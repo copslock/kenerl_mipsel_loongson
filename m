@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 00:33:22 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:56765 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 00:35:19 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:35826 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992851AbeEOWdPYTmjS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 00:33:15 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 15 May 2018 22:32:22 +0000
+        by eddie.linux-mips.org with ESMTP id S23992841AbeEOWfLbscMS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 00:35:11 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 15 May 2018 22:34:18 +0000
 Received: from [10.20.78.107] (10.20.78.107) by mipsdag02.mipstec.com
  (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 15
- May 2018 15:32:50 -0700
-Date:   Tue, 15 May 2018 23:32:11 +0100
+ May 2018 15:34:02 -0700
+Date:   Tue, 15 May 2018 23:33:26 +0100
 From:   "Maciej W. Rozycki" <macro@mips.com>
 To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         James Hogan <jhogan@kernel.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         <linux-fsdevel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/3] MIPS: DSP ASE regset support
-Message-ID: <alpine.DEB.2.00.1804301557320.11756@tp.orcam.me.uk>
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 2/3] MIPS: Correct the 64-bit DSP accumulator register size
+In-Reply-To: <alpine.DEB.2.00.1804301557320.11756@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.00.1805102026260.10896@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1804301557320.11756@tp.orcam.me.uk>
 User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 X-Originating-IP: [10.20.78.107]
 X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
  mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1526423542-853316-32019-19570-1
+X-BESS-ID: 1526423657-637138-23752-17153-2
 X-BESS-VER: 2018.6-r1805102334
 X-BESS-Apparent-Source-IP: 12.201.5.32
 X-BESS-Outbound-Spam-Score: 0.00
@@ -38,7 +40,7 @@ Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63967
+X-archive-position: 63968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,31 +57,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Use the `unsigned long' rather than `__u32' type for DSP accumulator 
+registers, like with the regular MIPS multiply/divide accumulator and 
+general-purpose registers, as all are 64-bit in 64-bit implementations 
+and using a 32-bit data type leads to contents truncation on context 
+saving.
+
+Update `arch_ptrace' and `compat_arch_ptrace' accordingly, removing 
+casts that are similarly not used with multiply/divide accumulator or 
+general-purpose register accesses.
+
+Cc: stable@vger.kernel.org # 2.6.15+
+Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+---
 Hi,
 
- For years, quite oddly, we have been missing DSP ASE register state from 
-core files.  These days regsets are used to define what goes into a core 
-file, so here's a change adding one.
-
- As a side effect ptrace(2) can now also access this regset, however no 
-complementing client implementation has been made.  Eventually that'll 
-have to change though so that DSP ASE registers can be correctly accessed 
-in n32 processes, which suffer from ptrace(2) 32-bit data types truncating 
-contents exchanged by PTRACE_PEEKUSR and PTRACE_POKEUSR requests with 
-64-bit registers and no means defined to access partial registers via this 
-API.
-
- In the course of this implementation I came across two bugs affecting the 
-area being updated and hence this has become a small patch series with the 
-audience wider than originally expected.
-
- See individual commit descriptions for the details of changes made.  
-
- NB there is no strict functional dependency between 1/3 and 2/3-3/3, so 
-the order of commits does not have to be preserved as far as these two 
-subsets are concerned.  However 3/3 does trigger the problem addressed 
-with 1/3 (and gracefully handles it), hence the grouping in a series.
-
- Please apply.
+ I have no 64-bit DSP hardware handy to verify this change, however some 
+surely exists and is used to run Linux, as indicated by GDB PR gdb/22286, 
+<https://sourceware.org/bugzilla/show_bug.cgi?id=22286>, so we better get 
+it right before people start screaming.
 
   Maciej
+---
+ arch/mips/include/asm/processor.h |    2 +-
+ arch/mips/kernel/ptrace.c         |    2 +-
+ arch/mips/kernel/ptrace32.c       |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+linux-mips-dsp64.diff
+Index: linux-jhogan-test/arch/mips/include/asm/processor.h
+===================================================================
+--- linux-jhogan-test.orig/arch/mips/include/asm/processor.h	2018-03-21 17:13:52.000000000 +0000
++++ linux-jhogan-test/arch/mips/include/asm/processor.h	2018-05-09 22:35:33.248559000 +0100
+@@ -141,7 +141,7 @@ struct mips_fpu_struct {
+ 
+ #define NUM_DSP_REGS   6
+ 
+-typedef __u32 dspreg_t;
++typedef unsigned long dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
+Index: linux-jhogan-test/arch/mips/kernel/ptrace.c
+===================================================================
+--- linux-jhogan-test.orig/arch/mips/kernel/ptrace.c	2018-05-09 22:34:00.000000000 +0100
++++ linux-jhogan-test/arch/mips/kernel/ptrace.c	2018-05-09 22:37:45.416608000 +0100
+@@ -856,7 +856,7 @@ long arch_ptrace(struct task_struct *chi
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
+Index: linux-jhogan-test/arch/mips/kernel/ptrace32.c
+===================================================================
+--- linux-jhogan-test.orig/arch/mips/kernel/ptrace32.c	2018-03-21 17:13:52.000000000 +0000
++++ linux-jhogan-test/arch/mips/kernel/ptrace32.c	2018-05-09 22:45:50.924418000 +0100
+@@ -142,7 +142,7 @@ long compat_arch_ptrace(struct task_stru
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:

@@ -1,48 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 20:28:54 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:60706 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992848AbeEOS2rhAlMd convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 20:28:47 +0200
-Received: from localhost (unknown [104.132.1.75])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6746F20677;
-        Tue, 15 May 2018 18:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526408921;
-        bh=0MaLvbWan03WnEh2nVVBH2Vd6x+XYJwrE4kAr21ghEc=;
-        h=To:From:In-Reply-To:Cc:References:Subject:Date:From;
-        b=IjqWfL9LjCNuTaECahT7mSdHqi9EhQyXf+pBiRUSIPvEmKRbYmKecs8OYyJpXgkNU
-         /7E0mLmclzZ/9UX1nzQ5wcYnlBi2sIZRgO1yDkwMTxTP+3cMW66kzrhpasABEQF4IQ
-         R49/Sd8DtfXlwWKYGU5pz7xAQnCFnSEWtZNfBzsY=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Paul Burton <paul.burton@mips.com>
-From:   Stephen Boyd <sboyd@kernel.org>
-In-Reply-To: <20180510065951.fiojonx5f776z5jm@mwanda>
-Cc:     Colin King <colin.king@canonical.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20180509134031.11611-1-colin.king@canonical.com>
- <20180509140135.4dndt3baomtxups5@mwanda>
- <20180509163311.alvyibwwuwkumyxf@pburton-laptop>
- <20180510065951.fiojonx5f776z5jm@mwanda>
-Message-ID: <152640892003.34267.13202118557714072290@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.7
-Subject: Re: [PATCH] clk: boston: fix memory leak of 'onecell' on error return paths
-Date:   Tue, 15 May 2018 11:28:40 -0700
-Return-Path: <sboyd@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 22:48:22 +0200 (CEST)
+Received: from shards.monkeyblade.net ([184.105.139.130]:57140 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992828AbeEOUsQLdqPC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 22:48:16 +0200
+Received: from localhost (67.110.78.66.ptr.us.xo.net [67.110.78.66])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 68C2613FA4842;
+        Tue, 15 May 2018 13:48:11 -0700 (PDT)
+Date:   Tue, 15 May 2018 16:45:02 -0400 (EDT)
+Message-Id: <20180515.164502.1934826189006257590.davem@davemloft.net>
+To:     alexandre.belloni@bootlin.com
+Cc:     Allan.Nielsen@microsemi.com, razvan.stefanescu@nxp.com,
+        po.liu@nxp.com, thomas.petazzoni@bootlin.com, andrew@lunn.ch,
+        f.fainelli@gmail.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        jhogan@kernel.org
+Subject: Re: [PATCH net-next v3 0/7] Microsemi Ocelot Ethernet switch
+ support
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
+References: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
+X-Mailer: Mew version 6.7 on Emacs 25.3 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 15 May 2018 13:48:12 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63963
+X-archive-position: 63964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@kernel.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,12 +48,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Quoting Dan Carpenter (2018-05-09 23:59:51)
-> It would be nice to make things static check clean.  One idea would be
-> that the static checker could ignore resource leaks in __init functions.
-> 
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Date: Mon, 14 May 2018 22:04:53 +0200
 
-Typically if the stuff is so important that it doesn't work without it
-then we throw in a panic() or a BUG() call to indicate that all hope is
-lost. Otherwise, I'm not sure what's wrong with adding in proper error
-paths for clean recovery.
+> The ocelot dts changes are here for reference and should probably go
+> through the MIPS tree once the bindings are accepted.
+
+Ok, series applied to net-next minus patches #5 and #6.
+
+Thank you.

@@ -1,63 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jun 2018 10:39:09 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:50174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992692AbeFCIiuRxMca (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 3 Jun 2018 10:38:50 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A53EE2089B;
-        Sun,  3 Jun 2018 08:38:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1528015124;
-        bh=Y8luB1jkztb1//bXYkYWSpKJzoQSED4E0kV2vrM9ay0=;
-        h=Subject:To:Cc:From:Date:From;
-        b=v00MARMKDWrgNPC3N9VPlGI3UP5+kdJSs++lVILMOWIrXxM/5W9L0iYGgI0H9AUh3
-         Ay9KiT2qp5JUhcHhev46iYwntj7KXwWJVZenb60pRCf9UsRu5q6D9zEvKe/j+cEi4r
-         IhR6TiYP0NBmIx6psvoMWDc+BKrzHLf/g+4vE3Ls=
-Subject: Patch "MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests" has been added to the 4.16-stable tree
-To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, macro@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 03 Jun 2018 10:37:43 +0200
-Message-ID: <152801506315045@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=GHQf=IV=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64153
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: "Maciej W. Rozycki" <macro@mips.com>
+Date: Tue, 15 May 2018 23:04:44 +0100
+Subject: MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests
+Message-ID: <20180515220444.3BxXdwTfDNV2rKJsZwQ6JyjIAq_5Pk9AB-P685jo_7s@z>
+
+From: Maciej W. Rozycki <macro@mips.com>
+
+commit 28e4213dd331e944e7fca1954a946829162ed9d4 upstream.
+
+Having PR_FP_MODE_FRE (i.e. Config5.FRE) set without PR_FP_MODE_FR (i.e.
+Status.FR) is not supported as the lone purpose of Config5.FRE is to
+emulate Status.FR=0 handling on FPU hardware that has Status.FR=1
+hardwired[1][2].  Also we do not handle this case elsewhere, and assume
+throughout our code that TIF_HYBRID_FPREGS and TIF_32BIT_FPREGS cannot
+be set both at once for a task, leading to inconsistent behaviour if
+this does happen.
+
+Return unsuccessfully then from prctl(2) PR_SET_FP_MODE calls requesting
+PR_FP_MODE_FRE to be set with PR_FP_MODE_FR clear.  This corresponds to
+modes allowed by `mips_set_personality_fp'.
+
+References:
+
+[1] "MIPS Architecture For Programmers, Vol. III: MIPS32 / microMIPS32
+    Privileged Resource Architecture", Imagination Technologies,
+    Document Number: MD00090, Revision 6.02, July 10, 2015, Table 9.69
+    "Config5 Register Field Descriptions", p. 262
+
+[2] "MIPS Architecture For Programmers, Volume III: MIPS64 / microMIPS64
+    Privileged Resource Architecture", Imagination Technologies,
+    Document Number: MD00091, Revision 6.03, December 22, 2015, Table
+    9.72 "Config5 Register Field Descriptions", p. 288
+
+Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.0+
+Patchwork: https://patchwork.linux-mips.org/patch/19327/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/process.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -721,6 +721,10 @@ int mips_set_process_fp_mode(struct task
+ 	if (value & ~known_bits)
+ 		return -EOPNOTSUPP;
+ 
++	/* Setting FRE without FR is not supported.  */
++	if ((value & (PR_FP_MODE_FR | PR_FP_MODE_FRE)) == PR_FP_MODE_FRE)
++		return -EOPNOTSUPP;
++
+ 	/* Avoid inadvertently triggering emulation */
+ 	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
+ 	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from macro@mips.com are
 
-    MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests
-
-to the 4.16-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-prctl-disallow-fre-without-fr-with-pr_set_fp_mode-requests.patch
-and it can be found in the queue-4.16 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.16/mips-ptrace-fix-ptrace_peekusr-requests-for-64-bit-fgrs.patch
+queue-4.16/mips-prctl-disallow-fre-without-fr-with-pr_set_fp_mode-requests.patch

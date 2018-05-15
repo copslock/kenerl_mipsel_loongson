@@ -1,60 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 01:04:16 +0200 (CEST)
-Received: from icp-osb-irony-out5.external.iinet.net.au ([203.59.1.221]:21213
-        "EHLO icp-osb-irony-out5.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992684AbeENXEH4KP9U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 01:04:07 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2DcAABmFPpa/6SIBjoNTxsBAQEBAwEBA?=
- =?us-ascii?q?QkBAQGFR5k1BoEHIYEPlSqEdwKDMjgUAQIBAQEBAQEChjwBAQEBAgE4QQULCw0?=
- =?us-ascii?q?BCi5XBgEMBgIBAYMfgXQFqxuDCRqEPoNugieJMYEHgTIMglyKRwKYNgmOS4dxh?=
- =?us-ascii?q?QQrkV0zgXMzGggoCIJ+kGBdkQgBAQ?=
-X-IPAS-Result: =?us-ascii?q?A2DcAABmFPpa/6SIBjoNTxsBAQEBAwEBAQkBAQGFR5k1BoE?=
- =?us-ascii?q?HIYEPlSqEdwKDMjgUAQIBAQEBAQEChjwBAQEBAgE4QQULCw0BCi5XBgEMBgIBA?=
- =?us-ascii?q?YMfgXQFqxuDCRqEPoNugieJMYEHgTIMglyKRwKYNgmOS4dxhQQrkV0zgXMzGgg?=
- =?us-ascii?q?oCIJ+kGBdkQgBAQ?=
-X-IronPort-AV: E=Sophos;i="5.49,402,1520870400"; 
-   d="scan'208";a="133423000"
-Received: from unknown (HELO [192.168.0.106]) ([58.6.136.164])
-  by icp-osb-irony-out5.iinet.net.au with ESMTP; 15 May 2018 07:03:11 +0800
-Subject: Re: [PATCH 1/7] i2c: i2c-gpio: move header to platform_data
-To:     Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Sergey Lapin <slapin@ossfans.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2018 15:51:06 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:49432 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992773AbeEONu5j6WBr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2018 15:50:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=241AJ8mZnNdwNghCTp5VQpExXzFZjtVD6a1xq4IGSGs=; b=NkqJSWpZQIhOehECjJfglY9CNj
+        IC3v8m5nu34GSlMvgGQlZeajW2xiukvkdYfSo+DLKOHIP1OUcnGrjsKR9t7dWy3gzdUU3Qr2KRDGm
+        9jyTq54s5EVnOslEXaExAzByY+XqGZoDLOTftVSBOtJMhL/a6KuYD+cNkWB8Tl8JKR6w/BEvrtMr9
+        vRd13nHVGmVRGMeyJ8fP/cILrN1t6eO/mt2cCkmRJTEIGRir3do1x+iGOtEzgxDYuZXxflApOf+yn
+        DkU4cAgHa2OnhuGLy1cb0on1J3hLb69km73+J/IvRWXI7FnXY2WapB7k1Jn0pxj+9MOeraSYmNDcD
+        cZUb+4dA==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:43216 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.89)
+        (envelope-from <linux@roeck-us.net>)
+        id 1fIaLp-003Ty9-AO; Tue, 15 May 2018 13:50:50 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-media@vger.kernel.org
-References: <20180419200015.15095-1-wsa@the-dreams.de>
- <20180419200015.15095-2-wsa@the-dreams.de>
- <20180514213719.o6ceftp2quem3s7f@ninjato>
-From:   Greg Ungerer <gerg@uclinux.org>
-Message-ID: <40bb677a-e6e1-7906-28fe-9e74cdfbefd7@uclinux.org>
-Date:   Tue, 15 May 2018 09:03:08 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+        Guenter Roeck <linux@roeck-us.net>,
+        "Eric W . Biederman" <ebiederm@xmission.com>
+Subject: [PATCH -next] signal/mips: Report FPE_FLTUNK for undiagnosed floating point exceptions
+Date:   Tue, 15 May 2018 06:50:47 -0700
+Message-Id: <1526392247-25512-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20180514213719.o6ceftp2quem3s7f@ninjato>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <gerg@uclinux.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63960
+X-archive-position: 63961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerg@uclinux.org
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,72 +65,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Most mips builds fail with
 
-Hi Wolfram,
+arch/mips/kernel/traps.c: In function ‘force_fcr31_sig’:
+arch/mips/kernel/traps.c:732:2: error:
+	‘si_code’ may be used uninitialized in this function
 
-On 15/05/18 07:37, Wolfram Sang wrote:
->>   arch/arm/mach-ks8695/board-acs5k.c               | 2 +-
->>   arch/arm/mach-sa1100/simpad.c                    | 2 +-
->>   arch/mips/alchemy/board-gpr.c                    | 2 +-
-> 
-> Those still need acks...
-> 
->> diff --git a/arch/arm/mach-ks8695/board-acs5k.c b/arch/arm/mach-ks8695/board-acs5k.c
->> index 937eb1d47e7b..ef835d82cdb9 100644
->> --- a/arch/arm/mach-ks8695/board-acs5k.c
->> +++ b/arch/arm/mach-ks8695/board-acs5k.c
->> @@ -19,7 +19,7 @@
->>   #include <linux/gpio/machine.h>
->>   #include <linux/i2c.h>
->>   #include <linux/i2c-algo-bit.h>
->> -#include <linux/i2c-gpio.h>
->> +#include <linux/platform_data/i2c-gpio.h>
->>   #include <linux/platform_data/pca953x.h>
->>   
->>   #include <linux/mtd/mtd.h>
-> 
-> ...
-> 
->> diff --git a/arch/arm/mach-sa1100/simpad.c b/arch/arm/mach-sa1100/simpad.c
->> index ace010479eb6..49a61e6f3c5f 100644
->> --- a/arch/arm/mach-sa1100/simpad.c
->> +++ b/arch/arm/mach-sa1100/simpad.c
->> @@ -37,7 +37,7 @@
->>   #include <linux/input.h>
->>   #include <linux/gpio_keys.h>
->>   #include <linux/leds.h>
->> -#include <linux/i2c-gpio.h>
->> +#include <linux/platform_data/i2c-gpio.h>
->>   
->>   #include "generic.h"
->>   
->> diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
->> index 4e79dbd54a33..fa75d75b5ba9 100644
->> --- a/arch/mips/alchemy/board-gpr.c
->> +++ b/arch/mips/alchemy/board-gpr.c
->> @@ -29,7 +29,7 @@
->>   #include <linux/leds.h>
->>   #include <linux/gpio.h>
->>   #include <linux/i2c.h>
->> -#include <linux/i2c-gpio.h>
->> +#include <linux/platform_data/i2c-gpio.h>
->>   #include <linux/gpio/machine.h>
->>   #include <asm/bootinfo.h>
->>   #include <asm/idle.h>
-> 
-> ... and this was the shortened diff for those.
-> 
-> Greg, Russell, Ralf, James? Is it okay if I take this via my tree?
+Fix the problem by initializing si_code with FPE_FLTUNK (undiagnosed
+floating point exception).
 
-Yes, I have no problem with that for the ks8695 part.
+Fixes: f43a54a0d916 ("signal/mips: Use force_sig_fault where appropriate")
+Cc: linux-mips@linux-mips.org
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+Feel free to merge into the patch introducing the problem.
 
-Acked-by: Greg Ungerer <gerg@uclinux.org>
+ arch/mips/kernel/traps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks
-Greg
-
-
-> Thanks,
-> 
->     Wolfram
-> 
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 66ec4b0b484d..d67fa74622ee 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -716,7 +716,7 @@ asmlinkage void do_ov(struct pt_regs *regs)
+ void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
+ 		     struct task_struct *tsk)
+ {
+-	int si_code;
++	int si_code = FPE_FLTUNK;
+ 
+ 	if (fcr31 & FPU_CSR_INV_X)
+ 		si_code = FPE_FLTINV;
+-- 
+2.7.4

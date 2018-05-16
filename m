@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 11:18:21 +0200 (CEST)
-Received: from newton.telenet-ops.be ([IPv6:2a02:1800:120:4::f00:d]:39632 "EHLO
-        newton.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992864AbeEPJSKFl07p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 11:18:10 +0200
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by newton.telenet-ops.be (Postfix) with ESMTPS id 40m83w4LjxzMsJng
-        for <linux-mips@linux-mips.org>; Wed, 16 May 2018 11:18:04 +0200 (CEST)
-Received: from ayla.of.borg ([84.194.111.163])
-        by albert.telenet-ops.be with bizsmtp
-        id mxJ31x0023XaVaC06xJ3BU; Wed, 16 May 2018 11:18:04 +0200
-Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
-        by ayla.of.borg with esmtp (Exim 4.86_2)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1fIsZO-0003HZ-UQ; Wed, 16 May 2018 11:18:02 +0200
-Received: from geert by ramsan with local (Exim 4.86_2)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1fIsZO-0005Q8-SG; Wed, 16 May 2018 11:18:02 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     "David S . Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] net: 8390: ne: Fix accidentally removed RBTX4927 support
-Date:   Wed, 16 May 2018 11:18:01 +0200
-Message-Id: <1526462281-20772-1-git-send-email-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.7.4
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 13:26:36 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:54376 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992907AbeEPL02fdgoK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 May 2018 13:26:28 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 6C68A206FB; Wed, 16 May 2018 13:26:21 +0200 (CEST)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 4075C20012;
+        Wed, 16 May 2018 13:26:21 +0200 (CEST)
+Date:   Wed, 16 May 2018 13:26:22 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        razvan.stefanescu@nxp.com, po.liu@nxp.com,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH net-next v3 0/7] Microsemi Ocelot Ethernet switch support
+Message-ID: <20180516112622.GA3254@piout.net>
+References: <20180514200500.2953-1-alexandre.belloni@bootlin.com>
+ <20180514205844.GG1057@lunn.ch>
+ <20180514214734.GB29541@jamesdev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180514214734.GB29541@jamesdev>
+User-Agent: Mutt/1.9.5 (2018-04-13)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63972
+X-archive-position: 63973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,36 +50,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The configuration settings for RBTX4927 were accidentally removed,
-leading to a silently broken network interface.
+On 14/05/2018 22:47:35+0100, James Hogan wrote:
+> On Mon, May 14, 2018 at 10:58:44PM +0200, Andrew Lunn wrote:
+> > Hi Alexandre
+> > > 
+> > > The ocelot dts changes are here for reference and should probably go
+> > > through the MIPS tree once the bindings are accepted.
+> > 
+> > For your next version, you probably want to drop those patches, so
+> > that David can apply the network patches to net-next.
+> 
+> Since it sounds like the net patches are ready now, I'll apply the MIPS
+> DTS ones for 4.18.
+> 
 
-Re-add the missing settings to fix this.
+They are in now, tell me if you want me to resend.
 
-Fixes: 8eb97ff5a4ec941d ("net: 8390: remove m32r specific bits")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-Bisected between v4.9-rc2 (doh) and v4.17-rc5.
+Anyway, I'll probably send another patch to enable the driver in
+board-ocelot.config
 
-Note to myself: I should do more boot testing on RBTX4927.
-Fortunately I caught it before it ends up in a point release ;-)
----
- drivers/net/ethernet/8390/ne.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/8390/ne.c b/drivers/net/ethernet/8390/ne.c
-index ac99d089ac7266c3..1c97e39b478e9f89 100644
---- a/drivers/net/ethernet/8390/ne.c
-+++ b/drivers/net/ethernet/8390/ne.c
-@@ -164,7 +164,9 @@ bad_clone_list[] __initdata = {
- #define NESM_START_PG	0x40	/* First page of TX buffer */
- #define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
- 
--#if defined(CONFIG_ATARI)	/* 8-bit mode on Atari, normal on Q40 */
-+#if defined(CONFIG_MACH_TX49XX)
-+#  define DCR_VAL 0x48		/* 8-bit mode */
-+#elif defined(CONFIG_ATARI)	/* 8-bit mode on Atari, normal on Q40 */
- #  define DCR_VAL (MACH_IS_ATARI ? 0x48 : 0x49)
- #else
- #  define DCR_VAL 0x49
 -- 
-2.7.4
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

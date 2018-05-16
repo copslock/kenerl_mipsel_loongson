@@ -1,69 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 13:43:25 +0200 (CEST)
-Received: from userp2130.oracle.com ([156.151.31.86]:40780 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992907AbeEPLnTRo0lK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 13:43:19 +0200
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w4GBedjJ072104;
-        Wed, 16 May 2018 11:43:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2017-10-26;
- bh=l/gzVKI1EmoDwHutA5nqLh/8kBV3Z6vTX6XtpUX2dUw=;
- b=nI0/gt2mfBlrBNdFDR2YKbc7Q9jpI98JmjbhPYWgAOKGcWOAHj/nP0PdQxKCC51/vjsE
- bV10O0Noe0r3OVPvuYIsMRNjF1Y72azrHRypB6C/5d5Ie9Abx7g3O962++Vj1LFe/x0H
- uRpxhBFsS/LyYRXGhtqdAlc+C9ByWQ7zOr8JLNkcfZFTtTK2Tm7+XQ0ytPdcEucVli5Z
- oJLBfMDtSHZR07S4V3hhrG5vZoL7RhMA+5IvYumPaOlPaC8HfagRPuSDAq81HfWhJsbb
- IHEnB/pRaGaBvR9RIJWDwuoXN9yjK7dvto4C7Bcu0IKZ8aA72GN1G3GcnyS7+Xh6LkH9 mA== 
-Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
-        by userp2130.oracle.com with ESMTP id 2hx29wce60-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 May 2018 11:43:06 +0000
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserv0022.oracle.com (8.14.4/8.14.4) with ESMTP id w4GBh4hT017080
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 May 2018 11:43:04 GMT
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id w4GBh2it016772;
-        Wed, 16 May 2018 11:43:03 GMT
-Received: from mwanda (/197.254.35.146)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 16 May 2018 04:43:02 -0700
-Date:   Wed, 16 May 2018 14:42:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Colin King <colin.king@canonical.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: boston: fix memory leak of 'onecell' on error
- return paths
-Message-ID: <20180516114254.wffddft537t45yfg@mwanda>
-References: <20180509134031.11611-1-colin.king@canonical.com>
- <20180509140135.4dndt3baomtxups5@mwanda>
- <20180509163311.alvyibwwuwkumyxf@pburton-laptop>
- <20180510065951.fiojonx5f776z5jm@mwanda>
- <152640892003.34267.13202118557714072290@swboyd.mtv.corp.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 17:40:49 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:54697 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992916AbeEPPkmAOqlk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 17:40:42 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx28.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 16 May 2018 15:40:08 +0000
+Received: from [10.20.78.133] (10.20.78.133) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 16
+ May 2018 08:40:35 -0700
+Date:   Wed, 16 May 2018 16:39:58 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     James Hogan <jhogan@kernel.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: ptrace: Fix PTRACE_PEEKUSR requests for 64-bit FGRs
+Message-ID: <alpine.DEB.2.00.1805161306260.10896@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <152640892003.34267.13202118557714072290@swboyd.mtv.corp.google.com>
-User-Agent: NeoMutt/20170609 (1.8.3)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=8894 signatures=668698
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1711220000 definitions=main-1805160119
-Return-Path: <dan.carpenter@oracle.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.133]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1526485207-637138-23749-67371-1
+X-BESS-VER: 2018.6-r1805102334
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193036
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Maciej.Rozycki@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63974
+X-archive-position: 63975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.carpenter@oracle.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,27 +53,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, May 15, 2018 at 11:28:40AM -0700, Stephen Boyd wrote:
-> Quoting Dan Carpenter (2018-05-09 23:59:51)
-> > It would be nice to make things static check clean.  One idea would be
-> > that the static checker could ignore resource leaks in __init functions.
-> > 
-> 
-> Typically if the stuff is so important that it doesn't work without it
-> then we throw in a panic() or a BUG() call to indicate that all hope is
-> lost. Otherwise, I'm not sure what's wrong with adding in proper error
-> paths for clean recovery.
+Use 64-bit accesses for 64-bit floating-point general registers with 
+PTRACE_PEEKUSR, removing the truncation of their upper halves in the 
+FR=1 mode, caused by commit bbd426f542cb ("MIPS: Simplify FP context 
+access"), which inadvertently switched them to using 32-bit accesses.
 
-In clk_boston_setup() then we'd have to put a ton of BUG()s in there to
-silence all the warnings.  Right now the static checkers only care about
-kmalloc() but in a year or two they'll be clever enough to care about
-everything leaked in this function.  I don't think adding BUG() calls
-is a good idea.
+The PTRACE_POKEUSR side is fine as it's never been broken and continues 
+using 64-bit accesses.
 
-Plus, I have a private static checker warning for that.  When the BTRFS
-filesystem was merged 10 years ago it used to call BUG() all the time if
-allocations failed so I made a static checker warning to spot that
-anti-pattern...
+Cc: <stable@vger.kernel.org> # 3.19+
+Fixes: bbd426f542cb ("MIPS: Simplify FP context access")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+---
+Hi,
 
-regards,
-dan carpenter
+ Here's another one, spotted in the course of GDB PR gdb/22286 regression 
+testing with the n64 ABI.  Please apply.
+
+  Maciej
+---
+ arch/mips/kernel/ptrace.c   |    2 +-
+ arch/mips/kernel/ptrace32.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+linux-mips-ptrace-peekusr-fp64.diff
+Index: linux/arch/mips/kernel/ptrace.c
+===================================================================
+--- linux.orig/arch/mips/kernel/ptrace.c	2018-05-15 17:44:25.000000000 +0100
++++ linux/arch/mips/kernel/ptrace.c	2018-05-16 11:22:00.714605000 +0100
+@@ -1070,7 +1070,7 @@ long arch_ptrace(struct task_struct *chi
+ 				break;
+ 			}
+ #endif
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;
+Index: linux/arch/mips/kernel/ptrace32.c
+===================================================================
+--- linux.orig/arch/mips/kernel/ptrace32.c	2018-05-15 17:45:16.000000000 +0100
++++ linux/arch/mips/kernel/ptrace32.c	2018-05-16 11:22:16.313698000 +0100
+@@ -109,7 +109,7 @@ long compat_arch_ptrace(struct task_stru
+ 						addr & 1);
+ 				break;
+ 			}
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;

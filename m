@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 19:59:37 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:41042 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 20:05:39 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993057AbeEPR7afXtz6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 May 2018 19:59:30 +0200
+        id S23993041AbeEPSFbNj0e6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 May 2018 20:05:31 +0200
 Received: from jamesdev (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7C93920834;
-        Wed, 16 May 2018 17:59:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CE94C206B7;
+        Wed, 16 May 2018 18:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1526493563;
-        bh=UZrP2NC/Yldc/RAsN11ZCKPUvaO0eIevLZ4xzX9W2gA=;
+        s=default; t=1526493924;
+        bh=ptxCbgGkDvIrm4vc/HkCi7oRWQ2qZM5k/FgHq18PTJU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UekkozVlhgWIfuOnmny0xhwFgOtpCL8Lctk/DcSQrIKpqrVB7auJtoIrKjK0mHZUn
-         uUEfAAxlsOH2iNuw4892YrohtzxwrVwCjQLeJ4EwtB7WgA/p2yukeSvMXeS/gFq1t+
-         OhadAKIo0F6yJs3IrhFIa1a53KXR5jr4Nn1YLmxE=
-Date:   Wed, 16 May 2018 18:59:18 +0100
+        b=T+i4Tv3a+rYQhTdF3tGuqxJgOdSe4wjw6jv2agCKZAeIIl5LjoXeJiceALHp2xUYm
+         oj6qMw96Ve3Gij+M/NbnITME6NbZERCYDZSTGAtHO0mGGqQbUuMZQJ2+kY7NmBNaSN
+         i6JK8VWMsDNFV7KSI/LgtvMFAwOO3Ai3LhwE/w4M=
+Date:   Wed, 16 May 2018 19:05:20 +0100
 From:   James Hogan <jhogan@kernel.org>
 To:     Matt Redfearn <matt.redfearn@mips.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -26,22 +26,21 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Jiri Olsa <jolsa@redhat.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH v3 4/7] MIPS: perf: Fix perf with MT counting other
- threads
-Message-ID: <20180516175916.GA12837@jamesdev>
+Subject: Re: [PATCH v3 5/7] MIPS: perf: Allocate per-core counters on demand
+Message-ID: <20180516180518.GB12837@jamesdev>
 References: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
- <1524219789-31241-5-git-send-email-matt.redfearn@mips.com>
+ <1524219789-31241-6-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fUYQa+Pmc3FrFX/N"
+        protocol="application/pgp-signature"; boundary="V0207lvV8h4k8FAm"
 Content-Disposition: inline
-In-Reply-To: <1524219789-31241-5-git-send-email-matt.redfearn@mips.com>
+In-Reply-To: <1524219789-31241-6-git-send-email-matt.redfearn@mips.com>
 User-Agent: Mutt/1.9.5 (2018-04-13)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63976
+X-archive-position: 63977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,87 +58,112 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---fUYQa+Pmc3FrFX/N
+--V0207lvV8h4k8FAm
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 20, 2018 at 11:23:06AM +0100, Matt Redfearn wrote:
-> diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf=
-_event_mipsxx.c
-> index 7e2b7d38a774..fe50986e83c6 100644
-> --- a/arch/mips/kernel/perf_event_mipsxx.c
-> +++ b/arch/mips/kernel/perf_event_mipsxx.c
-> @@ -323,7 +323,11 @@ static int mipsxx_pmu_alloc_counter(struct cpu_hw_ev=
-ents *cpuc,
-> =20
->  static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
->  {
-> +	struct perf_event *event =3D container_of(evt, struct perf_event, hw);
->  	struct cpu_hw_events *cpuc =3D this_cpu_ptr(&cpu_hw_events);
-> +#ifdef CONFIG_MIPS_MT_SMP
-> +	unsigned int range =3D evt->event_base >> 24;
-> +#endif /* CONFIG_MIPS_MT_SMP */
-> =20
->  	WARN_ON(idx < 0 || idx >=3D mipspmu.num_counters);
-> =20
-> @@ -331,11 +335,37 @@ static void mipsxx_pmu_enable_event(struct hw_perf_=
-event *evt, int idx)
->  		(evt->config_base & M_PERFCTL_CONFIG_MASK) |
->  		/* Make sure interrupt enabled. */
->  		MIPS_PERFCTRL_IE;
-> -	if (IS_ENABLED(CONFIG_CPU_BMIPS5000))
-> +
-> +#ifdef CONFIG_CPU_BMIPS5000
-> +	{
->  		/* enable the counter for the calling thread */
->  		cpuc->saved_ctrl[idx] |=3D
->  			(1 << (12 + vpe_id())) | BRCM_PERFCTRL_TC;
-> +	}
-> +#else
-> +#ifdef CONFIG_MIPS_MT_SMP
-> +	if (range > V) {
-> +		/* The counter is processor wide. Set it up to count all TCs. */
-> +		pr_debug("Enabling perf counter for all TCs\n");
-> +		cpuc->saved_ctrl[idx] |=3D M_TC_EN_ALL;
-> +	} else
-> +#endif /* CONFIG_MIPS_MT_SMP */
-> +	{
-> +		unsigned int cpu, ctrl;
-> =20
-> +		/*
-> +		 * Set up the counter for a particular CPU when event->cpu is
-> +		 * a valid CPU number. Otherwise set up the counter for the CPU
-> +		 * scheduling this thread.
-> +		 */
-> +		cpu =3D (event->cpu >=3D 0) ? event->cpu : smp_processor_id();
-> +
-> +		ctrl =3D M_PERFCTL_VPEID(cpu_vpe_id(&cpu_data[cpu]));
-> +		ctrl |=3D M_TC_EN_VPE;
-> +		cpuc->saved_ctrl[idx] |=3D ctrl;
-> +		pr_debug("Enabling perf counter for CPU%d\n", cpu);
-> +	}
-> +#endif /* CONFIG_CPU_BMIPS5000 */
+On Fri, Apr 20, 2018 at 11:23:07AM +0100, Matt Redfearn wrote:
+> Previously when performance counters are per-core, rather than
+> per-thread, the number available were divided by 2 on detection, and the
+> counters used by each thread in a core were "swizzled" to ensure
+> separation. However, this solution is suboptimal since it relies on a
+> couple of assumptions:
+> a) Always having 2 VPEs / core (number of counters was divided by 2)
+> b) Always having a number of counters implemented in the core that is
+>    divisible by 2. For instance if an SoC implementation had a single
+>    counter and 2 VPEs per core, then this logic would fail and no
+>    performance counters would be available.
+> The mechanism also does not allow for one VPE in a core using more than
+> it's allocation of the per-core counters to count multiple events even
+> though other VPEs may not be using them.
+>=20
+> Fix this situation by instead allocating (and releasing) per-core
+> performance counters when they are requested. This approach removes the
+> above assumptions and fixes the shortcomings.
+>=20
+> In order to do this:
+> Add additional logic to mipsxx_pmu_alloc_counter() to detect if a
+> sibling is using a per-core counter, and to allocate a per-core counter
+> in all sibling CPUs.
+> Similarly, add a mipsxx_pmu_free_counter() function to release a
+> per-core counter in all sibling CPUs when it is finished with.
+> A new spinlock, core_counters_lock, is introduced to ensure exclusivity
+> when allocating and releasing per-core counters.
+> Since counters are now allocated per-core on demand, rather than being
+> reserved per-thread at boot, all of the "swizzling" of counters is
+> removed.
+>=20
+> The upshot is that in an SoC with 2 counters / thread, counters are
+> reported as:
+> Performance counters: mips/interAptiv PMU enabled, 2 32-bit counters
+> available to each CPU, irq 18
+>=20
+> Running an instance of a test program on each of 2 threads in a
+> core, both threads can use their 2 counters to count 2 events:
+>=20
+> taskset 4 perf stat -e instructions:u,branches:u ./test_prog & taskset 8
+> perf stat -e instructions:u,branches:u ./test_prog
+>=20
+>  Performance counter stats for './test_prog':
+>=20
+>              30002      instructions:u
+>              10000      branches:u
+>=20
+>        0.005164264 seconds time elapsed
+>  Performance counter stats for './test_prog':
+>=20
+>              30002      instructions:u
+>              10000      branches:u
+>=20
+>        0.006139975 seconds time elapsed
+>=20
+> In an SoC with 2 counters / core (which can be forced by setting
+> cpu_has_mipsmt_pertccounters =3D 0), counters are reported as:
+> Performance counters: mips/interAptiv PMU enabled, 2 32-bit counters
+> available to each core, irq 18
+>=20
+> Running an instance of a test program on each of 2 threads in a
+> core, now only one thread manages to secure the performance counters to
+> count 2 events. The other thread does not get any counters.
+>=20
+> taskset 4 perf stat -e instructions:u,branches:u ./test_prog & taskset 8
+> perf stat -e instructions:u,branches:u ./test_prog
+>=20
+>  Performance counter stats for './test_prog':
+>=20
+>      <not counted>       instructions:u
+>      <not counted>       branches:u
+>=20
+>        0.005179533 seconds time elapsed
+>=20
+>  Performance counter stats for './test_prog':
+>=20
+>              30002      instructions:u
+>              10000      branches:u
+>=20
+>        0.005179467 seconds time elapsed
+>=20
+> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
 
-I'm not a huge fan of the ifdefery tbh, I don't think it makes it very
-easy to read having a combination of ifs and #ifdefs. I reckon
-IF_ENABLED would be better, perhaps with having the BMIPS5000 case
-return to avoid too much nesting.
+While this sounds like an improvement in practice, being able to use
+more counters on single threaded stuff than otherwise, I'm a little
+concerned what would happen if a task was migrated to a different CPU
+and the perf counters couldn't be obtained on the new CPU due to
+counters already being in use. Would the values be incorrectly small?
 
-Otherwise the patch looks okay to me.
-
-Thanks
+Cheers
 James
 
---fUYQa+Pmc3FrFX/N
+--V0207lvV8h4k8FAm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvxxcwAKCRA1zuSGKxAj
-8kBCAP4sctSZ7Q6x87ZMki4qfpi/KV9WrytKPScE+HZ1vi4yIAEA7JVy8xtAxT5l
-JtIM0hxrefKUgoOV+JDhwyIB7SKAgAM=
-=EsA1
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWvxy3QAKCRA1zuSGKxAj
+8tkAAP0WI8Ai9zj9o9qA7EMW3EHQBEcuicBa7FVsRmwP/GPRwQD/VYsbpp7Whbh1
+7p38EwuqwfxsypFa10m8oEjEHeXzmA4=
+=eiea
 -----END PGP SIGNATURE-----
 
---fUYQa+Pmc3FrFX/N--
+--V0207lvV8h4k8FAm--

@@ -1,59 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 12:40:57 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:58587 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993497AbeEQKktzrcP4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2018 12:40:49 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Thu, 17 May 2018 10:40:20 +0000
-Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Thu, 17
- May 2018 03:40:47 -0700
-Subject: Re: [PATCH v3 5/7] MIPS: perf: Allocate per-core counters on demand
-To:     James Hogan <jhogan@kernel.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        <linux-mips@linux-mips.org>, Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-References: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
- <1524219789-31241-6-git-send-email-matt.redfearn@mips.com>
- <20180516180518.GB12837@jamesdev>
-From:   Matt Redfearn <matt.redfearn@mips.com>
-Message-ID: <ea713dfc-a4ef-a2ea-de9f-bd40ef28b128@mips.com>
-Date:   Thu, 17 May 2018 11:40:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 16:31:06 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:39380 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993997AbeEQOa77HU6g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 May 2018 16:30:59 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D4D6A20652;
+        Thu, 17 May 2018 14:30:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1526567452;
+        bh=xpLrqBlANpm5lJwLgb1GU9cvAmjKF14GHcHEMP6GNQo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cpy4s+0gHwHoUkcBIGJCuu9lxVknuELfAeM7S9LDoFp0p+hzBciIumuMk5zovdo6r
+         zeooSlvEeOZMShYU/JtFgfbzgglNkp6KTx3jjCw3IGcGOZkn9RL3XLCUnt2n2H81oB
+         OQZJY5eWOwVSF90qSouUgjpj8pd1R3sYX6ROn0sc=
+Date:   Thu, 17 May 2018 15:30:47 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Matt Redfearn <matt.redfearn@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 1/6] MIPS: Move ehb() to barrier.h
+Message-ID: <20180517143046.GA24704@jamesdev>
+References: <1515148270-9391-1-git-send-email-matt.redfearn@mips.com>
+ <1515148270-9391-2-git-send-email-matt.redfearn@mips.com>
 MIME-Version: 1.0
-In-Reply-To: <20180516180518.GB12837@jamesdev>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.155.41]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1526553619-637139-24071-42272-1
-X-BESS-VER: 2018.6-r1805161801
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193074
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Matt.Redfearn@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fUYQa+Pmc3FrFX/N"
+Content-Disposition: inline
+In-Reply-To: <1515148270-9391-2-git-send-email-matt.redfearn@mips.com>
+User-Agent: Mutt/1.9.5 (2018-04-13)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63984
+X-archive-position: 63985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,115 +55,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
 
-On 16/05/18 19:05, James Hogan wrote:
-> On Fri, Apr 20, 2018 at 11:23:07AM +0100, Matt Redfearn wrote:
->> Previously when performance counters are per-core, rather than
->> per-thread, the number available were divided by 2 on detection, and the
->> counters used by each thread in a core were "swizzled" to ensure
->> separation. However, this solution is suboptimal since it relies on a
->> couple of assumptions:
->> a) Always having 2 VPEs / core (number of counters was divided by 2)
->> b) Always having a number of counters implemented in the core that is
->>     divisible by 2. For instance if an SoC implementation had a single
->>     counter and 2 VPEs per core, then this logic would fail and no
->>     performance counters would be available.
->> The mechanism also does not allow for one VPE in a core using more than
->> it's allocation of the per-core counters to count multiple events even
->> though other VPEs may not be using them.
->>
->> Fix this situation by instead allocating (and releasing) per-core
->> performance counters when they are requested. This approach removes the
->> above assumptions and fixes the shortcomings.
->>
->> In order to do this:
->> Add additional logic to mipsxx_pmu_alloc_counter() to detect if a
->> sibling is using a per-core counter, and to allocate a per-core counter
->> in all sibling CPUs.
->> Similarly, add a mipsxx_pmu_free_counter() function to release a
->> per-core counter in all sibling CPUs when it is finished with.
->> A new spinlock, core_counters_lock, is introduced to ensure exclusivity
->> when allocating and releasing per-core counters.
->> Since counters are now allocated per-core on demand, rather than being
->> reserved per-thread at boot, all of the "swizzling" of counters is
->> removed.
->>
->> The upshot is that in an SoC with 2 counters / thread, counters are
->> reported as:
->> Performance counters: mips/interAptiv PMU enabled, 2 32-bit counters
->> available to each CPU, irq 18
->>
->> Running an instance of a test program on each of 2 threads in a
->> core, both threads can use their 2 counters to count 2 events:
->>
->> taskset 4 perf stat -e instructions:u,branches:u ./test_prog & taskset 8
->> perf stat -e instructions:u,branches:u ./test_prog
->>
->>   Performance counter stats for './test_prog':
->>
->>               30002      instructions:u
->>               10000      branches:u
->>
->>         0.005164264 seconds time elapsed
->>   Performance counter stats for './test_prog':
->>
->>               30002      instructions:u
->>               10000      branches:u
->>
->>         0.006139975 seconds time elapsed
->>
->> In an SoC with 2 counters / core (which can be forced by setting
->> cpu_has_mipsmt_pertccounters = 0), counters are reported as:
->> Performance counters: mips/interAptiv PMU enabled, 2 32-bit counters
->> available to each core, irq 18
->>
->> Running an instance of a test program on each of 2 threads in a/soak/bin/bashsoak -E cpuhotplugHi
->> core, now only one thread manages to secure the performance counters to
->> count 2 events. The other thread does not get any counters.
->>
->> taskset 4 perf stat -e instructions:u,branches:u ./test_prog & taskset 8
->> perf stat -e instructions:u,branches:u ./test_prog
->>
->>   Performance counter stats for './test_prog':
->>
->>       <not counted>       instructions:u
->>       <not counted>       branches:u
->>
->>         0.005179533 seconds time elapsed
->>
->>   Performance counter stats for './test_prog':
->>
->>               30002      instructions:u
->>               10000      branches:u
->>
->>         0.005179467 seconds time elapsed
->>
->> Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-> 
-> While this sounds like an improvement in practice, being able to use
-> more counters on single threaded stuff than otherwise, I'm a little
-> concerned what would happen if a task was migrated to a different CPU
-> and the perf counters couldn't be obtained on the new CPU due to
-> counters already being in use. Would the values be incorrectly small?
+--fUYQa+Pmc3FrFX/N
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-This change was really forced by the new I7200 development. Current 
-configurations have 2 counters per core, but each core has 3 VPEs - 
-which means the current logic cannot correctly assign counters. IoW the 
-2 assumptions stated in the commit log are no longer true.
+On Fri, Jan 05, 2018 at 10:31:05AM +0000, Matt Redfearn wrote:
+> The current location of ehb() in mipsmtregs.h does not make sense, since
+> it is not strictly related to multi-threading, and may be used in code
+> which does not include mipsmtregs.h
 
-Though you are right that if a task migrated to a core on which another 
-VPE is already using the counters, this change would mean counters 
-cannot be assigned. In that case we return EAGAIN. I'm not sure if that 
-error would be handled gracefully by the scheduler and the task 
-scheduled away again... The code events logic that backs this is tricky 
-to follow.
+>  arch/mips/include/asm/barrier.h    | 13 +++++++++++++
+>  arch/mips/include/asm/mipsmtregs.h |  8 --------
 
-Thanks,
-Matt
+But ehb isn't really a memory barrier like the other barriers in
+barrier.h, its an execution hazard barrier, as used when available by
+the hazard macros in hazards.h, and in fact there is already an _ehb()
+there.
 
+I suspect the intention was that most MIPS arch code using ehb would do
+so using the appropriate hazard abstractions, which would do the right
+number of NOPs on hardware without the EHB instruction. Code that is
+specific to certain arch revisions (like the MIPS MT code and MIPS KVM)
+can get away with using _ehb/ehb, but should use the abstractions where
+they exist to make intentions clear.
 
-> 
-> Cheers
-> James
-> 
+None of the specific hazards in hazards.h really match the case in patch
+2, I suppose you could have a new sync_mfc0_hazard() macro, but its so
+specific and EHB should be guaranteed to exist there, so perhaps _ehb()
+should just be used instead of ehb() there? (with a comment to describe
+what operations are being protected from what hazards).
+
+Cheers
+James
+
+--fUYQa+Pmc3FrFX/N
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWv2SFQAKCRA1zuSGKxAj
+8g1NAQDbRoahEifuu6/yUogKV60Ye0OY1HPN5uhoF/Sps8q+6AD8DQ8sqzB6icvF
+yii4y7HzTo+e6WZ7o9i1Z1pm2g8YqgA=
+=6e5S
+-----END PGP SIGNATURE-----
+
+--fUYQa+Pmc3FrFX/N--

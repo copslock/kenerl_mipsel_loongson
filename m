@@ -1,1095 +1,142 @@
-From: Jiri Slaby <jslaby@suse.cz>
-Date: Thu, 24 Aug 2017 09:31:05 +0200
-Subject: futex: Remove duplicated code and fix undefined behaviour
-Message-ID: <20170824073105.MZuk6lBZVPHeR5kynXZKVXZ52ru7abcFTlqyUyju1D4@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 12:36:17 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:45498 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993514AbeEQKgKJi7Z4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2018 12:36:10 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Thu, 17 May 2018 10:34:52 +0000
+Received: from [192.168.155.41] (192.168.155.41) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Thu, 17
+ May 2018 03:35:19 -0700
+Subject: Re: [PATCH v3 4/7] MIPS: perf: Fix perf with MT counting other
+ threads
+To:     James Hogan <jhogan@kernel.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <linux-mips@linux-mips.org>, Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+References: <1524219789-31241-1-git-send-email-matt.redfearn@mips.com>
+ <1524219789-31241-5-git-send-email-matt.redfearn@mips.com>
+ <20180516175916.GA12837@jamesdev>
+From:   Matt Redfearn <matt.redfearn@mips.com>
+Message-ID: <63a1ca19-6ded-149a-5a61-7464609c691b@mips.com>
+Date:   Thu, 17 May 2018 11:35:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <20180516175916.GA12837@jamesdev>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.155.41]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1526553291-637139-24085-42046-1
+X-BESS-VER: 2018.6-r1805161801
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193074
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Matt.Redfearn@mips.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 63983
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: matt.redfearn@mips.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Jiri Slaby <jslaby@suse.cz>
+Hi James,
 
-commit 30d6e0a4190d37740e9447e4e4815f06992dd8c3 upstream.
+On 16/05/18 18:59, James Hogan wrote:
+> On Fri, Apr 20, 2018 at 11:23:06AM +0100, Matt Redfearn wrote:
+>> diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+>> index 7e2b7d38a774..fe50986e83c6 100644
+>> --- a/arch/mips/kernel/perf_event_mipsxx.c
+>> +++ b/arch/mips/kernel/perf_event_mipsxx.c
+>> @@ -323,7 +323,11 @@ static int mipsxx_pmu_alloc_counter(struct cpu_hw_events *cpuc,
+>>   
+>>   static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
+>>   {
+>> +	struct perf_event *event = container_of(evt, struct perf_event, hw);
+>>   	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+>> +#ifdef CONFIG_MIPS_MT_SMP
+>> +	unsigned int range = evt->event_base >> 24;
+>> +#endif /* CONFIG_MIPS_MT_SMP */
+>>   
+>>   	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
+>>   
+>> @@ -331,11 +335,37 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
+>>   		(evt->config_base & M_PERFCTL_CONFIG_MASK) |
+>>   		/* Make sure interrupt enabled. */
+>>   		MIPS_PERFCTRL_IE;
+>> -	if (IS_ENABLED(CONFIG_CPU_BMIPS5000))
+>> +
+>> +#ifdef CONFIG_CPU_BMIPS5000
+>> +	{
+>>   		/* enable the counter for the calling thread */
+>>   		cpuc->saved_ctrl[idx] |=
+>>   			(1 << (12 + vpe_id())) | BRCM_PERFCTRL_TC;
+>> +	}
+>> +#else
+>> +#ifdef CONFIG_MIPS_MT_SMP
+>> +	if (range > V) {
+>> +		/* The counter is processor wide. Set it up to count all TCs. */
+>> +		pr_debug("Enabling perf counter for all TCs\n");
+>> +		cpuc->saved_ctrl[idx] |= M_TC_EN_ALL;
+>> +	} else
+>> +#endif /* CONFIG_MIPS_MT_SMP */
+>> +	{
+>> +		unsigned int cpu, ctrl;
+>>   
+>> +		/*
+>> +		 * Set up the counter for a particular CPU when event->cpu is
+>> +		 * a valid CPU number. Otherwise set up the counter for the CPU
+>> +		 * scheduling this thread.
+>> +		 */
+>> +		cpu = (event->cpu >= 0) ? event->cpu : smp_processor_id();
+>> +
+>> +		ctrl = M_PERFCTL_VPEID(cpu_vpe_id(&cpu_data[cpu]));
+>> +		ctrl |= M_TC_EN_VPE;
+>> +		cpuc->saved_ctrl[idx] |= ctrl;
+>> +		pr_debug("Enabling perf counter for CPU%d\n", cpu);
+>> +	}
+>> +#endif /* CONFIG_CPU_BMIPS5000 */
+> 
+> I'm not a huge fan of the ifdefery tbh, I don't think it makes it very
+> easy to read having a combination of ifs and #ifdefs. I reckon
+> IF_ENABLED would be better, perhaps with having the BMIPS5000 case
+> return to avoid too much nesting.
 
-There is code duplicated over all architecture's headers for
-futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
-and comparison of the result.
+OK, I'll try and tidy it up.
 
-Remove this duplication and leave up to the arches only the needed
-assembly which is now in arch_futex_atomic_op_inuser.
+Thanks,
+Matt
 
-This effectively distributes the Will Deacon's arm64 fix for undefined
-behaviour reported by UBSAN to all architectures. The fix was done in
-commit 5f16a046f8e1 (arm64: futex: Fix undefined behaviour with
-FUTEX_OP_OPARG_SHIFT usage). Look there for an example dump.
-
-And as suggested by Thomas, check for negative oparg too, because it was
-also reported to cause undefined behaviour report.
-
-Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
-remove pointless access_ok() checks") as access_ok there returns true.
-We introduce it back to the helper for the sake of simplicity (it gets
-optimized away anyway).
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com> [s390]
-Acked-by: Chris Metcalf <cmetcalf@mellanox.com> [for tile]
-Reviewed-by: Darren Hart (VMware) <dvhart@infradead.org>
-Reviewed-by: Will Deacon <will.deacon@arm.com> [core/arm64]
-Cc: linux-mips@linux-mips.org
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: peterz@infradead.org
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: sparclinux@vger.kernel.org
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: linux-s390@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: linux-hexagon@vger.kernel.org
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-xtensa@linux-xtensa.org
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: openrisc@lists.librecores.org
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Richard Kuo <rkuo@codeaurora.org>
-Cc: linux-alpha@vger.kernel.org
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Link: http://lkml.kernel.org/r/20170824073105.3901-1-jslaby@suse.cz
-Cc: Ben Hutchings <ben.hutchings@codethink.co.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/alpha/include/asm/futex.h      |   26 +++---------------
- arch/arc/include/asm/futex.h        |   40 +++-------------------------
- arch/arm/include/asm/futex.h        |   26 ++----------------
- arch/arm64/include/asm/futex.h      |   27 ++-----------------
- arch/frv/include/asm/futex.h        |    3 +-
- arch/frv/kernel/futex.c             |   27 ++-----------------
- arch/hexagon/include/asm/futex.h    |   38 ++-------------------------
- arch/ia64/include/asm/futex.h       |   25 ++----------------
- arch/microblaze/include/asm/futex.h |   38 ++-------------------------
- arch/mips/include/asm/futex.h       |   25 ++----------------
- arch/parisc/include/asm/futex.h     |   26 ++----------------
- arch/powerpc/include/asm/futex.h    |   26 +++---------------
- arch/s390/include/asm/futex.h       |   23 +++-------------
- arch/sh/include/asm/futex.h         |   26 ++----------------
- arch/sparc/include/asm/futex_64.h   |   26 +++---------------
- arch/tile/include/asm/futex.h       |   40 +++-------------------------
- arch/x86/include/asm/futex.h        |   40 +++-------------------------
- arch/xtensa/include/asm/futex.h     |   27 +++----------------
- include/asm-generic/futex.h         |   50 ++++++------------------------------
- kernel/futex.c                      |   39 ++++++++++++++++++++++++++++
- 20 files changed, 126 insertions(+), 472 deletions(-)
-
---- a/arch/alpha/include/asm/futex.h
-+++ b/arch/alpha/include/asm/futex.h
-@@ -29,18 +29,10 @@
- 	:	"r" (uaddr), "r"(oparg)				\
- 	:	"memory")
- 
--static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -66,17 +58,9 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/arc/include/asm/futex.h
-+++ b/arch/arc/include/asm/futex.h
-@@ -73,20 +73,11 @@
- 
- #endif
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(int)))
--		return -EFAULT;
--
- #ifndef CONFIG_ARC_HAS_LLSC
- 	preempt_disable();	/* to guarantee atomic r-m-w of futex op */
- #endif
-@@ -118,30 +109,9 @@ static inline int futex_atomic_op_inuser
- 	preempt_enable();
- #endif
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ:
--			ret = (oldval == cmparg);
--			break;
--		case FUTEX_OP_CMP_NE:
--			ret = (oldval != cmparg);
--			break;
--		case FUTEX_OP_CMP_LT:
--			ret = (oldval < cmparg);
--			break;
--		case FUTEX_OP_CMP_GE:
--			ret = (oldval >= cmparg);
--			break;
--		case FUTEX_OP_CMP_LE:
--			ret = (oldval <= cmparg);
--			break;
--		case FUTEX_OP_CMP_GT:
--			ret = (oldval > cmparg);
--			break;
--		default:
--			ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/arm/include/asm/futex.h
-+++ b/arch/arm/include/asm/futex.h
-@@ -128,20 +128,10 @@ futex_atomic_cmpxchg_inatomic(u32 *uval,
- #endif /* !SMP */
- 
- static inline int
--futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret, tmp;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
--
- #ifndef CONFIG_SMP
- 	preempt_disable();
- #endif
-@@ -172,17 +162,9 @@ futex_atomic_op_inuser (int encoded_op,
- 	preempt_enable();
- #endif
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/arm64/include/asm/futex.h
-+++ b/arch/arm64/include/asm/futex.h
-@@ -51,20 +51,9 @@
- 	: "memory")
- 
- static inline int
--futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *_uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (int)(encoded_op << 8) >> 20;
--	int cmparg = (int)(encoded_op << 20) >> 20;
- 	int oldval = 0, ret, tmp;
--	u32 __user *uaddr = __uaccess_mask_ptr(_uaddr);
--
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1U << (oparg & 0x1f);
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -95,17 +84,9 @@ futex_atomic_op_inuser(unsigned int enco
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/frv/include/asm/futex.h
-+++ b/arch/frv/include/asm/futex.h
-@@ -7,7 +7,8 @@
- #include <asm/errno.h>
- #include <asm/uaccess.h>
- 
--extern int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr);
-+extern int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr);
- 
- static inline int
- futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
---- a/arch/frv/kernel/futex.c
-+++ b/arch/frv/kernel/futex.c
-@@ -186,20 +186,10 @@ static inline int atomic_futex_op_xchg_x
- /*
-  * do the futex operations
-  */
--int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+int arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
--
- 	pagefault_disable();
- 
- 	switch (op) {
-@@ -225,18 +215,9 @@ int futex_atomic_op_inuser(int encoded_o
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS; break;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
- 
- 	return ret;
- 
--} /* end futex_atomic_op_inuser() */
-+} /* end arch_futex_atomic_op_inuser() */
---- a/arch/hexagon/include/asm/futex.h
-+++ b/arch/hexagon/include/asm/futex.h
-@@ -31,18 +31,9 @@
- 
- 
- static inline int
--futex_atomic_op_inuser(int encoded_op, int __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(int)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -72,30 +63,9 @@ futex_atomic_op_inuser(int encoded_op, i
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ:
--			ret = (oldval == cmparg);
--			break;
--		case FUTEX_OP_CMP_NE:
--			ret = (oldval != cmparg);
--			break;
--		case FUTEX_OP_CMP_LT:
--			ret = (oldval < cmparg);
--			break;
--		case FUTEX_OP_CMP_GE:
--			ret = (oldval >= cmparg);
--			break;
--		case FUTEX_OP_CMP_LE:
--			ret = (oldval <= cmparg);
--			break;
--		case FUTEX_OP_CMP_GT:
--			ret = (oldval > cmparg);
--			break;
--		default:
--			ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/ia64/include/asm/futex.h
-+++ b/arch/ia64/include/asm/futex.h
-@@ -45,18 +45,9 @@ do {									\
- } while (0)
- 
- static inline int
--futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -84,17 +75,9 @@ futex_atomic_op_inuser (int encoded_op,
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/microblaze/include/asm/futex.h
-+++ b/arch/microblaze/include/asm/futex.h
-@@ -29,18 +29,9 @@
- })
- 
- static inline int
--futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -66,30 +57,9 @@ futex_atomic_op_inuser(int encoded_op, u
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ:
--			ret = (oldval == cmparg);
--			break;
--		case FUTEX_OP_CMP_NE:
--			ret = (oldval != cmparg);
--			break;
--		case FUTEX_OP_CMP_LT:
--			ret = (oldval < cmparg);
--			break;
--		case FUTEX_OP_CMP_GE:
--			ret = (oldval >= cmparg);
--			break;
--		case FUTEX_OP_CMP_LE:
--			ret = (oldval <= cmparg);
--			break;
--		case FUTEX_OP_CMP_GT:
--			ret = (oldval > cmparg);
--			break;
--		default:
--			ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/mips/include/asm/futex.h
-+++ b/arch/mips/include/asm/futex.h
-@@ -83,18 +83,9 @@
- }
- 
- static inline int
--futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -125,17 +116,9 @@ futex_atomic_op_inuser(int encoded_op, u
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/parisc/include/asm/futex.h
-+++ b/arch/parisc/include/asm/futex.h
-@@ -32,22 +32,12 @@ _futex_spin_unlock_irqrestore(u32 __user
- }
- 
- static inline int
--futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
- {
- 	unsigned long int flags;
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval, ret;
- 	u32 tmp;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(*uaddr)))
--		return -EFAULT;
--
- 	_futex_spin_lock_irqsave(uaddr, &flags);
- 	pagefault_disable();
- 
-@@ -85,17 +75,9 @@ out_pagefault_enable:
- 	pagefault_enable();
- 	_futex_spin_unlock_irqrestore(uaddr, &flags);
- 
--	if (ret == 0) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/powerpc/include/asm/futex.h
-+++ b/arch/powerpc/include/asm/futex.h
-@@ -31,18 +31,10 @@
- 	: "b" (uaddr), "i" (-EFAULT), "r" (oparg) \
- 	: "cr0", "memory")
- 
--static inline int futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -68,17 +60,9 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/s390/include/asm/futex.h
-+++ b/arch/s390/include/asm/futex.h
-@@ -21,17 +21,12 @@
- 		: "0" (-EFAULT), "d" (oparg), "a" (uaddr),		\
- 		  "m" (*uaddr) : "cc");
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, newval, ret;
- 
- 	load_kernel_asce();
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
- 
- 	pagefault_disable();
- 	switch (op) {
-@@ -60,17 +55,9 @@ static inline int futex_atomic_op_inuser
- 	}
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/sh/include/asm/futex.h
-+++ b/arch/sh/include/asm/futex.h
-@@ -27,21 +27,12 @@ futex_atomic_cmpxchg_inatomic(u32 *uval,
- 	return atomic_futex_op_cmpxchg_inatomic(uval, uaddr, oldval, newval);
- }
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	u32 oparg = (encoded_op << 8) >> 20;
--	u32 cmparg = (encoded_op << 20) >> 20;
- 	u32 oldval, newval, prev;
- 	int ret;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
--
- 	pagefault_disable();
- 
- 	do {
-@@ -80,17 +71,8 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = ((int)oldval < (int)cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = ((int)oldval >= (int)cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = ((int)oldval <= (int)cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = ((int)oldval > (int)cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
- 
- 	return ret;
- }
---- a/arch/sparc/include/asm/futex_64.h
-+++ b/arch/sparc/include/asm/futex_64.h
-@@ -29,22 +29,14 @@
- 	: "r" (uaddr), "r" (oparg), "i" (-EFAULT)	\
- 	: "memory")
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret, tem;
- 
--	if (unlikely(!access_ok(VERIFY_WRITE, uaddr, sizeof(u32))))
--		return -EFAULT;
- 	if (unlikely((((unsigned long) uaddr) & 0x3UL)))
- 		return -EINVAL;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
- 	pagefault_disable();
- 
- 	switch (op) {
-@@ -69,17 +61,9 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/tile/include/asm/futex.h
-+++ b/arch/tile/include/asm/futex.h
-@@ -106,12 +106,9 @@
- 	lock = __atomic_hashed_lock((int __force *)uaddr)
- #endif
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int uninitialized_var(val), ret;
- 
- 	__futex_prolog();
-@@ -119,12 +116,6 @@ static inline int futex_atomic_op_inuser
- 	/* The 32-bit futex code makes this assumption, so validate it here. */
- 	BUILD_BUG_ON(sizeof(atomic_t) != sizeof(int));
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
--
- 	pagefault_disable();
- 	switch (op) {
- 	case FUTEX_OP_SET:
-@@ -148,30 +139,9 @@ static inline int futex_atomic_op_inuser
- 	}
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ:
--			ret = (val == cmparg);
--			break;
--		case FUTEX_OP_CMP_NE:
--			ret = (val != cmparg);
--			break;
--		case FUTEX_OP_CMP_LT:
--			ret = (val < cmparg);
--			break;
--		case FUTEX_OP_CMP_GE:
--			ret = (val >= cmparg);
--			break;
--		case FUTEX_OP_CMP_LE:
--			ret = (val <= cmparg);
--			break;
--		case FUTEX_OP_CMP_GT:
--			ret = (val > cmparg);
--			break;
--		default:
--			ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = val;
-+
- 	return ret;
- }
- 
---- a/arch/x86/include/asm/futex.h
-+++ b/arch/x86/include/asm/futex.h
-@@ -41,20 +41,11 @@
- 		       "+m" (*uaddr), "=&r" (tem)		\
- 		     : "r" (oparg), "i" (-EFAULT), "1" (0))
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret, tem;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
--
- 	pagefault_disable();
- 
- 	switch (op) {
-@@ -80,30 +71,9 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ:
--			ret = (oldval == cmparg);
--			break;
--		case FUTEX_OP_CMP_NE:
--			ret = (oldval != cmparg);
--			break;
--		case FUTEX_OP_CMP_LT:
--			ret = (oldval < cmparg);
--			break;
--		case FUTEX_OP_CMP_GE:
--			ret = (oldval >= cmparg);
--			break;
--		case FUTEX_OP_CMP_LE:
--			ret = (oldval <= cmparg);
--			break;
--		case FUTEX_OP_CMP_GT:
--			ret = (oldval > cmparg);
--			break;
--		default:
--			ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/arch/xtensa/include/asm/futex.h
-+++ b/arch/xtensa/include/asm/futex.h
-@@ -44,18 +44,10 @@
- 	: "r" (uaddr), "I" (-EFAULT), "r" (oparg)	\
- 	: "memory")
- 
--static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
-+		u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- #if !XCHAL_HAVE_S32C1I
- 	return -ENOSYS;
-@@ -89,19 +81,10 @@ static inline int futex_atomic_op_inuser
- 
- 	pagefault_enable();
- 
--	if (ret)
--		return ret;
--
--	switch (cmp) {
--	case FUTEX_OP_CMP_EQ: return (oldval == cmparg);
--	case FUTEX_OP_CMP_NE: return (oldval != cmparg);
--	case FUTEX_OP_CMP_LT: return (oldval < cmparg);
--	case FUTEX_OP_CMP_GE: return (oldval >= cmparg);
--	case FUTEX_OP_CMP_LE: return (oldval <= cmparg);
--	case FUTEX_OP_CMP_GT: return (oldval > cmparg);
--	}
-+	if (!ret)
-+		*oval = oldval;
- 
--	return -ENOSYS;
-+	return ret;
- }
- 
- static inline int
---- a/include/asm-generic/futex.h
-+++ b/include/asm-generic/futex.h
-@@ -13,7 +13,7 @@
-  */
- 
- /**
-- * futex_atomic_op_inuser() - Atomic arithmetic operation with constant
-+ * arch_futex_atomic_op_inuser() - Atomic arithmetic operation with constant
-  *			  argument and comparison of the previous
-  *			  futex value with another constant.
-  *
-@@ -25,18 +25,11 @@
-  * <0 - On error
-  */
- static inline int
--futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval, ret;
- 	u32 tmp;
- 
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
- 	preempt_disable();
- 	pagefault_disable();
- 
-@@ -74,17 +67,9 @@ out_pagefault_enable:
- 	pagefault_enable();
- 	preempt_enable();
- 
--	if (ret == 0) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (ret == 0)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
-@@ -126,18 +111,9 @@ futex_atomic_cmpxchg_inatomic(u32 *uval,
- 
- #else
- static inline int
--futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
-+arch_futex_atomic_op_inuser(int op, u32 oparg, int *oval, u32 __user *uaddr)
- {
--	int op = (encoded_op >> 28) & 7;
--	int cmp = (encoded_op >> 24) & 15;
--	int oparg = (encoded_op << 8) >> 20;
--	int cmparg = (encoded_op << 20) >> 20;
- 	int oldval = 0, ret;
--	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
--		oparg = 1 << oparg;
--
--	if (! access_ok (VERIFY_WRITE, uaddr, sizeof(u32)))
--		return -EFAULT;
- 
- 	pagefault_disable();
- 
-@@ -153,17 +129,9 @@ futex_atomic_op_inuser (int encoded_op,
- 
- 	pagefault_enable();
- 
--	if (!ret) {
--		switch (cmp) {
--		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
--		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
--		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
--		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
--		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
--		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
--		default: ret = -ENOSYS;
--		}
--	}
-+	if (!ret)
-+		*oval = oldval;
-+
- 	return ret;
- }
- 
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -1458,6 +1458,45 @@ out:
- 	return ret;
- }
- 
-+static int futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
-+{
-+	unsigned int op =	  (encoded_op & 0x70000000) >> 28;
-+	unsigned int cmp =	  (encoded_op & 0x0f000000) >> 24;
-+	int oparg = sign_extend32((encoded_op & 0x00fff000) >> 12, 12);
-+	int cmparg = sign_extend32(encoded_op & 0x00000fff, 12);
-+	int oldval, ret;
-+
-+	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28)) {
-+		if (oparg < 0 || oparg > 31)
-+			return -EINVAL;
-+		oparg = 1 << oparg;
-+	}
-+
-+	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
-+		return -EFAULT;
-+
-+	ret = arch_futex_atomic_op_inuser(op, oparg, &oldval, uaddr);
-+	if (ret)
-+		return ret;
-+
-+	switch (cmp) {
-+	case FUTEX_OP_CMP_EQ:
-+		return oldval == cmparg;
-+	case FUTEX_OP_CMP_NE:
-+		return oldval != cmparg;
-+	case FUTEX_OP_CMP_LT:
-+		return oldval < cmparg;
-+	case FUTEX_OP_CMP_GE:
-+		return oldval >= cmparg;
-+	case FUTEX_OP_CMP_LE:
-+		return oldval <= cmparg;
-+	case FUTEX_OP_CMP_GT:
-+		return oldval > cmparg;
-+	default:
-+		return -ENOSYS;
-+	}
-+}
-+
- /*
-  * Wake up all waiters hashed on the physical page that is mapped
-  * to this virtual address:
-
-
-Patches currently in stable-queue which might be from jslaby@suse.cz are
-
-queue-4.9/futex-remove-duplicated-code-and-fix-undefined-behaviour.patch
+> 
+> Otherwise the patch looks okay to me.
+> 
+> Thanks
+> James
+> 

@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2018 20:41:02 +0200 (CEST)
-Received: from shards.monkeyblade.net ([184.105.139.130]:43140 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993041AbeEPSkzIN55o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 May 2018 20:40:55 +0200
-Received: from localhost (67.110.78.66.ptr.us.xo.net [67.110.78.66])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 67FCC14075F70;
-        Wed, 16 May 2018 11:40:48 -0700 (PDT)
-Date:   Wed, 16 May 2018 14:40:47 -0400 (EDT)
-Message-Id: <20180516.144047.1624723916101183580.davem@davemloft.net>
-To:     geert@linux-m68k.org
-Cc:     arnd@arndb.de, linux@dominikbrodowski.net, anemo@mba.ocn.ne.jp,
-        netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: 8390: ne: Fix accidentally removed RBTX4927
- support
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1526462281-20772-1-git-send-email-geert@linux-m68k.org>
-References: <1526462281-20772-1-git-send-email-geert@linux-m68k.org>
-X-Mailer: Mew version 6.7 on Emacs 25.3 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 16 May 2018 11:40:49 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 03:13:29 +0200 (CEST)
+Received: from out03.mta.xmission.com ([166.70.13.233]:42360 "EHLO
+        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993497AbeEQBNWGWhZi convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 May 2018 03:13:22 +0200
+Received: from in01.mta.xmission.com ([166.70.13.51])
+        by out03.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1fJ7Tn-0006DB-8l; Wed, 16 May 2018 19:13:15 -0600
+Received: from [97.90.247.198] (helo=x220.xmission.com)
+        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1fJ7Tm-0000B8-G1; Wed, 16 May 2018 19:13:15 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+References: <1526392247-25512-1-git-send-email-linux@roeck-us.net>
+Date:   Wed, 16 May 2018 20:13:10 -0500
+In-Reply-To: <1526392247-25512-1-git-send-email-linux@roeck-us.net> (Guenter
+        Roeck's message of "Tue, 15 May 2018 06:50:47 -0700")
+Message-ID: <87k1s3jd95.fsf@xmission.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-XM-SPF: eid=1fJ7Tm-0000B8-G1;;;mid=<87k1s3jd95.fsf@xmission.com>;;;hst=in01.mta.xmission.com;;;ip=97.90.247.198;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX19kcZIzeD/4OcMXj+PT8Qy42j9/8VCBv0k=
+X-SA-Exim-Connect-IP: 97.90.247.198
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+Subject: Re: [PATCH -next] signal/mips: Report FPE_FLTUNK for undiagnosed floating point exceptions
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Return-Path: <ebiederm@xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63978
+X-archive-position: 63979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: ebiederm@xmission.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,23 +55,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 16 May 2018 11:18:01 +0200
+Guenter Roeck <linux@roeck-us.net> writes:
 
-> The configuration settings for RBTX4927 were accidentally removed,
-> leading to a silently broken network interface.
-> 
-> Re-add the missing settings to fix this.
-> 
-> Fixes: 8eb97ff5a4ec941d ("net: 8390: remove m32r specific bits")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Most mips builds fail with
+>
+> arch/mips/kernel/traps.c: In function ‘force_fcr31_sig’:
+> arch/mips/kernel/traps.c:732:2: error:
+> 	‘si_code’ may be used uninitialized in this function
+>
+> Fix the problem by initializing si_code with FPE_FLTUNK (undiagnosed
+> floating point exception).
+>
+> Fixes: f43a54a0d916 ("signal/mips: Use force_sig_fault where appropriate")
+> Cc: linux-mips@linux-mips.org
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+Applied.  Thank you.
+
+Eric
+
 > ---
-> Bisected between v4.9-rc2 (doh) and v4.17-rc5.
-> 
-> Note to myself: I should do more boot testing on RBTX4927.
-> Fortunately I caught it before it ends up in a point release ;-)
-
-Better to go on a wild bisect ride than not be able to find the
-bug at all :-)
-
-Applied, thanks.
+> Feel free to merge into the patch introducing the problem.
+>
+>  arch/mips/kernel/traps.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 66ec4b0b484d..d67fa74622ee 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -716,7 +716,7 @@ asmlinkage void do_ov(struct pt_regs *regs)
+>  void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
+>  		     struct task_struct *tsk)
+>  {
+> -	int si_code;
+> +	int si_code = FPE_FLTUNK;
+>  
+>  	if (fcr31 & FPU_CSR_INV_X)
+>  		si_code = FPE_FLTINV;

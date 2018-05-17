@@ -1,62 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 03:20:26 +0200 (CEST)
-Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:36787
-        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993497AbeEQBUSwTpwi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2018 03:20:18 +0200
-Received: by mail-qk0-x243.google.com with SMTP id l132-v6so2337760qke.3;
-        Wed, 16 May 2018 18:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=kKlULhrr8tBS6WKcB83pg6Dx8eIbLvf6X5KSbQgNgBM=;
-        b=mJ2s26jIHSvbFGDoVyRaePckiteOHrgNWj0fjytumECn/WQXI679tcTfc0sZgGvi0v
-         VD1vG63YkaNMbG9kVqakgh86XoXPxUaDtfUw+i3c5D9MooAR8ihLdyqppEHDVynFxQqO
-         JkKig0anpYBy1WJMZHjIi2nk+1pX1g9b9O2VitEIiNt+cXtnCcghZT0FR+IsMMWpMcIN
-         g0zyDHRcziNEYAYVgBNix8i9HccZzdxAn9ekmv/JljoNL8vsifS+LfayyGYTk4CqJdR9
-         lSGMauedMgzBBbkbCGCnz4U/QM4FSopKOsxQHsnFKK91k4G1mFy9yr9y3b/OoMXH6ug/
-         D4Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=kKlULhrr8tBS6WKcB83pg6Dx8eIbLvf6X5KSbQgNgBM=;
-        b=NaNIGqx6kgU1SbBR7ParMA8ikHVIibzKgn5DpfNHqtWAMbCyreG/UfEhZQ7xEbYrLC
-         pvUVvbnKztDMMerViSIi5jPhZh7wQE1VZrXzPlaKVIMnp1KDH2pADCxp2v3Few0Oh47Y
-         TaJ1qYNjzX9VrXe6xuSoJebJ8OkPZkHpE/zD0MLvAJebvmzBnr4Q/ohvlRhdqW11l9wk
-         hh+JSms/q5WAU43AoIHJinHN/tTOAxsZ7Kpccllxn8zuRytAX0vRRGW8bli5Ha26mW/y
-         LGlxodvW5HTfPfR0cpI/PVQkWdh3wxAr9tB9/vjUAu+zwN+iIvons0Udr2JoI/dcU+fA
-         4ixA==
-X-Gm-Message-State: ALKqPwcvU7IWZGilT/8fXXv+jTyn0edFrLBfmLocYvagjQT/buyhHHga
-        bZtntSmuVWiqpg4iJIzgjBZQVnHiXviH0Tk098w=
-X-Google-Smtp-Source: AB8JxZqzQ6nsBZBr/XMhXbm6VvxNKLpHVqXGAYBp/OvCuK5HXXYmTAFFKI4FG2asQM11UYPIL00taffH9GC4xM7knQk=
-X-Received: by 2002:a37:6005:: with SMTP id u5-v6mr3163325qkb.32.1526520012606;
- Wed, 16 May 2018 18:20:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2018 11:39:47 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:55240 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993514AbeEQJjhYBm-k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 May 2018 11:39:37 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E7E562084F;
+        Thu, 17 May 2018 09:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1526549968;
+        bh=hXIVIctcRXLkSkUrfoJsfJgE5awzStgJaqs/uCPaL68=;
+        h=Subject:To:Cc:From:Date:From;
+        b=CdWi2HxcaryCbD3W0rcMXS3v5sgLawqOVTZQ7/YoJldEocXkDZRvgHLFm7SDuiSJd
+         /sRRd+En7rZ9+ThppcpMdm6U/NO5iy2bTAHmUkv02qXfgXVxYuXQIvdtqzgi6R1E0n
+         HzD0A5/sWJYNqL4mwqdVpMNbJcGCMv7hN5yJnOyY=
+Subject: Patch "futex: Remove duplicated code and fix undefined behaviour" has been added to the 4.4-stable tree
+To:     20170824073105.3901-1-jslaby@suse.cz, arnd@arndb.de,
+        ben.hutchings@codethink.co.uk, benh@kernel.crashing.org,
+        catalin.marinas@arm.com, chris@zankel.net, cmetcalf@mellanox.com,
+        dalias@libc.org, davem@davemloft.net, deller@gmx.de,
+        dvhart@infradead.org, fenghua.yu@intel.com,
+        gregkh@linuxfoundation.org, heiko.carstens@de.ibm.com,
+        ink@jurassic.park.msu.ru, jcmvbkbc@gmail.com,
+        jejb@parisc-linux.org, jonas@southpole.se, jslaby@suse.cz,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, mattst88@gmail.com,
+        monstr@monstr.eu, mpe@ellerman.id.au,
+        openrisc@lists.librecores.org, paulus@samba.org,
+        peterz@infradead.org, ralf@linux-mips.org, rkuo@codeaurora.org,
+        rmk+kernel@armlinux.org.uk, rth@twiddle.net,
+        schwidefsky@de.ibm.com, shorne@gmail.com,
+        stefan.kristiansson@saunalahti.fi, tglx@linutronix.de,
+        tony.luck@intel.com, vgupta@synopsys.com, will.deacon@arm.com,
+        ysato@users.sourceforge.jp
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Thu, 17 May 2018 11:38:53 +0200
+Message-ID: <15265499332582@kroah.com>
 MIME-Version: 1.0
-Received: by 10.12.185.3 with HTTP; Wed, 16 May 2018 18:20:12 -0700 (PDT)
-In-Reply-To: <287ab070-0463-04a5-63fa-475c44752f56@gmail.com>
-References: <20180504190530.1879-1-raj.khem@gmail.com> <e380a58d-fc9f-89e0-cc56-c3a0000a179b@mips.com>
- <287ab070-0463-04a5-63fa-475c44752f56@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 16 May 2018 21:20:12 -0400
-X-Google-Sender-Auth: p36jRf1n4L8-E4-CBiyyFj--dxE
-Message-ID: <CAK8P3a0NugcUSkLZkM8z1H8Xr2zpt0tFesSabu5hLKy8JbfYrA@mail.gmail.com>
-Subject: Re: [PATCH] mips: Disable attribute-alias warnings
-To:     Khem Raj <raj.khem@gmail.com>
-Cc:     Matt Redfearn <matt.redfearn@mips.com>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=CLTL=IE=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63980
+X-archive-position: 63981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,56 +64,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 10, 2018 at 12:03 PM, Khem Raj <raj.khem@gmail.com> wrote:
->
->
-> On 5/10/18 2:34 AM, Matt Redfearn wrote:
->>
->> Hi Khem,
->>
->> On 04/05/18 20:05, Khem Raj wrote:
->>>
->>> This warning is seen with gcc-8
->>>
->>> error: 'sys_cachectl' alias between functions of incompatible types
->>> 'long int(char *, int,  int)'
->>> and 'long int(long int,  long int,  long int)'
->>>
->>> Signed-off-by: Khem Raj <raj.khem@gmail.com>
->>> Cc: Ralf Baechle <ralf@linux-mips.org>
->>> Cc: linux-mips@linux-mips.org
->>> ---
->>>   arch/mips/kernel/Makefile | 2 ++
->>>   arch/mips/mm/Makefile     | 1 +
->>>   2 files changed, 3 insertions(+)
->>>
->>> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
->>> index f10e1e15e1c6..eb92e52eb3db 100644
->>> --- a/arch/mips/kernel/Makefile
->>> +++ b/arch/mips/kernel/Makefile
->>> @@ -2,6 +2,8 @@
->>>   #
->>>   # Makefile for the Linux/MIPS kernel.
->>>   #
->>> +CFLAGS_signal.o        += $(call cc-disable-warning, attribute-alias)
->>> +CFLAGS_syscall.o    += $(call cc-disable-warning, attribute-alias)
->>
->>
->> Rather than disabling the (potentially useful) warning for the whole
->> compilation unit, the better fix, I believe, would be something like Arnd
->> proposed https://patchwork.kernel.org/patch/10093317/ to disable it just for
->> the definition of the syscall entry point . Whatever happened to that RFC
->> Arnd?
->>
->
-> I tend to agree. I think, I have also tested a patch where I am manually
-> ignoring the warning via pragma around the function which essentially is
-> similar to what Arnd has proposed only that Arnd's patch is generic
 
-Sorry I never followed up on my initial patches. I still think we should do it
-that way, but will need some more time until I can revisit them, as
-I'm currently
-travelling. If someone else wants to pick up my patches and post a
-new version in the meantime, that would be greatly appreciated.
+This is a note to let you know that I've just added the patch titled
 
-        Arnd
+    futex: Remove duplicated code and fix undefined behaviour
+
+to the 4.4-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     futex-remove-duplicated-code-and-fix-undefined-behaviour.patch
+and it can be found in the queue-4.4 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

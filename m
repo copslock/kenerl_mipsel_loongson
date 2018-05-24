@@ -1,43 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2018 15:00:17 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:44202 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990475AbeEXNALUtrAH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 May 2018 15:00:11 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9244820899;
-        Thu, 24 May 2018 13:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527166804;
-        bh=KNuP6EmkbB1lqGvuJ6MtBIFEI8sEIjbBP5QFO2pMT9c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rjt7Ty9XXdVvvpbdLjOXeUJl3tGiehXQ4c02FqbM9xz0n8qFWCSX5JqXMXFPaLL0G
-         bJtmey6IUKNhkLOg6mRR965Rd3xqKmk1En8E0wJLojXZ2tQ0iCHCc7SIXBDqcUqXU0
-         Een8gfc+Vb0/MoBxj/+rvtbD9UXg51zehWfPnvRs=
-Date:   Thu, 24 May 2018 14:00:00 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     "Maciej W. Rozycki" <macro@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: ptrace: Fix PTRACE_PEEKUSR requests for 64-bit FGRs
-Message-ID: <20180524125959.GB24269@jamesdev>
-References: <alpine.DEB.2.00.1805161306260.10896@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2018 18:36:35 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:40581 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990400AbeEXQg0kv3Pf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2018 18:36:26 +0200
+Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Thu, 24 May 2018 16:36:18 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
+ (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Thu, 24
+ May 2018 09:36:21 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Thu, 24 May
+ 2018 09:36:21 -0700
+Date:   Thu, 24 May 2018 09:36:17 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     "Maciej W. Rozycki" <macro@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE
+ requests
+Message-ID: <20180524163617.dts46enhigc2yjfo@pburton-laptop>
+References: <alpine.DEB.2.00.1805141439290.10896@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3uo+9/B/ebqu+fSQ"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1805161306260.10896@tp.orcam.me.uk>
-User-Agent: Mutt/1.9.5 (2018-04-13)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <alpine.DEB.2.00.1805141439290.10896@tp.orcam.me.uk>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1527179778-298553-3491-57502-1
+X-BESS-VER: 2018.6-r1805181819
+X-BESS-Apparent-Source-IP: 12.201.5.31
+X-BESS-Outbound-Spam-Score: 0.01
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193318
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender 
+        Domain Matches Recipient Domain 
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA_TO_FROM_DOMAIN_MATCH, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64007
+X-archive-position: 64008
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,38 +61,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Maciej,
 
---3uo+9/B/ebqu+fSQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, May 15, 2018 at 11:04:44PM +0100, Maciej W. Rozycki wrote:
+> Having PR_FP_MODE_FRE (i.e. Config5.FRE) set without PR_FP_MODE_FR (i.e. 
+> Status.FR) is not supported as the lone purpose of Config5.FRE is to 
+> emulate Status.FR=0 handling on FPU hardware that has Status.FR=1 
+> hardwired[1][2].  Also we do not handle this case elsewhere, and assume 
+> throughout our code that TIF_HYBRID_FPREGS and TIF_32BIT_FPREGS cannot 
+> be set both at once for a task, leading to inconsistent behaviour if 
+> this does happen.
 
-On Wed, May 16, 2018 at 04:39:58PM +0100, Maciej W. Rozycki wrote:
-> Use 64-bit accesses for 64-bit floating-point general registers with=20
-> PTRACE_PEEKUSR, removing the truncation of their upper halves in the=20
-> FR=3D1 mode, caused by commit bbd426f542cb ("MIPS: Simplify FP context=20
-> access"), which inadvertently switched them to using 32-bit accesses.
->=20
-> The PTRACE_POKEUSR side is fine as it's never been broken and continues=
-=20
-> using 64-bit accesses.
->=20
-> Cc: <stable@vger.kernel.org> # 3.19+
+Reviewing the code I think we should actually end up with FR=1 in this
+case, because neither __own_fpu() nor the FPU emulator depend on the
+value of TIF_32BIT_FPREGS if TIF_HYBRID_FPREGS is set. So it's not too
+awful & I don't see the kernel doing anything too crazy, but it
+definitely isn't what the user asked for.
 
-should that be 3.15+?
+> Return unsuccessfully then from prctl(2) PR_SET_FP_MODE calls requesting 
+> PR_FP_MODE_FRE to be set with PR_FP_MODE_FR clear.  This corresponds to 
+> modes allowed by `mips_set_personality_fp'.
 
-Cheers
-James
+Looks good to me:
 
---3uo+9/B/ebqu+fSQ
-Content-Type: application/pgp-signature; name="signature.asc"
+  Reviewed-by: Paul Burton <paul.burton@mips.com>
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+  Paul
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWwa3TgAKCRA1zuSGKxAj
-8sDvAP9b5xyZTvJTRL1ODiGao0nXlZE58CbdZGfh08Ld5eRiaAEAysXgF3YS4+nm
-+cHSReh8L6LfjKCPbHrOsWEht17wgQY=
-=+Mrn
------END PGP SIGNATURE-----
-
---3uo+9/B/ebqu+fSQ--
+> References:
+> 
+> [1] "MIPS Architecture For Programmers, Vol. III: MIPS32 / microMIPS32
+>     Privileged Resource Architecture", Imagination Technologies,
+>     Document Number: MD00090, Revision 6.02, July 10, 2015, Table 9.69 
+>     "Config5 Register Field Descriptions", p. 262
+> 
+> [2] "MIPS Architecture For Programmers, Volume III: MIPS64 / microMIPS64 
+>     Privileged Resource Architecture", Imagination Technologies, 
+>     Document Number: MD00091, Revision 6.03, December 22, 2015, Table 
+>     9.72 "Config5 Register Field Descriptions", p. 288
+> 
+> Cc: stable@vger.kernel.org # 4.0+
+> Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+> ---
+>  arch/mips/kernel/process.c |    4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> linux-mips-set-process-fp-mode-fr-fre.diff
+> Index: linux/arch/mips/kernel/process.c
+> ===================================================================
+> --- linux.orig/arch/mips/kernel/process.c	2018-05-12 22:52:11.000000000 +0100
+> +++ linux/arch/mips/kernel/process.c	2018-05-12 23:07:15.147112000 +0100
+> @@ -721,6 +721,10 @@ int mips_set_process_fp_mode(struct task
+>  	if (value & ~known_bits)
+>  		return -EOPNOTSUPP;
+>  
+> +	/* Setting FRE without FR is not supported.  */
+> +	if ((value & (PR_FP_MODE_FR | PR_FP_MODE_FRE)) == PR_FP_MODE_FRE)
+> +		return -EOPNOTSUPP;
+> +
+>  	/* Avoid inadvertently triggering emulation */
+>  	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
+>  	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
+> 

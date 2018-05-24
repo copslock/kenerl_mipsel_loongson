@@ -1,41 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2018 14:07:52 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:60724 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2018 15:00:17 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:44202 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991783AbeEXMHpsGszt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 May 2018 14:07:45 +0200
+        id S23990475AbeEXNALUtrAH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 May 2018 15:00:11 +0200
 Received: from jamesdev (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A2722086E;
-        Thu, 24 May 2018 12:07:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9244820899;
+        Thu, 24 May 2018 13:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527163659;
-        bh=oFQMv20n5zhKMN13AJMgHbdP+ap2VysQ2JjPgbAAIZI=;
+        s=default; t=1527166804;
+        bh=KNuP6EmkbB1lqGvuJ6MtBIFEI8sEIjbBP5QFO2pMT9c=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tfEQcXl89aGDGXnYF9MDoIETZlfJzeOOGQMLoeVwkvk/eoQx8V37VRMiV0vgcMzTD
-         4KrfSMdE8/OIGKW9uCZNP06Zvy9IL2rALwCfLRT93EE6afWg7kX+yQSLtfd1O8NHLS
-         bkM/dDqESHWJbaJl9cGLPL/0/1l1C25VaQcOitzU=
-Date:   Thu, 24 May 2018 13:07:34 +0100
+        b=rjt7Ty9XXdVvvpbdLjOXeUJl3tGiehXQ4c02FqbM9xz0n8qFWCSX5JqXMXFPaLL0G
+         bJtmey6IUKNhkLOg6mRR965Rd3xqKmk1En8E0wJLojXZ2tQ0iCHCc7SIXBDqcUqXU0
+         Een8gfc+Vb0/MoBxj/+rvtbD9UXg51zehWfPnvRs=
+Date:   Thu, 24 May 2018 14:00:00 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     Mathias Kresin <dev@kresin.me>
-Cc:     john@phrozen.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        hauke@hauke-m.de, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-Message-ID: <20180524120733.GA24269@jamesdev>
-References: <1523176203-18926-1-git-send-email-dev@kresin.me>
- <20180521163932.GA12779@jamesdev>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ptrace: Fix PTRACE_PEEKUSR requests for 64-bit FGRs
+Message-ID: <20180524125959.GB24269@jamesdev>
+References: <alpine.DEB.2.00.1805161306260.10896@tp.orcam.me.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BOKacYhQ+x31HxR3"
+        protocol="application/pgp-signature"; boundary="3uo+9/B/ebqu+fSQ"
 Content-Disposition: inline
-In-Reply-To: <20180521163932.GA12779@jamesdev>
+In-Reply-To: <alpine.DEB.2.00.1805161306260.10896@tp.orcam.me.uk>
 User-Agent: Mutt/1.9.5 (2018-04-13)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64006
+X-archive-position: 64007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,69 +51,37 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---BOKacYhQ+x31HxR3
+--3uo+9/B/ebqu+fSQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 21, 2018 at 05:39:32PM +0100, James Hogan wrote:
-> On Sun, Apr 08, 2018 at 10:30:03AM +0200, Mathias Kresin wrote:
-> > While doing a global software reset, these bits are not cleared and let
-> > some bootloader fail to initialise the GPHYs. The bootloader don't
-> > expect the GPHYs in reset, as they aren't during power on.
-> >=20
-> > The asserts were a workaround for a wrong syscon-reboot mask. With a
-> > mask set which includes the GPHY resets, these resets aren't required
-> > any more.
-> >=20
-> > Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RC=
-U syscon-mfd")
-> > Cc: stable@vger.kernel.org # 4.14+
-> > Signed-off-by: Mathias Kresin <dev@kresin.me>
+On Wed, May 16, 2018 at 04:39:58PM +0100, Maciej W. Rozycki wrote:
+> Use 64-bit accesses for 64-bit floating-point general registers with=20
+> PTRACE_PEEKUSR, removing the truncation of their upper halves in the=20
+> FR=3D1 mode, caused by commit bbd426f542cb ("MIPS: Simplify FP context=20
+> access"), which inadvertently switched them to using 32-bit accesses.
 >=20
-> Applied for 4.17. Thanks for the acks/reviews folk!
+> The PTRACE_POKEUSR side is fine as it's never been broken and continues=
+=20
+> using 64-bit accesses.
+>=20
+> Cc: <stable@vger.kernel.org> # 3.19+
 
-drivers/soc/lantiq/gphy.c: In function =E2=80=98xway_gphy_remove=E2=80=99:
-drivers/soc/lantiq/gphy.c:198:6: warning: unused variable =E2=80=98ret=E2=
-=80=99 [-Wunused-variable]
-  int ret;
-      ^~~
-drivers/soc/lantiq/gphy.c:196:17: warning: unused variable =E2=80=98dev=E2=
-=80=99 [-Wunused-variable]
-  struct device *dev =3D &pdev->dev;
-                 ^~~
-
-Easily fixed, I can drop those two lines:
-
-diff --git a/drivers/soc/lantiq/gphy.c b/drivers/soc/lantiq/gphy.c
-index 8c31ae750987..feeb17cebc25 100644
---- a/drivers/soc/lantiq/gphy.c
-+++ b/drivers/soc/lantiq/gphy.c
-@@ -193,9 +193,7 @@ static int xway_gphy_probe(struct platform_device *pdev)
-
- static int xway_gphy_remove(struct platform_device *pdev)
- {
--	struct device *dev =3D &pdev->dev;
-	struct xway_gphy_priv *priv =3D platform_get_drvdata(pdev);
--	int ret;
-
-	iowrite32be(0, priv->membase);
-
-However it does raise the question, it sounds like a fix, but was this
-patch tested and the warning just overlooked?
+should that be 3.15+?
 
 Cheers
 James
 
---BOKacYhQ+x31HxR3
+--3uo+9/B/ebqu+fSQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWwarBAAKCRA1zuSGKxAj
-8jdfAQDtnf7symakcWD4AS3WzH47QVijebMTfKH00E6gisIwBgD+LwAIaWipyGiS
-eMh14y1Gq1rNYFesjlI+TGlrdRrzhw4=
-=b82W
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWwa3TgAKCRA1zuSGKxAj
+8sDvAP9b5xyZTvJTRL1ODiGao0nXlZE58CbdZGfh08Ld5eRiaAEAysXgF3YS4+nm
++cHSReh8L6LfjKCPbHrOsWEht17wgQY=
+=+Mrn
 -----END PGP SIGNATURE-----
 
---BOKacYhQ+x31HxR3--
+--3uo+9/B/ebqu+fSQ--

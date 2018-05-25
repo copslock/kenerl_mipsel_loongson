@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 11:27:40 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:51294 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 11:27:54 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:51306 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993339AbeEYJWbTDYRA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 May 2018 11:22:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23993394AbeEYJWdJgx6A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 May 2018 11:22:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+        To:From:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=DdIRCD8nr2l/N7l4rCxzocfF5Bu7bsm90bZsIriDz/U=; b=RCM5NA24/cxZpAkKCaXXxsq+P
-        jkhs0syVgh1Cy/t+A82+VB4tMrq5mgdvf5TmeVt/V+NCSkBjTJvbc179uGm8uen04QAizVF3ut0s7
-        Dlq3jfn/XlpYJs5UXxZ+Zh8vICoO3r7cULZ/fjYlr4xIgMR6XCbPf5P03TcqwFQj8MB0vaWjMqGkn
-        EL4IVTB9LKWZ4NU7IUIILXhtpTWHWLTpK0HuHJ8nAlCoi+NUO3+LrA7iynFIVJRJnrzI/FVPgzVYX
-        WteR9pKPvpEw3cfApwbhYW/NQAkq2Jlmj+4KADkaE26Gsw7P6FWZDdAcz4JdX7+iUUnNrBSQ1vuWq
-        yWo1mmxPw==;
+         bh=pVRGt0LiPoQnKGtlJzqGAW4y/kfPC64JALY7kTXboao=; b=Zf6/PgY58AzBX6p9Z+wJRHXBc
+        /V9SNR9885MIGvy8pdSHXM8X+TKsdHWyYp5uhNXQBCODQDJYTqxQScqLHhui5oJgF3UuMRGWTNtAP
+        /lrqwAiLt2zNofS6TunPiY9tGFrtnzNIkcVMYBzFBMlF3SPIFGqsSlWvtdz74lDeZoGbmw7hiLSZ0
+        0zg+r3KVIL/4/eVTKPRKUUmmg98RPSRF6wjOglcJfh8ydf5lVSJBw2UMBONRPqvKpoSHGwKhK1AUd
+        iT4uatWFdtBKkK09NQlzhozu3R6G/w3FRcmKDUDZiJc4eYFL4yt/v+tKn0wwlwLhb+tw2gaxifEX8
+        PhQz3AMqA==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fM8vc-00020K-EE; Fri, 25 May 2018 09:22:29 +0000
+        id 1fM8vf-00020c-CS; Fri, 25 May 2018 09:22:31 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Kevin Cernekee <cernekee@gmail.com>,
@@ -27,18 +27,21 @@ Cc:     Kevin Cernekee <cernekee@gmail.com>,
         David Daney <david.daney@cavium.com>,
         Tom Bogendoerfer <tsbogend@alpha.franken.de>,
         linux-mips@linux-mips.org, iommu@lists.linux-foundation.org
-Subject: [PATCH 23/25] MIPS: bmips: use generic dma noncoherent ops
-Date:   Fri, 25 May 2018 11:21:09 +0200
-Message-Id: <20180525092111.18516-24-hch@lst.de>
+Subject: [PATCH 24/25] MIPS: remove the old dma-default implementation
+Date:   Fri, 25 May 2018 11:21:10 +0200
+Message-Id: <20180525092111.18516-25-hch@lst.de>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180525092111.18516-1-hch@lst.de>
 References: <20180525092111.18516-1-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Return-Path: <BATV+5cb9c4fab7748cb05a15+5388+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64036
+X-archive-position: 64037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,163 +58,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Provide phys_to_dma/dma_to_phys helpers, and the special
-arch_sync_dma_for_cpu_all hook, everything else is generic
+Now unused.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mips/Kconfig                             |  3 +-
- arch/mips/bmips/dma.c                         | 32 ++++++-----
- arch/mips/include/asm/bmips.h                 | 16 ------
- .../include/asm/mach-bmips/dma-coherence.h    | 54 -------------------
- 4 files changed, 21 insertions(+), 84 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-bmips/dma-coherence.h
+ arch/mips/Kconfig                             |   5 +-
+ arch/mips/include/asm/dma-mapping.h           |   3 -
+ .../include/asm/mach-generic/dma-coherence.h  |  73 ----
+ arch/mips/mm/Makefile                         |   1 -
+ arch/mips/mm/dma-default.c                    | 379 ------------------
+ 5 files changed, 1 insertion(+), 460 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-generic/dma-coherence.h
+ delete mode 100644 arch/mips/mm/dma-default.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 25a3c3262554..9ac3c6260b68 100644
+index 9ac3c6260b68..ad5a542bf094 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -209,6 +209,8 @@ config ATH79
+@@ -72,9 +72,6 @@ config MIPS
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select VIRT_TO_BUS
  
- config BMIPS_GENERIC
- 	bool "Broadcom Generic BMIPS kernel"
-+	select ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
-+	select ARCH_HAS_PHYS_TO_DMA
- 	select BOOT_RAW
- 	select NO_EXCEPT_FILL
- 	select USE_OF
-@@ -221,7 +223,6 @@ config BMIPS_GENERIC
- 	select BCM7120_L2_IRQ
- 	select BRCMSTB_L2_IRQ
- 	select IRQ_MIPS_CPU
--	select MIPS_DMA_DEFAULT
- 	select DMA_NONCOHERENT
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-diff --git a/arch/mips/bmips/dma.c b/arch/mips/bmips/dma.c
-index 04790f4e1805..02ba0e38748d 100644
---- a/arch/mips/bmips/dma.c
-+++ b/arch/mips/bmips/dma.c
-@@ -17,7 +17,7 @@
- #include <linux/printk.h>
- #include <linux/slab.h>
- #include <linux/types.h>
--#include <dma-coherence.h>
-+#include <asm/bmips.h>
- 
- /*
-  * BCM338x has configurable address translation windows which allow the
-@@ -40,7 +40,7 @@ static struct bmips_dma_range *bmips_dma_ranges;
- 
- #define FLUSH_RAC		0x100
- 
--static dma_addr_t bmips_phys_to_dma(struct device *dev, phys_addr_t pa)
-+dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pa)
- {
- 	struct bmips_dma_range *r;
- 
-@@ -52,17 +52,7 @@ static dma_addr_t bmips_phys_to_dma(struct device *dev, phys_addr_t pa)
- 	return pa;
- }
- 
--dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size)
--{
--	return bmips_phys_to_dma(dev, virt_to_phys(addr));
--}
+-config MIPS_DMA_DEFAULT
+-	bool
 -
--dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page)
--{
--	return bmips_phys_to_dma(dev, page_to_phys(page));
--}
--
--unsigned long plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
-+phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
- {
- 	struct bmips_dma_range *r;
+ menu "Machine selection"
  
-@@ -74,6 +64,22 @@ unsigned long plat_dma_addr_to_phys(struct device *dev, dma_addr_t dma_addr)
- 	return dma_addr;
- }
+ choice
+@@ -1113,7 +1110,7 @@ config DMA_NONCOHERENT
+ 	select NEED_DMA_MAP_STATE
+ 	select DMA_NONCOHERENT_MMAP
+ 	select DMA_NONCOHERENT_CACHE_SYNC
+-	select DMA_NONCOHERENT_OPS if !MIPS_DMA_DEFAULT
++	select DMA_NONCOHERENT_OPS
  
-+void arch_sync_dma_for_cpu_all(struct device *dev)
-+{
-+	void __iomem *cbr = BMIPS_GET_CBR();
-+	u32 cfg;
-+
-+	if (boot_cpu_type() != CPU_BMIPS3300 &&
-+	    boot_cpu_type() != CPU_BMIPS4350 &&
-+	    boot_cpu_type() != CPU_BMIPS4380)
-+		return;
-+
-+	/* Flush stale data out of the readahead cache */
-+	cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
-+	__raw_writel(cfg | 0x100, cbr + BMIPS_RAC_CONFIG);
-+	__raw_readl(cbr + BMIPS_RAC_CONFIG);
-+}
-+
- static int __init bmips_init_dma_ranges(void)
- {
- 	struct device_node *np =
-diff --git a/arch/mips/include/asm/bmips.h b/arch/mips/include/asm/bmips.h
-index b3e2975f83d3..bf6a8afd7ad2 100644
---- a/arch/mips/include/asm/bmips.h
-+++ b/arch/mips/include/asm/bmips.h
-@@ -123,22 +123,6 @@ static inline void bmips_write_zscm_reg(unsigned int offset, unsigned long data)
- 	barrier();
- }
+ config SYS_HAS_EARLY_PRINTK
+ 	bool
+diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+index caf97f739897..143250986e17 100644
+--- a/arch/mips/include/asm/dma-mapping.h
++++ b/arch/mips/include/asm/dma-mapping.h
+@@ -11,7 +11,6 @@
+ #endif
  
--static inline void bmips_post_dma_flush(struct device *dev)
--{
--	void __iomem *cbr = BMIPS_GET_CBR();
--	u32 cfg;
--
--	if (boot_cpu_type() != CPU_BMIPS3300 &&
--	    boot_cpu_type() != CPU_BMIPS4350 &&
--	    boot_cpu_type() != CPU_BMIPS4380)
--		return;
--
--	/* Flush stale data out of the readahead cache */
--	cfg = __raw_readl(cbr + BMIPS_RAC_CONFIG);
--	__raw_writel(cfg | 0x100, cbr + BMIPS_RAC_CONFIG);
--	__raw_readl(cbr + BMIPS_RAC_CONFIG);
--}
--
- #endif /* !defined(__ASSEMBLY__) */
+ extern const struct dma_map_ops jazz_dma_ops;
+-extern const struct dma_map_ops mips_default_dma_map_ops;
+ extern const struct dma_map_ops mips_swiotlb_ops;
  
- #endif /* _ASM_BMIPS_H */
-diff --git a/arch/mips/include/asm/mach-bmips/dma-coherence.h b/arch/mips/include/asm/mach-bmips/dma-coherence.h
+ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+@@ -20,8 +19,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return &jazz_dma_ops;
+ #elif defined(CONFIG_SWIOTLB)
+ 	return &mips_swiotlb_ops;
+-#elif defined(CONFIG_MIPS_DMA_DEFAULT)
+-	return &mips_default_dma_map_ops;
+ #elif defined(CONFIG_DMA_NONCOHERENT_OPS)
+ 	return &dma_noncoherent_ops;
+ #else
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
 deleted file mode 100644
-index d29781f02285..000000000000
---- a/arch/mips/include/asm/mach-bmips/dma-coherence.h
+index 8ad7a40ca786..000000000000
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
 +++ /dev/null
-@@ -1,54 +0,0 @@
+@@ -1,73 +0,0 @@
 -/*
-- * Copyright (C) 2006 Ralf Baechle <ralf@linux-mips.org>
-- * Copyright (C) 2009 Broadcom Corporation
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
+- * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
 - *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-- * GNU General Public License for more details.
 - */
--
--#ifndef __ASM_MACH_BMIPS_DMA_COHERENCE_H
--#define __ASM_MACH_BMIPS_DMA_COHERENCE_H
--
--#include <asm/bmips.h>
--#include <asm/cpu-type.h>
--#include <asm/cpu.h>
+-#ifndef __ASM_MACH_GENERIC_DMA_COHERENCE_H
+-#define __ASM_MACH_GENERIC_DMA_COHERENCE_H
 -
 -struct device;
 -
--extern dma_addr_t plat_map_dma_mem(struct device *dev, void *addr, size_t size);
--extern dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page);
--extern unsigned long plat_dma_addr_to_phys(struct device *dev,
--	dma_addr_t dma_addr);
+-static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+-	size_t size)
+-{
+-	return virt_to_phys(addr);
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+-	struct page *page)
+-{
+-	return page_to_phys(page);
+-}
+-
+-static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+-	dma_addr_t dma_addr)
+-{
+-	return dma_addr;
+-}
 -
 -static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
 -	size_t size, enum dma_data_direction direction)
@@ -233,11 +172,424 @@ index d29781f02285..000000000000
 -
 -static inline int plat_device_is_coherent(struct device *dev)
 -{
--	return 0;
+-#ifdef CONFIG_DMA_PERDEV_COHERENT
+-	return dev->archdata.dma_coherent;
+-#else
+-	switch (coherentio) {
+-	default:
+-	case IO_COHERENCE_DEFAULT:
+-		return hw_coherentio;
+-	case IO_COHERENCE_ENABLED:
+-		return 1;
+-	case IO_COHERENCE_DISABLED:
+-		return 0;
+-	}
+-#endif
 -}
 -
--#define plat_post_dma_flush	bmips_post_dma_flush
+-#ifndef plat_post_dma_flush
+-static inline void plat_post_dma_flush(struct device *dev)
+-{
+-}
+-#endif
 -
--#endif /* __ASM_MACH_BMIPS_DMA_COHERENCE_H */
+-#endif /* __ASM_MACH_GENERIC_DMA_COHERENCE_H */
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index c6146c3805dc..6922f393af19 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -17,7 +17,6 @@ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+ obj-$(CONFIG_HIGHMEM)		+= highmem.o
+ obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
+-obj-$(CONFIG_MIPS_DMA_DEFAULT)	+= dma-default.o
+ obj-$(CONFIG_DMA_NONCOHERENT)	+= dma-noncoherent.o
+ obj-$(CONFIG_SWIOTLB)		+= dma-swiotlb.o
+ 
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+deleted file mode 100644
+index 10b56e8a2076..000000000000
+--- a/arch/mips/mm/dma-default.c
++++ /dev/null
+@@ -1,379 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2000  Ani Joshi <ajoshi@unixbox.com>
+- * Copyright (C) 2000, 2001, 06	 Ralf Baechle <ralf@linux-mips.org>
+- * swiped from i386, and cloned for MIPS by Geert, polished by Ralf.
+- */
+-
+-#include <linux/types.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/mm.h>
+-#include <linux/export.h>
+-#include <linux/scatterlist.h>
+-#include <linux/string.h>
+-#include <linux/gfp.h>
+-#include <linux/highmem.h>
+-#include <linux/dma-contiguous.h>
+-
+-#include <asm/cache.h>
+-#include <asm/cpu-type.h>
+-#include <asm/io.h>
+-
+-#include <dma-coherence.h>
+-
+-static inline struct page *dma_addr_to_page(struct device *dev,
+-	dma_addr_t dma_addr)
+-{
+-	return pfn_to_page(
+-		plat_dma_addr_to_phys(dev, dma_addr) >> PAGE_SHIFT);
+-}
+-
+-/*
+- * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
+- * speculatively fill random cachelines with stale data at any time,
+- * requiring an extra flush post-DMA.
+- *
+- * Warning on the terminology - Linux calls an uncached area coherent;
+- * MIPS terminology calls memory areas with hardware maintained coherency
+- * coherent.
+- *
+- * Note that the R14000 and R16000 should also be checked for in this
+- * condition.  However this function is only called on non-I/O-coherent
+- * systems and only the R10000 and R12000 are used in such systems, the
+- * SGI IP28 Indigo² rsp. SGI IP32 aka O2.
+- */
+-static inline bool cpu_needs_post_dma_flush(struct device *dev)
+-{
+-	if (plat_device_is_coherent(dev))
+-		return false;
+-
+-	switch (boot_cpu_type()) {
+-	case CPU_R10000:
+-	case CPU_R12000:
+-	case CPU_BMIPS5000:
+-		return true;
+-
+-	default:
+-		/*
+-		 * Presence of MAARs suggests that the CPU supports
+-		 * speculatively prefetching data, and therefore requires
+-		 * the post-DMA flush/invalidate.
+-		 */
+-		return cpu_has_maar;
+-	}
+-}
+-
+-static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+-{
+-	gfp_t dma_flag;
+-
+-#ifdef CONFIG_ISA
+-	if (dev == NULL)
+-		dma_flag = __GFP_DMA;
+-	else
+-#endif
+-#if defined(CONFIG_ZONE_DMA32) && defined(CONFIG_ZONE_DMA)
+-	     if (dev == NULL || dev->coherent_dma_mask < DMA_BIT_MASK(32))
+-			dma_flag = __GFP_DMA;
+-	else if (dev->coherent_dma_mask < DMA_BIT_MASK(64))
+-			dma_flag = __GFP_DMA32;
+-	else
+-#endif
+-#if defined(CONFIG_ZONE_DMA32) && !defined(CONFIG_ZONE_DMA)
+-	     if (dev == NULL || dev->coherent_dma_mask < DMA_BIT_MASK(64))
+-		dma_flag = __GFP_DMA32;
+-	else
+-#endif
+-#if defined(CONFIG_ZONE_DMA) && !defined(CONFIG_ZONE_DMA32)
+-	     if (dev == NULL ||
+-		 dev->coherent_dma_mask < DMA_BIT_MASK(sizeof(phys_addr_t) * 8))
+-		dma_flag = __GFP_DMA;
+-	else
+-#endif
+-		dma_flag = 0;
+-
+-	/* Don't invoke OOM killer */
+-	gfp |= __GFP_NORETRY;
+-
+-	return gfp | dma_flag;
+-}
+-
+-static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+-	dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+-{
+-	void *ret;
+-	struct page *page = NULL;
+-	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+-
+-	gfp = massage_gfp_flags(dev, gfp);
+-
+-	if (IS_ENABLED(CONFIG_DMA_CMA) && gfpflags_allow_blocking(gfp))
+-		page = dma_alloc_from_contiguous(dev, count, get_order(size),
+-						 gfp);
+-	if (!page)
+-		page = alloc_pages(gfp, get_order(size));
+-
+-	if (!page)
+-		return NULL;
+-
+-	ret = page_address(page);
+-	memset(ret, 0, size);
+-	*dma_handle = plat_map_dma_mem(dev, ret, size);
+-	if (!(attrs & DMA_ATTR_NON_CONSISTENT) &&
+-	    !plat_device_is_coherent(dev)) {
+-		dma_cache_wback_inv((unsigned long) ret, size);
+-		ret = UNCAC_ADDR(ret);
+-	}
+-
+-	return ret;
+-}
+-
+-static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+-	dma_addr_t dma_handle, unsigned long attrs)
+-{
+-	unsigned long addr = (unsigned long) vaddr;
+-	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+-	struct page *page = NULL;
+-
+-	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+-
+-	if (!(attrs & DMA_ATTR_NON_CONSISTENT) && !plat_device_is_coherent(dev))
+-		addr = CAC_ADDR(addr);
+-
+-	page = virt_to_page((void *) addr);
+-
+-	if (!dma_release_from_contiguous(dev, page, count))
+-		__free_pages(page, get_order(size));
+-}
+-
+-static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+-	void *cpu_addr, dma_addr_t dma_addr, size_t size,
+-	unsigned long attrs)
+-{
+-	unsigned long user_count = vma_pages(vma);
+-	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+-	unsigned long addr = (unsigned long)cpu_addr;
+-	unsigned long off = vma->vm_pgoff;
+-	unsigned long pfn;
+-	int ret = -ENXIO;
+-
+-	if (!plat_device_is_coherent(dev))
+-		addr = CAC_ADDR(addr);
+-
+-	pfn = page_to_pfn(virt_to_page((void *)addr));
+-
+-	if (attrs & DMA_ATTR_WRITE_COMBINE)
+-		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+-	else
+-		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-
+-	if (dma_mmap_from_dev_coherent(dev, vma, cpu_addr, size, &ret))
+-		return ret;
+-
+-	if (off < count && user_count <= (count - off)) {
+-		ret = remap_pfn_range(vma, vma->vm_start,
+-				      pfn + off,
+-				      user_count << PAGE_SHIFT,
+-				      vma->vm_page_prot);
+-	}
+-
+-	return ret;
+-}
+-
+-static inline void __dma_sync_virtual(void *addr, size_t size,
+-	enum dma_data_direction direction)
+-{
+-	switch (direction) {
+-	case DMA_TO_DEVICE:
+-		dma_cache_wback((unsigned long)addr, size);
+-		break;
+-
+-	case DMA_FROM_DEVICE:
+-		dma_cache_inv((unsigned long)addr, size);
+-		break;
+-
+-	case DMA_BIDIRECTIONAL:
+-		dma_cache_wback_inv((unsigned long)addr, size);
+-		break;
+-
+-	default:
+-		BUG();
+-	}
+-}
+-
+-/*
+- * A single sg entry may refer to multiple physically contiguous
+- * pages. But we still need to process highmem pages individually.
+- * If highmem is not configured then the bulk of this loop gets
+- * optimized out.
+- */
+-static inline void __dma_sync(struct page *page,
+-	unsigned long offset, size_t size, enum dma_data_direction direction)
+-{
+-	size_t left = size;
+-
+-	do {
+-		size_t len = left;
+-
+-		if (PageHighMem(page)) {
+-			void *addr;
+-
+-			if (offset + len > PAGE_SIZE) {
+-				if (offset >= PAGE_SIZE) {
+-					page += offset >> PAGE_SHIFT;
+-					offset &= ~PAGE_MASK;
+-				}
+-				len = PAGE_SIZE - offset;
+-			}
+-
+-			addr = kmap_atomic(page);
+-			__dma_sync_virtual(addr + offset, len, direction);
+-			kunmap_atomic(addr);
+-		} else
+-			__dma_sync_virtual(page_address(page) + offset,
+-					   size, direction);
+-		offset = 0;
+-		page++;
+-		left -= len;
+-	} while (left);
+-}
+-
+-static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+-	size_t size, enum dma_data_direction direction, unsigned long attrs)
+-{
+-	if (cpu_needs_post_dma_flush(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+-		__dma_sync(dma_addr_to_page(dev, dma_addr),
+-			   dma_addr & ~PAGE_MASK, size, direction);
+-	plat_post_dma_flush(dev);
+-	plat_unmap_dma_mem(dev, dma_addr, size, direction);
+-}
+-
+-static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+-	int nents, enum dma_data_direction direction, unsigned long attrs)
+-{
+-	int i;
+-	struct scatterlist *sg;
+-
+-	for_each_sg(sglist, sg, nents, i) {
+-		if (!plat_device_is_coherent(dev) &&
+-		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+-			__dma_sync(sg_page(sg), sg->offset, sg->length,
+-				   direction);
+-#ifdef CONFIG_NEED_SG_DMA_LENGTH
+-		sg->dma_length = sg->length;
+-#endif
+-		sg->dma_address = plat_map_dma_mem_page(dev, sg_page(sg)) +
+-				  sg->offset;
+-	}
+-
+-	return nents;
+-}
+-
+-static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
+-	unsigned long offset, size_t size, enum dma_data_direction direction,
+-	unsigned long attrs)
+-{
+-	if (!plat_device_is_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+-		__dma_sync(page, offset, size, direction);
+-
+-	return plat_map_dma_mem_page(dev, page) + offset;
+-}
+-
+-static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
+-	int nhwentries, enum dma_data_direction direction,
+-	unsigned long attrs)
+-{
+-	int i;
+-	struct scatterlist *sg;
+-
+-	for_each_sg(sglist, sg, nhwentries, i) {
+-		if (!plat_device_is_coherent(dev) &&
+-		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
+-		    direction != DMA_TO_DEVICE)
+-			__dma_sync(sg_page(sg), sg->offset, sg->length,
+-				   direction);
+-		plat_unmap_dma_mem(dev, sg->dma_address, sg->length, direction);
+-	}
+-}
+-
+-static void mips_dma_sync_single_for_cpu(struct device *dev,
+-	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+-{
+-	if (cpu_needs_post_dma_flush(dev))
+-		__dma_sync(dma_addr_to_page(dev, dma_handle),
+-			   dma_handle & ~PAGE_MASK, size, direction);
+-	plat_post_dma_flush(dev);
+-}
+-
+-static void mips_dma_sync_single_for_device(struct device *dev,
+-	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+-{
+-	if (!plat_device_is_coherent(dev))
+-		__dma_sync(dma_addr_to_page(dev, dma_handle),
+-			   dma_handle & ~PAGE_MASK, size, direction);
+-}
+-
+-static void mips_dma_sync_sg_for_cpu(struct device *dev,
+-	struct scatterlist *sglist, int nelems,
+-	enum dma_data_direction direction)
+-{
+-	int i;
+-	struct scatterlist *sg;
+-
+-	if (cpu_needs_post_dma_flush(dev)) {
+-		for_each_sg(sglist, sg, nelems, i) {
+-			__dma_sync(sg_page(sg), sg->offset, sg->length,
+-				   direction);
+-		}
+-	}
+-	plat_post_dma_flush(dev);
+-}
+-
+-static void mips_dma_sync_sg_for_device(struct device *dev,
+-	struct scatterlist *sglist, int nelems,
+-	enum dma_data_direction direction)
+-{
+-	int i;
+-	struct scatterlist *sg;
+-
+-	if (!plat_device_is_coherent(dev)) {
+-		for_each_sg(sglist, sg, nelems, i) {
+-			__dma_sync(sg_page(sg), sg->offset, sg->length,
+-				   direction);
+-		}
+-	}
+-}
+-
+-static int mips_dma_supported(struct device *dev, u64 mask)
+-{
+-	return plat_dma_supported(dev, mask);
+-}
+-
+-static void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+-			 enum dma_data_direction direction)
+-{
+-	BUG_ON(direction == DMA_NONE);
+-
+-	if (!plat_device_is_coherent(dev))
+-		__dma_sync_virtual(vaddr, size, direction);
+-}
+-
+-const struct dma_map_ops mips_default_dma_map_ops = {
+-	.alloc = mips_dma_alloc_coherent,
+-	.free = mips_dma_free_coherent,
+-	.mmap = mips_dma_mmap,
+-	.map_page = mips_dma_map_page,
+-	.unmap_page = mips_dma_unmap_page,
+-	.map_sg = mips_dma_map_sg,
+-	.unmap_sg = mips_dma_unmap_sg,
+-	.sync_single_for_cpu = mips_dma_sync_single_for_cpu,
+-	.sync_single_for_device = mips_dma_sync_single_for_device,
+-	.sync_sg_for_cpu = mips_dma_sync_sg_for_cpu,
+-	.sync_sg_for_device = mips_dma_sync_sg_for_device,
+-	.dma_supported = mips_dma_supported,
+-	.cache_sync = mips_dma_cache_sync,
+-};
+-EXPORT_SYMBOL(mips_default_dma_map_ops);
 -- 
 2.17.0

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 11:25:11 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:51124 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 11:25:26 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:51146 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993041AbeEYJWCRJTtA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 May 2018 11:22:02 +0200
+        by eddie.linux-mips.org with ESMTP id S23993065AbeEYJWFXhS9A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 May 2018 11:22:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=aCcfSBfMf3NlKskqrCtQ3/wpr5W6TBS1v8aapJcdnQA=; b=kf4+JVQnEHNYfZIEy75z2j+qd
-        cTTRC5N4I8hWbo+z5PWH9dFTVZ6zB4KC06qwC4gMIRrb8LlHFEsajbCZdeQWbMhJhhpL+iMEiM7VS
-        CE88Akpn+RJlfTaT8A6iG17ea5wyheb7/giFvEOGGcqnLwMtTRF+qaUStxHG+froqyTf8zvQFiARt
-        4uIdyyV1OP6IqbjwsAuDS1u5JRCOYIA4v/8/saPSX+2PlploaGFGvlwhC6naVPVaCuk5B3kWgFx2t
-        h76cdjKzRaMwZ1pBuVMPWFkosHb4RXRjSTxmfCjWnqUW+JVGKpZ5e/xjXeX0ohKp49S2uuhE2N3So
-        rKxHuDuEw==;
+         bh=MJlAC0itoeyEAL8mW9RX271rfhVuIHrEowJh2ms2Pew=; b=Ve0Pzp/K8ZKNCdUCzHBGrvLE0
+        uliAAvNMsz0BQ3RCGhRMFoAUFSC547dZrpa+Yog4vzpuBUhJYT7qtyxYl7at4F7v9lZX82hUMwcCc
+        8nq79tmr962ZSvoZKi4/7amhHPIk1CjNey3gl1QbHrS+Pl8A+/r7PnUKUS3VcMcNrit8+Z0YG4OFS
+        /qjPmMRuJrBIGs6gCnOfFLDjYpTet2k2Fd5zCTcgGyFy/+67GbZ+cLNdWsKdwPtjcRN2l/r6nd2QN
+        uBDTvPtRsQblmPkOZS+PIElxfNX5plh9SwR0QSgsT6S4+DjO0IAF4ub19g2+NLRqHqo4qM6rZTdPv
+        ULSWXWRqA==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fM8vA-0001wT-Mb; Fri, 25 May 2018 09:22:01 +0000
+        id 1fM8vD-0001wq-Vs; Fri, 25 May 2018 09:22:04 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Kevin Cernekee <cernekee@gmail.com>,
@@ -27,9 +27,9 @@ Cc:     Kevin Cernekee <cernekee@gmail.com>,
         David Daney <david.daney@cavium.com>,
         Tom Bogendoerfer <tsbogend@alpha.franken.de>,
         linux-mips@linux-mips.org, iommu@lists.linux-foundation.org
-Subject: [PATCH 14/25] MIPS: use dma_direct_ops for coherent I/O
-Date:   Fri, 25 May 2018 11:21:00 +0200
-Message-Id: <20180525092111.18516-15-hch@lst.de>
+Subject: [PATCH 15/25] MIPS: IP27: use dma_direct_ops
+Date:   Fri, 25 May 2018 11:21:01 +0200
+Message-Id: <20180525092111.18516-16-hch@lst.de>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180525092111.18516-1-hch@lst.de>
 References: <20180525092111.18516-1-hch@lst.de>
@@ -38,7 +38,7 @@ Return-Path: <BATV+5cb9c4fab7748cb05a15+5388+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64027
+X-archive-position: 64028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,153 +55,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Switch the simple cache coherent architectures that don't require any
-DMA address translation to dma_direct_ops.
-
-We'll soon use at least parts of the direct DMA ops implementation for
-all platforms, so select the symbol globally.
+IP27 is coherent and has a reasonably direct mapping, just with a little
+per-bus offset added into the dma address.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mips/Kconfig                   | 15 +--------------
- arch/mips/include/asm/dma-mapping.h |  2 +-
- 2 files changed, 2 insertions(+), 15 deletions(-)
+ arch/mips/Kconfig                             |  2 +-
+ .../include/asm/mach-ip27/dma-coherence.h     | 70 -------------------
+ arch/mips/pci/pci-ip27.c                      | 14 ++++
+ 3 files changed, 15 insertions(+), 71 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-ip27/dma-coherence.h
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 24cc20ea60b9..173e5714151c 100644
+index 173e5714151c..934696595ad6 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -16,6 +16,7 @@ config MIPS
- 	select BUILDTIME_EXTABLE_SORT
- 	select CLONE_BACKWARDS
- 	select CPU_PM if CPU_IDLE
-+	select DMA_DIRECT_OPS
- 	select GENERIC_ATOMIC64 if !64BIT
- 	select GENERIC_CLOCKEVENTS
- 	select GENERIC_CMOS_UPDATE
-@@ -563,7 +564,6 @@ config NEC_MARKEINS
- 	bool "NEC EMMA2RH Mark-eins board"
- 	select SOC_EMMA2RH
- 	select HW_HAS_PCI
--	select MIPS_DMA_DEFAULT
- 	help
- 	  This enables support for the NEC Electronics Mark-eins boards.
+@@ -677,11 +677,11 @@ config SGI_IP22
  
-@@ -577,14 +577,12 @@ config MACH_VR41XX
- 
- config NXP_STB220
- 	bool "NXP STB220 board"
+ config SGI_IP27
+ 	bool "SGI IP27 (Origin200/2000)"
++	select ARCH_HAS_PHYS_TO_DMA
+ 	select FW_ARC
+ 	select FW_ARC64
+ 	select BOOT_ELF64
+ 	select DEFAULT_SGI_PARTITION
 -	select MIPS_DMA_DEFAULT
- 	select SOC_PNX833X
- 	help
- 	 Support for NXP Semiconductors STB220 Development Board.
- 
- config NXP_STB225
- 	bool "NXP 225 board"
--	select MIPS_DMA_DEFAULT
- 	select SOC_PNX833X
- 	select SOC_PNX8335
- 	help
-@@ -762,7 +760,6 @@ config SGI_IP32
- config SIBYTE_CRHINE
- 	bool "Sibyte BCM91120C-CRhine"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_BCM1120
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -772,7 +769,6 @@ config SIBYTE_CRHINE
- config SIBYTE_CARMEL
- 	bool "Sibyte BCM91120x-Carmel"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_BCM1120
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -782,7 +778,6 @@ config SIBYTE_CARMEL
- config SIBYTE_CRHONE
- 	bool "Sibyte BCM91125C-CRhone"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_BCM1125
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -793,7 +788,6 @@ config SIBYTE_CRHONE
- config SIBYTE_RHONE
- 	bool "Sibyte BCM91125E-Rhone"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_BCM1125H
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -804,7 +798,6 @@ config SIBYTE_SWARM
- 	bool "Sibyte BCM91250A-SWARM"
- 	select BOOT_ELF32
- 	select HAVE_PATA_PLATFORM
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -817,7 +810,6 @@ config SIBYTE_LITTLESUR
- 	bool "Sibyte BCM91250C2-LittleSur"
- 	select BOOT_ELF32
- 	select HAVE_PATA_PLATFORM
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -828,7 +820,6 @@ config SIBYTE_LITTLESUR
- config SIBYTE_SENTOSA
- 	bool "Sibyte BCM91250E-Sentosa"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -838,7 +829,6 @@ config SIBYTE_SENTOSA
- config SIBYTE_BIGSUR
- 	bool "Sibyte BCM91480B-BigSur"
- 	select BOOT_ELF32
--	select MIPS_DMA_DEFAULT
- 	select NR_CPUS_DEFAULT_4
- 	select SIBYTE_BCM1x80
- 	select SWAP_IO_SPACE
-@@ -959,7 +949,6 @@ config NLM_XLR_BOARD
- 	select SYS_HAS_CPU_XLR
- 	select SYS_SUPPORTS_SMP
+ 	select SYS_HAS_EARLY_PRINTK
  	select HW_HAS_PCI
--	select MIPS_DMA_DEFAULT
- 	select SWAP_IO_SPACE
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
-@@ -986,7 +975,6 @@ config NLM_XLP_BOARD
- 	select SYS_HAS_CPU_XLP
- 	select SYS_SUPPORTS_SMP
- 	select HW_HAS_PCI
--	select MIPS_DMA_DEFAULT
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select PHYS_ADDR_T_64BIT
-@@ -1012,7 +1000,6 @@ config MIPS_PARAVIRT
- 	bool "Para-Virtualized guest system"
- 	select CEVT_R4K
- 	select CSRC_R4K
--	select MIPS_DMA_DEFAULT
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index eaf3d9054104..7c0d4f0ccaa0 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -20,7 +20,7 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- #elif defined(CONFIG_MIPS_DMA_DEFAULT)
- 	return &mips_default_dma_map_ops;
- #else
--	return NULL;
-+	return &dma_direct_ops;
- #endif
+ 	select NR_CPUS_DEFAULT_64
+diff --git a/arch/mips/include/asm/mach-ip27/dma-coherence.h b/arch/mips/include/asm/mach-ip27/dma-coherence.h
+deleted file mode 100644
+index 04d862020ac9..000000000000
+--- a/arch/mips/include/asm/mach-ip27/dma-coherence.h
++++ /dev/null
+@@ -1,70 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
+- *
+- */
+-#ifndef __ASM_MACH_IP27_DMA_COHERENCE_H
+-#define __ASM_MACH_IP27_DMA_COHERENCE_H
+-
+-#include <asm/pci/bridge.h>
+-
+-#define pdev_to_baddr(pdev, addr) \
+-	(BRIDGE_CONTROLLER(pdev->bus)->baddr + (addr))
+-#define dev_to_baddr(dev, addr) \
+-	pdev_to_baddr(to_pci_dev(dev), (addr))
+-
+-struct device;
+-
+-static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+-	size_t size)
+-{
+-	dma_addr_t pa = dev_to_baddr(dev, virt_to_phys(addr));
+-
+-	return pa;
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+-	struct page *page)
+-{
+-	dma_addr_t pa = dev_to_baddr(dev, page_to_phys(page));
+-
+-	return pa;
+-}
+-
+-static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+-	dma_addr_t dma_addr)
+-{
+-	return dma_addr & ~(0xffUL << 56);
+-}
+-
+-static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
+-	size_t size, enum dma_data_direction direction)
+-{
+-}
+-
+-static inline int plat_dma_supported(struct device *dev, u64 mask)
+-{
+-	/*
+-	 * we fall back to GFP_DMA when the mask isn't all 1s,
+-	 * so we can't guarantee allocations that must be
+-	 * within a tighter range than GFP_DMA..
+-	 */
+-	if (mask < DMA_BIT_MASK(24))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static inline void plat_post_dma_flush(struct device *dev)
+-{
+-}
+-
+-static inline int plat_device_is_coherent(struct device *dev)
+-{
+-	return 1;		/* IP27 non-coherent mode is unsupported */
+-}
+-
+-#endif /* __ASM_MACH_IP27_DMA_COHERENCE_H */
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index 0f09eafa5e3a..65b48d41a229 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -11,6 +11,7 @@
+ #include <linux/export.h>
+ #include <linux/pci.h>
+ #include <linux/smp.h>
++#include <linux/dma-direct.h>
+ #include <asm/sn/arch.h>
+ #include <asm/pci/bridge.h>
+ #include <asm/paccess.h>
+@@ -182,6 +183,19 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ 	return 0;
  }
  
++dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
++{
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
++
++	return bc->baddr + paddr;
++}
++
++phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
++{
++	return dma_addr & ~(0xffUL << 56);
++}
++
+ /*
+  * Device might live on a subordinate PCI bus.	XXX Walk up the chain of buses
+  * to find the slot number in sense of the bridge device register.
 -- 
 2.17.0

@@ -1,75 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 12:13:16 +0200 (CEST)
-Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:45708
-        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbeEYKNIly2Fh convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 May 2018 12:13:08 +0200
-Received: by mail-oi0-x241.google.com with SMTP id b130-v6so4081556oif.12
-        for <linux-mips@linux-mips.org>; Fri, 25 May 2018 03:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Z+f2vtx1gehbLezjQ80IUZO9lABZLaxcsWmpxODoKxE=;
-        b=nuB6Am9G3sqkWXnfyRs2jVCeJd7OVvRQCIqJkOWcvC+J3LnNZL8Hy+iHAsYNpLldMb
-         qpuaVTuvTVjspxwHHP/42QZVeagI/awviTXsB2p0SN4FUvGEkvBpUVvTMdtIIByRqjAy
-         8/MTa3jQG2Eie0IygM7XGV1kEJvWX/h3NNcmkUeLZFoq/x/Fci8S76oViRd2RjbDKIYP
-         WVdTnyOjVzn2nKvdw0KLp38TAi6gzXobF/DasnYbgSHMVuS/eWm9fH3zoOglC2mGmlWf
-         Y8UHBRH4aoyZJS+sT7lk0C4oF1/W/PSDhSU+KfuglS+M7aPQ9mk33ZJs/PFlJLgc1O5R
-         TAkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Z+f2vtx1gehbLezjQ80IUZO9lABZLaxcsWmpxODoKxE=;
-        b=M7J84RQ5BL2sWfOMqRzcuY3bwHnJ0ldhnu7KgDbDIB3Z2TfauATnHM5ULKJwp4yCqy
-         uxBBz9zMzly85VMvxwu3KZg+ItUQrjWwKrQNXUatsii2A6wbrOTkGnU+4FwU9NcOiwPn
-         5AamIu8bkgLRgi5p0uxMLH+gy+7dj4J+uFIhAobI9O/gCF1JG7em7TCmBUW+FrBeBEJ7
-         H6nGxfERsKxyP/lHHiMM5sAiVBItqVtozsbQ35DudX8k6nnPVnoeFogmo2WmB/KZK4r+
-         A5A846DRUXOoCaBMrDEnXSp7lDBSh6M6jLWY5AX5iFcMn6NX8BLELEY6qNtpx634mJHq
-         2VSg==
-X-Gm-Message-State: ALKqPwcj2qiNwaMspIRaK8j9Dz3SdYPntKOnsN1pWuxgUPeGmP1HDf5m
-        XyrCBsPqwxlUKcqJ4hiYeWbxW3RU
-X-Google-Smtp-Source: ADUXVKJj/pSJ5WWb0lsbPGzh66s2g2xzQjuQuo86BC77HCv/hohiKVQe6Jn5QihKaIYl3+NuSxK4yg==
-X-Received: by 2002:aca:c7c4:: with SMTP id x187-v6mr939126oif.97.1527243181817;
-        Fri, 25 May 2018 03:13:01 -0700 (PDT)
-Received: from mail-ot0-f181.google.com (mail-ot0-f181.google.com. [74.125.82.181])
-        by smtp.gmail.com with ESMTPSA id x4-v6sm17090231otx.54.2018.05.25.03.13.00
-        for <linux-mips@linux-mips.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 May 2018 03:13:01 -0700 (PDT)
-Received: by mail-ot0-f181.google.com with SMTP id l13-v6so5456281otk.9
-        for <linux-mips@linux-mips.org>; Fri, 25 May 2018 03:13:00 -0700 (PDT)
-X-Received: by 2002:a9d:2184:: with SMTP id s4-v6mr1017884otb.237.1527243180225;
- Fri, 25 May 2018 03:13:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2018 17:41:53 +0200 (CEST)
+Received: from vm1.sequanux.org ([188.165.36.56]:34871 "EHLO vm1.sequanux.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990423AbeEYPlqjzZYC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 May 2018 17:41:46 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by vm1.sequanux.org (Postfix) with ESMTP id 34EEA1081F7;
+        Fri, 25 May 2018 17:41:46 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at vm1.sequanux.org
+Received: from vm1.sequanux.org ([127.0.0.1])
+        by localhost (vm1.sequanux.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id K5ZCu4gm4ee5; Fri, 25 May 2018 17:41:44 +0200 (CEST)
+Received: from localhost (softwrestling.org [188.165.144.248])
+        by vm1.sequanux.org (Postfix) with ESMTPSA id 8862810812B;
+        Fri, 25 May 2018 17:41:44 +0200 (CEST)
+Date:   Fri, 25 May 2018 17:41:44 +0200
+From:   Simon Guinot <simon.guinot@sequanux.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-mips@linux-mips.org
+Subject: i2c-gpio and boards conversions to GPIO descriptors
+Message-ID: <20180525154144.GC19100@kw.sim.vm.gnt>
 MIME-Version: 1.0
-Received: by 2002:a9d:4081:0:0:0:0:0 with HTTP; Fri, 25 May 2018 03:12:39
- -0700 (PDT)
-X-Originating-IP: [193.151.80.5]
-In-Reply-To: <20180524120733.GA24269@jamesdev>
-References: <1523176203-18926-1-git-send-email-dev@kresin.me>
- <20180521163932.GA12779@jamesdev> <20180524120733.GA24269@jamesdev>
-From:   Mathias Kresin <dev@kresin.me>
-Date:   Fri, 25 May 2018 13:12:39 +0300
-X-Gmail-Original-Message-ID: <CABwW5nkcBT3FmUy6A_t3E5VU3Z78eut3anPe06=yYbLeMrtg3A@mail.gmail.com>
-Message-ID: <CABwW5nkcBT3FmUy6A_t3E5VU3Z78eut3anPe06=yYbLeMrtg3A@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-To:     James Hogan <jhogan@kernel.org>
-Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        hauke@hauke-m.de, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dev@kresin.me>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="r5Pyd7+fXNt84Ff3"
+Content-Disposition: inline
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <simon.guinot@sequanux.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64039
+X-archive-position: 64040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev@kresin.me
+X-original-sender: simon.guinot@sequanux.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,54 +46,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2018-05-24 15:07 GMT+03:00 James Hogan <jhogan@kernel.org>:
-> On Mon, May 21, 2018 at 05:39:32PM +0100, James Hogan wrote:
->> On Sun, Apr 08, 2018 at 10:30:03AM +0200, Mathias Kresin wrote:
->> > While doing a global software reset, these bits are not cleared and let
->> > some bootloader fail to initialise the GPHYs. The bootloader don't
->> > expect the GPHYs in reset, as they aren't during power on.
->> >
->> > The asserts were a workaround for a wrong syscon-reboot mask. With a
->> > mask set which includes the GPHY resets, these resets aren't required
->> > any more.
->> >
->> > Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd")
->> > Cc: stable@vger.kernel.org # 4.14+
->> > Signed-off-by: Mathias Kresin <dev@kresin.me>
->>
->> Applied for 4.17. Thanks for the acks/reviews folk!
->
-> drivers/soc/lantiq/gphy.c: In function ‘xway_gphy_remove’:
-> drivers/soc/lantiq/gphy.c:198:6: warning: unused variable ‘ret’ [-Wunused-variable]
->   int ret;
->       ^~~
-> drivers/soc/lantiq/gphy.c:196:17: warning: unused variable ‘dev’ [-Wunused-variable]
->   struct device *dev = &pdev->dev;
->                  ^~~
->
-> Easily fixed, I can drop those two lines:
->
-> diff --git a/drivers/soc/lantiq/gphy.c b/drivers/soc/lantiq/gphy.c
-> index 8c31ae750987..feeb17cebc25 100644
-> --- a/drivers/soc/lantiq/gphy.c
-> +++ b/drivers/soc/lantiq/gphy.c
-> @@ -193,9 +193,7 @@ static int xway_gphy_probe(struct platform_device *pdev)
->
->  static int xway_gphy_remove(struct platform_device *pdev)
->  {
-> -       struct device *dev = &pdev->dev;
->         struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
-> -       int ret;
->
->         iowrite32be(0, priv->membase);
->
-> However it does raise the question, it sounds like a fix, but was this
-> patch tested and the warning just overlooked?
 
-Yes the patch is tested. It is committed to OpenWrt on top of 4.14
-since a while.
+--r5Pyd7+fXNt84Ff3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It is as simple as I didn't noticed the warnings.
+Hi Linus,
 
-Thanks a lot for fixing the warnings
-Mathias
+I think your patch b2e63555592f "i2c: gpio: Convert to use descriptors"
+may have broken i2c-gpio support for some boards using old fashion
+platform_device declarations.
+
+Indeed when an "i2c-gpio" platform_device is registered with a fixed id
+e.g. 0, then I think the device name becomes "i2c-gpio.0". And then this
+won't match a lookup table registered with an "i2c-gpio" dev_id.
+
+Please double check this :)
+
+Simon
+
+--r5Pyd7+fXNt84Ff3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEXW8DgovlR3VS5hA0zyg/RDPmszoFAlsILrgACgkQzyg/RDPm
+szpd/hAAoE3d2/3Q8y9kg82qGUp8uGanKE61aRL0FSngbTfVsI1Yx4i+Am4urNvo
+D8Bs/g3/w0TxecAY1FMfb8NALIN5+pgErORE+28gtzm1jFW2dIZealUu8yw2oahO
+7DfMNNRwI3em2ZljYqnqUzknIaA28wwTyxrxYQoqmflr8ygZatrpvYkOjFzCIZAB
+Ym/iBuaJVl7ACbjHew3QJZcqiXpEYxdJG37vlhLtFzU3nynrct9vXXCtK1IwexbI
+YzYOWOYtEjxYuP6a2SC63WyGz9Q8St3cnawoYrFm7OLaUCgskHrX8/H6JDrSf2n4
+BQ2UwpVYGr6PU19xYYVLRTuLZ+CFsZnoy2KU5BMWvOO7wqlUG4qOnRFLKCgezXAP
+kmrO3zVQOdGihN1VYWppR4VqbHDZBF6HVaxtIoebMZFXP8Ecw1Pa2LVBJzOtDgYw
+rfgJQH5eAEnyKyajCdRwuqedE9cOlv5XpQ0FurPUCl3OSnl0w+109gcDrG7dpEQ+
+m4V/Gy6MWjZCbZVUJTGnKypk65Gv3J4yUQ2iu+twb18Zhi80aQFCc53Bf/puixcX
+lg1omjg/MaHa1HjmsPtZwdqeDCVdoifLqaGegCvgzDmqCG02kwzbIu/ckzgqcsD8
+SkjFL9xFD6fuiuWuLj+sblXl+lbG4ON66aH2quC1CsWOM7kL5j8=
+=ngPR
+-----END PGP SIGNATURE-----
+
+--r5Pyd7+fXNt84Ff3--

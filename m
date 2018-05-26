@@ -1,102 +1,88 @@
-From: "Maciej W. Rozycki" <macro@mips.com>
-Date: Mon, 30 Apr 2018 15:56:47 +0100
-Subject: MIPS: ptrace: Expose FIR register through FP regset
-Message-ID: <20180430145647.6MCPCl6Okx_2Hf7d5D4WeoLR1fDVqjhe02rquFFsEkg@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2018 18:38:57 +0200 (CEST)
+Received: from mail-io0-x233.google.com ([IPv6:2607:f8b0:4001:c06::233]:33454
+        "EHLO mail-io0-x233.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994697AbeEZQiuMbGUB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2018 18:38:50 +0200
+Received: by mail-io0-x233.google.com with SMTP id o185-v6so9747201iod.0
+        for <linux-mips@linux-mips.org>; Sat, 26 May 2018 09:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=IzrP1Rk/l0QjVUrXlCZ2IYIhRHPTqACtq0QeiuNkZUE=;
+        b=d5zd32Ax4t8MU1Fe0I6ZuX/b2NtlnpzJmZGsVz8+hsqXmyJeqoF2uvqt4hjX0O5Hk8
+         AIcmGYSbKvBf2/ZKFtF39xe7+xq4VQp1CGYGcyCCf1JlOYBRKUiQwvK91Uk29TjfHJBd
+         iOeh7pAidB8tdwuVevV2h4cjURo6Yl55TaVw4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=IzrP1Rk/l0QjVUrXlCZ2IYIhRHPTqACtq0QeiuNkZUE=;
+        b=oA+5WHoZwuTjTBvHrXehgXTqIutRHolds1KYYR5dHscz5ng5NxerS6czaA/x0YroNM
+         IaR1hJcC0jIs9NuCCizf4lJ0sGY0b4I9p1WTEuhjZ8EapPq8JnglB13uUMdQBKhBLC7q
+         FI5K1qixb0JPZ++sfRM+xsGKE0V+kkIY9NvaFB6ls9xI4Nu3QZEzDr+c7HdTapCPB1Yg
+         VjbcahkF9+//HhJRGdTExglKrfywQGL3zC7qqUQQ/j7sU2s/tvNBABDGgL+mp+aU+AxO
+         8ps+gBOJsRVtTsQzZTd9ZED5ApJLaPsuy63Dj5iSITnamLAXITj+Fvk6iVNA9fGihPAO
+         Iq2A==
+X-Gm-Message-State: ALKqPwfdTk0TZan32icbKUg5jgQc2WQzSHTBL0ghQ9W4204t9ZFWFaAp
+        sViHtWkhwohSOs7j8XlatrmKdIbZV+0vGHs9u2c4Gg==
+X-Google-Smtp-Source: ADUXVKJ0tJdzwpUcyQNV+Ilm04+DKVtpgMC66FaMWOpz4z7g5v/d6Zudck/Pfiqdf9G3JnsvA6wi1iOllxNlU7OCJnM=
+X-Received: by 2002:a6b:4014:: with SMTP id k20-v6mr5597697ioa.277.1527352723872;
+ Sat, 26 May 2018 09:38:43 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a4f:78c9:0:0:0:0:0 with HTTP; Sat, 26 May 2018 09:38:43
+ -0700 (PDT)
+In-Reply-To: <20180525154144.GC19100@kw.sim.vm.gnt>
+References: <20180525154144.GC19100@kw.sim.vm.gnt>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 26 May 2018 18:38:43 +0200
+Message-ID: <CACRpkdb26T7JNHOPSFxmPLyNnMDqpNYnMZxKEHGL8gPo9V2Sjg@mail.gmail.com>
+Subject: Re: i2c-gpio and boards conversions to GPIO descriptors
+To:     Simon Guinot <simon.guinot@sequanux.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc:     Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus.walleij@linaro.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64063
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: linus.walleij@linaro.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Maciej W. Rozycki <macro@mips.com>
+On Fri, May 25, 2018 at 5:41 PM, Simon Guinot <simon.guinot@sequanux.org> wrote:
+> Hi Linus,
+>
+> I think your patch b2e63555592f "i2c: gpio: Convert to use descriptors"
+> may have broken i2c-gpio support for some boards using old fashion
+> platform_device declarations.
+>
+> Indeed when an "i2c-gpio" platform_device is registered with a fixed id
+> e.g. 0, then I think the device name becomes "i2c-gpio.0". And then this
+> won't match a lookup table registered with an "i2c-gpio" dev_id.
 
-commit 71e909c0cdad28a1df1fa14442929e68615dee45 upstream.
+Yeah what a mess, I'm sending patches to fix it up, the ARM
+patch already sent, I will send a separate one for the MIPS
+machines.
 
-Correct commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-and expose the FIR register using the unused 4 bytes at the end of the
-NT_PRFPREG regset.  Without that register included clients cannot use
-the PTRACE_GETREGSET request to retrieve the complete FPU register set
-and have to resort to one of the older interfaces, either PTRACE_PEEKUSR
-or PTRACE_GETFPREGS, to retrieve the missing piece of data.  Also the
-register is irreversibly missing from core dumps.
+Sorry for the mess! :(
 
-This register is architecturally hardwired and read-only so the write
-path does not matter.  Ignore data supplied on writes then.
-
-Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.13+
-Patchwork: https://patchwork.linux-mips.org/patch/19273/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/ptrace.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -483,7 +483,7 @@ static int fpr_get_msa(struct task_struc
- /*
-  * Copy the floating-point context to the supplied NT_PRFPREG buffer.
-  * Choose the appropriate helper for general registers, and then copy
-- * the FCSR register separately.
-+ * the FCSR and FIR registers separately.
-  */
- static int fpr_get(struct task_struct *target,
- 		   const struct user_regset *regset,
-@@ -491,6 +491,7 @@ static int fpr_get(struct task_struct *t
- 		   void *kbuf, void __user *ubuf)
- {
- 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
-+	const int fir_pos = fcr31_pos + sizeof(u32);
- 	int err;
- 
- 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-@@ -503,6 +504,12 @@ static int fpr_get(struct task_struct *t
- 	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
- 				  &target->thread.fpu.fcr31,
- 				  fcr31_pos, fcr31_pos + sizeof(u32));
-+	if (err)
-+		return err;
-+
-+	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+				  &boot_cpu_data.fpu_id,
-+				  fir_pos, fir_pos + sizeof(u32));
- 
- 	return err;
- }
-@@ -551,7 +558,8 @@ static int fpr_set_msa(struct task_struc
- /*
-  * Copy the supplied NT_PRFPREG buffer to the floating-point context.
-  * Choose the appropriate helper for general registers, and then copy
-- * the FCSR register separately.
-+ * the FCSR register separately.  Ignore the incoming FIR register
-+ * contents though, as the register is read-only.
-  *
-  * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
-  * which is supposed to have been guaranteed by the kernel before
-@@ -565,6 +573,7 @@ static int fpr_set(struct task_struct *t
- 		   const void *kbuf, const void __user *ubuf)
- {
- 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
-+	const int fir_pos = fcr31_pos + sizeof(u32);
- 	u32 fcr31;
- 	int err;
- 
-@@ -592,6 +601,11 @@ static int fpr_set(struct task_struct *t
- 		ptrace_setfcr31(target, fcr31);
- 	}
- 
-+	if (count > 0)
-+		err = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+						fir_pos,
-+						fir_pos + sizeof(u32));
-+
- 	return err;
- }
- 
-
-
-Patches currently in stable-queue which might be from macro@mips.com are
-
-queue-4.9/mips-ptrace-expose-fir-register-through-fp-regset.patch
-queue-4.9/mips-fix-ptrace-2-ptrace_peekusr-and-ptrace_pokeusr-accesses-to-o32-fgrs.patch
+Yours,
+Linus Walleij

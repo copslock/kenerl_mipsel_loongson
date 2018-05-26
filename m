@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2018 18:38:57 +0200 (CEST)
-Received: from mail-io0-x233.google.com ([IPv6:2607:f8b0:4001:c06::233]:33454
-        "EHLO mail-io0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994697AbeEZQiuMbGUB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2018 18:38:50 +0200
-Received: by mail-io0-x233.google.com with SMTP id o185-v6so9747201iod.0
-        for <linux-mips@linux-mips.org>; Sat, 26 May 2018 09:38:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2018 19:15:11 +0200 (CEST)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:51487
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994697AbeEZRPFPOguB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2018 19:15:05 +0200
+Received: by mail-wm0-x243.google.com with SMTP id j4-v6so21907624wme.1
+        for <linux-mips@linux-mips.org>; Sat, 26 May 2018 10:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=IzrP1Rk/l0QjVUrXlCZ2IYIhRHPTqACtq0QeiuNkZUE=;
-        b=d5zd32Ax4t8MU1Fe0I6ZuX/b2NtlnpzJmZGsVz8+hsqXmyJeqoF2uvqt4hjX0O5Hk8
-         AIcmGYSbKvBf2/ZKFtF39xe7+xq4VQp1CGYGcyCCf1JlOYBRKUiQwvK91Uk29TjfHJBd
-         iOeh7pAidB8tdwuVevV2h4cjURo6Yl55TaVw4=
+        h=from:to:cc:subject:date:message-id;
+        bh=tCtQ2UHCisF88/UdZQScfRnVfAxpBHpLOTxzTzqPGNY=;
+        b=ZGPo+UreJFwj5FcrD4YHY/qyi04QdOu3ZAXP3IJn1lEwubQejFpuCwXCLimcoIccN8
+         p25POHRhhYB3UHkMxnA/DziVWOxnbBDGrhZB3zAoI4hcvYvTgChwQSgCb0MliDVW3csf
+         UBa/FqGk8oVUfGzHFpUa9ID1qmXK9SwRuOqq4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=IzrP1Rk/l0QjVUrXlCZ2IYIhRHPTqACtq0QeiuNkZUE=;
-        b=oA+5WHoZwuTjTBvHrXehgXTqIutRHolds1KYYR5dHscz5ng5NxerS6czaA/x0YroNM
-         IaR1hJcC0jIs9NuCCizf4lJ0sGY0b4I9p1WTEuhjZ8EapPq8JnglB13uUMdQBKhBLC7q
-         FI5K1qixb0JPZ++sfRM+xsGKE0V+kkIY9NvaFB6ls9xI4Nu3QZEzDr+c7HdTapCPB1Yg
-         VjbcahkF9+//HhJRGdTExglKrfywQGL3zC7qqUQQ/j7sU2s/tvNBABDGgL+mp+aU+AxO
-         8ps+gBOJsRVtTsQzZTd9ZED5ApJLaPsuy63Dj5iSITnamLAXITj+Fvk6iVNA9fGihPAO
-         Iq2A==
-X-Gm-Message-State: ALKqPwfdTk0TZan32icbKUg5jgQc2WQzSHTBL0ghQ9W4204t9ZFWFaAp
-        sViHtWkhwohSOs7j8XlatrmKdIbZV+0vGHs9u2c4Gg==
-X-Google-Smtp-Source: ADUXVKJ0tJdzwpUcyQNV+Ilm04+DKVtpgMC66FaMWOpz4z7g5v/d6Zudck/Pfiqdf9G3JnsvA6wi1iOllxNlU7OCJnM=
-X-Received: by 2002:a6b:4014:: with SMTP id k20-v6mr5597697ioa.277.1527352723872;
- Sat, 26 May 2018 09:38:43 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a4f:78c9:0:0:0:0:0 with HTTP; Sat, 26 May 2018 09:38:43
- -0700 (PDT)
-In-Reply-To: <20180525154144.GC19100@kw.sim.vm.gnt>
-References: <20180525154144.GC19100@kw.sim.vm.gnt>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=tCtQ2UHCisF88/UdZQScfRnVfAxpBHpLOTxzTzqPGNY=;
+        b=MwuYOHVJ/YHGw5LpVap1osRIH1x8s7QYHd1slT8T1TFfhDMlHP20txGCcuJ3PBLKBV
+         5dGAqrOH2WwnFgnlFbD79Iwu/bkvqZooxcTYzKuRW3IlTSGEz+7oTFW6ERuGhx24SCyq
+         5FDMHaiGaUMwArIEUvqqtJ42D81xkujfa0JQuDz6zV206eUNbYfCILxv+Y0jQbJMa+ti
+         YpyiV84CwcrN6jT85vcvgaRFK0kDfpHVTwnayyyQR2wVMXidrnw4n9q4NbRWP3ITiwa7
+         zW2jZPAnFH+/RL/uuCA7Q1jPhGdCvQCf/um8BMvs3CW5RrgvHxp5zzjXthPR67J+IbeM
+         XrhA==
+X-Gm-Message-State: ALKqPweD8JScZFS1Zxk1m62FJdA+Miv4/TFTIUSAK5Q+E+F37aS4PbkI
+        ovTLDnysfRnSUdBid9qkk+whzw==
+X-Google-Smtp-Source: ADUXVKK3vUE0NINdVogsPlRKOBPIcuQlKFdPqsM2EK+P/BqIC4w3BpK3D5O0cAxmy+5Tr+zXkdbTCA==
+X-Received: by 2002:a2e:8018:: with SMTP id j24-v6mr4443319ljg.92.1527354899714;
+        Sat, 26 May 2018 10:14:59 -0700 (PDT)
+Received: from localhost.localdomain (c-ae7b71d5.014-348-6c756e10.bbcust.telenor.se. [213.113.123.174])
+        by smtp.gmail.com with ESMTPSA id f64-v6sm6077264lfg.63.2018.05.26.10.14.57
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 26 May 2018 10:14:58 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 26 May 2018 18:38:43 +0200
-Message-ID: <CACRpkdb26T7JNHOPSFxmPLyNnMDqpNYnMZxKEHGL8gPo9V2Sjg@mail.gmail.com>
-Subject: Re: i2c-gpio and boards conversions to GPIO descriptors
-To:     Simon Guinot <simon.guinot@sequanux.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-i2c@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc:     Haavard Skinnemoen <hskinnemoen@gmail.com>,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        Linus Walleij <linus.walleij@linaro.org>,
         Wolfram Sang <wsa@the-dreams.de>,
-        Linux MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
+        Simon Guinot <simon.guinot@sequanux.org>
+Subject: [PATCH] MIPS: pb44: Fix i2c-gpio GPIO descriptor table
+Date:   Sat, 26 May 2018 19:12:51 +0200
+Message-Id: <20180526171251.7653-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.17.0
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64063
+X-archive-position: 64064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,22 +62,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 25, 2018 at 5:41 PM, Simon Guinot <simon.guinot@sequanux.org> wrote:
-> Hi Linus,
->
-> I think your patch b2e63555592f "i2c: gpio: Convert to use descriptors"
-> may have broken i2c-gpio support for some boards using old fashion
-> platform_device declarations.
->
-> Indeed when an "i2c-gpio" platform_device is registered with a fixed id
-> e.g. 0, then I think the device name becomes "i2c-gpio.0". And then this
-> won't match a lookup table registered with an "i2c-gpio" dev_id.
+I used bad names in my clumsiness when rewriting many board
+files to use GPIO descriptors instead of platform data. A few
+had the platform_device ID set to -1 which would indeed give
+the device name "i2c-gpio".
 
-Yeah what a mess, I'm sending patches to fix it up, the ARM
-patch already sent, I will send a separate one for the MIPS
-machines.
+But several had it set to >=0 which gives the names
+"i2c-gpio.0", "i2c-gpio.1" ...
 
-Sorry for the mess! :(
+Fix the one affected board in the MIPS tree. Sorry.
 
-Yours,
-Linus Walleij
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: Simon Guinot <simon.guinot@sequanux.org>
+Reported-by: Simon Guinot <simon.guinot@sequanux.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Ralf can you please apply this for MIPS fixes?
+---
+ arch/mips/ath79/mach-pb44.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
+index 6b2c6f3baefa..75fb96ca61db 100644
+--- a/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/mach-pb44.c
+@@ -34,7 +34,7 @@
+ #define PB44_KEYS_DEBOUNCE_INTERVAL	(3 * PB44_KEYS_POLL_INTERVAL)
+ 
+ static struct gpiod_lookup_table pb44_i2c_gpiod_table = {
+-	.dev_id = "i2c-gpio",
++	.dev_id = "i2c-gpio.0",
+ 	.table = {
+ 		GPIO_LOOKUP_IDX("ath79-gpio", PB44_GPIO_I2C_SDA,
+ 				NULL, 0, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+-- 
+2.17.0

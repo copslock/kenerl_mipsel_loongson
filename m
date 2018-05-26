@@ -1,40 +1,63 @@
-From: Colin Ian King <colin.king@canonical.com>
-Date: Mon, 14 May 2018 18:23:50 +0100
-Subject: KVM: Fix spelling mistake: "cop_unsuable" -> "cop_unusable"
-Message-ID: <20180514172350.cpoza26am3fhNnprIbSLY9Am1y4NgyDtm5pT9LgfwrE@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2018 12:27:47 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:53010 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994272AbeEZKZ2Ba6jI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 26 May 2018 12:25:28 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6EB1C20883;
+        Sat, 26 May 2018 10:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1527330321;
+        bh=GaMdo5XR62t6N7GoHHOqcdzxvtXYPOKXV7BJombK67k=;
+        h=Subject:To:Cc:From:Date:From;
+        b=KirKLHl2PKDuk5qGyAPvRfgmGI54i/FRC/k1xj1ik6mu50lPZ/FO7Agx9JVVdzd8T
+         k+8W300xWNiW4Nz3gsi3hUXh9buBmkTqGW136rFHWxe1JJM8/vFhJmTkHwnOJZOiKr
+         0S6+HFjC0x0QVOxHfsvdYnei0xlMdCB8uxlh8Q/s=
+Subject: Patch "MIPS: Fix ptrace(2) PTRACE_PEEKUSR and PTRACE_POKEUSR accesses to o32 FGRs" has been added to the 4.4-stable tree
+To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
+        linux-mips@linux-mips.org, macro@mips.com, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 26 May 2018 12:24:09 +0200
+Message-ID: <1527330249243110@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=Dqjb=IN=linuxfoundation.org=gregkh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64057
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Colin Ian King <colin.king@canonical.com>
 
-commit ba3696e94d9d590d9a7e55f68e81c25dba515191 upstream.
+This is a note to let you know that I've just added the patch titled
 
-Trivial fix to spelling mistake in debugfs_entries text.
+    MIPS: Fix ptrace(2) PTRACE_PEEKUSR and PTRACE_POKEUSR accesses to o32 FGRs
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kernel-janitors@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10+
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+to the 4.4-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
----
- arch/mips/kvm/mips.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The filename of the patch is:
+     mips-fix-ptrace-2-ptrace_peekusr-and-ptrace_pokeusr-accesses-to-o32-fgrs.patch
+and it can be found in the queue-4.4 subdirectory.
 
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -40,7 +40,7 @@ struct kvm_stats_debugfs_item debugfs_en
- 	{ "cache",	  VCPU_STAT(cache_exits),	 KVM_STAT_VCPU },
- 	{ "signal",	  VCPU_STAT(signal_exits),	 KVM_STAT_VCPU },
- 	{ "interrupt",	  VCPU_STAT(int_exits),		 KVM_STAT_VCPU },
--	{ "cop_unsuable", VCPU_STAT(cop_unusable_exits), KVM_STAT_VCPU },
-+	{ "cop_unusable", VCPU_STAT(cop_unusable_exits), KVM_STAT_VCPU },
- 	{ "tlbmod",	  VCPU_STAT(tlbmod_exits),	 KVM_STAT_VCPU },
- 	{ "tlbmiss_ld",	  VCPU_STAT(tlbmiss_ld_exits),	 KVM_STAT_VCPU },
- 	{ "tlbmiss_st",	  VCPU_STAT(tlbmiss_st_exits),	 KVM_STAT_VCPU },
-
-
-Patches currently in stable-queue which might be from colin.king@canonical.com are
-
-queue-4.4/kvm-fix-spelling-mistake-cop_unsuable-cop_unusable.patch
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

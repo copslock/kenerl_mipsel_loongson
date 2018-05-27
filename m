@@ -1,54 +1,64 @@
-From: James Hogan <jhogan@kernel.org>
-Date: Fri, 2 Feb 2018 22:14:09 +0000
-Subject: MIPS: generic: Fix machine compatible matching
-Message-ID: <20180202221409.UgGQ2U1qMmEzIBsIIZ_fhH70zHGFAg97wKrty8EThUM@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 May 2018 18:27:49 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:55578 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992719AbeE0Q1mWoVIq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 27 May 2018 18:27:42 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BEEF2077B;
+        Sun, 27 May 2018 16:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1527438455;
+        bh=Hm4cBAoo8J48fhJcU4o2A4g4C8sADRic4judUbPDaVU=;
+        h=Subject:To:Cc:From:Date:From;
+        b=Yh1lVh4j6WwyO9MwINshp/w0uQdcDH/V0nR8gO3xVyWDShZuNHdeOIKl0JZa392mo
+         LDp6cD2p8d1di/XUPMjZeENtJgwRN6Zvt702l50YyY16znGSHvm4wUMmyCv4yUTsE0
+         LzBh/6EYzPFyd5XMT3QIZesAt5iebn/FE5K/8NyA=
+Subject: Patch "MIPS: Octeon: Fix logging messages with spurious periods after newlines" has been added to the 4.4-stable tree
+To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
+        jhogan@kernel.org, joe@perches.com, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 27 May 2018 18:06:46 +0200
+Message-ID: <1527437206210134@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=rI55=IO=linuxfoundation.org=gregkh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64074
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: James Hogan <jhogan@kernel.org>
 
-[ Upstream commit 9a9ab3078e2744a1a55163cfaec73a5798aae33e ]
+This is a note to let you know that I've just added the patch titled
 
-We now have a platform (Ranchu) in the "generic" platform which matches
-based on the FDT compatible string using mips_machine_is_compatible(),
-however that function doesn't stop at a blank struct
-of_device_id::compatible as that is an array in the struct, not a
-pointer to a string.
+    MIPS: Octeon: Fix logging messages with spurious periods after newlines
 
-Fix the loop completion to check the first byte of the compatible array
-rather than the address of the compatible array in the struct.
+to the 4.4-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18580/
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/include/asm/machine.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The filename of the patch is:
+     mips-octeon-fix-logging-messages-with-spurious-periods-after-newlines.patch
+and it can be found in the queue-4.4 subdirectory.
 
---- a/arch/mips/include/asm/machine.h
-+++ b/arch/mips/include/asm/machine.h
-@@ -52,7 +52,7 @@ mips_machine_is_compatible(const struct
- 	if (!mach->matches)
- 		return NULL;
- 
--	for (match = mach->matches; match->compatible; match++) {
-+	for (match = mach->matches; match->compatible[0]; match++) {
- 		if (fdt_node_check_compatible(fdt, 0, match->compatible) == 0)
- 			return match;
- 	}
-
-
-Patches currently in stable-queue which might be from jhogan@kernel.org are
-
-queue-4.9/mips-ptrace-expose-fir-register-through-fp-regset.patch
-queue-4.9/mips-ath79-fix-ar724x_pll_reg_pcie_config-offset.patch
-queue-4.9/mips-txx9-use-is_builtin-for-config_leds_class.patch
-queue-4.9/mips-octeon-fix-logging-messages-with-spurious-periods-after-newlines.patch
-queue-4.9/mips-generic-fix-machine-compatible-matching.patch
-queue-4.9/mips-fix-ptrace-2-ptrace_peekusr-and-ptrace_pokeusr-accesses-to-o32-fgrs.patch
-queue-4.9/kvm-fix-spelling-mistake-cop_unsuable-cop_unusable.patch
-queue-4.9/mips-c-r4k-fix-data-corruption-related-to-cache-coherence.patch
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:04:29 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:44532 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:04:43 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:44582 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994840AbeE1LEWTDuR0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 13:04:22 +0200
+        id S23994841AbeE1LEYt-jQ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 13:04:24 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8B6E72075C;
-        Mon, 28 May 2018 11:04:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3BB662087E;
+        Mon, 28 May 2018 11:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527505456;
-        bh=TDPgzZWbRnSsWuK7Tkvz3+AAHYO8LbWAKrSED7tmDuA=;
+        s=default; t=1527505458;
+        bh=Ck+NfNQvJ9XsSXu5bSBhatSFr4c+P1DjKJBf5zXw87M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nxQMCJCo5mKtGzO+BJugtzbReZC2IiGguSBBEBcvFV15MuINNaB8cfddPgEsyUtsS
-         Rs/d55vmUX3Hh4hCayn/fTNPT5ksOAS6eXvLBhObnfR98RqZ7Ne2A7k+p4wbrLNgtK
-         gdYCXHFD23YfCU8H2tLXoanphI7hFPm/qBXLk/vA=
+        b=HEz80Xc6kHQGF80TBwf9vU+s5ERlVqlsUufzlMasI55p67COZLIycy9/NNHFGGfeu
+         JwbzTiNqyOAtHeiAdMcoL6sVNbRwu0O+zh550ZNjF55UmOPzv6B6RzFKMW2VpP32Kj
+         qgQpqWmpQRFHYDyfZqdzRrnYsxn0mVQDVj22cGIo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -22,20 +22,21 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.16 001/272] MIPS: xilfpga: Stop generating useless dtb.o
-Date:   Mon, 28 May 2018 12:00:34 +0200
-Message-Id: <20180528100240.332168472@linuxfoundation.org>
+Subject: [PATCH 4.16 002/272] MIPS: xilfpga: Actually include FDT in fitImage
+Date:   Mon, 28 May 2018 12:00:35 +0200
+Message-Id: <20180528100240.411696974@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180528100240.256525891@linuxfoundation.org>
 References: <20180528100240.256525891@linuxfoundation.org>
 User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64109
+X-archive-position: 64110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,29 +59,29 @@ X-list: linux-mips
 
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-commit a5a92abbce56c41ff121db41a33b9c0a0ff39365 upstream.
+commit 947bc875116042d5375446aa29bc1073c2d38977 upstream.
 
-A dtb.o is generated from nexys4ddr.dts but this is never used since it
-has been moved to mips/generic with commit b35565bb16a5 ("MIPS: generic:
-Add support for MIPSfpga").
+Commit b35565bb16a5 ("MIPS: generic: Add support for MIPSfpga") added
+and its.S file for xilfpga but forgot to add it to
+arch/mips/generic/Platform so it is never used.
 
 Fixes: b35565bb16a5 ("MIPS: generic: Add support for MIPSfpga")
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: <stable@vger.kernel.org> # 4.15+
-Patchwork: https://patchwork.linux-mips.org/patch/19244/
+Patchwork: https://patchwork.linux-mips.org/patch/19245/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/boot/dts/xilfpga/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ arch/mips/generic/Platform |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/boot/dts/xilfpga/Makefile
-+++ b/arch/mips/boot/dts/xilfpga/Makefile
-@@ -1,4 +1,2 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= nexys4ddr.dtb
--
--obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+--- a/arch/mips/generic/Platform
++++ b/arch/mips/generic/Platform
+@@ -16,3 +16,4 @@ all-$(CONFIG_MIPS_GENERIC)	:= vmlinux.gz
+ its-y					:= vmlinux.its.S
+ its-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= board-boston.its.S
+ its-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= board-ni169445.its.S
++its-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= board-xilfpga.its.S

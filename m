@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:00:10 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:40916 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:03:09 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43378 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993032AbeE1LACdxxJ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 13:00:02 +0200
+        id S23994792AbeE1LDBduBA0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 13:03:01 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B5932087E;
-        Mon, 28 May 2018 10:59:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D37220883;
+        Mon, 28 May 2018 11:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527505196;
-        bh=1UtSte01u4BnVwa3dJyh3iyZVUxcZLir2KP+Go+g8NE=;
+        s=default; t=1527505375;
+        bh=8qvT2QhIW14Ai+gdsXRAu4tWqqUH060xu7U/HES6gQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WlXNB3mOv0zzcACe3MEKs2P68Aa1g3EetvhZSVb643q37W0BwKSEegb6SoO8lgSJj
-         WY0dY5UzReFmxRuSXD7WzHMUSJpVnTE8pI+L0BBV+pTJc6FwG+kZ1HvZw+7tkLlVjd
-         PQ2G73XZC5zvrsMC+480mnzfuU2YR/vV6upBUwN8=
+        b=vKlu+Q8/vrl2u5+lem4GpfXiuMnYb29eFZAAyr76kCFP0b3Be5fAUW8a2iDfxqnuV
+         FZ2GNBXaeiy14GdLKLQ4T9wd/1NzAN4GE43OkdgfVmVwtH2oRp9v0/8AekAHfoHWOl
+         buPSAkrwev5f/12lWjCo4acyieI/A8Qzo/YQrI2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
+        stable@vger.kernel.org, Joe Perches <joe@perches.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 410/496] MIPS: ath79: Fix AR724X_PLL_REG_PCIE_CONFIG offset
-Date:   Mon, 28 May 2018 12:03:15 +0200
-Message-Id: <20180528100337.034682667@linuxfoundation.org>
+Subject: [PATCH 4.14 475/496] MIPS: Octeon: Fix logging messages with spurious periods after newlines
+Date:   Mon, 28 May 2018 12:04:20 +0200
+Message-Id: <20180528100339.920020213@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180528100319.498712256@linuxfoundation.org>
 References: <20180528100319.498712256@linuxfoundation.org>
@@ -36,7 +36,7 @@ Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64107
+X-archive-position: 64108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,37 +57,68 @@ X-list: linux-mips
 
 ------------------
 
-From: Mathias Kresin <dev@kresin.me>
+From: Joe Perches <joe@perches.com>
 
-[ Upstream commit 05454c1bde91fb013c0431801001da82947e6b5a ]
+[ Upstream commit db6775ca6e0353d2618ca7d5e210fc36ad43bbd4 ]
 
-According to the QCA u-boot source the "PCIE Phase Lock Loop
-Configuration (PCIE_PLL_CONFIG)" register is for all SoCs except the
-QCA955X and QCA956X at offset 0x10.
+Using a period after a newline causes bad output.
 
-Since the PCIE PLL config register is only defined for the AR724x fix
-only this value. The value is wrong since the day it was added and isn't
-used by any driver yet.
-
-Signed-off-by: Mathias Kresin <dev@kresin.me>
+Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
+Signed-off-by: Joe Perches <joe@perches.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16048/
+Patchwork: https://patchwork.linux-mips.org/patch/17886/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/cavium-octeon/octeon-irq.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -167,7 +167,7 @@
- #define AR71XX_AHB_DIV_MASK		0x7
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -2271,7 +2271,7 @@ static int __init octeon_irq_init_cib(st
  
- #define AR724X_PLL_REG_CPU_CONFIG	0x00
--#define AR724X_PLL_REG_PCIE_CONFIG	0x18
-+#define AR724X_PLL_REG_PCIE_CONFIG	0x10
+ 	parent_irq = irq_of_parse_and_map(ciu_node, 0);
+ 	if (!parent_irq) {
+-		pr_err("ERROR: Couldn't acquire parent_irq for %s\n.",
++		pr_err("ERROR: Couldn't acquire parent_irq for %s\n",
+ 			ciu_node->name);
+ 		return -EINVAL;
+ 	}
+@@ -2283,7 +2283,7 @@ static int __init octeon_irq_init_cib(st
  
- #define AR724X_PLL_FB_SHIFT		0
- #define AR724X_PLL_FB_MASK		0x3ff
+ 	addr = of_get_address(ciu_node, 0, NULL, NULL);
+ 	if (!addr) {
+-		pr_err("ERROR: Couldn't acquire reg(0) %s\n.", ciu_node->name);
++		pr_err("ERROR: Couldn't acquire reg(0) %s\n", ciu_node->name);
+ 		return -EINVAL;
+ 	}
+ 	host_data->raw_reg = (u64)phys_to_virt(
+@@ -2291,7 +2291,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	addr = of_get_address(ciu_node, 1, NULL, NULL);
+ 	if (!addr) {
+-		pr_err("ERROR: Couldn't acquire reg(1) %s\n.", ciu_node->name);
++		pr_err("ERROR: Couldn't acquire reg(1) %s\n", ciu_node->name);
+ 		return -EINVAL;
+ 	}
+ 	host_data->en_reg = (u64)phys_to_virt(
+@@ -2299,7 +2299,7 @@ static int __init octeon_irq_init_cib(st
+ 
+ 	r = of_property_read_u32(ciu_node, "cavium,max-bits", &val);
+ 	if (r) {
+-		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n.",
++		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n",
+ 			ciu_node->name);
+ 		return r;
+ 	}
+@@ -2309,7 +2309,7 @@ static int __init octeon_irq_init_cib(st
+ 					   &octeon_irq_domain_cib_ops,
+ 					   host_data);
+ 	if (!cib_domain) {
+-		pr_err("ERROR: Couldn't irq_domain_add_linear()\n.");
++		pr_err("ERROR: Couldn't irq_domain_add_linear()\n");
+ 		return -ENOMEM;
+ 	}
+ 

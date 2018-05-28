@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:07:43 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:48712 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:08:14 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:49254 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993860AbeE1KHfOTPEl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 12:07:35 +0200
+        id S23993883AbeE1KIHLB1Vl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 12:08:07 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 706962089D;
-        Mon, 28 May 2018 10:07:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 73175206B7;
+        Mon, 28 May 2018 10:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527502049;
-        bh=deQIjyeEFU3VAxWbSKrp3WIMbkjjGXziWM4zIAJWLSI=;
+        s=default; t=1527502081;
+        bh=+o9JfQTJPBBUxppAH6jpMRxp8rHo5AXiIQoY7CEB4Tg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QdU+kIaZXlt0BLBRHtlUfY/vTUf6HS9jIR93akS6bPHmRPiMUvagKIRP8trxoBjZD
-         e+TL3pEvpFbqkMa/haD+pSiKQkkbEvS/KZMQy5eAOMA1CkXAfoZHDsCmVepQolIiip
-         WSirPdnwAn5dxvCan2jnXR+30t30n3ez9OnmHhCc=
+        b=fv0LmXnnyFofoBaqwLOiJGrweXhNiOJotV15xwqKPU9gZ1kIiNP4ZvqKue8DhbK4R
+         ZwdCxJS7SJMnfOxeQxbE+An80HeTAEfbPcGvhX9dIV5PuXEatcgil9uo0B09EYxSWA
+         ykqM6ulGv5CHcemXUw9EHFPjaAHYwn7OG5uffNlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 3.18 001/185] MIPS: ptrace: Expose FIR register through FP regset
-Date:   Mon, 28 May 2018 12:00:42 +0200
-Message-Id: <20180528100050.786410467@linuxfoundation.org>
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sasha Levin <alexander.levin@microsoft.com>
+Subject: [PATCH 3.18 037/185] MIPS: TXx9: use IS_BUILTIN() for CONFIG_LEDS_CLASS
+Date:   Mon, 28 May 2018 12:01:18 +0200
+Message-Id: <20180528100053.542387362@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180528100050.700971285@linuxfoundation.org>
 References: <20180528100050.700971285@linuxfoundation.org>
 User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64085
+X-archive-position: 64086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,94 +57,58 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@mips.com>
+From: Matt Redfearn <matt.redfearn@mips.com>
 
-commit 71e909c0cdad28a1df1fa14442929e68615dee45 upstream.
+[ Upstream commit 0cde5b44a30f1daaef1c34e08191239dc63271c4 ]
 
-Correct commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-and expose the FIR register using the unused 4 bytes at the end of the
-NT_PRFPREG regset.  Without that register included clients cannot use
-the PTRACE_GETREGSET request to retrieve the complete FPU register set
-and have to resort to one of the older interfaces, either PTRACE_PEEKUSR
-or PTRACE_GETFPREGS, to retrieve the missing piece of data.  Also the
-register is irreversibly missing from core dumps.
+When commit b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+added board support for the RBTX4939, it added a call to
+led_classdev_register even if the LED class is built as a module.
+Built-in arch code cannot call module code directly like this. Commit
+b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro") subsequently
+changed the inclusion of this code to a single check that
+CONFIG_LEDS_CLASS is either builtin or a module, but the same issue
+remains.
 
-This register is architecturally hardwired and read-only so the write
-path does not matter.  Ignore data supplied on writes then.
+This leads to MIPS allmodconfig builds failing when CONFIG_MACH_TX49XX=y
+is set:
 
-Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+arch/mips/txx9/rbtx4939/setup.o: In function `rbtx4939_led_probe':
+setup.c:(.init.text+0xc0): undefined reference to `of_led_classdev_register'
+make: *** [Makefile:999: vmlinux] Error 1
+
+Fix this by using the IS_BUILTIN() macro instead.
+
+Fixes: b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Reviewed-by: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.13+
-Patchwork: https://patchwork.linux-mips.org/patch/19273/
+Patchwork: https://patchwork.linux-mips.org/patch/18544/
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/kernel/ptrace.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ arch/mips/txx9/rbtx4939/setup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -444,7 +444,7 @@ static int fpr_get_msa(struct task_struc
- /*
-  * Copy the floating-point context to the supplied NT_PRFPREG buffer.
-  * Choose the appropriate helper for general registers, and then copy
-- * the FCSR register separately.
-+ * the FCSR and FIR registers separately.
-  */
- static int fpr_get(struct task_struct *target,
- 		   const struct user_regset *regset,
-@@ -452,6 +452,7 @@ static int fpr_get(struct task_struct *t
- 		   void *kbuf, void __user *ubuf)
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -186,7 +186,7 @@ static void __init rbtx4939_update_ioc_p
+ 
+ #define RBTX4939_MAX_7SEGLEDS	8
+ 
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ static u8 led_val[RBTX4939_MAX_7SEGLEDS];
+ struct rbtx4939_led_data {
+ 	struct led_classdev cdev;
+@@ -262,7 +262,7 @@ static inline void rbtx4939_led_setup(vo
+ 
+ static void __rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
  {
- 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
-+	const int fir_pos = fcr31_pos + sizeof(u32);
- 	int err;
- 
- 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
-@@ -464,6 +465,12 @@ static int fpr_get(struct task_struct *t
- 	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
- 				  &target->thread.fpu.fcr31,
- 				  fcr31_pos, fcr31_pos + sizeof(u32));
-+	if (err)
-+		return err;
-+
-+	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+				  &boot_cpu_data.fpu_id,
-+				  fir_pos, fir_pos + sizeof(u32));
- 
- 	return err;
- }
-@@ -512,7 +519,8 @@ static int fpr_set_msa(struct task_struc
- /*
-  * Copy the supplied NT_PRFPREG buffer to the floating-point context.
-  * Choose the appropriate helper for general registers, and then copy
-- * the FCSR register separately.
-+ * the FCSR register separately.  Ignore the incoming FIR register
-+ * contents though, as the register is read-only.
-  *
-  * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
-  * which is supposed to have been guaranteed by the kernel before
-@@ -526,6 +534,7 @@ static int fpr_set(struct task_struct *t
- 		   const void *kbuf, const void __user *ubuf)
- {
- 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
-+	const int fir_pos = fcr31_pos + sizeof(u32);
- 	u32 fcr31;
- 	int err;
- 
-@@ -551,6 +560,11 @@ static int fpr_set(struct task_struct *t
- 		target->thread.fpu.fcr31 = fcr31 & ~FPU_CSR_ALL_X;
- 	}
- 
-+	if (count > 0)
-+		err = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+						fir_pos,
-+						fir_pos + sizeof(u32));
-+
- 	return err;
- }
- 
+-#if IS_ENABLED(CONFIG_LEDS_CLASS)
++#if IS_BUILTIN(CONFIG_LEDS_CLASS)
+ 	unsigned long flags;
+ 	local_irq_save(flags);
+ 	/* bit7: reserved for LED class */

@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:12:32 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:53522 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:14:35 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:55768 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993065AbeE1KMSblT-l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 12:12:18 +0200
+        id S23994601AbeE1KO1bDKhl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 12:14:27 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B70B7208A2;
-        Mon, 28 May 2018 10:12:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A761020843;
+        Mon, 28 May 2018 10:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527502332;
-        bh=xCo2zLm8AvIohSJ39jIRmh3d7agX5+6OpKI7YNWkzDY=;
+        s=default; t=1527502461;
+        bh=qGSC3lDlhsBVRiFF+wsnkz13WKxnB98rQJo/KbArNGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h3zvnLpoFrlTvNRZxZqihfIQcmTpHuSulm9DJxftiQ5at3BGePRqVym/rmX59E8zi
-         dqmuidwjFgrMRN6Ode/huE6DmemcrzOjRJ7Txpr9IBiEQh1X6Oc287uJHsNm/NrJhj
-         fF5t+izH345yL9/ez7XKptqGwAsJRtewr37CK7KQ=
+        b=UsB0ksMJJziMDUFTqoIKUgm18CUF+S9uWC2oq6vDezgt5+PhKlqZme4qG18+6ZYT5
+         uxR5ytd1WGFwSl6bUcZEjv4nP4CuA7JqBHGFo8dmQ2GzL/Xkh2NZRgmr65HIYuys3x
+         UT2bTft4s1TckjKABi3RbX3ti6/B3HS3JUqH8a5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 148/185] MIPS: ath79: Fix AR724X_PLL_REG_PCIE_CONFIG offset
-Date:   Mon, 28 May 2018 12:03:09 +0200
-Message-Id: <20180528100108.904555680@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.4 001/268] MIPS: ptrace: Expose FIR register through FP regset
+Date:   Mon, 28 May 2018 11:59:35 +0200
+Message-Id: <20180528100202.174811317@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180528100050.700971285@linuxfoundation.org>
-References: <20180528100050.700971285@linuxfoundation.org>
+In-Reply-To: <20180528100202.045206534@linuxfoundation.org>
+References: <20180528100202.045206534@linuxfoundation.org>
 User-Agent: quilt/0.65
-X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64087
+X-archive-position: 64088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,41 +51,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Kresin <dev@kresin.me>
+From: Maciej W. Rozycki <macro@mips.com>
 
-[ Upstream commit 05454c1bde91fb013c0431801001da82947e6b5a ]
+commit 71e909c0cdad28a1df1fa14442929e68615dee45 upstream.
 
-According to the QCA u-boot source the "PCIE Phase Lock Loop
-Configuration (PCIE_PLL_CONFIG)" register is for all SoCs except the
-QCA955X and QCA956X at offset 0x10.
+Correct commit 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+and expose the FIR register using the unused 4 bytes at the end of the
+NT_PRFPREG regset.  Without that register included clients cannot use
+the PTRACE_GETREGSET request to retrieve the complete FPU register set
+and have to resort to one of the older interfaces, either PTRACE_PEEKUSR
+or PTRACE_GETFPREGS, to retrieve the missing piece of data.  Also the
+register is irreversibly missing from core dumps.
 
-Since the PCIE PLL config register is only defined for the AR724x fix
-only this value. The value is wrong since the day it was added and isn't
-used by any driver yet.
+This register is architecturally hardwired and read-only so the write
+path does not matter.  Ignore data supplied on writes then.
 
-Signed-off-by: Mathias Kresin <dev@kresin.me>
+Fixes: 7aeb753b5353 ("MIPS: Implement task_user_regset_view.")
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/16048/
+Cc: <stable@vger.kernel.org> # 3.13+
+Patchwork: https://patchwork.linux-mips.org/patch/19273/
 Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -167,7 +167,7 @@
- #define AR71XX_AHB_DIV_MASK		0x7
+---
+ arch/mips/kernel/ptrace.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -483,7 +483,7 @@ static int fpr_get_msa(struct task_struc
+ /*
+  * Copy the floating-point context to the supplied NT_PRFPREG buffer.
+  * Choose the appropriate helper for general registers, and then copy
+- * the FCSR register separately.
++ * the FCSR and FIR registers separately.
+  */
+ static int fpr_get(struct task_struct *target,
+ 		   const struct user_regset *regset,
+@@ -491,6 +491,7 @@ static int fpr_get(struct task_struct *t
+ 		   void *kbuf, void __user *ubuf)
+ {
+ 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
++	const int fir_pos = fcr31_pos + sizeof(u32);
+ 	int err;
  
- #define AR724X_PLL_REG_CPU_CONFIG	0x00
--#define AR724X_PLL_REG_PCIE_CONFIG	0x18
-+#define AR724X_PLL_REG_PCIE_CONFIG	0x10
+ 	if (sizeof(target->thread.fpu.fpr[0]) == sizeof(elf_fpreg_t))
+@@ -503,6 +504,12 @@ static int fpr_get(struct task_struct *t
+ 	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+ 				  &target->thread.fpu.fcr31,
+ 				  fcr31_pos, fcr31_pos + sizeof(u32));
++	if (err)
++		return err;
++
++	err = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
++				  &boot_cpu_data.fpu_id,
++				  fir_pos, fir_pos + sizeof(u32));
  
- #define AR724X_PLL_DIV_SHIFT		0
- #define AR724X_PLL_DIV_MASK		0x3ff
+ 	return err;
+ }
+@@ -551,7 +558,8 @@ static int fpr_set_msa(struct task_struc
+ /*
+  * Copy the supplied NT_PRFPREG buffer to the floating-point context.
+  * Choose the appropriate helper for general registers, and then copy
+- * the FCSR register separately.
++ * the FCSR register separately.  Ignore the incoming FIR register
++ * contents though, as the register is read-only.
+  *
+  * We optimize for the case where `count % sizeof(elf_fpreg_t) == 0',
+  * which is supposed to have been guaranteed by the kernel before
+@@ -565,6 +573,7 @@ static int fpr_set(struct task_struct *t
+ 		   const void *kbuf, const void __user *ubuf)
+ {
+ 	const int fcr31_pos = NUM_FPU_REGS * sizeof(elf_fpreg_t);
++	const int fir_pos = fcr31_pos + sizeof(u32);
+ 	u32 fcr31;
+ 	int err;
+ 
+@@ -592,6 +601,11 @@ static int fpr_set(struct task_struct *t
+ 		ptrace_setfcr31(target, fcr31);
+ 	}
+ 
++	if (count > 0)
++		err = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
++						fir_pos,
++						fir_pos + sizeof(u32));
++
+ 	return err;
+ }
+ 

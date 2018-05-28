@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:43:51 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:56018 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:00:10 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:40916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994647AbeE1KnoZ6a20 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 12:43:44 +0200
+        id S23993032AbeE1LACdxxJ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 13:00:02 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ABE9720844;
-        Mon, 28 May 2018 10:43:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B5932087E;
+        Mon, 28 May 2018 10:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527504218;
-        bh=HDKsPp72L58lfe66xuYKU1rraoH1eMLMpsdrjErNiQc=;
+        s=default; t=1527505196;
+        bh=1UtSte01u4BnVwa3dJyh3iyZVUxcZLir2KP+Go+g8NE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHdRTalDVDnjEtnM0T8LIpaKKmAd6bVjqbFGaQDfmjt0T83NZgOsSeRLt8fgaNEql
-         e3Q1t0AM5PvqSt2j6ruHCMadzknfDDGoBbT0k5PRIIxmjCvIIeYACJhm3wMwPUd/HG
-         QswlsZPcr/5/mJ6leMXSo1gEh37qPwdw+nYRBsUU=
+        b=WlXNB3mOv0zzcACe3MEKs2P68Aa1g3EetvhZSVb643q37W0BwKSEegb6SoO8lgSJj
+         WY0dY5UzReFmxRuSXD7WzHMUSJpVnTE8pI+L0BBV+pTJc6FwG+kZ1HvZw+7tkLlVjd
+         PQ2G73XZC5zvrsMC+480mnzfuU2YR/vV6upBUwN8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
+        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 057/496] MIPS: generic: Fix machine compatible matching
-Date:   Mon, 28 May 2018 11:57:22 +0200
-Message-Id: <20180528100322.195730290@linuxfoundation.org>
+Subject: [PATCH 4.14 410/496] MIPS: ath79: Fix AR724X_PLL_REG_PCIE_CONFIG offset
+Date:   Mon, 28 May 2018 12:03:15 +0200
+Message-Id: <20180528100337.034682667@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180528100319.498712256@linuxfoundation.org>
 References: <20180528100319.498712256@linuxfoundation.org>
@@ -37,7 +36,7 @@ Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64106
+X-archive-position: 64107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,40 +57,37 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <jhogan@kernel.org>
+From: Mathias Kresin <dev@kresin.me>
 
-[ Upstream commit 9a9ab3078e2744a1a55163cfaec73a5798aae33e ]
+[ Upstream commit 05454c1bde91fb013c0431801001da82947e6b5a ]
 
-We now have a platform (Ranchu) in the "generic" platform which matches
-based on the FDT compatible string using mips_machine_is_compatible(),
-however that function doesn't stop at a blank struct
-of_device_id::compatible as that is an array in the struct, not a
-pointer to a string.
+According to the QCA u-boot source the "PCIE Phase Lock Loop
+Configuration (PCIE_PLL_CONFIG)" register is for all SoCs except the
+QCA955X and QCA956X at offset 0x10.
 
-Fix the loop completion to check the first byte of the compatible array
-rather than the address of the compatible array in the struct.
+Since the PCIE PLL config register is only defined for the AR724x fix
+only this value. The value is wrong since the day it was added and isn't
+used by any driver yet.
 
-Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Matt Redfearn <matt.redfearn@mips.com>
+Signed-off-by: Mathias Kresin <dev@kresin.me>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18580/
+Patchwork: https://patchwork.linux-mips.org/patch/16048/
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/machine.h |    2 +-
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/machine.h
-+++ b/arch/mips/include/asm/machine.h
-@@ -52,7 +52,7 @@ mips_machine_is_compatible(const struct
- 	if (!mach->matches)
- 		return NULL;
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -167,7 +167,7 @@
+ #define AR71XX_AHB_DIV_MASK		0x7
  
--	for (match = mach->matches; match->compatible; match++) {
-+	for (match = mach->matches; match->compatible[0]; match++) {
- 		if (fdt_node_check_compatible(fdt, 0, match->compatible) == 0)
- 			return match;
- 	}
+ #define AR724X_PLL_REG_CPU_CONFIG	0x00
+-#define AR724X_PLL_REG_PCIE_CONFIG	0x18
++#define AR724X_PLL_REG_PCIE_CONFIG	0x10
+ 
+ #define AR724X_PLL_FB_SHIFT		0
+ #define AR724X_PLL_FB_MASK		0x3ff

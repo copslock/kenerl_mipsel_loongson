@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:40:47 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:53678 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:41:40 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:54414 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994630AbeE1KkjBeQ70 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 12:40:39 +0200
+        id S23994823AbeE1KldCmri0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 12:41:33 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3AD8A208A5;
-        Mon, 28 May 2018 10:40:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A043208A5;
+        Mon, 28 May 2018 10:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527504032;
-        bh=WvYBQJYPKwl7WBfRlTJ+MkEASVsr3Vxyrl7edtHVzaQ=;
+        s=default; t=1527504086;
+        bh=Pa20+0PAwIaQ42WVXklwYQ74pobj1FzriSueKEwd0d8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1YJUL6eZjWAecjrk4umT2bkLcTZRY1shnGnnVLfRVJRW/DJ8JxtmQ06DnV20VX9R7
-         HtAEvL5N0dS67urzhzNhcVgkAHC+jUEB9+H2QId7PKsoP7XU8gWOQLSwdeKbQO+vDx
-         z4raF/8+jKaG8oQgNcnxRq0evaqOKLMI4wf9h5oQ=
+        b=tb+Jzc472hd7UlhORpNlQ5NGQshj5ySHYZDdDYIX1jE5i/pVra9AHs6HToWsH07ZN
+         P+R0msP5J8fJwnbL2Jflm6jzR1zVgLeIJ4RPW6biPSwEptlkjnnEIM6gUNP/V7CnOU
+         XK/sDN2cnuhtZRWBcbsjHd3I8sls6FyS4e4AqFCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Joe Perches <joe@perches.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 317/329] MIPS: Octeon: Fix logging messages with spurious periods after newlines
-Date:   Mon, 28 May 2018 12:04:06 +0200
-Message-Id: <20180528100307.344528309@linuxfoundation.org>
+        stable@vger.kernel.org, NeilBrown <neil@brown.name>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.14 001/496] MIPS: c-r4k: Fix data corruption related to cache coherence
+Date:   Mon, 28 May 2018 11:56:26 +0200
+Message-Id: <20180528100319.570433678@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20180528100241.796630982@linuxfoundation.org>
-References: <20180528100241.796630982@linuxfoundation.org>
+In-Reply-To: <20180528100319.498712256@linuxfoundation.org>
+References: <20180528100319.498712256@linuxfoundation.org>
 User-Agent: quilt/0.65
-X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64101
+X-archive-position: 64102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,72 +52,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Perches <joe@perches.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit db6775ca6e0353d2618ca7d5e210fc36ad43bbd4 ]
+commit 55a2aa08b3af519a9693f99cdf7fa6d8b62d9f65 upstream.
 
-Using a period after a newline causes bad output.
+When DMA will be performed to a MIPS32 1004K CPS, the L1-cache for the
+range needs to be flushed and invalidated first.
+The code currently takes one of two approaches.
+1/ If the range is less than the size of the dcache, then HIT type
+   requests flush/invalidate cache lines for the particular addresses.
+   HIT-type requests a globalised by the CPS so this is safe on SMP.
 
-Fixes: 64b139f97c01 ("MIPS: OCTEON: irq: add CIB and other fixes")
-Signed-off-by: Joe Perches <joe@perches.com>
+2/ If the range is larger than the size of dcache, then INDEX type
+   requests flush/invalidate the whole cache. INDEX type requests affect
+   the local cache only. CPS does not propagate them in any way. So this
+   invalidation is not safe on SMP CPS systems.
+
+Data corruption due to '2' can quite easily be demonstrated by
+repeatedly "echo 3 > /proc/sys/vm/drop_caches" and then sha1sum a file
+that is several times the size of available memory. Dropping caches
+means that large contiguous extents (large than dcache) are more likely.
+
+This was not a problem before Linux-4.8 because option 2 was never used
+if CONFIG_MIPS_CPS was defined. The commit which removed that apparently
+didn't appreciate the full consequence of the change.
+
+We could, in theory, globalize the INDEX based flush by sending an IPI
+to other cores. These cache invalidation routines can be called with
+interrupts disabled and synchronous IPI require interrupts to be
+enabled. Asynchronous IPI may not trigger writeback soon enough. So we
+cannot use IPI in practice.
+
+We can already test if IPI would be needed for an INDEX operation with
+r4k_op_needs_ipi(R4K_INDEX). If this is true then we mustn't try the
+INDEX approach as we cannot use IPI. If this is false (e.g. when there
+is only one core and hence one L1 cache) then it is safe to use the
+INDEX approach without IPI.
+
+This patch avoids options 2 if r4k_op_needs_ipi(R4K_INDEX), and so
+eliminates the corruption.
+
+Fixes: c00ab4896ed5 ("MIPS: Remove cpu_has_safe_index_cacheops")
+Signed-off-by: NeilBrown <neil@brown.name>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17886/
+Cc: <stable@vger.kernel.org> # 4.8+
+Patchwork: https://patchwork.linux-mips.org/patch/19259/
 Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/cavium-octeon/octeon-irq.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -2271,7 +2271,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	parent_irq = irq_of_parse_and_map(ciu_node, 0);
- 	if (!parent_irq) {
--		pr_err("ERROR: Couldn't acquire parent_irq for %s\n.",
-+		pr_err("ERROR: Couldn't acquire parent_irq for %s\n",
- 			ciu_node->name);
- 		return -EINVAL;
- 	}
-@@ -2283,7 +2283,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	addr = of_get_address(ciu_node, 0, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(0) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(0) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->raw_reg = (u64)phys_to_virt(
-@@ -2291,7 +2291,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	addr = of_get_address(ciu_node, 1, NULL, NULL);
- 	if (!addr) {
--		pr_err("ERROR: Couldn't acquire reg(1) %s\n.", ciu_node->name);
-+		pr_err("ERROR: Couldn't acquire reg(1) %s\n", ciu_node->name);
- 		return -EINVAL;
- 	}
- 	host_data->en_reg = (u64)phys_to_virt(
-@@ -2299,7 +2299,7 @@ static int __init octeon_irq_init_cib(st
- 
- 	r = of_property_read_u32(ciu_node, "cavium,max-bits", &val);
- 	if (r) {
--		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n.",
-+		pr_err("ERROR: Couldn't read cavium,max-bits from %s\n",
- 			ciu_node->name);
- 		return r;
- 	}
-@@ -2309,7 +2309,7 @@ static int __init octeon_irq_init_cib(st
- 					   &octeon_irq_domain_cib_ops,
- 					   host_data);
- 	if (!cib_domain) {
--		pr_err("ERROR: Couldn't irq_domain_add_linear()\n.");
-+		pr_err("ERROR: Couldn't irq_domain_add_linear()\n");
- 		return -ENOMEM;
+---
+ arch/mips/mm/c-r4k.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -851,9 +851,12 @@ static void r4k_dma_cache_wback_inv(unsi
+ 	/*
+ 	 * Either no secondary cache or the available caches don't have the
+ 	 * subset property so we have to flush the primary caches
+-	 * explicitly
++	 * explicitly.
++	 * If we would need IPI to perform an INDEX-type operation, then
++	 * we have to use the HIT-type alternative as IPI cannot be used
++	 * here due to interrupts possibly being disabled.
+ 	 */
+-	if (size >= dcache_size) {
++	if (!r4k_op_needs_ipi(R4K_INDEX) && size >= dcache_size) {
+ 		r4k_blast_dcache();
+ 	} else {
+ 		R4600_HIT_CACHEOP_WAR_IMPL;
+@@ -890,7 +893,7 @@ static void r4k_dma_cache_inv(unsigned l
+ 		return;
  	}
  
+-	if (size >= dcache_size) {
++	if (!r4k_op_needs_ipi(R4K_INDEX) && size >= dcache_size) {
+ 		r4k_blast_dcache();
+ 	} else {
+ 		R4600_HIT_CACHEOP_WAR_IMPL;

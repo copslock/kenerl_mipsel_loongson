@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:06:05 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:44846 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 13:11:48 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:52706 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994615AbeE1LEiLfIf0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 May 2018 13:04:38 +0200
+        id S23994886AbeE1LLkbgzv0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 13:11:40 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF81F2075C;
-        Mon, 28 May 2018 11:04:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 53EE3206B7;
+        Mon, 28 May 2018 11:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1527505472;
-        bh=aI09Vu3vdkLIf0AvAcUd3LItyt6Rr41I6I/pQG1CC4M=;
+        s=default; t=1527505893;
+        bh=CfA2SMCyG+LUXzKv0sZIEZl04zn+6d310pXpqrFeifw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yUyjY7iq7zfXVEg7SRxSVyniM+HB8lytn792BUtw3TFiBurKQKAMaCc6/6m76+SiG
-         8ymooCAfwuph1jSUWa2fuD8hqUR5N2uH1DmA1OU0//xN+L9vSyBjxPdV9NWLJsZaoh
-         rza5cwNp2R1iGkd8DPloY82fLGDVfUcC2aw8mWpQ=
+        b=k6Y0U/CCMSSLdJM705LaUPqWfIaaUKdiSdZ8gtKQDRGsf8UyynAsFbT1k0Oi0sCkK
+         NRqfI06XyWneqDyz2mdDmM+eDe8rFjpDRLcBoS5AqwMceZziYPNcXhKPmoC3tiP/4t
+         pnTebeQaYUEP9L+DcPYV0QmPyTZL/gYEAsr97AHU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
+        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kernel-janitors@vger.kernel.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.16 007/272] KVM: Fix spelling mistake: "cop_unsuable" -> "cop_unusable"
-Date:   Mon, 28 May 2018 12:00:40 +0200
-Message-Id: <20180528100240.814377558@linuxfoundation.org>
+        James Hogan <jhogan@kernel.org>,
+        Sasha Levin <alexander.levin@microsoft.com>
+Subject: [PATCH 4.16 167/272] MIPS: ath79: Fix AR724X_PLL_REG_PCIE_CONFIG offset
+Date:   Mon, 28 May 2018 12:03:20 +0200
+Message-Id: <20180528100254.847997805@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20180528100240.256525891@linuxfoundation.org>
 References: <20180528100240.256525891@linuxfoundation.org>
@@ -35,7 +36,7 @@ Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64115
+X-archive-position: 64116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,33 +57,37 @@ X-list: linux-mips
 
 ------------------
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Mathias Kresin <dev@kresin.me>
 
-commit ba3696e94d9d590d9a7e55f68e81c25dba515191 upstream.
+[ Upstream commit 05454c1bde91fb013c0431801001da82947e6b5a ]
 
-Trivial fix to spelling mistake in debugfs_entries text.
+According to the QCA u-boot source the "PCIE Phase Lock Loop
+Configuration (PCIE_PLL_CONFIG)" register is for all SoCs except the
+QCA955X and QCA956X at offset 0x10.
 
-Fixes: 669e846e6c4e ("KVM/MIPS32: MIPS arch specific APIs for KVM")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Since the PCIE PLL config register is only defined for the AR724x fix
+only this value. The value is wrong since the day it was added and isn't
+used by any driver yet.
+
+Signed-off-by: Mathias Kresin <dev@kresin.me>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: kernel-janitors@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10+
+Patchwork: https://patchwork.linux-mips.org/patch/16048/
 Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/kvm/mips.c |    2 +-
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -45,7 +45,7 @@ struct kvm_stats_debugfs_item debugfs_en
- 	{ "cache",	  VCPU_STAT(cache_exits),	 KVM_STAT_VCPU },
- 	{ "signal",	  VCPU_STAT(signal_exits),	 KVM_STAT_VCPU },
- 	{ "interrupt",	  VCPU_STAT(int_exits),		 KVM_STAT_VCPU },
--	{ "cop_unsuable", VCPU_STAT(cop_unusable_exits), KVM_STAT_VCPU },
-+	{ "cop_unusable", VCPU_STAT(cop_unusable_exits), KVM_STAT_VCPU },
- 	{ "tlbmod",	  VCPU_STAT(tlbmod_exits),	 KVM_STAT_VCPU },
- 	{ "tlbmiss_ld",	  VCPU_STAT(tlbmiss_ld_exits),	 KVM_STAT_VCPU },
- 	{ "tlbmiss_st",	  VCPU_STAT(tlbmiss_st_exits),	 KVM_STAT_VCPU },
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -167,7 +167,7 @@
+ #define AR71XX_AHB_DIV_MASK		0x7
+ 
+ #define AR724X_PLL_REG_CPU_CONFIG	0x00
+-#define AR724X_PLL_REG_PCIE_CONFIG	0x18
++#define AR724X_PLL_REG_PCIE_CONFIG	0x10
+ 
+ #define AR724X_PLL_FB_SHIFT		0
+ #define AR724X_PLL_FB_MASK		0x3ff

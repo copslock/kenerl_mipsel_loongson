@@ -1,65 +1,120 @@
-From: Matt Redfearn <matt.redfearn@mips.com>
-Date: Mon, 29 Jan 2018 11:26:45 +0000
-Subject: MIPS: TXx9: use IS_BUILTIN() for CONFIG_LEDS_CLASS
-Message-ID: <20180129112645.aT4bUX-MtnZm0hghUX9QE8JDmuQyuQNa3yIyoOSfhUI@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 May 2018 12:06:16 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:47118 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993030AbeE1KGIX5Zpl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 May 2018 12:06:08 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4CA4120899;
+        Mon, 28 May 2018 10:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1527501960;
+        bh=q+WwcWEWrJzQd4+aNnd7QG6xGVmraAMMw6KKzEGWBGU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NORvbHIFfmPXcYG2p1gZCBM+uUYOPtLo/dbVXyNZMfAeEYsBGnxFKesPsYsPomLM6
+         f7+1Kc42jyHp33yJ+ddb0pfsI0SFLqW74tQlExAI56RbAAm9s523/WGMZt1oPi4SIh
+         FSV1AHP+JENqUgWsD1kfl5AbReTyo4Bk0mDxXhvM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 3.18 002/185] MIPS: Fix ptrace(2) PTRACE_PEEKUSR and PTRACE_POKEUSR accesses to o32 FGRs
+Date:   Mon, 28 May 2018 12:00:43 +0200
+Message-Id: <20180528100050.833352031@linuxfoundation.org>
+X-Mailer: git-send-email 2.17.0
+In-Reply-To: <20180528100050.700971285@linuxfoundation.org>
+References: <20180528100050.700971285@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <SRS0=WbIs=IP=linuxfoundation.org=gregkh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64083
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Matt Redfearn <matt.redfearn@mips.com>
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 0cde5b44a30f1daaef1c34e08191239dc63271c4 ]
+------------------
 
-When commit b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
-added board support for the RBTX4939, it added a call to
-led_classdev_register even if the LED class is built as a module.
-Built-in arch code cannot call module code directly like this. Commit
-b33b44073734 ("MIPS: TXX9: use IS_ENABLED() macro") subsequently
-changed the inclusion of this code to a single check that
-CONFIG_LEDS_CLASS is either builtin or a module, but the same issue
-remains.
+From: Maciej W. Rozycki <macro@mips.com>
 
-This leads to MIPS allmodconfig builds failing when CONFIG_MACH_TX49XX=y
-is set:
+commit 9a3a92ccfe3620743d4ae57c987dc8e9c5f88996 upstream.
 
-arch/mips/txx9/rbtx4939/setup.o: In function `rbtx4939_led_probe':
-setup.c:(.init.text+0xc0): undefined reference to `of_led_classdev_register'
-make: *** [Makefile:999: vmlinux] Error 1
+Check the TIF_32BIT_FPREGS task setting of the tracee rather than the
+tracer in determining the layout of floating-point general registers in
+the floating-point context, correcting access to odd-numbered registers
+for o32 tracees where the setting disagrees between the two processes.
 
-Fix this by using the IS_BUILTIN() macro instead.
-
-Fixes: b27311e1cace ("MIPS: TXx9: Add RBTX4939 board support")
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-Reviewed-by: James Hogan <jhogan@kernel.org>
+Fixes: 597ce1723e0f ("MIPS: Support for 64-bit FP with O32 binaries")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18544/
+Cc: <stable@vger.kernel.org> # 3.14+
 Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/txx9/rbtx4939/setup.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/ptrace.c   |    4 ++--
+ arch/mips/kernel/ptrace32.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/txx9/rbtx4939/setup.c
-+++ b/arch/mips/txx9/rbtx4939/setup.c
-@@ -186,7 +186,7 @@ static void __init rbtx4939_update_ioc_p
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -702,7 +702,7 @@ long arch_ptrace(struct task_struct *chi
+ 			fregs = get_fpu_regs(child);
  
- #define RBTX4939_MAX_7SEGLEDS	8
- 
--#if IS_ENABLED(CONFIG_LEDS_CLASS)
-+#if IS_BUILTIN(CONFIG_LEDS_CLASS)
- static u8 led_val[RBTX4939_MAX_7SEGLEDS];
- struct rbtx4939_led_data {
- 	struct led_classdev cdev;
-@@ -262,7 +262,7 @@ static inline void rbtx4939_led_setup(vo
- 
- static void __rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
- {
--#if IS_ENABLED(CONFIG_LEDS_CLASS)
-+#if IS_BUILTIN(CONFIG_LEDS_CLASS)
- 	unsigned long flags;
- 	local_irq_save(flags);
- 	/* bit7: reserved for LED class */
-
-
-Patches currently in stable-queue which might be from matt.redfearn@mips.com are
-
-queue-3.18/mips-txx9-use-is_builtin-for-config_leds_class.patch
+ #ifdef CONFIG_32BIT
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+@@ -796,7 +796,7 @@ long arch_ptrace(struct task_struct *chi
+ 				child->thread.fpu.fcr31 = 0;
+ 			}
+ #ifdef CONFIG_32BIT
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -97,7 +97,7 @@ long compat_arch_ptrace(struct task_stru
+ 				break;
+ 			}
+ 			fregs = get_fpu_regs(child);
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even
+@@ -203,7 +203,7 @@ long compat_arch_ptrace(struct task_stru
+ 				       sizeof(child->thread.fpu));
+ 				child->thread.fpu.fcr31 = 0;
+ 			}
+-			if (test_thread_flag(TIF_32BIT_FPREGS)) {
++			if (test_tsk_thread_flag(child, TIF_32BIT_FPREGS)) {
+ 				/*
+ 				 * The odd registers are actually the high
+ 				 * order bits of the values stored in the even

@@ -1,14 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 00:00:27 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:46340 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994676AbeE3WAPmk54j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 May 2018 00:00:15 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext-too.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id EAD73AF03;
-        Wed, 30 May 2018 22:00:06 +0000 (UTC)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 00:37:07 +0200 (CEST)
+Received: from mail-it0-x244.google.com ([IPv6:2607:f8b0:4001:c0b::244]:37779
+        "EHLO mail-it0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994676AbeE3Wg6CWpVQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2018 00:36:58 +0200
+Received: by mail-it0-x244.google.com with SMTP id l6-v6so12257570iti.2
+        for <linux-mips@linux-mips.org>; Wed, 30 May 2018 15:36:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=kgm5l5XhYV99nBDdwXztR+m6Mhkyb42YXSSjhwGnFsk=;
+        b=pM/BdO6sKD3wfcSv9xvyZ9ZZCh95V7KGyxioXz7TwWqwLU9e34XtChmNbHZG4qdisG
+         iKZCcD28oylehJumuvOJHI+idt/AL8JhGroW1BAiwQg9UB3e3wEwrkf6pIzOK+C+yBGA
+         +ZakEAKiu3s5sZ1tD9ZhIe3pc8AsH6fazt0wGLIbSkoBf2gv4gPLfOuN/hYSAi3tzbCD
+         VtKbVlzSP73VtTYMnaWNjmQmGnd/4O9HJ7ZBAvGSCtQQpErdiT6O5jw05WuhEbp28MJZ
+         rbfk2fAQX2+aoTyKoPVWZCT7bXF7bjLcl9iTeoA2pSomumRaEw6MWhJxgdANM5jhlB+x
+         S++g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=kgm5l5XhYV99nBDdwXztR+m6Mhkyb42YXSSjhwGnFsk=;
+        b=b4ib881eImu/pKZt54zEHdjxzCTcTfKoQJZ36r7xelKJ5K1xyrdFUmDhWokHNb0MS+
+         xkywYGYoB+NTh8kHFLBUa4t4ZKUhV+ynXp1vToc5EzQCYnKAKCCiGZFnE/jn5EJ0fQA3
+         kDRCmXo7RJU9ZXoHUSVAA9YhORce+kj0U829wvEX2P3z+Fd4SN/4y5e2uy9oM9LqHsRw
+         ZvdhLC48N25SoZ42IhHJNYtu+vnAW/Zkk7OrgdgkErhToH78tVX4TimP1VyhldxkUSZb
+         RSJ/hRYy/0gafyisRswY6G1SfMje0v1P8O2Qgz26Vbp1s4/t6jWbXqNCYGcZ09EBv+VF
+         xSlQ==
+X-Gm-Message-State: APt69E2dxVYHOscvtC+T2PGmu2xZziUGvmyTiEyjlF1YnQDOFdE5hGhz
+        I2FwnzqEFGPVJ/HJ6Rr9qCreKw==
+X-Google-Smtp-Source: ADUXVKKL8KfewnOAAaPiSaT9j8mPkM1Sf02VY3aYpFYjh1dPKTxxwV5/dXfK4M96twS9wQWUsreK8w==
+X-Received: by 2002:a24:74d2:: with SMTP id o201-v6mr3708611itc.151.1527719811744;
+        Wed, 30 May 2018 15:36:51 -0700 (PDT)
+Received: from [192.168.42.193] ([172.58.142.210])
+        by smtp.googlemail.com with ESMTPSA id 131-v6sm7194917itv.29.2018.05.30.15.36.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 30 May 2018 15:36:50 -0700 (PDT)
 Subject: Re: [PATCH] kbuild: add machine size to CHEKCFLAGS
-To:     Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+To:     =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
 Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Richard Henderson <rth@twiddle.net>,
@@ -36,72 +67,28 @@ Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
         linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
         Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Rob Landley <rob@landley.net>
+        Christoph Hellwig <hch@infradead.org>
 References: <20180530204838.22079-1-luc.vanoostenryck@gmail.com>
-From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
- 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
-Organization: SUSE Linux GmbH
-Message-ID: <d47b72cc-9209-a190-38b3-969870e1bf26@suse.de>
-Date:   Thu, 31 May 2018 00:00:03 +0200
+ <d47b72cc-9209-a190-38b3-969870e1bf26@suse.de>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <0dd9d6dc-6cb3-157c-33ac-8c3e449a3859@landley.net>
+Date:   Wed, 30 May 2018 17:36:45 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-In-Reply-To: <20180530204838.22079-1-luc.vanoostenryck@gmail.com>
+In-Reply-To: <d47b72cc-9209-a190-38b3-969870e1bf26@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Return-Path: <afaerber@suse.de>
+Return-Path: <rob@landley.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64124
+X-archive-position: 64125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afaerber@suse.de
+X-original-sender: rob@landley.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -114,49 +101,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Luc,
-
-The typo in the subject made me curious...
-
-Am 30.05.2018 um 22:48 schrieb Luc Van Oostenryck:
-> By default, sparse assumes a 64bit machine when compiled on x86-64
-> and 32bit when compiled on anything else.
+On 05/30/2018 05:00 PM, Andreas Färber wrote:
+> What about the architectures not touched by your patch that previously
+> had no -m32/-m64? (arc, c6x, h8300, hexagon, m68k, microblaze, nds32,
+> nios2, openrisc, powerpc, riscv, s390, sh, unicore32, xtensa)
 > 
-> This can of course create all sort of problems for the other archs, like
-> issuing false warnings ('shift too big (32) for type unsigned long'), or
-> worse, failing to emit legitimate warnings.
-> 
-> Fix this by adding the -m32/-m64 flag, depending on CONFIG_64BIT,
-> to CHECKFLAGS in the main Makefile (and so for all archs).
-> Also, remove the now unneeded -m32/-m64 in arch specific Makefiles.
-> 
-> Signed-off-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-> ---
->  Makefile             | 3 +++
->  arch/alpha/Makefile  | 2 +-
->  arch/arm/Makefile    | 2 +-
->  arch/arm64/Makefile  | 2 +-
->  arch/ia64/Makefile   | 2 +-
->  arch/mips/Makefile   | 3 ---
->  arch/parisc/Makefile | 2 +-
->  arch/sparc/Makefile  | 2 +-
->  arch/x86/Makefile    | 2 +-
->  9 files changed, 10 insertions(+), 10 deletions(-)
+> You forgot to CC them on this patch.
 
-What about the architectures not touched by your patch that previously
-had no -m32/-m64? (arc, c6x, h8300, hexagon, m68k, microblaze, nds32,
-nios2, openrisc, powerpc, riscv, s390, sh, unicore32, xtensa)
+A) He cc'd arch/sh on the previous patch earlier today, to which I replied:
 
-You forgot to CC them on this patch.
+https://marc.info/?l=linux-sh&m=152769132515226&w=2
 
-Have you really checked that all their toolchains support the -m32/-m64
-flags you newly introduce for them? Apart from non-biarch architectures,
-I'm thinking of 31-bit s390 as a corner case where !64 != 32.
+B) Every change to common infrastructure should cc: every arch? Really? So like
+filesystem changes and stuff to?
 
-Regards,
-Andreas
+> Have you really checked that all their toolchains support the -m32/-m64
+> flags you newly introduce for them? Apart from non-biarch architectures,
+> I'm thinking of 31-bit s390 as a corner case where !64 != 32.
 
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+1) Last I heard Linux implements lp64:
+   http://www.unix.org/whitepapers/64bit.html
+
+2) it's unlikely to be worse than it was before the patch,
+
+3) last I checked https://github.com/landley/mkroot boots to an s390 shell
+prompt under qemu, although I haven't tried building with this patch. (And you
+may still need to add HOST_EXTRA='lex yacc bison flex' to the command line
+unless they've re-added the _shipped versions like the old kconfig had...) Point
+is, shouldn't be too hard to test it. Presumably that's why we have an -rc1 and
+then 6 more -rc versions each release...
+
+Rob

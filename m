@@ -1,54 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 23:06:54 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:40083 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994688AbeEaVGrO0uAO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2018 23:06:47 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Thu, 31 May 2018 21:06:23 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Thu, 31
- May 2018 14:06:28 -0700
-Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
- with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Thu, 31 May
- 2018 14:06:28 -0700
-Date:   Thu, 31 May 2018 14:06:22 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-CC:     James Hogan <jhogan@kernel.org>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3 1/1] MIPS: BCM47XX: Enable MIPS32 74K Core
- ExternalSync for BCM47XX PCIe erratum
-Message-ID: <20180531210622.btphkhpujfxnybq4@pburton-laptop>
-References: <20180531010240.16991-1-ikegami@allied-telesis.co.jp>
- <20180531010240.16991-2-ikegami@allied-telesis.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 23:30:15 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:60474 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994688AbeEaVaIbIqDJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 May 2018 23:30:08 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A80B220890;
+        Thu, 31 May 2018 21:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1527802201;
+        bh=Vy2nIzyMSNLPsCeLMsX7X225soO5TlUCIhqk16jg6yc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gcHBk3OvfuDbrB581sY2LS7gtyDb8fxa6F469Q41tqZxRVtP1v3diIuwZmxiexJwE
+         kd3uBFvWd/+1qeCAp5dvSPtSO+aifNpHc2URE+ZX1FmPRj72eqisPrp0LKte/r5UIS
+         Qfv3gFLVdjZtd1KAVrwHKbRf+rsBG5xQxIIYa6dU=
+Date:   Thu, 31 May 2018 22:29:57 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     "Maciej W. Rozycki" <macro@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE
+ requests
+Message-ID: <20180531212956.GA30406@jamesdev>
+References: <alpine.DEB.2.00.1805141439290.10896@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="u3/rZRmxL6MmkK24"
 Content-Disposition: inline
-In-Reply-To: <20180531010240.16991-2-ikegami@allied-telesis.co.jp>
-User-Agent: NeoMutt/20180512
-X-BESS-ID: 1527800782-637140-22267-511385-1
-X-BESS-VER: 2018.6-r1805181819
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193585
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+In-Reply-To: <alpine.DEB.2.00.1805141439290.10896@tp.orcam.me.uk>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64136
+X-archive-position: 64137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,33 +51,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Tokunori,
 
-On Thu, May 31, 2018 at 10:02:40AM +0900, Tokunori Ikegami wrote:
-> diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-> index 6054d49e608e..8fec219e1160 100644
-> --- a/arch/mips/bcm47xx/setup.c
-> +++ b/arch/mips/bcm47xx/setup.c
-> @@ -212,6 +212,13 @@ static int __init bcm47xx_cpu_fixes(void)
->  		 */
->  		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
->  			cpu_wait = NULL;
-> +
-> +		/*
-> +		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
-> +		 * Enable ExternalSync for sync instruction to take effect
-> +		 */
-> +		pr_info("ExternalSync has been enabled\n");
-> +		set_c0_config7(MIPS_CONF7_ES);
+--u3/rZRmxL6MmkK24
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Great - this looks better placed than v2, and so long as this erratum
-only applies to systems using BCMA this looks good to me.
+On Tue, May 15, 2018 at 11:04:44PM +0100, Maciej W. Rozycki wrote:
+> Having PR_FP_MODE_FRE (i.e. Config5.FRE) set without PR_FP_MODE_FR (i.e.=
+=20
+> Status.FR) is not supported as the lone purpose of Config5.FRE is to=20
+> emulate Status.FR=3D0 handling on FPU hardware that has Status.FR=3D1=20
+> hardwired[1][2].  Also we do not handle this case elsewhere, and assume=
+=20
+> throughout our code that TIF_HYBRID_FPREGS and TIF_32BIT_FPREGS cannot=20
+> be set both at once for a task, leading to inconsistent behaviour if=20
+> this does happen.
+>=20
+> Return unsuccessfully then from prctl(2) PR_SET_FP_MODE calls requesting=
+=20
+> PR_FP_MODE_FRE to be set with PR_FP_MODE_FR clear.  This corresponds to=
+=20
+> modes allowed by `mips_set_personality_fp'.
+>=20
+> References:
+>=20
+> [1] "MIPS Architecture For Programmers, Vol. III: MIPS32 / microMIPS32
+>     Privileged Resource Architecture", Imagination Technologies,
+>     Document Number: MD00090, Revision 6.02, July 10, 2015, Table 9.69=20
+>     "Config5 Register Field Descriptions", p. 262
+>=20
+> [2] "MIPS Architecture For Programmers, Volume III: MIPS64 / microMIPS64=
+=20
+>     Privileged Resource Architecture", Imagination Technologies,=20
+>     Document Number: MD00091, Revision 6.03, December 22, 2015, Table=20
+>     9.72 "Config5 Register Field Descriptions", p. 288
+>=20
+> Cc: stable@vger.kernel.org # 4.0+
+> Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for=
+ MIPS")
+> Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 
-My only other niggle would be questioning whether we really need the
-pr_info() - I'd probably go without it, but it's not a strong opinion so
-either way:
+Thanks, applied to mips-fixes, hopefully for 4.17 (but if it misses
+tomorrows linux-next it may have to wait 'til 4.18).
 
-    Reviewed-by: Paul Burton <paul.burton@mips.com>
+Cheers
+James
 
-Thanks,
-    Paul
+--u3/rZRmxL6MmkK24
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWxBpUwAKCRA1zuSGKxAj
+8nD+AQDlX/YPX/WyufbGvOmzQO3ows5pmEBYDLTntCMjLwfQLAEA9ODc1Qt8srfM
+nrZ+PcIffTYPGEghVp1HHUcl1GHBqwU=
+=UY2D
+-----END PGP SIGNATURE-----
+
+--u3/rZRmxL6MmkK24--

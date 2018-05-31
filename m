@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 18:32:36 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:57818 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994685AbeEaQc3pOvhO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 May 2018 18:32:29 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id CE8B068CEE; Thu, 31 May 2018 18:38:59 +0200 (CEST)
-Date:   Thu, 31 May 2018 18:38:59 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        David Daney <david.daney@cavium.com>,
-        Tom Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 05/25] MIPS: Octeon: refactor swiotlb code
-Message-ID: <20180531163859.GA31181@lst.de>
-References: <20180525092111.18516-1-hch@lst.de> <20180525092111.18516-6-hch@lst.de> <20180530232552.4rqnoo3652mabrqq@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 23:06:54 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:40083 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994688AbeEaVGrO0uAO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2018 23:06:47 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Thu, 31 May 2018 21:06:23 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Thu, 31
+ May 2018 14:06:28 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Thu, 31 May
+ 2018 14:06:28 -0700
+Date:   Thu, 31 May 2018 14:06:22 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+CC:     James Hogan <jhogan@kernel.org>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v3 1/1] MIPS: BCM47XX: Enable MIPS32 74K Core
+ ExternalSync for BCM47XX PCIe erratum
+Message-ID: <20180531210622.btphkhpujfxnybq4@pburton-laptop>
+References: <20180531010240.16991-1-ikegami@allied-telesis.co.jp>
+ <20180531010240.16991-2-ikegami@allied-telesis.co.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20180530232552.4rqnoo3652mabrqq@pburton-laptop>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+In-Reply-To: <20180531010240.16991-2-ikegami@allied-telesis.co.jp>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1527800782-637140-22267-511385-1
+X-BESS-VER: 2018.6-r1805181819
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193585
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64135
+X-archive-position: 64136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,19 +61,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 30, 2018 at 04:25:52PM -0700, Paul Burton wrote:
-> > +static const struct octeon_dma_map_ops octeon_gen2_ops = {
-> > +	.phys_to_dma	= octeon_hole_phys_to_dma,
-> > +	.dma_to_phys	= octeon_hole_dma_to_phys,
-> > +};
-> 
-> These are pointers to functions of the wrong type, right? phys_to_dma &
-> dma_to_phys have the struct device * argument but the octeon_hole_*
-> functions do not. I'd expect we either need to restore the
-> octeon_gen2_* wrappers that you remove below or change the definition of
-> the octeon_hole_* functions.
+Hi Tokunori,
 
-That is true.  I have no idea how that passed the buildbot, which
-reported all kinds of other issues in the original octeon conversion.
+On Thu, May 31, 2018 at 10:02:40AM +0900, Tokunori Ikegami wrote:
+> diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+> index 6054d49e608e..8fec219e1160 100644
+> --- a/arch/mips/bcm47xx/setup.c
+> +++ b/arch/mips/bcm47xx/setup.c
+> @@ -212,6 +212,13 @@ static int __init bcm47xx_cpu_fixes(void)
+>  		 */
+>  		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
+>  			cpu_wait = NULL;
+> +
+> +		/*
+> +		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
+> +		 * Enable ExternalSync for sync instruction to take effect
+> +		 */
+> +		pr_info("ExternalSync has been enabled\n");
+> +		set_c0_config7(MIPS_CONF7_ES);
 
-I'll fix this for the next respin.
+Great - this looks better placed than v2, and so long as this erratum
+only applies to systems using BCMA this looks good to me.
+
+My only other niggle would be questioning whether we really need the
+pr_info() - I'd probably go without it, but it's not a strong opinion so
+either way:
+
+    Reviewed-by: Paul Burton <paul.burton@mips.com>
+
+Thanks,
+    Paul

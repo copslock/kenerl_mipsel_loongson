@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 03:04:09 +0200 (CEST)
-Received: from mail1.bemta12.messagelabs.com ([216.82.251.6]:6480 "EHLO
-        mail1.bemta12.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994674AbeEaBD7sDYut (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2018 03:03:59 +0200
-Received: from [216.82.249.212] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-6.bemta-12.messagelabs.com id 1B/B9-27145-DF94F0B5; Thu, 31 May 2018 01:03:57 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLIsWRWlGSWpSXmKPExsUyLfyHiO4fT/5
-  og7Y9ahYTpk5id2D0OLpyLVMAYxRrZl5SfkUCa8a8ezsYC96wVBzbMJWlgbGXpYuRi0NIYC6j
-  RPOrq+wQzi9GiU8LnzJ2MXJysAmYSkx/tRDMFhFQlnjwaycjSBGzwCNGiXmNP9hBEsICvhJHH
-  51mAbFZBFQl3q/dzNbFyMHBK+AocWS7FkhYQkBe4vCbJlYQm1dAUOLkzCcsICXMAuoS6+cJgY
-  SZgUqat85mBrGFBDQlnvd8Z4RoDZZY/PgL6wRGvllIumchdM9C0r2AkXkVo0ZxalFZapGusal
-  eUlFmekZJbmJmjq6hoZFebmpxcWJ6ak5iUrFecn7uJkZgsNUzMDDuYHy2P/oQoyQHk5Io7+Vq
-  vmghvqT8lMqMxOKM+KLSnNTiQ4wyHBxKErz/PPijhQSLUtNTK9Iyc4BhD5OW4OBREuHlBIa+E
-  G9xQWJucWY6ROoUo6KUOO8hkD4BkERGaR5cGyzWLjHKSgnzMjIwMAjxFKQW5WaWoMq/YhTnYF
-  QS5r0EMoUnM68EbvoroMVMQIufTOQGWVySiJCSamDUu7Qu3u/49lU321KUcq8o/7z3k397r63
-  njeeHHmsyJuSpbE2M8p6Z4Hx53i+BRwKX40x8woMsvLyuv38XvHivW3fM62ZVqe1drg/3n4rl
-  ei/75PCWiVtFd8q8zZvWvPxA9UWFi5MmRf0IePw4sj1276XHdwqsF5jcnZqauvfB+xUeM1fFi
-  j9rVGIpzkg01GIuKk4EAAfF9R6wAgAA
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2018 03:04:23 +0200 (CEST)
+Received: from mail1.bemta8.messagelabs.com ([216.82.243.198]:24750 "EHLO
+        mail1.bemta8.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994676AbeEaBEC6etet (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2018 03:04:02 +0200
+Received: from [216.82.242.46] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-6.bemta-8.messagelabs.com id 70/72-28268-10A4F0B5; Thu, 31 May 2018 01:04:01 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrAIsWRWlGSWpSXmKPExsUyLfyHiC6jF3+
+  0wYkudYsJUyexOzB6HF25limAMYo1My8pvyKBNWPZlhWsBV9FK+btfcfcwDhFqIuRk0NIYC6j
+  xKnvfl2MXED2L0aJ/59XsYEk2ARMJaa/WsgIYosIKEs8+LWTEaSIWeARo8S8xh/sIAlhgWSJR
+  0tuM4PYLAKqEn1TL7GA2LwCjhJvps0BGyQhIC9x+E0TK4jNKeAkMXPvP3aIzY4SrXf/MUPUC0
+  qcnPkEqJcDaIG6xPp5YMcxA7U2b53NDFGuKfG85zsjSImEQLDEz9uhExgFZiFpnoXQPAtJ8wJ
+  G5lWMGsWpRWWpRbpGhnpJRZnpGSW5iZk5uoYGFnq5qcXFiempOYlJxXrJ+bmbGIGhWc/AwLiD
+  ced590OMkhxMSqK8l6v5ooX4kvJTKjMSizPii0pzUosPMcpwcChJ8P7z4I8WEixKTU+tSMvMA
+  UYJTFqCg0dJhJfTEyjNW1yQmFucmQ6ROsWoy3GnraeHWYglLz8vVUqc9xDIDAGQoozSPLgRsI
+  i9xCgrJczLyMDAIMRTkFqUm1mCKv+KUZyDUUmYlxdkFU9mXgncpldARzABHfFkIjfIESWJCCm
+  pBkZuQcc/AqY7pcy77mt/vFKxc16EEkvq67eXWxrm87HN/vt5okdFvEHVrEtemz1qLj5zXD3T
+  KWETv9nFF90yV38cmLc0b4njzQVrZgveVm/p1gitzvp+MWpZ6aWzcgLSUo6dra/XCW+9Wlc8s
+  VgzO5ZVdYbXZa2l0Su3Hr81NyZFWnjlln8X2oSUWIozEg21mIuKEwHobRUG0wIAAA==
 X-Env-Sender: ikegami@allied-telesis.co.jp
-X-Msg-Ref: server-2.tower-219.messagelabs.com!1527728635!185471199!1
+X-Msg-Ref: server-14.tower-96.messagelabs.com!1527728640!104873142!1
 X-Originating-IP: [150.87.248.20]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.9.15; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 16112 invoked from network); 31 May 2018 01:03:56 -0000
+Received: (qmail 5845 invoked from network); 31 May 2018 01:04:01 -0000
 Received: from abricot-inet.allied-telesis.co.jp (HELO TKY-DS01.at.lc) (150.87.248.20)
-  by server-2.tower-219.messagelabs.com with SMTP; 31 May 2018 01:03:56 -0000
+  by server-14.tower-96.messagelabs.com with SMTP; 31 May 2018 01:04:01 -0000
 Received: from swim-manx.rd.allied-telesis.co.jp ([150.87.21.50]) by TKY-DS01.at.lc with Microsoft SMTPSVC(8.0.9200.16384);
-         Thu, 31 May 2018 10:03:55 +0900
+         Thu, 31 May 2018 10:03:59 +0900
 Received: from ikegami-pc.rd.allied-telesis.co.jp by swim-manx.rd.allied-telesis.co.jp
- (AlliedTelesis SMTPRS 1.3 pl 1 ++E6B86F8C687C6288D9B5559052954DC9) with ESMTP id <B0004125305@swim-manx.rd.allied-telesis.co.jp>;
- Thu, 31 May 2018 10:03:54 +0900
+ (AlliedTelesis SMTPRS 1.3 pl 1 ++E6B86F8C687C6288D9B5559052954DC9) with ESMTP id <B0004125306@swim-manx.rd.allied-telesis.co.jp>;
+ Thu, 31 May 2018 10:03:59 +0900
 From:   Tokunori Ikegami <ikegami@allied-telesis.co.jp>
 To:     James Hogan <jhogan@kernel.org>
 Cc:     Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
@@ -39,19 +39,21 @@ Cc:     Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
         Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
         linux-mips@linux-mips.org
-Subject: [PATCH v3 0/1] MIPS: BCM47XX: Apply BCM5300X PCIe erratum workaround
-Date:   Thu, 31 May 2018 10:02:39 +0900
-Message-Id: <20180531010240.16991-1-ikegami@allied-telesis.co.jp>
+Subject: [PATCH v3 1/1] MIPS: BCM47XX: Enable MIPS32 74K Core ExternalSync for BCM47XX PCIe erratum
+Date:   Thu, 31 May 2018 10:02:40 +0900
+Message-Id: <20180531010240.16991-2-ikegami@allied-telesis.co.jp>
 X-Mailer: git-send-email 2.16.1
+In-Reply-To: <20180531010240.16991-1-ikegami@allied-telesis.co.jp>
+References: <20180531010240.16991-1-ikegami@allied-telesis.co.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 31 May 2018 01:03:55.0436 (UTC) FILETIME=[3F8716C0:01D3F87B]
+X-OriginalArrivalTime: 31 May 2018 01:03:59.0946 (UTC) FILETIME=[423742A0:01D3F87B]
 Return-Path: <ikegami@allied-telesis.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64130
+X-archive-position: 64131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,22 +70,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The workaround is to eanble ExternalSync mode and it is implemented on CFE.
-But to enable this without CFE implemented it add the workaround into Linux.
+The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as below.
+
+  R10: PCIe Transactions Periodically Fail
+
+    Description: The BCM5300X PCIe does not maintain transaction ordering.
+                 This may cause PCIe transaction failure.
+    Fix Comment: Add a dummy PCIe configuration read after a PCIe
+                 configuration write to ensure PCIe configuration access
+                 ordering. Set ES bit of CP0 configu7 register to enable
+                 sync function so that the sync instruction is functional.
+    Resolution:  hndpci.c: extpci_write_config()
+                 hndmips.c: si_mips_init()
+                 mipsinc.h CONF7_ES
+
+This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
+Also the dummy PCIe configuration read is already implemented in the Linux
+BCMA driver.
+Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=y
+too so that the sync instruction is externalised.
 
 Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
 Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: Rafał Miłecki <zajec5@gmail.com>
 Cc: linux-mips@linux-mips.org
+---
+Changes since v2:
+- Move the change into platform-specific code bcm47xx_cpu_fixes() function from in generic code.
 
-Tokunori Ikegami (1):
-  MIPS: BCM47XX: Enable MIPS32 74K Core ExternalSync for BCM47XX PCIe
-    erratum
+Changes since v1 resent:
+- None.
+
+Changes since v1 original:
+- Change to use set_c0_config7 instead of write_c0_config7.
 
  arch/mips/bcm47xx/setup.c        | 7 +++++++
  arch/mips/include/asm/mipsregs.h | 3 +++
  2 files changed, 10 insertions(+)
 
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 6054d49e608e..8fec219e1160 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -212,6 +212,13 @@ static int __init bcm47xx_cpu_fixes(void)
+ 		 */
+ 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
+ 			cpu_wait = NULL;
++
++		/*
++		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
++		 * Enable ExternalSync for sync instruction to take effect
++		 */
++		pr_info("ExternalSync has been enabled\n");
++		set_c0_config7(MIPS_CONF7_ES);
+ 		break;
+ #endif
+ 	}
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 858752dac337..0f94acf60144 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -680,6 +680,8 @@
+ #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
+ 
+ #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
++/* ExternalSync */
++#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
+ 
+ #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
+ #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
+@@ -2759,6 +2761,7 @@ __BUILD_SET_C0(status)
+ __BUILD_SET_C0(cause)
+ __BUILD_SET_C0(config)
+ __BUILD_SET_C0(config5)
++__BUILD_SET_C0(config7)
+ __BUILD_SET_C0(intcontrol)
+ __BUILD_SET_C0(intctl)
+ __BUILD_SET_C0(srsmap)
 -- 
 2.16.1

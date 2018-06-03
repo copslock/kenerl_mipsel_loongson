@@ -1,110 +1,63 @@
-From: Mathias Kresin <dev@kresin.me>
-Date: Sun, 8 Apr 2018 10:30:03 +0200
-Subject: MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-Message-ID: <20180408083003.FjEeo9hToTtmQh3FP2-5zB8CR9MAQR8w992yVVrlvqk@z>
-
-From: Mathias Kresin <dev@kresin.me>
-
-commit 32795631e67e16141aa5e065c28ba03bf17abb90 upstream.
-
-While doing a global software reset, these bits are not cleared and let
-some bootloader fail to initialise the GPHYs. The bootloader don't
-expect the GPHYs in reset, as they aren't during power on.
-
-The asserts were a workaround for a wrong syscon-reboot mask. With a
-mask set which includes the GPHY resets, these resets aren't required
-any more.
-
-Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd")
-Signed-off-by: Mathias Kresin <dev@kresin.me>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: John Crispin <john@phrozen.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.14+
-Patchwork: https://patchwork.linux-mips.org/patch/19003/
-[jhogan@kernel.org: Fix build warnings]
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/soc/lantiq/gphy.c |   36 ------------------------------------
- 1 file changed, 36 deletions(-)
-
---- a/drivers/soc/lantiq/gphy.c
-+++ b/drivers/soc/lantiq/gphy.c
-@@ -30,7 +30,6 @@ struct xway_gphy_priv {
- 	struct clk *gphy_clk_gate;
- 	struct reset_control *gphy_reset;
- 	struct reset_control *gphy_reset2;
--	struct notifier_block gphy_reboot_nb;
- 	void __iomem *membase;
- 	char *fw_name;
- };
-@@ -64,24 +63,6 @@ static const struct of_device_id xway_gp
- };
- MODULE_DEVICE_TABLE(of, xway_gphy_match);
- 
--static struct xway_gphy_priv *to_xway_gphy_priv(struct notifier_block *nb)
--{
--	return container_of(nb, struct xway_gphy_priv, gphy_reboot_nb);
--}
--
--static int xway_gphy_reboot_notify(struct notifier_block *reboot_nb,
--				   unsigned long code, void *unused)
--{
--	struct xway_gphy_priv *priv = to_xway_gphy_priv(reboot_nb);
--
--	if (priv) {
--		reset_control_assert(priv->gphy_reset);
--		reset_control_assert(priv->gphy_reset2);
--	}
--
--	return NOTIFY_DONE;
--}
--
- static int xway_gphy_load(struct device *dev, struct xway_gphy_priv *priv,
- 			  dma_addr_t *dev_addr)
- {
-@@ -205,14 +186,6 @@ static int xway_gphy_probe(struct platfo
- 	reset_control_deassert(priv->gphy_reset);
- 	reset_control_deassert(priv->gphy_reset2);
- 
--	/* assert the gphy reset because it can hang after a reboot: */
--	priv->gphy_reboot_nb.notifier_call = xway_gphy_reboot_notify;
--	priv->gphy_reboot_nb.priority = -1;
--
--	ret = register_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to register reboot notifier\n");
--
- 	platform_set_drvdata(pdev, priv);
- 
- 	return ret;
-@@ -220,21 +193,12 @@ static int xway_gphy_probe(struct platfo
- 
- static int xway_gphy_remove(struct platform_device *pdev)
- {
--	struct device *dev = &pdev->dev;
- 	struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
--	int ret;
--
--	reset_control_assert(priv->gphy_reset);
--	reset_control_assert(priv->gphy_reset2);
- 
- 	iowrite32be(0, priv->membase);
- 
- 	clk_disable_unprepare(priv->gphy_clk_gate);
- 
--	ret = unregister_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to unregister reboot notifier\n");
--
- 	return 0;
- }
- 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jun 2018 10:39:09 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:50174 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992692AbeFCIiuRxMca (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Jun 2018 10:38:50 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A53EE2089B;
+        Sun,  3 Jun 2018 08:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1528015124;
+        bh=Y8luB1jkztb1//bXYkYWSpKJzoQSED4E0kV2vrM9ay0=;
+        h=Subject:To:Cc:From:Date:From;
+        b=v00MARMKDWrgNPC3N9VPlGI3UP5+kdJSs++lVILMOWIrXxM/5W9L0iYGgI0H9AUh3
+         Ay9KiT2qp5JUhcHhev46iYwntj7KXwWJVZenb60pRCf9UsRu5q6D9zEvKe/j+cEi4r
+         IhR6TiYP0NBmIx6psvoMWDc+BKrzHLf/g+4vE3Ls=
+Subject: Patch "MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests" has been added to the 4.16-stable tree
+To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
+        linux-mips@linux-mips.org, macro@mips.com, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 03 Jun 2018 10:37:43 +0200
+Message-ID: <152801506315045@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=GHQf=IV=linuxfoundation.org=gregkh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64153
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from dev@kresin.me are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.16/mips-lantiq-gphy-drop-reboot-remove-reset-asserts.patch
+    MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests
+
+to the 4.16-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-prctl-disallow-fre-without-fr-with-pr_set_fp_mode-requests.patch
+and it can be found in the queue-4.16 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

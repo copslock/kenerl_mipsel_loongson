@@ -1,31 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 09:02:16 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:47592 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 09:02:30 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:47622 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993874AbeFDHCBabVf7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jun 2018 09:02:01 +0200
+        id S23994077AbeFDHCDcKJb7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jun 2018 09:02:03 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3766E2088F;
-        Mon,  4 Jun 2018 07:01:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DFA1820852;
+        Mon,  4 Jun 2018 07:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1528095714;
-        bh=zYiXRAbmYr9IP5Kz+z9tK+lOkkqcsggKKaCmtnwbpgI=;
+        s=default; t=1528095717;
+        bh=m7jpH58IX2yPqt2+gVLgj8yVGY8sSfJ/p4SkzkjHMXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ODf5oh28AEQXEJ1R6QL4SoPr5NvYIEZq6DaWDY9lK+drcopipNQdkm8YFE9mZY46L
-         4tNDw6KyntdSyMJwSMumXtdtkGzkE4HP+YcziYYjdovfVCkC98imkQNgOgNKgxUsq0
-         EIUQAb16K1BzNa4YYk6CQg2SHO8gJ4T+nfvJKt14=
+        b=YPTcU2NXTCy3AMhJcaYin3o92YxTHEGcvp9AEpUreff+kEKLME0gJyqjeK6ZF/Pz+
+         9iJ1Wt5eY3CZluTuF0HBxXsldRTC41Cr3rreUmg89b4O6fQcwTlcYbxoJlJe95Rwtf
+         i97Q+d1ML5V4bxPQrD7VRzVaQFjFTfKU/H53KTnA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 36/52] MIPS: lantiq: gphy: Drop reboot/remove reset asserts
-Date:   Mon,  4 Jun 2018 08:58:31 +0200
-Message-Id: <20180604065608.017672204@linuxfoundation.org>
+Subject: [PATCH 4.14 37/52] MIPS: ptrace: Fix PTRACE_PEEKUSR requests for 64-bit FGRs
+Date:   Mon,  4 Jun 2018 08:58:32 +0200
+Message-Id: <20180604065608.061925407@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180604065606.532044490@linuxfoundation.org>
 References: <20180604065606.532044490@linuxfoundation.org>
@@ -37,7 +35,7 @@ Return-Path: <SRS0=7zps=IW=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64166
+X-archive-position: 64167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,103 +56,51 @@ X-list: linux-mips
 
 ------------------
 
-From: Mathias Kresin <dev@kresin.me>
+From: Maciej W. Rozycki <macro@mips.com>
 
-commit 32795631e67e16141aa5e065c28ba03bf17abb90 upstream.
+commit c7e814628df65f424fe197dde73bfc67e4a244d7 upstream.
 
-While doing a global software reset, these bits are not cleared and let
-some bootloader fail to initialise the GPHYs. The bootloader don't
-expect the GPHYs in reset, as they aren't during power on.
+Use 64-bit accesses for 64-bit floating-point general registers with
+PTRACE_PEEKUSR, removing the truncation of their upper halves in the
+FR=1 mode, caused by commit bbd426f542cb ("MIPS: Simplify FP context
+access"), which inadvertently switched them to using 32-bit accesses.
 
-The asserts were a workaround for a wrong syscon-reboot mask. With a
-mask set which includes the GPHY resets, these resets aren't required
-any more.
+The PTRACE_POKEUSR side is fine as it's never been broken and continues
+using 64-bit accesses.
 
-Fixes: 126534141b45 ("MIPS: lantiq: Add a GPHY driver which uses the RCU syscon-mfd")
-Signed-off-by: Mathias Kresin <dev@kresin.me>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: John Crispin <john@phrozen.org>
+Fixes: bbd426f542cb ("MIPS: Simplify FP context access")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.14+
-Patchwork: https://patchwork.linux-mips.org/patch/19003/
-[jhogan@kernel.org: Fix build warnings]
+Cc: <stable@vger.kernel.org> # 3.15+
+Patchwork: https://patchwork.linux-mips.org/patch/19334/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/soc/lantiq/gphy.c |   36 ------------------------------------
- 1 file changed, 36 deletions(-)
+ arch/mips/kernel/ptrace.c   |    2 +-
+ arch/mips/kernel/ptrace32.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/lantiq/gphy.c
-+++ b/drivers/soc/lantiq/gphy.c
-@@ -30,7 +30,6 @@ struct xway_gphy_priv {
- 	struct clk *gphy_clk_gate;
- 	struct reset_control *gphy_reset;
- 	struct reset_control *gphy_reset2;
--	struct notifier_block gphy_reboot_nb;
- 	void __iomem *membase;
- 	char *fw_name;
- };
-@@ -64,24 +63,6 @@ static const struct of_device_id xway_gp
- };
- MODULE_DEVICE_TABLE(of, xway_gphy_match);
- 
--static struct xway_gphy_priv *to_xway_gphy_priv(struct notifier_block *nb)
--{
--	return container_of(nb, struct xway_gphy_priv, gphy_reboot_nb);
--}
--
--static int xway_gphy_reboot_notify(struct notifier_block *reboot_nb,
--				   unsigned long code, void *unused)
--{
--	struct xway_gphy_priv *priv = to_xway_gphy_priv(reboot_nb);
--
--	if (priv) {
--		reset_control_assert(priv->gphy_reset);
--		reset_control_assert(priv->gphy_reset2);
--	}
--
--	return NOTIFY_DONE;
--}
--
- static int xway_gphy_load(struct device *dev, struct xway_gphy_priv *priv,
- 			  dma_addr_t *dev_addr)
- {
-@@ -205,14 +186,6 @@ static int xway_gphy_probe(struct platfo
- 	reset_control_deassert(priv->gphy_reset);
- 	reset_control_deassert(priv->gphy_reset2);
- 
--	/* assert the gphy reset because it can hang after a reboot: */
--	priv->gphy_reboot_nb.notifier_call = xway_gphy_reboot_notify;
--	priv->gphy_reboot_nb.priority = -1;
--
--	ret = register_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to register reboot notifier\n");
--
- 	platform_set_drvdata(pdev, priv);
- 
- 	return ret;
-@@ -220,21 +193,12 @@ static int xway_gphy_probe(struct platfo
- 
- static int xway_gphy_remove(struct platform_device *pdev)
- {
--	struct device *dev = &pdev->dev;
- 	struct xway_gphy_priv *priv = platform_get_drvdata(pdev);
--	int ret;
--
--	reset_control_assert(priv->gphy_reset);
--	reset_control_assert(priv->gphy_reset2);
- 
- 	iowrite32be(0, priv->membase);
- 
- 	clk_disable_unprepare(priv->gphy_clk_gate);
- 
--	ret = unregister_reboot_notifier(&priv->gphy_reboot_nb);
--	if (ret)
--		dev_warn(dev, "Failed to unregister reboot notifier\n");
--
- 	return 0;
- }
- 
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -809,7 +809,7 @@ long arch_ptrace(struct task_struct *chi
+ 				break;
+ 			}
+ #endif
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -108,7 +108,7 @@ long compat_arch_ptrace(struct task_stru
+ 						addr & 1);
+ 				break;
+ 			}
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;

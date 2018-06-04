@@ -1,45 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 09:04:56 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:49538 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 10:18:49 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:50112 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994698AbeFDHETqdbY7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jun 2018 09:04:19 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 438EA2089B;
-        Mon,  4 Jun 2018 07:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1528095853;
-        bh=/+I4ZKhXtVrnKmdRysfWe3KyMqJw8mAmYp2JTuo7H6E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bo7DrhWnwVY3RYaU8EVNCJKK9pMXizUvSLxcIUb7sJblqUpQw/RdEWOwh/OEGIWcK
-         kQ7NTLzxU9KQ2iq8p8BWdv4rmkcMpDmetrgTUuEJMgh94cTm34URGKlAI9jXntvWvg
-         rjYylnzKxa2OEEohWtSKeTpW+S6bhlvoy7InIF6s=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.16 35/47] MIPS: prctl: Disallow FRE without FR with PR_SET_FP_MODE requests
-Date:   Mon,  4 Jun 2018 08:58:47 +0200
-Message-Id: <20180604065550.944787192@linuxfoundation.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180604065549.468488465@linuxfoundation.org>
-References: <20180604065549.468488465@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <SRS0=7zps=IW=linuxfoundation.org=gregkh@kernel.org>
+        id S23990434AbeFDISlhQKCv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jun 2018 10:18:41 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext-too.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 76D22AD2B;
+        Mon,  4 Jun 2018 08:18:35 +0000 (UTC)
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Make elf2ecoff work on 64bit host machines
+Date:   Mon,  4 Jun 2018 10:18:25 +0200
+Message-Id: <20180604081825.11995-2-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.13.6
+In-Reply-To: <20180604081825.11995-1-tbogendoerfer@suse.de>
+References: <20180604081825.11995-1-tbogendoerfer@suse.de>
+Return-Path: <tbogendoerfer@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64171
+X-archive-position: 64172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: tbogendoerfer@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,61 +38,172 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.16-stable review patch.  If anyone has any objections, please let me know.
+Use fixed width integer types for ecoff structs to make elf2ecoff work
+on 64bit host machines
 
-------------------
-
-From: Maciej W. Rozycki <macro@mips.com>
-
-commit 28e4213dd331e944e7fca1954a946829162ed9d4 upstream.
-
-Having PR_FP_MODE_FRE (i.e. Config5.FRE) set without PR_FP_MODE_FR (i.e.
-Status.FR) is not supported as the lone purpose of Config5.FRE is to
-emulate Status.FR=0 handling on FPU hardware that has Status.FR=1
-hardwired[1][2].  Also we do not handle this case elsewhere, and assume
-throughout our code that TIF_HYBRID_FPREGS and TIF_32BIT_FPREGS cannot
-be set both at once for a task, leading to inconsistent behaviour if
-this does happen.
-
-Return unsuccessfully then from prctl(2) PR_SET_FP_MODE calls requesting
-PR_FP_MODE_FRE to be set with PR_FP_MODE_FR clear.  This corresponds to
-modes allowed by `mips_set_personality_fp'.
-
-References:
-
-[1] "MIPS Architecture For Programmers, Vol. III: MIPS32 / microMIPS32
-    Privileged Resource Architecture", Imagination Technologies,
-    Document Number: MD00090, Revision 6.02, July 10, 2015, Table 9.69
-    "Config5 Register Field Descriptions", p. 262
-
-[2] "MIPS Architecture For Programmers, Volume III: MIPS64 / microMIPS64
-    Privileged Resource Architecture", Imagination Technologies,
-    Document Number: MD00091, Revision 6.03, December 22, 2015, Table
-    9.72 "Config5 Register Field Descriptions", p. 288
-
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.0+
-Patchwork: https://patchwork.linux-mips.org/patch/19327/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/kernel/process.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/boot/ecoff.h     | 58 +++++++++++++++++++++++-----------------------
+ arch/mips/boot/elf2ecoff.c | 29 +++++++++++------------
+ 2 files changed, 43 insertions(+), 44 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -721,6 +721,10 @@ int mips_set_process_fp_mode(struct task
- 	if (value & ~known_bits)
- 		return -EOPNOTSUPP;
+diff --git a/arch/mips/boot/ecoff.h b/arch/mips/boot/ecoff.h
+index b3e73c22c345..9eb4167ef979 100644
+--- a/arch/mips/boot/ecoff.h
++++ b/arch/mips/boot/ecoff.h
+@@ -3,13 +3,13 @@
+  * Some ECOFF definitions.
+  */
+ typedef struct filehdr {
+-	unsigned short	f_magic;	/* magic number */
+-	unsigned short	f_nscns;	/* number of sections */
+-	long		f_timdat;	/* time & date stamp */
+-	long		f_symptr;	/* file pointer to symbolic header */
+-	long		f_nsyms;	/* sizeof(symbolic hdr) */
+-	unsigned short	f_opthdr;	/* sizeof(optional hdr) */
+-	unsigned short	f_flags;	/* flags */
++	uint16_t	f_magic;	/* magic number */
++	uint16_t	f_nscns;	/* number of sections */
++	int32_t		f_timdat;	/* time & date stamp */
++	int32_t		f_symptr;	/* file pointer to symbolic header */
++	int32_t		f_nsyms;	/* sizeof(symbolic hdr) */
++	uint16_t	f_opthdr;	/* sizeof(optional hdr) */
++	uint16_t	f_flags;	/* flags */
+ } FILHDR;
+ #define FILHSZ	sizeof(FILHDR)
  
-+	/* Setting FRE without FR is not supported.  */
-+	if ((value & (PR_FP_MODE_FR | PR_FP_MODE_FRE)) == PR_FP_MODE_FRE)
-+		return -EOPNOTSUPP;
-+
- 	/* Avoid inadvertently triggering emulation */
- 	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
- 	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
+@@ -18,32 +18,32 @@ typedef struct filehdr {
+ 
+ typedef struct scnhdr {
+ 	char		s_name[8];	/* section name */
+-	long		s_paddr;	/* physical address, aliased s_nlib */
+-	long		s_vaddr;	/* virtual address */
+-	long		s_size;		/* section size */
+-	long		s_scnptr;	/* file ptr to raw data for section */
+-	long		s_relptr;	/* file ptr to relocation */
+-	long		s_lnnoptr;	/* file ptr to gp histogram */
+-	unsigned short	s_nreloc;	/* number of relocation entries */
+-	unsigned short	s_nlnno;	/* number of gp histogram entries */
+-	long		s_flags;	/* flags */
++	int32_t		s_paddr;	/* physical address, aliased s_nlib */
++	int32_t		s_vaddr;	/* virtual address */
++	int32_t		s_size;		/* section size */
++	int32_t		s_scnptr;	/* file ptr to raw data for section */
++	int32_t		s_relptr;	/* file ptr to relocation */
++	int32_t		s_lnnoptr;	/* file ptr to gp histogram */
++	uint16_t	s_nreloc;	/* number of relocation entries */
++	uint16_t	s_nlnno;	/* number of gp histogram entries */
++	int32_t		s_flags;	/* flags */
+ } SCNHDR;
+ #define SCNHSZ		sizeof(SCNHDR)
+-#define SCNROUND	((long)16)
++#define SCNROUND	((int32_t)16)
+ 
+ typedef struct aouthdr {
+-	short	magic;		/* see above				*/
+-	short	vstamp;		/* version stamp			*/
+-	long	tsize;		/* text size in bytes, padded to DW bdry*/
+-	long	dsize;		/* initialized data "  "		*/
+-	long	bsize;		/* uninitialized data "	  "		*/
+-	long	entry;		/* entry pt.				*/
+-	long	text_start;	/* base of text used for this file	*/
+-	long	data_start;	/* base of data used for this file	*/
+-	long	bss_start;	/* base of bss used for this file	*/
+-	long	gprmask;	/* general purpose register mask	*/
+-	long	cprmask[4];	/* co-processor register masks		*/
+-	long	gp_value;	/* the gp value used for this object	*/
++	int16_t	magic;		/* see above				*/
++	int16_t	vstamp;		/* version stamp			*/
++	int32_t	tsize;		/* text size in bytes, padded to DW bdry*/
++	int32_t	dsize;		/* initialized data "  "		*/
++	int32_t	bsize;		/* uninitialized data "	  "		*/
++	int32_t	entry;		/* entry pt.				*/
++	int32_t	text_start;	/* base of text used for this file	*/
++	int32_t	data_start;	/* base of data used for this file	*/
++	int32_t	bss_start;	/* base of bss used for this file	*/
++	int32_t	gprmask;	/* general purpose register mask	*/
++	int32_t	cprmask[4];	/* co-processor register masks		*/
++	int32_t	gp_value;	/* the gp value used for this object	*/
+ } AOUTHDR;
+ #define AOUTHSZ sizeof(AOUTHDR)
+ 
+diff --git a/arch/mips/boot/elf2ecoff.c b/arch/mips/boot/elf2ecoff.c
+index 266c8137e859..8322282f93b0 100644
+--- a/arch/mips/boot/elf2ecoff.c
++++ b/arch/mips/boot/elf2ecoff.c
+@@ -55,8 +55,8 @@
+ /* -------------------------------------------------------------------- */
+ 
+ struct sect {
+-	unsigned long vaddr;
+-	unsigned long len;
++	uint32_t vaddr;
++	uint32_t len;
+ };
+ 
+ int *symTypeTable;
+@@ -153,16 +153,16 @@ static char *saveRead(int file, off_t offset, off_t len, char *name)
+ }
+ 
+ #define swab16(x) \
+-	((unsigned short)( \
+-		(((unsigned short)(x) & (unsigned short)0x00ffU) << 8) | \
+-		(((unsigned short)(x) & (unsigned short)0xff00U) >> 8) ))
++	((uint16_t)( \
++		(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
++		(((uint16_t)(x) & (uint16_t)0xff00U) >> 8) ))
+ 
+ #define swab32(x) \
+ 	((unsigned int)( \
+-		(((unsigned int)(x) & (unsigned int)0x000000ffUL) << 24) | \
+-		(((unsigned int)(x) & (unsigned int)0x0000ff00UL) <<  8) | \
+-		(((unsigned int)(x) & (unsigned int)0x00ff0000UL) >>  8) | \
+-		(((unsigned int)(x) & (unsigned int)0xff000000UL) >> 24) ))
++		(((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) | \
++		(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
++		(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
++		(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24) ))
+ 
+ static void convert_elf_hdr(Elf32_Ehdr * e)
+ {
+@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
+ 	struct aouthdr eah;
+ 	struct scnhdr esecs[6];
+ 	int infile, outfile;
+-	unsigned long cur_vma = ULONG_MAX;
++	uint32_t cur_vma = UINT32_MAX;
+ 	int addflag = 0;
+ 	int nosecs;
+ 
+@@ -518,7 +518,7 @@ int main(int argc, char *argv[])
+ 
+ 		for (i = 0; i < nosecs; i++) {
+ 			printf
+-			    ("Section %d: %s phys %lx  size %lx	 file offset %lx\n",
++			    ("Section %d: %s phys %x  size %x	 file offset %x\n",
+ 			     i, esecs[i].s_name, esecs[i].s_paddr,
+ 			     esecs[i].s_size, esecs[i].s_scnptr);
+ 		}
+@@ -564,17 +564,16 @@ int main(int argc, char *argv[])
+ 		   the section can be loaded before copying. */
+ 		if (ph[i].p_type == PT_LOAD && ph[i].p_filesz) {
+ 			if (cur_vma != ph[i].p_vaddr) {
+-				unsigned long gap =
+-				    ph[i].p_vaddr - cur_vma;
++				uint32_t gap = ph[i].p_vaddr - cur_vma;
+ 				char obuf[1024];
+ 				if (gap > 65536) {
+ 					fprintf(stderr,
+-						"Intersegment gap (%ld bytes) too large.\n",
++						"Intersegment gap (%d bytes) too large.\n",
+ 						gap);
+ 					exit(1);
+ 				}
+ 				fprintf(stderr,
+-					"Warning: %ld byte intersegment gap.\n",
++					"Warning: %d byte intersegment gap.\n",
+ 					gap);
+ 				memset(obuf, 0, sizeof obuf);
+ 				while (gap) {
+-- 
+2.13.6

@@ -1,29 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 10:19:01 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:50111 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 17:53:30 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:50082 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992678AbeFDISlh97qv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jun 2018 10:18:41 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext-too.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 65505ACDD;
-        Mon,  4 Jun 2018 08:18:35 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] Make elf2ecoff work on 64bit host machines
-Date:   Mon,  4 Jun 2018 10:18:24 +0200
-Message-Id: <20180604081825.11995-1-tbogendoerfer@suse.de>
+        id S23994562AbeFDPxX05Vf9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jun 2018 17:53:23 +0200
+Received: from localhost.localdomain (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9786A20896;
+        Mon,  4 Jun 2018 15:53:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1528127596;
+        bh=oWJaCDLTi+igdzV+vF4jWbvfReFewdO7c6illdHDiUw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KDG3bRCSyjavjdNN0a8bQa7GEclrrAWk0aQsFMhxMmEqvPD8xjNRYHsqzZgpCBgUD
+         gtkJEHY095ZxHPrGgde8UTVYLRRQ/wR1WqbaRbUOig3fQwG8LlmbnwNXDrgeHdsDUB
+         KxH5ztM2D3bUtH9pYhtn23WBnFtuwDT8RW6qGriw=
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-arch@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [RFC PATCH -tip v5 09/27] MIPS: kprobes: Remove jprobe implementation
+Date:   Tue,  5 Jun 2018 00:52:52 +0900
+Message-Id: <152812757230.10068.6282345214798526578.stgit@devbox>
 X-Mailer: git-send-email 2.13.6
-Return-Path: <tbogendoerfer@suse.de>
+In-Reply-To: <152812730943.10068.5166429445118734697.stgit@devbox>
+References: <152812730943.10068.5166429445118734697.stgit@devbox>
+User-Agent: StGit/0.17.1-dirty
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <mhiramat@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64173
+X-archive-position: 64174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbogendoerfer@suse.de
+X-original-sender: mhiramat@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,184 +57,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use fixed width integer types for ecoff structs to make elf2ecoff work
-on 64bit host machines
+Remove arch dependent setjump/longjump functions
+and unused fields in kprobe_ctlblk for jprobes
+from arch/mips.
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
 ---
+ arch/mips/include/asm/kprobes.h |   13 -----------
+ arch/mips/kernel/kprobes.c      |   45 ---------------------------------------
+ 2 files changed, 58 deletions(-)
 
-v2: include stdint.h and use inttypes.h for printf formats
-
- arch/mips/boot/ecoff.h     | 58 +++++++++++++++++++++++-----------------------
- arch/mips/boot/elf2ecoff.c | 31 +++++++++++++------------
- 2 files changed, 45 insertions(+), 44 deletions(-)
-
-diff --git a/arch/mips/boot/ecoff.h b/arch/mips/boot/ecoff.h
-index b3e73c22c345..9eb4167ef979 100644
---- a/arch/mips/boot/ecoff.h
-+++ b/arch/mips/boot/ecoff.h
-@@ -3,13 +3,13 @@
-  * Some ECOFF definitions.
-  */
- typedef struct filehdr {
--	unsigned short	f_magic;	/* magic number */
--	unsigned short	f_nscns;	/* number of sections */
--	long		f_timdat;	/* time & date stamp */
--	long		f_symptr;	/* file pointer to symbolic header */
--	long		f_nsyms;	/* sizeof(symbolic hdr) */
--	unsigned short	f_opthdr;	/* sizeof(optional hdr) */
--	unsigned short	f_flags;	/* flags */
-+	uint16_t	f_magic;	/* magic number */
-+	uint16_t	f_nscns;	/* number of sections */
-+	int32_t		f_timdat;	/* time & date stamp */
-+	int32_t		f_symptr;	/* file pointer to symbolic header */
-+	int32_t		f_nsyms;	/* sizeof(symbolic hdr) */
-+	uint16_t	f_opthdr;	/* sizeof(optional hdr) */
-+	uint16_t	f_flags;	/* flags */
- } FILHDR;
- #define FILHSZ	sizeof(FILHDR)
- 
-@@ -18,32 +18,32 @@ typedef struct filehdr {
- 
- typedef struct scnhdr {
- 	char		s_name[8];	/* section name */
--	long		s_paddr;	/* physical address, aliased s_nlib */
--	long		s_vaddr;	/* virtual address */
--	long		s_size;		/* section size */
--	long		s_scnptr;	/* file ptr to raw data for section */
--	long		s_relptr;	/* file ptr to relocation */
--	long		s_lnnoptr;	/* file ptr to gp histogram */
--	unsigned short	s_nreloc;	/* number of relocation entries */
--	unsigned short	s_nlnno;	/* number of gp histogram entries */
--	long		s_flags;	/* flags */
-+	int32_t		s_paddr;	/* physical address, aliased s_nlib */
-+	int32_t		s_vaddr;	/* virtual address */
-+	int32_t		s_size;		/* section size */
-+	int32_t		s_scnptr;	/* file ptr to raw data for section */
-+	int32_t		s_relptr;	/* file ptr to relocation */
-+	int32_t		s_lnnoptr;	/* file ptr to gp histogram */
-+	uint16_t	s_nreloc;	/* number of relocation entries */
-+	uint16_t	s_nlnno;	/* number of gp histogram entries */
-+	int32_t		s_flags;	/* flags */
- } SCNHDR;
- #define SCNHSZ		sizeof(SCNHDR)
--#define SCNROUND	((long)16)
-+#define SCNROUND	((int32_t)16)
- 
- typedef struct aouthdr {
--	short	magic;		/* see above				*/
--	short	vstamp;		/* version stamp			*/
--	long	tsize;		/* text size in bytes, padded to DW bdry*/
--	long	dsize;		/* initialized data "  "		*/
--	long	bsize;		/* uninitialized data "	  "		*/
--	long	entry;		/* entry pt.				*/
--	long	text_start;	/* base of text used for this file	*/
--	long	data_start;	/* base of data used for this file	*/
--	long	bss_start;	/* base of bss used for this file	*/
--	long	gprmask;	/* general purpose register mask	*/
--	long	cprmask[4];	/* co-processor register masks		*/
--	long	gp_value;	/* the gp value used for this object	*/
-+	int16_t	magic;		/* see above				*/
-+	int16_t	vstamp;		/* version stamp			*/
-+	int32_t	tsize;		/* text size in bytes, padded to DW bdry*/
-+	int32_t	dsize;		/* initialized data "  "		*/
-+	int32_t	bsize;		/* uninitialized data "	  "		*/
-+	int32_t	entry;		/* entry pt.				*/
-+	int32_t	text_start;	/* base of text used for this file	*/
-+	int32_t	data_start;	/* base of data used for this file	*/
-+	int32_t	bss_start;	/* base of bss used for this file	*/
-+	int32_t	gprmask;	/* general purpose register mask	*/
-+	int32_t	cprmask[4];	/* co-processor register masks		*/
-+	int32_t	gp_value;	/* the gp value used for this object	*/
- } AOUTHDR;
- #define AOUTHSZ sizeof(AOUTHDR)
- 
-diff --git a/arch/mips/boot/elf2ecoff.c b/arch/mips/boot/elf2ecoff.c
-index 266c8137e859..b66eb3129e15 100644
---- a/arch/mips/boot/elf2ecoff.c
-+++ b/arch/mips/boot/elf2ecoff.c
-@@ -43,6 +43,8 @@
- #include <limits.h>
- #include <netinet/in.h>
- #include <stdlib.h>
-+#include <stdint.h>
-+#include <inttypes.h>
- 
- #include "ecoff.h"
- 
-@@ -55,8 +57,8 @@
- /* -------------------------------------------------------------------- */
- 
- struct sect {
--	unsigned long vaddr;
--	unsigned long len;
-+	uint32_t vaddr;
-+	uint32_t len;
+diff --git a/arch/mips/include/asm/kprobes.h b/arch/mips/include/asm/kprobes.h
+index ad1a99948f27..a72dfbf1babb 100644
+--- a/arch/mips/include/asm/kprobes.h
++++ b/arch/mips/include/asm/kprobes.h
+@@ -68,16 +68,6 @@ struct prev_kprobe {
+ 	unsigned long saved_epc;
  };
  
- int *symTypeTable;
-@@ -153,16 +155,16 @@ static char *saveRead(int file, off_t offset, off_t len, char *name)
+-#define MAX_JPROBES_STACK_SIZE 128
+-#define MAX_JPROBES_STACK_ADDR \
+-	(((unsigned long)current_thread_info()) + THREAD_SIZE - 32 - sizeof(struct pt_regs))
+-
+-#define MIN_JPROBES_STACK_SIZE(ADDR)					\
+-	((((ADDR) + MAX_JPROBES_STACK_SIZE) > MAX_JPROBES_STACK_ADDR)	\
+-		? MAX_JPROBES_STACK_ADDR - (ADDR)			\
+-		: MAX_JPROBES_STACK_SIZE)
+-
+-
+ #define SKIP_DELAYSLOT 0x0001
+ 
+ /* per-cpu kprobe control block */
+@@ -86,12 +76,9 @@ struct kprobe_ctlblk {
+ 	unsigned long kprobe_old_SR;
+ 	unsigned long kprobe_saved_SR;
+ 	unsigned long kprobe_saved_epc;
+-	unsigned long jprobe_saved_sp;
+-	struct pt_regs jprobe_saved_regs;
+ 	/* Per-thread fields, used while emulating branches */
+ 	unsigned long flags;
+ 	unsigned long target_epc;
+-	u8 jprobes_stack[MAX_JPROBES_STACK_SIZE];
+ 	struct prev_kprobe prev_kprobe;
+ };
+ 
+diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
+index f5c8bce70db2..efdcd0b1ce12 100644
+--- a/arch/mips/kernel/kprobes.c
++++ b/arch/mips/kernel/kprobes.c
+@@ -468,51 +468,6 @@ int __kprobes kprobe_exceptions_notify(struct notifier_block *self,
+ 	return ret;
  }
  
- #define swab16(x) \
--	((unsigned short)( \
--		(((unsigned short)(x) & (unsigned short)0x00ffU) << 8) | \
--		(((unsigned short)(x) & (unsigned short)0xff00U) >> 8) ))
-+	((uint16_t)( \
-+		(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
-+		(((uint16_t)(x) & (uint16_t)0xff00U) >> 8) ))
- 
- #define swab32(x) \
- 	((unsigned int)( \
--		(((unsigned int)(x) & (unsigned int)0x000000ffUL) << 24) | \
--		(((unsigned int)(x) & (unsigned int)0x0000ff00UL) <<  8) | \
--		(((unsigned int)(x) & (unsigned int)0x00ff0000UL) >>  8) | \
--		(((unsigned int)(x) & (unsigned int)0xff000000UL) >> 24) ))
-+		(((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) | \
-+		(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
-+		(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
-+		(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24) ))
- 
- static void convert_elf_hdr(Elf32_Ehdr * e)
- {
-@@ -274,7 +276,7 @@ int main(int argc, char *argv[])
- 	struct aouthdr eah;
- 	struct scnhdr esecs[6];
- 	int infile, outfile;
--	unsigned long cur_vma = ULONG_MAX;
-+	uint32_t cur_vma = UINT32_MAX;
- 	int addflag = 0;
- 	int nosecs;
- 
-@@ -518,7 +520,7 @@ int main(int argc, char *argv[])
- 
- 		for (i = 0; i < nosecs; i++) {
- 			printf
--			    ("Section %d: %s phys %lx  size %lx	 file offset %lx\n",
-+			    ("Section %d: %s phys %"PRIx32"  size %"PRIx32"	 file offset %x\n",
- 			     i, esecs[i].s_name, esecs[i].s_paddr,
- 			     esecs[i].s_size, esecs[i].s_scnptr);
- 		}
-@@ -564,17 +566,16 @@ int main(int argc, char *argv[])
- 		   the section can be loaded before copying. */
- 		if (ph[i].p_type == PT_LOAD && ph[i].p_filesz) {
- 			if (cur_vma != ph[i].p_vaddr) {
--				unsigned long gap =
--				    ph[i].p_vaddr - cur_vma;
-+				uint32_t gap = ph[i].p_vaddr - cur_vma;
- 				char obuf[1024];
- 				if (gap > 65536) {
- 					fprintf(stderr,
--						"Intersegment gap (%ld bytes) too large.\n",
-+						"Intersegment gap (%"PRId32" bytes) too large.\n",
- 						gap);
- 					exit(1);
- 				}
- 				fprintf(stderr,
--					"Warning: %ld byte intersegment gap.\n",
-+					"Warning: %d byte intersegment gap.\n",
- 					gap);
- 				memset(obuf, 0, sizeof obuf);
- 				while (gap) {
--- 
-2.13.6
+-int __kprobes setjmp_pre_handler(struct kprobe *p, struct pt_regs *regs)
+-{
+-	struct jprobe *jp = container_of(p, struct jprobe, kp);
+-	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+-
+-	kcb->jprobe_saved_regs = *regs;
+-	kcb->jprobe_saved_sp = regs->regs[29];
+-
+-	memcpy(kcb->jprobes_stack, (void *)kcb->jprobe_saved_sp,
+-	       MIN_JPROBES_STACK_SIZE(kcb->jprobe_saved_sp));
+-
+-	regs->cp0_epc = (unsigned long)(jp->entry);
+-
+-	return 1;
+-}
+-
+-/* Defined in the inline asm below. */
+-void jprobe_return_end(void);
+-
+-void __kprobes jprobe_return(void)
+-{
+-	/* Assembler quirk necessitates this '0,code' business.	 */
+-	asm volatile(
+-		"break 0,%0\n\t"
+-		".globl jprobe_return_end\n"
+-		"jprobe_return_end:\n"
+-		: : "n" (BRK_KPROBE_BP) : "memory");
+-}
+-
+-int __kprobes longjmp_break_handler(struct kprobe *p, struct pt_regs *regs)
+-{
+-	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+-
+-	if (regs->cp0_epc >= (unsigned long)jprobe_return &&
+-	    regs->cp0_epc <= (unsigned long)jprobe_return_end) {
+-		*regs = kcb->jprobe_saved_regs;
+-		memcpy((void *)kcb->jprobe_saved_sp, kcb->jprobes_stack,
+-		       MIN_JPROBES_STACK_SIZE(kcb->jprobe_saved_sp));
+-		preempt_enable_no_resched();
+-
+-		return 1;
+-	}
+-	return 0;
+-}
+-
+ /*
+  * Function return probe trampoline:
+  *	- init_kprobes() establishes a probepoint here

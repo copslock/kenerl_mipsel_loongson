@@ -1,45 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2018 22:13:01 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:40002 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994661AbeFDUMyVhoja (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jun 2018 22:12:54 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66F2220845;
-        Mon,  4 Jun 2018 20:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1528143167;
-        bh=5AtyzRELWiexrnbOIpFqp6aiaRnHT2jOgGYiiZnEuDU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GxG5N/hKwcUjdwQuf+joF6/xdKmRo2r1NmyIOq6pDupFsqvDvwOwVUjm0YPxEg+xr
-         oYTezWCliJ3XhEtjp/SgCfvcjvfPWBA7G+owNmQt7ZKEV60YXH7SKc+vGIMBa6p4Fv
-         ETzjkXWdXwGsKFfyZw0/FOz1GFSSK2vB5qY38pEw=
-Date:   Mon, 4 Jun 2018 21:12:43 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Simon Guinot <simon.guinot@sequanux.org>,
-        Paul Burton <paul.burton@mips.com>
-Subject: Re: [PATCH] MIPS: pb44: Fix i2c-gpio GPIO descriptor table
-Message-ID: <20180604201242.GA11664@jamesdev>
-References: <20180526171251.7653-1-linus.walleij@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2018 00:14:24 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:54495 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994691AbeFDWOQqog46 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2018 00:14:16 +0200
+Received: from mipsdag03.mipstec.com (mail3.mips.com [12.201.5.33]) by mx30.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 04 Jun 2018 22:14:05 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag03.mipstec.com
+ (10.20.40.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 4 Jun
+ 2018 15:14:12 -0700
+Received: from localhost (10.20.78.62) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Mon, 4 Jun
+ 2018 15:14:12 -0700
+Date:   Mon, 4 Jun 2018 15:14:04 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] Make elf2ecoff work on 64bit host machines
+Message-ID: <20180604221404.u55nor4sad6cfamb@pburton-laptop>
+References: <20180604081825.11995-1-tbogendoerfer@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jI8keyz6grp/JLjh"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20180526171251.7653-1-linus.walleij@linaro.org>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <jhogan@kernel.org>
+In-Reply-To: <20180604081825.11995-1-tbogendoerfer@suse.de>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1528150445-637140-27211-4561-1
+X-BESS-VER: 2018.7-r1805312038
+X-BESS-Apparent-Source-IP: 12.201.5.33
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193716
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: tbogendoerfer@suse.de,ralf@linux-mips.org,jhogan@kernel.org,linux-mips@linux-mips.org,linux-kernel@vger.kernel.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64179
+X-archive-position: 64180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,46 +59,213 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Thomas,
 
---jI8keyz6grp/JLjh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, May 26, 2018 at 07:12:51PM +0200, Linus Walleij wrote:
-> I used bad names in my clumsiness when rewriting many board
-> files to use GPIO descriptors instead of platform data. A few
-> had the platform_device ID set to -1 which would indeed give
-> the device name "i2c-gpio".
->=20
-> But several had it set to >=3D0 which gives the names
-> "i2c-gpio.0", "i2c-gpio.1" ...
->=20
-> Fix the one affected board in the MIPS tree. Sorry.
->=20
-> Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Wolfram Sang <wsa@the-dreams.de>
-> Cc: Simon Guinot <simon.guinot@sequanux.org>
-> Reported-by: Simon Guinot <simon.guinot@sequanux.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+On Mon, Jun 04, 2018 at 10:18:24AM +0200, Thomas Bogendoerfer wrote:
+> Use fixed width integer types for ecoff structs to make elf2ecoff work
+> on 64bit host machines
+> 
+> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 > ---
-> Ralf can you please apply this for MIPS fixes?
+> 
+> v2: include stdint.h and use inttypes.h for printf formats
+> 
+>  arch/mips/boot/ecoff.h     | 58 +++++++++++++++++++++++-----------------------
+>  arch/mips/boot/elf2ecoff.c | 31 +++++++++++++------------
+>  2 files changed, 45 insertions(+), 44 deletions(-)
+> 
+> diff --git a/arch/mips/boot/ecoff.h b/arch/mips/boot/ecoff.h
+> index b3e73c22c345..9eb4167ef979 100644
+> --- a/arch/mips/boot/ecoff.h
+> +++ b/arch/mips/boot/ecoff.h
+> @@ -3,13 +3,13 @@
+>   * Some ECOFF definitions.
+>   */
+>  typedef struct filehdr {
+> -	unsigned short	f_magic;	/* magic number */
+> -	unsigned short	f_nscns;	/* number of sections */
+> -	long		f_timdat;	/* time & date stamp */
+> -	long		f_symptr;	/* file pointer to symbolic header */
+> -	long		f_nsyms;	/* sizeof(symbolic hdr) */
+> -	unsigned short	f_opthdr;	/* sizeof(optional hdr) */
+> -	unsigned short	f_flags;	/* flags */
+> +	uint16_t	f_magic;	/* magic number */
+> +	uint16_t	f_nscns;	/* number of sections */
+> +	int32_t		f_timdat;	/* time & date stamp */
+> +	int32_t		f_symptr;	/* file pointer to symbolic header */
+> +	int32_t		f_nsyms;	/* sizeof(symbolic hdr) */
+> +	uint16_t	f_opthdr;	/* sizeof(optional hdr) */
+> +	uint16_t	f_flags;	/* flags */
+>  } FILHDR;
+>  #define FILHSZ	sizeof(FILHDR)
+>  
+> @@ -18,32 +18,32 @@ typedef struct filehdr {
+>  
+>  typedef struct scnhdr {
+>  	char		s_name[8];	/* section name */
+> -	long		s_paddr;	/* physical address, aliased s_nlib */
+> -	long		s_vaddr;	/* virtual address */
+> -	long		s_size;		/* section size */
+> -	long		s_scnptr;	/* file ptr to raw data for section */
+> -	long		s_relptr;	/* file ptr to relocation */
+> -	long		s_lnnoptr;	/* file ptr to gp histogram */
+> -	unsigned short	s_nreloc;	/* number of relocation entries */
+> -	unsigned short	s_nlnno;	/* number of gp histogram entries */
+> -	long		s_flags;	/* flags */
+> +	int32_t		s_paddr;	/* physical address, aliased s_nlib */
+> +	int32_t		s_vaddr;	/* virtual address */
+> +	int32_t		s_size;		/* section size */
+> +	int32_t		s_scnptr;	/* file ptr to raw data for section */
+> +	int32_t		s_relptr;	/* file ptr to relocation */
+> +	int32_t		s_lnnoptr;	/* file ptr to gp histogram */
+> +	uint16_t	s_nreloc;	/* number of relocation entries */
+> +	uint16_t	s_nlnno;	/* number of gp histogram entries */
+> +	int32_t		s_flags;	/* flags */
+>  } SCNHDR;
+>  #define SCNHSZ		sizeof(SCNHDR)
+> -#define SCNROUND	((long)16)
+> +#define SCNROUND	((int32_t)16)
+>  
+>  typedef struct aouthdr {
+> -	short	magic;		/* see above				*/
+> -	short	vstamp;		/* version stamp			*/
+> -	long	tsize;		/* text size in bytes, padded to DW bdry*/
+> -	long	dsize;		/* initialized data "  "		*/
+> -	long	bsize;		/* uninitialized data "	  "		*/
+> -	long	entry;		/* entry pt.				*/
+> -	long	text_start;	/* base of text used for this file	*/
+> -	long	data_start;	/* base of data used for this file	*/
+> -	long	bss_start;	/* base of bss used for this file	*/
+> -	long	gprmask;	/* general purpose register mask	*/
+> -	long	cprmask[4];	/* co-processor register masks		*/
+> -	long	gp_value;	/* the gp value used for this object	*/
+> +	int16_t	magic;		/* see above				*/
+> +	int16_t	vstamp;		/* version stamp			*/
+> +	int32_t	tsize;		/* text size in bytes, padded to DW bdry*/
+> +	int32_t	dsize;		/* initialized data "  "		*/
+> +	int32_t	bsize;		/* uninitialized data "	  "		*/
+> +	int32_t	entry;		/* entry pt.				*/
+> +	int32_t	text_start;	/* base of text used for this file	*/
+> +	int32_t	data_start;	/* base of data used for this file	*/
+> +	int32_t	bss_start;	/* base of bss used for this file	*/
+> +	int32_t	gprmask;	/* general purpose register mask	*/
+> +	int32_t	cprmask[4];	/* co-processor register masks		*/
+> +	int32_t	gp_value;	/* the gp value used for this object	*/
+>  } AOUTHDR;
+>  #define AOUTHSZ sizeof(AOUTHDR)
+>  
+> diff --git a/arch/mips/boot/elf2ecoff.c b/arch/mips/boot/elf2ecoff.c
+> index 266c8137e859..b66eb3129e15 100644
+> --- a/arch/mips/boot/elf2ecoff.c
+> +++ b/arch/mips/boot/elf2ecoff.c
+> @@ -43,6 +43,8 @@
+>  #include <limits.h>
+>  #include <netinet/in.h>
+>  #include <stdlib.h>
+> +#include <stdint.h>
 
-Thanks (and sorry this missed 4.17). Now applied.
+Could you move the #include <stdint.h> into ecoff.h? Since ecoff.h
+itself makes use of these types. I know the end result will be the same,
+but if anything else were ever to include ecoff.h then having the right
+includes there could make that easier.
 
-Cheers
-James
+And I know that's unlikely to happen given that new platforms are
+unlikely to use this but still, good practice.
 
---jI8keyz6grp/JLjh
-Content-Type: application/pgp-signature; name="signature.asc"
+> +#include <inttypes.h>
+>  
+>  #include "ecoff.h"
+>  
+> @@ -55,8 +57,8 @@
+>  /* -------------------------------------------------------------------- */
+>  
+>  struct sect {
+> -	unsigned long vaddr;
+> -	unsigned long len;
+> +	uint32_t vaddr;
+> +	uint32_t len;
+>  };
+>  
+>  int *symTypeTable;
+> @@ -153,16 +155,16 @@ static char *saveRead(int file, off_t offset, off_t len, char *name)
+>  }
+>  
+>  #define swab16(x) \
+> -	((unsigned short)( \
+> -		(((unsigned short)(x) & (unsigned short)0x00ffU) << 8) | \
+> -		(((unsigned short)(x) & (unsigned short)0xff00U) >> 8) ))
+> +	((uint16_t)( \
+> +		(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
+> +		(((uint16_t)(x) & (uint16_t)0xff00U) >> 8) ))
+>  
+>  #define swab32(x) \
+>  	((unsigned int)( \
+> -		(((unsigned int)(x) & (unsigned int)0x000000ffUL) << 24) | \
+> -		(((unsigned int)(x) & (unsigned int)0x0000ff00UL) <<  8) | \
+> -		(((unsigned int)(x) & (unsigned int)0x00ff0000UL) >>  8) | \
+> -		(((unsigned int)(x) & (unsigned int)0xff000000UL) >> 24) ))
+> +		(((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) | \
+> +		(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
+> +		(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
+> +		(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24) ))
+>  
+>  static void convert_elf_hdr(Elf32_Ehdr * e)
+>  {
+> @@ -274,7 +276,7 @@ int main(int argc, char *argv[])
+>  	struct aouthdr eah;
+>  	struct scnhdr esecs[6];
+>  	int infile, outfile;
+> -	unsigned long cur_vma = ULONG_MAX;
+> +	uint32_t cur_vma = UINT32_MAX;
+>  	int addflag = 0;
+>  	int nosecs;
+>  
+> @@ -518,7 +520,7 @@ int main(int argc, char *argv[])
+>  
+>  		for (i = 0; i < nosecs; i++) {
+>  			printf
+> -			    ("Section %d: %s phys %lx  size %lx	 file offset %lx\n",
+> +			    ("Section %d: %s phys %"PRIx32"  size %"PRIx32"	 file offset %x\n",
 
------BEGIN PGP SIGNATURE-----
+The offset (s_scnptr) format should probably be PRIx32 as well.
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWxWdOAAKCRA1zuSGKxAj
-8t7BAQCwN8M+ecFypYeIfe2z3Ii1NGBx9u94MPPKnUUUJP0wkwEAgQmGZTR+g//w
-yGiZjWZYWzk0Vzgnat2lwlCr5V64YAk=
-=Jzxd
------END PGP SIGNATURE-----
+I know you didn't introduce it but I think the tab before "file" in the
+string would be better represented in source using \t rather than the
+tab character itself, so perhaps you could change that for clarify here
+which would also avoid making the line so long.
 
---jI8keyz6grp/JLjh--
+Apart from those niggles:
+
+    Reviewed-by: Paul Burton <paul.burton@mips.com>
+
+Thanks,
+    Paul
+
+>  			     i, esecs[i].s_name, esecs[i].s_paddr,
+>  			     esecs[i].s_size, esecs[i].s_scnptr);
+>  		}
+> @@ -564,17 +566,16 @@ int main(int argc, char *argv[])
+>  		   the section can be loaded before copying. */
+>  		if (ph[i].p_type == PT_LOAD && ph[i].p_filesz) {
+>  			if (cur_vma != ph[i].p_vaddr) {
+> -				unsigned long gap =
+> -				    ph[i].p_vaddr - cur_vma;
+> +				uint32_t gap = ph[i].p_vaddr - cur_vma;
+>  				char obuf[1024];
+>  				if (gap > 65536) {
+>  					fprintf(stderr,
+> -						"Intersegment gap (%ld bytes) too large.\n",
+> +						"Intersegment gap (%"PRId32" bytes) too large.\n",
+>  						gap);
+>  					exit(1);
+>  				}
+>  				fprintf(stderr,
+> -					"Warning: %ld byte intersegment gap.\n",
+> +					"Warning: %d byte intersegment gap.\n",
+>  					gap);
+>  				memset(obuf, 0, sizeof obuf);
+>  				while (gap) {
+> -- 
+> 2.13.6
+> 
+> 

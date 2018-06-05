@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2018 17:45:49 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:45438 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2018 19:03:56 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:53880 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994709AbeFEPpllq6zI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jun 2018 17:45:41 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        id S23994717AbeFERDs2eKzk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jun 2018 19:03:48 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 032242075E;
-        Tue,  5 Jun 2018 15:45:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F0092075E;
+        Tue,  5 Jun 2018 17:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1528213535;
-        bh=FhAglVYBLB9e+ENrLGQQmTHRFLinlacm6uJZ+y4AYHI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Bmt/V8DC7g9y12lMPs8UhC2Uh95KyRcZJ2NJ/XfDkWVjFfy2e//Oo5RuBO5bpdoJS
-         afnL5thMwKnGLiwPDYDLvNMlZZh30mbv9fI/H5NfblszKTnWV3eO2YPLpu2tul49pY
-         X4kDYIT8Z/qJimP0026vSY2yI8JmCq2C+oVlATBM=
-Date:   Tue, 5 Jun 2018 16:45:30 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Cc:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v5 1/1] MIPS: BCM47XX: Enable MIPS32 74K Core
- ExternalSync for BCM47XX PCIe erratum
-Message-ID: <20180605154529.GA19361@jamesdev>
-References: <20180603140201.10593-1-ikegami@allied-telesis.co.jp>
- <20180603140201.10593-2-ikegami@allied-telesis.co.jp>
+        s=default; t=1528218221;
+        bh=ljHJJ9xuo5se0vY+1IZxpRkowzD1QaWaBfowqDjKgUU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=njGcOMc/gS5Z1eKPOYieqr3vn9WVskX9u1TXCgsOOtxEiFZ6vsnzCKxP94taKFQF7
+         sqKPwxFPCbcWakArnIDCntqnwuryL/H4wgGfroCpZ+oXI5l6R+onFREbp0/MLYWI75
+         DKMjnswZ+bahZmmIepZtwiFFNuA/lw5gMcqGUTKs=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.4 26/37] MIPS: ptrace: Fix PTRACE_PEEKUSR requests for 64-bit FGRs
+Date:   Tue,  5 Jun 2018 19:01:31 +0200
+Message-Id: <20180605170110.400512984@linuxfoundation.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20180605170108.884872354@linuxfoundation.org>
+References: <20180605170108.884872354@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
-Content-Disposition: inline
-In-Reply-To: <20180603140201.10593-2-ikegami@allied-telesis.co.jp>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <jhogan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <SRS0=vjBF=IX=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64192
+X-archive-position: 64193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,63 +52,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
---cNdxnHkX5QqsyA0e
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------------------
 
-On Sun, Jun 03, 2018 at 11:02:01PM +0900, Tokunori Ikegami wrote:
-> The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as bel=
-ow.
->=20
->   R10: PCIe Transactions Periodically Fail
->=20
->     Description: The BCM5300X PCIe does not maintain transaction ordering.
->                  This may cause PCIe transaction failure.
->     Fix Comment: Add a dummy PCIe configuration read after a PCIe
->                  configuration write to ensure PCIe configuration access
->                  ordering. Set ES bit of CP0 configu7 register to enable
->                  sync function so that the sync instruction is functional.
->     Resolution:  hndpci.c: extpci_write_config()
->                  hndmips.c: si_mips_init()
->                  mipsinc.h CONF7_ES
->=20
-> This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
-> Also the dummy PCIe configuration read is already implemented in the Linux
-> BCMA driver.
-> Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=3Dy
-> too so that the sync instruction is externalised.
->=20
-> Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-> Reviewed-by: Paul Burton <paul.burton@mips.com>
-> Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> Cc: Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com>
-> Cc: linux-mips@linux-mips.org
+From: Maciej W. Rozycki <macro@mips.com>
 
-I presume this patch is ready to apply now (thanks for the reviews
-folks).
+commit c7e814628df65f424fe197dde73bfc67e4a244d7 upstream.
 
-How far back does this need backporting to stable branches?
+Use 64-bit accesses for 64-bit floating-point general registers with
+PTRACE_PEEKUSR, removing the truncation of their upper halves in the
+FR=1 mode, caused by commit bbd426f542cb ("MIPS: Simplify FP context
+access"), which inadvertently switched them to using 32-bit accesses.
 
-It applies easily back to 3.14 I think (commit 3c06b12b046e ("MIPS:
-BCM47XX: fix position of cpu_wait disabling")), but you mentioned other
-fixes too. Have those been backported too, and if not is there any point
-backporting this?
+The PTRACE_POKEUSR side is fine as it's never been broken and continues
+using 64-bit accesses.
 
-Thanks
-James
+Fixes: bbd426f542cb ("MIPS: Simplify FP context access")
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.15+
+Patchwork: https://patchwork.linux-mips.org/patch/19334/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
---cNdxnHkX5QqsyA0e
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+ arch/mips/kernel/ptrace.c   |    2 +-
+ arch/mips/kernel/ptrace32.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWxawGAAKCRA1zuSGKxAj
-8hiDAQD+wF1+KUdI3AtFXaROQoc+yipyveQcpF2P01C9MSdkNgEA1Gobq2cGd6HP
-rcNiY2GZMSgrz6bMMAjsHi6AeHsaMgY=
-=vpLx
------END PGP SIGNATURE-----
-
---cNdxnHkX5QqsyA0e--
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -841,7 +841,7 @@ long arch_ptrace(struct task_struct *chi
+ 				break;
+ 			}
+ #endif
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -107,7 +107,7 @@ long compat_arch_ptrace(struct task_stru
+ 						addr & 1);
+ 				break;
+ 			}
+-			tmp = get_fpr32(&fregs[addr - FPR_BASE], 0);
++			tmp = get_fpr64(&fregs[addr - FPR_BASE], 0);
+ 			break;
+ 		case PC:
+ 			tmp = regs->cp0_epc;

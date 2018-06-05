@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2018 07:49:32 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2018 07:49:47 +0200 (CEST)
 Received: from mail-co1nam03on0040.outbound.protection.outlook.com ([104.47.40.40]:11990
         "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993016AbeFEFtVSz2FB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jun 2018 07:49:21 +0200
+        id S23994695AbeFEFt0gRVJB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jun 2018 07:49:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FG0EKOXyskkOM9W+YdYSCNyt0xsV6XW66f17Zn333Iw=;
- b=EfD+Z0oYAGS95x12BAPAC06Gf8p7KJ9TSGW3bIxSA8m8gfa3RxvKJuCv8i3qqA5yJZp8VvvFg/aIxrejkRmudqKRDBbyWUcidIhON5H7cb8FMDzMpOEg3tJzYjItagFjpQ4yAFTn6shnuS9BjFjugWDk/MHFF0J9O74sGlJji9M=
+ bh=cw+7FZ/Vl4FYV3byQq9eed3Y54PYkT4e2mNHWsEr7LY=;
+ b=GXZIZaHJBPrkJ5TW88NOIZtzVugCQIRGJ6AHcjVhVlFFvGhu0SuSvB/QGaevqMrWvFB3VWunxZzkhSdObEmCwSUWgjmLvZ0Ey44O1R3eMrlrNhl4mswScNj9wRZeNKRdTotHeuowg79fPfpxwaVAq33qq39jxbAPBIHCL858m0c=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.caveonetworks.com (12.108.191.226) by
  SN1PR07MB3966.namprd07.prod.outlook.com (2603:10b6:802:26::14) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.820.14; Tue, 5 Jun 2018 05:49:09 +0000
+ 15.20.820.14; Tue, 5 Jun 2018 05:49:13 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
-Subject: [PATCH v7 0/8] Add Octeon Hotplug CPU Support.
-Date:   Tue,  5 Jun 2018 00:24:49 -0500
-Message-Id: <1528176297-21697-1-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH v7 3/8] MIPS: Octeon: Properly use sysinfo header file.
+Date:   Tue,  5 Jun 2018 00:24:52 -0500
+Message-Id: <1528176297-21697-4-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1528176297-21697-1-git-send-email-steven.hill@cavium.com>
+References: <1528176297-21697-1-git-send-email-steven.hill@cavium.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [12.108.191.226]
@@ -29,48 +31,49 @@ X-ClientProxiedBy: SN1PR0701CA0012.namprd07.prod.outlook.com
  (2603:10b6:802:26::14)
 X-MS-PublicTrafficType: Email
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(5600026)(4534165)(4627221)(201703031133081)(201702281549075)(2017052603328)(7153060)(7193020);SRVR:SN1PR07MB3966;
-X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;3:1rStL7lReJFzOTwi/qeYod9Df287pFJBlDiAkkuryix7lKYir9BKyLmifbZSJG8sZR5enSwYFYcIn48JQMydQA5e20UejotAt0OpW62OYdEn8Sf54SUOhSapSeOMV3+02RMIo2z3lQq40TVB8F/oUaQQZS69sTkxBw1A5RcIysEStR8rnZ4Bl24yeF1J08YkXz1hgz+V5kQ+k6BMVLYKY7gqdo6/38rSy9tuEdYNtqNjp9+W9WZc6EnOL2V90hw/;25:5Tn/g0PBCM9BaPzZFKfUiSKD3Xf1IVjnofhGL+Q2wQU4cn10wiCGG1BKJMl2/BGVN+zjWvxwSaxlH38xRDNXidPx5yenCWwSVgc5pvz7eZpnZOVuI9e4S2EjYtiQzTswR+Ls40yulAA+P4BdZfRg0Nh3GJF7Ap7/1785AM3qfQryEnGOtKf/sVbpsK2ZBqkgI2OoZMmUU1FAVTfoKIFmrbT8L3zXUkcDFugMfIy8HGxaa/r5IXLUVwJnRmsBiAmno+zBMrEDwF/N+5hr3yoxCisrej7i335EiuRuQHHfgG+sGbSyzAD99+P2EhxRf14LQziaL6klT+Cd1wgEGJVZ0g==;31:nyfpmtkulMfdw3GQxdw/raeX/a2r2kQpG5t7M7bzqHeWhVBaqXWWdOrPsZb0ONo0B6twDXrOBXxkpV9eL+OZ2L969u7ViM6cN5VE8GyfcTELSXmV0JCucurgdsKjiM9N/jOKmUBfXYnTb9rBvoswRVZgGIrY9gKedhgYxTbuG3khp73+DHJTbqmwf4+R4CtvUoQG2tPrFdwZJFE7ATCxKjbeYUGMq76kdE0tI+LJZ9A=
+X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;3:hDfqNsM6NSehY9NFeGDFyuebj9sfY2h65O9phRjAcSuqP8Q1saWCxOiHAQ7wMrbzp+Yr1SFNX6Ev2goOoPLnNL1Fvg3rwq67npMy06aBFPiLn0qSS1y7zvLVcqAW/T/LB6JfdVRdW01GunBoKklaF/C0gBsJcoHamulw02gOAl4SHr/wP8gerh8Vo5/BKYcSfw+WmuCuMuX2QRyPA+a1UcMt5Z6I/oZjjzfDSjgMbCiorqX6N2WetMS5oe5kZVgz;25:WiHjT+R4QJaQzMy7NyHsukhhiXVvzlzGM2MMIFxOKYGn2QK+FtnowcuCnTGz4meHT/y+W5Qd2k5QR6rVdeMQ3i90cd3+L8hoVp86ps8vRwP0VLSZtYLrxuQLc0PmkYEoiZBq+u8efxunFhkAjON2GZ/LoBQVBg12cS6IVGOIGcyK/rYzXooc+EEa+2aO8ZCX6I7FuWVQDiKcav8zkTHqAgmK1bw6lci5NwZ2x0obKrJ7qxVdGr10Q2WX2VGmDrgHmwXFxWOIcWCmb8996C4/1vnRH9nhQKhQEo871n+nWor9KeBWp24pE/TDJlSpRnmgw2YCFuf7XAFQEteteID8wA==;31:B66d40HNb9vRg7xAe1mBHAKKp25R5o1JGppcJVnDHemyW4sieRgmC6A8MY37NPVY7kCFi/r8qnwE169TtoFK3nYmN+DxeERDLUC8sAu162f4L0MmVB6flKBOJqx4es2Fbs1y9IVgL33P0aJ4FPgiPB6LynmFyzAGJVWb2/bx71zf67Loag6bQWd4SvOl8KdjFREwfk1zGcaw/VIc64n6YGB5Of6KNjb2C5Bty6iJa+c=
 X-MS-TrafficTypeDiagnostic: SN1PR07MB3966:
-X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;20:ojjIPepSlQWnJPeXttGaKoeWXDrK8HOQXSWieiTz1Nd463pmjE8S7kCuLqk7oLKVQmU2w5i2uOCWJqDXmiWuyo4NzjguPr/BDO8Bj6IixJou8YTlL86enVFG36seU2LkQ6GpOPdlBSEFjxqwS84ilRI7YNvbEPQzkdVOSmVmxOUOmi2cwmvQLuZw+en4cTnognlHbOOpLH5KrgEoT9+xMdOz9bWa49ZaURTOG6q2C/X5oq28MlZFd7tAo6cxeCN0T4PBUyB8Fs4TEEXHFiGyy4rQYRHr7qErtvcvbUJ8+Tz2s1aiES+tJCJ156jlhEb1BUBWFLgrMLtlTzVZYH5iw+hD9Lvo3dC1Bwf3PV6lxpeBa1IBzG20jsQvgkeevi/Z7vhKsuQfFRMTzicHsKBXx2hP5i5wcwy6x4ArK+vGdLw7f2dC06OrsSKQ1oGXSfTSj6STt8JtcoBvPy8LCljwLe8K+hbCBM1a7yl82r3auFdxcJgupsrWZowGXLjv6B5s;4:gfbJyDinNBMl2LDoldXTvkbVDjVXF/dBL/EAu5oHdtd5TrLXcepCwMPCTmoc8HFvZlzKN8QLUdygqf35YzN6EDZ/NhYWBZoMHvnKSa/Rr4D0Dp1bXoeCct24ih3SXfDZtlm0Sv9qMJIgzIAk8PsfB0hD0BzCc59fnXzzCyCuljCB6szjCPXCS05Kkg3btkHZPKIXHo+qAivdqCknZgu40kJJL5ysmy4NGh2n3386NLSWcckaq7zjRw71+7rFPmYncwFH5EjnPhxtFJ3N20mQZQ==
-X-Microsoft-Antispam-PRVS: <SN1PR07MB39662FD29601B006858889A280660@SN1PR07MB3966.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;20:oJxCOIQyoFvkTr4lvGtDkMS0Zr5/4ms4lUMGeaOf3iLEMetNZ094DPZau3JYgz/kGHCrEtfww6XfDufmrGznHedNFTM80+hJurzLGYZLvryeL7Hu2TeS8XP4etaBeX3WmtaV1XL3Tomkc2pKUKN44bBc+V4ihd4i9VKXZhMxFfePimyAAfChVv3/il+ys2H5cB0pvvdTQV/g5WCmpEqEuj4rxszdFdr64CELY+yZVaiHsOdRJ0nXFTaygVylRyk/hI7XbCq6fllXzwoZG8PLDuihW3uuSxMQzV7g1raXnFnbT7yf/Kas04aefu4AvwTe2IiNHcaIm38vvB2zPslrOmAF9jpoHk0rnITjyK3lpQD/raJqMgc/SkJQCRXp8jw9egGYVlCcGnFqWd/Blfz/diw77rwiHppLXwBDOISLBg2SqhVCye1pMgU+/ibP11+mHUlVgNz59rM++xVdeEYbC/qNsp1xE7+CS9+ABxwszBvfMoL/bMCIsd4GSe0Ti8e7;4:7kUb1ymnMgsSj2/A7kKduXd/M3B7Me1vREdcYiCxb2Q+PDkQSzFvrR8K+fsIpGSuYLOzTBu+2XSBNly0ZVzhEwzF9hSStx674LWCfkBwHcrVDL/C68omGTi5XUtLebcQsLiMjWg97NF8vIXoJGmxmY/O+i+SNUlUhW38PJ2NyAlczTXhdn43/xzcHswnfp2+/S29dNTL0Ay0f5/TMrZQ0ZvQE4t4JvcP8tYCsxPsJqmI8EGIgthfJabUZyDtIcFtO+mA4tvO8nbLcDagKyxkcw==
+X-Microsoft-Antispam-PRVS: <SN1PR07MB396602DCC441B5A0358536D880660@SN1PR07MB3966.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(5005006)(8121501046)(3002001)(3231254)(944501410)(52105095)(10201501046)(93006095)(93001095)(149027)(150027)(6041310)(20161123564045)(20161123558120)(20161123560045)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:SN1PR07MB3966;BCL:0;PCL:0;RULEID:;SRVR:SN1PR07MB3966;
 X-Forefront-PRVS: 0694C54398
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(396003)(366004)(39380400002)(376002)(39860400002)(346002)(199004)(189003)(316002)(8936002)(956004)(16526019)(53936002)(478600001)(476003)(50226002)(2616005)(53416004)(186003)(386003)(25786009)(72206003)(3846002)(6506007)(26005)(6116002)(5660300001)(66066001)(305945005)(48376002)(6916009)(7736002)(59450400001)(50466002)(486006)(6666003)(47776003)(97736004)(52116002)(2351001)(6512007)(105586002)(86362001)(2906002)(8676002)(106356001)(69596002)(81166006)(81156014)(2361001)(6486002)(36756003)(51416003)(68736007)(16586007);DIR:OUT;SFP:1101;SCL:1;SRVR:SN1PR07MB3966;H:black.caveonetworks.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(396003)(366004)(39380400002)(376002)(39860400002)(346002)(199004)(189003)(316002)(11346002)(8936002)(956004)(16526019)(53936002)(478600001)(476003)(50226002)(2616005)(446003)(53416004)(186003)(386003)(25786009)(72206003)(3846002)(6506007)(26005)(6116002)(5660300001)(66066001)(305945005)(48376002)(6916009)(7736002)(59450400001)(50466002)(486006)(6666003)(47776003)(97736004)(52116002)(2351001)(6512007)(105586002)(86362001)(2906002)(8676002)(106356001)(69596002)(76176011)(81166006)(81156014)(2361001)(6486002)(36756003)(51416003)(68736007)(16586007)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN1PR07MB3966;H:black.caveonetworks.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN1PR07MB3966;23:T7Yc1g5NAbIXmUSl3eWZJ/Y3OFkZOtVl5wd41yYFA?=
- =?us-ascii?Q?I9W2/xmEJH6DB/cUKRwFNhQIYqDX1E4EQitsEn/sPNb84S6Hsef27R9Dg3CU?=
- =?us-ascii?Q?j6p86HjPj04xse02uBARBylxJ7IY4y7zN21+kE+/ZfCqPw3/gdEDrePVwsxd?=
- =?us-ascii?Q?QAeBDfPEwwUhMepxju2IHt+uRZO1aHnfx0N6vOR0UgDeZ292rcOoR4DY13Wl?=
- =?us-ascii?Q?5lx21P0fYjtfxX+GqpCFoHKP8n6YABlP6+S6AFeHfnMiWQHhtqTIxcyoXt24?=
- =?us-ascii?Q?/k9AD+NEmKjm2yYtoREAIBWbnnOGFnCLHzEaQ1Eu6rA/F1UPW1NRmuzbeJQM?=
- =?us-ascii?Q?toM8m+9T7kHxHBeRAy2UJ4v6H+zWCpYN5G+b01GTaPULFMiiXIcUyURexLAk?=
- =?us-ascii?Q?YxRHZ5MKKFOsivn+mhqqDFHS+dp8S2Ngpaxhi8FpWk7BerBDKq+NRHQkbE0o?=
- =?us-ascii?Q?aKYQ2efyVggA38nT1O2a2AAcKMvlq0B79NYXZ17be3dICtErhIKbgh7krRms?=
- =?us-ascii?Q?wzMNHO4I9zFvsxbuyVXGUUktgYBl35E1YZUsAZ9XerwwH5iicvKxr218uT3K?=
- =?us-ascii?Q?boQFGPwUdXNFBzwfmd2l2lonGiF0QtaN3McBmWNhj8NWAcvP8QDur4wtLNZK?=
- =?us-ascii?Q?3575kgr/SMzghQ+U36EB01kVViVaKyH5m+UKB4hlfVi+LHOhudtXUUfsvCw+?=
- =?us-ascii?Q?8BJr7UG6cF4Tf4IY7exslNztqqA6n8vRFm0Vh0l1mPZ+tCw4CTx1ULYxJKcF?=
- =?us-ascii?Q?cPMsASLv6ysOf2ytwJ7MpUZRCiR6BX0QTqI0hTR19XxBpb5C4SSExnX2cw1D?=
- =?us-ascii?Q?MT3v7O/nR1RCEVK96MOTI0zKDrugKD9fOjkrMiAW5l1NlPrISfEGqasKKfZa?=
- =?us-ascii?Q?6zCgKk4pSf3EHGvxgPoWmGkHRAhRJaEKOrdvnYu+8BRYseyRh5esSwrHXDhL?=
- =?us-ascii?Q?Cr/VuLTWDptJvwt3XCoGKw3pCyckvv8NEm14yYexV1yRKdEMFlTu38LcPWhm?=
- =?us-ascii?Q?TALAnSzLZ2X3zv68qRw3ZhoF5ovs3pphfcNQ6GiDsn7IPwmEZstZs+RFoy7J?=
- =?us-ascii?Q?Nwksjrzge8lkkM4ez2LMEQdNqte68VzD+b7ZCKYe3WkJ8MWqfsrforz8fVv7?=
- =?us-ascii?Q?LirqCaYJQdyxWdtckNqZLgx5ndrL0fzZXSYk3AaLkd7oLFGke/kUXafwp48Z?=
- =?us-ascii?Q?GmkIGdJSERwGMpKoUz6MP8C+jwvtif5RSOqbqKAIzNdNySZq7MUI3dQKw=3D?=
- =?us-ascii?Q?=3D?=
-X-Microsoft-Antispam-Message-Info: 6zLId4HFDzaK+ZhnDrj1vSPj9/QeO1Oi6LrKY7NV2O+VntMy1KoTVrTGp3BO68E+bqkuAgRWTS5pA9PgRpX3iYU2O3NaNlrfkvvmIXL7gW2fdfduwKS2qK3faZP6nF9y7px+KbR8+HhrYXAwEX9SjBTDd3MqHsbDvauyg3ajlm4E5ty7uarjH21NSTuM1Ae4
-X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;6:UcE7rk90T/cx78mq8fT73qsxuB7oIKoRHfn2wwkpdXAL6i0WJsDvpuSZJmgtCZ1MVGQCD6do31OTbZFvSKCtgSXhcWXCTPr8C98NfFdoyi0NIf+QVa3BtDqMZDUAyH0PGntEDdAUTw+fBSklvFgi8qwqz/51APikxetCRCakWsZpsw0nBM2RMLDscnoR5pME0uUU5Okl5qTs2wQdaEMeTs6iu2LSMfs+sXpk5kSO8ZzksTZYwKTW1QeBJFSF83okStZGbDV2BGz6Q6kM6WVBlYYI7wcmyKAQ4Qv4y2hw3AvE1aT3hPXO+Jy4m4Y1eX6oC/+6Xba/17p4n9EqoXkwR01n5wkTaIewyLA6B5BlC6ppKHrnduKSc2zOs1Ki1DJNiRiEMjHEfjcsx9TwdPiRInJqFSJw8+kMwHu2pIY6O+mz6ZczDVZsVS26DIPK0i7OltmzS+2XfghcYt99hfgKdw==;5:zQ488mzPtwkBBRByEe3VvSl+ZIT5RMpTtQFdN+urkNBeiscw951rUh1bjBxEda5SwkfZUV80XBONBtUo9E2xxKSZkCbgcAvrAExqyjwNhq9NKXA6bPg4264/JoDmpQq4XJNK4JZaAiStTk/4iOBHrIBggU1XkP/IjFZnVJaPYsQ=;24:XLAUbVper+Oa5Ae8fkBy5qw0fEx/3BhhoaaaNQNPrzjU1YSJOg/Q/j1HwUNvg5FQ8lLhdD1xXJ9Rh9Ec9f8/JlUnqA4vOAsXAFG5pmVkDY8=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN1PR07MB3966;23:nh962dU6WK2knr5yDHjqp6JMnzl8UFXB9hiFyAsGc?=
+ =?us-ascii?Q?uZwmmADN69DA41xWxBU2Fgavp37kBPxghPQkM5eLlLyh/gxy2UYqrfSB2sKj?=
+ =?us-ascii?Q?Unzz5lUPjZg18pLhI1VEB0wlSaHIUPBsGkC8SOmn787KnLr/hie34ehp8jTG?=
+ =?us-ascii?Q?Deoa6JwCQYlkuBXcafuUFO2z+IiLFB39Ldgki0VGpnhtmW4bZ+6VGO3xCG9p?=
+ =?us-ascii?Q?G7PXE405q+tHfWgjeoh76RIPPcooSluFEywUdVuVP1gKxflH+gOxnqdnIIPr?=
+ =?us-ascii?Q?VVQPYYbLs3Hv2GFUtOLSAC+pRj8sDJuoHmMFlnkFQO+6jI/Soe9eavBg+69a?=
+ =?us-ascii?Q?6KwcJNuEgxxPpLdfCNDgF1KOWkx9+w+3iyY+dypVAK41r4QD7QGgIktH81m/?=
+ =?us-ascii?Q?VUe5MXTucSur1rQzcDVfcX5UOHUPzPb5UVbMfsAhHPBZzg/T26owZyYkMCyJ?=
+ =?us-ascii?Q?VT+Z5ditt7KG/jOHgjz/5Z9408A9pC/IGyjgL0LqEwLwk+XuqQzMFEVIU952?=
+ =?us-ascii?Q?XKruZsW/b2uSmlMjE8xFqnqY4gxW0jpFayJpCMKpr7wh35Tyc/E7I0wOpk/t?=
+ =?us-ascii?Q?TUjftWcYI1QjlcLkghAcuFcXoaYzr1pb3lqK0gNA4fJP0OBiVJjlKHUk3ptQ?=
+ =?us-ascii?Q?XU2DW/D2u52DjrUwPWqunPXvJQN6ho6UTRlAi2wJWQts5ptDxx5m367f0LDA?=
+ =?us-ascii?Q?/ap3jQ2Z212hWBltQXGPiWMxBQs9d3zaQPeJtMNgFjdGFtVka6a9WmOLw2l3?=
+ =?us-ascii?Q?fSOn58YPOw6l8iVG4v4PPu4m1PQwNST8jH8q3PFMDzpHjFDltYMO3Bf9Dd0u?=
+ =?us-ascii?Q?i4mmjbNuI9o6rx+Yv+bNy9p4EFw6UbTMwNsrZr5PNKdZ6SNNiYgnZJ0K6gC7?=
+ =?us-ascii?Q?zOpJQMtR1UE1B+9GqfhWG/WxW2DdGcGN6W1FnWuxDQFkYExi+4Or9JDho3CT?=
+ =?us-ascii?Q?U5r43dvxdW5/XP+ixXUe6pVldZb7OiXBow/cFHPtIFXeTLImkGKNG0hYp7Gv?=
+ =?us-ascii?Q?gjGxz1frQc9orsUkTwSmOxMal7lZO1XxpGIT9YFhPJGF4s9R8+0FhAHPb/Ua?=
+ =?us-ascii?Q?E0GEsb9NpHAkMF4WcFD5K25PGAU/WRWMVnNgggy5FXhGY5/Ab36L/eJ4RH9Q?=
+ =?us-ascii?Q?zrqrEqM18Bb9YoRgs3BIcBZASKiNFWe3jKjDSVXuMZUJHTzktonx1OGP6mZt?=
+ =?us-ascii?Q?CcWH4Vv7RHQn6p/LgPAsAgF7GdxK35vMicn4OyfPChVxoBfvyXfUy14tm0ZU?=
+ =?us-ascii?Q?T6u/8XzfhgMTWtmlMHfTeH7Nkjm2wllMZds+KX6Wi5D+trMQiiIqakOWN2ya?=
+ =?us-ascii?Q?xJ/Fb+ufTUC5VfuJLXFkiw=3D?=
+X-Microsoft-Antispam-Message-Info: 2ZlrEed3BsHHE+B/QDw0vYk2OFMU7LsWOSX74VGjrdCdErcKc9tb/7sZDE7iihZQP7PRAk5KGHU6q/MRTSEV5HKiPaOii4Dr6ARWVL9UHPi5HBEmPSzi5hNB9Z1YplWCATmWsvMK2hb4Q/B50DBeNqcBqvQTPJBPHUvvYPbKrWsM/h3aac3rmvmm6M6PoE7W
+X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;6:lg+H/AGxbHhUV+PLTCtkmzi+Gba87cRR2eytRRMgaCj+K2NXLCWFDBx4V50sdoVTVOK020NEHBHWlTk+6TbOse8lFz9cyntwQwBHyB5aWGcbXpjtYzXuWCXklx5rIIpyjF3159jkpFQ7w01BuMvqfm8g4zZBjrEWwHuM2OOj8UK+yJxGlBO/omUtUFAK2AZObfMgeLCltRR59Tf4oAUUl1ia4NzZWtNnL/UQX8rLmjXGLf0y7X/xj8T8Mzh1/yuL5bg+qT99gs8uOnaPJ5I9VfcHiJEyiP+kwMQzfiggcgspiTpvs5Gvw3LrOAvGbXxlZBbhSNupdmCp2StLVwxcr1XjZZyUtNvBza0y32IIhGiQfuRUjntqWM7NJXNjXHzlRqnHvrzJ5MmHvcMOyfM7FcUhZjBXV5M2spUYXJwrT0psN3V0YM4TjIfDeT75edrDU8Uo9aDkpfwz3My39b8QVw==;5:C6uxtb1XZc2yA7nCW9Mab7/9y4kCjtJvLmVppol2qAqknt3YRbFSbt8KoCTt+VtkrgqNp+82nDidnPkwv5O/7sbYYfmWSVfvKAfeJNEPGMcc3Jy5XisT3YDIlWfF6okG8EPNbO/zLFtxlaRF7t7zoVGXsx2xwR/VY1U1ntgfHwc=;24:wEM1DHnyQ/ub0rDw8FYYjOyt4w24myb8UjZHfWRpjxMW7jogx0GfFY6pR8I+1kXaP2r/SVZ1wn/T41wV4Bt0LJN/h5OF7IR833v/nm5+kvA=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;7:7Wrz/AjMsGm6uf+Vq4JCkZrq1Tbis+A2nz1r++KM0DS4afU34biGWix+v6sUl5C+8FUz20ZF4S8tg7i3qaVUv95/cSt/9+TEZO/5RMXvpWVo23JBcx6sInVI/u5kV9ThgRD4MyqmhaeMBA95fE8k0sF7v63hod7VwdIAU+HHCW+ZeSvn+iq053+O/jHuDvDGZUecgMw7HeyKsFhUkhi9EKAFTEzqKmvx2wR5CKgyERtXMjmEHmCRT5nF4hOTI64n
-X-MS-Office365-Filtering-Correlation-Id: 017247c1-2d3e-4498-e0ec-08d5caa80f58
+X-Microsoft-Exchange-Diagnostics: 1;SN1PR07MB3966;7:N4x6QPtuPSwJDjucftACgWGQCK1kD1OSs7nk5TeaveeZdbSoYbrTzVMvR5quf2793nwCSbWht7WSdR3VjG5ZcHL/tCvpZaGG3P8M1ifFhTpSOQuGcpMCY5LE8rYQpENNaQVMkwTB1btmcXWhsCv+rvTkzQhqOGBMUtH7olY9A5gRLf2dvV2U+0ldJD7zikHxd47yYcvc2rmd4WKpqA6Hap0cENvpWp4HGgJyrLIyN+Je+a7mrpG2xoFSEbE8kkgY
+X-MS-Office365-Filtering-Correlation-Id: bdc4c125-d270-43b2-9ed6-08d5caa811bd
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2018 05:49:09.9842 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 017247c1-2d3e-4498-e0ec-08d5caa80f58
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2018 05:49:13.6718 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdc4c125-d270-43b2-9ed6-08d5caa811bd
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR07MB3966
@@ -78,7 +81,7 @@ Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64181
+X-archive-position: 64182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -95,57 +98,371 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Changes in v7:
-- Rebased against v4.17 kernel.
-- Minor clean-ups, no functional changes.
+Clean up usage of 'cvmx-sysinfo.h' header file. Also sort the
+inclusing of header files and update copyrights.
 
-David Daney (2):
-  MIPS: Octeon: Populate kernel memory from cvmx_bootmem named blocks.
-  MIPS: Octeon: Add working hotplug CPU support.
+Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper-board.c |  9 ++++-----
+ arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c  |  3 ++-
+ arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c |  6 +++---
+ arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c |  2 +-
+ arch/mips/cavium-octeon/executive/cvmx-helper-spi.c   |  5 +++--
+ arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c  |  4 ++--
+ arch/mips/cavium-octeon/executive/cvmx-helper.c       | 13 +++++++------
+ arch/mips/cavium-octeon/executive/cvmx-pko.c          |  7 ++++---
+ arch/mips/cavium-octeon/executive/cvmx-spi.c          |  6 +++---
+ arch/mips/cavium-octeon/octeon-platform.c             |  3 ++-
+ arch/mips/cavium-octeon/setup.c                       |  5 +++--
+ arch/mips/cavium-octeon/smp.c                         |  1 +
+ arch/mips/include/asm/octeon/cvmx-ipd.h               |  3 ++-
+ arch/mips/include/asm/octeon/cvmx-sysinfo.h           |  4 ++--
+ arch/mips/include/asm/octeon/cvmx.h                   |  2 +-
+ 15 files changed, 40 insertions(+), 33 deletions(-)
 
-Steven J. Hill (6):
-  MIPS: Octeon: Remove unused CIU types and macros.
-  MIPS: Octeon: Remove extern declarations.
-  MIPS: Octeon: Properly use sysinfo header file.
-  MIPS: Octeon: Whitespace and formatting clean-ups.
-  MIPS: Octeon: Remove crufty KEXEC and CRASH_DUMP code.
-  MIPS: Add the concept of BOOT_MEM_KERNEL to boot_mem_map.
-
- arch/mips/Kconfig                                  |     2 +-
- .../cavium-octeon/executive/cvmx-helper-board.c    |    29 +-
- .../cavium-octeon/executive/cvmx-helper-jtag.c     |     6 +-
- .../cavium-octeon/executive/cvmx-helper-rgmii.c    |    65 +-
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    |    25 +-
- .../mips/cavium-octeon/executive/cvmx-helper-spi.c |    32 +-
- .../cavium-octeon/executive/cvmx-helper-xaui.c     |    14 +-
- arch/mips/cavium-octeon/executive/cvmx-helper.c    |    54 +-
- arch/mips/cavium-octeon/executive/cvmx-pko.c       |    62 +-
- arch/mips/cavium-octeon/executive/cvmx-spi.c       |   102 +-
- arch/mips/cavium-octeon/executive/octeon-model.c   |    29 +-
- arch/mips/cavium-octeon/octeon-platform.c          |    70 +-
- arch/mips/cavium-octeon/octeon_boot.h              |    95 -
- arch/mips/cavium-octeon/setup.c                    |   376 +-
- arch/mips/cavium-octeon/smp.c                      |   238 +-
- arch/mips/include/asm/bootinfo.h                   |     4 +-
- .../asm/mach-cavium-octeon/kernel-entry-init.h     |    56 +-
- arch/mips/include/asm/mipsregs.h                   |     1 +
- arch/mips/include/asm/octeon/cvmx-asm.h            |    93 +-
- arch/mips/include/asm/octeon/cvmx-asxx-defs.h      |     4 +-
- arch/mips/include/asm/octeon/cvmx-ciu-defs.h       | 10048 +------------------
- arch/mips/include/asm/octeon/cvmx-coremask.h       |    28 +-
- arch/mips/include/asm/octeon/cvmx-gmxx-defs.h      |     4 +-
- arch/mips/include/asm/octeon/cvmx-ipd.h            |     3 +-
- arch/mips/include/asm/octeon/cvmx-pcsx-defs.h      |     4 +-
- arch/mips/include/asm/octeon/cvmx-pcsxx-defs.h     |     4 +-
- arch/mips/include/asm/octeon/cvmx-spxx-defs.h      |     4 +-
- arch/mips/include/asm/octeon/cvmx-stxx-defs.h      |     4 +-
- arch/mips/include/asm/octeon/cvmx-sysinfo.h        |     4 +-
- arch/mips/include/asm/octeon/cvmx.h                |    96 +-
- arch/mips/include/asm/octeon/octeon.h              |   140 +-
- arch/mips/kernel/setup.c                           |    30 +-
- arch/mips/pci/pcie-octeon.c                        |     8 +-
- 33 files changed, 959 insertions(+), 10775 deletions(-)
- delete mode 100644 arch/mips/cavium-octeon/octeon_boot.h
-
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index ab8362e..971c03e 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -32,16 +32,15 @@
+  */
+ 
+ #include <asm/octeon/octeon.h>
+-#include <asm/octeon/cvmx-bootinfo.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-helper.h>
+-#include <asm/octeon/cvmx-helper-util.h>
+ #include <asm/octeon/cvmx-helper-board.h>
++#include <asm/octeon/cvmx-helper-util.h>
+ 
+-#include <asm/octeon/cvmx-gmxx-defs.h>
+ #include <asm/octeon/cvmx-asxx-defs.h>
++#include <asm/octeon/cvmx-gmxx-defs.h>
+ 
+ /**
+  * Return the MII PHY address associated with the given IPD
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
+index 607b4e6..c79c8cf 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
+@@ -5,7 +5,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -33,6 +33,7 @@
+  */
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ #include <asm/octeon/cvmx-helper-jtag.h>
+ 
+ 
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
+index b8898e2..427f29e 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
+@@ -30,17 +30,17 @@
+  * and monitoring.
+  */
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-pko.h>
+ #include <asm/octeon/cvmx-helper.h>
+ #include <asm/octeon/cvmx-helper-board.h>
+ 
+-#include <asm/octeon/cvmx-npi-defs.h>
+-#include <asm/octeon/cvmx-gmxx-defs.h>
+ #include <asm/octeon/cvmx-asxx-defs.h>
+ #include <asm/octeon/cvmx-dbg-defs.h>
++#include <asm/octeon/cvmx-gmxx-defs.h>
++#include <asm/octeon/cvmx-npi-defs.h>
+ 
+ /**
+  * Probe RGMII ports and determine the number present
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
+index a176358..194b3dd 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
+@@ -31,8 +31,8 @@
+  */
+ 
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-helper.h>
+ #include <asm/octeon/cvmx-helper-board.h>
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
+index 2a574d2..0384cac 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
+@@ -30,10 +30,11 @@
+  * and monitoring.
+  */
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
+-#include <asm/octeon/cvmx-spi.h>
++#include <asm/octeon/cvmx-sysinfo.h>
++
+ #include <asm/octeon/cvmx-helper.h>
++#include <asm/octeon/cvmx-spi.h>
+ 
+ #include <asm/octeon/cvmx-pip-defs.h>
+ #include <asm/octeon/cvmx-pko-defs.h>
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
+index 2bb6912..650c239 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
+@@ -32,15 +32,15 @@
+  */
+ 
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-helper.h>
+ 
+-#include <asm/octeon/cvmx-pko-defs.h>
+ #include <asm/octeon/cvmx-gmxx-defs.h>
+ #include <asm/octeon/cvmx-pcsx-defs.h>
+ #include <asm/octeon/cvmx-pcsxx-defs.h>
++#include <asm/octeon/cvmx-pko-defs.h>
+ 
+ int __cvmx_helper_xaui_enumerate(int interface)
+ {
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index 75108ec..9a27dfe 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -31,20 +31,21 @@
+  *
+  */
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
++
++#include <asm/octeon/cvmx-helper.h>
++#include <asm/octeon/cvmx-helper-board.h>
+ 
+ #include <asm/octeon/cvmx-fpa.h>
++#include <asm/octeon/cvmx-ipd.h>
+ #include <asm/octeon/cvmx-pip.h>
+ #include <asm/octeon/cvmx-pko.h>
+-#include <asm/octeon/cvmx-ipd.h>
+ #include <asm/octeon/cvmx-spi.h>
+-#include <asm/octeon/cvmx-helper.h>
+-#include <asm/octeon/cvmx-helper-board.h>
+ 
++#include <asm/octeon/cvmx-asxx-defs.h>
+ #include <asm/octeon/cvmx-pip-defs.h>
+ #include <asm/octeon/cvmx-smix-defs.h>
+-#include <asm/octeon/cvmx-asxx-defs.h>
+ 
+ /**
+  * cvmx_override_pko_queue_priority(int ipd_port, uint64_t
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-pko.c b/arch/mips/cavium-octeon/executive/cvmx-pko.c
+index 676fab5..e1cd963 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-pko.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-pko.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -30,10 +30,11 @@
+  */
+ 
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
+-#include <asm/octeon/cvmx-pko.h>
++#include <asm/octeon/cvmx-sysinfo.h>
++
+ #include <asm/octeon/cvmx-helper.h>
++#include <asm/octeon/cvmx-pko.h>
+ 
+ /**
+  * Internal state of packet output
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-spi.c b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+index f51957a..4901ab2 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-spi.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-spi.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -30,15 +30,15 @@
+  * Support library for the SPI
+  */
+ #include <asm/octeon/octeon.h>
+-
+ #include <asm/octeon/cvmx-config.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include <asm/octeon/cvmx-pko.h>
+ #include <asm/octeon/cvmx-spi.h>
+ 
+ #include <asm/octeon/cvmx-spxx-defs.h>
+-#include <asm/octeon/cvmx-stxx-defs.h>
+ #include <asm/octeon/cvmx-srxx-defs.h>
++#include <asm/octeon/cvmx-stxx-defs.h>
+ 
+ #define INVOKE_CB(function_p, args...)		\
+ 	do {					\
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 8505db4..1a52f23 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -3,7 +3,7 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 2004-2017 Cavium, Inc.
++ * Copyright (C) 2004-2018 Cavium, Inc.
+  * Copyright (C) 2008 Wind River Systems
+  */
+ 
+@@ -13,6 +13,7 @@
+ #include <linux/libfdt.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-bootinfo.h>
+ #include <asm/octeon/cvmx-helper-board.h>
+ 
+ #ifdef CONFIG_USB
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 3ef1d47..09696cf 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -3,7 +3,7 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 2004-2007 Cavium Networks
++ * Copyright (C) 2004-2018 Cavium, Inc.
+  * Copyright (C) 2008, 2009 Wind River Systems
+  *   written by Ralf Baechle <ralf@linux-mips.org>
+  */
+@@ -39,8 +39,9 @@
+ #include <asm/time.h>
+ 
+ #include <asm/octeon/octeon.h>
+-#include <asm/octeon/pci-octeon.h>
+ #include <asm/octeon/cvmx-rst-defs.h>
++#include <asm/octeon/cvmx-sysinfo.h>
++#include <asm/octeon/pci-octeon.h>
+ 
+ /*
+  * TRUE for devices having registers with little-endian byte
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 75e7c86..f08f175 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -21,6 +21,7 @@
+ #include <asm/setup.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-sysinfo.h>
+ 
+ #include "octeon_boot.h"
+ 
+diff --git a/arch/mips/include/asm/octeon/cvmx-ipd.h b/arch/mips/include/asm/octeon/cvmx-ipd.h
+index cbdc14b..31fdbeb 100644
+--- a/arch/mips/include/asm/octeon/cvmx-ipd.h
++++ b/arch/mips/include/asm/octeon/cvmx-ipd.h
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2008 Cavium Networks
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -36,6 +36,7 @@
+ #include <asm/octeon/octeon-feature.h>
+ 
+ #include <asm/octeon/cvmx-ipd-defs.h>
++#include <asm/octeon/cvmx-pip-defs.h>
+ 
+ enum cvmx_ipd_mode {
+    CVMX_IPD_OPC_MODE_STT = 0LL,	  /* All blocks DRAM, not cached in L2 */
+diff --git a/arch/mips/include/asm/octeon/cvmx-sysinfo.h b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
+index c6c3ee3..f1a11a9 100644
+--- a/arch/mips/include/asm/octeon/cvmx-sysinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-sysinfo.h
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2016 Cavium, Inc.
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -32,7 +32,7 @@
+ #ifndef __CVMX_SYSINFO_H__
+ #define __CVMX_SYSINFO_H__
+ 
+-#include "cvmx-coremask.h"
++#include<asm/octeon/cvmx-bootinfo.h>
+ 
+ #define OCTEON_SERIAL_LEN 20
+ /**
+diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
+index 25854ab..a58f265 100644
+--- a/arch/mips/include/asm/octeon/cvmx.h
++++ b/arch/mips/include/asm/octeon/cvmx.h
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2017 Cavium, Inc.
++ * Copyright (C) 2003-2018 Cavium, Inc.
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
 -- 
 2.1.4

@@ -1,41 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2018 21:37:47 +0200 (CEST)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:55570
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994717AbeFFThklNlA5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2018 21:37:40 +0200
-Received: by mail-wm0-x241.google.com with SMTP id v16-v6so13619280wmh.5;
-        Wed, 06 Jun 2018 12:37:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2018 21:38:00 +0200 (CEST)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:32803
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994718AbeFFThmGo7h5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2018 21:37:42 +0200
+Received: by mail-wm0-x244.google.com with SMTP id z6-v6so234309wma.0;
+        Wed, 06 Jun 2018 12:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=JMcpTpgnoFQhAbEmluph/LVOeKNavOPVvKyXmU6PJXw=;
-        b=kHb2PlUhN/UnIKjFR2lY/8cTLvA1peaEcE9l0WWUniQq9XX2e0pRj+zHsI+afpwRpt
-         t0wSoNwuoE3fd6P9ULVfz/Tz2LtJW6YgHcCZQK13yEVWsuP5XPCFfVS3ZX6wrTx1E+vM
-         Y5AWBpSaz2IKeUF97bplb1KV6WYjSTOI6n/u/evZYAnu0zsD89Kl5YNxxEUyLqqyrNmG
-         zNH4rzPPeyB3nREoONcKFuTJj9iLyh05HRqbhpOZ60pe1OICbkXOYdJUEGTG0RnxXbq8
-         1bq+KI6VPR7T+isO0fNM8GQmDQ8VnWJKbZ6onDlnrbY9fAf+DkPEEfv628i5n3reNKG3
-         05QQ==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=gRlJKzsrjUkXCPkm9CJFc+arRqQTE6jVfz0e05peksA=;
+        b=gBivzBmb45ws0QWzFjxXFetN6wna8NlU2zqDw1sI3akUmUapnCv2QP+LYi+jTtecFy
+         3BiTJZOw4gcz0t/U+OZJm6NOVtjbcVZmZNDGVcJx8HuYoEzDijZw3CpQkrgmuIAvufqx
+         YIW2vKNUeez3hAdFUEW91HLRCk1lXTprisCFTbPwrnYQKD4nI0gx4nt0b2KgIUf7Rjr7
+         1VNzNPW4a+Q+Ja+0VwXaNH7hc4o92ztImkSF3zkXMn5OoYSWQiSbsggcrvxNUrcE4Ux9
+         zUBbf4xDPe9EPboJczj4dV/RCG94S4p9JNN4g5djUlp86trF7S4bNQU6nsHurqRACPUW
+         Zt7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=JMcpTpgnoFQhAbEmluph/LVOeKNavOPVvKyXmU6PJXw=;
-        b=k722QfdmbpSeNq2jcu2lWHPcsXehwO3aMoBJqy4BCbawMe7WG8od8EAwncg9Nz+W/r
-         PyEfbMb3eb57IPb9NftXBWhSzvCYlIsC6cXQtcXfUkgyjtXxjJnl5HW2YLkkxueRi9Ur
-         zyw2FV0SDdNugaCZoKhwNxzskRxunrvxRT9CPrs20mw6Wa3z6OKNqeQvz/9GB62pM3Zo
-         u9EyN+AhGlVWiLewBtWjRTe6uk9wjeKpLZ6SOnBLvim+XBo1PmJkWzhxW857GRFx0Y3D
-         94WJkXk3BL0+0J7xjaixauUDG2xkNYwvPIwuJB3WlbIbH2m3KGnKC4ohYQWq0sSZolbl
-         3kBA==
-X-Gm-Message-State: APt69E0Yy+Cv38Kpb+qauWgjRTUfiaJYCvKiVbv1VCh3e/Nvk7wgWgVP
-        SLoVfkPlwY40/pGJ0xWKqu8=
-X-Google-Smtp-Source: ADUXVKKUflISX871SWBsxk2kfF+xT0U8+pgS1yfmKcdR1wA2F4mWL9ew1gZ22KXalofT6wDyjjQeDQ==
-X-Received: by 2002:a1c:3fc2:: with SMTP id m185-v6mr2537206wma.37.1528313855096;
-        Wed, 06 Jun 2018 12:37:35 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=gRlJKzsrjUkXCPkm9CJFc+arRqQTE6jVfz0e05peksA=;
+        b=YglUdTPwcY1f5/nRac+uQ8qJOxT1ByxHj12mhP9j9ewyqw55DtOv6/QZePVKiCZYHi
+         Q/15lfOsfGgoMLxaz1WiiL/qRPorZALkNo5/ACkGM4Wm4jgS/UznlNJ5W5dcp0ZZCH3I
+         WS3QM7qFVWn5wMYHtV1k/+aCR/MqKfiN6gu0CWvyzEUVe9QqdMN+Fl3Bo7PdSQOrUnuU
+         4J9ghEI8MNGOl6atidzG06IpbI03VwNHjcMPzf3MOBWFfpM7xR9jLj7y2VsyIaiziRul
+         Slo3rfzuFAPAD/lAigYohS7957e4YNCQBFjPo4GMeKnpAWci2uF4OxC68uI5iRwnQLmY
+         e29Q==
+X-Gm-Message-State: APt69E0fEe98iWuZaFI+hyt0zq8t9zxiq9K7LnzsiBqyCYbKcg1+uRiC
+        iXbOp8vKA1VczRFpa+NOXkQ=
+X-Google-Smtp-Source: ADUXVKKVbkLjVmzr2Sm6YmpvW2x0vGH9qfhYXAI97WqEb50UQVivpRBmcT/r7DxRGhCkQYh26btEmw==
+X-Received: by 2002:a1c:2348:: with SMTP id j69-v6mr2716482wmj.112.1528313856725;
+        Wed, 06 Jun 2018 12:37:36 -0700 (PDT)
 Received: from macbookpro.malat.net (bru31-1-78-225-226-121.fbx.proxad.net. [78.225.226.121])
-        by smtp.gmail.com with ESMTPSA id e2-v6sm10376059wro.97.2018.06.06.12.37.34
+        by smtp.gmail.com with ESMTPSA id m134-v6sm5346161wmg.13.2018.06.06.12.37.35
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 06 Jun 2018 12:37:34 -0700 (PDT)
+        Wed, 06 Jun 2018 12:37:36 -0700 (PDT)
 Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id 5CE0E10C2B80; Wed,  6 Jun 2018 21:37:33 +0200 (CEST)
+        id 0E50510C2B81; Wed,  6 Jun 2018 21:37:35 +0200 (CEST)
 From:   Mathieu Malaterre <malat@debian.org>
 To:     James Hogan <jhogan@kernel.org>
 Cc:     Mathieu Malaterre <malat@debian.org>,
@@ -43,15 +44,17 @@ Cc:     Mathieu Malaterre <malat@debian.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] MIPS: Ci20: Enable SPI/GPIO driver
-Date:   Wed,  6 Jun 2018 21:37:29 +0200
-Message-Id: <20180606193730.15087-1-malat@debian.org>
+Subject: [PATCH 2/2] MIPS: jz4780: DTS: Probe the spi-gpio driver from devicetree
+Date:   Wed,  6 Jun 2018 21:37:30 +0200
+Message-Id: <20180606193730.15087-2-malat@debian.org>
 X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20180606193730.15087-1-malat@debian.org>
+References: <20180606193730.15087-1-malat@debian.org>
 Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64198
+X-archive-position: 64199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,25 +71,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update the Ci20's defconfig to enable the JZ4780's SPI/GPIO driver.
+The spi-gpio driver supports jz4780.
 
 Signed-off-by: Mathieu Malaterre <malat@debian.org>
 ---
- arch/mips/configs/ci20_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/boot/dts/ingenic/jz4780.dtsi | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index 0ddef6ad2652..0c08c7675b42 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -93,6 +93,8 @@ CONFIG_SERIAL_OF_PLATFORM=y
- # CONFIG_HW_RANDOM is not set
- CONFIG_I2C=y
- CONFIG_I2C_JZ4780=y
-+CONFIG_SPI=y
-+CONFIG_SPI_GPIO=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_INGENIC=y
- # CONFIG_HWMON is not set
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+index 809f01a62955..308079ee8dd3 100644
+--- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -167,6 +167,25 @@
+ 		};
+ 	};
+ 
++	spi_gpio {
++		compatible = "spi-gpio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		num-chipselects = <2>;
++
++		gpio-miso = <&gpe 14 0>;
++		gpio-sck = <&gpe 15 0>;
++		gpio-mosi = <&gpe 17 0>;
++		cs-gpios = <&gpe 16 0
++			    &gpe 18 0>;
++
++		spidev@0 {
++			compatible = "spidev";
++			reg = <0>;
++			spi-max-frequency = <1000000>;
++		};
++	};
++
+ 	uart0: serial@10030000 {
+ 		compatible = "ingenic,jz4780-uart";
+ 		reg = <0x10030000 0x100>;
 -- 
 2.11.0

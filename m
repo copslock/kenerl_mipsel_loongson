@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2018 17:02:44 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:48987 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2018 17:04:08 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49100 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994585AbeFGPCgQqXff (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2018 17:02:36 +0200
+        by eddie.linux-mips.org with ESMTP id S23994644AbeFGPEBc79vf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2018 17:04:01 +0200
 Received: from [148.252.241.226] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1fQvbm-0005hL-Pl; Thu, 07 Jun 2018 15:09:46 +0100
+        id 1fQvbT-0005Zk-LJ; Thu, 07 Jun 2018 15:09:28 +0100
 Received: from ben by deadeye with local (Exim 4.91)
         (envelope-from <ben@decadent.org.uk>)
-        id 1fQvb3-0002tC-8v; Thu, 07 Jun 2018 15:09:01 +0100
+        id 1fQvbB-0003Bh-LT; Thu, 07 Jun 2018 15:09:09 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "James Hogan" <jhogan@kernel.org>,
-        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>
+CC:     akpm@linux-foundation.org, "Justin Chen" <justinpopo6@gmail.com>,
+        "Florian Fainelli" <f.fainelli@gmail.com>,
+        linux-mips@linux-mips.org, "James Hogan" <jhogan@kernel.org>
 Date:   Thu, 07 Jun 2018 15:05:21 +0100
-Message-ID: <lsq.1528380321.538040447@decadent.org.uk>
+Message-ID: <lsq.1528380321.568346237@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 144/410] MIPS: Fix clean of vmlinuz.{32,ecoff,bin,srec}
+Subject: [PATCH 3.16 325/410] MIPS: BMIPS: Do not mask IPIs during suspend
 In-Reply-To: <lsq.1528380320.647747352@decadent.org.uk>
 X-SA-Exim-Connect-IP: 148.252.241.226
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -31,7 +32,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64211
+X-archive-position: 64212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,33 +53,50 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <jhogan@kernel.org>
+From: Justin Chen <justinpopo6@gmail.com>
 
-commit 5f2483eb2423152445b39f2db59d372f523e664e upstream.
+commit 06a3f0c9f2725f5d7c63c4203839373c9bd00c28 upstream.
 
-Make doesn't expand shell style "vmlinuz.{32,ecoff,bin,srec}" to the 4
-separate files, so none of these files get cleaned up by make clean.
-List the files separately instead.
+Commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on CPU IRQs") fixes an
+issue where disable_irq did not actually disable the irq. The bug caused
+our IPIs to not be disabled, which actually is the correct behavior.
 
-Fixes: ec3352925b74 ("MIPS: Remove all generated vmlinuz* files on "make clean"")
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+With the addition of commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on
+CPU IRQs"), the IPIs were getting disabled going into suspend, thus
+schedule_ipi() was not being called. This caused deadlocks where
+schedulable task were not being scheduled and other cpus were waiting
+for them to do something.
+
+Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called on the
+IPIs during suspend.
+
+Signed-off-by: Justin Chen <justinpopo6@gmail.com>
+Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
+Cc: Florian Fainelli <f.fainelli@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18491/
+Patchwork: https://patchwork.linux-mips.org/patch/17385/
+[jhogan@kernel.org: checkpatch: wrap long lines and fix commit refs]
+Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/boot/compressed/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/mips/kernel/smp-bmips.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -117,4 +117,8 @@ OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFL
- vmlinuz.srec: vmlinuz
- 	$(call cmd,objcopy)
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -159,11 +159,11 @@ static void bmips_prepare_cpus(unsigned
+ 		return;
+ 	}
  
--clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
-+clean-files += $(objtree)/vmlinuz
-+clean-files += $(objtree)/vmlinuz.32
-+clean-files += $(objtree)/vmlinuz.ecoff
-+clean-files += $(objtree)/vmlinuz.bin
-+clean-files += $(objtree)/vmlinuz.srec
+-	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
+-			"smp_ipi0", NULL))
++	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt,
++			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi0", NULL))
+ 		panic("Can't request IPI0 interrupt");
+-	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
+-			"smp_ipi1", NULL))
++	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt,
++			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi1", NULL))
+ 		panic("Can't request IPI1 interrupt");
+ }
+ 

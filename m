@@ -1,42 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2018 17:04:08 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49100 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994644AbeFGPEBc79vf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2018 17:04:01 +0200
-Received: from [148.252.241.226] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1fQvbT-0005Zk-LJ; Thu, 07 Jun 2018 15:09:28 +0100
-Received: from ben by deadeye with local (Exim 4.91)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1fQvbB-0003Bh-LT; Thu, 07 Jun 2018 15:09:09 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Justin Chen" <justinpopo6@gmail.com>,
-        "Florian Fainelli" <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org, "James Hogan" <jhogan@kernel.org>
-Date:   Thu, 07 Jun 2018 15:05:21 +0100
-Message-ID: <lsq.1528380321.568346237@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 325/410] MIPS: BMIPS: Do not mask IPIs during suspend
-In-Reply-To: <lsq.1528380320.647747352@decadent.org.uk>
-X-SA-Exim-Connect-IP: 148.252.241.226
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2018 07:51:35 +0200 (CEST)
+Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:34847
+        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994552AbeFHFv1MoMAH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jun 2018 07:51:27 +0200
+Received: by mail-pl0-x241.google.com with SMTP id i5-v6so7618677plt.2
+        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2018 22:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=we2piHi7dcdfzEZ+YYDL/tHGMos3Un/e/bcbwr11dbk=;
+        b=sw4Plc4VR9YzZy3nao0KesQ3E2N2aIVDKU4zpabO84RbSBR4q9JMv3LHMskb0VpFMa
+         M/7Sah/kSKFDtZLcYUBIgnYjrQZJ7d31/QSSQtoEc/vXN6UxgJPNIN6AA8j2Du88Pf5P
+         xV5qO/pGX8H/CpxlUotJxTiLZ2q6a9COwvcbS1hYDQ23eytZwHty832VcRSXmVwrfWrD
+         WpDkMLprMFCR9u1nyDe8d9K1M+gXXoXw8SBivswVWRqcDUUp6GnrhtCdlU21v3n9jMcF
+         SkK04Swv5j9QnZiG2gYid5eaHiB4BwB6hD7y2zU3O7R0AOCKlORMIeWbcMj+odJ4cTv2
+         2Ibw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=we2piHi7dcdfzEZ+YYDL/tHGMos3Un/e/bcbwr11dbk=;
+        b=sg9sMALyShcxPYAXSQp8pmrZMegpEcV6zHEFmeURlXuHgKehHy4Zzki6gKPEDwkcD9
+         Y0Lu19sNN+O6U04ZFkFO12kjhA1gw8EARhQPcYPvYk0WTSLfTsgxbUGBPXSl2ZcRV1Mi
+         GsFU4bJmPQaPv7T3pbdQMRDk74HBPbwQ62457d9Qb5ptqr4NT7nBfiAodDn/7IUQwA+M
+         XXDMJRQOMtaE6OrwXnr83B/MMGziht0azzRHwMH8kTGK7s+Y0l324gx311U81OXJU9B9
+         HI1KL1I6y5q7c69mDWk4vWzm+PxPYmcGzo0pKtzZl0B/74WYe3VuoLymdpAcdWdM09we
+         JQyQ==
+X-Gm-Message-State: APt69E1/juE+iXFbtRoHbu6jm79wwnTFgLqAXudfFZ3mEn/5JIX81SPZ
+        pCrBtuAlsga4gvjAzKfufj+ctcu0aeo=
+X-Google-Smtp-Source: ADUXVKJhPq86QhaXxI2pj9I+XKG1xWPGCGLDD7ZNziSjTdutWFEHiLay+zfflzaGsPrSGnIJryKDxQ==
+X-Received: by 2002:a17:902:3303:: with SMTP id a3-v6mr5065041plc.209.1528437080678;
+        Thu, 07 Jun 2018 22:51:20 -0700 (PDT)
+Received: from localhost.localdomain ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id u9-v6sm106922500pfi.60.2018.06.07.22.51.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 Jun 2018 22:51:19 -0700 (PDT)
+From:   r@hev.cc
+To:     linux-mips@linux-mips.org, paul.burton@mips.com
+Cc:     jhogan@kernel.org, ralf@linux-mips.org, Heiher <r@hev.cc>
+Subject: [PATCH] MIPS: Fix ejtag handler on SMP
+Date:   Fri,  8 Jun 2018 13:51:09 +0800
+Message-Id: <20180608055109.828-1-r@hev.cc>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <r@hev.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64212
+X-archive-position: 64213
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: r@hev.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,54 +62,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.57-rc1 review patch.  If anyone has any objections, please let me know.
+From: Heiher <r@hev.cc>
 
-------------------
+On SMP systems, the shared ejtag debug buffer may be overwritten by
+other cores, because every cores can generate ejtag exception at
+same time.
 
-From: Justin Chen <justinpopo6@gmail.com>
+Unfortunately, in that context, it's difficult to relax more registers
+to access per cpu buffers. so use ll/sc to serialize the access.
 
-commit 06a3f0c9f2725f5d7c63c4203839373c9bd00c28 upstream.
-
-Commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on CPU IRQs") fixes an
-issue where disable_irq did not actually disable the irq. The bug caused
-our IPIs to not be disabled, which actually is the correct behavior.
-
-With the addition of commit a3e6c1eff548 ("MIPS: IRQ: Fix disable_irq on
-CPU IRQs"), the IPIs were getting disabled going into suspend, thus
-schedule_ipi() was not being called. This caused deadlocks where
-schedulable task were not being scheduled and other cpus were waiting
-for them to do something.
-
-Add the IRQF_NO_SUSPEND flag so an irq_disable will not be called on the
-IPIs during suspend.
-
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Fixes: a3e6c1eff548 ("MIPS: IRQ: Fix disabled_irq on CPU IRQs")
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/17385/
-[jhogan@kernel.org: checkpatch: wrap long lines and fix commit refs]
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Heiher <r@hev.cc>
 ---
- arch/mips/kernel/smp-bmips.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/genex.S | 46 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -159,11 +159,11 @@ static void bmips_prepare_cpus(unsigned
- 		return;
- 	}
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 37b9383eacd3..3804afd878f8 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -354,16 +354,56 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	sll	k0, k0, 30	# Check for SDBBP.
+ 	bgez	k0, ejtag_return
  
--	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi0", NULL))
-+	if (request_irq(IPI0_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi0", NULL))
- 		panic("Can't request IPI0 interrupt");
--	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt, IRQF_PERCPU,
--			"smp_ipi1", NULL))
-+	if (request_irq(IPI1_IRQ, bmips_ipi_interrupt,
-+			IRQF_PERCPU | IRQF_NO_SUSPEND, "smp_ipi1", NULL))
- 		panic("Can't request IPI1 interrupt");
- }
++#ifdef CONFIG_SMP
++1:	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	ll	k0, 0(k0)
++	bnez	k0, 1b
++	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	sc	k0, 0(k0)
++	beqz	k0, 1b
++# ifdef CONFIG_WEAK_REORDERING_BEYOND_LLSC
++	sync
++# endif
++
++	PTR_LA	k0, ejtag_debug_buffer
++	LONG_S	k1, 0(k0)
++
++	mfc0	k1, CP0_EBASE
++	andi	k1, MIPS_EBASE_CPUNUM
++	PTR_SLL	k1, LONGLOG
++	PTR_LA	k0, ejtag_debug_buffer_per_cpu
++	PTR_ADDU k0, k1
++
++	PTR_LA	k1, ejtag_debug_buffer
++	LONG_L	k1, 0(k1)
++	LONG_S	k1, 0(k0)
++
++	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	sw	zero, 0(k0)
++#else
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_S	k1, 0(k0)
++#endif
++
+ 	SAVE_ALL
+ 	move	a0, sp
+ 	jal	ejtag_exception_handler
+ 	RESTORE_ALL
++
++#ifdef CONFIG_SMP
++	mfc0	k1, CP0_EBASE
++	andi	k1, MIPS_EBASE_CPUNUM
++	PTR_SLL	k1, LONGLOG
++	PTR_LA	k0, ejtag_debug_buffer_per_cpu
++	PTR_ADDU k0, k1
++	LONG_L	k1, 0(k0)
++#else
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_L	k1, 0(k0)
++#endif
  
+ ejtag_return:
++	back_to_back_c0_hazard
+ 	MFC0	k0, CP0_DESAVE
+ 	.set	mips32
+ 	deret
+@@ -377,6 +417,12 @@ ejtag_return:
+ 	.data
+ EXPORT(ejtag_debug_buffer)
+ 	.fill	LONGSIZE
++#ifdef CONFIG_SMP
++EXPORT(ejtag_debug_buffer_spinlock)
++	.fill	LONGSIZE
++EXPORT(ejtag_debug_buffer_per_cpu)
++	.fill	LONGSIZE * NR_CPUS
++#endif
+ 	.previous
+ 
+ 	__INIT
+-- 
+2.17.1

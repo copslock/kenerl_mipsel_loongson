@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2018 07:51:35 +0200 (CEST)
-Received: from mail-pl0-x241.google.com ([IPv6:2607:f8b0:400e:c01::241]:34847
-        "EHLO mail-pl0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994552AbeFHFv1MoMAH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jun 2018 07:51:27 +0200
-Received: by mail-pl0-x241.google.com with SMTP id i5-v6so7618677plt.2
-        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2018 22:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=we2piHi7dcdfzEZ+YYDL/tHGMos3Un/e/bcbwr11dbk=;
-        b=sw4Plc4VR9YzZy3nao0KesQ3E2N2aIVDKU4zpabO84RbSBR4q9JMv3LHMskb0VpFMa
-         M/7Sah/kSKFDtZLcYUBIgnYjrQZJ7d31/QSSQtoEc/vXN6UxgJPNIN6AA8j2Du88Pf5P
-         xV5qO/pGX8H/CpxlUotJxTiLZ2q6a9COwvcbS1hYDQ23eytZwHty832VcRSXmVwrfWrD
-         WpDkMLprMFCR9u1nyDe8d9K1M+gXXoXw8SBivswVWRqcDUUp6GnrhtCdlU21v3n9jMcF
-         SkK04Swv5j9QnZiG2gYid5eaHiB4BwB6hD7y2zU3O7R0AOCKlORMIeWbcMj+odJ4cTv2
-         2Ibw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=we2piHi7dcdfzEZ+YYDL/tHGMos3Un/e/bcbwr11dbk=;
-        b=sg9sMALyShcxPYAXSQp8pmrZMegpEcV6zHEFmeURlXuHgKehHy4Zzki6gKPEDwkcD9
-         Y0Lu19sNN+O6U04ZFkFO12kjhA1gw8EARhQPcYPvYk0WTSLfTsgxbUGBPXSl2ZcRV1Mi
-         GsFU4bJmPQaPv7T3pbdQMRDk74HBPbwQ62457d9Qb5ptqr4NT7nBfiAodDn/7IUQwA+M
-         XXDMJRQOMtaE6OrwXnr83B/MMGziht0azzRHwMH8kTGK7s+Y0l324gx311U81OXJU9B9
-         HI1KL1I6y5q7c69mDWk4vWzm+PxPYmcGzo0pKtzZl0B/74WYe3VuoLymdpAcdWdM09we
-         JQyQ==
-X-Gm-Message-State: APt69E1/juE+iXFbtRoHbu6jm79wwnTFgLqAXudfFZ3mEn/5JIX81SPZ
-        pCrBtuAlsga4gvjAzKfufj+ctcu0aeo=
-X-Google-Smtp-Source: ADUXVKJhPq86QhaXxI2pj9I+XKG1xWPGCGLDD7ZNziSjTdutWFEHiLay+zfflzaGsPrSGnIJryKDxQ==
-X-Received: by 2002:a17:902:3303:: with SMTP id a3-v6mr5065041plc.209.1528437080678;
-        Thu, 07 Jun 2018 22:51:20 -0700 (PDT)
-Received: from localhost.localdomain ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id u9-v6sm106922500pfi.60.2018.06.07.22.51.17
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 07 Jun 2018 22:51:19 -0700 (PDT)
-From:   r@hev.cc
-To:     linux-mips@linux-mips.org, paul.burton@mips.com
-Cc:     jhogan@kernel.org, ralf@linux-mips.org, Heiher <r@hev.cc>
-Subject: [PATCH] MIPS: Fix ejtag handler on SMP
-Date:   Fri,  8 Jun 2018 13:51:09 +0800
-Message-Id: <20180608055109.828-1-r@hev.cc>
-X-Mailer: git-send-email 2.17.1
-Return-Path: <r@hev.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jun 2018 00:37:26 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:47147 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994619AbeFHWhNsgbuL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jun 2018 00:37:13 +0200
+Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx1414.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 08 Jun 2018 22:37:06 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
+ (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 8 Jun
+ 2018 15:37:15 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Fri, 8 Jun
+ 2018 15:37:15 -0700
+Date:   Fri, 8 Jun 2018 15:37:05 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     <r@hev.cc>
+CC:     <linux-mips@linux-mips.org>, <jhogan@kernel.org>,
+        <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix ejtag handler on SMP
+Message-ID: <20180608223705.uaac4xsi2z5b7mnl@pburton-laptop>
+References: <20180608055109.828-1-r@hev.cc>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20180608055109.828-1-r@hev.cc>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1528497426-531716-17306-75259-1
+X-BESS-VER: 2018.7-r1806072306
+X-BESS-Apparent-Source-IP: 12.201.5.31
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.193893
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: r@hev.cc,linux-mips@linux-mips.org,jhogan@kernel.org,ralf@linux-mips.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64213
+X-archive-position: 64214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r@hev.cc
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,93 +58,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Heiher <r@hev.cc>
+Hi Heiher,
 
-On SMP systems, the shared ejtag debug buffer may be overwritten by
-other cores, because every cores can generate ejtag exception at
-same time.
+On Fri, Jun 08, 2018 at 01:51:09PM +0800, r@hev.cc wrote:
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index 37b9383eacd3..3804afd878f8 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -354,16 +354,56 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+>  	sll	k0, k0, 30	# Check for SDBBP.
+>  	bgez	k0, ejtag_return
+>  
+> +#ifdef CONFIG_SMP
+> +1:	PTR_LA	k0, ejtag_debug_buffer_spinlock
+> +	ll	k0, 0(k0)
+> +	bnez	k0, 1b
+> +	PTR_LA	k0, ejtag_debug_buffer_spinlock
+> +	sc	k0, 0(k0)
+> +	beqz	k0, 1b
+> +# ifdef CONFIG_WEAK_REORDERING_BEYOND_LLSC
+> +	sync
+> +# endif
+> +
+> +	PTR_LA	k0, ejtag_debug_buffer
+> +	LONG_S	k1, 0(k0)
+> +
+> +	mfc0	k1, CP0_EBASE
+> +	andi	k1, MIPS_EBASE_CPUNUM
+> +	PTR_SLL	k1, LONGLOG
+> +	PTR_LA	k0, ejtag_debug_buffer_per_cpu
+> +	PTR_ADDU k0, k1
 
-Unfortunately, in that context, it's difficult to relax more registers
-to access per cpu buffers. so use ll/sc to serialize the access.
+Neat - I like the concept of using the spinlock for just a short window
+to free up k1, then using a per-CPU buffer.
 
-Signed-off-by: Heiher <r@hev.cc>
----
- arch/mips/kernel/genex.S | 46 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Unfortunately it's not going to be as simple as using EBase.CPUNum, for
+at least 2 reasons:
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 37b9383eacd3..3804afd878f8 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -354,16 +354,56 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
- 	sll	k0, k0, 30	# Check for SDBBP.
- 	bgez	k0, ejtag_return
- 
-+#ifdef CONFIG_SMP
-+1:	PTR_LA	k0, ejtag_debug_buffer_spinlock
-+	ll	k0, 0(k0)
-+	bnez	k0, 1b
-+	PTR_LA	k0, ejtag_debug_buffer_spinlock
-+	sc	k0, 0(k0)
-+	beqz	k0, 1b
-+# ifdef CONFIG_WEAK_REORDERING_BEYOND_LLSC
-+	sync
-+# endif
-+
-+	PTR_LA	k0, ejtag_debug_buffer
-+	LONG_S	k1, 0(k0)
-+
-+	mfc0	k1, CP0_EBASE
-+	andi	k1, MIPS_EBASE_CPUNUM
-+	PTR_SLL	k1, LONGLOG
-+	PTR_LA	k0, ejtag_debug_buffer_per_cpu
-+	PTR_ADDU k0, k1
-+
-+	PTR_LA	k1, ejtag_debug_buffer
-+	LONG_L	k1, 0(k1)
-+	LONG_S	k1, 0(k0)
-+
-+	PTR_LA	k0, ejtag_debug_buffer_spinlock
-+	sw	zero, 0(k0)
-+#else
- 	PTR_LA	k0, ejtag_debug_buffer
- 	LONG_S	k1, 0(k0)
-+#endif
-+
- 	SAVE_ALL
- 	move	a0, sp
- 	jal	ejtag_exception_handler
- 	RESTORE_ALL
-+
-+#ifdef CONFIG_SMP
-+	mfc0	k1, CP0_EBASE
-+	andi	k1, MIPS_EBASE_CPUNUM
-+	PTR_SLL	k1, LONGLOG
-+	PTR_LA	k0, ejtag_debug_buffer_per_cpu
-+	PTR_ADDU k0, k1
-+	LONG_L	k1, 0(k0)
-+#else
- 	PTR_LA	k0, ejtag_debug_buffer
- 	LONG_L	k1, 0(k0)
-+#endif
- 
- ejtag_return:
-+	back_to_back_c0_hazard
- 	MFC0	k0, CP0_DESAVE
- 	.set	mips32
- 	deret
-@@ -377,6 +417,12 @@ ejtag_return:
- 	.data
- EXPORT(ejtag_debug_buffer)
- 	.fill	LONGSIZE
-+#ifdef CONFIG_SMP
-+EXPORT(ejtag_debug_buffer_spinlock)
-+	.fill	LONGSIZE
-+EXPORT(ejtag_debug_buffer_per_cpu)
-+	.fill	LONGSIZE * NR_CPUS
-+#endif
- 	.previous
- 
- 	__INIT
--- 
-2.17.1
+  - EBase.CPUNum doesn't always equal the Linux CPU number. For example
+    in many systems which implement multi-threading ASE CPUNum is
+    actually just a concatenation of some fixed number of bits
+    specifying the core number and some fixed number of bits specifying
+    the VP(E) number. So for example we might have a system with 2 cores
+    each of which have 2 threads, but whose numbering looks like this:
+
+      Linux CPU Number | Core Number | VP(E) Number | EBase.CPUNum
+      -----------------|-------------|--------------|-------------
+                     0 |  0b00 / 0x0 |   0b00 / 0x0 | 0b0000 / 0x0
+		     1 |  0b00 / 0x0 |   0b01 / 0x1 | 0b0001 / 0x1
+		     2 |  0b01 / 0x1 |   0b00 / 0x0 | 0b0100 / 0x4
+		     3 |  0b01 / 0x1 |   0b01 / 0x1 | 0b0101 / 0x5
+
+    This means that it might be the case that EBase.CPUNum >= NR_CPUS,
+    which would result in a buffer overflow here.
+
+    There are other ways this could happen too, for example if the
+    kernel is configured with CONFIG_NR_CPUS=2 and run on a system which
+    actually has more than 2 CPUs we'd have problems if the kernel was
+    actually running on CPUs besides the ones CPUNum refers to as 0 & 1.
+
+  - Some newer MIPS CPUs such as the I6500 introduce the concept of
+    clusters, which are a layer of CPU topology beyond cores. In these
+    systems EBase.CPUNum may not be aware of clusters at all, so for
+    example the first CPU in each cluster may both have EBase.CPUNum
+    equal to zero. MIPSr6 introduced the GlobalNumber register to
+    resolve this problem.
+
+One option would be to load the CPU number the same way
+smp_processor_id() does with:
+
+    lw	k1, TI_CPU(gp)
+
+This has the disadvantage that things may go wrong if we take an EJTAG
+exception before the gp register has been setup when a CPU is onlined,
+but that should hopefully be a very small window of time. I think that
+may be our best option.
+
+Thanks,
+    Paul

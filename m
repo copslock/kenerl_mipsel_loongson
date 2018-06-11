@@ -1,71 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2018 10:59:26 +0200 (CEST)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:35076
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990406AbeFKI7SttYvb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jun 2018 10:59:18 +0200
-Received: by mail-lf0-x244.google.com with SMTP id i15-v6so19046265lfc.2;
-        Mon, 11 Jun 2018 01:59:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2018 11:01:33 +0200 (CEST)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:42047
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990406AbeFKJB1DokGb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jun 2018 11:01:27 +0200
+Received: by mail-pl0-x244.google.com with SMTP id w17-v6so11948555pll.9
+        for <linux-mips@linux-mips.org>; Mon, 11 Jun 2018 02:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=cmHOackrM7toBNxodTtQKxAuxRZbvGgu0kQ/oXiC7HA=;
-        b=HcTfstZ0QzMYkABaR5IYWQtcK17fKZMVCVMCU+hSzEsZDa2bbTDSvbVxmkVQ/4BP3u
-         qySTxiPJJXQCJtnbLcBbduRIwRNPJOz8vjpTUUH56lY6W7xcwVMDvRVjj4SlvTLTP/bd
-         ULHKMkus7ZLYLB+TPdU/kVljJEuo+WDVKXVjjDNfy+6z29HURjdC8AvUghmKsltWlwGX
-         F7tIjUXIfgE24kNhLPWSOS3L+owNX3boO5fK0Re3k9ll52qcRiJSP83AZBlxRhyJQVGs
-         9OUt0Qx+TZbw0V6J7ubAJXGH8iHw0ni5MzGBCmx93NRiDLxAXNQEmM4c5fmHKM67BlZi
-         7lSw==
+        d=hev-cc.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=p7YjCsxgshiZNq7SS5aMDgSDR35wat//+Agyd+bjIkE=;
+        b=Vfu/G2IBzpt+1tHFSKLKijVP05pCjOZOBMjGUbOCnIGSm9cE1A1k6lgaGy1x1eCmy7
+         cHh9K9ooB0hMGNAVfcUUr3oBu0WBciFyIXqxersPp4hCHVLJpPlxJqLZEDU6If6iKmlW
+         TMy+wjM6jFCIRkVPzY8OvL+3fixsnFbMqCnnwWdrh38RtUX5NBICVq3c/GYimC5jpztT
+         D2wjQJ6SaKnVVKwNKmu4Qg93GiyMw93ZffUIyEGJQPUAsAIlVhlwAnN8JfyXogF48yD2
+         s/FWwRti4HXDerJKiSXBJbvEXWY9TGOE9dH6rFAfpTYCO85LXOEujS+8qIgwIKTQhz8O
+         LCCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=cmHOackrM7toBNxodTtQKxAuxRZbvGgu0kQ/oXiC7HA=;
-        b=aPC/1wcZUIpRGsRg3+5LM/iCje9oKfDhHXpIIZkdCmd4W+5ehQaUaqaNqqBrcuTcWb
-         cR1O4tcpG2r6LlOH9hKaCxIq79tdb6Pe+J7PrTBjM4XFa30N1aTaKp6/qoVOmVD/Q0V+
-         zGPgbeA1DZvwPTMEMrl3jbV7v7LKbygVSihtY9YOSnbox7S9aewI8uyq3uF6KGpYNTOw
-         hu2M+fI1x/XSP27Q0uyYDAYVIM0GQA6/iRDcnagVaPxCGM/Ticf3olIutA1YTPJbvXTv
-         Xz0WLil9EguqmW7S7kZV6jksmk4ntU2zkVfp8yW5l+dzQFAKVpWnDmbVQDjDPH4HM3Qc
-         7HbQ==
-X-Gm-Message-State: APt69E2H62blkvZAPV/QiESG2VxkWPINh/sx1edLAS5oHOYC8AsRaEyN
-        fosD2tCvwE1kglaoffpqyp3B6YCH8EF06QIGq30=
-X-Google-Smtp-Source: ADUXVKJ070nYlgsetMLgCQk9en45kpPhF58MvywStrrgxcutJ/36ZN8glV8ZS2xkywOtuZpmE3LzidZyWCStaLGY43g=
-X-Received: by 2002:a19:c203:: with SMTP id l3-v6mr10330051lfc.55.1528707553231;
- Mon, 11 Jun 2018 01:59:13 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a2e:56c8:0:0:0:0:0 with HTTP; Mon, 11 Jun 2018 01:59:12
- -0700 (PDT)
-In-Reply-To: <1528706663-20670-4-git-send-email-geert@linux-m68k.org>
-References: <1528706663-20670-1-git-send-email-geert@linux-m68k.org> <1528706663-20670-4-git-send-email-geert@linux-m68k.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 11 Jun 2018 10:59:12 +0200
-X-Google-Sender-Auth: JgdAQOxMhwOi7TXc4PgGGtPeZBE
-Message-ID: <CAK8P3a1mhVJYuQGZM+ypQ1mKbB=+5gA6L=_D7-jjPmShLarwUQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3 RFC] Revert "net: stmmac: fix build failure due to
- missing COMMON_CLK dependency"
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Ungerer <gerg@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Corentin Labbe <clabbe@baylibre.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=p7YjCsxgshiZNq7SS5aMDgSDR35wat//+Agyd+bjIkE=;
+        b=nWKN5jIaH0TzgR2BjYtcuioYfmbY917Qckcs57x0GJy+tjYJBltiDRZJP2sf05aows
+         /+wa3AW9aK0zQxdc/E2bLPSQIfHgLbH0ktmTAhWTM/2FN4+AZ+ETzH4G9NW/fsnT4XOE
+         vUbASaVwcqTo8P85cMtiSOAQM2AYnnd4GbBWUKEfSWuXf9AUau6E9h/NhPs5K/SrnOtc
+         m2V5i5n6oIVxiMJFLt/PhQCXtk6JS3w+tXlNt42jmNlfMlfDyINj5zA9RYIKjDpUBWRJ
+         8MQ/wq/Tv826du8zwqFsuN67v23T2yTQR4VSPrLtpO9zf1q0AHyvYe6Fpyf4p4a90vcr
+         eoqA==
+X-Gm-Message-State: APt69E2r9J98BnlDPz+HnEuWVDA+ZDZIVVX4cBfuXUkeR7a5rNdpQCxu
+        95aj62mHiojUPGB5rtwddOeNSkTi3pI=
+X-Google-Smtp-Source: ADUXVKI0maBBq4z5a0dAXE3EN2/arxx7erN5OTbJZoLdZKt1aoc/454ZMltmkl7EngUXqlIy9DUxXg==
+X-Received: by 2002:a17:902:b110:: with SMTP id q16-v6mr17581882plr.286.1528707680516;
+        Mon, 11 Jun 2018 02:01:20 -0700 (PDT)
+Received: from localhost.localdomain ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id a23-v6sm51358347pgd.85.2018.06.11.02.01.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 11 Jun 2018 02:01:18 -0700 (PDT)
+From:   r@hev.cc
+To:     linux-mips@linux-mips.org, paul.burton@mips.com
+Cc:     jhogan@kernel.org, ralf@linux-mips.org, Heiher <r@hev.cc>
+Subject: [PATCH v5] MIPS: Fix ejtag handler on SMP
+Date:   Mon, 11 Jun 2018 17:01:10 +0800
+Message-Id: <20180611090110.27978-1-r@hev.cc>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <r@hev.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64222
+X-archive-position: 64223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: r@hev.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,20 +62,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 11, 2018 at 10:44 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> This reverts commit bde4975310eb1982bd0bbff673989052d92fd481.
->
-> All legacy clock implementations now implement clk_set_rate() (Some
-> implementations may be dummies, though).
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
-> Marked "RFC", as this depends on "m68k: coldfire: Normalize clk API" and
-> "MIPS: AR7: Normalize clk API".
+From: Heiher <r@hev.cc>
 
-This seems reasonable. It's possible that it will cause regressions because the
-COMMON_CLK dependency hides another dependency on something else
-that not everything implements, but we should fix that properly if that happens.
+On SMP systems, the shared ejtag debug buffer may be overwritten by
+other cores, because every cores can generate ejtag exception at
+same time.
 
-       Arnd
+Unfortunately, in that context, it's difficult to relax more registers
+to access per cpu buffers. so use ll/sc to serialize the access.
+
+Signed-off-by: Heiher <r@hev.cc>
+---
+ arch/mips/kernel/genex.S | 46 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 37b9383eacd3..6c257b52f57f 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -354,16 +354,56 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
+ 	sll	k0, k0, 30	# Check for SDBBP.
+ 	bgez	k0, ejtag_return
+ 
++#ifdef CONFIG_SMP
++1:	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	ll	k0, 0(k0)
++	bnez	k0, 1b
++	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	sc	k0, 0(k0)
++	beqz	k0, 1b
++# ifdef CONFIG_WEAK_REORDERING_BEYOND_LLSC
++	sync
++# endif
++
++	PTR_LA	k0, ejtag_debug_buffer
++	LONG_S	k1, 0(k0)
++
++	ASM_CPUID_MFC0 k1, ASM_SMP_CPUID_REG
++	PTR_SRL	k1, SMP_CPUID_PTRSHIFT
++	PTR_SLL	k1, LONGLOG
++	PTR_LA	k0, ejtag_debug_buffer_per_cpu
++	PTR_ADDU k0, k1
++
++	PTR_LA	k1, ejtag_debug_buffer
++	LONG_L	k1, 0(k1)
++	LONG_S	k1, 0(k0)
++
++	PTR_LA	k0, ejtag_debug_buffer_spinlock
++	sw	zero, 0(k0)
++#else
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_S	k1, 0(k0)
++#endif
++
+ 	SAVE_ALL
+ 	move	a0, sp
+ 	jal	ejtag_exception_handler
+ 	RESTORE_ALL
++
++#ifdef CONFIG_SMP
++	ASM_CPUID_MFC0 k1, ASM_SMP_CPUID_REG
++	PTR_SRL	k1, SMP_CPUID_PTRSHIFT
++	PTR_SLL	k1, LONGLOG
++	PTR_LA	k0, ejtag_debug_buffer_per_cpu
++	PTR_ADDU k0, k1
++	LONG_L	k1, 0(k0)
++#else
+ 	PTR_LA	k0, ejtag_debug_buffer
+ 	LONG_L	k1, 0(k0)
++#endif
+ 
+ ejtag_return:
++	back_to_back_c0_hazard
+ 	MFC0	k0, CP0_DESAVE
+ 	.set	mips32
+ 	deret
+@@ -377,6 +417,12 @@ ejtag_return:
+ 	.data
+ EXPORT(ejtag_debug_buffer)
+ 	.fill	LONGSIZE
++#ifdef CONFIG_SMP
++EXPORT(ejtag_debug_buffer_spinlock)
++	.fill	LONGSIZE
++EXPORT(ejtag_debug_buffer_per_cpu)
++	.fill	LONGSIZE * NR_CPUS
++#endif
+ 	.previous
+ 
+ 	__INIT
+-- 
+2.17.1

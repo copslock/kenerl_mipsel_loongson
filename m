@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2018 10:45:10 +0200 (CEST)
-Received: from newton.telenet-ops.be ([IPv6:2a02:1800:120:4::f00:d]:60326 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2018 10:45:26 +0200 (CEST)
+Received: from newton.telenet-ops.be ([IPv6:2a02:1800:120:4::f00:d]:60336 "EHLO
         newton.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990757AbeFKIohHGEHb (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992479AbeFKIohfs7sb (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jun 2018 10:44:37 +0200
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by newton.telenet-ops.be (Postfix) with ESMTPS id 41465C6Lt0zMqr7k
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by newton.telenet-ops.be (Postfix) with ESMTPS id 41465C6d2zzMqrC9
         for <linux-mips@linux-mips.org>; Mon, 11 Jun 2018 10:44:31 +0200 (CEST)
 Received: from ayla.of.borg ([84.194.111.163])
-        by baptiste.telenet-ops.be with bizsmtp
-        id xLkS1x00Z3XaVaC01LkSy2; Mon, 11 Jun 2018 10:44:31 +0200
+        by laurent.telenet-ops.be with bizsmtp
+        id xLkS1x00V3XaVaC01LkSsv; Mon, 11 Jun 2018 10:44:31 +0200
 Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
         by ayla.of.borg with esmtp (Exim 4.86_2)
         (envelope-from <geert@linux-m68k.org>)
-        id 1fSIR8-0006xV-Gt; Mon, 11 Jun 2018 10:44:26 +0200
+        id 1fSIR8-0006xN-FF; Mon, 11 Jun 2018 10:44:26 +0200
 Received: from geert by ramsan with local (Exim 4.86_2)
         (envelope-from <geert@linux-m68k.org>)
-        id 1fSIR8-0005OO-FV; Mon, 11 Jun 2018 10:44:26 +0200
+        id 1fSIR8-0005OE-E8; Mon, 11 Jun 2018 10:44:26 +0200
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Greg Ungerer <gerg@linux-m68k.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -29,9 +29,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
         linux-mips@linux-mips.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 3/3 RFC] Revert "net: stmmac: fix build failure due to missing COMMON_CLK dependency"
-Date:   Mon, 11 Jun 2018 10:44:23 +0200
-Message-Id: <1528706663-20670-4-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 1/3] m68k: coldfire: Normalize clk API
+Date:   Mon, 11 Jun 2018 10:44:21 +0200
+Message-Id: <1528706663-20670-2-git-send-email-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1528706663-20670-1-git-send-email-geert@linux-m68k.org>
 References: <1528706663-20670-1-git-send-email-geert@linux-m68k.org>
@@ -39,7 +39,7 @@ Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64220
+X-archive-position: 64221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,67 +56,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reverts commit bde4975310eb1982bd0bbff673989052d92fd481.
+Coldfire still provides its own variant of the clk API rather than using
+the generic COMMON_CLK API.  This generally works, but it causes some
+link errors with drivers using the clk_round_rate(), clk_set_rate(),
+clk_set_parent(), or clk_get_parent() functions when a platform lacks
+those interfaces.
 
-All legacy clock implementations now implement clk_set_rate() (Some
-implementations may be dummies, though).
+This adds empty stub implementations for each of them, and I don't even
+try to do something useful here but instead just print a WARN() message
+to make it obvious what is going on if they ever end up being called.
+
+The drivers that call these won't be used on these platforms (otherwise
+we'd get a link error today), so the added code is harmless bloat and
+will warn about accidental use.
+
+Based on commit bd7fefe1f06ca6cc ("ARM: w90x900: normalize clk API").
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-Marked "RFC", as this depends on "m68k: coldfire: Normalize clk API" and
-"MIPS: AR7: Normalize clk API".
----
- drivers/net/ethernet/stmicro/stmmac/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/m68k/coldfire/clk.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index cb5b0f58c395c2bd..e28c0d2c58e911ed 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -33,7 +33,7 @@ config DWMAC_DWC_QOS_ETH
- 	select PHYLIB
- 	select CRC32
- 	select MII
--	depends on OF && COMMON_CLK && HAS_DMA
-+	depends on OF && HAS_DMA
- 	help
- 	  Support for chips using the snps,dwc-qos-ethernet.txt DT binding.
+diff --git a/arch/m68k/coldfire/clk.c b/arch/m68k/coldfire/clk.c
+index 849cd208e2ed99e6..7bc666e482ebe82f 100644
+--- a/arch/m68k/coldfire/clk.c
++++ b/arch/m68k/coldfire/clk.c
+@@ -129,4 +129,33 @@ unsigned long clk_get_rate(struct clk *clk)
+ }
+ EXPORT_SYMBOL(clk_get_rate);
  
-@@ -57,7 +57,7 @@ config DWMAC_ANARION
- config DWMAC_IPQ806X
- 	tristate "QCA IPQ806x DWMAC support"
- 	default ARCH_QCOM
--	depends on OF && COMMON_CLK && (ARCH_QCOM || COMPILE_TEST)
-+	depends on OF && (ARCH_QCOM || COMPILE_TEST)
- 	select MFD_SYSCON
- 	help
- 	  Support for QCA IPQ806X DWMAC Ethernet.
-@@ -100,7 +100,7 @@ config DWMAC_OXNAS
- config DWMAC_ROCKCHIP
- 	tristate "Rockchip dwmac support"
- 	default ARCH_ROCKCHIP
--	depends on OF && COMMON_CLK && (ARCH_ROCKCHIP || COMPILE_TEST)
-+	depends on OF && (ARCH_ROCKCHIP || COMPILE_TEST)
- 	select MFD_SYSCON
- 	help
- 	  Support for Ethernet controller on Rockchip RK3288 SoC.
-@@ -123,7 +123,7 @@ config DWMAC_SOCFPGA
- config DWMAC_STI
- 	tristate "STi GMAC support"
- 	default ARCH_STI
--	depends on OF && COMMON_CLK && (ARCH_STI || COMPILE_TEST)
-+	depends on OF && (ARCH_STI || COMPILE_TEST)
- 	select MFD_SYSCON
- 	---help---
- 	  Support for ethernet controller on STi SOCs.
-@@ -147,7 +147,7 @@ config DWMAC_STM32
- config DWMAC_SUNXI
- 	tristate "Allwinner GMAC support"
- 	default ARCH_SUNXI
--	depends on OF && COMMON_CLK && (ARCH_SUNXI || COMPILE_TEST)
-+	depends on OF && (ARCH_SUNXI || COMPILE_TEST)
- 	---help---
- 	  Support for Allwinner A20/A31 GMAC ethernet controllers.
- 
++/* dummy functions, should not be called */
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	WARN_ON(clk);
++	return 0;
++}
++EXPORT_SYMBOL(clk_round_rate);
++
++int clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	WARN_ON(clk);
++	return 0;
++}
++EXPORT_SYMBOL(clk_set_rate);
++
++int clk_set_parent(struct clk *clk, struct clk *parent)
++{
++	WARN_ON(clk);
++	return 0;
++}
++EXPORT_SYMBOL(clk_set_parent);
++
++struct clk *clk_get_parent(struct clk *clk)
++{
++	WARN_ON(clk);
++	return NULL;
++}
++EXPORT_SYMBOL(clk_get_parent);
++
+ /***************************************************************************/
 -- 
 2.7.4

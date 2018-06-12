@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 11:50:23 +0200 (CEST)
-Received: from mail-pf0-x243.google.com ([IPv6:2607:f8b0:400e:c00::243]:36430
-        "EHLO mail-pf0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992494AbeFLJuPhvJOf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 11:50:15 +0200
-Received: by mail-pf0-x243.google.com with SMTP id a12-v6so11823201pfi.3;
-        Tue, 12 Jun 2018 02:50:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 11:50:37 +0200 (CEST)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:39163
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992497AbeFLJuZp11Of (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 11:50:25 +0200
+Received: by mail-pl0-x244.google.com with SMTP id f1-v6so14079327plt.6;
+        Tue, 12 Jun 2018 02:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=lu4OhWwCKU9BxaQ2oT4wJGfxQCLGkMzek7tNIjqHvOY=;
-        b=XgaF1PW3PdEQMbnZLiUOFTMOTJhoIroUx8nPKOGOzV5XQsjJOuG5vuR8wlhsfvxC4b
-         12vYiHO1yvmDlA0OyV1t78w300zYxvPamayaDQWMmfatiYPN9HLpVgAc9gKH9tHYZ3+o
-         XNSwZ+E5VgMx1cQHoG+GAqfHVTi4Vn/HMLkTNu0ZUkkyTRU9SfqKvJGVPtUH1B3iSLwC
-         xqanWsreWzHDALq2bwtnXQNjXEQ0vCKRmgiqjrFle+HJiXCJq4hKLutClQqPyGBh6W8V
-         MH7g9YPloNcBQde8sH3qSk99bzS8zmflNpZqdNz1feOWArT1nflynpYjPO2PWVXewiaA
-         9JRA==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=0mOnMs2BjK65i3sx4aQyomsWdirSXf5uwWpKmel7wvM=;
+        b=KVut6Gdoc8T9eo2/L2G2P0D5lV3ITmPobzu3q7bM5xV/Fglb+deaQCw4Gli3EXhStM
+         oDKqOFTQR7zEXBjU3aqyZOX+ySD8+k1jCK13JdhP0yPhzsn+TLMUy6sZ3zCP01CTDuOR
+         wcTSnaOlXdgg+jiDRh6Q6zK53o0+ZghhSOtrcqHq0xaPeif3gG2pz32X0DsakmtRxmQa
+         farVsGCS3583oO/oFrg7qCeW5TdL5533woZ8y4IeU4xrsSk+MFfQda3mNw88HuOvWOQS
+         LndRiT3o8d54ZtkOKVFwVLbcJFKlmbPbPuUlSngqHXK2m2J63DDY2mkR39cJJa6yLudg
+         +s+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=lu4OhWwCKU9BxaQ2oT4wJGfxQCLGkMzek7tNIjqHvOY=;
-        b=OvDWsbxNGq0FJXrUAG4HaqXM8CFOutzP7BcNupa7adYEf3stFdXqnxeZ5Gc7mdGv2a
-         2jb13HIoya1gia9dr0SW5yQ0VLmd/PBSuFhXloOuwJRdWgVud+NmICQySzYdYlfYyTBM
-         RCdWrbYt0vNBa/fbXHYsQP6Q7FXD9dkNY4qedmVoTj6J12eN96NL2yzvJ6OMTUJV9OC1
-         viFnSGguvFcXGKgPWDRr1y79iSTlefg78HiDB5h5nuE36MmE+BKAEKBqbvMHrQe8dJ/t
-         gDT/B6hrNWqkCJsTxkHPQ5CcW9z9GMWzWB98mys7EbQqWiL72aaCseslFY7qPKclkqwp
-         fHyQ==
-X-Gm-Message-State: APt69E3I9VAIjwgBkbVeRrRfV+NRP+YMR7gvD4Tpx2Cq+t9RP7+Cb0fZ
-        0F5uGkwNzye3GNyPg3a09Q8fQw==
-X-Google-Smtp-Source: ADUXVKJCrl7kayfkc6jRDU7NzhsNHsVx+TSRqaR4B7vWCnn1TA6tx8OvXmbC7fXWWHoHlSAPwJDLVw==
-X-Received: by 2002:a62:d712:: with SMTP id b18-v6mr3125600pfh.70.1528797008783;
-        Tue, 12 Jun 2018 02:50:08 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references;
+        bh=0mOnMs2BjK65i3sx4aQyomsWdirSXf5uwWpKmel7wvM=;
+        b=rhTbn1dh15Dbm25sYjImVcajSTKGuDZubT1Ym6TVjiZhR3qt/L6Tb/W6R1qiRWelf8
+         9mrQL5orDQTo664jmlVUBTa1b/hmuOHcwdZwcXzHnnZ4yp2WvrP/ign/yPmdUzXWGCLA
+         QGuSQPXeUfkZg+PyjESihEWeg4MMDYQRYekRo7MdD6Ljgoj0Ii+sexhxuayPMwWJx/5/
+         nSuCIgDTq32RsoQN45C1bVjxhNryemqJJeeh9z9mvUhbs7HYa1cOC/1CwJ1Ye8Ho8B2w
+         QAzHTeGi0Tuaqr+nyf+E+RAnBCFBPMy9+wUhT5/MWHh65HHvvhlAbBg/MgOKpqRe/+iE
+         LH/g==
+X-Gm-Message-State: APt69E03E9pwadwPgozzosu0dyiKYKH/OmUy3XlfThVdsY6QCY7jovn+
+        6PTl03oxoccji8nXHrNR7pnBTw==
+X-Google-Smtp-Source: ADUXVKK44pt9WVz8+Q/yddUNfrtcccbWscfEmwDGla+Zpm988X/LKO6uAtv3/k8auK5fl6NzJj5/vg==
+X-Received: by 2002:a17:902:8a82:: with SMTP id p2-v6mr3387380plo.244.1528797019388;
+        Tue, 12 Jun 2018 02:50:19 -0700 (PDT)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id o66-v6sm1881485pfi.157.2018.06.12.02.50.05
+        by smtp.gmail.com with ESMTPSA id o66-v6sm1881485pfi.157.2018.06.12.02.50.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 12 Jun 2018 02:50:07 -0700 (PDT)
+        Tue, 12 Jun 2018 02:50:18 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Paul Burton <paul.burton@mips.com>,
@@ -41,16 +42,18 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhuacai@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH Resend 1/2] MIPS: io: Add barrier after register read in inX()
-Date:   Tue, 12 Jun 2018 17:54:42 +0800
-Message-Id: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH Resend 2/2] MIPS: mcs lock: implement arch_mcs_spin_lock_contended() for Loongson-3
+Date:   Tue, 12 Jun 2018 17:54:43 +0800
+Message-Id: <1528797283-16577-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
+References: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64239
+X-archive-position: 64240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,34 +70,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-While a barrier is present in the outX() functions before the register
-write, a similar barrier is missing in the inX() functions after the
-register read. This could allow memory accesses following inX() to
-observe stale data.
+After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
+in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
+has SFB (Store Fill Buffer) and need a mb() after every READ_ONCE().
 
-This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: Add
-barrier after register read in readX()"). Because war_io_reorder_wmb()
-is both used by writeX() and outX(), if readX() need a barrier then so
-does inX().
+This patch introduce a MIPS-specific mcs_spinlock.h and revert to the
+old implementation of arch_mcs_spin_lock_contended() for Loongson-3.
 
-Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/io.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/include/asm/Kbuild         |  1 -
+ arch/mips/include/asm/mcs_spinlock.h | 14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/asm/mcs_spinlock.h
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index a7d0b83..cea8ad8 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -414,6 +414,8 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
- 	__val = *__addr;						\
- 	slow;								\
- 									\
-+	/* prevent prefetching of coherent DMA data prematurely */	\
-+	rmb();								\
- 	return pfx##ioswab##bwlq(__addr, __val);			\
- }
- 
+diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+index 45d541b..7076627 100644
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -6,7 +6,6 @@ generic-y += emergency-restart.h
+ generic-y += export.h
+ generic-y += irq_work.h
+ generic-y += local64.h
+-generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+ generic-y += parport.h
+ generic-y += percpu.h
+diff --git a/arch/mips/include/asm/mcs_spinlock.h b/arch/mips/include/asm/mcs_spinlock.h
+new file mode 100644
+index 0000000..063df4e
+--- /dev/null
++++ b/arch/mips/include/asm/mcs_spinlock.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_MCS_LOCK_H
++#define __ASM_MCS_LOCK_H
++
++/* Loongson-3 need a mb() after every READ_ONCE() */
++#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_SMP)
++#define arch_mcs_spin_lock_contended(l)					\
++do {									\
++	while (!(smp_load_acquire(l)))					\
++		cpu_relax();						\
++} while (0)
++#endif	/* CONFIG_CPU_LOONGSON3 && CONFIG_SMP */
++
++#endif	/* __ASM_MCS_LOCK_H */
 -- 
 2.7.0

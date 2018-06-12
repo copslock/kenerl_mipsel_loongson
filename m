@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 09:27:38 +0200 (CEST)
-Received: from icp-osb-irony-out3.external.iinet.net.au ([203.59.1.153]:28278
-        "EHLO icp-osb-irony-out3.external.iinet.net.au" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992497AbeFLH1a1ez9V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 09:27:30 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2DQAAAXdR9b/zSOqnwNTxoBAQEBAQIBA?=
- =?us-ascii?q?QEBCAEBAQGFTIN3lTABAQEBAQEGgQUpllOEdwKDBDgUAQIBAQEBAQEChj4BAQE?=
- =?us-ascii?q?DIxVBEAsNCwICJgICVwYBDAYCAQGDHoF0qW1tghwag2ABhEyBaIELiEmBB4EPJ?=
- =?us-ascii?q?IJoh3OCVQKZAwgBjm+IGIUdkw2BczMaCCgIgn6QGQFHXZAxAQE?=
-X-IPAS-Result: =?us-ascii?q?A2DQAAAXdR9b/zSOqnwNTxoBAQEBAQIBAQEBCAEBAQGFTIN?=
- =?us-ascii?q?3lTABAQEBAQEGgQUpllOEdwKDBDgUAQIBAQEBAQEChj4BAQEDIxVBEAsNCwICJ?=
- =?us-ascii?q?gICVwYBDAYCAQGDHoF0qW1tghwag2ABhEyBaIELiEmBB4EPJIJoh3OCVQKZAwg?=
- =?us-ascii?q?Bjm+IGIUdkw2BczMaCCgIgn6QGQFHXZAxAQE?=
-X-IronPort-AV: E=Sophos;i="5.51,213,1526313600"; 
-   d="scan'208";a="87014098"
-Received: from unknown (HELO [192.168.0.106]) ([124.170.142.52])
-  by icp-osb-irony-out3.iinet.net.au with ESMTP; 12 Jun 2018 15:26:24 +0800
-From:   Greg Ungerer <gerg@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 09:32:27 +0200 (CEST)
+Received: from mail-ua0-f195.google.com ([209.85.217.195]:36707 "EHLO
+        mail-ua0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992496AbeFLHcQY7BtV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 09:32:16 +0200
+Received: by mail-ua0-f195.google.com with SMTP id c23-v6so15294967uan.3;
+        Tue, 12 Jun 2018 00:32:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZkuAVGXNysuh02rnOn+qkguRzbJWt5KzZCa1KKykFZ4=;
+        b=ZGX7ZZXxbCGk4/2HOIC4oyuWblhbNKmKITvHzkEHdGYTEzNysfHUSm8Oy8fuETDfxR
+         RG+IXaCOd0sOsvLIM4/9/qZ8MmDuwt0E6wo3tcmUxQDKl7DTbj+7iGN1LjGaSeD01POr
+         hq9BycKIvDz7lrxfB+rDD3SJp0Ut/dlAFNKJIldNKAT25n8ZYEzl50b0Bc4PXrbn0G7m
+         cEc7CB6dk9tpW0LVkeYzya8L/ezdzYuvv8ZLSXZArEQampm1HippLRpXCf8ij2gFudqJ
+         fA98xwFqI+llz7+ZJfYFfLBoRCR6SKrNXO++hndXRFJP5ruqmgwQJ6kLTdJDaVXx+N5D
+         tTdQ==
+X-Gm-Message-State: APt69E3q24W9tIP8z7aEIuR54CoEw4UTmUEz6IRXEgy14bOogkOO/8c2
+        DN9MN6Sg3Q7rCCAtPwYd6FIBW1DQuhZvSnx6I9A=
+X-Google-Smtp-Source: ADUXVKLe61r6hcO+a07acV/jbzNEXLSJxcpl+WQ+pI88Yz1DhD6LVFOQ60wzjr58faeI+dcFjMEKhAQcll345BFfTR8=
+X-Received: by 2002:ab0:265:: with SMTP id 92-v6mr1755640uas.26.1528788730321;
+ Tue, 12 Jun 2018 00:32:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <1528706663-20670-1-git-send-email-geert@linux-m68k.org>
+ <1528706663-20670-2-git-send-email-geert@linux-m68k.org> <944b08ba-a882-e6cd-42fa-9251bce1d7b1@linux-m68k.org>
+In-Reply-To: <944b08ba-a882-e6cd-42fa-9251bce1d7b1@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 12 Jun 2018 09:31:59 +0200
+Message-ID: <CAMuHMdUyD8d2yoe6v8TEinEH3hhS7Znv99pPxDCkr_uEFS0Fzg@mail.gmail.com>
 Subject: Re: [PATCH 1/3] m68k: coldfire: Normalize clk API
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+To:     Greg Ungerer <gerg@linux-m68k.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Giuseppe Cavallaro <peppe.cavallaro@st.com>,
         Alexandre Torgue <alexandre.torgue@st.com>,
         Jose Abreu <joabreu@synopsys.com>,
         Corentin Labbe <clabbe@baylibre.com>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@linux-mips.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1528706663-20670-1-git-send-email-geert@linux-m68k.org>
- <1528706663-20670-2-git-send-email-geert@linux-m68k.org>
-Message-ID: <944b08ba-a882-e6cd-42fa-9251bce1d7b1@linux-m68k.org>
-Date:   Tue, 12 Jun 2018 17:26:22 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
-MIME-Version: 1.0
-In-Reply-To: <1528706663-20670-2-git-send-email-geert@linux-m68k.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <gerg@linux-m68k.org>
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64235
+X-archive-position: 64236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerg@linux-m68k.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,77 +64,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Geert,
+Hi Greg,
 
-On 11/06/18 18:44, Geert Uytterhoeven wrote:
-> Coldfire still provides its own variant of the clk API rather than using
-> the generic COMMON_CLK API.  This generally works, but it causes some
-> link errors with drivers using the clk_round_rate(), clk_set_rate(),
-> clk_set_parent(), or clk_get_parent() functions when a platform lacks
-> those interfaces.
-> 
-> This adds empty stub implementations for each of them, and I don't even
-> try to do something useful here but instead just print a WARN() message
-> to make it obvious what is going on if they ever end up being called.
-> 
-> The drivers that call these won't be used on these platforms (otherwise
-> we'd get a link error today), so the added code is harmless bloat and
-> will warn about accidental use.
-> 
-> Based on commit bd7fefe1f06ca6cc ("ARM: w90x900: normalize clk API").
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+On Tue, Jun 12, 2018 at 9:27 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
+> On 11/06/18 18:44, Geert Uytterhoeven wrote:
+> > Coldfire still provides its own variant of the clk API rather than using
+> > the generic COMMON_CLK API.  This generally works, but it causes some
+> > link errors with drivers using the clk_round_rate(), clk_set_rate(),
+> > clk_set_parent(), or clk_get_parent() functions when a platform lacks
+> > those interfaces.
+> >
+> > This adds empty stub implementations for each of them, and I don't even
+> > try to do something useful here but instead just print a WARN() message
+> > to make it obvious what is going on if they ever end up being called.
+> >
+> > The drivers that call these won't be used on these platforms (otherwise
+> > we'd get a link error today), so the added code is harmless bloat and
+> > will warn about accidental use.
+> >
+> > Based on commit bd7fefe1f06ca6cc ("ARM: w90x900: normalize clk API").
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>
+> I am fine with this for ColdFire, so
+>
+> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
 
-I am fine with this for ColdFire, so
+Thanks!
 
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+> Are you going to take this/these via your m68k git tree?
 
-Are you going to take this/these via your m68k git tree?
+I''m fine delagating this to you.
+Thanks!
 
-Regards
-Greg
+Gr{oetje,eeting}s,
 
+                        Geert
 
-> ---
->   arch/m68k/coldfire/clk.c | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/m68k/coldfire/clk.c b/arch/m68k/coldfire/clk.c
-> index 849cd208e2ed99e6..7bc666e482ebe82f 100644
-> --- a/arch/m68k/coldfire/clk.c
-> +++ b/arch/m68k/coldfire/clk.c
-> @@ -129,4 +129,33 @@ unsigned long clk_get_rate(struct clk *clk)
->   }
->   EXPORT_SYMBOL(clk_get_rate);
->   
-> +/* dummy functions, should not be called */
-> +long clk_round_rate(struct clk *clk, unsigned long rate)
-> +{
-> +	WARN_ON(clk);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(clk_round_rate);
-> +
-> +int clk_set_rate(struct clk *clk, unsigned long rate)
-> +{
-> +	WARN_ON(clk);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(clk_set_rate);
-> +
-> +int clk_set_parent(struct clk *clk, struct clk *parent)
-> +{
-> +	WARN_ON(clk);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(clk_set_parent);
-> +
-> +struct clk *clk_get_parent(struct clk *clk)
-> +{
-> +	WARN_ON(clk);
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL(clk_get_parent);
-> +
->   /***************************************************************************/
-> 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

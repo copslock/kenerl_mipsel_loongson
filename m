@@ -1,56 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 20:41:11 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:48265 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992684AbeFLSlEEuACv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 20:41:04 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 12 Jun 2018 18:40:54 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 12
- Jun 2018 11:41:04 -0700
-Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
- with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Tue, 12 Jun
- 2018 11:41:04 -0700
-Date:   Tue, 12 Jun 2018 11:40:53 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>
-Subject: Re: [PATCH Resend 2/2] MIPS: mcs lock: implement
- arch_mcs_spin_lock_contended() for Loongson-3
-Message-ID: <20180612184053.odi5gvvwbqovgvc6@pburton-laptop>
-References: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
- <1528797283-16577-2-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2018 00:24:41 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:33271 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993339AbeFLWYeN0oVH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jun 2018 00:24:34 +0200
+Received: by mail-pf0-f195.google.com with SMTP id b17-v6so271157pfi.0;
+        Tue, 12 Jun 2018 15:24:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=J9IvU1cX1LPBQyS4HNvbWY1dc6IN6lPqYJsKAqWSv+4=;
+        b=FpxuKyTxVpOzc+eYmcKFOD/OQtfANfU1snjNPT+qLwwciWcoRA7uDnr+YT1AAqoTgl
+         PGOlfuNd8mpFHVev2JXTGX5kqal4vjPrRZ5s50dKmoVGbYVlHEA40T8ksqTBG1TqPF/q
+         IEIjgb9ytwTlTS1i2fsB2tdmBSCzW4FEkGiGv7BNsJNMdUFfmEfdTFk+6xKoNPySPsxt
+         erAvPFa51prQd2Oy6Cdi4SJQAPd5oJyGqdiINHqLRWzsR52nKDIDIdOqSWOYS2RA4TbO
+         Zfrg5Tp6ayWLtdHIEUT4zVq2KAACq1oSaU9s1tXf4qiPW0NDm2inM+gd6JhoSbZZWmtI
+         mVoA==
+X-Gm-Message-State: APt69E1abH0Sd9DkGc2G1IfylA7AZbLno4g4Adqb4nabhVUFyuONOEH2
+        0R6RxIgUFMpEaMZd8AbWbw==
+X-Google-Smtp-Source: ADUXVKKw/kgMcb9uEw33ozCvkfkt43vl+oiIIbms0Mxdyl71WZIv+fUJKHV+hH0J0087r2+Ig1auEQ==
+X-Received: by 2002:a63:7211:: with SMTP id n17-v6mr1815539pgc.94.1528842267392;
+        Tue, 12 Jun 2018 15:24:27 -0700 (PDT)
+Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
+        by smtp.gmail.com with ESMTPSA id v26-v6sm1308471pfe.13.2018.06.12.15.24.26
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 Jun 2018 15:24:26 -0700 (PDT)
+Date:   Tue, 12 Jun 2018 16:24:24 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Songjun Wu <songjun.wu@linux.intel.com>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@intel.com, linux-mips@linux-mips.org,
+        qi-ming.wu@intel.com, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/7] MIPS: dts: Add aliases node for lantiq danube serial
+Message-ID: <20180612222424.GA2197@rob-hp-laptop>
+References: <20180612054034.4969-1-songjun.wu@linux.intel.com>
+ <20180612054034.4969-2-songjun.wu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1528797283-16577-2-git-send-email-chenhc@lemote.com>
-User-Agent: NeoMutt/20180512
-X-BESS-ID: 1528828854-853316-1015-36534-1
-X-BESS-VER: 2018.7-r1806112253
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194004
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: chenhc@lemote.com,ralf@linux-mips.org,linux-mips@linux-mips.org,zhangfx@lemote.com,wuzhangjin@gmail.com,chenhuacai@gmail.com
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+In-Reply-To: <20180612054034.4969-2-songjun.wu@linux.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64247
+X-archive-position: 64248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,78 +69,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Huacai,
-
-On Tue, Jun 12, 2018 at 05:54:43PM +0800, Huacai Chen wrote:
-> After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
-> in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
-> has SFB (Store Fill Buffer) and need a mb() after every READ_ONCE().
-
-Why do you need that mb()?
-
-Could you describe what is actually happening with the current code, in
-order to explain what requires the mb() you mention here? What's being
-held in the SFB & why is that problematic?
-
-Most importantly if smp_cond_load_acquire() isn't working as expected on
-Loongson CPUs then fixing that would be a much better path forwards than
-trying to avoid using it.
-
-Could it be that Loongson requires an implementation of
-(smp_)read_barrier_depends()?
-
-Additionally you have "Resend" in the subject of this email, but I don't
-see any previous submissions of this patch - given that commit
-7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire() in MCS spin
-loop") is very recent I doubt there were any. Please try to be factual,
-and if you have 2 patches that are unrelated please send them separately
-rather than as a series.
-
-Thanks,
-    Paul
-
-> This patch introduce a MIPS-specific mcs_spinlock.h and revert to the
-> old implementation of arch_mcs_spin_lock_contended() for Loongson-3.
+On Tue, Jun 12, 2018 at 01:40:28PM +0800, Songjun Wu wrote:
+> Previous implementation uses a hard-coded register value to check if
+> the current serial entity is the console entity.
+> Now the lantiq serial driver uses the aliases for the index of the
+> serial port.
+> The lantiq danube serial dts are updated with aliases to support this.
 > 
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
 > ---
->  arch/mips/include/asm/Kbuild         |  1 -
->  arch/mips/include/asm/mcs_spinlock.h | 14 ++++++++++++++
->  2 files changed, 14 insertions(+), 1 deletion(-)
->  create mode 100644 arch/mips/include/asm/mcs_spinlock.h
 > 
-> diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
-> index 45d541b..7076627 100644
-> --- a/arch/mips/include/asm/Kbuild
-> +++ b/arch/mips/include/asm/Kbuild
-> @@ -6,7 +6,6 @@ generic-y += emergency-restart.h
->  generic-y += export.h
->  generic-y += irq_work.h
->  generic-y += local64.h
-> -generic-y += mcs_spinlock.h
->  generic-y += mm-arch-hooks.h
->  generic-y += parport.h
->  generic-y += percpu.h
-> diff --git a/arch/mips/include/asm/mcs_spinlock.h b/arch/mips/include/asm/mcs_spinlock.h
-> new file mode 100644
-> index 0000000..063df4e
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mcs_spinlock.h
-> @@ -0,0 +1,14 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_MCS_LOCK_H
-> +#define __ASM_MCS_LOCK_H
+>  arch/mips/boot/dts/lantiq/danube.dtsi | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+> index 2dd950181f8a..7a9e15da6bd0 100644
+> --- a/arch/mips/boot/dts/lantiq/danube.dtsi
+> +++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+> @@ -4,6 +4,10 @@
+>  	#size-cells = <1>;
+>  	compatible = "lantiq,xway", "lantiq,danube";
+>  
+> +	aliases {
+> +		serial0 = &asc1;
+> +	};
 > +
-> +/* Loongson-3 need a mb() after every READ_ONCE() */
-> +#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_SMP)
-> +#define arch_mcs_spin_lock_contended(l)					\
-> +do {									\
-> +	while (!(smp_load_acquire(l)))					\
-> +		cpu_relax();						\
-> +} while (0)
-> +#endif	/* CONFIG_CPU_LOONGSON3 && CONFIG_SMP */
-> +
-> +#endif	/* __ASM_MCS_LOCK_H */
+>  	cpus {
+>  		cpu@0 {
+>  			compatible = "mips,mips24Kc";
+> @@ -74,7 +78,7 @@
+>  			reg = <0xE100A00 0x100>;
+>  		};
+>  
+> -		serial@E100C00 {
+> +		asc1: serial@E100C00 {
+
+Fix this to be lower case hex while you are at it.
+
+>  			compatible = "lantiq,asc";
+>  			reg = <0xE100C00 0x400>;
+>  			interrupt-parent = <&icu0>;
 > -- 
-> 2.7.0
+> 2.11.0
 > 

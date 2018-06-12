@@ -1,63 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 11:50:37 +0200 (CEST)
-Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:39163
-        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992497AbeFLJuZp11Of (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2018 11:50:25 +0200
-Received: by mail-pl0-x244.google.com with SMTP id f1-v6so14079327plt.6;
-        Tue, 12 Jun 2018 02:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0mOnMs2BjK65i3sx4aQyomsWdirSXf5uwWpKmel7wvM=;
-        b=KVut6Gdoc8T9eo2/L2G2P0D5lV3ITmPobzu3q7bM5xV/Fglb+deaQCw4Gli3EXhStM
-         oDKqOFTQR7zEXBjU3aqyZOX+ySD8+k1jCK13JdhP0yPhzsn+TLMUy6sZ3zCP01CTDuOR
-         wcTSnaOlXdgg+jiDRh6Q6zK53o0+ZghhSOtrcqHq0xaPeif3gG2pz32X0DsakmtRxmQa
-         farVsGCS3583oO/oFrg7qCeW5TdL5533woZ8y4IeU4xrsSk+MFfQda3mNw88HuOvWOQS
-         LndRiT3o8d54ZtkOKVFwVLbcJFKlmbPbPuUlSngqHXK2m2J63DDY2mkR39cJJa6yLudg
-         +s+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references;
-        bh=0mOnMs2BjK65i3sx4aQyomsWdirSXf5uwWpKmel7wvM=;
-        b=rhTbn1dh15Dbm25sYjImVcajSTKGuDZubT1Ym6TVjiZhR3qt/L6Tb/W6R1qiRWelf8
-         9mrQL5orDQTo664jmlVUBTa1b/hmuOHcwdZwcXzHnnZ4yp2WvrP/ign/yPmdUzXWGCLA
-         QGuSQPXeUfkZg+PyjESihEWeg4MMDYQRYekRo7MdD6Ljgoj0Ii+sexhxuayPMwWJx/5/
-         nSuCIgDTq32RsoQN45C1bVjxhNryemqJJeeh9z9mvUhbs7HYa1cOC/1CwJ1Ye8Ho8B2w
-         QAzHTeGi0Tuaqr+nyf+E+RAnBCFBPMy9+wUhT5/MWHh65HHvvhlAbBg/MgOKpqRe/+iE
-         LH/g==
-X-Gm-Message-State: APt69E03E9pwadwPgozzosu0dyiKYKH/OmUy3XlfThVdsY6QCY7jovn+
-        6PTl03oxoccji8nXHrNR7pnBTw==
-X-Google-Smtp-Source: ADUXVKK44pt9WVz8+Q/yddUNfrtcccbWscfEmwDGla+Zpm988X/LKO6uAtv3/k8auK5fl6NzJj5/vg==
-X-Received: by 2002:a17:902:8a82:: with SMTP id p2-v6mr3387380plo.244.1528797019388;
-        Tue, 12 Jun 2018 02:50:19 -0700 (PDT)
-Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id o66-v6sm1881485pfi.157.2018.06.12.02.50.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 12 Jun 2018 02:50:18 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH Resend 2/2] MIPS: mcs lock: implement arch_mcs_spin_lock_contended() for Loongson-3
-Date:   Tue, 12 Jun 2018 17:54:43 +0800
-Message-Id: <1528797283-16577-2-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
-References: <1528797283-16577-1-git-send-email-chenhc@lemote.com>
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2018 13:24:07 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:52920 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992521AbeFLLYALXILC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Jun 2018 13:24:00 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0C181208AE;
+        Tue, 12 Jun 2018 11:23:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1528802633;
+        bh=XubKKVHNsxx7+mIjf/LZvYwEuNbmY1kL5nL31zUEbJs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Wb6g0B6BSH/JrskdqcAyCbDa9SDU4MOQ6qrtGaw4n4L4KtDwi6kzV4wSmsDTugN35
+         R2GfGezizzk1QEzJevaZcA94qeoCjWk98YwUVGKXuAaTbtsImZxbCIxub0aXibvIA9
+         TITucK4YjflvbVtajO+SlU+l8vMmaJD5Qk+ep1Qs=
+Date:   Tue, 12 Jun 2018 12:23:48 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Songjun Wu <songjun.wu@linux.intel.com>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@intel.com, linux-mips@linux-mips.org,
+        qi-ming.wu@intel.com, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 3/7] MIPS: intel: Add initial support for Intel MIPS SoCs
+Message-ID: <20180612112346.GA8748@jamesdev>
+References: <20180612054034.4969-1-songjun.wu@linux.intel.com>
+ <20180612054034.4969-4-songjun.wu@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="J2SCkAp4GZ/dPZZf"
+Content-Disposition: inline
+In-Reply-To: <20180612054034.4969-4-songjun.wu@linux.intel.com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64240
+X-archive-position: 64241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,51 +56,329 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
-in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
-has SFB (Store Fill Buffer) and need a mb() after every READ_ONCE().
 
-This patch introduce a MIPS-specific mcs_spinlock.h and revert to the
-old implementation of arch_mcs_spin_lock_contended() for Loongson-3.
+--J2SCkAp4GZ/dPZZf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/Kbuild         |  1 -
- arch/mips/include/asm/mcs_spinlock.h | 14 ++++++++++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/include/asm/mcs_spinlock.h
+Hi,
 
-diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
-index 45d541b..7076627 100644
---- a/arch/mips/include/asm/Kbuild
-+++ b/arch/mips/include/asm/Kbuild
-@@ -6,7 +6,6 @@ generic-y += emergency-restart.h
- generic-y += export.h
- generic-y += irq_work.h
- generic-y += local64.h
--generic-y += mcs_spinlock.h
- generic-y += mm-arch-hooks.h
- generic-y += parport.h
- generic-y += percpu.h
-diff --git a/arch/mips/include/asm/mcs_spinlock.h b/arch/mips/include/asm/mcs_spinlock.h
-new file mode 100644
-index 0000000..063df4e
---- /dev/null
-+++ b/arch/mips/include/asm/mcs_spinlock.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MCS_LOCK_H
-+#define __ASM_MCS_LOCK_H
-+
-+/* Loongson-3 need a mb() after every READ_ONCE() */
-+#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_SMP)
-+#define arch_mcs_spin_lock_contended(l)					\
-+do {									\
-+	while (!(smp_load_acquire(l)))					\
-+		cpu_relax();						\
-+} while (0)
-+#endif	/* CONFIG_CPU_LOONGSON3 && CONFIG_SMP */
-+
-+#endif	/* __ASM_MCS_LOCK_H */
--- 
-2.7.0
+Good to see this patch!
+
+On Tue, Jun 12, 2018 at 01:40:30PM +0800, Songjun Wu wrote:
+> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+> index ac7ad54f984f..bcd647060f3e 100644
+> --- a/arch/mips/Kbuild.platforms
+> +++ b/arch/mips/Kbuild.platforms
+> @@ -12,6 +12,7 @@ platforms += cobalt
+>  platforms += dec
+>  platforms += emma
+>  platforms += generic
+> +platforms += intel-mips
+
+What are the main things preventing this from moving to the generic
+platform? Is it mainly the use of EVA (which generic doesn't yet
+support)?
+
+> diff --git a/arch/mips/include/asm/mach-intel-mips/kernel-entry-init.h b/arch/mips/include/asm/mach-intel-mips/kernel-entry-init.h
+> new file mode 100644
+> index 000000000000..3893855b60c6
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-intel-mips/kernel-entry-init.h
+...
+> +	/*
+> +	 * Get Config.K0 value and use it to program
+> +	 * the segmentation registers
+
+Please can you describe (maybe with a table) the segment layout in human
+readable terms so the reader doesn't need to decode the SegCtl registers
+to understand where everything is in the virtual address space?
+
+> diff --git a/arch/mips/boot/dts/intel-mips/Makefile b/arch/mips/boot/dts/intel-mips/Makefile
+> new file mode 100644
+> index 000000000000..b16c0081639c
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/intel-mips/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +dtb-$(CONFIG_DTB_INTEL_MIPS_GRX500)	+= easy350_anywan.dtb
+> +obj-y	+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+
+This needs updating to obj-$(CONFIG_BUILTIN_DTB) as per commit
+fca3aa166422 ("MIPS: dts: Avoid unneeded built-in.a in DTS dirs") in
+linux-next.
+
+> diff --git a/arch/mips/intel-mips/Makefile b/arch/mips/intel-mips/Makefile
+> new file mode 100644
+> index 000000000000..9f272d06eecd
+> --- /dev/null
+> +++ b/arch/mips/intel-mips/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +obj-$(CONFIG_INTEL_MIPS)	+= prom.o irq.o time.o
+
+You can use obj-y, since this Makefile is only included if
+CONFIG_INTEL_MIPS=y (i.e. via the platform-$(CONFIG_INTEL_MIPS) below).
+
+Also please split each file onto separate "obj-y += whatever.o" lines.
+
+> diff --git a/arch/mips/intel-mips/Platform b/arch/mips/intel-mips/Platform
+> new file mode 100644
+> index 000000000000..b34750eeaeb0
+> --- /dev/null
+> +++ b/arch/mips/intel-mips/Platform
+> @@ -0,0 +1,11 @@
+> +#
+> +# MIPs SoC platform
+> +#
+> +
+> +platform-$(CONFIG_INTEL_MIPS)			+= intel-mips/
+
+^^^ (this is what ensures the Makefile is only included for this
+platform)
+
+> diff --git a/arch/mips/intel-mips/irq.c b/arch/mips/intel-mips/irq.c
+> new file mode 100644
+> index 000000000000..00637a5cdd20
+> --- /dev/null
+> +++ b/arch/mips/intel-mips/irq.c
+> @@ -0,0 +1,36 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2016 Intel Corporation.
+> + */
+> +#include <linux/init.h>
+> +#include <linux/irqchip.h>
+> +#include <linux/of_irq.h>
+> +#include <asm/irq.h>
+> +
+> +#include <asm/irq_cpu.h>
+> +
+> +void __init arch_init_irq(void)
+> +{
+> +	struct device_node *intc_node;
+> +
+> +	pr_info("EIC is %s\n", cpu_has_veic ? "on" : "off");
+> +	pr_info("VINT is %s\n", cpu_has_vint ? "on" : "off");
+> +
+> +	intc_node = of_find_compatible_node(NULL, NULL,
+> +					    "mti,cpu-interrupt-controller");
+> +	if (!cpu_has_veic && !intc_node)
+> +		mips_cpu_irq_init();
+> +
+> +	irqchip_init();
+> +}
+> +
+> +int get_c0_perfcount_int(void)
+> +{
+> +	return gic_get_c0_perfcount_int();
+> +}
+> +EXPORT_SYMBOL_GPL(get_c0_perfcount_int);
+> +
+> +unsigned int get_c0_compare_int(void)
+> +{
+> +	return gic_get_c0_compare_int();
+> +}
+
+Worth having get_c0_fdc_int() too for the "Fast Debug Channel"?
+
+> diff --git a/arch/mips/intel-mips/prom.c b/arch/mips/intel-mips/prom.c
+> new file mode 100644
+> index 000000000000..9407858ddc94
+> --- /dev/null
+> +++ b/arch/mips/intel-mips/prom.c
+> @@ -0,0 +1,184 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2014 Lei Chuanhua <Chuanhua.lei@lantiq.com>
+> + * Copyright (C) 2016 Intel Corporation.
+> + */
+> +#include <linux/init.h>
+> +#include <linux/export.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/of_fdt.h>
+> +#include <linux/regmap.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <asm/mips-cps.h>
+> +#include <asm/smp-ops.h>
+> +#include <asm/dma-coherence.h>
+> +#include <asm/prom.h>
+> +
+> +#define IOPORT_RESOURCE_START   0x10000000
+> +#define IOPORT_RESOURCE_END     0xffffffff
+> +#define IOMEM_RESOURCE_START    0x10000000
+> +#define IOMEM_RESOURCE_END      0xffffffff
+
+The _END ones seem to be unused?
+
+> +static void __init prom_init_cmdline(void)
+> +{
+> +	int i;
+> +	int argc;
+> +	char **argv;
+> +
+> +	/*
+> +	 * If u-boot pass parameters, it is ok, however, if without u-boot
+> +	 * JTAG or other tool has to reset all register value before it goes
+> +	 * emulation most likely belongs to this category
+> +	 */
+> +	if (fw_arg0 == 0 || fw_arg1 == 0)
+> +		return;
+> +
+> +	argc = fw_arg0;
+> +	argv = (char **)KSEG1ADDR(fw_arg1);
+> +
+> +	arcs_cmdline[0] = '\0';
+> +
+> +	for (i = 0; i < argc; i++) {
+> +		char *p = (char *)KSEG1ADDR(argv[i]);
+> +
+> +		if (argv[i] && *p) {
+> +			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
+> +			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
+> +		}
+> +	}
+
+Please describe the boot register protocol in the commit message and/or
+a comment in this function.
+
+Is it compatible with the UHI boot protocol, such that this could
+potentially be converted to use the generic platform in future?
+
+> +}
+> +
+> +static int __init plat_enable_iocoherency(void)
+> +{
+> +	int supported = 0;
+> +
+> +	if (mips_cps_numiocu(0) != 0) {
+> +		/* Nothing special needs to be done to enable coherency */
+> +		pr_info("Coherence Manager IOCU detected\n");
+> +		/* Second IOCU for MPE or other master access register */
+> +		write_gcr_reg0_base(0xa0000000);
+> +		write_gcr_reg0_mask(0xf8000000 | CM_GCR_REGn_MASK_CMTGT_IOCU1);
+> +		supported = 1;
+> +	}
+> +
+> +	/* hw_coherentio = supported; */
+> +
+> +	return supported;
+> +}
+> +
+> +static void __init plat_setup_iocoherency(void)
+> +{
+> +#ifdef CONFIG_DMA_NONCOHERENT
+> +	/*
+> +	 * Kernel has been configured with software coherency
+> +	 * but we might choose to turn it off and use hardware
+> +	 * coherency instead.
+
+That sounds a big risky. Software coherency will I think perform cache
+line invalidation when syncing buffers from device to CPU (see
+__dma_sync_virtual), so that the underlying RAM written by the
+supposedly incoherent DMA is visible. If its coherent afterall then it
+may be sat in a dirty line in the cache, and not have been written back
+to RAM yet before it gets invalidated?
+
+> +	 */
+> +	if (plat_enable_iocoherency()) {
+> +		if (coherentio == IO_COHERENCE_DISABLED)
+> +			pr_info("Hardware DMA cache coherency disabled\n");
+> +		else
+> +			pr_info("Hardware DMA cache coherency enabled\n");
+> +	} else {
+> +		if (coherentio == IO_COHERENCE_ENABLED)
+> +			pr_info("Hardware DMA cache coherency unsupported, but enabled from command line!\n");
+> +		else
+> +			pr_info("Software DMA cache coherency enabled\n");
+> +	}
+> +#else
+> +	if (!plat_enable_iocoherency())
+> +		panic("Hardware DMA cache coherency not supported!");
+> +#endif
+> +}
+
+
+> +void __init device_tree_init(void)
+> +{
+> +	if (!initial_boot_params)
+> +		return;
+
+Redundant check. unflatten_and_copy_device_tree() now handles that and
+emits a message.
+
+> +
+> +	unflatten_and_copy_device_tree();
+> +}
+> +
+> +#define CPC_BASE_ADDR		0x12310000
+
+Please put this at the top of the file with other #defines.
+
+> +
+> +phys_addr_t mips_cpc_default_phys_base(void)
+> +{
+> +	return CPC_BASE_ADDR;
+> +}
+
+> diff --git a/arch/mips/intel-mips/time.c b/arch/mips/intel-mips/time.c
+> new file mode 100644
+> index 000000000000..77ad4014fe9d
+> --- /dev/null
+> +++ b/arch/mips/intel-mips/time.c
+> @@ -0,0 +1,56 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2016 Intel Corporation.
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/clocksource.h>
+> +#include <linux/of.h>
+> +
+> +#include <asm/time.h>
+> +
+> +static inline u32 get_counter_resolution(void)
+> +{
+> +	u32 res;
+> +
+> +	__asm__ __volatile__(".set	push\n"
+
+Preferably each line of asm should end \n\t and the final line doesn't
+need \n or \t. Look at the .s compiler output to see the difference.
+
+> +			     ".set	mips32r2\n"
+> +			     "rdhwr	%0, $3\n"
+
+Hmm, it'd be nice to abstract this in mipsregs.h, but that can always
+wait. You could use MIPS_HWR_CCRES though (i.e. off top of my head
+something like "%0, $%1\n" and have a "i" (MIPS_HWR_CCRES) input.
+
+> +			     ".set pop\n"
+> +			     : "=&r" (res)
+
+I don't think you strictly need an early clobber there since there are
+no register inputs, "=r" should do fine.
+
+> +			     : /* no input */
+> +			     : "memory");
+
+I don't think that operation clobbers any memory?
+
+Thanks
+James
+
+--J2SCkAp4GZ/dPZZf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWx+tQQAKCRA1zuSGKxAj
+8mCmAP0YcFeLhdWqRmrKx1Kj4nfiSw+n/mHL8icm7Xm3VueBfQD7Biu4QqJeSQjd
+BFlbigIdSVe9+Xuw1j0TVLxMMvws7Q4=
+=Em5k
+-----END PGP SIGNATURE-----
+
+--J2SCkAp4GZ/dPZZf--

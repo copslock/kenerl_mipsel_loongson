@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2018 23:48:31 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:35298 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993497AbeFMVsVlbqT1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jun 2018 23:48:21 +0200
-Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 13 Jun 2018 21:48:12 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
- (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 13
- Jun 2018 14:48:23 -0700
-Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
- with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Wed, 13 Jun
- 2018 14:48:23 -0700
-Date:   Wed, 13 Jun 2018 14:48:11 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Yuri Frolov <crashing.kernel@gmail.com>
-CC:     Daniel Golle <daniel@makrotopia.org>, <linux-mips@linux-mips.org>
-Subject: Re: [vmlinuz.bin] Does u-boot support loading vmlinuz[.bin]?
-Message-ID: <20180613214811.zvuyf5e6hajutv6j@pburton-laptop>
-References: <90a06531-2663-3982-962d-ff8025ee4388@gmail.com>
- <20180613153510.GB31768@makrotopia.org>
- <2cfa098d-46f4-b4b2-10f9-e447b89c7fda@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2018 08:38:22 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:42446 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992720AbeFNGiNh0Rq1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Jun 2018 08:38:13 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2018 23:38:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.51,222,1526367600"; 
+   d="scan'208";a="237338374"
+Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.15]) ([10.226.39.15])
+  by fmsmga006.fm.intel.com with ESMTP; 13 Jun 2018 23:38:07 -0700
+Subject: Re: [PATCH 7/7] tty: serial: lantiq: Add CCF support
+To:     Rob Herring <robh@kernel.org>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@linux.intel.com, linux-mips@linux-mips.org,
+        qi-ming.wu@intel.com, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.com>, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>
+References: <20180612054034.4969-1-songjun.wu@linux.intel.com>
+ <20180612054034.4969-8-songjun.wu@linux.intel.com>
+ <20180612223953.GA21621@rob-hp-laptop>
+From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
+Message-ID: <0c62efdb-9a23-3514-352c-a9689aacc1a5@linux.intel.com>
+Date:   Thu, 14 Jun 2018 14:38:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2cfa098d-46f4-b4b2-10f9-e447b89c7fda@gmail.com>
-User-Agent: NeoMutt/20180512
-X-BESS-ID: 1528926492-853316-23201-500-1
-X-BESS-VER: 2018.7-r1806112253
-X-BESS-Apparent-Source-IP: 12.201.5.31
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194039
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: crashing.kernel@gmail.com,daniel@makrotopia.org,linux-mips@linux-mips.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+In-Reply-To: <20180612223953.GA21621@rob-hp-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <songjun.wu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64259
+X-archive-position: 64260
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: songjun.wu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,43 +55,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yuri,
 
-On Wed, Jun 13, 2018 at 07:28:43PM +0300, Yuri Frolov wrote:
-> On 06/13/2018 06:35 PM, Daniel Golle wrote:
-> > On Wed, Jun 13, 2018 at 02:19:06PM +0300, Yuri Frolov wrote:
-> > > do I understand correctly, that the native format for mips arch.
-> > > u-boot uses is uImage?
 
-Easy options are to use the legacy uImage or FIT as Daniel mentioned.
-
-As an example, when running U-Boot the older MIPS Malta platform
-generally uses a legacy uImage whilst the newer MIPS Boston platform
-uses a FIT (.itb) image.
-
-> > > Yocto's default for mips is vmlinuz.bin for some reason, here is
-> > > the question.
-
-Please note that, at least when targeting MIPS, vmlinuz.bin is not a
-zImage - those are 2 different things. If you build vmlinuz.bin for MIPS
-then what you get is a flat binary containing some decompression code
-and a compressed version of vmlinux.bin. The file has no special header
-as it appears the ARM zImage format does.
-
-> > You got to enable U-Boot's CONFIG_CMD_BOOTZ and use the bootz command
-> > in order to boot that. Or change that default to generate FIT or legacy
-> > uImage instead.
-> > 
-> 
-> bootz_setup is properly defined only for arm (arch/arm/lib/zimage.c);
-> default bootz_setup returns an error.
->
-> So, is bootz supposed to work for architectures other than arm?
-
-So far as I can see it isn't - it's ARM specific.
-
-But again that's not the same as a MIPS vmlinuz.bin, so I suspect with
-that knowledge your question may change.
-
-Thanks,
-    Paul
+On 6/13/2018 6:39 AM, Rob Herring wrote:
+> On Tue, Jun 12, 2018 at 01:40:34PM +0800, Songjun Wu wrote:
+>> Previous implementation uses platform-dependent API to get the clock.
+>> Those functions are not available for other SoC which uses the same IP.
+>> The CCF (Common Clock Framework) have an abstraction based APIs
+>> for clock.
+>> Change to use CCF APIs to get clock and rate.
+>> So that different SoCs can use the same driver.
+>> Clocks and clock-names are updated in device tree binding.
+>>
+>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+>>
+>> ---
+>>
+>>   .../devicetree/bindings/serial/lantiq_asc.txt      |  15 +++
+> Please split bindings to separate patch.
+Thanks.
+It will be split to two separate patches, one for bindings, the other 
+for code.
+>>   drivers/tty/serial/Kconfig                         |   2 +-
+>>   drivers/tty/serial/lantiq.c                        | 101 +++++++++++++++++----
+>>   3 files changed, 98 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/serial/lantiq_asc.txt b/Documentation/devicetree/bindings/serial/lantiq_asc.txt
+>> index 3acbd309ab9d..608f0c87a4af 100644
+>> --- a/Documentation/devicetree/bindings/serial/lantiq_asc.txt
+>> +++ b/Documentation/devicetree/bindings/serial/lantiq_asc.txt
+>> @@ -6,6 +6,10 @@ Required properties:
+>>   - interrupts: the 3 (tx rx err) interrupt numbers. The interrupt specifier
+>>     depends on the interrupt-parent interrupt controller.
+>>   
+>> +Optional properties:
+>> +- clocks: Should contain frequency clock and gate clock
+>> +- clock-names: Should be "freq" and "asc"
+>> +
+>>   Example:
+>>   
+>>   asc1: serial@e100c00 {
+>> @@ -14,3 +18,14 @@ asc1: serial@e100c00 {
+>>   	interrupt-parent = <&icu0>;
+>>   	interrupts = <112 113 114>;
+>>   };
+>> +
+>> +asc0: serial@600000 {
+>> +	compatible = "lantiq,asc";
+>> +	reg = <0x600000 0x100000>;
+> 1MB of address space? That wastes a lot of virtual space on 32-bit
+> systems. Just make the size the actual used range.
+The size of address space will be updated to the actual used range.
+>> +	interrupt-parent = <&gic>;
+>> +	interrupts = <GIC_SHARED 103 IRQ_TYPE_LEVEL_HIGH>,
+>> +	<GIC_SHARED 105 IRQ_TYPE_LEVEL_HIGH>,
+>> +	<GIC_SHARED 106 IRQ_TYPE_LEVEL_HIGH>;
+>> +	clocks = <&pll0aclk SSX4_CLK>, <&clkgate1 GATE_URT_CLK>;
+>> +	clock-names = "freq", "asc";
+>> +};

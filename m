@@ -1,60 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 18:31:36 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:60318 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993008AbeFOQb2XhV1G convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jun 2018 18:31:28 +0200
-Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 15 Jun 2018 16:31:18 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
- (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 15
- Jun 2018 09:31:30 -0700
-Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
- with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Fri, 15 Jun
- 2018 09:31:30 -0700
-Date:   Fri, 15 Jun 2018 09:31:18 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 19:37:39 +0200 (CEST)
+Received: from mail.efficios.com ([IPv6:2607:5300:60:7898::beef]:59344 "EHLO
+        mail.efficios.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993029AbeFORha3e1hJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 19:37:30 +0200
+Received: from localhost (ip6-localhost [IPv6:::1])
+        by mail.efficios.com (Postfix) with ESMTP id B828622B412;
+        Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+Received: from mail.efficios.com ([IPv6:::1])
+        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
+        with ESMTP id qtk03QvMmmau; Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+Received: from localhost (ip6-localhost [IPv6:::1])
+        by mail.efficios.com (Postfix) with ESMTP id 451D522B40F;
+        Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 451D522B40F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+        s=default; t=1529084239;
+        bh=EaDSR6aNKInsrOpzhKzh57NIKqnBCH6lcbQa6v9j4wE=;
+        h=Date:From:To:Message-ID:MIME-Version;
+        b=Q75W1KEYx6wmlA9EWvFQAwg5NtevO8zTVCOuOYW58NOXzYY7YgpM9zj2vuBKxMfwc
+         +lLh7x/bKq5E90uZ124cSpzcKU2Hmsu3XUdf3Cre/wP+SBGI5ZRqiYF2GKhCLYzKin
+         zpOG3AepNgHpQ1nAwklV8Mupl+tWPqpLSQRgvFx/GITYMvBE3r1wirgoQUCTSB5tDN
+         AkIKGi7iWPLhrx81ubm9YiRW6dj8kzgFH8ZhNYD53aWTyM4Sxj5YQdix5bXrVYGSxJ
+         KgI1SXsOvm/IytpqK64u4g9rB2rn9yVSRIyRmPnv+AiU5wKoyBKUXu6/RMIoD4wLXB
+         83XUA5hdhcl/Q==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([IPv6:::1])
+        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
+        with ESMTP id OmnmOT05UXnl; Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+Received: from mail02.efficios.com (mail02.efficios.com [167.114.142.138])
+        by mail.efficios.com (Postfix) with ESMTP id 3036622B408;
+        Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+Date:   Fri, 15 Jun 2018 13:37:19 -0400 (EDT)
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
         linux-mips <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        wuzhangjin <wuzhangjin@gmail.com>,
-        stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Fix arch_trigger_cpumask_backtrace()
-Message-ID: <20180615163118.s522qanwyo7weliu@pburton-laptop>
-References: <1517802167-20340-1-git-send-email-chenhc@lemote.com>
- <20180613212125.gxbqusrjgzb257sj@pburton-laptop>
- <tencent_593903C43C0807E06AB44674@qq.com>
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Message-ID: <1373980460.14412.1529084239034.JavaMail.zimbra@efficios.com>
+In-Reply-To: <20180615105809.GB7603@jamesdev>
+References: <20180614235211.31357-1-paul.burton@mips.com> <20180614235211.31357-5-paul.burton@mips.com> <20180615105809.GB7603@jamesdev>
+Subject: Re: [PATCH 4/4] rseq/selftests: Implement MIPS support
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <tencent_593903C43C0807E06AB44674@qq.com>
-User-Agent: NeoMutt/20180512
-X-BESS-ID: 1529080278-298554-21967-32480-1
-X-BESS-VER: 2018.7-r1806150109
-X-BESS-Apparent-Source-IP: 12.201.5.31
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194088
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: chenhc@lemote.com,ralf@linux-mips.org,steven.hill@cavium.com,linux-mips@linux-mips.org,zhangfx@lemote.com,wuzhangjin@gmail.com,stable@vger.kernel.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.142.138]
+X-Mailer: Zimbra 8.8.8_GA_2096 (ZimbraWebClient - FF52 (Linux)/8.8.8_GA_1703)
+Thread-Topic: rseq/selftests: Implement MIPS support
+Thread-Index: sJDkoLXztL0rd01o4PFqQYpfV3YGlA==
+Return-Path: <compudj@efficios.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64309
+X-archive-position: 64310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: mathieu.desnoyers@efficios.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,27 +72,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Huacai,
+----- On Jun 15, 2018, at 6:58 AM, James Hogan jhogan@kernel.org wrote:
 
-On Fri, Jun 15, 2018 at 12:30:35PM +0800, 陈华才 wrote:
-> I can't test your branch...... Because now the mainline kernel lacks
-> too many features needed by Loongson-3.
+> On Thu, Jun 14, 2018 at 04:52:10PM -0700, Paul Burton wrote:
+>> +#define __RSEQ_ASM_DEFINE_TABLE(version, flags,	start_ip,			\
+> 
+> Nit: technically all these \'s are on 81st column...
+> 
+>> +#define __RSEQ_ASM_DEFINE_ABORT(table_label, label, teardown,			\
+>> +				abort_label, version, flags,			\
+>> +				start_ip, post_commit_offset, abort_ip)		\
+>> +		".balign 32\n\t"						\
+> 
+> ARM doesn't do this for DEFINE_ABORT. Is it intentional that we do for
+> MIPS?
 
-Interesting - so the mainline Loongson-3 code doesn't actually work? How
-much is missing for it to be functional?
+Given that include/uapi/linux/rseq.h declares struct rseq_cs as
+__attribute__((aligned(4 * sizeof(__u64)))), and considering this
+comment:
 
-> By the way, Your approach is based on NMI but I don't think NMI is
-> always available on each MIPS board.
+/*
+ * struct rseq_cs is aligned on 4 * 8 bytes to ensure it is always
+ * contained within a single cache-line. It is usually declared as
+ * link-time constant data.
+ */
 
-It isn't using NMIs at all - the nmi_trigger_cpumask_backtrace()
-function has NMI in its name, sure, but it just invokes a callback to
-interrupt other CPUs & we can implement that using regular old IPIs.
-
-This is the same way arch/arm does it, so it's not unprecedented &
-allows us to share the common code.
-
-It would be ideal to use NMIs where possible in future, but that can
-come later for platforms where they're available.
+The .balign 32 is the right thing to do here. I will add a .balign 32
+to ARM selftests code as well.
 
 Thanks,
-    Paul
+
+Mathieu
+
+> 
+> Thanks
+> James
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:11:16 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50474 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:11:30 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50654 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993030AbeFOLJUpLJXT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:20 +0200
+        by eddie.linux-mips.org with ESMTP id S23993032AbeFOLJY30ZcT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=ppIZLEE00FrTyH+ESGTzwZE3vSCJnq2qUHGULF+YQxQ=; b=hUq+Iqyhw0liJ3pxr8GijLRot
-        bES6Ie/1gXRqcpsIZM3iJPTPZjNaSqEcRt88fPZSiSNGm7fWgtefCsgC4gAtq32YjUK0pw+nbGsG8
-        ljX00qF04q1RhOFRrok8bUgQzv7YkPANI8VxuK9Ubh9G6JT5qUITXcu4mXlUT+crvAZg718p2OhgW
-        j/84RmPx4MOw0TIv+d8hzqGjbWeFXvJnHDnIomtcYFto1svLhPdNZL1OwSEcV3h4Mr0m6CXX6T+SS
-        OFEuD8yynwstFPMFL4KB2PsTh26crsdDiKuqQmLILFKUkLiNKbVcmDRittzRqZWSQ+fxWOMEukylP
-        y1POc6ojg==;
+         bh=tX1GFvo0wzT1PSGBtmlUtd73aahXpA8VhD0PlkMR3wQ=; b=JUGm5sF8RZofcxLpOHfX2t6tP
+        nyp7e5C9cOLponqicKsfOebnyJKZIKGT3x/BMnlb5L68dmB9z+IPpE9BnoezRaUvO6iad6yjZd/xD
+        ZADaTFA7OUdpVrklXEyLp4vP+MOrK05Xr7JmSOFs4kzF4BPVeLnYcM/UHfnJJncG28haGh4VAP7XQ
+        nu0h5b4BHmljRz+WeItB5opLEsCZSV7GIVy0WVTVw8lKKiAbPIOHHFSOjD/ro9EtVpHCdcqBJKDGS
+        HWqrR4ww3zkaPSjik0O+zuC1aM5Xqgg2j6193NSM24FMLMfuOaB4IxJZ4hz8zhchWN0kfWVevrWe8
+        o8+f8dG3g==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fTmbW-0004v0-9l; Fri, 15 Jun 2018 11:09:18 +0000
+        id 1fTmbZ-0004wd-Fp; Fri, 15 Jun 2018 11:09:22 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -28,9 +28,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
         iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
-Subject: [PATCH 06/25] MIPS: loongson: remove loongson_dma_supported
-Date:   Fri, 15 Jun 2018 13:08:35 +0200
-Message-Id: <20180615110854.19253-7-hch@lst.de>
+Subject: [PATCH 07/25] MIPS: consolidate the swiotlb implementations
+Date:   Fri, 15 Jun 2018 13:08:36 +0200
+Message-Id: <20180615110854.19253-8-hch@lst.de>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180615110854.19253-1-hch@lst.de>
 References: <20180615110854.19253-1-hch@lst.de>
@@ -39,7 +39,7 @@ Return-Path: <BATV+0eb41a859d58214bb3da+5409+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64287
+X-archive-position: 64288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,44 +56,369 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-swiotlb_dma_supported will always return true for a mask large enough to
-cover the DMA addresses for all physical memory, which is the right
-thing to do for swiotlb based dma ops.  This function returned false
-if the mask was bigger than a firmware set dma_mask_bits that apparently
-can be either 32 or 64, and which seems completely buggys if it actually
-is not 64, as the false return negates the whole point of swiotlb.
+Octeon and Loongson share exactly the same code, move it into a common
+implementation, and use that implementation directly from get_arch_dma_ops.
+
+Also provide the expected dma-direct.h helpers directly instead of
+delegating to platform dma-coherence.h headers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mips/loongson64/common/dma-swiotlb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/mips/cavium-octeon/dma-octeon.c          | 61 ----------------
+ arch/mips/include/asm/dma-direct.h            | 17 ++++-
+ arch/mips/include/asm/dma-mapping.h           |  5 ++
+ .../asm/mach-cavium-octeon/dma-coherence.h    | 11 ---
+ .../asm/mach-loongson64/dma-coherence.h       | 10 ---
+ arch/mips/loongson64/common/dma-swiotlb.c     | 71 +------------------
+ arch/mips/mm/Makefile                         |  1 +
+ arch/mips/mm/dma-swiotlb.c                    | 61 ++++++++++++++++
+ 8 files changed, 84 insertions(+), 153 deletions(-)
+ create mode 100644 arch/mips/mm/dma-swiotlb.c
 
-diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
-index 6a739f8ae110..a5e50f2ec301 100644
---- a/arch/mips/loongson64/common/dma-swiotlb.c
-+++ b/arch/mips/loongson64/common/dma-swiotlb.c
-@@ -56,13 +56,6 @@ static void loongson_dma_sync_sg_for_device(struct device *dev,
- 	mb();
+diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+index 7f0c9f926b6e..236833be6fbe 100644
+--- a/arch/mips/cavium-octeon/dma-octeon.c
++++ b/arch/mips/cavium-octeon/dma-octeon.c
+@@ -11,7 +11,6 @@
+  * Copyright (C) 2010 Cavium Networks, Inc.
+  */
+ #include <linux/dma-direct.h>
+-#include <linux/scatterlist.h>
+ #include <linux/bootmem.h>
+ #include <linux/swiotlb.h>
+ #include <linux/types.h>
+@@ -169,49 +168,6 @@ void __init octeon_pci_dma_init(void)
  }
+ #endif /* CONFIG_PCI */
  
--static int loongson_dma_supported(struct device *dev, u64 mask)
+-static dma_addr_t octeon_dma_map_page(struct device *dev, struct page *page,
+-	unsigned long offset, size_t size, enum dma_data_direction direction,
+-	unsigned long attrs)
 -{
--	if (mask > DMA_BIT_MASK(loongson_sysconf.dma_mask_bits))
--		return 0;
--	return swiotlb_dma_supported(dev, mask);
+-	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
+-					    direction, attrs);
+-	mb();
+-
+-	return daddr;
+-}
+-
+-static int octeon_dma_map_sg(struct device *dev, struct scatterlist *sg,
+-	int nents, enum dma_data_direction direction, unsigned long attrs)
+-{
+-	int r = swiotlb_map_sg_attrs(dev, sg, nents, direction, attrs);
+-	mb();
+-	return r;
+-}
+-
+-static void octeon_dma_sync_single_for_device(struct device *dev,
+-	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+-{
+-	swiotlb_sync_single_for_device(dev, dma_handle, size, direction);
+-	mb();
+-}
+-
+-static void octeon_dma_sync_sg_for_device(struct device *dev,
+-	struct scatterlist *sg, int nelems, enum dma_data_direction direction)
+-{
+-	swiotlb_sync_sg_for_device(dev, sg, nelems, direction);
+-	mb();
+-}
+-
+-static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
+-	dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+-{
+-	void *ret = swiotlb_alloc(dev, size, dma_handle, gfp, attrs);
+-
+-	mb();
+-
+-	return ret;
 -}
 -
  dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
  {
- 	long nid;
-@@ -99,7 +92,7 @@ static const struct dma_map_ops loongson_dma_map_ops = {
- 	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
- 	.sync_sg_for_device = loongson_dma_sync_sg_for_device,
- 	.mapping_error = swiotlb_dma_mapping_error,
--	.dma_supported = loongson_dma_supported,
-+	.dma_supported = swiotlb_dma_supported,
- };
+ #ifdef CONFIG_PCI
+@@ -230,21 +186,6 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr)
+ 	return daddr;
+ }
+ 
+-static const struct dma_map_ops octeon_swiotlb_ops = {
+-	.alloc			= octeon_dma_alloc_coherent,
+-	.free			= swiotlb_free,
+-	.map_page		= octeon_dma_map_page,
+-	.unmap_page		= swiotlb_unmap_page,
+-	.map_sg			= octeon_dma_map_sg,
+-	.unmap_sg		= swiotlb_unmap_sg_attrs,
+-	.sync_single_for_cpu	= swiotlb_sync_single_for_cpu,
+-	.sync_single_for_device	= octeon_dma_sync_single_for_device,
+-	.sync_sg_for_cpu	= swiotlb_sync_sg_for_cpu,
+-	.sync_sg_for_device	= octeon_dma_sync_sg_for_device,
+-	.mapping_error		= swiotlb_dma_mapping_error,
+-	.dma_supported		= swiotlb_dma_supported
+-};
+-
+ char *octeon_swiotlb;
  
  void __init plat_swiotlb_setup(void)
+@@ -307,6 +248,4 @@ void __init plat_swiotlb_setup(void)
+ 
+ 	if (swiotlb_init_with_tbl(octeon_swiotlb, swiotlb_nslabs, 1) == -ENOMEM)
+ 		panic("Cannot allocate SWIOTLB buffer");
+-
+-	mips_dma_map_ops = &octeon_swiotlb_ops;
+ }
+diff --git a/arch/mips/include/asm/dma-direct.h b/arch/mips/include/asm/dma-direct.h
+index f32f15530aba..b5c240806e1b 100644
+--- a/arch/mips/include/asm/dma-direct.h
++++ b/arch/mips/include/asm/dma-direct.h
+@@ -1 +1,16 @@
+-#include <asm/dma-coherence.h>
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _MIPS_DMA_DIRECT_H
++#define _MIPS_DMA_DIRECT_H 1
++
++static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
++{
++	if (!dev->dma_mask)
++		return false;
++
++	return addr + size - 1 <= *dev->dma_mask;
++}
++
++dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr);
++phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr);
++
++#endif /* _MIPS_DMA_DIRECT_H */
+diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+index 886e75a383f2..ebcce3e22297 100644
+--- a/arch/mips/include/asm/dma-mapping.h
++++ b/arch/mips/include/asm/dma-mapping.h
+@@ -11,10 +11,15 @@
+ #endif
+ 
+ extern const struct dma_map_ops *mips_dma_map_ops;
++extern const struct dma_map_ops mips_swiotlb_ops;
+ 
+ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ {
++#ifdef CONFIG_SWIOTLB
++	return &mips_swiotlb_ops;
++#else
+ 	return mips_dma_map_ops;
++#endif
+ }
+ 
+ #define arch_setup_dma_ops arch_setup_dma_ops
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+index c5cdeea495f8..c0254c72d97b 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+@@ -61,17 +61,6 @@ static inline void plat_post_dma_flush(struct device *dev)
+ {
+ }
+ 
+-static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
+-{
+-	if (!dev->dma_mask)
+-		return false;
+-
+-	return addr + size - 1 <= *dev->dma_mask;
+-}
+-
+-dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr);
+-phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr);
+-
+ extern char *octeon_swiotlb;
+ 
+ #endif /* __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/mach-loongson64/dma-coherence.h b/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+index 64fc44dec0a8..b8825a7d1279 100644
+--- a/arch/mips/include/asm/mach-loongson64/dma-coherence.h
++++ b/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+@@ -17,16 +17,6 @@
+ 
+ struct device;
+ 
+-static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
+-{
+-	if (!dev->dma_mask)
+-		return false;
+-
+-	return addr + size - 1 <= *dev->dma_mask;
+-}
+-
+-extern dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr);
+-extern phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr);
+ static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+ 					  size_t size)
+ {
+diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
+index a5e50f2ec301..a4f554bf1232 100644
+--- a/arch/mips/loongson64/common/dma-swiotlb.c
++++ b/arch/mips/loongson64/common/dma-swiotlb.c
+@@ -1,60 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include <linux/mm.h>
++#include <linux/dma-direct.h>
+ #include <linux/init.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/scatterlist.h>
+ #include <linux/swiotlb.h>
+-#include <linux/bootmem.h>
+-
+-#include <asm/bootinfo.h>
+-#include <boot_param.h>
+-#include <dma-coherence.h>
+-
+-static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+-{
+-	void *ret = swiotlb_alloc(dev, size, dma_handle, gfp, attrs);
+-
+-	mb();
+-	return ret;
+-}
+-
+-static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
+-				unsigned long offset, size_t size,
+-				enum dma_data_direction dir,
+-				unsigned long attrs)
+-{
+-	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
+-					dir, attrs);
+-	mb();
+-	return daddr;
+-}
+-
+-static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
+-				int nents, enum dma_data_direction dir,
+-				unsigned long attrs)
+-{
+-	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, attrs);
+-	mb();
+-
+-	return r;
+-}
+-
+-static void loongson_dma_sync_single_for_device(struct device *dev,
+-				dma_addr_t dma_handle, size_t size,
+-				enum dma_data_direction dir)
+-{
+-	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
+-	mb();
+-}
+-
+-static void loongson_dma_sync_sg_for_device(struct device *dev,
+-				struct scatterlist *sg, int nents,
+-				enum dma_data_direction dir)
+-{
+-	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
+-	mb();
+-}
+ 
+ dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+ {
+@@ -80,23 +27,7 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr)
+ 	return daddr;
+ }
+ 
+-static const struct dma_map_ops loongson_dma_map_ops = {
+-	.alloc = loongson_dma_alloc_coherent,
+-	.free = swiotlb_free,
+-	.map_page = loongson_dma_map_page,
+-	.unmap_page = swiotlb_unmap_page,
+-	.map_sg = loongson_dma_map_sg,
+-	.unmap_sg = swiotlb_unmap_sg_attrs,
+-	.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
+-	.sync_single_for_device = loongson_dma_sync_single_for_device,
+-	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
+-	.sync_sg_for_device = loongson_dma_sync_sg_for_device,
+-	.mapping_error = swiotlb_dma_mapping_error,
+-	.dma_supported = swiotlb_dma_supported,
+-};
+-
+ void __init plat_swiotlb_setup(void)
+ {
+ 	swiotlb_init(1);
+-	mips_dma_map_ops = &loongson_dma_map_ops;
+ }
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index c463bdad45c7..b87e4258fd78 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+ obj-$(CONFIG_HIGHMEM)		+= highmem.o
+ obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
++obj-$(CONFIG_SWIOTLB)		+= dma-swiotlb.o
+ 
+ obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R3000)		+= c-r3k.o tlb-r3k.o
+diff --git a/arch/mips/mm/dma-swiotlb.c b/arch/mips/mm/dma-swiotlb.c
+new file mode 100644
+index 000000000000..6014ed3479fd
+--- /dev/null
++++ b/arch/mips/mm/dma-swiotlb.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/dma-mapping.h>
++#include <linux/swiotlb.h>
++
++static void *mips_swiotlb_alloc(struct device *dev, size_t size,
++		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
++{
++	void *ret = swiotlb_alloc(dev, size, dma_handle, gfp, attrs);
++
++	mb();
++	return ret;
++}
++
++static dma_addr_t mips_swiotlb_map_page(struct device *dev,
++		struct page *page, unsigned long offset, size_t size,
++		enum dma_data_direction dir, unsigned long attrs)
++{
++	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
++					dir, attrs);
++	mb();
++	return daddr;
++}
++
++static int mips_swiotlb_map_sg(struct device *dev, struct scatterlist *sg,
++		int nents, enum dma_data_direction dir, unsigned long attrs)
++{
++	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, attrs);
++	mb();
++
++	return r;
++}
++
++static void mips_swiotlb_sync_single_for_device(struct device *dev,
++		dma_addr_t dma_handle, size_t size, enum dma_data_direction dir)
++{
++	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
++	mb();
++}
++
++static void mips_swiotlb_sync_sg_for_device(struct device *dev,
++		struct scatterlist *sg, int nents, enum dma_data_direction dir)
++{
++	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
++	mb();
++}
++
++const struct dma_map_ops mips_swiotlb_ops = {
++	.alloc			= mips_swiotlb_alloc,
++	.free			= swiotlb_free,
++	.map_page		= mips_swiotlb_map_page,
++	.unmap_page		= swiotlb_unmap_page,
++	.map_sg			= mips_swiotlb_map_sg,
++	.unmap_sg		= swiotlb_unmap_sg_attrs,
++	.sync_single_for_cpu	= swiotlb_sync_single_for_cpu,
++	.sync_single_for_device	= mips_swiotlb_sync_single_for_device,
++	.sync_sg_for_cpu	= swiotlb_sync_sg_for_cpu,
++	.sync_sg_for_device	= mips_swiotlb_sync_sg_for_device,
++	.mapping_error		= swiotlb_dma_mapping_error,
++	.dma_supported		= swiotlb_dma_supported,
++};
++EXPORT_SYMBOL(mips_swiotlb_ops);
 -- 
 2.17.1

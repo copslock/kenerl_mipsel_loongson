@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:10:14 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50124 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:10:32 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50292 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992735AbeFOLJQjNnTT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:16 +0200
+        by eddie.linux-mips.org with ESMTP id S23993024AbeFOLJRVCM0T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=SpVXJCPFouTEqsbTuzoIHRXRVhfVe+jfsplPlJ6qzco=; b=Fti4e8fzFakt5i4ecWTpkET6W
-        TvzNy+Yvi3p3bjpHjZBUsL+6lB0BMEKoXDGIJN7O7MsvG78jdBbAm0CMghSrBwCaOQAcfo66D77TL
-        S88g2tp6dEWOM0CsHzN8H8GQaOsxRKLhuRxwS/qWNNUS9F/18/kCT89vO3AwGQEJQVTIbhEp4H5Pp
-        0k1QyfU+rby54l2ZNzUZaQbs6lKVI3ITxX/TcEvJ5WnNRqO9MW/G/bAERD5V4tUBV8TzbtPBq/+mw
-        4zQ9CTXmVL1xPCG3UoiLRyp+rEMGgZiilOGjoLRAaqwQcZtXxX82oo89ClDSlfaXteLMPy58Z7PVa
-        SL4WGHFBA==;
+         bh=GGrLAMYo5duxRQkYfGmn1GdOWdAnfTU4K6fh8JSG9N4=; b=a/o7qPbUki/5eq8t6oim7i5sH
+        rZ41gix+Kv42kfym7EcRcPEm2mrr5qSSk6BgnHpE7T8F/KQL0S221obCRf1MvQlUnIHTajrx6cYzo
+        HsiujGTtL05f61uPyh3M0hu9aIr/oqNfVnlEFEiHRX+8Cx+vYelXe3UAko5PMH0WbLPiFx3OxQxAC
+        xVeqFIqdXs+5EOkehbJFahSVeUeLWqd4DWm8XAnni+Nt8C4cM9iVBQkQbORGh+XeiXMTzDrtd7r7P
+        w3UuFKahPgA14Y9uOx9p6lmf3XGEHHPa3Qjo3HCjtsdt9D5h/jENN9E/j55yoQUfiN830Zsb9QDN8
+        f1S3imOjw==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fTmbL-0004nm-Lk; Fri, 15 Jun 2018 11:09:08 +0000
+        id 1fTmbP-0004pv-Ln; Fri, 15 Jun 2018 11:09:12 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -28,9 +28,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
         iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
-Subject: [PATCH 03/25] MIPS: remove CONFIG_DMA_COHERENT
-Date:   Fri, 15 Jun 2018 13:08:32 +0200
-Message-Id: <20180615110854.19253-4-hch@lst.de>
+Subject: [PATCH 04/25] MIPS: Octeon: unexport __phys_to_dma and __dma_to_phys
+Date:   Fri, 15 Jun 2018 13:08:33 +0200
+Message-Id: <20180615110854.19253-5-hch@lst.de>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180615110854.19253-1-hch@lst.de>
 References: <20180615110854.19253-1-hch@lst.de>
@@ -39,7 +39,7 @@ Return-Path: <BATV+0eb41a859d58214bb3da+5409+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64284
+X-archive-position: 64285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,202 +56,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We can just check for !CONFIG_DMA_NONCOHERENT instead and simplify things
-a lot.
+These functions are just low-level helpers for the swiotlb and dma-direct
+implementations, and should never be used by drivers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Paul Burton <paul.burton@mips.com>
 ---
- arch/mips/Kconfig                            | 16 ----------------
- arch/mips/include/asm/dma-coherence.h        |  6 +++---
- arch/mips/include/asm/mach-generic/kmalloc.h |  3 +--
- arch/mips/mti-malta/malta-setup.c            |  4 ++--
- arch/mips/sibyte/Kconfig                     |  1 -
- 5 files changed, 6 insertions(+), 24 deletions(-)
+ arch/mips/cavium-octeon/dma-octeon.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3f9deec70b92..89be9f97da4e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -665,7 +665,6 @@ config SGI_IP27
- 	select FW_ARC64
- 	select BOOT_ELF64
- 	select DEFAULT_SGI_PARTITION
--	select DMA_COHERENT
- 	select SYS_HAS_EARLY_PRINTK
- 	select HW_HAS_PCI
- 	select NR_CPUS_DEFAULT_64
-@@ -742,7 +741,6 @@ config SGI_IP32
- config SIBYTE_CRHINE
- 	bool "Sibyte BCM91120C-CRhine"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select SIBYTE_BCM1120
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -752,7 +750,6 @@ config SIBYTE_CRHINE
- config SIBYTE_CARMEL
- 	bool "Sibyte BCM91120x-Carmel"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select SIBYTE_BCM1120
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -762,7 +759,6 @@ config SIBYTE_CARMEL
- config SIBYTE_CRHONE
- 	bool "Sibyte BCM91125C-CRhone"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select SIBYTE_BCM1125
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -773,7 +769,6 @@ config SIBYTE_CRHONE
- config SIBYTE_RHONE
- 	bool "Sibyte BCM91125E-Rhone"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select SIBYTE_BCM1125H
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -783,7 +778,6 @@ config SIBYTE_RHONE
- config SIBYTE_SWARM
- 	bool "Sibyte BCM91250A-SWARM"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select HAVE_PATA_PLATFORM
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
-@@ -796,7 +790,6 @@ config SIBYTE_SWARM
- config SIBYTE_LITTLESUR
- 	bool "Sibyte BCM91250C2-LittleSur"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select HAVE_PATA_PLATFORM
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
-@@ -808,7 +801,6 @@ config SIBYTE_LITTLESUR
- config SIBYTE_SENTOSA
- 	bool "Sibyte BCM91250E-Sentosa"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select SIBYTE_SB1250
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_SB1
-@@ -818,7 +810,6 @@ config SIBYTE_SENTOSA
- config SIBYTE_BIGSUR
- 	bool "Sibyte BCM91480B-BigSur"
- 	select BOOT_ELF32
--	select DMA_COHERENT
- 	select NR_CPUS_DEFAULT_4
- 	select SIBYTE_BCM1x80
- 	select SWAP_IO_SPACE
-@@ -895,7 +886,6 @@ config CAVIUM_OCTEON_SOC
- 	select CEVT_R4K
- 	select ARCH_HAS_PHYS_TO_DMA
- 	select PHYS_ADDR_T_64BIT
--	select DMA_COHERENT
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select EDAC_SUPPORT
-@@ -944,7 +934,6 @@ config NLM_XLR_BOARD
- 	select PHYS_ADDR_T_64BIT
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
--	select DMA_COHERENT
- 	select NR_CPUS_DEFAULT_32
- 	select CEVT_R4K
- 	select CSRC_R4K
-@@ -972,7 +961,6 @@ config NLM_XLP_BOARD
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
--	select DMA_COHERENT
- 	select NR_CPUS_DEFAULT_32
- 	select CEVT_R4K
- 	select CSRC_R4K
-@@ -991,7 +979,6 @@ config MIPS_PARAVIRT
- 	bool "Para-Virtualized guest system"
- 	select CEVT_R4K
- 	select CSRC_R4K
--	select DMA_COHERENT
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
-@@ -1117,9 +1104,6 @@ config DMA_PERDEV_COHERENT
- 	bool
- 	select DMA_MAYBE_COHERENT
+diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+index 7b335ab21697..e5d00c79bd26 100644
+--- a/arch/mips/cavium-octeon/dma-octeon.c
++++ b/arch/mips/cavium-octeon/dma-octeon.c
+@@ -13,7 +13,6 @@
+ #include <linux/dma-direct.h>
+ #include <linux/scatterlist.h>
+ #include <linux/bootmem.h>
+-#include <linux/export.h>
+ #include <linux/swiotlb.h>
+ #include <linux/types.h>
+ #include <linux/init.h>
+@@ -190,7 +189,6 @@ dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
  
--config DMA_COHERENT
--	bool
--
- config DMA_NONCOHERENT
- 	bool
- 	select NEED_DMA_MAP_STATE
-diff --git a/arch/mips/include/asm/dma-coherence.h b/arch/mips/include/asm/dma-coherence.h
-index 72d0eab02afc..8eda48748ed5 100644
---- a/arch/mips/include/asm/dma-coherence.h
-+++ b/arch/mips/include/asm/dma-coherence.h
-@@ -21,10 +21,10 @@ enum coherent_io_user_state {
- extern enum coherent_io_user_state coherentio;
- extern int hw_coherentio;
- #else
--#ifdef CONFIG_DMA_COHERENT
--#define coherentio	IO_COHERENCE_ENABLED
--#else
-+#ifdef CONFIG_DMA_NONCOHERENT
- #define coherentio	IO_COHERENCE_DISABLED
-+#else
-+#define coherentio	IO_COHERENCE_ENABLED
- #endif
- #define hw_coherentio	0
- #endif /* CONFIG_DMA_MAYBE_COHERENT */
-diff --git a/arch/mips/include/asm/mach-generic/kmalloc.h b/arch/mips/include/asm/mach-generic/kmalloc.h
-index 74207c7bd00d..649a98338886 100644
---- a/arch/mips/include/asm/mach-generic/kmalloc.h
-+++ b/arch/mips/include/asm/mach-generic/kmalloc.h
-@@ -2,8 +2,7 @@
- #ifndef __ASM_MACH_GENERIC_KMALLOC_H
- #define __ASM_MACH_GENERIC_KMALLOC_H
+ 	return ops->phys_to_dma(dev, paddr);
+ }
+-EXPORT_SYMBOL(__phys_to_dma);
  
--
--#ifndef CONFIG_DMA_COHERENT
-+#ifdef CONFIG_DMA_NONCOHERENT
- /*
-  * Total overkill for most systems but need as a safe default.
-  * Set this one if any device in the system might do non-coherent DMA.
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index 7b63914d2e58..4d5cdfeee3db 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -227,7 +227,7 @@ static void __init bonito_quirks_setup(void)
- 	} else
- 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
+ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr)
+ {
+@@ -200,7 +198,6 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr)
  
--#ifdef CONFIG_DMA_COHERENT
-+#ifndef CONFIG_DMA_NONCOHERENT
- 	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
- 		pr_info("Enabled Bonito CPU coherency\n");
-@@ -279,7 +279,7 @@ void __init plat_mem_setup(void)
- 	 */
- 	enable_dma(4);
+ 	return ops->dma_to_phys(dev, daddr);
+ }
+-EXPORT_SYMBOL(__dma_to_phys);
  
--#ifdef CONFIG_DMA_COHERENT
-+#ifndef CONFIG_DMA_NONCOHERENT
- 	if (mips_revision_sconid != MIPS_REVISION_SCON_BONITO)
- 		panic("Hardware DMA cache coherency not supported");
- #endif
-diff --git a/arch/mips/sibyte/Kconfig b/arch/mips/sibyte/Kconfig
-index f4dbce25bc6a..7ec278d72096 100644
---- a/arch/mips/sibyte/Kconfig
-+++ b/arch/mips/sibyte/Kconfig
-@@ -70,7 +70,6 @@ config SIBYTE_BCM1x55
- 
- config SIBYTE_SB1xxx_SOC
- 	bool
--	select DMA_COHERENT
- 	select IRQ_MIPS_CPU
- 	select SWAP_IO_SPACE
- 	select SYS_SUPPORTS_32BIT_KERNEL
+ static struct octeon_dma_map_ops octeon_linear_dma_map_ops = {
+ 	.dma_map_ops = {
 -- 
 2.17.1

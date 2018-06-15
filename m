@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 12:58:31 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:46994 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992907AbeFOK6V5-TiT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jun 2018 12:58:21 +0200
-Received: from jamesdev (jahogan.plus.com [212.159.75.221])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A2CA2208B2;
-        Fri, 15 Jun 2018 10:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529060295;
-        bh=5U7V9eGN1JS8ygcZzefuPYrzJIYsl4zfV4h++Y98lDs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yvYypnOZg3VFmnSyzjjCevkh3t+jiDp9eIeDqqKMvPmhZZSVrcTOMTwbbYcrH72Uv
-         1uP+4/4oP+tgcYqiOnjrT/BsoLer/Kwmdf1OtSuMIToiF2KV2mLRkncf3fSYkQXcCZ
-         R34iIfAhUfOEtU8Rz9OfdBpa1ShLbRMwqBFNJsZQ=
-Date:   Fri, 15 Jun 2018 11:58:10 +0100
-From:   James Hogan <jhogan@kernel.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips@linux-mips.org, Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 4/4] rseq/selftests: Implement MIPS support
-Message-ID: <20180615105809.GB7603@jamesdev>
-References: <20180614235211.31357-1-paul.burton@mips.com>
- <20180614235211.31357-5-paul.burton@mips.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
-Content-Disposition: inline
-In-Reply-To: <20180614235211.31357-5-paul.burton@mips.com>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <jhogan@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:09:20 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:49766 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992936AbeFOLJHUfnST (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
+        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=AkwUXu55SDpWWl/cAn615FwUzbHBIuTpq/HAhYdrNj4=; b=QsOHWrQx1JKXrmWv1cwWCOvHq
+        8BaQAjeodRRA88BBuDfGE7ew0DjiK4GmwhI/Q7JVgsGeqZoLMpkd5BcTSCNWzEcBorGUMuc3twE7a
+        qSamtgAKLdbvhMiyMBOKCL5IAjDlGQwSkVaVgfzsMN1wFaamA9xxCr30g+FlodPaHm1teP3LnCzgD
+        HcHfM66xMaVR/t1kGA77duZRK1k6xzO/FOTPUjn1nBXjG5aUaE3mY5K0Etae3tBT9Io8T8M+4RnYI
+        /pSaeKOC7vOGUIcubHbFh6oqHHVCODZinA9CrqqLTOlSOXpNY1JQDLsu53/5nRNbTeuVGhhvL8hu0
+        3B7XXEKFw==;
+Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1fTmbE-0004jm-QF; Fri, 15 Jun 2018 11:09:01 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Tom Bogendoerfer <tsbogend@alpha.franken.de>,
+        Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
+Subject: [PATCH 01/25] MIPS: remove a dead ifdef from mach-ath25/dma-coherence.h
+Date:   Fri, 15 Jun 2018 13:08:30 +0200
+Message-Id: <20180615110854.19253-2-hch@lst.de>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20180615110854.19253-1-hch@lst.de>
+References: <20180615110854.19253-1-hch@lst.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+0eb41a859d58214bb3da+5409+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64280
+X-archive-position: 64281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jhogan@kernel.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,41 +56,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+ath25 is alwas non-coherent, so keeping these ifdefs doesn't make any sense.
 
---7ZAtKRhVyVSsbBD2
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Paul Burton <paul.burton@mips.com>
+---
+ arch/mips/include/asm/mach-ath25/dma-coherence.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-On Thu, Jun 14, 2018 at 04:52:10PM -0700, Paul Burton wrote:
-> +#define __RSEQ_ASM_DEFINE_TABLE(version, flags,	start_ip,			\
-
-Nit: technically all these \'s are on 81st column...
-
-> +#define __RSEQ_ASM_DEFINE_ABORT(table_label, label, teardown,			\
-> +				abort_label, version, flags,			\
-> +				start_ip, post_commit_offset, abort_ip)		\
-> +		".balign 32\n\t"						\
-
-ARM doesn't do this for DEFINE_ABORT. Is it intentional that we do for
-MIPS?
-
-Otherwise this whole series looks reasonable to me, so feel free to add
-my rb on the whole series if you do apply youself:
-
-Reviewed-by: James Hogan <jhogan@kernel.org>
-
-Thanks
-James
-
---7ZAtKRhVyVSsbBD2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWyObwQAKCRA1zuSGKxAj
-8rB/AP92jAaGzv9MtOvxArSDM9bpCmUgwi+wcvUZLIenW/1HBwD+M5+uEzr940Es
-CWMG8J2OTpcP2ojwsPFWP6Bi5pEkvg0=
-=1YVE
------END PGP SIGNATURE-----
-
---7ZAtKRhVyVSsbBD2--
+diff --git a/arch/mips/include/asm/mach-ath25/dma-coherence.h b/arch/mips/include/asm/mach-ath25/dma-coherence.h
+index d5defdde32db..124755d4f079 100644
+--- a/arch/mips/include/asm/mach-ath25/dma-coherence.h
++++ b/arch/mips/include/asm/mach-ath25/dma-coherence.h
+@@ -61,12 +61,7 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+ 
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+-#ifdef CONFIG_DMA_COHERENT
+-	return 1;
+-#endif
+-#ifdef CONFIG_DMA_NONCOHERENT
+ 	return 0;
+-#endif
+ }
+ 
+ static inline void plat_post_dma_flush(struct device *dev)
+-- 
+2.17.1

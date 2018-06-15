@@ -1,28 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 15:24:41 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:34884 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992735AbeFONYev1wgo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 15:24:34 +0200
-Received: from ala-blade48.wrs.com (ala-blade48.wrs.com [147.11.105.68])
-        by mail.windriver.com (8.15.2/8.15.1) with SMTP id w5FDOOBX021295;
-        Fri, 15 Jun 2018 06:24:25 -0700 (PDT)
-Received: by ala-blade48.wrs.com (sSMTP sendmail emulation); Fri, 15 Jun 2018 06:24:24 -0700
-From:   He Zhe <zhe.he@windriver.com>
-To:     ralf@linux-mips.org, jhogan@kernel.org, ebiederm@xmission.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mips: Fix build error by disabling attribute-alias warning
-Date:   Fri, 15 Jun 2018 06:24:21 -0700
-Message-Id: <20180615132421.2693-1-zhe.he@windriver.com>
-X-Mailer: git-send-email 2.11.0
-Return-Path: <zhe.he@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 18:31:36 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:60318 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993008AbeFOQb2XhV1G convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Jun 2018 18:31:28 +0200
+Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx3.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 15 Jun 2018 16:31:18 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
+ (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 15
+ Jun 2018 09:31:30 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Fri, 15 Jun
+ 2018 09:31:30 -0700
+Date:   Fri, 15 Jun 2018 09:31:18 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        wuzhangjin <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Fix arch_trigger_cpumask_backtrace()
+Message-ID: <20180615163118.s522qanwyo7weliu@pburton-laptop>
+References: <1517802167-20340-1-git-send-email-chenhc@lemote.com>
+ <20180613212125.gxbqusrjgzb257sj@pburton-laptop>
+ <tencent_593903C43C0807E06AB44674@qq.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <tencent_593903C43C0807E06AB44674@qq.com>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1529080278-298554-21967-32480-1
+X-BESS-VER: 2018.7-r1806150109
+X-BESS-Apparent-Source-IP: 12.201.5.31
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194088
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: chenhc@lemote.com,ralf@linux-mips.org,steven.hill@cavium.com,linux-mips@linux-mips.org,zhangfx@lemote.com,wuzhangjin@gmail.com,stable@vger.kernel.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64307
+X-archive-position: 64309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhe.he@windriver.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,37 +67,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch fixes the following error caused by building arch/mips with
-GCC 8.1.0.
+Hi Huacai,
 
-In file included from arch/mips/kernel/signal32.c:15:
-include/linux/syscalls.h:233:18: error: 'sys_32_sigaction' alias between functions of incompatible types 'long int(long int,  const struct compat_sigaction *, struct compat_sigaction *)' and 'long int(long int,  long int,  long int)' [-Werror=attribute-alias]
-  asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__)) \
-                  ^~~
+On Fri, Jun 15, 2018 at 12:30:35PM +0800, 陈华才 wrote:
+> I can't test your branch...... Because now the mainline kernel lacks
+> too many features needed by Loongson-3.
 
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
- arch/mips/kernel/signal32.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Interesting - so the mainline Loongson-3 code doesn't actually work? How
+much is missing for it to be functional?
 
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index c4db910a8794..95cb406e220d 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -35,6 +35,9 @@ asmlinkage int sys32_sigsuspend(compat_sigset_t __user *uset)
- 	return compat_sys_rt_sigsuspend(uset, sizeof(compat_sigset_t));
- }
- 
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wpragmas"
-+#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *, act,
- 	struct compat_sigaction __user *, oact)
- {
-@@ -76,3 +79,4 @@ SYSCALL_DEFINE3(32_sigaction, long, sig, const struct compat_sigaction __user *,
- 
- 	return ret;
- }
-+#pragma GCC diagnostic pop
--- 
-2.11.0
+> By the way, Your approach is based on NMI but I don't think NMI is
+> always available on each MIPS board.
+
+It isn't using NMIs at all - the nmi_trigger_cpumask_backtrace()
+function has NMI in its name, sure, but it just invokes a callback to
+interrupt other CPUs & we can implement that using regular old IPIs.
+
+This is the same way arch/arm does it, so it's not unprecedented &
+allows us to share the common code.
+
+It would be ideal to use NMIs where possible in future, but that can
+come later for platforms where they're available.
+
+Thanks,
+    Paul

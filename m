@@ -1,53 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 20:17:24 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:35700 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 20:43:53 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:38224 "EHLO
         9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993029AbeFOSRQi9JvJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 20:17:16 +0200
-Received: from mipsdag03.mipstec.com (mail3.mips.com [12.201.5.33]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 15 Jun 2018 11:16:54 -0700
+        by eddie.linux-mips.org with ESMTP id S23993030AbeFOSnp2WwpN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 20:43:45 +0200
+Received: from mipsdag03.mipstec.com (mail3.mips.com [12.201.5.33]) by mx1401.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 15 Jun 2018 18:43:17 +0000
 Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag03.mipstec.com
  (10.20.40.48) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 15
- Jun 2018 11:17:06 -0700
+ Jun 2018 11:43:29 -0700
 Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
  with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Fri, 15 Jun
- 2018 11:17:06 -0700
-Date:   Fri, 15 Jun 2018 11:16:54 -0700
+ 2018 11:43:29 -0700
+Date:   Fri, 15 Jun 2018 11:43:17 -0700
 From:   Paul Burton <paul.burton@mips.com>
-To:     James Hogan <jhogan@kernel.org>
-CC:     <linux-mips@linux-mips.org>, Peter Zijlstra <peterz@infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+CC:     linux-mips <linux-mips@linux-mips.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        James Hogan <jhogan@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 4/4] rseq/selftests: Implement MIPS support
-Message-ID: <20180615181654.wmaadjgqgq7wksc5@pburton-laptop>
+Subject: Re: [PATCH 2/4] MIPS: Add syscall detection for restartable sequences
+Message-ID: <20180615184317.vogskh6rg53kfuzz@pburton-laptop>
 References: <20180614235211.31357-1-paul.burton@mips.com>
- <20180614235211.31357-5-paul.burton@mips.com>
- <20180615105809.GB7603@jamesdev>
+ <20180614235211.31357-3-paul.burton@mips.com>
+ <1881638448.14415.1529084485237.JavaMail.zimbra@efficios.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20180615105809.GB7603@jamesdev>
+In-Reply-To: <1881638448.14415.1529084485237.JavaMail.zimbra@efficios.com>
 User-Agent: NeoMutt/20180512
-X-BESS-ID: 1529086614-321457-25883-48-1
+X-BESS-ID: 1529088197-321457-25892-1763-1
 X-BESS-VER: 2018.7-r1806151722
 X-BESS-Apparent-Source-IP: 12.201.5.33
 X-BESS-Envelope-From: Paul.Burton@mips.com
 X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194091
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194092
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------
         0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
 X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: jhogan@kernel.org,linux-mips@linux-mips.org,peterz@infradead.org,linux-kernel@vger.kernel.org,mathieu.desnoyers@efficios.com,boqun.feng@gmail.com,paulmck@linux.vnet.ibm.com,ralf@linux-mips.org
+X-BESS-Orig-Rcpt: mathieu.desnoyers@efficios.com,linux-mips@linux-mips.org,peterz@infradead.org,jhogan@kernel.org,linux-kernel@vger.kernel.org,boqun.feng@gmail.com,paulmck@linux.vnet.ibm.com,ralf@linux-mips.org
 X-BESS-BRTS-Status: 1
 Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64312
+X-archive-position: 64313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,91 +65,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 15, 2018 at 11:58:10AM +0100, James Hogan wrote:
-> On Thu, Jun 14, 2018 at 04:52:10PM -0700, Paul Burton wrote:
-> > +#define __RSEQ_ASM_DEFINE_TABLE(version, flags,	start_ip,			\
+Hi Mathieu,
+
+On Fri, Jun 15, 2018 at 01:41:25PM -0400, Mathieu Desnoyers wrote:
+> > diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+> > index 38a302919e6b..d7de8adcfcc8 100644
+> > --- a/arch/mips/kernel/entry.S
+> > +++ b/arch/mips/kernel/entry.S
+> > @@ -79,6 +79,10 @@ FEXPORT(ret_from_fork)
+> > 	jal	schedule_tail		# a0 = struct task_struct *prev
+> > 
+> > FEXPORT(syscall_exit)
+> > +#ifdef CONFIG_DEBUG_RSEQ
+> > +	move	a0, sp
+> > +	jal	rseq_syscall
+> > +#endif
+> > 	local_irq_disable		# make sure need_resched and
+> > 					# signals dont change between
+> > 					# sampling and return
+> > @@ -141,6 +145,10 @@ work_notifysig:				# deal with pending signals and
+> > 	j	resume_userspace_check
+> > 
+> > FEXPORT(syscall_exit_partial)
+> > +#ifdef CONFIG_DEBUG_RSEQ
+> > +	move	a0, sp
+> > +	jal	rseq_syscall
+> > +#endif
+> > 	local_irq_disable		# make sure need_resched doesn't
+> > 					# change between and return
+> > 	LONG_L	a2, TI_FLAGS($28)	# current->work
 > 
-> Nit: technically all these \'s are on 81st column...
+> Just to double-check: you did test with CONFIG_DEBUG_RSEQ=y, right ?
 
-True... I'll replace the runs of tabs with a single space.
+Yes, I did. Although I only ran the selftests, which I don't believe
+would actually trigger the SIGSEGV condition.
 
-> > +#define __RSEQ_ASM_DEFINE_ABORT(table_label, label, teardown,			\
-> > +				abort_label, version, flags,			\
-> > +				start_ip, post_commit_offset, abort_ip)		\
-> > +		".balign 32\n\t"						\
-> 
-> ARM doesn't do this for DEFINE_ABORT. Is it intentional that we do for
-> MIPS?
+Side-note: maybe it'd be useful to have a test that does intentionally
+perform a syscall within a restartable sequence & checks that it
+actually receives a SIGSEGV?.
 
-We need to align this structure at least in the MIPS64 case because the
-.dword directive seems to lead to extra padding if we don't, and that
-messes up the offsets of the fields.
+> Are there any live registers that need to be saved before calling
+> rseq_syscall ?
 
-For example here's an extract from basic_percpu_ops_test built for
-MIPS64r6el without the .balign directive, starting from the
-RSEQ_ASM_STORE_RSEQ_CS macro in rseq_cmpeqv_storev():
+No - we just need gp/$28 & sp/$29, and the calling convention means
+rseq_syscall() should return with those unmodified. Everything else that
+we or userland care about is about to be loaded from the stack anyway.
 
-   120001298:   df848068        ld      a0,-32664(gp)
-   12000129c:   fc640008        sd      a0,8(v1)
-   1200012a0:   8c640004        lw      a0,4(v1)
-   1200012a4:   14820011        bne     a0,v0,1200012ec <.L4^B1>
-   1200012a8:   00000000        nop
-   1200012ac:   dca40000        ld      a0,0(a1)
-   1200012b0:   14870015        bne     a0,a3,120001308 <.L5>
-   1200012b4:   00000000        nop
-   1200012b8:   fca60000        sd      a2,0(a1)
-   1200012bc:   1000000d        b       1200012f4 <.L5^B1>
-   1200012c0:   00000000        nop
-   1200012c4:   00000000        nop
-   1200012c8:   00000000        nop
-   1200012cc:   00000000        nop
-   1200012d0:   200012a0        bovc    zero,zero,120005d54 <__FRAME_END__+0x3e28>
-   1200012d4:   00000001        0x1
-   1200012d8:   0000001c        0x1c
-   1200012dc:   00000000        nop
-   1200012e0:   200012ec        bovc    zero,zero,120005e94 <__FRAME_END__+0x3f68>
-   1200012e4:   00000001        0x1
-   1200012e8:   53053053        0x53053053
-
-...
-
-   120012118:   200012c4        bovc    zero,zero,120016c2c <_end+0x49bc>
-   12001211c:   00000001        0x1
-
-And _gp, which the gp register contains the address of:
-
-   $ nm tools/testing/selftests/rseq/basic_percpu_ops_test | grep gp
-   000000012001a0b0 d _gp
-
-The ld instruction @120001298 is what the "dla $4, 3f" expanded to, so
-it's loading the address of the table which we're going to write to
-rseq_cs. It loads from gp-32664, ie. 0x12001a0b0-32664, ie. 0x120012118,
-so the table address loaded is 0x1200012c4.
-
-If we take that as the start of the struct rseq_cs then we get:
-
-   1200012c4: __u32 version = 0x0
-   1200012c8: __u32 flags = 0x0
-   1200012cc: __u64 start_ip = 200012a000000000
-
-Where start_ip is both not naturally aligned, so might be slow to access
-or involve T&E, and more importantly doesn't have the intended value.
-What happened is that gas inserted 4 bytes of padding at 1200012cc to
-naturally align the .dword directive for start_ip, and that throws us
-off.
-
-Using the .balign directive avoids this, and I went with 32 bytes
-because that's what struct rseq_cs is declared with in linux/rseq.h.
-
-The ARM code has probably gotten away with it because it's 32 bit only,
-so isn't emitting any 64 bit values (though if it did I don't know what
-an ARM64 assembler would do with regards to alignment & padding anyway).
-
-> Otherwise this whole series looks reasonable to me, so feel free to add
-> my rb on the whole series if you do apply youself:
-> 
-> Reviewed-by: James Hogan <jhogan@kernel.org>
-
-Thanks James :)
-
-Paul
+Thanks,
+    Paul

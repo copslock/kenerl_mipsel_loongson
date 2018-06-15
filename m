@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:09:56 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:49974 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:10:14 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50124 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993008AbeFOLJLMcoTT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:11 +0200
+        by eddie.linux-mips.org with ESMTP id S23992735AbeFOLJQjNnTT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=OublZJkBDwdfjJYZf/oaaRMAE8PSzEN3t7HP4vDXBz4=; b=sKjDVQqdmr0vqP4yWqP/ULehs
-        Zw83F/tgHaAK2uChO8Cj8X02vZn4mRei5SMC381COC9h2DqYTeEcX/JioreoJTpmASiRd9THZYYh/
-        u4EZWJb59PrYjnl053L9TnIGzIKjMXvHfOOBgdq2Tf3Ar5P2UObRaCT8y4S979IrV1Sbz1GqIoxyD
-        ptgSBYImED9P6718HseZ4qm0+u6DN4MZXxxZ+cyDWpV8EtX693My7ZtLVQtYjCULEP6SHZe0SZs4A
-        2byCG99QLW9VbI9NPvhrAneOfHHjfwy50rBN7Z6uY5tInL68ene5TFm4DVfkyjX9spNLNC08FbmhY
-        /SugjUxTw==;
+         bh=SpVXJCPFouTEqsbTuzoIHRXRVhfVe+jfsplPlJ6qzco=; b=Fti4e8fzFakt5i4ecWTpkET6W
+        TvzNy+Yvi3p3bjpHjZBUsL+6lB0BMEKoXDGIJN7O7MsvG78jdBbAm0CMghSrBwCaOQAcfo66D77TL
+        S88g2tp6dEWOM0CsHzN8H8GQaOsxRKLhuRxwS/qWNNUS9F/18/kCT89vO3AwGQEJQVTIbhEp4H5Pp
+        0k1QyfU+rby54l2ZNzUZaQbs6lKVI3ITxX/TcEvJ5WnNRqO9MW/G/bAERD5V4tUBV8TzbtPBq/+mw
+        4zQ9CTXmVL1xPCG3UoiLRyp+rEMGgZiilOGjoLRAaqwQcZtXxX82oo89ClDSlfaXteLMPy58Z7PVa
+        SL4WGHFBA==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fTmbI-0004lq-Cq; Fri, 15 Jun 2018 11:09:05 +0000
+        id 1fTmbL-0004nm-Lk; Fri, 15 Jun 2018 11:09:08 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -28,9 +28,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
         iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
-Subject: [PATCH 02/25] MIPS: simplify CONFIG_DMA_NONCOHERENT ifdefs
-Date:   Fri, 15 Jun 2018 13:08:31 +0200
-Message-Id: <20180615110854.19253-3-hch@lst.de>
+Subject: [PATCH 03/25] MIPS: remove CONFIG_DMA_COHERENT
+Date:   Fri, 15 Jun 2018 13:08:32 +0200
+Message-Id: <20180615110854.19253-4-hch@lst.de>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180615110854.19253-1-hch@lst.de>
 References: <20180615110854.19253-1-hch@lst.de>
@@ -39,7 +39,7 @@ Return-Path: <BATV+0eb41a859d58214bb3da+5409+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64283
+X-archive-position: 64284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,82 +56,202 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CONFIG_DMA_MAYBE_COHERENT already selects CONFIG_DMA_NONCOHERENT, so we
-can remove the extra conditions.
+We can just check for !CONFIG_DMA_NONCOHERENT instead and simplify things
+a lot.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Paul Burton <paul.burton@mips.com>
 ---
- arch/mips/include/asm/io.h | 4 ++--
- arch/mips/mm/c-r4k.c       | 4 ++--
- arch/mips/mm/cache.c       | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/Kconfig                            | 16 ----------------
+ arch/mips/include/asm/dma-coherence.h        |  6 +++---
+ arch/mips/include/asm/mach-generic/kmalloc.h |  3 +--
+ arch/mips/mti-malta/malta-setup.c            |  4 ++--
+ arch/mips/sibyte/Kconfig                     |  1 -
+ 5 files changed, 6 insertions(+), 24 deletions(-)
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index a7d0b836f2f7..6d6bdc6a48eb 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -588,7 +588,7 @@ static inline void memcpy_toio(volatile void __iomem *dst, const void *src, int
-  *
-  * This API used to be exported; it now is for arch code internal use only.
-  */
--#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3f9deec70b92..89be9f97da4e 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -665,7 +665,6 @@ config SGI_IP27
+ 	select FW_ARC64
+ 	select BOOT_ELF64
+ 	select DEFAULT_SGI_PARTITION
+-	select DMA_COHERENT
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select HW_HAS_PCI
+ 	select NR_CPUS_DEFAULT_64
+@@ -742,7 +741,6 @@ config SGI_IP32
+ config SIBYTE_CRHINE
+ 	bool "Sibyte BCM91120C-CRhine"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select SIBYTE_BCM1120
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_SB1
+@@ -752,7 +750,6 @@ config SIBYTE_CRHINE
+ config SIBYTE_CARMEL
+ 	bool "Sibyte BCM91120x-Carmel"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select SIBYTE_BCM1120
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_SB1
+@@ -762,7 +759,6 @@ config SIBYTE_CARMEL
+ config SIBYTE_CRHONE
+ 	bool "Sibyte BCM91125C-CRhone"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select SIBYTE_BCM1125
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_SB1
+@@ -773,7 +769,6 @@ config SIBYTE_CRHONE
+ config SIBYTE_RHONE
+ 	bool "Sibyte BCM91125E-Rhone"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select SIBYTE_BCM1125H
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_SB1
+@@ -783,7 +778,6 @@ config SIBYTE_RHONE
+ config SIBYTE_SWARM
+ 	bool "Sibyte BCM91250A-SWARM"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select HAVE_PATA_PLATFORM
+ 	select SIBYTE_SB1250
+ 	select SWAP_IO_SPACE
+@@ -796,7 +790,6 @@ config SIBYTE_SWARM
+ config SIBYTE_LITTLESUR
+ 	bool "Sibyte BCM91250C2-LittleSur"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select HAVE_PATA_PLATFORM
+ 	select SIBYTE_SB1250
+ 	select SWAP_IO_SPACE
+@@ -808,7 +801,6 @@ config SIBYTE_LITTLESUR
+ config SIBYTE_SENTOSA
+ 	bool "Sibyte BCM91250E-Sentosa"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select SIBYTE_SB1250
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_SB1
+@@ -818,7 +810,6 @@ config SIBYTE_SENTOSA
+ config SIBYTE_BIGSUR
+ 	bool "Sibyte BCM91480B-BigSur"
+ 	select BOOT_ELF32
+-	select DMA_COHERENT
+ 	select NR_CPUS_DEFAULT_4
+ 	select SIBYTE_BCM1x80
+ 	select SWAP_IO_SPACE
+@@ -895,7 +886,6 @@ config CAVIUM_OCTEON_SOC
+ 	select CEVT_R4K
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select PHYS_ADDR_T_64BIT
+-	select DMA_COHERENT
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select EDAC_SUPPORT
+@@ -944,7 +934,6 @@ config NLM_XLR_BOARD
+ 	select PHYS_ADDR_T_64BIT
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+-	select DMA_COHERENT
+ 	select NR_CPUS_DEFAULT_32
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+@@ -972,7 +961,6 @@ config NLM_XLP_BOARD
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+-	select DMA_COHERENT
+ 	select NR_CPUS_DEFAULT_32
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+@@ -991,7 +979,6 @@ config MIPS_PARAVIRT
+ 	bool "Para-Virtualized guest system"
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+-	select DMA_COHERENT
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+@@ -1117,9 +1104,6 @@ config DMA_PERDEV_COHERENT
+ 	bool
+ 	select DMA_MAYBE_COHERENT
+ 
+-config DMA_COHERENT
+-	bool
+-
+ config DMA_NONCOHERENT
+ 	bool
+ 	select NEED_DMA_MAP_STATE
+diff --git a/arch/mips/include/asm/dma-coherence.h b/arch/mips/include/asm/dma-coherence.h
+index 72d0eab02afc..8eda48748ed5 100644
+--- a/arch/mips/include/asm/dma-coherence.h
++++ b/arch/mips/include/asm/dma-coherence.h
+@@ -21,10 +21,10 @@ enum coherent_io_user_state {
+ extern enum coherent_io_user_state coherentio;
+ extern int hw_coherentio;
+ #else
+-#ifdef CONFIG_DMA_COHERENT
+-#define coherentio	IO_COHERENCE_ENABLED
+-#else
 +#ifdef CONFIG_DMA_NONCOHERENT
+ #define coherentio	IO_COHERENCE_DISABLED
++#else
++#define coherentio	IO_COHERENCE_ENABLED
+ #endif
+ #define hw_coherentio	0
+ #endif /* CONFIG_DMA_MAYBE_COHERENT */
+diff --git a/arch/mips/include/asm/mach-generic/kmalloc.h b/arch/mips/include/asm/mach-generic/kmalloc.h
+index 74207c7bd00d..649a98338886 100644
+--- a/arch/mips/include/asm/mach-generic/kmalloc.h
++++ b/arch/mips/include/asm/mach-generic/kmalloc.h
+@@ -2,8 +2,7 @@
+ #ifndef __ASM_MACH_GENERIC_KMALLOC_H
+ #define __ASM_MACH_GENERIC_KMALLOC_H
  
- extern void (*_dma_cache_wback_inv)(unsigned long start, unsigned long size);
- extern void (*_dma_cache_wback)(unsigned long start, unsigned long size);
-@@ -607,7 +607,7 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
- #define dma_cache_inv(start,size)	\
- 	do { (void) (start); (void) (size); } while (0)
- 
--#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
-+#endif /* CONFIG_DMA_NONCOHERENT */
- 
+-
+-#ifndef CONFIG_DMA_COHERENT
++#ifdef CONFIG_DMA_NONCOHERENT
  /*
-  * Read a 32-bit register that requires a 64-bit read cycle on the bus.
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index e12dfa48b478..b83ecfb2fbfc 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -830,7 +830,7 @@ static void r4k_flush_icache_user_range(unsigned long start, unsigned long end)
- 	return __r4k_flush_icache_range(start, end, true);
- }
+  * Total overkill for most systems but need as a safe default.
+  * Set this one if any device in the system might do non-coherent DMA.
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index 7b63914d2e58..4d5cdfeee3db 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -227,7 +227,7 @@ static void __init bonito_quirks_setup(void)
+ 	} else
+ 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
  
--#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
-+#ifdef CONFIG_DMA_NONCOHERENT
+-#ifdef CONFIG_DMA_COHERENT
++#ifndef CONFIG_DMA_NONCOHERENT
+ 	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
+ 		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+ 		pr_info("Enabled Bonito CPU coherency\n");
+@@ -279,7 +279,7 @@ void __init plat_mem_setup(void)
+ 	 */
+ 	enable_dma(4);
  
- static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- {
-@@ -904,7 +904,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 	bc_inv(addr, size);
- 	__sync();
- }
--#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
-+#endif /* CONFIG_DMA_NONCOHERENT */
+-#ifdef CONFIG_DMA_COHERENT
++#ifndef CONFIG_DMA_NONCOHERENT
+ 	if (mips_revision_sconid != MIPS_REVISION_SCON_BONITO)
+ 		panic("Hardware DMA cache coherency not supported");
+ #endif
+diff --git a/arch/mips/sibyte/Kconfig b/arch/mips/sibyte/Kconfig
+index f4dbce25bc6a..7ec278d72096 100644
+--- a/arch/mips/sibyte/Kconfig
++++ b/arch/mips/sibyte/Kconfig
+@@ -70,7 +70,6 @@ config SIBYTE_BCM1x55
  
- struct flush_cache_sigtramp_args {
- 	struct mm_struct *mm;
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 0d3c656feba0..70a523151ff3 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -56,7 +56,7 @@ EXPORT_SYMBOL_GPL(local_flush_data_cache_page);
- EXPORT_SYMBOL(flush_data_cache_page);
- EXPORT_SYMBOL(flush_icache_all);
- 
--#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
-+#ifdef CONFIG_DMA_NONCOHERENT
- 
- /* DMA cache operations. */
- void (*_dma_cache_wback_inv)(unsigned long start, unsigned long size);
-@@ -65,7 +65,7 @@ void (*_dma_cache_inv)(unsigned long start, unsigned long size);
- 
- EXPORT_SYMBOL(_dma_cache_wback_inv);
- 
--#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
-+#endif /* CONFIG_DMA_NONCOHERENT */
- 
- /*
-  * We could optimize the case where the cache argument is not BCACHE but
+ config SIBYTE_SB1xxx_SOC
+ 	bool
+-	select DMA_COHERENT
+ 	select IRQ_MIPS_CPU
+ 	select SWAP_IO_SPACE
+ 	select SYS_SUPPORTS_32BIT_KERNEL
 -- 
 2.17.1

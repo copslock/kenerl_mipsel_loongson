@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:13:53 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50898 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2018 13:14:13 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50954 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993060AbeFOLJeD7YDT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23992916AbeFOLJgBiigT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2018 13:09:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1tQ9ZhcazR4RWOWeJHE9Rm+57t/B0fJR4IsF62B9nNc=; b=btXaKNtGIKSdNzVQk5Cs7vIuP
-        cGb6aYOHlUA9SHaT8GBkZRxy7piRlHdhAV6Mj0D0eblSjE3e4oLHi13r3ZfnHPAY84yaSv2VZ3wMP
-        rlvQvuWTP63wdyHc7inYyDItxhdnOXs/jlds0LzgEOsQ/4cTJcCYqWiRE5lESJAVFG0SW2koXoJsa
-        1j16I7E5WEimHTytoxmJ84Ke9dzPAO3+Z8jctFdv/nOlmftUo1r7TSfeNKRAQaMnPUsXUHrBzValt
-        Gw3Ke5sPYGvgx3C0hDwWV8NOUkdrs0LMioqYmvqIG7Ph+lgGmmdbK261GPa1xErpwFSEJATVRsA8Z
-        yvD2x/dQw==;
+         bh=3XuHupa321+Twa4vpD3OC+mq9/5nS9R4/YBjqtzZLM4=; b=MOQ4f1VWP2ZpRVtIiSdMSkntX
+        RrlVfpVEpP9bezVXMMMOwUjPdMHcdiQHlypGR98dllw/uZJ2kewpLRG9/OPd7mSvHv7HWW+FoR1ai
+        ipYxolWNIlOqoaMc2uYQcDkbosENMmZAF5Cl34Es2vtoNlRJHean4wvjkp6Ry3GpwOxcW2l28VXfZ
+        XAtzHpgRyXlSzQ6wf3hzfabIXzVW5Yr1+pvCYouKaV+jNYHOwJQZY+HzC3mFVMMhiaCBRgoKOj/8T
+        SXm9N7GkRgb8oxE0tu4teQExqRV543mnOEZERLp4LWajjLKqz7Nf1HdtP1Rftf3WMCJlupLd5FvUj
+        Zpm+SvQ/g==;
 Received: from 80-109-164-210.cable.dynamic.surfer.at ([80.109.164.210] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fTmbj-00051W-4D; Fri, 15 Jun 2018 11:09:31 +0000
+        id 1fTmbm-000537-5U; Fri, 15 Jun 2018 11:09:34 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Ralf Baechle <ralf@linux-mips.org>, James Hogan <jhogan@kernel.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -28,9 +28,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
         iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
-Subject: [PATCH 10/25] MIPS: Octeon: remove mips dma-default stubs
-Date:   Fri, 15 Jun 2018 13:08:39 +0200
-Message-Id: <20180615110854.19253-11-hch@lst.de>
+Subject: [PATCH 11/25] MIPS: Octeon: move swiotlb declarations out of dma-coherence.h
+Date:   Fri, 15 Jun 2018 13:08:40 +0200
+Message-Id: <20180615110854.19253-12-hch@lst.de>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180615110854.19253-1-hch@lst.de>
 References: <20180615110854.19253-1-hch@lst.de>
@@ -39,7 +39,7 @@ Return-Path: <BATV+0eb41a859d58214bb3da+5409+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64291
+X-archive-position: 64292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,79 +56,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Octeon doesn't use the dma-default code, and now doesn't built it either,
-so these stubs can be removed.
+No need to pull them into a global header.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- .../asm/mach-cavium-octeon/dma-coherence.h    | 48 -------------------
- 1 file changed, 48 deletions(-)
+ .../asm/mach-cavium-octeon/dma-coherence.h     | 18 ------------------
+ arch/mips/include/asm/octeon/pci-octeon.h      |  3 +++
+ arch/mips/pci/pci-octeon.c                     |  2 --
+ arch/mips/pci/pcie-octeon.c                    |  2 --
+ 4 files changed, 3 insertions(+), 22 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
 
 diff --git a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-index c0254c72d97b..66eee98b8b8d 100644
+deleted file mode 100644
+index 66eee98b8b8d..000000000000
 --- a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-@@ -4,11 +4,6 @@
-  * for more details.
-  *
-  * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 - *
-- *
-- * Similar to mach-generic/dma-coherence.h except
-- * plat_device_is_coherent hard coded to return 1.
-- *
+- * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
+- */
+-#ifndef __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H
+-#define __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H
+-
+-#include <linux/bug.h>
+-
+-struct device;
+-
+-extern void octeon_pci_dma_init(void);
+-extern char *octeon_swiotlb;
+-
+-#endif /* __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/octeon/pci-octeon.h b/arch/mips/include/asm/octeon/pci-octeon.h
+index 1884609741a8..b12d9a3fbfb6 100644
+--- a/arch/mips/include/asm/octeon/pci-octeon.h
++++ b/arch/mips/include/asm/octeon/pci-octeon.h
+@@ -63,4 +63,7 @@ enum octeon_dma_bar_type {
   */
- #ifndef __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H
- #define __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H
-@@ -18,49 +13,6 @@
- struct device;
+ extern enum octeon_dma_bar_type octeon_dma_bar_type;
  
- extern void octeon_pci_dma_init(void);
--
--static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
--	size_t size)
--{
--	BUG();
--	return 0;
--}
--
--static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
--	struct page *page)
--{
--	BUG();
--	return 0;
--}
--
--static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
--	dma_addr_t dma_addr)
--{
--	BUG();
--	return 0;
--}
--
--static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
--	size_t size, enum dma_data_direction direction)
--{
--	BUG();
--}
--
--static inline int plat_dma_supported(struct device *dev, u64 mask)
--{
--	BUG();
--	return 0;
--}
--
--static inline int plat_device_is_coherent(struct device *dev)
--{
--	return 1;
--}
--
--static inline void plat_post_dma_flush(struct device *dev)
--{
--}
--
- extern char *octeon_swiotlb;
++void octeon_pci_dma_init(void);
++extern char *octeon_swiotlb;
++
+ #endif
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index a20697df3539..5017d5843c5a 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -21,8 +21,6 @@
+ #include <asm/octeon/cvmx-pci-defs.h>
+ #include <asm/octeon/pci-octeon.h>
  
- #endif /* __ASM_MACH_CAVIUM_OCTEON_DMA_COHERENCE_H */
+-#include <dma-coherence.h>
+-
+ #define USE_OCTEON_INTERNAL_ARBITER
+ 
+ /*
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+index 87ba86bd8696..9cc5905860ef 100644
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -94,8 +94,6 @@ union cvmx_pcie_address {
+ 
+ static int cvmx_pcie_rc_initialize(int pcie_port);
+ 
+-#include <dma-coherence.h>
+-
+ /**
+  * Return the Core virtual base address for PCIe IO access. IOs are
+  * read/written as an offset from this address.
 -- 
 2.17.1

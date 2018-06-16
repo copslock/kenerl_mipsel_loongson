@@ -1,31 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 09:52:35 +0200 (CEST)
-Received: from www.osadl.org ([62.245.132.105]:58289 "EHLO www.osadl.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 17:48:11 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:49600 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990946AbeFPHw2gMtrL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2018 09:52:28 +0200
-Received: from debian01.hofrr.at (178.115.242.59.static.drei.at [178.115.242.59] (may be forged))
-        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id w5G7oH4S025952;
-        Sat, 16 Jun 2018 09:50:17 +0200
-From:   Nicholas Mc Guire <hofrat@osadl.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "Steven J. Hill" <steven.hill@cavium.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Nicholas Mc Guire <hofrat@osadl.org>
-Subject: [PATCH] MIPS: Octeon: add missing of_node_put()
-Date:   Sat, 16 Jun 2018 09:49:56 +0200
-Message-Id: <1529135396-16728-1-git-send-email-hofrat@osadl.org>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <hofrat@osadl.org>
+        id S23993070AbeFPPsEYx7Qw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jun 2018 17:48:04 +0200
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id ADF5B40F58;
+        Sat, 16 Jun 2018 17:47:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id Qe0F26bypRaq; Sat, 16 Jun 2018 17:47:57 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     linux-mips@linux-mips.org, ak@linux.intel.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: remove const from mips_io_port_base
+Date:   Sat, 16 Jun 2018 17:47:45 +0200
+Message-Id: <20180616154745.28230-1-hauke@hauke-m.de>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64321
+X-archive-position: 64322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hofrat@osadl.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,35 +40,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
- The call to of_find_node_by_name inside the do-while-loop is returning
-node with refcount incremented thus it must be explicitly decremented
-here after usage.
+This variable is changed by some platform init code. When LTO is used
+gcc assumes that the variable never changes and inlines the constant
+instead of checking this variable which is wrong.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
-commit 93e502b3c2d4 ("MIPS: OCTEON: Platform support for OCTEON III USB controller")
+This fixes a runtime boot problem when LTO is activated.
+
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
-Problem located by an experimental coccinelle script
+ arch/mips/include/asm/io.h | 2 +-
+ arch/mips/kernel/setup.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Patch was compile tested with: cavium_octeon_defconfig (implies
-CONFIG_USB=y)
-(with a number of sparse warnings - not related to the proposed change)
-
-Patch is against 4.17.0 (localversion-next is next-20180614)
-
- arch/mips/cavium-octeon/octeon-usb.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/cavium-octeon/octeon-usb.c b/arch/mips/cavium-octeon/octeon-usb.c
-index bfdfaf3..76e06b4 100644
---- a/arch/mips/cavium-octeon/octeon-usb.c
-+++ b/arch/mips/cavium-octeon/octeon-usb.c
-@@ -512,6 +512,7 @@ static int __init dwc3_octeon_device_init(void)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index a7d0b836f2f7..f28f8cd44dd3 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -60,7 +60,7 @@
+  * instruction, so the lower 16 bits must be zero.  Should be true on
+  * on any sane architecture; generic code does not use this assumption.
+  */
+-extern const unsigned long mips_io_port_base;
++extern unsigned long mips_io_port_base;
  
- 		if (of_device_is_compatible(node, compat_node_name)) {
- 			pdev = of_find_device_by_node(node);
-+			of_node_put(node);
- 			if (!pdev)
- 				return -ENODEV;
+ /*
+  * Gcc will generate code to load the value of mips_io_port_base after each
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 2c96c0c68116..153460c531a9 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -75,7 +75,7 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+  * mips_io_port_base is the begin of the address space to which x86 style
+  * I/O ports are mapped.
+  */
+-const unsigned long mips_io_port_base = -1;
++unsigned long mips_io_port_base = -1;
+ EXPORT_SYMBOL(mips_io_port_base);
  
+ static struct resource code_resource = { .name = "Kernel code", };
 -- 
-2.1.4
+2.11.0

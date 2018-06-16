@@ -1,25 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 09:09:19 +0200 (CEST)
-Received: from www.osadl.org ([62.245.132.105]:57718 "EHLO www.osadl.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 09:29:12 +0200 (CEST)
+Received: from www.osadl.org ([62.245.132.105]:58042 "EHLO www.osadl.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990945AbeFPHJM58T-o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2018 09:09:12 +0200
+        id S23990945AbeFPH3FhCLpL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jun 2018 09:29:05 +0200
 Received: from debian01.hofrr.at (178.115.242.59.static.drei.at [178.115.242.59] (may be forged))
-        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id w5G76rXb026481;
-        Sat, 16 Jun 2018 09:06:53 +0200
+        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id w5G7QpAQ009199;
+        Sat, 16 Jun 2018 09:26:51 +0200
 From:   Nicholas Mc Guire <hofrat@osadl.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>
-Subject: [PATCH] MIPS: Octeon: add missing of_node_put()
-Date:   Sat, 16 Jun 2018 09:06:33 +0200
-Message-Id: <1529132793-9872-1-git-send-email-hofrat@osadl.org>
+        James Hogan <jhogan@kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        "Steven J. Hill" <Steven.Hill@cavium.com>,
+        Joe Perches <joe@perches.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Nicholas Mc Guire <hofrat@osadl.org>
+Subject: [PATCH] MIPS: Octeon: assign bool true/false not 1/0
+Date:   Sat, 16 Jun 2018 09:26:32 +0200
+Message-Id: <1529133992-15360-1-git-send-email-hofrat@osadl.org>
 X-Mailer: git-send-email 2.1.4
 Return-Path: <hofrat@osadl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64319
+X-archive-position: 64320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,50 +41,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
- The call to of_find_node_by_name returns a node pointer with refcount
-incremented thus it must be explicitly decremented here after the last
-usage.
+Booleans should be assigned true/false not 1/0 as comparison is not needed
 
 Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 ---
 
-Patch found by experimental coccinelle script
+Problem located by scripts/coccinelle/misc/boolinit.cocci
+  ./arch/mips/cavium-octeon/octeon-irq.c:817:3-13:
+  WARNING: Assignment of bool to 0/1
 
 Patch was compile tested with: cavium_octeon_defconfig
 (with a number of sparse warnings - not related to the proposed change)
 
 Patch is against 4.17.0 (localversion-next is next-20180614)
 
- arch/mips/cavium-octeon/octeon-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/cavium-octeon/octeon-irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 8505db4..1d92efb 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -320,10 +320,11 @@ static int __init octeon_ehci_device_init(void)
- 	ehci_node = of_find_node_by_name(NULL, "ehci");
- 	if (!ehci_node)
- 		return 0;
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index b3aec10..31be6a9 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -814,7 +814,7 @@ static int octeon_irq_ciu_set_affinity(struct irq_data *data,
+ 			pen = &per_cpu(octeon_irq_ciu1_en_mirror, cpu);
  
- 	pd = of_find_device_by_node(ehci_node);
-+	of_node_put(ehci_node);
- 	if (!pd)
- 		return 0;
- 
- 	pd->dev.platform_data = &octeon_ehci_pdata;
- 	octeon_ehci_hw_start(&pd->dev);
-@@ -382,10 +383,11 @@ static int __init octeon_ohci_device_init(void)
- 	ohci_node = of_find_node_by_name(NULL, "ohci");
- 	if (!ohci_node)
- 		return 0;
- 
- 	pd = of_find_device_by_node(ohci_node);
-+	of_node_put(ohci_node);
- 	if (!pd)
- 		return 0;
- 
- 	pd->dev.platform_data = &octeon_ohci_pdata;
- 	octeon_ohci_hw_start(&pd->dev);
+ 		if (cpumask_test_cpu(cpu, dest) && enable_one) {
+-			enable_one = 0;
++			enable_one = false;
+ 			__set_bit(cd->bit, pen);
+ 		} else {
+ 			__clear_bit(cd->bit, pen);
 -- 
 2.1.4

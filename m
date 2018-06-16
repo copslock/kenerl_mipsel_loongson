@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 17:58:00 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:63036 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 17:58:38 +0200 (CEST)
+Received: from mx1.mailbox.org ([80.241.60.212]:37260 "EHLO mx1.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993070AbeFPP5xgwndw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2018 17:57:53 +0200
+        id S23993070AbeFPP6cJdfHw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jun 2018 17:58:32 +0200
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 0392440F22;
-        Sat, 16 Jun 2018 17:57:47 +0200 (CEST)
+        by mx1.mailbox.org (Postfix) with ESMTPS id B6D104318F;
+        Sat, 16 Jun 2018 17:58:26 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id tm6TxfYGwNF4; Sat, 16 Jun 2018 17:57:46 +0200 (CEST)
+        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
+        with ESMTP id 77-O1JvcWO6C; Sat, 16 Jun 2018 17:58:25 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
 Cc:     linux-mips@linux-mips.org, ak@linux.intel.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: Use same definition for tlbmiss_handler_setup_pgd
-Date:   Sat, 16 Jun 2018 17:57:37 +0200
-Message-Id: <20180616155737.31156-1-hauke@hauke-m.de>
+Subject: [PATCH] MIPS: define __current_thread_info inside of function
+Date:   Sat, 16 Jun 2018 17:58:15 +0200
+Message-Id: <20180616155815.31230-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64323
+X-archive-position: 64324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,55 +40,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-tlbmiss_handler_setup_pgd is defined as a pointer to a u32 array in
-tlbex.c and as a function pointer in mmu_context.h. This was done
-because tlbex.c fills the memory of u32 with assembler code which
-implements a function, this assembler code depends on the CPU being
-used. Later the code will jump into this function.
-
-This patch uses the same type for both definitions and makes use of the
-pointer to the _start of the function in places where we have to access
-the code of the function.
+__current_thread_info is currently defined in the header file, but when
+we link the kernel with LTO it shows up in all files which include this
+header file and causes conflicts with itself. Move the definition into
+the only function which uses it to prevent these problems.
 
 This fixes the build with LTO.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/mm/tlbex.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/thread_info.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 79b9f2ad3ff5..f1aa5989a424 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1575,7 +1575,7 @@ extern u32 handle_tlbl[], handle_tlbl_end[];
- extern u32 handle_tlbs[], handle_tlbs_end[];
- extern u32 handle_tlbm[], handle_tlbm_end[];
- extern u32 tlbmiss_handler_setup_pgd_start[];
--extern u32 tlbmiss_handler_setup_pgd[];
-+extern void tlbmiss_handler_setup_pgd(unsigned long);
- EXPORT_SYMBOL_GPL(tlbmiss_handler_setup_pgd);
- extern u32 tlbmiss_handler_setup_pgd_end[];
+diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
+index 4993db40482c..9348776e16a3 100644
+--- a/arch/mips/include/asm/thread_info.h
++++ b/arch/mips/include/asm/thread_info.h
+@@ -49,11 +49,11 @@ struct thread_info {
+ 	.addr_limit	= KERNEL_DS,		\
+ }
  
-@@ -1592,7 +1592,7 @@ static void build_setup_pgd(void)
- #endif
- 
- 	memset(tlbmiss_handler_setup_pgd, 0, tlbmiss_handler_setup_pgd_size *
--					sizeof(tlbmiss_handler_setup_pgd[0]));
-+					sizeof(u32));
- 	memset(labels, 0, sizeof(labels));
- 	memset(relocs, 0, sizeof(relocs));
- 	pgd_reg = allocate_kscratch();
-@@ -1650,9 +1650,9 @@ static void build_setup_pgd(void)
- 
- 	uasm_resolve_relocs(relocs, labels);
- 	pr_debug("Wrote tlbmiss_handler_setup_pgd (%u instructions).\n",
--		 (unsigned int)(p - tlbmiss_handler_setup_pgd));
-+		 (unsigned int)(p - tlbmiss_handler_setup_pgd_start));
- 
--	dump_handler("tlbmiss_handler", tlbmiss_handler_setup_pgd,
-+	dump_handler("tlbmiss_handler", tlbmiss_handler_setup_pgd_start,
- 					tlbmiss_handler_setup_pgd_size);
+-/* How to get the thread information struct from C.  */
+-register struct thread_info *__current_thread_info __asm__("$28");
+-
+ static inline struct thread_info *current_thread_info(void)
+ {
++	/* How to get the thread information struct from C.  */
++	register struct thread_info *__current_thread_info __asm__("$28");
++
+ 	return __current_thread_info;
  }
  
 -- 

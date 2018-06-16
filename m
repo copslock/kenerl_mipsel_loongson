@@ -1,55 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 12:25:48 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39210 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbeIQKZ1tdj6- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Sep 2018 12:25:27 +0200
-Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E847CBE0;
-        Mon, 17 Sep 2018 10:25:20 +0000 (UTC)
-Subject: Patch "MIPS: Octeon: add missing of_node_put()" has been added to the 4.9-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        hofrat@osadl.org, jhogan@kernel.org, linux-mips@linux-mips.org,
-        paul.burton@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 17 Sep 2018 12:23:45 +0200
-Message-ID: <153717982592222@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66357
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Nicholas Mc Guire <hofrat@osadl.org>
+Date: Sat, 16 Jun 2018 09:06:33 +0200
+Subject: MIPS: Octeon: add missing of_node_put()
+Message-ID: <20180616070633.8vPj4rZlzuVoGw_otVYf1EmWPiphj8MTFeXtUq74iJE@z>
+
+From: Nicholas Mc Guire <hofrat@osadl.org>
+
+[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
+
+The call to of_find_node_by_name returns a node pointer with refcount
+incremented thus it must be explicitly decremented here after the last
+usage.
+
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19558/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/cavium-octeon/octeon-platform.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -366,6 +366,7 @@ static int __init octeon_ehci_device_ini
+ 		return 0;
+ 
+ 	pd = of_find_device_by_node(ehci_node);
++	of_node_put(ehci_node);
+ 	if (!pd)
+ 		return 0;
+ 
+@@ -428,6 +429,7 @@ static int __init octeon_ohci_device_ini
+ 		return 0;
+ 
+ 	pd = of_find_device_by_node(ohci_node);
++	of_node_put(ohci_node);
+ 	if (!pd)
+ 		return 0;
+ 
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from hofrat@osadl.org are
 
-    MIPS: Octeon: add missing of_node_put()
-
-to the 4.9-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-octeon-add-missing-of_node_put.patch
-and it can be found in the queue-4.9 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.9/mips-generic-fix-missing-of_node_put.patch
+queue-4.9/mips-octeon-add-missing-of_node_put.patch

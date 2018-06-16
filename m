@@ -1,71 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 02:57:25 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:52016 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993065AbeFPA5QnYcIb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jun 2018 02:57:16 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Sat, 16 Jun 2018 00:54:19 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 15
- Jun 2018 17:54:00 -0700
-Received: from pburton-laptop.mipstec.com (10.20.2.29) by
- mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
- via Frontend Transport; Fri, 15 Jun 2018 17:54:00 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     <linux-kbuild@vger.kernel.org>
-CC:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        <linux-mips@linux-mips.org>, Arnd Bergmann <arnd@arndb.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Matthew Wilcox <matthew@wil.cx>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        He Zhe <zhe.he@windriver.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Khem Raj <raj.khem@gmail.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Gideon Israel Dsouza <gidisrael@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
-        <linuxppc-dev@lists.ozlabs.org>, Paul Burton <paul.burton@mips.com>
-Subject: [PATCH 2/3] disable -Wattribute-alias warning for SYSCALL_DEFINEx()
-Date:   Fri, 15 Jun 2018 17:53:21 -0700
-Message-ID: <20180616005323.7938-3-paul.burton@mips.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180616005323.7938-1-paul.burton@mips.com>
-References: <20180616005323.7938-1-paul.burton@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-BESS-ID: 1529110459-637139-29217-15683-1
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194099
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: linux-kbuild@vger.kernel.org,paulus@samba.org,linux-kernel@vger.kernel.org,heiko.carstens@de.ibm.com,mpe@ellerman.id.au,keescook@chromium.org,yamada.masahiro@socionext.com,gidisrael@gmail.com,shorne@gmail.com,viro@zeniv.linux.org.uk,christophe.leroy@c-s.fr,raj.khem@gmail.com,michal.lkml@markovi.net,zhe.he@windriver.com,mka@chromium.org,akpm@linux-foundation.org,jpoimboe@redhat.com,dianders@chromium.org,tglx@linutronix.de,matthew@wil.cx,arnd@arndb.de,linux-mips@linux-mips.org,benh@kernel.crashing.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 09:09:19 +0200 (CEST)
+Received: from www.osadl.org ([62.245.132.105]:57718 "EHLO www.osadl.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990945AbeFPHJM58T-o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jun 2018 09:09:12 +0200
+Received: from debian01.hofrr.at (178.115.242.59.static.drei.at [178.115.242.59] (may be forged))
+        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id w5G76rXb026481;
+        Sat, 16 Jun 2018 09:06:53 +0200
+From:   Nicholas Mc Guire <hofrat@osadl.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>
+Subject: [PATCH] MIPS: Octeon: add missing of_node_put()
+Date:   Sat, 16 Jun 2018 09:06:33 +0200
+Message-Id: <1529132793-9872-1-git-send-email-hofrat@osadl.org>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <hofrat@osadl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64318
+X-archive-position: 64319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: hofrat@osadl.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,127 +36,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Arnd Bergmann <arnd@arndb.de>
+ The call to of_find_node_by_name returns a node pointer with refcount
+incremented thus it must be explicitly decremented here after the last
+usage.
 
-gcc-8 warns for every single definition of a system call entry
-point, e.g.:
-
-include/linux/compat.h:56:18: error: 'compat_sys_rt_sigprocmask' alias between functions of incompatible types 'long int(int,  compat_sigset_t *, compat_sigset_t *, compat_size_t)' {aka 'long int(int,  struct <anonymous> *, struct <anonymous> *, unsigned int)'} and 'long int(long int,  long int,  long int,  long int)' [-Werror=attribute-alias]
-  asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))\
-                  ^~~~~~~~~~
-include/linux/compat.h:45:2: note: in expansion of macro 'COMPAT_SYSCALL_DEFINEx'
-  COMPAT_SYSCALL_DEFINEx(4, _##name, __VA_ARGS__)
-  ^~~~~~~~~~~~~~~~~~~~~~
-kernel/signal.c:2601:1: note: in expansion of macro 'COMPAT_SYSCALL_DEFINE4'
- COMPAT_SYSCALL_DEFINE4(rt_sigprocmask, int, how, compat_sigset_t __user *, nset,
- ^~~~~~~~~~~~~~~~~~~~~~
-include/linux/compat.h:60:18: note: aliased declaration here
-  asmlinkage long compat_SyS##name(__MAP(x,__SC_LONG,__VA_ARGS__))\
-                  ^~~~~~~~~~
-
-The new warning seems reasonable in principle, but it doesn't
-help us here, since we rely on the type mismatch to sanitize the
-system call arguments. After I reported this as GCC PR82435, a new
--Wno-attribute-alias option was added that could be used to turn the
-warning off globally on the command line, but I'd prefer to do it a
-little more fine-grained.
-
-Interestingly, turning a warning off and on again inside of
-a single macro doesn't always work, in this case I had to add
-an extra statement inbetween and decided to copy the __SC_TEST
-one from the native syscall to the compat syscall macro.  See
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 for more details
-about this.
-
-[paul.burton@mips.com:
-  - Rebase atop current master.
-  - Split GCC & version arguments to __diag_ignore() in order to match
-    changes to the preceding patch.
-  - Add the comment argument to match the preceding patch.]
-
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82435
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Michal Marek <michal.lkml@markovi.net>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Matthew Wilcox <matthew@wil.cx>
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: Khem Raj <raj.khem@gmail.com>
-Cc: He Zhe <zhe.he@windriver.com>
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 ---
 
- include/linux/compat.h   | 8 +++++++-
- include/linux/syscalls.h | 4 ++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+Patch found by experimental coccinelle script
 
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index b1a5562b3215..c68acc47da57 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -72,6 +72,9 @@
-  */
- #ifndef COMPAT_SYSCALL_DEFINEx
- #define COMPAT_SYSCALL_DEFINEx(x, name, ...)					\
-+	__diag_push();								\
-+	__diag_ignore(GCC, 8, "-Wattribute-alias",				\
-+		      "Type aliasing is used to sanitize syscall arguments");\
- 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));	\
- 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
- 		__attribute__((alias(__stringify(__se_compat_sys##name))));	\
-@@ -80,8 +83,11 @@
- 	asmlinkage long __se_compat_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__));	\
- 	asmlinkage long __se_compat_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))	\
- 	{									\
--		return __do_compat_sys##name(__MAP(x,__SC_DELOUSE,__VA_ARGS__));\
-+		long ret = __do_compat_sys##name(__MAP(x,__SC_DELOUSE,__VA_ARGS__));\
-+		__MAP(x,__SC_TEST,__VA_ARGS__);					\
-+		return ret;							\
- 	}									\
-+	__diag_pop();								\
- 	static inline long __do_compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))
- #endif /* COMPAT_SYSCALL_DEFINEx */
+Patch was compile tested with: cavium_octeon_defconfig
+(with a number of sparse warnings - not related to the proposed change)
+
+Patch is against 4.17.0 (localversion-next is next-20180614)
+
+ arch/mips/cavium-octeon/octeon-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 8505db4..1d92efb 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -320,10 +320,11 @@ static int __init octeon_ehci_device_init(void)
+ 	ehci_node = of_find_node_by_name(NULL, "ehci");
+ 	if (!ehci_node)
+ 		return 0;
  
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 73810808cdf2..a368a68cb667 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -231,6 +231,9 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
-  */
- #ifndef __SYSCALL_DEFINEx
- #define __SYSCALL_DEFINEx(x, name, ...)					\
-+	__diag_push();							\
-+	__diag_ignore(GCC, 8, "-Wattribute-alias",			\
-+		      "Type aliasing is used to sanitize syscall arguments");\
- 	asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
- 		__attribute__((alias(__stringify(__se_sys##name))));	\
- 	ALLOW_ERROR_INJECTION(sys##name, ERRNO);			\
-@@ -243,6 +246,7 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
- 		__PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));	\
- 		return ret;						\
- 	}								\
-+	__diag_pop();							\
- 	static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))
- #endif /* __SYSCALL_DEFINEx */
+ 	pd = of_find_device_by_node(ehci_node);
++	of_node_put(ehci_node);
+ 	if (!pd)
+ 		return 0;
  
+ 	pd->dev.platform_data = &octeon_ehci_pdata;
+ 	octeon_ehci_hw_start(&pd->dev);
+@@ -382,10 +383,11 @@ static int __init octeon_ohci_device_init(void)
+ 	ohci_node = of_find_node_by_name(NULL, "ohci");
+ 	if (!ohci_node)
+ 		return 0;
+ 
+ 	pd = of_find_device_by_node(ohci_node);
++	of_node_put(ohci_node);
+ 	if (!pd)
+ 		return 0;
+ 
+ 	pd->dev.platform_data = &octeon_ohci_pdata;
+ 	octeon_ohci_hw_start(&pd->dev);
 -- 
-2.17.1
+2.1.4

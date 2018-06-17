@@ -1,66 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2018 22:28:36 +0200 (CEST)
-Received: from mail.efficios.com ([IPv6:2607:5300:60:7898::beef]:35642 "EHLO
-        mail.efficios.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993426AbeFPU2aN0UNd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jun 2018 22:28:30 +0200
-Received: from localhost (ip6-localhost [IPv6:::1])
-        by mail.efficios.com (Postfix) with ESMTP id 353231AD8E9;
-        Sat, 16 Jun 2018 16:28:23 -0400 (EDT)
-Received: from mail.efficios.com ([IPv6:::1])
-        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
-        with ESMTP id VDqYTmiV6sWp; Sat, 16 Jun 2018 16:28:22 -0400 (EDT)
-Received: from localhost (ip6-localhost [IPv6:::1])
-        by mail.efficios.com (Postfix) with ESMTP id CA7E41AD8E5;
-        Sat, 16 Jun 2018 16:28:22 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com CA7E41AD8E5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-        s=default; t=1529180902;
-        bh=X5vUEOdk1XyPi30VUQMQWVBkjjmEVnZ9hzsFnZdSMNs=;
-        h=Date:From:To:Message-ID:MIME-Version;
-        b=Yq+XnrDPelamtdRVfpV+4Fb+YswBfjX7qemRDBkDYSHYJRVP4hj1P0Kbw/v1oi3zj
-         dzR+xm2XkIvjSWduZ8xweacmZTv9QC+WAg6A4M0tSwNwvJNfqqw8iF4rCdi5rNt5mg
-         iK0/t8eo/dN8TZkbP2nactI3MF/mdgQbxF9VFlCCW8MU1o0HXO2g0slgiz8yqLlRWK
-         JWdkYisN+CQ3W9QxQIAVxpW5KCdb2xJsvRfAspAJj1w7SPNoLcYh3RK5s+9Rg+zT+O
-         7y45W6m2RsWdQULHFJCBllJR9Ev7ngjHg5ToT0Jr6SyAl7TE1asDLPUpCz7KfwgdQt
-         gLDNenwvAPw1Q==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([IPv6:::1])
-        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
-        with ESMTP id Z9MkFkHz-BZq; Sat, 16 Jun 2018 16:28:22 -0400 (EDT)
-Received: from mail02.efficios.com (mail02.efficios.com [167.114.142.138])
-        by mail.efficios.com (Postfix) with ESMTP id B30D91AD8DF;
-        Sat, 16 Jun 2018 16:28:22 -0400 (EDT)
-Date:   Sat, 16 Jun 2018 16:28:22 -0400 (EDT)
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jun 2018 03:12:10 +0200 (CEST)
+Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:44498
+        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993514AbeFQBMDecdNX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Jun 2018 03:12:03 +0200
+Received: by mail-pf0-x244.google.com with SMTP id h12-v6so6524294pfk.11
+        for <linux-mips@linux-mips.org>; Sat, 16 Jun 2018 18:12:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2W2Gm7K4ZAUFtmPdhaToCIfjNpot7ZNt+wV5jYJsThU=;
+        b=r/ZyMo9QhC4wKgo9MZicBRk8Pch+hGXZoQNkOU5taSZy/k9pNA0rZ4re5eEWWfGUVm
+         dfqKOtAItBjctRvk2KIFtt10+nKccOTuv8E1HMZHGVE+TGs7Zq1brei84Rsh6kBD0iIv
+         w8ECUnemkKejVWKWFqtt23AiZpiUKcFPjsD6S3Q9rNF5QkNuIQMigZpfZiZVONl3T50K
+         YUcuywhz0dlfz5TO/Rc4GmVgjHbj9DT4BGMwYTQhMVOt+vm6kQ3UsRyUBYKY67WCEC7R
+         VJI2BjzNt+AcKzSqWLFJndtmQd65sz9FwHzgFtgAiee+ey2QSiiqVh0zxaNWcSKDCbj9
+         P8OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2W2Gm7K4ZAUFtmPdhaToCIfjNpot7ZNt+wV5jYJsThU=;
+        b=SAp/KnTrDMlZC5cWEY4r+6vlP7+OoaYBSjbv4j0wY8WTxtoa243CJ35OGNSqFwlFEW
+         vxTd81rrJUIwDOmzvTBr/MH94NYSCR4kMj0adFDS9RTH2++RxL86F0nT+n1IWtcAxDMx
+         DKV2mxZaYoMBfR/0s8KQj2HpYbmjg5wU11GQLIm3/iXpst795nMdsTsDh8dxPguaVYlR
+         qxVY0NlckdRBdHQ0N2Ttb28vx7dkO01kWReJXK+5v0WlsF5GAkSu1XHvhfPDyAOfOQjY
+         bPJ9uj2UwTATxohb3MCZmgAEdxlLzH2T4Fe7z6L66TmAYOmD71WpcbW8WwH66ivSvsBA
+         7i1g==
+X-Gm-Message-State: APt69E04YVw2OKAlut1To3GQZuE6EB9NGCTPDLbop3vSTdnlhRi37DLv
+        a8x/ASsnFnUR/0Hbi31sR0o=
+X-Google-Smtp-Source: ADUXVKKCIo4xyWw6htseAoC56FNbqqPNn7oLLwJEf5PYyHGI6aue7NHIJG10lc9n/lDe9GhTwAOwjg==
+X-Received: by 2002:a63:7b1e:: with SMTP id w30-v6mr6238478pgc.402.1529197916277;
+        Sat, 16 Jun 2018 18:11:56 -0700 (PDT)
+Received: from localhost (g134.124-44-9.ppp.wakwak.ne.jp. [124.44.9.134])
+        by smtp.gmail.com with ESMTPSA id h8-v6sm13207119pgq.35.2018.06.16.18.11.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 16 Jun 2018 18:11:55 -0700 (PDT)
+Date:   Sun, 17 Jun 2018 10:11:53 +0900
+From:   Stafford Horne <shorne@gmail.com>
 To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        James Hogan <jhogan@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Message-ID: <1395794863.16071.1529180902679.JavaMail.zimbra@efficios.com>
-In-Reply-To: <20180615184317.vogskh6rg53kfuzz@pburton-laptop>
-References: <20180614235211.31357-1-paul.burton@mips.com> <20180614235211.31357-3-paul.burton@mips.com> <1881638448.14415.1529084485237.JavaMail.zimbra@efficios.com> <20180615184317.vogskh6rg53kfuzz@pburton-laptop>
-Subject: Re: [PATCH 2/4] MIPS: Add syscall detection for restartable
- sequences
+Cc:     linux-kbuild@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 0/3] Resolve -Wattribute-alias warnings from
+ SYSCALL_DEFINEx()
+Message-ID: <20180617011153.GA24595@lianli.shorne-pla.net>
+References: <20180616005323.7938-1-paul.burton@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.142.138]
-X-Mailer: Zimbra 8.8.8_GA_2096 (ZimbraWebClient - FF52 (Linux)/8.8.8_GA_1703)
-Thread-Topic: MIPS: Add syscall detection for restartable sequences
-Thread-Index: SlHyYEUEN8xEhKN/NjbikbkJQDt2ag==
-Return-Path: <compudj@efficios.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180616005323.7938-1-paul.burton@mips.com>
+User-Agent: Mutt/1.9.5 (2018-04-13)
+Return-Path: <shorne@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64327
+X-archive-position: 64328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mathieu.desnoyers@efficios.com
+X-original-sender: shorne@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,78 +92,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------ On Jun 15, 2018, at 2:43 PM, Paul Burton paul.burton@mips.com wrote:
-
-> Hi Mathieu,
+On Fri, Jun 15, 2018 at 05:53:19PM -0700, Paul Burton wrote:
+> This series introduces infrastructure allowing compiler diagnostics to
+> be disabled or their severity modified for specific pieces of code, with
+> suitable abstractions to prevent that code from becoming tied to a
+> specific compiler.
 > 
-> On Fri, Jun 15, 2018 at 01:41:25PM -0400, Mathieu Desnoyers wrote:
->> > diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
->> > index 38a302919e6b..d7de8adcfcc8 100644
->> > --- a/arch/mips/kernel/entry.S
->> > +++ b/arch/mips/kernel/entry.S
->> > @@ -79,6 +79,10 @@ FEXPORT(ret_from_fork)
->> > 	jal	schedule_tail		# a0 = struct task_struct *prev
->> > 
->> > FEXPORT(syscall_exit)
->> > +#ifdef CONFIG_DEBUG_RSEQ
->> > +	move	a0, sp
->> > +	jal	rseq_syscall
->> > +#endif
->> > 	local_irq_disable		# make sure need_resched and
->> > 					# signals dont change between
->> > 					# sampling and return
->> > @@ -141,6 +145,10 @@ work_notifysig:				# deal with pending signals and
->> > 	j	resume_userspace_check
->> > 
->> > FEXPORT(syscall_exit_partial)
->> > +#ifdef CONFIG_DEBUG_RSEQ
->> > +	move	a0, sp
->> > +	jal	rseq_syscall
->> > +#endif
->> > 	local_irq_disable		# make sure need_resched doesn't
->> > 					# change between and return
->> > 	LONG_L	a2, TI_FLAGS($28)	# current->work
->> 
->> Just to double-check: you did test with CONFIG_DEBUG_RSEQ=y, right ?
+> This infrastructure is then used to disable the -Wattribute-alias
+> warning around syscall definitions, which rely on type mismatches to
+> sanitize arguments.
 > 
-> Yes, I did. Although I only ran the selftests, which I don't believe
-> would actually trigger the SIGSEGV condition.
-
-Yeah, I typically hand-craft a critical section that generate a
-system call in order to trigger this. It's hackish however, and
-only triggers the SIGSEGV on kernels with CONFIG_DEBUG_RSEQ=y.
-
+> Finally PowerPC-specific #pragma's are removed now that the generic code
+> is handling this.
 > 
-> Side-note: maybe it'd be useful to have a test that does intentionally
-> perform a syscall within a restartable sequence & checks that it
-> actually receives a SIGSEGV?.
-
-We'd have to craft asm code for each architecture issuing a system
-call in a rseq c.s. to test this. And we'd need to make this test
-only runs on a kernel with CONFIG_DEBUG_RSEQ=y.
-
-I'm not convinced yet it's worth the effort to cleanly integrate this
-in selftests, but I'm very open to the idea.
-
+> The series takes Arnd's RFC patches & addresses the review comments they
+> received. The most notable effect of this series to to avoid warnings &
+> build failures caused by -Wattribute-alias when compiling the kernel
+> with GCC 8.
 > 
->> Are there any live registers that need to be saved before calling
->> rseq_syscall ?
-> 
-> No - we just need gp/$28 & sp/$29, and the calling convention means
-> rseq_syscall() should return with those unmodified. Everything else that
-> we or userland care about is about to be loaded from the stack anyway.
-
-Sounds good!
-
-Thanks,
-
-Mathieu
-
+> Applies cleanly atop master as of 9215310cf13b ("Merge
+> git://git.kernel.org/pub/scm/linux/kernel/git/davem/net").
 > 
 > Thanks,
 >     Paul
+> 
+> Arnd Bergmann (2):
+>   kbuild: add macro for controlling warnings to linux/compiler.h
+>   disable -Wattribute-alias warning for SYSCALL_DEFINEx()
+> 
+> Paul Burton (1):
+>   Revert "powerpc: fix build failure by disabling attribute-alias
+>     warning in pci_32"
+> 
+>  arch/powerpc/kernel/pci_32.c   |  4 ---
+>  include/linux/compat.h         |  8 ++++-
+>  include/linux/compiler-gcc.h   | 66 ++++++++++++++++++++++++++++++++++
+>  include/linux/compiler_types.h | 18 ++++++++++
+>  include/linux/syscalls.h       |  4 +++
+>  5 files changed, 95 insertions(+), 5 deletions(-)
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+Hello Paul,
+
+I tested the series out with the new OpenRISC 9.0.0 port and the
+-Wattribute-alias warnings are gone.  Thank you.
+
+Using toolchain binaries from:
+  https://github.com/stffrdhrn/gcc/releases/tag/or1k-9.0.0-20180613
+
+For the series:
+
+Tested-by: Stafford Horne <shorne@gmail.com>
+
+-Stafford

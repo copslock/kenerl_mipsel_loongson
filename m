@@ -1,83 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 15:06:10 +0200 (CEST)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:33433
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994571AbeFRNGETCxQ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 15:06:04 +0200
-Received: by mail-lf0-x242.google.com with SMTP id y20-v6so24568168lfy.0
-        for <linux-mips@linux-mips.org>; Mon, 18 Jun 2018 06:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=6M+7FVl7UAWt995uN4YV/iXiVEMLJuYi9KC5rV4Xvhg=;
-        b=j4H9wsdaYCqdHSP+6oWZ7o6zAEfdposVdzVWiLtf4hUB+vwh95AnoRrPLr6eK6ygds
-         OV/3viYrpu5HY7JYKhTuJPaw67TX2oPrfbb+E+L4YXEGlfP3kq42z+GRQ3K1G5LtGmbi
-         c1McID+r5PvL+UaLwBX+oTcOl+ByxTVjYCr3Ovly0EB2t2Lx9ifD1bAy2UU/UrAyDDje
-         qzz2T6jiRHaXYM+IJoWpZe+FCWSslYSIG1M3ix8QAWlyy4Yn52+PgSiRkgw9t8GTevp8
-         uzm86ksSjwTNmJh1Onb7M1mbo5W8woUNKcsJe+bIPw9PlB5JbYwmnNvxMQQzJWdKTZyN
-         DjgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=6M+7FVl7UAWt995uN4YV/iXiVEMLJuYi9KC5rV4Xvhg=;
-        b=S57y3PEScVN+rEJJSVzOv41ZfUauq41i8D/3ddd6vpEdjm9EHHGGJt47IFtHSeZ403
-         z/OxHrR2i92pOteUq+oCD8DcjREp2vyHGFcj2WRmmoK2kdZu/zwaapbZutRROUNwBkPy
-         APuSAfZ6rPRuJhESyPRElr048YYFTCdisjFrA8DpGlVq9szVjLUDSOtPGb9c2d2iHd3+
-         0ffqh0w38iGqXnCcVQf56aJ5FOUKC4rlhnFPIu4aRxKM+jFzTUXumuCfbZxNnT4PQbu+
-         j7q3eHzPECq1evexzL/P5JFMqYIiCqg1CtOpGKNc9uwBZ236TbxyHsBr/IkPmWdeWoHC
-         +vvw==
-X-Gm-Message-State: APt69E3INEt0iuGy0jcmdFKIZWMjnIH5iYJK0yaNfYFH9RbIHTfr40ke
-        t82iWNJ51vhqhEsgPRo8WImE5C0q/OvUXfIY1bc=
-X-Google-Smtp-Source: ADUXVKKBH7gQ+x0RIza7Op3bS3fG4rHXF5OhBK61doYJog3K6k2s2IVUxioizgqr1XbI3ryDgB59urGQOm1g8QO8h6Q=
-X-Received: by 2002:a19:141f:: with SMTP id k31-v6mr2833908lfi.23.1529327158393;
- Mon, 18 Jun 2018 06:05:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 20:52:34 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:53181 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994585AbeFRSw0iRI0- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 20:52:26 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1414.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 18 Jun 2018 18:51:49 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 18
+ Jun 2018 11:51:54 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Mon, 18 Jun
+ 2018 11:51:54 -0700
+Date:   Mon, 18 Jun 2018 11:51:41 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>, <stable@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andrea Parri <andrea.parri@amarulasolutions.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Akira Yokosawa <akiyks@gmail.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: implement smp_cond_load_acquire() for Loongson-3
+Message-ID: <20180618185141.yvkrsbdi2gbxjxj7@pburton-laptop>
+References: <1529042858-9483-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Received: by 2002:a2e:56c8:0:0:0:0:0 with HTTP; Mon, 18 Jun 2018 06:05:57
- -0700 (PDT)
-In-Reply-To: <20180616005323.7938-1-paul.burton@mips.com>
-References: <20180616005323.7938-1-paul.burton@mips.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 18 Jun 2018 15:05:57 +0200
-X-Google-Sender-Auth: nQn1PvnOf7LVKkGPFKtvcJW8Yog
-Message-ID: <CAK8P3a2Yz-02On2K2U0+8+tR8RQCQ+KWh7CrtqL9L+FweP+TPQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Resolve -Wattribute-alias warnings from SYSCALL_DEFINEx()
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Matthew Wilcox <matthew@wil.cx>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        He Zhe <zhe.he@windriver.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Khem Raj <raj.khem@gmail.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Gideon Israel Dsouza <gidisrael@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1529042858-9483-1-git-send-email-chenhc@lemote.com>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1529347894-531716-5145-161145-2
+X-BESS-VER: 2018.7-r1806151722
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194166
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: chenhc@lemote.com,paulmck@linux.vnet.ibm.com,luc.maranget@inria.fr,j.alglave@ucl.ac.uk,dhowells@redhat.com,npiggin@gmail.com,boqun.feng@gmail.com,peterz@infradead.org,will.deacon@arm.com,andrea.parri@amarulasolutions.com,stern@rowland.harvard.edu,stable@vger.kernel.org,chenhuacai@gmail.com,wuzhangjin@gmail.com,zhangfx@lemote.com,linux-mips@linux-mips.org,ralf@linux-mips.org,akiyks@gmail.com,linux-kernel@vger.kernel.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64355
+X-archive-position: 64356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,30 +73,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jun 16, 2018 at 2:53 AM, Paul Burton <paul.burton@mips.com> wrote:
-> This series introduces infrastructure allowing compiler diagnostics to
-> be disabled or their severity modified for specific pieces of code, with
-> suitable abstractions to prevent that code from becoming tied to a
-> specific compiler.
->
-> This infrastructure is then used to disable the -Wattribute-alias
-> warning around syscall definitions, which rely on type mismatches to
-> sanitize arguments.
->
-> Finally PowerPC-specific #pragma's are removed now that the generic code
-> is handling this.
->
-> The series takes Arnd's RFC patches & addresses the review comments they
-> received. The most notable effect of this series to to avoid warnings &
-> build failures caused by -Wattribute-alias when compiling the kernel
-> with GCC 8.
->
-> Applies cleanly atop master as of 9215310cf13b ("Merge
-> git://git.kernel.org/pub/scm/linux/kernel/git/davem/net").
->
+Hi Huacai,
 
-Sorry I dropped the ball on this earlier, and thanks a lot for picking
-it up again! From what I can tell, your version addresses all issues
-I was aware of, so we should merge that.
+On Fri, Jun 15, 2018 at 02:07:38PM +0800, Huacai Chen wrote:
+> After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
+> in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
+> has SFB (Store Fill Buffer) and READ_ONCE() may get an old value in a
+> tight loop. So in smp_cond_load_acquire() we need a __smp_mb() after
+> every READ_ONCE().
 
-      Arnd
+Thanks - modifying smp_cond_load_acquire() is a step better than
+modifying arch_mcs_spin_lock_contended() to avoid it, but I'm still not
+sure we've reached the root of the problem. If tight loops using
+READ_ONCE() are at fault then what's special about
+smp_cond_load_acquire()? Could other such loops not hit the same
+problem?
+
+Is the scenario you encounter the same as that outlined in the "DATA
+DEPENDENCY BARRIERS (HISTORICAL)" section of
+Documentation/memory-barriers.txt by any chance? If so then perhaps it
+would be better to implement smp_read_barrier_depends(), or just raw
+read_barrier_depends() depending upon how your SFB functions.
+
+Is there any public documentation describing the behaviour of the store
+fill buffer in Loongson-3?
+
+Part of the problem is that I'm still not sure what's actually happening
+in your system - it would be helpful to have further information in the
+commit message about what actually happens. For example if you could
+walk us through an example of the problem step by step in the style of
+the diagrams you'll see in Documentation/memory-barriers.txt then I
+think that would help us to see what the best solution here is.
+
+I've copied the LKMM maintainers in case they have further input.
+
+Thanks,
+    Paul
+
+> This patch introduce a Loongson-specific smp_cond_load_acquire(). And
+> it should be backported to as early as linux-4.5, in which release the
+> smp_cond_acquire() is introduced.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/barrier.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
+> index a5eb1bb..4ea384d 100644
+> --- a/arch/mips/include/asm/barrier.h
+> +++ b/arch/mips/include/asm/barrier.h
+> @@ -222,6 +222,23 @@
+>  #define __smp_mb__before_atomic()	__smp_mb__before_llsc()
+>  #define __smp_mb__after_atomic()	smp_llsc_mb()
+>  
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +/* Loongson-3 need a __smp_mb() after READ_ONCE() here */
+> +#define smp_cond_load_acquire(ptr, cond_expr)			\
+> +({								\
+> +	typeof(ptr) __PTR = (ptr);				\
+> +	typeof(*ptr) VAL;					\
+> +	for (;;) {						\
+> +		VAL = READ_ONCE(*__PTR);			\
+> +		__smp_mb();					\
+> +		if (cond_expr)					\
+> +			break;					\
+> +		cpu_relax();					\
+> +	}							\
+> +	VAL;							\
+> +})
+> +#endif	/* CONFIG_CPU_LOONGSON3 */
+> +
+>  #include <asm-generic/barrier.h>
+>  
+>  #endif /* __ASM_BARRIER_H */
+> -- 
+> 2.7.0
+> 

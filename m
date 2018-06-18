@@ -1,74 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 09:03:31 +0200 (CEST)
-Received: from pegase1.c-s.fr ([93.17.236.30]:29541 "EHLO pegase1.c-s.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 09:07:15 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:46778 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994585AbeFRHB6j9H6N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Jun 2018 09:01:58 +0200
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 418MTP3Q1Yz9tvRl;
-        Mon, 18 Jun 2018 09:01:45 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id alvT8eiQlHrx; Mon, 18 Jun 2018 09:01:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 418MTP2pC7z9tvRV;
-        Mon, 18 Jun 2018 09:01:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id C191C8B80A;
-        Mon, 18 Jun 2018 09:01:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id SBss0golivtv; Mon, 18 Jun 2018 09:01:51 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.232.3])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 822898B74B;
-        Mon, 18 Jun 2018 09:01:50 +0200 (CEST)
-Subject: Re: [PATCH 3/3] Revert "powerpc: fix build failure by disabling
- attribute-alias warning in pci_32"
-To:     Paul Burton <paul.burton@mips.com>, linux-kbuild@vger.kernel.org
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Matthew Wilcox <matthew@wil.cx>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        He Zhe <zhe.he@windriver.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Khem Raj <raj.khem@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Gideon Israel Dsouza <gidisrael@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20180616005323.7938-1-paul.burton@mips.com>
- <20180616005323.7938-4-paul.burton@mips.com>
-From:   Christophe LEROY <christophe.leroy@c-s.fr>
-Message-ID: <14ef00cd-088c-d165-f4b2-b63eb2f3866b@c-s.fr>
-Date:   Mon, 18 Jun 2018 09:01:50 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+        id S23994551AbeFRHHDIIEwN convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 09:07:03 +0200
+Received: from mail-wm0-f46.google.com (mail-wm0-f46.google.com [74.125.82.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CBE7208E7;
+        Mon, 18 Jun 2018 07:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1529305615;
+        bh=4ZYFG1TnLxxT8on8ktrEz7UhOVRcpYgKuwmuDa4az9o=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=iEiG4jvytPZtwpU15iRI0ZiQuU0Y5K8gd+P4dlBceh4QiCxU58waprp+/YAcat4Yv
+         9cSBKct8XHpp/9GR4o4zfqg35mxqIWPMOlmOkTn7TsPtzJo3BhDzoUhrzdbQgoP06g
+         tZUDq3wV1bXDAdv5si0AfHh9S0/ydPBgo4lRFVQc=
+Received: by mail-wm0-f46.google.com with SMTP id o13-v6so12142762wmf.4;
+        Mon, 18 Jun 2018 00:06:55 -0700 (PDT)
+X-Gm-Message-State: APt69E3xiJm1yksPxHTzsyQ+21V6uhmOB54hSKy8xecx5BJSn/+JanWT
+        5GrDZbJG2NRQR7TRs2ffw70nGiknt/x876gns28=
+X-Google-Smtp-Source: ADUXVKJU9gWVlcj+yRVl3049YozY9P9RtZj4/L2gJu6Ei7m38f4Jyz5oPgD0+ND9eHX0xp+s6GC08IaYRSBZbpN9Oq4=
+X-Received: by 2002:a1c:c05:: with SMTP id 5-v6mr8153967wmm.117.1529305613911;
+ Mon, 18 Jun 2018 00:06:53 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180616005323.7938-4-paul.burton@mips.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-Return-Path: <christophe.leroy@c-s.fr>
+Received: by 2002:adf:9166:0:0:0:0:0 with HTTP; Mon, 18 Jun 2018 00:06:53
+ -0700 (PDT)
+In-Reply-To: <20180617143127.11421-1-j.neuschaefer@gmx.net>
+References: <20180617143127.11421-1-j.neuschaefer@gmx.net>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 18 Jun 2018 09:06:53 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPcAVovxU2mHSbkAG0axutFbd=_92bNdd2P_CnQGmhAfCg@mail.gmail.com>
+Message-ID: <CAJKOXPcAVovxU2mHSbkAG0axutFbd=_92bNdd2P_CnQGmhAfCg@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Fix unbalanced quotation marks
+To:     =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+Cc:     devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Anthony Kim <anthony.kim@hideep.com>,
+        linux-arm-kernel@lists.infradead.org,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <krzk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64341
+X-archive-position: 64342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: christophe.leroy@c-s.fr
+X-original-sender: krzk@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,68 +89,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-Le 16/06/2018 à 02:53, Paul Burton a écrit :
-> With SYSCALL_DEFINEx() disabling -Wattribute-alias generically, there's
-> no need to duplicate that for PowerPC's pciconfig_iobase syscall.
-> 
-> This reverts commit 415520373975 ("powerpc: fix build failure by
-> disabling attribute-alias warning in pci_32").
-> 
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Cc: Michal Marek <michal.lkml@markovi.net>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Matthew Wilcox <matthew@wil.cx>
-> Cc: Matthias Kaehlcke <mka@chromium.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Khem Raj <raj.khem@gmail.com>
-> Cc: He Zhe <zhe.he@windriver.com>
-> Cc: linux-kbuild@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-
-Acked-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
-> 
+On Sun, Jun 17, 2018 at 4:31 PM, Jonathan Neuschäfer
+<j.neuschaefer@gmx.net> wrote:
+> Multiple binding documents have various forms of unbalanced quotation
+> marks. Fix them.
+>
+> Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 > ---
-> 
->   arch/powerpc/kernel/pci_32.c | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
-> index 4f861055a852..d63b488d34d7 100644
-> --- a/arch/powerpc/kernel/pci_32.c
-> +++ b/arch/powerpc/kernel/pci_32.c
-> @@ -285,9 +285,6 @@ pci_bus_to_hose(int bus)
->    * Note that the returned IO or memory base is a physical address
->    */
->   
-> -#pragma GCC diagnostic push
-> -#pragma GCC diagnostic ignored "-Wpragmas"
-> -#pragma GCC diagnostic ignored "-Wattribute-alias"
->   SYSCALL_DEFINE3(pciconfig_iobase, long, which,
->   		unsigned long, bus, unsigned long, devfn)
->   {
-> @@ -313,4 +310,3 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which,
->   
->   	return result;
->   }
-> -#pragma GCC diagnostic pop
-> 
+>
+> Should I split this patch so that different parts can go through different trees?
+> ---
+>  .../devicetree/bindings/arm/samsung/samsung-boards.txt          | 2 +-
+>  .../devicetree/bindings/gpio/nintendo,hollywood-gpio.txt        | 2 +-
+>  Documentation/devicetree/bindings/input/touchscreen/hideep.txt  | 2 +-
+>  .../bindings/interrupt-controller/nvidia,tegra20-ictlr.txt      | 2 +-
+>  .../devicetree/bindings/interrupt-controller/st,stm32-exti.txt  | 2 +-
+>  Documentation/devicetree/bindings/mips/brcm/soc.txt             | 2 +-
+>  Documentation/devicetree/bindings/net/fsl-fman.txt              | 2 +-
+>  Documentation/devicetree/bindings/power/power_domain.txt        | 2 +-
+>  Documentation/devicetree/bindings/regulator/tps65090.txt        | 2 +-
+>  Documentation/devicetree/bindings/reset/st,sti-softreset.txt    | 2 +-
+>  Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt    | 2 +-
+>  Documentation/devicetree/bindings/sound/qcom,apq8096.txt        | 2 +-
+>  12 files changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
+> index bdadc3da9556..6970f30a3770 100644
+> --- a/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
+> +++ b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
+> @@ -66,7 +66,7 @@ Required root node properties:
+>         - "insignal,arndale-octa" - for Exynos5420-based Insignal Arndale
+>                                     Octa board.
+>         - "insignal,origen"       - for Exynos4210-based Insignal Origen board.
+> -       - "insignal,origen4412    - for Exynos4412-based Insignal Origen board.
+> +       - "insignal,origen4412"   - for Exynos4412-based Insignal Origen board.
+>
+
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+Best regards,
+Krzysztof

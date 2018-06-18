@@ -1,65 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 13:52:26 +0200 (CEST)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:33579
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994561AbeFRLwTHlXAj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 13:52:19 +0200
-Received: by mail-lf0-x244.google.com with SMTP id y20-v6so24206293lfy.0;
-        Mon, 18 Jun 2018 04:52:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 15:06:10 +0200 (CEST)
+Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:33433
+        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994571AbeFRNGETCxQ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 15:06:04 +0200
+Received: by mail-lf0-x242.google.com with SMTP id y20-v6so24568168lfy.0
+        for <linux-mips@linux-mips.org>; Mon, 18 Jun 2018 06:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=u6lapVaDPJDLDEq9Vwies/bT1iQPkezn3nOqZiIx/8A=;
-        b=skCX43TnUmuqtBmGJ7eLbQt7WnI2Y2+eqRZNZtqW5uKvFEhzuGQBr7kSyQIirFpHYv
-         CsN5ZoG9v0EGOvX0y/r4U4zBOHK+sdiUDn7Ecd0L9LYc0wRUSeQVjnh1XZ8zev50msWY
-         cXOMyYhuRbppnr3za4IX8s/lMJ/YBUb9ZnjXRpVY/m+3KxhOxVML/07buIRedtsRPsr9
-         bsMX7gi2Qq6b9VrFzT+O45hqZROWvhNWqLfy53kYalgIdFBE8xx3oDF5+GI6SYYYVm1R
-         Am0A9fv94U5m9JFLR183TEO7tG0mNqkCkmejFuQEqEbeOpB8clRBC1RcPxL01kCN7cLO
-         NjGA==
+        bh=6M+7FVl7UAWt995uN4YV/iXiVEMLJuYi9KC5rV4Xvhg=;
+        b=j4H9wsdaYCqdHSP+6oWZ7o6zAEfdposVdzVWiLtf4hUB+vwh95AnoRrPLr6eK6ygds
+         OV/3viYrpu5HY7JYKhTuJPaw67TX2oPrfbb+E+L4YXEGlfP3kq42z+GRQ3K1G5LtGmbi
+         c1McID+r5PvL+UaLwBX+oTcOl+ByxTVjYCr3Ovly0EB2t2Lx9ifD1bAy2UU/UrAyDDje
+         qzz2T6jiRHaXYM+IJoWpZe+FCWSslYSIG1M3ix8QAWlyy4Yn52+PgSiRkgw9t8GTevp8
+         uzm86ksSjwTNmJh1Onb7M1mbo5W8woUNKcsJe+bIPw9PlB5JbYwmnNvxMQQzJWdKTZyN
+         DjgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=u6lapVaDPJDLDEq9Vwies/bT1iQPkezn3nOqZiIx/8A=;
-        b=ifPBLBqgAlW99yIqfQdpggAiVKZtg9sLQAd+LmzNaJVQd/kbQxBiuc5eeVqmRcwgIO
-         JaGFA3QNrCaoXE9LDZMlpErSsciLN6+TK8/B7RbtkrBrA8vV6z5d15HJ0Pb3bXOi23KF
-         S/93fdBFmcVZB55vPDIKjTAPAnVUI/Qmyo7MXIxvyLk0lFmiJt8cQI+uyjAeBvuGFjj7
-         CJKkvmsms6voty7AcGuwy9D9y+8VsG8bpBH82AOlubRehiaqNwhu5VGuAOsm6WVB8fy+
-         z2kBLlp0hRFOikqXfdLtdJ0/kzwWjiZCCKCxdJSw5FEs5FZgaqWqVY8hHoGGNhvRFwpT
-         CPTA==
-X-Gm-Message-State: APt69E0r5PjjEHMRKzg6RXgsHxCjtiZ9SL3jYuFL8t+sHiyybMsaX1ZX
-        s+xZ8583r8lxYSYi7CQBcPsL4vVb0GT4By1QCKdQMRWr
-X-Google-Smtp-Source: ADUXVKLue/FrGPMlDAIEnlBXHnCR5j7eCcDrQfyl03s+b1/noQlC+7LSLGJ7fJkHD9VsNGRD4vfIggri5xK89sflljQ=
-X-Received: by 2002:a19:8ecd:: with SMTP id a74-v6mr6989950lfl.12.1529322733434;
- Mon, 18 Jun 2018 04:52:13 -0700 (PDT)
+        bh=6M+7FVl7UAWt995uN4YV/iXiVEMLJuYi9KC5rV4Xvhg=;
+        b=S57y3PEScVN+rEJJSVzOv41ZfUauq41i8D/3ddd6vpEdjm9EHHGGJt47IFtHSeZ403
+         z/OxHrR2i92pOteUq+oCD8DcjREp2vyHGFcj2WRmmoK2kdZu/zwaapbZutRROUNwBkPy
+         APuSAfZ6rPRuJhESyPRElr048YYFTCdisjFrA8DpGlVq9szVjLUDSOtPGb9c2d2iHd3+
+         0ffqh0w38iGqXnCcVQf56aJ5FOUKC4rlhnFPIu4aRxKM+jFzTUXumuCfbZxNnT4PQbu+
+         j7q3eHzPECq1evexzL/P5JFMqYIiCqg1CtOpGKNc9uwBZ236TbxyHsBr/IkPmWdeWoHC
+         +vvw==
+X-Gm-Message-State: APt69E3INEt0iuGy0jcmdFKIZWMjnIH5iYJK0yaNfYFH9RbIHTfr40ke
+        t82iWNJ51vhqhEsgPRo8WImE5C0q/OvUXfIY1bc=
+X-Google-Smtp-Source: ADUXVKKBH7gQ+x0RIza7Op3bS3fG4rHXF5OhBK61doYJog3K6k2s2IVUxioizgqr1XbI3ryDgB59urGQOm1g8QO8h6Q=
+X-Received: by 2002:a19:141f:: with SMTP id k31-v6mr2833908lfi.23.1529327158393;
+ Mon, 18 Jun 2018 06:05:58 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a2e:56c8:0:0:0:0:0 with HTTP; Mon, 18 Jun 2018 04:52:12
+Received: by 2002:a2e:56c8:0:0:0:0:0 with HTTP; Mon, 18 Jun 2018 06:05:57
  -0700 (PDT)
-In-Reply-To: <f992c920-7e57-8099-b13c-f3651c0d1594@linux.intel.com>
-References: <20180612054034.4969-1-songjun.wu@linux.intel.com>
- <20180612054034.4969-5-songjun.wu@linux.intel.com> <CAK8P3a0K6qezHLcjkeq0zd+iQJQc_qbT2JhtZGrCNRT495sUvQ@mail.gmail.com>
- <f992c920-7e57-8099-b13c-f3651c0d1594@linux.intel.com>
+In-Reply-To: <20180616005323.7938-1-paul.burton@mips.com>
+References: <20180616005323.7938-1-paul.burton@mips.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 18 Jun 2018 13:52:12 +0200
-X-Google-Sender-Auth: 0Kucv6JGWonQB_x2QIskA4_VNNA
-Message-ID: <CAK8P3a3Zgtk56RAuP=J=-F9VPLxCu=vyGRFpTdBjtnWbOX+4KQ@mail.gmail.com>
-Subject: Re: [PATCH 4/7] tty: serial: lantiq: Always use readl()/writel()
-To:     "Wu, Songjun" <songjun.wu@linux.intel.com>
-Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
-        chuanhua.lei@intel.com,
+Date:   Mon, 18 Jun 2018 15:05:57 +0200
+X-Google-Sender-Auth: nQn1PvnOf7LVKkGPFKtvcJW8Yog
+Message-ID: <CAK8P3a2Yz-02On2K2U0+8+tR8RQCQ+KWh7CrtqL9L+FweP+TPQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Resolve -Wattribute-alias warnings from SYSCALL_DEFINEx()
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        qi-ming.wu@intel.com, linux-clk <linux-clk@vger.kernel.org>,
-        linux-serial@vger.kernel.org, DTML <devicetree@vger.kernel.org>,
-        James Hogan <jhogan@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64354
+X-archive-position: 64355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,58 +90,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 18, 2018 at 11:39 AM, Wu, Songjun
-<songjun.wu@linux.intel.com> wrote:
+On Sat, Jun 16, 2018 at 2:53 AM, Paul Burton <paul.burton@mips.com> wrote:
+> This series introduces infrastructure allowing compiler diagnostics to
+> be disabled or their severity modified for specific pieces of code, with
+> suitable abstractions to prevent that code from becoming tied to a
+> specific compiler.
 >
+> This infrastructure is then used to disable the -Wattribute-alias
+> warning around syscall definitions, which rely on type mismatches to
+> sanitize arguments.
 >
-> On 6/14/2018 6:07 PM, Arnd Bergmann wrote:
->>
->> On Tue, Jun 12, 2018 at 7:40 AM, Songjun Wu <songjun.wu@linux.intel.com>
->> wrote:
->>>
->>> Previous implementation uses platform-dependent functions
->>> ltq_w32()/ltq_r32() to access registers. Those functions are not
->>> available for other SoC which uses the same IP.
->>> Change to OS provided readl()/writel() and readb()/writeb(), so
->>> that different SoCs can use the same driver.
->>>
->>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
->>
->> Are there any big-endian machines using this driver? The original
->> definition
->> of ltq_r32() uses non-byteswapping __raw_readl() etc, which suggests
->> that the registers might be wired up in a way that matches the CPU
->> endianess (this is usally a bad idea in hardware design, but nothing
->> we can influence in the OS).
->>
->> When you change it to readl(), that will breaks all machines that rely
->> on the old behavior on big-endian kernels.
+> Finally PowerPC-specific #pragma's are removed now that the generic code
+> is handling this.
 >
-> It will not break existing big-endian SoC as SWAP_IO_SPACE is disabled.
+> The series takes Arnd's RFC patches & addresses the review comments they
+> received. The most notable effect of this series to to avoid warnings &
+> build failures caused by -Wattribute-alias when compiling the kernel
+> with GCC 8.
 >
-> Disable SWAP_IO_SPACE will not impact ltq_r32 as it uses non-byte swapping
-> __raw_readl() and it makes readl work in big-endian kernel too.
+> Applies cleanly atop master as of 9215310cf13b ("Merge
+> git://git.kernel.org/pub/scm/linux/kernel/git/davem/net").
 >
-> The old Lantiq platform enable SWAP_IO_SPACE to support PCI as it's a
-> little-endian bus plus PCI TX/RX swap enable impacted both data and control
-> path.
 
-Right, I see now what you mean. I was getting confused by how MIPS
-defines the __raw_* accessors differently from other big-endian
-architectures when CONFIG_SWAP_IO_SPACE is disabled.
-
-I suppose this just means you can't use any PCI drivers using __raw_
-accessors or memcpy_fromio(), but your patch to the serial driver is fine.
-
-> Alternatively PCI device driver has to do endian swap, It is better to let
-> PCI device driver to do endian swap instead because SWAP_IO_SPACE is global
-> wide macro.
-> Once we set it, other peripheral such as USB has to change its register
-> access as well
-
-I'm not entirely sure what you mean here, I would assume that aiming for
-maximum compatibility with existing drivers would be the main goal here.
-The USB platform drivers can already deal with being compiled for either
-(or both) endianess.
+Sorry I dropped the ball on this earlier, and thanks a lot for picking
+it up again! From what I can tell, your version addresses all issues
+I was aware of, so we should merge that.
 
       Arnd

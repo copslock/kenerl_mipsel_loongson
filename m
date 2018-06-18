@@ -1,80 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jun 2018 16:42:18 +0200 (CEST)
-Received: from mout.gmx.net ([212.227.17.22]:37729 "EHLO mout.gmx.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 09:00:51 +0200 (CEST)
+Received: from pegase1.c-s.fr ([93.17.236.30]:52077 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993961AbeFQOmL3tcp0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Jun 2018 16:42:11 +0200
-Received: from longitude ([109.91.33.105]) by mail.gmx.com (mrgmx101
- [212.227.17.168]) with ESMTPSA (Nemesis) id 0LaKaw-1fvcfZ14hy-00m5Nh; Sun, 17
- Jun 2018 16:41:03 +0200
-From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To:     devicetree@vger.kernel.org
-Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        id S23994552AbeFRHAod7xpN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jun 2018 09:00:44 +0200
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 418MS02qRsz9ttSX;
+        Mon, 18 Jun 2018 09:00:32 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id L6t6eFTOhOgs; Mon, 18 Jun 2018 09:00:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 418MS022bwz9ttSG;
+        Mon, 18 Jun 2018 09:00:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id A65188B80A;
+        Mon, 18 Jun 2018 09:00:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id ju4NeiF9Zdeb; Mon, 18 Jun 2018 09:00:38 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.232.3])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 782C78B74B;
+        Mon, 18 Jun 2018 09:00:37 +0200 (CEST)
+Subject: Re: [PATCH 0/3] Resolve -Wattribute-alias warnings from
+ SYSCALL_DEFINEx()
+To:     Paul Burton <paul.burton@mips.com>, linux-kbuild@vger.kernel.org
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Anthony Kim <anthony.kim@hideep.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: [PATCH] dt-bindings: Fix unbalanced quotation marks
-Date:   Sun, 17 Jun 2018 16:31:18 +0200
-Message-Id: <20180617143127.11421-1-j.neuschaefer@gmx.net>
-X-Mailer: git-send-email 2.17.1
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20180616005323.7938-1-paul.burton@mips.com>
+From:   Christophe LEROY <christophe.leroy@c-s.fr>
+Message-ID: <f9b53b28-7961-d970-3c6c-570ec595d29f@c-s.fr>
+Date:   Mon, 18 Jun 2018 09:00:37 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20180616005323.7938-1-paul.burton@mips.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:U4ftRpIYAzQjKFguisDrzN+4LCGZOt83SPIQkRnRgX0UwtUXzmu
- oMme6Yhh1pATApQ2n+HOtYWYI46c0zd3vBVlK5i8hu1/+WkD26+8rVMBnIFyLmN9rUxx5AT
- Aj8Kvv5AI6dXiNZuL9jNHd8R38fLvnCTds1yWcr8eRbj1BSEQHQHlisZb5yTEszF8iKPoyK
- d8EVU1aaeaMG/n3aC391Q==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:DzoN68pR5hQ=:kWCVuZhyiEzdHRi7U+aqXW
- gip6ZyK4Xm31bcpTNvvZ42siXZ+sm/hWStkzZ5bqnEjuCcmG08CrjHoQSJP57hwmdgeu71/Di
- 5jThcJon/oFPSzBsNBD/fFDi0CvNxWDSAgE4+Mpz8JnE5Qt2XoIf0dAalv/3LJri//tv3XAZP
- O4Gt8WFYCIv0J9AQU5pSfTS1qvIYcAsB09N3BNCt5ZCKylesmXTXmwEzDkCCX5Enx19mcxGrq
- rnr9uX0ab0d2lvxJO7sBxcswjIo4YVo1A5udC79y62Gkcxc/hZDfBIApChVTd3bAgeF3R3M5u
- oW7bcnM16+2CnYjJ7yMmlDLlavzRlTgEtbdV24iWH42CvlSkNBGwvGH7tHC+nHY5NjVDe1LP/
- xOBF9wSInFMIaQRo4LVv5P3JxsY9I8KJehwIq8jwba+c96mPrfpGoTqI1laNA4+u6sjrd1Lh1
- pNlORMkAbIUhvyPtOYZt7MECUohxfa9O7k1PixvkmNloGaag845wiIVu/Jjx2iSdhXTmfh5v5
- v6bluu8ZYJQvG4nlKGqF1msyKF/QeluWNHX0E6X9rTLcsV2YJ11RwONzL6KcwON3PMnzl+Aco
- wJYjkKqUIW4XoHt2zwHU6Am5XnurI2qaWBUR9Vu2It8WsNXrSmbvbUMh5n4uMEm55UyN6BRfw
- vhafB+tTV5HnbWFdYMeZAhfZgdMege6AlZBvBmz7BO9qQoer+38KKcO4//RjkPDubj32nRQmT
- eEfg54XH/qmwTv9Ud2/Y2aB6STniqR6FIYM+tsuu/tDGWMy/c1RkHeRJvcUNQ+DGKNcLID3oR
- lbWmDj4
-Return-Path: <j.neuschaefer@gmx.net>
+Return-Path: <christophe.leroy@c-s.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64337
+X-archive-position: 64338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: j.neuschaefer@gmx.net
+X-original-sender: christophe.leroy@c-s.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,183 +80,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Multiple binding documents have various forms of unbalanced quotation
-marks. Fix them.
 
-Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
----
 
-Should I split this patch so that different parts can go through different trees?
----
- .../devicetree/bindings/arm/samsung/samsung-boards.txt          | 2 +-
- .../devicetree/bindings/gpio/nintendo,hollywood-gpio.txt        | 2 +-
- Documentation/devicetree/bindings/input/touchscreen/hideep.txt  | 2 +-
- .../bindings/interrupt-controller/nvidia,tegra20-ictlr.txt      | 2 +-
- .../devicetree/bindings/interrupt-controller/st,stm32-exti.txt  | 2 +-
- Documentation/devicetree/bindings/mips/brcm/soc.txt             | 2 +-
- Documentation/devicetree/bindings/net/fsl-fman.txt              | 2 +-
- Documentation/devicetree/bindings/power/power_domain.txt        | 2 +-
- Documentation/devicetree/bindings/regulator/tps65090.txt        | 2 +-
- Documentation/devicetree/bindings/reset/st,sti-softreset.txt    | 2 +-
- Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt    | 2 +-
- Documentation/devicetree/bindings/sound/qcom,apq8096.txt        | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+Le 16/06/2018 à 02:53, Paul Burton a écrit :
+> This series introduces infrastructure allowing compiler diagnostics to
+> be disabled or their severity modified for specific pieces of code, with
+> suitable abstractions to prevent that code from becoming tied to a
+> specific compiler.
+> 
+> This infrastructure is then used to disable the -Wattribute-alias
+> warning around syscall definitions, which rely on type mismatches to
+> sanitize arguments.
+> 
+> Finally PowerPC-specific #pragma's are removed now that the generic code
+> is handling this.
+> 
+> The series takes Arnd's RFC patches & addresses the review comments they
+> received. The most notable effect of this series to to avoid warnings &
+> build failures caused by -Wattribute-alias when compiling the kernel
+> with GCC 8.
+> 
+> Applies cleanly atop master as of 9215310cf13b ("Merge
+> git://git.kernel.org/pub/scm/linux/kernel/git/davem/net").
+> 
+> Thanks,
+>      Paul
+> 
+> Arnd Bergmann (2):
+>    kbuild: add macro for controlling warnings to linux/compiler.h
+>    disable -Wattribute-alias warning for SYSCALL_DEFINEx()
+> 
+> Paul Burton (1):
+>    Revert "powerpc: fix build failure by disabling attribute-alias
+>      warning in pci_32"
+> 
+>   arch/powerpc/kernel/pci_32.c   |  4 ---
+>   include/linux/compat.h         |  8 ++++-
+>   include/linux/compiler-gcc.h   | 66 ++++++++++++++++++++++++++++++++++
+>   include/linux/compiler_types.h | 18 ++++++++++
+>   include/linux/syscalls.h       |  4 +++
+>   5 files changed, 95 insertions(+), 5 deletions(-)
+> 
 
-diff --git a/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
-index bdadc3da9556..6970f30a3770 100644
---- a/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
-+++ b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
-@@ -66,7 +66,7 @@ Required root node properties:
- 	- "insignal,arndale-octa" - for Exynos5420-based Insignal Arndale
- 				    Octa board.
- 	- "insignal,origen"       - for Exynos4210-based Insignal Origen board.
--	- "insignal,origen4412    - for Exynos4412-based Insignal Origen board.
-+	- "insignal,origen4412"   - for Exynos4412-based Insignal Origen board.
- 
- 
- Optional nodes:
-diff --git a/Documentation/devicetree/bindings/gpio/nintendo,hollywood-gpio.txt b/Documentation/devicetree/bindings/gpio/nintendo,hollywood-gpio.txt
-index 20fc72d9e61e..45a61b462287 100644
---- a/Documentation/devicetree/bindings/gpio/nintendo,hollywood-gpio.txt
-+++ b/Documentation/devicetree/bindings/gpio/nintendo,hollywood-gpio.txt
-@@ -1,7 +1,7 @@
- Nintendo Wii (Hollywood) GPIO controller
- 
- Required properties:
--- compatible: "nintendo,hollywood-gpio
-+- compatible: "nintendo,hollywood-gpio"
- - reg: Physical base address and length of the controller's registers.
- - gpio-controller: Marks the device node as a GPIO controller.
- - #gpio-cells: Should be <2>. The first cell is the pin number and the
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/hideep.txt b/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-index 121d9b7c79a2..1063c30d53f7 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-+++ b/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-@@ -32,7 +32,7 @@ i2c@00000000 {
- 		reg = <0x6c>;
- 		interrupt-parent = <&gpx1>;
- 		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
--		vdd-supply = <&ldo15_reg>";
-+		vdd-supply = <&ldo15_reg>;
- 		vid-supply = <&ldo18_reg>;
- 		reset-gpios = <&gpx1 5 0>;
- 		touchscreen-size-x = <1080>;
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-index 1099fe0788fa..f246ccbf8838 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-@@ -15,7 +15,7 @@ Required properties:
-   include "nvidia,tegra30-ictlr".	
- - reg : Specifies base physical address and size of the registers.
-   Each controller must be described separately (Tegra20 has 4 of them,
--  whereas Tegra30 and later have 5"  
-+  whereas Tegra30 and later have 5).
- - interrupt-controller : Identifies the node as an interrupt controller.
- - #interrupt-cells : Specifies the number of cells needed to encode an
-   interrupt source. The value must be 3.
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/st,stm32-exti.txt b/Documentation/devicetree/bindings/interrupt-controller/st,stm32-exti.txt
-index 136bd612bd83..6a36bf66d932 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/st,stm32-exti.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/st,stm32-exti.txt
-@@ -12,7 +12,7 @@ Required properties:
-   specifier, shall be 2
- - interrupts: interrupts references to primary interrupt controller
-   (only needed for exti controller with multiple exti under
--  same parent interrupt: st,stm32-exti and st,stm32h7-exti")
-+  same parent interrupt: st,stm32-exti and st,stm32h7-exti)
- 
- Example:
- 
-diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-index 356c29789cf5..3a66d3c483e1 100644
---- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
-+++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-@@ -152,7 +152,7 @@ Required properties:
- - compatible	: should contain one of:
- 		  "brcm,bcm7425-timers"
- 		  "brcm,bcm7429-timers"
--		  "brcm,bcm7435-timers and
-+		  "brcm,bcm7435-timers" and
- 		  "brcm,brcmstb-timers"
- - reg		: the timers register range
- - interrupts	: the interrupt line for this timer block
-diff --git a/Documentation/devicetree/bindings/net/fsl-fman.txt b/Documentation/devicetree/bindings/net/fsl-fman.txt
-index df873d1f3b7c..f8c33890bc29 100644
---- a/Documentation/devicetree/bindings/net/fsl-fman.txt
-+++ b/Documentation/devicetree/bindings/net/fsl-fman.txt
-@@ -238,7 +238,7 @@ PROPERTIES
- 		Must include one of the following:
- 		- "fsl,fman-dtsec" for dTSEC MAC
- 		- "fsl,fman-xgec" for XGEC MAC
--		- "fsl,fman-memac for mEMAC MAC
-+		- "fsl,fman-memac" for mEMAC MAC
- 
- - cell-index
- 		Usage: required
-diff --git a/Documentation/devicetree/bindings/power/power_domain.txt b/Documentation/devicetree/bindings/power/power_domain.txt
-index 9b387f861aed..7dec508987c7 100644
---- a/Documentation/devicetree/bindings/power/power_domain.txt
-+++ b/Documentation/devicetree/bindings/power/power_domain.txt
-@@ -133,7 +133,7 @@ located inside a PM domain with index 0 of a power controller represented by a
- node with the label "power".
- In the second example the consumer device are partitioned across two PM domains,
- the first with index 0 and the second with index 1, of a power controller that
--is represented by a node with the label "power.
-+is represented by a node with the label "power".
- 
- Optional properties:
- - required-opps: This contains phandle to an OPP node in another device's OPP
-diff --git a/Documentation/devicetree/bindings/regulator/tps65090.txt b/Documentation/devicetree/bindings/regulator/tps65090.txt
-index ca69f5e3040c..ae326f263597 100644
---- a/Documentation/devicetree/bindings/regulator/tps65090.txt
-+++ b/Documentation/devicetree/bindings/regulator/tps65090.txt
-@@ -16,7 +16,7 @@ Required properties:
- Optional properties:
- - ti,enable-ext-control: This is applicable for DCDC1, DCDC2 and DCDC3.
-   If DCDCs are externally controlled then this property should be there.
--- "dcdc-ext-control-gpios: This is applicable for DCDC1, DCDC2 and DCDC3.
-+- dcdc-ext-control-gpios: This is applicable for DCDC1, DCDC2 and DCDC3.
-   If DCDCs are externally controlled and if it is from GPIO then GPIO
-   number should be provided. If it is externally controlled and no GPIO
-   entry then driver will just configure this rails as external control
-diff --git a/Documentation/devicetree/bindings/reset/st,sti-softreset.txt b/Documentation/devicetree/bindings/reset/st,sti-softreset.txt
-index a21658f18fe6..3661e6153a92 100644
---- a/Documentation/devicetree/bindings/reset/st,sti-softreset.txt
-+++ b/Documentation/devicetree/bindings/reset/st,sti-softreset.txt
-@@ -15,7 +15,7 @@ Please refer to reset.txt in this directory for common reset
- controller binding usage.
- 
- Required properties:
--- compatible: Should be st,stih407-softreset";
-+- compatible: Should be "st,stih407-softreset";
- - #reset-cells: 1, see below
- 
- example:
-diff --git a/Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt b/Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt
-index 6a4aadc4ce06..84b28dbe9f15 100644
---- a/Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt
-+++ b/Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt
-@@ -30,7 +30,7 @@ Required properties:
- 
- 			  Board connectors:
- 			  * Headset Mic
--			  * Secondary Mic",
-+			  * Secondary Mic
- 			  * DMIC
- 			  * Ext Spk
- 
-diff --git a/Documentation/devicetree/bindings/sound/qcom,apq8096.txt b/Documentation/devicetree/bindings/sound/qcom,apq8096.txt
-index aa54e49fc8a2..c7600a93ab39 100644
---- a/Documentation/devicetree/bindings/sound/qcom,apq8096.txt
-+++ b/Documentation/devicetree/bindings/sound/qcom,apq8096.txt
-@@ -35,7 +35,7 @@ This binding describes the APQ8096 sound card, which uses qdsp for audio.
- 			"Digital Mic3"
- 
- 		Audio pins and MicBias on WCD9335 Codec:
--			"MIC_BIAS1
-+			"MIC_BIAS1"
- 			"MIC_BIAS2"
- 			"MIC_BIAS3"
- 			"MIC_BIAS4"
--- 
-2.17.1
+Works well, thanks.
+
+You can then also revert 	2479bfc9bc600dcce7f932d52dcfa8d677c41f93
+("powerpc: Fix build by disabling attribute-alias warning for 
+SYSCALL_DEFINEx")
+
+Christophe

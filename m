@@ -1,50 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 20:52:49 +0200 (CEST)
-Received: from ste-pvt-msa2.bahnhof.se ([213.80.101.71]:44643 "EHLO
-        ste-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994602AbeFRSwiNWiM- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 20:52:38 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by ste-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 546573F82F;
-        Mon, 18 Jun 2018 20:52:37 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from ste-pvt-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id aC2wAHVRX1EC; Mon, 18 Jun 2018 20:52:35 +0200 (CEST)
-Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
-        (Authenticated sender: mb547485)
-        by ste-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 7BF843F40C;
-        Mon, 18 Jun 2018 20:52:35 +0200 (CEST)
-Date:   Mon, 18 Jun 2018 20:52:33 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
-Subject: Re: [RFC v2] MIPS: PS2: Interrupt request (IRQ) support
-Message-ID: <20180618185232.GA7182@localhost.localdomain>
-References: <alpine.DEB.2.00.1709272208300.16752@tp.orcam.me.uk>
- <20170930065654.GA7714@localhost.localdomain>
- <alpine.DEB.2.00.1709301305400.12020@tp.orcam.me.uk>
- <20171029172016.GA2600@localhost.localdomain>
- <alpine.DEB.2.00.1711102209440.10088@tp.orcam.me.uk>
- <20171111160422.GA2332@localhost.localdomain>
- <20180129202715.GA4817@localhost.localdomain>
- <alpine.DEB.2.00.1801312259410.4191@tp.orcam.me.uk>
- <20180303122657.GC24991@localhost.localdomain>
- <20180318104521.GB2364@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 23:05:30 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:48277 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991127AbeFRVFXDFQE8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 23:05:23 +0200
+Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx1404.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 18 Jun 2018 21:05:08 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
+ (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 18
+ Jun 2018 14:05:21 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Mon, 18 Jun
+ 2018 14:05:21 -0700
+Date:   Mon, 18 Jun 2018 14:05:07 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+Subject: Re: [PATCH V3 03/10] MIPS: Loongson-3: Enable Store Fill Buffer at
+ runtime
+Message-ID: <20180618210507.akcvvigzj7qis3re@pburton-laptop>
+References: <1524885694-18132-1-git-send-email-chenhc@lemote.com>
+ <1524885694-18132-4-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20180318104521.GB2364@localhost.localdomain>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-Return-Path: <noring@nocrew.org>
+In-Reply-To: <1524885694-18132-4-git-send-email-chenhc@lemote.com>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1529355907-382908-20156-164175-1
+X-BESS-VER: 2018.7-r1806151722
+X-BESS-Apparent-Source-IP: 12.201.5.31
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194169
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: chenhc@lemote.com,ralf@linux-mips.org,linux-mips@linux-mips.org,zhangfx@lemote.com,wuzhangjin@gmail.com,chenhuacai@gmail.com
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64357
+X-archive-position: 64358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,171 +63,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+Hi Huacai,
 
-I have completely reworked the handling of IRQs: it's now modular and
-simplified (INTC patch attached below). The cascading interrupts for DMA
-and the Graphics Synthesizer are setup in separate modules. The SBUS
-interrupts are shared instead of demultiplexed and RPC is no longer used
-as an alternative to interrupt forwarding.
+On Sat, Apr 28, 2018 at 11:21:27AM +0800, Huacai Chen wrote:
+> New Loongson-3 (Loongson-3A R2, Loongson-3A R3, and newer) has SFB
+> (Store Fill Buffer) which can improve the performance of memory access.
+> Now, SFB enablement is controlled by CONFIG_LOONGSON3_ENHANCEMENT, and
+> the generic kernel has no benefit from SFB (even it is running on a new
+> Loongson-3 machine). With this patch, we can enable SFB at runtime by
+> detecting the CPU type (the expense is war_io_reorder_wmb() will always
+> be a 'sync', which will hurt the performance of old Loongson-3).
 
-Unrelated to IRQs: I have also replaced all previous BIOS calls. The kernel
-no longer needs a BIOS and reclaims its memory space. In particular, the
-I/O processor (IOP) is reset by the kernel and a boot loader is no longer
-needed to perform this task. I also have a collection of patches to get
-kexec working with a compressed (vmlinuz) kernel, so it can reboot itself.
+Neat - I like the move towards the kernel detecting this at runtime,
+rather than requiring the user to select it at configuration/build time.
 
-I have implemented a graphical putc to render boot prints to the screen,
-both when decompressing the kernel and for early boot stages (prom_putchar).
-A UART requires extra hardware and soldering and is significantly more
-difficult to install.
+> diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+> index 3127391..cbac603 100644
+> --- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+> +++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+> @@ -11,6 +11,8 @@
+>  #ifndef __ASM_MACH_LOONGSON64_KERNEL_ENTRY_H
+>  #define __ASM_MACH_LOONGSON64_KERNEL_ENTRY_H
+>  
+> +#include <asm/cpu.h>
+> +
+>  /*
+>   * Override macros used in arch/mips/kernel/head.S.
+>   */
+> @@ -26,12 +28,15 @@
+>  	mfc0	t0, CP0_PAGEGRAIN
+>  	or	t0, (0x1 << 29)
+>  	mtc0	t0, CP0_PAGEGRAIN
+> -#ifdef CONFIG_LOONGSON3_ENHANCEMENT
+>  	/* Enable STFill Buffer */
+> +	mfc0	t0, CP0_PRID
+> +	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
+> +	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
+> +	bnez	t0, 1f
+>  	mfc0	t0, CP0_CONFIG6
+>  	or	t0, 0x100
+>  	mtc0	t0, CP0_CONFIG6
+> -#endif
+> +1:
+>  	_ehb
+>  	.set	pop
+>  #endif
 
-The frame buffer module is essentially complete. It can operate in two
-distinct modes: console xor virtual mode. In console mode text is rendered
-as textured tiles from local Graphics Synthesizer memory. This is very fast,
-memory and bandwidth efficient. In virtual mode a memory buffer is allocated
-in main memory and copied via DMA to the Graphics Synthesizer. This enables
-mmap, but it is fairly inefficient and mostly useful for compatibility.
-YWRAP and other acceleration techniques are implemented too.
+I think it'd be neater if we did this from C in cpu_probe_loongson()
+though. If we add __BUILD_SET_C0(config6) to asm/mipsregs.h and define a
+macro naming the SFB enable bit then both boot CPU & secondary cases
+could be handled by a single line in cpu_probe_loongson(). Something
+like this:
 
-I have a separate device driver for the Graphics Synthesizer. Its interface,
-the GIF, is serial with a streaming graphical hardware primitive format (for
-points, triangles, sprites, etc.) and a character device (such as /dev/gs)
-would be ideal and the most efficient way to render graphics for the R5900,
-especially if scatter-gather DMA is implemented as well.
+    set_c0_config6(LOONGSON_CONFIG6_SFB_ENABLE);
 
-I have many more ideas yet to explore and implement. :)
+Unless there's a technical reason this doesn't work I'd prefer it to the
+assembly version (and maybe we could move the LPA & ELPA configuration
+into cpu-probe.c too then remove asm/mach-loongson64/kernel-entry-init.h
+entirely).
 
-Fredrik
-
---- /dev/null
-+++ b/arch/mips/ps2/irq.c
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PlayStation 2 Interrupt controller (INTC) IRQs
-+ *
-+ * Copyright (C) 2018 Fredrik Noring
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/ioport.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+
-+#include <asm/bootinfo.h>
-+#include <asm/io.h>
-+#include <asm/irq_cpu.h>
-+#include <asm/mipsregs.h>
-+
-+#include <asm/mach-ps2/irq.h>
-+#include <asm/mach-ps2/ps2.h>
-+
-+static inline void intc_reverse_mask(struct irq_data *data)
-+{
-+	outl(BIT(data->irq - IRQ_INTC), INTC_MASK);
-+}
-+
-+static void intc_mask_ack(struct irq_data *data)
-+{
-+	const unsigned int bit = BIT(data->irq - IRQ_INTC);
-+
-+	outl(bit, INTC_MASK);
-+	outl(bit, INTC_STAT);
-+}
-+
-+#define INTC_IRQ_TYPE(irq_, name_)				\
-+	{							\
-+		.irq = irq_,					\
-+		.irq_chip = {					\
-+			.name = name_,				\
-+			.irq_unmask = intc_reverse_mask,	\
-+			.irq_mask = intc_reverse_mask,		\
-+			.irq_mask_ack = intc_mask_ack,		\
-+		}						\
-+	}
-+
-+static struct {
-+	unsigned int irq;
-+	struct irq_chip irq_chip;
-+} intc_irqs[] = {
-+	INTC_IRQ_TYPE(IRQ_INTC_GS,     "INTC GS"),
-+	INTC_IRQ_TYPE(IRQ_INTC_SBUS,   "INTC SBUS"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VB_ON,  "INTC VB on"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VB_OFF, "INTC VB off"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VIF0,   "INTC VIF0"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VIF1,   "INTC VIF1"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VU0,    "INTC VU0"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VU1,    "INTC VU1"),
-+	INTC_IRQ_TYPE(IRQ_INTC_IPU,    "INTC IPU"),
-+	INTC_IRQ_TYPE(IRQ_INTC_TIMER0, "INTC timer0"),
-+	INTC_IRQ_TYPE(IRQ_INTC_TIMER1, "INTC timer1"),
-+	INTC_IRQ_TYPE(IRQ_INTC_TIMER2, "INTC timer2"),
-+	INTC_IRQ_TYPE(IRQ_INTC_TIMER3, "INTC timer3"),
-+	INTC_IRQ_TYPE(IRQ_INTC_SFIFO,  "INTC SFIFO"),
-+	INTC_IRQ_TYPE(IRQ_INTC_VU0WD,  "INTC VU0WD"),
-+	INTC_IRQ_TYPE(IRQ_INTC_PGPU,   "INTC PGPU"),
-+};
-+
-+static irqreturn_t intc_cascade(int irq, void *data)
-+{
-+	unsigned int pending, irq_intc;
-+	irqreturn_t status = IRQ_NONE;
-+
-+	for (pending = inl(INTC_STAT); pending; pending &= ~BIT(irq_intc)) {
-+		irq_intc = __fls(pending);
-+
-+		if (generic_handle_irq(irq_intc + IRQ_INTC) < 0)
-+			spurious_interrupt();
-+		else
-+			status = IRQ_HANDLED;
-+	}
-+
-+	return status;
-+}
-+
-+static struct irqaction cascade_intc_irqaction = {
-+	.name = "INTC cascade",
-+	.handler = intc_cascade,
-+};
-+
-+void __init arch_init_irq(void)
-+{
-+	int err;
-+	int i;
-+
-+	mips_cpu_irq_init();
-+
-+	for (i = 0; i < ARRAY_SIZE(intc_irqs); i++)
-+		irq_set_chip_and_handler(intc_irqs[i].irq,
-+			&intc_irqs[i].irq_chip, handle_level_irq);
-+
-+	/* FIXME: Is HARDIRQS_SW_RESEND needed? Are these edge types needed? */
-+	irq_set_irq_type(IRQ_INTC_GS, IRQ_TYPE_EDGE_FALLING);
-+	irq_set_irq_type(IRQ_INTC_SBUS, IRQ_TYPE_EDGE_FALLING);
-+	irq_set_irq_type(IRQ_INTC_VB_ON, IRQ_TYPE_EDGE_RISING);
-+	irq_set_irq_type(IRQ_INTC_VB_OFF, IRQ_TYPE_EDGE_FALLING);
-+
-+	outl(inl(INTC_MASK), INTC_MASK);
-+	outl(inl(INTC_STAT), INTC_STAT);
-+
-+	err = setup_irq(IRQ_C0_INTC, &cascade_intc_irqaction);
-+	if (err)
-+		printk(KERN_ERR "irq: Failed to setup INTC (err = %d).\n", err);
-+}
-+
-+asmlinkage void plat_irq_dispatch(void)
-+{
-+	const unsigned int pending = read_c0_status() & read_c0_cause();
-+
-+	if (!(pending & (CAUSEF_IP2 | CAUSEF_IP3 | CAUSEF_IP7)))
-+		return spurious_interrupt();
-+
-+	if (pending & CAUSEF_IP2)
-+		do_IRQ(IRQ_C0_INTC);	/* INTC interrupt */
-+	if (pending & CAUSEF_IP3)
-+		do_IRQ(IRQ_C0_DMAC);	/* DMAC interrupt */
-+	if (pending & CAUSEF_IP7)
-+		do_IRQ(IRQ_C0_IRQ7);	/* Timer interrupt */
-+}
+Thanks,
+    Paul

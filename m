@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 10:30:04 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:52280 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2018 10:30:18 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52362 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994585AbeFRI3wf0wul (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 10:29:52 +0200
+        by eddie.linux-mips.org with ESMTP id S23994707AbeFRIaGFbyMl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2018 10:30:06 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 248ACC50;
-        Mon, 18 Jun 2018 08:29:45 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AD015C75;
+        Mon, 18 Jun 2018 08:29:59 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,9 +15,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
         James Hogan <jhogan@kernel.org>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 005/189] MIPS: io: Prevent compiler reordering writeX()
-Date:   Mon, 18 Jun 2018 10:11:41 +0200
-Message-Id: <20180618081209.461440376@linuxfoundation.org>
+Subject: [PATCH 4.14 009/189] MIPS: io: Add barrier after register read in readX()
+Date:   Mon, 18 Jun 2018 10:11:45 +0200
+Message-Id: <20180618081209.610917310@linuxfoundation.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180618081209.254234434@linuxfoundation.org>
 References: <20180618081209.254234434@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64347
+X-archive-position: 64348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,35 +52,35 @@ X-list: linux-mips
 
 From: Sinan Kaya <okaya@codeaurora.org>
 
-[ Upstream commit f6b7aeee8f167409195fbf1364d02988fecad1d0 ]
+[ Upstream commit a1cc7034e33d12dc17d13fbcd7d597d552889097 ]
 
-writeX() has strong ordering semantics with respect to memory updates.
-In the absence of a write barrier or a compiler barrier, the compiler
-can reorder register and memory update instructions. This breaks the
-writeX() API.
+While a barrier is present in the writeX() functions before the register
+write, a similar barrier is missing in the readX() functions after the
+register read. This could allow memory accesses following readX() to
+observe stale data.
 
 Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/18997/
+Patchwork: https://patchwork.linux-mips.org/patch/19069/
 [jhogan@kernel.org: Tidy commit message]
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/io.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/io.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/arch/mips/include/asm/io.h
 +++ b/arch/mips/include/asm/io.h
-@@ -307,7 +307,7 @@ static inline void iounmap(const volatil
- #if defined(CONFIG_CPU_CAVIUM_OCTEON) || defined(CONFIG_LOONGSON3_ENHANCEMENT)
- #define war_io_reorder_wmb()		wmb()
- #else
--#define war_io_reorder_wmb()		do { } while (0)
-+#define war_io_reorder_wmb()		barrier()
- #endif
+@@ -377,6 +377,8 @@ static inline type pfx##read##bwlq(const
+ 		BUG();							\
+ 	}								\
+ 									\
++	/* prevent prefetching of coherent DMA data prematurely */	\
++	rmb();								\
+ 	return pfx##ioswab##bwlq(__mem, __val);				\
+ }
  
- #define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\

@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 18:09:08 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:37610 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 18:14:25 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:40280 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992408AbeFSQJBStH7A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Jun 2018 18:09:01 +0200
+        id S23992408AbeFSQOT3fhYA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jun 2018 18:14:19 +0200
 Received: from localhost.localdomain (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9336D20652;
-        Tue, 19 Jun 2018 16:08:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 68C6B20652;
+        Tue, 19 Jun 2018 16:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529424534;
-        bh=oWJaCDLTi+igdzV+vF4jWbvfReFewdO7c6illdHDiUw=;
+        s=default; t=1529424853;
+        bh=8jXNP8vnwcF+TR6+0YdF5rciKwGAeWP5OJuYS69gA/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xntQ7L+a8bT8gIBoUZP69a+tvPEZiHyGkA1wUGuC9JddlHMPbBcTd/tGBkMKPYRaN
-         59+ZNytfIKK4AX15vXIm/EEQovfSGX2FjQ2kk1RXi8dalJ9OPQEBeVq9UIOed4kPXI
-         IuCDDgymN2ZsJ9fAPTCk6gKKta8jSU/uncmui0q0=
+        b=yLxIVAImP7C9sG/k0Jqp/P6CLR6mllstKtjPhO6efPWYgAtpyoj4WneJ+WwLTRu/Q
+         Y6/nsdEK04jfSf7WSV3mJznGvvNv6uYfKuAUJ51vzV79ZiGxOCZdyQAy7fAO4XZ7UT
+         NLBAV3SUxLRQAIg1zNIk83pBMo0z37/gxDmH82F8=
 From:   Masami Hiramatsu <mhiramat@kernel.org>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>
@@ -26,9 +26,9 @@ Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         linux-arch@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH -tip v6 09/27] MIPS: kprobes: Remove jprobe implementation
-Date:   Wed, 20 Jun 2018 01:08:30 +0900
-Message-Id: <152942451058.15209.3459785416221980965.stgit@devbox>
+Subject: [PATCH -tip v6 20/27] MIPS: kprobes: Don't call the ->break_handler() in MIPS kprobes code
+Date:   Wed, 20 Jun 2018 01:13:49 +0900
+Message-Id: <152942482953.15209.843924518200700137.stgit@devbox>
 X-Mailer: git-send-email 2.13.6
 In-Reply-To: <152942424698.15209.15245996287444292393.stgit@devbox>
 References: <152942424698.15209.15245996287444292393.stgit@devbox>
@@ -40,7 +40,7 @@ Return-Path: <mhiramat@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64369
+X-archive-position: 64370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,106 +57,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove arch dependent setjump/longjump functions
-and unused fields in kprobe_ctlblk for jprobes
-from arch/mips.
+Don't call the ->break_handler() from the MIPS kprobes code,
+because it was only used by jprobes which got removed.
 
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/include/asm/kprobes.h |   13 -----------
- arch/mips/kernel/kprobes.c      |   45 ---------------------------------------
- 2 files changed, 58 deletions(-)
+ arch/mips/kernel/kprobes.c |   21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/arch/mips/include/asm/kprobes.h b/arch/mips/include/asm/kprobes.h
-index ad1a99948f27..a72dfbf1babb 100644
---- a/arch/mips/include/asm/kprobes.h
-+++ b/arch/mips/include/asm/kprobes.h
-@@ -68,16 +68,6 @@ struct prev_kprobe {
- 	unsigned long saved_epc;
- };
- 
--#define MAX_JPROBES_STACK_SIZE 128
--#define MAX_JPROBES_STACK_ADDR \
--	(((unsigned long)current_thread_info()) + THREAD_SIZE - 32 - sizeof(struct pt_regs))
--
--#define MIN_JPROBES_STACK_SIZE(ADDR)					\
--	((((ADDR) + MAX_JPROBES_STACK_SIZE) > MAX_JPROBES_STACK_ADDR)	\
--		? MAX_JPROBES_STACK_ADDR - (ADDR)			\
--		: MAX_JPROBES_STACK_SIZE)
--
--
- #define SKIP_DELAYSLOT 0x0001
- 
- /* per-cpu kprobe control block */
-@@ -86,12 +76,9 @@ struct kprobe_ctlblk {
- 	unsigned long kprobe_old_SR;
- 	unsigned long kprobe_saved_SR;
- 	unsigned long kprobe_saved_epc;
--	unsigned long jprobe_saved_sp;
--	struct pt_regs jprobe_saved_regs;
- 	/* Per-thread fields, used while emulating branches */
- 	unsigned long flags;
- 	unsigned long target_epc;
--	u8 jprobes_stack[MAX_JPROBES_STACK_SIZE];
- 	struct prev_kprobe prev_kprobe;
- };
- 
 diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
-index f5c8bce70db2..efdcd0b1ce12 100644
+index efdcd0b1ce12..7fd277bc59b9 100644
 --- a/arch/mips/kernel/kprobes.c
 +++ b/arch/mips/kernel/kprobes.c
-@@ -468,51 +468,6 @@ int __kprobes kprobe_exceptions_notify(struct notifier_block *self,
- 	return ret;
- }
+@@ -326,19 +326,13 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
+ 				preempt_enable_no_resched();
+ 			}
+ 			return 1;
+-		} else {
+-			if (addr->word != breakpoint_insn.word) {
+-				/*
+-				 * The breakpoint instruction was removed by
+-				 * another cpu right after we hit, no further
+-				 * handling of this interrupt is appropriate
+-				 */
+-				ret = 1;
+-				goto no_kprobe;
+-			}
+-			p = __this_cpu_read(current_kprobe);
+-			if (p->break_handler && p->break_handler(p, regs))
+-				goto ss_probe;
++		} else if (addr->word != breakpoint_insn.word) {
++			/*
++			 * The breakpoint instruction was removed by
++			 * another cpu right after we hit, no further
++			 * handling of this interrupt is appropriate
++			 */
++			ret = 1;
+ 		}
+ 		goto no_kprobe;
+ 	}
+@@ -367,7 +361,6 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
+ 		return 1;
+ 	}
  
--int __kprobes setjmp_pre_handler(struct kprobe *p, struct pt_regs *regs)
--{
--	struct jprobe *jp = container_of(p, struct jprobe, kp);
--	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
--
--	kcb->jprobe_saved_regs = *regs;
--	kcb->jprobe_saved_sp = regs->regs[29];
--
--	memcpy(kcb->jprobes_stack, (void *)kcb->jprobe_saved_sp,
--	       MIN_JPROBES_STACK_SIZE(kcb->jprobe_saved_sp));
--
--	regs->cp0_epc = (unsigned long)(jp->entry);
--
--	return 1;
--}
--
--/* Defined in the inline asm below. */
--void jprobe_return_end(void);
--
--void __kprobes jprobe_return(void)
--{
--	/* Assembler quirk necessitates this '0,code' business.	 */
--	asm volatile(
--		"break 0,%0\n\t"
--		".globl jprobe_return_end\n"
--		"jprobe_return_end:\n"
--		: : "n" (BRK_KPROBE_BP) : "memory");
--}
--
--int __kprobes longjmp_break_handler(struct kprobe *p, struct pt_regs *regs)
--{
--	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
--
--	if (regs->cp0_epc >= (unsigned long)jprobe_return &&
--	    regs->cp0_epc <= (unsigned long)jprobe_return_end) {
--		*regs = kcb->jprobe_saved_regs;
--		memcpy((void *)kcb->jprobe_saved_sp, kcb->jprobes_stack,
--		       MIN_JPROBES_STACK_SIZE(kcb->jprobe_saved_sp));
--		preempt_enable_no_resched();
--
--		return 1;
--	}
--	return 0;
--}
--
- /*
-  * Function return probe trampoline:
-  *	- init_kprobes() establishes a probepoint here
+-ss_probe:
+ 	prepare_singlestep(p, regs, kcb);
+ 	if (kcb->flags & SKIP_DELAYSLOT) {
+ 		kcb->kprobe_status = KPROBE_HIT_SSDONE;

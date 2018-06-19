@@ -1,67 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 09:23:06 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:53998 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990391AbeFSHW7ZMIoJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 09:22:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
-        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=r82M0Nf+k4GMGFrElp0fUqvdbG8NbsQ0Xreisy+okG8=; b=M3iu43EwsnprKFN8+FnkQ3C/WV
-        m4fwc6y37UrkZ4zD2jnM62LeOfYowtJ/mTrc3dScgmwLIJPwqKefw5z9r+pe7LKe39620ynspuqSy
-        yVlHZywGRFeAqnyHJEZB4IL12Pmi4sUSRzlIWsQ/567bt8SYAYl5/qFrgh8SU13LYMcHPKc+jM+sd
-        nIYM8OK+tYwIJkDRQD7lcurUwxpvXs1KbbrWb291ohsYYk6irwqEEnHwA4oB9UoRh8KLz08/oL+Mn
-        Bo9G64DcErszTs7iu8lViuFa8/Z9Lfmd3LtuBCNsXm6ws5X9eGdMw4klY5GniZ6pTyCEPtXmw0XKm
-        znufAlWQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fVAyT-000518-94; Tue, 19 Jun 2018 07:22:45 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id D2AE120268507; Tue, 19 Jun 2018 09:22:42 +0200 (CEST)
-Date:   Tue, 19 Jun 2018 09:22:42 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 10:52:09 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:49586 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990393AbeFSIwCvwidZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 10:52:02 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 702FC1435;
+        Tue, 19 Jun 2018 01:51:54 -0700 (PDT)
+Received: from edgewater-inn.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3FFF33F25D;
+        Tue, 19 Jun 2018 01:51:54 -0700 (PDT)
+Received: by edgewater-inn.cambridge.arm.com (Postfix, from userid 1000)
+        id D09241AE5153; Tue, 19 Jun 2018 09:52:29 +0100 (BST)
+Date:   Tue, 19 Jun 2018 09:52:29 +0100
+From:   Will Deacon <will.deacon@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     Paul Burton <paul.burton@mips.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        linux-mips <linux-mips@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
         Fuxin Zhang <zhangfx@lemote.com>,
-        wuzhangjin <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        stable <stable@vger.kernel.org>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>, stable@vger.kernel.org,
         Alan Stern <stern@rowland.harvard.edu>,
-        AndreaParri <andrea.parri@amarulasolutions.com>,
-        Will Deacon <will.deacon@arm.com>,
+        Andrea Parri <andrea.parri@amarulasolutions.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         David Howells <dhowells@redhat.com>,
         Jade Alglave <j.alglave@ucl.ac.uk>,
         Luc Maranget <luc.maranget@inria.fr>,
         "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Akira Yokosawa <akiyks@gmail.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+        Akira Yokosawa <akiyks@gmail.com>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] MIPS: implement smp_cond_load_acquire() for Loongson-3
-Message-ID: <20180619072242.GC2494@hirez.programming.kicks-ass.net>
+Message-ID: <20180619085229.GA13984@arm.com>
 References: <1529042858-9483-1-git-send-email-chenhc@lemote.com>
  <20180618185141.yvkrsbdi2gbxjxj7@pburton-laptop>
- <tencent_59DC823168EC2F5D42AE44F0@qq.com>
+ <20180619071710.GB2494@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <tencent_59DC823168EC2F5D42AE44F0@qq.com>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <20180619071710.GB2494@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64364
+X-archive-position: 64365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,32 +61,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 19, 2018 at 02:40:14PM +0800, 陈华才 wrote:
-> Hi, Paul,
+Hi all,
+
+On Tue, Jun 19, 2018 at 09:17:10AM +0200, Peter Zijlstra wrote:
+> On Mon, Jun 18, 2018 at 11:51:41AM -0700, Paul Burton wrote:
+> > On Fri, Jun 15, 2018 at 02:07:38PM +0800, Huacai Chen wrote:
+> > > After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
+> > > in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
+> > > has SFB (Store Fill Buffer) and READ_ONCE() may get an old value in a
+> > > tight loop. So in smp_cond_load_acquire() we need a __smp_mb() after
+> > > every READ_ONCE().
+> > 
+> > Thanks - modifying smp_cond_load_acquire() is a step better than
+> > modifying arch_mcs_spin_lock_contended() to avoid it, but I'm still not
+> > sure we've reached the root of the problem. 
 > 
-> First of all, could you please check why linux-mips reject e-mails
-> from lemote.com? Of course I can send e-mails by gmail, but my gmail
-> can't receive e-mails from linux-mips since March, 2018.
+> Agreed, this looks entirely dodgy.
+> 
+> > If tight loops using
+> > READ_ONCE() are at fault then what's special about
+> > smp_cond_load_acquire()? Could other such loops not hit the same
+> > problem?
+> 
+> Right again, Linux has a number of places where it relies on loops like
+> this.
+> 
+> 	for (;;) {
+> 		if (READ_ONCE(*ptr))
+> 			break;
+> 
+> 		cpu_relax();
+> 	}
+> 
+> That is assumed to terminate -- provided the store to make *ptr != 0
+> happens of course.
+> 
+> And this has nothing to do with store buffers per se, sure store-buffers
+> might delay the store from being visible for a (little) while, but we
+> very much assume store buffers will not indefinitely hold on to data.
 
-Could you please learn to use email? No top posting and wrap lines at 78
-chars.
+We had an issue 8 years ago with the 11MPCore CPU where reads were
+prioritised over writes, so code doing something like:
 
-> I have already read Documentation/memory-barriers.txt, but I don't
-> think we should define a smp_read_barrier_depends() for Loongson-3.
-> Because Loongson-3's behavior isn't like Alpha, and in syntax, this is
-> not a data-dependent issue.
+  WRITE_ONCE(*foo, 1);
+  while (!READ_ONCE(*bar));
 
-Agreed, this is not a data-dependency issue.
+might never make the store to foo visible to other CPUs. This caused a
+livelock in KGDB, where two CPUs were doing this on opposite variables
+(i.e. the "SB" litmus test, but with the reads looping until they read
+1).
 
-> There is no document about Loongson-3's SFB. In my opinion, SFB looks
-> like the L0 cache but sometimes it is out of cache-coherent machanism
-> (L1 cache's cross-core coherency is maintained by hardware, but not
-> always true for SFB). smp_mb() is needed for smp_cond_load_acquire(),
-> but not every READ_ONCE().
+See 534be1d5a2da ("ARM: 6194/1: change definition of cpu_relax() for
+ARM11MPCore") for the ugly fix, assuming that the "Store Fill Buffer"
+suffers from the same disease.
 
-Linux does _NOT_ support non-coherent SMP. If your system is not fully
-coherent, you're out of luck.
-
-But please, explain in excruciating detail what exactly you need that
-smp_mb for. If, like I posited in my previous email, it is to ensure
-remote store buffer flushes, then your machine is terminally broken.
+Will

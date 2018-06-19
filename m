@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:48:32 +0200 (CEST)
-Received: from mail-yw0-f196.google.com ([209.85.161.196]:44392 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:48:50 +0200 (CEST)
+Received: from mail-yw0-f196.google.com ([209.85.161.196]:42118 "EHLO
         mail-yw0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993098AbeFSVrYzzMer (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:24 +0200
-Received: by mail-yw0-f196.google.com with SMTP id k18-v6so440373ywm.11;
-        Tue, 19 Jun 2018 14:47:24 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23994560AbeFSVr0mGADr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:26 +0200
+Received: by mail-yw0-f196.google.com with SMTP id t184-v6so443772ywg.9;
+        Tue, 19 Jun 2018 14:47:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=8RXql62/dQvZpkpAbxhcxM+PugjdkCOIwRwB4Nmmg1k=;
-        b=kHbeoXUPy5CIZHNW7LwPNMnrJsjwAkpdWIKa+VpM7noOJAofxrGYTnRrk2rb7+We+q
-         wWqEVBIxjAPukMxgs87xZKOW6uF9Vk2m9AoO1LADS53eVMeWzLaBP2vk2tEW5H0Ah+ox
-         HQvIThekP5J5yBSpoyD/gdzuUhu8TRVnRF0VMiY+epZmba0VJDx4c4TXP4TA/xYBHR2r
-         8+Zamd7Z8GIOpWFVLWg2IH3x5K6BB5i4QfsYSCiA4CKF6jf9KpsxB9hBT8ac2/s8xZOt
-         EHXxfqZN13un0IX4Hkips+GQmh0Sw5TZb4aBz6oz6Jewsxc4zT7JZRslc88a+BOO3z4M
-         JD5w==
-X-Gm-Message-State: APt69E2nPd8Dj7Ma1ndYwHJrnYjSz5UhJiWBpAQmzGZ2Hl3C1HdKndQ8
-        iU4nJQw7TREp+s8fe41Poby/o1w=
-X-Google-Smtp-Source: ADUXVKJZiJ6h2fYXypqCdEj79PpwEojYfikwuP4+wenuiCzgT5xRq77x3ANdUD+ZlWapubFLbvPiTw==
-X-Received: by 2002:a81:ad44:: with SMTP id l4-v6mr9285131ywk.68.1529444838893;
-        Tue, 19 Jun 2018 14:47:18 -0700 (PDT)
+        bh=W1Ng6EJXxwLUZYoApWutVMxtEjDppkRB8dUa9ssSHew=;
+        b=qz+hJoUghodDwZkCSYpbnXr4lT1cwW9elQkxAqVLUsm69T/5T+yqympDsu2LxenrtG
+         V3SQcR2CoTjWTW6JP1r4V/kYoEHi4OketdXbWRmv1Jt2aJicQso+N9XoDMmqhlGVe14k
+         76fQH+JTYNqzql9NRrmD4KPtf1tkwvXTNzPKDsbiV7ndlaKdmkS0kW6wi+d/koy4GReV
+         3m2RLHBfEGvK4MhG06PXA9P7ge1dRbu3SgDApOc0X4kEBNujpxypDbdX0l7vInsenOxu
+         bxoXt3tedncKcb8VupDoOTPDZvQv+aKPMkksrAWEz9diuSLRw/OQfukmT4W03UrUtMgI
+         42aw==
+X-Gm-Message-State: APt69E0XDy8nCEOecRuc3ynt5dqgPuJeEKaiWggTCvrhmi6kpMarygaX
+        KJsxM0kW208Fv07pC4xZ2wvJ+CE=
+X-Google-Smtp-Source: ADUXVKIbzIEOSqM3qo0OkHJcwHsQLszyG0v2gtaxnWQRGraiX54Z7ZCVBdVyIkn44hTS6liLyhuTqw==
+X-Received: by 2002:a81:6541:: with SMTP id z62-v6mr8755428ywb.160.1529444840548;
+        Tue, 19 Jun 2018 14:47:20 -0700 (PDT)
 Received: from localhost.localdomain (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.17
+        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.19
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Jun 2018 14:47:18 -0700 (PDT)
+        Tue, 19 Jun 2018 14:47:19 -0700 (PDT)
 From:   Rob Herring <robh@kernel.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 4/5] MIPS: generic: remove unnecessary of_platform_populate call
-Date:   Tue, 19 Jun 2018 15:47:09 -0600
-Message-Id: <20180619214710.22066-5-robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 5/5] MIPS: lantiq: remove unnecessary of_platform_default_populate call
+Date:   Tue, 19 Jun 2018 15:47:10 -0600
+Message-Id: <20180619214710.22066-6-robh@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180619214710.22066-1-robh@kernel.org>
 References: <20180619214710.22066-1-robh@kernel.org>
@@ -40,7 +41,7 @@ Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64384
+X-archive-position: 64385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,49 +58,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The DT core will call of_platform_populate, so it is not necessary for
-arch specific code to call it unless there are custom match entries,
+The DT core will call of_platform_default_populate, so it is not necessary
+for arch specific code to call it unless there are custom match entries,
 auxdata or parent device. Neither of those apply here, so remove the call.
 
-Cc: Paul Burton <paul.burton@mips.com>
+Cc: John Crispin <john@phrozen.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/mips/generic/init.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ arch/mips/lantiq/prom.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/mips/generic/init.c b/arch/mips/generic/init.c
-index 5ba6fcc26fa7..07ec08462d70 100644
---- a/arch/mips/generic/init.c
-+++ b/arch/mips/generic/init.c
-@@ -14,7 +14,6 @@
- #include <linux/init.h>
- #include <linux/irqchip.h>
- #include <linux/of_fdt.h>
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 9ff7ccde9de0..d984bd5c2ec5 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -9,7 +9,6 @@
+ #include <linux/export.h>
+ #include <linux/clk.h>
+ #include <linux/bootmem.h>
 -#include <linux/of_platform.h>
+ #include <linux/of_fdt.h>
  
  #include <asm/bootinfo.h>
- #include <asm/fw/fw.h>
-@@ -208,18 +207,6 @@ void __init arch_init_irq(void)
- 	irqchip_init();
+@@ -114,10 +113,3 @@ void __init prom_init(void)
+ 		panic("failed to register_vsmp_smp_ops()");
+ #endif
  }
- 
--static int __init publish_devices(void)
+-
+-int __init plat_of_setup(void)
 -{
--	if (!of_have_populated_dt())
--		panic("Device-tree not present");
--
--	if (of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL))
--		panic("Failed to populate DT");
--
--	return 0;
+-	return of_platform_default_populate(NULL, NULL, NULL);
 -}
--arch_initcall(publish_devices);
 -
- void __init prom_free_prom_memory(void)
- {
- }
+-arch_initcall(plat_of_setup);
 -- 
 2.17.1

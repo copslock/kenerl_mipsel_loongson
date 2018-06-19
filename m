@@ -1,54 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 10:52:09 +0200 (CEST)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:49586 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990393AbeFSIwCvwidZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 10:52:02 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 702FC1435;
-        Tue, 19 Jun 2018 01:51:54 -0700 (PDT)
-Received: from edgewater-inn.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3FFF33F25D;
-        Tue, 19 Jun 2018 01:51:54 -0700 (PDT)
-Received: by edgewater-inn.cambridge.arm.com (Postfix, from userid 1000)
-        id D09241AE5153; Tue, 19 Jun 2018 09:52:29 +0100 (BST)
-Date:   Tue, 19 Jun 2018 09:52:29 +0100
-From:   Will Deacon <will.deacon@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Huacai Chen <chenhc@lemote.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 12:11:15 +0200 (CEST)
+Received: from hqemgate15.nvidia.com ([216.228.121.64]:5331 "EHLO
+        hqemgate15.nvidia.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990391AbeFSKLHtavgP convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jun 2018 12:11:07 +0200
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqemgate15.nvidia.com (using TLS: TLSv1, AES128-SHA)
+        id <B5b28d69d0000>; Tue, 19 Jun 2018 03:10:37 -0700
+Received: from HQMAIL101.nvidia.com ([172.20.161.6])
+  by hqpgpgate102.nvidia.com (PGP Universal service);
+  Tue, 19 Jun 2018 03:11:02 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate102.nvidia.com on Tue, 19 Jun 2018 03:11:02 -0700
+Received: from [10.21.132.148] (172.20.13.39) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 19 Jun
+ 2018 10:10:50 +0000
+Subject: Re: [PATCH] dt-bindings: Fix unbalanced quotation marks
+To:     =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+        <devicetree@vger.kernel.org>
+CC:     Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>, stable@vger.kernel.org,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andrea Parri <andrea.parri@amarulasolutions.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Akira Yokosawa <akiyks@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: implement smp_cond_load_acquire() for Loongson-3
-Message-ID: <20180619085229.GA13984@arm.com>
-References: <1529042858-9483-1-git-send-email-chenhc@lemote.com>
- <20180618185141.yvkrsbdi2gbxjxj7@pburton-laptop>
- <20180619071710.GB2494@hirez.programming.kicks-ass.net>
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Anthony Kim <anthony.kim@hideep.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-input@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <netdev@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <alsa-devel@alsa-project.org>
+References: <20180617143127.11421-1-j.neuschaefer@gmx.net>
+From:   Jon Hunter <jonathanh@nvidia.com>
+Message-ID: <819db945-1f89-93d3-b213-365a9704e100@nvidia.com>
+Date:   Tue, 19 Jun 2018 11:10:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180619071710.GB2494@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+In-Reply-To: <20180617143127.11421-1-j.neuschaefer@gmx.net>
+X-Originating-IP: [172.20.13.39]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
+ HQMAIL101.nvidia.com (172.20.187.10)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
+Return-Path: <jonathanh@nvidia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64365
+X-archive-position: 64366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: jonathanh@nvidia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,58 +84,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
 
-On Tue, Jun 19, 2018 at 09:17:10AM +0200, Peter Zijlstra wrote:
-> On Mon, Jun 18, 2018 at 11:51:41AM -0700, Paul Burton wrote:
-> > On Fri, Jun 15, 2018 at 02:07:38PM +0800, Huacai Chen wrote:
-> > > After commit 7f56b58a92aaf2c ("locking/mcs: Use smp_cond_load_acquire()
-> > > in MCS spin loop") Loongson-3 fails to boot. This is because Loongson-3
-> > > has SFB (Store Fill Buffer) and READ_ONCE() may get an old value in a
-> > > tight loop. So in smp_cond_load_acquire() we need a __smp_mb() after
-> > > every READ_ONCE().
-> > 
-> > Thanks - modifying smp_cond_load_acquire() is a step better than
-> > modifying arch_mcs_spin_lock_contended() to avoid it, but I'm still not
-> > sure we've reached the root of the problem. 
-> 
-> Agreed, this looks entirely dodgy.
-> 
-> > If tight loops using
-> > READ_ONCE() are at fault then what's special about
-> > smp_cond_load_acquire()? Could other such loops not hit the same
-> > problem?
-> 
-> Right again, Linux has a number of places where it relies on loops like
-> this.
-> 
-> 	for (;;) {
-> 		if (READ_ONCE(*ptr))
-> 			break;
-> 
-> 		cpu_relax();
-> 	}
-> 
-> That is assumed to terminate -- provided the store to make *ptr != 0
-> happens of course.
-> 
-> And this has nothing to do with store buffers per se, sure store-buffers
-> might delay the store from being visible for a (little) while, but we
-> very much assume store buffers will not indefinitely hold on to data.
 
-We had an issue 8 years ago with the 11MPCore CPU where reads were
-prioritised over writes, so code doing something like:
+On 17/06/18 15:31, Jonathan Neuschäfer wrote:
+> Multiple binding documents have various forms of unbalanced quotation
+> marks. Fix them.
+> 
+> Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+> ---
+> 
+> Should I split this patch so that different parts can go through different trees?
+> ---
+>  .../devicetree/bindings/arm/samsung/samsung-boards.txt          | 2 +-
+>  .../devicetree/bindings/gpio/nintendo,hollywood-gpio.txt        | 2 +-
+>  Documentation/devicetree/bindings/input/touchscreen/hideep.txt  | 2 +-
+>  .../bindings/interrupt-controller/nvidia,tegra20-ictlr.txt      | 2 +-
+>  .../devicetree/bindings/interrupt-controller/st,stm32-exti.txt  | 2 +-
+>  Documentation/devicetree/bindings/mips/brcm/soc.txt             | 2 +-
+>  Documentation/devicetree/bindings/net/fsl-fman.txt              | 2 +-
+>  Documentation/devicetree/bindings/power/power_domain.txt        | 2 +-
+>  Documentation/devicetree/bindings/regulator/tps65090.txt        | 2 +-
+>  Documentation/devicetree/bindings/reset/st,sti-softreset.txt    | 2 +-
+>  Documentation/devicetree/bindings/sound/qcom,apq8016-sbc.txt    | 2 +-
+>  Documentation/devicetree/bindings/sound/qcom,apq8096.txt        | 2 +-
+>  12 files changed, 12 insertions(+), 12 deletions(-)
 
-  WRITE_ONCE(*foo, 1);
-  while (!READ_ONCE(*bar));
+...
 
-might never make the store to foo visible to other CPUs. This caused a
-livelock in KGDB, where two CPUs were doing this on opposite variables
-(i.e. the "SB" litmus test, but with the reads looping until they read
-1).
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
+> index 1099fe0788fa..f246ccbf8838 100644
+> --- a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
+> @@ -15,7 +15,7 @@ Required properties:
+>    include "nvidia,tegra30-ictlr".	
+>  - reg : Specifies base physical address and size of the registers.
+>    Each controller must be described separately (Tegra20 has 4 of them,
+> -  whereas Tegra30 and later have 5"  
+> +  whereas Tegra30 and later have 5).
+>  - interrupt-controller : Identifies the node as an interrupt controller.
+>  - #interrupt-cells : Specifies the number of cells needed to encode an
+>    interrupt source. The value must be 3.
 
-See 534be1d5a2da ("ARM: 6194/1: change definition of cpu_relax() for
-ARM11MPCore") for the ugly fix, assuming that the "Store Fill Buffer"
-suffers from the same disease.
+For the above Tegra portion ...
 
-Will
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+
+Cheers
+Jon
+
+-- 
+nvpublic

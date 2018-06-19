@@ -1,71 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 18:16:28 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:41440 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992408AbeFSQQTpw-tA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Jun 2018 18:16:19 +0200
-Received: from localhost.localdomain (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A395320652;
-        Tue, 19 Jun 2018 16:16:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529424972;
-        bh=kt9pmkkEFjU5/BEyWdPQl4rhFzUyKryw+cgCpC46Ix0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TOC4cWrxoyQGD63saSdCNU7zxSKGmgivWXk9nX6l5b+YyyGSOOel+Pe9L8PFg4GEB
-         9jUwU/+jQMEJUx+fHQaHGkDV+pv8lmDMdvm5xa6tomiITaN1wyBuBo2jIV0zo9hm23
-         +5YJO7g5PyKuDHjPckmm3olQXFTPlGQWf4yQRRmU=
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-arch@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Josef Bacik <jbacik@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>, x86@kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: [PATCH -tip v6 24/27] bpf: error-inject: kprobes: Clear current_kprobe and enable preempt in kprobe
-Date:   Wed, 20 Jun 2018 01:15:45 +0900
-Message-Id: <152942494574.15209.12323837825873032258.stgit@devbox>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <152942424698.15209.15245996287444292393.stgit@devbox>
-References: <152942424698.15209.15245996287444292393.stgit@devbox>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 19:36:08 +0200 (CEST)
+Received: from conssluserg-01.nifty.com ([210.131.2.80]:32427 "EHLO
+        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992554AbeFSRgAqwjqK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 19:36:00 +0200
+Received: from mail-ua0-f176.google.com (mail-ua0-f176.google.com [209.85.217.176]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id w5JHZHD8023933
+        for <linux-mips@linux-mips.org>; Wed, 20 Jun 2018 02:35:17 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com w5JHZHD8023933
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1529429718;
+        bh=PJu6Zziv+jk9s+cId3nLu/n8efPlTKEzdQdiY5eRG/c=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=wUU2aoWZf+0Jatb5Qk15DC2Oga4akcPfwgkExhJxdvYBd3rAkXmrOQc8269X/cWpx
+         srwcbvfYd5N0cgj3ie/p7NWG1zsW9abE1ZhthPSU2yCRh5QJzIq6m50Lv4VjeltHdH
+         vAWvfXcgr457YDV9hhl5YFkDRK5DaFWgW/1Il6guUH7NBM9UnzShYeBgDrs5Owr4bc
+         Wz2lUp6GkFHTCwH//tRP6yE6og3WV7b2Z/5gP5QmuEElilVt6/Ms0NxRNu50GPxvij
+         iJOdnk7U0RxWBqP/axQAxKXLW5s1nMJDvvBl/osJWKgkO5/j71UNKTDS8ISNJWVG/n
+         RXJxCpfPkDPww==
+X-Nifty-SrcIP: [209.85.217.176]
+Received: by mail-ua0-f176.google.com with SMTP id s13-v6so347488uad.2
+        for <linux-mips@linux-mips.org>; Tue, 19 Jun 2018 10:35:17 -0700 (PDT)
+X-Gm-Message-State: APt69E2jmQMJAEauzKJQYrHxaY52YD3Z7oQFutl9lKbLIJFZ+tyLIzvq
+        26kLI//fWEZRjHGIloXgCIlwEgDzybY8xDKWslo=
+X-Google-Smtp-Source: ADUXVKIAC14oFY/uuxS4R569XwhcgvDv2XElYS9BeH0qIXMlFkUib1tqJMOHwyqc1jskWEH3UvTr6kOOhwnF2Ug7Z/Q=
+X-Received: by 2002:ab0:13c8:: with SMTP id n8-v6mr11056761uae.140.1529429716370;
+ Tue, 19 Jun 2018 10:35:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <mhiramat@kernel.org>
+Received: by 2002:ab0:20ab:0:0:0:0:0 with HTTP; Tue, 19 Jun 2018 10:34:35
+ -0700 (PDT)
+In-Reply-To: <20180616005323.7938-2-paul.burton@mips.com>
+References: <20180616005323.7938-1-paul.burton@mips.com> <20180616005323.7938-2-paul.burton@mips.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Wed, 20 Jun 2018 02:34:35 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASvCha27kU4ipn23uOpNuxkzJrNzWBwYcxN4n=3xtv8SA@mail.gmail.com>
+Message-ID: <CAK7LNASvCha27kU4ipn23uOpNuxkzJrNzWBwYcxN4n=3xtv8SA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] kbuild: add macro for controlling warnings to linux/compiler.h
+To:     Paul Burton <paul.burton@mips.com>, Arnd Bergmann <arnd@arndb.de>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64371
+X-archive-position: 64372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhiramat@kernel.org
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,446 +82,361 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Clear current_kprobe and enable preemption in kprobe
-even if pre_handler returns !0.
+Hi.
 
-This simplifies function override using kprobes.
+2018-06-16 9:53 GMT+09:00 Paul Burton <paul.burton@mips.com>:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> I have occasionally run into a situation where it would make sense to
+> control a compiler warning from a source file rather than doing so from
+> a Makefile using the $(cc-disable-warning, ...) or $(cc-option, ...)
+> helpers.
+>
+> The approach here is similar to what glibc uses, using __diag() and
+> related macros to encapsulate a _Pragma("GCC diagnostic ...") statement
+> that gets turned into the respective "#pragma GCC diagnostic ..." by
+> the preprocessor when the macro gets expanded.
+>
+> Like glibc, I also have an argument to pass the affected compiler
+> version, but decided to actually evaluate that one. For now, this
+> supports GCC_4_6, GCC_4_7, GCC_4_8, GCC_4_9, GCC_5, GCC_6, GCC_7,
+> GCC_8 and GCC_9. Adding support for CLANG_5 and other interesting
+> versions is straightforward here. GNU compilers starting with gcc-4.2
+> could support it in principle, but "#pragma GCC diagnostic push"
+> was only added in gcc-4.6, so it seems simpler to not deal with those
+> at all. The same versions show a large number of warnings already,
+> so it seems easier to just leave it at that and not do a more
+> fine-grained control for them.
+>
+> The use cases I found so far include:
+>
+> - turning off the gcc-8 -Wattribute-alias warning inside of the
+>   SYSCALL_DEFINEx() macro without having to do it globally.
+>
+> - Reducing the build time for a simple re-make after a change,
+>   once we move the warnings from ./Makefile and
+>   ./scripts/Makefile.extrawarn into linux/compiler.h
+>
+> - More control over the warnings based on other configurations,
+>   using preprocessor syntax instead of Makefile syntax. This should make
+>   it easier for the average developer to understand and change things.
+>
+> - Adding an easy way to turn the W=1 option on unconditionally
+>   for a subdirectory or a specific file. This has been requested
+>   by several developers in the past that want to have their subsystems
+>   W=1 clean.
+>
+> - Integrating clang better into the build systems. Clang supports
+>   more warnings than GCC, and we probably want to classify them
+>   as default, W=1, W=2 etc, but there are cases in which the
+>   warnings should be classified differently due to excessive false
+>   positives from one or the other compiler.
+>
+> - Adding a way to turn the default warnings into errors (e.g. using
+>   a new "make E=0" tag) while not also turning the W=1 warnings into
+>   errors.
+>
+> This patch for now just adds the minimal infrastructure in order to
+> do the first of the list above. As the #pragma GCC diagnostic
+> takes precedence over command line options, the next step would be
+> to convert a lot of the individual Makefiles that set nonstandard
+> options to use __diag() instead.
+>
+> [paul.burton@mips.com:
+>   - Rebase atop current master.
+>   - Add __diag_GCC, or more generally __diag_<compiler>, abstraction to
+>     avoid code outside of linux/compiler-gcc.h needing to duplicate
+>     knowledge about different GCC versions.
+>   - Add a comment argument to __diag_{ignore,warn,error} which isn't
+>     used in the expansion of the macros but serves to push people to
+>     document the reason for using them - per feedback from Kees Cook.]
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Matthew Wilcox <matthew@wil.cx>
+> Cc: Matthias Kaehlcke <mka@chromium.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: Khem Raj <raj.khem@gmail.com>
+> Cc: He Zhe <zhe.he@windriver.com>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>
+>  include/linux/compiler-gcc.h   | 66 ++++++++++++++++++++++++++++++++++
+>  include/linux/compiler_types.h | 18 ++++++++++
+>  2 files changed, 84 insertions(+)
+>
+> diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+> index f1a7492a5cc8..aba64a2912d8 100644
+> --- a/include/linux/compiler-gcc.h
+> +++ b/include/linux/compiler-gcc.h
+> @@ -347,3 +347,69 @@
+>  #if GCC_VERSION >= 50100
+>  #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
+>  #endif
+> +
+> +/*
+> + * turn individual warnings and errors on and off locally, depending
+> + * on version.
+> + */
+> +#define __diag_GCC(version, s) __diag_GCC_ ## version(s)
+> +
+> +#if GCC_VERSION >= 40600
+> +#define __diag_str1(s) #s
+> +#define __diag_str(s) __diag_str1(s)
+> +#define __diag(s) _Pragma(__diag_str(GCC diagnostic s))
+> +
+> +/* compilers before gcc-4.6 do not understand "#pragma GCC diagnostic push" */
+> +#define __diag_GCC_4_6(s) __diag(s)
+> +#else
+> +#define __diag(s)
+> +#define __diag_GCC_4_6(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 40700
+> +#define __diag_GCC_4_7(s) __diag(s)
+> +#else
+> +#define __diag_GCC_4_7(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 40800
+> +#define __diag_GCC_4_8(s) __diag(s)
+> +#else
+> +#define __diag_GCC_4_8(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 40900
+> +#define __diag_GCC_4_9(s) __diag(s)
+> +#else
+> +#define __diag_GCC_4_9(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 50000
+> +#define __diag_GCC_5(s) __diag(s)
+> +#else
+> +#define __diag_GCC_5(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 60000
+> +#define __diag_GCC_6(s) __diag(s)
+> +#else
+> +#define __diag_GCC_6(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 70000
+> +#define __diag_GCC_7(s) __diag(s)
+> +#else
+> +#define __diag_GCC_7(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 80000
+> +#define __diag_GCC_8(s) __diag(s)
+> +#else
+> +#define __diag_GCC_8(s)
+> +#endif
+> +
+> +#if GCC_VERSION >= 90000
+> +#define __diag_GCC_9(s) __diag(s)
+> +#else
+> +#define __diag_GCC_9(s)
+> +#endif
 
-Jprobe used to require to keep the preemption disabled and
-keep current_kprobe until it returned to original function
-entry. For this reason kprobe_int3_handler() and similar
-arch dependent kprobe handers checks pre_handler result
-and exit without enabling preemption if the result is !0.
 
-After removing the jprobe, Kprobes does not need to
-keep preempt disabled even if user handler returns !0
-anymore.
+Hmm, we would have to add this for every release.
 
-But since the function override handler in error-inject
-and bpf is also returns !0 if it overrides a function,
-to balancing the preempt count, it enables preemption
-and reset current kprobe by itself.
 
-That is a bad design that is very buggy. This fixes
-such unbalanced preempt-count and current_kprobes setting
-in kprobes, bpf and error-inject.
 
-Note: for powerpc and x86, this removes all preempt_disable
-from kprobe_ftrace_handler because ftrace callbacks are
-called under preempt disabled.
+> diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+> index 6b79a9bba9a7..313a2ad884e0 100644
+> --- a/include/linux/compiler_types.h
+> +++ b/include/linux/compiler_types.h
+> @@ -271,4 +271,22 @@ struct ftrace_likely_data {
+>  # define __native_word(t) (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+>  #endif
+>
+> +#ifndef __diag
+> +#define __diag(string)
+> +#endif
+> +
+> +#ifndef __diag_GCC
+> +#define __diag_GCC(string)
+> +#endif
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Acked-by: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Josef Bacik <jbacik@fb.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: x86@kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
----
- Changes in v6:
-  - Simplify kprobe_ftrace_handler change on x86 and powerpc code.
- Changes in v5:
-  - Fix kprobe_ftrace_handler in arch/powerpc too.
----
- arch/arc/kernel/kprobes.c            |    5 +++--
- arch/arm/probes/kprobes/core.c       |   10 +++++-----
- arch/arm64/kernel/probes/kprobes.c   |   10 +++++-----
- arch/ia64/kernel/kprobes.c           |   13 ++++---------
- arch/mips/kernel/kprobes.c           |    4 ++--
- arch/powerpc/kernel/kprobes-ftrace.c |   19 ++++++-------------
- arch/powerpc/kernel/kprobes.c        |    7 +++++--
- arch/s390/kernel/kprobes.c           |    7 ++++---
- arch/sh/kernel/kprobes.c             |    7 ++++---
- arch/sparc/kernel/kprobes.c          |    7 ++++---
- arch/x86/kernel/kprobes/core.c       |    4 ++++
- arch/x86/kernel/kprobes/ftrace.c     |    9 +++------
- kernel/fail_function.c               |    3 ---
- kernel/trace/trace_kprobe.c          |   11 +++--------
- 14 files changed, 52 insertions(+), 64 deletions(-)
 
-diff --git a/arch/arc/kernel/kprobes.c b/arch/arc/kernel/kprobes.c
-index 465365696c91..df35d4c0b0b8 100644
---- a/arch/arc/kernel/kprobes.c
-+++ b/arch/arc/kernel/kprobes.c
-@@ -231,6 +231,9 @@ int __kprobes arc_kprobe_handler(unsigned long addr, struct pt_regs *regs)
- 		if (!p->pre_handler || !p->pre_handler(p, regs)) {
- 			setup_singlestep(p, regs);
- 			kcb->kprobe_status = KPROBE_HIT_SS;
-+		} else {
-+			reset_current_kprobe();
-+			preempt_enable_no_resched();
- 		}
- 
- 		return 1;
-@@ -442,9 +445,7 @@ static int __kprobes trampoline_probe_handler(struct kprobe *p,
- 	kretprobe_assert(ri, orig_ret_address, trampoline_address);
- 	regs->ret = orig_ret_address;
- 
--	reset_current_kprobe();
- 	kretprobe_hash_unlock(current, &flags);
--	preempt_enable_no_resched();
- 
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
-diff --git a/arch/arm/probes/kprobes/core.c b/arch/arm/probes/kprobes/core.c
-index 3192350f389d..8d37601fdb20 100644
---- a/arch/arm/probes/kprobes/core.c
-+++ b/arch/arm/probes/kprobes/core.c
-@@ -300,10 +300,10 @@ void __kprobes kprobe_handler(struct pt_regs *regs)
- 
- 			/*
- 			 * If we have no pre-handler or it returned 0, we
--			 * continue with normal processing.  If we have a
--			 * pre-handler and it returned non-zero, it prepped
--			 * for calling the break_handler below on re-entry,
--			 * so get out doing nothing more here.
-+			 * continue with normal processing. If we have a
-+			 * pre-handler and it returned non-zero, it will
-+			 * modify the execution path and no need to single
-+			 * stepping. Let's just reset current kprobe and exit.
- 			 */
- 			if (!p->pre_handler || !p->pre_handler(p, regs)) {
- 				kcb->kprobe_status = KPROBE_HIT_SS;
-@@ -312,8 +312,8 @@ void __kprobes kprobe_handler(struct pt_regs *regs)
- 					kcb->kprobe_status = KPROBE_HIT_SSDONE;
- 					p->post_handler(p, regs, 0);
- 				}
--				reset_current_kprobe();
- 			}
-+			reset_current_kprobe();
- 		}
- 	} else {
- 		/*
-diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
-index 076c3c0775a6..5daf3d721cb7 100644
---- a/arch/arm64/kernel/probes/kprobes.c
-+++ b/arch/arm64/kernel/probes/kprobes.c
-@@ -395,9 +395,9 @@ static void __kprobes kprobe_handler(struct pt_regs *regs)
- 			/*
- 			 * If we have no pre-handler or it returned 0, we
- 			 * continue with normal processing.  If we have a
--			 * pre-handler and it returned non-zero, it prepped
--			 * for calling the break_handler below on re-entry,
--			 * so get out doing nothing more here.
-+			 * pre-handler and it returned non-zero, it will
-+			 * modify the execution path and no need to single
-+			 * stepping. Let's just reset current kprobe and exit.
- 			 *
- 			 * pre_handler can hit a breakpoint and can step thru
- 			 * before return, keep PSTATE D-flag enabled until
-@@ -405,8 +405,8 @@ static void __kprobes kprobe_handler(struct pt_regs *regs)
- 			 */
- 			if (!p->pre_handler || !p->pre_handler(p, regs)) {
- 				setup_singlestep(p, regs, kcb, 0);
--				return;
--			}
-+			} else
-+				reset_current_kprobe();
- 		}
- 	}
- 	/*
-diff --git a/arch/ia64/kernel/kprobes.c b/arch/ia64/kernel/kprobes.c
-index 74c8524e6309..aa41bd5cf9b7 100644
---- a/arch/ia64/kernel/kprobes.c
-+++ b/arch/ia64/kernel/kprobes.c
-@@ -478,12 +478,9 @@ int __kprobes trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- 			 */
- 			break;
- 	}
--
- 	kretprobe_assert(ri, orig_ret_address, trampoline_address);
- 
--	reset_current_kprobe();
- 	kretprobe_hash_unlock(current, &flags);
--	preempt_enable_no_resched();
- 
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
-@@ -851,13 +848,11 @@ static int __kprobes pre_kprobes_handler(struct die_args *args)
- 	set_current_kprobe(p, kcb);
- 	kcb->kprobe_status = KPROBE_HIT_ACTIVE;
- 
--	if (p->pre_handler && p->pre_handler(p, regs))
--		/*
--		 * Our pre-handler is specifically requesting that we just
--		 * do a return.  This is used for both the jprobe pre-handler
--		 * and the kretprobe trampoline
--		 */
-+	if (p->pre_handler && p->pre_handler(p, regs)) {
-+		reset_current_kprobe();
-+		preempt_enable_no_resched();
- 		return 1;
-+	}
- 
- #if !defined(CONFIG_PREEMPT)
- 	if (p->ainsn.inst_flag == INST_FLAG_BOOSTABLE && !p->post_handler) {
-diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
-index 7fd277bc59b9..54cd675c5d1d 100644
---- a/arch/mips/kernel/kprobes.c
-+++ b/arch/mips/kernel/kprobes.c
-@@ -358,6 +358,8 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
- 
- 	if (p->pre_handler && p->pre_handler(p, regs)) {
- 		/* handler has already set things up, so skip ss setup */
-+		reset_current_kprobe();
-+		preempt_enable_no_resched();
- 		return 1;
- 	}
- 
-@@ -543,9 +545,7 @@ static int __kprobes trampoline_probe_handler(struct kprobe *p,
- 	kretprobe_assert(ri, orig_ret_address, trampoline_address);
- 	instruction_pointer(regs) = orig_ret_address;
- 
--	reset_current_kprobe();
- 	kretprobe_hash_unlock(current, &flags);
--	preempt_enable_no_resched();
- 
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
-diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
-index 070d1d862444..e4a49c051325 100644
---- a/arch/powerpc/kernel/kprobes-ftrace.c
-+++ b/arch/powerpc/kernel/kprobes-ftrace.c
-@@ -32,11 +32,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
- 	struct kprobe *p;
- 	struct kprobe_ctlblk *kcb;
- 
--	preempt_disable();
--
- 	p = get_kprobe((kprobe_opcode_t *)nip);
- 	if (unlikely(!p) || kprobe_disabled(p))
--		goto end;
-+		return;
- 
- 	kcb = get_kprobe_ctlblk();
- 	if (kprobe_running()) {
-@@ -60,18 +58,13 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
- 				kcb->kprobe_status = KPROBE_HIT_SSDONE;
- 				p->post_handler(p, regs, 0);
- 			}
--			__this_cpu_write(current_kprobe, NULL);
--		} else {
--			/*
--			 * If pre_handler returns !0, it sets regs->nip and
--			 * resets current kprobe. In this case, we should not
--			 * re-enable preemption.
--			 */
--			return;
- 		}
-+		/*
-+		 * If pre_handler returns !0, it changes regs->nip. We have to
-+		 * skip emulating post_handler.
-+		 */
-+		__this_cpu_write(current_kprobe, NULL);
- 	}
--end:
--	preempt_enable_no_resched();
- }
- NOKPROBE_SYMBOL(kprobe_ftrace_handler);
- 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index f06747e2e70d..5c60bb0f927f 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -358,9 +358,12 @@ int kprobe_handler(struct pt_regs *regs)
- 
- 	kcb->kprobe_status = KPROBE_HIT_ACTIVE;
- 	set_current_kprobe(p, regs, kcb);
--	if (p->pre_handler && p->pre_handler(p, regs))
--		/* handler has already set things up, so skip ss setup */
-+	if (p->pre_handler && p->pre_handler(p, regs)) {
-+		/* handler changed execution path, so skip ss setup */
-+		reset_current_kprobe();
-+		preempt_enable_no_resched();
- 		return 1;
-+	}
- 
- 	if (p->ainsn.boostable >= 0) {
- 		ret = try_to_emulate(p, regs);
-diff --git a/arch/s390/kernel/kprobes.c b/arch/s390/kernel/kprobes.c
-index 3e34018960b5..7c0a095e9c5f 100644
---- a/arch/s390/kernel/kprobes.c
-+++ b/arch/s390/kernel/kprobes.c
-@@ -326,8 +326,11 @@ static int kprobe_handler(struct pt_regs *regs)
- 			 */
- 			push_kprobe(kcb, p);
- 			kcb->kprobe_status = KPROBE_HIT_ACTIVE;
--			if (p->pre_handler && p->pre_handler(p, regs))
-+			if (p->pre_handler && p->pre_handler(p, regs)) {
-+				pop_kprobe(kcb);
-+				preempt_enable_no_resched();
- 				return 1;
-+			}
- 			kcb->kprobe_status = KPROBE_HIT_SS;
- 		}
- 		enable_singlestep(kcb, regs, (unsigned long) p->ainsn.insn);
-@@ -431,9 +434,7 @@ static int trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- 
- 	regs->psw.addr = orig_ret_address;
- 
--	pop_kprobe(get_kprobe_ctlblk());
- 	kretprobe_hash_unlock(current, &flags);
--	preempt_enable_no_resched();
- 
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
-diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index 4fafe0cd12c6..241e903dd3ee 100644
---- a/arch/sh/kernel/kprobes.c
-+++ b/arch/sh/kernel/kprobes.c
-@@ -272,9 +272,12 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
- 	set_current_kprobe(p, regs, kcb);
- 	kcb->kprobe_status = KPROBE_HIT_ACTIVE;
- 
--	if (p->pre_handler && p->pre_handler(p, regs))
-+	if (p->pre_handler && p->pre_handler(p, regs)) {
- 		/* handler has already set things up, so skip ss setup */
-+		reset_current_kprobe();
-+		preempt_enable_no_resched();
- 		return 1;
-+	}
- 
- 	prepare_singlestep(p, regs);
- 	kcb->kprobe_status = KPROBE_HIT_SS;
-@@ -352,8 +355,6 @@ int __kprobes trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- 	regs->pc = orig_ret_address;
- 	kretprobe_hash_unlock(current, &flags);
- 
--	preempt_enable_no_resched();
--
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
- 		kfree(ri);
-diff --git a/arch/sparc/kernel/kprobes.c b/arch/sparc/kernel/kprobes.c
-index c684c96ef2e9..dfbca2470536 100644
---- a/arch/sparc/kernel/kprobes.c
-+++ b/arch/sparc/kernel/kprobes.c
-@@ -175,8 +175,11 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
- 
- 	set_current_kprobe(p, regs, kcb);
- 	kcb->kprobe_status = KPROBE_HIT_ACTIVE;
--	if (p->pre_handler && p->pre_handler(p, regs))
-+	if (p->pre_handler && p->pre_handler(p, regs)) {
-+		reset_current_kprobe();
-+		preempt_enable_no_resched();
- 		return 1;
-+	}
- 
- 	prepare_singlestep(p, regs, kcb);
- 	kcb->kprobe_status = KPROBE_HIT_SS;
-@@ -508,9 +511,7 @@ static int __kprobes trampoline_probe_handler(struct kprobe *p,
- 	regs->tpc = orig_ret_address;
- 	regs->tnpc = orig_ret_address + 4;
- 
--	reset_current_kprobe();
- 	kretprobe_hash_unlock(current, &flags);
--	preempt_enable_no_resched();
- 
- 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
- 		hlist_del(&ri->hlist);
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index 0ac16a0d93e5..814e26b7c8a2 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -694,6 +694,10 @@ int kprobe_int3_handler(struct pt_regs *regs)
- 			 */
- 			if (!p->pre_handler || !p->pre_handler(p, regs))
- 				setup_singlestep(p, regs, kcb, 0);
-+			else {
-+				reset_current_kprobe();
-+				preempt_enable_no_resched();
-+			}
- 			return 1;
- 		}
- 	} else if (*addr != BREAKPOINT_INSTRUCTION) {
-diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
-index 02a6dd1b6bd0..ef819e19650b 100644
---- a/arch/x86/kernel/kprobes/ftrace.c
-+++ b/arch/x86/kernel/kprobes/ftrace.c
-@@ -45,8 +45,6 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 		/* Kprobe handler expects regs->ip = ip + 1 as breakpoint hit */
- 		regs->ip = ip + sizeof(kprobe_opcode_t);
- 
--		/* To emulate trap based kprobes, preempt_disable here */
--		preempt_disable();
- 		__this_cpu_write(current_kprobe, p);
- 		kcb->kprobe_status = KPROBE_HIT_ACTIVE;
- 		if (!p->pre_handler || !p->pre_handler(p, regs)) {
-@@ -60,13 +58,12 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 				p->post_handler(p, regs, 0);
- 			}
- 			regs->ip = orig_ip;
--			__this_cpu_write(current_kprobe, NULL);
--			preempt_enable_no_resched();
- 		}
- 		/*
--		 * If pre_handler returns !0, it sets regs->ip and
--		 * resets current kprobe, and keep preempt count +1.
-+		 * If pre_handler returns !0, it changes regs->ip. We have to
-+		 * skip emulating post_handler.
- 		 */
-+		__this_cpu_write(current_kprobe, NULL);
- 	}
- }
- NOKPROBE_SYMBOL(kprobe_ftrace_handler);
-diff --git a/kernel/fail_function.c b/kernel/fail_function.c
-index 1d5632d8bbcc..b090688df94f 100644
---- a/kernel/fail_function.c
-+++ b/kernel/fail_function.c
-@@ -184,9 +184,6 @@ static int fei_kprobe_handler(struct kprobe *kp, struct pt_regs *regs)
- 	if (should_fail(&fei_fault_attr, 1)) {
- 		regs_set_return_value(regs, attr->retval);
- 		override_function_with_return(regs);
--		/* Kprobe specific fixup */
--		reset_current_kprobe();
--		preempt_enable_no_resched();
- 		return 1;
- 	}
- 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index daa81571b22a..7e3b944b6ac1 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1217,16 +1217,11 @@ kprobe_perf_func(struct trace_kprobe *tk, struct pt_regs *regs)
- 
- 		/*
- 		 * We need to check and see if we modified the pc of the
--		 * pt_regs, and if so clear the kprobe and return 1 so that we
--		 * don't do the single stepping.
--		 * The ftrace kprobe handler leaves it up to us to re-enable
--		 * preemption here before returning if we've modified the ip.
-+		 * pt_regs, and if so return 1 so that we don't do the
-+		 * single stepping.
- 		 */
--		if (orig_ip != instruction_pointer(regs)) {
--			reset_current_kprobe();
--			preempt_enable_no_resched();
-+		if (orig_ip != instruction_pointer(regs))
- 			return 1;
--		}
- 		if (!ret)
- 			return 0;
- 	}
+
+
+__diag_GCC() takes two arguments,
+so it should be:
+
+#ifndef __diag_GCC
+#define __diag_GCC(version, s)
+#endif
+
+
+Otherwise, this would cause warning like this:
+
+
+arch/arm64/kernel/sys.c:40:1: error: macro "__diag_GCC" passed 2
+arguments, but takes just 1
+ SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
+ ^~~~~~~~~~
+
+
+
+
+
+
+
+> +#define __diag_push()  __diag(push)
+> +#define __diag_pop()   __diag(pop)
+> +
+> +#define __diag_ignore(compiler, version, option, comment) \
+> +       __diag_ ## compiler(version, ignored option)
+> +#define __diag_warn(compiler, version, option, comment) \
+> +       __diag_ ## compiler(version, warning option)
+> +#define __diag_error(compiler, version, option, comment) \
+> +       __diag_ ## compiler(version, error   option)
+> +
+
+
+To me, it looks like this is putting GCC/Clang specific things
+in the common file, <linux/compiler_types.h> .
+
+All compilers must use "ignored", "warning", "error",
+not allowed to use "ignore".
+
+
+
+I also wonder if we could avoid proliferating __diag_GCC_*.
+
+
+
+>  #endif /* __LINUX_COMPILER_TYPES_H */
+> --
+> 2.17.1
+>
+
+
+I attached a bit different implementation below.
+
+I used -Wno-pragmas to avoid unknown option warnings.
+
+
+
+
+diff --git a/Makefile b/Makefile
+index ca2af1a..d610d81 100644
+--- a/Makefile
++++ b/Makefile
+@@ -817,6 +817,8 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CFLAGS  += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+
++KBUILD_CFLAGS   += $(call cc-option,-Wno-pragmas)
++
+ # use the deterministic mode of AR if available
+ KBUILD_ARFLAGS := $(call ar-option,D)
+
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index f1a7492..3f9c1cc 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -3,6 +3,8 @@
+ #error "Please don't include <linux/compiler-gcc.h> directly, include
+<linux/compiler.h> instead."
+ #endif
+
++#include <linux/stringify.h>
++
+ /*
+  * Common definitions for all gcc versions go here.
+  */
+@@ -259,6 +261,16 @@
+  */
+ #define __visible      __attribute__((externally_visible))
+
++/* turn individual warnings and errors on and off locally */
++#define __diag_gcc(s)  _Pragma(__stringify(GCC diagnostic s))
++
++#define __diag_push()  __diag_gcc(push)
++#define __diag_pop()   __diag_gcc(pop)
++
++#define __diag_ignore(option, comment) __diag_gcc(ignored __stringify(option))
++#define __diag_warn(option, comment)   __diag_gcc(warning __stringify(option))
++#define __diag_error(option, comment)  __diag_gcc(error __stringify(option))
++
+ #endif /* GCC_VERSION >= 40600 */
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 6b79a9b..32e354f 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -271,4 +271,24 @@ struct ftrace_likely_data {
+ # define __native_word(t) (sizeof(t) == sizeof(char) || sizeof(t) ==
+sizeof(short) || sizeof(t) == sizeof(int) || sizeof(t) ==
+sizeof(long))
+ #endif
+
++#ifndef __diag_push
++#define __diag_push()
++#endif
++
++#ifndef __diag_pop
++#define __diag_pop()
++#endif
++
++#ifndef __diag_ignore
++#define __diag_ignore(option, comment)
++#endif
++
++#ifndef __diag_warn
++#define __diag_warn(option, comment)
++#endif
++
++#ifndef __diag_error
++#define __diag_error(option, comment)
++#endif
++
+ #endif /* __LINUX_COMPILER_TYPES_H */
+
+
+
+
+
+Usage is
+
+       __diag_push();
+       __diag_ignore(-Wattribute-alias,
+                     "Type aliasing is used to sanitize syscall arguments");
+              ...
+       __diag_pop();
+
+
+
+
+Comments, ideas are appreciated.
+
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

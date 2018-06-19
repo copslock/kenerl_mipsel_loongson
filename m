@@ -1,96 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 20:23:24 +0200 (CEST)
-Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:40358
-        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992835AbeFSSXROch0h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 20:23:17 +0200
-Received: by mail-pl0-x244.google.com with SMTP id t12-v6so284444plo.7;
-        Tue, 19 Jun 2018 11:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=9yqKscspWioSQg/mdUQVbCb1IzDlTrgVuF38fd/HGmQ=;
-        b=lrbd/+ywpi09p0kEaYhZf+gQj86n/cj7Tfoe4kQTnqqHeDW6Szv1u7Boe7dxskxv/p
-         doMgGOetTFFrkiuBscnp3352XJQtGqlQDG/L+aKty+fbHvPZr8Loh3D1Ns7RNCZB7Prf
-         6BZzv4adJgY5dHBPJRV17A7r0jMxltr11Sz7gAXraOpc3SkEHyo6GY1gI1zypcWff4+k
-         qIfq/iyPHE5Wa62qVYiYUUuXxQXe6vgEbLdjL8fAzRlWyJ5Pe/tA9cHnOR+9LEeXzwmC
-         ZRfQ67mkfUzr5MWrl72yXTMwkVucks26+3i2LJutzc0WYKqlXJe5P36jDZ3wh1x67V7h
-         7Ixg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=9yqKscspWioSQg/mdUQVbCb1IzDlTrgVuF38fd/HGmQ=;
-        b=eVcZNqhSyz936inkqnrjzqgbc1y8F4d0m7+VRzf1RV/7g58XIqQ0rXGerZSEDo+XI0
-         aNvAZtY0dP3mIXtM4catt4ekHn6opiq1LyM7nEZ73TWXZOW4akpURvZCPNOwcLMur2fL
-         ftTkfDUM+Q8LEGiBZLs9wg0RcplzbXbSGE83aQC+f4vOCUEXF9x+NFIwGJu7KeA++dx3
-         tEpwuio/zauZDEDGyCw3tW9tJnKC6oDSaEZiN1sCKP0L3sQTs33Jh2eAYodnfS+vKsjy
-         t4mCWjsDT5ZydCxla4x2QqQRsEQrZDt+x8mclf8Od/Ru5Kboj2ptX442iRJh1jbwMgrq
-         Ibmg==
-X-Gm-Message-State: APt69E1ZAHDhczI2+LJ6TZxB1Xj7wGhRL/PXiVncpIQlPkb4d8l41wvs
-        gVtEJjez2lw9pTtEdeZFClM=
-X-Google-Smtp-Source: ADUXVKKWR7hGXcl7XrJBhq6yYQqfB2fAAlYr81pFpyd+9nIPixyf6o5FqzIVSM0se1l2Wn4EgfAIQQ==
-X-Received: by 2002:a17:902:5402:: with SMTP id d2-v6mr15781793pli.38.1529432590593;
-        Tue, 19 Jun 2018 11:23:10 -0700 (PDT)
-Received: from dtor-ws ([2620:0:1000:1511:8de6:27a8:ed13:2ef5])
-        by smtp.gmail.com with ESMTPSA id r20-v6sm321175pgu.25.2018.06.19.11.23.08
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 19 Jun 2018 11:23:09 -0700 (PDT)
-Date:   Tue, 19 Jun 2018 11:23:07 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>
-Cc:     devicetree@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 21:05:22 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:50075 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992747AbeFSTFQFpKLz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 21:05:16 +0200
+Received: from mipsdag03.mipstec.com (mail3.mips.com [12.201.5.33]) by mx2.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 19 Jun 2018 19:02:26 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag03.mipstec.com
+ (10.20.40.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 19
+ Jun 2018 12:02:24 -0700
+Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
+ with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Tue, 19 Jun
+ 2018 12:02:24 -0700
+Date:   Tue, 19 Jun 2018 12:02:25 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Anthony Kim <anthony.kim@hideep.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH] dt-bindings: Fix unbalanced quotation marks
-Message-ID: <20180619182307.GG71788@dtor-ws>
-References: <20180617143127.11421-1-j.neuschaefer@gmx.net>
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 1/3] kbuild: add macro for controlling warnings to
+ linux/compiler.h
+Message-ID: <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
+References: <20180616005323.7938-1-paul.burton@mips.com>
+ <20180616005323.7938-2-paul.burton@mips.com>
+ <CAK7LNASvCha27kU4ipn23uOpNuxkzJrNzWBwYcxN4n=3xtv8SA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20180617143127.11421-1-j.neuschaefer@gmx.net>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <dmitry.torokhov@gmail.com>
+In-Reply-To: <CAK7LNASvCha27kU4ipn23uOpNuxkzJrNzWBwYcxN4n=3xtv8SA@mail.gmail.com>
+User-Agent: NeoMutt/20180512
+X-BESS-ID: 1529434946-298553-23332-2599-1
+X-BESS-VER: 2018.7-r1806151722
+X-BESS-Apparent-Source-IP: 12.201.5.33
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194198
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: yamada.masahiro@socionext.com,linux-kernel@vger.kernel.org,heiko.carstens@de.ibm.com,mpe@ellerman.id.au,keescook@chromium.org,gidisrael@gmail.com,shorne@gmail.com,viro@zeniv.linux.org.uk,christophe.leroy@c-s.fr,raj.khem@gmail.com,michal.lkml@markovi.net,benh@kernel.crashing.org,zhe.he@windriver.com,mka@chromium.org,akpm@linux-foundation.org,jpoimboe@redhat.com,dianders@chromium.org,tglx@linutronix.de,matthew@wil.cx,mingo@kernel.org,linux-mips@linux-mips.org,mchehab@kernel.org,linux-kbuild@vger.kernel.org,arnd@arndb.de,paulus@samba.org,linuxppc-dev@lists.ozlabs.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64373
+X-archive-position: 64374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitry.torokhov@gmail.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,22 +84,176 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jun 17, 2018 at 04:31:18PM +0200, Jonathan Neuschäfer wrote:
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/hideep.txt b/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-> index 121d9b7c79a2..1063c30d53f7 100644
-> --- a/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/hideep.txt
-> @@ -32,7 +32,7 @@ i2c@00000000 {
->  		reg = <0x6c>;
->  		interrupt-parent = <&gpx1>;
->  		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-> -		vdd-supply = <&ldo15_reg>";
-> +		vdd-supply = <&ldo15_reg>;
->  		vid-supply = <&ldo18_reg>;
->  		reset-gpios = <&gpx1 5 0>;
->  		touchscreen-size-x = <1080>;
+Hi Masahiro,
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+On Wed, Jun 20, 2018 at 02:34:35AM +0900, Masahiro Yamada wrote:
+> 2018-06-16 9:53 GMT+09:00 Paul Burton <paul.burton@mips.com>:
+> > diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+> > index f1a7492a5cc8..aba64a2912d8 100644
+> > --- a/include/linux/compiler-gcc.h
+> > +++ b/include/linux/compiler-gcc.h
+> > @@ -347,3 +347,69 @@
+> >  #if GCC_VERSION >= 50100
+> >  #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
+> >  #endif
+> > +
+> > +/*
+> > + * turn individual warnings and errors on and off locally, depending
+> > + * on version.
+> > + */
+> > +#define __diag_GCC(version, s) __diag_GCC_ ## version(s)
+> > +
+> > +#if GCC_VERSION >= 40600
+> > +#define __diag_str1(s) #s
+> > +#define __diag_str(s) __diag_str1(s)
+> > +#define __diag(s) _Pragma(__diag_str(GCC diagnostic s))
+> > +
+> > +/* compilers before gcc-4.6 do not understand "#pragma GCC diagnostic push" */
+> > +#define __diag_GCC_4_6(s) __diag(s)
+> > +#else
+> > +#define __diag(s)
+> > +#define __diag_GCC_4_6(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 40700
+> > +#define __diag_GCC_4_7(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_4_7(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 40800
+> > +#define __diag_GCC_4_8(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_4_8(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 40900
+> > +#define __diag_GCC_4_9(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_4_9(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 50000
+> > +#define __diag_GCC_5(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_5(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 60000
+> > +#define __diag_GCC_6(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_6(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 70000
+> > +#define __diag_GCC_7(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_7(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 80000
+> > +#define __diag_GCC_8(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_8(s)
+> > +#endif
+> > +
+> > +#if GCC_VERSION >= 90000
+> > +#define __diag_GCC_9(s) __diag(s)
+> > +#else
+> > +#define __diag_GCC_9(s)
+> > +#endif
+> 
+> 
+> Hmm, we would have to add this for every release.
 
--- 
-Dmitry
+Well, strictly speaking only ones that we need to modify diags for - ie.
+in this series we could get away with only adding the GCC 8 macro if we
+wanted.
+
+> > diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+> > index 6b79a9bba9a7..313a2ad884e0 100644
+> > --- a/include/linux/compiler_types.h
+> > +++ b/include/linux/compiler_types.h
+> > @@ -271,4 +271,22 @@ struct ftrace_likely_data {
+> >  # define __native_word(t) (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+> >  #endif
+> >
+> > +#ifndef __diag
+> > +#define __diag(string)
+> > +#endif
+> > +
+> > +#ifndef __diag_GCC
+> > +#define __diag_GCC(string)
+> > +#endif
+> 
+> __diag_GCC() takes two arguments,
+> so it should be:
+> 
+> #ifndef __diag_GCC
+> #define __diag_GCC(version, s)
+> #endif
+> 
+> 
+> Otherwise, this would cause warning like this:
+> 
+> 
+> arch/arm64/kernel/sys.c:40:1: error: macro "__diag_GCC" passed 2
+> arguments, but takes just 1
+>  SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
+>  ^~~~~~~~~~
+
+Yes, good catch.
+
+> > +#define __diag_push()  __diag(push)
+> > +#define __diag_pop()   __diag(pop)
+> > +
+> > +#define __diag_ignore(compiler, version, option, comment) \
+> > +       __diag_ ## compiler(version, ignored option)
+> > +#define __diag_warn(compiler, version, option, comment) \
+> > +       __diag_ ## compiler(version, warning option)
+> > +#define __diag_error(compiler, version, option, comment) \
+> > +       __diag_ ## compiler(version, error   option)
+> > +
+> 
+> To me, it looks like this is putting GCC/Clang specific things
+> in the common file, <linux/compiler_types.h> .
+> 
+> All compilers must use "ignored", "warning", "error",
+> not allowed to use "ignore".
+
+We could move that to linux/compiler-gcc.h pretty easily.
+
+> I also wonder if we could avoid proliferating __diag_GCC_*.
+
+My thought is that it's unlikely we'll ever support enough different
+compilers for it to become problematic to list the ones we modify
+warnings for in linux/compiler_types.h.
+
+> I attached a bit different implementation below.
+> 
+> I used -Wno-pragmas to avoid unknown option warnings.
+
+That doesn't seem very clean to me because it will hide typos or other
+mistakes. One advantage of Arnd's patch is that by specifying the
+compiler & version we only attempt to use pragmas that are appropriate
+so we don't need to ignore unknown ones.
+
+> Usage is
+> 
+>        __diag_push();
+>        __diag_ignore(-Wattribute-alias,
+>                      "Type aliasing is used to sanitize syscall arguments");
+>               ...
+>        __diag_pop();
+> 
+> Comments, ideas are appreciated.
+
+By removing the compiler & version arguments you're enforcing that if we
+ignore a warning for one compiler we must ignore it for all, regardless
+of whether it's problematic. This essentially presumes that warnings
+with the same name will behave the same across compilers, which feels
+worse to me than having users of this explicitly state which compilers
+need the pragmas.
+
+Thanks,
+    Paul

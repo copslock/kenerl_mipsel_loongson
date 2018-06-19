@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:47:58 +0200 (CEST)
-Received: from mail-yb0-f195.google.com ([209.85.213.195]:40196 "EHLO
-        mail-yb0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993094AbeFSVrXh60Nr (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:48:15 +0200 (CEST)
+Received: from mail-yw0-f194.google.com ([209.85.161.194]:43978 "EHLO
+        mail-yw0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993097AbeFSVrXoLc0r (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:23 +0200
-Received: by mail-yb0-f195.google.com with SMTP id v17-v6so477672ybe.7;
+Received: by mail-yw0-f194.google.com with SMTP id r19-v6so441958ywc.10;
         Tue, 19 Jun 2018 14:47:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=LC5sN3D4i3c7rmr3NVM7+l7w8yoxwsjrueH4YGTx6Bw=;
-        b=Qql2VDVI5OzsEDoaPSUze0owvrlcSLL8c0tq2KBQPEol1BHeXvul1H6GXTdV2MTrad
-         CuwnaGwvaMGKdtVQHV27+0Bbsv4TnFVwy78jqToZ2P5Vxs7mmewuHu8+HYc5MliNj0t9
-         G5xWdaEyt/ctppvLFtPkuEmNfoxAL2L6mOZmXGzSmBPe5mpBfbEKbeaznVLl2OCoBoOK
-         yUZyciL23daPT1LLpKEYxZiVGJyxtMZHycu7QRQomm3BCG/1RTXNwLdhl/y0o5MwzByi
-         8wVFb77Vr18LoItiFTaCCjNPV+M2+bbo9Uu0Pq6yTNkQ12POu9qyaZrR2NWZQ1lD/miE
-         LPLg==
-X-Gm-Message-State: APt69E2zxsRCcfpmUQOIki3BUF9falosrgvViyrVf4vLxeWzd5CAhlrf
-        VnaBRlStrOUS1cGloOVDbZUA/3A=
-X-Google-Smtp-Source: ADUXVKLuJ8i9DyLEFpRBFtxIAH7bgHir/IWUJ8F0iE7gvlar1QLWrkqL920xOe7TKU7oRFGkryq+NA==
-X-Received: by 2002:a25:7e05:: with SMTP id z5-v6mr9708903ybc.442.1529444835927;
-        Tue, 19 Jun 2018 14:47:15 -0700 (PDT)
+        bh=wLVnH7vIuGi0xSrrr/f9kAJNZm3q+kno8SThjP7bEPk=;
+        b=lDVCZfnFimmHdQ1nHaWryPZBrq59VsmwZKnG71CC4IVK9HzirENrA45ap3zf2DqsHl
+         bS9wA3wdJTP951CYEBVh+l6p0vBYoNWfIfZ2l+Kg9KZFMGmmUe6cKog5LQQTpD9ybcSV
+         RVHzv7dmml7DZc6LZY8KOTHiole+8Fm3F5V3O3UaVxh8PniwMp54sPOTzYhyGCxhHRqe
+         nBCQoYVRnUB1Ibh/cDAOCmLNpACal1PrQH1wQbTStcr4gLdFhhG33Bdotpm9vD0xbrQj
+         ae4HN419yJTBBhQ2mZ4gvpS5CS32cXbBk1Vw22NyN5QkDsXydh+/QYUJz1DfGHKm3By+
+         UhaA==
+X-Gm-Message-State: APt69E3OhxXFI43gkE/ACenE1y2f8cMa0xI1IdJAXdnF/OtGi6sJr0nW
+        zhkzKM+6+o6bIiFb29teOIqzD8A=
+X-Google-Smtp-Source: ADUXVKK95K8qb9qEUxyZffW815yMRebygAB5bY6ffYmiYsR8JhWIoRoWunrDUe6Q+dKD/gP3UWe7Kw==
+X-Received: by 2002:a0d:c905:: with SMTP id l5-v6mr9331254ywd.308.1529444837527;
+        Tue, 19 Jun 2018 14:47:17 -0700 (PDT)
 Received: from localhost.localdomain (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.14
+        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Jun 2018 14:47:15 -0700 (PDT)
+        Tue, 19 Jun 2018 14:47:16 -0700 (PDT)
 From:   Rob Herring <robh@kernel.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 2/5] MIPS: netlogic: remove unnecessary of_platform_bus_probe call
-Date:   Tue, 19 Jun 2018 15:47:07 -0600
-Message-Id: <20180619214710.22066-3-robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 3/5] MIPS: bmips: remove unnecessary call to register "simple-bus"
+Date:   Tue, 19 Jun 2018 15:47:08 -0600
+Message-Id: <20180619214710.22066-4-robh@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180619214710.22066-1-robh@kernel.org>
 References: <20180619214710.22066-1-robh@kernel.org>
@@ -40,7 +42,7 @@ Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64382
+X-archive-position: 64383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,40 +59,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The DT core code will probe "simple-bus" by default, so remove
-the Netlogic specific call. The probing of simple-bus happens at
-arch_initcall_sync, so the call being removed here is already a nop.
+The DT core will register "simple-bus" by default, so it is not necessary
+for arch specific code to do so unless there are custom match entries,
+auxdata or parent device. Neither of those apply here, so remove the call.
 
+Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/mips/netlogic/xlp/dt.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ arch/mips/bmips/setup.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
-index 856a6e6d296e..b5ba83f4c646 100644
---- a/arch/mips/netlogic/xlp/dt.c
-+++ b/arch/mips/netlogic/xlp/dt.c
-@@ -93,17 +93,3 @@ void __init device_tree_init(void)
- {
- 	unflatten_and_copy_device_tree();
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 3b6f687f177c..231fc5ce375e 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -202,13 +202,6 @@ void __init device_tree_init(void)
+ 	of_node_put(np);
  }
--
--static struct of_device_id __initdata xlp_ids[] = {
--	{ .compatible = "simple-bus", },
--	{},
--};
--
--int __init xlp8xx_ds_publish_devices(void)
+ 
+-int __init plat_of_setup(void)
 -{
--	if (!of_have_populated_dt())
--		return 0;
--	return of_platform_bus_probe(NULL, xlp_ids, NULL);
+-	return __dt_register_buses("simple-bus", NULL);
 -}
 -
--device_initcall(xlp8xx_ds_publish_devices);
+-arch_initcall(plat_of_setup);
+-
+ static int __init plat_dev_init(void)
+ {
+ 	of_clk_init(NULL);
 -- 
 2.17.1

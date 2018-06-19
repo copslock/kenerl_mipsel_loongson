@@ -1,50 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 02:38:31 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:48687 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991162AbeFSAiXO0MRg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 02:38:23 +0200
-Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx1413.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 19 Jun 2018 00:38:04 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
- (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Mon, 18
- Jun 2018 17:38:17 -0700
-Received: from pburton-laptop.mipstec.com (10.20.2.29) by
- mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
- via Frontend Transport; Mon, 18 Jun 2018 17:38:17 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Always use -march=<arch>, not -<arch> shortcuts
-Date:   Mon, 18 Jun 2018 17:37:59 -0700
-Message-ID: <20180619003800.32129-1-paul.burton@mips.com>
-X-Mailer: git-send-email 2.17.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 08:35:21 +0200 (CEST)
+Received: from ozlabs.org ([203.11.71.1]:33201 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990391AbeFSGfPMybhJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jun 2018 08:35:15 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 418yrC6sdVz9s19;
+        Tue, 19 Jun 2018 16:35:07 +1000 (AEST)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-ia64@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Build regressions/improvements in v4.18-rc1
+In-Reply-To: <CAMuHMdULmiArTvYsEqnyg5SB6PqjZnNANLAyYcqqYeYmHKJ5Dw@mail.gmail.com>
+References: <20180618091729.11091-1-geert@linux-m68k.org> <CAMuHMdULmiArTvYsEqnyg5SB6PqjZnNANLAyYcqqYeYmHKJ5Dw@mail.gmail.com>
+Date:   Tue, 19 Jun 2018 16:35:07 +1000
+Message-ID: <87vaafxp0k.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-BESS-ID: 1529368684-531715-24936-178260-1
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.31
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.50
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194177
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.50 BSF_RULE7568M          META: Custom Rule 7568M 
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: linux-mips@linux-mips.org,jhogan@kernel.org,ralf@linux-mips.org,stable@vger.kernel.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64359
+X-archive-position: 64360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,115 +46,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The VDSO Makefile filters CFLAGS to select a subset which it uses whilst
-building the VDSO ELF. One of the flags it allows through is the -march=
-flag that selects the architecture/ISA to target.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> On Mon, Jun 18, 2018 at 11:18 AM Geert Uytterhoeven
+> <geert@linux-m68k.org> wrote:
+>> Below is the list of build error/warning regressions/improvements in
+>> v4.18-rc1[1] compared to v4.17[2].
+>>
+>> Summarized:
+>>   - build errors: +11/-1
+>
+>> [1] http://kisskb.ellerman.id.au/kisskb/head/ce397d215ccd07b8ae3f71db689aedb85d56ab40/ (233 out of 244 configs)
+>> [2] http://kisskb.ellerman.id.au/kisskb/head/29dcea88779c856c7dc92040a0c01233263101d4/ (all 244 configs)
+>
+>> 11 error regressions:
+>>   + /kisskb/src/drivers/ata/pata_ali.c: error: implicit declaration of function 'pci_domain_nr' [-Werror=implicit-function-declaration]:  => 469:38
+>
+> sparc64/sparc-allmodconfig
+>
+>>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid':  => 1413:15
+>>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid_nopanic':  => 1377:15
+>>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid_raw':  => 1340:15
+>
+> ia64/ia64-defconfig
+> mips/bigsur_defconfig
+> mips/cavium_octeon_defconfig
+> mips/ip22_defconfig
+> mips/ip27_defconfig
+> mips/ip32_defconfig
+> mips/malta_defconfig
+> mips/mips-allmodconfig
+> mips/mips-allnoconfig
+> mips/mips-defconfig
+> mipsel/mips-allmodconfig
+> mipsel/mips-allnoconfig
+> mipsel/mips-defconfig
 
-Unfortunately in cases where CONFIG_CPU_MIPS32_R{1,2}=y and the
-toolchain defaults to building for MIPS64, the main MIPS Makefile ends
-up using the short-form -<arch> flags in cflags-y. This is because the
-calls to cc-option always fail to use the long-form -march=<arch> flag
-due to the lack of an -mabi=<abi> flag in KBUILD_CFLAGS at the point
-where the cc-option function is executed. The resulting GCC invocation
-is something like:
+These are now fixed in Linus' tree by:
 
-  $ mips64-linux-gcc -Werror -march=mips32r2 -c -x c /dev/null -o tmp
-  cc1: error: '-march=mips32r2' is not compatible with the selected ABI
+  6cc22dc08a24 ("revert "mm/memblock: add missing include <linux/bootmem.h>"")
 
-These short-form -<arch> flags are dropped by the VDSO Makefile's
-filtering, and so we attempt to build the VDSO without specifying any
-architecture. This results in an attempt to build the VDSO using
-whatever the compiler's default architecture is, regardless of whether
-that is suitable for the kernel configuration.
 
-One encountered build failure resulting from this mismatch is a
-rejection of the sync instruction if the kernel is configured for a
-MIPS32 or MIPS64 r1 or r2 target but the toolchain defaults to an older
-architecture revision such as MIPS1 which did not include the sync
-instruction:
+>>   + error: ".radix__flush_pwc_lpid" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>>   + error: ".radix__flush_tlb_lpid_page" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>>   + error: ".radix__local_flush_tlb_lpid_guest" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>>   + error: "radix__flush_pwc_lpid" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>>   + error: "radix__flush_tlb_lpid_page" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>>   + error: "radix__local_flush_tlb_lpid_guest" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
+>
+> powerpc/ppc64_defconfig+NO_RADIX
+> ppc64le/powernv_defconfig+NO_RADIX (what's in a name ;-)
 
-    CC      arch/mips/vdso/gettimeofday.o
-  /tmp/ccGQKoOj.s: Assembler messages:
-  /tmp/ccGQKoOj.s:273: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:329: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:520: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:714: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1009: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1066: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1114: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1279: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1334: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1374: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1459: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1514: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:1814: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:2002: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  /tmp/ccGQKoOj.s:2066: Error: opcode not supported on this processor: mips1 (mips1) `sync'
-  make[2]: *** [scripts/Makefile.build:318: arch/mips/vdso/gettimeofday.o] Error 1
-  make[1]: *** [scripts/Makefile.build:558: arch/mips/vdso] Error 2
-  make[1]: *** Waiting for unfinished jobs....
+Can you tell we don't test that combination very often :/
 
-This can be reproduced for example by attempting to build
-pistachio_defconfig using Arnd's GCC 8.1.0 mips64 toolchain from
-kernel.org:
 
-  https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/x86_64-gcc-8.1.0-nolibc-mips64-linux.tar.xz
+>>   + {standard input}: Error: offset to unaligned destination:  => 2268, 2316, 1691, 1362, 1455, 1598, 2502, 1645, 1988, 1927, 1409, 2615, 1548, 2409, 1268, 2363, 1314, 1208, 1785, 2034, 2222, 2661, 1880, 2552, 1161, 2082, 1833, 2455, 2176, 2129, 1501, 1738
+>
+> sh4/sh-randconfig (doesn't seem to be a new issue, seen before on v4.12-rc3)
 
-Resolve this problem by using the long-form -march=<arch> in all cases,
-which makes it through the arch/mips/vdso/Makefile's filtering & is thus
-consistently used to build both the kernel proper & the VDSO.
+I think I'll disable that one, it's been broken more often that not and
+I doubt anyone is that motivated to fix sh4 randconfig breakages?
 
-The use of cc-option to prefer the long-form & fall back to the
-short-form flags makes no sense since the short-form is just an
-abbreviation for the also-supported long-form in all GCC versions that
-we support building with. This means there is no case in which we have
-to use the short-form -<arch> flags, so we can simply remove them.
+  http://kisskb.ellerman.id.au/kisskb/target/1826/
 
-The manual redefinition of _MIPS_ISA is removed naturally along with the
-use of the short-form flags that it accompanied, and whilst here we
-remove the separate assembler ISA selection. I suspect that both of
-these were only required due to the mips32 vs mips2 mismatch that was
-introduced by commit 59b3e8e9aac6 ("[MIPS] Makefile crapectomy.") and
-fixed but not cleaned up by commit 9200c0b2a07c ("[MIPS] Fix Makefile
-bugs for MIPS32/MIPS64 R1 and R2.").
 
-I've marked this for backport as far as v4.4 where the MIPS VDSO was
-introduced. In earlier kernels there should be no ill effect to using
-the short-form flags.
+Relatedly I might move all the randconfig targets from Linus' tree into
+a separate "linus-rand" tree, so that they don't pollute the results, as
+I've done for linux-next.
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # v4.4+
----
-
- arch/mips/Makefile | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index e2122cca4ae2..1e98d22ec119 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -155,15 +155,11 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
- cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
- cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
- cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
--cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
--			-Wa,-mips32 -Wa,--trap
--cflags-$(CONFIG_CPU_MIPS32_R2)	+= $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
--			-Wa,-mips32r2 -Wa,--trap
-+cflags-$(CONFIG_CPU_MIPS32_R1)	+= -march=mips32 -Wa,--trap
-+cflags-$(CONFIG_CPU_MIPS32_R2)	+= -march=mips32r2 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS32_R6)	+= -march=mips32r6 -Wa,--trap -modd-spreg
--cflags-$(CONFIG_CPU_MIPS64_R1)	+= $(call cc-option,-march=mips64,-mips64 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
--			-Wa,-mips64 -Wa,--trap
--cflags-$(CONFIG_CPU_MIPS64_R2)	+= $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) \
--			-Wa,-mips64r2 -Wa,--trap
-+cflags-$(CONFIG_CPU_MIPS64_R1)	+= -march=mips64 -Wa,--trap
-+cflags-$(CONFIG_CPU_MIPS64_R2)	+= -march=mips64r2 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS64_R6)	+= -march=mips64r6 -Wa,--trap
- cflags-$(CONFIG_CPU_R5000)	+= -march=r5000 -Wa,--trap
- cflags-$(CONFIG_CPU_R5432)	+= $(call cc-option,-march=r5400,-march=r5000) \
--- 
-2.17.1
+cheers

@@ -1,72 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 22:19:16 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:47736 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992962AbeFSUTEylWpI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 22:19:04 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx27.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Tue, 19 Jun 2018 20:17:01 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 19
- Jun 2018 13:15:23 -0700
-Received: from pburton-laptop.mipstec.com (10.20.2.29) by
- mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
- via Frontend Transport; Tue, 19 Jun 2018 13:15:23 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     <linux-kbuild@vger.kernel.org>
-CC:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        <linux-mips@linux-mips.org>, Arnd Bergmann <arnd@arndb.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Matthew Wilcox <matthew@wil.cx>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        He Zhe <zhe.he@windriver.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Khem Raj <raj.khem@gmail.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Gideon Israel Dsouza <gidisrael@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
-        <linuxppc-dev@lists.ozlabs.org>, Paul Burton <paul.burton@mips.com>
-Subject: [PATCH v2 3/3] powerpc: Remove -Wattribute-alias pragmas
-Date:   Tue, 19 Jun 2018 13:14:58 -0700
-Message-ID: <20180619201458.4559-4-paul.burton@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:47:26 +0200 (CEST)
+Received: from mail-yb0-f194.google.com ([209.85.213.194]:41515 "EHLO
+        mail-yb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993006AbeFSVrTKcNdr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:19 +0200
+Received: by mail-yb0-f194.google.com with SMTP id f14-v6so476030ybg.8;
+        Tue, 19 Jun 2018 14:47:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=D1b452cPMWfxhYWP98VQHWGo0nNdgHczEIl56yxt5ko=;
+        b=oLmzg40/Rck/rhv1XigY1toyV6qItZBY3r6G/LmpCA/kPMlS8LeE8w5mDDpBtNW9qF
+         X/XAgpu3CIXrTDBOUzQhvOenbQV0g+g1Xl4MvIZN7irEp730lihNXnPh9yIVJTnKqFkY
+         n3Sy64nyJ/BtLUMeBHw4xPW+v9kzeUEOlAM7GQcKwyu1nz0+Y/fh70xxO9iC5sXYOLuB
+         tOw8mKRT5/Qu13B8FYq5pIVFdekM94qvgw2wX34EEZbl11KKVuj7UbC8t1/Wkva4ZUR5
+         5ohu0lmJtTrlIVqrionckyfZNsKwFbLUmTc1HRUuymaXjsZWcOx0KYW+9KcDTHbNKw/H
+         BMLg==
+X-Gm-Message-State: APt69E2bSLTMU/0Hni7WZLxJjFDjys/RQrfhI1p96CG6LhJHulEDDWiT
+        QDPoFLoshOONa4H8X33DT7qqON8=
+X-Google-Smtp-Source: ADUXVKJjpMTOv1cNfNTe/7iimKIE2M7xv6w6DgOnL6B6I+k7RnOOEgrOkyazqPwfbGIz3VdAhf3Qrg==
+X-Received: by 2002:a25:98c1:: with SMTP id m1-v6mr8921871ybo.265.1529444832972;
+        Tue, 19 Jun 2018 14:47:12 -0700 (PDT)
+Received: from localhost.localdomain (24-223-123-72.static.usa-companies.net. [24.223.123.72])
+        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.11
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 19 Jun 2018 14:47:12 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 0/5] MIPS: Clean-up DT bus probing
+Date:   Tue, 19 Jun 2018 15:47:05 -0600
+Message-Id: <20180619214710.22066-1-robh@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180619201458.4559-1-paul.burton@mips.com>
-References: <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
- <20180619201458.4559-1-paul.burton@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-BESS-ID: 1529439416-637137-2579-5881-2
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194199
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: linux-kbuild@vger.kernel.org,paulus@samba.org,linux-kernel@vger.kernel.org,heiko.carstens@de.ibm.com,mpe@ellerman.id.au,keescook@chromium.org,yamada.masahiro@socionext.com,gidisrael@gmail.com,shorne@gmail.com,viro@zeniv.linux.org.uk,christophe.leroy@c-s.fr,raj.khem@gmail.com,linuxppc-dev@lists.ozlabs.org,michal.lkml@markovi.net,zhe.he@windriver.com,mka@chromium.org,akpm@linux-foundation.org,jpoimboe@redhat.com,dianders@chromium.org,tglx@linutronix.de,matthew@wil.cx,mingo@kernel.org,arnd@arndb.de,linux-mips@linux-mips.org,mchehab@kernel.org,benh@kernel.crashing.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64379
+X-archive-position: 64380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,226 +54,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With SYSCALL_DEFINEx() disabling -Wattribute-alias generically, there's
-no need to duplicate that for PowerPC syscalls.
+This is a series of clean-ups of DT bus probing calls. Generally, the 
+DT core code takes care of the default case and arches/platforms only 
+need to do their own call if they have non-default matching 
+requirements.
 
-This reverts commit 415520373975 ("powerpc: fix build failure by
-disabling attribute-alias warning in pci_32") and commit 2479bfc9bc60
-("powerpc: Fix build by disabling attribute-alias warning for
-SYSCALL_DEFINEx").
+Rob
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Michal Marek <michal.lkml@markovi.net>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Matthew Wilcox <matthew@wil.cx>
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: Khem Raj <raj.khem@gmail.com>
-Cc: He Zhe <zhe.he@windriver.com>
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linuxppc-dev@lists.ozlabs.org
+Rob Herring (5):
+  MIPS: octeon: use of_platform_populate to probe devices
+  MIPS: netlogic: remove unnecessary of_platform_bus_probe call
+  MIPS: bmips: remove unnecessary call to register "simple-bus"
+  MIPS: generic: remove unnecessary of_platform_populate call
+  MIPS: lantiq: remove unnecessary of_platform_default_populate call
 
----
-Michael & Christophe, I didn't add your acks here yet since it changed
-to include the second revert that Christophe pointed out I'd missed & I
-didn't want to presume your acks extended to that.
+ arch/mips/bmips/setup.c                   |  7 -------
+ arch/mips/cavium-octeon/octeon-platform.c |  2 +-
+ arch/mips/generic/init.c                  | 13 -------------
+ arch/mips/lantiq/prom.c                   |  8 --------
+ arch/mips/netlogic/xlp/dt.c               | 14 --------------
+ 5 files changed, 1 insertion(+), 43 deletions(-)
 
-Changes in v2:
-- Also revert 2479bfc9bc60 ("powerpc: Fix build by disabling
-  attribute-alias warning for SYSCALL_DEFINEx").
-- Change subject now that it's not just a simple one-commit revert.
-
- arch/powerpc/kernel/pci_32.c    | 4 ----
- arch/powerpc/kernel/pci_64.c    | 4 ----
- arch/powerpc/kernel/rtas.c      | 4 ----
- arch/powerpc/kernel/signal_32.c | 8 --------
- arch/powerpc/kernel/signal_64.c | 4 ----
- arch/powerpc/kernel/syscalls.c  | 4 ----
- arch/powerpc/mm/subpage-prot.c  | 4 ----
- 7 files changed, 32 deletions(-)
-
-diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
-index 4f861055a852..d63b488d34d7 100644
---- a/arch/powerpc/kernel/pci_32.c
-+++ b/arch/powerpc/kernel/pci_32.c
-@@ -285,9 +285,6 @@ pci_bus_to_hose(int bus)
-  * Note that the returned IO or memory base is a physical address
-  */
- 
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE3(pciconfig_iobase, long, which,
- 		unsigned long, bus, unsigned long, devfn)
- {
-@@ -313,4 +310,3 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which,
- 
- 	return result;
- }
--#pragma GCC diagnostic pop
-diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
-index 812171c09f42..dff28f903512 100644
---- a/arch/powerpc/kernel/pci_64.c
-+++ b/arch/powerpc/kernel/pci_64.c
-@@ -203,9 +203,6 @@ void pcibios_setup_phb_io_space(struct pci_controller *hose)
- #define IOBASE_ISA_IO		3
- #define IOBASE_ISA_MEM		4
- 
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, in_bus,
- 			  unsigned long, in_devfn)
- {
-@@ -259,7 +256,6 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, in_bus,
- 
- 	return -EOPNOTSUPP;
- }
--#pragma GCC diagnostic pop
- 
- #ifdef CONFIG_NUMA
- int pcibus_to_node(struct pci_bus *bus)
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 7fb9f83dcde8..8afd146bc9c7 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1051,9 +1051,6 @@ struct pseries_errorlog *get_pseries_errorlog(struct rtas_error_log *log,
- }
- 
- /* We assume to be passed big endian arguments */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- {
- 	struct rtas_args args;
-@@ -1140,7 +1137,6 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 
- 	return 0;
- }
--#pragma GCC diagnostic pop
- 
- /*
-  * Call early during boot, before mem init, to retrieve the RTAS
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 5eedbb282d42..e6474a45cef5 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -1038,9 +1038,6 @@ static int do_setcontext_tm(struct ucontext __user *ucp,
- }
- #endif
- 
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- #ifdef CONFIG_PPC64
- COMPAT_SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 		       struct ucontext __user *, new_ctx, int, ctx_size)
-@@ -1134,7 +1131,6 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	set_thread_flag(TIF_RESTOREALL);
- 	return 0;
- }
--#pragma GCC diagnostic pop
- 
- #ifdef CONFIG_PPC64
- COMPAT_SYSCALL_DEFINE0(rt_sigreturn)
-@@ -1231,9 +1227,6 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	return 0;
- }
- 
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- #ifdef CONFIG_PPC32
- SYSCALL_DEFINE3(debug_setcontext, struct ucontext __user *, ctx,
- 			 int, ndbg, struct sig_dbg_op __user *, dbg)
-@@ -1337,7 +1330,6 @@ SYSCALL_DEFINE3(debug_setcontext, struct ucontext __user *, ctx,
- 	return 0;
- }
- #endif
--#pragma GCC diagnostic pop
- 
- /*
-  * OK, we're invoking a handler
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index d42b60020389..83d51bf586c7 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -625,9 +625,6 @@ static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
- /*
-  * Handle {get,set,swap}_context operations
-  */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 		struct ucontext __user *, new_ctx, long, ctx_size)
- {
-@@ -693,7 +690,6 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	set_thread_flag(TIF_RESTOREALL);
- 	return 0;
- }
--#pragma GCC diagnostic pop
- 
- 
- /*
-diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
-index 083fa06962fd..466216506eb2 100644
---- a/arch/powerpc/kernel/syscalls.c
-+++ b/arch/powerpc/kernel/syscalls.c
-@@ -62,9 +62,6 @@ static inline long do_mmap2(unsigned long addr, size_t len,
- 	return ret;
- }
- 
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE6(mmap2, unsigned long, addr, size_t, len,
- 		unsigned long, prot, unsigned long, flags,
- 		unsigned long, fd, unsigned long, pgoff)
-@@ -78,7 +75,6 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
- {
- 	return do_mmap2(addr, len, prot, flags, fd, offset, PAGE_SHIFT);
- }
--#pragma GCC diagnostic pop
- 
- #ifdef CONFIG_PPC32
- /*
-diff --git a/arch/powerpc/mm/subpage-prot.c b/arch/powerpc/mm/subpage-prot.c
-index 75cb646a79c3..9d16ee251fc0 100644
---- a/arch/powerpc/mm/subpage-prot.c
-+++ b/arch/powerpc/mm/subpage-prot.c
-@@ -186,9 +186,6 @@ static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
-  * in a 2-bit field won't allow writes to a page that is otherwise
-  * write-protected.
-  */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wpragmas"
--#pragma GCC diagnostic ignored "-Wattribute-alias"
- SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
- 		unsigned long, len, u32 __user *, map)
- {
-@@ -272,4 +269,3 @@ SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
- 	up_write(&mm->mmap_sem);
- 	return err;
- }
--#pragma GCC diagnostic pop
 -- 
 2.17.1

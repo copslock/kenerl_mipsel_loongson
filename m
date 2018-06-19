@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:47:26 +0200 (CEST)
-Received: from mail-yb0-f194.google.com ([209.85.213.194]:41515 "EHLO
-        mail-yb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993006AbeFSVrTKcNdr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:19 +0200
-Received: by mail-yb0-f194.google.com with SMTP id f14-v6so476030ybg.8;
-        Tue, 19 Jun 2018 14:47:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 23:47:39 +0200 (CEST)
+Received: from mail-yb0-f196.google.com ([209.85.213.196]:36119 "EHLO
+        mail-yb0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993066AbeFSVrU3KNer (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2018 23:47:20 +0200
+Received: by mail-yb0-f196.google.com with SMTP id x128-v6so483352ybg.3;
+        Tue, 19 Jun 2018 14:47:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=D1b452cPMWfxhYWP98VQHWGo0nNdgHczEIl56yxt5ko=;
-        b=oLmzg40/Rck/rhv1XigY1toyV6qItZBY3r6G/LmpCA/kPMlS8LeE8w5mDDpBtNW9qF
-         X/XAgpu3CIXrTDBOUzQhvOenbQV0g+g1Xl4MvIZN7irEp730lihNXnPh9yIVJTnKqFkY
-         n3Sy64nyJ/BtLUMeBHw4xPW+v9kzeUEOlAM7GQcKwyu1nz0+Y/fh70xxO9iC5sXYOLuB
-         tOw8mKRT5/Qu13B8FYq5pIVFdekM94qvgw2wX34EEZbl11KKVuj7UbC8t1/Wkva4ZUR5
-         5ohu0lmJtTrlIVqrionckyfZNsKwFbLUmTc1HRUuymaXjsZWcOx0KYW+9KcDTHbNKw/H
-         BMLg==
-X-Gm-Message-State: APt69E2bSLTMU/0Hni7WZLxJjFDjys/RQrfhI1p96CG6LhJHulEDDWiT
-        QDPoFLoshOONa4H8X33DT7qqON8=
-X-Google-Smtp-Source: ADUXVKJjpMTOv1cNfNTe/7iimKIE2M7xv6w6DgOnL6B6I+k7RnOOEgrOkyazqPwfbGIz3VdAhf3Qrg==
-X-Received: by 2002:a25:98c1:: with SMTP id m1-v6mr8921871ybo.265.1529444832972;
-        Tue, 19 Jun 2018 14:47:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=LT9TrtiRXCl2nVaT1mJwH3wuwflNX6wnuE0hTLu4Q3Y=;
+        b=ueZw3XbLyxoso/9Gm+27IDCW+5Rjpkt1ejosO4jcCPuk2TYzEgIQ9UQI3BD/jA78RS
+         r1QO+Cy7dXnTO3V6LyieTOjfoOMvWHLUjZeT4DvqhjIzGAGWEcl9PF9uob7XlbqYNkLb
+         34Jlka+dcK6enY5E0sXJad3Qw9jZBbjQKM1r/GD2CMrjgbH2s21zGpp1r1BVv7Y47WC/
+         wq5ECabh2LfGa+XA6oNJJ9GqblzyJZb96ehTbbmA/tg/W7pk5Yoty9NuR413SqUXjKkN
+         mSga+VQ4h2wiBmrVX8F5Prj27jt2ZD65rdPlrFiZ5Qe0gqiwDCRYc62ic/xPs5pe3EUl
+         GYQg==
+X-Gm-Message-State: APt69E1J+DnPo4OlZuDDdQgi8VlilngIwIRb9A8myfmz2/EMkVP3SEAg
+        47RiSNkETL2VZViFV5a9oszbahA=
+X-Google-Smtp-Source: ADUXVKL1K/JDgTy1ecJl2I9TQj2Zcm6uezU6HIHNQ4R7oP1fBUt5mz28PxPUTK7kt88DxVPNfypN/w==
+X-Received: by 2002:a25:b10d:: with SMTP id g13-v6mr7125131ybj.169.1529444834496;
+        Tue, 19 Jun 2018 14:47:14 -0700 (PDT)
 Received: from localhost.localdomain (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.11
+        by smtp.googlemail.com with ESMTPSA id x66-v6sm333612ywc.76.2018.06.19.14.47.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Jun 2018 14:47:12 -0700 (PDT)
+        Tue, 19 Jun 2018 14:47:13 -0700 (PDT)
 From:   Rob Herring <robh@kernel.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 0/5] MIPS: Clean-up DT bus probing
-Date:   Tue, 19 Jun 2018 15:47:05 -0600
-Message-Id: <20180619214710.22066-1-robh@kernel.org>
+Subject: [PATCH 1/5] MIPS: octeon: use of_platform_populate to probe devices
+Date:   Tue, 19 Jun 2018 15:47:06 -0600
+Message-Id: <20180619214710.22066-2-robh@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20180619214710.22066-1-robh@kernel.org>
+References: <20180619214710.22066-1-robh@kernel.org>
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64380
+X-archive-position: 64381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,26 +57,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a series of clean-ups of DT bus probing calls. Generally, the 
-DT core code takes care of the default case and arches/platforms only 
-need to do their own call if they have non-default matching 
-requirements.
+of_platform_bus_probe is deprecated in favor of of_platform_populate.
+of_platform_populate is stricter requiring compatible properties for
+matching rather than name or type. Octeon uses compatible strings for
+matching, so convert it to of_platform_populate.
 
-Rob
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ arch/mips/cavium-octeon/octeon-platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Rob Herring (5):
-  MIPS: octeon: use of_platform_populate to probe devices
-  MIPS: netlogic: remove unnecessary of_platform_bus_probe call
-  MIPS: bmips: remove unnecessary call to register "simple-bus"
-  MIPS: generic: remove unnecessary of_platform_populate call
-  MIPS: lantiq: remove unnecessary of_platform_default_populate call
-
- arch/mips/bmips/setup.c                   |  7 -------
- arch/mips/cavium-octeon/octeon-platform.c |  2 +-
- arch/mips/generic/init.c                  | 13 -------------
- arch/mips/lantiq/prom.c                   |  8 --------
- arch/mips/netlogic/xlp/dt.c               | 14 --------------
- 5 files changed, 1 insertion(+), 43 deletions(-)
-
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 8505db478904..2940e9cc3a04 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -1067,6 +1067,6 @@ int __init octeon_prune_device_tree(void)
+ 
+ static int __init octeon_publish_devices(void)
+ {
+-	return of_platform_bus_probe(NULL, octeon_ids, NULL);
++	return of_platform_populate(NULL, octeon_ids, NULL, NULL);
+ }
+ arch_initcall(octeon_publish_devices);
 -- 
 2.17.1

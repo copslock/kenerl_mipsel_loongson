@@ -1,39 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 08:35:21 +0200 (CEST)
-Received: from ozlabs.org ([203.11.71.1]:33201 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2018 08:46:43 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:20698 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990391AbeFSGfPMybhJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Jun 2018 08:35:15 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 418yrC6sdVz9s19;
-        Tue, 19 Jun 2018 16:35:07 +1000 (AEST)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-ia64@vger.kernel.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Build regressions/improvements in v4.18-rc1
-In-Reply-To: <CAMuHMdULmiArTvYsEqnyg5SB6PqjZnNANLAyYcqqYeYmHKJ5Dw@mail.gmail.com>
-References: <20180618091729.11091-1-geert@linux-m68k.org> <CAMuHMdULmiArTvYsEqnyg5SB6PqjZnNANLAyYcqqYeYmHKJ5Dw@mail.gmail.com>
-Date:   Tue, 19 Jun 2018 16:35:07 +1000
-Message-ID: <87vaafxp0k.fsf@concordia.ellerman.id.au>
+        id S23990392AbeFSGqf5IwEJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jun 2018 08:46:35 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jun 2018 23:46:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.51,242,1526367600"; 
+   d="scan'208";a="58842762"
+Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.15]) ([10.226.39.15])
+  by fmsmga002.fm.intel.com with ESMTP; 18 Jun 2018 23:46:27 -0700
+Subject: Re: [PATCH 1/7] MIPS: dts: Add aliases node for lantiq danube serial
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@intel.com,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        qi-ming.wu@intel.com, linux-clk <linux-clk@vger.kernel.org>,
+        linux-serial@vger.kernel.org, DTML <devicetree@vger.kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20180612054034.4969-1-songjun.wu@linux.intel.com>
+ <20180612054034.4969-2-songjun.wu@linux.intel.com>
+ <CAK8P3a1=CBahrEE2uDRfdrSi=ALc5LBED1=KbLbLa40c9H8dmQ@mail.gmail.com>
+ <539411c1-82b7-cf76-71cf-d50f3303f50f@linux.intel.com>
+ <CAK8P3a0WVxHU98zjY6d8jN0bDtwabFkrbcxr3a7xRkxSjD2ZLg@mail.gmail.com>
+From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
+Message-ID: <32ff76eb-6711-f0f2-2d83-6887a961855f@linux.intel.com>
+Date:   Tue, 19 Jun 2018 14:46:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+In-Reply-To: <CAK8P3a0WVxHU98zjY6d8jN0bDtwabFkrbcxr3a7xRkxSjD2ZLg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <songjun.wu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64360
+X-archive-position: 64361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: songjun.wu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,71 +64,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
-> On Mon, Jun 18, 2018 at 11:18 AM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
->> Below is the list of build error/warning regressions/improvements in
->> v4.18-rc1[1] compared to v4.17[2].
->>
->> Summarized:
->>   - build errors: +11/-1
+
+
+On 6/18/2018 6:59 PM, Arnd Bergmann wrote:
+> On Mon, Jun 18, 2018 at 11:42 AM, Wu, Songjun
+> <songjun.wu@linux.intel.com> wrote:
+>> On 6/14/2018 6:03 PM, Arnd Bergmann wrote:
+>>> On Tue, Jun 12, 2018 at 7:40 AM, Songjun Wu <songjun.wu@linux.intel.com>
+>>> wrote:
+>>>> Previous implementation uses a hard-coded register value to check if
+>>>> the current serial entity is the console entity.
+>>>> Now the lantiq serial driver uses the aliases for the index of the
+>>>> serial port.
+>>>> The lantiq danube serial dts are updated with aliases to support this.
+>>>>
+>>>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+>>>> ---
+>>>>
+>>>>    arch/mips/boot/dts/lantiq/danube.dtsi | 6 +++++-
+>>>>    1 file changed, 5 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi
+>>>> b/arch/mips/boot/dts/lantiq/danube.dtsi
+>>>> index 2dd950181f8a..7a9e15da6bd0 100644
+>>>> --- a/arch/mips/boot/dts/lantiq/danube.dtsi
+>>>> +++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+>>>> @@ -4,6 +4,10 @@
+>>>>           #size-cells = <1>;
+>>>>           compatible = "lantiq,xway", "lantiq,danube";
+>>>>
+>>>> +       aliases {
+>>>> +               serial0 = &asc1;
+>>>> +       };
+>>>> +
+>>> You generally want the aliases to be part of the board specific file,
+>>> not every board numbers their serial ports in the same way.
+>>>
+>> In this chip only asc1 can be used as console,  so serial0 is defined in
+>> chip specific file.
+> This was a more general comment about 'aliases' being board specific
+> in principle (though we've had exceptions in the past). Even if there
+> is only one uart on the chip, I'd recommend following the same
+> conventions as the other chips that have more than one uart.
 >
->> [1] http://kisskb.ellerman.id.au/kisskb/head/ce397d215ccd07b8ae3f71db689aedb85d56ab40/ (233 out of 244 configs)
->> [2] http://kisskb.ellerman.id.au/kisskb/head/29dcea88779c856c7dc92040a0c01233263101d4/ (all 244 configs)
->
->> 11 error regressions:
->>   + /kisskb/src/drivers/ata/pata_ali.c: error: implicit declaration of function 'pci_domain_nr' [-Werror=implicit-function-declaration]:  => 469:38
->
-> sparc64/sparc-allmodconfig
->
->>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid':  => 1413:15
->>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid_nopanic':  => 1377:15
->>   + /kisskb/src/mm/memblock.c: error: redefinition of 'memblock_virt_alloc_try_nid_raw':  => 1340:15
->
-> ia64/ia64-defconfig
-> mips/bigsur_defconfig
-> mips/cavium_octeon_defconfig
-> mips/ip22_defconfig
-> mips/ip27_defconfig
-> mips/ip32_defconfig
-> mips/malta_defconfig
-> mips/mips-allmodconfig
-> mips/mips-allnoconfig
-> mips/mips-defconfig
-> mipsel/mips-allmodconfig
-> mipsel/mips-allnoconfig
-> mipsel/mips-defconfig
-
-These are now fixed in Linus' tree by:
-
-  6cc22dc08a24 ("revert "mm/memblock: add missing include <linux/bootmem.h>"")
-
-
->>   + error: ".radix__flush_pwc_lpid" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->>   + error: ".radix__flush_tlb_lpid_page" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->>   + error: ".radix__local_flush_tlb_lpid_guest" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->>   + error: "radix__flush_pwc_lpid" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->>   + error: "radix__flush_tlb_lpid_page" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->>   + error: "radix__local_flush_tlb_lpid_guest" [arch/powerpc/kvm/kvm-hv.ko] undefined!:  => N/A
->
-> powerpc/ppc64_defconfig+NO_RADIX
-> ppc64le/powernv_defconfig+NO_RADIX (what's in a name ;-)
-
-Can you tell we don't test that combination very often :/
-
-
->>   + {standard input}: Error: offset to unaligned destination:  => 2268, 2316, 1691, 1362, 1455, 1598, 2502, 1645, 1988, 1927, 1409, 2615, 1548, 2409, 1268, 2363, 1314, 1208, 1785, 2034, 2222, 2661, 1880, 2552, 1161, 2082, 1833, 2455, 2176, 2129, 1501, 1738
->
-> sh4/sh-randconfig (doesn't seem to be a new issue, seen before on v4.12-rc3)
-
-I think I'll disable that one, it's been broken more often that not and
-I doubt anyone is that motivated to fix sh4 randconfig breakages?
-
-  http://kisskb.ellerman.id.au/kisskb/target/1826/
-
-
-Relatedly I might move all the randconfig targets from Linus' tree into
-a separate "linus-rand" tree, so that they don't pollute the results, as
-I've done for linux-next.
-
-cheers
+>         Arnd
+Accept, 'aliases' will be move to the board specific file.

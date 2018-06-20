@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 23:30:51 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:38478 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 23:35:35 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:40242 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992992AbeFTVamS84NZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Jun 2018 23:30:42 +0200
+        id S23992992AbeFTVf3QrrAZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Jun 2018 23:35:29 +0200
 Received: from jamesdev (jahogan.plus.com [212.159.75.221])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DC9762083A;
-        Wed, 20 Jun 2018 21:30:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C9EC32083A;
+        Wed, 20 Jun 2018 21:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1529530235;
-        bh=GL024BYDuKB5hmShj++DiGt7r1jBEN/plNT6xSYhkRs=;
+        s=default; t=1529530523;
+        bh=VmeS3cp0iW/LzNAJELkosgq7Pgj07zg2rrjVSEGyHkw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k/FxnWs86qlFU7KWmNL8st6I75TlQkMoXFCTTdHXLkyLKnls6LHvo748bYpfDBHVH
-         UQhB8I05IEGXYVW8+Ewl8ykQJnAABECdaFfzmSSSZ2MV7UEwqFUsW9T/e6JUournxQ
-         eIPMZIRdBdiqR19+liek44ipZ0etuG6vahjgNH+w=
-Date:   Wed, 20 Jun 2018 22:30:32 +0100
+        b=hN8dTZVBhpzO3OzYq+IR9UQqqHcHmch51Y0DEkvSce5NPEEsg2gDNsogtyadf/sPx
+         LLffuYPQN9iqY3v1X8eIysaiHnfbRbB+GPvBjdryR4zGY1dg3DvciaHiSfaB+wV9Ra
+         tdkXLD+mpFZ71VXSI75nDBp2I4q9s2V0+fZ5bpUU=
+Date:   Wed, 20 Jun 2018 22:35:19 +0100
 From:   James Hogan <jhogan@kernel.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Always use -march=<arch>, not -<arch> shortcuts
-Message-ID: <20180620213031.GB22606@jamesdev>
-References: <20180619003800.32129-1-paul.burton@mips.com>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Allan Nielsen <Allan.Nielsen@microsemi.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mips: mscc: build FIT image for Ocelot
+Message-ID: <20180620213518.GC22606@jamesdev>
+References: <20180425211607.2645-1-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="61jdw2sOBCFtR2d/"
+        protocol="application/pgp-signature"; boundary="S1BNGpv0yoYahz37"
 Content-Disposition: inline
-In-Reply-To: <20180619003800.32129-1-paul.burton@mips.com>
+In-Reply-To: <20180425211607.2645-1-alexandre.belloni@bootlin.com>
 User-Agent: Mutt/1.10.0 (2018-05-17)
 Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64400
+X-archive-position: 64401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,29 +53,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---61jdw2sOBCFtR2d/
+--S1BNGpv0yoYahz37
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 
-On Mon, Jun 18, 2018 at 05:37:59PM -0700, Paul Burton wrote:
-> Resolve this problem by using the long-form -march=<arch> in all cases,
-> which makes it through the arch/mips/vdso/Makefile's filtering & is thus
-> consistently used to build both the kernel proper & the VDSO.
+On Wed, Apr 25, 2018 at 11:16:06PM +0200, Alexandre Belloni wrote:
+> +config FIT_IMAGE_FDT_OCELOT_PCB123
+> +	bool "Include FDT for Microsemi Ocelot PCB123"
+> +	select MSCC_OCELOT
+> +	help
+> +	  Enable this to include the FDT for the Ocelot PCB123 platform
+> +	  from Microsemi in the FIT kernel image.
+> +	  This require u-boot on the platform.
+
+nit: s/require/requires/
 
 Reviewed-by: James Hogan <jhogan@kernel.org>
 
 Cheers
 James
 
---61jdw2sOBCFtR2d/
+--S1BNGpv0yoYahz37
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWyrHdwAKCRA1zuSGKxAj
-8npyAP0RzFBGeTPJZj/D0fvsIVlzI22crAdue8YHI3cj/Iw3iAD6Alxq7kqO+IAw
-G8Izbv5PrBIYo8GnSFa7f7gZYPrkGw0=
-=9y7k
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWyrIlgAKCRA1zuSGKxAj
+8g1GAP9Vks506o7RiTuEOxZk0KT4ieio5219M8qOXbdI4R/oDQD9E38xNMnjOE+e
+rQLqP+NZxeOzWr3m4rXpf3+r7orYuQw=
+=i+eZ
 -----END PGP SIGNATURE-----
 
---61jdw2sOBCFtR2d/--
+--S1BNGpv0yoYahz37--

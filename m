@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 05:46:30 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.224]:39756 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeFTDqW30FwM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jun 2018 05:46:22 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx26.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 20 Jun 2018 03:46:18 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Tue, 19
- Jun 2018 20:46:16 -0700
-Received: from pburton-laptop.ba.imgtec.org (10.20.78.225) by
- mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
- via Frontend Transport; Tue, 19 Jun 2018 20:46:16 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 09:14:29 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.211]:35707 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990475AbeFTHOU6FqH8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Jun 2018 09:14:20 +0200
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 0F0E470932; Wed, 20 Jun 2018 09:23:29 +0200 (CEST)
+Date:   Wed, 20 Jun 2018 09:23:28 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2] MIPS: Wire up io_pgetevents syscall
-Date:   Tue, 19 Jun 2018 20:46:15 -0700
-Message-ID: <20180620034615.17579-1-paul.burton@mips.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180615083543.GA7603@jamesdev>
-References: <20180615083543.GA7603@jamesdev>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Tom Bogendoerfer <tsbogend@alpha.franken.de>,
+        Huacai Chen <chenhc@lemote.com>,
+        iommu@lists.linux-foundation.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 18/25] MIPS: loongson64: use generic dma noncoherent ops
+Message-ID: <20180620072328.GA1675@lst.de>
+References: <20180615110854.19253-1-hch@lst.de> <20180615110854.19253-19-hch@lst.de> <20180619231925.mgbgc7lfvjqumr7a@pburton-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-BESS-ID: 1529466378-853316-12155-20586-1
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194213
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: linux-mips@linux-mips.org,jhogan@kernel.org,ralf@linux-mips.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180619231925.mgbgc7lfvjqumr7a@pburton-laptop>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64393
+X-archive-position: 64394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,129 +46,213 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Wire up the io_pgetevents syscall that was introduced by commit
-7a074e96dee6 ("aio: implement io_pgetevents").
+On Tue, Jun 19, 2018 at 04:19:25PM -0700, Paul Burton wrote:
+> Hi Christoph,
+> 
+> On Fri, Jun 15, 2018 at 01:08:47PM +0200, Christoph Hellwig wrote:
+> > -static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+> > -	dma_addr_t dma_addr)
+> > -{
+> > -#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+> > -	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
+> > -#else
+> > -	return dma_addr & 0x7fffffff;
+> > -#endif
+> > -}
+> 
+> ...
+> 
+> > +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+> > +{
+> > +#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+> > +	if (dma_addr > 0x8fffffff)
+> > +		return dma_addr;
+> > +#endif
+> > +	return dma_addr & 0x0fffffff;
+> > +}
+> 
+> Thanks for putting in the work here - I've applied patches 1-17 to
+> mips-next so far, but I'm struggling to convince myself that the above
+> is correct.
+> 
+> In the original code we have 3 distinct cases:
+> 
+>   64b Loongson2F, dma_addr > 0x8fffffff  -> dma_addr
+>   64b Loongson2F, dma_addr <= 0x8fffffff -> dma_addr & 0x0fffffff
+>   Everything else                        -> dma_addr & 0x7fffffff
+> 
+> In the new __dma_to_phys() though only the first case remains the same.
+> 
+> Is this intentional or a mixup?
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+No, this is a mixup.  I hadn't noticed one case was 0x0fffffff and
+the other 0x7fffffff.
+
+Below is the minimal fixup that keeps things as much as it was before.
 
 ---
-This will conflict with the rseq patches, but is trivial to fixup.
+From 174213f535c07774cdbbccd42c76164893729cf5 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Wed, 20 Jun 2018 09:11:15 +0200
+Subject: MIPS: loongson64: use generic dma noncoherent ops
+Content-Length: 4681
+Lines: 159
 
-Changes in v2:
-- Use compat_sys_io_pgetevents for o32 & n32 on MIPS64 kernels.
+Provide phys_to_dma/dma_to_phys helpers, everything else is generic.
 
- arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
- arch/mips/kernel/scall32-o32.S      |  1 +
- arch/mips/kernel/scall64-64.S       |  1 +
- arch/mips/kernel/scall64-n32.S      |  1 +
- arch/mips/kernel/scall64-o32.S      |  1 +
- 5 files changed, 13 insertions(+), 6 deletions(-)
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/mips/Kconfig                             |  1 +
+ .../asm/mach-loongson64/dma-coherence.h       | 69 -------------------
+ arch/mips/loongson64/Kconfig                  |  2 -
+ arch/mips/loongson64/common/Makefile          |  1 +
+ arch/mips/loongson64/common/dma.c             | 18 +++++
+ 5 files changed, 20 insertions(+), 71 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-loongson64/dma-coherence.h
+ create mode 100644 arch/mips/loongson64/common/dma.c
 
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index bb05e9916a5f..41a01e29c4ff 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -388,17 +388,18 @@
- #define __NR_pkey_alloc			(__NR_Linux + 364)
- #define __NR_pkey_free			(__NR_Linux + 365)
- #define __NR_statx			(__NR_Linux + 366)
-+#define __NR_io_pgetevents		(__NR_Linux + 367)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 326bd73bc5bf..e192e484b1b8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1827,6 +1827,7 @@ config CPU_LOONGSON2
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
++	select ARCH_HAS_PHYS_TO_DMA
  
+ config CPU_LOONGSON1
+ 	bool
+diff --git a/arch/mips/include/asm/mach-loongson64/dma-coherence.h b/arch/mips/include/asm/mach-loongson64/dma-coherence.h
+deleted file mode 100644
+index 651dd2eb3ee5..000000000000
+--- a/arch/mips/include/asm/mach-loongson64/dma-coherence.h
++++ /dev/null
+@@ -1,69 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2006, 07  Ralf Baechle <ralf@linux-mips.org>
+- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- */
+-#ifndef __ASM_MACH_LOONGSON64_DMA_COHERENCE_H
+-#define __ASM_MACH_LOONGSON64_DMA_COHERENCE_H
+-
+-#ifdef CONFIG_SWIOTLB
+-#include <linux/swiotlb.h>
+-#endif
+-
+-struct device;
+-
+-static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+-					  size_t size)
+-{
+-	return virt_to_phys(addr) | 0x80000000;
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+-					       struct page *page)
+-{
+-	return page_to_phys(page) | 0x80000000;
+-}
+-
+-static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+-	dma_addr_t dma_addr)
+-{
+-#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+-	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
+-#else
+-	return dma_addr & 0x7fffffff;
+-#endif
+-}
+-
+-static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
+-	size_t size, enum dma_data_direction direction)
+-{
+-}
+-
+-static inline int plat_dma_supported(struct device *dev, u64 mask)
+-{
+-	/*
+-	 * we fall back to GFP_DMA when the mask isn't all 1s,
+-	 * so we can't guarantee allocations that must be
+-	 * within a tighter range than GFP_DMA..
+-	 */
+-	if (mask < DMA_BIT_MASK(24))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static inline int plat_device_is_coherent(struct device *dev)
+-{
+-	return 0;
+-}
+-
+-static inline void plat_post_dma_flush(struct device *dev)
+-{
+-}
+-
+-#endif /* __ASM_MACH_LOONGSON64_DMA_COHERENCE_H */
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index a785bf8da3f3..c865b4b9b775 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -13,7 +13,6 @@ config LEMOTE_FULOONG2E
+ 	select CSRC_R4K
+ 	select SYS_HAS_CPU_LOONGSON2E
+ 	select DMA_NONCOHERENT
+-	select MIPS_DMA_DEFAULT
+ 	select BOOT_ELF32
+ 	select BOARD_SCACHE
+ 	select HW_HAS_PCI
+@@ -45,7 +44,6 @@ config LEMOTE_MACH2F
+ 	select CS5536
+ 	select CSRC_R4K if ! MIPS_EXTERNAL_TIMER
+ 	select DMA_NONCOHERENT
+-	select MIPS_DMA_DEFAULT
+ 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
+ 	select HAVE_CLK
+ 	select HW_HAS_PCI
+diff --git a/arch/mips/loongson64/common/Makefile b/arch/mips/loongson64/common/Makefile
+index 684624f61f5a..57ee03022941 100644
+--- a/arch/mips/loongson64/common/Makefile
++++ b/arch/mips/loongson64/common/Makefile
+@@ -6,6 +6,7 @@
+ obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
+     bonito-irq.o mem.o machtype.o platform.o serial.o
+ obj-$(CONFIG_PCI) += pci.o
++obj-$(CONFIG_CPU_LOONGSON2) += dma.o
  
- /*
-  * Offset of the last Linux o32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		366
-+#define __NR_Linux_syscalls		367
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
- 
- #define __NR_O32_Linux			4000
--#define __NR_O32_Linux_syscalls		366
-+#define __NR_O32_Linux_syscalls		367
- 
- #if _MIPS_SIM == _MIPS_SIM_ABI64
- 
-@@ -733,16 +734,17 @@
- #define __NR_pkey_alloc			(__NR_Linux + 324)
- #define __NR_pkey_free			(__NR_Linux + 325)
- #define __NR_statx			(__NR_Linux + 326)
-+#define __NR_io_pgetevents		(__NR_Linux + 327)
- 
- /*
-  * Offset of the last Linux 64-bit flavoured syscall
-  */
--#define __NR_Linux_syscalls		326
-+#define __NR_Linux_syscalls		327
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
- 
- #define __NR_64_Linux			5000
--#define __NR_64_Linux_syscalls		326
-+#define __NR_64_Linux_syscalls		327
- 
- #if _MIPS_SIM == _MIPS_SIM_NABI32
- 
-@@ -1081,15 +1083,16 @@
- #define __NR_pkey_alloc			(__NR_Linux + 328)
- #define __NR_pkey_free			(__NR_Linux + 329)
- #define __NR_statx			(__NR_Linux + 330)
-+#define __NR_io_pgetevents		(__NR_Linux + 331)
- 
- /*
-  * Offset of the last N32 flavoured syscall
-  */
--#define __NR_Linux_syscalls		330
-+#define __NR_Linux_syscalls		331
- 
- #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
- 
- #define __NR_N32_Linux			6000
--#define __NR_N32_Linux_syscalls		330
-+#define __NR_N32_Linux_syscalls		331
- 
- #endif /* _UAPI_ASM_UNISTD_H */
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index a9a7d78803cd..7010fedee283 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -590,3 +590,4 @@ EXPORT(sys_call_table)
- 	PTR	sys_pkey_alloc
- 	PTR	sys_pkey_free			/* 4365 */
- 	PTR	sys_statx
-+	PTR	sys_io_pgetevents
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index 65d5aeeb9bdb..c6602079c46f 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -439,4 +439,5 @@ EXPORT(sys_call_table)
- 	PTR	sys_pkey_alloc
- 	PTR	sys_pkey_free			/* 5325 */
- 	PTR	sys_statx
-+	PTR	sys_io_pgetevents
- 	.size	sys_call_table,.-sys_call_table
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index cbf190ef9e8a..4959b103f7a9 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -434,4 +434,5 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_pkey_alloc
- 	PTR	sys_pkey_free
- 	PTR	sys_statx			/* 6330 */
-+	PTR	compat_sys_io_pgetevents
- 	.size	sysn32_call_table,.-sysn32_call_table
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 9ebe3e2403b1..433c7da31dbf 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -583,4 +583,5 @@ EXPORT(sys32_call_table)
- 	PTR	sys_pkey_alloc
- 	PTR	sys_pkey_free			/* 4365 */
- 	PTR	sys_statx
-+	PTR	compat_sys_io_pgetevents
- 	.size	sys32_call_table,.-sys32_call_table
+ #
+ # Serial port support
+diff --git a/arch/mips/loongson64/common/dma.c b/arch/mips/loongson64/common/dma.c
+new file mode 100644
+index 000000000000..48f04126bde2
+--- /dev/null
++++ b/arch/mips/loongson64/common/dma.c
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/dma-direct.h>
++
++dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
++{
++	return paddr | 0x80000000;
++}
++
++phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
++{
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
++	if (dma_addr > 0x8fffffff)
++		return dma_addr;
++	return dma_addr & 0x0fffffff;
++#else
++	return dma_addr & 0x7fffffff;
++#endif
++}
 -- 
 2.17.1

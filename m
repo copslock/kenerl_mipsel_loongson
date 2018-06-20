@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 19:14:35 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:50884 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994674AbeFTROYqFRCS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jun 2018 19:14:24 +0200
-Received: from mipsdag03.mipstec.com (mail3.mips.com [12.201.5.33]) by mx29.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 20 Jun 2018 17:14:19 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag03.mipstec.com
- (10.20.40.48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 20
- Jun 2018 10:14:18 -0700
-Received: from localhost (10.20.2.29) by mipsdag02.mipstec.com (10.20.40.47)
- with Microsoft SMTP Server id 15.1.1415.2 via Frontend Transport; Wed, 20 Jun
- 2018 10:14:18 -0700
-Date:   Wed, 20 Jun 2018 10:14:18 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 0/5] MIPS: Clean-up DT bus probing
-Message-ID: <20180620171418.43yveoh3md4kqzvw@pburton-laptop>
-References: <20180619214710.22066-1-robh@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 23:17:58 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:36262 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992992AbeFTVRvADrY3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Jun 2018 23:17:51 +0200
+Received: from jamesdev (jahogan.plus.com [212.159.75.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7908220846;
+        Wed, 20 Jun 2018 21:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1529529464;
+        bh=JaQLZwHRKB/x7C+ZikXJeDh6mobwqXfu4k3OBQ2DEPE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CLUVBUtT0TmcX10M5PuUHY5bm8Q0Ht1h8+ysQcYX9Xs4atEz9eRxZau6G3cg3ssFt
+         P/Qx0JGdFu3WXvY+kQs2kWYLD/58hgBh7vRpfqv3VLD4h1eyER6YPI3OKnAu4+WIed
+         iikleWzrpzMb6BqBE5ZsTolZiy3Wscz1Fa38Oh+o=
+Date:   Wed, 20 Jun 2018 22:17:40 +0100
+From:   James Hogan <jhogan@kernel.org>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Wire up io_pgetevents syscall
+Message-ID: <20180620211738.GA22606@jamesdev>
+References: <20180615083543.GA7603@jamesdev>
+ <20180620034615.17579-1-paul.burton@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
 Content-Disposition: inline
-In-Reply-To: <20180619214710.22066-1-robh@kernel.org>
-User-Agent: NeoMutt/20180512
-X-BESS-ID: 1529514859-637139-29444-50583-1
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.33
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194226
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: robh@kernel.org,ralf@linux-mips.org,jhogan@kernel.org,linux-kernel@vger.kernel.org,linux-mips@linux-mips.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+In-Reply-To: <20180620034615.17579-1-paul.burton@mips.com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <jhogan@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64398
+X-archive-position: 64399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: jhogan@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,30 +50,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rob,
 
-On Tue, Jun 19, 2018 at 03:47:05PM -0600, Rob Herring wrote:
-> This is a series of clean-ups of DT bus probing calls. Generally, the 
-> DT core code takes care of the default case and arches/platforms only 
-> need to do their own call if they have non-default matching 
-> requirements.
-> 
-> Rob
-> 
-> Rob Herring (5):
->   MIPS: octeon: use of_platform_populate to probe devices
->   MIPS: netlogic: remove unnecessary of_platform_bus_probe call
->   MIPS: bmips: remove unnecessary call to register "simple-bus"
->   MIPS: generic: remove unnecessary of_platform_populate call
->   MIPS: lantiq: remove unnecessary of_platform_default_populate call
-> 
->  arch/mips/bmips/setup.c                   |  7 -------
->  arch/mips/cavium-octeon/octeon-platform.c |  2 +-
->  arch/mips/generic/init.c                  | 13 -------------
->  arch/mips/lantiq/prom.c                   |  8 --------
->  arch/mips/netlogic/xlp/dt.c               | 14 --------------
->  5 files changed, 1 insertion(+), 43 deletions(-)
+--EVF5PPMfhYS0aIcm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks - series applied to mips-next for 4.19.
+On Tue, Jun 19, 2018 at 08:46:15PM -0700, Paul Burton wrote:
+> Wire up the io_pgetevents syscall that was introduced by commit
+> 7a074e96dee6 ("aio: implement io_pgetevents").
+>=20
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+>=20
+> ---
+> This will conflict with the rseq patches, but is trivial to fixup.
+>=20
+> Changes in v2:
+> - Use compat_sys_io_pgetevents for o32 & n32 on MIPS64 kernels.
 
-Paul
+Thanks,
+
+Reviewed-by: James Hogan <jhogan@kernel.org>
+
+Cheers
+James
+
+--EVF5PPMfhYS0aIcm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS7lRNBWUYtqfDOVL41zuSGKxAj8gUCWyrEcgAKCRA1zuSGKxAj
+8ioKAP9H5qC8U2Of6pPE9kdLj9DJYsOcvBOrmZbs28mG3pybiwD/djwmexTXmeDV
+BXjbAsb1esKaQEDagX8NW/s+VYECuAM=
+=KYJU
+-----END PGP SIGNATURE-----
+
+--EVF5PPMfhYS0aIcm--

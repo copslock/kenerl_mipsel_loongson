@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2018 01:19:03 +0200 (CEST)
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:25752 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2018 01:22:30 +0200 (CEST)
+Received: from conssluserg-04.nifty.com ([210.131.2.83]:29203 "EHLO
         conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994687AbeFTXS4A8XX3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jun 2018 01:18:56 +0200
-Received: from mail-vk0-f53.google.com (mail-vk0-f53.google.com [209.85.213.53]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id w5KNI1ip028854
-        for <linux-mips@linux-mips.org>; Thu, 21 Jun 2018 08:18:02 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com w5KNI1ip028854
+        by eddie.linux-mips.org with ESMTP id S23994687AbeFTXWYNop33 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jun 2018 01:22:24 +0200
+Received: from mail-vk0-f54.google.com (mail-vk0-f54.google.com [209.85.213.54]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id w5KNLgmo030165
+        for <linux-mips@linux-mips.org>; Thu, 21 Jun 2018 08:21:43 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com w5KNLgmo030165
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1529536682;
-        bh=9vrsGmZqC+GEIrYCahrSYjjvsiH/Pb/HRSGorzhJ1AY=;
+        s=dec2015msa; t=1529536903;
+        bh=BvjvEwsCKwteznCw+J7EKVMYt10HGvefYc/aHObNGQA=;
         h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=zhCJSGvfo9vi9wMXx0u5ghhHeRZfuqFlxzWjEVgauLZrTB9bvixTQ/JsJVFh4yEBE
-         THX1XqyY+0eOjHiG4axupQzIseA5fWyd7SAQUXU4MvsHnxDcPWKDuNJYTRhfDRFyO6
-         rH1iLrZl++HF7UE/z7LYtAzRpdyZBC/1gpD+tEYP6fIeUcQvBud5kgvb08NWCxViUT
-         NkJJ23l3o9w7lO+sH9gLINbN2Y4P1wAvdFFpJt8SsAncXxXNf/KhdYCGw5oyUpnfRC
-         uLPf6H+fxqDFuugnHyQCD78D2IMT1zOgmDOaV65EYz/Z88TiISFeMEilyAB8+OCidJ
-         VGGv1z3vx1RUA==
-X-Nifty-SrcIP: [209.85.213.53]
-Received: by mail-vk0-f53.google.com with SMTP id d74-v6so750144vke.10
-        for <linux-mips@linux-mips.org>; Wed, 20 Jun 2018 16:18:02 -0700 (PDT)
-X-Gm-Message-State: APt69E18clrehxBJjdGnpr2Vxgdz5SiPWk7h3Owm4FxKvV+LDH+jhQ9B
-        Y2AW3LxsV/M0rk5D6bfSoCjcBz6UwTBpndbIz+o=
-X-Google-Smtp-Source: ADUXVKJ+CSATZmViNP7QSK2PN7hNYLM3YFRFJsR7LNNfctJ3Nx5V5/bn+R8vz04vr86PQPnxHPpcmt57lN/hciXKkYk=
-X-Received: by 2002:a1f:c944:: with SMTP id z65-v6mr13516653vkf.11.1529536681104;
- Wed, 20 Jun 2018 16:18:01 -0700 (PDT)
+        b=1KrV2lRBZYSAMSAdo1pjeJEBopT2ygXvGHz/lF6BQqU7IXwbSRGERKJHhuQt7QoNn
+         pvIx5PBMXmimnDgRzFuxTnb1oLaMpjqcLfnQIzGG9hSWhW3c0YtVdxJZVNRx9Py3QU
+         NhqscH3BlSy6lAzKFSr/H6zL6u1lzLw0AcED9XaooveWQqf8qFE/49pP19wDFG5Fmn
+         vCLuEJkc55u16zHu1uowh8w/h+jj8efTn/dFditWHT1OVjgqyov3MyqT4L3ucGMxLI
+         yU6mf7Ejw2Q4i8ae1tsy9EidJp9AoZLTlkatDnjvDQ4HRFY6iKfIq1l6oaJSi1J76+
+         NnX58aw4e1P1A==
+X-Nifty-SrcIP: [209.85.213.54]
+Received: by mail-vk0-f54.google.com with SMTP id b134-v6so752615vke.13
+        for <linux-mips@linux-mips.org>; Wed, 20 Jun 2018 16:21:43 -0700 (PDT)
+X-Gm-Message-State: APt69E3WxAokDHJzGYIfJoqECX+ltUfYnKhgflbngAKsja3tjSbhGfrZ
+        G+QSK8JR1c2loYdhEwnzWGNv0rRfMnFXDkIKuPM=
+X-Google-Smtp-Source: ADUXVKK8VDo10H+/qDD44PBh51+5R2N1idb5nT+dcqk0wRMp3DXbMsa1hKkUo4LNme8GCn2Rmmgr6AC3X46TaKRT27k=
+X-Received: by 2002:a1f:b143:: with SMTP id a64-v6mr13458964vkf.65.1529536902208;
+ Wed, 20 Jun 2018 16:21:42 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab0:1ec1:0:0:0:0:0 with HTTP; Wed, 20 Jun 2018 16:17:18
+Received: by 2002:ab0:1ec1:0:0:0:0:0 with HTTP; Wed, 20 Jun 2018 16:21:01
  -0700 (PDT)
-In-Reply-To: <20180619201458.4559-2-paul.burton@mips.com>
-References: <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
- <20180619201458.4559-1-paul.burton@mips.com> <20180619201458.4559-2-paul.burton@mips.com>
+In-Reply-To: <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
+References: <20180616005323.7938-1-paul.burton@mips.com> <20180616005323.7938-2-paul.burton@mips.com>
+ <CAK7LNASvCha27kU4ipn23uOpNuxkzJrNzWBwYcxN4n=3xtv8SA@mail.gmail.com> <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 21 Jun 2018 08:17:18 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASxuQJJsbBQocWSDpeiEuB2A68r2Znbo8ayk2mujywkpQ@mail.gmail.com>
-Message-ID: <CAK7LNASxuQJJsbBQocWSDpeiEuB2A68r2Znbo8ayk2mujywkpQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] kbuild: add macro for controlling warnings to linux/compiler.h
+Date:   Thu, 21 Jun 2018 08:21:01 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQRu0p8_8DqEdmUUPfc4gC60SSj90vTpz3iKaiE596-TA@mail.gmail.com>
+Message-ID: <CAK7LNAQRu0p8_8DqEdmUUPfc4gC60SSj90vTpz3iKaiE596-TA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] kbuild: add macro for controlling warnings to linux/compiler.h
 To:     Paul Burton <paul.burton@mips.com>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Linux-MIPS <linux-mips@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
         Matthew Wilcox <matthew@wil.cx>,
         Thomas Gleixner <tglx@linutronix.de>,
         Douglas Anderson <dianders@chromium.org>,
@@ -66,7 +67,7 @@ Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64403
+X-archive-position: 64404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,206 +84,195 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi.
+2018-06-20 4:02 GMT+09:00 Paul Burton <paul.burton@mips.com>:
+> Hi Masahiro,
+>
+> On Wed, Jun 20, 2018 at 02:34:35AM +0900, Masahiro Yamada wrote:
+>> 2018-06-16 9:53 GMT+09:00 Paul Burton <paul.burton@mips.com>:
+>> > diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+>> > index f1a7492a5cc8..aba64a2912d8 100644
+>> > --- a/include/linux/compiler-gcc.h
+>> > +++ b/include/linux/compiler-gcc.h
+>> > @@ -347,3 +347,69 @@
+>> >  #if GCC_VERSION >= 50100
+>> >  #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
+>> >  #endif
+>> > +
+>> > +/*
+>> > + * turn individual warnings and errors on and off locally, depending
+>> > + * on version.
+>> > + */
+>> > +#define __diag_GCC(version, s) __diag_GCC_ ## version(s)
+>> > +
+>> > +#if GCC_VERSION >= 40600
+>> > +#define __diag_str1(s) #s
+>> > +#define __diag_str(s) __diag_str1(s)
+>> > +#define __diag(s) _Pragma(__diag_str(GCC diagnostic s))
+>> > +
+>> > +/* compilers before gcc-4.6 do not understand "#pragma GCC diagnostic push" */
+>> > +#define __diag_GCC_4_6(s) __diag(s)
+>> > +#else
+>> > +#define __diag(s)
+>> > +#define __diag_GCC_4_6(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 40700
+>> > +#define __diag_GCC_4_7(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_4_7(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 40800
+>> > +#define __diag_GCC_4_8(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_4_8(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 40900
+>> > +#define __diag_GCC_4_9(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_4_9(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 50000
+>> > +#define __diag_GCC_5(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_5(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 60000
+>> > +#define __diag_GCC_6(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_6(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 70000
+>> > +#define __diag_GCC_7(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_7(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 80000
+>> > +#define __diag_GCC_8(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_8(s)
+>> > +#endif
+>> > +
+>> > +#if GCC_VERSION >= 90000
+>> > +#define __diag_GCC_9(s) __diag(s)
+>> > +#else
+>> > +#define __diag_GCC_9(s)
+>> > +#endif
+>>
+>>
+>> Hmm, we would have to add this for every release.
+>
+> Well, strictly speaking only ones that we need to modify diags for - ie.
+> in this series we could get away with only adding the GCC 8 macro if we
+> wanted.
+>
+>> > diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+>> > index 6b79a9bba9a7..313a2ad884e0 100644
+>> > --- a/include/linux/compiler_types.h
+>> > +++ b/include/linux/compiler_types.h
+>> > @@ -271,4 +271,22 @@ struct ftrace_likely_data {
+>> >  # define __native_word(t) (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+>> >  #endif
+>> >
+>> > +#ifndef __diag
+>> > +#define __diag(string)
+>> > +#endif
+>> > +
+>> > +#ifndef __diag_GCC
+>> > +#define __diag_GCC(string)
+>> > +#endif
+>>
+>> __diag_GCC() takes two arguments,
+>> so it should be:
+>>
+>> #ifndef __diag_GCC
+>> #define __diag_GCC(version, s)
+>> #endif
+>>
+>>
+>> Otherwise, this would cause warning like this:
+>>
+>>
+>> arch/arm64/kernel/sys.c:40:1: error: macro "__diag_GCC" passed 2
+>> arguments, but takes just 1
+>>  SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
+>>  ^~~~~~~~~~
+>
+> Yes, good catch.
+>
+>> > +#define __diag_push()  __diag(push)
+>> > +#define __diag_pop()   __diag(pop)
+>> > +
+>> > +#define __diag_ignore(compiler, version, option, comment) \
+>> > +       __diag_ ## compiler(version, ignored option)
+>> > +#define __diag_warn(compiler, version, option, comment) \
+>> > +       __diag_ ## compiler(version, warning option)
+>> > +#define __diag_error(compiler, version, option, comment) \
+>> > +       __diag_ ## compiler(version, error   option)
+>> > +
+>>
+>> To me, it looks like this is putting GCC/Clang specific things
+>> in the common file, <linux/compiler_types.h> .
+>>
+>> All compilers must use "ignored", "warning", "error",
+>> not allowed to use "ignore".
+>
+> We could move that to linux/compiler-gcc.h pretty easily.
+>
+>> I also wonder if we could avoid proliferating __diag_GCC_*.
+>
+> My thought is that it's unlikely we'll ever support enough different
+> compilers for it to become problematic to list the ones we modify
+> warnings for in linux/compiler_types.h.
+>
+>> I attached a bit different implementation below.
+>>
+>> I used -Wno-pragmas to avoid unknown option warnings.
+>
+> That doesn't seem very clean to me because it will hide typos or other
+> mistakes. One advantage of Arnd's patch is that by specifying the
+> compiler & version we only attempt to use pragmas that are appropriate
+> so we don't need to ignore unknown ones.
+>
+>> Usage is
+>>
+>>        __diag_push();
+>>        __diag_ignore(-Wattribute-alias,
+>>                      "Type aliasing is used to sanitize syscall arguments");
+>>               ...
+>>        __diag_pop();
+>>
+>> Comments, ideas are appreciated.
+>
+> By removing the compiler & version arguments you're enforcing that if we
+> ignore a warning for one compiler we must ignore it for all, regardless
+> of whether it's problematic. This essentially presumes that warnings
+> with the same name will behave the same across compilers, which feels
+> worse to me than having users of this explicitly state which compilers
+> need the pragmas.
 
 
-2018-06-20 5:14 GMT+09:00 Paul Burton <paul.burton@mips.com>:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> I have occasionally run into a situation where it would make sense to
-> control a compiler warning from a source file rather than doing so from
-> a Makefile using the $(cc-disable-warning, ...) or $(cc-option, ...)
-> helpers.
->
-> The approach here is similar to what glibc uses, using __diag() and
-> related macros to encapsulate a _Pragma("GCC diagnostic ...") statement
-> that gets turned into the respective "#pragma GCC diagnostic ..." by
-> the preprocessor when the macro gets expanded.
->
-> Like glibc, I also have an argument to pass the affected compiler
-> version, but decided to actually evaluate that one. For now, this
-> supports GCC_4_6, GCC_4_7, GCC_4_8, GCC_4_9, GCC_5, GCC_6, GCC_7,
-> GCC_8 and GCC_9. Adding support for CLANG_5 and other interesting
-> versions is straightforward here. GNU compilers starting with gcc-4.2
-> could support it in principle, but "#pragma GCC diagnostic push"
-> was only added in gcc-4.6, so it seems simpler to not deal with those
-> at all. The same versions show a large number of warnings already,
-> so it seems easier to just leave it at that and not do a more
-> fine-grained control for them.
->
-> The use cases I found so far include:
->
-> - turning off the gcc-8 -Wattribute-alias warning inside of the
->   SYSCALL_DEFINEx() macro without having to do it globally.
->
-> - Reducing the build time for a simple re-make after a change,
->   once we move the warnings from ./Makefile and
->   ./scripts/Makefile.extrawarn into linux/compiler.h
->
-> - More control over the warnings based on other configurations,
->   using preprocessor syntax instead of Makefile syntax. This should make
->   it easier for the average developer to understand and change things.
->
-> - Adding an easy way to turn the W=1 option on unconditionally
->   for a subdirectory or a specific file. This has been requested
->   by several developers in the past that want to have their subsystems
->   W=1 clean.
->
-> - Integrating clang better into the build systems. Clang supports
->   more warnings than GCC, and we probably want to classify them
->   as default, W=1, W=2 etc, but there are cases in which the
->   warnings should be classified differently due to excessive false
->   positives from one or the other compiler.
->
-> - Adding a way to turn the default warnings into errors (e.g. using
->   a new "make E=0" tag) while not also turning the W=1 warnings into
->   errors.
->
-> This patch for now just adds the minimal infrastructure in order to
-> do the first of the list above. As the #pragma GCC diagnostic
-> takes precedence over command line options, the next step would be
-> to convert a lot of the individual Makefiles that set nonstandard
-> options to use __diag() instead.
->
-> [paul.burton@mips.com:
->   - Rebase atop current master.
->   - Add __diag_GCC, or more generally __diag_<compiler>, abstraction to
->     avoid code outside of linux/compiler-gcc.h needing to duplicate
->     knowledge about different GCC versions.
->   - Add a comment argument to __diag_{ignore,warn,error} which isn't
->     used in the expansion of the macros but serves to push people to
->     document the reason for using them - per feedback from Kees Cook.
->   - Translate severity to GCC-specific pragmas in linux/compiler-gcc.h
->     rather than using GCC-specific in linux/compiler_types.h.
->   - Drop all but GCC 8 macros, since we only need to define macros for
->     versions that we need to introduce pragmas for, and as of this
->     series that's just GCC 8.
->   - Capitalize comments in linux/compiler-gcc.h to match the style of
->     the rest of the file.
->   - Line up macro definitions with tabs in linux/compiler-gcc.h.]
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Tested-by: Stafford Horne <shorne@gmail.com>
-> Cc: Michal Marek <michal.lkml@markovi.net>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Matthew Wilcox <matthew@wil.cx>
-> Cc: Matthias Kaehlcke <mka@chromium.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Khem Raj <raj.khem@gmail.com>
-> Cc: He Zhe <zhe.he@windriver.com>
-> Cc: linux-kbuild@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linuxppc-dev@lists.ozlabs.org
->
-> ---
->
-> Changes in v2:
-> - Add version argument to fallback __diag_GCC definition.
-> - Translate severity from generic ignore,warn,error to GCC-specific
->   pragma content ignored,warning,error in linux/compiler-gcc.h in order
->   to keep linux/compiler_types.h generic per feedback from Masahiro
->   Yamada.
-> - Drop all but GCC 8 macros, since we only need to define macros for
->   versions that we need to introduce pragmas for, and as of this series
->   that's just GCC 8.
-> - Capitalize comments in linux/compiler-gcc.h to match the style of the
->   rest of the file.
-> - Line up macro definitions with tabs in linux/compiler-gcc.h.
->
->  include/linux/compiler-gcc.h   | 27 +++++++++++++++++++++++++++
->  include/linux/compiler_types.h | 18 ++++++++++++++++++
->  2 files changed, 45 insertions(+)
->
-> diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-> index f1a7492a5cc8..5067a90af9c3 100644
-> --- a/include/linux/compiler-gcc.h
-> +++ b/include/linux/compiler-gcc.h
-> @@ -347,3 +347,30 @@
->  #if GCC_VERSION >= 50100
->  #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
->  #endif
-> +
-> +/*
-> + * Turn individual warnings and errors on and off locally, depending
-> + * on version.
-> + */
-> +#define __diag_GCC(version, severity, s) \
-> +       __diag_GCC_ ## version(__diag_GCC_ ## severity s)
-> +
-> +/* Severity used in pragma directives */
-> +#define __diag_GCC_ignore      ignored
-> +#define __diag_GCC_warn                warning
-> +#define __diag_GCC_error       error
-> +
-> +/* Compilers before gcc-4.6 do not understand "#pragma GCC diagnostic push" */
-> +#if GCC_VERSION >= 40600
-> +#define __diag_str1(s)         #s
-> +#define __diag_str(s)          __diag_str1(s)
-> +#define __diag(s)              _Pragma(__diag_str(GCC diagnostic s))
-> +#else
-> +#define __diag(s)
+
+Fair enough.
+
+V2 is good except one nit.
+(I left a comment in it)
 
 
-You can omit the #else here
-because it is covered by compiler_types.h
+I can fix it up locally
+if it is tedious to re-spin, though.
 
 
 
-> +#endif
-> +
-> +#if GCC_VERSION >= 80000
-> +#define __diag_GCC_8(s)                __diag(s)
-> +#else
-> +#define __diag_GCC_8(s)
-> +#endif
-> diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-> index 6b79a9bba9a7..a8ba6b04152c 100644
-> --- a/include/linux/compiler_types.h
-> +++ b/include/linux/compiler_types.h
-> @@ -271,4 +271,22 @@ struct ftrace_likely_data {
->  # define __native_word(t) (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
->  #endif
->
-> +#ifndef __diag
-> +#define __diag(string)
-> +#endif
-> +
-> +#ifndef __diag_GCC
-> +#define __diag_GCC(version, severity, string)
-> +#endif
-> +
-> +#define __diag_push()  __diag(push)
-> +#define __diag_pop()   __diag(pop)
-> +
-> +#define __diag_ignore(compiler, version, option, comment) \
-> +       __diag_ ## compiler(version, ignore, option)
-> +#define __diag_warn(compiler, version, option, comment) \
-> +       __diag_ ## compiler(version, warn, option)
-> +#define __diag_error(compiler, version, option, comment) \
-> +       __diag_ ## compiler(version, error, option)
-> +
->  #endif /* __LINUX_COMPILER_TYPES_H */
-> --
-> 2.17.1
->
+
+
+> Thanks,
+>     Paul
 > --
 > To unsubscribe from this list: send the line "unsubscribe linux-kbuild" in
 > the body of a message to majordomo@vger.kernel.org

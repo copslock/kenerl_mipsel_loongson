@@ -1,70 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 11:22:42 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50446 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994641AbeFTJWgJ0hLn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Jun 2018 11:22:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
-        :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Mm8B6hvvw2/VNm8h40poQZG0dsa92W6ce82K+9oLdF0=; b=J5tf/UZpExB0n+CuRHIZDz8J5G
-        QZjxc7TWh34GfhSehQQxNesnKNoTISy7S7BwVzeevnAswNQC03mivf1jc5Ozyx23heikOh2pxv2Em
-        ztP45cjmrggMlFdGdrQvhWvglUjssvgVHPYenZjicpEnwhvm2WPFDf2vLZx/LHzw4VKJZD+jHHCH4
-        6BhfjTCvn3KHjE8SKnlySfwtiQxHkZJNDu3N0bbRKbLv/eQSm3FpORmWqUtQ2We5MvvU/cxYw915D
-        BGFJI+5906LbwYDIa9K7de/Xtqd8iCZeedwQO0+9IImnd/1fRfW58zG2NeKzHmaZuqBWm9th4VBci
-        OllyLKZA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fVZJr-00039z-LP; Wed, 20 Jun 2018 09:22:27 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 197BC2029F1DD; Wed, 20 Jun 2018 11:22:26 +0200 (CEST)
-Date:   Wed, 20 Jun 2018 11:22:26 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Will Deacon <will.deacon@arm.com>
-Cc:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        wuzhangjin <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        stable <stable@vger.kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        AndreaParri <andrea.parri@amarulasolutions.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Akira Yokosawa <akiyks@gmail.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: implement smp_cond_load_acquire() for Loongson-3
-Message-ID: <20180620092226.GM2476@hirez.programming.kicks-ass.net>
-References: <1529042858-9483-1-git-send-email-chenhc@lemote.com>
- <20180618185141.yvkrsbdi2gbxjxj7@pburton-laptop>
- <tencent_59DC823168EC2F5D42AE44F0@qq.com>
- <20180619072242.GC2494@hirez.programming.kicks-ass.net>
- <tencent_2BF857EC332473814C12A753@qq.com>
- <20180620081715.GA27776@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2018 15:40:58 +0200 (CEST)
+Received: from pegase1.c-s.fr ([93.17.236.30]:19174 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994655AbeFTNknlwZvk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Jun 2018 15:40:43 +0200
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 419mDf2qntz9ttl6;
+        Wed, 20 Jun 2018 15:40:34 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id uYPHJFo49GTt; Wed, 20 Jun 2018 15:40:34 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 419mDf2DfTz9ttkv;
+        Wed, 20 Jun 2018 15:40:34 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D7808B827;
+        Wed, 20 Jun 2018 15:40:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id ofANG5p2Pjig; Wed, 20 Jun 2018 15:40:38 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.232.3])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 12D3E8B823;
+        Wed, 20 Jun 2018 15:40:37 +0200 (CEST)
+Subject: Re: [PATCH v2 3/3] powerpc: Remove -Wattribute-alias pragmas
+To:     Paul Burton <paul.burton@mips.com>, linux-kbuild@vger.kernel.org
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Matthew Wilcox <matthew@wil.cx>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Douglas Anderson <dianders@chromium.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        He Zhe <zhe.he@windriver.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Khem Raj <raj.khem@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Gideon Israel Dsouza <gidisrael@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20180619190225.7eguhiw3ixaiwpgl@pburton-laptop>
+ <20180619201458.4559-1-paul.burton@mips.com>
+ <20180619201458.4559-4-paul.burton@mips.com>
+From:   Christophe LEROY <christophe.leroy@c-s.fr>
+Message-ID: <ba484232-7b59-05b2-34a9-2d66d43ff382@c-s.fr>
+Date:   Wed, 20 Jun 2018 15:40:37 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20180619201458.4559-4-paul.burton@mips.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20180620081715.GA27776@arm.com>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <peterz@infradead.org>
+Return-Path: <christophe.leroy@c-s.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64396
+X-archive-position: 64397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: christophe.leroy@c-s.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,43 +81,233 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 20, 2018 at 09:17:16AM +0100, Will Deacon wrote:
-> On Wed, Jun 20, 2018 at 11:31:55AM +0800, 陈华才 wrote:
-> > Loongson-3's Store Fill Buffer is nearly the same as your "Store Buffer",
-> > and it increases the memory ordering weakness. So, smp_cond_load_acquire()
-> > only need a __smp_mb() before the loop, not after every READ_ONCE(). In
-> > other word, the following code is just OK:
-> > 
-> > #define smp_cond_load_acquire(ptr, cond_expr)                   \
-> > ({                                                              \
-> >         typeof(ptr) __PTR = (ptr);                              \
-> >         typeof(*ptr) VAL;                                       \
-> >         __smp_mb();                                     \
-> >         for (;;) {                                              \
-> >                 VAL = READ_ONCE(*__PTR);                        \
-> >                 if (cond_expr)                                  \
-> >                         break;                                  \
-> >                 cpu_relax();                                    \
-> >         }                                                       \
-> >         __smp_mb();                                     \
-> >         VAL;                                                    \
-> > })
-> > 
-> > the __smp_mb() before loop is used to avoid "reads prioritised over
-> > writes", which is caused by SFB's weak ordering and similar to ARM11MPCore
-> > (mentioned by Will Deacon).
-> 
-> Sure, but smp_cond_load_acquire() isn't the only place you'll see this sort
-> of pattern in the kernel. In other places, the only existing arch hook is
-> cpu_relax(), so unless you want to audit all loops and add a special
-> MIPs-specific smp_mb() to those that are affected, I think your only option
-> is to stick it in cpu_relax().
-> 
-> I assume you don't have a control register that can disable this
-> prioritisation in the SFB?
 
-Right, I think we also want to clarify that this 'feature' is not
-supported by the Linux kernel in general and LKMM in specific.
 
-It really is a CPU bug. And the cpu_relax() change is a best effort
-work-around.
+Le 19/06/2018 à 22:14, Paul Burton a écrit :
+> With SYSCALL_DEFINEx() disabling -Wattribute-alias generically, there's
+> no need to duplicate that for PowerPC syscalls.
+> 
+> This reverts commit 415520373975 ("powerpc: fix build failure by
+> disabling attribute-alias warning in pci_32") and commit 2479bfc9bc60
+> ("powerpc: Fix build by disabling attribute-alias warning for
+> SYSCALL_DEFINEx").
+> 
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Matthew Wilcox <matthew@wil.cx>
+> Cc: Matthias Kaehlcke <mka@chromium.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Gideon Israel Dsouza <gidisrael@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: Khem Raj <raj.khem@gmail.com>
+> Cc: He Zhe <zhe.he@windriver.com>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> 
+> ---
+> Michael & Christophe, I didn't add your acks here yet since it changed
+> to include the second revert that Christophe pointed out I'd missed & I
+> didn't want to presume your acks extended to that.
+
+Looks ok to me
+
+Acked-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+> 
+> Changes in v2:
+> - Also revert 2479bfc9bc60 ("powerpc: Fix build by disabling
+>    attribute-alias warning for SYSCALL_DEFINEx").
+> - Change subject now that it's not just a simple one-commit revert.
+> 
+>   arch/powerpc/kernel/pci_32.c    | 4 ----
+>   arch/powerpc/kernel/pci_64.c    | 4 ----
+>   arch/powerpc/kernel/rtas.c      | 4 ----
+>   arch/powerpc/kernel/signal_32.c | 8 --------
+>   arch/powerpc/kernel/signal_64.c | 4 ----
+>   arch/powerpc/kernel/syscalls.c  | 4 ----
+>   arch/powerpc/mm/subpage-prot.c  | 4 ----
+>   7 files changed, 32 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
+> index 4f861055a852..d63b488d34d7 100644
+> --- a/arch/powerpc/kernel/pci_32.c
+> +++ b/arch/powerpc/kernel/pci_32.c
+> @@ -285,9 +285,6 @@ pci_bus_to_hose(int bus)
+>    * Note that the returned IO or memory base is a physical address
+>    */
+>   
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE3(pciconfig_iobase, long, which,
+>   		unsigned long, bus, unsigned long, devfn)
+>   {
+> @@ -313,4 +310,3 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which,
+>   
+>   	return result;
+>   }
+> -#pragma GCC diagnostic pop
+> diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+> index 812171c09f42..dff28f903512 100644
+> --- a/arch/powerpc/kernel/pci_64.c
+> +++ b/arch/powerpc/kernel/pci_64.c
+> @@ -203,9 +203,6 @@ void pcibios_setup_phb_io_space(struct pci_controller *hose)
+>   #define IOBASE_ISA_IO		3
+>   #define IOBASE_ISA_MEM		4
+>   
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, in_bus,
+>   			  unsigned long, in_devfn)
+>   {
+> @@ -259,7 +256,6 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, in_bus,
+>   
+>   	return -EOPNOTSUPP;
+>   }
+> -#pragma GCC diagnostic pop
+>   
+>   #ifdef CONFIG_NUMA
+>   int pcibus_to_node(struct pci_bus *bus)
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index 7fb9f83dcde8..8afd146bc9c7 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -1051,9 +1051,6 @@ struct pseries_errorlog *get_pseries_errorlog(struct rtas_error_log *log,
+>   }
+>   
+>   /* We assume to be passed big endian arguments */
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+>   {
+>   	struct rtas_args args;
+> @@ -1140,7 +1137,6 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+>   
+>   	return 0;
+>   }
+> -#pragma GCC diagnostic pop
+>   
+>   /*
+>    * Call early during boot, before mem init, to retrieve the RTAS
+> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+> index 5eedbb282d42..e6474a45cef5 100644
+> --- a/arch/powerpc/kernel/signal_32.c
+> +++ b/arch/powerpc/kernel/signal_32.c
+> @@ -1038,9 +1038,6 @@ static int do_setcontext_tm(struct ucontext __user *ucp,
+>   }
+>   #endif
+>   
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   #ifdef CONFIG_PPC64
+>   COMPAT_SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+>   		       struct ucontext __user *, new_ctx, int, ctx_size)
+> @@ -1134,7 +1131,6 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+>   	set_thread_flag(TIF_RESTOREALL);
+>   	return 0;
+>   }
+> -#pragma GCC diagnostic pop
+>   
+>   #ifdef CONFIG_PPC64
+>   COMPAT_SYSCALL_DEFINE0(rt_sigreturn)
+> @@ -1231,9 +1227,6 @@ SYSCALL_DEFINE0(rt_sigreturn)
+>   	return 0;
+>   }
+>   
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   #ifdef CONFIG_PPC32
+>   SYSCALL_DEFINE3(debug_setcontext, struct ucontext __user *, ctx,
+>   			 int, ndbg, struct sig_dbg_op __user *, dbg)
+> @@ -1337,7 +1330,6 @@ SYSCALL_DEFINE3(debug_setcontext, struct ucontext __user *, ctx,
+>   	return 0;
+>   }
+>   #endif
+> -#pragma GCC diagnostic pop
+>   
+>   /*
+>    * OK, we're invoking a handler
+> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+> index d42b60020389..83d51bf586c7 100644
+> --- a/arch/powerpc/kernel/signal_64.c
+> +++ b/arch/powerpc/kernel/signal_64.c
+> @@ -625,9 +625,6 @@ static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
+>   /*
+>    * Handle {get,set,swap}_context operations
+>    */
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+>   		struct ucontext __user *, new_ctx, long, ctx_size)
+>   {
+> @@ -693,7 +690,6 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+>   	set_thread_flag(TIF_RESTOREALL);
+>   	return 0;
+>   }
+> -#pragma GCC diagnostic pop
+>   
+>   
+>   /*
+> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+> index 083fa06962fd..466216506eb2 100644
+> --- a/arch/powerpc/kernel/syscalls.c
+> +++ b/arch/powerpc/kernel/syscalls.c
+> @@ -62,9 +62,6 @@ static inline long do_mmap2(unsigned long addr, size_t len,
+>   	return ret;
+>   }
+>   
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE6(mmap2, unsigned long, addr, size_t, len,
+>   		unsigned long, prot, unsigned long, flags,
+>   		unsigned long, fd, unsigned long, pgoff)
+> @@ -78,7 +75,6 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
+>   {
+>   	return do_mmap2(addr, len, prot, flags, fd, offset, PAGE_SHIFT);
+>   }
+> -#pragma GCC diagnostic pop
+>   
+>   #ifdef CONFIG_PPC32
+>   /*
+> diff --git a/arch/powerpc/mm/subpage-prot.c b/arch/powerpc/mm/subpage-prot.c
+> index 75cb646a79c3..9d16ee251fc0 100644
+> --- a/arch/powerpc/mm/subpage-prot.c
+> +++ b/arch/powerpc/mm/subpage-prot.c
+> @@ -186,9 +186,6 @@ static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
+>    * in a 2-bit field won't allow writes to a page that is otherwise
+>    * write-protected.
+>    */
+> -#pragma GCC diagnostic push
+> -#pragma GCC diagnostic ignored "-Wpragmas"
+> -#pragma GCC diagnostic ignored "-Wattribute-alias"
+>   SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
+>   		unsigned long, len, u32 __user *, map)
+>   {
+> @@ -272,4 +269,3 @@ SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
+>   	up_write(&mm->mmap_sem);
+>   	return err;
+>   }
+> -#pragma GCC diagnostic pop
+> 

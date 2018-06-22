@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2018 22:51:51 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:36165 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994614AbeFUUvo659s1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jun 2018 22:51:44 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id CFBF120834; Thu, 21 Jun 2018 22:51:38 +0200 (CEST)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 99C52206A0;
-        Thu, 21 Jun 2018 22:51:38 +0200 (CEST)
-Date:   Thu, 21 Jun 2018 22:51:39 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Allan Nielsen <Allan.Nielsen@microsemi.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mips: generic: allow not building DTB in
-Message-ID: <20180621205139.GM7737@piout.net>
-References: <20180425211607.2645-1-alexandre.belloni@bootlin.com>
- <20180425211607.2645-2-alexandre.belloni@bootlin.com>
- <20180620220807.GD22606@jamesdev>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2018 10:12:22 +0200 (CEST)
+Received: from mail-ua0-f193.google.com ([209.85.217.193]:37767 "EHLO
+        mail-ua0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbeFVIMPV6vwD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2018 10:12:15 +0200
+Received: by mail-ua0-f193.google.com with SMTP id c2-v6so3760944uae.4
+        for <linux-mips@linux-mips.org>; Fri, 22 Jun 2018 01:12:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PFvWEvBE+tER3NesNR5rnNKEpD8RVlHJ9UN8uppk4Pw=;
+        b=oVPpXJ/t0kh45J6c/8Te6tzA0prdOPhE7ZY5gV2sakn5Zuo03B+exwJCp4hhQ2IcnP
+         EqG2RdQECz5gW8ZQMAfSKWfZ1jeOfiThff9HCpuDaH+NUffzMZZDdVg2EplvVWazCnRM
+         l+B7UM0U/phsI2UmrWTEYHxqyQ6urgwGmcOzGaSbhKEmzH54VqQM46pX0xVXvCVcG/WY
+         fhUO3jRPI1aibEsv9KXnK5OaE4SV9m8SRwDekzqrmdAkfrA3IE4cFV8Rb88SxuesnpEs
+         q8rVKE/SUFLXJMTEWzP3swN+13htAzopknBFF5kZmuGSqMIx4UOmt4qfgEDWFGOM4Dpb
+         PmMg==
+X-Gm-Message-State: APt69E04ERHJsC6YMa7QB71ex+Lb+GLeqYO6KbobzFibVL3phCYYssBt
+        Q+neYyNeosu7KY4j2m0DoR7Jo2ZsC35kbn+tZMs=
+X-Google-Smtp-Source: ADUXVKLXsF4H1J8j777N4NQqFQU9Z8FzUWj/b57ALmtinnRV5Q0T7z2kNaUqTsZTDVxCqqMuQbfq+yu6CiAz8aNrtrA=
+X-Received: by 2002:ab0:5b18:: with SMTP id u24-v6mr396210uae.72.1529655129263;
+ Fri, 22 Jun 2018 01:12:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180620220807.GD22606@jamesdev>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <alexandre.belloni@bootlin.com>
+References: <20180622075421.16001-1-geert@linux-m68k.org>
+In-Reply-To: <20180622075421.16001-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 22 Jun 2018 10:11:58 +0200
+Message-ID: <CAMuHMdWhFyiAhA=bdjxSSmopJ=yJMXqMmOAD8hWUHWpiz0t4kA@mail.gmail.com>
+Subject: Re: [PATCH v2] time: Make sure jiffies_to_msecs() preserves non-zero
+ time periods
+To:     John Stultz <john.stultz@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64408
+X-archive-position: 64409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,86 +57,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 20/06/2018 23:08:08+0100, James Hogan wrote:
-> On Wed, Apr 25, 2018 at 11:16:07PM +0200, Alexandre Belloni wrote:
-> > Allow not building any DTB in the generic kernel so it gets smaller. This
-> > is necessary for ocelot because it can be built as a legacy platform that
-> > needs a built-in DTB and it can also handle a separate DTB once it is
-> > updated with a more modern bootloader. In the latter case, it is preferable
-> > to not include any DTB in the kernel image so it is smaller.
-> 
-> Since bootloaders can modify DTs before passing them to the kernel (e.g.
-> to add cmdline args or memory nodes), that would seem to make it
-> impossible to have a kernel supporting both legacy bootloader, and a
-> u-boot which might do that DT tweaking.
-> 
-> Or perhaps its not important for this platform.
-> 
+CC alpha, mips
 
-It is still possible to generate a FIT image containing a kernel with a
-built in DTB and a separate DTB:
-
-> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > index 5e9fce076ab6..3d3554c13710 100644
-> > --- a/arch/mips/Makefile
-> > +++ b/arch/mips/Makefile
-> > @@ -404,7 +404,7 @@ endif
-> >  CLEAN_FILES += vmlinux.32 vmlinux.64
-> >  
-> >  # device-trees
-> > -core-$(CONFIG_BUILTIN_DTB) += arch/mips/boot/dts/
-> > +core-y += arch/mips/boot/dts/
-> 
-> Won't that result in DTBs being built unnecessarily on other platforms
-> which support BUILTIN_DTB but don't have it enabled?
-> 
-> I suppose the alternative is another Kconfig symbol for when building of
-> DTBs is needed, selected by BUILTIN_DTB and MIPS_GENERIC.
-> 
-Does it matter? On arm all the DTBs for selected platforms are always
-built. It is not adding much to the build time.
-
-IIRC, without that change, it is not possible to build any dtb without
-having CONFIG_BUILTIN_DTB set.
-
-> > diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-> > index 6564f18b2012..012f283f99c4 100644
-> > --- a/arch/mips/generic/Kconfig
-> > +++ b/arch/mips/generic/Kconfig
-> > @@ -3,6 +3,7 @@ if MIPS_GENERIC
-> >  
-> >  config LEGACY_BOARDS
-> >  	bool
-> > +	select BUILTIN_DTB
-> >  	help
-> >  	  Select this from your board if the board must use a legacy, non-UHI,
-> >  	  boot protocol. This will cause the kernel to scan through the list of
-> > diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
-> > index 1a08438fd893..9c954f2ae561 100644
-> > --- a/arch/mips/generic/vmlinux.its.S
-> > +++ b/arch/mips/generic/vmlinux.its.S
-> > @@ -21,6 +21,7 @@
-> >  		};
-> >  	};
-> >  
-> > +#if IS_ENABLED(CONFIG_BUILTIN_DTB)
-> 
-> An #ifdef would do, but no matter if it works. Though shouldn't that be
-> if !IS_ENABLED (or #ifndef)?
-> 
-
-No, that is exactly the configuration I need to remove when no DTB has
-been built in the kernel. In that case, it doesn't make sense to provide
-a configuration using only the kernel.
-
-> A comment would be great here too to mention why its helpful.
-> 
-
-
-
-
-
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+On Fri, Jun 22, 2018 at 9:54 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> For the common cases where 1000 is a multiple of HZ, or HZ is a multiple
+> of 1000, jiffies_to_msecs() never returns zero when passed a non-zero
+> time period.
+>
+> However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
+> 1200, as used on alpha and DECstation), jiffies_to_msecs() may return
+> zero for small non-zero time periods.  This may break code that relies
+> on receiving back a non-zero value.
+>
+> jiffies_to_usecs() does not need such a fix, as <linux/jiffies.h> does
+> not support values of HZ larger than 12287, thus rejecting any
+> problematic huge values of HZ.
+>
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> ---
+> v2:
+>   - Add examples of affected systems,
+>   - Use DIV_ROUND_UP().
+> ---
+>  kernel/time/time.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/kernel/time/time.c b/kernel/time/time.c
+> index 6fa99213fc720e4b..2b41e8e2d31db26f 100644
+> --- a/kernel/time/time.c
+> +++ b/kernel/time/time.c
+> @@ -28,6 +28,7 @@
+>   */
+>
+>  #include <linux/export.h>
+> +#include <linux/kernel.h>
+>  #include <linux/timex.h>
+>  #include <linux/capability.h>
+>  #include <linux/timekeeper_internal.h>
+> @@ -314,9 +315,10 @@ unsigned int jiffies_to_msecs(const unsigned long j)
+>         return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
+>  #else
+>  # if BITS_PER_LONG == 32
+> -       return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
+> +       return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
+> +              HZ_TO_MSEC_SHR32;
+>  # else
+> -       return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
+> +       return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
+>  # endif
+>  #endif
+>  }
+> --
+> 2.17.1

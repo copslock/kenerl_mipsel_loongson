@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2018 16:34:10 +0200 (CEST)
-Received: from newton.telenet-ops.be ([195.130.132.45]:44882 "EHLO
-        newton.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993104AbeFVOeDasv1f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2018 16:34:03 +0200
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by newton.telenet-ops.be (Postfix) with ESMTPS id 41C1KR0VKTzMqtH6
-        for <linux-mips@linux-mips.org>; Fri, 22 Jun 2018 16:34:03 +0200 (CEST)
-Received: from ayla.of.borg ([84.194.111.163])
-        by albert.telenet-ops.be with bizsmtp
-        id 1qa21y0083XaVaC06qa2Gs; Fri, 22 Jun 2018 16:34:02 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ayla.of.borg with esmtp (Exim 4.86_2)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1fWN8U-00055H-1q; Fri, 22 Jun 2018 16:34:02 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1fWN8T-0001xf-W1; Fri, 22 Jun 2018 16:34:02 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     John Stultz <john.stultz@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        stable@vger.kernel.org
-Subject: [PATCH v3] time: Make sure jiffies_to_msecs() preserves non-zero time periods
-Date:   Fri, 22 Jun 2018 16:33:57 +0200
-Message-Id: <20180622143357.7495-1-geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2018 19:56:12 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.210]:41228 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993852AbeFVR4Evts6O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2018 19:56:04 +0200
+Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx1402.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 22 Jun 2018 17:55:56 +0000
+Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
+ (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 22
+ Jun 2018 10:55:49 -0700
+Received: from pburton-laptop.mipstec.com (10.20.2.29) by
+ mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
+ via Frontend Transport; Fri, 22 Jun 2018 10:55:49 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 0/3] MIPS: Fix arch_trigger_cpumask_backtrace(), clean up output
+Date:   Fri, 22 Jun 2018 10:55:44 -0700
+Message-ID: <20180622175547.17716-1-paul.burton@mips.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain
+X-BESS-ID: 1529690136-321458-14409-5864-6
+X-BESS-VER: 2018.7-r1806151722
+X-BESS-Apparent-Source-IP: 12.201.5.31
+X-BESS-Envelope-From: Paul.Burton@mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194338
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: linux-mips@linux-mips.org,chenhc@lemote.com,ralf@linux-mips.org,jhogan@kernel.org
+X-BESS-BRTS-Status: 1
+Return-Path: <Paul.Burton@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64412
+X-archive-position: 64413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,63 +57,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For the common cases where 1000 is a multiple of HZ, or HZ is a multiple
-of 1000, jiffies_to_msecs() never returns zero when passed a non-zero
-time period.
+This series switches MIPS to use the generic
+nmi_trigger_cpumask_backtrace() infrastructure to back
+arch_trigger_cpumask_backtrace(), switching from synchronous to
+asynchronous IPIs in the process in order to resolve possible deadlock
+conditions. With the generic infrastructure in use we start using the
+__cpuidle annotation to clean up its output for idle CPUs.
 
-However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
-1200, as used on alpha and DECstation), jiffies_to_msecs() may return
-zero for small non-zero time periods.  This may break code that relies
-on receiving back a non-zero value.
+Applies cleanly atop master as of 894b8c000ae6 ("Merge tag
+'for_v4.18-rc2' of
+git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs").
 
-jiffies_to_usecs() does not need such a fix: one jiffy can only be
-less than one µs if HZ > 1000000, and such large values of HZ are
-already rejected at build time, twice:
-  - include/linux/jiffies.h does #error if HZ >= 12288,
-  - kernel/time/time.c has BUILD_BUG_ON(HZ > USEC_PER_SEC).
+Thanks,
+    Paul
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: stable@vger.kernel.org
----
-Broken since forever.
+Paul Burton (3):
+  MIPS: Call dump_stack() from show_regs()
+  MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
+  MIPS: Annotate cpu_wait implementations with __cpuidle
 
-v3:
-  - Add Reviewed-by,
-  - Cc stable,
-  - Explain better why jiffies_to_usecs() does not need a fix,
+ arch/mips/kernel/idle.c       | 12 +++++-----
+ arch/mips/kernel/process.c    | 43 +++++++++++++++++++++++------------
+ arch/mips/kernel/traps.c      |  1 +
+ arch/mips/vr41xx/common/pmu.c |  3 ++-
+ 4 files changed, 38 insertions(+), 21 deletions(-)
 
-v2:
-  - Add examples of affected systems,
-  - Use DIV_ROUND_UP().
----
- kernel/time/time.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 6fa99213fc720e4b..2b41e8e2d31db26f 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -28,6 +28,7 @@
-  */
- 
- #include <linux/export.h>
-+#include <linux/kernel.h>
- #include <linux/timex.h>
- #include <linux/capability.h>
- #include <linux/timekeeper_internal.h>
-@@ -314,9 +315,10 @@ unsigned int jiffies_to_msecs(const unsigned long j)
- 	return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
- #else
- # if BITS_PER_LONG == 32
--	return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
-+	return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
-+	       HZ_TO_MSEC_SHR32;
- # else
--	return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
-+	return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
- # endif
- #endif
- }
 -- 
 2.17.1

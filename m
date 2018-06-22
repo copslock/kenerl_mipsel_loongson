@@ -1,55 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2018 14:22:58 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40598 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeGMMWtO2aZz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2018 14:22:49 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8FDF3A92;
-        Fri, 13 Jul 2018 12:22:41 +0000 (UTC)
-Subject: Patch "MIPS: Call dump_stack() from show_regs()" has been added to the 4.17-stable tree
-To:     chenhc@lemote.com, gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, paul.burton@mips.com,
-        ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 13 Jul 2018 14:22:07 +0200
-Message-ID: <153148452741204@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64826
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@mips.com>
+Date: Fri, 22 Jun 2018 10:55:45 -0700
+Subject: MIPS: Call dump_stack() from show_regs()
+Message-ID: <20180622175545.cwfd09FRwDmxrCxAMPR7e5AeuxxfAn6ANQLBq9FCUes@z>
+
+From: Paul Burton <paul.burton@mips.com>
+
+commit 5a267832c2ec47b2dad0fdb291a96bb5b8869315 upstream.
+
+The generic nmi_cpu_backtrace() function calls show_regs() when a struct
+pt_regs is available, and dump_stack() otherwise. If we were to make use
+of the generic nmi_cpu_backtrace() with MIPS' current implementation of
+show_regs() this would mean that we see only register data with no
+accompanying stack information, in contrast with our current
+implementation which calls dump_stack() regardless of whether register
+state is available.
+
+In preparation for making use of the generic nmi_cpu_backtrace() to
+implement arch_trigger_cpumask_backtrace(), have our implementation of
+show_regs() call dump_stack() and drop the explicit dump_stack() call in
+arch_dump_stack() which is invoked by arch_trigger_cpumask_backtrace().
+
+This will allow the output we produce to remain the same after a later
+patch switches to using nmi_cpu_backtrace(). It may mean that we produce
+extra stack output in other uses of show_regs(), but this:
+
+  1) Seems harmless.
+  2) Is good for consistency between arch_trigger_cpumask_backtrace()
+     and other users of show_regs().
+  3) Matches the behaviour of the ARM & PowerPC architectures.
+
+Marked for stable back to v4.9 as a prerequisite of the following patch
+"MIPS: Call dump_stack() from show_regs()".
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19596/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/process.c |    4 ++--
+ arch/mips/kernel/traps.c   |    1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -663,8 +663,8 @@ static void arch_dump_stack(void *info)
+ 
+ 	if (regs)
+ 		show_regs(regs);
+-
+-	dump_stack();
++	else
++		dump_stack();
+ }
+ 
+ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -351,6 +351,7 @@ static void __show_regs(const struct pt_
+ void show_regs(struct pt_regs *regs)
+ {
+ 	__show_regs((struct pt_regs *)regs);
++	dump_stack();
+ }
+ 
+ void show_registers(struct pt_regs *regs)
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from paul.burton@mips.com are
 
-    MIPS: Call dump_stack() from show_regs()
-
-to the 4.17-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-call-dump_stack-from-show_regs.patch
-and it can be found in the queue-4.17 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.17/mips-call-dump_stack-from-show_regs.patch
+queue-4.17/mips-fix-ioremap-ram-check.patch
+queue-4.17/mips-use-async-ipis-for-arch_trigger_cpumask_backtrace.patch

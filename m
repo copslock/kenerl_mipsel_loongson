@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2018 20:07:46 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:37248 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994077AbeFVSHjvecWO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2018 20:07:39 +0200
-Received: from mipsdag01.mipstec.com (mail1.mips.com [12.201.5.31]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Fri, 22 Jun 2018 18:07:34 +0000
-Received: from mipsdag02.mipstec.com (10.20.40.47) by mipsdag01.mipstec.com
- (10.20.40.46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Fri, 22
- Jun 2018 11:07:34 -0700
-Received: from pburton-laptop.mipstec.com (10.20.2.29) by
- mipsdag02.mipstec.com (10.20.40.47) with Microsoft SMTP Server id 15.1.1415.2
- via Frontend Transport; Fri, 22 Jun 2018 11:07:34 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Remove no-op cast in show_regs()
-Date:   Fri, 22 Jun 2018 11:07:03 -0700
-Message-ID: <20180622180703.18324-1-paul.burton@mips.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-BESS-ID: 1529690854-321459-16254-7820-1
-X-BESS-VER: 2018.7-r1806151722
-X-BESS-Apparent-Source-IP: 12.201.5.31
-X-BESS-Envelope-From: Paul.Burton@mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.194339
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: linux-mips@linux-mips.org,jhogan@kernel.org,ralf@linux-mips.org
-X-BESS-BRTS-Status: 1
-Return-Path: <Paul.Burton@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2018 08:29:40 +0200 (CEST)
+Received: from smtprelay0161.hostedemail.com ([216.40.44.161]:49869 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994653AbeFWG3dnDRF- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jun 2018 08:29:33 +0200
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id DE89C211D6;
+        Sat, 23 Jun 2018 06:29:31 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: run76_35f9b93c7393b
+X-Filterd-Recvd-Size: 1667
+Received: from joe-laptop.perches.com (unknown [47.151.150.235])
+        (Authenticated sender: joe@perches.com)
+        by omf01.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 23 Jun 2018 06:29:30 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: ath25: Convert random_ether_addr to eth_random_addr
+Date:   Fri, 22 Jun 2018 23:29:28 -0700
+Message-Id: <2a63f5c5d19e51471347a1a45b5b5cd4697dcb23.1529735299.git.joe@perches.com>
+X-Mailer: git-send-email 2.15.0
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64417
+X-archive-position: 64418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,32 +43,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In show_regs() we have a regs argument of type struct pt_regs *, and we
-explicitly cast it to that same type as part of calling __show_regs().
+random_ether_addr is a #define for eth_random_addr which is
+generally preferred in kernel code by ~3:1
 
-Casting regs to the same type that it is declared as does nothing at
-all, so remove the useless cast.
+Convert the uses of random_ether_addr to enable removing the #define
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Joe Perches <joe@perches.com>
 ---
- arch/mips/kernel/traps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath25/board.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 8d505a21396e..6be2337ca224 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -350,7 +350,7 @@ static void __show_regs(const struct pt_regs *regs)
-  */
- void show_regs(struct pt_regs *regs)
- {
--	__show_regs((struct pt_regs *)regs);
-+	__show_regs(regs);
- 	dump_stack();
- }
+diff --git a/arch/mips/ath25/board.c b/arch/mips/ath25/board.c
+index 6d11ae581ea7..989e71015ee6 100644
+--- a/arch/mips/ath25/board.c
++++ b/arch/mips/ath25/board.c
+@@ -146,10 +146,10 @@ int __init ath25_find_config(phys_addr_t base, unsigned long size)
+ 			pr_info("Fixing up empty mac addresses\n");
+ 			config->reset_config_gpio = 0xffff;
+ 			config->sys_led_gpio = 0xffff;
+-			random_ether_addr(config->wlan0_mac);
++			eth_random_addr(config->wlan0_mac);
+ 			config->wlan0_mac[0] &= ~0x06;
+-			random_ether_addr(config->enet0_mac);
+-			random_ether_addr(config->enet1_mac);
++			eth_random_addr(config->enet0_mac);
++			eth_random_addr(config->enet1_mac);
+ 		}
+ 	}
  
 -- 
-2.17.1
+2.15.0

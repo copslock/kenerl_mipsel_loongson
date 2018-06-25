@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:17 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57990 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:35 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57994 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992966AbeFYRQC7dhpw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jun 2018 19:16:02 +0200
+        id S23992994AbeFYRQDO8Mdw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:16:03 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 07/25] MIPS: ath79: finetune cpu-overrides
-Date:   Mon, 25 Jun 2018 19:15:31 +0200
-Message-Id: <20180625171549.4618-8-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 08/25] MIPS: ath79: enable uart during early_prink
+Date:   Mon, 25 Jun 2018 19:15:32 +0200
+Message-Id: <20180625171549.4618-9-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64435
+X-archive-position: 64436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,45 +33,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Gabor Juhos <juhosg@openwrt.org>
 
-This patch adds a few additional cpu feature overrides so that they do not
-need to be probed at runtime.
+This patch ensures, that the poinmux register is properly setup for the
+boot console uart when early_printk is enabled.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/ath79/early_printk.c | 44 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-index 0089a740e5ae..026ad90c8ac0 100644
---- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-@@ -36,6 +36,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_rixi		0
+diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
+index d6c892cf01b1..2024a0bb9144 100644
+--- a/arch/mips/ath79/early_printk.c
++++ b/arch/mips/ath79/early_printk.c
+@@ -58,6 +58,46 @@ static void prom_putchar_dummy(unsigned char ch)
+ 	/* nothing to do */
+ }
  
- #define cpu_has_mips32r1	1
- #define cpu_has_mips32r2	1
-@@ -43,6 +44,7 @@
- #define cpu_has_mips64r2	0
++static void prom_enable_uart(u32 id)
++{
++	void __iomem *gpio_base;
++	u32 uart_en;
++	u32 t;
++
++	switch (id) {
++	case REV_ID_MAJOR_AR71XX:
++		uart_en = AR71XX_GPIO_FUNC_UART_EN;
++		break;
++
++	case REV_ID_MAJOR_AR7240:
++	case REV_ID_MAJOR_AR7241:
++	case REV_ID_MAJOR_AR7242:
++		uart_en = AR724X_GPIO_FUNC_UART_EN;
++		break;
++
++	case REV_ID_MAJOR_AR913X:
++		uart_en = AR913X_GPIO_FUNC_UART_EN;
++		break;
++
++	case REV_ID_MAJOR_AR9330:
++	case REV_ID_MAJOR_AR9331:
++		uart_en = AR933X_GPIO_FUNC_UART_EN;
++		break;
++
++	case REV_ID_MAJOR_AR9341:
++	case REV_ID_MAJOR_AR9342:
++	case REV_ID_MAJOR_AR9344:
++		/* TODO */
++	default:
++		return;
++	}
++
++	gpio_base = (void __iomem *)(KSEG1ADDR(AR71XX_GPIO_BASE));
++	t = __raw_readl(gpio_base + AR71XX_GPIO_REG_FUNC);
++	t |= uart_en;
++	__raw_writel(t, gpio_base + AR71XX_GPIO_REG_FUNC);
++}
++
+ static void prom_putchar_init(void)
+ {
+ 	void __iomem *base;
+@@ -92,8 +132,10 @@ static void prom_putchar_init(void)
  
- #define cpu_has_mipsmt		0
-+#define cpu_has_userlocal	0
+ 	default:
+ 		_prom_putchar = prom_putchar_dummy;
+-		break;
++		return;
+ 	}
++
++	prom_enable_uart(id);
+ }
  
- #define cpu_has_64bits		0
- #define cpu_has_64bit_zero_reg	0
-@@ -51,5 +53,9 @@
- 
- #define cpu_dcache_line_size()	32
- #define cpu_icache_line_size()	32
-+#define cpu_has_vtag_icache	0
-+#define cpu_has_dc_aliases	1
-+#define cpu_has_ic_fills_f_dc	0
-+#define cpu_has_pindexed_dcache	0
- 
- #endif /* __ASM_MACH_ATH79_CPU_FEATURE_OVERRIDES_H */
+ void prom_putchar(unsigned char ch)
 -- 
 2.11.0

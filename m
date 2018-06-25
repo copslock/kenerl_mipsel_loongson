@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 04:49:14 +0200 (CEST)
-Received: from forward105o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::608]:43787
-        "EHLO forward105o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990947AbeFYCtG7SqJ9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2018 04:49:06 +0200
-Received: from mxback1g.mail.yandex.net (mxback1g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:162])
-        by forward105o.mail.yandex.net (Yandex) with ESMTP id 2761A44427BD;
-        Mon, 25 Jun 2018 05:48:59 +0300 (MSK)
-Received: from localhost (localhost [::1])
-        by mxback1g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id xzdvB3YfmR-mwVavELv;
-        Mon, 25 Jun 2018 05:48:58 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1529894938;
-        bh=vSPn18e/fNkTKhonsgVCcJdjFL5iBLHyzn99bjYyXrc=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=xHEiPngPvFGtD7zfx0szLItx75lcVoXPMvx6DJXzeS6+ctStPXQrx33WE9fbBIJPx
-         TLo/q+9Bg1pXkQ3ABvYYPGOPEkBRGsb0A9jVc6MuTuD5jGTkv9a06RXf5ayZ3YuXK4
-         1SL6S/FGtf+a1E1nb68+MCBxRfzZUE1eLwwcms0w=
-Authentication-Results: mxback1g.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by web11o.yandex.ru with HTTP;
-        Mon, 25 Jun 2018 05:48:58 +0300
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-Envelope-From: yjx@flygoat.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: The SSL certification of  linux-mips.org has expired
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 11:07:34 +0200 (CEST)
+Received: from mail-ua0-f193.google.com ([209.85.217.193]:40074 "EHLO
+        mail-ua0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991783AbeFYJH1Grm0D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2018 11:07:27 +0200
+Received: by mail-ua0-f193.google.com with SMTP id j17-v6so1698273uap.7
+        for <linux-mips@linux-mips.org>; Mon, 25 Jun 2018 02:07:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TorOwruUNp57xWE0RsAcyQ/AI6wGTDQqMCU/mvNIRRI=;
+        b=gwINoZ2sydI7F7kkoZTTV0BFdZC9CqNZb1Pi2dDDFjd2VXPld3cEb7lpmiOAgGD4Bb
+         oMXBu+HUglSEKliT8HGO26MjPd7qzncs6McXMIlDMnbiyr6qrO5CQWq0BBcT8mR5jFEG
+         bGBqkDd5RpSh9Q+PzN1458aADSEEGJHkyLBbiNawCHXlI1GNV5/EdL30WAhzZ0Eo6hRk
+         D6R0BCWWdV3eCIS4AEVhnQ9pyOfJNT4grY/8Qeh6xq1luSiBrs5I+zkwYejSiTcAi4R0
+         /CROhtZ78AxF0zt0IjOJqm1W4xI79z9w+2Go/ktG7K5njrsdyOjuUiPCxGdEumbMaIO/
+         Thsw==
+X-Gm-Message-State: APt69E0lzpz9GZp7lEF/KLPTrSSnXoyNVq7dBxD7uZ27/7Z+t6D5N7ab
+        X4Q8qoU14nc6+rYuYY20Ijb+hZv08+HUelH+Hzg=
+X-Google-Smtp-Source: ADUXVKKxQXIP8MoglaZsNyW80mC0eXS0orm9chMYNwAR4dRqKy87WrIvKqltUfY1HAmX4IBJZjWCKFwqGKy5xrWF7Kg=
+X-Received: by 2002:ab0:265:: with SMTP id 92-v6mr8025779uas.26.1529917640801;
+ Mon, 25 Jun 2018 02:07:20 -0700 (PDT)
 MIME-Version: 1.0
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date:   Mon, 25 Jun 2018 10:48:58 +0800
-Message-Id: <5812041529894938@web11o.yandex.ru>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-Return-Path: <jiaxun.yang@flygoat.com>
+References: <20180625090329.10895-1-geert@linux-m68k.org>
+In-Reply-To: <20180625090329.10895-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 25 Jun 2018 11:07:09 +0200
+Message-ID: <CAMuHMdW--a2btaTWu3ZP_KtTD6zKFCYsG8FV9KA0y-W6Vg0gQw@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v4.18-rc2
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64426
+X-archive-position: 64427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiaxun.yang@flygoat.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,12 +52,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf
+On Mon, Jun 25, 2018 at 11:04 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> JFYI, when comparing v4.18-rc2[1] to v4.18-rc1[3], the summaries are:
+>   - build errors: +6/-4
 
-It seemed like Let's Encrypt certification auto renew script on linux-mips.org server is not
-working properly. Please check it manualy.
+  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
+of 'rseq_handle_notify_resume' from incompatible pointer type
+[-Werror=incompatible-pointer-types]:  => 873:29
+  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
+of 'rseq_handle_notify_resume' from incompatible pointer type
+[-Werror]:  => 873:3
+  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
+of 'rseq_signal_deliver' from incompatible pointer type
+[-Werror=incompatible-pointer-types]:  => 804:22
+  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
+of 'rseq_signal_deliver' from incompatible pointer type [-Werror]:  =>
+804:2
+  + /kisskb/src/arch/mips/kernel/signal.c: error: too few arguments to
+function 'rseq_handle_notify_resume':  => 873:3
+  + /kisskb/src/arch/mips/kernel/signal.c: error: too few arguments to
+function 'rseq_signal_deliver':  => 804:2
 
-Thanks
+Lots of MIPS, fix available.
 
---
-Jiaxun Yang  
+> [1] http://kisskb.ellerman.id.au/kisskb/head/7daf201d7fe8334e2d2364d4e8ed3394ec9af819/ (231 out of 244 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/head/ce397d215ccd07b8ae3f71db689aedb85d56ab40/ (233 out of 244 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

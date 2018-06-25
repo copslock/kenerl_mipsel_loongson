@@ -1,16 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:16:27 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57936 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:16:42 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57944 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992514AbeFYRQAhSpQw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992844AbeFYRQArEUUw (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Jun 2018 19:16:00 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+        Henryk Heisig <hyniu@o2.pl>,
         Matthias Schiffer <mschiffer@universe-factory.net>,
-        Weijie Gao <hackpascal@gmail.com>
-Subject: [PATCH 02/25] MIPS: ath79: add support for QCA953x QCA956x TP9343
-Date:   Mon, 25 Jun 2018 19:15:26 +0200
-Message-Id: <20180625171549.4618-3-john@phrozen.org>
+        Weijie Gao <hackpascal@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Julien Dusser <julien.dusser@free.fr>
+Subject: [PATCH 01/25] MIPS: ath79: add lots of missing registers
+Date:   Mon, 25 Jun 2018 19:15:25 +0200
+Message-Id: <20180625171549.4618-2-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -18,7 +21,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64429
+X-archive-position: 64430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,411 +38,984 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Matthias Schiffer <mschiffer@universe-factory.net>
+From: Gabor Juhos <juhosg@openwrt.org>
 
-This patch adds support for 2 new types of QCA silicon. TP9343 is
-essentially the sane as the QCA956X but is licensed by TPLink.
+This patch adds many new registers for various QCA MIPS SoCs. The patch is
+an aggragate of many contributions made to OpenWrt.
 
-Signed-off-by: Weijie Gao <hackpascal@gmail.com>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Henryk Heisig <hyniu@o2.pl>
 Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
+Signed-off-by: Weijie Gao <hackpascal@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Julien Dusser <julien.dusser@free.fr>
 ---
- arch/mips/ath79/clock.c                  | 193 +++++++++++++++++++++++++++++++
- arch/mips/ath79/common.c                 |   8 ++
- arch/mips/ath79/early_printk.c           |   4 +
- arch/mips/ath79/setup.c                  |  34 +++++-
- arch/mips/include/asm/mach-ath79/ath79.h |  33 ++++++
- 5 files changed, 269 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h | 771 ++++++++++++++++++++++++-
+ 1 file changed, 770 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 6b1000b6a6a6..cf9158e3c2d9 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -355,6 +355,91 @@ static void __init ar934x_clocks_init(void)
- 	iounmap(dpll_base);
- }
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index d99ca862dae3..284b4fa23e03 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -20,6 +20,10 @@
+ #include <linux/bitops.h>
  
-+static void __init qca953x_clocks_init(void)
-+{
-+	unsigned long ref_rate;
-+	unsigned long cpu_rate;
-+	unsigned long ddr_rate;
-+	unsigned long ahb_rate;
-+	u32 pll, out_div, ref_div, nint, frac, clk_ctrl, postdiv;
-+	u32 cpu_pll, ddr_pll;
-+	u32 bootstrap;
-+
-+	bootstrap = ath79_reset_rr(QCA953X_RESET_REG_BOOTSTRAP);
-+	if (bootstrap &	QCA953X_BOOTSTRAP_REF_CLK_40)
-+		ref_rate = 40 * 1000 * 1000;
-+	else
-+		ref_rate = 25 * 1000 * 1000;
-+
-+	pll = ath79_pll_rr(QCA953X_PLL_CPU_CONFIG_REG);
-+	out_div = (pll >> QCA953X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+		  QCA953X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA953X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+		  QCA953X_PLL_CPU_CONFIG_REFDIV_MASK;
-+	nint = (pll >> QCA953X_PLL_CPU_CONFIG_NINT_SHIFT) &
-+	       QCA953X_PLL_CPU_CONFIG_NINT_MASK;
-+	frac = (pll >> QCA953X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
-+	       QCA953X_PLL_CPU_CONFIG_NFRAC_MASK;
-+
-+	cpu_pll = nint * ref_rate / ref_div;
-+	cpu_pll += frac * (ref_rate >> 6) / ref_div;
-+	cpu_pll /= (1 << out_div);
-+
-+	pll = ath79_pll_rr(QCA953X_PLL_DDR_CONFIG_REG);
-+	out_div = (pll >> QCA953X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
-+		  QCA953X_PLL_DDR_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA953X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-+		  QCA953X_PLL_DDR_CONFIG_REFDIV_MASK;
-+	nint = (pll >> QCA953X_PLL_DDR_CONFIG_NINT_SHIFT) &
-+	       QCA953X_PLL_DDR_CONFIG_NINT_MASK;
-+	frac = (pll >> QCA953X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
-+	       QCA953X_PLL_DDR_CONFIG_NFRAC_MASK;
-+
-+	ddr_pll = nint * ref_rate / ref_div;
-+	ddr_pll += frac * (ref_rate >> 6) / (ref_div << 4);
-+	ddr_pll /= (1 << out_div);
-+
-+	clk_ctrl = ath79_pll_rr(QCA953X_PLL_CLK_CTRL_REG);
-+
-+	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
-+		  QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_CPU_PLL_BYPASS)
-+		cpu_rate = ref_rate;
-+	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_CPUCLK_FROM_CPUPLL)
-+		cpu_rate = cpu_pll / (postdiv + 1);
-+	else
-+		cpu_rate = ddr_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT) &
-+		  QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_DDR_PLL_BYPASS)
-+		ddr_rate = ref_rate;
-+	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL)
-+		ddr_rate = ddr_pll / (postdiv + 1);
-+	else
-+		ddr_rate = cpu_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT) &
-+		  QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_AHB_PLL_BYPASS)
-+		ahb_rate = ref_rate;
-+	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL)
-+		ahb_rate = ddr_pll / (postdiv + 1);
-+	else
-+		ahb_rate = cpu_pll / (postdiv + 1);
-+
-+	ath79_add_sys_clkdev("ref", ref_rate);
-+	ath79_add_sys_clkdev("cpu", cpu_rate);
-+	ath79_add_sys_clkdev("ddr", ddr_rate);
-+	ath79_add_sys_clkdev("ahb", ahb_rate);
-+
-+	clk_add_alias("wdt", NULL, "ref", NULL);
-+	clk_add_alias("uart", NULL, "ref", NULL);
-+}
-+
- static void __init qca955x_clocks_init(void)
- {
- 	unsigned long ref_rate;
-@@ -440,6 +525,110 @@ static void __init qca955x_clocks_init(void)
- 	clk_add_alias("uart", NULL, "ref", NULL);
- }
+ #define AR71XX_APB_BASE		0x18000000
++#define AR71XX_GE0_BASE		0x19000000
++#define AR71XX_GE0_SIZE		0x10000
++#define AR71XX_GE1_BASE		0x1a000000
++#define AR71XX_GE1_SIZE		0x10000
+ #define AR71XX_EHCI_BASE	0x1b000000
+ #define AR71XX_EHCI_SIZE	0x1000
+ #define AR71XX_OHCI_BASE	0x1c000000
+@@ -39,6 +43,8 @@
+ #define AR71XX_PLL_SIZE		0x100
+ #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
+ #define AR71XX_RESET_SIZE	0x100
++#define AR71XX_MII_BASE		(AR71XX_APB_BASE + 0x00070000)
++#define AR71XX_MII_SIZE		0x100
  
-+static void __init qca956x_clocks_init(void)
-+{
-+	unsigned long ref_rate;
-+	unsigned long cpu_rate;
-+	unsigned long ddr_rate;
-+	unsigned long ahb_rate;
-+	u32 pll, out_div, ref_div, nint, hfrac, lfrac, clk_ctrl, postdiv;
-+	u32 cpu_pll, ddr_pll;
-+	u32 bootstrap;
-+
-+	/*
-+	 * QCA956x timer init workaround has to be applied right before setting
-+	 * up the clock. Else, there will be no jiffies
-+	 */
-+	u32 misc;
-+
-+	misc = ath79_reset_rr(AR71XX_RESET_REG_MISC_INT_ENABLE);
-+	misc |= MISC_INT_MIPS_SI_TIMERINT_MASK;
-+	ath79_reset_wr(AR71XX_RESET_REG_MISC_INT_ENABLE, misc);
-+
-+	bootstrap = ath79_reset_rr(QCA956X_RESET_REG_BOOTSTRAP);
-+	if (bootstrap &	QCA956X_BOOTSTRAP_REF_CLK_40)
-+		ref_rate = 40 * 1000 * 1000;
-+	else
-+		ref_rate = 25 * 1000 * 1000;
-+
-+	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG_REG);
-+	out_div = (pll >> QCA956X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+		  QCA956X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA956X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+		  QCA956X_PLL_CPU_CONFIG_REFDIV_MASK;
-+
-+	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG1_REG);
-+	nint = (pll >> QCA956X_PLL_CPU_CONFIG1_NINT_SHIFT) &
-+	       QCA956X_PLL_CPU_CONFIG1_NINT_MASK;
-+	hfrac = (pll >> QCA956X_PLL_CPU_CONFIG1_NFRAC_H_SHIFT) &
-+	       QCA956X_PLL_CPU_CONFIG1_NFRAC_H_MASK;
-+	lfrac = (pll >> QCA956X_PLL_CPU_CONFIG1_NFRAC_L_SHIFT) &
-+	       QCA956X_PLL_CPU_CONFIG1_NFRAC_L_MASK;
-+
-+	cpu_pll = nint * ref_rate / ref_div;
-+	cpu_pll += (lfrac * ref_rate) / ((ref_div * 25) << 13);
-+	cpu_pll += (hfrac >> 13) * ref_rate / ref_div;
-+	cpu_pll /= (1 << out_div);
-+
-+	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG_REG);
-+	out_div = (pll >> QCA956X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
-+		  QCA956X_PLL_DDR_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA956X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-+		  QCA956X_PLL_DDR_CONFIG_REFDIV_MASK;
-+	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG1_REG);
-+	nint = (pll >> QCA956X_PLL_DDR_CONFIG1_NINT_SHIFT) &
-+	       QCA956X_PLL_DDR_CONFIG1_NINT_MASK;
-+	hfrac = (pll >> QCA956X_PLL_DDR_CONFIG1_NFRAC_H_SHIFT) &
-+	       QCA956X_PLL_DDR_CONFIG1_NFRAC_H_MASK;
-+	lfrac = (pll >> QCA956X_PLL_DDR_CONFIG1_NFRAC_L_SHIFT) &
-+	       QCA956X_PLL_DDR_CONFIG1_NFRAC_L_MASK;
-+
-+	ddr_pll = nint * ref_rate / ref_div;
-+	ddr_pll += (lfrac * ref_rate) / ((ref_div * 25) << 13);
-+	ddr_pll += (hfrac >> 13) * ref_rate / ref_div;
-+	ddr_pll /= (1 << out_div);
-+
-+	clk_ctrl = ath79_pll_rr(QCA956X_PLL_CLK_CTRL_REG);
-+
-+	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
-+		  QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_PLL_BYPASS)
-+		cpu_rate = ref_rate;
-+	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_CPUPLL)
-+		cpu_rate = ddr_pll / (postdiv + 1);
-+	else
-+		cpu_rate = cpu_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT) &
-+		  QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_DDR_PLL_BYPASS)
-+		ddr_rate = ref_rate;
-+	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_DDRPLL)
-+		ddr_rate = cpu_pll / (postdiv + 1);
-+	else
-+		ddr_rate = ddr_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT) &
-+		  QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_AHB_PLL_BYPASS)
-+		ahb_rate = ref_rate;
-+	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL)
-+		ahb_rate = ddr_pll / (postdiv + 1);
-+	else
-+		ahb_rate = cpu_pll / (postdiv + 1);
-+
-+	ath79_add_sys_clkdev("ref", ref_rate);
-+	ath79_add_sys_clkdev("cpu", cpu_rate);
-+	ath79_add_sys_clkdev("ddr", ddr_rate);
-+	ath79_add_sys_clkdev("ahb", ahb_rate);
-+
-+	clk_add_alias("wdt", NULL, "ref", NULL);
-+	clk_add_alias("uart", NULL, "ref", NULL);
-+}
-+
- void __init ath79_clocks_init(void)
- {
- 	if (soc_is_ar71xx())
-@@ -450,8 +639,12 @@ void __init ath79_clocks_init(void)
- 		ar933x_clocks_init();
- 	else if (soc_is_ar934x())
- 		ar934x_clocks_init();
-+	else if (soc_is_qca953x())
-+		qca953x_clocks_init();
- 	else if (soc_is_qca955x())
- 		qca955x_clocks_init();
-+	else if (soc_is_qca956x() || soc_is_tp9343())
-+		qca956x_clocks_init();
- 	else
- 		BUG();
- }
-diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
-index 10a405d593df..fad32543a968 100644
---- a/arch/mips/ath79/common.c
-+++ b/arch/mips/ath79/common.c
-@@ -103,8 +103,12 @@ void ath79_device_reset_set(u32 mask)
- 		reg = AR933X_RESET_REG_RESET_MODULE;
- 	else if (soc_is_ar934x())
- 		reg = AR934X_RESET_REG_RESET_MODULE;
-+	else if (soc_is_qca953x())
-+		reg = QCA953X_RESET_REG_RESET_MODULE;
- 	else if (soc_is_qca955x())
- 		reg = QCA955X_RESET_REG_RESET_MODULE;
-+	else if (soc_is_qca956x() || soc_is_tp9343())
-+		reg = QCA956X_RESET_REG_RESET_MODULE;
- 	else
- 		BUG();
+ #define AR71XX_PCI_MEM_BASE	0x10000000
+ #define AR71XX_PCI_MEM_SIZE	0x07000000
+@@ -81,18 +87,39 @@
  
-@@ -131,8 +135,12 @@ void ath79_device_reset_clear(u32 mask)
- 		reg = AR933X_RESET_REG_RESET_MODULE;
- 	else if (soc_is_ar934x())
- 		reg = AR934X_RESET_REG_RESET_MODULE;
-+	else if (soc_is_qca953x())
-+		reg = QCA953X_RESET_REG_RESET_MODULE;
- 	else if (soc_is_qca955x())
- 		reg = QCA955X_RESET_REG_RESET_MODULE;
-+	else if (soc_is_qca956x() || soc_is_tp9343())
-+		reg = QCA956X_RESET_REG_RESET_MODULE;
- 	else
- 		BUG();
+ #define AR933X_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
+ #define AR933X_UART_SIZE	0x14
++#define AR933X_GMAC_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define AR933X_GMAC_SIZE	0x04
+ #define AR933X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
+ #define AR933X_WMAC_SIZE	0x20000
+ #define AR933X_EHCI_BASE	0x1b000000
+ #define AR933X_EHCI_SIZE	0x1000
  
-diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
-index d1adc59af5bf..d6c892cf01b1 100644
---- a/arch/mips/ath79/early_printk.c
-+++ b/arch/mips/ath79/early_printk.c
-@@ -76,8 +76,12 @@ static void prom_putchar_init(void)
- 	case REV_ID_MAJOR_AR9341:
- 	case REV_ID_MAJOR_AR9342:
- 	case REV_ID_MAJOR_AR9344:
-+	case REV_ID_MAJOR_QCA9533:
-+	case REV_ID_MAJOR_QCA9533_V2:
- 	case REV_ID_MAJOR_QCA9556:
- 	case REV_ID_MAJOR_QCA9558:
-+	case REV_ID_MAJOR_TP9343:
-+	case REV_ID_MAJOR_QCA956X:
- 		_prom_putchar = prom_putchar_ar71xx;
- 		break;
++#define AR934X_GMAC_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define AR934X_GMAC_SIZE	0x14
+ #define AR934X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
+ #define AR934X_WMAC_SIZE	0x20000
+ #define AR934X_EHCI_BASE	0x1b000000
+ #define AR934X_EHCI_SIZE	0x200
++#define AR934X_NFC_BASE		0x1b000200
++#define AR934X_NFC_SIZE		0xb8
+ #define AR934X_SRIF_BASE	(AR71XX_APB_BASE + 0x00116000)
+ #define AR934X_SRIF_SIZE	0x1000
  
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index f206dafbb0a3..fed49cdc5fdf 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -59,6 +59,7 @@ static void __init ath79_detect_sys_type(void)
- 	u32 major;
- 	u32 minor;
- 	u32 rev = 0;
-+	u32 ver = 1;
- 
- 	id = ath79_reset_rr(AR71XX_RESET_REG_REV_ID);
- 	major = id & REV_ID_MAJOR_MASK;
-@@ -151,6 +152,17 @@ static void __init ath79_detect_sys_type(void)
- 		rev = id & AR934X_REV_ID_REVISION_MASK;
- 		break;
- 
-+	case REV_ID_MAJOR_QCA9533_V2:
-+		ver = 2;
-+		ath79_soc_rev = 2;
-+		/* drop through */
++#define QCA953X_GMAC_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define QCA953X_GMAC_SIZE	0x14
++#define QCA953X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
++#define QCA953X_WMAC_SIZE	0x20000
++#define QCA953X_EHCI_BASE	0x1b000000
++#define QCA953X_EHCI_SIZE	0x200
++#define QCA953X_SRIF_BASE	(AR71XX_APB_BASE + 0x00116000)
++#define QCA953X_SRIF_SIZE	0x1000
 +
-+	case REV_ID_MAJOR_QCA9533:
-+		ath79_soc = ATH79_SOC_QCA9533;
-+		chip = "9533";
-+		rev = id & QCA953X_REV_ID_REVISION_MASK;
-+		break;
++#define QCA953X_PCI_CFG_BASE0	0x14000000
++#define QCA953X_PCI_CTRL_BASE0	(AR71XX_APB_BASE + 0x000f0000)
++#define QCA953X_PCI_CRP_BASE0	(AR71XX_APB_BASE + 0x000c0000)
++#define QCA953X_PCI_MEM_BASE0	0x10000000
++#define QCA953X_PCI_MEM_SIZE	0x02000000
 +
- 	case REV_ID_MAJOR_QCA9556:
- 		ath79_soc = ATH79_SOC_QCA9556;
- 		chip = "9556";
-@@ -163,14 +175,30 @@ static void __init ath79_detect_sys_type(void)
- 		rev = id & QCA955X_REV_ID_REVISION_MASK;
- 		break;
+ #define QCA955X_PCI_MEM_BASE0	0x10000000
+ #define QCA955X_PCI_MEM_BASE1	0x12000000
+ #define QCA955X_PCI_MEM_SIZE	0x02000000
+@@ -106,11 +133,72 @@
+ #define QCA955X_PCI_CTRL_BASE1	(AR71XX_APB_BASE + 0x00280000)
+ #define QCA955X_PCI_CTRL_SIZE	0x100
  
-+	case REV_ID_MAJOR_QCA956X:
-+		ath79_soc = ATH79_SOC_QCA956X;
-+		chip = "956X";
-+		rev = id & QCA956X_REV_ID_REVISION_MASK;
-+		break;
++#define QCA955X_GMAC_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define QCA955X_GMAC_SIZE	0x40
+ #define QCA955X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
+ #define QCA955X_WMAC_SIZE	0x20000
+ #define QCA955X_EHCI0_BASE	0x1b000000
+ #define QCA955X_EHCI1_BASE	0x1b400000
+ #define QCA955X_EHCI_SIZE	0x1000
++#define QCA955X_NFC_BASE	0x1b800200
++#define QCA955X_NFC_SIZE	0xb8
 +
-+	case REV_ID_MAJOR_TP9343:
-+		ath79_soc = ATH79_SOC_TP9343;
-+		chip = "9343";
-+		rev = id & QCA956X_REV_ID_REVISION_MASK;
-+		break;
++#define QCA956X_PCI_MEM_BASE1	0x12000000
++#define QCA956X_PCI_MEM_SIZE	0x02000000
++#define QCA956X_PCI_CFG_BASE1	0x16000000
++#define QCA956X_PCI_CFG_SIZE	0x1000
++#define QCA956X_PCI_CRP_BASE1	(AR71XX_APB_BASE + 0x00250000)
++#define QCA956X_PCI_CRP_SIZE	0x1000
++#define QCA956X_PCI_CTRL_BASE1	(AR71XX_APB_BASE + 0x00280000)
++#define QCA956X_PCI_CTRL_SIZE	0x100
 +
- 	default:
- 		panic("ath79: unknown SoC, id:0x%08x", id);
- 	}
++#define QCA956X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
++#define QCA956X_WMAC_SIZE	0x20000
++#define QCA956X_EHCI0_BASE	0x1b000000
++#define QCA956X_EHCI1_BASE	0x1b400000
++#define QCA956X_EHCI_SIZE	0x200
++#define QCA956X_GMAC_SGMII_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define QCA956X_GMAC_SGMII_SIZE	0x64
++#define QCA956X_PLL_BASE	(AR71XX_APB_BASE + 0x00050000)
++#define QCA956X_PLL_SIZE	0x50
++#define QCA956X_GMAC_BASE	(AR71XX_APB_BASE + 0x00070000)
++#define QCA956X_GMAC_SIZE	0x64
++
++/*
++ * Hidden Registers
++ */
++#define QCA956X_MAC_CFG_BASE		0xb9000000
++#define QCA956X_MAC_CFG_SIZE		0x64
++
++#define QCA956X_MAC_CFG1_REG		0x00
++#define QCA956X_MAC_CFG1_SOFT_RST	BIT(31)
++#define QCA956X_MAC_CFG1_RX_RST		BIT(19)
++#define QCA956X_MAC_CFG1_TX_RST		BIT(18)
++#define QCA956X_MAC_CFG1_LOOPBACK	BIT(8)
++#define QCA956X_MAC_CFG1_RX_EN		BIT(2)
++#define QCA956X_MAC_CFG1_TX_EN		BIT(0)
++
++#define QCA956X_MAC_CFG2_REG		0x04
++#define QCA956X_MAC_CFG2_IF_1000	BIT(9)
++#define QCA956X_MAC_CFG2_IF_10_100	BIT(8)
++#define QCA956X_MAC_CFG2_HUGE_FRAME_EN	BIT(5)
++#define QCA956X_MAC_CFG2_LEN_CHECK	BIT(4)
++#define QCA956X_MAC_CFG2_PAD_CRC_EN	BIT(2)
++#define QCA956X_MAC_CFG2_FDX		BIT(0)
++
++#define QCA956X_MAC_MII_MGMT_CFG_REG	0x20
++#define QCA956X_MGMT_CFG_CLK_DIV_20	0x07
++
++#define QCA956X_MAC_FIFO_CFG0_REG	0x48
++#define QCA956X_MAC_FIFO_CFG1_REG	0x4c
++#define QCA956X_MAC_FIFO_CFG2_REG	0x50
++#define QCA956X_MAC_FIFO_CFG3_REG	0x54
++#define QCA956X_MAC_FIFO_CFG4_REG	0x58
++#define QCA956X_MAC_FIFO_CFG5_REG	0x5c
++
++#define QCA956X_DAM_RESET_OFFSET	0xb90001bc
++#define QCA956X_DAM_RESET_SIZE		0x4
++#define QCA956X_INLINE_CHKSUM_ENG	BIT(27)
  
--	ath79_soc_rev = rev;
-+	if (ver == 1)
-+		ath79_soc_rev = rev;
+ /*
+  * DDR_CTRL block
+@@ -149,6 +237,12 @@
+ #define AR934X_DDR_REG_FLUSH_PCIE	0xa8
+ #define AR934X_DDR_REG_FLUSH_WMAC	0xac
  
--	if (soc_is_qca955x())
--		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s rev %u",
-+	if (soc_is_qca953x() || soc_is_qca955x() || soc_is_qca956x())
-+		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s ver %u rev %u",
-+			chip, ver, rev);
-+	else if (soc_is_tp9343())
-+		sprintf(ath79_sys_type, "Qualcomm Atheros TP%s rev %u",
- 			chip, rev);
- 	else
- 		sprintf(ath79_sys_type, "Atheros AR%s rev %u", chip, rev);
-diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
-index 441faa92c3cd..f54c9b0c6325 100644
---- a/arch/mips/include/asm/mach-ath79/ath79.h
-+++ b/arch/mips/include/asm/mach-ath79/ath79.h
-@@ -32,8 +32,11 @@ enum ath79_soc_type {
- 	ATH79_SOC_AR9341,
- 	ATH79_SOC_AR9342,
- 	ATH79_SOC_AR9344,
-+	ATH79_SOC_QCA9533,
- 	ATH79_SOC_QCA9556,
- 	ATH79_SOC_QCA9558,
-+	ATH79_SOC_TP9343,
-+	ATH79_SOC_QCA956X,
- };
++#define QCA953X_DDR_REG_FLUSH_GE0	0x9c
++#define QCA953X_DDR_REG_FLUSH_GE1	0xa0
++#define QCA953X_DDR_REG_FLUSH_USB	0xa4
++#define QCA953X_DDR_REG_FLUSH_PCIE	0xa8
++#define QCA953X_DDR_REG_FLUSH_WMAC	0xac
++
+ /*
+  * PLL block
+  */
+@@ -166,9 +260,15 @@
+ #define AR71XX_AHB_DIV_SHIFT		20
+ #define AR71XX_AHB_DIV_MASK		0x7
  
- extern enum ath79_soc_type ath79_soc;
-@@ -100,6 +103,16 @@ static inline int soc_is_ar934x(void)
- 	return soc_is_ar9341() || soc_is_ar9342() || soc_is_ar9344();
- }
++#define AR71XX_ETH0_PLL_SHIFT		17
++#define AR71XX_ETH1_PLL_SHIFT		19
++
+ #define AR724X_PLL_REG_CPU_CONFIG	0x00
+ #define AR724X_PLL_REG_PCIE_CONFIG	0x10
  
-+static inline int soc_is_qca9533(void)
-+{
-+	return ath79_soc == ATH79_SOC_QCA9533;
-+}
++#define AR724X_PLL_REG_PCIE_CONFIG_PPL_BYPASS	BIT(16)
++#define AR724X_PLL_REG_PCIE_CONFIG_PPL_RESET	BIT(25)
 +
-+static inline int soc_is_qca953x(void)
-+{
-+	return soc_is_qca9533();
-+}
-+
- static inline int soc_is_qca9556(void)
- {
- 	return ath79_soc == ATH79_SOC_QCA9556;
-@@ -115,6 +128,26 @@ static inline int soc_is_qca955x(void)
- 	return soc_is_qca9556() || soc_is_qca9558();
- }
+ #define AR724X_PLL_FB_SHIFT		0
+ #define AR724X_PLL_FB_MASK		0x3ff
+ #define AR724X_PLL_REF_DIV_SHIFT	10
+@@ -178,6 +278,8 @@
+ #define AR724X_DDR_DIV_SHIFT		22
+ #define AR724X_DDR_DIV_MASK		0x3
  
-+static inline int soc_is_tp9343(void)
-+{
-+	return ath79_soc == ATH79_SOC_TP9343;
-+}
++#define AR7242_PLL_REG_ETH0_INT_CLOCK	0x2c
 +
-+static inline int soc_is_qca9561(void)
-+{
-+	return ath79_soc == ATH79_SOC_QCA956X;
-+}
-+
-+static inline int soc_is_qca9563(void)
-+{
-+	return ath79_soc == ATH79_SOC_QCA956X;
-+}
-+
-+static inline int soc_is_qca956x(void)
-+{
-+	return soc_is_qca9561() || soc_is_qca9563();
-+}
-+
- void ath79_ddr_wb_flush(unsigned int reg);
- void ath79_ddr_set_pci_windows(void);
+ #define AR913X_PLL_REG_CPU_CONFIG	0x00
+ #define AR913X_PLL_REG_ETH_CONFIG	0x04
+ #define AR913X_PLL_REG_ETH0_INT_CLOCK	0x14
+@@ -190,6 +292,9 @@
+ #define AR913X_AHB_DIV_SHIFT		19
+ #define AR913X_AHB_DIV_MASK		0x1
  
++#define AR913X_ETH0_PLL_SHIFT		20
++#define AR913X_ETH1_PLL_SHIFT		22
++
+ #define AR933X_PLL_CPU_CONFIG_REG	0x00
+ #define AR933X_PLL_CLOCK_CTRL_REG	0x08
+ 
+@@ -211,6 +316,8 @@
+ #define AR934X_PLL_CPU_CONFIG_REG		0x00
+ #define AR934X_PLL_DDR_CONFIG_REG		0x04
+ #define AR934X_PLL_CPU_DDR_CLK_CTRL_REG		0x08
++#define AR934X_PLL_SWITCH_CLOCK_CONTROL_REG	0x24
++#define AR934X_PLL_ETH_XMII_CONTROL_REG		0x2c
+ 
+ #define AR934X_PLL_CPU_CONFIG_NFRAC_SHIFT	0
+ #define AR934X_PLL_CPU_CONFIG_NFRAC_MASK	0x3f
+@@ -243,9 +350,52 @@
+ #define AR934X_PLL_CPU_DDR_CLK_CTRL_DDRCLK_FROM_DDRPLL	BIT(21)
+ #define AR934X_PLL_CPU_DDR_CLK_CTRL_AHBCLK_FROM_DDRPLL	BIT(24)
+ 
++#define AR934X_PLL_SWITCH_CLOCK_CONTROL_MDIO_CLK_SEL	BIT(6)
++
++#define QCA953X_PLL_CPU_CONFIG_REG		0x00
++#define QCA953X_PLL_DDR_CONFIG_REG		0x04
++#define QCA953X_PLL_CLK_CTRL_REG		0x08
++#define QCA953X_PLL_SWITCH_CLOCK_CONTROL_REG	0x24
++#define QCA953X_PLL_ETH_XMII_CONTROL_REG	0x2c
++#define QCA953X_PLL_ETH_SGMII_CONTROL_REG	0x48
++
++#define QCA953X_PLL_CPU_CONFIG_NFRAC_SHIFT	0
++#define QCA953X_PLL_CPU_CONFIG_NFRAC_MASK	0x3f
++#define QCA953X_PLL_CPU_CONFIG_NINT_SHIFT	6
++#define QCA953X_PLL_CPU_CONFIG_NINT_MASK	0x3f
++#define QCA953X_PLL_CPU_CONFIG_REFDIV_SHIFT	12
++#define QCA953X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
++#define QCA953X_PLL_CPU_CONFIG_OUTDIV_SHIFT	19
++#define QCA953X_PLL_CPU_CONFIG_OUTDIV_MASK	0x7
++
++#define QCA953X_PLL_DDR_CONFIG_NFRAC_SHIFT	0
++#define QCA953X_PLL_DDR_CONFIG_NFRAC_MASK	0x3ff
++#define QCA953X_PLL_DDR_CONFIG_NINT_SHIFT	10
++#define QCA953X_PLL_DDR_CONFIG_NINT_MASK	0x3f
++#define QCA953X_PLL_DDR_CONFIG_REFDIV_SHIFT	16
++#define QCA953X_PLL_DDR_CONFIG_REFDIV_MASK	0x1f
++#define QCA953X_PLL_DDR_CONFIG_OUTDIV_SHIFT	23
++#define QCA953X_PLL_DDR_CONFIG_OUTDIV_MASK	0x7
++
++#define QCA953X_PLL_CLK_CTRL_CPU_PLL_BYPASS		BIT(2)
++#define QCA953X_PLL_CLK_CTRL_DDR_PLL_BYPASS		BIT(3)
++#define QCA953X_PLL_CLK_CTRL_AHB_PLL_BYPASS		BIT(4)
++#define QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT		5
++#define QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_MASK		0x1f
++#define QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT		10
++#define QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_MASK		0x1f
++#define QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT		15
++#define QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_MASK		0x1f
++#define QCA953X_PLL_CLK_CTRL_CPUCLK_FROM_CPUPLL		BIT(20)
++#define QCA953X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL		BIT(21)
++#define QCA953X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL		BIT(24)
++
+ #define QCA955X_PLL_CPU_CONFIG_REG		0x00
+ #define QCA955X_PLL_DDR_CONFIG_REG		0x04
+ #define QCA955X_PLL_CLK_CTRL_REG		0x08
++#define QCA955X_PLL_ETH_XMII_CONTROL_REG	0x28
++#define QCA955X_PLL_ETH_SGMII_CONTROL_REG	0x48
++#define QCA955X_PLL_ETH_SGMII_SERDES_REG	0x4c
+ 
+ #define QCA955X_PLL_CPU_CONFIG_NFRAC_SHIFT	0
+ #define QCA955X_PLL_CPU_CONFIG_NFRAC_MASK	0x3f
+@@ -278,6 +428,81 @@
+ #define QCA955X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL		BIT(21)
+ #define QCA955X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL		BIT(24)
+ 
++#define QCA955X_PLL_ETH_SGMII_SERDES_LOCK_DETECT	BIT(2)
++#define QCA955X_PLL_ETH_SGMII_SERDES_PLL_REFCLK		BIT(1)
++#define QCA955X_PLL_ETH_SGMII_SERDES_EN_PLL		BIT(0)
++
++#define QCA956X_PLL_CPU_CONFIG_REG			0x00
++#define QCA956X_PLL_CPU_CONFIG1_REG			0x04
++#define QCA956X_PLL_DDR_CONFIG_REG			0x08
++#define QCA956X_PLL_DDR_CONFIG1_REG			0x0c
++#define QCA956X_PLL_CLK_CTRL_REG			0x10
++#define QCA956X_PLL_SWITCH_CLOCK_CONTROL_REG		0x28
++#define QCA956X_PLL_ETH_XMII_CONTROL_REG		0x30
++#define QCA956X_PLL_ETH_SGMII_SERDES_REG		0x4c
++
++#define QCA956X_PLL_CPU_CONFIG_REFDIV_SHIFT		12
++#define QCA956X_PLL_CPU_CONFIG_REFDIV_MASK		0x1f
++#define QCA956X_PLL_CPU_CONFIG_OUTDIV_SHIFT		19
++#define QCA956X_PLL_CPU_CONFIG_OUTDIV_MASK		0x7
++
++#define QCA956X_PLL_CPU_CONFIG1_NFRAC_L_SHIFT		0
++#define QCA956X_PLL_CPU_CONFIG1_NFRAC_L_MASK		0x1f
++#define QCA956X_PLL_CPU_CONFIG1_NFRAC_H_SHIFT		5
++#define QCA956X_PLL_CPU_CONFIG1_NFRAC_H_MASK		0x1fff
++#define QCA956X_PLL_CPU_CONFIG1_NINT_SHIFT		18
++#define QCA956X_PLL_CPU_CONFIG1_NINT_MASK		0x1ff
++
++#define QCA956X_PLL_DDR_CONFIG_REFDIV_SHIFT		16
++#define QCA956X_PLL_DDR_CONFIG_REFDIV_MASK		0x1f
++#define QCA956X_PLL_DDR_CONFIG_OUTDIV_SHIFT		23
++#define QCA956X_PLL_DDR_CONFIG_OUTDIV_MASK		0x7
++
++#define QCA956X_PLL_DDR_CONFIG1_NFRAC_L_SHIFT		0
++#define QCA956X_PLL_DDR_CONFIG1_NFRAC_L_MASK		0x1f
++#define QCA956X_PLL_DDR_CONFIG1_NFRAC_H_SHIFT		5
++#define QCA956X_PLL_DDR_CONFIG1_NFRAC_H_MASK		0x1fff
++#define QCA956X_PLL_DDR_CONFIG1_NINT_SHIFT		18
++#define QCA956X_PLL_DDR_CONFIG1_NINT_MASK		0x1ff
++
++#define QCA956X_PLL_CLK_CTRL_CPU_PLL_BYPASS		BIT(2)
++#define QCA956X_PLL_CLK_CTRL_DDR_PLL_BYPASS		BIT(3)
++#define QCA956X_PLL_CLK_CTRL_AHB_PLL_BYPASS		BIT(4)
++#define QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT		5
++#define QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_MASK		0x1f
++#define QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT		10
++#define QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_MASK		0x1f
++#define QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT		15
++#define QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_MASK		0x1f
++#define QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_DDRPLL	BIT(20)
++#define QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_CPUPLL	BIT(21)
++#define QCA956X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL		BIT(24)
++
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_I2C_CLK_SELB		BIT(5)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_MDIO_CLK_SEL0_1		BIT(6)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_UART1_CLK_SEL		BIT(7)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_USB_REFCLK_FREQ_SEL_SHIFT 8
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_USB_REFCLK_FREQ_SEL_MASK	 0xf
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_EN_PLL_TOP		BIT(12)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_MDIO_CLK_SEL0_2		BIT(13)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_MDIO_CLK_SEL1_1		BIT(14)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_MDIO_CLK_SEL1_2		BIT(15)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_SWITCH_FUNC_TST_MODE	BIT(16)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_EEE_ENABLE		BIT(17)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_OEN_CLK125M_PLL		BIT(18)
++#define QCA956X_PLL_SWITCH_CLOCK_SPARE_SWITCHCLK_SEL		BIT(19)
++
++#define QCA956X_PLL_ETH_XMII_TX_INVERT			BIT(1)
++#define QCA956X_PLL_ETH_XMII_GIGE			BIT(25)
++#define QCA956X_PLL_ETH_XMII_RX_DELAY_SHIFT		28
++#define QCA956X_PLL_ETH_XMII_RX_DELAY_MASK		0x3
++#define QCA956X_PLL_ETH_XMII_TX_DELAY_SHIFT		26
++#define QCA956X_PLL_ETH_XMII_TX_DELAY_MASK		3
++
++#define QCA956X_PLL_ETH_SGMII_SERDES_LOCK_DETECT		BIT(2)
++#define QCA956X_PLL_ETH_SGMII_SERDES_PLL_REFCLK			BIT(1)
++#define QCA956X_PLL_ETH_SGMII_SERDES_EN_PLL			BIT(0)
++
+ /*
+  * USB_CONFIG block
+  */
+@@ -317,10 +542,19 @@
+ #define AR934X_RESET_REG_BOOTSTRAP		0xb0
+ #define AR934X_RESET_REG_PCIE_WMAC_INT_STATUS	0xac
+ 
++#define QCA953X_RESET_REG_RESET_MODULE		0x1c
++#define QCA953X_RESET_REG_BOOTSTRAP		0xb0
++#define QCA953X_RESET_REG_PCIE_WMAC_INT_STATUS	0xac
++
+ #define QCA955X_RESET_REG_RESET_MODULE		0x1c
+ #define QCA955X_RESET_REG_BOOTSTRAP		0xb0
+ #define QCA955X_RESET_REG_EXT_INT_STATUS	0xac
+ 
++#define QCA956X_RESET_REG_RESET_MODULE		0x1c
++#define QCA956X_RESET_REG_BOOTSTRAP		0xb0
++#define QCA956X_RESET_REG_EXT_INT_STATUS	0xac
++
++#define MISC_INT_MIPS_SI_TIMERINT_MASK	BIT(28)
+ #define MISC_INT_ETHSW			BIT(12)
+ #define MISC_INT_TIMER4			BIT(10)
+ #define MISC_INT_TIMER3			BIT(9)
+@@ -370,16 +604,123 @@
+ #define AR913X_RESET_USB_HOST		BIT(5)
+ #define AR913X_RESET_USB_PHY		BIT(4)
+ 
++#define AR933X_RESET_GE1_MDIO		BIT(23)
++#define AR933X_RESET_GE0_MDIO		BIT(22)
++#define AR933X_RESET_GE1_MAC		BIT(13)
+ #define AR933X_RESET_WMAC		BIT(11)
++#define AR933X_RESET_GE0_MAC		BIT(9)
+ #define AR933X_RESET_USB_HOST		BIT(5)
+ #define AR933X_RESET_USB_PHY		BIT(4)
+ #define AR933X_RESET_USBSUS_OVERRIDE	BIT(3)
+ 
++#define AR934X_RESET_HOST		BIT(31)
++#define AR934X_RESET_SLIC		BIT(30)
++#define AR934X_RESET_HDMA		BIT(29)
++#define AR934X_RESET_EXTERNAL		BIT(28)
++#define AR934X_RESET_RTC		BIT(27)
++#define AR934X_RESET_PCIE_EP_INT	BIT(26)
++#define AR934X_RESET_CHKSUM_ACC		BIT(25)
++#define AR934X_RESET_FULL_CHIP		BIT(24)
++#define AR934X_RESET_GE1_MDIO		BIT(23)
++#define AR934X_RESET_GE0_MDIO		BIT(22)
++#define AR934X_RESET_CPU_NMI		BIT(21)
++#define AR934X_RESET_CPU_COLD		BIT(20)
++#define AR934X_RESET_HOST_RESET_INT	BIT(19)
++#define AR934X_RESET_PCIE_EP		BIT(18)
++#define AR934X_RESET_UART1		BIT(17)
++#define AR934X_RESET_DDR		BIT(16)
++#define AR934X_RESET_USB_PHY_PLL_PWD_EXT BIT(15)
++#define AR934X_RESET_NANDF		BIT(14)
++#define AR934X_RESET_GE1_MAC		BIT(13)
++#define AR934X_RESET_ETH_SWITCH_ANALOG	BIT(12)
+ #define AR934X_RESET_USB_PHY_ANALOG	BIT(11)
++#define AR934X_RESET_HOST_DMA_INT	BIT(10)
++#define AR934X_RESET_GE0_MAC		BIT(9)
++#define AR934X_RESET_ETH_SWITCH		BIT(8)
++#define AR934X_RESET_PCIE_PHY		BIT(7)
++#define AR934X_RESET_PCIE		BIT(6)
+ #define AR934X_RESET_USB_HOST		BIT(5)
+ #define AR934X_RESET_USB_PHY		BIT(4)
+ #define AR934X_RESET_USBSUS_OVERRIDE	BIT(3)
+-
++#define AR934X_RESET_LUT		BIT(2)
++#define AR934X_RESET_MBOX		BIT(1)
++#define AR934X_RESET_I2S		BIT(0)
++
++#define QCA953X_RESET_USB_EXT_PWR	BIT(29)
++#define QCA953X_RESET_EXTERNAL		BIT(28)
++#define QCA953X_RESET_RTC		BIT(27)
++#define QCA953X_RESET_FULL_CHIP		BIT(24)
++#define QCA953X_RESET_GE1_MDIO		BIT(23)
++#define QCA953X_RESET_GE0_MDIO		BIT(22)
++#define QCA953X_RESET_CPU_NMI		BIT(21)
++#define QCA953X_RESET_CPU_COLD		BIT(20)
++#define QCA953X_RESET_DDR		BIT(16)
++#define QCA953X_RESET_USB_PHY_PLL_PWD_EXT BIT(15)
++#define QCA953X_RESET_GE1_MAC		BIT(13)
++#define QCA953X_RESET_ETH_SWITCH_ANALOG	BIT(12)
++#define QCA953X_RESET_USB_PHY_ANALOG	BIT(11)
++#define QCA953X_RESET_GE0_MAC		BIT(9)
++#define QCA953X_RESET_ETH_SWITCH	BIT(8)
++#define QCA953X_RESET_PCIE_PHY		BIT(7)
++#define QCA953X_RESET_PCIE		BIT(6)
++#define QCA953X_RESET_USB_HOST		BIT(5)
++#define QCA953X_RESET_USB_PHY		BIT(4)
++#define QCA953X_RESET_USBSUS_OVERRIDE	BIT(3)
++
++#define QCA955X_RESET_HOST		BIT(31)
++#define QCA955X_RESET_SLIC		BIT(30)
++#define QCA955X_RESET_HDMA		BIT(29)
++#define QCA955X_RESET_EXTERNAL		BIT(28)
++#define QCA955X_RESET_RTC		BIT(27)
++#define QCA955X_RESET_PCIE_EP_INT	BIT(26)
++#define QCA955X_RESET_CHKSUM_ACC	BIT(25)
++#define QCA955X_RESET_FULL_CHIP		BIT(24)
++#define QCA955X_RESET_GE1_MDIO		BIT(23)
++#define QCA955X_RESET_GE0_MDIO		BIT(22)
++#define QCA955X_RESET_CPU_NMI		BIT(21)
++#define QCA955X_RESET_CPU_COLD		BIT(20)
++#define QCA955X_RESET_HOST_RESET_INT	BIT(19)
++#define QCA955X_RESET_PCIE_EP		BIT(18)
++#define QCA955X_RESET_UART1		BIT(17)
++#define QCA955X_RESET_DDR		BIT(16)
++#define QCA955X_RESET_USB_PHY_PLL_PWD_EXT BIT(15)
++#define QCA955X_RESET_NANDF		BIT(14)
++#define QCA955X_RESET_GE1_MAC		BIT(13)
++#define QCA955X_RESET_SGMII_ANALOG	BIT(12)
++#define QCA955X_RESET_USB_PHY_ANALOG	BIT(11)
++#define QCA955X_RESET_HOST_DMA_INT	BIT(10)
++#define QCA955X_RESET_GE0_MAC		BIT(9)
++#define QCA955X_RESET_SGMII		BIT(8)
++#define QCA955X_RESET_PCIE_PHY		BIT(7)
++#define QCA955X_RESET_PCIE		BIT(6)
++#define QCA955X_RESET_USB_HOST		BIT(5)
++#define QCA955X_RESET_USB_PHY		BIT(4)
++#define QCA955X_RESET_USBSUS_OVERRIDE	BIT(3)
++#define QCA955X_RESET_LUT		BIT(2)
++#define QCA955X_RESET_MBOX		BIT(1)
++#define QCA955X_RESET_I2S		BIT(0)
++
++#define QCA956X_RESET_EXTERNAL		BIT(28)
++#define QCA956X_RESET_FULL_CHIP		BIT(24)
++#define QCA956X_RESET_GE1_MDIO		BIT(23)
++#define QCA956X_RESET_GE0_MDIO		BIT(22)
++#define QCA956X_RESET_CPU_NMI		BIT(21)
++#define QCA956X_RESET_CPU_COLD		BIT(20)
++#define QCA956X_RESET_DMA		BIT(19)
++#define QCA956X_RESET_DDR		BIT(16)
++#define QCA956X_RESET_GE1_MAC		BIT(13)
++#define QCA956X_RESET_SGMII_ANALOG	BIT(12)
++#define QCA956X_RESET_USB_PHY_ANALOG	BIT(11)
++#define QCA956X_RESET_GE0_MAC		BIT(9)
++#define QCA956X_RESET_SGMII		BIT(8)
++#define QCA956X_RESET_USB_HOST		BIT(5)
++#define QCA956X_RESET_USB_PHY		BIT(4)
++#define QCA956X_RESET_USBSUS_OVERRIDE	BIT(3)
++#define QCA956X_RESET_SWITCH_ANALOG	BIT(2)
++#define QCA956X_RESET_SWITCH		BIT(0)
++
++#define AR933X_BOOTSTRAP_MDIO_GPIO_EN	BIT(18)
++#define AR933X_BOOTSTRAP_EEPBUSY	BIT(4)
+ #define AR933X_BOOTSTRAP_REF_CLK_40	BIT(0)
+ 
+ #define AR934X_BOOTSTRAP_SW_OPTION8	BIT(23)
+@@ -398,8 +739,17 @@
+ #define AR934X_BOOTSTRAP_SDRAM_DISABLED BIT(1)
+ #define AR934X_BOOTSTRAP_DDR1		BIT(0)
+ 
++#define QCA953X_BOOTSTRAP_SW_OPTION2	BIT(12)
++#define QCA953X_BOOTSTRAP_SW_OPTION1	BIT(11)
++#define QCA953X_BOOTSTRAP_EJTAG_MODE	BIT(5)
++#define QCA953X_BOOTSTRAP_REF_CLK_40	BIT(4)
++#define QCA953X_BOOTSTRAP_SDRAM_DISABLED BIT(1)
++#define QCA953X_BOOTSTRAP_DDR1		BIT(0)
++
+ #define QCA955X_BOOTSTRAP_REF_CLK_40	BIT(4)
+ 
++#define QCA956X_BOOTSTRAP_REF_CLK_40	BIT(2)
++
+ #define AR934X_PCIE_WMAC_INT_WMAC_MISC		BIT(0)
+ #define AR934X_PCIE_WMAC_INT_WMAC_TX		BIT(1)
+ #define AR934X_PCIE_WMAC_INT_WMAC_RXLP		BIT(2)
+@@ -418,6 +768,24 @@
+ 	 AR934X_PCIE_WMAC_INT_PCIE_RC1 | AR934X_PCIE_WMAC_INT_PCIE_RC2 | \
+ 	 AR934X_PCIE_WMAC_INT_PCIE_RC3)
+ 
++#define QCA953X_PCIE_WMAC_INT_WMAC_MISC		BIT(0)
++#define QCA953X_PCIE_WMAC_INT_WMAC_TX		BIT(1)
++#define QCA953X_PCIE_WMAC_INT_WMAC_RXLP		BIT(2)
++#define QCA953X_PCIE_WMAC_INT_WMAC_RXHP		BIT(3)
++#define QCA953X_PCIE_WMAC_INT_PCIE_RC		BIT(4)
++#define QCA953X_PCIE_WMAC_INT_PCIE_RC0		BIT(5)
++#define QCA953X_PCIE_WMAC_INT_PCIE_RC1		BIT(6)
++#define QCA953X_PCIE_WMAC_INT_PCIE_RC2		BIT(7)
++#define QCA953X_PCIE_WMAC_INT_PCIE_RC3		BIT(8)
++#define QCA953X_PCIE_WMAC_INT_WMAC_ALL \
++	(QCA953X_PCIE_WMAC_INT_WMAC_MISC | QCA953X_PCIE_WMAC_INT_WMAC_TX | \
++	 QCA953X_PCIE_WMAC_INT_WMAC_RXLP | QCA953X_PCIE_WMAC_INT_WMAC_RXHP)
++
++#define QCA953X_PCIE_WMAC_INT_PCIE_ALL \
++	(QCA953X_PCIE_WMAC_INT_PCIE_RC | QCA953X_PCIE_WMAC_INT_PCIE_RC0 | \
++	 QCA953X_PCIE_WMAC_INT_PCIE_RC1 | QCA953X_PCIE_WMAC_INT_PCIE_RC2 | \
++	 QCA953X_PCIE_WMAC_INT_PCIE_RC3)
++
+ #define QCA955X_EXT_INT_WMAC_MISC		BIT(0)
+ #define QCA955X_EXT_INT_WMAC_TX			BIT(1)
+ #define QCA955X_EXT_INT_WMAC_RXLP		BIT(2)
+@@ -449,6 +817,37 @@
+ 	 QCA955X_EXT_INT_PCIE_RC2_INT1 | QCA955X_EXT_INT_PCIE_RC2_INT2 | \
+ 	 QCA955X_EXT_INT_PCIE_RC2_INT3)
+ 
++#define QCA956X_EXT_INT_WMAC_MISC		BIT(0)
++#define QCA956X_EXT_INT_WMAC_TX			BIT(1)
++#define QCA956X_EXT_INT_WMAC_RXLP		BIT(2)
++#define QCA956X_EXT_INT_WMAC_RXHP		BIT(3)
++#define QCA956X_EXT_INT_PCIE_RC1		BIT(4)
++#define QCA956X_EXT_INT_PCIE_RC1_INT0		BIT(5)
++#define QCA956X_EXT_INT_PCIE_RC1_INT1		BIT(6)
++#define QCA956X_EXT_INT_PCIE_RC1_INT2		BIT(7)
++#define QCA956X_EXT_INT_PCIE_RC1_INT3		BIT(8)
++#define QCA956X_EXT_INT_PCIE_RC2		BIT(12)
++#define QCA956X_EXT_INT_PCIE_RC2_INT0		BIT(13)
++#define QCA956X_EXT_INT_PCIE_RC2_INT1		BIT(14)
++#define QCA956X_EXT_INT_PCIE_RC2_INT2		BIT(15)
++#define QCA956X_EXT_INT_PCIE_RC2_INT3		BIT(16)
++#define QCA956X_EXT_INT_USB1			BIT(24)
++#define QCA956X_EXT_INT_USB2			BIT(28)
++
++#define QCA956X_EXT_INT_WMAC_ALL \
++	(QCA956X_EXT_INT_WMAC_MISC | QCA956X_EXT_INT_WMAC_TX | \
++	 QCA956X_EXT_INT_WMAC_RXLP | QCA956X_EXT_INT_WMAC_RXHP)
++
++#define QCA956X_EXT_INT_PCIE_RC1_ALL \
++	(QCA956X_EXT_INT_PCIE_RC1 | QCA956X_EXT_INT_PCIE_RC1_INT0 | \
++	 QCA956X_EXT_INT_PCIE_RC1_INT1 | QCA956X_EXT_INT_PCIE_RC1_INT2 | \
++	 QCA956X_EXT_INT_PCIE_RC1_INT3)
++
++#define QCA956X_EXT_INT_PCIE_RC2_ALL \
++	(QCA956X_EXT_INT_PCIE_RC2 | QCA956X_EXT_INT_PCIE_RC2_INT0 | \
++	 QCA956X_EXT_INT_PCIE_RC2_INT1 | QCA956X_EXT_INT_PCIE_RC2_INT2 | \
++	 QCA956X_EXT_INT_PCIE_RC2_INT3)
++
+ #define REV_ID_MAJOR_MASK		0xfff0
+ #define REV_ID_MAJOR_AR71XX		0x00a0
+ #define REV_ID_MAJOR_AR913X		0x00b0
+@@ -460,8 +859,12 @@
+ #define REV_ID_MAJOR_AR9341		0x0120
+ #define REV_ID_MAJOR_AR9342		0x1120
+ #define REV_ID_MAJOR_AR9344		0x2120
++#define REV_ID_MAJOR_QCA9533		0x0140
++#define REV_ID_MAJOR_QCA9533_V2		0x0160
+ #define REV_ID_MAJOR_QCA9556		0x0130
+ #define REV_ID_MAJOR_QCA9558		0x1130
++#define REV_ID_MAJOR_TP9343		0x0150
++#define REV_ID_MAJOR_QCA956X		0x1150
+ 
+ #define AR71XX_REV_ID_MINOR_MASK	0x3
+ #define AR71XX_REV_ID_MINOR_AR7130	0x0
+@@ -482,8 +885,12 @@
+ 
+ #define AR934X_REV_ID_REVISION_MASK	0xf
+ 
++#define QCA953X_REV_ID_REVISION_MASK	0xf
++
+ #define QCA955X_REV_ID_REVISION_MASK	0xf
+ 
++#define QCA956X_REV_ID_REVISION_MASK	0xf
++
+ /*
+  * SPI block
+  */
+@@ -521,15 +928,63 @@
+ #define AR71XX_GPIO_REG_INT_ENABLE	0x24
+ #define AR71XX_GPIO_REG_FUNC		0x28
+ 
++#define AR934X_GPIO_REG_OUT_FUNC0	0x2c
++#define AR934X_GPIO_REG_OUT_FUNC1	0x30
++#define AR934X_GPIO_REG_OUT_FUNC2	0x34
++#define AR934X_GPIO_REG_OUT_FUNC3	0x38
++#define AR934X_GPIO_REG_OUT_FUNC4	0x3c
++#define AR934X_GPIO_REG_OUT_FUNC5	0x40
+ #define AR934X_GPIO_REG_FUNC		0x6c
+ 
++#define QCA953X_GPIO_REG_OUT_FUNC0	0x2c
++#define QCA953X_GPIO_REG_OUT_FUNC1	0x30
++#define QCA953X_GPIO_REG_OUT_FUNC2	0x34
++#define QCA953X_GPIO_REG_OUT_FUNC3	0x38
++#define QCA953X_GPIO_REG_OUT_FUNC4	0x3c
++#define QCA953X_GPIO_REG_IN_ENABLE0	0x44
++#define QCA953X_GPIO_REG_FUNC		0x6c
++
++#define QCA953X_GPIO_OUT_MUX_SPI_CS1		10
++#define QCA953X_GPIO_OUT_MUX_SPI_CS2		11
++#define QCA953X_GPIO_OUT_MUX_SPI_CS0		9
++#define QCA953X_GPIO_OUT_MUX_SPI_CLK		8
++#define QCA953X_GPIO_OUT_MUX_SPI_MOSI		12
++#define QCA953X_GPIO_OUT_MUX_LED_LINK1		41
++#define QCA953X_GPIO_OUT_MUX_LED_LINK2		42
++#define QCA953X_GPIO_OUT_MUX_LED_LINK3		43
++#define QCA953X_GPIO_OUT_MUX_LED_LINK4		44
++#define QCA953X_GPIO_OUT_MUX_LED_LINK5		45
++
++#define QCA955X_GPIO_REG_OUT_FUNC0	0x2c
++#define QCA955X_GPIO_REG_OUT_FUNC1	0x30
++#define QCA955X_GPIO_REG_OUT_FUNC2	0x34
++#define QCA955X_GPIO_REG_OUT_FUNC3	0x38
++#define QCA955X_GPIO_REG_OUT_FUNC4	0x3c
++#define QCA955X_GPIO_REG_OUT_FUNC5	0x40
++#define QCA955X_GPIO_REG_FUNC		0x6c
++
++#define QCA956X_GPIO_REG_OUT_FUNC0	0x2c
++#define QCA956X_GPIO_REG_OUT_FUNC1	0x30
++#define QCA956X_GPIO_REG_OUT_FUNC2	0x34
++#define QCA956X_GPIO_REG_OUT_FUNC3	0x38
++#define QCA956X_GPIO_REG_OUT_FUNC4	0x3c
++#define QCA956X_GPIO_REG_OUT_FUNC5	0x40
++#define QCA956X_GPIO_REG_IN_ENABLE0	0x44
++#define QCA956X_GPIO_REG_IN_ENABLE3	0x50
++#define QCA956X_GPIO_REG_FUNC		0x6c
++
++#define QCA956X_GPIO_OUT_MUX_GE0_MDO	32
++#define QCA956X_GPIO_OUT_MUX_GE0_MDC	33
++
+ #define AR71XX_GPIO_COUNT		16
+ #define AR7240_GPIO_COUNT		18
+ #define AR7241_GPIO_COUNT		20
+ #define AR913X_GPIO_COUNT		22
+ #define AR933X_GPIO_COUNT		30
+ #define AR934X_GPIO_COUNT		23
++#define QCA953X_GPIO_COUNT		18
+ #define QCA955X_GPIO_COUNT		24
++#define QCA956X_GPIO_COUNT		23
+ 
+ /*
+  * SRIF block
+@@ -552,4 +1007,318 @@
+ #define AR934X_SRIF_DPLL2_OUTDIV_SHIFT	13
+ #define AR934X_SRIF_DPLL2_OUTDIV_MASK	0x7
+ 
++#define QCA953X_SRIF_CPU_DPLL1_REG	0x1c0
++#define QCA953X_SRIF_CPU_DPLL2_REG	0x1c4
++#define QCA953X_SRIF_CPU_DPLL3_REG	0x1c8
++
++#define QCA953X_SRIF_DDR_DPLL1_REG	0x240
++#define QCA953X_SRIF_DDR_DPLL2_REG	0x244
++#define QCA953X_SRIF_DDR_DPLL3_REG	0x248
++
++#define QCA953X_SRIF_DPLL1_REFDIV_SHIFT	27
++#define QCA953X_SRIF_DPLL1_REFDIV_MASK	0x1f
++#define QCA953X_SRIF_DPLL1_NINT_SHIFT	18
++#define QCA953X_SRIF_DPLL1_NINT_MASK	0x1ff
++#define QCA953X_SRIF_DPLL1_NFRAC_MASK	0x0003ffff
++
++#define QCA953X_SRIF_DPLL2_LOCAL_PLL	BIT(30)
++#define QCA953X_SRIF_DPLL2_OUTDIV_SHIFT	13
++#define QCA953X_SRIF_DPLL2_OUTDIV_MASK	0x7
++
++#define AR71XX_GPIO_FUNC_STEREO_EN		BIT(17)
++#define AR71XX_GPIO_FUNC_SLIC_EN		BIT(16)
++#define AR71XX_GPIO_FUNC_SPI_CS2_EN		BIT(13)
++#define AR71XX_GPIO_FUNC_SPI_CS1_EN		BIT(12)
++#define AR71XX_GPIO_FUNC_UART_EN		BIT(8)
++#define AR71XX_GPIO_FUNC_USB_OC_EN		BIT(4)
++#define AR71XX_GPIO_FUNC_USB_CLK_EN		BIT(0)
++
++#define AR724X_GPIO_FUNC_GE0_MII_CLK_EN		BIT(19)
++#define AR724X_GPIO_FUNC_SPI_EN			BIT(18)
++#define AR724X_GPIO_FUNC_SPI_CS_EN2		BIT(14)
++#define AR724X_GPIO_FUNC_SPI_CS_EN1		BIT(13)
++#define AR724X_GPIO_FUNC_CLK_OBS5_EN		BIT(12)
++#define AR724X_GPIO_FUNC_CLK_OBS4_EN		BIT(11)
++#define AR724X_GPIO_FUNC_CLK_OBS3_EN		BIT(10)
++#define AR724X_GPIO_FUNC_CLK_OBS2_EN		BIT(9)
++#define AR724X_GPIO_FUNC_CLK_OBS1_EN		BIT(8)
++#define AR724X_GPIO_FUNC_ETH_SWITCH_LED4_EN	BIT(7)
++#define AR724X_GPIO_FUNC_ETH_SWITCH_LED3_EN	BIT(6)
++#define AR724X_GPIO_FUNC_ETH_SWITCH_LED2_EN	BIT(5)
++#define AR724X_GPIO_FUNC_ETH_SWITCH_LED1_EN	BIT(4)
++#define AR724X_GPIO_FUNC_ETH_SWITCH_LED0_EN	BIT(3)
++#define AR724X_GPIO_FUNC_UART_RTS_CTS_EN	BIT(2)
++#define AR724X_GPIO_FUNC_UART_EN		BIT(1)
++#define AR724X_GPIO_FUNC_JTAG_DISABLE		BIT(0)
++
++#define AR913X_GPIO_FUNC_WMAC_LED_EN		BIT(22)
++#define AR913X_GPIO_FUNC_EXP_PORT_CS_EN		BIT(21)
++#define AR913X_GPIO_FUNC_I2S_REFCLKEN		BIT(20)
++#define AR913X_GPIO_FUNC_I2S_MCKEN		BIT(19)
++#define AR913X_GPIO_FUNC_I2S1_EN		BIT(18)
++#define AR913X_GPIO_FUNC_I2S0_EN		BIT(17)
++#define AR913X_GPIO_FUNC_SLIC_EN		BIT(16)
++#define AR913X_GPIO_FUNC_UART_RTSCTS_EN		BIT(9)
++#define AR913X_GPIO_FUNC_UART_EN		BIT(8)
++#define AR913X_GPIO_FUNC_USB_CLK_EN		BIT(4)
++
++#define AR933X_GPIO_FUNC_SPDIF2TCK		BIT(31)
++#define AR933X_GPIO_FUNC_SPDIF_EN		BIT(30)
++#define AR933X_GPIO_FUNC_I2SO_22_18_EN		BIT(29)
++#define AR933X_GPIO_FUNC_I2S_MCK_EN		BIT(27)
++#define AR933X_GPIO_FUNC_I2SO_EN		BIT(26)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED_DUPL	BIT(25)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED_COLL	BIT(24)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED_ACT	BIT(23)
++#define AR933X_GPIO_FUNC_SPI_EN			BIT(18)
++#define AR933X_GPIO_FUNC_SPI_CS_EN2		BIT(14)
++#define AR933X_GPIO_FUNC_SPI_CS_EN1		BIT(13)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED4_EN	BIT(7)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED3_EN	BIT(6)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED2_EN	BIT(5)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED1_EN	BIT(4)
++#define AR933X_GPIO_FUNC_ETH_SWITCH_LED0_EN	BIT(3)
++#define AR933X_GPIO_FUNC_UART_RTS_CTS_EN	BIT(2)
++#define AR933X_GPIO_FUNC_UART_EN		BIT(1)
++#define AR933X_GPIO_FUNC_JTAG_DISABLE		BIT(0)
++
++#define AR934X_GPIO_FUNC_CLK_OBS7_EN		BIT(9)
++#define AR934X_GPIO_FUNC_CLK_OBS6_EN		BIT(8)
++#define AR934X_GPIO_FUNC_CLK_OBS5_EN		BIT(7)
++#define AR934X_GPIO_FUNC_CLK_OBS4_EN		BIT(6)
++#define AR934X_GPIO_FUNC_CLK_OBS3_EN		BIT(5)
++#define AR934X_GPIO_FUNC_CLK_OBS2_EN		BIT(4)
++#define AR934X_GPIO_FUNC_CLK_OBS1_EN		BIT(3)
++#define AR934X_GPIO_FUNC_CLK_OBS0_EN		BIT(2)
++#define AR934X_GPIO_FUNC_JTAG_DISABLE		BIT(1)
++
++#define AR934X_GPIO_OUT_GPIO		0
++#define AR934X_GPIO_OUT_SPI_CS1	7
++#define AR934X_GPIO_OUT_LED_LINK0	41
++#define AR934X_GPIO_OUT_LED_LINK1	42
++#define AR934X_GPIO_OUT_LED_LINK2	43
++#define AR934X_GPIO_OUT_LED_LINK3	44
++#define AR934X_GPIO_OUT_LED_LINK4	45
++#define AR934X_GPIO_OUT_EXT_LNA0	46
++#define AR934X_GPIO_OUT_EXT_LNA1	47
++
++#define QCA955X_GPIO_FUNC_CLK_OBS7_EN		BIT(9)
++#define QCA955X_GPIO_FUNC_CLK_OBS6_EN		BIT(8)
++#define QCA955X_GPIO_FUNC_CLK_OBS5_EN		BIT(7)
++#define QCA955X_GPIO_FUNC_CLK_OBS4_EN		BIT(6)
++#define QCA955X_GPIO_FUNC_CLK_OBS3_EN		BIT(5)
++#define QCA955X_GPIO_FUNC_CLK_OBS2_EN		BIT(4)
++#define QCA955X_GPIO_FUNC_CLK_OBS1_EN		BIT(3)
++#define QCA955X_GPIO_FUNC_JTAG_DISABLE		BIT(1)
++
++#define QCA955X_GPIO_OUT_GPIO		0
++#define QCA955X_MII_EXT_MDI		1
++#define QCA955X_SLIC_DATA_OUT		3
++#define QCA955X_SLIC_PCM_FS		4
++#define QCA955X_SLIC_PCM_CLK		5
++#define QCA955X_SPI_CLK			8
++#define QCA955X_SPI_CS_0		9
++#define QCA955X_SPI_CS_1		10
++#define QCA955X_SPI_CS_2		11
++#define QCA955X_SPI_MISO		12
++#define QCA955X_I2S_CLK			13
++#define QCA955X_I2S_WS			14
++#define QCA955X_I2S_SD			15
++#define QCA955X_I2S_MCK			16
++#define QCA955X_SPDIF_OUT		17
++#define QCA955X_UART1_TD		18
++#define QCA955X_UART1_RTS		19
++#define QCA955X_UART1_RD		20
++#define QCA955X_UART1_CTS		21
++#define QCA955X_UART0_SOUT		22
++#define QCA955X_SPDIF2_OUT		23
++#define QCA955X_LED_SGMII_SPEED0	24
++#define QCA955X_LED_SGMII_SPEED1	25
++#define QCA955X_LED_SGMII_DUPLEX	26
++#define QCA955X_LED_SGMII_LINK_UP	27
++#define QCA955X_SGMII_SPEED0_INVERT	28
++#define QCA955X_SGMII_SPEED1_INVERT	29
++#define QCA955X_SGMII_DUPLEX_INVERT	30
++#define QCA955X_SGMII_LINK_UP_INVERT	31
++#define QCA955X_GE1_MII_MDO		32
++#define QCA955X_GE1_MII_MDC		33
++#define QCA955X_SWCOM2			38
++#define QCA955X_SWCOM3			39
++#define QCA955X_MAC2_GPIO		40
++#define QCA955X_MAC3_GPIO		41
++#define QCA955X_ATT_LED			42
++#define QCA955X_PWR_LED			43
++#define QCA955X_TX_FRAME		44
++#define QCA955X_RX_CLEAR_EXTERNAL	45
++#define QCA955X_LED_NETWORK_EN		46
++#define QCA955X_LED_POWER_EN		47
++#define QCA955X_WMAC_GLUE_WOW		68
++#define QCA955X_RX_CLEAR_EXTENSION	70
++#define QCA955X_CP_NAND_CS1		73
++#define QCA955X_USB_SUSPEND		74
++#define QCA955X_ETH_TX_ERR		75
++#define QCA955X_DDR_DQ_OE		76
++#define QCA955X_CLKREQ_N_EP		77
++#define QCA955X_CLKREQ_N_RC		78
++#define QCA955X_CLK_OBS0		79
++#define QCA955X_CLK_OBS1		80
++#define QCA955X_CLK_OBS2		81
++#define QCA955X_CLK_OBS3		82
++#define QCA955X_CLK_OBS4		83
++#define QCA955X_CLK_OBS5		84
++
++/*
++ * MII_CTRL block
++ */
++#define AR71XX_MII_REG_MII0_CTRL	0x00
++#define AR71XX_MII_REG_MII1_CTRL	0x04
++
++#define AR71XX_MII_CTRL_IF_MASK		3
++#define AR71XX_MII_CTRL_SPEED_SHIFT	4
++#define AR71XX_MII_CTRL_SPEED_MASK	3
++#define AR71XX_MII_CTRL_SPEED_10	0
++#define AR71XX_MII_CTRL_SPEED_100	1
++#define AR71XX_MII_CTRL_SPEED_1000	2
++
++#define AR71XX_MII0_CTRL_IF_GMII	0
++#define AR71XX_MII0_CTRL_IF_MII		1
++#define AR71XX_MII0_CTRL_IF_RGMII	2
++#define AR71XX_MII0_CTRL_IF_RMII	3
++
++#define AR71XX_MII1_CTRL_IF_RGMII	0
++#define AR71XX_MII1_CTRL_IF_RMII	1
++
++/*
++ * AR933X GMAC interface
++ */
++#define AR933X_GMAC_REG_ETH_CFG		0x00
++
++#define AR933X_ETH_CFG_RGMII_GE0	BIT(0)
++#define AR933X_ETH_CFG_MII_GE0		BIT(1)
++#define AR933X_ETH_CFG_GMII_GE0		BIT(2)
++#define AR933X_ETH_CFG_MII_GE0_MASTER	BIT(3)
++#define AR933X_ETH_CFG_MII_GE0_SLAVE	BIT(4)
++#define AR933X_ETH_CFG_MII_GE0_ERR_EN	BIT(5)
++#define AR933X_ETH_CFG_SW_PHY_SWAP	BIT(7)
++#define AR933X_ETH_CFG_SW_PHY_ADDR_SWAP	BIT(8)
++#define AR933X_ETH_CFG_RMII_GE0		BIT(9)
++#define AR933X_ETH_CFG_RMII_GE0_SPD_10	0
++#define AR933X_ETH_CFG_RMII_GE0_SPD_100	BIT(10)
++
++/*
++ * AR934X GMAC Interface
++ */
++#define AR934X_GMAC_REG_ETH_CFG		0x00
++
++#define AR934X_ETH_CFG_RGMII_GMAC0	BIT(0)
++#define AR934X_ETH_CFG_MII_GMAC0	BIT(1)
++#define AR934X_ETH_CFG_GMII_GMAC0	BIT(2)
++#define AR934X_ETH_CFG_MII_GMAC0_MASTER	BIT(3)
++#define AR934X_ETH_CFG_MII_GMAC0_SLAVE	BIT(4)
++#define AR934X_ETH_CFG_MII_GMAC0_ERR_EN	BIT(5)
++#define AR934X_ETH_CFG_SW_ONLY_MODE	BIT(6)
++#define AR934X_ETH_CFG_SW_PHY_SWAP	BIT(7)
++#define AR934X_ETH_CFG_SW_APB_ACCESS	BIT(9)
++#define AR934X_ETH_CFG_RMII_GMAC0	BIT(10)
++#define AR933X_ETH_CFG_MII_CNTL_SPEED	BIT(11)
++#define AR934X_ETH_CFG_RMII_GMAC0_MASTER BIT(12)
++#define AR933X_ETH_CFG_SW_ACC_MSB_FIRST	BIT(13)
++#define AR934X_ETH_CFG_RXD_DELAY        BIT(14)
++#define AR934X_ETH_CFG_RXD_DELAY_MASK   0x3
++#define AR934X_ETH_CFG_RXD_DELAY_SHIFT  14
++#define AR934X_ETH_CFG_RDV_DELAY        BIT(16)
++#define AR934X_ETH_CFG_RDV_DELAY_MASK   0x3
++#define AR934X_ETH_CFG_RDV_DELAY_SHIFT  16
++
++/*
++ * QCA953X GMAC Interface
++ */
++#define QCA953X_GMAC_REG_ETH_CFG		0x00
++
++#define QCA953X_ETH_CFG_SW_ONLY_MODE		BIT(6)
++#define QCA953X_ETH_CFG_SW_PHY_SWAP		BIT(7)
++#define QCA953X_ETH_CFG_SW_APB_ACCESS		BIT(9)
++#define QCA953X_ETH_CFG_SW_ACC_MSB_FIRST	BIT(13)
++
++/*
++ * QCA955X GMAC Interface
++ */
++
++#define QCA955X_GMAC_REG_ETH_CFG	0x00
++#define QCA955X_GMAC_REG_SGMII_SERDES	0x18
++
++#define QCA955X_ETH_CFG_RGMII_EN	BIT(0)
++#define QCA955X_ETH_CFG_MII_GE0		BIT(1)
++#define QCA955X_ETH_CFG_GMII_GE0	BIT(2)
++#define QCA955X_ETH_CFG_MII_GE0_MASTER	BIT(3)
++#define QCA955X_ETH_CFG_MII_GE0_SLAVE	BIT(4)
++#define QCA955X_ETH_CFG_GE0_ERR_EN	BIT(5)
++#define QCA955X_ETH_CFG_GE0_SGMII	BIT(6)
++#define QCA955X_ETH_CFG_RMII_GE0	BIT(10)
++#define QCA955X_ETH_CFG_MII_CNTL_SPEED	BIT(11)
++#define QCA955X_ETH_CFG_RMII_GE0_MASTER	BIT(12)
++#define QCA955X_ETH_CFG_RXD_DELAY_MASK	0x3
++#define QCA955X_ETH_CFG_RXD_DELAY_SHIFT	14
++#define QCA955X_ETH_CFG_RDV_DELAY	BIT(16)
++#define QCA955X_ETH_CFG_RDV_DELAY_MASK	0x3
++#define QCA955X_ETH_CFG_RDV_DELAY_SHIFT	16
++#define QCA955X_ETH_CFG_TXD_DELAY_MASK	0x3
++#define QCA955X_ETH_CFG_TXD_DELAY_SHIFT	18
++#define QCA955X_ETH_CFG_TXE_DELAY_MASK	0x3
++#define QCA955X_ETH_CFG_TXE_DELAY_SHIFT	20
++
++#define QCA955X_SGMII_SERDES_LOCK_DETECT_STATUS	BIT(15)
++#define QCA955X_SGMII_SERDES_RES_CALIBRATION_SHIFT 23
++#define QCA955X_SGMII_SERDES_RES_CALIBRATION_MASK 0xf
++/*
++ * QCA956X GMAC Interface
++ */
++
++#define QCA956X_GMAC_REG_ETH_CFG	0x00
++#define QCA956X_GMAC_REG_SGMII_RESET	0x14
++#define QCA956X_GMAC_REG_SGMII_SERDES	0x18
++#define QCA956X_GMAC_REG_MR_AN_CONTROL	0x1c
++#define QCA956X_GMAC_REG_SGMII_CONFIG	0x34
++#define QCA956X_GMAC_REG_SGMII_DEBUG	0x58
++
++#define QCA956X_ETH_CFG_RGMII_EN		BIT(0)
++#define QCA956X_ETH_CFG_GE0_SGMII		BIT(6)
++#define QCA956X_ETH_CFG_SW_ONLY_MODE		BIT(7)
++#define QCA956X_ETH_CFG_SW_PHY_SWAP		BIT(8)
++#define QCA956X_ETH_CFG_SW_PHY_ADDR_SWAP	BIT(9)
++#define QCA956X_ETH_CFG_SW_APB_ACCESS		BIT(10)
++#define QCA956X_ETH_CFG_SW_ACC_MSB_FIRST	BIT(13)
++#define QCA956X_ETH_CFG_RXD_DELAY_MASK		0x3
++#define QCA956X_ETH_CFG_RXD_DELAY_SHIFT		14
++#define QCA956X_ETH_CFG_RDV_DELAY_MASK		0x3
++#define QCA956X_ETH_CFG_RDV_DELAY_SHIFT		16
++
++#define QCA956X_SGMII_RESET_RX_CLK_N_RESET	0x0
++#define QCA956X_SGMII_RESET_RX_CLK_N		BIT(0)
++#define QCA956X_SGMII_RESET_TX_CLK_N		BIT(1)
++#define QCA956X_SGMII_RESET_RX_125M_N		BIT(2)
++#define QCA956X_SGMII_RESET_TX_125M_N		BIT(3)
++#define QCA956X_SGMII_RESET_HW_RX_125M_N	BIT(4)
++
++#define QCA956X_SGMII_SERDES_CDR_BW_MASK	0x3
++#define QCA956X_SGMII_SERDES_CDR_BW_SHIFT	1
++#define QCA956X_SGMII_SERDES_TX_DR_CTRL_MASK	0x7
++#define QCA956X_SGMII_SERDES_TX_DR_CTRL_SHIFT	4
++#define QCA956X_SGMII_SERDES_PLL_BW		BIT(8)
++#define QCA956X_SGMII_SERDES_VCO_FAST		BIT(9)
++#define QCA956X_SGMII_SERDES_VCO_SLOW		BIT(10)
++#define QCA956X_SGMII_SERDES_LOCK_DETECT_STATUS	BIT(15)
++#define QCA956X_SGMII_SERDES_EN_SIGNAL_DETECT	BIT(16)
++#define QCA956X_SGMII_SERDES_FIBER_SDO		BIT(17)
++#define QCA956X_SGMII_SERDES_RES_CALIBRATION_SHIFT 23
++#define QCA956X_SGMII_SERDES_RES_CALIBRATION_MASK 0xf
++#define QCA956X_SGMII_SERDES_VCO_REG_SHIFT	27
++#define QCA956X_SGMII_SERDES_VCO_REG_MASK	0xf
++
++#define QCA956X_MR_AN_CONTROL_AN_ENABLE		BIT(12)
++#define QCA956X_MR_AN_CONTROL_PHY_RESET		BIT(15)
++
++#define QCA956X_SGMII_CONFIG_MODE_CTRL_SHIFT	0
++#define QCA956X_SGMII_CONFIG_MODE_CTRL_MASK	0x7
++
+ #endif /* __ASM_MACH_AR71XX_REGS_H */
 -- 
 2.11.0

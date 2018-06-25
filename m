@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:25:07 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:58214 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:25:24 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:58220 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992936AbeFYRXyNJStL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jun 2018 19:23:54 +0200
+        id S23992940AbeFYRX4T-st7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:23:56 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 15/25] MIPS: ath79: move legacy "wdt" and "uart" clock aliases out of soc init
-Date:   Mon, 25 Jun 2018 19:15:39 +0200
-Message-Id: <20180625171549.4618-16-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
+Subject: [PATCH 13/25] MIPS: pci-ar724x: convert to OF
+Date:   Mon, 25 Jun 2018 19:15:37 +0200
+Message-Id: <20180625171549.4618-14-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64443
+X-archive-position: 64444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,116 +33,207 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
+With the ath79 target getting converted to pure OF, we can drop all the
+platform data code and add the missing OF bits to the driver. We also add
+a irq domain for the PCI/e controllers cascade, thus making it usable from
+dts files.
 
-Preparation for reusing functions for DT
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/clock.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ arch/mips/pci/pci-ar724x.c | 88 ++++++++++++++++++++++------------------------
+ 1 file changed, 42 insertions(+), 46 deletions(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 50bc3b01a4c4..e02b819b2f5d 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -110,9 +110,6 @@ static void __init ar71xx_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
--
--	clk_add_alias("wdt", NULL, "ahb", NULL);
--	clk_add_alias("uart", NULL, "ahb", NULL);
- }
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index 64b58cc48a91..86b7b9d2edab 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -14,8 +14,11 @@
+ #include <linux/init.h>
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
++#include <linux/irqchip/chained_irq.h>
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
++#include <linux/of_irq.h>
++#include <linux/of_pci.h>
  
- static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
-@@ -140,9 +137,6 @@ static void __init ar724x_clocks_init(void)
- 	ref_clk = ath79_set_clk(ATH79_CLK_REF, AR724X_BASE_FREQ);
+ #define AR724X_PCI_REG_APP		0x00
+ #define AR724X_PCI_REG_RESET		0x18
+@@ -45,17 +48,20 @@ struct ar724x_pci_controller {
+ 	void __iomem *crp_base;
  
- 	ar724x_clk_init(ref_clk, ath79_pll_base);
--
--	clk_add_alias("wdt", NULL, "ahb", NULL);
--	clk_add_alias("uart", NULL, "ahb", NULL);
- }
+ 	int irq;
+-	int irq_base;
  
- static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
-@@ -218,9 +212,6 @@ static void __init ar933x_clocks_init(void)
- 	ref_clk = ath79_set_clk(ATH79_CLK_REF, ref_rate);
+ 	bool link_up;
+ 	bool bar0_is_cached;
+ 	u32  bar0_value;
  
- 	ar9330_clk_init(ref_clk, ath79_pll_base);
--
--	clk_add_alias("wdt", NULL, "ahb", NULL);
--	clk_add_alias("uart", NULL, "ref", NULL);
- }
++	struct device_node *np;
+ 	struct pci_controller pci_controller;
++	struct irq_domain *domain;
+ 	struct resource io_res;
+ 	struct resource mem_res;
+ };
  
- static u32 __init ar934x_get_pll_freq(u32 ref, u32 ref_div, u32 nint, u32 nfrac,
-@@ -353,9 +344,6 @@ static void __init ar934x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
--	clk_add_alias("wdt", NULL, "ref", NULL);
--	clk_add_alias("uart", NULL, "ref", NULL);
--
- 	iounmap(dpll_base);
- }
- 
-@@ -439,9 +427,6 @@ static void __init qca953x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
--
--	clk_add_alias("wdt", NULL, "ref", NULL);
--	clk_add_alias("uart", NULL, "ref", NULL);
- }
- 
- static void __init qca955x_clocks_init(void)
-@@ -524,9 +509,6 @@ static void __init qca955x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
--
--	clk_add_alias("wdt", NULL, "ref", NULL);
--	clk_add_alias("uart", NULL, "ref", NULL);
- }
- 
- static void __init qca956x_clocks_init(void)
-@@ -628,13 +610,13 @@ static void __init qca956x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
--
--	clk_add_alias("wdt", NULL, "ref", NULL);
--	clk_add_alias("uart", NULL, "ref", NULL);
- }
- 
- void __init ath79_clocks_init(void)
++static struct irq_chip ar724x_pci_irq_chip;
++
+ static inline bool ar724x_pci_check_link(struct ar724x_pci_controller *apc)
  {
-+	const char *wdt;
-+	const char *uart;
-+
- 	if (soc_is_ar71xx())
- 		ar71xx_clocks_init();
- 	else if (soc_is_ar724x() || soc_is_ar913x())
-@@ -651,6 +633,20 @@ void __init ath79_clocks_init(void)
- 		qca956x_clocks_init();
+ 	u32 reset;
+@@ -231,35 +237,31 @@ static struct pci_ops ar724x_pci_ops = {
+ 
+ static void ar724x_pci_irq_handler(struct irq_desc *desc)
+ {
+-	struct ar724x_pci_controller *apc;
+-	void __iomem *base;
++	struct irq_chip *chip = irq_desc_get_chip(desc);
++	struct ar724x_pci_controller *apc = irq_desc_get_handler_data(desc);
+ 	u32 pending;
+ 
+-	apc = irq_desc_get_handler_data(desc);
+-	base = apc->ctrl_base;
+-
+-	pending = __raw_readl(base + AR724X_PCI_REG_INT_STATUS) &
+-		  __raw_readl(base + AR724X_PCI_REG_INT_MASK);
++	chained_irq_enter(chip, desc);
++	pending = __raw_readl(apc->ctrl_base + AR724X_PCI_REG_INT_STATUS) &
++		  __raw_readl(apc->ctrl_base + AR724X_PCI_REG_INT_MASK);
+ 
+ 	if (pending & AR724X_PCI_INT_DEV0)
+-		generic_handle_irq(apc->irq_base + 0);
+-
++		generic_handle_irq(irq_linear_revmap(apc->domain, 1));
  	else
- 		BUG();
-+
-+	if (soc_is_ar71xx() || soc_is_ar724x() || soc_is_ar913x()) {
-+		wdt = "ahb";
-+		uart = "ahb";
-+	} else if (soc_is_ar933x()) {
-+		wdt = "ahb";
-+		uart = "ref";
-+	} else {
-+		wdt = "ref";
-+		uart = "ref";
-+	}
-+
-+	clk_add_alias("wdt", NULL, wdt, NULL);
-+	clk_add_alias("uart", NULL, uart, NULL);
+ 		spurious_interrupt();
++	chained_irq_exit(chip, desc);
  }
  
- unsigned long __init
+ static void ar724x_pci_irq_unmask(struct irq_data *d)
+ {
+ 	struct ar724x_pci_controller *apc;
+ 	void __iomem *base;
+-	int offset;
+ 	u32 t;
+ 
+ 	apc = irq_data_get_irq_chip_data(d);
+ 	base = apc->ctrl_base;
+-	offset = apc->irq_base - d->irq;
+ 
+-	switch (offset) {
++	switch (irq_linear_revmap(apc->domain, d->irq)) {
+ 	case 0:
+ 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
+ 		__raw_writel(t | AR724X_PCI_INT_DEV0,
+@@ -273,14 +275,12 @@ static void ar724x_pci_irq_mask(struct irq_data *d)
+ {
+ 	struct ar724x_pci_controller *apc;
+ 	void __iomem *base;
+-	int offset;
+ 	u32 t;
+ 
+ 	apc = irq_data_get_irq_chip_data(d);
+ 	base = apc->ctrl_base;
+-	offset = apc->irq_base - d->irq;
+ 
+-	switch (offset) {
++	switch (irq_linear_revmap(apc->domain, d->irq)) {
+ 	case 0:
+ 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
+ 		__raw_writel(t & ~AR724X_PCI_INT_DEV0,
+@@ -305,26 +305,34 @@ static struct irq_chip ar724x_pci_irq_chip = {
+ 	.irq_mask_ack	= ar724x_pci_irq_mask,
+ };
+ 
++static int ar724x_pci_irq_map(struct irq_domain *d,
++			      unsigned int irq, irq_hw_number_t hw)
++{
++	struct ar724x_pci_controller *apc = d->host_data;
++
++	irq_set_chip_and_handler(irq, &ar724x_pci_irq_chip, handle_level_irq);
++	irq_set_chip_data(irq, apc);
++
++	return 0;
++}
++
++static const struct irq_domain_ops ar724x_pci_domain_ops = {
++	.xlate = irq_domain_xlate_onecell,
++	.map = ar724x_pci_irq_map,
++};
++
+ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
+ 				int id)
+ {
+ 	void __iomem *base;
+-	int i;
+ 
+ 	base = apc->ctrl_base;
+ 
+ 	__raw_writel(0, base + AR724X_PCI_REG_INT_MASK);
+ 	__raw_writel(0, base + AR724X_PCI_REG_INT_STATUS);
+ 
+-	apc->irq_base = ATH79_PCI_IRQ_BASE + (id * AR724X_PCI_IRQ_COUNT);
+-
+-	for (i = apc->irq_base;
+-	     i < apc->irq_base + AR724X_PCI_IRQ_COUNT; i++) {
+-		irq_set_chip_and_handler(i, &ar724x_pci_irq_chip,
+-					 handle_level_irq);
+-		irq_set_chip_data(i, apc);
+-	}
+-
++	apc->domain = irq_domain_add_linear(apc->np, 2,
++					    &ar724x_pci_domain_ops, apc);
+ 	irq_set_chained_handler_and_data(apc->irq, ar724x_pci_irq_handler,
+ 					 apc);
+ }
+@@ -394,29 +402,11 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ 	if (apc->irq < 0)
+ 		return -EINVAL;
+ 
+-	res = platform_get_resource_byname(pdev, IORESOURCE_IO, "io_base");
+-	if (!res)
+-		return -EINVAL;
+-
+-	apc->io_res.parent = res;
+-	apc->io_res.name = "PCI IO space";
+-	apc->io_res.start = res->start;
+-	apc->io_res.end = res->end;
+-	apc->io_res.flags = IORESOURCE_IO;
+-
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mem_base");
+-	if (!res)
+-		return -EINVAL;
+-
+-	apc->mem_res.parent = res;
+-	apc->mem_res.name = "PCI memory space";
+-	apc->mem_res.start = res->start;
+-	apc->mem_res.end = res->end;
+-	apc->mem_res.flags = IORESOURCE_MEM;
+-
++	apc->np = pdev->dev.of_node;
+ 	apc->pci_controller.pci_ops = &ar724x_pci_ops;
+ 	apc->pci_controller.io_resource = &apc->io_res;
+ 	apc->pci_controller.mem_resource = &apc->mem_res;
++	pci_load_of_ranges(&apc->pci_controller, pdev->dev.of_node);
+ 
+ 	/*
+ 	 * Do the full PCIE Root Complex Initialization Sequence if the PCIe
+@@ -438,10 +428,16 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static const struct of_device_id ar724x_pci_ids[] = {
++	{ .compatible = "qcom,ar7240-pci" },
++	{},
++};
++
+ static struct platform_driver ar724x_pci_driver = {
+ 	.probe = ar724x_pci_probe,
+ 	.driver = {
+ 		.name = "ar724x-pci",
++		.of_match_table = of_match_ptr(ar724x_pci_ids),
+ 	},
+ };
+ 
 -- 
 2.11.0

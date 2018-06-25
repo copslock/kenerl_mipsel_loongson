@@ -1,15 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:17:47 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57970 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:03 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57982 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992943AbeFYRQBy3Vsw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jun 2018 19:16:01 +0200
+        id S23992960AbeFYRQCaQgmw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:16:02 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 05/25] MIPS: ath79: Avoid using unitialized 'reg' variable
-Date:   Mon, 25 Jun 2018 19:15:29 +0200
-Message-Id: <20180625171549.4618-6-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 06/25] MIPS: ath79: fix system restart
+Date:   Mon, 25 Jun 2018 19:15:30 +0200
+Message-Id: <20180625171549.4618-7-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -17,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64433
+X-archive-position: 64434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,46 +33,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markos Chandras <markos.chandras@imgtec.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-Fixes the following build error:
-arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
-uninitialized in this function [-Werror=maybe-uninitialized]
-arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
-In file included from arch/mips/ath79/common.c:20:0:
-arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
-arch/mips/include/asm/mach-ath79/ath79.h:139:20:
-error: 'reg' may be used uninitialized in this function
-[-Werror=maybe-uninitialized]
-arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
+This patch disables irq on reboot to fix hang issues that were observed
+due to pending interrupts.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- arch/mips/ath79/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/ath79/setup.c                  | 1 +
+ arch/mips/include/asm/mach-ath79/ath79.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
-index cd6055f9e7a0..fc3438150b3e 100644
---- a/arch/mips/ath79/common.c
-+++ b/arch/mips/ath79/common.c
-@@ -110,7 +110,7 @@ void ath79_device_reset_set(u32 mask)
- 	else if (soc_is_qca956x() || soc_is_tp9343())
- 		reg = QCA956X_RESET_REG_RESET_MODULE;
- 	else
--		BUG();
-+		panic("Reset register not defined for this SOC");
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index fed49cdc5fdf..4c7a93f4039a 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYPE_LEN];
  
- 	spin_lock_irqsave(&ath79_device_reset_lock, flags);
- 	t = ath79_reset_rr(reg);
-@@ -142,7 +142,7 @@ void ath79_device_reset_clear(u32 mask)
- 	else if (soc_is_qca956x() || soc_is_tp9343())
- 		reg = QCA956X_RESET_REG_RESET_MODULE;
- 	else
--		BUG();
-+		panic("Reset register not defined for this SOC");
+ static void ath79_restart(char *command)
+ {
++	local_irq_disable();
+ 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
+ 	for (;;)
+ 		if (cpu_wait)
+diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
+index f54c9b0c6325..73dcd63b8243 100644
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -167,6 +167,7 @@ static inline u32 ath79_pll_rr(unsigned reg)
+ static inline void ath79_reset_wr(unsigned reg, u32 val)
+ {
+ 	__raw_writel(val, ath79_reset_base + reg);
++	(void) __raw_readl(ath79_reset_base + reg); /* flush */
+ }
  
- 	spin_lock_irqsave(&ath79_device_reset_lock, flags);
- 	t = ath79_reset_rr(reg);
+ static inline u32 ath79_reset_rr(unsigned reg)
 -- 
 2.11.0

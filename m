@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:03 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57982 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:17 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57990 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992960AbeFYRQCaQgmw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992966AbeFYRQC7dhpw (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Jun 2018 19:16:02 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 06/25] MIPS: ath79: fix system restart
-Date:   Mon, 25 Jun 2018 19:15:30 +0200
-Message-Id: <20180625171549.4618-7-john@phrozen.org>
+Subject: [PATCH 07/25] MIPS: ath79: finetune cpu-overrides
+Date:   Mon, 25 Jun 2018 19:15:31 +0200
+Message-Id: <20180625171549.4618-8-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64434
+X-archive-position: 64435
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,38 +35,43 @@ X-list: linux-mips
 
 From: Felix Fietkau <nbd@nbd.name>
 
-This patch disables irq on reboot to fix hang issues that were observed
-due to pending interrupts.
+This patch adds a few additional cpu feature overrides so that they do not
+need to be probed at runtime.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- arch/mips/ath79/setup.c                  | 1 +
- arch/mips/include/asm/mach-ath79/ath79.h | 1 +
- 2 files changed, 2 insertions(+)
+ arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index fed49cdc5fdf..4c7a93f4039a 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYPE_LEN];
+diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+index 0089a740e5ae..026ad90c8ac0 100644
+--- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+@@ -36,6 +36,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_rixi		0
  
- static void ath79_restart(char *command)
- {
-+	local_irq_disable();
- 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
- 	for (;;)
- 		if (cpu_wait)
-diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
-index f54c9b0c6325..73dcd63b8243 100644
---- a/arch/mips/include/asm/mach-ath79/ath79.h
-+++ b/arch/mips/include/asm/mach-ath79/ath79.h
-@@ -167,6 +167,7 @@ static inline u32 ath79_pll_rr(unsigned reg)
- static inline void ath79_reset_wr(unsigned reg, u32 val)
- {
- 	__raw_writel(val, ath79_reset_base + reg);
-+	(void) __raw_readl(ath79_reset_base + reg); /* flush */
- }
+ #define cpu_has_mips32r1	1
+ #define cpu_has_mips32r2	1
+@@ -43,6 +44,7 @@
+ #define cpu_has_mips64r2	0
  
- static inline u32 ath79_reset_rr(unsigned reg)
+ #define cpu_has_mipsmt		0
++#define cpu_has_userlocal	0
+ 
+ #define cpu_has_64bits		0
+ #define cpu_has_64bit_zero_reg	0
+@@ -51,5 +53,9 @@
+ 
+ #define cpu_dcache_line_size()	32
+ #define cpu_icache_line_size()	32
++#define cpu_has_vtag_icache	0
++#define cpu_has_dc_aliases	1
++#define cpu_has_ic_fills_f_dc	0
++#define cpu_has_pindexed_dcache	0
+ 
+ #endif /* __ASM_MACH_ATH79_CPU_FEATURE_OVERRIDES_H */
 -- 
 2.11.0

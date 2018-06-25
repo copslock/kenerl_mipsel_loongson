@@ -1,68 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jun 2018 19:08:45 +0200 (CEST)
-Received: from mail.efficios.com ([167.114.142.138]:35812 "EHLO
-        mail.efficios.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992514AbeFXRIfkDn-L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jun 2018 19:08:35 +0200
-Received: from localhost (ip6-localhost [IPv6:::1])
-        by mail.efficios.com (Postfix) with ESMTP id EA5F71B7A5F;
-        Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-Received: from mail.efficios.com ([IPv6:::1])
-        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
-        with ESMTP id IatNLKutw4_4; Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-Received: from localhost (ip6-localhost [IPv6:::1])
-        by mail.efficios.com (Postfix) with ESMTP id 83BD51B7A5C;
-        Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 83BD51B7A5C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-        s=default; t=1529860106;
-        bh=hAqvlgCUMk8xqzaVlWhPaA4bAFIJJlvbOocB3CNR07I=;
-        h=Date:From:To:Message-ID:MIME-Version;
-        b=gPkS4mTkDIQgfC5PTogUetCIqh7+7kiZITIhdmgnyYuZRhvI9vlOri0XhXA1vDrwL
-         f7Qa1Nb33gefYM47mmUAMvP/X79117qL5Pa8/kjQjOndDgZ7RRNDvJZvK2tTqP6mDr
-         yh+T+Y6UuBvtzkDD5Tq22/f68FQCUHllqko//zTdCjGn2KX3OL68q9E0mfR1nQbT6e
-         +FIXyuflWZNSZd/8wURx8ncYgqxl8KrPlD7R6xJdHgR0kDTlqsbnmxcHxYI/YDJ0vh
-         xokzDp3z+ZLxOynjMB4my3AOPI0Za7/kyJo0h17Bf7d9OQrmYRWGErUf0u1itpY39v
-         nGJodMj6LwUZQ==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([IPv6:::1])
-        by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
-        with ESMTP id ET7ld-2N8hyx; Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-Received: from mail02.efficios.com (mail02.efficios.com [167.114.142.138])
-        by mail.efficios.com (Postfix) with ESMTP id 6F05C1B7A55;
-        Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-Date:   Sun, 24 Jun 2018 13:08:26 -0400 (EDT)
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Will Deacon <will.deacon@arm.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Message-ID: <929268757.2788.1529860106385.JavaMail.zimbra@efficios.com>
-In-Reply-To: <20180624165800.2732-1-paul.burton@mips.com>
-References: <20180624165800.2732-1-paul.burton@mips.com>
-Subject: Re: [PATCH] MIPS: Add ksig argument to
- rseq_{signal_deliver,handle_notify_resume}
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 04:49:14 +0200 (CEST)
+Received: from forward105o.mail.yandex.net ([IPv6:2a02:6b8:0:1a2d::608]:43787
+        "EHLO forward105o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990947AbeFYCtG7SqJ9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2018 04:49:06 +0200
+Received: from mxback1g.mail.yandex.net (mxback1g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:162])
+        by forward105o.mail.yandex.net (Yandex) with ESMTP id 2761A44427BD;
+        Mon, 25 Jun 2018 05:48:59 +0300 (MSK)
+Received: from localhost (localhost [::1])
+        by mxback1g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id xzdvB3YfmR-mwVavELv;
+        Mon, 25 Jun 2018 05:48:58 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1529894938;
+        bh=vSPn18e/fNkTKhonsgVCcJdjFL5iBLHyzn99bjYyXrc=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=xHEiPngPvFGtD7zfx0szLItx75lcVoXPMvx6DJXzeS6+ctStPXQrx33WE9fbBIJPx
+         TLo/q+9Bg1pXkQ3ABvYYPGOPEkBRGsb0A9jVc6MuTuD5jGTkv9a06RXf5ayZ3YuXK4
+         1SL6S/FGtf+a1E1nb68+MCBxRfzZUE1eLwwcms0w=
+Authentication-Results: mxback1g.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by web11o.yandex.ru with HTTP;
+        Mon, 25 Jun 2018 05:48:58 +0300
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+Envelope-From: yjx@flygoat.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: The SSL certification of  linux-mips.org has expired
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date:   Mon, 25 Jun 2018 10:48:58 +0800
+Message-Id: <5812041529894938@web11o.yandex.ru>
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.142.138]
-X-Mailer: Zimbra 8.8.8_GA_2096 (ZimbraWebClient - FF52 (Linux)/8.8.8_GA_1703)
-Thread-Topic: MIPS: Add ksig argument to rseq_{signal_deliver,handle_notify_resume}
-Thread-Index: SBYsSNqHvmHZSquWL19MpbLUYdGwdQ==
-Return-Path: <compudj@efficios.com>
+Content-Type: text/plain
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64424
+X-archive-position: 64426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mathieu.desnoyers@efficios.com
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,92 +50,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------ On Jun 24, 2018, at 12:58 PM, Paul Burton paul.burton@mips.com wrote:
+Hi Ralf
 
-> Commit 784e0300fe9f ("rseq: Avoid infinite recursion when delivering
-> SIGSEGV") added a new ksig argument to the rseq_signal_deliver() &
-> rseq_handle_notify_resume() functions, and was merged in v4.18-rc2.
-> Meanwhile MIPS support for restartable sequences was also merged in
-> v4.18-rc2 with commit 9ea141ad5471 ("MIPS: Add support for restartable
-> sequences"), and therefore didn't get updated for the API change.
-> 
-> This results in build failures like the following:
-> 
->    CC      arch/mips/kernel/signal.o
->  arch/mips/kernel/signal.c: In function 'handle_signal':
->  arch/mips/kernel/signal.c:804:22: error: passing argument 1 of
->    'rseq_signal_deliver' from incompatible pointer type
->    [-Werror=incompatible-pointer-types]
->    rseq_signal_deliver(regs);
->                        ^~~~
->  In file included from ./include/linux/context_tracking.h:5,
->                   from arch/mips/kernel/signal.c:12:
->  ./include/linux/sched.h:1811:56: note: expected 'struct ksignal *' but
->    argument is of type 'struct pt_regs *'
->    static inline void rseq_signal_deliver(struct ksignal *ksig,
->                                           ~~~~~~~~~~~~~~~~^~~~
->  arch/mips/kernel/signal.c:804:2: error: too few arguments to function
->    'rseq_signal_deliver'
->    rseq_signal_deliver(regs);
->    ^~~~~~~~~~~~~~~~~~~
-> 
-> Fix this by adding the ksig argument as was done for other architectures
-> in commit 784e0300fe9f ("rseq: Avoid infinite recursion when delivering
-> SIGSEGV").
+It seemed like Let's Encrypt certification auto renew script on linux-mips.org server is not
+working properly. Please check it manualy.
 
-Looks like we both noticed the same issue. Your commit message is more
-exhaustive than mine, so yours should be merged rather than mine.
+Thanks
 
-Acked-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-
-Thanks!
-
-Mathieu
-
-> 
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
-> 
-> arch/mips/kernel/signal.c | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-> index 00f2535d2226..0a9cfe7a0372 100644
-> --- a/arch/mips/kernel/signal.c
-> +++ b/arch/mips/kernel/signal.c
-> @@ -801,7 +801,7 @@ static void handle_signal(struct ksignal *ksig, struct
-> pt_regs *regs)
-> 		regs->regs[0] = 0;		/* Don't deal with this again.	*/
-> 	}
-> 
-> -	rseq_signal_deliver(regs);
-> +	rseq_signal_deliver(ksig, regs);
-> 
-> 	if (sig_uses_siginfo(&ksig->ka, abi))
-> 		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
-> @@ -870,7 +870,7 @@ asmlinkage void do_notify_resume(struct pt_regs *regs, void
-> *unused,
-> 	if (thread_info_flags & _TIF_NOTIFY_RESUME) {
-> 		clear_thread_flag(TIF_NOTIFY_RESUME);
-> 		tracehook_notify_resume(regs);
-> -		rseq_handle_notify_resume(regs);
-> +		rseq_handle_notify_resume(NULL, regs);
-> 	}
-> 
-> 	user_enter();
-> --
-> 2.17.1
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+--
+Jiaxun Yang  

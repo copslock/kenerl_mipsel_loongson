@@ -1,45 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 11:07:34 +0200 (CEST)
-Received: from mail-ua0-f193.google.com ([209.85.217.193]:40074 "EHLO
-        mail-ua0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991783AbeFYJH1Grm0D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2018 11:07:27 +0200
-Received: by mail-ua0-f193.google.com with SMTP id j17-v6so1698273uap.7
-        for <linux-mips@linux-mips.org>; Mon, 25 Jun 2018 02:07:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TorOwruUNp57xWE0RsAcyQ/AI6wGTDQqMCU/mvNIRRI=;
-        b=gwINoZ2sydI7F7kkoZTTV0BFdZC9CqNZb1Pi2dDDFjd2VXPld3cEb7lpmiOAgGD4Bb
-         oMXBu+HUglSEKliT8HGO26MjPd7qzncs6McXMIlDMnbiyr6qrO5CQWq0BBcT8mR5jFEG
-         bGBqkDd5RpSh9Q+PzN1458aADSEEGJHkyLBbiNawCHXlI1GNV5/EdL30WAhzZ0Eo6hRk
-         D6R0BCWWdV3eCIS4AEVhnQ9pyOfJNT4grY/8Qeh6xq1luSiBrs5I+zkwYejSiTcAi4R0
-         /CROhtZ78AxF0zt0IjOJqm1W4xI79z9w+2Go/ktG7K5njrsdyOjuUiPCxGdEumbMaIO/
-         Thsw==
-X-Gm-Message-State: APt69E0lzpz9GZp7lEF/KLPTrSSnXoyNVq7dBxD7uZ27/7Z+t6D5N7ab
-        X4Q8qoU14nc6+rYuYY20Ijb+hZv08+HUelH+Hzg=
-X-Google-Smtp-Source: ADUXVKKxQXIP8MoglaZsNyW80mC0eXS0orm9chMYNwAR4dRqKy87WrIvKqltUfY1HAmX4IBJZjWCKFwqGKy5xrWF7Kg=
-X-Received: by 2002:ab0:265:: with SMTP id 92-v6mr8025779uas.26.1529917640801;
- Mon, 25 Jun 2018 02:07:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180625090329.10895-1-geert@linux-m68k.org>
-In-Reply-To: <20180625090329.10895-1-geert@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 25 Jun 2018 11:07:09 +0200
-Message-ID: <CAMuHMdW--a2btaTWu3ZP_KtTD6zKFCYsG8FV9KA0y-W6Vg0gQw@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v4.18-rc2
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:16:08 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57926 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992703AbeFYRP70NLGw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:15:59 +0200
+From:   John Crispin <john@phrozen.org>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
+Subject: [PATCH 00/25] MIPS: ath79: convert target to pure OF
+Date:   Mon, 25 Jun 2018 19:15:24 +0200
+Message-Id: <20180625171549.4618-1-john@phrozen.org>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64427
+X-archive-position: 64428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,40 +31,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 25, 2018 at 11:04 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> JFYI, when comparing v4.18-rc2[1] to v4.18-rc1[3], the summaries are:
->   - build errors: +6/-4
+In the last couple of months we have been conevrting this target to OF
+inside OpenWrt. This series is an aggragte of all the patches that have
+been produced in that period. There have been plenty of dts contributions
+already and we hope to be able to drop the old mach file based target in
+the not too distant future.
 
-  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
-of 'rseq_handle_notify_resume' from incompatible pointer type
-[-Werror=incompatible-pointer-types]:  => 873:29
-  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
-of 'rseq_handle_notify_resume' from incompatible pointer type
-[-Werror]:  => 873:3
-  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
-of 'rseq_signal_deliver' from incompatible pointer type
-[-Werror=incompatible-pointer-types]:  => 804:22
-  + /kisskb/src/arch/mips/kernel/signal.c: error: passing argument 1
-of 'rseq_signal_deliver' from incompatible pointer type [-Werror]:  =>
-804:2
-  + /kisskb/src/arch/mips/kernel/signal.c: error: too few arguments to
-function 'rseq_handle_notify_resume':  => 873:3
-  + /kisskb/src/arch/mips/kernel/signal.c: error: too few arguments to
-function 'rseq_signal_deliver':  => 804:2
+Felix Fietkau (9):
+  MIPS: ath79: fix register address in ath79_ddr_wb_flush()
+  MIPS: ath79: fix system restart
+  MIPS: ath79: finetune cpu-overrides
+  MIPS: ath79: add helpers for setting clocks and expose the ref clock
+  MIPS: ath79: move legacy "wdt" and "uart" clock aliases out of soc
+    init
+  MIPS: ath79: pass PLL base to clock init functions
+  MIPS: ath79: make specifying the reference clock in DT optional
+  MIPS: ath79: support setting up clock via DT on all SoC types
+  MIPS: ath79: export switch MDIO reference clock
 
-Lots of MIPS, fix available.
+Gabor Juhos (2):
+  MIPS: ath79: add lots of missing registers
+  MIPS: ath79: enable uart during early_prink
 
-> [1] http://kisskb.ellerman.id.au/kisskb/head/7daf201d7fe8334e2d2364d4e8ed3394ec9af819/ (231 out of 244 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/head/ce397d215ccd07b8ae3f71db689aedb85d56ab40/ (233 out of 244 configs)
+John Crispin (11):
+  MIPS: ath79: select the PINCTRL subsystem
+  dt-bindings: PCI: qcom,ar7100: adds binding doc
+  MIPS: pci-ar71xx: convert to OF
+  dt-bindings: PCI: qcom,ar7240: adds binding doc
+  MIPS: pci-ar724x: convert to OF
+  MIPS: ath79: drop legacy IRQ code
+  MIPS: ath79: drop machfiles
+  MIPS: ath79: drop legacy pci code
+  MIPS: ath79: drop platform device registration code
+  MIPS: ath79: drop !OF clock code
+  MIPS: ath79: sanitize symbols
 
-Gr{oetje,eeting}s,
+Markos Chandras (1):
+  MIPS: ath79: Avoid using unitialized 'reg' variable
 
-                        Geert
+Mathias Kresin (1):
+  MIPS: ath79: get PCIe controller out of reset
+
+Matthias Schiffer (1):
+  MIPS: ath79: add support for QCA953x QCA956x TP9343
+
+ .../devicetree/bindings/pci/qcom,ar7100-pci.txt    |  36 +
+ .../devicetree/bindings/pci/qcom,ar7240-pci.txt    |  40 ++
+ arch/mips/Kconfig                                  |   4 +-
+ arch/mips/ath79/Kconfig                            | 117 +---
+ arch/mips/ath79/Makefile                           |  23 +-
+ arch/mips/ath79/clock.c                            | 463 ++++++++-----
+ arch/mips/ath79/common.c                           |  14 +-
+ arch/mips/ath79/common.h                           |   5 -
+ arch/mips/ath79/dev-common.c                       | 159 -----
+ arch/mips/ath79/dev-common.h                       |  18 -
+ arch/mips/ath79/dev-gpio-buttons.c                 |  56 --
+ arch/mips/ath79/dev-gpio-buttons.h                 |  23 -
+ arch/mips/ath79/dev-leds-gpio.c                    |  54 --
+ arch/mips/ath79/dev-leds-gpio.h                    |  21 -
+ arch/mips/ath79/dev-spi.c                          |  38 -
+ arch/mips/ath79/dev-spi.h                          |  22 -
+ arch/mips/ath79/dev-usb.c                          | 242 -------
+ arch/mips/ath79/dev-usb.h                          |  17 -
+ arch/mips/ath79/dev-wmac.c                         | 155 -----
+ arch/mips/ath79/dev-wmac.h                         |  17 -
+ arch/mips/ath79/early_printk.c                     |  48 +-
+ arch/mips/ath79/irq.c                              | 169 -----
+ arch/mips/ath79/mach-ap121.c                       |  92 ---
+ arch/mips/ath79/mach-ap136.c                       | 156 -----
+ arch/mips/ath79/mach-ap81.c                        | 100 ---
+ arch/mips/ath79/mach-db120.c                       | 136 ----
+ arch/mips/ath79/mach-pb44.c                        | 128 ----
+ arch/mips/ath79/mach-ubnt-xm.c                     | 126 ----
+ arch/mips/ath79/machtypes.h                        |  28 -
+ arch/mips/ath79/pci.c                              | 273 --------
+ arch/mips/ath79/pci.h                              |  35 -
+ arch/mips/ath79/setup.c                            | 113 ++-
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h     | 771 ++++++++++++++++++++-
+ arch/mips/include/asm/mach-ath79/ath79.h           |  38 +-
+ .../include/asm/mach-ath79/cpu-feature-overrides.h |   6 +
+ arch/mips/pci/Makefile                             |   3 +-
+ arch/mips/pci/fixup-ath79.c                        |  21 +
+ arch/mips/pci/pci-ar71xx.c                         |  82 +--
+ arch/mips/pci/pci-ar724x.c                         | 130 ++--
+ include/dt-bindings/clock/ath79-clk.h              |   4 +-
+ 40 files changed, 1452 insertions(+), 2531 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
+ create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7240-pci.txt
+ delete mode 100644 arch/mips/ath79/dev-common.c
+ delete mode 100644 arch/mips/ath79/dev-common.h
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.c
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.h
+ delete mode 100644 arch/mips/ath79/dev-spi.c
+ delete mode 100644 arch/mips/ath79/dev-spi.h
+ delete mode 100644 arch/mips/ath79/dev-usb.c
+ delete mode 100644 arch/mips/ath79/dev-usb.h
+ delete mode 100644 arch/mips/ath79/dev-wmac.c
+ delete mode 100644 arch/mips/ath79/dev-wmac.h
+ delete mode 100644 arch/mips/ath79/irq.c
+ delete mode 100644 arch/mips/ath79/mach-ap121.c
+ delete mode 100644 arch/mips/ath79/mach-ap136.c
+ delete mode 100644 arch/mips/ath79/mach-ap81.c
+ delete mode 100644 arch/mips/ath79/mach-db120.c
+ delete mode 100644 arch/mips/ath79/mach-pb44.c
+ delete mode 100644 arch/mips/ath79/mach-ubnt-xm.c
+ delete mode 100644 arch/mips/ath79/machtypes.h
+ delete mode 100644 arch/mips/ath79/pci.c
+ delete mode 100644 arch/mips/ath79/pci.h
+ create mode 100644 arch/mips/pci/fixup-ath79.c
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.11.0

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:18:53 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:58000 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:19:13 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:58088 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993001AbeFYRQDo0vZw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jun 2018 19:16:03 +0200
+        id S23992966AbeFYRSbX4Zjw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:18:31 +0200
 From:   John Crispin <john@phrozen.org>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Mathias Kresin <dev@kresin.me>
-Subject: [PATCH 09/25] MIPS: ath79: get PCIe controller out of reset
-Date:   Mon, 25 Jun 2018 19:15:33 +0200
-Message-Id: <20180625171549.4618-10-john@phrozen.org>
+To:     Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>,
+        linux-spi@vger.kernel.org
+Subject: [PATCH] spi: ath79: drop pdata support
+Date:   Mon, 25 Jun 2018 19:18:23 +0200
+Message-Id: <20180625171823.4782-1-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
-References: <20180625171549.4618-1-john@phrozen.org>
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64437
+X-archive-position: 64438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,104 +33,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Mathias Kresin <dev@kresin.me>
+The target is being converted to pure OF. We can therefore drop all of the
+platform data code from the driver.
 
-The ar724x pci driver expects the PCIe controller to be brought out of
-reset by the bootloader.
-
-At least the AVM Fritz 300E bootloader doesn't take care of releasing
-the different PCIe controller related resets which causes an endless
-hang as soon as either the PCIE Reset register (0x180f0018) or the PCI
-Application Control register (0x180f0000) is read from.
-
-Do the full "PCIE Root Complex Initialization Sequence" if the PCIe
-host controller is still in reset during probing.
-
-The QCA u-boot sleeps 10ms after the PCIE Application Control bit is
-set to ready. It has been shown that 10ms might not be enough time if
-PCIe should be used right after setting the bit. During my tests it
-took up to 20ms till the link was up. Giving the link up to 100ms
-should work for all cases.
-
-Signed-off-by: Mathias Kresin <dev@kresin.me>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/pci/pci-ar724x.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+Hi Mark,
+Once Acked, this patch should ideally go upstream via the mips tree to
+avoid merge order conflicts with the series converting the target to OF.
+	John
 
-diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index 1e23c8d587bd..64b58cc48a91 100644
---- a/arch/mips/pci/pci-ar724x.c
-+++ b/arch/mips/pci/pci-ar724x.c
-@@ -12,14 +12,18 @@
- #include <linux/irq.h>
- #include <linux/pci.h>
- #include <linux/init.h>
-+#include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <asm/mach-ath79/ath79.h>
+ arch/mips/include/asm/mach-ath79/ath79_spi_platform.h | 19 -------------------
+ drivers/spi/spi-ath79.c                               |  8 --------
+ 2 files changed, 27 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+
+diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+deleted file mode 100644
+index aa71216edf99..000000000000
+--- a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
++++ /dev/null
+@@ -1,19 +0,0 @@
+-/*
+- *  Platform data definition for Atheros AR71XX/AR724X/AR913X SPI controller
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_SPI_PLATFORM_H
+-#define _ATH79_SPI_PLATFORM_H
+-
+-struct ath79_spi_platform_data {
+-	unsigned	bus_num;
+-	unsigned	num_chipselect;
+-};
+-
+-#endif /* _ATH79_SPI_PLATFORM_H */
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index 0719bd484891..6eb7255558df 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -26,7 +26,6 @@
+ #include <linux/err.h>
+ 
  #include <asm/mach-ath79/ar71xx_regs.h>
+-#include <asm/mach-ath79/ath79_spi_platform.h>
  
-+#define AR724X_PCI_REG_APP		0x00
- #define AR724X_PCI_REG_RESET		0x18
- #define AR724X_PCI_REG_INT_STATUS	0x4c
- #define AR724X_PCI_REG_INT_MASK		0x50
+ #define DRV_NAME	"ath79-spi"
  
-+#define AR724X_PCI_APP_LTSSM_ENABLE	BIT(0)
-+
- #define AR724X_PCI_RESET_LINK_UP	BIT(0)
- 
- #define AR724X_PCI_INT_DEV0		BIT(14)
-@@ -325,6 +329,37 @@ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
- 					 apc);
- }
- 
-+static void ar724x_pci_hw_init(struct ar724x_pci_controller *apc)
-+{
-+	u32 ppl, app;
-+	int wait = 0;
-+
-+	/* deassert PCIe host controller and PCIe PHY reset */
-+	ath79_device_reset_clear(AR724X_RESET_PCIE);
-+	ath79_device_reset_clear(AR724X_RESET_PCIE_PHY);
-+
-+	/* remove the reset of the PCIE PLL */
-+	ppl = ath79_pll_rr(AR724X_PLL_REG_PCIE_CONFIG);
-+	ppl &= ~AR724X_PLL_REG_PCIE_CONFIG_PPL_RESET;
-+	ath79_pll_wr(AR724X_PLL_REG_PCIE_CONFIG, ppl);
-+
-+	/* deassert bypass for the PCIE PLL */
-+	ppl = ath79_pll_rr(AR724X_PLL_REG_PCIE_CONFIG);
-+	ppl &= ~AR724X_PLL_REG_PCIE_CONFIG_PPL_BYPASS;
-+	ath79_pll_wr(AR724X_PLL_REG_PCIE_CONFIG, ppl);
-+
-+	/* set PCIE Application Control to ready */
-+	app = __raw_readl(apc->ctrl_base + AR724X_PCI_REG_APP);
-+	app |= AR724X_PCI_APP_LTSSM_ENABLE;
-+	__raw_writel(app, apc->ctrl_base + AR724X_PCI_REG_APP);
-+
-+	/* wait up to 100ms for PHY link up */
-+	do {
-+		mdelay(10);
-+		wait++;
-+	} while (wait < 10 && !ar724x_pci_check_link(apc));
-+}
-+
- static int ar724x_pci_probe(struct platform_device *pdev)
+@@ -208,7 +207,6 @@ static int ath79_spi_probe(struct platform_device *pdev)
  {
- 	struct ar724x_pci_controller *apc;
-@@ -383,6 +418,13 @@ static int ar724x_pci_probe(struct platform_device *pdev)
- 	apc->pci_controller.io_resource = &apc->io_res;
- 	apc->pci_controller.mem_resource = &apc->mem_res;
+ 	struct spi_master *master;
+ 	struct ath79_spi *sp;
+-	struct ath79_spi_platform_data *pdata;
+ 	struct resource	*r;
+ 	unsigned long rate;
+ 	int ret;
+@@ -223,15 +221,9 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	platform_set_drvdata(pdev, sp);
  
-+	/*
-+	 * Do the full PCIE Root Complex Initialization Sequence if the PCIe
-+	 * host controller is in reset.
-+	 */
-+	if (ath79_reset_rr(AR724X_RESET_REG_RESET_MODULE) & AR724X_RESET_PCIE)
-+		ar724x_pci_hw_init(apc);
-+
- 	apc->link_up = ar724x_pci_check_link(apc);
- 	if (!apc->link_up)
- 		dev_warn(&pdev->dev, "PCIe link is down\n");
+-	pdata = dev_get_platdata(&pdev->dev);
+-
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+ 	master->setup = ath79_spi_setup;
+ 	master->cleanup = ath79_spi_cleanup;
+-	if (pdata) {
+-		master->bus_num = pdata->bus_num;
+-		master->num_chipselect = pdata->num_chipselect;
+-	}
+ 
+ 	sp->bitbang.master = master;
+ 	sp->bitbang.chipselect = ath79_spi_chipselect;
 -- 
 2.11.0

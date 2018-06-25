@@ -1,20 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:16:08 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57926 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:16:27 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57936 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992703AbeFYRP70NLGw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jun 2018 19:15:59 +0200
+        id S23992514AbeFYRQAhSpQw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Jun 2018 19:16:00 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 00/25] MIPS: ath79: convert target to pure OF
-Date:   Mon, 25 Jun 2018 19:15:24 +0200
-Message-Id: <20180625171549.4618-1-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org,
+        Matthias Schiffer <mschiffer@universe-factory.net>,
+        Weijie Gao <hackpascal@gmail.com>
+Subject: [PATCH 02/25] MIPS: ath79: add support for QCA953x QCA956x TP9343
+Date:   Mon, 25 Jun 2018 19:15:26 +0200
+Message-Id: <20180625171549.4618-3-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
+References: <20180625171549.4618-1-john@phrozen.org>
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64428
+X-archive-position: 64429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,116 +35,411 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In the last couple of months we have been conevrting this target to OF
-inside OpenWrt. This series is an aggragte of all the patches that have
-been produced in that period. There have been plenty of dts contributions
-already and we hope to be able to drop the old mach file based target in
-the not too distant future.
+From: Matthias Schiffer <mschiffer@universe-factory.net>
 
-Felix Fietkau (9):
-  MIPS: ath79: fix register address in ath79_ddr_wb_flush()
-  MIPS: ath79: fix system restart
-  MIPS: ath79: finetune cpu-overrides
-  MIPS: ath79: add helpers for setting clocks and expose the ref clock
-  MIPS: ath79: move legacy "wdt" and "uart" clock aliases out of soc
-    init
-  MIPS: ath79: pass PLL base to clock init functions
-  MIPS: ath79: make specifying the reference clock in DT optional
-  MIPS: ath79: support setting up clock via DT on all SoC types
-  MIPS: ath79: export switch MDIO reference clock
+This patch adds support for 2 new types of QCA silicon. TP9343 is
+essentially the sane as the QCA956X but is licensed by TPLink.
 
-Gabor Juhos (2):
-  MIPS: ath79: add lots of missing registers
-  MIPS: ath79: enable uart during early_prink
+Signed-off-by: Weijie Gao <hackpascal@gmail.com>
+Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
+---
+ arch/mips/ath79/clock.c                  | 193 +++++++++++++++++++++++++++++++
+ arch/mips/ath79/common.c                 |   8 ++
+ arch/mips/ath79/early_printk.c           |   4 +
+ arch/mips/ath79/setup.c                  |  34 +++++-
+ arch/mips/include/asm/mach-ath79/ath79.h |  33 ++++++
+ 5 files changed, 269 insertions(+), 3 deletions(-)
 
-John Crispin (11):
-  MIPS: ath79: select the PINCTRL subsystem
-  dt-bindings: PCI: qcom,ar7100: adds binding doc
-  MIPS: pci-ar71xx: convert to OF
-  dt-bindings: PCI: qcom,ar7240: adds binding doc
-  MIPS: pci-ar724x: convert to OF
-  MIPS: ath79: drop legacy IRQ code
-  MIPS: ath79: drop machfiles
-  MIPS: ath79: drop legacy pci code
-  MIPS: ath79: drop platform device registration code
-  MIPS: ath79: drop !OF clock code
-  MIPS: ath79: sanitize symbols
-
-Markos Chandras (1):
-  MIPS: ath79: Avoid using unitialized 'reg' variable
-
-Mathias Kresin (1):
-  MIPS: ath79: get PCIe controller out of reset
-
-Matthias Schiffer (1):
-  MIPS: ath79: add support for QCA953x QCA956x TP9343
-
- .../devicetree/bindings/pci/qcom,ar7100-pci.txt    |  36 +
- .../devicetree/bindings/pci/qcom,ar7240-pci.txt    |  40 ++
- arch/mips/Kconfig                                  |   4 +-
- arch/mips/ath79/Kconfig                            | 117 +---
- arch/mips/ath79/Makefile                           |  23 +-
- arch/mips/ath79/clock.c                            | 463 ++++++++-----
- arch/mips/ath79/common.c                           |  14 +-
- arch/mips/ath79/common.h                           |   5 -
- arch/mips/ath79/dev-common.c                       | 159 -----
- arch/mips/ath79/dev-common.h                       |  18 -
- arch/mips/ath79/dev-gpio-buttons.c                 |  56 --
- arch/mips/ath79/dev-gpio-buttons.h                 |  23 -
- arch/mips/ath79/dev-leds-gpio.c                    |  54 --
- arch/mips/ath79/dev-leds-gpio.h                    |  21 -
- arch/mips/ath79/dev-spi.c                          |  38 -
- arch/mips/ath79/dev-spi.h                          |  22 -
- arch/mips/ath79/dev-usb.c                          | 242 -------
- arch/mips/ath79/dev-usb.h                          |  17 -
- arch/mips/ath79/dev-wmac.c                         | 155 -----
- arch/mips/ath79/dev-wmac.h                         |  17 -
- arch/mips/ath79/early_printk.c                     |  48 +-
- arch/mips/ath79/irq.c                              | 169 -----
- arch/mips/ath79/mach-ap121.c                       |  92 ---
- arch/mips/ath79/mach-ap136.c                       | 156 -----
- arch/mips/ath79/mach-ap81.c                        | 100 ---
- arch/mips/ath79/mach-db120.c                       | 136 ----
- arch/mips/ath79/mach-pb44.c                        | 128 ----
- arch/mips/ath79/mach-ubnt-xm.c                     | 126 ----
- arch/mips/ath79/machtypes.h                        |  28 -
- arch/mips/ath79/pci.c                              | 273 --------
- arch/mips/ath79/pci.h                              |  35 -
- arch/mips/ath79/setup.c                            | 113 ++-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h     | 771 ++++++++++++++++++++-
- arch/mips/include/asm/mach-ath79/ath79.h           |  38 +-
- .../include/asm/mach-ath79/cpu-feature-overrides.h |   6 +
- arch/mips/pci/Makefile                             |   3 +-
- arch/mips/pci/fixup-ath79.c                        |  21 +
- arch/mips/pci/pci-ar71xx.c                         |  82 +--
- arch/mips/pci/pci-ar724x.c                         | 130 ++--
- include/dt-bindings/clock/ath79-clk.h              |   4 +-
- 40 files changed, 1452 insertions(+), 2531 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
- create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7240-pci.txt
- delete mode 100644 arch/mips/ath79/dev-common.c
- delete mode 100644 arch/mips/ath79/dev-common.h
- delete mode 100644 arch/mips/ath79/dev-gpio-buttons.c
- delete mode 100644 arch/mips/ath79/dev-gpio-buttons.h
- delete mode 100644 arch/mips/ath79/dev-leds-gpio.c
- delete mode 100644 arch/mips/ath79/dev-leds-gpio.h
- delete mode 100644 arch/mips/ath79/dev-spi.c
- delete mode 100644 arch/mips/ath79/dev-spi.h
- delete mode 100644 arch/mips/ath79/dev-usb.c
- delete mode 100644 arch/mips/ath79/dev-usb.h
- delete mode 100644 arch/mips/ath79/dev-wmac.c
- delete mode 100644 arch/mips/ath79/dev-wmac.h
- delete mode 100644 arch/mips/ath79/irq.c
- delete mode 100644 arch/mips/ath79/mach-ap121.c
- delete mode 100644 arch/mips/ath79/mach-ap136.c
- delete mode 100644 arch/mips/ath79/mach-ap81.c
- delete mode 100644 arch/mips/ath79/mach-db120.c
- delete mode 100644 arch/mips/ath79/mach-pb44.c
- delete mode 100644 arch/mips/ath79/mach-ubnt-xm.c
- delete mode 100644 arch/mips/ath79/machtypes.h
- delete mode 100644 arch/mips/ath79/pci.c
- delete mode 100644 arch/mips/ath79/pci.h
- create mode 100644 arch/mips/pci/fixup-ath79.c
-
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index 6b1000b6a6a6..cf9158e3c2d9 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -355,6 +355,91 @@ static void __init ar934x_clocks_init(void)
+ 	iounmap(dpll_base);
+ }
+ 
++static void __init qca953x_clocks_init(void)
++{
++	unsigned long ref_rate;
++	unsigned long cpu_rate;
++	unsigned long ddr_rate;
++	unsigned long ahb_rate;
++	u32 pll, out_div, ref_div, nint, frac, clk_ctrl, postdiv;
++	u32 cpu_pll, ddr_pll;
++	u32 bootstrap;
++
++	bootstrap = ath79_reset_rr(QCA953X_RESET_REG_BOOTSTRAP);
++	if (bootstrap &	QCA953X_BOOTSTRAP_REF_CLK_40)
++		ref_rate = 40 * 1000 * 1000;
++	else
++		ref_rate = 25 * 1000 * 1000;
++
++	pll = ath79_pll_rr(QCA953X_PLL_CPU_CONFIG_REG);
++	out_div = (pll >> QCA953X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
++		  QCA953X_PLL_CPU_CONFIG_OUTDIV_MASK;
++	ref_div = (pll >> QCA953X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
++		  QCA953X_PLL_CPU_CONFIG_REFDIV_MASK;
++	nint = (pll >> QCA953X_PLL_CPU_CONFIG_NINT_SHIFT) &
++	       QCA953X_PLL_CPU_CONFIG_NINT_MASK;
++	frac = (pll >> QCA953X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
++	       QCA953X_PLL_CPU_CONFIG_NFRAC_MASK;
++
++	cpu_pll = nint * ref_rate / ref_div;
++	cpu_pll += frac * (ref_rate >> 6) / ref_div;
++	cpu_pll /= (1 << out_div);
++
++	pll = ath79_pll_rr(QCA953X_PLL_DDR_CONFIG_REG);
++	out_div = (pll >> QCA953X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
++		  QCA953X_PLL_DDR_CONFIG_OUTDIV_MASK;
++	ref_div = (pll >> QCA953X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
++		  QCA953X_PLL_DDR_CONFIG_REFDIV_MASK;
++	nint = (pll >> QCA953X_PLL_DDR_CONFIG_NINT_SHIFT) &
++	       QCA953X_PLL_DDR_CONFIG_NINT_MASK;
++	frac = (pll >> QCA953X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
++	       QCA953X_PLL_DDR_CONFIG_NFRAC_MASK;
++
++	ddr_pll = nint * ref_rate / ref_div;
++	ddr_pll += frac * (ref_rate >> 6) / (ref_div << 4);
++	ddr_pll /= (1 << out_div);
++
++	clk_ctrl = ath79_pll_rr(QCA953X_PLL_CLK_CTRL_REG);
++
++	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
++		  QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_CPU_PLL_BYPASS)
++		cpu_rate = ref_rate;
++	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_CPUCLK_FROM_CPUPLL)
++		cpu_rate = cpu_pll / (postdiv + 1);
++	else
++		cpu_rate = ddr_pll / (postdiv + 1);
++
++	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT) &
++		  QCA953X_PLL_CLK_CTRL_DDR_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_DDR_PLL_BYPASS)
++		ddr_rate = ref_rate;
++	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL)
++		ddr_rate = ddr_pll / (postdiv + 1);
++	else
++		ddr_rate = cpu_pll / (postdiv + 1);
++
++	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT) &
++		  QCA953X_PLL_CLK_CTRL_AHB_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA953X_PLL_CLK_CTRL_AHB_PLL_BYPASS)
++		ahb_rate = ref_rate;
++	else if (clk_ctrl & QCA953X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL)
++		ahb_rate = ddr_pll / (postdiv + 1);
++	else
++		ahb_rate = cpu_pll / (postdiv + 1);
++
++	ath79_add_sys_clkdev("ref", ref_rate);
++	ath79_add_sys_clkdev("cpu", cpu_rate);
++	ath79_add_sys_clkdev("ddr", ddr_rate);
++	ath79_add_sys_clkdev("ahb", ahb_rate);
++
++	clk_add_alias("wdt", NULL, "ref", NULL);
++	clk_add_alias("uart", NULL, "ref", NULL);
++}
++
+ static void __init qca955x_clocks_init(void)
+ {
+ 	unsigned long ref_rate;
+@@ -440,6 +525,110 @@ static void __init qca955x_clocks_init(void)
+ 	clk_add_alias("uart", NULL, "ref", NULL);
+ }
+ 
++static void __init qca956x_clocks_init(void)
++{
++	unsigned long ref_rate;
++	unsigned long cpu_rate;
++	unsigned long ddr_rate;
++	unsigned long ahb_rate;
++	u32 pll, out_div, ref_div, nint, hfrac, lfrac, clk_ctrl, postdiv;
++	u32 cpu_pll, ddr_pll;
++	u32 bootstrap;
++
++	/*
++	 * QCA956x timer init workaround has to be applied right before setting
++	 * up the clock. Else, there will be no jiffies
++	 */
++	u32 misc;
++
++	misc = ath79_reset_rr(AR71XX_RESET_REG_MISC_INT_ENABLE);
++	misc |= MISC_INT_MIPS_SI_TIMERINT_MASK;
++	ath79_reset_wr(AR71XX_RESET_REG_MISC_INT_ENABLE, misc);
++
++	bootstrap = ath79_reset_rr(QCA956X_RESET_REG_BOOTSTRAP);
++	if (bootstrap &	QCA956X_BOOTSTRAP_REF_CLK_40)
++		ref_rate = 40 * 1000 * 1000;
++	else
++		ref_rate = 25 * 1000 * 1000;
++
++	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG_REG);
++	out_div = (pll >> QCA956X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
++		  QCA956X_PLL_CPU_CONFIG_OUTDIV_MASK;
++	ref_div = (pll >> QCA956X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
++		  QCA956X_PLL_CPU_CONFIG_REFDIV_MASK;
++
++	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG1_REG);
++	nint = (pll >> QCA956X_PLL_CPU_CONFIG1_NINT_SHIFT) &
++	       QCA956X_PLL_CPU_CONFIG1_NINT_MASK;
++	hfrac = (pll >> QCA956X_PLL_CPU_CONFIG1_NFRAC_H_SHIFT) &
++	       QCA956X_PLL_CPU_CONFIG1_NFRAC_H_MASK;
++	lfrac = (pll >> QCA956X_PLL_CPU_CONFIG1_NFRAC_L_SHIFT) &
++	       QCA956X_PLL_CPU_CONFIG1_NFRAC_L_MASK;
++
++	cpu_pll = nint * ref_rate / ref_div;
++	cpu_pll += (lfrac * ref_rate) / ((ref_div * 25) << 13);
++	cpu_pll += (hfrac >> 13) * ref_rate / ref_div;
++	cpu_pll /= (1 << out_div);
++
++	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG_REG);
++	out_div = (pll >> QCA956X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
++		  QCA956X_PLL_DDR_CONFIG_OUTDIV_MASK;
++	ref_div = (pll >> QCA956X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
++		  QCA956X_PLL_DDR_CONFIG_REFDIV_MASK;
++	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG1_REG);
++	nint = (pll >> QCA956X_PLL_DDR_CONFIG1_NINT_SHIFT) &
++	       QCA956X_PLL_DDR_CONFIG1_NINT_MASK;
++	hfrac = (pll >> QCA956X_PLL_DDR_CONFIG1_NFRAC_H_SHIFT) &
++	       QCA956X_PLL_DDR_CONFIG1_NFRAC_H_MASK;
++	lfrac = (pll >> QCA956X_PLL_DDR_CONFIG1_NFRAC_L_SHIFT) &
++	       QCA956X_PLL_DDR_CONFIG1_NFRAC_L_MASK;
++
++	ddr_pll = nint * ref_rate / ref_div;
++	ddr_pll += (lfrac * ref_rate) / ((ref_div * 25) << 13);
++	ddr_pll += (hfrac >> 13) * ref_rate / ref_div;
++	ddr_pll /= (1 << out_div);
++
++	clk_ctrl = ath79_pll_rr(QCA956X_PLL_CLK_CTRL_REG);
++
++	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
++		  QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_PLL_BYPASS)
++		cpu_rate = ref_rate;
++	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_CPUPLL)
++		cpu_rate = ddr_pll / (postdiv + 1);
++	else
++		cpu_rate = cpu_pll / (postdiv + 1);
++
++	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT) &
++		  QCA956X_PLL_CLK_CTRL_DDR_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_DDR_PLL_BYPASS)
++		ddr_rate = ref_rate;
++	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_CPU_DDRCLK_FROM_DDRPLL)
++		ddr_rate = cpu_pll / (postdiv + 1);
++	else
++		ddr_rate = ddr_pll / (postdiv + 1);
++
++	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT) &
++		  QCA956X_PLL_CLK_CTRL_AHB_POST_DIV_MASK;
++
++	if (clk_ctrl & QCA956X_PLL_CLK_CTRL_AHB_PLL_BYPASS)
++		ahb_rate = ref_rate;
++	else if (clk_ctrl & QCA956X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL)
++		ahb_rate = ddr_pll / (postdiv + 1);
++	else
++		ahb_rate = cpu_pll / (postdiv + 1);
++
++	ath79_add_sys_clkdev("ref", ref_rate);
++	ath79_add_sys_clkdev("cpu", cpu_rate);
++	ath79_add_sys_clkdev("ddr", ddr_rate);
++	ath79_add_sys_clkdev("ahb", ahb_rate);
++
++	clk_add_alias("wdt", NULL, "ref", NULL);
++	clk_add_alias("uart", NULL, "ref", NULL);
++}
++
+ void __init ath79_clocks_init(void)
+ {
+ 	if (soc_is_ar71xx())
+@@ -450,8 +639,12 @@ void __init ath79_clocks_init(void)
+ 		ar933x_clocks_init();
+ 	else if (soc_is_ar934x())
+ 		ar934x_clocks_init();
++	else if (soc_is_qca953x())
++		qca953x_clocks_init();
+ 	else if (soc_is_qca955x())
+ 		qca955x_clocks_init();
++	else if (soc_is_qca956x() || soc_is_tp9343())
++		qca956x_clocks_init();
+ 	else
+ 		BUG();
+ }
+diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+index 10a405d593df..fad32543a968 100644
+--- a/arch/mips/ath79/common.c
++++ b/arch/mips/ath79/common.c
+@@ -103,8 +103,12 @@ void ath79_device_reset_set(u32 mask)
+ 		reg = AR933X_RESET_REG_RESET_MODULE;
+ 	else if (soc_is_ar934x())
+ 		reg = AR934X_RESET_REG_RESET_MODULE;
++	else if (soc_is_qca953x())
++		reg = QCA953X_RESET_REG_RESET_MODULE;
+ 	else if (soc_is_qca955x())
+ 		reg = QCA955X_RESET_REG_RESET_MODULE;
++	else if (soc_is_qca956x() || soc_is_tp9343())
++		reg = QCA956X_RESET_REG_RESET_MODULE;
+ 	else
+ 		BUG();
+ 
+@@ -131,8 +135,12 @@ void ath79_device_reset_clear(u32 mask)
+ 		reg = AR933X_RESET_REG_RESET_MODULE;
+ 	else if (soc_is_ar934x())
+ 		reg = AR934X_RESET_REG_RESET_MODULE;
++	else if (soc_is_qca953x())
++		reg = QCA953X_RESET_REG_RESET_MODULE;
+ 	else if (soc_is_qca955x())
+ 		reg = QCA955X_RESET_REG_RESET_MODULE;
++	else if (soc_is_qca956x() || soc_is_tp9343())
++		reg = QCA956X_RESET_REG_RESET_MODULE;
+ 	else
+ 		BUG();
+ 
+diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
+index d1adc59af5bf..d6c892cf01b1 100644
+--- a/arch/mips/ath79/early_printk.c
++++ b/arch/mips/ath79/early_printk.c
+@@ -76,8 +76,12 @@ static void prom_putchar_init(void)
+ 	case REV_ID_MAJOR_AR9341:
+ 	case REV_ID_MAJOR_AR9342:
+ 	case REV_ID_MAJOR_AR9344:
++	case REV_ID_MAJOR_QCA9533:
++	case REV_ID_MAJOR_QCA9533_V2:
+ 	case REV_ID_MAJOR_QCA9556:
+ 	case REV_ID_MAJOR_QCA9558:
++	case REV_ID_MAJOR_TP9343:
++	case REV_ID_MAJOR_QCA956X:
+ 		_prom_putchar = prom_putchar_ar71xx;
+ 		break;
+ 
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index f206dafbb0a3..fed49cdc5fdf 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -59,6 +59,7 @@ static void __init ath79_detect_sys_type(void)
+ 	u32 major;
+ 	u32 minor;
+ 	u32 rev = 0;
++	u32 ver = 1;
+ 
+ 	id = ath79_reset_rr(AR71XX_RESET_REG_REV_ID);
+ 	major = id & REV_ID_MAJOR_MASK;
+@@ -151,6 +152,17 @@ static void __init ath79_detect_sys_type(void)
+ 		rev = id & AR934X_REV_ID_REVISION_MASK;
+ 		break;
+ 
++	case REV_ID_MAJOR_QCA9533_V2:
++		ver = 2;
++		ath79_soc_rev = 2;
++		/* drop through */
++
++	case REV_ID_MAJOR_QCA9533:
++		ath79_soc = ATH79_SOC_QCA9533;
++		chip = "9533";
++		rev = id & QCA953X_REV_ID_REVISION_MASK;
++		break;
++
+ 	case REV_ID_MAJOR_QCA9556:
+ 		ath79_soc = ATH79_SOC_QCA9556;
+ 		chip = "9556";
+@@ -163,14 +175,30 @@ static void __init ath79_detect_sys_type(void)
+ 		rev = id & QCA955X_REV_ID_REVISION_MASK;
+ 		break;
+ 
++	case REV_ID_MAJOR_QCA956X:
++		ath79_soc = ATH79_SOC_QCA956X;
++		chip = "956X";
++		rev = id & QCA956X_REV_ID_REVISION_MASK;
++		break;
++
++	case REV_ID_MAJOR_TP9343:
++		ath79_soc = ATH79_SOC_TP9343;
++		chip = "9343";
++		rev = id & QCA956X_REV_ID_REVISION_MASK;
++		break;
++
+ 	default:
+ 		panic("ath79: unknown SoC, id:0x%08x", id);
+ 	}
+ 
+-	ath79_soc_rev = rev;
++	if (ver == 1)
++		ath79_soc_rev = rev;
+ 
+-	if (soc_is_qca955x())
+-		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s rev %u",
++	if (soc_is_qca953x() || soc_is_qca955x() || soc_is_qca956x())
++		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s ver %u rev %u",
++			chip, ver, rev);
++	else if (soc_is_tp9343())
++		sprintf(ath79_sys_type, "Qualcomm Atheros TP%s rev %u",
+ 			chip, rev);
+ 	else
+ 		sprintf(ath79_sys_type, "Atheros AR%s rev %u", chip, rev);
+diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
+index 441faa92c3cd..f54c9b0c6325 100644
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -32,8 +32,11 @@ enum ath79_soc_type {
+ 	ATH79_SOC_AR9341,
+ 	ATH79_SOC_AR9342,
+ 	ATH79_SOC_AR9344,
++	ATH79_SOC_QCA9533,
+ 	ATH79_SOC_QCA9556,
+ 	ATH79_SOC_QCA9558,
++	ATH79_SOC_TP9343,
++	ATH79_SOC_QCA956X,
+ };
+ 
+ extern enum ath79_soc_type ath79_soc;
+@@ -100,6 +103,16 @@ static inline int soc_is_ar934x(void)
+ 	return soc_is_ar9341() || soc_is_ar9342() || soc_is_ar9344();
+ }
+ 
++static inline int soc_is_qca9533(void)
++{
++	return ath79_soc == ATH79_SOC_QCA9533;
++}
++
++static inline int soc_is_qca953x(void)
++{
++	return soc_is_qca9533();
++}
++
+ static inline int soc_is_qca9556(void)
+ {
+ 	return ath79_soc == ATH79_SOC_QCA9556;
+@@ -115,6 +128,26 @@ static inline int soc_is_qca955x(void)
+ 	return soc_is_qca9556() || soc_is_qca9558();
+ }
+ 
++static inline int soc_is_tp9343(void)
++{
++	return ath79_soc == ATH79_SOC_TP9343;
++}
++
++static inline int soc_is_qca9561(void)
++{
++	return ath79_soc == ATH79_SOC_QCA956X;
++}
++
++static inline int soc_is_qca9563(void)
++{
++	return ath79_soc == ATH79_SOC_QCA956X;
++}
++
++static inline int soc_is_qca956x(void)
++{
++	return soc_is_qca9561() || soc_is_qca9563();
++}
++
+ void ath79_ddr_wb_flush(unsigned int reg);
+ void ath79_ddr_set_pci_windows(void);
+ 
 -- 
 2.11.0

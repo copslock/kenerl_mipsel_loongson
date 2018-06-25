@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:17:08 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57956 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2018 19:17:25 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:57964 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992936AbeFYRQBWVN9w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992940AbeFYRQBonqow (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 25 Jun 2018 19:16:01 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 03/25] MIPS: ath79: select the PINCTRL subsystem
-Date:   Mon, 25 Jun 2018 19:15:27 +0200
-Message-Id: <20180625171549.4618-4-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>,
+        Alban Bedel <albeu@free.fr>
+Subject: [PATCH 04/25] MIPS: ath79: fix register address in ath79_ddr_wb_flush()
+Date:   Mon, 25 Jun 2018 19:15:28 +0200
+Message-Id: <20180625171549.4618-5-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180625171549.4618-1-john@phrozen.org>
 References: <20180625171549.4618-1-john@phrozen.org>
@@ -16,7 +17,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64431
+X-archive-position: 64432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,26 +34,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The pinmux on QCA SoCs is controlled by a single register. The
-"pinctrl-single" driver can be used but requires the target
-to select PINCTRL.
+From: Felix Fietkau <nbd@nbd.name>
 
-Signed-off-by: John Crispin <john@phrozen.org>
+ath79_ddr_wb_flush_base has the type void __iomem *, so register offsets
+need to be a multiple of 4.
+
+Cc: Alban Bedel <albeu@free.fr>
+Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/ath79/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 79a864cfc595..03909f2ada9f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -193,6 +193,7 @@ config ATH79
- 	select CSRC_R4K
- 	select DMA_NONCOHERENT
- 	select GPIOLIB
-+	select PINCTRL
- 	select HAVE_CLK
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
+diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+index fad32543a968..cd6055f9e7a0 100644
+--- a/arch/mips/ath79/common.c
++++ b/arch/mips/ath79/common.c
+@@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(ath79_ddr_ctrl_init);
+ 
+ void ath79_ddr_wb_flush(u32 reg)
+ {
+-	void __iomem *flush_reg = ath79_ddr_wb_flush_base + reg;
++	void __iomem *flush_reg = ath79_ddr_wb_flush_base + (reg * 4);
+ 
+ 	/* Flush the DDR write buffer. */
+ 	__raw_writel(0x1, flush_reg);
 -- 
 2.11.0

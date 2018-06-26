@@ -1,36 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2018 16:08:09 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:38833 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993029AbeFZOIAddtQt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Jun 2018 16:08:00 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id DDBF120775; Tue, 26 Jun 2018 16:07:53 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 8C273206D8;
-        Tue, 26 Jun 2018 16:07:43 +0200 (CEST)
-Date:   Tue, 26 Jun 2018 16:07:43 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mips: generic: allow not building DTB in
-Message-ID: <20180626140743.GE4207@piout.net>
-References: <20180626115712.11643-1-alexandre.belloni@bootlin.com>
- <20180626115712.11643-2-alexandre.belloni@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180626115712.11643-2-alexandre.belloni@bootlin.com>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <alexandre.belloni@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2018 17:00:09 +0200 (CEST)
+Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:40684
+        "EHLO heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993029AbeFZPABc46su (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2018 17:00:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=1IrhDaB+SKZKqzsbZjzkfWPRayLxpXSofxJ8qgvyiJY=; b=lHRASFTcoJue
+        v/fGHqVXrJzquGZg5XlSCTTfQ8Pi4lkhRv3ypQI3/K0/wopQ+sBm34X2Vowv7OQJ2jHrsB8Oz26KB
+        li0YqO+xfoWhraVG0FsPAjP10pY+a9KJ4nUlTIAONHtliWFIC91VvwU6XYzolZCHNviaGxijsvi36
+        l2TH8=;
+Received: from host109-146-194-33.range109-146.btcentralplus.com ([109.146.194.33] helo=finisterre.ee.mobilebroadband)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1fXpRo-0001IU-Aq; Tue, 26 Jun 2018 15:00:00 +0000
+Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
+        id C26D7440070; Tue, 26 Jun 2018 15:59:59 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Applied "spi: ath79: drop pdata support" to the spi tree
+In-Reply-To:  <20180625171823.4782-1-john@phrozen.org>
+Message-Id: <20180626145959.C26D7440070@finisterre.ee.mobilebroadband>
+Date:   Tue, 26 Jun 2018 15:59:59 +0100 (BST)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64462
+X-archive-position: 64463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,94 +53,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/06/2018 13:57:12+0200, Alexandre Belloni wrote:
-> Allow not building any DTB in the generic kernel so it gets smaller. This
-> is necessary for ocelot because it can be built as a legacy platform that
-> needs a built-in DTB and it can also handle a separate DTB once it is
-> updated with a more modern bootloader. In the latter case, it is preferable
-> to not include any DTB in the kernel image so it is smaller.
-> 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
-> Changes in v2:
->  - rebased on v4.18-rc1
-> 
+The patch
 
-Note that while the first patch can probably be applied as-is (it only
-affects Ocelot). this one still needs to be refined. It seems to be
-causing build issues with some defconfig.
+   spi: ath79: drop pdata support
 
->  arch/mips/Kconfig               | 1 -
->  arch/mips/Makefile              | 2 +-
->  arch/mips/generic/Kconfig       | 1 +
->  arch/mips/generic/vmlinux.its.S | 2 ++
->  4 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 3f9deec70b92..2cc43f51fa6f 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -85,7 +85,6 @@ choice
->  config MIPS_GENERIC
->  	bool "Generic board-agnostic MIPS kernel"
->  	select BOOT_RAW
-> -	select BUILTIN_DTB
->  	select CEVT_R4K
->  	select CLKSRC_MIPS_GIC
->  	select COMMON_CLK
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index e2122cca4ae2..5c5d491d736e 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -401,7 +401,7 @@ endif
->  CLEAN_FILES += vmlinux.32 vmlinux.64
->  
->  # device-trees
-> -core-$(CONFIG_BUILTIN_DTB) += arch/mips/boot/dts/
-> +core-y += arch/mips/boot/dts/
->  
->  %.dtb %.dtb.S %.dtb.o: | scripts
->  	$(Q)$(MAKE) $(build)=arch/mips/boot/dts arch/mips/boot/dts/$@
-> diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-> index 08e33c6b2539..13692b84928e 100644
-> --- a/arch/mips/generic/Kconfig
-> +++ b/arch/mips/generic/Kconfig
-> @@ -3,6 +3,7 @@ if MIPS_GENERIC
->  
->  config LEGACY_BOARDS
->  	bool
-> +	select BUILTIN_DTB
->  	help
->  	  Select this from your board if the board must use a legacy, non-UHI,
->  	  boot protocol. This will cause the kernel to scan through the list of
-> diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
-> index 1a08438fd893..9c954f2ae561 100644
-> --- a/arch/mips/generic/vmlinux.its.S
-> +++ b/arch/mips/generic/vmlinux.its.S
-> @@ -21,6 +21,7 @@
->  		};
->  	};
->  
-> +#if IS_ENABLED(CONFIG_BUILTIN_DTB)
+has been applied to the spi tree at
 
-Thinking more about that, the conf@default configuration should probably
-not be removed if the platform is not using DT at all. Are there still
-MIPS platforms without DT support?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
->  	configurations {
->  		default = "conf@default";
->  
-> @@ -29,4 +30,5 @@
->  			kernel = "kernel@0";
->  		};
->  	};
-> +#endif
->  };
-> -- 
-> 2.18.0
-> 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

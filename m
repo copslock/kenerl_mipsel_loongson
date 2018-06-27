@@ -1,93 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2018 00:56:06 +0200 (CEST)
-Received: from mail-by2nam01on0117.outbound.protection.outlook.com ([104.47.34.117]:60496
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2018 00:58:11 +0200 (CEST)
+Received: from mail-eopbgr680133.outbound.protection.outlook.com ([40.107.68.133]:57650
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993057AbeF0Wzyuwtoa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 Jun 2018 00:55:54 +0200
+        id S23993057AbeF0W6Arq0Ya (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Jun 2018 00:58:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gCgsPrfyTL+vozNItxY+0I38yXAre1aoWH1KnI+UYTA=;
- b=UEOf7MtgWEntsETx/tuVD09gdK9RP4j+2Cm5VUpJXEI9yen7FvvLB1ao2hNmtnJiGPB6ZwMHRv227uxxDldij1i8+73GCRtxMb4k0LnU4Ba1F6n+TQT2LspNnQ8TiF2Tpxd58BS0eF3wpTTrZDeCQjA4M27mPj+lJ9qmWI/IStE=
+ bh=GxIpJq916+Q8lEEwqhiJLPPNEQPc9BTHjeSxHmSyERQ=;
+ b=YpGUyM8mzGMktdgKCRPzsk1VXWXmYDbtYaWMBecyV1B9W2U+oXZdKB2lj46YwIwBHPb+06XAsqosqicJ78a1N3gTDZ2VJLnCiN8crcgSqSagSznscVzJcMDi5JHtt5E825pD/lNy317IFJvHABbubf0XOJLy0x+S88jcCp6WTDQ=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 Received: from localhost (4.16.204.77) by
- DM6PR08MB4938.namprd08.prod.outlook.com (2603:10b6:5:4b::19) with Microsoft
+ BYAPR08MB4934.namprd08.prod.outlook.com (2603:10b6:a03:6a::15) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.884.21; Wed, 27 Jun 2018 22:55:43 +0000
-Date:   Wed, 27 Jun 2018 15:55:39 -0700
+ 15.20.884.22; Wed, 27 Jun 2018 22:57:47 +0000
+Date:   Wed, 27 Jun 2018 15:57:43 -0700
 From:   Paul Burton <paul.burton@mips.com>
 To:     John Crispin <john@phrozen.org>
 Cc:     James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Gabor Juhos <juhosg@openwrt.org>, Henryk Heisig <hyniu@o2.pl>,
         Matthias Schiffer <mschiffer@universe-factory.net>,
-        Weijie Gao <hackpascal@gmail.com>
-Subject: Re: [PATCH 02/25] MIPS: ath79: add support for QCA953x QCA956x TP9343
-Message-ID: <20180627225539.kybn5lvibmao6w2x@pburton-laptop>
+        Weijie Gao <hackpascal@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Julien Dusser <julien.dusser@free.fr>
+Subject: Re: [PATCH 01/25] MIPS: ath79: add lots of missing registers
+Message-ID: <20180627225743.aghuksdpqpmg4m4b@pburton-laptop>
 References: <20180625171549.4618-1-john@phrozen.org>
- <20180625171549.4618-3-john@phrozen.org>
+ <20180625171549.4618-2-john@phrozen.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180625171549.4618-3-john@phrozen.org>
+In-Reply-To: <20180625171549.4618-2-john@phrozen.org>
 User-Agent: NeoMutt/20180622
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BN6PR14CA0018.namprd14.prod.outlook.com
- (2603:10b6:404:79::28) To DM6PR08MB4938.namprd08.prod.outlook.com
- (2603:10b6:5:4b::19)
+X-ClientProxiedBy: DM5PR06CA0106.namprd06.prod.outlook.com
+ (2603:10b6:4:3a::47) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 20585554-7e03-4f18-ae0c-08d5dc811cdb
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(7021125)(8989117)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(5600026)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4938;
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;3:Lp1HOoac/4GuNGtfEvNsrXnhWUl1RP8gXDPUQ0NRGao7zMVRsZXF16lSCjvCWtO34DyVUl9AS+IeelXAdIYupLJ0HWHl7z8O1I0XIbwDdiyZwkNwF4wC1Op34Qq35zoxWoc6/tzCRS63KGkvSKxp6wq0NJBlXu3fpdCsCBIc3POYHWUpmvvx71HPLUg5HDCSjxMZMLI4fXQFRYyZGl/fSJIzUvzd4aAPPnRiVMMqkHgbMPXpjEYyYveKtCgMubg5;25:+e+rJJz2vkY/eCWYw4ECl8OPrlZ/NHQWrENeiVGisoxXnKU87l+ujLuzzXXQhBLV9q9jLx4Fz6uy0u1SnqpGhmJF+yIfL+USETlii6CsEiX1x82tdO6w1Dj0mnZ/ufjRed7x11twpO6yskopoFyPnJXfi++7YcdrYXUe8YohZsNYZ+ZDR1EZiVN9ymXM/vipgxEy4+o86dC0pweUTPIVLuMFol2xcNmUl9tCwdFH96wkF6cm8gm1UcUIQuPZAPq1m9w2X4bJWlNiQTVwCetScV9ExPgB5vnOZ/UYy2XtlhhmdZQzwgbA62jYJ5v8m7C2gHZ9lNZYSvFv7Aojto8BAA==;31:InEy4fI/eakaQZdC1DHEPYepQ7NxXO+qxCnTXKmA2hpaZP9tEy8Nje7C4Gi8A9djA06Qt42Mq8mLu9g0HFn1bPf2P/bpbrX1Dtb5ZKn3w6H1eNYFX2HwhW+ca1ZOgWhEPrFk/x82Xrv6lgcbSTT0If7AX5/0dOWdSM03k68as7kEiP1kowbb+xsenfIuj3NMrEWJZ2JuFBWkuh/9W106n+lwBVcOT8Xf6zcogWTd1K8=
-X-MS-TrafficTypeDiagnostic: DM6PR08MB4938:
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;20:oFNlKyvHckqY6hJOKnah4ybc129G4wOQUELDk0kmFi5plerXvdnN9dL5LPJyITSV3khat2iniNaYIj5MGPV8O708Nuo7kbzpq2LNMRhiOdZamlaKfrgj3Wn/ISTtIj9tr7Bn9mDANVZT3Avy0vYzvH+Cq0oDbMna5Jk5My5wPDJyMItRWDyuYNZG7nTzalYB4XYoOXGcbCy4naEJ0AXarbB5EQ7pSYFGbZzSLbSECtiRIX4VxbvWWawB411Dv0rc;4:lBd9/8xv5nEV0gQf2ko3of4AAuwA/8NRZ5+V7ff0496UOc4Rg8phwrNHq99lp329BImMMedE8/4AUrHq9oj54eStdwbuXTsEWMpG8/HAsfGQq9w1Hn6sOg65ph5TUeu8tG6Os54BHvHsHkbkxFc8efgBC7HA7RxXXPDlCrAnrz3BCxIJKupxQiHd3fcP2jjbb5kDuUtRixyOolCjCvH4nzniHHEA/qldh3OUDOivNm2EbZf8DwG55BqOnpZnR3ky31/kkfmJQPP/JWDJR5gYPDxtEuV5OeOYTWnKphnyzdQyARxbYYwLdu8asX9GXQey
-X-Microsoft-Antispam-PRVS: <DM6PR08MB49380D2B6540B902E6D9BCF1C1480@DM6PR08MB4938.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(85827821059158);
+X-MS-Office365-Filtering-Correlation-Id: 055d84bd-a0c5-4ff3-b9e6-08d5dc816697
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(7021125)(8989117)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(5600026)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4934;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;3:mGqOPhajKhd0yhZVhglvN9aNMPhpXXG1coqWWBV0LgF0zwxEKZW67WGsspLs0+HKSfHewtPBxCa+gMyr9S9tj78hOUCj9Ys3W3cd/renkBsrOCan7ct9+fQTubc4HnPDcDSsQPN/xo+VOjvcR3NSeYffUMK52vyhP6GgL7ogeW+yEtcMJsgP14Keq1OAQ0Z1YwIkTR3PGCChLeykJYtbFnjSyCRuZfc8qlf+lHvSlExnmOjVk6u+7BJXRhMB4Hq0;25:RJclyF62l5ZUThl1AdtNMZanADuFzNKZ88+DxteU0L+XICPrnkvcw3Eso7HmAb573t47TnUdNLn//pUMdSelLbvKCk8ljNYzY5MgFHyAeso7QbNhp8msYO/FIOs4nk3qnPnuRtFfQWY6s4s2Eha2cT1/cS+vrnaGpFtotmwDcF1DTn3nc+iGYF0DZDZsgoDvfzutQjylq70dCKGfP0mJUwjLOufZKdmx5Ba8dqSSZK3DRCdrfoouN7lOBiYJV4KFtBUXh9SrQLaUBdGS1lriKW0Syzp4gHgOh8OLy94HnWOehPPdhSWUvQTI32YgBVv8WE6rRdY6ihT8wQlqjgDF3g==;31:CTXnA/S7HfuSEXA3NvLex0Ld3jogp5BCtEoQV1D6vrcaWyYGPYGNxp5zKaro31TS1MmU9VlgtJg4AaQTWlyNdZQi5f37FxVaI1wH21kTLoFajzgzl7x47nmeqWahzAR4rwUZKB0eCuD+rApDPd+0dWl2Sn6jmhyXk+VMIMZVK1jq+cdnGDUBVwdB0b/cn6SVnjf1t+sq0NbOwrMf2gWEuSkaPKfXKAHm23HN/QsO1aI=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4934:
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;20:0Jxn052ohdCP87SPG9ceL0Nz4MDGshmjlXY7pQALxrxSy6FOp3683IbbQfrlVWA7zLZtNbvxTENckR5UKdfyms3N7fOU58Bgq04cafW4lPaJwDn+KGEZfF42FhqtR2jon6L5x5dtQZboo6VRNNis0bimLhKNGg8Gg8f+SNUGMf07VrftHNhc43fJzNz4/XmTVvTGTIDi8e+V+vA+EEuWZNzympcoJlV4QEWE7qfwziFqHFn3ctPaW7sGPajlda7v;4:3wOhdllDF5/eRWnLjZF/RBSC3eWpHxIpA+WkQa9qHSur/2J03BsJSOcf0XfixXHk3TiAl2owJ+uf6bizP46JeNwdyL3WRGaescYzhia5ZdnnEdSWxQLCdreXaISG9xiopIYhzpfJ5LuIanStlrBulgUIiEBX3YRsxOX8QeI3OABvTSkiFReqnpIaukVzj8EX4U0Alxy7+F+c346UjzCCHvyVhQRFqbzaJDqKZ0eT+pxU7w4+E/859XLJt+NcDCOYqfFqiUvMeCNNdGd6yckdlbOmOjdaLM0VglOZxF2xC0ZmT41PyvibrFLacJsZC09QPu4bPsI3RkQD+SgvKIw3a6sTFXqXQL4hIyky7LY7RDg=
+X-Microsoft-Antispam-PRVS: <BYAPR08MB4934969ACAB3F2578EA30ED9C1480@BYAPR08MB4934.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(191636701735510)(85827821059158);
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3231254)(944501410)(52105095)(3002001)(10201501046)(93006095)(149027)(150027)(6041310)(2016111802025)(20161123564045)(20161123562045)(20161123560045)(20161123558120)(6072148)(6043046)(201708071742011)(7699016);SRVR:DM6PR08MB4938;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4938;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3231254)(944501410)(52105095)(93006095)(10201501046)(3002001)(149027)(150027)(6041310)(20161123560045)(2016111802025)(20161123564045)(20161123562045)(20161123558120)(6072148)(6043046)(201708071742011)(7699016);SRVR:BYAPR08MB4934;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4934;
 X-Forefront-PRVS: 0716E70AB6
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(376002)(396003)(136003)(39840400004)(346002)(366004)(199004)(189003)(305945005)(16586007)(105586002)(44832011)(9686003)(58126008)(956004)(446003)(11346002)(76506005)(54906003)(33896004)(42882007)(386003)(486006)(8936002)(7736002)(81156014)(50466002)(81166006)(23726003)(6486002)(229853002)(6496006)(1076002)(52116002)(106356001)(316002)(476003)(8676002)(186003)(478600001)(16526019)(3846002)(6246003)(76176011)(2906002)(5660300001)(6666003)(6116002)(6916009)(97736004)(39060400002)(4326008)(47776003)(53936002)(25786009)(26005)(68736007)(66066001)(33716001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4938;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(366004)(136003)(39840400004)(376002)(346002)(396003)(189003)(199004)(68736007)(446003)(1076002)(44832011)(58126008)(50466002)(956004)(316002)(6486002)(9686003)(11346002)(486006)(5660300001)(16586007)(229853002)(97736004)(3846002)(23726003)(6116002)(16526019)(186003)(386003)(476003)(54906003)(26005)(6246003)(305945005)(7736002)(106356001)(39060400002)(53936002)(4326008)(6496006)(25786009)(8936002)(42882007)(52116002)(76176011)(6916009)(66066001)(76506005)(81166006)(33716001)(478600001)(7416002)(105586002)(6666003)(2906002)(47776003)(81156014)(33896004)(8676002)(15866825006);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4934;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4938;23:izVuWcQwTkGKvCuMi2QSi37+6Y3NcJSMeZyLNbvBU?=
- =?us-ascii?Q?N+48MY6Z/3IATea6ZLlVPiW9TEmcNK9arKSds/qjze6gIBtZQlxCXpkYERRT?=
- =?us-ascii?Q?xs/mDVQF7sbs3+EwKtUaFcHprdbK22RxrYhGCdW3nVrRWnk9y/8VvvXJPOTZ?=
- =?us-ascii?Q?sUQOybXeTGWa4gJ5Ikff+AFKqRPzyfV1gMaBHJ/cojaWKNuCePejSZcelEd+?=
- =?us-ascii?Q?4kWPrcMYSxXmqMvp5RD4+m/BrR72zUKQ+3oEQKcEjKs7vWlgjawQ/xqQPON1?=
- =?us-ascii?Q?6C814xzd8t1U0H28cEEipMirMFug8YnRsfhojMqWhB5YpKEElpu87/Db29Cr?=
- =?us-ascii?Q?y0ZZ1M+2Tl3OH9UBs/V+susZ4LJtLj942X1zOWt0osOEKv9X0rm7CkjWOdSn?=
- =?us-ascii?Q?fr7RjVjrsrw4Into36r3ViSpg0J7oL+YTrIdnH7wp79NNn1UKuYdGA8fXwUp?=
- =?us-ascii?Q?6oAGocAHpH6wiPN2aAXUuT3VjEl511dnr6Ax8YWQlHikkfaAu4Bam87ZxSmP?=
- =?us-ascii?Q?zK9Y35qKGf03dsIDej0u5Yq+fzVeaAOWNY3xAijmPqZh1lUW2EbakF/8Nqir?=
- =?us-ascii?Q?UKLTun8ztZvzcmZCUWgTH0OpVDjxoQ56jgcI2b1qCMjSmcSiJvUmiu7AEpZX?=
- =?us-ascii?Q?CNfaNEGAUtFjMWzWVsbpPZg729sUVnH9sVg7PKLrh/gl0ZP6+DJqX8fMEiUG?=
- =?us-ascii?Q?/+9tvSZKprm/aSy2C9+0MIvYDzh1E5QlC69U+nD5veS6p98jo4OyBIVtF9wQ?=
- =?us-ascii?Q?LGBfq4vJ81C6fQE+2BhuCbmlBydcmhEv/66ZADPXCgqccFGQGqyxIkc3nQWm?=
- =?us-ascii?Q?hn7biFmmPVC6X/WdKxTzHwxxdglArLeV1zy6JU8LdG55ZgOK/eyiGsCw1gCG?=
- =?us-ascii?Q?f2MBEejLK5KVRwgPoJndKk+pwyLItpaqq4JPhhpsNdtxDdtxXoc39X2Iqcmc?=
- =?us-ascii?Q?Krh6X9nSa/SfBZ063YSnSNK8fMS8QNDO2Ju+K1MCnvRXSqfbf2IuB1KJD2b5?=
- =?us-ascii?Q?NVGZrDBtbzRjXUey22/lHhoBagrWnSMWC0/JSoC5GIr21e2qb/mkp8pTCi4x?=
- =?us-ascii?Q?Kvm7DxPx3lzEQcw/A57oc2VcAW6P/bCAoEP0WGAsT6kecjg7f4FxKzVDIK1F?=
- =?us-ascii?Q?NIbH3SgiPvavM0fhyBGdSQqvLV/234BFXrSRvzTI3taWuNzdbSIMRRtH6X9G?=
- =?us-ascii?Q?ymqiEx8/5MLlukfxn3mBnvvEBA6rjRhoFjxghaLDuFY6Hg638HE9I6Xv9av8?=
- =?us-ascii?Q?tptqgiA1SZ89f5p8P/yENgGAcbuKs8+CPY4T1WFJpC6Cl31YM4bpJ3h2+7H6?=
- =?us-ascii?Q?U1v898y3b/hzxKiE5AfNUXXjU3ti0mb3SWRR0T5K1rU?=
-X-Microsoft-Antispam-Message-Info: ZBB96YaMLjXhMRzoqTUtfEOpU3/F/qUUBIkDCedWGnsfizjcyIm55l+60JUFUow/w2YjHt0HFmLTlZiAdIn52S1hhRc76AQ4Oj+PLiqsHqgyb+uOoVQRPMRiYigWddLKLJZhAOQkC1ErSY0pFl6vHBsT+02dypuoSYQ6EbwJVyFZMwTqS0mz0wf9cz44wHIZEjsO+yinelqGcj96hqucnDmxcP8yZPXZJEVnaBIITMZYzS4Wz1yTB742JqMfFF4HOsGC5PNnyiq68uM/3RzSSCZ1EffLtkoe3fpkYrq/bjhGxcuxcIG2xie2Mr2kc00OzVkXsfu28Rg7Ef1yxHHp0KIKbEn6IG3vT5Kup8/nedI=
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;6:Of8/TSF7fzKuRWatAhKvgnulTqgVGD6arMISxcJjnxZWu6DEzPksxSyT1VIs9dIcnY1m34oiDX5tTyvFFhq/OH4hen6IV4k/aEmUqdwfiBEbgTyJRzz+amuFs+nWX45qRJCcVd/sU457boQGTht0BE08lYJvZ5jrYGzp06oyoYOLOOC/A/z1SFDd0G6PsOgYumcDAI6fnjKceynt9SSa3uDLF1OIOEwhiMt19wC5DYWOL+kS41tuKbIC6u+72HWtw2CGfhpqcFT05x5JL1qvLRNXnoFPq36VChB8pJWKD9b2u4uXkcdvSy5M+vSSiJ+Mx1m3bIXjeoUUhUfd1UmgUOF3u73BlTC5Iu2euOonNLOJ9L4XaZG8JQJil9pXS+EC2DP5cbErM1Vu8vV31JxayZMnih6E8lnDpCMJYCqIOP8p0dBoZkDEpzxJbRQGbMSHL09LWKi5nFWsF3RzRE0yAg==;5:4mtX9UlWT//r/JqQOeud7xi4n+kjPxHteBlbSQf+GiVnzjr0PHNOygyxw0AKzOIAfyM0vH4LGohR/i6lr/UfqNrBwyA2RaOWI11hzgb3aaeR8I8NzYn39OqyNeqKUYS2d9WV6wXoxdiipg1rrPwyTp1TzYTuWnOdEZ6kf4vauc0=;24:q9wS53qVLKWnI7aXQnmhFqhtdB9TGMTXq8Ck64INwkE5h+fgJNTYmTewpvn+/zYNgKnk13/n7CnQA25nWdojpCcTpyk9ZHwhEDvZcn0M6fs=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4934;23:w48vluQH+rFNUIKG9D5SGMrCVVdgnf+65lDmgKrdn?=
+ =?us-ascii?Q?6+w4Ss5CDvByFcKdTYOiJAxiXeeosm0DwuDU/sLIToY1YQVkgKF3zNRqOtCg?=
+ =?us-ascii?Q?BRiaHsFMN+QWVOICbTtxsFlOww482pw1zk3V3uHGV/iQDv9BnafQ0Mlzwq7a?=
+ =?us-ascii?Q?8os7GumBjkXqRjaMSOmj9SeodLzKtCsl4YqhHW6fazTvANo5Iaqf9/cxP6zA?=
+ =?us-ascii?Q?wUFu3U8v0mhA7CKzB090V0QK37ka3qBBKtep+llcaHXMqLL+2NK85/5gi1WN?=
+ =?us-ascii?Q?JZAFQ4K4PXVYKHH7pvz0ZHkPF3G7Y+WhZ9xCfb6sChOQDkDC5CPme6bSc6/l?=
+ =?us-ascii?Q?zo+8+rN5N404gXFdEo4A6pThD9vievtrOAes+kYRBmI+k7hmDwy3uhsPxLEg?=
+ =?us-ascii?Q?IhjM3kBPJ0NBWEXtelGd6hwVnhyWO0SI+akX2CDU3GVZuXGrbIpIIzCRYG0L?=
+ =?us-ascii?Q?4E37yuk705nD2rXXOsV3hXnpoNg2T9QAfkqc0ZRbyg85ZJJ51kk3/1zTRibt?=
+ =?us-ascii?Q?oBh3GU3AB2tYGeXpu69JyLRHv2VIAsXXNbwtuABVnt6FakPzG4nfAHiOKPin?=
+ =?us-ascii?Q?6vxkSnYNwj9wQlCO1oVYt51sXFPYRDBzJJj8I9IuiglZY3M8hYjeQWi6wBKc?=
+ =?us-ascii?Q?KXaeJGw3PuoFvVOEC6ZrVEqo+2659kmgrop1v3za/hIBVk70XIkPWaWU+u7f?=
+ =?us-ascii?Q?x06ilbY0BmMI2u3DFr711pN3rujQVumqkZjHy4rHuH5xpZg0IMS27+wd593w?=
+ =?us-ascii?Q?CgqF+nRSXwG3gjwzQvqoSa87l/u51qWa0INraWNzBiQnvmPMgHrHO7x2BCyt?=
+ =?us-ascii?Q?UtK+BMArbUYw+fy/9f3auUZemaETGxVeG2DwTbDWwiR9Vas8ST3YNLQhhK4d?=
+ =?us-ascii?Q?OYmavPCgIZhWLvvHd9VMuRUcWbgPg3CdZp/9Roj2PYGbV+wdfDkArz02OkVV?=
+ =?us-ascii?Q?vsmxbrbOACQpkvekgp+p6i99+Y8bc8FzmPipmJIBnStrtRxsAt/YfxMib2eD?=
+ =?us-ascii?Q?Jvkp/gBRWu2o+WYAB16PwcIxQLK19u/wHqbPVoJw0pys12MvBAhNkq+a7apk?=
+ =?us-ascii?Q?c02ajJ3N1tZ/yoYTd0Ad1TgDfh2RGDHggj4PUAF/gHpT8BYY3/+Hc5RJEbHG?=
+ =?us-ascii?Q?Oid1anOT2kmCW6Zm+g0R707rf2c4RbFBzgZlkadmtww29cDxqoC52FgnaDza?=
+ =?us-ascii?Q?E05cs2BxMHm2lWZusZrGD28tFuI9UWOrCo43/OB4n967xfWmeM/choEI7aAb?=
+ =?us-ascii?Q?J+KVd/+/LV7N1MDwS3JMSlto1XH6aFt4QtUWJXLqTqP6iqPCKWhVR125Aj+l?=
+ =?us-ascii?Q?mxbdHD7vfosdp/GgphxUzXjurWZVqY5iSfSfqIjonisPSi42aNbreUamR0Hn?=
+ =?us-ascii?Q?8YEFVfpT9JTqpuSUqi2RzXiX6g=3D?=
+X-Microsoft-Antispam-Message-Info: pxYcy+q5l6cewVV2ErgE7kFXqsmtqqoGNApPVbfU1l6b9IVnC79xRlBneJLPLBu8Uuq4AUcffkJlhF8HJy3BxIney1MS301wve7WhjQy4g4pcXJFlxGXlY/D4pTkEoKBdlVvSDmefXj9zWM1pe3I2Q4YQ4czWZJ5IPpkqwSmf1jUpo79cO+AesM29bSZbqGioXtOm7v/PZyNm/sivHLiRMZLMPIlzaVZg3DY53O3gAhUU2NiQ9T6ITQgtISuTOjEcmolAz8do9lhQGO4z09YdU7CeGwVwCpEZhMVBeKsRFLIeg/4FXsuf1hgpGvRPx3D+PAFjyxU28aqY5b/cdXX3Nv+bO6NiQaz6biXFJLAsHw=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;6:1ox1jDj74CBKQePK6wKqZGURiMbgJfm6gyqGcqvePgpw19aW/RUczzqhvafq8hoCdX4D7RHG1mvpy/WupRi0R1h1zCqBWJivNnlM612tj6QGCIxgKCfsTuSFiUka6ckmua+eCyfTfdADBFoWn1rfJ/B370Zp0xPXBR3ytn1T+WHvfWZdxUQ6nvHVVNDwJ0m/AuP6tLXBpM2bKuuyPniFzvl2rkGAlM6AjhdnEtnqVLCTbB5LOAsXPUTtRRewuZbvEQ15BA3vZ0Bz7Y0HWZjuO+TzvDc5xQ8SLnvHvm2HM8AgcgwhSGktCALDgdMrS6n8BY+D/WU0R/bebrL2YLD9eDlyUfG6rX+cfPR05vmo6VZ7pPvOs2cNaaF90ObQj7UCL8qv441w37ZN9u7zBnsLT/qZMLbKSp/bGufGH4Ynb+9spMjdl2GWy0Mr/AsIaujuo/6lSGI3y1w4jSh8/aM+zg==;5:QCWCdyuqmyVIY+klPYGjwl8iduChfTfsfk8VM4mowdr2hVmMSMEGVK85eARH/7QgOEvJz5G8zubyKQtKhwCs1AVXVpdKIMAq3sab9MdkCGeA8UjTJx9Bmg2ZOazxfVhF4lpR/Zi3H0kmemA+UPQWqgpHsbgLJc/GdW0uT9wPeYs=;24:fOhyKHyZ7yK7bhcslCYx8MF1YHpgeje4HPJLTi6w+XHk3CIvE8viXSHNyg+a0NSBFGZ+fxhwNoJ82x/QJnhQGeau6rtMgCb7WVnNF5tB7dQ=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;7:v9w/AoJgZwRtm0ZiXwbm6rHuM5PvZSYEOpQ7ZBuwzfKsxf49OoVs/RxMFPejzOq9Fc0TU20KRL66H/V0FgAW28gtCjVfJ18ZzLN38WYqwcO5vWieLfU6t+N+kMPSU7PNUx5THlwkoXH3usVd1VDHoQCz70NhOAycl9tM1IHoigdYDTt1grEsVo/fasleMxGAxWAFUTZnvHTx8jeXijAef4/tDGCVSJSkVoRoB4q/z1F/halF3O4hkNStlyUrVJq/
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;7:uYr7x8dn/Vw970AFxtrwuEYsedJKSyi9lpKBTnhp6m+9PbzblI0WmfKg94COipayM+QR3tudDqWHdj1LcBy5zoeXIs6l4i80ncRvFlRxwwDnU8yg6kR2jwD57OWb35Qjna1e1kHkYe8ySfDHtH8cABMa/Y2Uj/46qec2hfL7vGpA7q/5WSph99OoHKrBMyUEh+zlLAGiYWYZiza8G0yhDbu0jEEglH+83HyXq7493vekt/+XUUCMmqskyNCbrZus
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2018 22:55:43.3002 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20585554-7e03-4f18-ae0c-08d5dc811cdb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2018 22:57:47.0717 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 055d84bd-a0c5-4ff3-b9e6-08d5dc816697
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4938
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4934
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64472
+X-archive-position: 64473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,20 +108,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi John/Matthias,
+Hi John,
 
-On Mon, Jun 25, 2018 at 07:15:26PM +0200, John Crispin wrote:
-> From: Matthias Schiffer <mschiffer@universe-factory.net>
+On Mon, Jun 25, 2018 at 07:15:25PM +0200, John Crispin wrote:
+> From: Gabor Juhos <juhosg@openwrt.org>
 > 
-> This patch adds support for 2 new types of QCA silicon. TP9343 is
-> essentially the sane as the QCA956X but is licensed by TPLink.
-
-s/sane/same/
-
-> Signed-off-by: Weijie Gao <hackpascal@gmail.com>
+> This patch adds many new registers for various QCA MIPS SoCs. The patch is
+> an aggragate of many contributions made to OpenWrt.
+> 
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> Signed-off-by: Henryk Heisig <hyniu@o2.pl>
 > Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
+> Signed-off-by: Weijie Gao <hackpascal@gmail.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: Julien Dusser <julien.dusser@free.fr>
 
-Since this is coming via you John could you add your SoB?
+That's quite a list already :) But since this is coming via you could
+you add your SoB?
 
 Thanks,
     Paul

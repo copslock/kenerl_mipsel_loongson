@@ -1,95 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2018 00:48:34 +0200 (CEST)
-Received: from mail-sn1nam01on0119.outbound.protection.outlook.com ([104.47.32.119]:6968
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993961AbeF1WsXDe4jT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 29 Jun 2018 00:48:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+wRssR+Jjh1I5SoO8JZHVA0wCjKSoDzhJCmo1DJx3FU=;
- b=eABwzceXepr6bd1aazTYBxaTSQ+cXEoUQT2lchJz/WNLqn/zvAwg1YXCxm1PPmBlzz5kd888972dRDWcZwI6D86FZpMxhwbkmIoTdSOhn/FIhlaKaxQywCfD7QxRy9Zm0esfqQXXy0sy4qG5sJLQI2Cz3d/a0Z8mh2HxFrkDbE0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- BN7PR08MB4931.namprd08.prod.outlook.com (2603:10b6:408:28::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.906.21; Thu, 28 Jun 2018 22:48:11 +0000
-Date:   Thu, 28 Jun 2018 15:48:08 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, jhogan@kernel.org, linux-mips@linux-mips.org,
-        ak@linux.intel.com
-Subject: Re: [PATCH] MIPS: remove const from mips_io_port_base
-Message-ID: <20180628224808.osbostnj77pzrsod@pburton-laptop>
-References: <20180616154745.28230-1-hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2018 05:28:51 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60328 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeF2D2oeaGp8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jun 2018 05:28:44 +0200
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w5T3Scdk049197
+        for <linux-mips@linux-mips.org>; Thu, 28 Jun 2018 23:28:42 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2jw7jnucj8-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 28 Jun 2018 23:28:40 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Fri, 29 Jun 2018 04:23:45 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 29 Jun 2018 04:23:41 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w5T3NeNa29949958
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 29 Jun 2018 03:23:40 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C68C8AE057;
+        Fri, 29 Jun 2018 04:23:31 +0100 (BST)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C35BDAE04D;
+        Fri, 29 Jun 2018 04:23:22 +0100 (BST)
+Received: from [9.79.204.50] (unknown [9.79.204.50])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 29 Jun 2018 04:23:22 +0100 (BST)
+Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
+ count (semaphore)
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, corbet@lwn.net,
+        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
+ <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
+ <20180628195106.GA3952@redhat.com>
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date:   Fri, 29 Jun 2018 08:53:28 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180616154745.28230-1-hauke@hauke-m.de>
-User-Agent: NeoMutt/20180622
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BYAPR02CA0007.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::20) To BN7PR08MB4931.namprd08.prod.outlook.com
- (2603:10b6:408:28::17)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 87e95742-0bd2-4079-b5db-08d5dd493a18
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652020)(7021125)(8989117)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(5600026)(711020)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4931;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;3:r1tsOwjQKwiEmMn0Z6gUMS7T0ULpA+gMJRrV66Oj/a6GQha+zc+nCKG/nKT0vCjauYUt/tusW5/j8AFWy3jejAfYJW5CM9/xppJWPuPH4o2gZr8r7EJ7f9UtWYEY2ez8haLDZapQhZkgXzEQJ7G+pQ8862cal5B2DPAGVz3DyYznqyxQLxaiZknv9OxRBJ48/E/gwyJmibPwgaRMrdb83+w8ba9GSkiDa8+8BaQ69366qtDeaWV7mZSoi/2VC50g;25:EoqQ2vMPd+amUYGp2fQwQaKyBZpNuU8tlp0cbSXtqw4PQloLk64W6WBO6t5BRlfXlWhiDVnor/heW4Gxkw1REAs7V3ODHXHhLhDyJNiFBzqiXkXxnMEP2mjnewmxvXkPoKJpjnHRO4CSUYjSgozqdJY4tlTgfllZXR6hr41o7oupF0Np4w31wKUFbPfkK1FPrOVaF8MDVa8L2uUqBCb0TUjdH7b1lUeb0J1lytimeucJzDCzHGyGL9KVeyKHDnhjOXaYWeyjRsMUKjzgA4XYqY6CtydOf0QahaPQrRnwWwek3fXwWCtkvhTQqkBNDibPNcljkCZBkV9KzYe80jmRkw==;31:5Xhi6tMU01YnGBsMYC4peAOlLhymorTa36CfrMeVQh6ZS1AHJBqA+KZECFOQPr2YP4NnThi1io9lwYUVYYxgETfJxj8tYk4wZpW61omWY5FkZJq8f23VhBPkU253QYprm3ykCoywde9nAeqZ0hvGRV0L7lwIRahMatwrsJdDinzIDAhk7vYDiIL7E9SNmdAe9vhTmn48TdXlFVVv2ovIXYCkWM4Hpj0eRM4f/eCl844=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4931:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;20:2001dmnAZXTGd2EpnPzWkzCqShFeIjkPCI5IabZ+msuvl0xsbhCjbDAqyae+1fDlJr/ASVjzgoI2Qi7FYWUQ/BWSq+BvrHaqdlF7Y243i3O1Xc3Nq87RMJTuKXezRSx85Vwtbk4UsFd2Jr8c13w3gk+9v8cM55ezZALvL8rhPfTHosbE/pC6R9y3fHttzb6YzR6b9qsjp+AnJc5rQt1DrG7Wp6h/4g7PSXUn6jPryq6SGhNOJgumEz4N23K6N448;4:Y1MzDL0qQeVxkYr5Gh1x+erLI2+g/4tl13gTldKSwF8YhSy/ZsOBICBH1pHlzkpyKh+DdVa1d6YeFfOioc2UqNr0uAbVANabOSs0x02ITCqPxPtcyMmf+V/BcalfoTCZoNctmadPBWCfVxtP9CX/kc6r1kEsSYzIjLMIJYT5SjPYef6Iix/+Md7HJ9Yvd6pXY/bL89GcdIIT7AMTFF0tWIPUIqoT9iPsFs+Mu4tUBSWZ0kr44NrirpTZ5FJ0gsJ+TclSDVGcLfec8ydYeEvUbA==
-X-Microsoft-Antispam-PRVS: <BN7PR08MB493127BCA1A6B7DEE862A9E5C14F0@BN7PR08MB4931.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3002001)(3231254)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(2016111802025)(20161123562045)(20161123558120)(20161123560045)(20161123564045)(6043046)(6072148)(201708071742011)(7699016);SRVR:BN7PR08MB4931;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4931;
-X-Forefront-PRVS: 0717E25089
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(39840400004)(396003)(366004)(136003)(376002)(52314003)(199004)(189003)(54094003)(476003)(23726003)(3846002)(6116002)(68736007)(11346002)(6486002)(1076002)(446003)(44832011)(486006)(7736002)(575784001)(956004)(81166006)(81156014)(9686003)(8936002)(8676002)(2906002)(66066001)(76506005)(33896004)(305945005)(386003)(5660300001)(47776003)(4326008)(6916009)(106356001)(42882007)(26005)(33716001)(186003)(229853002)(6666003)(50466002)(16526019)(105586002)(53936002)(6246003)(16586007)(25786009)(316002)(6496006)(58126008)(97736004)(76176011)(52116002)(478600001);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4931;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4931;23:mr8W3pQg7KopdWRrCfmhlpIykBC4N4Rz4SgBCUC+1?=
- =?us-ascii?Q?9Ztn0mAhExkKgCdRfl8jpTtQFryNYe8JZm1KJ0p1pqwmV4CqiMg4vTy5qskR?=
- =?us-ascii?Q?8EdtqobPvFJkgXxKA4i0XTHIxsxKYJBMuzulzvbz/IQIBiG9BO3mmuhbFCTX?=
- =?us-ascii?Q?sH9Ut7JcLRbHgCJdZc8buAHiyWJuRjojtjXA1xd4TxT96pGB3hK7GNMfVP0r?=
- =?us-ascii?Q?nvTNN5v5C9/TMZcULoIccocyMmtPt+fOxIjYDJMlvNkXridF4BzJypfTNf50?=
- =?us-ascii?Q?S0JifADyZoBQh/Kw1Ji3magNvtIY9ETa+Zdq1+EWGGSUkNmZIKuw8+gHCCt7?=
- =?us-ascii?Q?popM9LjAiKdJGk1iy44zE9JHuUp0RPh74p6eErC/C6mDQPxsHvTKbiapYIsH?=
- =?us-ascii?Q?ybUs13wNQW7uNv8dk+3PLFbyPLyJgwmh3PWINR3ajY4ENtcaGI8+Mrt2vla1?=
- =?us-ascii?Q?H29w7jo0akyqGZe2qzcRqbjYCquDoBQEDNCugrqTZmYzfybUfiQ8XvWvF9/b?=
- =?us-ascii?Q?Fcs4WTwBW8XHcMAsy9JjUT50EbqYH5eZOvapqRlpiS0JYTyF0OENBdsy7cjt?=
- =?us-ascii?Q?zuTi0PG5panVql3Vz5X+vl3mroaEG4DAYy+PlEBvKaZ1URWMxuJ33Xt66Oo7?=
- =?us-ascii?Q?1PaBfp9CpWC1WPnBsCVwXNJKJsNKTWgJfTuT0ibxQRh1KYm00cH0d6F/qpxt?=
- =?us-ascii?Q?qGufEBeylXWpPpeJm3Wf3QZn0vi6mbbn4vnZzo9tzYUNX+zPs5ZbJpj6eoJr?=
- =?us-ascii?Q?P+NIc0kMFerbjT4vQz4udNrtoThF2X8IEe10JC78LQtKwZkstg0u/GnoH+D9?=
- =?us-ascii?Q?GPKNED9v7fbU1A0ZxM8Rhyr/ouAjca9EDirAW0ASvZrk6okeGS7MbvLqQnL4?=
- =?us-ascii?Q?0erSTrNNWonbbaQkz+J4K60ZcvmGLow+4Ehd6pvcWl82pNIwX6pgMaf6h0DI?=
- =?us-ascii?Q?tsNpPgEHTy9IqK1UJPC555cd29faaOQIsQVK1m1yesyE2nMDPEC7GaI3WQqi?=
- =?us-ascii?Q?rkbkO/a8r9/0aHahVZnlv5noNKBni2T0ppCnYUfrZ95FUh6LN/D3mzGfzE6Z?=
- =?us-ascii?Q?0boVZl87rLXIvA2e3YWBaBMWHh1ZJuPT64797w1q1xBpSjjwMKVjfiUf7NMp?=
- =?us-ascii?Q?V5XGKYKHk0pCICpfPqXrWU0hLlf7bM6mzbVuHUVXEm2g7wux1lxu6NDuGh6P?=
- =?us-ascii?Q?fbeDo9m2gPHISkPW9r8cwIIlgRFyHsQNKpi6gwmHccSYvLnfkD6VCahqLIAY?=
- =?us-ascii?Q?/yS4oEhawUayT6Zrte8AlGhosRk2mmCuYJnyjbZKDFMVA//srgva4AnGrio3?=
- =?us-ascii?Q?7yc6oPzokRLoNCW9RoGkONWhov3p3V/qwA8WWAc869qsa5FYGzv/lQG7x2x3?=
- =?us-ascii?Q?lgTOw=3D=3D?=
-X-Microsoft-Antispam-Message-Info: iQEwZBMaWvWdtZOMf/Y9UXS+ckyDQtpo7pOUweqDKIxoAoYfKLEfQMr78JyDUybIQXW4CTcFRZtzP/CikTHc0pcjqIl5UWqdKbnYrSBfTm9sQirxTLWV9d7nh/Iy/xEM5h9FnGHfgCWa/UdgNRhu1CX+TUHPkc1S4NKwsc3efOkDVxp2i9t1hHSCSYZO8+GcqQaEHFz3kFvDvSWEwyydcXBOLyhjUJC6Xb9FMqHgwUNfYTzOkw/Vgijs8eD1T/k9gPj3KSlXRUW3be+KDINMYjqu9A1hVsiGhfaEJYLmBtS7s9HCkdRgrGOUd0hRDvs2F40MiyUBFPaXROkoWHfq+qplIPf7N2bo/FLOHFuu7GI=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;6:luuqGYj/j/6oxxWxjINhFCE+N0TAHoLd8MNotv57BeEISD7qpWfa/hIeHXvJ4C4czSOeY/NT/9wWAV1tSf9WFuTUDl8cSZD7/b3rHrcULkJ6G70MVeKkpfV4m7KfWFFWX1XeRskEpCeXsJg2eHs/WQb9+PpJ8a9WPdxzzjH9soX8HaHt/1g0BmqEgpcGxTja21YfHdMNKQph/Cr3H+a75LAL6Co1Wc4z4ISWnN6rEJm+3H47Q7Jw6SgA5eYG/GW9cpgmDMxcfGda3ZW02XS8ltI94OmXiP6mmX5O7ruEizUdJWfsXz3N4Hyeoh/RubiEu8I9Wcs7S5m3X9YPtqMGJeeVjzjqNPHUQwUmY/WguKL0vX98p1ObK0M3SbOqP9k0o/fQnWgqWCWiHat3v3tdS3WqqOlqcQhHKu4YJXSHGysz87LBZ33bPr9jGig7AkCn73ANCej680i8r48HrUxBcg==;5:tmexsE33xrg2EppDEvIW8MUxFGvyC8Hp53/vwqkrlP8hZQYb4mmviWelhBMvl7j2SCw2vSW3+RKPjNTyPATM5fIQQLsmvJONJYyRGWDBOvmfXcBDzYiXkV3sX4WOBuKUvnBKE9z+yObYN54Omuzyw5jTEOt/w3Y4iU0ukrJg7w4=;24:j3Ugy3I6rfiugxK7W0Vu6zzzj4QqwGznQDMbYXtMCzRFlVPpWjhfhWiKaNCArSaSAYR+2MIPyYaS7jaMm60PZ8Qav89Gj0Cr+xu18ekM5aE=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;7:4jlygnIOmYewMaiVAC6Zq7Oo6wrX42w+02N+NAibvP1c3nmby/ugMkMuVaTj58XuRjXI84kT1qyFyK7ZWVYavDma4g/hM6WpHR02tVavbK0D8QdZUFKfOwjYe8YLjKY7C/orvZ9QtwSZphFEhIxHu5+V2K3RluTOKnIqoUlru05YeL4ZSKP/LMn13vzDjgKBT9Rfrrbo9A3XEAQ9EjQB/86ZSbAMMCnYiP1Gv2dYM36EmAgGqG/kj66EQL5NU72x
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2018 22:48:11.8279 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87e95742-0bd2-4079-b5db-08d5dd493a18
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4931
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <20180628195106.GA3952@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18062903-0020-0000-0000-000002A11786
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18062903-0021-0000-0000-000020ED18A0
+Message-Id: <cd95a4cc-4301-0dca-5fdd-53cc016dcfe1@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-06-28_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1806290036
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64498
+X-archive-position: 64499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,67 +89,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Hauke,
+Hi Oleg,
 
-On Sat, Jun 16, 2018 at 05:47:45PM +0200, Hauke Mehrtens wrote:
-> This variable is changed by some platform init code. When LTO is used
-> gcc assumes that the variable never changes and inlines the constant
-> instead of checking this variable which is wrong.
+On 06/29/2018 01:21 AM, Oleg Nesterov wrote:
+> I have to admit that after a quick glance I can't understand this patch
+> at all... I'll try to read it again tomorrow, but could you at least explain
+> how find_node_in_range/build_probe_list can work if off_type==REF_CTR_OFFSET?
 > 
-> This fixes a runtime boot problem when LTO is activated.
+> On 06/28, Ravi Bangoria wrote:
+>>
+>> -find_node_in_range(struct inode *inode, loff_t min, loff_t max)
+>> +find_node_in_range(struct inode *inode, int off_type, loff_t min, loff_t max)
+>>  {
+>>  	struct rb_node *n = uprobes_tree.rb_node;
+>>  
+>>  	while (n) {
+>>  		struct uprobe *u = rb_entry(n, struct uprobe, rb_node);
+>> +		loff_t offset = uprobe_get_offset(u, off_type);
+>>  
+>>  		if (inode < u->inode) {
+>>  			n = n->rb_left;
+>>  		} else if (inode > u->inode) {
+>>  			n = n->rb_right;
+>>  		} else {
+>> -			if (max < u->offset)
+>> +			if (max < offset)
+>>  				n = n->rb_left;
+>> -			else if (min > u->offset)
+>> +			else if (min > offset)
+>>  				n = n->rb_right;
+>>  			else
+>>  				break;
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  arch/mips/include/asm/io.h | 2 +-
->  arch/mips/kernel/setup.c   | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-
-This does cause GCC 8.1.0 to emit extra loads, adding 652 bytes to a
-32r2el_defconfig build from current mips-next. I'd expect kernels for
-some of the older supported machines might show a larger gain as they're
-more likely to use inX/outX. Combined with the fact that LTO support
-isn't in mainline yet anyway, this makes me hesitant to apply this one.
-
-Although it is tempting from the standpoint that set_io_port_base() is
-an ugly hack & this would allow its removal... I wonder if we could
-clean that up in the same patch though, since it's a natural consequence
-of removing const & might make it attractive enough to tolerate the code
-size increase.
-
-Even better might be if we could use a fixed virtual address for the I/O
-port base, for example by using fixmap. That should give even better
-code generation but would of course have TLB overhead & be more
-complicated to implement.
-
-Thanks,
-    Paul
-
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index a7d0b836f2f7..f28f8cd44dd3 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -60,7 +60,7 @@
->   * instruction, so the lower 16 bits must be zero.  Should be true on
->   * on any sane architecture; generic code does not use this assumption.
->   */
-> -extern const unsigned long mips_io_port_base;
-> +extern unsigned long mips_io_port_base;
->  
->  /*
->   * Gcc will generate code to load the value of mips_io_port_base after each
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 2c96c0c68116..153460c531a9 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -75,7 +75,7 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
->   * mips_io_port_base is the begin of the address space to which x86 style
->   * I/O ports are mapped.
->   */
-> -const unsigned long mips_io_port_base = -1;
-> +unsigned long mips_io_port_base = -1;
->  EXPORT_SYMBOL(mips_io_port_base);
->  
->  static struct resource code_resource = { .name = "Kernel code", };
-> -- 
-> 2.11.0
+> To simplify, lets forget about uprobe->inode (which acts as a key too). So uprobes_tree
+> is a binary tree sorted by uprobe->offset key and that is why the binary search works.
 > 
+> But it is not sorted by uprobe->ref_ctr_offset. So for example n->rb_left can have the
+> n->ref_ctr_offset key that is greater than the n's ref_ctr_offset. So how we can use the
+> binary search if REF_CTR_OFFSET?
+> 
+> I must have missed something, I assume you tested this patch and it works somehow...
+> 
+
+Right, I've misinterpreted that code. Will check it.
+
+Thanks for explaining,
+Ravi

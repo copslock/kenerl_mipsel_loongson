@@ -1,74 +1,56 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 22 Jun 2018 16:33:57 +0200
-Subject: time: Make sure jiffies_to_msecs() preserves non-zero time periods
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 13:39:06 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38142 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992066AbeGALiz4zNi1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 13:38:55 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 51E46720;
+        Sun,  1 Jul 2018 11:38:47 +0000 (UTC)
+Subject: Patch "MIPS: io: Add barrier after register read in inX()" has been added to the 4.14-stable tree
+To:     chenhc@lemote.com, chenhuacai@gmail.com,
+        gregkh@linuxfoundation.org, james.hogan@mips.com,
+        linux-mips@linux-mips.org, paul.burton@mips.com,
+        wuzhangjin@gmail.com, zhangfx@lemote.com
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 01 Jul 2018 13:38:26 +0200
+Message-ID: <15304451064739@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Message-ID: <20180622143357.aYlg6q2jaWNxA1k-cUVY5ObiUnDViK55Hw46lsvWvIA@z>
-
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-
-commit abcbcb80cd09cd40f2089d912764e315459b71f7 upstream.
-
-For the common cases where 1000 is a multiple of HZ, or HZ is a multiple of
-1000, jiffies_to_msecs() never returns zero when passed a non-zero time
-period.
-
-However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
-1200, as used on alpha and DECstation), jiffies_to_msecs() may return zero
-for small non-zero time periods.  This may break code that relies on
-receiving back a non-zero value.
-
-jiffies_to_usecs() does not need such a fix: one jiffy can only be less
-than one µs if HZ > 1000000, and such large values of HZ are already
-rejected at build time, twice:
-
-  - include/linux/jiffies.h does #error if HZ >= 12288,
-  - kernel/time/time.c has BUILD_BUG_ON(HZ > USEC_PER_SEC).
-
-Broken since forever.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20180622143357.7495-1-geert@linux-m68k.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- kernel/time/time.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -28,6 +28,7 @@
-  */
- 
- #include <linux/export.h>
-+#include <linux/kernel.h>
- #include <linux/timex.h>
- #include <linux/capability.h>
- #include <linux/timekeeper_internal.h>
-@@ -254,9 +255,10 @@ unsigned int jiffies_to_msecs(const unsi
- 	return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
- #else
- # if BITS_PER_LONG == 32
--	return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
-+	return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
-+	       HZ_TO_MSEC_SHR32;
- # else
--	return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
-+	return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
- # endif
- #endif
- }
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64510
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from geert@linux-m68k.org are
+This is a note to let you know that I've just added the patch titled
 
-queue-3.18/time-make-sure-jiffies_to_msecs-preserves-non-zero-time-periods.patch
-queue-3.18/m68k-mm-adjust-vm-area-to-be-unmapped-by-gap-size-for-__iounmap.patch
+    MIPS: io: Add barrier after register read in inX()
+
+to the 4.14-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-io-add-barrier-after-register-read-in-inx.patch
+and it can be found in the queue-4.14 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

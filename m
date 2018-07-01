@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:42:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56260 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:42:26 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56312 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993874AbeGAQmCSRixh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:42:02 +0200
+        by eddie.linux-mips.org with ESMTP id S23994642AbeGAQmNN2j2h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:42:13 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 60A06ACC;
-        Sun,  1 Jul 2018 16:41:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A554BAA6;
+        Sun,  1 Jul 2018 16:42:06 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
+        stable@vger.kernel.org, Simon Guinot <simon.guinot@sequanux.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Paul Burton <paul.burton@mips.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.17 110/220] MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum
-Date:   Sun,  1 Jul 2018 18:22:14 +0200
-Message-Id: <20180701160912.967593659@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Wolfram Sang <wsa@the-dreams.de>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.17 122/220] MIPS: pb44: Fix i2c-gpio GPIO descriptor table
+Date:   Sun,  1 Jul 2018 18:22:26 +0200
+Message-Id: <20180701160913.445786757@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180701160908.272447118@linuxfoundation.org>
 References: <20180701160908.272447118@linuxfoundation.org>
@@ -30,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64532
+X-archive-position: 64533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,79 +50,45 @@ X-list: linux-mips
 
 ------------------
 
-From: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 2a027b47dba6b77ab8c8e47b589ae9bbc5ac6175 upstream.
+commit 326345f995a83e326fa2e01d54bfa9a6a307bd4d upstream.
 
-The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as
-below.
+I used bad names in my clumsiness when rewriting many board
+files to use GPIO descriptors instead of platform data. A few
+had the platform_device ID set to -1 which would indeed give
+the device name "i2c-gpio".
 
-  R10: PCIe Transactions Periodically Fail
+But several had it set to >=0 which gives the names
+"i2c-gpio.0", "i2c-gpio.1" ...
 
-    Description: The BCM5300X PCIe does not maintain transaction ordering.
-                 This may cause PCIe transaction failure.
-    Fix Comment: Add a dummy PCIe configuration read after a PCIe
-                 configuration write to ensure PCIe configuration access
-                 ordering. Set ES bit of CP0 configu7 register to enable
-                 sync function so that the sync instruction is functional.
-    Resolution:  hndpci.c: extpci_write_config()
-                 hndmips.c: si_mips_init()
-                 mipsinc.h CONF7_ES
+Fix the one affected board in the MIPS tree. Sorry.
 
-This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
-Also the dummy PCIe configuration read is already implemented in the
-Linux BCMA driver.
-
-Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=y
-too so that the sync instruction is externalised.
-
-Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Reported-by: Simon Guinot <simon.guinot@sequanux.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Paul Burton <paul.burton@mips.com>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: Rafał Miłecki <zajec5@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: Simon Guinot <simon.guinot@sequanux.org>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/19461/
+Cc: <stable@vger.kernel.org> # 4.15+
+Patchwork: https://patchwork.linux-mips.org/patch/19387/
 Signed-off-by: James Hogan <jhogan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/bcm47xx/setup.c        |    6 ++++++
- arch/mips/include/asm/mipsregs.h |    3 +++
- 2 files changed, 9 insertions(+)
+ arch/mips/ath79/mach-pb44.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -212,6 +212,12 @@ static int __init bcm47xx_cpu_fixes(void
- 		 */
- 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
- 			cpu_wait = NULL;
-+
-+		/*
-+		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
-+		 * Enable ExternalSync for sync instruction to take effect
-+		 */
-+		set_c0_config7(MIPS_CONF7_ES);
- 		break;
- #endif
- 	}
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -681,6 +681,8 @@
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
+--- a/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/mach-pb44.c
+@@ -34,7 +34,7 @@
+ #define PB44_KEYS_DEBOUNCE_INTERVAL	(3 * PB44_KEYS_POLL_INTERVAL)
  
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
-+/* ExternalSync */
-+#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
- 
- #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
- #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -2760,6 +2762,7 @@ __BUILD_SET_C0(status)
- __BUILD_SET_C0(cause)
- __BUILD_SET_C0(config)
- __BUILD_SET_C0(config5)
-+__BUILD_SET_C0(config7)
- __BUILD_SET_C0(intcontrol)
- __BUILD_SET_C0(intctl)
- __BUILD_SET_C0(srsmap)
+ static struct gpiod_lookup_table pb44_i2c_gpiod_table = {
+-	.dev_id = "i2c-gpio",
++	.dev_id = "i2c-gpio.0",
+ 	.table = {
+ 		GPIO_LOOKUP_IDX("ath79-gpio", PB44_GPIO_I2C_SDA,
+ 				NULL, 0, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:14:20 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50800 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:14:42 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50820 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992886AbeGAQODmaGi1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:14:03 +0200
+        by eddie.linux-mips.org with ESMTP id S23993849AbeGAQOGaXqD1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:14:06 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3766F86A;
-        Sun,  1 Jul 2018 16:13:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F33114A3;
+        Sun,  1 Jul 2018 16:13:59 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>
-Subject: [PATCH 3.18 70/85] MIPS: io: Add barrier after register read in inX()
-Date:   Sun,  1 Jul 2018 18:02:28 +0200
-Message-Id: <20180701153125.162697389@linuxfoundation.org>
+        stable@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-alpha@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH 3.18 71/85] time: Make sure jiffies_to_msecs() preserves non-zero time periods
+Date:   Sun,  1 Jul 2018 18:02:29 +0200
+Message-Id: <20180701153125.199432514@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180701153122.365061142@linuxfoundation.org>
 References: <20180701153122.365061142@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64521
+X-archive-position: 64522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,43 +50,63 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 18f3e95b90b28318ef35910d21c39908de672331 upstream.
+commit abcbcb80cd09cd40f2089d912764e315459b71f7 upstream.
 
-While a barrier is present in the outX() functions before the register
-write, a similar barrier is missing in the inX() functions after the
-register read. This could allow memory accesses following inX() to
-observe stale data.
+For the common cases where 1000 is a multiple of HZ, or HZ is a multiple of
+1000, jiffies_to_msecs() never returns zero when passed a non-zero time
+period.
 
-This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: Add
-barrier after register read in readX()"). Because war_io_reorder_wmb()
-is both used by writeX() and outX(), if readX() need a barrier then so
-does inX().
+However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
+1200, as used on alpha and DECstation), jiffies_to_msecs() may return zero
+for small non-zero time periods.  This may break code that relies on
+receiving back a non-zero value.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19516/
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <james.hogan@mips.com>
+jiffies_to_usecs() does not need such a fix: one jiffy can only be less
+than one µs if HZ > 1000000, and such large values of HZ are already
+rejected at build time, twice:
+
+  - include/linux/jiffies.h does #error if HZ >= 12288,
+  - kernel/time/time.c has BUILD_BUG_ON(HZ > USEC_PER_SEC).
+
+Broken since forever.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-alpha@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: Huacai Chen <chenhuacai@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20180622143357.7495-1-geert@linux-m68k.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/io.h |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/time.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -412,6 +412,8 @@ static inline type pfx##in##bwlq##p(unsi
- 	__val = *__addr;						\
- 	slow;								\
- 									\
-+	/* prevent prefetching of coherent DMA data prematurely */	\
-+	rmb();								\
- 	return pfx##ioswab##bwlq(__addr, __val);			\
- }
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -28,6 +28,7 @@
+  */
  
+ #include <linux/export.h>
++#include <linux/kernel.h>
+ #include <linux/timex.h>
+ #include <linux/capability.h>
+ #include <linux/timekeeper_internal.h>
+@@ -254,9 +255,10 @@ unsigned int jiffies_to_msecs(const unsi
+ 	return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
+ #else
+ # if BITS_PER_LONG == 32
+-	return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
++	return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
++	       HZ_TO_MSEC_SHR32;
+ # else
+-	return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
++	return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
+ # endif
+ #endif
+ }

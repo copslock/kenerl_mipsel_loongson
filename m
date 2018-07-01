@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:34:39 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54342 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:42:10 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56260 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993890AbeGAQeZ1GLlh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:34:25 +0200
+        by eddie.linux-mips.org with ESMTP id S23993874AbeGAQmCSRixh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:42:02 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D864592B;
-        Sun,  1 Jul 2018 16:34:18 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 60A06ACC;
+        Sun,  1 Jul 2018 16:41:55 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -16,12 +16,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Chris Packham <chris.packham@alliedtelesis.co.nz>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
         linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 077/157] MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum
-Date:   Sun,  1 Jul 2018 18:22:29 +0200
-Message-Id: <20180701160856.452978800@linuxfoundation.org>
+Subject: [PATCH 4.17 110/220] MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum
+Date:   Sun,  1 Jul 2018 18:22:14 +0200
+Message-Id: <20180701160912.967593659@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180701160852.287307684@linuxfoundation.org>
-References: <20180701160852.287307684@linuxfoundation.org>
+In-Reply-To: <20180701160908.272447118@linuxfoundation.org>
+References: <20180701160908.272447118@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -30,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64531
+X-archive-position: 64532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,7 +47,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,7 +110,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -680,6 +680,8 @@
+@@ -681,6 +681,8 @@
  #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
  
  #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
  #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -2745,6 +2747,7 @@ __BUILD_SET_C0(status)
+@@ -2760,6 +2762,7 @@ __BUILD_SET_C0(status)
  __BUILD_SET_C0(cause)
  __BUILD_SET_C0(config)
  __BUILD_SET_C0(config5)

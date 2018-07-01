@@ -1,54 +1,56 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 26 May 2018 19:12:51 +0200
-Subject: MIPS: pb44: Fix i2c-gpio GPIO descriptor table
-Message-ID: <20180526171251.nH7_j7ICLHQKSGPFdM2gz0r1GXzMVNnjP8XHYKpBUAU@z>
-
-From: Linus Walleij <linus.walleij@linaro.org>
-
-commit 326345f995a83e326fa2e01d54bfa9a6a307bd4d upstream.
-
-I used bad names in my clumsiness when rewriting many board
-files to use GPIO descriptors instead of platform data. A few
-had the platform_device ID set to -1 which would indeed give
-the device name "i2c-gpio".
-
-But several had it set to >=0 which gives the names
-"i2c-gpio.0", "i2c-gpio.1" ...
-
-Fix the one affected board in the MIPS tree. Sorry.
-
-Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-Reported-by: Simon Guinot <simon.guinot@sequanux.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Wolfram Sang <wsa@the-dreams.de>
-Cc: Simon Guinot <simon.guinot@sequanux.org>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.15+
-Patchwork: https://patchwork.linux-mips.org/patch/19387/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/ath79/mach-pb44.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/ath79/mach-pb44.c
-+++ b/arch/mips/ath79/mach-pb44.c
-@@ -34,7 +34,7 @@
- #define PB44_KEYS_DEBOUNCE_INTERVAL	(3 * PB44_KEYS_POLL_INTERVAL)
- 
- static struct gpiod_lookup_table pb44_i2c_gpiod_table = {
--	.dev_id = "i2c-gpio",
-+	.dev_id = "i2c-gpio.0",
- 	.table = {
- 		GPIO_LOOKUP_IDX("ath79-gpio", PB44_GPIO_I2C_SDA,
- 				NULL, 0, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 13:40:21 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38348 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993104AbeGALjmgahc1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 13:39:42 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EBDFA720;
+        Sun,  1 Jul 2018 11:39:35 +0000 (UTC)
+Subject: Patch "time: Make sure jiffies_to_msecs() preserves non-zero time periods" has been added to the 4.17-stable tree
+To:     20180622143357.7495-1-geert@linux-m68k.org, arnd@arndb.de,
+        geert@linux-m68k.org, gregkh@linuxfoundation.org,
+        john.stultz@linaro.org, linux-mips@linux-mips.org,
+        sboyd@kernel.org, tglx@linutronix.de
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 01 Jul 2018 13:38:45 +0200
+Message-ID: <15304451257035@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 64514
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from linus.walleij@linaro.org are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.17/mips-pb44-fix-i2c-gpio-gpio-descriptor-table.patch
-queue-4.17/pinctrl-devicetree-fix-pctldev-pointer-overwrite.patch
-queue-4.17/pinctrl-armada-37xx-fix-spurious-irq-management.patch
+    time: Make sure jiffies_to_msecs() preserves non-zero time periods
+
+to the 4.17-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     time-make-sure-jiffies_to_msecs-preserves-non-zero-time-periods.patch
+and it can be found in the queue-4.17 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:18:18 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51624 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:26:38 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52654 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993890AbeGAQRm4pwN1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:17:42 +0200
+        by eddie.linux-mips.org with ESMTP id S23990474AbeGAQ0aSgneh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:26:30 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3376DACC;
-        Sun,  1 Jul 2018 16:17:36 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 66CC0AEF;
+        Sun,  1 Jul 2018 16:26:23 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.4 060/105] time: Make sure jiffies_to_msecs() preserves non-zero time periods
-Date:   Sun,  1 Jul 2018 18:02:10 +0200
-Message-Id: <20180701153153.832745776@linuxfoundation.org>
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+Subject: [PATCH 4.9 050/101] MIPS: io: Add barrier after register read in inX()
+Date:   Sun,  1 Jul 2018 18:21:36 +0200
+Message-Id: <20180701160759.153292731@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180701153149.382300170@linuxfoundation.org>
-References: <20180701153149.382300170@linuxfoundation.org>
+In-Reply-To: <20180701160757.138608453@linuxfoundation.org>
+References: <20180701160757.138608453@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64525
+X-archive-position: 64526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,67 +46,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit abcbcb80cd09cd40f2089d912764e315459b71f7 upstream.
+commit 18f3e95b90b28318ef35910d21c39908de672331 upstream.
 
-For the common cases where 1000 is a multiple of HZ, or HZ is a multiple of
-1000, jiffies_to_msecs() never returns zero when passed a non-zero time
-period.
+While a barrier is present in the outX() functions before the register
+write, a similar barrier is missing in the inX() functions after the
+register read. This could allow memory accesses following inX() to
+observe stale data.
 
-However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
-1200, as used on alpha and DECstation), jiffies_to_msecs() may return zero
-for small non-zero time periods.  This may break code that relies on
-receiving back a non-zero value.
+This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: Add
+barrier after register read in readX()"). Because war_io_reorder_wmb()
+is both used by writeX() and outX(), if readX() need a barrier then so
+does inX().
 
-jiffies_to_usecs() does not need such a fix: one jiffy can only be less
-than one µs if HZ > 1000000, and such large values of HZ are already
-rejected at build time, twice:
-
-  - include/linux/jiffies.h does #error if HZ >= 12288,
-  - kernel/time/time.c has BUILD_BUG_ON(HZ > USEC_PER_SEC).
-
-Broken since forever.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20180622143357.7495-1-geert@linux-m68k.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19516/
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <james.hogan@mips.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- kernel/time/time.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/io.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -28,6 +28,7 @@
-  */
- 
- #include <linux/export.h>
-+#include <linux/kernel.h>
- #include <linux/timex.h>
- #include <linux/capability.h>
- #include <linux/timekeeper_internal.h>
-@@ -258,9 +259,10 @@ unsigned int jiffies_to_msecs(const unsi
- 	return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
- #else
- # if BITS_PER_LONG == 32
--	return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
-+	return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
-+	       HZ_TO_MSEC_SHR32;
- # else
--	return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
-+	return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
- # endif
- #endif
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -412,6 +412,8 @@ static inline type pfx##in##bwlq##p(unsi
+ 	__val = *__addr;						\
+ 	slow;								\
+ 									\
++	/* prevent prefetching of coherent DMA data prematurely */	\
++	rmb();								\
+ 	return pfx##ioswab##bwlq(__addr, __val);			\
  }
+ 

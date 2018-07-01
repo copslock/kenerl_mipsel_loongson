@@ -1,27 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:28:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53002 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:33:16 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54070 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993514AbeGAQ2CSzsPh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:28:02 +0200
+        by eddie.linux-mips.org with ESMTP id S23994077AbeGAQdIMqxsh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:33:08 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AEA2492B;
-        Sun,  1 Jul 2018 16:27:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CDF3A49B;
+        Sun,  1 Jul 2018 16:33:00 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.9 045/101] MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum
-Date:   Sun,  1 Jul 2018 18:21:31 +0200
-Message-Id: <20180701160758.956396634@linuxfoundation.org>
+        James Hogan <james.hogan@mips.com>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+Subject: [PATCH 4.14 086/157] MIPS: io: Add barrier after register read in inX()
+Date:   Sun,  1 Jul 2018 18:22:38 +0200
+Message-Id: <20180701160856.876093337@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180701160757.138608453@linuxfoundation.org>
-References: <20180701160757.138608453@linuxfoundation.org>
+In-Reply-To: <20180701160852.287307684@linuxfoundation.org>
+References: <20180701160852.287307684@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -30,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64528
+X-archive-position: 64529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,83 +46,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 2a027b47dba6b77ab8c8e47b589ae9bbc5ac6175 upstream.
+commit 18f3e95b90b28318ef35910d21c39908de672331 upstream.
 
-The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as
-below.
+While a barrier is present in the outX() functions before the register
+write, a similar barrier is missing in the inX() functions after the
+register read. This could allow memory accesses following inX() to
+observe stale data.
 
-  R10: PCIe Transactions Periodically Fail
+This patch is very similar to commit a1cc7034e33d12dc1 ("MIPS: io: Add
+barrier after register read in readX()"). Because war_io_reorder_wmb()
+is both used by writeX() and outX(), if readX() need a barrier then so
+does inX().
 
-    Description: The BCM5300X PCIe does not maintain transaction ordering.
-                 This may cause PCIe transaction failure.
-    Fix Comment: Add a dummy PCIe configuration read after a PCIe
-                 configuration write to ensure PCIe configuration access
-                 ordering. Set ES bit of CP0 configu7 register to enable
-                 sync function so that the sync instruction is functional.
-    Resolution:  hndpci.c: extpci_write_config()
-                 hndmips.c: si_mips_init()
-                 mipsinc.h CONF7_ES
-
-This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
-Also the dummy PCIe configuration read is already implemented in the
-Linux BCMA driver.
-
-Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=y
-too so that the sync instruction is externalised.
-
-Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: Rafał Miłecki <zajec5@gmail.com>
-Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/19461/
-Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19516/
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <james.hogan@mips.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/bcm47xx/setup.c        |    6 ++++++
- arch/mips/include/asm/mipsregs.h |    3 +++
- 2 files changed, 9 insertions(+)
+ arch/mips/include/asm/io.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -212,6 +212,12 @@ static int __init bcm47xx_cpu_fixes(void
- 		 */
- 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
- 			cpu_wait = NULL;
-+
-+		/*
-+		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
-+		 * Enable ExternalSync for sync instruction to take effect
-+		 */
-+		set_c0_config7(MIPS_CONF7_ES);
- 		break;
- #endif
- 	}
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -663,6 +663,8 @@
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -414,6 +414,8 @@ static inline type pfx##in##bwlq##p(unsi
+ 	__val = *__addr;						\
+ 	slow;								\
+ 									\
++	/* prevent prefetching of coherent DMA data prematurely */	\
++	rmb();								\
+ 	return pfx##ioswab##bwlq(__addr, __val);			\
+ }
  
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
-+/* ExternalSync */
-+#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
- 
- #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
- #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -2641,6 +2643,7 @@ __BUILD_SET_C0(status)
- __BUILD_SET_C0(cause)
- __BUILD_SET_C0(config)
- __BUILD_SET_C0(config5)
-+__BUILD_SET_C0(config7)
- __BUILD_SET_C0(intcontrol)
- __BUILD_SET_C0(intctl)
- __BUILD_SET_C0(srsmap)

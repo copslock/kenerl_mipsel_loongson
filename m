@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:11:43 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:50262 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jul 2018 18:14:06 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:50776 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992678AbeGAQLeJz3n1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:11:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23993514AbeGAQN6TlEr1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Jul 2018 18:13:58 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 18A09AEF;
-        Sun,  1 Jul 2018 16:11:25 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AF8334A3;
+        Sun,  1 Jul 2018 16:13:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Sinan Kaya <okaya@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 05/85] MIPS: io: Add barrier after register read in readX()
-Date:   Sun,  1 Jul 2018 18:01:23 +0200
-Message-Id: <20180701153122.580288823@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
+        Paul Burton <paul.burton@mips.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>
+Subject: [PATCH 3.18 68/85] MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum
+Date:   Sun,  1 Jul 2018 18:02:26 +0200
+Message-Id: <20180701153125.086418084@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180701153122.365061142@linuxfoundation.org>
 References: <20180701153122.365061142@linuxfoundation.org>
@@ -29,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64519
+X-archive-position: 64520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,37 +51,79 @@ X-list: linux-mips
 
 ------------------
 
-From: Sinan Kaya <okaya@codeaurora.org>
+From: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
 
-[ Upstream commit a1cc7034e33d12dc17d13fbcd7d597d552889097 ]
+commit 2a027b47dba6b77ab8c8e47b589ae9bbc5ac6175 upstream.
 
-While a barrier is present in the writeX() functions before the register
-write, a similar barrier is missing in the readX() functions after the
-register read. This could allow memory accesses following readX() to
-observe stale data.
+The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as
+below.
 
-Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
+  R10: PCIe Transactions Periodically Fail
+
+    Description: The BCM5300X PCIe does not maintain transaction ordering.
+                 This may cause PCIe transaction failure.
+    Fix Comment: Add a dummy PCIe configuration read after a PCIe
+                 configuration write to ensure PCIe configuration access
+                 ordering. Set ES bit of CP0 configu7 register to enable
+                 sync function so that the sync instruction is functional.
+    Resolution:  hndpci.c: extpci_write_config()
+                 hndmips.c: si_mips_init()
+                 mipsinc.h CONF7_ES
+
+This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
+Also the dummy PCIe configuration read is already implemented in the
+Linux BCMA driver.
+
+Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=y
+too so that the sync instruction is externalised.
+
+Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+Reviewed-by: Paul Burton <paul.burton@mips.com>
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: Rafał Miłecki <zajec5@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/19069/
-[jhogan@kernel.org: Tidy commit message]
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/19461/
 Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/include/asm/io.h |    2 ++
- 1 file changed, 2 insertions(+)
 
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -375,6 +375,8 @@ static inline type pfx##read##bwlq(const
- 		BUG();							\
- 	}								\
- 									\
-+	/* prevent prefetching of coherent DMA data prematurely */	\
-+	rmb();								\
- 	return pfx##ioswab##bwlq(__mem, __val);				\
- }
+---
+ arch/mips/bcm47xx/setup.c        |    6 ++++++
+ arch/mips/include/asm/mipsregs.h |    3 +++
+ 2 files changed, 9 insertions(+)
+
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -269,6 +269,12 @@ static int __init bcm47xx_cpu_fixes(void
+ 		 */
+ 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
+ 			cpu_wait = NULL;
++
++		/*
++		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
++		 * Enable ExternalSync for sync instruction to take effect
++		 */
++		set_c0_config7(MIPS_CONF7_ES);
+ 		break;
+ #endif
+ 	}
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -667,6 +667,8 @@
+ #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
  
+ #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
++/* ExternalSync */
++#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
+ 
+ #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
+ #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
+@@ -1863,6 +1865,7 @@ __BUILD_SET_C0(status)
+ __BUILD_SET_C0(cause)
+ __BUILD_SET_C0(config)
+ __BUILD_SET_C0(config5)
++__BUILD_SET_C0(config7)
+ __BUILD_SET_C0(intcontrol)
+ __BUILD_SET_C0(intctl)
+ __BUILD_SET_C0(srsmap)

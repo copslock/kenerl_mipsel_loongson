@@ -1,53 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 20:05:46 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:58520 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993880AbeGBSFjRtORN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Jul 2018 20:05:39 +0200
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 544DF401EF0D;
-        Mon,  2 Jul 2018 18:05:33 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 5AC762166B5D;
-        Mon,  2 Jul 2018 18:05:30 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Mon,  2 Jul 2018 20:05:33 +0200 (CEST)
-Date:   Mon, 2 Jul 2018 20:05:29 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>, rostedt@goodmis.org,
-        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180702180529.GB31400@redhat.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180702160158.GD65296@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 20:25:04 +0200 (CEST)
+Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:31707 "EHLO
+        ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993880AbeGBSY5VFd0U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Jul 2018 20:24:57 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 6EF893FAD8;
+        Mon,  2 Jul 2018 20:24:56 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 2a0XjVLzBnaz; Mon,  2 Jul 2018 20:24:56 +0200 (CEST)
+Received: from localhost.localdomain (h-155-4-135-114.NA.cust.bahnhof.se [155.4.135.114])
+        (Authenticated sender: mb547485)
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 0AEFA3F827;
+        Mon,  2 Jul 2018 20:24:55 +0200 (CEST)
+Date:   Mon, 2 Jul 2018 20:24:54 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [RFC] MIPS: Align vmlinuz load address to a page boundary
+Message-ID: <20180702182453.GA2537@localhost.localdomain>
+References: <20180610182056.GA15738@localhost.localdomain>
+ <20180702131158.GA431230@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20180702160158.GD65296@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Mon, 02 Jul 2018 18:05:33 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Mon, 02 Jul 2018 18:05:33 +0000 (UTC) for IP:'10.11.54.6' DOMAIN:'int-mx06.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
-Return-Path: <oleg@redhat.com>
+In-Reply-To: <20180702131158.GA431230@linux-mips.org>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64550
+X-archive-position: 64551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,27 +49,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/02, Srikar Dronamraju wrote:
->
-> > Implement the reference counter logic in core uprobe. User will be
-> > able to use it from trace_uprobe as well as from kernel module. New
-> > trace_uprobe definition with reference counter will now be:
-> >
-> >     <path>:<offset>[(ref_ctr_offset)]
-> >
-> > where ref_ctr_offset is an optional field. For kernel module, new
-> > variant of uprobe_register() has been introduced:
-> >
-> >     uprobe_register_refctr(inode, offset, ref_ctr_offset, consumer)
-> >
->
-> Sorry for bringing this again, but I would actually think the ref_ctr is
-> a consumer property. i.e the ref_ctr_offset should be part of
-> uprobe_consumer.
+Hi Ralf,
 
-Damn yes ;) I was thinking about this too but decided to discuss this later.
+On Mon, Jul 02, 2018 at 03:11:58PM +0200, Ralf Baechle wrote:
+> Basically MIPS supports page sizes 4k, 8k, 16k, 32k, 64k.  Not every system
+> supports all page sizes.  4k is the safe bet while larger systems prefer 16k
+> or 64k.  Details are complicated.
+> 
+> And of course with kexec the kexecing and the kexecuted kernels do not even
+> have to have the same page size.  It would appear that the userland code you
+> were refering to in your 2nd email in
+> 
+>   https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git/tree/kexec/kexec.c?id=HEAD#n343
+> 
+> might erroneously fail if pagesize on the kexecing kernel is larger than of
+> the kernel being kexed.
 
-But this probably means more complications, I am not sure about the actual
-implementation.
+The comment in kexec.c suggests that it might be possible to find a way to
+"cope with this problem". What could that mean? It came with the initial
+commit, so the log is unfortunately not informative.
 
-Oleg.
+If we align vmlinuz to 64 KiB then it will work on all systems, I suppose.
+Would there be drawbacks? Can the kernel make use of all memory regardless
+of its base address, for example?
+
+Fredrik

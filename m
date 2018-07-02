@@ -1,88 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 16:02:06 +0200 (CEST)
-Received: from mail-dm3nam03on0064.outbound.protection.outlook.com ([104.47.41.64]:63200
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 16:26:48 +0200 (CEST)
+Received: from mail-eopbgr700088.outbound.protection.outlook.com ([40.107.70.88]:56128
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993666AbeGBOBvb2PAr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Jul 2018 16:01:51 +0200
+        id S23993634AbeGBO0ePSAIN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Jul 2018 16:26:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6+Wr7x1izPiyFQjbqaIStt4LKe3elK7S4df13QFu9wA=;
- b=cu70hEKQLlRSZrO8Cmi8SvHpGiIPsHLYhhVXhk/XbDVMnFFW9uYBLRYgQ+K0wPZ7nNqGqqt9E0WAYXGsSpSj+F7IzNGY1LhWUi5UOCZMEK+aHOzJBDtZ+hkDcmFpsrRXdMMyjdjYKUDXzBPuwcRusO+NgsQdwgB+oJiEM7stYGI=
+ bh=qbG+bDFf/IxUNHEnp/ngJyK0hdkmWa5EffO7MFOnPos=;
+ b=fOV3WQmB0oHjMi7SQOwZ3fB6eYatrwRC1ROGPZEZnRRgWu5uAVNIRcGovlQaVDbxq54dFz8VFiPTc3sXFQh9i21cC3QAwvZ5UarxcHESD13S7YlKLaAm9fUN9Q11VdssZeACFHWlE0JMnzvWFsRTQzjk/FAics5CkORQJNlIvuU=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Steven.Hill@cavium.com; 
 Received: from black.inter.net (50.82.185.132) by
- MW2PR07MB3962.namprd07.prod.outlook.com (2603:10b6:907:5::27) with Microsoft
+ BL0PR07MB3954.namprd07.prod.outlook.com (2603:10b6:207:4a::28) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.906.20; Mon, 2 Jul 2018 14:01:37 +0000
+ 15.20.906.24; Mon, 2 Jul 2018 14:26:19 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
 Cc:     Chandrakala Chavva <cchavva@caviumnetworks.com>
-Subject: [PATCH] MIPS: Octeon: Remove unused CIU types and macros.
-Date:   Mon,  2 Jul 2018 09:01:29 -0500
-Message-Id: <1530540089-1726-1-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH v3] MIPS: Octeon: Remove unused CIU types and macros.
+Date:   Mon,  2 Jul 2018 09:26:12 -0500
+Message-Id: <1530541572-17223-1-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [50.82.185.132]
-X-ClientProxiedBy: SN4PR0701CA0022.namprd07.prod.outlook.com
- (2603:10b6:803:28::32) To MW2PR07MB3962.namprd07.prod.outlook.com
- (2603:10b6:907:5::27)
+X-ClientProxiedBy: CO2PR07CA0082.namprd07.prod.outlook.com (2603:10b6:100::50)
+ To BL0PR07MB3954.namprd07.prod.outlook.com (2603:10b6:207:4a::28)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 47599623-94ea-4a60-3d64-08d5e0245432
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:MW2PR07MB3962;
-X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;3:tkWDDS9XkFq6Zb9DIdPeficTQRd8uINx8fzcbqJk5VJpmZ35jZywV5y3zlUidfYRIlRQNScsBgkcB8XC6trkhuESw2uVbisY02MrjcIWlhQRPnxFfToSsq5hY/D1HKzAD57B26V/Srl2Fj9PUfwevVuP2aufU4RVc3uMFqrUBY9BzywnjUFP3BnBqDbacg5fZ5WU4sVBXsqDWGvfIMLsYuJXM7OGKyfbuWprBMyqa/fhl+QIbxsYDGNKGmhKkGJZ;25:uJb0xKxRRGHMF2T735g+Ui0CP/4lSOiLN41Cg6uzgbQfd9ZQZq8zNfJdcvwznLY1dS6eeR7z8Q7NVp0ua44dt2Vw2/nY8EdM3nKXIDwUre48jjVLd2DAvWy1e6t3uylxRNcnLbaCF5cu2VR1M/i9rS/vxfQHoVw1QUMbesMF2PHVW2kDeaz9AulWZKrpFAwKpo+XpOpDgWUeWFZza5u11+EldnFgaD2tZHIX/+WyYaVC3B/AGZctY472te9JQCjSTmLAzQlu/2p5HZ3FumE7yhYK2RiwvzxF4ofK9CmHRhCcizh7ulrEkARG9es27ctcx48BbrPCFv3hUWXGL26x3g==;31:Y2f7lUdJueGDTBXzraxkGECu9kXOZeiMldEtZTlT+pY+i8TJ0S9hjS/D3u3pvXDOGNdN03/RuoZ/+EO59/uTwp87T3qeu3zbWM7sKn8UdhbGXE4s6czPSh8ZCbzK3Ar25lp3ElwZ4Gzedz3rT+8oj4zB9+BnW5WK92hq7TT7TVuCdQxTOMEBqcTTjUNBxmZ5pDo8pWQRv4fNRSqj8nawenAEi5ZwQ5SkXyIp8LxBsT8=
-X-MS-TrafficTypeDiagnostic: MW2PR07MB3962:
-X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;20:hUtD2UzDTpqShpMp58Bj1QXvKNAkNLUV1E4wXCpEH46dU+0wlTyI0YtxET4x7Y5o3wDewotzIPr5Vl8gHMoTLAlN4RmPhJYodCpzGFRM+c0fghSRXQeDCLXjiX6ROgC/LyxMv4L6vAtpeJSh7GeXU5sHLcCHnuHFlATybCDCjnoFW/FXiiZgvG8vUPcSFOdbq7Wm++7KIti75rp2+yio/BjUczEo29kPk/vmiDnt3ALIefqh9BqovJJ30+l9xXH3nzKJVlY9Xd25iquoLl5bDoqHMtlhEovR1yIvCQaO+7fi4E3jaSqnknXdXDKuYXvgK0up2nYi4fqzezT4adN45EvVPzAFDhfRdWBtJ5NqE8tRaU4EFiYEsrK4cgJRsBbjESOTH6cc6K86cLwZ+2sug63JQEZ2z2XlxHgM+OEdXX0QbMdbHNYpruNyeiCAPLmiC4pLR6pl7JJT07Jzgn5gef5+4iKLbd2Y9j5GCvQmF35/u230ud6z7YAGgKrQ4Y1m;4:IcY5qxJttQmkawMMgDZwsReV1dX6UqRw1dPfcAuKkwmScPsm7gEAcL8B5xIl+tlE0EN4TewjDxCmm70UpIVIeB7Rbp1lMG032YFk6INFhsmRZ/ehAkvhrAoy/+ylgmceQrxm4DsLw5ZNeLPezgWWyGL2frHpZ7w4kSdxsNBaTXxbbdmSdrJG21lvltyRavawQ8akOAaArmiGwEUMyP+nOzffi33VKeqGYzRoI6aUxkbH7c3pB2Aj24Ev23Fy4IzVis2Eo9029eBF5U9cDukBYSJ/M2Rn6c8wCnj8yNs47t5fLHa0d+F3LBffSUuit8rI5qeu6qA/zAOs1NvKROlyN4kXsjjkxoPx/rBPYNIqSgs=
-X-Microsoft-Antispam-PRVS: <MW2PR07MB3962E67BF82CD91F0679D2EB80430@MW2PR07MB3962.namprd07.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: ac353aa5-8594-46b1-7c70-08d5e027c7cf
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:BL0PR07MB3954;
+X-Microsoft-Exchange-Diagnostics: 1;BL0PR07MB3954;3:oJliPaXSuHc0UIgpNPraNbO6R4HKHwDt/rghR2ru3YySobWjlC3Otg5myMdAvNQt9witxBgU/ra/z0SKxs1enRj1rBqinDjXZUP3wC8KeHnIHGIXK5k1WQs+uvMwr/UuxM/iBeaeonoMhL4xOknUUZcmK+OYT2RAxUXN8QbiE3wxWGB1JgcuPTnUhH6WuPryB0vlTZzdIk/a6uZbaQRqIEm2hjTaiD8/jALtZOVWOKai69E8M8xeqAsdjYrE5Is/;25:LJIUmHXzZbNfCFSyZTyJzcgacAFcZzs8V7xCd7rnDZlUNEmATGNXtSawBjpSo+46G1WWJVle5b/XNu3EarLEzW7HMHF4CyNw1VEHvo7rVe0jkLHF24+tYfqZIZUnZPj8DwjH7TJqfP/BY2smzKH0H+97fa+fBkKJD1MyvDadznijl5YUr8OnIGipbqlZHTAEXLtqvzo19qAtw1SbwEKmTXtWwYeIpi8sxElMeUR1xaqQAGKv+0FB1eSggukObIi2r0+GhL3K08UKwKIFKNnj6A5oonBVnhT+SIXT2Qj6BF40E6LPoYq125G25dTPWddCqbC71/bGVdVSQPGqGynsLw==;31:RXFI6rpev0EpludRQoIXO1vdVJAq7CJrzP2x9wn0kbanMOFxl8F80LpUtvTdg/uMlbEE5Bvzu9SdTmGTLG6FQW0rRN6mmJADNSvxeFjR4RcxN2cAF7oydXaiBnYmgqh/34s9PzvRoeDDHiK6kFaYGHcdlhJu7+zF4X75wPLrq6p3Nv5hGTZ27OniJWJIOjPR1eMqsmhf5fDULz+RCrghmo+jp1Xxugqna+8lf6PNWlY=
+X-MS-TrafficTypeDiagnostic: BL0PR07MB3954:
+X-Microsoft-Exchange-Diagnostics: 1;BL0PR07MB3954;20:EL1Y3AWUtAofiqD4pvLsP4mrrVzZv92lmMhvJiFqom3iMV/KAtvn0alvSpD5ptREnJ4ET5jjAV+GW7Nj0FaDHyVyikgh+YGctLg1xRnWFS16jwqBb5iCuAxowxNaiPCvp4bvQZmRfE1tKGpUgQr2wWJCSA0qgrfH7mJem2k9xqFSTOM1rNmvW6DV6FV1dru0jkIs6zrluH0qlvEIYSAwpm+x3thfsDdnNdG29q0TGdX4qRv1M719+OsV9w+CKBx/YIwSGwOzrdvrGowqNOBC6MaiV7x4yP5aw+I4zj/RR3vixwDHQiOQkw+gio/kNlnY/7GazMqP9L3XhIvsrj86rCoGzXNOtBq2u5UhWQDqNmtrX5AbBosl662K4jBWu9pjAj3siCw6OJxAszRdt0bkYk7uRSTIH8SdL9WOjihquh04/RMaLENsECSKmEbZZXnklv3TASHtIx+W6Kvbae5Y6QkF8Hoow7z2nTsUrDVxOkJJ4iyNutwhBQ+AK2hoc8K5;4:0nejapEGFh9aNm98b5l6PPsVq6KWPujgIzBguVxUoXpUBGI7+ogyqUnZtN5uLl04m+qpcRDrwUiZ6NUrNrcHyUGOlPYTn7TGDYUPK+jhdVKc6YwiYnwfiOqXxxcxwWzEDAMJvQVRRl4/KE1YNY/T5b5lF1zTyuOeAu5sUzaMDpd8Yy7Gxuk+5XqbI97STOnJO+VNp2s1yVgWUq/RhYmgFo5PoedUthD3S75JlU8YOTb0736zBifbiVmws4rwQuSlC2+lRe9EPlkao+JJ5CGwkgU3KbeZ43Q5EKlfQuOFmEhNYst09DCelVwaRcR+bci72znUhKPhCsL21gpeUUW+Iopv8eaWwuz0+7mECdcZiA0=
+X-Microsoft-Antispam-PRVS: <BL0PR07MB39544030150FE596917DC54F80430@BL0PR07MB3954.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:(250305191791016)(22074186197030);
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(93006095)(93001095)(3231254)(944501410)(52105095)(149027)(150027)(6041310)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123558120)(20161123562045)(6072148)(201708071742011)(7699016);SRVR:MW2PR07MB3962;BCL:0;PCL:0;RULEID:;SRVR:MW2PR07MB3962;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(10201501046)(3231254)(944501410)(52105095)(3002001)(93006095)(93001095)(149027)(150027)(6041310)(20161123564045)(20161123562045)(20161123560045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:BL0PR07MB3954;BCL:0;PCL:0;RULEID:;SRVR:BL0PR07MB3954;
 X-Forefront-PRVS: 07215D0470
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(136003)(366004)(396003)(376002)(346002)(39860400002)(199004)(189003)(8676002)(97736004)(14444005)(86362001)(575784001)(2906002)(16586007)(66066001)(81156014)(316002)(81166006)(305945005)(7736002)(47776003)(6666003)(6916009)(6116002)(3846002)(69596002)(36756003)(5660300001)(4326008)(26005)(186003)(50226002)(16526019)(1857600001)(106356001)(6512007)(956004)(2616005)(6306002)(107886003)(8936002)(53416004)(52116002)(476003)(486006)(51416003)(2351001)(2361001)(105586002)(386003)(6506007)(25786009)(966005)(50466002)(48376002)(6486002)(72206003)(68736007)(478600001)(16200700003)(53946003)(53936002)(2004002)(559001)(569006);DIR:OUT;SFP:1101;SCL:1;SRVR:MW2PR07MB3962;H:black.inter.net;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(396003)(39850400004)(376002)(136003)(346002)(366004)(189003)(199004)(3846002)(186003)(72206003)(48376002)(6116002)(5660300001)(966005)(26005)(6666003)(6486002)(25786009)(6916009)(36756003)(86362001)(16586007)(4326008)(69596002)(50466002)(16526019)(478600001)(47776003)(66066001)(316002)(575784001)(8676002)(476003)(53946003)(50226002)(97736004)(2906002)(53416004)(386003)(2616005)(53936002)(956004)(14444005)(6306002)(16200700003)(107886003)(106356001)(8936002)(52116002)(51416003)(2361001)(105586002)(68736007)(81166006)(6506007)(486006)(305945005)(7736002)(2351001)(81156014)(6512007)(2004002)(559001)(579004)(569006);DIR:OUT;SFP:1101;SCL:1;SRVR:BL0PR07MB3954;H:black.inter.net;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MW2PR07MB3962;23:G2x5svsVIUYlaX5Ch/R9IkJYjkGyVElpzQU+5+U0W?=
- =?us-ascii?Q?odU5ZEpJG51RGzVaei2WYePTEKLU8ZTBReXajWV0Pz1MdMEEvwtKJeIkXivC?=
- =?us-ascii?Q?JUxSPNf3d5vl2gTbFwsMR4QVKb33xxHYY7M7QbJ0kA8sajwWH06q/ckIDNNl?=
- =?us-ascii?Q?qKyrcPp8b7vXmVskldN+vzOpksck47Kh+N6FvoGbvXhfffTNpp6FXqrpnSd5?=
- =?us-ascii?Q?TTOSspa3aYvP9WbpNJYKDe7LOf6IWwhF3NnyX866p2cijBExcEblZrWQZHVs?=
- =?us-ascii?Q?cgJNeBjl8l4T/1KW6ro5iz8FJTkrsqRQHyKPRZgW5/nIUaWUWjis4LgxvPTz?=
- =?us-ascii?Q?j/3lUp8eisYPkJgl1j2SRefdA1NOiyCvq49QmmSEp9m2pYehwuP5OgumjtKF?=
- =?us-ascii?Q?lKYowHctAEo4nHILa+5WRQAsJKtTj91kwmi4GDnJX/XvgbHFwlCLdTF8LL5S?=
- =?us-ascii?Q?2hAwvbQ8oLGWVjiJa7taK6ZAPLaPJN7l4fIjaUsm7tk8LKda8wTOCB1EkQ5f?=
- =?us-ascii?Q?Bc/GaiBHMTbjDBvXWaIOq8vhkqDkQbELx1m+k7UzVKHIOuuUy0rwoVRXl+lm?=
- =?us-ascii?Q?ZdFN2BJ2CJiP/6SSLLywxxTqwvIWw1MKZLF/3NZr3x10ntOmFGX/URvZ41b1?=
- =?us-ascii?Q?Q4lH0MPcrN3ayaGIcGGwpd/whraLLUxXC9Z5OnSAEa/vpOuZTfuozmzZjSnA?=
- =?us-ascii?Q?A9J+cswxCBhdZfpI7wABudPXb4vAH2TZVA+AfSthNyCI9E4VXJ/kcHM4KIdh?=
- =?us-ascii?Q?uhKfPUyB4QAuOk78Vx82x9uMs3j578A4yvm8XMa2N1bRgI1UduKxkicVEMC+?=
- =?us-ascii?Q?emqtlhSKm7gTAcWgePinWrTcw2vIgxrDQvbE8tDliXmTyxAWDbMXfif+bLdO?=
- =?us-ascii?Q?wLXLUb4SWwizX716hlXjrUgXETPyS26HgD2mrlHR23pcA0nomj+mT6z4OhnY?=
- =?us-ascii?Q?VcttIL57ryJr+jX2/UfDzBTNwPpS4VBTlFw03KWCCawY4+A3K1ELrpt/qwFP?=
- =?us-ascii?Q?D57E+GMRCzqQaDbAJKU19Aai236lWDkz7Ct8ZDEwazY+/fKKwW6XWjI3ZrhG?=
- =?us-ascii?Q?Oja9f/RNTPw3TEx9OL8rNtdp/2aqVXxwfkYA6VElPPdIbdG2HxiOH2B6kNyF?=
- =?us-ascii?Q?+oITFkV5iWDFJ1cpZvJ40hDcfUQls7M4zZqLYp3CzODiwHeQ3+hV6rffNM5T?=
- =?us-ascii?Q?GICo+SRNtJFKMJ5oNgyl3MBHoyzg0Ck7+TQKofVcG1H1r+zrOzQ4WzTapoBA?=
- =?us-ascii?Q?GS+EEekFBcmBg913oDUvcKxSe+rDZsiGnLblQZRgx7KaT0m8QT2bq4H2x/Qb?=
- =?us-ascii?Q?7MvSI3ED/FtO5ciUmxyQ2v6n7lwVJayjPSuXu7CUnA0ILp7hMi7+aotXW3NG?=
- =?us-ascii?Q?P0RML1i8oIMrzbjzjtihBxtGfJsJZSszzZ7OCSMEmKtGpDPACmY+07C6Y+PJ?=
- =?us-ascii?Q?TPlZfI47TAWkE+Vr6sh8oRGllLDX9Q=3D?=
-X-Microsoft-Antispam-Message-Info: 4z+Y9YhwjcHxRODR9eTscHsv9VaTQEiukVXBL/DDVb1mX0LEU6C3drwd6CZl03/HB8O+Mwm3MTtZDnPPl8/2XtqoXbvtOQp+y8XB70n94w6n0v9LZgyff9oPo97q1zYw4E+BUU3amZLzkiQPTtW8bTNOu2D42c6IW326+yLfrf5VzO0d8jGtAhnvGSgIdLOKI3SSY7i/fF+e8VymrZF6ZMy73absozATSNKgw5tgIDVAKl/lGnt3E1eR5KO2a+QRa8emCtQzofYKAGg14ksBgb3vp5b2YdMsy6Leq4q6s/G2YjDfTYJOBOGcqH3yV1qt+E9pP05AmGUFXj8yn9XLjBQZS5l1ehcvIDGJnxV5EBA=
-X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;6:UdfPA+6B14McCNs+ysrL6Q0vszqw9OMOnBm/HeS1OoxpIaamWvhETPel6L6lKF5HYTiNDgrIRGBpfa+/YX3SmZ97mDE/Va396eRJDQIVb747B0OyJJEzU3czxJhBuqytJs41HW7I+YvIlygeZYg6HbQmC5D1RUynk0jTSoqOBDgsO1aQEQsjPunzhJG4IQ7Oy69qsyPD6zloP46P/oN4ARgXMV1G/8GwzoibH526vlULC+dgzZ6A3U5iR0LJYruk8BahFnJOO2+vGXebBMCTkA5V21lWWVtz6w0Gk0j8DvHrvSTLQAwiDVDIz7P9tI7f9thjQkndZMFuMd0rtnLPaKizqctO6V/k+7XGA4Wdo6z2+53W5hMeaWnLRsXrpWTnysK8zrzpSsXHayx/BMeA8s8C/T6l/c96MlmqXJvckOAuZbrFvE4EA8HPTfatz2byYLgzKcMmsD8SXVWl3X5OLA==;5:EwTWm+6rbw/PYg3JOJKTEKfbKbNY6wHuSMMWpNCkFIZU7u7qzSEaq7m3PquDmHrIU1f3oAbLTDV6axd/PCEuJJGqdUwUgOxCKDa6ObWxP5emeA/ObR0QAB5S2tsrS9ykGY7jvAxWBdnOZWMH6DixUtqZwP6DeWOJr/H9r2/7JHk=;24:DDtsRyozKVfw5JJbTUYdZShYWBKSaWb3g6wjiDv3ISZHGD+SuGFgYbLPm8D8m30H4ehK+PlPFPu3gAz6oXrCDXi9pi5M+p/EmECsgwwEuCc=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BL0PR07MB3954;23:TUoV11UHFjFuPKGuyYh4fistU7Q1Zy9NkRynsfIXM?=
+ =?us-ascii?Q?zNaixv5jkUBzjf10WbxZxnE82GImpVyFgyGi8GNs3PxgtB4ibO6/k5S/WV3O?=
+ =?us-ascii?Q?fhr/aLrdoVMWMiyZHIBJHNFEgAUuilPfpqmTVxNAPFph+XwyEuxM8cy8STxk?=
+ =?us-ascii?Q?iBqrRMPgx0oin6SFPJNrgwPVSrZD52wGk/gpYHLU1vPVGo7KsrSgR3APhXYM?=
+ =?us-ascii?Q?0sbEus2qk2S7GOQ9UXzH00Lcf78n5UwC2tz8v7qJECKFnryaBIFbYOZUnljZ?=
+ =?us-ascii?Q?sbYUETr7T31hjSfnWARwfhTOiVAY+EzLErBijQYFI+2rW4Mm6qoMsp61XJ+z?=
+ =?us-ascii?Q?gb/E/AeCfXC8O+hW9R9FVLLukDH5F0y2w1hUA246goY3J0xdHaGZgTl7n92Z?=
+ =?us-ascii?Q?FOB3dAxgpfLD8tq/4Of/BKdUH0i0FaaWQjQuDwUouTk6JzC2j3jm8ucTPukp?=
+ =?us-ascii?Q?arOLtrvdnC0oQ6tHmfgADyGjX3Phf59w2zsie/I6hfSP1hXcnBjcPl44yT7i?=
+ =?us-ascii?Q?qnaVLAMK/rkRnZdZcemiflaMUO+Z8tI8SC6hn/C2JAftrOPoAUPl30oisbNo?=
+ =?us-ascii?Q?r0MsBZLksD3Oxg/7mY5sqjeegOyUTixhwmJVYqtofmmvlC0pD42dvWpc3UWz?=
+ =?us-ascii?Q?AW2BW4wGU9v8LDy7vExpBOIZ711XLOVh4V2bwejThF1/6kvQ9PPWCZmlaDBp?=
+ =?us-ascii?Q?Ax30/UbQf5bYSrZ2+Jm2OFsyNdndm+TBHIS4nF8+ylTdunoVl3bCDdcTvt8g?=
+ =?us-ascii?Q?jVyGeMBShFTauKfcW4pkYtaDQkG0pJ3WvQJpwPPPaBCaKmYlZV3Z2Qg6Fv6Q?=
+ =?us-ascii?Q?O3r74FnhEgtWGd24LpWq76rstxgwqxZ9VJ26yZ5zAumk4DRSfg0xaCkggqTf?=
+ =?us-ascii?Q?zuKdCLzMvgbouCHLQ3p1cAqLRl8OgA0EaZ09BhPdU/lV9oftQd4MFid0SiHF?=
+ =?us-ascii?Q?O23q6jkKBL52I8wkbpSntL80jiWFfyHjcbCubbm8xidYfeKFpr67fJJSSQj2?=
+ =?us-ascii?Q?qJxvV2dwBv085C9qkGv9X34GbJ2v1gxkW7p4U6yJZwR9RoVmVDjJ63kPWGCx?=
+ =?us-ascii?Q?gm/kEILI2UkXW2eeaxmS60IYjvjBfiUQmdcxED46Qr0TNZ/Ou0Aydc8zWyVj?=
+ =?us-ascii?Q?kvhcDihbiv+KKQsdYPIpQ7mOdFENrfQrgNzwsASNbPbSnecSKoPBBYLOr9pC?=
+ =?us-ascii?Q?Ykn+yxLi6W7Z67lpRZYRDsEtFIiUUfMcuC6vNkl3RXWSvQplU3IDyBmv1oX4?=
+ =?us-ascii?Q?6PKVNxZbSfhyTzEXu4XY1vO2eCNC/usc7P1LFEux8j1y+YBPlEC0TfJCzdd9?=
+ =?us-ascii?Q?KQ48/s4X57n2+Cccbn803QSfI7+RfwMf1SajY1y9pogn9/BqFXagYXRiV7Pn?=
+ =?us-ascii?Q?cGhblJHPmjT3DYXKj3+OEsDR9onDkW1HqzvhuzN0+gp3DnY702HZN2ivs/V6?=
+ =?us-ascii?Q?HyjYly+Dg=3D=3D?=
+X-Microsoft-Antispam-Message-Info: NXt1lsAA7lScHfZ4BR0/MkooWxTsO7giYO6vwJK5zsqoLLMPX4DCRnggHYJaaHtajJ7WTvfj83bUuw1jwAH1CKJG/LO1ol1lz/5uZ/RpupQ87z1FUi9L/GlW1LUfUvVLhEQGVjVUFDHUaqogJSlKFSdi2vjGLWVWhgQuuF/9l6W4aqkVKBfVIa7dO03SLQUwtTWKCHVz2skbhZO0bShwENuRkB82ML/mVHvbqR4TQk5BFE9uB7KTYb7n3n8d0MX4NfDDtDdE2JklMy5bDK+LVD3yoQa5FEISI/OP3KZssifbIuwK/a30UmBhUrY7Gp50dksGwGNd5PEi1z3qX7reyxGzNgUobaSeb4DIOCxbYIw=
+X-Microsoft-Exchange-Diagnostics: 1;BL0PR07MB3954;6:T/WQkuu5QDDJfj8JHgf6WfGHUOs4BIYR7KOpR2E4FXVkFjscFairEJtRIGf1S1dwOR68gqWp+aGME2JN5phkpggrD8hQTndNkRFCmov5IKB9VA7HEEwuRydQjxFHfTVbpJIAPVacSR5Uo+ks5CpLrT9rttKz5pKVUa+MS38km/hi6N4J++01NIwbioWN552aWmtWYZFV8McocIzlaCvVBCAfCMDszsLUYomFz2vum4lgoPxzU6udgBQcTHbJ3fJXD4jH9w+Igp5exmAF/+IjdrAp/9ELgfTJjgkmrzTGDbdeLAD3YvS1Vi79jfB4irTLJ2ZsOd27XsvVZTIn7SvaPbJEnp1i8uSb93Ii0lhXd9cWeOdXlVGp46Sn0lOV0Nvg1yoBojP1Gc49cZJaC0zUpB7d+TgTkGmZc9o2AIGKNZfYgF9sTvFwEZk55AUnvaKYBh6JmGdJ9AzUzp+j298URg==;5:78D/QkTR3gsKDvWhBXnwG/hmiMvnygwzHhZqd0U5aoZ4DTJc3owWIwULsxnd8CMk8qSHZMv5JHbp82QeXdD+tzWCl4RVYicT5wExhrG1nzgGujDjdApnqFDVmSxxN4vbUw9UHcNChZCB7rMd6MNEXtYPQVldXGlpfLXWeLUEykw=;24:thJBxW4G6kcHKyuX3dObNaiU12xkDw4YtntlEKPo+aEW72zeQKumSkry1/Rh0J8YC7o9eHn6/WiO2DIe/4VsnKvOyFxWPCSplvq59X9a3gc=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;7:rcMJPpSrTl/wx+tnxF60IYmLY5sPn0sAt7sK6freaIwZ/gggEMuhw0Alfw56D/yY/hkpjQpk+jwVmziy3ZM87uSXQYU/XrCEtXEiAdEWrxhnL5ZaIhC1rUh4+g56peK5hCx4rsbqIrILa7GiK9ypF4hbmxbun8nwkgSrbFyXr5AAQPtoY178Ifck6SIX8EFqoPlkEa0/sdPkGnbYfhvWqqahzXJalmsnPmkd2peJs6QZ3YkxJytkwKO8LlOolEKf
+X-Microsoft-Exchange-Diagnostics: 1;BL0PR07MB3954;7:LlrRMGi5u6UgipZ9sHFnvqtkCuhjsE48SGor/2FpA8s+f9ee3UOASLzDO9U219xVr650VFe1sS0PGa9R5uQVUQWqela9V0cBk1zmRPJ8yQ8xpgMyqH3piN473gmLiqJbEAmNbRYtmj2YbbgM3zMFLnguiVs0Lqo/vd3sixrKqZMa4q5Riuo1SnGuIgvRdt0NS43xPDlRU21Fs9xz8EjRRT9Mijx6E6FiivGurY+Rj13vtOlCFxt6POVCEFABMsvj
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2018 14:01:37.3412 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47599623-94ea-4a60-3d64-08d5e0245432
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2018 14:26:19.5903 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac353aa5-8594-46b1-7c70-08d5e027c7cf
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR07MB3962
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR07MB3954
 Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64540
+X-archive-position: 64541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -106,12 +105,12 @@ to this clean-up.
 
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
 ---
- arch/mips/include/asm/octeon/cvmx-ciu-defs.h | 10102 +------------------------
+ arch/mips/include/asm/octeon/cvmx-ciu-defs.h | 10106 +------------------------
  arch/mips/pci/pcie-octeon.c                  |     4 +-
- 2 files changed, 146 insertions(+), 9960 deletions(-)
+ 2 files changed, 148 insertions(+), 9962 deletions(-)
 
 diff --git a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
-index 6e61792..de00e35 100644
+index 6e61792..364ca97 100644
 --- a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
 +++ b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
 @@ -1,10014 +1,200 @@
@@ -244,7 +243,7 @@ index 6e61792..de00e35 100644
 -		return CVMX_ADD_IO_SEG(0x0001070100100600ull) + (offset) * 8;
 -	}
 -	return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
-+	if (cvmx_get_octeon_family() == OCTEON_CN68XX)
++	if ((cvmx_get_proc_id() & OCTEON_PRID_MASK) == OCTEON_CN68XX)
 +		return CVMX_CIU_ADDR(0x100100600, coreid, 0xffff, 8);
 +	else
 +		return CVMX_CIU_ADDR(0x0680, coreid, 0xffff, 8);
@@ -276,7 +275,7 @@ index 6e61792..de00e35 100644
 -		return CVMX_ADD_IO_SEG(0x0001070100100400ull) + (offset) * 8;
 -	}
 -	return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
-+	if (cvmx_get_octeon_family() == OCTEON_CN68XX)
++	if ((cvmx_get_proc_id() & OCTEON_PRID_MASK) == OCTEON_CN68XX)
 +		return CVMX_CIU_ADDR(0x100100400, coreid, 0xffff, 8);
 +	else
 +		return CVMX_CIU_ADDR(0x0600, coreid, 0xffff, 8);
@@ -289,7 +288,7 @@ index 6e61792..de00e35 100644
 -static inline uint64_t CVMX_CIU_PP_POKEX(unsigned long offset)
 +static inline uint64_t CVMX_CIU_PP_POKEX(unsigned int coreid)
  {
- 	switch (cvmx_get_octeon_family()) {
+-	switch (cvmx_get_octeon_family()) {
 -	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
 -		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
 -	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
@@ -315,6 +314,7 @@ index 6e61792..de00e35 100644
 -	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
 -	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
 -		return CVMX_ADD_IO_SEG(0x0001010000030000ull) + (offset) * 8;
++	switch ((cvmx_get_proc_id() & OCTEON_PRID_MASK) {
 +	case OCTEON_CN30XX:
 +	case OCTEON_CN31XX:
 +	case OCTEON_CN38XX:
@@ -368,7 +368,7 @@ index 6e61792..de00e35 100644
 -static inline uint64_t CVMX_CIU_WDOGX(unsigned long offset)
 +static inline uint64_t CVMX_CIU_WDOGX(unsigned int coreid)
  {
- 	switch (cvmx_get_octeon_family()) {
+-	switch (cvmx_get_octeon_family()) {
 -	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
 -		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
 -	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
@@ -394,6 +394,7 @@ index 6e61792..de00e35 100644
 -	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
 -	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
 -		return CVMX_ADD_IO_SEG(0x0001010000020000ull) + (offset) * 8;
++	switch ((cvmx_get_proc_id() & OCTEON_PRID_MASK) {
 +	case OCTEON_CN30XX:
 +	case OCTEON_CN31XX:
 +	case OCTEON_CN38XX:
@@ -7849,9 +7850,10 @@ index 6e61792..de00e35 100644
 -	struct cvmx_ciu_nmi_s cn68xxp1;
 -	struct cvmx_ciu_nmi_cn52xx cnf71xx;
 -};
--
+ 
 -union cvmx_ciu_pci_inta {
--	uint64_t u64;
++union cvmx_ciu_qlm {
+ 	uint64_t u64;
 -	struct cvmx_ciu_pci_inta_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_2_63:62;
@@ -7860,7 +7862,22 @@ index 6e61792..de00e35 100644
 -		uint64_t intr:2;
 -		uint64_t reserved_2_63:62;
 -#endif
--	} s;
++	struct cvmx_ciu_qlm_s {
++		__BITFIELD_FIELD(uint64_t g2bypass:1,
++		__BITFIELD_FIELD(uint64_t reserved_53_62:10,
++		__BITFIELD_FIELD(uint64_t g2deemph:5,
++		__BITFIELD_FIELD(uint64_t reserved_45_47:3,
++		__BITFIELD_FIELD(uint64_t g2margin:5,
++		__BITFIELD_FIELD(uint64_t reserved_32_39:8,
++		__BITFIELD_FIELD(uint64_t txbypass:1,
++		__BITFIELD_FIELD(uint64_t reserved_21_30:10,
++		__BITFIELD_FIELD(uint64_t txdeemph:5,
++		__BITFIELD_FIELD(uint64_t reserved_13_15:3,
++		__BITFIELD_FIELD(uint64_t txmargin:5,
++		__BITFIELD_FIELD(uint64_t reserved_4_7:4,
++		__BITFIELD_FIELD(uint64_t lane_en:4,
++		;)))))))))))))
+ 	} s;
 -	struct cvmx_ciu_pci_inta_s cn30xx;
 -	struct cvmx_ciu_pci_inta_s cn31xx;
 -	struct cvmx_ciu_pci_inta_s cn38xx;
@@ -8412,10 +8429,9 @@ index 6e61792..de00e35 100644
 -	struct cvmx_ciu_qlm4_s cn68xx;
 -	struct cvmx_ciu_qlm4_s cn68xxp1;
 -};
- 
+-
 -union cvmx_ciu_qlm_dcok {
-+union cvmx_ciu_qlm {
- 	uint64_t u64;
+-	uint64_t u64;
 -	struct cvmx_ciu_qlm_dcok_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_4_63:60;
@@ -8424,22 +8440,7 @@ index 6e61792..de00e35 100644
 -		uint64_t qlm_dcok:4;
 -		uint64_t reserved_4_63:60;
 -#endif
-+	struct cvmx_ciu_qlm_s {
-+		__BITFIELD_FIELD(uint64_t g2bypass:1,
-+		__BITFIELD_FIELD(uint64_t reserved_53_62:10,
-+		__BITFIELD_FIELD(uint64_t g2deemph:5,
-+		__BITFIELD_FIELD(uint64_t reserved_45_47:3,
-+		__BITFIELD_FIELD(uint64_t g2margin:5,
-+		__BITFIELD_FIELD(uint64_t reserved_32_39:8,
-+		__BITFIELD_FIELD(uint64_t txbypass:1,
-+		__BITFIELD_FIELD(uint64_t reserved_21_30:10,
-+		__BITFIELD_FIELD(uint64_t txdeemph:5,
-+		__BITFIELD_FIELD(uint64_t reserved_13_15:3,
-+		__BITFIELD_FIELD(uint64_t txmargin:5,
-+		__BITFIELD_FIELD(uint64_t reserved_4_7:4,
-+		__BITFIELD_FIELD(uint64_t lane_en:4,
-+		;)))))))))))))
- 	} s;
+-	} s;
 -	struct cvmx_ciu_qlm_dcok_cn52xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_2_63:62;
@@ -8904,12 +8905,7 @@ index 6e61792..de00e35 100644
 -		uint64_t reserved_62_62:1;
 -		uint64_t rst:1;
 -#endif
-+		__BITFIELD_FIELD(uint64_t reserved_3_63:61,
-+		__BITFIELD_FIELD(uint64_t host64:1,
-+		__BITFIELD_FIELD(uint64_t npi:1,
-+		__BITFIELD_FIELD(uint64_t soft_prst:1,
-+		;))))
- 	} s;
+-	} s;
 -	struct cvmx_ciu_sum1_iox_int_cn61xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t rst:1;
@@ -10051,7 +10047,12 @@ index 6e61792..de00e35 100644
 -		uint64_t endor:2;
 -		uint64_t reserved_15_63:49;
 -#endif
--	} s;
++		__BITFIELD_FIELD(uint64_t reserved_3_63:61,
++		__BITFIELD_FIELD(uint64_t host64:1,
++		__BITFIELD_FIELD(uint64_t npi:1,
++		__BITFIELD_FIELD(uint64_t soft_prst:1,
++		;))))
+ 	} s;
 -	struct cvmx_ciu_sum2_iox_int_cn61xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_10_63:54;

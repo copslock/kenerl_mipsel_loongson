@@ -1,75 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 16:57:47 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:52110 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993552AbeGBO5lPk40N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Jul 2018 16:57:41 +0200
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w62Esxj1031005
-        for <linux-mips@linux-mips.org>; Mon, 2 Jul 2018 10:57:40 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2jyk6erbm6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Mon, 02 Jul 2018 10:57:39 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <srikar@linux.vnet.ibm.com>;
-        Mon, 2 Jul 2018 15:57:38 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 2 Jul 2018 15:57:31 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w62EvU0138666382
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 2 Jul 2018 14:57:30 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BD28F52050;
-        Mon,  2 Jul 2018 15:57:14 +0100 (BST)
-Received: from linux.vnet.ibm.com (unknown [9.40.192.68])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id BF2E95204E;
-        Mon,  2 Jul 2018 15:57:11 +0100 (BST)
-Date:   Mon, 2 Jul 2018 07:57:27 -0700
-From:   Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     oleg@redhat.com, rostedt@goodmis.org, mhiramat@kernel.org,
-        peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v5 10/10] perf probe: Support SDT markers having
- reference counter (semaphore)
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-11-ravi.bangoria@linux.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 17:21:31 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33924 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993860AbeGBPVXOU94N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Jul 2018 17:21:23 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id w62FKUpZ439160;
+        Mon, 2 Jul 2018 17:20:30 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id w62FKTBa439158;
+        Mon, 2 Jul 2018 17:20:29 +0200
+Date:   Mon, 2 Jul 2018 17:20:29 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Remove no-op cast in show_regs()
+Message-ID: <20180702152029.GA437552@linux-mips.org>
+References: <20180622180703.18324-1-paul.burton@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180628052209.13056-11-ravi.bangoria@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18070214-0016-0000-0000-000001E2826C
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18070214-0017-0000-0000-00003236DB0D
-Message-Id: <20180702145727.GC65296@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-02_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807020171
-Return-Path: <srikar@linux.vnet.ibm.com>
+In-Reply-To: <20180622180703.18324-1-paul.burton@mips.com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64545
+X-archive-position: 64546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: srikar@linux.vnet.ibm.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,30 +44,127 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-* Ravi Bangoria <ravi.bangoria@linux.ibm.com> [2018-06-28 10:52:09]:
+On Fri, Jun 22, 2018 at 11:07:03AM -0700, Paul Burton wrote:
 
-> With this, perf buildid-cache will save SDT markers with reference
-> counter in probe cache. Perf probe will be able to probe markers
-> having reference counter. Ex,
+> In show_regs() we have a regs argument of type struct pt_regs *, and we
+> explicitly cast it to that same type as part of calling __show_regs().
 > 
->   # readelf -n /tmp/tick | grep -A1 loop2
->     Name: loop2
->     ... Semaphore: 0x0000000010020036
-> 
->   # ./perf buildid-cache --add /tmp/tick
+> Casting regs to the same type that it is declared as does nothing at
+> all, so remove the useless cast.
 
-Would this perf buildid-cache work if the executable is stripped of
-symbols?
+Good catch but there's no dump_stack() in v4.18-rc3 so this doesn't apply.
+That's trivial to patch up but since pointless casts are one of my pet
+peeve I used a semantic patch from a dark local repository to hunt down a
+few more.
 
->   # ./perf probe sdt_tick:loop2
->   # ./perf stat -e sdt_tick:loop2 /tmp/tick
->     hi: 0
->     hi: 1
->     hi: 2
->     ^C
->      Performance counter stats for '/tmp/tick':
->                  3      sdt_tick:loop2
->        2.561851452 seconds time elapsed
+@identitycast@
+type T;
+T *A;
+@@
+-	(T *) A
++	A
 
-Also can we document how to use SDT markers with perf under perf-probe
-or perf-build-cache?
+Julia, I guess this isn't bulletproof but maybe something similar should
+be considered for scripts/coccinelle?
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/kernel/relocate.c           |  2 +-
+ arch/mips/kernel/traps.c              |  2 +-
+ arch/mips/loongson64/loongson-3/smp.c | 10 +++++-----
+ arch/mips/pmcs-msp71xx/msp_usb.c      |  4 ++--
+ arch/mips/sgi-ip22/ip28-berr.c        |  2 +-
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
+index cbf4cc0b0b6c..ae7d9cf2c849 100644
+--- a/arch/mips/kernel/relocate.c
++++ b/arch/mips/kernel/relocate.c
+@@ -146,7 +146,7 @@ int __init do_relocations(void *kbase_old, void *kbase_new, long offset)
+ 			break;
+ 
+ 		type = (*r >> 24) & 0xff;
+-		loc_orig = (void *)(kbase_old + ((*r & 0x00ffffff) << 2));
++		loc_orig = (kbase_old + ((*r & 0x00ffffff) << 2));
+ 		loc_new = RELOCATED(loc_orig);
+ 
+ 		if (reloc_handlers_rel[type] == NULL) {
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index d67fa74622ee..2935aa608d2f 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -350,7 +350,7 @@ static void __show_regs(const struct pt_regs *regs)
+  */
+ void show_regs(struct pt_regs *regs)
+ {
+-	__show_regs((struct pt_regs *)regs);
++	__show_regs(regs);
+ }
+ 
+ void show_registers(struct pt_regs *regs)
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 8501109bb0f0..e231c2cb4a64 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -349,7 +349,7 @@ static void loongson3_smp_finish(void)
+ 	write_c0_compare(read_c0_count() + mips_hpt_frequency/HZ);
+ 	local_irq_enable();
+ 	loongson3_ipi_write64(0,
+-			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x0));
++			(ipi_mailbox_buf[cpu_logical_map(cpu)] + 0x0));
+ 	pr_info("CPU#%d finished, CP0_ST=%x\n",
+ 			smp_processor_id(), read_c0_status());
+ }
+@@ -416,13 +416,13 @@ static int loongson3_boot_secondary(int cpu, struct task_struct *idle)
+ 			cpu, startargs[0], startargs[1], startargs[2]);
+ 
+ 	loongson3_ipi_write64(startargs[3],
+-			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x18));
++			(ipi_mailbox_buf[cpu_logical_map(cpu)] + 0x18));
+ 	loongson3_ipi_write64(startargs[2],
+-			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x10));
++			(ipi_mailbox_buf[cpu_logical_map(cpu)] + 0x10));
+ 	loongson3_ipi_write64(startargs[1],
+-			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x8));
++			(ipi_mailbox_buf[cpu_logical_map(cpu)] + 0x8));
+ 	loongson3_ipi_write64(startargs[0],
+-			(void *)(ipi_mailbox_buf[cpu_logical_map(cpu)]+0x0));
++			(ipi_mailbox_buf[cpu_logical_map(cpu)] + 0x0));
+ 	return 0;
+ }
+ 
+diff --git a/arch/mips/pmcs-msp71xx/msp_usb.c b/arch/mips/pmcs-msp71xx/msp_usb.c
+index c87c5f810cd1..d38ac70b5a2e 100644
+--- a/arch/mips/pmcs-msp71xx/msp_usb.c
++++ b/arch/mips/pmcs-msp71xx/msp_usb.c
+@@ -133,13 +133,13 @@ static int __init msp_usb_setup(void)
+ 	 * "D" for device-mode.	 If it works for Ethernet, why not USB...
+ 	 *  -- hammtrev, 2007/03/22
+ 	 */
+-	snprintf((char *)&envstr[0], sizeof(envstr), "usbmode");
++	snprintf(&envstr[0], sizeof(envstr), "usbmode");
+ 
+ 	/* set default host mode */
+ 	val = 1;
+ 
+ 	/* get environment string */
+-	strp = prom_getenv((char *)&envstr[0]);
++	strp = prom_getenv(&envstr[0]);
+ 	if (strp) {
+ 		/* compare string */
+ 		if (!strcmp(strp, "device"))
+diff --git a/arch/mips/sgi-ip22/ip28-berr.c b/arch/mips/sgi-ip22/ip28-berr.c
+index 2ed8e4990b7a..082541d33161 100644
+--- a/arch/mips/sgi-ip22/ip28-berr.c
++++ b/arch/mips/sgi-ip22/ip28-berr.c
+@@ -464,7 +464,7 @@ void ip22_be_interrupt(int irq)
+ 		die_if_kernel("Oops", regs);
+ 		force_sig(SIGBUS, current);
+ 	} else if (debug_be_interrupt)
+-		show_regs((struct pt_regs *)regs);
++		show_regs(regs);
+ }
+ 
+ static int ip28_be_handler(struct pt_regs *regs, int is_fixup)

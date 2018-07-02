@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 15:12:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46752 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 15:55:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51476 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993515AbeGBNMvQPAdk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Jul 2018 15:12:51 +0200
+        id S23993849AbeGBNzjXJ-3r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Jul 2018 15:55:39 +0200
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id w62DBxR3431706;
-        Mon, 2 Jul 2018 15:11:59 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id w62DskWt433159;
+        Mon, 2 Jul 2018 15:54:46 +0200
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id w62DBw0f431705;
-        Mon, 2 Jul 2018 15:11:58 +0200
-Date:   Mon, 2 Jul 2018 15:11:58 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id w62Dsgf1433158;
+        Mon, 2 Jul 2018 15:54:42 +0200
+Date:   Mon, 2 Jul 2018 15:54:42 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Fredrik Noring <noring@nocrew.org>
-Cc:     linux-mips@linux-mips.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [RFC] MIPS: Align vmlinuz load address to a page boundary
-Message-ID: <20180702131158.GA431230@linux-mips.org>
-References: <20180610182056.GA15738@localhost.localdomain>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     paul.burton@mips.com, jhogan@kernel.org, linux-mips@linux-mips.org,
+        ak@linux.intel.com, Matthew Fortune <mfortune@gmail.com>
+Subject: Re: [PATCH] MIPS: define __current_thread_info inside of function
+Message-ID: <20180702135442.GB431230@linux-mips.org>
+References: <20180616155815.31230-1-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180610182056.GA15738@localhost.localdomain>
+In-Reply-To: <20180616155815.31230-1-hauke@hauke-m.de>
 User-Agent: Mutt/1.10.0 (2018-05-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64538
+X-archive-position: 64539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,23 +43,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jun 10, 2018 at 08:20:58PM +0200, Fredrik Noring wrote:
+On Sat, Jun 16, 2018 at 05:58:15PM +0200, Hauke Mehrtens wrote:
 
-> The kexec system call seems to require that the vmlinuz loading address is
-> aligned to a page boundary. 4096 bytes is a fairly common page size, but
-> perhaps not the only possibility? Does kexec require additional alignments?
+> __current_thread_info is currently defined in the header file, but when
+> we link the kernel with LTO it shows up in all files which include this
+> header file and causes conflicts with itself. Move the definition into
+> the only function which uses it to prevent these problems.
+> 
+> This fixes the build with LTO.
 
-Basically MIPS supports page sizes 4k, 8k, 16k, 32k, 64k.  Not every system
-supports all page sizes.  4k is the safe bet while larger systems prefer 16k
-or 64k.  Details are complicated.
+Not a new issue, see
 
-And of course with kexec the kexecing and the kexecuted kernels do not even
-have to have the same page size.  It would appear that the userland code you
-were refering to in your 2nd email in
+  https://git.linux-mips.org/cgit/ralf/linux-lto.git/commit/arch/mips/include/asm/thread_info.h?id=969890d139ee53f61fc6ed3f534335802c733e1b
 
-  https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git/tree/kexec/kexec.c?id=HEAD#n343
+This was never upstreamed since LTO never received much love from upstream
+back then and there might be more well ripened code in there.
 
-might erroneously fail if pagesize on the kexecing kernel is larger than of
-the kernel being kexed.
+To me this appeared like a compiler issue; I think this global register
+variable should be treated like a cmmon variable.
+
+Maybe Matthew can shed some light on this?
 
   Ralf

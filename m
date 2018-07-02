@@ -1,36 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 15:55:46 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51476 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2018 16:02:06 +0200 (CEST)
+Received: from mail-dm3nam03on0064.outbound.protection.outlook.com ([104.47.41.64]:63200
+        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993849AbeGBNzjXJ-3r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Jul 2018 15:55:39 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id w62DskWt433159;
-        Mon, 2 Jul 2018 15:54:46 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id w62Dsgf1433158;
-        Mon, 2 Jul 2018 15:54:42 +0200
-Date:   Mon, 2 Jul 2018 15:54:42 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     paul.burton@mips.com, jhogan@kernel.org, linux-mips@linux-mips.org,
-        ak@linux.intel.com, Matthew Fortune <mfortune@gmail.com>
-Subject: Re: [PATCH] MIPS: define __current_thread_info inside of function
-Message-ID: <20180702135442.GB431230@linux-mips.org>
-References: <20180616155815.31230-1-hauke@hauke-m.de>
+        id S23993666AbeGBOBvb2PAr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Jul 2018 16:01:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6+Wr7x1izPiyFQjbqaIStt4LKe3elK7S4df13QFu9wA=;
+ b=cu70hEKQLlRSZrO8Cmi8SvHpGiIPsHLYhhVXhk/XbDVMnFFW9uYBLRYgQ+K0wPZ7nNqGqqt9E0WAYXGsSpSj+F7IzNGY1LhWUi5UOCZMEK+aHOzJBDtZ+hkDcmFpsrRXdMMyjdjYKUDXzBPuwcRusO+NgsQdwgB+oJiEM7stYGI=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Steven.Hill@cavium.com; 
+Received: from black.inter.net (50.82.185.132) by
+ MW2PR07MB3962.namprd07.prod.outlook.com (2603:10b6:907:5::27) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.906.20; Mon, 2 Jul 2018 14:01:37 +0000
+From:   "Steven J. Hill" <steven.hill@cavium.com>
+To:     linux-mips@linux-mips.org
+Cc:     Chandrakala Chavva <cchavva@caviumnetworks.com>
+Subject: [PATCH] MIPS: Octeon: Remove unused CIU types and macros.
+Date:   Mon,  2 Jul 2018 09:01:29 -0500
+Message-Id: <1530540089-1726-1-git-send-email-steven.hill@cavium.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180616155815.31230-1-hauke@hauke-m.de>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [50.82.185.132]
+X-ClientProxiedBy: SN4PR0701CA0022.namprd07.prod.outlook.com
+ (2603:10b6:803:28::32) To MW2PR07MB3962.namprd07.prod.outlook.com
+ (2603:10b6:907:5::27)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 47599623-94ea-4a60-3d64-08d5e0245432
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:MW2PR07MB3962;
+X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;3:tkWDDS9XkFq6Zb9DIdPeficTQRd8uINx8fzcbqJk5VJpmZ35jZywV5y3zlUidfYRIlRQNScsBgkcB8XC6trkhuESw2uVbisY02MrjcIWlhQRPnxFfToSsq5hY/D1HKzAD57B26V/Srl2Fj9PUfwevVuP2aufU4RVc3uMFqrUBY9BzywnjUFP3BnBqDbacg5fZ5WU4sVBXsqDWGvfIMLsYuJXM7OGKyfbuWprBMyqa/fhl+QIbxsYDGNKGmhKkGJZ;25:uJb0xKxRRGHMF2T735g+Ui0CP/4lSOiLN41Cg6uzgbQfd9ZQZq8zNfJdcvwznLY1dS6eeR7z8Q7NVp0ua44dt2Vw2/nY8EdM3nKXIDwUre48jjVLd2DAvWy1e6t3uylxRNcnLbaCF5cu2VR1M/i9rS/vxfQHoVw1QUMbesMF2PHVW2kDeaz9AulWZKrpFAwKpo+XpOpDgWUeWFZza5u11+EldnFgaD2tZHIX/+WyYaVC3B/AGZctY472te9JQCjSTmLAzQlu/2p5HZ3FumE7yhYK2RiwvzxF4ofK9CmHRhCcizh7ulrEkARG9es27ctcx48BbrPCFv3hUWXGL26x3g==;31:Y2f7lUdJueGDTBXzraxkGECu9kXOZeiMldEtZTlT+pY+i8TJ0S9hjS/D3u3pvXDOGNdN03/RuoZ/+EO59/uTwp87T3qeu3zbWM7sKn8UdhbGXE4s6czPSh8ZCbzK3Ar25lp3ElwZ4Gzedz3rT+8oj4zB9+BnW5WK92hq7TT7TVuCdQxTOMEBqcTTjUNBxmZ5pDo8pWQRv4fNRSqj8nawenAEi5ZwQ5SkXyIp8LxBsT8=
+X-MS-TrafficTypeDiagnostic: MW2PR07MB3962:
+X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;20:hUtD2UzDTpqShpMp58Bj1QXvKNAkNLUV1E4wXCpEH46dU+0wlTyI0YtxET4x7Y5o3wDewotzIPr5Vl8gHMoTLAlN4RmPhJYodCpzGFRM+c0fghSRXQeDCLXjiX6ROgC/LyxMv4L6vAtpeJSh7GeXU5sHLcCHnuHFlATybCDCjnoFW/FXiiZgvG8vUPcSFOdbq7Wm++7KIti75rp2+yio/BjUczEo29kPk/vmiDnt3ALIefqh9BqovJJ30+l9xXH3nzKJVlY9Xd25iquoLl5bDoqHMtlhEovR1yIvCQaO+7fi4E3jaSqnknXdXDKuYXvgK0up2nYi4fqzezT4adN45EvVPzAFDhfRdWBtJ5NqE8tRaU4EFiYEsrK4cgJRsBbjESOTH6cc6K86cLwZ+2sug63JQEZ2z2XlxHgM+OEdXX0QbMdbHNYpruNyeiCAPLmiC4pLR6pl7JJT07Jzgn5gef5+4iKLbd2Y9j5GCvQmF35/u230ud6z7YAGgKrQ4Y1m;4:IcY5qxJttQmkawMMgDZwsReV1dX6UqRw1dPfcAuKkwmScPsm7gEAcL8B5xIl+tlE0EN4TewjDxCmm70UpIVIeB7Rbp1lMG032YFk6INFhsmRZ/ehAkvhrAoy/+ylgmceQrxm4DsLw5ZNeLPezgWWyGL2frHpZ7w4kSdxsNBaTXxbbdmSdrJG21lvltyRavawQ8akOAaArmiGwEUMyP+nOzffi33VKeqGYzRoI6aUxkbH7c3pB2Aj24Ev23Fy4IzVis2Eo9029eBF5U9cDukBYSJ/M2Rn6c8wCnj8yNs47t5fLHa0d+F3LBffSUuit8rI5qeu6qA/zAOs1NvKROlyN4kXsjjkxoPx/rBPYNIqSgs=
+X-Microsoft-Antispam-PRVS: <MW2PR07MB3962E67BF82CD91F0679D2EB80430@MW2PR07MB3962.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(250305191791016)(22074186197030);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(93006095)(93001095)(3231254)(944501410)(52105095)(149027)(150027)(6041310)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123558120)(20161123562045)(6072148)(201708071742011)(7699016);SRVR:MW2PR07MB3962;BCL:0;PCL:0;RULEID:;SRVR:MW2PR07MB3962;
+X-Forefront-PRVS: 07215D0470
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(136003)(366004)(396003)(376002)(346002)(39860400002)(199004)(189003)(8676002)(97736004)(14444005)(86362001)(575784001)(2906002)(16586007)(66066001)(81156014)(316002)(81166006)(305945005)(7736002)(47776003)(6666003)(6916009)(6116002)(3846002)(69596002)(36756003)(5660300001)(4326008)(26005)(186003)(50226002)(16526019)(1857600001)(106356001)(6512007)(956004)(2616005)(6306002)(107886003)(8936002)(53416004)(52116002)(476003)(486006)(51416003)(2351001)(2361001)(105586002)(386003)(6506007)(25786009)(966005)(50466002)(48376002)(6486002)(72206003)(68736007)(478600001)(16200700003)(53946003)(53936002)(2004002)(559001)(569006);DIR:OUT;SFP:1101;SCL:1;SRVR:MW2PR07MB3962;H:black.inter.net;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: cavium.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;MW2PR07MB3962;23:G2x5svsVIUYlaX5Ch/R9IkJYjkGyVElpzQU+5+U0W?=
+ =?us-ascii?Q?odU5ZEpJG51RGzVaei2WYePTEKLU8ZTBReXajWV0Pz1MdMEEvwtKJeIkXivC?=
+ =?us-ascii?Q?JUxSPNf3d5vl2gTbFwsMR4QVKb33xxHYY7M7QbJ0kA8sajwWH06q/ckIDNNl?=
+ =?us-ascii?Q?qKyrcPp8b7vXmVskldN+vzOpksck47Kh+N6FvoGbvXhfffTNpp6FXqrpnSd5?=
+ =?us-ascii?Q?TTOSspa3aYvP9WbpNJYKDe7LOf6IWwhF3NnyX866p2cijBExcEblZrWQZHVs?=
+ =?us-ascii?Q?cgJNeBjl8l4T/1KW6ro5iz8FJTkrsqRQHyKPRZgW5/nIUaWUWjis4LgxvPTz?=
+ =?us-ascii?Q?j/3lUp8eisYPkJgl1j2SRefdA1NOiyCvq49QmmSEp9m2pYehwuP5OgumjtKF?=
+ =?us-ascii?Q?lKYowHctAEo4nHILa+5WRQAsJKtTj91kwmi4GDnJX/XvgbHFwlCLdTF8LL5S?=
+ =?us-ascii?Q?2hAwvbQ8oLGWVjiJa7taK6ZAPLaPJN7l4fIjaUsm7tk8LKda8wTOCB1EkQ5f?=
+ =?us-ascii?Q?Bc/GaiBHMTbjDBvXWaIOq8vhkqDkQbELx1m+k7UzVKHIOuuUy0rwoVRXl+lm?=
+ =?us-ascii?Q?ZdFN2BJ2CJiP/6SSLLywxxTqwvIWw1MKZLF/3NZr3x10ntOmFGX/URvZ41b1?=
+ =?us-ascii?Q?Q4lH0MPcrN3ayaGIcGGwpd/whraLLUxXC9Z5OnSAEa/vpOuZTfuozmzZjSnA?=
+ =?us-ascii?Q?A9J+cswxCBhdZfpI7wABudPXb4vAH2TZVA+AfSthNyCI9E4VXJ/kcHM4KIdh?=
+ =?us-ascii?Q?uhKfPUyB4QAuOk78Vx82x9uMs3j578A4yvm8XMa2N1bRgI1UduKxkicVEMC+?=
+ =?us-ascii?Q?emqtlhSKm7gTAcWgePinWrTcw2vIgxrDQvbE8tDliXmTyxAWDbMXfif+bLdO?=
+ =?us-ascii?Q?wLXLUb4SWwizX716hlXjrUgXETPyS26HgD2mrlHR23pcA0nomj+mT6z4OhnY?=
+ =?us-ascii?Q?VcttIL57ryJr+jX2/UfDzBTNwPpS4VBTlFw03KWCCawY4+A3K1ELrpt/qwFP?=
+ =?us-ascii?Q?D57E+GMRCzqQaDbAJKU19Aai236lWDkz7Ct8ZDEwazY+/fKKwW6XWjI3ZrhG?=
+ =?us-ascii?Q?Oja9f/RNTPw3TEx9OL8rNtdp/2aqVXxwfkYA6VElPPdIbdG2HxiOH2B6kNyF?=
+ =?us-ascii?Q?+oITFkV5iWDFJ1cpZvJ40hDcfUQls7M4zZqLYp3CzODiwHeQ3+hV6rffNM5T?=
+ =?us-ascii?Q?GICo+SRNtJFKMJ5oNgyl3MBHoyzg0Ck7+TQKofVcG1H1r+zrOzQ4WzTapoBA?=
+ =?us-ascii?Q?GS+EEekFBcmBg913oDUvcKxSe+rDZsiGnLblQZRgx7KaT0m8QT2bq4H2x/Qb?=
+ =?us-ascii?Q?7MvSI3ED/FtO5ciUmxyQ2v6n7lwVJayjPSuXu7CUnA0ILp7hMi7+aotXW3NG?=
+ =?us-ascii?Q?P0RML1i8oIMrzbjzjtihBxtGfJsJZSszzZ7OCSMEmKtGpDPACmY+07C6Y+PJ?=
+ =?us-ascii?Q?TPlZfI47TAWkE+Vr6sh8oRGllLDX9Q=3D?=
+X-Microsoft-Antispam-Message-Info: 4z+Y9YhwjcHxRODR9eTscHsv9VaTQEiukVXBL/DDVb1mX0LEU6C3drwd6CZl03/HB8O+Mwm3MTtZDnPPl8/2XtqoXbvtOQp+y8XB70n94w6n0v9LZgyff9oPo97q1zYw4E+BUU3amZLzkiQPTtW8bTNOu2D42c6IW326+yLfrf5VzO0d8jGtAhnvGSgIdLOKI3SSY7i/fF+e8VymrZF6ZMy73absozATSNKgw5tgIDVAKl/lGnt3E1eR5KO2a+QRa8emCtQzofYKAGg14ksBgb3vp5b2YdMsy6Leq4q6s/G2YjDfTYJOBOGcqH3yV1qt+E9pP05AmGUFXj8yn9XLjBQZS5l1ehcvIDGJnxV5EBA=
+X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;6:UdfPA+6B14McCNs+ysrL6Q0vszqw9OMOnBm/HeS1OoxpIaamWvhETPel6L6lKF5HYTiNDgrIRGBpfa+/YX3SmZ97mDE/Va396eRJDQIVb747B0OyJJEzU3czxJhBuqytJs41HW7I+YvIlygeZYg6HbQmC5D1RUynk0jTSoqOBDgsO1aQEQsjPunzhJG4IQ7Oy69qsyPD6zloP46P/oN4ARgXMV1G/8GwzoibH526vlULC+dgzZ6A3U5iR0LJYruk8BahFnJOO2+vGXebBMCTkA5V21lWWVtz6w0Gk0j8DvHrvSTLQAwiDVDIz7P9tI7f9thjQkndZMFuMd0rtnLPaKizqctO6V/k+7XGA4Wdo6z2+53W5hMeaWnLRsXrpWTnysK8zrzpSsXHayx/BMeA8s8C/T6l/c96MlmqXJvckOAuZbrFvE4EA8HPTfatz2byYLgzKcMmsD8SXVWl3X5OLA==;5:EwTWm+6rbw/PYg3JOJKTEKfbKbNY6wHuSMMWpNCkFIZU7u7qzSEaq7m3PquDmHrIU1f3oAbLTDV6axd/PCEuJJGqdUwUgOxCKDa6ObWxP5emeA/ObR0QAB5S2tsrS9ykGY7jvAxWBdnOZWMH6DixUtqZwP6DeWOJr/H9r2/7JHk=;24:DDtsRyozKVfw5JJbTUYdZShYWBKSaWb3g6wjiDv3ISZHGD+SuGFgYbLPm8D8m30H4ehK+PlPFPu3gAz6oXrCDXi9pi5M+p/EmECsgwwEuCc=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-Microsoft-Exchange-Diagnostics: 1;MW2PR07MB3962;7:rcMJPpSrTl/wx+tnxF60IYmLY5sPn0sAt7sK6freaIwZ/gggEMuhw0Alfw56D/yY/hkpjQpk+jwVmziy3ZM87uSXQYU/XrCEtXEiAdEWrxhnL5ZaIhC1rUh4+g56peK5hCx4rsbqIrILa7GiK9ypF4hbmxbun8nwkgSrbFyXr5AAQPtoY178Ifck6SIX8EFqoPlkEa0/sdPkGnbYfhvWqqahzXJalmsnPmkd2peJs6QZ3YkxJytkwKO8LlOolEKf
+X-OriginatorOrg: cavium.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2018 14:01:37.3412 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47599623-94ea-4a60-3d64-08d5e0245432
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 711e4ccf-2e9b-4bcf-a551-4094005b6194
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW2PR07MB3962
+Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64539
+X-archive-position: 64540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: steven.hill@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,25 +99,10200 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jun 16, 2018 at 05:58:15PM +0200, Hauke Mehrtens wrote:
+Remove all unused data types and macros. Define a new macro that
+neatens up the file. Convert the remaining structures to use
+__BITFIELD_FIELD. Use common QLM structure in PCIe code related
+to this clean-up.
 
-> __current_thread_info is currently defined in the header file, but when
-> we link the kernel with LTO it shows up in all files which include this
-> header file and causes conflicts with itself. Move the definition into
-> the only function which uses it to prevent these problems.
-> 
-> This fixes the build with LTO.
+Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+---
+ arch/mips/include/asm/octeon/cvmx-ciu-defs.h | 10102 +------------------------
+ arch/mips/pci/pcie-octeon.c                  |     4 +-
+ 2 files changed, 146 insertions(+), 9960 deletions(-)
 
-Not a new issue, see
-
-  https://git.linux-mips.org/cgit/ralf/linux-lto.git/commit/arch/mips/include/asm/thread_info.h?id=969890d139ee53f61fc6ed3f534335802c733e1b
-
-This was never upstreamed since LTO never received much love from upstream
-back then and there might be more well ripened code in there.
-
-To me this appeared like a compiler issue; I think this global register
-variable should be treated like a cmmon variable.
-
-Maybe Matthew can shed some light on this?
-
-  Ralf
+diff --git a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
+index 6e61792..de00e35 100644
+--- a/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
++++ b/arch/mips/include/asm/octeon/cvmx-ciu-defs.h
+@@ -1,10014 +1,200 @@
+-/***********************license start***************
+- * Author: Cavium Networks
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Octeon CIU definitions
+  *
+- * Contact: support@caviumnetworks.com
+- * This file is part of the OCTEON SDK
+- *
+- * Copyright (c) 2003-2012 Cavium Networks
+- *
+- * This file is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License, Version 2, as
+- * published by the Free Software Foundation.
+- *
+- * This file is distributed in the hope that it will be useful, but
+- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
+- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
+- * NONINFRINGEMENT.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this file; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- * or visit http://www.gnu.org/licenses/.
+- *
+- * This file may also be available under a different license from Cavium.
+- * Contact Cavium Networks for more information
+- ***********************license end**************************************/
++ * Copyright (C) 2003-2018 Cavium, Inc.
++ */
+ 
+ #ifndef __CVMX_CIU_DEFS_H__
+ #define __CVMX_CIU_DEFS_H__
+ 
+-#define CVMX_CIU_BIST (CVMX_ADD_IO_SEG(0x0001070000000730ull))
+-#define CVMX_CIU_BLOCK_INT (CVMX_ADD_IO_SEG(0x00010700000007C0ull))
+-#define CVMX_CIU_DINT (CVMX_ADD_IO_SEG(0x0001070000000720ull))
+-#define CVMX_CIU_EN2_IOX_INT(offset) (CVMX_ADD_IO_SEG(0x000107000000A600ull) + ((offset) & 1) * 8)
+-#define CVMX_CIU_EN2_IOX_INT_W1C(offset) (CVMX_ADD_IO_SEG(0x000107000000CE00ull) + ((offset) & 1) * 8)
+-#define CVMX_CIU_EN2_IOX_INT_W1S(offset) (CVMX_ADD_IO_SEG(0x000107000000AE00ull) + ((offset) & 1) * 8)
+-#define CVMX_CIU_EN2_PPX_IP2(offset) (CVMX_ADD_IO_SEG(0x000107000000A000ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP2_W1C(offset) (CVMX_ADD_IO_SEG(0x000107000000C800ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP2_W1S(offset) (CVMX_ADD_IO_SEG(0x000107000000A800ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP3(offset) (CVMX_ADD_IO_SEG(0x000107000000A200ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP3_W1C(offset) (CVMX_ADD_IO_SEG(0x000107000000CA00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP3_W1S(offset) (CVMX_ADD_IO_SEG(0x000107000000AA00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP4(offset) (CVMX_ADD_IO_SEG(0x000107000000A400ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP4_W1C(offset) (CVMX_ADD_IO_SEG(0x000107000000CC00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_EN2_PPX_IP4_W1S(offset) (CVMX_ADD_IO_SEG(0x000107000000AC00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_FUSE (CVMX_ADD_IO_SEG(0x0001070000000728ull))
+-#define CVMX_CIU_GSTOP (CVMX_ADD_IO_SEG(0x0001070000000710ull))
+-#define CVMX_CIU_INT33_SUM0 (CVMX_ADD_IO_SEG(0x0001070000000110ull))
+-#define CVMX_CIU_INTX_EN0(offset) (CVMX_ADD_IO_SEG(0x0001070000000200ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN0_W1C(offset) (CVMX_ADD_IO_SEG(0x0001070000002200ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN0_W1S(offset) (CVMX_ADD_IO_SEG(0x0001070000006200ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN1(offset) (CVMX_ADD_IO_SEG(0x0001070000000208ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN1_W1C(offset) (CVMX_ADD_IO_SEG(0x0001070000002208ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN1_W1S(offset) (CVMX_ADD_IO_SEG(0x0001070000006208ull) + ((offset) & 63) * 16)
+-#define CVMX_CIU_INTX_EN4_0(offset) (CVMX_ADD_IO_SEG(0x0001070000000C80ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_EN4_0_W1C(offset) (CVMX_ADD_IO_SEG(0x0001070000002C80ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_EN4_0_W1S(offset) (CVMX_ADD_IO_SEG(0x0001070000006C80ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_EN4_1(offset) (CVMX_ADD_IO_SEG(0x0001070000000C88ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_EN4_1_W1C(offset) (CVMX_ADD_IO_SEG(0x0001070000002C88ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_EN4_1_W1S(offset) (CVMX_ADD_IO_SEG(0x0001070000006C88ull) + ((offset) & 15) * 16)
+-#define CVMX_CIU_INTX_SUM0(offset) (CVMX_ADD_IO_SEG(0x0001070000000000ull) + ((offset) & 63) * 8)
+-#define CVMX_CIU_INTX_SUM4(offset) (CVMX_ADD_IO_SEG(0x0001070000000C00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_INT_DBG_SEL (CVMX_ADD_IO_SEG(0x00010700000007D0ull))
+-#define CVMX_CIU_INT_SUM1 (CVMX_ADD_IO_SEG(0x0001070000000108ull))
+-static inline uint64_t CVMX_CIU_MBOX_CLRX(unsigned long offset)
++#include <asm/bitfield.h>
++
++#define CVMX_CIU_ADDR(addr, coreid, coremask, offset)			       \
++	(CVMX_ADD_IO_SEG(0x0001070000000000ull + addr##ull) +		       \
++	 (((coreid) & (coremask)) * offset))
++
++#define CVMX_CIU_EN2_PPX_IP4(c)		CVMX_CIU_ADDR(0xA400, c, 0xffff, 8)
++#define CVMX_CIU_EN2_PPX_IP4_W1C(c)	CVMX_CIU_ADDR(0xCC00, c, 0xffff, 8)
++#define CVMX_CIU_EN2_PPX_IP4_W1S(c)	CVMX_CIU_ADDR(0xAC00, c, 0xffff, 8)
++#define CVMX_CIU_FUSE			CVMX_CIU_ADDR(0x0728, 0, 0, 0)
++#define CVMX_CIU_INT_SUM1		CVMX_CIU_ADDR(0x0108, 0, 0, 0)
++#define CVMX_CIU_INTX_EN0(c)		CVMX_CIU_ADDR(0x0200, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_EN0_W1C(c)	CVMX_CIU_ADDR(0x2200, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_EN0_W1S(c)	CVMX_CIU_ADDR(0x6200, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_EN1(c)		CVMX_CIU_ADDR(0x0208, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_EN1_W1C(c)	CVMX_CIU_ADDR(0x2208, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_EN1_W1S(c)	CVMX_CIU_ADDR(0x6208, c, 0x3ffff, 16)
++#define CVMX_CIU_INTX_SUM0(c)		CVMX_CIU_ADDR(0x0000, c, 0x3ffff, 8)
++#define CVMX_CIU_NMI			CVMX_CIU_ADDR(0x0718, 0, 0, 0)
++#define CVMX_CIU_PCI_INTA		CVMX_CIU_ADDR(0x0750, 0, 0, 0)
++#define CVMX_CIU_PP_BIST_STAT		CVMX_CIU_ADDR(0x07E0, 0, 0, 0)
++#define CVMX_CIU_PP_DBG			CVMX_CIU_ADDR(0x0708, 0, 0, 0)
++#define CVMX_CIU_PP_RST			CVMX_CIU_ADDR(0x0700, 0, 0, 0)
++#define CVMX_CIU_QLM0			CVMX_CIU_ADDR(0x0780, 0, 0, 0)
++#define CVMX_CIU_QLM1			CVMX_CIU_ADDR(0x0788, 0, 0, 0)
++#define CVMX_CIU_QLM_JTGC		CVMX_CIU_ADDR(0x0768, 0, 0, 0)
++#define CVMX_CIU_QLM_JTGD		CVMX_CIU_ADDR(0x0770, 0, 0, 0)
++#define CVMX_CIU_SOFT_BIST		CVMX_CIU_ADDR(0x0738, 0, 0, 0)
++#define CVMX_CIU_SOFT_PRST		CVMX_CIU_ADDR(0x0748, 0, 0, 0)
++#define CVMX_CIU_SOFT_PRST1		CVMX_CIU_ADDR(0x0758, 0, 0, 0)
++#define CVMX_CIU_SOFT_RST		CVMX_CIU_ADDR(0x0740, 0, 0, 0)
++#define CVMX_CIU_TIM_MULTI_CAST		CVMX_CIU_ADDR(0xC200, 0, 0, 0)
++#define CVMX_CIU_SUM2_PPX_IP4(c)	CVMX_CIU_ADDR(0x8c00, c, 0x0ffff, 8)
++#define CVMX_CIU_TIMX(c)		CVMX_CIU_ADDR(0x0480, c, 0x0ffff, 8)
++
++static inline uint64_t CVMX_CIU_MBOX_CLRX(unsigned int coreid)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100600ull) + (offset) * 8;
+-	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000680ull) + (offset) * 8;
++	if (cvmx_get_octeon_family() == OCTEON_CN68XX)
++		return CVMX_CIU_ADDR(0x100100600, coreid, 0xffff, 8);
++	else
++		return CVMX_CIU_ADDR(0x0680, coreid, 0xffff, 8);
+ }
+ 
+-static inline uint64_t CVMX_CIU_MBOX_SETX(unsigned long offset)
++static inline uint64_t CVMX_CIU_MBOX_SETX(unsigned int coreid)
+ {
+-	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100400ull) + (offset) * 8;
+-	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000600ull) + (offset) * 8;
++	if (cvmx_get_octeon_family() == OCTEON_CN68XX)
++		return CVMX_CIU_ADDR(0x100100400, coreid, 0xffff, 8);
++	else
++		return CVMX_CIU_ADDR(0x0600, coreid, 0xffff, 8);
+ }
+ 
+-#define CVMX_CIU_NMI (CVMX_ADD_IO_SEG(0x0001070000000718ull))
+-#define CVMX_CIU_PCI_INTA (CVMX_ADD_IO_SEG(0x0001070000000750ull))
+-#define CVMX_CIU_PP_BIST_STAT (CVMX_ADD_IO_SEG(0x00010700000007E0ull))
+-#define CVMX_CIU_PP_DBG (CVMX_ADD_IO_SEG(0x0001070000000708ull))
+-static inline uint64_t CVMX_CIU_PP_POKEX(unsigned long offset)
++static inline uint64_t CVMX_CIU_PP_POKEX(unsigned int coreid)
+ {
+ 	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN70XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100200ull) + (offset) * 8;
+-	case OCTEON_CNF75XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001010000030000ull) + (offset) * 8;
++	case OCTEON_CN30XX:
++	case OCTEON_CN31XX:
++	case OCTEON_CN38XX:
++	case OCTEON_CN50XX:
++	case OCTEON_CN52XX:
++	case OCTEON_CN56XX:
++	case OCTEON_CN58XX:
++	case OCTEON_CN61XX:
++	case OCTEON_CN63XX:
++	case OCTEON_CN66XX:
++	case OCTEON_CN70XX:
++	case OCTEON_CNF71XX:
++	default:
++		return CVMX_CIU_ADDR(0x0580, coreid, 0xffff, 8);
++	case OCTEON_CN68XX:
++		return CVMX_CIU_ADDR(0x100100200, coreid, 0xffff, 8);
++	case OCTEON_CN73XX:
++	case OCTEON_CN78XX:
++	case OCTEON_CNF75XX:
++		return (CVMX_CIU_ADDR(0x1010000030000, coreid, 0xffff, 8) -
++			0x60000000000ull);
+ 	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000580ull) + (offset) * 8;
+ }
+ 
+-#define CVMX_CIU_PP_RST (CVMX_ADD_IO_SEG(0x0001070000000700ull))
+-#define CVMX_CIU_QLM0 (CVMX_ADD_IO_SEG(0x0001070000000780ull))
+-#define CVMX_CIU_QLM1 (CVMX_ADD_IO_SEG(0x0001070000000788ull))
+-#define CVMX_CIU_QLM2 (CVMX_ADD_IO_SEG(0x0001070000000790ull))
+-#define CVMX_CIU_QLM3 (CVMX_ADD_IO_SEG(0x0001070000000798ull))
+-#define CVMX_CIU_QLM4 (CVMX_ADD_IO_SEG(0x00010700000007A0ull))
+-#define CVMX_CIU_QLM_DCOK (CVMX_ADD_IO_SEG(0x0001070000000760ull))
+-#define CVMX_CIU_QLM_JTGC (CVMX_ADD_IO_SEG(0x0001070000000768ull))
+-#define CVMX_CIU_QLM_JTGD (CVMX_ADD_IO_SEG(0x0001070000000770ull))
+-#define CVMX_CIU_SOFT_BIST (CVMX_ADD_IO_SEG(0x0001070000000738ull))
+-#define CVMX_CIU_SOFT_PRST (CVMX_ADD_IO_SEG(0x0001070000000748ull))
+-#define CVMX_CIU_SOFT_PRST1 (CVMX_ADD_IO_SEG(0x0001070000000758ull))
+-#define CVMX_CIU_SOFT_PRST2 (CVMX_ADD_IO_SEG(0x00010700000007D8ull))
+-#define CVMX_CIU_SOFT_PRST3 (CVMX_ADD_IO_SEG(0x00010700000007E0ull))
+-#define CVMX_CIU_SOFT_RST (CVMX_ADD_IO_SEG(0x0001070000000740ull))
+-#define CVMX_CIU_SUM1_IOX_INT(offset) (CVMX_ADD_IO_SEG(0x0001070000008600ull) + ((offset) & 1) * 8)
+-#define CVMX_CIU_SUM1_PPX_IP2(offset) (CVMX_ADD_IO_SEG(0x0001070000008000ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_SUM1_PPX_IP3(offset) (CVMX_ADD_IO_SEG(0x0001070000008200ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_SUM1_PPX_IP4(offset) (CVMX_ADD_IO_SEG(0x0001070000008400ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_SUM2_IOX_INT(offset) (CVMX_ADD_IO_SEG(0x0001070000008E00ull) + ((offset) & 1) * 8)
+-#define CVMX_CIU_SUM2_PPX_IP2(offset) (CVMX_ADD_IO_SEG(0x0001070000008800ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_SUM2_PPX_IP3(offset) (CVMX_ADD_IO_SEG(0x0001070000008A00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_SUM2_PPX_IP4(offset) (CVMX_ADD_IO_SEG(0x0001070000008C00ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_TIMX(offset) (CVMX_ADD_IO_SEG(0x0001070000000480ull) + ((offset) & 15) * 8)
+-#define CVMX_CIU_TIM_MULTI_CAST (CVMX_ADD_IO_SEG(0x000107000000C200ull))
+-static inline uint64_t CVMX_CIU_WDOGX(unsigned long offset)
++static inline uint64_t CVMX_CIU_WDOGX(unsigned int coreid)
+ {
+ 	switch (cvmx_get_octeon_family()) {
+-	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN70XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+-	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001070100100000ull) + (offset) * 8;
+-	case OCTEON_CNF75XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
+-	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
+-		return CVMX_ADD_IO_SEG(0x0001010000020000ull) + (offset) * 8;
++	case OCTEON_CN30XX:
++	case OCTEON_CN31XX:
++	case OCTEON_CN38XX:
++	case OCTEON_CN50XX:
++	case OCTEON_CN52XX:
++	case OCTEON_CN56XX:
++	case OCTEON_CN58XX:
++	case OCTEON_CN61XX:
++	case OCTEON_CN63XX:
++	case OCTEON_CN66XX:
++	case OCTEON_CN70XX:
++	case OCTEON_CNF71XX:
++	default:
++		return CVMX_CIU_ADDR(0x0500, coreid, 0xffff, 8);
++	case OCTEON_CN68XX:
++		return CVMX_CIU_ADDR(0x1070100100000, coreid, 0xffff, 8);
++	case OCTEON_CN73XX:
++	case OCTEON_CN78XX:
++	case OCTEON_CNF75XX:
++		return (CVMX_CIU_ADDR(0x1010000020000, coreid, 0xffff, 8) -
++			0x0000060000000000ull);
+ 	}
+-	return CVMX_ADD_IO_SEG(0x0001070000000500ull) + (offset) * 8;
+ }
+ 
+-union cvmx_ciu_bist {
+-	uint64_t u64;
+-	struct cvmx_ciu_bist_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t bist:7;
+-#else
+-		uint64_t bist:7;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_ciu_bist_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t bist:4;
+-#else
+-		uint64_t bist:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_bist_cn30xx cn31xx;
+-	struct cvmx_ciu_bist_cn30xx cn38xx;
+-	struct cvmx_ciu_bist_cn30xx cn38xxp2;
+-	struct cvmx_ciu_bist_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t bist:2;
+-#else
+-		uint64_t bist:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn50xx;
+-	struct cvmx_ciu_bist_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t bist:3;
+-#else
+-		uint64_t bist:3;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_bist_cn52xx cn52xxp1;
+-	struct cvmx_ciu_bist_cn30xx cn56xx;
+-	struct cvmx_ciu_bist_cn30xx cn56xxp1;
+-	struct cvmx_ciu_bist_cn30xx cn58xx;
+-	struct cvmx_ciu_bist_cn30xx cn58xxp1;
+-	struct cvmx_ciu_bist_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t bist:6;
+-#else
+-		uint64_t bist:6;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_bist_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_5_63:59;
+-		uint64_t bist:5;
+-#else
+-		uint64_t bist:5;
+-		uint64_t reserved_5_63:59;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_bist_cn63xx cn63xxp1;
+-	struct cvmx_ciu_bist_cn61xx cn66xx;
+-	struct cvmx_ciu_bist_s cn68xx;
+-	struct cvmx_ciu_bist_s cn68xxp1;
+-	struct cvmx_ciu_bist_cn61xx cnf71xx;
+-};
+-
+-union cvmx_ciu_block_int {
+-	uint64_t u64;
+-	struct cvmx_ciu_block_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_62_63:2;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_43_59:17;
+-		uint64_t ptp:1;
+-		uint64_t dpi:1;
+-		uint64_t dfm:1;
+-		uint64_t reserved_34_39:6;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t pip:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t lmc0:1;
+-		uint64_t l2c:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t rad:1;
+-		uint64_t usb:1;
+-		uint64_t pow:1;
+-		uint64_t tim:1;
+-		uint64_t pko:1;
+-		uint64_t ipd:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t zip:1;
+-		uint64_t dfa:1;
+-		uint64_t fpa:1;
+-		uint64_t key:1;
+-		uint64_t sli:1;
+-		uint64_t gmx1:1;
+-		uint64_t gmx0:1;
+-		uint64_t mio:1;
+-#else
+-		uint64_t mio:1;
+-		uint64_t gmx0:1;
+-		uint64_t gmx1:1;
+-		uint64_t sli:1;
+-		uint64_t key:1;
+-		uint64_t fpa:1;
+-		uint64_t dfa:1;
+-		uint64_t zip:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t ipd:1;
+-		uint64_t pko:1;
+-		uint64_t tim:1;
+-		uint64_t pow:1;
+-		uint64_t usb:1;
+-		uint64_t rad:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t l2c:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t pip:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t reserved_34_39:6;
+-		uint64_t dfm:1;
+-		uint64_t dpi:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_43_59:17;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_63:2;
+-#endif
+-	} s;
+-	struct cvmx_ciu_block_int_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_43_63:21;
+-		uint64_t ptp:1;
+-		uint64_t dpi:1;
+-		uint64_t reserved_31_40:10;
+-		uint64_t iob:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t pip:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t lmc0:1;
+-		uint64_t l2c:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t rad:1;
+-		uint64_t usb:1;
+-		uint64_t pow:1;
+-		uint64_t tim:1;
+-		uint64_t pko:1;
+-		uint64_t ipd:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t zip:1;
+-		uint64_t dfa:1;
+-		uint64_t fpa:1;
+-		uint64_t key:1;
+-		uint64_t sli:1;
+-		uint64_t gmx1:1;
+-		uint64_t gmx0:1;
+-		uint64_t mio:1;
+-#else
+-		uint64_t mio:1;
+-		uint64_t gmx0:1;
+-		uint64_t gmx1:1;
+-		uint64_t sli:1;
+-		uint64_t key:1;
+-		uint64_t fpa:1;
+-		uint64_t dfa:1;
+-		uint64_t zip:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t ipd:1;
+-		uint64_t pko:1;
+-		uint64_t tim:1;
+-		uint64_t pow:1;
+-		uint64_t usb:1;
+-		uint64_t rad:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t l2c:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t pip:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_31_40:10;
+-		uint64_t dpi:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_43_63:21;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_block_int_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_43_63:21;
+-		uint64_t ptp:1;
+-		uint64_t dpi:1;
+-		uint64_t dfm:1;
+-		uint64_t reserved_34_39:6;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t reserved_23_24:2;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t pip:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t lmc0:1;
+-		uint64_t l2c:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t rad:1;
+-		uint64_t usb:1;
+-		uint64_t pow:1;
+-		uint64_t tim:1;
+-		uint64_t pko:1;
+-		uint64_t ipd:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t zip:1;
+-		uint64_t dfa:1;
+-		uint64_t fpa:1;
+-		uint64_t key:1;
+-		uint64_t sli:1;
+-		uint64_t reserved_2_2:1;
+-		uint64_t gmx0:1;
+-		uint64_t mio:1;
+-#else
+-		uint64_t mio:1;
+-		uint64_t gmx0:1;
+-		uint64_t reserved_2_2:1;
+-		uint64_t sli:1;
+-		uint64_t key:1;
+-		uint64_t fpa:1;
+-		uint64_t dfa:1;
+-		uint64_t zip:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t ipd:1;
+-		uint64_t pko:1;
+-		uint64_t tim:1;
+-		uint64_t pow:1;
+-		uint64_t usb:1;
+-		uint64_t rad:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t l2c:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t pip:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_23_24:2;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t reserved_34_39:6;
+-		uint64_t dfm:1;
+-		uint64_t dpi:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_43_63:21;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_block_int_cn63xx cn63xxp1;
+-	struct cvmx_ciu_block_int_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_62_63:2;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_43_59:17;
+-		uint64_t ptp:1;
+-		uint64_t dpi:1;
+-		uint64_t dfm:1;
+-		uint64_t reserved_33_39:7;
+-		uint64_t srio0:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t pip:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t lmc0:1;
+-		uint64_t l2c:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t rad:1;
+-		uint64_t usb:1;
+-		uint64_t pow:1;
+-		uint64_t tim:1;
+-		uint64_t pko:1;
+-		uint64_t ipd:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t zip:1;
+-		uint64_t dfa:1;
+-		uint64_t fpa:1;
+-		uint64_t key:1;
+-		uint64_t sli:1;
+-		uint64_t gmx1:1;
+-		uint64_t gmx0:1;
+-		uint64_t mio:1;
+-#else
+-		uint64_t mio:1;
+-		uint64_t gmx0:1;
+-		uint64_t gmx1:1;
+-		uint64_t sli:1;
+-		uint64_t key:1;
+-		uint64_t fpa:1;
+-		uint64_t dfa:1;
+-		uint64_t zip:1;
+-		uint64_t reserved_8_8:1;
+-		uint64_t ipd:1;
+-		uint64_t pko:1;
+-		uint64_t tim:1;
+-		uint64_t pow:1;
+-		uint64_t usb:1;
+-		uint64_t rad:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t l2c:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t pip:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t asxpcs1:1;
+-		uint64_t reserved_24_24:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_27_27:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_29_29:1;
+-		uint64_t iob:1;
+-		uint64_t reserved_31_31:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_33_39:7;
+-		uint64_t dfm:1;
+-		uint64_t dpi:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_43_59:17;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_63:2;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_block_int_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_43_63:21;
+-		uint64_t ptp:1;
+-		uint64_t dpi:1;
+-		uint64_t reserved_31_40:10;
+-		uint64_t iob:1;
+-		uint64_t reserved_27_29:3;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t reserved_23_24:2;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t pip:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t lmc0:1;
+-		uint64_t l2c:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t rad:1;
+-		uint64_t usb:1;
+-		uint64_t pow:1;
+-		uint64_t tim:1;
+-		uint64_t pko:1;
+-		uint64_t ipd:1;
+-		uint64_t reserved_6_8:3;
+-		uint64_t fpa:1;
+-		uint64_t key:1;
+-		uint64_t sli:1;
+-		uint64_t reserved_2_2:1;
+-		uint64_t gmx0:1;
+-		uint64_t mio:1;
+-#else
+-		uint64_t mio:1;
+-		uint64_t gmx0:1;
+-		uint64_t reserved_2_2:1;
+-		uint64_t sli:1;
+-		uint64_t key:1;
+-		uint64_t fpa:1;
+-		uint64_t reserved_6_8:3;
+-		uint64_t ipd:1;
+-		uint64_t pko:1;
+-		uint64_t tim:1;
+-		uint64_t pow:1;
+-		uint64_t usb:1;
+-		uint64_t rad:1;
+-		uint64_t reserved_15_15:1;
+-		uint64_t l2c:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_18_19:2;
+-		uint64_t pip:1;
+-		uint64_t reserved_21_21:1;
+-		uint64_t asxpcs0:1;
+-		uint64_t reserved_23_24:2;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_27_29:3;
+-		uint64_t iob:1;
+-		uint64_t reserved_31_40:10;
+-		uint64_t dpi:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_43_63:21;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_dint {
+-	uint64_t u64;
+-	struct cvmx_ciu_dint_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t dint:32;
+-#else
+-		uint64_t dint:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_dint_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t dint:1;
+-#else
+-		uint64_t dint:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_dint_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t dint:2;
+-#else
+-		uint64_t dint:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_dint_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t dint:16;
+-#else
+-		uint64_t dint:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_dint_cn38xx cn38xxp2;
+-	struct cvmx_ciu_dint_cn31xx cn50xx;
+-	struct cvmx_ciu_dint_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t dint:4;
+-#else
+-		uint64_t dint:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_dint_cn52xx cn52xxp1;
+-	struct cvmx_ciu_dint_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t dint:12;
+-#else
+-		uint64_t dint:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_dint_cn56xx cn56xxp1;
+-	struct cvmx_ciu_dint_cn38xx cn58xx;
+-	struct cvmx_ciu_dint_cn38xx cn58xxp1;
+-	struct cvmx_ciu_dint_cn52xx cn61xx;
+-	struct cvmx_ciu_dint_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t dint:6;
+-#else
+-		uint64_t dint:6;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_dint_cn63xx cn63xxp1;
+-	struct cvmx_ciu_dint_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t dint:10;
+-#else
+-		uint64_t dint:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_dint_s cn68xx;
+-	struct cvmx_ciu_dint_s cn68xxp1;
+-	struct cvmx_ciu_dint_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_iox_int {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_iox_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_iox_int_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_iox_int_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_iox_int_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_iox_int_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_iox_int_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_iox_int_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_iox_int_w1c_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_iox_int_w1c_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_iox_int_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_iox_int_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_iox_int_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_iox_int_w1s_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_iox_int_w1s_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip2 {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip2_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip2_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip2_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip2_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip2_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip2_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip2_w1c_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip2_w1c_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip2_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip2_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip2_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip2_w1s_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip2_w1s_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip3 {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip3_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip3_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip3_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip3_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip3_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip3_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip3_w1c_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip3_w1c_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip3_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip3_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip3_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip3_w1s_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip3_w1s_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip4 {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip4_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip4_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip4_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip4_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip4_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip4_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip4_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip4_w1c_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip4_w1c_s cnf71xx;
+-};
+-
+-union cvmx_ciu_en2_ppx_ip4_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_en2_ppx_ip4_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_en2_ppx_ip4_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_en2_ppx_ip4_w1s_cn61xx cn66xx;
+-	struct cvmx_ciu_en2_ppx_ip4_w1s_s cnf71xx;
+-};
+-
+-union cvmx_ciu_fuse {
+-	uint64_t u64;
+-	struct cvmx_ciu_fuse_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t fuse:32;
+-#else
+-		uint64_t fuse:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_fuse_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t fuse:1;
+-#else
+-		uint64_t fuse:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_fuse_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t fuse:2;
+-#else
+-		uint64_t fuse:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_fuse_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t fuse:16;
+-#else
+-		uint64_t fuse:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_fuse_cn38xx cn38xxp2;
+-	struct cvmx_ciu_fuse_cn31xx cn50xx;
+-	struct cvmx_ciu_fuse_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t fuse:4;
+-#else
+-		uint64_t fuse:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_fuse_cn52xx cn52xxp1;
+-	struct cvmx_ciu_fuse_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t fuse:12;
+-#else
+-		uint64_t fuse:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_fuse_cn56xx cn56xxp1;
+-	struct cvmx_ciu_fuse_cn38xx cn58xx;
+-	struct cvmx_ciu_fuse_cn38xx cn58xxp1;
+-	struct cvmx_ciu_fuse_cn52xx cn61xx;
+-	struct cvmx_ciu_fuse_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t fuse:6;
+-#else
+-		uint64_t fuse:6;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_fuse_cn63xx cn63xxp1;
+-	struct cvmx_ciu_fuse_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t fuse:10;
+-#else
+-		uint64_t fuse:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_fuse_s cn68xx;
+-	struct cvmx_ciu_fuse_s cn68xxp1;
+-	struct cvmx_ciu_fuse_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_gstop {
+-	uint64_t u64;
+-	struct cvmx_ciu_gstop_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t gstop:1;
+-#else
+-		uint64_t gstop:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_ciu_gstop_s cn30xx;
+-	struct cvmx_ciu_gstop_s cn31xx;
+-	struct cvmx_ciu_gstop_s cn38xx;
+-	struct cvmx_ciu_gstop_s cn38xxp2;
+-	struct cvmx_ciu_gstop_s cn50xx;
+-	struct cvmx_ciu_gstop_s cn52xx;
+-	struct cvmx_ciu_gstop_s cn52xxp1;
+-	struct cvmx_ciu_gstop_s cn56xx;
+-	struct cvmx_ciu_gstop_s cn56xxp1;
+-	struct cvmx_ciu_gstop_s cn58xx;
+-	struct cvmx_ciu_gstop_s cn58xxp1;
+-	struct cvmx_ciu_gstop_s cn61xx;
+-	struct cvmx_ciu_gstop_s cn63xx;
+-	struct cvmx_ciu_gstop_s cn63xxp1;
+-	struct cvmx_ciu_gstop_s cn66xx;
+-	struct cvmx_ciu_gstop_s cn68xx;
+-	struct cvmx_ciu_gstop_s cn68xxp1;
+-	struct cvmx_ciu_gstop_s cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en0 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en0_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_intx_en0_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_intx_en0_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_intx_en0_cn38xx cn38xxp2;
+-	struct cvmx_ciu_intx_en0_cn30xx cn50xx;
+-	struct cvmx_ciu_intx_en0_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en0_cn52xx cn52xxp1;
+-	struct cvmx_ciu_intx_en0_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en0_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_en0_cn38xx cn58xx;
+-	struct cvmx_ciu_intx_en0_cn38xx cn58xxp1;
+-	struct cvmx_ciu_intx_en0_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en0_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en0_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en0_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en0_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en0_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en0_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en0_w1c_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en0_w1c_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en0_w1c_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en0_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en0_w1c_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en0_w1c_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en0_w1c_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en0_w1c_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en0_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en0_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en0_w1s_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en0_w1s_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en0_w1s_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en0_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en0_w1s_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en0_w1s_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en0_w1s_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en0_w1s_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en1 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en1_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t wdog:1;
+-#else
+-		uint64_t wdog:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_intx_en1_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t wdog:2;
+-#else
+-		uint64_t wdog:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_intx_en1_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_intx_en1_cn38xx cn38xxp2;
+-	struct cvmx_ciu_intx_en1_cn31xx cn50xx;
+-	struct cvmx_ciu_intx_en1_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en1_cn52xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} cn52xxp1;
+-	struct cvmx_ciu_intx_en1_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en1_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_en1_cn38xx cn58xx;
+-	struct cvmx_ciu_intx_en1_cn38xx cn58xxp1;
+-	struct cvmx_ciu_intx_en1_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en1_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en1_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en1_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en1_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en1_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en1_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en1_w1c_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en1_w1c_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en1_w1c_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en1_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en1_w1c_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en1_w1c_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en1_w1c_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en1_w1c_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en1_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en1_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en1_w1s_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en1_w1s_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en1_w1s_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en1_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en1_w1s_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en1_w1s_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en1_w1s_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en1_w1s_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_0 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_0_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn50xx;
+-	struct cvmx_ciu_intx_en4_0_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_0_cn52xx cn52xxp1;
+-	struct cvmx_ciu_intx_en4_0_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_0_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_en4_0_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_0_cn58xx cn58xxp1;
+-	struct cvmx_ciu_intx_en4_0_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_0_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en4_0_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_0_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_0_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_0_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_0_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_0_w1c_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_0_w1c_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_0_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_0_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_0_w1s_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_0_w1s_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t reserved_44_44:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t reserved_44_44:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_1 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_1_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t wdog:2;
+-#else
+-		uint64_t wdog:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn50xx;
+-	struct cvmx_ciu_intx_en4_1_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_1_cn52xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} cn52xxp1;
+-	struct cvmx_ciu_intx_en4_1_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_1_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_en4_1_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_1_cn58xx cn58xxp1;
+-	struct cvmx_ciu_intx_en4_1_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_1_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en4_1_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_1_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_1_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_1_w1c {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_1_w1c_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_1_w1c_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_1_w1c_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_en4_1_w1s {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_en4_1_w1s_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn63xx cn63xxp1;
+-	struct cvmx_ciu_intx_en4_1_w1s_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_en4_1_w1s_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_sum0 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_sum0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_sum0_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_intx_sum0_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_intx_sum0_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_intx_sum0_cn38xx cn38xxp2;
+-	struct cvmx_ciu_intx_sum0_cn30xx cn50xx;
+-	struct cvmx_ciu_intx_sum0_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_sum0_cn52xx cn52xxp1;
+-	struct cvmx_ciu_intx_sum0_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_sum0_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_sum0_cn38xx cn58xx;
+-	struct cvmx_ciu_intx_sum0_cn38xx cn58xxp1;
+-	struct cvmx_ciu_intx_sum0_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_sum0_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_sum0_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_sum0_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_sum0_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_intx_sum4 {
+-	uint64_t u64;
+-	struct cvmx_ciu_intx_sum4_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_intx_sum4_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t reserved_47_47:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn50xx;
+-	struct cvmx_ciu_intx_sum4_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_intx_sum4_cn52xx cn52xxp1;
+-	struct cvmx_ciu_intx_sum4_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_intx_sum4_cn56xx cn56xxp1;
+-	struct cvmx_ciu_intx_sum4_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_56_63:8;
+-		uint64_t timer:4;
+-		uint64_t key_zero:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t key_zero:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_56_63:8;
+-#endif
+-	} cn58xx;
+-	struct cvmx_ciu_intx_sum4_cn58xx cn58xxp1;
+-	struct cvmx_ciu_intx_sum4_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_intx_sum4_cn52xx cn63xx;
+-	struct cvmx_ciu_intx_sum4_cn52xx cn63xxp1;
+-	struct cvmx_ciu_intx_sum4_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_intx_sum4_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_int33_sum0 {
+-	uint64_t u64;
+-	struct cvmx_ciu_int33_sum0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_int33_sum0_s cn61xx;
+-	struct cvmx_ciu_int33_sum0_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t reserved_51_51:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_58:2;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_int33_sum0_cn63xx cn63xxp1;
+-	struct cvmx_ciu_int33_sum0_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t mii:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:2;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t reserved_57_57:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t mii:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_int33_sum0_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bootdma:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t powiq:1;
+-		uint64_t twsi2:1;
+-		uint64_t mpi:1;
+-		uint64_t pcm:1;
+-		uint64_t usb:1;
+-		uint64_t timer:4;
+-		uint64_t sum2:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t trace:1;
+-		uint64_t rml:1;
+-		uint64_t twsi:1;
+-		uint64_t wdog_sum:1;
+-		uint64_t pci_msi:4;
+-		uint64_t pci_int:4;
+-		uint64_t uart:2;
+-		uint64_t mbox:2;
+-		uint64_t gpio:16;
+-		uint64_t workq:16;
+-#else
+-		uint64_t workq:16;
+-		uint64_t gpio:16;
+-		uint64_t mbox:2;
+-		uint64_t uart:2;
+-		uint64_t pci_int:4;
+-		uint64_t pci_msi:4;
+-		uint64_t wdog_sum:1;
+-		uint64_t twsi:1;
+-		uint64_t rml:1;
+-		uint64_t trace:1;
+-		uint64_t gmx_drp:1;
+-		uint64_t reserved_49_49:1;
+-		uint64_t ipd_drp:1;
+-		uint64_t sum2:1;
+-		uint64_t timer:4;
+-		uint64_t usb:1;
+-		uint64_t pcm:1;
+-		uint64_t mpi:1;
+-		uint64_t twsi2:1;
+-		uint64_t powiq:1;
+-		uint64_t ipdppthr:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t bootdma:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_int_dbg_sel {
+-	uint64_t u64;
+-	struct cvmx_ciu_int_dbg_sel_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t sel:3;
+-		uint64_t reserved_10_15:6;
+-		uint64_t irq:2;
+-		uint64_t reserved_5_7:3;
+-		uint64_t pp:5;
+-#else
+-		uint64_t pp:5;
+-		uint64_t reserved_5_7:3;
+-		uint64_t irq:2;
+-		uint64_t reserved_10_15:6;
+-		uint64_t sel:3;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} s;
+-	struct cvmx_ciu_int_dbg_sel_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t sel:3;
+-		uint64_t reserved_10_15:6;
+-		uint64_t irq:2;
+-		uint64_t reserved_4_7:4;
+-		uint64_t pp:4;
+-#else
+-		uint64_t pp:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t irq:2;
+-		uint64_t reserved_10_15:6;
+-		uint64_t sel:3;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_int_dbg_sel_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t sel:3;
+-		uint64_t reserved_10_15:6;
+-		uint64_t irq:2;
+-		uint64_t reserved_3_7:5;
+-		uint64_t pp:3;
+-#else
+-		uint64_t pp:3;
+-		uint64_t reserved_3_7:5;
+-		uint64_t irq:2;
+-		uint64_t reserved_10_15:6;
+-		uint64_t sel:3;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_int_dbg_sel_cn61xx cn66xx;
+-	struct cvmx_ciu_int_dbg_sel_s cn68xx;
+-	struct cvmx_ciu_int_dbg_sel_s cn68xxp1;
+-	struct cvmx_ciu_int_dbg_sel_cn61xx cnf71xx;
+-};
+-
+-union cvmx_ciu_int_sum1 {
+-	uint64_t u64;
+-	struct cvmx_ciu_int_sum1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_int_sum1_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t wdog:1;
+-#else
+-		uint64_t wdog:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_int_sum1_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t wdog:2;
+-#else
+-		uint64_t wdog:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_int_sum1_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t wdog:16;
+-#else
+-		uint64_t wdog:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_int_sum1_cn38xx cn38xxp2;
+-	struct cvmx_ciu_int_sum1_cn31xx cn50xx;
+-	struct cvmx_ciu_int_sum1_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_20_63:44;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_20_63:44;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_int_sum1_cn52xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_19_63:45;
+-		uint64_t mii1:1;
+-		uint64_t usb1:1;
+-		uint64_t uart2:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t uart2:1;
+-		uint64_t usb1:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_19_63:45;
+-#endif
+-	} cn52xxp1;
+-	struct cvmx_ciu_int_sum1_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t wdog:12;
+-#else
+-		uint64_t wdog:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_int_sum1_cn56xx cn56xxp1;
+-	struct cvmx_ciu_int_sum1_cn38xx cn58xx;
+-	struct cvmx_ciu_int_sum1_cn38xx cn58xxp1;
+-	struct cvmx_ciu_int_sum1_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_int_sum1_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t srio1:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_6_17:12;
+-		uint64_t wdog:6;
+-#else
+-		uint64_t wdog:6;
+-		uint64_t reserved_6_17:12;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_45:9;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t srio1:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_62:6;
+-		uint64_t rst:1;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_int_sum1_cn63xx cn63xxp1;
+-	struct cvmx_ciu_int_sum1_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_int_sum1_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_37_46:10;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_46:10;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_mbox_clrx {
+-	uint64_t u64;
+-	struct cvmx_ciu_mbox_clrx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t bits:32;
+-#else
+-		uint64_t bits:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_mbox_clrx_s cn30xx;
+-	struct cvmx_ciu_mbox_clrx_s cn31xx;
+-	struct cvmx_ciu_mbox_clrx_s cn38xx;
+-	struct cvmx_ciu_mbox_clrx_s cn38xxp2;
+-	struct cvmx_ciu_mbox_clrx_s cn50xx;
+-	struct cvmx_ciu_mbox_clrx_s cn52xx;
+-	struct cvmx_ciu_mbox_clrx_s cn52xxp1;
+-	struct cvmx_ciu_mbox_clrx_s cn56xx;
+-	struct cvmx_ciu_mbox_clrx_s cn56xxp1;
+-	struct cvmx_ciu_mbox_clrx_s cn58xx;
+-	struct cvmx_ciu_mbox_clrx_s cn58xxp1;
+-	struct cvmx_ciu_mbox_clrx_s cn61xx;
+-	struct cvmx_ciu_mbox_clrx_s cn63xx;
+-	struct cvmx_ciu_mbox_clrx_s cn63xxp1;
+-	struct cvmx_ciu_mbox_clrx_s cn66xx;
+-	struct cvmx_ciu_mbox_clrx_s cn68xx;
+-	struct cvmx_ciu_mbox_clrx_s cn68xxp1;
+-	struct cvmx_ciu_mbox_clrx_s cnf71xx;
+-};
+-
+-union cvmx_ciu_mbox_setx {
+-	uint64_t u64;
+-	struct cvmx_ciu_mbox_setx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t bits:32;
+-#else
+-		uint64_t bits:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_mbox_setx_s cn30xx;
+-	struct cvmx_ciu_mbox_setx_s cn31xx;
+-	struct cvmx_ciu_mbox_setx_s cn38xx;
+-	struct cvmx_ciu_mbox_setx_s cn38xxp2;
+-	struct cvmx_ciu_mbox_setx_s cn50xx;
+-	struct cvmx_ciu_mbox_setx_s cn52xx;
+-	struct cvmx_ciu_mbox_setx_s cn52xxp1;
+-	struct cvmx_ciu_mbox_setx_s cn56xx;
+-	struct cvmx_ciu_mbox_setx_s cn56xxp1;
+-	struct cvmx_ciu_mbox_setx_s cn58xx;
+-	struct cvmx_ciu_mbox_setx_s cn58xxp1;
+-	struct cvmx_ciu_mbox_setx_s cn61xx;
+-	struct cvmx_ciu_mbox_setx_s cn63xx;
+-	struct cvmx_ciu_mbox_setx_s cn63xxp1;
+-	struct cvmx_ciu_mbox_setx_s cn66xx;
+-	struct cvmx_ciu_mbox_setx_s cn68xx;
+-	struct cvmx_ciu_mbox_setx_s cn68xxp1;
+-	struct cvmx_ciu_mbox_setx_s cnf71xx;
+-};
+-
+-union cvmx_ciu_nmi {
+-	uint64_t u64;
+-	struct cvmx_ciu_nmi_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t nmi:32;
+-#else
+-		uint64_t nmi:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_nmi_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t nmi:1;
+-#else
+-		uint64_t nmi:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_nmi_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t nmi:2;
+-#else
+-		uint64_t nmi:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_nmi_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t nmi:16;
+-#else
+-		uint64_t nmi:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_nmi_cn38xx cn38xxp2;
+-	struct cvmx_ciu_nmi_cn31xx cn50xx;
+-	struct cvmx_ciu_nmi_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t nmi:4;
+-#else
+-		uint64_t nmi:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_nmi_cn52xx cn52xxp1;
+-	struct cvmx_ciu_nmi_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t nmi:12;
+-#else
+-		uint64_t nmi:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_nmi_cn56xx cn56xxp1;
+-	struct cvmx_ciu_nmi_cn38xx cn58xx;
+-	struct cvmx_ciu_nmi_cn38xx cn58xxp1;
+-	struct cvmx_ciu_nmi_cn52xx cn61xx;
+-	struct cvmx_ciu_nmi_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t nmi:6;
+-#else
+-		uint64_t nmi:6;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_nmi_cn63xx cn63xxp1;
+-	struct cvmx_ciu_nmi_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t nmi:10;
+-#else
+-		uint64_t nmi:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_nmi_s cn68xx;
+-	struct cvmx_ciu_nmi_s cn68xxp1;
+-	struct cvmx_ciu_nmi_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_pci_inta {
+-	uint64_t u64;
+-	struct cvmx_ciu_pci_inta_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t intr:2;
+-#else
+-		uint64_t intr:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_ciu_pci_inta_s cn30xx;
+-	struct cvmx_ciu_pci_inta_s cn31xx;
+-	struct cvmx_ciu_pci_inta_s cn38xx;
+-	struct cvmx_ciu_pci_inta_s cn38xxp2;
+-	struct cvmx_ciu_pci_inta_s cn50xx;
+-	struct cvmx_ciu_pci_inta_s cn52xx;
+-	struct cvmx_ciu_pci_inta_s cn52xxp1;
+-	struct cvmx_ciu_pci_inta_s cn56xx;
+-	struct cvmx_ciu_pci_inta_s cn56xxp1;
+-	struct cvmx_ciu_pci_inta_s cn58xx;
+-	struct cvmx_ciu_pci_inta_s cn58xxp1;
+-	struct cvmx_ciu_pci_inta_s cn61xx;
+-	struct cvmx_ciu_pci_inta_s cn63xx;
+-	struct cvmx_ciu_pci_inta_s cn63xxp1;
+-	struct cvmx_ciu_pci_inta_s cn66xx;
+-	struct cvmx_ciu_pci_inta_s cn68xx;
+-	struct cvmx_ciu_pci_inta_s cn68xxp1;
+-	struct cvmx_ciu_pci_inta_s cnf71xx;
+-};
+-
+-union cvmx_ciu_pp_bist_stat {
+-	uint64_t u64;
+-	struct cvmx_ciu_pp_bist_stat_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t pp_bist:32;
+-#else
+-		uint64_t pp_bist:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_pp_bist_stat_s cn68xx;
+-	struct cvmx_ciu_pp_bist_stat_s cn68xxp1;
+-};
+-
+-union cvmx_ciu_pp_dbg {
+-	uint64_t u64;
+-	struct cvmx_ciu_pp_dbg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t ppdbg:32;
+-#else
+-		uint64_t ppdbg:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_pp_dbg_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t ppdbg:1;
+-#else
+-		uint64_t ppdbg:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_pp_dbg_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t ppdbg:2;
+-#else
+-		uint64_t ppdbg:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_pp_dbg_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t ppdbg:16;
+-#else
+-		uint64_t ppdbg:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_pp_dbg_cn38xx cn38xxp2;
+-	struct cvmx_ciu_pp_dbg_cn31xx cn50xx;
+-	struct cvmx_ciu_pp_dbg_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t ppdbg:4;
+-#else
+-		uint64_t ppdbg:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_pp_dbg_cn52xx cn52xxp1;
+-	struct cvmx_ciu_pp_dbg_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t ppdbg:12;
+-#else
+-		uint64_t ppdbg:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_pp_dbg_cn56xx cn56xxp1;
+-	struct cvmx_ciu_pp_dbg_cn38xx cn58xx;
+-	struct cvmx_ciu_pp_dbg_cn38xx cn58xxp1;
+-	struct cvmx_ciu_pp_dbg_cn52xx cn61xx;
+-	struct cvmx_ciu_pp_dbg_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t ppdbg:6;
+-#else
+-		uint64_t ppdbg:6;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_pp_dbg_cn63xx cn63xxp1;
+-	struct cvmx_ciu_pp_dbg_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t ppdbg:10;
+-#else
+-		uint64_t ppdbg:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_pp_dbg_s cn68xx;
+-	struct cvmx_ciu_pp_dbg_s cn68xxp1;
+-	struct cvmx_ciu_pp_dbg_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_pp_pokex {
+-	uint64_t u64;
+-	struct cvmx_ciu_pp_pokex_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t poke:64;
+-#else
+-		uint64_t poke:64;
+-#endif
+-	} s;
+-	struct cvmx_ciu_pp_pokex_s cn30xx;
+-	struct cvmx_ciu_pp_pokex_s cn31xx;
+-	struct cvmx_ciu_pp_pokex_s cn38xx;
+-	struct cvmx_ciu_pp_pokex_s cn38xxp2;
+-	struct cvmx_ciu_pp_pokex_s cn50xx;
+-	struct cvmx_ciu_pp_pokex_s cn52xx;
+-	struct cvmx_ciu_pp_pokex_s cn52xxp1;
+-	struct cvmx_ciu_pp_pokex_s cn56xx;
+-	struct cvmx_ciu_pp_pokex_s cn56xxp1;
+-	struct cvmx_ciu_pp_pokex_s cn58xx;
+-	struct cvmx_ciu_pp_pokex_s cn58xxp1;
+-	struct cvmx_ciu_pp_pokex_s cn61xx;
+-	struct cvmx_ciu_pp_pokex_s cn63xx;
+-	struct cvmx_ciu_pp_pokex_s cn63xxp1;
+-	struct cvmx_ciu_pp_pokex_s cn66xx;
+-	struct cvmx_ciu_pp_pokex_s cn68xx;
+-	struct cvmx_ciu_pp_pokex_s cn68xxp1;
+-	struct cvmx_ciu_pp_pokex_s cnf71xx;
+-};
+-
+-union cvmx_ciu_pp_rst {
+-	uint64_t u64;
+-	struct cvmx_ciu_pp_rst_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t rst:31;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:31;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_ciu_pp_rst_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_ciu_pp_rst_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t rst:1;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:1;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn31xx;
+-	struct cvmx_ciu_pp_rst_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t rst:15;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:15;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn38xx;
+-	struct cvmx_ciu_pp_rst_cn38xx cn38xxp2;
+-	struct cvmx_ciu_pp_rst_cn31xx cn50xx;
+-	struct cvmx_ciu_pp_rst_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t rst:3;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:3;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_pp_rst_cn52xx cn52xxp1;
+-	struct cvmx_ciu_pp_rst_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t rst:11;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:11;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_pp_rst_cn56xx cn56xxp1;
+-	struct cvmx_ciu_pp_rst_cn38xx cn58xx;
+-	struct cvmx_ciu_pp_rst_cn38xx cn58xxp1;
+-	struct cvmx_ciu_pp_rst_cn52xx cn61xx;
+-	struct cvmx_ciu_pp_rst_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t rst:5;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:5;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} cn63xx;
+-	struct cvmx_ciu_pp_rst_cn63xx cn63xxp1;
+-	struct cvmx_ciu_pp_rst_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t rst:9;
+-		uint64_t rst0:1;
+-#else
+-		uint64_t rst0:1;
+-		uint64_t rst:9;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_pp_rst_s cn68xx;
+-	struct cvmx_ciu_pp_rst_s cn68xxp1;
+-	struct cvmx_ciu_pp_rst_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_qlm0 {
+-	uint64_t u64;
+-	struct cvmx_ciu_qlm0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t g2bypass:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_32_39:8;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_39:8;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2bypass:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm0_s cn61xx;
+-	struct cvmx_ciu_qlm0_s cn63xx;
+-	struct cvmx_ciu_qlm0_cn63xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn63xxp1;
+-	struct cvmx_ciu_qlm0_s cn66xx;
+-	struct cvmx_ciu_qlm0_cn68xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn68xx;
+-	struct cvmx_ciu_qlm0_cn68xx cn68xxp1;
+-	struct cvmx_ciu_qlm0_s cnf71xx;
+-};
+-
+-union cvmx_ciu_qlm1 {
+-	uint64_t u64;
+-	struct cvmx_ciu_qlm1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t g2bypass:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_32_39:8;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_39:8;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2bypass:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm1_s cn61xx;
+-	struct cvmx_ciu_qlm1_s cn63xx;
+-	struct cvmx_ciu_qlm1_cn63xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn63xxp1;
+-	struct cvmx_ciu_qlm1_s cn66xx;
+-	struct cvmx_ciu_qlm1_s cn68xx;
+-	struct cvmx_ciu_qlm1_s cn68xxp1;
+-	struct cvmx_ciu_qlm1_s cnf71xx;
+-};
+-
+-union cvmx_ciu_qlm2 {
+-	uint64_t u64;
+-	struct cvmx_ciu_qlm2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t g2bypass:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_32_39:8;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_39:8;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2bypass:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm2_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_qlm2_cn61xx cn63xx;
+-	struct cvmx_ciu_qlm2_cn63xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:4;
+-		uint64_t reserved_20_30:11;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn63xxp1;
+-	struct cvmx_ciu_qlm2_cn61xx cn66xx;
+-	struct cvmx_ciu_qlm2_s cn68xx;
+-	struct cvmx_ciu_qlm2_s cn68xxp1;
+-	struct cvmx_ciu_qlm2_cn61xx cnf71xx;
+-};
+-
+-union cvmx_ciu_qlm3 {
+-	uint64_t u64;
+-	struct cvmx_ciu_qlm3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t g2bypass:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_32_39:8;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_39:8;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2bypass:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm3_s cn68xx;
+-	struct cvmx_ciu_qlm3_s cn68xxp1;
+-};
+-
+-union cvmx_ciu_qlm4 {
+-	uint64_t u64;
+-	struct cvmx_ciu_qlm4_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t g2bypass:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_32_39:8;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_4_7:4;
+-		uint64_t lane_en:4;
+-#else
+-		uint64_t lane_en:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t txmargin:5;
+-		uint64_t reserved_13_15:3;
+-		uint64_t txdeemph:5;
+-		uint64_t reserved_21_30:10;
+-		uint64_t txbypass:1;
+-		uint64_t reserved_32_39:8;
+-		uint64_t g2margin:5;
+-		uint64_t reserved_45_47:3;
+-		uint64_t g2deemph:5;
+-		uint64_t reserved_53_62:10;
+-		uint64_t g2bypass:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm4_s cn68xx;
+-	struct cvmx_ciu_qlm4_s cn68xxp1;
+-};
+ 
+-union cvmx_ciu_qlm_dcok {
++union cvmx_ciu_qlm {
+ 	uint64_t u64;
+-	struct cvmx_ciu_qlm_dcok_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t qlm_dcok:4;
+-#else
+-		uint64_t qlm_dcok:4;
+-		uint64_t reserved_4_63:60;
+-#endif
++	struct cvmx_ciu_qlm_s {
++		__BITFIELD_FIELD(uint64_t g2bypass:1,
++		__BITFIELD_FIELD(uint64_t reserved_53_62:10,
++		__BITFIELD_FIELD(uint64_t g2deemph:5,
++		__BITFIELD_FIELD(uint64_t reserved_45_47:3,
++		__BITFIELD_FIELD(uint64_t g2margin:5,
++		__BITFIELD_FIELD(uint64_t reserved_32_39:8,
++		__BITFIELD_FIELD(uint64_t txbypass:1,
++		__BITFIELD_FIELD(uint64_t reserved_21_30:10,
++		__BITFIELD_FIELD(uint64_t txdeemph:5,
++		__BITFIELD_FIELD(uint64_t reserved_13_15:3,
++		__BITFIELD_FIELD(uint64_t txmargin:5,
++		__BITFIELD_FIELD(uint64_t reserved_4_7:4,
++		__BITFIELD_FIELD(uint64_t lane_en:4,
++		;)))))))))))))
+ 	} s;
+-	struct cvmx_ciu_qlm_dcok_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t qlm_dcok:2;
+-#else
+-		uint64_t qlm_dcok:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_qlm_dcok_cn52xx cn52xxp1;
+-	struct cvmx_ciu_qlm_dcok_s cn56xx;
+-	struct cvmx_ciu_qlm_dcok_s cn56xxp1;
+ };
+ 
+ union cvmx_ciu_qlm_jtgc {
+ 	uint64_t u64;
+ 	struct cvmx_ciu_qlm_jtgc_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_17_63:47;
+-		uint64_t bypass_ext:1;
+-		uint64_t reserved_11_15:5;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_7_7:1;
+-		uint64_t mux_sel:3;
+-		uint64_t bypass:4;
+-#else
+-		uint64_t bypass:4;
+-		uint64_t mux_sel:3;
+-		uint64_t reserved_7_7:1;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_11_15:5;
+-		uint64_t bypass_ext:1;
+-		uint64_t reserved_17_63:47;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_17_63:47,
++		__BITFIELD_FIELD(uint64_t bypass_ext:1,
++		__BITFIELD_FIELD(uint64_t reserved_11_15:5,
++		__BITFIELD_FIELD(uint64_t clk_div:3,
++		__BITFIELD_FIELD(uint64_t reserved_7_7:1,
++		__BITFIELD_FIELD(uint64_t mux_sel:3,
++		__BITFIELD_FIELD(uint64_t bypass:4,
++		;)))))))
+ 	} s;
+-	struct cvmx_ciu_qlm_jtgc_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_11_63:53;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_5_7:3;
+-		uint64_t mux_sel:1;
+-		uint64_t reserved_2_3:2;
+-		uint64_t bypass:2;
+-#else
+-		uint64_t bypass:2;
+-		uint64_t reserved_2_3:2;
+-		uint64_t mux_sel:1;
+-		uint64_t reserved_5_7:3;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_11_63:53;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_qlm_jtgc_cn52xx cn52xxp1;
+-	struct cvmx_ciu_qlm_jtgc_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_11_63:53;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_6_7:2;
+-		uint64_t mux_sel:2;
+-		uint64_t bypass:4;
+-#else
+-		uint64_t bypass:4;
+-		uint64_t mux_sel:2;
+-		uint64_t reserved_6_7:2;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_11_63:53;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_qlm_jtgc_cn56xx cn56xxp1;
+-	struct cvmx_ciu_qlm_jtgc_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_11_63:53;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_6_7:2;
+-		uint64_t mux_sel:2;
+-		uint64_t reserved_3_3:1;
+-		uint64_t bypass:3;
+-#else
+-		uint64_t bypass:3;
+-		uint64_t reserved_3_3:1;
+-		uint64_t mux_sel:2;
+-		uint64_t reserved_6_7:2;
+-		uint64_t clk_div:3;
+-		uint64_t reserved_11_63:53;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_qlm_jtgc_cn61xx cn63xx;
+-	struct cvmx_ciu_qlm_jtgc_cn61xx cn63xxp1;
+-	struct cvmx_ciu_qlm_jtgc_cn61xx cn66xx;
+-	struct cvmx_ciu_qlm_jtgc_s cn68xx;
+-	struct cvmx_ciu_qlm_jtgc_s cn68xxp1;
+-	struct cvmx_ciu_qlm_jtgc_cn61xx cnf71xx;
+ };
+ 
+ union cvmx_ciu_qlm_jtgd {
+ 	uint64_t u64;
+ 	struct cvmx_ciu_qlm_jtgd_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t capture:1;
+-		uint64_t shift:1;
+-		uint64_t update:1;
+-		uint64_t reserved_45_60:16;
+-		uint64_t select:5;
+-		uint64_t reserved_37_39:3;
+-		uint64_t shft_cnt:5;
+-		uint64_t shft_reg:32;
+-#else
+-		uint64_t shft_reg:32;
+-		uint64_t shft_cnt:5;
+-		uint64_t reserved_37_39:3;
+-		uint64_t select:5;
+-		uint64_t reserved_45_60:16;
+-		uint64_t update:1;
+-		uint64_t shift:1;
+-		uint64_t capture:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_qlm_jtgd_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t capture:1;
+-		uint64_t shift:1;
+-		uint64_t update:1;
+-		uint64_t reserved_42_60:19;
+-		uint64_t select:2;
+-		uint64_t reserved_37_39:3;
+-		uint64_t shft_cnt:5;
+-		uint64_t shft_reg:32;
+-#else
+-		uint64_t shft_reg:32;
+-		uint64_t shft_cnt:5;
+-		uint64_t reserved_37_39:3;
+-		uint64_t select:2;
+-		uint64_t reserved_42_60:19;
+-		uint64_t update:1;
+-		uint64_t shift:1;
+-		uint64_t capture:1;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_qlm_jtgd_cn52xx cn52xxp1;
+-	struct cvmx_ciu_qlm_jtgd_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t capture:1;
+-		uint64_t shift:1;
+-		uint64_t update:1;
+-		uint64_t reserved_44_60:17;
+-		uint64_t select:4;
+-		uint64_t reserved_37_39:3;
+-		uint64_t shft_cnt:5;
+-		uint64_t shft_reg:32;
+-#else
+-		uint64_t shft_reg:32;
+-		uint64_t shft_cnt:5;
+-		uint64_t reserved_37_39:3;
+-		uint64_t select:4;
+-		uint64_t reserved_44_60:17;
+-		uint64_t update:1;
+-		uint64_t shift:1;
+-		uint64_t capture:1;
+-#endif
+-	} cn56xx;
+-	struct cvmx_ciu_qlm_jtgd_cn56xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t capture:1;
+-		uint64_t shift:1;
+-		uint64_t update:1;
+-		uint64_t reserved_37_60:24;
+-		uint64_t shft_cnt:5;
+-		uint64_t shft_reg:32;
+-#else
+-		uint64_t shft_reg:32;
+-		uint64_t shft_cnt:5;
+-		uint64_t reserved_37_60:24;
+-		uint64_t update:1;
+-		uint64_t shift:1;
+-		uint64_t capture:1;
+-#endif
+-	} cn56xxp1;
+-	struct cvmx_ciu_qlm_jtgd_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t capture:1;
+-		uint64_t shift:1;
+-		uint64_t update:1;
+-		uint64_t reserved_43_60:18;
+-		uint64_t select:3;
+-		uint64_t reserved_37_39:3;
+-		uint64_t shft_cnt:5;
+-		uint64_t shft_reg:32;
+-#else
+-		uint64_t shft_reg:32;
+-		uint64_t shft_cnt:5;
+-		uint64_t reserved_37_39:3;
+-		uint64_t select:3;
+-		uint64_t reserved_43_60:18;
+-		uint64_t update:1;
+-		uint64_t shift:1;
+-		uint64_t capture:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_qlm_jtgd_cn61xx cn63xx;
+-	struct cvmx_ciu_qlm_jtgd_cn61xx cn63xxp1;
+-	struct cvmx_ciu_qlm_jtgd_cn61xx cn66xx;
+-	struct cvmx_ciu_qlm_jtgd_s cn68xx;
+-	struct cvmx_ciu_qlm_jtgd_s cn68xxp1;
+-	struct cvmx_ciu_qlm_jtgd_cn61xx cnf71xx;
+-};
+-
+-union cvmx_ciu_soft_bist {
+-	uint64_t u64;
+-	struct cvmx_ciu_soft_bist_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_bist:1;
+-#else
+-		uint64_t soft_bist:1;
+-		uint64_t reserved_1_63:63;
+-#endif
++		__BITFIELD_FIELD(uint64_t capture:1,
++		__BITFIELD_FIELD(uint64_t shift:1,
++		__BITFIELD_FIELD(uint64_t update:1,
++		__BITFIELD_FIELD(uint64_t reserved_45_60:16,
++		__BITFIELD_FIELD(uint64_t select:5,
++		__BITFIELD_FIELD(uint64_t reserved_37_39:3,
++		__BITFIELD_FIELD(uint64_t shft_cnt:5,
++		__BITFIELD_FIELD(uint64_t shft_reg:32,
++		;))))))))
+ 	} s;
+-	struct cvmx_ciu_soft_bist_s cn30xx;
+-	struct cvmx_ciu_soft_bist_s cn31xx;
+-	struct cvmx_ciu_soft_bist_s cn38xx;
+-	struct cvmx_ciu_soft_bist_s cn38xxp2;
+-	struct cvmx_ciu_soft_bist_s cn50xx;
+-	struct cvmx_ciu_soft_bist_s cn52xx;
+-	struct cvmx_ciu_soft_bist_s cn52xxp1;
+-	struct cvmx_ciu_soft_bist_s cn56xx;
+-	struct cvmx_ciu_soft_bist_s cn56xxp1;
+-	struct cvmx_ciu_soft_bist_s cn58xx;
+-	struct cvmx_ciu_soft_bist_s cn58xxp1;
+-	struct cvmx_ciu_soft_bist_s cn61xx;
+-	struct cvmx_ciu_soft_bist_s cn63xx;
+-	struct cvmx_ciu_soft_bist_s cn63xxp1;
+-	struct cvmx_ciu_soft_bist_s cn66xx;
+-	struct cvmx_ciu_soft_bist_s cn68xx;
+-	struct cvmx_ciu_soft_bist_s cn68xxp1;
+-	struct cvmx_ciu_soft_bist_s cnf71xx;
+ };
+ 
+ union cvmx_ciu_soft_prst {
+ 	uint64_t u64;
+ 	struct cvmx_ciu_soft_prst_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t host64:1;
+-		uint64_t npi:1;
+-		uint64_t soft_prst:1;
+-#else
+-		uint64_t soft_prst:1;
+-		uint64_t npi:1;
+-		uint64_t host64:1;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} s;
+-	struct cvmx_ciu_soft_prst_s cn30xx;
+-	struct cvmx_ciu_soft_prst_s cn31xx;
+-	struct cvmx_ciu_soft_prst_s cn38xx;
+-	struct cvmx_ciu_soft_prst_s cn38xxp2;
+-	struct cvmx_ciu_soft_prst_s cn50xx;
+-	struct cvmx_ciu_soft_prst_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_prst:1;
+-#else
+-		uint64_t soft_prst:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn52xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn52xxp1;
+-	struct cvmx_ciu_soft_prst_cn52xx cn56xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn56xxp1;
+-	struct cvmx_ciu_soft_prst_s cn58xx;
+-	struct cvmx_ciu_soft_prst_s cn58xxp1;
+-	struct cvmx_ciu_soft_prst_cn52xx cn61xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn63xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn63xxp1;
+-	struct cvmx_ciu_soft_prst_cn52xx cn66xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn68xx;
+-	struct cvmx_ciu_soft_prst_cn52xx cn68xxp1;
+-	struct cvmx_ciu_soft_prst_cn52xx cnf71xx;
+-};
+-
+-union cvmx_ciu_soft_prst1 {
+-	uint64_t u64;
+-	struct cvmx_ciu_soft_prst1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_prst:1;
+-#else
+-		uint64_t soft_prst:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_ciu_soft_prst1_s cn52xx;
+-	struct cvmx_ciu_soft_prst1_s cn52xxp1;
+-	struct cvmx_ciu_soft_prst1_s cn56xx;
+-	struct cvmx_ciu_soft_prst1_s cn56xxp1;
+-	struct cvmx_ciu_soft_prst1_s cn61xx;
+-	struct cvmx_ciu_soft_prst1_s cn63xx;
+-	struct cvmx_ciu_soft_prst1_s cn63xxp1;
+-	struct cvmx_ciu_soft_prst1_s cn66xx;
+-	struct cvmx_ciu_soft_prst1_s cn68xx;
+-	struct cvmx_ciu_soft_prst1_s cn68xxp1;
+-	struct cvmx_ciu_soft_prst1_s cnf71xx;
+-};
+-
+-union cvmx_ciu_soft_prst2 {
+-	uint64_t u64;
+-	struct cvmx_ciu_soft_prst2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_prst:1;
+-#else
+-		uint64_t soft_prst:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_ciu_soft_prst2_s cn66xx;
+-};
+-
+-union cvmx_ciu_soft_prst3 {
+-	uint64_t u64;
+-	struct cvmx_ciu_soft_prst3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_prst:1;
+-#else
+-		uint64_t soft_prst:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_ciu_soft_prst3_s cn66xx;
+-};
+-
+-union cvmx_ciu_soft_rst {
+-	uint64_t u64;
+-	struct cvmx_ciu_soft_rst_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t soft_rst:1;
+-#else
+-		uint64_t soft_rst:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_ciu_soft_rst_s cn30xx;
+-	struct cvmx_ciu_soft_rst_s cn31xx;
+-	struct cvmx_ciu_soft_rst_s cn38xx;
+-	struct cvmx_ciu_soft_rst_s cn38xxp2;
+-	struct cvmx_ciu_soft_rst_s cn50xx;
+-	struct cvmx_ciu_soft_rst_s cn52xx;
+-	struct cvmx_ciu_soft_rst_s cn52xxp1;
+-	struct cvmx_ciu_soft_rst_s cn56xx;
+-	struct cvmx_ciu_soft_rst_s cn56xxp1;
+-	struct cvmx_ciu_soft_rst_s cn58xx;
+-	struct cvmx_ciu_soft_rst_s cn58xxp1;
+-	struct cvmx_ciu_soft_rst_s cn61xx;
+-	struct cvmx_ciu_soft_rst_s cn63xx;
+-	struct cvmx_ciu_soft_rst_s cn63xxp1;
+-	struct cvmx_ciu_soft_rst_s cn66xx;
+-	struct cvmx_ciu_soft_rst_s cn68xx;
+-	struct cvmx_ciu_soft_rst_s cn68xxp1;
+-	struct cvmx_ciu_soft_rst_s cnf71xx;
+-};
+-
+-union cvmx_ciu_sum1_iox_int {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum1_iox_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_3_63:61,
++		__BITFIELD_FIELD(uint64_t host64:1,
++		__BITFIELD_FIELD(uint64_t npi:1,
++		__BITFIELD_FIELD(uint64_t soft_prst:1,
++		;))))
+ 	} s;
+-	struct cvmx_ciu_sum1_iox_int_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum1_iox_int_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_sum1_iox_int_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_sum1_ppx_ip2 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum1_ppx_ip2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum1_ppx_ip2_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum1_ppx_ip2_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_sum1_ppx_ip2_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_sum1_ppx_ip3 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum1_ppx_ip3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum1_ppx_ip3_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum1_ppx_ip3_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_sum1_ppx_ip3_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_sum1_ppx_ip4 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum1_ppx_ip4_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum1_ppx_ip4_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_4_17:14;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_17:14;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_45:5;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum1_ppx_ip4_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t srio3:1;
+-		uint64_t srio2:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t srio0:1;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t agl:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agx1:1;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t dfa:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t zip:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t mii1:1;
+-		uint64_t reserved_10_17:8;
+-		uint64_t wdog:10;
+-#else
+-		uint64_t wdog:10;
+-		uint64_t reserved_10_17:8;
+-		uint64_t mii1:1;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t zip:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t dfa:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t agx1:1;
+-		uint64_t reserved_38_45:8;
+-		uint64_t agl:1;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t srio0:1;
+-		uint64_t reserved_51_51:1;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_55:3;
+-		uint64_t dfm:1;
+-		uint64_t reserved_57_59:3;
+-		uint64_t srio2:1;
+-		uint64_t srio3:1;
+-		uint64_t reserved_62_62:1;
+-		uint64_t rst:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_ciu_sum1_ppx_ip4_cnf71xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t rst:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t pem1:1;
+-		uint64_t pem0:1;
+-		uint64_t ptp:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t agx0:1;
+-		uint64_t dpi:1;
+-		uint64_t sli:1;
+-		uint64_t usb:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t key:1;
+-		uint64_t rad:1;
+-		uint64_t tim:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t pko:1;
+-		uint64_t pip:1;
+-		uint64_t ipd:1;
+-		uint64_t l2c:1;
+-		uint64_t pow:1;
+-		uint64_t fpa:1;
+-		uint64_t iob:1;
+-		uint64_t mio:1;
+-		uint64_t nand:1;
+-		uint64_t reserved_4_18:15;
+-		uint64_t wdog:4;
+-#else
+-		uint64_t wdog:4;
+-		uint64_t reserved_4_18:15;
+-		uint64_t nand:1;
+-		uint64_t mio:1;
+-		uint64_t iob:1;
+-		uint64_t fpa:1;
+-		uint64_t pow:1;
+-		uint64_t l2c:1;
+-		uint64_t ipd:1;
+-		uint64_t pip:1;
+-		uint64_t pko:1;
+-		uint64_t reserved_28_28:1;
+-		uint64_t tim:1;
+-		uint64_t rad:1;
+-		uint64_t key:1;
+-		uint64_t reserved_32_32:1;
+-		uint64_t usb:1;
+-		uint64_t sli:1;
+-		uint64_t dpi:1;
+-		uint64_t agx0:1;
+-		uint64_t reserved_37_39:3;
+-		uint64_t dpi_dma:1;
+-		uint64_t reserved_41_46:6;
+-		uint64_t ptp:1;
+-		uint64_t pem0:1;
+-		uint64_t pem1:1;
+-		uint64_t reserved_50_51:2;
+-		uint64_t lmc0:1;
+-		uint64_t reserved_53_62:10;
+-		uint64_t rst:1;
+-#endif
+-	} cnf71xx;
+-};
+-
+-union cvmx_ciu_sum2_iox_int {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum2_iox_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum2_iox_int_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum2_iox_int_cn61xx cn66xx;
+-	struct cvmx_ciu_sum2_iox_int_s cnf71xx;
+-};
+-
+-union cvmx_ciu_sum2_ppx_ip2 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum2_ppx_ip2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum2_ppx_ip2_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum2_ppx_ip2_cn61xx cn66xx;
+-	struct cvmx_ciu_sum2_ppx_ip2_s cnf71xx;
+-};
+-
+-union cvmx_ciu_sum2_ppx_ip3 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum2_ppx_ip3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum2_ppx_ip3_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum2_ppx_ip3_cn61xx cn66xx;
+-	struct cvmx_ciu_sum2_ppx_ip3_s cnf71xx;
+-};
+-
+-union cvmx_ciu_sum2_ppx_ip4 {
+-	uint64_t u64;
+-	struct cvmx_ciu_sum2_ppx_ip4_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t endor:2;
+-		uint64_t eoi:1;
+-		uint64_t reserved_10_11:2;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_11:2;
+-		uint64_t eoi:1;
+-		uint64_t endor:2;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_ciu_sum2_ppx_ip4_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t timer:6;
+-		uint64_t reserved_0_3:4;
+-#else
+-		uint64_t reserved_0_3:4;
+-		uint64_t timer:6;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_ciu_sum2_ppx_ip4_cn61xx cn66xx;
+-	struct cvmx_ciu_sum2_ppx_ip4_s cnf71xx;
+ };
+ 
+ union cvmx_ciu_timx {
+ 	uint64_t u64;
+ 	struct cvmx_ciu_timx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_37_63:27;
+-		uint64_t one_shot:1;
+-		uint64_t len:36;
+-#else
+-		uint64_t len:36;
+-		uint64_t one_shot:1;
+-		uint64_t reserved_37_63:27;
+-#endif
+-	} s;
+-	struct cvmx_ciu_timx_s cn30xx;
+-	struct cvmx_ciu_timx_s cn31xx;
+-	struct cvmx_ciu_timx_s cn38xx;
+-	struct cvmx_ciu_timx_s cn38xxp2;
+-	struct cvmx_ciu_timx_s cn50xx;
+-	struct cvmx_ciu_timx_s cn52xx;
+-	struct cvmx_ciu_timx_s cn52xxp1;
+-	struct cvmx_ciu_timx_s cn56xx;
+-	struct cvmx_ciu_timx_s cn56xxp1;
+-	struct cvmx_ciu_timx_s cn58xx;
+-	struct cvmx_ciu_timx_s cn58xxp1;
+-	struct cvmx_ciu_timx_s cn61xx;
+-	struct cvmx_ciu_timx_s cn63xx;
+-	struct cvmx_ciu_timx_s cn63xxp1;
+-	struct cvmx_ciu_timx_s cn66xx;
+-	struct cvmx_ciu_timx_s cn68xx;
+-	struct cvmx_ciu_timx_s cn68xxp1;
+-	struct cvmx_ciu_timx_s cnf71xx;
+-};
+-
+-union cvmx_ciu_tim_multi_cast {
+-	uint64_t u64;
+-	struct cvmx_ciu_tim_multi_cast_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t en:1;
+-#else
+-		uint64_t en:1;
+-		uint64_t reserved_1_63:63;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_37_63:27,
++		__BITFIELD_FIELD(uint64_t one_shot:1,
++		__BITFIELD_FIELD(uint64_t len:36,
++		;)))
+ 	} s;
+-	struct cvmx_ciu_tim_multi_cast_s cn61xx;
+-	struct cvmx_ciu_tim_multi_cast_s cn66xx;
+-	struct cvmx_ciu_tim_multi_cast_s cnf71xx;
+ };
+ 
+ union cvmx_ciu_wdogx {
+ 	uint64_t u64;
+ 	struct cvmx_ciu_wdogx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_46_63:18;
+-		uint64_t gstopen:1;
+-		uint64_t dstop:1;
+-		uint64_t cnt:24;
+-		uint64_t len:16;
+-		uint64_t state:2;
+-		uint64_t mode:2;
+-#else
+-		uint64_t mode:2;
+-		uint64_t state:2;
+-		uint64_t len:16;
+-		uint64_t cnt:24;
+-		uint64_t dstop:1;
+-		uint64_t gstopen:1;
+-		uint64_t reserved_46_63:18;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_46_63:18,
++		__BITFIELD_FIELD(uint64_t gstopen:1,
++		__BITFIELD_FIELD(uint64_t dstop:1,
++		__BITFIELD_FIELD(uint64_t cnt:24,
++		__BITFIELD_FIELD(uint64_t len:16,
++		__BITFIELD_FIELD(uint64_t state:2,
++		__BITFIELD_FIELD(uint64_t mode:2,
++		;)))))))
+ 	} s;
+-	struct cvmx_ciu_wdogx_s cn30xx;
+-	struct cvmx_ciu_wdogx_s cn31xx;
+-	struct cvmx_ciu_wdogx_s cn38xx;
+-	struct cvmx_ciu_wdogx_s cn38xxp2;
+-	struct cvmx_ciu_wdogx_s cn50xx;
+-	struct cvmx_ciu_wdogx_s cn52xx;
+-	struct cvmx_ciu_wdogx_s cn52xxp1;
+-	struct cvmx_ciu_wdogx_s cn56xx;
+-	struct cvmx_ciu_wdogx_s cn56xxp1;
+-	struct cvmx_ciu_wdogx_s cn58xx;
+-	struct cvmx_ciu_wdogx_s cn58xxp1;
+-	struct cvmx_ciu_wdogx_s cn61xx;
+-	struct cvmx_ciu_wdogx_s cn63xx;
+-	struct cvmx_ciu_wdogx_s cn63xxp1;
+-	struct cvmx_ciu_wdogx_s cn66xx;
+-	struct cvmx_ciu_wdogx_s cn68xx;
+-	struct cvmx_ciu_wdogx_s cn68xxp1;
+-	struct cvmx_ciu_wdogx_s cnf71xx;
+ };
+ 
+-#endif
++#endif /* __CVMX_CIU_DEFS_H__ */
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+index 87ba86b..f199ec7 100644
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -1239,14 +1239,14 @@ static int __cvmx_pcie_rc_initialize_gen2(int pcie_port)
+ 	/* CN63XX Pass 1.0 errata G-14395 requires the QLM De-emphasis be programmed */
+ 	if (OCTEON_IS_MODEL(OCTEON_CN63XX_PASS1_0)) {
+ 		if (pcie_port) {
+-			union cvmx_ciu_qlm1 ciu_qlm;
++			union cvmx_ciu_qlm ciu_qlm;
+ 			ciu_qlm.u64 = cvmx_read_csr(CVMX_CIU_QLM1);
+ 			ciu_qlm.s.txbypass = 1;
+ 			ciu_qlm.s.txdeemph = 5;
+ 			ciu_qlm.s.txmargin = 0x17;
+ 			cvmx_write_csr(CVMX_CIU_QLM1, ciu_qlm.u64);
+ 		} else {
+-			union cvmx_ciu_qlm0 ciu_qlm;
++			union cvmx_ciu_qlm ciu_qlm;
+ 			ciu_qlm.u64 = cvmx_read_csr(CVMX_CIU_QLM0);
+ 			ciu_qlm.s.txbypass = 1;
+ 			ciu_qlm.s.txdeemph = 5;
+-- 
+2.1.4

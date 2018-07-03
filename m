@@ -1,54 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 21:26:57 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:40564 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994061AbeGCT0vWszbt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Jul 2018 21:26:51 +0200
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 1F29DBB43B;
-        Tue,  3 Jul 2018 19:26:39 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id C55FC111CBA2;
-        Tue,  3 Jul 2018 19:26:35 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Tue,  3 Jul 2018 21:26:38 +0200 (CEST)
-Date:   Tue, 3 Jul 2018 21:26:35 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>, rostedt@goodmis.org,
-        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180703192634.GA32223@redhat.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180702160158.GD65296@linux.vnet.ibm.com>
- <ac5ab301-7df6-90fb-748b-3dc4624ea3c4@linux.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 21:32:39 +0200 (CEST)
+Received: from mail-oi0-f66.google.com ([209.85.218.66]:36060 "EHLO
+        mail-oi0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994585AbeGCTcbv6QQt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jul 2018 21:32:31 +0200
+Received: by mail-oi0-f66.google.com with SMTP id r16-v6so6146240oie.3;
+        Tue, 03 Jul 2018 12:32:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gIGN36IUEMCStOLlmFeCJzWbXLac1ZeWJE7alWOPrVM=;
+        b=AU933zZkdetXtQpOPAuo+84nlih/9QiptaMSNnCyAG1OaG/i1LuJNjIs4bjhUIr/fM
+         u9sCzrXujFR9BahGXB9xJim7b8dUccRriguh86FZ+aHajY732Sm3EjjUqW9Sjv68Wx1M
+         AhHmtz8ysbXKkA2phe3yzL4uZF0XesJYCXg/kqV4YpGE7l/xREh/U0VVssIBe87Bw/4i
+         bnCiae6Oa1qTyT8J6DXgbvEDNvPpQQ/rZDU+wQAtFlfjHubQOeLIA2auxp4W+c2krNRC
+         ksxFIMcOPZERGt43wAO+ZJX9vDyz9DJ/yqrhSQfw51AqTgxFwiO5Yki3xdGTVPSmAFgD
+         F3UA==
+X-Gm-Message-State: APt69E1/BQnike9HVA0q3TyFoFrtJ0LWZ5Il01Tbq1ndxuSwnL3ML85q
+        zN25Xx+0al9zpHKuv/fecyRIqPOpAHjI5FFZE14=
+X-Google-Smtp-Source: AAOMgpeqDeuJ+WX9XvzawN3Ed6bH+RnsqAvEhFjV63D/CkiH0FZVbN3GAo7idsvKNs4g7zvEf6awDDiWsmRn/cYrVE0=
+X-Received: by 2002:aca:5e07:: with SMTP id s7-v6mr22819060oib.353.1530646345795;
+ Tue, 03 Jul 2018 12:32:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac5ab301-7df6-90fb-748b-3dc4624ea3c4@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Tue, 03 Jul 2018 19:26:39 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Tue, 03 Jul 2018 19:26:39 +0000 (UTC) for IP:'10.11.54.3' DOMAIN:'int-mx03.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
-Return-Path: <oleg@redhat.com>
+References: <20180703123214.23090-1-paul@crapouillou.net>
+In-Reply-To: <20180703123214.23090-1-paul@crapouillou.net>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Tue, 3 Jul 2018 21:32:13 +0200
+Message-ID: <CA+7wUsykjQkSHshNNVJaZJ4d_U9Q4fhaoRaNOTHhjoj43xRPLg@mail.gmail.com>
+Subject: Re: [PATCH 00/14] dma-jz4780 improvements
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     vkoul@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        dansilsby@gmail.com, dmaengine@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64589
+X-archive-position: 64590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,17 +61,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/03, Ravi Bangoria wrote:
+On Tue, Jul 3, 2018 at 2:32 PM Paul Cercueil <paul@crapouillou.net> wrote:
 >
-> Now about adding ref_ctr_offset into uprobe_consumer. Actually, I
-> didn't want to change the uprobe_consumer definition because it's
-> already exported and tools like systemtap are using it.
+> Hi,
+>
+> This set of patches by myself and Daniel extends the dma-jz4780 driver
+> to support other SoCs (JZ4770, JZ4740, JZ4725B).
+>
+> Some fixes are also included, for proper residue reporting, which fixes
+> errors with ALSA.
+>
+> Finally, the last two patches update the devicetree bindings for the
+> JZ4780 SoC and add a binding for the JZ4770 SoC.
+>
+> This patchset was tested on JZ4780, JZ4770 and JZ4725B, but was not tested
+> on the JZ4740, so it would be fantastic if somebody could test it there.
 
-So what? Yes, the out-of-tree modules should be updated, but this doesn't
-mean we can add the new features.
+For the entire series, everything works as expected on JZ4780 (Creator
+CI20), including reading from sdcard.
 
-And, speaking of systemtap, it already has to do build-time checks to verify
-that uprobe_consumer->ret_handler member exists. So it will need another
-STAPCONF_INODE_REFCNT and that is all.
+Tested-by: Mathieu Malaterre <malat@debian.org>
 
-Oleg.
+> Regards,
+> -Paul
+>

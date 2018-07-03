@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 08:29:52 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54972 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992869AbeGCG3mkIjWh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jul 2018 08:29:42 +0200
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w636T6Rq108529
-        for <linux-mips@linux-mips.org>; Tue, 3 Jul 2018 02:29:40 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2jyya3rrr9-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 09:44:24 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59882 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993890AbeGCHoR6XwAZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jul 2018 09:44:17 +0200
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w637iBBY093506
+        for <linux-mips@linux-mips.org>; Tue, 3 Jul 2018 03:44:17 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2k02ec5vak-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 03 Jul 2018 02:29:40 -0400
+        for <linux-mips@linux-mips.org>; Tue, 03 Jul 2018 03:44:15 -0400
 Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Tue, 3 Jul 2018 07:29:37 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 3 Jul 2018 08:44:08 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 3 Jul 2018 07:29:31 +0100
+        Tue, 3 Jul 2018 08:44:03 +0100
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w636TU2p43516074
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w637i2CL22085716
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 3 Jul 2018 06:29:31 GMT
+        Tue, 3 Jul 2018 07:44:02 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DB654AE051;
-        Tue,  3 Jul 2018 09:29:33 +0100 (BST)
+        by IMSVA (Postfix) with ESMTP id 83884AE053;
+        Tue,  3 Jul 2018 10:44:05 +0100 (BST)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9122BAE045;
-        Tue,  3 Jul 2018 09:29:30 +0100 (BST)
+        by IMSVA (Postfix) with ESMTP id 57CD9AE045;
+        Tue,  3 Jul 2018 10:44:02 +0100 (BST)
 Received: from [9.124.31.159] (unknown [9.124.31.159])
         by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue,  3 Jul 2018 09:29:30 +0100 (BST)
+        Tue,  3 Jul 2018 10:44:02 +0100 (BST)
 From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
  count (semaphore)
 To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc:     oleg@redhat.com, rostedt@goodmis.org, mhiramat@kernel.org,
-        peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net,
+Cc:     Oleg Nesterov <oleg@redhat.com>, rostedt@goodmis.org,
+        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, corbet@lwn.net,
         linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
         alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
@@ -46,32 +47,36 @@ Cc:     oleg@redhat.com, rostedt@goodmis.org, mhiramat@kernel.org,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
  <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180702160158.GD65296@linux.vnet.ibm.com>
-Date:   Tue, 3 Jul 2018 11:59:26 +0530
+ <20180701210935.GA14404@redhat.com>
+ <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
+ <20180702180156.GA31400@redhat.com>
+ <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
+ <20180703061612.GG65296@linux.vnet.ibm.com>
+Date:   Tue, 3 Jul 2018 13:13:58 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.8.0
 MIME-Version: 1.0
-In-Reply-To: <20180702160158.GD65296@linux.vnet.ibm.com>
+In-Reply-To: <20180703061612.GG65296@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 18070306-4275-0000-0000-000002948B95
+x-cbid: 18070307-0028-0000-0000-000002D79B81
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18070306-4276-0000-0000-0000379C085D
-Message-Id: <ac5ab301-7df6-90fb-748b-3dc4624ea3c4@linux.ibm.com>
+x-cbparentid: 18070307-0029-0000-0000-0000238F1B17
+Message-Id: <c21db380-7dc0-2165-8616-8dcb519aa787@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-03_03:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807030075
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807030089
 Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64559
+X-archive-position: 64560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,112 +95,110 @@ X-list: linux-mips
 
 Hi Srikar,
 
-On 07/02/2018 09:31 PM, Srikar Dronamraju wrote:
->> Implement the reference counter logic in core uprobe. User will be
->> able to use it from trace_uprobe as well as from kernel module. New
->> trace_uprobe definition with reference counter will now be:
+On 07/03/2018 11:46 AM, Srikar Dronamraju wrote:
+>> Current approach:
 >>
->>     <path>:<offset>[(ref_ctr_offset)]
+>>     ------------
+>>     register_for_each_vma() / uprobe_mmap()
+>>       install_breakpoint()
+>>         uprobe_write_opcode() {
+>>                 if (instruction is not already patched) {
+>>                         /* Gets called only _once_. */
+>>                         increment the reference counter;
+>>                         patch the instruction;
+>>                 }
+>>         }
+>>     ------------
 >>
->> where ref_ctr_offset is an optional field. For kernel module, new
->> variant of uprobe_register() has been introduced:
->>
->>     uprobe_register_refctr(inode, offset, ref_ctr_offset, consumer)
->>
 > 
-> Sorry for bringing this again, but I would actually think the ref_ctr is
-> a consumer property. i.e the ref_ctr_offset should be part of
-> uprobe_consumer.
-
-
-I agree that reference counter is a consumer property and that was the
-main reason my initial draft was to change trace_uprobe. But there were
-couple of issues with that approach too. I've already mentioned few of
-them here: https://lkml.org/lkml/2018/6/6/129. Apart from these, if I
-do it inside trace_uprobe, kernel module won't have a way to use
-reference counter.
-
-Now about adding ref_ctr_offset into uprobe_consumer. Actually, I
-didn't want to change the uprobe_consumer definition because it's
-already exported and tools like systemtap are using it. And thus, I
-haven't explored how difficult or easy it will be to implement it that
-way.
-
-
+> Lets say a user just installs a breakpoint which is part of USDT (using
+> either a trace or perf (or some other utility) 
+> Since the semaphore is not updated, it never hits the probe.
+> This is correct.
 > 
-> The advantages of doing that would be
-> 1. Dont need to expose uprobe structure and just update our
-> uprobe_consumer which is already an exported structure.
-> - Exporting uprobe structure would expose some of our internal
->   implementation details, basically reduce the freedom of changing stuff
->   internally.
-
-
-I agree. We will loose the freedom to change stuff by exporting uprobe.
-
-
-> - we came up with uprobe_arch for the parts that we wanted to expose
->   to archs. exposing uprobe and uprobe_arch looks weird.
-
-
-Hmm, how about this ...
-
-  set_swbp(arch_uprobe, ...) {
-    uprobe_write_opcode(arch_uprobe, ...) {
-      uprobe = container_of(arch_uprobe);
-      ...
-    }
-  }
-
-Let me think on this. If this works, I won't need to export struct uprobe
-outside.
-
-
+> Now he toggles the semaphore and places a probe at the same spot using
+> systemtap or bcc.
+> The probes will now be active and we see hits.
+> This is also correct.
 > 
-> 2. ref_ctr_offset is necessarily a consumer property, its not a uprobe
-> property at all.
+> If the user toggles the semaphore or deletes the probe using
+> systemtap/bcc. The probes will still be active.
+> Since the reference count is removed on the last consumer deletion. No?
+> This may be wrong because, we may be unnecessarily hitting the probes.
 
 
-I agree.
+I'm not sure if I get your concerns but let me try to explain what happens
+in such cases. please let me know if I misunderstood your point.
+
+1. Install a probe using perf.
+  # ./perf probe sdt_tick:loop2
+
+  This does not do anything. Just creates an entry in trace_uprobe.
+
+2. Start record using perf:
+  # ./perf record -a -e sdt_tick:loop2
+
+  This will call uprobe_register_refctr(inode, offfset, ref_ctr_offset)
+  and will create an object of struct uprobe.
+
+3. Start target process
+  # ./tick
+
+  When we start 'tick', kernel will load the binary and start creating
+  vmas, which will basically call uprobe_mmap(). First vma will be of
+  text section and thus instruction will be patched. But vma holding
+  reference counter is not present yet and thus the uprobe will be
+  added to delayed_uprobe_list. Now kernel will map the data section
+  holding reference counter and uprobe_mmap() will check for any
+  delayed_uprobe. It will find the uprobe and thus it will increment
+  the reference counter.
+
+  So, Reference counter = 1, instruction is patched with trap.
+
+4. For simplicity, I'm using kernel module instead of systemtap / bcc.
+   User loads a kernel module that registers a probe on the same uprobe
+   by calling uprobe_register_refctr(inode, offset, ref_ctr_offset).
+
+  # insmod test-sdt.ko
+
+  The sequence of function call here will be:
+    uprobe_register_refctr()
+      register_for_each_vma()
+        install_breakpoint()
+          set_swbp()
+            uprobe_write_opcode()
+
+  But uprobe_write_opcode will find instruction is already patched and
+  thus return without doing anything.
+
+  So, Reference counter = 1, instruction is patched.
+
+5. Let's say user kills perf record started in step 2. Function call
+   sequence here will be:
+
+     uprobe_unregister()
+       register_for_each_vma() {
+         if (!filter_chain())
+            remove_breakpoint();
+       }
+
+   Here filter_chain return true because other consumer is active on the
+   same uprobe. so uprobe_unregister() will return without doing anything.
+
+   So, Reference counter = 1, instruction is patched.
+
+6. User unloads the kernel module.
+   # rmmod test-sdt.ko
+
+   Same function sequence as step 5 but this time filter_chain() will
+   return false because there are no consumer left. And thus
+   remove_breakpoint() will get called which will reset instruction and
+   decrement the counter.
+
+  So, Reference counter = 0, instruction is reset.
 
 
-> 
-> 3. We dont need to change/add new uprobe_register functions.
-
-
-Quite possible. I need to explore on that.
-
-
-> 
-> The way I look at it is.
-> 
-> Based on the ref_ctr_offset field in consumer, we update_ref_ctr()
-> around install_breakpoint/remove_breakpoint.
-> 
->> +static int delayed_uprobe_add(struct uprobe *uprobe, struct mm_struct *mm)
->> +{
->> +	struct delayed_uprobe *du;
->> +
->> +	if (delayed_uprobe_check(uprobe, mm))
->> +		return 0;
->> +
->> +	du  = kzalloc(sizeof(*du), GFP_KERNEL);
->> +	if (!du)
->> +		return -ENOMEM;
->> +
->> +	du->uprobe = uprobe;
->> +	du->mm = mm;
->> +	list_add(&du->list, &delayed_uprobe_list);
->> +	return 0;
->> +}
->> +
-> 
-> If I understood the delayed_uprobe stuff, its when we could insert a
-> breakpoint but the vma that has the ref_ctr_offset is not loaded. Is
-> that correct?
-
-
-That's correct.
+Does this explain your concerns?
 
 Thanks,
 Ravi

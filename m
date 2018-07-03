@@ -1,34 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 14:36:14 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36528 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994640AbeGCMcpfJ24z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jul 2018 14:32:45 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 14/14] MIPS: JZ4770: DTS: Add DMA nodes
-Date:   Tue,  3 Jul 2018 14:32:14 +0200
-Message-Id: <20180703123214.23090-15-paul@crapouillou.net>
-In-Reply-To: <20180703123214.23090-1-paul@crapouillou.net>
-References: <20180703123214.23090-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1530621165; bh=C807AJhPGWsu5UJSfOF6v4vXjEyRG82nlyRkvUXCRQs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=OZIPt2NkoQ9xaNz5iqPpl8z941SOq/+rcCoMZBAlpFmNcd9yCSMG2a6QClbfvbZc7SFi3Jw4XDUWUbEKT028ZUttXyrjowFSAyp3sW1+d5x3YxIFHWzHJvIXhxj4Ewf8JX9YIJo2h7MpXmBQuLUFEC31TgTeNnn4cp83LOnNqks=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 18:37:08 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:44658 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994585AbeGCQg4Spv0y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Jul 2018 18:36:56 +0200
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id D29424078B89;
+        Tue,  3 Jul 2018 16:36:49 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 30CF71C640;
+        Tue,  3 Jul 2018 16:36:46 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Tue,  3 Jul 2018 18:36:49 +0200 (CEST)
+Date:   Tue, 3 Jul 2018 18:36:45 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, corbet@lwn.net,
+        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
+ count (semaphore)
+Message-ID: <20180703163645.GA23144@redhat.com>
+References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
+ <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
+ <20180701210935.GA14404@redhat.com>
+ <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
+ <20180702180156.GA31400@redhat.com>
+ <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 03 Jul 2018 16:36:49 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 03 Jul 2018 16:36:49 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64578
+X-archive-position: 64579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,55 +63,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the two devicetree nodes for the two DMA cores of the JZ4770 SoC,
-disabled by default, as currently there are no clients for the DMA
-driver (until the MMC driver and/or others get a devicetree node).
+On 07/03, Ravi Bangoria wrote:
+>
+> Ok let me explain the difference.
+>
+> Current approach:
+>
+>     ------------
+>     register_for_each_vma() / uprobe_mmap()
+>       install_breakpoint()
+>         uprobe_write_opcode() {
+>                 if (instruction is not already patched) {
+>                         /* Gets called only _once_. */
+>                         increment the reference counter;
+>                         patch the instruction;
+>                 }
+>         }
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- arch/mips/boot/dts/ingenic/jz4770.dtsi | 30 ++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+Yes I see. And I am not sure this all is correct. And I still hope we can do
+something better, I'll write another email.
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-index 7c2804f3f5f1..fda17beeb08b 100644
---- a/arch/mips/boot/dts/ingenic/jz4770.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-@@ -196,6 +196,36 @@
- 		status = "disabled";
- 	};
- 
-+	dmac0: jz4770-dma@13420000 {
-+		compatible = "ingenic,jz4770-dma";
-+		reg = <0x13420000 0xC0
-+		       0x13420300 0x20>;
-+
-+		#dma-cells = <1>;
-+
-+		clocks = <&cgu JZ4770_CLK_DMA>;
-+		interrupt-parent = <&intc>;
-+		interrupts = <24>;
-+
-+		/* Disable dmac0 until we have something that uses it */
-+		status = "disabled";
-+	};
-+
-+	dmac1: jz4770-dma@13420100 {
-+		compatible = "ingenic,jz4770-dma";
-+		reg = <0x13420100 0xC0
-+		       0x13420400 0x20>;
-+
-+		#dma-cells = <1>;
-+
-+		clocks = <&cgu JZ4770_CLK_DMA>;
-+		interrupt-parent = <&intc>;
-+		interrupts = <23>;
-+
-+		/* Disable dmac1 until we have something that uses it */
-+		status = "disabled";
-+	};
-+
- 	uhc: uhc@13430000 {
- 		compatible = "generic-ohci";
- 		reg = <0x13430000 0x1000>;
--- 
-2.18.0
+For now, let's discuss your current approach.
+
+> Now, if I put it inside install_breakpoint():
+>
+>     ------------
+>     uprobe_register()
+>       register_for_each_vma()
+>         install_breakpoint() {
+>                 /* Called _for each consumer_ */
+
+How so? it is not called for each consumer. I think you misread this code.
+
+>                 increment the reference counter _once_;
+>                 uprobe_write_opcode()
+> 		...
+>         }
+
+So. I meant that you can move the _same_ logic into install_breakpoint() and
+remove_breakpoint(). And note that ref_ctr_updated in uprobe_write_opcode() is
+only needed because it can retry the fault.
+
+IOW, you can simply do update_ref_ctr(is_register => 1) at the start of
+install_breakpoint(), and update_ref_ctr(0) in remove_breakpoint(), there are
+no other callers of uprobe_write_opcode(). To clarify, it is indirectly called
+by set_swbp() and set_orig_insn(), but this doesn't matter.
+
+Or you can kill update_ref_ctr() and (roughly) do
+
+	rc_vma = find_ref_ctr_vma(...);
+	if (rc_vma)
+		__update_ref_ctr(..., 1);
+	else
+		delayed_uprobe_add(...);
+
+at the start of install_breakpoint() and
+
+	rc_vma = find_ref_ctr_vma(...);
+	if (rc_vma)
+		__update_ref_ctr(..., -1);
+	delayed_uprobe_remove(...);
+
+in remove_breakpoint().
+
+
+>     uprobe_mmap()
+>       install_breakpoint() {
+>                 increment the reference counter _for each consumer_;
+
+Again, I do not understand where do you see the "for each consumer" thing.
+
+>                 uprobe_write_opcode()
+
+In short. There is a 1:1 relationship between uprobe_write_opcode(is_register => 1)
+and install_breakpoint(), and between uprobe_write_opcode(is_register => 0) and
+remove_breakpoint(). Whatever uprobe_write_opcode() can do if is_register == 1 can be
+done in install_breakpoint(), the same for is_register == 0 and remove_breakpont().
+
+What have I missed?
+
+Oleg.

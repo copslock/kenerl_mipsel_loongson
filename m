@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 19:26:02 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:51408 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 20:23:32 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:38394 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994585AbeGCRZxNIpw- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Jul 2018 19:25:53 +0200
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        id S23994587AbeGCSXZBeo2T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Jul 2018 20:23:25 +0200
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 15C8081ACF31;
-        Tue,  3 Jul 2018 17:25:47 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4C59CC324;
+        Tue,  3 Jul 2018 18:23:18 +0000 (UTC)
 Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 2981C178B1;
-        Tue,  3 Jul 2018 17:25:44 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with SMTP id F2DAB2156880;
+        Tue,  3 Jul 2018 18:23:14 +0000 (UTC)
 Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Tue,  3 Jul 2018 19:25:46 +0200 (CEST)
-Date:   Tue, 3 Jul 2018 19:25:43 +0200
+        oleg@redhat.com; Tue,  3 Jul 2018 20:23:18 +0200 (CEST)
+Date:   Tue, 3 Jul 2018 20:23:14 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
@@ -27,27 +27,27 @@ Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
         linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
 Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
  count (semaphore)
-Message-ID: <20180703172543.GC23144@redhat.com>
+Message-ID: <20180703182313.GA26120@redhat.com>
 References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
  <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
  <20180701210935.GA14404@redhat.com>
  <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
  <20180702180156.GA31400@redhat.com>
  <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
- <20180703163645.GA23144@redhat.com>
+ <20180703171255.GB23144@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180703163645.GA23144@redhat.com>
+In-Reply-To: <20180703171255.GB23144@redhat.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.8]); Tue, 03 Jul 2018 17:25:47 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.8]); Tue, 03 Jul 2018 17:25:47 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Tue, 03 Jul 2018 18:23:18 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.1]); Tue, 03 Jul 2018 18:23:18 +0000 (UTC) for IP:'10.11.54.6' DOMAIN:'int-mx06.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
 Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64582
+X-archive-position: 64583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,20 +64,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+forgot to mention...
+
+Of course, I am not sure that UPROBE_KERN_CTR can actually work, there are a lot
+of details. But if it can, then we can also make ->ref_ctr_offset a consumer property.
+
 On 07/03, Oleg Nesterov wrote:
 >
-> In short. There is a 1:1 relationship between uprobe_write_opcode(is_register => 1)
-> and install_breakpoint(), and between uprobe_write_opcode(is_register => 0) and
-> remove_breakpoint(). Whatever uprobe_write_opcode() can do if is_register == 1 can be
-> done in install_breakpoint(), the same for is_register == 0 and remove_breakpont().
+> On 07/03, Ravi Bangoria wrote:
+> >
+> > > OK, and how exactly they update the counter? I mean, can we assume that, say,
+> > > bcc or systemtap can only increment or decrement it?
+> >
+> > I don't think we can assume anything here because this is all in user's
+> > control. User can even manually go and update the counter by directly
+> > hooking into the memory.
 >
-> What have I missed?
-
-Ah. I missed the fact that uprobe_write_opcode() doesn't do update_ref_ctr() if
-verify_opcode() returns false.
-
-Now I understand what did you mean by "for each consumer". So if we move this logic
-into install/remove_breakpoint as I tried to suggest, we will also need another error
-code for the case when verify_opcode() returns false.
-
-Oleg.
+> Then how this all can work? I understand that user-space can do anything with
+> this counter, but we do not care if it does something wrong, say nullifies the
+> ctr incremented by kernel.
+>
+> I don't understand this. I think that if a user registers uprobe with
+> ->ref_ctr_offset != 0 we can safely assume that this is a counter, and we do
+> not care if userspace corrupts it.
+>
+> > > If yes, perhaps we can simplify the kernel code...
+> >
+> > Sure, let me know if you have any better idea.
+>
+> Can't we (ab)use the most significant bit in this counter?
+>
+> To simplify, lets suppose for the moment that 2 different uprobes can't have
+> the same ->ref_ctr_offset. Then we can do something like
+>
+> 	#define UPROBE_KERN_CTR		(SHRT_MAX + 1)	// MSB
+>
+> 	install_breakpoint:
+>
+> 		for (each valid_ref_ctr_vma which maps uprobe->ref_ctr_offset)
+> 			*ctr_ptr |= UPROBE_KERN_CTR;
+>
+> 		set_swbp();
+>
+> and
+>
+> 	remove_breakpoint:
+>
+> 		for (each valid_ref_ctr_vma which maps uprobe->ref_ctr_offset)
+> 			*ctr_ptr &= ~UPROBE_KERN_CTR;
+>
+> 		set_orig_insn();
+>
+> IOW, we increment/decrement by UPROBE_KERN_CTR, not by 1. But this way the
+> "increment" is idempotent, we do not care if "|=" or "&=" was applied more than
+> once, we do not need to record the fact that the counter was already incremented,
+> and inc/dec are always balanced.
+>
+>
+> Now, lets recall that multiple uprobes can share the same counter. install_breakpoint()
+> is still fine, and we only need to add the additional code into remove_breakpoint:
+>
+> 		for (each uprobe with the same inode and ref_ctr_offset)
+> 			if (filter_chain(uprobe))
+> 				goto keep_ctr;
+>
+> 		for (each valid_ref_ctr_vma which maps uprobe->ref_ctr_offset)
+> 			*ctr_ptr &= ~UPROBE_KERN_CTR;
+>
+> 	keep_ctr:
+> 		set_orig_insn();
+>
+>
+> Just an idea.
+>
+> What do you think?
+>
+> Oleg.

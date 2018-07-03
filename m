@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 21:22:40 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2018 21:22:59 +0200 (CEST)
 Received: from mail-eopbgr680122.outbound.protection.outlook.com ([40.107.68.122]:5440
         "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994585AbeGCTW0MiOuf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994587AbeGCTW0jXB7f (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 3 Jul 2018 21:22:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZfNnp68cfXV9aNITNZrLHPArsk0IlG1WEEj0y2ckKGY=;
- b=iD9mjVttvH96wEeFIH1nFsj0uuvI9FIpaJAwfzVgswGV69k52trKdF2lj2fb70ollPv4xM9sOdw39beaQ/O4N/XIpmxgjDVQ8Ii0nLz6Ak8Y30JljF6IQ0na6rY7XSno5hSPQ4ysD08ENAjmOA4dn7WdfCyeBMoxQlHhSHy2+2Q=
+ bh=3jsk/ItE1TAf9wH9fOh9VTlcAa6oE9lcVJFWa3ubx3I=;
+ b=qy7HwzjWU3tmcmuql3Ng0/HD3uhuuGsm/blH8LzNYyoNHHdw2mOkUv3k6Vc15DI/YL2rwu3QadmLX7kAguipTBDU9yiVTLbnBYpGhqmthxH8denRuUuehYPnqHNqAOva2+iAHhKXfk4OqropLacBlwrcui3hBcr/BwMXofU82qs=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=dzhu@wavecomp.com; 
 Received: from box.mipstec.com (4.16.204.77) by
  CY1PR0801MB2154.namprd08.prod.outlook.com (2a01:111:e400:c611::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.906.24; Tue, 3 Jul
- 2018 19:22:08 +0000
+ 2018 19:22:09 +0000
 From:   Dengcheng Zhu <dzhu@wavecomp.com>
 To:     pburton@wavecomp.com, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH 1/4] MIPS: Make play_dead() work for kexec
-Date:   Tue,  3 Jul 2018 12:21:44 -0700
-Message-Id: <1530645707-30259-2-git-send-email-dzhu@wavecomp.com>
+Subject: [PATCH 2/4] MIPS: kexec: Let the new kernel handle all CPUs
+Date:   Tue,  3 Jul 2018 12:21:45 -0700
+Message-Id: <1530645707-30259-3-git-send-email-dzhu@wavecomp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1530645707-30259-1-git-send-email-dzhu@wavecomp.com>
 References: <1530645707-30259-1-git-send-email-dzhu@wavecomp.com>
@@ -32,49 +32,49 @@ X-ClientProxiedBy: DM5PR06CA0100.namprd06.prod.outlook.com
  (2603:10b6:4:3a::41) To CY1PR0801MB2154.namprd08.prod.outlook.com
  (2a01:111:e400:c611::7)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 56562de4-4357-44de-4ba5-08d5e11a4533
+X-MS-Office365-Filtering-Correlation-Id: 8cd0c8a0-c63f-4e65-fc8a-08d5e11a459a
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(2017052603328)(7153060)(7193020);SRVR:CY1PR0801MB2154;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;3:GGGLdoCCvvV1f7FAx+H9HutNUMqc2Sjywz72+v5sVMEAcUSMzvnBPFYW+IyxNxJW3pEsQGTaxKEQI+27KW6n1eWg+HqEHdhSrrFzcPsWaOyZH9ynN7M+5OLdpUreH4YeM1Yx9/9JaACUb1waYzA0AB46KKRtyMHtFcOakWD8m57Obw0K8QHn+rFkdeL0nQL9LrOOlJ4zpJjoeaqAt6OhcjtrAs0fpD66xTfcDLERuMhBweQ7UzcJo2wrZ1QjAncV;25:zhCGXihLfVpHjJBe7Nily7ZEHyf+kobNiScLwz8t+Du2olZKcIktbAbMpxf+KnfrwzMsQUcvunBMEP/NVCw8k7m6ny3fTGAUytf/mCHutHwG++Cs+JNuDfkEgdF2NxqdH/f/DstOK4RU3mk3fimtxa4OCE5oqhf4BOdIOMl9j+iZqaCKXzjiYsHOZ3VqQFBmGGYregABCgVhEItJhs58jneK3e+dqpw/sSWScoaS8XMNKbuXJ5Ngs8fkD2jxk5yp1R390mZ57VD2wNrIY8lsFolkI7upqblGSsREbR+VJtshcx9UR/09AZly8O4D6HoSOYhSTmUeD2FejBGxRJR0oQ==;31:2oRcsSK8dgfg+PfChfEBoxF1qm3zApG9+m679Q4ULto1RnYZHLpW56Z7ErWZBgGhEm+vBIdbzsZDiZhyyPl0q8l4WamehXqoPDqbHSgoBMwVe7MgEpueAYH8Wecwgds/ruvlr9XBMCjCs04jfkTwnpf4CV76diOCVGqH3YsDlWloS7pmFwRjs8Jm+/m/vvARuWvKNzUxvN/PGtkxGpsAU4nfR53nwuweXyK13jJxzKg=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;3:XQal38zpqFPSlvRfRy51oj0VNknglljaBwonW/5QkLOxzHnvTHCrlylRmeu2+Wj1i8fNDZYfVxlpwjLaY8/uTxx8aHgNvCi315ypXBeIXf27AI7lYwmc064SysfDY9hqVq38WGt2xVbtD6EX3gkwUeYAf07e+xCa1FaKhJ+cM5G5uYx080sSoNjV8ENu9qHaOoTi8TxuI+QHlv2obEafoYWNwgfy1/n/0tgG4vvdpTupisRrF5XxFFeYPu4jcsNw;25:FSr8hGXXE+8VmfrLWbxyK1uCdjqYXOkVXebPs0THTB1K9XosUwj8a6yEx9Eg0qvIa3FaTWzDkfV8eLwR8/lSDHNilz75tlaK1sb0xLvN3M0t7aOxGQ8uqh5uANg9Ye/OxXGRAu8XOWzT4OIiSCK1G9XHG2x+uNmldr11wkH/EyN/z1UmqjqUDorGSbpLGmqIwpjmw4zo0ZiXWsWZ6uCPQnydgkjWtJykBBdLzskYhafRQym0pXpxY+AyfjfpNbSe9T+CrnfQ+ewLCbtC7wJGmWqet/l7STnhmPIyfpNt/dN+cpIhWVX/Peq9VRddnLyTJwnOMhKhO4xkUxdRZROXZw==;31:/qcZQ3ROCmG8LyvG6Wx0P6LOJMlT1ZGgIvL5c7VU2bEQWNDOCUScBYQGpVrs+pQfcKyh5Azeg2i8mkB7xCa/bIj46H20O2/ZtQhgo9j4lBgERoSvPDqGyab1y15TsUWtO1owPy7V9jICo+sXTfqvGMcWqfCCkShNLzHfSxd6wFstAQa2yfz7bV+8jwvp1+qC9z7Erg3wu4WKqPxG+YYfyEmsjVswy0xTFsMuhQRInqU=
 X-MS-TrafficTypeDiagnostic: CY1PR0801MB2154:
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;20:WUUKZoeNhOZD/H31drLu+tyUgAhFgt3Tg5XVaw6veCD3ICUq6PnNxLF0xvabFlCjXR3gK+TAOiQ8HSwFs38n+c2T+Xh5RSK/k4nJQlSJX/bCA36qbiyyq9P/qRoFmm48DsgkwQko9/8AYqu9l5xzUXqgxQY7jBr9o8JqBkxi5iJ92YSNVVbF4jsZ15vAxCnk6xSdWFaDUxpscOMCXIy5zOALY5YvT7KQKLqPYxYiCAd1bpZNBRuhV8n5iwiU8Hbs;4:Kh6H50Oyt0zaIkIqCRsTKnnkccy372ho/800jMgOrf2HkmNwDJS9rwO5xKLriC5q+WS+31Wx/yqrtymQ9v1VKcEjbnZ53Y86ceCYRGRdmUSk86hbEu+nc4hzHOItM4q6wCZBMjqfldTZ0wZEnSFCkFwnx0BAQQ6r8qmbcSmnpYXE41aoyMyi/nUtBwQtpMfrmlvSRvFZJTqh1mDetDR3OrJGJQVdmA0oGu4QechDVC4pey6IAknBYEvTiXxJ2M1pmUz0asp3jEnRTk6cJDhb5A==
-X-Microsoft-Antispam-PRVS: <CY1PR0801MB21541B85119AE3D8360887D0A2420@CY1PR0801MB2154.namprd08.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;20:eZlpksyednLcvjiWvYT9JK+Do5XUSdtjX4LJ7OrvXYG+3m62fOqEymxdSXyD29j5gqitVJYNXxc+s3fIqBIIKcCSTB56CW5XSMkVrJo06Np5T9FkrV4sy+ITW/q4Pw11a7c9w96O6EZawYaUbgKz4gxGb7wdh9Blu0eYBAKi0wlF9UfsHhMA9rvyqfIEzRsyBYvTq2cjQjtIk+vjOeR51JDhFwa+0IxCt8u+JEob7p1cScyXpIBIZ5c5xNYm2Sn5;4:ZykQqxBmwLek5c6tHT4V91B1wS9PLRPEKAq7K/MIrrLbDWBmS3G8wj3QQmz/ZmBLuPpS9tZvCGaxQHyv3JwLyQkb8xPGM049Koh9NsMD1Tpm4rViePprfPp3RU95liUwB0r1KaEnHFrx1F4sKr8s8/BH8aWZ8R8R+U1BwGldTxBq2Z5Kb5EKdu7T3kC5XCucW6yn4K8JSGHDvepZop5URP3gfGXgbV1YBDV4dsYIIhOtNoJV5VhsoUcNNlhImkvf5KOvGeLQ7t830A/D8vHBqQ==
+X-Microsoft-Antispam-PRVS: <CY1PR0801MB215426C128DC8E4385D20CCCA2420@CY1PR0801MB2154.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3231254)(944501410)(52105095)(3002001)(93006095)(93001095)(149027)(150027)(6041310)(20161123558120)(20161123564045)(20161123562045)(2016111802025)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(6043046)(6072148)(201708071742011)(7699016);SRVR:CY1PR0801MB2154;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0801MB2154;
 X-Forefront-PRVS: 0722981D2A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(136003)(396003)(39840400004)(346002)(376002)(366004)(199004)(189003)(476003)(68736007)(478600001)(81156014)(81166006)(8676002)(97736004)(305945005)(486006)(11346002)(6116002)(3846002)(446003)(956004)(8936002)(69596002)(6512007)(2906002)(86362001)(2616005)(316002)(16586007)(6486002)(25786009)(6506007)(66066001)(50226002)(4326008)(53936002)(47776003)(107886003)(450100002)(53416004)(5660300001)(51416003)(52116002)(105586002)(7736002)(37156001)(386003)(16526019)(26005)(36756003)(106356001)(50466002)(6666003)(76176011)(48376002);DIR:OUT;SFP:1102;SCL:1;SRVR:CY1PR0801MB2154;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(136003)(396003)(39840400004)(346002)(376002)(366004)(199004)(189003)(476003)(68736007)(478600001)(81156014)(81166006)(8676002)(97736004)(305945005)(486006)(11346002)(6116002)(3846002)(446003)(956004)(8936002)(69596002)(6512007)(2906002)(86362001)(2616005)(316002)(16586007)(575784001)(6486002)(25786009)(6506007)(66066001)(50226002)(4326008)(53936002)(47776003)(107886003)(450100002)(53416004)(5660300001)(51416003)(52116002)(105586002)(7736002)(37156001)(386003)(16526019)(26005)(36756003)(106356001)(50466002)(6666003)(76176011)(48376002);DIR:OUT;SFP:1102;SCL:1;SRVR:CY1PR0801MB2154;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY1PR0801MB2154;23:QuweWhVjdaw/t/C7YlZBkpBgT93TUouQNJ+L/78?=
- =?us-ascii?Q?JbbyxuKtFw37fZy1oUtveTtAMwRMSsK32hyRvGdf7pHOZJmgRP/VSxySmGVN?=
- =?us-ascii?Q?OKrSt0ebSLCkZBO2qUuqssqNijnnHl7A/SD96LUJ4rYiHMR8TQM7wUadzqSj?=
- =?us-ascii?Q?qFLh2396b2wlNhfgwq7HKLx889EHuPM7/ooY3RCAO/iOM58xHRCiTwDgog+W?=
- =?us-ascii?Q?uwT2ZeZ+3YqwnX7ndmL45lVJiNi7NIknswBTgTnVoEsAk+suBNFIz+QWyuPy?=
- =?us-ascii?Q?d0TuzLnAJiyaGIFUsbypys21F5riNMOMPjt8dLPe3NgUVnmxqmEaylXtQEV1?=
- =?us-ascii?Q?v9GnnL7J/pJXnisOfyWqYgmVgRXaVVRZwPnQ/HCKP7zKpHHOigRNkAG+bZBt?=
- =?us-ascii?Q?7vR5eK6sI6hv7K0Lgoq6lMpzXsEsPqvaOgDmoyxS9J/Lm2K0mUB/GL+0/Nux?=
- =?us-ascii?Q?jBewWjSloFmXwhrboXvOFol6XRHE/0Co2RDdh836bc3c/i5b9SKVAfo4/Ydv?=
- =?us-ascii?Q?RTKBuAQF8cS0SE2OSdvVyA3wTeTkKRboUZMmyZGGpGHPL7SuB775/t2uT7fD?=
- =?us-ascii?Q?Ws4xiAiLS1c9OmzGWCVhpOwQQ2ttrx5z/7bzF77yen7hSCSEie/8hFEcdLk6?=
- =?us-ascii?Q?UNFPrDd8cl4rExDjRAta8DYYdfupcN9dpLr+4gkm31GIJBwaugz123i4HVz5?=
- =?us-ascii?Q?sL9gaSd9q9fZ5Yxf22cVsot6K2bQV5giCsJmbwgNm9ru6xa43jubXavBpOqB?=
- =?us-ascii?Q?uSOUEJv9uo5vw5VVj7cS/slEQieznmUOVFP008YWRQsmlWcR7THoaDBRMNMR?=
- =?us-ascii?Q?WSZoP+ZUQYWntNBG8xVLlr2ctKUzo0H82tzy9bZU+rf42zY8EbZlIChQDkkB?=
- =?us-ascii?Q?ebtDORMQwdQ+6YrBQISAvgqedFbVtG3hO5mkB3fPpPjTBd2S2LgHZ0H/vrPa?=
- =?us-ascii?Q?TLvZBcWpqXCjoLHHtMRAwjdn2geC6QKKPTN6moegXMt6dxFsnEL4V/zZRDBS?=
- =?us-ascii?Q?5uDP6RsCqBfJyHIRw2HA+4QG5LfSu5VFagE90F7NjSS8DeQSBmwlJ7e3ldh2?=
- =?us-ascii?Q?8k0lctBij32iWJoMqYog/gbB3/NO2s5BSPaQHbf6YW9uv5+wacG83NQTJiLK?=
- =?us-ascii?Q?YzzF971JF++YYpmMd8CoCz410HNBPIaZKZ0rtxs4lJenug6iS0rumLNbxWbD?=
- =?us-ascii?Q?1YbKUAXOcbP856AoJhmRlrOs9oWD6cUAGbHzzS12FNuHwyv4L8TQbcuzipHU?=
- =?us-ascii?Q?q7gkpFhLigcjtJQsdEEE=3D?=
-X-Microsoft-Antispam-Message-Info: ZQpa11tyQSKnwc4+d59nE+9hFTBJhz6VjKaIHGF0FZqJQJVOJR1eVkmB7MU1dA7jdh9+QpZLc7UckOeVW/dvB6E30dtgWOv96ubWX6+9zVaZQohcwni/IOVrskD2+L+Nl+RkXEE70OxSdXyNK+CpzVq7YSEbsjm6I2IHChsvUD/+9PN25NzVbeBKdcfXssftKHdAMrrhsB3ZeuuUrqS2PQZskH31ZKhy5r0eYBRoT6XrNeMZLdiNSMzTh5/d9wuWi8kErV7tgtSR3A6J5q+XUDwXB4aSHHlaPYcXMuYGQF1dZSBtbLEdv9tErLgM3MzbNIJWTySULbQRqHB5X2cy+ahBSSYV6tjhpEh5dvpZvns=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;6:FF6lbreoaXKqmk0zNJnrA+R+GckWrw+XTknhwIXVGGnuWl7m0cqXvfGPccYHpCB2PmVJ05ZQgZLVpO15REehvzisjG8BFHjPs9UeowNcOxMVxQAHcALkEVoHHaExFaYQNLINkA7HU6IIFam/XFSqtSIDM1GW+GjvzXVMhY3FGzeyCcJ1qp4B6V2iseGpHnWb9lwnBYVFyyVoUro/hUZUP5bU9iS3hdtHxMQa3bi0psJEs8sEy1W19tjbiprgAgUZCIAJlLymJjcKVyvQhL0FdRjOVozl4GNd2N9Bx0zfWbxlU0SWbxDrhWs0j2atVzEgLLqK+IEqgVwBTUJ/VNqN1g8nYpuGRhTsx5xs/TfRwi60i7ECJ0k1elLnEbnuJk3ggOOS99bhOHhPUiHMIzyIXGGupHOWj3Dj96E8HvC7IWkM96x4eTcIzX/VwLutGgGF8nxOsZTd9X+a3lKQDESilw==;5:WcCCZ9MdMiNKylJaiA+2sZpkAqWfsHaRoeFYMieQyetmtEW0GJun+oJ5B+PmjaD0uR5G1ja1R4e0xbncjAAuGWGh20GLzXaho2irOBoQYbXK5Xnhsqbf2Tzadfcit0BYVuNdkiBcZ12NjnWK38IpHrwTUrmXxWc/ulN0ebXvRaE=;24:FYEVx2xYYAwfZa+IjW/02elKcMxW+mVJ2csoaNBmzrtL9ymXtc+x/jlABzpZU9yOD/oohMiAQwyknaeuE4JHjNa9S5QwLRMhlb0+RmH37E0=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY1PR0801MB2154;23:zNCnuHm2iGwzj9FBfyzeCYimp+hnaGqAn3p+jhC?=
+ =?us-ascii?Q?iayHJQo0yTSCl4qtdnbUsf6fGMi4ptV9kp8tLBPLLYGAzAFCjLn2CXhVYxTz?=
+ =?us-ascii?Q?UtIPlrQIVekOXMeJkHlaY+9/FhTdmq8LaALeoTMWHQNNT1gONPBfBirnquOZ?=
+ =?us-ascii?Q?KUPWSMZsFZce2vY61OxnCryXtTX2ZzxV8oaaoi7DMIFkh1DRzthuOIwWYfmh?=
+ =?us-ascii?Q?fTiQ7rGQE7hrPvdu+VbVXHKgvsn2Fr11IEzA++YW1/jjm18dPhl2//unxtSQ?=
+ =?us-ascii?Q?PqeEPY94EIQvTOgCY94tFeg89cEEi0D3Ke/TuX5WmXQf0wfA5jdiAayZtDaM?=
+ =?us-ascii?Q?GDmzDC925iyuIfuf8KxQvrigdjbJbZgo5f9tKFjfJf0I/qT9EvPI6tyoxzXs?=
+ =?us-ascii?Q?cCPjJmmyo1RsmD3C29OuwSUTU6VKciz/j8/Sy+x9Fxi/bON6W3EzoyBsyOPW?=
+ =?us-ascii?Q?3OKNp/sP298HufARUKgNMT7yyvdG84O1sq3L1ezCY2piVKUKLRES7I7IaBTu?=
+ =?us-ascii?Q?EDWE5UjULYneIvYRzLpkREy8l6KBaxddF8RABAG8GZb4F7At1RbldqAaf80t?=
+ =?us-ascii?Q?NyKPRrpSRsXgvamgRSoGF8mamtiSSHNZgbJ8n3n93NXYlP7qeK3NgS/oBG9S?=
+ =?us-ascii?Q?zZwslIGKRub+riD2uVKK6SWJcCbnqL0I/jtENOSQP1LPa/MOnUwC+qYiiofB?=
+ =?us-ascii?Q?ZNeDuA9QiPvBZOpq0i6nmEgzuiZmnsPpy32KuCX2DB9P6s3p/WEu8ZKCNOO/?=
+ =?us-ascii?Q?IivwgVOcmbNCm3wRJvR26F+lCiGbGvukAoQvIvVvRqpsvai0zi0k9cIVF722?=
+ =?us-ascii?Q?b5FiXtiIQqOaviH9ggIOGKO777sUNf3lZ/cjKTzh+CI1PvIf49pJVapdg5+d?=
+ =?us-ascii?Q?fwwP1usumtIhR3AQS4BlTj1tYX6nhFxKzBH+SjIcbG0d+0XBvXXjDlwz4Jig?=
+ =?us-ascii?Q?WkZVADp/av6u+m1zS27xLoWxdn6ZoTNv0nHNcJNWLITqIMk4VJHaBAuHKBA/?=
+ =?us-ascii?Q?yshtiBx3CXOrMhIb2h0EYp4nPamtSskYVoOeISr84DhDJJBK8XwtQy0EHSe5?=
+ =?us-ascii?Q?8psUPg9Zpe1J04nQXn6nqAZ+xOw2L2ncv98Cf6isp5fBqCMWov8LZLkiZybu?=
+ =?us-ascii?Q?ZpV2Vn51Dwi9YejRbmOqkKwZgU5aC8y9A6rNC5ACH8lP+aWWQKy30CXZI9Dy?=
+ =?us-ascii?Q?vJTF3kGG9L3jTMFI8z0G5NnujcMKmXOP31iLOhNG1/lP/vxnVwM6MlyNFuKb?=
+ =?us-ascii?Q?X7cDCAJcyLuin9KC2jb8xDRc1diLKNZi5Mrpst/Ll?=
+X-Microsoft-Antispam-Message-Info: v3E4kqtZOnMlbBWoV2JBaVKKJzCeGv0F8zT1TQC/bGnLU4uigBBJ5uLGhELnfidzB2Go2TJT7Fgju+W4SD76TiBXLicjh5F9nSKE1AdRWQ/1EKJq4kY2xKDxpKrmZC/FQEg4tJI7k0mgAcycmXOC0VpD16f0z/g+2r4NRDCJSy2j5zI+/GxdxajytdysC+EnmhjBFT5wLx9cQHw7xMUmydExxUYKbFu0Y1SFwhAy3/+fadbh/5x4LhsM751ARyDnCQFt1OXw4VSwUfza4cxgzr19ATixMQcdv+u+5/8uKaW/ICGdBUs8UOQZ0u7M52AbGwv1JNjRhnzyo/MTkvu69ljwhNjEyoBL/k8cwrCDvIY=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;6:1hPl1mqTf7BJAyW/yPej8Or9sCl7vyDB6AIouPbFwNr06GV0CQXGAlMd44cviUa5WuvbZffx6ElwTLWzLYqfjHQ4nYi0ECB6ElP3N87yeqBJ9t8jXIedPSkwhmDb2vPTNOVjO/7qMBVYBlxQU8MMhXuzB05McQZJ7rEF17Zrz7Kem0ef28KMmRgE9dfLqI8lUKqRrQRotk3KowUU8UYKpS7FILwlbp4XYIw1uBHZ0j6OARg+4i6fDSCo4RSrq2cyQ5Qa3UzOZq1rvGFnAIIwBTjBbugRr5/Mw6v3ZJZbHpEoBw/AjoJ0O7BkeXlkeNpEKpFNeR2+UBZPGIF1GuajhweDyYXIfLx8n1aWfVncDgb0Yt/dol8oOu1AQtYoU8aCFBGO7x24NJmXqRoX3bQYzcAipLF47jnS2mY2N35XZjn5UX9fRMgBFldIhUdVTnUInqUwtzq9UOM8NfxtuHczeQ==;5:zMLhV4FiEkJD7/K5947t4u9MZpHjY8vD3ObP3HaHQvB/tcQ+oOJdImnN9aGaz25UDE5B3TNoraEW+F0s5McY1z1BYAXkpYUO66x+ul5PIgHdLyFpdnUBcOUFN/nRygya9QQ1UuHo2c/lvOE047oRuAQZTaHBD0U6CJKuYqFUaPk=;24:0VU9+bXuEwpIfcBsBbc+AdF6fJexwJI6VAiODppdll3l/pRzsQ18vdzS5LWJLkKuxVQev7KLK2Ta3bGTR1jYW0u4kwIzRd02M87bFiGM2mQ=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;7:kwmA0EF3KzWE9PsAGtDhVFSFP62zQIxjWZoGC6bXkCLJ4omdijo+ZpzT0+m4glBhBixjAg7/StbPTwAis4dbeoM0gRyYBDE76oxiixCpp7o36tqjjiMuC2+BqO0mlrCwLVgh9CFw1IYlukpjabRtb+7N5MtjQCTpWsNbZFl46LoAt5bRbYfodC4ymp23FbgwzB+XWqMmuPdEW6JYjCmJnXeX/TzFtOWFxjsVZWcY18dOkPc1J0uMkwzr1wOyWGk2
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2154;7:4WtRJZJUiBS6v5fcdE7+4LkgGyBHB0YMSXCPQSlTZxul4SFNlrsgV85GHyMUqTCqB1VTEgMlrSJ9CGdISCv41BO9AmXkXLkgXuc++7DmnUQ7eqn30GP4SMY+omrZse+Mg7XUbgfGFvilc+rHTTlo6++lU1U7nmJp7J/9wSsrOScliscFUkKeMU05xi9wIAfuUuM7qSp3qBonT4D+vxzIQeiequnsCoVU159QsIBrDWNTnz9NPOMqVxVAT7czFPdE
 X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2018 19:22:08.5479 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56562de4-4357-44de-4ba5-08d5e11a4533
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2018 19:22:09.2304 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cd0c8a0-c63f-4e65-fc8a-08d5e11a459a
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0801MB2154
@@ -82,7 +82,7 @@ Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64585
+X-archive-position: 64586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -99,357 +99,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Extract play_dead() from CONFIG_HOTPLUG_CPU and share with CONFIG_KEXEC.
-Also, add one parameter to it to avoid doing unnecessary things in the case
-of kexec.
-
-This is needed to correctly support SMP new kernel in kexec. Before doing
-this, all non-crashing CPUs are waiting for the reboot signal
-(kexec_ready_to_reboot) to jump to kexec_start_address in kexec_smp_wait(),
-which creates some problems like incorrect CPU topology upon booting from
-new UP kernel, sluggish performance in MT environment during and after
-reboot, new SMP kernel not able to bring up secondary CPU etc.
-
-It would make sense to let the new (SMP) kernel manage all CPUs, instead of
-crashing CPU booting from reboot_code_buffer whereas others jumping to
-kexec_start_address. To do this, play_dead() is well suitable for preparing
-a boot environment for the new kernel.
+Use the new play_dead() interface to prepare an environment for the new
+kernel. Do not rely on non-crashing CPUs jumping to kexec_start_address.
 
 Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 ---
- arch/mips/cavium-octeon/smp.c         | 35 ++++++++-------
- arch/mips/include/asm/smp.h           |  4 +-
- arch/mips/kernel/process.c            |  2 +-
- arch/mips/kernel/smp-bmips.c          | 11 +++--
- arch/mips/kernel/smp-cps.c            | 59 ++++++++++++++----------
- arch/mips/loongson64/loongson-3/smp.c | 85 ++++++++++++++++++-----------------
- 6 files changed, 112 insertions(+), 84 deletions(-)
+ arch/mips/cavium-octeon/setup.c  |  2 +-
+ arch/mips/include/asm/kexec.h    |  1 +
+ arch/mips/kernel/crash.c         |  4 +++-
+ arch/mips/kernel/machine_kexec.c | 28 ++++++++++++++++++++++++----
+ 4 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 75e7c86..31150a8 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -280,11 +280,30 @@ static void octeon_smp_finish(void)
- 	local_irq_enable();
- }
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index a8034d0..3a1f7fa 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -95,7 +95,7 @@ static void octeon_kexec_smp_down(void *ignored)
+ 	"	sync						\n"
+ 	"	synci	($0)					\n");
  
--#ifdef CONFIG_HOTPLUG_CPU
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
- 
- /* State of each CPU. */
- DEFINE_PER_CPU(int, cpu_state);
- 
-+void play_dead(bool kexec)
-+{
-+	int cpu = cpu_number_map(cvmx_get_core_num());
-+
-+	if (!kexec)
-+		idle_task_exit();
-+	octeon_processor_boot = 0xff;
-+	per_cpu(cpu_state, cpu) = CPU_DEAD;
-+
-+	mb();
-+
-+	while (1)	/* core will be reset here */
-+		;
-+}
-+
-+#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
-+
-+#ifdef CONFIG_HOTPLUG_CPU
-+
- static int octeon_cpu_disable(void)
- {
- 	unsigned int cpu = smp_processor_id();
-@@ -343,20 +362,6 @@ static void octeon_cpu_die(unsigned int cpu)
- 	cvmx_write_csr(CVMX_CIU_PP_RST, 0);
- }
- 
--void play_dead(void)
--{
--	int cpu = cpu_number_map(cvmx_get_core_num());
--
--	idle_task_exit();
--	octeon_processor_boot = 0xff;
--	per_cpu(cpu_state, cpu) = CPU_DEAD;
--
--	mb();
--
--	while (1)	/* core will be reset here */
--		;
--}
--
- static void start_after_reset(void)
- {
- 	kernel_entry(0, 0, 0);	/* set a2 = 0 for secondary core */
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 88ebd83..3176053 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -77,8 +77,10 @@ static inline void __cpu_die(unsigned int cpu)
- 
- 	mp_ops->cpu_die(cpu);
- }
-+#endif
- 
--extern void play_dead(void);
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
-+extern void play_dead(bool kexec);
- #endif
- 
- /*
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 8d85046..1aa24bb 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -53,7 +53,7 @@
- #ifdef CONFIG_HOTPLUG_CPU
- void arch_cpu_idle_dead(void)
- {
--	play_dead();
-+	play_dead(false);
+-	relocated_kexec_smp_wait(NULL);
++	kexec_smp_reboot();
  }
  #endif
  
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 159e83a..e1c11bd 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -381,9 +381,14 @@ static void bmips_cpu_die(unsigned int cpu)
- {
+diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
+index 493a3cc..8f1d0ef 100644
+--- a/arch/mips/include/asm/kexec.h
++++ b/arch/mips/include/asm/kexec.h
+@@ -45,6 +45,7 @@ extern const unsigned char kexec_smp_wait[];
+ extern unsigned long secondary_kexec_args[4];
+ extern void (*relocated_kexec_smp_wait) (void *);
+ extern atomic_t kexec_ready_to_reboot;
++extern void kexec_smp_reboot(void);
+ extern void (*_crash_smp_send_stop)(void);
+ #endif
+ #endif
+diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
+index d455363..6d43200 100644
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -43,7 +43,9 @@ static void crash_shutdown_secondary(void *passed_regs)
+ 
+ 	while (!atomic_read(&kexec_ready_to_reboot))
+ 		cpu_relax();
+-	relocated_kexec_smp_wait(NULL);
++
++	kexec_smp_reboot();
++
+ 	/* NOTREACHED */
  }
  
--void __ref play_dead(void)
-+#endif /* CONFIG_HOTPLUG_CPU */
+diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
+index 8b574bc..02146ad 100644
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -12,6 +12,7 @@
+ 
+ #include <asm/cacheflush.h>
+ #include <asm/page.h>
++#include <asm/mipsmtregs.h>
+ 
+ extern const unsigned char relocate_new_kernel[];
+ extern const size_t relocate_new_kernel_size;
+@@ -19,6 +20,10 @@ extern const size_t relocate_new_kernel_size;
+ extern unsigned long kexec_start_address;
+ extern unsigned long kexec_indirection_page;
+ 
++static unsigned long reboot_code_buffer;
 +
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
++typedef void (*noretfun_t)(void) __noreturn;
 +
-+void __ref play_dead(bool kexec)
- {
--	idle_task_exit();
-+	if (!kexec)
-+		idle_task_exit();
- 
- 	/* flush data cache */
- 	_dma_cache_wback_inv(0, ~0);
-@@ -409,7 +414,7 @@ void __ref play_dead(void)
- 	: : : "memory");
- }
- 
--#endif /* CONFIG_HOTPLUG_CPU */
-+#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
- 
- const struct plat_smp_ops bmips43xx_smp_ops = {
- 	.smp_setup		= bmips_smp_setup,
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 03f1026..4615702 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -398,27 +398,7 @@ static void cps_smp_finish(void)
- 	local_irq_enable();
- }
- 
--#ifdef CONFIG_HOTPLUG_CPU
--
--static int cps_cpu_disable(void)
--{
--	unsigned cpu = smp_processor_id();
--	struct core_boot_config *core_cfg;
--
--	if (!cpu)
--		return -EBUSY;
--
--	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
--		return -EINVAL;
--
--	core_cfg = &mips_cps_core_bootcfg[cpu_core(&current_cpu_data)];
--	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
--	smp_mb__after_atomic();
--	set_cpu_online(cpu, false);
--	calculate_cpu_foreign_map();
--
--	return 0;
--}
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
- 
- static unsigned cpu_death_sibling;
- static enum {
-@@ -426,12 +406,18 @@ static enum {
- 	CPU_DEATH_POWER,
- } cpu_death;
- 
--void play_dead(void)
-+void play_dead(bool kexec)
- {
- 	unsigned int cpu, core, vpe_id;
- 
- 	local_irq_disable();
--	idle_task_exit();
-+	/*
-+	 * Don't bother dealing with idle task's mm as we are executing the
-+	 * new kernel.
-+	 */
-+	if (!kexec)
-+		idle_task_exit();
+ int (*_machine_kexec_prepare)(struct kimage *) = NULL;
+ void (*_machine_kexec_shutdown)(void) = NULL;
+ void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
+@@ -26,6 +31,19 @@ void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
+ void (*relocated_kexec_smp_wait) (void *);
+ atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
+ void (*_crash_smp_send_stop)(void) = NULL;
 +
- 	cpu = smp_processor_id();
- 	core = cpu_core(&cpu_data[cpu]);
- 	cpu_death = CPU_DEATH_POWER;
-@@ -454,7 +440,8 @@ void play_dead(void)
- 	}
- 
- 	/* This CPU has chosen its way out */
--	(void)cpu_report_death();
-+	if (!kexec)
-+		(void)cpu_report_death();
- 
- 	if (cpu_death == CPU_DEATH_HALT) {
- 		vpe_id = cpu_vpe_id(&cpu_data[cpu]);
-@@ -480,6 +467,30 @@ void play_dead(void)
- 	panic("Failed to offline CPU %u", cpu);
- }
- 
-+#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
-+
-+#ifdef CONFIG_HOTPLUG_CPU
-+
-+static int cps_cpu_disable(void)
++void kexec_smp_reboot(void)
 +{
-+	unsigned cpu = smp_processor_id();
-+	struct core_boot_config *core_cfg;
-+
-+	if (!cpu)
-+		return -EBUSY;
-+
-+	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
-+		return -EINVAL;
-+
-+	core_cfg = &mips_cps_core_bootcfg[cpu_core(&current_cpu_data)];
-+	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
-+	smp_mb__after_atomic();
-+	set_cpu_online(cpu, false);
-+	calculate_cpu_foreign_map();
-+
-+	return 0;
++	if (smp_processor_id() > 0) {
++		/*
++		 * Instead of cpu_relax() or wait, this is needed for kexec
++		 * smp reboot. Kdump usually doesn't require an smp new
++		 * kernel, but kexec may do.
++		 */
++		play_dead(true);
++	} else
++		((noretfun_t) reboot_code_buffer)();
 +}
-+
- static void wait_for_sibling_halt(void *ptr_cpu)
+ #endif
+ 
+ static void kexec_image_info(const struct kimage *kimage)
+@@ -79,12 +97,9 @@ machine_crash_shutdown(struct pt_regs *regs)
+ 		default_machine_crash_shutdown(regs);
+ }
+ 
+-typedef void (*noretfun_t)(void) __noreturn;
+-
+ void
+ machine_kexec(struct kimage *image)
  {
- 	unsigned cpu = (unsigned long)ptr_cpu;
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index 8501109..d426ce2 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -455,6 +455,47 @@ static void loongson3_cpu_die(unsigned int cpu)
- 	mb();
- }
+-	unsigned long reboot_code_buffer;
+ 	unsigned long entry;
+ 	unsigned long *ptr;
  
-+static int loongson3_disable_clock(unsigned int cpu)
-+{
-+	uint64_t core_id = cpu_core(&cpu_data[cpu]);
-+	uint64_t package_id = cpu_data[cpu].package;
-+
-+	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
-+		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
-+	} else {
-+		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
-+			LOONGSON_FREQCTRL(package_id) &= ~(1 << (core_id * 4 + 3));
-+	}
-+	return 0;
-+}
-+
-+static int loongson3_enable_clock(unsigned int cpu)
-+{
-+	uint64_t core_id = cpu_core(&cpu_data[cpu]);
-+	uint64_t package_id = cpu_data[cpu].package;
-+
-+	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
-+		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
-+	} else {
-+		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
-+			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
-+	}
-+	return 0;
-+}
-+
-+static int register_loongson3_notifier(void)
-+{
-+	return cpuhp_setup_state_nocalls(CPUHP_MIPS_SOC_PREPARE,
-+					 "mips/loongson:prepare",
-+					 loongson3_enable_clock,
-+					 loongson3_disable_clock);
-+}
-+early_initcall(register_loongson3_notifier);
-+
-+#endif /* CONFIG_HOTPLUG_CPU */
-+
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
-+
- /* To shutdown a core in Loongson 3, the target core should go to CKSEG1 and
-  * flush all L1 entries at first. Then, another core (usually Core 0) can
-  * safely disable the clock of the target core. loongson3_play_dead() is
-@@ -668,13 +709,14 @@ static void loongson3b_play_dead(int *state_addr)
- 		: "a1");
- }
- 
--void play_dead(void)
-+void play_dead(bool kexec)
- {
- 	int *state_addr;
- 	unsigned int cpu = smp_processor_id();
- 	void (*play_dead_at_ckseg1)(int *);
- 
--	idle_task_exit();
-+	if (!kexec)
-+		idle_task_exit();
- 	switch (read_c0_prid() & PRID_REV_MASK) {
- 	case PRID_REV_LOONGSON3A_R1:
- 	default:
-@@ -697,44 +739,7 @@ void play_dead(void)
- 	play_dead_at_ckseg1(state_addr);
- }
- 
--static int loongson3_disable_clock(unsigned int cpu)
--{
--	uint64_t core_id = cpu_core(&cpu_data[cpu]);
--	uint64_t package_id = cpu_data[cpu].package;
--
--	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
--		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
--	} else {
--		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
--			LOONGSON_FREQCTRL(package_id) &= ~(1 << (core_id * 4 + 3));
--	}
--	return 0;
--}
--
--static int loongson3_enable_clock(unsigned int cpu)
--{
--	uint64_t core_id = cpu_core(&cpu_data[cpu]);
--	uint64_t package_id = cpu_data[cpu].package;
--
--	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
--		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
--	} else {
--		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
--			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
--	}
--	return 0;
--}
--
--static int register_loongson3_notifier(void)
--{
--	return cpuhp_setup_state_nocalls(CPUHP_MIPS_SOC_PREPARE,
--					 "mips/loongson:prepare",
--					 loongson3_enable_clock,
--					 loongson3_disable_clock);
--}
--early_initcall(register_loongson3_notifier);
--
+@@ -132,6 +147,11 @@ machine_kexec(struct kimage *image)
+ 		(void *)(kexec_smp_wait - relocate_new_kernel);
+ 	smp_wmb();
+ 	atomic_set(&kexec_ready_to_reboot, 1);
 -#endif
-+#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
- 
- const struct plat_smp_ops loongson3_smp_ops = {
- 	.send_ipi_single = loongson3_send_ipi_single,
++
++	kexec_smp_reboot();
++
++	/* NOT REACHED */
++#else
+ 	((noretfun_t) reboot_code_buffer)();
++#endif
+ }
 -- 
 2.7.4

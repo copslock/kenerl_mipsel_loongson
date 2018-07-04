@@ -1,84 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jul 2018 07:27:13 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:50424 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992553AbeGDF1HOEE1x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jul 2018 07:27:07 +0200
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w645OQNF002698
-        for <linux-mips@linux-mips.org>; Wed, 4 Jul 2018 01:27:05 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2k0qsr8ksx-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 04 Jul 2018 01:27:05 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Wed, 4 Jul 2018 06:27:02 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 4 Jul 2018 06:26:47 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w645QkC425952478
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 4 Jul 2018 05:26:46 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3468EAE051;
-        Wed,  4 Jul 2018 08:26:48 +0100 (BST)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E763FAE058;
-        Wed,  4 Jul 2018 08:26:44 +0100 (BST)
-Received: from [9.124.31.203] (unknown [9.124.31.203])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  4 Jul 2018 08:26:44 +0100 (BST)
-Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
- count (semaphore)
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>, rostedt@goodmis.org,
-        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180702160158.GD65296@linux.vnet.ibm.com>
- <ac5ab301-7df6-90fb-748b-3dc4624ea3c4@linux.ibm.com>
- <20180703192634.GA32223@redhat.com>
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date:   Wed, 4 Jul 2018 10:56:42 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
-MIME-Version: 1.0
-In-Reply-To: <20180703192634.GA32223@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 18070405-4275-0000-0000-00000294F0DF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18070405-4276-0000-0000-0000379C726F
-Message-Id: <20d12c56-77f6-4d87-8498-d5bc090444e5@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-04_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=815 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807040064
-Return-Path: <ravi.bangoria@linux.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jul 2018 07:52:39 +0200 (CEST)
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:40395 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990946AbeGDFwcd1yIx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jul 2018 07:52:32 +0200
+X-Originating-IP: 79.86.19.127
+Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 71B531C0002;
+        Wed,  4 Jul 2018 05:52:22 +0000 (UTC)
+From:   Alexandre Ghiti <alex@ghiti.fr>
+To:     linux@armlinux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
+        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Cc:     Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH 00/11] hugetlb: Factorize architecture hugetlb primitives
+Date:   Wed,  4 Jul 2018 05:51:56 +0000
+Message-Id: <20180704055207.27978-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.16.2
+Return-Path: <alex@ghiti.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64604
+X-archive-position: 64605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: alex@ghiti.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,23 +47,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+In order to reduce copy/paste of functions across architectures and then
+make riscv hugetlb port simpler and smaller, this patchset intends to
+factorize the numerous hugetlb primitives that are defined across all the
+architectures.
 
+Except for prepare_hugepage_range, this patchset moves the versions that
+are just pass-through to standard pte primitives into
+asm-generic/hugetlb.h by using the same #ifdef semantic that can be
+found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
 
-On 07/04/2018 12:56 AM, Oleg Nesterov wrote:
-> On 07/03, Ravi Bangoria wrote:
->>
->> Now about adding ref_ctr_offset into uprobe_consumer. Actually, I
->> didn't want to change the uprobe_consumer definition because it's
->> already exported and tools like systemtap are using it.
-> 
-> So what? Yes, the out-of-tree modules should be updated, but this doesn't
-> mean we can add the new features.
-> 
-> And, speaking of systemtap, it already has to do build-time checks to verify
-> that uprobe_consumer->ret_handler member exists. So it will need another
-> STAPCONF_INODE_REFCNT and that is all.
+s390 architecture has not been tackled in this serie since it does not
+use asm-generic/hugetlb.h at all.
+powerpc could be factorized a bit more (cf huge_ptep_set_wrprotect).
 
-Ok. let me explore that possibility as well.
+This patchset has been compiled on x86 only.
 
-Thanks,
-Ravi
+Alexandre Ghiti (11):
+  hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
+  hugetlb: Introduce generic version of hugetlb_free_pgd_range
+  hugetlb: Introduce generic version of set_huge_pte_at
+  hugetlb: Introduce generic version of huge_ptep_get_and_clear
+  hugetlb: Introduce generic version of huge_ptep_clear_flush
+  hugetlb: Introduce generic version of huge_pte_none
+  hugetlb: Introduce generic version of huge_pte_wrprotect
+  hugetlb: Introduce generic version of prepare_hugepage_range
+  hugetlb: Introduce generic version of huge_ptep_set_wrprotect
+  hugetlb: Introduce generic version of huge_ptep_set_access_flags
+  hugetlb: Introduce generic version of huge_ptep_get
+
+ arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
+ arch/arm/include/asm/hugetlb.h               | 33 +----------
+ arch/arm64/include/asm/hugetlb.h             | 39 +++---------
+ arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
+ arch/mips/include/asm/hugetlb.h              | 40 +++----------
+ arch/parisc/include/asm/hugetlb.h            | 33 +++--------
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
+ arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +
+ arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
+ arch/sh/include/asm/hugetlb.h                | 54 ++---------------
+ arch/sparc/include/asm/hugetlb.h             | 40 +++----------
+ arch/x86/include/asm/hugetlb.h               | 72 +----------------------
+ include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
+ 15 files changed, 143 insertions(+), 384 deletions(-)
+
+-- 
+2.16.2

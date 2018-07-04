@@ -1,88 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jul 2018 11:24:48 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:59840 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991783AbeGDJYkkDEUK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jul 2018 11:24:40 +0200
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w649IsKY069961
-        for <linux-mips@linux-mips.org>; Wed, 4 Jul 2018 05:24:38 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2k0su2vbrb-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 04 Jul 2018 05:24:37 -0400
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Wed, 4 Jul 2018 10:24:35 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 4 Jul 2018 10:24:30 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w649OT0g18677778
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 4 Jul 2018 09:24:29 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 85040AE051;
-        Wed,  4 Jul 2018 12:24:31 +0100 (BST)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3A32CAE04D;
-        Wed,  4 Jul 2018 12:24:28 +0100 (BST)
-Received: from [9.124.31.203] (unknown [9.124.31.203])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  4 Jul 2018 12:24:28 +0100 (BST)
-Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
- count (semaphore)
-To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc:     Oleg Nesterov <oleg@redhat.com>, rostedt@goodmis.org,
-        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180701210935.GA14404@redhat.com>
- <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
- <20180702180156.GA31400@redhat.com>
- <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
- <20180703061612.GG65296@linux.vnet.ibm.com>
- <c21db380-7dc0-2165-8616-8dcb519aa787@linux.ibm.com>
- <20180704091652.GA21902@linux.vnet.ibm.com>
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date:   Wed, 4 Jul 2018 14:54:25 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jul 2018 18:28:31 +0200 (CEST)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:36529
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994653AbeGDQ2W5PQ-t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jul 2018 18:28:22 +0200
+Received: by mail-pf0-x241.google.com with SMTP id u16-v6so3045380pfh.3;
+        Wed, 04 Jul 2018 09:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=S7Y3YgfryNM+k8fvUdmVQ7FtrRa8j4XdS3Vf+0ChyU4=;
+        b=cpbMvR/sPszHW3p7rwFi3+DM2XC97r5ikG2ZUVJdoxfHb2nTqInFJyoDpXhW5UdAHg
+         pPEVq1z5BqKb4aK3VO6obxPtLwptKLGa3BMT7SSWJMOJN5hwKkO+xYpf3BURolo0ft0z
+         HpTmSrlVL2PjqL5l0+QzMBAkmFbY4//2oVZnslt6t3HFrssB9jUJLEzSPREwHdNN9JgM
+         8fl8Tnk1G+M9N8DpTPshyEEvzffuTei9cCpZdtInX3KgT4N5feJ0J9abAk3aZDh0DqGO
+         CjXRDoGY/2byBeNq0dz2VVgyijuuskSQDeuBDOm1Z34V07NbcO9xaCGczWg2GqHhn5fe
+         C3KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=S7Y3YgfryNM+k8fvUdmVQ7FtrRa8j4XdS3Vf+0ChyU4=;
+        b=TExhRa1vnnkCZCarFawTcHP4ES/E6KNSNQrK7Mi0pViYlRXFT5+gBBNueXKvSETUvI
+         q3o0ZwbdifOIAHsF1Yn97l4vB4iL8bvkVU39ZNfJ6XPY2seMIeMkEG2OvFJ7trkytcqy
+         UToGRIeSxfQyPg1KDlm5T9jCQ5KJQEWN8FVTS2SESZrTn+UUVKlGcULK8D4QHwZGU1rn
+         ow/sEC6O06S/zYwuTVcpFhW6zuIsfFNUhoLpLPAK0KtJEFbQZhKh8csiQB7qoYJrYVYc
+         169dt2Xyvbsw7XU/dbyB7q6hvodP/JnjZq97LGWwDmuYvC040dfgxTRCKRQOh+plVdMA
+         9tjA==
+X-Gm-Message-State: APt69E113T8+C6BZsINXhN/Zooe9f7EDFQFt1saIbXrlpHronNFlhQLR
+        YRvJsymdcCWALceVG4KOAR3krd9tdexYCpyZbEY=
+X-Google-Smtp-Source: AAOMgpeAnMLQfQRGhkA4ta1AvU9UACK6EBfxjdLzlc/ged2wfa+gU+7GWoxG1v3v7UDRct+dmZoLKWg03ZKTwBjY/0g=
+X-Received: by 2002:a63:a1a:: with SMTP id 26-v6mr2528179pgk.221.1530721696063;
+ Wed, 04 Jul 2018 09:28:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180704091652.GA21902@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 18070409-0012-0000-0000-000002869C5C
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18070409-0013-0000-0000-000020B81DC6
-Message-Id: <bca2cd84-ed4f-7364-687e-b10e3e930b06@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-04_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807040111
-Return-Path: <ravi.bangoria@linux.ibm.com>
+Received: by 2002:a17:90a:2604:0:0:0:0 with HTTP; Wed, 4 Jul 2018 09:28:15
+ -0700 (PDT)
+In-Reply-To: <20180703123214.23090-2-paul@crapouillou.net>
+References: <20180703123214.23090-1-paul@crapouillou.net> <20180703123214.23090-2-paul@crapouillou.net>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Wed, 4 Jul 2018 21:58:15 +0530
+Message-ID: <CANc+2y4ZJDKou4x570zNv82fSAxiOpbZfd3rFNB2M5Ft1C3eiQ@mail.gmail.com>
+Subject: Re: [PATCH 01/14] dmaengine: dma-jz4780: Avoid hardcoding number of channels
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64614
+X-archive-position: 64615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,44 +76,163 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Srikar,
+Hi Paul,
 
-On 07/04/2018 02:46 PM, Srikar Dronamraju wrote:
->>
->> I'm not sure if I get your concerns but let me try to explain what happens
->> in such cases. please let me know if I misunderstood your point.
->>
->> 1. Install a probe using perf.
->>   # ./perf probe sdt_tick:loop2
->>
->>
->>
->> Does this explain your concerns?
->>
-> 
-> 
-> No, this was not my concern.
-> My concern is with two users on the same USDT.
-> 1. First user enables the probe point but doesn't increment the ref_cnt.
-> via uprobe_register
-> 
-> 2. Second user tries to enable the probe point and also increments the
-> ref_cnt via uprobe_register_refctr.
+On 3 July 2018 at 18:02, Paul Cercueil <paul@crapouillou.net> wrote:
+> As part of the work to support various other Ingenic JZ47xx SoC versions,
+> which don't feature the same number of DMA channels per core, we now
+> deduce the number of DMA channels available from the devicetree
+> compatible string.
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  drivers/dma/dma-jz4780.c | 53 +++++++++++++++++++++++++++++-----------
+>  1 file changed, 39 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
+> index 85820a2d69d4..b40f491f0367 100644
+> --- a/drivers/dma/dma-jz4780.c
+> +++ b/drivers/dma/dma-jz4780.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> +#include <linux/of_device.h>
+>  #include <linux/of_dma.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+> @@ -23,8 +24,6 @@
+>  #include "dmaengine.h"
+>  #include "virt-dma.h"
+>
+> -#define JZ_DMA_NR_CHANNELS     32
+> -
+>  /* Global registers. */
+>  #define JZ_DMA_REG_DMAC                0x1000
+>  #define JZ_DMA_REG_DIRQP       0x1004
+> @@ -135,14 +134,20 @@ struct jz4780_dma_chan {
+>         unsigned int curr_hwdesc;
+>  };
+>
+> +enum jz_version {
+> +       ID_JZ4780,
+> +};
+> +
+>  struct jz4780_dma_dev {
+>         struct dma_device dma_device;
+>         void __iomem *base;
+>         struct clk *clk;
+>         unsigned int irq;
+> +       unsigned int nb_channels;
+> +       enum jz_version version;
+>
+>         uint32_t chan_reserved;
+> -       struct jz4780_dma_chan chan[JZ_DMA_NR_CHANNELS];
+> +       struct jz4780_dma_chan chan[];
 
+Looks like a variable length array in struct. I think there is some
+effort to remove the usage of VLA. Can you revisit this? I may be
+wrong, please feel free to correct.
 
-Ok got it. uprobe_register_refctr() will return with error because we don't
-allow one uprobe(inode+offset) with multiple reference counter.
-
-i.e. If inode+offset matches for two uprobes, ref_ctr_offset must match as
-well. Patch 8/10 takes care of this.
-
-
-> 
-> 3. If the second user now removes the probe point via uprobe_unregister.
-> 
-> 4. What is the state of the ref_cnt?
-> 
+>  };
+>
+>  struct jz4780_dma_filter_data {
+> @@ -648,7 +653,7 @@ static irqreturn_t jz4780_dma_irq_handler(int irq, void *data)
+>
+>         pending = jz4780_dma_readl(jzdma, JZ_DMA_REG_DIRQP);
+>
+> -       for (i = 0; i < JZ_DMA_NR_CHANNELS; i++) {
+> +       for (i = 0; i < jzdma->nb_channels; i++) {
+>                 if (!(pending & (1<<i)))
+>                         continue;
+>
+> @@ -728,7 +733,7 @@ static struct dma_chan *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
+>         data.channel = dma_spec->args[1];
+>
+>         if (data.channel > -1) {
+> -               if (data.channel >= JZ_DMA_NR_CHANNELS) {
+> +               if (data.channel >= jzdma->nb_channels) {
+>                         dev_err(jzdma->dma_device.dev,
+>                                 "device requested non-existent channel %u\n",
+>                                 data.channel);
+> @@ -752,19 +757,45 @@ static struct dma_chan *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
+>         }
+>  }
+>
+> +static const unsigned int jz4780_dma_nb_channels[] = {
+> +       [ID_JZ4780] = 32,
+> +};
+> +
+> +static const struct of_device_id jz4780_dma_dt_match[] = {
+> +       { .compatible = "ingenic,jz4780-dma", .data = (void *)ID_JZ4780 },
+> +       {},
+> +};
+> +MODULE_DEVICE_TABLE(of, jz4780_dma_dt_match);
+> +
+>  static int jz4780_dma_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+> +       const struct of_device_id *of_id = of_match_device(
+> +                       jz4780_dma_dt_match, dev);
+>         struct jz4780_dma_dev *jzdma;
+>         struct jz4780_dma_chan *jzchan;
+>         struct dma_device *dd;
+>         struct resource *res;
+> +       enum jz_version version;
+> +       unsigned int nb_channels;
+>         int i, ret;
+>
+> -       jzdma = devm_kzalloc(dev, sizeof(*jzdma), GFP_KERNEL);
+> +       if (of_id)
+> +               version = (enum jz_version)of_id->data;
+> +       else
+> +               version = ID_JZ4780; /* Default when not probed from DT */
+> +
+> +       nb_channels = jz4780_dma_nb_channels[version];
+> +
+> +       jzdma = devm_kzalloc(dev, sizeof(*jzdma)
+> +                               + sizeof(*jzdma->chan) * nb_channels,
+> +                               GFP_KERNEL);
+>         if (!jzdma)
+>                 return -ENOMEM;
+>
+> +       jzdma->nb_channels = nb_channels;
+> +       jzdma->version = version;
+> +
+>         platform_set_drvdata(pdev, jzdma);
+>
+>         res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> @@ -839,7 +870,7 @@ static int jz4780_dma_probe(struct platform_device *pdev)
+>
+>         INIT_LIST_HEAD(&dd->channels);
+>
+> -       for (i = 0; i < JZ_DMA_NR_CHANNELS; i++) {
+> +       for (i = 0; i < jzdma->nb_channels; i++) {
+>                 jzchan = &jzdma->chan[i];
+>                 jzchan->id = i;
+>
+> @@ -884,19 +915,13 @@ static int jz4780_dma_remove(struct platform_device *pdev)
+>
+>         free_irq(jzdma->irq, jzdma);
+>
+> -       for (i = 0; i < JZ_DMA_NR_CHANNELS; i++)
+> +       for (i = 0; i < jzdma->nb_channels; i++)
+>                 tasklet_kill(&jzdma->chan[i].vchan.task);
+>
+>         dma_async_device_unregister(&jzdma->dma_device);
+>         return 0;
+>  }
+>
+> -static const struct of_device_id jz4780_dma_dt_match[] = {
+> -       { .compatible = "ingenic,jz4780-dma", .data = NULL },
+> -       {},
+> -};
+> -MODULE_DEVICE_TABLE(of, jz4780_dma_dt_match);
+> -
+>  static struct platform_driver jz4780_dma_driver = {
+>         .probe          = jz4780_dma_probe,
+>         .remove         = jz4780_dma_remove,
 > --
-> Thanks and Regards
-> Srikar
-> 
+> 2.18.0
+>
+>

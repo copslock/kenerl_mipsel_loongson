@@ -1,43 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 11:54:25 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:60123 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 12:23:29 +0200 (CEST)
+Received: from pegase1.c-s.fr ([93.17.236.30]:50806 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994670AbeGEJthfpuoY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Jul 2018 11:49:37 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 03259208C4; Thu,  5 Jul 2018 11:49:31 +0200 (CEST)
-Received: from bbrezillon (AAubervilliers-681-1-39-106.w90-88.abo.wanadoo.fr [90.88.158.106])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 9BACB20787;
-        Thu,  5 Jul 2018 11:49:20 +0200 (CEST)
-Date:   Thu, 5 Jul 2018 11:49:21 +0200
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd@lists.infradead.org
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 00/27] mtd: rawnand: Improve compile-test coverage
-Message-ID: <20180705114921.4bb66185@bbrezillon>
-In-Reply-To: <20180705094522.12138-1-boris.brezillon@bootlin.com>
-References: <20180705094522.12138-1-boris.brezillon@bootlin.com>
-X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+        id S23993008AbeGEKXMpScVf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Jul 2018 12:23:12 +0200
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 41Lv7r3Lptz9ttS1;
+        Thu,  5 Jul 2018 12:23:04 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id btNar2wGZxeY; Thu,  5 Jul 2018 12:23:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 41Lv7r2cDfz9ttBx;
+        Thu,  5 Jul 2018 12:23:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id AF59E8B897;
+        Thu,  5 Jul 2018 12:23:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id R6m_1W6ppBel; Thu,  5 Jul 2018 12:23:05 +0200 (CEST)
+Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr [172.25.231.4])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 0DC1A8B88B;
+        Thu,  5 Jul 2018 12:23:05 +0200 (CEST)
+Subject: Re: [PATCH v3 02/11] hugetlb: Introduce generic version of
+ hugetlb_free_pgd_range
+To:     Alexandre Ghiti <alex@ghiti.fr>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+References: <20180705051640.790-1-alex@ghiti.fr>
+ <20180705051640.790-3-alex@ghiti.fr>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <005bf713-fb51-bf29-5f86-6f244cd49f35@c-s.fr>
+Date:   Thu, 5 Jul 2018 10:22:30 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20180705051640.790-3-alex@ghiti.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+Return-Path: <christophe.leroy@c-s.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64680
+X-archive-position: 64681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: christophe.leroy@c-s.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,98 +71,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+Geert since I have a question for you
 
-On Thu,  5 Jul 2018 11:44:55 +0200
-Boris Brezillon <boris.brezillon@bootlin.com> wrote:
 
-> Hello,
+On 07/05/2018 05:16 AM, Alexandre Ghiti wrote:
+> arm, arm64, mips, parisc, sh, x86 architectures use the
+> same version of hugetlb_free_pgd_range, so move this generic
+> implementation into asm-generic/hugetlb.h.
 > 
-> This is an attempt at adding "depends || COMPILE_TEST" to all NAND
-> drivers that have no compile-time dependencies on arch
-> features/headers.
-> 
-> This will hopefully help us (NAND/MTD maintainers) in detecting build
-> issues earlier. Unfortunately we still have a few drivers that can't
-> easily be modified to be arch independent.
-> 
-> I tried to put all patches that only touch the NAND subsystem first,
-> so that they can be applied even if other patches are being discussed.
-> 
-> Don't hesitate to point any missing dependencies when compiled with
-> COMPILE_TEST. I didn't have any problem when compiling, but that might
-> be because the dependencies were already selected.
-> 
-> I have Question for Geert. I know you worked on HAS_DMA removal when
-> combined with COMPILE_TEST, do you plan to do something similar with
-> HAS_IOMEM?
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-just here :).
+Build failure on mpc885_ads_defconfig
 
+   CC      arch/powerpc/kernel/setup-common.o
+In file included from arch/powerpc/kernel/setup-common.c:37:
+./include/linux/hugetlb.h:191:65: error: expected identifier or '(' 
+before '{' token
+  #define hugetlb_free_pgd_range(tlb, addr, end, floor, ceiling) 
+({BUG(); 0; })
+                                                                  ^
+./include/asm-generic/hugetlb.h:44:20: note: in expansion of macro 
+'hugetlb_free_pgd_range'
+  static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
+                     ^~~~~~~~~~~~~~~~~~~~~~
+
+see below
+
+> ---
+>   arch/arm/include/asm/hugetlb.h     | 12 ++----------
+>   arch/arm64/include/asm/hugetlb.h   | 10 ----------
+>   arch/ia64/include/asm/hugetlb.h    |  5 +++--
+>   arch/mips/include/asm/hugetlb.h    | 13 ++-----------
+>   arch/parisc/include/asm/hugetlb.h  | 12 ++----------
+>   arch/powerpc/include/asm/hugetlb.h |  4 +++-
+>   arch/sh/include/asm/hugetlb.h      | 12 ++----------
+>   arch/sparc/include/asm/hugetlb.h   |  4 +++-
+>   arch/x86/include/asm/hugetlb.h     | 11 ++---------
+>   include/asm-generic/hugetlb.h      | 11 +++++++++++
+>   10 files changed, 30 insertions(+), 64 deletions(-)
 > 
-> Regards,
-> 
-> Boris
-> 
-> Boris Brezillon (27):
->   mtd: rawnand: gpmi: Remove useless dependency on MTD_NAND
->   mtd: rawnand: Add 'depends on HAS_IOMEM' where missing
->   mtd: rawnand: atmel: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: omap2: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: s3c2410: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: sharpsl: Remove inclusion of mach and asm headers
->   mtd: rawnand: sharpsl: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: lpc32xx: Allow selection of these drivers when
->     COMPILE_TEST=y
->   mtd: rawnand: brcmnand: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: orion: Avoid direct inclusion of asm headers
->   mtd: rawnand: orion: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: mxc: Avoid inclusion of asm/mach headers
->   mtd: rawnand: mxc: Allow selection of this driver when COMPILE_TEST=y
->   mtd: rawnand: davinci: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: sunxi: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: qcom: Allow selection of this driver when COMPILE_TEST=y
->   mtd: rawnand: fsmc: Allow selection of this driver when COMPILE_TEST=y
->   mtd: rawnand: nuc900: Allow selection of this driver when
->     COMPILE_TEST=y
->   memory: fsl_ifc: Allow selection of this driver when COMPILE_TEST=y
->   mtd: rawnand: fsl_ifc: Allow selection of this driver when
->     COMPILE_TEST=y
->   bcma: Allow selection of this driver when COMPILE_TEST=y
->   MIPS: txx9: Move the ndfc.h header to include/linux/platform_data/txx9
->   mtd: rawnand: txx9ndfmc: Allow selection of this driver when
->     COMPILE_TEST=y
->   MIPS: jz4740: Move jz4740_nand.h header to
->     include/linux/platform_data/jz4740
->   mtd: rawnand: jz4740: Allow selection of this driver when
->     COMPILE_TEST=y
->   mtd: rawnand: jz4780: Drop the dependency on MACH_JZ4780
->   memory: jz4780-nemc: Allow selection of this driver when
->     COMPILE_TEST=y
-> 
->  arch/mips/jz4740/board-qi_lb60.c                   |  3 +-
->  arch/mips/txx9/generic/setup.c                     |  2 +-
->  arch/mips/txx9/generic/setup_tx4938.c              |  2 +-
->  arch/mips/txx9/generic/setup_tx4939.c              |  2 +-
->  drivers/bcma/Kconfig                               |  3 +-
->  drivers/memory/Kconfig                             |  6 ++-
->  drivers/mtd/nand/raw/Kconfig                       | 61 +++++++++++++++-------
->  drivers/mtd/nand/raw/jz4740_nand.c                 |  2 +-
->  drivers/mtd/nand/raw/mxc_nand.c                    |  2 -
->  drivers/mtd/nand/raw/orion_nand.c                  |  2 +-
->  drivers/mtd/nand/raw/sharpsl.c                     |  5 +-
->  drivers/mtd/nand/raw/txx9ndfmc.c                   |  2 +-
->  .../linux/platform_data/jz4740}/jz4740_nand.h      |  4 +-
->  .../linux/platform_data}/txx9/ndfmc.h              |  6 +--
->  14 files changed, 61 insertions(+), 41 deletions(-)
->  rename {arch/mips/include/asm/mach-jz4740 => include/linux/platform_data/jz4740}/jz4740_nand.h (91%)
->  rename {arch/mips/include/asm => include/linux/platform_data}/txx9/ndfmc.h (91%)
-> 
+
+[snip]
+
+> diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+> index 3225eb6402cc..de46ee16b615 100644
+> --- a/arch/powerpc/include/asm/hugetlb.h
+> +++ b/arch/powerpc/include/asm/hugetlb.h
+> @@ -4,7 +4,6 @@
+>   
+>   #ifdef CONFIG_HUGETLB_PAGE
+>   #include <asm/page.h>
+> -#include <asm-generic/hugetlb.h>
+>   
+>   extern struct kmem_cache *hugepte_cache;
+>   
+> @@ -113,6 +112,7 @@ static inline void flush_hugetlb_page(struct vm_area_struct *vma,
+>   void flush_hugetlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+>   #endif
+>   
+> +#define __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
+>   void hugetlb_free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
+>   			    unsigned long end, unsigned long floor,
+>   			    unsigned long ceiling);
+> @@ -193,4 +193,6 @@ static inline pte_t *hugepte_offset(hugepd_t hpd, unsigned long addr,
+>   }
+>   #endif /* CONFIG_HUGETLB_PAGE */
+>   
+> +#include <asm-generic/hugetlb.h>
+> +
+
+That include was previously inside #ifdef CONFIG_HUGETLB_PAGE.
+Why put it outside ?
+
+Christophe

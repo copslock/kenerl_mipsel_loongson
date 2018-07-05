@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 11:50:21 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 11:50:47 +0200 (CEST)
 Received: from mail.bootlin.com ([62.4.15.54]:59687 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994679AbeGEJqBp1hjY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994676AbeGEJqBa4vTY (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 5 Jul 2018 11:46:01 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id D066520922; Thu,  5 Jul 2018 11:45:55 +0200 (CEST)
+        id 0B169208FC; Thu,  5 Jul 2018 11:45:55 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-39-106.w90-88.abo.wanadoo.fr [90.88.158.106])
-        by mail.bootlin.com (Postfix) with ESMTPSA id C707C2092C;
-        Thu,  5 Jul 2018 11:45:30 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id A5A1C208FD;
+        Thu,  5 Jul 2018 11:45:28 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 27/27] memory: jz4780-nemc: Allow selection of this driver when COMPILE_TEST=y
-Date:   Thu,  5 Jul 2018 11:45:22 +0200
-Message-Id: <20180705094522.12138-28-boris.brezillon@bootlin.com>
+Subject: [PATCH 18/27] mtd: rawnand: nuc900: Allow selection of this driver when COMPILE_TEST=y
+Date:   Thu,  5 Jul 2018 11:45:13 +0200
+Message-Id: <20180705094522.12138-19-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180705094522.12138-1-boris.brezillon@bootlin.com>
 References: <20180705094522.12138-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64667
+X-archive-position: 64668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,30 +46,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It just makes maintainers' life easier by allowing them to compile-test
-this driver without having MACH_JZ4780 enabled.
+It just makes NAND maintainers' life easier by allowing them to
+compile-test this driver without having ARCH_W90X900 enabled.
 
-We also need to add a dependency on HAS_IOMEM to make sure the
-driver compiles correctly.
+We also need to add a dependency on HAS_IOMEM to make sure the driver
+compiles correctly.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/memory/Kconfig | 3 ++-
+ drivers/mtd/nand/raw/Kconfig | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 78457ab2cbc4..a642552dfdc9 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -122,7 +122,8 @@ config FSL_IFC
- config JZ4780_NEMC
- 	bool "Ingenic JZ4780 SoC NEMC driver"
- 	default y
--	depends on MACH_JZ4780
-+	depends on MACH_JZ4780 || COMPILE_TEST
+diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
+index 245f1b56b94f..5a24b0fc03f1 100644
+--- a/drivers/mtd/nand/raw/Kconfig
++++ b/drivers/mtd/nand/raw/Kconfig
+@@ -482,7 +482,8 @@ config MTD_NAND_SOCRATES
+ 
+ config MTD_NAND_NUC900
+ 	tristate "Support for NAND on Nuvoton NUC9xx/w90p910 evaluation boards."
+-	depends on ARCH_W90X900
++	depends on ARCH_W90X900 || COMPILE_TEST
 +	depends on HAS_IOMEM
  	help
- 	  This driver is for the NAND/External Memory Controller (NEMC) in
- 	  the Ingenic JZ4780. This controller is used to handle external
+ 	  This enables the driver for the NAND Flash on evaluation board based
+ 	  on w90p910 / NUC9xx.
 -- 
 2.14.1

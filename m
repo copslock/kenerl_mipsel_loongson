@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 10:30:50 +0200 (CEST)
-Received: from mga05.intel.com ([192.55.52.43]:60305 "EHLO mga05.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2018 11:41:04 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:50337 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992940AbeGEIaoQDrOB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Jul 2018 10:30:44 +0200
+        id S23993006AbeGEJkv3sUkY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Jul 2018 11:40:51 +0200
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2018 01:30:40 -0700
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Jul 2018 02:40:48 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.51,311,1526367600"; 
-   d="gz'50?scan'50,208,50";a="69799115"
+   d="gz'50?scan'50,208,50";a="68851590"
 Received: from bee.sh.intel.com (HELO bee) ([10.239.97.14])
-  by fmsmga001.fm.intel.com with ESMTP; 05 Jul 2018 01:30:35 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 05 Jul 2018 02:40:43 -0700
 Received: from kbuild by bee with local (Exim 4.84_2)
         (envelope-from <lkp@intel.com>)
-        id 1fazes-0000Hk-SF; Thu, 05 Jul 2018 16:30:34 +0800
-Date:   Thu, 5 Jul 2018 16:29:43 +0800
+        id 1fb0kk-000Vmf-Eh; Thu, 05 Jul 2018 17:40:42 +0800
+Date:   Thu, 5 Jul 2018 17:39:47 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Alexandre Ghiti <alex@ghiti.fr>
 Cc:     kbuild-all@01.org, linux@armlinux.org.uk, catalin.marinas@arm.com,
@@ -31,14 +31,14 @@ Cc:     kbuild-all@01.org, linux@armlinux.org.uk, catalin.marinas@arm.com,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-arch@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>
-Subject: Re: [PATCH v3 02/11] hugetlb: Introduce generic version of
- hugetlb_free_pgd_range
-Message-ID: <201807051622.dY8S5PXo%fengguang.wu@intel.com>
-References: <20180705051640.790-3-alex@ghiti.fr>
+Subject: Re: [PATCH v3 08/11] hugetlb: Introduce generic version of
+ prepare_hugepage_range
+Message-ID: <201807051714.BBlsWblH%fengguang.wu@intel.com>
+References: <20180705051640.790-9-alex@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="NzB8fVQJ5HfG6fxh"
+Content-Type: multipart/mixed; boundary="BOKacYhQ+x31HxR3"
 Content-Disposition: inline
-In-Reply-To: <20180705051640.790-3-alex@ghiti.fr>
+In-Reply-To: <20180705051640.790-9-alex@ghiti.fr>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-SA-Exim-Connect-IP: <locally generated>
 X-SA-Exim-Mail-From: lkp@intel.com
@@ -47,7 +47,7 @@ Return-Path: <lkp@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64650
+X-archive-position: 64651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,16 +65,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---NzB8fVQJ5HfG6fxh
+--BOKacYhQ+x31HxR3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Alexandre,
 
-Thank you for the patch! Yet something to improve:
+Thank you for the patch! Perhaps something to improve:
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v4.18-rc3 next-20180704]
+[auto build test WARNING on linus/master]
+[also build test WARNING on v4.18-rc3 next-20180704]
 [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 
 url:    https://github.com/0day-ci/linux/commits/Alexandre-Ghiti/hugetlb-Factorize-hugetlb-architecture-primitives/20180705-135909
@@ -86,60 +86,98 @@ reproduce:
         # save the attached .config to linux build tree
         GCC_VERSION=7.2.0 make.cross ARCH=powerpc 
 
-All error/warnings (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
    In file included from arch/powerpc/kernel/setup-common.c:37:0:
->> include/linux/hugetlb.h:191:65: error: expected identifier or '(' before '{' token
+   include/linux/hugetlb.h:191:65: error: expected identifier or '(' before '{' token
     #define hugetlb_free_pgd_range(tlb, addr, end, floor, ceiling) ({BUG(); 0; })
                                                                     ^
->> include/asm-generic/hugetlb.h:44:20: note: in expansion of macro 'hugetlb_free_pgd_range'
+   include/asm-generic/hugetlb.h:44:20: note: in expansion of macro 'hugetlb_free_pgd_range'
     static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
                        ^~~~~~~~~~~~~~~~~~~~~~
+   include/linux/hugetlb.h:187:50: error: expected identifier or '(' before '-' token
+    #define prepare_hugepage_range(file, addr, len) (-EINVAL)
+                                                     ^
+>> include/asm-generic/hugetlb.h:91:19: note: in expansion of macro 'prepare_hugepage_range'
+    static inline int prepare_hugepage_range(struct file *file,
+                      ^~~~~~~~~~~~~~~~~~~~~~
 
-vim +191 include/linux/hugetlb.h
+vim +/prepare_hugepage_range +91 include/asm-generic/hugetlb.h
 
-^1da177e Linus Torvalds    2005-04-16  172  
-87ffc118 Andrea Arcangeli  2017-02-22  173  #define follow_hugetlb_page(m,v,p,vs,a,b,i,w,n)	({ BUG(); 0; })
-^1da177e Linus Torvalds    2005-04-16  174  #define follow_huge_addr(mm, addr, write)	ERR_PTR(-EINVAL)
-^1da177e Linus Torvalds    2005-04-16  175  #define copy_hugetlb_page_range(src, dst, vma)	({ BUG(); 0; })
-e1759c21 Alexey Dobriyan   2008-10-15  176  static inline void hugetlb_report_meminfo(struct seq_file *m)
-e1759c21 Alexey Dobriyan   2008-10-15  177  {
-e1759c21 Alexey Dobriyan   2008-10-15  178  }
-^1da177e Linus Torvalds    2005-04-16  179  #define hugetlb_report_node_meminfo(n, buf)	0
-949f7ec5 David Rientjes    2013-04-29  180  static inline void hugetlb_show_meminfo(void)
-949f7ec5 David Rientjes    2013-04-29  181  {
-949f7ec5 David Rientjes    2013-04-29  182  }
-4dc71451 Aneesh Kumar K.V  2017-07-06  183  #define follow_huge_pd(vma, addr, hpd, flags, pdshift) NULL
-e66f17ff Naoya Horiguchi   2015-02-11  184  #define follow_huge_pmd(mm, addr, pmd, flags)	NULL
-e66f17ff Naoya Horiguchi   2015-02-11  185  #define follow_huge_pud(mm, addr, pud, flags)	NULL
-faaa5b62 Anshuman Khandual 2017-07-06  186  #define follow_huge_pgd(mm, addr, pgd, flags)	NULL
-a5516438 Andi Kleen        2008-07-23  187  #define prepare_hugepage_range(file, addr, len)	(-EINVAL)
-^1da177e Linus Torvalds    2005-04-16  188  #define pmd_huge(x)	0
-ceb86879 Andi Kleen        2008-07-23  189  #define pud_huge(x)	0
-^1da177e Linus Torvalds    2005-04-16  190  #define is_hugepage_only_range(mm, addr, len)	0
-9da61aef David Gibson      2006-03-22 @191  #define hugetlb_free_pgd_range(tlb, addr, end, floor, ceiling) ({BUG(); 0; })
-788c7df4 Hugh Dickins      2009-06-23  192  #define hugetlb_fault(mm, vma, addr, flags)	({ BUG(); 0; })
-8fb5debc Mike Kravetz      2017-02-22  193  #define hugetlb_mcopy_atomic_pte(dst_mm, dst_pte, dst_vma, dst_addr, \
-8fb5debc Mike Kravetz      2017-02-22  194  				src_addr, pagep)	({ BUG(); 0; })
-7868a208 Punit Agrawal     2017-07-06  195  #define huge_pte_offset(mm, address, sz)	0
-24669e58 Aneesh Kumar K.V  2012-07-31  196  
-
-:::::: The code at line 191 was first introduced by commit
-:::::: 9da61aef0fd5b17dd4bf4baf33db12c470def774 [PATCH] hugepage: Fix hugepage logic in free_pgtables()
-
-:::::: TO: David Gibson <david@gibson.dropbear.id.au>
-:::::: CC: Linus Torvalds <torvalds@g5.osdl.org>
+    42	
+    43	#ifndef __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
+  > 44	static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
+    45			unsigned long addr, unsigned long end,
+    46			unsigned long floor, unsigned long ceiling)
+    47	{
+    48		free_pgd_range(tlb, addr, end, floor, ceiling);
+    49	}
+    50	#endif
+    51	
+    52	#ifndef __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+    53	static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+    54			pte_t *ptep, pte_t pte)
+    55	{
+    56		set_pte_at(mm, addr, ptep, pte);
+    57	}
+    58	#endif
+    59	
+    60	#ifndef __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+    61	static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+    62			unsigned long addr, pte_t *ptep)
+    63	{
+    64		return ptep_get_and_clear(mm, addr, ptep);
+    65	}
+    66	#endif
+    67	
+    68	#ifndef __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+    69	static inline void huge_ptep_clear_flush(struct vm_area_struct *vma,
+    70			unsigned long addr, pte_t *ptep)
+    71	{
+    72		ptep_clear_flush(vma, addr, ptep);
+    73	}
+    74	#endif
+    75	
+    76	#ifndef __HAVE_ARCH_HUGE_PTE_NONE
+    77	static inline int huge_pte_none(pte_t pte)
+    78	{
+    79		return pte_none(pte);
+    80	}
+    81	#endif
+    82	
+    83	#ifndef __HAVE_ARCH_HUGE_PTE_WRPROTECT
+    84	static inline pte_t huge_pte_wrprotect(pte_t pte)
+    85	{
+    86		return pte_wrprotect(pte);
+    87	}
+    88	#endif
+    89	
+    90	#ifndef __HAVE_ARCH_PREPARE_HUGEPAGE_RANGE
+  > 91	static inline int prepare_hugepage_range(struct file *file,
+    92			unsigned long addr, unsigned long len)
+    93	{
+    94		struct hstate *h = hstate_file(file);
+    95	
+    96		if (len & ~huge_page_mask(h))
+    97			return -EINVAL;
+    98		if (addr & ~huge_page_mask(h))
+    99			return -EINVAL;
+   100	
+   101		return 0;
+   102	}
+   103	#endif
+   104	
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---NzB8fVQJ5HfG6fxh
+--BOKacYhQ+x31HxR3
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICO3PPVsAAy5jb25maWcAhDxdb+O2su/9FcIWuGhxsG3sfGz2XuSBoiibtSQqJGU7eRGy
+H4sICCfhPVsAAy5jb25maWcAhDxdb+O2su/9FcIWuGhxsG3sfGz2XuSBoiibtSQqJGU7eRGy
 iXdrNOvk2E67/fd3hpIsUiadg+I0nhkOh+Rwvjjqzz/9HJG3/cv3h/368eH5+d/o22qz2j7s
 V0/R1/Xz6v+iRESF0BFLuP4NiLP15u3H768v/6y2r4/RxW+j69/OPm4fz6PZartZPUf0ZfN1
 /e0NOKxfNj/9/BP88zMAv78Cs+3/Ru3Aj8/I5uO3zdvHb4+P0S/J6sv6YRN9+m0M3EajX5u/
@@ -343,4 +381,4 @@ TyitXLMI+aTVyBEQ5hbVsN71NEQZjPkN6o7lHsTbZEuGc0dd4rmrr0WUtQTzW8g5Y5Dr44Hc
 ZuEs5tSKeDMM/HIEVzDqhFeIKCyYoF0DzYFMpMM9vdkfIWBNMe26Gvhh+/y2wqow6KjSs9pA
 pBxW4BnkQPk/jjxRWmCmAAA=
 
---NzB8fVQJ5HfG6fxh--
+--BOKacYhQ+x31HxR3--

@@ -1,27 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Jul 2018 17:07:26 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:55818 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992747AbeGHPHTLZ8E- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Jul 2018 17:07:19 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH] MIPS: jz4740: Bump zload address
-Date:   Sun,  8 Jul 2018 17:07:12 +0200
-Message-Id: <20180708150712.7404-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531062437; bh=xg289lwT5JS32ZGyJVoi4pZrUBN6AiXrsLJepzYH4w4=; h=From:To:Cc:Subject:Date:Message-Id; b=FchTZBdZAoMGuroL57MBahfcWeaQ7gyHos2vZUplGnf5m2TNijX9dlyqmAM69atZ7TZ6I9rR03F+iSvcqHu2qc1yzZaOv1QyK1renZlwQBMtgyWVtW36eXyKCS5oADIq7IK7RD9BtA94Sk2Af6TwU/bbHJJqKu+o3cLd1bYTtXE=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Jul 2018 23:55:37 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:54344 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990395AbeGHVzaiYYVP convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Jul 2018 23:55:30 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id C26EA2082B; Sun,  8 Jul 2018 23:55:23 +0200 (CEST)
+Received: from xps13 (unknown [91.224.148.103])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 34713207D4;
+        Sun,  8 Jul 2018 23:55:23 +0200 (CEST)
+Date:   Sun, 8 Jul 2018 23:55:23 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Boris Brezillon <boris.brezillon@bootlin.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 00/27] mtd: rawnand: Improve compile-test coverage
+Message-ID: <20180708235523.30faa860@xps13>
+In-Reply-To: <20180705094522.12138-1-boris.brezillon@bootlin.com>
+References: <20180705094522.12138-1-boris.brezillon@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <miquel.raynal@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64709
+X-archive-position: 64710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: miquel.raynal@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,34 +49,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Having the zload address at 0x8060.0000 means the size of the
-uncompressed kernel cannot be bigger than around 6 MiB, as it is
-deflated at address 0x8001.0000.
+Hi Boris,
 
-This limit is too small; a kernel with some built-in drivers and things
-like debugfs enabled will already be over 6 MiB in size, and so will
-fail to extract properly.
+Boris Brezillon <boris.brezillon@bootlin.com> wrote on Thu,  5 Jul 2018
+11:44:55 +0200:
 
-To fix this, we bump the zload address from 0x8060.0000 to 0x8100.0000.
+> Hello,
+> 
+> This is an attempt at adding "depends || COMPILE_TEST" to all NAND
+> drivers that have no compile-time dependencies on arch
+> features/headers.
+> 
+> This will hopefully help us (NAND/MTD maintainers) in detecting build
+> issues earlier. Unfortunately we still have a few drivers that can't
+> easily be modified to be arch independent.
+> 
+> I tried to put all patches that only touch the NAND subsystem first,
+> so that they can be applied even if other patches are being discussed.
+> 
+> Don't hesitate to point any missing dependencies when compiled with
+> COMPILE_TEST. I didn't have any problem when compiling, but that might
+> be because the dependencies were already selected.
+> 
+> I have Question for Geert. I know you worked on HAS_DMA removal when
+> combined with COMPILE_TEST, do you plan to do something similar with
+> HAS_IOMEM?
+> 
+> Regards,
+> 
+> Boris
+> 
 
-This is fine, as all the boards featuring Ingenic JZ SoCs have at least
-32 MiB of RAM, and use u-boot or compatible bootloaders which won't
-hardcode the load address but read it from the uImage's header.
+Thanks for the cleanup.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- arch/mips/jz4740/Platform | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied patches 1-4, 6-9, 12-16, 18 and 21 to nand/next.
 
-diff --git a/arch/mips/jz4740/Platform b/arch/mips/jz4740/Platform
-index 28448d358c10..a2a5a85ea1f9 100644
---- a/arch/mips/jz4740/Platform
-+++ b/arch/mips/jz4740/Platform
-@@ -1,4 +1,4 @@
- platform-$(CONFIG_MACH_INGENIC)	+= jz4740/
- cflags-$(CONFIG_MACH_INGENIC)	+= -I$(srctree)/arch/mips/include/asm/mach-jz4740
- load-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80010000
--zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80600000
-+zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff81000000
--- 
-2.18.0
+Waiting a v2 for patches 5 (s3c), 10-11 (orion), 17 (fsmc), and acks
+for the others 19-20, 22-27.
+
+Thanks,
+Miquèl

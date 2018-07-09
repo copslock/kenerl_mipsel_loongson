@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:12:35 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49388 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:12:56 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49389 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994552AbeGIUKPjF4dt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994551AbeGIUKPjJomt (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 9 Jul 2018 22:10:15 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 0C1F42098A; Mon,  9 Jul 2018 22:10:15 +0200 (CEST)
+        id 61E682093C; Mon,  9 Jul 2018 22:10:15 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id EEB7420938;
-        Mon,  9 Jul 2018 22:09:58 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id E38A12093E;
+        Mon,  9 Jul 2018 22:09:59 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 18/24] mtd: rawnand: fsl_ifc: Allow selection of this driver when COMPILE_TEST=y
-Date:   Mon,  9 Jul 2018 22:09:39 +0200
-Message-Id: <20180709200945.30116-19-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 21/24] MIPS: jz4740: Move jz4740_nand.h header to include/linux/platform_data/jz4740
+Date:   Mon,  9 Jul 2018 22:09:42 +0200
+Message-Id: <20180709200945.30116-22-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64731
+X-archive-position: 64732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,31 +46,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It just makes maintainers' life easier by allowing them to compile-test
-this driver without having FSL_SOC, ARCH_LAYERSCAPE or SOC_LS1021A
-enabled.
-
-We also need to add a dependency on HAS_IOMEM to make sure the
-driver compiles correctly.
+This way we will be able to compile the jz4740_nand driver when
+COMPILE_TEST=y.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/jz4740/board-qi_lb60.c                                      | 3 ++-
+ drivers/mtd/nand/raw/jz4740_nand.c                                    | 2 +-
+ .../mach-jz4740 => include/linux/platform_data/jz4740}/jz4740_nand.h  | 4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+ rename {arch/mips/include/asm/mach-jz4740 => include/linux/platform_data/jz4740}/jz4740_nand.h (91%)
 
-diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index 29d360f984c9..dc6c5aff4172 100644
---- a/drivers/mtd/nand/raw/Kconfig
-+++ b/drivers/mtd/nand/raw/Kconfig
-@@ -408,7 +408,8 @@ config MTD_NAND_FSL_ELBC
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 60f0767507c6..af0c8ace0141 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -29,10 +29,11 @@
+ #include <linux/power/gpio-charger.h>
+ #include <linux/pwm.h>
  
- config MTD_NAND_FSL_IFC
- 	tristate "NAND support for Freescale IFC controller"
--	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A
-+	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
-+	depends on HAS_IOMEM
- 	select FSL_IFC
- 	select MEMORY
- 	help
++#include <linux/platform_data/jz4740/jz4740_nand.h>
++
+ #include <asm/mach-jz4740/gpio.h>
+ #include <asm/mach-jz4740/jz4740_fb.h>
+ #include <asm/mach-jz4740/jz4740_mmc.h>
+-#include <asm/mach-jz4740/jz4740_nand.h>
+ 
+ #include <linux/regulator/fixed.h>
+ #include <linux/regulator/machine.h>
+diff --git a/drivers/mtd/nand/raw/jz4740_nand.c b/drivers/mtd/nand/raw/jz4740_nand.c
+index 613b00a9604b..a0254461812d 100644
+--- a/drivers/mtd/nand/raw/jz4740_nand.c
++++ b/drivers/mtd/nand/raw/jz4740_nand.c
+@@ -25,7 +25,7 @@
+ 
+ #include <linux/gpio.h>
+ 
+-#include <asm/mach-jz4740/jz4740_nand.h>
++#include <linux/platform_data/jz4740/jz4740_nand.h>
+ 
+ #define JZ_REG_NAND_CTRL	0x50
+ #define JZ_REG_NAND_ECC_CTRL	0x100
+diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h b/include/linux/platform_data/jz4740/jz4740_nand.h
+similarity index 91%
+rename from arch/mips/include/asm/mach-jz4740/jz4740_nand.h
+rename to include/linux/platform_data/jz4740/jz4740_nand.h
+index f381d465e768..bc571f6d5ced 100644
+--- a/arch/mips/include/asm/mach-jz4740/jz4740_nand.h
++++ b/include/linux/platform_data/jz4740/jz4740_nand.h
+@@ -13,8 +13,8 @@
+  *
+  */
+ 
+-#ifndef __ASM_MACH_JZ4740_JZ4740_NAND_H__
+-#define __ASM_MACH_JZ4740_JZ4740_NAND_H__
++#ifndef __JZ4740_NAND_H__
++#define __JZ4740_NAND_H__
+ 
+ #include <linux/mtd/rawnand.h>
+ #include <linux/mtd/partitions.h>
 -- 
 2.14.1

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:10:49 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49342 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:11:03 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49352 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993941AbeGIUKKMkKFt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993928AbeGIUKKMY5dt (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 9 Jul 2018 22:10:10 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 9CA1120876; Mon,  9 Jul 2018 22:10:04 +0200 (CEST)
+        id E485C208B3; Mon,  9 Jul 2018 22:10:04 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 3E407208B3;
+        by mail.bootlin.com (Postfix) with ESMTPSA id 8921E208C5;
         Mon,  9 Jul 2018 22:09:54 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 03/24] mtd: rawnand: atmel: Allow selection of this driver when COMPILE_TEST=y
-Date:   Mon,  9 Jul 2018 22:09:24 +0200
-Message-Id: <20180709200945.30116-4-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 04/24] mtd: rawnand: s3c2410: Allow selection of this driver when COMPILE_TEST=y
+Date:   Mon,  9 Jul 2018 22:09:25 +0200
+Message-Id: <20180709200945.30116-5-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64724
+X-archive-position: 64725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,10 +47,12 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 It just makes NAND maintainers' life easier by allowing them to
-compile-test this driver without having ARCH_AT91 enabled.
+compile-test this driver without having ARCH_S3C24XX or ARCH_S3C64XX
+enabled.
 
-We also need to add a dependency on HAS_IOMEM to make sure the driver
-compiles correctly.
+We add a dependency on HAS_IOMEM to make sure the driver compiles
+correctly, and a dependency on !IA64 because the {read,write}s{bwl}()
+accessors are not defined for this architecture.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
@@ -58,18 +60,18 @@ Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index 230311fa2cc0..1488ad0a0199 100644
+index 1488ad0a0199..e01b3da726c0 100644
 --- a/drivers/mtd/nand/raw/Kconfig
 +++ b/drivers/mtd/nand/raw/Kconfig
-@@ -277,7 +277,8 @@ config MTD_NAND_CS553X
+@@ -119,7 +119,8 @@ config MTD_NAND_AU1550
  
- config MTD_NAND_ATMEL
- 	tristate "Support for NAND Flash / SmartMedia on AT91"
--	depends on ARCH_AT91
-+	depends on ARCH_AT91 || COMPILE_TEST
-+	depends on HAS_IOMEM
- 	select MFD_ATMEL_SMC
+ config MTD_NAND_S3C2410
+ 	tristate "NAND Flash support for Samsung S3C SoCs"
+-	depends on ARCH_S3C24XX || ARCH_S3C64XX
++	depends on ARCH_S3C24XX || ARCH_S3C64XX || COMPILE_TEST
++	depends on HAS_IOMEM && !IA64
  	help
- 	  Enables support for NAND Flash / Smart Media Card interface
+ 	  This enables the NAND flash controller on the S3C24xx and S3C64xx
+ 	  SoCs
 -- 
 2.14.1

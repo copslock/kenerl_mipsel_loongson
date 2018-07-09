@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:36:11 +0200 (CEST)
-Received: from mail-lj1-x242.google.com ([IPv6:2a00:1450:4864:20::242]:35416
-        "EHLO mail-lj1-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993928AbeGIUgDPeqRO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jul 2018 22:36:03 +0200
-Received: by mail-lj1-x242.google.com with SMTP id p10-v6so9657301ljg.2;
-        Mon, 09 Jul 2018 13:36:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:46:07 +0200 (CEST)
+Received: from mail-lj1-x241.google.com ([IPv6:2a00:1450:4864:20::241]:45148
+        "EHLO mail-lj1-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993316AbeGIUp4c0SEO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jul 2018 22:45:56 +0200
+Received: by mail-lj1-x241.google.com with SMTP id q5-v6so15080627ljh.12;
+        Mon, 09 Jul 2018 13:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=5Xll39+9VB7y/Ym4pxlOA5PZXitlr5bVmjsy7PHOOuY=;
-        b=V0R0QMCWADQjuX09Xx+LleJZNLOt7yQKuo5OAX6/K7OQWllZvLYGDQZR5eztEk+6+r
-         SyryGIQyBEl54n4kXK+RM9j5rWRs0aCBY4BSVbMTTxmhJgOUSrO3wvtT8rnFYx0AyH+j
-         YYtaamCXgjKXHSTD5kd+gDmaxin3cndNj2i1myOwDVUGd/PEv2mjAV+m7IvrhBNXbsvH
-         Uu14B/INEwZAS2nD+qu1sI3w5yWdBJv/5PPOpmI0vkJQMecxgI5qZIWtOkERYxZbcns7
-         Ujy6qExum6UnW5NgZ+LOHR4kczdrh9zlVYSgLESndL2Hdq1M0FfvNVIhOr+8+6NRaO61
-         pBMw==
+        bh=qvZx+E7FUOHlPfEwlmNOPCLe43tN3FmGw+aWfCesvPE=;
+        b=aXLVDgMMa2BaOhDVIIDf1n7Q02eHJryy8hjw+gHI46nL3PcGkF5za9OMiz0HOBsqiG
+         SJHKeAGj3Vc8TmAdzTgfkkpJ95ZPrIQDxnkVwfoYL6F3RL3kUyjQVak6XsCXgaSnnncb
+         dYSfzjikgo01wW7tsJ9YXmdy/kZRz9Z86fiJ4hZJn2jSFPBe63FyKOOVjuECgxNlQGuT
+         mReP2o4KYHPzgLzRd0UML5/0vx6ccE9ZZauX01DfTb3ZDVawCy8aSX7eiVORf4kxQtCd
+         RuyauW+++R4/ec8ymqL6HdUQdKO6UcGefNruGYkIp4twVZmYOu4CtybNWmkgpg40TDjn
+         zo3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=5Xll39+9VB7y/Ym4pxlOA5PZXitlr5bVmjsy7PHOOuY=;
-        b=aZWVJiafCjh/2D53APrmlkxK2JLUYM9czltkOKlIVdbdUOt3cx5ITVqCRDuJM/esED
-         tqZ4x/l2joY3MhG+bZcNYZH5gLchN2oLH/sfqkO9KqNKd0xYiQf+KX1gYcCOjS8IpGs6
-         WqiU5wPr+Jdy1+49z5c2sSdodbAL28Eb+rY79VkrhW4ny/OV0CFY4u3EWY9W91cO50mv
-         Mx1H2Xj3Qi1tF3EDgPuNQrfntARGyho872KcLISm+5zPLhNToQ6mCFHdrMsKacRxBxId
-         WqjhdtQYh6CgULOPChztrshL1m1PXDMzA4OLBnEFRV5Dz2/kbgcVu0kjVYzPDeJO4zXs
-         pEsw==
-X-Gm-Message-State: APt69E0DRES8glzqcdz7JbVtf7vSMBG5pz3NaXxswvXl2TOquX2kPZHE
-        rI4VInsVmkeDF/1jtowRAVdQkgmbnfBJmQHBdyA=
-X-Google-Smtp-Source: AAOMgpeWUvZKWg+Ku9CbyOvpCg5jW+esgNNKLmPrGMVbQY8FKdj0flnBgeaenv9JdzfNw1lk3FGcFwHcBck4S+BSkMg=
-X-Received: by 2002:a2e:1bcc:: with SMTP id c73-v6mr13267355ljf.0.1531168557594;
- Mon, 09 Jul 2018 13:35:57 -0700 (PDT)
+        bh=qvZx+E7FUOHlPfEwlmNOPCLe43tN3FmGw+aWfCesvPE=;
+        b=glhD7MFif9EIZrPv6BJHrpjlzbggTUxvFcNZLVhcQyF80WiBE13pRGVDCtgdRulBJb
+         4WbJkzaH0feoFCuRj6u45V0E9oYLsHI2yICtK4QppZpN/khwl1odzX7M/KBQz77Lukw0
+         IRiRHSNkEDAqvC4IPiu8WI3exOiF3No1C0y9hnvTUYOtBZGdA+DX6ZhJaAuN1rd7Dv81
+         ZdbJi2Sc04wfei7cCX2xoud7MMWJVdxHHKzTv3fuQq+XaW6Nzu9LcTmz1YBYwE6OUgaI
+         H/7cZEPNS5bXFFv5aOzm5QDrQScFi/RRP9HXmiOFRAELvec8rqZRddllttZL1KM0EvOc
+         RcCQ==
+X-Gm-Message-State: APt69E1NrHqcK+x4nOWdH/nk6oTUo2Wz7U3fGTJXtYSxUzyGsYgW1tSK
+        hceVx8rdfjYtohrH+GvhrOzptDvMNxcAgzHj64k=
+X-Google-Smtp-Source: AAOMgpfQK3uH5cDQ//P+3XK3Sn2Y/0aeD+ZTbavG6fZfTafJK4Suu+kUj7qQPIds5bah5QW4zMtlTHSMC2bozCWzXMk=
+X-Received: by 2002:a2e:5bc8:: with SMTP id m69-v6mr14177769lje.115.1531169150952;
+ Mon, 09 Jul 2018 13:45:50 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a2e:41c1:0:0:0:0:0 with HTTP; Mon, 9 Jul 2018 13:35:56 -0700 (PDT)
-In-Reply-To: <20180709200945.30116-12-boris.brezillon@bootlin.com>
-References: <20180709200945.30116-1-boris.brezillon@bootlin.com> <20180709200945.30116-12-boris.brezillon@bootlin.com>
+Received: by 2002:a2e:41c1:0:0:0:0:0 with HTTP; Mon, 9 Jul 2018 13:45:50 -0700 (PDT)
+In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
+References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 9 Jul 2018 22:35:56 +0200
-X-Google-Sender-Auth: U1hqZo7VhBsHxYnC1mr6MQAJfZE
-Message-ID: <CAK8P3a1Ndys3MMxLqL-hTFVDSZGm5ASEnQ7K+8dScvFrp=RTdA@mail.gmail.com>
-Subject: Re: [PATCH v2 11/24] mtd: rawnand: sunxi: Make sure ret is
- initialized in sunxi_nfc_read_byte()
+Date:   Mon, 9 Jul 2018 22:45:50 +0200
+X-Google-Sender-Auth: 1SjUtYo1_D_k5fCAAe2D43WiqMc
+Message-ID: <CAK8P3a2zUvr958ZDV9DeGd7y28TFi4A1eYG79rb8cZaPLvN0ng@mail.gmail.com>
+Subject: Re: [PATCH v2 00/24] mtd: rawnand: Improve compile-test coverage
 To:     Boris Brezillon <boris.brezillon@bootlin.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
@@ -58,7 +57,7 @@ Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64747
+X-archive-position: 64748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,29 +76,41 @@ X-list: linux-mips
 
 On Mon, Jul 9, 2018 at 10:09 PM, Boris Brezillon
 <boris.brezillon@bootlin.com> wrote:
-> Fixes the following smatch warning:
+> Hello,
 >
-> drivers/mtd/nand/raw/sunxi_nand.c:551 sunxi_nfc_read_byte() error: uninitialized symbol 'ret'.
+> This is an attempt at adding "depends || COMPILE_TEST" to all NAND
+> drivers that have no compile-time dependencies on arch
+> features/headers.
 >
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> ---
->  drivers/mtd/nand/raw/sunxi_nand.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> This will hopefully help us (NAND/MTD maintainers) in detecting build
+> issues earlier. Unfortunately we still have a few drivers that can't
+> easily be modified to be arch independent.
 >
-> diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-> index 99043c3a4fa7..4b11cd4a79be 100644
-> --- a/drivers/mtd/nand/raw/sunxi_nand.c
-> +++ b/drivers/mtd/nand/raw/sunxi_nand.c
-> @@ -544,7 +544,7 @@ static void sunxi_nfc_write_buf(struct mtd_info *mtd, const uint8_t *buf,
+> I tried to put all patches that only touch the NAND subsystem first,
+> so that they can be applied even if other patches are being discussed.
 >
->  static uint8_t sunxi_nfc_read_byte(struct mtd_info *mtd)
->  {
-> -       uint8_t ret;
-> +       uint8_t ret = 0;
->
->         sunxi_nfc_read_buf(mtd, &ret, 1);
->
+> Don't hesitate to point any missing dependencies when compiled with
+> COMPILE_TEST. I didn't have any problem when compiling, but that might
+> be because the dependencies were already selected.
 
-Should there perhaps be a warning when no data was returned after a timeout?
+Looks good to me overall.
 
-      Arnd
+> In this v2, I tried to fix all warnings/errors reported by kbuild/0day
+> robots. The only remaining ones are those in omap_elm.c which seems to
+> do some weird cpu_to_be32() conversions. I guess I could replace those
+> by iowrite32be() calls (or just add (__force __u32)), but I don't want
+> to risk a regression on this driver, so I'm just leaving it for someone
+> else to fix :P.
+
+Agreed, this is definedly very odd code. It looks like the intention
+is to write all the bits in reverse order, but four bytes at a time. I'm
+fairly sure the current implementation cannot work on big-endian,
+in particularly this line:
+
+val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
+
+Since shifting a number after the byteswap is not well-defined.
+It's probably correct on little-endian, but it's not clear what the
+best way would be to write this is an endian-neutral way.
+
+        Arnd

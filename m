@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:13:09 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49392 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:13:21 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49390 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994541AbeGIUKPiQaft (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994553AbeGIUKPpDWht (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 9 Jul 2018 22:10:15 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id B273E20922; Mon,  9 Jul 2018 22:10:14 +0200 (CEST)
+        id 5B6AF2093A; Mon,  9 Jul 2018 22:10:15 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 5558F20932;
-        Mon,  9 Jul 2018 22:09:58 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 9852F2093C;
+        Mon,  9 Jul 2018 22:09:59 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 16/24] memory: fsl_ifc: Allow selection of this driver when COMPILE_TEST=y
-Date:   Mon,  9 Jul 2018 22:09:37 +0200
-Message-Id: <20180709200945.30116-17-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 20/24] mtd: rawnand: txx9ndfmc: Allow selection of this driver when COMPILE_TEST=y
+Date:   Mon,  9 Jul 2018 22:09:41 +0200
+Message-Id: <20180709200945.30116-21-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64733
+X-archive-position: 64734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,31 +46,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It just makes maintainers' life easier by allowing them to compile-test
-this driver without having FSL_SOC, ARCH_LAYERSCAPE or SOC_LS1021A
+It just makes NAND maintainers' life easier by allowing them to
+compile-test this driver without having SOC_TX4938 or SOC_TX4939
 enabled.
 
-We also need to add a dependency on HAS_IOMEM to make sure the
-driver compiles correctly.
+We also need to add a dependency on HAS_IOMEM to make sure the driver
+compiles correctly.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/memory/Kconfig | 3 ++-
+ drivers/mtd/nand/raw/Kconfig | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 8d731d6c3e54..78457ab2cbc4 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -116,7 +116,8 @@ config FSL_CORENET_CF
+diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
+index dc6c5aff4172..f4bbc90ee250 100644
+--- a/drivers/mtd/nand/raw/Kconfig
++++ b/drivers/mtd/nand/raw/Kconfig
+@@ -471,7 +471,8 @@ config MTD_NAND_DAVINCI
  
- config FSL_IFC
- 	bool
--	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A
-+	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
+ config MTD_NAND_TXX9NDFMC
+ 	tristate "NAND Flash support for TXx9 SoC"
+-	depends on SOC_TX4938 || SOC_TX4939
++	depends on SOC_TX4938 || SOC_TX4939 || COMPILE_TEST
 +	depends on HAS_IOMEM
+ 	help
+ 	  This enables the NAND flash controller on the TXx9 SoCs.
  
- config JZ4780_NEMC
- 	bool "Ingenic JZ4780 SoC NEMC driver"
 -- 
 2.14.1

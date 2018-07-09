@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:14:28 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49389 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:14:41 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49392 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994558AbeGIUKPwFbLt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Jul 2018 22:10:15 +0200
+        id S23994561AbeGIUKQKqFht (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Jul 2018 22:10:16 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id ACF782093E; Mon,  9 Jul 2018 22:10:15 +0200 (CEST)
+        id 0317520935; Mon,  9 Jul 2018 22:10:16 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 3B17B2093F;
-        Mon,  9 Jul 2018 22:10:00 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 28FEA20949;
+        Mon,  9 Jul 2018 22:10:01 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 22/24] mtd: rawnand: jz4740: Allow selection of this driver when COMPILE_TEST=y
-Date:   Mon,  9 Jul 2018 22:09:43 +0200
-Message-Id: <20180709200945.30116-23-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 24/24] memory: jz4780-nemc: Allow selection of this driver when COMPILE_TEST=y
+Date:   Mon,  9 Jul 2018 22:09:45 +0200
+Message-Id: <20180709200945.30116-25-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64738
+X-archive-position: 64739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,30 +46,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It just makes NAND maintainers' life easier by allowing them to
-compile-test this driver without having MACH_JZ4740 enabled.
+It just makes maintainers' life easier by allowing them to compile-test
+this driver without having MACH_JZ4780 enabled.
 
-We also need to add a dependency on HAS_IOMEM to make sure the driver
-compiles correctly.
+We also need to add a dependency on HAS_IOMEM to make sure the
+driver compiles correctly.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/Kconfig | 3 ++-
+ drivers/memory/Kconfig | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index f4bbc90ee250..7b5e97719c25 100644
---- a/drivers/mtd/nand/raw/Kconfig
-+++ b/drivers/mtd/nand/raw/Kconfig
-@@ -492,7 +492,8 @@ config MTD_NAND_NUC900
- 
- config MTD_NAND_JZ4740
- 	tristate "Support for JZ4740 SoC NAND controller"
--	depends on MACH_JZ4740
-+	depends on MACH_JZ4740 || COMPILE_TEST
+diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+index 78457ab2cbc4..a642552dfdc9 100644
+--- a/drivers/memory/Kconfig
++++ b/drivers/memory/Kconfig
+@@ -122,7 +122,8 @@ config FSL_IFC
+ config JZ4780_NEMC
+ 	bool "Ingenic JZ4780 SoC NEMC driver"
+ 	default y
+-	depends on MACH_JZ4780
++	depends on MACH_JZ4780 || COMPILE_TEST
 +	depends on HAS_IOMEM
  	help
- 		Enables support for NAND Flash on JZ4740 SoC based boards.
- 
+ 	  This driver is for the NAND/External Memory Controller (NEMC) in
+ 	  the Ingenic JZ4780. This controller is used to handle external
 -- 
 2.14.1

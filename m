@@ -1,52 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 19:15:19 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:49504 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:10:17 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49321 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993928AbeGIRPNVeoPb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Jul 2018 19:15:13 +0200
-Received: from localhost (unknown [106.201.46.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F55C20871;
-        Mon,  9 Jul 2018 17:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1531156507;
-        bh=mnbJASZQ6vB8nBRDMUBh+xawH7madxOgrKeixrgkcv8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ofsTksSX/OSzuLwld6bgnPx84JXyEDgvLYae5hmFcq+C5xpapSSGuRBb/I0fIcKof
-         jIDXVppVVgwFinJ1GeQtA0su3VJjeNr7YXz+c9bYAjmLJ8+18eMxpOg0bg+v4aYWS8
-         +ZLT7+W3eKh2+jiMfpsxQfXqGEcRZ1U+iPc6w4Qc=
-Date:   Mon, 9 Jul 2018 22:44:58 +0530
-From:   Vinod <vkoul@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 06/14] dmaengine: dma-jz4780: Add support for the JZ4725B
- SoC
-Message-ID: <20180709171458.GL22377@vkoul-mobl>
-References: <20180703123214.23090-1-paul@crapouillou.net>
- <20180703123214.23090-7-paul@crapouillou.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180703123214.23090-7-paul@crapouillou.net>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <vkoul@kernel.org>
+        id S23993488AbeGIUKJO0iTt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Jul 2018 22:10:09 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id F3A9920956; Mon,  9 Jul 2018 22:10:03 +0200 (CEST)
+Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 9C39D20875;
+        Mon,  9 Jul 2018 22:09:53 +0200 (CEST)
+From:   Boris Brezillon <boris.brezillon@bootlin.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-mtd@lists.infradead.org
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v2 01/24] mtd: rawnand: atmel: Use uintptr_t casts instead of unsigned int
+Date:   Mon,  9 Jul 2018 22:09:22 +0200
+Message-Id: <20180709200945.30116-2-boris.brezillon@bootlin.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
+References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
+Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64721
+X-archive-position: 64722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vkoul@kernel.org
+X-original-sender: boris.brezillon@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,22 +46,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03-07-18, 14:32, Paul Cercueil wrote:
-> The JZ4725B has one DMA core starring six DMA channels.
-> As for the JZ4770, each DMA channel's clock can be enabled with
-> a register write, the difference here being that once started, it
-> is not possible to turn it off.
+When casting a pointer to an unsigned in, uintptr_t should be used to
+cope with the pointer size differences between 32-bit and 64-bit
+architectures.
 
-ok so disable for this, right..
+This is needed if we want to allow compilation of this driver when
+COMPILE_TEST=y.
 
-> @@ -204,6 +205,8 @@ static inline void jz4780_dma_chan_enable(struct jz4780_dma_dev *jzdma,
->  {
->  	if (jzdma->version == ID_JZ4770)
->  		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKES, BIT(chn));
-> +	else if (jzdma->version == ID_JZ4725B)
-> +		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKE, BIT(chn));
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-but you are writing to a different register here.. 
-
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index e686fe73159e..e8f7549d0354 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -2050,7 +2050,7 @@ atmel_smc_nand_controller_init(struct atmel_smc_nand_controller *nc)
+ 		return ret;
+ 	}
+ 
+-	nc->ebi_csa_offs = (unsigned int)match->data;
++	nc->ebi_csa_offs = (uintptr_t)match->data;
+ 
+ 	/*
+ 	 * The at91sam9263 has 2 EBIs, if the NAND controller is under EBI1
 -- 
-~Vinod
+2.14.1

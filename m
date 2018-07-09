@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:14:41 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49392 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jul 2018 22:14:56 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49406 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994561AbeGIUKQKqFht (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 Jul 2018 22:10:16 +0200
+        id S23994562AbeGIUKTCuq4t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Jul 2018 22:10:19 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 0317520935; Mon,  9 Jul 2018 22:10:16 +0200 (CEST)
+        id C962E2097D; Mon,  9 Jul 2018 22:10:13 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 28FEA20949;
-        Mon,  9 Jul 2018 22:10:01 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id BEFE120908;
+        Mon,  9 Jul 2018 22:09:56 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
@@ -19,9 +19,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 24/24] memory: jz4780-nemc: Allow selection of this driver when COMPILE_TEST=y
-Date:   Mon,  9 Jul 2018 22:09:45 +0200
-Message-Id: <20180709200945.30116-25-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 11/24] mtd: rawnand: sunxi: Make sure ret is initialized in sunxi_nfc_read_byte()
+Date:   Mon,  9 Jul 2018 22:09:32 +0200
+Message-Id: <20180709200945.30116-12-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
 References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64739
+X-archive-position: 64740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,30 +46,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It just makes maintainers' life easier by allowing them to compile-test
-this driver without having MACH_JZ4780 enabled.
+Fixes the following smatch warning:
 
-We also need to add a dependency on HAS_IOMEM to make sure the
-driver compiles correctly.
+drivers/mtd/nand/raw/sunxi_nand.c:551 sunxi_nfc_read_byte() error: uninitialized symbol 'ret'.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/memory/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/sunxi_nand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 78457ab2cbc4..a642552dfdc9 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -122,7 +122,8 @@ config FSL_IFC
- config JZ4780_NEMC
- 	bool "Ingenic JZ4780 SoC NEMC driver"
- 	default y
--	depends on MACH_JZ4780
-+	depends on MACH_JZ4780 || COMPILE_TEST
-+	depends on HAS_IOMEM
- 	help
- 	  This driver is for the NAND/External Memory Controller (NEMC) in
- 	  the Ingenic JZ4780. This controller is used to handle external
+diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
+index 99043c3a4fa7..4b11cd4a79be 100644
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -544,7 +544,7 @@ static void sunxi_nfc_write_buf(struct mtd_info *mtd, const uint8_t *buf,
+ 
+ static uint8_t sunxi_nfc_read_byte(struct mtd_info *mtd)
+ {
+-	uint8_t ret;
++	uint8_t ret = 0;
+ 
+ 	sunxi_nfc_read_buf(mtd, &ret, 1);
+ 
 -- 
 2.14.1

@@ -1,59 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 17:25:44 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:44632 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994427AbeGJPZhmPdh- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 10 Jul 2018 17:25:37 +0200
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 646F081A4EAF;
-        Tue, 10 Jul 2018 15:25:31 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id DED3A2156889;
-        Tue, 10 Jul 2018 15:25:27 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Tue, 10 Jul 2018 17:25:31 +0200 (CEST)
-Date:   Tue, 10 Jul 2018 17:25:27 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
-        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180710152527.GA3616@redhat.com>
-References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
- <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
- <20180701210935.GA14404@redhat.com>
- <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
- <20180702180156.GA31400@redhat.com>
- <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
- <20180703163645.GA23144@redhat.com>
- <20180703172543.GC23144@redhat.com>
- <f5a39a88-c21e-4606-a04d-11b5f32016b8@linux.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 17:37:10 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:45254 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994272AbeGJPhDwQZN- convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 17:37:03 +0200
+Date:   Tue, 10 Jul 2018 17:36:58 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 02/14] dmaengine: dma-jz4780: Separate chan/ctrl registers
+To:     Vinod <vkoul@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Message-Id: <1531237019.17118.1@crapouillou.net>
+In-Reply-To: <20180709170359.GI22377@vkoul-mobl>
+References: <20180703123214.23090-1-paul@crapouillou.net>
+        <20180703123214.23090-3-paul@crapouillou.net>
+        <20180709170359.GI22377@vkoul-mobl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5a39a88-c21e-4606-a04d-11b5f32016b8@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.8]); Tue, 10 Jul 2018 15:25:31 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.8]); Tue, 10 Jul 2018 15:25:31 +0000 (UTC) for IP:'10.11.54.6' DOMAIN:'int-mx06.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
-Return-Path: <oleg@redhat.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531237023; bh=cNGXnj5AABh9INizic9jqncTaQ9PKFkhO1FquUWNflw=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=Q6HBURlrhkQIX60y/N+RswUBy3BMqmJACYilheYlO3Hy1b+zFMSJvAi70Jk3jkG04RWaqLPLHH6PYjccKAHt31YfXpUjYEtevLBu0TFb1/P2cs+eF1hSlLkuXpqhrbtKN7cKkrLvGlvxVQ133hnL9DLiRpk0g2lrZP6AmDbqGJk=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64757
+X-archive-position: 64758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,23 +47,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ravi,
 
-On 07/04, Ravi Bangoria wrote:
->
-> > Now I understand what did you mean by "for each consumer". So if we move this logic
-> > into install/remove_breakpoint as I tried to suggest, we will also need another error
-> > code for the case when verify_opcode() returns false.
->
-> Ok so if we can use verify_opcode() inside install_breakpoint(), we can probably
-> move implementation logic in install/remove_breakpoint(). Let me explore that more.
 
-No, sorry for confusion, I meant another thing... But please forget. If we rely on
-verify_opcode() I no longer think it would be more clean to move this logic into
-install/remove_breakpoint.
+Le lun. 9 juil. 2018 à 19:03, Vinod <vkoul@kernel.org> a écrit :
+> On 03-07-18, 14:32, Paul Cercueil wrote:
+>>  The register area of the JZ4780 DMA core can be split into different
+>>  sections for different purposes:
+>> 
+>>  * one set of registers is used to perform actions at the DMA core 
+>> level,
+>>  that will generally affect all channels;
+>> 
+>>  * one set of registers per DMA channel, to perform actions at the 
+>> DMA
+>>  channel level, that will only affect the channel in question.
+>> 
+>>  The problem rises when trying to support new versions of the JZ47xx
+>>  Ingenic SoC. For instance, the JZ4770 has two DMA cores, each one
+>>  with six DMA channels, and the register sets are interleaved:
+>>  <DMA0 chan regs> <DMA1 chan regs> <DMA0 ctrl regs> <DMA1 ctrl regs>
+>> 
+>>  By using one memory resource for the channel-specific registers and
+>>  one memory resource for the core-specific registers, we can support
+>>  the JZ4770, by initializing the driver once per DMA core with 
+>> different
+>>  addresses.
+>> 
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  ---
+>>   .../devicetree/bindings/dma/jz4780-dma.txt    |   6 +-
+> 
+> Pls move to separate patch.
 
-However, I still think it would be better to avoid uprobe exporting and modifying
-set_swbp/set_orig_insn. May be we can simply kill both set_swbp() and set_orig_insn(),
-I'll re-check...
+OK.
 
-Oleg.
+>>   drivers/dma/dma-jz4780.c                      | 106 
+>> +++++++++++-------
+>>   2 files changed, 69 insertions(+), 43 deletions(-)
+>> 
+>>  diff --git a/Documentation/devicetree/bindings/dma/jz4780-dma.txt 
+>> b/Documentation/devicetree/bindings/dma/jz4780-dma.txt
+>>  index f25feee62b15..f9b1864f5b77 100644
+>>  --- a/Documentation/devicetree/bindings/dma/jz4780-dma.txt
+>>  +++ b/Documentation/devicetree/bindings/dma/jz4780-dma.txt
+>>  @@ -3,7 +3,8 @@
+>>   Required properties:
+>> 
+>>   - compatible: Should be "ingenic,jz4780-dma"
+>>  -- reg: Should contain the DMA controller registers location and 
+>> length.
+>>  +- reg: Should contain the DMA channel registers location and 
+>> length, followed
+>>  +  by the DMA controller registers location and length.
+>>   - interrupts: Should contain the interrupt specifier of the DMA 
+>> controller.
+>>   - interrupt-parent: Should be the phandle of the interrupt 
+>> controller that
+>>   - clocks: Should contain a clock specifier for the JZ4780 PDMA 
+>> clock.
+>>  @@ -22,7 +23,8 @@ Example:
+>> 
+>>   dma: dma@13420000 {
+>>   	compatible = "ingenic,jz4780-dma";
+>>  -	reg = <0x13420000 0x10000>;
+>>  +	reg = <0x13420000 0x400
+>>  +	       0x13421000 0x40>;
+> 
+> Second should be optional or we break platform which may not have
+> updated DT..
+
+See comment below.
+
+>>  -	jzdma->base = devm_ioremap_resource(dev, res);
+>>  -	if (IS_ERR(jzdma->base))
+>>  -		return PTR_ERR(jzdma->base);
+>>  +	jzdma->chn_base = devm_ioremap_resource(dev, res);
+>>  +	if (IS_ERR(jzdma->chn_base))
+>>  +		return PTR_ERR(jzdma->chn_base);
+>>  +
+>>  +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+>>  +	if (!res) {
+>>  +		dev_err(dev, "failed to get I/O memory\n");
+>>  +		return -EINVAL;
+>>  +	}
+> 
+> okay and this breaks if you happen to get probed on older DT. I think 
+> DT
+> is treated as ABI so you need to continue support older method while
+> finding if DT has split resources
+
+See my response to PrasannaKumar. All the Ingenic-based boards do 
+compile
+the devicetree within the kernel, so I think it's still fine to add 
+breaking
+changes. I'll wait on @Rob to give his point of view on this, though.
+
+(It's not something hard to change, but I'd like to know what's the 
+policy
+in that case. I have other DT-breaking patches to submit)
+
+> --
+> ~Vinod

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 17:41:42 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:49570 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 17:45:14 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:53092 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994272AbeGJPlcCuMb- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 17:41:32 +0200
-Date:   Tue, 10 Jul 2018 17:41:26 +0200
+        with ESMTP id S23994272AbeGJPpH6c70- convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 17:45:07 +0200
+Date:   Tue, 10 Jul 2018 17:45:02 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 04/14] dmaengine: dma-jz4780: Add support for the JZ4770
+Subject: Re: [PATCH 06/14] dmaengine: dma-jz4780: Add support for the JZ4725B
  SoC
 To:     Vinod <vkoul@kernel.org>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -18,20 +18,20 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Message-Id: <1531237286.17118.2@crapouillou.net>
-In-Reply-To: <20180709171032.GJ22377@vkoul-mobl>
+Message-Id: <1531237502.17118.3@crapouillou.net>
+In-Reply-To: <20180709171458.GL22377@vkoul-mobl>
 References: <20180703123214.23090-1-paul@crapouillou.net>
-        <20180703123214.23090-5-paul@crapouillou.net>
-        <20180709171032.GJ22377@vkoul-mobl>
+        <20180703123214.23090-7-paul@crapouillou.net>
+        <20180709171458.GL22377@vkoul-mobl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531237291; bh=d6WE7oAW3jTKnldJTv4nfQHOE3iDxU8Ba4ktfujz9hc=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=TtFbvyldGrWPA010Fu8NOoUy8G3lf4isV0/xHdwMbVgUeaOzenH/5dY+UbGhP7GjcBSXA/7Y4PWI1U82h5BjDYmH+u6YH1dgPyV7eJWZwYFG9ZpBGwbOsBidGK/0BrzPWJqoggaUzzrbSimfZ170hFxbXN7+vAT5p36iHk+NLPk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531237507; bh=WjTJmSBBrurN9JyF9IyWDMyPaD+mqwPGq8mYopQDoG8=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=DqSrVO4z5BhlGLAOU7Z7L7XLCxV2kHd9ITCUDKWOvlkRE+7O0nP2/683PCeGYv3cWc3IJg75AogCbLYK/lEnrvC2CDpXNh/7qnaTqTTlxitVmskMLN6u8CHblLLIT36BaR2eRDLMn7z9CBmhWFHhg82K+V0WC6boUZNfTN4v+K0=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64759
+X-archive-position: 64760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,42 +50,33 @@ X-list: linux-mips
 
 
 
-Le lun. 9 juil. 2018 à 19:10, Vinod <vkoul@kernel.org> a écrit :
+Le lun. 9 juil. 2018 à 19:14, Vinod <vkoul@kernel.org> a écrit :
 > On 03-07-18, 14:32, Paul Cercueil wrote:
+>>  The JZ4725B has one DMA core starring six DMA channels.
+>>  As for the JZ4770, each DMA channel's clock can be enabled with
+>>  a register write, the difference here being that once started, it
+>>  is not possible to turn it off.
 > 
->>  +static inline void jz4780_dma_chan_disable(struct jz4780_dma_dev 
->> *jzdma,
->>  +	unsigned int chn)
->>  +{
->>  +	if (jzdma->version == ID_JZ4770)
->>  +		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKEC, BIT(chn));
->>  +}
+> ok so disable for this, right..
 > 
-> this sounds as hardware behaviour, so why not describe as a property 
-> in
-> DT?
-
-See my response to your message on patch 1.
-
->>  +
->>   static struct jz4780_dma_desc *jz4780_dma_desc_alloc(
->>   	struct jz4780_dma_chan *jzchan, unsigned int count,
->>   	enum dma_transaction_type type)
->>  @@ -228,8 +246,15 @@ static void jz4780_dma_desc_free(struct 
->> virt_dma_desc *vdesc)
->>   	kfree(desc);
->>   }
->> 
->>  -static uint32_t jz4780_dma_transfer_size(unsigned long val, 
->> uint32_t *shift)
->>  +static const unsigned int jz4780_dma_ord_max[] = {
->>  +	[ID_JZ4770] = 6,
->>  +	[ID_JZ4780] = 7,
->>  +};
+>>  @@ -204,6 +205,8 @@ static inline void 
+>> jz4780_dma_chan_enable(struct jz4780_dma_dev *jzdma,
+>>   {
+>>   	if (jzdma->version == ID_JZ4770)
+>>   		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKES, BIT(chn));
+>>  +	else if (jzdma->version == ID_JZ4725B)
+>>  +		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKE, BIT(chn));
 > 
-> So this gives the transfer length supported?
+> but you are writing to a different register here..
 
-Yes, exactly. The maximum transfer size is (1 << ord).
+Yes. SoCs >= JZ4770 have the DCKE read-only register, and DCKES/DCKEC 
+to set/clear bits in DCKE.
+On JZ4725B, DCKE is read/write, but the zeros written are ignored (at 
+least that's what the
+documentation says).
 
 > --
 > ~Vinod
+
+Thanks,
+-Paul

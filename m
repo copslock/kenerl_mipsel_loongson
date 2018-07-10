@@ -1,71 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 09:47:44 +0200 (CEST)
-Received: from mail-lf0-x244.google.com ([IPv6:2a00:1450:4010:c07::244]:35301
-        "EHLO mail-lf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993961AbeGJHrey7tbm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 09:47:34 +0200
-Received: by mail-lf0-x244.google.com with SMTP id f18-v6so1349662lfc.2;
-        Tue, 10 Jul 2018 00:47:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=brez9X33y1AterNHq7JRaWyWV5IlwR9Mgh20hYDRQ5M=;
-        b=oqpZ05pt5xiBfqnZA/yS27zyA49Xcdn7+4RwJzWiT9SQIuKhnsBv03qbSAhDywPM9o
-         jzzp7wSW6pZrPiDYgOB+IDKFF7214BAQtbEoHkB36tE86iNQDNcuSNt1lgFsEs6XYnNI
-         65z/KTXNclIAaw4M5GHxDOShj+5RxrcchTeQ3HrevPr/NQ2H0xUwKWaJBvK8odi+PpzK
-         VQRE6IuH/JG7FNiq7rhcBF6JOAF3aDbKnfJzDTtrvnCFZ2XV275bvChGhnEXDo4gpohR
-         DRgvmDsaOK1bzNMHFjQ07R9rW1zidGbN5iihvS+fN674tYqLA6C8E4AxGaNbYPpxNPS+
-         f9DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=brez9X33y1AterNHq7JRaWyWV5IlwR9Mgh20hYDRQ5M=;
-        b=HuD4mLr2ujjzC3c8VGbIkFFZ04ccrhm4nckhVyxR36y5mVlGxiRbHpPj05C5R0OoNG
-         QAhe6IC1LQXDN3XWSyN3Jprvx3LYC06iB/TIrVTW8ExAaTyqdCuZ7qACxAu74NBhb0pM
-         5BkzBbRFJhCPmsyaFkzlMWxwOxhZmqn9lvaiTgAl+yO96zrZpZi+RHr16HGsSjFbhQxK
-         Adct2MoK8GKQfQZmHbiR/ROAoGfo2ll5Ss1OcK4R6ucQqbDhJmEZv4Cf1X5Wpfq+7USz
-         sLG1B99SUb865a93CiDo6IDVO5is1cgHn/YmQ4aB56WWvrMdB0CkeU9sqMY9m2dQYr/U
-         /q3A==
-X-Gm-Message-State: APt69E2XZjCjb+UhadyWiLaic5tjpKfPeHO4V2G6u/zHzGTEHphU1mLC
-        D4YmyzStQVmCIJPBeyrf23o=
-X-Google-Smtp-Source: AAOMgpdWd3O8XlDkZ/6XKr+oWmb4fD3MATb0rPxE7JSNvZuKvKK70ds9fSv5N/rfY0W1B6sqV8gLxw==
-X-Received: by 2002:a19:17c2:: with SMTP id 63-v6mr1858648lfx.112.1531208849349;
-        Tue, 10 Jul 2018 00:47:29 -0700 (PDT)
-Received: from mobilestation ([5.166.218.73])
-        by smtp.gmail.com with ESMTPSA id g22-v6sm1382726lja.14.2018.07.10.00.47.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 10 Jul 2018 00:47:28 -0700 (PDT)
-Date:   Tue, 10 Jul 2018 10:48:15 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, okaya@codeaurora.org,
-        chenhc@lemote.com, Sergey.Semin@t-platforms.ru,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "# v4 . 11" <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] mips: mm: Discard ioremap_uncached_accelerated()
- method
-Message-ID: <20180710074815.GA30235@mobilestation>
-References: <20180709135713.8083-1-fancer.lancer@gmail.com>
- <20180709135713.8083-2-fancer.lancer@gmail.com>
- <CA+7wUsxDfBdiGt5tZ7dxb63oMd=3Ry4s1Xysed8RSHJi35=VxQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 11:37:14 +0200 (CEST)
+Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:50678 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993961AbeGJJhHO8ef4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 11:37:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=MnkMywAPiRkW4Pwzzt3rRZBm6ib+aYpYOXcyNazxtlo=; b=lWf4GC4bNPPcpvzMYNNC87lKh
+        mdnBtALBQC4xgM5UfRvQtxsllxaGDfAk8uPqxxH/MvA6d1X7WDgcg42vbIlqGnrjwFVQlEzT05jsK
+        OEY4iEATpQcHK6p6HtEfy+qRlhCH7+aVIYymfd87K9+iIR0eRd5KeVGj4F6wd3eK+6qkP45PT+9lD
+        eksPTZJp19+kG8p/TKRNQKwRfLSrClVr5lTHaJg7+Q8QABxTaGoj4e5M96LjloLwPSsPYMsOL6NqT
+        Fx/baTkxVByxGeQmCNgMv2bZsZlMkvc/XehaF/PnCNoKlNNAbT6NF4fJpUpkEM8iabznrrw6MY0cs
+        bZ5MTYfwA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1fcp4b-0003Z0-1D; Tue, 10 Jul 2018 09:36:41 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 2E92120289CA5; Tue, 10 Jul 2018 11:36:37 +0200 (CEST)
+Date:   Tue, 10 Jul 2018 11:36:37 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andrea Parri <andrea.parri@amarulasolutions.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Akira Yokosawa <akiyks@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V2] MIPS: implement smp_cond_load_acquire() for Loongson-3
+Message-ID: <20180710093637.GF2476@hirez.programming.kicks-ass.net>
+References: <1531103198-16764-1-git-send-email-chenhc@lemote.com>
+ <20180709164939.uhqsvcv4a7jlbhvp@pburton-laptop>
+ <CAAhV-H7bqhz+dzgPk0_tTAN6y_k_8Ds9heF0p5uPHsHNg0v4Rg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+7wUsxDfBdiGt5tZ7dxb63oMd=3Ry4s1Xysed8RSHJi35=VxQ@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+In-Reply-To: <CAAhV-H7bqhz+dzgPk0_tTAN6y_k_8Ds9heF0p5uPHsHNg0v4Rg@mail.gmail.com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64752
+X-archive-position: 64753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,63 +72,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 10, 2018 at 09:15:17AM +0200, Mathieu Malaterre <malat@debian.org> wrote:
-> '
-> On Mon, Jul 9, 2018 at 3:57 PM Serge Semin <fancer.lancer@gmail.com> wrote:
-> >
-> > Adaptive ioremap_wc() method is now available (see "mips: mm:
-> > Create UCA-based ioremap_wc() method" commit). We can use it for
-> > UCA-featured MMIO transactions in the kernel, so we don't need
-> > it platform clone ioremap_uncached_accelerated() being declard.
-> > Seeing it is also unused anywhere in the kernel code, lets remove
-> > it from io.h arch-specific header then.
-> >
-> > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> > Singed-off-by: Paul Burton <paul.burton@mips.com>
+On Tue, Jul 10, 2018 at 12:26:34PM +0800, Huacai Chen wrote:
+> Hi, Paul and Peter,
 > 
-> nit: 'Signed' (on both patches)
+> I think we find the real root cause, READ_ONCE() doesn't need any
+> barriers, the problematic code is queued_spin_lock_slowpath() in
+> kernel/locking/qspinlock.c:
 > 
+>         if (old & _Q_TAIL_MASK) {
+>                 prev = decode_tail(old);
+> 
+>                 /* Link @node into the waitqueue. */
+>                 WRITE_ONCE(prev->next, node);
+> 
+>                 pv_wait_node(node, prev);
+>                 arch_mcs_spin_lock_contended(&node->locked);
+> 
+>                 /*
+>                  * While waiting for the MCS lock, the next pointer may have
+>                  * been set by another lock waiter. We optimistically load
+>                  * the next pointer & prefetch the cacheline for writing
+>                  * to reduce latency in the upcoming MCS unlock operation.
+>                  */
+>                 next = READ_ONCE(node->next);
+>                 if (next)
+>                         prefetchw(next);
+>         }
+> 
+> After WRITE_ONCE(prev->next, node); arch_mcs_spin_lock_contended()
+> enter a READ_ONCE() loop, so the effect of WRITE_ONCE() is invisible
+> by other cores because of the write buffer.
 
-Good catch! Thanks. Didn't notice the typo. Should have copy-pasted
-both the signature and the e-mail from another letter.
+And _that_ is a hardware bug. Also please explain how that is different
+from the ARM bug mentioned elsewhere.
 
-I'll fix it if there will be a second version of the patchset. Otherwise
-I suppose it would be easier for the integrator to do this.
+> As a result,
+> arch_mcs_spin_lock_contended() will wait for ever because the waiters
+> of prev->next will wait for ever. I think the right way to fix this is
+> flush SFB after this WRITE_ONCE(), but I don't have a good solution:
+> 1, MIPS has wbflush() which can be used to flush SFB, but other archs
+> don't have;
 
-Regards,
--Sergey
+Sane archs don't need this.
 
-> > Cc: James Hogan <jhogan@kernel.org>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  arch/mips/include/asm/io.h | 8 ++------
-> >  1 file changed, 2 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> > index babe5155a..360b7ddeb 100644
-> > --- a/arch/mips/include/asm/io.h
-> > +++ b/arch/mips/include/asm/io.h
-> > @@ -301,15 +301,11 @@ static inline void __iomem * __ioremap_mode(phys_addr_t offset, unsigned long si
-> >         __ioremap_mode((offset), (size), boot_cpu_data.writecombine)
-> >
-> >  /*
-> > - * These two are MIPS specific ioremap variant.         ioremap_cacheable_cow
-> > - * requests a cachable mapping, ioremap_uncached_accelerated requests a
-> > - * mapping using the uncached accelerated mode which isn't supported on
-> > - * all processors.
-> > + * This is a MIPS specific ioremap variant. ioremap_cacheable_cow
-> > + * requests a cachable mapping with CWB attribute enabled.
-> >   */
-> >  #define ioremap_cacheable_cow(offset, size)                            \
-> >         __ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
-> > -#define ioremap_uncached_accelerated(offset, size)                     \
-> > -       __ioremap_mode((offset), (size), _CACHE_UNCACHED_ACCELERATED)
-> >
-> >  static inline void iounmap(const volatile void __iomem *addr)
-> >  {
-> > --
-> > 2.12.0
-> >
-> >
+> 2, Every arch has mb(), and add mb() after WRITE_ONCE() can actually
+> solve Loongson's problem, but in syntax, mb() is different from
+> wbflush();
+
+Still wrong, because any non-broken arch doesn't need that flush to
+begin with.
+
+> 3, Maybe we can define a Loongson-specific WRITE_ONCE(), but not every
+> WRITE_ONCE() need wbflush(), we only need wbflush() between
+> WRITE_ONCE() and a READ_ONCE() loop.
+
+No no no no ...
+
+So now explain why the cpu_relax() hack that arm did doesn't work for
+you?

@@ -1,41 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 17:45:14 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:53092 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994272AbeGJPpH6c70- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 17:45:07 +0200
-Date:   Tue, 10 Jul 2018 17:45:02 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 06/14] dmaengine: dma-jz4780: Add support for the JZ4725B
- SoC
-To:     Vinod <vkoul@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2018 18:12:23 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60350 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994427AbeGJQMQ2xN8- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2018 18:12:16 +0200
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6AG9NlD072677
+        for <linux-mips@linux-mips.org>; Tue, 10 Jul 2018 12:12:14 -0400
+Received: from e16.ny.us.ibm.com (e16.ny.us.ibm.com [129.33.205.206])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2k501v89ye-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 10 Jul 2018 12:12:13 -0400
+Received: from localhost
+        by e16.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Tue, 10 Jul 2018 12:12:12 -0400
+Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
+        by e16.ny.us.ibm.com (146.89.104.203) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 10 Jul 2018 12:12:05 -0400
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6AGC4v97733722
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 10 Jul 2018 16:12:04 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7B10FB206A;
+        Tue, 10 Jul 2018 12:11:38 -0400 (EDT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 473D1B2064;
+        Tue, 10 Jul 2018 12:11:38 -0400 (EDT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.70.82.159])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Tue, 10 Jul 2018 12:11:38 -0400 (EDT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 83D0016C1AF9; Tue, 10 Jul 2018 09:14:23 -0700 (PDT)
+Date:   Tue, 10 Jul 2018 09:14:23 -0700
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Message-Id: <1531237502.17118.3@crapouillou.net>
-In-Reply-To: <20180709171458.GL22377@vkoul-mobl>
-References: <20180703123214.23090-1-paul@crapouillou.net>
-        <20180703123214.23090-7-paul@crapouillou.net>
-        <20180709171458.GL22377@vkoul-mobl>
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        wuzhangjin <wuzhangjin@gmail.com>,
+        stable <stable@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andrea Parri <andrea.parri@amarulasolutions.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        Akira Yokosawa <akiyks@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V2] MIPS: implement smp_cond_load_acquire() for Loongson-3
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <1531103198-16764-1-git-send-email-chenhc@lemote.com>
+ <20180709164939.uhqsvcv4a7jlbhvp@pburton-laptop>
+ <CAAhV-H7bqhz+dzgPk0_tTAN6y_k_8Ds9heF0p5uPHsHNg0v4Rg@mail.gmail.com>
+ <20180710093637.GF2476@hirez.programming.kicks-ass.net>
+ <20180710105437.GT2512@hirez.programming.kicks-ass.net>
+ <tencent_26F8B9E004D4512B2225FCE1@qq.com>
+ <20180710121727.GK2476@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531237507; bh=WjTJmSBBrurN9JyF9IyWDMyPaD+mqwPGq8mYopQDoG8=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=DqSrVO4z5BhlGLAOU7Z7L7XLCxV2kHd9ITCUDKWOvlkRE+7O0nP2/683PCeGYv3cWc3IJg75AogCbLYK/lEnrvC2CDpXNh/7qnaTqTTlxitVmskMLN6u8CHblLLIT36BaR2eRDLMn7z9CBmhWFHhg82K+V0WC6boUZNfTN4v+K0=
-Return-Path: <paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20180710121727.GK2476@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 18071016-0072-0000-0000-0000037DD041
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00009345; HX=3.00000241; KW=3.00000007;
+ PH=3.00000004; SC=3.00000266; SDB=6.01059369; UDB=6.00543689; IPR=6.00837290;
+ MB=3.00022089; MTD=3.00000008; XFM=3.00000015; UTC=2018-07-10 16:12:10
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18071016-0073-0000-0000-000048AA2EF4
+Message-Id: <20180710161423.GS3593@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-10_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807100172
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64760
+X-archive-position: 64761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,35 +106,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-Le lun. 9 juil. 2018 à 19:14, Vinod <vkoul@kernel.org> a écrit :
-> On 03-07-18, 14:32, Paul Cercueil wrote:
->>  The JZ4725B has one DMA core starring six DMA channels.
->>  As for the JZ4770, each DMA channel's clock can be enabled with
->>  a register write, the difference here being that once started, it
->>  is not possible to turn it off.
+On Tue, Jul 10, 2018 at 02:17:27PM +0200, Peter Zijlstra wrote:
 > 
-> ok so disable for this, right..
+> Please!! Learn to use email.
 > 
->>  @@ -204,6 +205,8 @@ static inline void 
->> jz4780_dma_chan_enable(struct jz4780_dma_dev *jzdma,
->>   {
->>   	if (jzdma->version == ID_JZ4770)
->>   		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKES, BIT(chn));
->>  +	else if (jzdma->version == ID_JZ4725B)
->>  +		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DCKE, BIT(chn));
+> A: Because it messes up the order in which people normally read text.
+> Q: Why is top-posting such a bad thing?
+> A: Top-posting.
+> Q: What is the most annoying thing in e-mail?
 > 
-> but you are writing to a different register here..
+> Also, wrap non-quoted lines to 78 characters.
+> 
+> On Tue, Jul 10, 2018 at 07:45:22PM +0800, é™ˆåŽæ‰ wrote:
+> > I'm afraid that you have missing something......
+> > 
+> > Firstly, our previous conclusion (READ_ONCE need a barrier to avoid
+> > 'reads prioritised over writes') is totally wrong. So define
+> > cpu_relax() to smp_mb() like ARM11MPCore is incorrect, even if it can
+> > 'solve' Loongson's problem.  Secondly, I think the real problem is
+> > like this:
+> 
+> >  1, CPU0 set the lock to 0, then do something;
+> >  2, While CPU0 is doing something, CPU1 set the flag to 1 with
+> >     WRITE_ONCE(), and then wait the lock become to 1 with a READ_ONCE()
+> >     loop;
+> >  3, After CPU0 complete its work, it wait the flag become to 1, and if
+> >     so then set the lock to 1;
+> >  4, If the lock becomes to 1, CPU1 will leave the READ_ONCE() loop.
 
-Yes. SoCs >= JZ4770 have the DCKE read-only register, and DCKES/DCKEC 
-to set/clear bits in DCKE.
-On JZ4725B, DCKE is read/write, but the zeros written are ignored (at 
-least that's what the
-documentation says).
+Are there specific loops in the kernel whose conditions are controlled
+by READ_ONCE() that don't contain cpu_relax(), smp_mb(), etc.?  One
+way to find them given your description of your hardware is to make
+cpu_relax() be smp_mb() as Peter suggests, and then run tests to find
+the problems.
 
-> --
-> ~Vinod
+Or have you already done this?
 
-Thanks,
--Paul
+							Thanx, Paul
+
+> > If without SFB, everything is OK. But with SFB in step 2, a
+> > READ_ONCE() loop is right after WRITE_ONCE(), which makes the flag
+> > cached in SFB (so be invisible by other CPUs) for ever, then both CPU0
+> > and CPU1 wait for ever.
+> 
+> Sure.. we all got that far. And no, this isn't the _real_ problem. This
+> is a manifestation of the problem.
+> 
+> The problem is that your SFB is broken (per the Linux requirements). We
+> require that stores will become visible. That is, they must not
+> indefinitely (for whatever reason) stay in the store buffer.
+> 
+> > I don't think this is a hardware bug, in design, SFB will flushed to
+> > L1 cache in three cases:
+> 
+> > 1, data in SFB is full (be a complete cache line);
+> > 2, there is a subsequent read access in the same cache line;
+> > 3, a 'sync' instruction is executed.
+> 
+> And I think this _is_ a hardware bug. You just designed the bug instead
+> of it being by accident.
+> 
+> > In this case, there is no other memory access (read or write) between
+> > WRITE_ONCE() and READ_ONCE() loop. So Case 1 and Case 2 will not
+> > happen, and the only way to make the flag be visible is wbflush
+> > (wbflush is sync in Loongson's case).
+> >
+> > I think this problem is not only happens on Loongson, but will happen
+> > on other CPUs which have write buffer (unless the write buffer has a
+> > 4th case to be flushed).
+> 
+> It doesn't happen an _any_ other architecture except that dodgy
+> ARM11MPCore part. Linux hard relies on stores to become available
+> _eventually_.
+> 
+> Still, even with the rules above, the best work-around is still the very
+> same cpu_relax() hack.

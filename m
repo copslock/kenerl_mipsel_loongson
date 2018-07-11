@@ -1,75 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 10:27:03 +0200 (CEST)
-Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:40656
-        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993634AbeGKI0yiWms4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 10:26:54 +0200
-Received: by mail-lf0-x242.google.com with SMTP id y200-v6so20574819lfd.7;
-        Wed, 11 Jul 2018 01:26:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=jQ1VliKAS89519IiVVIeZY/w/9fWgZ3b4QnIXWmxZIQ=;
-        b=PJVvrpR+Pu7iXlzP7TJjHZXT+Nob1u4nJNtP8hw+kiHzWj8j95Vk2kjuHEsP2ieeAA
-         5DUAAsenSOehe15WMvmGc16aIlRCLznS48skbz3vk/pSCKJFfA2q8XITAiOjzMb2yPFj
-         eeULzO9Q1i9n1NM7uDBji+xuboSKYlJq+Dc5M5PjwrT66d8XPs9NyjtwGsSizw+qa/ku
-         T55jH9fhdbiR1C//3ccRZjoyhLM7h5CgXDYKddP40497GHJ0dmKXkSjyByZCCBu3z9wr
-         i4NGIN5nxNCkbp5rxYOrNFF+oOKPac9bu2whBKcvHUsyAV2kIXan/MfsRq4J9oavzlsy
-         YNkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jQ1VliKAS89519IiVVIeZY/w/9fWgZ3b4QnIXWmxZIQ=;
-        b=f4YlKejdLxL/5h/VFD0uBxmdE+1O1zwy8U54JXExwuDsxXJUQfwSFMRzvINv8Vuo4u
-         In6ECG6q3CB6sOHHVYcq2D4Pzy77pWqyVBUSVIsAjse70WlXR5TwYJwmIhx0V29xGNcc
-         wOAKRdJiWt2OSt5EJ62DiDrc5PIN5DZsWU7FGpX8A5DcsYzgFxThzBWMkL3ykAuyxbtd
-         hsRRs2wyQGHr/pVSEjBib319X7BKK8GI6j5vT8FIRHVV7P1tTTUvi8UPtFuaOMR/2ALJ
-         RV5wOY/5aBWhgrHWtnMWFpPpgCXyCOrlhXHSa21CmbILf9sZ6oP2g47Rd/XRf9GDQf8c
-         tYcA==
-X-Gm-Message-State: APt69E2bm1qvBUyqF5VvycCAryE3sqDZ9hC8/ErM3fMzzr+vVH5a23XU
-        RHi1N+FAdEzgwnXdHZxCOxw=
-X-Google-Smtp-Source: AAOMgpcMAX50HmuI+45mNxJXS/SiTKZkBFqhlKycOiZXJfIbiK4vPIqG6Js2V+GTHT6aQYBRPDkM+A==
-X-Received: by 2002:a19:921a:: with SMTP id u26-v6mr5340489lfd.89.1531297609048;
-        Wed, 11 Jul 2018 01:26:49 -0700 (PDT)
-Received: from mobilestation ([5.166.218.73])
-        by smtp.gmail.com with ESMTPSA id g17-v6sm3008495ljg.27.2018.07.11.01.26.47
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Jul 2018 01:26:47 -0700 (PDT)
-Date:   Wed, 11 Jul 2018 11:27:36 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, okaya@codeaurora.org,
-        chenhc@lemote.com, Sergey.Semin@t-platforms.ru,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "# v4 . 11" <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] mips: mm: Discard ioremap_uncached_accelerated()
- method
-Message-ID: <20180711082736.GA9387@mobilestation>
-References: <20180709135713.8083-1-fancer.lancer@gmail.com>
- <20180709135713.8083-2-fancer.lancer@gmail.com>
- <CA+7wUsxDfBdiGt5tZ7dxb63oMd=3Ry4s1Xysed8RSHJi35=VxQ@mail.gmail.com>
- <20180710074815.GA30235@mobilestation>
- <20180710175940.rbjmdcpm54gfrael@pburton-laptop>
- <20180710191354.GA32182@mobilestation>
- <20180710210415.4uqstovovdfvxfup@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 10:44:46 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:35062 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993577AbeGKIojq7-A4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 10:44:39 +0200
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6B8iFCt098760
+        for <linux-mips@linux-mips.org>; Wed, 11 Jul 2018 04:44:38 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2k5cugv4ma-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 11 Jul 2018 04:44:37 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Wed, 11 Jul 2018 09:44:35 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 11 Jul 2018 09:44:30 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6B8iT4T39583928
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 11 Jul 2018 08:44:29 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2885511C052;
+        Wed, 11 Jul 2018 11:44:51 +0100 (BST)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D1F7411C05E;
+        Wed, 11 Jul 2018 11:44:47 +0100 (BST)
+Received: from [9.124.31.141] (unknown [9.124.31.141])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 11 Jul 2018 11:44:47 +0100 (BST)
+Subject: Re: [PATCH v5 06/10] Uprobes: Support SDT markers having reference
+ count (semaphore)
+To:     Oleg Nesterov <oleg@redhat.com>, srikar@linux.vnet.ibm.com
+Cc:     rostedt@goodmis.org, mhiramat@kernel.org, peterz@infradead.org,
+        mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net,
+        linux-doc@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180628052209.13056-1-ravi.bangoria@linux.ibm.com>
+ <20180628052209.13056-7-ravi.bangoria@linux.ibm.com>
+ <20180701210935.GA14404@redhat.com>
+ <0c543791-f3b7-5a4b-f002-e1c76bb430c0@linux.ibm.com>
+ <20180702180156.GA31400@redhat.com>
+ <f19e3801-d56a-4e34-0acc-1040a071cf91@linux.ibm.com>
+ <20180703163645.GA23144@redhat.com> <20180703172543.GC23144@redhat.com>
+ <f5a39a88-c21e-4606-a04d-11b5f32016b8@linux.ibm.com>
+ <20180710152527.GA3616@redhat.com>
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date:   Wed, 11 Jul 2018 14:14:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180710210415.4uqstovovdfvxfup@pburton-laptop>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <fancer.lancer@gmail.com>
+In-Reply-To: <20180710152527.GA3616@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18071108-4275-0000-0000-000002975D46
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18071108-4276-0000-0000-0000379EFBDC
+Message-Id: <6e3ff60b-267a-d49d-4ebb-c4264f9c034b@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-11_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807110094
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64773
+X-archive-position: 64774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fancer.lancer@gmail.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,48 +94,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Paul,
+Hi Oleg,
 
-On Tue, Jul 10, 2018 at 02:04:15PM -0700, Paul Burton <paul.burton@mips.com> wrote:
-> Hi Serge,
+On 07/10/2018 08:55 PM, Oleg Nesterov wrote:
+> Hi Ravi,
 > 
-> On Tue, Jul 10, 2018 at 10:13:54PM +0300, Serge Semin wrote:
-> > On Tue, Jul 10, 2018 at 10:59:40AM -0700, Paul Burton <paul.burton@mips.com> wrote:
-> > > However FYI for next time - you shouldn't really add someone else's
-> > > Signed-off-by tag anyway. The tag effectively states that a person can
-> > > agree to the Developer's Certificate of Origin for this patch (see
-> > > Documentation/process/submitting-patches.rst), and you can't agree that
-> > > on behalf of someone else. Generally a maintainer should add this tag
-> > > for themselves when they apply a patch.
-> > 
-> > I'm sorry if it seemed like I added Signed-off on your behalf.
+> On 07/04, Ravi Bangoria wrote:
+>>
+>>> Now I understand what did you mean by "for each consumer". So if we move this logic
+>>> into install/remove_breakpoint as I tried to suggest, we will also need another error
+>>> code for the case when verify_opcode() returns false.
+>>
+>> Ok so if we can use verify_opcode() inside install_breakpoint(), we can probably
+>> move implementation logic in install/remove_breakpoint(). Let me explore that more.
 > 
-> That's OK, I didn't think you did it maliciously :)
+> No, sorry for confusion, I meant another thing... But please forget. If we rely on
+> verify_opcode() I no longer think it would be more clean to move this logic into
+> install/remove_breakpoint.
 > 
-> > I thought the Signed-off also concerns the ones, who participated in
-> > the patch preparation. Since you suggested the design of the change,
-> > I've decided to put your name in the Signed-off tag. What shall I use
-> > in this way then?
-> 
-> In this case Suggested-by might have been a good choice. Reported-by is
-> also commonly used if someone reported a problem which you created a fix
-> for.
-> 
-> Section 13 of Documentation/process/submitting-patches.rst describes
-> these tags along with a couple others.
+> However, I still think it would be better to avoid uprobe exporting and modifying
+> set_swbp/set_orig_insn. May be we can simply kill both set_swbp() and set_orig_insn(),
+> I'll re-check...
 
-I always thought of these tags as something more like a formality. In fact
-this hasn't been my first patchset sent to the kernel e-mailing list.
-Although all of the previous ones didn't involve someone else participating
-in the changes development, except the reviewers of course. So I do aware
-of all the tags mentioned in the doc. But as it turns out I didn't
-fully understand their meaning. Main rule: most of the tags should not be
-added without the permission, except more or less formal CC and Fixes ones.
-Anyway thanks for the advice. Next time I'll be more careful with it.
+Good that you bring this up. Actually, we can implement same logic
+without exporting uprobe. We can do "uprobe = container_of(arch_uprobe)"
+in uprobe_write_opcode(). No need to export struct uprobe outside,
+no need to change set_swbp() / set_orig_insn() syntax. Just that we
+need to pass arch_uprobe object to uprobe_write_opcode().
 
-Regards,
--Sergey
 
-> 
-> Thanks,
->     Paul
+But, I wanted to discuss about making ref_ctr_offset a uprobe property
+or a consumer property, before posting v6:
+
+If we make it a consumer property, the design becomes flexible for
+user. User will have an option to either depend on kernel to handle
+reference counter or he can create normal uprobe and manipulate
+reference counter on his own. This will not require any changes to
+existing tools. With this approach we need to increment / decrement
+reference counter for each consumer. But, because of the fact that our
+install_breakpoint() / remove_breakpoint() are not balanced, we have
+to keep track of which reference counter have been updated in which
+mm, for which uprobe and for which consumer. I.e. Maintain a list of
+{uprobe, consumer, mm}. This will make kernel implementation quite
+complex because there are chances of races. What we gain in return
+is flexibility for users. Please let me know if there are any other
+advantages of this approach.
+
+By making it a uprobe property, we are forcing user to use
+uprobe_register_refctr() for uprobes having reference counter. Because
+we don't allow same uprobe with multiple reference counter and thus
+user can't use both uprobe_register_refctr() and uprobe_register() in
+parallel for same uprobe. Which means user does not have a flexibility
+to create normal uprobe with uprobe_register() and maintain reference
+counter on his own. But kernel implementation becomes simple with this
+approach. Though, this will require changes in tools which already
+supports SDT events, systemtap and bcc I'm aware of. But AFAICS, the
+change should not be major. In fact, the change should make tool code
+simpler because they don't have to worry about maintaining reference
+counter.
+
+Third options: How about allowing 0 as a special value for reference
+counter? I mean allow uprobe_register() and uprobe_register_refctr()
+in parallel but do not allow two uprobe_register_refctr() with two
+different reference counter. If we can do this, the issue of forcing
+legacy user to use uprobe_register_refctr() will be solved. I.e. no
+change needed on tools side and still kernel implementation will
+remain simple. I'll explore this option.
+
+Let me know your thoughts.
+
+Thanks,
+Ravi
+
+PS: We can't abuse MSB with first approach because any userspace tool
+can also abuse MSB in parallel. Probably, we can abuse MSB in second
+and third approach, though, there is no need to.

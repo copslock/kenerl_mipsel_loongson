@@ -1,49 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 08:56:43 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:33306 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993514AbeGKG4g4xImt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 08:56:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=ePsF86RfBm9KlJk6HkO8sqsuPBV7pw/yT5/Pb12gx2Q=; b=jmCpiQATag3E6ZKwnA+yG3XCE
-        qyrZ9/xJ1FUTfJHBlFNmi+HYZIRKx0kVuUZkV0DuhRn1LcBi8ZDAUClcN1Ay/+BKEaYp5BPRFv8AK
-        pdD2vPVtJeI3Xzgdob5x/sESwHaf2MPvTaClEeZQtbyeWitP7rnJiD15Qi02VVoYi/c4uDXhssdB6
-        c/R2fYvuF/CUHKJDMonZPMLXmQU29+nUwgehvHFoXEkrvlLgLipiXs/Owv3rA4UeX9Bh1UOGR4iSq
-        U3AfSe3f7lqAg5rG2a34N2GibwDbJAO8JuO/V359f++5dsmm0Ecqqicj4CNqqprRlXuv3V9QZNwZr
-        IrlQnKtEw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fd939-0007vU-H0; Wed, 11 Jul 2018 06:56:31 +0000
-Date:   Tue, 10 Jul 2018 23:56:31 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        okaya@codeaurora.org, chenhc@lemote.com,
-        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mips: mm: Discard ioremap_uncached_accelerated()
- method
-Message-ID: <20180711065631.GA21948@infradead.org>
-References: <20180709135713.8083-1-fancer.lancer@gmail.com>
- <20180709135713.8083-2-fancer.lancer@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180709135713.8083-2-fancer.lancer@gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+7dae7aff98f6b03f0ec2+5435+infradead.org+hch@bombadil.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 10:23:06 +0200 (CEST)
+Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:34183
+        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993514AbeGKIW6xTreZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 10:22:58 +0200
+Received: by mail-pl0-x244.google.com with SMTP id z9-v6so8842438plo.1;
+        Wed, 11 Jul 2018 01:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=pcK9d1nRShv/j8b1gDXxovfMQ0b3ktOA0nZHCFonlb8=;
+        b=b+CKcL1OC+3kxyDd+XoYKeindS+++g1gU2i1BVdwG7+P/6mCMaxAOqT9SUNNqBuHB9
+         nExkQyy98Cn30TaNRdVO1JqnVKwiktvUIoJFoPxr8Lnu3Mrj2918vA3QAvpyB96zSZLu
+         U0WLOGDwEhewRm4SBqiVracXnu1eKwoDnVfygc0zgsyhNwMGNI3QkMFVE9z9gtpreVnp
+         dWgli3S+GImmCarh+P20naDxHx4zMtkoBMNiTBDxp9Le5R9rZvZa/NkarW3nYexYCocb
+         pIPLmOyij81ivDItNI/Zkz7iPxW9iy+Jm9MdQO3S66SDJ/CQsCLL4gNVOK+MloBDOVK5
+         zz3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=pcK9d1nRShv/j8b1gDXxovfMQ0b3ktOA0nZHCFonlb8=;
+        b=I5ZrVHIuVaLmPdD/+j2OD1tO5Rhw9aixr2Ejzh5apvKsXbjs+L4fKrM/8jT/B/phF/
+         BsLu9aQ16sqPtefew287EwBhNv2pdrhwS5DwnikuBo2PPAK7WjRBVCZ1/nuswDrnLXo3
+         IEVyrPqD5eINvJl/QavmzsWvZ5xFPci0GyFzujg958DiDF+hS5c/ryyhVbLJoXBLdSp4
+         aF9stB+bbO7pEHL3wQQBQVHiMcAnT3gT3fDjxyPaGn/0Y+eYajO2i/lc/SanVij+TbcS
+         KrNnL1rHcBFi+AH6NPFPHcbr0VL+V1lqkw052CdrVLe5OR5yHLl10gArwoBhJQVfppxH
+         FExQ==
+X-Gm-Message-State: APt69E1PxeQd3z8Y4jj36d4WWnQqlrCX8lHWaXBnYQbc6rN2HaOmmHl7
+        nn5w7XYTwq7eogRayJM/C5Fpmg==
+X-Google-Smtp-Source: AAOMgpcPMY0jVavxjU3AffxUUbOgfZkLyxWWiJ9nIkqZSFgbiXkTxgik4KHdaLt8FwXSTGxjQyLxyw==
+X-Received: by 2002:a17:902:6047:: with SMTP id a7-v6mr27640778plt.188.1531297372073;
+        Wed, 11 Jul 2018 01:22:52 -0700 (PDT)
+Received: from software.domain.org ([104.251.228.27])
+        by smtp.gmail.com with ESMTPSA id g10-v6sm28875841pgs.17.2018.07.11.01.22.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 11 Jul 2018 01:22:51 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH RFC] MIPS: Make UTS_MACHINE reflect big-endian/little-endian
+Date:   Wed, 11 Jul 2018 16:28:17 +0800
+Message-Id: <1531297697-7952-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64771
+X-archive-position: 64772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@infradead.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,11 +67,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> + * This is a MIPS specific ioremap variant. ioremap_cacheable_cow
-> + * requests a cachable mapping with CWB attribute enabled.
->   */
->  #define ioremap_cacheable_cow(offset, size)				\
->  	__ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
+It seems like some application use "uname" command's output to do
+something different between big-endian and little-endian, so we make
+UTS_MACHINE reflect both 32bit/64bit and big-endian/little-endian.
 
-This isn't actually used anywhere in the kernel tree.  Please remove it
-as well.
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index e2122cc..a21c3a1 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -38,11 +38,11 @@ endif
+ 
+ ifdef CONFIG_32BIT
+ tool-archpref		= $(32bit-tool-archpref)
+-UTS_MACHINE		:= mips
++UTS_MACHINE		:= $(32bit-tool-archpref)
+ endif
+ ifdef CONFIG_64BIT
+ tool-archpref		= $(64bit-tool-archpref)
+-UTS_MACHINE		:= mips64
++UTS_MACHINE		:= $(64bit-tool-archpref)
+ endif
+ 
+ ifneq ($(SUBARCH),$(ARCH))
+-- 
+2.7.0

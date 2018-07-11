@@ -1,49 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 15:02:01 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:59550 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993514AbeGKNBzTozIi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jul 2018 15:01:55 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id D3A3D20775; Wed, 11 Jul 2018 15:01:49 +0200 (CEST)
-Received: from bbrezillon (AAubervilliers-681-1-12-56.w90-88.abo.wanadoo.fr [90.88.133.56])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 808FF206ED;
-        Wed, 11 Jul 2018 15:01:49 +0200 (CEST)
-Date:   Wed, 11 Jul 2018 15:01:48 +0200
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH v2 04/24] mtd: rawnand: s3c2410: Allow selection of this
- driver when COMPILE_TEST=y
-Message-ID: <20180711150148.5ca48df2@bbrezillon>
-In-Reply-To: <CAK8P3a2Ar0itsfXBMDoJwq106KBYT-mx55znVF5cd478FqzJsQ@mail.gmail.com>
-References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
-        <20180709200945.30116-5-boris.brezillon@bootlin.com>
-        <20180711131626.732967be@bbrezillon>
-        <CAK8P3a1CR_sN2KW4fZjADHrbKyB1ZSi=6+hPAPYoVeAeLGK_3g@mail.gmail.com>
-        <20180711133236.67726256@bbrezillon>
-        <CAK8P3a2Ar0itsfXBMDoJwq106KBYT-mx55znVF5cd478FqzJsQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 15:22:36 +0200 (CEST)
+Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:36035 "EHLO
+        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993515AbeGKNW3zWDOi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 15:22:29 +0200
+Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 11 Jul 2018 13:21:49 +0000
+Received: from [10.20.78.104] (10.20.78.104) by mipsdag02.mipstec.com
+ (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 11
+ Jul 2018 06:21:56 -0700
+Date:   Wed, 11 Jul 2018 14:21:41 +0100
+From:   "Maciej W. Rozycki" <macro@mips.com>
+To:     Christoph Hellwig <hch@lst.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        David Daney <david.daney@cavium.com>,
+        Tom Bogendoerfer <tsbogend@alpha.franken.de>,
+        <linux-mips@linux-mips.org>, <iommu@lists.linux-foundation.org>
+Subject: Re: [PATCH 12/25] MIPS: loongson: untangle dma implementations
+In-Reply-To: <20180711125736.GA19191@lst.de>
+Message-ID: <alpine.DEB.2.00.1807111419220.30992@tp.orcam.me.uk>
+References: <20180525092111.18516-1-hch@lst.de> <20180525092111.18516-13-hch@lst.de> <alpine.DEB.2.00.1807110407510.30992@tp.orcam.me.uk> <20180711125736.GA19191@lst.de>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.104]
+X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
+ mipsdag02.mipstec.com (10.20.40.47)
+X-BESS-ID: 1531315309-321459-21451-64374-1
+X-BESS-VER: 2018.8-r1807031532
+X-BESS-Apparent-Source-IP: 12.201.5.32
+X-BESS-Envelope-From: maciej.rozycki@uk.mips.com
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.195476
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-Orig-Rcpt: hch@lst.de,ralf@linux-mips.org,jhogan@kernel.org,cernekee@gmail.com,f.fainelli@gmail.com,chenhc@lemote.com,jiaxun.yang@flygoat.com,david.daney@cavium.com,tsbogend@alpha.franken.de,linux-mips@linux-mips.org,iommu@lists.linux-foundation.org
+X-BESS-BRTS-Status: 1
+Return-Path: <maciej.rozycki@uk.mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64795
+X-archive-position: 64796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: macro@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,43 +64,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 11 Jul 2018 14:09:19 +0200
-Arnd Bergmann <arnd@arndb.de> wrote:
+On Wed, 11 Jul 2018, Christoph Hellwig wrote:
 
-> On Wed, Jul 11, 2018 at 1:32 PM, Boris Brezillon
-> <boris.brezillon@bootlin.com> wrote:
-> > On Wed, 11 Jul 2018 13:27:53 +0200
-> > Arnd Bergmann <arnd@arndb.de> wrote:
-> >  
-> >> On Wed, Jul 11, 2018 at 1:16 PM, Boris Brezillon
-> >> <boris.brezillon@bootlin.com> wrote:  
-> >> > On Mon,  9 Jul 2018 22:09:25 +0200
-> >> > Boris Brezillon <boris.brezillon@bootlin.com> wrote:
-> >> >  
-> >> >> It just makes NAND maintainers' life easier by allowing them to
-> >> >> compile-test this driver without having ARCH_S3C24XX or ARCH_S3C64XX
-> >> >> enabled.
-> >> >>
-> >> >> We add a dependency on HAS_IOMEM to make sure the driver compiles
-> >> >> correctly, and a dependency on !IA64 because the {read,write}s{bwl}()
-> >> >> accessors are not defined for this architecture.  
-> >> >
-> >> > I see that SPARC does not define those accessors either. So I guess we
-> >> > should add depends on !SPARC.
-> >> >
-> >> > Arnd, any other way to know when the platform implements
-> >> > {read,write}s{bwl}() accessors?  
-> >>
-> >> I'd just consider that a bug, and send a patch to fix sparc64 if it's broken.
-> >> sparc32 appears to have these, and when Thierry sent the patch
-> >> to implement them everywhere[1], he said that he tested sparc64 as
-> >> well, so either something regressed since then, or his testing
-> >> was incomplete. Either way, the correct answer IMHO would be to
-> >> make it work rather than to add infrastructure around the broken
-> >> configurations.  
-> >
-> > I guess the same goes for IA64 then.  
+> >  SiByte should too though, at least for those boards, such as the SWARM 
+> > and the BigSur, that can have DRAM over 4GiB (and 32-bit PCI devices 
+> > plugged).
 > 
-> Right. FWIW, I just tried it out and sent the respective arch patches.
+> Only in this case refers to loonson boards.
 
-Cool! Thanks for doing that.
+ Right!
+
+> >  I never got to have the wiring of swiotlb completed for these boards as 
+> > I got distracted with getting set up to debug a DRAM controller issue 
+> > observed in the form of memory data corruption with the banks fully 
+> > populated (which might have to do something with the parameters of bank 
+> > interleaving enabled in such a configuration, as replacing a single 
+> > module with a smaller-sized one and therefore disabling interleaving, 
+> > which can only work with all modules being the same size, makes the 
+> > problem go away).
+> 
+> After this series enabling swiotlb for another board is trivial as all
+> the code has been consolidated.  Just select SWIOTLB and add a call to
+> swiotlb_init to the board setup code.
+
+ I had that feeling too, thanks for confirming.  And for doing this work 
+in the first place!
+
+  Maciej

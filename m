@@ -1,29 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 20:35:54 +0200 (CEST)
-Received: from www.osadl.org ([62.245.132.105]:57049 "EHLO www.osadl.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993881AbeGKSfsM5LxV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jul 2018 20:35:48 +0200
-Received: from debian01.hofrr.at (178.115.242.59.static.drei.at [178.115.242.59] (may be forged))
-        by www.osadl.org (8.13.8/8.13.8/OSADL-2007092901) with ESMTP id w6BIXR1I004645;
-        Wed, 11 Jul 2018 20:33:27 +0200
-From:   Nicholas Mc Guire <hofrat@osadl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 22:50:40 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:54564 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993888AbeGKUucSjpgT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jul 2018 22:50:32 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6DBFAADEF;
+        Wed, 11 Jul 2018 20:50:26 +0000 (UTC)
+Date:   Wed, 11 Jul 2018 22:50:25 +0200
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Paul Burton <paul.burton@mips.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>
-Subject: [PATCH] MIPS: generic: fix missing of_node_put()
-Date:   Wed, 11 Jul 2018 20:32:45 +0200
-Message-Id: <1531333965-7342-1-git-send-email-hofrat@osadl.org>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <hofrat@osadl.org>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mips: Fix mips_dma_map_sg by using correct dma
+ mapping function
+Message-Id: <20180711225025.9c8da709d9c513fbbdce020b@suse.de>
+In-Reply-To: <20180711160342.ddvlqvjp3smwyido@pburton-laptop>
+References: <20180711113852.2734-1-tbogendoerfer@suse.de>
+        <20180711160342.ddvlqvjp3smwyido@pburton-laptop>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <tbogendoerfer@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64802
+X-archive-position: 64803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hofrat@osadl.org
+X-original-sender: tbogendoerfer@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,36 +44,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
- of_find_compatible_node() returns a device_node pointer with refcount
-incremented and must be decremented explicitly.  
- As this code is using the result only to check presence of the interrupt 
-controller (!NULL) but not actually using the result otherwise the 
-refcount can be decremented here immediately again.
+On Wed, 11 Jul 2018 09:03:42 -0700
+Paul Burton <paul.burton@mips.com> wrote:
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
-Fixes: commit eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
----
+> This doesn't apply after Christoph's massive MIPS DMA cleanup which can
+> be found in mips-next (or linux-next). After this work we end up using
+> the generic dma_direct_map_sg() on most systems, and the code above has
+> been removed.
 
-Problem located with an experimental coccinelle script
+Christoph's cleanup also fixes the issue. I thought sending it as a fix for
+4.17 would be appropriate, but no problem with dropping it.
 
-Patch was compiletested with: 32r1_defconfig (implies generic_defconfig)
-
-Patch is against 4.18-rc4 (localversion-next is next-20180711)
-
- arch/mips/generic/init.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/generic/init.c b/arch/mips/generic/init.c
-index 07ec084..a106f81 100644
---- a/arch/mips/generic/init.c
-+++ b/arch/mips/generic/init.c
-@@ -203,6 +203,7 @@ void __init arch_init_irq(void)
- 					    "mti,cpu-interrupt-controller");
- 	if (!cpu_has_veic && !intc_node)
- 		mips_cpu_irq_init();
-+	of_node_put(intc_node);
- 
- 	irqchip_init();
- }
--- 
-2.1.4
+Thomas.

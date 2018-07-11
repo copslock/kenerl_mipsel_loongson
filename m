@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 14:14:25 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:51476 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 14:17:19 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:51778 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993577AbeGKMOStyQO0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jul 2018 14:14:18 +0200
+        id S23993577AbeGKMRKWAuf0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jul 2018 14:17:10 +0200
 Received: from localhost (unknown [106.200.243.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5DEF22084A;
-        Wed, 11 Jul 2018 12:14:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6DFB72084A;
+        Wed, 11 Jul 2018 12:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1531311252;
-        bh=9BfqPJy/9QTritHy6541J/y+6FdvNY1b5TuICtLJWWQ=;
+        s=default; t=1531311424;
+        bh=7MPLgS8jcq32VU6ZOl+aL6zKzSYkVQuVD8gwoppUNW0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OEwZQWwe/Xk5gESbjiQgPzmSRJX7L2O2UcxV7TQv/Z/qrzEzd4ybiCzNRtw2KAL5V
-         4GqKvjHA99dBZ4912ufdz+S6efTr34r0Bvsjma2KI1RbXSA5T5ZUbgPs1EVeGC271X
-         ndU7V0UZhQj0PUjTspnf7HvWoRhOLKDw2isGxz+o=
-Date:   Wed, 11 Jul 2018 17:44:03 +0530
+        b=kQ0REPasqeQ6hjZSrqYY4mTMwfHtAXyuhNc3dtssPMClTTRZnlrxD0VEIdWJurI/a
+         4qZI8tD1eQRNsOSnUgnNbpMz5e2Gh4cf34v7V5ZW+azYG7PpW4NtNRrUcBWlWsQVee
+         dWOz/5r49HY+PVbQDOGAQ6p205q8CI0TuXYMUDKw=
+Date:   Wed, 11 Jul 2018 17:46:55 +0530
 From:   Vinod <vkoul@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
@@ -28,23 +28,22 @@ Cc:     Mark Rutland <mark.rutland@arm.com>,
         Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH 01/14] dmaengine: dma-jz4780: Avoid hardcoding number of
- channels
-Message-ID: <20180711121403.GR3219@vkoul-mobl>
+Subject: Re: [PATCH 02/14] dmaengine: dma-jz4780: Separate chan/ctrl registers
+Message-ID: <20180711121655.GS3219@vkoul-mobl>
 References: <20180703123214.23090-1-paul@crapouillou.net>
- <20180703123214.23090-2-paul@crapouillou.net>
- <20180709165945.GH22377@vkoul-mobl>
- <1531236550.17118.0@crapouillou.net>
+ <20180703123214.23090-3-paul@crapouillou.net>
+ <20180709170359.GI22377@vkoul-mobl>
+ <1531237019.17118.1@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1531236550.17118.0@crapouillou.net>
+In-Reply-To: <1531237019.17118.1@crapouillou.net>
 User-Agent: Mutt/1.9.2 (2017-12-15)
 Return-Path: <vkoul@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64789
+X-archive-position: 64790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,53 +60,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+On 10-07-18, 17:36, Paul Cercueil wrote:
 
-On 10-07-18, 17:29, Paul Cercueil wrote:
-> > >  +static const unsigned int jz4780_dma_nb_channels[] = {
-> > >  +	[ID_JZ4780] = 32,
-> > >  +};
+> > >  @@ -3,7 +3,8 @@
+> > >   Required properties:
+> > > 
+> > >   - compatible: Should be "ingenic,jz4780-dma"
+> > >  -- reg: Should contain the DMA controller registers location and
+> > > length.
+> > >  +- reg: Should contain the DMA channel registers location and
+> > > length, followed
+> > >  +  by the DMA controller registers location and length.
+> > >   - interrupts: Should contain the interrupt specifier of the DMA
+> > > controller.
+> > >   - interrupt-parent: Should be the phandle of the interrupt
+> > > controller that
+> > >   - clocks: Should contain a clock specifier for the JZ4780 PDMA
+> > > clock.
+> > >  @@ -22,7 +23,8 @@ Example:
+> > > 
+> > >   dma: dma@13420000 {
+> > >   	compatible = "ingenic,jz4780-dma";
+> > >  -	reg = <0x13420000 0x10000>;
+> > >  +	reg = <0x13420000 0x400
+> > >  +	       0x13421000 0x40>;
+> > 
+> > Second should be optional or we break platform which may not have
+> > updated DT..
+> 
+> See comment below.
+> 
+> > >  -	jzdma->base = devm_ioremap_resource(dev, res);
+> > >  -	if (IS_ERR(jzdma->base))
+> > >  -		return PTR_ERR(jzdma->base);
+> > >  +	jzdma->chn_base = devm_ioremap_resource(dev, res);
+> > >  +	if (IS_ERR(jzdma->chn_base))
+> > >  +		return PTR_ERR(jzdma->chn_base);
 > > >  +
-> > >  +static const struct of_device_id jz4780_dma_dt_match[] = {
-> > >  +	{ .compatible = "ingenic,jz4780-dma", .data = (void *)ID_JZ4780 },
-> > >  +	{},
-> > >  +};
+> > >  +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> > >  +	if (!res) {
+> > >  +		dev_err(dev, "failed to get I/O memory\n");
+> > >  +		return -EINVAL;
+> > >  +	}
 > > 
-> > Looking at description I was hoping that channels would be in DT,
-> > channels is hardware information, so should come from DT rather than
-> > coding the kernel...
+> > okay and this breaks if you happen to get probed on older DT. I think DT
+> > is treated as ABI so you need to continue support older method while
+> > finding if DT has split resources
 > 
-> I had a talk with Linus Walleij (GPIO maintainer) about that:
-> http://lkml.iu.edu/hypermail/linux/kernel/1701.3/05422.html
+> See my response to PrasannaKumar. All the Ingenic-based boards do compile
+> the devicetree within the kernel, so I think it's still fine to add breaking
+> changes. I'll wait on @Rob to give his point of view on this, though.
 > 
-> And I agree with him, we shouldn't have in devicetree what we can deduce
-> from the compatible string. But there doesn't seem to be an enforced
-> policy about it.
+> (It's not something hard to change, but I'd like to know what's the policy
+> in that case. I have other DT-breaking patches to submit)
 
-Looking at this, yes that can be done as you have implemented but adding
-new compatible and tables every time seems not so great to me.
+The policy is that DT is an ABI and should not break :)
 
-If DT can describe these hardware features then driver can take action generically
-and we avoid these tables and skip some patches here..
-
-> 
-> @Rob, what do you think?
-
-Rob what is the recommendation here?
-
-> 
-> > >  -	jzdma = devm_kzalloc(dev, sizeof(*jzdma), GFP_KERNEL);
-> > >  +	if (of_id)
-> > >  +		version = (enum jz_version)of_id->data;
-> > >  +	else
-> > >  +		version = ID_JZ4780; /* Default when not probed from DT */
-> > 
-> > where else would it be probed from.... ?
-> 
-> Platform, MFD driver, etc. But not likely to happen.
-> I can remove these lines if you want.
-
-Lets add when we land support for those.
+Who maintains Ingenic arch. MAINTAINERS doesn't tell me.
 
 -- 
 ~Vinod

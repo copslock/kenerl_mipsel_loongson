@@ -1,34 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 12:03:41 +0200 (CEST)
-Received: from smtp-out4.electric.net ([192.162.216.187]:63820 "EHLO
-        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993514AbeGKKDemKfI4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 12:03:34 +0200
-Received: from 1fdBxp-0001xm-Ut by out4b.electric.net with emc1-ok (Exim 4.90_1)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1fdBxy-0002k6-Vl; Wed, 11 Jul 2018 03:03:22 -0700
-Received: by emcmailer; Wed, 11 Jul 2018 03:03:22 -0700
-Received: from [156.67.243.126] (helo=AcuMS.aculab.com)
-        by out4b.electric.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1fdBxp-0001xm-Ut; Wed, 11 Jul 2018 03:03:13 -0700
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
- (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Wed,
- 11 Jul 2018 11:04:52 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 11 Jul 2018 11:04:52 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Paul Burton' <paul.burton@mips.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        =?gb2312?B?s8K7qrLF?= <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 12:16:56 +0200 (CEST)
+Received: from forward104p.mail.yandex.net ([77.88.28.107]:54796 "EHLO
+        forward104p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993514AbeGKKQuL4no4 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jul 2018 12:16:50 +0200
+Received: from mxback1g.mail.yandex.net (mxback1g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:162])
+        by forward104p.mail.yandex.net (Yandex) with ESMTP id B3C52181BC3;
+        Wed, 11 Jul 2018 13:14:57 +0300 (MSK)
+Received: from smtp3p.mail.yandex.net (smtp3p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:8])
+        by mxback1g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id QIlY3WS5VM-Eu1G4nPP;
+        Wed, 11 Jul 2018 13:14:57 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1531304097;
+        bh=XCCe7vZc7GQyW/Uk20RcYER7XQFfgxW8goHDS9VObxA=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=WbgbahD0+vZJfY3jnRlpGa+xI1+WC81hJZdXBnPchpOduLhpn/jZRvMAZ+8rW8vpI
+         KOxfFiGvAOvK9jE9PkbZQ6A4SsUnLCQRSLyy94R808f93VSpN5JhTiPtoU32YX/9dC
+         9tEgueIFzhdbbd6/DnLpi4KmciYvZ7xscM/3BOHM=
+Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id fDNQFekDBA-EmhCeUUh;
+        Wed, 11 Jul 2018 13:14:53 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1531304094;
+        bh=XCCe7vZc7GQyW/Uk20RcYER7XQFfgxW8goHDS9VObxA=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References;
+        b=eCSIkuGGxcPhycRObxIrrwZk4lN1sPuTvO3aqvHXxpZvZefNyJllo4kHv+gkw4dh+
+         RWbHVp4cBjBxmrYVpnHRPUW6P7P6Zs1xWkn2pgQKiQWB8D75meSOpG0ByfSFOICrVf
+         XwXcAzmMoqMNG+zMQKj0C/EXrL2VcvzYeHMdgeRY=
+Authentication-Results: smtp3p.mail.yandex.net; dkim=pass header.i=@flygoat.com
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     linux-mips@linux-mips.org
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         wuzhangjin <wuzhangjin@gmail.com>,
         stable <stable@vger.kernel.org>,
-        "Alan Stern" <stern@rowland.harvard.edu>,
+        Alan Stern <stern@rowland.harvard.edu>,
         Andrea Parri <andrea.parri@amarulasolutions.com>,
         Will Deacon <will.deacon@arm.com>,
         Boqun Feng <boqun.feng@gmail.com>,
@@ -39,49 +48,23 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         Akira Yokosawa <akiyks@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH V2] MIPS: implement smp_cond_load_acquire() for Loongson-3
-Thread-Topic: [PATCH V2] MIPS: implement smp_cond_load_acquire() for
- Loongson-3
-Thread-Index: AQHUGHE46BeCJJ492kKUdytd7WH/WKSJx/lw
-Date:   Wed, 11 Jul 2018 10:04:52 +0000
-Message-ID: <1a072b07261b46d88938f0f709f54d42@AcuMS.aculab.com>
-References: <1531103198-16764-1-git-send-email-chenhc@lemote.com>
- <20180709164939.uhqsvcv4a7jlbhvp@pburton-laptop>
- <CAAhV-H7bqhz+dzgPk0_tTAN6y_k_8Ds9heF0p5uPHsHNg0v4Rg@mail.gmail.com>
- <20180710093637.GF2476@hirez.programming.kicks-ass.net>
- <20180710105437.GT2512@hirez.programming.kicks-ass.net>
- <tencent_26F8B9E004D4512B2225FCE1@qq.com>
- <20180710121727.GK2476@hirez.programming.kicks-ass.net>
- <20180710171040.f3gyyh524xlsqv4j@pburton-laptop>
-In-Reply-To: <20180710171040.f3gyyh524xlsqv4j@pburton-laptop>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.33]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Subject: Re: [PATCH V2] MIPS: implement smp_cond_load_acquire() for Loongson-3
+Date:   Wed, 11 Jul 2018 18:05:51 +0800
+Message-ID: <5471216.FKXZRxKFUI@flygoat-ry>
+In-Reply-To: <20180710121727.GK2476@hirez.programming.kicks-ass.net>
+References: <1531103198-16764-1-git-send-email-chenhc@lemote.com> <tencent_26F8B9E004D4512B2225FCE1@qq.com> <20180710121727.GK2476@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-Outbound-IP: 156.67.243.126
-X-Env-From: David.Laight@ACULAB.COM
-X-Proto: esmtps
-X-Revdns: 
-X-HELO: AcuMS.aculab.com
-X-TLS:  TLSv1.2:ECDHE-RSA-AES256-SHA384:256
-X-Authenticated_ID: 
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jiaxun.yang@flygoat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64777
+X-archive-position: 64778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: jiaxun.yang@flygoat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,25 +77,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-RnJvbTogUGF1bCBCdXJ0b24NCj4gU2VudDogMTAgSnVseSAyMDE4IDE4OjExDQouLi4NCj4gSSdt
-IG5vdCBzdXJlIHdoaWNoIGlzIHRoZSBpbnRlbnQgKEkgY2FuIGFzayBpZiBzb21lb25lJ3MgaW50
-ZXJlc3RlZCksDQo+IGJ1dCB5b3UgY291bGQgZWl0aGVyOg0KPiANCj4gICAxKSBDb25zaWRlciB0
-aGUgc3RvcmUgYnVmZmVyIGEgY2FjaGUsIGluIHdoaWNoIGNhc2UgbG9hZHMgbmVlZCB0bw0KPiAg
-ICAgIGNoZWNrIGFsbCBzdG9yZSBidWZmZXJzIGZyb20gYWxsIENQVXMgYmVjYXVzZSBvZiB0aGUg
-ImFsbCBjYWNoZXMiDQo+ICAgICAgcGFydCBvZiB0aGUgZmlyc3QgcXVvdGVkIHNlbnRlbmNlLg0K
-PiANCj4gb3INCj4gDQo+ICAgMikgRGVjaWRlIHN0b3JlIGJ1ZmZlcnMgYXJlbid0IGNvdmVyZWQg
-YnkgdGhlIE1JUFMgYXJjaGl0ZWN0dXJlDQo+ICAgICAgZG9jdW1lbnRhdGlvbiBhdCBhbGwgaW4g
-d2hpY2ggY2FzZSB0aGUgb25seSBzYW5lIHRoaW5nIHRvIGRvIHdvdWxkDQo+ICAgICAgYmUgdG8g
-bWFrZSBpdCB0cmFuc3BhcmVudCB0byBzb2Z0d2FyZSAoYW5kIGhlcmUgTG9vbmdzb24ncyBpc24n
-dCkNCi4uLg0KDQpTdG9yZSBidWZmZXJzIGFyZSBjb21tb24gYW5kIGFyZSBuZXZlciB0cmFuc3Bh
-cmVudCB0byBtdWx0aS10aHJlYWRlZCBjb2RlLg0KVGhleSBhcmUgbGFyZ2VseSB3aHkgeW91IG5l
-ZWQgbG9ja3MuDQoNCkF0IGxlYXN0IG9uIChlYXJseSkgc3BhcmMgc3lzdGVtcyB0aGV5IHdlcmUg
-YmV0d2VlbiB0aGUgZXhlY3V0aW9uIHVuaXQNCmFuZCB0aGUgZGF0YSBjYWNoZS4NCg0KSSBhbHNv
-IHN1c3BlY3QgdGhhdCAnd3JpdGUgc3RhcnZhdGlvbicgaXMgYWxzbyBjb21tb24gLSBhZnRlciBh
-bGwgdGhlDQpwdXJwb3NlIG9mIHRoZSBzdG9yZSBidWZmZXIgaXMgdG8gZG8gcmVhZHMgaW4gcHJl
-ZmVyZW5jZSB0byB3cml0ZXMgaW4NCm9yZGVyIHRvIHJlZHVjZSB0aGUgY3B1IHN0YWxscyB3YWl0
-aW5nIGZvciB0aGUgbWVtb3J5IGJ1cyAocHJvYmFibHkNCnRoZSBjcHUgdG8gY2FjaGUgaW50ZXJm
-YWNlKS4NCg0KSSB0aGluayB5b3VyIGV4YW1wbGUgaXMganVzdDoNCgkqKHZvbGF0aWxlIGludCAq
-KXh4eCA9IDE7DQoJd2hpbGUgKCEqKHZvbGF0aWxlIGludCAqKXl5eSkgY29udGludWU7DQpydW5u
-aW5nIG9uIHR3byBjcHUgd2l0aCB4eHggYW5kIHl5eSBzd2FwcGVkPw0KDQpZb3UgbmVlZCBhIHN0
-cm9uZ2VyIGJ1cyBjeWNsZSBpbiB0aGVyZSBzb21ld2hlcmUuDQoNCglEYXZpZA0KDQo=
+On 2018-7-10 Tue at 20:17:27，Peter Zijlstra Wrote：
+
+Hi Peter
+Since Huacai unable to send email via client, I'm going to reply for him 
+ 
+> Sure.. we all got that far. And no, this isn't the _real_ problem. This
+> is a manifestation of the problem.
+> 
+> The problem is that your SFB is broken (per the Linux requirements). We
+> require that stores will become visible. That is, they must not
+> indefinitely (for whatever reason) stay in the store buffer.
+> 
+> > I don't think this is a hardware bug, in design, SFB will flushed to
+> > L1 cache in three cases:
+> > 
+> > 1, data in SFB is full (be a complete cache line);
+> > 2, there is a subsequent read access in the same cache line;
+> > 3, a 'sync' instruction is executed.
+> 
+> And I think this _is_ a hardware bug. You just designed the bug instead
+> of it being by accident.
+Yes, we understood that this hardware feature is not supported by LKML,
+so it should be a hardware bug for LKML.
+> 
+> It doesn't happen an _any_ other architecture except that dodgy
+> ARM11MPCore part. Linux hard relies on stores to become available
+> _eventually_.
+> 
+> Still, even with the rules above, the best work-around is still the very
+> same cpu_relax() hack.
+
+As you say, SFB makes Loongson not fully SMP-coherent.
+However, modify cpu_relax can solve the current problem,
+but not so straight forward. On the other hand, providing a Loongson-specific 
+WRITE_ONCE looks more reasonable, because it the eliminate the "non-cohrency".
+So we can solve the bug from the root.
+
+Thanks.
+--
+Jiaxun Yang

@@ -1,57 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 15:22:36 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.154.211]:36035 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993515AbeGKNW3zWDOi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 15:22:29 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1403.ess.rzc.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Wed, 11 Jul 2018 13:21:49 +0000
-Received: from [10.20.78.104] (10.20.78.104) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Wed, 11
- Jul 2018 06:21:56 -0700
-Date:   Wed, 11 Jul 2018 14:21:41 +0100
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Christoph Hellwig <hch@lst.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        David Daney <david.daney@cavium.com>,
-        Tom Bogendoerfer <tsbogend@alpha.franken.de>,
-        <linux-mips@linux-mips.org>, <iommu@lists.linux-foundation.org>
-Subject: Re: [PATCH 12/25] MIPS: loongson: untangle dma implementations
-In-Reply-To: <20180711125736.GA19191@lst.de>
-Message-ID: <alpine.DEB.2.00.1807111419220.30992@tp.orcam.me.uk>
-References: <20180525092111.18516-1-hch@lst.de> <20180525092111.18516-13-hch@lst.de> <alpine.DEB.2.00.1807110407510.30992@tp.orcam.me.uk> <20180711125736.GA19191@lst.de>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 15:51:34 +0200 (CEST)
+Received: from mail-lf0-x242.google.com ([IPv6:2a00:1450:4010:c07::242]:33470
+        "EHLO mail-lf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993666AbeGKNv1yBHcp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 15:51:27 +0200
+Received: by mail-lf0-x242.google.com with SMTP id u14-v6so21356633lfu.0;
+        Wed, 11 Jul 2018 06:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=BGmb/SK4/5gaIjzTrMswGNRfj/L4bEKNv64u9bMTbkc=;
+        b=G6gd1mAcvwiyORuFP9mKxc3aKMgzJWtRuXJf3uKpWPVPEvfqhDmHdp0Lz/Z2pJi/Mk
+         DP2XvJpelgnKTgsJc2sDYUbXYRbjcMfBJq1yOuVXxphdOznkfE2PQ0DEIoxvMbG2IG2X
+         bwNddBpgLDrZFWXT9UAYR25bmWKAe0I5nOvu/TCaDiUBTWXm6Lu76h4IKd8iT5JNomTU
+         fCVBQqrjWkwftbE2R3YLi/bsElNyZlboe0nJEcxHHoweK6pOfhKFhHdozHU1HSQJz1F+
+         zedUGWvB8TxK/lDu1H4SkvVC7isN4OArFV9+orSSmA5bWceja5LnZAA8iPmrgUu1+RbA
+         H9QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BGmb/SK4/5gaIjzTrMswGNRfj/L4bEKNv64u9bMTbkc=;
+        b=pogW0kbHdc1z2hb0FXXuXu3XNWVD/aL8Z93moqie1/hhhtX7ia9gC6WWac+IIrx4oS
+         jHPZQn7Qpz7LYx86WHzWAb6VKsu46+rBezXmmP+141c/Fn7tyIs6+EfcmJqYGc+pYuZw
+         VqyTGviW2PyKcbRKglK7V7D8KrEuVzdf+jtzX4EZYRJdlaZd2nRhCUpLN45U/yETFRio
+         XAa1YyGbkj3ZAmi5OXtrYNYYjTrQG1Xcz3uIfWnurmes/0o1CXevlgW5nEhnLHpAxb1/
+         qgoWeG+5kx1GD/gsuBVWz/Gd/RRiP2+LhiZZehHQc2Ufve28Da9ZloVQzTusPTSikjHg
+         AsTg==
+X-Gm-Message-State: APt69E1Y1aKlEicUFx7IJ5kjvFx2nguvtE2SAj/iEPkhALySvWyflPBs
+        WgyQkh1kSPeMcevhlfdJV68=
+X-Google-Smtp-Source: AAOMgpfCBsr0mKj/PrEaQPjVZesxwh0/I2u76DRVyH97l+939ry3BBJgdyvvYIWJoCKA3o9tKYCWVg==
+X-Received: by 2002:a19:1749:: with SMTP id n70-v6mr5851378lfi.54.1531317082298;
+        Wed, 11 Jul 2018 06:51:22 -0700 (PDT)
+Received: from mobilestation ([5.166.218.73])
+        by smtp.gmail.com with ESMTPSA id t9-v6sm3047202ljt.21.2018.07.11.06.51.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Jul 2018 06:51:21 -0700 (PDT)
+Date:   Wed, 11 Jul 2018 16:52:10 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        okaya@codeaurora.org, chenhc@lemote.com,
+        Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mips: mm: Discard ioremap_uncached_accelerated()
+ method
+Message-ID: <20180711135210.GA18730@mobilestation>
+References: <20180709135713.8083-1-fancer.lancer@gmail.com>
+ <20180709135713.8083-2-fancer.lancer@gmail.com>
+ <20180711065631.GA21948@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.104]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1531315309-321459-21451-64374-1
-X-BESS-VER: 2018.8-r1807031532
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: maciej.rozycki@uk.mips.com
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.195476
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-Orig-Rcpt: hch@lst.de,ralf@linux-mips.org,jhogan@kernel.org,cernekee@gmail.com,f.fainelli@gmail.com,chenhc@lemote.com,jiaxun.yang@flygoat.com,david.daney@cavium.com,tsbogend@alpha.franken.de,linux-mips@linux-mips.org,iommu@lists.linux-foundation.org
-X-BESS-BRTS-Status: 1
-Return-Path: <maciej.rozycki@uk.mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180711065631.GA21948@infradead.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64796
+X-archive-position: 64797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: fancer.lancer@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,30 +75,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 11 Jul 2018, Christoph Hellwig wrote:
+Hello Christoph,
 
-> >  SiByte should too though, at least for those boards, such as the SWARM 
-> > and the BigSur, that can have DRAM over 4GiB (and 32-bit PCI devices 
-> > plugged).
+On Tue, Jul 10, 2018 at 11:56:31PM -0700, Christoph Hellwig <hch@infradead.org> wrote:
+> > + * This is a MIPS specific ioremap variant. ioremap_cacheable_cow
+> > + * requests a cachable mapping with CWB attribute enabled.
+> >   */
+> >  #define ioremap_cacheable_cow(offset, size)				\
+> >  	__ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
 > 
-> Only in this case refers to loonson boards.
+> This isn't actually used anywhere in the kernel tree.  Please remove it
+> as well.
 
- Right!
+I don't really know whether it is necessary at this point. We discarded the 
+ioremap_uncached_accelerated() method, since the obvious alternative is now
+available: ioremap_wc(). While ioremap_cacheable_cow() hasn't got one.
+So if it was up to me, I'd leave it here. Anyway if the subsystem maintainers
+think otherwise, I won't refuse to submit a patch with this method removal.
 
-> >  I never got to have the wiring of swiotlb completed for these boards as 
-> > I got distracted with getting set up to debug a DRAM controller issue 
-> > observed in the form of memory data corruption with the banks fully 
-> > populated (which might have to do something with the parameters of bank 
-> > interleaving enabled in such a configuration, as replacing a single 
-> > module with a smaller-sized one and therefore disabling interleaving, 
-> > which can only work with all modules being the same size, makes the 
-> > problem go away).
-> 
-> After this series enabling swiotlb for another board is trivial as all
-> the code has been consolidated.  Just select SWIOTLB and add a call to
-> swiotlb_init to the board setup code.
-
- I had that feeling too, thanks for confirming.  And for doing this work 
-in the first place!
-
-  Maciej
+Regards,
+-Sergey

@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 12:56:31 +0200 (CEST)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:57256 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2018 13:10:15 +0200 (CEST)
+Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:57790 "EHLO
         merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993514AbeGKK4YQeMwG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 12:56:24 +0200
+        with ESMTP id S23993514AbeGKLKJNq6NG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2018 13:10:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=fZlr3VHMLyGK9cgREmlen4OCHCy1Zl/a8jZmAiVpPrc=; b=SqqaZXARGvToXpVzhXIBM/KHw
-        WJqCatu2ICC+4UBNl9dtP6ElCe8pfgyNOX22yP/JBvEdsqlcBxhdAVNdS6/q2q9dGesLzwkFn5G44
-        Jb13F0VBVLITGNkxFZLn+jAwwN4nGoF4WxcOSfiK3qP1bUjk8aKr4MnMI6QDD1kmxT+K15pNbNNEb
-        A4tMIbLoL69HTpPaA8DYI1+/oDE9B59/7NHWMoSsboUZTFb/hEMPQSONSQu6DCSqdVXdukQRnBdTh
-        qmBB8ZzyTTkb3siufNKn4xWUhZRXBJNdZmOdaADscbA3QESMngVKTcRt2EXlK+WgXQWbbCo+sfiEt
-        Wr8AICI6w==;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=dAuCZZJoWD4NjzZ2cdhm7v1L5BsGI2qcbVsgK7bWiXY=; b=UQCd5mF4Xx1PRok2IwVGTe3dVV
+        8bGmTGE0j530pWZfYxTbApW6dwSWrFT3UtSDFgmlfNpShjR8fnBqflg4ruXv8tuHoS2ZURr7/mtcl
+        I17mz2r+HOaKyzW+x7eFFU6ZtQpYW0raoOdotsB750Dtsi6tYsj+DScM96SRKLZHYslSyjcLQHXLb
+        zy76FP8I+YXRLLbs2cRQfZ1E4Ms8UmMIuYenrcufB20Gw0otYrCtgCX9Crb+3cBaDKDOxaFVKOTon
+        meUxYBU36JjupCoOpbz5XsUm3K2T4ZHycox/kU/Px48b5B2g99pK0ak+jYNDTC4tNEqjXB432tavF
+        teWbhhww==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
         by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fdCmj-00073q-6Z; Wed, 11 Jul 2018 10:55:49 +0000
+        id 1fdD0M-0007DG-Ay; Wed, 11 Jul 2018 11:09:54 +0000
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 11DB420289CB2; Wed, 11 Jul 2018 12:55:46 +0200 (CEST)
-Date:   Wed, 11 Jul 2018 12:55:46 +0200
+        id EB40320289CB2; Wed, 11 Jul 2018 13:09:52 +0200 (CEST)
+Date:   Wed, 11 Jul 2018 13:09:52 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     'Paul Burton' <paul.burton@mips.com>,
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@linux-mips.org,
         =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         wuzhangjin <wuzhangjin@gmail.com>,
         stable <stable@vger.kernel.org>,
         Alan Stern <stern@rowland.harvard.edu>,
         Andrea Parri <andrea.parri@amarulasolutions.com>,
-        Will Deacon <will.deacon@arm.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         David Howells <dhowells@redhat.com>,
@@ -43,26 +42,23 @@ Cc:     'Paul Burton' <paul.burton@mips.com>,
         Akira Yokosawa <akiyks@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH V2] MIPS: implement smp_cond_load_acquire() for Loongson-3
-Message-ID: <20180711105546.GB2476@hirez.programming.kicks-ass.net>
+Message-ID: <20180711110952.GC2476@hirez.programming.kicks-ass.net>
 References: <1531103198-16764-1-git-send-email-chenhc@lemote.com>
- <20180709164939.uhqsvcv4a7jlbhvp@pburton-laptop>
- <CAAhV-H7bqhz+dzgPk0_tTAN6y_k_8Ds9heF0p5uPHsHNg0v4Rg@mail.gmail.com>
- <20180710093637.GF2476@hirez.programming.kicks-ass.net>
- <20180710105437.GT2512@hirez.programming.kicks-ass.net>
  <tencent_26F8B9E004D4512B2225FCE1@qq.com>
  <20180710121727.GK2476@hirez.programming.kicks-ass.net>
- <20180710171040.f3gyyh524xlsqv4j@pburton-laptop>
- <1a072b07261b46d88938f0f709f54d42@AcuMS.aculab.com>
+ <5471216.FKXZRxKFUI@flygoat-ry>
+ <20180711102106.GG13963@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1a072b07261b46d88938f0f709f54d42@AcuMS.aculab.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20180711102106.GG13963@arm.com>
 User-Agent: Mutt/1.10.0 (2018-05-17)
 Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64780
+X-archive-position: 64781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,21 +75,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 11, 2018 at 10:04:52AM +0000, David Laight wrote:
-> I also suspect that 'write starvation' is also common - after all the
-> purpose of the store buffer is to do reads in preference to writes in
-> order to reduce the cpu stalls waiting for the memory bus (probably
-> the cpu to cache interface).
+On Wed, Jul 11, 2018 at 11:21:06AM +0100, Will Deacon wrote:
+> On Wed, Jul 11, 2018 at 06:05:51PM +0800, Jiaxun Yang wrote:
+> > On 2018-7-10 Tue at 20:17:27，Peter Zijlstra Wrote：
+
+> > > Still, even with the rules above, the best work-around is still the very
+> > > same cpu_relax() hack.
+> > 
+> > As you say, SFB makes Loongson not fully SMP-coherent.
+> > However, modify cpu_relax can solve the current problem,
+> > but not so straight forward. On the other hand, providing a Loongson-specific 
+> > WRITE_ONCE looks more reasonable, because it the eliminate the "non-cohrency".
+> > So we can solve the bug from the root.
 > 
-> I think your example is just:
-> 	*(volatile int *)xxx = 1;
-> 	while (!*(volatile int *)yyy) continue;
-> running on two cpu with xxx and yyy swapped?
+> Curious, but why is it not straight-forward to hack cpu_relax()? If you try
+> to hack WRITE_ONCE, you also need to hack atomic_set, atomic64_set and all
+> the places that should be using WRITE_ONCE but aren't ;~)
 
-Yep. And Linux has been relying on that working for (afaict) basically
-forever.
+Right.
 
-> You need a stronger bus cycle in there somewhere.
+The problem isn't stores pre-se, normal progress should contain enough
+stores to flush out 'old' bits in the natural order of things. But the
+problem is spin-wait loops that inhibit normal progress (and thereby
+store-buffer flushing).
 
-Since all spin-wait loops _should_ have cpu_relax() that is the natural
-place to put it.
+And all spin-wait loops should be having cpu_relax() in them. So
+cpu_relax() is the natural place to fix this.
+
+Adding SYNC to WRITE_ONCE()/atomic* will hurt performance lots and will
+ultimately not guarantee anything more; and as Will said, keep you
+chasing dragons where people forgot to use WRITE_ONCE() where they maybe
+should've.

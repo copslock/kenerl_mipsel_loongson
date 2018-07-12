@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2018 03:29:08 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2018 03:29:21 +0200 (CEST)
 Received: from mail-bn3nam01on0130.outbound.protection.outlook.com ([104.47.33.130]:48896
         "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993900AbeGLB2XBzH9t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993964AbeGLB2X22ant (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 12 Jul 2018 03:28:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gB8ONCwXO+qBXqcUt2nQ7u5xZT02hIBjU+oJ4hSJUow=;
- b=AnTFzzZ3SIWljQBnE+fYV9n0TU/1Gx8kyZgVVALwZbkQUWjszcVSZqBeB6IeKq+u+Z8H/p/ObKNSCXCySmKau8KXeENuwYiFbBLvpJuuHl/cqlQ22ZRw/NlJSADrfLDLKMAmO4yHD52nuuwvAKyN0RoTu460blgxpbdUMoVdaB0=
+ bh=miHqHNwtIMLpFGIV9OT1ME9zyR+7bErZ4Fr8KitWFBU=;
+ b=Q/+gddyL6RW/yi4hCnvz6b3cOV8YMT2tn89lvhEWHZXi7In3bgKEHjbQNFqLRMVaHQ+O1rqv0ooReAIdb8FMSVfYDPObuiSNnh+R0+l7aW4K6ugv5bK0CU9GgCtXN2TYY6ym1/OUDonlgH7N7c8la2pppoBq34eXYzTWu8Hacl4=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=dzhu@wavecomp.com; 
 Received: from localhost.localdomain (73.162.151.67) by
@@ -19,9 +19,9 @@ Received: from localhost.localdomain (73.162.151.67) by
 From:   Dengcheng Zhu <dzhu@wavecomp.com>
 To:     pburton@wavecomp.com, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v2 4/6] MIPS: kexec: Do not flush system wide caches in machine_kexec()
-Date:   Wed, 11 Jul 2018 18:27:46 -0700
-Message-Id: <1531358868-10101-5-git-send-email-dzhu@wavecomp.com>
+Subject: [PATCH v2 5/6] MIPS: kexec: Relax memory restriction
+Date:   Wed, 11 Jul 2018 18:27:47 -0700
+Message-Id: <1531358868-10101-6-git-send-email-dzhu@wavecomp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1531358868-10101-1-git-send-email-dzhu@wavecomp.com>
 References: <1531358868-10101-1-git-send-email-dzhu@wavecomp.com>
@@ -32,12 +32,12 @@ X-ClientProxiedBy: BYAPR02CA0020.namprd02.prod.outlook.com
  (2603:10b6:a02:ee::33) To CO2PR0801MB2151.namprd08.prod.outlook.com
  (2603:10b6:102:17::6)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ccd5d768-cca4-4a3d-bf20-08d5e796bc5a
+X-MS-Office365-Filtering-Correlation-Id: 10d7ae02-17f4-462d-bfd6-08d5e796bcb7
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(2017052603328)(7153060)(7193020);SRVR:CO2PR0801MB2151;
-X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;3:kWVFj9q2lxIRL2LSNrtQbJ7bYTqoAbyszbtyJ9p5cyq/SKo6k99URWwvvyl7RVM3slRAqyEEPiEFGDas1mdQDagnPPTArN+1gESwSx2p8leoD1phoMpJ3BRjwf4FoVqKFUqMKHItlpGJzhPMKhAqL94KetkY+Vr0k9BlfFaXWuYDjqJWYrBI4rfqd4ygNxQIDQJEncKVUAeBt+AnDXC/45UJ1/NmUsp9mqjGOfmGwHWZotbqZvmsnyfm8/9wt3jv;25:YDI3bdOZGSsMl/BiaI47MxUxaQTFtiekyw7IKR9alsD6LeMgT0DwV0BoLo+F0vtaiKG7spAF68h+1KrmIB5E741LQHs+Wzp+pkOy42Xir8dZHCzfO/9cKxuq+LV7n7FEuw/xU+HyRIMznsuIPWEZ8RLw+OQBri0F2sl+WDDCfVNPiaNlkI/TVCUTEe5+cUatuPIjyAs9UcT2P9KiwECpPzFBtgd15J/EYqpfZnSoFUyIxHxzidcc8v1jfhTZqoR0OhlV/L+ZAqqxjApjAY0soZ6yVOMdkdpWKioeNwGv3QgkcyXKXRWbXZisvr3opyj5ycMDcEtF3JJrh+WenwBBiQ==;31:20ouKyaLvQBjNYUh0mWG7phSHYvHQcSkXqk9H4AAUT25akHWpK3IerC4xtIq7J3hk9uTErWWHrEFxE1QmBp2D5mzEf24MRf+Yp3TIWP9haGte88CG+jYoOOPzghSp8AZUy7TnKmzmBl9mpZczLNm8BuoBy18PdFQU8sn9rG3ilOkhITGVFlBIs+eXX1tB/KsO993BiwihDN4nB2WV8KRe777mRhb4V11g8MaBZwXWKw=
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;3:1Srz4qdXN0qD8YsFQQqq/gLtIdWr8MoNupj8aj37sEa9B8rKeag2zl8cLYyOdn6OOakHSDEtAmGbha12vH12zJnVRjunDv+pAZcvctVd3uQr51KEHK/9Y37+uC7jfmYB72nYvW8Yul3WNQdsU46F1sxInzfKdftdo/L85zi2kjr1YYsGP7T9WZf7N9m/DzZe766WLPK30V9CTH0v0dGddm6Xn1SNaWjeAaq4gSZJFDul5EHgWL56N1AETvIvkU4N;25:TIqIYzyepn0RCii6dFmzblYOtCtPni6FiEqj//5mWt+7BkvDBpL5qYCOnkXLS2k8qYVQ3qZfG0ygkkCjinygdD/gGXNZklDwd6SdK8/dhXmyGgtybs8GDNkhw4Jl+kzcMGNjMUrno33QO2ErIyfAmSOldiKtMzRxHyRLAZly24C12i3tZpIrrfHs931lmSLC4m5dl/e8e2c9dBOEz+XdUz/djXp38RTejP0zNiiCVCMBuV8nr+qwi9jHaP3dqVOZauVDV+s5gU0BgLGdm0MLXs9duTMciEcO2PXdYBlHh0CdVHMyo2mRPFJT2VSeAn+7SxEeEtE91IpgzZFeziQMBg==;31:Aq/7pzX97YbzHnTK6e6XacS/qhtRRGD2Wopraq18axAp7rYMnD+Ew0tf/xnNt0Jjuh/Pqocz+j82kawkPjjK72V59xwcOuHmziwmDWiQXypFKeDSA+WTd/BLDs2IG9NIv7sGh2usByXlO90ZF8GiUMPFIL/vp6DfbCWB+l4a0wkVmJKWfAitv21MnWDbebBJHX92OI9P1oZrQ5Vs1zNN6TAUOMpJnjNQyPb8OPOEVvQ=
 X-MS-TrafficTypeDiagnostic: CO2PR0801MB2151:
-X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;20:GTHwYP9uVjorEEw/13eu5fZaj6DGowP62xvzvBRdnboJBgZ1IwzRVVS8JcvfkgtcVW0GsWsaBFgr5aZLFxCLjMy3ItUOfkZWmLpUEQZE0kUfOME6sf9c14mtgPgY8A9V0Cg+32VQ93PJzhPCVuju1iAz2YEp27GfDos4UEonfEqBHAv9URxX16tspYHi+pvt2ud7vla6BDux0YM94psNi0GdLvmUvpsmGrXGWeErFAXTgzoV6MRIe4PsoIHIcFTI;4:cO5FqmHTfoJUBCY3T2bZvBa6P1t9pz1Na0/PSgns2l0Vw+x2MRxg2XmQtKQOXQOgpj8RXlqALu6NQnqN8RQ+mGzpwh8HlKEYSsGR6mlfh3n3e+xCB05b62+bMuTrV9rOwSqdrI70xXITQMui8Ix7BgnmRBzvJOWJjLkJvB9weS9w1kQABED5Bwpdn1MwGoxFs94MCVDFH4C/ZHN1xheOVOIlgR63CuRTqyY7yIk7creFvjaXzmN792BoCm9dAX/Rbfink9uFuquiyHaCX8czAg==
-X-Microsoft-Antispam-PRVS: <CO2PR0801MB21510A7F95E5A115B15EA2D3A2590@CO2PR0801MB2151.namprd08.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;20:7+GY3brxxKdMuNxo4s+yEu73vlCbyDvH7KH2WyiHCjeRmfCdFM53gHIHbsBd0xxLuUIWJ+zsH5hQO1LKHAde11a0fYdGVhuvdk9j1kWpMd7tcHMd02+HQO+row+mFPutxkSp6eNmaqyKu67Q+uktLoFp1CLPf779GbcJR+A3288uEEXoT7RpWoxXXyumeauxxMJz7SEuZS/o5FTRtbfH4OezgiBpCi07dFf73yBr0aoA6rMHaJZ+IktNZ40W/Ecz;4:X6Ms4i79vx0xO9NvNBfImu5RiarfIi8IApokzzUjoqxYLdNYWI9VInItPYO+35D34GerUadZVQXxkguddiNEu8Lv7XzCgcDxnHTHsgAaMnEXODG57JAiDeKC6O+/X3n/qjM8sjQaYk0dx6EkSY1oxq2o/XwBtBm+hQ/H71dmtkyCtrNQCbVb3FodidYZB19Xy8NsWLjUNBm2yWsjTBs5KRDJ9xsp8k2hRr85YLRi+eIBoB2hGdfrpUA6U+I/zAaNIs+QhJ9kjQkOTdVteaTktQ==
+X-Microsoft-Antispam-PRVS: <CO2PR0801MB21514FC41C1EF48B4DBAFC03A2590@CO2PR0801MB2151.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(3231311)(944501410)(52105095)(93006095)(93001095)(149027)(150027)(6041310)(2016111802025)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(6043046)(6072148)(201708071742011)(7699016);SRVR:CO2PR0801MB2151;BCL:0;PCL:0;RULEID:;SRVR:CO2PR0801MB2151;
@@ -45,35 +45,35 @@ X-Forefront-PRVS: 0731AA2DE6
 X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(39840400004)(366004)(396003)(376002)(346002)(136003)(189003)(199004)(386003)(6506007)(26005)(16526019)(86362001)(446003)(486006)(11346002)(476003)(2616005)(956004)(36756003)(106356001)(6666003)(2906002)(6116002)(3846002)(305945005)(5660300001)(68736007)(7736002)(478600001)(6512007)(14444005)(97736004)(50466002)(8936002)(8676002)(25786009)(4326008)(6486002)(107886003)(450100002)(81166006)(48376002)(81156014)(16586007)(105586002)(76176011)(51416003)(52116002)(66066001)(316002)(50226002)(53936002)(47776003);DIR:OUT;SFP:1102;SCL:1;SRVR:CO2PR0801MB2151;H:localhost.localdomain;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CO2PR0801MB2151;23:uLoD9uGJ5liXAsyXFjntk+TcMdzZZ4S59YHfpit?=
- =?us-ascii?Q?LscwWjuCacjNl/o8SAO0Df5LkqxPILKinGh37o+hsZdyxj3+LTe4g5ynt/VH?=
- =?us-ascii?Q?/z92PfM00dF8nV+dX8L5ZTYcTVfrYYoc2VIJX/70FvYpu6GdgVZRcaItwHLw?=
- =?us-ascii?Q?X0dGSM7DtPsU3jSF7cQ8pQUbkrT5KXsnZkZC3IkmKGCcJcp5wJBkRGxKgFZ1?=
- =?us-ascii?Q?SvcjU8srOg1SrtgGxCZcuzZ1tXLusM3YrZ8XpFj3BMbYcdkRHXvqytvlaShu?=
- =?us-ascii?Q?OX+/BIUbV+XUL75kCGBsacWiW+zkhjnMyWFyCA7GR9JRvULAdOxlpWGUQeRT?=
- =?us-ascii?Q?XBphqCMjHj/rcWLF+qbYy83GDpMHEesPCWDceyEuQPAECZPBbmVaGi4dr+O+?=
- =?us-ascii?Q?MhhF39+cmcu9yZUPid1pgvJrau7Jpk8Cg60wbAoh+XPJzdmBSiddMHD9b0kj?=
- =?us-ascii?Q?AcN9BiQo4coSsJMSuRuaSGGDYswrfjiSr45hXsvwFJFZCy6V2iAopa19Sq5o?=
- =?us-ascii?Q?TG5rS/nVVciCUrxQO7fu9Uu7mBkLvpT30+cgoyA77Pfs42XxPYUFNwijLtOv?=
- =?us-ascii?Q?wXT2EvdZnlZWJQErorGlEjOnF6gDIj0tTAlscg319dFB6n7MEZfoyh8eY4+E?=
- =?us-ascii?Q?nDPgZnGK6XPgAoTEpG2hyGVwD1eCxjGLm9+olZwlcXI7elkLwcmSXNBS3wwk?=
- =?us-ascii?Q?3fIk8kaPlhtV3e8bOA4njDICf9eUm9YT95Fjd82penfogXNZh47pB30ipMuz?=
- =?us-ascii?Q?c17CDyXes3UUjgEvOX2MKtTEA3zon78bxD3CKaH8yehUcwZQUodkGWlXguo+?=
- =?us-ascii?Q?NFOwOxGuoM5AKZROuNVnuuLcnklYk+tQlwiHghTraA6aQ+ecQDpyz7lH7VHM?=
- =?us-ascii?Q?BII321bLmTUQxHdW+vBOEdWgNwGa5BZ4243MZrvbG5OOh/jKLbv7CgpIZF6P?=
- =?us-ascii?Q?8ykWV4o/GwrjTZAVGTv99QTaQRORv6sx87JtWOMer0F2MzKhWrnZwOmJoW8J?=
- =?us-ascii?Q?eTc6kSuuPNb64dbQ//2CBAtQAViO9qZO+aOs0WmdRIsSJoE5vpBtoEUuzjt1?=
- =?us-ascii?Q?E1aSyqs9K05SVnzaBjVYj55nHaKSNJgDVtPnd2EO0TeXbqUPqi396mkAykAg?=
- =?us-ascii?Q?BZD3+eLyTp4GIRW27ZAHQcR8cqYzT8/HH1ISNIiJZ491FMxVPOuOAIjREAih?=
- =?us-ascii?Q?rs0ybINA51PyCy+u0qDwsnYFzuQNAeagmzP60?=
-X-Microsoft-Antispam-Message-Info: jbo6oPflWlA7VzylDqRA4PcifetOFKBP1gQeKiUzDuLYExpP4oGMgdKOSTAWapEJKIwbUpIemaIMoAtKyrsLcf49dGGWYWPSLHqugA+yWrRRaIrmYilrIbNrxvE3Di4dUpfT3lLM2hWlyU2Keca4T61qpw1AXE5YG1pOiM+NuvzBvESOBy+QrBEM2oZ7g0ctRi6EIKUXAur467Z0Wjr7a2CPbQPNmN2IczysXC+ttqXFfoJpcwHWKYULfbAfo00/5p/H6MSndLSXq0M6uS3nHErPSSxtfHocwfiq12dNTjyz11d36zxguJ3MN5H4nUXvAxmDyRh8C15nFH5/G/s5ITrEAzsG4BxsCG0c7DIZC+g=
-X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;6:DK8Ifq1xYCUpTpI83wC0BroNLZxiy2urPUM2gZRD/5kvFnassLVCOvBD2Sl6GQeZaZSZD3i5vsdQ8MRxsV9nMokhKjT6wq/AEYDTqnB3WEaO/BDNP1DMCqXsz+5NjFoQavbOLddQaSbr6rxnV9/7b+bshni0zC9Ne+P+0P/bA36HxrUisWRNDqeHE0PN7FOmFWxioRLktZXPMZzakLF6GqDN/D7YWX3KSIS3XkK8ETD68PZEv9wNe7/hCGyf+xFkDWwzWRLLxX6sH2Cp9q3EgT8CEvXteKru+ILdueaworLpAAurz7kLRo84k1jTlxq3OOFJcm5NfRzJYl4ne8DgaJEPaAu8kRu7dvhefZ8tIiw55OIRFOktx2veWjqs47+KT+j3RHntzsNLuOsISzdr9wey2Bb498mYJZWJ4DyxtJsqmkUXn4jvdP9p+/cWyyJ+21pY7AUhhZGgmXIT5aSdaA==;5:UDG7PJK/9p/HMyEkG0/vAdkv5wEY0zGGgoNadlLqDEm0oD8zvAONkR2hvjFxkCD2ddRZAke5IhgZMxRYmnrnHUX9/9aUshcVHAF6xGCgrvLviarBt5bh9YVq4n7fnlqjCZILTAGmPDM3OP6BqSg+EGRX7wWHtdOcBntY9HgR+Gw=;24:aew1mFqGKoTzR4xVZMp0sCgS9mAVck4PbwI25VrBzzSYhbIHNam7Jx4LOlTysX6Uxxw7hleU9HET/4+GHb+O2MgdHMotddzOwExfoWccq3w=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CO2PR0801MB2151;23:MmRbOBqkKUSr8+3kKP4HH22LXVrfX2SaS7sHfDK?=
+ =?us-ascii?Q?bdTeJ0lEG8E3lggRFOnDENzShx5AU1uoYKVynYeMb4f+hHthZ3Bv3Csuy12r?=
+ =?us-ascii?Q?7rtDAw7OxFzTtRQ30g1r9ySkw95APhKWBHcHMTXrZmbf0yndRXzMwZ6M3bZ1?=
+ =?us-ascii?Q?RIl8g0kfFIQUxaIP4JxW6rp8qOGmU60tjHXareF6kIdqPHQEsf21PsQLGwM2?=
+ =?us-ascii?Q?2PuP0Fs3U5qNxb2I7NeVwcZ7Nwy67s0TFCyK8nIC8ff/3+vuulTIPXy0h/bR?=
+ =?us-ascii?Q?W1Y//VkcT8LW9vLOctpj+fq7gHjYeByfOPeS815Xzvq5DpmYDIwoT4S/KlS5?=
+ =?us-ascii?Q?2OE4GZKYu1Sc6vuzZsU5QHIx2WK0pDyXoABHwdZ+sTI1+enOg/7fpfg8TRku?=
+ =?us-ascii?Q?1wwaXJ4HVFkcqmwZYGVfqb1nYyjMTFsWKmbLlp8fajT26DJXJzQdmzh9TPuu?=
+ =?us-ascii?Q?OdYTW1djXec2w2dgfru1NA6tgWwBlDihVNcvkJKf7LFILhSjoM9MIqBZG2PD?=
+ =?us-ascii?Q?RMd1VslnJ+DvQdMq0cE5/GFJDNxbjhFDG5WaaguTezo2K37BEMrqPIcqRLbR?=
+ =?us-ascii?Q?MthNIofPdtrxagyJf27oyWMT1UIMhjnWi/8aSuEXGR+lBUkI2suwdBfacTaE?=
+ =?us-ascii?Q?8kX1QVSticcRVLtyEY7LHlmwuEHWuSrVGQmzCOuEgmAhJdE2IB2lF2VnzhCo?=
+ =?us-ascii?Q?6uwAKrKV3TpveMj5rfvFyg16Ypuq+BNKo7UTP0qdL1DiDXnkPSLCTjBgSxBa?=
+ =?us-ascii?Q?uhPLu0MA5NY4KYDvFgw7vL3KqT7hkz9nu5P4pVvVFkCyKkpCUfaqZQxWH4Q5?=
+ =?us-ascii?Q?zHLFZ53PxwKzuWRJi3/+YBrXLxX334oABsr746sldO1R5c9Q4N4zPKjp7WVT?=
+ =?us-ascii?Q?cLrwNhYe9t9ybx2w3u4BITFud1LL5qh/wU7hEV1LCdICFcctt7n140KghI4o?=
+ =?us-ascii?Q?6eb3j7oU0X+E/75bU+GU9oFoOLjuGMshnPVSGB2fTEuAdoLaVIleDaQ/aI23?=
+ =?us-ascii?Q?e6stSrKxeWzeQHzprBfbnkIV9DT0wrFxoTj9PPR7Z5Cao82StcH336TG0nZb?=
+ =?us-ascii?Q?BXjJS5zeeg3sxGCalrnh4hKTEZ6Uy8qKu2nMR5AlRRQQGozx8sHH3fmAVpxv?=
+ =?us-ascii?Q?LcVtBAwCXaQ5/EOsqVMj/9D8LH9txvJSo7ZBG1okRsr2Ye0K5sV74c+Ac15t?=
+ =?us-ascii?Q?fqu2d7DweuLkRNBe1FTiEHCBnPEjRcr4zMfH8?=
+X-Microsoft-Antispam-Message-Info: D6G3wVs5PtsIh2p2Zxdw7Ms3XRWf4qfx843Juk8pEFfUPO0qw7XOOBAaYZ2zYeXcmZLZ4N8tTzNpF1cletgwV8b8dG8XIsa1e+osC+AbwVHkTNLSVInNxncIf8rhus0IDJMRgf+osLOhmi2XbIVI7hOFrm1fLl2yqyGhbCRutgZ4JIH9JBWGuUBS+G09beCrUtyf7GXK3xSK4iaHmF3Xrpfi61o47Yisk5wWcAXz2mXu8KkxJclf7GKWVncVH6h3Q78tpd3shdl8T+9Xayj78jpqrpFOVo+LwEWJb7B6niMl16P3RffCqIGXtvLtvmcCe7GBG+C6We6Qyo3EXZo0yhNfpIOrY9mnRMGTONlwNVE=
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;6:ESL4V7jVxJtGDwhll3OfuhyzN2utFaAFU5P04PMghcPVgSNHO0Dk1rIvqLG+UFPUibHyVH1OuMLDgh74SO+oEzEbR6NMrgKXpfSqX/8aqMAh/dc1Vy/W0d9ETdNAW1HgfgX+O6U6LcD+Wnx8GuTGmA8nY1dxyRU/75SR4xFfBzW2xf26EhIWF1Fr/FqDbyYHycBAPNKYPwMTx9sLtLbjD5FF5JLXFLtevWM3Tm1jRE1nHZ9WuRIHU7k4LD9aiBy9owL1uJP4kZ825Jxd4FbcHFM1q9f8CUPlQXG9Q1dBlh4qtaioqjAt8HS9XPPCVBIFFRmcO53NS9veWTNHoHvhLoL27woxa5qqXvClwoOghkk2pogk4GTlCMoOwItp+bxx/mBMCF5twtYzsgGCp4LyUpGexKLp10tK0m6IhDd/toPU/OMhg1m6IFGgPnmnLSzbM3q8yPSn4JJanbpGqkoalA==;5:+Lp8IykkpSUxaUWvXcjoOzQjkbKYNQ9xfRQ40QMNwNCdeZ7rFlJu5sVNJgMrdJP/DBaVgAiEaeRuOZmy1mDrLX0q0xXwrDTbCcGXpZfDNnVLF/5ZqY2DWg17+wTWVJ/AwU/UVZEtHUXaHxb2OYkLLl+bRaXYLn9qY/vh1GnnBRQ=;24:BEMWGIQFyyJsPln3zggNwzPmBzevXtoIh4YplGhU0pQqyq+n7jkiAMHR4avAKotp9Mv9WlNeDFxQjyghHkc+a8jlgL/8cxx5ml9G9DU74so=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;7:4BoWS+rfxOsgLDgdqJn2dorx/MQsWkaBpp/YtUIlXhckDhgvU+525eO0rHot3CegiiA7IUoLX8sIMmYhuNYloyCAYTN6HOB/P9KMJyDu5OUUAEgkCoNqTDYZ8MsJ/z2mZwj2Ne32WnrY9oI85o8VtHzuFrvcnnmmbMzFh0Xw2g4UPifAvzeNXI/XW3OPgY+DDyxPy6PA6JeFrSeyqcKQq3SSk4eyfYjNwzeQWGwRgrC7xDRmndDQQTybvHTLwl5M
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;7:HidNEIIwJnzTQEmC1bDpbmJwQ7eMJIBODIIW7Qh64b3Uib8unIN5zJ1iny2/1TMgybfWC2rfiTUs3+tBEvGIFzjLMzjuY2xRygyDA0bzoVv3ntpQHHI/U3db/p6kzGWJh36O13KDH8vkmhDkTSHVIZfTc+co1TUCjbTs84tk4P1zaDYcqXiwKCzPV7mC3YyzNobB2YITN/HqbwrHV7nTdhdNExhcoAliMn5UaqiANSdaavEeRYbNViSdTM3cFMVa
 X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2018 01:28:13.1655 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccd5d768-cca4-4a3d-bf20-08d5e796bc5a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2018 01:28:13.7680 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10d7ae02-17f4-462d-bfd6-08d5e796bcb7
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO2PR0801MB2151
@@ -81,7 +81,7 @@ Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64812
+X-archive-position: 64813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -98,39 +98,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Instead of __flush_cache_all(), simply flush local icache range. In systems
-without IOCU, flushing system wide caches require sending IPIs. But other
-CPUs have disabled local IRQs waiting for the reboot signal. It will then
-cause system hang.
+We can rely on the system kernel and the dump capture kernel themselves in
+memory usage.
 
-This patch fixes this problem.
+Being restrictive with 512MB limit may cause kexec tool failure on some
+platforms.
 
 Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 ---
- arch/mips/kernel/machine_kexec.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/kexec.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 31da6f2..3ba9d96 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -138,7 +138,16 @@ machine_kexec(struct kimage *image)
+diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
+index 9618e2e..97c548c 100644
+--- a/arch/mips/include/asm/kexec.h
++++ b/arch/mips/include/asm/kexec.h
+@@ -12,11 +12,11 @@
+ #include <asm/stacktrace.h>
  
- 	printk("Will call new kernel at %08lx\n", image->start);
- 	printk("Bye ...\n");
--	__flush_cache_all();
-+	/*
-+	 * __flush_cache_all() is expensive but unnecessary. More
-+	 * importantly, it could freeze the system as it may need to send
-+	 * IPIs, whereas other CPUs have been waiting for the reboot signal
-+	 * (kexec_ready_to_reboot) with local irqs disabled, because
-+	 * machine_crash_shutdown() has been called prior to entering
-+	 * this function - machine_kexec().
-+	 */
-+	local_flush_icache_range(reboot_code_buffer,
-+		reboot_code_buffer + relocate_new_kernel_size);
- #ifdef CONFIG_SMP
- 	atomic_set(&kexec_ready_to_reboot, 1);
+ /* Maximum physical address we can use pages from */
+-#define KEXEC_SOURCE_MEMORY_LIMIT (0x20000000)
++#define KEXEC_SOURCE_MEMORY_LIMIT (-1UL)
+ /* Maximum address we can reach in physical address mode */
+-#define KEXEC_DESTINATION_MEMORY_LIMIT (0x20000000)
++#define KEXEC_DESTINATION_MEMORY_LIMIT (-1UL)
+  /* Maximum address we can use for the control code buffer */
+-#define KEXEC_CONTROL_MEMORY_LIMIT (0x20000000)
++#define KEXEC_CONTROL_MEMORY_LIMIT (-1UL)
+ /* Reserve 3*4096 bytes for board-specific info */
+ #define KEXEC_CONTROL_PAGE_SIZE (4096 + 3*4096)
  
 -- 
 2.7.4

@@ -1,106 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2018 01:27:35 +0200 (CEST)
-Received: from mail-eopbgr680129.outbound.protection.outlook.com ([40.107.68.129]:60736
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2018 03:28:28 +0200 (CEST)
+Received: from mail-bn3nam01on0130.outbound.protection.outlook.com ([104.47.33.130]:48896
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993891AbeGKX12h-2gP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Jul 2018 01:27:28 +0200
+        id S23993888AbeGLB2Vi-ngt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 Jul 2018 03:28:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OTioZo2CrfDtttYe1oB8hWwlj7Nk4Qn6+ZRGRUEmvVI=;
- b=qRw4ToCuMGbc0be29xd7MfQVrExes/4I+WaMRUUeEydxhwuwg4SJtjxMHlKL4t73tBapfGamDH85uUst+GshF4PLElTxryyazXOp4dTpQEUijz++5h+5UcLECayxnIsjXA/jTmugdwKOclD6cGWj7/hI55+QZVuNLPYd/IOfzQc=
+ bh=biV4DwKzsFkrjJ02D/XMVI+v3CXYTQiC/Rqb2RCzfDI=;
+ b=XsI12W6nsaI1g4nUVm884bs6yoyPZOHcfpnNQA08FGl5G0sJz824liETiqtU5U9zz0yFRO1e0gPceTKKKX5FP+m1uIV1WEJu6qRT+ztFRJuNLcKHT6slsHT6+2+T67ERS6W/vIKNJGL4Oe84ywiJ3lNzI9flPYp9FHFq2DjzBW8=
 Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- DM6PR08MB4937.namprd08.prod.outlook.com (2603:10b6:5:4b::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.930.21; Wed, 11 Jul 2018 23:27:18 +0000
-Date:   Wed, 11 Jul 2018 16:27:15 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Vinod <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/14] dmaengine: dma-jz4780: Separate chan/ctrl registers
-Message-ID: <20180711232715.djxrbgmcski5xtjp@pburton-laptop>
-References: <20180703123214.23090-1-paul@crapouillou.net>
- <20180703123214.23090-3-paul@crapouillou.net>
- <20180709170359.GI22377@vkoul-mobl>
- <1531237019.17118.1@crapouillou.net>
- <20180711121655.GS3219@vkoul-mobl>
+ smtp.mailfrom=dzhu@wavecomp.com; 
+Received: from localhost.localdomain (73.162.151.67) by
+ CO2PR0801MB2151.namprd08.prod.outlook.com (2603:10b6:102:17::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.952.17; Thu, 12 Jul
+ 2018 01:28:10 +0000
+From:   Dengcheng Zhu <dzhu@wavecomp.com>
+To:     pburton@wavecomp.com, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Dengcheng Zhu <dzhu@wavecomp.com>
+Subject: [PATCH v2 0/6] MIPS: kexec/kdump: Fix smp reboot and other issues
+Date:   Wed, 11 Jul 2018 18:27:42 -0700
+Message-Id: <1531358868-10101-1-git-send-email-dzhu@wavecomp.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180711121655.GS3219@vkoul-mobl>
-User-Agent: NeoMutt/20180622
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BN6PR03CA0005.namprd03.prod.outlook.com
- (2603:10b6:404:23::15) To DM6PR08MB4937.namprd08.prod.outlook.com
- (2603:10b6:5:4b::18)
+Content-Type: text/plain
+X-Originating-IP: [73.162.151.67]
+X-ClientProxiedBy: BYAPR02CA0020.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::33) To CO2PR0801MB2151.namprd08.prod.outlook.com
+ (2603:10b6:102:17::6)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2586ae2b-3f8c-4105-f715-08d5e785d81d
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989117)(5600053)(711020)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4937;
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;3:H/uifbhh31hWnMcqNcYPyoOzctL9hYebromSxfYAZxgPvsPkZhlpIX1ft9UCk2VstFbm7LZxYrDW4CKIMf9ZAhixNaGI9uxYXRxuDxvU/MJDsOYycqzYNhJ5rxmVeEDSrZTlpSU3wGrmqKUIuSZ4VlhZC7Hpphv91WOgcgw9n7/tHankidiaM3+5V11G2Fexdy1oA2wSRxo341KYwZNvmPmvyvyxdVdOmBVhjGsLVMCBUYWfdLmY+AtDWaLO8Bej;25:yuK+sgCs9tJ9xIn/MUxBxUPwBLSXJL/cYzE8dY3MBA2M628+y13xA71brrgd11sr4wGdcdOCp/0pFWq9FpTU4r7jdOYt/Ig5MaRjrod1MNk5td1gyQpt946p1OuiS26TO82B49eHjN+la1KQsAQqFNgNKnkAf5ShDo2AqUp3qbbt29X6EoWwTLv0ALHVpDRxOLYshXjI4etU44GWqyDvwMY2MDpJIi0q0oa1ZKPr+/Y0Qk8W+WHWuntnTfih64qXHb1YRPgwwigw3iP9A5WgEq+54NsydmByWdj+6IsJ8mx+d/zbFRyP0PrOoqNuXkts+FO41vk9zC1w//DN4+Xozg==;31:Ll2DpaQ1kBdrKeD7AdgJzjky3qeW79v1aOb0C4NXsUt5WKqdlNAHI1CGW1ktNk5Gtq5wDcvB4Or6/BmatBUeHwf9TjzlbeDV1mu0nZozOjn81Q7zgM75KmiZfS64pE2VlKgVN9FnaFebIJ6VfjXThmboSTbTkbKz/xwmJmOskbeeBgfi6zgwaYzZeK1eZdGNJ2n8m23XXPI5yllpTQA6ILNe0+FeYBgb9fCgLw5RHtk=
-X-MS-TrafficTypeDiagnostic: DM6PR08MB4937:
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;20:pJjdPmWUV1OQf8GIynByWe5iEDq8OzTa7Vevcu4LnsckvMf48N6QstvpO2RdICtn1zVnWOCV1B+SxzpMmoTI/89mEijnvckBdYOTM3R2PJ3pPP/GHzqgog/lh55PNGAlPvf2pyr0ewWL2Uc64lisFJlTdhdPLEjynhDhc6MGrCQIisA3Zj3J689WIASWBdWMwtTpk1PxDq3myr6ReTPfjfND0LRXrRPaeMfs7uKOSdNGc5VhBHpeTCxRsrA17Zar;4:GPPBhc7bWfcNBldgOJjBhf0rAL5b4pqVYxfCfdob6rq7LJ/blhXsIBG6SnREH9PJR0S8JJL66ln/c6VCN90Z6wXoi5VhOuCt154VyBgb5MEoBwEZJ9+JRl+L4C4XzMKJAl0TqpxGGDgdU+cEbHjIHH3j5k32YJ7xmebb26HLj0OS1xg4ZBztw9POT0OSA9QLw5tz74eNg5rMeMBGdPALhRfKz7ShjuIWfelRDGiUqaLsdKXVp9czXdr0kxnYJcc/rCXdKVRaNGt7Gc1ZdB1NUA==
-X-Microsoft-Antispam-PRVS: <DM6PR08MB4937C58403BC57DB4C2545A4C15A0@DM6PR08MB4937.namprd08.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: f062b8a1-5299-4961-6724-08d5e796baa1
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600053)(711020)(2017052603328)(7153060)(7193020);SRVR:CO2PR0801MB2151;
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;3:otK5zU9z+dMsm/Pf1VcgIOUbwb7qiEYCNwK65XzZwQmvtITfGn7klRu7qcOM/bGQNJ7ZwZzvLz2tyLoYA1ZDR70jeZVqRbWiGp41vjjktW8d3OcIy3OcR5x+64T4H7pbTe0BNfPfUyqX1lYPsOP5jRLMPUHKCObMjO5dnr9ERFYb8E0H4NAvjVvOQ6XqfvO3ibyYeS82jeojNFsOPdipWK3MEL1Hqb8lbqmnivwvli+0Q4uxW/xJUUUY9QorY1JV;25:+IrsARNFk9dSvmvfIgndd/Ud3CgQAG+P+eqnJ25D6dDxACbNixR2x4p6RwiFFSimIdXqYb7QoSTZZOrdAsEeX67QxowJr7r8KgacUFympmjFvtGM51ftlThGrK55CH/+hp0oEcnf7w9Gg1OPZ+AXg6C2aMpcK99xRVWJzZxjEMttlvoQVkzeeJ6cGcZHP4Y5awHfqNmRtw08VbqiVxI/he/2JEfOpVY9orpgskjAag3x3eA7friiGJswlMG7GBcJs+I7EyboSbQBV+Y/UguwKLd5zpJmcY+hJiwUfEl3Gk6hGufY0BAeTNJWtXvUCMeYpaHx1rYeZNys29xAyy5Uqw==;31:VOnNX9iFwZfYEWpjQOytBHD+Rk/0x3u4byRRl22Qu/TAH4AOPBFXcCD0472qQa0qQaqtKX7D5dgaTOoaeaGu8OEY+LlOxDJXaHtFv6RxAXIwe6WEdS2tubO8XppSZUvkBC7QQ2QrBSspHXqIKMZGDaUQ0C2adRSM2bEWdBo0eyDAFv0BKqZP416zPF4WLDxxbDH5V8n6pRb66ngZ9GOrH9y5z06LMImnnJtqm8JgL60=
+X-MS-TrafficTypeDiagnostic: CO2PR0801MB2151:
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;20:OuY3zR5yrqiVeH2HzXcCT2Y8kmgyxVlgAPkckzgZjmFWyJBzs5h4LZMewHW1ZXc1DHILm+Z7UBBXihr3WA2t4g+ZCn3dqXs+M1jHnYA2hy4EXCl2BZar/yJ1VvDHwY0hil6tUZTsdMTBkmOAKgzmUm+q7yGt3HBMTXLeN2B+CxCyBnoxgKS16OUJat0wuaK9bpG6PF7gVLuUr2taE7JmXf9NehkwOhKWPy4ZRieP9C1dyTCi4OaT9b0puuG3lwzI;4:7DgVX0YhuzqRgjyU6Mmaf4p8ozrnvDCw67HXdJqIilzLN+tAmleVAqn425JVeplMgRbzE5bnPkd7h45f24fRxGhmRa0O8oRvWfe5my31/ZGgE3GVAORUzK7/bIDJpgnqzmQQvjeqJJH9Rinonx1tFy2uwtX2zGw3oZanlvDsbOMsK/6X64NetKfxgn03IHy1OOXGmjQb7VsGnvw4nfYQjGTAnKwb8RF6cP6paGyrhe/yy0adQN3LHImC0pvuu90alXsZ4Z8knBg6aC3Zlq3NVQ==
+X-Microsoft-Antispam-PRVS: <CO2PR0801MB215197BA084A57B3073AEF9AA2590@CO2PR0801MB2151.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(93006095)(3231311)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(2016111802025)(20161123564045)(20161123558120)(20161123560045)(20161123562045)(6043046)(6072148)(201708071742011)(7699016);SRVR:DM6PR08MB4937;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4937;
-X-Forefront-PRVS: 0730093765
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(366004)(376002)(346002)(39840400004)(136003)(396003)(189003)(199004)(76176011)(68736007)(476003)(6246003)(33896004)(9686003)(110136005)(53936002)(66066001)(33716001)(478600001)(97736004)(386003)(50466002)(4326008)(39060400002)(106356001)(2906002)(42882007)(54906003)(316002)(93886005)(47776003)(16586007)(186003)(26005)(8676002)(44832011)(25786009)(81166006)(81156014)(3846002)(23726003)(58126008)(11346002)(16526019)(229853002)(105586002)(446003)(76506005)(6486002)(7416002)(6666003)(956004)(1076002)(52116002)(6496006)(305945005)(5660300001)(6116002)(7736002)(486006)(8936002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4937;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(3231311)(944501410)(52105095)(93006095)(93001095)(149027)(150027)(6041310)(2016111802025)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(6043046)(6072148)(201708071742011)(7699016);SRVR:CO2PR0801MB2151;BCL:0;PCL:0;RULEID:;SRVR:CO2PR0801MB2151;
+X-Forefront-PRVS: 0731AA2DE6
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(39840400004)(366004)(396003)(376002)(346002)(136003)(189003)(199004)(386003)(6506007)(26005)(16526019)(86362001)(486006)(476003)(2616005)(956004)(36756003)(106356001)(6666003)(2906002)(6116002)(3846002)(305945005)(5660300001)(68736007)(7736002)(478600001)(6512007)(14444005)(97736004)(50466002)(8936002)(8676002)(25786009)(4326008)(6486002)(107886003)(450100002)(81166006)(48376002)(81156014)(16586007)(105586002)(51416003)(52116002)(66066001)(316002)(50226002)(53936002)(47776003);DIR:OUT;SFP:1102;SCL:1;SRVR:CO2PR0801MB2151;H:localhost.localdomain;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4937;23:U+7lBjtQnyUEbWrWrHxQq8LeRAbWtuf2AnZ2BLVhX?=
- =?us-ascii?Q?0JoQKzUD+iWhgzkq8kULwovgpcMdfmGouQ68LqyQTEGp3y47GBJzDxofy2yv?=
- =?us-ascii?Q?ERHuO/AyzXE0sZOWgEND0c5L2kQV3L/XPR0fSXvLgCcotoXLBQ8mgxRYwVRa?=
- =?us-ascii?Q?t00OwH6IiCf5902Ro0Xgzzq+6ztV/oZ+Yykf2+cxo0+2H8Q2Vw7ORBXJ3jlo?=
- =?us-ascii?Q?QO/gkyS69YwZtwusZHPLfOOBBpQig0d5/ujfvuvUupT1XlS/QS9tAqqxylki?=
- =?us-ascii?Q?0mBIsnri8+g7QoIxegpB6fSplkim2C7eTeCl7gQxUhrTDfEe1Hjkngk976VC?=
- =?us-ascii?Q?yDZqRXBGJ8GlGnGc8mUdSnFis0E3U8X1Hn9j3GY6dLbE5k3ma1r/t8nPjIiJ?=
- =?us-ascii?Q?Ph9ykGtmG7mvdsfM0BmgjX9BimQblyp/+Cl/DDEbU26KLkzfXn/ykz+l6QP2?=
- =?us-ascii?Q?TCbN3Q0FrZfswgjS8PVmnMWz+unGczptSW44A26ILStHkjq0TrtIFrRQJQQe?=
- =?us-ascii?Q?eNXd/IepIkSHio/++7XoH4gw/bNp1+ShX4ZFYpLyPAWGthy2Q8uBe16e+rpU?=
- =?us-ascii?Q?Csu6HmMW03M3aXh8iX+NmWo1vA1Gg2EF+DIitVopdJvpnyyvFW0LnSHxE/lb?=
- =?us-ascii?Q?sHk5S2HuMN8WWfWyWC0seCwDqo1YbX4vZ2KkFiHiHSEQ0bLaB0bXCA/0dO4z?=
- =?us-ascii?Q?Y1baGRzJCzMhq1d/8pkWYtCvw9Xr+ZJf62IuUYc2yTRzKkRl/l1PoYYzCj1Q?=
- =?us-ascii?Q?eXHHcIGvPzE3uffwsirrEmdyQl7TLjfIWuWIx8X6IcQFef71DIEbwG9vIF1O?=
- =?us-ascii?Q?TDQ+f7F8zM5ABi7bGyKNrIdnu4WniiKpIw2LGfRm8opGOmGvZcBcrokpZKDZ?=
- =?us-ascii?Q?h74cU7c6SKv2+QXu5KEVh+skcvdJuxDG7HtdG1lifxCklVwu9p/3N+5XkXcH?=
- =?us-ascii?Q?DRSEBfTnAniIjgqLoWzILdV6Q7iS3R6RcZhv3cUbbhztaiZDw5JUgaka7Lpj?=
- =?us-ascii?Q?5ALvtNKXgHS0UPR47Q7fivpeS7N8eV/s8ug/8rFUMLxLmGZMl/E19BTEBiEh?=
- =?us-ascii?Q?OKtrasF9cVnngpvjE9hRV9yDu6E990NuAWS7ex9wYA1t8e1DOqFOku21Hx2s?=
- =?us-ascii?Q?YMwlkagmkfJAz2kGKAGXt7nGfo82qq0DOmk1+vXjVfCD0WVhGcIxgfpuAGQr?=
- =?us-ascii?Q?Zr6TWcNVO5jUmAlkHm+2IPoQVd7W5b5DCjVVuSANjJLPtlkFxnuCKV+IWIhN?=
- =?us-ascii?Q?wvQPd1KpTOEWscW7nsah1MWfG+CQFOLHnmzl2kzVyrEGLCspgIN5j8BICxGj?=
- =?us-ascii?Q?rr+W/+4OihwBfcsSC8s7CKM1vp8v8tOonBwMscOCBrb/XY/0cELxxJU30MfJ?=
- =?us-ascii?Q?p67WnCv7I36NKP+lmYjM9Z207A=3D?=
-X-Microsoft-Antispam-Message-Info: alQQhCrPbNozLC8hDvhVtZ3i++ebxPpKbVIapto4ApoWtgGSEntQTlSHnEuC2ulDlhcHTha2vuAw6X67JBXnTVgAxQvxSFyO676ZMNtGDydONp6fRpRyY61mQh4vDmAsIfa8SeDm8USPmcb+K2CcOkkNUg6CQNO+cUG+YwOb8KXgYFjCeux/yWjPsYqBXe8I5lJxAWPwoMYQTH6jdGY7rRIXMwVuMcTHZcuB35puDUJkMjA5fLo9pHntfh7cdhQFystjhkGEz7TSITy2ebEoyOgn18TyVrqqsTDkh8iwNo4tIMLXvx/7TjWE4Wfd2WmNn4ji+Sv2Kjsh8usS9PmmVLXu/5KBv0scwIUQ8NAns9M=
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;6:udxyLLrrU3f1FWEyKxUcvdmn8h0YX20Z2y0am39XhAGqIoaPGwLKw9XxEufgcduWEDjYSxySF3ENoP3NHqESAC/Zq9oLDMHGyAXmTO5w466zRuPL0PgTE5FOXGDDbq5d5GONQ4FwQ9pHEjZxUC3z1SFtl7UexnkgO9HP/9r2PBhONBskGufM/apNARqLsKdV6ytSTx5gbp8ZwNbUPPwjOYys7fBHPkatCr6s8Odvyrn3VZ9SrGQ8mkqyLxoojr8QeNO4JZi1T/1/WYec2GA2Fe+NkJ0zIHHJbuELGy1LgBVSwSF05sBgZgUq45/hJMeu0/inYwFQ6/Vk9Lo/gPaoCTMU+GHnnP5Uw8Ulb/VOL0eWW028k4J1r9EUGK3KGEDjxqse4HEwD7ViMyJrOP6m/HIumaNjTKTO7jZT7vZTmS6oodAixP/XOdbhwfytIZFLAMlsc6Ed1whYIImVvmY/QA==;5:j49ORTVc9COQo83ZWBCfQTcrqVX6sl5ZWAjfbqeaJTrwqRsuL/ERoO311EqGrOUXkzyUddo+QOlNphtCwjKqUc58jYUdgHgguis1Q3g2sfTOO3KWC+Eexbxutc3NpVkUEkhTKv+laz107PshyAMAre3cuagtdkoHCVJDWI3Ryr0=;24:V49ILzSqnOB7+PBwpCeRWho3HTcIBMINw8hv8n3Z2wf5fvEA50VTYrssok5UvzhAs53fHC89eXFoB8mw/nrFAYrRLUin2JokJMhLvIU3thM=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CO2PR0801MB2151;23:hrSlNGNa3B2XW7DqZzFAcUK8QV2bd6C7p8sm2+t?=
+ =?us-ascii?Q?6mL7zYK5p7gBy/ahh7bZ2Bh529Z+EL13JB0VuJrillyp7prCUC0DqT4DnTl6?=
+ =?us-ascii?Q?JPCq/uecVzvJmIdNyOMyhSI7O5hk8oFgqDliZX0y8iWZH2HqiL519flrtJ59?=
+ =?us-ascii?Q?pseyTPjmh2+tOLs7uHhJD/vWRaeBRSLkaA5slXlk4X5OwJ13gjgGb3DjZ+hD?=
+ =?us-ascii?Q?fW4nisUzVgJT5M1oKJB0HM9pVdGJNySOfcl1EtGlEYHi/tqOCcSC6C6DmeRv?=
+ =?us-ascii?Q?9POgScJEaXlzWS9UxaF9CcBU2wyHd9vRInlS95W4tOL0JXzkIsoXk3Ih5p63?=
+ =?us-ascii?Q?lGpBP4eTx8HrRFIRAPAa9fu+skLeNf6XCAwGQH+4DWPWF4HoA0Mt4ibY7v7M?=
+ =?us-ascii?Q?XnIsVmMWVjPqE/sjXaQuoK6BvgAhADWzO4i/jnkuSFmH+LgxVS0HoG+GVOrh?=
+ =?us-ascii?Q?3yQ6QQ2jXXc+kyUGYuQxO/1nIb5HgerMMzywPsfXQLS9oFH9JknByTIs4Nxz?=
+ =?us-ascii?Q?HhdVBOdQFJayrOwi9cqJOnrJxrdaXGcSXi8HOcdFT1yNns6GbENXZBAouCGl?=
+ =?us-ascii?Q?GMR6mMx6ubAvYQlQLVSUk4j6QSFf+vLnoLrRLJRcF/l4D2PcuL0S3/JopqEy?=
+ =?us-ascii?Q?NvtjWPHDOm5ZSuB/xSXCuRxZi3BDu85epLLTv/7ck+Yp+VWgbyqYBjaUkW1r?=
+ =?us-ascii?Q?9FqoL9EbfnGuMcbiq6+D63GCqaUuUvyR3d0LuwOPf7z33k1UEbW0BR1KBXDl?=
+ =?us-ascii?Q?WHzuOMeLjwF48U86xWSoAYnB4yx9jIJwjZUV3NDTi/QGBL+zkp85wDajrwMq?=
+ =?us-ascii?Q?BuYVjnqK4HsSZgsJsZsCVqPqX0hbijk7rCQVSEozJ1lFRas5q3+GezSXuTj7?=
+ =?us-ascii?Q?cZSnV/mqLQpb+XdLRtpHC9Vapa7XsiU0EV0KztuvQ+TyDFjvOI+m4dxXEKao?=
+ =?us-ascii?Q?hlU6VLmqQi5jtssAVWBST9VOyzpU4Ovz/4G/3DY1EdFAZ65RAC/SucgYdIoG?=
+ =?us-ascii?Q?1tb3EBMQ7VNjz9+rR8DtVOkimsegjKoGcUSmPqAJKJOzBWCXJUm5Cwbkiezv?=
+ =?us-ascii?Q?K5V9hLaXXm+Upwwk6ViM17nospiyWFr1LWte+91w96BD0pzf3wEWA1Hl56LS?=
+ =?us-ascii?Q?mv7FwSo6v/mmmuB7y00Xpzh4/oAwaSS2LXivppRT1CawGmAIhs8en8Q=3D?=
+ =?us-ascii?Q?=3D?=
+X-Microsoft-Antispam-Message-Info: o0igJKpE4BkmeBDFHoUc2ZbJOKgj/KZHq5rbsgME3LC58XtotP5fl/AdbVfygs8xBiBUMwv3Na0zZXSvGy06QH82JYfYFga3b31x93kSoJskVAgeJkiPN+4UxmQiMMOd7eVMjCdIivp57UlbAJLA4QTB8xkyd3xzrDL2FmbHzOOfKBNfnPixtCsW1roKKIuQsCaFlnsEgWiMqHjWf/awm2qy/g/MB7T5MckKlsqM28XSf8WGGyHtOFppFybIumSemNp5Q73QF3i47sheOIYn17PqvjEhhWBjjba7aeyvPmm189cNub0z/js3F/1KS/atglCOZDEJfRoGjMg0oi4CL7In5xEw0lyEOEFfu5tsBAQ=
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;6:xejZaP4m6RrKccgCJ/6qQfgZ2es3Jco0IyCZ5RxjIE+L0NENV0mrgtB1rQ6UA36O9YPBKzreZXSJ5VQ4kNvWKviTxEqaChfmK1oOzyLoWyWxX5QOwkpeO9o+f7ZKnGBg9vmU9uIoekCxsgFvvYLWRNMK2L8LFlH//5kHC851rwOpgA7VmrWuVh7+SF8LFnucXUZnwRuwDWXuo1YMYfM+zElnOkSBpf+JOi44EVv0Ov5taD/Zq1NZd2J9F9azRDpUSvJpFue7sqxFXHbkZsnCLmGdm6hzK78pnrQAQzDx2yWZgplBp1Ma9fEPrl8hCjGK3MVcqqdSQ8Rux+Yr4fwA184pt/hxUeKk6oV3OvFko7TFonjDtlVpzZXGkvLREX1smvBy6C4HtuE4L8oeyvuB37wgblVXBvorfnzolYeG6nqb/4ghTTnO7Op2RA2NzcltFcISwHdzVc8X2p8jQtnXJA==;5:NSKbSgLFPi0AtJZlqsIf1V2YwtlE0VWOuPGPcYvi2lk6S/eeD+rGW3C5RIGfK1K/LwkMziVmxomzMpU0ak2GbSvFATstIkJrRiEZZru00KubhKd0D66iQjkor12RZcno5ZGuVq8oDhxNUKtjRfhfZzp81RW9LALLHZp9cN7bDKM=;24:2zWK08hmL3SNknYURno4g/vA3c+VkH2KZzf19msk4AB6mcLB483HgOCG7BKdHMNM8gZ4xIlCAfB9KHOi4urbvZx4yWm8azHaO+n9wLzl5Qw=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;7:b39p2+gKov0BY2UFBhJKvoOoyr/SFu+2676dlELpJIp5ARXWQTSdS+D7SiZ0bepdGxfAGvFx7OTHCUx8GmJUbmcUDkIm7tJq7TBL+nIjI4Q7qhPDpWhdFeQ/YEBxMPuPbuSVFffVC6zEJNrZAdzNadecB6xX7vKh8CN/oK6oDWNbgkYCImOkWm4naxRxhrARYWsZckEpN+b53aNEnawNia1OtlMciCaQGl5Fnp4h7lNKdhEM+hV5tBOUnmBCPOZF
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2018 23:27:18.2489 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2586ae2b-3f8c-4105-f715-08d5e785d81d
+X-Microsoft-Exchange-Diagnostics: 1;CO2PR0801MB2151;7:AOXOrS6Kx6c05NvfFhOFIr0be1ZolcPIT3pI8GvaMY+HhoJifVmmd6Qi38r+ES4IaK6spuHM2SpdBZtuVlVq8f72PhW/uQj/1SJ3J66dzwryTBOIY8EdBvpv9euwxmjslsTjoLEyy/oplp6fbGLDjEeONMbQWgsOj4/mo3F+pVEhgsbgDkwxy0KB6+OdM4hYPKU/pVsQNiQzrVBTIJe99dPoz5ufXpvhmRDv2zScLF7DvFBQ/EFzOx4A+HEqjn7+
+X-OriginatorOrg: wavecomp.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2018 01:28:10.2661 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f062b8a1-5299-4961-6724-08d5e796baa1
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4937
-Return-Path: <pburton@wavecomp.com>
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO2PR0801MB2151
+Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64808
+X-archive-position: 64809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: dzhu@wavecomp.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -113,40 +96,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Vinod,
+The issues are mentioned in patches 1/4/5/6. I will update kdump
+documentation for MIPS if the series gets accepted. Testing has been done 
+on single core i6500/Boston with IOCU, dual core i6500 without IOCU, and
+dual core interAptiv without IOCU.
 
-On Wed, Jul 11, 2018 at 05:46:55PM +0530, Vinod wrote:
-> > > >  -	jzdma->base = devm_ioremap_resource(dev, res);
-> > > >  -	if (IS_ERR(jzdma->base))
-> > > >  -		return PTR_ERR(jzdma->base);
-> > > >  +	jzdma->chn_base = devm_ioremap_resource(dev, res);
-> > > >  +	if (IS_ERR(jzdma->chn_base))
-> > > >  +		return PTR_ERR(jzdma->chn_base);
-> > > >  +
-> > > >  +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> > > >  +	if (!res) {
-> > > >  +		dev_err(dev, "failed to get I/O memory\n");
-> > > >  +		return -EINVAL;
-> > > >  +	}
-> > > 
-> > > okay and this breaks if you happen to get probed on older DT. I think DT
-> > > is treated as ABI so you need to continue support older method while
-> > > finding if DT has split resources
-> > 
-> > See my response to PrasannaKumar. All the Ingenic-based boards do compile
-> > the devicetree within the kernel, so I think it's still fine to add breaking
-> > changes. I'll wait on @Rob to give his point of view on this, though.
-> > 
-> > (It's not something hard to change, but I'd like to know what's the policy
-> > in that case. I have other DT-breaking patches to submit)
-> 
-> The policy is that DT is an ABI and should not break :)
+Changes:
 
-I think in general that's a good policy to have for compatibility, but
-if it's known for certain that the DT for all users of a driver is
-always built into the kernel then I don't see why we shouldn't feel free
-to change a binding. I agree with Paul that it'd be interesting to hear
-the DT binding maintainers take on this.
+v2 - v1:
+* Tested on MIPS32R2 platform in addition to MIPS64R6.
+* Added patches #5 and #6.
+* In patch #2, removed the unnecessary inclusion of asm/mipsmtregs.h
 
-Thanks,
-    Paul
+Dengcheng Zhu (6):
+  MIPS: Make play_dead() work for kexec
+  MIPS: kexec: Let the new kernel handle all CPUs
+  MIPS: kexec: Deprecate (relocated_)kexec_smp_wait
+  MIPS: kexec: Do not flush system wide caches in machine_kexec()
+  MIPS: kexec: Relax memory restriction
+  MIPS: kexec: Use prepare method from generic platform as default
+    option
+
+ arch/mips/cavium-octeon/setup.c       |  2 +-
+ arch/mips/cavium-octeon/smp.c         | 35 ++++++++-------
+ arch/mips/generic/Makefile            |  1 -
+ arch/mips/generic/kexec.c             | 44 ------------------
+ arch/mips/include/asm/kexec.h         |  9 ++--
+ arch/mips/include/asm/smp.h           |  4 +-
+ arch/mips/kernel/crash.c              |  4 +-
+ arch/mips/kernel/machine_kexec.c      | 77 ++++++++++++++++++++++++++-----
+ arch/mips/kernel/process.c            |  2 +-
+ arch/mips/kernel/relocate_kernel.S    | 39 ----------------
+ arch/mips/kernel/smp-bmips.c          | 11 +++--
+ arch/mips/kernel/smp-cps.c            | 59 ++++++++++++++----------
+ arch/mips/loongson64/loongson-3/smp.c | 85 ++++++++++++++++++-----------------
+ 13 files changed, 186 insertions(+), 186 deletions(-)
+ delete mode 100644 arch/mips/generic/kexec.c
+
+-- 
+2.7.4

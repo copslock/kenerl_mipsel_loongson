@@ -1,56 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 15:32:37 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49842 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993032AbeICNcWHzRBP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 15:32:22 +0200
-Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 67250CAA;
-        Mon,  3 Sep 2018 13:32:15 +0000 (UTC)
-Subject: Patch "MIPS: Change definition of cpu_relax() for Loongson-3" has been added to the 4.14-stable tree
-To:     chenhc@lemote.com, chenhuacai@gmail.com,
-        gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, paul.burton@mips.com,
-        ralf@linux-mips.org, wuzhangjin@gmail.com, zhangfx@lemote.com
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Sep 2018 15:31:50 +0200
-Message-ID: <15359815109198@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65884
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Huacai Chen <chenhc@lemote.com>
+Date: Fri, 13 Jul 2018 15:37:57 +0800
+Subject: MIPS: Change definition of cpu_relax() for Loongson-3
+Message-ID: <20180713073757.NQxvgHpHgFy3PCwj1oaT_hiIu77yPip4Bi7-X9SpLNQ@z>
+
+From: Huacai Chen <chenhc@lemote.com>
+
+commit a30718868915fbb991a9ae9e45594b059f28e9ae upstream.
+
+Linux expects that if a CPU modifies a memory location, then that
+modification will eventually become visible to other CPUs in the system.
+
+Loongson 3 CPUs include a Store Fill Buffer (SFB) which sits between a
+core & its L1 data cache, queueing memory accesses & allowing for faster
+forwarding of data from pending stores to younger loads from the core.
+Unfortunately the SFB prioritizes loads such that a continuous stream of
+loads may cause a pending write to be buffered indefinitely. This is
+problematic if we end up with 2 CPUs which each perform a store that the
+other polls for - one or both CPUs may end up with their stores buffered
+in the SFB, never reaching cache due to the continuous reads from the
+poll loop. Such a deadlock condition has been observed whilst running
+qspinlock code.
+
+This patch changes the definition of cpu_relax() to smp_mb() for
+Loongson-3, forcing a flush of the SFB on SMP systems which will cause
+any pending writes to make it as far as the L1 caches where they will
+become visible to other CPUs. If the kernel is not compiled for SMP
+support, this will expand to a barrier() as before.
+
+This workaround matches that currently implemented for ARM when
+CONFIG_ARM_ERRATA_754327=y, which was introduced by commit 534be1d5a2da
+("ARM: 6194/1: change definition of cpu_relax() for ARM11MPCore").
+
+Although the workaround is only required when the Loongson 3 SFB
+functionality is enabled, and we only began explicitly enabling that
+functionality in v4.7 with commit 1e820da3c9af ("MIPS: Loongson-3:
+Introduce CONFIG_LOONGSON3_ENHANCEMENT"), existing or future firmware
+may enable the SFB which means we may need the workaround backported to
+earlier kernels too.
+
+[paul.burton@mips.com:
+  - Reword commit message & comment.
+  - Limit stable backport to v3.15+ where we support Loongson 3 CPUs.]
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+References: 534be1d5a2da ("ARM: 6194/1: change definition of cpu_relax() for ARM11MPCore")
+References: 1e820da3c9af ("MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT")
+Patchwork: https://patchwork.linux-mips.org/patch/19830/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
+Cc: stable@vger.kernel.org # v3.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/include/asm/processor.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -388,7 +388,20 @@ unsigned long get_wchan(struct task_stru
+ #define KSTK_ESP(tsk) (task_pt_regs(tsk)->regs[29])
+ #define KSTK_STATUS(tsk) (task_pt_regs(tsk)->cp0_status)
+ 
++#ifdef CONFIG_CPU_LOONGSON3
++/*
++ * Loongson-3's SFB (Store-Fill-Buffer) may buffer writes indefinitely when a
++ * tight read loop is executed, because reads take priority over writes & the
++ * hardware (incorrectly) doesn't ensure that writes will eventually occur.
++ *
++ * Since spin loops of any kind should have a cpu_relax() in them, force an SFB
++ * flush from cpu_relax() such that any pending writes will become visible as
++ * expected.
++ */
++#define cpu_relax()	smp_mb()
++#else
+ #define cpu_relax()	barrier()
++#endif
+ 
+ /*
+  * Return_address is a replacement for __builtin_return_address(count)
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from chenhc@lemote.com are
 
-    MIPS: Change definition of cpu_relax() for Loongson-3
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-change-definition-of-cpu_relax-for-loongson-3.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-change-definition-of-cpu_relax-for-loongson-3.patch

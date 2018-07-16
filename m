@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:43:24 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38364 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:44:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38636 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994681AbeGPHmlOfSet (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:42:41 +0200
+        by eddie.linux-mips.org with ESMTP id S23994573AbeGPHoDOA9Rt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:44:03 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9E45BCA1;
-        Mon, 16 Jul 2018 07:42:34 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6FBF3C03;
+        Mon, 16 Jul 2018 07:43:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,21 +13,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Serge Semin <fancer.lancer@gmail.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.9 04/32] MIPS: Fix ioremap() RAM check
-Date:   Mon, 16 Jul 2018 09:36:12 +0200
-Message-Id: <20180716073504.973257167@linuxfoundation.org>
+Subject: [PATCH 4.4 01/43] MIPS: Fix ioremap() RAM check
+Date:   Mon, 16 Jul 2018 09:36:06 +0200
+Message-Id: <20180716073511.923793671@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180716073504.433996952@linuxfoundation.org>
-References: <20180716073504.433996952@linuxfoundation.org>
+In-Reply-To: <20180716073511.796555857@linuxfoundation.org>
+References: <20180716073511.796555857@linuxfoundation.org>
 User-Agent: quilt/0.65
-X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64848
+X-archive-position: 64849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -102,7 +101,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 --- a/arch/mips/mm/ioremap.c
 +++ b/arch/mips/mm/ioremap.c
 @@ -9,6 +9,7 @@
- #include <linux/export.h>
+ #include <linux/module.h>
  #include <asm/addrspace.h>
  #include <asm/byteorder.h>
 +#include <linux/ioport.h>

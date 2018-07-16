@@ -1,60 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 23:29:10 +0200 (CEST)
-Received: from mail-oi0-f68.google.com ([209.85.218.68]:35579 "EHLO
-        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993024AbeGPV3Am-z96 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 23:29:00 +0200
-Received: by mail-oi0-f68.google.com with SMTP id i12-v6so77644869oik.2;
-        Mon, 16 Jul 2018 14:29:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 23:33:54 +0200 (CEST)
+Received: from mail-oi0-f67.google.com ([209.85.218.67]:35382 "EHLO
+        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993024AbeGPVdsBCU96 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 23:33:48 +0200
+Received: by mail-oi0-f67.google.com with SMTP id i12-v6so77667741oik.2;
+        Mon, 16 Jul 2018 14:33:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Z4LTUphqrMF2ZUQkliDnej/gPLyoQjbEBwgTd9g6gvo=;
-        b=QnzT055baTYCMSJHzaQbTSZKPcTm82CMBWck3iwS1epignnkQECmdP7wnjGmykhzM2
-         uGLgYmwtM7X6Yyioh0ZYQFXNwz25Gd8s9vGGhY4QsZLjmMr3lpjK+JaHXj44/MAaLXnq
-         e0GE5sOcOCp82Qf+3ZF7b4p0+L0ZzEhOxbLa93UqHLq/szgiFvHV2uaU3/Fb9eV7boKX
-         o0H+X0hwEKAZL2sUzxU3zGwSJHiJG1WoV8GOr1hqNWULq2cmjUSqr1Ed0TBw/j3SjKkY
-         hn7+nAxKnDxkz9+n2wB9EMLzH2b2pNtkn9IUUEBVFJy6wKf4gFElgre6LbJwPF9KZLjM
-         2z4Q==
-X-Gm-Message-State: AOUpUlErzflH8SI9I2Idmc9olxPisHZSw64rmE3CUF45I5+Rq962pVAQ
-        B4sPfrLUg7mf2tB+euyodA==
-X-Google-Smtp-Source: AAOMgpeZD5rBFhgJQpDu4ehuJR2dtHJPUmFlHhzDv1eC+rbBSiwkybQp+GHo4PbeB0kWRShOBnWs8w==
-X-Received: by 2002:aca:a64d:: with SMTP id p74-v6mr1034454oie.149.1531776534378;
-        Mon, 16 Jul 2018 14:28:54 -0700 (PDT)
+        bh=tLMg6k/mwE9JutdGNUoTrKQN9z8d0yYh3gZ+rnkmhq0=;
+        b=Xlif7eyFSRmfxfaVkZGNm19fELoiOWBGDDjPK3INTXHh/lMbjjUv8oVScvNFO71LvL
+         MAKOOjnmwPIMkGMNoPJFpAQ3pscX4y2WiHy5DjdDlmqkHDNbF8CfTZjUMsYF4POTY3iV
+         IGdaegkyaSLLqvr47KrLmyBJm3yF5sz4IhGAZBD+OhOoN1yZDN1ZV1vJ7jDHx63inrar
+         3tdOfWkyHnPL9XtuKnimh3eghaXhnq/B4Kz+febrC4lKnThvMhH8u3TaqDd8Y8e/BXts
+         sp6ahWPJo9AGgE6xrxI42OgSMtCP5ndKSw6upsMIb6djrnFUaJaiMLBU2bS/3l3hI9aL
+         YpmA==
+X-Gm-Message-State: AOUpUlGs6KLULT9+nSlW3ssqFMgX0Fv7ehFAi1yBlKQiFxZOVmK0S3u3
+        37qPN1UqKGECB3b6cKP+3g==
+X-Google-Smtp-Source: AAOMgpcte/0EZl5FO8x8p88ft1DpjW4Q6UcDFzZQ1vxbT4Y84K8MQ8EmuxHzhf7mjOz+phEBAES4QA==
+X-Received: by 2002:aca:4914:: with SMTP id w20-v6mr1055172oia.5.1531776822226;
+        Mon, 16 Jul 2018 14:33:42 -0700 (PDT)
 Received: from localhost (24-223-123-72.static.usa-companies.net. [24.223.123.72])
-        by smtp.gmail.com with ESMTPSA id r133-v6sm30021629oia.33.2018.07.16.14.28.53
+        by smtp.gmail.com with ESMTPSA id e2-v6sm12307986oiy.50.2018.07.16.14.33.40
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 16 Jul 2018 14:28:53 -0700 (PDT)
-Date:   Mon, 16 Jul 2018 15:28:52 -0600
+        Mon, 16 Jul 2018 14:33:41 -0700 (PDT)
+Date:   Mon, 16 Jul 2018 15:33:39 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Vinod <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Paul Cercueil <paul@crapouillou.net>,
+To:     Vinod <vkoul@kernel.org>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
         Mathieu Malaterre <malat@debian.org>,
         Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/14] dmaengine: dma-jz4780: Separate chan/ctrl registers
-Message-ID: <20180716212852.GA6323@rob-hp-laptop>
+Subject: Re: [PATCH 05/14] dmaengine: dma-jz4780: Add support for the JZ4740
+ SoC
+Message-ID: <20180716213339.GA19161@rob-hp-laptop>
 References: <20180703123214.23090-1-paul@crapouillou.net>
- <20180703123214.23090-3-paul@crapouillou.net>
- <20180709170359.GI22377@vkoul-mobl>
- <1531237019.17118.1@crapouillou.net>
- <20180711121655.GS3219@vkoul-mobl>
- <20180711232715.djxrbgmcski5xtjp@pburton-laptop>
+ <20180703123214.23090-6-paul@crapouillou.net>
+ <20180709171226.GK22377@vkoul-mobl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180711232715.djxrbgmcski5xtjp@pburton-laptop>
+In-Reply-To: <20180709171226.GK22377@vkoul-mobl>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64864
+X-archive-position: 64865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,45 +70,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 11, 2018 at 04:27:15PM -0700, Paul Burton wrote:
-> Hi Vinod,
+On Mon, Jul 09, 2018 at 10:42:26PM +0530, Vinod wrote:
+> On 03-07-18, 14:32, Paul Cercueil wrote:
 > 
-> On Wed, Jul 11, 2018 at 05:46:55PM +0530, Vinod wrote:
-> > > > >  -	jzdma->base = devm_ioremap_resource(dev, res);
-> > > > >  -	if (IS_ERR(jzdma->base))
-> > > > >  -		return PTR_ERR(jzdma->base);
-> > > > >  +	jzdma->chn_base = devm_ioremap_resource(dev, res);
-> > > > >  +	if (IS_ERR(jzdma->chn_base))
-> > > > >  +		return PTR_ERR(jzdma->chn_base);
-> > > > >  +
-> > > > >  +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> > > > >  +	if (!res) {
-> > > > >  +		dev_err(dev, "failed to get I/O memory\n");
-> > > > >  +		return -EINVAL;
-> > > > >  +	}
-> > > > 
-> > > > okay and this breaks if you happen to get probed on older DT. I think DT
-> > > > is treated as ABI so you need to continue support older method while
-> > > > finding if DT has split resources
-> > > 
-> > > See my response to PrasannaKumar. All the Ingenic-based boards do compile
-> > > the devicetree within the kernel, so I think it's still fine to add breaking
-> > > changes. I'll wait on @Rob to give his point of view on this, though.
-> > > 
-> > > (It's not something hard to change, but I'd like to know what's the policy
-> > > in that case. I have other DT-breaking patches to submit)
-> > 
-> > The policy is that DT is an ABI and should not break :)
+> >  enum jz_version {
+> > +	ID_JZ4740,
+> >  	ID_JZ4770,
+> >  	ID_JZ4780,
+> >  };
+> > @@ -247,6 +248,7 @@ static void jz4780_dma_desc_free(struct virt_dma_desc *vdesc)
+> >  }
+> >  
+> >  static const unsigned int jz4780_dma_ord_max[] = {
+> > +	[ID_JZ4740] = 5,
+> >  	[ID_JZ4770] = 6,
+> >  	[ID_JZ4780] = 7,
+> >  };
+> > @@ -801,11 +803,13 @@ static struct dma_chan *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
+> >  }
+> >  
+> >  static const unsigned int jz4780_dma_nb_channels[] = {
+> > +	[ID_JZ4740] = 6,
+> >  	[ID_JZ4770] = 6,
+> >  	[ID_JZ4780] = 32,
+> >  };
 > 
-> I think in general that's a good policy to have for compatibility, but
-> if it's known for certain that the DT for all users of a driver is
-> always built into the kernel then I don't see why we shouldn't feel free
-> to change a binding. I agree with Paul that it'd be interesting to hear
-> the DT binding maintainers take on this.
+> I feel these should be done away with if we describe hardware in DT
 
-If the platform maintainers (and their users) don't care, then I don't 
-have an issue with the change. It should still be an exception and not 
-just any change goes. The commit message should still highlight that 
-compatibility is being broken and why.
+The compatible property can imply things like this.
 
-Rob
+But how this is structured is a bit strange. Normally you have a per 
+compatible struct with these as elements and the compatible matching 
+selects the struct.
+
+> 
+> >  
+> >  static const struct of_device_id jz4780_dma_dt_match[] = {
+> > +	{ .compatible = "ingenic,jz4740-dma", .data = (void *)ID_JZ4740 },
+> 
+> adding .compatible should be the only thing required, if at all for this
+> addition :)
+> 
+> -- 
+> ~Vinod

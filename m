@@ -1,36 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:44:12 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38636 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994573AbeGPHoDOA9Rt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:44:03 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6FBF3C03;
-        Mon, 16 Jul 2018 07:43:56 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:48:06 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:40258 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992571AbeGPHr6hfswt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:47:58 +0200
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6G7idhx007899
+        for <linux-mips@linux-mips.org>; Mon, 16 Jul 2018 03:47:56 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2k8q84r3b2-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Mon, 16 Jul 2018 03:47:56 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Mon, 16 Jul 2018 08:47:54 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 16 Jul 2018 08:47:50 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6G7lnmP37683252
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 16 Jul 2018 07:47:49 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6DA3852063;
+        Mon, 16 Jul 2018 10:48:08 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.99])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id CA0D652051;
+        Mon, 16 Jul 2018 10:48:06 +0100 (BST)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Mon, 16 Jul 2018 10:47:47 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.4 01/43] MIPS: Fix ioremap() RAM check
-Date:   Mon, 16 Jul 2018 09:36:06 +0200
-Message-Id: <20180716073511.923793671@linuxfoundation.org>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180716073511.796555857@linuxfoundation.org>
-References: <20180716073511.796555857@linuxfoundation.org>
-User-Agent: quilt/0.65
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+        Huacai Chen <chenhc@lemote.com>,
+        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Subject: [PATCH] mips: switch to NO_BOOTMEM
+Date:   Mon, 16 Jul 2018 10:47:42 +0300
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-GCONF: 00
+x-cbid: 18071607-0028-0000-0000-000002DC03C6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18071607-0029-0000-0000-00002393BF4E
+Message-Id: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-16_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807160092
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64849
+X-archive-position: 64850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,127 +74,311 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+MIPS already has memblock support and all the memory is already registered
+with it.
 
-------------------
+This patch replaces bootmem memory reservations with memblock ones and
+removes the bootmem initialization.
 
-From: Paul Burton <paul.burton@mips.com>
-
-commit 523402fa9101090c91d2033b7ebdfdcf65880488 upstream.
-
-We currently attempt to check whether a physical address range provided
-to __ioremap() may be in use by the page allocator by examining the
-value of PageReserved for each page in the region - lowmem pages not
-marked reserved are presumed to be in use by the page allocator, and
-requests to ioremap them fail.
-
-The way we check this has been broken since commit 92923ca3aace ("mm:
-meminit: only set page reserved in the memblock region"), because
-memblock will typically not have any knowledge of non-RAM pages and
-therefore those pages will not have the PageReserved flag set. Thus when
-we attempt to ioremap a region outside of RAM we incorrectly fail
-believing that the region is RAM that may be in use.
-
-In most cases ioremap() on MIPS will take a fast-path to use the
-unmapped kseg1 or xkphys virtual address spaces and never hit this path,
-so the only way to hit it is for a MIPS32 system to attempt to ioremap()
-an address range in lowmem with flags other than _CACHE_UNCACHED.
-Perhaps the most straightforward way to do this is using
-ioremap_uncached_accelerated(), which is how the problem was discovered.
-
-Fix this by making use of walk_system_ram_range() to test the address
-range provided to __ioremap() against only RAM pages, rather than all
-lowmem pages. This means that if we have a lowmem I/O region, which is
-very common for MIPS systems, we're free to ioremap() address ranges
-within it. A nice bonus is that the test is no longer limited to lowmem.
-
-The approach here matches the way x86 performed the same test after
-commit c81c8a1eeede ("x86, ioremap: Speed up check for RAM pages") until
-x86 moved towards a slightly more complicated check using walk_mem_res()
-for unrelated reasons with commit 0e4c12b45aa8 ("x86/mm, resource: Use
-PAGE_KERNEL protection for ioremap of memory pages").
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Fixes: 92923ca3aace ("mm: meminit: only set page reserved in the memblock region")
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # v4.2+
-Patchwork: https://patchwork.linux-mips.org/patch/19786/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
- arch/mips/mm/ioremap.c |   37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+The "generic" part was tested with qemu-system-mipsel (both 32 and 64
+bits).
+loongson3, sgi-ip27 and allyesconfig are build tested only.
 
---- a/arch/mips/mm/ioremap.c
-+++ b/arch/mips/mm/ioremap.c
-@@ -9,6 +9,7 @@
- #include <linux/module.h>
- #include <asm/addrspace.h>
- #include <asm/byteorder.h>
-+#include <linux/ioport.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-@@ -97,6 +98,20 @@ static int remap_area_pages(unsigned lon
- 	return error;
- }
+ arch/mips/Kconfig                      |  1 +
+ arch/mips/kernel/setup.c               | 89 +++++-----------------------------
+ arch/mips/loongson64/loongson-3/numa.c | 34 ++++++-------
+ arch/mips/sgi-ip27/ip27-memory.c       | 11 ++---
+ 4 files changed, 33 insertions(+), 102 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 08c10c5..bd15bad 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -76,6 +76,7 @@ config MIPS
+ 	select RTC_LIB if !MACH_LOONGSON64
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select VIRT_TO_BUS
++	select NO_BOOTMEM
  
-+static int __ioremap_check_ram(unsigned long start_pfn, unsigned long nr_pages,
-+			       void *arg)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		if (pfn_valid(start_pfn + i) &&
-+		    !PageReserved(pfn_to_page(start_pfn + i)))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Generic mapping function (not visible outside):
-  */
-@@ -115,8 +130,8 @@ static int remap_area_pages(unsigned lon
+ menu "Machine selection"
  
- void __iomem * __ioremap(phys_addr_t phys_addr, phys_addr_t size, unsigned long flags)
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 2c96c0c..10f46aa 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -327,7 +327,7 @@ static void __init finalize_initrd(void)
+ 
+ 	maybe_bswap_initrd();
+ 
+-	reserve_bootmem(__pa(initrd_start), size, BOOTMEM_DEFAULT);
++	memblock_reserve(__pa(initrd_start), size);
+ 	initrd_below_start_ok = 1;
+ 
+ 	pr_info("Initial ramdisk at: 0x%lx (%lu bytes)\n",
+@@ -364,20 +364,10 @@ static void __init bootmem_init(void)
+ 
+ #else  /* !CONFIG_SGI_IP27 */
+ 
+-static unsigned long __init bootmap_bytes(unsigned long pages)
+-{
+-	unsigned long bytes = DIV_ROUND_UP(pages, 8);
+-
+-	return ALIGN(bytes, sizeof(long));
+-}
+-
+ static void __init bootmem_init(void)
  {
-+	unsigned long offset, pfn, last_pfn;
- 	struct vm_struct * area;
--	unsigned long offset;
- 	phys_addr_t last_addr;
- 	void * addr;
- 
-@@ -136,18 +151,16 @@ void __iomem * __ioremap(phys_addr_t phy
- 		return (void __iomem *) CKSEG1ADDR(phys_addr);
+ 	unsigned long reserved_end;
+-	unsigned long mapstart = ~0UL;
+-	unsigned long bootmap_size;
+ 	phys_addr_t ramstart = PHYS_ADDR_MAX;
+-	bool bootmap_valid = false;
+ 	int i;
  
  	/*
--	 * Don't allow anybody to remap normal RAM that we're using..
-+	 * Don't allow anybody to remap RAM that may be allocated by the page
-+	 * allocator, since that could lead to races & data clobbering.
- 	 */
--	if (phys_addr < virt_to_phys(high_memory)) {
--		char *t_addr, *t_end;
--		struct page *page;
--
--		t_addr = __va(phys_addr);
--		t_end = t_addr + (size - 1);
--
--		for(page = virt_to_page(t_addr); page <= virt_to_page(t_end); page++)
--			if(!PageReserved(page))
--				return NULL;
-+	pfn = PFN_DOWN(phys_addr);
-+	last_pfn = PFN_DOWN(last_addr);
-+	if (walk_system_ram_range(pfn, last_pfn - pfn + 1, NULL,
-+				  __ioremap_check_ram) == 1) {
-+		WARN_ONCE(1, "ioremap on RAM at %pa - %pa\n",
-+			  &phys_addr, &last_addr);
-+		return NULL;
+@@ -389,6 +379,8 @@ static void __init bootmem_init(void)
+ 	init_initrd();
+ 	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
+ 
++	memblock_reserve(PHYS_OFFSET, reserved_end << PAGE_SHIFT);
++
+ 	/*
+ 	 * max_low_pfn is not a number of pages. The number of pages
+ 	 * of the system is given by 'max_low_pfn - min_low_pfn'.
+@@ -436,17 +428,16 @@ static void __init bootmem_init(void)
+ 		if (initrd_end && end <= (unsigned long)PFN_UP(__pa(initrd_end)))
+ 			continue;
+ #endif
+-		if (start >= mapstart)
+-			continue;
+-		mapstart = max(reserved_end, start);
  	}
  
  	/*
+ 	 * Reserve any memory between the start of RAM and PHYS_OFFSET
+ 	 */
+-	if (ramstart > PHYS_OFFSET)
++	if (ramstart > PHYS_OFFSET) {
+ 		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
+ 				  BOOT_MEM_RESERVED);
++		memblock_reserve(PHYS_OFFSET, ramstart - PHYS_OFFSET);
++	}
+ 
+ 	if (min_low_pfn >= max_low_pfn)
+ 		panic("Incorrect memory mapping !!!");
+@@ -472,52 +463,6 @@ static void __init bootmem_init(void)
+ 		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ 	}
+ 
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	/*
+-	 * mapstart should be after initrd_end
+-	 */
+-	if (initrd_end)
+-		mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
+-#endif
+-
+-	/*
+-	 * check that mapstart doesn't overlap with any of
+-	 * memory regions that have been reserved through eg. DTB
+-	 */
+-	bootmap_size = bootmap_bytes(max_low_pfn - min_low_pfn);
+-
+-	bootmap_valid = memory_region_available(PFN_PHYS(mapstart),
+-						bootmap_size);
+-	for (i = 0; i < boot_mem_map.nr_map && !bootmap_valid; i++) {
+-		unsigned long mapstart_addr;
+-
+-		switch (boot_mem_map.map[i].type) {
+-		case BOOT_MEM_RESERVED:
+-			mapstart_addr = PFN_ALIGN(boot_mem_map.map[i].addr +
+-						boot_mem_map.map[i].size);
+-			if (PHYS_PFN(mapstart_addr) < mapstart)
+-				break;
+-
+-			bootmap_valid = memory_region_available(mapstart_addr,
+-								bootmap_size);
+-			if (bootmap_valid)
+-				mapstart = PHYS_PFN(mapstart_addr);
+-			break;
+-		default:
+-			break;
+-		}
+-	}
+-
+-	if (!bootmap_valid)
+-		panic("No memory area to place a bootmap bitmap");
+-
+-	/*
+-	 * Initialize the boot-time allocator with low memory only.
+-	 */
+-	if (bootmap_size != init_bootmem_node(NODE_DATA(0), mapstart,
+-					 min_low_pfn, max_low_pfn))
+-		panic("Unexpected memory size required for bootmap");
+-
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		unsigned long start, end;
+ 
+@@ -566,9 +511,9 @@ static void __init bootmem_init(void)
+ 		default:
+ 			/* Not usable memory */
+ 			if (start > min_low_pfn && end < max_low_pfn)
+-				reserve_bootmem(boot_mem_map.map[i].addr,
+-						boot_mem_map.map[i].size,
+-						BOOTMEM_DEFAULT);
++				memblock_reserve(boot_mem_map.map[i].addr,
++						boot_mem_map.map[i].size);
++
+ 			continue;
+ 		}
+ 
+@@ -591,15 +536,9 @@ static void __init bootmem_init(void)
+ 		size = end - start;
+ 
+ 		/* Register lowmem ranges */
+-		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
+ 		memory_present(0, start, end);
+ 	}
+ 
+-	/*
+-	 * Reserve the bootmap memory.
+-	 */
+-	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
+-
+ #ifdef CONFIG_RELOCATABLE
+ 	/*
+ 	 * The kernel reserves all memory below its _end symbol as bootmem,
+@@ -901,17 +840,15 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	if (setup_elfcorehdr && setup_elfcorehdr_size) {
+ 		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
+ 		       setup_elfcorehdr, setup_elfcorehdr_size);
+-		reserve_bootmem(setup_elfcorehdr, setup_elfcorehdr_size,
+-				BOOTMEM_DEFAULT);
++		memblock_reserve(setup_elfcorehdr, setup_elfcorehdr_size);
+ 	}
+ #endif
+ 
+ 	mips_parse_crashkernel();
+ #ifdef CONFIG_KEXEC
+ 	if (crashk_res.start != crashk_res.end)
+-		reserve_bootmem(crashk_res.start,
+-				crashk_res.end - crashk_res.start + 1,
+-				BOOTMEM_DEFAULT);
++		memblock_reserve(crashk_res.start,
++				 crashk_res.end - crashk_res.start + 1);
+ #endif
+ 	device_tree_init();
+ 	sparse_init();
+@@ -921,7 +858,7 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	/* Tell bootmem about cma reserved memblock section */
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+-			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++			memblock_reserve(reg->base, reg->size);
+ 
+ 	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
+ 			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index 9717106..c1e6ec5 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -180,43 +180,39 @@ static void __init szmem(unsigned int node)
+ 
+ static void __init node_mem_init(unsigned int node)
+ {
+-	unsigned long bootmap_size;
+ 	unsigned long node_addrspace_offset;
+-	unsigned long start_pfn, end_pfn, freepfn;
++	unsigned long start_pfn, end_pfn;
+ 
+ 	node_addrspace_offset = nid_to_addroffset(node);
+ 	pr_info("Node%d's addrspace_offset is 0x%lx\n",
+ 			node, node_addrspace_offset);
+ 
+ 	get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
+-	freepfn = start_pfn;
+-	if (node == 0)
+-		freepfn = PFN_UP(__pa_symbol(&_end)); /* kernel end address */
+-	pr_info("Node%d: start_pfn=0x%lx, end_pfn=0x%lx, freepfn=0x%lx\n",
+-		node, start_pfn, end_pfn, freepfn);
++	pr_info("Node%d: start_pfn=0x%lx, end_pfn=0x%lx\n",
++		node, start_pfn, end_pfn);
+ 
+ 	__node_data[node] = prealloc__node_data + node;
+ 
+-	NODE_DATA(node)->bdata = &bootmem_node_data[node];
+ 	NODE_DATA(node)->node_start_pfn = start_pfn;
+ 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+ 
+-	bootmap_size = init_bootmem_node(NODE_DATA(node), freepfn,
+-					start_pfn, end_pfn);
+ 	free_bootmem_with_active_regions(node, end_pfn);
+-	if (node == 0) /* used by finalize_initrd() */
++
++	if (node == 0) {
++		/* kernel end address */
++		unsigned long kernel_end_pfn = PFN_UP(__pa_symbol(&_end));
++
++		/* used by finalize_initrd() */
+ 		max_low_pfn = end_pfn;
+ 
+-	/* This is reserved for the kernel and bdata->node_bootmem_map */
+-	reserve_bootmem_node(NODE_DATA(node), start_pfn << PAGE_SHIFT,
+-		((freepfn - start_pfn) << PAGE_SHIFT) + bootmap_size,
+-		BOOTMEM_DEFAULT);
++		/* Reserve the kernel text/data/bss */
++		memblock_reserve(start_pfn << PAGE_SHIFT,
++				 ((kernel_end_pfn - start_pfn) << PAGE_SHIFT));
+ 
+-	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
+ 		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
+-		reserve_bootmem_node(NODE_DATA(node),
+-				(node_addrspace_offset | 0xfe000000),
+-				32 << 20, BOOTMEM_DEFAULT);
++		if (node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT))
++			memblock_reserve((node_addrspace_offset | 0xfe000000),
++					 32 << 20);
+ 	}
+ 
+ 	sparse_memory_present_with_active_regions(node);
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index 59133d0a..6f7bef0 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -389,7 +389,6 @@ static void __init node_mem_init(cnodeid_t node)
+ {
+ 	unsigned long slot_firstpfn = slot_getbasepfn(node, 0);
+ 	unsigned long slot_freepfn = node_getfirstfree(node);
+-	unsigned long bootmap_size;
+ 	unsigned long start_pfn, end_pfn;
+ 
+ 	get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
+@@ -400,7 +399,6 @@ static void __init node_mem_init(cnodeid_t node)
+ 	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+ 	memset(__node_data[node], 0, PAGE_SIZE);
+ 
+-	NODE_DATA(node)->bdata = &bootmem_node_data[node];
+ 	NODE_DATA(node)->node_start_pfn = start_pfn;
+ 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+ 
+@@ -409,12 +407,11 @@ static void __init node_mem_init(cnodeid_t node)
+ 	slot_freepfn += PFN_UP(sizeof(struct pglist_data) +
+ 			       sizeof(struct hub_data));
+ 
+-	bootmap_size = init_bootmem_node(NODE_DATA(node), slot_freepfn,
+-					start_pfn, end_pfn);
+ 	free_bootmem_with_active_regions(node, end_pfn);
+-	reserve_bootmem_node(NODE_DATA(node), slot_firstpfn << PAGE_SHIFT,
+-		((slot_freepfn - slot_firstpfn) << PAGE_SHIFT) + bootmap_size,
+-		BOOTMEM_DEFAULT);
++
++	memblock_reserve(slot_firstpfn << PAGE_SHIFT,
++			 ((slot_freepfn - slot_firstpfn) << PAGE_SHIFT));
++
+ 	sparse_memory_present_with_active_regions(node);
+ }
+ 
+-- 
+2.7.4

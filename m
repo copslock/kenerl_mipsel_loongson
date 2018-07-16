@@ -1,55 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 07:45:14 +0200 (CEST)
-Received: from 9pmail.ess.barracuda.com ([64.235.150.225]:35470 "EHLO
-        9pmail.ess.barracuda.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991162AbeGPFpHaHU6D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 07:45:07 +0200
-Received: from mipsdag02.mipstec.com (mail2.mips.com [12.201.5.32]) by mx1.ess.sfj.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=NO); Mon, 16 Jul 2018 05:44:35 +0000
-Received: from [10.20.78.133] (10.20.78.133) by mipsdag02.mipstec.com
- (10.20.40.47) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1415.2; Sun, 15
- Jul 2018 22:44:42 -0700
-Date:   Mon, 16 Jul 2018 06:44:23 +0100
-From:   "Maciej W. Rozycki" <macro@mips.com>
-To:     Paul Burton <paul.burton@mips.com>
-CC:     Alexander Viro <viro@zeniv.linux.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:36:08 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37086 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992553AbeGPHf51Af7t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:35:57 +0200
+Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4A620CAF;
+        Mon, 16 Jul 2018 07:35:50 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        <linux-fsdevel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/3] binfmt_elf: Respect error return from
- `regset->active'
-In-Reply-To: <20180629171330.4giikc5x2cbxxuyc@pburton-laptop>
-Message-ID: <alpine.DEB.2.00.1807151824230.30992@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1804301557320.11756@tp.orcam.me.uk> <alpine.DEB.2.00.1805102009380.10896@tp.orcam.me.uk> <20180629171330.4giikc5x2cbxxuyc@pburton-laptop>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
+Subject: [PATCH 4.17 02/67] MIPS: Call dump_stack() from show_regs()
+Date:   Mon, 16 Jul 2018 09:34:31 +0200
+Message-Id: <20180716073443.563127118@linuxfoundation.org>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180716073443.294323458@linuxfoundation.org>
+References: <20180716073443.294323458@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.133]
-X-ClientProxiedBy: mipsdag02.mipstec.com (10.20.40.47) To
- mipsdag02.mipstec.com (10.20.40.47)
-X-BESS-ID: 1531719874-298552-23289-155744-1
-X-BESS-VER: 2018.9-r1807111811
-X-BESS-Apparent-Source-IP: 12.201.5.32
-X-BESS-Envelope-From: maciej.rozycki@uk.mips.com
-X-BESS-Outbound-Spam-Score: 0.01
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.195800
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.01 BSF_SC0_SA_TO_FROM_DOMAIN_MATCH META: Sender Domain Matches Recipient Domain 
-X-BESS-Outbound-Spam-Status: SCORE=0.01 using account:ESS59374 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_SA_TO_FROM_DOMAIN_MATCH
-X-BESS-Orig-Rcpt: viro@zeniv.linux.org.uk,jhogan@kernel.org,ralf@linux-mips.org,linux-fsdevel@vger.kernel.org,linux-mips@linux-mips.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org
-X-BESS-BRTS-Status: 1
-Return-Path: <maciej.rozycki@uk.mips.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64839
+X-archive-position: 64840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@mips.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,26 +44,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+4.17-stable review patch.  If anyone has any objections, please let me know.
 
-> > --- linux-jhogan-test.orig/fs/binfmt_elf.c	2018-03-21 17:14:55.000000000 +0000
-> > +++ linux-jhogan-test/fs/binfmt_elf.c	2018-05-09 23:25:50.742255000 +0100
-> > @@ -1739,7 +1739,7 @@ static int fill_thread_core_info(struct 
-> >  		const struct user_regset *regset = &view->regsets[i];
-> >  		do_thread_regset_writeback(t->task, regset);
-> >  		if (regset->core_note_type && regset->get &&
-> > -		    (!regset->active || regset->active(t->task, regset))) {
-> > +		    (!regset->active || regset->active(t->task, regset) > 0)) {
-> >  			int ret;
-> >  			size_t size = regset_size(t->task, regset);
-> >  			void *data = kmalloc(size, GFP_KERNEL);
-> > 
-> 
-> This looks obviously right to me, although I don't think it affects
-> anything until commit 25847fb195ae ("powerpc/ptrace: Enable support for
-> NT_PPC_CGPR") in v4.8-rc1 & even then not in a harmful way so I'd drop
-> the stable tag.
+------------------
 
- I'm fine with dropping the tag FWIW.  Thanks for taking care of my patch.
+From: Paul Burton <paul.burton@mips.com>
 
-  Maciej
+commit 5a267832c2ec47b2dad0fdb291a96bb5b8869315 upstream.
+
+The generic nmi_cpu_backtrace() function calls show_regs() when a struct
+pt_regs is available, and dump_stack() otherwise. If we were to make use
+of the generic nmi_cpu_backtrace() with MIPS' current implementation of
+show_regs() this would mean that we see only register data with no
+accompanying stack information, in contrast with our current
+implementation which calls dump_stack() regardless of whether register
+state is available.
+
+In preparation for making use of the generic nmi_cpu_backtrace() to
+implement arch_trigger_cpumask_backtrace(), have our implementation of
+show_regs() call dump_stack() and drop the explicit dump_stack() call in
+arch_dump_stack() which is invoked by arch_trigger_cpumask_backtrace().
+
+This will allow the output we produce to remain the same after a later
+patch switches to using nmi_cpu_backtrace(). It may mean that we produce
+extra stack output in other uses of show_regs(), but this:
+
+  1) Seems harmless.
+  2) Is good for consistency between arch_trigger_cpumask_backtrace()
+     and other users of show_regs().
+  3) Matches the behaviour of the ARM & PowerPC architectures.
+
+Marked for stable back to v4.9 as a prerequisite of the following patch
+"MIPS: Call dump_stack() from show_regs()".
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19596/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/process.c |    4 ++--
+ arch/mips/kernel/traps.c   |    1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -663,8 +663,8 @@ static void arch_dump_stack(void *info)
+ 
+ 	if (regs)
+ 		show_regs(regs);
+-
+-	dump_stack();
++	else
++		dump_stack();
+ }
+ 
+ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -351,6 +351,7 @@ static void __show_regs(const struct pt_
+ void show_regs(struct pt_regs *regs)
+ {
+ 	__show_regs((struct pt_regs *)regs);
++	dump_stack();
+ }
+ 
+ void show_registers(struct pt_regs *regs)

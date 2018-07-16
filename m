@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:40:46 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37800 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2018 09:42:47 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38336 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994608AbeGPHkENPX2t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:40:04 +0200
+        by eddie.linux-mips.org with ESMTP id S23994678AbeGPHmfwZjxt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jul 2018 09:42:35 +0200
 Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 94F38CA1;
-        Mon, 16 Jul 2018 07:39:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 42606C03;
+        Mon, 16 Jul 2018 07:42:29 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 05/54] MIPS: Fix ioremap() RAM check
-Date:   Mon, 16 Jul 2018 09:35:02 +0200
-Message-Id: <20180716073451.520643531@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
+Subject: [PATCH 4.9 02/32] MIPS: Call dump_stack() from show_regs()
+Date:   Mon, 16 Jul 2018 09:36:10 +0200
+Message-Id: <20180716073504.733225999@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180716073450.534886211@linuxfoundation.org>
-References: <20180716073450.534886211@linuxfoundation.org>
+In-Reply-To: <20180716073504.433996952@linuxfoundation.org>
+References: <20180716073504.433996952@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64845
+X-archive-position: 64846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,127 +44,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paul Burton <paul.burton@mips.com>
 
-commit 523402fa9101090c91d2033b7ebdfdcf65880488 upstream.
+commit 5a267832c2ec47b2dad0fdb291a96bb5b8869315 upstream.
 
-We currently attempt to check whether a physical address range provided
-to __ioremap() may be in use by the page allocator by examining the
-value of PageReserved for each page in the region - lowmem pages not
-marked reserved are presumed to be in use by the page allocator, and
-requests to ioremap them fail.
+The generic nmi_cpu_backtrace() function calls show_regs() when a struct
+pt_regs is available, and dump_stack() otherwise. If we were to make use
+of the generic nmi_cpu_backtrace() with MIPS' current implementation of
+show_regs() this would mean that we see only register data with no
+accompanying stack information, in contrast with our current
+implementation which calls dump_stack() regardless of whether register
+state is available.
 
-The way we check this has been broken since commit 92923ca3aace ("mm:
-meminit: only set page reserved in the memblock region"), because
-memblock will typically not have any knowledge of non-RAM pages and
-therefore those pages will not have the PageReserved flag set. Thus when
-we attempt to ioremap a region outside of RAM we incorrectly fail
-believing that the region is RAM that may be in use.
+In preparation for making use of the generic nmi_cpu_backtrace() to
+implement arch_trigger_cpumask_backtrace(), have our implementation of
+show_regs() call dump_stack() and drop the explicit dump_stack() call in
+arch_dump_stack() which is invoked by arch_trigger_cpumask_backtrace().
 
-In most cases ioremap() on MIPS will take a fast-path to use the
-unmapped kseg1 or xkphys virtual address spaces and never hit this path,
-so the only way to hit it is for a MIPS32 system to attempt to ioremap()
-an address range in lowmem with flags other than _CACHE_UNCACHED.
-Perhaps the most straightforward way to do this is using
-ioremap_uncached_accelerated(), which is how the problem was discovered.
+This will allow the output we produce to remain the same after a later
+patch switches to using nmi_cpu_backtrace(). It may mean that we produce
+extra stack output in other uses of show_regs(), but this:
 
-Fix this by making use of walk_system_ram_range() to test the address
-range provided to __ioremap() against only RAM pages, rather than all
-lowmem pages. This means that if we have a lowmem I/O region, which is
-very common for MIPS systems, we're free to ioremap() address ranges
-within it. A nice bonus is that the test is no longer limited to lowmem.
+  1) Seems harmless.
+  2) Is good for consistency between arch_trigger_cpumask_backtrace()
+     and other users of show_regs().
+  3) Matches the behaviour of the ARM & PowerPC architectures.
 
-The approach here matches the way x86 performed the same test after
-commit c81c8a1eeede ("x86, ioremap: Speed up check for RAM pages") until
-x86 moved towards a slightly more complicated check using walk_mem_res()
-for unrelated reasons with commit 0e4c12b45aa8 ("x86/mm, resource: Use
-PAGE_KERNEL protection for ioremap of memory pages").
+Marked for stable back to v4.9 as a prerequisite of the following patch
+"MIPS: Call dump_stack() from show_regs()".
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Fixes: 92923ca3aace ("mm: meminit: only set page reserved in the memblock region")
+Patchwork: https://patchwork.linux-mips.org/patch/19596/
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Huacai Chen <chenhc@lemote.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # v4.2+
-Patchwork: https://patchwork.linux-mips.org/patch/19786/
+Cc: stable@vger.kernel.org # v4.9+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/ioremap.c |   37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ arch/mips/kernel/process.c |    4 ++--
+ arch/mips/kernel/traps.c   |    1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mm/ioremap.c
-+++ b/arch/mips/mm/ioremap.c
-@@ -9,6 +9,7 @@
- #include <linux/export.h>
- #include <asm/addrspace.h>
- #include <asm/byteorder.h>
-+#include <linux/ioport.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-@@ -98,6 +99,20 @@ static int remap_area_pages(unsigned lon
- 	return error;
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -641,8 +641,8 @@ static void arch_dump_stack(void *info)
+ 
+ 	if (regs)
+ 		show_regs(regs);
+-
+-	dump_stack();
++	else
++		dump_stack();
  }
  
-+static int __ioremap_check_ram(unsigned long start_pfn, unsigned long nr_pages,
-+			       void *arg)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		if (pfn_valid(start_pfn + i) &&
-+		    !PageReserved(pfn_to_page(start_pfn + i)))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Generic mapping function (not visible outside):
-  */
-@@ -116,8 +131,8 @@ static int remap_area_pages(unsigned lon
- 
- void __iomem * __ioremap(phys_addr_t phys_addr, phys_addr_t size, unsigned long flags)
+ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -351,6 +351,7 @@ static void __show_regs(const struct pt_
+ void show_regs(struct pt_regs *regs)
  {
-+	unsigned long offset, pfn, last_pfn;
- 	struct vm_struct * area;
--	unsigned long offset;
- 	phys_addr_t last_addr;
- 	void * addr;
+ 	__show_regs((struct pt_regs *)regs);
++	dump_stack();
+ }
  
-@@ -137,18 +152,16 @@ void __iomem * __ioremap(phys_addr_t phy
- 		return (void __iomem *) CKSEG1ADDR(phys_addr);
- 
- 	/*
--	 * Don't allow anybody to remap normal RAM that we're using..
-+	 * Don't allow anybody to remap RAM that may be allocated by the page
-+	 * allocator, since that could lead to races & data clobbering.
- 	 */
--	if (phys_addr < virt_to_phys(high_memory)) {
--		char *t_addr, *t_end;
--		struct page *page;
--
--		t_addr = __va(phys_addr);
--		t_end = t_addr + (size - 1);
--
--		for(page = virt_to_page(t_addr); page <= virt_to_page(t_end); page++)
--			if(!PageReserved(page))
--				return NULL;
-+	pfn = PFN_DOWN(phys_addr);
-+	last_pfn = PFN_DOWN(last_addr);
-+	if (walk_system_ram_range(pfn, last_pfn - pfn + 1, NULL,
-+				  __ioremap_check_ram) == 1) {
-+		WARN_ONCE(1, "ioremap on RAM at %pa - %pa\n",
-+			  &phys_addr, &last_addr);
-+		return NULL;
- 	}
- 
- 	/*
+ void show_registers(struct pt_regs *regs)

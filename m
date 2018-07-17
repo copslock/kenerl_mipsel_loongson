@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 08:43:07 +0200 (CEST)
-Received: from mail-pg1-x541.google.com ([IPv6:2607:f8b0:4864:20::541]:42870
-        "EHLO mail-pg1-x541.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeGQGnCs2K-9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 08:43:02 +0200
-Received: by mail-pg1-x541.google.com with SMTP id y4-v6so3861pgp.9;
-        Mon, 16 Jul 2018 23:43:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 08:43:27 +0200 (CEST)
+Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:38355
+        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeGQGnWKaN09 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 08:43:22 +0200
+Received: by mail-pf0-x244.google.com with SMTP id v15-v6so12482pff.5;
+        Mon, 16 Jul 2018 23:43:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=qaMXww1nEwE40YlgzRW4KZWfKxWx8LOcN8hWtez+UFw=;
-        b=FKA4FCOaLCwCcQR5hOn3Lzu7wOfBADIBh951K+2+s4IHwvPmZeHV3IBEzvRAgJ9rlI
-         9W8nsiF881OQfyeQlVk67EPOg9I4+J+DgLZnRVu6RUeqQKiR7edONEX5R9zxwldRAKkq
-         dmocannjUxKKzSSEWiDswYR66cmAv5G1/9eD/LY9TMPIgEydzC1PqwytOxioIzCTyCmg
-         L7fyMM3DvbMBhZLEQInZzIxDjblje3v6+OoJWOrLF7iyBB4e9otiO6OYDcMEBhB/iUkQ
-         8+/srD0wqvSM7mmY4AZISLrwUzCCgZ+esmm51BlUGTpdI4SUIi1DVGKzHobXnu7tmZ8R
-         6+xQ==
+        bh=2NmA/BPjR0lXJMSTNDY7ne8iw2IYv1bW05vpMibtW/I=;
+        b=rPO2pnxDqqOYOkbPcn5yzDp+h8T0bnofw85REW8qvbEDr6j/oNMmqdJfueFT8Ar1Up
+         TY+sIAlv9Cxj+eymVIld8QHoWwflj2Gdlwl1IvQifzA1VzyIYP0CasOEySReIF8gqByi
+         uGxfHFcrp5tHtVpdmIp4vg0EDXcoghwBboPNi+3GY0RGZNSqucUOu5ylvuOgoLFgiVAl
+         YzWSilFRHDuHDEpG1QNzhuHxXGhcSOT+C6HXPNTyumCInoLujgDeM8EmVvBY1p8G5DEa
+         DTrgEf4g/V3FcJnpW4InDiVA43zefP5qzMxTzhlU2VeFwkER678P7G9JdSTbng0Vozx/
+         MHzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=qaMXww1nEwE40YlgzRW4KZWfKxWx8LOcN8hWtez+UFw=;
-        b=kn/+nd0YsIR02k31x7GoLv4Df0lhRcBR0YM6DcKFoWntvK3UgqHeFh2O2Zodt190vn
-         Q9tbhYSeU3Wvnn6fZ4MYIZB1e+n7lzg01fcUm7uIi13ZxbgEfU6Wm6Fz9emGF4YzBb7d
-         sf8WGuUs/VKwCPY71sdjA9Cs1GnwiRvq0ZRs6jiHFU67LKzjhtOEx/8wZrdmJ0xN4Wwz
-         FAAkXx3OBiH3UCI5x0LhwsZlx5irEcv40TXTqclS1q6Oz042l3nsG074h0CT8pmYeArI
-         WkLZp29HHyP5P6LrMs2osl6y3Ms3kaEwdNa9jcLHhRxginbJB7kpj9a82+U26dCZ8nDP
-         4Vwg==
-X-Gm-Message-State: AOUpUlG6U6QWlqUEAq/XfPALj9XiFLiwnlJfC7uhl8kijMRa3PB7pSSJ
-        C+IThLDMiMotW7nwSNxS1irZqw==
-X-Google-Smtp-Source: AAOMgpdKwW8a1AX5K+V9XZJKSH1FeeAsP1UbfKpMmE1VX09R69y/SxkjKEyW3WrUHH1MSnJxcanDvw==
-X-Received: by 2002:a65:420d:: with SMTP id c13-v6mr352590pgq.265.1531809775856;
-        Mon, 16 Jul 2018 23:42:55 -0700 (PDT)
+        bh=2NmA/BPjR0lXJMSTNDY7ne8iw2IYv1bW05vpMibtW/I=;
+        b=nnAeSsO7IdIvAahOuHEV9xsCflCX/dsktnkn6cWFqNmqjTVVOq/OqESxmJXCo620lR
+         ZgC/SbYagJi38cTB9L4wwlcsLa/Pl5KmELhAKQ5wa/3aQSrLsyGvGhDXMlHhjJddqhkx
+         QVpuqAVPBNVRSSwAP86fZZ6IQe20ZatS6MM+36+pD0FvG+k7bHmJ9i5rXcEalO2ViaZC
+         DC8dkHV/LdVS0hC6UjEH/mImliI1szbCP0EGJeN/Oqj93gcHwVsHpQAZBkjNvCKVG+8U
+         wCmVaYhQOEpiakqKiYTB/qT5NIfQLCuejC3GUbhgHrq6bhAVUohwm+cKkoZegmePRuFx
+         MS5A==
+X-Gm-Message-State: AOUpUlGOLMBD6XTfi+KUk7+lDAM1ExDMeYkey39FQ5ftx5vDHPxx5cQF
+        P7siXdxzUJeCbhWeBWJosaMI/w==
+X-Google-Smtp-Source: AAOMgpfbqcRAdcENdyosC0tGTiquIUycI5QUkJhyIe0OkvUBhTMNRVUc+gZjMtTMR97HY/FMbXCWhg==
+X-Received: by 2002:a63:df04:: with SMTP id u4-v6mr366938pgg.434.1531809795415;
+        Mon, 16 Jul 2018 23:43:15 -0700 (PDT)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id t21-v6sm702713pfi.73.2018.07.16.23.42.52
+        by smtp.gmail.com with ESMTPSA id o72-v6sm570231pfk.76.2018.07.16.23.43.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 16 Jul 2018 23:42:55 -0700 (PDT)
+        Mon, 16 Jul 2018 23:43:14 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Paul Burton <paul.burton@mips.com>,
@@ -42,15 +42,15 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhuacai@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH for 4.9] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
-Date:   Tue, 17 Jul 2018 14:48:35 +0800
-Message-Id: <1531810115-16549-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH for 4.4] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
+Date:   Tue, 17 Jul 2018 14:49:02 +0800
+Message-Id: <1531810142-17140-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64866
+X-archive-position: 64867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -164,56 +164,47 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Fixes: 856839b76836 ("MIPS: Add arch_trigger_all_cpu_backtrace() function")
 Fixes: 9a01c3ed5cdb ("nmi_backtrace: add more trigger_*_cpu_backtrace() methods")
-[ Huacai: backported to 4.9: Replace "call_single_data_t" with "struct call_single_data" ]
+[ Huacai: backported to 4.4: Restruction ]
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/kernel/process.c | 45 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 30 insertions(+), 15 deletions(-)
+ arch/mips/kernel/process.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index cb1e9c1..513a63b 100644
+index f96048a..354b99f 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -26,6 +26,7 @@
- #include <linux/kallsyms.h>
- #include <linux/random.h>
- #include <linux/prctl.h>
-+#include <linux/nmi.h>
- 
- #include <asm/asm.h>
- #include <asm/bootinfo.h>
-@@ -633,28 +634,42 @@ unsigned long arch_align_stack(unsigned long sp)
+@@ -629,21 +629,48 @@ unsigned long arch_align_stack(unsigned long sp)
  	return sp & ALMASK;
  }
  
--static void arch_dump_stack(void *info)
--{
--	struct pt_regs *regs;
 +static DEFINE_PER_CPU(struct call_single_data, backtrace_csd);
 +static struct cpumask backtrace_csd_busy;
++
+ static void arch_dump_stack(void *info)
+ {
+ 	struct pt_regs *regs;
++	static arch_spinlock_t lock = __ARCH_SPIN_LOCK_UNLOCKED;
  
--	regs = get_irq_regs();
--
--	if (regs)
--		show_regs(regs);
--	else
--		dump_stack();
-+static void handle_backtrace(void *info)
-+{
-+	nmi_cpu_backtrace(get_irq_regs());
++	arch_spin_lock(&lock);
+ 	regs = get_irq_regs();
+ 
+ 	if (regs)
+ 		show_regs(regs);
+ 	else
+ 		dump_stack();
++	arch_spin_unlock(&lock);
++
 +	cpumask_clear_cpu(smp_processor_id(), &backtrace_csd_busy);
  }
  
--void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+static void raise_backtrace(cpumask_t *mask)
+ void arch_trigger_all_cpu_backtrace(bool include_self)
  {
--	long this_cpu = get_cpu();
+-	smp_call_function(arch_dump_stack, NULL, 1);
 +	struct call_single_data *csd;
 +	int cpu;
- 
--	if (cpumask_test_cpu(this_cpu, mask) && !exclude_self)
--		dump_stack();
-+	for_each_cpu(cpu, mask) {
++
++	for_each_cpu(cpu, cpu_online_mask) {
 +		/*
 +		 * If we previously sent an IPI to the target CPU & it hasn't
 +		 * cleared its bit in the busy cpumask then it didn't handle
@@ -225,18 +216,11 @@ index cb1e9c1..513a63b 100644
 +				cpu);
 +			continue;
 +		}
- 
--	smp_call_function_many(mask, arch_dump_stack, NULL, 1);
++
 +		csd = &per_cpu(backtrace_csd, cpu);
-+		csd->func = handle_backtrace;
++		csd->func = arch_dump_stack;
 +		smp_call_function_single_async(cpu, csd);
 +	}
-+}
- 
--	put_cpu();
-+void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
-+{
-+	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
  }
  
  int mips_get_process_fp_mode(struct task_struct *task)

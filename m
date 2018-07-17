@@ -1,50 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 17:26:24 +0200 (CEST)
-Received: from mga18.intel.com ([134.134.136.126]:52538 "EHLO mga18.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 17:34:25 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43708 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990439AbeGQP0VcBjug (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jul 2018 17:26:21 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jul 2018 08:26:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.51,366,1526367600"; 
-   d="scan'208";a="73088055"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Jul 2018 08:26:15 -0700
-Message-ID: <c7704b44012f6b743cc3791eab3faf674f988ce9.camel@linux.intel.com>
-Subject: Re: [PATCH 3/5] i2c: designware: add MSCC Ocelot support
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>,
-        Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 17 Jul 2018 18:26:15 +0300
-In-Reply-To: <1886510d2a828d3a246ef1f490c6819f073fbdcb.camel@linux.intel.com>
-References: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
-         <20180717114837.21839-4-alexandre.belloni@bootlin.com>
-         <1886510d2a828d3a246ef1f490c6819f073fbdcb.camel@linux.intel.com>
-Organization: Intel Finland Oy
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.1-2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <andriy.shevchenko@linux.intel.com>
+        id S23990401AbeGQPeWxT3-g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jul 2018 17:34:22 +0200
+Received: from localhost (unknown [122.178.206.78])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A7EF20839;
+        Tue, 17 Jul 2018 15:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1531841656;
+        bh=Odx7C7LLxB0hPvxPLqDMm97N8dkhL4WBzNNd1R8eATI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HQtn2aGjhZTWI145IFcdEmJftV4Ep5/pwmDl0lKvQsZUre3KiCf/dybS5ifHOBtoi
+         9aMlR8+svYmFIr7xm3POS3ODBmOOhnF74hWn9YNs3gCAhek1lkxtRZ0WFibq72QSZj
+         zG4Y9AuWWJegWriPTK4fQV35bhX/fYKCtNvPNAzc=
+Date:   Tue, 17 Jul 2018 21:04:07 +0530
+From:   Vinod <vkoul@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 05/14] dmaengine: dma-jz4780: Add support for the JZ4740
+ SoC
+Message-ID: <20180717153407.GF3219@vkoul-mobl>
+References: <20180703123214.23090-1-paul@crapouillou.net>
+ <20180703123214.23090-6-paul@crapouillou.net>
+ <20180709171226.GK22377@vkoul-mobl>
+ <20180716213339.GA19161@rob-hp-laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180716213339.GA19161@rob-hp-laptop>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <vkoul@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64895
+X-archive-position: 64896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andriy.shevchenko@linux.intel.com
+X-original-sender: vkoul@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,21 +61,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2018-07-17 at 18:16 +0300, Andy Shevchenko wrote:
-> On Tue, 2018-07-17 at 13:48 +0200, Alexandre Belloni wrote:
-> > The Microsemi Ocelot I2C controller is a designware IP. It also has
-> > a
-> > second set of registers to allow tweaking SDA hold time and spike
-> > filtering.
+On 16-07-18, 15:33, Rob Herring wrote:
+> On Mon, Jul 09, 2018 at 10:42:26PM +0530, Vinod wrote:
+> > On 03-07-18, 14:32, Paul Cercueil wrote:
+> > 
+> > >  enum jz_version {
+> > > +	ID_JZ4740,
+> > >  	ID_JZ4770,
+> > >  	ID_JZ4780,
+> > >  };
+> > > @@ -247,6 +248,7 @@ static void jz4780_dma_desc_free(struct virt_dma_desc *vdesc)
+> > >  }
+> > >  
+> > >  static const unsigned int jz4780_dma_ord_max[] = {
+> > > +	[ID_JZ4740] = 5,
+> > >  	[ID_JZ4770] = 6,
+> > >  	[ID_JZ4780] = 7,
+> > >  };
+> > > @@ -801,11 +803,13 @@ static struct dma_chan *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
+> > >  }
+> > >  
+> > >  static const unsigned int jz4780_dma_nb_channels[] = {
+> > > +	[ID_JZ4740] = 6,
+> > >  	[ID_JZ4770] = 6,
+> > >  	[ID_JZ4780] = 32,
+> > >  };
+> > 
+> > I feel these should be done away with if we describe hardware in DT
+> 
+> The compatible property can imply things like this.
 
-> What do you think?
+So what is the general recommendation, let DT describe hardware
+including version delta or use compatible to code that in driver?
 
-You can also split it to 2-3 patches, like:
-- move to device_get_match_data()
-- move OF device table above in the code (no func changes)
-- add support for MSCC
-
+Is it documented anywhere?
 
 -- 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Intel Finland Oy
+~Vinod

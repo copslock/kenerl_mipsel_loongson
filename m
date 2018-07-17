@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:49:04 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:44069 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:49:14 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:44086 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992279AbeGQLsqtHtFT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jul 2018 13:48:46 +0200
+        id S23993024AbeGQLsrEACkT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jul 2018 13:48:47 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id E272C207B4; Tue, 17 Jul 2018 13:48:40 +0200 (CEST)
+        id 74FD5208FF; Tue, 17 Jul 2018 13:48:41 +0200 (CEST)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id B5B0420765;
-        Tue, 17 Jul 2018 13:48:40 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 4CBF520884;
+        Tue, 17 Jul 2018 13:48:41 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -20,15 +20,17 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 0/5] Add support for MSCC Ocelot i2c
-Date:   Tue, 17 Jul 2018 13:48:32 +0200
-Message-Id: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
+Subject: [PATCH 2/5] i2c: designware: allow IP specific sda_hold_time
+Date:   Tue, 17 Jul 2018 13:48:34 +0200
+Message-Id: <20180717114837.21839-3-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
+References: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
 Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64873
+X-archive-position: 64874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,31 +47,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Because some old designware IPs were not supporting setting an SDA hold
+time, vendors developed their own solution. Add a way for the final driver
+to provide its own SDA hold time handling.
 
-Because the designware IP was not able to the the SDA hold time, MSCC has
-its own implementation. Add support for it and then add i2c on ocelot
-boards.
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ drivers/i2c/busses/i2c-designware-common.c | 6 ++++++
+ drivers/i2c/busses/i2c-designware-core.h   | 1 +
+ 2 files changed, 7 insertions(+)
 
-I would expect patches 1 to 3 to go through the i2c tree and 4-5 through
-the mips tree once patch 3 has been reviewed by the DT maintainers.
-
-Alexandre Belloni (5):
-  i2c: designware: factorize setting SDA hold time
-  i2c: designware: allow IP specific sda_hold_time
-  i2c: designware: add MSCC Ocelot support
-  mips: dts: mscc: Add i2c on ocelot
-  mips: dts: mscc: enable i2c on ocelot_pcb123
-
- .../bindings/i2c/i2c-designware.txt           |  5 ++-
- arch/mips/boot/dts/mscc/ocelot.dtsi           | 19 +++++++++++
- arch/mips/boot/dts/mscc/ocelot_pcb123.dts     |  5 +++
- drivers/i2c/busses/i2c-designware-common.c    | 33 +++++++++++++++++++
- drivers/i2c/busses/i2c-designware-core.h      |  3 ++
- drivers/i2c/busses/i2c-designware-master.c    | 22 +------------
- drivers/i2c/busses/i2c-designware-platdrv.c   | 20 +++++++++++
- drivers/i2c/busses/i2c-designware-slave.c     | 22 +------------
- 8 files changed, 86 insertions(+), 43 deletions(-)
-
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index 9afc3e075b33..545b69d6be3c 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -297,6 +297,12 @@ void i2c_dw_set_sda_hold_time(struct dw_i2c_dev *dev)
+ {
+ 	u32 reg;
+ 
++	if (dev->set_sda_hold_time) {
++		dev->set_sda_hold_time(dev);
++
++		return;
++	}
++
+ 	/* Configure SDA Hold Time if required. */
+ 	reg = dw_readl(dev, DW_IC_COMP_VERSION);
+ 	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
+diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
+index bc43fb9ac1cf..b2778b6d8aca 100644
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -283,6 +283,7 @@ struct dw_i2c_dev {
+ 	void			(*disable)(struct dw_i2c_dev *dev);
+ 	void			(*disable_int)(struct dw_i2c_dev *dev);
+ 	int			(*init)(struct dw_i2c_dev *dev);
++	int			(*set_sda_hold_time)(struct dw_i2c_dev *dev);
+ 	int			mode;
+ 	struct i2c_bus_recovery_info rinfo;
+ };
 -- 
 2.18.0

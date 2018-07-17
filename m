@@ -1,60 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 10:11:35 +0200 (CEST)
-Received: from mail-pl0-x244.google.com ([IPv6:2607:f8b0:400e:c01::244]:38181
-        "EHLO mail-pl0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990395AbeGQILb2d05o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 10:11:31 +0200
-Received: by mail-pl0-x244.google.com with SMTP id b1-v6so125658pls.5;
-        Tue, 17 Jul 2018 01:11:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=Cx8LEwPpOzf2WfQUeI86HfkCTYNBCLJi3mfHAodUTKI=;
-        b=RPgSMXT80Oi/nHwrbs6r5j6QMKdhynQdJOrjJL3FNLLX7kSIcYou+geAkUb9LkeRLG
-         S9iFmcQvq1nmmZ8wxkSv/QjQJ7HlF5wS5AD7BSM/KFuv8LvQpOMHq0uaf1g1vBD6yIUP
-         BopTHRZ3GbZyYNif2vmCPvS/Dr0tXWkDyPZSkTLYTcJmov0uB7X5llMutrTvTWKiTzlO
-         f7c0oBiqBbymopfpRuHpgOWVxol0EcZk1NZLxmNADqOK7KchwPyZwjlZor2S7wXNsZ22
-         krtRfglRvrQbwXMeW5YnLvh1DlIDKRVj3Zig7c3BWGc6AeE5hufg0fvolsoBwuEAf4++
-         ekHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=Cx8LEwPpOzf2WfQUeI86HfkCTYNBCLJi3mfHAodUTKI=;
-        b=T6czcjwggp/g1OQU/976yObBM9p1WzzJFZPezTVZ21s63iqJBn7IQwhvxV6Cq4HMPQ
-         37FFngJ08wrZvEVB3ppjYaLmhIGHv+YBbkyil0PJHrY/tpciTl8gyrUaa6DIukueHcph
-         pv28DvqSc4dLDcNsI2MwBZevIPE/c6T9T0DvL7066XP34RzH9TygMzVQl6ziv8v2gGZ5
-         R9jcOptiFYsixjKpF2XQtDAi2VBnofYfuFuOe5Z7xhy9BJGYrQ5ak00/gJWhnJYj0KYl
-         jGuBZBP5FRGngMLDf3n9Z5sjnsJdKokPHIY8RPJrEKo6k2icn1z6BFOLUiZ/UzR1gABy
-         p0PA==
-X-Gm-Message-State: AOUpUlHx5XrRUNKtcCyEXDfjl4Tyaearopid7Bk+WFNIyLfRC3nmUvCh
-        S3P6VrWLisMPzFTtp1+Z0WId4A==
-X-Google-Smtp-Source: AAOMgpcUnXgQ7WJWGum8YNJoG1sNyg0Kaaw1E22Kxl+dc2EsVYOaoSmPt79WK4ygHiEt7LXbv4wOPQ==
-X-Received: by 2002:a17:902:70cc:: with SMTP id l12-v6mr660374plt.132.1531815084825;
-        Tue, 17 Jul 2018 01:11:24 -0700 (PDT)
-Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id 87-v6sm1247409pfn.103.2018.07.17.01.11.21
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 17 Jul 2018 01:11:24 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>, stable@vger.kernel.org,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH Resend 4.4] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
-Date:   Tue, 17 Jul 2018 16:17:11 +0800
-Message-Id: <1531815431-9716-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:00:43 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:60938 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990395AbeGQLAkv4ChX convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 13:00:40 +0200
+Date:   Tue, 17 Jul 2018 13:00:29 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 05/14] dmaengine: dma-jz4780: Add support for the JZ4740
+ SoC
+To:     Rob Herring <robh@kernel.org>
+Cc:     Vinod <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Message-Id: <1531825229.5992.0@smtp.crapouillou.net>
+In-Reply-To: <20180716213339.GA19161@rob-hp-laptop>
+References: <20180703123214.23090-1-paul@crapouillou.net>
+        <20180703123214.23090-6-paul@crapouillou.net>
+        <20180709171226.GK22377@vkoul-mobl> <20180716213339.GA19161@rob-hp-laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531825239; bh=aEZbmjqPBJqaEsjPMfUzrceU4haKjosnEaqcb+UBvtA=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=i7x45M6BeTXgcHXrZzOYUCwum1Nm7KcCCLDCwDR7w0Bio+7iMWF8wGyvgq/Eep/Os1creiQ64lvTEIvkq+dc8C6OszRHXh81p3zh/idyMxVAEAuQbpJ3RMZ/iDhFv0Uvw7BXKtEaupI8nbtbNioyyoaRQUtQPuVi1RlaLaQb3ak=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64869
+X-archive-position: 64870
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,163 +47,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+Hi,
 
-The current MIPS implementation of arch_trigger_cpumask_backtrace() is
-broken because it attempts to use synchronous IPIs despite the fact that
-it may be run with interrupts disabled.
+Le lun. 16 juil. 2018 à 23:33, Rob Herring <robh@kernel.org> a écrit :
+> On Mon, Jul 09, 2018 at 10:42:26PM +0530, Vinod wrote:
+>>  On 03-07-18, 14:32, Paul Cercueil wrote:
+>> 
+>>  >  enum jz_version {
+>>  > +	ID_JZ4740,
+>>  >  	ID_JZ4770,
+>>  >  	ID_JZ4780,
+>>  >  };
+>>  > @@ -247,6 +248,7 @@ static void jz4780_dma_desc_free(struct 
+>> virt_dma_desc *vdesc)
+>>  >  }
+>>  >
+>>  >  static const unsigned int jz4780_dma_ord_max[] = {
+>>  > +	[ID_JZ4740] = 5,
+>>  >  	[ID_JZ4770] = 6,
+>>  >  	[ID_JZ4780] = 7,
+>>  >  };
+>>  > @@ -801,11 +803,13 @@ static struct dma_chan 
+>> *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
+>>  >  }
+>>  >
+>>  >  static const unsigned int jz4780_dma_nb_channels[] = {
+>>  > +	[ID_JZ4740] = 6,
+>>  >  	[ID_JZ4770] = 6,
+>>  >  	[ID_JZ4780] = 32,
+>>  >  };
+>> 
+>>  I feel these should be done away with if we describe hardware in DT
+> 
+> The compatible property can imply things like this.
+> 
+> But how this is structured is a bit strange. Normally you have a per
+> compatible struct with these as elements and the compatible matching
+> selects the struct.
 
-This means that when arch_trigger_cpumask_backtrace() is invoked, for
-example by the RCU CPU stall watchdog, we may:
+You're right, I'll change that.
 
-  - Deadlock due to use of synchronous IPIs with interrupts disabled,
-    causing the CPU that's attempting to generate the backtrace output
-    to hang itself.
-
-  - Not succeed in generating the desired output from remote CPUs.
-
-  - Produce warnings about this from smp_call_function_many(), for
-    example:
-
-    [42760.526910] INFO: rcu_sched detected stalls on CPUs/tasks:
-    [42760.535755]  0-...!: (1 GPs behind) idle=ade/140000000000000/0 softirq=526944/526945 fqs=0
-    [42760.547874]  1-...!: (0 ticks this GP) idle=e4a/140000000000000/0 softirq=547885/547885 fqs=0
-    [42760.559869]  (detected by 2, t=2162 jiffies, g=266689, c=266688, q=33)
-    [42760.568927] ------------[ cut here ]------------
-    [42760.576146] WARNING: CPU: 2 PID: 1216 at kernel/smp.c:416 smp_call_function_many+0x88/0x20c
-    [42760.587839] Modules linked in:
-    [42760.593152] CPU: 2 PID: 1216 Comm: sh Not tainted 4.15.4-00373-gee058bb4d0c2 #2
-    [42760.603767] Stack : 8e09bd20 8e09bd20 8e09bd20 fffffff0 00000007 00000006 00000000 8e09bca8
-    [42760.616937]         95b2b379 95b2b379 807a0080 00000007 81944518 0000018a 00000032 00000000
-    [42760.630095]         00000000 00000030 80000000 00000000 806eca74 00000009 8017e2b8 000001a0
-    [42760.643169]         00000000 00000002 00000000 8e09baa4 00000008 808b8008 86d69080 8e09bca0
-    [42760.656282]         8e09ad50 805e20aa 00000000 00000000 00000000 8017e2b8 00000009 801070ca
-    [42760.669424]         ...
-    [42760.673919] Call Trace:
-    [42760.678672] [<27fde568>] show_stack+0x70/0xf0
-    [42760.685417] [<84751641>] dump_stack+0xaa/0xd0
-    [42760.692188] [<699d671c>] __warn+0x80/0x92
-    [42760.698549] [<68915d41>] warn_slowpath_null+0x28/0x36
-    [42760.705912] [<f7c76c1c>] smp_call_function_many+0x88/0x20c
-    [42760.713696] [<6bbdfc2a>] arch_trigger_cpumask_backtrace+0x30/0x4a
-    [42760.722216] [<f845bd33>] rcu_dump_cpu_stacks+0x6a/0x98
-    [42760.729580] [<796e7629>] rcu_check_callbacks+0x672/0x6ac
-    [42760.737476] [<059b3b43>] update_process_times+0x18/0x34
-    [42760.744981] [<6eb94941>] tick_sched_handle.isra.5+0x26/0x38
-    [42760.752793] [<478d3d70>] tick_sched_timer+0x1c/0x50
-    [42760.759882] [<e56ea39f>] __hrtimer_run_queues+0xc6/0x226
-    [42760.767418] [<e88bbcae>] hrtimer_interrupt+0x88/0x19a
-    [42760.775031] [<6765a19e>] gic_compare_interrupt+0x2e/0x3a
-    [42760.782761] [<0558bf5f>] handle_percpu_devid_irq+0x78/0x168
-    [42760.790795] [<90c11ba2>] generic_handle_irq+0x1e/0x2c
-    [42760.798117] [<1b6d462c>] gic_handle_local_int+0x38/0x86
-    [42760.805545] [<b2ada1c7>] gic_irq_dispatch+0xa/0x14
-    [42760.812534] [<90c11ba2>] generic_handle_irq+0x1e/0x2c
-    [42760.820086] [<c7521934>] do_IRQ+0x16/0x20
-    [42760.826274] [<9aef3ce6>] plat_irq_dispatch+0x62/0x94
-    [42760.833458] [<6a94b53c>] except_vec_vi_end+0x70/0x78
-    [42760.840655] [<22284043>] smp_call_function_many+0x1ba/0x20c
-    [42760.848501] [<54022b58>] smp_call_function+0x1e/0x2c
-    [42760.855693] [<ab9fc705>] flush_tlb_mm+0x2a/0x98
-    [42760.862730] [<0844cdd0>] tlb_flush_mmu+0x1c/0x44
-    [42760.869628] [<cb259b74>] arch_tlb_finish_mmu+0x26/0x3e
-    [42760.877021] [<1aeaaf74>] tlb_finish_mmu+0x18/0x66
-    [42760.883907] [<b3fce717>] exit_mmap+0x76/0xea
-    [42760.890428] [<c4c8a2f6>] mmput+0x80/0x11a
-    [42760.896632] [<a41a08f4>] do_exit+0x1f4/0x80c
-    [42760.903158] [<ee01cef6>] do_group_exit+0x20/0x7e
-    [42760.909990] [<13fa8d54>] __wake_up_parent+0x0/0x1e
-    [42760.917045] [<46cf89d0>] smp_call_function_many+0x1a2/0x20c
-    [42760.924893] [<8c21a93b>] syscall_common+0x14/0x1c
-    [42760.931765] ---[ end trace 02aa09da9dc52a60 ]---
-    [42760.938342] ------------[ cut here ]------------
-    [42760.945311] WARNING: CPU: 2 PID: 1216 at kernel/smp.c:291 smp_call_function_single+0xee/0xf8
-    ...
-
-This patch switches MIPS' arch_trigger_cpumask_backtrace() to use async
-IPIs & smp_call_function_single_async() in order to resolve this
-problem. We ensure use of the pre-allocated call_single_data_t
-structures is serialized by maintaining a cpumask indicating that
-they're busy, and refusing to attempt to send an IPI when a CPU's bit is
-set in this mask. This should only happen if a CPU hasn't responded to a
-previous backtrace IPI - ie. if it's hung - and we print a warning to
-the console in this case.
-
-I've marked this for stable branches as far back as v4.9, to which it
-applies cleanly. Strictly speaking the faulty MIPS implementation can be
-traced further back to commit 856839b76836 ("MIPS: Add
-arch_trigger_all_cpu_backtrace() function") in v3.19, but kernel
-versions v3.19 through v4.8 will require further work to backport due to
-the rework performed in commit 9a01c3ed5cdb ("nmi_backtrace: add more
-trigger_*_cpu_backtrace() methods").
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19597/
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org
-Fixes: 856839b76836 ("MIPS: Add arch_trigger_all_cpu_backtrace() function")
-Fixes: 9a01c3ed5cdb ("nmi_backtrace: add more trigger_*_cpu_backtrace() methods")
-[ Huacai: backported to 4.4: Restruction since generic NMI solution is unavailable ]
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/kernel/process.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index f96048a..354b99f 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -629,21 +629,48 @@ unsigned long arch_align_stack(unsigned long sp)
- 	return sp & ALMASK;
- }
- 
-+static DEFINE_PER_CPU(struct call_single_data, backtrace_csd);
-+static struct cpumask backtrace_csd_busy;
-+
- static void arch_dump_stack(void *info)
- {
- 	struct pt_regs *regs;
-+	static arch_spinlock_t lock = __ARCH_SPIN_LOCK_UNLOCKED;
- 
-+	arch_spin_lock(&lock);
- 	regs = get_irq_regs();
- 
- 	if (regs)
- 		show_regs(regs);
- 	else
- 		dump_stack();
-+	arch_spin_unlock(&lock);
-+
-+	cpumask_clear_cpu(smp_processor_id(), &backtrace_csd_busy);
- }
- 
- void arch_trigger_all_cpu_backtrace(bool include_self)
- {
--	smp_call_function(arch_dump_stack, NULL, 1);
-+	struct call_single_data *csd;
-+	int cpu;
-+
-+	for_each_cpu(cpu, cpu_online_mask) {
-+		/*
-+		 * If we previously sent an IPI to the target CPU & it hasn't
-+		 * cleared its bit in the busy cpumask then it didn't handle
-+		 * our previous IPI & it's not safe for us to reuse the
-+		 * call_single_data_t.
-+		 */
-+		if (cpumask_test_and_set_cpu(cpu, &backtrace_csd_busy)) {
-+			pr_warn("Unable to send backtrace IPI to CPU%u - perhaps it hung?\n",
-+				cpu);
-+			continue;
-+		}
-+
-+		csd = &per_cpu(backtrace_csd, cpu);
-+		csd->func = arch_dump_stack;
-+		smp_call_function_single_async(cpu, csd);
-+	}
- }
- 
- int mips_get_process_fp_mode(struct task_struct *task)
--- 
-2.7.0
+>> 
+>>  >
+>>  >  static const struct of_device_id jz4780_dma_dt_match[] = {
+>>  > +	{ .compatible = "ingenic,jz4740-dma", .data = (void *)ID_JZ4740 
+>> },
+>> 
+>>  adding .compatible should be the only thing required, if at all for 
+>> this
+>>  addition :)
+>> 
+>>  --
+>>  ~Vinod

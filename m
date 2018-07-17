@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 16:24:02 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:50254 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 16:24:15 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:50266 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993029AbeGQOXfGzoys (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jul 2018 16:23:35 +0200
+        id S23993032AbeGQOXg2Kt11 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jul 2018 16:23:36 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 68A61208FB; Tue, 17 Jul 2018 16:23:29 +0200 (CEST)
+        id EECB0206F3; Tue, 17 Jul 2018 16:23:29 +0200 (CEST)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 3C135206ED;
+        by mail.bootlin.com (Postfix) with ESMTPSA id C4B1220765;
         Tue, 17 Jul 2018 16:23:19 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>
@@ -16,9 +16,9 @@ Cc:     Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 2/5] spi: dw: allow providing own set_cs callback
-Date:   Tue, 17 Jul 2018 16:23:11 +0200
-Message-Id: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
+Subject: [PATCH 4/5] mips: dts: mscc: Add spi on Ocelot
+Date:   Tue, 17 Jul 2018 16:23:13 +0200
+Message-Id: <20180717142314.32337-5-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
 References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
@@ -26,7 +26,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64889
+X-archive-position: 64890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,40 +43,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow platform specific drivers to provide their own set_cs callback when
-the IP integration requires it.
+Add support for the SPI controller
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- drivers/spi/spi-dw.c | 3 +++
- drivers/spi/spi-dw.h | 1 +
- 2 files changed, 4 insertions(+)
+ arch/mips/boot/dts/mscc/ocelot.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index a087464efdd7..f76e31faf694 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -507,6 +507,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->dev.of_node = dev->of_node;
- 	master->flags = SPI_MASTER_GPIO_SS;
+diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
+index 4f33dbc67348..f7616a476247 100644
+--- a/arch/mips/boot/dts/mscc/ocelot.dtsi
++++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
+@@ -91,6 +91,17 @@
+ 			status = "disabled";
+ 		};
  
-+	if (dws->set_cs)
-+		master->set_cs = dws->set_cs;
++		spi: spi@101000 {
++			compatible = "mscc,ocelot-spi", "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0x101000 0x100>, <0x3c 0x18>;
++			interrupts = <9>;
++			clocks = <&ahb_clk>;
 +
- 	/* Basic HW init */
- 	spi_hw_init(dev, dws);
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 2cde2473b3e9..446013022849 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -112,6 +112,7 @@ struct dw_spi {
- 	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
-+	void (*set_cs)(struct spi_device *spi, bool enable);
- 
- 	/* Current message transfer state info */
- 	size_t			len;
++			status = "disabled";
++		};
++
+ 		switch@1010000 {
+ 			compatible = "mscc,vsc7514-switch";
+ 			reg = <0x1010000 0x10000>,
 -- 
 2.18.0

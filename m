@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 16:33:49 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:28445 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 17:16:22 +0200 (CEST)
+Received: from mga17.intel.com ([192.55.52.151]:9339 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992279AbeGQOdouFRD7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jul 2018 16:33:44 +0200
+        id S23990401AbeGQPQSyukK7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jul 2018 17:16:18 +0200
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jul 2018 07:33:41 -0700
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jul 2018 08:16:14 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.51,365,1526367600"; 
-   d="scan'208";a="57175488"
+X-IronPort-AV: E=Sophos;i="5.51,366,1526367600"; 
+   d="scan'208";a="57563054"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by orsmga007.jf.intel.com with ESMTP; 17 Jul 2018 07:33:38 -0700
-Message-ID: <1cdb4985f9d5fbd461bacf0e04eb7c10bfb7f6f9.camel@linux.intel.com>
-Subject: Re: [PATCH 2/5] i2c: designware: allow IP specific sda_hold_time
+  by orsmga008.jf.intel.com with ESMTP; 17 Jul 2018 08:16:11 -0700
+Message-ID: <1886510d2a828d3a246ef1f490c6819f073fbdcb.camel@linux.intel.com>
+Subject: Re: [PATCH 3/5] i2c: designware: add MSCC Ocelot support
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Wolfram Sang <wsa@the-dreams.de>,
@@ -24,11 +24,12 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-Date:   Tue, 17 Jul 2018 17:33:37 +0300
-In-Reply-To: <20180717114837.21839-3-alexandre.belloni@bootlin.com>
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 17 Jul 2018 18:16:10 +0300
+In-Reply-To: <20180717114837.21839-4-alexandre.belloni@bootlin.com>
 References: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
-         <20180717114837.21839-3-alexandre.belloni@bootlin.com>
+         <20180717114837.21839-4-alexandre.belloni@bootlin.com>
 Organization: Intel Finland Oy
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.1-2 
@@ -38,7 +39,7 @@ Return-Path: <andriy.shevchenko@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64893
+X-archive-position: 64894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,75 +57,117 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Tue, 2018-07-17 at 13:48 +0200, Alexandre Belloni wrote:
-> Because some old designware IPs were not supporting setting an SDA
-> hold
-> time, vendors developed their own solution. Add a way for the final
-> driver
-> to provide its own SDA hold time handling.
-> 
+> The Microsemi Ocelot I2C controller is a designware IP. It also has a
+> second set of registers to allow tweaking SDA hold time and spike
+> filtering.
 
-Thanks for information you provided. See my comment below.
-After addressing it, 
+Thanks for information you provided. See my comments below.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>  struct dw_i2c_dev {
+>  	struct device		*dev;
+>  	void __iomem		*base;
+> +	void __iomem		*base_ext;
 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  drivers/i2c/busses/i2c-designware-common.c | 6 ++++++
->  drivers/i2c/busses/i2c-designware-core.h   | 1 +
->  2 files changed, 7 insertions(+)
-> 
-> diff --git a/drivers/i2c/busses/i2c-designware-common.c
-> b/drivers/i2c/busses/i2c-designware-common.c
-> index 9afc3e075b33..545b69d6be3c 100644
-> --- a/drivers/i2c/busses/i2c-designware-common.c
-> +++ b/drivers/i2c/busses/i2c-designware-common.c
-> @@ -297,6 +297,12 @@ void i2c_dw_set_sda_hold_time(struct dw_i2c_dev
-> *dev)
->  {
->  	u32 reg;
-> 
+Maybe simple "ext"? Up to you.
+ 
+> +#define MSCC_ICPU_CFG_TWI_DELAY		0x0
+> +#define MSCC_ICPU_CFG_TWI_DELAY_ENABLE	BIT(0)
+> +#define MSCC_ICPU_CFG_TWI_SPIKE_FILTER	0x4
+> +
+> +static int mscc_twi_set_sda_hold_time(struct dw_i2c_dev *dev)
+> +{
+> +	writel((dev->sda_hold_time << 1) |
+> MSCC_ICPU_CFG_TWI_DELAY_ENABLE,
+> +	       dev->base_ext + MSCC_ICPU_CFG_TWI_DELAY);
+> +
+> +	return 0;
+> +}
+
+(1)
 
 >  
-> +	if (dev->set_sda_hold_time) {
-> +		dev->set_sda_hold_time(dev);
-> +
-> +		return;
+> +	if (of_device_is_compatible(pdev->dev.of_node, "mscc,ocelot-
+> i2c")) {
+> +		mem = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> +		dev->base_ext = devm_ioremap_resource(&pdev->dev,
+> mem);
+> +		if (!IS_ERR(dev->base_ext))
+> +			dev->set_sda_hold_time =
+> mscc_twi_set_sda_hold_time;
 > +	}
 
-I would rather inject this, for now (*), into if-else-if ladder, i.e.
+(2)
 
-if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
- ...
-} else if (dev->set_sda_hold_time) { // <<<
- ...
-} else if (dev->sda_hold_time) {
- ...
-
-(*) Since your IP is of v1.10a I don't believe any new version of IP
-would shadow existing DW IP registers, thus version check is okay to
-have first in my opinion.
-
-> +
->  	/* Configure SDA Hold Time if required. */
->  	reg = dw_readl(dev, DW_IC_COMP_VERSION);
->  	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
-> diff --git a/drivers/i2c/busses/i2c-designware-core.h
-> b/drivers/i2c/busses/i2c-designware-core.h
-> index bc43fb9ac1cf..b2778b6d8aca 100644
-> --- a/drivers/i2c/busses/i2c-designware-core.h
-> +++ b/drivers/i2c/busses/i2c-designware-core.h
-> @@ -283,6 +283,7 @@ struct dw_i2c_dev {
->  	void			(*disable)(struct dw_i2c_dev
-> *dev);
->  	void			(*disable_int)(struct dw_i2c_dev
-> *dev);
->  	int			(*init)(struct dw_i2c_dev *dev);
-> +	int			(*set_sda_hold_time)(struct
-> dw_i2c_dev *dev);
->  	int			mode;
->  	struct i2c_bus_recovery_info rinfo;
+>  static const struct of_device_id dw_i2c_of_match[] = {
+>  	{ .compatible = "snps,designware-i2c", },
+> +	{ .compatible = "mscc,ocelot-i2c", },
+>  	{},
 >  };
+
+(3)
+
+
+I would rather place them in analogue how we do for ACPI, i.e.
+
+--- 8< --- 8< ---
+
+...
+#define MODEL_MSCC_OCELOT  0x00000200
+#define MODEL_MASK         0x00000f00
+...
+
+#ifdef CONFIG_OF
+-->(1)
+int dw_i2c_of_configure(pdev)
+{
+...
+-->(2) (perhaps we don't care if it goes without condition, or move it
+below in the corresponding case?
+...
+
+ switch(dev->flags & MODEL_MASK) {
+  case MODEL_MSCC_OCELOT:
+   ...
+   break;
+  default:
+   break;
+ }
+
+ return 0;
+}
+
+-->(3)
+...
+{ .compatible = "mscc,ocelot-i2c", .data = (void *)MODEL_MSCC_OCELOT },
+...
+
+#else
+static inline int dw_i2c_of_configure(pdev) { return -ENODEV; }
+#endif
+
+...
+
+->probe():
+
+...
+
+/* REPLACE THIS in dw_i2c_acpi_configure() by below in ->probe():
+ * id = acpi_match_device(pdev->dev.driver->acpi_match_table, &pdev-
+>dev);
+ * if (id && id->driver_data)
+ *   dev->flags |= (u32)id->driver_data;
+ */
+
+  dev->flags |= (u32)device_get_match_data(&pdev->dev);
+
+  if (&pdev->dev.of_node)
+    dw_i2c_of_configure(pdev);
+
+...
+
+--- 8< --- 8< ---
+
+What do you think?
 
 -- 
 Andy Shevchenko <andriy.shevchenko@linux.intel.com>

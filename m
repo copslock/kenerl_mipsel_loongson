@@ -1,56 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:42:05 +0200 (CEST)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:43797
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990422AbeGQLmC2MvqT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 13:42:02 +0200
-Received: by mail-pf0-x241.google.com with SMTP id j26-v6so370424pfi.10;
-        Tue, 17 Jul 2018 04:42:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=zsxyWlJa5L1Gv7t8Xsms7pw8bNxF0HNNGy0CGtS1AO8=;
-        b=av1CxqpND9tL7sjaBogagecvcJetC3oAWvnNxypjEI9WMLUHQvnzFPijEUNYszrv2Z
-         fcgFtSx4HGUNSPkiwnabYDd/biIqVS3DHhJwsJum1NrX618ChCI1fmYhoUwYl04EPMII
-         EF4VtyW2IqiAaqIuji999n3sxPfB7zMbCPulTCS/56gRndKKCYvviemHYK5kZqFiHods
-         UWlYqIj3DbrTP1N5EUHDcvmoPnQCC5vhPek2CV5FoT/pFNVklwgtm/pkpasDbpyZqmIH
-         z9OyI6SgZCiyav+dRXcAhn9NFVAoNy5R9K1lQuKN3q8NkemfOrvDFM1IAQdG0++/eoYz
-         6FYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=zsxyWlJa5L1Gv7t8Xsms7pw8bNxF0HNNGy0CGtS1AO8=;
-        b=Jf9hP0CN8bEdgEFPmcuX0vlRP1j9fbJyKITglYXxtqf97zMd73DmW8PmTrrQVmgJaX
-         eP3bZg44X/quslraXYanV64hoMIBBpsrZRbneRzsYsQWfQA3/luy0HVLrZrd+6hRryXQ
-         Me52K8lwe4JSho1B9TwKf7+ysVSYcuJ5rTnecp0pnLjB1npv90UxNhG2Dw9XgPRzdTA1
-         6cHHyvIBaVY0fGtun2dDObbcaA+0j44mCSboAvxtUz7uwvA+T+yEO8cnvAusszbUlpov
-         7hm8YJsAd+XwaLNs0iO1HWUJGNlyS0mnkITkVr6nPKof9avAYERmlkYyFvIOjv28whjW
-         NF+A==
-X-Gm-Message-State: AOUpUlFBFLuuy+2v9UmHlphQ0XW5ynWYADGWZmV4gUR0VsvKKO6Ci6KH
-        FcxTPA54LoT5f4K6VMTtPBJ2pJ7A
-X-Google-Smtp-Source: AAOMgpdKSlpSxNSgGY0ksWmsXX+fvQbnKkweeoyQhZ6emF1MihY65ctxGtSX0uthlZTPNYhdhHCdIA==
-X-Received: by 2002:a62:748:: with SMTP id b69-v6mr302636pfd.177.1531827715681;
-        Tue, 17 Jul 2018 04:41:55 -0700 (PDT)
-Received: from raghu-VirtualBox ([116.197.184.12])
-        by smtp.gmail.com with ESMTPSA id y132-v6sm1608095pfb.91.2018.07.17.04.41.54
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 17 Jul 2018 04:41:54 -0700 (PDT)
-From:   RAGHU Halharvi <raghuhack78@gmail.com>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     RAGHU Halharvi <raghuhack78@gmail.com>, jhogan@kernel.org,
-        ralf@linux-mips.org
-Subject: [PATCH] mips:sgi-ip22:Check return value from kzalloc
-Date:   Tue, 17 Jul 2018 17:11:45 +0530
-Message-Id: <20180717114145.21856-1-raghuhack78@gmail.com>
-X-Mailer: git-send-email 2.17.1
-Return-Path: <raghuhack78@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:48:52 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:44072 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992482AbeGQLsquM1jT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jul 2018 13:48:46 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 3357120876; Tue, 17 Jul 2018 13:48:41 +0200 (CEST)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 08E2620765;
+        Tue, 17 Jul 2018 13:48:41 +0200 (CEST)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Wolfram Sang <wsa@the-dreams.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        James Hogan <jhogan@kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 1/5] i2c: designware: factorize setting SDA hold time
+Date:   Tue, 17 Jul 2018 13:48:33 +0200
+Message-Id: <20180717114837.21839-2-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
+References: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64871
+X-archive-position: 64872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raghuhack78@gmail.com
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,23 +47,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: RAGHU Halharvi <raghuhack78@gmail.com>
----
- arch/mips/sgi-ip22/ip22-gio.c | 2 ++
- 1 file changed, 2 insertions(+)
+Factorize setting the SDA hold time in a new function
+i2c_dw_set_sda_hold_time() that is used for both master and slave mode.
 
-diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
-index b225033aade6..5aaf40a1743b 100644
---- a/arch/mips/sgi-ip22/ip22-gio.c
-+++ b/arch/mips/sgi-ip22/ip22-gio.c
-@@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
- 		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
- 		       slotno, name, id);
- 		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
-+		if (!gio_dev)
-+			return -ENOMEM;
- 		gio_dev->name = name;
- 		gio_dev->slotno = slotno;
- 		gio_dev->id.id = id;
+This conveniently pulls the fix for the spurious warning from commit
+7a20e707aae2 ("i2c: designware: suppress unneeded SDA hold time warnings")
+in slave mode.
+
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ drivers/i2c/busses/i2c-designware-common.c | 27 ++++++++++++++++++++++
+ drivers/i2c/busses/i2c-designware-core.h   |  1 +
+ drivers/i2c/busses/i2c-designware-master.c | 22 +-----------------
+ drivers/i2c/busses/i2c-designware-slave.c  | 22 +-----------------
+ 4 files changed, 30 insertions(+), 42 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index 48914dfc8ce8..9afc3e075b33 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -293,5 +293,32 @@ u32 i2c_dw_read_comp_param(struct dw_i2c_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(i2c_dw_read_comp_param);
+ 
++void i2c_dw_set_sda_hold_time(struct dw_i2c_dev *dev)
++{
++	u32 reg;
++
++	/* Configure SDA Hold Time if required. */
++	reg = dw_readl(dev, DW_IC_COMP_VERSION);
++	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
++		if (!dev->sda_hold_time) {
++			/* Keep previous hold time setting if no one set it. */
++			dev->sda_hold_time = dw_readl(dev, DW_IC_SDA_HOLD);
++		}
++		/*
++		 * Workaround for avoiding TX arbitration lost in case I2C
++		 * slave pulls SDA down "too quickly" after falling egde of
++		 * SCL by enabling non-zero SDA RX hold. Specification says it
++		 * extends incoming SDA low to high transition while SCL is
++		 * high but it apprears to help also above issue.
++		 */
++		if (!(dev->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
++			dev->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
++		dw_writel(dev, dev->sda_hold_time, DW_IC_SDA_HOLD);
++	} else if (dev->sda_hold_time) {
++		dev_warn(dev->dev,
++			 "Hardware too old to adjust SDA hold time.\n");
++	}
++}
++
+ MODULE_DESCRIPTION("Synopsys DesignWare I2C bus adapter core");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
+index d690e648bc01..bc43fb9ac1cf 100644
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -306,6 +306,7 @@ int i2c_dw_handle_tx_abort(struct dw_i2c_dev *dev);
+ u32 i2c_dw_func(struct i2c_adapter *adap);
+ void i2c_dw_disable(struct dw_i2c_dev *dev);
+ void i2c_dw_disable_int(struct dw_i2c_dev *dev);
++void i2c_dw_set_sda_hold_time(struct dw_i2c_dev *dev);
+ 
+ static inline void __i2c_dw_enable(struct dw_i2c_dev *dev)
+ {
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index 27436a937492..826329f8e30b 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -146,27 +146,7 @@ static int i2c_dw_init_master(struct dw_i2c_dev *dev)
+ 		}
+ 	}
+ 
+-	/* Configure SDA Hold Time if required */
+-	reg = dw_readl(dev, DW_IC_COMP_VERSION);
+-	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
+-		if (!dev->sda_hold_time) {
+-			/* Keep previous hold time setting if no one set it */
+-			dev->sda_hold_time = dw_readl(dev, DW_IC_SDA_HOLD);
+-		}
+-		/*
+-		 * Workaround for avoiding TX arbitration lost in case I2C
+-		 * slave pulls SDA down "too quickly" after falling egde of
+-		 * SCL by enabling non-zero SDA RX hold. Specification says it
+-		 * extends incoming SDA low to high transition while SCL is
+-		 * high but it apprears to help also above issue.
+-		 */
+-		if (!(dev->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
+-			dev->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
+-		dw_writel(dev, dev->sda_hold_time, DW_IC_SDA_HOLD);
+-	} else if (dev->sda_hold_time) {
+-		dev_warn(dev->dev,
+-			"Hardware too old to adjust SDA hold time.\n");
+-	}
++	i2c_dw_set_sda_hold_time(dev);
+ 
+ 	i2c_dw_configure_fifo_master(dev);
+ 	i2c_dw_release_lock(dev);
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 8ce2cd368477..150e5edb064c 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -77,27 +77,7 @@ static int i2c_dw_init_slave(struct dw_i2c_dev *dev)
+ 	/* Disable the adapter. */
+ 	__i2c_dw_disable(dev);
+ 
+-	/* Configure SDA Hold Time if required. */
+-	reg = dw_readl(dev, DW_IC_COMP_VERSION);
+-	if (reg >= DW_IC_SDA_HOLD_MIN_VERS) {
+-		if (!dev->sda_hold_time) {
+-			/* Keep previous hold time setting if no one set it. */
+-			dev->sda_hold_time = dw_readl(dev, DW_IC_SDA_HOLD);
+-		}
+-		/*
+-		 * Workaround for avoiding TX arbitration lost in case I2C
+-		 * slave pulls SDA down "too quickly" after falling egde of
+-		 * SCL by enabling non-zero SDA RX hold. Specification says it
+-		 * extends incoming SDA low to high transition while SCL is
+-		 * high but it apprears to help also above issue.
+-		 */
+-		if (!(dev->sda_hold_time & DW_IC_SDA_HOLD_RX_MASK))
+-			dev->sda_hold_time |= 1 << DW_IC_SDA_HOLD_RX_SHIFT;
+-		dw_writel(dev, dev->sda_hold_time, DW_IC_SDA_HOLD);
+-	} else {
+-		dev_warn(dev->dev,
+-			 "Hardware too old to adjust SDA hold time.\n");
+-	}
++	i2c_dw_set_sda_hold_time(dev);
+ 
+ 	i2c_dw_configure_fifo_slave(dev);
+ 	i2c_dw_release_lock(dev);
 -- 
-2.17.1
+2.18.0

@@ -1,40 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 20:01:04 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:37532 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990439AbeGQSA7W2HRl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 20:00:59 +0200
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6HHxGP4097151
-        for <linux-mips@linux-mips.org>; Tue, 17 Jul 2018 14:00:57 -0400
-Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2k9hfjasp5-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 17 Jul 2018 14:00:56 -0400
-Received: from localhost
-        by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Tue, 17 Jul 2018 14:00:56 -0400
-Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
-        by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 17 Jul 2018 14:00:49 -0400
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6HI0nrO57933968
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 17 Jul 2018 18:00:49 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4986EB2066;
-        Tue, 17 Jul 2018 14:00:40 -0400 (EDT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2954CB206A;
-        Tue, 17 Jul 2018 14:00:40 -0400 (EDT)
-Received: from paulmck-ThinkPad-W541 (unknown [9.70.82.159])
-        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 17 Jul 2018 14:00:40 -0400 (EDT)
-Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
-        id E80C916CA213; Tue, 17 Jul 2018 11:03:12 -0700 (PDT)
-Date:   Tue, 17 Jul 2018 11:03:12 -0700
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 20:47:04 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50690 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990439AbeGQSrBFi5ab (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 20:47:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=rfmMnILmdpRZ1jiR9Zz/vQitnTWj/Y7Zpd3dxJjEQMA=; b=j7NSb+quIH3A+2jahkD0kazHc
+        ULieKV5Cri6VZAZGa+nN4nhrXTt9k4hvJGGbUmxNx13Pwb+qG/iZ7K/fndW68hFxYb0t6/Oxautxt
+        B6mLRYlz9PeZRMszm0YWOBZRN1Xga6VzHlTxFnCdRwax+lRArERKiKCwe+Du41crOMYQzXEca+ozC
+        U3V0E+R3HAQJYTsIrMEh96aMF0CoFMYCvUFQ7yW4iMx0JNwYG9KOThdrcN7uv/6tCYKh68fmuXaOo
+        TXaZWrZRGJGjtsuUEPdh5XFKG6JitYGIpuujr8xrA87Jwbjl/mhsYUjlfHwrQsoQK3Kj2wy550F0H
+        W+m4g/24g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1ffUzr-0000Fv-JB; Tue, 17 Jul 2018 18:46:51 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 166CA20275F36; Tue, 17 Jul 2018 20:46:50 +0200 (CEST)
+Date:   Tue, 17 Jul 2018 20:46:50 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Paul Burton <paul.burton@mips.com>
 Cc:     Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -45,47 +32,31 @@ Cc:     Huacai Chen <chenhc@lemote.com>,
         Alan Stern <stern@rowland.harvard.edu>,
         Andrea Parri <andrea.parri@amarulasolutions.com>,
         Will Deacon <will.deacon@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         David Howells <dhowells@redhat.com>,
         Jade Alglave <j.alglave@ucl.ac.uk>,
         Luc Maranget <luc.maranget@inria.fr>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         Akira Yokosawa <akiyks@gmail.com>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] MIPS: Change definition of cpu_relax() for Loongson-3
-Reply-To: paulmck@linux.vnet.ibm.com
+Message-ID: <20180717184650.GN2494@hirez.programming.kicks-ass.net>
 References: <1531467477-9952-1-git-send-email-chenhc@lemote.com>
  <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 18071718-2213-0000-0000-000002CC2C67
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00009381; HX=3.00000241; KW=3.00000007;
- PH=3.00000004; SC=3.00000266; SDB=6.01062195; UDB=6.00545347; IPR=6.00840052;
- MB=3.00022173; MTD=3.00000008; XFM=3.00000015; UTC=2018-07-17 18:00:54
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18071718-2214-0000-0000-00005ADF1203
-Message-Id: <20180717180312.GP12945@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-17_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807170188
-Return-Path: <paulmck@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64900
+X-archive-position: 64901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,8 +70,6 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Tue, Jul 17, 2018 at 10:52:32AM -0700, Paul Burton wrote:
-> Hi Huacai,
-> 
 > On Fri, Jul 13, 2018 at 03:37:57PM +0800, Huacai Chen wrote:
 > > Linux expects that if a CPU modifies a memory location, then that
 > > modification will eventually become visible to other CPUs in the system.
@@ -143,7 +112,9 @@ On Tue, Jul 17, 2018 at 10:52:32AM -0700, Paul Burton wrote:
 > 
 > I think "may starve writes" or "may queue writes indefinitely" would be
 > clearer than "may get starved".
-> 
+
+Agreed.
+
 > > +#define cpu_relax()	smp_mb()
 > > +#else
 > >  #define cpu_relax()	barrier()
@@ -151,13 +122,16 @@ On Tue, Jul 17, 2018 at 10:52:32AM -0700, Paul Burton wrote:
 > >  
 > >  /*
 > >   * Return_address is a replacement for __builtin_return_address(count)
-> > -- 
-> > 2.7.0
 > 
 > Apart from the comment above though this looks better to me.
 > 
 > Re-copying the LKMM maintainers - are you happy(ish) with this?
 
-This looks much better to me.
+Right, thanks for adding us back on :-)
 
-							Thanx, Paul
+Yes, this is much better, although I myself would also prefer explicit
+mention that this is a work-around for a hardware bug.
+
+But aside from the actual comment bike-shedding, this looks entirely
+acceptible (also because ARM is already doing this -- and the Changelog
+might want to refer to that particular patch).

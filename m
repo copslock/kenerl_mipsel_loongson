@@ -1,40 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:00:43 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:60938 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990395AbeGQLAkv4ChX convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 13:00:40 +0200
-Date:   Tue, 17 Jul 2018 13:00:29 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 05/14] dmaengine: dma-jz4780: Add support for the JZ4740
- SoC
-To:     Rob Herring <robh@kernel.org>
-Cc:     Vinod <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Message-Id: <1531825229.5992.0@smtp.crapouillou.net>
-In-Reply-To: <20180716213339.GA19161@rob-hp-laptop>
-References: <20180703123214.23090-1-paul@crapouillou.net>
-        <20180703123214.23090-6-paul@crapouillou.net>
-        <20180709171226.GK22377@vkoul-mobl> <20180716213339.GA19161@rob-hp-laptop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531825239; bh=aEZbmjqPBJqaEsjPMfUzrceU4haKjosnEaqcb+UBvtA=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=i7x45M6BeTXgcHXrZzOYUCwum1Nm7KcCCLDCwDR7w0Bio+7iMWF8wGyvgq/Eep/Os1creiQ64lvTEIvkq+dc8C6OszRHXh81p3zh/idyMxVAEAuQbpJ3RMZ/iDhFv0Uvw7BXKtEaupI8nbtbNioyyoaRQUtQPuVi1RlaLaQb3ak=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 13:42:05 +0200 (CEST)
+Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:43797
+        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990422AbeGQLmC2MvqT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 13:42:02 +0200
+Received: by mail-pf0-x241.google.com with SMTP id j26-v6so370424pfi.10;
+        Tue, 17 Jul 2018 04:42:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=zsxyWlJa5L1Gv7t8Xsms7pw8bNxF0HNNGy0CGtS1AO8=;
+        b=av1CxqpND9tL7sjaBogagecvcJetC3oAWvnNxypjEI9WMLUHQvnzFPijEUNYszrv2Z
+         fcgFtSx4HGUNSPkiwnabYDd/biIqVS3DHhJwsJum1NrX618ChCI1fmYhoUwYl04EPMII
+         EF4VtyW2IqiAaqIuji999n3sxPfB7zMbCPulTCS/56gRndKKCYvviemHYK5kZqFiHods
+         UWlYqIj3DbrTP1N5EUHDcvmoPnQCC5vhPek2CV5FoT/pFNVklwgtm/pkpasDbpyZqmIH
+         z9OyI6SgZCiyav+dRXcAhn9NFVAoNy5R9K1lQuKN3q8NkemfOrvDFM1IAQdG0++/eoYz
+         6FYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zsxyWlJa5L1Gv7t8Xsms7pw8bNxF0HNNGy0CGtS1AO8=;
+        b=Jf9hP0CN8bEdgEFPmcuX0vlRP1j9fbJyKITglYXxtqf97zMd73DmW8PmTrrQVmgJaX
+         eP3bZg44X/quslraXYanV64hoMIBBpsrZRbneRzsYsQWfQA3/luy0HVLrZrd+6hRryXQ
+         Me52K8lwe4JSho1B9TwKf7+ysVSYcuJ5rTnecp0pnLjB1npv90UxNhG2Dw9XgPRzdTA1
+         6cHHyvIBaVY0fGtun2dDObbcaA+0j44mCSboAvxtUz7uwvA+T+yEO8cnvAusszbUlpov
+         7hm8YJsAd+XwaLNs0iO1HWUJGNlyS0mnkITkVr6nPKof9avAYERmlkYyFvIOjv28whjW
+         NF+A==
+X-Gm-Message-State: AOUpUlFBFLuuy+2v9UmHlphQ0XW5ynWYADGWZmV4gUR0VsvKKO6Ci6KH
+        FcxTPA54LoT5f4K6VMTtPBJ2pJ7A
+X-Google-Smtp-Source: AAOMgpdKSlpSxNSgGY0ksWmsXX+fvQbnKkweeoyQhZ6emF1MihY65ctxGtSX0uthlZTPNYhdhHCdIA==
+X-Received: by 2002:a62:748:: with SMTP id b69-v6mr302636pfd.177.1531827715681;
+        Tue, 17 Jul 2018 04:41:55 -0700 (PDT)
+Received: from raghu-VirtualBox ([116.197.184.12])
+        by smtp.gmail.com with ESMTPSA id y132-v6sm1608095pfb.91.2018.07.17.04.41.54
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 17 Jul 2018 04:41:54 -0700 (PDT)
+From:   RAGHU Halharvi <raghuhack78@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     RAGHU Halharvi <raghuhack78@gmail.com>, jhogan@kernel.org,
+        ralf@linux-mips.org
+Subject: [PATCH] mips:sgi-ip22:Check return value from kzalloc
+Date:   Tue, 17 Jul 2018 17:11:45 +0530
+Message-Id: <20180717114145.21856-1-raghuhack78@gmail.com>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <raghuhack78@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64870
+X-archive-position: 64871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: raghuhack78@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,55 +63,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Signed-off-by: RAGHU Halharvi <raghuhack78@gmail.com>
+---
+ arch/mips/sgi-ip22/ip22-gio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Le lun. 16 juil. 2018 à 23:33, Rob Herring <robh@kernel.org> a écrit :
-> On Mon, Jul 09, 2018 at 10:42:26PM +0530, Vinod wrote:
->>  On 03-07-18, 14:32, Paul Cercueil wrote:
->> 
->>  >  enum jz_version {
->>  > +	ID_JZ4740,
->>  >  	ID_JZ4770,
->>  >  	ID_JZ4780,
->>  >  };
->>  > @@ -247,6 +248,7 @@ static void jz4780_dma_desc_free(struct 
->> virt_dma_desc *vdesc)
->>  >  }
->>  >
->>  >  static const unsigned int jz4780_dma_ord_max[] = {
->>  > +	[ID_JZ4740] = 5,
->>  >  	[ID_JZ4770] = 6,
->>  >  	[ID_JZ4780] = 7,
->>  >  };
->>  > @@ -801,11 +803,13 @@ static struct dma_chan 
->> *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
->>  >  }
->>  >
->>  >  static const unsigned int jz4780_dma_nb_channels[] = {
->>  > +	[ID_JZ4740] = 6,
->>  >  	[ID_JZ4770] = 6,
->>  >  	[ID_JZ4780] = 32,
->>  >  };
->> 
->>  I feel these should be done away with if we describe hardware in DT
-> 
-> The compatible property can imply things like this.
-> 
-> But how this is structured is a bit strange. Normally you have a per
-> compatible struct with these as elements and the compatible matching
-> selects the struct.
-
-You're right, I'll change that.
-
->> 
->>  >
->>  >  static const struct of_device_id jz4780_dma_dt_match[] = {
->>  > +	{ .compatible = "ingenic,jz4740-dma", .data = (void *)ID_JZ4740 
->> },
->> 
->>  adding .compatible should be the only thing required, if at all for 
->> this
->>  addition :)
->> 
->>  --
->>  ~Vinod
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index b225033aade6..5aaf40a1743b 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+ 		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
+ 		       slotno, name, id);
+ 		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
++		if (!gio_dev)
++			return -ENOMEM;
+ 		gio_dev->name = name;
+ 		gio_dev->slotno = slotno;
+ 		gio_dev->id.id = id;
+-- 
+2.17.1

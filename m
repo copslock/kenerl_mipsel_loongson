@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 14:46:24 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:46991 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993067AbeGQMqVjxX-d (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jul 2018 14:46:21 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 043A0207B4; Tue, 17 Jul 2018 14:46:16 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id C68A3206ED;
-        Tue, 17 Jul 2018 14:46:05 +0200 (CEST)
-Date:   Tue, 17 Jul 2018 14:46:06 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-Subject: Re: [PATCH 0/5] Add support for MSCC Ocelot i2c
-Message-ID: <20180717124606.GC23935@piout.net>
-References: <20180717114837.21839-1-alexandre.belloni@bootlin.com>
- <08da5a79982a1ac2a2b6b4931d497edfe8fa6171.camel@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 14:48:26 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:52990 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993070AbeGQMsXA6YKd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 14:48:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=kJU4mzvFgSyDMH0hHFRGGTEcAb8pljtaJg5m9yLMyMA=; b=RB1fUSUUgSA85D/CLNqdD7CwC
+        mLZtofW/xI5hlv3i446QD6KaXqFBjQwYMFgRWFAsmDq2pK0z/4EwZkO/5Iy0JtOiy/8tjdVctcYpU
+        dTnjNEcoDTg0YB4ygFHZqfV/vThJGed4idV29zzfhMWJ+0+PhfxBiPRoHG2UJhKcFz1M/I54iWEn3
+        ZPWJWuJ9ASmsMfBGkhZDPuzckdbdBqES8AQ5WOGXX8Tl/cUavCswvuFbeDo7Y6xwLlMeCR5DCN0aU
+        cO8I0BLeoYPQwQKwgdHZJKFrltvEsbIL0KCQnfDaUBy3b8CqSVUMlcs28OHdzesoYeKv3n7N6w9Ms
+        SzUsZOoIA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1ffPOs-0006Qr-V7; Tue, 17 Jul 2018 12:48:18 +0000
+Date:   Tue, 17 Jul 2018 05:48:18 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Serge Semin <fancer.lancer@gmail.com>
+Cc:     Christoph Hellwig <hch@infradead.org>, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, okaya@codeaurora.org,
+        chenhc@lemote.com, Sergey.Semin@t-platforms.ru,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mips: mm: Discard ioremap_uncached_accelerated()
+ method
+Message-ID: <20180717124818.GC22099@infradead.org>
+References: <20180709135713.8083-1-fancer.lancer@gmail.com>
+ <20180709135713.8083-2-fancer.lancer@gmail.com>
+ <20180711065631.GA21948@infradead.org>
+ <20180711135210.GA18730@mobilestation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <08da5a79982a1ac2a2b6b4931d497edfe8fa6171.camel@linux.intel.com>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <20180711135210.GA18730@mobilestation>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+46ef037c8ead33cf991a+5441+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64883
+X-archive-position: 64884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: hch@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,53 +59,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/07/2018 15:21:20+0300, Andy Shevchenko wrote:
-> On Tue, 2018-07-17 at 13:48 +0200, Alexandre Belloni wrote:
-> > Hi,
+On Wed, Jul 11, 2018 at 04:52:10PM +0300, Serge Semin wrote:
+> Hello Christoph,
+> 
+> On Tue, Jul 10, 2018 at 11:56:31PM -0700, Christoph Hellwig <hch@infradead.org> wrote:
+> > > + * This is a MIPS specific ioremap variant. ioremap_cacheable_cow
+> > > + * requests a cachable mapping with CWB attribute enabled.
+> > >   */
+> > >  #define ioremap_cacheable_cow(offset, size)				\
+> > >  	__ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
 > > 
-> > Because the designware IP was not able to the the SDA hold time, MSCC
-> > has
-> > its own implementation. Add support for it and then add i2c on ocelot
-> > boards.
-> > 
-> > I would expect patches 1 to 3 to go through the i2c tree and 4-5
-> > through
-> > the mips tree once patch 3 has been reviewed by the DT maintainers.
+> > This isn't actually used anywhere in the kernel tree.  Please remove it
+> > as well.
 > 
-> Without reading datasheet it all feels like a wrong place to put.
-> 
-> But maybe that SoC (SoC family?) has some update to DesignWare IP.
-> Btw, what the version of DW IP it's using? 2.00a? More older, more
-> recent?
-> 
+> I don't really know whether it is necessary at this point. We discarded the 
+> ioremap_uncached_accelerated() method, since the obvious alternative is now
+> available: ioremap_wc(). While ioremap_cacheable_cow() hasn't got one.
+> So if it was up to me, I'd leave it here. Anyway if the subsystem maintainers
+> think otherwise, I won't refuse to submit a patch with this method removal.
 
-COMP_VERSION reads 0x3131302A so it is before DW_IC_SDA_HOLD_MIN_VERS.
-
-> 
-> > Alexandre Belloni (5):
-> >   i2c: designware: factorize setting SDA hold time
-> >   i2c: designware: allow IP specific sda_hold_time
-> >   i2c: designware: add MSCC Ocelot support
-> >   mips: dts: mscc: Add i2c on ocelot
-> >   mips: dts: mscc: enable i2c on ocelot_pcb123
-> > 
-> >  .../bindings/i2c/i2c-designware.txt           |  5 ++-
-> >  arch/mips/boot/dts/mscc/ocelot.dtsi           | 19 +++++++++++
-> >  arch/mips/boot/dts/mscc/ocelot_pcb123.dts     |  5 +++
-> >  drivers/i2c/busses/i2c-designware-common.c    | 33
-> > +++++++++++++++++++
-> >  drivers/i2c/busses/i2c-designware-core.h      |  3 ++
-> >  drivers/i2c/busses/i2c-designware-master.c    | 22 +------------
-> >  drivers/i2c/busses/i2c-designware-platdrv.c   | 20 +++++++++++
-> >  drivers/i2c/busses/i2c-designware-slave.c     | 22 +------------
-> >  8 files changed, 86 insertions(+), 43 deletions(-)
-> > 
-> 
-> -- 
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Intel Finland Oy
-
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+The function is entirely unused in the kernel tree, please remove it.

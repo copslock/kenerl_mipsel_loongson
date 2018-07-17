@@ -1,62 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 20:47:04 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:50690 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990439AbeGQSrBFi5ab (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 20:47:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=rfmMnILmdpRZ1jiR9Zz/vQitnTWj/Y7Zpd3dxJjEQMA=; b=j7NSb+quIH3A+2jahkD0kazHc
-        ULieKV5Cri6VZAZGa+nN4nhrXTt9k4hvJGGbUmxNx13Pwb+qG/iZ7K/fndW68hFxYb0t6/Oxautxt
-        B6mLRYlz9PeZRMszm0YWOBZRN1Xga6VzHlTxFnCdRwax+lRArERKiKCwe+Du41crOMYQzXEca+ozC
-        U3V0E+R3HAQJYTsIrMEh96aMF0CoFMYCvUFQ7yW4iMx0JNwYG9KOThdrcN7uv/6tCYKh68fmuXaOo
-        TXaZWrZRGJGjtsuUEPdh5XFKG6JitYGIpuujr8xrA87Jwbjl/mhsYUjlfHwrQsoQK3Kj2wy550F0H
-        W+m4g/24g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1ffUzr-0000Fv-JB; Tue, 17 Jul 2018 18:46:51 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 166CA20275F36; Tue, 17 Jul 2018 20:46:50 +0200 (CEST)
-Date:   Tue, 17 Jul 2018 20:46:50 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>, stable@vger.kernel.org,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andrea Parri <andrea.parri@amarulasolutions.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Akira Yokosawa <akiyks@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Change definition of cpu_relax() for Loongson-3
-Message-ID: <20180717184650.GN2494@hirez.programming.kicks-ass.net>
-References: <1531467477-9952-1-git-send-email-chenhc@lemote.com>
- <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2018 23:30:22 +0200 (CEST)
+Received: from mail-vk0-x244.google.com ([IPv6:2607:f8b0:400c:c05::244]:39451
+        "EHLO mail-vk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992482AbeGQVaSSFMI8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2018 23:30:18 +0200
+Received: by mail-vk0-x244.google.com with SMTP id e139-v6so1390700vkf.6
+        for <linux-mips@linux-mips.org>; Tue, 17 Jul 2018 14:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=ePT1hv7iWzZgRWhg3eMMNq4TEXwmNCubXlnVUnxU2Rw=;
+        b=jOX2W2e4jw/ObrtQAgG9qdFfL9e3OpQoXMNlhGKopzGB4pg9I2C8Ew2giWyBzuj1cf
+         4uSkc7IM9xqLgccC+JwjZfXXzOEZK1S7sO3kzV+P0o3oJluDwz+/ZY50xDFkUe6aT/fU
+         D4wtBetW2bNfMYG1RP0uysbRtniakTnwf7P8bPOf8qjYlSABE4MLIPcC23F3y/rF1z8p
+         RQ55U2zl5kj9bfORAbtaHekTkKAGWrwoYZglTD/kbpjBGRKXv5ytO78WScPfpuPa/8Oq
+         3NDIHjaJYttBe85dGpxxabPfdehhPpO5/g79uT7/bMGG1J7reLXG1rGnR6HlVZDML1V9
+         tU6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=ePT1hv7iWzZgRWhg3eMMNq4TEXwmNCubXlnVUnxU2Rw=;
+        b=JEnYlFlMZ7gg4Y76OmroORIno/CXjKIAJCpky841o3bhcahoygBl9iZbf0S7iijJX8
+         4vLR+tpykQZyrUKbzinL2vxoljjvnClWlGYu7fm1u7rqB88uZX1b6ot/bmFMPPgVb6Zl
+         jHLsPGkrNJqTJQ7+sGIe/KP+SY7xyun7R7UFng8GG4V/P/aVwPstPRM9+K7xXfME10jc
+         S7uECiCMa2IF/h5t5PdFhbd5HcXRA+LUDrpXLeB7EJuFbs/3cxmdE1rk91BwNLw+12VK
+         son77Uf9OI3byjmsIioGoHZb2HgFBs7hSgPUS2jcyXaXAr/CQkUzoXOCFg5avowRD3L0
+         fUrw==
+X-Gm-Message-State: AOUpUlHGn13gwVkMXqlDFhIwGqdIzGFtLudGvXPclv4zhK5p1Pn/5K0M
+        0oKbk6wKfN61USnBvtCs6HrpONP4aN/Nfq8Lo7A=
+X-Google-Smtp-Source: AAOMgpds2pqSKsUp0uht1mnLgHHkYkAQg67SgI7J1wRAVZs92pUiZFX26Kyq0UrjjZOD+r/wTgCIBzIKoZEnCM3w6rA=
+X-Received: by 2002:a1f:8e4d:: with SMTP id q74-v6mr2029446vkd.161.1531863011909;
+ Tue, 17 Jul 2018 14:30:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
-User-Agent: Mutt/1.10.0 (2018-05-17)
-Return-Path: <peterz@infradead.org>
+Received: by 2002:a67:2149:0:0:0:0:0 with HTTP; Tue, 17 Jul 2018 14:30:11
+ -0700 (PDT)
+In-Reply-To: <20180717142314.32337-2-alexandre.belloni@bootlin.com>
+References: <20180717142314.32337-1-alexandre.belloni@bootlin.com> <20180717142314.32337-2-alexandre.belloni@bootlin.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 18 Jul 2018 00:30:11 +0300
+Message-ID: <CAHp75Vc4SrMXznc6PSrO2Lfrc3gspu_g1QYjuFDWT9-J=C+bjw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] spi: dw: fix possible race condition
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64901
+X-archive-position: 64902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,69 +72,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 17, 2018 at 10:52:32AM -0700, Paul Burton wrote:
-> On Fri, Jul 13, 2018 at 03:37:57PM +0800, Huacai Chen wrote:
-> > Linux expects that if a CPU modifies a memory location, then that
-> > modification will eventually become visible to other CPUs in the system.
-> > 
-> > On Loongson-3 processor with SFB (Store Fill Buffer), loads may be
-> > prioritised over stores so it is possible for a store operation to be
-> > postponed if a polling loop immediately follows it. If the variable
-> > being polled indirectly depends on the outstanding store [for example,
-> > another CPU may be polling the variable that is pending modification]
-> > then there is the potential for deadlock if interrupts are disabled.
-> > This deadlock occurs in qspinlock code.
-> > 
-> > This patch changes the definition of cpu_relax() to smp_mb() for
-> > Loongson-3, forcing a flushing of the SFB on SMP systems before the
-> > next load takes place. If the Kernel is not compiled for SMP support,
-> > this will expand to a barrier() as before.
-> > 
-> > References: 534be1d5a2da940 (ARM: 6194/1: change definition of cpu_relax() for ARM11MPCore)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> > ---
-> >  arch/mips/include/asm/processor.h | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-> > index af34afb..a8c4a3a 100644
-> > --- a/arch/mips/include/asm/processor.h
-> > +++ b/arch/mips/include/asm/processor.h
-> > @@ -386,7 +386,17 @@ unsigned long get_wchan(struct task_struct *p);
-> >  #define KSTK_ESP(tsk) (task_pt_regs(tsk)->regs[29])
-> >  #define KSTK_STATUS(tsk) (task_pt_regs(tsk)->cp0_status)
-> >  
-> > +#ifdef CONFIG_CPU_LOONGSON3
-> > +/*
-> > + * Loongson-3's SFB (Store-Fill-Buffer) may get starved when stuck in a read
-> > + * loop. Since spin loops of any kind should have a cpu_relax() in them, force
-> > + * a Store-Fill-Buffer flush from cpu_relax() such that any pending writes will
-> > + * become available as expected.
-> > + */
-> 
-> I think "may starve writes" or "may queue writes indefinitely" would be
-> clearer than "may get starved".
+On Tue, Jul 17, 2018 at 5:23 PM, Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+> It is possible to get an interrupt as soon as it is requested.  dw_spi_irq
+> does spi_controller_get_devdata(master) and expects it to be different than
+> NULL. However, spi_controller_set_devdata() is called after request_irq(),
+> resulting in the following crash:
+>
+> CPU 0 Unable to handle kernel paging request at virtual address 00000030, epc == 8058e09c, ra == 8018ff90
+> [...]
+> Call Trace:
+> [<8058e09c>] dw_spi_irq+0x8/0x64
+> [<8018ff90>] __handle_irq_event_percpu+0x70/0x1d4
+> [<80190128>] handle_irq_event_percpu+0x34/0x8c
+> [<801901c4>] handle_irq_event+0x44/0x80
+> [<801951a8>] handle_level_irq+0xdc/0x194
+> [<8018f580>] generic_handle_irq+0x38/0x50
+> [<804c6924>] ocelot_irq_handler+0x104/0x1c0
+> [<8018f580>] generic_handle_irq+0x38/0x50
+> [<8075c1d8>] do_IRQ+0x18/0x24
+> [<804c4714>] plat_irq_dispatch+0xa4/0x150
+> [<80106ba8>] except_vec_vi_end+0xb8/0xc4
+> [<8075ba5c>] _raw_spin_unlock_irqrestore+0x14/0x20
+> [<801926c8>] __setup_irq+0x53c/0x8e0
+> [<80192e28>] request_threaded_irq+0xf4/0x1e8
+> [<8058ed18>] dw_spi_add_host+0x264/0x2c4
+> [<8058f2ec>] dw_spi_mmio_probe+0x258/0x27c
+> [<8051f4a4>] platform_drv_probe+0x58/0xbc
+> [<8051daa8>] driver_probe_device+0x308/0x40c
+> [<8051dc9c>] __driver_attach+0xf0/0xf8
+> [<8051b698>] bus_for_each_dev+0x78/0xcc
+> [<8051c2c0>] bus_add_driver+0x1b4/0x228
+> [<8051e840>] driver_register+0x84/0x154
+> [<801001d8>] do_one_initcall+0x54/0x1ac
+> [<80880e90>] kernel_init_freeable+0x1ec/0x2ac
+> [<80755310>] kernel_init+0x14/0x110
+> [<80106698>] ret_from_kernel_thread+0x14/0x1c
+> Code: 00000000  8ca40050  8c820008 <8c420030> 0000000f  3042003f  10400007  00000000  8ca20230
+>
 
-Agreed.
+Good catch!
 
-> > +#define cpu_relax()	smp_mb()
-> > +#else
-> >  #define cpu_relax()	barrier()
-> > +#endif
-> >  
-> >  /*
-> >   * Return_address is a replacement for __builtin_return_address(count)
-> 
-> Apart from the comment above though this looks better to me.
-> 
-> Re-copying the LKMM maintainers - are you happy(ish) with this?
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Right, thanks for adding us back on :-)
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ---
+>  drivers/spi/spi-dw.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index f693bfe95ab9..a087464efdd7 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -485,6 +485,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+>         dws->dma_inited = 0;
+>         dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
+>
+> +       spi_controller_set_devdata(master, dws);
+> +
+>         ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
+>                           master);
+>         if (ret < 0) {
+> @@ -518,7 +520,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+>                 }
+>         }
+>
+> -       spi_controller_set_devdata(master, dws);
+>         ret = devm_spi_register_controller(dev, master);
+>         if (ret) {
+>                 dev_err(&master->dev, "problem registering spi master\n");
+> --
+> 2.18.0
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-Yes, this is much better, although I myself would also prefer explicit
-mention that this is a work-around for a hardware bug.
 
-But aside from the actual comment bike-shedding, this looks entirely
-acceptible (also because ARM is already doing this -- and the Changelog
-might want to refer to that particular patch).
+
+-- 
+With Best Regards,
+Andy Shevchenko

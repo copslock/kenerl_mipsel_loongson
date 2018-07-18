@@ -1,61 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 02:52:57 +0200 (CEST)
-Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:40414
-        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992482AbeGRAwx27Tnl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 02:52:53 +0200
-Received: by mail-io0-x241.google.com with SMTP id l14-v6so2623929iob.7;
-        Tue, 17 Jul 2018 17:52:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 03:15:56 +0200 (CEST)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:33458
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993024AbeGRBPxHpRjl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 03:15:53 +0200
+Received: by mail-it0-x243.google.com with SMTP id y124-v6so16113612itc.0;
+        Tue, 17 Jul 2018 18:15:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=rBmh1j5AUP5LDuq2WVz93apHK8b8pF6X0zGDTBc2oG4=;
-        b=OI+l5kDyWdOsF0q7b/vrZYKDUTtteUNlS1Hi9BrdmvkK70/nu5vk8EduvS8mMzGUmI
-         pQsRAzQTKkiYB4Hl/D7ayK/r298+0e9eShmek6KtIJ5FNPWXSbqQ5zbnLIzjbrx0AjSP
-         EDA/LZMdm6cNcWTrnMA3VX5i2zteIUbGJsQ5zBvTwUjAUUVoxtQh+exdwTxyTLTJ/cFI
-         A2aFrolgPXRAcsyxs8Ta8z/Mam+5mJzinwRUO4J22euvw7XzsTzf6POBHsIb7TwsbeEu
-         rESdDFfpf5VmytJhhglA3Co8gxIEt5Z4o+TAf6Oe8AZDxClIvAdYKNqd8+4x2Qbmndhh
-         XHjA==
+        bh=KkCPA4iVjt5oodRnLb1cD13F+gfTwx1/KZRAmRFN1Ws=;
+        b=qK6jb0epDhhUhdAnA/fZB3f9Z3VCep3x0DyBFictItsYOLPhxvcUt9VvUHGyYwMcV5
+         1X7d8SxG+Z6P6N8uvkFzOjQtBkLHXGh2Xl3PaqHepRnCHyopLv5MgjwdDVjPuu+xxTal
+         l1zEnOqte7oev42P0GLo4UZgkxdAnpLeUQxIRdAC7RUPUARwg1S00SYXp4yqL6kycI8F
+         +kJUo/K1J+cHvHaAFHxQC1kKuZgK3RoqcqWH68TD1HZihZg4LhGoK/82T2tcnm5D+t8m
+         IEWaktDYbg95Y8CnXXok6oI9dwg7m7zWUoE2lUpgPTOCwFs5lSWDe0tnARjImKsG469r
+         BWXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=rBmh1j5AUP5LDuq2WVz93apHK8b8pF6X0zGDTBc2oG4=;
-        b=M8lQYVuUgTGeJmPEi0JtrHtnen7V33H2/Hz2gebPqYUsNB1G0ntAIxaZQ2LcUu/wR4
-         RNsTxmBg0FWAx4o+xB95dfDTViJtjkOs6abpydihkQaB8AC96i+hU0ro0lH0G/XJRBK0
-         kLyGv3inAZJkGifGY5I9RRI721D415njYDSKY65VELmC1LNQyTS2sTlbQ73LZyVY0lFj
-         RNJm/4UMCkAuxBOP1XOm8qUc3YnXtSHDQ2enhEIRFqDRdq9027suwX+ToCDUG1rpjkfE
-         BwEIYDAnxRyPx/k8m3nFwhnKLUBNkDh0Q6+cngkIigv8OInb5+SwbVlxBsMvdWLqeFRt
-         lvaQ==
-X-Gm-Message-State: AOUpUlHj0ZPCNRdWxLHOAxbskJ6c+39s7xl0b0s8cm1WdVphfq8IEbn5
-        e8WRIvkT7b+y2+ixbv6RwhVY9YAl5mBrqvfCneM=
-X-Google-Smtp-Source: AA+uWPz6thtYx9gewK41dqLwHlxSBMMxA5Va+sYeOHB4MQgZFSPJvw0lZ/CAsqr7LtSOdmt3XytKV/0BQ8eVshvdSec=
-X-Received: by 2002:a6b:fc14:: with SMTP id r20-v6mr3152550ioh.270.1531875166805;
- Tue, 17 Jul 2018 17:52:46 -0700 (PDT)
+        bh=KkCPA4iVjt5oodRnLb1cD13F+gfTwx1/KZRAmRFN1Ws=;
+        b=LT3bL7GKhkaMMCzxIyMEfrv61XDrkmGzHa95rB96RyJPTZfT3wlIJs4zR5XEjOMLlQ
+         D9AE3S5TfNPqiQoYHTctNXayP/frjKiseYOBzkZuJvqJ27xEfzz83R4Butpco3E/ct1u
+         BN88qZM2/ptxcTYgcF3YyKVtX4NuzLK0m2jB5qByZQPz+k2N9malAeytpIm11rr3jzEG
+         H0Yqn7VEaELUKEq07qfrIi2bww41vndLHPNqAJQzLkw7oRYZeYBBSgGw1esagUZTZX/d
+         27LEQzwB46isYUHP5MSb29qDxaGzS3E3MiO6nJt5Dbid2LSYz2heBL/trbAToS+5ctjv
+         9PlQ==
+X-Gm-Message-State: AOUpUlGN5xxqU2iwQ6Zv/hSicEaR8mIYV/wD7Zy74vApZyJx0igua0Of
+        nTV0XxDAuUuKgAU1r5LCzaXK5A62lp+uRYKV92M=
+X-Google-Smtp-Source: AAOMgpf0VOFwWm/Zs+9fyLuVTeTKB5dkQKa91gWhKWy83huHSnIvYKshtsS2zR03P9W6y2b4QqArtMbiqu652cI0uZk=
+X-Received: by 2002:a24:5002:: with SMTP id m2-v6mr363968itb.16.1531876546766;
+ Tue, 17 Jul 2018 18:15:46 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a6b:3757:0:0:0:0:0 with HTTP; Tue, 17 Jul 2018 17:52:46
+Received: by 2002:a6b:3757:0:0:0:0:0 with HTTP; Tue, 17 Jul 2018 18:15:46
  -0700 (PDT)
-In-Reply-To: <20180717135729.GA16737@kroah.com>
-References: <1531815431-9716-1-git-send-email-chenhc@lemote.com> <20180717135729.GA16737@kroah.com>
+In-Reply-To: <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
+References: <1531467477-9952-1-git-send-email-chenhc@lemote.com> <20180717175232.ea7pi2bqswnzmznc@pburton-laptop>
 From:   Huacai Chen <chenhc@lemote.com>
-Date:   Wed, 18 Jul 2018 08:52:46 +0800
-X-Google-Sender-Auth: -RRmeVWDoxN4nlEFf4NQE7KgBqU
-Message-ID: <CAAhV-H75ncA+Q3idrA7byN8U5HV7yxRk-LXciBC8RjRa4bwpBA@mail.gmail.com>
-Subject: Re: [PATCH Resend 4.4] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
-To:     Greg KH <greg@kroah.com>
+Date:   Wed, 18 Jul 2018 09:15:46 +0800
+X-Google-Sender-Auth: UqQjVUCJ3GfsGIrQVJeJ2SvMIwA
+Message-ID: <CAAhV-H5_==ZdKTOJTNXkRBTqmr5cxFvcaVabfNarEiQt_LvHZQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Change definition of cpu_relax() for Loongson-3
+To:     Paul Burton <paul.burton@mips.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        stable <stable@vger.kernel.org>
+        stable <stable@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andrea Parri <andrea.parri@amarulasolutions.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Akira Yokosawa <akiyks@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64909
+X-archive-position: 64910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,127 +83,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 17, 2018 at 9:57 PM, Greg KH <greg@kroah.com> wrote:
-> On Tue, Jul 17, 2018 at 04:17:11PM +0800, Huacai Chen wrote:
->> From: Paul Burton <paul.burton@mips.com>
+On Wed, Jul 18, 2018 at 1:52 AM, Paul Burton <paul.burton@mips.com> wrote:
+> Hi Huacai,
+>
+> On Fri, Jul 13, 2018 at 03:37:57PM +0800, Huacai Chen wrote:
+>> Linux expects that if a CPU modifies a memory location, then that
+>> modification will eventually become visible to other CPUs in the system.
 >>
->> The current MIPS implementation of arch_trigger_cpumask_backtrace() is
->> broken because it attempts to use synchronous IPIs despite the fact that
->> it may be run with interrupts disabled.
+>> On Loongson-3 processor with SFB (Store Fill Buffer), loads may be
+>> prioritised over stores so it is possible for a store operation to be
+>> postponed if a polling loop immediately follows it. If the variable
+>> being polled indirectly depends on the outstanding store [for example,
+>> another CPU may be polling the variable that is pending modification]
+>> then there is the potential for deadlock if interrupts are disabled.
+>> This deadlock occurs in qspinlock code.
 >>
->> This means that when arch_trigger_cpumask_backtrace() is invoked, for
->> example by the RCU CPU stall watchdog, we may:
+>> This patch changes the definition of cpu_relax() to smp_mb() for
+>> Loongson-3, forcing a flushing of the SFB on SMP systems before the
+>> next load takes place. If the Kernel is not compiled for SMP support,
+>> this will expand to a barrier() as before.
 >>
->>   - Deadlock due to use of synchronous IPIs with interrupts disabled,
->>     causing the CPU that's attempting to generate the backtrace output
->>     to hang itself.
->>
->>   - Not succeed in generating the desired output from remote CPUs.
->>
->>   - Produce warnings about this from smp_call_function_many(), for
->>     example:
->>
->>     [42760.526910] INFO: rcu_sched detected stalls on CPUs/tasks:
->>     [42760.535755]  0-...!: (1 GPs behind) idle=ade/140000000000000/0 softirq=526944/526945 fqs=0
->>     [42760.547874]  1-...!: (0 ticks this GP) idle=e4a/140000000000000/0 softirq=547885/547885 fqs=0
->>     [42760.559869]  (detected by 2, t=2162 jiffies, g=266689, c=266688, q=33)
->>     [42760.568927] ------------[ cut here ]------------
->>     [42760.576146] WARNING: CPU: 2 PID: 1216 at kernel/smp.c:416 smp_call_function_many+0x88/0x20c
->>     [42760.587839] Modules linked in:
->>     [42760.593152] CPU: 2 PID: 1216 Comm: sh Not tainted 4.15.4-00373-gee058bb4d0c2 #2
->>     [42760.603767] Stack : 8e09bd20 8e09bd20 8e09bd20 fffffff0 00000007 00000006 00000000 8e09bca8
->>     [42760.616937]         95b2b379 95b2b379 807a0080 00000007 81944518 0000018a 00000032 00000000
->>     [42760.630095]         00000000 00000030 80000000 00000000 806eca74 00000009 8017e2b8 000001a0
->>     [42760.643169]         00000000 00000002 00000000 8e09baa4 00000008 808b8008 86d69080 8e09bca0
->>     [42760.656282]         8e09ad50 805e20aa 00000000 00000000 00000000 8017e2b8 00000009 801070ca
->>     [42760.669424]         ...
->>     [42760.673919] Call Trace:
->>     [42760.678672] [<27fde568>] show_stack+0x70/0xf0
->>     [42760.685417] [<84751641>] dump_stack+0xaa/0xd0
->>     [42760.692188] [<699d671c>] __warn+0x80/0x92
->>     [42760.698549] [<68915d41>] warn_slowpath_null+0x28/0x36
->>     [42760.705912] [<f7c76c1c>] smp_call_function_many+0x88/0x20c
->>     [42760.713696] [<6bbdfc2a>] arch_trigger_cpumask_backtrace+0x30/0x4a
->>     [42760.722216] [<f845bd33>] rcu_dump_cpu_stacks+0x6a/0x98
->>     [42760.729580] [<796e7629>] rcu_check_callbacks+0x672/0x6ac
->>     [42760.737476] [<059b3b43>] update_process_times+0x18/0x34
->>     [42760.744981] [<6eb94941>] tick_sched_handle.isra.5+0x26/0x38
->>     [42760.752793] [<478d3d70>] tick_sched_timer+0x1c/0x50
->>     [42760.759882] [<e56ea39f>] __hrtimer_run_queues+0xc6/0x226
->>     [42760.767418] [<e88bbcae>] hrtimer_interrupt+0x88/0x19a
->>     [42760.775031] [<6765a19e>] gic_compare_interrupt+0x2e/0x3a
->>     [42760.782761] [<0558bf5f>] handle_percpu_devid_irq+0x78/0x168
->>     [42760.790795] [<90c11ba2>] generic_handle_irq+0x1e/0x2c
->>     [42760.798117] [<1b6d462c>] gic_handle_local_int+0x38/0x86
->>     [42760.805545] [<b2ada1c7>] gic_irq_dispatch+0xa/0x14
->>     [42760.812534] [<90c11ba2>] generic_handle_irq+0x1e/0x2c
->>     [42760.820086] [<c7521934>] do_IRQ+0x16/0x20
->>     [42760.826274] [<9aef3ce6>] plat_irq_dispatch+0x62/0x94
->>     [42760.833458] [<6a94b53c>] except_vec_vi_end+0x70/0x78
->>     [42760.840655] [<22284043>] smp_call_function_many+0x1ba/0x20c
->>     [42760.848501] [<54022b58>] smp_call_function+0x1e/0x2c
->>     [42760.855693] [<ab9fc705>] flush_tlb_mm+0x2a/0x98
->>     [42760.862730] [<0844cdd0>] tlb_flush_mmu+0x1c/0x44
->>     [42760.869628] [<cb259b74>] arch_tlb_finish_mmu+0x26/0x3e
->>     [42760.877021] [<1aeaaf74>] tlb_finish_mmu+0x18/0x66
->>     [42760.883907] [<b3fce717>] exit_mmap+0x76/0xea
->>     [42760.890428] [<c4c8a2f6>] mmput+0x80/0x11a
->>     [42760.896632] [<a41a08f4>] do_exit+0x1f4/0x80c
->>     [42760.903158] [<ee01cef6>] do_group_exit+0x20/0x7e
->>     [42760.909990] [<13fa8d54>] __wake_up_parent+0x0/0x1e
->>     [42760.917045] [<46cf89d0>] smp_call_function_many+0x1a2/0x20c
->>     [42760.924893] [<8c21a93b>] syscall_common+0x14/0x1c
->>     [42760.931765] ---[ end trace 02aa09da9dc52a60 ]---
->>     [42760.938342] ------------[ cut here ]------------
->>     [42760.945311] WARNING: CPU: 2 PID: 1216 at kernel/smp.c:291 smp_call_function_single+0xee/0xf8
->>     ...
->>
->> This patch switches MIPS' arch_trigger_cpumask_backtrace() to use async
->> IPIs & smp_call_function_single_async() in order to resolve this
->> problem. We ensure use of the pre-allocated call_single_data_t
->> structures is serialized by maintaining a cpumask indicating that
->> they're busy, and refusing to attempt to send an IPI when a CPU's bit is
->> set in this mask. This should only happen if a CPU hasn't responded to a
->> previous backtrace IPI - ie. if it's hung - and we print a warning to
->> the console in this case.
->>
->> I've marked this for stable branches as far back as v4.9, to which it
->> applies cleanly. Strictly speaking the faulty MIPS implementation can be
->> traced further back to commit 856839b76836 ("MIPS: Add
->> arch_trigger_all_cpu_backtrace() function") in v3.19, but kernel
->> versions v3.19 through v4.8 will require further work to backport due to
->> the rework performed in commit 9a01c3ed5cdb ("nmi_backtrace: add more
->> trigger_*_cpu_backtrace() methods").
->>
->> Signed-off-by: Paul Burton <paul.burton@mips.com>
->> Patchwork: https://patchwork.linux-mips.org/patch/19597/
->> Cc: James Hogan <jhogan@kernel.org>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Cc: linux-mips@linux-mips.org
+>> References: 534be1d5a2da940 (ARM: 6194/1: change definition of cpu_relax() for ARM11MPCore)
 >> Cc: stable@vger.kernel.org
->> Fixes: 856839b76836 ("MIPS: Add arch_trigger_all_cpu_backtrace() function")
->> Fixes: 9a01c3ed5cdb ("nmi_backtrace: add more trigger_*_cpu_backtrace() methods")
->> [ Huacai: backported to 4.4: Restruction since generic NMI solution is unavailable ]
 >> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 >> ---
->>  arch/mips/kernel/process.c | 29 ++++++++++++++++++++++++++++-
->>  1 file changed, 28 insertions(+), 1 deletion(-)
+>>  arch/mips/include/asm/processor.h | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+>> index af34afb..a8c4a3a 100644
+>> --- a/arch/mips/include/asm/processor.h
+>> +++ b/arch/mips/include/asm/processor.h
+>> @@ -386,7 +386,17 @@ unsigned long get_wchan(struct task_struct *p);
+>>  #define KSTK_ESP(tsk) (task_pt_regs(tsk)->regs[29])
+>>  #define KSTK_STATUS(tsk) (task_pt_regs(tsk)->cp0_status)
+>>
+>> +#ifdef CONFIG_CPU_LOONGSON3
+>> +/*
+>> + * Loongson-3's SFB (Store-Fill-Buffer) may get starved when stuck in a read
+>> + * loop. Since spin loops of any kind should have a cpu_relax() in them, force
+>> + * a Store-Fill-Buffer flush from cpu_relax() such that any pending writes will
+>> + * become available as expected.
+>> + */
 >
-> Always give me a hint as to what the original git commit id is in
-> Linus's tree please.
->
-> Also, this patch does not apply at all to the 4.4.y tree :(
-commit b63e132b6433a41cf311e8bc382d33fd2b73b505 upstream.
-
-The reason of "not applicable to 4.4" is because this is a patch
-series and its previous patch is
-5a267832c2ec47b2dad0fdb291a96bb5b8869315 ("MIPS: Call dump_stack()
-from show_regs()") which is already cc stable and doesn't need any
-change.
-
-Now, should I resend this patch and its previous patch again?
+> I think "may starve writes" or "may queue writes indefinitely" would be
+> clearer than "may get starved".
+Need I change the comment and resend? Or you change the comment and get merged?
 
 Huacai
 
 >
-> greg k-h
+>> +#define cpu_relax()  smp_mb()
+>> +#else
+>>  #define cpu_relax()  barrier()
+>> +#endif
+>>
+>>  /*
+>>   * Return_address is a replacement for __builtin_return_address(count)
+>> --
+>> 2.7.0
+>
+> Apart from the comment above though this looks better to me.
+>
+> Re-copying the LKMM maintainers - are you happy(ish) with this?
+>
+> Thanks,
+>     Paul

@@ -1,50 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 14:24:29 +0200 (CEST)
-Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:41540
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 14:30:13 +0200 (CEST)
+Received: from heliosphere.sirena.org.uk ([IPv6:2a01:7e01::f03c:91ff:fed4:a3b6]:50936
         "EHLO heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990757AbeGRMY0PaH9S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 14:24:26 +0200
+        by eddie.linux-mips.org with ESMTP id S23992408AbeGRM3zU5May (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 14:29:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=dCyXj/uVZYwoNnk54f6bSih9QXBGzYOOctuBBeCWh0w=; b=HoYB2qptb289RhYl5MTtyvAvh
-        ezNiQdVu763T4dfOpyff8Z7kqnt7zzJoC29eIxr9QsoJYiwvQSrW011RdSDlqOygaAfUyUEVf//FS
-        A1yM44y6bWuWDqqMiukXDXhQrLRrOzQc/nTxKTLBo4qxo/m1mNwHmiJmei4ZjY6soTuyo=;
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=N2vL6pUs/MFDoeBhOS+LM7Lz+QtEx2+rbV0NB02L92k=; b=AlCuFMEFLx0m
+        Y7cel02cChIBzwQnEfG63GWxiGhtd28s3Ux5PsGrrlT9pi8KqPk1q2Z+wAH/SKsGOT1jfJDHrr/8m
+        n3sQBVG4WGC3J75LuJpgKWMG8M4zT83NRGlX1niHw4ojB+/LvKZOxc5JqEUuPrkR7NsjCKy7R5Off
+        77NFs=;
 Received: from debutante.sirena.org.uk ([2001:470:1f1d:6b5::3] helo=debutante)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1fflVG-0003U4-Ki; Wed, 18 Jul 2018 12:24:22 +0000
+        id 1fflab-0003Ww-GR; Wed, 18 Jul 2018 12:29:53 +0000
 Received: from broonie by debutante with local (Exim 4.91)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1fflVF-000745-Vk; Wed, 18 Jul 2018 13:24:21 +0100
-Date:   Wed, 18 Jul 2018 13:24:21 +0100
+        id 1fflab-0007Xk-2r; Wed, 18 Jul 2018 13:29:53 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     James Hogan <jhogan@kernel.org>,
+Cc:     Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-Subject: Re: [PATCH 2/5] spi: dw: allow providing own set_cs callback
-Message-ID: <20180718122421.GK5700@sirena.org.uk>
-References: <20180717142314.32337-1-alexandre.belloni@bootlin.com>
- <20180717142314.32337-3-alexandre.belloni@bootlin.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M9kwpIYUMbI/2cCx"
-Content-Disposition: inline
-In-Reply-To: <20180717142314.32337-3-alexandre.belloni@bootlin.com>
-X-Cookie: Remember the... the... uhh.....
-User-Agent: Mutt/1.10.0 (2018-05-17)
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        linux-spi@vger.kernel.org
+Subject: Applied "spi: dw: fix possible race condition" to the spi tree
+In-Reply-To:  <20180717142314.32337-2-alexandre.belloni@bootlin.com>
+Message-Id: <E1fflab-0007Xk-2r@debutante>
+Date:   Wed, 18 Jul 2018 13:29:53 +0100
 Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64919
+X-archive-position: 64920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,54 +56,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The patch
 
---M9kwpIYUMbI/2cCx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: dw: fix possible race condition
 
-On Tue, Jul 17, 2018 at 04:23:11PM +0200, Alexandre Belloni wrote:
-> Allow platform specific drivers to provide their own set_cs callback when
-> the IP integration requires it.
+has been applied to the spi tree at
 
-The following changes since commit ce397d215ccd07b8ae3f71db689aedb85d56ab40:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-  Linux 4.18-rc1 (2018-06-17 08:04:49 +0900)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-are available in the Git repository at:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-dw-set-cs
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-for you to fetch changes up to 62dbbae483b6452e688b8e26c4d024d484117697:
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-  spi: dw: allow providing own set_cs callback (2018-07-18 13:22:37 +0100)
-
-----------------------------------------------------------------
-spi: dw: Allow custom set_cs_callback
-
-Allow platform specific drivers to provide their own set_cs callback when
-the IP integration requires it.
-
-----------------------------------------------------------------
-Alexandre Belloni (1):
-      spi: dw: allow providing own set_cs callback
-
- drivers/spi/spi-dw.c | 3 +++
- drivers/spi/spi-dw.h | 1 +
- 2 files changed, 4 insertions(+)
-
---M9kwpIYUMbI/2cCx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAltPMXUACgkQJNaLcl1U
-h9BWsgf9FOP0W6xbxEz+Z9Vym3Fbf6vuznYgCsxHhqV79EP6lRLrdJOllZTSXOSy
-dkYUwpR0MlLDukWBvPPwmDM2m/BR6rHfzMWXqyWh4+wj6CD9KZlm7hMqauANfSoC
-6zV2IdBSVw3d0QHfiMRB2WuVBAnTlTFaPPik66NJo/VngEEvBrnsV3KjuECtdeKZ
-KgHtmh0O/D674R8OdfKJ4BjpHAl2BCHJnyjr0fm1X/doqci62vM2Oq6WQWSA6Z2w
-W9BgQzxMgFEiXNVAikwYAT2g/wos85wiqRFPMqUQDC0I0KTxZJjsL4yogxSiIEVZ
-WUMcnYQ6Qzbwj83eD7krc7hVaCVYLw==
-=I9ay
------END PGP SIGNATURE-----
-
---M9kwpIYUMbI/2cCx--
+Thanks,
+Mark

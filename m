@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 20:22:43 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:56160 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 20:22:54 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:56514 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993041AbeGRSU46gWyK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 20:20:56 +0200
+        with ESMTP id S23993394AbeGRSU6SNvlK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 20:20:58 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -15,17 +15,17 @@ Cc:     Mathieu Malaterre <malat@debian.org>,
         Paul Cercueil <paul@crapouillou.net>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH v2 10/17] dmaengine: dma-jz4780: Add missing residue DTC mask
-Date:   Wed, 18 Jul 2018 20:20:16 +0200
-Message-Id: <20180718182023.8182-11-paul@crapouillou.net>
+Subject: [PATCH v2 11/17] dmaengine: dma-jz4780: Simplify jz4780_dma_desc_residue()
+Date:   Wed, 18 Jul 2018 20:20:17 +0200
+Message-Id: <20180718182023.8182-12-paul@crapouillou.net>
 In-Reply-To: <20180718182023.8182-1-paul@crapouillou.net>
 References: <20180718182023.8182-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531938056; bh=SACEdm727cXCr3e38elj5C305w3s4RWfi53FGTR6fSc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=XU8rkkF8Ew4+1mc3GKxp+SxR4Vu4IW9rnZye8hey9UcQIru7TzJUEybukNGW9cPw3teZRiqbywMqtDAUQ7k68OF/FeItbecJ02JqAm/T8pUCZk6pEedJUJ+saEHm18DpNu+hfwGEDowZhtUHlt/Zvq0/wEnYC39AJYBkPY3AGhI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531938057; bh=vzelrVMKs/0wg3dLlRx1QkugqOvdrasHHVxrnabaetQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=o8Ouv8UTg8uPrsfR324em7lZFz7rdJj+XY+A40LTIK3rIz/LndR9Zwga16U8q1Qa7xLLaJsKnRkklkKEhZXIL3mqPG2aJHA1VnxclzOtb5PGQO/EA5RiyyZYY5IL+1MQOiYvmf9YI0uw8Yz2w7YkTjPGnsfVTZNkaG9IuWBN9j4=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64932
+X-archive-position: 64933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,33 +44,47 @@ X-list: linux-mips
 
 From: Daniel Silsby <dansilsby@gmail.com>
 
-The 'dtc' word in jz DMA descriptors contains two fields: The
-lowest 24 bits are the transfer count, and upper 8 bits are the DOA
-offset to next descriptor. The upper 8 bits are now correctly masked
-off when computing residue in jz4780_dma_desc_residue(). Note that
-reads of the DTCn hardware reg are automatically masked this way.
+Simple cleanup, no changes to actual logic here.
 
 Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 ---
- drivers/dma/dma-jz4780.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/dma-jz4780.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
  v2: No change
 
 diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index 3c9d3952e23a..fa926de082ba 100644
+index fa926de082ba..cc2a86844db4 100644
 --- a/drivers/dma/dma-jz4780.c
 +++ b/drivers/dma/dma-jz4780.c
-@@ -614,7 +614,8 @@ static size_t jz4780_dma_desc_residue(struct jz4780_dma_chan *jzchan,
- 	residue = 0;
+@@ -608,22 +608,17 @@ static size_t jz4780_dma_desc_residue(struct jz4780_dma_chan *jzchan,
+ 	struct jz4780_dma_desc *desc, unsigned int next_sg)
+ {
+ 	struct jz4780_dma_dev *jzdma = jz4780_dma_chan_parent(jzchan);
+-	unsigned int residue, count;
++	unsigned int count = 0;
+ 	unsigned int i;
  
+-	residue = 0;
+-
  	for (i = next_sg; i < desc->count; i++)
--		residue += desc->desc[i].dtc << jzchan->transfer_shift;
-+		residue += (desc->desc[i].dtc & 0xffffff) <<
-+			jzchan->transfer_shift;
+-		residue += (desc->desc[i].dtc & 0xffffff) <<
+-			jzchan->transfer_shift;
++		count += desc->desc[i].dtc & 0xffffff;
  
- 	if (next_sg != 0) {
- 		count = jz4780_dma_chn_readl(jzdma, jzchan->id,
+-	if (next_sg != 0) {
+-		count = jz4780_dma_chn_readl(jzdma, jzchan->id,
++	if (next_sg != 0)
++		count += jz4780_dma_chn_readl(jzdma, jzchan->id,
+ 					 JZ_DMA_REG_DTC);
+-		residue += count << jzchan->transfer_shift;
+-	}
+ 
+-	return residue;
++	return count << jzchan->transfer_shift;
+ }
+ 
+ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
 -- 
 2.11.0

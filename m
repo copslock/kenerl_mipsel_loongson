@@ -1,58 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 07:27:32 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:46564 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 09:14:17 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:45907 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990423AbeGRF12ccbi1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Jul 2018 07:27:28 +0200
-Received: from localhost (unknown [106.200.213.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE1FB20684;
-        Wed, 18 Jul 2018 05:27:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1531891641;
-        bh=/ieGR3d+D0SiRFYhDVh4gOFVfjw5t1O+MSo6UJUyRvE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MJP0CSkp86A84YUhy16p1GANZ81tgC/pIxNSS82dnTzfLZgr6XG+BDFySLaZHJPoZ
-         a19u8HD+WXmiDgoG4UZlCsVONUbBkaKc2TYp7dMeCr3MzMhUshGVFNQpP4kTf2hw+N
-         7v0jqFZPV5wbTfkvKJTwpuHxnu7vIW/iQSSJ6+K0=
-Date:   Wed, 18 Jul 2018 10:57:13 +0530
-From:   Vinod <vkoul@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>,
-        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
-        <dmaengine@vger.kernel.org>, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 05/14] dmaengine: dma-jz4780: Add support for the JZ4740
- SoC
-Message-ID: <20180718052713.GH3219@vkoul-mobl>
-References: <20180703123214.23090-1-paul@crapouillou.net>
- <20180703123214.23090-6-paul@crapouillou.net>
- <20180709171226.GK22377@vkoul-mobl>
- <20180716213339.GA19161@rob-hp-laptop>
- <20180717153407.GF3219@vkoul-mobl>
- <CAL_JsqJBw9vBURZQxa4RkDAfiinnNRK6CVTBmpnC3TaSukZLRA@mail.gmail.com>
+        id S23990421AbeGRHOOm3hUI convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 09:14:14 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id BD7E1209A4; Wed, 18 Jul 2018 09:14:08 +0200 (CEST)
+Received: from xps13 (AAubervilliers-681-1-27-161.w90-88.abo.wanadoo.fr [90.88.147.161])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 8F98C20940;
+        Wed, 18 Jul 2018 09:13:32 +0200 (CEST)
+Date:   Wed, 18 Jul 2018 09:13:32 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Boris Brezillon <boris.brezillon@bootlin.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 00/24] mtd: rawnand: Improve compile-test coverage
+Message-ID: <20180718091332.53da4898@xps13>
+In-Reply-To: <20180709200945.30116-1-boris.brezillon@bootlin.com>
+References: <20180709200945.30116-1-boris.brezillon@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJBw9vBURZQxa4RkDAfiinnNRK6CVTBmpnC3TaSukZLRA@mail.gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <vkoul@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <miquel.raynal@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64912
+X-archive-position: 64913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vkoul@kernel.org
+X-original-sender: miquel.raynal@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,63 +49,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17-07-18, 11:40, Rob Herring wrote:
-> On Tue, Jul 17, 2018 at 9:34 AM Vinod <vkoul@kernel.org> wrote:
-> >
-> > On 16-07-18, 15:33, Rob Herring wrote:
-> > > On Mon, Jul 09, 2018 at 10:42:26PM +0530, Vinod wrote:
-> > > > On 03-07-18, 14:32, Paul Cercueil wrote:
-> > > >
-> > > > >  enum jz_version {
-> > > > > + ID_JZ4740,
-> > > > >   ID_JZ4770,
-> > > > >   ID_JZ4780,
-> > > > >  };
-> > > > > @@ -247,6 +248,7 @@ static void jz4780_dma_desc_free(struct virt_dma_desc *vdesc)
-> > > > >  }
-> > > > >
-> > > > >  static const unsigned int jz4780_dma_ord_max[] = {
-> > > > > + [ID_JZ4740] = 5,
-> > > > >   [ID_JZ4770] = 6,
-> > > > >   [ID_JZ4780] = 7,
-> > > > >  };
-> > > > > @@ -801,11 +803,13 @@ static struct dma_chan *jz4780_of_dma_xlate(struct of_phandle_args *dma_spec,
-> > > > >  }
-> > > > >
-> > > > >  static const unsigned int jz4780_dma_nb_channels[] = {
-> > > > > + [ID_JZ4740] = 6,
-> > > > >   [ID_JZ4770] = 6,
-> > > > >   [ID_JZ4780] = 32,
-> > > > >  };
-> > > >
-> > > > I feel these should be done away with if we describe hardware in DT
-> > >
-> > > The compatible property can imply things like this.
-> >
-> > So what is the general recommendation, let DT describe hardware
-> > including version delta or use compatible to code that in driver?
-> 
-> Compatible is the version. Looking at the above, the version or ID
-> isn't even stable.
-> 
-> > Is it documented anywhere?
-> 
-> Not really. It's a judgment call generally. Maybe # of DMA channels
-> should be a property because that is something most controllers have.
-> But you really have to define the property up front, not when the 2nd
-> version of h/w shows up with different properties.
-> 
-> To start defining guidelines, a couple of things come to mind:
-> 
-> - Define properties for parameters that vary from board to board (for one SoC).
-> - You can't add new required properties to existing bindings, so the
-> not present default must work for all existing compatibles (or you
-> need per compatible driver data).
-> - Bugs/quirks/errata should be handled by compatible, not adding a
-> property. Because bugs should be fixable without a dtb update and only
-> a kernel update.
+Hi Boris,
 
-Sounds good to me, thanks for the guide.
+Boris Brezillon <boris.brezillon@bootlin.com> wrote on Mon,  9 Jul 2018
+22:09:21 +0200:
 
--- 
-~Vinod
+> Hello,
+> 
+> This is an attempt at adding "depends || COMPILE_TEST" to all NAND
+> drivers that have no compile-time dependencies on arch
+> features/headers.
+> 
+> This will hopefully help us (NAND/MTD maintainers) in detecting build
+> issues earlier. Unfortunately we still have a few drivers that can't
+> easily be modified to be arch independent.
+> 
+> I tried to put all patches that only touch the NAND subsystem first,
+> so that they can be applied even if other patches are being discussed.
+> 
+> Don't hesitate to point any missing dependencies when compiled with
+> COMPILE_TEST. I didn't have any problem when compiling, but that might
+> be because the dependencies were already selected.
+> 
+> In this v2, I tried to fix all warnings/errors reported by kbuild/0day
+> robots. The only remaining ones are those in omap_elm.c which seems to
+> do some weird cpu_to_be32() conversions. I guess I could replace those
+> by iowrite32be() calls (or just add (__force __u32)), but I don't want
+> to risk a regression on this driver, so I'm just leaving it for someone
+> else to fix :P.
+> 
+> Regards,
+> 
+> Boris
+> 
+> Changes in v2:
+> - Fix a few problems reported by kbuild robots and Stephen Rothwell
+> 
+> Boris Brezillon (24):
+>   mtd: rawnand: atmel: Use uintptr_t casts instead of unsigned int
+>   mtd: rawnand: atmel: Add an __iomem cast on gen_pool_dma_alloc() call
+>   mtd: rawnand: atmel: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: s3c2410: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: orion: Avoid direct inclusion of asm headers
+>   mtd: rawnand: orion: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: davinci: Stop doing iomem pointer <-> u32 conversions
+>   mtd: rawnand: davinci: Use uintptr_t casts instead of unsigned ones
+>   mtd: rawnand: davinci: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: sunxi: Add an U suffix to NFC_PAGE_OP definition
+>   mtd: rawnand: sunxi: Make sure ret is initialized in
+>     sunxi_nfc_read_byte()
+>   mtd: rawnand: sunxi: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: fscm: Avoid collision on PC def when compiling for MIPS
+>   mtd: rawnand: fsmc: Use uintptr_t casts instead of unsigned ones
+>   mtd: rawnand: fsmc: Allow selection of this driver when COMPILE_TEST=y
+>   memory: fsl_ifc: Allow selection of this driver when COMPILE_TEST=y
+>   mtd: rawnand: fsl_ifc: Add an __iomem specifier on eccstat_regs
+>   mtd: rawnand: fsl_ifc: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   MIPS: txx9: Move the ndfc.h header to include/linux/platform_data/txx9
+>   mtd: rawnand: txx9ndfmc: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   MIPS: jz4740: Move jz4740_nand.h header to
+>     include/linux/platform_data/jz4740
+>   mtd: rawnand: jz4740: Allow selection of this driver when
+>     COMPILE_TEST=y
+>   mtd: rawnand: jz4780: Drop the dependency on MACH_JZ4780
+>   memory: jz4780-nemc: Allow selection of this driver when
+>     COMPILE_TEST=y
+> 
+>  arch/mips/jz4740/board-qi_lb60.c                   |  3 +-
+>  arch/mips/txx9/generic/setup.c                     |  2 +-
+>  arch/mips/txx9/generic/setup_tx4938.c              |  2 +-
+>  arch/mips/txx9/generic/setup_tx4939.c              |  2 +-
+>  drivers/memory/Kconfig                             |  6 ++--
+>  drivers/mtd/nand/raw/Kconfig                       | 33 ++++++++++++++--------
+>  drivers/mtd/nand/raw/atmel/nand-controller.c       |  8 +++---
+>  drivers/mtd/nand/raw/davinci_nand.c                | 33 ++++++++++------------
+>  drivers/mtd/nand/raw/fsl_ifc_nand.c                |  2 +-
+>  drivers/mtd/nand/raw/fsmc_nand.c                   | 33 +++++++++++-----------
+>  drivers/mtd/nand/raw/jz4740_nand.c                 |  2 +-
+>  drivers/mtd/nand/raw/orion_nand.c                  |  2 +-
+>  drivers/mtd/nand/raw/sunxi_nand.c                  |  4 +--
+>  drivers/mtd/nand/raw/txx9ndfmc.c                   |  2 +-
+>  .../linux/platform_data/jz4740}/jz4740_nand.h      |  4 +--
+>  .../linux/platform_data}/txx9/ndfmc.h              |  6 ++--
+>  16 files changed, 77 insertions(+), 67 deletions(-)
+>  rename {arch/mips/include/asm/mach-jz4740 => include/linux/platform_data/jz4740}/jz4740_nand.h (91%)
+>  rename {arch/mips/include/asm => include/linux/platform_data}/txx9/ndfmc.h (91%)
+> 
+
+Series applied with some typo fixes in the commit log as well as a
+proper indentation forced in drivers/mtd/nand/raw/Kconfig.
+
+Thanks,
+Miquèl

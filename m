@@ -1,35 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2018 20:24:04 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:58686 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993973AbeGRSVFyzyIK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2018 20:21:05 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2018 05:57:09 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:42472 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990434AbeGSD5EX7VmX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Jul 2018 05:57:04 +0200
+Received: from localhost (unknown [106.201.102.32])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E8DE92084C;
+        Thu, 19 Jul 2018 03:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1531972617;
+        bh=I6Glwk2YbAnTo9IMLqE86xgDfEa2NcFxsAv2v3GiuaQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LC/YVAk3IoSqb4KxRqS3Rukihq8/Gu5VbNRxdiHhzuzWnG5ctOSvBofDxGSOjfJgJ
+         uDRzYk37+8wqOnJUgUUf2zEQkj3395gUTR34VHHPHE236l382VAX8KaUMgGlEFh4n+
+         hQzXf+Q53X4s2xbKyTRE4RKkJ4VsVMQr0SggvI1U=
+Date:   Thu, 19 Jul 2018 09:26:49 +0530
+From:   Vinod <vkoul@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
         Daniel Silsby <dansilsby@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH v2 17/17] MIPS: JZ4740: DTS: Add DMA nodes
-Date:   Wed, 18 Jul 2018 20:20:23 +0200
-Message-Id: <20180718182023.8182-18-paul@crapouillou.net>
-In-Reply-To: <20180718182023.8182-1-paul@crapouillou.net>
+Subject: Re: [PATCH v2 00/17] JZ4780 DMA patchset v2
+Message-ID: <20180719035649.GI3219@vkoul-mobl>
 References: <20180718182023.8182-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1531938065; bh=wyf444FbT5gy8/I4KFsZheQgFeCiehGbZtB0KJVVGBw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=AhhPwr8MwoaRPn6gBiZZERMOOKVG5SzAhsdh+7awhGNs3q6KC70R77oFlLeWTct+vAYXxHq0FEAVryLJCrCuRl7wb3IIQlibxx/39AvkzQGoj0MVYoBf1/4NkQ47x5LJDV/KaPS56AV2cUNsicfFDnPPj+Nfyi3epbcWAxfVqDs=
-Return-Path: <paul@crapouillou.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180718182023.8182-1-paul@crapouillou.net>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <vkoul@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64939
+X-archive-position: 64940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: vkoul@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,43 +57,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the devicetree nodes for the DMA core of the JZ4740 SoC, disabled
-by default, as currently there are no clients for the DMA driver
-(until the MMC driver and/or others get a devicetree node).
+On 18-07-18, 20:20, Paul Cercueil wrote:
+> Hi,
+> 
+> This is the version 2 of my jz4780-dma driver update patchset.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Mathieu Malaterre <malat@debian.org>
----
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+why is this not send to dmaengine mailing list? Please post on that as
+well
 
- v2: New patch in this series
+> 
+> Changelog:
+> 
+> - All documentation changes have been moved to one single patch [01/17].
+> 
+> - The new patch [02/17] enforces that we're probed from devicetree.
+> 
+> - The driver will not fail if only one memory resource has been supplied
+>   in the devicetree, to keep compatibility with old devicetree files.
+> 
+> - A new patch [17/17] adds a devicetree node for the DMA driver in the
+>   JZ4740 DTS file.
+> 
+> - Some other small changes; see per-file changelog.
+> 
+> Regards,
+> -Paul
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 26c6b561d6f7..47d93f2597af 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -154,6 +154,21 @@
- 		clock-names = "baud", "module";
- 	};
- 
-+	dmac: dma@13020000 {
-+		compatible = "ingenic,jz4740-dma";
-+		reg = <0x13020000 0xbc
-+		       0x13020300 0x14>;
-+		#dma-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <29>;
-+
-+		clocks = <&cgu JZ4740_CLK_DMA>;
-+
-+		/* Disable dmac until we have something that uses it */
-+		status = "disabled";
-+	};
-+
- 	uhc: uhc@13030000 {
- 		compatible = "ingenic,jz4740-ohci", "generic-ohci";
- 		reg = <0x13030000 0x1000>;
 -- 
-2.11.0
+~Vinod

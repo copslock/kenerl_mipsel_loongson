@@ -1,76 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2018 10:07:17 +0200 (CEST)
-Received: from mail-lj1-x241.google.com ([IPv6:2a00:1450:4864:20::241]:43856
-        "EHLO mail-lj1-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992328AbeGSIHLBLrVi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jul 2018 10:07:11 +0200
-Received: by mail-lj1-x241.google.com with SMTP id r13-v6so6422510ljg.10
-        for <linux-mips@linux-mips.org>; Thu, 19 Jul 2018 01:07:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2018 10:19:40 +0200 (CEST)
+Received: from mail-pg1-x544.google.com ([IPv6:2607:f8b0:4864:20::544]:46659
+        "EHLO mail-pg1-x544.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbeGSIThAtCWi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jul 2018 10:19:37 +0200
+Received: by mail-pg1-x544.google.com with SMTP id p23-v6so3264228pgv.13;
+        Thu, 19 Jul 2018 01:19:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ygSA0TisS1G9yDz0tiDVeJGinlDq21hTl6agLHlX5Fk=;
-        b=NEFJMDPShLPuXndEYWYWJ5HTiG4EMoG/o6Rohaus6oRguuoiqqKRTGF5O5pWK/zoLF
-         DrbAuhydw7TTKWDfVK4uhluOYftAwQMwWJ+f61amMBYkftd6WxAr73+8IJyl5of0P2K6
-         RSilifL/MOZQKGq/h2ZjzS5IjQAF7FTE2feKgFUui3qUMQ0aQ5ZIlVboW4FIGiM/5T5K
-         KFsugZbdQdmrJwxMZNzqYjeyTuO0aw5SBAG6Fu0tCaNy4jZtbLLIpE1jlTLbUML7G5iM
-         wuYFJoS/cBl0TB5uqDMAvfYWCfBkpJWBKNcKfYn3QdTRqxFNFGTwZWRrbqzQ8JCt+ljm
-         a6xg==
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=PP84X+OxFJ21UTR88oId1ypuOJWMSzupWAVzwbw8YCs=;
+        b=TeSvFK4aTOuYn8P9m3RFFz6niSS14OO2/qimVU0KFUf0/CIoMwbSdTKS4hSsQGZgXU
+         YWJ4Lhh1MwnfxIX2WPmZvsvi2cqQ9WYJVVs1sVKk1yaTsfuQ96JRlEnMZCD7vIeJFY81
+         KkZgG03hoNQz7orjdepNRdnx3grSJInHY5kFOHtBNTY/FOVEwZvEkW/IbBTwcs+GcJpN
+         vEoRZP1rRkW8n/htRGDKiywYUG9IBbpe3jfP6pKdtCkhcJa3Tuo466jEwzs4zwAs2FiM
+         kxS2DSxtLsL5dLBpL++fNy0UQih4t3A1Uqywz1Wa5Twg7xivuHsAJTq70wKzJ41RI6Q6
+         F2jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ygSA0TisS1G9yDz0tiDVeJGinlDq21hTl6agLHlX5Fk=;
-        b=dcDJTPl0T6xkI4RCpS2xoNCld8KjlG6OtFT7WrXhZu2BRuiq2erA2ZWxsWvUUvsSPu
-         jde1V9z1vHzuim/4vh3DsVKrFnhL7Tm/xM5Ne8Tz4OWn8CEjZBCwe3bg7dpd08qIHvw7
-         LQjfOGE2dOIpkrpudZgRbERrRM4ZutfbWpSCenerZi+4fMrHplYRQARrMGN9gn2+Lash
-         gq5JoWdS/QI6gFguVPrud8gMF590z16Fq29HGhFHTSzb1c06XSB4DJYfSihW+arRmIwk
-         4gZ3Kb89EP6uyQiYvnH82MCIlzXRovjAfZ45UQLr4PftXRu/PW3uBetzhYQQWS79bro2
-         6mmw==
-X-Gm-Message-State: AOUpUlGM/KbEGq4jDJDXDqPXq0lwa3B5yrJesBDnQZz5WTxKzRtgQOUz
-        yIE7U5bKbN/EGJCczSj9eKi4iWT8AkA=
-X-Google-Smtp-Source: AAOMgpdQPgH91GP5mPyyFGWJplFK2ldUGq5XFaLqt+wTk+RpRfroBJCS3IZTwTx86D19/sZ1274wpw==
-X-Received: by 2002:a2e:6c07:: with SMTP id h7-v6mr6684856ljc.81.1531987625446;
-        Thu, 19 Jul 2018 01:07:05 -0700 (PDT)
-Received: from [192.168.0.126] ([31.173.87.106])
-        by smtp.gmail.com with ESMTPSA id b87-v6sm859884lfh.33.2018.07.19.01.07.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Jul 2018 01:07:04 -0700 (PDT)
-Subject: Re: [PATCH v2 16/17] MIPS: JZ4770: DTS: Add DMA nodes
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-References: <20180718182023.8182-1-paul@crapouillou.net>
- <20180718182023.8182-17-paul@crapouillou.net>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <b25df80b-2314-8ed1-6fdf-5bb9b49ec994@cogentembedded.com>
-Date:   Thu, 19 Jul 2018 11:06:57 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20180718182023.8182-17-paul@crapouillou.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=PP84X+OxFJ21UTR88oId1ypuOJWMSzupWAVzwbw8YCs=;
+        b=CrHXiEKo/XC5KhZyzjirtsBXDYEz3QexKd0VTdPIAPI9AkvAGJYlumvLOybZvinJ2s
+         knHFBK5LKtD5yWlN/P4R4Q2DTyHuT6yNKqpda351Zmg1RYDziWa3Zs40l8ZRPwjsZ4aP
+         a5oyDxIPxlsBpph1biLIa06Q4/acnETrXctIDCV7l+jljlPeup8ffqsUP/vmgsBgWQ6+
+         Na4avOZ/z9c17wv7fXC/O3OUviQUGsscsRMyVILkbDPqIYYNLCZnCDXKrLoEZ+L+uwbL
+         shVH5xD1301B3VycRIpIHzGCaKge8JNXxCfmhRPmkjy+WhhZ/b1o3qYg73eLBjIgFuGF
+         Whww==
+X-Gm-Message-State: AOUpUlEDUe/D+qOYrItjzQWYWuWFK3j+YICjsJSQXII7LznThAo75g00
+        QXkfp6Xt0ITizTXnPf9TzG8lDkPQ1TQ=
+X-Google-Smtp-Source: AAOMgpcpzdldSSZDsC03k++psHpPepWs9KqA3yzKGLZTpxACt+mKfYQ3Ql4hK4bmfokrO84/vkG3lg==
+X-Received: by 2002:a65:6411:: with SMTP id a17-v6mr8886836pgv.287.1531988370167;
+        Thu, 19 Jul 2018 01:19:30 -0700 (PDT)
+Received: from software.domain.org ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id i6-v6sm7728360pfo.107.2018.07.19.01.19.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 19 Jul 2018 01:19:29 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH 1/2 4.4 Backport] MIPS: Call dump_stack() from show_regs()
+Date:   Thu, 19 Jul 2018 16:25:19 +0800
+Message-Id: <1531988720-2431-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64942
+X-archive-position: 64943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,38 +67,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 7/18/2018 9:20 PM, Paul Cercueil wrote:
+From: Paul Burton <paul.burton@mips.com>
 
-> Add the two devicetree nodes for the two DMA cores of the JZ4770 SoC,
-> disabled by default, as currently there are no clients for the DMA
-> driver (until the MMC driver and/or others get a devicetree node).
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Tested-by: Mathieu Malaterre <malat@debian.org>
-> ---
->   arch/mips/boot/dts/ingenic/jz4770.dtsi | 30 ++++++++++++++++++++++++++++++
->   1 file changed, 30 insertions(+)
-> 
->   v2: No change
-> 
-> diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-> index 7c2804f3f5f1..fda17beeb08b 100644
-> --- a/arch/mips/boot/dts/ingenic/jz4770.dtsi
-> +++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
-> @@ -196,6 +196,36 @@
->   		status = "disabled";
->   	};
->   
-> +	dmac0: jz4770-dma@13420000 {
+commit 5a267832c2ec47b2dad0fdb291a96bb5b8869315 upstream.
 
-	dmac0: dma-controller@13420000 {
+The generic nmi_cpu_backtrace() function calls show_regs() when a struct
+pt_regs is available, and dump_stack() otherwise. If we were to make use
+of the generic nmi_cpu_backtrace() with MIPS' current implementation of
+show_regs() this would mean that we see only register data with no
+accompanying stack information, in contrast with our current
+implementation which calls dump_stack() regardless of whether register
+state is available.
 
-[...]
+In preparation for making use of the generic nmi_cpu_backtrace() to
+implement arch_trigger_cpumask_backtrace(), have our implementation of
+show_regs() call dump_stack() and drop the explicit dump_stack() call in
+arch_dump_stack() which is invoked by arch_trigger_cpumask_backtrace().
 
-> +	dmac1: jz4770-dma@13420100 {
+This will allow the output we produce to remain the same after a later
+patch switches to using nmi_cpu_backtrace(). It may mean that we produce
+extra stack output in other uses of show_regs(), but this:
 
-	dmac1: dma-controller@13420100 {
+  1) Seems harmless.
+  2) Is good for consistency between arch_trigger_cpumask_backtrace()
+     and other users of show_regs().
+  3) Matches the behaviour of the ARM & PowerPC architectures.
 
-[...]
+Marked for stable back to v4.9 as a prerequisite of the following patch
+"MIPS: Call dump_stack() from show_regs()".
 
-MBR, Sergei
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19596/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org
+[ Huacai: backported to 4.4: The next patch is also backported to 4.4 ]
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/kernel/process.c | 4 ++--
+ arch/mips/kernel/traps.c   | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 1ee603d..f96048a 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -637,8 +637,8 @@ static void arch_dump_stack(void *info)
+ 
+ 	if (regs)
+ 		show_regs(regs);
+-
+-	dump_stack();
++	else
++		dump_stack();
+ }
+ 
+ void arch_trigger_all_cpu_backtrace(bool include_self)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 31ca2ed..1b90121 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -344,6 +344,7 @@ static void __show_regs(const struct pt_regs *regs)
+ void show_regs(struct pt_regs *regs)
+ {
+ 	__show_regs((struct pt_regs *)regs);
++	dump_stack();
+ }
+ 
+ void show_registers(struct pt_regs *regs)
+-- 
+2.7.0

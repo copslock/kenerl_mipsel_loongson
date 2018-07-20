@@ -1,26 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:26:47 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47216 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993885AbeGTMYTKG0kp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 14:24:19 +0200
-From:   John Crispin <john@phrozen.org>
-To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH V2 24/25] MIPS: ath79: sanitize symbols
-Date:   Fri, 20 Jul 2018 13:58:41 +0200
-Message-Id: <20180720115842.8406-25-john@phrozen.org>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
-References: <20180720115842.8406-1-john@phrozen.org>
-Return-Path: <john@phrozen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:27:48 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53840 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993881AbeGTM1nxZsei (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 14:27:43 +0200
+Received: from localhost (LFbn-1-12238-233.w90-92.abo.wanadoo.fr [90.92.53.233])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AB62341C;
+        Fri, 20 Jul 2018 12:27:36 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
+Subject: [PATCH 4.4 26/31] MIPS: Call dump_stack() from show_regs()
+Date:   Fri, 20 Jul 2018 14:13:56 +0200
+Message-Id: <20180720121341.095972489@linuxfoundation.org>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180720121340.158484922@linuxfoundation.org>
+References: <20180720121340.158484922@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64982
+X-archive-position: 64983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,99 +44,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We no longer need to select which SoCs are supported as the whole arch
-code is always built. So lets drop all the SoC symbols
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-Signed-off-by: John Crispin <john@phrozen.org>
+------------------
+
+From: Paul Burton <paul.burton@mips.com>
+
+commit 5a267832c2ec47b2dad0fdb291a96bb5b8869315 upstream.
+
+The generic nmi_cpu_backtrace() function calls show_regs() when a struct
+pt_regs is available, and dump_stack() otherwise. If we were to make use
+of the generic nmi_cpu_backtrace() with MIPS' current implementation of
+show_regs() this would mean that we see only register data with no
+accompanying stack information, in contrast with our current
+implementation which calls dump_stack() regardless of whether register
+state is available.
+
+In preparation for making use of the generic nmi_cpu_backtrace() to
+implement arch_trigger_cpumask_backtrace(), have our implementation of
+show_regs() call dump_stack() and drop the explicit dump_stack() call in
+arch_dump_stack() which is invoked by arch_trigger_cpumask_backtrace().
+
+This will allow the output we produce to remain the same after a later
+patch switches to using nmi_cpu_backtrace(). It may mean that we produce
+extra stack output in other uses of show_regs(), but this:
+
+  1) Seems harmless.
+  2) Is good for consistency between arch_trigger_cpumask_backtrace()
+     and other users of show_regs().
+  3) Matches the behaviour of the ARM & PowerPC architectures.
+
+Marked for stable back to v4.9 as a prerequisite of the following patch
+"MIPS: Call dump_stack() from show_regs()".
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19596/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/Kconfig       |  2 ++
- arch/mips/ath79/Kconfig | 44 +++++---------------------------------------
- arch/mips/pci/Makefile  |  2 +-
- 3 files changed, 8 insertions(+), 40 deletions(-)
+ arch/mips/kernel/process.c |    4 ++--
+ arch/mips/kernel/traps.c   |    1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4d8e15a15d57..9f4e461bbc2c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -204,6 +204,8 @@ config ATH79
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_MIPS16
- 	select SYS_SUPPORTS_ZBOOT_UART_PROM
-+	select HW_HAS_PCI
-+	select USB_ARCH_HAS_EHCI
- 	select USE_OF
- 	select USB_EHCI_ROOT_HUB_TT if USB_EHCI_HCD_PLATFORM
- 	help
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 9496b800571c..a6a194174156 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -1,48 +1,14 @@
- # SPDX-License-Identifier: GPL-2.0
- if ATH79
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -637,8 +637,8 @@ static void arch_dump_stack(void *info)
  
--config SOC_AR71XX
--	select HW_HAS_PCI
--	def_bool n
+ 	if (regs)
+ 		show_regs(regs);
 -
--config SOC_AR724X
--	select HW_HAS_PCI
--	select PCI_AR724X if PCI
--	def_bool n
--
--config SOC_AR913X
--	def_bool n
--
--config SOC_AR933X
--	def_bool n
--
--config SOC_AR934X
--	select HW_HAS_PCI
--	select PCI_AR724X if PCI
--	def_bool n
--
--config SOC_QCA955X
--	select HW_HAS_PCI
--	select PCI_AR724X if PCI
-+config PCI_AR71XX
-+	bool "PCI support for AR7100 type SoCs"
-+	depends on PCI
- 	def_bool n
+-	dump_stack();
++	else
++		dump_stack();
+ }
  
- config PCI_AR724X
--	def_bool n
--
--config ATH79_DEV_GPIO_BUTTONS
--	def_bool n
--
--config ATH79_DEV_LEDS_GPIO
--	def_bool n
--
--config ATH79_DEV_SPI
--	def_bool n
--
--config ATH79_DEV_USB
--	def_bool n
--
--config ATH79_DEV_WMAC
--	depends on (SOC_AR913X || SOC_AR933X || SOC_AR934X || SOC_QCA955X)
-+	bool "PCI support for AR724x type SoCs"
-+	depends on PCI
- 	def_bool n
+ void arch_trigger_all_cpu_backtrace(bool include_self)
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -344,6 +344,7 @@ static void __show_regs(const struct pt_
+ void show_regs(struct pt_regs *regs)
+ {
+ 	__show_regs((struct pt_regs *)regs);
++	dump_stack();
+ }
  
- endif
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index c4f976593061..836dbd4380cb 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -23,7 +23,7 @@ obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
- 					ops-bcm63xx.o
- obj-$(CONFIG_MIPS_ALCHEMY)	+= pci-alchemy.o
- obj-$(CONFIG_PCI_AR2315)	+= pci-ar2315.o
--obj-$(CONFIG_SOC_AR71XX)	+= pci-ar71xx.o
-+obj-$(CONFIG_PCI_AR71XX)	+= pci-ar71xx.o
- obj-$(CONFIG_PCI_AR724X)	+= pci-ar724x.o
- obj-$(CONFIG_MIPS_PCI_VIRTIO)	+= pci-virtio-guest.o
- #
--- 
-2.11.0
+ void show_registers(struct pt_regs *regs)

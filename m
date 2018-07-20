@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 20:38:27 +0200 (CEST)
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:44869 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993514AbeGTSiYMSFL4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 20:38:24 +0200
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.11] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 6B7D41C0002;
-        Fri, 20 Jul 2018 18:37:52 +0000 (UTC)
-From:   Alex Ghiti <alex@ghiti.fr>
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-References: <20180705110716.3919-1-alex@ghiti.fr>
- <20180709141621.GD22297@dhcp22.suse.cz>
-Message-ID: <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
-Date:   Fri, 20 Jul 2018 18:37:51 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
-MIME-Version: 1.0
-In-Reply-To: <20180709141621.GD22297@dhcp22.suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <alex@ghiti.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 22:15:30 +0200 (CEST)
+Received: from mail-lj1-x242.google.com ([IPv6:2a00:1450:4864:20::242]:44964
+        "EHLO mail-lj1-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993514AbeGTUP0Vkv00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 22:15:26 +0200
+Received: by mail-lj1-x242.google.com with SMTP id q127-v6so12067743ljq.11;
+        Fri, 20 Jul 2018 13:15:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=74SSK+YvwPJw8a7XuH/8OaCpBh2qG5nXP4WSsVG/Iko=;
+        b=aR/MWyDnoJ93PqmpGLRZsAEgCdCOvopfPOSsPTdzVYKm8vgypRcAewRz/jhhqhBY3E
+         g1qKIrIw1KFbCqHvcC+0v8ciJ3rfQvWi5XFtx+mCblGWPSUKP5AQoC4aiencCu1DkcVF
+         6l2ZnoXJ5WePkFyBdDPEeeNVHuTGb4l0D+KZOwQrbROFbOKxBgvtMXg6hj/pt+ICd+a0
+         xpvXGu+eCS8s/w/AkquTD0ebK/aJrwzxw3gQ/GgcO+lNyY4t3lkWg5nLLiRg+gq64YcX
+         9tLKooDlnBi2isLp+N/hMUDxpOcR8t1iZZULZdsrZgrdrUyD/E8h86ciNL5j6InBfnuo
+         ygJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=74SSK+YvwPJw8a7XuH/8OaCpBh2qG5nXP4WSsVG/Iko=;
+        b=JFaeMosJilCb1tq0s6j8n1ursjo5QVPCTpO9xpzJwoSqIe7BZMhoJKvIkAswbl5SMe
+         pU+XZootrreqdk314/x2+QIzHOWvGHOrCv0KBBOg0gFjjCKZAv4yVcEIeE5xqQ7VchmI
+         0ge9MKdhCpK8iobr1XiFljf8hjkctITgg1qbX+tcns90X8zM4Un3oqE327kUMar2oc/c
+         KYeh/Bpf6ItRuykWYfktT/x9qeUjvQVQvvnrAPZf78a6XRzAmtKcg99B0/91B0nUq0jJ
+         aVQjWAECLVN+6cn7SsGjqwfzlkPmQgbVXa6o9RVubKosyJnmj/m/DImFTV7CHm3sKN8D
+         YeZw==
+X-Gm-Message-State: AOUpUlGZgB1vwhg20qI1xkUPKpQj/RkTqVWhFJncG82WAvuKqqEsTvt1
+        zHOtSBrK+zNgheS+u9PQjqg=
+X-Google-Smtp-Source: AAOMgpfJZMq6Dsm/5tg/UOU4LmMweNrth9oTU5NZz94wnS+f1z80x3dgxp+Ac0VCosWp3lPMGlwXrw==
+X-Received: by 2002:a2e:9a16:: with SMTP id o22-v6mr2754544lji.17.1532117720798;
+        Fri, 20 Jul 2018 13:15:20 -0700 (PDT)
+Received: from linux.local ([5.166.218.73])
+        by smtp.gmail.com with ESMTPSA id z5-v6sm411894lff.96.2018.07.20.13.15.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 20 Jul 2018 13:15:20 -0700 (PDT)
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     paul.burton@mips.com, jhogan@kernel.org, ralf@linux-mips.org
+Cc:     hch@infradead.org, okaya@codeaurora.org, chenhc@lemote.com,
+        Sergey.Semin@t-platforms.ru, linux-kernel@vger.kernel.org,
+        Serge Semin <fancer.lancer@gmail.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH] mips: mm: Discard ioremap_cacheable_cow() method
+Date:   Fri, 20 Jul 2018 23:14:27 +0300
+Message-Id: <20180720201427.18845-1-fancer.lancer@gmail.com>
+X-Mailer: git-send-email 2.12.0
+Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64996
+X-archive-position: 64997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: fancer.lancer@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,68 +65,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Does anyone have any suggestion about those patches ?
+This macro substitution is the shortcut to map cacheable IO memory
+with coherent and write-back attributes. Since it is entirely unused
+by kernel, lets just remove it.
 
-On 07/09/2018 02:16 PM, Michal Hocko wrote:
-> [CC hugetlb guys - http://lkml.kernel.org/r/20180705110716.3919-1-alex@ghiti.fr]
->
-> On Thu 05-07-18 11:07:05, Alexandre Ghiti wrote:
->> In order to reduce copy/paste of functions across architectures and then
->> make riscv hugetlb port (and future ports) simpler and smaller, this
->> patchset intends to factorize the numerous hugetlb primitives that are
->> defined across all the architectures.
->>
->> Except for prepare_hugepage_range, this patchset moves the versions that
->> are just pass-through to standard pte primitives into
->> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
->> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
->>
->> s390 architecture has not been tackled in this serie since it does not
->> use asm-generic/hugetlb.h at all.
->> powerpc could be factorized a bit more (cf huge_ptep_set_wrprotect).
->>
->> This patchset has been compiled on x86 only.
->>
->> Changelog:
->>
->> v4:
->>    Fix powerpc build error due to misplacing of #include
->>    <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as
->>    pointed by Christophe Leroy.
->>
->> v1, v2, v3:
->>    Same version, just problems with email provider and misuse of
->>    --batch-size option of git send-email
->>
->> Alexandre Ghiti (11):
->>    hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
->>    hugetlb: Introduce generic version of hugetlb_free_pgd_range
->>    hugetlb: Introduce generic version of set_huge_pte_at
->>    hugetlb: Introduce generic version of huge_ptep_get_and_clear
->>    hugetlb: Introduce generic version of huge_ptep_clear_flush
->>    hugetlb: Introduce generic version of huge_pte_none
->>    hugetlb: Introduce generic version of huge_pte_wrprotect
->>    hugetlb: Introduce generic version of prepare_hugepage_range
->>    hugetlb: Introduce generic version of huge_ptep_set_wrprotect
->>    hugetlb: Introduce generic version of huge_ptep_set_access_flags
->>    hugetlb: Introduce generic version of huge_ptep_get
->>
->>   arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
->>   arch/arm/include/asm/hugetlb.h               | 33 +----------
->>   arch/arm64/include/asm/hugetlb.h             | 39 +++---------
->>   arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
->>   arch/mips/include/asm/hugetlb.h              | 40 +++----------
->>   arch/parisc/include/asm/hugetlb.h            | 33 +++--------
->>   arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +
->>   arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
->>   arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
->>   arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +
->>   arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
->>   arch/sh/include/asm/hugetlb.h                | 54 ++---------------
->>   arch/sparc/include/asm/hugetlb.h             | 40 +++----------
->>   arch/x86/include/asm/hugetlb.h               | 72 +----------------------
->>   include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
->>   15 files changed, 143 insertions(+), 384 deletions(-)
->>
->> -- 
->> 2.16.2
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+CC: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Sinan Kaya <okaya@codeaurora.org>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Sergey.Semin@t-platforms.ru
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/mips/include/asm/io.h | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index f613d1df66c0..cd170d920d55 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -300,13 +300,6 @@ static inline void __iomem * __ioremap_mode(phys_addr_t offset, unsigned long si
+ #define ioremap_wc(offset, size)					\
+ 	__ioremap_mode((offset), (size), boot_cpu_data.writecombine)
+ 
+-/*
+- * This is a MIPS specific ioremap variant. ioremap_cacheable_cow
+- * requests a cachable mapping with CWB attribute enabled.
+- */
+-#define ioremap_cacheable_cow(offset, size)				\
+-	__ioremap_mode((offset), (size), _CACHE_CACHABLE_COW)
+-
+ static inline void iounmap(const volatile void __iomem *addr)
+ {
+ 	if (plat_iounmap(addr))
+-- 
+2.12.0

@@ -1,80 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 15:23:37 +0200 (CEST)
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:54562 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993256AbeGTNXeHjwPG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 15:23:34 +0200
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6KDIxZK009824;
-        Fri, 20 Jul 2018 08:23:03 -0500
-Authentication-Results: ppops.net;
-        spf=none smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from mail3.cirrus.com ([87.246.76.56])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2kbg2301br-1;
-        Fri, 20 Jul 2018 08:23:03 -0500
-Received: from EX17.ad.cirrus.com (ex17.ad.cirrus.com [172.20.9.81])
-        by mail3.cirrus.com (Postfix) with ESMTP id 8E608611CE60;
-        Fri, 20 Jul 2018 08:24:13 -0500 (CDT)
-Received: from imbe.wolfsonmicro.main (198.61.95.81) by EX17.ad.cirrus.com
- (172.20.9.81) with Microsoft SMTP Server id 14.3.301.0; Fri, 20 Jul 2018
- 14:23:02 +0100
-Received: from imbe.wolfsonmicro.main (imbe.wolfsonmicro.main [198.61.95.81])
-        by imbe.wolfsonmicro.main (8.14.4/8.14.4) with ESMTP id w6KDMwCn011246; Fri,
- 20 Jul 2018 14:22:58 +0100
-Date:   Fri, 20 Jul 2018 14:22:58 +0100
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-CC:     Marcel Ziswiler <marcel@ziswiler.com>,
-        <alsa-devel@alsa-project.org>, <linux-tegra@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Marcel Ziswiler" <marcel.ziswiler@toradex.com>,
-        <linux-mips@linux-mips.org>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        "Philippe Ombredanne" <pombredanne@nexb.com>,
-        Bhumika Goyal <bhumirks@gmail.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Thierry Reding" <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Paul Burton <paul.burton@mips.com>,
-        "Liam Girdwood" <lgirdwood@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Daniel Mack" <daniel@zonque.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        <linux-arm-kernel@lists.infradead.org>,
-        "Jaroslav Kysela" <perex@perex.cz>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
-        Han Xu <han.xu@nxp.com>, Donglin Peng <dolinux.peng@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>
-Subject: Re: [PATCH] ASoC: wm9712: fix replace codec to component
-Message-ID: <20180720132258.GD18740@imbe.wolfsonmicro.main>
-References: <20180720075148.14648-1-marcel@ziswiler.com>
- <87effy48lz.wl-kuninori.morimoto.gx@renesas.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 15:47:52 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:43324 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993316AbeGTNrsRSQCE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 15:47:48 +0200
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6KDiB45060514
+        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 09:47:46 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2kbft43nv7-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 09:47:46 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Fri, 20 Jul 2018 14:47:44 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 20 Jul 2018 14:47:38 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6KDlbtw27656404
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Jul 2018 13:47:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F30FB42047;
+        Fri, 20 Jul 2018 16:47:54 +0100 (BST)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E7F424203F;
+        Fri, 20 Jul 2018 16:47:44 +0100 (BST)
+Received: from [9.77.210.204] (unknown [9.77.210.204])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 20 Jul 2018 16:47:44 +0100 (BST)
+Subject: Re: [PATCH v6 0/6] Uprobes: Support SDT markers having reference
+ count (semaphore)
+To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, mhiramat@kernel.org,
+        Song Liu <liu.song.a23@gmail.com>
+Cc:     rostedt@goodmis.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date:   Fri, 20 Jul 2018 19:17:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <87effy48lz.wl-kuninori.morimoto.gx@renesas.com>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=495 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1806210000
- definitions=main-1807200152
-Return-Path: <ckeepax@opensource.cirrus.com>
+In-Reply-To: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18072013-0028-0000-0000-000002DE0D08
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18072013-0029-0000-0000-00002395E006
+Message-Id: <0c0adc46-ca53-94d6-658e-77c724e6ce73@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-20_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807200156
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64986
+X-archive-position: 64987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ckeepax@opensource.cirrus.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,26 +86,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 20, 2018 at 08:30:41AM +0000, Kuninori Morimoto wrote:
-> 
-> Hi Marcel
-> 
-> > From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-> > 
-> > Since commit 143b44845d87 ("ASoC: wm9712: replace codec to component")
-> > "wm9712-codec" got renamed to "wm9712-component", however, this change
-> > never got propagated down to the actual board/platform drivers. E.g. on
-> > Colibri T20 this lead to the following spew upon boot with sound/touch
-> > being broken:
-> 
-> Oops, my bad...
-> The platform_driver name is not important,
-> how about simply rename back it to "wm9712-codec" ?
-> 
+Oleg, Srikar, Masami, Song,
 
-Yeah I would agree here wm9712-component isn't great as a name
-for board files etc. Lets rename back to wm9712-codec for these
-specific bits.
+Any feedback please? :)
 
 Thanks,
-Charles
+Ravi
+
+On 07/16/2018 02:17 PM, Ravi Bangoria wrote:
+> Userspace Statically Defined Tracepoints[1] are dtrace style markers
+> inside userspace applications. Applications like PostgreSQL, MySQL,
+> Pthread, Perl, Python, Java, Ruby, Node.js, libvirt, QEMU, glib etc
+> have these markers embedded in them. These markers are added by developer
+> at important places in the code. Each marker source expands to a single
+> nop instruction in the compiled code but there may be additional
+> overhead for computing the marker arguments which expands to couple of
+> instructions. In case the overhead is more, execution of it can be
+> omitted by runtime if() condition when no one is tracing on the marker:
+> 
+>     if (reference_counter > 0) {
+>         Execute marker instructions;
+>     }
+> 
+> Default value of reference counter is 0. Tracer has to increment the 
+> reference counter before tracing on a marker and decrement it when
+> done with the tracing.
+> 
+> Currently, perf tool has limited supports for SDT markers. I.e. it
+> can not trace markers surrounded by reference counter. Also, it's
+> not easy to add reference counter logic in userspace tool like perf,
+> so basic idea for this patchset is to add reference counter logic in
+> the a uprobe infrastructure. Ex,[2]
+> 
+>   # cat tick.c
+>     ... 
+>     for (i = 0; i < 100; i++) {
+> 	DTRACE_PROBE1(tick, loop1, i);
+>         if (TICK_LOOP2_ENABLED()) {
+>             DTRACE_PROBE1(tick, loop2, i); 
+>         }
+>         printf("hi: %d\n", i); 
+>         sleep(1);
+>     }   
+>     ... 
+> 
+> Here tick:loop1 is marker without reference counter where as tick:loop2
+> is surrounded by reference counter condition.
+> 
+>   # perf buildid-cache --add /tmp/tick
+>   # perf probe sdt_tick:loop1
+>   # perf probe sdt_tick:loop2
+> 
+>   # perf stat -e sdt_tick:loop1,sdt_tick:loop2 -- /tmp/tick
+>   hi: 0
+>   hi: 1
+>   hi: 2
+>   ^C
+>   Performance counter stats for '/tmp/tick':
+>              3      sdt_tick:loop1
+>              0      sdt_tick:loop2
+>      2.747086086 seconds time elapsed
+> 
+> Perf failed to record data for tick:loop2. Same experiment with this
+> patch series:
+> 
+>   # ./perf buildid-cache --add /tmp/tick
+>   # ./perf probe sdt_tick:loop2
+>   # ./perf stat -e sdt_tick:loop2 /tmp/tick
+>     hi: 0
+>     hi: 1
+>     hi: 2
+>     ^C  
+>      Performance counter stats for '/tmp/tick':
+>                  3      sdt_tick:loop2
+>        2.561851452 seconds time elapsed
+> 
+> 
+> v6 changes:
+>  - Do not export struct uprobe outside of uprobe.c. Instead, use
+>    container_of(arch_uprobe) to regain uprobe in uprobe_write_opcode().
+>  - Allow 0 as a special value for reference counter _offset_. I.e.
+>    two uprobes, one having ref_ctr_offset=0 and the other having
+>    non-zero ref_ctr_offset can coexists.
+>  - If vma holding reference counter is not present while patching an
+>    instruction, we add that uprobe in delayed_uprobe_list. When
+>    appropriate mapping is created, we increment the reference counter
+>    and remove uprobe from delayed_uprobe_list. While doing all this,
+>    v5 was searching for all such uprobes in uprobe_tree which is not 
+>    require. Also, uprobes are stored in rbtree with inode+offset as
+>    the key and v5 was searching uprobe based on inode+ref_ctr_offset
+>    which is wrong too. Fix this by directly looing on delayed_uprobe_list.
+>  - Consider VM_SHARED vma as invalid for reference counter. Return
+>    false from valid_ref_ctr_vma() if vma->vm_flags has VM_SHARED set.
+>  - No need to use FOLL_FORCE in get_user_pages_remote() while getting
+>    a page to update reference counter. Remove it.
+>  - Do not mention usage of reference counter in Documentation/.
+> 
+> 
+> v5 can be found at: https://lkml.org/lkml/2018/6/28/51
+> 
+> Ravi Bangoria (6):
+>   Uprobes: Simplify uprobe_register() body
+>   Uprobe: Additional argument arch_uprobe to uprobe_write_opcode()
+>   Uprobes: Support SDT markers having reference count (semaphore)
+>   trace_uprobe/sdt: Prevent multiple reference counter for same uprobe
+>   Uprobes/sdt: Prevent multiple reference counter for same uprobe
+>   perf probe: Support SDT markers having reference counter (semaphore)
+> 
+>  arch/arm/probes/uprobes/core.c |   2 +-
+>  arch/mips/kernel/uprobes.c     |   2 +-
+>  include/linux/uprobes.h        |   7 +-
+>  kernel/events/uprobes.c        | 358 ++++++++++++++++++++++++++++++++++++-----
+>  kernel/trace/trace.c           |   2 +-
+>  kernel/trace/trace_uprobe.c    |  78 ++++++++-
+>  tools/perf/util/probe-event.c  |  39 ++++-
+>  tools/perf/util/probe-event.h  |   1 +
+>  tools/perf/util/probe-file.c   |  34 +++-
+>  tools/perf/util/probe-file.h   |   1 +
+>  tools/perf/util/symbol-elf.c   |  46 ++++--
+>  tools/perf/util/symbol.h       |   7 +
+>  12 files changed, 503 insertions(+), 74 deletions(-)
+> 

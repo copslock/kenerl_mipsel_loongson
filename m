@@ -1,57 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 17:47:58 +0200 (CEST)
-Received: from mail-lf1-x142.google.com ([IPv6:2a00:1450:4864:20::142]:42122
-        "EHLO mail-lf1-x142.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993316AbeGTPryVMz40 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 17:47:54 +0200
-Received: by mail-lf1-x142.google.com with SMTP id u202-v6so2112703lff.9
-        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 08:47:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 17:51:51 +0200 (CEST)
+Received: from mail-lf1-x144.google.com ([IPv6:2a00:1450:4864:20::144]:43950
+        "EHLO mail-lf1-x144.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993316AbeGTPvrxNXZ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 17:51:47 +0200
+Received: by mail-lf1-x144.google.com with SMTP id m12-v6so2129618lfc.10
+        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 08:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:cc:references:from:organization:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=aJ4lbSD/2hhTSvfa/6VF/7Uj8rY8ilmiEjQ7Muc11Kc=;
-        b=wyqVm+36SMpvOrYgnHrJtE1NwOu/X/NJgS3JDxhYUBSbmFfS3z5SNt9TgX08M+sOl3
-         i1GOmMLSTSUfVied+b+H7wpdgc+8B2cH9BVR9jJDS1Uvr6Ki4VN+mmChEE1U39q0eqr3
-         yYKa7XN+cP5fAjbqRK9KF2XWYyne0coe9XA4mwlJPAjYK53BNfydreVvlzjxIjazeDoh
-         H6na8nk23tDOWLWhRKIcRiQpsN/6rAGCOT4iHqksuU/vpp8x+4QUaH8lEyCTOiW2NRUW
-         A7e9i+fwTTs0xvv6L5nxtKKEN+DUUnQaIQXU/PAOOfI7jOtldaUycgN3ib0vv5HdIuCB
-         GWhA==
+        bh=s77QPZMTYaHHlVZmv/KHF2k3xtrejKbSBRTrGNfndjQ=;
+        b=a7SdzSy7xawvI498HgcYcDiI3FxLM0XxbsHwqfLBd4t2mfR2y6tUMYRKwSqAnoMKJC
+         lClymBchUn3A39GOpKfwmi4lQ5YtxakKLtU152n3/3tt5w3vPlVH8PI3FFCKMRlOfHdN
+         ANmCFZtP/97pxcnot8BZ9CFBo+dT3T3GrJ/VChwsylf1OO+2WCwsRpS1iPPZOfIBX06G
+         dRkUwic0R4pEbdCuolayUdEalg6TUGEL+9ZINiz0HIEbM4wGMwqDBJsL2hpuvUUqwTRt
+         gncvedCpv+oNN2dv/9sUH8QfJ4n9irts7qBL5dnqd4ArJ01T6JwMQSn202Cf0f2FBBdT
+         FfQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:organization
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=aJ4lbSD/2hhTSvfa/6VF/7Uj8rY8ilmiEjQ7Muc11Kc=;
-        b=uAYS7tQcgZLKAnuw0gesNd9VfbTz/curhLAW78wRp30DaczFIt/Wn+x+gT18z1Wxzl
-         n0GOeu9ka+dNlOEHENf/iRfVWCVPgQP2zsMIVQjMrBF7B2XS2yltMd9PckDfuY4ZEKsh
-         3XzrYRsBTgtlcr6O+rBbbbC6S3WFrgbsqXdcSvDgdL866X6AduISnmBCEekdZ8Vinz5q
-         6Vm+XUZxYnjC9fOBTPvNRZJ6zUZzaUHE44pRj5MdmDf7G1/lpYT1fvdCI1Zwa4e67FYo
-         eX3P1q8HKtV7RSBm8KAsRTla8BzS+QNM7kaG/wcaQ3wC5n7UOBu9+00Tq6CANqL8LVus
-         tHMA==
-X-Gm-Message-State: AOUpUlHSZ4bBABuHhAcsamD74AbengijgLHpSTDiclS3Bnk/vv2Ynom3
-        4rI4d02TlXn9dnBXmaUpZ/ZswA==
-X-Google-Smtp-Source: AAOMgpeyWdWntXkMdAQ7tFtY6QpwkpdE8S58kps71g7STB4nXO/J3H4T8yheAPL81kf24P7xz2pszg==
-X-Received: by 2002:a19:8f8f:: with SMTP id s15-v6mr1813262lfk.96.1532101669003;
-        Fri, 20 Jul 2018 08:47:49 -0700 (PDT)
+        bh=s77QPZMTYaHHlVZmv/KHF2k3xtrejKbSBRTrGNfndjQ=;
+        b=elaxpWqEObf8y1RNm1FfJWfS7CYNSxYGg2y08CD3mipnp3lY8zinRuOsIDeoDzt2mN
+         ptDIHbp+VDTEuVQsI9pFZErq7dLTr0tZr8XAzH1PqtOEmY0GPo7aLWBTSrlD2ylXhMOp
+         nx3PMm1ul7axyAhLsOYLLSNSX9YhOv6n6jfzZffz541aXRfBN5qsZ9XmcNV1cXHy6Wk6
+         c3WXVon3SuA0xxPjSK2jjMSw4GPfp/yXvoXH7T5xXsEfpvnq+L+p81BoTuuVRzjmaiIQ
+         RqeA8LAbjWHN483U0z1KNm+0Wmo1zLGwzwVTE/hGBif++1ELl42yRRqBdiTjxxKXv/V2
+         TDVQ==
+X-Gm-Message-State: AOUpUlHjwn7zwtwNOTMlgYGwgsBCpUiJVNUp+qhYR6yDqYyV9krd2qiP
+        nuT4sF2w7lPeZgBqPaF4rpJ7DQ==
+X-Google-Smtp-Source: AAOMgpcTmvd6/3uAXKrliyXyaHao4mNoq0Ni95JLBHpL1tOFgZIbRH9EUvfVo250dKuhy1JH29i2Ww==
+X-Received: by 2002:a19:dd5c:: with SMTP id u89-v6mr1717873lfg.83.1532101902514;
+        Fri, 20 Jul 2018 08:51:42 -0700 (PDT)
 Received: from wasted.cogentembedded.com ([31.173.86.110])
-        by smtp.gmail.com with ESMTPSA id v10-v6sm429467ljg.12.2018.07.20.08.47.47
+        by smtp.gmail.com with ESMTPSA id m29-v6sm340243lfj.45.2018.07.20.08.51.41
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 20 Jul 2018 08:47:47 -0700 (PDT)
-Subject: Re: [PATCH V2 07/25] MIPS: ath79: enable uart during early_prink
+        Fri, 20 Jul 2018 08:51:41 -0700 (PDT)
+Subject: Re: [PATCH V2 09/25] dt-bindings: PCI: qcom,ar7100: adds binding doc
 To:     John Crispin <john@phrozen.org>, James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org
 References: <20180720115842.8406-1-john@phrozen.org>
- <20180720115842.8406-8-john@phrozen.org>
+ <20180720115842.8406-10-john@phrozen.org>
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Organization: Cogent Embedded
-Message-ID: <357b8f17-4eeb-9939-3781-af060673abf1@cogentembedded.com>
-Date:   Fri, 20 Jul 2018 18:47:46 +0300
+Message-ID: <f09ceb04-be84-a9ee-b383-d4314e4662d5@cogentembedded.com>
+Date:   Fri, 20 Jul 2018 18:51:40 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20180720115842.8406-8-john@phrozen.org>
+In-Reply-To: <20180720115842.8406-10-john@phrozen.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
@@ -59,7 +60,7 @@ Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64989
+X-archive-position: 64990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,40 +79,59 @@ X-list: linux-mips
 
 On 07/20/2018 02:58 PM, John Crispin wrote:
 
-> From: Gabor Juhos <juhosg@openwrt.org>
+> With the driver being converted from platform_data to pure OF, we need to
+> also add some docs.
 > 
-> This patch ensures, that the poinmux register is properly setup for the
-
-   Pinmux.
-
-> boot console uart when early_printk is enabled.
-
-   UART (else my spell-checker trips over it).
-
-> 
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
 > Signed-off-by: John Crispin <john@phrozen.org>
 > ---
->  arch/mips/ath79/early_printk.c | 44 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 43 insertions(+), 1 deletion(-)
+>  .../devicetree/bindings/pci/qcom,ar7100-pci.txt    | 38 ++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
 > 
-> diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
-> index d6c892cf01b1..2024a0bb9144 100644
-> --- a/arch/mips/ath79/early_printk.c
-> +++ b/arch/mips/ath79/early_printk.c
-> @@ -58,6 +58,46 @@ static void prom_putchar_dummy(unsigned char ch)
->  	/* nothing to do */
->  }
->  
-> +static void prom_enable_uart(u32 id)
-> +{
-> +	void __iomem *gpio_base;
-> +	u32 uart_en;
-> +	u32 t;
-[...]
-> +	gpio_base = (void __iomem *)(KSEG1ADDR(AR71XX_GPIO_BASE));
+> diff --git a/Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt b/Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
+> new file mode 100644
+> index 000000000000..10085dd1cd11
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
+> @@ -0,0 +1,38 @@
+> +* Qualcomm Atheros AR7100 PCI express root complex
+> +
+> +Required properties:
+> +- compatible: should contain "qcom,ar7100-pci" to identify the core.
+> +- reg: Should contain the register ranges as listed in the reg-names property.
+> +- reg-names: Definition: Must include the following entries
+> +	- "cfg_base"	IO Memory
+> +- #address-cells: set to <3>
+> +- #size-cells: set to <2>
+> +- ranges: ranges for the PCI memory and I/O regions
+> +- interrupt-map-mask and interrupt-map: standard PCI
+> +	properties to define the mapping of the PCIe interface to interrupt
+> +	numbers.
+> +- #interrupt-cells: set to <1>
+> +- interrupt-controller: define to enable the builtin IRQ cascade.
+> +
+> +Optional properties:
+> +- interrupt-parent: phandle to the MIPS IRQ controller
+> +
+> +* Example for ar7100
+> +	pcie-controller@180c0000 {
+> +		compatible = "qca,ar7100-pci";
+> +		#address-cells = <3>;
+> +		#size-cells = <2>;
+> +		bus-range = <0x0 0x0>;
 
-   Are the parens around KSEG1ADDR() really needed?
+   Not documented above.
+
+> +		reg = <0x17010000 0x100>;
+> +		reg-names = "cfg_base";
+> +		ranges = <0x2000000 0 0x10000000 0x10000000 0 0x07000000
+> +			  0x1000000 0 0x00000000 0x00000000 0 0x00000001>;
+> +		interrupt-parent = <&cpuintc>;
+> +		interrupts = <2>;
+
+   Not documented above.
 
 [...]
 

@@ -1,22 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:26:23 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47204 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:26:37 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47210 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993883AbeGTMYPNIzw5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 14:24:15 +0200
+        id S23993394AbeGTMYRQ0gqZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 14:24:17 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH V2 19/25] MIPS: ath79: drop legacy IRQ code
-Date:   Fri, 20 Jul 2018 13:58:36 +0200
-Message-Id: <20180720115842.8406-20-john@phrozen.org>
+Subject: [PATCH V2 21/25] MIPS: ath79: drop legacy pci code
+Date:   Fri, 20 Jul 2018 13:58:38 +0200
+Message-Id: <20180720115842.8406-22-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
 References: <20180720115842.8406-1-john@phrozen.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64980
+X-archive-position: 64981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,242 +36,392 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With the target now being fully OF based, we can drop the legacy IRQ code.
-All IRQs are now handled via the new irqchip drivers.
+With the target now being fully OF based, we can drop the legacy pci
+platform code. The only bits that we need to keep is the fixup code
+which we move to its own code file.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/Makefile                 |   2 +-
- arch/mips/ath79/irq.c                    | 169 -------------------------------
- arch/mips/ath79/setup.c                  |   6 ++
- arch/mips/include/asm/mach-ath79/ath79.h |   4 -
- 4 files changed, 7 insertions(+), 174 deletions(-)
- delete mode 100644 arch/mips/ath79/irq.c
+ arch/mips/ath79/Makefile    |   1 -
+ arch/mips/ath79/pci.c       | 273 --------------------------------------------
+ arch/mips/ath79/pci.h       |  35 ------
+ arch/mips/pci/Makefile      |   1 +
+ arch/mips/pci/fixup-ath79.c |  21 ++++
+ 5 files changed, 22 insertions(+), 309 deletions(-)
+ delete mode 100644 arch/mips/ath79/pci.c
+ delete mode 100644 arch/mips/ath79/pci.h
+ create mode 100644 arch/mips/pci/fixup-ath79.c
 
 diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index fcc382cfc770..d8bd9b821ac9 100644
+index ab8e26fe7446..bd0c9b8b1b5b 100644
 --- a/arch/mips/ath79/Makefile
 +++ b/arch/mips/ath79/Makefile
-@@ -8,7 +8,7 @@
- # under the terms of the GNU General Public License version 2 as published
- # by the Free Software Foundation.
- 
--obj-y	:= prom.o setup.o irq.o common.o clock.o
-+obj-y	:= prom.o setup.o common.o clock.o
+@@ -11,7 +11,6 @@
+ obj-y	:= prom.o setup.o common.o clock.o
  
  obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- obj-$(CONFIG_PCI)			+= pci.o
-diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+-obj-$(CONFIG_PCI)			+= pci.o
+ 
+ #
+ # Devices
+diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
 deleted file mode 100644
-index 2dfff1f19004..000000000000
---- a/arch/mips/ath79/irq.c
+index b816cb4a25ff..000000000000
+--- a/arch/mips/ath79/pci.c
 +++ /dev/null
-@@ -1,169 +0,0 @@
+@@ -1,273 +0,0 @@
 -/*
-- *  Atheros AR71xx/AR724x/AR913x specific interrupt handling
+- *  Atheros AR71XX/AR724X specific PCI setup code
 - *
-- *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
+- *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
 - *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
 - *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 - *
-- *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
+- *  Parts of this file are based on Atheros' 2.6.15 BSP
 - *
 - *  This program is free software; you can redistribute it and/or modify it
 - *  under the terms of the GNU General Public License version 2 as published
 - *  by the Free Software Foundation.
 - */
 -
--#include <linux/kernel.h>
 -#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/irqchip.h>
--#include <linux/of_irq.h>
--
--#include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--
--#include <asm/mach-ath79/ath79.h>
+-#include <linux/pci.h>
+-#include <linux/resource.h>
+-#include <linux/platform_device.h>
 -#include <asm/mach-ath79/ar71xx_regs.h>
--#include "common.h"
--#include "machtypes.h"
+-#include <asm/mach-ath79/ath79.h>
+-#include <asm/mach-ath79/irq.h>
+-#include "pci.h"
 -
+-static int (*ath79_pci_plat_dev_init)(struct pci_dev *dev);
+-static const struct ath79_pci_irq *ath79_pci_irq_map;
+-static unsigned ath79_pci_nr_irqs;
 -
--static void ar934x_ip2_irq_dispatch(struct irq_desc *desc)
--{
--	u32 status;
--
--	status = ath79_reset_rr(AR934X_RESET_REG_PCIE_WMAC_INT_STATUS);
--
--	if (status & AR934X_PCIE_WMAC_INT_PCIE_ALL) {
--		ath79_ddr_wb_flush(3);
--		generic_handle_irq(ATH79_IP2_IRQ(0));
--	} else if (status & AR934X_PCIE_WMAC_INT_WMAC_ALL) {
--		ath79_ddr_wb_flush(4);
--		generic_handle_irq(ATH79_IP2_IRQ(1));
--	} else {
--		spurious_interrupt();
+-static const struct ath79_pci_irq ar71xx_pci_irq_map[] = {
+-	{
+-		.slot	= 17,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(0),
+-	}, {
+-		.slot	= 18,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(1),
+-	}, {
+-		.slot	= 19,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(2),
 -	}
--}
+-};
 -
--static void ar934x_ip2_irq_init(void)
+-static const struct ath79_pci_irq ar724x_pci_irq_map[] = {
+-	{
+-		.slot	= 0,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(0),
+-	}
+-};
+-
+-static const struct ath79_pci_irq qca955x_pci_irq_map[] = {
+-	{
+-		.bus	= 0,
+-		.slot	= 0,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(0),
+-	},
+-	{
+-		.bus	= 1,
+-		.slot	= 0,
+-		.pin	= 1,
+-		.irq	= ATH79_PCI_IRQ(1),
+-	},
+-};
+-
+-int pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
 -{
+-	int irq = -1;
 -	int i;
 -
--	for (i = ATH79_IP2_IRQ_BASE;
--	     i < ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT; i++)
--		irq_set_chip_and_handler(i, &dummy_irq_chip,
--					 handle_level_irq);
--
--	irq_set_chained_handler(ATH79_CPU_IRQ(2), ar934x_ip2_irq_dispatch);
--}
--
--static void qca955x_ip2_irq_dispatch(struct irq_desc *desc)
--{
--	u32 status;
--
--	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
--	status &= QCA955X_EXT_INT_PCIE_RC1_ALL | QCA955X_EXT_INT_WMAC_ALL;
--
--	if (status == 0) {
--		spurious_interrupt();
--		return;
+-	if (ath79_pci_nr_irqs == 0 ||
+-	    ath79_pci_irq_map == NULL) {
+-		if (soc_is_ar71xx()) {
+-			ath79_pci_irq_map = ar71xx_pci_irq_map;
+-			ath79_pci_nr_irqs = ARRAY_SIZE(ar71xx_pci_irq_map);
+-		} else if (soc_is_ar724x() ||
+-			   soc_is_ar9342() ||
+-			   soc_is_ar9344()) {
+-			ath79_pci_irq_map = ar724x_pci_irq_map;
+-			ath79_pci_nr_irqs = ARRAY_SIZE(ar724x_pci_irq_map);
+-		} else if (soc_is_qca955x()) {
+-			ath79_pci_irq_map = qca955x_pci_irq_map;
+-			ath79_pci_nr_irqs = ARRAY_SIZE(qca955x_pci_irq_map);
+-		} else {
+-			pr_crit("pci %s: invalid irq map\n",
+-				pci_name((struct pci_dev *) dev));
+-			return irq;
+-		}
 -	}
 -
--	if (status & QCA955X_EXT_INT_PCIE_RC1_ALL) {
--		/* TODO: flush DDR? */
--		generic_handle_irq(ATH79_IP2_IRQ(0));
+-	for (i = 0; i < ath79_pci_nr_irqs; i++) {
+-		const struct ath79_pci_irq *entry;
+-
+-		entry = &ath79_pci_irq_map[i];
+-		if (entry->bus == dev->bus->number &&
+-		    entry->slot == slot &&
+-		    entry->pin == pin) {
+-			irq = entry->irq;
+-			break;
+-		}
 -	}
 -
--	if (status & QCA955X_EXT_INT_WMAC_ALL) {
--		/* TODO: flush DDR? */
--		generic_handle_irq(ATH79_IP2_IRQ(1));
--	}
--}
--
--static void qca955x_ip3_irq_dispatch(struct irq_desc *desc)
--{
--	u32 status;
--
--	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
--	status &= QCA955X_EXT_INT_PCIE_RC2_ALL |
--		  QCA955X_EXT_INT_USB1 |
--		  QCA955X_EXT_INT_USB2;
--
--	if (status == 0) {
--		spurious_interrupt();
--		return;
--	}
--
--	if (status & QCA955X_EXT_INT_USB1) {
--		/* TODO: flush DDR? */
--		generic_handle_irq(ATH79_IP3_IRQ(0));
--	}
--
--	if (status & QCA955X_EXT_INT_USB2) {
--		/* TODO: flush DDR? */
--		generic_handle_irq(ATH79_IP3_IRQ(1));
--	}
--
--	if (status & QCA955X_EXT_INT_PCIE_RC2_ALL) {
--		/* TODO: flush DDR? */
--		generic_handle_irq(ATH79_IP3_IRQ(2));
--	}
--}
--
--static void qca955x_irq_init(void)
--{
--	int i;
--
--	for (i = ATH79_IP2_IRQ_BASE;
--	     i < ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT; i++)
--		irq_set_chip_and_handler(i, &dummy_irq_chip,
--					 handle_level_irq);
--
--	irq_set_chained_handler(ATH79_CPU_IRQ(2), qca955x_ip2_irq_dispatch);
--
--	for (i = ATH79_IP3_IRQ_BASE;
--	     i < ATH79_IP3_IRQ_BASE + ATH79_IP3_IRQ_COUNT; i++)
--		irq_set_chip_and_handler(i, &dummy_irq_chip,
--					 handle_level_irq);
--
--	irq_set_chained_handler(ATH79_CPU_IRQ(3), qca955x_ip3_irq_dispatch);
--}
--
--void __init arch_init_irq(void)
--{
--	unsigned irq_wb_chan2 = -1;
--	unsigned irq_wb_chan3 = -1;
--	bool misc_is_ar71xx;
--
--	if (mips_machtype == ATH79_MACH_GENERIC_OF) {
--		irqchip_init();
--		return;
--	}
--
--	if (soc_is_ar71xx() || soc_is_ar724x() ||
--	    soc_is_ar913x() || soc_is_ar933x()) {
--		irq_wb_chan2 = 3;
--		irq_wb_chan3 = 2;
--	} else if (soc_is_ar934x()) {
--		irq_wb_chan3 = 2;
--	}
--
--	ath79_cpu_irq_init(irq_wb_chan2, irq_wb_chan3);
--
--	if (soc_is_ar71xx() || soc_is_ar913x())
--		misc_is_ar71xx = true;
--	else if (soc_is_ar724x() ||
--		 soc_is_ar933x() ||
--		 soc_is_ar934x() ||
--		 soc_is_qca955x())
--		misc_is_ar71xx = false;
+-	if (irq < 0)
+-		pr_crit("pci %s: no irq found for pin %u\n",
+-			pci_name((struct pci_dev *) dev), pin);
 -	else
--		BUG();
--	ath79_misc_irq_init(
--		ath79_reset_base + AR71XX_RESET_REG_MISC_INT_STATUS,
--		ATH79_CPU_IRQ(6), ATH79_MISC_IRQ_BASE, misc_is_ar71xx);
+-		pr_info("pci %s: using irq %d for pin %u\n",
+-			pci_name((struct pci_dev *) dev), irq, pin);
 -
--	if (soc_is_ar934x())
--		ar934x_ip2_irq_init();
--	else if (soc_is_qca955x())
--		qca955x_irq_init();
+-	return irq;
 -}
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 4c7a93f4039a..a8c1cca07461 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -19,6 +19,7 @@
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/of_fdt.h>
-+#include <linux/irqchip.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/idle.h>
-@@ -311,6 +312,11 @@ void __init plat_time_init(void)
- 	mips_hpt_frequency = cpu_clk_rate / 2;
- }
- 
-+void __init arch_init_irq(void)
+-
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	if (ath79_pci_plat_dev_init)
+-		return ath79_pci_plat_dev_init(dev);
+-
+-	return 0;
+-}
+-
+-void __init ath79_pci_set_irq_map(unsigned nr_irqs,
+-				  const struct ath79_pci_irq *map)
+-{
+-	ath79_pci_nr_irqs = nr_irqs;
+-	ath79_pci_irq_map = map;
+-}
+-
+-void __init ath79_pci_set_plat_dev_init(int (*func)(struct pci_dev *dev))
+-{
+-	ath79_pci_plat_dev_init = func;
+-}
+-
+-static struct platform_device *
+-ath79_register_pci_ar71xx(void)
+-{
+-	struct platform_device *pdev;
+-	struct resource res[4];
+-
+-	memset(res, 0, sizeof(res));
+-
+-	res[0].name = "cfg_base";
+-	res[0].flags = IORESOURCE_MEM;
+-	res[0].start = AR71XX_PCI_CFG_BASE;
+-	res[0].end = AR71XX_PCI_CFG_BASE + AR71XX_PCI_CFG_SIZE - 1;
+-
+-	res[1].flags = IORESOURCE_IRQ;
+-	res[1].start = ATH79_CPU_IRQ(2);
+-	res[1].end = ATH79_CPU_IRQ(2);
+-
+-	res[2].name = "io_base";
+-	res[2].flags = IORESOURCE_IO;
+-	res[2].start = 0;
+-	res[2].end = 0;
+-
+-	res[3].name = "mem_base";
+-	res[3].flags = IORESOURCE_MEM;
+-	res[3].start = AR71XX_PCI_MEM_BASE;
+-	res[3].end = AR71XX_PCI_MEM_BASE + AR71XX_PCI_MEM_SIZE - 1;
+-
+-	pdev = platform_device_register_simple("ar71xx-pci", -1,
+-					       res, ARRAY_SIZE(res));
+-	return pdev;
+-}
+-
+-static struct platform_device *
+-ath79_register_pci_ar724x(int id,
+-			  unsigned long cfg_base,
+-			  unsigned long ctrl_base,
+-			  unsigned long crp_base,
+-			  unsigned long mem_base,
+-			  unsigned long mem_size,
+-			  unsigned long io_base,
+-			  int irq)
+-{
+-	struct platform_device *pdev;
+-	struct resource res[6];
+-
+-	memset(res, 0, sizeof(res));
+-
+-	res[0].name = "cfg_base";
+-	res[0].flags = IORESOURCE_MEM;
+-	res[0].start = cfg_base;
+-	res[0].end = cfg_base + AR724X_PCI_CFG_SIZE - 1;
+-
+-	res[1].name = "ctrl_base";
+-	res[1].flags = IORESOURCE_MEM;
+-	res[1].start = ctrl_base;
+-	res[1].end = ctrl_base + AR724X_PCI_CTRL_SIZE - 1;
+-
+-	res[2].flags = IORESOURCE_IRQ;
+-	res[2].start = irq;
+-	res[2].end = irq;
+-
+-	res[3].name = "mem_base";
+-	res[3].flags = IORESOURCE_MEM;
+-	res[3].start = mem_base;
+-	res[3].end = mem_base + mem_size - 1;
+-
+-	res[4].name = "io_base";
+-	res[4].flags = IORESOURCE_IO;
+-	res[4].start = io_base;
+-	res[4].end = io_base;
+-
+-	res[5].name = "crp_base";
+-	res[5].flags = IORESOURCE_MEM;
+-	res[5].start = crp_base;
+-	res[5].end = crp_base + AR724X_PCI_CRP_SIZE - 1;
+-
+-	pdev = platform_device_register_simple("ar724x-pci", id,
+-					       res, ARRAY_SIZE(res));
+-	return pdev;
+-}
+-
+-int __init ath79_register_pci(void)
+-{
+-	struct platform_device *pdev = NULL;
+-
+-	if (soc_is_ar71xx()) {
+-		pdev = ath79_register_pci_ar71xx();
+-	} else if (soc_is_ar724x()) {
+-		pdev = ath79_register_pci_ar724x(-1,
+-						 AR724X_PCI_CFG_BASE,
+-						 AR724X_PCI_CTRL_BASE,
+-						 AR724X_PCI_CRP_BASE,
+-						 AR724X_PCI_MEM_BASE,
+-						 AR724X_PCI_MEM_SIZE,
+-						 0,
+-						 ATH79_CPU_IRQ(2));
+-	} else if (soc_is_ar9342() ||
+-		   soc_is_ar9344()) {
+-		u32 bootstrap;
+-
+-		bootstrap = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
+-		if ((bootstrap & AR934X_BOOTSTRAP_PCIE_RC) == 0)
+-			return -ENODEV;
+-
+-		pdev = ath79_register_pci_ar724x(-1,
+-						 AR724X_PCI_CFG_BASE,
+-						 AR724X_PCI_CTRL_BASE,
+-						 AR724X_PCI_CRP_BASE,
+-						 AR724X_PCI_MEM_BASE,
+-						 AR724X_PCI_MEM_SIZE,
+-						 0,
+-						 ATH79_IP2_IRQ(0));
+-	} else if (soc_is_qca9558()) {
+-		pdev = ath79_register_pci_ar724x(0,
+-						 QCA955X_PCI_CFG_BASE0,
+-						 QCA955X_PCI_CTRL_BASE0,
+-						 QCA955X_PCI_CRP_BASE0,
+-						 QCA955X_PCI_MEM_BASE0,
+-						 QCA955X_PCI_MEM_SIZE,
+-						 0,
+-						 ATH79_IP2_IRQ(0));
+-
+-		pdev = ath79_register_pci_ar724x(1,
+-						 QCA955X_PCI_CFG_BASE1,
+-						 QCA955X_PCI_CTRL_BASE1,
+-						 QCA955X_PCI_CRP_BASE1,
+-						 QCA955X_PCI_MEM_BASE1,
+-						 QCA955X_PCI_MEM_SIZE,
+-						 1,
+-						 ATH79_IP3_IRQ(2));
+-	} else {
+-		/* No PCI support */
+-		return -ENODEV;
+-	}
+-
+-	if (!pdev)
+-		pr_err("unable to register PCI controller device\n");
+-
+-	return pdev ? 0 : -ENODEV;
+-}
+diff --git a/arch/mips/ath79/pci.h b/arch/mips/ath79/pci.h
+deleted file mode 100644
+index 1d00a3803c37..000000000000
+--- a/arch/mips/ath79/pci.h
++++ /dev/null
+@@ -1,35 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X PCI support
+- *
+- *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_PCI_H
+-#define _ATH79_PCI_H
+-
+-struct ath79_pci_irq {
+-	int	bus;
+-	u8	slot;
+-	u8	pin;
+-	int	irq;
+-};
+-
+-#ifdef CONFIG_PCI
+-void ath79_pci_set_irq_map(unsigned nr_irqs, const struct ath79_pci_irq *map);
+-void ath79_pci_set_plat_dev_init(int (*func)(struct pci_dev *dev));
+-int ath79_register_pci(void);
+-#else
+-static inline void
+-ath79_pci_set_irq_map(unsigned nr_irqs, const struct ath79_pci_irq *map) {}
+-static inline void
+-ath79_pci_set_plat_dev_init(int (*func)(struct pci_dev *)) {}
+-static inline int ath79_register_pci(void) { return 0; }
+-#endif
+-
+-#endif /* _ATH79_PCI_H */
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index 8185a2bfaf09..c4f976593061 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -29,6 +29,7 @@ obj-$(CONFIG_MIPS_PCI_VIRTIO)	+= pci-virtio-guest.o
+ #
+ # These are still pretty much in the old state, watch, go blind.
+ #
++obj-$(CONFIG_ATH79)		+= fixup-ath79.o
+ obj-$(CONFIG_LASAT)		+= pci-lasat.o
+ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fixup-fuloong2e.o ops-loongson2.o
+diff --git a/arch/mips/pci/fixup-ath79.c b/arch/mips/pci/fixup-ath79.c
+new file mode 100644
+index 000000000000..9e651a4af05e
+--- /dev/null
++++ b/arch/mips/pci/fixup-ath79.c
+@@ -0,0 +1,21 @@
++/*
++ *  Copyright (C) 2018 John Crispin <john@phrozen.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#include <linux/pci.h>
++//#include <linux/of_irq.h>
++#include <linux/of_pci.h>
++
++int pcibios_plat_dev_init(struct pci_dev *dev)
 +{
-+	irqchip_init();
++	return PCIBIOS_SUCCESSFUL;
 +}
 +
- static int __init ath79_setup(void)
- {
- 	if  (mips_machtype == ATH79_MACH_GENERIC_OF)
-diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
-index 73dcd63b8243..47e8827e9564 100644
---- a/arch/mips/include/asm/mach-ath79/ath79.h
-+++ b/arch/mips/include/asm/mach-ath79/ath79.h
-@@ -178,8 +178,4 @@ static inline u32 ath79_reset_rr(unsigned reg)
- void ath79_device_reset_set(u32 mask);
- void ath79_device_reset_clear(u32 mask);
- 
--void ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3);
--void ath79_misc_irq_init(void __iomem *regs, int irq,
--			int irq_base, bool is_ar71xx);
--
- #endif /* __ASM_MACH_ATH79_H */
++int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	return of_irq_parse_and_map_pci(dev, slot, pin);
++}
 -- 
 2.11.0

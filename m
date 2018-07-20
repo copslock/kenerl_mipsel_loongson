@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:28:29 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:55132 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:28:43 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55350 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993885AbeGTM2YGE44i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 14:28:24 +0200
+        by eddie.linux-mips.org with ESMTP id S23993880AbeGTM2eq59Ni (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 14:28:34 +0200
 Received: from localhost (LFbn-1-12238-233.w90-92.abo.wanadoo.fr [90.92.53.233])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9A07ABCF;
-        Fri, 20 Jul 2018 12:28:12 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 521B9BB6;
+        Fri, 20 Jul 2018 12:28:15 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,21 +13,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.4 27/31] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
-Date:   Fri, 20 Jul 2018 14:13:57 +0200
-Message-Id: <20180720121341.133460889@linuxfoundation.org>
+Subject: [PATCH 4.9 01/66] MIPS: Use async IPIs for arch_trigger_cpumask_backtrace()
+Date:   Fri, 20 Jul 2018 14:13:18 +0200
+Message-Id: <20180720121407.305714136@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180720121340.158484922@linuxfoundation.org>
-References: <20180720121340.158484922@linuxfoundation.org>
+In-Reply-To: <20180720121407.228772286@linuxfoundation.org>
+References: <20180720121407.228772286@linuxfoundation.org>
 User-Agent: quilt/0.65
-X-stable: review
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64984
+X-archive-position: 64985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -149,46 +148,55 @@ Cc: linux-mips@linux-mips.org
 Cc: stable@vger.kernel.org # v4.9+
 Fixes: 856839b76836 ("MIPS: Add arch_trigger_all_cpu_backtrace() function")
 Fixes: 9a01c3ed5cdb ("nmi_backtrace: add more trigger_*_cpu_backtrace() methods")
-[ Huacai: backported to 4.4: Restruction since generic NMI solution is unavailable ]
+[ Huacai: backported to 4.9: Replace "call_single_data_t" with "struct call_single_data" ]
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/process.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ arch/mips/kernel/process.c |   45 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 15 deletions(-)
 
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -629,21 +629,48 @@ unsigned long arch_align_stack(unsigned
+@@ -26,6 +26,7 @@
+ #include <linux/kallsyms.h>
+ #include <linux/random.h>
+ #include <linux/prctl.h>
++#include <linux/nmi.h>
+ 
+ #include <asm/asm.h>
+ #include <asm/bootinfo.h>
+@@ -633,28 +634,42 @@ unsigned long arch_align_stack(unsigned
  	return sp & ALMASK;
  }
  
+-static void arch_dump_stack(void *info)
+-{
+-	struct pt_regs *regs;
 +static DEFINE_PER_CPU(struct call_single_data, backtrace_csd);
 +static struct cpumask backtrace_csd_busy;
-+
- static void arch_dump_stack(void *info)
- {
- 	struct pt_regs *regs;
-+	static arch_spinlock_t lock = __ARCH_SPIN_LOCK_UNLOCKED;
  
-+	arch_spin_lock(&lock);
- 	regs = get_irq_regs();
- 
- 	if (regs)
- 		show_regs(regs);
- 	else
- 		dump_stack();
-+	arch_spin_unlock(&lock);
-+
+-	regs = get_irq_regs();
+-
+-	if (regs)
+-		show_regs(regs);
+-	else
+-		dump_stack();
++static void handle_backtrace(void *info)
++{
++	nmi_cpu_backtrace(get_irq_regs());
 +	cpumask_clear_cpu(smp_processor_id(), &backtrace_csd_busy);
  }
  
- void arch_trigger_all_cpu_backtrace(bool include_self)
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++static void raise_backtrace(cpumask_t *mask)
  {
--	smp_call_function(arch_dump_stack, NULL, 1);
+-	long this_cpu = get_cpu();
 +	struct call_single_data *csd;
 +	int cpu;
-+
-+	for_each_cpu(cpu, cpu_online_mask) {
+ 
+-	if (cpumask_test_cpu(this_cpu, mask) && !exclude_self)
+-		dump_stack();
++	for_each_cpu(cpu, mask) {
 +		/*
 +		 * If we previously sent an IPI to the target CPU & it hasn't
 +		 * cleared its bit in the busy cpumask then it didn't handle
@@ -200,11 +208,18 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +				cpu);
 +			continue;
 +		}
-+
+ 
+-	smp_call_function_many(mask, arch_dump_stack, NULL, 1);
 +		csd = &per_cpu(backtrace_csd, cpu);
-+		csd->func = arch_dump_stack;
++		csd->func = handle_backtrace;
 +		smp_call_function_single_async(cpu, csd);
 +	}
++}
+ 
+-	put_cpu();
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++{
++	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
  }
  
  int mips_get_process_fp_mode(struct task_struct *task)

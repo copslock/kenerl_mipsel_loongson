@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:00:19 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:46230 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:00:28 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:46242 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993514AbeGTL6vy1AWA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 13:58:51 +0200
+        id S23993552AbeGTL6wj-yUA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 13:58:52 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+Cc:     linux-mips@linux-mips.org, Mathias Kresin <dev@kresin.me>,
         John Crispin <john@phrozen.org>
-Subject: [PATCH V2 07/25] MIPS: ath79: enable uart during early_prink
-Date:   Fri, 20 Jul 2018 13:58:24 +0200
-Message-Id: <20180720115842.8406-8-john@phrozen.org>
+Subject: [PATCH V2 08/25] MIPS: ath79: get PCIe controller out of reset
+Date:   Fri, 20 Jul 2018 13:58:25 +0200
+Message-Id: <20180720115842.8406-9-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
 References: <20180720115842.8406-1-john@phrozen.org>
@@ -17,7 +17,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64964
+X-archive-position: 64965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,79 +34,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Gabor Juhos <juhosg@openwrt.org>
+From: Mathias Kresin <dev@kresin.me>
 
-This patch ensures, that the poinmux register is properly setup for the
-boot console uart when early_printk is enabled.
+The ar724x pci driver expects the PCIe controller to be brought out of
+reset by the bootloader.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+At least the AVM Fritz 300E bootloader doesn't take care of releasing
+the different PCIe controller related resets which causes an endless
+hang as soon as either the PCIE Reset register (0x180f0018) or the PCI
+Application Control register (0x180f0000) is read from.
+
+Do the full "PCIE Root Complex Initialization Sequence" if the PCIe
+host controller is still in reset during probing.
+
+The QCA u-boot sleeps 10ms after the PCIE Application Control bit is
+set to ready. It has been shown that 10ms might not be enough time if
+PCIe should be used right after setting the bit. During my tests it
+took up to 20ms till the link was up. Giving the link up to 100ms
+should work for all cases.
+
+Signed-off-by: Mathias Kresin <dev@kresin.me>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/early_printk.c | 44 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ arch/mips/pci/pci-ar724x.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
-index d6c892cf01b1..2024a0bb9144 100644
---- a/arch/mips/ath79/early_printk.c
-+++ b/arch/mips/ath79/early_printk.c
-@@ -58,6 +58,46 @@ static void prom_putchar_dummy(unsigned char ch)
- 	/* nothing to do */
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index 1e23c8d587bd..64b58cc48a91 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -12,14 +12,18 @@
+ #include <linux/irq.h>
+ #include <linux/pci.h>
+ #include <linux/init.h>
++#include <linux/delay.h>
+ #include <linux/platform_device.h>
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ 
++#define AR724X_PCI_REG_APP		0x00
+ #define AR724X_PCI_REG_RESET		0x18
+ #define AR724X_PCI_REG_INT_STATUS	0x4c
+ #define AR724X_PCI_REG_INT_MASK		0x50
+ 
++#define AR724X_PCI_APP_LTSSM_ENABLE	BIT(0)
++
+ #define AR724X_PCI_RESET_LINK_UP	BIT(0)
+ 
+ #define AR724X_PCI_INT_DEV0		BIT(14)
+@@ -325,6 +329,37 @@ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
+ 					 apc);
  }
  
-+static void prom_enable_uart(u32 id)
++static void ar724x_pci_hw_init(struct ar724x_pci_controller *apc)
 +{
-+	void __iomem *gpio_base;
-+	u32 uart_en;
-+	u32 t;
++	u32 ppl, app;
++	int wait = 0;
 +
-+	switch (id) {
-+	case REV_ID_MAJOR_AR71XX:
-+		uart_en = AR71XX_GPIO_FUNC_UART_EN;
-+		break;
++	/* deassert PCIe host controller and PCIe PHY reset */
++	ath79_device_reset_clear(AR724X_RESET_PCIE);
++	ath79_device_reset_clear(AR724X_RESET_PCIE_PHY);
 +
-+	case REV_ID_MAJOR_AR7240:
-+	case REV_ID_MAJOR_AR7241:
-+	case REV_ID_MAJOR_AR7242:
-+		uart_en = AR724X_GPIO_FUNC_UART_EN;
-+		break;
++	/* remove the reset of the PCIE PLL */
++	ppl = ath79_pll_rr(AR724X_PLL_REG_PCIE_CONFIG);
++	ppl &= ~AR724X_PLL_REG_PCIE_CONFIG_PPL_RESET;
++	ath79_pll_wr(AR724X_PLL_REG_PCIE_CONFIG, ppl);
 +
-+	case REV_ID_MAJOR_AR913X:
-+		uart_en = AR913X_GPIO_FUNC_UART_EN;
-+		break;
++	/* deassert bypass for the PCIE PLL */
++	ppl = ath79_pll_rr(AR724X_PLL_REG_PCIE_CONFIG);
++	ppl &= ~AR724X_PLL_REG_PCIE_CONFIG_PPL_BYPASS;
++	ath79_pll_wr(AR724X_PLL_REG_PCIE_CONFIG, ppl);
 +
-+	case REV_ID_MAJOR_AR9330:
-+	case REV_ID_MAJOR_AR9331:
-+		uart_en = AR933X_GPIO_FUNC_UART_EN;
-+		break;
++	/* set PCIE Application Control to ready */
++	app = __raw_readl(apc->ctrl_base + AR724X_PCI_REG_APP);
++	app |= AR724X_PCI_APP_LTSSM_ENABLE;
++	__raw_writel(app, apc->ctrl_base + AR724X_PCI_REG_APP);
 +
-+	case REV_ID_MAJOR_AR9341:
-+	case REV_ID_MAJOR_AR9342:
-+	case REV_ID_MAJOR_AR9344:
-+		/* TODO */
-+	default:
-+		return;
-+	}
-+
-+	gpio_base = (void __iomem *)(KSEG1ADDR(AR71XX_GPIO_BASE));
-+	t = __raw_readl(gpio_base + AR71XX_GPIO_REG_FUNC);
-+	t |= uart_en;
-+	__raw_writel(t, gpio_base + AR71XX_GPIO_REG_FUNC);
++	/* wait up to 100ms for PHY link up */
++	do {
++		mdelay(10);
++		wait++;
++	} while (wait < 10 && !ar724x_pci_check_link(apc));
 +}
 +
- static void prom_putchar_init(void)
+ static int ar724x_pci_probe(struct platform_device *pdev)
  {
- 	void __iomem *base;
-@@ -92,8 +132,10 @@ static void prom_putchar_init(void)
+ 	struct ar724x_pci_controller *apc;
+@@ -383,6 +418,13 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ 	apc->pci_controller.io_resource = &apc->io_res;
+ 	apc->pci_controller.mem_resource = &apc->mem_res;
  
- 	default:
- 		_prom_putchar = prom_putchar_dummy;
--		break;
-+		return;
- 	}
++	/*
++	 * Do the full PCIE Root Complex Initialization Sequence if the PCIe
++	 * host controller is in reset.
++	 */
++	if (ath79_reset_rr(AR724X_RESET_REG_RESET_MODULE) & AR724X_RESET_PCIE)
++		ar724x_pci_hw_init(apc);
 +
-+	prom_enable_uart(id);
- }
- 
- void prom_putchar(unsigned char ch)
+ 	apc->link_up = ar724x_pci_check_link(apc);
+ 	if (!apc->link_up)
+ 		dev_warn(&pdev->dev, "PCIe link is down\n");
 -- 
 2.11.0

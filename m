@@ -1,69 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 02:33:53 +0200 (CEST)
-Received: from mail-qt0-x242.google.com ([IPv6:2607:f8b0:400d:c0d::242]:41931
-        "EHLO mail-qt0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993107AbeGTAduFXkgx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 02:33:50 +0200
-Received: by mail-qt0-x242.google.com with SMTP id e19-v6so8896061qtp.8;
-        Thu, 19 Jul 2018 17:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gJjaQCmidxLoGVvn6IwVvpfqGCdJoLW+smhMdPEzz1M=;
-        b=dgzajuVyX4NslCyBFR/Il8a73p4aFGNQIXYcn7fC4yRn94geDXSzW+6H/pDzihU9ln
-         lr+JwTBuHTiiJlkwX5IHNUVuCIPb2oC9domJ3hmjM8cS2kTYicTgIgS5ehXnlfDePqdo
-         n/oiQgBGitkTSFcHVkN3m5WL9cvDPKSmHzCyUPrCqbzC2mtWkLijkNNFY57TuEQ+qler
-         /TxM8uuq6SgIoUAB+jaR5t7VhRwqGjXf+lHlr8G7D6j3GTDHPGAmaK1HUKNLzYzOR15S
-         wP6AwI3zPhosC+vBdyCYUuQJ2t3x7FTiQblD03HaPv+BqXpqQsn5+e6xuB8S8z4rwOtt
-         m2Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gJjaQCmidxLoGVvn6IwVvpfqGCdJoLW+smhMdPEzz1M=;
-        b=Mn3c9sLeq5IWs5jXcLMTeuw/fYkB8z5O38CBniOB4prc0TUnApwsjJIspKn+mQ1Pvu
-         VD12vCOdecc68qSCh1NPd8nMRSEIXtH9ezAtf1yXVC0NYjnpsT38qUS/8jelvcPn8BUr
-         rQNMZ6B0bp5j5RE55WjU0eey8Puaoniy8AUJXa4v4PZ/o0qzMv2J1+icjk2v3sZZS4xD
-         G5S0T5bSYE4M+DWXwUJiT0WwM15V6Jp6TS9bQzZZD81qq6JxMxml+NvexK75AsPdz24P
-         EvAth5sW7po7boT6UnSxIsSupQngESQChJSBpR/dp7BcLv78bbbTOEeVTGWU0+96raRt
-         E2iQ==
-X-Gm-Message-State: AOUpUlFeQ5fFZK81xswrdboR+NKvvlIKotBAiolEJqZeCMyjHl6NKMrG
-        lcUmvO4twCQoM0f0cbaEIGA=
-X-Google-Smtp-Source: AAOMgpeywteAB5ett3pUytJwqLKmF23SPfawvMTd6B+gtxFI44XglJeemX1NCNVjrxAFlRmOvpeTNg==
-X-Received: by 2002:a0c:c602:: with SMTP id v2-v6mr12944591qvi.31.1532046823884;
-        Thu, 19 Jul 2018 17:33:43 -0700 (PDT)
-Received: from [10.0.2.15] (CPEac9e17937810-CM64777dd8e660.cpe.net.cable.rogers.com. [99.245.240.231])
-        by smtp.gmail.com with ESMTPSA id k5-v6sm273892qke.92.2018.07.19.17.33.42
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Jul 2018 17:33:43 -0700 (PDT)
-Subject: Re: [PATCH] mips: rapidio: Drop dependency on PCI
-To:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 09:53:54 +0200 (CEST)
+Received: from mout.perfora.net ([74.208.4.197]:40755 "EHLO mout.perfora.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993081AbeGTHxrmKKTN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 09:53:47 +0200
+Received: from localhost.localdomain.ziswiler.net ([89.217.215.226]) by
+ mrelay.perfora.net (mreueus002 [74.208.5.2]) with ESMTPA (Nemesis) id
+ 0LvjLO-1g5fkm15rQ-017Xy1; Fri, 20 Jul 2018 09:52:13 +0200
+From:   Marcel Ziswiler <marcel@ziswiler.com>
+To:     alsa-devel@alsa-project.org, linux-tegra@vger.kernel.org,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        linux-mips@linux-mips.org,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
         James Hogan <jhogan@kernel.org>,
-        Matt Porter <mporter@kernel.crashing.org>
-References: <20180713135132.1066-1-alexander.sverdlin@nokia.com>
-From:   Alexandre Bounine <alex.bou9@gmail.com>
-Message-ID: <5639e809-6ebe-14a3-d784-26b8df176f23@gmail.com>
-Date:   Thu, 19 Jul 2018 20:33:37 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
-MIME-Version: 1.0
-In-Reply-To: <20180713135132.1066-1-alexander.sverdlin@nokia.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <alex.bou9@gmail.com>
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Bhumika Goyal <bhumirks@gmail.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Jaroslav Kysela <perex@perex.cz>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
+        Han Xu <han.xu@nxp.com>, Donglin Peng <dolinux.peng@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: [PATCH] ASoC: wm9712: fix replace codec to component
+Date:   Fri, 20 Jul 2018 09:51:48 +0200
+Message-Id: <20180720075148.14648-1-marcel@ziswiler.com>
+X-Mailer: git-send-email 2.14.4
+X-Provags-ID: V03:K1:jgkuzK5IC8EHF4K+efLJ7LCt74be1ZvWsYu53EshPQ8lgi0OG7V
+ /3DXb/hCGTLv9bkJdY2Erfg6k2SYSMAVzXAXu9YYXgAFhwavhUbOEjbCkMDskw3d0Elnmqt
+ XTdRWmUVj0QZXJDVwC2fdn1r72SV1HqZ0F1wpwEOA+6v4Vmv5CU9Qi2X7CliMwvqyS23+NW
+ Y4mQ9/EadW3erMN8545qA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:qwFmHeUNMWg=:aQqWF11ctMgVo/ljbSF6Ib
+ PKhgX5X4nIS139T5EQZKVyat+jeJhvHVV8WIA7BgYGRANCxHbDnq5mL9BB2dNIypPGhkPXH4y
+ BO5u2RqqidKSOnhUHJosbzhndcWpM779WI0wbDMAJM3d7l+KBRmraoT87vqs1NGsBBAwW5gCN
+ 8CaYzBPCzBhjaiyiqghdZpXi3Zf58XdGGpXwxdfotWOaFtIvjilBqynyXN6K+WaZwARYa36eJ
+ Q0XcVtoH4hPri7/WAMLEVnzwPCIuqW1Wbh//OQNVITmwPCHv36/WPfCcPO8ESiEv47u+E4/9a
+ uZNWdQ02/W+hifpTO9OLdeba/82euYMIajDvmPvvqefRWlEK9N7BwjPkTbdNaH0cW6sm+sUUX
+ v7L4ZIJwYUYvmu3BsMhhS4nCFe5L5nZcgC2Yo3P+mNDWjb6k/2BLFO74c6NOuK2y+GVBKYhJe
+ B7SAfk/RRNdaWdTua1dl3OhgJjF072siOV3buKmFRsq6Nu/d/GDDD0cb409QsQN2KwcjIEPCV
+ uoUavxAwkSJubyD9M9o6c2ZDxcew+2A1l2ixb21IhFNPcx2s91vymPxarLxCYIanhbFfqk0Y0
+ jm2hmB/DmEkq1Jff0CEdR5yeTa/fBbDoKckeN3N7nyQB2oi8YpOsu+9SQXQoQ8vyPy1uzpQk3
+ DCxcAt9VM/KlOp8CzR6RHVz/NoOLyinqybWRDLiQEbb0XqTHDgnIBgM9N3kslFkQ8jkM=
+Return-Path: <marcel@ziswiler.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64953
+X-archive-position: 64954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex.bou9@gmail.com
+X-original-sender: marcel@ziswiler.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,32 +76,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 
+Since commit 143b44845d87 ("ASoC: wm9712: replace codec to component")
+"wm9712-codec" got renamed to "wm9712-component", however, this change
+never got propagated down to the actual board/platform drivers. E.g. on
+Colibri T20 this lead to the following spew upon boot with sound/touch
+being broken:
 
-On 2018-07-13 09:51 AM, Alexander Sverdlin wrote:
-> Cavium Octeon is an example of the SoC where RAPIDIO works without PCI.
-> So drop the unnecessary dependency.
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
-> ---
->   arch/mips/Kconfig | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 08c10c518f83..ac8a63d02391 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -3117,7 +3117,6 @@ source "drivers/pcmcia/Kconfig"
->   
->   config RAPIDIO
->   	tristate "RapidIO support"
-> -	depends on PCI
->   	default n
->   	help
->   	  If you say Y here, the kernel will include drivers and
-> 
-Please consider using approach similar to config options in arch/powerpc 
-branch (search for HAS_RAPIDIO). This will allow better handling of SoC 
-configurations, e.g. forcing built-in code instead of building a module.
-Also it will keep the same style for supported architectures. ARM uses 
-the same as well - patch is on its way.
+[    2.214121] tegra-snd-wm9712 sound: ASoC: CODEC DAI wm9712-hifi not registered
+[    2.222137] tegra-snd-wm9712 sound: snd_soc_register_card failed (-517)
+...
+[    2.344384] tegra-snd-wm9712 sound: ASoC: CODEC DAI wm9712-hifi not registered
+[    2.351885] tegra-snd-wm9712 sound: snd_soc_register_card failed (-517)
+...
+[    2.668339] tegra-snd-wm9712 sound: ASoC: CODEC DAI wm9712-hifi not registered
+[    2.675811] tegra-snd-wm9712 sound: snd_soc_register_card failed (-517)
+...
+[    3.208408] tegra-snd-wm9712 sound: ASoC: CODEC DAI wm9712-hifi not registered
+[    3.216312] tegra-snd-wm9712 sound: snd_soc_register_card failed (-517)
+...
+[    3.235397] tegra-snd-wm9712 sound: ASoC: CODEC DAI wm9712-hifi not registered
+[    3.248938] tegra-snd-wm9712 sound: snd_soc_register_card failed (-517)
+...
+[   14.970443] ALSA device list:
+[   14.996628]   No soundcards found.
+
+This commit finally fixes this again.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+
+---
+
+ arch/arm/mach-pxa/tosa.c             | 2 +-
+ arch/mips/alchemy/devboards/db1300.c | 2 +-
+ drivers/mfd/wm97xx-core.c            | 6 +++---
+ sound/soc/au1x/db1200.c              | 4 ++--
+ sound/soc/fsl/pcm030-audio-fabric.c  | 6 +++---
+ sound/soc/fsl/phycore-ac97.c         | 6 +++---
+ sound/soc/pxa/e800_wm9712.c          | 4 ++--
+ sound/soc/pxa/em-x270.c              | 4 ++--
+ sound/soc/pxa/palm27x.c              | 4 ++--
+ sound/soc/pxa/tosa.c                 | 4 ++--
+ sound/soc/tegra/tegra_wm9712.c       | 4 ++--
+ 11 files changed, 23 insertions(+), 23 deletions(-)
+
+diff --git a/arch/arm/mach-pxa/tosa.c b/arch/arm/mach-pxa/tosa.c
+index cb5cd8e78c94..32011e600496 100644
+--- a/arch/arm/mach-pxa/tosa.c
++++ b/arch/arm/mach-pxa/tosa.c
+@@ -848,7 +848,7 @@ static struct platform_device sharpsl_rom_device = {
+ };
+ 
+ static struct platform_device wm9712_device = {
+-	.name	= "wm9712-codec",
++	.name	= "wm9712-component",
+ 	.id	= -1,
+ };
+ 
+diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+index efb318e03e0a..841a27736eb1 100644
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -638,7 +638,7 @@ static struct platform_device db1300_sd0_dev = {
+ /**********************************************************************/
+ 
+ static struct platform_device db1300_wm9715_dev = {
+-	.name		= "wm9712-codec",
++	.name		= "wm9712-component",
+ 	.id		= 1,	/* ID of PSC for AC97 audio, see asoc glue! */
+ };
+ 
+diff --git a/drivers/mfd/wm97xx-core.c b/drivers/mfd/wm97xx-core.c
+index f5a8347f837f..9fec11fc0410 100644
+--- a/drivers/mfd/wm97xx-core.c
++++ b/drivers/mfd/wm97xx-core.c
+@@ -109,7 +109,7 @@ static const struct regmap_config wm9705_regmap_config = {
+ };
+ 
+ static struct mfd_cell wm9705_cells[] = {
+-	{ .name = "wm9705-codec", },
++	{ .name = "wm9705-component", },
+ 	{ .name = "wm97xx-ts", },
+ };
+ 
+@@ -177,7 +177,7 @@ static const struct regmap_config wm9712_regmap_config = {
+ };
+ 
+ static struct mfd_cell wm9712_cells[] = {
+-	{ .name = "wm9712-codec", },
++	{ .name = "wm9712-component", },
+ 	{ .name = "wm97xx-ts", },
+ };
+ 
+@@ -248,7 +248,7 @@ static const struct regmap_config wm9713_regmap_config = {
+ };
+ 
+ static struct mfd_cell wm9713_cells[] = {
+-	{ .name = "wm9713-codec", },
++	{ .name = "wm9713-component", },
+ 	{ .name = "wm97xx-ts", },
+ };
+ 
+diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
+index 301e1fc9a377..d452478d62b4 100644
+--- a/sound/soc/au1x/db1200.c
++++ b/sound/soc/au1x/db1200.c
+@@ -52,7 +52,7 @@ static struct snd_soc_dai_link db1200_ac97_dai = {
+ 	.codec_dai_name	= "ac97-hifi",
+ 	.cpu_dai_name	= "au1xpsc_ac97.1",
+ 	.platform_name	= "au1xpsc-pcm.1",
+-	.codec_name	= "ac97-codec.1",
++	.codec_name	= "ac97-component.1",
+ };
+ 
+ static struct snd_soc_card db1200_ac97_machine = {
+@@ -68,7 +68,7 @@ static struct snd_soc_dai_link db1300_ac97_dai = {
+ 	.codec_dai_name	= "wm9712-hifi",
+ 	.cpu_dai_name	= "au1xpsc_ac97.1",
+ 	.platform_name	= "au1xpsc-pcm.1",
+-	.codec_name	= "wm9712-codec.1",
++	.codec_name	= "wm9712-component.1",
+ };
+ 
+ static struct snd_soc_card db1300_ac97_machine = {
+diff --git a/sound/soc/fsl/pcm030-audio-fabric.c b/sound/soc/fsl/pcm030-audio-fabric.c
+index ec731223cab3..869f4b226ccd 100644
+--- a/sound/soc/fsl/pcm030-audio-fabric.c
++++ b/sound/soc/fsl/pcm030-audio-fabric.c
+@@ -33,14 +33,14 @@ static struct snd_soc_dai_link pcm030_fabric_dai[] = {
+ 	.stream_name = "AC97 Analog",
+ 	.codec_dai_name = "wm9712-hifi",
+ 	.cpu_dai_name = "mpc5200-psc-ac97.0",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ },
+ {
+ 	.name = "AC97.1",
+ 	.stream_name = "AC97 IEC958",
+ 	.codec_dai_name = "wm9712-aux",
+ 	.cpu_dai_name = "mpc5200-psc-ac97.1",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ },
+ };
+ 
+@@ -85,7 +85,7 @@ static int pcm030_fabric_probe(struct platform_device *op)
+ 	if (ret)
+ 		dev_err(&op->dev, "request_module returned: %d\n", ret);
+ 
+-	pdata->codec_device = platform_device_alloc("wm9712-codec", -1);
++	pdata->codec_device = platform_device_alloc("wm9712-component", -1);
+ 	if (!pdata->codec_device)
+ 		dev_err(&op->dev, "platform_device_alloc() failed\n");
+ 
+diff --git a/sound/soc/fsl/phycore-ac97.c b/sound/soc/fsl/phycore-ac97.c
+index 66fb6c4614d2..dbd81d3b7c2c 100644
+--- a/sound/soc/fsl/phycore-ac97.c
++++ b/sound/soc/fsl/phycore-ac97.c
+@@ -30,8 +30,8 @@ static struct snd_soc_dai_link imx_phycore_dai_ac97[] = {
+ 	{
+ 		.name		= "HiFi",
+ 		.stream_name	= "HiFi",
+-		.codec_dai_name		= "wm9712-hifi",
+-		.codec_name	= "wm9712-codec",
++		.codec_dai_name	= "wm9712-hifi",
++		.codec_name	= "wm9712-component",
+ 		.cpu_dai_name	= "imx-ssi.0",
+ 		.platform_name	= "imx-ssi.0",
+ 		.ops		= &imx_phycore_hifi_ops,
+@@ -88,7 +88,7 @@ static int __init imx_phycore_init(void)
+ 	if (ret)
+ 		goto fail1;
+ 
+-	imx_phycore_snd_device = platform_device_alloc("wm9712-codec", -1);
++	imx_phycore_snd_device = platform_device_alloc("wm9712-component", -1);
+ 	if (!imx_phycore_snd_device) {
+ 		ret = -ENOMEM;
+ 		goto fail2;
+diff --git a/sound/soc/pxa/e800_wm9712.c b/sound/soc/pxa/e800_wm9712.c
+index 1ed8aa2348f1..937746d1e23e 100644
+--- a/sound/soc/pxa/e800_wm9712.c
++++ b/sound/soc/pxa/e800_wm9712.c
+@@ -75,7 +75,7 @@ static struct snd_soc_dai_link e800_dai[] = {
+ 		.cpu_dai_name = "pxa2xx-ac97",
+ 		.codec_dai_name = "wm9712-hifi",
+ 		.platform_name = "pxa-pcm-audio",
+-		.codec_name = "wm9712-codec",
++		.codec_name = "wm9712-component",
+ 	},
+ 	{
+ 		.name = "AC97 Aux",
+@@ -83,7 +83,7 @@ static struct snd_soc_dai_link e800_dai[] = {
+ 		.cpu_dai_name = "pxa2xx-ac97-aux",
+ 		.codec_dai_name = "wm9712-aux",
+ 		.platform_name = "pxa-pcm-audio",
+-		.codec_name = "wm9712-codec",
++		.codec_name = "wm9712-component",
+ 	},
+ };
+ 
+diff --git a/sound/soc/pxa/em-x270.c b/sound/soc/pxa/em-x270.c
+index e046770ce70e..e958c4c241f6 100644
+--- a/sound/soc/pxa/em-x270.c
++++ b/sound/soc/pxa/em-x270.c
+@@ -37,7 +37,7 @@ static struct snd_soc_dai_link em_x270_dai[] = {
+ 		.cpu_dai_name = "pxa2xx-ac97",
+ 		.codec_dai_name = "wm9712-hifi",
+ 		.platform_name = "pxa-pcm-audio",
+-		.codec_name = "wm9712-codec",
++		.codec_name = "wm9712-component",
+ 	},
+ 	{
+ 		.name = "AC97 Aux",
+@@ -45,7 +45,7 @@ static struct snd_soc_dai_link em_x270_dai[] = {
+ 		.cpu_dai_name = "pxa2xx-ac97-aux",
+ 		.codec_dai_name = "wm9712-aux",
+ 		.platform_name = "pxa-pcm-audio",
+-		.codec_name = "wm9712-codec",
++		.codec_name = "wm9712-component",
+ 	},
+ };
+ 
+diff --git a/sound/soc/pxa/palm27x.c b/sound/soc/pxa/palm27x.c
+index 97167048572d..040db695270e 100644
+--- a/sound/soc/pxa/palm27x.c
++++ b/sound/soc/pxa/palm27x.c
+@@ -93,7 +93,7 @@ static struct snd_soc_dai_link palm27x_dai[] = {
+ 	.stream_name = "AC97 HiFi",
+ 	.cpu_dai_name = "pxa2xx-ac97",
+ 	.codec_dai_name =  "wm9712-hifi",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ 	.platform_name = "pxa-pcm-audio",
+ 	.init = palm27x_ac97_init,
+ },
+@@ -102,7 +102,7 @@ static struct snd_soc_dai_link palm27x_dai[] = {
+ 	.stream_name = "AC97 Aux",
+ 	.cpu_dai_name = "pxa2xx-ac97-aux",
+ 	.codec_dai_name = "wm9712-aux",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ 	.platform_name = "pxa-pcm-audio",
+ },
+ };
+diff --git a/sound/soc/pxa/tosa.c b/sound/soc/pxa/tosa.c
+index ae9c12e1ea2a..af42417ccec5 100644
+--- a/sound/soc/pxa/tosa.c
++++ b/sound/soc/pxa/tosa.c
+@@ -189,7 +189,7 @@ static struct snd_soc_dai_link tosa_dai[] = {
+ 	.cpu_dai_name = "pxa2xx-ac97",
+ 	.codec_dai_name = "wm9712-hifi",
+ 	.platform_name = "pxa-pcm-audio",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ 	.ops = &tosa_ops,
+ },
+ {
+@@ -198,7 +198,7 @@ static struct snd_soc_dai_link tosa_dai[] = {
+ 	.cpu_dai_name = "pxa2xx-ac97-aux",
+ 	.codec_dai_name = "wm9712-aux",
+ 	.platform_name = "pxa-pcm-audio",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ 	.ops = &tosa_ops,
+ },
+ };
+diff --git a/sound/soc/tegra/tegra_wm9712.c b/sound/soc/tegra/tegra_wm9712.c
+index 864a3345972e..aa12be76d15a 100644
+--- a/sound/soc/tegra/tegra_wm9712.c
++++ b/sound/soc/tegra/tegra_wm9712.c
+@@ -53,7 +53,7 @@ static struct snd_soc_dai_link tegra_wm9712_dai = {
+ 	.name = "AC97 HiFi",
+ 	.stream_name = "AC97 HiFi",
+ 	.codec_dai_name = "wm9712-hifi",
+-	.codec_name = "wm9712-codec",
++	.codec_name = "wm9712-component",
+ 	.init = tegra_wm9712_init,
+ };
+ 
+@@ -83,7 +83,7 @@ static int tegra_wm9712_driver_probe(struct platform_device *pdev)
+ 	card->dev = &pdev->dev;
+ 	snd_soc_card_set_drvdata(card, machine);
+ 
+-	machine->codec = platform_device_alloc("wm9712-codec", -1);
++	machine->codec = platform_device_alloc("wm9712-component", -1);
+ 	if (!machine->codec) {
+ 		dev_err(&pdev->dev, "Can't allocate wm9712 platform device\n");
+ 		return -ENOMEM;
+-- 
+2.14.4

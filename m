@@ -1,15 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:24:56 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47140 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:25:12 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47148 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993488AbeGTMX6w11G2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 14:23:58 +0200
+        id S23993515AbeGTMYBRTt0o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 14:24:01 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V2 13/25] MIPS: ath79: add helpers for setting clocks and expose the ref clock
-Date:   Fri, 20 Jul 2018 13:58:30 +0200
-Message-Id: <20180720115842.8406-14-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
+Subject: [PATCH V2 22/25] MIPS: ath79: drop platform device registration code
+Date:   Fri, 20 Jul 2018 13:58:39 +0200
+Message-Id: <20180720115842.8406-23-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
 References: <20180720115842.8406-1-john@phrozen.org>
@@ -17,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64973
+X-archive-position: 64974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,248 +33,975 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
+With the target now being fully OF based, we can drop the legacy platform
+device registration code. All devices and their drivers are now probed
+via OF.
 
-Preparation for transitioning the legacy clock setup code over
-to OF.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/clock.c               | 128 ++++++++++++++++++----------------
- include/dt-bindings/clock/ath79-clk.h |   3 +-
- 2 files changed, 68 insertions(+), 63 deletions(-)
+ arch/mips/ath79/Makefile           |  10 --
+ arch/mips/ath79/common.h           |   2 -
+ arch/mips/ath79/dev-common.c       | 159 ------------------------
+ arch/mips/ath79/dev-common.h       |  18 ---
+ arch/mips/ath79/dev-gpio-buttons.c |  56 ---------
+ arch/mips/ath79/dev-gpio-buttons.h |  23 ----
+ arch/mips/ath79/dev-leds-gpio.c    |  54 ---------
+ arch/mips/ath79/dev-leds-gpio.h    |  21 ----
+ arch/mips/ath79/dev-spi.c          |  38 ------
+ arch/mips/ath79/dev-spi.h          |  22 ----
+ arch/mips/ath79/dev-usb.c          | 242 -------------------------------------
+ arch/mips/ath79/dev-usb.h          |  17 ---
+ arch/mips/ath79/dev-wmac.c         | 155 ------------------------
+ arch/mips/ath79/dev-wmac.h         |  17 ---
+ arch/mips/ath79/setup.c            |   1 -
+ 15 files changed, 835 deletions(-)
+ delete mode 100644 arch/mips/ath79/dev-common.c
+ delete mode 100644 arch/mips/ath79/dev-common.h
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.c
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.h
+ delete mode 100644 arch/mips/ath79/dev-spi.c
+ delete mode 100644 arch/mips/ath79/dev-spi.h
+ delete mode 100644 arch/mips/ath79/dev-usb.c
+ delete mode 100644 arch/mips/ath79/dev-usb.h
+ delete mode 100644 arch/mips/ath79/dev-wmac.c
+ delete mode 100644 arch/mips/ath79/dev-wmac.h
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index cf9158e3c2d9..50bc3b01a4c4 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -37,20 +37,46 @@ static struct clk_onecell_data clk_data = {
- 	.clk_num = ARRAY_SIZE(clks),
- };
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index bd0c9b8b1b5b..e18d9a2ecf62 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -11,13 +11,3 @@
+ obj-y	:= prom.o setup.o common.o clock.o
  
--static struct clk *__init ath79_add_sys_clkdev(
--	const char *id, unsigned long rate)
-+static const char * const clk_names[ATH79_CLK_END] = {
-+	[ATH79_CLK_CPU] = "cpu",
-+	[ATH79_CLK_DDR] = "ddr",
-+	[ATH79_CLK_AHB] = "ahb",
-+	[ATH79_CLK_REF] = "ref",
-+};
-+
-+static const char * __init ath79_clk_name(int type)
- {
--	struct clk *clk;
--	int err;
-+	BUG_ON(type >= ARRAY_SIZE(clk_names) || !clk_names[type]);
-+	return clk_names[type];
-+}
+ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
+-
+-#
+-# Devices
+-#
+-obj-y					+= dev-common.o
+-obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
+-obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
+-obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
+-obj-$(CONFIG_ATH79_DEV_USB)		+= dev-usb.o
+-obj-$(CONFIG_ATH79_DEV_WMAC)		+= dev-wmac.o
+diff --git a/arch/mips/ath79/common.h b/arch/mips/ath79/common.h
+index 870c6b2e97e8..77dd989e5ce0 100644
+--- a/arch/mips/ath79/common.h
++++ b/arch/mips/ath79/common.h
+@@ -24,6 +24,4 @@ unsigned long ath79_get_sys_clk_rate(const char *id);
  
--	clk = clk_register_fixed_rate(NULL, id, NULL, 0, rate);
-+static void __init __ath79_set_clk(int type, const char *name, struct clk *clk)
-+{
- 	if (IS_ERR(clk))
--		panic("failed to allocate %s clock structure", id);
-+		panic("failed to allocate %s clock structure", clk_names[type]);
+ void ath79_ddr_ctrl_init(void);
  
--	err = clk_register_clkdev(clk, id, NULL);
--	if (err)
--		panic("unable to register %s clock device", id);
-+	clks[type] = clk;
-+	clk_register_clkdev(clk, name, NULL);
-+}
- 
-+static struct clk * __init ath79_set_clk(int type, unsigned long rate)
-+{
-+	const char *name = ath79_clk_name(type);
-+	struct clk *clk;
-+
-+	clk = clk_register_fixed_rate(NULL, name, NULL, 0, rate);
-+	__ath79_set_clk(type, name, clk);
-+	return clk;
-+}
-+
-+static struct clk * __init ath79_set_ff_clk(int type, const char *parent,
-+					    unsigned int mult, unsigned int div)
-+{
-+	const char *name = ath79_clk_name(type);
-+	struct clk *clk;
-+
-+	clk = clk_register_fixed_factor(NULL, name, parent, 0, mult, div);
-+	__ath79_set_clk(type, name, clk);
- 	return clk;
- }
- 
-@@ -80,27 +106,15 @@ static void __init ar71xx_clocks_init(void)
- 	div = (((pll >> AR71XX_AHB_DIV_SHIFT) & AR71XX_AHB_DIV_MASK) + 1) * 2;
- 	ahb_rate = cpu_rate / div;
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
- 
--static struct clk * __init ath79_reg_ffclk(const char *name,
--		const char *parent_name, unsigned int mult, unsigned int div)
+-void ath79_gpio_init(void);
+-
+ #endif /* __ATH79_COMMON_H */
+diff --git a/arch/mips/ath79/dev-common.c b/arch/mips/ath79/dev-common.c
+deleted file mode 100644
+index 9d0172a4dc69..000000000000
+--- a/arch/mips/ath79/dev-common.c
++++ /dev/null
+@@ -1,159 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X common devices
+- *
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  Parts of this file are based on Atheros' 2.6.15 BSP
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/platform_device.h>
+-#include <linux/platform_data/gpio-ath79.h>
+-#include <linux/serial_8250.h>
+-#include <linux/clk.h>
+-#include <linux/err.h>
+-
+-#include <asm/mach-ath79/ath79.h>
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include "common.h"
+-#include "dev-common.h"
+-
+-static struct resource ath79_uart_resources[] = {
+-	{
+-		.start	= AR71XX_UART_BASE,
+-		.end	= AR71XX_UART_BASE + AR71XX_UART_SIZE - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-#define AR71XX_UART_FLAGS (UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP)
+-static struct plat_serial8250_port ath79_uart_data[] = {
+-	{
+-		.mapbase	= AR71XX_UART_BASE,
+-		.irq		= ATH79_MISC_IRQ(3),
+-		.flags		= AR71XX_UART_FLAGS,
+-		.iotype		= UPIO_MEM32,
+-		.regshift	= 2,
+-	}, {
+-		/* terminating entry */
+-	}
+-};
+-
+-static struct platform_device ath79_uart_device = {
+-	.name		= "serial8250",
+-	.id		= PLAT8250_DEV_PLATFORM,
+-	.resource	= ath79_uart_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_uart_resources),
+-	.dev = {
+-		.platform_data	= ath79_uart_data
+-	},
+-};
+-
+-static struct resource ar933x_uart_resources[] = {
+-	{
+-		.start	= AR933X_UART_BASE,
+-		.end	= AR933X_UART_BASE + AR71XX_UART_SIZE - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.start	= ATH79_MISC_IRQ(3),
+-		.end	= ATH79_MISC_IRQ(3),
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device ar933x_uart_device = {
+-	.name		= "ar933x-uart",
+-	.id		= -1,
+-	.resource	= ar933x_uart_resources,
+-	.num_resources	= ARRAY_SIZE(ar933x_uart_resources),
+-};
+-
+-void __init ath79_register_uart(void)
 -{
--	struct clk *clk;
+-	unsigned long uart_clk_rate;
 -
--	clk = clk_register_fixed_factor(NULL, name, parent_name, 0, mult, div);
--	if (IS_ERR(clk))
--		panic("failed to allocate %s clock structure", name);
+-	uart_clk_rate = ath79_get_sys_clk_rate("uart");
 -
--	return clk;
+-	if (soc_is_ar71xx() ||
+-	    soc_is_ar724x() ||
+-	    soc_is_ar913x() ||
+-	    soc_is_ar934x() ||
+-	    soc_is_qca955x()) {
+-		ath79_uart_data[0].uartclk = uart_clk_rate;
+-		platform_device_register(&ath79_uart_device);
+-	} else if (soc_is_ar933x()) {
+-		platform_device_register(&ar933x_uart_device);
+-	} else {
+-		BUG();
+-	}
 -}
 -
- static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- {
- 	u32 pll;
-@@ -114,24 +128,19 @@ static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 	ddr_div = ((pll >> AR724X_DDR_DIV_SHIFT) & AR724X_DDR_DIV_MASK) + 1;
- 	ahb_div = (((pll >> AR724X_AHB_DIV_SHIFT) & AR724X_AHB_DIV_MASK) + 1) * 2;
- 
--	clks[ATH79_CLK_CPU] = ath79_reg_ffclk("cpu", "ref", mult, div);
--	clks[ATH79_CLK_DDR] = ath79_reg_ffclk("ddr", "ref", mult, div * ddr_div);
--	clks[ATH79_CLK_AHB] = ath79_reg_ffclk("ahb", "ref", mult, div * ahb_div);
-+	ath79_set_ff_clk(ATH79_CLK_CPU, "ref", mult, div);
-+	ath79_set_ff_clk(ATH79_CLK_DDR, "ref", mult, div * ddr_div);
-+	ath79_set_ff_clk(ATH79_CLK_AHB, "ref", mult, div * ahb_div);
- }
- 
- static void __init ar724x_clocks_init(void)
- {
- 	struct clk *ref_clk;
- 
--	ref_clk = ath79_add_sys_clkdev("ref", AR724X_BASE_FREQ);
-+	ref_clk = ath79_set_clk(ATH79_CLK_REF, AR724X_BASE_FREQ);
- 
- 	ar724x_clk_init(ref_clk, ath79_pll_base);
- 
--	/* just make happy plat_time_init() from arch/mips/ath79/setup.c */
--	clk_register_clkdev(clks[ATH79_CLK_CPU], "cpu", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_DDR], "ddr", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_AHB], "ahb", NULL);
+-void __init ath79_register_wdt(void)
+-{
+-	struct resource res;
 -
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
-@@ -186,12 +195,12 @@ static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 		     AR933X_PLL_CLOCK_CTRL_AHB_DIV_MASK) + 1;
- 	}
- 
--	clks[ATH79_CLK_CPU] = ath79_reg_ffclk("cpu", "ref",
--					ninit_mul, ref_div * out_div * cpu_div);
--	clks[ATH79_CLK_DDR] = ath79_reg_ffclk("ddr", "ref",
--					ninit_mul, ref_div * out_div * ddr_div);
--	clks[ATH79_CLK_AHB] = ath79_reg_ffclk("ahb", "ref",
--					ninit_mul, ref_div * out_div * ahb_div);
-+	ath79_set_ff_clk(ATH79_CLK_CPU, "ref", ninit_mul,
-+			 ref_div * out_div * cpu_div);
-+	ath79_set_ff_clk(ATH79_CLK_DDR, "ref", ninit_mul,
-+			 ref_div * out_div * ddr_div);
-+	ath79_set_ff_clk(ATH79_CLK_AHB, "ref", ninit_mul,
-+			 ref_div * out_div * ahb_div);
- }
- 
- static void __init ar933x_clocks_init(void)
-@@ -206,15 +215,10 @@ static void __init ar933x_clocks_init(void)
- 	else
- 		ref_rate = (25 * 1000 * 1000);
- 
--	ref_clk = ath79_add_sys_clkdev("ref", ref_rate);
-+	ref_clk = ath79_set_clk(ATH79_CLK_REF, ref_rate);
- 
- 	ar9330_clk_init(ref_clk, ath79_pll_base);
- 
--	/* just make happy plat_time_init() from arch/mips/ath79/setup.c */
--	clk_register_clkdev(clks[ATH79_CLK_CPU], "cpu", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_DDR], "ddr", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_AHB], "ahb", NULL);
+-	memset(&res, 0, sizeof(res));
 -
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
- }
-@@ -344,10 +348,10 @@ static void __init ar934x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
+-	res.flags = IORESOURCE_MEM;
+-	res.start = AR71XX_RESET_BASE + AR71XX_RESET_REG_WDOG_CTRL;
+-	res.end = res.start + 0x8 - 1;
+-
+-	platform_device_register_simple("ath79-wdt", -1, &res, 1);
+-}
+-
+-static struct ath79_gpio_platform_data ath79_gpio_pdata;
+-
+-static struct resource ath79_gpio_resources[] = {
+-	{
+-		.flags = IORESOURCE_MEM,
+-		.start = AR71XX_GPIO_BASE,
+-		.end = AR71XX_GPIO_BASE + AR71XX_GPIO_SIZE - 1,
+-	},
+-	{
+-		.start	= ATH79_MISC_IRQ(2),
+-		.end	= ATH79_MISC_IRQ(2),
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device ath79_gpio_device = {
+-	.name		= "ath79-gpio",
+-	.id		= -1,
+-	.resource	= ath79_gpio_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_gpio_resources),
+-	.dev = {
+-		.platform_data	= &ath79_gpio_pdata
+-	},
+-};
+-
+-void __init ath79_gpio_init(void)
+-{
+-	if (soc_is_ar71xx()) {
+-		ath79_gpio_pdata.ngpios = AR71XX_GPIO_COUNT;
+-	} else if (soc_is_ar7240()) {
+-		ath79_gpio_pdata.ngpios = AR7240_GPIO_COUNT;
+-	} else if (soc_is_ar7241() || soc_is_ar7242()) {
+-		ath79_gpio_pdata.ngpios = AR7241_GPIO_COUNT;
+-	} else if (soc_is_ar913x()) {
+-		ath79_gpio_pdata.ngpios = AR913X_GPIO_COUNT;
+-	} else if (soc_is_ar933x()) {
+-		ath79_gpio_pdata.ngpios = AR933X_GPIO_COUNT;
+-	} else if (soc_is_ar934x()) {
+-		ath79_gpio_pdata.ngpios = AR934X_GPIO_COUNT;
+-		ath79_gpio_pdata.oe_inverted = 1;
+-	} else if (soc_is_qca955x()) {
+-		ath79_gpio_pdata.ngpios = QCA955X_GPIO_COUNT;
+-		ath79_gpio_pdata.oe_inverted = 1;
+-	} else {
+-		BUG();
+-	}
+-
+-	platform_device_register(&ath79_gpio_device);
+-}
+diff --git a/arch/mips/ath79/dev-common.h b/arch/mips/ath79/dev-common.h
+deleted file mode 100644
+index 0f514e1affce..000000000000
+--- a/arch/mips/ath79/dev-common.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X common devices
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_COMMON_H
+-#define _ATH79_DEV_COMMON_H
+-
+-void ath79_register_uart(void);
+-void ath79_register_wdt(void);
+-
+-#endif /* _ATH79_DEV_COMMON_H */
+diff --git a/arch/mips/ath79/dev-gpio-buttons.c b/arch/mips/ath79/dev-gpio-buttons.c
+deleted file mode 100644
+index 366b35fb164d..000000000000
+--- a/arch/mips/ath79/dev-gpio-buttons.c
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X GPIO button support
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include "linux/init.h"
+-#include "linux/slab.h"
+-#include <linux/platform_device.h>
+-
+-#include "dev-gpio-buttons.h"
+-
+-void __init ath79_register_gpio_keys_polled(int id,
+-					    unsigned poll_interval,
+-					    unsigned nbuttons,
+-					    struct gpio_keys_button *buttons)
+-{
+-	struct platform_device *pdev;
+-	struct gpio_keys_platform_data pdata;
+-	struct gpio_keys_button *p;
+-	int err;
+-
+-	p = kmemdup(buttons, nbuttons * sizeof(*p), GFP_KERNEL);
+-	if (!p)
+-		return;
+-
+-	pdev = platform_device_alloc("gpio-keys-polled", id);
+-	if (!pdev)
+-		goto err_free_buttons;
+-
+-	memset(&pdata, 0, sizeof(pdata));
+-	pdata.poll_interval = poll_interval;
+-	pdata.nbuttons = nbuttons;
+-	pdata.buttons = p;
+-
+-	err = platform_device_add_data(pdev, &pdata, sizeof(pdata));
+-	if (err)
+-		goto err_put_pdev;
+-
+-	err = platform_device_add(pdev);
+-	if (err)
+-		goto err_put_pdev;
+-
+-	return;
+-
+-err_put_pdev:
+-	platform_device_put(pdev);
+-
+-err_free_buttons:
+-	kfree(p);
+-}
+diff --git a/arch/mips/ath79/dev-gpio-buttons.h b/arch/mips/ath79/dev-gpio-buttons.h
+deleted file mode 100644
+index 481847ac1cba..000000000000
+--- a/arch/mips/ath79/dev-gpio-buttons.h
++++ /dev/null
+@@ -1,23 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X GPIO button support
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_GPIO_BUTTONS_H
+-#define _ATH79_DEV_GPIO_BUTTONS_H
+-
+-#include <linux/input.h>
+-#include <linux/gpio_keys.h>
+-
+-void ath79_register_gpio_keys_polled(int id,
+-				     unsigned poll_interval,
+-				     unsigned nbuttons,
+-				     struct gpio_keys_button *buttons);
+-
+-#endif /* _ATH79_DEV_GPIO_BUTTONS_H */
+diff --git a/arch/mips/ath79/dev-leds-gpio.c b/arch/mips/ath79/dev-leds-gpio.c
+deleted file mode 100644
+index dcb1debcefb8..000000000000
+--- a/arch/mips/ath79/dev-leds-gpio.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/slab.h>
+-#include <linux/platform_device.h>
+-
+-#include "dev-leds-gpio.h"
+-
+-void __init ath79_register_leds_gpio(int id,
+-				     unsigned num_leds,
+-				     struct gpio_led *leds)
+-{
+-	struct platform_device *pdev;
+-	struct gpio_led_platform_data pdata;
+-	struct gpio_led *p;
+-	int err;
+-
+-	p = kmemdup(leds, num_leds * sizeof(*p), GFP_KERNEL);
+-	if (!p)
+-		return;
+-
+-	pdev = platform_device_alloc("leds-gpio", id);
+-	if (!pdev)
+-		goto err_free_leds;
+-
+-	memset(&pdata, 0, sizeof(pdata));
+-	pdata.num_leds = num_leds;
+-	pdata.leds = p;
+-
+-	err = platform_device_add_data(pdev, &pdata, sizeof(pdata));
+-	if (err)
+-		goto err_put_pdev;
+-
+-	err = platform_device_add(pdev);
+-	if (err)
+-		goto err_put_pdev;
+-
+-	return;
+-
+-err_put_pdev:
+-	platform_device_put(pdev);
+-
+-err_free_leds:
+-	kfree(p);
+-}
+diff --git a/arch/mips/ath79/dev-leds-gpio.h b/arch/mips/ath79/dev-leds-gpio.h
+deleted file mode 100644
+index 6e5d8851ebcf..000000000000
+--- a/arch/mips/ath79/dev-leds-gpio.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_LEDS_GPIO_H
+-#define _ATH79_DEV_LEDS_GPIO_H
+-
+-#include <linux/leds.h>
+-
+-void ath79_register_leds_gpio(int id,
+-			      unsigned num_leds,
+-			      struct gpio_led *leds);
+-
+-#endif /* _ATH79_DEV_LEDS_GPIO_H */
+diff --git a/arch/mips/ath79/dev-spi.c b/arch/mips/ath79/dev-spi.c
+deleted file mode 100644
+index aa30163efbfd..000000000000
+--- a/arch/mips/ath79/dev-spi.c
++++ /dev/null
+@@ -1,38 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X SPI controller device
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/platform_device.h>
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include "dev-spi.h"
+-
+-static struct resource ath79_spi_resources[] = {
+-	{
+-		.start	= AR71XX_SPI_BASE,
+-		.end	= AR71XX_SPI_BASE + AR71XX_SPI_SIZE - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct platform_device ath79_spi_device = {
+-	.name		= "ath79-spi",
+-	.id		= -1,
+-	.resource	= ath79_spi_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_spi_resources),
+-};
+-
+-void __init ath79_register_spi(struct ath79_spi_platform_data *pdata,
+-			       struct spi_board_info const *info,
+-			       unsigned n)
+-{
+-	spi_register_board_info(info, n);
+-	ath79_spi_device.dev.platform_data = pdata;
+-	platform_device_register(&ath79_spi_device);
+-}
+diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
+deleted file mode 100644
+index d732565ca736..000000000000
+--- a/arch/mips/ath79/dev-spi.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X SPI controller device
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_SPI_H
+-#define _ATH79_DEV_SPI_H
+-
+-#include <linux/spi/spi.h>
+-#include <asm/mach-ath79/ath79_spi_platform.h>
+-
+-void ath79_register_spi(struct ath79_spi_platform_data *pdata,
+-			 struct spi_board_info const *info,
+-			 unsigned n);
+-
+-#endif /* _ATH79_DEV_SPI_H */
+diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
+deleted file mode 100644
+index 8227265bcc2d..000000000000
+--- a/arch/mips/ath79/dev-usb.c
++++ /dev/null
+@@ -1,242 +0,0 @@
+-/*
+- *  Atheros AR7XXX/AR9XXX USB Host Controller device
+- *
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  Parts of this file are based on Atheros' 2.6.15 BSP
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <linux/irq.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/platform_device.h>
+-#include <linux/usb/ehci_pdriver.h>
+-#include <linux/usb/ohci_pdriver.h>
+-
+-#include <asm/mach-ath79/ath79.h>
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include "common.h"
+-#include "dev-usb.h"
+-
+-static u64 ath79_usb_dmamask = DMA_BIT_MASK(32);
+-
+-static struct usb_ohci_pdata ath79_ohci_pdata = {
+-};
+-
+-static struct usb_ehci_pdata ath79_ehci_pdata_v1 = {
+-	.has_synopsys_hc_bug	= 1,
+-};
+-
+-static struct usb_ehci_pdata ath79_ehci_pdata_v2 = {
+-	.caps_offset		= 0x100,
+-	.has_tt			= 1,
+-};
+-
+-static void __init ath79_usb_register(const char *name, int id,
+-				      unsigned long base, unsigned long size,
+-				      int irq, const void *data,
+-				      size_t data_size)
+-{
+-	struct resource res[2];
+-	struct platform_device *pdev;
+-
+-	memset(res, 0, sizeof(res));
+-
+-	res[0].flags = IORESOURCE_MEM;
+-	res[0].start = base;
+-	res[0].end = base + size - 1;
+-
+-	res[1].flags = IORESOURCE_IRQ;
+-	res[1].start = irq;
+-	res[1].end = irq;
+-
+-	pdev = platform_device_register_resndata(NULL, name, id,
+-						 res, ARRAY_SIZE(res),
+-						 data, data_size);
+-
+-	if (IS_ERR(pdev)) {
+-		pr_err("ath79: unable to register USB at %08lx, err=%d\n",
+-		       base, (int) PTR_ERR(pdev));
+-		return;
+-	}
+-
+-	pdev->dev.dma_mask = &ath79_usb_dmamask;
+-	pdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+-}
+-
+-#define AR71XX_USB_RESET_MASK	(AR71XX_RESET_USB_HOST | \
+-				 AR71XX_RESET_USB_PHY | \
+-				 AR71XX_RESET_USB_OHCI_DLL)
+-
+-static void __init ath79_usb_setup(void)
+-{
+-	void __iomem *usb_ctrl_base;
+-
+-	ath79_device_reset_set(AR71XX_USB_RESET_MASK);
+-	mdelay(1000);
+-	ath79_device_reset_clear(AR71XX_USB_RESET_MASK);
+-
+-	usb_ctrl_base = ioremap(AR71XX_USB_CTRL_BASE, AR71XX_USB_CTRL_SIZE);
+-
+-	/* Turning on the Buff and Desc swap bits */
+-	__raw_writel(0xf0000, usb_ctrl_base + AR71XX_USB_CTRL_REG_CONFIG);
+-
+-	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
+-	__raw_writel(0x20c00, usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
+-
+-	iounmap(usb_ctrl_base);
+-
+-	mdelay(900);
+-
+-	ath79_usb_register("ohci-platform", -1,
+-			   AR71XX_OHCI_BASE, AR71XX_OHCI_SIZE,
+-			   ATH79_MISC_IRQ(6),
+-			   &ath79_ohci_pdata, sizeof(ath79_ohci_pdata));
+-
+-	ath79_usb_register("ehci-platform", -1,
+-			   AR71XX_EHCI_BASE, AR71XX_EHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ehci_pdata_v1, sizeof(ath79_ehci_pdata_v1));
+-}
+-
+-static void __init ar7240_usb_setup(void)
+-{
+-	void __iomem *usb_ctrl_base;
+-
+-	ath79_device_reset_clear(AR7240_RESET_OHCI_DLL);
+-	ath79_device_reset_set(AR7240_RESET_USB_HOST);
+-
+-	mdelay(1000);
+-
+-	ath79_device_reset_set(AR7240_RESET_OHCI_DLL);
+-	ath79_device_reset_clear(AR7240_RESET_USB_HOST);
+-
+-	usb_ctrl_base = ioremap(AR7240_USB_CTRL_BASE, AR7240_USB_CTRL_SIZE);
+-
+-	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
+-	__raw_writel(0x3, usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
+-
+-	iounmap(usb_ctrl_base);
+-
+-	ath79_usb_register("ohci-platform", -1,
+-			   AR7240_OHCI_BASE, AR7240_OHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ohci_pdata, sizeof(ath79_ohci_pdata));
+-}
+-
+-static void __init ar724x_usb_setup(void)
+-{
+-	ath79_device_reset_set(AR724X_RESET_USBSUS_OVERRIDE);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR724X_RESET_USB_HOST);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR724X_RESET_USB_PHY);
+-	mdelay(10);
+-
+-	ath79_usb_register("ehci-platform", -1,
+-			   AR724X_EHCI_BASE, AR724X_EHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-}
+-
+-static void __init ar913x_usb_setup(void)
+-{
+-	ath79_device_reset_set(AR913X_RESET_USBSUS_OVERRIDE);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR913X_RESET_USB_HOST);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR913X_RESET_USB_PHY);
+-	mdelay(10);
+-
+-	ath79_usb_register("ehci-platform", -1,
+-			   AR913X_EHCI_BASE, AR913X_EHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-}
+-
+-static void __init ar933x_usb_setup(void)
+-{
+-	ath79_device_reset_set(AR933X_RESET_USBSUS_OVERRIDE);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR933X_RESET_USB_HOST);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR933X_RESET_USB_PHY);
+-	mdelay(10);
+-
+-	ath79_usb_register("ehci-platform", -1,
+-			   AR933X_EHCI_BASE, AR933X_EHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-}
+-
+-static void __init ar934x_usb_setup(void)
+-{
+-	u32 bootstrap;
+-
+-	bootstrap = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
+-	if (bootstrap & AR934X_BOOTSTRAP_USB_MODE_DEVICE)
+-		return;
+-
+-	ath79_device_reset_set(AR934X_RESET_USBSUS_OVERRIDE);
+-	udelay(1000);
+-
+-	ath79_device_reset_clear(AR934X_RESET_USB_PHY);
+-	udelay(1000);
+-
+-	ath79_device_reset_clear(AR934X_RESET_USB_PHY_ANALOG);
+-	udelay(1000);
+-
+-	ath79_device_reset_clear(AR934X_RESET_USB_HOST);
+-	udelay(1000);
+-
+-	ath79_usb_register("ehci-platform", -1,
+-			   AR934X_EHCI_BASE, AR934X_EHCI_SIZE,
+-			   ATH79_CPU_IRQ(3),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-}
+-
+-static void __init qca955x_usb_setup(void)
+-{
+-	ath79_usb_register("ehci-platform", 0,
+-			   QCA955X_EHCI0_BASE, QCA955X_EHCI_SIZE,
+-			   ATH79_IP3_IRQ(0),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-
+-	ath79_usb_register("ehci-platform", 1,
+-			   QCA955X_EHCI1_BASE, QCA955X_EHCI_SIZE,
+-			   ATH79_IP3_IRQ(1),
+-			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+-}
+-
+-void __init ath79_register_usb(void)
+-{
+-	if (soc_is_ar71xx())
+-		ath79_usb_setup();
+-	else if (soc_is_ar7240())
+-		ar7240_usb_setup();
+-	else if (soc_is_ar7241() || soc_is_ar7242())
+-		ar724x_usb_setup();
+-	else if (soc_is_ar913x())
+-		ar913x_usb_setup();
+-	else if (soc_is_ar933x())
+-		ar933x_usb_setup();
+-	else if (soc_is_ar934x())
+-		ar934x_usb_setup();
+-	else if (soc_is_qca955x())
+-		qca955x_usb_setup();
+-	else
+-		BUG();
+-}
+diff --git a/arch/mips/ath79/dev-usb.h b/arch/mips/ath79/dev-usb.h
+deleted file mode 100644
+index 4b86a69ca080..000000000000
+--- a/arch/mips/ath79/dev-usb.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/*
+- *  Atheros AR71XX/AR724X/AR913X USB Host Controller support
+- *
+- *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_USB_H
+-#define _ATH79_DEV_USB_H
+-
+-void ath79_register_usb(void);
+-
+-#endif /* _ATH79_DEV_USB_H */
+diff --git a/arch/mips/ath79/dev-wmac.c b/arch/mips/ath79/dev-wmac.c
+deleted file mode 100644
+index da190b1b87ce..000000000000
+--- a/arch/mips/ath79/dev-wmac.c
++++ /dev/null
+@@ -1,155 +0,0 @@
+-/*
+- *  Atheros AR913X/AR933X SoC built-in WMAC device support
+- *
+- *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  Parts of this file are based on Atheros 2.6.15/2.6.31 BSP
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <linux/irq.h>
+-#include <linux/platform_device.h>
+-#include <linux/ath9k_platform.h>
+-
+-#include <asm/mach-ath79/ath79.h>
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include "dev-wmac.h"
+-
+-static struct ath9k_platform_data ath79_wmac_data;
+-
+-static struct resource ath79_wmac_resources[] = {
+-	{
+-		/* .start and .end fields are filled dynamically */
+-		.flags	= IORESOURCE_MEM,
+-	}, {
+-		/* .start and .end fields are filled dynamically */
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device ath79_wmac_device = {
+-	.name		= "ath9k",
+-	.id		= -1,
+-	.resource	= ath79_wmac_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_wmac_resources),
+-	.dev = {
+-		.platform_data = &ath79_wmac_data,
+-	},
+-};
+-
+-static void __init ar913x_wmac_setup(void)
+-{
+-	/* reset the WMAC */
+-	ath79_device_reset_set(AR913X_RESET_AMBA2WMAC);
+-	mdelay(10);
+-
+-	ath79_device_reset_clear(AR913X_RESET_AMBA2WMAC);
+-	mdelay(10);
+-
+-	ath79_wmac_resources[0].start = AR913X_WMAC_BASE;
+-	ath79_wmac_resources[0].end = AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1;
+-	ath79_wmac_resources[1].start = ATH79_CPU_IRQ(2);
+-	ath79_wmac_resources[1].end = ATH79_CPU_IRQ(2);
+-}
+-
+-
+-static int ar933x_wmac_reset(void)
+-{
+-	ath79_device_reset_set(AR933X_RESET_WMAC);
+-	ath79_device_reset_clear(AR933X_RESET_WMAC);
+-
+-	return 0;
+-}
+-
+-static int ar933x_r1_get_wmac_revision(void)
+-{
+-	return ath79_soc_rev;
+-}
+-
+-static void __init ar933x_wmac_setup(void)
+-{
+-	u32 t;
+-
+-	ar933x_wmac_reset();
+-
+-	ath79_wmac_device.name = "ar933x_wmac";
+-
+-	ath79_wmac_resources[0].start = AR933X_WMAC_BASE;
+-	ath79_wmac_resources[0].end = AR933X_WMAC_BASE + AR933X_WMAC_SIZE - 1;
+-	ath79_wmac_resources[1].start = ATH79_CPU_IRQ(2);
+-	ath79_wmac_resources[1].end = ATH79_CPU_IRQ(2);
+-
+-	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
+-	if (t & AR933X_BOOTSTRAP_REF_CLK_40)
+-		ath79_wmac_data.is_clk_25mhz = false;
+-	else
+-		ath79_wmac_data.is_clk_25mhz = true;
+-
+-	if (ath79_soc_rev == 1)
+-		ath79_wmac_data.get_mac_revision = ar933x_r1_get_wmac_revision;
+-
+-	ath79_wmac_data.external_reset = ar933x_wmac_reset;
+-}
+-
+-static void ar934x_wmac_setup(void)
+-{
+-	u32 t;
+-
+-	ath79_wmac_device.name = "ar934x_wmac";
+-
+-	ath79_wmac_resources[0].start = AR934X_WMAC_BASE;
+-	ath79_wmac_resources[0].end = AR934X_WMAC_BASE + AR934X_WMAC_SIZE - 1;
+-	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
+-	ath79_wmac_resources[1].end = ATH79_IP2_IRQ(1);
+-
+-	t = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
+-	if (t & AR934X_BOOTSTRAP_REF_CLK_40)
+-		ath79_wmac_data.is_clk_25mhz = false;
+-	else
+-		ath79_wmac_data.is_clk_25mhz = true;
+-}
+-
+-static void qca955x_wmac_setup(void)
+-{
+-	u32 t;
+-
+-	ath79_wmac_device.name = "qca955x_wmac";
+-
+-	ath79_wmac_resources[0].start = QCA955X_WMAC_BASE;
+-	ath79_wmac_resources[0].end = QCA955X_WMAC_BASE + QCA955X_WMAC_SIZE - 1;
+-	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
+-	ath79_wmac_resources[1].end = ATH79_IP2_IRQ(1);
+-
+-	t = ath79_reset_rr(QCA955X_RESET_REG_BOOTSTRAP);
+-	if (t & QCA955X_BOOTSTRAP_REF_CLK_40)
+-		ath79_wmac_data.is_clk_25mhz = false;
+-	else
+-		ath79_wmac_data.is_clk_25mhz = true;
+-}
+-
+-void __init ath79_register_wmac(u8 *cal_data)
+-{
+-	if (soc_is_ar913x())
+-		ar913x_wmac_setup();
+-	else if (soc_is_ar933x())
+-		ar933x_wmac_setup();
+-	else if (soc_is_ar934x())
+-		ar934x_wmac_setup();
+-	else if (soc_is_qca955x())
+-		qca955x_wmac_setup();
+-	else
+-		BUG();
+-
+-	if (cal_data)
+-		memcpy(ath79_wmac_data.eeprom_data, cal_data,
+-		       sizeof(ath79_wmac_data.eeprom_data));
+-
+-	platform_device_register(&ath79_wmac_device);
+-}
+diff --git a/arch/mips/ath79/dev-wmac.h b/arch/mips/ath79/dev-wmac.h
+deleted file mode 100644
+index c9cd8709f090..000000000000
+--- a/arch/mips/ath79/dev-wmac.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/*
+- *  Atheros AR913X/AR933X SoC built-in WMAC device support
+- *
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _ATH79_DEV_WMAC_H
+-#define _ATH79_DEV_WMAC_H
+-
+-void ath79_register_wmac(u8 *cal_data);
+-
+-#endif /* _ATH79_DEV_WMAC_H */
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 88be5fbab269..689d0daed409 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -32,7 +32,6 @@
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include "common.h"
+-#include "dev-common.h"
  
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
+ #define ATH79_SYS_TYPE_LEN	64
  
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -431,10 +435,10 @@ static void __init qca953x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -516,10 +520,10 @@ static void __init qca955x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -620,10 +624,10 @@ static void __init qca956x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-diff --git a/include/dt-bindings/clock/ath79-clk.h b/include/dt-bindings/clock/ath79-clk.h
-index 27359ad83904..262d7c5eb248 100644
---- a/include/dt-bindings/clock/ath79-clk.h
-+++ b/include/dt-bindings/clock/ath79-clk.h
-@@ -13,7 +13,8 @@
- #define ATH79_CLK_CPU		0
- #define ATH79_CLK_DDR		1
- #define ATH79_CLK_AHB		2
-+#define ATH79_CLK_REF		3
- 
--#define ATH79_CLK_END		3
-+#define ATH79_CLK_END		4
- 
- #endif /* __DT_BINDINGS_ATH79_CLK_H */
 -- 
 2.11.0

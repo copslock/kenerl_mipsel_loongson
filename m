@@ -1,15 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:26:07 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47198 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:26:23 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47204 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993881AbeGTMYNNnMHZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 14:24:13 +0200
+        id S23993883AbeGTMYPNIzw5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 14:24:15 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V2 15/25] MIPS: ath79: pass PLL base to clock init functions
-Date:   Fri, 20 Jul 2018 13:58:32 +0200
-Message-Id: <20180720115842.8406-16-john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
+Subject: [PATCH V2 19/25] MIPS: ath79: drop legacy IRQ code
+Date:   Fri, 20 Jul 2018 13:58:36 +0200
+Message-Id: <20180720115842.8406-20-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
 References: <20180720115842.8406-1-john@phrozen.org>
@@ -17,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64979
+X-archive-position: 64980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,246 +33,242 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
+With the target now being fully OF based, we can drop the legacy IRQ code.
+All IRQs are now handled via the new irqchip drivers.
 
-Preparation for passing the mapped base via DT
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/clock.c | 60 ++++++++++++++++++++++++-------------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ arch/mips/ath79/Makefile                 |   2 +-
+ arch/mips/ath79/irq.c                    | 169 -------------------------------
+ arch/mips/ath79/setup.c                  |   6 ++
+ arch/mips/include/asm/mach-ath79/ath79.h |   4 -
+ 4 files changed, 7 insertions(+), 174 deletions(-)
+ delete mode 100644 arch/mips/ath79/irq.c
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index e02b819b2f5d..984b3cdebd22 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -80,7 +80,7 @@ static struct clk * __init ath79_set_ff_clk(int type, const char *parent,
- 	return clk;
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index fcc382cfc770..d8bd9b821ac9 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -8,7 +8,7 @@
+ # under the terms of the GNU General Public License version 2 as published
+ # by the Free Software Foundation.
+ 
+-obj-y	:= prom.o setup.o irq.o common.o clock.o
++obj-y	:= prom.o setup.o common.o clock.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
+ obj-$(CONFIG_PCI)			+= pci.o
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+deleted file mode 100644
+index 2dfff1f19004..000000000000
+--- a/arch/mips/ath79/irq.c
++++ /dev/null
+@@ -1,169 +0,0 @@
+-/*
+- *  Atheros AR71xx/AR724x/AR913x specific interrupt handling
+- *
+- *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/irqchip.h>
+-#include <linux/of_irq.h>
+-
+-#include <asm/irq_cpu.h>
+-#include <asm/mipsregs.h>
+-
+-#include <asm/mach-ath79/ath79.h>
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include "common.h"
+-#include "machtypes.h"
+-
+-
+-static void ar934x_ip2_irq_dispatch(struct irq_desc *desc)
+-{
+-	u32 status;
+-
+-	status = ath79_reset_rr(AR934X_RESET_REG_PCIE_WMAC_INT_STATUS);
+-
+-	if (status & AR934X_PCIE_WMAC_INT_PCIE_ALL) {
+-		ath79_ddr_wb_flush(3);
+-		generic_handle_irq(ATH79_IP2_IRQ(0));
+-	} else if (status & AR934X_PCIE_WMAC_INT_WMAC_ALL) {
+-		ath79_ddr_wb_flush(4);
+-		generic_handle_irq(ATH79_IP2_IRQ(1));
+-	} else {
+-		spurious_interrupt();
+-	}
+-}
+-
+-static void ar934x_ip2_irq_init(void)
+-{
+-	int i;
+-
+-	for (i = ATH79_IP2_IRQ_BASE;
+-	     i < ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT; i++)
+-		irq_set_chip_and_handler(i, &dummy_irq_chip,
+-					 handle_level_irq);
+-
+-	irq_set_chained_handler(ATH79_CPU_IRQ(2), ar934x_ip2_irq_dispatch);
+-}
+-
+-static void qca955x_ip2_irq_dispatch(struct irq_desc *desc)
+-{
+-	u32 status;
+-
+-	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
+-	status &= QCA955X_EXT_INT_PCIE_RC1_ALL | QCA955X_EXT_INT_WMAC_ALL;
+-
+-	if (status == 0) {
+-		spurious_interrupt();
+-		return;
+-	}
+-
+-	if (status & QCA955X_EXT_INT_PCIE_RC1_ALL) {
+-		/* TODO: flush DDR? */
+-		generic_handle_irq(ATH79_IP2_IRQ(0));
+-	}
+-
+-	if (status & QCA955X_EXT_INT_WMAC_ALL) {
+-		/* TODO: flush DDR? */
+-		generic_handle_irq(ATH79_IP2_IRQ(1));
+-	}
+-}
+-
+-static void qca955x_ip3_irq_dispatch(struct irq_desc *desc)
+-{
+-	u32 status;
+-
+-	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
+-	status &= QCA955X_EXT_INT_PCIE_RC2_ALL |
+-		  QCA955X_EXT_INT_USB1 |
+-		  QCA955X_EXT_INT_USB2;
+-
+-	if (status == 0) {
+-		spurious_interrupt();
+-		return;
+-	}
+-
+-	if (status & QCA955X_EXT_INT_USB1) {
+-		/* TODO: flush DDR? */
+-		generic_handle_irq(ATH79_IP3_IRQ(0));
+-	}
+-
+-	if (status & QCA955X_EXT_INT_USB2) {
+-		/* TODO: flush DDR? */
+-		generic_handle_irq(ATH79_IP3_IRQ(1));
+-	}
+-
+-	if (status & QCA955X_EXT_INT_PCIE_RC2_ALL) {
+-		/* TODO: flush DDR? */
+-		generic_handle_irq(ATH79_IP3_IRQ(2));
+-	}
+-}
+-
+-static void qca955x_irq_init(void)
+-{
+-	int i;
+-
+-	for (i = ATH79_IP2_IRQ_BASE;
+-	     i < ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT; i++)
+-		irq_set_chip_and_handler(i, &dummy_irq_chip,
+-					 handle_level_irq);
+-
+-	irq_set_chained_handler(ATH79_CPU_IRQ(2), qca955x_ip2_irq_dispatch);
+-
+-	for (i = ATH79_IP3_IRQ_BASE;
+-	     i < ATH79_IP3_IRQ_BASE + ATH79_IP3_IRQ_COUNT; i++)
+-		irq_set_chip_and_handler(i, &dummy_irq_chip,
+-					 handle_level_irq);
+-
+-	irq_set_chained_handler(ATH79_CPU_IRQ(3), qca955x_ip3_irq_dispatch);
+-}
+-
+-void __init arch_init_irq(void)
+-{
+-	unsigned irq_wb_chan2 = -1;
+-	unsigned irq_wb_chan3 = -1;
+-	bool misc_is_ar71xx;
+-
+-	if (mips_machtype == ATH79_MACH_GENERIC_OF) {
+-		irqchip_init();
+-		return;
+-	}
+-
+-	if (soc_is_ar71xx() || soc_is_ar724x() ||
+-	    soc_is_ar913x() || soc_is_ar933x()) {
+-		irq_wb_chan2 = 3;
+-		irq_wb_chan3 = 2;
+-	} else if (soc_is_ar934x()) {
+-		irq_wb_chan3 = 2;
+-	}
+-
+-	ath79_cpu_irq_init(irq_wb_chan2, irq_wb_chan3);
+-
+-	if (soc_is_ar71xx() || soc_is_ar913x())
+-		misc_is_ar71xx = true;
+-	else if (soc_is_ar724x() ||
+-		 soc_is_ar933x() ||
+-		 soc_is_ar934x() ||
+-		 soc_is_qca955x())
+-		misc_is_ar71xx = false;
+-	else
+-		BUG();
+-	ath79_misc_irq_init(
+-		ath79_reset_base + AR71XX_RESET_REG_MISC_INT_STATUS,
+-		ATH79_CPU_IRQ(6), ATH79_MISC_IRQ_BASE, misc_is_ar71xx);
+-
+-	if (soc_is_ar934x())
+-		ar934x_ip2_irq_init();
+-	else if (soc_is_qca955x())
+-		qca955x_irq_init();
+-}
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 4c7a93f4039a..a8c1cca07461 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -19,6 +19,7 @@
+ #include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/of_fdt.h>
++#include <linux/irqchip.h>
+ 
+ #include <asm/bootinfo.h>
+ #include <asm/idle.h>
+@@ -311,6 +312,11 @@ void __init plat_time_init(void)
+ 	mips_hpt_frequency = cpu_clk_rate / 2;
  }
  
--static void __init ar71xx_clocks_init(void)
-+static void __init ar71xx_clocks_init(void __iomem *pll_base)
++void __init arch_init_irq(void)
++{
++	irqchip_init();
++}
++
+ static int __init ath79_setup(void)
  {
- 	unsigned long ref_rate;
- 	unsigned long cpu_rate;
-@@ -92,7 +92,7 @@ static void __init ar71xx_clocks_init(void)
+ 	if  (mips_machtype == ATH79_MACH_GENERIC_OF)
+diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
+index 73dcd63b8243..47e8827e9564 100644
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -178,8 +178,4 @@ static inline u32 ath79_reset_rr(unsigned reg)
+ void ath79_device_reset_set(u32 mask);
+ void ath79_device_reset_clear(u32 mask);
  
- 	ref_rate = AR71XX_BASE_FREQ;
- 
--	pll = ath79_pll_rr(AR71XX_PLL_REG_CPU_CONFIG);
-+	pll = __raw_readl(pll_base + AR71XX_PLL_REG_CPU_CONFIG);
- 
- 	div = ((pll >> AR71XX_PLL_FB_SHIFT) & AR71XX_PLL_FB_MASK) + 1;
- 	freq = div * ref_rate;
-@@ -130,13 +130,13 @@ static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 	ath79_set_ff_clk(ATH79_CLK_AHB, "ref", mult, div * ahb_div);
- }
- 
--static void __init ar724x_clocks_init(void)
-+static void __init ar724x_clocks_init(void __iomem *pll_base)
- {
- 	struct clk *ref_clk;
- 
- 	ref_clk = ath79_set_clk(ATH79_CLK_REF, AR724X_BASE_FREQ);
- 
--	ar724x_clk_init(ref_clk, ath79_pll_base);
-+	ar724x_clk_init(ref_clk, pll_base);
- }
- 
- static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
-@@ -197,7 +197,7 @@ static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 			 ref_div * out_div * ahb_div);
- }
- 
--static void __init ar933x_clocks_init(void)
-+static void __init ar933x_clocks_init(void __iomem *pll_base)
- {
- 	struct clk *ref_clk;
- 	unsigned long ref_rate;
-@@ -234,7 +234,7 @@ static u32 __init ar934x_get_pll_freq(u32 ref, u32 ref_div, u32 nint, u32 nfrac,
- 	return ret;
- }
- 
--static void __init ar934x_clocks_init(void)
-+static void __init ar934x_clocks_init(void __iomem *pll_base)
- {
- 	unsigned long ref_rate;
- 	unsigned long cpu_rate;
-@@ -265,7 +265,7 @@ static void __init ar934x_clocks_init(void)
- 			  AR934X_SRIF_DPLL1_REFDIV_MASK;
- 		frac = 1 << 18;
- 	} else {
--		pll = ath79_pll_rr(AR934X_PLL_CPU_CONFIG_REG);
-+		pll = __raw_readl(pll_base + AR934X_PLL_CPU_CONFIG_REG);
- 		out_div = (pll >> AR934X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
- 			AR934X_PLL_CPU_CONFIG_OUTDIV_MASK;
- 		ref_div = (pll >> AR934X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-@@ -292,7 +292,7 @@ static void __init ar934x_clocks_init(void)
- 			  AR934X_SRIF_DPLL1_REFDIV_MASK;
- 		frac = 1 << 18;
- 	} else {
--		pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
-+		pll = __raw_readl(pll_base + AR934X_PLL_DDR_CONFIG_REG);
- 		out_div = (pll >> AR934X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
- 			  AR934X_PLL_DDR_CONFIG_OUTDIV_MASK;
- 		ref_div = (pll >> AR934X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-@@ -307,7 +307,7 @@ static void __init ar934x_clocks_init(void)
- 	ddr_pll = ar934x_get_pll_freq(ref_rate, ref_div, nint,
- 				      nfrac, frac, out_div);
- 
--	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
-+	clk_ctrl = __raw_readl(pll_base + AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
- 
- 	postdiv = (clk_ctrl >> AR934X_PLL_CPU_DDR_CLK_CTRL_CPU_POST_DIV_SHIFT) &
- 		  AR934X_PLL_CPU_DDR_CLK_CTRL_CPU_POST_DIV_MASK;
-@@ -347,7 +347,7 @@ static void __init ar934x_clocks_init(void)
- 	iounmap(dpll_base);
- }
- 
--static void __init qca953x_clocks_init(void)
-+static void __init qca953x_clocks_init(void __iomem *pll_base)
- {
- 	unsigned long ref_rate;
- 	unsigned long cpu_rate;
-@@ -363,7 +363,7 @@ static void __init qca953x_clocks_init(void)
- 	else
- 		ref_rate = 25 * 1000 * 1000;
- 
--	pll = ath79_pll_rr(QCA953X_PLL_CPU_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA953X_PLL_CPU_CONFIG_REG);
- 	out_div = (pll >> QCA953X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
- 		  QCA953X_PLL_CPU_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA953X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-@@ -377,7 +377,7 @@ static void __init qca953x_clocks_init(void)
- 	cpu_pll += frac * (ref_rate >> 6) / ref_div;
- 	cpu_pll /= (1 << out_div);
- 
--	pll = ath79_pll_rr(QCA953X_PLL_DDR_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA953X_PLL_DDR_CONFIG_REG);
- 	out_div = (pll >> QCA953X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
- 		  QCA953X_PLL_DDR_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA953X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-@@ -391,7 +391,7 @@ static void __init qca953x_clocks_init(void)
- 	ddr_pll += frac * (ref_rate >> 6) / (ref_div << 4);
- 	ddr_pll /= (1 << out_div);
- 
--	clk_ctrl = ath79_pll_rr(QCA953X_PLL_CLK_CTRL_REG);
-+	clk_ctrl = __raw_readl(pll_base + QCA953X_PLL_CLK_CTRL_REG);
- 
- 	postdiv = (clk_ctrl >> QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
- 		  QCA953X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-@@ -429,7 +429,7 @@ static void __init qca953x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- }
- 
--static void __init qca955x_clocks_init(void)
-+static void __init qca955x_clocks_init(void __iomem *pll_base)
- {
- 	unsigned long ref_rate;
- 	unsigned long cpu_rate;
-@@ -445,7 +445,7 @@ static void __init qca955x_clocks_init(void)
- 	else
- 		ref_rate = 25 * 1000 * 1000;
- 
--	pll = ath79_pll_rr(QCA955X_PLL_CPU_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA955X_PLL_CPU_CONFIG_REG);
- 	out_div = (pll >> QCA955X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
- 		  QCA955X_PLL_CPU_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA955X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-@@ -459,7 +459,7 @@ static void __init qca955x_clocks_init(void)
- 	cpu_pll += frac * ref_rate / (ref_div * (1 << 6));
- 	cpu_pll /= (1 << out_div);
- 
--	pll = ath79_pll_rr(QCA955X_PLL_DDR_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA955X_PLL_DDR_CONFIG_REG);
- 	out_div = (pll >> QCA955X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
- 		  QCA955X_PLL_DDR_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA955X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-@@ -473,7 +473,7 @@ static void __init qca955x_clocks_init(void)
- 	ddr_pll += frac * ref_rate / (ref_div * (1 << 10));
- 	ddr_pll /= (1 << out_div);
- 
--	clk_ctrl = ath79_pll_rr(QCA955X_PLL_CLK_CTRL_REG);
-+	clk_ctrl = __raw_readl(pll_base + QCA955X_PLL_CLK_CTRL_REG);
- 
- 	postdiv = (clk_ctrl >> QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
- 		  QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-@@ -511,7 +511,7 @@ static void __init qca955x_clocks_init(void)
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- }
- 
--static void __init qca956x_clocks_init(void)
-+static void __init qca956x_clocks_init(void __iomem *pll_base)
- {
- 	unsigned long ref_rate;
- 	unsigned long cpu_rate;
-@@ -537,13 +537,13 @@ static void __init qca956x_clocks_init(void)
- 	else
- 		ref_rate = 25 * 1000 * 1000;
- 
--	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA956X_PLL_CPU_CONFIG_REG);
- 	out_div = (pll >> QCA956X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
- 		  QCA956X_PLL_CPU_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA956X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
- 		  QCA956X_PLL_CPU_CONFIG_REFDIV_MASK;
- 
--	pll = ath79_pll_rr(QCA956X_PLL_CPU_CONFIG1_REG);
-+	pll = __raw_readl(pll_base + QCA956X_PLL_CPU_CONFIG1_REG);
- 	nint = (pll >> QCA956X_PLL_CPU_CONFIG1_NINT_SHIFT) &
- 	       QCA956X_PLL_CPU_CONFIG1_NINT_MASK;
- 	hfrac = (pll >> QCA956X_PLL_CPU_CONFIG1_NFRAC_H_SHIFT) &
-@@ -556,12 +556,12 @@ static void __init qca956x_clocks_init(void)
- 	cpu_pll += (hfrac >> 13) * ref_rate / ref_div;
- 	cpu_pll /= (1 << out_div);
- 
--	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG_REG);
-+	pll = __raw_readl(pll_base + QCA956X_PLL_DDR_CONFIG_REG);
- 	out_div = (pll >> QCA956X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
- 		  QCA956X_PLL_DDR_CONFIG_OUTDIV_MASK;
- 	ref_div = (pll >> QCA956X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
- 		  QCA956X_PLL_DDR_CONFIG_REFDIV_MASK;
--	pll = ath79_pll_rr(QCA956X_PLL_DDR_CONFIG1_REG);
-+	pll = __raw_readl(pll_base + QCA956X_PLL_DDR_CONFIG1_REG);
- 	nint = (pll >> QCA956X_PLL_DDR_CONFIG1_NINT_SHIFT) &
- 	       QCA956X_PLL_DDR_CONFIG1_NINT_MASK;
- 	hfrac = (pll >> QCA956X_PLL_DDR_CONFIG1_NFRAC_H_SHIFT) &
-@@ -574,7 +574,7 @@ static void __init qca956x_clocks_init(void)
- 	ddr_pll += (hfrac >> 13) * ref_rate / ref_div;
- 	ddr_pll /= (1 << out_div);
- 
--	clk_ctrl = ath79_pll_rr(QCA956X_PLL_CLK_CTRL_REG);
-+	clk_ctrl = __raw_readl(pll_base + QCA956X_PLL_CLK_CTRL_REG);
- 
- 	postdiv = (clk_ctrl >> QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
- 		  QCA956X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-@@ -618,19 +618,19 @@ void __init ath79_clocks_init(void)
- 	const char *uart;
- 
- 	if (soc_is_ar71xx())
--		ar71xx_clocks_init();
-+		ar71xx_clocks_init(ath79_pll_base);
- 	else if (soc_is_ar724x() || soc_is_ar913x())
--		ar724x_clocks_init();
-+		ar724x_clocks_init(ath79_pll_base);
- 	else if (soc_is_ar933x())
--		ar933x_clocks_init();
-+		ar933x_clocks_init(ath79_pll_base);
- 	else if (soc_is_ar934x())
--		ar934x_clocks_init();
-+		ar934x_clocks_init(ath79_pll_base);
- 	else if (soc_is_qca953x())
--		qca953x_clocks_init();
-+		qca953x_clocks_init(ath79_pll_base);
- 	else if (soc_is_qca955x())
--		qca955x_clocks_init();
-+		qca955x_clocks_init(ath79_pll_base);
- 	else if (soc_is_qca956x() || soc_is_tp9343())
--		qca956x_clocks_init();
-+		qca956x_clocks_init(ath79_pll_base);
- 	else
- 		BUG();
- 
+-void ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3);
+-void ath79_misc_irq_init(void __iomem *regs, int irq,
+-			int irq_base, bool is_ar71xx);
+-
+ #endif /* __ASM_MACH_ATH79_H */
 -- 
 2.11.0

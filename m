@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:24:10 +0200 (CEST)
-Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47104 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 14:24:20 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:47112 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993394AbeGTMXsriiNU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 14:23:48 +0200
+        id S23993422AbeGTMXvA2tVn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 14:23:51 +0200
 From:   John Crispin <john@phrozen.org>
 To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>,
         John Crispin <john@phrozen.org>
-Subject: [PATCH V2 18/25] MIPS: ath79: export switch MDIO reference clock
-Date:   Fri, 20 Jul 2018 13:58:35 +0200
-Message-Id: <20180720115842.8406-19-john@phrozen.org>
+Subject: [PATCH V2 17/25] MIPS: ath79: support setting up clock via DT on all SoC types
+Date:   Fri, 20 Jul 2018 13:58:34 +0200
+Message-Id: <20180720115842.8406-18-john@phrozen.org>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180720115842.8406-1-john@phrozen.org>
 References: <20180720115842.8406-1-john@phrozen.org>
@@ -17,7 +17,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64969
+X-archive-position: 64970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,63 +36,78 @@ X-list: linux-mips
 
 From: Felix Fietkau <nbd@nbd.name>
 
-On AR934x, the MDIO reference clock can be configured to a fixed 100 MHz
-clock. If that feature is not used, it defaults to the main reference
-clock, like on all other SoC.
+Use the same functions as the legacy code
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ath79/clock.c               | 8 ++++++++
- include/dt-bindings/clock/ath79-clk.h | 3 ++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/mips/ath79/clock.c | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
 diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index c234818b30e1..699f00f096cb 100644
+index 6262253622b3..c234818b30e1 100644
 --- a/arch/mips/ath79/clock.c
 +++ b/arch/mips/ath79/clock.c
-@@ -42,6 +42,7 @@ static const char * const clk_names[ATH79_CLK_END] = {
- 	[ATH79_CLK_DDR] = "ddr",
- 	[ATH79_CLK_AHB] = "ahb",
- 	[ATH79_CLK_REF] = "ref",
-+	[ATH79_CLK_MDIO] = "mdio",
- };
+@@ -669,16 +669,6 @@ ath79_get_sys_clk_rate(const char *id)
+ #ifdef CONFIG_OF
+ static void __init ath79_clocks_init_dt(struct device_node *np)
+ {
+-	of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+-}
+-
+-CLK_OF_DECLARE(ar7100, "qca,ar7100-pll", ath79_clocks_init_dt);
+-CLK_OF_DECLARE(ar7240, "qca,ar7240-pll", ath79_clocks_init_dt);
+-CLK_OF_DECLARE(ar9340, "qca,ar9340-pll", ath79_clocks_init_dt);
+-CLK_OF_DECLARE(ar9550, "qca,qca9550-pll", ath79_clocks_init_dt);
+-
+-static void __init ath79_clocks_init_dt_ng(struct device_node *np)
+-{
+ 	struct clk *ref_clk;
+ 	void __iomem *pll_base;
  
- static const char * __init ath79_clk_name(int type)
-@@ -342,6 +343,10 @@ static void __init ar934x_clocks_init(void __iomem *pll_base)
- 	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
- 	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
+@@ -692,14 +682,21 @@ static void __init ath79_clocks_init_dt_ng(struct device_node *np)
+ 		goto err_clk;
+ 	}
  
-+	clk_ctrl = __raw_readl(pll_base + AR934X_PLL_SWITCH_CLOCK_CONTROL_REG);
-+	if (clk_ctrl & AR934X_PLL_SWITCH_CLOCK_CONTROL_MDIO_CLK_SEL)
-+		ath79_set_clk(ATH79_CLK_MDIO, 100 * 1000 * 1000);
-+
- 	iounmap(dpll_base);
- }
+-	if (of_device_is_compatible(np, "qca,ar9130-pll"))
++	if (of_device_is_compatible(np, "qca,ar7100-pll"))
++		ar71xx_clocks_init(pll_base);
++	else if (of_device_is_compatible(np, "qca,ar7240-pll") ||
++		 of_device_is_compatible(np, "qca,ar9130-pll"))
+ 		ar724x_clocks_init(pll_base);
+ 	else if (of_device_is_compatible(np, "qca,ar9330-pll"))
+ 		ar933x_clocks_init(pll_base);
+-	else {
+-		pr_err("%pOF: could not find any appropriate clk_init()\n", np);
+-		goto err_iounmap;
+-	}
++	else if (of_device_is_compatible(np, "qca,ar9340-pll"))
++		ar934x_clocks_init(pll_base);
++	else if (of_device_is_compatible(np, "qca,qca9530-pll"))
++		qca953x_clocks_init(pll_base);
++	else if (of_device_is_compatible(np, "qca,qca9550-pll"))
++		qca955x_clocks_init(pll_base);
++	else if (of_device_is_compatible(np, "qca,qca9560-pll"))
++		qca956x_clocks_init(pll_base);
  
-@@ -698,6 +703,9 @@ static void __init ath79_clocks_init_dt(struct device_node *np)
- 	else if (of_device_is_compatible(np, "qca,qca9560-pll"))
- 		qca956x_clocks_init(pll_base);
- 
-+	if (!clks[ATH79_CLK_MDIO])
-+		clks[ATH79_CLK_MDIO] = clks[ATH79_CLK_REF];
-+
  	if (of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data)) {
  		pr_err("%pOF: could not register clk provider\n", np);
- 		goto err_iounmap;
-diff --git a/include/dt-bindings/clock/ath79-clk.h b/include/dt-bindings/clock/ath79-clk.h
-index 262d7c5eb248..dcc679a7ad85 100644
---- a/include/dt-bindings/clock/ath79-clk.h
-+++ b/include/dt-bindings/clock/ath79-clk.h
-@@ -14,7 +14,8 @@
- #define ATH79_CLK_DDR		1
- #define ATH79_CLK_AHB		2
- #define ATH79_CLK_REF		3
-+#define ATH79_CLK_MDIO		4
- 
--#define ATH79_CLK_END		4
-+#define ATH79_CLK_END		5
- 
- #endif /* __DT_BINDINGS_ATH79_CLK_H */
+@@ -714,6 +711,14 @@ static void __init ath79_clocks_init_dt_ng(struct device_node *np)
+ err_clk:
+ 	clk_put(ref_clk);
+ }
+-CLK_OF_DECLARE(ar9130_clk, "qca,ar9130-pll", ath79_clocks_init_dt_ng);
+-CLK_OF_DECLARE(ar9330_clk, "qca,ar9330-pll", ath79_clocks_init_dt_ng);
++
++CLK_OF_DECLARE(ar7100_clk, "qca,ar7100-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar7240_clk, "qca,ar7240-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9130_clk, "qca,ar9130-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9330_clk, "qca,ar9330-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9340_clk, "qca,ar9340-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9530_clk, "qca,qca9530-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9550_clk, "qca,qca9550-pll", ath79_clocks_init_dt);
++CLK_OF_DECLARE(ar9560_clk, "qca,qca9560-pll", ath79_clocks_init_dt);
++
+ #endif
 -- 
 2.11.0

@@ -1,79 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 15:47:52 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:43324 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993316AbeGTNrsRSQCE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 15:47:48 +0200
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6KDiB45060514
-        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 09:47:46 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2kbft43nv7-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 09:47:46 -0400
-Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Fri, 20 Jul 2018 14:47:44 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 20 Jul 2018 14:47:38 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6KDlbtw27656404
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 20 Jul 2018 13:47:38 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F30FB42047;
-        Fri, 20 Jul 2018 16:47:54 +0100 (BST)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E7F424203F;
-        Fri, 20 Jul 2018 16:47:44 +0100 (BST)
-Received: from [9.77.210.204] (unknown [9.77.210.204])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri, 20 Jul 2018 16:47:44 +0100 (BST)
-Subject: Re: [PATCH v6 0/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, mhiramat@kernel.org,
-        Song Liu <liu.song.a23@gmail.com>
-Cc:     rostedt@goodmis.org, peterz@infradead.org, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        linux-kernel@vger.kernel.org, ananth@linux.vnet.ibm.com,
-        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date:   Fri, 20 Jul 2018 19:17:26 +0530
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 17:44:29 +0200 (CEST)
+Received: from mail-lf1-x144.google.com ([IPv6:2a00:1450:4864:20::144]:42112
+        "EHLO mail-lf1-x144.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993354AbeGTPoZDMx00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2018 17:44:25 +0200
+Received: by mail-lf1-x144.google.com with SMTP id u202-v6so2105778lff.9
+        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2018 08:44:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=jHxPO1o5siLGdoMshFfo7jCJV37JUq1NKh1f6aEWYaU=;
+        b=aEv8FPHTp6tWQyyt80RlwLRib9SP/C7H/9Sy/ftcWG276PH2mKzHVfh7hLtTfYjbqU
+         RQfSgm1NgCq4s9DYBERL3RSNhcD/cTPJVfgdhEDPDmrlJQIAUXkkpeqGQd5BWvh3dAZn
+         HxGsB0x0T9Ttbhbz9rQO0awWaBLLIVMjreUHhZbCN5GZxb65c8xQFo08BNw5u9kQiOMg
+         Oeu0buPysD8OIF7rLimfD3gawoX5/GNoL3aoVZssZbc4z9Cw3spqdOAqTo7ucf/WvH7W
+         jMQVRtEAxkVC0mYapJii+/w2BzVTV6h2rKG0Hk2Zn98gHM3+0/RbHEdXt04HeBLRagar
+         u0zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=jHxPO1o5siLGdoMshFfo7jCJV37JUq1NKh1f6aEWYaU=;
+        b=eZThRJTzJwrc2LvIXe8WTuuGEH/lodF9/O6rkUWkBOVvX1Oe7BPve81lYcmpHiCXv4
+         oFX/eE9JwiSdNPhiCqJWQCn7DvbP9bbJxwaNwzy9+5fiKtWHjqPGJFQ3/v+uB5kbfNvd
+         Nyy0CCv3VJaWMz0ahgF7Cc+BtQULc3e+zWEvhENtGKu2K911RSzE/mVQgaQeex8tV0aA
+         QZy7xmkV+ME5a+w1/rP0Ge3dT8J1zIciD7YWXtcx25ECg7BqDapAfccAFME9Gjssjv//
+         /48jvPP03r2n/cc+dlOrljKDcOGja72qEmPeO45sbJHvcMSgPyIi83iQCBAzt3bTDrmV
+         ck3g==
+X-Gm-Message-State: AOUpUlEle1ix3bgRNWBla7zok+GsB27Oxzs7VcOH+OukcoAhXUIUgE8t
+        5p6j3rOy6p3qmyH4xXhUdbuu0w==
+X-Google-Smtp-Source: AAOMgpf635y2ArWSYzWUa8VMAqNFov+XKH8hsTWtcwHCCacdn+0pUhwWk7huyRd9E4Cii9pBH6ixXA==
+X-Received: by 2002:a19:ca09:: with SMTP id a9-v6mr1698926lfg.142.1532101459247;
+        Fri, 20 Jul 2018 08:44:19 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.86.110])
+        by smtp.gmail.com with ESMTPSA id i15-v6sm338955lfb.94.2018.07.20.08.44.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 20 Jul 2018 08:44:18 -0700 (PDT)
+Subject: Re: [PATCH V2 04/25] MIPS: ath79: fix register address in
+ ath79_ddr_wb_flush()
+To:     John Crispin <john@phrozen.org>, James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Felix Fietkau <nbd@nbd.name>,
+        Alban Bedel <albeu@free.fr>
+References: <20180720115842.8406-1-john@phrozen.org>
+ <20180720115842.8406-5-john@phrozen.org>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <828c73e9-ec34-cf52-4d9c-822385f2ce32@cogentembedded.com>
+Date:   Fri, 20 Jul 2018 18:44:17 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20180720115842.8406-5-john@phrozen.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 18072013-0028-0000-0000-000002DE0D08
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18072013-0029-0000-0000-00002395E006
-Message-Id: <0c0adc46-ca53-94d6-658e-77c724e6ce73@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-20_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1807200156
-Return-Path: <ravi.bangoria@linux.ibm.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64987
+X-archive-position: 64988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,124 +78,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Oleg, Srikar, Masami, Song,
+Hello!
 
-Any feedback please? :)
+On 07/20/2018 02:58 PM, John Crispin wrote:
 
-Thanks,
-Ravi
+> From: Felix Fietkau <nbd@nbd.name>
+> 
+> ath79_ddr_wb_flush_base has the type void __iomem *, so register offsets
+> need to be a multiple of 4.
+> 
+> Cc: Alban Bedel <albeu@free.fr>
+> Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: John Crispin <john@phrozen.org>
+> ---
+>  arch/mips/ath79/common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+> index fad32543a968..cd6055f9e7a0 100644
+> --- a/arch/mips/ath79/common.c
+> +++ b/arch/mips/ath79/common.c
+> @@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(ath79_ddr_ctrl_init);
+>  
+>  void ath79_ddr_wb_flush(u32 reg)
+>  {
+> -	void __iomem *flush_reg = ath79_ddr_wb_flush_base + reg;
+> +	void __iomem *flush_reg = ath79_ddr_wb_flush_base + (reg * 4);
 
-On 07/16/2018 02:17 PM, Ravi Bangoria wrote:
-> Userspace Statically Defined Tracepoints[1] are dtrace style markers
-> inside userspace applications. Applications like PostgreSQL, MySQL,
-> Pthread, Perl, Python, Java, Ruby, Node.js, libvirt, QEMU, glib etc
-> have these markers embedded in them. These markers are added by developer
-> at important places in the code. Each marker source expands to a single
-> nop instruction in the compiled code but there may be additional
-> overhead for computing the marker arguments which expands to couple of
-> instructions. In case the overhead is more, execution of it can be
-> omitted by runtime if() condition when no one is tracing on the marker:
-> 
->     if (reference_counter > 0) {
->         Execute marker instructions;
->     }
-> 
-> Default value of reference counter is 0. Tracer has to increment the 
-> reference counter before tracing on a marker and decrement it when
-> done with the tracing.
-> 
-> Currently, perf tool has limited supports for SDT markers. I.e. it
-> can not trace markers surrounded by reference counter. Also, it's
-> not easy to add reference counter logic in userspace tool like perf,
-> so basic idea for this patchset is to add reference counter logic in
-> the a uprobe infrastructure. Ex,[2]
-> 
->   # cat tick.c
->     ... 
->     for (i = 0; i < 100; i++) {
-> 	DTRACE_PROBE1(tick, loop1, i);
->         if (TICK_LOOP2_ENABLED()) {
->             DTRACE_PROBE1(tick, loop2, i); 
->         }
->         printf("hi: %d\n", i); 
->         sleep(1);
->     }   
->     ... 
-> 
-> Here tick:loop1 is marker without reference counter where as tick:loop2
-> is surrounded by reference counter condition.
-> 
->   # perf buildid-cache --add /tmp/tick
->   # perf probe sdt_tick:loop1
->   # perf probe sdt_tick:loop2
-> 
->   # perf stat -e sdt_tick:loop1,sdt_tick:loop2 -- /tmp/tick
->   hi: 0
->   hi: 1
->   hi: 2
->   ^C
->   Performance counter stats for '/tmp/tick':
->              3      sdt_tick:loop1
->              0      sdt_tick:loop2
->      2.747086086 seconds time elapsed
-> 
-> Perf failed to record data for tick:loop2. Same experiment with this
-> patch series:
-> 
->   # ./perf buildid-cache --add /tmp/tick
->   # ./perf probe sdt_tick:loop2
->   # ./perf stat -e sdt_tick:loop2 /tmp/tick
->     hi: 0
->     hi: 1
->     hi: 2
->     ^C  
->      Performance counter stats for '/tmp/tick':
->                  3      sdt_tick:loop2
->        2.561851452 seconds time elapsed
-> 
-> 
-> v6 changes:
->  - Do not export struct uprobe outside of uprobe.c. Instead, use
->    container_of(arch_uprobe) to regain uprobe in uprobe_write_opcode().
->  - Allow 0 as a special value for reference counter _offset_. I.e.
->    two uprobes, one having ref_ctr_offset=0 and the other having
->    non-zero ref_ctr_offset can coexists.
->  - If vma holding reference counter is not present while patching an
->    instruction, we add that uprobe in delayed_uprobe_list. When
->    appropriate mapping is created, we increment the reference counter
->    and remove uprobe from delayed_uprobe_list. While doing all this,
->    v5 was searching for all such uprobes in uprobe_tree which is not 
->    require. Also, uprobes are stored in rbtree with inode+offset as
->    the key and v5 was searching uprobe based on inode+ref_ctr_offset
->    which is wrong too. Fix this by directly looing on delayed_uprobe_list.
->  - Consider VM_SHARED vma as invalid for reference counter. Return
->    false from valid_ref_ctr_vma() if vma->vm_flags has VM_SHARED set.
->  - No need to use FOLL_FORCE in get_user_pages_remote() while getting
->    a page to update reference counter. Remove it.
->  - Do not mention usage of reference counter in Documentation/.
-> 
-> 
-> v5 can be found at: https://lkml.org/lkml/2018/6/28/51
-> 
-> Ravi Bangoria (6):
->   Uprobes: Simplify uprobe_register() body
->   Uprobe: Additional argument arch_uprobe to uprobe_write_opcode()
->   Uprobes: Support SDT markers having reference count (semaphore)
->   trace_uprobe/sdt: Prevent multiple reference counter for same uprobe
->   Uprobes/sdt: Prevent multiple reference counter for same uprobe
->   perf probe: Support SDT markers having reference counter (semaphore)
-> 
->  arch/arm/probes/uprobes/core.c |   2 +-
->  arch/mips/kernel/uprobes.c     |   2 +-
->  include/linux/uprobes.h        |   7 +-
->  kernel/events/uprobes.c        | 358 ++++++++++++++++++++++++++++++++++++-----
->  kernel/trace/trace.c           |   2 +-
->  kernel/trace/trace_uprobe.c    |  78 ++++++++-
->  tools/perf/util/probe-event.c  |  39 ++++-
->  tools/perf/util/probe-event.h  |   1 +
->  tools/perf/util/probe-file.c   |  34 +++-
->  tools/perf/util/probe-file.h   |   1 +
->  tools/perf/util/symbol-elf.c   |  46 ++++--
->  tools/perf/util/symbol.h       |   7 +
->  12 files changed, 503 insertions(+), 74 deletions(-)
-> 
+   Parens not needed, the operator priorities are natural.
+
+[...]
+
+MBR, Sergei

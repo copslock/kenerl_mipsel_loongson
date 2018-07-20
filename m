@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2018 09:55:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38460 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991532AbeIUHzIqpDtC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2018 09:55:08 +0200
-Received: from localhost (unknown [37.170.50.219])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 08878D27;
-        Fri, 21 Sep 2018 07:55:00 +0000 (UTC)
-Subject: Patch "MIPS: ath79: fix system restart" has been added to the 4.9-stable tree
-To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
-        jhogan@kernel.org, john@phrozen.org, linux-mips@linux-mips.org,
-        nbd@nbd.name, paul.burton@mips.com, ralf@linux-mips.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 21 Sep 2018 09:45:38 +0200
-Message-ID: <15375159382156@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66479
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Felix Fietkau <nbd@nbd.name>
+Date: Fri, 20 Jul 2018 13:58:22 +0200
+Subject: MIPS: ath79: fix system restart
+Message-ID: <20180720115822.jAg4aV-7AlI06CNfl1H7dASZ9FZvfsjz0u5JoSyh67s@z>
+
+From: Felix Fietkau <nbd@nbd.name>
+
+[ Upstream commit f8a7bfe1cb2c1ebfa07775c9c8ac0ad3ba8e5ff5 ]
+
+This patch disables irq on reboot to fix hang issues that were observed
+due to pending interrupts.
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/19913/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/ath79/setup.c                  |    1 +
+ arch/mips/include/asm/mach-ath79/ath79.h |    1 +
+ 2 files changed, 2 insertions(+)
+
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYP
+ 
+ static void ath79_restart(char *command)
+ {
++	local_irq_disable();
+ 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
+ 	for (;;)
+ 		if (cpu_wait)
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -134,6 +134,7 @@ static inline u32 ath79_pll_rr(unsigned
+ static inline void ath79_reset_wr(unsigned reg, u32 val)
+ {
+ 	__raw_writel(val, ath79_reset_base + reg);
++	(void) __raw_readl(ath79_reset_base + reg); /* flush */
+ }
+ 
+ static inline u32 ath79_reset_rr(unsigned reg)
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from nbd@nbd.name are
 
-    MIPS: ath79: fix system restart
-
-to the 4.9-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-ath79-fix-system-restart.patch
-and it can be found in the queue-4.9 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.9/mips-ath79-fix-system-restart.patch

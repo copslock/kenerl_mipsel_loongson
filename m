@@ -1,74 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 11:22:37 +0200 (CEST)
-Received: from mout.perfora.net ([74.208.4.197]:57373 "EHLO mout.perfora.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2018 13:58:50 +0200 (CEST)
+Received: from nbd.name ([IPv6:2a01:4f8:221:3d45::2]:46150 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993256AbeGTJWeDm-m4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 Jul 2018 11:22:34 +0200
-Received: from localhost.localdomain ([89.217.215.226]) by mrelay.perfora.net
- (mreueus003 [74.208.5.2]) with ESMTPSA (Nemesis) id 0MezRn-1fMRmF149Z-00Oa3I;
- Fri, 20 Jul 2018 11:21:06 +0200
-Message-ID: <1532078447.19673.8.camel@ziswiler.com>
-Subject: Re: [PATCH] ASoC: wm9712: fix replace codec to component
-From:   Marcel Ziswiler <marcel@ziswiler.com>
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc:     alsa-devel@alsa-project.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-mips@linux-mips.org,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Bhumika Goyal <bhumirks@gmail.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Jaroslav Kysela <perex@perex.cz>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
-        Han Xu <han.xu@nxp.com>, Donglin Peng <dolinux.peng@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Boris Brezillon <boris.brezillon@bootlin.com>
-Date:   Fri, 20 Jul 2018 11:20:47 +0200
-In-Reply-To: <87effy48lz.wl-kuninori.morimoto.gx@renesas.com>
-References: <20180720075148.14648-1-marcel@ziswiler.com>
-         <87effy48lz.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 (3.26.6-1.fc27) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:onunNaexXgGZawMVxD2fW8hPkHh4cO9Cg1yWbodhs51c600RaZq
- wyk0sT4cSVy3YJ0M3f4WzppRf/hMK5T8CfGNbmNZrUncJCNr6AZ+1b4dFyz+cZJtX5bhqKz
- Exu7ktyVhMy4dEFD4QA02bu3tRUwtKfY9iSt+gJAdx7xaI8pprNY5gLkYbKYEwebM99bPz9
- EZgjCaRO4u8Lh2cViCJOQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:pEE3KBkYACo=:bvNhs15X8y4LQ9Ram2ca1E
- 6jdb4tG6+O/68mKLJqF0or2WqML2rIXxYxZL7ZJ8EXLyNCvaRwlpjrfVRX0/jHD4tUEYnrdCM
- NPhhaZava5/afY34O5HVa2QtkjC5YBCza1zQ2UDmZrPc7NRNaqMJ9LlIbZb+7f3Gw6oGM6o4R
- M4nP2gGXCXjnjHPvgbS7S0YhGiAFCwm0jCJXUqMmnOzq1zCwPv/D/IYny2LcaN4YJpRz1d9mT
- E35wapSwkcJbFcinmI+q3xYqqc7v+LO7S5mO1OcKpiHcH3IZ1lYwSZW1PJulJ+LJbTmVe+gOK
- 5KQH/nfCWIO9FT5UkmUcCUmqRxFWlGOADR+MrPaOneuZj8JEia2V9N0mAErIwGj5FZrLw0/2k
- oqwQBf7izzeTv1sTx1TBsK9T/co92PsvpXBbcq9zPcEBPsVorW3D9C24+Y3H7hAMR2N0T6zRg
- VzABrMMkTajI9NlM1DxLiwu61vkqBOWQohvZsoSCR9MjoG8DH5VZmi3Df1LaMRqruIYwPI81s
- Qh3mpqy52p5OUcEeDtpNWMAx1wqx8mQ83g433M2Pmz/J9VqbhQQpj07Rj5CwDhrXZLGTVAqIx
- FCGX/Kg+0rcMovBz2IUNGN6DLsCXgK/FLHjsDvVl1QGObgX4fw2GBtLTWSAFm3mPF23TdE7o9
- +bEBb3FXKxADqPFCOe8VnWbtw0HY9+YhMr7m3e+tCmJfAkh1XAUwa6FTdTfyyTzO7oO8YbcT4
- egCewQvmnhlM3WOR
-Return-Path: <marcel@ziswiler.com>
+        id S23993256AbeGTL6rzq72A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Jul 2018 13:58:47 +0200
+From:   John Crispin <john@phrozen.org>
+To:     James Hogan <jhogan@kernel.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
+Subject: [PATCH V2 00/25] MIPS: ath79: convert target to pure OF
+Date:   Fri, 20 Jul 2018 13:58:17 +0200
+Message-Id: <20180720115842.8406-1-john@phrozen.org>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 64956
+X-archive-position: 64957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcel@ziswiler.com
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,34 +31,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Kuninori
+In the last couple of months we have been conevrting this target to OF
+inside OpenWrt. This series is an aggragte of all the patches that have
+been produced in that period. There have been plenty of dts contributions
+already and we hope to be able to drop the old mach file based target in
+the not too distant future.
 
-On Fri, 2018-07-20 at 08:30 +0000, Kuninori Morimoto wrote:
-> Hi Marcel
-> 
-> > From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-> > 
-> > Since commit 143b44845d87 ("ASoC: wm9712: replace codec to
-> > component")
-> > "wm9712-codec" got renamed to "wm9712-component", however, this
-> > change
-> > never got propagated down to the actual board/platform drivers.
-> > E.g. on
-> > Colibri T20 this lead to the following spew upon boot with
-> > sound/touch
-> > being broken:
-> 
-> Oops, my bad...
-> The platform_driver name is not important,
-> how about simply rename back it to "wm9712-codec" ?
+Felix Fietkau (9):
+  MIPS: ath79: fix register address in ath79_ddr_wb_flush()
+  MIPS: ath79: fix system restart
+  MIPS: ath79: finetune cpu-overrides
+  MIPS: ath79: add helpers for setting clocks and expose the ref clock
+  MIPS: ath79: move legacy "wdt" and "uart" clock aliases out of soc
+    init
+  MIPS: ath79: pass PLL base to clock init functions
+  MIPS: ath79: make specifying the reference clock in DT optional
+  MIPS: ath79: support setting up clock via DT on all SoC types
+  MIPS: ath79: export switch MDIO reference clock
 
-Sure, that's your call. After all it was now broken for almost half a
-year (;-p). Should I cook that up as well or are you gona do it?
+Gabor Juhos (2):
+  MIPS: ath79: add lots of missing registers
+  MIPS: ath79: enable uart during early_prink
 
-> Best regards
-> ---
-> Kuninori Morimoto
+John Crispin (12):
+  MIPS: ath79: select the PINCTRL subsystem
+  dt-bindings: PCI: qcom,ar7100: adds binding doc
+  MIPS: pci-ar71xx: convert to OF
+  dt-bindings: PCI: qcom,ar7240: adds binding doc
+  MIPS: pci-ar724x: convert to OF
+  MIPS: ath79: drop legacy IRQ code
+  MIPS: ath79: drop machfiles
+  MIPS: ath79: drop legacy pci code
+  MIPS: ath79: drop platform device registration code
+  MIPS: ath79: drop !OF clock code
+  MIPS: ath79: sanitize symbols
+  spi: ath79: drop pdata support
 
-Cheers
+Mathias Kresin (1):
+  MIPS: ath79: get PCIe controller out of reset
 
-Marcel
+Matthias Schiffer (1):
+  MIPS: ath79: add support for QCA953x QCA956x TP9343
+
+---
+Changes in V1->V2
+* minor fixes in DT binding docs
+* add a few missing SoBs
+* add the SPI patch to the series
+* drop the unreachable patch
+
+ .../devicetree/bindings/pci/qcom,ar7100-pci.txt    |  38 +
+ .../devicetree/bindings/pci/qcom,ar7240-pci.txt    |  42 ++
+ arch/mips/Kconfig                                  |   4 +-
+ arch/mips/ath79/Kconfig                            | 117 +---
+ arch/mips/ath79/Makefile                           |  23 +-
+ arch/mips/ath79/clock.c                            | 463 ++++++++-----
+ arch/mips/ath79/common.c                           |  10 +-
+ arch/mips/ath79/common.h                           |   5 -
+ arch/mips/ath79/dev-common.c                       | 159 -----
+ arch/mips/ath79/dev-common.h                       |  18 -
+ arch/mips/ath79/dev-gpio-buttons.c                 |  56 --
+ arch/mips/ath79/dev-gpio-buttons.h                 |  23 -
+ arch/mips/ath79/dev-leds-gpio.c                    |  54 --
+ arch/mips/ath79/dev-leds-gpio.h                    |  21 -
+ arch/mips/ath79/dev-spi.c                          |  38 -
+ arch/mips/ath79/dev-spi.h                          |  22 -
+ arch/mips/ath79/dev-usb.c                          | 242 -------
+ arch/mips/ath79/dev-usb.h                          |  17 -
+ arch/mips/ath79/dev-wmac.c                         | 155 -----
+ arch/mips/ath79/dev-wmac.h                         |  17 -
+ arch/mips/ath79/early_printk.c                     |  48 +-
+ arch/mips/ath79/irq.c                              | 169 -----
+ arch/mips/ath79/mach-ap121.c                       |  92 ---
+ arch/mips/ath79/mach-ap136.c                       | 156 -----
+ arch/mips/ath79/mach-ap81.c                        | 100 ---
+ arch/mips/ath79/mach-db120.c                       | 136 ----
+ arch/mips/ath79/mach-pb44.c                        | 128 ----
+ arch/mips/ath79/mach-ubnt-xm.c                     | 126 ----
+ arch/mips/ath79/machtypes.h                        |  28 -
+ arch/mips/ath79/pci.c                              | 273 --------
+ arch/mips/ath79/pci.h                              |  35 -
+ arch/mips/ath79/setup.c                            | 113 ++-
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h     | 771 ++++++++++++++++++++-
+ arch/mips/include/asm/mach-ath79/ath79.h           |  38 +-
+ .../include/asm/mach-ath79/ath79_spi_platform.h    |  19 -
+ .../include/asm/mach-ath79/cpu-feature-overrides.h |   6 +
+ arch/mips/pci/Makefile                             |   3 +-
+ arch/mips/pci/fixup-ath79.c                        |  21 +
+ arch/mips/pci/pci-ar71xx.c                         |  82 +--
+ arch/mips/pci/pci-ar724x.c                         | 130 ++--
+ drivers/spi/spi-ath79.c                            |   8 -
+ include/dt-bindings/clock/ath79-clk.h              |   4 +-
+ 42 files changed, 1454 insertions(+), 2556 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7100-pci.txt
+ create mode 100644 Documentation/devicetree/bindings/pci/qcom,ar7240-pci.txt
+ delete mode 100644 arch/mips/ath79/dev-common.c
+ delete mode 100644 arch/mips/ath79/dev-common.h
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.c
+ delete mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ delete mode 100644 arch/mips/ath79/dev-leds-gpio.h
+ delete mode 100644 arch/mips/ath79/dev-spi.c
+ delete mode 100644 arch/mips/ath79/dev-spi.h
+ delete mode 100644 arch/mips/ath79/dev-usb.c
+ delete mode 100644 arch/mips/ath79/dev-usb.h
+ delete mode 100644 arch/mips/ath79/dev-wmac.c
+ delete mode 100644 arch/mips/ath79/dev-wmac.h
+ delete mode 100644 arch/mips/ath79/irq.c
+ delete mode 100644 arch/mips/ath79/mach-ap121.c
+ delete mode 100644 arch/mips/ath79/mach-ap136.c
+ delete mode 100644 arch/mips/ath79/mach-ap81.c
+ delete mode 100644 arch/mips/ath79/mach-db120.c
+ delete mode 100644 arch/mips/ath79/mach-pb44.c
+ delete mode 100644 arch/mips/ath79/mach-ubnt-xm.c
+ delete mode 100644 arch/mips/ath79/machtypes.h
+ delete mode 100644 arch/mips/ath79/pci.c
+ delete mode 100644 arch/mips/ath79/pci.h
+ delete mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+ create mode 100644 arch/mips/pci/fixup-ath79.c
+
+-- 
+2.11.0

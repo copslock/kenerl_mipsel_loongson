@@ -1,58 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jul 2018 17:10:27 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:59492 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992869AbeGUPKWzQGmy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Jul 2018 17:10:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=++q495uVSzoG0HIPuX0lHaqiTw4orANcgknxNynbXWo=; b=aErXGL/P4c1sCABTmU9PVPJXG
-        uHhIx1MMq/4kxIdjiRF0aPB1bh+JudTyg4uXsvTIWnk5lm2KCDi2P8xmXuFUa0pdyY5S48MgkAvNc
-        hVuRqda4tnLgR2evFLRoXPpUWNDYfAJc2QDqEy+zAj6Aapm/0jn0T8GGAsWQ6X1kmTKX6xHqr9Ofo
-        jAx1LUEh/8T72i32LW0cm0VDefGS2V93Cq4QbWl14gcczH5qVVK6ADFxZU+AWlA4Qd+OiBcEsP9IV
-        4azFGDMi9tMWQaNiA81OYIQyKtLOWICNPHxb/LicLRc9vMQvi4fPsphis+f1g+F62tIqjH1N51eXH
-        k7hXyb8bg==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.dunlab)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fgtWV-0001PN-Lj; Sat, 21 Jul 2018 15:10:19 +0000
-Subject: Re: [PATCH v3 13/18] dmaengine: dma-jz4780: Set DTCn register
- explicitly
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-References: <20180721110643.19624-1-paul@crapouillou.net>
- <20180721110643.19624-14-paul@crapouillou.net>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <bd06e477-a253-48f2-2b3e-dc48b2a12841@infradead.org>
-Date:   Sat, 21 Jul 2018 08:10:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20180721110643.19624-14-paul@crapouillou.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <rdunlap@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jul 2018 21:14:39 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:10174 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993852AbeGUTOfrycAY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 21 Jul 2018 21:14:35 +0200
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 3D60441182;
+        Sat, 21 Jul 2018 21:14:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id s2ry8zYxrH_m; Sat, 21 Jul 2018 21:14:29 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     davem@davemloft.net
+Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 1/4] MIPS: lantiq: Do not enable IRQs in dma open
+Date:   Sat, 21 Jul 2018 21:13:55 +0200
+Message-Id: <20180721191358.13952-2-hauke@hauke-m.de>
+In-Reply-To: <20180721191358.13952-1-hauke@hauke-m.de>
+References: <20180721191358.13952-1-hauke@hauke-m.de>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65020
+X-archive-position: 65021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdunlap@infradead.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,30 +44,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/21/2018 04:06 AM, Paul Cercueil wrote:
-> From: Daniel Silsby <dansilsby@gmail.com>
-> 
-> Normally, we wouldn't set the channel transfer count register directly
-> when using descriptor-driven transfers. However, there is no harm in
-> doing so, and it allows jz4780_dma_desc_residue() to report the correct
-> residue of an ongoing transfer, no matter when it is called.
-> 
-> Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
-> Tested-by: Mathieu Malaterre <malat@debian.org>
-> ---
->  drivers/dma/dma-jz4780.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+When a DMA channel is opened the IRQ should not get activated
+automatically, this allows it to pull data out manually without the help
+of interrupts. This is needed for a workaround in the vrx200 Ethernet
+driver.
 
-Hi,
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/lantiq/xway/dma.c        | 1 -
+ drivers/net/ethernet/lantiq_etop.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-Documentation/process/submitting-patches.rst says:
-
-The Signed-off-by: tag indicates that the signer was involved in the
-development of the patch, or that he/she was in the patch's delivery path.
-
-That means that patches that are from Daniel but you send (delivery path)
-should also be Signed-off-by: you.
-
-
+diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
+index 4b9fbb6744ad..3a90bb4edacc 100644
+--- a/arch/mips/lantiq/xway/dma.c
++++ b/arch/mips/lantiq/xway/dma.c
+@@ -106,7 +106,6 @@ ltq_dma_open(struct ltq_dma_channel *ch)
+ 	spin_lock_irqsave(&ltq_dma_lock, flag);
+ 	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
+ 	ltq_dma_w32_mask(0, DMA_CHAN_ON, LTQ_DMA_CCTRL);
+-	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
+ 	spin_unlock_irqrestore(&ltq_dma_lock, flag);
+ }
+ EXPORT_SYMBOL_GPL(ltq_dma_open);
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index afc810069440..c978a857a25c 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -438,6 +438,7 @@ ltq_etop_open(struct net_device *dev)
+ 		if (!IS_TX(i) && (!IS_RX(i)))
+ 			continue;
+ 		ltq_dma_open(&ch->dma);
++		ltq_dma_enable_irq(&ch->dma);
+ 		napi_enable(&ch->napi);
+ 	}
+ 	phy_start(dev->phydev);
 -- 
-~Randy
+2.11.0

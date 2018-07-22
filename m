@@ -1,27 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:04 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34368 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:14 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:34366 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993997AbeGVVU3rdRnS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993941AbeGVVU3gnAFS (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 22 Jul 2018 23:20:29 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 8540BADC0;
-        Sun, 22 Jul 2018 21:20:24 +0000 (UTC)
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 5F820AFD0;
+        Sun, 22 Jul 2018 21:20:22 +0000 (UTC)
 From:   =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        Govindraj Raja <Govindraj.Raja@imgtec.com>,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>,
+        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH 15/15] clk: pistachio: Fix wrong SDHost card speed
-Date:   Sun, 22 Jul 2018 23:20:10 +0200
-Message-Id: <20180722212010.3979-16-afaerber@suse.de>
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH 10/15] spi: img-spfi: Implement dual and quad mode
+Date:   Sun, 22 Jul 2018 23:20:05 +0200
+Message-Id: <20180722212010.3979-11-afaerber@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
 References: <20180722212010.3979-1-afaerber@suse.de>
@@ -32,7 +29,7 @@ Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65044
+X-archive-position: 65045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,56 +46,203 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Govindraj Raja <Govindraj.Raja@imgtec.com>
+From: Ionela Voinescu <ionela.voinescu@imgtec.com>
 
-The SDHost currently clocks the card 4x slower than it
-should do, because there is a fixed divide by 4 in the
-sdhost wrapper that is not present in the clock tree.
-To model this, add a fixed divide by 4 clock node in
-the SDHost clock path.
+For dual and quad modes to work, the SPFI controller needs
+to have information about command/address/dummy bytes in the
+transaction register. This information is not relevant for
+single mode, and therefore it can have any value in the
+allowed range. Therefore, for any read or write transfers of less
+than 8 bytes (cmd = 1 byte, addr up to 7 bytes), SPFI will be
+configured, but not enabled (unless it is the last transfer in
+the queue). The transfer will be enabled by the subsequent transfer.
+A pending transfer is determined by the content of the transaction
+register: if command part is set and tsize is not.
 
-This will ensure the right clock frequency is selected when
-the mmc driver tries to configure frequency on card insert.
+This way we ensure that for dual and quad transactions
+the command request size will appear in the command/address part
+of the transaction register, while the data size will be in
+tsize, all data being sent/received in the same transaction (as
+set up in the transaction register).
 
-Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 Signed-off-by: Andreas Färber <afaerber@suse.de>
 ---
- drivers/clk/pistachio/clk-pistachio.c     | 3 ++-
- include/dt-bindings/clock/pistachio-clk.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-img-spfi.c | 96 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 85 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
-index c4ceb5eaf46c..1c968d9a6e17 100644
---- a/drivers/clk/pistachio/clk-pistachio.c
-+++ b/drivers/clk/pistachio/clk-pistachio.c
-@@ -44,7 +44,7 @@ static struct pistachio_gate pistachio_gates[] __initdata = {
- 	GATE(CLK_AUX_ADC_INTERNAL, "aux_adc_internal", "sys_internal_div",
- 	     0x104, 22),
- 	GATE(CLK_AUX_ADC, "aux_adc", "aux_adc_div", 0x104, 23),
--	GATE(CLK_SD_HOST, "sd_host", "sd_host_div", 0x104, 24),
-+	GATE(CLK_SD_HOST, "sd_host", "sd_host_div4", 0x104, 24),
- 	GATE(CLK_BT, "bt", "bt_div", 0x104, 25),
- 	GATE(CLK_BT_DIV4, "bt_div4", "bt_div4_div", 0x104, 26),
- 	GATE(CLK_BT_DIV8, "bt_div8", "bt_div8_div", 0x104, 27),
-@@ -54,6 +54,7 @@ static struct pistachio_gate pistachio_gates[] __initdata = {
- static struct pistachio_fixed_factor pistachio_ffs[] __initdata = {
- 	FIXED_FACTOR(CLK_WIFI_DIV4, "wifi_div4", "wifi_pll", 4),
- 	FIXED_FACTOR(CLK_WIFI_DIV8, "wifi_div8", "wifi_pll", 8),
-+	FIXED_FACTOR(CLK_SDHOST_DIV4, "sd_host_div4", "sd_host_div", 4),
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 7a37090dabbe..c845a505bae6 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -40,7 +40,8 @@
+ #define SPFI_CONTROL_SOFT_RESET			BIT(11)
+ #define SPFI_CONTROL_SEND_DMA			BIT(10)
+ #define SPFI_CONTROL_GET_DMA			BIT(9)
+-#define SPFI_CONTROL_SE			BIT(8)
++#define SPFI_CONTROL_SE				BIT(8)
++#define SPFI_CONTROL_TX_RX			BIT(1)
+ #define SPFI_CONTROL_TMODE_SHIFT		5
+ #define SPFI_CONTROL_TMODE_MASK			0x7
+ #define SPFI_CONTROL_TMODE_SINGLE		0
+@@ -51,6 +52,10 @@
+ #define SPFI_TRANSACTION			0x18
+ #define SPFI_TRANSACTION_TSIZE_SHIFT		16
+ #define SPFI_TRANSACTION_TSIZE_MASK		0xffff
++#define SPFI_TRANSACTION_CMD_SHIFT		13
++#define SPFI_TRANSACTION_CMD_MASK		0x7
++#define SPFI_TRANSACTION_ADDR_SHIFT		10
++#define SPFI_TRANSACTION_ADDR_MASK		0x7
+ 
+ #define SPFI_PORT_STATE				0x1c
+ #define SPFI_PORT_STATE_DEV_SEL_SHIFT		20
+@@ -87,6 +92,7 @@
+  */
+ #define SPFI_32BIT_FIFO_SIZE			64
+ #define SPFI_8BIT_FIFO_SIZE			16
++#define SPFI_DATA_REQUEST_MAX_SIZE		8
+ 
+ struct img_spfi {
+ 	struct device *dev;
+@@ -103,6 +109,8 @@ struct img_spfi {
+ 	struct dma_chan *tx_ch;
+ 	bool tx_dma_busy;
+ 	bool rx_dma_busy;
++
++	bool complete;
  };
  
- static struct pistachio_div pistachio_divs[] __initdata = {
-diff --git a/include/dt-bindings/clock/pistachio-clk.h b/include/dt-bindings/clock/pistachio-clk.h
-index 039f83facb68..77b92aed241d 100644
---- a/include/dt-bindings/clock/pistachio-clk.h
-+++ b/include/dt-bindings/clock/pistachio-clk.h
-@@ -21,6 +21,7 @@
- /* Fixed-factor clocks */
- #define CLK_WIFI_DIV4			16
- #define CLK_WIFI_DIV8			17
-+#define CLK_SDHOST_DIV4			18
+ struct img_spfi_device_data {
+@@ -123,9 +131,11 @@ static inline void spfi_start(struct img_spfi *spfi)
+ {
+ 	u32 val;
  
- /* Gate clocks */
- #define CLK_MIPS			32
+-	val = spfi_readl(spfi, SPFI_CONTROL);
+-	val |= SPFI_CONTROL_SPFI_EN;
+-	spfi_writel(spfi, val, SPFI_CONTROL);
++	if (spfi->complete) {
++		val = spfi_readl(spfi, SPFI_CONTROL);
++		val |= SPFI_CONTROL_SPFI_EN;
++		spfi_writel(spfi, val, SPFI_CONTROL);
++	}
+ }
+ 
+ static inline void spfi_reset(struct img_spfi *spfi)
+@@ -138,12 +148,21 @@ static int spfi_wait_all_done(struct img_spfi *spfi)
+ {
+ 	unsigned long timeout = jiffies + msecs_to_jiffies(50);
+ 
++	if (!(spfi->complete))
++		return 0;
++
+ 	while (time_before(jiffies, timeout)) {
+ 		u32 status = spfi_readl(spfi, SPFI_INTERRUPT_STATUS);
+ 
+ 		if (status & SPFI_INTERRUPT_ALLDONETRIG) {
+ 			spfi_writel(spfi, SPFI_INTERRUPT_ALLDONETRIG,
+ 				    SPFI_INTERRUPT_CLEAR);
++			/*
++			 * Disable SPFI for it not to interfere with
++			 * pending transactions
++			 */
++			spfi_writel(spfi, spfi_readl(spfi, SPFI_CONTROL)
++			& ~SPFI_CONTROL_SPFI_EN, SPFI_CONTROL);
+ 			return 0;
+ 		}
+ 		cpu_relax();
+@@ -494,9 +513,32 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 			    struct spi_transfer *xfer)
+ {
+ 	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
+-	u32 val, div;
++	u32 val, div, transact;
++	bool is_pending;
+ 
+ 	/*
++	 * For read or write transfers of less than 8 bytes (cmd = 1 byte,
++	 * addr up to 7 bytes), SPFI will be configured, but not enabled
++	 * (unless it is the last transfer in the queue).The transfer will
++	 * be enabled by the subsequent transfer.
++	 * A pending transfer is determined by the content of the
++	 * transaction register: if command part is set and tsize
++	 * is not
++	 */
++	transact = spfi_readl(spfi, SPFI_TRANSACTION);
++	is_pending = ((transact >> SPFI_TRANSACTION_CMD_SHIFT) &
++			SPFI_TRANSACTION_CMD_MASK) &&
++			(!((transact >> SPFI_TRANSACTION_TSIZE_SHIFT) &
++			SPFI_TRANSACTION_TSIZE_MASK));
++
++	/* If there are no pending transactions it's OK to soft reset */
++	if (!is_pending) {
++		/* Start the transaction from a known (reset) state */
++		spfi_reset(spfi);
++	}
++
++	/*
++	 * Before anything else, set up parameters.
+ 	 * output = spfi_clk * (BITCLK / 512), where BITCLK must be a
+ 	 * power of 2 up to 128
+ 	 */
+@@ -509,20 +551,52 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 	val |= div << SPFI_DEVICE_PARAMETER_BITCLK_SHIFT;
+ 	spfi_writel(spfi, val, SPFI_DEVICE_PARAMETER(spi->chip_select));
+ 
+-	spfi_writel(spfi, xfer->len << SPFI_TRANSACTION_TSIZE_SHIFT,
+-		    SPFI_TRANSACTION);
++	if (!list_is_last(&xfer->transfer_list, &master->cur_msg->transfers) &&
++		/*
++		 * For duplex mode (both the tx and rx buffers are !NULL) the
++		 * CMD, ADDR, and DUMMY byte parts of the transaction register
++		 * should always be 0 and therefore the pending transfer
++		 * technique cannot be used.
++		 */
++		(xfer->tx_buf) && (!xfer->rx_buf) &&
++		(xfer->len <= SPFI_DATA_REQUEST_MAX_SIZE) && !is_pending) {
++		transact = (1 & SPFI_TRANSACTION_CMD_MASK) <<
++			SPFI_TRANSACTION_CMD_SHIFT;
++		transact |= ((xfer->len - 1) & SPFI_TRANSACTION_ADDR_MASK) <<
++			SPFI_TRANSACTION_ADDR_SHIFT;
++		spfi->complete = false;
++	} else {
++		spfi->complete = true;
++		if (is_pending) {
++			/* Keep setup from pending transfer */
++			transact |= ((xfer->len & SPFI_TRANSACTION_TSIZE_MASK) <<
++				SPFI_TRANSACTION_TSIZE_SHIFT);
++		} else {
++			transact = ((xfer->len & SPFI_TRANSACTION_TSIZE_MASK) <<
++				SPFI_TRANSACTION_TSIZE_SHIFT);
++		}
++	}
++	spfi_writel(spfi, transact, SPFI_TRANSACTION);
+ 
+ 	val = spfi_readl(spfi, SPFI_CONTROL);
+ 	val &= ~(SPFI_CONTROL_SEND_DMA | SPFI_CONTROL_GET_DMA);
+-	if (xfer->tx_buf)
++	/*
++	 * We set up send DMA for pending transfers also, as
++	 * those are always send transfers
++	 */
++	if ((xfer->tx_buf) || is_pending)
+ 		val |= SPFI_CONTROL_SEND_DMA;
+-	if (xfer->rx_buf)
++	if (xfer->tx_buf)
++		val |= SPFI_CONTROL_TX_RX;
++	if (xfer->rx_buf) {
+ 		val |= SPFI_CONTROL_GET_DMA;
++		val &= ~SPFI_CONTROL_TX_RX;
++	}
+ 	val &= ~(SPFI_CONTROL_TMODE_MASK << SPFI_CONTROL_TMODE_SHIFT);
+-	if (xfer->tx_nbits == SPI_NBITS_DUAL &&
++	if (xfer->tx_nbits == SPI_NBITS_DUAL ||
+ 	    xfer->rx_nbits == SPI_NBITS_DUAL)
+ 		val |= SPFI_CONTROL_TMODE_DUAL << SPFI_CONTROL_TMODE_SHIFT;
+-	else if (xfer->tx_nbits == SPI_NBITS_QUAD &&
++	else if (xfer->tx_nbits == SPI_NBITS_QUAD ||
+ 		 xfer->rx_nbits == SPI_NBITS_QUAD)
+ 		val |= SPFI_CONTROL_TMODE_QUAD << SPFI_CONTROL_TMODE_SHIFT;
+ 	val |= SPFI_CONTROL_SE;
 -- 
 2.16.4

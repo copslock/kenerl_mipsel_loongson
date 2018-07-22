@@ -1,38 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:33 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34402 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994077AbeGVVUaZdluS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 22 Jul 2018 23:20:30 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 91399AFD6;
-        Sun, 22 Jul 2018 21:20:23 +0000 (UTC)
-From:   =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2018 01:56:38 +0200 (CEST)
+Received: from relmlor3.renesas.com ([210.160.252.173]:49085 "EHLO
+        relmlie2.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993890AbeGVX4dx7taC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jul 2018 01:56:33 +0200
+Received: from unknown (HELO relmlir3.idc.renesas.com) ([10.200.68.153])
+  by relmlie2.idc.renesas.com with ESMTP; 23 Jul 2018 08:56:24 +0900
+Received: from relmlii2.idc.renesas.com (relmlii2.idc.renesas.com [10.200.68.66])
+        by relmlir3.idc.renesas.com (Postfix) with ESMTP id 62E4E4F037;
+        Mon, 23 Jul 2018 08:56:24 +0900 (JST)
+X-IronPort-AV: E=Sophos;i="5.51,391,1526310000"; 
+   d="scan'208";a="287576748"
+Received: from mail-ty1jpn01lp0184.outbound.protection.outlook.com (HELO JPN01-TY1-obe.outbound.protection.outlook.com) ([23.103.139.184])
+  by relmlii2.idc.renesas.com with ESMTP/TLS/AES256-SHA256; 23 Jul 2018 08:56:23 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=renesasgroup.onmicrosoft.com; s=selector1-renesas-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u8KsVggC/akphVjfoWIc3D9gwyYQKMUBy20oqY3Cdaw=;
+ b=M/XwIwIsSEaaF6/Mq+biD+KMEI3EbCxzkC7A7GXV3Wn00sY2VLQFghu5Ea/jnWoXEKVU7BipjYUoBzfQDLdmgIB3ZTMkq+SNzWFCARPOm7L0RvZCRcmscQUHO/kgB1/05jJeA4C311V1O5teCMm5sp6tRV5oFTSau3UvqEL20so=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=kuninori.morimoto.gx@renesas.com; 
+Received: from morimoto-PC.renesas.com (211.11.155.130) by
+ OSBPR01MB1864.jpnprd01.prod.outlook.com (2603:1096:603:2::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.973.16; Sun, 22 Jul 2018 23:56:16 +0000
+Message-ID: <87d0ve7ru7.wl-kuninori.morimoto.gx@renesas.com>
+From:   Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To:     Marcel Ziswiler <marcel@ziswiler.com>
+Cc:     <alsa-devel@alsa-project.org>,
+        <linux-tegra@vger.kernel.org>,
+        Mark Brown
+        <broonie@kernel.org>,
+        <linux-mips@linux-mips.org>,
+        Gregory CLEMENT
+        <gregory.clement@bootlin.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Bhumika Goyal <bhumirks@gmail.com>,
+        Kate Stewart
+        <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman
+        <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Thierry\
+ Reding" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Takashi Iwai <tiwai@suse.com>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        Ionela Voinescu <ionela.voinescu@imgtec.com>,
-        =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH 13/15] spi: img-spfi: RX maximum burst size for DMA is 8
-Date:   Sun, 22 Jul 2018 23:20:08 +0200
-Message-Id: <20180722212010.3979-14-afaerber@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
-References: <20180722212010.3979-1-afaerber@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <afaerber@suse.de>
+        "Liam\
+ Girdwood" <lgirdwood@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Daniel\
+ Mack" <daniel@zonque.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Russell\
+ King" <linux@armlinux.org.uk>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        <patches@opensource.cirrus.com>,
+        <linux-kernel@vger.kernel.org>,
+        Han Xu
+        <han.xu@nxp.com>,
+        Donglin Peng <dolinux.peng@gmail.com>,
+        Neil Armstrong
+        <narmstrong@baylibre.com>,
+        Boris Brezillon <boris.brezillon@bootlin.com>
+Subject: Re: [PATCH] ASoC: wm9712: fix replace codec to component
+In-Reply-To: <1532078447.19673.8.camel@ziswiler.com>
+References: <20180720075148.14648-1-marcel@ziswiler.com>
+        <87effy48lz.wl-kuninori.morimoto.gx@renesas.com>
+        <1532078447.19673.8.camel@ziswiler.com>
+User-Agent: Wanderlust/2.15.9 Emacs/24.5 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+Date:   Sun, 22 Jul 2018 23:56:16 +0000
+X-Originating-IP: [211.11.155.130]
+X-ClientProxiedBy: OSAPR01CA0091.jpnprd01.prod.outlook.com
+ (2603:1096:604:b::31) To OSBPR01MB1864.jpnprd01.prod.outlook.com
+ (2603:1096:603:2::17)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5f8b9a78-2ec8-47f9-a1e7-08d5f02eb6af
+X-MS-Office365-Filtering-HT: Tenant
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(4618075)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:OSBPR01MB1864;
+X-Microsoft-Exchange-Diagnostics: 1;OSBPR01MB1864;3:BsLSCa4n1Bro+oQ0KZ1cf7wgLR3o6b+t1DxrP3Nc6w76HA8LtyWl4b02R73P7KkFlV1bjtJ6OvIX0XWgbEfXZNZgySXKINBXH+E1o2jWzaRqu9QStHxQsjOIdnVvx45a3cHfeFSljDnKb9vkHOgkJ1tfgaow+DBMi0uoZliLzZVS4UW3eUB1Y3zvm+t/r+UVcelI3O2LzAqT1ur5r2VnNhXMTYZz1ziG1bgc87mXl/6hPHERM3IHGA+lrSLXZGok;25:SxGlpXErB8HzLM9kfphw+/jcbqKV6XG5TV5lB5i5K5LPpEemKaBSkwOxQjxu/dufZpKPTzv7zGi8+OzgVJrRRBzRqmIaopBbHQ7sohEMmNsg8XnzCzkn/BTEZklyO7cUKEq0g4eGHnqAJKsVcqE6eWr/tuZihCeh7pr0LbjiKiwjNXk/w01R5sawiY2cwPsTwI36UrgSAlQ3bPBCyYCvHYMV4qHSbKnqscGaDSLh8yGhUQlRsWCISJaywY2ayXJY8cwSpIofJx4Jdw/4/zINhE0TPtEAAM9iPPBwPYM4mnNrZbtsdI/s9wAk3f7IxO6fqYMdKbbGY3Kjhu2llDvdOQ==;31:PSM6ymnuB4zXd1n11Gj+AiaSW68Apy40gte9Kod6wKTWTyeUuheSGdtRuBvK0q8om9tzdqEE/4WCxzWaue6LPjSX6eRe4nLFbhuld9MNaXVGXZPAV8QjyZOlEFOIo5QkpFzOB3eX9j/vrz6jmxeJgQAVWNnIeyo0UoUxo5+U/gyj9zt1X7CsiFIb+lsbXyCnLnxKzeNB9A70vsBbmmA1G5ioGxCZDCSYMJbMNl3eW6Y=
+X-MS-TrafficTypeDiagnostic: OSBPR01MB1864:
+X-Microsoft-Exchange-Diagnostics: 1;OSBPR01MB1864;20:u0wpKFpusY47Kvdm7RWG/8fwwNCZFvb+yIUOcYYWPbpTTmeT4qZXxk3Y4w+01FdzcwyO4etlDq9s3OCK64zWfieXsAAE1NKasoIpGx6f1nTa+soy6H9HPCKfEI7A5deB7NvYdbsf0Qn7Shia4wEiqTsyy73u35SGFV0rv4hBr0uHtGiiTO3vR4KWUiH2h56+mVDZnPwMScL5lqzilFRkvbolIbp4OUfI+89MTxJ1qI6qFvuJFgYf8bA5+Or4Lz6aHsGPWIgxvgmme5PbSsX/GQYlFkgxnN87dfkkyLEPtFDmJm2YNOs+esNkyRJQSJWHWyjLN5RQ13Vp8knpk6HoEaP2qQzajvSQUa7/aw8LkSFkzF7FocIFFXVXX+2LLyUJXfwZcitP1HUQsiLFppCSczrjcZw/Bn0X2b5DGex356clmyB8TOMdm4Dfgaa1RWvwJfYbuJaHwYMW8hX5pbL1+Q91xliCzslJUXb7kNeS8iliIpRj0hfGUH9Xndv/GtQr;4:X3HCa7lXRmMEK7fPQSx8l/xoNSbXMFE/QogTEO2OcBmhwPmF/dk1b/LRfYXELKILoQ18gr5ka2pnVAXdFSRknaT67TmeQ+USrxFAjyPFFTm4KE1hBwR9HDiDEoDJHHqMDHSntfKjTwZjRdIy++F+JsJzWoKLc4V3NlI7IML8icWIrv9SX08Lv6pgkYNVgnuELW4BjRfvkA24yIh4/685i+ku3hmfqvEIBhH73MSzLFLZBsXzin3AHsnXLH6sYQQ5l6cz8jVhrrK6FSQD3ZkTXNytY/76Qy8rIa+c/gVwD3woqFFLN+VxLe3+gTYnoNfD
+X-Microsoft-Antispam-PRVS: <OSBPR01MB1864457B478B5A746257DC1BD4570@OSBPR01MB1864.jpnprd01.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(788757137089);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(3002001)(3231311)(944501410)(52105095)(93006095)(93001095)(10201501046)(6055026)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(6072148)(201708071742011)(7699016);SRVR:OSBPR01MB1864;BCL:0;PCL:0;RULEID:;SRVR:OSBPR01MB1864;
+X-Forefront-PRVS: 0741C77572
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(136003)(376002)(39850400004)(366004)(346002)(189003)(199004)(5660300001)(106356001)(14444005)(53416004)(6116002)(3846002)(7406005)(7416002)(23726003)(50466002)(2906002)(6486002)(36756003)(11346002)(105586002)(2616005)(956004)(476003)(486006)(97736004)(69596002)(6916009)(229853002)(8936002)(81156014)(81166006)(8676002)(4326008)(446003)(39060400002)(25786009)(86362001)(26005)(54906003)(58126008)(68736007)(16586007)(386003)(7736002)(305945005)(186003)(16526019)(316002)(66066001)(478600001)(76176011)(7696005)(52116002)(53936002)(47776003)(6246003)(16060500001);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB1864;H:morimoto-PC.renesas.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+Received-SPF: None (protection.outlook.com: renesas.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;OSBPR01MB1864;23:QPzKGIiYDa18n6v/MNxVf6ayt8lLKw5iVR//ElY4Z?=
+ =?us-ascii?Q?52+CzKCuef0O8T8Rvyp/sT/3sru6dQISzUuIGOX4609AaCdwZ4diSp1ZSUh4?=
+ =?us-ascii?Q?hqD0zlpEOZIG1H+WiwxrZT/TA6vHeSTtNs+MwWbZ0FvMzcDvhu9yH7mEKB0V?=
+ =?us-ascii?Q?BRq/zzTPiJ+T+qJR+SPADutJXx4+jh6tLP54pNhM3WqnoYxEyU9wnrqYg66D?=
+ =?us-ascii?Q?7hOo70c4fHCjBIxQDfRFwpyyIMavE+gbXaoQgq6g82gwoqueTa9v3mDgjQpz?=
+ =?us-ascii?Q?qol6WtmC5b24NtaAFUJfDR51XPiIzie7fdJFGRkOBOm/E8KPQKRpZzcF9vua?=
+ =?us-ascii?Q?j8pFC2UrkyNCs4t31lFTWrxFxgmnDMzG65hmA4Q0PNpLF9YrhNUzHKGinxRh?=
+ =?us-ascii?Q?VOdk06X3EzcbC3CfoC2jb5iKq748ptZpGi5wybvSfRtcNrtFr9JVKUDvlopm?=
+ =?us-ascii?Q?bevbjMH4ek3p9Odfk9NprmKxVjE4/l0yeCECZ2CcmGowBejc3+508CsNqFbk?=
+ =?us-ascii?Q?TtxyiLDgeYI/CyLOfpxEuomWrH/AKGmuB8QZxwoXCj1Z1xr+pN/pp1DPky8N?=
+ =?us-ascii?Q?bx8dXDp/8FerSDUA5/3mBoQxcXz85LrWlRrSZY1YF6ySi5NH9EXTkASa3Im7?=
+ =?us-ascii?Q?jpXl0uTST0azu5TsXr5XwT7vhGf7MQRPrqBRtk144AemGXQsB018ytriuNGn?=
+ =?us-ascii?Q?643hg0gKR6MIO4qpm7/8l1sM3iCbR9jiCRB9Au2RvbGXaDqqYNuXyqe01GhG?=
+ =?us-ascii?Q?zXitL42VhZ2dIBn1tg/hIRicWQ3pZIXYgCEyQAgCh+VyFz1IJdE3YkV4PSWv?=
+ =?us-ascii?Q?WxCBAi5zRr1vMXb/1YdXeEVSurWv7QU2NRohZcFWV5F058PK7ML/i6CEeD6C?=
+ =?us-ascii?Q?PkQHJtKrfjPXGUXL14Q/T9XX45mQsc/mPEmGmJDbK9+DbNCnY5dv6WWYsKI0?=
+ =?us-ascii?Q?cJcg2T37YufkoxiO0lVV4YFV5Q3PbA1p+0Tz86bZaE1KQqt7ffKadZvIbKN5?=
+ =?us-ascii?Q?VXGj7f3Gbw82LXJLajXaF7f2k86umXHr4laU0YfguJbzKMGGkxsLo53OPEpV?=
+ =?us-ascii?Q?Qv6F1ZTJu78F0BpvK95rYHs8gOOZWx2Rmjah9+Dp1pNQGiCefC/scpg2haO5?=
+ =?us-ascii?Q?KOa70S+3/x4KeohnM3H/Zbsq9MsZCtbggm1adhZagj3uvE8a8FEqjBVtKZ27?=
+ =?us-ascii?Q?CvOTKI3DNDvzn5gW6oAy6bTBX3PW/wqM4lP+LBKBaiqlrjHIkYo5rgR6yAPL?=
+ =?us-ascii?Q?u6Rg+8tCTRwhCD/PjaqSx3Erk6GhN0Kz+I8nkZ+WuLbf6l3cA5hJU4h5jlX7?=
+ =?us-ascii?Q?r1pNHuTzOjZCwvlvASioxc=3D?=
+X-Microsoft-Antispam-Message-Info: 9Px+ykqWvrWKTRgeajqnEkE8gVbNNGHB3dGdvOrXRdS9yk3NoNx9RUM8g5TsOFqat87AkNQwTGMOdhcTVzzwULLctyN8pAq+8ZzSaWXgmXgCdrXlD+2JlUpHGPr6qWI5dF8WxXaeG6GypN7v/MUQj46ffr4xw9aXMTOi4LGoDPkQ8T/RWWcvytILaPN4lZzagxANTjBqP+Fcx6M1Emos8CYPpivkslmofNj78+cZlzdu4D0T95fofl/7Y5KFqTtYzjIj2U/DitMvt3x1DqdSWkeaF0As4cPflpYyg9gzBp2fM66sapAsFiGenpUoMQqnuYaIFc2qSA8VrG4nHP2vHm/mb89cpqNUPTQKtDOnB2k=
+X-Microsoft-Exchange-Diagnostics: 1;OSBPR01MB1864;6:GE09NJ3UW/sai5/o9LXN1xAxwtMAagDGjT1nfPs6Lg/Tz8E33TEyiwF06bc7bRorK3xNzQGOQatHJaQ9Hn54+VWNlKse71/eZ0pQZatBtYvFw1HKVF+5X4AdlU56pCBH+2vcnWBaPp6X7qzEvW9PnzSJ6aii2VwE193jGD7O9HwmyZ7tJoc3LNVCYihrjABtPE+eBwgbJtsfX+xaYjmmH2W1YLKAq3DEDqhOJr5AYulSsAqvDCRbWc3szwXfbyflVMg7MNpAZVWPMm9SJjehwYaCvYmMfYfPJcNLAPy1U1qAVMMH8chx6Uzi72I8KjEp8XggT3OSW3hvgEeXBnr8olheA+7vv/30GkPGAFZLPBZ9rXf+axkmf42HLaMbrVRAQvC9IMkHSV7kc3bSU4yur1Y8sb+DSeo3tx4TbFXKtOFWKG8NW5zwQ2mCe7iaCGp8bxS+JIRNtl9p2H1FgsEn4A==;5:0Ki7dJL+HKmQst3vKOPtjOriUtCUUZh1e9621i2XfBy3D6biRtiHbiVs6skEzvlTuUf3CWrCmOzVSfYU6C7+Q9h1on/UmLeq84VI90zD2l8O8wRG43928iJovalVmAF+DiGK/PzMmXYGWfRShxXDFtfopWWFhz3SXCauO24eHTE=;7:vf5O/vPuO4sXu8+ZTVNbmNJQtFl2yPVsmoL58nk7VoxmKqX6cIpPCvCiWIPWQUIXr7lrIZPspYvm5dx53647oDnoa0egjgpYTtZZl68v+Mk955bW2PDqeeS4+tUIExo2QJdsE4YDOZ5AqLc0NWoLs+osXLia5VoYCWFqnhDrkEMml9pSmsUrN0r4D+/grjn2Iaj2ejLKuqxmBbNy6J+kgCWHeUDuBAWZZFMMeZHwIGwvBZ6lztTRYM9eQK9f40UO
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-Microsoft-Exchange-Diagnostics: 1;OSBPR01MB1864;20:2/+G4fGhEb9m6cFNo+dneSnufioEoBEJJ+vbGoYhQvNIUqLQUMkXOLiCP3pT/4kXJf375cZ3ceRfrPUgwVp7+tA2KJZ8iom+13W9QzlcgXTH5DByNJB+b6iUU10OrQlG3PR0jlFLlCz9qS/03b1XkuauizMKlFGGDhoowlL9Dxk=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2018 23:56:16.0684 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f8b9a78-2ec8-47f9-a1e7-08d5f02eb6af
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB1864
+Return-Path: <kuninori.morimoto.gx@renesas.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65047
+X-archive-position: 65048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afaerber@suse.de
+X-original-sender: kuninori.morimoto.gx@renesas.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,64 +149,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Ionela Voinescu <ionela.voinescu@imgtec.com>
 
-The depth of the FIFOs is 16 bytes. The DMA request line is tied
-to the half full/empty (depending on the use of the TX or RX FIFO)
-threshold. For the TX FIFO, if you set a burst size of 8 (equal to
-half the depth) the first burst goes into FIFO without any issues,
-but due the latency involved (the time the data leaves  the DMA
-engine to the time it arrives at the FIFO), the DMA might trigger
-another burst of 8. But given that there is no space for 2 additonal
-bursts of 8, this would result in a failure. Therefore, we have to
-keep the burst size for TX to 4 to accomodate for an extra burst.
+Hi Marcel
 
-For the read (RX) scenario, the DMA request line goes high when
-there is at least 8 entries in the FIFO (half full), and we can
-program the burst size to be 8 because the risk of accidental burst
-does not exist. The DMA engine will not trigger another read until
-the read data for all the burst it has sent out has been received.
+> > > Since commit 143b44845d87 ("ASoC: wm9712: replace codec to
+> > > component")
+> > > "wm9712-codec" got renamed to "wm9712-component", however, this
+> > > change
+> > > never got propagated down to the actual board/platform drivers.
+> > > E.g. on
+> > > Colibri T20 this lead to the following spew upon boot with
+> > > sound/touch
+> > > being broken:
+> > 
+> > Oops, my bad...
+> > The platform_driver name is not important,
+> > how about simply rename back it to "wm9712-codec" ?
+> 
+> Sure, that's your call. After all it was now broken for almost half a
+> year (;-p). Should I cook that up as well or are you gona do it?
 
-While here, move the burst size setting outside of the if/else branches
-as they have the same value for both 8 and 32 bit data widths.
+Sorry about that.
+I can't test it, you can do it ?
 
-Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
-Signed-off-by: Andreas Färber <afaerber@suse.de>
+Best regards
 ---
- drivers/spi/spi-img-spfi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 231b59c1ab60..8ad6c75d0af5 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -346,12 +346,11 @@ static int img_spfi_start_dma(struct spi_master *master,
- 		if (xfer->len % 4 == 0) {
- 			rxconf.src_addr = spfi->phys + SPFI_RX_32BIT_VALID_DATA;
- 			rxconf.src_addr_width = 4;
--			rxconf.src_maxburst = 4;
- 		} else {
- 			rxconf.src_addr = spfi->phys + SPFI_RX_8BIT_VALID_DATA;
- 			rxconf.src_addr_width = 1;
--			rxconf.src_maxburst = 4;
- 		}
-+		rxconf.src_maxburst = 8;
- 		dmaengine_slave_config(spfi->rx_ch, &rxconf);
- 
- 		rxdesc = dmaengine_prep_slave_sg(spfi->rx_ch, xfer->rx_sg.sgl,
-@@ -370,12 +369,11 @@ static int img_spfi_start_dma(struct spi_master *master,
- 		if (xfer->len % 4 == 0) {
- 			txconf.dst_addr = spfi->phys + SPFI_TX_32BIT_VALID_DATA;
- 			txconf.dst_addr_width = 4;
--			txconf.dst_maxburst = 4;
- 		} else {
- 			txconf.dst_addr = spfi->phys + SPFI_TX_8BIT_VALID_DATA;
- 			txconf.dst_addr_width = 1;
--			txconf.dst_maxburst = 4;
- 		}
-+		txconf.dst_maxburst = 4;
- 		dmaengine_slave_config(spfi->tx_ch, &txconf);
- 
- 		txdesc = dmaengine_prep_slave_sg(spfi->tx_ch, xfer->tx_sg.sgl,
--- 
-2.16.4
+Kuninori Morimoto

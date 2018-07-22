@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:22:31 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34368 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:22:41 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:34364 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993961AbeGVVU3g1rdS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994002AbeGVVU3r33eS (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 22 Jul 2018 23:20:29 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 150E2AFCC;
-        Sun, 22 Jul 2018 21:20:21 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 2715DAFCE;
+        Sun, 22 Jul 2018 21:20:22 +0000 (UTC)
 From:   =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Damien Horsley <damien.horsley@imgtec.com>,
         =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-        Rahul Bedarkar <rahulbedarkar89@gmail.com>,
-        James Hartley <james.hartley@sondrel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
-Subject: [PATCH 07/15] MIPS: dts: img: pistachio_marduk: Add SPI UART node
-Date:   Sun, 22 Jul 2018 23:20:02 +0200
-Message-Id: <20180722212010.3979-8-afaerber@suse.de>
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        dmaengine@vger.kernel.org
+Subject: [PATCH 09/15] dmaengine: img-mdc: Handle early status read
+Date:   Sun, 22 Jul 2018 23:20:04 +0200
+Message-Id: <20180722212010.3979-10-afaerber@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
 References: <20180722212010.3979-1-afaerber@suse.de>
@@ -30,7 +30,7 @@ Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65042
+X-archive-position: 65043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,38 +47,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The mikroBUS and Raspberry Pi B+ connector UARTs are behind an SC16IS752
-SPI-UART bridge. Add it in order to be able to use these connectors.
+From: Damien Horsley <damien.horsley@imgtec.com>
 
-Note: For UART flow control two pairs of jumpers need to be configured.
+It is possible that mdc_tx_status may be called before the first
+node has been read from memory.
 
+In this case, the residue value stored in the register is undefined.
+Return the transfer size instead.
+
+Signed-off-by: Damien Horsley <damien.horsley@imgtec.com>
 Signed-off-by: Andreas Färber <afaerber@suse.de>
 ---
- arch/mips/boot/dts/img/pistachio_marduk.dts | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/dma/img-mdc-dma.c | 40 ++++++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/boot/dts/img/pistachio_marduk.dts b/arch/mips/boot/dts/img/pistachio_marduk.dts
-index b0b6b534a41f..f682d0a5a3d9 100644
---- a/arch/mips/boot/dts/img/pistachio_marduk.dts
-+++ b/arch/mips/boot/dts/img/pistachio_marduk.dts
-@@ -159,6 +159,18 @@
- 		   <&gpio1 13 GPIO_ACTIVE_HIGH>,
- 		   <&gpio1 14 GPIO_ACTIVE_HIGH>;
+diff --git a/drivers/dma/img-mdc-dma.c b/drivers/dma/img-mdc-dma.c
+index 25cec9c243e1..0f2f0f52d83a 100644
+--- a/drivers/dma/img-mdc-dma.c
++++ b/drivers/dma/img-mdc-dma.c
+@@ -621,25 +621,33 @@ static enum dma_status mdc_tx_status(struct dma_chan *chan,
+ 			(MDC_CMDS_PROCESSED_CMDS_DONE_MASK + 1);
  
-+	sc16is752: uart@0 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0>;
-+		spi-max-frequency = <4000000>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+		clocks = <&ca8210>;
+ 		/*
+-		 * If the command loaded event hasn't been processed yet, then
+-		 * the difference above includes an extra command.
++		 * If the first node has not yet been read from memory,
++		 * the residue register value is undefined
+ 		 */
+-		if (!mdesc->cmd_loaded)
+-			cmds--;
+-		else
+-			cmds += mdesc->list_cmds_done;
+-
+-		bytes = mdesc->list_xfer_size;
+-		ldesc = mdesc->list;
+-		for (i = 0; i < cmds; i++) {
+-			bytes -= ldesc->xfer_size + 1;
+-			ldesc = ldesc->next_desc;
+-		}
+-		if (ldesc) {
+-			if (residue != MDC_TRANSFER_SIZE_MASK)
+-				bytes -= ldesc->xfer_size - residue;
++		if (!mdesc->cmd_loaded && !cmds) {
++			bytes = mdesc->list_xfer_size;
++		} else {
++			/*
++			 * If the command loaded event hasn't been processed yet, then
++			 * the difference above includes an extra command.
++			 */
++			if (!mdesc->cmd_loaded)
++				cmds--;
+ 			else
++				cmds += mdesc->list_cmds_done;
 +
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
-+
- 	ca8210: sixlowpan@4 {
- 		compatible = "cascoda,ca8210";
- 		reg = <4>;
++			bytes = mdesc->list_xfer_size;
++			ldesc = mdesc->list;
++			for (i = 0; i < cmds; i++) {
+ 				bytes -= ldesc->xfer_size + 1;
++				ldesc = ldesc->next_desc;
++			}
++			if (ldesc) {
++				if (residue != MDC_TRANSFER_SIZE_MASK)
++					bytes -= ldesc->xfer_size - residue;
++				else
++					bytes -= ldesc->xfer_size + 1;
++			}
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&mchan->vc.lock, flags);
 -- 
 2.16.4

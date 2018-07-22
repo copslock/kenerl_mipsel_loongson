@@ -1,25 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:22:41 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34364 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:04 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:34368 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994002AbeGVVU3r33eS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993997AbeGVVU3rdRnS (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 22 Jul 2018 23:20:29 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 2715DAFCE;
-        Sun, 22 Jul 2018 21:20:22 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 8540BADC0;
+        Sun, 22 Jul 2018 21:20:24 +0000 (UTC)
 From:   =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        Damien Horsley <damien.horsley@imgtec.com>,
+        Govindraj Raja <Govindraj.Raja@imgtec.com>,
         =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org
-Subject: [PATCH 09/15] dmaengine: img-mdc: Handle early status read
-Date:   Sun, 22 Jul 2018 23:20:04 +0200
-Message-Id: <20180722212010.3979-10-afaerber@suse.de>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH 15/15] clk: pistachio: Fix wrong SDHost card speed
+Date:   Sun, 22 Jul 2018 23:20:10 +0200
+Message-Id: <20180722212010.3979-16-afaerber@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
 References: <20180722212010.3979-1-afaerber@suse.de>
@@ -30,7 +32,7 @@ Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65043
+X-archive-position: 65044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,73 +49,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Damien Horsley <damien.horsley@imgtec.com>
+From: Govindraj Raja <Govindraj.Raja@imgtec.com>
 
-It is possible that mdc_tx_status may be called before the first
-node has been read from memory.
+The SDHost currently clocks the card 4x slower than it
+should do, because there is a fixed divide by 4 in the
+sdhost wrapper that is not present in the clock tree.
+To model this, add a fixed divide by 4 clock node in
+the SDHost clock path.
 
-In this case, the residue value stored in the register is undefined.
-Return the transfer size instead.
+This will ensure the right clock frequency is selected when
+the mmc driver tries to configure frequency on card insert.
 
-Signed-off-by: Damien Horsley <damien.horsley@imgtec.com>
+Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
 Signed-off-by: Andreas Färber <afaerber@suse.de>
 ---
- drivers/dma/img-mdc-dma.c | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ drivers/clk/pistachio/clk-pistachio.c     | 3 ++-
+ include/dt-bindings/clock/pistachio-clk.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/img-mdc-dma.c b/drivers/dma/img-mdc-dma.c
-index 25cec9c243e1..0f2f0f52d83a 100644
---- a/drivers/dma/img-mdc-dma.c
-+++ b/drivers/dma/img-mdc-dma.c
-@@ -621,25 +621,33 @@ static enum dma_status mdc_tx_status(struct dma_chan *chan,
- 			(MDC_CMDS_PROCESSED_CMDS_DONE_MASK + 1);
+diff --git a/drivers/clk/pistachio/clk-pistachio.c b/drivers/clk/pistachio/clk-pistachio.c
+index c4ceb5eaf46c..1c968d9a6e17 100644
+--- a/drivers/clk/pistachio/clk-pistachio.c
++++ b/drivers/clk/pistachio/clk-pistachio.c
+@@ -44,7 +44,7 @@ static struct pistachio_gate pistachio_gates[] __initdata = {
+ 	GATE(CLK_AUX_ADC_INTERNAL, "aux_adc_internal", "sys_internal_div",
+ 	     0x104, 22),
+ 	GATE(CLK_AUX_ADC, "aux_adc", "aux_adc_div", 0x104, 23),
+-	GATE(CLK_SD_HOST, "sd_host", "sd_host_div", 0x104, 24),
++	GATE(CLK_SD_HOST, "sd_host", "sd_host_div4", 0x104, 24),
+ 	GATE(CLK_BT, "bt", "bt_div", 0x104, 25),
+ 	GATE(CLK_BT_DIV4, "bt_div4", "bt_div4_div", 0x104, 26),
+ 	GATE(CLK_BT_DIV8, "bt_div8", "bt_div8_div", 0x104, 27),
+@@ -54,6 +54,7 @@ static struct pistachio_gate pistachio_gates[] __initdata = {
+ static struct pistachio_fixed_factor pistachio_ffs[] __initdata = {
+ 	FIXED_FACTOR(CLK_WIFI_DIV4, "wifi_div4", "wifi_pll", 4),
+ 	FIXED_FACTOR(CLK_WIFI_DIV8, "wifi_div8", "wifi_pll", 8),
++	FIXED_FACTOR(CLK_SDHOST_DIV4, "sd_host_div4", "sd_host_div", 4),
+ };
  
- 		/*
--		 * If the command loaded event hasn't been processed yet, then
--		 * the difference above includes an extra command.
-+		 * If the first node has not yet been read from memory,
-+		 * the residue register value is undefined
- 		 */
--		if (!mdesc->cmd_loaded)
--			cmds--;
--		else
--			cmds += mdesc->list_cmds_done;
--
--		bytes = mdesc->list_xfer_size;
--		ldesc = mdesc->list;
--		for (i = 0; i < cmds; i++) {
--			bytes -= ldesc->xfer_size + 1;
--			ldesc = ldesc->next_desc;
--		}
--		if (ldesc) {
--			if (residue != MDC_TRANSFER_SIZE_MASK)
--				bytes -= ldesc->xfer_size - residue;
-+		if (!mdesc->cmd_loaded && !cmds) {
-+			bytes = mdesc->list_xfer_size;
-+		} else {
-+			/*
-+			 * If the command loaded event hasn't been processed yet, then
-+			 * the difference above includes an extra command.
-+			 */
-+			if (!mdesc->cmd_loaded)
-+				cmds--;
- 			else
-+				cmds += mdesc->list_cmds_done;
-+
-+			bytes = mdesc->list_xfer_size;
-+			ldesc = mdesc->list;
-+			for (i = 0; i < cmds; i++) {
- 				bytes -= ldesc->xfer_size + 1;
-+				ldesc = ldesc->next_desc;
-+			}
-+			if (ldesc) {
-+				if (residue != MDC_TRANSFER_SIZE_MASK)
-+					bytes -= ldesc->xfer_size - residue;
-+				else
-+					bytes -= ldesc->xfer_size + 1;
-+			}
- 		}
- 	}
- 	spin_unlock_irqrestore(&mchan->vc.lock, flags);
+ static struct pistachio_div pistachio_divs[] __initdata = {
+diff --git a/include/dt-bindings/clock/pistachio-clk.h b/include/dt-bindings/clock/pistachio-clk.h
+index 039f83facb68..77b92aed241d 100644
+--- a/include/dt-bindings/clock/pistachio-clk.h
++++ b/include/dt-bindings/clock/pistachio-clk.h
+@@ -21,6 +21,7 @@
+ /* Fixed-factor clocks */
+ #define CLK_WIFI_DIV4			16
+ #define CLK_WIFI_DIV8			17
++#define CLK_SDHOST_DIV4			18
+ 
+ /* Gate clocks */
+ #define CLK_MIPS			32
 -- 
 2.16.4

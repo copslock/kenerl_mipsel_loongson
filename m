@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 05:17:44 +0200 (CEST)
-Received: from shards.monkeyblade.net ([IPv6:2620:137:e000::1:9]:45590 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990396AbeGVDRlLuey9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jul 2018 05:17:41 +0200
-Received: from localhost (unknown [172.58.46.180])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 046E8125F5F54;
-        Sat, 21 Jul 2018 20:17:36 -0700 (PDT)
-Date:   Sat, 21 Jul 2018 20:17:35 -0700 (PDT)
-Message-Id: <20180721.201735.301763862002485076.davem@davemloft.net>
-To:     hauke@hauke-m.de
-Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
-        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
-        hauke.mehrtens@intel.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 11:29:41 +0200 (CEST)
+Received: from mx1.mailbox.org ([80.241.60.212]:19636 "EHLO mx1.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990471AbeGVJ3h1IA94 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 22 Jul 2018 11:29:37 +0200
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.mailbox.org (Postfix) with ESMTPS id 34DEA48C7D
+        for <linux-mips@linux-mips.org>; Sun, 22 Jul 2018 11:29:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
+        with ESMTP id dVRHzXz3M_Gg for <linux-mips@linux-mips.org>;
+        Sun, 22 Jul 2018 11:29:30 +0200 (CEST)
 Subject: Re: [PATCH 4/4] net: dsa: Add Lantiq / Intel DSA driver for vrx200
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20180721191358.13952-5-hauke@hauke-m.de>
+To:     linux-mips@linux-mips.org
 References: <20180721191358.13952-1-hauke@hauke-m.de>
-        <20180721191358.13952-5-hauke@hauke-m.de>
-X-Mailer: Mew version 6.7 on Emacs 26 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+ <20180721191358.13952-5-hauke@hauke-m.de>
+ <20180721.201735.301763862002485076.davem@davemloft.net>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <0ec387d0-1150-447a-f2fc-0c0a4e5c4d6b@hauke-m.de>
+Date:   Sun, 22 Jul 2018 11:29:30 +0200
+MIME-Version: 1.0
+In-Reply-To: <20180721.201735.301763862002485076.davem@davemloft.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 21 Jul 2018 20:17:37 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65029
+X-archive-position: 65030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,12 +47,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Date: Sat, 21 Jul 2018 21:13:58 +0200
+On 07/22/2018 05:17 AM, David Miller wrote:
+> From: Hauke Mehrtens <hauke@hauke-m.de>
+> Date: Sat, 21 Jul 2018 21:13:58 +0200
+> 
+>> +		// start the table access:
+> 
+> Please stick to C-style comments, except perhaps in the SPDX
+> identifiers.
+> 
+> Thank you.
+> 
 
-> +		// start the table access:
+Sorry that I missed that, it is fixed now.
 
-Please stick to C-style comments, except perhaps in the SPDX
-identifiers.
-
-Thank you.
+Hauke

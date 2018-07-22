@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:24 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34400 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2018 23:23:33 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:34402 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994061AbeGVVUaXQo2S (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994077AbeGVVUaZdluS (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 22 Jul 2018 23:20:30 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 02F20AFE1;
-        Sun, 22 Jul 2018 21:20:24 +0000 (UTC)
+Received: from relay1.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 91399AFD6;
+        Sun, 22 Jul 2018 21:20:23 +0000 (UTC)
 From:   =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -15,9 +15,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Ionela Voinescu <ionela.voinescu@imgtec.com>,
         =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH 14/15] spi: img-spfi: Finish every transfer cleanly
-Date:   Sun, 22 Jul 2018 23:20:09 +0200
-Message-Id: <20180722212010.3979-15-afaerber@suse.de>
+Subject: [PATCH 13/15] spi: img-spfi: RX maximum burst size for DMA is 8
+Date:   Sun, 22 Jul 2018 23:20:08 +0200
+Message-Id: <20180722212010.3979-14-afaerber@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20180722212010.3979-1-afaerber@suse.de>
 References: <20180722212010.3979-1-afaerber@suse.de>
@@ -28,7 +28,7 @@ Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65046
+X-archive-position: 65047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,123 +47,62 @@ X-list: linux-mips
 
 From: Ionela Voinescu <ionela.voinescu@imgtec.com>
 
-Before this change, the interrupt status bit that signaled
-the end of a transfer was cleared in the wait_all_done
-function. That functionality triggered issues for DMA
-duplex transactions where the wait function was called
-twice, in both the TX and RX callbacks.
+The depth of the FIFOs is 16 bytes. The DMA request line is tied
+to the half full/empty (depending on the use of the TX or RX FIFO)
+threshold. For the TX FIFO, if you set a burst size of 8 (equal to
+half the depth) the first burst goes into FIFO without any issues,
+but due the latency involved (the time the data leaves  the DMA
+engine to the time it arrives at the FIFO), the DMA might trigger
+another burst of 8. But given that there is no space for 2 additonal
+bursts of 8, this would result in a failure. Therefore, we have to
+keep the burst size for TX to 4 to accomodate for an extra burst.
 
-In order to fix the issue, clear all interrupt data bits
-at the end of a PIO transfer or at the end of both TX and RX
-duplex transfers, if the transfer is not a pending transfer
-(command waiting for data). After that, the status register
-is checked for new incoming data or new data requests to be
-signaled. If SPFI finished cleanly, no new interrupt data
-bits should be set.
+For the read (RX) scenario, the DMA request line goes high when
+there is at least 8 entries in the FIFO (half full), and we can
+program the burst size to be 8 because the risk of accidental burst
+does not exist. The DMA engine will not trigger another read until
+the read data for all the burst it has sent out has been received.
+
+While here, move the burst size setting outside of the if/else branches
+as they have the same value for both 8 and 32 bit data widths.
 
 Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
 Signed-off-by: Andreas Färber <afaerber@suse.de>
 ---
- drivers/spi/spi-img-spfi.c | 49 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ drivers/spi/spi-img-spfi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 8ad6c75d0af5..a1244234daa5 100644
+index 231b59c1ab60..8ad6c75d0af5 100644
 --- a/drivers/spi/spi-img-spfi.c
 +++ b/drivers/spi/spi-img-spfi.c
-@@ -83,6 +83,14 @@
- #define SPFI_INTERRUPT_SDE			BIT(1)
- #define SPFI_INTERRUPT_SDTRIG			BIT(0)
+@@ -346,12 +346,11 @@ static int img_spfi_start_dma(struct spi_master *master,
+ 		if (xfer->len % 4 == 0) {
+ 			rxconf.src_addr = spfi->phys + SPFI_RX_32BIT_VALID_DATA;
+ 			rxconf.src_addr_width = 4;
+-			rxconf.src_maxburst = 4;
+ 		} else {
+ 			rxconf.src_addr = spfi->phys + SPFI_RX_8BIT_VALID_DATA;
+ 			rxconf.src_addr_width = 1;
+-			rxconf.src_maxburst = 4;
+ 		}
++		rxconf.src_maxburst = 8;
+ 		dmaengine_slave_config(spfi->rx_ch, &rxconf);
  
-+#define SPFI_INTERRUPT_DATA_BITS		(SPFI_INTERRUPT_SDHF |\
-+						SPFI_INTERRUPT_SDFUL |\
-+						SPFI_INTERRUPT_GDEX32BIT |\
-+						SPFI_INTERRUPT_GDHF |\
-+						SPFI_INTERRUPT_GDFUL |\
-+						SPFI_INTERRUPT_ALLDONETRIG |\
-+						SPFI_INTERRUPT_GDEX8BIT)
-+
- /*
-  * There are four parallel FIFOs of 16 bytes each.  The word buffer
-  * (*_32BIT_VALID_DATA) accesses all four FIFOs at once, resulting in an
-@@ -144,6 +152,23 @@ static inline void spfi_reset(struct img_spfi *spfi)
- 	spfi_writel(spfi, 0, SPFI_CONTROL);
- }
+ 		rxdesc = dmaengine_prep_slave_sg(spfi->rx_ch, xfer->rx_sg.sgl,
+@@ -370,12 +369,11 @@ static int img_spfi_start_dma(struct spi_master *master,
+ 		if (xfer->len % 4 == 0) {
+ 			txconf.dst_addr = spfi->phys + SPFI_TX_32BIT_VALID_DATA;
+ 			txconf.dst_addr_width = 4;
+-			txconf.dst_maxburst = 4;
+ 		} else {
+ 			txconf.dst_addr = spfi->phys + SPFI_TX_8BIT_VALID_DATA;
+ 			txconf.dst_addr_width = 1;
+-			txconf.dst_maxburst = 4;
+ 		}
++		txconf.dst_maxburst = 4;
+ 		dmaengine_slave_config(spfi->tx_ch, &txconf);
  
-+static inline void spfi_finish(struct img_spfi *spfi)
-+{
-+	if (!(spfi->complete))
-+		return;
-+
-+	/* Clear data bits as all transfers(TX and RX) have finished */
-+	spfi_writel(spfi, SPFI_INTERRUPT_DATA_BITS, SPFI_INTERRUPT_CLEAR);
-+	if (spfi_readl(spfi, SPFI_INTERRUPT_STATUS) & SPFI_INTERRUPT_DATA_BITS) {
-+		dev_err(spfi->dev, "SPFI did not finish transfer cleanly.\n");
-+		spfi_reset(spfi);
-+	}
-+	/* Disable SPFI for it not to interfere with pending transactions */
-+	spfi_writel(spfi,
-+		    spfi_readl(spfi, SPFI_CONTROL) & ~SPFI_CONTROL_SPFI_EN,
-+		    SPFI_CONTROL);
-+}
-+
- static int spfi_wait_all_done(struct img_spfi *spfi)
- {
- 	unsigned long timeout = jiffies + msecs_to_jiffies(50);
-@@ -152,19 +177,9 @@ static int spfi_wait_all_done(struct img_spfi *spfi)
- 		return 0;
- 
- 	while (time_before(jiffies, timeout)) {
--		u32 status = spfi_readl(spfi, SPFI_INTERRUPT_STATUS);
--
--		if (status & SPFI_INTERRUPT_ALLDONETRIG) {
--			spfi_writel(spfi, SPFI_INTERRUPT_ALLDONETRIG,
--				    SPFI_INTERRUPT_CLEAR);
--			/*
--			 * Disable SPFI for it not to interfere with
--			 * pending transactions
--			 */
--			spfi_writel(spfi, spfi_readl(spfi, SPFI_CONTROL)
--			& ~SPFI_CONTROL_SPFI_EN, SPFI_CONTROL);
-+		if (spfi_readl(spfi, SPFI_INTERRUPT_STATUS) &
-+		    SPFI_INTERRUPT_ALLDONETRIG)
- 			return 0;
--		}
- 		cpu_relax();
- 	}
- 
-@@ -296,6 +311,8 @@ static int img_spfi_start_pio(struct spi_master *master,
- 	}
- 
- 	ret = spfi_wait_all_done(spfi);
-+	spfi_finish(spfi);
-+
- 	if (ret < 0)
- 		return ret;
- 
-@@ -311,8 +328,10 @@ static void img_spfi_dma_rx_cb(void *data)
- 
- 	spin_lock_irqsave(&spfi->lock, flags);
- 	spfi->rx_dma_busy = false;
--	if (!spfi->tx_dma_busy)
-+	if (!spfi->tx_dma_busy) {
-+		spfi_finish(spfi);
- 		spi_finalize_current_transfer(spfi->master);
-+	}
- 	spin_unlock_irqrestore(&spfi->lock, flags);
- }
- 
-@@ -325,8 +344,10 @@ static void img_spfi_dma_tx_cb(void *data)
- 
- 	spin_lock_irqsave(&spfi->lock, flags);
- 	spfi->tx_dma_busy = false;
--	if (!spfi->rx_dma_busy)
-+	if (!spfi->rx_dma_busy) {
-+		spfi_finish(spfi);
- 		spi_finalize_current_transfer(spfi->master);
-+	}
- 	spin_unlock_irqrestore(&spfi->lock, flags);
- }
- 
+ 		txdesc = dmaengine_prep_slave_sg(spfi->tx_ch, xfer->tx_sg.sgl,
 -- 
 2.16.4

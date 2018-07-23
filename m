@@ -1,46 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2018 16:00:52 +0200 (CEST)
-Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:59605 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993928AbeGWOAt0NhQP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Jul 2018 16:00:49 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 41Z36b2kgfz9s0w;
-        Tue, 24 Jul 2018 00:00:37 +1000 (AEST)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Alex Ghiti <alex@ghiti.fr>, Michal Hocko <mhocko@kernel.org>
-Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture primitives
-In-Reply-To: <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
-References: <20180705110716.3919-1-alex@ghiti.fr> <20180709141621.GD22297@dhcp22.suse.cz> <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
-Date:   Tue, 24 Jul 2018 00:00:37 +1000
-Message-ID: <87d0vehx16.fsf@concordia.ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2018 16:48:46 +0200 (CEST)
+Received: from mail-eopbgr700104.outbound.protection.outlook.com ([40.107.70.104]:55469
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993920AbeGWOsmGnWbn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Jul 2018 16:48:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+5YoKuEwGjhf8InLHeEy6UYPCzCYvdn3CLELr5i4a1w=;
+ b=FmA4Emf70OKHn9AN7SPKjpKMyBDTUGkbId0DiaR6DK3Dlp5+i816qQySYoXo7BkVsVH5Yo/40IgyYqu80jerjFfJccLoRPpFMtEFGE1cBioJNcNyKQiM33WaFAvBki3Sn0qkry597+UzDQc+km47K+jMa7Xi4oP3Y2HRwYT1nLA=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=dzhu@wavecomp.com; 
+Received: from box.mipstec.com (4.16.204.77) by
+ CY1PR0801MB2155.namprd08.prod.outlook.com (2a01:111:e400:c611::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.973.21; Mon, 23 Jul
+ 2018 14:48:31 +0000
+From:   Dengcheng Zhu <dzhu@wavecomp.com>
+To:     pburton@wavecomp.com, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
+        Dengcheng Zhu <dzhu@wavecomp.com>
+Subject: [PATCH v3 0/6] MIPS: kexec/kdump: Fix smp reboot and other issues
+Date:   Mon, 23 Jul 2018 07:48:13 -0700
+Message-Id: <1532357299-8063-1-git-send-email-dzhu@wavecomp.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: BYAPR03CA0021.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::34) To CY1PR0801MB2155.namprd08.prod.outlook.com
+ (2a01:111:e400:c611::8)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f0984409-e138-44b2-1589-08d5f0ab5c5b
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(2017052603328)(7153060)(7193020);SRVR:CY1PR0801MB2155;
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;3:jnGq9i+80EqkOuriL8UTaxLI7jb9WdwAQJfWyjsPJ1C5NVFwNmYR9h32VXp+SoI2mqdhMXZsQASFjbt/j98qNrOPLuksid01KdhvrRhtSVz2LAx0s5Bb6gkl8yUsxE5kjQVvGo4uj8n1uujqwCzIHA1kzGhezTpBKphZuEPFJuy+Gk1V3SZESVDIMNzxz4xl5yIJryS1CB9y5fRW6e3y5FKTrBT7icFcC8Fanap3HYrV3Jrhy00+DHSmWuoxZTZZ;25:GDrMDOGAR7KP38FhJ9YRWriuXWBMflBhVLWtu1Bd37YNaSZ5AQgbzJFzIUY2yYzpxwm+BPbkMmnWeq5Zi7bAd8KZZWdZ4fDXtGzhwhbkShgtAMJnkxJSCT6UsT/c4cyHxt8R988z/YR2b6PvIJKw7xAT8Iw1dIgL94XP7GSG5BvA5dn3lk0zeVB969QLi57voVppmzfIi4lcdAAjBizu2OYjPJ+jYXr5/tXt9Z5X0PF22D0egkOfnHO8xB4zHoH6vk0kI+OqqJd9/y/sgiIBWnYFn3vyY7g/FY4uNgyMD+/uSp6GHU0StNZNv5WtRr1P1faWZw5Mm/7SkrDWQyIqfQ==;31:adca+qorbBp6ye0g/Bb966tx4RxaQEw6CoB7XLQbyzt1n8zlJPqxpTPK/wlShZ8HBJOUvzSmArpKl117ar1NISV0Nkz6xSt7QJteaFH1r/lc4m4Y6ht293QOW6LB9FzIG3fnwNGXoBE0P+jadRwk6PonTQIDlpD6cTY0Oj549WlHdMD903oz0latwkMG84EFCuU9+diIn22LSg4E15TfIdAv4cPZuhMHu0dV4LUUzQA=
+X-MS-TrafficTypeDiagnostic: CY1PR0801MB2155:
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;20:u0Na2MZ527n5SxR+DUbBzPi15ALDHBZRZj7HvgL+/FEEXsifQSsFjlY/zRGSeOH7Qw0Gqut3jy2LKquPjo7uQLttbLV9WtuAvERxM3va2QOqyFcIN+T+5hthkOf9c4m2SbTmVrTP7FZwSDK2SBeXf1wOHy64+Nxgrh+Fn1p4rnFRdl3RM1BubjnBMnzhEHjFZ3eg6v/TkLyOgT6WzFLvycvlKtDula28mqtlTCcAHGpryAULLrRrbmluGIolx1xY;4:7QxGoLd4nWoCzPNRVmYB0IK6mzHr3txWg1Ab61vY3NkX+Ej6NuZPkZCRIYK6wHklnfbc2tVBon9r4lkiib/FnMB9oEmPci3az4m2Qv2wTkkbDMjgAaRyfqhNhOrIS0Ym0cFOzDWViD6kdopsRwLRZOT2JdvOuVp+wjO2l88vrZRzUzkAvjCAS1IKgy/hX6kB7+qhvxQSO5uPm7z0HwoVQShtM6lNTOaFkpEXnjzwi5IRxwuyCrrnVGrZBUPzDYgF6afx3jWmJdoRcDhRy5FO0A==
+X-Microsoft-Antispam-PRVS: <CY1PR0801MB21554F24BE9ED8CD6B6154CCA2560@CY1PR0801MB2155.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(93001095)(10201501046)(3002001)(149027)(150027)(6041310)(2016111802025)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123562045)(20161123564045)(6072148)(6043046)(201708071742011)(7699016);SRVR:CY1PR0801MB2155;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0801MB2155;
+X-Forefront-PRVS: 0742443479
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(136003)(346002)(39840400004)(396003)(366004)(376002)(189003)(199004)(66066001)(86362001)(97736004)(8676002)(105586002)(81156014)(8936002)(47776003)(3846002)(6116002)(316002)(16586007)(106356001)(81166006)(14444005)(478600001)(5660300001)(6512007)(36756003)(6666003)(51416003)(305945005)(37156001)(69596002)(48376002)(68736007)(52116002)(50466002)(7736002)(25786009)(107886003)(4326008)(386003)(53936002)(16526019)(53416004)(2906002)(476003)(2616005)(50226002)(956004)(6486002)(486006)(6506007)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:CY1PR0801MB2155;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY1PR0801MB2155;23:KK1VuS98qehVA4H00Ai03FVzam5b/YzrIP1E1jy?=
+ =?us-ascii?Q?kT61LluimgZIpJexYYSsQWci9TlteVC6agnHUdnOe4qXO6qGeeeR6H+MwHc7?=
+ =?us-ascii?Q?vjjZXfEjjN87dZRMkxlgZVj1khwT6kZg5qhvMFzfD74XYpVjcGXZ4Ngda0Kd?=
+ =?us-ascii?Q?e8jyFcBFvx3r9cYdrMHKnlaq9zLdiXL+353adqGYP5cNhmWYSBTNnnWQOBSY?=
+ =?us-ascii?Q?XBapHqqOw/shjsOcwxCqpstOf4P87LSRDMa7bS4IJJ2BzPXLO4JInE+NuogI?=
+ =?us-ascii?Q?XKF3fyuQGDlO/ZMaVIDTODRs6doVGfHBB4M6S01ce8MMCx4uavCWZoWfXSKk?=
+ =?us-ascii?Q?RsQL2+563GwJplooHONO73pjPc1hK0ZDYydJt7AfPK+TO4Pg0mlAXUyucFj7?=
+ =?us-ascii?Q?LIijkKOWi0tChF+pbQs+FzPuVtswwAZ+HH2atzcFbtwY1y0IltlwytuPhIwx?=
+ =?us-ascii?Q?Gw2DASkoxoYRBGeBQwNr6pjWntfbqVIsS/X9Kckk5W8fuZvAIzRYE7dhznfd?=
+ =?us-ascii?Q?+Cyh4mbpYyzRmnbhmVPsSW+YUBoaR7HJeu6aMs1Hwuf3SlVe6OpMCw0mOycV?=
+ =?us-ascii?Q?bEEJa+Y3+Y3VDf8FXb4fNx+BOLZZKWRTf9/+lKM8JrUwmstS+gXgVurfNj5d?=
+ =?us-ascii?Q?4K3zwldnjAfekFh5W5cI0kgx9LoYSzuovTqcnVW25khSy1sDPGeCd7xKJIbc?=
+ =?us-ascii?Q?HZe/UpnsnNbb0o/vhXn3Brn2MR/BhnIuUvwzPQbSZLDY9sqe+S10U+6i/w1R?=
+ =?us-ascii?Q?h8SbN/aFBaZxOMpL06JwbDzHpdYKEyNiFcMGWD37wQTjP48km+UuZCaac4ET?=
+ =?us-ascii?Q?FFrbRKHl8Sj/wy9HoE41ll3ZeDoCFc5Hb3ycYuj5xTtA5fYPHhbWsG8btd5V?=
+ =?us-ascii?Q?PrTCFa1dlVNpo+IRUWisiOUBc3a07kl3coNoFKIFoc/vKkjzBZdFXC66STFV?=
+ =?us-ascii?Q?v0G2aWAHJ1AWWHvSMumA1ZLncKf4yEgjhNJrk0o7kbx+dydz/Wz5tHkJgvB+?=
+ =?us-ascii?Q?iad337ABa6qtcG2yJ+HwhXuI82i9TPWlp0dHAzLpEXQmSGVKkyGB8TrcXCrX?=
+ =?us-ascii?Q?UZdyTVR4p/Zc+01NgJz7DYWBHUtv/k7GqdKSrqFai80nglxJAt7f7GI4QILL?=
+ =?us-ascii?Q?HoWG4iTC+9k5q9aASCgQG82iZjHk/hmSEs3h/WQGkgyzNGwepVqhBGp+bxXa?=
+ =?us-ascii?Q?0TuRwUDjX6ci9LLA=3D?=
+X-Microsoft-Antispam-Message-Info: JrZa5ZjZR4tz4e5oZ4k4WbEknHKwtJbH5NIAErrrYMi9WKGZzs5oH5jhCfcBi5joGBy44OqCSINQ43bIoluZjV4b64V8uDf4Ycp7khdM0QSOnY8fIQUob3kym2QANnAAOMq4TBIEbPgK3RhEDz4140TNkvMtbdJgGI4umozWlHsPAzwyLvK7s49h53JJDqjLHg8xemI4AbeQB3nzNqsDN/ukNOAbVfZygR2A9VVFX1dqNPN5RTI2mLKyCCSiRGxBweDV4wZVxJmtVzOl4DRGMeK5CTmS7UGQp5trmq5j8okoPQtntBSdoZIpYP7/cNL8g8MnRnLVFoUWWhtX5enLmnV+Utnyx2OtqXI/tz5AHpI=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;6:F9Fz6R7vLnzHH+nT+TvQ2EfDjiVd+80Lw1oUGjUF+dNFNUwLH/UK1RwRdW3zDzyUsEzNGJFcdpUjYqdW6ZzfB8+16VEnH8MzVv6q388hvuVxcNbgSbs+TVfAQ31OsEgegrQMHs0dHapP+4d0Kk5lRUwg9H6Ac37zP/abNE+hpvj/WdIS/UEZDjP6tAgjmFQ4kKqceR5nsJwZZvxQ26nhc825fvr1YIoeik0CveBEYKr4W19qefNLLnREeYT63LVFPxAE61H+ZBOmofzXOBlNm2dQEi5s8pquBRX42wRZ+jf8+jxHlgb6LgMG8AxadCSa9r7iTHvH/Jn07Y0HefTD08jMskvIEadLfFDd9DxI+yZBg4ZBdcFNpQankNvfbm96s8FXLtPL7OLE4aJH7tNZYKwSmz+g0V8xn3utXmR+Lz3zRWs0LRHMAvOB3nkoufXXNPee9d8ZdPzwMC1LRZAnbw==;5:zQYZVhMwnh5g9qJQB7zGwLG70gx5B6p4XwI/6RBvUougbzuEKqv3Q9YjJdU4kzQtYft5r23Arla500F9XucU0lCgmMEsrI9j842sBbuPBvpI11npyKKQYCKKCdcUjw/7WeFzYPm0nNwsUpU2Xie56erpXHtj+l5SYEKeAqz3Njs=;7:KNw4n+uSnMhTYBDWfC5scUoOWyNVs95tqK5dkd8gtcVZ1nNPUrsJGCYf8KHp+BteWsoCQMviM1V26WWWHHwkM33fySfjRanxr9HrorI1xjLrYtmgHE978Ht724zxXVT8gPc4cfiRcP1qfrdaNlw3mWs+pRe9EIuhj3tLRkRxr9LVBM4TQg7N2K2plutft2/7vLVaY+ebQMgTT8x0e9sxQxfYXaFuvoUqaoj0xSdG5bnDBmp3x6L0GHre61ZzROZS
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: wavecomp.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2018 14:48:31.9840 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0984409-e138-44b2-1589-08d5f0ab5c5b
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0801MB2155
+Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65049
+X-archive-position: 65050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: dzhu@wavecomp.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,79 +96,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Alex Ghiti <alex@ghiti.fr> writes:
+The issues are mentioned in patches 1/4/5/6. I will update kdump
+documentation for MIPS if the series gets accepted. Testing has been done
+on single core i6500/Boston with IOCU, dual core i6500 without IOCU, and
+dual core interAptiv without IOCU.
 
-> Does anyone have any suggestion about those patches ?
+Changes:
 
-Cross compiling it for some non-x86 arches would be a good start :)
+v3 - v2:
+* Code style changes according to `scripts/checkpatch.pl --strict`.
+  Patch #6, like before, still has a warning message reminding if
+  MAINTAINERS needs updating. But it does NOT involve a maintainer change.
+* Add LIBFDT to CPU_LOONGSON3 for default_machine_kexec_prepare().
 
-There are cross compilers available here:
+v2 - v1:
+* Tested on MIPS32R2 platform in addition to MIPS64R6.
+* Added patches #5 and #6.
+* In patch #2, removed the unnecessary inclusion of asm/mipsmtregs.h
 
-  https://mirrors.edge.kernel.org/pub/tools/crosstool/
+Dengcheng Zhu (6):
+  MIPS: Make play_dead() work for kexec
+  MIPS: kexec: Let the new kernel handle all CPUs
+  MIPS: kexec: Deprecate (relocated_)kexec_smp_wait
+  MIPS: kexec: Do not flush system wide caches in machine_kexec()
+  MIPS: kexec: Relax memory restriction
+  MIPS: kexec: Use prepare method from generic platform as default
+    option
 
+ arch/mips/cavium-octeon/setup.c       |  2 +-
+ arch/mips/cavium-octeon/smp.c         | 36 +++++++++------
+ arch/mips/generic/Makefile            |  1 -
+ arch/mips/generic/kexec.c             | 44 ------------------
+ arch/mips/include/asm/kexec.h         | 11 ++---
+ arch/mips/include/asm/smp.h           |  4 +-
+ arch/mips/kernel/crash.c              |  4 +-
+ arch/mips/kernel/machine_kexec.c      | 78 ++++++++++++++++++++++++++-----
+ arch/mips/kernel/process.c            |  2 +-
+ arch/mips/kernel/relocate_kernel.S    | 39 ----------------
+ arch/mips/kernel/smp-bmips.c          | 11 +++--
+ arch/mips/kernel/smp-cps.c            | 60 ++++++++++++++----------
+ arch/mips/loongson64/loongson-3/smp.c | 86 +++++++++++++++++++----------------
+ 13 files changed, 191 insertions(+), 187 deletions(-)
+ delete mode 100644 arch/mips/generic/kexec.c
 
-cheers
-
-> On 07/09/2018 02:16 PM, Michal Hocko wrote:
->> [CC hugetlb guys - http://lkml.kernel.org/r/20180705110716.3919-1-alex@ghiti.fr]
->>
->> On Thu 05-07-18 11:07:05, Alexandre Ghiti wrote:
->>> In order to reduce copy/paste of functions across architectures and then
->>> make riscv hugetlb port (and future ports) simpler and smaller, this
->>> patchset intends to factorize the numerous hugetlb primitives that are
->>> defined across all the architectures.
->>>
->>> Except for prepare_hugepage_range, this patchset moves the versions that
->>> are just pass-through to standard pte primitives into
->>> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
->>> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
->>>
->>> s390 architecture has not been tackled in this serie since it does not
->>> use asm-generic/hugetlb.h at all.
->>> powerpc could be factorized a bit more (cf huge_ptep_set_wrprotect).
->>>
->>> This patchset has been compiled on x86 only.
->>>
->>> Changelog:
->>>
->>> v4:
->>>    Fix powerpc build error due to misplacing of #include
->>>    <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as
->>>    pointed by Christophe Leroy.
->>>
->>> v1, v2, v3:
->>>    Same version, just problems with email provider and misuse of
->>>    --batch-size option of git send-email
->>>
->>> Alexandre Ghiti (11):
->>>    hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
->>>    hugetlb: Introduce generic version of hugetlb_free_pgd_range
->>>    hugetlb: Introduce generic version of set_huge_pte_at
->>>    hugetlb: Introduce generic version of huge_ptep_get_and_clear
->>>    hugetlb: Introduce generic version of huge_ptep_clear_flush
->>>    hugetlb: Introduce generic version of huge_pte_none
->>>    hugetlb: Introduce generic version of huge_pte_wrprotect
->>>    hugetlb: Introduce generic version of prepare_hugepage_range
->>>    hugetlb: Introduce generic version of huge_ptep_set_wrprotect
->>>    hugetlb: Introduce generic version of huge_ptep_set_access_flags
->>>    hugetlb: Introduce generic version of huge_ptep_get
->>>
->>>   arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
->>>   arch/arm/include/asm/hugetlb.h               | 33 +----------
->>>   arch/arm64/include/asm/hugetlb.h             | 39 +++---------
->>>   arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
->>>   arch/mips/include/asm/hugetlb.h              | 40 +++----------
->>>   arch/parisc/include/asm/hugetlb.h            | 33 +++--------
->>>   arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +
->>>   arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
->>>   arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
->>>   arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +
->>>   arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
->>>   arch/sh/include/asm/hugetlb.h                | 54 ++---------------
->>>   arch/sparc/include/asm/hugetlb.h             | 40 +++----------
->>>   arch/x86/include/asm/hugetlb.h               | 72 +----------------------
->>>   include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
->>>   15 files changed, 143 insertions(+), 384 deletions(-)
->>>
->>> -- 
->>> 2.16.2
+-- 
+2.7.4

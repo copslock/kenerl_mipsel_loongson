@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2018 16:48:56 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2018 16:49:09 +0200 (CEST)
 Received: from mail-eopbgr700104.outbound.protection.outlook.com ([40.107.70.104]:55469
         "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993928AbeGWOsm1mH-n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Jul 2018 16:48:42 +0200
+        id S23993937AbeGWOso0pFrn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Jul 2018 16:48:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MBrmEN8uiMc9WndaE/aVzrKWB6JVeNM0NvukN0ODOGI=;
- b=jnwyiS8OmqP9cdIqSxcNv1uarzo1Bdtg+wB9pEhVRGYHL58ZddY7mdXstXFqgMdcCsOiWkWtPrArzf16nv7q5UcwbSqIgnKAIojZrm5GXJ36WIk1GKM4mfii1ikHHDGf/YHkivRb74xb4WCI+aqoHKhz7AhI+nJTK8nYkE2zZGg=
+ bh=p8TTpalJ4tymCsfPZmVyBsvFOGUSEbXiA///qHSHoDo=;
+ b=HEOfyTWDSjGQaG1IGS0UTfJEPGLFbOb2JexEBkXTFFCXi1qw1cuPM4DtoEKjh3xl1b//jf68k2G7M+hFtlPuQgJdW15FnFyBro5/wAcmMAxqUNkMhXT2BWcSXBTfWGWebjg97EhMIgyWRW23g/h3ZmEUnw4wCBXTbRBubkZ5oLE=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=dzhu@wavecomp.com; 
 Received: from box.mipstec.com (4.16.204.77) by
@@ -20,9 +20,9 @@ From:   Dengcheng Zhu <dzhu@wavecomp.com>
 To:     pburton@wavecomp.com, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
         Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v3 2/6] MIPS: kexec: Let the new kernel handle all CPUs
-Date:   Mon, 23 Jul 2018 07:48:15 -0700
-Message-Id: <1532357299-8063-3-git-send-email-dzhu@wavecomp.com>
+Subject: [PATCH v3 3/6] MIPS: kexec: Deprecate (relocated_)kexec_smp_wait
+Date:   Mon, 23 Jul 2018 07:48:16 -0700
+Message-Id: <1532357299-8063-4-git-send-email-dzhu@wavecomp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1532357299-8063-1-git-send-email-dzhu@wavecomp.com>
 References: <1532357299-8063-1-git-send-email-dzhu@wavecomp.com>
@@ -33,12 +33,12 @@ X-ClientProxiedBy: BYAPR03CA0021.namprd03.prod.outlook.com
  (2603:10b6:a02:a8::34) To CY1PR0801MB2155.namprd08.prod.outlook.com
  (2a01:111:e400:c611::8)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 696bb30f-da60-482a-fab1-08d5f0ab5d01
+X-MS-Office365-Filtering-Correlation-Id: 2040a436-3927-4611-1f19-08d5f0ab5d47
 X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(2017052603328)(7153060)(7193020);SRVR:CY1PR0801MB2155;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;3:x9KYh9+SV5E+ldWd9rvgqXX+1iE08KNvXL845a+jflTbz6aQFcK8NbZlzi7BN/BV0WN5UCBtzcpfm72pwlCqlSAzrOFWQU8VbAWAFW3B2KwgmfIT5vBLWUp0UUqdzqF5OqsW4xzBoOl2m5gzUCpLGjw51w3tolWUovViL55mbdPmSO809Pdj0u27MaF1pGiTCBIFuit3KilASRKkj2VkUEQWQY1P1agoSacyyyNvxeB9/iYly/+Nv2CG0sU2WwML;25:UEXn6muZJz8/oTdt8wUI8vOJ7P2gvi7uIDYu8xc9SPrloqFiPlK2a1Jc3VqCibh4otT40vDBc3l7LwnkHDkK/lfDDMhB/Qhjx3nQICGHpWbF6D5vN+Ta92AwQkRIPoWifjhj1EtuUtxj9Vvkz4Am9PXmOc2PFZr8roSNt3ON/G/WRJucXJzeBxjpM53FLpPtvBgj1DsyNhClmMV9Ans3sUBJqeq1F1aBa+y87jfDFCHK2m1Dv+em2cZCZgNSdwBmeVPsKDNFUb1ioM5NX+LzfnuQLJ1/Ehdnqd5RQuB91hzTz8yffrX2T+oS3HeGhib8uJjAbH2Q5iLmaNEeWnma6w==;31:MhTdB09ojjYP/28lz1kCll1BQRcTV82ge5Kfnao4ogHjc+fZRsiBr/lBkYikt4cBIDkiUFZOEl8BocoVZf3He1FLt1nkGoP6gs11fcna3g4XPndF4izGpNiCT1gKPFRluMPOdIJ5y76AszzfS00tal20c9LCOgG+OIUosy/pmqT6Zv9Lqsl9dFuDeyGYI2T1hzfZcheg9CBMAStXzaSL+Flw0B4uHxA6S2OJyccJ8+g=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;3:KN057RDj4Neu/c90VWHaC7rTYuohpI5qf/V7DhESrJJXoi/A+huFswLNwluAwu1UvQZRLY4zT70V6A1LvpgFkjd6Vp10a+Si1mky2viMpQVGXJu8i7Dso7+s/iTwpUYFSJYw48Vv6+BmsK6rPFx07vOGsGmCJ6G+ohFuL35msyrff1Rt/gcl544+ELD4rnoCHMQvihoYGzDIzAMbsOaQghC6t2Eqj29qqpqSrjjdUUheTJjXszUBxWo15XQAy4vR;25:JKBKpIfx+5R9Nr9AunO+5ABKi80wVZ8okEc9hadN0bG1+RKIOUqKDFwDq8IY9ENv6RGL+eoE6ZQ0jaFTpNDFhmiA/GBZm/HNaQX+Tg6EFICSpxAtzqXIYUIBIs2D1G77Q91CUVSn2Y2fW0RlzZi39m3FSY8szA/7HzscyOO9nb3cyKs7kpQAQzHh/OiNoQeXw1V4FyX//zJ6Q+62ot/F6seVg3LhBeMpn/AOcSaSBMMFS13VpP71lj5VY+Va4nZYEyns+gdHS7D9v7EHE30djZd/lvSVLuPdF75gUO6h4rJW+XyYB9I4/AVx+2+C7qWTVSVhAAanPmxStFRPDi4RkA==;31:THrLVqmht6MstQskyTmVO35r21IHG0XF6X2iawbPmAqW86mOtUU3nm0tySFd039fi1VnfUbnQEsdLYW7Uvq4Ty18x5YscfrgfvPqjNJfDLoC1U3m56g4OorPL32foWCYz27O/bcRXH02255cYYPGZZ5L+Y3YPP0Py/HBqW1o0rVRe0KA63Wxllf0TWXAkdZCFUKpwqONP60QzG/HwO3jaQguk1YUcuj+9byHHr3Sp4Y=
 X-MS-TrafficTypeDiagnostic: CY1PR0801MB2155:
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;20:tgv8Ndm9am9HLpqO2M6KcVakHPHJDXT1zqgkqaHaBmrpribCtKvsvpKO/cm1KPiSDh//eDnbdMQA3FURvapfbUfdcdpbWOZJjApsoN/mVDwBQTqyJRSrYmjteH/6ycTvzIGuxAKq4nTc1G7r/DgsbfG4k0j+bsqZhpOZoEg2xjzVvx0oEU+QSyZyVxU66IvMAOpkxn7StfC1acW3aIKBcJqzyfBvwxmtGqnommsNJonH49PgNfycdzZsdaNz0c9u;4:pFLcQl8kf0nwl8HUfZTk+o8ygdkmoMwglv8DwuwcyiZUIuVsRrQGFyadoImGMDTuIGwe+2sH9g+5SreMV3v6ULOnON5zAVKZqV6bEqrBtz1LvRE+aROBA+luYVSxu9RdypOtdDZAXaJCGiWdMVK0Hdrdh1xTKLafR6rrLo73pUGtFPbtetrKKnKi1KFMxNEF646pRBzGnNziQxvB22tDMQFtJH2fuEMEFdguxV98WUXBCht/YbBULCgkVp/RZir6Tkeaekw4KiIbdC/33QmCzHyMeAjpQp+TbnV6+0q5OHiz0JYUXKO5DoWi3qh00Z3h
-X-Microsoft-Antispam-PRVS: <CY1PR0801MB21555C66CA69E5FC0B2A8591A2560@CY1PR0801MB2155.namprd08.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;20:tvOEvhT3QZZ+jk05PbQUqh+QTO2IOCsvJ261p3orIdE3o8/tPWYmawWHWwhXvQFvRu1JTa8Oh7xwVV17jkD8ue2OYPT/5HBtPVwgEI9579QxRCW5NHher6bEclMed2gKMIZPv+03EIUUIwPsSc70LAgt+zAcyZWLmTOAzuOlRZO2zFMGVwux0uKmU4xzq6cKv0a2pTi+CrFH1pkw/SdHZL7CarawbDVUWo03vElhn2eGtrBWKc20Ukc9dGiQlgpK;4:bbIYpFropXNNDIcYHZi2UhAhFoum3gMCigJTb3Ji2YoqdPY7DplrxPMTzzynuMfaM7mtTKHOHN4DEjFOUgcCtWAuWdeatrhJ9q2axpzYqMV3RfgOpBdRmXtTED+wB4BtVqcie89oh+Ng78EZUuJrsFj1X0HUojPx6uFjVTghvHSY6QeKaMTn64yyiqryQtCoVkFUEgrj0Nq1asj/Spv3fKd/IR/jB7LOBtnM/3doH/LZNqRHPlfMJNR7KHmFCU5gJBixvtM/NiDiFVF8PBoQU9Ygb4MvrVMXioLtFvSXGLFTOHMJmyvdqBmyaY9qtUAG
+X-Microsoft-Antispam-PRVS: <CY1PR0801MB21555AE0F5A23D16097A87F7A2560@CY1PR0801MB2155.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(93001095)(10201501046)(3002001)(149027)(150027)(6041310)(2016111802025)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123562045)(20161123564045)(6072148)(6043046)(201708071742011)(7699016);SRVR:CY1PR0801MB2155;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0801MB2155;
@@ -46,35 +46,35 @@ X-Forefront-PRVS: 0742443479
 X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(136003)(346002)(39840400004)(396003)(366004)(376002)(189003)(199004)(66066001)(86362001)(97736004)(575784001)(8676002)(105586002)(81156014)(8936002)(47776003)(3846002)(6116002)(316002)(16586007)(106356001)(81166006)(478600001)(5660300001)(6512007)(36756003)(6666003)(51416003)(305945005)(37156001)(69596002)(48376002)(68736007)(52116002)(50466002)(7736002)(25786009)(76176011)(107886003)(4326008)(446003)(11346002)(386003)(53936002)(16526019)(53416004)(2906002)(476003)(2616005)(50226002)(956004)(6486002)(486006)(6506007)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:CY1PR0801MB2155;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY1PR0801MB2155;23:QgYLdD+WS+1o9cB+92O69HWx7O1knRiAKjZVSzQ?=
- =?us-ascii?Q?YsrU/qTnWgAUCyOFTx8zIArpjfTHT8LjwpxlmFotq1or79TBoqTy+8IeoTxO?=
- =?us-ascii?Q?fKtZCgnyevv12P2uxIH8DSonAuL9qNsLyO+JcRiOqr0JbzBCiZqeQww0eQp4?=
- =?us-ascii?Q?1fGGo1DH5EKkI9wtaKZPLR/ddXLW/VQgMy3DlXbDcYMCtsJqsrwTSRYI+qHr?=
- =?us-ascii?Q?26bmbdq9+e/VWenIsPdgTRdTuzg+QgRydpzujIjACNRfbaO2xaqAlEx+fSre?=
- =?us-ascii?Q?998tL7Iy9TfIJ2tRn8fCIy3yC52mBX4MFX06ZK0Gh2e3y+o1Im4x0cgCHFXW?=
- =?us-ascii?Q?7MkWYCRmqaMLq/20ERXdOF8RW6g+NaeuS9XD8zbldKRQjLblynok8CVK67Nq?=
- =?us-ascii?Q?4M0Ny3G3yVcH8AIurqDev2lT2gkCoO9vpYNbG2xhs07bCmzxhYrOQXpgT+eU?=
- =?us-ascii?Q?jFDsQIckulHkOdrqnrvyysVZqdkLwTt4ydJfuphATSd6ptXPkxhjo/iJUb6B?=
- =?us-ascii?Q?kQL/Gqkgv73w3VXc+c/oqmoPJuVTuA/HLm+ER9TTjk1k4dDQCAxQXFXo4d3w?=
- =?us-ascii?Q?4XqQhqvlzIPhl3WzHoIXDtvZ2Mv30jhiZ4tnZdYMW4A5udfOJ6jFYLpOxHot?=
- =?us-ascii?Q?zBgN+1mVvnN58ZJMJCIomnRGUCHWRVxEO0c2KNT+mprOEleISSHy96ypK4aV?=
- =?us-ascii?Q?tXYK+OxYf+SD+oQWHZgbwMPBdCXWP+HsTuIqpuKCuCJVDOP7K4rHUO3OvO7O?=
- =?us-ascii?Q?PHXkyy3eREiza6XdBgn77LuNOqyDzmBuPFIWFbqR9+ZOD/jqoAE7lmQAF/Rb?=
- =?us-ascii?Q?jjXEYENRh6Uwu+Fjfnkbp9iGKfGeeJKx3OE7GyewX9ufdREiGSVo5CYHEa1P?=
- =?us-ascii?Q?xkhcrqUV5hb4Un70u/C9j79yhqYcRG3eQkKj62DLVOgAYZpw3WwmKwcOusqG?=
- =?us-ascii?Q?UkqKVTr9rlIoxP9rZq9v1SEpN9s7EcEVswlPtq87jc0lk7CAYTqJFWFm00xh?=
- =?us-ascii?Q?WUNZo1r0FBxyW2KDQ0ydSngx36YnPV/rHD0gu27xPwXrH8I9KmM85JZuH4VM?=
- =?us-ascii?Q?9PyuTAY48hBIsW3SHPA2lFR3gUgMXbNeL4H1FZ8pscLtUXRuZssQtZ9xEUZy?=
- =?us-ascii?Q?Q8oHQnibkObLo5Nljz6YQMLGmaz4fdNADx4I5Rr8tixVfv4BHZEOnlg/vo5u?=
- =?us-ascii?Q?hGFhQfsT7qtvPR6P7yMuoErzG79w5AkeZ+tdsoNRtvvNieXNClAn8JU2Fqgl?=
- =?us-ascii?Q?XxBRc0PdP5L+aheYIzu0=3D?=
-X-Microsoft-Antispam-Message-Info: 3cAnyfhmm+vxRU0rOf/lyWOhjJrZBNd3jzsNn6BpRlejH3gIzO3mP6uvcw896/te47gZIux4A7Y5waUm+4j7GzyQtb+2RljVqb70mL/o10KI2C7sR+m45wQd3VxsT43V6/LCt/wN2F4CSX43/ykAZ8LKlf1/Z6IP6jWOkVPqRxVOSc39lG5GkC9VAyxnWGVaCzaNqZsLMkkv8EMguLuBYhPlMq3AsVZYmf2wigf/dt983nRqqUZv+vfLLD1iUsMVzDM8ol0ffidKHE6oIIwnnitZtGzVUtowFVF8FexPuHZuvbWHwSXGWkGS/GA3J3pT27Wps5GI7z5e1guxUAw+n/txYWP/M+1cHQHfONCLMW4=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;6:i+ZwLvNWSLLuyN17mUIhNEqETyebLafHVx7JfjSR8fpz2uKHMyR2oLg4VTyd1yEfk96e9oVkSjNBpVjfvF+WUHJfMfO6veRZyVDv0IJ3Zvv7F4LhIvEMb10FR8iUXef5Dk2fbBfmKixjtAh6C9sP/SxZtAgBKRf/ANNFLGO5GFB1uJnxq8GO91Bej9o/a1tnColjcyzJKQ1cc7vZrtgBMRJx8zmgrzKXBoeXv5q3/ku0lTXUW6d5oE4RQCODIaNN2lQByZ2iZTVm4IIHbhJJqKeQFqrN3keVk/NCMHT7dFlrtxPiw6CBSIq4a1brZjwqnTMVLEkG0/6OBZCSPPkFGx0zqcmuLwNB+UrxIWRFmaqJ/2eL8ZO5AneCt66MLoQupjE+5vSXPz2ZM6w55apH0PlMJJuBMxP/rBEtVGOWbKasGJxKMszwAbV9WNhOSmDeaBjDm0eFpabVJRCUv1kEzQ==;5:itXiTopRz4bsgFmEBnGe7Iz8XnjQZjcrtQfY18SyNG0BLRBcFdKIxrOfq1wYZE9a+gYn14JUyYQinAH3FT7TcG67rBLdc6xbo0my/hnZCLW9aBGnD8oB6Wlz6fRR+JZm+4gJS0H6DiWFCaJDM6te8H2v/ydkRcve4mujOCb5lzc=;7:q6m2G9nQHGJB1Q7P5xP5ZI114SjFV66tSzB+SgAvQ3mP+LNXkAreWKBhrjpZu7rCE83GZk83P2/9Kr560nv00CTCIicmXmRVC+iW7jwGkSs3khZCKBarCxKkNdS+InXp4TAotkbqS2o/L2pSRZOZZlaGLcmKwrVzOZEmQfLzmFT2ffY4xl/gXmF/EBExAQgQk66CisloH28aImje01ilMUuuoQ2Mz4r1fPHuLAQoI1Yjb994FLklRDUuMUWPycYY
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY1PR0801MB2155;23:CEpYusCi+rM9jfKoXy6Iv2997XmeXkYMOYSvGzw?=
+ =?us-ascii?Q?F24jWUage/SwO+HQb9aCLb81/69OehEdjR8UMUJWFlUMpL7acKcxdRri4Yhl?=
+ =?us-ascii?Q?zlRio5DiK/Rlt6iYU9PP/OXgxkX7yyaYC6K0ZUmJHrtERksVRYFjmPOTF1ND?=
+ =?us-ascii?Q?ZA4hHbnVU3pmARbNsBf1eIPBWm6HXPlN3BGTEK1JArBy5HoZV0fRY6cLLDUM?=
+ =?us-ascii?Q?OlJQy79GI+YV4qsvinja19TL3cfWyVfmZ/mivgN9GeUMcdKCNSdGUv+86KJy?=
+ =?us-ascii?Q?+SXZqKuG1PBAnVl4Co8Txk0i+4gH4HvP9LR9wVnMGWqLwAycEYTALPYxIm+p?=
+ =?us-ascii?Q?SrAme0i09NCBTIpON3FNkjDFMWcnwEw1uIkoDTfYyHK4mlg4OejD1FeUdC0k?=
+ =?us-ascii?Q?2qWdjfXFwMl79zR9P32VBymq2dchcMWsh+1qX0p554lMMj+at6F+jUVn+EMO?=
+ =?us-ascii?Q?GNRuhyqdzadrPj9roQyBC9UOio73a/PaLMyWCUEMxa05hELSWDbB1GPGo+2I?=
+ =?us-ascii?Q?6zVv5/4jDBeLWVxVtkF6JHCs97PSvrvgKoOCb8mTZiGXRUMH4YbfJ8uykKjy?=
+ =?us-ascii?Q?ZWyiMCw+zNdAtJ44fKdFvjBCYY/y6EmYmTyU/+238Y4j0/g7r6gqDGWY213y?=
+ =?us-ascii?Q?0cUM4ufrx3Pun1H0iWj2imOGZhknxB9MHacNmaTYrDcb+GUUjAJRFmpIUoii?=
+ =?us-ascii?Q?ek8rpo52L9Dx76K8lYZSRANmKUxDl1zYrHGIySkxRSSpKdu5lAlPNQYM+N3m?=
+ =?us-ascii?Q?v97NGMAKdzs/4GVF3Dj/XovJfdwZ97Y6ET6XzBgy7J1GASZ1Jro1W4595YOm?=
+ =?us-ascii?Q?c2JOHGHuwUXbM7K0aTczMg6YCaS/MvTb4yCL/YvCWSH4QEthiRNpOV/JhV6O?=
+ =?us-ascii?Q?ncBpG4YcMYqWiGYllPItiiNnxb+HHIjFqBkOiTDwQpB0fXeC80oCXU90FRpj?=
+ =?us-ascii?Q?hWAYQ0V0JCX9Z+8jNmoPgsebOKC0/j2QFlvkgsQ6Vc70pu2k/5PH2aawGcn7?=
+ =?us-ascii?Q?E+QPHvqx4c9PkjQ4HlxWnkz6+TlBcaeHt/F9Ax+IEuu31/kvy/rUpfd0nCpu?=
+ =?us-ascii?Q?wDemhmoXHFtrihJUtzWOaiD/1d8n4hgj2d2QouKNcNO3KwaXqZ1STmvHvm41?=
+ =?us-ascii?Q?ZvChFAl4UcYhyh+JfHP+Sp7q8iiRywo3sVCVCV4mDtuFaVXXScFOg7d9fHvs?=
+ =?us-ascii?Q?Ewlfi1akDhvyrXdll6/K+GPDZsc4qV/6jM5qK6aiaPxd28EiqfgyoGJE32ML?=
+ =?us-ascii?Q?5msJSIVGoi810rmrnaAk=3D?=
+X-Microsoft-Antispam-Message-Info: O3RBCPGgIkgieC4Pfe8uvgGtyQjZl64XKtcIi3K411ZqOGxOV4YIhDFOgblPi4grH0fOVKj53qhK39o0dSfnaLeGwzGCpv8XdSG9PCqbJJ8mF7EodagDK1Gj4lR9rTBxRivrvOeaN+zPA9NBEkmEFBSVo1aJOAVIE2VPHrQvZn9psF//hNG7cpQkNKJym8tbHZY0BJrOIZuPKxyotRdnmoFW96bPc22uYIJGATn5EP6jusa+5SaB1kK9Ki97Rw0cfg7O3MYB8yqgKsY+lZ2l06Mp/vDVVl/OPM5Gn9qOcUq26zd9A4ehxvOZPEyFT0C6oYLk52egKnbJBWkjkXdEjmoVRU3n7QgQT0nF2uEyTMQ=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;6:6PbVP3I8+Tu537l/KNq7wEVC5jCE5tpO0I3gZjq+HtoL5cow3LQKci54T9zFiexQCvqx/eWTxxZUF6w4YVZVat9N0d5AIEkJI5nYq2z5bkeNYkD33LT+QUedRQwOmPnXiuWk3TvfGQifB/48rUgBNoaLhW6U/UbuYtcgAaFoRBNg4HEOz6fFuGSyN872lNyk9tUV9EfSZDVwM8GKhaiAnwc07yYgIDn4fcA209f8adz4pCc7SonnpjieldgxGt5s+n/P2QxPP5R4enVqMt9ihGbjJSQDaxxj2I8bCQm6n2X99sGi473CyAdJ9jgCU9h2IR1aHGIZy1Z4odI1pcbu9QwxrHDV6NZzC5g8ssWAhYFnz6y4RZtYWW4lV2maUf8Gf5ntfS8IbiEq2+DFEf7U5kbmJPX9m0EOW0a8tl2mLJzQq3NxQ6c8ElJVT3KICJZQNP+g0aEHZ9xbZ1G3sVo5Yw==;5:0CY8wcze9BJ6NGUhKLG13Pl/kvWWkRfyecsP/aRwoPpVAiM2WUFBIYWeu24RhxpeVsbjUIfSYrnoTkX93lVyE2l6tzvxTylZ+4DDPuQMJVyJipvG3yx/gICj72EOD0c5Lxe7VAOkkBS9CUpLGCBdZW0pMtRenVz2bVddDZboomo=;7:PbVoXGF50pqyyU+AJTSG48FhmBmhFlcJTNOTkNKCJQ8EzNqL0cQvFdZQG5GU9eBRdp1z+7xkj/c/wl5mit2jPBZ04K+DWxhx/eSwM0xgpugfcTXbPKYH4jHXFfTYHoTuBF/NAV9jsNLvzi4FwhfjYgSVsFBoor7yhFoA+GVCCLs/GInidFUXj0pZ6TQBDVWRKxSueBsvaoAFYWMJcJaIW0MyBWmPTrgPDx07LaTCFiUIZ8dADp4Ns/4FSjBRnmqP
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2018 14:48:33.0777 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 696bb30f-da60-482a-fab1-08d5f0ab5d01
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2018 14:48:33.5309 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2040a436-3927-4611-1f19-08d5f0ab5d47
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0801MB2155
@@ -82,7 +82,7 @@ Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65051
+X-archive-position: 65052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -99,131 +99,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the new play_dead() interface to prepare an environment for the new
-kernel. Do not rely on non-crashing CPUs jumping to kexec_start_address.
+Since we've changed the SMP boot mechanism (by having the new kernel handle
+all CPUs), now remove (relocated_)kexec_smp_wait.
 
 Tested-by: Rachel Mozes <rachel.mozes@intel.com>
 Reported-by: Rachel Mozes <rachel.mozes@intel.com>
 Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 ---
-Changes:
+ arch/mips/include/asm/kexec.h      |  2 --
+ arch/mips/kernel/machine_kexec.c   |  5 -----
+ arch/mips/kernel/relocate_kernel.S | 39 --------------------------------------
+ 3 files changed, 46 deletions(-)
 
-* Code style adjustments.
-
- arch/mips/cavium-octeon/setup.c  |  2 +-
- arch/mips/include/asm/kexec.h    |  3 ++-
- arch/mips/kernel/crash.c         |  4 +++-
- arch/mips/kernel/machine_kexec.c | 28 ++++++++++++++++++++++++----
- 4 files changed, 30 insertions(+), 7 deletions(-)
-
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index a8034d0..3a1f7fa 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -95,7 +95,7 @@ static void octeon_kexec_smp_down(void *ignored)
- 	"	sync						\n"
- 	"	synci	($0)					\n");
- 
--	relocated_kexec_smp_wait(NULL);
-+	kexec_smp_reboot();
- }
- #endif
- 
 diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index 493a3cc..a8e0bfc 100644
+index a8e0bfc..33f31a8 100644
 --- a/arch/mips/include/asm/kexec.h
 +++ b/arch/mips/include/asm/kexec.h
-@@ -39,12 +39,13 @@ extern unsigned long kexec_args[4];
- extern int (*_machine_kexec_prepare)(struct kimage *);
- extern void (*_machine_kexec_shutdown)(void);
+@@ -41,9 +41,7 @@ extern void (*_machine_kexec_shutdown)(void);
  extern void (*_machine_crash_shutdown)(struct pt_regs *regs);
--extern void default_machine_crash_shutdown(struct pt_regs *regs);
-+void default_machine_crash_shutdown(struct pt_regs *regs);
+ void default_machine_crash_shutdown(struct pt_regs *regs);
  #ifdef CONFIG_SMP
- extern const unsigned char kexec_smp_wait[];
+-extern const unsigned char kexec_smp_wait[];
  extern unsigned long secondary_kexec_args[4];
- extern void (*relocated_kexec_smp_wait) (void *);
+-extern void (*relocated_kexec_smp_wait) (void *);
  extern atomic_t kexec_ready_to_reboot;
-+void kexec_smp_reboot(void);
+ void kexec_smp_reboot(void);
  extern void (*_crash_smp_send_stop)(void);
- #endif
- #endif
-diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index d455363..6d43200 100644
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -43,7 +43,9 @@ static void crash_shutdown_secondary(void *passed_regs)
- 
- 	while (!atomic_read(&kexec_ready_to_reboot))
- 		cpu_relax();
--	relocated_kexec_smp_wait(NULL);
-+
-+	kexec_smp_reboot();
-+
- 	/* NOTREACHED */
- }
- 
 diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 8b574bc..b3674f7 100644
+index b3674f7..1679408 100644
 --- a/arch/mips/kernel/machine_kexec.c
 +++ b/arch/mips/kernel/machine_kexec.c
-@@ -19,6 +19,10 @@ extern const size_t relocate_new_kernel_size;
- extern unsigned long kexec_start_address;
- extern unsigned long kexec_indirection_page;
- 
-+static unsigned long reboot_code_buffer;
-+
-+typedef void (*noretfun_t)(void) __noreturn;
-+
- int (*_machine_kexec_prepare)(struct kimage *) = NULL;
+@@ -27,7 +27,6 @@ int (*_machine_kexec_prepare)(struct kimage *) = NULL;
  void (*_machine_kexec_shutdown)(void) = NULL;
  void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
-@@ -26,6 +30,20 @@ void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
- void (*relocated_kexec_smp_wait) (void *);
+ #ifdef CONFIG_SMP
+-void (*relocated_kexec_smp_wait) (void *);
  atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
  void (*_crash_smp_send_stop)(void) = NULL;
-+
-+void kexec_smp_reboot(void)
-+{
-+	if (smp_processor_id() > 0) {
-+		/*
-+		 * Instead of cpu_relax() or wait, this is needed for kexec
-+		 * smp reboot. Kdump usually doesn't require an smp new
-+		 * kernel, but kexec may do.
-+		 */
-+		play_dead(true);
-+	} else {
-+		((noretfun_t)reboot_code_buffer)();
-+	}
-+}
- #endif
  
- static void kexec_image_info(const struct kimage *kimage)
-@@ -79,12 +97,9 @@ machine_crash_shutdown(struct pt_regs *regs)
- 		default_machine_crash_shutdown(regs);
- }
- 
--typedef void (*noretfun_t)(void) __noreturn;
--
- void
- machine_kexec(struct kimage *image)
- {
--	unsigned long reboot_code_buffer;
- 	unsigned long entry;
- 	unsigned long *ptr;
- 
-@@ -132,6 +147,11 @@ machine_kexec(struct kimage *image)
- 		(void *)(kexec_smp_wait - relocate_new_kernel);
- 	smp_wmb();
+@@ -142,10 +141,6 @@ machine_kexec(struct kimage *image)
+ 	printk("Bye ...\n");
+ 	__flush_cache_all();
+ #ifdef CONFIG_SMP
+-	/* All secondary cpus now may jump to kexec_wait cycle */
+-	relocated_kexec_smp_wait = reboot_code_buffer +
+-		(void *)(kexec_smp_wait - relocate_new_kernel);
+-	smp_wmb();
  	atomic_set(&kexec_ready_to_reboot, 1);
+ 
+ 	kexec_smp_reboot();
+diff --git a/arch/mips/kernel/relocate_kernel.S b/arch/mips/kernel/relocate_kernel.S
+index c6bbf21..14e0eaf 100644
+--- a/arch/mips/kernel/relocate_kernel.S
++++ b/arch/mips/kernel/relocate_kernel.S
+@@ -100,45 +100,6 @@ done:
+ 	j		s1
+ 	END(relocate_new_kernel)
+ 
+-#ifdef CONFIG_SMP
+-/*
+- * Other CPUs should wait until code is relocated and
+- * then start at entry (?) point.
+- */
+-LEAF(kexec_smp_wait)
+-	PTR_L		a0, s_arg0
+-	PTR_L		a1, s_arg1
+-	PTR_L		a2, s_arg2
+-	PTR_L		a3, s_arg3
+-	PTR_L		s1, kexec_start_address
+-
+-	/* Non-relocated address works for args and kexec_start_address ( old
+-	 * kernel is not overwritten). But we need relocated address of
+-	 * kexec_flag.
+-	 */
+-
+-	bal		1f
+-1:	move		t1,ra;
+-	PTR_LA		t2,1b
+-	PTR_LA		t0,kexec_flag
+-	PTR_SUB		t0,t0,t2;
+-	PTR_ADD		t0,t1,t0;
+-
+-1:	LONG_L		s0, (t0)
+-	bne		s0, zero,1b
+-
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-	.set push
+-	.set noreorder
+-	synci		0($0)
+-	.set pop
+-#else
+-	sync
 -#endif
-+
-+	kexec_smp_reboot();
-+
-+	/* NOT REACHED */
-+#else
- 	((noretfun_t) reboot_code_buffer)();
-+#endif
- }
+-	j		s1
+-	END(kexec_smp_wait)
+-#endif
+-
+ #ifdef __mips64
+        /* all PTR's must be aligned to 8 byte in 64-bit mode */
+        .align  3
 -- 
 2.7.4

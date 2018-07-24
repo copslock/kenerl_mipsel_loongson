@@ -1,99 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 20:10:40 +0200 (CEST)
-Received: from mail-eopbgr690105.outbound.protection.outlook.com ([40.107.69.105]:56576
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 20:16:25 +0200 (CEST)
+Received: from mail-sn1nam01on0108.outbound.protection.outlook.com ([104.47.32.108]:10304
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994541AbeGXSKhXWZaM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jul 2018 20:10:37 +0200
+        id S23993981AbeGXSQV2TBJM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jul 2018 20:16:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ok/Ff1dK2RgVvzzg4EXISW0ck/N7C82cfeDI5SgBMQY=;
- b=E1mJmkDKRLHdNR5Kh0Rq75IjLeGvFvpHFGkg+Cpg91a8VBJfxjWlJzVxoVsVgRuoR0J7FcUzB4FgyjBB0xtMEaLYW7xSxAd4SekwafUjILPAQD6r7EJIpPyR4KAqFZ6MiFhU6X0sRE6jYyZo+zi6yHzZRd9g3/45klzdZ6Vw7X8=
+ bh=wVPo4G77KF8PiwBOYYTZX3GTb3kl4w11VUyzRD8Angk=;
+ b=LPvxHqgcE+9mHbmJhm7TBagAGbtx//7hxKR5w/kE6tMWwc6qZBFd/92fmVjKEcS203ekVGSjGevD80Y3LVv7cn9gve+NKFX2ZJ0Fp44cmJy/AO+QbxKkNzbsgqiPQlqTj6feqXL764UFx+umk/Y0Vzx8VU01zMpoS2TlSbqOhd8=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
-Received: from pburton-laptop.mipstec.com (4.16.204.77) by
- BN7PR08MB4932.namprd08.prod.outlook.com (2603:10b6:408:28::18) with Microsoft
+Received: from localhost (4.16.204.77) by
+ BYAPR08MB4934.namprd08.prod.outlook.com (2603:10b6:a03:6a::15) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.973.16; Tue, 24 Jul 2018 18:10:25 +0000
+ 15.20.973.21; Tue, 24 Jul 2018 18:16:10 +0000
+Date:   Tue, 24 Jul 2018 11:16:06 -0700
 From:   Paul Burton <paul.burton@mips.com>
 To:     devicetree-compiler@vger.kernel.org,
         David Gibson <david@gibson.dropbear.id.au>,
         Jon Loeliger <jdl@jdl.com>
-Cc:     Paul Burton <paul.burton@mips.com>, Rob Herring <robh@kernel.org>,
-        =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+Cc:     Rob Herring <robh@kernel.org>,
+        Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
         linux-mips@linux-mips.org
-Subject: [PATCH] checks: Detect cascoda,ca8210 extclock-gpio false-positive
-Date:   Tue, 24 Jul 2018 11:09:40 -0700
-Message-Id: <20180724180940.20249-1-paul.burton@mips.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180724000647.okbjmghv4w66bl7u@pburton-laptop>
+Subject: Re: [PATCH] checks: Detect cascoda,ca8210 extclock-gpio
+ false-positive
+Message-ID: <20180724181606.jzho44vbpzjbux4d@pburton-laptop>
 References: <20180724000647.okbjmghv4w66bl7u@pburton-laptop>
+ <20180724180940.20249-1-paul.burton@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180724180940.20249-1-paul.burton@mips.com>
+User-Agent: NeoMutt/20180716
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: CY4PR1101CA0020.namprd11.prod.outlook.com
- (2603:10b6:910:15::30) To BN7PR08MB4932.namprd08.prod.outlook.com
- (2603:10b6:408:28::18)
+X-ClientProxiedBy: MWHPR2001CA0002.namprd20.prod.outlook.com
+ (2603:10b6:301:15::12) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5b0cb673-0164-44b2-93e8-08d5f190bb40
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4932;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;3:vE55J76olbUIPA30mMimSEQt5wJ4kjnFLa7o1RvU5LUhwOUTw2TX6/pObetCtdB50D7U7R+yJQhSVApIx5f+aKqjLRIRQpql9ZUVS/8NTAW2KUWwH01VIoHoPD/kF886mg3Lkn2c5jRhQh/f5uCZPXOs3KbGFLgmT0KzKUvlosWLdJKoToIGpY+8+Dmftae+AAp6HhEggLd3HVDetUADSskzV1F/+PdCO9sB1hOGgFnbeG1E4mnKzLBS3aR5bo3c;25:fznF0LlwvvCZ1LvvWGswndPV7Vw22ZQihEW2DkmU2Qj3ZFmH4A2sBtCSBW/oiGWGghKS3KGLrCpl+0rPRNPFGE1/gdBxQR3LRUzYDED1aomA0kZ8PXwNusvo7tXoTz6tzCVbV//FoiX2qme312EB+d8P0+bdJartY2vPixuELcYC5OOH6tdIsRTsakuEEFA+PFZYE8lL688iLbNgIYNB9Km11WudrUf3lEfNuGV72YNwzUKSCBNY0rj9zP/4G9OG9dsVPAK6Ly8yGBWqcVYCbsRJ8fTeVkpcZUoVbER6wpRPHSGDdajSnFJpPVZJ+W2MVdr48c5mvMUaNmKGnXB9aw==;31:jiuOCi3OSpyYxx1BEjgND36zI+VJ/+9qlx5J7mKQLSVAIvXYEfkR+mpt/f8HLIU4TqvojUR/q8tCtPBshryAh5jv4L9N8jzKctt+HjoZ5N+5Ijigg9cNx1S5TxVSttVTIOIFNeEAy8VH+jOWAIRJQjzvOXY9hS/4J++o8rQA7qS7PbTjsvRVQODVP+ne41Y73tt6FPiZ4OZHRUmfu1H9uFgZ1z8KmN+3V1VzIQwg88A=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4932:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;20:bu6n+CTa/rMvfdyXrzfLNoe57veAhiu7wHqxDga62wG7TblZysKDVBifl6hJqdmdXyam1g8xUbgN3TMkXPRw3rEbqBrlkVZLYGDbjC76m7fKd/ufvRqTSkSgqJhF1ijE1P4vFYE4rWyupgfQrDUGakJ4t9gQ9OJvEZa3i0SBC1VYsDiGJec2qpi8s+5vVAacJmvrBlacb/upDG3PMmD9Q5Va8K9GYlIBPIFi+AnOCSIE8gI/UK2EbEkWX+/i7k8Z;4:3LumymVk+5fC0KZ2kaunFi1eAHnGA2h/bqSi4EnO/XCR1LkmhmmJeZRbORFWXuICR5LTc/WLqzDN140kwpe8zWpAB/8SslO8ejsVGIRANxpKLWDl9mweir3b03pSHbgBuesP9GBhmh05MJ5RkMdLDhFGT3Tgwf2rMSYYmDkEtMTNYfZrQWz7n8UR6LOa4QYfbtIZFhnHUSvOBWifHcrhvXRw/FduFiXWnFxqcaobjU1V4T6qf8JcbQ757dquAPiEnA7vJoQUuRThQ4jaqRuFWtfG4ZG7wRK6f8SpdyjHY87lQBTjlJNUZSbMeLOZWdWE
-X-Microsoft-Antispam-PRVS: <BN7PR08MB4932E63B6024A82DE0EE9DEEC1550@BN7PR08MB4932.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(9452136761055);
+X-MS-Office365-Filtering-Correlation-Id: 7ee0ac4e-4e7b-493b-c59d-08d5f19188af
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4934;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;3:fP9Pr+GIJJRpaXsPzBcou/SfQfY9A/mG32Vu+3uPoziXcYd+ppVDKSPOKBreofcxXB4a4rjG6yh/wom20e4RILBw6Ifh9Yg0fFi5xDAbt6+3rRzj4cTIqanXjsgRiegCYB7uq8qyPjVlUdHv01medB9Gn9Nc9Yf5HZERNfWdH4UxzdS4n+Br+hpk+VU0S+fGG3FtyQpGErzap8eiFeIR1rXJQ1A0Swhzn6miASKkiQUkwz5SqkJx8iYFQ++F76bF;25:7Ym0ScU1ypz8lPj3lZ9wOu8j5s26+oWpfN9EH3sY89CDKWfz8miNE2n7Q++kjY/PQLELb0Bmw4WB0IEgFACG6LdZ78TYxbN07fh7Q6erSMocBcZ3wKU0yQO564fCeiFUuEobeXSIweiOvb4ygpGBJTkAXZc8TvzuSUNokBJFk13bbvDSSsRQBGXFcRMJ7zJuuFCvfqFDOG8tW2TpjDDe2/CVKJzu7cFCKWltctvSAWuw5nxpmJDIPmxRCwIUtiU1kJVjkQjSOS9SUF/nc/1zSutpDXardh5ZodCdXuHigcPG1wcmkIvHOpXspUb6s3W4+CT4+O568RyHbHcwHJfe4A==;31:QukhxITz98V+POBoukoek0TQzdP1K8P4AZTWT6+TiIOB1EzchJnoTXB3ed4lOYNulzMU3ARSljJpdQTw2mp4XOG3qRuMubPIjjI+Gz5FhPsubd6ZDYwwnuYHJYxuFfEew/RCIJ2i0EdfpySzFbnKTmCDzU6vjKCrTzVBeV43dOI1zJgBkvSAeCsuOYvfYXMyF8+f2AxBqCciwpV/jAQxM2gR9fOusvyEq9tzLH0lOOg=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4934:
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;20:Y62CQOyGV98tMlMT69NB3d8heKFSCDxa6k6zKSsJep7dAxAxvMP5f2DjWprhSyk1LHtPe01EQOpO1iA+ytIZATQVrWY+T4aZcKtmPKqaxWw7mxN1F47kIut2aKsL0pODk3qaawwy06FkVhJFJcl2diyVoTuhrNcy/S8LtTK8RhONMLuqiur0/klElxNf9zsMjH22FhkOGrzc3Z4OIEhHWAGKk49PNxc1Fc9OpdaoAFdd2ve+XyPloc/8sUyYTKBz;4:D1IXLLf0L6x2CDuf+L4xrn8GBlBXWgm4zoHeAX2P3oBOdw54k/N4i5348z7IohI2fn3w2VNJj8fh9mKrKA0Z254fvn3eMbwBurOYaYk5iTdlXrK/OewghQDz7akZ1VYXc/PuwQEcKjlXCQt8gaZRh5H0S220JtnWhHBrK8DlNyreJfTP+G3BYH3HEO9vXRRmTxe3zKiHHPB3jmQ0tIRlIX2dvWSgjyyKaJx0wa/AARL2w5MqkCsoO9kRyPYvfKWx59jknPDLB1xpURmpRVvqRA==
+X-Microsoft-Antispam-PRVS: <BYAPR08MB49341E1F161B5CDEE3782E6AC1550@BYAPR08MB4934.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(20161123564045)(20161123562045)(20161123560045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:BN7PR08MB4932;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4932;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(20161123562045)(20161123564045)(20161123560045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:BYAPR08MB4934;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4934;
 X-Forefront-PRVS: 0743E8D0A6
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(39850400004)(376002)(366004)(136003)(346002)(189003)(199004)(68736007)(69596002)(97736004)(6666003)(6512007)(6116002)(1076002)(50226002)(3846002)(2870700001)(4326008)(8936002)(2906002)(486006)(44832011)(6486002)(11346002)(1857600001)(42882007)(2616005)(5660300001)(476003)(956004)(14444005)(446003)(52116002)(305945005)(316002)(81166006)(478600001)(110136005)(54906003)(6506007)(386003)(47776003)(26005)(76176011)(66066001)(50466002)(23676004)(105586002)(7736002)(53416004)(25786009)(106356001)(36756003)(16526019)(186003)(53936002)(8676002)(81156014)(142933001);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4932;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(396003)(366004)(136003)(39850400004)(376002)(189003)(53754006)(199004)(50466002)(386003)(2906002)(105586002)(305945005)(16526019)(186003)(76506005)(5660300001)(476003)(106356001)(8936002)(6666003)(446003)(68736007)(52116002)(7736002)(11346002)(4326008)(8676002)(26005)(9686003)(42882007)(33896004)(478600001)(956004)(25786009)(316002)(66066001)(33716001)(6246003)(54906003)(110136005)(53936002)(1076002)(229853002)(58126008)(44832011)(97736004)(6486002)(6496006)(81166006)(486006)(76176011)(3846002)(6116002)(47776003)(23726003)(16586007)(81156014)(142933001);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4934;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtCTjdQUjA4TUI0OTMyOzIzOitxZ0F5aFpFUTZKWWc0cHo3bXJLVVR0WXFN?=
- =?utf-8?B?WWwzNjBkSzlmd001QU9BMzhtUGVGdFdWVWJETEpmVUNoY2VZL0M3N3NSb0p6?=
- =?utf-8?B?SUo1MjNZOTF0SHd0Mmhma0huTkRwaDJLek4rNGxNRXlyTG5naTlwSmJ1L3lD?=
- =?utf-8?B?YSs5aERmYlo4ZTR0VkVMbmVQQWFMeE1FZThmdXZtUTg1WDVCZXo4QmRBYWZI?=
- =?utf-8?B?V1VpdmRpTlB6cGdEWExYQjdUZE5meUVUb2tEYUM1cllEM1ZoWHY5WmM5RG5Z?=
- =?utf-8?B?N29RY2tEanRpeWZMb3hmSmVNM0cvSXNJaEdzNTNtVU9lcmczMmVxMzlxTHNa?=
- =?utf-8?B?UHdSSEdZNDJFN0xVSjRReDFwRFB4UHc5Nng5aCswdGVtWDI2dkJ0aVJuTjNB?=
- =?utf-8?B?dXlwUHY5ZE10TU5PMVN0bkFZUDNoNnRvY1A3ZGQwSWR6WndLaUh0NFk5RXow?=
- =?utf-8?B?TnNVaEVPVDNmMlFJWlJBK2IyUXRwYTZVL01pS1JqUzlmbm1lTEFrSkNVTGJw?=
- =?utf-8?B?aWxSMVVOaXkwTmYzOWtuYUZNQU9ZVERHV2tIeHoyM1RwQlRocU0wTHdDcDU5?=
- =?utf-8?B?WVF2alA4TjJUVllaM3NFQUd5aFBOVDRjUWJRdDA4SW5YNHVPMWNPdXNTVVgy?=
- =?utf-8?B?bTdSNTRCWjM1ZHFJRUJFTlBPZUx4dUU0Y2pmeDFsNE1JOVdiYnMrcVRhRk9W?=
- =?utf-8?B?RnorUEZDMExJKzNxSTQ2SGhlR2VrRWpVTXNQbFVFNlNOem1aS09JU3M5bEFk?=
- =?utf-8?B?YndPL0lIdFYxLy9ObGRqQXczenNFODlwL2ZrYVhJeUF2Mkp0ZUFlYU1FOHJH?=
- =?utf-8?B?MDRPVHVGMVZ2aEhVK3E0Vmxua3ptc08xNUMzeCtmRGh2bGxxLzc0SVFPNGY1?=
- =?utf-8?B?N2NTVkpBRDIxTGFLNmxrVUpWbFRwT05YL1hhb3pueWFNV21BVDB5Y3dJYVJr?=
- =?utf-8?B?TnFnZHdJTGdDMDYvYm14WG5aZG95OTZTUFFkNFNkWnIvSFk0emQvcUhGVXBn?=
- =?utf-8?B?WGdpSGpWSkhiSnNOdFlNaXRFVjMzVUttdlgrVVN5UUNHMndmWnFsMGpFK2ZK?=
- =?utf-8?B?cFcrdFFETlJUK1JaUnV4VGhRdWczQTJ1VkhWejc5WTRnSEpzNXp1Rk8vRXV1?=
- =?utf-8?B?S1lvWm4wUCsyT2xRc1ZrT3NHZGxHbnNpM0pZYVFwekJVdE5FS0JxMjRzZGVs?=
- =?utf-8?B?NlcvN3BIS3VDaG5xM2svQnJIdlZSRGJsS2hkdGlVQVNMUWJIaWVEd2VtV2ZH?=
- =?utf-8?B?WTZsS2JGcXdmVlNUTlgxNW43RjFYcUc4MGNHUzNQSGJORDkrblBBemQ5c2Fu?=
- =?utf-8?B?QlNWUDllU2VNMWdIZXVXZlVZVXdYRXJwNlM2UTZnak1HbEN1OTRRRzJBRitD?=
- =?utf-8?B?MThNTVdzMDUwM1VWRmtXaHRHekR0RUdSL3V4WTczeVF2YlZua2dhYzE1UHpk?=
- =?utf-8?B?UlB3QUZ1MWFzTlhyYktHODIwTVNSWXovM2hzOFFHUFpUc2RsTUdnSHozSXFW?=
- =?utf-8?B?cHFudU5lVEVMSWszYURHazNyMTFCbGVxSkxTVHo2UjQ5eHFKMkgwYzkrNGQw?=
- =?utf-8?B?QlV4cERKTXVqdVhpcU8yRGM4NjhJeHdtbGgwdzdKT2tJREVtOTBoOGpVamNX?=
- =?utf-8?B?U1BJSTk4R3dSUUdoRXV2c0JEZnJIbkVKMzZ6TlJVdFhtR1RLUWFydmZ2bWt3?=
- =?utf-8?B?QjRMZGpjWno0YlZhZmxPMUNuM3E2czM2QVlsUUdTUGdhQzBzQ1loVVNuUlF0?=
- =?utf-8?Q?KnYAk8mklbrwvaw7XT03Gf/a1XuA/OmCENa4g=3D?=
-X-Microsoft-Antispam-Message-Info: ++rBMxfh/wsa/u4RKx7yiKu92MhfeQEzFeesD4Z+lW9LbtGIOi0KBjnb/opf8IG50YxHBQBdL+GpodcfUYp+ysOAr2FCrbTqNJOxQ2cjg7Ms2CEv2SXXL+gA1a+N948RwL5OEm13CsJlvGTi5PXNbpykj/S9DKzqnprAsEc4WbUwzRviMAkJIpas3ZejuqJaDgOVh3KYbG7ogxqOZgJ8WZYHiTsIe6/ft6vs8U04CQc2ePN2V76Jrz+xA08KOqAYdUZ7DColJsXcl8AHpVJkjOGtX8uZQc7cueRx3WfBOvLKqBAemOuXxJgXXr+L3Hl9t8BLk9cKmqjCzqVSVt2DxuDfWtQXpWam7xc9k9xOpOY=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;6:Y0pKQuarMHjvPB2Can4N1E7wDwPMrBg1C+XOTDULOVvX6Kf1VG7ElSMplxxTvgg/oFVF7dUdMY4e9lr9oztGzvstGAeSfryVnoMrZFakZfv0i4j5CXGzXVwuLd9Se3pKgqFHY11pGNyt47QjCg92+uX/iEjxLAblAzlTwl/kxGAZxiq/iAqwCVU4zgfZqaohuDyIxPq5OgE45wFXusr2ThmEbIT0Q406t1xoiEdbgpUoXE35x2OKsx8HPH85kThkMfBmVcNgnOtklRB4q0EGYRSaD+2CxjyodqV09cqEznoHnhdS1sGhFg7ohb07WppDe5zHcSNXnB3njYslZqOC6JwJGSZr7zSgUroz9x8mhH1HXOMGaemtCl7SUEFwBovIcre/9FUL6xtueqa345yKCx3sA6Xj4hid/himfAoruh+fOe1hl9SjRNPuNin4Ii5L1uxEfwyhGGhWqbCI0lUeSg==;5:u6pvcUxZCf34bpGxoKkMcwfp6iWC7pQJTDaRBujg8DD0YpSetUvrXYO6FciL4d46MF+9gAHrAG82c6kb1btFCtmJl2WShsg1OAtg24G29+hn4HY4wNCoX++C290fNNZPyxFSjyfOgKjUqYudXob2rMsXhTNxvx8xMQsG7iDnaxY=;7:ySABl7itfANS+YSwB785YMK26vxk0efY65CTNTFlzZH+wmNynYtB77gVPlCj64lSvEgZmK6o1CE1fbUfsPIho1krGVCOpSoCCN7gIadkQZJ+MG9zlHqVGF3GOuC7NynXw+gAQt/gFaP3iY5fKh0qybiAL9rT3f1g/286z2rQZenI3dE1HH6TWXofexoZr2+KwXOdkC+FV4CV1Oa1FB4ZWSh1LOWVqb+CCm4LxbCWfD9uT9eytDaMtVIdhHRr5G6/
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4934;23:delagZ6+DeqeXfHy6ZiFdR2js8vOEfewYFql4XTnD?=
+ =?us-ascii?Q?lFnNnVps6xrj/JTBMTCRbWtzfbng0RhFTf9C9KntHTHEfJzq1vlosSQLhn86?=
+ =?us-ascii?Q?iRA7hYWQ5stVHtv8goLsDgMoqOerorol9ggyFxZbkee95ep1DutqyGD53Un2?=
+ =?us-ascii?Q?0cJ8WAs79paQYpk4pQpHXuncZaRYixF+Pt4G2xYhCO/8VpCDYyQtUJ2Ekmoq?=
+ =?us-ascii?Q?nGl9iyUo8RQJeIK6X7UZSiWTQ+weqGfclaW1Td8wuXDyagb1K7wJ5+y2h9a8?=
+ =?us-ascii?Q?pD6uXks+py3XCRgNFt3jnIk4IOs8pr6HdFP5D7pxlawrOZYbDZlQjdzm9NL5?=
+ =?us-ascii?Q?qNIjjNitfsua/+jK0VcxvQzeoKU/DTdSP5F4z75BpY4v7hxUcOKIE64ZW3M6?=
+ =?us-ascii?Q?3bhOhGJ4jJ3wzxJlJ+JJb0ppdfHOn7X8O4rX99nChjsoxUzQ7qoWS4oWI3Xq?=
+ =?us-ascii?Q?Jv7sRPnhLVlgk70A0Sp1aHEMO5oeDhhrs+1sgH+pbYawRPUogKVQl8qgTKid?=
+ =?us-ascii?Q?qGaMH5VzsJ/FVSoAZEY6CTv7dtr63LNuOhH62fsGpQ5p5KJoF0bGm28/uWlZ?=
+ =?us-ascii?Q?Dif6HwdBukBzA4Vo5Y4smj2nboJyMKgqB23NaOCrv9LqwYaAcXMMfwmV8CRQ?=
+ =?us-ascii?Q?qeMo4b735KaSYPd/SDDgXtMkxZJ7Cs4xNKGnmzXkfi/FyJtBu0ZTfURE+IWM?=
+ =?us-ascii?Q?cqYSlrBg3UWccvkza5SGTPg28+oMEN/OUNQVgDMWd7NMrVn+FRbOZ9n5wuN/?=
+ =?us-ascii?Q?U+viUETsoA/zBG3GYeQnWxZiru4avX+DHIHOvuMxZ4X7A8+LXW/2X/MRbwn1?=
+ =?us-ascii?Q?xLFux3PgXUEhvm+CaLd8ReDvCT1d+NoeLN5zZWvVZE4CxlB2U8qpTRSDoVtV?=
+ =?us-ascii?Q?XxIeZeVWBpuYss2kLNlPbQvq1Ppp6L3GsagS2eYcRoxkiwcwRzP1CzBGUHYv?=
+ =?us-ascii?Q?tIMKIW5epv2BiFbf/tU0UiEE4ywVw9b27QP6AhnactFVtNWylr6PLQJ7oJje?=
+ =?us-ascii?Q?sCOzRidZkqxLeKNETSgd4Ysc7gYeJH94tw0SpGwANLcBXXie7vItLTN9uEfZ?=
+ =?us-ascii?Q?peWLjjO3qhQnSDUmkWQ7UEvnSiPVtqQaMT53MBVTUhjL6fRzMmPwNdP0dToH?=
+ =?us-ascii?Q?aqVaZ9Ay7KGp9ZNUWrX69sBVsnFHJ6rYL5KHQfnjhhO9LJ589J3TMhst4ytJ?=
+ =?us-ascii?Q?t3bhdS1eM788ZADSm1KLnlIhLhAJ4oIgxNO57CSyqJSQ6t8fBN0b2bP/qk6J?=
+ =?us-ascii?Q?wI0pvBgOsmv2TeMD/3EpWxy2GIIEkaKCY36NG4bUP5BECLIq16lgzj7NG1RA?=
+ =?us-ascii?Q?o8EPInMJOq2+7JA1WI+AOoJMV8M5uZGtAwyIIILGAuewBVj5SD71OtPNNaJG?=
+ =?us-ascii?Q?PDe2Q=3D=3D?=
+X-Microsoft-Antispam-Message-Info: OzUp6dh4AfkbwzoOyW641i34a8auZuLB0CaiGD7hOn5aY0Aqbdx50RFe5GFv9wl24QuMKSLUI9CFyanffjIRWsNOpiZteN326N/EHZmo7Ji+uKLPU2p0IjLaLTuS2wpV4xkBFcFq/NmAjqiYy1pYRs0vREi6GMqjguVoC5mYrqQy72mAi3sZbgyn3aKLuOrrQ+32Xxmp+TNR25Ps/sIutweDcCZGAdA4rmpvmdYV26D/JXhSDatVsRe1x4706tnomt6Dht2Kw0Vyek3N4lF4YtgsVekzX4ehAFPChNQtg88sdexGPUM+q55uaCeqVImmC24c4u3B7vf+9AWGFEHssGqYhtFchfLkCwVJ3vBu5O8=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;6:ucYd2bwEhAVQs6jhyUmmchAubiL/wG0ghB0Wupm3/S+arcQUE/vCbv09SsoWUmfORUr5x7Kark3Xa34226gwJie753Lb5b6E9F9W/oraogvb5b2xnNJyu3txMVLU1pkodxfh3u4AggfPy/fcsDXukPi6JoEZMhLi0XAdYrIPJ4hwdeTqLdaPjLloXzAfz7rG1YD6Oyp1IvKDOIrgPBUal2mfocraUYQSTN16A6d4igARhnvHD5pReEGQDBn4FIrHezaSgQ8yrUdKxRRBCCTSSPXgh7ZuTJO9pd/+CgGh2hQAEaVJTN8bj7wAQhwB8KokWztdIhab38zqbAWazaV3AEm57Uzkr0o/d0oqiV6ATt9qS3vrxP1Uyva08gLeDyN2d9Ga6XWSoJ0pKvPIQDIxU6EsKm+W6piO4JUrTOKFeomNPg3+1mWJIyaCA2IWSFMibHcysCDW/klwctsvyEq/Sg==;5:D3IP+pQmTlyjXv9CLVPMymDXKKaqVXGKYATnU8VlKZp0ZJ+Ia+1vxz7jaUHMAvPoJPK6DR8i76P/j2IQyhzNm9OkBaScG9N4SExxmBulTPb4TGjSwGM+WRP3x5NWF9D+xpt7lpqXzWeCIIoQ6e4oA9pAKmfiursbuIwAYTkiVfw=;7:YHcfvdByeB39uE6M0HxUoN0lRTUGRPi5Lh2fHZr8A2RjNakA35sLmchdjKSVJ15Ee93NhYsdEC7pE783IjlCs5dU6Z6JT+4yxG66aacKn1Gj2fNQHOVgf90D8f3bnUOd52TSJh5n8sYuT0kMuQCLE6vXl4RO0iScsaeT8JGsmIF+D4Mf92JYuO52Od+NASkfBAVHf64GsVnHwoFXhxzdyB3hEJRgfKYnK7EMRcF3EvQlNd/FAU6J5GfiSzRbG8Sz
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2018 18:10:25.4924 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b0cb673-0164-44b2-93e8-08d5f190bb40
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2018 18:16:10.6847 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ee0ac4e-4e7b-493b-c59d-08d5f19188af
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4932
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4934
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65090
+X-archive-position: 65091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -110,110 +106,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The binding for the cascoda,ca8210 IEEE 802.15.4 (6LoWPAN) device
-includes an extclock-gpio property which does not contain a gpio-list,
-but is instead an integer representing a pin of the device itself. This
-falls foul of the gpios_property check, for example:
+Hi all,
 
-    DTC     arch/mips/boot/dts/img/pistachio_marduk.dtb
-  arch/mips/boot/dts/img/pistachio_marduk.dtb: Warning (gpios_property):
-    /spi@18100f00/sixlowpan@4: Missing property '#gpio-cells' in node
-    /clk@18144000 or bad phandle (referred from extclock-gpio[0])
+On Tue, Jul 24, 2018 at 11:09:40AM -0700, Paul Burton wrote:
+> @@ -1273,6 +1274,21 @@ static bool prop_is_gpio(struct property *prop)
+>  	if (!(streq(str, "gpios") || streq(str, "gpio")))
+>  		return false;
+>  
+> +	/*
+> +	 * *-gpios and *-gpio can appear in property names,
+> +	 * so skip over any false matches.
+> +	 */
+> +	for (i = 0; i < ARRAY_SIZE(false_positives); i++) {
+> +		if (strstr(prop->name, false_positives[i].prop))
+> +			return false;
 
-Extend the checking for false-positives in prop_is_gpio() to detect this
-case in addition to the existing nr-gpio case. The false-positive cases
-are described by an array including a compatible string & property name.
-A NULL compatible string indicates that the property may be present in
-any node, otherwise the property is only allowed in a node compatible
-with the given string. This allows us to whitelist the extclock-gpio
-property for the cascoda,ca8210 device without allowing it anywhere
-else.
+Of course as soon as I hit send I noticed this is strstr(), not
+strcmp(), and this probably doesn't make much sense... Please ignore.
 
-Since checks for false-positives now have a little higher cost, they are
-moved to after the detection of the gpio(s) substring, which the vast
-majority of property names will fail avoiding needless checks against
-the false_positives array.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>
-Cc: Jon Loeliger <jdl@jdl.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Andreas Färber <afaerber@suse.de>
-Cc: devicetree-compiler@vger.kernel.org
-Cc: linux-mips@linux-mips.org
----
- checks.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
-
-diff --git a/checks.c b/checks.c
-index a2cc103..c76e312 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1254,16 +1254,17 @@ WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "#reset-cells");
- WARNING_PROPERTY_PHANDLE_CELLS(sound_dai, "sound-dai", "#sound-dai-cells");
- WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#thermal-sensor-cells");
- 
--static bool prop_is_gpio(struct property *prop)
-+static bool prop_is_gpio(struct node *node, struct property *prop)
- {
-+	const struct {
-+		char *compat;
-+		char *prop;
-+	} false_positives[] = {
-+		{ NULL, "nr-gpio" },
-+		{ "cascoda,ca8210", "extclock-gpio" },
-+	};
- 	char *str;
--
--	/*
--	 * *-gpios and *-gpio can appear in property names,
--	 * so skip over any false matches (only one known ATM)
--	 */
--	if (strstr(prop->name, "nr-gpio"))
--		return false;
-+	int i;
- 
- 	str = strrchr(prop->name, '-');
- 	if (str)
-@@ -1273,6 +1274,21 @@ static bool prop_is_gpio(struct property *prop)
- 	if (!(streq(str, "gpios") || streq(str, "gpio")))
- 		return false;
- 
-+	/*
-+	 * *-gpios and *-gpio can appear in property names,
-+	 * so skip over any false matches.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(false_positives); i++) {
-+		if (strstr(prop->name, false_positives[i].prop))
-+			return false;
-+
-+		if (!false_positives[i].compat)
-+			return false;
-+
-+		if (node_is_compatible(node, false_positives[i].compat))
-+			return false;
-+	}
-+
- 	return true;
- }
- 
-@@ -1289,7 +1305,7 @@ static void check_gpios_property(struct check *c,
- 	for_each_property(node, prop) {
- 		struct provider provider;
- 
--		if (!prop_is_gpio(prop))
-+		if (!prop_is_gpio(node, prop))
- 			continue;
- 
- 		provider.prop_name = prop->name;
-@@ -1310,7 +1326,7 @@ static void check_deprecated_gpio_property(struct check *c,
- 	for_each_property(node, prop) {
- 		char *str;
- 
--		if (!prop_is_gpio(prop))
-+		if (!prop_is_gpio(node, prop))
- 			continue;
- 
- 		str = strstr(prop->name, "gpio");
--- 
-2.18.0
+Thanks,
+    Paul

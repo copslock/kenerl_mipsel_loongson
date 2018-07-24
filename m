@@ -1,41 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 07:39:38 +0200 (CEST)
-Received: from shards.monkeyblade.net ([IPv6:2620:137:e000::1:9]:51012 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbeGXFjdkyV3w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2018 07:39:33 +0200
-Received: from localhost (unknown [172.58.43.75])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id E7386108CA124;
-        Mon, 23 Jul 2018 22:39:28 -0700 (PDT)
-Date:   Mon, 23 Jul 2018 22:39:25 -0700 (PDT)
-Message-Id: <20180723.223925.421201399606552054.davem@davemloft.net>
-To:     hauke@hauke-m.de
-Cc:     paul.burton@mips.com, netdev@vger.kernel.org, andrew@lunn.ch,
-        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
-        hauke.mehrtens@intel.com
-Subject: Re: [PATCH 1/4] MIPS: lantiq: Do not enable IRQs in dma open
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <dd3980b2-b699-a988-3ecd-8261c782244f@hauke-m.de>
-References: <20180721191358.13952-2-hauke@hauke-m.de>
-        <20180724001923.d4y7eth7k3ng44lq@pburton-laptop>
-        <dd3980b2-b699-a988-3ecd-8261c782244f@hauke-m.de>
-X-Mailer: Mew version 6.7 on Emacs 26 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 23 Jul 2018 22:39:29 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 13:09:49 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:36804 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993964AbeGXLJpihDsy convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2018 13:09:45 +0200
+Date:   Tue, 24 Jul 2018 13:09:34 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v3 00/18] JZ4780 DMA patchset v3
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Message-Id: <1532430574.2610.0@smtp.crapouillou.net>
+In-Reply-To: <20180723175846.udmjtkx7fsaf52wa@pburton-laptop>
+References: <20180721110643.19624-1-paul@crapouillou.net>
+        <20180723175846.udmjtkx7fsaf52wa@pburton-laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1532430583; bh=PBGj1BpZp0feTqBaomdzuC/a/PGMi+7d+A74Qs+Cg+0=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=ejIs0s25ReYtzT1ysv+Oh/m0zFJ8MPJSXHEAibT/gnX92MVNH2jhOLPbIxRHu3R/w2Zn3Pcw9EXxZS5LmuKfmJP1rS/paQiPyfMj+0zeJnDxwJjM2yE8gkRVHJRUAm5NCe/T1+oQnkySXdAzeO96iDhIGi/X13I22PuHt5srXK8=
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65073
+X-archive-position: 65074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,39 +45,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Date: Tue, 24 Jul 2018 07:32:27 +0200
+Hi,
 
+Le lun. 23 juil. 2018 à 19:58, Paul Burton <paul.burton@mips.com> a 
+écrit :
+> Hi Paul & Vinod,
 > 
+> On Sat, Jul 21, 2018 at 01:06:25PM +0200, Paul Cercueil wrote:
+>>  This is the version 3 of my jz4780-dma driver update patchset.
+>> 
+>>  Apologies to the DMA people, the v2 of this patchset did not make 
+>> it to
+>>  their mailing-list; see the bottom of this email for a description 
+>> of
+>>  what happened in v2.
+>> 
+>>  Changelog from v2 to v3:
+>> 
+>>  - Modified the devicetree bindings to comply with the specification
+>> 
+>>  - New patch [06/18] allows the JZ4780 DMA driver to be compiled 
+>> within a
+>>    generic MIPS kernel.
 > 
-> On 07/24/2018 02:19 AM, Paul Burton wrote:
->> Hi Hauke,
->> 
->> On Sat, Jul 21, 2018 at 09:13:55PM +0200, Hauke Mehrtens wrote:
->>> When a DMA channel is opened the IRQ should not get activated
->>> automatically, this allows it to pull data out manually without the help
->>> of interrupts. This is needed for a workaround in the vrx200 Ethernet
->>> driver.
->>>
->>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>> ---
->>>  arch/mips/lantiq/xway/dma.c        | 1 -
->>>  drivers/net/ethernet/lantiq_etop.c | 1 +
->>>  2 files changed, 1 insertion(+), 1 deletion(-)
->> 
->> If you'd like this to go via the netdev tree to keep it with the rest of
->> the series:
->> 
->>     Acked-by: Paul Burton <paul.burton@mips.com>
+> Would you prefer to take the MIPS .dts changes in patches 16-18 
+> through
+> the DMA tree with the rest of the series?
+
+I think it would make sense yes.
+
+> If so then for patches 16-18:
 > 
-> Thanks, I also prefer that this goes through netdev.
-
-Please be sure to repost your series with Paul's ACK added.
-
-Also, in the patch postings and cover letter, put "net-next" in
-the Subject line so that the target tree is clear, like:
-
-	Subject: [PATCH net-next 1/4] MIPS: ...
-
-
-Thank you.
+>     Acked-by: Paul Burton <paul.burton@mips.com>
+> 
+> Thanks,
+>     Paul

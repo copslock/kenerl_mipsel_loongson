@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 15:12:25 +0200 (CEST)
-Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34771
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 15:12:45 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:43373
         "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994002AbeGXNMVfyx9B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2018 15:12:21 +0200
-Received: by mail-io0-x244.google.com with SMTP id l7-v6so3360920ioj.1;
-        Tue, 24 Jul 2018 06:12:21 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23994002AbeGXNMkIQkyB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2018 15:12:40 +0200
+Received: by mail-io0-x244.google.com with SMTP id y10-v6so3352511ioa.10;
+        Tue, 24 Jul 2018 06:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=8UIwKo3vKu34kwq38jTrg/7yVc2pABmsTxvJtRzXveo=;
-        b=jCEGxpO0GlNOS1vR/jKZqK+wPOG409bYqubTA9ZXDj6vbU7jmmY8BKmQJykScHprDL
-         0P0BIIMom03JpKJ25MSJ1isnoquHF8wVffClLw06SzHLVFvRtLh0KAhGyd1e4AdwlM5q
-         afbXSzQp2J38Wd08g9IvT9SRitsv3fktofVJ7WMlYpjusRxlo+m/phAMCq4qKWdIQP6J
-         V+qmZ40EkbhH5kn/7PQPBHtY0PSJhq5E9FnQIEratoPiwbBgAvIYAGuzqLMvizHfiZAU
-         kXiDUCU4U2bt5cXU8kat0CgQdSyY2xrDWgnzyUBdAjQWTCNJZuGcDzlXJvHBLXMrne2N
-         SVXg==
+        bh=GgwQtccgEz32aiqUtyjX9WDU31Dc9dZljNEGG1zi+f4=;
+        b=FGVLTX6eEuo5kNRqa+GlBwUmGMHkeImePkNPwmanK0jSzZ027IXxxQbzEL2rQf24hl
+         +MNrd6eJGKMjVWZQJ9D2D0v6fkp1jYLYVqyHlzXckrPbJZzjEcy8JPw1y/hxRrcdeI9O
+         DHiyKkQHGoKJZBhtIeANj0ta6Aw8Dj/snSq/xsptdpLZwm0Hfb/YoIfhmh2zU58Ld8aX
+         KxMRJ0vcxJKn0dNaOCJcJSnLrim5v1KGr/Vez2oJ83cnlceCsvfkf1vgYEjXIuUHJ44a
+         JcQugDgmKfjILOeOao6wuuJJB92UXZqcPRvB54GfwGijE77F/pbZdC0qguQeFiLKg1Ly
+         +FJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=8UIwKo3vKu34kwq38jTrg/7yVc2pABmsTxvJtRzXveo=;
-        b=T1jUrga7lUW4e+1+RwCJbj/RwXrRlq7q7goi8slzR5GzwiZ3/NukM1KYAYdjuXyO14
-         vucYFPEKLh4xUDfAlK6n84Rbbqe3bNoxRvd4adQS2Q6qGcYdhRTE+2RnMioPOLuSpZsR
-         AgGA+DQmwdVRR1DQgzNlCCWNdrnEm0DTRR2U+4a3xgnZ4Fqkmb4XSuQu0NJIY3iHuWBW
-         XiB3k0l0sIbdNbUrws0hE9h8b0jRavHf2bqgoseVPi4TFAscqaPL9jh0X0q8CFQl9Efp
-         C5PLXCi34MpbCIhpXSz105j29jLw8QacmMWSjwwOQNyZ+SOnJhA5iPbl3IsD/9xyX/fh
-         m8pA==
-X-Gm-Message-State: AOUpUlFvPoWzKPq9SMDRVFm3LN5zHFrkBKBtXTOX8G9ThPcZYGsHvyjV
-        Z0vg5nmD43+algRU/cCf/YY=
-X-Google-Smtp-Source: AAOMgpfP4GYha/VGjZoGk4RUOMvkhkuEDtMOx2veKDawzN21GctPTlCZThqD6KQWIwDQlq1SW8d6Ig==
-X-Received: by 2002:a6b:e913:: with SMTP id u19-v6mr13829627iof.38.1532437935249;
-        Tue, 24 Jul 2018 06:12:15 -0700 (PDT)
+        bh=GgwQtccgEz32aiqUtyjX9WDU31Dc9dZljNEGG1zi+f4=;
+        b=XRxmRtizgOgnyE3lnfCLTOBBZFK5Yi1kx1VQXP1sBD9viOrceHjg/GmaFhLe2rKsop
+         pZVol7Slyit0h5//blSokUKTH2sWNoGEF5DOAkAMynyD2LfKDjkjQHlkzyYgK0Hr/Aa6
+         yWGz1Wk6cbonKbB9rnWZd8rF/G1AFARyhlP5+073wU29XlkDhy04e+HwOqKR3ZsCnIos
+         GHrvJeL46+/OFEgVxlVDPebjlI74Zmcrf6XenZCOzBQ8k8DB16SogekGl81YMvEnqH2Y
+         1I/rDUu3UCvXSlx4a9nfceauYD0BXwnjcjAgrJiCdJBZ9O/3nQSg3baxv5XIZXWwIdkp
+         jUqg==
+X-Gm-Message-State: AOUpUlFU103+5m7sqkFH45hG+Aro/n2oAeadBsiJbzUPhtw7uuvmpang
+        BlmsFu9HYyFlxKhlcP+t/+E=
+X-Google-Smtp-Source: AAOMgpeX9gsvEQM+KkHZGYI4TNB0T+vbUvvGngXJaKbo1CoR0EvDQyzaVR/+jMmewKKIlU+7crPGTg==
+X-Received: by 2002:a5e:da41:: with SMTP id o1-v6mr13853035iop.81.1532437954340;
+        Tue, 24 Jul 2018 06:12:34 -0700 (PDT)
 Received: from [10.0.2.15] ([72.138.96.106])
-        by smtp.gmail.com with ESMTPSA id z71-v6sm9037035ioz.34.2018.07.24.06.12.14
+        by smtp.gmail.com with ESMTPSA id 82-v6sm1270965itm.2.2018.07.24.06.12.33
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 Jul 2018 06:12:14 -0700 (PDT)
-Subject: Re: [PATCH 1/2] MIPS: Introduce HAS_RAPIDIO Kconfig option
+        Tue, 24 Jul 2018 06:12:33 -0700 (PDT)
+Subject: Re: [PATCH 2/2] MIPS: Octeon: Select HAS_RAPIDIO
 To:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
         linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -45,13 +45,14 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Matt Porter <mporter@kernel.crashing.org>
 References: <20180724123200.6588-1-alexander.sverdlin@nokia.com>
+ <20180724123200.6588-2-alexander.sverdlin@nokia.com>
 From:   Alex Bounine <alex.bou9@gmail.com>
-Message-ID: <46c35e1a-15df-f4e1-ae9e-cb87ffed9a7b@gmail.com>
-Date:   Tue, 24 Jul 2018 09:12:13 -0400
+Message-ID: <98a14d92-ee18-57fd-81d3-f2a313664cdd@gmail.com>
+Date:   Tue, 24 Jul 2018 09:12:32 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20180724123200.6588-1-alexander.sverdlin@nokia.com>
+In-Reply-To: <20180724123200.6588-2-alexander.sverdlin@nokia.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,7 +60,7 @@ Return-Path: <alex.bou9@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65080
+X-archive-position: 65081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,34 +79,25 @@ X-list: linux-mips
 
 Acked-by: Alexandre Bounine <alex.bou9@gmail.com>
 
-
-On 2018-07-24 08:31 AM, Alexander Sverdlin wrote:
-> Introduce the same option as PPC and ARM already have because
-> RAPIDIO can function in the absence of PCI.
+On 2018-07-24 08:32 AM, Alexander Sverdlin wrote:
+> All Octeons starting with Octeon II have RAPIDIO controller which
+> can function even with PCI disabled.
 > 
 > Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
 > ---
->   arch/mips/Kconfig | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+>   arch/mips/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index a6ce5087b729..b7fa44ddf452 100644
+> index b7fa44ddf452..235feb657b0b 100644
 > --- a/arch/mips/Kconfig
 > +++ b/arch/mips/Kconfig
-> @@ -3104,10 +3104,13 @@ config ZONE_DMA32
->   
->   source "drivers/pcmcia/Kconfig"
->   
-> +config HAS_RAPIDIO
-> +	bool
-> +	default n
-> +
->   config RAPIDIO
->   	tristate "RapidIO support"
-> -	depends on PCI
-> -	default n
-> +	depends on HAS_RAPIDIO || PCI
->   	help
->   	  If you say Y here, the kernel will include drivers and
->   	  infrastructure code to support RapidIO interconnect devices.
+> @@ -890,6 +890,7 @@ config CAVIUM_OCTEON_SOC
+>   	bool "Cavium Networks Octeon SoC based boards"
+>   	select CEVT_R4K
+>   	select ARCH_HAS_PHYS_TO_DMA
+> +	select HAS_RAPIDIO
+>   	select PHYS_ADDR_T_64BIT
+>   	select SYS_SUPPORTS_64BIT_KERNEL
+>   	select SYS_SUPPORTS_BIG_ENDIAN
 > 

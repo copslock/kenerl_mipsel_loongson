@@ -1,90 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 02:48:47 +0200 (CEST)
-Received: from mail-sn1nam01on0132.outbound.protection.outlook.com ([104.47.32.132]:39184
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 03:21:33 +0200 (CEST)
+Received: from mail-eopbgr730131.outbound.protection.outlook.com ([40.107.73.131]:7317
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993941AbeGXAsnfv0QG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jul 2018 02:48:43 +0200
+        id S23993961AbeGXBV3iE7iG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jul 2018 03:21:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=63q9AeiWkpeWeBkdXV2uKkqrYdBASp3rKuCoxB+q8Eo=;
- b=GLmcaZPbnBsPGaoqM+CkIuPzrcbbiLJC9OX3a/ohQxJTn1u8kFcB8WGZ4pJtE2eAgSgfZQT8lQ146CKrePgUO+kiHv7Ee+R3U3D2mXQMDTfkSq+qcqbAVkY4YXDFO1QzAKqHy4JlGfnfpu/Ir/UbesyVx3gbVX/FOJGbjgjmI1s=
-Received: from localhost (4.16.204.77) by
- BYAPR08MB4933.namprd08.prod.outlook.com (2603:10b6:a03:6a::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.973.21; Tue, 24 Jul 2018 00:48:33 +0000
-Date:   Mon, 23 Jul 2018 17:48:30 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: jz4740: Bump zload address
-Message-ID: <20180724004830.6jvx2ngv5jvcutvr@pburton-laptop>
-References: <20180708150712.7404-1-paul@crapouillou.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180708150712.7404-1-paul@crapouillou.net>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR06CA0092.namprd06.prod.outlook.com
- (2603:10b6:4:3a::33) To BYAPR08MB4933.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::14)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ce13145e-2c7c-4b42-3aa2-08d5f0ff2eec
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989117)(5600073)(711020)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4933;
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;3:orhPu4dsBxmfwmv8ttr0x/pFyPXrxEG2A6YjTT6aaNmgGNa1I92gDS9mLNn13790F9NPKDOJTJGPD5RCgqulEa5qW9eveG+iKkI6F4M1JFLXUifbq3//4eFOW8soWiN7zchWCMl55Bg4vGtVNpFF495TOw/SLyLp9+UJUeOaNeGfOdwqNjv4lOs66bFfONggvKqTikQ5tFR+Y4+Hb7BHXz1m1T1V6WhVYyOPvK+lWNJe4mC5oNZ8vT0o39UHXzuv;25:g6kNfehZ8Fel0zxBQOIX95r5HRls3KRBArfmjZHqpd6VVohFJ/9RGi2jPLFFru7oP3wv+8fUZkU9pVN9lkAWhv1Tvupu4FMfgF3NlBSD08Rxj0yi5lbA7o66ELUaugRS11YS4ZaNl68z4kSx6wxcCaD/fS8+hJ1cgzePHHH6yf4TOV5L9ld19dFq2I0cmg3UFCgmSruiMBsNx7RW8wmsWDfPL41xJJVQ3DZpsXok6E5R41C8GIOETNuXe4TluIhh90D5KtH6c5U6gy+qQyBjjdfZXXghE0wT7yFqYH1GtdpsQPsN9rDvBakRFPLxaVw2g8j+BmeJOzUrX9VFuZe+kw==;31:ZqnquNf0fZ/azleHULkWnO21r3E1bkcdVzXeRRRF0uKPJcQ0J/7oTozB00T1hUot5Tp7X0qcwWS+1LH+1CBxgfmBUTZJDm52Vg4G1DkU91eXHdWWcaMNFB9DhwNIqCNiGlf74hHWXX5qAbyAIcKHCRlo3YXLs/Q5nUNKefLGOtaDbWn6z/io4e82C293QmZv6XLKVLEN3dDDBcm/zIzMlmY3wAFmtuF8bvXic7A5tV0=
-X-MS-TrafficTypeDiagnostic: BYAPR08MB4933:
+ bh=MivZZiv6WDLp/0Pgwlo34vUCR19zAPQhLG7amuU026M=;
+ b=ZKn/zGsAaXVIL6NPur0vIm/F8bCP1oxYcvAVX0b0I6i2DIz8fBVgCyXCHs9zSG/KPcY1Jga3IAjR+U6f2sjwdE37nB0y/Nr8OL3Hz1ex/ar88mPLkocGcTs+dOvo5QDXpGUvoF/gxOHSLDTJBvJYBjaFxhqR5ZsK8BMry8l/hLI=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;20:irS26DpqhnFtZoyj6lmEKvgLdD5065LEzm3qyOEq9kiRZfxyWkUQJL7gwAdX+aTQzw2V0SopptWufjSuoMfLRgfothD/sU9hDJNk+wvPBc67gG3mKxkrQMaHIlzQiK/dnUW2+ISN3wprDcHB0TL0EtOqEuHLIzk361L25K9NRV5OknEKU17rEezwJK/2/WvVdiVK3p1eaAaPCoxyGUmOHDzhfFJm/4P9j2kSIFdiuw/Qtfq+cuAvuzW7ymos8vDH;4:8Z6psvBKl++dXddYm8KU3/942CdTqcbhxLDl3dXXvFIFs8c4NlozMDUCtZc0HmOcnd4wNlkAAiGfONV2JD3+3R3IlogYDypWWU9msxE99FTita+X1l1gfkP2/TJM4Kw6DFPpqJjqG5fMVl77zpt5uH9yB7lXFgBngYGfVdDl2uoL4RPf17DKhRbzRCQpy9itr5YXPIyf124NInAGCI2t4/dCA/QkerW9ggkqZoovW84bpZllLTBXDyD4osTRIj2v0PCx1xx9LeloGrK9uahaMg==
-X-Microsoft-Antispam-PRVS: <BYAPR08MB49331B099A03A60D2864E5FBC1550@BYAPR08MB4933.namprd08.prod.outlook.com>
+Received: from localhost (4.16.204.77) by
+ SN6PR08MB4942.namprd08.prod.outlook.com (2603:10b6:805:69::32) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.973.20; Tue, 24 Jul 2018 01:21:18 +0000
+Date:   Mon, 23 Jul 2018 18:21:16 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@mips.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        wuzhangjin <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+Subject: Re: [PATCH V3 03/10] MIPS: Loongson-3: Enable Store Fill Buffer
+ atruntime
+Message-ID: <20180724012116.bxtzn7g6qmri43bd@pburton-laptop>
+References: <1524885694-18132-1-git-send-email-chenhc@lemote.com>
+ <1524885694-18132-4-git-send-email-chenhc@lemote.com>
+ <20180618210507.akcvvigzj7qis3re@pburton-laptop>
+ <tencent_3C127D3D5620B83833D77E8A@qq.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_3C127D3D5620B83833D77E8A@qq.com>
+User-Agent: NeoMutt/20180716
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: DM3PR12CA0064.namprd12.prod.outlook.com
+ (2603:10b6:0:56::32) To SN6PR08MB4942.namprd08.prod.outlook.com
+ (2603:10b6:805:69::32)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1e2871f7-e4c3-4762-dc3f-08d5f103c25c
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989117)(5600073)(711020)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990107)(7048125)(7024125)(7027125)(7028125)(7023125)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4942;
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;3:l1dbDYhovL9jiZSv1ElOEkVOTuTIG1I2PqTLw1fw/hvejsv0bhSUXRbyAwNEAB1+P7zAOVzdjyEz+/rMCAGpr30b1eGSColb4wMY58IUYWxA76RzrtwAYmibdnqvBIZ0l+nTIO3QurhbiekcIekR44e58Lrqzm+1FxZpHhyZyq3ECZwTJkTUpo9yz4JBRX7sZsk9Kj3Qh3bJEw9bzB1/CR+1fWaZnvnAQH1wYihdyaHBOKfLgKIW7ef6dSUB/3XQ;25:wcYUiRD3jkrKXD0VjU/9zwJg+IYYu0zhclst1FpGzv2rss6INs2C9DudevoTaasKXZ5HoUYEScaqa8uzcjqXttbhbLH6+SkKqDJQGrqEXR0pfBQpr+sAZrh+vfjV/ohlkMXClOfPhda6Q5HcexctIk40WPKOUBMzy9L9ZRlG6yl2nfXIe/vQoJDhsV9tcT1BoKz0ZIgUfzYHDkx6txkSd9fzt/Pq59ziW9ZhYn/rMNSdE24nt8ipx1hQXo1QzjZsVvN3pmG3eJyrzRuNViAAW1WBWPLZoWpVZoUR1JQ/CiOVG0+X1CwWJNrTkLNigsNiDW1mtY8spKHg5hgCT8hVXA==;31:9a3fMzEQrlfboGXwflI6emdINMRpyt3J3xOCfvKRo4SXX/fsaokredw+v4VimlYfuUs3rRec191RmtDQeh/boExMi76hPGy5xxIZ1JBaa7QYpMEggMQ//zIuirHuTb8CdQuNaKn8Jco99Zs+z737Tjo+jnrlNVUzJD+gwxv7sOECpavnP7qkm0nxGOPWvTlsOxztAS/mlj1T3KiGPyvSDjf5GZyVrCSx5ANA0nBx2FA=
+X-MS-TrafficTypeDiagnostic: SN6PR08MB4942:
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;20:E88jxHThBQJU/VQjlYbuUKdIhBg9uL6V5Jt7W9iBarNEl9on9AoZL5JTlRTQIBLvpN/mXJiwQ6WKXWcqJtGDywE5hJ8o1+dgdF83TDcwDp7M4vtclQ+29bLlvmUT+iwBmr1odyjPMWHc7ga3XG+xToDiKdUToa7XKRoMkMrEQBK8VhBGPeU9AZyvqQv5VVViB/f36trXoRCN6m9OSFN6oH0pA2BExEc0Tg+h1kjkcinvb+QaOnk9J59Vwptzfopc;4:ftXtnWTuudkrqQlYJLuw7BriYJj7/YY+RBmEoEQuEVD0n/kXdjok6EVDYeOe9xNPA2D82lsHF6s8k2TNRSfrilbuoaq5D6j4zYStBh3lBVaUtEMPSNAHLmcBHn1SktwYontlnCsJ44sb3fOqelHlR6k6Txfmtgww0NllCzwF788Af/xTEu4Vhfj+dv0VQYXVFj5Ni/i9+V/zg54p1kq7xog7PpDz+KnzR3hATI2sJw0Iq9BLjlZTz4fuvAH0bo/cTTBP/aP9s4sA5SE9vHPnCg==
+X-Microsoft-Antispam-PRVS: <SN6PR08MB4942499C70207B97F565C330C1550@SN6PR08MB4942.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(93006095)(3002001)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(2016111802025)(20161123560045)(20161123562045)(20161123564045)(20161123558120)(6043046)(6072148)(201708071742011)(7699016);SRVR:BYAPR08MB4933;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4933;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(10201501046)(3002001)(149027)(150027)(6041310)(2016111802025)(20161123560045)(20161123562045)(20161123558120)(20161123564045)(6072148)(6043046)(201708071742011)(7699016);SRVR:SN6PR08MB4942;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4942;
 X-Forefront-PRVS: 0743E8D0A6
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(39840400004)(136003)(376002)(396003)(366004)(189003)(199004)(105586002)(9686003)(47776003)(52116002)(66066001)(6496006)(76176011)(25786009)(106356001)(53936002)(386003)(81166006)(33896004)(8676002)(6486002)(50466002)(81156014)(6916009)(229853002)(8936002)(4326008)(6246003)(76506005)(7736002)(97736004)(305945005)(68736007)(186003)(956004)(58126008)(1076002)(11346002)(14444005)(486006)(16586007)(446003)(476003)(42882007)(54906003)(2906002)(26005)(33716001)(316002)(478600001)(16526019)(23726003)(5660300001)(3846002)(6116002)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4933;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(376002)(39840400004)(366004)(346002)(136003)(396003)(199004)(189003)(4326008)(53936002)(6916009)(2906002)(81166006)(8936002)(81156014)(8676002)(14444005)(9686003)(478600001)(305945005)(105586002)(42882007)(5660300001)(66066001)(33716001)(47776003)(39060400002)(6246003)(106356001)(76506005)(7736002)(52116002)(6496006)(23676004)(52146003)(6486002)(1076002)(50466002)(486006)(97736004)(386003)(93886005)(76176011)(58126008)(54906003)(25786009)(6116002)(2870700001)(316002)(446003)(476003)(229853002)(68736007)(956004)(11346002)(3846002)(26005)(33896004)(2486003)(16526019)(186003)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4942;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4933;23:TVlLe/wiDakqVSMb3XK4SaZvuTRb5VpfOlqV5G485?=
- =?us-ascii?Q?xkQGFHXJgaCeiJpfbS3hNu6azZB+DtRLM0brK8xon8UbPo8pbrALvwNcceR9?=
- =?us-ascii?Q?jnJT9MvTfdTWJJX/3tqVqVytOr9CFj1bUH/1oezelEnBLZHsPWAs/3lIoM9C?=
- =?us-ascii?Q?dlgm3Hah7NydAQkogJwqDcfSjDM/ojXsunCajN2e+yzhOl4V43mZmn5b/fFE?=
- =?us-ascii?Q?z7qQTI70alFqQOzBfRtaezvAVInNedRmGeXRpnKTsKvkl05OjlVp4yfkrkEY?=
- =?us-ascii?Q?0dpnuxX/dyCm/g3+ncOglW9VpzM3r3bL/1kvH9iZnJX81yw+sKK+tF00PL0n?=
- =?us-ascii?Q?gFPTKQ/79+FnRtjOsvKX0bbKzD6JnkUkx8f2N++Mrx+bUFtgyyNn9uKxmjaL?=
- =?us-ascii?Q?YbeA/RMI1XuULGNChGqAvP0cgD5oYh7h4XjOm7pkWakC9kFpzzf01qPsVF4L?=
- =?us-ascii?Q?ixRTNHm1dawmjS6W23Jble+AK65thJvnREuCfijxRrLmpuuvQgHVMgIlGZN6?=
- =?us-ascii?Q?ZS6T5i0hmXgL0mLcdMw87+91SUvcfwclIkK1FO4+l1zoTjxIDSpACm0rouPK?=
- =?us-ascii?Q?JTBX/ou0iUrFoeHBZ8u2iDJwKFbOXtZnstK4Zb46WN2/jv3OkRCvc0eMoYt7?=
- =?us-ascii?Q?n3ncFPvJPSWZaEWJ9BthqH2llzCuLs+uMpcBVbFGOdy/j/YcTwAP6ajgVsSh?=
- =?us-ascii?Q?GpRAL5HMk1BwRXo1A9qQbKF5uzoKarmmG1PXQJfaVOhGTbBBEEHDTBdPCG60?=
- =?us-ascii?Q?5nT06B9e3Tqie/zlxTABsDTDv1KO0M8Yw5GUpAofyftdWP5oN+g4HkNmESvT?=
- =?us-ascii?Q?5ylVn6AOmrnf5oE0MxzIIuenkf83n492TunI3xCbXgORTO+PBnP5QhNOpo1d?=
- =?us-ascii?Q?9jkANncdTb6IruTdo5S1J9mDOyl5RE87XoISf6O5uW/0XxiDmiep4QEwwITl?=
- =?us-ascii?Q?DOfWd3tH4Jqvf33tUn7g2t043+OgqjE07l87YnFEmAVn8+8SscqIkuHcrSCv?=
- =?us-ascii?Q?AP5SI2X7c75lEvAKDbKr92cj5N/IqIOmjRUiM4P/0/3QBMlH4jwcITIVcUh5?=
- =?us-ascii?Q?rsYQD/oPbY6UHd5iGVDxq0Fks6Awn+EZhzVfNhf1m4XicP3zPzzSoB0tZSM9?=
- =?us-ascii?Q?L5DgNLc1l2PjoUB3QWDDgdsJCij6i6txwuKPeTQIWHpEPjILJgAE6yxNm9Ls?=
- =?us-ascii?Q?7887eigVQ/+JV6lG4SBdeHOAgkZAlcC4E8XjHJ/VdvCi3hlqzBeJhQfoNwGI?=
- =?us-ascii?Q?27l1wFX9tMAUHKQXxUQdjLFgmCBDkEDWQqkRh1TQydFfaPsjcovsesCOIBSS?=
- =?us-ascii?Q?PzYgjKZQvRYxyM2ERGWc2Q=3D?=
-X-Microsoft-Antispam-Message-Info: pLqBtYMwTaXemg+Mr4Bz5nUm9TzYKrGV2vqnNN+ijTcmxGuQeN0gbIJofOL7MNTBnh/d71Y4+BVyEUnrL7h2RNaF3v34hXSASq/yelCYJua2R3rXdDapHHaGQMnTdqhWT+aH7i7tT+pya8nQzPhf6Ahj7QCYlDwafIp5uEfGH6v9lb7LoLqDCQCiClN0TZ4RB4Oeokc7sj1bVXwmHqEOi3Yq8hBDMbL/81G0uvn5qnrEOR9ifX15lMA41GqQSnj3PRI7Zq80I5DPezkefIuCUgrjKZlNKWurvNWIzmqwKZLjoyrFUAlMwbdhUJ5pLxx+dBy8waH6HTzmSsIi66D4V+gfUAynp1HGeT81IN1QdK0=
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;6:C31unq6iOTiAzElFuz0t80DCSGC36Vh6wbxTFX+8jOMh1EdyePXwe50ZmGt7AyTbw/oqwbgYeWeJrirR7rJhX4QeCsdGh8eXYBrsfoD7L0jnbORZcXj7VPuTHnq4+Y77vOniiaaE54RYuj5F8xOjE73pRJNDTdmSbGICO9RlGwGjXJ6I47uR3khr+A/4VG92yRzYVF0NQjHAG8cI6fqtfHysmw2BM0dEQw8te2CwsmIYE4hEwaZ/BS6j+gr1V4QzslMqzUkSHbdM5RB70aFBNM2a9zMw0L8+h4AH43opZPrhpSSK0hxNLDcUde6b/9t9g8uGBRHI4YKI3oB9iCS3S7zd32Bznv1smriisA1uReW9qqAT8iLtLIonnY77KxNBd4kT966uKqOGswU56ypa5Q5r4M7YxsUqgxNFb6ka8hM6V3o4MbkBLCGDtw0ItpXkInsdPfn4quFDi/pnPVHWzA==;5:LCna/cKYo+evpZ/uZcgaQ33CvWRlY9AXC7VW8+ofqQSWcC+5wvJWCNglJJ1vUkpNRfKiWQf1xUg72XiKtbNGh5OVVkLVZieox2JJhg9BtXlw4CSjwCH40NOU5bd1DiLLaom3XkTOZemWucmhxFOd7Bvq9Fm8K8XxOTZ6uFoDX9s=;7:GLiS2qk3VcE0ihcIgVvpiWFDLGT9dPAEtu8CUNNNJZgovo4jaHsGwAKGo//Lw5RI7ePViU5Tj9CNC1XPG0iflOGytcWK+/cbb2gl1C7sFaMNc9olMnncDMz6Bn5lCec9qvQEt9pAqnhGoUFaEYw+H6Uua1dxykUCKLPyZuXiScyyMeDySHXgXby/+YYJpGTOcbXuV0db6ctaVGvvKRgtWLvvsgZmgWA/co05iwgjFHBPMPcahVoZTFlBbIxqcWkB
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtTTjZQUjA4TUI0OTQyOzIzOnlEMCtVSk9rMEJPYTFhQm4wT0k3QVYvbXZm?=
+ =?utf-8?B?NGpjdVlxVm54UmNOTDNkMjlseGdORVVHV3prcFpuTlBndDMrdjc5QXVFcVlD?=
+ =?utf-8?B?QnBkTUw3c1VrQWtjalRtWk0rM2NIeGtTNnkwaFZLUittcG8xWWU0MWt5MnFK?=
+ =?utf-8?B?OFc1Y2RKcTZxbkpkVmUzODk5a2NJeHQvSnhNaGRsMW9wcmRURVdtMEFBSUdB?=
+ =?utf-8?B?ZmtaMm9GN0FyeGlpUkhqclB4c2poUFhvMHhNSlZQUmdSWkNnZmp2Qm9LRDJ5?=
+ =?utf-8?B?cDBHdlU2UDJHbnBrNmZ0am96Rko3ekI5SVdpVzRPY24ydk8xLzFobmtHMU1K?=
+ =?utf-8?B?eTZ2NWJxTUdPRGp3UWgzL3l6eHVGT3Z2KzcwQ0xEVGpnT1BUMzRNTkEyQktB?=
+ =?utf-8?B?NEFjM2pqOUhvY0xiZ2lleHVBZFBhdHNmc2RuVW9XWFhCUGMwREJ3bUhrVHlI?=
+ =?utf-8?B?L3dPQy9CdmtIMldnWk9DL1EzT3UrQ004a1drd2VGT0ZGUEhQSGRwbFFIODRD?=
+ =?utf-8?B?a1AxUndnZEZrMnRuSEtZckZLeFA0dFRWUUIrRGR6VUNWazZPZjlLa29OdzRH?=
+ =?utf-8?B?aDhtbWRSVkdTRTJCWTFVSmxYcVU5N1ZzWmhrdXc3YUMyMnozZjhtU1B2ZGU1?=
+ =?utf-8?B?b1FaY25JOGw5WDRYd21mclFMZlFtK3hjeXVwQk5YeVVHWHhpbTRrVFk4SWVi?=
+ =?utf-8?B?ZVYxOGVQV3lsN051bXpUc2kwTmtOa2FYOWtjR05abnJ0aUpsQTREeG5vcjJz?=
+ =?utf-8?B?dFFYZGpDdG96NTNPbWNTVE1YazFleU9IYytQdExwdjJrclJDYmQ0djZhaVZP?=
+ =?utf-8?B?bjUyQittNTBEUENpVU1nNjg3K3VhZnNqVVViSHN0cVBWNzF0WGlnK0Z4eXpn?=
+ =?utf-8?B?NjFBL3BlQVBFaGZQRFhiK1JwRkpydGtpRFl1T3JZNGpCaVdPaklzZ0hneXdq?=
+ =?utf-8?B?eU5WNE9HZ1F2ZUdoNHRVNWdWemxOckNYTFpQVzJkaUxyM2J2UWx1T3pKbW1M?=
+ =?utf-8?B?RCswd2NLV3FEMTdTOHVvTTlOdWR6cCtZWkFOV21PVUY1YWxWVlJrMk1DWkk2?=
+ =?utf-8?B?ZEtMMlhpNE9FRVNGY1U4bllwQzBaa0N2ZWpEdHdqcW1FZEZyV0xROHdaUTl5?=
+ =?utf-8?B?K1hublc3VUo2TEtLK0xFSXFhTDA2eUZIWkI5bE1WZEJ2NWpWWlpLUm54clVM?=
+ =?utf-8?B?eXVoRVZqMHhIVEdTNElXa1ZuUVhKa2gwWnJKSXlGM09EdDNZSnNlUW0yKy9E?=
+ =?utf-8?B?NG1YQ0ExaFZkVjYyT1Y4TWJHSno4NFNRUlVPOVE0Ym5sU2ZsS3V4eEltZUty?=
+ =?utf-8?B?Sjl2SE0xOEdGMGhOaUpTUk5rNlNVZE91cnlEem9ZZXR3MTRJemJ2OTd3TDQ1?=
+ =?utf-8?B?YllSZGoyQnR2c3F5T0kybjlESHlSeW1hYlcxdkY0TmR2SXEvamNWWUUrVVVQ?=
+ =?utf-8?B?SmNXREtkTkIxYm5vSEdJakxwbVJjWjZ2MWVzb0dwdlBpM2NyVjZvVm5KR3FZ?=
+ =?utf-8?B?NGNHWmYwUXpKR3ZYVXVTRjZzeXdTbGpxUHMrS3R5RnY4Q09hZHNkV3dneFVU?=
+ =?utf-8?B?VzQ0aWhKNkU2OFR0bmhQaFZCKzU2YlFRUENIQ25VS1JvLzNXcy9yaUZQbjVu?=
+ =?utf-8?B?NGh4VURXYi9yM0NyV1M4ei9DaHdBbDljZWc3MEJ1dFNiME5iOEtjMTV3ZGpk?=
+ =?utf-8?B?LzVsY1o0N0dtRlBTY1JUQXJsSEllRkFpU0JFMnJsaERaam1kSmEwbExuNi9h?=
+ =?utf-8?B?V25RSTU0MEM0U0h6UHB5ZDZkWG5ZZkZOaFFIbGhSS3pGRC9GTXpkRmNSZWpq?=
+ =?utf-8?B?OXkvQkdXdjE5Y2J0YzI3d1FLZ3hmL0NFQVFNZkk2dnNUMFJ0ZjVpUUovRzhD?=
+ =?utf-8?Q?W+IMwHZAX93tF4QWUhy+YuKd94GRPhgX?=
+X-Microsoft-Antispam-Message-Info: UKkBEQWNNguoJy1o0T3HDYvx2hs93f1HrCuEC+8jP0PQL7zFM+c4iG0k5ZFIcIsF/JiX4+e6yC/bQbb9IRCBkUcZE+M7uympnrFX5OUWzY1UTivWAKIlMjSZNyzTCdnAQAjAZ1Tv2n8MJXrGzwctTtazaiXaoqiSD3rgDLoSznBDs4PXrSCudx3JzzXL4yM/YvFubPVoosCmp+X5QvEnnRStb1exhMGx1LrqZcy0sca7S7Y6xhZNix6muwFtOw69yvHPdcrw/8v+GXaUgN5emSTWxmnMvuDvR78VeJ12zjrTsddRQj0kxb2K8O4DOQ+zxA4dhiHymkMYYUi9fiUPOem8Tum0dTSXoFNAjr/P0Hs=
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;6:WyfLbvbhLyr8LyRCcoP3jSURSruAqcM63Yi0xy5qHuBk+qgzqN6S3Wp1jgJdmKQBspjgRViPFdn8YiBDCBlmJhC4neUnMeBH81fkuo1rSMXG69SjZMD9h09vdeC0pGIzi1wTeYG7Tud/1zrCgBEKX1oXGAr5iQoS1WTU7fRf5hW6ecPOTqEcALBAq2Kxi0J5wrt8RnuFCh33928stIxB5bEoz5owHjHxcztzeKWXmpfKWU2JNOkpJf0SLtjyvH9gS5+sk4Z0Lp2yFZEso/sSGseiHGib61+lJ+c6g7s5Kr1RkWSO5QXeqMq5SnLE7B6rubycH6zsMie2Yjfzw+FhWHqoKAlXGqLfDZtR7f5Vu/rRgi2aElfbiVw9QelhrYHWhjdg8sgHigvglJXNMV0btx/GYxzgO9fYlOVEC76d/6avvOdDV+xxps+A4OFSYPlLaQno3mWKSWzCkrqibMo5tg==;5:bNR66ewq88DvJYEOqCU7rSKcp15u5ToC4Twx0JYcFHoYC8eNLejZ1ijuQNl5wI5AQylKywAPQe2GfZu24c9+i7OcQMB6G2fAe9A1qVAVvpvkJEA2e+9BpNHf7f597MU+8GHY90jQgqhdvKzqJiTjW/CKKh3jZ3oSVJHZw9CI+FY=;7:8iXVs21EwJtVGrhlXSj+rCxnhAybzkBFC4aq9d3lh83Cp+MC8EXXoeSyL93mTEt7n3G0qAHNblk/LQTnYV0bYKXhi5xLXd/a+ofB+Op+uyY2P+vf4AUY7NGimfq1oMU/wHNoYtSlvNtTjkDeYIEpWQ04696Ibg15biGqGFe4gtf+n+ew3msTXKFHAs7IKojv6q+Ra2BtQLvUizWZpnoNPuB8E9TRXVvJNyYgTByzNGhm2LJkq8h8lX8LKl2YRT4l
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2018 00:48:33.5161 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce13145e-2c7c-4b42-3aa2-08d5f0ff2eec
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2018 01:21:18.8843 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e2871f7-e4c3-4762-dc3f-08d5f103c25c
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4933
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4942
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65066
+X-archive-position: 65067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -101,28 +118,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Hi Huacai,
 
-On Sun, Jul 08, 2018 at 05:07:12PM +0200, Paul Cercueil wrote:
-> Having the zload address at 0x8060.0000 means the size of the
-> uncompressed kernel cannot be bigger than around 6 MiB, as it is
-> deflated at address 0x8001.0000.
-> 
-> This limit is too small; a kernel with some built-in drivers and things
-> like debugfs enabled will already be over 6 MiB in size, and so will
-> fail to extract properly.
-> 
-> To fix this, we bump the zload address from 0x8060.0000 to 0x8100.0000.
-> 
-> This is fine, as all the boards featuring Ingenic JZ SoCs have at least
-> 32 MiB of RAM, and use u-boot or compatible bootloaders which won't
-> hardcode the load address but read it from the uImage's header.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  arch/mips/jz4740/Platform | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Please stop top-posting - you make it difficult to reply. I know you've
+mentioned difficulties sending mail from your @lemote.com address but no
+matter which email address you're using you should be able to format
+your email properly if you're using a suitable email client.
 
-Thanks - applied to mips-next for 4.19 (and tested on Ci20).
+On Tue, Jun 19, 2018 at 02:50:36PM +0800, 陈华才 wrote:
+> > I think it'd be neater if we did this from C in cpu_probe_loongson()
+> > though. If we add __BUILD_SET_C0(config6) to asm/mipsregs.h and define a
+> > macro naming the SFB enable bit then both boot CPU & secondary cases
+> > could be handled by a single line in cpu_probe_loongson(). Something
+> > like this:
+> > 
+> >     set_c0_config6(LOONGSON_CONFIG6_SFB_ENABLE);
+> > 
+> > Unless there's a technical reason this doesn't work I'd prefer it to the
+> > assembly version (and maybe we could move the LPA & ELPA configuration
+> > into cpu-probe.c too then remove asm/mach-loongson64/kernel-entry-init.h
+> > entirely).
+>
+> We should enable SFB/ELPA as early as possible, because it is
+> dangerous if one core is SFB-enabled why another core isn't. ELPA is
+> similar.
 
-Paul
+Why is it dangerous, and in what circumstances?
+
+Based on commit messages & our other discussions about the SFB my
+understanding is that it sits within a core, between the CPU pipeline &
+the core's L1 data cache. Why would another core care about it being
+enabled or disabled? How could the other core even tell?
+
+Thanks,
+    Paul

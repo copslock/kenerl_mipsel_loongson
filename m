@@ -1,53 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 15:11:43 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:52652 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994002AbeGXNLgoyzMB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jul 2018 15:11:36 +0200
-Received: from localhost (unknown [171.61.90.205])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5AD5620875;
-        Tue, 24 Jul 2018 13:11:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1532437890;
-        bh=ZbqDJKeq58If8A+a5JAw0oIyX+jmylv6EzSkZrCKJ4E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E7FfNi7rwW4Ank8UpoHk7rAfkyR2iNDuH3d8RhidG4eqauToeRaaQYrp95Q8goUw5
-         dKmUCjdlD0LopPSP8ZBPZU5JU0bjebVrdchRXko4bSsmed0swsff+djlVx8/lpGRNB
-         sAPaenFZShDTU/eEkyg2KlErCv2syFCic5nvknvQ=
-Date:   Tue, 24 Jul 2018 18:41:21 +0530
-From:   Vinod <vkoul@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Daniel Silsby <dansilsby@gmail.com>, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2018 15:12:25 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:34771
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994002AbeGXNMVfyx9B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2018 15:12:21 +0200
+Received: by mail-io0-x244.google.com with SMTP id l7-v6so3360920ioj.1;
+        Tue, 24 Jul 2018 06:12:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=8UIwKo3vKu34kwq38jTrg/7yVc2pABmsTxvJtRzXveo=;
+        b=jCEGxpO0GlNOS1vR/jKZqK+wPOG409bYqubTA9ZXDj6vbU7jmmY8BKmQJykScHprDL
+         0P0BIIMom03JpKJ25MSJ1isnoquHF8wVffClLw06SzHLVFvRtLh0KAhGyd1e4AdwlM5q
+         afbXSzQp2J38Wd08g9IvT9SRitsv3fktofVJ7WMlYpjusRxlo+m/phAMCq4qKWdIQP6J
+         V+qmZ40EkbhH5kn/7PQPBHtY0PSJhq5E9FnQIEratoPiwbBgAvIYAGuzqLMvizHfiZAU
+         kXiDUCU4U2bt5cXU8kat0CgQdSyY2xrDWgnzyUBdAjQWTCNJZuGcDzlXJvHBLXMrne2N
+         SVXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=8UIwKo3vKu34kwq38jTrg/7yVc2pABmsTxvJtRzXveo=;
+        b=T1jUrga7lUW4e+1+RwCJbj/RwXrRlq7q7goi8slzR5GzwiZ3/NukM1KYAYdjuXyO14
+         vucYFPEKLh4xUDfAlK6n84Rbbqe3bNoxRvd4adQS2Q6qGcYdhRTE+2RnMioPOLuSpZsR
+         AgGA+DQmwdVRR1DQgzNlCCWNdrnEm0DTRR2U+4a3xgnZ4Fqkmb4XSuQu0NJIY3iHuWBW
+         XiB3k0l0sIbdNbUrws0hE9h8b0jRavHf2bqgoseVPi4TFAscqaPL9jh0X0q8CFQl9Efp
+         C5PLXCi34MpbCIhpXSz105j29jLw8QacmMWSjwwOQNyZ+SOnJhA5iPbl3IsD/9xyX/fh
+         m8pA==
+X-Gm-Message-State: AOUpUlFvPoWzKPq9SMDRVFm3LN5zHFrkBKBtXTOX8G9ThPcZYGsHvyjV
+        Z0vg5nmD43+algRU/cCf/YY=
+X-Google-Smtp-Source: AAOMgpfP4GYha/VGjZoGk4RUOMvkhkuEDtMOx2veKDawzN21GctPTlCZThqD6KQWIwDQlq1SW8d6Ig==
+X-Received: by 2002:a6b:e913:: with SMTP id u19-v6mr13829627iof.38.1532437935249;
+        Tue, 24 Jul 2018 06:12:15 -0700 (PDT)
+Received: from [10.0.2.15] ([72.138.96.106])
+        by smtp.gmail.com with ESMTPSA id z71-v6sm9037035ioz.34.2018.07.24.06.12.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Jul 2018 06:12:14 -0700 (PDT)
+Subject: Re: [PATCH 1/2] MIPS: Introduce HAS_RAPIDIO Kconfig option
+To:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 00/18] JZ4780 DMA patchset v3
-Message-ID: <20180724131121.GE3661@vkoul-mobl>
-References: <20180721110643.19624-1-paul@crapouillou.net>
- <20180723175846.udmjtkx7fsaf52wa@pburton-laptop>
- <1532430574.2610.0@smtp.crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Matt Porter <mporter@kernel.crashing.org>
+References: <20180724123200.6588-1-alexander.sverdlin@nokia.com>
+From:   Alex Bounine <alex.bou9@gmail.com>
+Message-ID: <46c35e1a-15df-f4e1-ae9e-cb87ffed9a7b@gmail.com>
+Date:   Tue, 24 Jul 2018 09:12:13 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1532430574.2610.0@smtp.crapouillou.net>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <vkoul@kernel.org>
+In-Reply-To: <20180724123200.6588-1-alexander.sverdlin@nokia.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <alex.bou9@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65079
+X-archive-position: 65080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vkoul@kernel.org
+X-original-sender: alex.bou9@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,35 +76,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 24-07-18, 13:09, Paul Cercueil wrote:
-> Hi,
-> 
-> Le lun. 23 juil. 2018 à 19:58, Paul Burton <paul.burton@mips.com> a écrit :
-> > Hi Paul & Vinod,
-> > 
-> > On Sat, Jul 21, 2018 at 01:06:25PM +0200, Paul Cercueil wrote:
-> > >  This is the version 3 of my jz4780-dma driver update patchset.
-> > > 
-> > >  Apologies to the DMA people, the v2 of this patchset did not make
-> > > it to
-> > >  their mailing-list; see the bottom of this email for a description
-> > > of
-> > >  what happened in v2.
-> > > 
-> > >  Changelog from v2 to v3:
-> > > 
-> > >  - Modified the devicetree bindings to comply with the specification
-> > > 
-> > >  - New patch [06/18] allows the JZ4780 DMA driver to be compiled
-> > > within a
-> > >    generic MIPS kernel.
-> > 
-> > Would you prefer to take the MIPS .dts changes in patches 16-18 through
-> > the DMA tree with the rest of the series?
-> 
-> I think it would make sense yes.
+Acked-by: Alexandre Bounine <alex.bou9@gmail.com>
 
-okay will do so when the series is merged
 
--- 
-~Vinod
+On 2018-07-24 08:31 AM, Alexander Sverdlin wrote:
+> Introduce the same option as PPC and ARM already have because
+> RAPIDIO can function in the absence of PCI.
+> 
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+> ---
+>   arch/mips/Kconfig | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index a6ce5087b729..b7fa44ddf452 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -3104,10 +3104,13 @@ config ZONE_DMA32
+>   
+>   source "drivers/pcmcia/Kconfig"
+>   
+> +config HAS_RAPIDIO
+> +	bool
+> +	default n
+> +
+>   config RAPIDIO
+>   	tristate "RapidIO support"
+> -	depends on PCI
+> -	default n
+> +	depends on HAS_RAPIDIO || PCI
+>   	help
+>   	  If you say Y here, the kernel will include drivers and
+>   	  infrastructure code to support RapidIO interconnect devices.
+> 

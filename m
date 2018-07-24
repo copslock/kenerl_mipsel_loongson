@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 01:24:09 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:34432 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 01:24:18 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:35108 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994542AbeGXXUoTqKRu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2018 01:20:44 +0200
+        with ESMTP id S23994561AbeGXXUqKxtUu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2018 01:20:46 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -21,17 +21,17 @@ Cc:     Paul Cercueil <paul@crapouillou.net>, linux-pwm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
         linux-doc@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: [PATCH v5 19/21] MIPS: CI20: Reduce system timer clock to 3 MHz
-Date:   Wed, 25 Jul 2018 01:19:56 +0200
-Message-Id: <20180724231958.20659-20-paul@crapouillou.net>
+Subject: [PATCH v5 20/21] MIPS: CI20: defconfig: enable OST driver
+Date:   Wed, 25 Jul 2018 01:19:57 +0200
+Message-Id: <20180724231958.20659-21-paul@crapouillou.net>
 In-Reply-To: <20180724231958.20659-1-paul@crapouillou.net>
 References: <20180724231958.20659-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1532474443; bh=8Yt9sphAYtinnrfMi2DD4jUv/yg73cz1CCOO1dadOKk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=S2l6Cs7hoUsZa8cOI+P4OiVLEEhYy0gNcixIVn7OsyVJa3rFJjtquaAgqndMyz5sLbLBpiIEX8FUlSi6oSg3g8KzWkWKbDzDx/ohuf4TGUu5XzuL+YtwLvNHxx2JC/I8ZJY6vEPOy+JxZ7rRgl1GfFz6TkkCHFoAHtJ5Y2M1qEA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1532474445; bh=eMar+wTGsGXHxw8aBujswzMNTp1sEYYsBh4cks8KBKk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=dHpZFenM+2X5SC/Ka3k8Dirj20mlYpYJ6YJmUeSs9w6gCbDr+o6PW/WmdiV0vgajAb9W4aklKE31AIxXct/CfplsxEXEbPDpLNO1rD+kP0yDjf3fJrWnJIAiExdT6a34AUrwHIcAd0TgRW4l0YL86DsRNIZgls6Lp9l0ugnIQYA=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65118
+X-archive-position: 65119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,29 +48,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The default clock (48 MHz) is too fast for the system timer, which fails
-to report time accurately.
+The OST driver provides a clocksource and sched_clock that are much more
+accurate than the default ones.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/configs/ci20_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
  v5: New patch
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 50cff3cbcc6d..700cf28a52ec 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -238,3 +238,9 @@
- 		bias-disable;
- 	};
- };
-+
-+&tcu {
-+	/* 3 MHz for the system timer */
-+	assigned-clocks = <&tcu TCU_CLK_TIMER0>;
-+	assigned-clock-rates = <3000000>;
-+};
+diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+index be23fd25eeaa..e56dc5c024b9 100644
+--- a/arch/mips/configs/ci20_defconfig
++++ b/arch/mips/configs/ci20_defconfig
+@@ -109,6 +109,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_JZ4740=y
+ CONFIG_DMADEVICES=y
+ CONFIG_DMA_JZ4780=y
++CONFIG_INGENIC_OST=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_MEMORY=y
+ CONFIG_EXT4_FS=y
 -- 
 2.11.0

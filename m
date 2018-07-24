@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 00:12:44 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:34288 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 00:15:56 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:34744 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993981AbeGXWMkyhhFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jul 2018 00:12:40 +0200
+        id S23994243AbeGXWPvTxjGC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Jul 2018 00:15:51 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id F1AF0AFBA;
-        Tue, 24 Jul 2018 22:12:32 +0000 (UTC)
-Subject: Re: [PATCH] checks: Detect cascoda,ca8210 extclock-gpio
- false-positive
-To:     Paul Burton <paul.burton@mips.com>, Rob Herring <robh@kernel.org>
-Cc:     Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
-        David Gibson <david@gibson.dropbear.id.au>,
-        Jon Loeliger <jdl@jdl.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Harry Morris <h.morris@cascoda.com>,
-        Harry Morris <harrymorris12@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Stefan Schmidt <stefan@osg.samsung.com>
-References: <20180724000647.okbjmghv4w66bl7u@pburton-laptop>
- <20180724180940.20249-1-paul.burton@mips.com>
- <CAL_JsqKs2RkWVo=WXVdhD+qs0jP2bDA3w6U=PeBSd=J9QiFCHw@mail.gmail.com>
- <20180724201738.brkxgsoovcng52a7@pburton-laptop>
+        by mx1.suse.de (Postfix) with ESMTP id 6039BAFA6;
+        Tue, 24 Jul 2018 22:15:45 +0000 (UTC)
+Subject: Re: [PATCH 04/15] MIPS: dts: img: pistachio_marduk: Switch mmc to 1
+ bit mode
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Ian Pozella <Ian.Pozella@imgtec.com>,
+        James Hartley <james.hartley@sondrel.com>,
+        Rahul Bedarkar <rahulbedarkar89@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
+References: <20180722212010.3979-1-afaerber@suse.de>
+ <20180722212010.3979-5-afaerber@suse.de>
 From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
@@ -67,12 +65,12 @@ Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
  ceCeyZUP1zSgRSjgITQp691Uli5Nd1mIzaaM8RjOE/Rw67FwgblKR6HAhSy/LYw1HVOu+Ees
  RAEdbtRt37A8brlb/ENxbLd9SGC8/j20FQjit7oPNMkTJDs7Uo2eb7WxOt5pSTVVqZkv7Q==
 Organization: SUSE Linux GmbH
-Message-ID: <96e4ccf1-0624-4840-d12d-39812324217e@suse.de>
-Date:   Wed, 25 Jul 2018 00:12:28 +0200
+Message-ID: <1b7064bc-7008-2c1c-2398-143401bbc368@suse.de>
+Date:   Wed, 25 Jul 2018 00:15:44 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20180724201738.brkxgsoovcng52a7@pburton-laptop>
+In-Reply-To: <20180722212010.3979-5-afaerber@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -80,7 +78,7 @@ Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65096
+X-archive-position: 65097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,52 +95,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rob and Paul,
+Am 22.07.2018 um 23:19 schrieb Andreas Färber:
+> From: Ian Pozella <Ian.Pozella@imgtec.com>
+> 
+> The mmc block in Pistachio allows 1 to 8 data bits to be used.
+> Marduk uses 4 bits allowing the upper 4 bits to be allocated
+> to the Mikrobus ports. However these bits are still connected
+> internally meaning the mmc block recieves signals on all data lines
 
-Am 24.07.2018 um 22:17 schrieb Paul Burton:
-> On Tue, Jul 24, 2018 at 01:16:28PM -0600, Rob Herring wrote:
->> On Tue, Jul 24, 2018 at 12:10 PM Paul Burton <paul.burton@mips.com> wrote:
->>>
->>> The binding for the cascoda,ca8210 IEEE 802.15.4 (6LoWPAN) device
->>> includes an extclock-gpio property which does not contain a gpio-list,
->>> but is instead an integer representing a pin of the device itself. This
->>> falls foul of the gpios_property check, for example:
->>>
->>>     DTC     arch/mips/boot/dts/img/pistachio_marduk.dtb
->>>   arch/mips/boot/dts/img/pistachio_marduk.dtb: Warning (gpios_property):
->>>     /spi@18100f00/sixlowpan@4: Missing property '#gpio-cells' in node
->>>     /clk@18144000 or bad phandle (referred from extclock-gpio[0])
->>>
->>> Extend the checking for false-positives in prop_is_gpio() to detect this
->>> case in addition to the existing nr-gpio case. The false-positive cases
->>> are described by an array including a compatible string & property name.
->>> A NULL compatible string indicates that the property may be present in
->>> any node, otherwise the property is only allowed in a node compatible
->>> with the given string. This allows us to whitelist the extclock-gpio
->>> property for the cascoda,ca8210 device without allowing it anywhere
->>> else.
->>
->> IMO the binding should be fixed. It wasn't reviewed and there are no
->> dts files using it. I see several issues with it.
+"receives"
 
-It looked strange to me, too, so revising it will be appreciated. Will
-you be driving this, Rob? Thanks.
+I had fixed a number of typos from the downstream patches already, but
+this one slipped through.
 
-BTW not a single binding in net/ieee802154/ has Rob's Reviewed-by or
-Acked-by, not just this binding.
-
-> Okie dokie - I'll drop Andreas' series that makes use of it[1] until
-> this is addressed.
-
-Please continue reviewing the remainder of that series - the patches
-before could easily be applied for anyone wanting to work on this board.
-And the patches after that are not about DT are independent, too.
-Only patches 6-8 are affected.
-
-Who knows how long fixing the binding will take...
-
-Thanks,
+Regards,
 Andreas
+
+> and seems the internal HW CRC checks get corrupted by this erroneous
+> data.
+> 
+> We cannot control what data is sent on these lines because they go
+> to external ports. 1 bit mode does not exhibit the issue hence the
+> safe default is to use this. If a user knows that in their use case
+> they will not use the upper bits then they can set to 4 bit mode in
+> order to improve performance.
+> 
+> Also make sure that the upper 4 bits don't get allocated to the mmc
+> driver (the default is to assign all 8 pins) so they can be allocated
+> to other drivers. Allocating all 4 despite setting 1 bit mode as this
+> matches what is there in hardware.
+> 
+> Signed-off-by: Ian Pozella <Ian.Pozella@imgtec.com>
+> Signed-off-by: Andreas Färber <afaerber@suse.de>
+[snip]
 
 -- 
 SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany

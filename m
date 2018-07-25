@@ -1,53 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 01:30:42 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:51178 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 01:43:41 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:53046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992960AbeGYXaiQqB53 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 01:30:38 +0200
+        id S23992960AbeGYXnhbf463 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 01:43:37 +0200
 Received: from localhost (unknown [104.132.1.75])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5FF4D20685;
-        Wed, 25 Jul 2018 23:30:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DC04020843;
+        Wed, 25 Jul 2018 23:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1532561431;
-        bh=simC5lAovSMiFfejwgnGnX0qhpV0mdP44Vc15Qe8+DI=;
+        s=default; t=1532562211;
+        bh=Xpz05yOHXuOaXz5yICYb5lLz8DSVKMe03Lva9oeOe5M=;
         h=To:From:In-Reply-To:Cc:References:Subject:Date:From;
-        b=MlFYSk55iP8BvRE1Yod7juRytg0sUHOIKJ6OTtFTNDasvVI09wa9Vg1KQcd+pfJXX
-         nyGtJvYbC0k+Mj4CTgc7WRPVkbWWJMeDsOcCz+/GUG3ybYwaWsTeOe9KM4ftNPQSTb
-         577aTkKIIwFJ0vvsZ6HK1/TKbH0NT/hMJp1zAf9I=
+        b=nJd2VZNLobe2r9v75BPM13p8i84y7EdzDV/JWBLTDOHGesWCqXSVPjcWgNyrHKQMn
+         0lX+HwtdDHPw6iTQegnVY+xamKH7AWSOnr1nRKU9RD0UDL90uTMFWiPLbYJVn1e/rU
+         XT0F8q1rxV7D1WwZ+TTpzr7OkGJbXt29+O5SMNAg=
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>
+To:     =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        linux-mips@linux-mips.org
 From:   Stephen Boyd <sboyd@kernel.org>
-In-Reply-To: <20180724231958.20659-15-paul@crapouillou.net>
-Cc:     Paul Cercueil <paul@crapouillou.net>, linux-pwm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20180724231958.20659-1-paul@crapouillou.net>
- <20180724231958.20659-15-paul@crapouillou.net>
-Message-ID: <153256143066.48062.8671703408424915070@swboyd.mtv.corp.google.com>
+In-Reply-To: <20180722212010.3979-16-afaerber@suse.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Govindraj Raja <Govindraj.Raja@imgtec.com>,
+        =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20180722212010.3979-1-afaerber@suse.de>
+ <20180722212010.3979-16-afaerber@suse.de>
+Message-ID: <153256221029.48062.5074371246522411479@swboyd.mtv.corp.google.com>
 User-Agent: alot/0.7
-Subject: Re: [PATCH v5 14/21] clk: jz4740: Add TCU clock
-Date:   Wed, 25 Jul 2018 16:30:30 -0700
+Subject: Re: [PATCH 15/15] clk: pistachio: Fix wrong SDHost card speed
+Date:   Wed, 25 Jul 2018 16:43:30 -0700
 Return-Path: <sboyd@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65148
+X-archive-position: 65149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,11 +58,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Quoting Paul Cercueil (2018-07-24 16:19:51)
-> Add the missing TCU clock to the list of clocks supplied by the CGU for
-> the JZ4740 SoC.
+Quoting Andreas Färber (2018-07-22 14:20:10)
+> From: Govindraj Raja <Govindraj.Raja@imgtec.com>
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> The SDHost currently clocks the card 4x slower than it
+> should do, because there is a fixed divide by 4 in the
+> sdhost wrapper that is not present in the clock tree.
+> To model this, add a fixed divide by 4 clock node in
+> the SDHost clock path.
+> 
+> This will ensure the right clock frequency is selected when
+> the mmc driver tries to configure frequency on card insert.
+> 
+> Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+> Signed-off-by: Andreas Färber <afaerber@suse.de>
 > ---
 
 Acked-by: Stephen Boyd <sboyd@kernel.org>

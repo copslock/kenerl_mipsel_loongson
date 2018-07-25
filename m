@@ -1,66 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 17:22:16 +0200 (CEST)
-Received: from mail-it0-f66.google.com ([209.85.214.66]:53052 "EHLO
-        mail-it0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992960AbeGYPWMkr4r- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2018 17:22:12 +0200
-Received: by mail-it0-f66.google.com with SMTP id p4-v6so9237296itf.2;
-        Wed, 25 Jul 2018 08:22:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wUGZ8yQvdACe2ZxrMtgWCtHxkP603WoiUzJ1qHIXpvY=;
-        b=gtZ711FwxKmDRBYYHf2V40t8GLvFEnWL711JrWUYXgR9LKgTc/9lwKYFT8xOv1vBOZ
-         g/Tx1t8hnz6SJ0C718Fpy1x//j/7nmsjQlLo6STEZRGe3Am7oBoSMrEDl36XatROsCE7
-         TE1ys6F4prSOtjdSU8fcMHZcqSrg/PAIE/x3QqlMWEsb6nF6s+G1FStPZlwBPOpQWAP+
-         kA97kbbQOf1TWCmNtxKbIMfTJ+cicAS8Loy2PP8YHVaWlPXEh3g8b97xcoo7p9hMIexq
-         G45y54p2TCKRexaAnKeSd1on5jgH5L8r9nkzJahn2g4Epj14sLlJWWob/D8u3l0X8HsE
-         5vpA==
-X-Gm-Message-State: AOUpUlGeV67q7RyO3vp2yejPSzggGdzYlaFPS4xeGs5Fn5oT2i1fGPOI
-        L/oS/VAO970wKutZArRItA==
-X-Google-Smtp-Source: AAOMgpfBERNduaebSHhGkU6RDd/OglPPwcFWY+zzqYRU/xkD3PrLTJ5XAwxdVAPAPadsFNNwidgHRA==
-X-Received: by 2002:a24:7941:: with SMTP id z62-v6mr6323443itc.20.1532532126594;
-        Wed, 25 Jul 2018 08:22:06 -0700 (PDT)
-Received: from localhost ([24.51.61.72])
-        by smtp.gmail.com with ESMTPSA id f195-v6sm2635184itf.41.2018.07.25.08.22.05
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 25 Jul 2018 08:22:06 -0700 (PDT)
-Date:   Wed, 25 Jul 2018 09:22:05 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-pwm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v5 14/21] clk: jz4740: Add TCU clock
-Message-ID: <20180725152205.GA6941@rob-hp-laptop>
-References: <20180724231958.20659-1-paul@crapouillou.net>
- <20180724231958.20659-15-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 17:29:23 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:51496 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991947AbeGYP3SqWVXl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Jul 2018 17:29:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=nH9S0LjWh4oTkmn63aZ2ajZQBlwJkJU0JRfUHqM8uz8=;
+        b=dcO185ZM06TNpCfDFjVVYM69i5B2G4ZB9fl61+xnNJObFHMGEzaQKFC4iKDpow5kU0InY1oKtq6poAER+jh9FFqWCq/IczyH6vc5PtzYrTC/Z2Dkq7l6+xRgLTitATnnRRdkRxb2RMJLEStWZ31R2iaEuTFELhtGe2I2C9axxDo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1fiLij-0004aR-RZ; Wed, 25 Jul 2018 17:28:57 +0200
+Date:   Wed, 25 Jul 2018 17:28:57 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com
+Subject: Re: [PATCH 3/4] net: lantiq: Add Lantiq / Intel vrx200 Ethernet
+ driver
+Message-ID: <20180725152857.GB16819@lunn.ch>
+References: <20180721191358.13952-1-hauke@hauke-m.de>
+ <20180721191358.13952-4-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180724231958.20659-15-paul@crapouillou.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <20180721191358.13952-4-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65141
+X-archive-position: 65142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,14 +47,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 25, 2018 at 01:19:51AM +0200, Paul Cercueil wrote:
-> Add the missing TCU clock to the list of clocks supplied by the CGU for
-> the JZ4740 SoC.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
->  include/dt-bindings/clock/jz4740-cgu.h | 1 +
->  2 files changed, 7 insertions(+)
+> +	/* Make sure the firmware of the embedded GPHY is loaded before,
+> +	 * otherwise they will not be detectable on the MDIO bus.
+> +	 */
+> +	of_for_each_phandle(&it, err, np, "lantiq,phys", NULL, 0) {
+> +		phy_np = it.node;
+> +		if (phy_np) {
+> +			struct platform_device *phy = of_find_device_by_node(phy_np);
+> +
+> +			of_node_put(phy_np);
+> +			if (!platform_get_drvdata(phy))
+> +				return -EPROBE_DEFER;
+> +		}
+> +	}
 
-Acked-by: Rob Herring <robh@kernel.org>
+Is there a device tree binding document for this somewhere?
+
+   Andrew

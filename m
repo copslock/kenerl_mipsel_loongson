@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 14:32:24 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:41878 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 16:20:46 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:51407 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992479AbeGYMcUhtC38 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jul 2018 14:32:20 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 9E0DA20876; Wed, 25 Jul 2018 14:32:14 +0200 (CEST)
-Received: from localhost (unknown [80.255.6.130])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 651FA2072F;
-        Wed, 25 Jul 2018 14:32:04 +0200 (CEST)
-Date:   Wed, 25 Jul 2018 14:32:04 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Quentin Schulz <quentin.schulz@bootlin.com>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH] MIPS: mscc: ocelot: fix length of memory address space
- for MIIM
-Message-ID: <20180725123204.GD3539@piout.net>
-References: <20180725122132.31187-1-quentin.schulz@bootlin.com>
+        id S23992289AbeGYOUmFSQXW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Jul 2018 16:20:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=gGxghg49+Ehyza/tzm8SCLHSpPJHJzrJyy0jYZ9uZ4E=;
+        b=eIL6PoQuw1P+YPYEC+Kll0yoMXvr5r2rhA7H6YOf6z3Df+sB9IUKSJfNVdojPcdU5nPvntRfEIXATRbPBV//2R3eAQjrL1b07/xbEnMSMFeRja80MnjhYZHbicFkHiiPkhsxMBmpJx0eQnmXrCqLqLOu745O2PzEiRnQ3MlLcS4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1fiKeL-0003yP-R3; Wed, 25 Jul 2018 16:20:21 +0200
+Date:   Wed, 25 Jul 2018 16:20:21 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com
+Subject: Re: [PATCH 2/4] net: dsa: Add Lantiq / Intel GSWIP tag support
+Message-ID: <20180725142021.GB13891@lunn.ch>
+References: <20180721191358.13952-1-hauke@hauke-m.de>
+ <20180721191358.13952-3-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180725122132.31187-1-quentin.schulz@bootlin.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <20180721191358.13952-3-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65138
+X-archive-position: 65139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,38 +46,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 25/07/2018 14:21:32+0200, Quentin Schulz wrote:
-> The length of memory address space for MIIM0 is from 0x7107009c to
-> 0x710700bf included which is 36 bytes long in decimal, or 0x24 bytes in
-> hexadecimal and not 0x36.
+On Sat, Jul 21, 2018 at 09:13:56PM +0200, Hauke Mehrtens wrote:
+> This handles the tag added by the PMAC on the VRX200 SoC line.
 > 
-> Fixes: 49b031690abe ("MIPS: mscc: Add switch to ocelot")
+> The GSWIP uses internally a GSWIP special tag which is located after the
+> Ethernet header. The PMAC which connects the GSWIP to the CPU converts
+> this special tag used by the GSWIP into the PMAC special tag which is
+> added in front of the Ethernet header.
 > 
-> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> This was tested with GSWIP 2.0 found in the VRX200 SoCs, other GSWIP
+> versions use slightly different PMAC special tags
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 
-> ---
->  arch/mips/boot/dts/mscc/ocelot.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
-> index 4f33dbc67348..7096915f26e0 100644
-> --- a/arch/mips/boot/dts/mscc/ocelot.dtsi
-> +++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
-> @@ -184,7 +184,7 @@
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			compatible = "mscc,ocelot-miim";
-> -			reg = <0x107009c 0x36>, <0x10700f0 0x8>;
-> +			reg = <0x107009c 0x24>, <0x10700f0 0x8>;
->  			interrupts = <14>;
->  			status = "disabled";
->  
-> -- 
-> 2.14.1
-> 
+Hi Hauke
 
--- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+This looks good. A new minor nitpicks below.
+
+> +#include <linux/bitops.h>
+> +#include <linux/etherdevice.h>
+> +#include <linux/skbuff.h>
+> +#include <net/dsa.h>
+> +
+> +#include "dsa_priv.h"
+> +
+> +
+> +#define GSWIP_TX_HEADER_LEN		4
+
+Single newline is sufficient.
+
+> +/* Byte 3 */
+> +#define GSWIP_TX_CRCGEN_DIS		BIT(23)
+
+BIT(23) in a byte is a bit odd.
+
+> +#define GSWIP_TX_SLPID_SHIFT		0	/* source port ID */
+> +#define  GSWIP_TX_SLPID_CPU		2
+> +#define  GSWIP_TX_SLPID_APP1		3
+> +#define  GSWIP_TX_SLPID_APP2		4
+> +#define  GSWIP_TX_SLPID_APP3		5
+> +#define  GSWIP_TX_SLPID_APP4		6
+> +#define  GSWIP_TX_SLPID_APP5		7
+> +
+> +
+> +#define GSWIP_RX_HEADER_LEN	8
+
+Single newline is sufficient. Please fix them all, if there are more
+of them.
+
+> +
+> +/* special tag in RX path header */
+> +/* Byte 7 */
+> +#define GSWIP_RX_SPPID_SHIFT		4
+> +#define GSWIP_RX_SPPID_MASK		GENMASK(6, 4)
+> +
+> +static struct sk_buff *gswip_tag_rcv(struct sk_buff *skb,
+> +				     struct net_device *dev,
+> +				     struct packet_type *pt)
+> +{
+> +	int port;
+> +	u8 *gswip_tag;
+> +
+> +	if (unlikely(!pskb_may_pull(skb, GSWIP_RX_HEADER_LEN)))
+> +		return NULL;
+> +
+> +	gswip_tag = ((u8 *)skb->data) - ETH_HLEN;
+
+The cast should not be needed, data already is an unsigned char.
+
+> +	skb_pull_rcsum(skb, GSWIP_RX_HEADER_LEN);
+> +
+> +	/* Get source port information */
+> +	port = (gswip_tag[7] & GSWIP_RX_SPPID_MASK) >> GSWIP_RX_SPPID_SHIFT;
+> +	skb->dev = dsa_master_find_slave(dev, 0, port);
+> +	if (!skb->dev)
+> +		return NULL;
+> +
+> +	return skb;
+> +}
+
+  Andrew

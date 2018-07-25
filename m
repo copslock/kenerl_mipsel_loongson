@@ -1,107 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 02:34:46 +0200 (CEST)
-Received: from mail-by2nam01on0092.outbound.protection.outlook.com ([104.47.34.92]:17334
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994243AbeGYAenMTFXV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Jul 2018 02:34:43 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2018 03:14:35 +0200 (CEST)
+Received: from mail-pg1-x544.google.com ([IPv6:2607:f8b0:4864:20::544]:36294
+        "EHLO mail-pg1-x544.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994541AbeGYBObl6-QV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2018 03:14:31 +0200
+Received: by mail-pg1-x544.google.com with SMTP id s7-v6so4089001pgv.3;
+        Tue, 24 Jul 2018 18:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JLfXF7WZwq4rz00dCCrZNbIKvMc2gH1Et0Wf/Ylt7/M=;
- b=bpXmgHiDj0dIC/IB4SOkfOBXnGbxJ5mQLNWDDFb1p3t/b1Zc2h1woiplNv4WB9ifmK/T+ZLiEjfB9vJaWAGboQ4ZDykH6jdb72UzZzyxAhFoi3CcFItNk0EuY9sd7RicSfyFc9eqzqGUjMTZcn0qvHS3CbjXZPGP7yTxYuYR4aM=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- BN7PR08MB4932.namprd08.prod.outlook.com (2603:10b6:408:28::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.973.16; Wed, 25 Jul 2018 00:34:32 +0000
-Date:   Tue, 24 Jul 2018 17:34:29 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Alexandre Ghiti <alex@ghiti.fr>
-Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, jhogan@kernel.org, jejb@parisc-linux.org,
-        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
-        mpe@ellerman.id.au, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-Message-ID: <20180725003428.jsklz7pj4m7lj3m4@pburton-laptop>
-References: <20180705110716.3919-1-alex@ghiti.fr>
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=BxZvccGO6bGf5/GhPclBxSLEQX1rBVRIQWlXRFxtHoo=;
+        b=mopsxzkYpGW81ZynHSW0vJfHmkGi/TH2Sn6iCwfrS8Fp4FX4aCcNcRBp93fkzNjLNM
+         xv3aaOtMLMHqOI5O6aJ6Z1ZokVUl6+23Oz/xgYNuu8Mjgqm2eD6avH0qBhmjL/uqQfkB
+         ldj8oV7eTmbhIXoiiY9LsPDGdngapGpkCgXpv/wEpMJEb/TYtjN9RdO6uvDauBhQBVkX
+         LVWIWvIy0mQ8U4H6r6KIVTJG40lDV55u06L8PaCE5tIzjLYT6tyLxMgDVPunt64sQpL1
+         YcUBw394oHChyJWLy+NsFWT2AhGS/3rxySEBWeUkNmTCVWvPuhK214x7SgK9FW4zR2np
+         Y8dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=BxZvccGO6bGf5/GhPclBxSLEQX1rBVRIQWlXRFxtHoo=;
+        b=q2MVKvRbCdaa+bVbC1YPjOIqbQ3YX+T+5WwS9sSF7t4MlNIGH/AVvYwSwjjAb5AGDc
+         XznzPrSrnk6R5twF+owiELyVECYpDXzNd98w6C0R6jTJjkEQ7f08opQo4Kr036k/p0pv
+         XTm+TtxOupJj2erfGcthKHPi5i36wCiFQSpZTrqhXWTIZt79SgRdk8qusxTH9m/6/B4G
+         klHHIoIJWbYclk+0TZi9jNFC6EIS7a4Qhlg4CVb64Z1fq6PkhjGEwRsbRF4mubsavwWy
+         P4slCX6jTVqps0p2oGSrT71NbrONhOaSIlGmBgNtwQ+Fz9UXDOnRMb66IJbYCGIowEzS
+         lOzg==
+X-Gm-Message-State: AOUpUlF9Noy6x3VUMsPwaLwo/9Pf+PrNpUzKI65yRoXrSofSrsAQPk5Z
+        FubjTAAV9V+o6tF82OQB/lo=
+X-Google-Smtp-Source: AAOMgpe/wSRhco7W/CknJ62VOKJ0+3hdxq9F5nu57NO6jBqT699Kx+uDmPgI8AEXvQgsiGBiSeUdFw==
+X-Received: by 2002:a63:6949:: with SMTP id e70-v6mr18971038pgc.119.1532481264917;
+        Tue, 24 Jul 2018 18:14:24 -0700 (PDT)
+Received: from server.roeck-us.net (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by smtp.gmail.com with ESMTPSA id 21-v6sm26065875pgx.20.2018.07.24.18.14.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Jul 2018 18:14:24 -0700 (PDT)
+Subject: Re: [PATCH v5 08/21] watchdog: jz4740: Use regmap and WDT clock
+ provided by TCU driver
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>
+Cc:     linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org
+References: <20180724231958.20659-1-paul@crapouillou.net>
+ <20180724231958.20659-9-paul@crapouillou.net>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <9179ab75-f071-d6a2-ef61-52431ca6409b@roeck-us.net>
+Date:   Tue, 24 Jul 2018 18:14:21 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180705110716.3919-1-alex@ghiti.fr>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: CY4PR19CA0027.namprd19.prod.outlook.com
- (2603:10b6:903:103::13) To BN7PR08MB4932.namprd08.prod.outlook.com
- (2603:10b6:408:28::18)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 01fb5f52-30fa-4e62-feb6-08d5f1c6641f
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600073)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4932;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;3:0f443Ub5m/RZKwAx64ZMGzyvjvGXzt6voB1AcPTJxVgmx/zp5G1ZVKkmYQZMlDINB9p40gQbe/qeGwpPHhRzWYQxQt9JWqeI6nffXz7hZ/NkvY6zp8MpbQIVWiDP25htRjZs0i0cNTpyp3O3Tf52STrSwheBzA6kx7qx0vMuOW77+yjwpZC12Fl7Httiqi2OQh60LtXGqKhnWlTEnT7xzq4LUT6Ta/JB0QZyr01o80+RRPhKckPXHCL3zHH5Flw/;25:4AR6Pm1/pIOqUBSDID7+eqy7jILsWVBxhYb0yJE+WMFckUPVZ32d6/ovPwj4ITjwD3XKQ/naf/DLzObT6GJch7zud2ehfdzsqmqKV8UtbayV18iFeWrNLreD3P9kUQs7PW2Ed/zxgS/7s9DlNKJuG4azCymoiq9J3W3N0q4iu3mrKtvGKIXyRl1S6eBg5h2xZx8Lo2VxAoiTJu8cSRcAfhA33CCC7cxeyNl0wPyrFat+xV3ub3QyTG3wxzC/IIWl61ZL3hzycQHuyRfJ30UrPvDJ5vgOQ4VdZkeu1ZPCdl36Hu5UD7aRH6dvBWeBKeWvWtsCyE9PT8pBAiFHQRbwlQ==;31:gN93pqNAlJ55JqJ+ik7/9V1mGWcF20dzwiyhco0x/zjdRaPhKHvjAmUiXR1W02eAr8LJ0zoCaMFHhnymNMKWJDESQUAPLdcEP+OmkrFuzP67vz3plMfJgFyfmqMUBnrH8qS2zlzJGleIzzJxUIoEcQSvAQaN4ArqladycmitG9J79u/Wa5Wfp0ECgxNiQoPUMqwtwniypKCX8fkKfO0RNkO5oYGDrWjFG7NqTG/Ydd4=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4932:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;20:q6LKqlxqUxCOSgncPrgGUQqQlD0tbykcp0acG8So1TwSTQr5aWchmghCc3SbFcfF/hxecLtdmi2z5Gu29b97+G2YsaWVnTO8wXErzA0twVc8s3bpc5fLrtCCEoM707qWCLcWOoOul7wvgbV3+Yd90Ki15vG/t3krGgVd+44JxMbpnaNRCTkc2IOGwOmBPYa+pbcc5WmjKZgMaTWhSPqeKNxyNzSG8KFj3B/G7XEMOO6lrsNqSxdi/tB7U9yHzlBh;4:BA/ouI43UD8iBWYeccxTRCxOD3i1OA4LCiTVOvisXK6IMM4GdWA928b7LbPuWsxVK/RwKGau5ioCYQjs6jyLGEAPT7PseXZV4Tt0fYX4xkrYxFpJJi+DoJ6RkXMoSX4V0FQZttRNgNn8y98EvkQy4j76SNQuqFNl5t+35oTWb3IEkWtgHLctCu21Cko5wH3wN+j7Ta3+Y6MLQH5GnqyaWITH5L7/ww+3D2Rgz5aEP6UrS7lh44bZbEb8vOoOJtC1mMRIhq+12GI3i5deu+FAcQ==
-X-Microsoft-Antispam-PRVS: <BN7PR08MB4932207425E72FA779B2051EC1540@BN7PR08MB4932.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(10201501046)(3002001)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123562045)(20161123564045)(6072148)(201708071742011)(7699016);SRVR:BN7PR08MB4932;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4932;
-X-Forefront-PRVS: 0744CFB5E8
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(376002)(366004)(39840400004)(136003)(396003)(189003)(199004)(7416002)(50466002)(7736002)(76506005)(105586002)(58126008)(16586007)(81166006)(478600001)(52116002)(6496006)(316002)(305945005)(47776003)(76176011)(66066001)(26005)(54906003)(33896004)(386003)(16526019)(7406005)(229853002)(8676002)(186003)(53936002)(81156014)(6246003)(106356001)(25786009)(6916009)(8936002)(33716001)(2906002)(23726003)(9686003)(1076002)(3846002)(956004)(6666003)(97736004)(68736007)(4326008)(6116002)(446003)(476003)(5660300001)(14444005)(486006)(6486002)(44832011)(11346002)(42882007);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4932;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4932;23:ykWb0C/AZifqLurPLgdiB9kTDnuxwzRZFAnTJZ0uJ?=
- =?us-ascii?Q?Ppms2DDzR6SGY6QeeOycT7edNq8qRtyTTNBxlYBdclA2wRN2JnkdL73rpU5N?=
- =?us-ascii?Q?TAab/SHx5REKpQhUuluuACB6NEbVNZekRmb+23L1AK4T3638ofA6OrYpofpY?=
- =?us-ascii?Q?taNm7WW41t/qLggZY+gmJybFDevPwl0H6yFxaJqOXJ/b8F2W4wRdSHM/VTkr?=
- =?us-ascii?Q?2JE0TwEmSHWdrNGbiMyRp+5mELxYmsksj2dfBY/10eYQEugmydKlcyYoOKka?=
- =?us-ascii?Q?by3QzzZhqaOBZClnhoz+PIrN/xFdFy8n7zT3Nq7AIIDqZ7oV6WmKbtMom+wb?=
- =?us-ascii?Q?1CXKfxBiktM6vo0fwYXWZLAt0Tl8D7Ge92k6ENeLvbsXwSiiX8hHUqcDDWAg?=
- =?us-ascii?Q?TOHZbUubi7XzF9hkUzjEEufJnMyVllY9J2vlRt948x4NYfOUjCejPSw9jzjW?=
- =?us-ascii?Q?R7b8og6C2kmCSeWHMW4tEMV6inUwZC6z0joR/Q8zFF3qHZv354HZFQEGBpvl?=
- =?us-ascii?Q?xkCBHUZwB+h5AW+Wjdjyzeg/qeFRSox+KLxvtBA7cIlR1OjcJrGRISMQJyqU?=
- =?us-ascii?Q?e07RvP8fgfK0mjixbz/RWLYjus2ehVhpdtlxmtO7knO9d6sJjWvTCroMA+O+?=
- =?us-ascii?Q?Yn9Bt/14ZgIm3vCiaLsnH+cBvD4pyh9qJ0DvMNd1/5xoj7ttThnRO7WlzKvd?=
- =?us-ascii?Q?jMvQKGHz2zh6H4Xk5Hzrfd80eJq6OD5tlWHbhMBk3OhqPckfaEhPoZOoIfVQ?=
- =?us-ascii?Q?yIvPedDPJwD0bPImfgE7XISqIY74D0xCOxlEjWfo+IfwnnMf9qe67EaPtse6?=
- =?us-ascii?Q?Y7cwuYr2PpoQr2dfbbH+uRFd9XV3HhxT4Nu8EmKzWfe+Fmn695llSMN/wokF?=
- =?us-ascii?Q?W+nw1rjinoTRDGiELSOCm9xOIWsSMeGw4FHsGDyG2L+VkeFW2EtG9HDjgRQq?=
- =?us-ascii?Q?h5xMPlRjbTjtc05YaAMePH+jyeFZ36C7Bdpl+qze4unA0HCpp2XZP1D/qHBe?=
- =?us-ascii?Q?++E5NCeLEGASlleuhEoqb5mzOn+9PaYqx+WthKIMHyRhgM774xxRFsYSHp1W?=
- =?us-ascii?Q?wIkvIdKz5k+w2VjemXY/Xk6fIHYAEUaoFS6z55i55a0OY6rxPberpJfH8uod?=
- =?us-ascii?Q?HZeHnRTx/0lrcikA+hlaUpbzGY4nJbdTV6RrCtNYopYE06qz/kLQJoRhvcq7?=
- =?us-ascii?Q?ff3aDcl4CDbvtYD5AZjHqtOPUwMGISZYlSihqCKCU7y7fodwmhv++Cdj1QBw?=
- =?us-ascii?Q?gkB5aMVW6WOQoK5FA0FGLWeMfZFbmu3syajJY1xj3X2RM2oRJAbQa9niWmqs?=
- =?us-ascii?Q?O/rzfjOMFzuEcKO0mYMPoBrqBTmwsQ0WqYv0tg7gB1scdTHHAyWwcWjN/+mg?=
- =?us-ascii?Q?JwQYw=3D=3D?=
-X-Microsoft-Antispam-Message-Info: +5YB1DRk88IY9SbJV3lgLNZTNElE94zMFbaZu8n16Dpesj6oyPM7CKmh/XRn0sI+cXNW0ZvcBxLOHgYDHCTAH0hy2c49wmDr1YQxv3QbX8XiULbZKzrqvvefdVTDHKGwc8cXA5z3i+R6poECWDYetD5MsqUiyeeZ2GEErhy5eJzpT0agLnfAev/R9EET0kOUsib5Feen+OIrnPXLNzjVnsp0oDsiQPifL9/Ny5eVLNEnTFMPFzjMd18kV1J0F5zpvvSMTu/KH2FV55yAsgfXiLrGHT+D+rlmlhp9CKChNDMgf1CYkPM7pu3khKQok6n3DhtGVyOm/zaCS9G0S+iARKJ7NjhixRCIjMsRPSnrh4A=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;6:c0410fq5yUiqNK85dbEuLO/zpj6NEeigf+AFB4t8+EGyfnadIYAm25z2sSp33+MoZ/uFzv54AqVKjO6mPh78gEa0Gl203BuIPFshOF9RbLN579CRc3FlcZ9NHO8mGgb3I3lmpmZrAztHuqZviBVNDIrlI7pSBjg0/BU6/o+aauy3zgYqyy2+Qu+5rAgmKYIMeW2hG4sCeh4rF2yMIQcehpIxbbwA7t/JNuKU1hPpisUlTZ8Dv4Zv29U/+rhIn5HKGA2WOgl6zQYQHeYKUTGzuG5UMlUGR4+C0meP0GKMrwTbBAw2ZAcxX0Vhwjp0MtHqjb3YvNuQb9wGv1fyrs/dXwZFrXtUjGQWhu1gU/+Gowo52iIXm8h1mzpHM110mI4ngDC5BCAjhAyWOw5SgWngcqALrDP+27e04yUKkzGdm3T+1aGlWugQSWbxyBw6a6Dg3ypzJrMO4UjGJ5TfGVh3Eg==;5:bvpOPu+nmcPW/B8Y2XgVTCZ7x0Fxb3VaSpk/0zgF3s97R2ec/itJjDanboIpHsJmxh3Ju6BOGZBizFqV7XdfR0vRgDd0170Pa/CPR5C5tx6AEITNFpfxpOoxYD2U7DbjRHxu59HBJp52f1oTVl91le0Fo4ggIzaF3zUrRCnZpZs=;7:qsbrhbh2hlaVz27iF1pahCd7FloVJRhonEg52BvTX6NKSRlqOiPpJVv7vVDt5NofTlerS9FNik7/mR2dJUX5Lyxf/Ib3JSmy/feyXu3objTlG9Qll/AwTq5iepmusjKbIXDDfNA27Xms0Ac1RJaw8srApb0fNdv7j+wwV28gBVwTHY65Xn/WgDyl1XNVJkGAtiabYSrQas58I8+y/QqRJFwNZ/dlS48fj0Lc9vZ+VAs+1oAhj608yTZWtohX2Tn6
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2018 00:34:32.6488 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01fb5f52-30fa-4e62-feb6-08d5f1c6641f
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4932
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <20180724231958.20659-9-paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65125
+X-archive-position: 65126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -114,29 +89,297 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alexandre,
-
-On Thu, Jul 05, 2018 at 11:07:05AM +0000, Alexandre Ghiti wrote:
-> In order to reduce copy/paste of functions across architectures and then
-> make riscv hugetlb port (and future ports) simpler and smaller, this
-> patchset intends to factorize the numerous hugetlb primitives that are
-> defined across all the architectures.
+On 07/24/2018 04:19 PM, Paul Cercueil wrote:
+> Instead of requesting the "ext" clock and handling the watchdog clock
+> divider and gating in the watchdog driver, we now request and use the
+> "wdt" clock that is supplied by the ingenic-timer "TCU" driver.
 > 
-> Except for prepare_hugepage_range, this patchset moves the versions that
-> are just pass-through to standard pte primitives into
-> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
-> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
+> The major benefit is that the watchdog's clock rate and parent can now
+> be specified from within devicetree, instead of hardcoded in the driver.
 > 
-> s390 architecture has not been tackled in this serie since it does not
-> use asm-generic/hugetlb.h at all.
-> powerpc could be factorized a bit more (cf huge_ptep_set_wrprotect).
+
+Where is the clock _rate_ specified in the devicetree file ?
+
+Changing the clock rate in the driver may not be as hardcoded as before,
+but the driver still changes the clock rate.
+
+> Also, this driver won't poke anymore into the TCU registers to
+> enable/disable the clock, as this is now handled by the TCU driver.
 > 
-> This patchset has been compiled on x86 only. 
+> On the bad side, we break the ABI with devicetree - as we now request a
+> different clock. In this very specific case it is still okay, as every
+> Ingenic JZ47xx-based board out there compile the devicetree within the
+> kernel; so it's still time to push breaking changes, in order to get a
+> clean devicetree that won't break once it musn't.
 
-For MIPS these look good - I don't see any issues & they pass a build
-test (using cavium_octeon_defconfig which enables huge pages), so:
+mustn't
 
-    Acked-by: Paul Burton <paul.burton@mips.com> # MIPS parts
+> 
 
-Thanks,
-    Paul
+This change needs to be documented in the devicetree bindings and must be
+approved by a DT maintainer. The bindings change only changes the clock name
+in the example, but not in the bindings description itself (which still
+references the rtc clock).
+
+> Since we broke the ABI by changing the clock, the driver was also
+> updated to use the regmap provided by the TCU driver.
+> 
+
+Odd logic. What does one have to do with the other ? Why not split
+the patch into two parts, one per logical change, as would be customary ?
+
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>   drivers/watchdog/Kconfig      |   2 +
+>   drivers/watchdog/jz4740_wdt.c | 128 +++++++++++++++++++++---------------------
+>   2 files changed, 66 insertions(+), 64 deletions(-)
+> 
+>   v5: New patch
+> 
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index 9af07fd92763..834222abbbdb 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -1476,7 +1476,9 @@ config INDYDOG
+>   config JZ4740_WDT
+>   	tristate "Ingenic jz4740 SoC hardware watchdog"
+>   	depends on MACH_JZ4740 || MACH_JZ4780
+> +	depends on COMMON_CLK
+>   	select WATCHDOG_CORE
+> +	select INGENIC_TIMER
+>   	help
+>   	  Hardware driver for the built-in watchdog timer on Ingenic jz4740 SoCs.
+>   
+> diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
+> index ec4d99a830ba..aaa6fc87136c 100644
+> --- a/drivers/watchdog/jz4740_wdt.c
+> +++ b/drivers/watchdog/jz4740_wdt.c
+> @@ -13,6 +13,7 @@
+>    *
+>    */
+>   
+> +#include <linux/mfd/ingenic-tcu.h>
+>   #include <linux/module.h>
+>   #include <linux/moduleparam.h>
+>   #include <linux/types.h>
+> @@ -25,26 +26,7 @@
+>   #include <linux/slab.h>
+>   #include <linux/err.h>
+>   #include <linux/of.h>
+> -
+> -#include <asm/mach-jz4740/timer.h>
+> -
+> -#define JZ_REG_WDT_TIMER_DATA     0x0
+> -#define JZ_REG_WDT_COUNTER_ENABLE 0x4
+> -#define JZ_REG_WDT_TIMER_COUNTER  0x8
+> -#define JZ_REG_WDT_TIMER_CONTROL  0xC
+> -
+> -#define JZ_WDT_CLOCK_PCLK 0x1
+> -#define JZ_WDT_CLOCK_RTC  0x2
+> -#define JZ_WDT_CLOCK_EXT  0x4
+> -
+> -#define JZ_WDT_CLOCK_DIV_SHIFT   3
+> -
+> -#define JZ_WDT_CLOCK_DIV_1    (0 << JZ_WDT_CLOCK_DIV_SHIFT)
+> -#define JZ_WDT_CLOCK_DIV_4    (1 << JZ_WDT_CLOCK_DIV_SHIFT)
+> -#define JZ_WDT_CLOCK_DIV_16   (2 << JZ_WDT_CLOCK_DIV_SHIFT)
+> -#define JZ_WDT_CLOCK_DIV_64   (3 << JZ_WDT_CLOCK_DIV_SHIFT)
+> -#define JZ_WDT_CLOCK_DIV_256  (4 << JZ_WDT_CLOCK_DIV_SHIFT)
+> -#define JZ_WDT_CLOCK_DIV_1024 (5 << JZ_WDT_CLOCK_DIV_SHIFT)
+> +#include <linux/regmap.h>
+>   
+>   #define DEFAULT_HEARTBEAT 5
+>   #define MAX_HEARTBEAT     2048
+> @@ -64,15 +46,15 @@ MODULE_PARM_DESC(heartbeat,
+>   
+>   struct jz4740_wdt_drvdata {
+>   	struct watchdog_device wdt;
+> -	void __iomem *base;
+> -	struct clk *rtc_clk;
+> +	struct regmap *map;
+> +	struct clk *clk;
+>   };
+>   
+>   static int jz4740_wdt_ping(struct watchdog_device *wdt_dev)
+>   {
+>   	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+>   
+> -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
+>   	return 0;
+>   }
+>   
+> @@ -80,52 +62,65 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
+>   				    unsigned int new_timeout)
+>   {
+>   	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> -	unsigned int rtc_clk_rate;
+> -	unsigned int timeout_value;
+> -	unsigned short clock_div = JZ_WDT_CLOCK_DIV_1;
+> -
+> -	rtc_clk_rate = clk_get_rate(drvdata->rtc_clk);
+> -
+> -	timeout_value = rtc_clk_rate * new_timeout;
+> -	while (timeout_value > 0xffff) {
+> -		if (clock_div == JZ_WDT_CLOCK_DIV_1024) {
+> -			/* Requested timeout too high;
+> -			* use highest possible value. */
+> -			timeout_value = 0xffff;
+> -			break;
+> -		}
+> -		timeout_value >>= 2;
+> -		clock_div += (1 << JZ_WDT_CLOCK_DIV_SHIFT);
+> +	struct clk *clk = drvdata->clk;
+> +	unsigned long clk_rate, timeout_value;
+> +	bool change_rate = false;
+> +	u32 tcer;
+> +	int ret = 0;
+> +
+> +	clk_rate = clk_get_rate(clk);
+> +	timeout_value = clk_rate * new_timeout;
+> +
+> +	if (timeout_value > 0xffff) {
+> +		clk_rate = clk_round_rate(clk, 0xffff / new_timeout);
+> +		timeout_value = clk_rate * new_timeout;
+> +		if (timeout_value > 0xffff)
+> +			return -EINVAL;
+
+This is conceptually wrong. The probe code should determine the
+maximum timeout and report it to the watchdog core, and it should
+not be necessary to validate the timeout in this function.
+
+Also, unless I am missing something, the new code only ever reduces the clock
+rate and never increases it. Given that, you might as well set the clock
+rate to the lowest possible rate when instantiating the driver and not
+bother with updating it later. That would simplify the code significantly
+and make it much easier to understand.
+
+Also, clk_round_rate() can technically return 0 or even a negative (error)
+value. Please make sure that the returned rate is valid.
+
+> +		change_rate = true;
+>   	}
+>   
+> -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
+> -	writew(clock_div, drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
+> +	regmap_read(drvdata->map, TCU_REG_WDT_TCER, &tcer);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
+>   
+> -	writew((u16)timeout_value, drvdata->base + JZ_REG_WDT_TIMER_DATA);
+> -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
+> -	writew(clock_div | JZ_WDT_CLOCK_RTC,
+> -		drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
+> +	if (change_rate) {
+> +		clk_disable_unprepare(clk);
+> +		ret = clk_set_rate(clk, clk_rate);
+> +		clk_prepare_enable(clk);
+> +		if (ret)
+> +			goto done;
+> +	}
+>   
+> -	writeb(0x1, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TDR, (u16)timeout_value);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
+>   
+>   	wdt_dev->timeout = new_timeout;
+> -	return 0;
+> +
+> +done:
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, tcer & TCU_WDT_TCER_TCEN);
+
+regmap_read() and regmap_write return errors. Are those ignored on purpose ?
+
+> +	return ret;
+>   }
+>   
+>   static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
+>   {
+> -	jz4740_timer_enable_watchdog();
+> -	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
+> +	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> +	int ret;
+>   
+> -	return 0;
+> +	clk_prepare_enable(drvdata->clk);
+> +	ret = jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
+> +	if (ret)
+> +		clk_disable_unprepare(drvdata->clk);
+> +	else
+> +		regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
+> +
+
+No else here please. Proper error handling is preferred.
+
+> +	return ret;
+>   }
+>   
+>   static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
+>   {
+>   	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+>   
+> -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
+> -	jz4740_timer_disable_watchdog();
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
+> +	clk_disable_unprepare(drvdata->clk);
+>   
+>   	return 0;
+>   }
+> @@ -163,13 +158,17 @@ MODULE_DEVICE_TABLE(of, jz4740_wdt_of_matches);
+>   
+>   static int jz4740_wdt_probe(struct platform_device *pdev)
+>   {
+> +	struct device *dev = &pdev->dev;
+>   	struct jz4740_wdt_drvdata *drvdata;
+>   	struct watchdog_device *jz4740_wdt;
+> -	struct resource	*res;
+>   	int ret;
+>   
+> -	drvdata = devm_kzalloc(&pdev->dev, sizeof(struct jz4740_wdt_drvdata),
+> -			       GFP_KERNEL);
+> +	if (!dev->of_node) {
+> +		dev_err(dev, "jz4740-wdt must be probed via devicetree\n");
+> +		return -ENODEV;
+> +	}
+> +
+
+Please explain. This check seems technically unnecessary and thus pointless.
+The driver doesn't even initialize its watchdog timeout from devicetree data.
+
+> +	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
+>   	if (!drvdata)
+>   		return -ENOMEM;
+>   
+> @@ -182,19 +181,20 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
+>   	jz4740_wdt->timeout = heartbeat;
+>   	jz4740_wdt->min_timeout = 1;
+>   	jz4740_wdt->max_timeout = MAX_HEARTBEAT;
+> -	jz4740_wdt->parent = &pdev->dev;
+> +	jz4740_wdt->parent = dev;
+>   	watchdog_set_nowayout(jz4740_wdt, nowayout);
+>   	watchdog_set_drvdata(jz4740_wdt, drvdata);
+>   
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+> -	if (IS_ERR(drvdata->base))
+> -		return PTR_ERR(drvdata->base);
+> +	drvdata->map = dev_get_regmap(dev->parent, NULL);
+> +	if (IS_ERR(drvdata->map)) {
+
+dev_get_regmap() does not return an ERR_PTR().
+
+> +		dev_warn(dev, "regmap not found\n");
+> +		return PTR_ERR(drvdata->map);
+> +	}
+>   
+> -	drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
+> -	if (IS_ERR(drvdata->rtc_clk)) {
+> -		dev_err(&pdev->dev, "cannot find RTC clock\n");
+> -		return PTR_ERR(drvdata->rtc_clk);
+> +	drvdata->clk = devm_clk_get(&pdev->dev, "wdt");
+> +	if (IS_ERR(drvdata->clk)) {
+> +		dev_err(&pdev->dev, "cannot find WDT clock\n");
+> +		return PTR_ERR(drvdata->clk);
+>   	}
+>   
+>   	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
+> 

@@ -1,44 +1,55 @@
-From: Felix Fietkau <nbd@nbd.name>
-Date: Fri, 20 Jul 2018 13:58:21 +0200
-Subject: MIPS: ath79: fix register address in ath79_ddr_wb_flush()
-Message-ID: <20180720115821.7USpLZ-lrhsOb65GfJw0tXYRO9sTg7rQmLIilkdirY0@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 16:52:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43774 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbeGZOwSsCF5Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 16:52:18 +0200
+Received: from localhost (unknown [62.119.166.9])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 08C68C9A;
+        Thu, 26 Jul 2018 14:52:11 +0000 (UTC)
+Subject: Patch "MIPS: ath79: fix register address in ath79_ddr_wb_flush()" has been added to the 4.9-stable tree
+To:     albeu@free.fr, gregkh@linuxfoundation.org, jhogan@kernel.org,
+        john@phrozen.org, linux-mips@linux-mips.org, nbd@nbd.name,
+        paul.burton@mips.com, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Thu, 26 Jul 2018 16:52:06 +0200
+Message-ID: <1532616726183224@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 65160
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
 
-commit bc88ad2efd11f29e00a4fd60fcd1887abfe76833 upstream.
+This is a note to let you know that I've just added the patch titled
 
-ath79_ddr_wb_flush_base has the type void __iomem *, so register offsets
-need to be a multiple of 4 in order to access the intended register.
+    MIPS: ath79: fix register address in ath79_ddr_wb_flush()
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: John Crispin <john@phrozen.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
-Patchwork: https://patchwork.linux-mips.org/patch/19912/
-Cc: Alban Bedel <albeu@free.fr>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.2+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+to the 4.9-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
----
- arch/mips/ath79/common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The filename of the patch is:
+     mips-ath79-fix-register-address-in-ath79_ddr_wb_flush.patch
+and it can be found in the queue-4.9 subdirectory.
 
---- a/arch/mips/ath79/common.c
-+++ b/arch/mips/ath79/common.c
-@@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(ath79_ddr_ctrl_init);
- 
- void ath79_ddr_wb_flush(u32 reg)
- {
--	void __iomem *flush_reg = ath79_ddr_wb_flush_base + reg;
-+	void __iomem *flush_reg = ath79_ddr_wb_flush_base + (reg * 4);
- 
- 	/* Flush the DDR write buffer. */
- 	__raw_writel(0x1, flush_reg);
-
-
-Patches currently in stable-queue which might be from nbd@nbd.name are
-
-queue-4.4/mips-ath79-fix-register-address-in-ath79_ddr_wb_flush.patch
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

@@ -1,54 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 07:41:39 +0200 (CEST)
-Received: from relay2-d.mail.gandi.net ([217.70.183.194]:55419 "EHLO
-        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990392AbeGZFlgCFy0n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 07:41:36 +0200
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.11] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 49C9B40005;
-        Thu, 26 Jul 2018 05:41:03 +0000 (UTC)
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@kernel.org>
-Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-References: <20180705110716.3919-1-alex@ghiti.fr>
- <20180709141621.GD22297@dhcp22.suse.cz>
- <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
- <87d0vehx16.fsf@concordia.ellerman.id.au>
-From:   Alex Ghiti <alex@ghiti.fr>
-Message-ID: <67aba0f0-c0d4-b06f-5fbc-f4d113ce5033@ghiti.fr>
-Date:   Thu, 26 Jul 2018 05:41:03 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 09:04:20 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:43924 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbeGZHEQFB0z8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 09:04:16 +0200
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6Q74B8M126332
+        for <linux-mips@linux-mips.org>; Thu, 26 Jul 2018 03:04:13 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2kf7q04rg5-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 26 Jul 2018 03:04:13 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Thu, 26 Jul 2018 08:04:04 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 26 Jul 2018 08:03:59 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6Q73wxM33095848
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 26 Jul 2018 07:03:59 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 926B0A405B;
+        Thu, 26 Jul 2018 10:04:12 +0100 (BST)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E4AB1A404D;
+        Thu, 26 Jul 2018 10:04:11 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.177])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu, 26 Jul 2018 10:04:11 +0100 (BST)
+Date:   Thu, 26 Jul 2018 10:03:56 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mips: switch to NO_BOOTMEM
+References: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87d0vehx16.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: fr
-Return-Path: <alex@ghiti.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18072607-0012-0000-0000-0000028EFABD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18072607-0013-0000-0000-000020C0E618
+Message-Id: <20180726070355.GD8477@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-26_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807260076
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65150
+X-archive-position: 65151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,111 +80,319 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi everyone,
+Any comments on this?
 
-This is the result of the build for all arches tackled in this series 
-rebased on 4.18-rc6:
+On Mon, Jul 16, 2018 at 10:47:42AM +0300, Mike Rapoport wrote:
+> MIPS already has memblock support and all the memory is already registered
+> with it.
+> 
+> This patch replaces bootmem memory reservations with memblock ones and
+> removes the bootmem initialization.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> ---
+> The "generic" part was tested with qemu-system-mipsel (both 32 and 64
+> bits).
+> loongson3, sgi-ip27 and allyesconfig are build tested only.
+> 
+>  arch/mips/Kconfig                      |  1 +
+>  arch/mips/kernel/setup.c               | 89 +++++-----------------------------
+>  arch/mips/loongson64/loongson-3/numa.c | 34 ++++++-------
+>  arch/mips/sgi-ip27/ip27-memory.c       | 11 ++---
+>  4 files changed, 33 insertions(+), 102 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 08c10c5..bd15bad 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -76,6 +76,7 @@ config MIPS
+>  	select RTC_LIB if !MACH_LOONGSON64
+>  	select SYSCTL_EXCEPTION_TRACE
+>  	select VIRT_TO_BUS
+> +	select NO_BOOTMEM
+> 
+>  menu "Machine selection"
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 2c96c0c..10f46aa 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -327,7 +327,7 @@ static void __init finalize_initrd(void)
+> 
+>  	maybe_bswap_initrd();
+> 
+> -	reserve_bootmem(__pa(initrd_start), size, BOOTMEM_DEFAULT);
+> +	memblock_reserve(__pa(initrd_start), size);
+>  	initrd_below_start_ok = 1;
+> 
+>  	pr_info("Initial ramdisk at: 0x%lx (%lu bytes)\n",
+> @@ -364,20 +364,10 @@ static void __init bootmem_init(void)
+> 
+>  #else  /* !CONFIG_SGI_IP27 */
+> 
+> -static unsigned long __init bootmap_bytes(unsigned long pages)
+> -{
+> -	unsigned long bytes = DIV_ROUND_UP(pages, 8);
+> -
+> -	return ALIGN(bytes, sizeof(long));
+> -}
+> -
+>  static void __init bootmem_init(void)
+>  {
+>  	unsigned long reserved_end;
+> -	unsigned long mapstart = ~0UL;
+> -	unsigned long bootmap_size;
+>  	phys_addr_t ramstart = PHYS_ADDR_MAX;
+> -	bool bootmap_valid = false;
+>  	int i;
+> 
+>  	/*
+> @@ -389,6 +379,8 @@ static void __init bootmem_init(void)
+>  	init_initrd();
+>  	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
+> 
+> +	memblock_reserve(PHYS_OFFSET, reserved_end << PAGE_SHIFT);
+> +
+>  	/*
+>  	 * max_low_pfn is not a number of pages. The number of pages
+>  	 * of the system is given by 'max_low_pfn - min_low_pfn'.
+> @@ -436,17 +428,16 @@ static void __init bootmem_init(void)
+>  		if (initrd_end && end <= (unsigned long)PFN_UP(__pa(initrd_end)))
+>  			continue;
+>  #endif
+> -		if (start >= mapstart)
+> -			continue;
+> -		mapstart = max(reserved_end, start);
+>  	}
+> 
+>  	/*
+>  	 * Reserve any memory between the start of RAM and PHYS_OFFSET
+>  	 */
+> -	if (ramstart > PHYS_OFFSET)
+> +	if (ramstart > PHYS_OFFSET) {
+>  		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
+>  				  BOOT_MEM_RESERVED);
+> +		memblock_reserve(PHYS_OFFSET, ramstart - PHYS_OFFSET);
+> +	}
+> 
+>  	if (min_low_pfn >= max_low_pfn)
+>  		panic("Incorrect memory mapping !!!");
+> @@ -472,52 +463,6 @@ static void __init bootmem_init(void)
+>  		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+>  	}
+> 
+> -#ifdef CONFIG_BLK_DEV_INITRD
+> -	/*
+> -	 * mapstart should be after initrd_end
+> -	 */
+> -	if (initrd_end)
+> -		mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
+> -#endif
+> -
+> -	/*
+> -	 * check that mapstart doesn't overlap with any of
+> -	 * memory regions that have been reserved through eg. DTB
+> -	 */
+> -	bootmap_size = bootmap_bytes(max_low_pfn - min_low_pfn);
+> -
+> -	bootmap_valid = memory_region_available(PFN_PHYS(mapstart),
+> -						bootmap_size);
+> -	for (i = 0; i < boot_mem_map.nr_map && !bootmap_valid; i++) {
+> -		unsigned long mapstart_addr;
+> -
+> -		switch (boot_mem_map.map[i].type) {
+> -		case BOOT_MEM_RESERVED:
+> -			mapstart_addr = PFN_ALIGN(boot_mem_map.map[i].addr +
+> -						boot_mem_map.map[i].size);
+> -			if (PHYS_PFN(mapstart_addr) < mapstart)
+> -				break;
+> -
+> -			bootmap_valid = memory_region_available(mapstart_addr,
+> -								bootmap_size);
+> -			if (bootmap_valid)
+> -				mapstart = PHYS_PFN(mapstart_addr);
+> -			break;
+> -		default:
+> -			break;
+> -		}
+> -	}
+> -
+> -	if (!bootmap_valid)
+> -		panic("No memory area to place a bootmap bitmap");
+> -
+> -	/*
+> -	 * Initialize the boot-time allocator with low memory only.
+> -	 */
+> -	if (bootmap_size != init_bootmem_node(NODE_DATA(0), mapstart,
+> -					 min_low_pfn, max_low_pfn))
+> -		panic("Unexpected memory size required for bootmap");
+> -
+>  	for (i = 0; i < boot_mem_map.nr_map; i++) {
+>  		unsigned long start, end;
+> 
+> @@ -566,9 +511,9 @@ static void __init bootmem_init(void)
+>  		default:
+>  			/* Not usable memory */
+>  			if (start > min_low_pfn && end < max_low_pfn)
+> -				reserve_bootmem(boot_mem_map.map[i].addr,
+> -						boot_mem_map.map[i].size,
+> -						BOOTMEM_DEFAULT);
+> +				memblock_reserve(boot_mem_map.map[i].addr,
+> +						boot_mem_map.map[i].size);
+> +
+>  			continue;
+>  		}
+> 
+> @@ -591,15 +536,9 @@ static void __init bootmem_init(void)
+>  		size = end - start;
+> 
+>  		/* Register lowmem ranges */
+> -		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
+>  		memory_present(0, start, end);
+>  	}
+> 
+> -	/*
+> -	 * Reserve the bootmap memory.
+> -	 */
+> -	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
+> -
+>  #ifdef CONFIG_RELOCATABLE
+>  	/*
+>  	 * The kernel reserves all memory below its _end symbol as bootmem,
+> @@ -901,17 +840,15 @@ static void __init arch_mem_init(char **cmdline_p)
+>  	if (setup_elfcorehdr && setup_elfcorehdr_size) {
+>  		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
+>  		       setup_elfcorehdr, setup_elfcorehdr_size);
+> -		reserve_bootmem(setup_elfcorehdr, setup_elfcorehdr_size,
+> -				BOOTMEM_DEFAULT);
+> +		memblock_reserve(setup_elfcorehdr, setup_elfcorehdr_size);
+>  	}
+>  #endif
+> 
+>  	mips_parse_crashkernel();
+>  #ifdef CONFIG_KEXEC
+>  	if (crashk_res.start != crashk_res.end)
+> -		reserve_bootmem(crashk_res.start,
+> -				crashk_res.end - crashk_res.start + 1,
+> -				BOOTMEM_DEFAULT);
+> +		memblock_reserve(crashk_res.start,
+> +				 crashk_res.end - crashk_res.start + 1);
+>  #endif
+>  	device_tree_init();
+>  	sparse_init();
+> @@ -921,7 +858,7 @@ static void __init arch_mem_init(char **cmdline_p)
+>  	/* Tell bootmem about cma reserved memblock section */
+>  	for_each_memblock(reserved, reg)
+>  		if (reg->size != 0)
+> -			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
+> +			memblock_reserve(reg->base, reg->size);
+> 
+>  	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
+>  			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+> diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+> index 9717106..c1e6ec5 100644
+> --- a/arch/mips/loongson64/loongson-3/numa.c
+> +++ b/arch/mips/loongson64/loongson-3/numa.c
+> @@ -180,43 +180,39 @@ static void __init szmem(unsigned int node)
+> 
+>  static void __init node_mem_init(unsigned int node)
+>  {
+> -	unsigned long bootmap_size;
+>  	unsigned long node_addrspace_offset;
+> -	unsigned long start_pfn, end_pfn, freepfn;
+> +	unsigned long start_pfn, end_pfn;
+> 
+>  	node_addrspace_offset = nid_to_addroffset(node);
+>  	pr_info("Node%d's addrspace_offset is 0x%lx\n",
+>  			node, node_addrspace_offset);
+> 
+>  	get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
+> -	freepfn = start_pfn;
+> -	if (node == 0)
+> -		freepfn = PFN_UP(__pa_symbol(&_end)); /* kernel end address */
+> -	pr_info("Node%d: start_pfn=0x%lx, end_pfn=0x%lx, freepfn=0x%lx\n",
+> -		node, start_pfn, end_pfn, freepfn);
+> +	pr_info("Node%d: start_pfn=0x%lx, end_pfn=0x%lx\n",
+> +		node, start_pfn, end_pfn);
+> 
+>  	__node_data[node] = prealloc__node_data + node;
+> 
+> -	NODE_DATA(node)->bdata = &bootmem_node_data[node];
+>  	NODE_DATA(node)->node_start_pfn = start_pfn;
+>  	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+> 
+> -	bootmap_size = init_bootmem_node(NODE_DATA(node), freepfn,
+> -					start_pfn, end_pfn);
+>  	free_bootmem_with_active_regions(node, end_pfn);
+> -	if (node == 0) /* used by finalize_initrd() */
+> +
+> +	if (node == 0) {
+> +		/* kernel end address */
+> +		unsigned long kernel_end_pfn = PFN_UP(__pa_symbol(&_end));
+> +
+> +		/* used by finalize_initrd() */
+>  		max_low_pfn = end_pfn;
+> 
+> -	/* This is reserved for the kernel and bdata->node_bootmem_map */
+> -	reserve_bootmem_node(NODE_DATA(node), start_pfn << PAGE_SHIFT,
+> -		((freepfn - start_pfn) << PAGE_SHIFT) + bootmap_size,
+> -		BOOTMEM_DEFAULT);
+> +		/* Reserve the kernel text/data/bss */
+> +		memblock_reserve(start_pfn << PAGE_SHIFT,
+> +				 ((kernel_end_pfn - start_pfn) << PAGE_SHIFT));
+> 
+> -	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
+>  		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
+> -		reserve_bootmem_node(NODE_DATA(node),
+> -				(node_addrspace_offset | 0xfe000000),
+> -				32 << 20, BOOTMEM_DEFAULT);
+> +		if (node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT))
+> +			memblock_reserve((node_addrspace_offset | 0xfe000000),
+> +					 32 << 20);
+>  	}
+> 
+>  	sparse_memory_present_with_active_regions(node);
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index 59133d0a..6f7bef0 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -389,7 +389,6 @@ static void __init node_mem_init(cnodeid_t node)
+>  {
+>  	unsigned long slot_firstpfn = slot_getbasepfn(node, 0);
+>  	unsigned long slot_freepfn = node_getfirstfree(node);
+> -	unsigned long bootmap_size;
+>  	unsigned long start_pfn, end_pfn;
+> 
+>  	get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
+> @@ -400,7 +399,6 @@ static void __init node_mem_init(cnodeid_t node)
+>  	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+>  	memset(__node_data[node], 0, PAGE_SIZE);
+> 
+> -	NODE_DATA(node)->bdata = &bootmem_node_data[node];
+>  	NODE_DATA(node)->node_start_pfn = start_pfn;
+>  	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+> 
+> @@ -409,12 +407,11 @@ static void __init node_mem_init(cnodeid_t node)
+>  	slot_freepfn += PFN_UP(sizeof(struct pglist_data) +
+>  			       sizeof(struct hub_data));
+> 
+> -	bootmap_size = init_bootmem_node(NODE_DATA(node), slot_freepfn,
+> -					start_pfn, end_pfn);
+>  	free_bootmem_with_active_regions(node, end_pfn);
+> -	reserve_bootmem_node(NODE_DATA(node), slot_firstpfn << PAGE_SHIFT,
+> -		((slot_freepfn - slot_firstpfn) << PAGE_SHIFT) + bootmap_size,
+> -		BOOTMEM_DEFAULT);
+> +
+> +	memblock_reserve(slot_firstpfn << PAGE_SHIFT,
+> +			 ((slot_freepfn - slot_firstpfn) << PAGE_SHIFT));
+> +
+>  	sparse_memory_present_with_active_regions(node);
+>  }
+> 
+> -- 
+> 2.7.4
+> 
 
-arm:
-         versatile_defconfig: without huge page OK
-         keystone_defconfig: with huge page OK
-arm64:
-         defconfig: with huge page OK
-ia64:
-         generic_defconfig: with huge page OK
-mips:
-         Paul Burton tested cavium octeon with huge page OK
-parisc:
-         generic-64bit_defconfig: with huge page does not link
-         generic-64bit_defconfig: without huge page does not link
-         BUT not because of this series, any feedback welcome.
-powerpc:
-         ppc64_defconfig: without huge page OK
-         ppc64_defconfig: with huge page OK
-sh:
-         dreamcast_defconfig: with huge page OK
-sparc:
-         sparc32_defconfig: without huge page OK
-sparc64:
-         sparc64_defconfig: with huge page OK
-x86:
-         with huge page OK
-
-Alex
-
-On 07/23/2018 02:00 PM, Michael Ellerman wrote:
-> Alex Ghiti <alex@ghiti.fr> writes:
->
->> Does anyone have any suggestion about those patches ?
-> Cross compiling it for some non-x86 arches would be a good start :)
->
-> There are cross compilers available here:
->
->    https://mirrors.edge.kernel.org/pub/tools/crosstool/
->
->
-> cheers
->
->> On 07/09/2018 02:16 PM, Michal Hocko wrote:
->>> [CC hugetlb guys - http://lkml.kernel.org/r/20180705110716.3919-1-alex@ghiti.fr]
->>>
->>> On Thu 05-07-18 11:07:05, Alexandre Ghiti wrote:
->>>> In order to reduce copy/paste of functions across architectures and then
->>>> make riscv hugetlb port (and future ports) simpler and smaller, this
->>>> patchset intends to factorize the numerous hugetlb primitives that are
->>>> defined across all the architectures.
->>>>
->>>> Except for prepare_hugepage_range, this patchset moves the versions that
->>>> are just pass-through to standard pte primitives into
->>>> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
->>>> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
->>>>
->>>> s390 architecture has not been tackled in this serie since it does not
->>>> use asm-generic/hugetlb.h at all.
->>>> powerpc could be factorized a bit more (cf huge_ptep_set_wrprotect).
->>>>
->>>> This patchset has been compiled on x86 only.
->>>>
->>>> Changelog:
->>>>
->>>> v4:
->>>>     Fix powerpc build error due to misplacing of #include
->>>>     <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as
->>>>     pointed by Christophe Leroy.
->>>>
->>>> v1, v2, v3:
->>>>     Same version, just problems with email provider and misuse of
->>>>     --batch-size option of git send-email
->>>>
->>>> Alexandre Ghiti (11):
->>>>     hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
->>>>     hugetlb: Introduce generic version of hugetlb_free_pgd_range
->>>>     hugetlb: Introduce generic version of set_huge_pte_at
->>>>     hugetlb: Introduce generic version of huge_ptep_get_and_clear
->>>>     hugetlb: Introduce generic version of huge_ptep_clear_flush
->>>>     hugetlb: Introduce generic version of huge_pte_none
->>>>     hugetlb: Introduce generic version of huge_pte_wrprotect
->>>>     hugetlb: Introduce generic version of prepare_hugepage_range
->>>>     hugetlb: Introduce generic version of huge_ptep_set_wrprotect
->>>>     hugetlb: Introduce generic version of huge_ptep_set_access_flags
->>>>     hugetlb: Introduce generic version of huge_ptep_get
->>>>
->>>>    arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
->>>>    arch/arm/include/asm/hugetlb.h               | 33 +----------
->>>>    arch/arm64/include/asm/hugetlb.h             | 39 +++---------
->>>>    arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
->>>>    arch/mips/include/asm/hugetlb.h              | 40 +++----------
->>>>    arch/parisc/include/asm/hugetlb.h            | 33 +++--------
->>>>    arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +
->>>>    arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
->>>>    arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
->>>>    arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +
->>>>    arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
->>>>    arch/sh/include/asm/hugetlb.h                | 54 ++---------------
->>>>    arch/sparc/include/asm/hugetlb.h             | 40 +++----------
->>>>    arch/x86/include/asm/hugetlb.h               | 72 +----------------------
->>>>    include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
->>>>    15 files changed, 143 insertions(+), 384 deletions(-)
->>>>
->>>> -- 
->>>> 2.16.2
+-- 
+Sincerely yours,
+Mike.

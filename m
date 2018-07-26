@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 20:46:17 +0200 (CEST)
-Received: from aserp2120.oracle.com ([141.146.126.78]:43058 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992279AbeGZSqM6t0-U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 20:46:12 +0200
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w6QIdlxF117893;
-        Thu, 26 Jul 2018 18:45:29 GMT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 21:01:07 +0200 (CEST)
+Received: from userp2120.oracle.com ([156.151.31.85]:43682 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992279AbeGZTBDYvCxU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 21:01:03 +0200
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w6QIwbjg101467;
+        Thu, 26 Jul 2018 19:00:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=iga+Dad2RaqUbadTOBDnT1nmywvDUDQe5ckOfJDiLxE=;
- b=nzZg+lRY9PgTP1pbppXRm0jrtldrydf6zuyoualF9BS5LtETWHrneScxq1NsX0IzkIrQ
- OH0/GNOYRPbRsMY1S7TBSIV1Gxz59gBCtxaRMutvygoO9j79J7lNu+eO2Lu2cOWO+8VI
- FpAUkZYqdfI7Lfdhf0OVUGRMlNodBs3fQYBhLT6cwFhY+JJqjrohRdbTNPY/SjVyvROa
- lT0hnvyIo8YVW8pUQ6Rcfyr0IyViic/aozdgjD+jM3VdjOhcqr4pA6I0ZXQ4Zk6MWD0w
- mHNYqoLv4HO4IRh7aOmK6QEx4qxLVCKZQPKIAeSs2TrScXTmTCOcUKseHxP2qLk1iBa5 OQ== 
+ bh=+mJQ8lBAXPkGfvLg+V+0g53QCAkZj/VBYqcZUcoFNCI=;
+ b=XfezPij3mbNE0kKvXd4evXlPC4AHD8X5WY7tZvmKL0+6eMZtwRrjNMgBbEBGz2ZgUtzg
+ rAmHwNcogvIODsgS+2aNAwKzVH4dH5L/v1rOPRbOijE9zV3OND5+Dw0RCUVLYP4caXaV
+ JLOu902A4iRzPCkifnTpGsz6seQgGxgIcG+dhhUtqBX8Dplh3Q/6qvoZMC2lk7z5fp6P
+ FfXcbtPBBCYi/gQoO8p3HoAxyX3eLs+d3F/miyuoe0f7+T29FMDxc2Mxl/EivD/YWvo0
+ l0pDOP31C/fgBD8uuoovLYXJwfFR6FJhB4qK8ykgNL13Bqv1MglNusPwp4FF70n+iF+9 Lg== 
 Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
-        by aserp2120.oracle.com with ESMTP id 2kbvsp4cd1-1
+        by userp2120.oracle.com with ESMTP id 2kbwfq4dbk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Jul 2018 18:45:29 +0000
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserv0021.oracle.com (8.14.4/8.14.4) with ESMTP id w6QIjTX7007340
+        Thu, 26 Jul 2018 19:00:22 +0000
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserv0021.oracle.com (8.14.4/8.14.4) with ESMTP id w6QJ0Je6031658
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Jul 2018 18:45:29 GMT
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id w6QIjRbE028239;
-        Thu, 26 Jul 2018 18:45:27 GMT
+        Thu, 26 Jul 2018 19:00:20 GMT
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id w6QJ0BFu012454;
+        Thu, 26 Jul 2018 19:00:12 GMT
 Received: from [192.168.1.164] (/50.38.38.67)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 26 Jul 2018 11:45:26 -0700
-Subject: Re: [PATCH v4 02/11] hugetlb: Introduce generic version of
- hugetlb_free_pgd_range
+        with ESMTP ; Thu, 26 Jul 2018 12:00:09 -0700
+Subject: Re: [PATCH v4 03/11] hugetlb: Introduce generic version of
+ set_huge_pte_at
 To:     Alexandre Ghiti <alex@ghiti.fr>, linux@armlinux.org.uk,
         catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
         fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
@@ -45,27 +45,27 @@ To:     Alexandre Ghiti <alex@ghiti.fr>, linux@armlinux.org.uk,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-arch@vger.kernel.org
 References: <20180705110716.3919-1-alex@ghiti.fr>
- <20180705110716.3919-3-alex@ghiti.fr>
+ <20180705110716.3919-4-alex@ghiti.fr>
 From:   Mike Kravetz <mike.kravetz@oracle.com>
-Message-ID: <623882f0-584d-6e03-d266-d0ddcb5d89aa@oracle.com>
-Date:   Thu, 26 Jul 2018 11:45:24 -0700
+Message-ID: <b9341c15-38d5-8a6f-2e51-bae3f6593880@oracle.com>
+Date:   Thu, 26 Jul 2018 12:00:06 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20180705110716.3919-3-alex@ghiti.fr>
+In-Reply-To: <20180705110716.3919-4-alex@ghiti.fr>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=8965 signatures=668706
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=960
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1806210000 definitions=main-1807260191
+ engine=8.0.1-1806210000 definitions=main-1807260194
 Return-Path: <mike.kravetz@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65172
+X-archive-position: 65173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,320 +83,192 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 07/05/2018 04:07 AM, Alexandre Ghiti wrote:
-> arm, arm64, mips, parisc, sh, x86 architectures use the
-> same version of hugetlb_free_pgd_range, so move this generic
+> arm, ia64, mips, powerpc, sh, x86 architectures use the
+> same version of set_huge_pte_at, so move this generic
 > implementation into asm-generic/hugetlb.h.
 > 
 
-Just one small issue below.  Not absolutely necessary to fix.
+Just one comment below, otherwise:
 Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
 
 > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 > ---
->  arch/arm/include/asm/hugetlb.h     | 12 ++----------
->  arch/arm64/include/asm/hugetlb.h   | 10 ----------
->  arch/ia64/include/asm/hugetlb.h    |  5 +++--
->  arch/mips/include/asm/hugetlb.h    | 13 ++-----------
->  arch/parisc/include/asm/hugetlb.h  | 12 ++----------
->  arch/powerpc/include/asm/hugetlb.h |  4 +++-
->  arch/sh/include/asm/hugetlb.h      | 12 ++----------
->  arch/sparc/include/asm/hugetlb.h   |  4 +++-
->  arch/x86/include/asm/hugetlb.h     | 11 ++---------
->  include/asm-generic/hugetlb.h      | 11 +++++++++++
->  10 files changed, 30 insertions(+), 64 deletions(-)
+>  arch/arm/include/asm/hugetlb-3level.h | 6 ------
+>  arch/arm64/include/asm/hugetlb.h      | 1 +
+>  arch/ia64/include/asm/hugetlb.h       | 6 ------
+>  arch/mips/include/asm/hugetlb.h       | 6 ------
+>  arch/parisc/include/asm/hugetlb.h     | 1 +
+>  arch/powerpc/include/asm/hugetlb.h    | 6 ------
+>  arch/sh/include/asm/hugetlb.h         | 6 ------
+>  arch/sparc/include/asm/hugetlb.h      | 1 +
+>  arch/x86/include/asm/hugetlb.h        | 6 ------
+>  include/asm-generic/hugetlb.h         | 8 +++++++-
+>  10 files changed, 10 insertions(+), 37 deletions(-)
 > 
-> diff --git a/arch/arm/include/asm/hugetlb.h b/arch/arm/include/asm/hugetlb.h
-> index 7d26f6c4f0f5..047b893ef95d 100644
-> --- a/arch/arm/include/asm/hugetlb.h
-> +++ b/arch/arm/include/asm/hugetlb.h
-> @@ -23,19 +23,9 @@
->  #define _ASM_ARM_HUGETLB_H
->  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
->  
->  #include <asm/hugetlb-3level.h>
->  
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr, unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
-> -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
-> -}
-> -
-> -
->  static inline int is_hugepage_only_range(struct mm_struct *mm,
->  					 unsigned long addr, unsigned long len)
->  {
-> @@ -68,4 +58,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  	clear_bit(PG_dcache_clean, &page->flags);
+> diff --git a/arch/arm/include/asm/hugetlb-3level.h b/arch/arm/include/asm/hugetlb-3level.h
+> index d4014fbe5ea3..398fb06e8207 100644
+> --- a/arch/arm/include/asm/hugetlb-3level.h
+> +++ b/arch/arm/include/asm/hugetlb-3level.h
+> @@ -37,12 +37,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
+>  	return retval;
 >  }
 >  
-> +#include <asm-generic/hugetlb.h>
-> +
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
+> -{
+> -	set_pte_at(mm, addr, ptep, pte);
+> -}
+> -
 
-I don't think moving the #include is necessary in this case where you are
-not adding a __HAVE_ARCH_HUGE* definition.  I like having all the #include
-statements at the top if possible.
+Since <asm-generic/hugetlb.h> is not directly included in this file,
+I had to search around in the #include dependency chain to look for
+it.  It makes me just a tiny bit nervous, but since it compiled, I'm
+sure there is not an issue.
 -- 
 Mike Kravetz
 
->  #endif /* _ASM_ARM_HUGETLB_H */
-> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
-> index 3fcf14663dfa..4af1a800a900 100644
-> --- a/arch/arm64/include/asm/hugetlb.h
-> +++ b/arch/arm64/include/asm/hugetlb.h
-> @@ -25,16 +25,6 @@ static inline pte_t huge_ptep_get(pte_t *ptep)
->  	return READ_ONCE(*ptep);
->  }
->  
-> -
-> -
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr, unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
-> -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
-> -}
-> -
->  static inline int is_hugepage_only_range(struct mm_struct *mm,
->  					 unsigned long addr, unsigned long len)
->  {
-> diff --git a/arch/ia64/include/asm/hugetlb.h b/arch/ia64/include/asm/hugetlb.h
-> index 74d2a5540aaf..afe9fa4d969b 100644
-> --- a/arch/ia64/include/asm/hugetlb.h
-> +++ b/arch/ia64/include/asm/hugetlb.h
-> @@ -3,9 +3,8 @@
->  #define _ASM_IA64_HUGETLB_H
->  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
-> -
->  
-> +#define __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
->  void hugetlb_free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
->  			    unsigned long end, unsigned long floor,
->  			    unsigned long ceiling);
-> @@ -70,4 +69,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  {
->  }
->  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* _ASM_IA64_HUGETLB_H */
-> diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
-> index 982bc0685330..53764050243e 100644
-> --- a/arch/mips/include/asm/hugetlb.h
-> +++ b/arch/mips/include/asm/hugetlb.h
-> @@ -10,8 +10,6 @@
->  #define __ASM_HUGETLB_H
->  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
-> -
->  
->  static inline int is_hugepage_only_range(struct mm_struct *mm,
->  					 unsigned long addr,
-> @@ -38,15 +36,6 @@ static inline int prepare_hugepage_range(struct file *file,
->  	return 0;
->  }
->  
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr,
-> -					  unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
-> -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
-> -}
-> -
->  static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
->  				   pte_t *ptep, pte_t pte)
->  {
-> @@ -114,4 +103,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  {
->  }
->  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* __ASM_HUGETLB_H */
-> diff --git a/arch/parisc/include/asm/hugetlb.h b/arch/parisc/include/asm/hugetlb.h
-> index 58e0f4620426..28c23b68d38d 100644
-> --- a/arch/parisc/include/asm/hugetlb.h
-> +++ b/arch/parisc/include/asm/hugetlb.h
-> @@ -3,8 +3,6 @@
->  #define _ASM_PARISC64_HUGETLB_H
->  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
-> -
->  
->  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
->  		     pte_t *ptep, pte_t pte);
-> @@ -32,14 +30,6 @@ static inline int prepare_hugepage_range(struct file *file,
->  	return 0;
->  }
->  
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr, unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
-> -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
-> -}
-> -
 >  static inline void huge_ptep_clear_flush(struct vm_area_struct *vma,
 >  					 unsigned long addr, pte_t *ptep)
 >  {
-> @@ -71,4 +61,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  {
+> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+> index 4af1a800a900..874661a1dff1 100644
+> --- a/arch/arm64/include/asm/hugetlb.h
+> +++ b/arch/arm64/include/asm/hugetlb.h
+> @@ -60,6 +60,7 @@ static inline void arch_clear_hugepage_flags(struct page *page)
+>  extern pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>  				struct page *page, int writable);
+>  #define arch_make_huge_pte arch_make_huge_pte
+> +#define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+>  extern void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>  			    pte_t *ptep, pte_t pte);
+>  extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+> diff --git a/arch/ia64/include/asm/hugetlb.h b/arch/ia64/include/asm/hugetlb.h
+> index afe9fa4d969b..a235d6f60fb3 100644
+> --- a/arch/ia64/include/asm/hugetlb.h
+> +++ b/arch/ia64/include/asm/hugetlb.h
+> @@ -20,12 +20,6 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
+>  		REGION_NUMBER((addr)+(len)-1) == RGN_HPAGE);
 >  }
 >  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* _ASM_PARISC64_HUGETLB_H */
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
+> -{
+> -	set_pte_at(mm, addr, ptep, pte);
+> -}
+> -
+>  static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>  					    unsigned long addr, pte_t *ptep)
+>  {
+> diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
+> index 53764050243e..8ea439041d5d 100644
+> --- a/arch/mips/include/asm/hugetlb.h
+> +++ b/arch/mips/include/asm/hugetlb.h
+> @@ -36,12 +36,6 @@ static inline int prepare_hugepage_range(struct file *file,
+>  	return 0;
+>  }
+>  
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
+> -{
+> -	set_pte_at(mm, addr, ptep, pte);
+> -}
+> -
+>  static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>  					    unsigned long addr, pte_t *ptep)
+>  {
+> diff --git a/arch/parisc/include/asm/hugetlb.h b/arch/parisc/include/asm/hugetlb.h
+> index 28c23b68d38d..77c8adbac7c3 100644
+> --- a/arch/parisc/include/asm/hugetlb.h
+> +++ b/arch/parisc/include/asm/hugetlb.h
+> @@ -4,6 +4,7 @@
+>  
+>  #include <asm/page.h>
+>  
+> +#define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>  		     pte_t *ptep, pte_t pte);
+>  
 > diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
-> index 3225eb6402cc..a7d5c739df9b 100644
+> index a7d5c739df9b..0794b53439d4 100644
 > --- a/arch/powerpc/include/asm/hugetlb.h
 > +++ b/arch/powerpc/include/asm/hugetlb.h
-> @@ -4,7 +4,6 @@
->  
->  #ifdef CONFIG_HUGETLB_PAGE
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
->  
->  extern struct kmem_cache *hugepte_cache;
->  
-> @@ -113,6 +112,7 @@ static inline void flush_hugetlb_page(struct vm_area_struct *vma,
->  void flush_hugetlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
->  #endif
->  
-> +#define __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
->  void hugetlb_free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
->  			    unsigned long end, unsigned long floor,
->  			    unsigned long ceiling);
-> @@ -179,6 +179,8 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  {
+> @@ -132,12 +132,6 @@ static inline int prepare_hugepage_range(struct file *file,
+>  	return 0;
 >  }
 >  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #else /* ! CONFIG_HUGETLB_PAGE */
->  static inline void flush_hugetlb_page(struct vm_area_struct *vma,
->  				      unsigned long vmaddr)
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
+> -{
+> -	set_pte_at(mm, addr, ptep, pte);
+> -}
+> -
+>  static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>  					    unsigned long addr, pte_t *ptep)
+>  {
 > diff --git a/arch/sh/include/asm/hugetlb.h b/arch/sh/include/asm/hugetlb.h
-> index 735939c0f513..f6a51b609409 100644
+> index f6a51b609409..bc552e37c1c9 100644
 > --- a/arch/sh/include/asm/hugetlb.h
 > +++ b/arch/sh/include/asm/hugetlb.h
-> @@ -4,8 +4,6 @@
->  
->  #include <asm/cacheflush.h>
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
-> -
->  
->  static inline int is_hugepage_only_range(struct mm_struct *mm,
->  					 unsigned long addr,
-> @@ -27,14 +25,6 @@ static inline int prepare_hugepage_range(struct file *file,
+> @@ -25,12 +25,6 @@ static inline int prepare_hugepage_range(struct file *file,
 >  	return 0;
 >  }
 >  
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr, unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
 > -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
+> -	set_pte_at(mm, addr, ptep, pte);
 > -}
 > -
->  static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
->  				   pte_t *ptep, pte_t pte)
+>  static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>  					    unsigned long addr, pte_t *ptep)
 >  {
-> @@ -85,4 +75,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  	clear_bit(PG_dcache_clean, &page->flags);
->  }
->  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* _ASM_SH_HUGETLB_H */
 > diff --git a/arch/sparc/include/asm/hugetlb.h b/arch/sparc/include/asm/hugetlb.h
-> index 300557c66698..59d89b52ccb7 100644
+> index 59d89b52ccb7..16b0c53ea6c9 100644
 > --- a/arch/sparc/include/asm/hugetlb.h
 > +++ b/arch/sparc/include/asm/hugetlb.h
-> @@ -3,7 +3,6 @@
->  #define _ASM_SPARC64_HUGETLB_H
+> @@ -12,6 +12,7 @@ struct pud_huge_patch_entry {
+>  extern struct pud_huge_patch_entry __pud_huge_patch, __pud_huge_patch_end;
+>  #endif
 >  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
+> +#define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>  		     pte_t *ptep, pte_t pte);
 >  
->  #ifdef CONFIG_HUGETLB_PAGE
->  struct pud_huge_patch_entry {
-> @@ -84,8 +83,11 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  {
->  }
->  
-> +#define __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
->  void hugetlb_free_pgd_range(struct mmu_gather *tlb, unsigned long addr,
->  			    unsigned long end, unsigned long floor,
->  			    unsigned long ceiling);
->  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* _ASM_SPARC64_HUGETLB_H */
 > diff --git a/arch/x86/include/asm/hugetlb.h b/arch/x86/include/asm/hugetlb.h
-> index 5ed826da5e07..996ce8e15365 100644
+> index 996ce8e15365..554d5614b375 100644
 > --- a/arch/x86/include/asm/hugetlb.h
 > +++ b/arch/x86/include/asm/hugetlb.h
-> @@ -3,7 +3,6 @@
->  #define _ASM_X86_HUGETLB_H
->  
->  #include <asm/page.h>
-> -#include <asm-generic/hugetlb.h>
->  
->  #define hugepages_supported() boot_cpu_has(X86_FEATURE_PSE)
->  
-> @@ -28,14 +27,6 @@ static inline int prepare_hugepage_range(struct file *file,
+> @@ -27,12 +27,6 @@ static inline int prepare_hugepage_range(struct file *file,
 >  	return 0;
 >  }
 >  
-> -static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> -					  unsigned long addr, unsigned long end,
-> -					  unsigned long floor,
-> -					  unsigned long ceiling)
+> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> -				   pte_t *ptep, pte_t pte)
 > -{
-> -	free_pgd_range(tlb, addr, end, floor, ceiling);
+> -	set_pte_at(mm, addr, ptep, pte);
 > -}
 > -
->  static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
->  				   pte_t *ptep, pte_t pte)
+>  static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+>  					    unsigned long addr, pte_t *ptep)
 >  {
-> @@ -90,4 +81,6 @@ static inline void arch_clear_hugepage_flags(struct page *page)
->  static inline bool gigantic_page_supported(void) { return true; }
->  #endif
->  
-> +#include <asm-generic/hugetlb.h>
-> +
->  #endif /* _ASM_X86_HUGETLB_H */
 > diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-> index 3da7cff52360..c697ca9dda18 100644
+> index c697ca9dda18..ee010b756246 100644
 > --- a/include/asm-generic/hugetlb.h
 > +++ b/include/asm-generic/hugetlb.h
-> @@ -40,4 +40,15 @@ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+> @@ -47,8 +47,14 @@ static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
+>  {
+>  	free_pgd_range(tlb, addr, end, floor, ceiling);
 >  }
+> +#endif
+>  
+> -
+> +#ifndef __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+> +static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+> +		pte_t *ptep, pte_t pte)
+> +{
+> +	set_pte_at(mm, addr, ptep, pte);
+> +}
 >  #endif
 >  
-> +#ifndef __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
-> +static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
-> +		unsigned long addr, unsigned long end,
-> +		unsigned long floor, unsigned long ceiling)
-> +{
-> +	free_pgd_range(tlb, addr, end, floor, ceiling);
-> +}
-> +
-> +
-> +#endif
-> +
 >  #endif /* _ASM_GENERIC_HUGETLB_H */
 > 

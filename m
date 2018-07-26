@@ -1,47 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 13:46:34 +0200 (CEST)
-Received: from ozlabs.org ([203.11.71.1]:58503 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 15:02:25 +0200 (CEST)
+Received: from mout.gmx.net ([212.227.15.18]:46537 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990401AbeGZLqXS22Th (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Jul 2018 13:46:23 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 41bqzx2q9Mz9ryl;
-        Thu, 26 Jul 2018 21:46:05 +1000 (AEST)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Mike Kravetz <mike.kravetz@oracle.com>, Alex Ghiti <alex@ghiti.fr>,
-        Michal Hocko <mhocko@kernel.org>
-Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
+        id S23990439AbeGZNCSjgr7v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Jul 2018 15:02:18 +0200
+Received: from ls3530 ([155.56.40.73]) by mail.gmx.com (mrgmx002
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0MTTKZ-1fbDCy051L-00SQbY; Thu, 26
+ Jul 2018 14:59:51 +0200
+Date:   Thu, 26 Jul 2018 14:59:40 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Alex Ghiti <alex@ghiti.fr>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@kernel.org>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-arch@vger.kernel.org,
         Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture primitives
-In-Reply-To: <75195a7d-3d0f-4e55-92cc-4ad772683c75@oracle.com>
-References: <20180705110716.3919-1-alex@ghiti.fr> <20180709141621.GD22297@dhcp22.suse.cz> <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr> <75195a7d-3d0f-4e55-92cc-4ad772683c75@oracle.com>
-Date:   Thu, 26 Jul 2018 21:46:00 +1000
-Message-ID: <87tvomgqyv.fsf@concordia.ellerman.id.au>
+        Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture
+ primitives
+Message-ID: <20180726125940.GA15033@ls3530>
+References: <20180705110716.3919-1-alex@ghiti.fr>
+ <20180709141621.GD22297@dhcp22.suse.cz>
+ <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
+ <87d0vehx16.fsf@concordia.ellerman.id.au>
+ <67aba0f0-c0d4-b06f-5fbc-f4d113ce5033@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <67aba0f0-c0d4-b06f-5fbc-f4d113ce5033@ghiti.fr>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+X-Provags-ID: V03:K1:LJW7STv0ttsGWNRGMntZtI8g9h5WdEk1zchAg4XmzjhCReDadlR
+ KG+cYi35nReER/0L3a4C+m2kngX4xI03Labu+btPyA68jH3f+GC+B4qcZQauRRzrEc80ERE
+ aHGns9dZ853xNeeLFJnjGRUYdQsbCokyKXfbOydvSxnYlIPh6n3wWXsfKwCi920Up+MZU84
+ 4FSFjVIiKuyHgJ1Qk6Gqg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:zkWr1oFCSxI=:2ucBH/SBIgeCNQ0BKUKeje
+ F+9jymR6qNiTUTKtDh89IYd0+6+Bsc5f/Syop13rLKmBEhnPFN+a41RacteZnwIBnLF9+ETjJ
+ 3DlfTAUQSeuGdnHBeADJFltjUCSTvD2vsM58+aeCkxMNMpajnlaqA3E/deNmLotmpKsrqKmrT
+ xKlckvHALi8pkKIKyDt5rE4pekx9GLBQHrEB1NEyQsX83D0pk7Fa15jDIyPGlYAUMVCVuoT17
+ DJeVFQ5oHMqQh4fvuIix9e6XmiP1i+/MxLVEOA++ocfAgfIXxZeQXNYsUss7wqZLlZ95KbpB4
+ nd1/9LjVBmgjK5zN4wTz2onTOFwgtJc09QXPUK1MLL2IOfESmDkYBPc0kTy3WMG7EITGFYPNq
+ HixBpBdcYX9LbmNXK17ispo3ECpjyd5I/z1NjyQd8knCR5tSlGgpWo5QqwfeE9aDbbXriwJ2t
+ /wsnmcXaL6hle00w1eZUquG+XYKrKxQ6+QU6lgXufdZW3cmVVZx0KiO+TJqk6T+10Ttt7D51L
+ ujer+8dhR2WIpubn1MFUSxKLz1do/E1GCp6bqM8TA5hUW2sPPdTl0fBs2i/8FGaAHsQc2Puzf
+ 1WyUDN0KnN7FwyxWaM99MUxbH1kX70dfXAa6+p3GiEzjwd/dTVZ0boShlQ9esqyhagkmjVRiz
+ z92FKnMmMwTkiykoE6mXlzBujDqmwCJ79GxbpgbZDTJVWBDagHK9DfPcW+VFFx/JUDs6tZHJa
+ 7LWB3ZcIw/5wqxV9V2OErrXZ/ChLYXLIWUiYsWrkJVlmrNajjZivfGblY84=
+Return-Path: <deller@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65153
+X-archive-position: 65154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: deller@gmx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,16 +76,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Mike Kravetz <mike.kravetz@oracle.com> writes:
+* Alex Ghiti <alex@ghiti.fr>:
+> This is the result of the build for all arches tackled in this series
+> rebased on 4.18-rc6:
+> ...
+> parisc:
+>         generic-64bit_defconfig: with huge page does not link
+>         generic-64bit_defconfig: without huge page does not link
+>         BUT not because of this series, any feedback welcome.
+Strange, but I will check that later....
 
-> On 07/20/2018 11:37 AM, Alex Ghiti wrote:
->> Does anyone have any suggestion about those patches ?
->
-> I only took a quick look.  From the hugetlb perspective, I like the
-> idea of moving routines to a common file.  If any of the arch owners
-> (or anyone else) agree, I can do a review of the series.
+Anyway, I applied your v4-patch to my parisc64 tree, built the kernel,
+started it and ran some hugetlb LTP testcases sucessfully.
+So, please add:
 
-The conversions look pretty good to me. If you want to give it a review
-then from my point of view it could go in -mm to shake out any bugs.
+Tested-by: Helge Deller <deller@gmx.de> # parisc
 
-cheers
+Helge

@@ -1,94 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 19:51:20 +0200 (CEST)
-Received: from mail-sn1nam01on0126.outbound.protection.outlook.com ([104.47.32.126]:45056
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993003AbeGZRvPLePGT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Jul 2018 19:51:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bzw9W8XA2r0OoxhRvOdB0uSAWg72RbeR8KrOpJGnybg=;
- b=ZYe9i7eXlMju/rUHJq89LIvb+lHSSRYNeBORcjGu4drLZrBtnUFao0QFiHbvnwSSHQZxyM5SNcqyXD81JFtLJb3pGjzAOcjbcMpBydW/XM8Xp9a9sc9Z7tjCJN2wtz22Pup/JPgPJ4wPYFTcXDyvCjcG1ozx4Tx8jvWjRLQOZxs=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- BYAPR08MB4936.namprd08.prod.outlook.com (2603:10b6:a03:6a::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.973.21; Thu, 26 Jul 2018 17:51:04 +0000
-Date:   Thu, 26 Jul 2018 10:51:00 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     ralf@linux-mips.org, jhogan@kernel.org, linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mips: configs: remove no longer needed config option
-Message-ID: <20180726175100.br5uk2z4aryfx64q@pburton-laptop>
-References: <20180626153035.361-1-anders.roxell@linaro.org>
- <CADYN=9+HHA+uFJT+QX9hvM1nunTg6zqwVwBeSuAVFAYjBanhSg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 20:41:58 +0200 (CEST)
+Received: from userp2130.oracle.com ([156.151.31.86]:44274 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992279AbeGZSlye7erU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jul 2018 20:41:54 +0200
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w6QIdPtT087581;
+        Thu, 26 Jul 2018 18:41:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=XksFvEa4qtN6dX3cv826jX28nJp5tgiVyhdQqP1EueM=;
+ b=arOTTObm5bU3L7FnFPFAi+k0mxMFlt2lVFdtVv8b3qrMbrvy7mvaGhKpmuYAxsj+JKdF
+ Lw2Ztan3cRSDB3Cs+VdDRXFYG3GJl+yQNUBefXDLQjwb7mcGFaXPokajon1iv1qjF7r4
+ DTInn7eSQ84is/jO+3WowudpwGLokKR/OvKEwUtFQQMFVMrxRfwjZczTGdyN8nNTS/BJ
+ NLtp32zDFJpiArJO/DduVUy8l5uMyyM6YGr+A+wYd/Tefl2wy0+SgrTAlH6LeqdIX6SX
+ 0iUfep4eYFpp30hQXjDhVtXA5pusUegFUlDcdgZUq0FImSQCU9OdaZofjPKe0BMjYVgO wQ== 
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+        by userp2130.oracle.com with ESMTP id 2kbv8tcd2e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Jul 2018 18:41:04 +0000
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserv0021.oracle.com (8.14.4/8.14.4) with ESMTP id w6QIf145018153
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Jul 2018 18:41:02 GMT
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id w6QIeqIB023467;
+        Thu, 26 Jul 2018 18:40:53 GMT
+Received: from [192.168.1.164] (/50.38.38.67)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 26 Jul 2018 11:40:51 -0700
+Subject: Re: [PATCH v4 01/11] hugetlb: Harmonize hugetlb.h arch specific
+ defines with pgtable.h
+To:     Alexandre Ghiti <alex@ghiti.fr>, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+References: <20180705110716.3919-1-alex@ghiti.fr>
+ <20180705110716.3919-2-alex@ghiti.fr>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <1f95fdc7-378b-9c2a-15ae-da78578a27bf@oracle.com>
+Date:   Thu, 26 Jul 2018 11:40:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADYN=9+HHA+uFJT+QX9hvM1nunTg6zqwVwBeSuAVFAYjBanhSg@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: MWHPR18CA0047.namprd18.prod.outlook.com
- (2603:10b6:320:31::33) To BYAPR08MB4936.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::17)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7231cbf8-8926-4b33-7b29-08d5f3205bc2
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600073)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4936;
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4936;3:oxuEGJ0vzUNLcBcKO+Irg9tfEhKMKt81etV5WFDbNkWNWNpxCJLXuh0eeS1T5+AK/vtVEm3EGASROZ81rJwHyfElSNbb/ugPBIuZyq4E4c3u9zz6mf08Z9NXVae1Yidmv5G/wj3BO7pWxKs34f+f5fYcEnXI/VFTdC0T5KNu3ZIfWrWb3LBRSStzxHKrCM+OCbjlVOHt/qKJBv1AjVqs7LszjtG4e6EEqAsVWYQy7V+mVLEixNQeZsGxsAEG7o+t;25:gLloyEoovfsTiV4c+EaRsVJQPO6RBFs/PodALNENZCd3sAQhp0HFerXldhwHLjoYf/61yaLn9Ez9BI1JXJmZwqwHv012AnwwwNapTZGf5150Eb+fAzwGCjBA/EZ7Gi8izoERhL2/wUlKuVee2sI4bUcv2MLMYCNw9QblhsQoDG9P1M65CWOnyupTRVnU2ynG6EVxL0VviFRpS7NKFJRJ+dLRDpNhuDRtZK036//bBhmynr8geQtliz4qQRC0c/XPO849syR8vDJywoeSBH5quQs9Eo/FwZwaG5LKP7WOj95aRcKMJygvlK4Oy1wbhMdkNO8wSBwyCDsKvVSWmzhhEg==;31:5CpCmRZDuK6Dh2Kk/xP6iPyBi0DgpILtaN03yEatEzZaV+E6nMn2awst6dPBmSlBozqDPv0pZ+2vomyeiyJWL3p5X70JxC8G1wavNAenVaSUa+mcYKpODWS3pr/OScbr8R28uonrfULLMDin8quu5SWUlR3QpdYfxQswc+GgRVTAMycqqFneNZd/XHSdpzxwBkW62UJkbYLZ5mapc7RxuhtqH+OSanEpJENL7ECofLA=
-X-MS-TrafficTypeDiagnostic: BYAPR08MB4936:
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4936;20:6D5IVyvVX/0y00jDV91uOZvKdkAg3w+AiJZ1mliVjElXiKYusxWlD4qqmOCBj3rchB2QaAi1PnvLfepAW2uOdosH/ypEPwXWggR2Cm/0kxgiFiEC33TUmR0ZIOQf5wQdoEICbGQrdDkZpK3jfG5Q3Sz/3YNdfBj2AWKYLHG65Qs+kzQuwj2DyCcqqwaNf9gylS29eMOi2htanckIAwE3P91jzB+tTONBpiG/guKb/aQCJPorA7yuStPj6LJJY6Y7;4:ltcZEL5GEXpNg4+S2gbaLzcqMyn2IWhGy93YEIh9HT1XrBN3ymDXsIl+YK8becdv9uTdVzxgCweQdC+fjBgRtRbaOOdBuoOlQPeBQAZx70cVz+nOi0U5MgVDc3cugjG8iLP1qDOH808mcgGTGzI3T23m/Ga/nF7oqICSI1YzF3JLQj/fUtLhFbIkBjKvjycscsA4lM5EQhbjWzB/MJs3WoF46yHaMaU5xKyT43a1RRh99gSxbxcQ5bFc3NfwiVITAlU/TnElrUkdALFY/5M6zQ==
-X-Microsoft-Antispam-PRVS: <BYAPR08MB4936FEC87AC5088A984DA86BC12B0@BYAPR08MB4936.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(10201501046)(93006095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:BYAPR08MB4936;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4936;
-X-Forefront-PRVS: 07459438AA
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(396003)(366004)(39830400003)(136003)(376002)(189003)(199004)(52314003)(52116002)(956004)(6486002)(11346002)(47776003)(76176011)(5660300001)(50466002)(446003)(476003)(229853002)(66066001)(68736007)(33896004)(16586007)(9686003)(2906002)(81166006)(76506005)(8676002)(42882007)(8936002)(6496006)(386003)(81156014)(316002)(58126008)(6916009)(305945005)(106356001)(1076002)(105586002)(186003)(3846002)(6246003)(16526019)(6116002)(33716001)(6666003)(23726003)(478600001)(25786009)(4326008)(97736004)(26005)(486006)(44832011)(7736002)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4936;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4936;23:T91cdEHRKggMWdgi2OcJFCg3vcjLh93WLg/y8KXz+?=
- =?us-ascii?Q?XfctbtNzlAnLclqixfB3l5N367CqZysyCYMELvbcY8rlCBv9JJaM0ARcU4JX?=
- =?us-ascii?Q?Br30+GWdutgfVZo3w4oqZwMO1v5YXXqT223ke1tnLF/qPMlAjy9TDRHdbey9?=
- =?us-ascii?Q?B0cXCjUXXWK3mLsE+5S4RjwrkbyKmrgglgu56mJxx2kWU63EQPXkO4v7WQf7?=
- =?us-ascii?Q?8l45/H0aqwDQkvTYM3OHszJHg2bRewO5ls1hxcUBrCG5tU3tlSEfJwDfqcKo?=
- =?us-ascii?Q?p0iqhmdn3m/Ex1ufc+mhMNZrKxzYjH2Z2Xu8KHQlW6DdzuEOUYD9LJ7r4Ijb?=
- =?us-ascii?Q?VfXJ5YXUi/IA1HErCaIu+YCb+3YvkzYd8JBnygAylQBBIgQeeMQjuWFpm1Tn?=
- =?us-ascii?Q?+6t0gSh186+nDd9w0t24W9XbdsZr5LcPZh4byslL1cvJosD6YFX07WVcaBac?=
- =?us-ascii?Q?CxFo/S3/PG/qfL6wFHq3+YlFVUvUNuMeKVp4qN7tL9Snz1ecsR7LjGZqwZzd?=
- =?us-ascii?Q?8ytX9EMWpcHr45ea8zDTb9YvDY9jTu1ZSGV7Jc4XaU/CIazmBXa6c42syOJk?=
- =?us-ascii?Q?tAER08mApTzWdKQk8FBVoFC3hJo+QvgtucJOvg52W3yY56JqA9jbqqqhoq5Z?=
- =?us-ascii?Q?C30rEKVn5l3R5b5UJ21Qgsbsp5xW/ZrCy6qMVIKzCQKb/LjnMxDdMeqSxGJd?=
- =?us-ascii?Q?96V9IHXLjoHe6ejgrte1T/rWrlOdHXT0NkEuMFssyK78pG4TXMudWaOHrgT0?=
- =?us-ascii?Q?CR39RYyrcgWt/6GUJzczpKsZOvot+Ge6doU7s73PwdRjvc2VqYoKhytWv+o/?=
- =?us-ascii?Q?fgEculNrDr48kuHXIykxWgOju3goAgpJY42TUASMTfVtucXOiD0+UOXoYBJC?=
- =?us-ascii?Q?sCJqPThWZeMFU+AX55VQr4OHEA1/CIXnkQjwUV1tSxK4P5mj1H+/2e6mVrE3?=
- =?us-ascii?Q?AkJ2SdZiVIwrgOE5MfwPKYjoqBPQ/Qwta2eKmHLR46DDLFIXJW7D5TmwTpmT?=
- =?us-ascii?Q?s4kr+sCTAqgYlXeOACOmVuPAqXrkuuhDHJshR31d45mhcLFwrI78jdcdlePB?=
- =?us-ascii?Q?F8UCZjOwjSljlPJgWDjU33KCkhFHb+3IV7ZaapZepbSTDRvsxUYFthnX8jcP?=
- =?us-ascii?Q?ju4/zf41pvt+81mvSCcGyk2QwrHX07rj2T0hztm6GMNWjOJrqLLkyRkjZEsA?=
- =?us-ascii?Q?MVdWMKtblNKgfmVCdIQUVKPxakdQu6WW6d6nLWfeHENcLl0jYqsYAkyGP7LF?=
- =?us-ascii?Q?aBGDR4ZAmZF35YZagjDIFT0YkEfhYILaHv55qquGAibt4Jr8RokqpG8FtBFD?=
- =?us-ascii?Q?VzoeYFACbDCTCPokDBzZCc=3D?=
-X-Microsoft-Antispam-Message-Info: ZKH5V0KwA60tQW0IqU3sZsUtRsDT9HBgp8QElrR+NAtBjyA1j6r6oG3aG5Lbcs2BE2VJNpIAL+6KklqovfINU1qoLWk4xbfLdZa6UWUvtKSEln3aVy4T9ZqQudxhN8hIhybcVJTU/HwivibkXLGFqrpImCZc/ix7HEKlsmWUv5bIzedoAZkqa8QvToXmIC83q4DWcPHx+Ln/gJ2hwn0p6CSma/q/PGpBT597bd27wE25S3Z9h3mA5E4BMlRpxih5tAm3DgeJC/FjNhbeEpIgUh6vcPmR69chpeVpuWBFpAf+E0QfNcmGcL+aUunjjm5E2FQTaI2JHsKi1D0abRWiQCK8Fr2bbNzcObZq/10R+AE=
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4936;6:zb8OMRD5tHgVjpCXaRrJnG/dwN3JKHp16jNdc06rlYGOogL/x5cKo9nlbX+1y6qx1OGS3LP9nBS4ekwj3FuReL9KOWy2GSuy5gD+d7aBzSsOeqLh2Dbp4U4CBBpJACNLdns5volXHGwCsfZXvUvZ+4BeZ7qd1iPPNLRHNMcOb2JRg30VH25e5ZxKvdW4WX3tBviBifg3E796qivo1sa07k2lQudzUGi0Z4dZO85p58UjfKIDLgtwswKnxjWjmcaSc/RT+FRq0ruagBCpt3nPirh4SjD4Um2G/ryoXZgaa6mh84kezm+mbfaTXKXGSvwMz7p7VTnHCnr0XhC9moCIQY9rYmKaz7/g4thdo7YGo/r8sQzrNhTOhtqqt0sOUecCZQJpBr/GkSvYJxUb4/tzBen9jZLI8+N106LFnu8JwDNNYu/vRZZbZUKnusku1XJumOZ0S8bLbSChHm5JX8vixQ==;5:/nC9/2zDtJdEmIAMK0WwfuGLkJWRoRRYA78GCn/v4KNh9SzIZxWzWA85Il512jENGd2dna5sVHXj0GXYvQMm3dt138z0/8CZ9pL/EQ70bD2f6Hmo8v/ysEm96PzfrDP3qnn3w0gXU/aukHZlRPiIzlX4HcsjB6K/E6WJ6hVXAqQ=;7:KHRCygECByiNGpu87hYaNyL/MZGyYrOp46k6yYIV3bHIeCD+cDlm1N6oxwF3/ek79Er818ShaIZ9/g2MWLHIvybI90OR6h5sh+fyvz0mrzjTKs5iO84AlHIcTHkvxUzL+3eUR+rSN9D4olxpEZH2OmiqXPvJzuZTLf4lHJtI9X+wlHW8KX69VUXRyaDengfmOE/e7LlqMBbHXniWwxGzbaHcEjVIMvVlLdWxQlHth86YLZT1AN3ypwNPqhkmAv2y
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2018 17:51:04.5427 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7231cbf8-8926-4b33-7b29-08d5f3205bc2
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4936
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <20180705110716.3919-2-alex@ghiti.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=8965 signatures=668706
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=997
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1806210000 definitions=main-1807260191
+Return-Path: <mike.kravetz@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65170
+X-archive-position: 65171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: mike.kravetz@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -101,42 +82,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Anders,
-
-On Thu, Jul 26, 2018 at 09:04:57AM +0200, Anders Roxell wrote:
-> > Since commit eedf265aa003 ("devpts: Make each mount of devpts an
-> > independent filesystem.") CONFIG_DEVPTS_MULTIPLE_INSTANCES isn't needed
-> > in the defconfig anymore.
-> >
-> > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-> > ---
-> >  arch/mips/configs/ip27_defconfig    | 1 -
-> >  arch/mips/configs/nlm_xlp_defconfig | 1 -
-> >  arch/mips/configs/nlm_xlr_defconfig | 1 -
-> >  3 files changed, 3 deletions(-)
+On 07/05/2018 04:07 AM, Alexandre Ghiti wrote:
+> asm-generic/hugetlb.h proposes generic implementations of hugetlb
+> related functions: use __HAVE_ARCH_HUGE* defines in order to make arch
+> specific implementations of hugetlb functions consistent with pgtable.h
+> scheme.
 > 
-> Ping.
 
-Apologies - this was forgotten because it stopped showing up as
-requiring action in patchwork after Ralf marked it as accepted, but it
-has never been applied to the shared mips-next branch.
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+-- 
+Mike Kravetz
 
-I do question whether it's worthwhile making these one-line changes to
-configs, because:
-
-  1) The no presence of CONFIG_DEVPTS_MULTIPLE_INSTANCES is harmless
-     anyway, it'll just be ignored.
-
-  2) The configs in question will still not be up to date with a lot of
-     other changes since they were added.
-
-Together these 2 things lead me to think that we'd be better to either:
-
-  a) Leave the defconfigs as-is, since the changes won't make them work
-     any better or worse.
-
-  b) Regenerate them entirely, such that they're up to date with not
-     just this Kconfig change but all of them.
-
-Thanks,
-    Paul
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  arch/arm64/include/asm/hugetlb.h | 2 +-
+>  include/asm-generic/hugetlb.h    | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+> index e73f68569624..3fcf14663dfa 100644
+> --- a/arch/arm64/include/asm/hugetlb.h
+> +++ b/arch/arm64/include/asm/hugetlb.h
+> @@ -81,9 +81,9 @@ extern void huge_ptep_set_wrprotect(struct mm_struct *mm,
+>  				    unsigned long addr, pte_t *ptep);
+>  extern void huge_ptep_clear_flush(struct vm_area_struct *vma,
+>  				  unsigned long addr, pte_t *ptep);
+> +#define __HAVE_ARCH_HUGE_PTE_CLEAR
+>  extern void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>  			   pte_t *ptep, unsigned long sz);
+> -#define huge_pte_clear huge_pte_clear
+>  extern void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long addr,
+>  				 pte_t *ptep, pte_t pte, unsigned long sz);
+>  #define set_huge_swap_pte_at set_huge_swap_pte_at
+> diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
+> index 9d0cde8ab716..3da7cff52360 100644
+> --- a/include/asm-generic/hugetlb.h
+> +++ b/include/asm-generic/hugetlb.h
+> @@ -32,7 +32,7 @@ static inline pte_t huge_pte_modify(pte_t pte, pgprot_t newprot)
+>  	return pte_modify(pte, newprot);
+>  }
+>  
+> -#ifndef huge_pte_clear
+> +#ifndef __HAVE_ARCH_HUGE_PTE_CLEAR
+>  static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>  		    pte_t *ptep, unsigned long sz)
+>  {
+> 

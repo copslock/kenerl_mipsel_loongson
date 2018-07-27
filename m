@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 12:11:35 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:55502 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992482AbeG0KL3QO5PF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2018 12:11:29 +0200
-Received: from localhost (unknown [89.188.5.116])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3F451CB7;
-        Fri, 27 Jul 2018 10:11:22 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Alban Bedel <albeu@free.fr>, James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.4 01/23] MIPS: ath79: fix register address in ath79_ddr_wb_flush()
-Date:   Fri, 27 Jul 2018 12:09:02 +0200
-Message-Id: <20180727100845.236622331@linuxfoundation.org>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180727100845.054377089@linuxfoundation.org>
-References: <20180727100845.054377089@linuxfoundation.org>
-User-Agent: quilt/0.65
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 12:36:42 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:41132 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990757AbeG0KghkktVn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Jul 2018 12:36:37 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 4272A20876; Fri, 27 Jul 2018 12:36:31 +0200 (CEST)
+Received: from localhost (unknown [88.128.81.178])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 04AF820618;
+        Fri, 27 Jul 2018 12:36:20 +0200 (CEST)
+Date:   Fri, 27 Jul 2018 12:36:21 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com, linus.walleij@linaro.org,
+        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH 1/2] MIPS: mscc: ocelot: add interrupt controller
+ properties to GPIO controller
+Message-ID: <20180727103621.GA7701@piout.net>
+References: <20180725122621.31713-1-quentin.schulz@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180725122621.31713-1-quentin.schulz@bootlin.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65194
+X-archive-position: 65195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,41 +46,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+On 25/07/2018 14:26:20+0200, Quentin Schulz wrote:
+> The GPIO controller also serves as an interrupt controller for events
+> on the GPIO it handles.
+> 
+> An interrupt occurs whenever a GPIO line has changed.
+> 
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-------------------
+> ---
+>  arch/mips/boot/dts/mscc/ocelot.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
+> index d7f0e3551500..afe8fc9011ea 100644
+> --- a/arch/mips/boot/dts/mscc/ocelot.dtsi
+> +++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
+> @@ -168,6 +168,9 @@
+>  			gpio-controller;
+>  			#gpio-cells = <2>;
+>  			gpio-ranges = <&gpio 0 0 22>;
+> +			interrupt-controller;
+> +			interrupts = <13>;
+> +			#interrupt-cells = <2>;
+>  
+>  			uart_pins: uart-pins {
+>  				pins = "GPIO_6", "GPIO_7";
+> -- 
+> 2.14.1
+> 
 
-From: Felix Fietkau <nbd@nbd.name>
-
-commit bc88ad2efd11f29e00a4fd60fcd1887abfe76833 upstream.
-
-ath79_ddr_wb_flush_base has the type void __iomem *, so register offsets
-need to be a multiple of 4 in order to access the intended register.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: John Crispin <john@phrozen.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
-Patchwork: https://patchwork.linux-mips.org/patch/19912/
-Cc: Alban Bedel <albeu@free.fr>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.2+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/ath79/common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/ath79/common.c
-+++ b/arch/mips/ath79/common.c
-@@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(ath79_ddr_ctrl_init);
- 
- void ath79_ddr_wb_flush(u32 reg)
- {
--	void __iomem *flush_reg = ath79_ddr_wb_flush_base + reg;
-+	void __iomem *flush_reg = ath79_ddr_wb_flush_base + (reg * 4);
- 
- 	/* Flush the DDR write buffer. */
- 	__raw_writel(0x1, flush_reg);
+-- 
+Alexandre Belloni, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com

@@ -1,65 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 15:08:08 +0200 (CEST)
-Received: from mail-vk0-x241.google.com ([IPv6:2607:f8b0:400c:c05::241]:41340
-        "EHLO mail-vk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992482AbeG0NIENZoox (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2018 15:08:04 +0200
-Received: by mail-vk0-x241.google.com with SMTP id o82-v6so2403882vko.8
-        for <linux-mips@linux-mips.org>; Fri, 27 Jul 2018 06:08:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=VAOeTaWahPDyn3xqk869/J06OLHjBONgOekfjZQfzEY=;
-        b=JbUm7urgYbL0YD4z4Jr073sInpctIkiqHx4o5yy8N2qMaBax8+P2SpX/DLyFxWmHWj
-         qL6XQxExDo2XiC6kNLAvbN5fY8uwK/pp35dItVRJ5saMOqFIrvsg6ttiqDCDH3hj17SW
-         uiRtsztTCHsAM/OXZgCwJr4PJ98eD2W/WehZENHG1NjDmj5TwwX7jNU5liBIvIyQgyOE
-         eMfMfJVDmQA1F4j6wGR38EPCIEhmtnxIk2RzfxFu8Pz6vpmUt/snv4pX+ADXMMfR0cu3
-         l4DVYGRfYJNrWNOEFuyK+Q4w+BPDkTlDzmVTvow1+4huOjDlW5WMXgXXVKB+H2kvO2HI
-         Zumg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=VAOeTaWahPDyn3xqk869/J06OLHjBONgOekfjZQfzEY=;
-        b=YcIF4ztnTOR7DeBypLsTXRpYHFvPs0okm94aFx5aTLr/CS08YgYoUx22Kg+s9uE3b7
-         6PElJ6K8ckPoknJ8oJAmRnd8NFoaw/IBAAZzXk2PBmpA0uq8znCMZc7lenuxUrjHof+9
-         I7H5XEi1vDOOCa3OdIke1JYWADU7BRPpLM5/4fdlsnpII7ADawinK8gGuAvFtP/C7ORn
-         NIlEQlG7NU7jA1WdkMGrORSedlmt2UsMwQaE5JbKIjw5sOypvco1WPWqc1k9R6ahYrKL
-         jyjn1+scqj1fdWHlAJsaz0RUGUNbSYB6ZEa7OPEPOlJX63k4rUmMAGoH4C3ReQlgTrlZ
-         Baog==
-X-Gm-Message-State: AOUpUlHh3hAkN08+Ss7sYf8TKQBw2UGjUwLRhLyzaAAfE8g3yV4qjgEd
-        /Pey9ZagIHJYDFkQjDFcrcvcZWJRuUUh1JVrUDw=
-X-Google-Smtp-Source: AAOMgpfToTtndqUmJ8r45TBgSc4ABWGdq6Y8xu9djuYI4RvBredxD8DZ+ItoFQuqbMaEpMXAqUCn7dCiemEhhq/pf6o=
-X-Received: by 2002:a1f:920b:: with SMTP id u11-v6mr3881974vkd.58.1532696876039;
- Fri, 27 Jul 2018 06:07:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 15:55:43 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:52020 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992492AbeG0NzjjgHcF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Jul 2018 15:55:39 +0200
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 3D6E940216E7;
+        Fri, 27 Jul 2018 13:55:33 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
+        by smtp.corp.redhat.com (Postfix) with SMTP id F0E221102E29;
+        Fri, 27 Jul 2018 13:55:29 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Fri, 27 Jul 2018 15:55:33 +0200 (CEST)
+Date:   Fri, 27 Jul 2018 15:55:29 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v6 5/6] Uprobes/sdt: Prevent multiple reference counter
+ for same uprobe
+Message-ID: <20180727135528.GA3618@redhat.com>
+References: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
+ <20180716084706.28244-6-ravi.bangoria@linux.ibm.com>
+ <20180725110802.GA27325@redhat.com>
+ <19d8abb0-44a3-cb26-405d-95f63fc01517@linux.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:a67:2149:0:0:0:0:0 with HTTP; Fri, 27 Jul 2018 06:07:54
- -0700 (PDT)
-In-Reply-To: <20180727120535.16504-3-alexandre.belloni@bootlin.com>
-References: <20180727120535.16504-1-alexandre.belloni@bootlin.com> <20180727120535.16504-3-alexandre.belloni@bootlin.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 27 Jul 2018 16:07:54 +0300
-Message-ID: <CAHp75Vdk+rqMu6OJOE8Kd-Wib3su+f9tQw6Nqhm9diEvBqaDNQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] spi: dw-mmio: add MSCC Ocelot support
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19d8abb0-44a3-cb26-405d-95f63fc01517@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Fri, 27 Jul 2018 13:55:33 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Fri, 27 Jul 2018 13:55:33 +0000 (UTC) for IP:'10.11.54.3' DOMAIN:'int-mx03.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65202
+X-archive-position: 65203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.shevchenko@gmail.com
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,73 +60,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 27, 2018 at 3:05 PM, Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
-> Because the SPI controller deasserts the chip select when the TX fifo is
-> empty (which may happen in the middle of a transfer), the CS should be
-> handled by linux. Unfortunately, some or all of the first four chip
-> selects are not muxable as GPIOs, depending on the SoC.
+Hi Ravi,
+
+On 07/27, Ravi Bangoria wrote:
 >
-> There is a way to bitbang those pins by using the SPI boot controller so
-> use it to set the chip selects.
+> > I simply can't understand this "bool installed"....
 >
-> At init time, it is also necessary to give control of the SPI interface to
-> the Designware IP.
+>
+> That boolean is needed because consumer_filter() returns false when this
+> function gets called first time from uprobe_register().
 
-Thanks for an update! My comments below (most of them just about style).
+Ah yes, I forgot about the (ugly) 2-stage TRACE_REG_PERF_REGISTER +
+TRACE_REG_PERF_OPEN logic...
 
-First of all, can we use 'controller' over the 'master' in the code?
+But then I think the whole idea of REF_CTR_OFF_RELOADED is even more broken.
+Nevermind.
 
->  .../bindings/spi/snps,dw-apb-ssi.txt          |  5 +-
+> I have a solution for this. Idea is, if reference counter is reloaded, save
+> of all mms for which consumer_filter() denied to updated when being called
+> from register_for_each_vma(). Use this list of mms as checklist next time
+> onwards. I don't know if it's good to do that or not.
 
->  Required properties:
-> -- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi"
-> -- reg : The register base for the controller. For "mscc,<soc>-spi", a second
-> -  register set is required (named ICPU_CFG:SPI_MST)
-> +- compatible : "snps,dw-apb-ssi"
-> +- reg : The register base for the controller.
+Sounds horrible ;) and I bet this is not enough.
 
-This hunk is odd.
+> Please let me know if you have any better approach.
 
->  struct dw_spi_mmio {
->         struct dw_spi  dws;
->         struct clk     *clk;
-> +       void           *priv;
->  };
+Just drop this patch.
 
-> +#define MSCC_SPI_MST_SW_MODE                   0x14
-> +#define MSCC_SPI_MST_SW_MODE_SW_PIN_CTRL_MODE  BIT(13)
-> +#define MSCC_SPI_MST_SW_MODE_SW_SPI_CS(x)      (x << 5)
+If we can't make it per consumer, let it be global like it was in first version.
 
-+ blank line ?
-
-> +struct dw_spi_mscc {
-> +       struct regmap       *syscon;
-
-> +       void __iomem        *spi_mst;
-
-A nit: do we need to repeat "spi" here?
-
-> +};
-
-> +       if (!enable)
-> +               dw_writel(dws, DW_SPI_SER, BIT(cs));
-
-This sounds like
-
-dw_set_cs(spi, enable);
-
-> +       dwsmscc = devm_kzalloc(&pdev->dev, sizeof(struct dw_spi_mscc),
-> +                              GFP_KERNEL);
-
-sizeof(*dwsmcc)  and one line in the result?
-
-> +       /* Deassert all CS */
-> +       writel(0, dwsmscc->spi_mst + MSCC_SPI_MST_SW_MODE);
-
-Hmm... Don't we need to call dw_set_cs() for all of them as well?
-If yes, perhaps better to call custom set_cs() in a loop?
-
--- 
-With Best Regards,
-Andy Shevchenko
+Oleg.

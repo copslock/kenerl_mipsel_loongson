@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 21:55:25 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:54838 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 21:55:37 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:54830 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993008AbeG0TzBjkdnu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993016AbeG0TzBjzuPu (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 27 Jul 2018 21:55:01 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 4E17220908; Fri, 27 Jul 2018 21:54:55 +0200 (CEST)
+        id 441712093A; Fri, 27 Jul 2018 21:54:55 +0200 (CEST)
 Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 2CC37209DD;
-        Fri, 27 Jul 2018 21:54:00 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 4D7E9209D6;
+        Fri, 27 Jul 2018 21:53:59 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Mark Brown <broonie@kernel.org>, James Hogan <jhogan@kernel.org>
 Cc:     Paul Burton <paul.burton@mips.com>,
@@ -17,9 +17,9 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v3 4/5] mips: dts: mscc: Add spi on Ocelot
-Date:   Fri, 27 Jul 2018 21:53:57 +0200
-Message-Id: <20180727195358.23336-5-alexandre.belloni@bootlin.com>
+Subject: [PATCH v3 1/5] spi: dw: export dw_spi_set_cs
+Date:   Fri, 27 Jul 2018 21:53:54 +0200
+Message-Id: <20180727195358.23336-2-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180727195358.23336-1-alexandre.belloni@bootlin.com>
 References: <20180727195358.23336-1-alexandre.belloni@bootlin.com>
@@ -27,7 +27,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65210
+X-archive-position: 65211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,34 +44,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the SPI controller
+Export dw_spi_set_cs so it can be used from the various IP integration
+modules.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- arch/mips/boot/dts/mscc/ocelot.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/spi/spi-dw.c | 3 ++-
+ drivers/spi/spi-dw.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
-index 4f33dbc67348..f7616a476247 100644
---- a/arch/mips/boot/dts/mscc/ocelot.dtsi
-+++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
-@@ -91,6 +91,17 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index f76e31faf694..ac2eb89ef7a5 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -133,7 +133,7 @@ static inline void dw_spi_debugfs_remove(struct dw_spi *dws)
+ }
+ #endif /* CONFIG_DEBUG_FS */
  
-+		spi: spi@101000 {
-+			compatible = "mscc,ocelot-spi", "snps,dw-apb-ssi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x101000 0x100>, <0x3c 0x18>;
-+			interrupts = <9>;
-+			clocks = <&ahb_clk>;
-+
-+			status = "disabled";
-+		};
-+
- 		switch@1010000 {
- 			compatible = "mscc,vsc7514-switch";
- 			reg = <0x1010000 0x10000>,
+-static void dw_spi_set_cs(struct spi_device *spi, bool enable)
++void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+ 	struct dw_spi *dws = spi_controller_get_devdata(spi->controller);
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+@@ -145,6 +145,7 @@ static void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	if (!enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+ }
++EXPORT_SYMBOL_GPL(dw_spi_set_cs);
+ 
+ /* Return the max entries we can fill into tx fifo */
+ static inline u32 tx_max(struct dw_spi *dws)
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 446013022849..0168b08364d5 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -245,6 +245,7 @@ struct dw_spi_chip {
+ 	void (*cs_control)(u32 command);
+ };
+ 
++extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+ extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
+ extern void dw_spi_remove_host(struct dw_spi *dws);
+ extern int dw_spi_suspend_host(struct dw_spi *dws);
 -- 
 2.18.0

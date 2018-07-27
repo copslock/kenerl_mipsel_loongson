@@ -1,26 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 11:47:38 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42034 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 12:01:35 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:52788 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990757AbeG0Jr0iZ9fF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2018 11:47:26 +0200
+        by eddie.linux-mips.org with ESMTP id S23992891AbeG0KB0GChMF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2018 12:01:26 +0200
 Received: from localhost (unknown [89.188.5.116])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E38B6BB6;
-        Fri, 27 Jul 2018 09:47:19 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B0D4DCBB;
+        Fri, 27 Jul 2018 10:01:18 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Rui Wang <rui.wang@windriver.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.17 04/66] MIPS: Fix off-by-one in pci_resource_to_user()
-Date:   Fri, 27 Jul 2018 11:44:57 +0200
-Message-Id: <20180727093809.530578598@linuxfoundation.org>
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Alban Bedel <albeu@free.fr>, James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.14 02/48] MIPS: ath79: fix register address in ath79_ddr_wb_flush()
+Date:   Fri, 27 Jul 2018 11:59:47 +0200
+Message-Id: <20180727095918.727784548@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180727093809.043856530@linuxfoundation.org>
-References: <20180727093809.043856530@linuxfoundation.org>
+In-Reply-To: <20180727095918.503549522@linuxfoundation.org>
+References: <20180727095918.503549522@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65189
+X-archive-position: 65190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,49 +45,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.17-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 38c0a74fe06da3be133cae3fb7bde6a9438e698b upstream.
+commit bc88ad2efd11f29e00a4fd60fcd1887abfe76833 upstream.
 
-The MIPS implementation of pci_resource_to_user() introduced in v3.12 by
-commit 4c2924b725fb ("MIPS: PCI: Use pci_resource_to_user to map pci
-memory space properly") incorrectly sets *end to the address of the
-byte after the resource, rather than the last byte of the resource.
+ath79_ddr_wb_flush_base has the type void __iomem *, so register offsets
+need to be a multiple of 4 in order to access the intended register.
 
-This results in userland seeing resources as a byte larger than they
-actually are, for example a 32 byte BAR will be reported by a tool such
-as lspci as being 33 bytes in size:
-
-    Region 2: I/O ports at 1000 [disabled] [size=33]
-
-Correct this by subtracting one from the calculated end address,
-reporting the correct address to userland.
-
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Rui Wang <rui.wang@windriver.com>
-Fixes: 4c2924b725fb ("MIPS: PCI: Use pci_resource_to_user to map pci memory space properly")
+Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
+Patchwork: https://patchwork.linux-mips.org/patch/19912/
+Cc: Alban Bedel <albeu@free.fr>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Wolfgang Grandegger <wg@grandegger.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # v3.12+
-Patchwork: https://patchwork.linux-mips.org/patch/19829/
+Cc: stable@vger.kernel.org # 4.2+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/pci/pci.c |    2 +-
+ arch/mips/ath79/common.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -54,5 +54,5 @@ void pci_resource_to_user(const struct p
- 	phys_addr_t size = resource_size(rsrc);
+--- a/arch/mips/ath79/common.c
++++ b/arch/mips/ath79/common.c
+@@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(ath79_ddr_ctrl_init);
  
- 	*start = fixup_bigphys_addr(rsrc->start, size);
--	*end = rsrc->start + size;
-+	*end = rsrc->start + size - 1;
- }
+ void ath79_ddr_wb_flush(u32 reg)
+ {
+-	void __iomem *flush_reg = ath79_ddr_wb_flush_base + reg;
++	void __iomem *flush_reg = ath79_ddr_wb_flush_base + (reg * 4);
+ 
+ 	/* Flush the DDR write buffer. */
+ 	__raw_writel(0x1, flush_reg);

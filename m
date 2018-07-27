@@ -1,98 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jul 2018 23:10:20 +0200 (CEST)
-Received: from mout.gmx.net ([212.227.15.18]:44941 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992279AbeGZVKRUtN0s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Jul 2018 23:10:17 +0200
-Received: from [192.168.20.60] ([92.116.181.115]) by mail.gmx.com (mrgmx001
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0MQiVh-1fZChp3Bcb-00Tyc9; Thu, 26
- Jul 2018 23:08:25 +0200
-Subject: Re: [PATCH v4 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-To:     Alex Ghiti <alex@ghiti.fr>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@kernel.org>, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
-        jhogan@kernel.org, jejb@parisc-linux.org, benh@kernel.crashing.org,
-        paulus@samba.org, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-References: <20180705110716.3919-1-alex@ghiti.fr>
- <20180709141621.GD22297@dhcp22.suse.cz>
- <2173685f-7f85-7acb-4685-2383210c5fa2@ghiti.fr>
- <87d0vehx16.fsf@concordia.ellerman.id.au>
- <67aba0f0-c0d4-b06f-5fbc-f4d113ce5033@ghiti.fr>
- <20180726125940.GA15033@ls3530>
- <de188e2f-99ab-53fa-20df-4fec00a935e9@ghiti.fr>
- <6ec7c5dc-feb1-86ff-b7d9-7794c92eaf0f@ghiti.fr>
-From:   Helge Deller <deller@gmx.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=deller@gmx.de; prefer-encrypt=mutual; keydata=
- xsBNBFDPIPYBCAC6PdtagIE06GASPWQJtfXiIzvpBaaNbAGgmd3Iv7x+3g039EV7/zJ1do/a
- y9jNEDn29j0/jyd0A9zMzWEmNO4JRwkMd5Z0h6APvlm2D8XhI94r/8stwroXOQ8yBpBcP0yX
- +sqRm2UXgoYWL0KEGbL4XwzpDCCapt+kmarND12oFj30M1xhTjuFe0hkhyNHkLe8g6MC0xNg
- KW3x7B74Rk829TTAtj03KP7oA+dqsp5hPlt/hZO0Lr0kSAxf3kxtaNA7+Z0LLiBqZ1nUerBh
- OdiCasCF82vQ4/y8rUaKotXqdhGwD76YZry9AQ9p6ccqKaYEzWis078Wsj7p0UtHoYDbABEB
- AAHNHEhlbGdlIERlbGxlciA8ZGVsbGVyQGdteC5kZT7CwJIEEwECADwCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAFiEE9M/0wAvkPPtRU6Boh8nBUbUeOGQFAlrHzIICGQEACgkQh8nB
- UbUeOGT1GAgAt+EeoHB4DbAx+pZoGbBYp6ZY8L6211n8fSi7wiwgM5VppucJ+C+wILoPkqiU
- +ZHKlcWRbttER2oBUvKOt0+yDfAGcoZwHS0P+iO3HtxR81h3bosOCwek+TofDXl+TH/WSQJa
- iaitof6iiPZLygzUmmW+aLSSeIAHBunpBetRpFiep1e5zujCglKagsW78Pq0DnzbWugGe26A
- 288JcK2W939bT1lZc22D9NhXXRHfX2QdDdrCQY7UsI6g/dAm1d2ldeFlGleqPMdaaQMcv5+E
- vDOur20qjTlenjnR/TFm9tA1zV+K7ePh+JfwKc6BSbELK4EHv8J8WQJjfTphakYLVM7ATQRQ
- zyD2AQgA2SJJapaLvCKdz83MHiTMbyk8yj2AHsuuXdmB30LzEQXjT3JEqj1mpvcEjXrX1B3h
- +0nLUHPI2Q4XWRazrzsseNMGYqfVIhLsK6zT3URPkEAp7R1JxoSiLoh4qOBdJH6AJHex4CWu
- UaSXX5HLqxKl1sq1tO8rq2+hFxY63zbWINvgT0FUEME27Uik9A5t8l9/dmF0CdxKdmrOvGMw
- T770cTt76xUryzM3fAyjtOEVEglkFtVQNM/BN/dnq4jDE5fikLLs8eaJwsWG9k9wQUMtmLpL
- gRXeFPRRK+IT48xuG8rK0g2NOD8aW5ThTkF4apznZe74M7OWr/VbuZbYW443QQARAQABwsBf
- BBgBAgAJBQJQzyD2AhsMAAoJEIfJwVG1HjhkNTgH/idWz2WjLE8DvTi7LvfybzvnXyx6rWUs
- 91tXUdCzLuOtjqWVsqBtSaZynfhAjlbqRlrFZQ8i8jRyJY1IwqgvHP6PO9s+rIxKlfFQtqhl
- kR1KUdhNGtiI90sTpi4aeXVsOyG3572KV3dKeFe47ALU6xE5ZL5U2LGhgQkbjr44I3EhPWc/
- lJ/MgLOPkfIUgjRXt0ZcZEN6pAMPU95+u1N52hmqAOQZvyoyUOJFH1siBMAFRbhgWyv+YE2Y
- ZkAyVDL2WxAedQgD/YCCJ+16yXlGYGNAKlvp07SimS6vBEIXk/3h5Vq4Hwgg0Z8+FRGtYZyD
- KrhlU0uMP9QTB5WAUvxvGy8=
-Message-ID: <91e66af2-9f59-624e-6839-eeadb47b9bee@gmx.de>
-Date:   Thu, 26 Jul 2018 23:08:13 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2018 06:17:40 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:47242 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990421AbeG0ERh0SLlZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2018 06:17:37 +0200
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6R4Eadv083220
+        for <linux-mips@linux-mips.org>; Fri, 27 Jul 2018 00:17:35 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2kftyb2g8q-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Fri, 27 Jul 2018 00:17:35 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Fri, 27 Jul 2018 05:17:33 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 27 Jul 2018 05:17:28 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6R4HRLs45547572
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 27 Jul 2018 04:17:27 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 71FAC4C044;
+        Fri, 27 Jul 2018 07:17:41 +0100 (BST)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 780A04C04E;
+        Fri, 27 Jul 2018 07:17:38 +0100 (BST)
+Received: from [9.124.31.216] (unknown [9.124.31.216])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 27 Jul 2018 07:17:38 +0100 (BST)
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v6 5/6] Uprobes/sdt: Prevent multiple reference counter
+ for same uprobe
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180716084706.28244-1-ravi.bangoria@linux.ibm.com>
+ <20180716084706.28244-6-ravi.bangoria@linux.ibm.com>
+ <20180725110802.GA27325@redhat.com>
+Date:   Fri, 27 Jul 2018 09:47:23 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.2
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-In-Reply-To: <6ec7c5dc-feb1-86ff-b7d9-7794c92eaf0f@ghiti.fr>
-Content-Type: text/plain; charset=iso-8859-15
+In-Reply-To: <20180725110802.GA27325@redhat.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:lx7/42WCXkUxJ1tcDGk55ahiOOjEn8MpWO4JQW/7OzyygKvPh+j
- icggxuN9uheEXwoTA68muLmVvpeBV2oJAmt5P0A034FfYi6eH0C+gJRL1KzbzGjsk3g88WR
- yGn2sA9O1qyFzuiNaTQEpgv0g8ZIQonJEUdWarUmOZCUxHSeTdRuaYxC7vX3VJjip4TRBIw
- N/gcSoif0Y4VlWdxKTpfA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:AXm+gX+ViyY=:9DAt0GtGjKTgUorFQiZS3e
- fZjtUs7tD94ADOvtQTq3m43Xpx/BwiIl+jlNKGOg3RiiPJkhHirXCihKTnXisDq0pSPcoLHWX
- w0tWsQ1aMFK5eKEn2zVkt5ZrTDd1VW2FeS/bvf6G8hbWyeKVrgXrVtkGYNRgTaVx+9nLk23Z3
- xgB+gfoueM1vJ/n7Zg3RvzHITmkHEkkAPcX6BHpBY/DdXcj0ScVtdqK5qNXTB/yEvdCp7d7da
- lWiQ0yfgmApFtjgDu/sM07QA0mDM5WvUmk7f8Ny1w6jqCCrLyNTp6B/Uiuh1lf/V+GXngKv/j
- xyLbkScuajPYZFa9Hae6s9o9CBzpOdQJ9ms8WyCsMVLxCHvyYkj+YB6fu8Ey1ROr9IRIeMJxj
- z0phX/aUKrC8slJ4m/r5URzaAoh41E6BgnIpIoirxZXwmdSUG1VffZa5TzMyfNsDj9BI0A+G/
- V/uZ1xs/evVRcBhfeXvRc7Qo1DMk+IU45WjoujKnU0vhbfHvlkFWMKzDUbw536M7t+1O/DDlR
- h3J1NMmh34ObFT7L26FxxUIP4hK87j3i0pX8tjf5++Unm4ShlD8KiJB1ZGFVvdngQoOiz61Xr
- EMokKsHmT8sIEZ6tBaT4jwVSqxbHJzbptQl215xMrHvlhJLKFrmv+JvoSk5psecIVQp/gNCcb
- +U8SBob0T/pVrADjB8W8+6mC3gR5Z+kue1LSzqEhfrvuhqZp8EZl5v/TJqjQNdZMoLeO8NFcW
- yWK+oPx3lz5XBMe5wG+Xok+TSPVA55OSRK/PXXVX0SWa/ugoCVbzAFmAHnCqzj8BK2Z2hmSNR
- YUFq3uB
-Return-Path: <deller@gmx.de>
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18072704-0008-0000-0000-000002586103
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18072704-0009-0000-0000-000021BEE41F
+Message-Id: <19d8abb0-44a3-cb26-405d-95f63fc01517@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-27_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=976 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807270040
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65185
+X-archive-position: 65186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deller@gmx.de
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -105,24 +88,162 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alex,
+Hi Oleg,
 
-On 26.07.2018 21:13, Alex Ghiti wrote:
-> $ make ARCH=parisc O=build_parisc generic-64bit_defconfig
-> $ PATH=/home/alex/wip/toolchain/gcc-8.1.0-nolibc/hppa64-linux/bin:$PATH make ARCH=parisc CROSS_COMPILE=hppa64-linux-
+On 07/25/2018 04:38 PM, Oleg Nesterov wrote:
+> No, I can't understand this patch...
 > 
->> ...
->>  LD      vmlinux.o
->>  MODPOST vmlinux.o
->> hppa64-linux-ld: init/main.o(.text+0x98): cannot reach strreplace
->> init/main.o: In function `initcall_blacklisted':
->> init/.tmp_main.o:(.text+0x98): relocation truncated to fit: R_PARISC_PCREL22F against symbol `strreplace' defined in .text section in lib/string.o
->> hppa64-linux-ld: init/main.o(.text+0xbc): cannot reach strcmp
+> On 07/16, Ravi Bangoria wrote:
+>>
+>> --- a/kernel/events/uprobes.c
+>> +++ b/kernel/events/uprobes.c
+>> @@ -63,6 +63,8 @@ static struct percpu_rw_semaphore dup_mmap_sem;
+>>
+>>  /* Have a copy of original instruction */
+>>  #define UPROBE_COPY_INSN	0
+>> +/* Reference counter offset is reloaded with non-zero value. */
+>> +#define REF_CTR_OFF_RELOADED	1
+>>
+>>  struct uprobe {
+>>  	struct rb_node		rb_node;	/* node in the rb tree */
+>> @@ -476,9 +478,23 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
+>>  		return ret;
+>>
+>>  	ret = verify_opcode(old_page, vaddr, &opcode);
+>> -	if (ret <= 0)
+>> +	if (ret < 0)
+>>  		goto put_old;
+> 
+> I agree, "ret <= 0" wasn't nice even before this change, but "ret < 0" looks
+> worse because this is simply not possible.
 
-In order to be able to link vmlinux, we need to enable 
-CONFIG_MLONGCALLS=y in the defconfig.
 
-Nevertheless, I see some modversion issues too which I still need 
-to analyze (but that's a completely off-topic issue here).
+Ok. Any better idea?
+I think if we don't track all mms patched by uprobe, we have to rely
+on current instruction.
 
-Helge
+
+> 
+>> +	/*
+>> +	 * If instruction is already patched but reference counter offset
+>> +	 * has been reloaded to non-zero value, increment the reference
+>> +	 * counter and return.
+>> +	 */
+>> +	if (ret == 0) {
+>> +		if (is_register &&
+>> +		    test_bit(REF_CTR_OFF_RELOADED, &uprobe->flags)) {
+>> +			WARN_ON(!uprobe->ref_ctr_offset);
+>> +			ret = update_ref_ctr(uprobe, mm, true);
+>> +		}
+>> +		goto put_old;
+>> +	}
+> 
+> So we need to force update_ref_ctr(true) in case when uprobe_register_refctr()
+> detects the already registered uprobe with ref_ctr_offset == 0, and then it calls
+> register_for_each_vma().
+> 
+> Why this can't race with uprobe_mmap() ?
+> 
+> uprobe_mmap() can do install_breakpoint() right after REF_CTR_OFF_RELOADED was set,
+> then register_for_each_vma() will find this vma and do install_breakpoint() too.
+> If ref_ctr_vma was already mmaped, the counter will be incremented twice, no?
+
+
+Hmm right. Probably, I can fix this race by using some lock, but I don't
+know if it's good to do that inside uprobe_mmap().
+
+
+> 
+>> @@ -971,6 +1011,7 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
+>>  	bool is_register = !!new;
+>>  	struct map_info *info;
+>>  	int err = 0;
+>> +	bool installed = false;
+>>
+>>  	percpu_down_write(&dup_mmap_sem);
+>>  	info = build_map_info(uprobe->inode->i_mapping,
+>> @@ -1000,8 +1041,10 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
+>>  		if (is_register) {
+>>  			/* consult only the "caller", new consumer. */
+>>  			if (consumer_filter(new,
+>> -					UPROBE_FILTER_REGISTER, mm))
+>> +					UPROBE_FILTER_REGISTER, mm)) {
+>>  				err = install_breakpoint(uprobe, mm, vma, info->vaddr);
+>> +				installed = true;
+>> +			}
+>>  		} else if (test_bit(MMF_HAS_UPROBES, &mm->flags)) {
+>>  			if (!filter_chain(uprobe,
+>>  					UPROBE_FILTER_UNREGISTER, mm))
+>> @@ -1016,6 +1059,8 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
+>>  	}
+>>   out:
+>>  	percpu_up_write(&dup_mmap_sem);
+>> +	if (installed)
+>> +		clear_bit(REF_CTR_OFF_RELOADED, &uprobe->flags);
+> 
+> I simply can't understand this "bool installed"....
+
+
+That boolean is needed because consumer_filter() returns false when this
+function gets called first time from uprobe_register(). And consumer_filter
+returns true when it gets called by uprobe_apply(). If I make it
+unconditional, there is no effect of setting REF_CTR_OFF_RELOADED bit. So
+this boolean is needed.
+
+Though, there is one more issue I found. Let's say there are two processes
+running and user probes on both of them using uprobe_register() using, let's
+say systemtap. Now, some other guy does uprobe_register_refctr() using
+'perf -p PID' on same uprobe but he is interested in only one process. Here,
+we will increment the reference counter only in the "PID" process and we will
+clear REF_CTR_OFF_RELOADED flag. Later, some other guy does 'perf -a' which
+will call uprobe_register_refctr() for both the target but we will fail to
+increment the counter in "non-PID" process because we had already clear
+REF_CTR_OFF_RELOADED.
+
+I have a solution for this. Idea is, if reference counter is reloaded, save
+of all mms for which consumer_filter() denied to updated when being called
+from register_for_each_vma(). Use this list of mms as checklist next time
+onwards. I don't know if it's good to do that or not.
+
+
+> 
+> shouldn't we clear REF_CTR_OFF_RELOADED unconditionally after register_for_each_vma()?
+> 
+
+
+No, because uprobe_register() is simply NOP and breakpoint is actually
+installed by uprobe_apply().
+
+
+> 
+> 
+> Also. Suppose we have a registered uprobe with ref_ctr_offset == 0. Then you add and
+> remove uprobe with ref_ctr_offset != 0. But afaics uprobe->ref_ctr_offset is never
+> cleared, so another uprobe with a different ref_ctr_offset != 0 will hit pr_warn/-EINVAL
+> in alloc_uprobe() and find_old_trace_uprobe() added by the previous patch can't detect
+> this case?
+
+
+This is a valid concern. So, this point is forcing me to make it a consumer
+property. But if I do that, all optimization done by uprobe_perf_open() and
+uprobe_perf_close() needs to be reverted, which I don't want to.
+
+
+> 
+> Plus it seems that we can have the unbalanced update_ref_ctr(false), at least in case
+> when __uprobe_register() with REF_CTR_OFF_RELOADED set fails before it patches all mm's.
+> If/when the 1st uprobe with ref_ctr_offset == 0 goes away, remove_breakpoint() will dec
+> the counter even if wasn't incremented.
+
+
+Hmm incase of failure, this could be possible.
+
+
+> 
+> Quite possibly I am totally confused, but this patch wrong in many ways...
+
+No, you are right.
+
+Please let me know if you have any better approach.
+
+Thanks for the review :)

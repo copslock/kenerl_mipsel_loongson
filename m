@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 14:44:54 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:38253 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 14:45:08 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:38261 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993060AbeG3MoaeqfXl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993066AbeG3MoasFCzl (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 30 Jul 2018 14:44:30 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 4D37D207F4; Mon, 30 Jul 2018 14:44:23 +0200 (CEST)
+        id 5E44A20884; Mon, 30 Jul 2018 14:44:24 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-89-120.w90-88.abo.wanadoo.fr [90.88.30.120])
-        by mail.bootlin.com (Postfix) with ESMTPSA id E0D1420765;
-        Mon, 30 Jul 2018 14:44:22 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 00E39207AC;
+        Mon, 30 Jul 2018 14:44:23 +0200 (CEST)
 From:   Quentin Schulz <quentin.schulz@bootlin.com>
 To:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
@@ -17,15 +17,19 @@ Cc:     kishon@ti.com, andrew@lunn.ch, f.fainelli@gmail.com,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         allan.nielsen@microsemi.com, thomas.petazzoni@bootlin.com,
         Quentin Schulz <quentin.schulz@bootlin.com>
-Subject: [PATCH 00/10] mscc: ocelot: add support for SerDes muxing configuration
-Date:   Mon, 30 Jul 2018 14:43:45 +0200
-Message-Id: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+Subject: [PATCH net-next 03/10] net: mscc: ocelot: get HSIO regmap from syscon
+Date:   Mon, 30 Jul 2018 14:43:48 +0200
+Message-Id: <fc4e6c0effa84417bddb32b4a53c6021f0b9e546.1532954208.git-series.quentin.schulz@bootlin.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
 Return-Path: <quentin.schulz@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65242
+X-archive-position: 65243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,65 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Ocelot switch has currently a hardcoded SerDes muxing that suits only
-a particular use case. Any other board setup will fail to work.
+HSIO address space was moved to a syscon, hence we need to get the
+regmap of this address space from there and no more from the device
+node.
 
-To prepare for upcoming boards' support that do not have the same muxing,
-create a PHY driver that will handle all possible cases.
+Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+---
+ drivers/net/ethernet/mscc/ocelot_board.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-A SerDes can work in SGMII, QSGMII or PCIe and is also muxed to use a
-given port depending on the selected mode or board design.
-
-The SerDes configuration is in the middle of an address space (HSIO) that
-is used to configure some parts in the MAC controller driver, that is why
-we need to use a syscon so that we can write to the same address space from
-different drivers safely using regmap.
-
-Patches from generic PHY and net should be safe to be merged separately.
-
-I suggest patches 1 to 5 and 10 go through net while the others (6 to 9)
-go through the generic PHY subsystem.
-
-Thanks,
-Quentin
-
-Quentin Schulz (10):
-  MIPS: mscc: ocelot: make HSIO registers address range a syscon
-  dt-bindings: net: ocelot: remove hsio from the list of register address spaces
-  net: mscc: ocelot: get HSIO regmap from syscon
-  net: mscc: ocelot: move the HSIO header to include/soc
-  net: mscc: ocelot: simplify register access for PLL5 configuration
-  phy: add QSGMII and PCIE modes
-  dt-bindings: phy: add DT binding for Microsemi Ocelot SerDes muxing
-  MIPS: mscc: ocelot: add SerDes mux DT node
-  phy: add driver for Microsemi Ocelot SerDes muxing
-  net: mscc: ocelot: make use of SerDes PHYs for handling their configuration
-
- Documentation/devicetree/bindings/mips/mscc.txt             |  16 +-
- Documentation/devicetree/bindings/net/mscc-ocelot.txt       |   9 +-
- Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt |  42 +-
- arch/mips/boot/dts/mscc/ocelot.dtsi                         |  19 +-
- drivers/net/ethernet/mscc/Kconfig                           |   2 +-
- drivers/net/ethernet/mscc/ocelot.c                          |  16 +-
- drivers/net/ethernet/mscc/ocelot.h                          |  79 +-
- drivers/net/ethernet/mscc/ocelot_board.c                    |  54 +-
- drivers/net/ethernet/mscc/ocelot_hsio.h                     | 785 +------
- drivers/net/ethernet/mscc/ocelot_regs.c                     |  93 +-
- drivers/phy/Kconfig                                         |   1 +-
- drivers/phy/Makefile                                        |   1 +-
- drivers/phy/mscc/Kconfig                                    |  11 +-
- drivers/phy/mscc/Makefile                                   |   5 +-
- drivers/phy/mscc/phy-ocelot-serdes.c                        | 314 +++-
- include/linux/phy/phy.h                                     |   2 +-
- include/soc/mscc/ocelot_hsio.h                              | 859 +++++++-
- 17 files changed, 1343 insertions(+), 965 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
- delete mode 100644 drivers/net/ethernet/mscc/ocelot_hsio.h
- create mode 100644 drivers/phy/mscc/Kconfig
- create mode 100644 drivers/phy/mscc/Makefile
- create mode 100644 drivers/phy/mscc/phy-ocelot-serdes.c
- create mode 100644 include/soc/mscc/ocelot_hsio.h
-
-base-commit: d6e74c71c4de5222f147b64bf747e8a3c523c690
+diff --git a/drivers/net/ethernet/mscc/ocelot_board.c b/drivers/net/ethernet/mscc/ocelot_board.c
+index 26bb3b1..b7d755b 100644
+--- a/drivers/net/ethernet/mscc/ocelot_board.c
++++ b/drivers/net/ethernet/mscc/ocelot_board.c
+@@ -9,6 +9,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_platform.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/skbuff.h>
+ 
+ #include "ocelot.h"
+@@ -162,6 +163,7 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct device_node *ports, *portnp;
+ 	struct ocelot *ocelot;
++	struct regmap *hsio;
+ 	u32 val;
+ 
+ 	struct {
+@@ -173,7 +175,6 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+ 		{ QSYS, "qsys" },
+ 		{ ANA, "ana" },
+ 		{ QS, "qs" },
+-		{ HSIO, "hsio" },
+ 	};
+ 
+ 	if (!np && !pdev->dev.platform_data)
+@@ -196,6 +197,14 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+ 		ocelot->targets[res[i].id] = target;
+ 	}
+ 
++	hsio = syscon_regmap_lookup_by_compatible("mscc,ocelot-hsio");
++	if (IS_ERR(hsio)) {
++		dev_err(&pdev->dev, "missing hsio syscon\n");
++		return PTR_ERR(hsio);
++	}
++
++	ocelot->targets[HSIO] = hsio;
++
+ 	err = ocelot_chip_init(ocelot);
+ 	if (err)
+ 		return err;
 -- 
 git-series 0.9.1

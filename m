@@ -1,93 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 20:50:57 +0200 (CEST)
-Received: from mail-cys01nam02on0113.outbound.protection.outlook.com ([104.47.37.113]:54937
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 22:58:32 +0200 (CEST)
+Received: from mail-co1nam05on0707.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe50::707]:21737
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993047AbeG3SuwxPyQH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Jul 2018 20:50:52 +0200
+        id S23993047AbeG3U62quZmq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Jul 2018 22:58:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIbiyJkRKsonZ/Ns/LFMbhSBiQlHPXH45N4iSy4PLTU=;
- b=e8SUBTcApD2T9F3un76P0Q/Qj7dezO4JXx1nbli9IoXCxSD3s2lVkFrz81+QqcGkFn2yf6IDgwCljfbrTsdt7fFR1jaV+kf0NYb2sBiPKG2oSwzjJ2bfhWiAoAFUlkcY42SMNM0IQ8Ss/iJxjQFCPUtpe2CppNEntEI+hyBXQk4=
+ bh=UoFmtrDSkHftnTdDVUbC8ZtKmxlshp1K3WGurmM906o=;
+ b=F2uvvCev0lGwezjuazRWHyiyV6jHTL5JzsvOgJ3/bhd/kOcujnC6OlwuYmtfTKA61L4TaUbYsW+ME+yhRRg+eqgEltUPMvswoByGC8e9zbsKjMe0fMr2phchoLNO2ygoWCJGpLSLR/5yuK17ASmH2IXmOmPmdSaL9qIu0YFqkWo=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=dzhu@wavecomp.com; 
 Received: from [10.20.2.221] (4.16.204.77) by
- CY1PR0801MB2155.namprd08.prod.outlook.com (2a01:111:e400:c611::8) with
+ BN3PR0801MB2147.namprd08.prod.outlook.com (2a01:111:e400:7bb5::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.995.19; Mon, 30 Jul
- 2018 18:50:41 +0000
-Message-ID: <5B5F5DFE.9090702@wavecomp.com>
-Date:   Mon, 30 Jul 2018 11:50:38 -0700
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.995.17; Mon, 30 Jul
+ 2018 20:57:41 +0000
+Message-ID: <5B5F7BC2.5070906@wavecomp.com>
+Date:   Mon, 30 Jul 2018 13:57:38 -0700
 From:   Dengcheng Zhu <dzhu@wavecomp.com>
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.7.0
 MIME-Version: 1.0
 To:     Paul Burton <paul.burton@mips.com>
 CC:     pburton@wavecomp.com, ralf@linux-mips.org,
         linux-mips@linux-mips.org, rachel.mozes@intel.com
-Subject: Re: [PATCH v3 1/6] MIPS: Make play_dead() work for kexec
-References: <1532357299-8063-1-git-send-email-dzhu@wavecomp.com> <1532357299-8063-2-git-send-email-dzhu@wavecomp.com> <20180724232355.z6j2wvs6srigr7kx@pburton-laptop>
-In-Reply-To: <20180724232355.z6j2wvs6srigr7kx@pburton-laptop>
+Subject: Re: [PATCH v3 6/6] MIPS: kexec: Use prepare method from generic platform
+ as default option
+References: <1532357299-8063-1-git-send-email-dzhu@wavecomp.com> <1532357299-8063-7-git-send-email-dzhu@wavecomp.com> <20180724233653.lv3rkz7g33hqz53m@pburton-laptop>
+In-Reply-To: <20180724233653.lv3rkz7g33hqz53m@pburton-laptop>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM6PR08CA0036.namprd08.prod.outlook.com
- (2603:10b6:5:80::49) To CY1PR0801MB2155.namprd08.prod.outlook.com
- (2a01:111:e400:c611::8)
+X-ClientProxiedBy: DM6PR08CA0004.namprd08.prod.outlook.com
+ (2603:10b6:5:80::17) To BN3PR0801MB2147.namprd08.prod.outlook.com
+ (2a01:111:e400:7bb5::20)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fa1b0a73-03d2-46e8-a48c-08d5f64d59a6
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:CY1PR0801MB2155;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;3:Locvokz9nt7f2QaYYzN5hlBC0mSYZSfgxhMtky8b/gp4XfNB+EfZUDbzSw70N2XJZZL4dNxAFrA1ZiDh7hOzUR8QLo00FDrLFjUbE2cRa8rD8eZQnxmiIfC7W0NjGH2kCS3MIimv3jOb0KmzFRSdvIUI6w6e9i3XROkMAwvU9zUbI2aRiX+nxmNgVg8S0pV3YYczGBdd0gf+Y+vrNiHKhJwfZQvlP2knMngusuwBT+IlZQ39bd6X2DbOaubxhJvt;25:Z6OoXLg/IH9KdYM7AnEwp9iz811elUOU2lEZetWaJA4AwN6byx6dXYdabTUyOLLsf1oFEi9CoTm8WmMirVb2V5X3eSUHJJrOtWL8hDq7Y8AvWyEWOLIlUWW5CZWltaohIjhFRwGN24+hmeMTkSJn120nnfQgvKkUeWriuOQfktJjfyPiFhAceqVsI3gZbqbB5gJ1oAlXtXjS9pWRtS8F4XqDJcNuNaqH/kXptjIjHVGYnU3fdYZ1ziYdMY1ZQc/8Qr5kVbnYHardiXfegpy6uRVINGccNeSZ7LfkfGoaF956H0uvVA++fFqz5hgIBEF0c1nnFyerlNDJHkn+E4qyXQ==;31:T+EQFs7UNJZB0rHLnOcT+rySH8HIQYkF2gJSPtnJBjGUSlHnB21Jdfx/7d2lUUt0GxPXtNAzCg3QtZH0lqlxPTgSZBIdnxtZG76mSSbfZfd4XWI9q78Q7B+/lBO4fHrseZ2lQJlJq9V6iOIiGDHE6I/I/Fn9nskTfskYz9axQfcXpcSUYQ/PfOZvQehkkoQdR+mbETw6SNCP/IahZblbcA4SITofO1QPte4SBlCU11g=
-X-MS-TrafficTypeDiagnostic: CY1PR0801MB2155:
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;20:+Q0Ty2z1seqyuT5cZ5GyLr17ytj3rRy9/vHzyjGDSqNzHqf/E1h+Jz0C4r7qdG7Q9fGytGfmmwcKTkE2HumbMbkigBtMFrqtNhOKXlAqHJ6YmXQypEPXuwUOk6vj6pZnm/Tdfy/bd9HpFf5V1fDQvlmeKqSpFearNeO+rLjo9SVISg1oPs0q9B5ORBGc+7bMnnZ4Gez4kFyvFqN2bmnIxoh/QOR3DW+yX/wNGN8Hhsp2C7+gn5M4p3aV0Xtamx1k;4:AbwqdsXO/k1eBRzLm4vB5qUgfhEBnWAZjvwwcYkBMLXf/aTbalr8d6sb2pfCOC4DniYpfQVDoAqBBUWRz4PTGn65vC+d0JInHHR1WRHVpLVbDfu3hskwfvD0/X+M0KCGHlshw59V6ao4z88X2IWTzBlYfYQmLoqB/N1bFL1mPyCOV20+O2vrBgJuu0tODOm8MDKaGMdNz5SECONlmbS12ZYk+2gmcMERsRMoD468hchjAT0B+Ot2oQiQm8M2kIZfRZBlMuu7Bp3ifr/jqZaSJc4cfdjzOX3rkMJA5cPr4nAM/ESCI8d6ly/1t4TIO7km
-X-Microsoft-Antispam-PRVS: <CY1PR0801MB2155B1C2A5190443A1ABF37CA22F0@CY1PR0801MB2155.namprd08.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 1a14a150-0ae0-4496-fbce-08d5f65f1772
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2147;
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2147;3:Ywpapr9E6Dut2NSTH5v3/JHhYC/mgw/mQWP40j8Mpj303H25mttV4qgXlmJJEzoGphVkz0Pg3XEVCFTYL3SrpXn5OvRJbbIoyU9wbPdQL4OZCGYpo+FeuFAM6F2yTxe9mHTpr17jcFKkRFvPuYGbPES/mkynxDlnuWtjCztZYJ04SoPy7drxtvQK2hmPXXPcmsaHQLMIOchK3RJzHfXTxaJQ9LOlFrqz2CZGVNeR+PUwRsDYtcmnehm11lLQmmcJ;25:t9iiyze5fmDxbi1SSFY5kzB0BTYgLbcq1pMuh4u4AGukJLc4BhK0RgLEaNWd+Z21KBqC0NXIpPEu5btNCVERRsLIN1Fv4+PtDaxgDNoGG/uJROsn+HFlP6D1w/OPWaOERDfVfHg2jCHMIm/2fswl2DYHm2rWwbV+424YYIi9XvUeVat3w7v2PmWnU3s978gE2Z9dRwymOA9sja8X733I1eAQDtU1oK9/RB393UWUcPW028LmQqHmFIdGyHfkEAseMLvFNeShel/dAeEZKqJHueZ4p8o7BPK/WTYqao/1+wLTW0Curn/iukK1ih8exynJGCgjWAUh+RJszDeTJQr3GA==;31:7PDqHGMIK3cxccq1XxWuuK9YOozPEax8rkXtowlyEyEoCous3fV1/soC1FoeYDk/kcImtTPfROJdF3eL7Zlx4Mx9nV08xuX82eQ6NYFsXhtyzPDrLYDA/DCDV0XZSuvD+KpIxdHyt8h+YnBnypfdIRcI56Ytd2d1ST8h+ACGk7ZC+qYMKnJfDa9TU3kp3WKewxwE8reUA8BTHPAUHwsJELdMNl3NoLKGRe3ZRb2wuFo=
+X-MS-TrafficTypeDiagnostic: BN3PR0801MB2147:
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2147;20:GAD9VwdcGtHDSdkQJRsY4IwtOk3AMFORcng54UahjxuSqWuFgpWN+kHpsMkv2RYLX2nqIOHMSqxThXReYaqom1/I7mjB7UFVaQjsU+1LHUy+OXP60ZBSBzo5T03q29aScHjcFwX4Sf4+aqiLW/h1Cc0ITh4QF6Zj5zfclY6D/v+cnGUHH/q48ygLUxetSgWSuDpWBoyRuFUnYsgpYZuKXd02xZ/2rryZRO9oqAfR7KQhAUCyQIb5W79WU9sG+RI6;4:TVKx4FIVKbL+1qloneadcxzsH3ElUsi08tT9E8mkSCaf5+MLwKU5/Y8v5kV/L10z8FYIHyV9u+PgSTD9Pv7bdMDFxWpJj3O7zdAgMlisPOzd3AH1xqEdZzIaW2Sv4kAjSo4XvHIG4z6cwyTQfmGHHlSciipRqLn/UWAAPfHWb7JjYtySmWqAUnPQ83ZmJL5YI+A0lFDkh020TQNyE0GMndNg4V9N4aA+zk2ddzthhn2HO2NXizZpIz8evH5cmPUNRbNIIj+xYWHzqSDtDfJRKxqOZT86JzF0wcc3HB+oII/4zS4ZE80IX2GEf0Un6j32
+X-Microsoft-Antispam-PRVS: <BN3PR0801MB21474BF36BD0ADB13C147057A22F0@BN3PR0801MB2147.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(3231311)(944501410)(52105095)(93006095)(93001095)(149027)(150027)(6041310)(20161123562045)(20161123560045)(20161123564045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(6072148)(201708071742011)(7699016);SRVR:CY1PR0801MB2155;BCL:0;PCL:0;RULEID:;SRVR:CY1PR0801MB2155;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(93001095)(3002001)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(6072148)(201708071742011)(7699016);SRVR:BN3PR0801MB2147;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2147;
 X-Forefront-PRVS: 0749DC2CE6
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6049001)(376002)(346002)(366004)(136003)(396003)(39840400004)(189003)(199004)(305945005)(2906002)(58126008)(230700001)(7736002)(476003)(2616005)(956004)(8676002)(50466002)(81166006)(59896002)(81156014)(8936002)(33656002)(16576012)(36756003)(68736007)(316002)(446003)(80316001)(11346002)(106356001)(5660300001)(486006)(52116002)(87266011)(76176011)(65816011)(6246003)(6862004)(64126003)(53546011)(25786009)(4326008)(86362001)(575784001)(229853002)(478600001)(47776003)(16526019)(65806001)(6116002)(65956001)(3846002)(386003)(66066001)(26005)(77096007)(97736004)(67846002)(6486002)(105586002)(53936002)(6666003)(23756003);DIR:OUT;SFP:1102;SCL:1;SRVR:CY1PR0801MB2155;H:[10.20.2.221];FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6049001)(366004)(346002)(136003)(39840400004)(376002)(396003)(199004)(189003)(59896002)(25786009)(58126008)(53936002)(316002)(6306002)(68736007)(16576012)(7736002)(305945005)(6862004)(5660300001)(86362001)(229853002)(6116002)(3846002)(97736004)(65806001)(67846002)(6246003)(16526019)(956004)(2616005)(446003)(476003)(6486002)(11346002)(105586002)(386003)(53546011)(8936002)(106356001)(36756003)(230700001)(486006)(23756003)(2906002)(966005)(26005)(478600001)(81166006)(81156014)(8676002)(50466002)(65816011)(76176011)(77096007)(64126003)(80316001)(65956001)(66066001)(47776003)(52116002)(87266011)(4326008)(33656002)(6666003)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2147;H:[10.20.2.221];FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;CY1PR0801MB2155;23:l7eaD+oKnBzmlUDUDNYweZWB3620ThsYwe79a?=
- =?iso-8859-1?Q?F+uoPvqPsbKGCg9TAycm4lMNYUbR0KgmJKoMWWD7peGY2rGMbn1HBaJtIK?=
- =?iso-8859-1?Q?GOFBHdefNd3y1wThNhM1O7V1aneaBxCn36InvlUULMsxlEdyEigKhD0VOd?=
- =?iso-8859-1?Q?8KyKdw5TbpuG4FeHRMekBJ3vFujjMjHWQiZUsLVG3b9d/pdNbL2/BJwpVN?=
- =?iso-8859-1?Q?ZFbkrHJ3Q0DddCn5E6CJ/3cex3z/e0D30fzEqmxoQuEhO2SXB3Yuy969l6?=
- =?iso-8859-1?Q?bjsTPBJci7/ckp3UyWPMJl3GZHCyeUh6jYBfwZy35delhdXbE90BTvTO/l?=
- =?iso-8859-1?Q?n10J8Are9rtVpHzHlZGay4wXcCfLUa5LIR+Y31dufv5+MEMym3WFXsXXIV?=
- =?iso-8859-1?Q?5WNskVSlWzoEvaN/pG9nC5el6ctXMB4g2ox8C6TAkjmEijFDjUQO9qTQz4?=
- =?iso-8859-1?Q?oX7O05WSHUiyb/dTuiTjvTsdEzgbWfzriqxOfzhuRfSyYg5P9qsu53wl7C?=
- =?iso-8859-1?Q?x8Gg5JVvDpSscwvBpAQm60SFLI86hMTtjhSIBqwwHxIOtP66md4H+7mUx8?=
- =?iso-8859-1?Q?G/eYAtCLBW+W30R+q14fswwEQkQwV5tqnM6gF1zdXX+IOdnIef2xOnKuuK?=
- =?iso-8859-1?Q?uYsqa4OoKyTV8k+D9nbbMlmE3bBp4NhhBtSGrUrEYdBLmuMdyidUdmD2wm?=
- =?iso-8859-1?Q?WdMXIryeHFuhS6iM7D9AIkdmSOVJsDwzw1cMBMZlPPRO4wzP7DlOKB1/TG?=
- =?iso-8859-1?Q?kztcbWmTTyvXa8bR8mmc0FH9UFPL5MewDI6LEIRMgRQ+aovI+gtwPJL2iP?=
- =?iso-8859-1?Q?BulJjVBD6+3c/qLIR3/Pb4I0pMpyOR1zOtkyd5I/+19uedlE1NSU9aQSQU?=
- =?iso-8859-1?Q?UZcPWzmiIlK6MEbZwwxu3SoIKkOI+r8axYtULXNnslWS02590YykF0iR/Q?=
- =?iso-8859-1?Q?Ii2ss/eeWZ1KB8BUVv5zhGASi07bPbBAEsI/y6YeuCZ93Nt3yt7EWZ//Hp?=
- =?iso-8859-1?Q?tIw4cOp+vNM6C7GqMMljNIwFTO0466Wrh8hZlogcg5aZoZyLf60F53ITzh?=
- =?iso-8859-1?Q?pQ63qUzI1rlzSK53Ph0mAjN69Uxs5FrUyNqd7PS+TJBhKa3DQB9Zefu9y/?=
- =?iso-8859-1?Q?8MhKIGqKZ9bopv3ONMFLADrmzpoy99ha5fjOrAwEGF4RNcI2UJMa858+02?=
- =?iso-8859-1?Q?kzMP8wAMPy5TdYeavUQxg2Td6QDGvxO+1yt/3IvGL/ehw5v2TnWnLQiFdG?=
- =?iso-8859-1?Q?oPZDwGUqZzNGQtzmPrq+3Nabs+9RGB2C6T1EnWppUNdRt0SJxcMPcVicdd?=
- =?iso-8859-1?Q?YH7WLIwo0AkyCOkccTQjdpyiC0fh3jlkK7S8HvSixMZTOlDFCzb6vF75T0?=
- =?iso-8859-1?Q?GosGVZV4gYf0QVfE5Uxnu6Tg27jtluuBktJLyhl4nYFgjDvdZcEgYPAvjd?=
- =?iso-8859-1?Q?YQvHBY7jUWqCb7e3qHvO3/35utRvBHtBwbQthzQ4b+T7gvFpZ4v95x4gyn?=
- =?iso-8859-1?Q?Qa58KxFA91X0GDXl4gBDBM=3D?=
-X-Microsoft-Antispam-Message-Info: zv1yEWZz3xPpejMvy9HYwRyDBUujtN2meIxtOcoVlz00qbRw8SSeqpY9KoY5EIWEXvgJJySZTBos+OKPcnMz1xI4Oo4R2Qf++8UqImH2hGaCqvGVUQpLQMpriBreDeZyoNnMwd5Dd0XiYAazpmDv45m2R5tm3/4wrpKOASxYElYaJOGQLGl5fjJD9It+cppz3GYf5lcltf9ZIdzuN+UUixVDOGKFmB0OgjodXZu7rWRSBj+ySRLUbvfJ9L2CxxfgOafFV5OhUxUPlFDXFihqQmAzuxaW6dpfs3hrtXfjO3UPss08drjUj7FsKlMqwATN5UbSod0F/e8HHB9AIfq9Mo9lyWIudH7L/lmnJ0zxPQ8=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR0801MB2155;6:1Fdx+4rPoSAbtQHtuJVFM405DWksOgl6Z5ILapyOiw/+tfvrLAOpdc3A9AoGYEHRs1jVFcwl39h3tF0ViZh9f6euORJIWA0VJvL0K7R8dM39EzIvzy6srFWRCZFt8BlgOVp6EFfZ15TqZj3tQsH7uYW/o32CaT0ld6WnLVn5XjhCDCSN6bGcavrR6DtdjhQu4s5u5otteZFiSd2oTsoe8XIc0yJJOTmdtgcnHkL6dMJ5fIbL/Su+igfMAqDZuzAP2D8eJg6NHXZUwLI1FVNb4aKPpcd9jYwm/+MVlMqGfOonxqD4IK+XzOzQGCKGuXqjiQG5fjAOb39v9JJvNUAVlZCdrnrHTnxibStx2OxUFU9yl9rFYUVPv9BTWvUYF86wr4oDB6Vtimnhjmk1MpcvUgv7K91t7T1Sif7RBxW6+AYeN2HpAawhGajb0mLsAA0qC5NpyNgIPuRIQrS7WFWa/g==;5:OfHmsi1lNxVx394B7RbkvuGiYnwzHW5D2XnVpskvlZTDT0dTCwXW9tBvki+qwqxfBKDTfBoNcbwafaVahrYfv97vwr4D5cZLTc9btVKvetBcRIO+2/xROC95f8Ck5tivdNR+BxVgHxOHRksEojl7tJpSGKzyZwOBtj5KF5mblaw=;7:y4aHzFIeKL036RPoqvUmDBAc1dSwQuH8TObzG4RITxiY9z+jqGjR4uw9Sdg/oGMt05j8M1FoKw/HO6Zh9Nn4nhqkTiQcMt1OfjguFc6tts0j3xyYBoSun8zQcncmMWPFjaOssJLc8EPe8RYfOLDFtRZlcwzyModCt+NpLBuwLjg34ybLX4sW684i8jvK/TbxuqjuhICrMzrNKktV1AbEmPeQk97Z1uH0t9iM+nOvUTi1Q48sJ5/TN7CR5km6vSgD
+X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN3PR0801MB2147;23:Mr6zIqD+JA6+NRyghIeBYuU6zVQA6v3lujLI/?=
+ =?iso-8859-1?Q?jKbohRGzRmtojtRwwSFw/0Gzh7P2AvHIIJA4YhX30zvJxAIJsBHQ9BoRo6?=
+ =?iso-8859-1?Q?63GA//uQ2+oc22dKrqDkZ+sf7pPgmyBai0G1b9dksgwtVs0EnYZhxrTZk8?=
+ =?iso-8859-1?Q?Pj/a8Xg/jGKEHaPArWytBNmJSDc1W9EdMPz/Ue32WG2lzYBPw7LLeYGpH9?=
+ =?iso-8859-1?Q?NGCH9DFoQV1htQj25sTJiJEmS4vUmq6k4H7oQQLUWd3n8ozxEE2NWdfb9o?=
+ =?iso-8859-1?Q?mHYGvLPzM2x1Is6MyvJ6Pn+8c5MG1TbB7NVWiQFfQHrp4My+vUwgkjXDuE?=
+ =?iso-8859-1?Q?kEvgwv8xh4kjzJTDS03YDKdpKUO3zp4/c0OQZuPHMCA+QefByctSbrBksf?=
+ =?iso-8859-1?Q?Ko80GpXdm3Qu3VoShf8kNvFMslWHdvod3WBz64NtqGru2XKD+W6quCNvoU?=
+ =?iso-8859-1?Q?2UKpP9n9/mNquZKKn7lITx6Agkla8/uKmjYVJe0bfpgwF//rANsIhKO/wx?=
+ =?iso-8859-1?Q?sapNOQZ1ARzaZJFPyqVjG/AEEr7UEcpKRznlIdZ+JjSDNCUaKB7X8neQq7?=
+ =?iso-8859-1?Q?X4rOX0Bi/RwZeBB1DD16TlxYfmn6DOUa/WDB+aY/Ms3xamyNvp2JmcW2+o?=
+ =?iso-8859-1?Q?IlGixckThfQ/R9mKn8tduWH5SvZTRyRhhdqO8aE72VVZiuqSsTbPrH2iho?=
+ =?iso-8859-1?Q?g4QhNsfnMFsXGIEJpLTeq6ycZ5R76d/mAB9oDpkYrc00C5Ho9iy/Gskgn2?=
+ =?iso-8859-1?Q?r0jeXNc9PMzg6VvgOL+rw9Pm/jwPGK/vfv5HDqqx+NHpM5U9EeMJlt/Xlw?=
+ =?iso-8859-1?Q?seHhFcv+pTS4haH1IE42r0hqp9xuEtconKHGcgKjm9C3La2WFvrmOIbOPt?=
+ =?iso-8859-1?Q?domlRDLr0aD46YxZi5dybFzOyz4XGPA44LpVxbTsi3/1h2284WVZzG3T6L?=
+ =?iso-8859-1?Q?7qP8uUnhloepd5I0Q7PkgMQerhad41CSbunRZYKkmVsAefasKVUBzKN49P?=
+ =?iso-8859-1?Q?tSO1rmMyHST3r4ceocIA+RwKwFIt8wEe1D7UZCWtjY2+IItBX2q/ayRvJK?=
+ =?iso-8859-1?Q?5pNokn/LqDBTcWDyYHSdubOICCcI5593ht9NfzGFjQagN1qNHek2Jm70jt?=
+ =?iso-8859-1?Q?jCbGjilSUH02ZJG3rvCa17xX7/Q1bPuPpiRRRDlkiXH9iO0ZJbAY3NSR8W?=
+ =?iso-8859-1?Q?B6iamO3wxBVG1G3Gz18ONosT7XpeTQUNUy0DAtgqFTXS5IUbIXTsdCNaEB?=
+ =?iso-8859-1?Q?6HEjrgVSYX5DU2fdJHLn5gkmVJodAz7tNjryl6Juo5kp3f3WOG/iJbtIHs?=
+ =?iso-8859-1?Q?Ib72D9FrYPYpfHrwiUsUK4oH19PBOp98GDFf7R5Pb3RN2Kr+HDZhPX9yfn?=
+ =?iso-8859-1?Q?iA8Pz/nLFSA8eZpt3gQOXDg5ob94ER3IcI5MRHi7por9q+Y3Zo/oN4tzwq?=
+ =?iso-8859-1?Q?1nJeCooNLpbPuPHAyJHtHd5I2xKGq2kUVxwbne6ROEQE1d3oVZJgQ1NHIA?=
+ =?iso-8859-1?Q?aArAB0M8r2w6AkrRp1EujzZzVREF9Zyqg6ldJuOV8Kp?=
+X-Microsoft-Antispam-Message-Info: Sf9ooILHThoWlmx8h/DYAT/rRMf90rUtMhKa9s+akTFfhmZkdyKpt0qLl1BdYWWwt6qav6fNkuE0wSFn+heKzfLLQ6KT6AgeUFZXlWXVoYoetLJFzJqhBZISDIJXaUqeqvxNn1jSNz2t7mYsnLhZhan4mymCDmpi17rRhQE5r/wDvcNKli/iqyzYoFpNF5H2spSSUba1qOYuHAJ2Xv7Kt6mlRspbcwdmH2afINuVs3WvCpRh6gr6V71p10Ykg3fcgCIwrgpx8QGNlg6qZeNvkbkfvz+/xcnpVm8QMesq5n/N/3TCQqrKmFxqaif9sDqQhgAjT5nbEWyVcQ2yEc+UsTPHLX6a2hoA8VACDjT+Axk=
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2147;6:H+cR1BLpAPz6bZIB4eLDRxJPuPPGIshfdA/3wZ/veZqj6DLNUd6jcTEfqEv8R9HZfglH2cX7+E677Aky6EkhmtjqGRuN4vtCo+xlq6vJgXib6AkIALgAmYvZ4fx7UGwn6UvzHUmPZfgre8vI9FlMZs2EBu+zyryPON5CWffMtGjbg7fbb/7mC8JDWHFHDVUJBU9vePN1Y0swVh6Xr5cW3cpgriC/SsvykA3KYLYokZlyQcGq2l+Tiy7Ex5wh2Ned1bjQvE6qsEHmibmyCK39w4Jo8k7nie82qOcNgPplLPqhDPWVJyi2get49jiF9Z+oqtBmUbgPfz8Q7GhPQ8pLXKXl3/jDLQd/ssPKnM/vYHgdwlB+OtcBy+2ufumc7xwiLM7abwrxo/xZEckdnCUo97m/fbm5Iw04I9wvOz9Dscg5lFgZLaFogsZKC93E2s4lVYsQT8eLN0GbjJ5l2/2BSA==;5:o8foPlsbc4dL5uu/GAMOI0/4UUcYRH749uvqPEQ/kSfothB5FeLnLPb+V2oayCAcnWAwbdgSb0LwsL6HP+QYiK0Qx7wGuDYeutJcsrAkLtXsWB732BOt4dc5jr+RfczE0EG2RxESYHwH/BEcqMaDWPcVQ8ASBBQEqXlzgcAcbw8=;7:GoGsAMeD+bRzZBnwobgQG88pitHT5XoaZrBlemCEWBgAQdk8PN90G9WzNoUtz/mBe8NV4OOyUxLbacEfNjDfjWE/XZ/rEMI6Y418Mg4SsUfnbP0e4fHHPevZ/59RKQKdK1LDzJSYXmXdE4405Wl2Uc6dljWFznF1dPSWwfr6wGKmwuzzOl2ICiJgULuKHAo0ixkt0u1KPqQTC76uivSOf1Et4dB/6jKCvQWz+0D0qjJ2TVb2tjFV6a0Ip9DKvs/7
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2018 18:50:41.5426 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa1b0a73-03d2-46e8-a48c-08d5f64d59a6
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2018 20:57:41.2666 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a14a150-0ae0-4496-fbce-08d5f65f1772
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR0801MB2155
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2147
 Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65260
+X-archive-position: 65261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -107,95 +108,52 @@ X-list: linux-mips
 Hi Paul,
 
 
-Thanks for reviewing. Please see my comments below.
-
-
-On 07/24/2018 04:23 PM, Paul Burton wrote:
+On 07/24/2018 04:36 PM, Paul Burton wrote:
 > Hi Dengcheng,
 >
-> On Mon, Jul 23, 2018 at 07:48:14AM -0700, Dengcheng Zhu wrote:
->> Extract play_dead() from CONFIG_HOTPLUG_CPU and share with CONFIG_KEXEC.
->> Also, add one parameter to it to avoid doing unnecessary things in the case
->> of kexec.
-> I'd prefer that we use a separate function to play_dead() for this, for
-> example we could provide an implementation of crash_smp_send_stop() much
-> like ARM's which invokes a machine_crash_nonpanic_core() function on all
-> CPUs other than the crash CPU.
-
-ARM's crash_smp_send_stop() that calls machine_crash_nonpanic_core() is called
-in machine_crash_shutdown(), not in machine_kexec(). It's similar in the MIPS
-case - default_machine_crash_shutdown().
-
+> On Mon, Jul 23, 2018 at 07:48:19AM -0700, Dengcheng Zhu wrote:
+>> The kexec_prepare method for the generic platform should be applicable to
+>> other platforms.
+> ...only for platforms which use the UHI boot protocol, which is what
+> generic_kexec_prepare() sets up kexec_args for. On any platforms which
+> don't use this boot protocol the new kernel wound find unexpected
+> arguments & in the worst case do something crazy with them.
 >
-> This would prevent the kexec/kdump functionality from depending on the
-> board/platform specific play_dead(), and wouldn't need these changes to
-> all of the implementations of play_dead().
-
-The revised play_dead() is JUST to make sure we are turning off CPUs cleanly.
-This function itself already hides board/platform details. So it seems a good
-candidate for turning off CPUs for the target platform.
-
-This function is called only in the newly created kexec_smp_reboot(), before
-which cpu states have been saved.
-
+>> For those otherwise, like Octeon, they will use their own
+>> _machine_kexec_prepare().
+>>
+>> Without the default prepare work, platforms other than the generic one will
+>> not be able to automatically set up command line correctly for the new
+>> kernel.
+> So even with this patch they still can't unless they happen to use the
+> UHI boot protocol.
 >
-> We should also be calling crash_save_cpu() on each CPU, which is a
-> further difference from play_dead().
+> If we ever have multiple in-tree platforms which make use of the UHI
+> boot protocol & want to use kexec then I'd be fine with us moving
+> generic_kexec_prepare() & renaming it something like uhi_kexec_prepare()
+> but I prefer that we don't just presume the boot protocol for any
+> platform that doesn't set _machine_kexec_prepare.
 
-crash_save_cpu() is already called in machine_crash_shutdown(), which is
-prior to machine_kexec().
+Thanks for pointing this out. How about something like the following in
+kernel/machine_kexec.c?
 
->
->> This is needed to correctly support SMP new kernel in kexec. Before doing
->> this, all non-crashing CPUs are waiting for the reboot signal
->> (kexec_ready_to_reboot) to jump to kexec_start_address in kexec_smp_wait(),
->> which creates some problems like incorrect CPU topology upon booting from
->> new UP kernel,
-> Do you know how that happens? I'd expect detecting topology not to
-> depend upon what state CPUs are in. That should certainly be the case
-> for smp-cps/CONFIG_MIPS_CPS which detects topology just by reading
-> CM/CPC/GIC registers.
+--------------------------
+#ifdef CONFIG_UHI_BOOT
+static int uhi_machine_kexec_prepare(struct kimage *kimage)
+{
+     <the code of generic_kexec_prepare()>
+}
 
-I didn't debug the topology issue. But it's related to the attempt of *all*
-CPUs using the same code from kexec_start_address, thinking they are
-dominating the system.
+int (*_machine_kexec_prepare)(struct kimage *) = uhi_machine_kexec_prepare;
+#else
+int (*_machine_kexec_prepare)(struct kimage *) = NULL;
+#endif
+--------------------------
 
-The cleanest way IMO is simple and what this patch is trying to do - turn off
-CPUs and do a fresh SMP boot from c0v0.
+In this way, any platform (config MIPS_GENERIC at this moment) can do
+"select UHI_BOOT" if applicable. So this will be a one-line change to
+UHI platforms that have not been upstreamed.
 
-
->
->> sluggish performance in MT environment during and after reboot,
-> The function running on non-crash CPUs would just need to execute a loop
-> of wait instructions to avoid this.
-
-Same as the topology problem, I didn't look into this performance issue. But
-I did try using 'wait' on non-crash CPUs - it didn't work well. In the clean
-way, this problem disappears as expected.
-
->
->> new SMP kernel not able to bring up secondary CPU etc.
-> If the SMP implementation can reset CPUs then that ought not to happen,
-> since no matter what the CPU was doing Linux should be able to cause it
-> to reset & run some known piece of code. I'm not sure the current Octeon
-> SMP code can do that, but there are patches in patchwork that look like
-> they might (& patches to remove Octeon's current kexec/kdump code which
-> suggests nobody cares much about it).
->
-> I'd suggest we could perhaps add a boolean to struct plat_smp_ops to
-> indicate whether kexec is supported, and start by setting it to true for
-> cps_smp_ops. Then we can have machine_kexec_prepare() return an error if
-> it finds !mp_ops->kexec_supported, and deal with enabling kexec per
-> platform. I think this would be better than Kconfig because there are
-> systems where we may use one of multiple SMP implementations - for
-> example Malta might use smp-cps (which would be OK for kexec) or smp-cmp
-> (which wouldn't). If we get to a point where all our SMP implementations
-> can deal with kexec we could remove the field later.
-
-This problem is also related to the original kexec boot mechanism. No
-matter what SMP implementation it is, it should be good if we correctly turn
-off CPUs and reboot the (SMP) system from the 1st CPU in its own
-implementation.
 
 
 Regards,
@@ -205,68 +163,57 @@ Dengcheng
 ---------------------------------------------------------------------------
 
 *From:* Paul Burton <mailto:paul.burton@mips.com>
-*Sent:* Tuesday, July 24, 2018 4:23PM
+*Sent:* Tuesday, July 24, 2018 4:36PM
 *To:* Dengcheng Zhu <mailto:dzhu@wavecomp.com>
 *Cc:* Pburton <mailto:pburton@wavecomp.com>, Ralf 
 <mailto:ralf@linux-mips.org>, Linux-mips 
 <mailto:linux-mips@linux-mips.org>, Rachel.mozes 
 <mailto:rachel.mozes@intel.com>
-*Subject:* Re: [PATCH v3 1/6] MIPS: Make play_dead() work for kexec
+*Subject:* Re: [PATCH v3 6/6] MIPS: kexec: Use prepare method from generic 
+platform as default option
 
 Hi Dengcheng,
 
-On Mon, Jul 23, 2018 at 07:48:14AM -0700, Dengcheng Zhu wrote:
+On Mon, Jul 23, 2018 at 07:48:19AM -0700, Dengcheng Zhu wrote:
 
-> Extract play_dead() from CONFIG_HOTPLUG_CPU and share with CONFIG_KEXEC.
-> Also, add one parameter to it to avoid doing unnecessary things in the case
-> of kexec.
+> The kexec_prepare method for the generic platform should be applicable to
+> other platforms.
 
-I'd prefer that we use a separate function to play_dead() for this, for
-example we could provide an implementation of crash_smp_send_stop() much
-like ARM's which invokes a machine_crash_nonpanic_core() function on all
-CPUs other than the crash CPU.
+...only for platforms which use the UHI boot protocol, which is what
+generic_kexec_prepare() sets up kexec_args for. On any platforms which
+don't use this boot protocol the new kernel wound find unexpected
+arguments & in the worst case do something crazy with them.
 
-This would prevent the kexec/kdump functionality from depending on the
-board/platform specific play_dead(), and wouldn't need these changes to
-all of the implementations of play_dead().
+> For those otherwise, like Octeon, they will use their own
+> _machine_kexec_prepare().
+>
+> Without the default prepare work, platforms other than the generic one will
+> not be able to automatically set up command line correctly for the new
+> kernel.
 
-We should also be calling crash_save_cpu() on each CPU, which is a
-further difference from play_dead().
+So even with this patch they still can't unless they happen to use the
+UHI boot protocol.
 
-> This is needed to correctly support SMP new kernel in kexec. Before doing
-> this, all non-crashing CPUs are waiting for the reboot signal
-> (kexec_ready_to_reboot) to jump to kexec_start_address in kexec_smp_wait(),
-> which creates some problems like incorrect CPU topology upon booting from
-> new UP kernel,
+If we ever have multiple in-tree platforms which make use of the UHI
+boot protocol & want to use kexec then I'd be fine with us moving
+generic_kexec_prepare() & renaming it something like uhi_kexec_prepare()
+but I prefer that we don't just presume the boot protocol for any
+platform that doesn't set _machine_kexec_prepare.
 
-Do you know how that happens? I'd expect detecting topology not to
-depend upon what state CPUs are in. That should certainly be the case
-for smp-cps/CONFIG_MIPS_CPS which detects topology just by reading
-CM/CPC/GIC registers.
+Hopefully anyone using the UHI boot protocol is doing so because they
+want to fit in with the generic kernel platform so this won't happen
+anyway (just need to get EVA supported by the generic platform & then
+there'd be no reason at all not to use it).
 
-> sluggish performance in MT environment during and after reboot,
-
-The function running on non-crash CPUs would just need to execute a loop
-of wait instructions to avoid this.
-
-> new SMP kernel not able to bring up secondary CPU etc.
-
-If the SMP implementation can reset CPUs then that ought not to happen,
-since no matter what the CPU was doing Linux should be able to cause it
-to reset & run some known piece of code. I'm not sure the current Octeon
-SMP code can do that, but there are patches in patchwork that look like
-they might (& patches to remove Octeon's current kexec/kdump code which
-suggests nobody cares much about it).
-
-I'd suggest we could perhaps add a boolean to struct plat_smp_ops to
-indicate whether kexec is supported, and start by setting it to true for
-cps_smp_ops. Then we can have machine_kexec_prepare() return an error if
-it finds !mp_ops->kexec_supported, and deal with enabling kexec per
-platform. I think this would be better than Kconfig because there are
-systems where we may use one of multiple SMP implementations - for
-example Malta might use smp-cps (which would be OK for kexec) or smp-cmp
-(which wouldn't). If we get to a point where all our SMP implementations
-can deal with kexec we could remove the field later.
+Interestingly there's a patch in patchwork from last year which aimed at
+making the default to pass arguments the current kernel was given to the
+new kernel [1]. That would seem like a saner default since we'd be
+making no presumptions about what those arguments should actually be,
+but I don't think that's safe either because if any of those arguments
+are pointers we have no guarantees that we haven't overwritten the
+memory they're pointing at.
 
 Thanks,
      Paul
+
+[1] https://patchwork.linux-mips.org/patch/15397/

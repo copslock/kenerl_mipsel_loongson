@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 15:25:04 +0200 (CEST)
-Received: from vps0.lunn.ch ([185.16.172.187]:56197 "EHLO vps0.lunn.ch"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 15:35:04 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:56215 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993041AbeG3NZAqlv5D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Jul 2018 15:25:00 +0200
+        id S23993047AbeG3Ne7rx7Wo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Jul 2018 15:34:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=2/jopxJ0a3Xr5McvI9/4v/db/6AbFZh4lrTEwV7FVGg=;
-        b=yvK8Q5rxVzowFxnL1dw2048nnDehg+3tD7VczRCuI59j27Tsu3BQIFQiFzAYyhCmBt/fetQupTzPsXZkMpxPAKjUolm+O3BML9JZA5BB35eMDd8uUHX9X9fFaDWvHwgPqe+R1U8LYPws7ABaMzvFV8p93787ZuaJojPQYW3tEeI=;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=m/UngLPTmZIQ+RQ2vs0wOdHdGz9MGHtZfbBwdMsJfoU=;
+        b=RB6Z8MTCYeHVUoWm3fJw/kXu+bhHQT3rCIAg90Kmj56JM36GO4/LiYlPp+iyB0/V4Wynpj4puuQE/ZFrjcxULd2012nAg6gBAXHQaLenovgjLRn5/rXxanZ6CLn6+VR4LPtXzMAYc/15LfJSL1mNcQVKtT03TetK6v0n0An02EA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
         (envelope-from <andrew@lunn.ch>)
-        id 1fk8AD-000810-Uk; Mon, 30 Jul 2018 15:24:41 +0200
-Date:   Mon, 30 Jul 2018 15:24:41 +0200
+        id 1fk8K0-00085O-LS; Mon, 30 Jul 2018 15:34:48 +0200
+Date:   Mon, 30 Jul 2018 15:34:48 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Quentin Schulz <quentin.schulz@bootlin.com>
 Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
@@ -19,20 +19,21 @@ Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, allan.nielsen@microsemi.com,
         thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH 00/10] mscc: ocelot: add support for SerDes muxing
- configuration
-Message-ID: <20180730132441.GC13198@lunn.ch>
+Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
+ Ocelot SerDes muxing
+Message-ID: <20180730133448.GD13198@lunn.ch>
 References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+ <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65252
+X-archive-position: 65253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,17 +50,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> The SerDes configuration is in the middle of an address space (HSIO) that
-> is used to configure some parts in the MAC controller driver, that is why
-> we need to use a syscon so that we can write to the same address space from
-> different drivers safely using regmap.
+> +Required properties:
+> +
+> +- compatible: should be "mscc,vsc7514-serdes"
+> +- #phy-cells : from the generic phy bindings, must be 3. The first number
+> +               defines the kind of Serdes (1 for SERDES1G_X, 6 for
+> +	       SERDES6G_X), the second defines the macros in the specified
+> +	       kind of Serdes (X for SERDES1G_X or SERDES6G_X) and the
+> +	       last one defines the input port to use for a given SerDes
+> +	       macro,
 
-Hi Quentin
+It looks like there are some space vs tab issues here.
 
-I assume breaking backwards compatibility is not an issue here, since
-there currently is only one board using the DT binding. But it would
-be good to give a warning in the cover notes. git bisect will also
-break for this one particular board. And since these changes are going
-through different trees, it could be quite a big break.
+> +
+> +Example:
+> +
+> +	serdes: serdes {
 
-	Andrew
+Maybe this should be serdes-mux? The SERDES itself should have some
+registers somewhere. If you ever decide to make use of phylink,
+e.g. to support SFP, you are going to need to know if the SERDES is
+up. So you might need to add the actual SERDES device, in addition to
+the mux for the SERDES.
+
+> +		compatible = "mscc,vsc7514-serdes";
+> +		#phy-cells = <3>;
+> +	};

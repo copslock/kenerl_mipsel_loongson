@@ -1,46 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 23:28:11 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36588 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993047AbeG3V2H7C3Un convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2018 23:28:07 +0200
-Date:   Mon, 30 Jul 2018 23:27:54 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v5 08/21] watchdog: jz4740: Use regmap and WDT clock
- provided by TCU driver
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-pwm@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 23:39:57 +0200 (CEST)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:51415
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993047AbeG3VjvDE3Rn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2018 23:39:51 +0200
+Received: by mail-wm0-x243.google.com with SMTP id y2-v6so871185wma.1;
+        Mon, 30 Jul 2018 14:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=xLRTzG3IH4CWymWhETQY8fS7tdzUNeRZ8kYA1Ty5o+M=;
+        b=k7nF7k6yvK8ExcBjziumt8mgFa1sM72T3RCOEGAo5K8mkq31Sy309qNE1thrtlQwr7
+         15RisSoeCp3RG+cg/KmbVgg+ergOR9HFwmhpzRfCc4gQIvXX/WZr0il83G0sMWSvKrsy
+         oSRtnA/BScgbFJxuKju+gSSrwOSDxwINixh1lPmT/wzvzAZF1gQaensXYMVHPt8F07ch
+         +4QvWYVa/SVgWMWUb2RVIsXa9RKpk9ZR3+SrHeCSSviW9l4w7wHzxu9w5CGCRp8H6Jc1
+         ZzXIsSWvnYoj9BvVBizkiQ0KRqX5xju8bwFMLNXl+SPL/1DoDWAzfyUZ5Ar8fpUQ1nKy
+         GlWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=xLRTzG3IH4CWymWhETQY8fS7tdzUNeRZ8kYA1Ty5o+M=;
+        b=ICaj3XklE87djMRa+3zKkC8hjkbnuEaSTdRPQZgofC0lAVuKIOAJTYDxRpsDFyAz1X
+         NDrcw5TKaEoQrpelgH+Queq7Ok1MqL5a6+lexBHpsbt8VVz2FWFJ8p8QDGgis4VYFS+1
+         z1vS1g/xOaENB9tmizz8sWHLajuW1MWPG/xCLDAj/eOLLtWRtr4zkzFS0HXQ7QChW98j
+         EyOImGRUlPGmpfZmFprSk1rJiYV/qn2zwNzgeA3b+/A167BhFi3N2uUAdZZsBSDEUc5A
+         qskNVo2dE5fobowmw/TKMYRPdHBT7gc8MF99K4V4nupfHKXz3r1ubTCsAKU6S4f7rRJN
+         0uWQ==
+X-Gm-Message-State: AOUpUlFQtdHi5BXlPb6Rn8ji/878l3MiR6kyaJ+X8ra+0lwLI3rcvW8Z
+        komi7/qlwdvxMPJu/2UfHg0=
+X-Google-Smtp-Source: AAOMgpctfmGt+UXnCeYuzTSzH4gZ7xdwfyCG8N0R4c80eFVE//Qtm54rESWXsJFFLaWXD0TZSG9cvQ==
+X-Received: by 2002:a1c:30c3:: with SMTP id w186-v6mr515209wmw.153.1532986785567;
+        Mon, 30 Jul 2018 14:39:45 -0700 (PDT)
+Received: from [10.69.41.93] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id w4-v6sm10621848wrl.46.2018.07.30.14.39.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 30 Jul 2018 14:39:44 -0700 (PDT)
+Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
+ Ocelot SerDes muxing
+To:     Quentin Schulz <quentin.schulz@bootlin.com>,
+        alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net
+Cc:     kishon@ti.com, andrew@lunn.ch, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org
-Message-Id: <1532986074.4702.1@smtp.crapouillou.net>
-In-Reply-To: <9179ab75-f071-d6a2-ef61-52431ca6409b@roeck-us.net>
-References: <20180724231958.20659-1-paul@crapouillou.net>
-        <20180724231958.20659-9-paul@crapouillou.net>
-        <9179ab75-f071-d6a2-ef61-52431ca6409b@roeck-us.net>
+        netdev@vger.kernel.org, allan.nielsen@microsemi.com,
+        thomas.petazzoni@bootlin.com
+References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+ <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+Message-ID: <bcea7c75-e5a6-4533-aee0-65c893e8a422@gmail.com>
+Date:   Mon, 30 Jul 2018 14:39:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1532986085; bh=SCrFaxjsVxNYUu26GybTijZXW52ThaHUzrkbVb1ZRhQ=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=ksgYRGDtZCQU5byVWaayWGIKE0/hKPbRNW78Yl6BZGKS6/olxLr2QejNFoxGDWvWufZJ8fmubzAmfckSqLLcTxDTCisQkMxbYx4jK1SDKEhaH9G0vul8pQOS8X8yOJKo5WRBRu9A+C77zrjZdOA0hV2A04q8IkYgKgn3ShbuLx0=
-Return-Path: <paul@crapouillou.net>
+In-Reply-To: <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65263
+X-archive-position: 65264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,339 +115,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Guenter,
-
-Le mer. 25 juil. 2018 à 3:14, Guenter Roeck <linux@roeck-us.net> a 
-écrit :
-> On 07/24/2018 04:19 PM, Paul Cercueil wrote:
->> Instead of requesting the "ext" clock and handling the watchdog clock
->> divider and gating in the watchdog driver, we now request and use the
->> "wdt" clock that is supplied by the ingenic-timer "TCU" driver.
->> 
->> The major benefit is that the watchdog's clock rate and parent can 
->> now
->> be specified from within devicetree, instead of hardcoded in the 
->> driver.
->> 
+On 07/30/2018 05:43 AM, Quentin Schulz wrote:
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+> ---
+>  Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt | 42 +++++++-
+>  1 file changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
 > 
-> Where is the clock _rate_ specified in the devicetree file ?
-> 
-> Changing the clock rate in the driver may not be as hardcoded as 
-> before,
-> but the driver still changes the clock rate.
+> diff --git a/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+> new file mode 100644
+> index 0000000..25b102d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+> @@ -0,0 +1,42 @@
+> +Microsemi Ocelot SerDes muxing driver
+> +-------------------------------------
+> +
+> +On Microsemi Ocelot, there is a handful of registers in HSIO address
+> +space for setting up the SerDes to switch port muxing.
+> +
+> +A SerDes X can be "muxed" to work with switch port Y or Z for example.
+> +One specific SerDes can also be used as a PCIe interface.
+> +
+> +Hence, a SerDes represents an interface, be it an Ethernet or a PCIe one.
+> +
+> +There are two kinds of SerDes: SERDES1G supports 10/100Mbps in
+> +half/full-duplex and 1000Mbps in full-duplex mode while SERDES6G supports
+> +10/100Mbps in half/full-duplex and 1000/2500Mbps in full-duplex mode.
+> +
+> +Also, SERDES6G number (aka "macro") 0 is the only interface supporting
+> +QSGMII.
+> +
+> +Required properties:
+> +
+> +- compatible: should be "mscc,vsc7514-serdes"
+> +- #phy-cells : from the generic phy bindings, must be 3. The first number
+> +               defines the kind of Serdes (1 for SERDES1G_X, 6 for
+> +	       SERDES6G_X), the second defines the macros in the specified
+> +	       kind of Serdes (X for SERDES1G_X or SERDES6G_X) and the
+> +	       last one defines the input port to use for a given SerDes
+> +	       macro,
 
-Right.
-
->> Also, this driver won't poke anymore into the TCU registers to
->> enable/disable the clock, as this is now handled by the TCU driver.
->> 
->> On the bad side, we break the ABI with devicetree - as we now 
->> request a
->> different clock. In this very specific case it is still okay, as 
->> every
->> Ingenic JZ47xx-based board out there compile the devicetree within 
->> the
->> kernel; so it's still time to push breaking changes, in order to get 
->> a
->> clean devicetree that won't break once it musn't.
-> 
-> mustn't
-> 
->> 
-> 
-> This change needs to be documented in the devicetree bindings and 
-> must be
-> approved by a DT maintainer. The bindings change only changes the 
-> clock name
-> in the example, but not in the bindings description itself (which 
-> still
-> references the rtc clock).
-
-Right, that's an error in the doc. Easily fixed.
-
->> Since we broke the ABI by changing the clock, the driver was also
->> updated to use the regmap provided by the TCU driver.
->> 
-> 
-> Odd logic. What does one have to do with the other ? Why not split
-> the patch into two parts, one per logical change, as would be 
-> customary ?
-
-I didn't want to break the devicetree ABI twice ;)
-I'll split them.
-
->> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->> ---
->>   drivers/watchdog/Kconfig      |   2 +
->>   drivers/watchdog/jz4740_wdt.c | 128 
->> +++++++++++++++++++++---------------------
->>   2 files changed, 66 insertions(+), 64 deletions(-)
->> 
->>   v5: New patch
->> 
->> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
->> index 9af07fd92763..834222abbbdb 100644
->> --- a/drivers/watchdog/Kconfig
->> +++ b/drivers/watchdog/Kconfig
->> @@ -1476,7 +1476,9 @@ config INDYDOG
->>   config JZ4740_WDT
->>   	tristate "Ingenic jz4740 SoC hardware watchdog"
->>   	depends on MACH_JZ4740 || MACH_JZ4780
->> +	depends on COMMON_CLK
->>   	select WATCHDOG_CORE
->> +	select INGENIC_TIMER
->>   	help
->>   	  Hardware driver for the built-in watchdog timer on Ingenic 
->> jz4740 SoCs.
->>   diff --git a/drivers/watchdog/jz4740_wdt.c 
->> b/drivers/watchdog/jz4740_wdt.c
->> index ec4d99a830ba..aaa6fc87136c 100644
->> --- a/drivers/watchdog/jz4740_wdt.c
->> +++ b/drivers/watchdog/jz4740_wdt.c
->> @@ -13,6 +13,7 @@
->>    *
->>    */
->>   +#include <linux/mfd/ingenic-tcu.h>
->>   #include <linux/module.h>
->>   #include <linux/moduleparam.h>
->>   #include <linux/types.h>
->> @@ -25,26 +26,7 @@
->>   #include <linux/slab.h>
->>   #include <linux/err.h>
->>   #include <linux/of.h>
->> -
->> -#include <asm/mach-jz4740/timer.h>
->> -
->> -#define JZ_REG_WDT_TIMER_DATA     0x0
->> -#define JZ_REG_WDT_COUNTER_ENABLE 0x4
->> -#define JZ_REG_WDT_TIMER_COUNTER  0x8
->> -#define JZ_REG_WDT_TIMER_CONTROL  0xC
->> -
->> -#define JZ_WDT_CLOCK_PCLK 0x1
->> -#define JZ_WDT_CLOCK_RTC  0x2
->> -#define JZ_WDT_CLOCK_EXT  0x4
->> -
->> -#define JZ_WDT_CLOCK_DIV_SHIFT   3
->> -
->> -#define JZ_WDT_CLOCK_DIV_1    (0 << JZ_WDT_CLOCK_DIV_SHIFT)
->> -#define JZ_WDT_CLOCK_DIV_4    (1 << JZ_WDT_CLOCK_DIV_SHIFT)
->> -#define JZ_WDT_CLOCK_DIV_16   (2 << JZ_WDT_CLOCK_DIV_SHIFT)
->> -#define JZ_WDT_CLOCK_DIV_64   (3 << JZ_WDT_CLOCK_DIV_SHIFT)
->> -#define JZ_WDT_CLOCK_DIV_256  (4 << JZ_WDT_CLOCK_DIV_SHIFT)
->> -#define JZ_WDT_CLOCK_DIV_1024 (5 << JZ_WDT_CLOCK_DIV_SHIFT)
->> +#include <linux/regmap.h>
->>     #define DEFAULT_HEARTBEAT 5
->>   #define MAX_HEARTBEAT     2048
->> @@ -64,15 +46,15 @@ MODULE_PARM_DESC(heartbeat,
->>     struct jz4740_wdt_drvdata {
->>   	struct watchdog_device wdt;
->> -	void __iomem *base;
->> -	struct clk *rtc_clk;
->> +	struct regmap *map;
->> +	struct clk *clk;
->>   };
->>     static int jz4740_wdt_ping(struct watchdog_device *wdt_dev)
->>   {
->>   	struct jz4740_wdt_drvdata *drvdata = 
->> watchdog_get_drvdata(wdt_dev);
->>   -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
->>   	return 0;
->>   }
->>   @@ -80,52 +62,65 @@ static int jz4740_wdt_set_timeout(struct 
->> watchdog_device *wdt_dev,
->>   				    unsigned int new_timeout)
->>   {
->>   	struct jz4740_wdt_drvdata *drvdata = 
->> watchdog_get_drvdata(wdt_dev);
->> -	unsigned int rtc_clk_rate;
->> -	unsigned int timeout_value;
->> -	unsigned short clock_div = JZ_WDT_CLOCK_DIV_1;
->> -
->> -	rtc_clk_rate = clk_get_rate(drvdata->rtc_clk);
->> -
->> -	timeout_value = rtc_clk_rate * new_timeout;
->> -	while (timeout_value > 0xffff) {
->> -		if (clock_div == JZ_WDT_CLOCK_DIV_1024) {
->> -			/* Requested timeout too high;
->> -			* use highest possible value. */
->> -			timeout_value = 0xffff;
->> -			break;
->> -		}
->> -		timeout_value >>= 2;
->> -		clock_div += (1 << JZ_WDT_CLOCK_DIV_SHIFT);
->> +	struct clk *clk = drvdata->clk;
->> +	unsigned long clk_rate, timeout_value;
->> +	bool change_rate = false;
->> +	u32 tcer;
->> +	int ret = 0;
->> +
->> +	clk_rate = clk_get_rate(clk);
->> +	timeout_value = clk_rate * new_timeout;
->> +
->> +	if (timeout_value > 0xffff) {
->> +		clk_rate = clk_round_rate(clk, 0xffff / new_timeout);
->> +		timeout_value = clk_rate * new_timeout;
->> +		if (timeout_value > 0xffff)
->> +			return -EINVAL;
-> 
-> This is conceptually wrong. The probe code should determine the
-> maximum timeout and report it to the watchdog core, and it should
-> not be necessary to validate the timeout in this function.
-
-That sounds better indeed.
-
-> Also, unless I am missing something, the new code only ever reduces 
-> the clock
-> rate and never increases it. Given that, you might as well set the 
-> clock
-> rate to the lowest possible rate when instantiating the driver and not
-> bother with updating it later. That would simplify the code 
-> significantly
-> and make it much easier to understand.
-
-Actually I could even use whatever rate the clock is running at without 
-trying
-to change it within the driver. Then my clock provider can default to 
-the highest
-divider, and the rate would be overridable in devicetree for those who 
-don't like
-the default rate.
-
-> Also, clk_round_rate() can technically return 0 or even a negative 
-> (error)
-> value. Please make sure that the returned rate is valid.
-> 
->> +		change_rate = true;
->>   	}
->>   -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
->> -	writew(clock_div, drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
->> +	regmap_read(drvdata->map, TCU_REG_WDT_TCER, &tcer);
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
->>   -	writew((u16)timeout_value, drvdata->base + 
->> JZ_REG_WDT_TIMER_DATA);
->> -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
->> -	writew(clock_div | JZ_WDT_CLOCK_RTC,
->> -		drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
->> +	if (change_rate) {
->> +		clk_disable_unprepare(clk);
->> +		ret = clk_set_rate(clk, clk_rate);
->> +		clk_prepare_enable(clk);
->> +		if (ret)
->> +			goto done;
->> +	}
->>   -	writeb(0x1, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TDR, (u16)timeout_value);
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
->>     	wdt_dev->timeout = new_timeout;
->> -	return 0;
->> +
->> +done:
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, tcer & 
->> TCU_WDT_TCER_TCEN);
-> 
-> regmap_read() and regmap_write return errors. Are those ignored on 
-> purpose ?
-
-Sort of. It's MMIO without IOMMU, what can go wrong?
-
->> +	return ret;
->>   }
->>     static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
->>   {
->> -	jz4740_timer_enable_watchdog();
->> -	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
->> +	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
->> +	int ret;
->>   -	return 0;
->> +	clk_prepare_enable(drvdata->clk);
->> +	ret = jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
->> +	if (ret)
->> +		clk_disable_unprepare(drvdata->clk);
->> +	else
->> +		regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
->> +
-> 
-> No else here please. Proper error handling is preferred.
-
-Sure.
-
->> +	return ret;
->>   }
->>     static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
->>   {
->>   	struct jz4740_wdt_drvdata *drvdata = 
->> watchdog_get_drvdata(wdt_dev);
->>   -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
->> -	jz4740_timer_disable_watchdog();
->> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
->> +	clk_disable_unprepare(drvdata->clk);
->>     	return 0;
->>   }
->> @@ -163,13 +158,17 @@ MODULE_DEVICE_TABLE(of, jz4740_wdt_of_matches);
->>     static int jz4740_wdt_probe(struct platform_device *pdev)
->>   {
->> +	struct device *dev = &pdev->dev;
->>   	struct jz4740_wdt_drvdata *drvdata;
->>   	struct watchdog_device *jz4740_wdt;
->> -	struct resource	*res;
->>   	int ret;
->>   -	drvdata = devm_kzalloc(&pdev->dev, sizeof(struct 
->> jz4740_wdt_drvdata),
->> -			       GFP_KERNEL);
->> +	if (!dev->of_node) {
->> +		dev_err(dev, "jz4740-wdt must be probed via devicetree\n");
->> +		return -ENODEV;
->> +	}
->> +
-> 
-> Please explain. This check seems technically unnecessary and thus 
-> pointless.
-> The driver doesn't even initialize its watchdog timeout from 
-> devicetree data.
-
-Right, we get the regmap from the device's parent but that does not 
-imply devicetree.
-I'll remove that.
-
->> +	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
->>   	if (!drvdata)
->>   		return -ENOMEM;
->>   @@ -182,19 +181,20 @@ static int jz4740_wdt_probe(struct 
->> platform_device *pdev)
->>   	jz4740_wdt->timeout = heartbeat;
->>   	jz4740_wdt->min_timeout = 1;
->>   	jz4740_wdt->max_timeout = MAX_HEARTBEAT;
->> -	jz4740_wdt->parent = &pdev->dev;
->> +	jz4740_wdt->parent = dev;
->>   	watchdog_set_nowayout(jz4740_wdt, nowayout);
->>   	watchdog_set_drvdata(jz4740_wdt, drvdata);
->>   -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> -	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->> -	if (IS_ERR(drvdata->base))
->> -		return PTR_ERR(drvdata->base);
->> +	drvdata->map = dev_get_regmap(dev->parent, NULL);
->> +	if (IS_ERR(drvdata->map)) {
-> 
-> dev_get_regmap() does not return an ERR_PTR().
-
-Oops.
-
->> +		dev_warn(dev, "regmap not found\n");
->> +		return PTR_ERR(drvdata->map);
->> +	}
->>   -	drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
->> -	if (IS_ERR(drvdata->rtc_clk)) {
->> -		dev_err(&pdev->dev, "cannot find RTC clock\n");
->> -		return PTR_ERR(drvdata->rtc_clk);
->> +	drvdata->clk = devm_clk_get(&pdev->dev, "wdt");
->> +	if (IS_ERR(drvdata->clk)) {
->> +		dev_err(&pdev->dev, "cannot find WDT clock\n");
->> +		return PTR_ERR(drvdata->clk);
->>   	}
->>     	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
->> 
-> 
-
-Thanks!
--Paul Cercueil
+It would probably be more natural to reverse some of this and have the
+1st cell be the input port, while the 2nd and 3rd cell are the serdes
+kind and the serdes macro type. Same comment as Andrew, can you please
+define the 2nd and 3rd cells possible values in a header file that you
+can include from both the DTS and the driver making use of that?
+-- 
+Florian

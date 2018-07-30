@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 15:38:45 +0200 (CEST)
-Received: from vps0.lunn.ch ([185.16.172.187]:56227 "EHLO vps0.lunn.ch"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2018 15:50:34 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:56246 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993047AbeG3NimayrRo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Jul 2018 15:38:42 +0200
+        id S23993057AbeG3Nuan1k8o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Jul 2018 15:50:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=+rKLiq1M1kX2R2tpcENwFfJPLIiikYRzBVwQ+1HmghI=;
-        b=Zh1V3u+uQhI9Rx9YpUQ/++2uZpihTKnzC4KMa97ifVOc7GOCe+dB5TQviqAgxRhBkjE0PWL3r1NQWhU3Dy9a0dzQrtofPXJjaiZV9nzJDaChyMfN0EJjc+UaxAMZUATQfcn+iWy6NbOqEAT4u1MqupX+NDTs7UfHuSPvJE/74Rg=;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=U3oipQDuKhWXq1o6qVl/9OolBNXLVPhtpVyoIhKPzuI=;
+        b=Ekizksp68Ckc3otkrt30ClAdVFlQQGHlmssJZyGB6iaNArf1vcx88XX4qTD8IODmPSWBKEsbtQ7bKBCRLGlrqJaxcSod7bXXnFB4ZHRTHQOx+w87pE0/M7p0I+K4mfYknwJkehAGqx3OQqkhbT3QKv1o3JPn+hrXjUN/PV0Vqjw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
         (envelope-from <andrew@lunn.ch>)
-        id 1fk8Na-00088B-7F; Mon, 30 Jul 2018 15:38:30 +0200
-Date:   Mon, 30 Jul 2018 15:38:30 +0200
+        id 1fk8Z0-0008Ce-0N; Mon, 30 Jul 2018 15:50:18 +0200
+Date:   Mon, 30 Jul 2018 15:50:18 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Quentin Schulz <quentin.schulz@bootlin.com>
 Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
@@ -19,21 +19,21 @@ Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, allan.nielsen@microsemi.com,
         thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
- Ocelot SerDes muxing
-Message-ID: <20180730133830.GE13198@lunn.ch>
+Subject: Re: [PATCH net-next 10/10] net: mscc: ocelot: make use of SerDes
+ PHYs for handling their configuration
+Message-ID: <20180730135018.GF13198@lunn.ch>
 References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
- <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
+ <0ce1b3e8466064741dc6e484f87bbe48542cb978.1532954208.git-series.quentin.schulz@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <0ce1b3e8466064741dc6e484f87bbe48542cb978.1532954208.git-series.quentin.schulz@bootlin.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65254
+X-archive-position: 65255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,17 +50,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> +- compatible: should be "mscc,vsc7514-serdes"
-> +- #phy-cells : from the generic phy bindings, must be 3. The first number
-> +               defines the kind of Serdes (1 for SERDES1G_X, 6 for
-> +	       SERDES6G_X), the second defines the macros in the specified
-> +	       kind of Serdes (X for SERDES1G_X or SERDES6G_X) and the
-> +	       last one defines the input port to use for a given SerDes
-> +	       macro,
+ On Mon, Jul 30, 2018 at 02:43:55PM +0200, Quentin Schulz wrote:
+
+> +		err = of_get_phy_mode(portnp);
+> +		if (err < 0)
+> +			ocelot->ports[port]->phy_mode = PHY_INTERFACE_MODE_NA;
+> +		else
+> +			ocelot->ports[port]->phy_mode = err;
+> +
+> +		if (ocelot->ports[port]->phy_mode == PHY_INTERFACE_MODE_NA)
+> +			continue;
+> +
+> +		if (ocelot->ports[port]->phy_mode == PHY_INTERFACE_MODE_SGMII)
+> +			phy_mode = PHY_MODE_SGMII;
+> +		else
+> +			phy_mode = PHY_MODE_QSGMII;
 
 Hi Quentin
 
-Maybe add #defines in an include file to make the binding less
-magic?
+Say somebody puts RGMII as the phy-mode? It would be better to verify
+it is only SGMII or QSGMII and return -EINVAL otherwise.
 
-      Andrew
+> +
+> +		serdes = devm_of_phy_get(ocelot->dev, portnp, NULL);
+> +		if (IS_ERR(serdes)) {
+> +			if (PTR_ERR(serdes) == -EPROBE_DEFER) {
+> +				dev_err(ocelot->dev, "deferring probe\n");
+
+dev_dbg() ? It is not really an error.
+
+> +				err = -EPROBE_DEFER;
+> +				goto err_probe_ports;
+> +			}
+> +
+> +			dev_err(ocelot->dev, "missing SerDes phys for port%d\n",
+> +				port);
+> +			err = -ENODEV;
+
+err = PTR_ERR(serdes) so we get the actual error?
+
+>  			goto err_probe_ports;
+>  		}
+> +
+> +		ocelot->ports[port]->serdes = serdes;
+>  	}
+>  
+>  	register_netdevice_notifier(&ocelot_netdevice_nb);
+
+
+	Andrew

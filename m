@@ -1,62 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 03:09:01 +0200 (CEST)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:44742 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993029AbeGaBI5eKQo5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jul 2018 03:08:57 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qbGs4h/GgGklAXQBai4VPsqaU5ZT/KchQuqvzxesQ2I=; b=qE1onPXb4N0gulcpheDsUwJlOU
-        FJ8D9a3Z++u2vahBkSlXLwM4unIqsEkjXjlmGle61yKz/S8dUT2QJo2QS5cMLikF0D+tAcoFmg3nE
-        T5Zs7GxawrXzDWu4vzUlmw7sXdh1YjyA+wvXOOviTk/oYz1A8oQtZlLlmXbdTSQf8b5ocaBhTeRBd
-        iRR08xBdP9YAfD+yBNlf12vLQ8/Flso4olRQqharMXAHq9su+r+9Bw8gRxPwsrdmn7FJZaPiTRI13
-        BGHLsYqIUm50vfM4fLbEc8btN5BbaJe96l2WDYbEZ7j7NLO4nt0wRl+wq+PwbECRyWU7xoU00HlYE
-        ++EN6CAg==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1fkJ9b-0002OT-5u; Tue, 31 Jul 2018 01:08:47 +0000
-Subject: Re: [PATCH 0/6] rapidio: move Kconfig menu definition to subsystem
-To:     Alexei Colin <acolin@isi.edu>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     John Paul Walters <jwalters@isi.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Anvin <hpa@zytor.com>,
-        Matt Porter <mporter@kernel.crashing.org>, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20180730225035.28365-1-acolin@isi.edu>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <db90c65d-b6da-1f57-43c6-e105fc6f1704@infradead.org>
-Date:   Mon, 30 Jul 2018 18:08:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 03:27:37 +0200 (CEST)
+Received: from mail-sn1nam02on0104.outbound.protection.outlook.com ([104.47.36.104]:38710
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993029AbeGaB1crfLhU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jul 2018 03:27:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5pFJIEOIr5OKJEQgQQat2nVj00o7ySdiagG5qHmMO1g=;
+ b=CJfGf/gBckKDKGVOP6DljN/digsaBXHZxBlPNysnGy9H5X1BrBFC81F/y3AkLcUiHZb0gwYJa23q7+y6f1Z9SFK+pJ6psV+3H9Zgb0VLClhLN5JJTZS7Ns43BOo+ynsyxv59pOIzjCeEOEJENsuGpZ2byIdq0DYC/V+Z7PKV6M0=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+Received: from localhost (4.16.204.77) by
+ DM6PR08MB4938.namprd08.prod.outlook.com (2603:10b6:5:4b::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.995.20; Tue, 31 Jul 2018 01:27:22 +0000
+Date:   Mon, 30 Jul 2018 18:27:18 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     RAGHU Halharvi <raghuhack78@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        jhogan@kernel.org, ralf@linux-mips.org
+Subject: Re: [PATCH] mips:sgi-ip22:Check return value from kzalloc
+Message-ID: <20180731012718.bnct37fdtiaezdyd@pburton-laptop>
+References: <20180717114145.21856-1-raghuhack78@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20180730225035.28365-1-acolin@isi.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <rdunlap@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180717114145.21856-1-raghuhack78@gmail.com>
+User-Agent: NeoMutt/20180716
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: MWHPR1201CA0017.namprd12.prod.outlook.com
+ (2603:10b6:301:4a::27) To DM6PR08MB4938.namprd08.prod.outlook.com
+ (2603:10b6:5:4b::19)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bf47eca8-24ed-4baa-2f39-08d5f684c3b9
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4938;
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;3:UN2ABsV7bhJl3EdxfnamUdMHoAIkH/FfxFXYpS3qaa53n1cLKXMw79vuZrKtOoo4xXLnOyJ8XPoFonJddJ7UOttHPqwej4QVG0c7uBJTbtW1diA0vmyvzatJ65vWrrRTBQsx/D/oARFG0ZR8T/LqYWaaFq+mUBCZFcnEV/4Vr+lGBFi5zpoUl13Yl24wY8wg2LjHuGqN0a0yxE/5CbhCUR6POtNfe4ZPnlPnXsiJHhiPZyaIWeCon3mg7L6vnVS4;25:50+8jxX4MROGJ6tiD2VUz0wrKj17L4KqIR4sBAdOb5xGKTjqD9a7L6G4NOKmKF5Mx8CYpPVf4D9WlpJO4EFvoyX3bXW8gxIq+HQ1PG9bgl4GC62oTExf69sBEuYmnd57HL8ddXUCoImfVeVHqLHHbARb3RDuuUQCuG3vXAg6RWxEBa4wx19QED4NABQPNS8MMG5jfs6YxI/94Uy71H3aH4rG9YkGz/KL4Y1rYL08AIZ6YCTjeIHoA6B/Jeatn0TJWaa8on8CU3EJ9jF8B5Zej0501A5DA0YRGWmgqj0s7tWhLGdWSBcFTUmr/l+GifyK5YrVA2MXJQLOKA3xzNmsJQ==;31:NYbdOLZPM/GO7mfbAkwx8CLVAMLSfNJmd5ihh78QZzhA7TofMw0CrOxNZB7fHDGxB2WmAK5VVFKGscjsDT0ll7VvhTdpfKHw8DCs3nobpDllIYpMXa1Kng2w4FPaWmblzIM6qHbSalQFipKAiqJ3Evf495audQ5y6mp90d0FjKNW9fZiLVMfRxBdL8SNyvVrkX53FtAMajBlmRFiNU6uDV8qf9YcnLysQbNTzjf4nq4=
+X-MS-TrafficTypeDiagnostic: DM6PR08MB4938:
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;20:M64OoPbfMzZ4WawXepre2IXcjSIVpsuxNFA1Lyb2WrY5uThS6cSeJ6Vx9DLtzHFdq5NphH4T8wJcBCsDrnVhNyGGIgiXHdH3ls2XzNAd35gzs2Yl/Zw9lcqxCQvvo4J+zfCGnGRj5jqdIxBvEMSUu+jZH7ojwNWkZST0TuzyLXwe7pDXb961DzDS2oZ+6cjiJmwoghBTtHQ1CeDDqcfbAtMfM2zgfmGM0aE1iFKtzQSr2wsE7+Kfbf7R64aBHt8I;4:ZocxZMiREFWvksLDK5vt2HkBtYggXLLeOm6xDf2tIWXlT53xxpTAalmBX6AXiOjOLsmClqoFToatZwcW1imDOJYNF3NoV5tIxefa7wVj63gqEoGiuAZx3lf5M31n7/fl7mloz9xBK6yGrampfw1BdZKDhkNmNPCnAdnJ5+Xnwm7/LaMxfaz9WcxBdli+B6eXbVWQKAhs8eT0APl6hfmJexhxFziEQ7t2pp9dRTnmtxhv5VgfA9rHk96nW9BkCfOB+fcPYySEW3JMEHfpK3IpGYMF2X70+LIYDv4Fcxj+FHW/KEvZ+cz27EJWocfQ+MP6
+X-Microsoft-Antispam-PRVS: <DM6PR08MB49389D7D4E172FE36742EAC0C12E0@DM6PR08MB4938.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(85827821059158);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(93006095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(6072148)(201708071742011)(7699016);SRVR:DM6PR08MB4938;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4938;
+X-Forefront-PRVS: 0750463DC9
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(376002)(346002)(366004)(136003)(39840400004)(396003)(199004)(189003)(16526019)(2906002)(5660300001)(186003)(44832011)(42882007)(14444005)(9686003)(53936002)(229853002)(68736007)(6666003)(386003)(26005)(58126008)(6496006)(316002)(6916009)(52116002)(76176011)(33896004)(446003)(39060400002)(6116002)(1076002)(16586007)(11346002)(1411001)(50466002)(7736002)(8676002)(76506005)(305945005)(478600001)(4326008)(956004)(3846002)(486006)(476003)(8936002)(23726003)(6486002)(6246003)(81166006)(97736004)(33716001)(66066001)(25786009)(105586002)(81156014)(106356001)(47776003);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4938;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4938;23:6z0W7brgtYPnw+q7plpUzQSaNosQ1wNgk/lx6EcEU?=
+ =?us-ascii?Q?IyKWxnhcS3PsxmThR/mZ9J8oaGCtsRlLKCt0j2zESPF3bZ8Er5DbL1j5Pa77?=
+ =?us-ascii?Q?ux6ugrv1p1oDbGSvNVUc8H6OfskqtnfhKR6t3hzJgWWwhJGQTHfRTS115eVR?=
+ =?us-ascii?Q?ngBHab2GGiaRONk+3eJwHPtOVVx1O8ACxDOYUYloTHrXQv3xxARCUFRxJnfo?=
+ =?us-ascii?Q?Kt8z42Emk3k8U+TgQ1dUITc4G9+1+J0dg8wgefMY7X6BLTC+JkCudTM36UDO?=
+ =?us-ascii?Q?uxiEUr0LT/SK+LOfwqWFQdEAQNB261YJfJ+Bnr841YtZR/55dHW9qOAisiXx?=
+ =?us-ascii?Q?cfK3hah2+e5v9B+CG5HS8uU+0d5hvFSbN4YdKfOAU2L+YFHLQ9V6swsWfMRT?=
+ =?us-ascii?Q?ZWM33agwV1ogZVkzqW9KP4eeqFehZw4XLC89yw/kF5uigi1Rua42WcHwNVDA?=
+ =?us-ascii?Q?0ObRcCAJIRQk1s5SPfKppugKn8wt9GbVNa3FbY4DNAD/b1VYh96Ge6Qtd3hw?=
+ =?us-ascii?Q?cP9tBSkNUPwbFN9xnrAJFGl2/E3QlO15uqFIDsApLttQTG+nhrQzw3KqXre3?=
+ =?us-ascii?Q?fNdYWF08wZEqNUu3SSlEUt9Qbyg8P58yPbYyaP2ozbVG6TSNXbY8gn33dl1b?=
+ =?us-ascii?Q?n2ylkkG3EbjmOe6kNVws8Ij5j2HJiyOvQmWRCEqsNBEy3OzQDKKXFp2xNW2m?=
+ =?us-ascii?Q?0wkQI3F8SAyI7fo78w6p5Iq17XSMl3VqfHv+dTRgdoy0WhSucuwSn7ZLgzhU?=
+ =?us-ascii?Q?BaPMH+UJfyccYVz8PDuX4wcM8tg1FpBVxT/Ewx8iSUuCN+TF7o+zM4nL0j5N?=
+ =?us-ascii?Q?cUy3i+hFkLGZRjrw1Go+0j8zPDlR9enI8Kdz1I6lw95UE01t1D7GGIPetrWZ?=
+ =?us-ascii?Q?mdF2VXoK0MzkoKuAF3B+2ddf4wZ/PVoVOpZZkc45cAcBtCu9s7wU11RzBsyp?=
+ =?us-ascii?Q?WRrGSXEmlhNIoBYIv55fqyNxS0AYP3S1ZwGtTrRoG6qYmqrTB4ODQd4s9MIw?=
+ =?us-ascii?Q?cfDseMNL33rZWGK5QWOY6/DRfNwmo4Ge3I0dEYbBV5qACHBrME+fOWVDcp5H?=
+ =?us-ascii?Q?0uIAWfz1UhaFjlehPFlLOosIKBnQ5vxLVPsF05gsUyq7UH3aHR7yboQbIB8z?=
+ =?us-ascii?Q?/b4ylvbDUf9jPkq5ZfRcmiWGbij6VQwErnGzT3ufGDbNmIjFjcbQHhytPUQX?=
+ =?us-ascii?Q?aiCgI1TJ2GSCeCZ6lH3V/gO1JS9reB7IBo+Vqfkp4Xd6iQyJaCjm3EJsdw8Y?=
+ =?us-ascii?Q?wS06YI78fIV3laZQb+6ZSDzdVfK9k/oYfhYCeQ66jCighw+FWHfTylUE+YrO?=
+ =?us-ascii?Q?VTpP/50GsOLdBNH9VNQ6VdLLi5/wq8IE3Q/XdjlG8yl6HOCmmirwEnjRbOLL?=
+ =?us-ascii?Q?6B5MQ=3D=3D?=
+X-Microsoft-Antispam-Message-Info: uIwEjfQXoUW4rFr1OMX6Q8/7gosWUclKWl0hToyg6mdzIiWjX2ti9tcxaH5FZUD1Y16N9Gvq26V2SCIjYTzq/qjeltsq9+nmjBnDm5rk6LdbIx0oVFDO7We19ATm+hqfEV1N1KQjTwZZTvVsCXjwUlN3BEmuZDDZuiR4hvqC9OebyR79gb6mWjYffZbz0dYvmIzefvugAMHzCmP8fJU0uiRFXUUN8o3v6bhu7lecd4SCTsnox2/4kfLeGvXuNrnW0FV28DGW1XIdRZ0MBWVFOGEqxOSHhrGSFuTOIW4XO+Lfu6DBj/2ZWuDDuzk8SeIVWjX291aFNy0gDyIspH/8BH+j1ch2JpLHZj/A4Aj6cxY=
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;6:AyPm8uOMDWiQevk/S1u2+STNJXYVIiNVPXrokxsdETH8ukGcF2fZP/B05DMCbTrh3hRnYssZOS8h0Z9gokDOU8a50X82JHISeoSQeJLVrKmAVxWR+s/Fa2t3F20T4KJSHNd6pckXop71URi3WmPRbkQhiRnLdafzpaLVhXgjs/jQdBZ+DYOfTVFSO5m9R2fWDl3JeTXT367GeUVByMPDEcStAm9TWyiDRJe0zacWprrZryJ7KtDbu0/wy+cxpIPWtOWFm6AwBjn8nVQcrU5i7/3ARPQk/KREOKugBAiNJ4Mqve7/of1fp00eA9LFS87o1NQ7ZuXuOKYlY5UI/YR3OCL9YssNxii2ynpYVzCvIEWRJFgkC9Jl7rcErqYPwYxdP9Mb+ae/4Wpt98gUAAfHFJO9JR5P2mJunIRxu6q9oa+NUQp7muFDWBJfaGDuCqetqPtcapb0xQg3nssVnBbswQ==;5:hyp4vLL+mv6xzJERvsBg3XNGyZ7XGupW3fqHmUs0iagPXH2xbKz0DvuW9tW2maC3gyRouqT1haiU35YcE1hxRkA0g/XRxw8SXlr2ff77x9EHf3QXdIJeNUgh+ZETb0ppX/j1/nZuvweQxZ0VaqEjb1rp/y2ZWPXyK+n3byATpoM=;7:FOYz3JH7heBeCInpboLp6ejwnsqzRzXsY6eI0rde0K6lwAqCglk/XCY9kqSeFJZRrkByWOzB7ava8SkFmWV3TwZaM5Q6pFRNsVfkgWM9IuypHZXqxdnguP9mWEY2LKzd1AHH15ggxfI1fDc7IBoxsizmP1ELjca1Ag3LIOj6rGChShPZYhR9ourTf9/+8pZ5SXpweAKqlGRFBUg4aHnaOcP9xujnTGlpGtWOR+53S+0AvMdt9hpZWcBjn1EXaS9p
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2018 01:27:22.1051 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf47eca8-24ed-4baa-2f39-08d5f684c3b9
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4938
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65269
+X-archive-position: 65270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdunlap@infradead.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,79 +101,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/30/2018 03:50 PM, Alexei Colin wrote:
-> The top-level Kconfig entry for RapidIO subsystem is currently
-> duplicated in several architecture-specific Kconfig files. This set of
-> patches does two things:
-> 
-> 1. Move the Kconfig menu definition into the RapidIO subsystem and
-> remove the duplicate definitions from arch Kconfig files.
-> 
-> 2. Enable RapidIO Kconfig menu entry for arm and arm64 architectures,
-> where it was not enabled before. I tested that subsystem and drivers
-> build successfully for both architectures, and tested that the modules
-> load on a custom arm64 Qemu model.
-> 
-> For all architectures, RapidIO menu should be offered when either:
-> (1) The platform has a PCI bus (which host a RapidIO module on the bus).
-> (2) The platform has a RapidIO IP block (connected to a system bus, e.g.
-> AXI on ARM). In this case, 'select HAS_RAPIDIO' should be added to the
-> 'config ARCH_*' menu entry for the SoCs that offer the IP block.
-> 
-> Prior to this patchset, different architectures used different criteria:
-> * powerpc: (1) and (2)
-> * mips: (1) and (2) after recent commit into next that added (2):
->   https://www.linux-mips.org/archives/linux-mips/2018-07/msg00596.html
->   fc5d988878942e9b42a4de5204bdd452f3f1ce47
->   491ec1553e0075f345fbe476a93775eabcbc40b6
-> * x86: (1)
-> * arm,arm64: none (RapidIO menus never offered)
-> 
-> Responses to feedback from prior submission (thanks for the reviews!):
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2018-July/593347.html
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2018-July/593349.html
-> 
-> Changelog:
->   * Moved Kconfig entry into RapidIO subsystem instead of duplicating
-> 
-> In the current patchset, I took the approach of adding '|| PCI' to the
-> depends in the subsystem. I did try the alterantive approach mentioned
-> in the reviews for v1 of this patch, where the subsystem Kconfig does
-> not add a '|| PCI' and each per-architecture Kconfig has to add a
-> 'select HAS_RAPIDIO if PCI' and SoCs with IP blocks have to also add
-> 'select HAS_RAPIDIO'. This works too but requires each architecture's
-> Kconfig to add the line for RapidIO (whereas current approach does not
-> require that involvement) and also may create a false impression that
-> the dependency on PCI is strict.
-> 
-> We appreciate the suggestion for also selecting the RapdiIO subsystem for
-> compilation with COMPILE_TEST, but hope to address it in a separate
-> patchset, localized to the subsystem, since it will need to change
-> depends on all drivers, not just on the top level, and since this
-> patch now spans multiple architectures.
-> 
-> 
-> Alexei Colin (6):
->   rapidio: define top Kconfig menu in driver subtree
->   x86: factor out RapidIO Kconfig menu
->   powerpc: factor out RapidIO Kconfig menu entry
->   mips: factor out RapidIO Kconfig entry
->   arm: enable RapidIO menu in Kconfig
->   arm64: enable RapidIO menu in Kconfig
-> 
->  arch/arm/Kconfig        |  2 ++
->  arch/arm64/Kconfig      |  2 ++
->  arch/mips/Kconfig       | 11 -----------
->  arch/powerpc/Kconfig    | 13 +------------
->  arch/x86/Kconfig        |  8 --------
->  drivers/rapidio/Kconfig | 15 +++++++++++++++
->  6 files changed, 20 insertions(+), 31 deletions(-)
-> 
+Hi Raghu,
 
-LGTM.
+On Tue, Jul 17, 2018 at 05:11:45PM +0530, RAGHU Halharvi wrote:
+> Signed-off-by: RAGHU Halharvi <raghuhack78@gmail.com>
+> ---
+>  arch/mips/sgi-ip22/ip22-gio.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # for the series
+You should write a commit message, even for trivial patches, which
+describes the motivation for the patch. For more complex patches it
+should also explain how the changes being made solve a problem, or
+clarify anything non-obvious about the way the patched code works.
 
-thanks,
--- 
-~Randy
+In general, read Documentation/process/submitting-patches.rst
+
+> diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+> index b225033aade6..5aaf40a1743b 100644
+> --- a/arch/mips/sgi-ip22/ip22-gio.c
+> +++ b/arch/mips/sgi-ip22/ip22-gio.c
+> @@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+>  		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
+>  		       slotno, name, id);
+>  		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
+> +		if (!gio_dev)
+> +			return -ENOMEM;
+
+One especially important point for patches like this one is to make sure
+that your code at least compiles. In this case you try to return an
+error code from a function that returns void, which won't work.
+
+Thanks,
+    Paul

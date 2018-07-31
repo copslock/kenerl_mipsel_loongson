@@ -1,41 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 10:03:23 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:36609 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993067AbeGaIDNPpBKa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2018 10:03:13 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id AF9B9207B7; Tue, 31 Jul 2018 10:03:06 +0200 (CEST)
-Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 795C32069C;
-        Tue, 31 Jul 2018 10:02:56 +0200 (CEST)
-Date:   Tue, 31 Jul 2018 10:02:57 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Quentin Schulz <quentin.schulz@bootlin.com>
-Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com, davem@davemloft.net,
-        kishon@ti.com, andrew@lunn.ch, f.fainelli@gmail.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        allan.nielsen@microsemi.com, thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH net-next 05/10] net: mscc: ocelot: simplify register
- access for PLL5 configuration
-Message-ID: <20180731080257.GR28585@piout.net>
-References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
- <df5856230f6a2932a8e0289dc6e8d12234a02bfe.1532954208.git-series.quentin.schulz@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 10:14:39 +0200 (CEST)
+Received: from mail-db5eur01on0096.outbound.protection.outlook.com ([104.47.2.96]:37568
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990946AbeGaIOepzQUa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jul 2018 10:14:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.onmicrosoft.com;
+ s=selector1-nokia-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ZEwYYcb/sWYaVLNvnvdI1Vl6NvD24a4o2e5p6GFhPI=;
+ b=aRtMJcS8X339lrk9JfzjWBpRXgA6oacRgemfjQcLxbP32as3TIJVGc6PpjhByL4TS06VgSxTQ06tFLW13tfGQtN6uqQa+1d7Nqk2CiOqiLuWjEWcGYMZmIyHLTikwbsNgfwQAkst5VYNLae5O2R/47rj1Ctvr41aQQWYyQSwxbQ=
+Received: from DB6PR07CA0056.eurprd07.prod.outlook.com (2603:10a6:6:2a::18) by
+ DB6PR07MB3383.eurprd07.prod.outlook.com (2603:10a6:6:23::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1017.8; Tue, 31 Jul 2018 08:14:26 +0000
+Received: from DB5EUR03FT026.eop-EUR03.prod.protection.outlook.com
+ (2a01:111:f400:7e0a::202) by DB6PR07CA0056.outlook.office365.com
+ (2603:10a6:6:2a::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1017.7 via Frontend
+ Transport; Tue, 31 Jul 2018 08:14:26 +0000
+Received-SPF: Pass (protection.outlook.com: domain of nokia.com designates
+ 131.228.2.240 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.240; helo=mailrelay.int.nokia.com;
+Received: from mailrelay.int.nokia.com (131.228.2.240) by
+ DB5EUR03FT026.mail.protection.outlook.com (10.152.20.159) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.20.1038.3 via Frontend Transport; Tue, 31 Jul 2018 08:14:26 +0000
+Received: from fihe3nok0734.emea.nsn-net.net (localhost [127.0.0.1])
+        by fihe3nok0734.emea.nsn-net.net (8.14.9/8.14.5) with ESMTP id w6V8DBhu015759
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 31 Jul 2018 11:13:11 +0300
+Received: from [10.151.72.141] ([10.151.72.141])
+        by fihe3nok0734.emea.nsn-net.net (8.14.9/8.14.5) with ESMTP id w6V8DBr5015740;
+        Tue, 31 Jul 2018 11:13:11 +0300
+X-HPESVCS-Source-Ip: 10.151.72.141
+Subject: Re: [PATCH 4/6] mips: factor out RapidIO Kconfig entry
+To:     Alexei Colin <acolin@isi.edu>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        John Paul Walters <jwalters@isi.edu>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+References: <20180730225035.28365-1-acolin@isi.edu>
+ <20180730225035.28365-5-acolin@isi.edu>
+From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
+Message-ID: <7f7b9813-7e32-e42d-3f6b-f8e0af506d24@nokia.com>
+Date:   Tue, 31 Jul 2018 10:13:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <df5856230f6a2932a8e0289dc6e8d12234a02bfe.1532954208.git-series.quentin.schulz@bootlin.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <alexandre.belloni@bootlin.com>
+In-Reply-To: <20180730225035.28365-5-acolin@isi.edu>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:131.228.2.240;IPV:CAL;SCL:-1;CTRY:FI;EFV:NLI;SFV:NSPM;SFS:(10019020)(39860400002)(136003)(346002)(396003)(376002)(2980300002)(438002)(199004)(189003)(336012)(478600001)(5660300001)(31686004)(26826003)(2171002)(6246003)(97736004)(229853002)(53936002)(106466001)(64126003)(2906002)(36756003)(31696002)(39060400002)(4326008)(65826007)(86362001)(58126008)(76176011)(22756006)(81156014)(53546011)(446003)(110136005)(305945005)(316002)(65806001)(65956001)(6346003)(26005)(11346002)(230700001)(77096007)(186003)(356003)(106002)(8936002)(50466002)(47776003)(126002)(476003)(54906003)(23676004)(2486003)(2616005)(8676002)(486006)(44832011)(81166006)(68736007);DIR:OUT;SFP:1102;SCL:1;SRVR:DB6PR07MB3383;H:mailrelay.int.nokia.com;FPR:;SPF:Pass;LANG:en;PTR:InfoDomainNonexistent;A:1;MX:1;
+X-Microsoft-Exchange-Diagnostics: 1;DB5EUR03FT026;1:iPvEe/FBGnOW4vHIfumyhzywiStucSJIWMHJ1GxNioLOv75a6gZOgxxDIcmCzdTT2uSc8DGatLbQSfo2DXGz/TvN/lXTlVXNEg/yPedvryLv9OoOIn1PZTUFtPvbCqaV
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 38cba819-07c0-405a-f26a-08d5f6bda195
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(4608076)(2017052603328);SRVR:DB6PR07MB3383;
+X-Microsoft-Exchange-Diagnostics: 1;DB6PR07MB3383;3:x66e9MmR8r9Zg823nbUWnwlf5/vpYR8v4TX2TZ9h4k19J4rQK/GiJDJq8iywbhJkE7YrPkf0IXs59jlB8UP5CLaWN7RdoXZBXZVJJZj07tL5k5Im2KjkMI9jVxkmZOuwr8vfdYE81PgHFrVwYyzSuyzIAevEzKdYCJ2tGqNkBOerz0bHqaFYWFKLG6dxYmNKltPQd1V3MoMgEWj8YG+8YrDCGX/KaN3SAzpxVRrUuyYaeu+0Plv25GocikYQJe+sHQmyv9Q0oINaYEusQhjFwectZWDzAT1jyo0UUbK7xm2S7XgJtj/LP4NmGCsuedx2Ksz+6pB5tQ5Jr1PheHL2E15oVD1gLoZkCP+/zfGdTe0=;25:4lSK1N5IoqS+VEWFxPkOgiQe2rP/WGl+iRTsnogOj1czVMWUDvSVUoZM59Pnher4GG5zeMwNH9zEfA0WYFHXk+UQR07bwOZiuvRfvrv086UBkHjdtA+m2VJkL3TkIQ3U+fTgSGsHNz0fwcf0T8R/qaHwffIKOcWSjwo4kbHmkL7SwGbBAVb7fyU2OJBTWVHbBN5F/44947kerdrGNRrnb/Lk50h1zZDaeUfZyidZl5Pa5p0s+dCsJij40eDUxLgxQ5UMRvIMPDeAuedTDPmSicSt5NAawHNeEVH7aOONtJiYPlA9GvvuE0300CNBXFqY2t0/wBl53lnxrnx9+gZohQ==
+X-MS-TrafficTypeDiagnostic: DB6PR07MB3383:
+X-Microsoft-Exchange-Diagnostics: 1;DB6PR07MB3383;31:Q3V1qLZbvNyU3VxXNnPFlTiNQrSo+9Ov9x49NXzTdmbc10bZMPKIT2H98zWX8wb9C/egFKmcVL990QXiQ57UTdLO/vxqZdXsK6E+zO/LsAvWaaFrq2KhrtBpzPNCSnXozek01C2DZ9iiVZCS6otaVaiLqt+FoYoTTXd6lS4VepmoWfXT5LSlCzoQeXK8mfHdZrkWxaRyANtwc1qNhPs5DeidyS7UxYLVTA8pDgSdl3k=;20:MCPS7aKHvViTJL00JpUrCy3UD5ZSx7dw42FlH/L0S3/XGTf7Poi/1M+dX9USyi2LMFGakNq2ue4m5vNBX+9rEcJPoRtyhOHGFQVv1D1r91scSv7c8D6n9jcFubCLlIM6FRK7n3VS+WAWyzWFBX0y3flTQomXOzYLVN4ZTGL38r97ArxfvPJv7HCaMBGg0UQyQAucxkmdB+32i0HzFEL+zosVy1qDOh+VVI8UfyGa0Pwv+wImRv3Bs09gRa5Gr4liFwVLEb2Pi6sl1q5sJTjgO8Op6NMCBLoInOwG8vhlVLAdI/lStVQpeodRnBCM3PIreroRvwSmicmlAyvsPrqe76L8SQUhbV1aPr7MAROVyKuwSfPtmFTvf2M9pIQMqHhZBf8Tx2/pfcFoplGF2Wue9mRQ4/QV8m18HBZYooQCMYLgWZrhF09xoSU1r5dH+epgJ4GFNwFJ1SsH0w42PErIA1h9kyGYf96Bpu7cntiSRlvmY8Uw+ylDV2mmAlM2dEMK6gGk9AsfWEPlGBtO3hyd4dSzR5HLEpSEFA6Wmp+NKiJUG1oGKyQGftZnPQz7akX+rK97MKobiZMJ+ocu2fQf5gBzm7j+OmO9kx2cn3wlix8=
+X-Microsoft-Antispam-PRVS: <DB6PR07MB338374BA55F41CD4E78F3F4D882E0@DB6PR07MB3383.eurprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(9452136761055)(82608151540597)(109105607167333)(195916259791689);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(11241501184)(806099)(944501410)(52105095)(3002001)(10201501046)(93006095)(93004095)(6055026)(149027)(150027)(6041310)(20161123564045)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(6072148)(201708071742011)(7699016);SRVR:DB6PR07MB3383;BCL:0;PCL:0;RULEID:;SRVR:DB6PR07MB3383;
+X-Microsoft-Exchange-Diagnostics: 1;DB6PR07MB3383;4:KORCqK2coCyJVGtHIT48EfW4wJeupSiTvM8JKOhe9y0q55/OB8ZPK6h0bPsUiytIvI1Q8vC9vnpGfSy0wDv7JaXun+q6nJrOvzR+sL4/uR3KEVGs9j2nLsCyTtoU3yZY72TTlM7Ed7kM66YA9fiY/SlO0UbvkE0DuHUsoax7xyzohl8RzbJb9BIpw7p/6CYDe/kuDSlbO/XP4h+paqJvFdK7pBGvoG0kFggwm3p2m2fK5xxW4udJDwSbY7pXTUYChyLDjqNTJSds3PUJhGejpqqv3Q+LvES4qTqQNkNXnbEFmpzNA4l5FxA90Hi+CL7jkIX4a6fdh3zddSLMONoYZ+DGYFb+7wJzPUx1iadnnzfsshkF0oqXB9lydazgPjT1YbqUPjwv3TaA179+Gfb/zE1NeSPZ0h1BFzMUy7epoFM=
+X-Forefront-PRVS: 0750463DC9
+X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtEQjZQUjA3TUIzMzgzOzIzOlgzeVJoZENCeUhHclZMeTJXL3h6cnFnd0dY?=
+ =?utf-8?B?TEFOdGc0VW5kSy9ZVHRscEJic0ZibDBoRXF6MUEreWg4cHJFalFsOWF1L3pB?=
+ =?utf-8?B?T3pLZ3lSN1RKOERpVVFWaCtYWWwxeEpNc1pFS1dTK2xQcjhhOHM5cENhV0Zu?=
+ =?utf-8?B?V0pIb1dPOVVxd24zTDhzR0VUQWhxbDFZcXhjTTBleitPYndWY1lya3ptemJy?=
+ =?utf-8?B?SEN3NC9qbDR4S2JnVzNUS3NtMitrL2c5dFNaZFNnSFd3di9QRmxWV3BqcXN4?=
+ =?utf-8?B?OEZhL1BCZzIraW0wS201MkppUjRiOVAyNmg4V1dPVU9Yd1dqTFBLUW5HRmNK?=
+ =?utf-8?B?T1luSGJsaisrdFVwR1V1V1d3ZUhEa1dyZU1EOTU0RjJPR2h2Yjl2Vk8zWFlZ?=
+ =?utf-8?B?TlVlUGxLSURCZ0pHRVVvaGhUU1dheVFSN0NmVWc5VVBxQ2ltN0RWQVJuZEgz?=
+ =?utf-8?B?c3p3YWE0YnA0M1BDVlo3Z29PTWpPOUtrRjJIS09zbXBneE4xYUJLWWF6cE9u?=
+ =?utf-8?B?ZjU3U1VLYmdGbnRkSE5yZnZ5OGZqL251SitNcmM4aE1UZWxGRkZZN0Y5Yk04?=
+ =?utf-8?B?aUVRZ3E1R0hZTWlTckdrUjh2MGk1dmZPREZ4dUxEbmhUUFd4Z2FIQ2xYaXp4?=
+ =?utf-8?B?R2RDQ1JMQndzWmVzSTg3blJUTXYzaFMrSmJIcHFFaE5zREFkVGoyWnhoQ0U2?=
+ =?utf-8?B?SWthOU0wbjh0SjZQYWdYSEZGczhtRTR5UENpRnVFSm5wTFRXWGdUYUpqVmZM?=
+ =?utf-8?B?VHpPeFdOc0pZN1B2TEE3ZHhHQSt0L0s2ZC9mM211YkJuVFVXbnVCa1BJSmNN?=
+ =?utf-8?B?QkRSdXRyQldPYll6Uk9McUlWZkdIZFQvOWQzZjFpVUkrdkZEdzRWSjZrM1Jn?=
+ =?utf-8?B?YmVBSTJYOTRub3pzUzFMcDlNT05LdHFJcHNvQ0pxMFF4elY0UjBRWG9VK0dU?=
+ =?utf-8?B?UG5aSXp2Sm9WbTYrQWcwOWZLRFdXV1Y4dlhUQ1hFQ3VLOEVobit0ek9HUFBX?=
+ =?utf-8?B?SGdzNXMxZU5BVERQYkxEUFcra29ZOU56YVpDZnJrRXo2WWNwek1XK3lvZ2s0?=
+ =?utf-8?B?TkVlTlBNMzRob2UyVHh3Q2ZYSDdTRzRnd0JVa1cxamduTEhEVE4yN3F1UEFy?=
+ =?utf-8?B?VzlGRmw5UEtMS3NzcG1kZkgzWXNXT2pJclJxUkpkSGtXWUFHRGpDVzFUY1pK?=
+ =?utf-8?B?cGJBbEsxRVRJQTJQdzdSMjRIRVJ6YnQ0REtTNmlqcjNxUzdZbnViVUw5VUxq?=
+ =?utf-8?B?VlpQUlpJOFd4ZFk5VjJ3cVl3alFmZjQ2MFJPZi8xL0ZJeEswdUVlbXkxRVA4?=
+ =?utf-8?B?diszOWcwWnM4aFFYU2k5SEtVNlJrUThwMjl3akR3aitVV1hkS3hoU1d5bHlR?=
+ =?utf-8?B?U2p3Y3V4R3RlSWtYVWh5MDllMlpQOWdWM0prdlpUZ3dkcy91R0lsRFRRY294?=
+ =?utf-8?B?SDhISnA2NXhUWkNuNUtmMUxNbkZJOEI1K3JybW9CM0o5dHBwWGRXNU93NTZx?=
+ =?utf-8?B?Y21IMjYzdjE0bDNDL0ZnQ3lnVExDRkp6dkZBS2h4Rk1KYU42YU9mMTN5bU9M?=
+ =?utf-8?B?WnYwd01pbGtIM1hsSVpFVU5qa0NNdWE1N1d1QitmUGlEdDg4dW11a2hFM1NU?=
+ =?utf-8?B?cU9rK0J0WlBmakJjempWQnViSlhoN29sTmdpb3U3bkRiTCtRWU84bGQxR21k?=
+ =?utf-8?B?RmhxNkxXZllVcmlXMUJPUGo5cmk5MGhLSk1wYjV6TVl5QUkycVhnNWRlZG1j?=
+ =?utf-8?B?UG1lNGF1MmpJWFBGVERIVjNQN2pZMzYvai9naUZEc0dFNnlyTjl4c2I1dHVH?=
+ =?utf-8?B?QkR4SmNyUWhCWjNvenlyOEVJcGp5T2pQS1NzRVp1Z0E2Nnc9PQ==?=
+X-Microsoft-Antispam-Message-Info: hVpaJBL2SCK1zyCp3qKIDQK5IQ4sS81L3S+221peaN/txvmh9zGH+gNDfArL9GT8xu76ZY5Opt12EJdE98n/+FVd+BMaRN134HIgWVUa8mIorcI5d5e4cYnOdsMOwfGmOo5kpz12JNcESRPv7iXpKIvggZP6/xaKx5INLpiJu+NDhmbenn2TwE+Gyz/dRqgZaV+O3g2ykyWpJOEVBge/W0Tgl5pEDz9Th/SbypxFNlLmvaMXxoU+2i12MeXi72YbBxoYqTcXZUjpI4Q09JiKPr6UWtgQShfBxoCqOocmQwnfBrju3rFhZrfx8oOEqGENcceFKarPlIDngO16OQTHGNThKngS7VEfUku/p+SisnMF92gMhgLd7rF8KORugK4W09cQVH5Mi4zhRRD1iiWuyhK1ZTdGDwTZ7tlXdnAWmSAX4nctbWefwO5kvvBLE4wZ
+X-Microsoft-Exchange-Diagnostics: 1;DB6PR07MB3383;6:9GvBx+c7ig0yPWHK+eosQYigO+ol+lkzE/y6FsIOsGbmQOWV6h/58/WZx7qzA9VtXYqfxx7EDwGWNWmjvSdlEG2/jQfDwdeAG5q4SpZi3RzU58ok+xmmaiSdplsvsjiFGpx10+M03tj7jDkhRD368LRHKbEa1ivhitBj/q+/Ayxk+VT64uG2MEDuoFmL6ZsTEgZqOyrm7gTDqlGrXiZsialoyoe+eEtdktmFTKlx4haopoFgYbESJQ22oGVtab7nUnFaqF1cMjbjOaJcG8zjov8h6d0gjn4WxUjnQ0soT4sREu3wKIdUY9rQ6fFU9/QqqGOXX9Nt9+iV7HBcIzmsw0jZ1VO0OTZKf7KGbXMRLDDnDXLoM+zSCo4yt+7dNZXJ+Y96q83Vq/ZHbc8cghACHt4ohy1mNGDtoqteV3222IePvNxA2OZYMu/KRR8eFD8kec7Pw6tucqwEk8CnCLsf7w==;5:4B7wHErjrkabLsZ4zPHnHv5wlU7c5ExK+CoBEoaPvsKicaUFCsyLWN7tYU/hgn7IdmQ+9spDtttTXlGG4TgKrrV0s/SRS55FGuQvU4a4HZMcO2KJllixe4HZJicnsZ2VwRUlr8TYhhJ9BxrKVape60/xOmXWMtKvg8zzlen8gME=;7:bPzupdPYZsTZD/k4lzdTL7L64Fl0Ka49aWiPYkeGiXzMogD8C89WYi+Yx1oZQu3Dtp0GdP0MztUo4HNha3Orc8n6QoKHvu2JHnmX4NsJ3z7d99/clGD/MJG/Luz1gMKcpyK4eYoNS1ZN/vNaQqJtIYLN2i88P/uuu/YgtcqUXan1K/7VzC5WI5zfDgWe6W6LTRO9+hIyg/C1d28MQYjZbXZcey0FNRYz3CuV/g7/+BQZg4S5vVS0S7DrUuRnpj1y
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: nokia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2018 08:14:26.1128
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38cba819-07c0-405a-f26a-08d5f6bda195
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.240];Helo=[mailrelay.int.nokia.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR07MB3383
+Return-Path: <alexander.sverdlin@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65294
+X-archive-position: 65295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: alexander.sverdlin@nokia.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,322 +133,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 30/07/2018 14:43:50+0200, Quentin Schulz wrote:
-> Since HSIO address space can be accessed by different drivers, let's
-> simplify the register address definitions so that it can be easily used
-> by all drivers and put the register address definition in the
-> include/soc/mscc/ocelot_hsio.h header file.
+Hi!
+
+On 31/07/18 00:50, Alexei Colin wrote:
+> The menu entry is now defined in the rapidio subtree.
 > 
-> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Platforms with a PCI bus will be offered the RapidIO menu since they may
+> be want support for a RapidIO PCI device. Platforms without a PCI bus
+> that might include a RapidIO IP block will need to "select HAS_RAPIDIO"
+> in the platform-/machine-specific "config ARCH_*" Kconfig entry.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+> Cc: John Paul Walters <jwalters@isi.edu>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Alexei Colin <acolin@isi.edu>
+
+With patch [1/6] together this looks fine to me.
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
 
 > ---
->  drivers/net/ethernet/mscc/ocelot.h      | 73 +---------------------
->  drivers/net/ethernet/mscc/ocelot_regs.c | 92 ++------------------------
->  include/soc/mscc/ocelot_hsio.h          | 74 +++++++++++++++++++++-
->  3 files changed, 83 insertions(+), 156 deletions(-)
+>  arch/mips/Kconfig | 11 -----------
+>  1 file changed, 11 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/mscc/ocelot.h b/drivers/net/ethernet/mscc/ocelot.h
-> index 2da20a3..3720e51 100644
-> --- a/drivers/net/ethernet/mscc/ocelot.h
-> +++ b/drivers/net/ethernet/mscc/ocelot.h
-> @@ -332,79 +332,6 @@ enum ocelot_reg {
->  	SYS_CM_DATA_RD,
->  	SYS_CM_OP,
->  	SYS_CM_DATA,
-> -	HSIO_PLL5G_CFG0 = HSIO << TARGET_OFFSET,
-> -	HSIO_PLL5G_CFG1,
-> -	HSIO_PLL5G_CFG2,
-> -	HSIO_PLL5G_CFG3,
-> -	HSIO_PLL5G_CFG4,
-> -	HSIO_PLL5G_CFG5,
-> -	HSIO_PLL5G_CFG6,
-> -	HSIO_PLL5G_STATUS0,
-> -	HSIO_PLL5G_STATUS1,
-> -	HSIO_PLL5G_BIST_CFG0,
-> -	HSIO_PLL5G_BIST_CFG1,
-> -	HSIO_PLL5G_BIST_CFG2,
-> -	HSIO_PLL5G_BIST_STAT0,
-> -	HSIO_PLL5G_BIST_STAT1,
-> -	HSIO_RCOMP_CFG0,
-> -	HSIO_RCOMP_STATUS,
-> -	HSIO_SYNC_ETH_CFG,
-> -	HSIO_SYNC_ETH_PLL_CFG,
-> -	HSIO_S1G_DES_CFG,
-> -	HSIO_S1G_IB_CFG,
-> -	HSIO_S1G_OB_CFG,
-> -	HSIO_S1G_SER_CFG,
-> -	HSIO_S1G_COMMON_CFG,
-> -	HSIO_S1G_PLL_CFG,
-> -	HSIO_S1G_PLL_STATUS,
-> -	HSIO_S1G_DFT_CFG0,
-> -	HSIO_S1G_DFT_CFG1,
-> -	HSIO_S1G_DFT_CFG2,
-> -	HSIO_S1G_TP_CFG,
-> -	HSIO_S1G_RC_PLL_BIST_CFG,
-> -	HSIO_S1G_MISC_CFG,
-> -	HSIO_S1G_DFT_STATUS,
-> -	HSIO_S1G_MISC_STATUS,
-> -	HSIO_MCB_S1G_ADDR_CFG,
-> -	HSIO_S6G_DIG_CFG,
-> -	HSIO_S6G_DFT_CFG0,
-> -	HSIO_S6G_DFT_CFG1,
-> -	HSIO_S6G_DFT_CFG2,
-> -	HSIO_S6G_TP_CFG0,
-> -	HSIO_S6G_TP_CFG1,
-> -	HSIO_S6G_RC_PLL_BIST_CFG,
-> -	HSIO_S6G_MISC_CFG,
-> -	HSIO_S6G_OB_ANEG_CFG,
-> -	HSIO_S6G_DFT_STATUS,
-> -	HSIO_S6G_ERR_CNT,
-> -	HSIO_S6G_MISC_STATUS,
-> -	HSIO_S6G_DES_CFG,
-> -	HSIO_S6G_IB_CFG,
-> -	HSIO_S6G_IB_CFG1,
-> -	HSIO_S6G_IB_CFG2,
-> -	HSIO_S6G_IB_CFG3,
-> -	HSIO_S6G_IB_CFG4,
-> -	HSIO_S6G_IB_CFG5,
-> -	HSIO_S6G_OB_CFG,
-> -	HSIO_S6G_OB_CFG1,
-> -	HSIO_S6G_SER_CFG,
-> -	HSIO_S6G_COMMON_CFG,
-> -	HSIO_S6G_PLL_CFG,
-> -	HSIO_S6G_ACJTAG_CFG,
-> -	HSIO_S6G_GP_CFG,
-> -	HSIO_S6G_IB_STATUS0,
-> -	HSIO_S6G_IB_STATUS1,
-> -	HSIO_S6G_ACJTAG_STATUS,
-> -	HSIO_S6G_PLL_STATUS,
-> -	HSIO_S6G_REVID,
-> -	HSIO_MCB_S6G_ADDR_CFG,
-> -	HSIO_HW_CFG,
-> -	HSIO_HW_QSGMII_CFG,
-> -	HSIO_HW_QSGMII_STAT,
-> -	HSIO_CLK_CFG,
-> -	HSIO_TEMP_SENSOR_CTRL,
-> -	HSIO_TEMP_SENSOR_CFG,
-> -	HSIO_TEMP_SENSOR_STAT,
->  };
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 10256056647c..92b9262ee731 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -3106,17 +3106,6 @@ config ZONE_DMA32
 >  
->  enum ocelot_regfield {
-> diff --git a/drivers/net/ethernet/mscc/ocelot_regs.c b/drivers/net/ethernet/mscc/ocelot_regs.c
-> index bf0c609..9271af1 100644
-> --- a/drivers/net/ethernet/mscc/ocelot_regs.c
-> +++ b/drivers/net/ethernet/mscc/ocelot_regs.c
-> @@ -103,82 +103,6 @@ static const u32 ocelot_qs_regmap[] = {
->  	REG(QS_INH_DBG,                    0x000048),
->  };
+>  source "drivers/pcmcia/Kconfig"
 >  
-> -static const u32 ocelot_hsio_regmap[] = {
-> -	REG(HSIO_PLL5G_CFG0,               0x000000),
-> -	REG(HSIO_PLL5G_CFG1,               0x000004),
-> -	REG(HSIO_PLL5G_CFG2,               0x000008),
-> -	REG(HSIO_PLL5G_CFG3,               0x00000c),
-> -	REG(HSIO_PLL5G_CFG4,               0x000010),
-> -	REG(HSIO_PLL5G_CFG5,               0x000014),
-> -	REG(HSIO_PLL5G_CFG6,               0x000018),
-> -	REG(HSIO_PLL5G_STATUS0,            0x00001c),
-> -	REG(HSIO_PLL5G_STATUS1,            0x000020),
-> -	REG(HSIO_PLL5G_BIST_CFG0,          0x000024),
-> -	REG(HSIO_PLL5G_BIST_CFG1,          0x000028),
-> -	REG(HSIO_PLL5G_BIST_CFG2,          0x00002c),
-> -	REG(HSIO_PLL5G_BIST_STAT0,         0x000030),
-> -	REG(HSIO_PLL5G_BIST_STAT1,         0x000034),
-> -	REG(HSIO_RCOMP_CFG0,               0x000038),
-> -	REG(HSIO_RCOMP_STATUS,             0x00003c),
-> -	REG(HSIO_SYNC_ETH_CFG,             0x000040),
-> -	REG(HSIO_SYNC_ETH_PLL_CFG,         0x000048),
-> -	REG(HSIO_S1G_DES_CFG,              0x00004c),
-> -	REG(HSIO_S1G_IB_CFG,               0x000050),
-> -	REG(HSIO_S1G_OB_CFG,               0x000054),
-> -	REG(HSIO_S1G_SER_CFG,              0x000058),
-> -	REG(HSIO_S1G_COMMON_CFG,           0x00005c),
-> -	REG(HSIO_S1G_PLL_CFG,              0x000060),
-> -	REG(HSIO_S1G_PLL_STATUS,           0x000064),
-> -	REG(HSIO_S1G_DFT_CFG0,             0x000068),
-> -	REG(HSIO_S1G_DFT_CFG1,             0x00006c),
-> -	REG(HSIO_S1G_DFT_CFG2,             0x000070),
-> -	REG(HSIO_S1G_TP_CFG,               0x000074),
-> -	REG(HSIO_S1G_RC_PLL_BIST_CFG,      0x000078),
-> -	REG(HSIO_S1G_MISC_CFG,             0x00007c),
-> -	REG(HSIO_S1G_DFT_STATUS,           0x000080),
-> -	REG(HSIO_S1G_MISC_STATUS,          0x000084),
-> -	REG(HSIO_MCB_S1G_ADDR_CFG,         0x000088),
-> -	REG(HSIO_S6G_DIG_CFG,              0x00008c),
-> -	REG(HSIO_S6G_DFT_CFG0,             0x000090),
-> -	REG(HSIO_S6G_DFT_CFG1,             0x000094),
-> -	REG(HSIO_S6G_DFT_CFG2,             0x000098),
-> -	REG(HSIO_S6G_TP_CFG0,              0x00009c),
-> -	REG(HSIO_S6G_TP_CFG1,              0x0000a0),
-> -	REG(HSIO_S6G_RC_PLL_BIST_CFG,      0x0000a4),
-> -	REG(HSIO_S6G_MISC_CFG,             0x0000a8),
-> -	REG(HSIO_S6G_OB_ANEG_CFG,          0x0000ac),
-> -	REG(HSIO_S6G_DFT_STATUS,           0x0000b0),
-> -	REG(HSIO_S6G_ERR_CNT,              0x0000b4),
-> -	REG(HSIO_S6G_MISC_STATUS,          0x0000b8),
-> -	REG(HSIO_S6G_DES_CFG,              0x0000bc),
-> -	REG(HSIO_S6G_IB_CFG,               0x0000c0),
-> -	REG(HSIO_S6G_IB_CFG1,              0x0000c4),
-> -	REG(HSIO_S6G_IB_CFG2,              0x0000c8),
-> -	REG(HSIO_S6G_IB_CFG3,              0x0000cc),
-> -	REG(HSIO_S6G_IB_CFG4,              0x0000d0),
-> -	REG(HSIO_S6G_IB_CFG5,              0x0000d4),
-> -	REG(HSIO_S6G_OB_CFG,               0x0000d8),
-> -	REG(HSIO_S6G_OB_CFG1,              0x0000dc),
-> -	REG(HSIO_S6G_SER_CFG,              0x0000e0),
-> -	REG(HSIO_S6G_COMMON_CFG,           0x0000e4),
-> -	REG(HSIO_S6G_PLL_CFG,              0x0000e8),
-> -	REG(HSIO_S6G_ACJTAG_CFG,           0x0000ec),
-> -	REG(HSIO_S6G_GP_CFG,               0x0000f0),
-> -	REG(HSIO_S6G_IB_STATUS0,           0x0000f4),
-> -	REG(HSIO_S6G_IB_STATUS1,           0x0000f8),
-> -	REG(HSIO_S6G_ACJTAG_STATUS,        0x0000fc),
-> -	REG(HSIO_S6G_PLL_STATUS,           0x000100),
-> -	REG(HSIO_S6G_REVID,                0x000104),
-> -	REG(HSIO_MCB_S6G_ADDR_CFG,         0x000108),
-> -	REG(HSIO_HW_CFG,                   0x00010c),
-> -	REG(HSIO_HW_QSGMII_CFG,            0x000110),
-> -	REG(HSIO_HW_QSGMII_STAT,           0x000114),
-> -	REG(HSIO_CLK_CFG,                  0x000118),
-> -	REG(HSIO_TEMP_SENSOR_CTRL,         0x00011c),
-> -	REG(HSIO_TEMP_SENSOR_CFG,          0x000120),
-> -	REG(HSIO_TEMP_SENSOR_STAT,         0x000124),
-> -};
+> -config HAS_RAPIDIO
+> -	bool
+> -	default n
 > -
->  static const u32 ocelot_qsys_regmap[] = {
->  	REG(QSYS_PORT_MODE,                0x011200),
->  	REG(QSYS_SWITCH_PORT_MODE,         0x011234),
-> @@ -303,7 +227,6 @@ static const u32 ocelot_sys_regmap[] = {
->  static const u32 *ocelot_regmap[] = {
->  	[ANA] = ocelot_ana_regmap,
->  	[QS] = ocelot_qs_regmap,
-> -	[HSIO] = ocelot_hsio_regmap,
->  	[QSYS] = ocelot_qsys_regmap,
->  	[REW] = ocelot_rew_regmap,
->  	[SYS] = ocelot_sys_regmap,
-> @@ -454,9 +377,11 @@ static void ocelot_pll5_init(struct ocelot *ocelot)
->  	/* Configure PLL5. This will need a proper CCF driver
->  	 * The values are coming from the VTSS API for Ocelot
->  	 */
-> -	ocelot_write(ocelot, HSIO_PLL5G_CFG4_IB_CTRL(0x7600) |
-> -		     HSIO_PLL5G_CFG4_IB_BIAS_CTRL(0x8), HSIO_PLL5G_CFG4);
-> -	ocelot_write(ocelot, HSIO_PLL5G_CFG0_CORE_CLK_DIV(0x11) |
-> +	regmap_write(ocelot->targets[HSIO], HSIO_PLL5G_CFG4,
-> +		     HSIO_PLL5G_CFG4_IB_CTRL(0x7600) |
-> +		     HSIO_PLL5G_CFG4_IB_BIAS_CTRL(0x8));
-> +	regmap_write(ocelot->targets[HSIO], HSIO_PLL5G_CFG0,
-> +		     HSIO_PLL5G_CFG0_CORE_CLK_DIV(0x11) |
->  		     HSIO_PLL5G_CFG0_CPU_CLK_DIV(2) |
->  		     HSIO_PLL5G_CFG0_ENA_BIAS |
->  		     HSIO_PLL5G_CFG0_ENA_VCO_BUF |
-> @@ -466,13 +391,14 @@ static void ocelot_pll5_init(struct ocelot *ocelot)
->  		     HSIO_PLL5G_CFG0_SELBGV820(4) |
->  		     HSIO_PLL5G_CFG0_DIV4 |
->  		     HSIO_PLL5G_CFG0_ENA_CLKTREE |
-> -		     HSIO_PLL5G_CFG0_ENA_LANE, HSIO_PLL5G_CFG0);
-> -	ocelot_write(ocelot, HSIO_PLL5G_CFG2_EN_RESET_FRQ_DET |
-> +		     HSIO_PLL5G_CFG0_ENA_LANE);
-> +	regmap_write(ocelot->targets[HSIO], HSIO_PLL5G_CFG2,
-> +		     HSIO_PLL5G_CFG2_EN_RESET_FRQ_DET |
->  		     HSIO_PLL5G_CFG2_EN_RESET_OVERRUN |
->  		     HSIO_PLL5G_CFG2_GAIN_TEST(0x8) |
->  		     HSIO_PLL5G_CFG2_ENA_AMPCTRL |
->  		     HSIO_PLL5G_CFG2_PWD_AMPCTRL_N |
-> -		     HSIO_PLL5G_CFG2_AMPC_SEL(0x10), HSIO_PLL5G_CFG2);
-> +		     HSIO_PLL5G_CFG2_AMPC_SEL(0x10));
->  }
+> -config RAPIDIO
+> -	tristate "RapidIO support"
+> -	depends on HAS_RAPIDIO || PCI
+> -	help
+> -	  If you say Y here, the kernel will include drivers and
+> -	  infrastructure code to support RapidIO interconnect devices.
+> -
+>  source "drivers/rapidio/Kconfig"
 >  
->  int ocelot_chip_init(struct ocelot *ocelot)
-> diff --git a/include/soc/mscc/ocelot_hsio.h b/include/soc/mscc/ocelot_hsio.h
-> index d93ddec..43112dd 100644
-> --- a/include/soc/mscc/ocelot_hsio.h
-> +++ b/include/soc/mscc/ocelot_hsio.h
-> @@ -8,6 +8,80 @@
->  #ifndef _MSCC_OCELOT_HSIO_H_
->  #define _MSCC_OCELOT_HSIO_H_
->  
-> +#define HSIO_PLL5G_CFG0			0x0000
-> +#define HSIO_PLL5G_CFG1			0x0004
-> +#define HSIO_PLL5G_CFG2			0x0008
-> +#define HSIO_PLL5G_CFG3			0x000c
-> +#define HSIO_PLL5G_CFG4			0x0010
-> +#define HSIO_PLL5G_CFG5			0x0014
-> +#define HSIO_PLL5G_CFG6			0x0018
-> +#define HSIO_PLL5G_STATUS0		0x001c
-> +#define HSIO_PLL5G_STATUS1		0x0020
-> +#define HSIO_PLL5G_BIST_CFG0		0x0024
-> +#define HSIO_PLL5G_BIST_CFG1		0x0028
-> +#define HSIO_PLL5G_BIST_CFG2		0x002c
-> +#define HSIO_PLL5G_BIST_STAT0		0x0030
-> +#define HSIO_PLL5G_BIST_STAT1		0x0034
-> +#define HSIO_RCOMP_CFG0			0x0038
-> +#define HSIO_RCOMP_STATUS		0x003c
-> +#define HSIO_SYNC_ETH_CFG		0x0040
-> +#define HSIO_SYNC_ETH_PLL_CFG		0x0048
-> +#define HSIO_S1G_DES_CFG		0x004c
-> +#define HSIO_S1G_IB_CFG			0x0050
-> +#define HSIO_S1G_OB_CFG			0x0054
-> +#define HSIO_S1G_SER_CFG		0x0058
-> +#define HSIO_S1G_COMMON_CFG		0x005c
-> +#define HSIO_S1G_PLL_CFG		0x0060
-> +#define HSIO_S1G_PLL_STATUS		0x0064
-> +#define HSIO_S1G_DFT_CFG0		0x0068
-> +#define HSIO_S1G_DFT_CFG1		0x006c
-> +#define HSIO_S1G_DFT_CFG2		0x0070
-> +#define HSIO_S1G_TP_CFG			0x0074
-> +#define HSIO_S1G_RC_PLL_BIST_CFG	0x0078
-> +#define HSIO_S1G_MISC_CFG		0x007c
-> +#define HSIO_S1G_DFT_STATUS		0x0080
-> +#define HSIO_S1G_MISC_STATUS		0x0084
-> +#define HSIO_MCB_S1G_ADDR_CFG		0x0088
-> +#define HSIO_S6G_DIG_CFG		0x008c
-> +#define HSIO_S6G_DFT_CFG0		0x0090
-> +#define HSIO_S6G_DFT_CFG1		0x0094
-> +#define HSIO_S6G_DFT_CFG2		0x0098
-> +#define HSIO_S6G_TP_CFG0		0x009c
-> +#define HSIO_S6G_TP_CFG1		0x00a0
-> +#define HSIO_S6G_RC_PLL_BIST_CFG	0x00a4
-> +#define HSIO_S6G_MISC_CFG		0x00a8
-> +#define HSIO_S6G_OB_ANEG_CFG		0x00ac
-> +#define HSIO_S6G_DFT_STATUS		0x00b0
-> +#define HSIO_S6G_ERR_CNT		0x00b4
-> +#define HSIO_S6G_MISC_STATUS		0x00b8
-> +#define HSIO_S6G_DES_CFG		0x00bc
-> +#define HSIO_S6G_IB_CFG			0x00c0
-> +#define HSIO_S6G_IB_CFG1		0x00c4
-> +#define HSIO_S6G_IB_CFG2		0x00c8
-> +#define HSIO_S6G_IB_CFG3		0x00cc
-> +#define HSIO_S6G_IB_CFG4		0x00d0
-> +#define HSIO_S6G_IB_CFG5		0x00d4
-> +#define HSIO_S6G_OB_CFG			0x00d8
-> +#define HSIO_S6G_OB_CFG1		0x00dc
-> +#define HSIO_S6G_SER_CFG		0x00e0
-> +#define HSIO_S6G_COMMON_CFG		0x00e4
-> +#define HSIO_S6G_PLL_CFG		0x00e8
-> +#define HSIO_S6G_ACJTAG_CFG		0x00ec
-> +#define HSIO_S6G_GP_CFG			0x00f0
-> +#define HSIO_S6G_IB_STATUS0		0x00f4
-> +#define HSIO_S6G_IB_STATUS1		0x00f8
-> +#define HSIO_S6G_ACJTAG_STATUS		0x00fc
-> +#define HSIO_S6G_PLL_STATUS		0x0100
-> +#define HSIO_S6G_REVID			0x0104
-> +#define HSIO_MCB_S6G_ADDR_CFG		0x0108
-> +#define HSIO_HW_CFG			0x010c
-> +#define HSIO_HW_QSGMII_CFG		0x0110
-> +#define HSIO_HW_QSGMII_STAT		0x0114
-> +#define HSIO_CLK_CFG			0x0118
-> +#define HSIO_TEMP_SENSOR_CTRL		0x011c
-> +#define HSIO_TEMP_SENSOR_CFG		0x0120
-> +#define HSIO_TEMP_SENSOR_STAT		0x0124
-> +
->  #define HSIO_PLL5G_CFG0_ENA_ROT                           BIT(31)
->  #define HSIO_PLL5G_CFG0_ENA_LANE                          BIT(30)
->  #define HSIO_PLL5G_CFG0_ENA_CLKTREE                       BIT(29)
-> -- 
-> git-series 0.9.1
+>  endmenu
 
 -- 
-Alexandre Belloni, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Best regards,
+Alexander Sverdlin.

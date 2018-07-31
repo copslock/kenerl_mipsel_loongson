@@ -1,94 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 03:27:37 +0200 (CEST)
-Received: from mail-sn1nam02on0104.outbound.protection.outlook.com ([104.47.36.104]:38710
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993029AbeGaB1crfLhU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2018 03:27:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5pFJIEOIr5OKJEQgQQat2nVj00o7ySdiagG5qHmMO1g=;
- b=CJfGf/gBckKDKGVOP6DljN/digsaBXHZxBlPNysnGy9H5X1BrBFC81F/y3AkLcUiHZb0gwYJa23q7+y6f1Z9SFK+pJ6psV+3H9Zgb0VLClhLN5JJTZS7Ns43BOo+ynsyxv59pOIzjCeEOEJENsuGpZ2byIdq0DYC/V+Z7PKV6M0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- DM6PR08MB4938.namprd08.prod.outlook.com (2603:10b6:5:4b::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.995.20; Tue, 31 Jul 2018 01:27:22 +0000
-Date:   Mon, 30 Jul 2018 18:27:18 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     RAGHU Halharvi <raghuhack78@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        jhogan@kernel.org, ralf@linux-mips.org
-Subject: Re: [PATCH] mips:sgi-ip22:Check return value from kzalloc
-Message-ID: <20180731012718.bnct37fdtiaezdyd@pburton-laptop>
-References: <20180717114145.21856-1-raghuhack78@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180717114145.21856-1-raghuhack78@gmail.com>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: MWHPR1201CA0017.namprd12.prod.outlook.com
- (2603:10b6:301:4a::27) To DM6PR08MB4938.namprd08.prod.outlook.com
- (2603:10b6:5:4b::19)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bf47eca8-24ed-4baa-2f39-08d5f684c3b9
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4938;
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;3:UN2ABsV7bhJl3EdxfnamUdMHoAIkH/FfxFXYpS3qaa53n1cLKXMw79vuZrKtOoo4xXLnOyJ8XPoFonJddJ7UOttHPqwej4QVG0c7uBJTbtW1diA0vmyvzatJ65vWrrRTBQsx/D/oARFG0ZR8T/LqYWaaFq+mUBCZFcnEV/4Vr+lGBFi5zpoUl13Yl24wY8wg2LjHuGqN0a0yxE/5CbhCUR6POtNfe4ZPnlPnXsiJHhiPZyaIWeCon3mg7L6vnVS4;25:50+8jxX4MROGJ6tiD2VUz0wrKj17L4KqIR4sBAdOb5xGKTjqD9a7L6G4NOKmKF5Mx8CYpPVf4D9WlpJO4EFvoyX3bXW8gxIq+HQ1PG9bgl4GC62oTExf69sBEuYmnd57HL8ddXUCoImfVeVHqLHHbARb3RDuuUQCuG3vXAg6RWxEBa4wx19QED4NABQPNS8MMG5jfs6YxI/94Uy71H3aH4rG9YkGz/KL4Y1rYL08AIZ6YCTjeIHoA6B/Jeatn0TJWaa8on8CU3EJ9jF8B5Zej0501A5DA0YRGWmgqj0s7tWhLGdWSBcFTUmr/l+GifyK5YrVA2MXJQLOKA3xzNmsJQ==;31:NYbdOLZPM/GO7mfbAkwx8CLVAMLSfNJmd5ihh78QZzhA7TofMw0CrOxNZB7fHDGxB2WmAK5VVFKGscjsDT0ll7VvhTdpfKHw8DCs3nobpDllIYpMXa1Kng2w4FPaWmblzIM6qHbSalQFipKAiqJ3Evf495audQ5y6mp90d0FjKNW9fZiLVMfRxBdL8SNyvVrkX53FtAMajBlmRFiNU6uDV8qf9YcnLysQbNTzjf4nq4=
-X-MS-TrafficTypeDiagnostic: DM6PR08MB4938:
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;20:M64OoPbfMzZ4WawXepre2IXcjSIVpsuxNFA1Lyb2WrY5uThS6cSeJ6Vx9DLtzHFdq5NphH4T8wJcBCsDrnVhNyGGIgiXHdH3ls2XzNAd35gzs2Yl/Zw9lcqxCQvvo4J+zfCGnGRj5jqdIxBvEMSUu+jZH7ojwNWkZST0TuzyLXwe7pDXb961DzDS2oZ+6cjiJmwoghBTtHQ1CeDDqcfbAtMfM2zgfmGM0aE1iFKtzQSr2wsE7+Kfbf7R64aBHt8I;4:ZocxZMiREFWvksLDK5vt2HkBtYggXLLeOm6xDf2tIWXlT53xxpTAalmBX6AXiOjOLsmClqoFToatZwcW1imDOJYNF3NoV5tIxefa7wVj63gqEoGiuAZx3lf5M31n7/fl7mloz9xBK6yGrampfw1BdZKDhkNmNPCnAdnJ5+Xnwm7/LaMxfaz9WcxBdli+B6eXbVWQKAhs8eT0APl6hfmJexhxFziEQ7t2pp9dRTnmtxhv5VgfA9rHk96nW9BkCfOB+fcPYySEW3JMEHfpK3IpGYMF2X70+LIYDv4Fcxj+FHW/KEvZ+cz27EJWocfQ+MP6
-X-Microsoft-Antispam-PRVS: <DM6PR08MB49389D7D4E172FE36742EAC0C12E0@DM6PR08MB4938.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(85827821059158);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(93006095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(6072148)(201708071742011)(7699016);SRVR:DM6PR08MB4938;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4938;
-X-Forefront-PRVS: 0750463DC9
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(376002)(346002)(366004)(136003)(39840400004)(396003)(199004)(189003)(16526019)(2906002)(5660300001)(186003)(44832011)(42882007)(14444005)(9686003)(53936002)(229853002)(68736007)(6666003)(386003)(26005)(58126008)(6496006)(316002)(6916009)(52116002)(76176011)(33896004)(446003)(39060400002)(6116002)(1076002)(16586007)(11346002)(1411001)(50466002)(7736002)(8676002)(76506005)(305945005)(478600001)(4326008)(956004)(3846002)(486006)(476003)(8936002)(23726003)(6486002)(6246003)(81166006)(97736004)(33716001)(66066001)(25786009)(105586002)(81156014)(106356001)(47776003);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4938;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4938;23:6z0W7brgtYPnw+q7plpUzQSaNosQ1wNgk/lx6EcEU?=
- =?us-ascii?Q?IyKWxnhcS3PsxmThR/mZ9J8oaGCtsRlLKCt0j2zESPF3bZ8Er5DbL1j5Pa77?=
- =?us-ascii?Q?ux6ugrv1p1oDbGSvNVUc8H6OfskqtnfhKR6t3hzJgWWwhJGQTHfRTS115eVR?=
- =?us-ascii?Q?ngBHab2GGiaRONk+3eJwHPtOVVx1O8ACxDOYUYloTHrXQv3xxARCUFRxJnfo?=
- =?us-ascii?Q?Kt8z42Emk3k8U+TgQ1dUITc4G9+1+J0dg8wgefMY7X6BLTC+JkCudTM36UDO?=
- =?us-ascii?Q?uxiEUr0LT/SK+LOfwqWFQdEAQNB261YJfJ+Bnr841YtZR/55dHW9qOAisiXx?=
- =?us-ascii?Q?cfK3hah2+e5v9B+CG5HS8uU+0d5hvFSbN4YdKfOAU2L+YFHLQ9V6swsWfMRT?=
- =?us-ascii?Q?ZWM33agwV1ogZVkzqW9KP4eeqFehZw4XLC89yw/kF5uigi1Rua42WcHwNVDA?=
- =?us-ascii?Q?0ObRcCAJIRQk1s5SPfKppugKn8wt9GbVNa3FbY4DNAD/b1VYh96Ge6Qtd3hw?=
- =?us-ascii?Q?cP9tBSkNUPwbFN9xnrAJFGl2/E3QlO15uqFIDsApLttQTG+nhrQzw3KqXre3?=
- =?us-ascii?Q?fNdYWF08wZEqNUu3SSlEUt9Qbyg8P58yPbYyaP2ozbVG6TSNXbY8gn33dl1b?=
- =?us-ascii?Q?n2ylkkG3EbjmOe6kNVws8Ij5j2HJiyOvQmWRCEqsNBEy3OzQDKKXFp2xNW2m?=
- =?us-ascii?Q?0wkQI3F8SAyI7fo78w6p5Iq17XSMl3VqfHv+dTRgdoy0WhSucuwSn7ZLgzhU?=
- =?us-ascii?Q?BaPMH+UJfyccYVz8PDuX4wcM8tg1FpBVxT/Ewx8iSUuCN+TF7o+zM4nL0j5N?=
- =?us-ascii?Q?cUy3i+hFkLGZRjrw1Go+0j8zPDlR9enI8Kdz1I6lw95UE01t1D7GGIPetrWZ?=
- =?us-ascii?Q?mdF2VXoK0MzkoKuAF3B+2ddf4wZ/PVoVOpZZkc45cAcBtCu9s7wU11RzBsyp?=
- =?us-ascii?Q?WRrGSXEmlhNIoBYIv55fqyNxS0AYP3S1ZwGtTrRoG6qYmqrTB4ODQd4s9MIw?=
- =?us-ascii?Q?cfDseMNL33rZWGK5QWOY6/DRfNwmo4Ge3I0dEYbBV5qACHBrME+fOWVDcp5H?=
- =?us-ascii?Q?0uIAWfz1UhaFjlehPFlLOosIKBnQ5vxLVPsF05gsUyq7UH3aHR7yboQbIB8z?=
- =?us-ascii?Q?/b4ylvbDUf9jPkq5ZfRcmiWGbij6VQwErnGzT3ufGDbNmIjFjcbQHhytPUQX?=
- =?us-ascii?Q?aiCgI1TJ2GSCeCZ6lH3V/gO1JS9reB7IBo+Vqfkp4Xd6iQyJaCjm3EJsdw8Y?=
- =?us-ascii?Q?wS06YI78fIV3laZQb+6ZSDzdVfK9k/oYfhYCeQ66jCighw+FWHfTylUE+YrO?=
- =?us-ascii?Q?VTpP/50GsOLdBNH9VNQ6VdLLi5/wq8IE3Q/XdjlG8yl6HOCmmirwEnjRbOLL?=
- =?us-ascii?Q?6B5MQ=3D=3D?=
-X-Microsoft-Antispam-Message-Info: uIwEjfQXoUW4rFr1OMX6Q8/7gosWUclKWl0hToyg6mdzIiWjX2ti9tcxaH5FZUD1Y16N9Gvq26V2SCIjYTzq/qjeltsq9+nmjBnDm5rk6LdbIx0oVFDO7We19ATm+hqfEV1N1KQjTwZZTvVsCXjwUlN3BEmuZDDZuiR4hvqC9OebyR79gb6mWjYffZbz0dYvmIzefvugAMHzCmP8fJU0uiRFXUUN8o3v6bhu7lecd4SCTsnox2/4kfLeGvXuNrnW0FV28DGW1XIdRZ0MBWVFOGEqxOSHhrGSFuTOIW4XO+Lfu6DBj/2ZWuDDuzk8SeIVWjX291aFNy0gDyIspH/8BH+j1ch2JpLHZj/A4Aj6cxY=
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4938;6:AyPm8uOMDWiQevk/S1u2+STNJXYVIiNVPXrokxsdETH8ukGcF2fZP/B05DMCbTrh3hRnYssZOS8h0Z9gokDOU8a50X82JHISeoSQeJLVrKmAVxWR+s/Fa2t3F20T4KJSHNd6pckXop71URi3WmPRbkQhiRnLdafzpaLVhXgjs/jQdBZ+DYOfTVFSO5m9R2fWDl3JeTXT367GeUVByMPDEcStAm9TWyiDRJe0zacWprrZryJ7KtDbu0/wy+cxpIPWtOWFm6AwBjn8nVQcrU5i7/3ARPQk/KREOKugBAiNJ4Mqve7/of1fp00eA9LFS87o1NQ7ZuXuOKYlY5UI/YR3OCL9YssNxii2ynpYVzCvIEWRJFgkC9Jl7rcErqYPwYxdP9Mb+ae/4Wpt98gUAAfHFJO9JR5P2mJunIRxu6q9oa+NUQp7muFDWBJfaGDuCqetqPtcapb0xQg3nssVnBbswQ==;5:hyp4vLL+mv6xzJERvsBg3XNGyZ7XGupW3fqHmUs0iagPXH2xbKz0DvuW9tW2maC3gyRouqT1haiU35YcE1hxRkA0g/XRxw8SXlr2ff77x9EHf3QXdIJeNUgh+ZETb0ppX/j1/nZuvweQxZ0VaqEjb1rp/y2ZWPXyK+n3byATpoM=;7:FOYz3JH7heBeCInpboLp6ejwnsqzRzXsY6eI0rde0K6lwAqCglk/XCY9kqSeFJZRrkByWOzB7ava8SkFmWV3TwZaM5Q6pFRNsVfkgWM9IuypHZXqxdnguP9mWEY2LKzd1AHH15ggxfI1fDc7IBoxsizmP1ELjca1Ag3LIOj6rGChShPZYhR9ourTf9/+8pZ5SXpweAKqlGRFBUg4aHnaOcP9xujnTGlpGtWOR+53S+0AvMdt9hpZWcBjn1EXaS9p
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2018 01:27:22.1051 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf47eca8-24ed-4baa-2f39-08d5f684c3b9
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4938
-Return-Path: <pburton@wavecomp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 05:52:01 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60208 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbeGaDv6sybxM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jul 2018 05:51:58 +0200
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w6V3nHc5009304
+        for <linux-mips@linux-mips.org>; Mon, 30 Jul 2018 23:51:56 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2kjg43g6c1-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Mon, 30 Jul 2018 23:51:56 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Tue, 31 Jul 2018 04:51:53 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 31 Jul 2018 04:51:48 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w6V3pliJ31654108
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 31 Jul 2018 03:51:47 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5001B4C046;
+        Tue, 31 Jul 2018 06:52:00 +0100 (BST)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 05A794C044;
+        Tue, 31 Jul 2018 06:51:57 +0100 (BST)
+Received: from bangoria.in.ibm.com (unknown [9.124.31.37])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 31 Jul 2018 06:51:56 +0100 (BST)
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com
+Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v7 0/6] Uprobes: Support SDT markers having reference count (semaphore)
+Date:   Tue, 31 Jul 2018 09:21:37 +0530
+X-Mailer: git-send-email 2.14.4
+X-TM-AS-GCONF: 00
+x-cbid: 18073103-0016-0000-0000-000001EE812B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18073103-0017-0000-0000-000032439D9A
+Message-Id: <20180731035143.11942-1-ravi.bangoria@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-07-31_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1806210000 definitions=main-1807310041
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65270
+X-archive-position: 65271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -101,35 +78,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Raghu,
+v7 changes:
+ - Don't allow both zero and non-zero reference counter offset at
+   the same time. It's painful and error prone.
+ - Don't call delayed_uprobe_install() if vma->vm_mm does not have
+   any breakpoint installed.
 
-On Tue, Jul 17, 2018 at 05:11:45PM +0530, RAGHU Halharvi wrote:
-> Signed-off-by: RAGHU Halharvi <raghuhack78@gmail.com>
-> ---
->  arch/mips/sgi-ip22/ip22-gio.c | 2 ++
->  1 file changed, 2 insertions(+)
+v6: https://lkml.org/lkml/2018/7/16/353
 
-You should write a commit message, even for trivial patches, which
-describes the motivation for the patch. For more complex patches it
-should also explain how the changes being made solve a problem, or
-clarify anything non-obvious about the way the patched code works.
 
-In general, read Documentation/process/submitting-patches.rst
+Description:
+Userspace Statically Defined Tracepoints[1] are dtrace style markers
+inside userspace applications. Applications like PostgreSQL, MySQL,
+Pthread, Perl, Python, Java, Ruby, Node.js, libvirt, QEMU, glib etc
+have these markers embedded in them. These markers are added by developer
+at important places in the code. Each marker source expands to a single
+nop instruction in the compiled code but there may be additional
+overhead for computing the marker arguments which expands to couple of
+instructions. In case the overhead is more, execution of it can be
+omitted by runtime if() condition when no one is tracing on the marker:
 
-> diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
-> index b225033aade6..5aaf40a1743b 100644
-> --- a/arch/mips/sgi-ip22/ip22-gio.c
-> +++ b/arch/mips/sgi-ip22/ip22-gio.c
-> @@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
->  		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
->  		       slotno, name, id);
->  		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
-> +		if (!gio_dev)
-> +			return -ENOMEM;
+    if (reference_counter > 0) {
+        Execute marker instructions;
+    }
 
-One especially important point for patches like this one is to make sure
-that your code at least compiles. In this case you try to return an
-error code from a function that returns void, which won't work.
+Default value of reference counter is 0. Tracer has to increment the 
+reference counter before tracing on a marker and decrement it when
+done with the tracing.
 
-Thanks,
-    Paul
+Currently, perf tool has limited supports for SDT markers. I.e. it
+can not trace markers surrounded by reference counter. Also, it's
+not easy to add reference counter logic in userspace tool like perf,
+so basic idea for this patchset is to add reference counter logic in
+the a uprobe infrastructure. Ex,[2]
+
+  # cat tick.c
+    ... 
+    for (i = 0; i < 100; i++) {
+	DTRACE_PROBE1(tick, loop1, i);
+        if (TICK_LOOP2_ENABLED()) {
+            DTRACE_PROBE1(tick, loop2, i); 
+        }
+        printf("hi: %d\n", i); 
+        sleep(1);
+    }   
+    ... 
+
+Here tick:loop1 is marker without reference counter where as tick:loop2
+is surrounded by reference counter condition.
+
+  # perf buildid-cache --add /tmp/tick
+  # perf probe sdt_tick:loop1
+  # perf probe sdt_tick:loop2
+
+  # perf stat -e sdt_tick:loop1,sdt_tick:loop2 -- /tmp/tick
+  hi: 0
+  hi: 1
+  hi: 2
+  ^C
+  Performance counter stats for '/tmp/tick':
+             3      sdt_tick:loop1
+             0      sdt_tick:loop2
+     2.747086086 seconds time elapsed
+
+Perf failed to record data for tick:loop2. Same experiment with this
+patch series:
+
+  # ./perf buildid-cache --add /tmp/tick
+  # ./perf probe sdt_tick:loop2
+  # ./perf stat -e sdt_tick:loop2 /tmp/tick
+    hi: 0
+    hi: 1
+    hi: 2
+    ^C  
+     Performance counter stats for '/tmp/tick':
+                 3      sdt_tick:loop2
+       2.561851452 seconds time elapsed
+
+
+Ravi Bangoria (6):
+  Uprobes: Simplify uprobe_register() body
+  Uprobe: Additional argument arch_uprobe to uprobe_write_opcode()
+  Uprobes: Support SDT markers having reference count (semaphore)
+  Uprobes/sdt: Prevent multiple reference counter for same uprobe
+  trace_uprobe/sdt: Prevent multiple reference counter for same uprobe
+  perf probe: Support SDT markers having reference counter (semaphore)
+
+ arch/arm/probes/uprobes/core.c |   2 +-
+ arch/mips/kernel/uprobes.c     |   2 +-
+ include/linux/uprobes.h        |   7 +-
+ kernel/events/uprobes.c        | 315 +++++++++++++++++++++++++++++++++++------
+ kernel/trace/trace.c           |   2 +-
+ kernel/trace/trace_uprobe.c    |  75 +++++++++-
+ tools/perf/util/probe-event.c  |  39 ++++-
+ tools/perf/util/probe-event.h  |   1 +
+ tools/perf/util/probe-file.c   |  34 ++++-
+ tools/perf/util/probe-file.h   |   1 +
+ tools/perf/util/symbol-elf.c   |  46 ++++--
+ tools/perf/util/symbol.h       |   7 +
+ 12 files changed, 459 insertions(+), 72 deletions(-)
+
+-- 
+2.14.4

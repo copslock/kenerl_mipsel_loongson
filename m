@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 16:39:06 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:48889 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 16:39:15 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:48896 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993081AbeGaOjCySBDh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2018 16:39:02 +0200
+        id S23993087AbeGaOjDNghAh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jul 2018 16:39:03 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 7C476207AA; Tue, 31 Jul 2018 16:38:56 +0200 (CEST)
+        id C58CA207AB; Tue, 31 Jul 2018 16:38:56 +0200 (CEST)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 5584C20731;
+        by mail.bootlin.com (Postfix) with ESMTPSA id 9F2FB20731;
         Tue, 31 Jul 2018 16:38:56 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Mark Brown <broonie@kernel.org>, Paul Burton <paul.burton@mips.com>
@@ -15,11 +15,10 @@ Cc:     James Hogan <jhogan@kernel.org>, linux-spi@vger.kernel.org,
         linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v4 1/3] spi: dw: document Microsemi integration
-Date:   Tue, 31 Jul 2018 16:38:53 +0200
-Message-Id: <20180731143855.7131-2-alexandre.belloni@bootlin.com>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 2/3] mips: dts: mscc: Add spi on Ocelot
+Date:   Tue, 31 Jul 2018 16:38:54 +0200
+Message-Id: <20180731143855.7131-3-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
 References: <20180731143855.7131-1-alexandre.belloni@bootlin.com>
@@ -27,7 +26,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65321
+X-archive-position: 65322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,37 +43,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The integration of the Designware SPI controller on Microsemi SoCs requires
-an extra register set to be able to give the IP control of the SPI
-interface.
+Add support for the SPI controller
 
-Cc: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
-Changes in v4:
- - changed subject to be prefixed by spi: dw:
- - documented possible <soc> values. jaguar2 support will be added later to the
-   driver.
+ arch/mips/boot/dts/mscc/ocelot.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-index 204b311e0400..642d3fb1ef85 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-@@ -1,8 +1,10 @@
- Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
+diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
+index 4f33dbc67348..f7616a476247 100644
+--- a/arch/mips/boot/dts/mscc/ocelot.dtsi
++++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
+@@ -91,6 +91,17 @@
+ 			status = "disabled";
+ 		};
  
- Required properties:
--- compatible : "snps,dw-apb-ssi"
--- reg : The register base for the controller.
-+- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi", where soc is "ocelot" or
-+  "jaguar2"
-+- reg : The register base for the controller. For "mscc,<soc>-spi", a second
-+  register set is required (named ICPU_CFG:SPI_MST)
- - interrupts : One interrupt, used by the controller.
- - #address-cells : <1>, as required by generic SPI binding.
- - #size-cells : <0>, also as required by generic SPI binding.
++		spi: spi@101000 {
++			compatible = "mscc,ocelot-spi", "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0x101000 0x100>, <0x3c 0x18>;
++			interrupts = <9>;
++			clocks = <&ahb_clk>;
++
++			status = "disabled";
++		};
++
+ 		switch@1010000 {
+ 			compatible = "mscc,vsc7514-switch";
+ 			reg = <0x1010000 0x10000>,
 -- 
 2.18.0

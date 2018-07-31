@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 16:02:36 +0200 (CEST)
-Received: from mga06.intel.com ([134.134.136.31]:48896 "EHLO mga06.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2018 16:04:46 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:63355 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993097AbeGaOCZnyEtP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2018 16:02:25 +0200
+        id S23993072AbeGaOEi4i0zP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jul 2018 16:04:38 +0200
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jul 2018 07:02:22 -0700
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jul 2018 07:04:36 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.51,427,1526367600"; 
-   d="scan'208";a="76075368"
+   d="scan'208";a="220582286"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by fmsmga004.fm.intel.com with ESMTP; 31 Jul 2018 07:02:13 -0700
-Message-ID: <44e52856371e4b5c102df8f2efebd527fd26b066.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/6] i2c: designware: use generic table matching
+  by orsmga004.jf.intel.com with ESMTP; 31 Jul 2018 07:04:32 -0700
+Message-ID: <e9c70e9265587b69c07629dfdfd2ea041c70acae.camel@linux.intel.com>
+Subject: Re: [PATCH v2 2/6] i2c: designware: move #ifdef CONFIG_OF to the top
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Wolfram Sang <wsa@the-dreams.de>,
@@ -25,10 +25,10 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>
-Date:   Tue, 31 Jul 2018 17:02:12 +0300
-In-Reply-To: <20180731134740.441-2-alexandre.belloni@bootlin.com>
+Date:   Tue, 31 Jul 2018 17:04:31 +0300
+In-Reply-To: <20180731134740.441-3-alexandre.belloni@bootlin.com>
 References: <20180731134740.441-1-alexandre.belloni@bootlin.com>
-         <20180731134740.441-2-alexandre.belloni@bootlin.com>
+         <20180731134740.441-3-alexandre.belloni@bootlin.com>
 Organization: Intel Finland Oy
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.1-2 
@@ -38,7 +38,7 @@ Return-Path: <andriy.shevchenko@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65306
+X-archive-position: 65307
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,48 +56,55 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Tue, 2018-07-31 at 15:47 +0200, Alexandre Belloni wrote:
-> Switch to device_get_match_data in probe to match the device specific
-> data
-> instead of using the acpi specific function.
+> Move the #ifdef CONFIG_OF section to the top of the file, after the
+> ACPI
+> section so functions defined there can be used in dw_i2c_plat_probe.
 > 
 
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 > ---
->  drivers/i2c/busses/i2c-designware-platdrv.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  drivers/i2c/busses/i2c-designware-platdrv.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c
 > b/drivers/i2c/busses/i2c-designware-platdrv.c
-> index ddf13527aaee..00bf62f77c47 100644
+> index 00bf62f77c47..ba142d7c0e05 100644
 > --- a/drivers/i2c/busses/i2c-designware-platdrv.c
 > +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-> @@ -119,10 +119,6 @@ static int dw_i2c_acpi_configure(struct
+> @@ -157,6 +157,14 @@ static inline int dw_i2c_acpi_configure(struct
 > platform_device *pdev)
->  		break;
->  	}
+>  }
+>  #endif
 >  
-> -	id = acpi_match_device(pdev->dev.driver->acpi_match_table,
-> &pdev->dev);
-> -	if (id && id->driver_data)
-> -		dev->flags |= (u32)id->driver_data;
-> -
->  	if (acpi_bus_get_device(handle, &adev))
->  		return -ENODEV;
->  
-> @@ -269,6 +265,8 @@ static int dw_i2c_plat_probe(struct
-> platform_device *pdev)
->  	else
->  		i2c_parse_fw_timings(&pdev->dev, t, false);
->  
-> +	dev->flags |= (u32)device_get_match_data(&pdev->dev);
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id dw_i2c_of_match[] = {
+> +	{ .compatible = "snps,designware-i2c", },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
+> +#endif
 > +
->  	acpi_speed = i2c_acpi_find_bus_speed(&pdev->dev);
->  	/*
->  	 * Some DSTDs use a non standard speed, round down to the
-> lowest
+>  static void i2c_dw_configure_master(struct dw_i2c_dev *dev)
+>  {
+>  	struct i2c_timings *t = &dev->timings;
+> @@ -391,14 +399,6 @@ static int dw_i2c_plat_remove(struct
+> platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> -#ifdef CONFIG_OF
+> -static const struct of_device_id dw_i2c_of_match[] = {
+> -	{ .compatible = "snps,designware-i2c", },
+> -	{},
+> -};
+> -MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
+> -#endif
+> -
+>  #ifdef CONFIG_PM_SLEEP
+>  static int dw_i2c_plat_prepare(struct device *dev)
+>  {
 
 -- 
 Andy Shevchenko <andriy.shevchenko@linux.intel.com>

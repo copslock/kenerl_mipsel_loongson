@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 10:15:51 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:41594 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 10:24:24 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:42368 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992514AbeHAIPr6HDBP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Aug 2018 10:15:47 +0200
+        id S23991623AbeHAIYVBij52 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Aug 2018 10:24:21 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id A1F832074F; Wed,  1 Aug 2018 10:15:40 +0200 (CEST)
+        id 7BFBD2074F; Wed,  1 Aug 2018 10:24:14 +0200 (CEST)
 Received: from qschulz (AAubervilliers-681-1-89-120.w90-88.abo.wanadoo.fr [90.88.30.120])
-        by mail.bootlin.com (Postfix) with ESMTPSA id DF70220740;
-        Wed,  1 Aug 2018 10:15:39 +0200 (CEST)
-Date:   Wed, 1 Aug 2018 10:15:39 +0200
+        by mail.bootlin.com (Postfix) with ESMTPSA id A985020740;
+        Wed,  1 Aug 2018 10:24:13 +0200 (CEST)
+Date:   Wed, 1 Aug 2018 10:24:13 +0200
 From:   Quentin Schulz <quentin.schulz@bootlin.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
+To:     Andrew Lunn <andrew@lunn.ch>
 Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
         mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
-        andrew@lunn.ch, linux-mips@linux-mips.org,
+        f.fainelli@gmail.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, allan.nielsen@microsemi.com,
         thomas.petazzoni@bootlin.com
 Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
  Ocelot SerDes muxing
-Message-ID: <20180801081539.gxkviv6rnpwzoyxb@qschulz>
+Message-ID: <20180801082413.2mjm52vwxw3anun6@qschulz>
 References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
  <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
- <bcea7c75-e5a6-4533-aee0-65c893e8a422@gmail.com>
+ <20180730133448.GD13198@lunn.ch>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ttyslgyn422axldo"
+        protocol="application/pgp-signature"; boundary="aipy2f7xx2epmgoe"
 Content-Disposition: inline
-In-Reply-To: <bcea7c75-e5a6-4533-aee0-65c893e8a422@gmail.com>
+In-Reply-To: <20180730133448.GD13198@lunn.ch>
 User-Agent: NeoMutt/20171215
 Return-Path: <quentin.schulz@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65342
+X-archive-position: 65343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,50 +52,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---ttyslgyn422axldo
+--aipy2f7xx2epmgoe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Florian,
+Hi Andrew,
 
-On Mon, Jul 30, 2018 at 02:39:35PM -0700, Florian Fainelli wrote:
-> On 07/30/2018 05:43 AM, Quentin Schulz wrote:
-> > Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
-> > ---
-> >  Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt | 42 +++++=
-++-
-> >  1 file changed, 42 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-se=
-rdes.txt
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.tx=
-t b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
-> > new file mode 100644
-> > index 0000000..25b102d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
-> > @@ -0,0 +1,42 @@
-> > +Microsemi Ocelot SerDes muxing driver
-> > +-------------------------------------
-> > +
-> > +On Microsemi Ocelot, there is a handful of registers in HSIO address
-> > +space for setting up the SerDes to switch port muxing.
-> > +
-> > +A SerDes X can be "muxed" to work with switch port Y or Z for example.
-> > +One specific SerDes can also be used as a PCIe interface.
-> > +
-> > +Hence, a SerDes represents an interface, be it an Ethernet or a PCIe o=
-ne.
-> > +
-> > +There are two kinds of SerDes: SERDES1G supports 10/100Mbps in
-> > +half/full-duplex and 1000Mbps in full-duplex mode while SERDES6G suppo=
-rts
-> > +10/100Mbps in half/full-duplex and 1000/2500Mbps in full-duplex mode.
-> > +
-> > +Also, SERDES6G number (aka "macro") 0 is the only interface supporting
-> > +QSGMII.
-> > +
+On Mon, Jul 30, 2018 at 03:34:48PM +0200, Andrew Lunn wrote:
 > > +Required properties:
 > > +
 > > +- compatible: should be "mscc,vsc7514-serdes"
@@ -107,69 +71,58 @@ ber
 > > +	       last one defines the input port to use for a given SerDes
 > > +	       macro,
 >=20
-> It would probably be more natural to reverse some of this and have the
-> 1st cell be the input port, while the 2nd and 3rd cell are the serdes
-> kind and the serdes macro type. Same comment as Andrew, can you please
-> define the 2nd and 3rd cells possible values in a header file that you
-> can include from both the DTS and the driver making use of that?
+> It looks like there are some space vs tab issues here.
+>=20
 
-OK for a define for the DeviceTree part.
+Yup.
 
-You want one set of defines for the values in the 2nd cell and one other
-set of defines for the 3rd cell?
+> > +
+> > +Example:
+> > +
+> > +	serdes: serdes {
+>=20
+> Maybe this should be serdes-mux? The SERDES itself should have some
+> registers somewhere. If you ever decide to make use of phylink,
+> e.g. to support SFP, you are going to need to know if the SERDES is
+> up. So you might need to add the actual SERDES device, in addition to
+> the mux for the SERDES.
+>=20
 
-I'm fine with a define for the second value (which is basically the enum
-serdes_type I've defined at the beginning of the serdes driver) but I
-don't see the point of defining the index of the SerDes. What would it
-look like?
+I'm not sure to follow.
 
-enum serdes_type {
-	SERDES1G =3D 1,
-	SERDES6G =3D 6,
-}
+To be honest, I might have mislead you. The whole configuration of the
+serdes is in the hsio register address space. For now, muxing is the
+only reason there is a driver for the serdes but there are other things
+that can be configured (though not used yet): de/serializer, input/output
+buffers, PLL, ... configuration registers for the SerDes.
 
-#define SERDES1G_0	0
-#define SERDES1G_1	1
-#define SERDES1G_2	2
-#define SERDES6G_0	0
-#define SERDES6G_1	1
+So I think I should remove the mention to muxing and just say in the
+cover letter and commit log it's for muxing the SerDes among other
+configurations.
 
-Then, e.g.:
-
-&port5 {
-	phys =3D <&serdes 5 SERDES1G SERDES1G_0>
-};
-
-If you want a define for the pair (serdes_type, serdes_index), I don't
-see how I could re-use it on the driver side but it makes more sense on the
-DeviceTree side:
-
-#define SERDES1G_0	1 0
-#define SERDES1G_1	1 1
-#define SERDES1G_2	1 2
-#define SERDES6G_0	6 0
-#define SERDES6G_1	6 1
+So I think we're good with the current driver and DT, just poor wording
+on my side for the commit log/cover letter. Do you agree?
 
 Quentin
 
---ttyslgyn422axldo
+--aipy2f7xx2epmgoe
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEXeEYjDsJh38OoyMzhLiadT7g8aMFAlthbCsACgkQhLiadT7g
-8aMn1Q//flSQjNEklNYgfyaq/ZlLriC4wdz8c11wAMiMT+ibj2YHlO8+4Ty7Q9Lx
-7XHG9/pabDr1uYkMW1LGtwHvJjrKpfYURKXEycH9GkjWYISClviwF+DLzIFaCKzk
-YvTcBlTh/oAbIq0auau3JTe/FOSx//uOn5la7vdzjluNNZz+NW9Y4ZA94ZZCthLd
-N40uR+5HIf/DSFll/Vf/5ivGh+F5jUT8mTdeDgJpZ7X5RJo+a/FqiGruurMavFMC
-ljldSwDDBmK3UfXxygIpp2nW0K0umaGzF8eshizEPoYB4UHb4a6TCRnuR4PHfvKA
-O+8K1Kuc4dGAO8liD5kCG/x1T/t3ZlK4hrqKzS62XtsF3F05WpaMzC4CT43jTjq9
-qcqDeMZPjoGFNVYzpgTbYRn4+xdU//qpguvnV/tnvgx38+Hqy/fygB9cBJqOzb8h
-WcAe/IaZxeXNOuHrRGhfTea0N6vRNUJhXqLCb7rhlWsIgwn4yw+cN+8vfq5ZHkj7
-GYbFdPtFlIR37ulVtO9W5Rhz1jUqfH7sO5Ij14Z08v/0y3qTcIbadFQCp4APg1yH
-/qj4RTXPSTC/uzCFRaHFZI2MeNuz7vqEzpgeDu4yQmUYmxeAAhAGctvlhsJc7pWH
-moip7728lCPTtAUbjzraThUv9+mV/PYt714TDfjbj2vLYIythM4=
-=UbLu
+iQIzBAEBCgAdFiEEXeEYjDsJh38OoyMzhLiadT7g8aMFAlthbi0ACgkQhLiadT7g
+8aOyLA/9HtLbvOJgwUIZRSo5DLUGfIBcDAtRbCl1SaO8iLbCWTxaIoBuNXuNO8XI
+yUjneskEuXEAf0cuKpvrCmc34rK/ccezT1FoI7GSZ1avKosbpBo7CexZNoIPlp5S
+ABoiNORwbiTeZgth+ppgT1rSYB7RkxH0Rn3PeArX6jOdxUQz2iSZVfDK/6WmoHaA
+tWwfivFI428uVRq+dD5PRUW+eOF4EA+wnvGGL0I/Dl1Tsp6Z93hxdKLrkT6d6pxn
+n/JR5d9r/U7uyTJ20/oK+202y2/dG+5Iy6+UIUFH+Y5CuxeOroJJbLAfhk2yC2sI
+BgKLVqrH5i6UI1dWmdyC1YGKOyQE8WZ3oJ2Nht1VvYs92OKfEF8RIn9v788RdkgI
+bB7s4KM5hT9qnon+t2iw7q1UKmyTCcV1Mcdm1j/yNDWE4grK3DkeOQXBhBhpeZhf
+jFdKmNUkrTCrxtoOLlm7NYNGJLlY9gAmOJiXeGRmQZYnzpJvZ8vbPx0MzSSdoqqR
+wxuNrOC2pzv5zc5Vv33WDtC62Nz5IkZMdVqm4tDlI/HVgcdLgyf/UOuJIqhWd3Zy
+oSLPrS0OrWac72jJ3MYORq+EqxDcdHEqbUl6kaDNlXTwonZ7mHyS92IKdtUIrhdx
+jvHh8+OmPTht1cRXtWpoIvPyOIrEF/H3DV7b5Ikp1eHEDCnjsAg=
+=0DPF
 -----END PGP SIGNATURE-----
 
---ttyslgyn422axldo--
+--aipy2f7xx2epmgoe--

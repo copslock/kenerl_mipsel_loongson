@@ -1,74 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 15:16:11 +0200 (CEST)
-Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:36321
-        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993891AbeHANQH2nC9O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2018 15:16:07 +0200
-Received: by mail-it0-x243.google.com with SMTP id p81-v6so9256739itp.1
-        for <linux-mips@linux-mips.org>; Wed, 01 Aug 2018 06:16:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=QRwr3HK7nt0hGQKlW4/QGEnnlhLebhT7hwSbjCz6vh4=;
-        b=dKPWpRLewCctKBhIttr1QfDzsKcsCU0zg+NuzxJYqUtJf6MiU8Eg8BHnqJFHoVaST1
-         PU2ToXuTUrgNfuuZ+te4D/NROVLpcNGv/Gx9F4OqhRy8QdqH/Acsc+20MsBNaOPEvZIK
-         AIkqJvjC7m5DEYt9na5ddnMgswoL32EIscetle05S4cHYOaW7cVaFsbQqxC5y6OMcZ2h
-         ovnI9206Wvma/v4DLcQrJr1MPviL9plg0pdrCbzwpfXiXaCsKxVBeqtJ0cag0pyYGnQj
-         saLNNLsGPJEu1rXMK5qMNjPlG2olktPh0VY1ermoMniu5QkSaLVBfkNNXRzMGm/51SXa
-         iVUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QRwr3HK7nt0hGQKlW4/QGEnnlhLebhT7hwSbjCz6vh4=;
-        b=EAYsMuuJ3BQsRDfFD1V8YRZudms7SDeb7qaFGuqlhmazBNbM+JL/XrGnCGBMtRNfSa
-         T+E0C4Kzc8VwOtFSvEjuEyvR374dWwSddhOeKAq3Y+FOlmowKfAlgm4XqykuZC2Sqg6U
-         LD/B/C3+lVMxlmEDrcyrqKpTGrNva0Fre2WbdFAS24VldlVb3fLRUDMBIIZ7WZjojC8a
-         dUiNaeWjB/tIqW5vvpdnGWhbSBc4PMFH+Xnzw2fHyOM49RIn5lqu0lYxPny5WtYi7let
-         VsMtXNVSaXxR7///qOree+ptBFfDrTM1RWMGNlSWIc/pLUaZV3J6kkAzTXArS0TEK/Hw
-         1J0g==
-X-Gm-Message-State: AOUpUlH5nzp9y6aottfEXxK/Pvp6/8PMi/qzIl5nfr6ocQTE5eYln8KP
-        +S6wPFucbHIGMhjtCMz+qOk=
-X-Google-Smtp-Source: AAOMgpcSAivVEyJEXin2WtTYvPcsVGH8NRW5xKI+GQvpyXnTtTXDztv2XiVnCT+nK8nUOg5XvKddew==
-X-Received: by 2002:a02:b468:: with SMTP id w37-v6mr23179683jaj.18.1533129361070;
-        Wed, 01 Aug 2018 06:16:01 -0700 (PDT)
-Received: from [10.0.2.15] ([72.138.96.106])
-        by smtp.gmail.com with ESMTPSA id i9-v6sm5194147iom.19.2018.08.01.06.15.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 Aug 2018 06:16:00 -0700 (PDT)
-Subject: Re: [RESEND PATCH 6/6] arm64: enable RapidIO menu in Kconfig
-To:     Christoph Hellwig <hch@infradead.org>,
-        Alexei Colin <acolin@isi.edu>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        John Paul Walters <jwalters@isi.edu>, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20180731142954.30345-1-acolin@isi.edu>
- <20180731142954.30345-7-acolin@isi.edu>
- <20180801095404.GA17585@infradead.org>
-From:   Alex Bounine <alex.bou9@gmail.com>
-Message-ID: <fad8661c-cd8c-3a9c-ca03-5d2f63893a24@gmail.com>
-Date:   Wed, 1 Aug 2018 09:15:57 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 16:32:25 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:58681 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993890AbeHAOcWI7waK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Aug 2018 16:32:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=HZVHIcGBbO59f7jeBPx4lFsq7RRBofTJ/CSi1I5TcGk=;
+        b=hUdWdB0VXUGyE60C42ZwW+GFf/ov+RNxzunrAnzZdDw1IZOVGUeAlGDngswWgIoiMyo7PJcZtUKLVz4EzRnkY+DTEWVH/lw25rgCHre4LgOzfcm46tO8U0WSil3ieYHTa1gJLcyW3GGBlBbvhpPf3uU8ZSa9snkrkL8XQrpa8pE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1fksAF-0004PV-Hs; Wed, 01 Aug 2018 16:31:47 +0200
+Date:   Wed, 1 Aug 2018 16:31:47 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
+        f.fainelli@gmail.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, allan.nielsen@microsemi.com,
+        thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
+ Ocelot SerDes muxing
+Message-ID: <20180801143147.GA16322@lunn.ch>
+References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+ <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
+ <20180730133448.GD13198@lunn.ch>
+ <20180801082413.2mjm52vwxw3anun6@qschulz>
 MIME-Version: 1.0
-In-Reply-To: <20180801095404.GA17585@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <alex.bou9@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180801082413.2mjm52vwxw3anun6@qschulz>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65346
+X-archive-position: 65347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex.bou9@gmail.com
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,36 +52,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2018-08-01 05:54 AM, Christoph Hellwig wrote:
-> On Tue, Jul 31, 2018 at 10:29:54AM -0400, Alexei Colin wrote:
->> Platforms with a PCI bus will be offered the RapidIO menu since they may
->> be want support for a RapidIO PCI device. Platforms without a PCI bus
->> that might include a RapidIO IP block will need to "select HAS_RAPIDIO"
->> in the platform-/machine-specific "config ARCH_*" Kconfig entry.
->>
->> Tested that kernel builds for arm64 with RapidIO subsystem and
->> switch drivers enabled, also that the modules load successfully
->> on a custom Aarch64 Qemu model.
+> > Maybe this should be serdes-mux? The SERDES itself should have some
+> > registers somewhere. If you ever decide to make use of phylink,
+> > e.g. to support SFP, you are going to need to know if the SERDES is
+> > up. So you might need to add the actual SERDES device, in addition to
+> > the mux for the SERDES.
+> > 
 > 
-> As said before, please include it from drivers/Kconfig so that _all_
-> architectures supporting PCI (or other Rapidio attachements) get it
-> and not some arbitrary selection of architectures.
+> I'm not sure to follow.
 > 
-As it was replied earlier this is not a random selection of 
-architectures but only ones that implement support for RapidIO as system 
-bus. If other architectures choose to adopt RapidIO we will include them 
-as well.
+> To be honest, I might have mislead you. The whole configuration of the
+> serdes is in the hsio register address space. For now, muxing is the
+> only reason there is a driver for the serdes but there are other things
+> that can be configured (though not used yet): de/serializer, input/output
+> buffers, PLL, ... configuration registers for the SerDes.
 
-On some platforms RapidIO can be the only system bus available replacing 
-PCI/PCIe or RapidIO can coexist with PCIe.
+When you are using the SERDES for networking, you need to know if the
+SERDES has achieved sync. For example, when the SERDES connects to an
+optical SFP module, the SERDES bit stream continues unmodified over
+the optical link to the SERDES in the peer. The optical module can
+tell you if it is receiving optical power, but it cannot tell you if
+the optical signal makes any sense. The SERDES however knows how to
+decode the bitstream, sync to it, etc. So you need some registers in
+the SERDES to get this status information. Typically, you can also get
+access to the SGMII/1000Base-X code word, so you can do
+auto-negotiation, or know if you need to send each bit 10 or 100 times
+in order to do 100Mbps or 10Mbps. If you are connecting to a PHY which
+can do > 1Gbps, you need to change the SERDES between SGMII,
+1000Base-X, 2500Base-X, etc. Before you can say the link is up, you
+want the PHY to tell you it has link to its peer PHY, and you want to
+know the SERDES is ready. Typically the SERDES is last, since you
+don't know what to configure the SERDES to until the PHY is finished
+negotiating the link to its peer.
 
-As it is done now, RapidIO is configured in "Bus Options" (x86/PPC) or 
-"Bus Support" (ARMs) sub-menu and from system configuration option it 
-should be kept this way.
+If you look at any of the Marvell SERDES interfaces, found in PHYs or
+switches, there are dozens of registers for controlling the SERDES.
 
-Current location of RAPIDIO configuration option is familiar to users of 
-PowerPC and x86 platforms, and is similarly available in some ARM 
-manufacturers kernel code trees.
+Now, it could be we don't have a clear definition of what a SERDES
+is. The Marvell documents has a lot in its definition of SERDES, where
+as what you could be purely a 'dumb' parallel to serial convert, and
+all the rest of the logic is in the Ethernet MAC and the PCIe device?
 
-drivers/Kconfig will be used for configuring drivers for peripheral 
-RapidIO devices if/when such device drivers will be published.
+Now, back to my original point. Where are the registers for 'the rest
+of this logic'? If they are in the MAC address space, we don't have a
+problem. If they are somewhere else, maybe you will need to add
+another device. What is this device called? That is why i'm trying to
+differentiate between the 'SERDES-MUX' and the 'SERDES'.
+
+	Andrew

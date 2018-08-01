@@ -1,87 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 22:13:14 +0200 (CEST)
-Received: from mail-bl2nam02on0119.outbound.protection.outlook.com ([104.47.38.119]:57580
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2018 22:15:47 +0200 (CEST)
+Received: from mail-by2nam01on0114.outbound.protection.outlook.com ([104.47.34.114]:64781
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993937AbeHAUNLIbGih (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Aug 2018 22:13:11 +0200
+        id S23993937AbeHAUPnv8BHh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Aug 2018 22:15:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3doy/JADrtyIUyXq5mLrP5GF8gE+3EadUF1yYlYdKW0=;
- b=bxz6P2Sj3e6D9wDeNyK/480iH3V6uZiR3F7Q7zq98Lnvd4amIXLuEAceOM2l2ANn3s0RcHiz8PGd+wmt/bKLeax9j982udKiNvbisWf7LaOcuWD6AzehUOGM8Own77t1wWMzYg1UhR3OH6dLpWdnM63Dz0pQMY53J5FtwifJijE=
+ bh=qTRlCjyj0kWjgf6nkZZWcrw9EtdcqoakXJD083mn+pU=;
+ b=iGutALbqtbJkhp+johL93tp84fZLV5TMZJxrXn19yrUKc/1JaFFmU1EJgdBdtscfDZOvo7y3Wm3ka5ok2Li2MN6duPCTGZpgThG3GAi6VjUum5hCeq6SWTgUAtGGj/7V+HUpZ9x6HBbQLQmcMRgolHVNqAZMw6IbRn2UiZAQiFY=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 Received: from pburton-laptop.mipstec.com (4.16.204.77) by
- SN6PR08MB4943.namprd08.prod.outlook.com (2603:10b6:805:69::33) with Microsoft
+ DM6PR08MB4939.namprd08.prod.outlook.com (2603:10b6:5:4b::20) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1017.15; Wed, 1 Aug 2018 20:12:59 +0000
+ 15.20.995.19; Wed, 1 Aug 2018 20:15:32 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Remove nabi_no_regargs
-Date:   Wed,  1 Aug 2018 13:12:42 -0700
-Message-Id: <20180801201242.21898-1-paul.burton@mips.com>
+Subject: [PATCH 1/2] MIPS: Remove unused sys_32_mmap2
+Date:   Wed,  1 Aug 2018 13:15:17 -0700
+Message-Id: <20180801201518.27246-1-paul.burton@mips.com>
 X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BYAPR03CA0036.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::49) To SN6PR08MB4943.namprd08.prod.outlook.com
- (2603:10b6:805:69::33)
+X-ClientProxiedBy: MWHPR2201CA0075.namprd22.prod.outlook.com
+ (2603:10b6:301:5e::28) To DM6PR08MB4939.namprd08.prod.outlook.com
+ (2603:10b6:5:4b::20)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ce72cb2f-9b39-4a98-1958-08d5f7eb2e01
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4943;
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;3:CstsBYvAtOWM6Qr9WH4AmoGFoaogUfb9C6D1i8G1GC+8gmYXGvjSVgz+1M4MfU74w3ErXyags4Je8c84ljS6t3sgPu7DZhaFDIlqP08yGkLmY8KlL5XuCfq2N2ZDW+q/s+GyUV1mk8UjLVWjWh19WsFzNJrUcD0F6q6p0xwpWIURI2+FJ1rBXk0e4jZSyIZP3Hlf09l/74V2tYNZcONW7r+5e0/usmkuB91+J8FbVhSjuTjtmt3IC5y316kOXwa4;25:Q05rhck/6ctilH0MLxRh8PSpnvutRa4nWaEtAd9tXu3zjB3AJdHjPbnrbS27/MSs+UFwMwf5Ym2R4PqdIGaw5V7EkJq/9ZeegZ0CIy2iic/OkTCE2K+XH7t+DiPQbjZYzMxbQA6YFef9Fmi1lSZxi/t/lwwlqDWhXnauJ8pDshziX/TibtAR84TFNG0krgcneTQuGBh9/G/4ET2m0rkRiycsSJwUhNrrpxPmmxISrSt8iVOTxIsyKDqJwNkFL4jwNsUMpYEjSxuvmeTWKWBo+oUyCEH19asSqUmMptz4UNpDEO/ik6uRwKE5F2u59ToxtGLAlP3BLesdgpfK2IxLoQ==;31:IVPknA8XvNzDP+t3HzVso2Z3hsuKfIj8jDQTwTgOmXRrVE0O10rUa3nW4GD8wLX+fIhbM2IjHwltjRSUT8wpzzBTjb4w7UNzqZjAGu/0XshCeyIBAADk6p8aqI0mvQvb7BNur4wOME95LexaRBtjqCSsJOwBFRlKQA2kfVdnN7Pq0ARhIGbec54YKtyB0qbLI75ZQDU+vPME6XtFY2OXQcBtAyA9GRdomUA0UvtKrKc=
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4943:
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;20:qZyXTpNcjmTGNWHJB+EO1Py8snxdM69YhLJx250m0JKJF9zUGAJqRDKWu8IsY2xkpYw+WF5bCDCq+43is/EhssOG91ja3HqlKxGlCyfQ9UlBTUM2ehG43tsNR3vPygAyC1anQnwhZGwSnyNHwboVtOK8lyh30M6VRdrel7550mYltI3T4B5pLW4ws04ktZ+Z3f3IS0twNJywVHsKGIWSOFRG1wd0TyypiuMVdj15RkYK+NmDhW8iaJr8NGObvaED;4:s9kKmwIcybI6ZkEGCQzlQTtimOCSCIzVwPp9q+Yv2G9P+RSS2aYUQ2s//2WFll9Tsi71QE/lYaZBXIC/zCuPhg7+6tOQYNDAMBcqkFFr6SwB7TDuSKTBqTAxxdNa/VpgX6oiFQrSSeKpPBlNFeD5owqGFeaDL55LkiM+l6I1xua2AH5AXxj0h07zVXSocKOK4eX7crAUqNGCzE+jXxKlygGeeV9X6wZDfX8Eh1jMeLHPpVq9FkS5d3eJXai7fR9KrzAM+9HW750kKM2cXtSdyg==
-X-Microsoft-Antispam-PRVS: <SN6PR08MB4943163B6A56E18BE50168ECC12D0@SN6PR08MB4943.namprd08.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 1b9dd359-c6b1-4063-65ed-08d5f7eb891b
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4939;
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4939;3:cFNXV/cExjsBV34igrRCzzfSf/Jg00BkMUaLPJgNeqNjDT0D0J8JHRzBeFYk2DfAuRbK9LcH+YsER42vZ8LXrQ5GtVHTjPzMr6O+HMqhLYyjhP3n1Ql4Ksavf66Ete4d1tO7sICuIIUz3L1DLmrxfwEf05Fl6tX9vDkpZ7WKtz3+DqdeVlFDswS6Vptb9DmPE7nKrLkUHUYClgjm4rWSa8Y2MmCObKubQ5l2iTWXadg7Jx/IsH/yXdBElNeYwd0q;25:5H8f8lgXlwyeeDRa564kfoq09oo1yqqWZQnD8Qyv+FwjDkrSqb0xPL4dZ7W3fOH493GoieElaZ5NKWRqu+YsMalR3CWjKBp7OwUzv89mGK7DP6+yvZs03gzAAft0vE7/iRpD8f/0KqFN+HvkQJljRYl/uiGTvUKhBV3YZOhLtuP8AQP1C4t9n48+7R9bKtwnFUMUdiBd+LE8++U/zh0jAVKgHP0KaOEMCx5r52eHZvcbqFaJ93abSpTH6bNahhbzL4nHzxYc1l5p3PkOGiHV2aluV/Y2jBoqEMEu1hTx31/9MbyKNVMoV+neUPzEKw0+S4KOgKFu+dKzkXwJ5fRcWg==;31:HzBk2nMzNJRcphnEU0LxUTOt1im6nb71TpqhoInQwqgLf0nZIC9csBNFqlI/1oSKWyHbTs/+5PB4J067EDSVpRCAlxEF2vB65/FFypktxlwU1gSHNDR68LxoqMwc+8UNUSn/maa/fg2l51QhHahOCj987jzQyOcZEASBqJVjJWs5RDcn90sHqqqozYn75mAQPX/T5/c7r8bcLLTpAPL5IE2SuAWSZYvOKX/WUGmIV00=
+X-MS-TrafficTypeDiagnostic: DM6PR08MB4939:
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4939;20:DdWTG1s1bg5oiatqKFzozKKzWltO9QsEXft+J8AUvpE3nHjwOIXPA2eGelYD3aTaQMB1vke1idpeZFnMrelTtvYOy7ZngyFPYW/tJmzvQHHgQHvIpU+xAA0TBc6drNwuG8QWWTPPrfBYB1pnLPOQHh9JAHMd6stBUvV7KCrxigY+N8BppTfdQ03pdNiYat9eG1cx6l2+e960KNc+ovSPNBJk+T9FGwbab3pq8ehr96XA5JJpRM82B+BlKYMV/baJ;4:NSYcjhB3wqnzCxzAy5FAZIuZmfP5ONFsJ4Xz9QrlMUa8cOMlkW97VzLCpbUESJ4REGHQU56zUuNBI8EdiKVuVXCTSiY/fvqWD5kH32aaGnKAQeHtdJz23SGUEhykSKL7fys0Ey3zx9G0nrLpMdfa6ko3BpQLylm6qiCTbI39p823DaXvzrgObkUydnWDjHVoyDI3XAa6fWUJS3wSJqGpkxG8RBx+EGuC24ELtdnFus9/+NI/K6bvA30VCGSIos+Q/lxYuhcJEQRgREA86ln8VQ==
+X-Microsoft-Antispam-PRVS: <DM6PR08MB493982EB64D12259A95BA170C12D0@DM6PR08MB4939.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(3002001)(10201501046)(93006095)(149027)(150027)(6041310)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(20161123564045)(20161123560045)(6072148)(201708071742011)(7699016);SRVR:SN6PR08MB4943;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4943;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3002001)(10201501046)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(20161123564045)(20161123560045)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(6072148)(201708071742011)(7699016);SRVR:DM6PR08MB4939;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4939;
 X-Forefront-PRVS: 0751474A44
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(39840400004)(396003)(136003)(366004)(376002)(346002)(189003)(199004)(7736002)(8676002)(2361001)(106356001)(53936002)(105586002)(6512007)(4326008)(42882007)(48376002)(81156014)(66066001)(50466002)(16586007)(54906003)(305945005)(6486002)(81166006)(8936002)(53416004)(316002)(36756003)(2351001)(25786009)(97736004)(26005)(478600001)(47776003)(14444005)(476003)(3846002)(6666003)(956004)(2616005)(1857600001)(486006)(44832011)(6116002)(2906002)(1076002)(50226002)(68736007)(6916009)(52116002)(51416003)(5660300001)(186003)(16526019)(69596002)(6506007)(386003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4943;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(366004)(396003)(346002)(376002)(39840400004)(136003)(189003)(199004)(2361001)(44832011)(66066001)(6486002)(6116002)(47776003)(3846002)(6916009)(1076002)(2616005)(386003)(42882007)(956004)(2906002)(476003)(6666003)(486006)(4326008)(68736007)(316002)(6506007)(2351001)(97736004)(6512007)(69596002)(7736002)(106356001)(5660300001)(53936002)(16586007)(81166006)(81156014)(105586002)(8936002)(36756003)(26005)(25786009)(50226002)(186003)(8676002)(16526019)(52116002)(54906003)(53416004)(305945005)(478600001)(50466002)(51416003)(48376002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4939;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4943;23:3k77ZOyDD5/xmcJARWquso6AtxlJAqJdDOY1ntq8g?=
- =?us-ascii?Q?5QT7z7RmXrkV5+FLsy2VEoGqkkdkRbPjstdiJPi1Zkqw3hmnRDG2ORkfPjuR?=
- =?us-ascii?Q?C6Wl4+kfhAvmmtrFHz/9qu+WWFlcZW6JqRnsMyXcuWW0u0QhTJ6/ip/GWkHl?=
- =?us-ascii?Q?R7FTmXN9LZG2NXw5mnLYFHs7E4KJQO2eJHzWJNrZb7AwS0ovLVUZFm07DfvQ?=
- =?us-ascii?Q?/ChVGmooSzrEvilr2NKduuQahSS5tRYyU/hKMv+mEXocnRbQC9klIM7g7FlE?=
- =?us-ascii?Q?8Nl22g8jdSY1oUtU41iilpcjDfcb04/yYTeaGQ5EBDFJ2kv/PKBzxDBDwSIV?=
- =?us-ascii?Q?10iZ3gshrFSprY7s0r3KMmozbC+9UXr5R8hXmz2LL+ypjz2PtQYSQ1pHOZ4Z?=
- =?us-ascii?Q?jKXU+M6RacibXSwOT6L2i7qdCUJVjvxt0YQm5oPH2jJooCylzC8UqJ/W2LwJ?=
- =?us-ascii?Q?ge5r/FLO4gznmbsTD4O0Jk0Q3mAaJEi+rOhhFY7lJEXsjZsm9HL/00QzxNIf?=
- =?us-ascii?Q?pK85po9KaJu2gtlvXgz9hujG5Qnb3GwnGhWzin75BAoJuAbFoufhFBK3XNhG?=
- =?us-ascii?Q?OWj6SxhAOhbUeBmYkj3SXbYaKxPanMvp8TDP5PYdAVrMgRFWU7oMyDTY+Lmk?=
- =?us-ascii?Q?Nzl5GdZf2jNxHpmU8YDgw/pCiGiyaTPbiaJlXL3anEljDRmTROqH5mUz36C4?=
- =?us-ascii?Q?GZaPRyBt/haTRWXB644/dEn/R0Bze6wAPqzpDVqbEXijNWdthi7BpV0TlJSH?=
- =?us-ascii?Q?9Nd/7mc1aL8tCqJiD5tVQBEkU5ngFdxNKUkPM0RpuvNoNv/nzvEIin/nGtwh?=
- =?us-ascii?Q?ITKgza18nSeAfImgekvOm+4Vrn5srpxopNvBuBK4aCWjuLZPG+2+XT09yUzr?=
- =?us-ascii?Q?ew3boCtl7SD68YwS5ggfJk/+SJuXukTWZehG2S4CVo/HnlojvRUmGwoDf7Qv?=
- =?us-ascii?Q?8IsK3u3B1QPe8wF8DbzDOPYyABWoG4WJ20/4bmnOrMqBtCJLtGZ8a31ZW4AQ?=
- =?us-ascii?Q?ApmSfa+bTcuP9tKgA6W2jG1h9Im/2cOZxR8NrveusKpt6KJ7DrCeRxJSXGvx?=
- =?us-ascii?Q?DzXULH1kp0qZEbfIjMjJex2Ms9fy2UK5loVGhuIurLTcL57g3QOL7/sBenF3?=
- =?us-ascii?Q?EfJtvn1Ei94bpDgTUxb9JNJFVpsTY66/ABmQ7e0QduDC+92lZ0OxlW3Tja05?=
- =?us-ascii?Q?lIowZFA7/e+bVaYVQQUXqt46UH6ppr1rTZdmbyt2/PwSJnkKzZGE4uHaeJu1?=
- =?us-ascii?Q?2EgwAs2nQ56VlW/ZevfbNMaGL3XXED38dfUMik6O8zJdHdcGGUjSciEXrm/Q?=
- =?us-ascii?B?Zz09?=
-X-Microsoft-Antispam-Message-Info: d8TxE3AGrXrgc77QaC/8gTd0IwGrsgmKLQBP/dUH8to3dyjn18r+fpzOJ6n/U1XLnpsjTnTlpz2RKNPRM0/M+ksSrtKTVEKbTslsR6gyv471X7MkWHeDowkjjmTZyLcqJaRwWQARFwO42qLvPI82PKnjfTnQ4FZqt+5IMu7dQ1i11QZhjGZxsCDcUJh0N2tIf3AJYpoHs8IqMa44Zu0ezt618gL40oUjcI94RPa+ZHlFMik8k58F7WSEtRExDWq9okzvhbKPd0e6EmE8LgH0HwC0eqYRXxYWs7UMuIxJCYzA9iAVZCWFB2ByEJNf8NPnjbl3IwBHmIgPusMOk14+Zl5VtKtQvC67ouW8KsBJ46o=
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;6:JQwz1IU7vhLlLJo1qE7hqBzMl6THbzncTMZ/7Rx4MTnEWspx0OIzfGb+MJwlFAm+39NGHIArma7nwdRKWszb4sqj2a2f89R5UICBvcuWdBQKREoeziGlrTd4TG9tUlC9XpYefmuWQqY634WHPQM2/gfqntrKGWxq1jnSEekYEkxPD8osgn9gU64PVlj5Vlruu5RUnaDj/ZW6P2Q+uc4N93VxRb3q64ZZc11Pho9M97GuQnANwnIapdQal6nOyem2TYwLe0fe8y9x1BH1PvrYR6WU55KDKwlhhV8Nm8vPKLU7v6zMdksVfUSA/J67g+4L0C/yHZfRLJa8zcAlx9xXybKXvwhuVoqXqmTPrX2k8OCMI+F5mlWEi6paw9+xsGhvl9y10FokhmI6I8zgXbIUTwHCu/9864ktrDfQTcgFdQLM2nOSuyZaSI1oZT8bulIKh0ESpLwhHVcxCP99xicT2g==;5:cZ/hgrNJ54j9s5c5e8Yq5gRhPPzYcjac1DjEQKZ/3MQwzQjDa0IMoZfSyW/i4PZBYotY9oVm0zPN7wiFP0LkoAtBD+PrJpgDkvv3jEm6WLPsDhy42aGp4GhGMu+8sKSsA4nRkZMMjA0PnGzWpO5OBm8Vh7ITW3mVE5OBYLXuFFg=;7:+CCmr2A50EJavLcCypDtbq2rGszgpXzIc0rOmtsvBJpDFcf+ThJ2kqOg9OgV5cIHCpyyij0DXbSZb5gto8PJesT1N5v9nI39fvoT9ulN/Vgu5uWI0rXGPUJcSGW1/RfVBVecjs2Tn+7cxai72iplBZjXONIehbedwfaOftve9EiYWlTuY2QLyYHy5orMPL2uXifcTQwKp+xIL1bW5GZfSIcMo2oWVW1YA+qnzC8gtzji/dEQdqc9kBHfNuHBJdhT
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4939;23:AwVO+StKBX4tS2CrAs9yQKG09wQhziA6Efcd5l1DD?=
+ =?us-ascii?Q?D7MUrCWfwuIz63xB/SI7h0vkoKGdvjhaQYkoug6kiwKGyYWPfUqKm0Exxxqh?=
+ =?us-ascii?Q?Q2zgfBF1DZDnEX//uYBBHc8aopdw2GyaKMsG6yuKlg8+7N0zp+coHjK7LI0v?=
+ =?us-ascii?Q?gJGKrZZu4oKa4Lc1NBhvhxo5tSpV/YrO12bF7HJZZTVNVN22D8i6AtX6rjAy?=
+ =?us-ascii?Q?BdEoq8mPx6ehU+zVwZRUtHX8Xrral6v5cIeIlsrzRkwoX49GkeybRhNloETJ?=
+ =?us-ascii?Q?S9FnQncvbxHGr7akIg1RCJCLaMspimQkqSaod7Wt1KEQ8cxMFJhxb9A+1FuU?=
+ =?us-ascii?Q?73LVWZ/ejJSRl/StiV2kDziPV4zeKb15beQPvPL8QWp0hN5xz7+zc2Eg8TMR?=
+ =?us-ascii?Q?6+hhiHUXxm0jY4XWH4aHhCs2Zk9ZVrHqXOdqyoh6ImB5LNYeE97XE7rN2qn1?=
+ =?us-ascii?Q?wHcM1dcmJJMXU61+eAgMqN9e0CovWozCqarj3lp+vmYFTsqfPDM61bNxnuap?=
+ =?us-ascii?Q?xgI3ZSN8SyL4+WlkrkVIsyi2r3vze++fHIwuQwT0FwQosnfhzWDbVQxA+i0e?=
+ =?us-ascii?Q?lDOtLp2fJbfCGcJyh9OYc0GRVgS94MS+BrocBtu/knjn7/IG/xNsqvyYqylZ?=
+ =?us-ascii?Q?cwrhRa5+YsBn67QKuOF0jhSUH+kqkIIy8iGLncxtoSIWwafOro2Qui3ysJIr?=
+ =?us-ascii?Q?j6bpD7OG/BnZgbGvKCwUOMWCSRbTS+NrKBSYnxJRpKiGUPwQwgXwIOzNWIsJ?=
+ =?us-ascii?Q?ZkG+iHSlcoutXmPBYAApHGJ1yJ5LYRN5Bg/NGlfoL0WrDneQWHA0Gz+ZYWpE?=
+ =?us-ascii?Q?45lU1suliFZ8CbuyybisWBmDcpDzsRAeULm6Vc6YFz4KUcAekjEg7Iq2FsSP?=
+ =?us-ascii?Q?mvmaMsFIZhTA8VOfl+cPj0TIz1KeJ+4+9QXfjIfJRWYdzJWoDzRB2OFOIans?=
+ =?us-ascii?Q?8ni/bp/hh6vuL2wGaCQ/Ts8F/bI5MnX5mpf3SUfcAE17pON7NfMoQUIWSryF?=
+ =?us-ascii?Q?zxiFoK5dGfMHPnjutBS2ZPD1jZPTd8p9OYjOnH4IazDXI1/Xf2XupWvSi/jm?=
+ =?us-ascii?Q?+s0Za+DANo/oTHApO7hY7SPmbFvWvEP91aD1vVIwde+mq//2HwCbdfufZheL?=
+ =?us-ascii?Q?Bhmj8LINfYhO8/neT10vN18pM//YpjZ2CgFKw/6FT6Uakwe01coJ3V9RHR1O?=
+ =?us-ascii?Q?arnpFpH4ein3DMDjC03YBQvXkvMSNc9Wfr4PnUtYsHAHh/vgQVYVoOYklPGr?=
+ =?us-ascii?Q?1/znIbhlRKve8C+eJw=3D?=
+X-Microsoft-Antispam-Message-Info: oXxdzovYv/CCvLHefmgO9IZO9SqOXByBVBGBE0svVx88KNVJpeiCUPUx70TfTHqHRBicKqCkCg2F80mshiFPpNJQyTeFH+nj9zlYI7p2uIXc/Lg5FR/qa9N8+O+PJDwNMbwavLcXzt9U8eGFZSBIe/weWCSIKVsjQ1M2bZgchRvUs1uByaBd+wbz7wi8vE+K9jDsNDJJE6uNa6CYfbHmA0LR6vf+5XQ2XyNIGGGnxAphsP0Sd7JS31OGnksTYLa/p2tYaVNGIqZjcOdirZf9NIkxjAY4EFTt77hdUye3qlnHa/bLeYP8WdheoErya8ik7byxWPgUG8TFNUj5GWQoUPIX44QAVg6BGuGdc/NO6yU=
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4939;6:QD3YtHBJs8beckK8oKZeIVDjrKQ1EO/IO13ZJpxSsuStAAchAcZcupyEqixEM4qckH9ZL0FfT8AhRYLLItxxfpBz5E1Lb+7n63zks52xY6KDT20DzXvPkX+6zf6FHGZ7ibDOuTBOysgEwCIwKU5DXhADfjur3BFQlR40mAQAKhL1XtCeHdfki8kuqvb8rQ2lZtJeO24icXH14Z/WWhm7IXnnRmXDY43paFVqrdIZGJk0wPv7HZB7XRLtpl1x0mOvNITE+YHp81a55Zi6lwdHjlSzhRIGPjJjTBjMc6I26Yo22818FP5YN59DeHOAkwUh3xZxYJtbaDBVmDO+AfIFVuRhxEotdY2C3ha1B26JUfQewVy4Pr8io+E7WjHE4kkJfwqkbvoGSsztKOOJ17f8G3smxlbdSx3YKLIR2LngqNtUA8+GrGJ/zYPfnmkZW6Z4DoyWFOBZa93rQjA5dA9XJg==;5:iAQokncri0JRb/89nCqAnuyJXu2H2/vYkga+pKSRKHcnY5Dho7lk+knmaEVR/SVHSr/7S7XgkYWBGIf2cglg7Puae4pKValwojKkn7ndTIjkuD/snJZE9jCumKb+mKWls9n4g1EpgCRfu2+BfOdrH0Gan0H+NqPJqRrm24Ax+Io=;7:cnWTHoq4qzPmiB+JkhVKK6ydrKZY5qw9RPJhTrwy1/ZiWsiy4z13C55rng0kOq/xd8+C6X6MxrDQe/Z4iE97ta75rBVAD7bKOyEp7JrWqR3tlQcbXdAgbi6RTff5RiYjOVM69bd49AvydzdabP5KFkRZHE1Ac7Gtt3f4OV6r7bq3Bcjv4DPWQXS1hEQGGFbEBdWDsyskww5VF7uKHKsBrBSaY6ZTiQoebczlPTJCY3QQne0KK9dQKHwvseo8Ya0G
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2018 20:12:59.9329 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce72cb2f-9b39-4a98-1958-08d5f7eb2e01
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2018 20:15:32.8810 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b9dd359-c6b1-4063-65ed-08d5f7eb891b
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4943
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4939
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65348
+X-archive-position: 65349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -98,250 +97,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Our sigreturn functions make use of a macro named nabi_no_regargs to
-declare 8 dummy arguments to a function, forcing the compiler to expect
-a pt_regs structure on the stack rather than in argument registers. This
-is an ugly hack which unnecessarily causes these sigreturn functions to
-need to care about the calling convention of the ABI the kernel is built
-for. Although this is abstracted via nabi_no_regargs, it's still ugly &
-unnecessary.
+The sys_32_mmap2 function has been unused since we started using syscall
+wrappers in commit dbda6ac08976 ("MIPS: CVE-2009-0029: Enable syscall
+wrappers."), and is indeed identical to the sys_mips_mmap2 function that
+replaced it in sys32_call_table.
 
-Remove nabi_no_regargs & the struct pt_regs argument from sigreturn
-functions, and instead use current_pt_regs() to find the struct pt_regs
-on the stack, which works cleanly regardless of ABI.
+Remove the dead code.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/include/asm/sim.h   | 12 ------------
- arch/mips/kernel/signal.c     | 20 ++++++++++++--------
- arch/mips/kernel/signal_n32.c | 10 ++++++----
- arch/mips/kernel/signal_o32.c | 20 ++++++++++++--------
- 4 files changed, 30 insertions(+), 32 deletions(-)
+ arch/mips/kernel/linux32.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/mips/include/asm/sim.h b/arch/mips/include/asm/sim.h
-index 91831800c480..59f31a95facd 100644
---- a/arch/mips/include/asm/sim.h
-+++ b/arch/mips/include/asm/sim.h
-@@ -39,8 +39,6 @@ __asm__(								\
- 	".end\t__" #symbol "\n\t"					\
- 	".size\t__" #symbol",. - __" #symbol)
- 
--#define nabi_no_regargs
--
- #endif /* CONFIG_32BIT */
- 
- #ifdef CONFIG_64BIT
-@@ -67,16 +65,6 @@ __asm__(								\
- 	".end\t__" #symbol "\n\t"					\
- 	".size\t__" #symbol",. - __" #symbol)
- 
--#define nabi_no_regargs							\
--	unsigned long __dummy0,						\
--	unsigned long __dummy1,						\
--	unsigned long __dummy2,						\
--	unsigned long __dummy3,						\
--	unsigned long __dummy4,						\
--	unsigned long __dummy5,						\
--	unsigned long __dummy6,						\
--	unsigned long __dummy7,
--
- #endif /* CONFIG_64BIT */
- 
- #endif /* _ASM_SIM_H */
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 0a9cfe7a0372..19f778c33ab7 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -592,13 +592,15 @@ SYSCALL_DEFINE3(sigaction, int, sig, const struct sigaction __user *, act,
+diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
+index 318f1c05c5b3..d41855927996 100644
+--- a/arch/mips/kernel/linux32.c
++++ b/arch/mips/kernel/linux32.c
+@@ -61,16 +61,6 @@
+ #define merge_64(r1, r2) ((((r2) & 0xffffffffUL) << 32) + ((r1) & 0xffffffffUL))
  #endif
  
- #ifdef CONFIG_TRAD_SIGNALS
--asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs regs)
-+asmlinkage void sys_sigreturn(void)
- {
- 	struct sigframe __user *frame;
-+	struct pt_regs *regs;
- 	sigset_t blocked;
- 	int sig;
+-SYSCALL_DEFINE6(32_mmap2, unsigned long, addr, unsigned long, len,
+-	unsigned long, prot, unsigned long, flags, unsigned long, fd,
+-	unsigned long, pgoff)
+-{
+-	if (pgoff & (~PAGE_MASK >> 12))
+-		return -EINVAL;
+-	return ksys_mmap_pgoff(addr, len, prot, flags, fd,
+-			       pgoff >> (PAGE_SHIFT-12));
+-}
+-
+ #define RLIM_INFINITY32 0x7fffffff
+ #define RESOURCE32(x) ((x > RLIM_INFINITY32) ? RLIM_INFINITY32 : x)
  
--	frame = (struct sigframe __user *) regs.regs[29];
-+	regs = current_pt_regs();
-+	frame = (struct sigframe __user *)regs->regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_from_user(&blocked, &frame->sf_mask, sizeof(blocked)))
-@@ -606,7 +608,7 @@ asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs regs)
- 
- 	set_current_blocked(&blocked);
- 
--	sig = restore_sigcontext(&regs, &frame->sf_sc);
-+	sig = restore_sigcontext(regs, &frame->sf_sc);
- 	if (sig < 0)
- 		goto badframe;
- 	else if (sig)
-@@ -619,7 +621,7 @@ asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs regs)
- 		"move\t$29, %0\n\t"
- 		"j\tsyscall_exit"
- 		:/* no outputs */
--		:"r" (&regs));
-+		:"r" (regs));
- 	/* Unreached */
- 
- badframe:
-@@ -627,13 +629,15 @@ asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs regs)
- }
- #endif /* CONFIG_TRAD_SIGNALS */
- 
--asmlinkage void sys_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
-+asmlinkage void sys_rt_sigreturn(void)
- {
- 	struct rt_sigframe __user *frame;
-+	struct pt_regs *regs;
- 	sigset_t set;
- 	int sig;
- 
--	frame = (struct rt_sigframe __user *) regs.regs[29];
-+	regs = current_pt_regs();
-+	frame = (struct rt_sigframe __user *)regs->regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_from_user(&set, &frame->rs_uc.uc_sigmask, sizeof(set)))
-@@ -641,7 +645,7 @@ asmlinkage void sys_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 
- 	set_current_blocked(&set);
- 
--	sig = restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext);
-+	sig = restore_sigcontext(regs, &frame->rs_uc.uc_mcontext);
- 	if (sig < 0)
- 		goto badframe;
- 	else if (sig)
-@@ -657,7 +661,7 @@ asmlinkage void sys_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 		"move\t$29, %0\n\t"
- 		"j\tsyscall_exit"
- 		:/* no outputs */
--		:"r" (&regs));
-+		:"r" (regs));
- 	/* Unreached */
- 
- badframe:
-diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-index b672cebb4a1a..0e3e5737c28f 100644
---- a/arch/mips/kernel/signal_n32.c
-+++ b/arch/mips/kernel/signal_n32.c
-@@ -64,13 +64,15 @@ struct rt_sigframe_n32 {
- 	struct ucontextn32 rs_uc;
- };
- 
--asmlinkage void sysn32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
-+asmlinkage void sysn32_rt_sigreturn(void)
- {
- 	struct rt_sigframe_n32 __user *frame;
-+	struct pt_regs *regs;
- 	sigset_t set;
- 	int sig;
- 
--	frame = (struct rt_sigframe_n32 __user *) regs.regs[29];
-+	regs = current_pt_regs();
-+	frame = (struct rt_sigframe_n32 __user *)regs->regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_conv_sigset_from_user(&set, &frame->rs_uc.uc_sigmask))
-@@ -78,7 +80,7 @@ asmlinkage void sysn32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 
- 	set_current_blocked(&set);
- 
--	sig = restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext);
-+	sig = restore_sigcontext(regs, &frame->rs_uc.uc_mcontext);
- 	if (sig < 0)
- 		goto badframe;
- 	else if (sig)
-@@ -94,7 +96,7 @@ asmlinkage void sysn32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 		"move\t$29, %0\n\t"
- 		"j\tsyscall_exit"
- 		:/* no outputs */
--		:"r" (&regs));
-+		:"r" (regs));
- 	/* Unreached */
- 
- badframe:
-diff --git a/arch/mips/kernel/signal_o32.c b/arch/mips/kernel/signal_o32.c
-index 2b3572fb5f1b..8409038e4848 100644
---- a/arch/mips/kernel/signal_o32.c
-+++ b/arch/mips/kernel/signal_o32.c
-@@ -151,13 +151,15 @@ static int setup_frame_32(void *sig_return, struct ksignal *ksig,
- 	return 0;
- }
- 
--asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
-+asmlinkage void sys32_rt_sigreturn(void)
- {
- 	struct rt_sigframe32 __user *frame;
-+	struct pt_regs *regs;
- 	sigset_t set;
- 	int sig;
- 
--	frame = (struct rt_sigframe32 __user *) regs.regs[29];
-+	regs = current_pt_regs();
-+	frame = (struct rt_sigframe32 __user *)regs->regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_conv_sigset_from_user(&set, &frame->rs_uc.uc_sigmask))
-@@ -165,7 +167,7 @@ asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 
- 	set_current_blocked(&set);
- 
--	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
-+	sig = restore_sigcontext32(regs, &frame->rs_uc.uc_mcontext);
- 	if (sig < 0)
- 		goto badframe;
- 	else if (sig)
-@@ -181,7 +183,7 @@ asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
- 		"move\t$29, %0\n\t"
- 		"j\tsyscall_exit"
- 		:/* no outputs */
--		:"r" (&regs));
-+		:"r" (regs));
- 	/* Unreached */
- 
- badframe:
-@@ -251,13 +253,15 @@ struct mips_abi mips_abi_32 = {
- };
- 
- 
--asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
-+asmlinkage void sys32_sigreturn(void)
- {
- 	struct sigframe32 __user *frame;
-+	struct pt_regs *regs;
- 	sigset_t blocked;
- 	int sig;
- 
--	frame = (struct sigframe32 __user *) regs.regs[29];
-+	regs = current_pt_regs();
-+	frame = (struct sigframe32 __user *)regs->regs[29];
- 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__copy_conv_sigset_from_user(&blocked, &frame->sf_mask))
-@@ -265,7 +269,7 @@ asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
- 
- 	set_current_blocked(&blocked);
- 
--	sig = restore_sigcontext32(&regs, &frame->sf_sc);
-+	sig = restore_sigcontext32(regs, &frame->sf_sc);
- 	if (sig < 0)
- 		goto badframe;
- 	else if (sig)
-@@ -278,7 +282,7 @@ asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
- 		"move\t$29, %0\n\t"
- 		"j\tsyscall_exit"
- 		:/* no outputs */
--		:"r" (&regs));
-+		:"r" (regs));
- 	/* Unreached */
- 
- badframe:
 -- 
 2.18.0

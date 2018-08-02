@@ -1,78 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2018 13:56:19 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59372 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993973AbeHBL4QFUBAq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2018 13:56:16 +0200
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w72BsCtn132202
-        for <linux-mips@linux-mips.org>; Thu, 2 Aug 2018 07:56:13 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2kkx7h8jjd-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 02 Aug 2018 07:56:13 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Thu, 2 Aug 2018 12:56:06 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 2 Aug 2018 12:56:02 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w72Bu1sw34865164
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 2 Aug 2018 11:56:01 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2E0EB11C04A;
-        Thu,  2 Aug 2018 14:56:11 +0100 (BST)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 74D4811C052;
-        Thu,  2 Aug 2018 14:56:06 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.207.181])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu,  2 Aug 2018 14:56:05 +0100 (BST)
-Date:   Thu, 2 Aug 2018 14:55:51 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     "Fancer's opinion" <fancer.lancer@gmail.com>,
-        Paul Burton <Paul.Burton@mips.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips: switch to NO_BOOTMEM
-References: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
- <20180726070355.GD8477@rapoport-lnx>
- <20180726172005.pgjmkvwz2lpflpor@pburton-laptop>
- <CAMPMW8p092oXk1w+SVjgx-ZH+46piAY8xgYPDfLUwLCkBm-TVw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2018 15:46:02 +0200 (CEST)
+Received: from mail-d.ads.isi.edu ([128.9.180.199]:9565 "EHLO
+        mail-d.ads.isi.edu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994056AbeHBNp6Wn5ai (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2018 15:45:58 +0200
+X-IronPort-AV: E=Sophos;i="5.51,436,1526367600"; 
+   d="scan'208";a="2662501"
+Received: from guest228.east.isi.edu (HELO localhost) ([65.123.202.228])
+  by mail-d.ads.isi.edu with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Aug 2018 06:45:46 -0700
+Date:   Thu, 2 Aug 2018 09:45:44 -0400
+From:   Alexei Colin <acolin@isi.edu>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     alex.bou9@gmail.com, Christoph Hellwig <hch@infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        jwalters@isi.edu, Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RESEND PATCH 6/6] arm64: enable RapidIO menu in Kconfig
+Message-ID: <20180802134544.GG38497@guest228.east.isi.edu>
+References: <20180731142954.30345-1-acolin@isi.edu>
+ <20180731142954.30345-7-acolin@isi.edu>
+ <20180801095404.GA17585@infradead.org>
+ <fad8661c-cd8c-3a9c-ca03-5d2f63893a24@gmail.com>
+ <CAMuHMdVDra1MKcuuD0SqEYXSggr0iVFcbcjL33z7JuiE1_y8yw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMPMW8p092oXk1w+SVjgx-ZH+46piAY8xgYPDfLUwLCkBm-TVw@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18080211-0020-0000-0000-000002AFF113
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18080211-0021-0000-0000-000020FC1D95
-Message-Id: <20180802115550.GA10232@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-02_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=818 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1806210000 definitions=main-1808020125
-Return-Path: <rppt@linux.vnet.ibm.com>
+In-Reply-To: <CAMuHMdVDra1MKcuuD0SqEYXSggr0iVFcbcjL33z7JuiE1_y8yw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <acolin@isi.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65352
+X-archive-position: 65353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: acolin@isi.edu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,46 +53,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Thu, Aug 02, 2018 at 10:57:00AM +0200, Geert Uytterhoeven wrote:
+> On Wed, Aug 1, 2018 at 3:16 PM Alex Bounine <alex.bou9@gmail.com> wrote:
+> > On 2018-08-01 05:54 AM, Christoph Hellwig wrote:
+> > > On Tue, Jul 31, 2018 at 10:29:54AM -0400, Alexei Colin wrote:
+> > >> Platforms with a PCI bus will be offered the RapidIO menu since they may
+> > >> be want support for a RapidIO PCI device. Platforms without a PCI bus
+> > >> that might include a RapidIO IP block will need to "select HAS_RAPIDIO"
+> > >> in the platform-/machine-specific "config ARCH_*" Kconfig entry.
+> > >>
+> > >> Tested that kernel builds for arm64 with RapidIO subsystem and
+> > >> switch drivers enabled, also that the modules load successfully
+> > >> on a custom Aarch64 Qemu model.
+> > >
+> > > As said before, please include it from drivers/Kconfig so that _all_
+> > > architectures supporting PCI (or other Rapidio attachements) get it
+> > > and not some arbitrary selection of architectures.
+> 
+> +1
+> 
+> > As it was replied earlier this is not a random selection of
+> > architectures but only ones that implement support for RapidIO as system
+> > bus. If other architectures choose to adopt RapidIO we will include them
+> > as well.
+> >
+> > On some platforms RapidIO can be the only system bus available replacing
+> > PCI/PCIe or RapidIO can coexist with PCIe.
+> >
+> > As it is done now, RapidIO is configured in "Bus Options" (x86/PPC) or
+> > "Bus Support" (ARMs) sub-menu and from system configuration option it
+> > should be kept this way.
+> >
+> > Current location of RAPIDIO configuration option is familiar to users of
+> > PowerPC and x86 platforms, and is similarly available in some ARM
+> > manufacturers kernel code trees.
+> >
+> > drivers/Kconfig will be used for configuring drivers for peripheral
+> > RapidIO devices if/when such device drivers will be published.
+> 
+> Everything in drivers/rapidio/Kconfig depends on RAPIDIO (probably it should
+> use a big if RAPIDIO/endif instead), so it can just be included from
+> drivers/Kconfig now.
+> 
+> The sooner you do that, the less treewide changes are needed (currently
+> limited to mips, powerpc, and x86; your patch adds arm64).
 
-On Thu, Jul 26, 2018 at 10:55:53PM +0300, Fancer's opinion wrote:
-> Hello, folks
-> Regarding the no_bootmem patchset I've sent earlier.
-> I'm terribly sorry about huge delay with response. I got sucked in a new
-> project, so just didn't have a time to proceed with the series, answer to the
-> questions and resend the set.
-> If it is still relevant and needed for community, I can get back to the series
-> on the next week, answer to the Mett's questions (sorry, man, for doing it so
-> long), rebase it on top of the kernel 4.18 and resend the new version. We also
-> can try to combine it with this patch, if it is found convenient.
+If I move RapidIO option to drivers/Kconfig, then it won't appear under
+the Bus Options/System Support menu, along with other choices for the
+system bus (PCI, PCMCIA, ISA, TC, ...). Alex explains above that RapidIO
+may be selected as a system bus on some architectures, and users expect
+it to be in the menu in which it has been for some time now.  What
+problem is the current organization causing?
 
-So, what would be the best way to move forward?
-
-> Regards,
-> -Sergey
-> 
-> 
-> On Thu, 26 Jul 2018, 20:20 Paul Burton, <paul.burton@mips.com> wrote:
-> 
->     Hi Mike,
-> 
->     On Thu, Jul 26, 2018 at 10:03:56AM +0300, Mike Rapoport wrote:
->     > Any comments on this?
-> 
->     I haven't looked at this in detail yet, but there was a much larger
->     series submitted to accomplish this not too long ago, which needed
->     another revision:
-> 
->         https://patchwork.linux-mips.org/project/linux-mips/list/?series=787&
->     state=*
-> 
->     Given that, I'd be (pleasantly) surprised if this one smaller patch is
->     enough.
-> 
->     Thanks,
->         Paul
-> 
-
--- 
-Sincerely yours,
-Mike.
+This patch does not intend to propose any changes to the current
+organization of the menus, if such changes are needed, another patch can
+be made with that purpose. What problem is this patch introducing?

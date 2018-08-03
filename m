@@ -1,39 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 12:30:40 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:48810 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992289AbeHCKagZmYEo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2018 12:30:36 +0200
-Received: from localhost (ip-213-127-46-170.ip.prioritytelecom.net [213.127.46.170])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BFDD6720;
-        Fri,  3 Aug 2018 10:30:26 +0000 (UTC)
-Date:   Fri, 3 Aug 2018 12:30:23 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Wu, Songjun" <songjun.wu@linux.intel.com>
-Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
-        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>
-Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
-Message-ID: <20180803103023.GA6557@kroah.com>
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-15-songjun.wu@linux.intel.com>
- <20180803055640.GA32226@kroah.com>
- <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 13:25:10 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:35018 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992241AbeHCLZGxOuuI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Aug 2018 13:25:06 +0200
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id A6C5540216F7;
+        Fri,  3 Aug 2018 11:24:59 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 39FB42026D65;
+        Fri,  3 Aug 2018 11:24:56 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Fri,  3 Aug 2018 13:24:59 +0200 (CEST)
+Date:   Fri, 3 Aug 2018 13:24:55 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
+        mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v7 3/6] Uprobes: Support SDT markers having reference
+ count (semaphore)
+Message-ID: <20180803112455.GA13794@redhat.com>
+References: <20180731035143.11942-1-ravi.bangoria@linux.ibm.com>
+ <20180731035143.11942-4-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <gregkh@linuxfoundation.org>
+In-Reply-To: <20180731035143.11942-4-ravi.bangoria@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.4
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Fri, 03 Aug 2018 11:24:59 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Fri, 03 Aug 2018 11:24:59 +0000 (UTC) for IP:'10.11.54.4' DOMAIN:'int-mx04.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65387
+X-archive-position: 65388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,67 +59,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 03, 2018 at 03:33:38PM +0800, Wu, Songjun wrote:
-> 
-> 
-> On 8/3/2018 1:56 PM, Greg Kroah-Hartman wrote:
-> > On Fri, Aug 03, 2018 at 11:02:33AM +0800, Songjun Wu wrote:
-> > > Previous implementation uses platform-dependent API to get the clock.
-> > > Those functions are not available for other SoC which uses the same IP.
-> > > The CCF (Common Clock Framework) have an abstraction based APIs for
-> > > clock. In future, the platform specific code will be removed when the
-> > > legacy soc use CCF as well.
-> > > Change to use CCF APIs to get clock and rate. So that different SoCs
-> > > can use the same driver.
-> > > 
-> > > Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
-> > > ---
-> > > 
-> > > Changes in v2: None
-> > > 
-> > >   drivers/tty/serial/lantiq.c | 11 +++++++++++
-> > >   1 file changed, 11 insertions(+)
-> > > 
-> > > diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
-> > > index 36479d66fb7c..35518ab3a80d 100644
-> > > --- a/drivers/tty/serial/lantiq.c
-> > > +++ b/drivers/tty/serial/lantiq.c
-> > > @@ -26,7 +26,9 @@
-> > >   #include <linux/clk.h>
-> > >   #include <linux/gpio.h>
-> > > +#ifdef CONFIG_LANTIQ
-> > >   #include <lantiq_soc.h>
-> > > +#endif
-> > That is never how you do this in Linux, you know better.
-> > 
-> > Please go and get this patchset reviewed and signed-off-by from other
-> > internal Intel kernel developers before resending it next time.  It is
-> > their job to find and fix your basic errors like this, not ours.
-> Thank you for your comment.
-> Actually, we have discussed this issue internally.
-> We put the reason why we use "#ifdef CONFIG_LANTIQ" preprocessor in commit
-> message in "[PATCH v2 08/18] serial: intel: Get serial id from dts".
-> Please refer the commit message below.
-> 
-> "#ifdef CONFIG_LANTIQ" preprocessor is used because LTQ_EARLY_ASC
-> macro is defined in lantiq_soc.h.
-> lantiq_soc.h is in arch path for legacy product support.
-> 
-> arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-> 
-> If "#ifdef preprocessor" is changed to
-> "if (IS_ENABLED(CONFIG_LANTIQ))", when CONFIG_LANTIQ is not enabled,
-> code using LTQ_EARLY_ASC is compiled.
-> Compilation will fail for no LTQ_EARLY_ASC defined.
+Hi Ravi,
 
-Sorry, but no.  Why is this one tiny driver/chip somehow more "special"
-than all of the tens of thousands of other devices we support to warrent
-it getting some sort of special exception to do things differently?
-What happens to the next device that wants to do it this way?
+I was going to give up and ack this series, but it seems I noticed
+a bug...
 
-Our coding style and rules are there for a reason, do not violate them
-thinking your device is the only one that matters.
+On 07/31, Ravi Bangoria wrote:
+>
+> +static int delayed_uprobe_add(struct uprobe *uprobe, struct mm_struct *mm)
+> +{
+> +	struct delayed_uprobe *du;
+> +
+> +	if (delayed_uprobe_check(uprobe, mm))
+> +		return 0;
+> +
+> +	du  = kzalloc(sizeof(*du), GFP_KERNEL);
+> +	if (!du)
+> +		return -ENOMEM;
+> +
+> +	du->uprobe = uprobe;
+> +	du->mm = mm;
 
-Do it properly, again, you all know better than this.
+I am surprised I didn't notice this before...
 
-greg k-h
+So
+	du->mm = mm;
+
+is fine, mm can't go away, uprobe_clear_state() does delayed_uprobe_remove(NULL,mm).
+
+But
+	du->uprobe = uprobe;
+
+doesn't look right, uprobe can go away and it can be freed, its memory can be reused.
+We can't rely on remove_breakpoint(), the application can unmap the probed page/vma.
+Yes we do not care about the application in this case, say, the next uprobe_mmap() can
+wrongly increment the counter, we do not care although this can lead to hard-to-debug
+problems. But, if nothing else, the kernel can crash if the freed memory is unmapped.
+So I think put_uprobe() should do delayed_uprobe_remove(uprobe, NULL) before kfree()
+and delayed_uprobe_remove() should be updated to handle the mm==NULL case.
+
+Also. delayed_uprobe_add() should check the list and avoid duplicates. Otherwise the
+trivial
+
+	for (;;)
+		munmap(mmap(uprobed_file));
+
+will eat the memory until uprobe is unregistered.
+
+
+> +static bool valid_ref_ctr_vma(struct uprobe *uprobe,
+> +			      struct vm_area_struct *vma)
+> +{
+> +	unsigned long vaddr = offset_to_vaddr(vma, uprobe->ref_ctr_offset);
+> +
+> +	return uprobe->ref_ctr_offset &&
+> +		vma->vm_file &&
+> +		file_inode(vma->vm_file) == uprobe->inode &&
+> +		vma->vm_flags & VM_WRITE &&
+> +		!(vma->vm_flags & VM_SHARED) &&
+
+		vma->vm_flags & (VM_WRITE|VM_SHARED) == VM_WRITE &&
+
+looks a bit better to me, but I won't insist.
+
+> +static int delayed_uprobe_install(struct vm_area_struct *vma)
+> +{
+> +	struct list_head *pos, *q;
+> +	struct delayed_uprobe *du;
+> +	unsigned long vaddr;
+> +	int ret = 0, err = 0;
+> +
+> +	mutex_lock(&delayed_uprobe_lock);
+> +	list_for_each_safe(pos, q, &delayed_uprobe_list) {
+> +		du = list_entry(pos, struct delayed_uprobe, list);
+> +
+> +		if (!valid_ref_ctr_vma(du->uprobe, vma))
+> +			continue;
+> +
+> +		vaddr = offset_to_vaddr(vma, du->uprobe->ref_ctr_offset);
+> +		ret = __update_ref_ctr(vma->vm_mm, vaddr, 1);
+> +		/* Record an error and continue. */
+> +		err = ret & !err ? ret : err;
+
+I try to avoid the cosmetic nits, but I simply can't look at this line ;)
+
+		if (ret && !err)
+			err = ret;
+
+> @@ -1072,7 +1281,14 @@ int uprobe_mmap(struct vm_area_struct *vma)
+>  	struct uprobe *uprobe, *u;
+>  	struct inode *inode;
+>
+> -	if (no_uprobe_events() || !valid_vma(vma, true))
+> +	if (no_uprobe_events())
+> +		return 0;
+> +
+> +	if (vma->vm_flags & VM_WRITE &&
+> +	    test_bit(MMF_HAS_UPROBES, &vma->vm_mm->flags))
+> +		delayed_uprobe_install(vma);
+
+OK, so you also added the VM_WRITE check and I agree. But then I think we
+should also check VM_SHARED, just like valid_ref_ctr_vma() does?
+
+Oleg.

@@ -1,54 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 11:48:36 +0200 (CEST)
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:47773 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991947AbeHCJsdbb7d9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2018 11:48:33 +0200
-X-Originating-IP: 81.250.144.103
-Received: from [10.30.1.20] (LNeuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 024F3240002;
-        Fri,  3 Aug 2018 09:47:49 +0000 (UTC)
-Subject: Re: [PATCH v5 09/11] hugetlb: Introduce generic version of
- huge_ptep_set_wrprotect
-To:     Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
-        mike.kravetz@oracle.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
-        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
-        benh@kernel.crashing.org, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
-References: <20180731060155.16915-1-alex@ghiti.fr>
- <20180731060155.16915-10-alex@ghiti.fr>
- <87h8kfhg7o.fsf@concordia.ellerman.id.au>
- <6acb1389-6998-bafb-cf69-174fd522c04c@ghiti.fr>
- <90bf556f-144d-24b8-d2f6-70fee4a30559@ghiti.fr>
- <87muu3hlzc.fsf@concordia.ellerman.id.au>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-Message-ID: <ef7fbd80-84a9-0b39-f948-413dea6f6469@ghiti.fr>
-Date:   Fri, 3 Aug 2018 11:47:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 12:30:40 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48810 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992289AbeHCKagZmYEo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2018 12:30:36 +0200
+Received: from localhost (ip-213-127-46-170.ip.prioritytelecom.net [213.127.46.170])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BFDD6720;
+        Fri,  3 Aug 2018 10:30:26 +0000 (UTC)
+Date:   Fri, 3 Aug 2018 12:30:23 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Wu, Songjun" <songjun.wu@linux.intel.com>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>
+Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
+Message-ID: <20180803103023.GA6557@kroah.com>
+References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
+ <20180803030237.3366-15-songjun.wu@linux.intel.com>
+ <20180803055640.GA32226@kroah.com>
+ <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <87muu3hlzc.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-Return-Path: <alex@ghiti.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65386
+X-archive-position: 65387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,63 +46,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Michael,
+On Fri, Aug 03, 2018 at 03:33:38PM +0800, Wu, Songjun wrote:
+> 
+> 
+> On 8/3/2018 1:56 PM, Greg Kroah-Hartman wrote:
+> > On Fri, Aug 03, 2018 at 11:02:33AM +0800, Songjun Wu wrote:
+> > > Previous implementation uses platform-dependent API to get the clock.
+> > > Those functions are not available for other SoC which uses the same IP.
+> > > The CCF (Common Clock Framework) have an abstraction based APIs for
+> > > clock. In future, the platform specific code will be removed when the
+> > > legacy soc use CCF as well.
+> > > Change to use CCF APIs to get clock and rate. So that different SoCs
+> > > can use the same driver.
+> > > 
+> > > Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+> > > ---
+> > > 
+> > > Changes in v2: None
+> > > 
+> > >   drivers/tty/serial/lantiq.c | 11 +++++++++++
+> > >   1 file changed, 11 insertions(+)
+> > > 
+> > > diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+> > > index 36479d66fb7c..35518ab3a80d 100644
+> > > --- a/drivers/tty/serial/lantiq.c
+> > > +++ b/drivers/tty/serial/lantiq.c
+> > > @@ -26,7 +26,9 @@
+> > >   #include <linux/clk.h>
+> > >   #include <linux/gpio.h>
+> > > +#ifdef CONFIG_LANTIQ
+> > >   #include <lantiq_soc.h>
+> > > +#endif
+> > That is never how you do this in Linux, you know better.
+> > 
+> > Please go and get this patchset reviewed and signed-off-by from other
+> > internal Intel kernel developers before resending it next time.  It is
+> > their job to find and fix your basic errors like this, not ours.
+> Thank you for your comment.
+> Actually, we have discussed this issue internally.
+> We put the reason why we use "#ifdef CONFIG_LANTIQ" preprocessor in commit
+> message in "[PATCH v2 08/18] serial: intel: Get serial id from dts".
+> Please refer the commit message below.
+> 
+> "#ifdef CONFIG_LANTIQ" preprocessor is used because LTQ_EARLY_ASC
+> macro is defined in lantiq_soc.h.
+> lantiq_soc.h is in arch path for legacy product support.
+> 
+> arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+> 
+> If "#ifdef preprocessor" is changed to
+> "if (IS_ENABLED(CONFIG_LANTIQ))", when CONFIG_LANTIQ is not enabled,
+> code using LTQ_EARLY_ASC is compiled.
+> Compilation will fail for no LTQ_EARLY_ASC defined.
 
-Thanks, I will then remove those two specific implementations and we'll 
-use the generic ones.
+Sorry, but no.  Why is this one tiny driver/chip somehow more "special"
+than all of the tens of thousands of other devices we support to warrent
+it getting some sort of special exception to do things differently?
+What happens to the next device that wants to do it this way?
 
-I send a v6 asap.
+Our coding style and rules are there for a reason, do not violate them
+thinking your device is the only one that matters.
 
-Thanks again,
+Do it properly, again, you all know better than this.
 
-Alex
-
-
-On 08/03/2018 10:51 AM, Michael Ellerman wrote:
-> Hi Alex,
->
-> Sorry missed your previous mail.
->
-> Alex Ghiti <alex@ghiti.fr> writes:
->> Ok, I tried every defconfig available:
->>
->> - for the nohash/32, I found that I could use mpc885_ads_defconfig and I
->> activated HUGETLBFS.
->> I removed the definition of huge_ptep_set_wrprotect from
->> nohash/32/pgtable.h, add an #error in
->> include/asm-generic/hugetlb.h right before the generic definition of
->> huge_ptep_set_wrprotect,
->> and fell onto it at compile-time:
->> => I'm pretty confident then that removing the definition of
->> huge_ptep_set_wrprotect does not
->> break anythingin this case.
-> Thanks, that sounds good.
->
->> - regardind book3s/32, I did not find any defconfig with
->> CONFIG_PPC_BOOK3S_32, CONFIG_PPC32
->> allowing to enable huge page support (ie CONFIG_SYS_SUPPORTS_HUGETLBFS)
->> => Do you have a defconfig that would allow me to try the same as above ?
-> I think you're right, it's dead code AFAICS.
->
-> We have:
->
-> config PPC_BOOK3S_64
->          ...
-> 	select SYS_SUPPORTS_HUGETLBFS
->
-> config PPC_FSL_BOOK3E
->          ...
-> 	select SYS_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
->
-> config PPC_8xx
-> 	...
-> 	select SYS_SUPPORTS_HUGETLBFS
->
->
-> So we can't ever enable HUGETLBFS for Book3S 32.
->
-> Presumably the code got copied when we split the headers apart.
->
-> So I think you can just ignore that one, and we'll delete it.
->
-> cheers
+greg k-h

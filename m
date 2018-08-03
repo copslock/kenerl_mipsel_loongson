@@ -1,37 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 07:58:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60534 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994061AbeHCF5YcKmjk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2018 07:57:24 +0200
-Received: from localhost (D57E6652.static.ziggozakelijk.nl [213.126.102.82])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 032B23EE;
-        Fri,  3 Aug 2018 05:57:12 +0000 (UTC)
-Date:   Fri, 3 Aug 2018 07:57:09 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Songjun Wu <songjun.wu@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 09:21:59 +0200 (CEST)
+Received: from mga14.intel.com ([192.55.52.115]:48731 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992241AbeHCHVyFWbO2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Aug 2018 09:21:54 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Aug 2018 00:21:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.51,437,1526367600"; 
+   d="scan'208";a="59391313"
+Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.42]) ([10.226.39.42])
+  by fmsmga007.fm.intel.com with ESMTP; 03 Aug 2018 00:21:46 -0700
+Subject: Re: [PATCH v2 15/18] serial: intel: Support more platform
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
         chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>
-Subject: Re: [PATCH v2 15/18] serial: intel: Support more platform
-Message-ID: <20180803055709.GB32226@kroah.com>
 References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
  <20180803030237.3366-16-songjun.wu@linux.intel.com>
+ <20180803055709.GB32226@kroah.com>
+From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
+Message-ID: <2bd3f808-ed93-ac2c-a802-957a88129e67@linux.intel.com>
+Date:   Fri, 3 Aug 2018 15:21:45 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180803030237.3366-16-songjun.wu@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <gregkh@linuxfoundation.org>
+In-Reply-To: <20180803055709.GB32226@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <songjun.wu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65382
+X-archive-position: 65383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: songjun.wu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,12 +53,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 03, 2018 at 11:02:34AM +0800, Songjun Wu wrote:
-> Support more platform.
-> 
-> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
-> ---
 
-Your changelog text makes no sense, sorry.
 
-greg k-h
+On 8/3/2018 1:57 PM, Greg Kroah-Hartman wrote:
+> On Fri, Aug 03, 2018 at 11:02:34AM +0800, Songjun Wu wrote:
+>> Support more platform.
+>>
+>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+>> ---
+> Your changelog text makes no sense, sorry.
+Thanks for your comment.
+I will describe it more clearly.

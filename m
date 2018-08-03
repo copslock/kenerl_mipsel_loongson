@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 09:33:48 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:62652 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2018 10:51:19 +0200 (CEST)
+Received: from ozlabs.org ([203.11.71.1]:58453 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991162AbeHCHdo1NjTE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 3 Aug 2018 09:33:44 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Aug 2018 00:33:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.51,437,1526367600"; 
-   d="scan'208";a="59394465"
-Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.42]) ([10.226.39.42])
-  by fmsmga007.fm.intel.com with ESMTP; 03 Aug 2018 00:33:38 -0700
-Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
-        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-15-songjun.wu@linux.intel.com>
- <20180803055640.GA32226@kroah.com>
-From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
-Message-ID: <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
-Date:   Fri, 3 Aug 2018 15:33:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        id S23992241AbeHCIvQfKobT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Aug 2018 10:51:16 +0200
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 41hgkK0XF2z9s0R;
+        Fri,  3 Aug 2018 18:51:04 +1000 (AEST)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Alex Ghiti <alex@ghiti.fr>, linux-mm@kvack.org,
+        mike.kravetz@oracle.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org,
+        "aneesh.kumar\@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v5 09/11] hugetlb: Introduce generic version of huge_ptep_set_wrprotect
+In-Reply-To: <90bf556f-144d-24b8-d2f6-70fee4a30559@ghiti.fr>
+References: <20180731060155.16915-1-alex@ghiti.fr> <20180731060155.16915-10-alex@ghiti.fr> <87h8kfhg7o.fsf@concordia.ellerman.id.au> <6acb1389-6998-bafb-cf69-174fd522c04c@ghiti.fr> <90bf556f-144d-24b8-d2f6-70fee4a30559@ghiti.fr>
+Date:   Fri, 03 Aug 2018 18:51:03 +1000
+Message-ID: <87muu3hlzc.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20180803055640.GA32226@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-Return-Path: <songjun.wu@linux.intel.com>
+Content-Type: text/plain
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65384
+X-archive-position: 65385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: songjun.wu@linux.intel.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,55 +52,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Alex,
 
+Sorry missed your previous mail.
 
-On 8/3/2018 1:56 PM, Greg Kroah-Hartman wrote:
-> On Fri, Aug 03, 2018 at 11:02:33AM +0800, Songjun Wu wrote:
->> Previous implementation uses platform-dependent API to get the clock.
->> Those functions are not available for other SoC which uses the same IP.
->> The CCF (Common Clock Framework) have an abstraction based APIs for
->> clock. In future, the platform specific code will be removed when the
->> legacy soc use CCF as well.
->> Change to use CCF APIs to get clock and rate. So that different SoCs
->> can use the same driver.
->>
->> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
->> ---
->>
->> Changes in v2: None
->>
->>   drivers/tty/serial/lantiq.c | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
->> index 36479d66fb7c..35518ab3a80d 100644
->> --- a/drivers/tty/serial/lantiq.c
->> +++ b/drivers/tty/serial/lantiq.c
->> @@ -26,7 +26,9 @@
->>   #include <linux/clk.h>
->>   #include <linux/gpio.h>
->>   
->> +#ifdef CONFIG_LANTIQ
->>   #include <lantiq_soc.h>
->> +#endif
-> That is never how you do this in Linux, you know better.
+Alex Ghiti <alex@ghiti.fr> writes:
+> Ok, I tried every defconfig available:
 >
-> Please go and get this patchset reviewed and signed-off-by from other
-> internal Intel kernel developers before resending it next time.  It is
-> their job to find and fix your basic errors like this, not ours.
-Thank you for your comment.
-Actually, we have discussed this issue internally.
-We put the reason why we use "#ifdef CONFIG_LANTIQ" preprocessor in commit
-message in "[PATCH v2 08/18] serial: intel: Get serial id from dts".
-Please refer the commit message below.
+> - for the nohash/32, I found that I could use mpc885_ads_defconfig and I 
+> activated HUGETLBFS.
+> I removed the definition of huge_ptep_set_wrprotect from 
+> nohash/32/pgtable.h, add an #error in
+> include/asm-generic/hugetlb.h right before the generic definition of 
+> huge_ptep_set_wrprotect,
+> and fell onto it at compile-time:
+> => I'm pretty confident then that removing the definition of 
+> huge_ptep_set_wrprotect does not
+> break anythingin this case.
 
-"#ifdef CONFIG_LANTIQ" preprocessor is used because LTQ_EARLY_ASC
-macro is defined in lantiq_soc.h.
-lantiq_soc.h is in arch path for legacy product support.
+Thanks, that sounds good.
 
-arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+> - regardind book3s/32, I did not find any defconfig with 
+> CONFIG_PPC_BOOK3S_32, CONFIG_PPC32
+> allowing to enable huge page support (ie CONFIG_SYS_SUPPORTS_HUGETLBFS)
+> => Do you have a defconfig that would allow me to try the same as above ?
 
-If "#ifdef preprocessor" is changed to
-"if (IS_ENABLED(CONFIG_LANTIQ))", when CONFIG_LANTIQ is not enabled,
-code using LTQ_EARLY_ASC is compiled.
-Compilation will fail for no LTQ_EARLY_ASC defined.
+I think you're right, it's dead code AFAICS.
+
+We have:
+
+config PPC_BOOK3S_64
+        ...
+	select SYS_SUPPORTS_HUGETLBFS
+
+config PPC_FSL_BOOK3E
+        ...
+	select SYS_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
+
+config PPC_8xx
+	...
+	select SYS_SUPPORTS_HUGETLBFS
+
+
+So we can't ever enable HUGETLBFS for Book3S 32.
+
+Presumably the code got copied when we split the headers apart.
+
+So I think you can just ignore that one, and we'll delete it.
+
+cheers

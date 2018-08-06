@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 00:25:11 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 00:25:21 +0200 (CEST)
 Received: from mail-eopbgr730108.outbound.protection.outlook.com ([40.107.73.108]:30880
         "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994671AbeHFWY5pS940 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Aug 2018 00:24:57 +0200
+        id S23994672AbeHFWY6NRhyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Aug 2018 00:24:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=owJ8G8vPkalcEfupGBMJu1TxrI8dOW/pm6q+WDyGNz8=;
- b=e2QeiDgnyCNWSJXAvAarlGlM7ueg+H9C0bDoS17GV5I+Pn9X1EVuLtzGuJxrIjNjlV3LGvhSQ3bWZ9VJobB8xvvSW/f3DFRsfvb4ArEQARUhd7MiSdEQRMtPlBBMtFgys+0K+7sN9xTavhDAm/MV9dqpGNdSFs8nGbtA0KDu7fE=
+ bh=3iw9EBiIhH2zEhQ27nYjjNaWn8Mum4+DBwjB3esWN+g=;
+ b=o8lOH6odksHFK5zSNSu/kAlaPxtimTUvK0uf1M4imm+h0V/VbNVUqVGP2EW2IYA/eYfn9pzc1L6n/J51y260s5yuc2U72isE6GMPwoP4OlhtP++g9VRsyewnlU5lszUJwWUSrhXaXTdD8AGzMzcEK7eCoVxEdVCfsXktNzGKHOA=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 Received: from pburton-laptop.mipstec.com (4.16.204.77) by
  BN7PR08MB4932.namprd08.prod.outlook.com (2603:10b6:408:28::18) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1017.15; Mon, 6 Aug 2018 22:24:46 +0000
+ 15.20.1017.15; Mon, 6 Aug 2018 22:24:48 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 1/3] MIPS: genvdso: Remove GOT checks
-Date:   Mon,  6 Aug 2018 15:24:25 -0700
-Message-Id: <20180806222427.2834-2-paul.burton@mips.com>
+Subject: [PATCH 2/3] MIPS: Fix __write_64bit_c0_split() constraints for clang
+Date:   Mon,  6 Aug 2018 15:24:26 -0700
+Message-Id: <20180806222427.2834-3-paul.burton@mips.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180806222427.2834-1-paul.burton@mips.com>
 References: <20180806222427.2834-1-paul.burton@mips.com>
@@ -33,49 +33,50 @@ X-ClientProxiedBy: BN6PR2001CA0045.namprd20.prod.outlook.com
  (2603:10b6:405:16::31) To BN7PR08MB4932.namprd08.prod.outlook.com
  (2603:10b6:408:28::18)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ca681333-c676-46e5-f853-08d5fbeb6b09
+X-MS-Office365-Filtering-Correlation-Id: 87e7532f-babd-40cb-f3b9-08d5fbeb6baf
 X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4932;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;3:1hZXIrqM6qr77YXSWY6DntnG8+MfiiDq12+0BqwtZro3NdZX/InUeXj7xAfXfkR7wiSRHYOM7Wxz83jGNJWsrIGbGByysySk1rCSzk8KMaEN812+FsuNM/iEv6tgB5vn4wxhfp39CgBvmL9vBKiIepZjiIWSGOeVfp02Z9VyIei1qA3J+EURtEe1zFvJAKmZOuREEU4z73+V8qImSxcmBEAzrbqvZEglSPDHOsRzWvUAZeAN16XN6OLgZw+9LJdc;25:RELiAw+Hu2brFsPtBsWApBUpzaeY0Xxnzg7kjjBIaRn5MFPLeKNjYTws2jWnrc/B2TKkJFkDKxTLkgFQ8g+3tS4v4/59/GFNsG2pVec0ZLd0bS/s70tdubJDa3uEoEs8fVqUzPJarlEjzA110e4KujkEwGSlKACflZFPse258oTVdlm9ef1HZxEXksA3N2ppzQOyueyrrFqc9ruEs6qL/ijN7VbxZI2ULdbfpwLEO4Md0B3b8xt9gnNHbV+MMWyC+b8k6jG30J1aAdMhPmFF/6bD+J6sxXndchRN+hPCLicx2LLb+n2tBaqxriNCd4y9FpmXlT59FSvuyN5i+luuCw==;31:NjYjB478p0YdHC0twFQrJcTqg2feOLnxjt4m/D28PENH3fnXTyvYep8epbP5DOA3aUJKvsL8zlo2jQPOuoK/tPZGAePxGDS3w16tSKDBal6QO7FNPLgKvt4srwJNSCVo2bJmjmbekYVMfHYqzyYyEZWHq+osc+UW02PnSf6vXmk1yNCoDEPT/xB7x21VkeZE/ZF/JnDy7ufaL3r12xxDcT5555ZVsOwZq1sCWawgJ/M=
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;3:Yx/NvlzZel19oVorYsFDHM2v5cE49utwmESMnwYaCcAm84DOxO3Mqzom7EHhrIc4WnTekBf2iDt/KDXHdPD4JIUXBWSF+1xb7miRBWA+j/dIcIrWncQFHni7zhg5D/42ZmiM8uHswBd1kzOgWiUyVVPaYQgNUkoThKlcr7N0KK70j+ERGm+2Lxh72WjDDzpi/srAOb/BTkQhDcJx6NEbqvZxZL6A3tuphUknT1wU6rGU4iLdbeSoVwpMxubT3/pr;25:jJns9HQwkl7BL6egV9J8t62mwB9TzMrcx5PJbuQCXPSOkwXrk9E+SAEPtTrFd7gty6SUN5Bo58HA7Mj+lgXQa0iin3O+KWGwJACYwrft+6/9gc893Z9FGcVsJiWOnuP6Ny72lFxmFgue3gJIzT6gWTVES56vSa4nVNCDj+Z4u5oMmRwBmhjX4Qylo9hksrcCDeKzo2KeG6Vyzmr6V+bG1V4AdRmgbZBbDkIv0iuNp3HFW5CVeJJrLXaRPMRYdaQDv+lhcXIheB0IyIaib3mi63vYesvo1NhUFxd0lU7LbDU6YMT+INqTxW4L99bfhjN4XKZpWaSEEqMd2q33/X6T8g==;31:+6LLGbdLkCsgaLK875kt7zPUn/cslvws8jIqv71PvLtsBlHHtxf8FhybYl6dY7ijjFOs6jUC5kJmtldrCjikXaigdN+PP9LMsGb6iROn/O+xk72lY9bNJsUW/NGTP/5QtFyWsSEiLgdbvXA4UtKhQwrNtp7csgJsZGFg39jsT0Zxm4e2r93uLLpwl+YGRvPGXoUknj0VjTJ5VlEd0Y7iIJcxQaIA1jO0KnYzwmBgM/c=
 X-MS-TrafficTypeDiagnostic: BN7PR08MB4932:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;20:/NKjUbHZ3cHoEciAUUqL+UkTXgR1yDeUtoD1suj2vd6poMTVxU/VnQiZ1ck36D6EhtuxAoJn8q24SoZif4c9SBAnfYsC/A5NcAQ55gL6xxqoBIMr8Lr9dosJUAgyMCnL484m4x7yOho1n/poE+KbFyTIJPElfDMy76kFpfUa2Q7N+1p0G1TOPtN9o61ut/fNzqDzZWo+8ZjyP741c2X2Z9CkMUDBlhYyX/c0k9RoPfC56UU1xBJPFCBt5Izt1hwt;4:AKMU4AfXPG4OFg9BAfwhRo62qPyxLowYakMiQTuXbFIFouhB6/lGOquVsyDGR+zGBEK5rq1Carjh13dB7dI+zJvVnyPhq4yT6Xy1buD+MWKpZxPmC6h51lShtdFjPcF3rPyKS1zjh7X/YB8C1RFmPtKN+MBYPquiuWeRXF4+ahdZs0uyazuHu8gPhAkY1tTjum/bTUYV5TDytYZbnU/NKLOut8RLxA4OkxgIyr0xtq80sEauicLA0vTRKkBFB0vKqrrYfxTgOfdBxZ6xiWWvSw==
-X-Microsoft-Antispam-PRVS: <BN7PR08MB4932380E1DA54208E809D260C1200@BN7PR08MB4932.namprd08.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;20:swjePBU8yN8FdXbVFP4MG5an0PHhwEs3fUFalOX+jQnHZqtf3ypvnHNlbEybP5KnhaLa+gB49yprRbYpbqxGUaVsoixWXmuRZu3xvhKD5SdyPtAnDTBQ5W4Sv1knAO86ofe8SD+ff2H42xp7r4OomQVH3DW7FxF1/WqUHs3PaphiPKeAvHKVpayHa4fS74RvsBoZXZfyBgbkoNgS9CwecIMlsQrxvhSrQkaPKtLjtKUbY2vcxOkGxNDGTaovu4wF;4:dZL5iQUwFe16mZXmpAi4zqVAy9yaIygzLl1peju72wp6xUMfAVOlkkzbnbBDfC1FfMMN6nArfnZDU0IH81xMHpp8d5ato3GDTspgYyLaceNTfp4Telaesssa5+X8GRG+PO73zgRdr0C8hrem4oavDIGEbZkvnKQ8lEJRypbb1scIVM9WXiV/duy6/hyHAuBP8Fhw3Cf/Ez2cHHVsqfIIO35cLnN+crIguNWwyH+svv/Tvg3udAoFsQqLph9PLXvAQy8njyr/3BilECfX4oSBhg==
+X-Microsoft-Antispam-PRVS: <BN7PR08MB4932F22EA36C63745702A689C1200@BN7PR08MB4932.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3231311)(944501410)(52105095)(3002001)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123560045)(20161123562045)(20161123558120)(6072148)(201708071742011)(7699016);SRVR:BN7PR08MB4932;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4932;
 X-Forefront-PRVS: 07562C22DA
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(366004)(346002)(136003)(376002)(39840400004)(189003)(199004)(97736004)(47776003)(66066001)(42882007)(7736002)(476003)(446003)(11346002)(25786009)(3846002)(1076002)(81156014)(81166006)(4326008)(486006)(76176011)(956004)(2616005)(305945005)(8676002)(2361001)(478600001)(68736007)(50466002)(6116002)(48376002)(69596002)(5660300001)(6916009)(6666003)(2906002)(16526019)(36756003)(26005)(186003)(6506007)(2351001)(386003)(44832011)(6486002)(316002)(6512007)(16586007)(50226002)(106356001)(8936002)(105586002)(54906003)(53416004)(51416003)(52116002)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4932;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(366004)(346002)(136003)(376002)(39840400004)(189003)(199004)(97736004)(47776003)(66066001)(42882007)(7736002)(476003)(446003)(11346002)(25786009)(3846002)(1076002)(81156014)(81166006)(4326008)(486006)(76176011)(956004)(2616005)(305945005)(8676002)(2361001)(478600001)(68736007)(50466002)(6116002)(48376002)(69596002)(5660300001)(6916009)(6666003)(2906002)(16526019)(36756003)(26005)(186003)(6506007)(2351001)(386003)(44832011)(6486002)(316002)(6512007)(16586007)(50226002)(106356001)(8936002)(105586002)(54906003)(53416004)(51416003)(52116002)(14444005)(15760500003)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4932;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4932;23:n/lS3LVdMaokB0E/vE1xyTgMW27PzmRUJMqtZlpTQ?=
- =?us-ascii?Q?BEs4ldbl+OXPUohqk8Rp4MsMdsOWjjdajpED6dABwlZgxwH4YSBfyM4/PCdh?=
- =?us-ascii?Q?imiz3LIOjr/3f02QER0MzwQbBCUVw6F76H6F4Iv69cV4AxdfXbVbjH4iid6f?=
- =?us-ascii?Q?h3Ao4KvJJYZPuTNO0k6BlY+Vi0Q3Odf7QwasXPQyiqYRsJWKcqBRyjILWdR6?=
- =?us-ascii?Q?DakESMkAkzcQ/4/QF8DhKAJSpKqtg+6Isq13hp0a7/tYxMkI2N1REGaQ3Ioc?=
- =?us-ascii?Q?ufk/Q2gV/b8r3BkNQQIwZFNLIDPfAa4UFWF2yFgb8nMujVOOS9+fBvPfcP66?=
- =?us-ascii?Q?ulsVJgUkfb0h81ynczAHuxswHD7ZFOglArPbZGHgj8XBAOcp0PdvlJjOBqHm?=
- =?us-ascii?Q?CwPhRu3IhsNb7Atl/l2X/94h8elvMq+hwmtFfv77rDoeFSTKaW3qElbVLClA?=
- =?us-ascii?Q?ZG9aMtkdByANc4Q8bWie8BHmC3DBEFb7Wg+r40T3I/wzfasHFomY1dvYeN3o?=
- =?us-ascii?Q?SxbyNxX1Z0pmgXr8HE41CVxDdswynvP03ls/oNlpMPABzqN9mdtssOZmwMFV?=
- =?us-ascii?Q?94rIA/9FUJNzKxQVS2OZVLr24xX3r6qvGjAqPyNHibZejhwi1gQeUcnTTiDn?=
- =?us-ascii?Q?zVUzq2Ib5OebFm3p9FEVkPVl9gbTqUot+9Hg7DVhsWirvUlJNKI4X9SCwgGq?=
- =?us-ascii?Q?pP1nqSaXkhNTpf4VOfLFJaPHOsX9lJNI3kafaV3v21H7veSsqIIG1UX8tMQD?=
- =?us-ascii?Q?n+EhXxYY/DeZvORtI8oPDOOOEipm1dHeKxSbevr72yubCq110+z2dg9cy/iH?=
- =?us-ascii?Q?UFmSE6MLF8tLmoZxoVnsGpyMG4driCD6mB1pSdVO9Ud/uDZqjTXPc/OIo7Tc?=
- =?us-ascii?Q?zyXhTn0WUIncWf+jWUcj+Bxc+20Cn3lU7sJWkr/H0ZplV7IyNUHKoM+ggu1P?=
- =?us-ascii?Q?tIl7I2eUzIba8w5zDcql89H+opTn/hoyHz0gjtgiiuVaQUhnQQO81yfsoTuW?=
- =?us-ascii?Q?yDVN6jhu0fuVjP/WBJKRUxEtTiL7wcC3toRQdmdrauc3dTct3KXqw7yQiF0w?=
- =?us-ascii?Q?cTDIIyO6b7FDiSewNxnIo+DwmIyvYn1Nxc0qEpff5KkDh/fGU0VLc2t1aRfk?=
- =?us-ascii?Q?6cVUWo1JEa0HWLUZvDraAbLYEpUJ2TI6ZV/iJuXKkg2ONttwyF32gnCJSV1S?=
- =?us-ascii?Q?kRQElTXX+5YN7r1uibW6q9OxZBsY6zhCXRY13OLXbnDmah3r0kGHK+5aa1rL?=
- =?us-ascii?Q?GQxSmVF78GkNG692Nl5RelSt8r4DMGYodwLitr7XGD/CCzquPdo+geUNcucw?=
- =?us-ascii?Q?LK5FRa+/BzKyIiyVZQAZz0=3D?=
-X-Microsoft-Antispam-Message-Info: vTvfgcaI7y4LBBtn6+ejq19AIyAPstTfbD9yBBNpBBGqWlQAksQ/A8kQ59HhUFzR8k/MSvvXZGGHuufh08Ub4yKLpdT+bXErV+dei+KCnieHUstQ112p0cMlZluPzhGpIv8MRxCwDQ3s43jCzmIw1gNAXNAQMrR2T2bts6dCqJTUFCeAWlGzKhX+B0S5kp1Bqx7ZvlpWhfegiifTH5tJr+UtgLGsK/a/alts+KRo95dQHKKqZu+12YYs0u7bm3g0O1zafmpPT7/5ulr+S1mmSEUUvYOo+3WLh6pKa31EfmMRB2SyzpCfrq59L9beNS/vqtrmzoDuRc08TimsRrloTnRNo7AP0m8NoecthWBFpCE=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;6:0r4BuwV6f5msmE0CpBTSLh68CZYusr24kpcdXzKo9wDFhGd7H2OOY18WQZM5dxED3x8FJHxDP2e3pZGnnYU4KPK/yJ+A0mPCVa04UUuRIoKiN8KEhvj7HupTUXsoD0YJ/Y/OjfBq1nnLh2L9v3IrA1VslArVq3zDgRDb4fPO8Ktv7KSfAbsPNE3UuLZ0bupjt0Rtq0mvYK+dJtVB01rB/u9bd63rcai/tWmhSpqwKx/49cQxDegwR2R5Mc9t/fVbszCVDrcxiUxKBVAfzE4NULkzcCCZXUuN2DpL2KykZ0pZqsp+MRgK/a3SwthmDHTktKaE8fWawfUjteSBBHK+IpANkVea+0oWLCxMLXKKbcRUwHhwJf7WIezh71KmD0+QqZwKTelCk9doxRwSEA4RZVW4AbZoo794mnndA36WSeZ9dMRcDZMxbvGEHAIgMJiyrV4RBvtRBRuQ9u3b9lDLYw==;5:x7KWPE313wbHeJotftc2nL4Ep9wb6jbs+IWHl2LI9/yMInHp2+DAQgMwf0N0j6mjM890uiWmuwQeaw1LUiWNh0vTx/SyreyttiXBH7IKy7sooVtE6hEEt0dxP6qAuAABp0q50Retl28HBfwKKkfFUKwe356RSlyI7CYA1CfAnF8=;7:aVuGypMbxza4Xnh8/2dVHyHChfbNMy0xlzDtRJFZK9mAkksJAwWRqE8YrdHRT5YV+6FCmtK0//IPLlr3njyQFWwnem+nruCmXewhofNnCc55d2S/yIzCfcEVgGZGFuUwac3kQ/rnSsWF01e1vhYEs4plF5UH6V/1KvPT+oLemANpYIaBdwBHmkGuaCOO67e91tactpBkHYqNPDB2ottjaYlBbVDGrgB7kBypmz/WCOVMP11IQH+rXsacjntv/fbW
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4932;23:W1Dhy35T2jjL+5GfYbIcHUyDXuplQGr5w9o3e9KX6?=
+ =?us-ascii?Q?q6s2aH0wn5UCQI8ImxJiOHPcbvWhbEvlU+zCVqafX0Dwg+qa4pVu1D6/xPOj?=
+ =?us-ascii?Q?wS7bD0cGrAQ6090iKzTSknQV3iaU7Q9Mt955IsZN2Fc5u+sGSxR4obyt9rtu?=
+ =?us-ascii?Q?E/BWtZj7ARQZpnfiqvJjvBSsZfB7p7dV6500EkGJUYWSaQNWPPwYi2V6z8XJ?=
+ =?us-ascii?Q?Yk/hii/mMokP/rVnWPr5idy/JmDQ7H7aVEq15evTkCSmOdfvZX5hrmnWu5fl?=
+ =?us-ascii?Q?kCKp3z3HAr0Amu7Mpq9NAQkvpcp5AYN78ZO+t6RMA4uz1ZusMXVAC/2k3tr8?=
+ =?us-ascii?Q?jqwe/T63MAoer5drDe+WgsH9SmznUVgD4djNl1rsvluz+cNigBK+BG/r+uLB?=
+ =?us-ascii?Q?g3Vj5Ky34BoRm5GSJLasIRtwzs+AER5RxYjDmPagphoGduQtK4HDGqiM+n/F?=
+ =?us-ascii?Q?6q1sJrVZyYYwjt0sE/BcfoQW01hXErlv+0zNxpdWToCyfvRGrNkUq8Zeb/CE?=
+ =?us-ascii?Q?t0lTDz05TUiTEZSEqsExzlRaVyO9o0vu+PP55JuMGEqTM0NYcwt1h/HG+FaZ?=
+ =?us-ascii?Q?k2J/TuGqHYuRrpT9CaE1AzkYezQuvlnDTkZZp6Dqx/wDkUK3Q9C9A3A9Fc+5?=
+ =?us-ascii?Q?l+p6rLYfwP6LVBD+zVOTmLS25W3i45PpBhgafDNCP7Wwtyu61Ge2khfhJP/S?=
+ =?us-ascii?Q?DgriTlkiGzf9wbm169oav2IhyEE3+nFUM2HPQRpZsmW16zjqcxUx6jVfDWyh?=
+ =?us-ascii?Q?fi7bN1Ua7YaF3t4BDIRa5YHohekc1twkvBCKs5NaXqnIZkNqEIWJefY2pAxJ?=
+ =?us-ascii?Q?TYwUWkjJwB5bTZipggKhpDFSPuV4ATpgkfBbmx++Y0FYFu6TgR8JKBBaA6NX?=
+ =?us-ascii?Q?QkZePYAI+faH4AuMGnfgu0HECsIR+mAxD0UuVxpiiJR7Ar3BG2LyPwKPEG/0?=
+ =?us-ascii?Q?E5mSyexe1+qLFDRiWiZMmWTrPTiBcqc6yMCPDkQ3iq7yJJx+gMyQsD2ev+ms?=
+ =?us-ascii?Q?ojGnBTlhY61pZxqUq3M2hzXc0cQri6AJgxkES/C5jjhZxQkNu/TMQlz5FBXr?=
+ =?us-ascii?Q?jrUZQpfPFnbCp/ydPq4su98rKTJkNCLBNdtbJmp3GiuHsBvbTR/lBuLgIzfv?=
+ =?us-ascii?Q?orGEH9WxTo1xWXDXBfG+cK4q182LbgUtGPB74rXCacwWm0zkoz+j3ctFudk5?=
+ =?us-ascii?Q?cD80R0oXqQ+9YXuE1yLHEhjcsurGmp1r+RWImNj6Vdv+nmWlryTrm7HUvJTf?=
+ =?us-ascii?Q?pb0x7yNmRuLTwzLWJ3oTeNM8Sa66rh36SN+us0ipHv01mBh2fuegHo9/5O0a?=
+ =?us-ascii?Q?ZFNzfrodQyoySg6wZ8k+xFFj7kybq5+nRzOhacHz15IQSjERex3/H06PiPL6?=
+ =?us-ascii?Q?B7LGg=3D=3D?=
+X-Microsoft-Antispam-Message-Info: xCkoXOw5IJfdBu09pVwiByjMNSaDl39cfbalu3T795yC+2CE62luNKfkr0aUBhvlfhLVcyo3Z8IEJhxAPLIlhZ+EHWAtWev98O7JqZYFD0Y4UfkO7FuNPwyxyrhxPDdUJFwWDqzu0mc1KKb/ktS0xmizndVrzVQbb5d4o91GabAHOlMEnlOJMtF0X77h2O7gyEkr2P4gWh5F/igiwAqpBMWqza6Nc8hCM1ABvByeIceXMRK/6c2XrxjkN0acljZwdYDM8PQSl+mJ4AxkWiIPa+iK+21tVxL0ywJbUsdUBTkLUYtSY9T0vmGQ7iirz8BBGdL07hY/6GyhXMBkHiKrxnuLNJ6S5ioFDlrBUw3ftmk=
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4932;6:t2XpRKlZvmc9adCxX5P9V3QmZpeeFiUh9hv0fi9rtwtiV5c2aSn7Rir963Kv35+CNdmGaurEKgUuhKSfKJR6U6J72DEGaVQpmaRysDEyGG+3cFJdLUkjjMqBieN2jaj3doGv6s+0nMS65g2aX+ck9v5e7MxYiIovI2qHl+DFVZOIQc9yI+A83RWInS6jk5ySkJvPUgFWOpZNLyZ5Td8fWjaqsk/jBomNB/8guyREUdpwbUYebbAdQz0P5lj6etZoa9kYoi9lp2kaPm5aC0QpSHE70P42i3qy6aJMz+CQGzR1zXkBdBGre6svZJH+EM4qunaNEOo3MVju63vS+2y1b22pt9UdUHJenDhI25oOdkLoWHeweVSa7EVDNk7FCkLuE/660ASJxfvNONOqZPA9rFwywvlMKB0chdB+Hpjxkbxv+9ayrHvWtnnwAj8tk+IdTc8gWAUEn8/TAq+zJy8qXQ==;5:/1++2EnrHUEhAM8biTxJOKfYtb2rvbfqUIA0KKXmdW1EfCdG7Oz92vHMdrSQo8m0IckE8aHVfDsH5wUKBNUXc4XEtIDKuSXAQWuFEavRDdiQM670pyiVcTOPMjQYGi9euDhSnWvi50fa5TbsZl1UGM+tmhSDYABRJ7hv3km+SuM=;7:mPN2uxW2MpTVs3TsEK2YRAo44MB6nO6v29bkKIaaBLsKUre0F4KWN3XC+gJj+hd0vxLnroXNind8n9/PzDf2HtIYEI4U0U+hSJ3NcvyMNE38e/dbutXYrQwSzq9WaOkBGybzRVGixzGp6TwvGlo+IjpwzbCleYHzH1CNJ63ey9ebg/PfOC8KVjX4JuWV6lc2MMLPCoav502hXcOjM1jY+L3ts+GoJYMrii/mgdeDGFGY7eL+qHxV2jtfe+okfovo
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2018 22:24:46.9911 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca681333-c676-46e5-f853-08d5fbeb6b09
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2018 22:24:48.0779 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87e7532f-babd-40cb-f3b9-08d5fbeb6baf
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4932
@@ -83,7 +84,7 @@ Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65439
+X-archive-position: 65440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -100,20 +101,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Our genvdso tool performs some rather paranoid checking that the VDSO
-library isn't attempting to make use of a GOT by constraining the number
-of entries that the GOT is allowed to contain to the minimum 2 entries
-that are always generated by binutils.
+When building using clang, the constraints for unreachable inline
+assembly seem to be checked. A result of this is that a CONFIG_32BIT=y
+build using clang will result in the constraints for inline assembly in
+__write_64bit_c0_split() being checked even when the caller ultimately
+used __write_ulong_c0_register() & the 64-bit path will never be taken.
 
-Unfortunately lld prior to revision 334390 generates a third entry,
-which is unused & thus harmless but falls foul of genvdso's checks &
-causes the build to fail.
+This results in build failures like the following:
 
-Since we already check that the VDSO contains no relocations it seems
-reasonable to presume that it also doesn't contain use of a GOT, which
-would involve relocations. Thus rather than attempting to work around
-this issue by allowing 3 GOT entries when using lld, simply remove the
-GOT checks which seem overly paranoid.
+  In file included from kernel/fork.c:98:
+  ./arch/mips/include/asm/mmu_context.h:149:19: error: unsupported
+    inline asm: input with type 'unsigned long' matching output with
+    type 'unsigned long long'
+          write_c0_entryhi(cpu_asid(cpu, next));
+          ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+  ./arch/mips/include/asm/mmu_context.h:93:2: note: expanded from macro
+    'cpu_asid'
+          (cpu_context((cpu), (mm)) & cpu_asid_mask(&cpu_data[cpu]))
+          ^
+  ./arch/mips/include/asm/mipsregs.h:1617:65: note: expanded from macro
+    'write_c0_entryhi'
+  #define write_c0_entryhi(val)   __write_ulong_c0_register($10, 0, val)
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+  ./arch/mips/include/asm/mipsregs.h:1430:39: note: expanded from macro
+    '__write_ulong_c0_register'
+                  __write_64bit_c0_register(reg, sel, val);               \
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+  ./arch/mips/include/asm/mipsregs.h:1400:41: note: expanded from macro
+    '__write_64bit_c0_register'
+                  __write_64bit_c0_split(register, sel, value);           \
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+  ./arch/mips/include/asm/mipsregs.h:1498:13: note: expanded from macro
+    '__write_64bit_c0_split'
+                          : "r,0" (val));                                 \
+                                   ^~~
+
+This occurs because __write_64bit_c0_split() declares an unsigned long
+long (ie. 64-bit) __tmp variable for use as an output from the inline
+assembly, and then attempts to constrain its input to make use of the
+same registers without caring whether the input is actually of the same
+width.
+
+Avoid the build failure by simply casting the input value to the same
+unsigned long long type as the output which we want to use the same
+registers as.
+
+On a CONFIG_32BIT=y build this means that for users of
+__write_ulong_c0_register() we would zero-extend the input value from
+32-bit to 64-bit if the path were ever taken, but we know it never will
+be. For a CONFIG_64BIT=y build the caller should be providing a 64-bit
+value already causing our cast to be a no-op.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
@@ -121,84 +158,30 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/vdso/genvdso.h | 51 ----------------------------------------
- 1 file changed, 51 deletions(-)
+ arch/mips/include/asm/mipsregs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/vdso/genvdso.h b/arch/mips/vdso/genvdso.h
-index 94334727059a..611b06f01a3c 100644
---- a/arch/mips/vdso/genvdso.h
-+++ b/arch/mips/vdso/genvdso.h
-@@ -15,8 +15,6 @@ static inline bool FUNC(patch_vdso)(const char *path, void *vdso)
- 	ELF(Shdr) *shdr;
- 	char *shstrtab, *name;
- 	uint16_t sh_count, sh_entsize, i;
--	unsigned int local_gotno, symtabno, gotsym;
--	ELF(Dyn) *dyn = NULL;
- 
- 	shdrs = vdso + FUNC(swap_uint)(ehdr->e_shoff);
- 	sh_count = swap_uint16(ehdr->e_shnum);
-@@ -41,9 +39,6 @@ static inline bool FUNC(patch_vdso)(const char *path, void *vdso)
- 				"%s: '%s' contains relocation sections\n",
- 				program_name, path);
- 			return false;
--		case SHT_DYNAMIC:
--			dyn = vdso + FUNC(swap_uint)(shdr->sh_offset);
--			break;
- 		}
- 
- 		/* Check for existing sections. */
-@@ -61,52 +56,6 @@ static inline bool FUNC(patch_vdso)(const char *path, void *vdso)
- 		}
- 	}
- 
--	/*
--	 * Ensure the GOT has no entries other than the standard 2, for the same
--	 * reason we check that there's no relocation sections above.
--	 * The standard two entries are:
--	 * - Lazy resolver
--	 * - Module pointer
--	 */
--	if (dyn) {
--		local_gotno = symtabno = gotsym = 0;
--
--		while (FUNC(swap_uint)(dyn->d_tag) != DT_NULL) {
--			switch (FUNC(swap_uint)(dyn->d_tag)) {
--			/*
--			 * This member holds the number of local GOT entries.
--			 */
--			case DT_MIPS_LOCAL_GOTNO:
--				local_gotno = FUNC(swap_uint)(dyn->d_un.d_val);
--				break;
--			/*
--			 * This member holds the number of entries in the
--			 * .dynsym section.
--			 */
--			case DT_MIPS_SYMTABNO:
--				symtabno = FUNC(swap_uint)(dyn->d_un.d_val);
--				break;
--			/*
--			 * This member holds the index of the first dynamic
--			 * symbol table entry that corresponds to an entry in
--			 * the GOT.
--			 */
--			case DT_MIPS_GOTSYM:
--				gotsym = FUNC(swap_uint)(dyn->d_un.d_val);
--				break;
--			}
--
--			dyn++;
--		}
--
--		if (local_gotno > 2 || symtabno - gotsym) {
--			fprintf(stderr,
--				"%s: '%s' contains unexpected GOT entries\n",
--				program_name, path);
--			return false;
--		}
--	}
--
- 	return true;
- }
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index ae461d91cd1f..d8213dca2ab4 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1495,7 +1495,7 @@ do {									\
+ 			"dmtc0\t%L0, " #source "\n\t"			\
+ 			".set\tmips0"					\
+ 			: "=&r,r" (__tmp)				\
+-			: "r,0" (val));					\
++			: "r,0" ((unsigned long long)val));		\
+ 	else								\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+@@ -1506,7 +1506,7 @@ do {									\
+ 			"dmtc0\t%L0, " #source ", " #sel "\n\t"		\
+ 			".set\tmips0"					\
+ 			: "=&r,r" (__tmp)				\
+-			: "r,0" (val));					\
++			: "r,0" ((unsigned long long)val));		\
+ 	local_irq_restore(__flags);					\
+ } while (0)
  
 -- 
 2.18.0

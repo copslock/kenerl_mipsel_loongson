@@ -1,46 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 14:48:11 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:33974 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 17:15:20 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:43750 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994614AbeHFMsIb0emr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Aug 2018 14:48:08 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 980F2207B5; Mon,  6 Aug 2018 14:47:59 +0200 (CEST)
-Received: from qschulz (AAubervilliers-681-1-99-143.w90-88.abo.wanadoo.fr [90.88.4.143])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 3B32D206A6;
-        Mon,  6 Aug 2018 14:47:59 +0200 (CEST)
-Date:   Mon, 6 Aug 2018 14:47:59 +0200
-From:   Quentin Schulz <quentin.schulz@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
-        f.fainelli@gmail.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, allan.nielsen@microsemi.com,
-        thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH 07/10] dt-bindings: phy: add DT binding for Microsemi
- Ocelot SerDes muxing
-Message-ID: <20180806124759.7e2uz7jvoycalris@qschulz>
-References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
- <cd75c96640cc7fe306ee355acb1db85adb5b796f.1532954208.git-series.quentin.schulz@bootlin.com>
- <20180730133448.GD13198@lunn.ch>
- <20180801082413.2mjm52vwxw3anun6@qschulz>
- <20180801143147.GA16322@lunn.ch>
+        id S23994619AbeHFPPNrQqpz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 6 Aug 2018 17:15:13 +0200
+Received: from mail-qt0-f174.google.com (mail-qt0-f174.google.com [209.85.216.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E61E721A58;
+        Mon,  6 Aug 2018 15:15:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1533568507;
+        bh=ESQjGEI5PGW7PE4gaTHvUdHk0/agU9lq0+5RsgFmsZs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jJnQ6StKTz74D3T0Z4UyHTMg/cyFlWGMHwwpXCW4hSbbQBeuhmjoyMAdjc88eK3nI
+         sZaSkVoas7B63XhuwdCjfi4jFexaEi7J9tbky90RANv73e1FXJB8V7Lgm+mKch1eAK
+         1r39QWSIl4weeQzzRKf/tdepgW/ZkBo8+SHMapSQ=
+Received: by mail-qt0-f174.google.com with SMTP id t5-v6so14192434qtn.3;
+        Mon, 06 Aug 2018 08:15:06 -0700 (PDT)
+X-Gm-Message-State: AOUpUlEyPc0Jfjft0Gz7UbIAO+StaJnkQ5bm6ax1Z5ppZ1gi8sw0628k
+        vR2xOT0Dj2hHbVz5ioEacopYBivjmcbe+9SXsQ==
+X-Google-Smtp-Source: AAOMgpe//wKERl/pGMnDQnhURHagtn6KPVZjvY8uIMPwFDXXnfQ54AJVwQbnBMWSnXr+jTlVdLJQqLF6qS6iCvkeo+w=
+X-Received: by 2002:ac8:2c72:: with SMTP id e47-v6mr15441740qta.60.1533568506083;
+ Mon, 06 Aug 2018 08:15:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dwtbtpadbufkaztq"
-Content-Disposition: inline
-In-Reply-To: <20180801143147.GA16322@lunn.ch>
-User-Agent: NeoMutt/20171215
-Return-Path: <quentin.schulz@bootlin.com>
+References: <20180803030237.3366-1-songjun.wu@linux.intel.com> <20180803030237.3366-7-songjun.wu@linux.intel.com>
+In-Reply-To: <20180803030237.3366-7-songjun.wu@linux.intel.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 6 Aug 2018 09:14:54 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLyuFsfXsG7g10D5g1uLXrFHJ9rdHc97AP9G+pj88v+xg@mail.gmail.com>
+Message-ID: <CAL_JsqLyuFsfXsG7g10D5g1uLXrFHJ9rdHc97AP9G+pj88v+xg@mail.gmail.com>
+Subject: Re: [PATCH v2 06/18] MIPS: dts: Change upper case to lower case
+To:     Songjun Wu <songjun.wu@linux.intel.com>
+Cc:     hua.ma@linux.intel.com, yixin zhu <yixin.zhu@linux.intel.com>,
+        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh+dt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65411
+X-archive-position: 65412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quentin.schulz@bootlin.com
+X-original-sender: robh+dt@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,99 +67,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Aug 2, 2018 at 9:03 PM Songjun Wu <songjun.wu@linux.intel.com> wrote:
+>
+> All the upper case in unit-address and hex constants are
+> changed to lower case according to the Linux conventions.
 
---dwtbtpadbufkaztq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is DT conventions, not Linux.
 
-Hi Andrew,
+Otherwise,
 
-On Wed, Aug 01, 2018 at 04:31:47PM +0200, Andrew Lunn wrote:
-> > > Maybe this should be serdes-mux? The SERDES itself should have some
-> > > registers somewhere. If you ever decide to make use of phylink,
-> > > e.g. to support SFP, you are going to need to know if the SERDES is
-> > > up. So you might need to add the actual SERDES device, in addition to
-> > > the mux for the SERDES.
-> > >=20
-> >=20
-> > I'm not sure to follow.
-> >=20
-> > To be honest, I might have mislead you. The whole configuration of the
-> > serdes is in the hsio register address space. For now, muxing is the
-> > only reason there is a driver for the serdes but there are other things
-> > that can be configured (though not used yet): de/serializer, input/outp=
-ut
-> > buffers, PLL, ... configuration registers for the SerDes.
->=20
-> When you are using the SERDES for networking, you need to know if the
-> SERDES has achieved sync. For example, when the SERDES connects to an
-> optical SFP module, the SERDES bit stream continues unmodified over
-> the optical link to the SERDES in the peer. The optical module can
-> tell you if it is receiving optical power, but it cannot tell you if
-> the optical signal makes any sense. The SERDES however knows how to
-> decode the bitstream, sync to it, etc. So you need some registers in
-> the SERDES to get this status information. Typically, you can also get
-> access to the SGMII/1000Base-X code word, so you can do
-> auto-negotiation, or know if you need to send each bit 10 or 100 times
-> in order to do 100Mbps or 10Mbps. If you are connecting to a PHY which
-> can do > 1Gbps, you need to change the SERDES between SGMII,
-> 1000Base-X, 2500Base-X, etc. Before you can say the link is up, you
-> want the PHY to tell you it has link to its peer PHY, and you want to
-> know the SERDES is ready. Typically the SERDES is last, since you
-> don't know what to configure the SERDES to until the PHY is finished
-> negotiating the link to its peer.
->=20
-> If you look at any of the Marvell SERDES interfaces, found in PHYs or
-> switches, there are dozens of registers for controlling the SERDES.
->=20
-> Now, it could be we don't have a clear definition of what a SERDES
-> is. The Marvell documents has a lot in its definition of SERDES, where
-> as what you could be purely a 'dumb' parallel to serial convert, and
-> all the rest of the logic is in the Ethernet MAC and the PCIe device?
->=20
-> Now, back to my original point. Where are the registers for 'the rest
-> of this logic'? If they are in the MAC address space, we don't have a
-> problem. If they are somewhere else, maybe you will need to add
-> another device. What is this device called? That is why i'm trying to
-> differentiate between the 'SERDES-MUX' and the 'SERDES'.
->=20
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-If I've correctly read the datasheet of the switch, the sync status bit
-is in the MAC address space. Same for 1000BASE-X/SGMII, autonegotiation.
-
-The point I was trying to make was that this driver isn't only for
-"muxing". There are also a handful of registers for
-(electronically-related ?) features of SerDes (e.g. "control of phase
-regulator logic", "deserializer phase control", a few
-thresholds/hysteresis/frequencies, etc...
-
-I understand that "serdes" isn't also fully matching the work done by
-this driver as some features are handled within the MAC controller
-address space.
-
-Let me know if something bothers you/does not make sense,
-Thanks,
-Quentin
-
---dwtbtpadbufkaztq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEXeEYjDsJh38OoyMzhLiadT7g8aMFAltoQ38ACgkQhLiadT7g
-8aNNmRAAj3K9XzeEroN7RKAVvgvpx7JR0bTMte0G2EebUPsrmM1SYW9MD7zypbzA
-7JKgVaQdeYy0DIf6TCUfLb9Q9w7EETlnF2iWawDPt5OpvD+sYOYOSmUbCkUOBk56
-r4EI1HLCyo2tTcHtKcnDOw7b55Racgmc2ToSOLiL/u3koVZwgHFStrNP1Y+woQ8N
-saLzxwhhCGQhb+GLL3U2Silk6WO+Pbj3TG0YDf0YFhufaFHaux+Ni6kHaFjGuHy8
-68RQwrGBwjXdgopf5o7aqcEuUXUN6Lx2Q4eEHdxJZXxN7y+eo5uJLntRj+fk2Nn1
-AWW+f5fsHju5LYy+icEBYFDAzH2aBsgLCNtD1zxmoEv6Ot/HHJRIFOF1noQB79D/
-ZU4pKZsftOxCb3dLkDnRg3WrA7M1jIbmVGsFM3fIro7+oebhJjdGyLTPmOC2UmS5
-w9JgFVkEh+uCnACJyclgORW9Xydbn7BhiU3AKUehpKUJ7FYArFGozHaMC9oxeYdj
-Skj9M0+1FOanAcsXOO+pcHock11Fn7vDBc8HOpq4OXvPSFTeHYDE5DHOwvFgqGDI
-QKb6R2bZqy2VXlluhxbGbnz+57xZ1KjtA3Mcb+XVZlaxsiDWL91OA8o1Bjk0VRwQ
-wTvgzjRnqMOrp7TJPxhSDk12KPTvz74ShQRoM6zaJNBWN8yUsAA=
-=0PCv
------END PGP SIGNATURE-----
-
---dwtbtpadbufkaztq--
+>
+> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+> ---
+>
+> Changes in v2: None
+>
+>  arch/mips/boot/dts/lantiq/danube.dtsi   | 42 ++++++++++++++++-----------------
+>  arch/mips/boot/dts/lantiq/easy50712.dts | 14 +++++------
+>  2 files changed, 28 insertions(+), 28 deletions(-)

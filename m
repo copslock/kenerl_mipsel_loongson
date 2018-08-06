@@ -1,79 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 11:52:48 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:33792 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994577AbeHFJwnmL7Vy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2018 11:52:43 +0200
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w769is4R095850
-        for <linux-mips@linux-mips.org>; Mon, 6 Aug 2018 05:52:42 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2kpjesbybg-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2018 05:52:41 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Mon, 6 Aug 2018 10:52:39 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 6 Aug 2018 10:52:33 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w769qWRr34340870
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 6 Aug 2018 09:52:32 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B1B3052051;
-        Mon,  6 Aug 2018 12:52:40 +0100 (BST)
-Received: from [9.124.35.244] (unknown [9.124.35.244])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 897105204F;
-        Mon,  6 Aug 2018 12:52:37 +0100 (BST)
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH v7 3/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
-        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
-        mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20180731035143.11942-1-ravi.bangoria@linux.ibm.com>
- <20180731035143.11942-4-ravi.bangoria@linux.ibm.com>
- <20180803112455.GA13794@redhat.com>
-Date:   Mon, 6 Aug 2018 15:22:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 13:06:46 +0200 (CEST)
+Received: from mail-io0-x242.google.com ([IPv6:2607:f8b0:4001:c06::242]:34204
+        "EHLO mail-io0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994583AbeHFLGmQ7Huo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2018 13:06:42 +0200
+Received: by mail-io0-x242.google.com with SMTP id l7-v6so10668179ioj.1
+        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2018 04:06:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1kgyf+xozKBERQ/3jTZWyHubUeF9g8qmF9GMdrpyuHg=;
+        b=Hn5PfxGY9VeXtd1JVZ9z+7XY/kpanOGzMKp38t8fOv90Z+y0SLcXGdhLX3A7DWR4Pb
+         lpm22QSncoLBONvROz90BBOyyNkDl1vazz9BxbTqiohl7udGHc+bVVQVTcEjaY/mzbyH
+         maFxRzqiE2dBR0Ux0lEi+vGkGREDP+W47/SLs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1kgyf+xozKBERQ/3jTZWyHubUeF9g8qmF9GMdrpyuHg=;
+        b=fflOwEiK4Hgl9yuqvrxoNnI2wQ0VkALhU69hTcDvbFOfn58OZ7LD+1HYDwRaTa6xSq
+         5k8i/vH/xRfga5YYtIWn5NSoocii6Xv0aV6+XxeRAIWki7TEKwhRjk9TLMBTE9+aimDv
+         vAThxR0P67h1thZvlVn+WdOGM4BqP3okmWO4Tzm+Ara8sWstyZPYzRn9Z01ZeNrU08cs
+         UX6eQQjAWjs3cPgrp+hytWksvHI8R23k2LRNUWnvJ7Knxwz/RjTDtV+hbDLGtOlJhRka
+         +vice9pEY+/fy0jtcXldt7+6nMdv5rxvyioNROHlOlyUl09tsYG7wd4WOMIVJTbjhhrL
+         CKSQ==
+X-Gm-Message-State: AOUpUlFOFZUfWMgxep36ev415rRjTqBYU1QbJriN0mYdKoEy5m2ncIJZ
+        BMJ2BEag6NJ0yeWVhRi89TqNQ+NyTy6uVhjgLB+nPw==
+X-Google-Smtp-Source: AA+uWPzRo4vouDXnCCplavPjkNK9iwMnmkz+XlDL/ei03F1kg/M+PI/j7BfApAUMOzNSegGx2z7iII/0+oohPMBjTK0=
+X-Received: by 2002:a6b:c3c4:: with SMTP id t187-v6mr14328616iof.304.1533553595887;
+ Mon, 06 Aug 2018 04:06:35 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180803112455.GA13794@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 18080609-4275-0000-0000-000002A50712
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18080609-4276-0000-0000-000037AD073E
-Message-Id: <bfb47985-8f58-e5e4-f8b4-695dfea7937f@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-06_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1808060106
-Return-Path: <ravi.bangoria@linux.ibm.com>
+References: <20180725122621.31713-1-quentin.schulz@bootlin.com> <20180725122621.31713-2-quentin.schulz@bootlin.com>
+In-Reply-To: <20180725122621.31713-2-quentin.schulz@bootlin.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 6 Aug 2018 13:06:23 +0200
+Message-ID: <CACRpkdbq2Q-J8scsuaUS0hP1x12xh0zd+RMrCp0TYB773bOAdg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] pinctrl: ocelot: add support for interrupt controller
+To:     quentin.schulz@bootlin.com
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
+        James Hogan <jhogan@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65408
+X-archive-position: 65409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,141 +70,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Oleg,
+Hi Quentin, sorry for delays!
 
-Sorry for bit late reply.
+On Wed, Jul 25, 2018 at 2:27 PM Quentin Schulz
+<quentin.schulz@bootlin.com> wrote:
 
+> This GPIO controller can serve as an interrupt controller as well on the
+> GPIOs it handles.
+>
+> An interrupt is generated whenever a GPIO line changes and the
+> interrupt for this GPIO line is enabled. This means that both the
+> changes from low to high and high to low generate an interrupt.
+>
+> For some use cases, it makes sense to ignore the high to low change and
+> not generate an interrupt. Such a use case is a line that is hold in a
+> level high/low manner until the event holding the line gets acked.
+> This can be achieved by making sure the interrupt on the GPIO controller
+> side gets acked and masked only after the line gets hold in its default
+> state, this is what's done with the fasteoi functions.
+>
+> Only IRQ_TYPE_EDGE_BOTH and IRQ_TYPE_LEVEL_HIGH are supported for now.
+>
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 
-On 08/03/2018 04:54 PM, Oleg Nesterov wrote:
-> Hi Ravi,
-> 
-> I was going to give up and ack this series, but it seems I noticed
-> a bug...
-> 
-> On 07/31, Ravi Bangoria wrote:
->>
->> +static int delayed_uprobe_add(struct uprobe *uprobe, struct mm_struct *mm)
->> +{
->> +	struct delayed_uprobe *du;
->> +
->> +	if (delayed_uprobe_check(uprobe, mm))
->> +		return 0;
->> +
->> +	du  = kzalloc(sizeof(*du), GFP_KERNEL);
->> +	if (!du)
->> +		return -ENOMEM;
->> +
->> +	du->uprobe = uprobe;
->> +	du->mm = mm;
-> 
-> I am surprised I didn't notice this before...
-> 
-> So
-> 	du->mm = mm;
-> 
-> is fine, mm can't go away, uprobe_clear_state() does delayed_uprobe_remove(NULL,mm).
-> 
-> But
-> 	du->uprobe = uprobe;
-> 
-> doesn't look right, uprobe can go away and it can be freed, its memory can be reused.
-> We can't rely on remove_breakpoint(),
+Patch applied, it's such a pretty and straight-forward patch.
+Also IRQ is probably very nice to have, so let's get this in and
+supported.
 
+Please consider addressing the following in follow-up patch(es):
 
-I'm sorry. I didn't get this. How can uprobe go away without calling
-    uprobe_unregister()
-    -> rergister_for_each_vma()
-       -> remove_breakpoint()
-And remove_breakpoint() will get called only when last uprobe consumer is going
-away _for that mm_. So, we can rely on remove_breakpoint() to remove {uprobe,mm}
-from delayed_uprobe_list. Am I missing anything? Or it would be even better if
-you can tell me some example scenario.
+> +static int ocelot_irq_set_type(struct irq_data *data, unsigned int type);
 
+Can't you just move the function above so you don't have to forward-declare
+this?
 
-> the application can unmap the probed page/vma.
-> Yes we do not care about the application in this case, say, the next uprobe_mmap() can
-> wrongly increment the counter, we do not care although this can lead to hard-to-debug
-> problems. But, if nothing else, the kernel can crash if the freed memory is unmapped.
-> So I think put_uprobe() should do delayed_uprobe_remove(uprobe, NULL) before kfree()
-> and delayed_uprobe_remove() should be updated to handle the mm==NULL case.
-> 
-> Also. delayed_uprobe_add() should check the list and avoid duplicates. Otherwise the
-> trivial
-> 
-> 	for (;;)
-> 		munmap(mmap(uprobed_file));
-> 
-> will eat the memory until uprobe is unregistered.
+> +static struct irq_chip ocelot_eoi_irqchip = {
+> +       .name           = "gpio",
+> +       .irq_mask       = ocelot_irq_mask,
+> +       .irq_eoi        = ocelot_irq_ack,
+> +       .irq_unmask     = ocelot_irq_unmask,
+> +       .flags          = IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED,
 
+As you see the latter part of the define is "IF_HANDLED".
 
-I'm already calling delayed_uprobe_check(uprobe, mm) from delayed_uprobe_add().
-So, we don't add same {uprobe,mm} multiple time in delayed_uprobe_list.
+> +       .irq_set_type   = ocelot_irq_set_type,
+> +};
+> +
+> +static struct irq_chip ocelot_irqchip = {
+> +       .name           = "gpio",
+> +       .irq_mask       = ocelot_irq_mask,
+> +       .irq_ack        = ocelot_irq_ack,
+> +       .irq_unmask     = ocelot_irq_unmask,
+> +       .irq_set_type   = ocelot_irq_set_type,
+> +};
 
-Is it the same check you are asking me to add or something else.
+Is it really neccessary to have two irqchips?
 
+Is this to separate ACK and EOI because the EOI version
+doesn't survive an ACK?
 
-> 
-> 
->> +static bool valid_ref_ctr_vma(struct uprobe *uprobe,
->> +			      struct vm_area_struct *vma)
->> +{
->> +	unsigned long vaddr = offset_to_vaddr(vma, uprobe->ref_ctr_offset);
->> +
->> +	return uprobe->ref_ctr_offset &&
->> +		vma->vm_file &&
->> +		file_inode(vma->vm_file) == uprobe->inode &&
->> +		vma->vm_flags & VM_WRITE &&
->> +		!(vma->vm_flags & VM_SHARED) &&
-> 
-> 		vma->vm_flags & (VM_WRITE|VM_SHARED) == VM_WRITE &&
-> 
-> looks a bit better to me, but I won't insist.
-
-Sure. I'll change it.
-
-> 
->> +static int delayed_uprobe_install(struct vm_area_struct *vma)
->> +{
->> +	struct list_head *pos, *q;
->> +	struct delayed_uprobe *du;
->> +	unsigned long vaddr;
->> +	int ret = 0, err = 0;
->> +
->> +	mutex_lock(&delayed_uprobe_lock);
->> +	list_for_each_safe(pos, q, &delayed_uprobe_list) {
->> +		du = list_entry(pos, struct delayed_uprobe, list);
->> +
->> +		if (!valid_ref_ctr_vma(du->uprobe, vma))
->> +			continue;
->> +
->> +		vaddr = offset_to_vaddr(vma, du->uprobe->ref_ctr_offset);
->> +		ret = __update_ref_ctr(vma->vm_mm, vaddr, 1);
->> +		/* Record an error and continue. */
->> +		err = ret & !err ? ret : err;
-> 
-> I try to avoid the cosmetic nits, but I simply can't look at this line ;)
-> 
-> 		if (ret && !err)
-> 			err = ret;
-
-This is neat. Will replace it.
-
-> 
->> @@ -1072,7 +1281,14 @@ int uprobe_mmap(struct vm_area_struct *vma)
->>  	struct uprobe *uprobe, *u;
->>  	struct inode *inode;
->>
->> -	if (no_uprobe_events() || !valid_vma(vma, true))
->> +	if (no_uprobe_events())
->> +		return 0;
->> +
->> +	if (vma->vm_flags & VM_WRITE &&
->> +	    test_bit(MMF_HAS_UPROBES, &vma->vm_mm->flags))
->> +		delayed_uprobe_install(vma);
-> 
-> OK, so you also added the VM_WRITE check and I agree. But then I think we
-> should also check VM_SHARED, just like valid_ref_ctr_vma() does?
-
-Right. I'll add a check here.
-
-Thanks for reviewing :)
+Yours,
+Linus Walleij

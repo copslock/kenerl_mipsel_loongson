@@ -1,84 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 18:21:53 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:49624 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994640AbeHFQVqRi02y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Aug 2018 18:21:46 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 6A4A0AF6F;
-        Mon,  6 Aug 2018 16:21:40 +0000 (UTC)
-Subject: Re: [RFC] serial: sc16is7xx: Use DT sub-nodes for UART ports
-To:     linux-serial@vger.kernel.org, Rob Herring <robh@kernel.org>
-Cc:     linux-mips@linux-mips.org, jringle@gridpoint.com,
-        allsey87@gmail.com, Jakub Kicinski <kubakici@wp.pl>,
-        Xue Liu <liuxuenetmail@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-kernel@vger.kernel.org
-References: <CAL_JsqKNnfgESG6ON95D7nD8VNrcVy7-x6cGGnae_GbbGKAuPQ@mail.gmail.com>
- <20180805232651.10605-1-afaerber@suse.de>
-From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
- 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
-Organization: SUSE Linux GmbH
-Message-ID: <c258d70d-5b9b-77ff-a478-2a96d510d454@suse.de>
-Date:   Mon, 6 Aug 2018 18:21:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 18:28:26 +0200 (CEST)
+Received: from cpanel4.indieserve.net ([199.212.143.9]:53006 "EHLO
+        cpanel4.indieserve.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994637AbeHFQ2WwR4cG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2018 18:28:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=AUiCoM4TBWBMSspHa5/ys/BnJWlfjtdIBABlKvFNT9I=; b=Rat9C4TABjQqDomz65Ec6AstJT
+        ktEBvARgm2KqmJWAnIWwtF54ywUOsc0aRFQI1aKzux6QD7Qu/FnpDkRjWaM1/MUApyoLrqjdMRcrZ
+        P4u4zBFGTEK1jIKXFn915JzzduodehXEunXQVX7nA1qYxABHUDuviu+yYBblff4NvALGjt+soa0XP
+        hIm/W4cknuu9W2GIW3F84VLd4zCmDC5/4brlyq5QvSgaceFjRLPhcaMQZskfmKyfHTTS7PXpeYv7V
+        CUXyOC4ouuaA1aMNNFTNhslKesC8lksQddStk096olr6EwiaMk0tw0G/mwNOhU3bsdgHvMIPFxXoO
+        NZKqRmBA==;
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:38388 helo=localhost.localdomain)
+        by cpanel4.indieserve.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.91)
+        (envelope-from <rpjday@crashcourse.ca>)
+        id 1fmiMl-00BRpf-El; Mon, 06 Aug 2018 12:28:20 -0400
+Date:   Mon, 6 Aug 2018 12:26:48 -0400 (EDT)
+From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To:     linux-mips@linux-mips.org
+cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Subject: [PATCH] MIPS: Remove obsolete MIPS checks for DST node "chosen@0"
+Message-ID: <alpine.LFD.2.21.1808061223350.24138@localhost.localdomain>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20180805232651.10605-1-afaerber@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <afaerber@suse.de>
+Content-Type: text/plain; charset=US-ASCII
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel4.indieserve.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel4.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel4.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65416
+X-archive-position: 65417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afaerber@suse.de
+X-original-sender: rpjday@crashcourse.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,69 +62,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 06.08.2018 um 01:26 schrieb Andreas Färber:
-> This is to allow using serdev.
-> 
-> Signed-off-by: Andreas Färber <afaerber@suse.de>
-> ---
->  drivers/tty/serial/sc16is7xx.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> index 243c96025053..ad7267274f65 100644
-> --- a/drivers/tty/serial/sc16is7xx.c
-> +++ b/drivers/tty/serial/sc16is7xx.c
-> @@ -1213,9 +1213,31 @@ static int sc16is7xx_probe(struct device *dev,
->  			SC16IS7XX_IOCONTROL_SRESET_BIT);
->  
->  	for (i = 0; i < devtype->nr_uart; ++i) {
-> +#ifdef CONFIG_OF
 
-Looks like this and below need to be CONFIG_OF_ADDRESS (build failure
-reported for sparc).
+As there is precious little left in any DTS files referring to the
+node "/chosen@0" as opposed to "/chosen", remove the two checks for
+the former node name.
 
-Regards,
-Andreas
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-> +		struct device_node *np;
-> +		struct platform_device *pdev;
-> +		char name[6] = "uartx";
-> +#endif
-> +
->  		s->p[i].line		= i;
->  		/* Initialize port data */
-> +#ifdef CONFIG_OF
-> +		name[4] = '0' + i;
-> +		np = of_get_child_by_name(dev->of_node, name);
-> +		if (IS_ERR(np)) {
-> +			ret = PTR_ERR(np);
-> +			goto out_ports;
-> +		}
-> +		pdev = of_platform_device_create(np, NULL, dev);
-> +		if (IS_ERR(pdev)) {
-> +			ret = PTR_ERR(pdev);
-> +			goto out_ports;
-> +		}
-> +		platform_set_drvdata(pdev, dev_get_drvdata(dev));
-> +		s->p[i].port.dev	= &pdev->dev;
-> +#else
->  		s->p[i].port.dev	= dev;
-> +#endif
->  		s->p[i].port.irq	= irq;
->  		s->p[i].port.type	= PORT_SC16IS7XX;
->  		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
-> @@ -1271,6 +1293,9 @@ static int sc16is7xx_probe(struct device *dev,
->  	for (i--; i >= 0; i--) {
->  		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
->  		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
-> +#ifdef CONFIG_OF
-> +		of_platform_device_destroy(s->p[i].port.dev, NULL);
-> +#endif
->  	}
->  
->  #ifdef CONFIG_GPIOLIB
+---
+
+  if this patch is applied, there are only a couple more lines that
+would need to be deleted to totally remove all refs to "chosen@0". at
+the moment, i see no MIPS DTS files that refer to that node name.
+
+diff --git a/arch/mips/generic/yamon-dt.c b/arch/mips/generic/yamon-dt.c
+index b408dac722ac..7ba4ad5cc1d6 100644
+--- a/arch/mips/generic/yamon-dt.c
++++ b/arch/mips/generic/yamon-dt.c
+@@ -27,8 +27,6 @@ __init int yamon_dt_append_cmdline(void *fdt)
+
+ 	/* find or add chosen node */
+ 	chosen_off = fdt_path_offset(fdt, "/chosen");
+-	if (chosen_off == -FDT_ERR_NOTFOUND)
+-		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+ 	if (chosen_off == -FDT_ERR_NOTFOUND)
+ 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
+ 	if (chosen_off < 0) {
+@@ -220,8 +218,6 @@ __init int yamon_dt_serial_config(void *fdt)
+
+ 	/* find or add chosen node */
+ 	chosen_off = fdt_path_offset(fdt, "/chosen");
+-	if (chosen_off == -FDT_ERR_NOTFOUND)
+-		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+ 	if (chosen_off == -FDT_ERR_NOTFOUND)
+ 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
+ 	if (chosen_off < 0) {
 
 -- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                  http://crashcourse.ca/dokuwiki
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================

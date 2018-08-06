@@ -1,56 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 17:20:22 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:45456 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994635AbeHFPURr6oQz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Aug 2018 17:20:17 +0200
-Received: from mail-qt0-f178.google.com (mail-qt0-f178.google.com [209.85.216.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2BAF121A53
-        for <linux-mips@linux-mips.org>; Mon,  6 Aug 2018 15:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1533568811;
-        bh=Ak2PP2n4i5ZzDY9Kr9kA5ITfUSCB1L3UoyTvkbtIuew=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WSSL1c6AJzowRgXejPCTCDvlrnS83tQ8LlqYhC8LnMPEoW4YHO8u9Vq54gqirPWfk
-         +5MnuB/L8buQQTou2GOXCgcIirNhJjLWLk46AxxxPUr0Pf9q1l1oyIprr3wLIfhHPb
-         Y18pmJqbCrDQcPmpHOEXge8bdVTe1sAb7POkiJOA=
-Received: by mail-qt0-f178.google.com with SMTP id f18-v6so14167056qtp.10
-        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2018 08:20:11 -0700 (PDT)
-X-Gm-Message-State: AOUpUlGBXAKNDRHT51FkMINVfA9XeO0ywkZRDwQuVpE969BatUgYtcVX
-        u3Hfl9WyeBRU9gl5smeZV/KwCxS3NE5jeLE2nQ==
-X-Google-Smtp-Source: AAOMgpc2XILn0qSCBy+xGWyT97XXZOVaZrovGG2DGVwYFoWAE2v6ZGrCBQCI4BKikn4vBwV+81MfJSds1114L8Dg8LA=
-X-Received: by 2002:ac8:96b:: with SMTP id z40-v6mr14821088qth.362.1533568810413;
- Mon, 06 Aug 2018 08:20:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 18:21:53 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:49624 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994640AbeHFQVqRi02y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 6 Aug 2018 18:21:46 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6A4A0AF6F;
+        Mon,  6 Aug 2018 16:21:40 +0000 (UTC)
+Subject: Re: [RFC] serial: sc16is7xx: Use DT sub-nodes for UART ports
+To:     linux-serial@vger.kernel.org, Rob Herring <robh@kernel.org>
+Cc:     linux-mips@linux-mips.org, jringle@gridpoint.com,
+        allsey87@gmail.com, Jakub Kicinski <kubakici@wp.pl>,
+        Xue Liu <liuxuenetmail@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-kernel@vger.kernel.org
+References: <CAL_JsqKNnfgESG6ON95D7nD8VNrcVy7-x6cGGnae_GbbGKAuPQ@mail.gmail.com>
+ <20180805232651.10605-1-afaerber@suse.de>
+From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
+ 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
+Organization: SUSE Linux GmbH
+Message-ID: <c258d70d-5b9b-77ff-a478-2a96d510d454@suse.de>
+Date:   Mon, 6 Aug 2018 18:21:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com> <20180803030237.3366-3-songjun.wu@linux.intel.com>
-In-Reply-To: <20180803030237.3366-3-songjun.wu@linux.intel.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 6 Aug 2018 09:19:59 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK5pFNKyAhTTmNpaSnKa_beY3kS8FGtYim8oTgw6oO9Rw@mail.gmail.com>
-Message-ID: <CAL_JsqK5pFNKyAhTTmNpaSnKa_beY3kS8FGtYim8oTgw6oO9Rw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/18] clk: intel: Add clock driver for Intel MIPS SoCs
-To:     Songjun Wu <songjun.wu@linux.intel.com>
-Cc:     hua.ma@linux.intel.com, yixin zhu <yixin.zhu@linux.intel.com>,
-        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh+dt@kernel.org>
+In-Reply-To: <20180805232651.10605-1-afaerber@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65415
+X-archive-position: 65416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: afaerber@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,53 +91,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 2, 2018 at 9:03 PM Songjun Wu <songjun.wu@linux.intel.com> wrote:
->
-> From: Yixin Zhu <yixin.zhu@linux.intel.com>
->
-> This driver provides PLL clock registration as well as various clock
-> branches, e.g. MUX clock, gate clock, divider clock and so on.
->
-> PLLs that provide clock to DDR, CPU and peripherals are shown below:
->
->                  +---------+
->             |--->| LCPLL3 0|--PCIe clk-->
->    XO       |    +---------+
-> +-----------|
->             |    +---------+
->             |    |        3|--PAE clk-->
->             |--->| PLL0B  2|--GSWIP clk-->
->             |    |        1|--DDR clk-->DDR PHY clk-->
->             |    |        0|--CPU1 clk--+   +-----+
->             |    +---------+            |--->0    |
->             |                               | MUX |--CPU clk-->
->             |    +---------+            |--->1    |
->             |    |        0|--CPU0 clk--+   +-----+
->             |--->| PLLOA  1|--SSX4 clk-->
->                  |        2|--NGI clk-->
->                  |        3|--CBM clk-->
->                  +---------+
->
-> Signed-off-by: Yixin Zhu <yixin.zhu@linux.intel.com>
-> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+Am 06.08.2018 um 01:26 schrieb Andreas Färber:
+> This is to allow using serdev.
+> 
+> Signed-off-by: Andreas Färber <afaerber@suse.de>
 > ---
->
-> Changes in v2:
-> - Rewrite clock driver, add platform clock description details in
->   clock driver.
->
->  drivers/clk/Kconfig                          |   1 +
->  drivers/clk/Makefile                         |   3 +
->  drivers/clk/intel/Kconfig                    |  20 ++
->  drivers/clk/intel/Makefile                   |   7 +
->  drivers/clk/intel/clk-cgu-pll.c              | 166 ++++++++++
->  drivers/clk/intel/clk-cgu-pll.h              |  34 ++
->  drivers/clk/intel/clk-cgu.c                  | 470 +++++++++++++++++++++++++++
->  drivers/clk/intel/clk-cgu.h                  | 259 +++++++++++++++
->  drivers/clk/intel/clk-grx500.c               | 168 ++++++++++
+>  drivers/tty/serial/sc16is7xx.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index 243c96025053..ad7267274f65 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -1213,9 +1213,31 @@ static int sc16is7xx_probe(struct device *dev,
+>  			SC16IS7XX_IOCONTROL_SRESET_BIT);
+>  
+>  	for (i = 0; i < devtype->nr_uart; ++i) {
+> +#ifdef CONFIG_OF
 
->  include/dt-bindings/clock/intel,grx500-clk.h |  69 ++++
+Looks like this and below need to be CONFIG_OF_ADDRESS (build failure
+reported for sparc).
 
-This belongs with the clk binding patch.
+Regards,
+Andreas
 
-Rob
+> +		struct device_node *np;
+> +		struct platform_device *pdev;
+> +		char name[6] = "uartx";
+> +#endif
+> +
+>  		s->p[i].line		= i;
+>  		/* Initialize port data */
+> +#ifdef CONFIG_OF
+> +		name[4] = '0' + i;
+> +		np = of_get_child_by_name(dev->of_node, name);
+> +		if (IS_ERR(np)) {
+> +			ret = PTR_ERR(np);
+> +			goto out_ports;
+> +		}
+> +		pdev = of_platform_device_create(np, NULL, dev);
+> +		if (IS_ERR(pdev)) {
+> +			ret = PTR_ERR(pdev);
+> +			goto out_ports;
+> +		}
+> +		platform_set_drvdata(pdev, dev_get_drvdata(dev));
+> +		s->p[i].port.dev	= &pdev->dev;
+> +#else
+>  		s->p[i].port.dev	= dev;
+> +#endif
+>  		s->p[i].port.irq	= irq;
+>  		s->p[i].port.type	= PORT_SC16IS7XX;
+>  		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
+> @@ -1271,6 +1293,9 @@ static int sc16is7xx_probe(struct device *dev,
+>  	for (i--; i >= 0; i--) {
+>  		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+>  		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
+> +#ifdef CONFIG_OF
+> +		of_platform_device_destroy(s->p[i].port.dev, NULL);
+> +#endif
+>  	}
+>  
+>  #ifdef CONFIG_GPIOLIB
+
+-- 
+SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

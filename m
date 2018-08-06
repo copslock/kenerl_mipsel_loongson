@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 20:10:07 +0200 (CEST)
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:35365 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994655AbeHFSKENdSik (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2018 20:10:04 +0200
-X-Originating-IP: 79.86.19.127
-Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 9F7C9240009;
-        Mon,  6 Aug 2018 18:09:38 +0000 (UTC)
-From:   Alexandre Ghiti <alex@ghiti.fr>
-To:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
-        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Cc:     Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v6 11/11] hugetlb: Introduce generic version of huge_ptep_get
-Date:   Mon,  6 Aug 2018 17:57:11 +0000
-Message-Id: <20180806175711.24438-12-alex@ghiti.fr>
-X-Mailer: git-send-email 2.16.2
-In-Reply-To: <20180806175711.24438-1-alex@ghiti.fr>
-References: <20180806175711.24438-1-alex@ghiti.fr>
-Return-Path: <alex@ghiti.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 20:54:25 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:45190 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994658AbeHFSyUkHeTs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 6 Aug 2018 20:54:20 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id C19C5207B5; Mon,  6 Aug 2018 20:54:13 +0200 (CEST)
+Received: from localhost (LPuteaux-656-1-243-71.w82-127.abo.wanadoo.fr [82.127.120.71])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 81B4C2072D;
+        Mon,  6 Aug 2018 20:54:13 +0200 (CEST)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Wolfram Sang <wsa@the-dreams.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        James Hogan <jhogan@kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH v3 0/6] Add support for MSCC Ocelot i2c
+Date:   Mon,  6 Aug 2018 20:54:06 +0200
+Message-Id: <20180806185412.7210-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.18.0
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65430
+X-archive-position: 65431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,180 +45,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ia64, mips, parisc, powerpc, sh, sparc, x86 architectures use the
-same version of huge_ptep_get, so move this generic implementation into
-asm-generic/hugetlb.h.
+Hello,
 
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Tested-by: Helge Deller <deller@gmx.de> # parisc
-Acked-by: Catalin Marinas <catalin.marinas@arm.com> # arm64
-Acked-by: Paul Burton <paul.burton@mips.com> # MIPS parts
-Reviewed-by: Luiz Capitulino <lcapitulino@redhat.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
----
- arch/arm/include/asm/hugetlb-3level.h | 1 +
- arch/arm64/include/asm/hugetlb.h      | 1 +
- arch/ia64/include/asm/hugetlb.h       | 5 -----
- arch/mips/include/asm/hugetlb.h       | 5 -----
- arch/parisc/include/asm/hugetlb.h     | 5 -----
- arch/powerpc/include/asm/hugetlb.h    | 5 -----
- arch/sh/include/asm/hugetlb.h         | 5 -----
- arch/sparc/include/asm/hugetlb.h      | 5 -----
- arch/x86/include/asm/hugetlb.h        | 5 -----
- include/asm-generic/hugetlb.h         | 7 +++++++
- 10 files changed, 9 insertions(+), 35 deletions(-)
+Because the designware IP was not able to handle the SDA hold time before
+version 1.11a, MSCC has its own implementation. Add support for it and then add
+i2c on ocelot boards.
 
-diff --git a/arch/arm/include/asm/hugetlb-3level.h b/arch/arm/include/asm/hugetlb-3level.h
-index 54e4b097b1f5..0d9f3918fa7e 100644
---- a/arch/arm/include/asm/hugetlb-3level.h
-+++ b/arch/arm/include/asm/hugetlb-3level.h
-@@ -29,6 +29,7 @@
-  * ptes.
-  * (The valid bit is automatically cleared by set_pte_at for PROT_NONE ptes).
-  */
-+#define __HAVE_ARCH_HUGE_PTEP_GET
- static inline pte_t huge_ptep_get(pte_t *ptep)
- {
- 	pte_t retval = *ptep;
-diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
-index 80887abcef7f..fb6609875455 100644
---- a/arch/arm64/include/asm/hugetlb.h
-+++ b/arch/arm64/include/asm/hugetlb.h
-@@ -20,6 +20,7 @@
- 
- #include <asm/page.h>
- 
-+#define __HAVE_ARCH_HUGE_PTEP_GET
- static inline pte_t huge_ptep_get(pte_t *ptep)
- {
- 	return READ_ONCE(*ptep);
-diff --git a/arch/ia64/include/asm/hugetlb.h b/arch/ia64/include/asm/hugetlb.h
-index e9b42750fdf5..36cc0396b214 100644
---- a/arch/ia64/include/asm/hugetlb.h
-+++ b/arch/ia64/include/asm/hugetlb.h
-@@ -27,11 +27,6 @@ static inline void huge_ptep_clear_flush(struct vm_area_struct *vma,
- {
- }
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
-index 120adc3b2ffd..425bb6fc3bda 100644
---- a/arch/mips/include/asm/hugetlb.h
-+++ b/arch/mips/include/asm/hugetlb.h
-@@ -82,11 +82,6 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 	return changed;
- }
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/parisc/include/asm/hugetlb.h b/arch/parisc/include/asm/hugetlb.h
-index 165b4e5a6f32..7cb595dcb7d7 100644
---- a/arch/parisc/include/asm/hugetlb.h
-+++ b/arch/parisc/include/asm/hugetlb.h
-@@ -48,11 +48,6 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 					     unsigned long addr, pte_t *ptep,
- 					     pte_t pte, int dirty);
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
-index 658bf7136a3c..33a2d9e3ea9e 100644
---- a/arch/powerpc/include/asm/hugetlb.h
-+++ b/arch/powerpc/include/asm/hugetlb.h
-@@ -142,11 +142,6 @@ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 				      unsigned long addr, pte_t *ptep,
- 				      pte_t pte, int dirty);
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/sh/include/asm/hugetlb.h b/arch/sh/include/asm/hugetlb.h
-index c87195ae0cfa..6f025fe18146 100644
---- a/arch/sh/include/asm/hugetlb.h
-+++ b/arch/sh/include/asm/hugetlb.h
-@@ -32,11 +32,6 @@ static inline void huge_ptep_clear_flush(struct vm_area_struct *vma,
- {
- }
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- 	clear_bit(PG_dcache_clean, &page->flags);
-diff --git a/arch/sparc/include/asm/hugetlb.h b/arch/sparc/include/asm/hugetlb.h
-index 028a1465fbe7..3963f80d1cb3 100644
---- a/arch/sparc/include/asm/hugetlb.h
-+++ b/arch/sparc/include/asm/hugetlb.h
-@@ -53,11 +53,6 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 	return changed;
- }
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/arch/x86/include/asm/hugetlb.h b/arch/x86/include/asm/hugetlb.h
-index 574d42eb081e..7469d321f072 100644
---- a/arch/x86/include/asm/hugetlb.h
-+++ b/arch/x86/include/asm/hugetlb.h
-@@ -13,11 +13,6 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
- 	return 0;
- }
- 
--static inline pte_t huge_ptep_get(pte_t *ptep)
--{
--	return *ptep;
--}
--
- static inline void arch_clear_hugepage_flags(struct page *page)
- {
- }
-diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-index f3c99a03ee83..71d7b77eea50 100644
---- a/include/asm-generic/hugetlb.h
-+++ b/include/asm-generic/hugetlb.h
-@@ -119,4 +119,11 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- }
- #endif
- 
-+#ifndef __HAVE_ARCH_HUGE_PTEP_GET
-+static inline pte_t huge_ptep_get(pte_t *ptep)
-+{
-+	return *ptep;
-+}
-+#endif
-+
- #endif /* _ASM_GENERIC_HUGETLB_H */
+I would expect patches 1 to 4 to go through the i2c tree and 5-6 through
+the mips tree once patch 4 has been reviewed by the DT maintainers.
+
+This is based on top of i2c-next plus on
+https://patchwork.ozlabs.org/project/linux-i2c/list/?series=57551
+
+Changes in v3:
+ - collected review tags
+ - fixed build warnings on 64bit machines
+
+Changes in v2:
+ - removed first patch as a similar one is in i2c-next
+ - rebase on top of i2c-next
+ - Added two patches to implement ideas from Andy
+
+
+Alexandre Belloni (6):
+  i2c: designware: use generic table matching
+  i2c: designware: move #ifdef CONFIG_OF to the top
+  i2c: designware: allow IP specific sda_hold_time
+  i2c: designware: add MSCC Ocelot support
+  MIPS: dts: mscc: Add i2c on ocelot
+  MIPS: dts: mscc: enable i2c on ocelot_pcb123
+
+ .../bindings/i2c/i2c-designware.txt           |  9 ++-
+ arch/mips/boot/dts/mscc/ocelot.dtsi           | 18 ++++++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts     |  6 ++
+ drivers/i2c/busses/i2c-designware-common.c    |  2 +
+ drivers/i2c/busses/i2c-designware-core.h      |  4 ++
+ drivers/i2c/busses/i2c-designware-platdrv.c   | 63 +++++++++++++++----
+ 6 files changed, 87 insertions(+), 15 deletions(-)
+
 -- 
-2.16.2
+2.18.0

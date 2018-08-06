@@ -1,64 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 11:30:16 +0200 (CEST)
-Received: from mail-ua0-f193.google.com ([209.85.217.193]:37673 "EHLO
-        mail-ua0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992925AbeHFJaJeflVy convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Aug 2018 11:30:09 +0200
-Received: by mail-ua0-f193.google.com with SMTP id y10-v6so11384073uao.4
-        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2018 02:30:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ibOPXNk7cCXefNDte1F78GbU5P3UIxul/MRGgITah/g=;
-        b=PFXfTsv0SyGq3jCCumYdzD3gbTTXcPNobC64Fub2uRvkTgRFE4geqtcjnTRBFkgUqn
-         8Xqyegjmy4MK0OwYXGJYH/Vk7dgfpt1IATN+3i07lgJn0NrJVCg5w7uqMZ/HXi+TjbY6
-         dxU5juGgz2MDc/5G/sNYa3DpExRWW4/m/DZndmo9axIRvL/A0oLmUWL/ge9wZs2Ua7p4
-         xn2sDIZnYdDNkz9/tK8rgFtkCGctutfMwWv+KmMBM4mKFq6qFGDPt1TRsSpKD1E52uyz
-         pR7cYr2MXJyFS0HD+b/HbyCbN7qWV4Ct5jcUEgRKWVRk9SBRjIEcPvefYDnM857vE9X7
-         rElQ==
-X-Gm-Message-State: AOUpUlH8BHZs132L+k+E8syh4PmCkjuCVk93AYk+XzTsCNXuGR6P3Ckj
-        Pc8VjfGJkMrxQEnEAGCh/XoBmOxqjX3gCR0VrFI=
-X-Google-Smtp-Source: AAOMgpfhdR9WeET5CRw5ljgZ4JFQc+EOieJgLuwOdcqfRt27ievoDFRsEnwFhOLR68r+t6dT52luvU5uF0K/+CAMRzg=
-X-Received: by 2002:ab0:72d1:: with SMTP id g17-v6mr10506191uap.33.1533547803436;
- Mon, 06 Aug 2018 02:30:03 -0700 (PDT)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2018 11:32:50 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:40161 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993003AbeHFJcqfVPKy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 6 Aug 2018 11:32:46 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Aug 2018 02:32:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.51,452,1526367600"; 
+   d="scan'208";a="70509848"
+Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.42]) ([10.226.39.42])
+  by FMSMGA003.fm.intel.com with ESMTP; 06 Aug 2018 02:32:40 -0700
+Subject: Re: [PATCH v2 08/18] serial: intel: Get serial id from dts
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.com>
 References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-15-songjun.wu@linux.intel.com> <20180803055640.GA32226@kroah.com>
- <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com> <20180803103023.GA6557@kroah.com>
- <3360edd2-f3d8-b860-13fa-ce680edbfd0a@hauke-m.de> <20180804124309.GB4920@kroah.com>
- <CAK8P3a3qs34LuhPeaef2wPHYEWbYO5N-4n7763BcaDyppiJ6DA@mail.gmail.com>
- <acd28f40-4342-7f67-8468-7d4578f614a1@linux.intel.com> <CAMuHMdWY9NuYOXq8sD9wmH48=vhMcSBomRY9ZbC+tGE3PGiTGg@mail.gmail.com>
- <0ab8e6e7-3cc2-8e50-b1f3-99616437f527@linux.intel.com>
-In-Reply-To: <0ab8e6e7-3cc2-8e50-b1f3-99616437f527@linux.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 6 Aug 2018 11:29:51 +0200
-Message-ID: <CAMuHMdUJ8-bveoHWOetjrHtq2HNPnf00PidQwJ-kZD2o86KLMw@mail.gmail.com>
-Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
-To:     songjun.wu@linux.intel.com
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>, hua.ma@linux.intel.com,
-        yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
-        qi-ming.wu@intel.com,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jiri Slaby <jslaby@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+ <20180803030237.3366-9-songjun.wu@linux.intel.com>
+ <20180803054304.GA2214@kroah.com>
+From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
+Message-ID: <198e6e8a-cb42-f6b5-b1c0-e3f0bfd3124a@linux.intel.com>
+Date:   Mon, 6 Aug 2018 17:32:39 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
+MIME-Version: 1.0
+In-Reply-To: <20180803054304.GA2214@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <songjun.wu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65405
+X-archive-position: 65406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: songjun.wu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,101 +53,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Songjun,
 
-On Mon, Aug 6, 2018 at 10:58 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
-> On 8/6/2018 3:20 PM, Geert Uytterhoeven wrote:
-> > On Mon, Aug 6, 2018 at 9:15 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
-> >> On 8/5/2018 5:03 AM, Arnd Bergmann wrote:
-> >>> On Sat, Aug 4, 2018 at 2:43 PM, Greg Kroah-Hartman
-> >>> <gregkh@linuxfoundation.org> wrote:
-> >>>> On Sat, Aug 04, 2018 at 12:54:22PM +0200, Hauke Mehrtens wrote:
-> >>>>> On 08/03/2018 12:30 PM, Greg Kroah-Hartman wrote:
-> >>>>>> On Fri, Aug 03, 2018 at 03:33:38PM +0800, Wu, Songjun wrote:
-> >>>>> This patch makes it possible to use it with the legacy lantiq code and
-> >>>>> also with the common clock framework. I see multiple options to fix this
-> >>>>> problem.
-> >>>>>
-> >>>>> 1. The current approach to have it as a compile variant for a) legacy
-> >>>>> lantiq arch code without common clock framework and b) support for SoCs
-> >>>>> using the common clock framework.
-> >>>>> 2. Convert the lantiq arch code to the common clock framework. This
-> >>>>> would be a good approach, but it need some efforts.
-> >>>>> 3. Remove the arch/mips/lantiq code. There are still users of this code.
-> >>>>> 4. Use the old APIs also for the new xRX500 SoC, I do not like this
-> >>>>> approach.
-> >>>>> 5. Move lantiq_soc.h to somewhere in include/linux/ so it is globally
-> >>>>> available and provide some better wrapper code.
-> >>>> I don't really care what you do at this point in time, but you all
-> >>>> should know better than the crazy #ifdef is not allowed to try to
-> >>>> prevent/allow the inclusion of a .h file.  Checkpatch might have even
-> >>>> warned you about it, right?
-> >>>>
-> >>>> So do it correctly, odds are #5 is correct, as that makes it work like
-> >>>> any other device in the kernel.  You are not unique here.
-> >>> The best approach here would clearly be 2. We don't want platform
-> >>> specific header files for doing things that should be completely generic.
-> >>>
-> >>> Converting lantiq to the common-clk framework obviously requires
-> >>> some work, but then again the whole arch/mips/lantiq/clk.c file
-> >>> is fairly short and maybe not that hard to convert.
-> >>>
-> >>> >From looking at arch/mips/lantiq/xway/sysctrl.c, it appears that you
-> >>> already use the clkdev lookup mechanism for some devices without
-> >>> using COMMON_CLK, so I would assume that you can also use those
-> >>> for the remaining clks, which would be much simpler. It registers
-> >>> one anonymous clk there as
-> >>>
-> >>>           clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
-> >>>
-> >>> so why not add replace that with two named clocks and just use
-> >>> the same names in the DT for the newer chip?
-> >>>
-> >>>         Arnd
-> >> We discussed internally and have another solution for this issue.
-> >> Add one lantiq.h in the serial folder, and use "#ifdef preprocessor" in
-> >> lantiq.h,
-> >> also providing no-op stub functions in the #else case, then call those
-> >> functions
-> >> unconditionally from lantiq.c to avoid #ifdef in C file.
-> >>
-> >> To support CCF in legacy product is another topic, is not included in
-> >> this patch.
-> >>
-> >> The implementation is as following：
-> >> #ifdef CONFIG_LANTIQ
-> >> #include <lantiq_soc.h>
-> >> #else
-> >> #define LTQ_EARLY_ASC 0
-> >> #define CPHYSADDR(_val) 0
-> >>
-> >> static inline struct clk *clk_get_fpi(void)
-> >> {
-> >>       return NULL;
-> >> }
-> >> #endif
-> > Why not use clkdev_add(), as Arnd suggested?
-> > That would be a 3-line patch without introducing a new header file and an ugly
-> > #ifdef, which complicates compile coverage testing?
-> >
-> The reason we add a new head file is also for two macros(LTQ_EARLY_ASC
-> and CPHYSADDR)
-> used by legacy product. We need to provide the no-op stub for these two
-> macro for new product.
 
-No you don't. The line number should not be obtained by comparing the
-resource address with a hardcoded base address.
-
-Perhaps the override of port->line should just be removed, as IIRC, the serial
-core has already filled in that field with the (next available) line number?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+On 8/3/2018 1:43 PM, Greg Kroah-Hartman wrote:
+> On Fri, Aug 03, 2018 at 11:02:27AM +0800, Songjun Wu wrote:
+>> Get serial id from dts.
+>>
+>> "#ifdef CONFIG_LANTIQ" preprocessor is used because LTQ_EARLY_ASC
+>> macro is defined in lantiq_soc.h.
+>> lantiq_soc.h is in arch path for legacy product support.
+>>
+>> arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+>>
+>> If "#ifdef preprocessor" is changed to
+>> "if (IS_ENABLED(CONFIG_LANTIQ))", when CONFIG_LANTIQ is not enabled,
+>> code using LTQ_EARLY_ASC is compiled.
+>> Compilation will fail for no LTQ_EARLY_ASC defined.
+>>
+>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+>> ---
+>>
+>> Changes in v2: None
+>>
+>>   drivers/tty/serial/lantiq.c | 19 +++++++++++++++----
+>>   1 file changed, 15 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+>> index 044128277248..836ca51460f2 100644
+>> --- a/drivers/tty/serial/lantiq.c
+>> +++ b/drivers/tty/serial/lantiq.c
+>> @@ -6,6 +6,7 @@
+>>    * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
+>>    * Copyright (C) 2007 John Crispin <john@phrozen.org>
+>>    * Copyright (C) 2010 Thomas Langer, <thomas.langer@lantiq.com>
+>> + * Copyright (C) 2018 Intel Corporation.
+> Your changes here do not warrent the addition of a copyright line, don't
+> you agree?  If not, please get a signed-off-by from your corporate
+> lawyer who does this this is warrented when you resend this patch.
+>
+> thanks,
+>
+> greg k-h
+>
+Thanks.
+The copyright line will be removed when we resend this patch.

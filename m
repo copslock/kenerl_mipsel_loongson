@@ -1,65 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 09:34:12 +0200 (CEST)
-Received: from mail-ua0-f195.google.com ([209.85.217.195]:45992 "EHLO
-        mail-ua0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994677AbeHGHd7D8G8o convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Aug 2018 09:33:59 +0200
-Received: by mail-ua0-f195.google.com with SMTP id k8-v6so15029667uaq.12
-        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2018 00:33:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 11:54:15 +0200 (CEST)
+Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:41279
+        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994679AbeHGJyLB6gwg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 11:54:11 +0200
+Received: by mail-wr1-x443.google.com with SMTP id j5-v6so15130830wrr.8;
+        Tue, 07 Aug 2018 02:54:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/O7TdJoP7N2FoanRdi/G7kqSl9vXm6WcMt5chEXnx7o=;
+        b=UaJRAVVxSRKur9MPSQZ2Uo1UPET3Ydprsp8o02JewUQdbAbU5swUsE/EtjBuJ+wBCu
+         bRaIRPHGCjcdgEe6ndp0SglDIDwXcPYvN+NXRGLT+NtBZmXKEZvWA1BdoLuKL9XZDjbm
+         /PZyst4k+bIEQwLprjwghKwuoaIVN+4UTceo717pqO9kH0hQpDIQ0zo9oJCYDB4SXJ1d
+         s6QNdxil1HXONF+/YuiosHH+JfCzExrzWaFK2CY3MUHTY0hFubz4KI5suvZHvEskxgP5
+         y5tTRnFhu8jvukI6O53DhECjO5Bqjt+5EuE2ukxKPtEkdFPQ8ZZlZ83aUzTDcaARZOuU
+         Gf1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=RIztZSW56qlEmpFi4Woqf2wd8+YujPd82HedacZbr7A=;
-        b=cgyLAm+c/6uur9u2ZVjhNj1fo5TIzeOQT3C063dU5v3dWxSkRewdUR6rNn2Fb85RUI
-         9NrP5rVIABLsgOE17oIxwNY1jtyfBtinpDFR1X/bm/S6JyhFa+CnXtauRPzp4ZG1vu8X
-         WMRRVkbxbbgrW+/Z6cIYJA9kSisaI7Tcjt1CzWecVhv9tEXd5YSOKoMh3ly9WG1I7zSf
-         t0kCrqwlPEZGWrjXAGv2ET2e0vVVOy+h3CIMizdD/EEbWWsado+E8GRDL+Ni3PRwabIt
-         lfRv6Ljx++JZZ1GJFJv7vNBsjcA2U7SnXpfX6RbWzWashEXBdfvhEE8kFFVzRbgQM9UF
-         CUZg==
-X-Gm-Message-State: AOUpUlEQcYxukRHmiWAq2mhpwQUREpkqzym47dyT3XPsl1x3g+uqzVpd
-        HPRpCWeXqlKayn3bwNYx0bd1NQm/hiurY3kJs0Y=
-X-Google-Smtp-Source: AAOMgpcae72AYYRxaexs4Jin4o9qoUM+RYscsmBy6B4OH4ZhSWRt9dfo3cto9RiF0VOn1ui1qE8nD71QwzkgNw/1vnw=
-X-Received: by 2002:a9f:37c8:: with SMTP id q66-v6mr12521003uaq.180.1533627233144;
- Tue, 07 Aug 2018 00:33:53 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/O7TdJoP7N2FoanRdi/G7kqSl9vXm6WcMt5chEXnx7o=;
+        b=Dbcsl9HW6yGMQPcmFt91YUyMSc/SqFQCvTMOi7+8RZnCvELCnxAFvSPzGp8VKWeedh
+         a6rtK4eT5BpovTv/YtQ+pjxV1xP1UTS9tgEDBI8kgwod6IzCbgkPI4VJGmw9c+1AFUVk
+         JG1GopEAjESXHbvtZJyzYBxNA6kKB7BWCl24c0mzttL6ADMKlKus9Z2lAfIzWhSCD+C4
+         rLI/N6Vs3swZ2SOWp92CawfM8Xs/OMh+Kgsch4kV/e7oLqbHD5ZTZ2kyaO1ACHmpd+C/
+         iTp/lZj1/iEIAEs6ECfzlCFnlxEmMQ/Pfk2O5yWHSgaQIN1JTLmFHuEOelf/cAeTJt3T
+         1H6w==
+X-Gm-Message-State: AOUpUlFEetTeNO3S6sM9Oia+nZ/QmtH5y8+GaP9MH4mzMJKDWMRF8ztW
+        QRc8qZ0WQzaH4u0D8p9xerc=
+X-Google-Smtp-Source: AAOMgpeEgHwxMnWaxx9fhC80pBwiUFSRP0teJEeBR4iDRGlYK4soV0+oSVPH/N/ZXm0P0N5shdrNzg==
+X-Received: by 2002:adf:f210:: with SMTP id p16-v6mr12506702wro.184.1533635645712;
+        Tue, 07 Aug 2018 02:54:05 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id y206-v6sm1404825wmg.45.2018.08.07.02.54.03
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 Aug 2018 02:54:05 -0700 (PDT)
+Date:   Tue, 7 Aug 2018 11:54:02 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Alexandre Ghiti <alex@ghiti.fr>
+Cc:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
+ primitives
+Message-ID: <20180807095402.GA12200@gmail.com>
+References: <20180806175711.24438-1-alex@ghiti.fr>
 MIME-Version: 1.0
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-15-songjun.wu@linux.intel.com> <20180803055640.GA32226@kroah.com>
- <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com> <20180803103023.GA6557@kroah.com>
- <3360edd2-f3d8-b860-13fa-ce680edbfd0a@hauke-m.de> <20180804124309.GB4920@kroah.com>
- <CAK8P3a3qs34LuhPeaef2wPHYEWbYO5N-4n7763BcaDyppiJ6DA@mail.gmail.com>
- <acd28f40-4342-7f67-8468-7d4578f614a1@linux.intel.com> <CAMuHMdWY9NuYOXq8sD9wmH48=vhMcSBomRY9ZbC+tGE3PGiTGg@mail.gmail.com>
- <0ab8e6e7-3cc2-8e50-b1f3-99616437f527@linux.intel.com> <CAMuHMdUJ8-bveoHWOetjrHtq2HNPnf00PidQwJ-kZD2o86KLMw@mail.gmail.com>
- <d6d0be20-aea9-cecf-1e39-3d65c0dbad5f@linux.intel.com>
-In-Reply-To: <d6d0be20-aea9-cecf-1e39-3d65c0dbad5f@linux.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Aug 2018 09:33:39 +0200
-Message-ID: <CAMuHMdXADda8fuc9_oTGQFPUnYs8gX-Bp6md5fJgu=wHvM-duw@mail.gmail.com>
-Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
-To:     songjun.wu@linux.intel.com
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>, hua.ma@linux.intel.com,
-        yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
-        qi-ming.wu@intel.com,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jiri Slaby <jslaby@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180806175711.24438-1-alex@ghiti.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <mingo.kernel.org@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65444
+X-archive-position: 65445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: mingo@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,35 +82,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Songjun,
 
-On Tue, Aug 7, 2018 at 9:18 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
-> On 8/6/2018 5:29 PM, Geert Uytterhoeven wrote:
-> > On Mon, Aug 6, 2018 at 10:58 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
-> >> The reason we add a new head file is also for two macros(LTQ_EARLY_ASC
-> >> and CPHYSADDR)
-> >> used by legacy product. We need to provide the no-op stub for these two
-> >> macro for new product.
-> > No you don't. The line number should not be obtained by comparing the
-> > resource address with a hardcoded base address.
-> This is the previous code. Now the line number is obtained from dts.
+* Alexandre Ghiti <alex@ghiti.fr> wrote:
 
-Note that obtaining line numbers from DTS has its own share of problems, when
-considering DT overlays. I've replied to the patch adding the call to
-of_alias_get_id().
+> [CC linux-mm for inclusion in -mm tree]                                          
+>                                                                                  
+> In order to reduce copy/paste of functions across architectures and then         
+> make riscv hugetlb port (and future ports) simpler and smaller, this             
+> patchset intends to factorize the numerous hugetlb primitives that are           
+> defined across all the architectures.                                            
+>                                                                                  
+> Except for prepare_hugepage_range, this patchset moves the versions that         
+> are just pass-through to standard pte primitives into                            
+> asm-generic/hugetlb.h by using the same #ifdef semantic that can be              
+> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.                            
+>                                                                                  
+> s390 architecture has not been tackled in this serie since it does not           
+> use asm-generic/hugetlb.h at all.                                                
+>                                                                                  
+> This patchset has been compiled on all addressed architectures with              
+> success (except for parisc, but the problem does not come from this              
+> series).                                                                         
+>                                                                                  
+> v6:                                                                              
+>   - Remove nohash/32 and book3s/32 powerpc specific implementations in
+>     order to use the generic ones.                                                        
+>   - Add all the Reviewed-by, Acked-by and Tested-by in the commits,              
+>     thanks to everyone.                                                          
+>                                                                                  
+> v5:                                                                              
+>   As suggested by Mike Kravetz, no need to move the #include                     
+>   <asm-generic/hugetlb.h> for arm and x86 architectures, let it live at          
+>   the top of the file.                                                           
+>                                                                                  
+> v4:                                                                              
+>   Fix powerpc build error due to misplacing of #include                          
+>   <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as              
+>   pointed by Christophe Leroy.                                                   
+>                                                                                  
+> v1, v2, v3:                                                                      
+>   Same version, just problems with email provider and misuse of                  
+>   --batch-size option of git send-email
+> 
+> Alexandre Ghiti (11):
+>   hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
+>   hugetlb: Introduce generic version of hugetlb_free_pgd_range
+>   hugetlb: Introduce generic version of set_huge_pte_at
+>   hugetlb: Introduce generic version of huge_ptep_get_and_clear
+>   hugetlb: Introduce generic version of huge_ptep_clear_flush
+>   hugetlb: Introduce generic version of huge_pte_none
+>   hugetlb: Introduce generic version of huge_pte_wrprotect
+>   hugetlb: Introduce generic version of prepare_hugepage_range
+>   hugetlb: Introduce generic version of huge_ptep_set_wrprotect
+>   hugetlb: Introduce generic version of huge_ptep_set_access_flags
+>   hugetlb: Introduce generic version of huge_ptep_get
+> 
+>  arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
+>  arch/arm/include/asm/hugetlb.h               | 30 ----------
+>  arch/arm64/include/asm/hugetlb.h             | 39 +++---------
+>  arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
+>  arch/mips/include/asm/hugetlb.h              | 40 +++----------
+>  arch/parisc/include/asm/hugetlb.h            | 33 +++--------
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  6 --
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
+>  arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
+>  arch/powerpc/include/asm/nohash/32/pgtable.h |  6 --
+>  arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
+>  arch/sh/include/asm/hugetlb.h                | 54 ++---------------
+>  arch/sparc/include/asm/hugetlb.h             | 40 +++----------
+>  arch/x86/include/asm/hugetlb.h               | 69 ----------------------
+>  include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
+>  15 files changed, 135 insertions(+), 394 deletions(-)
 
-> We keep this code for the compatibility.
->
-> Referring to the conditional-compilation part in coding-style,
-> We add a header file to avoid using “#ifdef” in C file.
-> > Perhaps the override of port->line should just be removed, as IIRC, the serial
-> > core has already filled in that field with the (next available) line number?
+The x86 bits look good to me (assuming it's all tested on all relevant architectures, etc.)
 
-Gr{oetje,eeting}s,
+Acked-by: Ingo Molnar <mingo@kernel.org>
 
-                        Geert--
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Thanks,
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+	Ingo

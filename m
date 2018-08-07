@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:42:39 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36184 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:42:53 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:36546 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994681AbeHGLm1mTGXB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:27 +0200
+        with ESMTP id S23994683AbeHGLm2rTeLB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:28 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -13,17 +13,17 @@ To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
 Cc:     Paul Cercueil <paul@crapouillou.net>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH v4 01/18] doc: dt-bindings: jz4780-dma: Update bindings to reflect driver changes
-Date:   Tue,  7 Aug 2018 13:42:01 +0200
-Message-Id: <20180807114218.20091-2-paul@crapouillou.net>
+Subject: [PATCH v4 02/18] dmaengine: dma-jz4780: Return error if not probed from DT
+Date:   Tue,  7 Aug 2018 13:42:02 +0200
+Message-Id: <20180807114218.20091-3-paul@crapouillou.net>
 In-Reply-To: <20180807114218.20091-1-paul@crapouillou.net>
 References: <20180807114218.20091-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642146; bh=ivAO7yn63NYBs63Csv16o8eJvvtdX9pHHkmko1F4V7M=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JrBNSZ6/VsBN8eIPlT6WxEOpRyRnGQu2DZHvNmdSeqZJXmEFwx9HodqWJbfUFoNuxQ0WXndvr1ZYmAN5FhR+b9iZPrCmwsIB/I6w4i6NQvk+hsayIVP/7BX8VsEeND6sY2yeNbgn1Y7V1FJ1lmatzQ+igjIJGok10EgGPcd5qz8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642148; bh=pLsrqXxTamgyjI8snNH79AJair8tR/6mG0IA3/DDSwo=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=CUiEpOcKhaijw7cf+9EXXXKsray+EN6rI2nHQf0OsaaX7UVldp3VIOTf21IaqecBcAQyj1bBhP0ysNAI8BkglPzVY3ymlGqsWDhd57mieLRu+vmE7cUuoGaUcKJ6NRP+2puMl0EniSrSYk8EbOCRMGEK1sCgmJPd8EQfEoWJNOo=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65448
+X-archive-position: 65449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,56 +40,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The driver now expects the devicetree to supply a second memory
-resource. This resource is mandatory on the newly supported SoCs.
-For the JZ4780, new devicetree code must also provide it, although the
-driver is still compatible with older devicetree binaries.
+The driver calls clk_get() with the clock name set to NULL, which means
+that the driver could only work when probed from devicetree. From now
+on, we explicitly require the driver to be probed from devicetree.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 ---
- Documentation/devicetree/bindings/dma/jz4780-dma.txt | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/dma/dma-jz4780.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
- v2: New patch in this series; regroups the changes made to the
- jz4780-dma.txt doc file in the previous version of the patchset.
+ v2: New patch
 
- v3: Updated example to comply with devicetree specification
+ v3: No change
 
- v4: Removed driver-specific comment in commit message
+ v4: No change
 
-diff --git a/Documentation/devicetree/bindings/dma/jz4780-dma.txt b/Documentation/devicetree/bindings/dma/jz4780-dma.txt
-index f25feee62b15..14f33305e194 100644
---- a/Documentation/devicetree/bindings/dma/jz4780-dma.txt
-+++ b/Documentation/devicetree/bindings/dma/jz4780-dma.txt
-@@ -2,8 +2,13 @@
+diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
+index 85820a2d69d4..987899610b46 100644
+--- a/drivers/dma/dma-jz4780.c
++++ b/drivers/dma/dma-jz4780.c
+@@ -761,6 +761,11 @@ static int jz4780_dma_probe(struct platform_device *pdev)
+ 	struct resource *res;
+ 	int i, ret;
  
- Required properties:
- 
--- compatible: Should be "ingenic,jz4780-dma"
--- reg: Should contain the DMA controller registers location and length.
-+- compatible: Should be one of:
-+  * ingenic,jz4740-dma
-+  * ingenic,jz4725b-dma
-+  * ingenic,jz4770-dma
-+  * ingenic,jz4780-dma
-+- reg: Should contain the DMA channel registers location and length, followed
-+  by the DMA controller registers location and length.
- - interrupts: Should contain the interrupt specifier of the DMA controller.
- - interrupt-parent: Should be the phandle of the interrupt controller that
- - clocks: Should contain a clock specifier for the JZ4780 PDMA clock.
-@@ -20,9 +25,10 @@ Optional properties:
- 
- Example:
- 
--dma: dma@13420000 {
-+dma: dma-controller@13420000 {
- 	compatible = "ingenic,jz4780-dma";
--	reg = <0x13420000 0x10000>;
-+	reg = <0x13420000 0x400
-+	       0x13421000 0x40>;
- 
- 	interrupt-parent = <&intc>;
- 	interrupts = <10>;
++	if (!dev->of_node) {
++		dev_err(dev, "This driver must be probed from devicetree\n");
++		return -EINVAL;
++	}
++
+ 	jzdma = devm_kzalloc(dev, sizeof(*jzdma), GFP_KERNEL);
+ 	if (!jzdma)
+ 		return -ENOMEM;
 -- 
 2.11.0

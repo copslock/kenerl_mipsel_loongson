@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:45:06 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:39756 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:45:15 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:40086 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994698AbeHGLmksBTzB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:40 +0200
+        with ESMTP id S23994701AbeHGLmmL5ilB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:42 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -13,17 +13,17 @@ To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
 Cc:     Paul Cercueil <paul@crapouillou.net>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, Daniel Silsby <dansilsby@gmail.com>
-Subject: [PATCH v4 12/18] dmaengine: dma-jz4780: Simplify jz4780_dma_desc_residue()
-Date:   Tue,  7 Aug 2018 13:42:12 +0200
-Message-Id: <20180807114218.20091-13-paul@crapouillou.net>
+Subject: [PATCH v4 13/18] dmaengine: dma-jz4780: Set DTCn register explicitly
+Date:   Tue,  7 Aug 2018 13:42:13 +0200
+Message-Id: <20180807114218.20091-14-paul@crapouillou.net>
 In-Reply-To: <20180807114218.20091-1-paul@crapouillou.net>
 References: <20180807114218.20091-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642160; bh=UaYjkuWn7rqYy6k7gqyn08yAI0x7hmJ/3cPov77Hv4U=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=SIKCi+db78ljhPH1GKMm1p+Gjtggpc7EdEiZurO+X5NfoBYb9b/DQP6aWFXXOlCc2EOxG/IfeVas6eDZEfL8QVq0sRhW/WPnxSa+9RBO+UJFUbRNHMR8Idc53svoznYLu0neAhdd1nMfNS/o1wIx1aXkDpnTThKm2fd15laUcUY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642161; bh=rFmand/bmQWqAV2RJt6xKDPcYkecvE3f/44OTYi0yBU=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=DmjoBsFGp83TnkDhXMQBURvJS/gIYjckpnRhu5WHzy1Ti4hR5yW7Hp/matFQsbiw3vhl3+xW+SrGw8rsTbY5JesnCSF3BhD0JGBNXx7mJ+7H+K8nWsDExg6otIQ9E0cXGGP4C+G9kjlyftk5utY91jmqgWzK+fsC24WAdHNQDaE=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65459
+X-archive-position: 65460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,14 +42,17 @@ X-list: linux-mips
 
 From: Daniel Silsby <dansilsby@gmail.com>
 
-Simple cleanup, no changes to actual logic here.
+Normally, we wouldn't set the channel transfer count register directly
+when using descriptor-driven transfers. However, there is no harm in
+doing so, and it allows jz4780_dma_desc_residue() to report the correct
+residue of an ongoing transfer, no matter when it is called.
 
 Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 ---
- drivers/dma/dma-jz4780.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/dma/dma-jz4780.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
  v2: No change
 
@@ -58,36 +61,24 @@ Tested-by: Mathieu Malaterre <malat@debian.org>
  v4: Add my Signed-off-by
 
 diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index a4292ac4c686..019cebc2e5e5 100644
+index 019cebc2e5e5..d03711834a44 100644
 --- a/drivers/dma/dma-jz4780.c
 +++ b/drivers/dma/dma-jz4780.c
-@@ -610,22 +610,17 @@ static size_t jz4780_dma_desc_residue(struct jz4780_dma_chan *jzchan,
- 	struct jz4780_dma_desc *desc, unsigned int next_sg)
- {
- 	struct jz4780_dma_dev *jzdma = jz4780_dma_chan_parent(jzchan);
--	unsigned int residue, count;
-+	unsigned int count = 0;
- 	unsigned int i;
+@@ -532,6 +532,15 @@ static void jz4780_dma_begin(struct jz4780_dma_chan *jzchan)
+ 	jz4780_dma_chn_writel(jzdma, jzchan->id, JZ_DMA_REG_DRT,
+ 			      jzchan->transfer_type);
  
--	residue = 0;
--
- 	for (i = next_sg; i < desc->count; i++)
--		residue += (desc->desc[i].dtc & 0xffffff) <<
--			jzchan->transfer_shift;
-+		count += desc->desc[i].dtc & 0xffffff;
- 
--	if (next_sg != 0) {
--		count = jz4780_dma_chn_readl(jzdma, jzchan->id,
-+	if (next_sg != 0)
-+		count += jz4780_dma_chn_readl(jzdma, jzchan->id,
- 					 JZ_DMA_REG_DTC);
--		residue += count << jzchan->transfer_shift;
--	}
- 
--	return residue;
-+	return count << jzchan->transfer_shift;
- }
- 
- static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
++	/*
++	 * Set the transfer count. This is redundant for a descriptor-driven
++	 * transfer. However, there can be a delay between the transfer start
++	 * time and when DTCn reg contains the new transfer count. Setting
++	 * it explicitly ensures residue is computed correctly at all times.
++	 */
++	jz4780_dma_chn_writel(jzdma, jzchan->id, JZ_DMA_REG_DTC,
++				jzchan->desc->desc[jzchan->curr_hwdesc].dtc);
++
+ 	/* Write descriptor address and initiate descriptor fetch. */
+ 	desc_phys = jzchan->desc->desc_phys +
+ 		    (jzchan->curr_hwdesc * sizeof(*jzchan->desc->desc));
 -- 
 2.11.0

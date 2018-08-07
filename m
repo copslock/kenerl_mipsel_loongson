@@ -1,62 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 09:18:56 +0200 (CEST)
-Received: from mga07.intel.com ([134.134.136.100]:57621 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993024AbeHGHSwuU8-g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Aug 2018 09:18:52 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2018 00:18:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.51,454,1526367600"; 
-   d="scan'208";a="81295776"
-Received: from songjunw-mobl1.ger.corp.intel.com (HELO [10.226.39.42]) ([10.226.39.42])
-  by orsmga002.jf.intel.com with ESMTP; 07 Aug 2018 00:18:46 -0700
-Subject: Re: [PATCH v2 14/18] serial: intel: Add CCF support
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>, hua.ma@linux.intel.com,
-        yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
-        qi-ming.wu@intel.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 09:34:02 +0200 (CEST)
+Received: from mail-ua0-f194.google.com ([209.85.217.194]:35782 "EHLO
+        mail-ua0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993024AbeHGHd4LVIYo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 09:33:56 +0200
+Received: by mail-ua0-f194.google.com with SMTP id q12-v6so15076732ual.2
+        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2018 00:33:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GE/fYjIuio1/pTL8bdFFc+pv3Uk68paDEfNifPHmXWs=;
+        b=VA93ZT00S0EayRRbq7wivL54BDZctDJOB0jIPU2AiNOfXOJVe9l44Xt0aWU2AG5rcI
+         M9z1r3tRLH/2sJeqjm1KApqVJYHVyta6NJIFrjQhUeDptOOX7rgj7jLTt8XUvZcGcU/O
+         9M0HE9j0fGby0fpJEzlDjMfoqy+wYVSZtzoGcpbZjVRVU1dkg2dKbNTFCTk6ch3osAAg
+         4OQapJNYtrMLzCeq7LbvHpETBBBIAbYS1VUB1z2cjlkfFGKvlgKLpzcF8Vz7HBO1CIsY
+         pgrjHGk2fjK173+R1tXf5zjAAszfA0siblD3iAjdmVK2mmt0V3tMsx4hI8fUfPANut0Z
+         KkLA==
+X-Gm-Message-State: AOUpUlE6y0Ee4Ze32tTmQKqe1uCTWwmNhBXrBHgA72cPYQpCj/fGV2zM
+        jKw0BRKS3FKRMoBe2nVPxrLGgr8L1eUDaf5os7k=
+X-Google-Smtp-Source: AAOMgpdqehgpS+3jTcG7bm7ld/PVCL4WRpJ333yQgVnmJoBlkr38nSKWpnzWEGar3HZagmHTOncuQ4QjHujYxrctMO4=
+X-Received: by 2002:a1f:8948:: with SMTP id l69-v6mr11835313vkd.132.1533627230008;
+ Tue, 07 Aug 2018 00:33:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <20180803030237.3366-1-songjun.wu@linux.intel.com> <20180803030237.3366-9-songjun.wu@linux.intel.com>
+In-Reply-To: <20180803030237.3366-9-songjun.wu@linux.intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 7 Aug 2018 09:33:38 +0200
+Message-ID: <CAMuHMdXkGchPN337dXbBVOFsb1o-Tkh8S_z=uCm3Z0sDjPVMKA@mail.gmail.com>
+Subject: Re: [PATCH v2 08/18] serial: intel: Get serial id from dts
+To:     songjun.wu@linux.intel.com
+Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
+        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         linux-clk <linux-clk@vger.kernel.org>,
         "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Jiri Slaby <jslaby@suse.com>
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-15-songjun.wu@linux.intel.com>
- <20180803055640.GA32226@kroah.com>
- <763bba56-3701-7fe9-9b31-4710594b40d5@linux.intel.com>
- <20180803103023.GA6557@kroah.com>
- <3360edd2-f3d8-b860-13fa-ce680edbfd0a@hauke-m.de>
- <20180804124309.GB4920@kroah.com>
- <CAK8P3a3qs34LuhPeaef2wPHYEWbYO5N-4n7763BcaDyppiJ6DA@mail.gmail.com>
- <acd28f40-4342-7f67-8468-7d4578f614a1@linux.intel.com>
- <CAMuHMdWY9NuYOXq8sD9wmH48=vhMcSBomRY9ZbC+tGE3PGiTGg@mail.gmail.com>
- <0ab8e6e7-3cc2-8e50-b1f3-99616437f527@linux.intel.com>
- <CAMuHMdUJ8-bveoHWOetjrHtq2HNPnf00PidQwJ-kZD2o86KLMw@mail.gmail.com>
-From:   "Wu, Songjun" <songjun.wu@linux.intel.com>
-Message-ID: <d6d0be20-aea9-cecf-1e39-3d65c0dbad5f@linux.intel.com>
-Date:   Tue, 7 Aug 2018 15:18:45 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <CAMuHMdUJ8-bveoHWOetjrHtq2HNPnf00PidQwJ-kZD2o86KLMw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-Return-Path: <songjun.wu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65442
+X-archive-position: 65443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: songjun.wu@linux.intel.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,100 +60,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Songjun,
 
+On Fri, Aug 3, 2018 at 5:04 AM Songjun Wu <songjun.wu@linux.intel.com> wrote:
+> Get serial id from dts.
+>
+> "#ifdef CONFIG_LANTIQ" preprocessor is used because LTQ_EARLY_ASC
+> macro is defined in lantiq_soc.h.
+> lantiq_soc.h is in arch path for legacy product support.
+>
+> arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+>
+> If "#ifdef preprocessor" is changed to
+> "if (IS_ENABLED(CONFIG_LANTIQ))", when CONFIG_LANTIQ is not enabled,
+> code using LTQ_EARLY_ASC is compiled.
+> Compilation will fail for no LTQ_EARLY_ASC defined.
+>
+> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
 
-On 8/6/2018 5:29 PM, Geert Uytterhoeven wrote:
-> Hi Songjun,
->
-> On Mon, Aug 6, 2018 at 10:58 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
->> On 8/6/2018 3:20 PM, Geert Uytterhoeven wrote:
->>> On Mon, Aug 6, 2018 at 9:15 AM Wu, Songjun <songjun.wu@linux.intel.com> wrote:
->>>> On 8/5/2018 5:03 AM, Arnd Bergmann wrote:
->>>>> On Sat, Aug 4, 2018 at 2:43 PM, Greg Kroah-Hartman
->>>>> <gregkh@linuxfoundation.org> wrote:
->>>>>> On Sat, Aug 04, 2018 at 12:54:22PM +0200, Hauke Mehrtens wrote:
->>>>>>> On 08/03/2018 12:30 PM, Greg Kroah-Hartman wrote:
->>>>>>>> On Fri, Aug 03, 2018 at 03:33:38PM +0800, Wu, Songjun wrote:
->>>>>>> This patch makes it possible to use it with the legacy lantiq code and
->>>>>>> also with the common clock framework. I see multiple options to fix this
->>>>>>> problem.
->>>>>>>
->>>>>>> 1. The current approach to have it as a compile variant for a) legacy
->>>>>>> lantiq arch code without common clock framework and b) support for SoCs
->>>>>>> using the common clock framework.
->>>>>>> 2. Convert the lantiq arch code to the common clock framework. This
->>>>>>> would be a good approach, but it need some efforts.
->>>>>>> 3. Remove the arch/mips/lantiq code. There are still users of this code.
->>>>>>> 4. Use the old APIs also for the new xRX500 SoC, I do not like this
->>>>>>> approach.
->>>>>>> 5. Move lantiq_soc.h to somewhere in include/linux/ so it is globally
->>>>>>> available and provide some better wrapper code.
->>>>>> I don't really care what you do at this point in time, but you all
->>>>>> should know better than the crazy #ifdef is not allowed to try to
->>>>>> prevent/allow the inclusion of a .h file.  Checkpatch might have even
->>>>>> warned you about it, right?
->>>>>>
->>>>>> So do it correctly, odds are #5 is correct, as that makes it work like
->>>>>> any other device in the kernel.  You are not unique here.
->>>>> The best approach here would clearly be 2. We don't want platform
->>>>> specific header files for doing things that should be completely generic.
->>>>>
->>>>> Converting lantiq to the common-clk framework obviously requires
->>>>> some work, but then again the whole arch/mips/lantiq/clk.c file
->>>>> is fairly short and maybe not that hard to convert.
->>>>>
->>>>> >From looking at arch/mips/lantiq/xway/sysctrl.c, it appears that you
->>>>> already use the clkdev lookup mechanism for some devices without
->>>>> using COMMON_CLK, so I would assume that you can also use those
->>>>> for the remaining clks, which would be much simpler. It registers
->>>>> one anonymous clk there as
->>>>>
->>>>>            clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
->>>>>
->>>>> so why not add replace that with two named clocks and just use
->>>>> the same names in the DT for the newer chip?
->>>>>
->>>>>          Arnd
->>>> We discussed internally and have another solution for this issue.
->>>> Add one lantiq.h in the serial folder, and use "#ifdef preprocessor" in
->>>> lantiq.h,
->>>> also providing no-op stub functions in the #else case, then call those
->>>> functions
->>>> unconditionally from lantiq.c to avoid #ifdef in C file.
->>>>
->>>> To support CCF in legacy product is another topic, is not included in
->>>> this patch.
->>>>
->>>> The implementation is as following：
->>>> #ifdef CONFIG_LANTIQ
->>>> #include <lantiq_soc.h>
->>>> #else
->>>> #define LTQ_EARLY_ASC 0
->>>> #define CPHYSADDR(_val) 0
->>>>
->>>> static inline struct clk *clk_get_fpi(void)
->>>> {
->>>>        return NULL;
->>>> }
->>>> #endif
->>> Why not use clkdev_add(), as Arnd suggested?
->>> That would be a 3-line patch without introducing a new header file and an ugly
->>> #ifdef, which complicates compile coverage testing?
->>>
->> The reason we add a new head file is also for two macros(LTQ_EARLY_ASC
->> and CPHYSADDR)
->> used by legacy product. We need to provide the no-op stub for these two
->> macro for new product.
-> No you don't. The line number should not be obtained by comparing the
-> resource address with a hardcoded base address.
-This is the previous code. Now the line number is obtained from dts.
-We keep this code for the compatibility.
+Thanks for your patch!
 
-Referring to the conditional-compilation part in coding-style,
-We add a header file to avoid using “#ifdef” in C file.
-> Perhaps the override of port->line should just be removed, as IIRC, the serial
-> core has already filled in that field with the (next available) line number?
+> @@ -699,9 +700,19 @@ lqasc_probe(struct platform_device *pdev)
+>                 return -ENODEV;
+>         }
 >
-> Gr{oetje,eeting}s,
+> -       /* check if this is the console port */
+> -       if (mmres->start != CPHYSADDR(LTQ_EARLY_ASC))
+> -               line = 1;
+> +       /* get serial id */
+> +       line = of_alias_get_id(node, "serial");
+> +       if (line < 0) {
+> +#ifdef CONFIG_LANTIQ
+> +               if (mmres->start == CPHYSADDR(LTQ_EARLY_ASC))
+> +                       line = 0;
+> +               else
+> +                       line = 1;
+> +#else
+> +               dev_err(&pdev->dev, "failed to get alias id, errno %d\n", line);
+> +               return line;
+
+Please note that not providing a fallback here makes life harder when using
+DT overlays.
+See the description of commit 7678f4c20fa7670f ("serial: sh-sci: Add support
+for dynamic instances") for background info.
+
+> +#endif
+> +       }
 >
->                          Geert
+>         if (lqasc_port[line]) {
+>                 dev_err(&pdev->dev, "port %d already allocated\n", line);
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

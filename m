@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 17:01:43 +0200 (CEST)
-Received: from mail-io0-f195.google.com ([209.85.223.195]:37943 "EHLO
-        mail-io0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994702AbeHGPBgRo8Yl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 17:01:36 +0200
-Received: by mail-io0-f195.google.com with SMTP id v26-v6so14240457iog.5;
-        Tue, 07 Aug 2018 08:01:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 19:42:34 +0200 (CEST)
+Received: from mail-it0-f67.google.com ([209.85.214.67]:35151 "EHLO
+        mail-it0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994711AbeHGRmaWYaQ0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 19:42:30 +0200
+Received: by mail-it0-f67.google.com with SMTP id 139-v6so17287232itf.0
+        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2018 10:42:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=2bfpvkev53o9yaQQ9M/RxMH9P5Wk+KrNDI7wCnruyCI=;
-        b=PWdAGozVR1pwauHF/+nDpA1ooJA9jrEq4nYDa5Fg5WE79ZwadhgAGvsR/mzfwzJnny
-         +4swUd1XQLvv0OXi2slJSd5rod5C5BJCuJFp0uNQ3gwwqQ0VZsIk7gaxaQq6QZvFIMIE
-         G/ywOv1tMmPpL9erqXaj4AN+HnIz4bT3EV1cOjML5D+uimwA04n8AQs2TiwkUfBRoIOi
-         ksypm2RBtI2Ih4ijI4fIp6zr6+2Rx8Mi/w8cxq/9OplCY4plywUeQpRyO/yAkjc9vSeg
-         dVZD/mIVAqGK8ex8+SZn3wMFHkb8D9jQtorV5vp/UGiD2Xde6O8MUnHcKC1eYUwQMMBv
-         8/mw==
-X-Gm-Message-State: AOUpUlGf0SdDpYJXH2YRefFSYFyN/egDvfALb4YISMKvr5TSRZABUNFC
-        0+IjgdGVUsTa4ah7wuX5Lg==
-X-Google-Smtp-Source: AA+uWPykaNvmyvc3jHpflAD0xYgGa7mWtrnlTVTYN0KZIC+effdXwuPbUjP7f4YXuLxmxFbtvMfobw==
-X-Received: by 2002:a6b:9bd1:: with SMTP id d200-v6mr20540129ioe.147.1533654090218;
-        Tue, 07 Aug 2018 08:01:30 -0700 (PDT)
+        bh=KeKJnzQOffQOfRtAMyjQsTpNA5n7hdyzcdzP6bVZfls=;
+        b=YBz8tde+2N1dnazJk03UlrZ5BTJormO/hm8/IC6IZYSnNz0n42M3rXa5Ac1kZXWkN6
+         6tml6XaYAPFG7SpbYkUCt/HsLbB9z+mcFk9t316UAuGzbaVjiccvIOK7APNvgATDE6oJ
+         Waru7+0keHgGxRapDU089Y5eMlp5anLN8YcYbOWWnoyKgSLaFLw/kGx3Ff4CG5fSwqY4
+         ecvgp0urqdjegP9+YM+7gIs16xyHOorf8Kr8OvJY+LcUxT0Wo4iD2FFRgL23OoK537oy
+         ncTrv2nfTvBh6w9/O/F4yIg9nINcj6Dq/ZEnabzn67wNEniZJqfmj4lUFaAcHTqv+gPH
+         jcPg==
+X-Gm-Message-State: AOUpUlFS5OIQ/r6Mvr7+/I5s3YBtq63+nYX7W3ZcJa3A//+MyUdXJfnp
+        +Kl6qGo1ppa3mYx0zbXRRw==
+X-Google-Smtp-Source: AA+uWPySPENDMX6MHA4PVFFsHcyOjIXrwPOgxWyDwSHWjEa1qLYLRzL6sFUjx8v7/2qBeJ7rAR7r8Q==
+X-Received: by 2002:a24:534c:: with SMTP id n73-v6mr2818748itb.25.1533663744257;
+        Tue, 07 Aug 2018 10:42:24 -0700 (PDT)
 Received: from localhost ([24.51.61.72])
-        by smtp.gmail.com with ESMTPSA id l10-v6sm913816itb.27.2018.08.07.08.01.29
+        by smtp.gmail.com with ESMTPSA id c71-v6sm727703ioe.69.2018.08.07.10.42.23
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Aug 2018 08:01:29 -0700 (PDT)
-Date:   Tue, 7 Aug 2018 09:01:29 -0600
+        Tue, 07 Aug 2018 10:42:23 -0700 (PDT)
+Date:   Tue, 7 Aug 2018 11:42:22 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Vinod Koul <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
         James Hogan <jhogan@kernel.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 01/18] doc: dt-bindings: jz4780-dma: Update bindings
- to reflect driver changes
-Message-ID: <20180807150129.GA9404@rob-hp-laptop>
-References: <20180807114218.20091-1-paul@crapouillou.net>
- <20180807114218.20091-2-paul@crapouillou.net>
+        Paul Burton <paul.burton@mips.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Allan Nielsen <allan.nielsen@microsemi.com>
+Subject: Re: [PATCH v3 4/6] i2c: designware: add MSCC Ocelot support
+Message-ID: <20180807174222.GA5720@rob-hp-laptop>
+References: <20180806185412.7210-1-alexandre.belloni@bootlin.com>
+ <20180806185412.7210-5-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180807114218.20091-2-paul@crapouillou.net>
+In-Reply-To: <20180806185412.7210-5-alexandre.belloni@bootlin.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65468
+X-archive-position: 65469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,18 +68,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 07, 2018 at 01:42:01PM +0200, Paul Cercueil wrote:
-> The driver now expects the devicetree to supply a second memory
-> resource. This resource is mandatory on the newly supported SoCs.
-> For the JZ4780, new devicetree code must also provide it, although the
-> driver is still compatible with older devicetree binaries.
+On Mon, Aug 06, 2018 at 08:54:10PM +0200, Alexandre Belloni wrote:
+> The Microsemi Ocelot I2C controller is a designware IP. It also has a
+> second set of registers to allow tweaking SDA hold time and spike
+> filtering.
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Tested-by: Mathieu Malaterre <malat@debian.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 > ---
->  Documentation/devicetree/bindings/dma/jz4780-dma.txt | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+>  .../bindings/i2c/i2c-designware.txt           |  9 ++++-
 
-Drop the 'doc: ' from the subject if you respin. Otherwise,
+Please split binding patches.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+>  drivers/i2c/busses/i2c-designware-core.h      |  3 ++
+>  drivers/i2c/busses/i2c-designware-platdrv.c   | 40 +++++++++++++++++++
+>  3 files changed, 50 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/i2c/i2c-designware.txt b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
+> index fbb0a6d8b964..7886f2dc6675 100644
+> --- a/Documentation/devicetree/bindings/i2c/i2c-designware.txt
+> +++ b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
+> @@ -2,7 +2,8 @@
+>  
+>  Required properties :
+>  
+> - - compatible : should be "snps,designware-i2c"
+> + - compatible : should be "snps,designware-i2c" or "mscc,ocelot-i2c" followed by
+> +   "snps,designware-i2c" for fallback
+
+Please reformat to one valid combination per line.
+
+>   - reg : Offset and length of the register set for the device
+>   - interrupts : <IRQ> where IRQ is the interrupt number.
+>  
+> @@ -11,8 +12,12 @@ Recommended properties :
+>   - clock-frequency : desired I2C bus clock frequency in Hz.
+>  
+>  Optional properties :
+> + - reg : for "mscc,ocelot-i2c", a second register set to configure the SDA hold
+> +   time, named ICPU_CFG:TWI_DELAY in the datasheet.
+> +
+>   - i2c-sda-hold-time-ns : should contain the SDA hold time in nanoseconds.
+> -   This option is only supported in hardware blocks version 1.11a or newer.
+> +   This option is only supported in hardware blocks version 1.11a or newer and
+> +   on Microsemi SoCs ("mscc,ocelot-i2c" compatible).
+>  
+>   - i2c-scl-falling-time-ns : should contain the SCL falling time in nanoseconds.
+>     This value which is by default 300ns is used to compute the tLOW period.

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:45:34 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:40424 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:45:44 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:41108 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994702AbeHGLmnjrEUB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:43 +0200
+        with ESMTP id S23994681AbeHGLmqbr5aB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 13:42:46 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -12,18 +12,18 @@ To:     Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 Cc:     Paul Cercueil <paul@crapouillou.net>, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, Daniel Silsby <dansilsby@gmail.com>
-Subject: [PATCH v4 14/18] dmaengine: dma-jz4780: Further residue status fix
-Date:   Tue,  7 Aug 2018 13:42:14 +0200
-Message-Id: <20180807114218.20091-15-paul@crapouillou.net>
+        linux-mips@linux-mips.org
+Subject: [PATCH v4 16/18] MIPS: JZ4780: DTS: Update DMA node to match driver changes
+Date:   Tue,  7 Aug 2018 13:42:16 +0200
+Message-Id: <20180807114218.20091-17-paul@crapouillou.net>
 In-Reply-To: <20180807114218.20091-1-paul@crapouillou.net>
 References: <20180807114218.20091-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642162; bh=/+x6Hih2LqJF9rRR9YKSDlZBUCfXomzvcj+7FjvB06A=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ktxQ+u1T4iAHHCWJ/C/QlTTnKhsgTnxDfoKobg6GWHNmEURm/01a6/kwtO0xJCmEgIw4cJAkbRS93c1A05GsuDsZHHy745ueMewXPtGla0UiGFryb2eb+Z8QefRa+ZxNbxfgdC5mwpAEcUAUFKKCv6envvXAn091G7Kkgg8SYMs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1533642165; bh=9jgCX3Pa1sDQ//Gd/PFq+4yBc2SXlPuKtUruCihU94A=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=AtB3E/Vp7EWC0ttUCPoLAHlg2MpSj1C7PDcOnbM2RakpDhgJgaxzyGrJm+LSTs79vTaDasGZa6k6eUCumZpSbaTJPr1FLatLtY24L6qRrEp2p5B8vf87F/dg43YlKd8StJzUsrcGsIxC1dFB8aS8d13n52xpKDHb3VtIkSFzmhc=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65461
+X-archive-position: 65462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,45 +40,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Daniel Silsby <dansilsby@gmail.com>
+The driver now accepts two memory resources, the first one for the
+channel-specific registers, the second one for the controller-specific
+registers.
 
-Func jz4780_dma_desc_residue() expects the index to the next hw
-descriptor as its last parameter. Caller func jz4780_dma_tx_status(),
-however, applied modulus before passing it. When the current hw
-descriptor was last in the list, the index passed became zero.
+Note that older devicetrees, without this commit, will still work with
+the jz4780-dma driver.
 
-The resulting excess of reported residue especially caused problems
-with cyclic DMA transfer clients, i.e. ALSA AIC audio output, which
-rely on this for determining current DMA location within buffer.
-
-Combined with the recent and related residue-reporting fixes, spurious
-ALSA audio underruns on jz4770 hardware are now fixed.
-
-Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 ---
- drivers/dma/dma-jz4780.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/ingenic/jz4780.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- v2: No change
+ v2: Update info about devicetree ABI compatibility in commit message
 
  v3: No change
 
- v4: Add my Signed-off-by
+ v4: No change
 
-diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index d03711834a44..351dc8268515 100644
---- a/drivers/dma/dma-jz4780.c
-+++ b/drivers/dma/dma-jz4780.c
-@@ -653,7 +653,7 @@ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
- 					to_jz4780_dma_desc(vdesc), 0);
- 	} else if (cookie == jzchan->desc->vdesc.tx.cookie) {
- 		txstate->residue = jz4780_dma_desc_residue(jzchan, jzchan->desc,
--			  (jzchan->curr_hwdesc + 1) % jzchan->desc->count);
-+					jzchan->curr_hwdesc + 1);
- 	} else
- 		txstate->residue = 0;
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+index aa4e8f75ff5d..ad3b1f827cf5 100644
+--- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -247,7 +247,8 @@
  
+ 	dma: dma@13420000 {
+ 		compatible = "ingenic,jz4780-dma";
+-		reg = <0x13420000 0x10000>;
++		reg = <0x13420000 0x400
++		       0x13421000 0x40>;
+ 		#dma-cells = <2>;
+ 
+ 		interrupt-parent = <&intc>;
 -- 
 2.11.0

@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 16:10:18 +0200 (CEST)
-Received: from mga01.intel.com ([192.55.52.88]:44637 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993997AbeHGOKO5d-gH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Aug 2018 16:10:14 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2018 07:10:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.51,455,1526367600"; 
-   d="scan'208";a="74441198"
-Received: from mylly.fi.intel.com (HELO [10.237.72.64]) ([10.237.72.64])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Aug 2018 07:10:09 -0700
-Subject: Re: [PATCH v3 0/6] Add support for MSCC Ocelot i2c
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        James Hogan <jhogan@kernel.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-References: <20180806185412.7210-1-alexandre.belloni@bootlin.com>
-From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Message-ID: <ce7bc15f-5742-8d1b-4b47-2e8b66d3e5c3@linux.intel.com>
-Date:   Tue, 7 Aug 2018 17:10:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 17:01:43 +0200 (CEST)
+Received: from mail-io0-f195.google.com ([209.85.223.195]:37943 "EHLO
+        mail-io0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994702AbeHGPBgRo8Yl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 17:01:36 +0200
+Received: by mail-io0-f195.google.com with SMTP id v26-v6so14240457iog.5;
+        Tue, 07 Aug 2018 08:01:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2bfpvkev53o9yaQQ9M/RxMH9P5Wk+KrNDI7wCnruyCI=;
+        b=PWdAGozVR1pwauHF/+nDpA1ooJA9jrEq4nYDa5Fg5WE79ZwadhgAGvsR/mzfwzJnny
+         +4swUd1XQLvv0OXi2slJSd5rod5C5BJCuJFp0uNQ3gwwqQ0VZsIk7gaxaQq6QZvFIMIE
+         G/ywOv1tMmPpL9erqXaj4AN+HnIz4bT3EV1cOjML5D+uimwA04n8AQs2TiwkUfBRoIOi
+         ksypm2RBtI2Ih4ijI4fIp6zr6+2Rx8Mi/w8cxq/9OplCY4plywUeQpRyO/yAkjc9vSeg
+         dVZD/mIVAqGK8ex8+SZn3wMFHkb8D9jQtorV5vp/UGiD2Xde6O8MUnHcKC1eYUwQMMBv
+         8/mw==
+X-Gm-Message-State: AOUpUlGf0SdDpYJXH2YRefFSYFyN/egDvfALb4YISMKvr5TSRZABUNFC
+        0+IjgdGVUsTa4ah7wuX5Lg==
+X-Google-Smtp-Source: AA+uWPykaNvmyvc3jHpflAD0xYgGa7mWtrnlTVTYN0KZIC+effdXwuPbUjP7f4YXuLxmxFbtvMfobw==
+X-Received: by 2002:a6b:9bd1:: with SMTP id d200-v6mr20540129ioe.147.1533654090218;
+        Tue, 07 Aug 2018 08:01:30 -0700 (PDT)
+Received: from localhost ([24.51.61.72])
+        by smtp.gmail.com with ESMTPSA id l10-v6sm913816itb.27.2018.08.07.08.01.29
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 Aug 2018 08:01:29 -0700 (PDT)
+Date:   Tue, 7 Aug 2018 09:01:29 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Vinod Koul <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v4 01/18] doc: dt-bindings: jz4780-dma: Update bindings
+ to reflect driver changes
+Message-ID: <20180807150129.GA9404@rob-hp-laptop>
+References: <20180807114218.20091-1-paul@crapouillou.net>
+ <20180807114218.20091-2-paul@crapouillou.net>
 MIME-Version: 1.0
-In-Reply-To: <20180806185412.7210-1-alexandre.belloni@bootlin.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <jarkko.nikula@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180807114218.20091-2-paul@crapouillou.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65467
+X-archive-position: 65468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jarkko.nikula@linux.intel.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,21 +66,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/06/2018 09:54 PM, Alexandre Belloni wrote:
-> Hello,
+On Tue, Aug 07, 2018 at 01:42:01PM +0200, Paul Cercueil wrote:
+> The driver now expects the devicetree to supply a second memory
+> resource. This resource is mandatory on the newly supported SoCs.
+> For the JZ4780, new devicetree code must also provide it, although the
+> driver is still compatible with older devicetree binaries.
 > 
-> Because the designware IP was not able to handle the SDA hold time before
-> version 1.11a, MSCC has its own implementation. Add support for it and then add
-> i2c on ocelot boards.
-> 
-> I would expect patches 1 to 4 to go through the i2c tree and 5-6 through
-> the mips tree once patch 4 has been reviewed by the DT maintainers.
-> 
-For the patches 1-4/6 that touch i2c-designware:
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Tested-by: Mathieu Malaterre <malat@debian.org>
+> ---
+>  Documentation/devicetree/bindings/dma/jz4780-dma.txt | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Drop the 'doc: ' from the subject if you respin. Otherwise,
 
-I tested acpi_match_device() conversion to device_get_match_data() 
-didn't affect MODEL_CHERRYTRAIL case and quick test that i2c 
-communication continue working.
+Reviewed-by: Rob Herring <robh@kernel.org>

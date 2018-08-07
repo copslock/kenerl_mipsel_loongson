@@ -1,75 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 11:54:15 +0200 (CEST)
-Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:41279
-        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994679AbeHGJyLB6gwg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 11:54:11 +0200
-Received: by mail-wr1-x443.google.com with SMTP id j5-v6so15130830wrr.8;
-        Tue, 07 Aug 2018 02:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=/O7TdJoP7N2FoanRdi/G7kqSl9vXm6WcMt5chEXnx7o=;
-        b=UaJRAVVxSRKur9MPSQZ2Uo1UPET3Ydprsp8o02JewUQdbAbU5swUsE/EtjBuJ+wBCu
-         bRaIRPHGCjcdgEe6ndp0SglDIDwXcPYvN+NXRGLT+NtBZmXKEZvWA1BdoLuKL9XZDjbm
-         /PZyst4k+bIEQwLprjwghKwuoaIVN+4UTceo717pqO9kH0hQpDIQ0zo9oJCYDB4SXJ1d
-         s6QNdxil1HXONF+/YuiosHH+JfCzExrzWaFK2CY3MUHTY0hFubz4KI5suvZHvEskxgP5
-         y5tTRnFhu8jvukI6O53DhECjO5Bqjt+5EuE2ukxKPtEkdFPQ8ZZlZ83aUzTDcaARZOuU
-         Gf1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=/O7TdJoP7N2FoanRdi/G7kqSl9vXm6WcMt5chEXnx7o=;
-        b=Dbcsl9HW6yGMQPcmFt91YUyMSc/SqFQCvTMOi7+8RZnCvELCnxAFvSPzGp8VKWeedh
-         a6rtK4eT5BpovTv/YtQ+pjxV1xP1UTS9tgEDBI8kgwod6IzCbgkPI4VJGmw9c+1AFUVk
-         JG1GopEAjESXHbvtZJyzYBxNA6kKB7BWCl24c0mzttL6ADMKlKus9Z2lAfIzWhSCD+C4
-         rLI/N6Vs3swZ2SOWp92CawfM8Xs/OMh+Kgsch4kV/e7oLqbHD5ZTZ2kyaO1ACHmpd+C/
-         iTp/lZj1/iEIAEs6ECfzlCFnlxEmMQ/Pfk2O5yWHSgaQIN1JTLmFHuEOelf/cAeTJt3T
-         1H6w==
-X-Gm-Message-State: AOUpUlFEetTeNO3S6sM9Oia+nZ/QmtH5y8+GaP9MH4mzMJKDWMRF8ztW
-        QRc8qZ0WQzaH4u0D8p9xerc=
-X-Google-Smtp-Source: AAOMgpeEgHwxMnWaxx9fhC80pBwiUFSRP0teJEeBR4iDRGlYK4soV0+oSVPH/N/ZXm0P0N5shdrNzg==
-X-Received: by 2002:adf:f210:: with SMTP id p16-v6mr12506702wro.184.1533635645712;
-        Tue, 07 Aug 2018 02:54:05 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id y206-v6sm1404825wmg.45.2018.08.07.02.54.03
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Aug 2018 02:54:05 -0700 (PDT)
-Date:   Tue, 7 Aug 2018 11:54:02 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Alexandre Ghiti <alex@ghiti.fr>
-Cc:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
-        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-Message-ID: <20180807095402.GA12200@gmail.com>
-References: <20180806175711.24438-1-alex@ghiti.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 13:36:37 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:43808 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994680AbeHGLgeS7rPB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Aug 2018 13:36:34 +0200
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id B59F540241C4;
+        Tue,  7 Aug 2018 11:36:27 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
+        by smtp.corp.redhat.com (Postfix) with SMTP id B15801C663;
+        Tue,  7 Aug 2018 11:36:23 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Tue,  7 Aug 2018 13:36:27 +0200 (CEST)
+Date:   Tue, 7 Aug 2018 13:36:23 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
+        mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v7 3/6] Uprobes: Support SDT markers having reference
+ count (semaphore)
+Message-ID: <20180807113622.GC19831@redhat.com>
+References: <20180731035143.11942-1-ravi.bangoria@linux.ibm.com>
+ <20180731035143.11942-4-ravi.bangoria@linux.ibm.com>
+ <20180803112455.GA13794@redhat.com>
+ <bfb47985-8f58-e5e4-f8b4-695dfea7937f@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180806175711.24438-1-alex@ghiti.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <mingo.kernel.org@gmail.com>
+In-Reply-To: <bfb47985-8f58-e5e4-f8b4-695dfea7937f@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 07 Aug 2018 11:36:27 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 07 Aug 2018 11:36:27 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65445
+X-archive-position: 65446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,82 +61,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Ravi,
 
-* Alexandre Ghiti <alex@ghiti.fr> wrote:
+On 08/06, Ravi Bangoria wrote:
+>
+> >> +static int delayed_uprobe_add(struct uprobe *uprobe, struct mm_struct *mm)
+> >> +{
+> >> +	struct delayed_uprobe *du;
+> >> +
+> >> +	if (delayed_uprobe_check(uprobe, mm))
+> >> +		return 0;
+> >> +
+> >> +	du  = kzalloc(sizeof(*du), GFP_KERNEL);
+> >> +	if (!du)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	du->uprobe = uprobe;
+> >> +	du->mm = mm;
+> >
+> > I am surprised I didn't notice this before...
+> >
+> > So
+> > 	du->mm = mm;
+> >
+> > is fine, mm can't go away, uprobe_clear_state() does delayed_uprobe_remove(NULL,mm).
+> >
+> > But
+> > 	du->uprobe = uprobe;
+> >
+> > doesn't look right, uprobe can go away and it can be freed, its memory can be reused.
+> > We can't rely on remove_breakpoint(),
+>
+>
+> I'm sorry. I didn't get this. How can uprobe go away without calling
+>     uprobe_unregister()
+>     -> rergister_for_each_vma()
+>        -> remove_breakpoint()
+> And remove_breakpoint() will get called
 
-> [CC linux-mm for inclusion in -mm tree]                                          
->                                                                                  
-> In order to reduce copy/paste of functions across architectures and then         
-> make riscv hugetlb port (and future ports) simpler and smaller, this             
-> patchset intends to factorize the numerous hugetlb primitives that are           
-> defined across all the architectures.                                            
->                                                                                  
-> Except for prepare_hugepage_range, this patchset moves the versions that         
-> are just pass-through to standard pte primitives into                            
-> asm-generic/hugetlb.h by using the same #ifdef semantic that can be              
-> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.                            
->                                                                                  
-> s390 architecture has not been tackled in this serie since it does not           
-> use asm-generic/hugetlb.h at all.                                                
->                                                                                  
-> This patchset has been compiled on all addressed architectures with              
-> success (except for parisc, but the problem does not come from this              
-> series).                                                                         
->                                                                                  
-> v6:                                                                              
->   - Remove nohash/32 and book3s/32 powerpc specific implementations in
->     order to use the generic ones.                                                        
->   - Add all the Reviewed-by, Acked-by and Tested-by in the commits,              
->     thanks to everyone.                                                          
->                                                                                  
-> v5:                                                                              
->   As suggested by Mike Kravetz, no need to move the #include                     
->   <asm-generic/hugetlb.h> for arm and x86 architectures, let it live at          
->   the top of the file.                                                           
->                                                                                  
-> v4:                                                                              
->   Fix powerpc build error due to misplacing of #include                          
->   <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as              
->   pointed by Christophe Leroy.                                                   
->                                                                                  
-> v1, v2, v3:                                                                      
->   Same version, just problems with email provider and misuse of                  
->   --batch-size option of git send-email
-> 
-> Alexandre Ghiti (11):
->   hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
->   hugetlb: Introduce generic version of hugetlb_free_pgd_range
->   hugetlb: Introduce generic version of set_huge_pte_at
->   hugetlb: Introduce generic version of huge_ptep_get_and_clear
->   hugetlb: Introduce generic version of huge_ptep_clear_flush
->   hugetlb: Introduce generic version of huge_pte_none
->   hugetlb: Introduce generic version of huge_pte_wrprotect
->   hugetlb: Introduce generic version of prepare_hugepage_range
->   hugetlb: Introduce generic version of huge_ptep_set_wrprotect
->   hugetlb: Introduce generic version of huge_ptep_set_access_flags
->   hugetlb: Introduce generic version of huge_ptep_get
-> 
->  arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
->  arch/arm/include/asm/hugetlb.h               | 30 ----------
->  arch/arm64/include/asm/hugetlb.h             | 39 +++---------
->  arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
->  arch/mips/include/asm/hugetlb.h              | 40 +++----------
->  arch/parisc/include/asm/hugetlb.h            | 33 +++--------
->  arch/powerpc/include/asm/book3s/32/pgtable.h |  6 --
->  arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
->  arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
->  arch/powerpc/include/asm/nohash/32/pgtable.h |  6 --
->  arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
->  arch/sh/include/asm/hugetlb.h                | 54 ++---------------
->  arch/sparc/include/asm/hugetlb.h             | 40 +++----------
->  arch/x86/include/asm/hugetlb.h               | 69 ----------------------
->  include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
->  15 files changed, 135 insertions(+), 394 deletions(-)
+assuming that _unregister() will find the same vma with the probed insn. But
+as I said, the application can munmap the probed page/vma.
 
-The x86 bits look good to me (assuming it's all tested on all relevant architectures, etc.)
+No?
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+> > Also. delayed_uprobe_add() should check the list and avoid duplicates. Otherwise the
+> > trivial
+> >
+> > 	for (;;)
+> > 		munmap(mmap(uprobed_file));
+> >
+> > will eat the memory until uprobe is unregistered.
+>
+>
+> I'm already calling delayed_uprobe_check(uprobe, mm) from delayed_uprobe_add().
 
-Thanks,
+Oops ;)
 
-	Ingo
+Oleg.

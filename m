@@ -1,61 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2018 19:42:34 +0200 (CEST)
-Received: from mail-it0-f67.google.com ([209.85.214.67]:35151 "EHLO
-        mail-it0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994711AbeHGRmaWYaQ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2018 19:42:30 +0200
-Received: by mail-it0-f67.google.com with SMTP id 139-v6so17287232itf.0
-        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2018 10:42:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=KeKJnzQOffQOfRtAMyjQsTpNA5n7hdyzcdzP6bVZfls=;
-        b=YBz8tde+2N1dnazJk03UlrZ5BTJormO/hm8/IC6IZYSnNz0n42M3rXa5Ac1kZXWkN6
-         6tml6XaYAPFG7SpbYkUCt/HsLbB9z+mcFk9t316UAuGzbaVjiccvIOK7APNvgATDE6oJ
-         Waru7+0keHgGxRapDU089Y5eMlp5anLN8YcYbOWWnoyKgSLaFLw/kGx3Ff4CG5fSwqY4
-         ecvgp0urqdjegP9+YM+7gIs16xyHOorf8Kr8OvJY+LcUxT0Wo4iD2FFRgL23OoK537oy
-         ncTrv2nfTvBh6w9/O/F4yIg9nINcj6Dq/ZEnabzn67wNEniZJqfmj4lUFaAcHTqv+gPH
-         jcPg==
-X-Gm-Message-State: AOUpUlFS5OIQ/r6Mvr7+/I5s3YBtq63+nYX7W3ZcJa3A//+MyUdXJfnp
-        +Kl6qGo1ppa3mYx0zbXRRw==
-X-Google-Smtp-Source: AA+uWPySPENDMX6MHA4PVFFsHcyOjIXrwPOgxWyDwSHWjEa1qLYLRzL6sFUjx8v7/2qBeJ7rAR7r8Q==
-X-Received: by 2002:a24:534c:: with SMTP id n73-v6mr2818748itb.25.1533663744257;
-        Tue, 07 Aug 2018 10:42:24 -0700 (PDT)
-Received: from localhost ([24.51.61.72])
-        by smtp.gmail.com with ESMTPSA id c71-v6sm727703ioe.69.2018.08.07.10.42.23
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Aug 2018 10:42:23 -0700 (PDT)
-Date:   Tue, 7 Aug 2018 11:42:22 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microsemi.com>
-Subject: Re: [PATCH v3 4/6] i2c: designware: add MSCC Ocelot support
-Message-ID: <20180807174222.GA5720@rob-hp-laptop>
-References: <20180806185412.7210-1-alexandre.belloni@bootlin.com>
- <20180806185412.7210-5-alexandre.belloni@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Aug 2018 04:52:21 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:31276 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992735AbeHHCwRwXdvN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Aug 2018 04:52:17 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2018 19:52:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.51,456,1526367600"; 
+   d="scan'208";a="79454475"
+Received: from zhuyixin-mobl1.gar.corp.intel.com (HELO [10.226.38.39]) ([10.226.38.39])
+  by fmsmga001.fm.intel.com with ESMTP; 07 Aug 2018 19:51:52 -0700
+Subject: Re: [PATCH v2 02/18] clk: intel: Add clock driver for Intel MIPS SoCs
+To:     Rob Herring <robh+dt@kernel.org>,
+        Songjun Wu <songjun.wu@linux.intel.com>
+Cc:     hua.ma@linux.intel.com, chuanhua.lei@linux.intel.com,
+        qi-ming.wu@intel.com, Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
+ <20180803030237.3366-3-songjun.wu@linux.intel.com>
+ <CAL_JsqK5pFNKyAhTTmNpaSnKa_beY3kS8FGtYim8oTgw6oO9Rw@mail.gmail.com>
+From:   yixin zhu <yixin.zhu@linux.intel.com>
+Message-ID: <57bea045-628b-2dad-2492-dadd9947cbe9@linux.intel.com>
+Date:   Wed, 8 Aug 2018 10:51:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180806185412.7210-5-alexandre.belloni@bootlin.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <CAL_JsqK5pFNKyAhTTmNpaSnKa_beY3kS8FGtYim8oTgw6oO9Rw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <yixin.zhu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65469
+X-archive-position: 65470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: yixin.zhu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,51 +58,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 06, 2018 at 08:54:10PM +0200, Alexandre Belloni wrote:
-> The Microsemi Ocelot I2C controller is a designware IP. It also has a
-> second set of registers to allow tweaking SDA hold time and spike
-> filtering.
-> 
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  .../bindings/i2c/i2c-designware.txt           |  9 ++++-
 
-Please split binding patches.
 
->  drivers/i2c/busses/i2c-designware-core.h      |  3 ++
->  drivers/i2c/busses/i2c-designware-platdrv.c   | 40 +++++++++++++++++++
->  3 files changed, 50 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/i2c/i2c-designware.txt b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
-> index fbb0a6d8b964..7886f2dc6675 100644
-> --- a/Documentation/devicetree/bindings/i2c/i2c-designware.txt
-> +++ b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
-> @@ -2,7 +2,8 @@
->  
->  Required properties :
->  
-> - - compatible : should be "snps,designware-i2c"
-> + - compatible : should be "snps,designware-i2c" or "mscc,ocelot-i2c" followed by
-> +   "snps,designware-i2c" for fallback
+On 8/6/2018 11:19 PM, Rob Herring wrote:
+> On Thu, Aug 2, 2018 at 9:03 PM Songjun Wu <songjun.wu@linux.intel.com> wrote:
+>> From: Yixin Zhu <yixin.zhu@linux.intel.com>
+>>
+>> This driver provides PLL clock registration as well as various clock
+>> branches, e.g. MUX clock, gate clock, divider clock and so on.
+>>
+>> PLLs that provide clock to DDR, CPU and peripherals are shown below:
+>>
+>>                   +---------+
+>>              |--->| LCPLL3 0|--PCIe clk-->
+>>     XO       |    +---------+
+>> +-----------|
+>>              |    +---------+
+>>              |    |        3|--PAE clk-->
+>>              |--->| PLL0B  2|--GSWIP clk-->
+>>              |    |        1|--DDR clk-->DDR PHY clk-->
+>>              |    |        0|--CPU1 clk--+   +-----+
+>>              |    +---------+            |--->0    |
+>>              |                               | MUX |--CPU clk-->
+>>              |    +---------+            |--->1    |
+>>              |    |        0|--CPU0 clk--+   +-----+
+>>              |--->| PLLOA  1|--SSX4 clk-->
+>>                   |        2|--NGI clk-->
+>>                   |        3|--CBM clk-->
+>>                   +---------+
+>>
+>> Signed-off-by: Yixin Zhu <yixin.zhu@linux.intel.com>
+>> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
+>> ---
+>>
+>> Changes in v2:
+>> - Rewrite clock driver, add platform clock description details in
+>>    clock driver.
+>>
+>>   drivers/clk/Kconfig                          |   1 +
+>>   drivers/clk/Makefile                         |   3 +
+>>   drivers/clk/intel/Kconfig                    |  20 ++
+>>   drivers/clk/intel/Makefile                   |   7 +
+>>   drivers/clk/intel/clk-cgu-pll.c              | 166 ++++++++++
+>>   drivers/clk/intel/clk-cgu-pll.h              |  34 ++
+>>   drivers/clk/intel/clk-cgu.c                  | 470 +++++++++++++++++++++++++++
+>>   drivers/clk/intel/clk-cgu.h                  | 259 +++++++++++++++
+>>   drivers/clk/intel/clk-grx500.c               | 168 ++++++++++
+>>   include/dt-bindings/clock/intel,grx500-clk.h |  69 ++++
+> This belongs with the clk binding patch.
+>
+> Rob
+Thanks for review.
+Will move it to clock binding patch.
 
-Please reformat to one valid combination per line.
-
->   - reg : Offset and length of the register set for the device
->   - interrupts : <IRQ> where IRQ is the interrupt number.
->  
-> @@ -11,8 +12,12 @@ Recommended properties :
->   - clock-frequency : desired I2C bus clock frequency in Hz.
->  
->  Optional properties :
-> + - reg : for "mscc,ocelot-i2c", a second register set to configure the SDA hold
-> +   time, named ICPU_CFG:TWI_DELAY in the datasheet.
-> +
->   - i2c-sda-hold-time-ns : should contain the SDA hold time in nanoseconds.
-> -   This option is only supported in hardware blocks version 1.11a or newer.
-> +   This option is only supported in hardware blocks version 1.11a or newer and
-> +   on Microsemi SoCs ("mscc,ocelot-i2c" compatible).
->  
->   - i2c-scl-falling-time-ns : should contain the SCL falling time in nanoseconds.
->     This value which is by default 300ns is used to compute the tLOW period.
+>

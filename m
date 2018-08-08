@@ -1,100 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Aug 2018 23:42:34 +0200 (CEST)
-Received: from mail-co1nam03on0106.outbound.protection.outlook.com ([104.47.40.106]:55648
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 00:57:07 +0200 (CEST)
+Received: from mail-cys01nam02on0104.outbound.protection.outlook.com ([104.47.37.104]:45072
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994738AbeHHVmbGtKsX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Aug 2018 23:42:31 +0200
+        id S23994738AbeHHW5E19RmA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Aug 2018 00:57:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9lxETS1x7qowOxi0gafLI2f7xDY4M3V4n89giaCScc4=;
- b=MPwuoRcqu3T78HsWbPm7r8BBVmxF+JXKDmjspCloICWX0/SAHGvhMeEJAxIms4hvdPLuoeQ+SJk8GVj8bRRlXlUKnKnQ1gH50EWJeBvhGL5zlrANQUIAPxgaPAYoCGtZeBfVVK3G36/YCMcn9wKYuPSwOqHg/0FXiuLTYF+/nUA=
+ bh=0yd9zqHVNwyDcQicslfWg3pWchN0XwHdlK9IhdDFNRw=;
+ b=dgvl3X7hIa5GTzvX3/O0Rov4BEf3Q3sb8cdjbtEqomLoi39VhNc3Vg4Hmj0WFK0KXqmWc/YUQM+TAvppmRpW+vYucnyWxfQ5FqpMUm1jqxDMXb8r/kZNsu4keT+wi7Oy8E+NUrjcqv5eFW2w25KssaDUYc2+XdJaj2gu7NlYhBM=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- BYAPR08MB4934.namprd08.prod.outlook.com (2603:10b6:a03:6a::15) with Microsoft
+Received: from pburton-laptop.mipstec.com (4.16.204.77) by
+ SN6PR08MB4942.namprd08.prod.outlook.com (2603:10b6:805:69::32) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1017.15; Wed, 8 Aug 2018 21:42:18 +0000
-Date:   Wed, 8 Aug 2018 14:42:15 -0700
+ 15.20.1017.15; Wed, 8 Aug 2018 22:56:52 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Fancer's opinion <fancer.lancer@gmail.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+To:     linux-mips@linux-mips.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
         James Hogan <jhogan@kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mips: switch to NO_BOOTMEM
-Message-ID: <20180808214215.bf6hyurv3nunfynd@pburton-laptop>
-References: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
- <20180726070355.GD8477@rapoport-lnx>
- <20180726172005.pgjmkvwz2lpflpor@pburton-laptop>
- <CAMPMW8p092oXk1w+SVjgx-ZH+46piAY8xgYPDfLUwLCkBm-TVw@mail.gmail.com>
- <20180802115550.GA10232@rapoport-lnx>
- <CAMPMW8qq-aEm-0dQrWh08SBBSRp3xAqR1PL5Oe-RvkJgUk6LjA@mail.gmail.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-alpha@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        linux-arch@vger.kernel.org, Paul Burton <paul.burton@mips.com>
+Subject: [PATCH v5 0/4] MIPS: Override barrier_before_unreachable() to fix microMIPS
+Date:   Wed,  8 Aug 2018 15:52:21 -0700
+Message-Id: <20180808225225.24450-1-paul.burton@mips.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMPMW8qq-aEm-0dQrWh08SBBSRp3xAqR1PL5Oe-RvkJgUk6LjA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR06CA0093.namprd06.prod.outlook.com
- (2603:10b6:4:3a::34) To BYAPR08MB4934.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::15)
+X-ClientProxiedBy: MWHPR2001CA0004.namprd20.prod.outlook.com
+ (2603:10b6:301:15::14) To SN6PR08MB4942.namprd08.prod.outlook.com
+ (2603:10b6:805:69::32)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0723c158-4f80-499e-0669-08d5fd77d0e7
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4934;
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;3:T5rxW87gLn4AxtaECP03VP5zJ7NNEUaYYvGQiyxXJRbruXy3/ye9V5WIHYNA1VM11Q6Pposrc9H+csJdzWfUmaj0PRjhbDc10/fpyrY7rWtdAflhx8h03rx1lJkmQjOVYhHrTlgQflJj5kGEnjUBDK9jM6VWVUdJ1rYyMKJkmLUg67VJPPZvHmkxxRSc753Wcgw/EJf1Al3pnhOEHCngY6aZH3hvAaY8goO4HXJilcn7pFow8U2RxVgciGrLhIbn;25:J+Ue6bgcJUlfyVdZ0YF2ibqnGS3ZgaMUnkiX6fvrecQZMZn3aDlKq7u0WYeOiA6U73yitIdnQNgDVw29KVG6tkPwmVTFHLJqTol8VT1Vvp5+vUvvWYg2QLW3lPYjCAL/2H1RFXzVfV0zpUVyKn6fHiqfkhajFGrir51GGnul4Gmbci8So3SpCVlDE+RC/ADqtA1Pc9WlorLw+VHhumlEio+slCEFS7vsbgcSGrrPfd4M+T+Jep+Yja9ekXDjAWZ24+D1uKCWTwyHgzUBUuyrXilXDROJMq+i/0Ea72mgw8zkfNXrKE+kuy3A0SwDTdxPMP7k6F2rJCLYdKcFXYHWjw==;31:9QfEB+rhGy56zj0q/eUH7OVXO3OpSY8/G8vi8M9h2MZOhg5I8p3b7swW9jbbRnNQzDlVS4Q57NQU5tfi1zHM6uFDA8Y+2L3c68fHIeIKs5pxP4PuY7alTLMnG+KhIWGC8JSPgz6ms91WjVhiabx5Z50BihoIdbtT51sCjrfi1d136wM3eaNnqjJEhfJQZlfVc6R1/x3FzPYe54L0zagbvNOkASBpB9Gtwp6Daa4E28Y=
-X-MS-TrafficTypeDiagnostic: BYAPR08MB4934:
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;20:iJA2p1xmfKXY/x1Jb4HE4zYGy3ftrTBtNLbbF+Ded7lbGTSmHGMFf3ZGN4LAFzaUpdCN0mNfkYyyW3oWMEH1K4beXxc7bcqAaYa7oCBfAZpsn4tCDm6bqlND4Guw1t/y4A97jMDGSbPLnjZ6dRgs2m2pGManuZ/kXqtmi5+g4QBU3JWpURsJ0d/S43Gh7FtgfNXcb0Ak0M3xn2fRL6IdgOzA4x9QUN2P/EFgy9SfvRaF4QPIzg0o2CFpxmRLV9cD;4:V3Pvpvc/g5T6FQdulOljcvwQEgaGSkLyp5VoJ73RAZBtss3OZx6TPDmIBpFgy7lGgo2IefyU2ZX3pIGgQg6wQMAgqCIobzf3TyYio33xPB7hcNgSaAAGYp2QMSkEinlJ9AdTjoGy46ilU3voXTILbfpH8iL2aul1UUwYihqtVCjVe2aT8kyNMr9bhT6yHPI1+fxXPB2CTkC/46syNZY9vR0J9rLysF3U/VhhRYLzyv7BApugORRxedbb/1lxi4+sHWcuF6vsbjstDbP2NKVS2A==
-X-Microsoft-Antispam-PRVS: <BYAPR08MB493487D44D86139F0C209188C1260@BYAPR08MB4934.namprd08.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 4cfbb42f-178e-4c00-9e0a-08d5fd823bcc
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(5600074)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4942;
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;3:pjDhw0d9aofuH9p6fw8PrrvTn4GicmC/i/OGcK4rl/QYBmRwpFkBVsZjzEYAii5tqo2dNL6yMaCI/YtZudSTO86egDDC1I7vBMmzlc0K4fbPBXyqtKnY25kBVXc8Hov9cCFHt38BLHmgS45xBGTZ5F/LHHWZpOhWw9poXludiF4PgFKePKZWImi3qCqX6ntVWPb1br6Ui1R5n/gqgpLjFQfe8tLYcrpAqScRbKUSlz/bU+RxwLHmGKm0CibniC9s;25:DQevpCzHPR96BYvdYrE1zM+MZ9TOK9jzqJkzDK2YT/9B25VKB1gml5iX9WGPr+q2RsP7/VlIqmZSksKW2vPz1fBVcfc3OiyOtKeqJJqdJwV57u3EUKJIKHXnlwob9ApfHd19xqFAxbu9CFEfh3P5/PRscreTGPdptLlegtth4Hoan3VSRjag90SAdS62l14WhtoTCjLdfn0BFe8h/46tqdEEt9mfu3QAEsna2ZxL4XktQuKFvVRQTGqfEdV4vG5dEVF48TY4liwUXdX2Rvrm9/1sBVCbYAHN4Kw2yfIGfk7qmStL0jFC521wsFmghT3oWw+gF+sL116np89iPtU1+Q==;31:wcJvE4BkjpfUEFxcKzQW8nMNAtuMi9WLeU23SkXCYfkx9aJUhmhmrMwPqD4GBTqRkdpHIaOCuk0K1w3AqJTXmI25ccI6xRw5myg8bNUx0XVWTY/fl7y9vugDc7haW1ifUGQRNlA6ZDMHByq6pomzwD+bpMtvM7iCehADP66Qlxv/mAXoYantWA8AAlcC6xqvguCho4TRIHof65EIx4PKE1DP4DMDSlI7OCdwejLdaF8=
+X-MS-TrafficTypeDiagnostic: SN6PR08MB4942:
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;20:fsDPqq2nEIuQ6VzHm4axehQse9Ru58b2JRrKx4iKouszswXqKaPwSiS00uWpIlWncxV6dGIkWG7KERX5NkLwWkvw+DnMpL/Rzt8BnxlGYG7Dfkxbx9xxZ/gk9q63yuq+dqo5040gsiG0DUWJ8GnsFDNxEdQXwimEuqnJ8pDf8viPkSFYrqqm/o0pg8qWIk4IGJmhg7Ovl83EDUXA1Rm8qbG0MwBPatL6mbatIhJRRubOMGYEiHjtkpuzjG1NFRgX;4:XO0nHyzDa+YbxQtV6hE7OxrgeYUmLg6gE6DIXS8kpl+jgJXUZj+4KqctAy4XdqhmdmpniM3x/0z30ZxdCPLmpSuWR5OegMbbqvNL8iCaFhdHxUdI1LcUPuAOtABKhSWNpyAiTEAONfVWA8hLkgvU6do8+ZEZDcO5AhTAZkSRVijaJ/6EyQtW37E4tPhONtGlUuMO6XSY/23hO30x3YJDG3hr9atsJlEY4CYo3h0CVnc8xzu1IBI4LmsbFl/muO2qhaGU/NKjvaR2hzIxuX06BQ==
+X-Microsoft-Antispam-PRVS: <SN6PR08MB494247B40713AF1CF9B34FA8C1260@SN6PR08MB4942.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231311)(944501410)(52105095)(93006095)(10201501046)(149027)(150027)(6041310)(20161123562045)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(6072148)(201708071742011)(7699016);SRVR:BYAPR08MB4934;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4934;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(93006095)(3002001)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123558120)(6072148)(201708071742011)(7699016);SRVR:SN6PR08MB4942;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4942;
 X-Forefront-PRVS: 07584EDBCD
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(136003)(376002)(346002)(366004)(39850400004)(396003)(189003)(199004)(1076002)(6246003)(76176011)(66066001)(4326008)(47776003)(52116002)(33896004)(9686003)(6486002)(386003)(39060400002)(93886005)(25786009)(186003)(16526019)(26005)(305945005)(105586002)(6666003)(5660300001)(3846002)(106356001)(76506005)(68736007)(23726003)(6116002)(316002)(956004)(33716001)(478600001)(50466002)(44832011)(229853002)(486006)(476003)(81166006)(11346002)(446003)(7736002)(42882007)(6496006)(110136005)(53936002)(16586007)(58126008)(97736004)(8936002)(2906002)(54906003)(8676002)(81156014);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4934;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(39840400004)(376002)(346002)(136003)(366004)(199004)(189003)(6486002)(25786009)(44832011)(66066001)(47776003)(42882007)(476003)(2616005)(16586007)(53936002)(14444005)(107886003)(956004)(486006)(39060400002)(316002)(6512007)(54906003)(2906002)(4326008)(386003)(1076002)(69596002)(3846002)(305945005)(6116002)(36756003)(2361001)(478600001)(50466002)(7416002)(48376002)(97736004)(7736002)(186003)(16526019)(2351001)(8936002)(6506007)(50226002)(53416004)(8676002)(106356001)(68736007)(51416003)(81156014)(81166006)(6916009)(105586002)(26005)(52116002)(6666003)(5660300001);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4942;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4934;23:IpwAkpUbvHyDXcSZZIwStDYcMp/IYIDgkQRd5pSMS?=
- =?us-ascii?Q?bwl1u3rGb1E1S/QtkRcTdGOYwAmV/11dRgqGyo3bKmJHwoy6z52hIDZas7oD?=
- =?us-ascii?Q?ypGswgXzrl+Jyw3f2jaKUJqHB179JA6g6lH85nBeUhIhneqb8MgQ+uwPsALo?=
- =?us-ascii?Q?Y7PT9HlyJHD2g8xnrA5b+b492vxEF4g2/3QZnfToKHxdH5h+1xrk1eP/5Eqg?=
- =?us-ascii?Q?SsxN94xewtqeJQDhsoBHKNqPGMXwp8MJQsDVjpxkTLyLoLmUqF7Op/gvoZx8?=
- =?us-ascii?Q?FmEW3LdtY4Rfw4EllGTZ1OG/9t7QiAi+WPIYM7JuEZbb2xTnt+vl1rDkKLLy?=
- =?us-ascii?Q?4dhKu99UcyFxcpV6AfUFN3xcq0pg1CUWUSd56UxM1PVKmGlFKEO2R2Q43zXX?=
- =?us-ascii?Q?g2DHVYSBNAHr8rBZyibR/agEwbcToCWhy90dMNhzjyLMpawNdtoWIWATQZ0e?=
- =?us-ascii?Q?H/eMp5mvA3QP0QG51UvrBPtJAGDMvXxW+SSeU5ogpS/bfnMKSlcVkrvQLrSB?=
- =?us-ascii?Q?9VHtox76lqB8t5obNdlp8kIHecJp7W6CGBZ5/URoc/2IgqJlJivbsuljcGBZ?=
- =?us-ascii?Q?gXbOEVIdo0+3sk3sAdNWi50rb4JOiTFcT0Blq4gJv2//HFdSBZnCnmPaxiUd?=
- =?us-ascii?Q?xpM8YGybYig6GtSInBVAXjeXkEdmam+bGqHyjz+rU/lemPId+jq0A/Xujvbz?=
- =?us-ascii?Q?LvE2eC8fNSgx3b17karfuBfGaRUlJKHtJ89p+hH3fe5Epv+kdzhP8Laaibn6?=
- =?us-ascii?Q?gNPvp1QNfO9OyIQYgxsUGWfMyby7Cup6BYvcbWw3VivR2PDxO67ggoIsSZG7?=
- =?us-ascii?Q?t931FlxvBOxYEgpO16VG7llKPs+YDafxy16QxOorC+QDTzqBbwetEIGAwRXQ?=
- =?us-ascii?Q?9XzHOWWxp0Btrs6eqxLaJqouvmxKFChl0jUISmpXKoPou4x37fUqBcqvtNcL?=
- =?us-ascii?Q?V7NhWWI6GDCySXmORFO5LZPtsyw1r/ddXDJ8Dw+Ki9q7cb4gg+yvUrd37V4K?=
- =?us-ascii?Q?ydH0HI7C96mOAw3Ae2XrrjesWKVVa8UxZo9qiDnX/Q2Cw/PR/+2HeGRnnCZG?=
- =?us-ascii?Q?u4HxbwjHyCe4FYzqf/Fg762+8K+FNKSC1VMSemOEMq2AKm35NHQ5U0foCEv+?=
- =?us-ascii?Q?dJhHPDDAlCmUUU+yETcbjurYjpqkd9cX4070iQTKGptI+DjEs09E6vHwA0Oi?=
- =?us-ascii?Q?M8iVvN+8LWXrGu3mlwVQtFnG3NVA29zsl7TLVskCe9ja+VQMygvFH38V+cPJ?=
- =?us-ascii?Q?XJ0sWp57KejkrGGtJmnCdYfXqDNEisJMEMX8D7HQl+wXrGXKYeTxDMQVHXwv?=
- =?us-ascii?Q?PjXIukCpjQwn4esERcWNW8S2HteBxO+/CKObDDE0kSoifZ9yx1thyBGN2den?=
- =?us-ascii?Q?qXX2w=3D=3D?=
-X-Microsoft-Antispam-Message-Info: 5XMXzFyOLygilyJHcxQBNvxMxhybu/6EKChk5DISLBFcMz4RewfXov6rlWinnWnen+IEFMddb91F5HfOMqDaAGdgptvWFdX8qq+4/H3n20mkLzXIxOKulUITkxVpRQwmBWC834TPhLbRYd6z2mu2aiXuXoI+Pubs/mXjHbvLn2mExcuG7IPJV8aShlJ5DRrKLlYMvsgclv070N2vXWAZB0+Yw5Rqkbh0DYSPPPTJvqN0m8DN8ZGdUAWfLwyjIs+IikjfW5mGEUMeI/2zWcHPQ55msyOaTu8OowmKfmTKF0MOdCLKAcYzCrYaUdna2L+WLEk/75LjQvuH6pNw9rkjSKjQWOGBDAyuOOiUZO937bA=
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;6:d8zHiOddJ8sqotI3KX3j1iyMRwgAbxINBfx762lAEQmq7rZ7NKV8kT47oQyKi6OcbioLkX/hH9y5mzhRgDL3LM/L7iR4mWlv54PHAUJcdPkQA5onFB6xg8YOhKCsgBO5prK9ypsOY7pZafaNv0k0MYRyqNcPaB9n09kksfuQ24QbJrGYWTbH0k10VzESOfbqV9vb0d6qyVSQQrQdjDRrSsQ/y25lKk2Yk9lf5KqWRKF8B89i8stpp1VStIGC1ct3l0xhI26O8By7Lc91U1MLxP8kL17lK7lnaSWtcEj7pmdfQrlSRSn4jTa5zDXu8C1MiGxTjVwre3/kw6bcJprMrdEbMutQ5QC/Y5VRdGgnZTDt/xBuflSzQ8xeAkQUR0LL6RG8ZPsKJAn7JC+NRT+zUmZQiYTNP8KIP5+f5AWhiDLd0POLhUHfhtBPKh32STtS0wvtpPwzgH5bSMkwPpQaVA==;5:+7v1Js9AI9pYbY7c95lUOBmsK3PEJ208NiVwPV2Vcgy+ZMy10N7jcT9duEtAZyBwst2x2AKU5/Xp5JM3epwEjqLOnguIqo2PYyQIEnXai6vfrbXw291lShactT4v47OZj27umP1mIKe3sMdklIa2Vh+z23MQZaHOF6HbQxm6MiM=;7:58CERGHIsrKbWdajzBL6co8+0Bd1RPbx4GTCD91G/CzoNKvxBCJG+8++wtk08kth730adQn1V87uMaq1pdXduoLGVdvhEbwyyPVB/Cq2kar2Zfx0Zri9/SxrtwzGcPZr7pUS54Uq2Fzs4hokwec+puDcxQtHfc3ONngtUiukdLf2kD2yzXrVOmNbv/X81l6sHGE3IJrrrZZ+YkY2dQUSfnwIFZ0h8APo9ocQpJdX3ZSbq8OybmQQYPzHkxlDH8Sq
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4942;23:bRayDZkdo7K9HJ/CPGF1VS/fg4mjOXlbw8zLL67m6?=
+ =?us-ascii?Q?T4hPd7CteRx7OxsuyyhvUHf5pk0vjtcUa1GOPl4ykWTV9jJrOL9oxrTFGvN3?=
+ =?us-ascii?Q?hnJWfAzIqmbNLlxjU6Gpu99HmXqne5r6xOKSrHiZoHQIQtFyrt1/5ubgsl4M?=
+ =?us-ascii?Q?KROMEBSUSfh8B+kvkDM+oV3N44j8nzaRBGvK/7a2skTG3XfSbtWAQ4lTMykb?=
+ =?us-ascii?Q?XUVFxjLXW6mDF02hell0WU4DL0YBBCeuTpXzxsJvGiEybvHnKMA2M3kPC1Ik?=
+ =?us-ascii?Q?4fOUodKmn/p1+r2sAk/CB66ukTD/YcCNwNi57uoNgQ6XHbdY0YamAGvUTm4t?=
+ =?us-ascii?Q?UqQxEJC60Db6dvIBcM5vUy5K3bN4C7PoiwIZb2i6z5KL4KZtsYbU0zNEBHl6?=
+ =?us-ascii?Q?K/lXxtiET4wTFWhEDt3YTipAyoJuXZrs/kUCf2x30umf5/NdyQntDuWoCN7K?=
+ =?us-ascii?Q?QC4SUZ08qKwBR+C9v0TDek+2GrrBvwLvvBGBOblUqNvInTnaYwOWsJW3Wee4?=
+ =?us-ascii?Q?IB6ij59uUpvZgEI+wgF5qOTGuXnt5uMBJADr7YGQwBCenELypV5guN9QkDuX?=
+ =?us-ascii?Q?+9lZThJgE06fpknP/dGexn9rxohYgdtVJ1q3k9F9cDq3zMPimb+nk6PiOFds?=
+ =?us-ascii?Q?wdpOik0Oc7Cq2s5BC084/A5Eu27dRFTwcPO3MEa9kyJzitJcmX6TmjLppjnb?=
+ =?us-ascii?Q?nCM6LVRz5PjJIvhddMfOSKLGAdxvRFOyJzQReLMc/9nKWJj+TeAscG/dPCAV?=
+ =?us-ascii?Q?c9ZmlDXj4x3EPrwbIZFCDBLPSJyy+Ch279Kq+OEaEyCYAS30Nz71Y5EG0AIm?=
+ =?us-ascii?Q?9dNX+lxqlCl5HZ+QkQfPkwHKraMfTBwGDN/mUtTQmLhpmN6vzpC33/5Q6SS4?=
+ =?us-ascii?Q?CdC4e6UXMCZdmKc7RU6iiDl92coavR7fH81jhdzktsIM98l6UGFwhKLWeh+d?=
+ =?us-ascii?Q?BiY39ZBos233bSFcmnuxCauc0Z8asTGRtcdHVpB0miFZmv/InSzJa6JPBzNc?=
+ =?us-ascii?Q?sc12iZWMxyWBHWWAW7Gq8BohAT7Y89k/EfzTGk7VNzypP/87ZN0i9KG1y1kT?=
+ =?us-ascii?Q?eB6vexwUWB6INOGvvHcb+K61ARAUbTr3cdxDlPHXvzGj4goDbpsouboJmE8+?=
+ =?us-ascii?Q?42rLonUJotJ/S/NLRG+9lN+Bu/VjqX6sl/iPhtuQj0nllmLyENShs5hqd261?=
+ =?us-ascii?Q?X5QoGlRIGcNoZ1cJgFsDwU3dm4+j398BxBxVx1FWcAIddeTnXcc9s32ss/Ac?=
+ =?us-ascii?Q?Lw8zs3Ywp2vd4PsqpmzOcrNJmQz3KxNpzBVRjQ0+tb1SY0Se0CJpvvwwBB8C?=
+ =?us-ascii?Q?fwUtODyF58ljl03UiAnLHV022kyv3gQnrAx/MihnWMh?=
+X-Microsoft-Antispam-Message-Info: qgNvNPsmgu8o3Even8hGogmtZncjGlq7UPaaWf1Nv0q8Dz3u2vYAp1GFRZYfILJ+nVaazDCjX4/dI6dIQSxTWavWi/N0sB+wMecOBkX+2cwUameMzl/0iL/J189jUeUsj4NBQvcOpAqm0TlUBU5VXGQhLw0GkChqPVqL6aPn2L2URGf3VQuc4N+p4lfg0jkhwVfFJDIV0f8vM+TQ7SOwThisTIEyA58H5xI6i2iU8cVy0MYTTvmY2BYUCKhjlGZ2uJcE9SbURa9ya5m4bODwZzvmpL92C3edmqqzuBQ0BGd+5q2ZZFavruzVUngmz6og2wI0Zuzrnli6kjF1mwUMKrmskR31UTw4oihd1yimlgM=
+X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;6:OqluYbobbU4aJVwFLUODsARbhQ26516OZfIcu+Ee9fVXWprH7NtLeOXJHN6jX5RzTCxOKyec0o+hlAW8QF5m0fgBwsEKC1LHszGapnhUD5aKTBfYNR98PppOgcDXP0YCQ2o0AM4urjOKzaZ7fIsAg9B0urHdI87tuHLHq7cLTqdqt6SauB09v3nyb0JyKhZs09XZMhCtnGJWxkOa5nILR9x1sslLAnf2EjwtJXFYw8QWpcPcXKLb2NihdeyD+OOnwX3TRZ1c0NT3tLh8L3UKw29zGmGBgf7YNIukJ/m5Qzj/WY0UYCQVVG1mgXiaD7UiWRodnnuDklFOJUNkAwtEAW4Zaj+IDwNQVCEvABrRr74yWhgl7/QTy8JIHG5+kymTuGzoao0BxvfwZvne+dgQMqzN4rb3sSXFb+SoYmHyuItDqYX3PWFsRNJOsKoXsXBoA+gVUTgJZbOGaXHkgNjeGw==;5:SUuNGlCtbSe8r7lbObrxkP64NrEL87Sc3pE3uGcMWB5f1DoIdhTmWT2QTMRZlMeJ9jOU1r2RkGvQwLIqt6t8TcUMo3V6fzdVNOrWjAWru3cRhweIG0LyribFE8/Q+J+hr1S9WtCVQhTKwLJnV+JInKkveSqFGiQAN/cK9HRWHbY=;7:hUCp8m2zDyYezfS8JnsOrB9O6SV27hjuenLfxPonLnNA3rwuR4my4tpUW5CK0AsXOUVPvtIeP23xLBiEgZY+AevrnCe10EFElhGIQS/xB4/s3ZClCEJzEhOwze7eTLKZ8r8ht1JWz54LLdepSeHT6tui3lEOy10RF/jKNaoXV94xP/0bgZw60547g4SbrIvPfvZDRQvvDL9pL/HhTfl8AGL2BkhxYzf6V9yqndt/ecl8CYLnqGVDaRXoV753561T
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2018 21:42:18.8258 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0723c158-4f80-499e-0669-08d5fd77d0e7
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2018 22:56:52.3417 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cfbb42f-178e-4c00-9e0a-08d5fd823bcc
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4934
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4942
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65480
+X-archive-position: 65481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -111,24 +105,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Sergey & Mike,
+This series overrides barrier_before_unreachable() for MIPS to add a
+.insn assembler directive.
 
-On Thu, Aug 09, 2018 at 12:30:03AM +0300, Fancer's opinion wrote:
-> Hello Mike,
-> I haven't read your patch text yet. I am waiting for the subsystem
-> maintainers response at least
-> about the necessity to have this type of changes being merged into the
-> sources (I mean
-> memblock/no-bootmem alteration). If they find it pointless (although I
-> would strongly disagree), then
-> nothing to discuss. Otherwise we can come up with a solution.
-> 
-> -Sergey
+Due to the subsequent __builtin_unreachable(), the assembler can't tell
+that a label on the empty inline asm is code rather than data, so any
+microMIPS branches targeting it (which sadly can't be removed) raise
+errors due to the mismatching ISA mode, Adding the .insn in patch 4
+tells the assembler that it should be treated as code.
 
-I'm all for dropping bootmem.
+To do this we add a new standard asm/compiler.h for architecture
+overrides in patch 3. There are a few existing asm/compiler.h files
+already existing, most of which are fairly simple and don't include
+anything else (arm, arm64, mips). Unfortunately the alpha one includes
+linux/compiler.h though, so it can undefine some inline macros. On
+Arnd's suggestion this is converted to use OPTIMIZE_INLINING instead in
+patch 1. A build of alpha's defconfig on GCC 7.3 before and after this
+series results in the following size differences, which appear harmless
+to me:
 
-It's too late for something this invasive in 4.19, but I'd love to get
-it into 4.20.
+$ ./scripts/bloat-o-meter vmlinux.1 vmlinux.2
+add/remove: 1/1 grow/shrink: 3/0 up/down: 264/-348 (-84)
+Function                                     old     new   delta
+cap_bprm_set_creds                          1496    1664    +168
+cap_issubset                                   -      68     +68
+flex_array_put                               328     344     +16
+cap_capset                                   488     500     +12
+nonroot_raised_pE.constprop                  348       -    -348
+Total: Before=5823709, After=5823625, chg -0.00%
 
-Thanks,
-    Paul
+Also um needs the generated/ include directory adding to the include
+paths in patch 2 so that an asm-generic wrapper asm/compiler.h can be
+included from automatically included headers.
+
+Applies cleanly atop v4.18-rc8.
+
+Changes in v5 (Paul):
+- Rebase atop v4.18-rc8.
+
+Changes in v4 (James):
+- Fix asm-generic/compiler.h include from check, compiler_types.h is
+  included on the command line so linux/compiler.h may not be included
+  (kbuild test robot).
+- New patch 2 to fix um (kbuild test robot).
+
+Changes in v3 (James):
+- New patch 1.
+- Rebase after 4.17 arch removal and update commit messages.
+- Use asm/compiler.h instead of compiler-gcc.h (Arnd).
+- Drop stable tag for now.
+
+Changes in v2 (Paul):
+- Add generic-y entries to arch Kbuild files. Oops!
+
+James Hogan (2):
+  alpha: Use OPTIMIZE_INLINING instead of asm/compiler.h
+  um: Add generated/ to MODE_INCLUDE
+
+Paul Burton (2):
+  compiler.h: Allow arch-specific overrides
+  MIPS: Workaround GCC __builtin_unreachable reordering bug
+
+ arch/alpha/Kconfig                 |  6 ++++++
+ arch/alpha/include/asm/compiler.h  | 11 -----------
+ arch/arc/include/asm/Kbuild        |  1 +
+ arch/c6x/include/asm/Kbuild        |  1 +
+ arch/h8300/include/asm/Kbuild      |  1 +
+ arch/hexagon/include/asm/Kbuild    |  1 +
+ arch/ia64/include/asm/Kbuild       |  1 +
+ arch/m68k/include/asm/Kbuild       |  1 +
+ arch/microblaze/include/asm/Kbuild |  1 +
+ arch/mips/include/asm/compiler.h   | 30 ++++++++++++++++++++++++++++++
+ arch/nds32/include/asm/Kbuild      |  1 +
+ arch/nios2/include/asm/Kbuild      |  1 +
+ arch/openrisc/include/asm/Kbuild   |  1 +
+ arch/parisc/include/asm/Kbuild     |  1 +
+ arch/powerpc/include/asm/Kbuild    |  1 +
+ arch/riscv/include/asm/Kbuild      |  1 +
+ arch/s390/include/asm/Kbuild       |  1 +
+ arch/sh/include/asm/Kbuild         |  1 +
+ arch/sparc/include/asm/Kbuild      |  1 +
+ arch/um/Makefile                   |  1 +
+ arch/um/include/asm/Kbuild         |  1 +
+ arch/unicore32/include/asm/Kbuild  |  1 +
+ arch/x86/include/asm/Kbuild        |  1 +
+ arch/xtensa/include/asm/Kbuild     |  1 +
+ include/asm-generic/compiler.h     | 10 ++++++++++
+ include/linux/compiler-gcc.h       |  2 ++
+ include/linux/compiler_types.h     |  3 +++
+ 27 files changed, 72 insertions(+), 11 deletions(-)
+ create mode 100644 include/asm-generic/compiler.h
+
+-- 
+2.18.0

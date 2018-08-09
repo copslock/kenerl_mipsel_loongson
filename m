@@ -1,99 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 19:46:47 +0200 (CEST)
-Received: from mail-eopbgr730138.outbound.protection.outlook.com ([40.107.73.138]:44640
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 19:51:55 +0200 (CEST)
+Received: from mail-eopbgr690123.outbound.protection.outlook.com ([40.107.69.123]:59850
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994762AbeHIRpuYS0Um (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Aug 2018 19:45:50 +0200
+        id S23994752AbeHIRvv5bslm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Aug 2018 19:51:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XNuybKGSU1gWlhttY/lpT4sPm/hey1hj8yJR5hAgEGg=;
- b=Z9Ulw2X483JhosypaL5NDfpLtd/jsfic1bEK0TOMdgPBzXiyivptSTPxo1jWeTrpdIdR2dtgmRtdb38KFpFshVg6cV8ubOMUdN+6Inf31RgGOsxGFuYYdTml0fPos/fVa35Xsu1cjwhS9wwi1djg6L/CNRedm9pySoV6v/GNXPw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from pburton-laptop.mipstec.com (4.16.204.77) by
- BN7PR08MB4929.namprd08.prod.outlook.com (2603:10b6:408:28::15) with Microsoft
+ bh=MTx4PKh4zPSF9tSxxUR7HVn1EIXohhPFTIe0AGAKKBU=;
+ b=WWjqA05PbGDUUP4zo4Gunfn2+4S4cCu1dP4/W5bdwyaO2azM/WRjx5RwkMKXpP8oVuwOV5NwEfOpNaqdUbvRAidO4unFxhSFsGkXrWeuzVIUK+yrWAzIMkaEjQlrMV+Sxqd2qpY6CadfgQZSTbNPTLK2pvNQO5xehx3UOW64ZIE=
+Received: from localhost (4.16.204.77) by
+ BYAPR08MB4933.namprd08.prod.outlook.com (2603:10b6:a03:6a::14) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1038.21; Thu, 9 Aug 2018 17:45:42 +0000
+ 15.20.1017.15; Thu, 9 Aug 2018 17:51:39 +0000
+Date:   Thu, 9 Aug 2018 10:51:35 -0700
 From:   Paul Burton <paul.burton@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     Arnd Bergmann <arnd@arndb.de>, Richard Henderson <rth@twiddle.net>,
+To:     James Hogan <jhogan@kernel.org>,
+        Fengguang Wu <fengguang.wu@intel.com>
+Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
         Jeff Dike <jdike@addtoit.com>,
         Richard Weinberger <richard@nod.at>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-alpha@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        linux-arch@vger.kernel.org, linux-um@lists.infradead.org,
-        Paul Burton <paul.burton@mips.com>
-Subject: [PATCH v6 4/4] MIPS: Workaround GCC __builtin_unreachable reordering bug
-Date:   Thu,  9 Aug 2018 10:44:44 -0700
-Message-Id: <20180809174444.31705-5-paul.burton@mips.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180809174444.31705-1-paul.burton@mips.com>
-References: <20180809174444.31705-1-paul.burton@mips.com>
+        user-mode-linux-devel@lists.sourceforge.net
+Subject: Re: [PATCH v4 2/4] um: Add generated/ to MODE_INCLUDE
+Message-ID: <20180809175135.dqblkxyoxr6uhu4d@pburton-laptop>
+References: <cover.a2e1d7681cb1ff2808945fc00db5f29c2f011783.1526074770.git-series.jhogan@kernel.org>
+ <d820cbb19a333cdfc4a24d0c6b2c3f09def1f3e5.1526074770.git-series.jhogan@kernel.org>
+ <20180514092633.GA2419@jamesdev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180514092633.GA2419@jamesdev>
+User-Agent: NeoMutt/20180716
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BN6PR2001CA0025.namprd20.prod.outlook.com
- (2603:10b6:405:16::11) To BN7PR08MB4929.namprd08.prod.outlook.com
- (2603:10b6:408:28::15)
+X-ClientProxiedBy: MWHPR1201CA0019.namprd12.prod.outlook.com
+ (2603:10b6:301:4a::29) To BYAPR08MB4933.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::14)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 456c049d-b996-48fb-20a3-08d5fe1fee2c
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4929;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;3:CBjSPAxW4BudW3qWAhQ9AVlNclaNHPVmdHE+baJ3xDbYc093po6QWlIpfhYCF+5K1xwwn9yHXkhfJu56nw5X5To0gSd23kKQYB0gV4p6rXSd8HiyS/jUn2QEpy0E7pVWb0i5ZbayRFDgq65IcdtOEl48wSCYVogMcNN8tGQRpGBnld1H6PjXkEQifdwRLSBtOvMAP6NosbCZgVEhpIvEp39o3SZBrKy5GyHQefAizNNajUR5ot3B8CArhV8pw+Fu;25:3ZUBM9bjKj2MOrJnwA/k0dGq2jnBqWPDKKuCZFUnFlqAP/1vc6DvOetH5VovEbLxFaWMcOQOiHFe4JhxBw07Qp6oVSrHews5a7JHPMk9sYcWnDx/DpKtE+ud0diLN3qYLC3+C0mvBg+pgTT7X1YD5fJB1lTMJwY52e+JFHi5weXGOAwFOoVsbECGp3XX1N/FPIFR9YLtEk+Y0hsTwFRcM6nag9VqWripVHmNDuxbbST3vM4PGHieY2Vv+4VybX1MFtNlSfWTMmleDTjH6+554F1R58Y+scJLQR7xOhpgypQsfv1GlTKhWivjYSdp85ysymOM7SO0ZStvevTzc+Px7g==;31:wZNoMzaqMkGT9m8ZJreORyKFhlpCODaUdUqDh4CQ7XbRn2iSTVbjmQiQKO4LOIBU7KrTDMt6T7Y/ZMALdy41VpAqi27CCLUlX035nyKHKfXUoW1lyzQrdz+JWU/5vTfdfsCUgLa6Zklxf3C/fWzpP1AWa/r2nzqdlfwWgHRID1wlljVx/Xxqwmps41suuXtQhY0UTDbxkJbO1TuHN/UReBq0v3G8VFFuucnY6NxVzfU=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4929:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;20:ibiQnBT+4EGcIixnj4eq+HgAqE84ZO5nD+9SoEpFOcmwpCDSHKZLctyPGBSjtE7VNE9yoHaevM+hz1fQr1bUFTlTgrpw+VIG6XheXOu8HlXNTVx6hk+u5XJjSMC5X05tVQ0bc6IBAIQ83dEXo37F2pSRA7CjPI26Vxgt7SrMDuw7LmPjtUM0gWefkU6H4xIEPwPWc6yDEFzNEsc/+D3FV0iy7PWVxs6fuRAKmzVUHdQh1wxaR5geO5IgQIGIAvI1;4:G/kurT0YazIhvWNms/T1Eu4NBbywwyP7kTI1gKg5pAcpMIE5NDemFZuSRHmJK3ocF3/A2/AjSJUybzpgA28VqC/uMDchJOTnsjZkSD19VQQjVXBiHoO7vBYJkwwPsnL1IVM/yOz9IHx3eqAv7+u2sIS80MFMFxHlgVqnM6rFsk8s/VFvWSK+04AjM2Dz+aXLgLkHxij15nQaz5Sr+G8DLoJgV9Ikb3gXrfmQtcORcC9rP1t6Kjgt7kpjgwfQcMv0yIwlyKG2pmJQlTcSAJdrNcT04Ub3j2QX+ityX12UpZ7Q8Mw/RQBPVcktiB6S8fhATc4fRX2J0VRSw2L6kuXBz0D090aumzEXGvSMWGMcOH8=
-X-Microsoft-Antispam-PRVS: <BN7PR08MB49294C5421A2D77D4EEBE577C1250@BN7PR08MB4929.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(22074186197030)(183786458502308);
+X-MS-Office365-Filtering-Correlation-Id: 956e67fb-419a-450c-179f-08d5fe20c246
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989117)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4933;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;3:VeDN5XGZBOFuo+w63ybss5W239RDnFhviBXzHuKPF4/3ZOyGyu4Lj/on30SqI19Cm1TphXgVVgilgkmY14KtmrGa3VOQinxCAI8BZQKnV2lRc5CvspwlA+TDg1fsmYEYgycidlxD8Y5/gi3A0GYwEYVEkK85bXnOYFOAGPPytefpB2kGeFm+cRKNTIaTJ5sBLtoJlWEq8jWkO3p6v0rumWI9ToltmfgU1nSuFpCwhYpxiEOOwx6mCCoSdfyTuZsV;25:wPwJEFSoDQCnLhlmdMyD0n/wgb9zQ31KcFja8uiY4Ov3inevtL5wzm3DN32yE1GaMDw7OmTxeCHpS26ySl+mnsL7siZx026d3rLO9xkjAkkWhW78J59w3zh0EC75A3dAdrGhBJQyimgDa4OaiYOeVb7xKSxaVvrYOfOWzA2qdcEA0UMP+6Ama5IHvRRtcqtzbsyL7cW258a9/ABEuZwJQ+9FsI7EoCoW96duvoUHZzEAcuOpB4N/Ys3eicFUqZRLfmA3pi259LswDUiMaVLBvU7wkwaJ+rhOgLdLY0Y/aHgOGxyOMULDzZXTVd2Oq+GwPiGCnFVyc3cxxRCmwEBaeA==;31:QxhomIdlhY3u8Nt/9RjjzSEO5D54KjXsyT7oBtUqtRJAb9h9aJIUwRg23CiZr1NlTcaCPrfju2sMTlKlUSRDBAIkDYxyQwB+oJCyvCpJasCb69nhw6JGVCv6BPL7qE9thrm544lAp/iYu+ZQa3w16n13uchNJr+2pIBcrhUgmQQHaYPU9t6WyHGshUA7NQaUKg7ylkjMZE1uxED4t3rgUUW2bFR84sNRq/01PKaOmXY=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4933:
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;20:7fN49W1kV35FtNX7VD1ewZyXpUibphpb2YT2TI8P/kZvhLI+tLz6KT8NIBt717LZ7U3YMHUOl2xX0iFUo0O31gwybU1lk8CA6NubWqQaRCcxeB7gJG0gBj6fbd8EXnK+eGwRgX4WTij2bj7LRiEEzBn16nIzMPg5wxKqSibcQ2OpNtjmR0briohrCGWJ+n3s2R8kDhgHdeAwmpr69d5PR0mpH+LQJqmidsSdkIdlKuHaX9xsP3DpXB9PWNTcSpAM;4:ZdOtGzcYY/kJ0eWpRS3l7nX1TDI1IJLKnOCg9CFUa/xpD+L2+6bhgDTZIeWmzsqLUeQaeFiOtCwQbCH+2o5l14XQkESvWXoO4mmH2Abayr5YZNNa6MQtfj87kRj7T5BnY6XSEVidPm71gy2pxeURsMQ4KTNtdqg6zYI3Pw5ZjFDaVtqKXQ/iJ/L75D+BJD61djA5DjvXi9IP8MFu9yNgKPj75CB2Hh1h6KVaqY4XPUJUoO5KO3b1tUV88DhDGcPEtVl6qhYbldjv04XuCwYZrZpjl3V/hMsH22VI36hzSAL3xaMkAaqFQHX0+ONnUU+4U0AxDq2wGpoJRG7MU/BXzgyefEdrvMJj9Z3exX8br4o=
+X-Microsoft-Antispam-PRVS: <BYAPR08MB49333EF9D30DAEF58EDAE037C1250@BYAPR08MB4933.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(20558992708506)(84791874153150);
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3002001)(3231311)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123558120)(20161123564045)(20161123562045)(6072148)(201708071742011)(7699016);SRVR:BN7PR08MB4929;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4929;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3231311)(944501410)(52105095)(3002001)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(6072148)(201708071742011)(7699016);SRVR:BYAPR08MB4933;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4933;
 X-Forefront-PRVS: 0759F7A50A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(136003)(376002)(39850400004)(396003)(366004)(199004)(189003)(47776003)(2351001)(7736002)(81166006)(81156014)(6116002)(3846002)(186003)(16526019)(6506007)(386003)(107886003)(5660300001)(39060400002)(25786009)(1076002)(26005)(14444005)(8676002)(53936002)(478600001)(6512007)(6306002)(105586002)(106356001)(2361001)(66066001)(53416004)(966005)(6486002)(305945005)(6916009)(4326008)(11346002)(50226002)(8936002)(69596002)(476003)(486006)(97736004)(316002)(68736007)(51416003)(52116002)(44832011)(76176011)(16586007)(42882007)(54906003)(50466002)(446003)(2906002)(7416002)(48376002)(956004)(2616005)(36756003);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4929;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(396003)(366004)(346002)(376002)(136003)(39850400004)(189003)(199004)(26005)(106356001)(76506005)(105586002)(16526019)(6496006)(76176011)(6486002)(52116002)(53936002)(478600001)(11346002)(8936002)(16586007)(956004)(9686003)(316002)(446003)(58126008)(42882007)(23726003)(1076002)(44832011)(186003)(68736007)(476003)(66066001)(54906003)(229853002)(486006)(110136005)(50466002)(6666003)(2906002)(6116002)(3846002)(5660300001)(5024004)(25786009)(4326008)(386003)(305945005)(7736002)(7416002)(33716001)(81166006)(97736004)(575784001)(33896004)(39060400002)(81156014)(6246003)(8676002)(47776003);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4933;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4929;23:2PbYi23jNIOIWCNlaaxZuAHJABwPfqWO8795fYpW6?=
- =?us-ascii?Q?oq2KjcIJlZhiKYVGes08jN7L2NYHjcJjYZJpiJLv4AGntyB31U+nzBEpnij2?=
- =?us-ascii?Q?O3zKjzpfvKbmRJoC4KTxOq1N/AjecFgZHwkM0IUxwTeu0sJfreBHPVeiLU1x?=
- =?us-ascii?Q?cmQh92IFmAdh9RjuKavBxcHmbXIqFbCoCHjSjuYWWyLu1a1I1catSHF6or3d?=
- =?us-ascii?Q?1a1ibBbFqVU3t31E4lgZSlaHMulZ30qrVwTurEgL/37IinwfWvBtIF0C+OTD?=
- =?us-ascii?Q?8B5ChZmGsv3dbsg4p4YZfwwivx9MkJno8I8vTwcORQEXTICvAu7wQVCzZ25W?=
- =?us-ascii?Q?eMa7UVLHpDTVWcldFhNr63EsZmh89R4n8g9HS8Ul0HzspXN5aiVO9pO4vVw1?=
- =?us-ascii?Q?ZZ/+fRjvVHdfKl3VczcfipdRjjQyHT/giK6r5xm4omerg+GTFxd8TIYA8eY0?=
- =?us-ascii?Q?f9hehHFpRu1DSRqZFuZgdE4ue1vyiOmSsAH7tAVxH6VbZxfntuWTWKuHoMvb?=
- =?us-ascii?Q?bUgvHR+AVYRU/yzmGOSRxM7AggzbgYCBltG7vk5vCkbnSz57w/uNgFiZnIOT?=
- =?us-ascii?Q?uNTmX2xWizrZpi5+0Teh3PGaSdhtPoAMSt+Iwrx7xJDubTpv+YeXTwtwQhYW?=
- =?us-ascii?Q?oVI9KYuwo6Gb1GTOTilNKnaQr3rEejbpKREa3StEsMuMItjanELLPTU04tKF?=
- =?us-ascii?Q?OuxBkyZoKQTEn+CSUJa2VX5RsoN/ByWBl+1I9DQOvIKWnq7EKIay3Nd1EAjc?=
- =?us-ascii?Q?0ZjP8mWxWP7AFZyEEc0UGP1O1UW0nRIwCL0mXvWUEQKWBh8mx7UVrsEKkjRU?=
- =?us-ascii?Q?OFeGNC38vZYSMW9tnC1j4S/Yz2gD55Qaqq7G56H3pe/oSGswHauepyOAWoZM?=
- =?us-ascii?Q?DwJeKWBaoxWl0kjdqSgQBDElHmseOWOyXR7l6bDP3fHJw1hzdmDocKvwqPXB?=
- =?us-ascii?Q?0riaDr1ta2rolvrQeXJ5DWrTFCuTBTAEF0H0pTMMDhEo2w3dm3IqfntmAJj6?=
- =?us-ascii?Q?ZCqPWXL0I6imJa+xkoJLKN17qbMUlGY/MFUzR4yV5z2ZXRwJY02OdVBXIyiD?=
- =?us-ascii?Q?bhBEQl7gKTDmRtyBsfVwK2B+KdGfZ3UpCrnP74cBDWxNM/oq+0WMosWgqXBL?=
- =?us-ascii?Q?gXI/GKNKaz5e6YCAsussxhqbRwboEThDpHOQNfCDgTCX0PIjgUanAVZDzOKA?=
- =?us-ascii?Q?/PhHm6X/WQyllsdjUQWsAkAhJEAPdUnWM2ce9lT+a+3QIbw8JbW+t7h62j5A?=
- =?us-ascii?Q?+TjtUN7cHrr6g7asmQ0jRvZ0/0VwoDiF9yfC18xPN9eg5sYPfmjAnZ6UYJXP?=
- =?us-ascii?Q?RE+ZFXB6dTLSwJINlmFu0o0A8KXBeAIiNQCSLcXnG/8VLXIowPWl9rkk8WBG?=
- =?us-ascii?Q?JxnvTLZjNjKCbV9vEY/FfUlk4uRirQ6Bsu3hvM83oVznlS14YqEOvO+XYYZi?=
- =?us-ascii?Q?g89OA7Ysw=3D=3D?=
-X-Microsoft-Antispam-Message-Info: XvJwbkQ/+YYT0e0k0OMvaO8M+76du8U2nSHBuVEhdurJQc4OeUdUCoVDO8D4qPRo0/hsRiP1WhYkoYdmcIvIUT/W26d2QafKMXMbZRLYWfHaccs/a3AvOxZ9+ulHei+LX0Rmwjlja3qR81mRcWYvzM35vxBo/ucFWKpf+LMfLC4rFSvvXO7qC5VI3H6UduVX6Vo/kiV6RKtCetiJewDb7tqQgxqKckcxfKqQnIEFJ6TsNCialFGOjNRnBYBRbsyE8ZrKepP3e3dXFvYhP/S4U1xc8x8LQZbJ9B0RzlvT6igxaUa9ChXoWcrfyy7sGIwWbvI20IKxiEk5Go3GQl3GeFI6cna916XOw+QWf+yYsxY=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;6:d89sN1kvEtfVVFDFizO7WchD2RKXpmrvNf4mxHR84l9A2Z2KSnDsFeREZiD+q3s73kCpmcUWuzJM9B4vPXBZFIQuS4OCp8yFaicXJJwk91LFn0D175uiuhBe1Q7iB27/rEi4a943jNgeqzpI3VIMf6E6JIHwsyHge7uiZo2TcCeOEWddmPOEhiMoRdqmm5HG7z5kIoEfntIESDnsZaOGWdbGS6bIWHDry5o35UYtnP4lwflmKXnUJimfs6YvNgknqdAx7OkZ5wAwf+KKpPxQmLBfw10bayuqKKSpfZYn/yOfrERZpR3M93KvNiQ1QnwZ2nDaYNo1ffhFMiR2GxZ68yiZix1dw+tVAgPnqNpnA2vHaLPksdFqKLXDGIKaxYmAnZq74zAhLuhNT6gsJEaiR04xD5JrwGLT139L7kl9TtFiSRvYDuydEGZub0x6LjprFRJapug8cACTAGDykjS1Mg==;5:ZRmwMzZNyD1DnBCpWRVL23KA2junTTNOYfJ5OaUcylpyQ42AtsG+xuEkTJH9K/nXhHVtmnYfpMGevfutheXuPuMRlRFUJn/rrLk/y7oORMYO3xqn95q/FMqH8YKKVghalZKk2O2kKcfdI4y4vIe9/xOGFJOD8P6Q9B/mXdNgJ7M=;7:uTOik7xloRL6+YONxaCOfS4n/sJXDQqZxbYUdFrMroINByV72+IRMm1AtKDmdRojwgzzDzSEy9r1MQeYWkGAIRKzniiZrvwwfZQCrDnCs9iD4Pb3yciBITTrgFtc4BLrip/R5Sj3dJJHNykQzB0U4cOIXJ8DwCRvgpsnSCrAF0yIhvkqfu5JOUwre7YNCYcz91zJNQ2Dz7G0JlGBoiwvoTiy+i9lmZwoR54X8+AkpD2LVgiilkG0oUl7fFzJ+e/A
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4933;23:mT8d3Wj2UVUL+7MeuwcgJXv1Z+sE5nQG47j+UWfNf?=
+ =?us-ascii?Q?vrkJeNb6tZJiAIinFTtnqui5/dhfZOcILy31aJfjXAcUAhaesyXBJjh0r2k0?=
+ =?us-ascii?Q?CTH410Ykqzx+VAQFc2U6yhn8KAckC7vRkzW0W/O4eyYO52CED+4dR2wChW9Z?=
+ =?us-ascii?Q?G8tEoqbYTnYZSGuTgVB8MYit5AEEes0guyoQjRyicez3vX57E7bLZezFNtEh?=
+ =?us-ascii?Q?5myn0V+PEm/LlS1A4Xu/9PAG1ZC59ktVGCXZ+Ivk0aHeNFQx4WRaRLcw5pe1?=
+ =?us-ascii?Q?WoO17qA6eFXgXcKJ0789POf+EzGm8ruVcZ3rPf0f09KYw/bhp0JEoLHZsC2M?=
+ =?us-ascii?Q?4WRkVobJMrA2JX030SIBmlx4oawBZVVSQ+nChxBKRwgqw1IYCw6V6xiAUawt?=
+ =?us-ascii?Q?9fYATMxWUB/un9mAlinx/DVU76d7iGWWJbEX0WDZ6CTb0332hJE/j/s3iYXd?=
+ =?us-ascii?Q?sosChaxHN1XoU3uJutq1Gwsct7zqjzsG34ryaHAkVxWnmBaGfyql8oc7DjM5?=
+ =?us-ascii?Q?Qn6CoNLiA4RzgNWlwh5mfplj4JMpSsFEpT+zMm6UwaIkTzicCo4WfyDSwScd?=
+ =?us-ascii?Q?Fe2QRmQdyzXFvV2fIf7uEWtiT8o8jCTwe/XeTlDYBhnc6r8sdy7XJtJs1T6m?=
+ =?us-ascii?Q?b8WtMYSWKEs6G17boWAtIzQ11lAwg5mdZeDe4ITZ0i3qxkH8ZmAzzCdc0fQQ?=
+ =?us-ascii?Q?ev08r1C4wcSxXR9zKAXQrMjE92c9fVgvlrzIJiurKY5CWr9ei/xPZQbxjDt0?=
+ =?us-ascii?Q?khifUHZ2311cmtMulf2PPeZa/Y48gWdZFLPuLGgRyJyM/gGS7qSVdCW9iIQc?=
+ =?us-ascii?Q?UY567N25STPHevqBV1lcl9a+QaFdZhQ7lwaDmIfRTYtX2vC1vPEUyhfFtqK5?=
+ =?us-ascii?Q?DbOw3Ve7YJUxzHNakdeeFgt9o3sTCNtHESzvkfRu/5AbwF7WZ1RJfm+4a0aY?=
+ =?us-ascii?Q?ZZPUnzea5zt0EQlWoMF4b53e7uSBwvXeOLw9tlSxaX1j3/JkRsXc9SPDs522?=
+ =?us-ascii?Q?y9j45dzRTl/ERCpp1v2Ugpxhmw80NYYWKWENzE6BlCI92N1qv9w6ut0conrF?=
+ =?us-ascii?Q?CQrFIiK4HNhMIVgdORLTdo3NqL1gm+tnTbqiFPKfG31q5tsGUoUP+2oJoEN0?=
+ =?us-ascii?Q?U8reE6P+MEUG2HbgRtk6EO6xgPbh8wa0hAn7uZyMr25hdsH1nI7UNgR/sU7p?=
+ =?us-ascii?Q?dxBJ/hVSeeVFgXRUIniqZK1ZB/abTziBkCqsW9rHuqTiFb25EKg5oPAt1SUR?=
+ =?us-ascii?Q?B5+VjPvnHcRQKxHXi1hM6MQc1xbmNh1X0n8BhK7cTUU4oqa6qHoDxbeb90Zb?=
+ =?us-ascii?Q?8ubBYR4j5Y7Jh1Vhter25Cys/af2JLsmi36SKA6pCQVEIUjeuM7Hwt5VWjfL?=
+ =?us-ascii?Q?rEl35OL4xeoZyC5oQwjZ2fj13rbsbPO+6HgP/kJwKkIF26f?=
+X-Microsoft-Antispam-Message-Info: tPrAkRyxgDeu6GIC9OKM1Hg/N+pVWC8dEtX0kxZC5E/RezPHXGpI+JbSuVhTHoftH2eBWUvNBxRlyZ4BkbCXiGIEa89q7URdSlFc35f5vGlVaPcRqYM6A8bSC7h+TX5DYcG+bSE/MBi5NvhJqn+AzjPRDsw/rDH4rXqvaIjaW0zEBXIx33R4Wdtm6Qf24FaAiyTCJYPLFsLJmzbdyv/IKx/ZrOAhVO7qEF2JXW1zAi/p+4Z73+GL893bIbi+InIGbZ0/vXp5HLRoSMoa2rBsYyrdBTqMCbXJkLxDsIEwgT29kY8/awU+zVyLIGcxgl+QBVNS2tWcgXffw2KOF+LXWNCvxS6TRX/czqjyr10Wm5s=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;6:kmECdTtueovkDDQE3Dc20Ik2ltepbeI2gtfIbeHWkncHxuA3uwJ+Xe9CTF7dO3OcmvhpLVF0uaAk0tDZhHZ70+bBgTdxLR3lzm71OTuiWIY+3k7PwjZCquJFy5CS5LYTJPecpGDPL7o8gM/VT1LCDW3L7I1Wfdexfv+3AN0JBjFymMl6w7onb6cW8suygwi44L9mJPX287H4lS3eJWuXZ5kqvECPhU9XLVserKx222ysBx8817jRFj+I4gy4p5m9fZVMyYXD8KGoioDkGFynlwgmGsUoHd5ouYPt4fKUqRHf5yKoyzMHDQx8+/V1Vt0SFg8UXrNT8R1ihbokWY4yrouSjqSXIqhHQ0LZmTdt2OBz+HKglXvdtZaM+Pjd1NEnpUYSxPMszOyVqi/+KfCne80Ir16vDSWDulIq6/jWeFQ60QufU/5wLGfjEM5cqrcs9gvAdYfdRNfisT0I1RJ3zA==;5:ZH30cTpp+2LcI4qChlwB5l9RTei82AHmfOe02xfsCvEBUv5LpsJLJw0myNiclY2a841T8eSPa+oVaJTHRm0nbGJFKIRkkEXLR8XRlh6IgJRgVJG9d5thzPSGfCOZF/siDUY3vWK+9LzuF1JXSPUUuzAVQpdmfFlf0VhyzwBY0YI=;7:WW/NbapiJKc1MitCp44qKzJYT6bZvJOFjy8VcWqpjQg3PtPhTAtPUeikjEfskZ4CJ1garviQbRfz85UOy37NAtQWEC4sRvw2mVsJPqcp12JJEqUMMiGG9nrEv+Kr66545Z9YCv4n/1SSKMGZoX7ZsYxdDhqmd2NxYPbN/+ZNZSrZsuQVSEM2WvyKghJtb6lM4w6KPp3VEeiH7pZdDkmIj4490qiFrdRIMEx2kbPtZt966GuaI4UEBgcEwIta9NNn
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2018 17:45:42.4875 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 456c049d-b996-48fb-20a3-08d5fe1fee2c
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2018 17:51:39.3124 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 956e67fb-419a-450c-179f-08d5fe20c246
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4929
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4933
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65502
+X-archive-position: 65503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -110,118 +109,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Older versions of GCC for the MIPS architecture suffer from a bug which
-can lead to instructions from beyond an unreachable statement being
-incorrectly reordered into earlier branch delay slots if the unreachable
-statement is the only content of a case in a switch statement. This can
-lead to seemingly random behaviour, such as invalid memory accesses from
-incorrectly reordered loads or stores, and link failures on microMIPS
-builds.
+Hi James / Fengguang,
 
-See this potential GCC fix for details:
+On Mon, May 14, 2018 at 10:26:34AM +0100, James Hogan wrote:
+> Hmm, I thought I'd fixed this, but again the kbuild test robot
+> complains:
+> 
+> On Sat, May 12, 2018 at 09:47:40AM +0800, kbuild test robot wrote:
+> > bisected to: aea47daf8a396e512e0cfe11d9c05798749db172  compiler.h: Allow arch-specific overrides
+> > commit date: 2 days ago
+> > config: um-x86_64_defconfig (attached as .config)
+> > compiler: gcc-7 (Debian 7.3.0-16) 7.3.0
+> > reproduce:
+> >         git checkout aea47daf8a396e512e0cfe11d9c05798749db172
+> >         # save the attached .config to linux build tree
+> >         make ARCH=um SUBARCH=x86_64
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >    In file included from arch/um/include/shared/init.h:44:0,
+> >                     from arch/um/kernel/config.c:8:
+> > >> include/linux/compiler_types.h:58:10: fatal error: asm/compiler.h: No such file or directory
+> >     #include <asm/compiler.h>
+> >              ^~~~~~~~~~~~~~~~
+> >    compilation terminated.
+> > 
+> > vim +58 include/linux/compiler_types.h
+> > 
+> >     56	
+> >     57	/* Allow architectures to override some definitions where necessary */
+> >   > 58	#include <asm/compiler.h>
+> >     59	
+> 
+> Can anybody else reproduce that or have ideas why its still happening? I
+> don't seem to be able to.
+> 
+> Its from my mips-next-test branch here (that isn't in linux-next):
+> git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git
 
-    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
+I think I figured it out at last - it's because the generated includes
+will be in $(objtree) but your patch looked for them in $(srctree).
+Fixed in the v6 I just submitted.
 
-This bug can be worked around by placing a volatile asm statement, which
-GCC is prevented from reordering past, prior to the
-__builtin_unreachable call.
+Presumably the kbuild test robot is building with O=somewhere, but it
+doesn't indicate that in the email which means the command it reports
+will reproduce the bug simply doesn't.
 
-This was actually done already for other reasons by commit 173a3efd3edb
-("bug.h: work around GCC PR82365 in BUG()"), but without the MIPS
-specific .insn, which broke microMIPS builds on newer GCC 7.2 toolchains
-with errors like the following:
+I realise this is probably rare in the grand scheme of things, but maybe
+it'd be worth mentioning O= in the emails Fengguang?
 
-    arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA mode
-    arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA mode
-
-Add a MIPS-specific definition of barrier_before_unreachable() which
-includes the .insn directive in order to satisfy the assembler that
-branch targets are in fact code.
-
-The original bug affects at least a maltasmvp_defconfig kernel built
-from the v4.4 tag using GCC 4.9.2 (from a Codescape SDK 2015.06-05
-toolchain), with the result being an address exception taken after log
-messages about the L1 caches (during probe of the L2 cache):
-
-    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
-    VPE topology {2,2} total 4
-    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
-    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
-    <AdEL exception here>
-
-This is early enough that the kernel exception vectors are not in use,
-so any further output depends upon the bootloader. This is reproducible
-in QEMU where no further output occurs - ie. the system hangs here.
-Given the nature of the bug it may potentially be hit with differing
-symptoms.
-
-Fixes: 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-[jhogan@kernel.org: Forward port and use asm/compiler.h instead of
- asm/compiler-gcc.h]
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mips@linux-mips.org
-
----
-
-Changes in v6: None
-Changes in v5:
-- Comment & commit message tweaks.
-
-Changes in v4: None
-Changes in v3:
-- Forward port to v4.17-rc and update commit message.
-- Drop stable tag for now.
-
-Changes in v2:
-- Remove generic-y entry.
-
- arch/mips/include/asm/compiler.h | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
-index e081a265f422..1e9548faf9c7 100644
---- a/arch/mips/include/asm/compiler.h
-+++ b/arch/mips/include/asm/compiler.h
-@@ -8,6 +8,36 @@
- #ifndef _ASM_COMPILER_H
- #define _ASM_COMPILER_H
- 
-+/*
-+ * With GCC v4.5 onwards can use __builtin_unreachable to indicate to the
-+ * compiler that a particular code path will never be hit. This allows it to be
-+ * optimised out of the generated binary.
-+ *
-+ * Unfortunately GCC from at least v4.9.2 to current head of tree as of May
-+ * 2016 suffer from a bug that can lead to instructions from beyond an
-+ * unreachable statement being incorrectly reordered into earlier delay slots
-+ * if the unreachable statement is the only content of a case in a switch
-+ * statement. This can lead to seemingly random behaviour, such as invalid
-+ * memory accesses from incorrectly reordered loads or stores. See this
-+ * potential GCC fix for details:
-+ *
-+ *   https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
-+ *
-+ * GCC also handles stack allocation suboptimally when calling noreturn
-+ * functions or calling __builtin_unreachable():
-+ *
-+ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82365
-+ *
-+ * We work around both of these issues by placing a volatile asm statement,
-+ * which GCC is prevented from reordering past, prior to __builtin_unreachable
-+ * calls.
-+ *
-+ * The .insn statement is required to ensure that any branches to the
-+ * statement, which sadly must be kept due to the asm statement, are known to
-+ * be branches to code and satisfy linker requirements for microMIPS kernels.
-+ */
-+#define barrier_before_unreachable() asm volatile(".insn")
-+
- #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
- #define GCC_IMM_ASM() "n"
- #define GCC_REG_ACCUM "$0"
--- 
-2.18.0
+Thanks,
+    Paul

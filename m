@@ -1,73 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 06:24:41 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:52780 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993070AbeHIEYc3jLdH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2018 06:24:32 +0200
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w794J1fd119876
-        for <linux-mips@linux-mips.org>; Thu, 9 Aug 2018 00:24:31 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2kref3g5k8-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 09 Aug 2018 00:24:31 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Thu, 9 Aug 2018 05:19:29 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 9 Aug 2018 05:19:24 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w794JNcE7864530
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 9 Aug 2018 04:19:23 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id ABB81A4040;
-        Thu,  9 Aug 2018 07:19:30 +0100 (BST)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 74CEEA4055;
-        Thu,  9 Aug 2018 07:19:27 +0100 (BST)
-Received: from bangoria.in.ibm.com (unknown [9.124.35.190])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Aug 2018 07:19:27 +0100 (BST)
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, rostedt@goodmis.org,
-        mhiramat@kernel.org, liu.song.a23@gmail.com
-Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: [PATCH v8 5/6] trace_uprobe/sdt: Prevent multiple reference counter for same uprobe
-Date:   Thu,  9 Aug 2018 09:48:55 +0530
-X-Mailer: git-send-email 2.14.4
-In-Reply-To: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
-References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 18080904-0008-0000-0000-0000025F3397
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18080904-0009-0000-0000-000021C74132
-Message-Id: <20180809041856.1547-6-ravi.bangoria@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-09_01:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1808090045
-Return-Path: <ravi.bangoria@linux.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 10:59:31 +0200 (CEST)
+Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:34450
+        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994741AbeHII72HgPy9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2018 10:59:28 +0200
+Received: by mail-wr1-x443.google.com with SMTP id c13-v6so4477016wrt.1
+        for <linux-mips@linux-mips.org>; Thu, 09 Aug 2018 01:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=F7KHAUGCcRku+LbHtcagWA+vrgOv2XDa19iGg6969S8=;
+        b=oaI4opN9upeJCU/58x3Ksgl5A2I3sw6YNleoHpt2tl+JuoK3nswJW6zwccE/6bwipm
+         Nz9StJceVWLxs1GmVV3PMKXuRLWGRX8Qgld/uXTjaFMWM27ejoURQbSbXUKqfpZc45zc
+         tUZEWZzdJy94fQTJGu4TO4F22n9wFmyNP9d+zx3rgIdMtPRayOKhWmVo2DTZORJgpwj/
+         mhzQle7MGwBPsQK7DCGSbXC9+LcO48S0onMmzh+Pe22qASg1s1T4Eqv3xacwBSj9dZUr
+         mYBEXljzLF1wppn8MctD8fexcRNOgWwztKH73iaJNwyT5wrs80YvYhMj3wTOGn2pCryw
+         IsIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=F7KHAUGCcRku+LbHtcagWA+vrgOv2XDa19iGg6969S8=;
+        b=uYNsUlJNi2/cCw+8fdpXfDneTdW6vVixZHKVmyVqgoCrKKEqdjvON/KPvlTRDdcXn/
+         +W3rkZuikAdpWw+A4gtWA+yTByBlrptqgZnm/GE88uDH+33uAUBmE5iBxnquVqNhrPC6
+         xw7RsWN+Xzr9YzGme3jBvWHX9pZ/RYNmra66+VTBQzy7aososH7KP79JvOSVoUEEb0zr
+         7K9frvk+vMiqodY/oevFh133eh6NU9iVfwjQEEk2i/RgdW4TXlwt14TxBh5PlZCsBT7F
+         6DQ3HLYKKLNZF8/wuZ04RZObWyz/k1RRdgZeRy5BHIY/UP8JuqVz4skGuexadunhAXkn
+         NCZg==
+X-Gm-Message-State: AOUpUlFGY+FGgH88OYjxRt98QR8WgvopWjfL+199boJ4pRw+vLwsnVZr
+        87+gp241C5ibHM/a0QVUR94=
+X-Google-Smtp-Source: AA+uWPy6tZUAHO9qho/G9ya7Zrzi9ECrrrHGUq2LmMakQD+6WIx54GFG5SEOOj0ZTRa9g+bfA1WRGQ==
+X-Received: by 2002:adf:b309:: with SMTP id j9-v6mr800998wrd.207.1533805162758;
+        Thu, 09 Aug 2018 01:59:22 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:9e39::64])
+        by smtp.gmail.com with ESMTPSA id a6-v6sm11219702wmf.22.2018.08.09.01.59.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Aug 2018 01:59:21 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] irqchip/bcm7038-l1: hide cpu offline callback when building for !SMP
+Date:   Thu,  9 Aug 2018 10:59:01 +0200
+Message-Id: <20180809085901.26568-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.13.2
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65492
+X-archive-position: 65493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,82 +66,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We assume to have only one reference counter for one uprobe.
-Don't allow user to add multiple trace_uprobe entries having
-same inode+offset but different reference counter.
+When compiling bmips with SMP disabled, the build fails with:
 
-Ex,
-  # echo "p:sdt_tick/loop2 /home/ravi/tick:0x6e4(0x10036)" > uprobe_events
-  # echo "p:sdt_tick/loop2_1 /home/ravi/tick:0x6e4(0xfffff)" >> uprobe_events
-  bash: echo: write error: Invalid argument
+drivers/irqchip/irq-bcm7038-l1.o: In function `bcm7038_l1_cpu_offline':
+drivers/irqchip/irq-bcm7038-l1.c:242: undefined reference to `irq_set_affinity_locked'
+make[5]: *** [vmlinux] Error 1
 
-  # dmesg
-  trace_kprobe: Reference counter offset mismatch.
+Fix this by adding and setting bcm7038_l1_cpu_offline only when actually
+compiling for SMP. It wouldn't have been used anyway, as it requires
+CPU_HOTPLUG, which in turn requires SMP.
 
-There is one exception though:
-When user is trying to replace the old entry with the new
-one, we allow this if the new entry does not conflict with
-any other existing entries.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Fixes: 34c535793bcb ("irqchip/bcm7038-l1: Implement irq_cpu_offline() callback")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- kernel/trace/trace_uprobe.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index bf2be098eb08..be64d943d7ea 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -324,6 +324,35 @@ static int unregister_trace_uprobe(struct trace_uprobe *tu)
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index faf734ff4cf3..0f6e30e9009d 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -217,6 +217,7 @@ static int bcm7038_l1_set_affinity(struct irq_data *d,
  	return 0;
  }
  
-+/*
-+ * Uprobe with multiple reference counter is not allowed. i.e.
-+ * If inode and offset matches, reference counter offset *must*
-+ * match as well. Though, there is one exception: If user is
-+ * replacing old trace_uprobe with new one(same group/event),
-+ * then we allow same uprobe with new reference counter as far
-+ * as the new one does not conflict with any other existing
-+ * ones.
-+ */
-+static struct trace_uprobe *find_old_trace_uprobe(struct trace_uprobe *new)
-+{
-+	struct trace_uprobe *tmp, *old = NULL;
-+	struct inode *new_inode = d_real_inode(new->path.dentry);
-+
-+	old = find_probe_event(trace_event_name(&new->tp.call),
-+				new->tp.call.class->system);
-+
-+	list_for_each_entry(tmp, &uprobe_list, list) {
-+		if ((old ? old != tmp : true) &&
-+		    new_inode == d_real_inode(tmp->path.dentry) &&
-+		    new->offset == tmp->offset &&
-+		    new->ref_ctr_offset != tmp->ref_ctr_offset) {
-+			pr_warn("Reference counter offset mismatch.");
-+			return ERR_PTR(-EINVAL);
-+		}
-+	}
-+	return old;
-+}
-+
- /* Register a trace_uprobe and probe_event */
- static int register_trace_uprobe(struct trace_uprobe *tu)
++#ifdef CONFIG_SMP
+ static void bcm7038_l1_cpu_offline(struct irq_data *d)
  {
-@@ -333,8 +362,12 @@ static int register_trace_uprobe(struct trace_uprobe *tu)
- 	mutex_lock(&uprobe_lock);
+ 	struct cpumask *mask = irq_data_get_affinity_mask(d);
+@@ -241,6 +242,7 @@ static void bcm7038_l1_cpu_offline(struct irq_data *d)
+ 	}
+ 	irq_set_affinity_locked(d, &new_affinity, false);
+ }
++#endif
  
- 	/* register as an event */
--	old_tu = find_probe_event(trace_event_name(&tu->tp.call),
--			tu->tp.call.class->system);
-+	old_tu = find_old_trace_uprobe(tu);
-+	if (IS_ERR(old_tu)) {
-+		ret = PTR_ERR(old_tu);
-+		goto end;
-+	}
-+
- 	if (old_tu) {
- 		/* delete old event */
- 		ret = unregister_trace_uprobe(old_tu);
+ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 				      unsigned int idx,
+@@ -293,7 +295,9 @@ static struct irq_chip bcm7038_l1_irq_chip = {
+ 	.irq_mask		= bcm7038_l1_mask,
+ 	.irq_unmask		= bcm7038_l1_unmask,
+ 	.irq_set_affinity	= bcm7038_l1_set_affinity,
++#ifdef CONFIG_SMP
+ 	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
++#endif
+ };
+ 
+ static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
 -- 
-2.14.4
+2.13.2

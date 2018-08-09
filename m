@@ -1,80 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 14:34:57 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60844 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990422AbeHIMeyc1it7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2018 14:34:54 +0200
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w79CTdhR136467
-        for <linux-mips@linux-mips.org>; Thu, 9 Aug 2018 08:34:52 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2krnme89tm-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 09 Aug 2018 08:34:51 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Thu, 9 Aug 2018 13:34:49 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 9 Aug 2018 13:34:45 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w79CYilk37748788
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 9 Aug 2018 12:34:44 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9DFDC42042;
-        Thu,  9 Aug 2018 15:34:52 +0100 (BST)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DF9AE4203F;
-        Thu,  9 Aug 2018 15:34:51 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.8.123])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu,  9 Aug 2018 15:34:51 +0100 (BST)
-Date:   Thu, 9 Aug 2018 15:34:42 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     "Fancer's opinion" <fancer.lancer@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mips: switch to NO_BOOTMEM
-References: <1531727262-11520-1-git-send-email-rppt@linux.vnet.ibm.com>
- <20180726070355.GD8477@rapoport-lnx>
- <20180726172005.pgjmkvwz2lpflpor@pburton-laptop>
- <CAMPMW8p092oXk1w+SVjgx-ZH+46piAY8xgYPDfLUwLCkBm-TVw@mail.gmail.com>
- <20180802115550.GA10232@rapoport-lnx>
- <CAMPMW8qq-aEm-0dQrWh08SBBSRp3xAqR1PL5Oe-RvkJgUk6LjA@mail.gmail.com>
- <20180808214215.bf6hyurv3nunfynd@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 16:38:43 +0200 (CEST)
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:36316 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994542AbeHIOiiy1Iot (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Aug 2018 16:38:38 +0200
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 713E640216EB;
+        Thu,  9 Aug 2018 14:38:32 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
+        by smtp.corp.redhat.com (Postfix) with SMTP id E80482026D66;
+        Thu,  9 Aug 2018 14:38:28 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Thu,  9 Aug 2018 16:38:32 +0200 (CEST)
+Date:   Thu, 9 Aug 2018 16:38:28 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
+        mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
+ count (semaphore)
+Message-ID: <20180809143827.GC22636@redhat.com>
+References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
+ <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180808214215.bf6hyurv3nunfynd@pburton-laptop>
+In-Reply-To: <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18080912-0016-0000-0000-000001F4623B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18080912-0017-0000-0000-0000324A75BA
-Message-Id: <20180809123441.GA3264@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-09_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=898 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1808090131
-Return-Path: <rppt@linux.vnet.ibm.com>
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.4
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 09 Aug 2018 14:38:32 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 09 Aug 2018 14:38:32 +0000 (UTC) for IP:'10.11.54.4' DOMAIN:'int-mx04.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65495
+X-archive-position: 65496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,33 +59,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 08, 2018 at 02:42:15PM -0700, Paul Burton wrote:
-> Hi Sergey & Mike,
-> 
-> On Thu, Aug 09, 2018 at 12:30:03AM +0300, Fancer's opinion wrote:
-> > Hello Mike,
-> > I haven't read your patch text yet. I am waiting for the subsystem
-> > maintainers response at least
-> > about the necessity to have this type of changes being merged into the
-> > sources (I mean
-> > memblock/no-bootmem alteration). If they find it pointless (although I
-> > would strongly disagree), then
-> > nothing to discuss. Otherwise we can come up with a solution.
-> > 
-> > -Sergey
-> 
-> I'm all for dropping bootmem.
-> 
-> It's too late for something this invasive in 4.19, but I'd love to get
-> it into 4.20.
+I need to read this (hopefully final) version carefully. I'll try to do
+this before next Monday.
 
-I can resend my patch once merge window is closed. We can then apply
-additional changes Sergey has done in his set on top.
+just one note,
 
-> Thanks,
->     Paul
-> 
+On 08/09, Ravi Bangoria wrote:
+>
+> +static void delayed_uprobe_remove(struct uprobe *uprobe, struct mm_struct *mm)
+> +{
+> +	struct list_head *pos, *q;
+> +	struct delayed_uprobe *du;
+> +
+> +	if (!uprobe && !mm)
+> +		return;
+> +
+> +	list_for_each_safe(pos, q, &delayed_uprobe_list) {
+> +		du = list_entry(pos, struct delayed_uprobe, list);
+> +
+> +		if (uprobe && mm && du->uprobe == uprobe && du->mm == mm)
+> +			delayed_uprobe_delete(du);
+> +		else if (!uprobe && du->mm == mm)
+> +			delayed_uprobe_delete(du);
+> +		else if (!mm && du->uprobe == uprobe)
+> +			delayed_uprobe_delete(du);
+> +	}
 
--- 
-Sincerely yours,
-Mike.
+Sorry, I can't resist... this doesn't look very nice. How about
+
+	list_for_each_safe(pos, q, &delayed_uprobe_list) {
+		du = list_entry(pos, struct delayed_uprobe, list);
+
+		if (uprobe && du->uprobe != uprobe)
+			continue;
+		if (mm && du->mm != mm)
+			continue;
+
+		delayed_uprobe_delete();
+	}
+
+I won't insist, this is cosmetic after all, but please consider this change
+in case you will need to send v9.
+
+Oleg.

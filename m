@@ -1,52 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 16:38:43 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:36316 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994542AbeHIOiiy1Iot (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Aug 2018 16:38:38 +0200
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2018 17:49:17 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:58996 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994542AbeHIPtOnB5MI convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2018 17:49:14 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F214160B74; Thu,  9 Aug 2018 15:49:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1533829748;
+        bh=4Nj5+8/soLOeBJIItHvHi97HqCf3cvzmLRCChSyhsVw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=hz9NixG5vkCpJn8nRr205NmamWo1NGjoWEgGkQMSV/ihSyB0h3Ee+tH/OJKSFpUxw
+         sosCtyvZ0T8tJgHJEkTmLf2Qaj3ZfdSlyofZmKdr3c50Z+xQRuz5FsIglceCPu+2JN
+         8wOcZiUrTAlGC3WeGxgSZCWUdnPMtUWVUXiR6gjs=
+Received: from potku.adurom.net (88-114-240-52.elisa-laajakaista.fi [88.114.240.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 713E640216EB;
-        Thu,  9 Aug 2018 14:38:32 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id E80482026D66;
-        Thu,  9 Aug 2018 14:38:28 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Thu,  9 Aug 2018 16:38:32 +0200 (CEST)
-Date:   Thu, 9 Aug 2018 16:38:28 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     srikar@linux.vnet.ibm.com, rostedt@goodmis.org,
-        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
-        mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180809143827.GC22636@redhat.com>
-References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
- <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E91E3607EB;
+        Thu,  9 Aug 2018 15:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1533829747;
+        bh=4Nj5+8/soLOeBJIItHvHi97HqCf3cvzmLRCChSyhsVw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Jc9wYdeEh8K4Hdyhmgvo9bDR70QU+njFEI6+kjZ3OfgqiAj95trS0w79ouiSFqA2L
+         dPY5REXQAim/7J+lrMn/OFheafMqyftqZHC4IBo2VNYlC0x/2Q9rDkDVk8Bnj+Civc
+         ECzGTwrZ/LUFXfMS7wYCjspI2WqVq4c5qyj/8CpE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E91E3607EB
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        b43-dev <b43-dev@lists.infradead.org>,
+        Joe Perches <joe@perches.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: ssb: Remove SSB_WARN_ON, SSB_BUG_ON and SSB_DEBUG
+References: <20180731221509.59c0a17a@wiggum>
+Date:   Thu, 09 Aug 2018 18:49:02 +0300
+In-Reply-To: <20180731221509.59c0a17a@wiggum> ("Michael \=\?utf-8\?Q\?B\=C3\=BCs\?\=
+ \=\?utf-8\?Q\?ch\=22's\?\= message of
+        "Tue, 31 Jul 2018 22:15:09 +0200")
+Message-ID: <8736vn1qxd.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.4
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 09 Aug 2018 14:38:32 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.5]); Thu, 09 Aug 2018 14:38:32 +0000 (UTC) for IP:'10.11.54.4' DOMAIN:'int-mx04.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
-Return-Path: <oleg@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65496
+X-archive-position: 65497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,46 +72,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I need to read this (hopefully final) version carefully. I'll try to do
-this before next Monday.
+Michael Büsch <m@bues.ch> writes:
 
-just one note,
-
-On 08/09, Ravi Bangoria wrote:
+> Use the standard WARN_ON instead.
+> If a small kernel is desired, WARN_ON can be disabled globally.
 >
-> +static void delayed_uprobe_remove(struct uprobe *uprobe, struct mm_struct *mm)
-> +{
-> +	struct list_head *pos, *q;
-> +	struct delayed_uprobe *du;
-> +
-> +	if (!uprobe && !mm)
-> +		return;
-> +
-> +	list_for_each_safe(pos, q, &delayed_uprobe_list) {
-> +		du = list_entry(pos, struct delayed_uprobe, list);
-> +
-> +		if (uprobe && mm && du->uprobe == uprobe && du->mm == mm)
-> +			delayed_uprobe_delete(du);
-> +		else if (!uprobe && du->mm == mm)
-> +			delayed_uprobe_delete(du);
-> +		else if (!mm && du->uprobe == uprobe)
-> +			delayed_uprobe_delete(du);
-> +	}
+> Also remove SSB_DEBUG. Besides WARN_ON it only adds a tiny debug check.
+> Include this check unconditionally.
+>
+> Signed-off-by: Michael Buesch <m@bues.ch>
 
-Sorry, I can't resist... this doesn't look very nice. How about
+Applied manually:
 
-	list_for_each_safe(pos, q, &delayed_uprobe_list) {
-		du = list_entry(pos, struct delayed_uprobe, list);
+209b43759d65 ssb: Remove SSB_WARN_ON, SSB_BUG_ON and SSB_DEBUG
 
-		if (uprobe && du->uprobe != uprobe)
-			continue;
-		if (mm && du->mm != mm)
-			continue;
-
-		delayed_uprobe_delete();
-	}
-
-I won't insist, this is cosmetic after all, but please consider this change
-in case you will need to send v9.
-
-Oleg.
+-- 
+Kalle Valo

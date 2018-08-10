@@ -1,87 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2018 19:45:54 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:53928 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994794AbeHJRpt2pLB0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 10 Aug 2018 19:45:49 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id B99E8ADAB;
-        Fri, 10 Aug 2018 17:45:43 +0000 (UTC)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2018 20:12:03 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:39452 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994796AbeHJSMA1V1u0 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Aug 2018 20:12:00 +0200
+Received: from mail-qk0-f174.google.com (mail-qk0-f174.google.com [209.85.220.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8E0A022450
+        for <linux-mips@linux-mips.org>; Fri, 10 Aug 2018 18:11:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1533924713;
+        bh=yZhlFZ8gprzMmtXCdMKVygb8ooVXZfynNtY3c6jYjW4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=RI0suXjP/eUwYtq8s2LfzNkoSXjO42ogtS37/lcsdi32phorfy/OyzBbe31R5Wtmq
+         wAhi4Fbqc1v/Nu7UrQ9onIYv2rIUyqfPqnoBBRJ0q9TGkLGtE1KANJmGO60TTMIhLE
+         HNvhtwBk4ZYFD76NBIZKRpTRqkT4j123Shmpo/pY=
+Received: by mail-qk0-f174.google.com with SMTP id z74-v6so6966553qkb.10
+        for <linux-mips@linux-mips.org>; Fri, 10 Aug 2018 11:11:53 -0700 (PDT)
+X-Gm-Message-State: AOUpUlE9joe/xec65DuJeWj9H+t2+tb8jAM9jHIQ2LAc9Ydy/TIn2RtK
+        +MPK1f4lEjXF+2L+AftxjlM54z/TpIbostfEDw==
+X-Google-Smtp-Source: AA+uWPwm53GWQ7QRW4Pi5vtzQqBsXkVH/wrVWk9wM321i/GxIuPM5foxG2LNNGx45AuhKmjGmDeDV062qsmPFpWjp+I=
+X-Received: by 2002:a37:a0c8:: with SMTP id j191-v6mr2820818qke.375.1533924712734;
+ Fri, 10 Aug 2018 11:11:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAL_JsqKNnfgESG6ON95D7nD8VNrcVy7-x6cGGnae_GbbGKAuPQ@mail.gmail.com>
+ <20180805232651.10605-1-afaerber@suse.de> <CAL_Jsq+f5VMWZg9GNF=e-UmFjcjbVnE7Dr0EBF56E6gUrdTnuQ@mail.gmail.com>
+ <0aa77961-fe60-6afe-e6c5-d2db4250cb22@suse.de>
+In-Reply-To: <0aa77961-fe60-6afe-e6c5-d2db4250cb22@suse.de>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 10 Aug 2018 12:11:41 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+LOqe9h1t9nYeothfV96ntkWb6X+anSryLqbVTX+XSWw@mail.gmail.com>
+Message-ID: <CAL_Jsq+LOqe9h1t9nYeothfV96ntkWb6X+anSryLqbVTX+XSWw@mail.gmail.com>
 Subject: Re: [RFC] serial: sc16is7xx: Use DT sub-nodes for UART ports
-To:     Rob Herring <robh@kernel.org>
-Cc:     SERIAL DRIVERS <linux-serial@vger.kernel.org>,
+To:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>
+Cc:     "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
         Linux-MIPS <linux-mips@linux-mips.org>, jringle@gridpoint.com,
         Michael Allwright <allsey87@gmail.com>,
         Jakub Kicinski <kubakici@wp.pl>, liuxuenetmail@gmail.com,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jslaby@suse.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <CAL_JsqKNnfgESG6ON95D7nD8VNrcVy7-x6cGGnae_GbbGKAuPQ@mail.gmail.com>
- <20180805232651.10605-1-afaerber@suse.de>
- <CAL_Jsq+f5VMWZg9GNF=e-UmFjcjbVnE7Dr0EBF56E6gUrdTnuQ@mail.gmail.com>
-From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
- 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
-Organization: SUSE Linux GmbH
-Message-ID: <0aa77961-fe60-6afe-e6c5-d2db4250cb22@suse.de>
-Date:   Fri, 10 Aug 2018 19:45:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <CAL_Jsq+f5VMWZg9GNF=e-UmFjcjbVnE7Dr0EBF56E6gUrdTnuQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <afaerber@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65540
+X-archive-position: 65541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afaerber@suse.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,80 +63,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 10.08.2018 um 19:34 schrieb Rob Herring:
-> On Sun, Aug 5, 2018 at 5:27 PM Andreas Färber <afaerber@suse.de> wrote:
->>
->> This is to allow using serdev.
->>
->> Signed-off-by: Andreas Färber <afaerber@suse.de>
->> ---
->>  drivers/tty/serial/sc16is7xx.c | 25 +++++++++++++++++++++++++
->>  1 file changed, 25 insertions(+)
->>
->> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
->> index 243c96025053..ad7267274f65 100644
->> --- a/drivers/tty/serial/sc16is7xx.c
->> +++ b/drivers/tty/serial/sc16is7xx.c
->> @@ -1213,9 +1213,31 @@ static int sc16is7xx_probe(struct device *dev,
->>                         SC16IS7XX_IOCONTROL_SRESET_BIT);
->>
->>         for (i = 0; i < devtype->nr_uart; ++i) {
->> +#ifdef CONFIG_OF
->> +               struct device_node *np;
->> +               struct platform_device *pdev;
->> +               char name[6] = "uartx";
->> +#endif
->> +
->>                 s->p[i].line            = i;
->>                 /* Initialize port data */
->> +#ifdef CONFIG_OF
->> +               name[4] = '0' + i;
->> +               np = of_get_child_by_name(dev->of_node, name);
->> +               if (IS_ERR(np)) {
->> +                       ret = PTR_ERR(np);
->> +                       goto out_ports;
->> +               }
->> +               pdev = of_platform_device_create(np, NULL, dev);
-> 
-> Ideally, you would use of_platform_default_populate here. I think
-> you'd have to add a compatible to the child nodes, but that wouldn't
-> be a bad thing. I could envision that the child nodes ultimately
-> become their own driver utilizing the standard 8250 driver and a
-> compatible string would be needed in that case.
+On Fri, Aug 10, 2018 at 11:45 AM Andreas Färber <afaerber@suse.de> wrote:
+>
+> Am 10.08.2018 um 19:34 schrieb Rob Herring:
+> > On Sun, Aug 5, 2018 at 5:27 PM Andreas Färber <afaerber@suse.de> wrote:
+> >>
+> >> This is to allow using serdev.
+> >>
+> >> Signed-off-by: Andreas Färber <afaerber@suse.de>
+> >> ---
+> >>  drivers/tty/serial/sc16is7xx.c | 25 +++++++++++++++++++++++++
+> >>  1 file changed, 25 insertions(+)
+> >>
+> >> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> >> index 243c96025053..ad7267274f65 100644
+> >> --- a/drivers/tty/serial/sc16is7xx.c
+> >> +++ b/drivers/tty/serial/sc16is7xx.c
+> >> @@ -1213,9 +1213,31 @@ static int sc16is7xx_probe(struct device *dev,
+> >>                         SC16IS7XX_IOCONTROL_SRESET_BIT);
+> >>
+> >>         for (i = 0; i < devtype->nr_uart; ++i) {
+> >> +#ifdef CONFIG_OF
+> >> +               struct device_node *np;
+> >> +               struct platform_device *pdev;
+> >> +               char name[6] = "uartx";
+> >> +#endif
+> >> +
+> >>                 s->p[i].line            = i;
+> >>                 /* Initialize port data */
+> >> +#ifdef CONFIG_OF
+> >> +               name[4] = '0' + i;
+> >> +               np = of_get_child_by_name(dev->of_node, name);
+> >> +               if (IS_ERR(np)) {
+> >> +                       ret = PTR_ERR(np);
+> >> +                       goto out_ports;
+> >> +               }
+> >> +               pdev = of_platform_device_create(np, NULL, dev);
+> >
+> > Ideally, you would use of_platform_default_populate here. I think
+> > you'd have to add a compatible to the child nodes, but that wouldn't
+> > be a bad thing. I could envision that the child nodes ultimately
+> > become their own driver utilizing the standard 8250 driver and a
+> > compatible string would be needed in that case.
+>
+> Separate compatibles would mean separate drivers.
 
-Separate compatibles would mean separate drivers.
+No. Having a compatible doesn't mean you have to have a driver.
 
-Unlike your DUART example this is not an MMIO device that we can easily
-split but a SPI slave (well, regmap due to some I2C models).
+> Unlike your DUART example this is not an MMIO device that we can easily
+> split but a SPI slave (well, regmap due to some I2C models).
 
-I don't see how separate drivers could work, given that the whole
-spi_device has a single interrupt for all functions of this device.
+A SPI slave could provide a regmap, right?
 
-That left me with this ugly but working construct.
+> I don't see how separate drivers could work, given that the whole
+> spi_device has a single interrupt for all functions of this device.
 
-Is the uartX naming correct, or should it be serialX?
+A shared interrupt or a parent driver that creates an irqchip like MFD
+drivers often do.
 
-Regards,
-Andreas
+>
+> That left me with this ugly but working construct.
 
-> 
-> You'd then have to loop over each child of 'dev' instead of the DT nodes.
-> 
->> +               if (IS_ERR(pdev)) {
->> +                       ret = PTR_ERR(pdev);
->> +                       goto out_ports;
->> +               }
->> +               platform_set_drvdata(pdev, dev_get_drvdata(dev));
->> +               s->p[i].port.dev        = &pdev->dev;
->> +#else
->>                 s->p[i].port.dev        = dev;
->> +#endif
->>                 s->p[i].port.irq        = irq;
->>                 s->p[i].port.type       = PORT_SC16IS7XX;
->>                 s->p[i].port.fifosize   = SC16IS7XX_FIFO_SIZE;
+In any case, I'm was suggesting that you do any of this now. I just
+want the binding to be designed to work either way.
 
+> Is the uartX naming correct, or should it be serialX?
 
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+Ah, yes. Should be serial@... I'm fine if both the parent and child
+are named serial@...
+
+Rob

@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2018 15:37:27 +0200 (CEST)
-Received: from mail-pg1-x542.google.com ([IPv6:2607:f8b0:4864:20::542]:38305
-        "EHLO mail-pg1-x542.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbeHJNhUWdrg6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Aug 2018 15:37:20 +0200
-Received: by mail-pg1-x542.google.com with SMTP id k3-v6so4425242pgq.5;
-        Fri, 10 Aug 2018 06:37:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2018 15:37:46 +0200 (CEST)
+Received: from mail-pg1-x541.google.com ([IPv6:2607:f8b0:4864:20::541]:42946
+        "EHLO mail-pg1-x541.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993920AbeHJNhnCM7j6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Aug 2018 15:37:43 +0200
+Received: by mail-pg1-x541.google.com with SMTP id y4-v6so4419602pgp.9;
+        Fri, 10 Aug 2018 06:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=qrD4MvwhbLXYx3O4UgxKv0JmcAAJsljb/JibsHFiXpY=;
-        b=EsfKQ/LrQi4sFaomV5SkvorBmveqoIYRx3GnMheCQF41otR5FKp1/gISuLyu4iELqj
-         btzsmYkpFIHAz8za+KSdRGDbzQltZFT1AaR/y6AGhIatmrPPwDEr2pV6iAzcC6d8Vsfm
-         eulRtJf2bq0DcmxKyRj8sfBI7MwN2/AhYKgmO6Eco8XJ9PgPuCNiliSZYnTYtPmIjjhS
-         +dji1qoPUH8ItKVB4qiOrNeLiSJhk1JvAkO+VakKRrJJJ1R4Mo2QijzWCKRKZVNfxRs+
-         NWMSSICv12or1FMhN1vfNiDeoESIWJUAZcBv7TUwGYwkhGaLohYifhf85q6zJGnYkMQM
-         Pnaw==
+        bh=WtxEI4l3KMgN+mKQ13uzMgZlocJDJEpYaCFOClNnnEU=;
+        b=fHdEWPGqISYB+gPXIuF9SGHcP6XZfCvxW6OiyCSDIPTEEYcfA3cXNegMFb4KTDw2Ah
+         tzS1xpzyO3r4r4Vzjn5qoO9xf7n5zFx5pwrc8h2dAteNPl9f1wJOKAMTUYdFDXUVkedR
+         iIAxxfbPRrqXZOQqwvH2GUbTFi76AXiIc3XXc1ojfqx0/aVoBLzziwHHusOnJnC7XNjh
+         /KZoYPVTbdV73LrpjWB6Sh8u30ZD1LhlA4QxeREaLJRpXoiPh18HAlBQ2qb1YFi+0WAz
+         XS74FSaNCKPMWbBdB33Uoder6Wb1rLbEU0CP4VwivWFLMI7Oj1JKboB7bDAK4f/1zozk
+         LJGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qrD4MvwhbLXYx3O4UgxKv0JmcAAJsljb/JibsHFiXpY=;
-        b=J+T6J+AmoV859AEEmU95XgqoM9Akh6rmKicgiuBiF4X+ayC6f0RnyTG6vhKEAs0y04
-         ylv8NR3XAuTZm96MXdR7+h5tU94FZKk0oK/4PcyndDQglAtZw99lLg5KQ58r3KirksbT
-         NgnQ+1BqHtBNOnSKEyvAEn1ynu48sientUp/QyJ8AS35xxsUKMPyogpoRB8/dU62buy6
-         WfuBpq7MmJ0gstT3ow4j8iDQFRRtRYSmBOJidFz8eHgRFitEzp4QoTe2k0BMQxGQspzm
-         rbKxRKCxfLZpfDmJEshJF09mMF3kJi6CQ9wNdGp3WVXJswXRD9gVO9JreyZF+aB911DR
-         wz+w==
-X-Gm-Message-State: AOUpUlE2VP7qg9hkTT0PKbLqQ0+xTCHs7wSIaX3X0jyELpcKrj/X+Clj
-        L0kBpoY0OJvk0J1gP0fmbXQ=
-X-Google-Smtp-Source: AA+uWPzGRUoq/rQF+MhLIARGldHLiuDiNMCKRLJLRnjt69lvBjDkGVexMXzCK0AEddQHuVDA8vNy4g==
-X-Received: by 2002:a62:63c2:: with SMTP id x185-v6mr7034537pfb.13.1533908234304;
-        Fri, 10 Aug 2018 06:37:14 -0700 (PDT)
+        bh=WtxEI4l3KMgN+mKQ13uzMgZlocJDJEpYaCFOClNnnEU=;
+        b=Rd4abV88GYfDdmmL72G4hhdFW9+W6+/ECCQv9ExnNkIaRZF59b+8R4EM2fs9oduCRv
+         z06KriRN2URuqnQSHBDnYBiGqJNL41TAJjiV5sdMHzkUtYKGkNC0d/SL58bIlJ0q4xeb
+         ySFup7GiILWqSL6JJ/whgUeEt5oetRZhmPDo35vbOQo7HtPSaFtqvyZ9L0rCct7IoLy4
+         uF37cs8vghXpUSv+QLotVwRyb+glZ7EGsSiQ5/61tnMd/7CNBUsyqxNDS/yAiDCHoeD+
+         hjUiy4Zkic7F1zZmJqcjnhXV+MKeVN4WwM3vZrg8056jz3tAm6KPMqrN/aWjeRriQInX
+         CiDA==
+X-Gm-Message-State: AOUpUlEyDEKLxFjGSqkSly4vThkSCcEMdmeMl0VS2wsLZUj+te62SECN
+        2UkVRdzFHllJvZNyi257v/U=
+X-Google-Smtp-Source: AA+uWPyWlyfhKhrqHdFUIHs4pe24NmmOWzHcj5W9qXr6EyufSqUHZg3wKFgzuezZYM5vzdm4jrVKTA==
+X-Received: by 2002:a63:a042:: with SMTP id u2-v6mr6429924pgn.80.1533908257018;
+        Fri, 10 Aug 2018 06:37:37 -0700 (PDT)
 Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
-        by smtp.gmail.com with ESMTPSA id a15-v6sm16487309pfe.32.2018.08.10.06.37.13
+        by smtp.gmail.com with ESMTPSA id j15-v6sm12160378pfn.52.2018.08.10.06.37.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Aug 2018 06:37:13 -0700 (PDT)
-Date:   Fri, 10 Aug 2018 06:37:12 -0700
+        Fri, 10 Aug 2018 06:37:36 -0700 (PDT)
+Date:   Fri, 10 Aug 2018 06:37:35 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -56,21 +56,21 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH v6 09/24] watchdog: jz4740: Use regmap provided by TCU
- driver
-Message-ID: <20180810133712.GB29028@roeck-us.net>
+Subject: Re: [PATCH v6 10/24] watchdog: jz4740: Avoid starting watchdog in
+ set_timeout
+Message-ID: <20180810133735.GC29028@roeck-us.net>
 References: <20180809214414.20905-1-paul@crapouillou.net>
- <20180809214414.20905-10-paul@crapouillou.net>
+ <20180809214414.20905-11-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180809214414.20905-10-paul@crapouillou.net>
+In-Reply-To: <20180809214414.20905-11-paul@crapouillou.net>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65535
+X-archive-position: 65536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,112 +87,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 09, 2018 at 11:43:59PM +0200, Paul Cercueil wrote:
-> Since we broke the ABI by changing the clock, the driver was also
-> updated to use the regmap provided by the TCU driver.
+On Thu, Aug 09, 2018 at 11:44:00PM +0200, Paul Cercueil wrote:
+> Previously the jz4740_wdt_set_timeout() function was starting the timer
+> unconditionally, even if it was stopped when that function was entered.
+> 
+> Now, the timer will be restarted only if it was already running before
+> this function is called.
 > 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
 > ---
->  drivers/watchdog/jz4740_wdt.c | 30 ++++++++++++++----------------
->  1 file changed, 14 insertions(+), 16 deletions(-)
+>  drivers/watchdog/jz4740_wdt.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
 >  v6: New patch
 > 
 > diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
-> index 1d504ecf45e1..0f54306aee25 100644
+> index 0f54306aee25..45d9495170e5 100644
 > --- a/drivers/watchdog/jz4740_wdt.c
 > +++ b/drivers/watchdog/jz4740_wdt.c
-> @@ -13,6 +13,7 @@
->   *
->   */
->  
-> +#include <linux/mfd/ingenic-tcu.h>
->  #include <linux/module.h>
->  #include <linux/moduleparam.h>
->  #include <linux/types.h>
-> @@ -25,10 +26,7 @@
->  #include <linux/slab.h>
->  #include <linux/err.h>
->  #include <linux/of.h>
-> -
-> -#define JZ_REG_WDT_TIMER_DATA     0x0
-> -#define JZ_REG_WDT_COUNTER_ENABLE 0x4
-> -#define JZ_REG_WDT_TIMER_COUNTER  0x8
-> +#include <linux/regmap.h>
->  
->  #define DEFAULT_HEARTBEAT 5
->  #define MAX_HEARTBEAT     2048
-> @@ -48,7 +46,7 @@ MODULE_PARM_DESC(heartbeat,
->  
->  struct jz4740_wdt_drvdata {
->  	struct watchdog_device wdt;
-> -	void __iomem *base;
-> +	struct regmap *map;
->  	struct clk *clk;
->  	unsigned long clk_rate;
->  };
-> @@ -57,7 +55,7 @@ static int jz4740_wdt_ping(struct watchdog_device *wdt_dev)
+> @@ -64,13 +64,15 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
 >  {
 >  	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
->  
-> -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
->  	return 0;
->  }
->  
-> @@ -67,12 +65,12 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
->  	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
 >  	u16 timeout_value = (u16)(drvdata->clk_rate * new_timeout);
+> +	u32 tcer;
 >  
-> -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
+> +	regmap_read(drvdata->map, TCU_REG_WDT_TCER, &tcer);
+>  	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
 >  
-> -	writew((u16)timeout_value, drvdata->base + JZ_REG_WDT_TIMER_DATA);
-> -	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TDR, timeout_value);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
+>  	regmap_write(drvdata->map, TCU_REG_WDT_TDR, timeout_value);
+>  	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
 >  
-> -	writeb(0x1, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
+> -	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, tcer & TCU_WDT_TCER_TCEN);
 >  
 >  	wdt_dev->timeout = new_timeout;
 >  	return 0;
-> @@ -96,7 +94,7 @@ static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
->  {
->  	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> @@ -86,6 +88,7 @@ static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
+>  		return ret;
 >  
-> -	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
-> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
->  	clk_disable_unprepare(drvdata->clk);
+>  	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
+> +	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
 >  
 >  	return 0;
-> @@ -138,7 +136,6 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct jz4740_wdt_drvdata *drvdata;
->  	struct watchdog_device *jz4740_wdt;
-> -	struct resource	*res;
->  	long rate;
->  	int ret;
->  
-> @@ -174,10 +171,11 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
->  	watchdog_set_nowayout(jz4740_wdt, nowayout);
->  	watchdog_set_drvdata(jz4740_wdt, drvdata);
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
-> -	if (IS_ERR(drvdata->base))
-> -		return PTR_ERR(drvdata->base);
-> +	drvdata->map = dev_get_regmap(dev->parent, NULL);
-> +	if (!drvdata->map) {
-> +		dev_err(dev, "regmap not found\n");
-> +		return -EINVAL;
-> +	}
->  
->  	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
->  	if (ret < 0)
+>  }
 > -- 
 > 2.11.0
 > 

@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Aug 2018 17:38:11 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:35880 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Aug 2018 07:04:28 +0200 (CEST)
+Received: from mga05.intel.com ([192.55.52.43]:31920 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993937AbeHKPiGgIz3l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 11 Aug 2018 17:38:06 +0200
-Received: from vmware.local.home (cpe-66-24-56-78.stny.res.rr.com [66.24.56.78])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B903921A5D;
-        Sat, 11 Aug 2018 15:37:57 +0000 (UTC)
-Date:   Sat, 11 Aug 2018 11:37:56 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Song Liu <liu.song.a23@gmail.com>
-Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        srikar@linux.vnet.ibm.com, Oleg Nesterov <oleg@redhat.com>,
-        mhiramat@kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, open list <linux-kernel@vger.kernel.org>,
-        ananth@linux.vnet.ibm.com,
-        Alexis Berlemont <alexis.berlemont@gmail.com>,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180811113756.494a10f7@vmware.local.home>
-In-Reply-To: <CAPhsuW49+qA7kT7yE4tgbnAuox-iOzssg-jc2abG8XDo6XeX8A@mail.gmail.com>
-References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
-        <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
-        <CAPhsuW49+qA7kT7yE4tgbnAuox-iOzssg-jc2abG8XDo6XeX8A@mail.gmail.com>
-X-Mailer: Claws Mail 3.15.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S23991082AbeHLFERbuveB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 12 Aug 2018 07:04:17 +0200
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Aug 2018 22:04:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.53,227,1531810800"; 
+   d="gz'50?scan'50,208,50";a="72100060"
+Received: from bee.sh.intel.com (HELO lkp-server01) ([10.239.97.14])
+  by FMSMGA003.fm.intel.com with ESMTP; 11 Aug 2018 22:03:52 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1foiXA-0003HY-JB; Sun, 12 Aug 2018 13:03:20 +0800
+Date:   Sun, 12 Aug 2018 13:03:40 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     kbuild-all@01.org, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Subject: [mips-linux:mips-next 128/129] include/linux/compiler_types.h:58:10:
+ fatal error: asm/compiler.h: No such file or directory
+Message-ID: <201808121338.0TluQ3VG%fengguang.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <SRS0=GNy6=K2=goodmis.org=rostedt@kernel.org>
+Content-Type: multipart/mixed; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <lkp@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65549
+X-archive-position: 65550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: lkp@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,462 +49,389 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 11 Aug 2018 00:57:12 -0700
-Song Liu <liu.song.a23@gmail.com> wrote:
 
-> > +
-> > +static void delayed_uprobe_delete(struct delayed_uprobe *du)
-> > +{
-> > +       if (!du)
-> > +               return;  
-> Do we really need this check?
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'd suggest we keep it. It's not a fast path, and operations like this
-should really check for NULL.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git mips-next
+head:   37085141c81d9a5ada269fe050faad4c1d9598ab
+commit: 1060f3b77cba546490109662c38df135165cd8aa [128/129] compiler.h: Allow arch-specific overrides
+config: ia64-defconfig (attached as .config)
+compiler: ia64-linux-gcc (GCC) 8.1.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout 1060f3b77cba546490109662c38df135165cd8aa
+        # save the attached .config to linux build tree
+        GCC_VERSION=8.1.0 make.cross ARCH=ia64 
 
+All errors (new ones prefixed by >>):
 
-> 
-> > +       list_del(&du->list);
-> > +       kfree(du);
-> > +}
-> > +
-> > +static void delayed_uprobe_remove(struct uprobe *uprobe, struct mm_struct *mm)
-> > +{
-> > +       struct list_head *pos, *q;
-> > +       struct delayed_uprobe *du;
-> > +
-> > +       if (!uprobe && !mm)
-> > +               return;  
-> And do we really need this check?
+   In file included from <command-line>:
+>> include/linux/compiler_types.h:58:10: fatal error: asm/compiler.h: No such file or directory
+    #include <asm/compiler.h>
+             ^~~~~~~~~~~~~~~~
+   compilation terminated.
+   make[2]: *** [arch/ia64/kernel/nr-irqs.s] Error 1
+   make[2]: Target 'include/generated/nr-irqs.h' not remade because of errors.
+   make[1]: *** [make_nr_irqs_h] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [sub-make] Error 2
 
-Same here, as it's not a fast path, and it prevents kernel oops if a
-NULL is passed in.
+vim +58 include/linux/compiler_types.h
 
-> 
-> > +
-> > +       list_for_each_safe(pos, q, &delayed_uprobe_list) {
-> > +               du = list_entry(pos, struct delayed_uprobe, list);
-> > +
-> > +               if (uprobe && mm && du->uprobe == uprobe && du->mm == mm)
-> > +                       delayed_uprobe_delete(du);
-> > +               else if (!uprobe && du->mm == mm)
-> > +                       delayed_uprobe_delete(du);
-> > +               else if (!mm && du->uprobe == uprobe)
-> > +                       delayed_uprobe_delete(du);
-> > +       }
-> > +}
-> > +
-> > +static bool valid_ref_ctr_vma(struct uprobe *uprobe,
-> > +                             struct vm_area_struct *vma)
-> > +{
-> > +       unsigned long vaddr = offset_to_vaddr(vma, uprobe->ref_ctr_offset);
-> > +
-> > +       return uprobe->ref_ctr_offset &&
-> > +               vma->vm_file &&
-> > +               file_inode(vma->vm_file) == uprobe->inode &&
-> > +               (vma->vm_flags & (VM_WRITE|VM_SHARED)) == VM_WRITE &&
-> > +               vma->vm_start <= vaddr &&
-> > +               vma->vm_end > vaddr;
-> > +}
-> > +
-> > +static struct vm_area_struct *
-> > +find_ref_ctr_vma(struct uprobe *uprobe, struct mm_struct *mm)
-> > +{
-> > +       struct vm_area_struct *tmp;
-> > +
-> > +       for (tmp = mm->mmap; tmp; tmp = tmp->vm_next)
-> > +               if (valid_ref_ctr_vma(uprobe, tmp))
-> > +                       return tmp;
-> > +
-> > +       return NULL;
-> > +}
-> > +
-> > +static int
-> > +__update_ref_ctr(struct mm_struct *mm, unsigned long vaddr, short d)
-> > +{
-> > +       void *kaddr;
-> > +       struct page *page;
-> > +       struct vm_area_struct *vma;
-> > +       int ret = 0;  
-> It is not necessary to initialize ret here.
+    56	
+    57	/* Allow architectures to override some definitions where necessary */
+  > 58	#include <asm/compiler.h>
+    59	
 
-Agreed.
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
-> 
-> > +       short *ptr;
-> > +
-> > +       if (vaddr == 0 || d == 0)
-> > +               return -EINVAL;
-> > +
-> > +       ret = get_user_pages_remote(NULL, mm, vaddr, 1,
-> > +                       FOLL_WRITE, &page, &vma, NULL);
-> > +       if (unlikely(ret <= 0)) {
-> > +               /*
-> > +                * We are asking for 1 page. If get_user_pages_remote() fails,
-> > +                * it may return 0, in that case we have to return error.
-> > +                */
-> > +               ret = (ret == 0) ? -EBUSY : ret;
-> > +               pr_warn("Failed to %s ref_ctr. (%d)\n",
-> > +                       d > 0 ? "increment" : "decrement", ret);  
-> This warning is not really useful. Seems this function has little information
-> about which uprobe is failing here. Maybe we only need warning in the caller
-> (or caller of caller).
+--MGYHOYXEY6WxJCY8
+Content-Type: application/gzip
+Content-Disposition: attachment; filename=".config.gz"
+Content-Transfer-Encoding: base64
 
-I'm fine with or without this.
+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
 
-> 
-> > +               return ret;
-> > +       }
-> > +
-> > +       kaddr = kmap_atomic(page);
-> > +       ptr = kaddr + (vaddr & ~PAGE_MASK);
-> > +
-> > +       if (unlikely(*ptr + d < 0)) {
-> > +               pr_warn("ref_ctr going negative. vaddr: 0x%lx, "
-> > +                       "curr val: %d, delta: %d\n", vaddr, *ptr, d);
-> > +               ret = -EINVAL;
-> > +               goto out;
-> > +       }
-> > +
-> > +       *ptr += d;
-> > +       ret = 0;
-> > +out:
-> > +       kunmap_atomic(kaddr);
-> > +       put_page(page);
-> > +       return ret;
-> > +}
-> > +
-> > +static int update_ref_ctr(struct uprobe *uprobe, struct mm_struct *mm,
-> > +                         bool is_register)  
-> What's the reason of bool is_register here vs. short d in __update_ref_ctr()?
-> Can we use short for both?
-
-bool has more control, but I agree that this function is a bit
-confusing.
-
--- Steve
-
-> 
-> > +{
-> > +       struct vm_area_struct *rc_vma;
-> > +       unsigned long rc_vaddr;
-> > +       int ret = 0;
-> > +
-> > +       rc_vma = find_ref_ctr_vma(uprobe, mm);
-> > +
-> > +       if (rc_vma) {
-> > +               rc_vaddr = offset_to_vaddr(rc_vma, uprobe->ref_ctr_offset);
-> > +               ret = __update_ref_ctr(mm, rc_vaddr, is_register ? 1 : -1);
-> > +
-> > +               if (is_register)
-> > +                       return ret;
-> > +       }  
-> Mixing __update_ref_ctr() here and delayed_uprobe_add() in the same
-> function is a little confusing (at least for me). How about we always use
-> delayed uprobe for uprobe_mmap() and use non-delayed in other case(s)?
-> 
-> > +
-> > +       mutex_lock(&delayed_uprobe_lock);
-> > +       if (is_register)
-> > +               ret = delayed_uprobe_add(uprobe, mm);
-> > +       else
-> > +               delayed_uprobe_remove(uprobe, mm);
-> > +       mutex_unlock(&delayed_uprobe_lock);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> >  /*
-> >   * NOTE:
-> >   * Expect the breakpoint instruction to be the smallest size instruction for
-> > @@ -302,9 +463,13 @@ static int verify_opcode(struct page *page, unsigned long vaddr, uprobe_opcode_t
-> >  int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
-> >                         unsigned long vaddr, uprobe_opcode_t opcode)
-> >  {
-> > +       struct uprobe *uprobe;
-> >         struct page *old_page, *new_page;
-> >         struct vm_area_struct *vma;
-> > -       int ret;
-> > +       int ret, is_register, ref_ctr_updated = 0;
-> > +
-> > +       is_register = is_swbp_insn(&opcode);
-> > +       uprobe = container_of(auprobe, struct uprobe, arch);
-> >
-> >  retry:
-> >         /* Read the page with vaddr into memory */
-> > @@ -317,6 +482,15 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
-> >         if (ret <= 0)
-> >                 goto put_old;
-> >
-> > +       /* We are going to replace instruction, update ref_ctr. */
-> > +       if (!ref_ctr_updated && uprobe->ref_ctr_offset) {
-> > +               ret = update_ref_ctr(uprobe, mm, is_register);
-> > +               if (ret)
-> > +                       goto put_old;
-> > +
-> > +               ref_ctr_updated = 1;
-> > +       }
-> > +
-> >         ret = anon_vma_prepare(vma);
-> >         if (ret)
-> >                 goto put_old;
-> > @@ -337,6 +511,11 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct mm_struct *mm,
-> >
-> >         if (unlikely(ret == -EAGAIN))
-> >                 goto retry;
-> > +
-> > +       /* Revert back reference counter if instruction update failed. */
-> > +       if (ret && is_register && ref_ctr_updated)
-> > +               update_ref_ctr(uprobe, mm, false);
-> > +
-> >         return ret;
-> >  }
-> >
-> > @@ -378,8 +557,15 @@ static struct uprobe *get_uprobe(struct uprobe *uprobe)
-> >
-> >  static void put_uprobe(struct uprobe *uprobe)
-> >  {
-> > -       if (atomic_dec_and_test(&uprobe->ref))
-> > +       if (atomic_dec_and_test(&uprobe->ref)) {
-> > +               /*
-> > +                * If application munmap(exec_vma) before uprobe_unregister()
-> > +                * gets called, we don't get a chance to remove uprobe from
-> > +                * delayed_uprobe_list in remove_breakpoint(). Do it here.
-> > +                */
-> > +               delayed_uprobe_remove(uprobe, NULL);
-> >                 kfree(uprobe);
-> > +       }
-> >  }
-> >
-> >  static int match_uprobe(struct uprobe *l, struct uprobe *r)
-> > @@ -484,7 +670,8 @@ static struct uprobe *insert_uprobe(struct uprobe *uprobe)
-> >         return u;
-> >  }
-> >
-> > -static struct uprobe *alloc_uprobe(struct inode *inode, loff_t offset)
-> > +static struct uprobe *alloc_uprobe(struct inode *inode, loff_t offset,
-> > +                                  loff_t ref_ctr_offset)
-> >  {
-> >         struct uprobe *uprobe, *cur_uprobe;
-> >
-> > @@ -494,6 +681,7 @@ static struct uprobe *alloc_uprobe(struct inode *inode, loff_t offset)
-> >
-> >         uprobe->inode = inode;
-> >         uprobe->offset = offset;
-> > +       uprobe->ref_ctr_offset = ref_ctr_offset;
-> >         init_rwsem(&uprobe->register_rwsem);
-> >         init_rwsem(&uprobe->consumer_rwsem);
-> >
-> > @@ -895,7 +1083,7 @@ EXPORT_SYMBOL_GPL(uprobe_unregister);
-> >   * else return 0 (success)
-> >   */
-> >  static int __uprobe_register(struct inode *inode, loff_t offset,
-> > -                            struct uprobe_consumer *uc)
-> > +                            loff_t ref_ctr_offset, struct uprobe_consumer *uc)
-> >  {
-> >         struct uprobe *uprobe;
-> >         int ret;
-> > @@ -912,7 +1100,7 @@ static int __uprobe_register(struct inode *inode, loff_t offset,
-> >                 return -EINVAL;
-> >
-> >   retry:
-> > -       uprobe = alloc_uprobe(inode, offset);
-> > +       uprobe = alloc_uprobe(inode, offset, ref_ctr_offset);
-> >         if (!uprobe)
-> >                 return -ENOMEM;
-> >         /*
-> > @@ -938,10 +1126,17 @@ static int __uprobe_register(struct inode *inode, loff_t offset,
-> >  int uprobe_register(struct inode *inode, loff_t offset,
-> >                     struct uprobe_consumer *uc)
-> >  {
-> > -       return __uprobe_register(inode, offset, uc);
-> > +       return __uprobe_register(inode, offset, 0, uc);
-> >  }
-> >  EXPORT_SYMBOL_GPL(uprobe_register);
-> >
-> > +int uprobe_register_refctr(struct inode *inode, loff_t offset,
-> > +                          loff_t ref_ctr_offset, struct uprobe_consumer *uc)
-> > +{
-> > +       return __uprobe_register(inode, offset, ref_ctr_offset, uc);
-> > +}
-> > +EXPORT_SYMBOL_GPL(uprobe_register_refctr);
-> > +
-> >  /*
-> >   * uprobe_apply - unregister a already registered probe.
-> >   * @inode: the file in which the probe has to be removed.
-> > @@ -1060,6 +1255,31 @@ static void build_probe_list(struct inode *inode,
-> >         spin_unlock(&uprobes_treelock);
-> >  }
-> >
-> > +static int delayed_uprobe_install(struct vm_area_struct *vma)  
-> This function name is confusing. How about we call it delayed_ref_ctr_incr() or
-> something similar? Also, we should add comments to highlight this is vma is not
-> the vma containing the uprobe, but the vma containing the ref_ctr.
-> 
-> > +{
-> > +       struct list_head *pos, *q;
-> > +       struct delayed_uprobe *du;
-> > +       unsigned long vaddr;
-> > +       int ret = 0, err = 0;
-> > +
-> > +       mutex_lock(&delayed_uprobe_lock);
-> > +       list_for_each_safe(pos, q, &delayed_uprobe_list) {
-> > +               du = list_entry(pos, struct delayed_uprobe, list);
-> > +
-> > +               if (!valid_ref_ctr_vma(du->uprobe, vma))
-> > +                       continue;
-> > +
-> > +               vaddr = offset_to_vaddr(vma, du->uprobe->ref_ctr_offset);
-> > +               ret = __update_ref_ctr(vma->vm_mm, vaddr, 1);
-> > +               /* Record an error and continue. */
-> > +               if (ret && !err)
-> > +                       err = ret;  
-> I think this is a good place (when ret != 0) to call pr_warn(). I guess we can
-> print which mm get error for which uprobe (inode+offset).
-> 
-> > +               delayed_uprobe_delete(du);
-> > +       }
-> > +       mutex_unlock(&delayed_uprobe_lock);
-> > +       return err;
-> > +}
-> > +
-> >  /*
-> >   * Called from mmap_region/vma_adjust with mm->mmap_sem acquired.
-> >   *
-> > @@ -1072,7 +1292,15 @@ int uprobe_mmap(struct vm_area_struct *vma)
-> >         struct uprobe *uprobe, *u;
-> >         struct inode *inode;
-> >
-> > -       if (no_uprobe_events() || !valid_vma(vma, true))
-> > +       if (no_uprobe_events())
-> > +               return 0;
-> > +
-> > +       if (vma->vm_file &&
-> > +           (vma->vm_flags & (VM_WRITE|VM_SHARED)) == VM_WRITE &&
-> > +           test_bit(MMF_HAS_UPROBES, &vma->vm_mm->flags))
-> > +               delayed_uprobe_install(vma);
-> > +
-> > +       if (!valid_vma(vma, true))
-> >                 return 0;
-> >
-> >         inode = file_inode(vma->vm_file);
-> > @@ -1246,6 +1474,10 @@ void uprobe_clear_state(struct mm_struct *mm)
-> >  {
-> >         struct xol_area *area = mm->uprobes_state.xol_area;
-> >
-> > +       mutex_lock(&delayed_uprobe_lock);
-> > +       delayed_uprobe_remove(NULL, mm);
-> > +       mutex_unlock(&delayed_uprobe_lock);
-> > +
-> >         if (!area)
-> >                 return;
-> >
-> > diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> > index 823687997b01..616160b85860 100644
-> > --- a/kernel/trace/trace.c
-> > +++ b/kernel/trace/trace.c
-> > @@ -4620,7 +4620,7 @@ static const char readme_msg[] =
-> >    "place (kretprobe): [<module>:]<symbol>[+<offset>]|<memaddr>\n"
-> >  #endif
-> >  #ifdef CONFIG_UPROBE_EVENTS
-> > -       "\t    place: <path>:<offset>\n"
-> > +  "   place (uprobe): <path>:<offset>[(ref_ctr_offset)]\n"
-> >  #endif
-> >         "\t     args: <name>=fetcharg[:type]\n"
-> >         "\t fetcharg: %<register>, @<address>, @<symbol>[+|-<offset>],\n"
-> > diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-> > index bf89a51e740d..bf2be098eb08 100644
-> > --- a/kernel/trace/trace_uprobe.c
-> > +++ b/kernel/trace/trace_uprobe.c
-> > @@ -59,6 +59,7 @@ struct trace_uprobe {
-> >         struct inode                    *inode;
-> >         char                            *filename;
-> >         unsigned long                   offset;
-> > +       unsigned long                   ref_ctr_offset;
-> >         unsigned long                   nhit;
-> >         struct trace_probe              tp;
-> >  };
-> > @@ -364,10 +365,10 @@ static int register_trace_uprobe(struct trace_uprobe *tu)
-> >  static int create_trace_uprobe(int argc, char **argv)
-> >  {
-> >         struct trace_uprobe *tu;
-> > -       char *arg, *event, *group, *filename;
-> > +       char *arg, *event, *group, *filename, *rctr, *rctr_end;
-> >         char buf[MAX_EVENT_NAME_LEN];
-> >         struct path path;
-> > -       unsigned long offset;
-> > +       unsigned long offset, ref_ctr_offset;
-> >         bool is_delete, is_return;
-> >         int i, ret;
-> >
-> > @@ -376,6 +377,7 @@ static int create_trace_uprobe(int argc, char **argv)
-> >         is_return = false;
-> >         event = NULL;
-> >         group = NULL;
-> > +       ref_ctr_offset = 0;
-> >
-> >         /* argc must be >= 1 */
-> >         if (argv[0][0] == '-')
-> > @@ -450,6 +452,26 @@ static int create_trace_uprobe(int argc, char **argv)
-> >                 goto fail_address_parse;
-> >         }
-> >
-> > +       /* Parse reference counter offset if specified. */
-> > +       rctr = strchr(arg, '(');
-> > +       if (rctr) {
-> > +               rctr_end = strchr(rctr, ')');
-> > +               if (rctr > rctr_end || *(rctr_end + 1) != 0) {
-> > +                       ret = -EINVAL;
-> > +                       pr_info("Invalid reference counter offset.\n");
-> > +                       goto fail_address_parse;
-> > +               }
-> > +
-> > +               *rctr++ = '\0';
-> > +               *rctr_end = '\0';
-> > +               ret = kstrtoul(rctr, 0, &ref_ctr_offset);
-> > +               if (ret) {
-> > +                       pr_info("Invalid reference counter offset.\n");
-> > +                       goto fail_address_parse;
-> > +               }
-> > +       }
-> > +
-> > +       /* Parse uprobe offset. */
-> >         ret = kstrtoul(arg, 0, &offset);
-> >         if (ret)
-> >                 goto fail_address_parse;
-> > @@ -484,6 +506,7 @@ static int create_trace_uprobe(int argc, char **argv)
-> >                 goto fail_address_parse;
-> >         }
-> >         tu->offset = offset;
-> > +       tu->ref_ctr_offset = ref_ctr_offset;
-> >         tu->path = path;
-> >         tu->filename = kstrdup(filename, GFP_KERNEL);
-> >
-> > @@ -602,6 +625,9 @@ static int probes_seq_show(struct seq_file *m, void *v)
-> >                         trace_event_name(&tu->tp.call), tu->filename,
-> >                         (int)(sizeof(void *) * 2), tu->offset);
-> >
-> > +       if (tu->ref_ctr_offset)
-> > +               seq_printf(m, "(0x%lx)", tu->ref_ctr_offset);
-> > +
-> >         for (i = 0; i < tu->tp.nr_args; i++)
-> >                 seq_printf(m, " %s=%s", tu->tp.args[i].name, tu->tp.args[i].comm);
-> >
-> > @@ -917,7 +943,13 @@ probe_event_enable(struct trace_uprobe *tu, struct trace_event_file *file,
-> >
-> >         tu->consumer.filter = filter;
-> >         tu->inode = d_real_inode(tu->path.dentry);
-> > -       ret = uprobe_register(tu->inode, tu->offset, &tu->consumer);
-> > +       if (tu->ref_ctr_offset) {
-> > +               ret = uprobe_register_refctr(tu->inode, tu->offset,
-> > +                               tu->ref_ctr_offset, &tu->consumer);
-> > +       } else {
-> > +               ret = uprobe_register(tu->inode, tu->offset, &tu->consumer);
-> > +       }
-> > +
-> >         if (ret)
-> >                 goto err_buffer;
-> >
-> > --
-> > 2.14.4
-> >  
+--MGYHOYXEY6WxJCY8--

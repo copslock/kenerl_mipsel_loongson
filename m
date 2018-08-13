@@ -1,59 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 16:51:37 +0200 (CEST)
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:40308 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994077AbeHMOvdox6g0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Aug 2018 16:51:33 +0200
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 618AB40241C0;
-        Mon, 13 Aug 2018 14:51:26 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.34.27.30])
-        by smtp.corp.redhat.com (Postfix) with SMTP id F321D178BE;
-        Mon, 13 Aug 2018 14:51:22 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Mon, 13 Aug 2018 16:51:26 +0200 (CEST)
-Date:   Mon, 13 Aug 2018 16:51:22 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     Song Liu <liu.song.a23@gmail.com>, srikar@linux.vnet.ibm.com,
-        Steven Rostedt <rostedt@goodmis.org>, mhiramat@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        ananth@linux.vnet.ibm.com,
-        Alexis Berlemont <alexis.berlemont@gmail.com>,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180813145121.GD28360@redhat.com>
-References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
- <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
- <CAPhsuW49+qA7kT7yE4tgbnAuox-iOzssg-jc2abG8XDo6XeX8A@mail.gmail.com>
- <95a1221e-aecc-42be-5239-a2c2429be176@linux.ibm.com>
- <20180813115019.GB28360@redhat.com>
- <fa85d19f-b22c-e09c-b8d2-f68f0c79de15@linux.ibm.com>
- <20180813131723.GC28360@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 17:22:05 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:37374 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990473AbeHMPV7t90m0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 17:21:59 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C85D80D;
+        Mon, 13 Aug 2018 08:21:52 -0700 (PDT)
+Received: from [10.4.13.119] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20E5D3F73C;
+        Mon, 13 Aug 2018 08:21:49 -0700 (PDT)
+Subject: Re: [PATCH] irqchip/bcm7038-l1: hide cpu offline callback when
+ building for !SMP
+To:     Jonas Gorski <jonas.gorski@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+References: <20180809085901.26568-1-jonas.gorski@gmail.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <795995ac-8cab-23df-e3f9-bf3578cd525c@arm.com>
+Date:   Mon, 13 Aug 2018 16:21:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180813131723.GC28360@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Mon, 13 Aug 2018 14:51:26 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Mon, 13 Aug 2018 14:51:26 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'oleg@redhat.com' RCPT:''
-Return-Path: <oleg@redhat.com>
+In-Reply-To: <20180809085901.26568-1-jonas.gorski@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65566
+X-archive-position: 65567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,40 +50,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/13, Oleg Nesterov wrote:
->
-> On 08/13, Ravi Bangoria wrote:
-> >
-> > > But damn, process creation (exec) is trivial. We could add a new uprobe_exec()
-> > > hook and avoid delayed_uprobe_install() in uprobe_mmap().
-> >
-> > I'm sorry. I didn't get this.
->
-> Sorry for confusion...
->
-> I meant, if only exec*( could race with _register(), we could add another uprobe
-> hook which updates all (delayed) counters before return to user-mode.
->
-> > > Afaics, the really problematic case is dlopen() which can race with _register()
-> > > too, right?
-> >
-> > dlopen() should internally use mmap() right? So what is the problem here? Can
-> > you please elaborate.
->
-> What I tried to say is that we can't avoid uprobe_mmap()->delayed_uprobe_install()
-> because dlopen() can race with _register() too, just like exec.
+On 09/08/18 09:59, Jonas Gorski wrote:
+> When compiling bmips with SMP disabled, the build fails with:
+> 
+> drivers/irqchip/irq-bcm7038-l1.o: In function `bcm7038_l1_cpu_offline':
+> drivers/irqchip/irq-bcm7038-l1.c:242: undefined reference to `irq_set_affinity_locked'
+> make[5]: *** [vmlinux] Error 1
+> 
+> Fix this by adding and setting bcm7038_l1_cpu_offline only when actually
+> compiling for SMP. It wouldn't have been used anyway, as it requires
+> CPU_HOTPLUG, which in turn requires SMP.
+> 
+> Fixes: 34c535793bcb ("irqchip/bcm7038-l1: Implement irq_cpu_offline() callback")
+> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+> ---
+>  drivers/irqchip/irq-bcm7038-l1.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+> index faf734ff4cf3..0f6e30e9009d 100644
+> --- a/drivers/irqchip/irq-bcm7038-l1.c
+> +++ b/drivers/irqchip/irq-bcm7038-l1.c
+> @@ -217,6 +217,7 @@ static int bcm7038_l1_set_affinity(struct irq_data *d,
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_SMP
+>  static void bcm7038_l1_cpu_offline(struct irq_data *d)
+>  {
+>  	struct cpumask *mask = irq_data_get_affinity_mask(d);
+> @@ -241,6 +242,7 @@ static void bcm7038_l1_cpu_offline(struct irq_data *d)
+>  	}
+>  	irq_set_affinity_locked(d, &new_affinity, false);
+>  }
+> +#endif
+>  
+>  static int __init bcm7038_l1_init_one(struct device_node *dn,
+>  				      unsigned int idx,
+> @@ -293,7 +295,9 @@ static struct irq_chip bcm7038_l1_irq_chip = {
+>  	.irq_mask		= bcm7038_l1_mask,
+>  	.irq_unmask		= bcm7038_l1_unmask,
+>  	.irq_set_affinity	= bcm7038_l1_set_affinity,
+> +#ifdef CONFIG_SMP
+>  	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
+> +#endif
+>  };
+>  
+>  static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
+> 
 
-I'm afraid I added even more confusion... so let me clarify although I am sure you
-understand this better than me ;)
+Queued, thanks.
 
-of course, the main reason why we can't avoid uprobe_mmap()->delayed_uprobe_install()
-is not the race with _register(), the main reason is that dlopen() can mmap the code
-first, then mmap the counter we need to increment.
-
-Again, just like exec, but exec is "atomic" in that it can't return to user-mode until
-evrything is done, so we could add another uprobe hook and avoid delayed_uprobe_install
-in uprobe_mmap().
-
-Just in case my previous email was not clear.
-
-Oleg.
+	M.
+-- 
+Jazz is not dead. It just smells funny...

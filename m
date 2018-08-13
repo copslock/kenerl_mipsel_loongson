@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 20:36:31 +0200 (CEST)
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:57051 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeHMSgZMFro3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 20:36:25 +0200
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.11] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 00EE61BF204;
-        Mon, 13 Aug 2018 18:35:54 +0000 (UTC)
-Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-To:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
-        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org
-References: <20180806175711.24438-1-alex@ghiti.fr>
-From:   Alex Ghiti <alex@ghiti.fr>
-Message-ID: <55833b7d-3c29-d7ac-41f1-82f1ac228e4a@ghiti.fr>
-Date:   Mon, 13 Aug 2018 18:35:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2018 00:31:18 +0200 (CEST)
+Received: from mail-it0-f65.google.com ([209.85.214.65]:53411 "EHLO
+        mail-it0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992554AbeHMWbLcEPkz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2018 00:31:11 +0200
+Received: by mail-it0-f65.google.com with SMTP id 72-v6so15576087itw.3;
+        Mon, 13 Aug 2018 15:31:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/ixxyV+zZ5lpUR/tC3df0LJWkBDWprKeVxR8Rsg3d/s=;
+        b=CMLjAOhuzEXuXWy3jFISYoWM0cBcyJzLy8gr5uqCv12EVqiosVLpcmGqQQ6MR2ZBls
+         1LTxfj+MpX4U77ci2wgwexuI/Q6KU7vl6Mk5LcqOCb2I52w50QoUvbPo+U6M6J1ogzdH
+         Pjn04wUsDxN7ynSaI8r1r0TN+B+uxxKH74AWrbFjemGdoJHAHxdcmzjOV+TA5FdQVIh2
+         BNgC+ixYxVwX2w6U4xfO8CVR+LIHYPl84FbeHsuYFnk7slphMmyvTes1BKZQUSMWku6r
+         pBpWvPdAGig3RUH+F6TZyF89zUJApBG0UMLdM3BmUmYJB90WEfqesfd2Q1c06WUNbjDM
+         J/RQ==
+X-Gm-Message-State: AOUpUlFDSy73WOX7dfts5s7yaANUzzRVSXhFP3yjhGbM/Ui6+43fCCjV
+        2d9TWpu2gXliQtixKcqjyw==
+X-Google-Smtp-Source: AA+uWPyj1dRllgCWFyDNgTTzfqbEcwgUtUIULAvSHjK3Q0fWN/uozfV99VJtOJPvo4BkU7vH2+h27g==
+X-Received: by 2002:a24:6302:: with SMTP id j2-v6mr12862803itc.8.1534199465429;
+        Mon, 13 Aug 2018 15:31:05 -0700 (PDT)
+Received: from localhost ([24.51.61.72])
+        by smtp.gmail.com with ESMTPSA id h12-v6sm2788029ioj.57.2018.08.13.15.31.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 13 Aug 2018 15:31:04 -0700 (PDT)
+Date:   Mon, 13 Aug 2018 16:31:03 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, mark.rutland@arm.com,
+        davem@davemloft.net, kishon@ti.com, andrew@lunn.ch,
+        f.fainelli@gmail.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, allan.nielsen@microsemi.com,
+        thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH net-next 02/10] dt-bindings: net: ocelot: remove hsio
+ from the list of register address spaces
+Message-ID: <20180813223103.GA16669@rob-hp-laptop>
+References: <cover.aa759035f6eefdd0bb2a5ae335dab5bd5399bd46.1532954208.git-series.quentin.schulz@bootlin.com>
+ <3558e538b55a2249b0a179c04c27e9d3715bbbaa.1532954208.git-series.quentin.schulz@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <20180806175711.24438-1-alex@ghiti.fr>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: fr
-Return-Path: <alex@ghiti.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3558e538b55a2249b0a179c04c27e9d3715bbbaa.1532954208.git-series.quentin.schulz@bootlin.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65575
+X-archive-position: 65576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,82 +66,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi everyone,
+On Mon, Jul 30, 2018 at 02:43:47PM +0200, Quentin Schulz wrote:
+> HSIO register address space should be handled outside of the MAC
+> controller as there are some registers for PLL5 configuring,
+> SerDes/switch port muxing and a thermal sensor IP, so let's remove it.
+> 
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+> ---
+>  Documentation/devicetree/bindings/mips/mscc.txt       | 16 ++++++++++++-
+>  Documentation/devicetree/bindings/net/mscc-ocelot.txt |  9 ++-----
+>  2 files changed, 19 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mips/mscc.txt b/Documentation/devicetree/bindings/mips/mscc.txt
+> index ae15ec3..bc817e9 100644
+> --- a/Documentation/devicetree/bindings/mips/mscc.txt
+> +++ b/Documentation/devicetree/bindings/mips/mscc.txt
+> @@ -41,3 +41,19 @@ Example:
+>  		compatible = "mscc,ocelot-cpu-syscon", "syscon";
+>  		reg = <0x70000000 0x2c>;
+>  	};
+> +
+> +o HSIO regs:
+> +
+> +The SoC has a few registers (HSIO) handling miscellaneous functionalities:
+> +configuration and status of PLL5, RCOMP, SyncE, SerDes configurations and
+> +status, SerDes muxing and a thermal sensor.
+> +
+> +Required properties:
+> +- compatible: Should be "mscc,ocelot-hsio", "syscon", "simple-mfd"
+> +- reg : Should contain registers location and length
+> +
+> +Example:
+> +	syscon@10d0000 {
+> +		compatible = "mscc,ocelot-hsio", "syscon", "simple-mfd";
 
-Does someone need anything more to be done regarding this series ?
+simple-mfd is not appropriate without child nodes, so drop it.
 
-Thanks,
-
-Alex
-
-
-On 08/06/2018 05:57 PM, Alexandre Ghiti wrote:
-> [CC linux-mm for inclusion in -mm tree]
->                                                                                   
-> In order to reduce copy/paste of functions across architectures and then
-> make riscv hugetlb port (and future ports) simpler and smaller, this
-> patchset intends to factorize the numerous hugetlb primitives that are
-> defined across all the architectures.
->                                                                                   
-> Except for prepare_hugepage_range, this patchset moves the versions that
-> are just pass-through to standard pte primitives into
-> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
-> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
->                                                                                   
-> s390 architecture has not been tackled in this serie since it does not
-> use asm-generic/hugetlb.h at all.
->                                                                                   
-> This patchset has been compiled on all addressed architectures with
-> success (except for parisc, but the problem does not come from this
-> series).
->                                                                                   
-> v6:
->    - Remove nohash/32 and book3s/32 powerpc specific implementations in
->      order to use the generic ones.
->    - Add all the Reviewed-by, Acked-by and Tested-by in the commits,
->      thanks to everyone.
->                                                                                   
-> v5:
->    As suggested by Mike Kravetz, no need to move the #include
->    <asm-generic/hugetlb.h> for arm and x86 architectures, let it live at
->    the top of the file.
->                                                                                   
-> v4:
->    Fix powerpc build error due to misplacing of #include
->    <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as
->    pointed by Christophe Leroy.
->                                                                                   
-> v1, v2, v3:
->    Same version, just problems with email provider and misuse of
->    --batch-size option of git send-email
->
-> Alexandre Ghiti (11):
->    hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
->    hugetlb: Introduce generic version of hugetlb_free_pgd_range
->    hugetlb: Introduce generic version of set_huge_pte_at
->    hugetlb: Introduce generic version of huge_ptep_get_and_clear
->    hugetlb: Introduce generic version of huge_ptep_clear_flush
->    hugetlb: Introduce generic version of huge_pte_none
->    hugetlb: Introduce generic version of huge_pte_wrprotect
->    hugetlb: Introduce generic version of prepare_hugepage_range
->    hugetlb: Introduce generic version of huge_ptep_set_wrprotect
->    hugetlb: Introduce generic version of huge_ptep_set_access_flags
->    hugetlb: Introduce generic version of huge_ptep_get
->
->   arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
->   arch/arm/include/asm/hugetlb.h               | 30 ----------
->   arch/arm64/include/asm/hugetlb.h             | 39 +++---------
->   arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
->   arch/mips/include/asm/hugetlb.h              | 40 +++----------
->   arch/parisc/include/asm/hugetlb.h            | 33 +++--------
->   arch/powerpc/include/asm/book3s/32/pgtable.h |  6 --
->   arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
->   arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
->   arch/powerpc/include/asm/nohash/32/pgtable.h |  6 --
->   arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
->   arch/sh/include/asm/hugetlb.h                | 54 ++---------------
->   arch/sparc/include/asm/hugetlb.h             | 40 +++----------
->   arch/x86/include/asm/hugetlb.h               | 69 ----------------------
->   include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
->   15 files changed, 135 insertions(+), 394 deletions(-)
->
+> +		reg = <0x10d0000 0x10000>;
+> +	};
+> diff --git a/Documentation/devicetree/bindings/net/mscc-ocelot.txt b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
+> index 0a84711..9e5c17d 100644
+> --- a/Documentation/devicetree/bindings/net/mscc-ocelot.txt
+> +++ b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
+> @@ -12,7 +12,6 @@ Required properties:
+>    - "sys"
+>    - "rew"
+>    - "qs"
+> -  - "hsio"
+>    - "qsys"
+>    - "ana"
+>    - "portX" with X from 0 to the number of last port index available on that
+> @@ -45,7 +44,6 @@ Example:
+>  		reg = <0x1010000 0x10000>,
+>  		      <0x1030000 0x10000>,
+>  		      <0x1080000 0x100>,
+> -		      <0x10d0000 0x10000>,
+>  		      <0x11e0000 0x100>,
+>  		      <0x11f0000 0x100>,
+>  		      <0x1200000 0x100>,
+> @@ -59,10 +57,9 @@ Example:
+>  		      <0x1280000 0x100>,
+>  		      <0x1800000 0x80000>,
+>  		      <0x1880000 0x10000>;
+> -		reg-names = "sys", "rew", "qs", "hsio", "port0",
+> -			    "port1", "port2", "port3", "port4", "port5",
+> -			    "port6", "port7", "port8", "port9", "port10",
+> -			    "qsys", "ana";
+> +		reg-names = "sys", "rew", "qs", "port0", "port1", "port2",
+> +			    "port3", "port4", "port5", "port6", "port7",
+> +			    "port8", "port9", "port10", "qsys", "ana";
+>  		interrupts = <21 22>;
+>  		interrupt-names = "xtr", "inj";
+>  
+> -- 
+> git-series 0.9.1

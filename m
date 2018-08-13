@@ -1,59 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 19:53:29 +0200 (CEST)
-Received: from mail-io0-f194.google.com ([209.85.223.194]:42163 "EHLO
-        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990471AbeHMRx0Ebcrt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 19:53:26 +0200
-Received: by mail-io0-f194.google.com with SMTP id n18-v6so15593460ioa.9
-        for <linux-mips@linux-mips.org>; Mon, 13 Aug 2018 10:53:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x5e9tAl16mCydrCkCvidtIYtGiM1nInW53c1/S7MUX0=;
-        b=aaDF3co8LDxLt5kOY3vDaCl/N7rCnbEEY13JFamjuBMUvaKTrGe8iiu/1Tn0OkSvtw
-         aQbDaVGncT8uihyqNwpyeKD0R+NE2i39+p2R+/slZvfq27SIIBX1tNul1qa8AFa/KwfR
-         QpCqdQNL6jW4A86vNmBENGFhEs43P6eXXDpUnjjquStyjLzec67/q4lt76Icu3fvsEbu
-         HYioHqIExrrNoOsnJGtCthIbfk8YwqAzc5Q2ykh3SBOFDV4riHTDI636jCme1oafnmIp
-         Lw7kMDisy0dPBeKH+kd4C1R0CkHPqu5pZRIigO6/l8DPy+h0+JMk79yp0wcZ3/A1cQaj
-         RvUw==
-X-Gm-Message-State: AOUpUlGbg5Dfl0tn40GwhmQtIXZq+yMKgb7+uN1TSgwvLW2H18o0pDHD
-        iruQkVO6LerlZq3/EP62QA==
-X-Google-Smtp-Source: AA+uWPypnOKL+VhPETs2lijeBNcTjNw1+9GTsiXscK4C8thsMzX/2rqHxx4+zxmaygNo/PLGhqxAbA==
-X-Received: by 2002:a6b:5a08:: with SMTP id o8-v6mr15733584iob.5.1534182799984;
-        Mon, 13 Aug 2018 10:53:19 -0700 (PDT)
-Received: from localhost ([24.51.61.72])
-        by smtp.gmail.com with ESMTPSA id u68-v6sm6633070ita.36.2018.08.13.10.53.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 13 Aug 2018 10:53:19 -0700 (PDT)
-Date:   Mon, 13 Aug 2018 11:53:17 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Songjun Wu <songjun.wu@linux.intel.com>
-Cc:     hua.ma@linux.intel.com, yixin.zhu@linux.intel.com,
-        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 18/18] dt-bindings: serial: lantiq: Add optional
- properties for CCF
-Message-ID: <20180813175317.GA31286@rob-hp-laptop>
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-19-songjun.wu@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 20:36:31 +0200 (CEST)
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:57051 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbeHMSgZMFro3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 20:36:25 +0200
+X-Originating-IP: 79.86.19.127
+Received: from [192.168.0.11] (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 00EE61BF204;
+        Mon, 13 Aug 2018 18:35:54 +0000 (UTC)
+Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
+ primitives
+To:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+References: <20180806175711.24438-1-alex@ghiti.fr>
+From:   Alex Ghiti <alex@ghiti.fr>
+Message-ID: <55833b7d-3c29-d7ac-41f1-82f1ac228e4a@ghiti.fr>
+Date:   Mon, 13 Aug 2018 18:35:53 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180803030237.3366-19-songjun.wu@linux.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <20180806175711.24438-1-alex@ghiti.fr>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: fr
+Return-Path: <alex@ghiti.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65574
+X-archive-position: 65575
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: alex@ghiti.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,15 +55,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 03, 2018 at 11:02:37AM +0800, Songjun Wu wrote:
-> Clocks and clock-names are updated in device tree binding.
-> 
-> Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
-> ---
-> 
-> Changes in v2: None
-> 
->  Documentation/devicetree/bindings/serial/lantiq_asc.txt | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+Hi everyone,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Does someone need anything more to be done regarding this series ?
+
+Thanks,
+
+Alex
+
+
+On 08/06/2018 05:57 PM, Alexandre Ghiti wrote:
+> [CC linux-mm for inclusion in -mm tree]
+>                                                                                   
+> In order to reduce copy/paste of functions across architectures and then
+> make riscv hugetlb port (and future ports) simpler and smaller, this
+> patchset intends to factorize the numerous hugetlb primitives that are
+> defined across all the architectures.
+>                                                                                   
+> Except for prepare_hugepage_range, this patchset moves the versions that
+> are just pass-through to standard pte primitives into
+> asm-generic/hugetlb.h by using the same #ifdef semantic that can be
+> found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.
+>                                                                                   
+> s390 architecture has not been tackled in this serie since it does not
+> use asm-generic/hugetlb.h at all.
+>                                                                                   
+> This patchset has been compiled on all addressed architectures with
+> success (except for parisc, but the problem does not come from this
+> series).
+>                                                                                   
+> v6:
+>    - Remove nohash/32 and book3s/32 powerpc specific implementations in
+>      order to use the generic ones.
+>    - Add all the Reviewed-by, Acked-by and Tested-by in the commits,
+>      thanks to everyone.
+>                                                                                   
+> v5:
+>    As suggested by Mike Kravetz, no need to move the #include
+>    <asm-generic/hugetlb.h> for arm and x86 architectures, let it live at
+>    the top of the file.
+>                                                                                   
+> v4:
+>    Fix powerpc build error due to misplacing of #include
+>    <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as
+>    pointed by Christophe Leroy.
+>                                                                                   
+> v1, v2, v3:
+>    Same version, just problems with email provider and misuse of
+>    --batch-size option of git send-email
+>
+> Alexandre Ghiti (11):
+>    hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
+>    hugetlb: Introduce generic version of hugetlb_free_pgd_range
+>    hugetlb: Introduce generic version of set_huge_pte_at
+>    hugetlb: Introduce generic version of huge_ptep_get_and_clear
+>    hugetlb: Introduce generic version of huge_ptep_clear_flush
+>    hugetlb: Introduce generic version of huge_pte_none
+>    hugetlb: Introduce generic version of huge_pte_wrprotect
+>    hugetlb: Introduce generic version of prepare_hugepage_range
+>    hugetlb: Introduce generic version of huge_ptep_set_wrprotect
+>    hugetlb: Introduce generic version of huge_ptep_set_access_flags
+>    hugetlb: Introduce generic version of huge_ptep_get
+>
+>   arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
+>   arch/arm/include/asm/hugetlb.h               | 30 ----------
+>   arch/arm64/include/asm/hugetlb.h             | 39 +++---------
+>   arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
+>   arch/mips/include/asm/hugetlb.h              | 40 +++----------
+>   arch/parisc/include/asm/hugetlb.h            | 33 +++--------
+>   arch/powerpc/include/asm/book3s/32/pgtable.h |  6 --
+>   arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
+>   arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
+>   arch/powerpc/include/asm/nohash/32/pgtable.h |  6 --
+>   arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
+>   arch/sh/include/asm/hugetlb.h                | 54 ++---------------
+>   arch/sparc/include/asm/hugetlb.h             | 40 +++----------
+>   arch/x86/include/asm/hugetlb.h               | 69 ----------------------
+>   include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
+>   15 files changed, 135 insertions(+), 394 deletions(-)
+>

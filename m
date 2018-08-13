@@ -1,68 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 17:24:34 +0200 (CEST)
-Received: from mail-it0-f66.google.com ([209.85.214.66]:39060 "EHLO
-        mail-it0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeHMPYaYh9uL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 17:24:30 +0200
-Received: by mail-it0-f66.google.com with SMTP id g141-v6so14581416ita.4;
-        Mon, 13 Aug 2018 08:24:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2018 18:27:45 +0200 (CEST)
+Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:42135
+        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990398AbeHMQ1mogRiF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2018 18:27:42 +0200
+Received: by mail-qt0-x243.google.com with SMTP id z8-v6so18005859qto.9;
+        Mon, 13 Aug 2018 09:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=uC8monHxjKqVjpXWcdlPRgoEs2V7pkwvVylPOwryAYM=;
+        b=S9l1hy+Z2e5Q2m4c7sfs/sMuJNbg3zVC02Hn/cikLvB5p0ukrrI2lXVhM/vNaoE0hC
+         Cm5veF2CpnFpSWrb7Db5Qh0Cec3NAdz0Q21unE+eIkwSnTHDKuN69R0rWvq40dDKm5is
+         85oYpaJJDFdny/gmUYb+FUjmQRdXTe6XrwaLiY9M5Kr2X6wP15vIfNTk+e+AVkEcTX/0
+         OR4YFQ9TXeYR6/tRZ8cFtSxQFq4oITJntTHiJ9GyJtp+ZjG95dfPgOvWPNu2yNxA5W53
+         qkwlsgWdPAux9pH4JcehFM7p/GH2rHYeBHr+PGpVzs8thAxLjyUrIePJK6N0RvkU2pTq
+         IMLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ocbgtEahqKRjgPeqHg39tIUlKOf/rjKNIllWuWkaAmY=;
-        b=kfZr0/dvnEM3U/W58o+CGl2en3VW19faIl9zpeuP4uRtT3C70SVNYK7ZOdT245MKZ/
-         d2NJ/euVyzihxBT76JYEw0P6M+V1JUf3QHxVHA6mwlbng5OxczIlhKsTZleZu6ZbBuNA
-         6oj4MaQxK8kzvelx2RctHXgd2yQwiJAKxSuZC+71HwdFkPwlrP6u/p22PoX9UEioSoSk
-         1KOMHlW0dcYSAAqSGwQt7Y8t9C/CeeGlBT/ZSvM0gUD1bAhBDFofqJQnAjte7BqhSo7P
-         mTzUzTceKu38nWh2IAczbZL3ZoKbvQPOjhAMDKZumZfwvQkQ0HgX3CCtV7WQUCeYAVxM
-         aE7A==
-X-Gm-Message-State: AOUpUlGaX62alm7fEqHpCrCp5Dk9dKdl09cWqRoXLmvR/bafKTAYDw5Q
-        0qgLLza/Szj8DudyEJAg+Q==
-X-Google-Smtp-Source: AA+uWPxlHcQyHznD8zmn8GUxPhyBYhVH9xhP3V9ni/lNHx4qJsgcE1xoMZ39djlSqaEeC6Qejlx7pQ==
-X-Received: by 2002:a24:3c53:: with SMTP id m80-v6mr11034591ita.86.1534173864245;
-        Mon, 13 Aug 2018 08:24:24 -0700 (PDT)
-Received: from localhost ([24.51.61.72])
-        by smtp.gmail.com with ESMTPSA id 14-v6sm5839462itu.20.2018.08.13.08.24.23
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 13 Aug 2018 08:24:23 -0700 (PDT)
-Date:   Mon, 13 Aug 2018 09:24:22 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH v6 04/24] dt-bindings: Add doc for the Ingenic TCU drivers
-Message-ID: <20180813152422.GA18650@rob-hp-laptop>
-References: <20180809214414.20905-1-paul@crapouillou.net>
- <20180809214414.20905-5-paul@crapouillou.net>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=uC8monHxjKqVjpXWcdlPRgoEs2V7pkwvVylPOwryAYM=;
+        b=X6utsfBCPC2MSbzYyYHl0x3O3H1Ulb1Y6vtf2o9oTRq2yvyLFEFqION9ALq999JJ17
+         t0LW7x5FaYDHw1KU3bPHSYqnZenFEilMVczQhqtsLI6YRmm6KhQ1cMU49bLw8Ej38+tQ
+         XxZmH596H9+wR++qAltJtFy5tONG9CuW78zT9kWOKgxxKL4AygCSJUZFJjUZDpBH190j
+         qBSP/vyJrGLtk78CXg/ai6hOFLWJyiQUM92x5Aeet0lwKxEznrWU59btbT/4+Ph3XD/K
+         a19WJTGOAJ03PzTvdNJftBHfjnqx+a3rt4kneD94F70W8eCzmd7Qes4l0AbDYHCHP4Ac
+         lrJQ==
+X-Gm-Message-State: AOUpUlE6ccFJ2mn9oVbhxYeCHjMSMgLL92rROC0hhVCOA4RG/Sy6MLcj
+        7vWtEQOOiUGvjuh61yj53NySxqv8JDCUxC823/E=
+X-Google-Smtp-Source: AA+uWPynQU823Uc7kPp0ZqGRtEa3NhsmMyN6W4urnaKAHvdBPdlAeg4bfEkpUru3kudcrNhCnAsLZHtBmn/FEsLfGac=
+X-Received: by 2002:aed:3688:: with SMTP id f8-v6mr17954184qtb.276.1534177656589;
+ Mon, 13 Aug 2018 09:27:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180809214414.20905-5-paul@crapouillou.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <robherring2@gmail.com>
+Received: by 2002:a0c:c3cc:0:0:0:0:0 with HTTP; Mon, 13 Aug 2018 09:27:36
+ -0700 (PDT)
+In-Reply-To: <20180813084922.GB44470@linux.vnet.ibm.com>
+References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
+ <20180809041856.1547-6-ravi.bangoria@linux.ibm.com> <CAPhsuW5g1dOnceA=kqfpC+rR6EguJaR+wPwY9nSWLbGSSj5XjQ@mail.gmail.com>
+ <66f84261-aa3e-4692-a124-09537fda4312@linux.ibm.com> <20180813084922.GB44470@linux.vnet.ibm.com>
+From:   Song Liu <liu.song.a23@gmail.com>
+Date:   Mon, 13 Aug 2018 09:27:36 -0700
+Message-ID: <CAPhsuW4Vo0Py9EmiAx64v1ExwH49NuPaXYWr9Hmm6mLFewbHog@mail.gmail.com>
+Subject: Re: [PATCH v8 5/6] trace_uprobe/sdt: Prevent multiple reference
+ counter for same uprobe
+To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>, mhiramat@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        ananth@linux.vnet.ibm.com,
+        Alexis Berlemont <alexis.berlemont@gmail.com>,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <liu.song.a23@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65568
+X-archive-position: 65569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: liu.song.a23@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,18 +79,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 09, 2018 at 11:43:54PM +0200, Paul Cercueil wrote:
-> Add documentation about how to properly use the Ingenic TCU
-> (Timer/Counter Unit) drivers from devicetree.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  .../devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt |  25 ----
->  .../devicetree/bindings/timer/ingenic,tcu.txt      | 134 +++++++++++++++++++++
->  .../bindings/watchdog/ingenic,jz4740-wdt.txt       |  17 ---
->  3 files changed, 134 insertions(+), 42 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt
->  create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
->  delete mode 100644 Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
+On Mon, Aug 13, 2018 at 1:49 AM, Srikar Dronamraju
+<srikar@linux.vnet.ibm.com> wrote:
+> * Ravi Bangoria <ravi.bangoria@linux.ibm.com> [2018-08-13 13:49:44]:
+>
+>> Hi Song,
+>>
+>> On 08/11/2018 01:42 PM, Song Liu wrote:
+>> > Do we really need this given we already have PATCH 4/6?
+>> > uprobe_regsiter() can be called
+>> > out of trace_uprobe, this patch won't catch all conflicts anyway.
+>>
+>> Right but it, at least, catch all conflicts happening via trace_uprobe.
+>>
+>> I don't mind in removing this patch but I would like to get an opinion of
+>> Oleg/Srikar/Steven/Masami.
+>>
+>
+> I would suggest to keep it, atleast it can ctah conflicts happening via
+> trace_uprobe.
+>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Yeah, that makes sense.
+
+Reviewed-by: Song Liu <songliubraving@fb.com>

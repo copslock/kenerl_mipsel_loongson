@@ -1,38 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2018 02:05:32 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:38472 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2018 02:07:59 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:38628 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993067AbeHNAF3hlc5B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2018 02:05:29 +0200
+        id S23993889AbeHNAHzECBhB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2018 02:07:55 +0200
 Received: from gandalf.local.home (cpe-66-24-56-78.stny.res.rr.com [66.24.56.78])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 630A220C01;
-        Tue, 14 Aug 2018 00:05:21 +0000 (UTC)
-Date:   Mon, 13 Aug 2018 20:05:19 -0400
+        by mail.kernel.org (Postfix) with ESMTPSA id CF3F320C01;
+        Tue, 14 Aug 2018 00:07:46 +0000 (UTC)
+Date:   Mon, 13 Aug 2018 20:07:45 -0400
 From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Song Liu <liu.song.a23@gmail.com>
-Cc:     Oleg Nesterov <oleg@redhat.com>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        srikar@linux.vnet.ibm.com, mhiramat@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        ananth@linux.vnet.ibm.com,
-        Alexis Berlemont <alexis.berlemont@gmail.com>,
+To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>, oleg@redhat.com,
+        mhiramat@kernel.org, liu.song.a23@gmail.com, peterz@infradead.org,
+        mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
         naveen.n.rao@linux.vnet.ibm.com,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
- count (semaphore)
-Message-ID: <20180813200519.09ca5e9c@gandalf.local.home>
-In-Reply-To: <20180813200141.601a44e0@gandalf.local.home>
+Subject: Re: [PATCH v8 1/6] Uprobes: Simplify uprobe_register() body
+Message-ID: <20180813200745.2d0d5bb3@gandalf.local.home>
+In-Reply-To: <20180813085612.GE44470@linux.vnet.ibm.com>
 References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
-        <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
-        <20180809143827.GC22636@redhat.com>
-        <20180810155813.49259913@gandalf.local.home>
-        <CAPhsuW4ymZAxLdDOAz-rKkyb_POA3ibNW7+2G3BE5Mxtntyqsg@mail.gmail.com>
-        <20180813200141.601a44e0@gandalf.local.home>
+        <20180809041856.1547-2-ravi.bangoria@linux.ibm.com>
+        <20180813085612.GE44470@linux.vnet.ibm.com>
 X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,7 +34,7 @@ Return-Path: <SRS0=NrGH=K5=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65580
+X-archive-position: 65581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,40 +51,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 13 Aug 2018 20:01:41 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Mon, 13 Aug 2018 01:56:12 -0700
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
 
-> On Fri, 10 Aug 2018 23:14:01 -0700
-> Song Liu <liu.song.a23@gmail.com> wrote:
+> * Ravi Bangoria <ravi.bangoria@linux.ibm.com> [2018-08-09 09:48:51]:
 > 
-> > On Fri, Aug 10, 2018 at 12:58 PM, Steven Rostedt <rostedt@goodmis.org> wrote:  
-> > > On Thu, 9 Aug 2018 16:38:28 +0200
-> > > Oleg Nesterov <oleg@redhat.com> wrote:
-> > >    
-> > >> I need to read this (hopefully final) version carefully. I'll try to do
-> > >> this before next Monday.
-> > >>    
-> > >
-> > > Monday may be the opening of the merge window (more likely Sunday). Do
-> > > you think this is good enough for pushing it in this late in the game,
-> > > or do you think we should wait another cycle?
-> > >
-> > > -- Steve    
-> > 
-> > We (Facebook) have use cases in production that would benefit from this work, so
-> > I would rather see this gets in sooner than later. After a brief
-> > review (I will more
-> > careful review before Monday), I think this set is not likely to break
-> > existing uprobes
-> > (those w/o ref_ctr). Therefore, I think it is safe to put it in this cycle.
+> > Simplify uprobe_register() function body and let __uprobe_register()
+> > handle everything. Also move dependency functions around to fix build
+> > failures.
 > >   
 > 
-> It's still going under review, and the merge window is now open. I'd
-> prefer that this waits till the next merge window.
-> 
-> 
+> One nit:
+> s/to fix build/failures/to avoid build failures/
 
-But this said, patch 1&2 look simple enough to include this merge
-window. I'll pull them in and start testing.
+I pulled in this patch with the above update to the change log.
+
+> 
+> 
+> 
+> > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> > ---  
+> 
+> 
+> Acked-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+
+Thanks, I added your ack and Song's Reviewed-by tags.
 
 -- Steve

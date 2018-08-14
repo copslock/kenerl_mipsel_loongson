@@ -1,46 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2018 09:31:38 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:56758 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992492AbeHNHbe5KcjI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2018 09:31:34 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 2641EAEE6;
-        Tue, 14 Aug 2018 07:31:29 +0000 (UTC)
-Message-ID: <1534231386.31827.3.camel@suse.com>
-Subject: Re: serdev: How to attach serdev devices to USB based tty devices?
-From:   Oliver Neukum <oneukum@suse.com>
-To:     Andreas =?ISO-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
-        Rob Herring <robh@kernel.org>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        linux-usb@vger.kernel.org
-Cc:     Jian-Hong Pan <starnight@g.ncu.edu.tw>,
-        Xue Liu <liuxuenetmail@gmail.com>,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Stefan Rehm <rehm@miromico.ch>,
-        "LoRa_Community_Support@semtech.com" 
-        <LoRa_Community_Support@semtech.com>,
-        Alexander Graf <agraf@suse.de>, devicetree@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Tue, 14 Aug 2018 09:23:06 +0200
-In-Reply-To: <3639955d-5990-1c82-7158-ac07b33c41f2@suse.de>
-References: <3639955d-5990-1c82-7158-ac07b33c41f2@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <oneukum@suse.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2018 10:57:08 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:56206 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992492AbeHNI5EqQ4Zg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2018 10:57:04 +0200
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7E8sIqa125624
+        for <linux-mips@linux-mips.org>; Tue, 14 Aug 2018 04:57:02 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2kuu6hsvpk-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 14 Aug 2018 04:57:02 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Tue, 14 Aug 2018 09:56:59 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 14 Aug 2018 09:56:54 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7E8urhQ42467388
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Aug 2018 08:56:53 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F01594204B;
+        Tue, 14 Aug 2018 11:56:58 +0100 (BST)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9A10E4203F;
+        Tue, 14 Aug 2018 11:56:55 +0100 (BST)
+Received: from [9.124.35.253] (unknown [9.124.35.253])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 14 Aug 2018 11:56:55 +0100 (BST)
+Subject: Re: [PATCH v8 3/6] Uprobes: Support SDT markers having reference
+ count (semaphore)
+To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com
+Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180809041856.1547-1-ravi.bangoria@linux.ibm.com>
+ <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date:   Tue, 14 Aug 2018 14:26:49 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
+MIME-Version: 1.0
+In-Reply-To: <20180809041856.1547-4-ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18081408-0020-0000-0000-000002B68545
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18081408-0021-0000-0000-00002103AE6C
+Message-Id: <2e55cc3b-a268-b66b-f75f-2a0fab02c6bf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-14_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=891 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808140093
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65585
+X-archive-position: 65586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oneukum@suse.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,23 +87,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Di, 2018-08-14 at 04:28 +0200, Andreas Färber  wrote:
-> My idea then was that if we had some unique criteria like vendor and
-> product IDs (or whatever is supported in usb_device_id), we could write
-> a usb_driver with suitable USB_DEVICE*() macro. In its probe function we
-> could call into the existing tty driver's probe function and afterwards
-> try creating and attaching the appropriate serdev device, i.e. a fixed
-> USB-to-serdev driver mapping. Problem is that most devices don't seem to
-> implement any unique identifier I could make this depend on - either by
-> using a standard FT232/FT2232/CH340G chip or by using STMicroelectronics
-> virtual com port identifiers in CDC firmware and only differing in the
-> textual description [3] the usb_device_id does not seem to match on.
 
-If you really must do this you can benignly fail probe(). Thus you
-can compare strings within your probe() method.
-This sucks because you need to make sure your drivers are always
-loaded in a certain order and you really rely on undocumented
-properties, but it can be done.
+> +static int delayed_uprobe_install(struct vm_area_struct *vma)
+> +{
+> +	struct list_head *pos, *q;
+> +	struct delayed_uprobe *du;
+> +	unsigned long vaddr;
+> +	int ret = 0, err = 0;
+> +
+> +	mutex_lock(&delayed_uprobe_lock);
+> +	list_for_each_safe(pos, q, &delayed_uprobe_list) {
+> +		du = list_entry(pos, struct delayed_uprobe, list);
+> +
+> +		if (!valid_ref_ctr_vma(du->uprobe, vma))
+> +			continue;
 
-	Regards
-		Oliver
+I think we should compare mm here. I.e.:
+
+    if (du->mm != vma->vm_mm || !valid_ref_ctr_vma(du->uprobe, vma))
+            continue;
+
+Otherwise things can mess up.
+
+> +
+> +		vaddr = offset_to_vaddr(vma, du->uprobe->ref_ctr_offset);
+> +		ret = __update_ref_ctr(vma->vm_mm, vaddr, 1);
+> +		/* Record an error and continue. */
+> +		if (ret && !err)
+> +			err = ret;
+> +		delayed_uprobe_delete(du);
+> +	}
+> +	mutex_unlock(&delayed_uprobe_lock);
+> +	return err;
+> +}

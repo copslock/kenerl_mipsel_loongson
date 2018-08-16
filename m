@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2018 10:45:57 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:50878 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2018 10:46:10 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:50887 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994589AbeHPIpl0HsKu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994590AbeHPIpl0HsKu (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 16 Aug 2018 10:45:41 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id B738120E1C; Thu, 16 Aug 2018 10:45:35 +0200 (CEST)
+        id D3934206A6; Thu, 16 Aug 2018 10:45:36 +0200 (CEST)
 Received: from localhost (unknown [78.250.249.73])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 59306206A6;
-        Thu, 16 Aug 2018 10:45:25 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 7C2A820712;
+        Thu, 16 Aug 2018 10:45:26 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -20,9 +20,9 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v4 1/7] i2c: designware: use generic table matching
-Date:   Thu, 16 Aug 2018 10:45:15 +0200
-Message-Id: <20180816084521.16289-2-alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 2/7] i2c: designware: move #ifdef CONFIG_OF to the top
+Date:   Thu, 16 Aug 2018 10:45:16 +0200
+Message-Id: <20180816084521.16289-3-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180816084521.16289-1-alexandre.belloni@bootlin.com>
 References: <20180816084521.16289-1-alexandre.belloni@bootlin.com>
@@ -30,7 +30,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65594
+X-archive-position: 65595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,47 +47,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Switch to device_get_match_data in probe to match the device specific data
-instead of using the acpi specific function.
+Move the #ifdef CONFIG_OF section to the top of the file, after the ACPI
+section so functions defined there can be used in dw_i2c_plat_probe.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index fc1462601b16..d5936c32c075 100644
+index d5936c32c075..776d4354f366 100644
 --- a/drivers/i2c/busses/i2c-designware-platdrv.c
 +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -99,7 +99,6 @@ static int dw_i2c_acpi_configure(struct platform_device *pdev)
- 	struct i2c_timings *t = &dev->timings;
- 	u32 ss_ht = 0, fp_ht = 0, hs_ht = 0, fs_ht = 0;
- 	acpi_handle handle = ACPI_HANDLE(&pdev->dev);
--	const struct acpi_device_id *id;
- 	struct acpi_device *adev;
- 	const char *uid;
+@@ -169,6 +169,14 @@ static inline int dw_i2c_acpi_configure(struct platform_device *pdev)
+ }
+ #endif
  
-@@ -132,10 +131,6 @@ static int dw_i2c_acpi_configure(struct platform_device *pdev)
- 		break;
- 	}
- 
--	id = acpi_match_device(pdev->dev.driver->acpi_match_table, &pdev->dev);
--	if (id && id->driver_data)
--		dev->flags |= (u32)id->driver_data;
--
- 	if (acpi_bus_get_device(handle, &adev))
- 		return -ENODEV;
- 
-@@ -304,6 +299,8 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
- 	else
- 		t->bus_freq_hz = 400000;
- 
-+	dev->flags |= (uintptr_t)device_get_match_data(&pdev->dev);
++#ifdef CONFIG_OF
++static const struct of_device_id dw_i2c_of_match[] = {
++	{ .compatible = "snps,designware-i2c", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
++#endif
 +
- 	if (has_acpi_companion(&pdev->dev))
- 		dw_i2c_acpi_configure(pdev);
+ static void i2c_dw_configure_master(struct dw_i2c_dev *dev)
+ {
+ 	struct i2c_timings *t = &dev->timings;
+@@ -403,14 +411,6 @@ static int dw_i2c_plat_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
+-#ifdef CONFIG_OF
+-static const struct of_device_id dw_i2c_of_match[] = {
+-	{ .compatible = "snps,designware-i2c", },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
+-#endif
+-
+ #ifdef CONFIG_PM_SLEEP
+ static int dw_i2c_plat_prepare(struct device *dev)
+ {
 -- 
 2.18.0

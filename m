@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2018 10:47:17 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:50921 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2018 10:47:26 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:50929 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994614AbeHPIpt4wUhu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2018 10:45:49 +0200
+        id S23994617AbeHPIpwFMuvu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Aug 2018 10:45:52 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 442A62079D; Thu, 16 Aug 2018 10:45:44 +0200 (CEST)
+        id D42112072F; Thu, 16 Aug 2018 10:45:45 +0200 (CEST)
 Received: from localhost (unknown [78.250.249.73])
-        by mail.bootlin.com (Postfix) with ESMTPSA id EF2C420DB0;
-        Thu, 16 Aug 2018 10:45:31 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 1D4C920DB3;
+        Thu, 16 Aug 2018 10:45:33 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -20,9 +20,9 @@ Cc:     Paul Burton <paul.burton@mips.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microsemi.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v4 6/7] MIPS: dts: mscc: Add i2c on ocelot
-Date:   Thu, 16 Aug 2018 10:45:20 +0200
-Message-Id: <20180816084521.16289-7-alexandre.belloni@bootlin.com>
+Subject: [PATCH v4 7/7] MIPS: dts: mscc: enable i2c on ocelot_pcb123
+Date:   Thu, 16 Aug 2018 10:45:21 +0200
+Message-Id: <20180816084521.16289-8-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180816084521.16289-1-alexandre.belloni@bootlin.com>
 References: <20180816084521.16289-1-alexandre.belloni@bootlin.com>
@@ -30,7 +30,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65600
+X-archive-position: 65601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,49 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ocelot has an i2c controller, add it. There is only one possible pinmux
-configuration so add it as well.
+Enable the i2c controller on ocelot PCB123. While there are no i2c devices
+on the board itself, it can be used to control the SFP transceivers.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- arch/mips/boot/dts/mscc/ocelot.dtsi | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
-index 4f33dbc67348..34093acebc0d 100644
---- a/arch/mips/boot/dts/mscc/ocelot.dtsi
-+++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
-@@ -78,6 +78,19 @@
- 			status = "disabled";
- 		};
+diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+index 4ccd65379059..336c859a9bbe 100644
+--- a/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
++++ b/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
+@@ -26,6 +26,12 @@
+ 	status = "okay";
+ };
  
-+		i2c: i2c@100400 {
-+			compatible = "mscc,ocelot-i2c", "snps,designware-i2c";
-+			pinctrl-0 = <&i2c_pins>;
-+			pinctrl-names = "default";
-+			reg = <0x100400 0x100>, <0x198 0x8>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts = <8>;
-+			clocks = <&ahb_clk>;
++&i2c {
++	clock-frequency = <100000>;
++	i2c-sda-hold-time-ns = <300>;
++	status = "okay";
++};
 +
-+			status = "disabled";
-+		};
-+
- 		uart2: serial@100800 {
- 			pinctrl-0 = <&uart2_pins>;
- 			pinctrl-names = "default";
-@@ -178,6 +191,11 @@
- 				pins = "GPIO_12", "GPIO_13";
- 				function = "uart2";
- 			};
-+
-+			i2c_pins: i2c-pins {
-+				pins = "GPIO_16", "GPIO_17";
-+				function = "twi";
-+			};
- 		};
- 
- 		mdio0: mdio@107009c {
+ &mdio0 {
+ 	status = "okay";
+ };
 -- 
 2.18.0

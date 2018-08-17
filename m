@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2018 18:13:44 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:54509 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2018 18:13:53 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:54603 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994684AbeHQQJwzOO1q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Aug 2018 18:09:52 +0200
+        id S23994689AbeHQQJ55bLtq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Aug 2018 18:09:57 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id C86A0215E1; Fri, 17 Aug 2018 18:09:46 +0200 (CEST)
+        id 872A0215D4; Fri, 17 Aug 2018 18:09:49 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 93AE0215D6;
-        Fri, 17 Aug 2018 18:09:45 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 0346B212F4;
+        Fri, 17 Aug 2018 18:09:47 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -61,9 +61,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH 18/23] mtd: rawnand: Pass a nand_chip object to chip->erase()
-Date:   Fri, 17 Aug 2018 18:09:17 +0200
-Message-Id: <20180817160922.6224-19-boris.brezillon@bootlin.com>
+Subject: [PATCH 20/23] mtd: rawnand: Pass a nand_chip object to chip->setup_read_retry()
+Date:   Fri, 17 Aug 2018 18:09:19 +0200
+Message-Id: <20180817160922.6224-21-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180817160922.6224-1-boris.brezillon@bootlin.com>
 References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
@@ -71,7 +71,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65624
+X-archive-position: 65625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,90 +92,109 @@ Let's make the raw NAND API consistent by patching all helpers and
 hooks to take a nand_chip object instead of an mtd_info one or
 remove the mtd_info object when both are passed.
 
-Let's tackle the chip->erase() hook.
+Let's tackle the chip->setup_read_retry() hook.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/denali.c    | 4 ++--
- drivers/mtd/nand/raw/docg4.c     | 4 ++--
- drivers/mtd/nand/raw/nand_base.c | 7 +++----
- include/linux/mtd/rawnand.h      | 2 +-
- 4 files changed, 8 insertions(+), 9 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c   | 12 +++++-------
+ drivers/mtd/nand/raw/nand_hynix.c  |  3 +--
+ drivers/mtd/nand/raw/nand_micron.c |  3 +--
+ include/linux/mtd/rawnand.h        |  2 +-
+ 4 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/denali.c b/drivers/mtd/nand/raw/denali.c
-index 87ca07c8a1b6..fb7d778c3578 100644
---- a/drivers/mtd/nand/raw/denali.c
-+++ b/drivers/mtd/nand/raw/denali.c
-@@ -922,9 +922,9 @@ static int denali_waitfunc(struct nand_chip *chip)
- 	return irq_status & INTR__INT_ACT ? 0 : NAND_STATUS_FAIL;
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index 0ae597ced5b4..a7575aa68c48 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -3475,17 +3475,15 @@ static uint8_t *nand_transfer_oob(struct mtd_info *mtd, uint8_t *oob,
+ 
+ /**
+  * nand_setup_read_retry - [INTERN] Set the READ RETRY mode
+- * @mtd: MTD device structure
++ * @chip: NAND chip object
+  * @retry_mode: the retry mode to use
+  *
+  * Some vendors supply a special command to shift the Vt threshold, to be used
+  * when there are too many bitflips in a page (i.e., ECC error). After setting
+  * a new threshold, the host should retry reading the page.
+  */
+-static int nand_setup_read_retry(struct mtd_info *mtd, int retry_mode)
++static int nand_setup_read_retry(struct nand_chip *chip, int retry_mode)
+ {
+-	struct nand_chip *chip = mtd_to_nand(mtd);
+-
+ 	pr_debug("setting READ RETRY mode %d\n", retry_mode);
+ 
+ 	if (retry_mode >= chip->read_retries)
+@@ -3494,7 +3492,7 @@ static int nand_setup_read_retry(struct mtd_info *mtd, int retry_mode)
+ 	if (!chip->setup_read_retry)
+ 		return -EOPNOTSUPP;
+ 
+-	return chip->setup_read_retry(mtd, retry_mode);
++	return chip->setup_read_retry(chip, retry_mode);
  }
  
--static int denali_erase(struct mtd_info *mtd, int page)
-+static int denali_erase(struct nand_chip *chip, int page)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = mtd_to_denali(nand_to_mtd(chip));
- 	uint32_t irq_status;
+ static void nand_wait_readrdy(struct nand_chip *chip)
+@@ -3619,7 +3617,7 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
+ 			if (mtd->ecc_stats.failed - ecc_failures) {
+ 				if (retry_mode + 1 < chip->read_retries) {
+ 					retry_mode++;
+-					ret = nand_setup_read_retry(mtd,
++					ret = nand_setup_read_retry(chip,
+ 							retry_mode);
+ 					if (ret < 0)
+ 						break;
+@@ -3646,7 +3644,7 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
  
- 	denali_reset_irq(denali);
-diff --git a/drivers/mtd/nand/raw/docg4.c b/drivers/mtd/nand/raw/docg4.c
-index 1a39e9701191..57e880575807 100644
---- a/drivers/mtd/nand/raw/docg4.c
-+++ b/drivers/mtd/nand/raw/docg4.c
-@@ -892,9 +892,9 @@ static int docg4_read_oob(struct nand_chip *nand, int page)
+ 		/* Reset to retry mode 0 */
+ 		if (retry_mode) {
+-			ret = nand_setup_read_retry(mtd, 0);
++			ret = nand_setup_read_retry(chip, 0);
+ 			if (ret < 0)
+ 				break;
+ 			retry_mode = 0;
+diff --git a/drivers/mtd/nand/raw/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
+index fa873e517131..bb1c4f8ce785 100644
+--- a/drivers/mtd/nand/raw/nand_hynix.c
++++ b/drivers/mtd/nand/raw/nand_hynix.c
+@@ -113,9 +113,8 @@ static int hynix_nand_reg_write_op(struct nand_chip *chip, u8 addr, u8 val)
  	return 0;
  }
  
--static int docg4_erase_block(struct mtd_info *mtd, int page)
-+static int docg4_erase_block(struct nand_chip *nand, int page)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(nand);
- 	struct docg4_priv *doc = nand_get_controller_data(nand);
- 	void __iomem *docptr = doc->virtadr;
- 	uint16_t g4_page;
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 9be0f98c1244..26be436eb8f1 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -4623,14 +4623,13 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
- 
- /**
-  * single_erase - [GENERIC] NAND standard block erase command function
-- * @mtd: MTD device structure
-+ * @chip: NAND chip object
-  * @page: the page address of the block which will be erased
-  *
-  * Standard erase command for NAND chips. Returns NAND status.
-  */
--static int single_erase(struct mtd_info *mtd, int page)
-+static int single_erase(struct nand_chip *chip, int page)
+-static int hynix_nand_setup_read_retry(struct mtd_info *mtd, int retry_mode)
++static int hynix_nand_setup_read_retry(struct nand_chip *chip, int retry_mode)
  {
 -	struct nand_chip *chip = mtd_to_nand(mtd);
- 	unsigned int eraseblock;
+ 	struct hynix_nand *hynix = nand_get_manufacturer_data(chip);
+ 	const u8 *values;
+ 	int i, ret;
+diff --git a/drivers/mtd/nand/raw/nand_micron.c b/drivers/mtd/nand/raw/nand_micron.c
+index 2f26dbeb5428..1a5505ccbe54 100644
+--- a/drivers/mtd/nand/raw/nand_micron.c
++++ b/drivers/mtd/nand/raw/nand_micron.c
+@@ -74,9 +74,8 @@ struct micron_nand {
+ 	struct micron_on_die_ecc ecc;
+ };
  
- 	/* Send commands to erase a block */
-@@ -4715,7 +4714,7 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 		    (page + pages_per_block))
- 			chip->pagebuf = -1;
+-static int micron_nand_setup_read_retry(struct mtd_info *mtd, int retry_mode)
++static int micron_nand_setup_read_retry(struct nand_chip *chip, int retry_mode)
+ {
+-	struct nand_chip *chip = mtd_to_nand(mtd);
+ 	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {retry_mode};
  
--		status = chip->erase(mtd, page & chip->pagemask);
-+		status = chip->erase(chip, page & chip->pagemask);
- 
- 		/* See if block erase succeeded */
- 		if (status) {
+ 	return nand_set_features(chip, ONFI_FEATURE_ADDR_READ_RETRY, feature);
 diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 520c0932d15a..469008740e89 100644
+index 471ad78d27a5..6f5e7ea36dab 100644
 --- a/include/linux/mtd/rawnand.h
 +++ b/include/linux/mtd/rawnand.h
-@@ -1298,7 +1298,7 @@ struct nand_chip {
- 	int (*exec_op)(struct nand_chip *chip,
- 		       const struct nand_operation *op,
- 		       bool check_only);
--	int (*erase)(struct mtd_info *mtd, int page);
-+	int (*erase)(struct nand_chip *chip, int page);
- 	int (*set_features)(struct mtd_info *mtd, struct nand_chip *chip,
- 			    int feature_addr, uint8_t *subfeature_para);
- 	int (*get_features)(struct mtd_info *mtd, struct nand_chip *chip,
+@@ -1303,7 +1303,7 @@ struct nand_chip {
+ 			    uint8_t *subfeature_para);
+ 	int (*get_features)(struct nand_chip *chip, int feature_addr,
+ 			    uint8_t *subfeature_para);
+-	int (*setup_read_retry)(struct mtd_info *mtd, int retry_mode);
++	int (*setup_read_retry)(struct nand_chip *chip, int retry_mode);
+ 	int (*setup_data_interface)(struct mtd_info *mtd, int chipnr,
+ 				    const struct nand_data_interface *conf);
+ 
 -- 
 2.14.1

@@ -1,49 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2018 18:08:01 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:59436 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994601AbeHPQH6Zr3Dw convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2018 18:07:58 +0200
-Date:   Thu, 16 Aug 2018 18:07:44 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v6 06/24] clocksource: Add driver for the Ingenic JZ47xx
- OST
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, thierry.reding@gmail.com,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>, wim@linux-watchdog.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        linux-pwm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        linux-watchdog@vger.kernel.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org,
-        Maarten ter Huurne <maarten@treewalker.org>
-Message-Id: <1534435664.5686.0@smtp.crapouillou.net>
-In-Reply-To: <CA+7wUsxKtiJZD35dvT7UrmWYXcDdpmRq3NVM25=dX=4qQ_ewuw@mail.gmail.com>
-References: <20180809214414.20905-1-paul@crapouillou.net>
-        <20180809214414.20905-7-paul@crapouillou.net>
-        <CA+7wUsxKtiJZD35dvT7UrmWYXcDdpmRq3NVM25=dX=4qQ_ewuw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534435677; bh=yLBdLl/fjqoM179xl9EYX76KGqXnM+BBGClvoU9reZM=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=bL2/BGubY35hCVuIuZqgqTUQ2IPYPHZmIHYSwgXchrB6VAm9QxK38K78k39G9oy9E8M/xg3uv94KPtrGO7JJfpbgqiSUfq1N1bY346ohSlX0N5W0LTj6U2ELYyLi7YxYfhUVyG2+xkMQEleUj7zZbUbd0KJ6L37UUiKqZXhcikw=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2018 03:46:39 +0200 (CEST)
+Received: from mail-pl0-x243.google.com ([IPv6:2607:f8b0:400e:c01::243]:44878
+        "EHLO mail-pl0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994646AbeHQBqeXhGaa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2018 03:46:34 +0200
+Received: by mail-pl0-x243.google.com with SMTP id ba4-v6so2940867plb.11
+        for <linux-mips@linux-mips.org>; Thu, 16 Aug 2018 18:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=/nkMDk9Ekxgg14E9V5bn38j4KZ/ucP8iU6DmwVz+yU8=;
+        b=fACeGxxeJdMhS7stAYNsBkp3EO8npsQ4mKE7oCtKxbrbkWgA3KqDIILRHvc7yibc8K
+         BRCh0qcI4ofTZ1Dj0DKZLARK8c0lwVh8/d0YKeC0huD40mMHf54tXND0xwg0GL/OKEYX
+         3jHsa6F3MmHaOc32I9vjoSnFdCrSCgwBUsBCxnMyaH3RfSZ+Tm6vtSgcwdr+f151Ch21
+         66nPydTr+XOT8KsESRCkTVw3Emo89rlatiMN4jc0wgrOude0tK2+pS4dNXi7b8x6X6gQ
+         j+e7o55MjG71kiZedHtoZEoZUHUbX7J7sI7BOdoCgz7TDag4Ho6tXweb9obbJllcWp4u
+         KkKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=/nkMDk9Ekxgg14E9V5bn38j4KZ/ucP8iU6DmwVz+yU8=;
+        b=WKtZ0qORcKQbdvkoVkGWl2vDpTDkmHNMwtR/aSG28JWdl1GbSj5gDehdsQYLihx11v
+         DFZPNoumxlVjgL5lzSn+KzU0VhtpbuOs6Bi690GtoWv62pALwgpVs+y4dT0/quMsdSaF
+         Gs44MWV6Qlz69w69uqOzeVXg5dsLODVKv8exkqj4HOzKXxhiCN/VrgkPTU/yc9C36SvU
+         GD6VXEBwiCKmGud2DjSPeaKYb8e01f1Ta7bciHc/Xhtuy3L/sBCE48RDJNZKCy0arwaS
+         u+Ka6f9UhS0WGTl+g+aJuJbzB+vK2xJbbCb8E0ObdhNiVTPXEriZneQL+VUa6Iub6pSp
+         Fywg==
+X-Gm-Message-State: AOUpUlE1ZT7v74IWQ+64ohwgyJd4xeqIZ3fLF9uvTLlTcqR3TiOcdpRf
+        X2KqdXvD0LimkSdRrtRG99qxfJXqpjk=
+X-Google-Smtp-Source: AA+uWPyqUpokcA8Z8lgPio4zDSNVas+nePuZiiSwWor1Df0fA9Q6fDU2TN0L2u5GgGllJxVKIEe8/A==
+X-Received: by 2002:a17:902:7584:: with SMTP id j4-v6mr31608380pll.184.1534470387548;
+        Thu, 16 Aug 2018 18:46:27 -0700 (PDT)
+Received: from localhost.localdomain ([2402:f000:1:1501:200:5efe:a66f:53fa])
+        by smtp.gmail.com with ESMTPSA id g15-v6sm659363pfg.98.2018.08.16.18.46.26
+        for <linux-mips@linux-mips.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 16 Aug 2018 18:46:27 -0700 (PDT)
+From:   Jiecheng Wu <jasonwood2031@gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: [PATCH] ip22-gio.c: fix missing return value check of kzalloc()
+Date:   Fri, 17 Aug 2018 09:46:16 +0800
+Message-Id: <20180817014616.6488-1-jasonwood2031@gmail.com>
+X-Mailer: git-send-email 2.14.3.windows.1
+Return-Path: <jasonwood2031@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65604
+X-archive-position: 65606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: jasonwood2031@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,337 +62,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mathieu,
+Function ip22_check_gio() defined in arch/mips/sgi-ip22/ip22-gio.c calls kzalloc() to allocate memory for struct gio_device which is dereferenced immediately. As kzalloc() may return NULL when OOM happens, this code piece may cause NULL pointer dereference bug.
+---
+ arch/mips/sgi-ip22/ip22-gio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Le mar. 14 août 2018 à 11:42, Mathieu Malaterre <malat@debian.org> a 
-écrit :
-> On Thu, Aug 9, 2018 at 11:44 PM Paul Cercueil <paul@crapouillou.net> 
-> wrote:
->> 
->>  From: Maarten ter Huurne <maarten@treewalker.org>
->> 
->>  OST is the OS Timer, a 64-bit timer/counter with buffered reading.
->> 
->>  SoCs before the JZ4770 had (if any) a 32-bit OST; the JZ4770 and
->>  JZ4780 have a 64-bit OST.
->> 
->>  This driver will register both a clocksource and a sched_clock to 
->> the
->>  system.
-> 
-> With CONFIG_DEBUG_SECTION_MISMATCH=y here is what I see:
-> 
->   MODPOST vmlinux.o
-> WARNING: vmlinux.o(.data+0x26600): Section mismatch in reference from
-> the variable ingenic_ost_driver to the function
-> .init.text:ingenic_ost_probe()
-> The variable ingenic_ost_driver references
-> the function __init ingenic_ost_probe()
-> If the reference is valid then annotate the
-> variable with __init* or __refdata (see linux/init.h) or name the 
-> variable:
-> *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one, *_console
-> 
-> WARNING: vmlinux.o(.data+0x26660): Section mismatch in reference from
-> the variable ingenic_tcu_driver to the function
-> .init.text:ingenic_tcu_probe()
-> The variable ingenic_tcu_driver references
-> the function __init ingenic_tcu_probe()
-> If the reference is valid then annotate the
-> variable with __init* or __refdata (see linux/init.h) or name the 
-> variable:
-> *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one, *_console
-> 
-> Thanks
-
-Right, I'll fix it in V7.
-Thanks!
-
->>  Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   drivers/clocksource/Kconfig       |   8 ++
->>   drivers/clocksource/Makefile      |   1 +
->>   drivers/clocksource/ingenic-ost.c | 208 
->> ++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 217 insertions(+)
->>   create mode 100644 drivers/clocksource/ingenic-ost.c
->> 
->>   v5: New patch
->> 
->>   v6: - Get rid of SoC IDs; pass pointer to ingenic_ost_soc_info as
->>         devicetree match data instead.
->>       - Use device_get_match_data() instead of the of_* variant
->>       - Handle error of dev_get_regmap() properly
->> 
->>  diff --git a/drivers/clocksource/Kconfig 
->> b/drivers/clocksource/Kconfig
->>  index 98f708208a8d..e855938c69f1 100644
->>  --- a/drivers/clocksource/Kconfig
->>  +++ b/drivers/clocksource/Kconfig
->>  @@ -619,4 +619,12 @@ config INGENIC_TIMER
->>          help
->>            Support for the timer/counter unit of the Ingenic JZ SoCs.
->> 
->>  +config INGENIC_OST
->>  +       bool "Ingenic JZ47xx Operating System Timer"
->>  +       depends on MIPS || COMPILE_TEST
->>  +       depends on COMMON_CLK
->>  +       select INGENIC_TIMER
->>  +       help
->>  +         Support for the OS Timer of the Ingenic JZ4770 or similar 
->> SoC.
->>  +
->>   endmenu
->>  diff --git a/drivers/clocksource/Makefile 
->> b/drivers/clocksource/Makefile
->>  index 26877505d400..56ce37252944 100644
->>  --- a/drivers/clocksource/Makefile
->>  +++ b/drivers/clocksource/Makefile
->>  @@ -75,6 +75,7 @@ obj-$(CONFIG_ASM9260_TIMER)           += 
->> asm9260_timer.o
->>   obj-$(CONFIG_H8300_TMR8)               += h8300_timer8.o
->>   obj-$(CONFIG_H8300_TMR16)              += h8300_timer16.o
->>   obj-$(CONFIG_H8300_TPU)                        += h8300_tpu.o
->>  +obj-$(CONFIG_INGENIC_OST)              += ingenic-ost.o
->>   obj-$(CONFIG_INGENIC_TIMER)            += ingenic-timer.o
->>   obj-$(CONFIG_CLKSRC_ST_LPC)            += clksrc_st_lpc.o
->>   obj-$(CONFIG_X86_NUMACHIP)             += numachip.o
->>  diff --git a/drivers/clocksource/ingenic-ost.c 
->> b/drivers/clocksource/ingenic-ost.c
->>  new file mode 100644
->>  index 000000000000..400d30656790
->>  --- /dev/null
->>  +++ b/drivers/clocksource/ingenic-ost.c
->>  @@ -0,0 +1,208 @@
->>  +// SPDX-License-Identifier: GPL-2.0
->>  +/*
->>  + * JZ47xx SoCs TCU Operating System Timer driver
->>  + *
->>  + * Copyright (C) 2016 Maarten ter Huurne <maarten@treewalker.org>
->>  + * Copyright (C) 2018 Paul Cercueil <paul@crapouillou.net>
->>  + */
->>  +
->>  +#include <linux/clk.h>
->>  +#include <linux/clocksource.h>
->>  +#include <linux/mfd/ingenic-tcu.h>
->>  +#include <linux/module.h>
->>  +#include <linux/platform_device.h>
->>  +#include <linux/pm.h>
->>  +#include <linux/regmap.h>
->>  +#include <linux/sched_clock.h>
->>  +
->>  +#include "ingenic-timer.h"
->>  +
->>  +#define TCU_OST_TCSR_MASK      0xc0
->>  +#define TCU_OST_TCSR_CNT_MD    BIT(15)
->>  +
->>  +#define TCU_OST_CHANNEL                15
->>  +
->>  +struct ingenic_ost_soc_info {
->>  +       bool is64bit;
->>  +};
->>  +
->>  +struct ingenic_ost {
->>  +       struct regmap *map;
->>  +       struct clk *clk;
->>  +
->>  +       struct clocksource cs;
->>  +};
->>  +
->>  +static u64 notrace ingenic_ost_read_cntl(void)
->>  +{
->>  +       /* Bypass the regmap here as we must return as soon as 
->> possible */
->>  +       return readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +}
->>  +
->>  +static u64 notrace ingenic_ost_read_cnth(void)
->>  +{
->>  +       /* Bypass the regmap here as we must return as soon as 
->> possible */
->>  +       return readl(ingenic_tcu_base + TCU_REG_OST_CNTH);
->>  +}
->>  +
->>  +static u64 notrace ingenic_ost_clocksource_read(struct clocksource 
->> *cs)
->>  +{
->>  +       u32 val1, val2;
->>  +       u64 count, recount;
->>  +       s64 diff;
->>  +
->>  +       /*
->>  +        * The buffering of the upper 32 bits of the timer prevents 
->> wrong
->>  +        * results from the bottom 32 bits overflowing due to the 
->> timer ticking
->>  +        * along. However, it does not prevent wrong results from 
->> simultaneous
->>  +        * reads of the timer, which could reset the buffer 
->> mid-read.
->>  +        * Since this kind of wrong read can happen only when the 
->> bottom bits
->>  +        * overflow, there will be minutes between wrong reads, so 
->> if we read
->>  +        * twice in succession, at least one of the reads will be 
->> correct.
->>  +        */
->>  +
->>  +       /* Bypass the regmap here as we must return as soon as 
->> possible */
->>  +       val1 = readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +       val2 = readl(ingenic_tcu_base + TCU_REG_OST_CNTHBUF);
->>  +       count = (u64)val1 | (u64)val2 << 32;
->>  +
->>  +       val1 = readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +       val2 = readl(ingenic_tcu_base + TCU_REG_OST_CNTHBUF);
->>  +       recount = (u64)val1 | (u64)val2 << 32;
->>  +
->>  +       /*
->>  +        * A wrong read will produce a result that is 1<<32 too 
->> high: the bottom
->>  +        * part from before overflow and the upper part from after 
->> overflow.
->>  +        * Therefore, the lower value of the two reads is the 
->> correct value.
->>  +        */
->>  +
->>  +       diff = (s64)(recount - count);
->>  +       if (unlikely(diff < 0))
->>  +               count = recount;
->>  +
->>  +       return count;
->>  +}
->>  +
->>  +static int __init ingenic_ost_probe(struct platform_device *pdev)
->>  +{
->>  +       const struct ingenic_ost_soc_info *soc_info;
->>  +       struct device *dev = &pdev->dev;
->>  +       struct ingenic_ost *ost;
->>  +       struct clocksource *cs;
->>  +       unsigned long rate, flags;
->>  +       int err;
->>  +
->>  +       soc_info = device_get_match_data(dev);
->>  +       if (!soc_info)
->>  +               return -EINVAL;
->>  +
->>  +       ost = devm_kzalloc(dev, sizeof(*ost), GFP_KERNEL);
->>  +       if (!ost)
->>  +               return -ENOMEM;
->>  +
->>  +       ost->map = dev_get_regmap(dev->parent, NULL);
->>  +       if (!ost->map) {
->>  +               dev_err(dev, "regmap not found\n");
->>  +               return -EINVAL;
->>  +       }
->>  +
->>  +       ost->clk = devm_clk_get(dev, "ost");
->>  +       if (IS_ERR(ost->clk))
->>  +               return PTR_ERR(ost->clk);
->>  +
->>  +       err = clk_prepare_enable(ost->clk);
->>  +       if (err)
->>  +               return err;
->>  +
->>  +       /* Clear counter high/low registers */
->>  +       if (soc_info->is64bit)
->>  +               regmap_write(ost->map, TCU_REG_OST_CNTL, 0);
->>  +       regmap_write(ost->map, TCU_REG_OST_CNTH, 0);
->>  +
->>  +       /* Don't reset counter at compare value. */
->>  +       regmap_update_bits(ost->map, TCU_REG_OST_TCSR,
->>  +                          TCU_OST_TCSR_MASK, TCU_OST_TCSR_CNT_MD);
->>  +
->>  +       rate = clk_get_rate(ost->clk);
->>  +
->>  +       /* Enable OST TCU channel */
->>  +       regmap_write(ost->map, TCU_REG_TESR, BIT(TCU_OST_CHANNEL));
->>  +
->>  +       cs = &ost->cs;
->>  +       cs->name        = "ingenic-ost";
->>  +       cs->rating      = 320;
->>  +       cs->flags       = CLOCK_SOURCE_IS_CONTINUOUS;
->>  +
->>  +       if (soc_info->is64bit) {
->>  +               cs->mask = CLOCKSOURCE_MASK(64);
->>  +               cs->read = ingenic_ost_clocksource_read;
->>  +       } else {
->>  +               cs->mask = CLOCKSOURCE_MASK(32);
->>  +               cs->read = (u64 (*)(struct clocksource 
->> *))ingenic_ost_read_cnth;
->>  +       }
->>  +
->>  +       err = clocksource_register_hz(cs, rate);
->>  +       if (err) {
->>  +               dev_err(dev, "clocksource registration failed: 
->> %d\n", err);
->>  +               clk_disable_unprepare(ost->clk);
->>  +               return err;
->>  +       }
->>  +
->>  +       /* Cannot register a sched_clock with interrupts on */
->>  +       local_irq_save(flags);
->>  +       if (soc_info->is64bit)
->>  +               sched_clock_register(ingenic_ost_read_cntl, 32, 
->> rate);
->>  +       else
->>  +               sched_clock_register(ingenic_ost_read_cnth, 32, 
->> rate);
->>  +       local_irq_restore(flags);
->>  +
->>  +       return 0;
->>  +}
->>  +
->>  +#ifdef CONFIG_PM_SLEEP
->>  +static int ingenic_ost_suspend(struct device *dev)
->>  +{
->>  +       struct ingenic_ost *ost = dev_get_drvdata(dev);
->>  +
->>  +       clk_disable(ost->clk);
->>  +       return 0;
->>  +}
->>  +
->>  +static int ingenic_ost_resume(struct device *dev)
->>  +{
->>  +       struct ingenic_ost *ost = dev_get_drvdata(dev);
->>  +
->>  +       return clk_enable(ost->clk);
->>  +}
->>  +
->>  +static SIMPLE_DEV_PM_OPS(ingenic_ost_pm_ops, ingenic_ost_suspend,
->>  +                        ingenic_ost_resume);
->>  +#define INGENIC_OST_PM_OPS (&ingenic_ost_pm_ops)
->>  +#else
->>  +#define INGENIC_OST_PM_OPS NULL
->>  +#endif /* CONFIG_PM_SUSPEND */
->>  +
->>  +static const struct ingenic_ost_soc_info jz4725b_ost_soc_info = {
->>  +       .is64bit = false,
->>  +};
->>  +
->>  +static const struct ingenic_ost_soc_info jz4770_ost_soc_info = {
->>  +       .is64bit = true,
->>  +};
->>  +
->>  +static const struct of_device_id ingenic_ost_of_match[] = {
->>  +       { .compatible = "ingenic,jz4725b-ost", .data = 
->> &jz4725b_ost_soc_info, },
->>  +       { .compatible = "ingenic,jz4770-ost",  .data = 
->> &jz4770_ost_soc_info,  },
->>  +       { }
->>  +};
->>  +MODULE_DEVICE_TABLE(of, ingenic_ost_of_match);
->>  +
->>  +static struct platform_driver ingenic_ost_driver = {
->>  +       .probe = ingenic_ost_probe,
->>  +       .driver = {
->>  +               .name   = "ingenic-ost",
->>  +               .pm     = INGENIC_OST_PM_OPS,
->>  +               .of_match_table = ingenic_ost_of_match,
->>  +       },
->>  +};
->>  +module_platform_driver(ingenic_ost_driver);
->>  --
->>  2.11.0
->> 
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index b225033..ec32d75 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -363,6 +363,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+ 		printk(KERN_INFO "GIO: slot %d : %s (id %x)\n",
+ 		       slotno, name, id);
+ 		gio_dev = kzalloc(sizeof *gio_dev, GFP_KERNEL);
++		if (!gio_dev)
++			return;
+ 		gio_dev->name = name;
+ 		gio_dev->slotno = slotno;
+ 		gio_dev->id.id = id;
+-- 
+2.6.4

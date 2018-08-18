@@ -1,95 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2018 10:30:25 +0200 (CEST)
-Received: from mail.kmu-office.ch ([IPv6:2a02:418:6a02::a2]:33076 "EHLO
-        mail.kmu-office.ch" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992479AbeHRIaURimlT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Aug 2018 10:30:20 +0200
-Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
-        by mail.kmu-office.ch (Postfix) with ESMTPSA id D82E05C0160;
-        Sat, 18 Aug 2018 10:30:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
-        t=1534581018;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wrzpGBwVdnGSCEPad0HzJWp1P5bASq7vWkSLXVz3Ywo=;
-        b=R1oCVBxQ+84IhVvGhIWE7PYu8OJknZBj5ATtL9Y4HUG8TLf+rmW+GdZyJcSRSOBrA8VnWv
-        k0TQjeaC+iOke+gA3xrpGr6l9tumNt8STicopKsaht4XZm4bQOdGb/yIh7wVYadoWGKyet
-        FENG0aSeqjNlAuuZhkv7MZp/uQHVRn8=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 18 Aug 2018 10:30:13 +0200
-From:   Stefan Agner <stefan@agner.ch>
-To:     Boris Brezillon <boris.brezillon@bootlin.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Lukasz Majewski <lukma@denx.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2018 20:11:27 +0200 (CEST)
+Received: from mail-eopbgr730131.outbound.protection.outlook.com ([40.107.73.131]:40480
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994683AbeHRSLXoxMsN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 18 Aug 2018 20:11:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W4s/coGwrNva37hdnDh7+QznJCWVO4WL7qOfj5oNyjA=;
+ b=JFdm+xrw0UzJsdnbbGipBfdjfpsztU49+FFUB4nXk41hb9fN6Qv3w12MSOu+HfShWaXHk7HrPaEaa0WSi1eh/zK68w/VMYu5xZwDHpjqxp9gTFFOjd0LKPZY92wkk9ZVC/N2byAk19tUEm70XLZ24vSwCfLLN6vjLOJ90qtCzJM=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+Received: from pburton-laptop.mipstec.com (4.16.204.77) by
+ BYAPR08MB4935.namprd08.prod.outlook.com (2603:10b6:a03:6a::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1059.22; Sat, 18 Aug 2018 18:11:11 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        James Hogan <jhogan@kernel.org>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Han Xu <han.xu@nxp.com>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Xiaolei Li <xiaolei.li@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Subject: Re: [PATCH 08/23] mtd: rawnand: Pass a nand_chip object to
- ecc->read_xxx() hooks
-In-Reply-To: <20180817160922.6224-9-boris.brezillon@bootlin.com>
-References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
- <20180817160922.6224-9-boris.brezillon@bootlin.com>
-Message-ID: <c08c6ecf720cc6b242094246b2f296c3@agner.ch>
-X-Sender: stefan@agner.ch
-User-Agent: Roundcube Webmail/1.3.4
-Return-Path: <stefan@agner.ch>
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v8 0/2] MIPS: Override barrier_before_unreachable() to fix microMIPS
+Date:   Sat, 18 Aug 2018 11:10:15 -0700
+Message-Id: <20180818181017.1246-1-paul.burton@mips.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: DM5PR21CA0035.namprd21.prod.outlook.com
+ (2603:10b6:3:ed::21) To BYAPR08MB4935.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::16)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 82cef1f8-6f0b-4e21-7009-08d60535faff
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4935;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;3:YB3rHBqIrRtGe93dopf9OzBbVAynj6wphhNb5vd2AcBz9crl4xBspuXvQ/xRIReNCNsjHQ6DziyH3SjKI2SecYbuVywF6Ny9S1si5qioqjRjaUQ1CcSiqVSDymxBkSUQDPIhEAW6jqcgQZBp0b9yySCokER7cbJ5vMPo+YKoYsWUZ2aDGXHCBpBHCzhk/o9bHzZw/nHpeLjd9qdkPttqwrVSZn8hT3XSID+NUl0wz6mLYRYTT829TJn6w9nAmGCq;25:5MpNeN3fpN4xkGqL5L9wkwMGVmR4YQ1KvMlsto+ALXSX4zigSixlUhdKWBlRQ6hA2u/JKFiFYj728Ebntsi5viuluFe3EoIQNgxN5ICV4cpCkhi02DC3AxeMyztZxb6C7xgImZoANMx3+4VEo6j8LQwhui7pbYydDL4l7k6MvMT0kuXplNDODbjZVqHZcXG90of1Q9d5HcO5R9/mj/Q+RqXnQDj3Tj+H2DIk5kyMMewXBjj1i2slskz72gEdkACqB+l7AIC0qkE9NND+tMV/lHfdn3Wypetcb3cgPFm1jVY5SCOJzCnQey/8HX9sREr4BmOS/dkcsS25ut08A7H2AA==;31:V9+GhbeA7exn3Ic2tqsYZH8S6wEZNCaKuKuxEzzLboN0u004uD1+/KA+h8ZdgYAm48TWoLRKSnxrczphM85XDcGfZhGGiivq/iwlyC70VuyEnkmUZK6WjnhWEMGJVERnDwWRDOjmm28KsSq0nmBFulrm7AoIQGrqBBLC27LhbX5Sk1HUazVzgijG2FvabQMJNYC2fZyALyraulK2GuMHGYjmPPLaZjD0wxv9oIUWDZw=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4935:
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;20:tVUT9pxfRttr7jzVBZ7hMz+aAOiG5YDNCIyz4+BdLr/ixcucl8SdAbWZpoBnDhIxeFhnZ1+xKsj+66q3wKoRfGytTZw2rHn267NaeHjeN313GGP/dKjzp1scmJZ/iz+4AIP+p94mZr82MHZ/G9uEaKerPuSjx2pBD49gsqqY3S9/7ZA1DWkgWDp8jGMMsoKtQ+Fq7mC5rw0Nwn8IpfROzVQqXQpHhcF1YJo+989lqfSbAUiz78BJjgNx1DwhTb62;4:Bl0GXYTHJ+aCCh5pHuW7CNo2zyOjTOMdFPa9x1329qucmA7mX6ciq2a8g5Zd44pkSWUh5eAUMwuLSiVY5zpQHNYshqfn1GdX1uQ7v5Q2j8KT4aiDkMuzWDfXVzWJF2Kk2uaANEhlnBvPl5Nfj5PgbG400A89aDR56u8viF1n1QDc4p4zcVeg9A+JdDDIAR2H/EyjN2MqLne5Jakjc0uqHPwJpp01qA/AoI7OwJVheMOCV/F4NfUZwGT06jXOZjWPhC91CitRxjgIJwNksg/WWw==
+X-Microsoft-Antispam-PRVS: <BYAPR08MB49358CD0204F0A80E44C6C0FC13C0@BYAPR08MB4935.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3231311)(944501410)(52105095)(93006095)(3002001)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123564045)(20161123562045)(20161123560045)(201708071742011)(7699016);SRVR:BYAPR08MB4935;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4935;
+X-Forefront-PRVS: 076804FE30
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(376002)(346002)(396003)(136003)(366004)(39840400004)(199004)(189003)(53416004)(47776003)(106356001)(105586002)(14444005)(50466002)(6486002)(6916009)(48376002)(386003)(6506007)(956004)(476003)(2906002)(2616005)(8936002)(42882007)(16586007)(486006)(316002)(2351001)(36756003)(68736007)(66066001)(54906003)(966005)(50226002)(186003)(16526019)(478600001)(26005)(1076002)(51416003)(52116002)(53936002)(97736004)(69596002)(6306002)(6512007)(81166006)(8676002)(81156014)(305945005)(44832011)(3846002)(6116002)(7736002)(4326008)(2361001)(5660300001)(25786009)(6606295002);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4935;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4935;23:q914A92ths5sNfeJHTTzlmKfu/YqM+4FZzJZs3Xa2?=
+ =?us-ascii?Q?uJ+C5QjlYM+d3sdns/AOaQ6MZA3FpKj95zmcjABA45dRlOH9Mbdh6IQ5MaQp?=
+ =?us-ascii?Q?MAXKheZLudorH1+Mg/9QUKDtd3DSS3oT+zqWUI2PvmiROtEk5xsBC9yOJuoE?=
+ =?us-ascii?Q?C7YtZrsbUPHl3wPQSbUmluSwKjOhCHbWEKUYAbRlbFBBvqhIva1yHsVM9FRL?=
+ =?us-ascii?Q?52c8MT7tN46DGZtE7xQcdFq/5Y9Kz+93e1rvcMneLUAj1UsQt9cxuTgfXcOL?=
+ =?us-ascii?Q?pyYNQDG3E8bh9OhBd9qwiff0aDLJAGqcoKYLnvedCgXuFY0yaiNuUQYU3sV+?=
+ =?us-ascii?Q?QcqgoWlA+sb/jkgNKJczzCCKp2uQJS3Tm/r9gRk1bsq17pKNOsJirv7qZb1J?=
+ =?us-ascii?Q?+Bs6T6cg9XanCJqgv0sQs1rT4ZHSRfeU19wjm6q1H5pN7SK9CYHHt5Ldo2n3?=
+ =?us-ascii?Q?PSnnV6WbLETQby8XgN+kLcnKeG0Mc8TS+YasnuWc1CBMM9qD1SZB2bUZfOkm?=
+ =?us-ascii?Q?pm/icPOMvZgcsAq5aloncgr2enh878es9cXFaSHEmx5KqoSbZ2/k3S12/AM1?=
+ =?us-ascii?Q?k4088fmzjQgAgU9GoET+ZBIho1BRSO5E3TKwDEjIu4ryJ0FlNCF3ALRI91L4?=
+ =?us-ascii?Q?J6hgq+BhdTMx07iURwTkWrwdx/luHXwW0F+xk6mwjNfEl3WZLMsZBSVtdhxc?=
+ =?us-ascii?Q?PNIjLWVm8urW57oNFnIYlJnqfZXK9T6ixaP8ONmNq6HjZKnCQ5bPNRLk2ShO?=
+ =?us-ascii?Q?a0aeZUKSPbAYNC/oE9XPxi88UvL5iNXdKzy9nNpJfeNDNUCfpnUXQKCcSKRW?=
+ =?us-ascii?Q?E/9V4ivnwviktUorgfuM0PNYseBZXTAtj8KmFn4PlXHCFYdm55/hli2GUcCl?=
+ =?us-ascii?Q?CP27AegZzGP2s92cSsH5XyI+jKe+pDJB7ERAgytANKOYTTOLnc410MDhEOuh?=
+ =?us-ascii?Q?8l/uaMI2kuGi3R2N9gS3QpE/EJSpUp/0MOpJYR2lbmQh1rIOygKSxGqNXlSF?=
+ =?us-ascii?Q?iOBq+BncpReLGwj065DOGLCYV9pmHhQJFGrbnTLvqAHiLDVhyI4ZnyClNe7x?=
+ =?us-ascii?Q?bRIZ9FuLQef6RaQ/kREnDz9QFhtuKGYxlriLMAquWG/oSwlqKykRUTp3tLRp?=
+ =?us-ascii?Q?mbzaktTK9AJAQ0tr89OlMvlyuuat+iXuH8EMwAVC96CwvADC0EEVwvcIJmBO?=
+ =?us-ascii?Q?77njSioeGBqZJ3Giap9lEI7ek/2sAdeOnyG+2/lcXfgpZN/m3K5uFSFmSJ+l?=
+ =?us-ascii?Q?fs2kz+Pt2PApRzyLwJXvM4MzGVj7/0LGKY4cYjDDWUwc79xOQJr+S1h3VJ++?=
+ =?us-ascii?Q?CmFLzFAofTNdnuu1ZiboJ4=3D?=
+X-Microsoft-Antispam-Message-Info: bXL27h52zohs4U6U+Fwd9ulmsSb28xgqEONXmuI3l8Ja7iDoBq2+Aw8ftuqX19MKstRQ8S94DVtvctEdQ1g776v6ZYHt5NBPVmxyD2k76JF/Judq/l5Fq8REiOcgNLYGK0ZbvP9pyDG/Em6AnNA0DO6WGNVVlhyNACCVNVP9nM2GAv8NxGEpS+YkiLL2POXaG63hzTo5QYtTNwNLQgIhUho6oKcBsD6bmU2LKcKvjONNrkkjz8ZlcI13QMYkn0iHnKkF1s5DB0V6E9EHTH4LZAbIZYR9MRCA/bHRXELgUujImp0lhxO0xKaBGqqSa57KUgNcxWXw5spNVsysQme/HN7k/U2B6ncS/LQum8RWpKA=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;6:izvElteu8grYOsz5tKaZ0EZjuZzJefn5TocKJeuCWRYXU6052D8NB35QVabr32BQIeyEdUrhTm4Lo3xq2rNF2rM7C1TLbINiHvvu7JSdp3rlL4LNqm8SI6U/KN8AY3pvZPFnXoE3PVtZ8hJvvVSOTNvgPznL8PR5EOBlwjWcy5qErjDacMwqyGpoCk0qXcSYy8cKkGuwQ839SKWvw47b7IkWf9MHBQ5s1n71m+P8+mX5o2LpoQtO+5lMU76o2yuJimCQgHqfslQTolR6DOHNLjexysDEQ3t1g/gj3VlJ/AJSVuTedTvObgKOPW8cdK/vtrsuUrDiecp5Qbta7Abfog/zJkl3kqbaKCMovI/RV8n1oyaTKTY+dyqpRmea7/d31wAC3eki0BtcRdVhcJ2nQzFjTBdNNMuBS1JrYH+4OduqW3fWDt7vNPg1v2wrM5Bt0MFwubRXFp/PjFu28JPEtw==;5:H9EYJKxzZGxH3X4GEIWaJW8QhHWWNMEB2advSr/gTYFnxk4HkThMwwwUWEvum5wFFqhd6+LDhiCgcm646J+TFz8Kg2CHkuK5aRViZgC6BcEfuAxRGNJ1/GYwC//N/UYEo5i9v8qv17ZSZZc28sJB3j6hb4ZAYynUa9fagBLIve0=;7:OxsbE02yp1Bg4RfM1DUr3LPpiIVJGR+6mNAMjcWso4kINYEQQ+0+k4dqIbiafEFa2e0pavW9oW5X+ntXSlfBk1a+zDqYdroa7Jdqj0Go3ctk2ArclxAfKgbpdMrzm/SfEl7YM0vRQrod46LGjMaVqGhvPLxZzaO5aS5YCiOQNwc5M1UXWe5IRCDhrc4Ieot6ud2RGNbkRck36aWcimsqnpz8lqq6X+RGQYX8Mvg6L7pYbEGrTanjwgfMJ/vt2+LU
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2018 18:11:11.2266 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82cef1f8-6f0b-4e21-7009-08d60535faff
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4935
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65635
+X-archive-position: 65636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stefan@agner.ch
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,254 +101,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Boris,
+This series overrides barrier_before_unreachable() for MIPS to add a
+.insn assembler directive.
 
-On 17.08.2018 18:09, Boris Brezillon wrote:
-> Let's make the raw NAND API consistent by patching all helpers and
-> hooks to take a nand_chip object instead of an mtd_info one or
-> remove the mtd_info object when both are passed.
-> 
-> Let's tackle all ecc->read_xxx() hooks at once.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> ---
->  drivers/mtd/nand/raw/atmel/nand-controller.c  | 12 ++---
->  drivers/mtd/nand/raw/brcmnand/brcmnand.c      | 21 ++++----
->  drivers/mtd/nand/raw/cafe_nand.c              | 10 ++--
->  drivers/mtd/nand/raw/denali.c                 | 17 +++---
->  drivers/mtd/nand/raw/docg4.c                  | 20 ++++----
->  drivers/mtd/nand/raw/fsl_elbc_nand.c          |  5 +-
->  drivers/mtd/nand/raw/fsl_ifc_nand.c           |  5 +-
->  drivers/mtd/nand/raw/fsmc_nand.c              |  6 +--
->  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c    | 23 ++++-----
->  drivers/mtd/nand/raw/hisi504_nand.c           |  9 ++--
->  drivers/mtd/nand/raw/lpc32xx_mlc.c            | 10 ++--
->  drivers/mtd/nand/raw/lpc32xx_slc.c            | 14 ++---
->  drivers/mtd/nand/raw/marvell_nand.c           | 30 +++++------
->  drivers/mtd/nand/raw/mtk_nand.c               | 23 +++++----
->  drivers/mtd/nand/raw/mxc_nand.c               | 11 ++--
->  drivers/mtd/nand/raw/nand_base.c              | 74 +++++++++++++--------------
->  drivers/mtd/nand/raw/nand_micron.c            |  6 +--
->  drivers/mtd/nand/raw/omap2.c                  |  6 +--
->  drivers/mtd/nand/raw/qcom_nandc.c             | 11 ++--
->  drivers/mtd/nand/raw/r852.c                   |  5 +-
->  drivers/mtd/nand/raw/sh_flctl.c               |  6 ++-
->  drivers/mtd/nand/raw/sunxi_nand.c             | 26 +++++-----
->  drivers/mtd/nand/raw/tango_nand.c             | 16 +++---
->  drivers/mtd/nand/raw/tegra_nand.c             | 15 +++---
->  drivers/mtd/nand/raw/vf610_nfc.c              | 18 +++----
->  drivers/staging/mt29f_spinand/mt29f_spinand.c |  5 +-
->  include/linux/mtd/rawnand.h                   | 30 +++++------
->  27 files changed, 216 insertions(+), 218 deletions(-)
-> 
-[...]
-> diff --git a/drivers/mtd/nand/raw/tegra_nand.c
-> b/drivers/mtd/nand/raw/tegra_nand.c
-> index 5dcee20e2a8c..bcc3a2888c4f 100644
-> --- a/drivers/mtd/nand/raw/tegra_nand.c
-> +++ b/drivers/mtd/nand/raw/tegra_nand.c
-> @@ -615,10 +615,10 @@ static int tegra_nand_page_xfer(struct mtd_info
-> *mtd, struct nand_chip *chip,
->  	return ret;
->  }
->  
-> -static int tegra_nand_read_page_raw(struct mtd_info *mtd,
-> -				    struct nand_chip *chip, u8 *buf,
-> +static int tegra_nand_read_page_raw(struct nand_chip *chip, u8 *buf,
->  				    int oob_required, int page)
->  {
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
->  	void *oob_buf = oob_required ? chip->oob_poi : NULL;
->  
->  	return tegra_nand_page_xfer(mtd, chip, buf, oob_buf,
+Due to the subsequent __builtin_unreachable(), the assembler can't tell
+that a label on the empty inline asm is code rather than data, so any
+microMIPS branches targeting it (which sadly can't be removed) raise
+errors due to the mismatching ISA mode, Adding the .insn in patch 2
+tells the assembler that it should be treated as code.
 
-Since mtd is only required to pass it to tegra_nand_page_xfer, it would
-be better to change tegra_nand_page_xfer to only take chip.
+Applies cleanly atop v4.18.
 
---
-Stefan
+Changes in v8 (Paul):
+- Try something different... including a header that might be an
+  asm-generic wrapper in linux/compiler_types.h creates build ordering
+  problems for any C file which can be built before the asm-generic
+  target. Patch 1 changes tact to avoid asm-generic & the ordering
+  problem.
+- Commit message improvements in patch 2.
 
-> @@ -635,9 +635,10 @@ static int tegra_nand_write_page_raw(struct mtd_info *mtd,
->  				     mtd->oobsize, page, false);
->  }
->  
-> -static int tegra_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
-> -			       int page)
-> +static int tegra_nand_read_oob(struct nand_chip *chip, int page)
->  {
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
-> +
->  	return tegra_nand_page_xfer(mtd, chip, NULL, chip->oob_poi,
->  				    mtd->oobsize, page, true);
->  }
-> @@ -649,10 +650,10 @@ static int tegra_nand_write_oob(struct mtd_info
-> *mtd, struct nand_chip *chip,
->  				    mtd->oobsize, page, false);
->  }
->  
-> -static int tegra_nand_read_page_hwecc(struct mtd_info *mtd,
-> -				      struct nand_chip *chip, u8 *buf,
-> +static int tegra_nand_read_page_hwecc(struct nand_chip *chip, u8 *buf,
->  				      int oob_required, int page)
->  {
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
->  	struct tegra_nand_controller *ctrl = to_tegra_ctrl(chip->controller);
->  	struct tegra_nand_chip *nand = to_tegra_chip(chip);
->  	void *oob_buf = oob_required ? chip->oob_poi : NULL;
-> @@ -716,7 +717,7 @@ static int tegra_nand_read_page_hwecc(struct mtd_info *mtd,
->  		 * erased or if error correction just failed for all sub-
->  		 * pages.
->  		 */
-> -		ret = tegra_nand_read_oob(mtd, chip, page);
-> +		ret = tegra_nand_read_oob(chip, page);
->  		if (ret < 0)
->  			return ret;
->  
-> diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
-> index a73213c835a5..7cbcc41cea95 100644
-> --- a/drivers/mtd/nand/raw/vf610_nfc.c
-> +++ b/drivers/mtd/nand/raw/vf610_nfc.c
-> @@ -557,9 +557,10 @@ static void vf610_nfc_fill_row(struct nand_chip
-> *chip, int page, u32 *code,
->  	}
->  }
->  
-> -static int vf610_nfc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
-> -				uint8_t *buf, int oob_required, int page)
-> +static int vf610_nfc_read_page(struct nand_chip *chip, uint8_t *buf,
-> +			       int oob_required, int page)
->  {
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
->  	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
->  	int trfr_sz = mtd->writesize + mtd->oobsize;
->  	u32 row = 0, cmd1 = 0, cmd2 = 0, code = 0;
-> @@ -643,15 +644,15 @@ static int vf610_nfc_write_page(struct mtd_info
-> *mtd, struct nand_chip *chip,
->  	return 0;
->  }
->  
-> -static int vf610_nfc_read_page_raw(struct mtd_info *mtd,
-> -				   struct nand_chip *chip, u8 *buf,
-> +static int vf610_nfc_read_page_raw(struct nand_chip *chip, u8 *buf,
->  				   int oob_required, int page)
->  {
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
->  	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
->  	int ret;
->  
->  	nfc->data_access = true;
-> -	ret = nand_read_page_raw(mtd, chip, buf, oob_required, page);
-> +	ret = nand_read_page_raw(chip, buf, oob_required, page);
->  	nfc->data_access = false;
->  
->  	return ret;
-> @@ -677,14 +678,13 @@ static int vf610_nfc_write_page_raw(struct mtd_info *mtd,
->  	return nand_prog_page_end_op(chip);
->  }
->  
-> -static int vf610_nfc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
-> -			      int page)
-> +static int vf610_nfc_read_oob(struct nand_chip *chip, int page)
->  {
-> -	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
-> +	struct vf610_nfc *nfc = mtd_to_nfc(nand_to_mtd(chip));
->  	int ret;
->  
->  	nfc->data_access = true;
-> -	ret = nand_read_oob_std(mtd, chip, page);
-> +	ret = nand_read_oob_std(chip, page);
->  	nfc->data_access = false;
->  
->  	return ret;
-> diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> index b50788b2d1d9..0776d38d4498 100644
-> --- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> +++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-> @@ -643,14 +643,15 @@ static int spinand_write_page_hwecc(struct mtd_info *mtd,
->  	return nand_prog_page_op(chip, page, 0, p, eccsize * eccsteps);
->  }
->  
-> -static int spinand_read_page_hwecc(struct mtd_info *mtd, struct
-> nand_chip *chip,
-> -				   u8 *buf, int oob_required, int page)
-> +static int spinand_read_page_hwecc(struct nand_chip *chip, u8 *buf,
-> +				   int oob_required, int page)
->  {
->  	int retval;
->  	u8 status;
->  	u8 *p = buf;
->  	int eccsize = chip->ecc.size;
->  	int eccsteps = chip->ecc.steps;
-> +	struct mtd_info *mtd = nand_to_mtd(chip);
->  	struct spinand_info *info = nand_get_controller_data(chip);
->  
->  	enable_read_hw_ecc = 1;
-> diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-> index 24434310d126..a5f4a585f749 100644
-> --- a/include/linux/mtd/rawnand.h
-> +++ b/include/linux/mtd/rawnand.h
-> @@ -652,14 +652,14 @@ struct nand_ecc_ctrl {
->  			 uint8_t *ecc_code);
->  	int (*correct)(struct nand_chip *chip, uint8_t *dat, uint8_t *read_ecc,
->  		       uint8_t *calc_ecc);
-> -	int (*read_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
-> -			uint8_t *buf, int oob_required, int page);
-> +	int (*read_page_raw)(struct nand_chip *chip, uint8_t *buf,
-> +			     int oob_required, int page);
->  	int (*write_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
->  			const uint8_t *buf, int oob_required, int page);
-> -	int (*read_page)(struct mtd_info *mtd, struct nand_chip *chip,
-> -			uint8_t *buf, int oob_required, int page);
-> -	int (*read_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
-> -			uint32_t offs, uint32_t len, uint8_t *buf, int page);
-> +	int (*read_page)(struct nand_chip *chip, uint8_t *buf,
-> +			 int oob_required, int page);
-> +	int (*read_subpage)(struct nand_chip *chip, uint32_t offs,
-> +			    uint32_t len, uint8_t *buf, int page);
->  	int (*write_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
->  			uint32_t offset, uint32_t data_len,
->  			const uint8_t *data_buf, int oob_required, int page);
-> @@ -667,9 +667,8 @@ struct nand_ecc_ctrl {
->  			const uint8_t *buf, int oob_required, int page);
->  	int (*write_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
->  			int page);
-> -	int (*read_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
-> -			int page);
-> -	int (*read_oob)(struct mtd_info *mtd, struct nand_chip *chip, int page);
-> +	int (*read_oob_raw)(struct nand_chip *chip, int page);
-> +	int (*read_oob)(struct nand_chip *chip, int page);
->  	int (*write_oob)(struct mtd_info *mtd, struct nand_chip *chip,
->  			int page);
->  };
-> @@ -1676,11 +1675,10 @@ int nand_write_oob_syndrome(struct mtd_info
-> *mtd, struct nand_chip *chip,
->  			    int page);
->  
->  /* Default read_oob implementation */
-> -int nand_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip, int page);
-> +int nand_read_oob_std(struct nand_chip *chip, int page);
->  
->  /* Default read_oob syndrome implementation */
-> -int nand_read_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
-> -			   int page);
-> +int nand_read_oob_syndrome(struct nand_chip *chip, int page);
->  
->  /* Wrapper to use in order for controllers/vendors to GET/SET FEATURES */
->  int nand_get_features(struct nand_chip *chip, int addr, u8 *subfeature_param);
-> @@ -1690,10 +1688,10 @@ int nand_get_set_features_notsupp(struct
-> mtd_info *mtd, struct nand_chip *chip,
->  				  int addr, u8 *subfeature_param);
->  
->  /* Default read_page_raw implementation */
-> -int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
-> -		       uint8_t *buf, int oob_required, int page);
-> -int nand_read_page_raw_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
-> -			       u8 *buf, int oob_required, int page);
-> +int nand_read_page_raw(struct nand_chip *chip, uint8_t *buf, int oob_required,
-> +		       int page);
-> +int nand_read_page_raw_notsupp(struct nand_chip *chip, u8 *buf,
-> +			       int oob_required, int page);
->  
->  /* Default write_page_raw implementation */
->  int nand_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
+Changes in v7 (Paul):
+- Elaborate on affected GCC versions in patch 4.
+
+Changes in v6 (Paul):
+- Fix patch 2 to find the generated headers in $(objtree).
+- Remove CC's for defunct MIPS email addresses (Matthew & Robert).
+- CC linux-um@lists.infradead.org.
+
+Changes in v5 (Paul):
+- Rebase atop v4.18-rc8.
+- Comment & commit message tweaks.
+- Add SPDX-License-Identifier to asm-generic/compiler.h.
+
+Changes in v4 (James):
+- Fix asm-generic/compiler.h include from check, compiler_types.h is
+  included on the command line so linux/compiler.h may not be included
+  (kbuild test robot).
+- New patch 2 to fix um (kbuild test robot).
+
+Changes in v3 (James):
+- New patch 1.
+- Rebase after 4.17 arch removal and update commit messages.
+- Use asm/compiler.h instead of compiler-gcc.h (Arnd).
+- Drop stable tag for now.
+
+Changes in v2 (Paul):
+- Add generic-y entries to arch Kbuild files. Oops!
+
+Previous versions:
+v1: https://www.linux-mips.org/archives/linux-mips/2016-05/msg00399.html
+v2: https://www.linux-mips.org/archives/linux-mips/2016-05/msg00401.html
+v3: https://lkml.org/lkml/2018/4/17/228
+v4: https://www.linux-mips.org/archives/linux-mips/2018-05/msg00069.html
+v5: https://www.spinics.net/lists/mips/msg74408.html
+v6: https://www.spinics.net/lists/mips/msg74425.html
+v7: https://www.spinics.net/lists/linux-arch/msg47934.html
+
+Older #ifdef-based attempt:
+https://marc.info/?l=linux-mips&m=145555921408274&w=2
+
+Paul Burton (2):
+  kbuild: Allow asm-specific compiler_types.h
+  MIPS: Workaround GCC __builtin_unreachable reordering bug
+
+ arch/mips/include/asm/compiler_types.h | 39 ++++++++++++++++++++++++++
+ include/linux/compiler-gcc.h           |  2 ++
+ scripts/Makefile.lib                   |  5 +++-
+ 3 files changed, 45 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/asm/compiler_types.h
+
+-- 
+2.18.0

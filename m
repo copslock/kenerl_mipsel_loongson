@@ -1,96 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2018 20:11:53 +0200 (CEST)
-Received: from mail-eopbgr730131.outbound.protection.outlook.com ([40.107.73.131]:40480
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994685AbeHRSLYnhFvN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 Aug 2018 20:11:24 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2018 12:14:27 +0200 (CEST)
+Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:39698
+        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990945AbeHSKON4CzH8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Aug 2018 12:14:13 +0200
+Received: by mail-wr1-x442.google.com with SMTP id o37-v6so1690342wrf.6;
+        Sun, 19 Aug 2018 03:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=axr3lji30FelzXcjd45bcsbNzC0X1BTnSuI1Dn8YaJk=;
- b=UXiGruUm9nTHiSUvXW3711HQRxyKQ33DARkiV8OQW93SkqJQJOg39Zf9a7Mqoin4bpFZ0jIT0hRr/iAGUk1J6VVSlm6EbzBMNfnTOlO5srLQcMlvMCN88X0JHHkaFf3Mghm59qa4ywk5R1OvWjgMTOndL9kBkHO4nrveVSThh1c=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from pburton-laptop.mipstec.com (4.16.204.77) by
- BYAPR08MB4935.namprd08.prod.outlook.com (2603:10b6:a03:6a::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1059.22; Sat, 18 Aug 2018 18:11:14 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        James Hogan <jhogan@kernel.org>,
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=MUX690iee6Uv4JxZQBrijq1WybE1sglwnlOd7W5C1aQ=;
+        b=o8JNb2uKkQfvlORu8CEYJ29W+Gi5aXq6xdjBNG2742dH+BDrohHKd4jVY9QWzoswzK
+         T3JF7MIThxFH9iLyvNDn2pekdP8Thc8JuKtZ3bmj4PbczUd0IGY04PIGuSasNDmCXQc4
+         VMe37tqrchG8Z5B8Ctk4NFXcCfCejV/2CFxVdI6rGMsFb5LV6T8qme1o5CZiuWtH6tpC
+         Y6Z8PeC1s2UUctSWr1Ftt7dEzlaQVkyiCz6wJJKN/UbAfJZEF5t36nW/086SXVWNd4FQ
+         rXawiNzym1xE/QJrDViSzpbLPx4SuEC/PEaZyrOKFF/PCtdRDx6ufNEqufGXSNIL7PNJ
+         YY2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=MUX690iee6Uv4JxZQBrijq1WybE1sglwnlOd7W5C1aQ=;
+        b=sc/bVtdo37uu4BZYphLYi9QPIfCkCWcTv8GcNquKYXAbH6IYKyZOn4Urfmefn4QQuF
+         N4NwkMK4zxax4v/FmKwBV/22APSVraQsdpG+wwdD8kqEVvdzmmIdxmLldfIGXdfuEJc3
+         xZ/+x1jkiK4IXWXeTn4oJryetCEfyAO4rskO+XLoTZVi1F2z+9mv5O3EOXeCSFW+yGPM
+         4M0BpVprIJsUm06rhaTtZeC8UxCD3uw8/EeqDuIKtVpd/GBTDwM1mcrASWPQVrAImRAm
+         k7u+x3zZDhLV7RXP53+pbcWDGEsO7evKGAUyHDL9UVxFgblSyVsefXvSSu7RFa5vw3yn
+         D2lQ==
+X-Gm-Message-State: AOUpUlFsB12Cy/ncPRPq/TataZk3xW2nw+RiuPXlgFP6v+VOUQ1DE9oJ
+        fl7MAr0kzTmGsXLWv+jugoA=
+X-Google-Smtp-Source: AA+uWPyNm23TCnwgnzh8ch6Gu8RKk+3otKqm7BmvksR7q5nGNmkEj+YKz9aLLCCupQA72r0h6EB8RA==
+X-Received: by 2002:adf:b583:: with SMTP id c3-v6mr27025768wre.79.1534673648312;
+        Sun, 19 Aug 2018 03:14:08 -0700 (PDT)
+Received: from [172.28.172.2] ([46.188.134.42])
+        by smtp.gmail.com with ESMTPSA id m8-v6sm14979543wrf.93.2018.08.19.03.13.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 19 Aug 2018 03:14:06 -0700 (PDT)
+Subject: Re: [PATCH 01/23] mtd: rawnand: plat_nand: Pass a nand_chip object to
+ all platform_nand_ctrl hooks
+To:     Boris Brezillon <boris.brezillon@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-mtd@lists.infradead.org
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lukasz Majewski <lukma@denx.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Alexander Clouter <alex@digriz.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v8 2/2] MIPS: Workaround GCC __builtin_unreachable reordering bug
-Date:   Sat, 18 Aug 2018 11:10:17 -0700
-Message-Id: <20180818181017.1246-3-paul.burton@mips.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180818181017.1246-1-paul.burton@mips.com>
-References: <20180818181017.1246-1-paul.burton@mips.com>
+        Han Xu <han.xu@nxp.com>,
+        Harvey Hunt <harveyhuntnexus@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Xiaolei Li <xiaolei.li@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Mans Rullgard <mans@mansr.com>, Stefan Agner <stefan@agner.ch>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
+References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
+ <20180817160922.6224-2-boris.brezillon@bootlin.com>
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Message-ID: <157f4cfb-ea3b-7e10-e4f2-3acaf5fd6df0@gmail.com>
+Date:   Sun, 19 Aug 2018 12:13:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR21CA0035.namprd21.prod.outlook.com
- (2603:10b6:3:ed::21) To BYAPR08MB4935.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::16)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f39ce75a-adca-46cd-59f4-08d60535fcd0
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4935;
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;3:q0ToXm9KHYmsJNDYWLbwOEPvyQ/bvSw0GOptKD8/0NLekdIzGsZEaXWw4NQPnkbUn1wWxAigeQUEC1EUJP6eKJwWh7aYqFlFEpiNZCnZtNMKvcGM8v+Mdug7G80VJxMvUaIvPrWMMan4BhwZl1Xbu9HD4tDnZU9nBCD0xcl544hM44GDheRam8KE51SuqWkPoQrS8R+i1IxeVM+SFJzNUvuQjyVvEi54kIb25Mj/gakWYrMqXT9I3N6skM5cngnq;25:uwVG1Lng0YmCZqe1dW0G/nQr6IOrplLIZ4K+BdQaFJRRMVooqixyda3szVaZ5bS/hj/ERngbmd3wOA/8H9SuIx0mZ9ok/4TaE2O0QWVqM2nEZJYk6LnSF+7fSsMU5W9+UcGKrXudyMKdsgt2RR/KjrC55OSXUUsyACj5xaXztvOqX9GptaeupP+CM0pPKyRloActB44q6+oRGoavYUamoAr6PjLzDkSegl6H2rYCD/fMNHoqp5oibaMy8LkA5ouRakzXxBzcXz+vYzN+fFIv/a4HMSI2We9TckJcqh68d7BbMVo3DO6kGLQ9s/Rki5CvwUXESs6a6w95wrJnWfIoug==;31:7A3cFLN4uA0rNya1uFoJjxIGT8YERe6v+RSPwB64PibLFZ6xRXGzpcY39adX6PzQ+cTjWUaqcAf6D1dgr1O0K+bQh4/AMcao+Ivt+5qG/cOZShy81ALEvkKxN1A8jgA9qKsYsiSZcxAQ0//nwxKg8ki2l2OyT2+G0ke5+9KopAt9P6SzrAZaPvZcqpJpoXuMUITox5MdZY3Ys2usjASuj4WIzqZRistBD9mwa/2lZhg=
-X-MS-TrafficTypeDiagnostic: BYAPR08MB4935:
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;20:XBTae1Xb//EsnJRA1t8Dr6bav3L0f1lyycs9mwzUgbFtWJJ1ML1LZKCrgsAy1Nha+ZWrsa63d5eSo3Nnv8uZcpQNLVeSgLAxnUsPNmzD6i06vbCRRwdLvj+br2TLGYS7oc8TdKu99UOUJk4tIkR3o5OdhuzenPOQ3LYDaz2wL5o57hifCxYb/DBFvsnYUhOaKJC0y3H8wiLAOxt0GTUBAElVZtNsbse9KGNjSGIqpWogtbDZtR6TELmguOiqPbI5;4:sEYLW98pK5r554VnW1HegkVvLlFlMcLj0epSd0W5B/BPnub5iBllfTvFTjW7k26pvkyOoX4oU6yR/6V9CbPnQllWeMhNYHEVjCIP1vb5IZZit/hqoWkdtkL1tgwpz9dQZRNt+eY49eSD2nt6nWJX82MxIWBCoxijOLTxz4mLKgOLr7670JQ5lp0TmEwB8k6ZTE/R/D85EndSrrgLhkencivSvfr9XmBOtwW9xiWTN1UzmsauSEbcMa9T9KSBmvfsIIJ81coNnE8rXEhT/mzw3s9/CK2Jhbm+2EWWJ8tmcTGjX68RyPo6+ax1JjnPYEOpYOOBVtUNusv0kgU011WpjN7Ymf3gT9cVjUVza1z8Jwg=
-X-Microsoft-Antispam-PRVS: <BYAPR08MB49354163BB2E6A3654A522A9C13C0@BYAPR08MB4935.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(22074186197030)(183786458502308);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3231311)(944501410)(52105095)(93006095)(3002001)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123564045)(20161123562045)(20161123560045)(201708071742011)(7699016);SRVR:BYAPR08MB4935;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4935;
-X-Forefront-PRVS: 076804FE30
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(376002)(346002)(396003)(136003)(366004)(39840400004)(199004)(189003)(53416004)(47776003)(106356001)(105586002)(14444005)(50466002)(6486002)(6916009)(48376002)(386003)(6506007)(11346002)(956004)(476003)(2906002)(2616005)(8936002)(42882007)(16586007)(486006)(316002)(446003)(2351001)(36756003)(68736007)(66066001)(54906003)(966005)(50226002)(186003)(16526019)(478600001)(26005)(1076002)(51416003)(52116002)(53936002)(97736004)(76176011)(69596002)(6306002)(6512007)(81166006)(8676002)(81156014)(305945005)(44832011)(3846002)(6116002)(7736002)(4326008)(2361001)(5660300001)(25786009);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4935;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4935;23:v7Ls6GU5X+Q+laqXeNssfS01t+PB4M2jEdN7N8lk+?=
- =?us-ascii?Q?3nKlpnGXs/9DcHBVCDCVc/3AkTMLae4QI8FqRz87wPGDzLB5TTPKvxU1FwhN?=
- =?us-ascii?Q?FlWPo6WYj+3rF+HUbctiSZhAy27/p0aaDzl2UPrFwUqzbMGNEjZ8tGAsOF5L?=
- =?us-ascii?Q?G1JoGf26YErmioxk0dx7lqzd3p7Wr8OfrHFJhc3ON3t6w18JJnfz7bnpPYXx?=
- =?us-ascii?Q?yb+FkDe4VhtIWSrjTTJpBjRuO6JZ65qF20MR16krx/dxfd9I7N8Dhsz0WY5T?=
- =?us-ascii?Q?T5o8t0PDf++QS4xqM2YHJpMG4mNx577/lRVmJEeh1uduVmV/mXgBCNEeQuZw?=
- =?us-ascii?Q?YPVVSRkNjE4Z0taUcHcE6jQ5gUckiJqJG0+yyFeUYiH7/bfLacbTfTpQrvfP?=
- =?us-ascii?Q?1Fdng/tET8p8ZMW1JDLjVNzp7kWJIMorGDdtKqgkO39278rJ+NfCqoo+9js9?=
- =?us-ascii?Q?L63yIxxEfZt9+0qZsemgabUhCf9P5lXmPgqlnLn+9JMETqIujaipsY877FBz?=
- =?us-ascii?Q?fh2sU/wvpjgc1VhT/d1B55CKxzazhtgaZwS2goCO4SxplF3vImF/10EKnWfl?=
- =?us-ascii?Q?G6hUIwia9wjZsTHHMMPIRt7S81oP4v32d0xZtKDARvcqr474CVY3ikTvGKv+?=
- =?us-ascii?Q?+HX7UlGKijADZkQb2/f7HGMKfKcaAXQoCCjcbi2ujy9etZP4VZ9KqVGyUd65?=
- =?us-ascii?Q?guhcCurM2eu1KUswBRilSFsOxb9gGfJo/5NiJUm0Y8siRayAIyYedH4Netbg?=
- =?us-ascii?Q?PT7x+rjshekizxM+Wpr2pDyLc1BvNWeLIFDYzXC5x7P+Zpo7/WgX9/HUyWWs?=
- =?us-ascii?Q?+hBmS50uKrOZKYHbtzGYJgNQG2FUTZhNDSJQpW6lxjbbzspkjTiqVGGGEApU?=
- =?us-ascii?Q?+sXaDQSmNQJCeVcAJeX9D4ghbpYtThSI4Uzw3ObMQeXnkFjq/5O5dKcu43FE?=
- =?us-ascii?Q?9XEzoxd92rN+IGE9zLrsTGAeRU4yPJRAk2+lEA4gFY4SE/5Vn/gjthycoT/Z?=
- =?us-ascii?Q?SWHjtYO9ERkmMGLi7E1bvyLDAa+OTgrq+vnE7MUcVbeOCLGCNqfqfd8SsLX2?=
- =?us-ascii?Q?M88Szw/c1/D+MIvdvUQsUVStzDcJmgydlb6EEM5mCRTp+KpAMFKokj/a0E5G?=
- =?us-ascii?Q?aOlWew1MtSoWYUDMUiyNTj93DeBWUIhMjsax9EUh80a+MlV6JYU+KqNmo9xI?=
- =?us-ascii?Q?5I4sBb7i32+GLKxv/X9ZKl606CoWo3jLXG/G7soQ1DAdpElmwCsPfJHAYlQV?=
- =?us-ascii?Q?y/25LMg6IERxg1KGGp9sTSOJajwuv2NFPwBfBxQz2MA/C/zF1SozwS+8ztn0?=
- =?us-ascii?Q?lQH+t1bfp3VT8JUHSg/wlA05o6UqwmKBsEeNqwRyJrX?=
-X-Microsoft-Antispam-Message-Info: UR0jU1NgSCPCXXjYjc60g5SvbBn/XYRaMKRaEOP//lbNPt3w/Sbr4Mnfugs0z+HzeK1pu9fB/9uWCdGl1w+VxgwjpeAx/5xpowxQyIuJnb4n/bxfmKjQ1Q0B0caqJUJ4SIrsN86u1eorJpF7Ji5MNamv7JfN2GiBMH52pBR31cjugXGKUWrTVxH1pumRzDui3FI8lNnymctDq7AwlmPXFNKzJAasAe6oIxO85abPi2g6N4FE7oRGvYXUfx7lgiYPiDhampTegQ6z9Kg47dHlzHRrM8xer4sjRe0GVWCmzEtOwXxFW9ohRKEoF2Zz2v31EmSswjmNGx4n9KqQymtXAeihFaLh5TPhgetDZepyx4c=
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4935;6:BTLH8r8XJ1JDqJVpygfZnmFe6NZY/zUSbgd0eUmV6QehVQU/gigcsllHglVqCHDtJBNHMBhIsSbYe0fM57BeG3sOpPqd7u55u9jUSiFndhHqAJVr2lFWxhXwSy02BIGNwUGJW9YzNdnm7xVFOYX7JWeAdI/SjGrlwBkg8kXfQNNP2PAVdiTLCLwKIKgaLdHun+qtELyrD6RN0cJa/N0UMuaWa6ECqIuijZtcZ/y2QvqHKyF//0/L/S+um0hNpdkOio/dMcvy+S/MvN9iDaXOlWMiNnrLno40XTyk1vVbQh36MgT+Pfv15QbJ7aEYUvLw64OK7drdlPfobX63yWy3o1tXoVI0fsdpDICY/6nEMRkrfGUb5uuTZloiR2qcn8NPRGShCJAR3pCpVXYPo9ahrbEQdaO4IPjDahYhE/UeS8gdC/mUQxaarLvUqpP3EiEv+COprjPxTvwDiuDPIpvX9g==;5:3VMgwSHmFmtvHlVUWnsIK4w4GiAce8SwppsfXnGyqGdUdE9bvSO3z/S87k1CduI9Ym3pQAXVjwvcsP/Y8hOZKnNDDrJ/gZNjX2w+6znoeOs7QA25MXhbFoD3bmJRoTadbY+9via9z8YA3hcCkyYdzp0Wk/SEO1XQamflWGwnG8g=;7:ip+IF6kX3+m+k5ggbV9rb4yt4XrrbyTFEvx1TsgTJOpD+bTBuwjmdWZntJfYLGu1D9jVrOM9s5DkbTyDxOsbmSxKLIfP7iT/w4XdswoTA1E1np9B+rqBnIUttNW7fCid/uBMXLYuMUcBkW8Z8ekkf2u764C5HbnfRBLbtbPeL5nSBPknjVjD8KcgtJs5s3nI7ImqFrdMvPmBdnpCFgqZIjiFXUx9pW9u5lPI7ayWSWjl3YV07ezmwDFDbkpRGNbN
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2018 18:11:14.2891 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f39ce75a-adca-46cd-59f4-08d60535fcd0
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4935
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <20180817160922.6224-2-boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <alexander.sverdlin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65638
+X-archive-position: 65639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: alexander.sverdlin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,162 +123,609 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some versions of GCC for the MIPS architecture suffer from a bug which
-can lead to instructions from beyond an unreachable statement being
-incorrectly reordered into earlier branch delay slots if the unreachable
-statement is the only content of a case in a switch statement. This can
-lead to seemingly random behaviour, such as invalid memory accesses from
-incorrectly reordered loads or stores, and link failures on microMIPS
-builds.
+Hello!
 
-See this potential GCC fix for details:
+On 17/08/18 18:09, Boris Brezillon wrote:
+> Let's make the raw NAND API consistent by patching all helpers and
+> hooks to take a nand_chip object instead of an mtd_info one or
+> remove the mtd_info object when both are passed.
+>
+> In order to do that, we first need to update the platform_nand_ctrl
+> hooks to take a nand_chip object instead of an mtd_info.
+>
+> We had temporary plat_nand_xxx() wrappers to the do the mtd -> chip
+> conversion, but those will be dropped when doing the patching nand_chip
+> hooks to take a nand_chip object.
+>
+> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 
-    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+For the EP93xx parts:
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
-Runtime problems resulting from this bug were initially observed using a
-maltasmvp_defconfig v4.4 kernel built using GCC 4.9.2 (from a Codescape
-SDK 2015.06-05 toolchain), with the result being an address exception
-taken after log messages about the L1 caches (during probe of the L2
-cache):
-
-    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
-    VPE topology {2,2} total 4
-    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
-    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
-    <AdEL exception here>
-
-This is early enough that the kernel exception vectors are not in use,
-so any further output depends upon the bootloader. This is reproducible
-in QEMU where no further output occurs - ie. the system hangs here.
-Given the nature of the bug it may potentially be hit with differing
-symptoms. The bug is known to affect GCC versions as recent as 7.3, and
-it is unclear whether GCC 8 fixed it or just happens not to encounter
-the bug in the testcase found at the link above due to differing
-optimizations.
-
-This bug can be worked around by placing a volatile asm statement, which
-GCC is prevented from reordering past, prior to the
-__builtin_unreachable call.
-
-That was actually done already for other reasons by commit 173a3efd3edb
-("bug.h: work around GCC PR82365 in BUG()"), but creates problems for
-microMIPS builds due to the lack of a .insn directive. The microMIPS ISA
-allows for interlinking with regular MIPS32 code by repurposing bit 0 of
-the program counter as an ISA mode bit. To switch modes one changes the
-value of this bit in the PC. However typical branch instructions encode
-their offsets as multiples of 2-byte instruction halfwords, which means
-they cannot change ISA mode - this must be done using either an indirect
-branch (a jump-register in MIPS terminology) or a dedicated jalx
-instruction. In order to ensure that regular branches don't attempt to
-target code in a different ISA which they can't actually switch to, the
-linker will check that branch targets are code in the same ISA as the
-branch.
-
-Unfortunately our empty asm volatile statements don't qualify as code,
-and the link for microMIPS builds fails with errors such as:
-
-    arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA mode
-    arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA mode
-
-Resolve this by adding a .insn directive within the asm statement which
-declares that what comes next is code. This may or may not be true,
-since we don't really know what comes next, but as this code is in an
-unreachable path anyway that doesn't matter since we won't execute it.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mips@linux-mips.org
-
----
-
-Changes in v8:
-- Move to asm/compiler_types.h to suit patch 1.
-- Commit message improvements.
-- Drop James' SoB since this changed a fair bit since he added it.
-
-Changes in v7:
-- Elaborate on affected GCC versions in comment.
-
-Changes in v6: None
-
-Changes in v5:
-- Comment & commit message tweaks.
-
-Changes in v4: None
-
-Changes in v3:
-- Forward port to v4.17-rc and update commit message.
-- Drop stable tag for now.
-
-Changes in v2:
-- Remove generic-y entry.
-
- arch/mips/include/asm/compiler_types.h | 39 ++++++++++++++++++++++++++
- include/linux/compiler-gcc.h           |  2 ++
- 2 files changed, 41 insertions(+)
- create mode 100644 arch/mips/include/asm/compiler_types.h
-
-diff --git a/arch/mips/include/asm/compiler_types.h b/arch/mips/include/asm/compiler_types.h
-new file mode 100644
-index 000000000000..cecd5dc48ce2
---- /dev/null
-+++ b/arch/mips/include/asm/compiler_types.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_COMPILER_TYPES_H__
-+#define __ASM_COMPILER_TYPES_H__
-+
-+/*
-+ * With GCC 4.5 onwards we can use __builtin_unreachable to indicate to the
-+ * compiler that a particular code path will never be hit. This allows it to be
-+ * optimised out of the generated binary.
-+ *
-+ * Unfortunately at least GCC 4.6.3 through 7.3.0 inclusive suffer from a bug
-+ * that can lead to instructions from beyond an unreachable statement being
-+ * incorrectly reordered into earlier delay slots if the unreachable statement
-+ * is the only content of a case in a switch statement. This can lead to
-+ * seemingly random behaviour, such as invalid memory accesses from incorrectly
-+ * reordered loads or stores. See this potential GCC fix for details:
-+ *
-+ *   https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
-+ *
-+ * It is unclear whether GCC 8 onwards suffer from the same issue - nothing
-+ * relevant is mentioned in GCC 8 release notes and nothing obviously relevant
-+ * stands out in GCC commit logs, but these newer GCC versions generate very
-+ * different code for the testcase which doesn't exhibit the bug.
-+ *
-+ * GCC also handles stack allocation suboptimally when calling noreturn
-+ * functions or calling __builtin_unreachable():
-+ *
-+ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82365
-+ *
-+ * We work around both of these issues by placing a volatile asm statement,
-+ * which GCC is prevented from reordering past, prior to __builtin_unreachable
-+ * calls.
-+ *
-+ * The .insn statement is required to ensure that any branches to the
-+ * statement, which sadly must be kept due to the asm statement, are known to
-+ * be branches to code and satisfy linker requirements for microMIPS kernels.
-+ */
-+#define barrier_before_unreachable() asm volatile(".insn")
-+
-+#endif /* __ASM_COMPILER_TYPES_H__ */
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index f1a7492a5cc8..354d40f7bf80 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -218,7 +218,9 @@
-  *
-  * Adding an empty inline assembly before it works around the problem
-  */
-+#ifndef barrier_before_unreachable
- #define barrier_before_unreachable() asm volatile("")
-+#endif
- 
- /*
-  * Mark a position in code as unreachable.  This can be used to
--- 
-2.18.0
+> ---
+>   arch/arm/mach-ep93xx/snappercl15.c      |  7 ++--
+>   arch/arm/mach-ep93xx/ts72xx.c           |  7 ++--
+>   arch/arm/mach-imx/mach-qong.c           | 11 +++----
+>   arch/arm/mach-ixp4xx/ixdp425-setup.c    |  3 +-
+>   arch/arm/mach-omap1/board-fsample.c     |  2 +-
+>   arch/arm/mach-omap1/board-h2.c          |  2 +-
+>   arch/arm/mach-omap1/board-h3.c          |  2 +-
+>   arch/arm/mach-omap1/board-nand.c        |  3 +-
+>   arch/arm/mach-omap1/board-perseus2.c    |  2 +-
+>   arch/arm/mach-omap1/common.h            |  2 +-
+>   arch/arm/mach-orion5x/ts78xx-setup.c    | 18 ++++-------
+>   arch/arm/mach-pxa/balloon3.c            |  8 ++---
+>   arch/arm/mach-pxa/em-x270.c             |  5 ++-
+>   arch/arm/mach-pxa/palmtx.c              |  5 ++-
+>   arch/mips/alchemy/devboards/db1200.c    |  5 ++-
+>   arch/mips/alchemy/devboards/db1300.c    |  5 ++-
+>   arch/mips/alchemy/devboards/db1550.c    |  5 ++-
+>   arch/mips/netlogic/xlr/platform-flash.c |  4 +--
+>   arch/mips/pnx833x/common/platform.c     |  3 +-
+>   arch/mips/rb532/devices.c               |  5 ++-
+>   arch/sh/boards/mach-migor/setup.c       |  6 ++--
+>   drivers/mtd/nand/raw/plat_nand.c        | 57 ++++++++++++++++++++++++++++++---
+>   include/linux/mtd/rawnand.h             | 10 +++---
+>   23 files changed, 101 insertions(+), 76 deletions(-)
+>
+> diff --git a/arch/arm/mach-ep93xx/snappercl15.c b/arch/arm/mach-ep93xx/snappercl15.c
+> index 45940c1d7787..aa03ea79c5f5 100644
+> --- a/arch/arm/mach-ep93xx/snappercl15.c
+> +++ b/arch/arm/mach-ep93xx/snappercl15.c
+> @@ -45,10 +45,9 @@
+>   
+>   #define NAND_CTRL_ADDR(chip) 	(chip->IO_ADDR_W + 0x40)
+>   
+> -static void snappercl15_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+> +static void snappercl15_nand_cmd_ctrl(struct nand_chip *chip, int cmd,
+>   				      unsigned int ctrl)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+>   	static u16 nand_state = SNAPPERCL15_NAND_WPN;
+>   	u16 set;
+>   
+> @@ -73,10 +72,8 @@ static void snappercl15_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+>   		__raw_writew((cmd & 0xff) | nand_state, chip->IO_ADDR_W);
+>   }
+>   
+> -static int snappercl15_nand_dev_ready(struct mtd_info *mtd)
+> +static int snappercl15_nand_dev_ready(struct nand_chip *chip)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+> -
+>   	return !!(__raw_readw(NAND_CTRL_ADDR(chip)) & SNAPPERCL15_NAND_RDY);
+>   }
+>   
+> diff --git a/arch/arm/mach-ep93xx/ts72xx.c b/arch/arm/mach-ep93xx/ts72xx.c
+> index c089a2a4fe30..26259dd9e951 100644
+> --- a/arch/arm/mach-ep93xx/ts72xx.c
+> +++ b/arch/arm/mach-ep93xx/ts72xx.c
+> @@ -76,11 +76,9 @@ static void __init ts72xx_map_io(void)
+>   #define TS72XX_NAND_CONTROL_ADDR_LINE	22	/* 0xN0400000 */
+>   #define TS72XX_NAND_BUSY_ADDR_LINE	23	/* 0xN0800000 */
+>   
+> -static void ts72xx_nand_hwcontrol(struct mtd_info *mtd,
+> +static void ts72xx_nand_hwcontrol(struct nand_chip *chip,
+>   				  int cmd, unsigned int ctrl)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+> -
+>   	if (ctrl & NAND_CTRL_CHANGE) {
+>   		void __iomem *addr = chip->IO_ADDR_R;
+>   		unsigned char bits;
+> @@ -99,9 +97,8 @@ static void ts72xx_nand_hwcontrol(struct mtd_info *mtd,
+>   		__raw_writeb(cmd, chip->IO_ADDR_W);
+>   }
+>   
+> -static int ts72xx_nand_device_ready(struct mtd_info *mtd)
+> +static int ts72xx_nand_device_ready(struct nand_chip *chip)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+>   	void __iomem *addr = chip->IO_ADDR_R;
+>   
+>   	addr += (1 << TS72XX_NAND_BUSY_ADDR_LINE);
+> diff --git a/arch/arm/mach-imx/mach-qong.c b/arch/arm/mach-imx/mach-qong.c
+> index 42a700053103..ff015f603ac9 100644
+> --- a/arch/arm/mach-imx/mach-qong.c
+> +++ b/arch/arm/mach-imx/mach-qong.c
+> @@ -129,10 +129,9 @@ static void qong_init_nor_mtd(void)
+>   /*
+>    * Hardware specific access to control-lines
+>    */
+> -static void qong_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +static void qong_nand_cmd_ctrl(struct nand_chip *nand_chip, int cmd,
+> +			       unsigned int ctrl)
+>   {
+> -	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+> -
+>   	if (cmd == NAND_CMD_NONE)
+>   		return;
+>   
+> @@ -145,14 +144,14 @@ static void qong_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+>   /*
+>    * Read the Device Ready pin.
+>    */
+> -static int qong_nand_device_ready(struct mtd_info *mtd)
+> +static int qong_nand_device_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(IOMUX_TO_GPIO(MX31_PIN_NFRB));
+>   }
+>   
+> -static void qong_nand_select_chip(struct mtd_info *mtd, int chip)
+> +static void qong_nand_select_chip(struct nand_chip *chip, int cs)
+>   {
+> -	if (chip >= 0)
+> +	if (cs >= 0)
+>   		gpio_set_value(IOMUX_TO_GPIO(MX31_PIN_NFCE_B), 0);
+>   	else
+>   		gpio_set_value(IOMUX_TO_GPIO(MX31_PIN_NFCE_B), 1);
+> diff --git a/arch/arm/mach-ixp4xx/ixdp425-setup.c b/arch/arm/mach-ixp4xx/ixdp425-setup.c
+> index 3ec829d52cdd..7c39edc121ba 100644
+> --- a/arch/arm/mach-ixp4xx/ixdp425-setup.c
+> +++ b/arch/arm/mach-ixp4xx/ixdp425-setup.c
+> @@ -75,9 +75,8 @@ static struct mtd_partition ixdp425_partitions[] = {
+>   };
+>   
+>   static void
+> -ixdp425_flash_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +ixdp425_flash_nand_cmd_ctrl(struct nand_chip *this, int cmd, unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	int offset = (int)nand_get_controller_data(this);
+>   
+>   	if (ctrl & NAND_CTRL_CHANGE) {
+> diff --git a/arch/arm/mach-omap1/board-fsample.c b/arch/arm/mach-omap1/board-fsample.c
+> index 69bd601feb83..e9f512a0602e 100644
+> --- a/arch/arm/mach-omap1/board-fsample.c
+> +++ b/arch/arm/mach-omap1/board-fsample.c
+> @@ -186,7 +186,7 @@ static struct platform_device nor_device = {
+>   
+>   #define FSAMPLE_NAND_RB_GPIO_PIN	62
+>   
+> -static int nand_dev_ready(struct mtd_info *mtd)
+> +static int nand_dev_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(FSAMPLE_NAND_RB_GPIO_PIN);
+>   }
+> diff --git a/arch/arm/mach-omap1/board-h2.c b/arch/arm/mach-omap1/board-h2.c
+> index ab51f8554697..23f5512142f2 100644
+> --- a/arch/arm/mach-omap1/board-h2.c
+> +++ b/arch/arm/mach-omap1/board-h2.c
+> @@ -182,7 +182,7 @@ static struct mtd_partition h2_nand_partitions[] = {
+>   
+>   #define H2_NAND_RB_GPIO_PIN	62
+>   
+> -static int h2_nand_dev_ready(struct mtd_info *mtd)
+> +static int h2_nand_dev_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(H2_NAND_RB_GPIO_PIN);
+>   }
+> diff --git a/arch/arm/mach-omap1/board-h3.c b/arch/arm/mach-omap1/board-h3.c
+> index ad339f51cc78..98e7cb42e2c1 100644
+> --- a/arch/arm/mach-omap1/board-h3.c
+> +++ b/arch/arm/mach-omap1/board-h3.c
+> @@ -185,7 +185,7 @@ static struct mtd_partition nand_partitions[] = {
+>   
+>   #define H3_NAND_RB_GPIO_PIN	10
+>   
+> -static int nand_dev_ready(struct mtd_info *mtd)
+> +static int nand_dev_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(H3_NAND_RB_GPIO_PIN);
+>   }
+> diff --git a/arch/arm/mach-omap1/board-nand.c b/arch/arm/mach-omap1/board-nand.c
+> index 1bffbb4e050f..59d56a30bc63 100644
+> --- a/arch/arm/mach-omap1/board-nand.c
+> +++ b/arch/arm/mach-omap1/board-nand.c
+> @@ -20,9 +20,8 @@
+>   
+>   #include "common.h"
+>   
+> -void omap1_nand_cmd_ctl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +void omap1_nand_cmd_ctl(struct nand_chip *this, int cmd, unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long mask;
+>   
+>   	if (cmd == NAND_CMD_NONE)
+> diff --git a/arch/arm/mach-omap1/board-perseus2.c b/arch/arm/mach-omap1/board-perseus2.c
+> index b4951eb82898..c61c7c7520ca 100644
+> --- a/arch/arm/mach-omap1/board-perseus2.c
+> +++ b/arch/arm/mach-omap1/board-perseus2.c
+> @@ -144,7 +144,7 @@ static struct platform_device nor_device = {
+>   
+>   #define P2_NAND_RB_GPIO_PIN	62
+>   
+> -static int nand_dev_ready(struct mtd_info *mtd)
+> +static int nand_dev_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(P2_NAND_RB_GPIO_PIN);
+>   }
+> diff --git a/arch/arm/mach-omap1/common.h b/arch/arm/mach-omap1/common.h
+> index c6537d2c2859..11b87a4c84d4 100644
+> --- a/arch/arm/mach-omap1/common.h
+> +++ b/arch/arm/mach-omap1/common.h
+> @@ -82,7 +82,7 @@ void omap1_restart(enum reboot_mode, const char *);
+>   
+>   extern void __init omap_check_revision(void);
+>   
+> -extern void omap1_nand_cmd_ctl(struct mtd_info *mtd, int cmd,
+> +extern void omap1_nand_cmd_ctl(struct nand_chip *this, int cmd,
+>   			       unsigned int ctrl);
+>   
+>   extern void omap1_timer_init(void);
+> diff --git a/arch/arm/mach-orion5x/ts78xx-setup.c b/arch/arm/mach-orion5x/ts78xx-setup.c
+> index 94778739e38f..48d85ddf7c31 100644
+> --- a/arch/arm/mach-orion5x/ts78xx-setup.c
+> +++ b/arch/arm/mach-orion5x/ts78xx-setup.c
+> @@ -131,11 +131,9 @@ static void ts78xx_ts_rtc_unload(void)
+>    * NAND_CLE: bit 1 -> bit 1
+>    * NAND_ALE: bit 2 -> bit 0
+>    */
+> -static void ts78xx_ts_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+> -			unsigned int ctrl)
+> +static void ts78xx_ts_nand_cmd_ctrl(struct nand_chip *this, int cmd,
+> +				    unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+> -
+>   	if (ctrl & NAND_CTRL_CHANGE) {
+>   		unsigned char bits;
+>   
+> @@ -150,15 +148,14 @@ static void ts78xx_ts_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+>   		writeb(cmd, this->IO_ADDR_W);
+>   }
+>   
+> -static int ts78xx_ts_nand_dev_ready(struct mtd_info *mtd)
+> +static int ts78xx_ts_nand_dev_ready(struct nand_chip *chip)
+>   {
+>   	return readb(TS_NAND_CTRL) & 0x20;
+>   }
+>   
+> -static void ts78xx_ts_nand_write_buf(struct mtd_info *mtd,
+> -			const uint8_t *buf, int len)
+> +static void ts78xx_ts_nand_write_buf(struct nand_chip *chip,
+> +				     const uint8_t *buf, int len)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+>   	void __iomem *io_base = chip->IO_ADDR_W;
+>   	unsigned long off = ((unsigned long)buf & 3);
+>   	int sz;
+> @@ -182,10 +179,9 @@ static void ts78xx_ts_nand_write_buf(struct mtd_info *mtd,
+>   		writesb(io_base, buf, len);
+>   }
+>   
+> -static void ts78xx_ts_nand_read_buf(struct mtd_info *mtd,
+> -			uint8_t *buf, int len)
+> +static void ts78xx_ts_nand_read_buf(struct nand_chip *chip,
+> +				    uint8_t *buf, int len)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+>   	void __iomem *io_base = chip->IO_ADDR_R;
+>   	unsigned long off = ((unsigned long)buf & 3);
+>   	int sz;
+> diff --git a/arch/arm/mach-pxa/balloon3.c b/arch/arm/mach-pxa/balloon3.c
+> index af46d2182533..71fda90b9599 100644
+> --- a/arch/arm/mach-pxa/balloon3.c
+> +++ b/arch/arm/mach-pxa/balloon3.c
+> @@ -571,9 +571,9 @@ static inline void balloon3_i2c_init(void) {}
+>    * NAND
+>    ******************************************************************************/
+>   #if defined(CONFIG_MTD_NAND_PLATFORM)||defined(CONFIG_MTD_NAND_PLATFORM_MODULE)
+> -static void balloon3_nand_cmd_ctl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +static void balloon3_nand_cmd_ctl(struct nand_chip *this, int cmd,
+> +				  unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	uint8_t balloon3_ctl_set = 0, balloon3_ctl_clr = 0;
+>   
+>   	if (ctrl & NAND_CTRL_CHANGE) {
+> @@ -600,7 +600,7 @@ static void balloon3_nand_cmd_ctl(struct mtd_info *mtd, int cmd, unsigned int ct
+>   		writeb(cmd, this->IO_ADDR_W);
+>   }
+>   
+> -static void balloon3_nand_select_chip(struct mtd_info *mtd, int chip)
+> +static void balloon3_nand_select_chip(struct nand_chip *this, int chip)
+>   {
+>   	if (chip < 0 || chip > 3)
+>   		return;
+> @@ -616,7 +616,7 @@ static void balloon3_nand_select_chip(struct mtd_info *mtd, int chip)
+>   		BALLOON3_NAND_CONTROL_REG);
+>   }
+>   
+> -static int balloon3_nand_dev_ready(struct mtd_info *mtd)
+> +static int balloon3_nand_dev_ready(struct nand_chip *this)
+>   {
+>   	return __raw_readl(BALLOON3_NAND_STAT_REG) & BALLOON3_NAND_STAT_RNB;
+>   }
+> diff --git a/arch/arm/mach-pxa/em-x270.c b/arch/arm/mach-pxa/em-x270.c
+> index 29be04c6cc48..ba1ec9992830 100644
+> --- a/arch/arm/mach-pxa/em-x270.c
+> +++ b/arch/arm/mach-pxa/em-x270.c
+> @@ -285,10 +285,9 @@ static void nand_cs_off(void)
+>   }
+>   
+>   /* hardware specific access to control-lines */
+> -static void em_x270_nand_cmd_ctl(struct mtd_info *mtd, int dat,
+> +static void em_x270_nand_cmd_ctl(struct nand_chip *this, int dat,
+>   				 unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long nandaddr = (unsigned long)this->IO_ADDR_W;
+>   
+>   	dsb();
+> @@ -317,7 +316,7 @@ static void em_x270_nand_cmd_ctl(struct mtd_info *mtd, int dat,
+>   }
+>   
+>   /* read device ready pin */
+> -static int em_x270_nand_device_ready(struct mtd_info *mtd)
+> +static int em_x270_nand_device_ready(struct nand_chip *this)
+>   {
+>   	dsb();
+>   
+> diff --git a/arch/arm/mach-pxa/palmtx.c b/arch/arm/mach-pxa/palmtx.c
+> index 47e3e38e9bec..ed9661e70b83 100644
+> --- a/arch/arm/mach-pxa/palmtx.c
+> +++ b/arch/arm/mach-pxa/palmtx.c
+> @@ -247,10 +247,9 @@ static inline void palmtx_keys_init(void) {}
+>    ******************************************************************************/
+>   #if defined(CONFIG_MTD_NAND_PLATFORM) || \
+>   	defined(CONFIG_MTD_NAND_PLATFORM_MODULE)
+> -static void palmtx_nand_cmd_ctl(struct mtd_info *mtd, int cmd,
+> -				 unsigned int ctrl)
+> +static void palmtx_nand_cmd_ctl(struct nand_chip *this, int cmd,
+> +				unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	char __iomem *nandaddr = this->IO_ADDR_W;
+>   
+>   	if (cmd == NAND_CMD_NONE)
+> diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+> index da7663770425..f043615c1a99 100644
+> --- a/arch/mips/alchemy/devboards/db1200.c
+> +++ b/arch/mips/alchemy/devboards/db1200.c
+> @@ -197,10 +197,9 @@ static struct i2c_board_info db1200_i2c_devs[] __initdata = {
+>   
+>   /**********************************************************************/
+>   
+> -static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+> +static void au1200_nand_cmd_ctrl(struct nand_chip *this, int cmd,
+>   				 unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
+>   
+>   	ioaddr &= 0xffffff00;
+> @@ -220,7 +219,7 @@ static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+>   	}
+>   }
+>   
+> -static int au1200_nand_device_ready(struct mtd_info *mtd)
+> +static int au1200_nand_device_ready(struct nand_chip *this)
+>   {
+>   	return alchemy_rdsmem(AU1000_MEM_STSTAT) & 1;
+>   }
+> diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+> index efb318e03e0a..1201fa655e78 100644
+> --- a/arch/mips/alchemy/devboards/db1300.c
+> +++ b/arch/mips/alchemy/devboards/db1300.c
+> @@ -149,10 +149,9 @@ static void __init db1300_gpio_config(void)
+>   
+>   /**********************************************************************/
+>   
+> -static void au1300_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+> +static void au1300_nand_cmd_ctrl(struct nand_chip *this, int cmd,
+>   				 unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
+>   
+>   	ioaddr &= 0xffffff00;
+> @@ -172,7 +171,7 @@ static void au1300_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+>   	}
+>   }
+>   
+> -static int au1300_nand_device_ready(struct mtd_info *mtd)
+> +static int au1300_nand_device_ready(struct nand_chip *this)
+>   {
+>   	return alchemy_rdsmem(AU1000_MEM_STSTAT) & 1;
+>   }
+> diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
+> index 7d3dfaa10231..cae39cde5de6 100644
+> --- a/arch/mips/alchemy/devboards/db1550.c
+> +++ b/arch/mips/alchemy/devboards/db1550.c
+> @@ -126,10 +126,9 @@ static struct i2c_board_info db1550_i2c_devs[] __initdata = {
+>   
+>   /**********************************************************************/
+>   
+> -static void au1550_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+> +static void au1550_nand_cmd_ctrl(struct nand_chip *this, int cmd,
+>   				 unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
+>   
+>   	ioaddr &= 0xffffff00;
+> @@ -149,7 +148,7 @@ static void au1550_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+>   	}
+>   }
+>   
+> -static int au1550_nand_device_ready(struct mtd_info *mtd)
+> +static int au1550_nand_device_ready(struct nand_chip *this)
+>   {
+>   	return alchemy_rdsmem(AU1000_MEM_STSTAT) & 1;
+>   }
+> diff --git a/arch/mips/netlogic/xlr/platform-flash.c b/arch/mips/netlogic/xlr/platform-flash.c
+> index 4d1b4c003376..4f76b85b44c9 100644
+> --- a/arch/mips/netlogic/xlr/platform-flash.c
+> +++ b/arch/mips/netlogic/xlr/platform-flash.c
+> @@ -92,8 +92,8 @@ struct xlr_nand_flash_priv {
+>   
+>   static struct xlr_nand_flash_priv nand_priv;
+>   
+> -static void xlr_nand_ctrl(struct mtd_info *mtd, int cmd,
+> -		unsigned int ctrl)
+> +static void xlr_nand_ctrl(struct nand_chip *chip, int cmd,
+> +			  unsigned int ctrl)
+>   {
+>   	if (ctrl & NAND_CLE)
+>   		nlm_write_reg(nand_priv.flash_mmio,
+> diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
+> index a7a4e9f5146d..ca8a2889431e 100644
+> --- a/arch/mips/pnx833x/common/platform.c
+> +++ b/arch/mips/pnx833x/common/platform.c
+> @@ -178,9 +178,8 @@ static struct platform_device pnx833x_sata_device = {
+>   };
+>   
+>   static void
+> -pnx833x_flash_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +pnx833x_flash_nand_cmd_ctrl(struct nand_chip *this, int cmd, unsigned int ctrl)
+>   {
+> -	struct nand_chip *this = mtd_to_nand(mtd);
+>   	unsigned long nandaddr = (unsigned long)this->IO_ADDR_W;
+>   
+>   	if (cmd == NAND_CMD_NONE)
+> diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+> index 354d258396ff..9173949892ed 100644
+> --- a/arch/mips/rb532/devices.c
+> +++ b/arch/mips/rb532/devices.c
+> @@ -141,14 +141,13 @@ static struct platform_device cf_slot0 = {
+>   };
+>   
+>   /* Resources and device for NAND */
+> -static int rb532_dev_ready(struct mtd_info *mtd)
+> +static int rb532_dev_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(GPIO_RDY);
+>   }
+>   
+> -static void rb532_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+> +static void rb532_cmd_ctrl(struct nand_chip *chip, int cmd, unsigned int ctrl)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+>   	unsigned char orbits, nandbits;
+>   
+>   	if (ctrl & NAND_CTRL_CHANGE) {
+> diff --git a/arch/sh/boards/mach-migor/setup.c b/arch/sh/boards/mach-migor/setup.c
+> index 3d7d0046cf49..1e16f8a861d3 100644
+> --- a/arch/sh/boards/mach-migor/setup.c
+> +++ b/arch/sh/boards/mach-migor/setup.c
+> @@ -166,11 +166,9 @@ static struct mtd_partition migor_nand_flash_partitions[] = {
+>   	},
+>   };
+>   
+> -static void migor_nand_flash_cmd_ctl(struct mtd_info *mtd, int cmd,
+> +static void migor_nand_flash_cmd_ctl(struct nand_chip *chip, int cmd,
+>   				     unsigned int ctrl)
+>   {
+> -	struct nand_chip *chip = mtd_to_nand(mtd);
+> -
+>   	if (cmd == NAND_CMD_NONE)
+>   		return;
+>   
+> @@ -182,7 +180,7 @@ static void migor_nand_flash_cmd_ctl(struct mtd_info *mtd, int cmd,
+>   		writeb(cmd, chip->IO_ADDR_W);
+>   }
+>   
+> -static int migor_nand_flash_ready(struct mtd_info *mtd)
+> +static int migor_nand_flash_ready(struct nand_chip *chip)
+>   {
+>   	return gpio_get_value(GPIO_PTA1); /* NAND_RBn */
+>   }
+> diff --git a/drivers/mtd/nand/raw/plat_nand.c b/drivers/mtd/nand/raw/plat_nand.c
+> index 222626df4b96..24f904300c44 100644
+> --- a/drivers/mtd/nand/raw/plat_nand.c
+> +++ b/drivers/mtd/nand/raw/plat_nand.c
+> @@ -23,6 +23,42 @@ struct plat_nand_data {
+>   	void __iomem		*io_base;
+>   };
+>   
+> +static void plat_nand_cmd_ctrl(struct mtd_info *mtd, int dat, unsigned int ctrl)
+> +{
+> +	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+> +
+> +	pdata->ctrl.cmd_ctrl(mtd_to_nand(mtd), dat, ctrl);
+> +}
+> +
+> +static int plat_nand_dev_ready(struct mtd_info *mtd)
+> +{
+> +	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+> +
+> +	return pdata->ctrl.dev_ready(mtd_to_nand(mtd));
+> +}
+> +
+> +static void plat_nand_select_chip(struct mtd_info *mtd, int cs)
+> +{
+> +	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+> +
+> +	pdata->ctrl.select_chip(mtd_to_nand(mtd), cs);
+> +}
+> +
+> +static void plat_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
+> +				int len)
+> +{
+> +	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+> +
+> +	pdata->ctrl.write_buf(mtd_to_nand(mtd), buf, len);
+> +}
+> +
+> +static void plat_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
+> +{
+> +	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+> +
+> +	pdata->ctrl.read_buf(mtd_to_nand(mtd), buf, len);
+> +}
+> +
+>   /*
+>    * Probe for the NAND device.
+>    */
+> @@ -62,11 +98,22 @@ static int plat_nand_probe(struct platform_device *pdev)
+>   
+>   	data->chip.IO_ADDR_R = data->io_base;
+>   	data->chip.IO_ADDR_W = data->io_base;
+> -	data->chip.cmd_ctrl = pdata->ctrl.cmd_ctrl;
+> -	data->chip.dev_ready = pdata->ctrl.dev_ready;
+> -	data->chip.select_chip = pdata->ctrl.select_chip;
+> -	data->chip.write_buf = pdata->ctrl.write_buf;
+> -	data->chip.read_buf = pdata->ctrl.read_buf;
+> +
+> +	if (pdata->ctrl.cmd_ctrl)
+> +		data->chip.cmd_ctrl = plat_nand_cmd_ctrl;
+> +
+> +	if (pdata->ctrl.dev_ready)
+> +		data->chip.dev_ready = plat_nand_dev_ready;
+> +
+> +	if (pdata->ctrl.select_chip)
+> +		data->chip.select_chip = plat_nand_select_chip;
+> +
+> +	if (pdata->ctrl.write_buf)
+> +		data->chip.write_buf = plat_nand_write_buf;
+> +
+> +	if (pdata->ctrl.read_buf)
+> +		data->chip.read_buf = plat_nand_read_buf;
+> +
+>   	data->chip.chip_delay = pdata->chip.chip_delay;
+>   	data->chip.options |= pdata->chip.options;
+>   	data->chip.bbt_options |= pdata->chip.bbt_options;
+> diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
+> index d155470f53c8..818cdc0a4dbb 100644
+> --- a/include/linux/mtd/rawnand.h
+> +++ b/include/linux/mtd/rawnand.h
+> @@ -1595,11 +1595,11 @@ struct platform_device;
+>   struct platform_nand_ctrl {
+>   	int (*probe)(struct platform_device *pdev);
+>   	void (*remove)(struct platform_device *pdev);
+> -	int (*dev_ready)(struct mtd_info *mtd);
+> -	void (*select_chip)(struct mtd_info *mtd, int chip);
+> -	void (*cmd_ctrl)(struct mtd_info *mtd, int dat, unsigned int ctrl);
+> -	void (*write_buf)(struct mtd_info *mtd, const uint8_t *buf, int len);
+> -	void (*read_buf)(struct mtd_info *mtd, uint8_t *buf, int len);
+> +	int (*dev_ready)(struct nand_chip *chip);
+> +	void (*select_chip)(struct nand_chip *chip, int cs);
+> +	void (*cmd_ctrl)(struct nand_chip *chip, int dat, unsigned int ctrl);
+> +	void (*write_buf)(struct nand_chip *chip, const uint8_t *buf, int len);
+> +	void (*read_buf)(struct nand_chip *chip, uint8_t *buf, int len);
+>   	void *priv;
+>   };
+>   

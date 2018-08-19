@@ -1,87 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2018 13:26:27 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:48343 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990757AbeHSL0YXXWWu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Aug 2018 13:26:24 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id DEFAD20DD8; Sun, 19 Aug 2018 13:26:17 +0200 (CEST)
-Received: from bbrezillon (unknown [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id ABBA5207C4;
-        Sun, 19 Aug 2018 13:26:16 +0200 (CEST)
-Date:   Sun, 19 Aug 2018 13:26:15 +0200
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Stefan Agner <stefan@agner.ch>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Lukasz Majewski <lukma@denx.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Han Xu <han.xu@nxp.com>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Xiaolei Li <xiaolei.li@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Subject: Re: [PATCH 08/23] mtd: rawnand: Pass a nand_chip object to
- ecc->read_xxx() hooks
-Message-ID: <20180819132615.6c090d12@bbrezillon>
-In-Reply-To: <c08c6ecf720cc6b242094246b2f296c3@agner.ch>
-References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
-        <20180817160922.6224-9-boris.brezillon@bootlin.com>
-        <c08c6ecf720cc6b242094246b2f296c3@agner.ch>
-X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2018 21:20:39 +0200 (CEST)
+Received: from mail-lf1-x144.google.com ([IPv6:2a00:1450:4864:20::144]:38811
+        "EHLO mail-lf1-x144.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994682AbeHSTUgkRZNO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Aug 2018 21:20:36 +0200
+Received: by mail-lf1-x144.google.com with SMTP id a4-v6so9321910lff.5
+        for <linux-mips@linux-mips.org>; Sun, 19 Aug 2018 12:20:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=MD9e6IlC0gB4zaSRGkqcrpZaimmviU2IMAsekNkAxuY=;
+        b=kw9rFY8G5dg2xtNZ1XseWQlBOPthKyxmai4v+N3slaCJSo9ltzdlx7Z7Ip+2mHw3Ie
+         fVFQqK1K651if7huTI/Y4j+fuLh+3pg0vrkxtMH/6vyJID4lDJSrFg6Wk7MkYiorG0E+
+         YSYBeNybJfv4z4qfvVHRqI8vG0i7fomyShZwmBc3Zfiv2LVPUucOIxPY5exLB0/g+L79
+         PO0TG4751fI/+ns7l4Se+J/RoPQj4lCKkXu6RVx2rMX+euBmR/tIchmnPDY7/yTacRDD
+         fH0F1VIzCT7aYvFQ5xkgL897w8sC7EbVGNHL0ax5CN0vJkX5NrlvmRpKrv651QgyvlBc
+         yMEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=MD9e6IlC0gB4zaSRGkqcrpZaimmviU2IMAsekNkAxuY=;
+        b=hC5ycmuUqfIJxGwRMcyZxSv/ukGs9Cz3c9aeyvMi4cTGluYlGkId8cdqPVEqxlKspL
+         yl3HplwBSakeykeEiQZhFM7QiuKk3jMuMwBUv9RI+ztLm+hJlK/vkQkcepElaSX/+PxU
+         yutzI5OjeDyqR8I3RJsIa8yXeVf6aqrEeOkD7mqeRY0AVkvxV+zWJMNUDhdoNMRV+kwo
+         eayctdaq1q3VTQ1htehx3udBF2uT1yewrxrMKJ3JNFxljGPgsbsqT6s8vcl38wymaPaI
+         HMzXdOc5UdfXQ/qLoaxjLG//gT5XS2gNS/IGtGT0w3v6hdz2tMJiLDb6gqBaqYD8fY/Z
+         xCmA==
+X-Gm-Message-State: AOUpUlE1BTNRWPsjKQpsKhrsfqLb85RqGAZ46JDLovVw3Fbk5DqUpK2H
+        R2pTweIRycBOghp1cOThDys=
+X-Google-Smtp-Source: AA+uWPwqz/8lUynIZlLbwVWPEb4/zqQDaqPUKEtOCoM23mwHog9jE1s55MlLGWrIokT5RLB8dw2qdg==
+X-Received: by 2002:a19:a111:: with SMTP id k17-v6mr26381802lfe.131.1534706431069;
+        Sun, 19 Aug 2018 12:20:31 -0700 (PDT)
+Received: from duuni.helsinki.fi (nat-eduroam-hy-138-172.fe.helsinki.fi. [128.214.138.172])
+        by smtp.gmail.com with ESMTPSA id f14-v6sm779262lfm.29.2018.08.19.12.20.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 19 Aug 2018 12:20:29 -0700 (PDT)
+From:   Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
+To:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
+Subject: [PATCH] MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
+Date:   Sun, 19 Aug 2018 22:20:23 +0300
+Message-Id: <20180819192023.18463-1-tuomas.tynkkynen@iki.fi>
+X-Mailer: git-send-email 2.16.3
+Return-Path: <dezgeg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65640
+X-archive-position: 65641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: tuomas.tynkkynen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,39 +64,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stefan,
+Setting GPIO 21 high seems to be required to enable power to USB ports
+on the WNDR3400v3. As there is already similar code for WNR3500L,
+make the existing USB power GPIO code generic and use that.
 
-On Sat, 18 Aug 2018 10:30:13 +0200
-Stefan Agner <stefan@agner.ch> wrote:
+Signed-off-by: Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
+---
+ arch/mips/bcm47xx/workarounds.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-> > diff --git a/drivers/mtd/nand/raw/tegra_nand.c
-> > b/drivers/mtd/nand/raw/tegra_nand.c
-> > index 5dcee20e2a8c..bcc3a2888c4f 100644
-> > --- a/drivers/mtd/nand/raw/tegra_nand.c
-> > +++ b/drivers/mtd/nand/raw/tegra_nand.c
-> > @@ -615,10 +615,10 @@ static int tegra_nand_page_xfer(struct mtd_info
-> > *mtd, struct nand_chip *chip,
-> >  	return ret;
-> >  }
-> >  
-> > -static int tegra_nand_read_page_raw(struct mtd_info *mtd,
-> > -				    struct nand_chip *chip, u8 *buf,
-> > +static int tegra_nand_read_page_raw(struct nand_chip *chip, u8 *buf,
-> >  				    int oob_required, int page)
-> >  {
-> > +	struct mtd_info *mtd = nand_to_mtd(chip);
-> >  	void *oob_buf = oob_required ? chip->oob_poi : NULL;
-> >  
-> >  	return tegra_nand_page_xfer(mtd, chip, buf, oob_buf,  
-> 
-> Since mtd is only required to pass it to tegra_nand_page_xfer, it would
-> be better to change tegra_nand_page_xfer to only take chip.
-
-For sure, but that's the sort of cleanups I'll leave to NAND controller
-driver maintainers (in this case you ;-)). I only take care of the NAND
-API here and try to make things as simple as possible to ease review and
-avoid breaking drivers. 
-
-Regards,
-
-Boris
+diff --git a/arch/mips/bcm47xx/workarounds.c b/arch/mips/bcm47xx/workarounds.c
+index 1a8a07e7a563..46eddbec8d9f 100644
+--- a/arch/mips/bcm47xx/workarounds.c
++++ b/arch/mips/bcm47xx/workarounds.c
+@@ -5,9 +5,8 @@
+ #include <bcm47xx_board.h>
+ #include <bcm47xx.h>
+ 
+-static void __init bcm47xx_workarounds_netgear_wnr3500l(void)
++static void __init bcm47xx_workarounds_enable_usb_power(int usb_power)
+ {
+-	const int usb_power = 12;
+ 	int err;
+ 
+ 	err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
+@@ -23,7 +22,10 @@ void __init bcm47xx_workarounds(void)
+ 
+ 	switch (board) {
+ 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
+-		bcm47xx_workarounds_netgear_wnr3500l();
++		bcm47xx_workarounds_enable_usb_power(12);
++		break;
++	case BCM47XX_BOARD_NETGEAR_WNDR3400_V3:
++		bcm47xx_workarounds_enable_usb_power(21);
+ 		break;
+ 	default:
+ 		/* No workaround(s) needed */
+-- 
+2.16.3

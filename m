@@ -1,52 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 09:38:19 +0200 (CEST)
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:38941 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993941AbeHTHiQhwXeJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 09:38:16 +0200
-X-Originating-IP: 81.250.144.103
-Received: from [10.30.1.20] (LNeuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 386B21BF207;
-        Mon, 20 Aug 2018 07:37:50 +0000 (UTC)
-Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     linux-mm@kvack.org, Mike Kravetz <mike.kravetz@oracle.com>,
-        linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        jejb@parisc-linux.org, deller@gmx.de, benh@kernel.crashing.org,
-        paulus@samba.org, mpe@ellerman.id.au, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, hpa@zytor.com, x86@kernel.org, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20180806175711.24438-1-alex@ghiti.fr>
- <81078a7f-09cf-7f19-f6bb-8a1f4968d6fb@ghiti.fr>
- <20180820071730.GC29735@dhcp22.suse.cz>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-Message-ID: <00b8c047-3ab5-f86b-41e5-d87950f10c21@ghiti.fr>
-Date:   Mon, 20 Aug 2018 09:36:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 09:57:52 +0200 (CEST)
+Received: from mail.kmu-office.ch ([IPv6:2a02:418:6a02::a2]:47154 "EHLO
+        mail.kmu-office.ch" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993941AbeHTH5tAU7FJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 09:57:49 +0200
+Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
+        by mail.kmu-office.ch (Postfix) with ESMTPSA id B92DE5C098D;
+        Mon, 20 Aug 2018 09:57:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
+        t=1534751867;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=g7AmbXNkQIurVSmibexV7AXumjOYX6OjcNzG5W+/Sjk=;
+        b=KtglNBk70xkhSaNPExcs7rTEgRl6uECpyfJquUBrL8ukABQLj69F3RA0ENZraA1BAALNIO
+        qIR/I7kRgWpF2SADeEa7qiutB1FA7cTa6nLs/Z7SuM3Y1Tju/c1dG4f/Q4B4O72a1uAzAB
+        FTnKEF9jA/KU0l1cstfky5Zg8yTFEWE=
 MIME-Version: 1.0
-In-Reply-To: <20180820071730.GC29735@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-Return-Path: <alex@ghiti.fr>
+Date:   Mon, 20 Aug 2018 09:57:47 +0200
+From:   Stefan Agner <stefan@agner.ch>
+To:     Boris Brezillon <boris.brezillon@bootlin.com>
+Cc:     Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-mtd@lists.infradead.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Lukasz Majewski <lukma@denx.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Alexander Clouter <alex@digriz.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Han Xu <han.xu@nxp.com>,
+        Harvey Hunt <harveyhuntnexus@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Xiaolei Li <xiaolei.li@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        Mans Rullgard <mans@mansr.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
+Subject: Re: [PATCH 08/23] mtd: rawnand: Pass a nand_chip object to
+ ecc->read_xxx() hooks
+In-Reply-To: <20180819132615.6c090d12@bbrezillon>
+References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
+ <20180817160922.6224-9-boris.brezillon@bootlin.com>
+ <c08c6ecf720cc6b242094246b2f296c3@agner.ch>
+ <20180819132615.6c090d12@bbrezillon>
+Message-ID: <f75fc1c2e3c70cdb6c2f9ca2dbba3f2f@agner.ch>
+X-Sender: stefan@agner.ch
+User-Agent: Roundcube Webmail/1.3.4
+Return-Path: <stefan@agner.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65652
+X-archive-position: 65653
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@ghiti.fr
+X-original-sender: stefan@agner.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,25 +104,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ok, my bad, sorry about that, I have just added Andrew as CC then.
-
-Thank you,
-
-Alex
-
-
-On 08/20/2018 09:17 AM, Michal Hocko wrote:
-> On Mon 20-08-18 08:45:10, Alexandre Ghiti wrote:
->> Hi Michal,
+On 19.08.2018 13:26, Boris Brezillon wrote:
+> Hi Stefan,
+> 
+> On Sat, 18 Aug 2018 10:30:13 +0200
+> Stefan Agner <stefan@agner.ch> wrote:
+> 
+>> > diff --git a/drivers/mtd/nand/raw/tegra_nand.c
+>> > b/drivers/mtd/nand/raw/tegra_nand.c
+>> > index 5dcee20e2a8c..bcc3a2888c4f 100644
+>> > --- a/drivers/mtd/nand/raw/tegra_nand.c
+>> > +++ b/drivers/mtd/nand/raw/tegra_nand.c
+>> > @@ -615,10 +615,10 @@ static int tegra_nand_page_xfer(struct mtd_info
+>> > *mtd, struct nand_chip *chip,
+>> >  	return ret;
+>> >  }
+>> >
+>> > -static int tegra_nand_read_page_raw(struct mtd_info *mtd,
+>> > -				    struct nand_chip *chip, u8 *buf,
+>> > +static int tegra_nand_read_page_raw(struct nand_chip *chip, u8 *buf,
+>> >  				    int oob_required, int page)
+>> >  {
+>> > +	struct mtd_info *mtd = nand_to_mtd(chip);
+>> >  	void *oob_buf = oob_required ? chip->oob_poi : NULL;
+>> >
+>> >  	return tegra_nand_page_xfer(mtd, chip, buf, oob_buf,
 >>
->> This patchset got acked, tested and reviewed by quite a few people, and it
->> has been suggested
->> that it should be included in -mm tree: could you tell me if something else
->> needs to be done for
->> its inclusion ?
->>
->> Thanks for your time,
-> I didn't really get to look at the series but seeing an Ack from Mike
-> and arch maintainers should be good enough for it to go. This email
-> doesn't have Andrew Morton in the CC list so you should add him if you
-> want the series to land into the mm tree.
+>> Since mtd is only required to pass it to tegra_nand_page_xfer, it would
+>> be better to change tegra_nand_page_xfer to only take chip.
+> 
+> For sure, but that's the sort of cleanups I'll leave to NAND controller
+> driver maintainers (in this case you ;-)). I only take care of the NAND
+> API here and try to make things as simple as possible to ease review and
+> avoid breaking drivers.
+
+Understand, but that change makes your patch simpler... Or did create
+those patches automatically? In that case it makes sense to avoid manual
+changes.
+
+I can send a follow up patch no problem, but if you do a v2 and did the
+chagnes manually anyway, I really think it can go into this patchset.
+
+--
+Stefan
+ 

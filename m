@@ -1,15 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 09:17:44 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:48736 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993946AbeHTHRjdFRK5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 20 Aug 2018 09:17:39 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 26AF0AEB6;
-        Mon, 20 Aug 2018 07:17:33 +0000 (UTC)
-Date:   Mon, 20 Aug 2018 09:17:30 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Alexandre Ghiti <alex@ghiti.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 09:38:19 +0200 (CEST)
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:38941 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993941AbeHTHiQhwXeJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 09:38:16 +0200
+X-Originating-IP: 81.250.144.103
+Received: from [10.30.1.20] (LNeuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 386B21BF207;
+        Mon, 20 Aug 2018 07:37:50 +0000 (UTC)
+Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
+ primitives
+To:     Michal Hocko <mhocko@kernel.org>
 Cc:     linux-mm@kvack.org, Mike Kravetz <mike.kravetz@oracle.com>,
         linux@armlinux.org.uk, catalin.marinas@arm.com,
         will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
@@ -22,26 +23,30 @@ Cc:     linux-mm@kvack.org, Mike Kravetz <mike.kravetz@oracle.com>,
         linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v6 00/11] hugetlb: Factorize hugetlb architecture
- primitives
-Message-ID: <20180820071730.GC29735@dhcp22.suse.cz>
+        linux-arch@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
 References: <20180806175711.24438-1-alex@ghiti.fr>
  <81078a7f-09cf-7f19-f6bb-8a1f4968d6fb@ghiti.fr>
+ <20180820071730.GC29735@dhcp22.suse.cz>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+Message-ID: <00b8c047-3ab5-f86b-41e5-d87950f10c21@ghiti.fr>
+Date:   Mon, 20 Aug 2018 09:36:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81078a7f-09cf-7f19-f6bb-8a1f4968d6fb@ghiti.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <mhocko@kernel.org>
+In-Reply-To: <20180820071730.GC29735@dhcp22.suse.cz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Return-Path: <alex@ghiti.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65651
+X-archive-position: 65652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: alex@ghiti.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,21 +59,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon 20-08-18 08:45:10, Alexandre Ghiti wrote:
-> Hi Michal,
-> 
-> This patchset got acked, tested and reviewed by quite a few people, and it
-> has been suggested
-> that it should be included in -mm tree: could you tell me if something else
-> needs to be done for
-> its inclusion ?
-> 
-> Thanks for your time,
+Ok, my bad, sorry about that, I have just added Andrew as CC then.
 
-I didn't really get to look at the series but seeing an Ack from Mike
-and arch maintainers should be good enough for it to go. This email
-doesn't have Andrew Morton in the CC list so you should add him if you
-want the series to land into the mm tree.
--- 
-Michal Hocko
-SUSE Labs
+Thank you,
+
+Alex
+
+
+On 08/20/2018 09:17 AM, Michal Hocko wrote:
+> On Mon 20-08-18 08:45:10, Alexandre Ghiti wrote:
+>> Hi Michal,
+>>
+>> This patchset got acked, tested and reviewed by quite a few people, and it
+>> has been suggested
+>> that it should be included in -mm tree: could you tell me if something else
+>> needs to be done for
+>> its inclusion ?
+>>
+>> Thanks for your time,
+> I didn't really get to look at the series but seeing an Ack from Mike
+> and arch maintainers should be good enough for it to go. This email
+> doesn't have Andrew Morton in the CC list so you should add him if you
+> want the series to land into the mm tree.

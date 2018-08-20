@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 11:27:47 +0200 (CEST)
-Received: from h1.mediaprovider.org ([IPv6:2a03:4000:6:1021::4]:53095 "EHLO
-        h1.direct-netware.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993941AbeHTJ1pD2yvt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 11:27:45 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 12:06:44 +0200 (CEST)
+Received: from h1.direct-netware.de ([5.45.107.14]:43846 "EHLO
+        h1.direct-netware.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993941AbeHTKGl7LiSt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 12:06:41 +0200
 Received: from odin.localnet (p54B04450.dip0.t-ipconnect.de [84.176.68.80])
-        by h1.direct-netware.de (Postfix) with ESMTPA id 1F49B101557
-        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 11:27:43 +0200 (CEST)
+        by h1.direct-netware.de (Postfix) with ESMTPA id A6005100B3B
+        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 12:06:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=vplace.de; s=mail;
-        t=1534757263; bh=P3j2VXopv21vVoRo/3C3S/ms3sDdY6P2EGP5Y4bScYA=;
-        h=From:To:Subject:Date:From;
-        b=PGx33dmglsXFFHAjpaoyfQXLn/aEJeiqgMHPv3DDB5LK6CdAZRoskiddMmJYJskVD
-         A0SY3X+7FVRERTgGIYf5xMayHCChIcTqPvlxBYZlfMReh61AZz+4k1OS26qnq7cCos
-         2mDxQ+JWnFwu33oC4aKe8wnSvqFj0Jip0eWckBMw=
+        t=1534759601; bh=55a+NsatVDclP9ZHCX1v8Dezd/svxy+xKdhcYmIAXZo=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=Knh1dmggo4Uti1OiiLo3uHobeosldclqgwFz6tFZijgJlqfgHuuxDeQyuLabpTrbK
+         uizSg7YmXck9VeBYiq8vsdTD2fdnxqC2BfYNVU6s7/ovMy6kFTicc3Y1wDkKFiNpu6
+         Kk8VSn2zuc/0li6UyCPYo0TiwVBbhoBNo2epazCI=
 Received: from loki.localnet (unknown [172.16.255.10])
-        by odin.localnet (Postfix) with ESMTP id B5107D7F571
-        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 11:27:41 +0200 (CEST)
-From:   Tobias Wolf <dev-NTEO@vplace.de>
+        by odin.localnet (Postfix) with ESMTP id 3B8E4D7F865
+        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 12:06:41 +0200 (CEST)
+From:   Tobias Wolf <t.wolf@vplace.de>
 To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Fix memory reservation in bootmem_init for certain non-usermem setups
-Date:   Mon, 20 Aug 2018 11:27:39 +0200
-Message-ID: <1983860.23LM468bU3@loki>
+Subject: [PATCH v2] MIPS: Fix memory reservation in bootmem_init for certain non-usermem setups
+Date:   Mon, 20 Aug 2018 12:06:40 +0200
+Message-ID: <1609732.rDWVQJrTVM@loki>
+In-Reply-To: <1983860.23LM468bU3@loki>
+References: <1983860.23LM468bU3@loki>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-Return-Path: <dev-NTEO@vplace.de>
+Return-Path: <t.wolf@vplace.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65656
+X-archive-position: 65657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev-NTEO@vplace.de
+X-original-sender: t.wolf@vplace.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,6 +53,8 @@ in the full memory range of 0x0 - 0x8000000 to be marked as reserved for this
 platform.
 
 This patch adds the originally intended prerequisite again.
+
+v2: Correctly compare that usermem is not null.
 
 Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
 ---
@@ -76,7 +80,7 @@ pages)
  	 * Reserve any memory between the start of RAM and PHYS_OFFSET
  	 */
 -	if (ramstart > PHYS_OFFSET)
-+	if (usermem == 0 && ramstart > PHYS_OFFSET)
++	if (usermem && ramstart > PHYS_OFFSET)
  		add_memory_region(PHYS_OFFSET, ramstart - PHYS_OFFSET,
  				  BOOT_MEM_RESERVED);
  
@@ -89,5 +93,3 @@ pages)
  static int __init early_parse_mem(char *p)
  {
  	phys_addr_t start, size;
--- 
-2.18.0

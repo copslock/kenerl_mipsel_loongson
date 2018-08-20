@@ -1,57 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2018 21:20:39 +0200 (CEST)
-Received: from mail-lf1-x144.google.com ([IPv6:2a00:1450:4864:20::144]:38811
-        "EHLO mail-lf1-x144.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994682AbeHSTUgkRZNO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Aug 2018 21:20:36 +0200
-Received: by mail-lf1-x144.google.com with SMTP id a4-v6so9321910lff.5
-        for <linux-mips@linux-mips.org>; Sun, 19 Aug 2018 12:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=MD9e6IlC0gB4zaSRGkqcrpZaimmviU2IMAsekNkAxuY=;
-        b=kw9rFY8G5dg2xtNZ1XseWQlBOPthKyxmai4v+N3slaCJSo9ltzdlx7Z7Ip+2mHw3Ie
-         fVFQqK1K651if7huTI/Y4j+fuLh+3pg0vrkxtMH/6vyJID4lDJSrFg6Wk7MkYiorG0E+
-         YSYBeNybJfv4z4qfvVHRqI8vG0i7fomyShZwmBc3Zfiv2LVPUucOIxPY5exLB0/g+L79
-         PO0TG4751fI/+ns7l4Se+J/RoPQj4lCKkXu6RVx2rMX+euBmR/tIchmnPDY7/yTacRDD
-         fH0F1VIzCT7aYvFQ5xkgL897w8sC7EbVGNHL0ax5CN0vJkX5NrlvmRpKrv651QgyvlBc
-         yMEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=MD9e6IlC0gB4zaSRGkqcrpZaimmviU2IMAsekNkAxuY=;
-        b=hC5ycmuUqfIJxGwRMcyZxSv/ukGs9Cz3c9aeyvMi4cTGluYlGkId8cdqPVEqxlKspL
-         yl3HplwBSakeykeEiQZhFM7QiuKk3jMuMwBUv9RI+ztLm+hJlK/vkQkcepElaSX/+PxU
-         yutzI5OjeDyqR8I3RJsIa8yXeVf6aqrEeOkD7mqeRY0AVkvxV+zWJMNUDhdoNMRV+kwo
-         eayctdaq1q3VTQ1htehx3udBF2uT1yewrxrMKJ3JNFxljGPgsbsqT6s8vcl38wymaPaI
-         HMzXdOc5UdfXQ/qLoaxjLG//gT5XS2gNS/IGtGT0w3v6hdz2tMJiLDb6gqBaqYD8fY/Z
-         xCmA==
-X-Gm-Message-State: AOUpUlE1BTNRWPsjKQpsKhrsfqLb85RqGAZ46JDLovVw3Fbk5DqUpK2H
-        R2pTweIRycBOghp1cOThDys=
-X-Google-Smtp-Source: AA+uWPwqz/8lUynIZlLbwVWPEb4/zqQDaqPUKEtOCoM23mwHog9jE1s55MlLGWrIokT5RLB8dw2qdg==
-X-Received: by 2002:a19:a111:: with SMTP id k17-v6mr26381802lfe.131.1534706431069;
-        Sun, 19 Aug 2018 12:20:31 -0700 (PDT)
-Received: from duuni.helsinki.fi (nat-eduroam-hy-138-172.fe.helsinki.fi. [128.214.138.172])
-        by smtp.gmail.com with ESMTPSA id f14-v6sm779262lfm.29.2018.08.19.12.20.29
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 19 Aug 2018 12:20:29 -0700 (PDT)
-From:   Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
-To:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
-Subject: [PATCH] MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
-Date:   Sun, 19 Aug 2018 22:20:23 +0300
-Message-Id: <20180819192023.18463-1-tuomas.tynkkynen@iki.fi>
-X-Mailer: git-send-email 2.16.3
-Return-Path: <dezgeg@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2018 06:43:13 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:33994 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990434AbeHTEnKHOVof (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2018 06:43:10 +0200
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7K4d49a034065
+        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 00:43:08 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2kyj95q4yg-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2018 00:43:08 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Mon, 20 Aug 2018 05:43:06 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 20 Aug 2018 05:43:00 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7K4gxuc31981720
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 20 Aug 2018 04:43:00 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9FA2442042;
+        Mon, 20 Aug 2018 07:43:02 +0100 (BST)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 741CA42041;
+        Mon, 20 Aug 2018 07:42:59 +0100 (BST)
+Received: from bangoria.in.ibm.com (unknown [9.124.35.132])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 20 Aug 2018 07:42:59 +0100 (BST)
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To:     srikar@linux.vnet.ibm.com, oleg@redhat.com, rostedt@goodmis.org,
+        mhiramat@kernel.org, liu.song.a23@gmail.com
+Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, linux-kernel@vger.kernel.org,
+        ananth@linux.vnet.ibm.com, alexis.berlemont@gmail.com,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v9 0/4] Uprobes: Support SDT markers having reference count (semaphore)
+Date:   Mon, 20 Aug 2018 10:12:46 +0530
+X-Mailer: git-send-email 2.14.4
+X-TM-AS-GCONF: 00
+x-cbid: 18082004-0020-0000-0000-000002B90350
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18082004-0021-0000-0000-000021064B9A
+Message-Id: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-20_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808200049
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65641
+X-archive-position: 65642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tuomas.tynkkynen@iki.fi
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,41 +78,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Setting GPIO 21 high seems to be required to enable power to USB ports
-on the WNDR3400v3. As there is already similar code for WNR3500L,
-make the existing USB power GPIO code generic and use that.
+v8 -> v9:
+ - Rebased to rostedt/for-next (Commit bb730b5833b5 to be precise)
+ - Not including first two patches now. They are already pulled by
+   Steven.
+ - Change delayed_uprobe_remove() function as suggested by Oleg
+ - Dump inode, offset, ref_ctr_offset, mm etc if we fail to update
+   reference counter.
+ - Rename delayed_uprobe_install() to delayed_ref_ctr_inc()
+ - Use 'short d' (delta) in update_ref_ctr() in place of 'bool
+   is_register'.
 
-Signed-off-by: Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
----
- arch/mips/bcm47xx/workarounds.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+v8: https://lkml.org/lkml/2018/8/9/81
 
-diff --git a/arch/mips/bcm47xx/workarounds.c b/arch/mips/bcm47xx/workarounds.c
-index 1a8a07e7a563..46eddbec8d9f 100644
---- a/arch/mips/bcm47xx/workarounds.c
-+++ b/arch/mips/bcm47xx/workarounds.c
-@@ -5,9 +5,8 @@
- #include <bcm47xx_board.h>
- #include <bcm47xx.h>
- 
--static void __init bcm47xx_workarounds_netgear_wnr3500l(void)
-+static void __init bcm47xx_workarounds_enable_usb_power(int usb_power)
- {
--	const int usb_power = 12;
- 	int err;
- 
- 	err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
-@@ -23,7 +22,10 @@ void __init bcm47xx_workarounds(void)
- 
- 	switch (board) {
- 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
--		bcm47xx_workarounds_netgear_wnr3500l();
-+		bcm47xx_workarounds_enable_usb_power(12);
-+		break;
-+	case BCM47XX_BOARD_NETGEAR_WNDR3400_V3:
-+		bcm47xx_workarounds_enable_usb_power(21);
- 		break;
- 	default:
- 		/* No workaround(s) needed */
+Future work:
+ - Optimize uprobe_mmap()->delayed_ref_ctr_inc() by making
+   delayed_uprobe_list per mm.
+
+Description:
+Userspace Statically Defined Tracepoints[1] are dtrace style markers
+inside userspace applications. Applications like PostgreSQL, MySQL,
+Pthread, Perl, Python, Java, Ruby, Node.js, libvirt, QEMU, glib etc
+have these markers embedded in them. These markers are added by developer
+at important places in the code. Each marker source expands to a single
+nop instruction in the compiled code but there may be additional
+overhead for computing the marker arguments which expands to couple of
+instructions. In case the overhead is more, execution of it can be
+omitted by runtime if() condition when no one is tracing on the marker:
+
+    if (reference_counter > 0) {
+        Execute marker instructions;
+    }
+
+Default value of reference counter is 0. Tracer has to increment the 
+reference counter before tracing on a marker and decrement it when
+done with the tracing.
+
+Currently, perf tool has limited supports for SDT markers. I.e. it
+can not trace markers surrounded by reference counter. Also, it's
+not easy to add reference counter logic in userspace tool like perf,
+so basic idea for this patchset is to add reference counter logic in
+the a uprobe infrastructure. Ex,[2]
+
+  # cat tick.c
+    ... 
+    for (i = 0; i < 100; i++) {
+	DTRACE_PROBE1(tick, loop1, i);
+        if (TICK_LOOP2_ENABLED()) {
+            DTRACE_PROBE1(tick, loop2, i); 
+        }
+        printf("hi: %d\n", i); 
+        sleep(1);
+    }   
+    ... 
+
+Here tick:loop1 is marker without reference counter where as tick:loop2
+is surrounded by reference counter condition.
+
+  # perf buildid-cache --add /tmp/tick
+  # perf probe sdt_tick:loop1
+  # perf probe sdt_tick:loop2
+
+  # perf stat -e sdt_tick:loop1,sdt_tick:loop2 -- /tmp/tick
+  hi: 0
+  hi: 1
+  hi: 2
+  ^C
+  Performance counter stats for '/tmp/tick':
+             3      sdt_tick:loop1
+             0      sdt_tick:loop2
+     2.747086086 seconds time elapsed
+
+Perf failed to record data for tick:loop2. Same experiment with this
+patch series:
+
+  # ./perf buildid-cache --add /tmp/tick
+  # ./perf probe sdt_tick:loop2
+  # ./perf stat -e sdt_tick:loop2 /tmp/tick
+    hi: 0
+    hi: 1
+    hi: 2
+    ^C  
+     Performance counter stats for '/tmp/tick':
+                 3      sdt_tick:loop2
+       2.561851452 seconds time elapsed
+
+[1] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
+[2] https://github.com/iovisor/bcc/issues/327#issuecomment-200576506
+
+Ravi Bangoria (4):
+  Uprobes: Support SDT markers having reference count (semaphore)
+  Uprobes/sdt: Prevent multiple reference counter for same uprobe
+  trace_uprobe/sdt: Prevent multiple reference counter for same uprobe
+  perf probe: Support SDT markers having reference counter (semaphore)
+
+ include/linux/uprobes.h       |   5 +
+ kernel/events/uprobes.c       | 278 ++++++++++++++++++++++++++++++++++++++++--
+ kernel/trace/trace.c          |   2 +-
+ kernel/trace/trace_uprobe.c   |  75 +++++++++++-
+ tools/perf/util/probe-event.c |  39 +++++-
+ tools/perf/util/probe-event.h |   1 +
+ tools/perf/util/probe-file.c  |  34 +++++-
+ tools/perf/util/probe-file.h  |   1 +
+ tools/perf/util/symbol-elf.c  |  46 +++++--
+ tools/perf/util/symbol.h      |   7 ++
+ 10 files changed, 453 insertions(+), 35 deletions(-)
+
 -- 
-2.16.3
+2.14.4

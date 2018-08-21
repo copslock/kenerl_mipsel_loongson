@@ -1,85 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 08:21:07 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45384 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 09:34:46 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45012 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991947AbeHUGVEKNMng (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 08:21:04 +0200
+        by eddie.linux-mips.org with ESMTP id S23991947AbeHUHenzu9U0 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Aug 2018 09:34:43 +0200
 Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7L6Inc6018228
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 02:21:00 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2m07vdjqk8-1
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7L7YdQt084438
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 03:34:41 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2m0dp9a1q4-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 02:21:00 -0400
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 03:34:41 -0400
 Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
-        Tue, 21 Aug 2018 07:20:57 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+        Tue, 21 Aug 2018 08:34:25 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 21 Aug 2018 07:20:51 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7L6Kou937093414
+        Tue, 21 Aug 2018 08:34:20 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7L7YJdw45875314
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 21 Aug 2018 06:20:50 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 451ECA4053;
-        Tue, 21 Aug 2018 09:20:51 +0100 (BST)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CA68AA4040;
-        Tue, 21 Aug 2018 09:20:45 +0100 (BST)
-Received: from [9.195.41.244] (unknown [9.195.41.244])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 21 Aug 2018 09:20:45 +0100 (BST)
-From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+        Tue, 21 Aug 2018 07:34:19 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2234C11C052;
+        Tue, 21 Aug 2018 10:34:20 +0100 (BST)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B8A4F11C04A;
+        Tue, 21 Aug 2018 10:34:19 +0100 (BST)
+Received: from localhost (unknown [9.77.215.214])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 21 Aug 2018 10:34:19 +0100 (BST)
+Date:   Tue, 21 Aug 2018 13:04:17 +0530
+From:   "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 Subject: Re: [PATCH v9 0/4] Uprobes: Support SDT markers having reference
  count (semaphore)
-To:     Song Liu <liu.song.a23@gmail.com>
-Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>, mhiramat@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, namhyung@kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        ananth@linux.vnet.ibm.com,
-        Alexis Berlemont <alexis.berlemont@gmail.com>,
-        naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+To:     Song Liu <liu.song.a23@gmail.com>,
         Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
+        Alexis Berlemont <alexis.berlemont@gmail.com>,
+        ananth@linux.vnet.ibm.com, jolsa@redhat.com,
+        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, mhiramat@kernel.org, mingo@redhat.com,
+        namhyung@kernel.org, Oleg Nesterov <oleg@redhat.com>,
+        paul.burton@mips.com, Peter Zijlstra <peterz@infradead.org>,
+        ralf@linux-mips.org, Steven Rostedt <rostedt@goodmis.org>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
- <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
- <2e997c62-371c-1d9d-97ab-65726f588ab5@linux.ibm.com>
-Date:   Tue, 21 Aug 2018 11:50:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.8.0
+        <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+In-Reply-To: <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+User-Agent: astroid/0.13.0 (https://github.com/astroidmail/astroid)
 MIME-Version: 1.0
-In-Reply-To: <2e997c62-371c-1d9d-97ab-65726f588ab5@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 X-TM-AS-GCONF: 00
-x-cbid: 18082106-0020-0000-0000-000002B97F43
+x-cbid: 18082107-0016-0000-0000-000001F98918
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18082106-0021-0000-0000-00002106CDF0
-Message-Id: <dbd74447-b3e2-6bcf-2d8b-717b403bdf11@linux.ibm.com>
+x-cbparentid: 18082107-0017-0000-0000-0000324FD619
+Message-Id: <1534836620.dp1nz6tfz0.naveen@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-21_03:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1808210066
-Return-Path: <ravi.bangoria@linux.ibm.com>
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808210081
+Return-Path: <naveen.n.rao@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65675
+X-archive-position: 65676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravi.bangoria@linux.ibm.com
+X-original-sender: naveen.n.rao@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,41 +88,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Song,
-
-On 08/21/2018 10:53 AM, Ravi Bangoria wrote:
-> Hi Song,
+Song Liu wrote:
+> I am testing the patch set with the following code:
 > 
->> However, if I start a.out AFTER enabling the uprobe, there is something wrong:
->>
->> root@virt-test:~# ~/a.out
->> 11
->> semaphore 0       <<< this should be non-zero, as the uprobe is already enabled
+> #include <stdio.h>
+> #include <unistd.h>
+> 
+> volatile short semaphore = 0;
+> 
+> int for_uprobe(int c)
+> {
+>         printf("%d\n", c + 10);
+>         return c + 1;
+> }
+> 
+> int main(int argc, char *argv[])
+> {
+>         for_uprobe(argc);
+>         while (1) {
+>                 sleep(1);
+>                 printf("semaphore %d\n", semaphore);
+>         }
+> }
+> 
+> I created a uprobe on function for_uprobe(), that uses semaphore as
+> reference counter:
+> 
+>   echo "p:uprobe_1 /root/a.out:0x49a(0x1036)" >> uprobe_events
 
-In this testcase, semaphore variable is stored into .bss:
+Is that even valid? That _looks_ like a semaphore, but I'm not quite 
+sure that it qualifies as an _SDT_ semaphore. Do you see this issue if 
+you instead use the macros provided by <sys/sdt.h> to create SDT 
+markers?
 
-  $ nm test | grep semaphore
-  0000000010010c5e B semaphore
- 
-  $ readelf -SW ./test | grep "data\|bss"
-    [22] .data             PROGBITS        0000000010010c58 000c58 000004 00  WA  0   0  1
-    [23] .bss              NOBITS          0000000010010c5c 000c5c 000004 00  WA  0   0  2
 
-I'm not so sure but I guess .bss data initialization happens after
-calling uprobe_mmap() and thus you are seeing semaphore as 0.
-
-To verify this, if I force to save semaphore into data section by
-assigning non-zero value to it:
-
-  volatile short semaphore = 1
-
- $ nm test | grep semaphore
- 0000000010010c5c D semaphore
-
- $ readelf -SW ./test | grep "data\|bss"
-    [22] .data             PROGBITS        0000000010010c58 000c58 000006 00  WA  0   0  2
-    [23] .bss              NOBITS          0000000010010c5e 000c5e 000002 00  WA  0   0  1 
-
-increment/decrement works fine.
-
-Ravi
+- Naveen

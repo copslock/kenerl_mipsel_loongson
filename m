@@ -1,49 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 06:55:50 +0200 (CEST)
-Received: from mail-qt0-x234.google.com ([IPv6:2607:f8b0:400d:c0d::234]:33142
-        "EHLO mail-qt0-x234.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990393AbeHUEzqpGuHN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 06:55:46 +0200
-Received: by mail-qt0-x234.google.com with SMTP id r37-v6so11597048qtc.0;
-        Mon, 20 Aug 2018 21:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=S/M7KTeZpkAJf6OUt4/CSxp0s4dYx9ldyRPwUvhY+1M=;
-        b=HUIFPXxQ8jTNnmCgkFcmc4wcWsYJ9QvvKO1oe9wPNCAFnMRmKViwb8H008A0JvPiiD
-         Lz2ADcq+cZ2w8IQUOya+MYL+G7KrCdV2sshUVq9psC/3KBQvvVpv5XNt9PkiVPnmY23e
-         n1O7wbeqsZSMfqaPDTh/M7lF5fI0rQqlk2EqZsz8KQIBFlbtvL6MSjKLyw9qbsXL9+6L
-         RmXbgd+XvwPq+JnU3s3l1kJWWyTGqcBpqMUfnm1oeFwhvxOvbWMj32OrfHAn5Yp/Q7NB
-         G8bEV/ghquO99sKyqQi8p5pBsnAT6YPLKfWC2PKndjAq25MSl3kyGCV27dB6dZFFHM8n
-         zq3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=S/M7KTeZpkAJf6OUt4/CSxp0s4dYx9ldyRPwUvhY+1M=;
-        b=rwZovr/rKIIuC2Si0KTh/gMUE/XvktmJZoGSMiKnYoP73ODLkNpOOwJ6QhKXQmw39n
-         VbU6u/S6lev2EaGv7yEVvIxGwDMQpdqxHT75x4TSCdwX81fz1aLB+5d2T5ypRsMGTRWz
-         cPUygPCTjhDPlk+WIluxgFAmtVztrAiwLFErUEgKmWHkRXIJHRGYWyetr8oVG8ZRiQfB
-         /wDxSicHARr5NWruvoHVHvi2nkDfLoK9qqc5WOVcFKGyPZ0HEBVA7DAipQiem+6v37yg
-         4/mF9TUypxxJuCx3D3u0wo2peyII+aYSAzsVFVohrXd8gSh+mj2X7Dm3eGuBC9VGk9vt
-         067Q==
-X-Gm-Message-State: AOUpUlFluTrnYCEqo/4TV9Dt8X5RhfaTZYsbkmBYU32tcPjfRCTjs5MU
-        TKldeZX3UyZksVPXFuNLVQ02eX5/NzOAwPXm418=
-X-Google-Smtp-Source: AA+uWPzMyIcwAGJCFfE4S3ZO2DaOF8y5IJHEAd1cnt+LXIg7f/ZqQ8iX7lKGogPZVqYk3ACudo0bsgvPQPOAx2edYcQ=
-X-Received: by 2002:a0c:8441:: with SMTP id l59-v6mr44227233qva.5.1534827339478;
- Mon, 20 Aug 2018 21:55:39 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a0c:c3cc:0:0:0:0:0 with HTTP; Mon, 20 Aug 2018 21:55:38
- -0700 (PDT)
-In-Reply-To: <b0b9e181-0df7-dc8f-927a-a2cf52bed93d@linux.ibm.com>
-References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
- <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com> <b0b9e181-0df7-dc8f-927a-a2cf52bed93d@linux.ibm.com>
-From:   Song Liu <liu.song.a23@gmail.com>
-Date:   Mon, 20 Aug 2018 21:55:38 -0700
-Message-ID: <CAPhsuW4SQA+uu9=a2jT+KW0Yq=yCyWqe13KtsB_ATTMiNzCXkQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 07:23:37 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59556 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990393AbeHUFXfQsWKW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 07:23:35 +0200
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7L5JSrN045989
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 01:23:33 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2m0b102ym5-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 01:23:33 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Tue, 21 Aug 2018 06:23:31 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 21 Aug 2018 06:23:25 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7L5NOkC41811990
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 21 Aug 2018 05:23:24 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CCB19A4055;
+        Tue, 21 Aug 2018 08:23:24 +0100 (BST)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3D0F1A4040;
+        Tue, 21 Aug 2018 08:23:20 +0100 (BST)
+Received: from [9.195.41.244] (unknown [9.195.41.244])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 21 Aug 2018 08:23:19 +0100 (BST)
 Subject: Re: [PATCH v9 0/4] Uprobes: Support SDT markers having reference
  count (semaphore)
-To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To:     Song Liu <liu.song.a23@gmail.com>
 Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Steven Rostedt <rostedt@goodmis.org>, mhiramat@kernel.org,
@@ -55,17 +45,40 @@ Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
         Alexis Berlemont <alexis.berlemont@gmail.com>,
         naveen.n.rao@linux.vnet.ibm.com,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <liu.song.a23@gmail.com>
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
+ <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date:   Tue, 21 Aug 2018 10:53:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
+MIME-Version: 1.0
+In-Reply-To: <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 18082105-0020-0000-0000-000002B97B06
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18082105-0021-0000-0000-00002106C97D
+Message-Id: <2e997c62-371c-1d9d-97ab-65726f588ab5@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-21_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=815 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808210055
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65673
+X-archive-position: 65674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liu.song.a23@gmail.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,28 +91,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Aug 20, 2018 at 9:42 PM, Ravi Bangoria
-<ravi.bangoria@linux.ibm.com> wrote:
-> Hi Song,
->
->> root@virt-test:~# ~/a.out
->> 11
->> semaphore 0
->> semaphore 0
->> semaphore 2      <<<  when the uprobe is enabled
->
-> Yes, this happens when multiple vmas points to the same file portion.
-> Can you check /proc/`pgrep a.out`/maps.
->
-> Logic is simple. If we are going to patch an instruction, increment the
-> reference counter. If we are going to unpatch an instruction, decrement
-> the reference counter. In this case, we patched instruction twice and
-> thus incremented reference counter twice as well.
+Hi Song,
 
-Yes, this makes sense.
+> However, if I start a.out AFTER enabling the uprobe, there is something wrong:
+> 
+> root@virt-test:~# ~/a.out
+> 11
+> semaphore 0       <<< this should be non-zero, as the uprobe is already enabled
 
-Song
+Ok. I'm able to reproduce this. Digging deeper.
 
->
-> Ravi
->
+Ravi

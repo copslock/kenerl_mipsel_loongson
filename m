@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:20:07 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:48586 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:20:27 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:48854 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994713AbeHURRQO7QqD (ORCPT
+        with ESMTP id S23994715AbeHURRQO7QqD (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 19:17:16 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Thomas Gleixner <tglx@linutronix.de>,
@@ -17,17 +17,17 @@ Cc:     od@zcrc.me, Mathieu Malaterre <malat@debian.org>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 14/24] pwm: jz4740: Drop dependency on MACH_INGENIC, use COMPILE_TEST
-Date:   Tue, 21 Aug 2018 19:16:25 +0200
-Message-Id: <20180821171635.22740-15-paul@crapouillou.net>
+Subject: [PATCH v7 15/24] pwm: jz4740: Remove unused devicetree compatible strings
+Date:   Tue, 21 Aug 2018 19:16:26 +0200
+Message-Id: <20180821171635.22740-16-paul@crapouillou.net>
 In-Reply-To: <20180821171635.22740-1-paul@crapouillou.net>
 References: <20180821171635.22740-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871832; bh=mhzr5CxbR4Zg+O9L1XVg9f4zBvclGEEAgIQ64SJ2AZc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=KFEjq9MNiuVUINYq6Sos0VdLWyUM6iuG7Ge8GNux/MsqQ+VvWR5PBBQ7GM8RiS2eIxbJAqkgPkGTUFQgjbyjBH1MjP+qctDnfsHM8ac/XVCRAOpv/GQW8jQi9+9vna8RW9O6sP6VI2O+xi6AAceDGE+483OFiffez2e2PYSXivw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871834; bh=5Qi3CDFsvJoYRmKgcyWNjWFvL4eKwfcw1U/GwZYuE9A=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=SG3GyBZcmutwaKIUU/oiqTG6rD4bbZWqE0i22ul4/1kGfrvUvApGT3LKwc64GZXMKLzsHBndELUEzMQtMR+9WSXaTULsidQ+xoiAepuZJd6DLYOFKRdqDzUaLsb3Ce0oe/T+FlUSNAHZCoVYBJfC6WMWwBVthNkErg5Nfq8r/6c=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65698
+X-archive-position: 65699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,13 +44,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Depending on MACH_INGENIC prevent us from creating a generic kernel that
-works on more than one MIPS board. Instead, we just depend on MIPS being
-set.
-
-On other architectures, this driver can still be built, thanks to
-COMPILE_TEST. This is used by automated tools to find bugs, for
-instance.
+Right now none of the Ingenic-based boards probe this driver from
+devicetree. This driver defined three compatible strings for the exact
+same behaviour. Before these strings are used, we can remove two of
+them.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
@@ -62,21 +59,21 @@ Notes:
     
      v7: No change
 
- drivers/pwm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-jz4740.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 58359bf22b96..e53ad662ef87 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -201,7 +201,7 @@ config PWM_IMX
- 
- config PWM_JZ4740
- 	tristate "Ingenic JZ47xx PWM support"
--	depends on MACH_INGENIC
-+	depends on MIPS || COMPILE_TEST
- 	depends on COMMON_CLK
- 	select INGENIC_TIMER
- 	help
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index d08274ec007f..5814825d9bed 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -235,8 +235,6 @@ static int jz4740_pwm_remove(struct platform_device *pdev)
+ #ifdef CONFIG_OF
+ static const struct of_device_id jz4740_pwm_dt_ids[] = {
+ 	{ .compatible = "ingenic,jz4740-pwm", },
+-	{ .compatible = "ingenic,jz4770-pwm", },
+-	{ .compatible = "ingenic,jz4780-pwm", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, jz4740_pwm_dt_ids);
 -- 
 2.11.0

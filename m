@@ -1,81 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 09:34:46 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45012 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991947AbeHUHenzu9U0 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Aug 2018 09:34:43 +0200
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7L7YdQt084438
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 03:34:41 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2m0dp9a1q4-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 03:34:41 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <naveen.n.rao@linux.vnet.ibm.com>;
-        Tue, 21 Aug 2018 08:34:25 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 21 Aug 2018 08:34:20 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7L7YJdw45875314
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 21 Aug 2018 07:34:19 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2234C11C052;
-        Tue, 21 Aug 2018 10:34:20 +0100 (BST)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B8A4F11C04A;
-        Tue, 21 Aug 2018 10:34:19 +0100 (BST)
-Received: from localhost (unknown [9.77.215.214])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 21 Aug 2018 10:34:19 +0100 (BST)
-Date:   Tue, 21 Aug 2018 13:04:17 +0530
-From:   "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v9 0/4] Uprobes: Support SDT markers having reference
- count (semaphore)
-To:     Song Liu <liu.song.a23@gmail.com>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
-        Alexis Berlemont <alexis.berlemont@gmail.com>,
-        ananth@linux.vnet.ibm.com, jolsa@redhat.com,
-        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, mhiramat@kernel.org, mingo@redhat.com,
-        namhyung@kernel.org, Oleg Nesterov <oleg@redhat.com>,
-        paul.burton@mips.com, Peter Zijlstra <peterz@infradead.org>,
-        ralf@linux-mips.org, Steven Rostedt <rostedt@goodmis.org>,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
-        <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
-In-Reply-To: <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
-User-Agent: astroid/0.13.0 (https://github.com/astroidmail/astroid)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 09:39:22 +0200 (CEST)
+Received: from h1.mediaprovider.org ([IPv6:2a03:4000:6:1021::4]:55784 "EHLO
+        h1.direct-netware.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991947AbeHUHjTGzFz0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 09:39:19 +0200
+Received: from odin.localnet (p54B0473A.dip0.t-ipconnect.de [84.176.71.58])
+        by h1.direct-netware.de (Postfix) with ESMTPA id 67CBB1008D7;
+        Tue, 21 Aug 2018 09:39:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=vplace.de; s=mail;
+        t=1534837158; bh=x13k4a1x27bEXZ4ay7dWlO3hTdii/R9conodExOat9o=;
+        h=From:To:Reply-To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NWda8akr0/rZXIbap0IPzdlj4xTykNKZZkr68eo2al90m8BVs7tG9A97QpKqPqG5r
+         fbddX0Au62P0lBYCwricP2peOtioZWT/itiPLBj7X5JfOlZWSrkduolgenyM5RntXP
+         5N+uafQUd9bpY3iaAtkf4V5LaW3V7AtIW4Swsjuw=
+Received: from loki.localnet (unknown [172.16.255.10])
+        by odin.localnet (Postfix) with ESMTP id BA5B6D85BC5;
+        Tue, 21 Aug 2018 09:39:16 +0200 (CEST)
+From:   Tobias Wolf <t.wolf@vplace.de>
+To:     Paul Burton <paul.burton@mips.com>
+Reply-To: Tobias Wolf <dev-NTEO@vplace.de>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v3] MIPS: Fix memory reservation in bootmem_init for certain non-usermem setups
+Date:   Tue, 21 Aug 2018 09:39:14 +0200
+Message-ID: <1625136.EXtXsaCBjZ@loki>
+In-Reply-To: <20180820233111.xww5232dxbuouf4n@pburton-laptop>
+References: <1983860.23LM468bU3@loki> <7994529.fS1YjVU6T6@loki> <20180820233111.xww5232dxbuouf4n@pburton-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-X-TM-AS-GCONF: 00
-x-cbid: 18082107-0016-0000-0000-000001F98918
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18082107-0017-0000-0000-0000324FD619
-Message-Id: <1534836620.dp1nz6tfz0.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-21_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1808210081
-Return-Path: <naveen.n.rao@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Return-Path: <t.wolf@vplace.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65676
+X-archive-position: 65677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: naveen.n.rao@linux.vnet.ibm.com
+X-original-sender: t.wolf@vplace.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,38 +48,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Song Liu wrote:
-> I am testing the patch set with the following code:
-> 
-> #include <stdio.h>
-> #include <unistd.h>
-> 
-> volatile short semaphore = 0;
-> 
-> int for_uprobe(int c)
-> {
->         printf("%d\n", c + 10);
->         return c + 1;
-> }
-> 
-> int main(int argc, char *argv[])
-> {
->         for_uprobe(argc);
->         while (1) {
->                 sleep(1);
->                 printf("semaphore %d\n", semaphore);
->         }
-> }
-> 
-> I created a uprobe on function for_uprobe(), that uses semaphore as
-> reference counter:
-> 
->   echo "p:uprobe_1 /root/a.out:0x49a(0x1036)" >> uprobe_events
+Dear Paul,
 
-Is that even valid? That _looks_ like a semaphore, but I'm not quite 
-sure that it qualifies as an _SDT_ semaphore. Do you see this issue if 
-you instead use the macros provided by <sys/sdt.h> to create SDT 
-markers?
+Am Dienstag, 21. August 2018, 01:31:11 CEST schrieb Paul Burton:
+[...]
+> 
+> Could you please give an example of a typical memory layout on your
+> platform, and what mem= arguments you're using? That would help a lot in
+> being able to understand what's going wrong with the existing code.
 
+Here is the boot log without the patch
 
-- Naveen
+[    0.000000] SoC Type: Ralink RT2880 id:2 rev:1
+[...]
+[    0.000000] CPU0 revision is: 0001906c (MIPS 4KEc)
+[    0.000000] MIPS: machine is Belkin F5D8235 v1
+[    0.000000] Determined physical RAM map:
+[    0.000000]  memory: 02000000 @ 08000000 (usable)
+[    0.000000] Wasting 1048576 bytes for tracking 32768 unused pages
+[...]
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x0000000009ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x0000000009ffffff]
+[    0.000000] Initmem setup node 0 [mem 
+0x0000000000000000-0x0000000009ffffff]
+[...]
+[    0.000000] Memory: 23712K/163840K available (3334K kernel code, 162K 
+rwdata, 808K rodata, 2984K init, 208K bss, 140128K reserved, 0K cma-reserved)
+[...]
+[    0.000000] NR_IRQS: 256
+[    0.000000] Failed to request intc memory
+[    0.000000] Kernel panic - not syncing: Failed to request resources for 
+ralink,rt2880-sysc
+[    0.000000] Rebooting in 1 seconds..
+[    0.000000] Reboot failed -- System halted
+
+... and here with ...
+
+[    0.000000] SoC Type: Ralink RT2880 id:2 rev:1
+[...]
+[    0.000000] CPU0 revision is: 0001906c (MIPS 4KEc)
+[    0.000000] MIPS: machine is Belkin F5D8235 v1
+[    0.000000] Determined physical RAM map:
+[    0.000000]  memory: 02000000 @ 08000000 (usable)
+[    0.000000] Wasting 1048576 bytes for tracking 32768 unused pages
+[    0.000000] Initrd not found or empty - disabling initrd
+[...]
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000008000000-0x0000000009ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000008000000-0x0000000009ffffff]
+[    0.000000] Initmem setup node 0 [mem 
+0x0000000008000000-0x0000000009ffffff]
+[...]
+[    0.000000] Memory: 26700K/32768K available (3334K kernel code, 162K 
+rwdata, 808K rodata, 1192K init, 208K bss, 6068K reserved, 0K cma-reserved)
+[...]
+[    0.000000] NR_IRQS: 256
+[    0.000000] CPU Clock: 266MHz
+
+The command line does not contain any custom "mem=" entries, that's why the 
+patch checks "usermem". Please be aware that the platform already has a memory 
+related issue I tried to fix with another patch "mm: Fix alloc_node_mem_map 
+with ARCH_PFN_OFFSET calculation" [1]. So you might be right that this is not 
+the root cause for both issues. I guess the patch might be useful anyway as it 
+originated from the "early_parse_mem" function and memory was not reserved for 
+non usermem setups anyway.
+
+Currently I'm testing this device with an OpenWRT based image and compiled a 
+vanilla kernel separately to validate that this is not triggered outside the 
+mainline one.
+
+Best regards
+Tobias
+
+[1] https://patchwork.linux-mips.org/patch/14627/

@@ -1,81 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 16:29:28 +0200 (CEST)
-Received: from mail-lj1-x22c.google.com ([IPv6:2a00:1450:4864:20::22c]:46698
-        "EHLO mail-lj1-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993964AbeHUO3QxlW08 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 16:29:16 +0200
-Received: by mail-lj1-x22c.google.com with SMTP id 203-v6so14439109ljj.13
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 07:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=73R0KCNXFJRIOXpf/Nyu/iqnfM02jYVw8Q5oXxtGuJo=;
-        b=SXBSnh1l4Tj7rd/kiXloT/xi6J/zgyZ7fNHXIV3pcFioIcuGuecJ9iZ3zCKx7kihNa
-         d7KalOrdrY5s4x3+KRZIQxr9FJ74pb0nBARSuyrHUMmKDP6m45sZm9g0fOi6+oXe42wl
-         n/9S2SLMiCCr1ArYEOhPuHHihAfYf5Sa7Ah+vdr/T+Ue8Kx8RjJwT1zQmmjfFFRhj8MA
-         BrDlO+BAbdO6weFI7gphC+MjGcLMwttsCdljWlmBMABGoPasLFjUJKzOhCjg+qn0lWrR
-         /c3f6tD2OB2/PHIAnvPklXmLiUMroBDtAw/hdkuSrrl/wBuRyeIHgRTnH7uUqJfx30Hh
-         eIgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=73R0KCNXFJRIOXpf/Nyu/iqnfM02jYVw8Q5oXxtGuJo=;
-        b=mFfVl5kuLF0K3dcw68mLKXArhl1z0hX1AhLj7ZtbknYrtxgzOVDwLmTthFK52PamA0
-         x8e7YDfHkHzU7wOy3M4Ptvd/prqW1P0gsPsxKtm3cAOwhXlZFJi8aEBcibYZZCbJCrD5
-         gsBVuol1raa1Phpwb5ldk0wq1dBkX6MXqGMRv+XgU6Rb+E/n40daP0YRkypQu8G9F/PF
-         20MjgyQ7G+2uVaZaS4VaZvHIsqLRFJDz+DacouDv+JqiTokyxo4mp/G46KzqaoSYskVV
-         6rp4p8vOUFqLGbtadUZo//O0+/1N4HVKlmRIxd5r07h32Z75LutaD4Xrs0OVk9WRfhbt
-         IO4A==
-X-Gm-Message-State: AOUpUlF5s/Q1po1vGNr8bFTh4KcEphQyIKVKZpRyCm3oZPA+vKhOKSyv
-        YKyI/DVgfWUUoY494+i0ANw=
-X-Google-Smtp-Source: AA+uWPxbGlSrjjwKDz9vmIlhQKu+r6HKNijuGaOZ/2Nqk6DfESrEFls8k9w65D0xoTO8+BCXL1wJWw==
-X-Received: by 2002:a2e:8185:: with SMTP id e5-v6mr10475196ljg.93.1534861751306;
-        Tue, 21 Aug 2018 07:29:11 -0700 (PDT)
-Received: from xi.terra (c-74bee655.07-184-6d6c6d4.bbcust.telenor.se. [85.230.190.116])
-        by smtp.gmail.com with ESMTPSA id o184-v6sm1308564lff.95.2018.08.21.07.29.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Aug 2018 07:29:10 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.91)
-        (envelope-from <johan@kernel.org>)
-        id 1fs7eg-0006pI-Hn; Tue, 21 Aug 2018 16:29:11 +0200
-Date:   Tue, 21 Aug 2018 16:29:10 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 18:32:48 +0200 (CEST)
+Received: from server1044-han.de-nserver.de ([77.75.251.205]:17793 "EHLO
+        server1044-han.de-nserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993016AbeHUQcpUdx8D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 18:32:45 +0200
+Received: (qmail 11766 invoked from network); 21 Aug 2018 18:32:44 +0200
+X-Fcrdns: Yes
+Received: from p5B2C7149.dip0.t-ipconnect.de (HELO [192.168.0.56]) (91.44.113.73)
+  (smtp-auth username mailinglists@kunz-im-inter.net, mechanism plain)
+  by server1044-han.de-nserver.de (qpsmtpd/0.92) with (ECDHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA; Tue, 21 Aug 2018 18:32:44 +0200
+Subject: Re: serdev: How to attach serdev devices to USB based tty devices?
+To:     =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>,
+        Rob Herring <robh@kernel.org>,
         "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        linux-usb@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>,
+        linux-usb@vger.kernel.org
+Cc:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Stefan Rehm <rehm@miromico.ch>,
         Xue Liu <liuxuenetmail@gmail.com>,
-        Ben Whitten <ben.whitten@lairdtech.com>,
-        devicetree@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        Alexander Graf <agraf@suse.de>,
         "LoRa_Community_Support@semtech.com" 
         <LoRa_Community_Support@semtech.com>,
-        Jian-Hong Pan <starnight@g.ncu.edu.tw>,
-        Stefan Rehm <rehm@miromico.ch>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: serdev: How to attach serdev devices to USB based tty devices?
-Message-ID: <20180821142910.GJ14967@localhost>
+        Oliver Neukum <oneukum@suse.com>,
+        Alexander Graf <agraf@suse.de>,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        devicetree@vger.kernel.org, Jian-Hong Pan <starnight@g.ncu.edu.tw>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
 References: <3639955d-5990-1c82-7158-ac07b33c41f2@suse.de>
- <20180815182150.wsd5oxlucsox2qig@earth.universe>
+From:   Frank Kunz <mailinglists@kunz-im-inter.net>
+Openpgp: preference=signencrypt
+Autocrypt: addr=mailinglists@kunz-im-inter.net; prefer-encrypt=mutual;
+ keydata=
+ xsDiBEBcTn4RBADTVXx2rxejOvpg+K3IuzBCTeDBxoyCE5hGWjWhPhVFGVNzuXUvJtrz53Gc
+ 8tasoTb28cOTR5RFA+ZccEqr+Utl+x32uNcAUge8GvfCezQ/m/FzkjFIBHO/PwvRVl5Httut
+ Q0JAyhYTyWQXh6meGeLF0nbeV7TrOwVBfIex6c7QRwCgmIwD6CfTLDAiPVCoFCh8EBo0fvMD
+ /3W/ZaaAghqD00eK3YNndWVJRskijld744k4cmAIFl67rDU2B3GpslyKxBC3sPgcgZ2yL8Fa
+ k4EYG+HL+odvrnjMnB3QZ4oPTdkw2gwWay0EljQ7K7f3Y7hACvWE3GBbVoKaRhsWtuQkQQUo
+ DvRVnp5iV609nkpIhyMf4F0wCyoqA/sHPsQYjnwyCsQmb0NCvWIxUgX9rB94Q/TXG0xgCEwt
+ 1fenftJY+AePPu1e6Qd8BkkJ+ooSWAfP4aXlXEJfvmEIcMa5Yo8j5F4cQpifTV57H+M1MFiJ
+ RWPBYCWLATJ2b3R1Mevxi+KTuMXc275YNHA5YiPDXKBdt6/qLHS1a4N/MM0kRnJhbmsgS3Vu
+ eiA8ZnJhbmtAa3Vuei1pbS1pbnRlci5uZXQ+wlsEExECABsFAkBcTn4GCwkIBwMCAxUCAwMW
+ AgECHgECF4AACgkQZ1DjqcEsjXn+LQCeM8JNYhD7DCig8SZEKXIkpZZxjZgAnRy3EgJ5h1FJ
+ w+4CZoNCFKAcrIe9zsBNBEBcToAQBACpwIdSn7xurAlTHg77yDzpAiKMLLwbd3jpNE+T6zN3
+ 5uoYhpAwYrcrtTydSihFzznNAKAG2sd229EUY4LkkrlIK7pAd6PMBH9Ji3KqDARB1Rngh1dM
+ BcQkg2roJq1z2mnMLF2+wM3+IgD6KGbO0scU8oQ4Onju5k7CZspGaGA+xwADBQQApuZHYBSy
+ 7R2G7SzzEesr721SmrdXPo6zOC7DV3+A/oka1ZRWDkHpDxLsy5s/vTaNsLbVcodnItdrgsYQ
+ mIUQhLDnp+0dVPpeyHLZ8cR8jK2IxlIrsIREc4P7EkZVVc9EfL9RvAGEckZxvtxMPAtfXwxu
+ BYxXsWJuFPOdPybeoFnCRgQYEQIABgUCQFxOgAAKCRBnUOOpwSyNeQzyAJwIcdKVplSqfZy7
+ Fdv1LRVZy3uDFACdHdyyhm0xvjG5iJJtWCBJRzeUovQ=
+Message-ID: <b00d8330-dab4-e444-e02c-dee6b54abc81@kunz-im-inter.net>
+Date:   Tue, 21 Aug 2018 18:32:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180815182150.wsd5oxlucsox2qig@earth.universe>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <jhovold@gmail.com>
+In-Reply-To: <3639955d-5990-1c82-7158-ac07b33c41f2@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: 8bit
+X-User-Auth: Auth by mailinglists@kunz-im-inter.net through 91.44.113.73
+Return-Path: <mailinglists@kunz-im-inter.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65680
+X-archive-position: 65682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: johan@kernel.org
+X-original-sender: mailinglists@kunz-im-inter.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,35 +78,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 15, 2018 at 08:21:50PM +0200, Sebastian Reichel wrote:
-> Hi,
+Am 14.08.2018 um 04:28 schrieb Andreas Färber:
+> Hi Rob et al.,
 > 
-> +cc Johan Hovold <johan@kernel.org>
+> For my LoRa network driver project [1] I have found your serdev
+> framework to be a valuable help for dealing with hardware modules
+> exposing some textual or binary UART interface.
 > 
-> Johan told me, that he is working on this at ELCE 2017. Also he is
-> the subsystem maintainer of the USB serial subsystem.
+> In particular on arm(64) and mips this allows to define an unlimited
+> number of serdev drivers [2] that are associated via their Device Tree
+> compatible string and can optionally be configured via DT properties.
+> 
+> And in theory it seems serdev has also grown support for ACPI.
+> 
+> Now, a growing number of vendors are placing such modules on a USB stick
+> for easy evaluation on x86_64 PC hardware, or are designing mPCIe or M.2
+> cards using their USB pins. While I do not yet have access to such a
+> device myself, it is my understanding that devices with USB-UART bridge
+> chipsets (e.g., FTDI) will show up as /dev/ttyUSBx and devices with an
+> MCU implementing the CDC USB protocol (e.g., Pico-cell gateway = picoGW)
+> will show up as /dev/ttyACMx.
+> On the Raspberry Pi I've seen that Device Tree nodes can be used to pass
+> information to on-board devices such as MAC address to Ethernet chipset,
+> but that does not seem all that useful for passing a serdev child node
+> to hot-plugged devices at unpredictable hub/port location (where it
+> should not interfere with regular USB-UART cables for debugging), nor
+> would it help ACPI based platforms such as x86_64.
+> 
+> My idea then was that if we had some unique criteria like vendor and
+> product IDs (or whatever is supported in usb_device_id), we could write
+> a usb_driver with suitable USB_DEVICE*() macro. In its probe function we
+> could call into the existing tty driver's probe function and afterwards
+> try creating and attaching the appropriate serdev device, i.e. a fixed
+> USB-to-serdev driver mapping. Problem is that most devices don't seem to
+> implement any unique identifier I could make this depend on - either by
+> using a standard FT232/FT2232/CH340G chip or by using STMicroelectronics
+> virtual com port identifiers in CDC firmware and only differing in the
+> textual description [3] the usb_device_id does not seem to match on.
+> 
+> The obvious solution would of course be if hardware vendors could revise
+> their designs to configure FTDI/etc. chips uniquely. I hear that that
+> may involve exchanging the chipset, increasing costs, and may impact
+> existing drivers. Wouldn't help for devices out there today either.
 
-I haven't done much work on this; it's more of a low-priority background
-task that keeps popping up. ;)
+They need to put an extra eeprom (cents) into their design and program it.
 
-Rob already linked to Ricardo's series in which this was recently
-discussed [1][2].
+> 
+> For the picoGW CDC firmware, Semtech does appear to own a USB vendor ID,
+> so it would seem possible to allocate their own product IDs for SX1301
+> and SX1308 respectively to replace the generic STMicroelectronics IDs,
+> which the various vendors could offer as firmware updates.
+> 
+> All outside my control though.
+> 
+> Oliver therefore suggested to not mess with USB drivers and instead use
+> a line discipline (ldisc). It seems that for example the userspace tool
+> slattach takes a tty device and performs an ioctl to switch the generic
+> tty device into a special N_SLIP protocol mode, implemented in [4].
+> 
+> However, the existing number of such ldisc modes appears to be below 30,
+> with hardly any vendor-specific implementation, so polluting its number
+> space seems undesirable? And in some cases I would like to use the same
+> protocol implementation over direct UART and over USB, so would like to
+> avoid duplicate serdev_device_driver and tty_ldisc_ops implementations.
+> 
+> Long story short, has there been any thinking about a userspace
+> interface to attach a given serdev driver to a tty device?
+> 
+> Or is there, on OF_DYNAMIC platforms, a way from userspace to associate
+> a DT fragment (!= DT Overlay) with a given USB device dynamically, to
+> attach a serdev node with sub-nodes?
+> 
+> Any other ideas how to cleanly solve this?
+> 
+> In some cases we're talking about a "simple" AT-like command interface;
+> the picoGW implements a semi-generic USB-SPI bridge that may host a
+> choice of 2+ chipsets, which in turn has two further sub-devices with 3+
+> chipset choices (theoretically clk output and rx/tx options etc.) each.
+> (For the latter I'm thinking we'll need a serdev driver exposing a
+> regmap_bus and then implement regmap_bus based versions of the SPI
+> drivers like Ben and I refactored SX1257 in [2] last weekend.)>
 
-In one of those threads I also posted to some code I've been using to
-test serdev with USB-serial devices [3]. There are some known issues
-blocking this from being merged (e.g. serdev not supporting hangups and
-agreement on DT bindings), but it would otherwise allow you to use
-serdev for fixed topologies (i.e. you know beforehand which port you'll
-be plugging your USB-serial device into). So that might still be useful
-for development purposes as is.
+There is a mPCIe module (RAK833) available by RAK wireless that uses a
+FT2232 as USB-SPI bridge, not uart. I have one here for experiments. It
+is detected as generic FT2232 device on usb. As far as I understood so
+far the serdev does only support uart based communication, is there a
+chance to get USB-SPI bridged modules also working?
 
-With DT-overlay support this could be extended also to the dynamic case
-(e.g. loading overlays from userspace or passing the equivalent data
-from a tty driver).
+Br,
+Frank
 
-Johan
-
-
-[1] https://lkml.kernel.org/r/CAPybu_0RRNMsdzv4CKyw922hX3_EF=-LKD_QWZV0DoQmjG0aRQ@mail.gmail.com
-[2] https://lkml.kernel.org/r/20180611115240.32606-1-ricardo.ribalda@gmail.com
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git/log/?h=usb-serial-of
+> Thanks,
+> Andreas
+> 
+> [1] https://patchwork.ozlabs.org/cover/937545/
+> [2]
+> https://git.kernel.org/pub/scm/linux/kernel/git/afaerber/linux-lora.git/tree/drivers/net/lora?h=lora-next
+> [3]
+> https://github.com/Lora-net/picoGW_mcu/blob/master/src/usb_cdc/Src/usbd_desc.cpp#L59
+> [4]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/slip/slip.c#n1281
+> 

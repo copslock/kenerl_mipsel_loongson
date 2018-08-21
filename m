@@ -1,75 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 05:39:08 +0200 (CEST)
-Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:35410
-        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991808AbeHUDjBWX8ep (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 05:39:01 +0200
-Received: by mail-pg1-x543.google.com with SMTP id z4-v6so2802746pgv.2;
-        Mon, 20 Aug 2018 20:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Z4eDeCuaoR2lSRG13UqHTblSOwrIFDyHOJQxVV9sNDA=;
-        b=OHnpzTxIU1RFPdVe/CMr93FhuW1/Gr2WM6FNZ0sk0JfGZhyCyGTHkUKBTtQzAvURSp
-         7lrdQ+nIpkuBDutB5w/A1qj3wDwM7IOzJw+Y/frc38CkTf71DaxqzHuTdYm8fO1SKr4d
-         Jvzi4ADtLBPrPXtrdUwhrhmiOizB+7jngwZVO2mQHAaNKR0fusH/O0gB/WhluyLPfgXn
-         jnQS2o1I9RRobyGVOEBIrkh+GicE4GTYSRJn+bKVXLB6n56XDMgt4FyAYdDW723qgt/P
-         micg5FnyC0WynLMo+CHQpc20HK/C34k50Za4aBBH/suSR8V/qMS6TVl6dvCK+fQSG1TR
-         fwdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Z4eDeCuaoR2lSRG13UqHTblSOwrIFDyHOJQxVV9sNDA=;
-        b=C/bPMMRBxhxU5uv5d/dGda8dhMqu6WbCjk4Cjjw4icXUz5qpjIsIGnLcFcPaApJ0DS
-         hY2lj0euZJ8fnU6oZ83xHOTd68bLf/BdnAk0KQ7qyVWLzi3E/Gho7xmw5MmodsuQnsmK
-         bcwO9xCGG+gxe+HzcrRTlNX0cLnoxASlEq/zW4uo32zUCyrlD3fd4rUT2IpUZ6/FBwKp
-         sJ0WCGib9TTI2SWCnCY489Jx9wZVq5kPGzTZ84VYo+ZOHeOM0E4Qnkg3ryFaWd4y66xi
-         KNj/GqAD5AaMAigFxNNqsnnGuY9zRGFwd+msWueiP5wy0a5wfqqkyY829Yr5ds/DdT8a
-         lBBw==
-X-Gm-Message-State: AOUpUlFAtLndgpE/Z8FlE1bKslBXqZt/bwE7JCJqLve+HfXv3DvZol4S
-        NChtptsrqaowIkhfFMs2EBY=
-X-Google-Smtp-Source: AA+uWPxl8NONXRWGN2usS2i/V1I8YIJ5RHoEwC62vW8GSdRyz/BlME7vnIAZl7YenOHxVZgyWMyAEg==
-X-Received: by 2002:a62:954:: with SMTP id e81-v6mr51176719pfd.231.1534822734906;
-        Mon, 20 Aug 2018 20:38:54 -0700 (PDT)
-Received: from roar.ozlabs.ibm.com ([122.99.82.10])
-        by smtp.gmail.com with ESMTPSA id z19-v6sm16765357pgi.33.2018.08.20.20.38.49
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 20 Aug 2018 20:38:53 -0700 (PDT)
-Date:   Tue, 21 Aug 2018 13:38:42 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     Vaibhav Jain <vaibhav@linux.ibm.com>
-Cc:     "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
-        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
-        Michael Neuling <mikey@neuling.org>,
-        Stewart Smith <stewart@linux.ibm.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, James Hogan <jhogan@kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [Skiboot] [PATCH] opal/hmi: Wakeup the cpu before reading
- core_fir
-Message-ID: <20180821133842.1b13e972@roar.ozlabs.ibm.com>
-In-Reply-To: <20180820140605.11846-1-vaibhav@linux.ibm.com>
-References: <20180820183417.dejfsluih7elbclu@pburton-laptop>
-        <20180820223618.22319-1-paul.burton@mips.com>
-        <20180820223618.22319-2-paul.burton@mips.com>
-        <20180820140605.11846-1-vaibhav@linux.ibm.com>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 06:42:33 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:59686 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990393AbeHUEmaOdx0N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 06:42:30 +0200
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7L4dSuE021634
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 00:42:27 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2m0a00bfvx-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 00:42:27 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <ravi.bangoria@linux.ibm.com>;
+        Tue, 21 Aug 2018 05:42:25 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 21 Aug 2018 05:42:20 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7L4gJBU42270932
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 21 Aug 2018 04:42:19 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 17310A4057;
+        Tue, 21 Aug 2018 07:42:20 +0100 (BST)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5DCDCA4040;
+        Tue, 21 Aug 2018 07:42:15 +0100 (BST)
+Received: from [9.195.41.244] (unknown [9.195.41.244])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 21 Aug 2018 07:42:15 +0100 (BST)
+From:   Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v9 0/4] Uprobes: Support SDT markers having reference
+ count (semaphore)
+To:     Song Liu <liu.song.a23@gmail.com>
+Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>, mhiramat@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        ananth@linux.vnet.ibm.com,
+        Alexis Berlemont <alexis.berlemont@gmail.com>,
+        naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
+ <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+Date:   Tue, 21 Aug 2018 10:12:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <CAPhsuW70nRkwM8C76m4c_XF4tjepdRWYezg15sTvkMUDtHZ8JQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Return-Path: <npiggin@gmail.com>
+X-TM-AS-GCONF: 00
+x-cbid: 18082104-4275-0000-0000-000002AC7ECB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18082104-4276-0000-0000-000037B5B2E9
+Message-Id: <b0b9e181-0df7-dc8f-927a-a2cf52bed93d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-21_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=966 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808210047
+Return-Path: <ravi.bangoria@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65671
+X-archive-position: 65672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: npiggin@gmail.com
+X-original-sender: ravi.bangoria@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,96 +91,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 20 Aug 2018 19:36:05 +0530
-Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+Hi Song,
 
-> When stop state 5 is enabled, reading the core_fir during an HMI can
-> result in a xscom read error with xscom_read() returning the
-> OPAL_XSCOM_PARTIAL_GOOD error code and core_fir value of all FFs. At
-> present this return error code is not handled in decode_core_fir()
-> hence the invalid core_fir value is sent to the kernel where it
-> interprets it as a FATAL hmi causing a system check-stop.
-> 
-> This can be prevented by forcing the core to wake-up using before
-> reading the core_fir. Hence this patch wraps the call to
-> read_core_fir() within calls to dctl_set_special_wakeup() and
-> dctl_clear_special_wakeup().
+> root@virt-test:~# ~/a.out
+> 11
+> semaphore 0
+> semaphore 0
+> semaphore 2      <<<  when the uprobe is enabled
 
-Would it be feasible to enumerate the ranges of scoms that require
-special wakeup and check for those in xscom_read/write, and warn if
-spwkup was not set?
+Yes, this happens when multiple vmas points to the same file portion.
+Can you check /proc/`pgrep a.out`/maps.
 
-Thanks,
-Nick
+Logic is simple. If we are going to patch an instruction, increment the
+reference counter. If we are going to unpatch an instruction, decrement
+the reference counter. In this case, we patched instruction twice and
+thus incremented reference counter twice as well.
 
-> 
-> Suggested-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Signed-off-by: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
-> ---
->  core/hmi.c | 25 +++++++++++++++++--------
->  1 file changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/core/hmi.c b/core/hmi.c
-> index 1f665a2f..67c520a0 100644
-> --- a/core/hmi.c
-> +++ b/core/hmi.c
-> @@ -379,7 +379,7 @@ static bool decode_core_fir(struct cpu_thread *cpu,
->  {
->  	uint64_t core_fir;
->  	uint32_t core_id;
-> -	int i;
-> +	int i, swkup_rc = OPAL_UNSUPPORTED;
->  	bool found = false;
->  	int64_t ret;
->  	const char *loc;
-> @@ -390,14 +390,15 @@ static bool decode_core_fir(struct cpu_thread *cpu,
->  
->  	core_id = pir_to_core_id(cpu->pir);
->  
-> +	/* Force the core to wakeup, otherwise reading core_fir is unrealiable
-> +	 * if stop-state 5 is enabled.
-> +	 */
-> +	swkup_rc = dctl_set_special_wakeup(cpu);
-> +
->  	/* Get CORE FIR register value. */
->  	ret = read_core_fir(cpu->chip_id, core_id, &core_fir);
->  
-> -	if (ret == OPAL_HARDWARE) {
-> -		prerror("XSCOM error reading CORE FIR\n");
-> -		/* If the FIR can't be read, we should checkstop. */
-> -		return true;
-> -	} else if (ret == OPAL_WRONG_STATE) {
-> +	if (ret == OPAL_WRONG_STATE) {
->  		/*
->  		 * CPU is asleep, so it probably didn't cause the checkstop.
->  		 * If no other HMI cause is found a "catchall" checkstop
-> @@ -407,11 +408,16 @@ static bool decode_core_fir(struct cpu_thread *cpu,
->  		prlog(PR_DEBUG,
->  		      "FIR read failed, chip %d core %d asleep\n",
->  		      cpu->chip_id, core_id);
-> -		return false;
-> +		goto out;
-> +	} else if (ret != OPAL_SUCCESS) {
-> +		prerror("XSCOM error reading CORE FIR\n");
-> +		/* If the FIR can't be read, we should checkstop. */
-> +		found = true;
-> +		goto out;
->  	}
->  
->  	if (!core_fir)
-> -		return false;
-> +		goto out;
->  
->  	loc = chip_loc_code(cpu->chip_id);
->  	prlog(PR_INFO, "[Loc: %s]: CHIP ID: %x, CORE ID: %x, FIR: %016llx\n",
-> @@ -426,6 +432,9 @@ static bool decode_core_fir(struct cpu_thread *cpu,
->  						|= xstop_bits[i].reason;
->  		}
->  	}
-> +out:
-> +	if (!swkup_rc)
-> +		dctl_clear_special_wakeup(cpu);
->  	return found;
->  }
->  
+Ravi

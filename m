@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:19:48 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:46688 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:19:57 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:47910 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994709AbeHURRIE1z0D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 19:17:08 +0200
+        with ESMTP id S23994712AbeHURRQO7QqD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 19:17:16 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -17,17 +17,17 @@ Cc:     od@zcrc.me, Mathieu Malaterre <malat@debian.org>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 10/24] watchdog: jz4740: Avoid starting watchdog in set_timeout
-Date:   Tue, 21 Aug 2018 19:16:21 +0200
-Message-Id: <20180821171635.22740-11-paul@crapouillou.net>
+Subject: [PATCH v7 13/24] pwm: jz4740: Allow selection of PWM channels 0 and 1
+Date:   Tue, 21 Aug 2018 19:16:24 +0200
+Message-Id: <20180821171635.22740-14-paul@crapouillou.net>
 In-Reply-To: <20180821171635.22740-1-paul@crapouillou.net>
 References: <20180821171635.22740-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871826; bh=tBIxg5wGqomJKe9TZsyGLBfl5Hk6jZE8QDCNVIndQ3s=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=nC5RlNo3b+tcMvfjXb4jCFGETVw4/9gJboBH04Hel9NQUgAJbSyOYrulpbh/kDJ/yB+pumsX5pxl+e8HmdnEieZ6h20x45YItuUhDl4iq6V3aexBvLH2BBMru9PfwQg428W1nzm1NF3w31VDnYwVYBBb36mvwwF0ciXn3DE4A/g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871830; bh=7I9XfwWNevUXmYZFDHmdVij5bb+H8OkNxYvkQRyAS5U=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=o0EQFfWZkyVeR1tZV/q/2z/c9cEK6cD0q8NHgKZRTPq2QqYqdXJzuRGvAZhKdxN+t09RUSGvEGg1xoVZt8DvX3pby4vexNnk6YfCdqPpbgPDvCjXF4p0gHZ1C9bTfL/KE4Dm2Y6/Bb/bOUL+MjNidM/twOMAtWGz7c38kqiNIFA=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65696
+X-archive-position: 65697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,14 +44,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previously the jz4740_wdt_set_timeout() function was starting the timer
-unconditionally, even if it was stopped when that function was entered.
+The TCU channels 0 and 1 were previously reserved for system tasks, and
+thus unavailable for PWM.
 
-Now, the timer will be restarted only if it was already running before
-this function is called.
+This commit uses the newly introduced API functions of the ingenic-timer
+driver to request/release the TCU channels that should be used as PWM.
+This allows all the TCU channels to be used as PWM.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 ---
 
 Notes:
@@ -59,37 +59,63 @@ Notes:
     
      v7: No change
 
- drivers/watchdog/jz4740_wdt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-jz4740.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
-index 0f54306aee25..45d9495170e5 100644
---- a/drivers/watchdog/jz4740_wdt.c
-+++ b/drivers/watchdog/jz4740_wdt.c
-@@ -64,13 +64,15 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
- {
- 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
- 	u16 timeout_value = (u16)(drvdata->clk_rate * new_timeout);
-+	u32 tcer;
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index 1bda8d8e9865..d08274ec007f 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -43,27 +43,30 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	char clk_name[16];
+ 	int ret;
  
-+	regmap_read(drvdata->map, TCU_REG_WDT_TCER, &tcer);
- 	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
+-	/*
+-	 * Timers 0 and 1 are used for system tasks, so they are unavailable
+-	 * for use as PWMs.
+-	 */
+-	if (pwm->hwpwm < 2)
+-		return -EBUSY;
++	ret = ingenic_tcu_request_channel(pwm->hwpwm);
++	if (ret)
++		return ret;
  
- 	regmap_write(drvdata->map, TCU_REG_WDT_TDR, timeout_value);
- 	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
+ 	snprintf(clk_name, sizeof(clk_name), "timer%u", pwm->hwpwm);
  
--	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
-+	regmap_write(drvdata->map, TCU_REG_WDT_TCER, tcer & TCU_WDT_TCER_TCEN);
+ 	clk = clk_get(chip->dev, clk_name);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto err_free_channel;
++	}
  
- 	wdt_dev->timeout = new_timeout;
+ 	ret = clk_prepare_enable(clk);
+-	if (ret) {
+-		clk_put(clk);
+-		return ret;
+-	}
++	if (ret)
++		goto err_clk_put;
+ 
+ 	jz->clks[pwm->hwpwm] = clk;
  	return 0;
-@@ -86,6 +88,7 @@ static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
- 		return ret;
- 
- 	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
-+	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
- 
- 	return 0;
++
++err_clk_put:
++	clk_put(clk);
++err_free_channel:
++	ingenic_tcu_release_channel(pwm->hwpwm);
++	return ret;
  }
+ 
+ static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+@@ -73,6 +76,7 @@ static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
++	ingenic_tcu_release_channel(pwm->hwpwm);
+ }
+ 
+ static int jz4740_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
 -- 
 2.11.0

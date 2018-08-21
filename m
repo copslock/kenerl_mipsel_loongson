@@ -1,55 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 15:33:02 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49872 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993057AbeICNc2TyBSP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 15:32:28 +0200
-Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A3EB9CB7;
-        Mon,  3 Sep 2018 13:32:21 +0000 (UTC)
-Subject: Patch "MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7" has been added to the 4.14-stable tree
-To:     gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, paul.burton@mips.com,
-        ralf@linux-mips.org, vladimir.kondratiev@intel.com
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Sep 2018 15:31:50 +0200
-Message-ID: <153598151061207@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65886
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@mips.com>
+Date: Tue, 21 Aug 2018 12:12:59 -0700
+Subject: MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
+Message-ID: <20180821191259.ZDYQhE9-cfOWCKKoEGiuNNEvFdpgNLhyAy4HUyVkSsI@z>
+
+From: Paul Burton <paul.burton@mips.com>
+
+commit 690d9163bf4b8563a2682e619f938e6a0443947f upstream.
+
+Some versions of GCC suboptimally generate calls to the __multi3()
+intrinsic for MIPS64r6 builds, resulting in link failures due to the
+missing function:
+
+    LD      vmlinux.o
+    MODPOST vmlinux.o
+  kernel/bpf/verifier.o: In function `kmalloc_array':
+  include/linux/slab.h:631: undefined reference to `__multi3'
+  fs/select.o: In function `kmalloc_array':
+  include/linux/slab.h:631: undefined reference to `__multi3'
+  ...
+
+We already have a workaround for this in which we provide the
+instrinsic, but we do so selectively for GCC 7 only. Unfortunately the
+issue occurs with older GCC versions too - it has been observed with
+both GCC 5.4.0 & GCC 6.4.0.
+
+MIPSr6 support was introduced in GCC 5, so all major GCC versions prior
+to GCC 8 are affected and we extend our workaround accordingly to all
+MIPS64r6 builds using GCC versions older than GCC 8.
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
+Patchwork: https://patchwork.linux-mips.org/patch/20297/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # 4.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/arch/mips/lib/multi3.c b/arch/mips/lib/multi3.c
+index 111ad475aa0c..4c2483f410c2 100644
+--- a/arch/mips/lib/multi3.c
++++ b/arch/mips/lib/multi3.c
+@@ -4,12 +4,12 @@
+ #include "libgcc.h"
+ 
+ /*
+- * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
+- * specific case only we'll implement it here.
++ * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
++ * that specific case only we implement that intrinsic here.
+  *
+  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+  */
+-#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
+ 
+ /* multiply 64-bit values, low 64-bits returned */
+ static inline long long notrace dmulu(long long a, long long b)
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from paul.burton@mips.com are
 
-    MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-lib-provide-mips64r6-__multi3-for-gcc-7.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.14/mips-change-definition-of-cpu_relax-for-loongson-3.patch
+queue-4.14/mips-always-use-march-arch-not-arch-shortcuts.patch
+queue-4.14/mips-lib-provide-mips64r6-__multi3-for-gcc-7.patch
+queue-4.14/mips-correct-the-64-bit-dsp-accumulator-register-size.patch
+queue-4.14/revert-mips-bcm47xx-enable-74k-core-externalsync-for-pcie-erratum.patch

@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:19:35 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:46968 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:19:48 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:46688 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994710AbeHURRIhdCBD (ORCPT
+        with ESMTP id S23994709AbeHURRIE1z0D (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 19:17:08 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Thomas Gleixner <tglx@linutronix.de>,
@@ -17,17 +17,17 @@ Cc:     od@zcrc.me, Mathieu Malaterre <malat@debian.org>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 11/24] watchdog: jz4740: Drop dependency on MACH_JZ47xx, use COMPILE_TEST
-Date:   Tue, 21 Aug 2018 19:16:22 +0200
-Message-Id: <20180821171635.22740-12-paul@crapouillou.net>
+Subject: [PATCH v7 10/24] watchdog: jz4740: Avoid starting watchdog in set_timeout
+Date:   Tue, 21 Aug 2018 19:16:21 +0200
+Message-Id: <20180821171635.22740-11-paul@crapouillou.net>
 In-Reply-To: <20180821171635.22740-1-paul@crapouillou.net>
 References: <20180821171635.22740-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871827; bh=mkES4HvHNmq/RQeQEUAvdqQgOvdU/injB2ZI+MGVpdY=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=DOsnB50zQffCwaL2+ULRxbEGqaOc6i5eToxxVn11a4e3pnAAvvwPbu4n8cx6H48DG6/7vNDDWfF1kX6CHKfyQCNhcVah295N2ncjyKqP7+nJXIdAthhWwGD579R/MStoDXy21PGR8wQAmX7HZuIn0geXve+/n490Cx85GY0klPA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534871826; bh=tBIxg5wGqomJKe9TZsyGLBfl5Hk6jZE8QDCNVIndQ3s=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=nC5RlNo3b+tcMvfjXb4jCFGETVw4/9gJboBH04Hel9NQUgAJbSyOYrulpbh/kDJ/yB+pumsX5pxl+e8HmdnEieZ6h20x45YItuUhDl4iq6V3aexBvLH2BBMru9PfwQg428W1nzm1NF3w31VDnYwVYBBb36mvwwF0ciXn3DE4A/g=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65695
+X-archive-position: 65696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,40 +44,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Depending on MACH_JZ47xx prevent us from creating a generic kernel that
-works on more than one MIPS board. Instead, we just depend on MIPS being
-set.
+Previously the jz4740_wdt_set_timeout() function was starting the timer
+unconditionally, even if it was stopped when that function was entered.
 
-On other architectures, this driver can still be built, thanks to
-COMPILE_TEST. This is used by automated tools to find bugs, for
-instance.
+Now, the timer will be restarted only if it was already running before
+this function is called.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 ---
 
 Notes:
-     v5: New patch
-    
-     v6: No change
+     v6: New patch
     
      v7: No change
 
- drivers/watchdog/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/jz4740_wdt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 834222abbbdb..13a46cfa69b0 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1475,7 +1475,7 @@ config INDYDOG
+diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
+index 0f54306aee25..45d9495170e5 100644
+--- a/drivers/watchdog/jz4740_wdt.c
++++ b/drivers/watchdog/jz4740_wdt.c
+@@ -64,13 +64,15 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
+ {
+ 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+ 	u16 timeout_value = (u16)(drvdata->clk_rate * new_timeout);
++	u32 tcer;
  
- config JZ4740_WDT
- 	tristate "Ingenic jz4740 SoC hardware watchdog"
--	depends on MACH_JZ4740 || MACH_JZ4780
-+	depends on MIPS || COMPILE_TEST
- 	depends on COMMON_CLK
- 	select WATCHDOG_CORE
- 	select INGENIC_TIMER
++	regmap_read(drvdata->map, TCU_REG_WDT_TCER, &tcer);
+ 	regmap_write(drvdata->map, TCU_REG_WDT_TCER, 0);
+ 
+ 	regmap_write(drvdata->map, TCU_REG_WDT_TDR, timeout_value);
+ 	regmap_write(drvdata->map, TCU_REG_WDT_TCNT, 0);
+ 
+-	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
++	regmap_write(drvdata->map, TCU_REG_WDT_TCER, tcer & TCU_WDT_TCER_TCEN);
+ 
+ 	wdt_dev->timeout = new_timeout;
+ 	return 0;
+@@ -86,6 +88,7 @@ static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
+ 		return ret;
+ 
+ 	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
++	regmap_write(drvdata->map, TCU_REG_WDT_TCER, TCU_WDT_TCER_TCEN);
+ 
+ 	return 0;
+ }
 -- 
 2.11.0

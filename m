@@ -1,37 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 19:22:43 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:56746 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994703AbeHURVWofKjD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 19:21:22 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     od@zcrc.me, Mathieu Malaterre <malat@debian.org>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v7 24/24] MIPS: jz4740: Drop obsolete code
-Date:   Tue, 21 Aug 2018 19:21:17 +0200
-Message-Id: <20180821172117.23484-1-paul@crapouillou.net>
-In-Reply-To: <20180821171635.22740-1-paul@crapouillou.net>
-References: <20180821171635.22740-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1534872081; bh=+Nsn/8nzvMZ/g373h1TpX0abD5TQWCkB0hTqqNm+Z8E=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=IaS4FkBTrrgrz68HDEMCeGWnx+y56Pyb/cro0n9yu4dvJWZpsOG6t3JIs2jUONvI7Ozv0uLWQwynbNqoCYQQM0/Txavu6XV/n6aiJaqAQZrgKc1o0rvU1zLaWYPH+Vv/UUandPJRL+E2qTnRjMDRmuOQmvA1IRMoIdmnLsPLWIE=
-Return-Path: <paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 20:01:56 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:51128 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993973AbeHUSBxYfhYE convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 20:01:53 +0200
+Received: from mail-qt0-f171.google.com (mail-qt0-f171.google.com [209.85.216.171])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5C2672186C
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 18:01:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1534874506;
+        bh=19KuPt2NTvBQdVcS8JK5HhZEK13d+XotPGu/tjP6pwA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bzwhgttRZuZfcFZhF7kGjSSfLp6zW87GwiU+IFlba31a9uIW+jZ6ySxHyZPORizoz
+         ZgcOrMh/51OnQtnSsK2mWJzIrho3aUcTivrktOM+47t3gvPRqSd8weLsig4UGnhOGj
+         RdeL0L8yJL/VhryQpNnWBembwYUHvbrGHX6gldZg=
+Received: by mail-qt0-f171.google.com with SMTP id y5-v6so21250711qti.12
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 11:01:46 -0700 (PDT)
+X-Gm-Message-State: APzg51CdrP8jLzjcaxuhcfhLsJIQkRxDKi+ChBmbqYYyEU6Mb2GhR0th
+        DZg2Pl/HjEgcR6kZgiTb77SGHdvQAf0F0gyz1g==
+X-Google-Smtp-Source: ANB0Vdad/vaIbqSllLBN3Xv+nPKcu7mvg5Gml15XAmNQyIHa8j/goXq6o2+q8UjOkeB6mSTEa+GJw0Rtx0L6RLhB32s=
+X-Received: by 2002:a0c:db87:: with SMTP id m7-v6mr357431qvk.90.1534874505458;
+ Tue, 21 Aug 2018 11:01:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <3639955d-5990-1c82-7158-ac07b33c41f2@suse.de> <b00d8330-dab4-e444-e02c-dee6b54abc81@kunz-im-inter.net>
+In-Reply-To: <b00d8330-dab4-e444-e02c-dee6b54abc81@kunz-im-inter.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 21 Aug 2018 13:01:33 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKasgjf5BkEN-ATbLQdDaWxMLoeACkVPUe4vjs+Z0ziGw@mail.gmail.com>
+Message-ID: <CAL_JsqKasgjf5BkEN-ATbLQdDaWxMLoeACkVPUe4vjs+Z0ziGw@mail.gmail.com>
+Subject: Re: serdev: How to attach serdev devices to USB based tty devices?
+To:     mailinglists@kunz-im-inter.net
+Cc:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Xue Liu <liuxuenetmail@gmail.com>,
+        Ben Whitten <ben.whitten@lairdtech.com>,
+        devicetree@vger.kernel.org, netdev <netdev@vger.kernel.org>,
+        oneukum@suse.com, Alexander Graf <agraf@suse.de>,
+        LoRa_Community_Support@semtech.com,
+        =?UTF-8?B?5r2Y5bu65a6P?= <starnight@g.ncu.edu.tw>,
+        rehm@miromico.ch,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65708
+X-archive-position: 65709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,476 +67,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The old clocksource/timer platform code is now obsoleted by the newly
-introduced ingenic-timer and ingenic-ost drivers.
+On Tue, Aug 21, 2018 at 11:33 AM Frank Kunz
+<mailinglists@kunz-im-inter.net> wrote:
+>
+> Am 14.08.2018 um 04:28 schrieb Andreas Färber:
+> > Hi Rob et al.,
+> >
+> > For my LoRa network driver project [1] I have found your serdev
+> > framework to be a valuable help for dealing with hardware modules
+> > exposing some textual or binary UART interface.
+> >
+> > In particular on arm(64) and mips this allows to define an unlimited
+> > number of serdev drivers [2] that are associated via their Device Tree
+> > compatible string and can optionally be configured via DT properties.
+> >
+> > And in theory it seems serdev has also grown support for ACPI.
+> >
+> > Now, a growing number of vendors are placing such modules on a USB stick
+> > for easy evaluation on x86_64 PC hardware, or are designing mPCIe or M.2
+> > cards using their USB pins. While I do not yet have access to such a
+> > device myself, it is my understanding that devices with USB-UART bridge
+> > chipsets (e.g., FTDI) will show up as /dev/ttyUSBx and devices with an
+> > MCU implementing the CDC USB protocol (e.g., Pico-cell gateway = picoGW)
+> > will show up as /dev/ttyACMx.
+> > On the Raspberry Pi I've seen that Device Tree nodes can be used to pass
+> > information to on-board devices such as MAC address to Ethernet chipset,
+> > but that does not seem all that useful for passing a serdev child node
+> > to hot-plugged devices at unpredictable hub/port location (where it
+> > should not interfere with regular USB-UART cables for debugging), nor
+> > would it help ACPI based platforms such as x86_64.
+> >
+> > My idea then was that if we had some unique criteria like vendor and
+> > product IDs (or whatever is supported in usb_device_id), we could write
+> > a usb_driver with suitable USB_DEVICE*() macro. In its probe function we
+> > could call into the existing tty driver's probe function and afterwards
+> > try creating and attaching the appropriate serdev device, i.e. a fixed
+> > USB-to-serdev driver mapping. Problem is that most devices don't seem to
+> > implement any unique identifier I could make this depend on - either by
+> > using a standard FT232/FT2232/CH340G chip or by using STMicroelectronics
+> > virtual com port identifiers in CDC firmware and only differing in the
+> > textual description [3] the usb_device_id does not seem to match on.
+> >
+> > The obvious solution would of course be if hardware vendors could revise
+> > their designs to configure FTDI/etc. chips uniquely. I hear that that
+> > may involve exchanging the chipset, increasing costs, and may impact
+> > existing drivers. Wouldn't help for devices out there today either.
+>
+> They need to put an extra eeprom (cents) into their design and program it.
+>
+> >
+> > For the picoGW CDC firmware, Semtech does appear to own a USB vendor ID,
+> > so it would seem possible to allocate their own product IDs for SX1301
+> > and SX1308 respectively to replace the generic STMicroelectronics IDs,
+> > which the various vendors could offer as firmware updates.
+> >
+> > All outside my control though.
+> >
+> > Oliver therefore suggested to not mess with USB drivers and instead use
+> > a line discipline (ldisc). It seems that for example the userspace tool
+> > slattach takes a tty device and performs an ioctl to switch the generic
+> > tty device into a special N_SLIP protocol mode, implemented in [4].
+> >
+> > However, the existing number of such ldisc modes appears to be below 30,
+> > with hardly any vendor-specific implementation, so polluting its number
+> > space seems undesirable? And in some cases I would like to use the same
+> > protocol implementation over direct UART and over USB, so would like to
+> > avoid duplicate serdev_device_driver and tty_ldisc_ops implementations.
+> >
+> > Long story short, has there been any thinking about a userspace
+> > interface to attach a given serdev driver to a tty device?
+> >
+> > Or is there, on OF_DYNAMIC platforms, a way from userspace to associate
+> > a DT fragment (!= DT Overlay) with a given USB device dynamically, to
+> > attach a serdev node with sub-nodes?
+> >
+> > Any other ideas how to cleanly solve this?
+> >
+> > In some cases we're talking about a "simple" AT-like command interface;
+> > the picoGW implements a semi-generic USB-SPI bridge that may host a
+> > choice of 2+ chipsets, which in turn has two further sub-devices with 3+
+> > chipset choices (theoretically clk output and rx/tx options etc.) each.
+> > (For the latter I'm thinking we'll need a serdev driver exposing a
+> > regmap_bus and then implement regmap_bus based versions of the SPI
+> > drivers like Ben and I refactored SX1257 in [2] last weekend.)>
+>
+> There is a mPCIe module (RAK833) available by RAK wireless that uses a
+> FT2232 as USB-SPI bridge, not uart. I have one here for experiments. It
+> is detected as generic FT2232 device on usb. As far as I understood so
+> far the serdev does only support uart based communication, is there a
+> chance to get USB-SPI bridged modules also working?
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
+That should be somewhat easier than a UART because there's not the
+interactions with the tty layer to deal with. You still have the issue
+of what is the DT root for the FTDI device.
 
-Notes:
-     v5: New patch
-    
-     v6: No change
-    
-     v7: No change
-
- arch/mips/include/asm/mach-jz4740/platform.h |   1 -
- arch/mips/include/asm/mach-jz4740/timer.h    | 135 --------------------
- arch/mips/jz4740/Makefile                    |   3 +-
- arch/mips/jz4740/platform.c                  |   6 -
- arch/mips/jz4740/setup.c                     |   8 ++
- arch/mips/jz4740/time.c                      | 176 ---------------------------
- arch/mips/jz4740/timer.c                     |  51 --------
- 7 files changed, 9 insertions(+), 371 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-jz4740/timer.h
- delete mode 100644 arch/mips/jz4740/time.c
- delete mode 100644 arch/mips/jz4740/timer.c
-
-diff --git a/arch/mips/include/asm/mach-jz4740/platform.h b/arch/mips/include/asm/mach-jz4740/platform.h
-index c0c932ac72a7..cd464d956882 100644
---- a/arch/mips/include/asm/mach-jz4740/platform.h
-+++ b/arch/mips/include/asm/mach-jz4740/platform.h
-@@ -29,7 +29,6 @@ extern struct platform_device jz4740_i2s_device;
- extern struct platform_device jz4740_pcm_device;
- extern struct platform_device jz4740_codec_device;
- extern struct platform_device jz4740_adc_device;
--extern struct platform_device jz4740_pwm_device;
- extern struct platform_device jz4740_dma_device;
- 
- #endif
-diff --git a/arch/mips/include/asm/mach-jz4740/timer.h b/arch/mips/include/asm/mach-jz4740/timer.h
-deleted file mode 100644
-index 8750a1d04e22..000000000000
---- a/arch/mips/include/asm/mach-jz4740/timer.h
-+++ /dev/null
-@@ -1,135 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 platform timer support
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under  the terms of the GNU General	 Public License as published by the
-- *  Free Software Foundation;  either version 2 of the License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#ifndef __ASM_MACH_JZ4740_TIMER
--#define __ASM_MACH_JZ4740_TIMER
--
--#define JZ_REG_TIMER_STOP		0x0C
--#define JZ_REG_TIMER_STOP_SET		0x1C
--#define JZ_REG_TIMER_STOP_CLEAR		0x2C
--#define JZ_REG_TIMER_ENABLE		0x00
--#define JZ_REG_TIMER_ENABLE_SET		0x04
--#define JZ_REG_TIMER_ENABLE_CLEAR	0x08
--#define JZ_REG_TIMER_FLAG		0x10
--#define JZ_REG_TIMER_FLAG_SET		0x14
--#define JZ_REG_TIMER_FLAG_CLEAR		0x18
--#define JZ_REG_TIMER_MASK		0x20
--#define JZ_REG_TIMER_MASK_SET		0x24
--#define JZ_REG_TIMER_MASK_CLEAR		0x28
--
--#define JZ_REG_TIMER_DFR(x) (((x) * 0x10) + 0x30)
--#define JZ_REG_TIMER_DHR(x) (((x) * 0x10) + 0x34)
--#define JZ_REG_TIMER_CNT(x) (((x) * 0x10) + 0x38)
--#define JZ_REG_TIMER_CTRL(x) (((x) * 0x10) + 0x3C)
--
--#define JZ_TIMER_IRQ_HALF(x) BIT((x) + 0x10)
--#define JZ_TIMER_IRQ_FULL(x) BIT(x)
--
--#define JZ_TIMER_CTRL_PWM_ABBRUPT_SHUTDOWN	BIT(9)
--#define JZ_TIMER_CTRL_PWM_ACTIVE_LOW		BIT(8)
--#define JZ_TIMER_CTRL_PWM_ENABLE		BIT(7)
--#define JZ_TIMER_CTRL_PRESCALE_MASK		0x1c
--#define JZ_TIMER_CTRL_PRESCALE_OFFSET		0x3
--#define JZ_TIMER_CTRL_PRESCALE_1		(0 << 3)
--#define JZ_TIMER_CTRL_PRESCALE_4		(1 << 3)
--#define JZ_TIMER_CTRL_PRESCALE_16		(2 << 3)
--#define JZ_TIMER_CTRL_PRESCALE_64		(3 << 3)
--#define JZ_TIMER_CTRL_PRESCALE_256		(4 << 3)
--#define JZ_TIMER_CTRL_PRESCALE_1024		(5 << 3)
--
--#define JZ_TIMER_CTRL_PRESCALER(x) ((x) << JZ_TIMER_CTRL_PRESCALE_OFFSET)
--
--#define JZ_TIMER_CTRL_SRC_EXT		BIT(2)
--#define JZ_TIMER_CTRL_SRC_RTC		BIT(1)
--#define JZ_TIMER_CTRL_SRC_PCLK		BIT(0)
--
--extern void __iomem *jz4740_timer_base;
--void __init jz4740_timer_init(void);
--
--void jz4740_timer_enable_watchdog(void);
--void jz4740_timer_disable_watchdog(void);
--
--static inline void jz4740_timer_stop(unsigned int timer)
--{
--	writel(BIT(timer), jz4740_timer_base + JZ_REG_TIMER_STOP_SET);
--}
--
--static inline void jz4740_timer_start(unsigned int timer)
--{
--	writel(BIT(timer), jz4740_timer_base + JZ_REG_TIMER_STOP_CLEAR);
--}
--
--static inline bool jz4740_timer_is_enabled(unsigned int timer)
--{
--	return readb(jz4740_timer_base + JZ_REG_TIMER_ENABLE) & BIT(timer);
--}
--
--static inline void jz4740_timer_enable(unsigned int timer)
--{
--	writeb(BIT(timer), jz4740_timer_base + JZ_REG_TIMER_ENABLE_SET);
--}
--
--static inline void jz4740_timer_disable(unsigned int timer)
--{
--	writeb(BIT(timer), jz4740_timer_base + JZ_REG_TIMER_ENABLE_CLEAR);
--}
--
--static inline void jz4740_timer_set_period(unsigned int timer, uint16_t period)
--{
--	writew(period, jz4740_timer_base + JZ_REG_TIMER_DFR(timer));
--}
--
--static inline void jz4740_timer_set_duty(unsigned int timer, uint16_t duty)
--{
--	writew(duty, jz4740_timer_base + JZ_REG_TIMER_DHR(timer));
--}
--
--static inline void jz4740_timer_set_count(unsigned int timer, uint16_t count)
--{
--	writew(count, jz4740_timer_base + JZ_REG_TIMER_CNT(timer));
--}
--
--static inline uint16_t jz4740_timer_get_count(unsigned int timer)
--{
--	return readw(jz4740_timer_base + JZ_REG_TIMER_CNT(timer));
--}
--
--static inline void jz4740_timer_ack_full(unsigned int timer)
--{
--	writel(JZ_TIMER_IRQ_FULL(timer), jz4740_timer_base + JZ_REG_TIMER_FLAG_CLEAR);
--}
--
--static inline void jz4740_timer_irq_full_enable(unsigned int timer)
--{
--	writel(JZ_TIMER_IRQ_FULL(timer), jz4740_timer_base + JZ_REG_TIMER_FLAG_CLEAR);
--	writel(JZ_TIMER_IRQ_FULL(timer), jz4740_timer_base + JZ_REG_TIMER_MASK_CLEAR);
--}
--
--static inline void jz4740_timer_irq_full_disable(unsigned int timer)
--{
--	writel(JZ_TIMER_IRQ_FULL(timer), jz4740_timer_base + JZ_REG_TIMER_MASK_SET);
--}
--
--static inline void jz4740_timer_set_ctrl(unsigned int timer, uint16_t ctrl)
--{
--	writew(ctrl, jz4740_timer_base + JZ_REG_TIMER_CTRL(timer));
--}
--
--static inline uint16_t jz4740_timer_get_ctrl(unsigned int timer)
--{
--	return readw(jz4740_timer_base + JZ_REG_TIMER_CTRL(timer));
--}
--
--#endif
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index 88d6aa7d000b..72eb805028a4 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -5,8 +5,7 @@
- 
- # Object file lists.
- 
--obj-y += prom.o time.o reset.o setup.o \
--	platform.o timer.o
-+obj-y += prom.o reset.o setup.o platform.o
- 
- CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
- 
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-index cbc5f8e87230..af0ecaeb4931 100644
---- a/arch/mips/jz4740/platform.c
-+++ b/arch/mips/jz4740/platform.c
-@@ -233,12 +233,6 @@ struct platform_device jz4740_adc_device = {
- 	.resource	= jz4740_adc_resources,
- };
- 
--/* PWM */
--struct platform_device jz4740_pwm_device = {
--	.name = "jz4740-pwm",
--	.id   = -1,
--};
--
- /* DMA */
- static struct resource jz4740_dma_resources[] = {
- 	{
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index afb40f8bce96..099e4164afff 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -14,6 +14,8 @@
-  *
-  */
- 
-+#include <linux/clk-provider.h>
-+#include <linux/clocksource.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/irqchip.h>
-@@ -101,3 +103,9 @@ void __init arch_init_irq(void)
- {
- 	irqchip_init();
- }
-+
-+void __init plat_time_init(void)
-+{
-+	of_clk_init(NULL);
-+	timer_probe();
-+}
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-deleted file mode 100644
-index 2ca9160f642a..000000000000
---- a/arch/mips/jz4740/time.c
-+++ /dev/null
-@@ -1,176 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 platform time support
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under  the terms of the GNU General	 Public License as published by the
-- *  Free Software Foundation;  either version 2 of the License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/clk.h>
--#include <linux/clk-provider.h>
--#include <linux/interrupt.h>
--#include <linux/kernel.h>
--#include <linux/time.h>
--
--#include <linux/clockchips.h>
--#include <linux/sched_clock.h>
--
--#include <asm/mach-jz4740/clock.h>
--#include <asm/mach-jz4740/irq.h>
--#include <asm/mach-jz4740/timer.h>
--#include <asm/time.h>
--
--#include "clock.h"
--
--#define TIMER_CLOCKEVENT 0
--#define TIMER_CLOCKSOURCE 1
--
--static uint16_t jz4740_jiffies_per_tick;
--
--static u64 jz4740_clocksource_read(struct clocksource *cs)
--{
--	return jz4740_timer_get_count(TIMER_CLOCKSOURCE);
--}
--
--static struct clocksource jz4740_clocksource = {
--	.name = "jz4740-timer",
--	.rating = 200,
--	.read = jz4740_clocksource_read,
--	.mask = CLOCKSOURCE_MASK(16),
--	.flags = CLOCK_SOURCE_IS_CONTINUOUS,
--};
--
--static u64 notrace jz4740_read_sched_clock(void)
--{
--	return jz4740_timer_get_count(TIMER_CLOCKSOURCE);
--}
--
--static irqreturn_t jz4740_clockevent_irq(int irq, void *devid)
--{
--	struct clock_event_device *cd = devid;
--
--	jz4740_timer_ack_full(TIMER_CLOCKEVENT);
--
--	if (!clockevent_state_periodic(cd))
--		jz4740_timer_disable(TIMER_CLOCKEVENT);
--
--	cd->event_handler(cd);
--
--	return IRQ_HANDLED;
--}
--
--static int jz4740_clockevent_set_periodic(struct clock_event_device *evt)
--{
--	jz4740_timer_set_count(TIMER_CLOCKEVENT, 0);
--	jz4740_timer_set_period(TIMER_CLOCKEVENT, jz4740_jiffies_per_tick);
--	jz4740_timer_irq_full_enable(TIMER_CLOCKEVENT);
--	jz4740_timer_enable(TIMER_CLOCKEVENT);
--
--	return 0;
--}
--
--static int jz4740_clockevent_resume(struct clock_event_device *evt)
--{
--	jz4740_timer_irq_full_enable(TIMER_CLOCKEVENT);
--	jz4740_timer_enable(TIMER_CLOCKEVENT);
--
--	return 0;
--}
--
--static int jz4740_clockevent_shutdown(struct clock_event_device *evt)
--{
--	jz4740_timer_disable(TIMER_CLOCKEVENT);
--
--	return 0;
--}
--
--static int jz4740_clockevent_set_next(unsigned long evt,
--	struct clock_event_device *cd)
--{
--	jz4740_timer_set_count(TIMER_CLOCKEVENT, 0);
--	jz4740_timer_set_period(TIMER_CLOCKEVENT, evt);
--	jz4740_timer_enable(TIMER_CLOCKEVENT);
--
--	return 0;
--}
--
--static struct clock_event_device jz4740_clockevent = {
--	.name = "jz4740-timer",
--	.features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
--	.set_next_event = jz4740_clockevent_set_next,
--	.set_state_shutdown = jz4740_clockevent_shutdown,
--	.set_state_periodic = jz4740_clockevent_set_periodic,
--	.set_state_oneshot = jz4740_clockevent_shutdown,
--	.tick_resume = jz4740_clockevent_resume,
--	.rating = 200,
--#ifdef CONFIG_MACH_JZ4740
--	.irq = JZ4740_IRQ_TCU0,
--#endif
--#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
--	.irq = JZ4780_IRQ_TCU2,
--#endif
--};
--
--static struct irqaction timer_irqaction = {
--	.handler	= jz4740_clockevent_irq,
--	.flags		= IRQF_PERCPU | IRQF_TIMER,
--	.name		= "jz4740-timerirq",
--	.dev_id		= &jz4740_clockevent,
--};
--
--void __init plat_time_init(void)
--{
--	int ret;
--	uint32_t clk_rate;
--	uint16_t ctrl;
--	struct clk *ext_clk;
--
--	of_clk_init(NULL);
--	jz4740_timer_init();
--
--	ext_clk = clk_get(NULL, "ext");
--	if (IS_ERR(ext_clk))
--		panic("unable to get ext clock");
--	clk_rate = clk_get_rate(ext_clk) >> 4;
--	clk_put(ext_clk);
--
--	jz4740_jiffies_per_tick = DIV_ROUND_CLOSEST(clk_rate, HZ);
--
--	clockevent_set_clock(&jz4740_clockevent, clk_rate);
--	jz4740_clockevent.min_delta_ns = clockevent_delta2ns(100, &jz4740_clockevent);
--	jz4740_clockevent.min_delta_ticks = 100;
--	jz4740_clockevent.max_delta_ns = clockevent_delta2ns(0xffff, &jz4740_clockevent);
--	jz4740_clockevent.max_delta_ticks = 0xffff;
--	jz4740_clockevent.cpumask = cpumask_of(0);
--
--	clockevents_register_device(&jz4740_clockevent);
--
--	ret = clocksource_register_hz(&jz4740_clocksource, clk_rate);
--
--	if (ret)
--		printk(KERN_ERR "Failed to register clocksource: %d\n", ret);
--
--	sched_clock_register(jz4740_read_sched_clock, 16, clk_rate);
--
--	setup_irq(jz4740_clockevent.irq, &timer_irqaction);
--
--	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
--
--	jz4740_timer_set_ctrl(TIMER_CLOCKEVENT, ctrl);
--	jz4740_timer_set_ctrl(TIMER_CLOCKSOURCE, ctrl);
--
--	jz4740_timer_set_period(TIMER_CLOCKEVENT, jz4740_jiffies_per_tick);
--	jz4740_timer_irq_full_enable(TIMER_CLOCKEVENT);
--
--	jz4740_timer_set_period(TIMER_CLOCKSOURCE, 0xffff);
--
--	jz4740_timer_enable(TIMER_CLOCKEVENT);
--	jz4740_timer_enable(TIMER_CLOCKSOURCE);
--}
-diff --git a/arch/mips/jz4740/timer.c b/arch/mips/jz4740/timer.c
-deleted file mode 100644
-index 777877feef71..000000000000
---- a/arch/mips/jz4740/timer.c
-+++ /dev/null
-@@ -1,51 +0,0 @@
--/*
-- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *  JZ4740 platform timer support
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under  the terms of the GNU General	 Public License as published by the
-- *  Free Software Foundation;  either version 2 of the License, or (at your
-- *  option) any later version.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/export.h>
--#include <linux/io.h>
--#include <linux/init.h>
--#include <linux/kernel.h>
--
--#include <asm/mach-jz4740/base.h>
--#include <asm/mach-jz4740/timer.h>
--
--void __iomem *jz4740_timer_base;
--EXPORT_SYMBOL_GPL(jz4740_timer_base);
--
--void jz4740_timer_enable_watchdog(void)
--{
--	writel(BIT(16), jz4740_timer_base + JZ_REG_TIMER_STOP_CLEAR);
--}
--EXPORT_SYMBOL_GPL(jz4740_timer_enable_watchdog);
--
--void jz4740_timer_disable_watchdog(void)
--{
--	writel(BIT(16), jz4740_timer_base + JZ_REG_TIMER_STOP_SET);
--}
--EXPORT_SYMBOL_GPL(jz4740_timer_disable_watchdog);
--
--void __init jz4740_timer_init(void)
--{
--	jz4740_timer_base = ioremap(JZ4740_TCU_BASE_ADDR, 0x100);
--
--	if (!jz4740_timer_base)
--		panic("Failed to ioremap timer registers");
--
--	/* Disable all timer clocks except for those used as system timers */
--	writel(0x000100fc, jz4740_timer_base + JZ_REG_TIMER_STOP_SET);
--
--	/* Timer irqs are unmasked by default, mask them */
--	writel(0x00ff00ff, jz4740_timer_base + JZ_REG_TIMER_MASK_SET);
--}
--- 
-2.11.0
+Rob

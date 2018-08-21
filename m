@@ -1,91 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 21:13:33 +0200 (CEST)
-Received: from mail-dm3nam03on0123.outbound.protection.outlook.com ([104.47.41.123]:65145
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992289AbeHUTN2WhK3S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Aug 2018 21:13:28 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 22:31:33 +0200 (CEST)
+Received: from mail-it0-x24a.google.com ([IPv6:2607:f8b0:4001:c0b::24a]:59473
+        "EHLO mail-it0-x24a.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeHUUb2RQgtk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 22:31:28 +0200
+Received: by mail-it0-x24a.google.com with SMTP id a10-v6so29859itc.9
+        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2018 13:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EOHfSxuqQ5OvNIbwoX7D9/z13WKGCcTNzTMyWsMesN8=;
- b=CqIsNsb4lTTf2ECAIAIJKPLItQDskcMaJLx6y0TsuIION3YpT8Gswep5l3EETZsz0Y/Chs+/u9Bk2yoMDbJi2lnH9eSMJ9GAJERb0Sk/916HkBcbVvMvqKglbfDK7mY9f0qPLDnsUkAL8N8IWC9DjkA0MD9UGI4WUY9+AHf1PFY=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from pburton-laptop.mipstec.com (4.16.204.77) by
- DM6PR08MB4937.namprd08.prod.outlook.com (2603:10b6:5:4b::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1059.23; Tue, 21 Aug 2018 19:13:17 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     Paul Burton <paul.burton@mips.com>,
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=ioXeZ9O9/18Nwb8gLwEOorcUyDe4xCVsYiZuLmClpbQ=;
+        b=JrR1/haNdyeNhYmgMuhmGQMv40A58vIM1PIbcUtQsVpwVktxNZnBlvLPEJxRMDwyav
+         VpyNuimVlO9z8/QU7slNJizNPU4DUmlwfoPOK+bBGu2WXzlJVsQtpziQ/L5mwTew+W2W
+         /1V6ETC7VqMIp1GTc/yIoL8fNlcOD5yWIunVqb1g5rQ2bEg7DSd46fgBNrvAMn/mmAJt
+         9nITOT6LeN3vsSaUNAnPBEevp3V56swffZIx5KAmgetBg978OrE7EUIxWLMoM8bYsLI1
+         4Ocsp7Dp7zAb4UG87l51/u8naUMTLNIt3+ukpUdYATbW89D477QPAaybT0azvkqjHtDy
+         +b8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=ioXeZ9O9/18Nwb8gLwEOorcUyDe4xCVsYiZuLmClpbQ=;
+        b=ZIqNDLgobRmSzxvvCKxGA4MLcfx7OmcwL/8QwKUWPXsUGNyppd3dI5GtjB54P+sKx0
+         olRmQDk9Q28ZhEqGKJ47CYO90gxzIxTyMbsoxGgO5FNtDuNO+BlXR4MFTwBQXxFquuxr
+         igj/4Bpwim9IyDtukOyS9PNDGsoDec3Kt6K0bPLy78lGI09u/T/NHou0+tSS0fvvXPrX
+         h5UPvpPQnSHvAmUVGw6Jekj9UnFT1OxB13z26W1mfESF0ycsL7X8n5OBG6NDMQeWkwV7
+         o49dcvQAW47wo+pJx6MRWvcLA/i/+ORU022Lm8cD5kSWIGY+ALRdazcmZ4tW+vo/1doO
+         m5yA==
+X-Gm-Message-State: AOUpUlHerlFHYPjDjIn4ziuR7a1UcLH/RmBAugZKzP332hgGFMT++pTi
+        WkAp4pgYGhAn3RN4V0C1KkVRLHtDbJJrHxZVgd8=
+X-Google-Smtp-Source: AA+uWPxYaIAoc76wiFQXJiu1N4ZNN/MSr2nSsjY4XFvjHlS85UgTQUL7GphpwOwk47lc3vHNNt5XWcwuPljQe92BJe8=
+X-Received: by 2002:a6b:1806:: with SMTP id 6-v6mr23963203ioy.30.1534883480321;
+ Tue, 21 Aug 2018 13:31:20 -0700 (PDT)
+Date:   Tue, 21 Aug 2018 13:28:14 -0700
+In-Reply-To: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
+Message-Id: <20180821202900.208417-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
+X-Mailer: git-send-email 2.18.0.865.gffc8e1a3cd6-goog
+Subject: [PATCH] treewide: remove current_text_addr
+From:   Nick Desaulniers <ndesaulniers@google.com>
+To:     torvalds@linux-foundation.org, akpm@linux-foundation.org
+Cc:     ebiederm@xmission.com, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, horms@verge.net.au, natechancellor@gmail.com,
+        pombredanne@nexb.com, kstewart@linuxfoundation.org,
+        gregkh@linuxfoundation.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
-Date:   Tue, 21 Aug 2018 12:12:59 -0700
-Message-Id: <20180821191259.18156-1-paul.burton@mips.com>
-X-Mailer: git-send-email 2.18.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR16CA0004.namprd16.prod.outlook.com
- (2603:10b6:3:c0::14) To DM6PR08MB4937.namprd08.prod.outlook.com
- (2603:10b6:5:4b::18)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a5f3c86a-95b5-4cd9-115d-08d6079a26c2
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4937;
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;3:GphyDCYwXGOtroUjOQgyTwC+oBi1IMvCD64LozV3XRAEmVOZbOctdiafX3B8G2Eh3nLK7ufvirXzLQot1Igs2Q/kH/o9VBMkQWnTBD2xGOdvTd6XGYi2OuIE2fq0yKPc6Hxr6DGgLAcdm1qsvtgA024LL5gdNiDoFezrsoPpcovLPYukSQgKr+9eThjc952EmBY5Tf85owwwNthGOj0GIZk6BmZ4nRwqv0zr4qj7gJMQ/HKI9N4Aoh6QvTax4ow0;25:hMyKaqa+oxvQoIO7WT+0ZpsXHTGhH4zbbehWiMUHYZZM1tNnX0XyehM32ikJINYwEZ/j+tLnMHyuDjvkHKLYdR+lo2yP4AbSFppqJEC7ewFpUbQ3Xgv9Ctv5gAylvyo1QA8tkxuqy+yZTOnaOlqbvAh6e8720Zhgd+yYMmxg33CEuctcQXe3RcNU+uC4O4WMG/QXqngQrrbdzVDm6C9lN8APFXGjVEsfaLoe8QF6+Bi4XXRS89DCrc4LeADj0RWGwSYzb/R1ep1GE0KfpKM107l95aQAYhQsSm0TJ659B48kroRDuTxO9pq4Z9/5XAA1ubT01jPrZRtOzU9AsaBMDg==;31:LC16/3YnI+1MQmTkGSvmZ1mJRyt9S8ZWIhGOzO/AKyU9pXF2SUV3AUaAj4oA8eLji3Pu+65DOPXF0vzc9DiokieC5Goui0RQHJk/egoGsmkJ4y6IpmAedUn9Xy7Tw7AiWnEfRawLG9VK2ZYp3BXSMn3J+lR2GXKnlZjUUWDdBMHKfIOJ6M4MiBK+RteKRaH6QA7GGJpyx6MqAbZOmDI1a/8lTEzsynneTFzIGd+Qjds=
-X-MS-TrafficTypeDiagnostic: DM6PR08MB4937:
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;20:rqgyenYkt4KppC95nC7WRg7V0S21tpfqXETfCO2YcFEsCPzXz3RU4eNQ557NRA/ZLC6IA1zoxEgVdLavThxTbvKT80KvvvJFBLEMjWqXF8UIDUmE7vg5rNDLy5jvGDkeZ/4X28UC85SMCNveV4QHKoaz/IbGzMZkt2USEbfJ/1k+UhEV7oKG2DO0MyvAMycHVgx1XkOAK4GSvggM/dh+jcNufydAipiQ+QQblxjebAgnC0XromOa9PyOoMnhZqQL;4:4k53vqaa1drZby6CFKs6kPuUmeQfoj6JaRHfOmdETiCjwR++uRWpmMBulMXabkRxH8pvbkaPezR4gYpl/fRQnkUFQTVDe1q5q17dFMMUwv+APteoHzNCcseiJuP/lvO6qpAGRU0EOQHn4ZS0fNDv10jI9XZV5+GQ/yqNeaf/7wxL2vLMx45NdYD2mxIm/Iy2oZGPXDbOSIYmqyr2SNFS4oK3RVoxFUUxFlYdmUvXr1WvR8nNcL8QsjkAwx6jj8wKkVvb3ShjOXuAshFZuYZe6VW5vgKkkwPYu1q9+SEZFAkO7M34r06Qh46iWXuv1m2i5qReSh/+kxf+ytz6liohv2WIY5mdt9gl+4FN/LB8nVw9L4NiAZI8ArCrN77zRU6OtxMMunIVY1GLBjlo6AGL1P4pX8jaRBP/qOdan4k+t1o=
-X-Microsoft-Antispam-PRVS: <DM6PR08MB4937470744611C9DACEE4C7BC1310@DM6PR08MB4937.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(22074186197030)(9452136761055)(183786458502308)(228905959029699);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3231311)(944501410)(52105095)(3002001)(93006095)(149027)(150027)(6041310)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(201708071742011)(7699016);SRVR:DM6PR08MB4937;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4937;
-X-Forefront-PRVS: 0771670921
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(376002)(39850400004)(346002)(366004)(136003)(396003)(199004)(189003)(26005)(3846002)(186003)(16526019)(4326008)(6512007)(53936002)(956004)(1857600001)(8936002)(68736007)(6306002)(53416004)(6916009)(1076002)(6116002)(25786009)(97736004)(2616005)(476003)(54906003)(6666003)(486006)(42882007)(316002)(6506007)(478600001)(2361001)(386003)(16586007)(48376002)(50226002)(2906002)(966005)(66066001)(575784001)(52116002)(50466002)(69596002)(8676002)(81156014)(51416003)(6486002)(81166006)(47776003)(105586002)(44832011)(2351001)(36756003)(305945005)(7736002)(5660300001)(106356001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4937;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4937;23:F7pD96KOBB4hTOY1WbOHGOj5RawRBsw7GLzoATJzv?=
- =?us-ascii?Q?gb6IdDRVT1k34Vav8/JWfGEBaPlWQKOMkIJNbShlaOnVFQWIigq6xPwQgAlx?=
- =?us-ascii?Q?Nh2F7RF6jcv5pEFjxO0utigip13WIFLNJbUW0r2e6VG8HTv1+fHhQKIOZ5RV?=
- =?us-ascii?Q?b3NfYw9aoaLTPT/E9TKI5OBNZOP73NQdZ3BgrdzJEZjPovY9rwnNfbSaJDq/?=
- =?us-ascii?Q?HqxXxvniEaseTNRVIuooKL1F0l7hn2zo1KiNPEu/Ay8IcblIkmK5RCyNPiTS?=
- =?us-ascii?Q?SMxy60eL6wIYnjaXzEZY/ezZAy18/y3ba47Tf8/6tqB6pdfJPJCe00j9t03O?=
- =?us-ascii?Q?LrbJGu+8dzI36Hvoprk5Uril/ixRozai7ntEvVBky5jR6lXmNEbVHiXq35T2?=
- =?us-ascii?Q?I7OQPS21GM90yl65nf99e1ykcmYos27FqhgvQKbioJKpDa6o+6lq8g+uJZdH?=
- =?us-ascii?Q?QbJU+iQQ+ZlO1xsb7z9lUCOWSZ6475B9HegsVgP1hI2hwiJ+7vI/HJVmY5SN?=
- =?us-ascii?Q?0Ytuag66H3Ppmw1A0L6zDTy+gy6ZMc6CvItlYzCwyIlD11xPQrkUvqB1Lzp1?=
- =?us-ascii?Q?Bc7hALxTt4Ttu6h+51qPhj0it4kZvyh7WYQzq5BkJBo3r43fhd1UeTOwqDQA?=
- =?us-ascii?Q?f1GFUqg7ybrBzTpO0cCkbsdZ56M6ebFJ1rOk0CIskdVvnqH+1t8/37PuGJ3H?=
- =?us-ascii?Q?pKWIPcwhboYHbthwe/igHphtfK9acJyv0IXQDMTitWXVRNPGJ3uT4M6YiFMy?=
- =?us-ascii?Q?3Y1ZsH6YTWBvfMQ/48BRWs1q+/UVzWxLa4iN4YPUIcTEDql/CTxyYvTxJNu2?=
- =?us-ascii?Q?/EEeuenymqHAKMdvgtR00sytE38V/lb4HrgSII/d8MMaXkstTgL+uKWml40g?=
- =?us-ascii?Q?gZEq8YcbqL7z3Yr9CJPpKsI7iQ+G9D28r+vdUmqxdTuhvowwNKs9TlkMGYh+?=
- =?us-ascii?Q?Fsl/YYKOHAGuWJa6oP+A27iI+xlKSnIYsjioIes8u+aovcd9fR0uJRW95/Yf?=
- =?us-ascii?Q?7QCdy/cVA7yDm5V4WLfi0Il0Io6GXfrzf5eYWIyk9S7H9ICnjZDYd+yLuTmP?=
- =?us-ascii?Q?1T957nSc7SvfGz9vF8pWM2dXo9F+l4+sq32aRxEiUI61yvty7N1d7WSyVERA?=
- =?us-ascii?Q?6Es2Cpdu9ffuxvBZhVB63uO+NlbUVai9DPQ2LcYgFUMtzdT1u54nA4UdSLa9?=
- =?us-ascii?Q?zJLVSwdotOPxbVDnXIfEDe6Ktic4E68lWKRiXwQsAJi4T/HO0OkpXdXRmkXg?=
- =?us-ascii?Q?ivncy0zQRO5KTSAAUey/DCBijLt9sSIhbPpDWhPNigDN8hCZ2k5/lIH0VcQ2?=
- =?us-ascii?Q?yzG7J+aGNf0zc89+Qchzxgp+XyhLOvpXElaGqJp8xmZ?=
-X-Microsoft-Antispam-Message-Info: kh4OngCEHdcnFK5TvCrWONAIVdN2moV6xQhzPTnwi6DMlsxYvpwmkRjGzBebZ2rCIM76nZZQ2gVAeGKKGUrz4vCs3vUXvNC/t+bicR0oMulddUl/iJh0lXt2b5qFaddQF/n+MQ6UVTjsoN7O+4zpxYuP4dPWK/aA9mNONiBftSHgdOOD1TSSGyORomba91ppaiyI0PUhx9AUK+u72BgiEREFzgb+Zus26rEoHoGnWXwW0XInn2vqeSa34I7V9OHXuE2lMd2Yk8OBbR5MoOouo2CrhpXdG1lu4IvAMZaCWRFR/KSXDunS8llGqaNdCCUX8vJd+fFQIS51/1cD9YO7dvX4EJQPbwFA8rat+YSABMc=
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;6:X4N9ipquyOxKUQLCyHSkPxMXAtlqOHtM3tVk8ggbifUxgGn9xNTGuiPjCZgOpy0EmpRlEdmV6XUKwJF+53/kctrZ6FzqhJv95kJNhZcw/4NVYzzek4Ua2Bn55ahWBVLwNJ2T5HS+h7mOdWPrrVWkhE2Mq3HwPXorzAQLegPt0jSF1YgSdPdoWhpO49/GS9XVwQacn8iQQGs/YvhjoK3j1CtH/LJ8pIWo91hR9v+eYSMGRmNwAEfXKA7VpIR9KPFHkVSYNGq7RjVKUcYV24n2gHpQ06Gzo9+qmGmPFboygSQAdS4Q5oYqls1svOFcz15ip9MwjJUlmuoKVjzeeBz3Iwqj2yknTTeU1MYl9hf8E9te+oHYeBH5qsPer1dzK011S3rOg1BTWHC4zFfrsLBC4Pzn4bzGH0RpuJ4aTjPSRNf0yYl/nMDMJpUlcN3cQBKHorB1Pl9eY3uSg130ImRkTg==;5:BBQFYcIICKngy++ZUSlSCq/Oy8XBz0gNa4DzKXhY38yQG8xxODLIvY5dsn8gxTnSsJhED1rqcDBXXRgljiiC3JzCL7SFs3uy41/LiveEzoHlHjj1TUheMwoGCaMme/LPI7KlAPMLubO7ozJ5xc7bVACfnz8Y/XD9EUG2q6W6sFo=;7:ZG9DYfRiu/qIFKYkyJKVW3L8o1LfntqgVyFupBIRMOtu199L29Ga0kfRb2aXvXtKIrVeyHjP6qonmxiuMbU3hNn1aI41Y3jGrvL6mZkkyaCesMh73JN4IMSDYwQRGXg9pPCzGcTlsRPin7AgW3PVep9uR1HDtah2hBAGWtw9fjrH7uDlkTOTI0NeIqwkM3d3Qn75Z6EajCnMLaa9Mn7hklICEyp18emHS3HyTwVDgz9tUe+dtMxSA/1f9awEVNGq
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2018 19:13:17.2676 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5f3c86a-95b5-4cd9-115d-08d6079a26c2
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4937
-Return-Path: <pburton@wavecomp.com>
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Tobias Klauser <tklauser@distanz.ch>,
+        Noam Camus <noamc@ezchip.com>,
+        Mickael GUENE <mickael.guene@st.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        "=?UTF-8?q?Alex=20Benn=C3=A9e?=" <alex.bennee@linaro.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Yury Norov <ynorov@caviumnetworks.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Philippe Bergheaud <felix@linux.vnet.ibm.com>,
+        Ram Pai <linuxram@us.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Vasily Gorbik <gor@linux.vnet.ibm.com>,
+        Nick Alcock <nick.alcock@oracle.com>,
+        Shannon Nelson <shannon.nelson@oracle.com>,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jiri Kosina <jkosina@suse.cz>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <3mHZ8WwwKClkE45J1LCE95IJ7FF7C5.3FDC9ELO-D9GJC9ELO-D9GJ.FI7@flex--ndesaulniers.bounces.google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65710
+X-archive-position: 65711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: ndesaulniers@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -98,58 +149,572 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some versions of GCC suboptimally generate calls to the __multi3()
-intrinsic for MIPS64r6 builds, resulting in link failures due to the
-missing function:
+Prefer _THIS_IP_ defined in linux/kernel.h.
 
-    LD      vmlinux.o
-    MODPOST vmlinux.o
-  kernel/bpf/verifier.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  fs/select.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  ...
+Most definitions of current_text_addr were the same as _THIS_IP_, but
+a few archs had inline assembly instead.
 
-We already have a workaround for this in which we provide the
-instrinsic, but we do so selectively for GCC 7 only. Unfortunately the
-issue occurs with older GCC versions too - it has been observed with
-both GCC 5.4.0 & GCC 6.4.0.
+This patch removes the final call site of current_text_addr, making all
+of the definitions dead code.
 
-MIPSr6 support was introduced in GCC 5, so all major GCC versions prior
-to GCC 8 are affected and we extend our workaround accordingly to all
-MIPS64r6 builds using GCC versions older than GCC 8.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
-Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.15+
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 ---
+I suspect that current_text_addr predated GNU C extensions for statement
+expressions and/or taking the address of a label, then the macro was
+reimplemented for every new archs include/asm/processor.h, even though
+there were very few call sites, and none required an assembly
+implementation vs the C implementation.
 
- arch/mips/lib/multi3.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I am sad to see a few neat arch specific ways of getting the ip/pc, but
+we should prefer the higher level C in cases where assembly is not
+required. And the definitions can always be found again in git history.
 
-diff --git a/arch/mips/lib/multi3.c b/arch/mips/lib/multi3.c
-index 111ad475aa0c..4c2483f410c2 100644
---- a/arch/mips/lib/multi3.c
-+++ b/arch/mips/lib/multi3.c
-@@ -4,12 +4,12 @@
- #include "libgcc.h"
+ arch/alpha/include/asm/processor.h      |  6 ------
+ arch/arc/include/asm/processor.h        |  8 --------
+ arch/arm/include/asm/processor.h        |  6 ------
+ arch/arm64/include/asm/processor.h      |  7 -------
+ arch/c6x/include/asm/processor.h        | 11 -----------
+ arch/h8300/include/asm/processor.h      |  6 ------
+ arch/hexagon/include/asm/processor.h    |  3 ---
+ arch/ia64/include/asm/processor.h       |  6 ------
+ arch/m68k/include/asm/processor.h       |  6 ------
+ arch/microblaze/include/asm/processor.h | 12 ------------
+ arch/mips/include/asm/processor.h       |  5 -----
+ arch/nds32/include/asm/processor.h      |  6 ------
+ arch/nios2/include/asm/processor.h      |  6 ------
+ arch/openrisc/include/asm/processor.h   |  5 -----
+ arch/parisc/include/asm/processor.h     | 11 -----------
+ arch/powerpc/include/asm/processor.h    |  6 ------
+ arch/riscv/include/asm/processor.h      |  6 ------
+ arch/s390/include/asm/processor.h       |  6 ------
+ arch/sh/include/asm/processor_32.h      |  6 ------
+ arch/sh/include/asm/processor_64.h      | 15 ---------------
+ arch/sparc/include/asm/processor_32.h   |  6 ------
+ arch/sparc/include/asm/processor_64.h   |  6 ------
+ arch/unicore32/include/asm/processor.h  |  6 ------
+ arch/x86/include/asm/kexec.h            |  3 ++-
+ arch/x86/include/asm/processor.h        | 12 ------------
+ arch/x86/um/asm/processor_32.h          |  8 --------
+ arch/x86/um/asm/processor_64.h          |  3 ---
+ arch/xtensa/include/asm/processor.h     |  8 --------
+ 28 files changed, 2 insertions(+), 193 deletions(-)
+
+diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
+index cb05d045efe3..6100431da07a 100644
+--- a/arch/alpha/include/asm/processor.h
++++ b/arch/alpha/include/asm/processor.h
+@@ -10,12 +10,6 @@
+ 
+ #include <linux/personality.h>	/* for ADDR_LIMIT_32BIT */
+ 
+-/*
+- * Returns current instruction pointer ("program counter").
+- */
+-#define current_text_addr() \
+-  ({ void *__pc; __asm__ ("br %0,.+4" : "=r"(__pc)); __pc; })
+-
+ /*
+  * We have a 42-bit user address space: 4TB user VM...
+  */
+diff --git a/arch/arc/include/asm/processor.h b/arch/arc/include/asm/processor.h
+index 8ee41e988169..10346d6cf926 100644
+--- a/arch/arc/include/asm/processor.h
++++ b/arch/arc/include/asm/processor.h
+@@ -98,14 +98,6 @@ extern void start_thread(struct pt_regs * regs, unsigned long pc,
+ 
+ extern unsigned int get_wchan(struct task_struct *p);
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- * Should the PC register be read instead ? This macro does not seem to
+- * be used in many places so this wont be all that bad.
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ #endif /* !__ASSEMBLY__ */
  
  /*
-- * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
-- * specific case only we'll implement it here.
-+ * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
-+ * that specific case only we implement that intrinsic here.
-  *
-  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-  */
--#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
+diff --git a/arch/arm/include/asm/processor.h b/arch/arm/include/asm/processor.h
+index 1bf65b47808a..120f4c9bbfde 100644
+--- a/arch/arm/include/asm/processor.h
++++ b/arch/arm/include/asm/processor.h
+@@ -11,12 +11,6 @@
+ #ifndef __ASM_ARM_PROCESSOR_H
+ #define __ASM_ARM_PROCESSOR_H
  
- /* multiply 64-bit values, low 64-bits returned */
- static inline long long notrace dmulu(long long a, long long b)
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ #ifdef __KERNEL__
+ 
+ #include <asm/hw_breakpoint.h>
+diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index 79657ad91397..966214f473b4 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -25,13 +25,6 @@
+ #define USER_DS		(TASK_SIZE_64 - 1)
+ 
+ #ifndef __ASSEMBLY__
+-
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ #ifdef __KERNEL__
+ 
+ #include <linux/build_bug.h>
+diff --git a/arch/c6x/include/asm/processor.h b/arch/c6x/include/asm/processor.h
+index 8f7cce829f8e..a8581f5b27f6 100644
+--- a/arch/c6x/include/asm/processor.h
++++ b/arch/c6x/include/asm/processor.h
+@@ -17,17 +17,6 @@
+ #include <asm/page.h>
+ #include <asm/current.h>
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr()			\
+-({						\
+-	void *__pc;				\
+-	asm("mvc .S2 pce1,%0\n" : "=b"(__pc));	\
+-	__pc;					\
+-})
+-
+ /*
+  * User space process size. This is mostly meaningless for NOMMU
+  * but some C6X processors may have RAM addresses up to 0xFFFFFFFF.
+diff --git a/arch/h8300/include/asm/processor.h b/arch/h8300/include/asm/processor.h
+index 985346393e4a..a060b41b2d31 100644
+--- a/arch/h8300/include/asm/processor.h
++++ b/arch/h8300/include/asm/processor.h
+@@ -12,12 +12,6 @@
+ #ifndef __ASM_H8300_PROCESSOR_H
+ #define __ASM_H8300_PROCESSOR_H
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ #include <linux/compiler.h>
+ #include <asm/segment.h>
+ #include <asm/ptrace.h>
+diff --git a/arch/hexagon/include/asm/processor.h b/arch/hexagon/include/asm/processor.h
+index ce67940860a5..227bcb9cfdac 100644
+--- a/arch/hexagon/include/asm/processor.h
++++ b/arch/hexagon/include/asm/processor.h
+@@ -27,9 +27,6 @@
+ #include <asm/registers.h>
+ #include <asm/hexagon_vm.h>
+ 
+-/*  must be a macro  */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ /*  task_struct, defined elsewhere, is the "process descriptor" */
+ struct task_struct;
+ 
+diff --git a/arch/ia64/include/asm/processor.h b/arch/ia64/include/asm/processor.h
+index 10061ccf0440..c91ef98ed6bf 100644
+--- a/arch/ia64/include/asm/processor.h
++++ b/arch/ia64/include/asm/processor.h
+@@ -602,12 +602,6 @@ ia64_set_unat (__u64 *unat, void *spill_addr, unsigned long nat)
+ 	*unat = (*unat & ~mask) | (nat << bit);
+ }
+ 
+-/*
+- * Get the current instruction/program counter value.
+- */
+-#define current_text_addr() \
+-	({ void *_pc; _pc = (void *)ia64_getreg(_IA64_REG_IP); _pc; })
+-
+ static inline __u64
+ ia64_get_ivr (void)
+ {
+diff --git a/arch/m68k/include/asm/processor.h b/arch/m68k/include/asm/processor.h
+index 464e9f5f50ee..3750819ac5a1 100644
+--- a/arch/m68k/include/asm/processor.h
++++ b/arch/m68k/include/asm/processor.h
+@@ -8,12 +8,6 @@
+ #ifndef __ASM_M68K_PROCESSOR_H
+ #define __ASM_M68K_PROCESSOR_H
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ #include <linux/thread_info.h>
+ #include <asm/segment.h>
+ #include <asm/fpu.h>
+diff --git a/arch/microblaze/include/asm/processor.h b/arch/microblaze/include/asm/processor.h
+index 330d556860ba..66b537b8d138 100644
+--- a/arch/microblaze/include/asm/processor.h
++++ b/arch/microblaze/include/asm/processor.h
+@@ -45,12 +45,6 @@ extern void ret_from_kernel_thread(void);
+  */
+ # define TASK_SIZE	(0x81000000 - 0x80000000)
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-# define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ /*
+  * This decides where the kernel will search for a free chunk of vm
+  * space during mmap's. We won't be using it
+@@ -92,12 +86,6 @@ extern unsigned long get_wchan(struct task_struct *p);
+ 
+ #  ifndef __ASSEMBLY__
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#  define current_text_addr()	({ __label__ _l; _l: &&_l; })
+-
+ /* If you change this, you must change the associated assembly-languages
+  * constants defined below, THREAD_*.
+  */
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index b2fa62922d88..f08417f8772e 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -22,11 +22,6 @@
+ #include <asm/mipsregs.h>
+ #include <asm/prefetch.h>
+ 
+-/*
+- * Return current * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ /*
+  * System setup and hardware flags..
+  */
+diff --git a/arch/nds32/include/asm/processor.h b/arch/nds32/include/asm/processor.h
+index 9c83caf4269f..c2660f566bac 100644
+--- a/arch/nds32/include/asm/processor.h
++++ b/arch/nds32/include/asm/processor.h
+@@ -4,12 +4,6 @@
+ #ifndef __ASM_NDS32_PROCESSOR_H
+ #define __ASM_NDS32_PROCESSOR_H
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ #ifdef __KERNEL__
+ 
+ #include <asm/ptrace.h>
+diff --git a/arch/nios2/include/asm/processor.h b/arch/nios2/include/asm/processor.h
+index 4944e2e1d8b0..94bcb86f679f 100644
+--- a/arch/nios2/include/asm/processor.h
++++ b/arch/nios2/include/asm/processor.h
+@@ -38,12 +38,6 @@
+ #define KUSER_SIZE		(PAGE_SIZE)
+ #ifndef __ASSEMBLY__
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ # define TASK_SIZE		0x7FFF0000UL
+ # define TASK_UNMAPPED_BASE	(PAGE_ALIGN(TASK_SIZE / 3))
+ 
+diff --git a/arch/openrisc/include/asm/processor.h b/arch/openrisc/include/asm/processor.h
+index af31a9fe736a..351d3aed7a06 100644
+--- a/arch/openrisc/include/asm/processor.h
++++ b/arch/openrisc/include/asm/processor.h
+@@ -30,11 +30,6 @@
+ 		   | SPR_SR_DCE | SPR_SR_SM)
+ #define USER_SR   (SPR_SR_DME | SPR_SR_IME | SPR_SR_ICE \
+ 		   | SPR_SR_DCE | SPR_SR_IEE | SPR_SR_TEE)
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+ 
+ /*
+  * User space process size. This is hardcoded into a few places,
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
+index 2dbe5580a1a4..0d7f64ef9c7d 100644
+--- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -20,17 +20,6 @@
+ #include <asm/percpu.h>
+ #endif /* __ASSEMBLY__ */
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#ifdef CONFIG_PA20
+-#define current_ia(x)	__asm__("mfia %0" : "=r"(x))
+-#else /* mfia added in pa2.0 */
+-#define current_ia(x)	__asm__("blr 0,%0\n\tnop" : "=r"(x))
+-#endif
+-#define current_text_addr() ({ void *pc; current_ia(pc); pc; })
+-
+ #define HAVE_ARCH_PICK_MMAP_LAYOUT
+ 
+ #define TASK_SIZE_OF(tsk)       ((tsk)->thread.task_size)
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index 52fadded5c1e..1fff74df06e6 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -67,12 +67,6 @@ extern int _chrp_type;
+ 
+ #endif /* defined(__KERNEL__) && defined(CONFIG_PPC32) */
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+-
+ /* Macros for adjusting thread priority (hardware multi-threading) */
+ #define HMT_very_low()   asm volatile("or 31,31,31   # very low priority")
+ #define HMT_low()	 asm volatile("or 1,1,1	     # low priority")
+diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+index 3fe4af8147d2..020e35947060 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -33,12 +33,6 @@
+ struct task_struct;
+ struct pt_regs;
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr()	({ __label__ _l; _l: &&_l; })
+-
+ /* CPU-specific state of a task */
+ struct thread_struct {
+ 	/* Callee-saved registers */
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index 7f2953c15c37..f8028d37bb18 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -73,12 +73,6 @@ static inline int test_cpu_flag_of(int flag, int cpu)
+ 
+ #define arch_needs_cpu() test_cpu_flag(CIF_NOHZ_DELAY)
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ void *pc; asm("basr %0,0" : "=a" (pc)); pc; })
+-
+ static inline void get_cpu_id(struct cpuid *ptr)
+ {
+ 	asm volatile("stidp %0" : "=Q" (*ptr));
+diff --git a/arch/sh/include/asm/processor_32.h b/arch/sh/include/asm/processor_32.h
+index 95100d8a0b7b..0e0ecc0132e3 100644
+--- a/arch/sh/include/asm/processor_32.h
++++ b/arch/sh/include/asm/processor_32.h
+@@ -16,12 +16,6 @@
+ #include <asm/types.h>
+ #include <asm/hw_breakpoint.h>
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ void *pc; __asm__("mova	1f, %0\n.align 2\n1:":"=z" (pc)); pc; })
+-
+ /* Core Processor Version Register */
+ #define CCN_PVR		0xff000030
+ #define CCN_CVR		0xff000040
+diff --git a/arch/sh/include/asm/processor_64.h b/arch/sh/include/asm/processor_64.h
+index 777a16318aff..f3d7075648d0 100644
+--- a/arch/sh/include/asm/processor_64.h
++++ b/arch/sh/include/asm/processor_64.h
+@@ -19,21 +19,6 @@
+ #include <asm/types.h>
+ #include <cpu/registers.h>
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ \
+-void *pc; \
+-unsigned long long __dummy = 0; \
+-__asm__("gettr	tr0, %1\n\t" \
+-	"pta	4, tr0\n\t" \
+-	"gettr	tr0, %0\n\t" \
+-	"ptabs	%1, tr0\n\t"	\
+-	:"=r" (pc), "=r" (__dummy) \
+-	: "1" (__dummy)); \
+-pc; })
+-
+ #endif
+ 
+ /*
+diff --git a/arch/sparc/include/asm/processor_32.h b/arch/sparc/include/asm/processor_32.h
+index 192493c257fa..3c4bc2189092 100644
+--- a/arch/sparc/include/asm/processor_32.h
++++ b/arch/sparc/include/asm/processor_32.h
+@@ -7,12 +7,6 @@
+ #ifndef __ASM_SPARC_PROCESSOR_H
+ #define __ASM_SPARC_PROCESSOR_H
+ 
+-/*
+- * Sparc32 implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ void *pc; __asm__("sethi %%hi(1f), %0; or %0, %%lo(1f), %0;\n1:" : "=r" (pc)); pc; })
+-
+ #include <asm/psr.h>
+ #include <asm/ptrace.h>
+ #include <asm/head.h>
+diff --git a/arch/sparc/include/asm/processor_64.h b/arch/sparc/include/asm/processor_64.h
+index aac23d4a4ddd..5cf145f18f36 100644
+--- a/arch/sparc/include/asm/processor_64.h
++++ b/arch/sparc/include/asm/processor_64.h
+@@ -8,12 +8,6 @@
+ #ifndef __ASM_SPARC64_PROCESSOR_H
+ #define __ASM_SPARC64_PROCESSOR_H
+ 
+-/*
+- * Sparc64 implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ void *pc; __asm__("rd %%pc, %0" : "=r" (pc)); pc; })
+-
+ #include <asm/asi.h>
+ #include <asm/pstate.h>
+ #include <asm/ptrace.h>
+diff --git a/arch/unicore32/include/asm/processor.h b/arch/unicore32/include/asm/processor.h
+index 4eaa42167667..b772ed1c0f25 100644
+--- a/arch/unicore32/include/asm/processor.h
++++ b/arch/unicore32/include/asm/processor.h
+@@ -13,12 +13,6 @@
+ #ifndef __UNICORE_PROCESSOR_H__
+ #define __UNICORE_PROCESSOR_H__
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+-
+ #ifdef __KERNEL__
+ 
+ #include <asm/ptrace.h>
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index f327236f0fa7..86924d594ecd 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -21,6 +21,7 @@
+ #ifndef __ASSEMBLY__
+ 
+ #include <linux/string.h>
++#include <linux/kernel.h>
+ 
+ #include <asm/page.h>
+ #include <asm/ptrace.h>
+@@ -132,7 +133,7 @@ static inline void crash_setup_regs(struct pt_regs *newregs,
+ 		asm volatile("movl %%cs, %%eax;" :"=a"(newregs->cs));
+ 		asm volatile("pushfq; popq %0" :"=m"(newregs->flags));
+ #endif
+-		newregs->ip = (unsigned long)current_text_addr();
++		newregs->ip = _THIS_IP_;
+ 	}
+ }
+ 
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 682286aca881..20080b303605 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -42,18 +42,6 @@ struct vm86;
+ #define NET_IP_ALIGN	0
+ 
+ #define HBP_NUM 4
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-static inline void *current_text_addr(void)
+-{
+-	void *pc;
+-
+-	asm volatile("mov $1f, %0; 1:":"=r" (pc));
+-
+-	return pc;
+-}
+ 
+ /*
+  * These alignment constraints are for performance in the vSMP case,
+diff --git a/arch/x86/um/asm/processor_32.h b/arch/x86/um/asm/processor_32.h
+index c112de81c9e1..5fb1b8449adf 100644
+--- a/arch/x86/um/asm/processor_32.h
++++ b/arch/x86/um/asm/processor_32.h
+@@ -47,14 +47,6 @@ static inline void arch_copy_thread(struct arch_thread *from,
+         memcpy(&to->tls_array, &from->tls_array, sizeof(from->tls_array));
+ }
+ 
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter"). Stolen
+- * from asm-i386/processor.h
+- */
+-#define current_text_addr() \
+-	({ void *pc; __asm__("movl $1f,%0\n1:":"=g" (pc)); pc; })
+-
+ #define current_sp() ({ void *sp; __asm__("movl %%esp, %0" : "=r" (sp) : ); sp; })
+ #define current_bp() ({ unsigned long bp; __asm__("movl %%ebp, %0" : "=r" (bp) : ); bp; })
+ 
+diff --git a/arch/x86/um/asm/processor_64.h b/arch/x86/um/asm/processor_64.h
+index c3be85205a65..1ef9c21877bc 100644
+--- a/arch/x86/um/asm/processor_64.h
++++ b/arch/x86/um/asm/processor_64.h
+@@ -31,9 +31,6 @@ static inline void arch_copy_thread(struct arch_thread *from,
+ 	to->fs = from->fs;
+ }
+ 
+-#define current_text_addr() \
+-	({ void *pc; __asm__("movq $1f,%0\n1:":"=g" (pc)); pc; })
+-
+ #define current_sp() ({ void *sp; __asm__("movq %%rsp, %0" : "=r" (sp) : ); sp; })
+ #define current_bp() ({ unsigned long bp; __asm__("movq %%rbp, %0" : "=r" (bp) : ); bp; })
+ 
+diff --git a/arch/xtensa/include/asm/processor.h b/arch/xtensa/include/asm/processor.h
+index 5b0027d4ecc0..68891c992105 100644
+--- a/arch/xtensa/include/asm/processor.h
++++ b/arch/xtensa/include/asm/processor.h
+@@ -153,14 +153,6 @@ struct thread_struct {
+ 	int align[0] __attribute__ ((aligned(16)));
+ };
+ 
+-
+-/*
+- * Default implementation of macro that returns current
+- * instruction pointer ("program counter").
+- */
+-#define current_text_addr()  ({ __label__ _l; _l: &&_l;})
+-
+-
+ /* This decides where the kernel will search for a free chunk of vm
+  * space during mmap's.
+  */
 -- 
-2.18.0
+2.18.0.865.gffc8e1a3cd6-goog

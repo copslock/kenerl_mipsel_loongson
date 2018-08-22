@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2018 21:15:03 +0200 (CEST)
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:33499 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992869AbeHVTO6xJ3qU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2018 21:14:58 +0200
-Received: from belgarion ([90.89.234.36])
-        by mwinf5d35 with ME
-        id SKE31y00C0nnJME03KE68D; Wed, 22 Aug 2018 21:14:53 +0200
-X-ME-Helo: belgarion
-X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
-X-ME-Date: Wed, 22 Aug 2018 21:14:53 +0200
-X-ME-IP: 90.89.234.36
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Boris Brezillon <boris.brezillon@bootlin.com>
-Cc:     Richard Weinberger <richard@nod.at>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2018 21:24:28 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:48036 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992869AbeHVTY0AN9dD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Aug 2018 21:24:26 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 67A7B207AD; Wed, 22 Aug 2018 21:24:19 +0200 (CEST)
+Received: from bbrezillon (unknown [91.160.177.164])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 2F15B206DE;
+        Wed, 22 Aug 2018 21:24:18 +0200 (CEST)
+Date:   Wed, 22 Aug 2018 21:24:16 +0200
+From:   Boris Brezillon <boris.brezillon@bootlin.com>
+To:     Boris Brezillon <boris.brezillon@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
+        linux-mtd@lists.infradead.org
+Cc:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
@@ -38,6 +37,7 @@ Cc:     Richard Weinberger <richard@nod.at>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
@@ -62,26 +62,25 @@ Cc:     Richard Weinberger <richard@nod.at>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: Re: [PATCH 01/23] mtd: rawnand: plat_nand: Pass a nand_chip object to all platform_nand_ctrl hooks
+Subject: Re: [PATCH 01/23] mtd: rawnand: plat_nand: Pass a nand_chip object
+ to all platform_nand_ctrl hooks
+Message-ID: <20180822212416.404c47e6@bbrezillon>
+In-Reply-To: <20180817160922.6224-2-boris.brezillon@bootlin.com>
 References: <20180817160922.6224-1-boris.brezillon@bootlin.com>
         <20180817160922.6224-2-boris.brezillon@bootlin.com>
-X-URL:  http://belgarath.falguerolles.org/
-Date:   Wed, 22 Aug 2018 21:14:02 +0200
-In-Reply-To: <20180817160922.6224-2-boris.brezillon@bootlin.com> (Boris
-        Brezillon's message of "Fri, 17 Aug 2018 18:09:00 +0200")
-Message-ID: <87y3cy8b9h.fsf@belgarion.home>
-User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/24.5 (gnu/linux)
+X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <robert.jarzmik@free.fr>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65719
+X-archive-position: 65720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robert.jarzmik@free.fr
+X-original-sender: boris.brezillon@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,24 +93,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Boris Brezillon <boris.brezillon@bootlin.com> writes:
+On Fri, 17 Aug 2018 18:09:00 +0200
+Boris Brezillon <boris.brezillon@bootlin.com> wrote:
 
 > Let's make the raw NAND API consistent by patching all helpers and
 > hooks to take a nand_chip object instead of an mtd_info one or
 > remove the mtd_info object when both are passed.
->
+> 
 > In order to do that, we first need to update the platform_nand_ctrl
 > hooks to take a nand_chip object instead of an mtd_info.
->
+> 
 > We had temporary plat_nand_xxx() wrappers to the do the mtd -> chip
+
+     ^ add
+
 > conversion, but those will be dropped when doing the patching nand_chip
+
+					     ^ s/doing the//
+
 > hooks to take a nand_chip object.
->
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-For mach-pxa:
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-Cheers.
-
---
-Robert
+Will fix those typos in v2.

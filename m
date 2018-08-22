@@ -1,70 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2018 23:55:48 +0200 (CEST)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:34742 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994701AbeHUVzjAezcB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2018 23:55:39 +0200
-Received: by mail-oi0-f65.google.com with SMTP id 13-v6so34785450ois.1;
-        Tue, 21 Aug 2018 14:55:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=AVcTg7Ld6FXBiGx9e3SJwEPZeCF7UcEHxqTE7BUEsPE=;
-        b=LP1GBKWDb9eEr1X2MN2M3GToqZKUxAFmlHFkN6qnDn7v9AgPgQJXLQ0VZhup6xILs5
-         POKdIkCHRWFkQ3+LfGPVm4JH1aZKuH7N2RwBmyj4ezlStTGI35Hepn1JpTXImMnQg1RN
-         RoPQZrzpIBNsP0tz2Qlovf15PAtofT7Rv0xfrJhTx9kLy6GRXFPkSlhEKj2Pl/WuZx/a
-         BwY9eWxCXgtjZd7gbMMbDsunflYhhIeB0pUVW6n9lWEFfOGmC2sR3xKVhdm2twZ5bZlf
-         j8RdRqFdU9nrzAHFngsYsDYlne5b6uA4OSQYnXPFlC+ulgk2WDi+i5yLFrDtaHRhakCX
-         wnIw==
-X-Gm-Message-State: APzg51CLkgteVZL3MzT+d4ia0tEcFFTUdFZ1bpZPCpKVaLEwH6m+4A/j
-        G6Mudwwl+dMfh7t+kfSr/g==
-X-Google-Smtp-Source: ANB0VdZAGV+cCaUeAA3NUbZ44A6lpGp5n6wrzeMosz69SoWjDFlrGjco8ukkW1QKU5TDmW4m+QiStg==
-X-Received: by 2002:aca:f409:: with SMTP id s9-v6mr1142924oih.102.1534888532959;
-        Tue, 21 Aug 2018 14:55:32 -0700 (PDT)
-Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.googlemail.com with ESMTPSA id x126-v6sm18785332oig.15.2018.08.21.14.55.31
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Aug 2018 14:55:32 -0700 (PDT)
-From:   Rob Herring <robh@kernel.org>
-To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Frank Rowand <frowand.list@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-kbuild@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-h8-devel@lists.sourceforge.jp, linux-mips@linux-mips.org,
-        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
-        linux-xtensa@linux-xtensa.org
-Subject: [PATCH 6/8] kbuild: consolidate Devicetree dtb build rules
-Date:   Tue, 21 Aug 2018 16:55:22 -0500
-Message-Id: <20180821215524.23040-7-robh@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180821215524.23040-1-robh@kernel.org>
-References: <20180821215524.23040-1-robh@kernel.org>
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2018 14:40:07 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:36894 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992279AbeHVMj7HtssN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2018 14:39:59 +0200
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w7MCYHuO070001
+        for <linux-mips@linux-mips.org>; Wed, 22 Aug 2018 08:39:56 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2m13spshbv-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 22 Aug 2018 08:39:56 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <srikar@linux.vnet.ibm.com>;
+        Wed, 22 Aug 2018 13:39:53 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 22 Aug 2018 13:39:47 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w7MCdlDb45875328
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 22 Aug 2018 12:39:47 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C40B611C052;
+        Wed, 22 Aug 2018 15:39:46 +0100 (BST)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F202911C04A;
+        Wed, 22 Aug 2018 15:39:43 +0100 (BST)
+Received: from linux.vnet.ibm.com (unknown [9.40.192.68])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Wed, 22 Aug 2018 15:39:43 +0100 (BST)
+Date:   Wed, 22 Aug 2018 05:39:43 -0700
+From:   Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc:     oleg@redhat.com, rostedt@goodmis.org, mhiramat@kernel.org,
+        liu.song.a23@gmail.com, peterz@infradead.org, mingo@redhat.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org,
+        linux-kernel@vger.kernel.org, ananth@linux.vnet.ibm.com,
+        alexis.berlemont@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
+Subject: Re: [PATCH v9 1/4] Uprobes: Support SDT markers having reference
+ count (semaphore)
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
+ <20180820044250.11659-2-ravi.bangoria@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20180820044250.11659-2-ravi.bangoria@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18082212-0012-0000-0000-0000029D2669
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18082212-0013-0000-0000-000020D069D6
+Message-Id: <20180822123943.GD2080@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-08-22_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1808220129
+Return-Path: <srikar@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65717
+X-archive-position: 65718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: srikar@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,437 +85,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is nothing arch specific about building dtb files other than their
-location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
-The dependencies and supported targets are all slightly different.
-Also, a cross-compiler for each arch is needed, but really the host
-compiler preprocessor is perfectly fine for building dtbs. Move the
-build rules to a common location and remove the arch specific ones. This
-is done in a single step to avoid warnings about overriding rules.
+* Ravi Bangoria <ravi.bangoria@linux.ibm.com> [2018-08-20 10:12:47]:
 
-The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
-These pull in several dependencies some of which need a target compiler
-(specifically devicetable-offsets.h) and aren't needed to build dtbs.
-All that is really needed is dtc, so adjust the dependencies to only be
-dtc.
+> Userspace Statically Defined Tracepoints[1] are dtrace style markers
+> inside userspace applications. Applications like PostgreSQL, MySQL,
+> Pthread, Perl, Python, Java, Ruby, Node.js, libvirt, QEMU, glib etc
+> have these markers embedded in them. These markers are added by developer
+> at important places in the code. Each marker source expands to a single
+> nop instruction in the compiled code but there may be additional
+> overhead for computing the marker arguments which expands to couple of
+> instructions. In case the overhead is more, execution of it can be
+> omitted by runtime if() condition when no one is tracing on the marker:
+> 
+>     if (reference_counter > 0) {
+>         Execute marker instructions;
+>     }
+> 
+> Default value of reference counter is 0. Tracer has to increment the
+> reference counter before tracing on a marker and decrement it when
+> done with the tracing.
+> 
+> Implement the reference counter logic in core uprobe. User will be
+> able to use it from trace_uprobe as well as from kernel module. New
+> trace_uprobe definition with reference counter will now be:
+> 
+>     <path>:<offset>[(ref_ctr_offset)]
+> 
+> where ref_ctr_offset is an optional field. For kernel module, new
+> variant of uprobe_register() has been introduced:
+> 
+>     uprobe_register_refctr(inode, offset, ref_ctr_offset, consumer)
+> 
+> No new variant for uprobe_unregister() because it's assumed to have
+> only one reference counter for one uprobe.
+> 
+> [1] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
+> 
+> Note: 'reference counter' is called as 'semaphore' in original Dtrace
+> (or Systemtap, bcc and even in ELF) documentation and code. But the
+> term 'semaphore' is misleading in this context. This is just a counter
+> used to hold number of tracers tracing on a marker. This is not really
+> used for any synchronization. So we are calling it a 'reference counter'
+> in kernel / perf code.
+> 
 
-This change enables support 'dtbs_install' on some arches which were
-missing the target.
 
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Michal Marek <michal.lkml@markovi.net>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ley Foon Tan <lftan@altera.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Cc: linux-mips@linux-mips.org
-Cc: nios2-dev@lists.rocketboards.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-xtensa@linux-xtensa.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- Makefile                 | 30 ++++++++++++++++++++++++++++++
- arch/arc/Makefile        |  6 ------
- arch/arm/Makefile        | 20 +-------------------
- arch/arm64/Makefile      | 17 +----------------
- arch/c6x/Makefile        |  2 --
- arch/h8300/Makefile      | 11 +----------
- arch/microblaze/Makefile |  4 +---
- arch/mips/Makefile       | 15 +--------------
- arch/nds32/Makefile      |  2 +-
- arch/nios2/Makefile      |  7 -------
- arch/nios2/boot/Makefile |  4 ----
- arch/powerpc/Makefile    |  3 ---
- arch/xtensa/Makefile     | 12 +-----------
- scripts/Makefile         |  1 -
- scripts/Makefile.lib     |  2 +-
- 15 files changed, 38 insertions(+), 98 deletions(-)
+Acked-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-diff --git a/Makefile b/Makefile
-index c13f8b85ba60..6d89e673f192 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1212,6 +1212,30 @@ kselftest-merge:
- 		$(srctree)/tools/testing/selftests/*/config
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- 
-+# ---------------------------------------------------------------------------
-+# Devicetree files
-+
-+dtstree := $(wildcard arch/$(SRCARCH)/boot/dts)
-+
-+ifdef CONFIG_OF_EARLY_FLATTREE
-+
-+%.dtb %.dtb.S %.dtb.o: | dtc
-+	$(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
-+
-+PHONY += dtbs
-+dtbs: | dtc
-+	$(Q)$(MAKE) $(build)=$(dtstree)
-+
-+dtbs_install: dtbs
-+	$(Q)$(MAKE) $(dtbinst)=$(dtstree)
-+
-+all: dtbs
-+
-+dtc:
-+	$(Q)$(MAKE) $(build)=scripts/dtc
-+
-+endif
-+
- # ---------------------------------------------------------------------------
- # Modules
- 
-@@ -1425,6 +1449,12 @@ help:
- 	@echo  '  kselftest-merge - Merge all the config dependencies of kselftest to existing'
- 	@echo  '                    .config.'
- 	@echo  ''
-+	@$(if $(dtstree), \
-+		echo 'Devicetree:'; \
-+		echo '* dtbs            - Build device tree blobs for enabled boards'; \
-+		echo '  dtbs_install    - Install dtbs to $(INSTALL_DTBS_PATH)'; \
-+		echo '')
-+
- 	@echo 'Userspace tools targets:'
- 	@echo '  use "make tools/help"'
- 	@echo '  or  "cd tools; make help"'
-diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-index 6c1b20dd76ad..cbfb7a16b570 100644
---- a/arch/arc/Makefile
-+++ b/arch/arc/Makefile
-@@ -132,11 +132,5 @@ boot_targets += uImage uImage.bin uImage.gz
- $(boot_targets): vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
- 
--%.dtb %.dtb.S %.dtb.o: scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts $(boot)/dts/$@
--
--dtbs: scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts
--
- archclean:
- 	$(Q)$(MAKE) $(clean)=$(boot)
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index e7d703d8fac3..7f02ef8dfdb2 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -308,12 +308,7 @@ else
- KBUILD_IMAGE := $(boot)/zImage
- endif
- 
--# Build the DT binary blobs if we have OF configured
--ifeq ($(CONFIG_USE_OF),y)
--KBUILD_DTBS := dtbs
--endif
--
--all:	$(notdir $(KBUILD_IMAGE)) $(KBUILD_DTBS)
-+all:	$(notdir $(KBUILD_IMAGE))
- 
- 
- archheaders:
-@@ -340,17 +335,6 @@ $(BOOT_TARGETS): vmlinux
- $(INSTALL_TARGETS):
- 	$(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
- 
--%.dtb: | scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
--
--PHONY += dtbs dtbs_install
--
--dtbs: prepare scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts
--
--dtbs_install:
--	$(Q)$(MAKE) $(dtbinst)=$(boot)/dts
--
- PHONY += vdso_install
- vdso_install:
- ifeq ($(CONFIG_VDSO),y)
-@@ -372,8 +356,6 @@ define archhelp
-   echo  '  uImage        - U-Boot wrapped zImage'
-   echo  '  bootpImage    - Combined zImage and initial RAM disk'
-   echo  '                  (supply initrd image via make variable INITRD=<path>)'
--  echo  '* dtbs          - Build device tree blobs for enabled boards'
--  echo  '  dtbs_install  - Install dtbs to $(INSTALL_DTBS_PATH)'
-   echo  '  install       - Install uncompressed kernel'
-   echo  '  zinstall      - Install compressed kernel'
-   echo  '  uinstall      - Install U-Boot wrapped compressed kernel'
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index efe61a2e4b5e..5e7320b2212d 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -113,9 +113,8 @@ core-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
- # Default target when executing plain make
- boot		:= arch/arm64/boot
- KBUILD_IMAGE	:= $(boot)/Image.gz
--KBUILD_DTBS	:= dtbs
- 
--all:	Image.gz $(KBUILD_DTBS)
-+all:	Image.gz
- 
- 
- Image: vmlinux
-@@ -127,17 +126,6 @@ Image.%: Image
- zinstall install:
- 	$(Q)$(MAKE) $(build)=$(boot) $@
- 
--%.dtb: scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts $(boot)/dts/$@
--
--PHONY += dtbs dtbs_install
--
--dtbs: prepare scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts
--
--dtbs_install:
--	$(Q)$(MAKE) $(dtbinst)=$(boot)/dts
--
- PHONY += vdso_install
- vdso_install:
- 	$(Q)$(MAKE) $(build)=arch/arm64/kernel/vdso $@
-@@ -145,7 +133,6 @@ vdso_install:
- # We use MRPROPER_FILES and CLEAN_FILES now
- archclean:
- 	$(Q)$(MAKE) $(clean)=$(boot)
--	$(Q)$(MAKE) $(clean)=$(boot)/dts
- 
- # We need to generate vdso-offsets.h before compiling certain files in kernel/.
- # In order to do that, we should use the archprepare target, but we can't since
-@@ -160,8 +147,6 @@ vdso_prepare: prepare0
- define archhelp
-   echo  '* Image.gz      - Compressed kernel image (arch/$(ARCH)/boot/Image.gz)'
-   echo  '  Image         - Uncompressed kernel image (arch/$(ARCH)/boot/Image)'
--  echo  '* dtbs          - Build device tree blobs for enabled boards'
--  echo  '  dtbs_install  - Install dtbs to $(INSTALL_DTBS_PATH)'
-   echo  '  install       - Install uncompressed kernel'
-   echo  '  zinstall      - Install compressed kernel'
-   echo  '                  Install using (your) ~/bin/installkernel or'
-diff --git a/arch/c6x/Makefile b/arch/c6x/Makefile
-index 6ab942e6c534..ea4390021384 100644
---- a/arch/c6x/Makefile
-+++ b/arch/c6x/Makefile
-@@ -41,9 +41,7 @@ boot := arch/$(ARCH)/boot
- DTB:=$(subst dtbImage.,,$(filter dtbImage.%, $(MAKECMDGOALS)))
- export DTB
- 
--ifneq ($(DTB),)
- core-y	+= $(boot)/dts/
--endif
- 
- # With make 3.82 we cannot mix normal and wildcard targets
- 
-diff --git a/arch/h8300/Makefile b/arch/h8300/Makefile
-index e1c02ca230cb..b4adab9697c3 100644
---- a/arch/h8300/Makefile
-+++ b/arch/h8300/Makefile
-@@ -27,21 +27,12 @@ CROSS_COMPILE := h8300-unknown-linux-
- endif
- 
- core-y	+= arch/$(ARCH)/kernel/ arch/$(ARCH)/mm/
--ifneq '$(CONFIG_H8300_BUILTIN_DTB)' '""'
--core-y += arch/h8300/boot/dts/
--endif
-+core-y	+= arch/$(ARCH)/boot/dts/
- 
- libs-y	+= arch/$(ARCH)/lib/
- 
- boot := arch/h8300/boot
- 
--%.dtb %.dtb.S %.dtb.o: | scripts
--	$(Q)$(MAKE) $(build)=arch/h8300/boot/dts arch/h8300/boot/dts/$@
--
--PHONY += dtbs
--dtbs: scripts
--	$(Q)$(MAKE) $(build)=arch/h8300/boot/dts
--
- archmrproper:
- 
- archclean:
-diff --git a/arch/microblaze/Makefile b/arch/microblaze/Makefile
-index d269dd4b8279..3e58b2317d09 100644
---- a/arch/microblaze/Makefile
-+++ b/arch/microblaze/Makefile
-@@ -65,9 +65,7 @@ boot := arch/microblaze/boot
- # Are we making a simpleImage.<boardname> target? If so, crack out the boardname
- DTB:=$(subst simpleImage.,,$(filter simpleImage.%, $(MAKECMDGOALS)))
- 
--ifneq ($(DTB),)
--	core-y	+= $(boot)/dts/
--endif
-+core-y	+= $(boot)/dts/
- 
- # defines filename extension depending memory management type
- ifeq ($(CONFIG_MMU),)
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 5425df002a6b..8cb5994db05a 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -407,18 +407,7 @@ endif
- CLEAN_FILES += vmlinux.32 vmlinux.64
- 
- # device-trees
--core-$(CONFIG_BUILTIN_DTB) += arch/mips/boot/dts/
--
--%.dtb %.dtb.S %.dtb.o: | scripts
--	$(Q)$(MAKE) $(build)=arch/mips/boot/dts arch/mips/boot/dts/$@
--
--PHONY += dtbs
--dtbs: scripts
--	$(Q)$(MAKE) $(build)=arch/mips/boot/dts
--
--PHONY += dtbs_install
--dtbs_install:
--	$(Q)$(MAKE) $(dtbinst)=arch/mips/boot/dts
-+core-y += arch/mips/boot/dts/
- 
- archprepare:
- ifdef CONFIG_MIPS32_N32
-@@ -461,8 +450,6 @@ define archhelp
- 	echo '  uImage.lzma          - U-Boot image (lzma)'
- 	echo '  uImage.lzo           - U-Boot image (lzo)'
- 	echo '  uzImage.bin          - U-Boot image (self-extracting)'
--	echo '  dtbs                 - Device-tree blobs for enabled boards'
--	echo '  dtbs_install         - Install dtbs to $(INSTALL_DTBS_PATH)'
- 	echo
- 	echo '  These will be default as appropriate for a configured platform.'
- 	echo
-diff --git a/arch/nds32/Makefile b/arch/nds32/Makefile
-index 031c676821ff..4ec91e48ad4e 100644
---- a/arch/nds32/Makefile
-+++ b/arch/nds32/Makefile
-@@ -43,7 +43,7 @@ CHECKFLAGS      += -D__NDS32_EB__
- endif
- 
- boot := arch/nds32/boot
--core-$(BUILTIN_DTB) += $(boot)/dts/
-+core-y += $(boot)/dts/
- 
- .PHONY: FORCE
- 
-diff --git a/arch/nios2/Makefile b/arch/nios2/Makefile
-index db2e78fe65c7..52c03e60b114 100644
---- a/arch/nios2/Makefile
-+++ b/arch/nios2/Makefile
-@@ -56,12 +56,6 @@ all: vmImage
- archclean:
- 	$(Q)$(MAKE) $(clean)=$(nios2-boot)
- 
--%.dtb %.dtb.S %.dtb.o: | scripts
--	$(Q)$(MAKE) $(build)=$(nios2-boot)/dts $(nios2-boot)/dts/$@
--
--dtbs:
--	$(Q)$(MAKE) $(build)=$(nios2-boot)/dts
--
- $(BOOT_TARGETS): vmlinux
- 	$(Q)$(MAKE) $(build)=$(nios2-boot) $(nios2-boot)/$@
- 
-@@ -74,5 +68,4 @@ define archhelp
-   echo  '                     (your) ~/bin/$(INSTALLKERNEL) or'
-   echo  '                     (distribution) /sbin/$(INSTALLKERNEL) or'
-   echo  '                     install to $$(INSTALL_PATH)'
--  echo  '  dtbs            - Build device tree blobs for enabled boards'
- endef
-diff --git a/arch/nios2/boot/Makefile b/arch/nios2/boot/Makefile
-index 0b48f1bf086d..37dfc7e584bc 100644
---- a/arch/nios2/boot/Makefile
-+++ b/arch/nios2/boot/Makefile
-@@ -31,9 +31,5 @@ $(obj)/zImage: $(obj)/compressed/vmlinux FORCE
- $(obj)/compressed/vmlinux: $(obj)/vmlinux.gz FORCE
- 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
- 
--targets += $(dtb-y)
--
--$(obj)/dtbs: $(addprefix $(obj)/, $(dtb-y))
--
- install:
- 	sh $(srctree)/$(src)/install.sh $(KERNELRELEASE) $(BOOTIMAGE) System.map "$(INSTALL_PATH)"
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 9bacffa3b72e..b5845146451b 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -293,9 +293,6 @@ $(BOOT_TARGETS2): vmlinux
- bootwrapper_install:
- 	$(Q)$(MAKE) $(build)=$(boot) $(patsubst %,$(boot)/%,$@)
- 
--%.dtb: scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts $(patsubst %,$(boot)/dts/%,$@)
--
- # Used to create 'merged defconfigs'
- # To use it $(call) it with the first argument as the base defconfig
- # and the second argument as a space separated list of .config files to merge,
-diff --git a/arch/xtensa/Makefile b/arch/xtensa/Makefile
-index 3a934b72a272..2c1b20cf75c2 100644
---- a/arch/xtensa/Makefile
-+++ b/arch/xtensa/Makefile
-@@ -84,28 +84,18 @@ LIBGCC := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
- head-y		:= arch/xtensa/kernel/head.o
- core-y		+= arch/xtensa/kernel/ arch/xtensa/mm/
- core-y		+= $(buildvar) $(buildplf)
-+core-y 		+= arch/xtensa/boot/dts/
- 
- libs-y		+= arch/xtensa/lib/ $(LIBGCC)
- drivers-$(CONFIG_OPROFILE)	+= arch/xtensa/oprofile/
- 
--ifneq ($(CONFIG_BUILTIN_DTB),"")
--core-$(CONFIG_OF) += arch/xtensa/boot/dts/
--endif
--
- boot		:= arch/xtensa/boot
- 
- all Image zImage uImage: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $@
- 
--%.dtb:
--	$(Q)$(MAKE) $(build)=$(boot)/dts $(boot)/dts/$@
--
--dtbs: scripts
--	$(Q)$(MAKE) $(build)=$(boot)/dts
--
- define archhelp
-   @echo '* Image       - Kernel ELF image with reset vector'
-   @echo '* zImage      - Compressed kernel image (arch/xtensa/boot/images/zImage.*)'
-   @echo '* uImage      - U-Boot wrapped image'
--  @echo '  dtbs        - Build device tree blobs for enabled boards'
- endef
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 61affa300d25..a716a6b10954 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -39,7 +39,6 @@ build_unifdef: $(obj)/unifdef
- subdir-$(CONFIG_MODVERSIONS) += genksyms
- subdir-y                     += mod
- subdir-$(CONFIG_SECURITY_SELINUX) += selinux
--subdir-$(CONFIG_DTC)         += dtc
- subdir-$(CONFIG_GDB_SCRIPTS) += gdb
- 
- # Let clean descend into subdirs
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index df0fff252619..9f619f54bc90 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -283,7 +283,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb FORCE
- 
- quiet_cmd_dtc = DTC     $@
- cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
--	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-+	$(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
- 	$(DTC) -O dtb -o $@ -b 0 \
- 		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
- 		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
--- 
-2.17.1
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+> [Only trace_uprobe.c]
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+> ---

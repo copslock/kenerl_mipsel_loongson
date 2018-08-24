@@ -1,92 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Aug 2018 19:56:15 +0200 (CEST)
-Received: from mail-by2nam03on0130.outbound.protection.outlook.com ([104.47.42.130]:38639
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994077AbeHWR4JuE2kW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Aug 2018 19:56:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qitb6SQUw3VLY1kGDg8eqwSC9vkb/Df/01aWvvrekjQ=;
- b=M2wwES+qJvBhjGM+th3FgrXzHcAgVjGYRhXOZkAz0NA51HHxDkSpGze31pzuubKrm6CeGodlSq6yjndvK3YafK/YLV9eIV8RM0Gr8uEKHgGNj0EBY1Su3m49CnSlL7psPxuOsAa7GMiXWck/sCr5RJLcrbbLk34eleuB+KgEd+g=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- BN7PR08MB4930.namprd08.prod.outlook.com (2603:10b6:408:28::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1080.13; Thu, 23 Aug 2018 17:55:55 +0000
-Date:   Thu, 23 Aug 2018 10:55:52 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [GIT PULL] MIPS fixes for 4.19-rc1
-Message-ID: <20180823175552.vcvct6im553gqpxj@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2018 23:40:18 +0200 (CEST)
+Received: from frisell.zx2c4.com ([192.95.5.64]:50219 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994564AbeHXVkMXYReI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Aug 2018 23:40:12 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id f9af843c;
+        Fri, 24 Aug 2018 21:25:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
+        :subject:date:message-id:in-reply-to:references:mime-version
+        :content-type:content-transfer-encoding; s=mail; bh=Te30qLwOIc/F
+        Wkvqpqdt+vfvMD8=; b=lGC7ARd4Whk0+rgyyqp/F/vawdFSb9W5K0vlw9vCkNPx
+        cVX5O/j9hL3QraLmJAzbHymk/bPjC84Thw/QWZABWzWjyRGP6N63g3sChQBO8y4n
+        QNypty8A/QADRhpv0Dh8h6WiDlnBtzOU6vVUROIHxP734qyw1J/RfbHvAmOd36pe
+        nKxOeUNIwTJba89ju63Zrl16zQARcO1TMlkOjvlXw4s9jb8hH4ZrQPMX4xlmrPv7
+        2GAXoIUDQgcy6mylKpQanQexC3aCY16jJYD8oneoP+MzFuqrFtxI1pDsrdFsH6Kp
+        CTw31Eex2AFp1F5yQbiouwoWS7fKGIurJodY3RP2jQ==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 643eb57f (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
+        Fri, 24 Aug 2018 21:25:34 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        davem@davemloft.net
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Samuel Neves <sneves@dei.uc.pt>,
+        Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
+        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-crypto@vger.kernel.org
+Subject: [PATCH v2 06/17] zinc: ChaCha20 MIPS32r2 implementation
+Date:   Fri, 24 Aug 2018 15:38:38 -0600
+Message-Id: <20180824213849.23647-7-Jason@zx2c4.com>
+In-Reply-To: <20180824213849.23647-1-Jason@zx2c4.com>
+References: <20180824213849.23647-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="knq5u2lkkg7y2qpq"
-Content-Disposition: inline
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM6PR08CA0014.namprd08.prod.outlook.com
- (2603:10b6:5:80::27) To BN7PR08MB4930.namprd08.prod.outlook.com
- (2603:10b6:408:28::16)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7c0819e4-a558-4c3b-2e94-08d60921acc4
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4930;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4930;3:nNJYFnF/OoljX1Kj7WoKk2jVrAZ9vLj+ZDCOw0Rp7FtDtbr4HJCY6obcsne62GQTHzRMN7s1e7u6KO/qQqpaX3rwL9ssmeqlb6psctAOZB4iEFS1AVPUa4kErLC3qR3Zxt0kcueRki72mViKsJGTGTC7lIdnSr8i2ltBMC/eEk2EFPkVAmUbJatnks24G23mfZVq9skEVZRhkZ+HYkhMgMv8GDYaeYCNIYdWj06KOLeKWIlUJKoohPeEBrR0GRhJ;25:WqpK2aBtfU5I0XFYj3p2ukbBX5m7jfxg/7MNFxAUCPzSPmkZYLlenw7lKRAkJBUTeIMegU3bOVRs1tfTxLNk2Y2pcYGN1PyXY5pMiw/GnsaQ5hvkMZFG6l1QiLVcglzBtqIS7NxV67RIHgh1X6+opnGDa/ZRAQP1eJ4P3tTt8dJrbUK8DnLhXxEu7iKNjRis/iOsfVW3wAPII96SWSfhd9cGHCk+2adhhQlEgZylapom9iRns1b30xLkrrgRFiiJa/DZQbCt7V/S0UyRO4kwFUGmRWye+6Zmz9vCvZEfIDq5NKHGod+wKgwtEZDMPMaPwefGkcpEJzIBQQfDJ2/Ymg==;31:z0OtR+PijxeZT2ARWsT3OFLUXojDiULmlmPrkBV9FJN2mz9Ls8WpEUPwaTS363Hvw4ZMC1+JS/jKzqdM8LkJt6tIdwU2PeVt1BbWferreJXXDMvi0T6iRE7Wb5HA5I5teP+L+s4xYodkfm1zj5fY+FCuf0VEPKf7vlSXGUVdnfXR4webrgDisjJlu6uezTK5oTO2RN5nLhxgfXqrO0d/zTMp9xP5p4/uHOkaiAtbek8=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4930:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4930;20:e9miFboh6zJr8+cZVy4sOT48TqChFWHr+f1Xvw8BiSXunzXwoulBEC/Wo1I/I7lcfjwGNsvLjhgVTw+22DMwQA4o6oksjH9Naso1Y98/O5RU2fIXcEqt4gQdhItuiE55yy0TdvEEREMzgWwx3+R5k73dLjhjbSDLK4/27f/YE3v3Jc1MG8R+c+mQF8PALogCTklv1zLbx+yvXJfzxd9SPaMMp1IOkiZJLARurPTsIoC2vZmv8RYQqE9Uf6Qq1MCU;4:xZbqM51u8QWiV7R1epNf8pZHfA3r3ImoRFoGyJ9X/+9Mh3GvQJnFO7qXBoFuCEjsejSzP2ITtbzCnnhXcVdRR5UV9O+AWsN7AkGezTXJoiShci8zQTUx95gUPoXfXgM3SWijWU4O1uooov+TAUS32b8pIzT92ry8tr8RsDoqwixmoquqe8WiswghmD1xz7q6R8SS/LsyZKp/cq8g+EmCWABa9sKPMjP2bVlm0DvMiKwHzSc9Ju3aAcdD+ugbcbZH6qcZypOrwrIo+Q1sgU168eBchQuW1jUt5jIJoXhStzk5Rjk25h1DPnXeSR5mGbMurfueY9wQ/K5xFRdPhF8/52rkquKo0pL7IiDiGZOCSw4=
-X-Microsoft-Antispam-PRVS: <BN7PR08MB493039FC3EE10A835C125A8CC1370@BN7PR08MB4930.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(192374486261705)(84791874153150);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(3231311)(944501410)(52105095)(93006095)(149027)(150027)(6041310)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123562045)(20161123564045)(201708071742011)(7699016);SRVR:BN7PR08MB4930;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4930;
-X-Forefront-PRVS: 0773BB46AC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(39840400004)(396003)(136003)(346002)(376002)(366004)(189003)(199004)(3846002)(6116002)(53936002)(5660300001)(76506005)(956004)(52116002)(476003)(8936002)(81166006)(81156014)(6486002)(68736007)(575784001)(8676002)(21480400003)(6496006)(6666003)(9686003)(6916009)(486006)(97736004)(44144004)(1076002)(105586002)(33896004)(66066001)(33716001)(42882007)(84326002)(106356001)(7736002)(305945005)(478600001)(14444005)(2906002)(44832011)(316002)(16586007)(16526019)(54906003)(186003)(26005)(4326008)(25786009)(386003)(58126008)(63394003)(2700100001);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4930;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4930;23:GcRuFINBKdZOluiGnCfrXjexuUpj2/rPW/DQXqzQw?=
- =?us-ascii?Q?70hxMGcjmK8UV/efV3AYHF+0HQA5Z2G8p/ZeSZHNli77oHuJjFzIs/QAK1/B?=
- =?us-ascii?Q?dUMS2xltGjl8zTYOaJhyB2bfbjP8H/BR6eBzBFYlO6hIRm/cQ2NH8LN2ENN9?=
- =?us-ascii?Q?qGhZS5A0FgvASMtvOaipGt3u45zaOcZZLgDM5M/nFty9bVlX9k0JiuVNQRVz?=
- =?us-ascii?Q?y5cHWsCK+izNgFE4y5+YOHfG6KM4bkgRN/884GaMTTUd5NU/eyMcEFqW/y3J?=
- =?us-ascii?Q?Ev5jEIsGLSLJwihZpI4p0p5NFlg5UNIj3pmq810KIZHrpNjoQhAXyKc0DUw1?=
- =?us-ascii?Q?ZZrHnnJ6aIxS1wB96x+KOwxDtSC/wr94zpD8nfPq+H9tVwPHj/Cx9h6lZ6gC?=
- =?us-ascii?Q?EmQ6sC3pmjd8JjN6bVEA8QgwrO6T9Hz/sjtH3GWqfVi9NsVRuomjaqoJdve9?=
- =?us-ascii?Q?6M1pDwxFFTkxnlkBAYrAOiJ+CM92bdexcPpg54/mcRNSAx8SplG3ybezuv8n?=
- =?us-ascii?Q?8wkufLWdLz+/5Dj7uKVd5tEDu7VLwzUhoi0pKrpPRofNIAICBAPiFsgR3PdO?=
- =?us-ascii?Q?UO7Yd8gbGcCY2vcMU+3+N3LnoZ+W4iAmzmaDcU49f9syROH2AjRyyOKCW1qw?=
- =?us-ascii?Q?X3BIPM9bphpVFE6OmLcuIr9CPNbpgjG7dJVhw1vWtjPjVXBC8zARnos62yHa?=
- =?us-ascii?Q?+3uqMBKMBdZV3EF97TCMocdaOB3xGPzhi7h9JEsppGPpbBMt7FCecBL8rJOk?=
- =?us-ascii?Q?D/AWfbC0cFl2RsRtGJQx2Kj287PWCyd7F8ltqj76R4fhtlipH9yaiSsB8+Ke?=
- =?us-ascii?Q?Ugg5HXZir1BSj4naJEYMnT0uP2Il8j/NJpyj6hJV/IM74RESe8AuKsw51s+c?=
- =?us-ascii?Q?KYO1BKZYecDnYIpN6eaB4RBnimj9JFlBmw7lcsq3e3/DfvdkVuuH3t9n9aX8?=
- =?us-ascii?Q?oy/YGPtniAautokI+MeKsI7Cmfa/HiHuJPLx5q5X3I1WnTvRn2mwuUHmApSn?=
- =?us-ascii?Q?G9OLF4jxsM/QxVmsw3WLyHyOIp9krMyRdIO8ULqthHxW8LZyNMCl++q5qKyC?=
- =?us-ascii?Q?czAMwKEcxZRZ3SAcy1Y4kFN0UzcnfvYk37NcdFhc+WTnj2t1BKGJ2zncRZRY?=
- =?us-ascii?Q?t9P4meWXHSqLvzHLkN48Cz9SN/bvMVEuvYAiHHlAS/oy/l5asOD/nRVuMe4q?=
- =?us-ascii?Q?7RcYZnhq6zCUgqGEqIhEFfLRAlmcvj8sgeoyyk+E2UGQsu2SuVxhukSZEzFS?=
- =?us-ascii?Q?d/na6qyQ2v8RCKZNKlDnLxbWxMJylib0S8PRlJMlkoAY86AuUWH6Hhe2oY1e?=
- =?us-ascii?Q?EZUzxGAQAkKslcNQ5lhYgA=3D?=
-X-Microsoft-Antispam-Message-Info: YX6Y28rQgqlO07iR+0p2K9so4W73yVGkzkeIm2InfffebrdVSMoa9U4F9vPSIp0xZiRdy7KzgxtgcBouBWjtUUprNdusJ+dZyGlwHdETOaFueEempqKGlqe/Fgt1fKZpgyaWcfKhMyuoFIXdATp175l1GEJhLGbPrfxxETzqEHg6/PzR+o22cxBQvqwYu2cf3ADLvy+3JYRw5jiwqlTeke5Omn5jrASSMkjM8J9XBPCB7UZyTGnN9/NSTLgSXqcuzcmBVDSCJbovAnD9OOj9NvQtUdMEeb+5JXzEqNPF8MsFyGmG1x/mDbYiAtbG2wzEebh7EY4ZOvW+gIPlPwHZOATwihXxo/SMtn813KrdqRE=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4930;6:Yur/lyDYftGHGAPWyFSHQ74qgFrVW83RhfxhHmsSF0nI5NAxfUU2T6OwyXDlKELEAiwI3Ngq3AeCFZGPIPANMpQxlx3IPw9gHI2FKCLV83/R+30cn4rAKs0SfGycvhVOarSpZs289QTawT9EB5Tf9JA0lG5q9GtsofJ3at48TXiWPNyMdLPdfVeVCssG40rmfXFsU0ouDDJ9Pv8GlnwOJB4uZfB5yof8rPmmS2oT4Xxq8NESyya5p7BignQkGzzaOKFALOOuJPgakVwz0FBBTh4IJVUF6+gZ2xQocy7BIazmGMqhTblV9TFJsS5sHlryogf3MHCujOY8Z48vom+brRYxB/Ag4S3FhnOzqF+GKWyBhG4aiV1ecIXyrpGSJ0v6Yx0eFZWsNL9vq4mkeSOjwtV/MbwMRoFbzfx5aWmzqZ4t/tvilIxqZEnb50YQTjtef210VDKQ1+ted6oWl/q2ZA==;5:QssN3hkttohPZTO14pwd3455llu4Rl3dtwm1VG8Juij5ZAcUz6txA2GpLGW90z/jEel9CuzHMV90N1ZQ2an5ewA8v3S/XSFH6KbAkZD60NxRQIqBtfiXjexMzT1ugOCaZD0ipkbbuKaI8TsCzGEXvvP62akww+GuW/JAye2hrtE=;7:X7G6LWoszwe9mi8Z27p1+EM3gImGJf6sGH0LBNQ6pWTWUm6DQWXqOr4oDQFn+MaY5OGMb7IxP79UNNvtG/dYsyf5y+UscnWTTMHs0kvLXsjmMvFcQrcKpRN6RuF2CMH1WS4jK4qG+7+/KP+KtUBIFhJBBWTNQowWqviuQbmMRocVnjgZFiEg6/j3fcHZNfUILdCaJpcAKj4gPLWUjsdoDXY600mKpLUD0VPOHZ9BqNqOfzF5OOE3sMXqao3Lre8O
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2018 17:55:55.4221 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c0819e4-a558-4c3b-2e94-08d60921acc4
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4930
-Return-Path: <pburton@wavecomp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65724
+X-archive-position: 65725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,199 +58,547 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+This MIPS32r2 implementation comes from René van Dorst and me and
+results in a nice speedup on the usual OpenWRT targets.
 
---knq5u2lkkg7y2qpq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Samuel Neves <sneves@dei.uc.pt>
+Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+Cc: René van Dorst <opensource@vdorst.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-crypto@vger.kernel.org
+---
+ lib/zinc/Makefile                      |   4 +
+ lib/zinc/chacha20/chacha20-mips-glue.h |  19 +
+ lib/zinc/chacha20/chacha20-mips.S      | 474 +++++++++++++++++++++++++
+ 3 files changed, 497 insertions(+)
+ create mode 100644 lib/zinc/chacha20/chacha20-mips-glue.h
+ create mode 100644 lib/zinc/chacha20/chacha20-mips.S
 
-Hi Linus,
-
-Here are a few MIPS fixes for 4.19 - please pull.
-
-There are a couple of conflicts with master, currently at 815f0ddb346c
-("include/linux/compiler*.h: make compiler-*.h mutually exclusive"), but
-nothing complex:
-
-  - arch/Kconfig should just keep the additions of both
-    HAVE_ARCH_PREL32_RELOCATIONS & HAVE_ARCH_COMPILER_H.
-
-  - include/linux/compiler_types.h should keep the #ifdef
-    CONFIG_HAVE_ARCH_COMPILER_H & associated comment, placing it after
-    the linux/compiler-*.h inclusions.
-
-Here's a sample resolution:
-
-diff --cc arch/Kconfig
-index 4426e9687d89,5c7c48e7b727..af0283ad1534
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@@ -841,18 -971,12 +841,26 @@@ config REFCOUNT_FUL
-          against various use-after-free conditions that can be used in
-          security flaw exploits.
-
- +config HAVE_ARCH_PREL32_RELOCATIONS
- +      bool
- +      help
- +        May be selected by an architecture if it supports place-relative
- +        32-bit relocations, both in the toolchain and in the module loade=
-r,
- +        in which case relative references can be used in special sections
- +        for PCI fixup, initcalls etc which are only half the size on 64 b=
-it
- +        architectures, and don't require runtime relocation on relocatable
- +        kernels.
- +
-+ config HAVE_ARCH_COMPILER_H
-+       bool
-+       help
-+         An architecture can select this if it provides an
-+         asm/compiler.h header that should be included after
-+         linux/compiler-*.h in order to override macro definitions that th=
-ose
-+         headers generally provide.
+diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
+index fc6ca1c84cd1..3ba830b51695 100644
+--- a/lib/zinc/Makefile
++++ b/lib/zinc/Makefile
+@@ -16,6 +16,10 @@ ifeq ($(CONFIG_ARM64),y)
+ zinc-y += chacha20/chacha20-arm64.o
+ CFLAGS_chacha20.o += -include $(srctree)/$(src)/chacha20/chacha20-arm-glue.h
+ endif
++ifeq ($(CONFIG_MIPS)$(CONFIG_CPU_MIPS32_R2),yy)
++zinc-y += chacha20/chacha20-mips.o
++CFLAGS_chacha20.o += -include $(srctree)/$(src)/chacha20/chacha20-mips-glue.h
++endif
+ endif
+ 
+ zinc-y += main.o
+diff --git a/lib/zinc/chacha20/chacha20-mips-glue.h b/lib/zinc/chacha20/chacha20-mips-glue.h
+new file mode 100644
+index 000000000000..54c71a0b5bd0
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips-glue.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0
++ *
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
 +
-  source "kernel/gcov/Kconfig"
- +
- +source "scripts/gcc-plugins/Kconfig"
- +
- +endmenu
-diff --cc include/linux/compiler_types.h
-index 90479a0f3986,4be464a07612..3525c179698c
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@@ -54,20 -54,44 +54,32 @@@ extern void __chk_io_ptr(const volatil
- =20
-  #ifdef __KERNEL__
- =20
- -#ifdef __GNUC__
- -#include <linux/compiler-gcc.h>
- -#endif
- -
- -#if defined(CC_USING_HOTPATCH) && !defined(__CHECKER__)
- -#define notrace __attribute__((hotpatch(0,0)))
- -#else
- -#define notrace __attribute__((no_instrument_function))
- -#endif
- -
- -/* Intel compiler defines __GNUC__. So we will overwrite implementations
- - * coming from above header files here
- - */
- -#ifdef __INTEL_COMPILER
- -# include <linux/compiler-intel.h>
- -#endif
- -
- -/* Clang compiler defines __GNUC__. So we will overwrite implementations
- - * coming from above header files here
- - */
- +/* Compiler specific macros. */
-  #ifdef __clang__
-  #include <linux/compiler-clang.h>
- +#elif defined(__INTEL_COMPILER)
- +#include <linux/compiler-intel.h>
- +#elif defined(__GNUC__)
- +/* The above compilers also define __GNUC__, so order is important here. =
-*/
- +#include <linux/compiler-gcc.h>
- +#else
- +#error "Unknown compiler"
-  #endif
- =20
-+ /*
-+  * Some architectures need to provide custom definitions of macros provid=
-ed
-+  * by linux/compiler-*.h, and can do so using asm/compiler.h. We include =
-that
-+  * conditionally rather than using an asm-generic wrapper in order to avo=
-id
-+  * build failures if any C compilation, which will include this file via =
-an
-+  * -include argument in c_flags, occurs prior to the asm-generic wrappers=
- being
-+  * generated.
-+  */
-+ #ifdef CONFIG_HAVE_ARCH_COMPILER_H
-+ #include <asm/compiler.h>
-+ #endif
++#include <zinc/chacha20.h>
 +
-  /*
- - * Generic compiler-dependent macros required for kernel
- + * Generic compiler-independent macros required for kernel
-   * build go below this comment. Actual compiler/compiler version
-   * specific implementations come from the above header files
-   */
-
-Thanks,
-    Paul
-
-
-The following changes since commit 22f20a110321efb7cde3e87ae99862e1036ca285:
-
-  MIPS: Remove remnants of UASM_ISA (2018-08-09 14:45:00 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_4.=
-19_2
-
-for you to fetch changes up to 690d9163bf4b8563a2682e619f938e6a0443947f:
-
-  MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7 (2018-08-21 12:14:11 -=
-0700)
-
-----------------------------------------------------------------
-A few MIPS fixes for 4.19:
-
-  - Fix microMIPS build failures by adding a .insn directive to the
-    barrier_before_unreachable() asm statement in order to convince the
-    toolchain that the asm statement is a valid branch target rather
-    than a bogus attempt to switch ISA.
-
-  - Clean up our declarations of TLB functions that we overwrite with
-    generated code in order to prevent the compiler making assumptions
-    about alignment that cause microMIPS kernels built with GCC 7 &
-    above to die early during boot.
-
-  - Fix up a regression for MIPS32 kernels which slipped into the main
-    MIPS pull for 4.19, causing CONFIG_32BIT=3Dy kernels to contain
-    inappropriate MIPS64 instructions.
-
-  - Extend our existing workaround for MIPSr6 builds that end up using
-    the __multi3 intrinsic to GCC 7 & below, rather than just GCC 7.
-
-----------------------------------------------------------------
-Paul Burton (6):
-      MIPS: Export tlbmiss_handler_setup_pgd near its definition
-      MIPS: Consistently declare TLB functions
-      MIPS: Avoid move psuedo-instruction whilst using MIPS_ISA_LEVEL
-      compiler.h: Allow arch-specific asm/compiler.h
-      MIPS: Workaround GCC __builtin_unreachable reordering bug
-      MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
-
- arch/Kconfig                           |   8 +++
- arch/mips/Kconfig                      |   1 +
- arch/mips/include/asm/asm-prototypes.h |   1 +
- arch/mips/include/asm/atomic.h         |   4 +-
- arch/mips/include/asm/compiler.h       |  35 ++++++++++++
- arch/mips/include/asm/mmu_context.h    |   1 +
- arch/mips/include/asm/tlbex.h          |   9 +++
- arch/mips/kernel/traps.c               |   4 +-
- arch/mips/lib/multi3.c                 |   6 +-
- arch/mips/mm/tlb-funcs.S               |   3 +-
- arch/mips/mm/tlbex.c                   | 101 +++++++++++++----------------=
-----
- include/linux/compiler_types.h         |  12 ++++
- 12 files changed, 116 insertions(+), 69 deletions(-)
-
---knq5u2lkkg7y2qpq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCW371KAAKCRA+p5+stXUA
-3WjyAQDSLNawb+awSS2HzMgmO3rT+rn1CxkUeO1NOGXGy6csfgD+JdihN+GwiTo3
-9lKyzHl/R3w0c1vDFComfIl0on5xcw4=
-=h9DG
------END PGP SIGNATURE-----
-
---knq5u2lkkg7y2qpq--
++asmlinkage void chacha20_mips(u8 *out, const u8 *in, const size_t len, const u32 key[8], const u32 counter[4]);
++void __init chacha20_fpu_init(void) { }
++
++static inline bool chacha20_arch(u8 *dst, const u8 *src, const size_t len, const u32 key[8], const u32 counter[4], simd_context_t simd_context)
++{
++	chacha20_mips(dst, src, len, key, counter);
++	return true;
++}
++
++static inline bool hchacha20_arch(u8 *derived_key, const u8 *nonce, const u8 *key, simd_context_t simd_context) { return false; }
++
++#define HAVE_CHACHA20_ARCH_IMPLEMENTATION
+diff --git a/lib/zinc/chacha20/chacha20-mips.S b/lib/zinc/chacha20/chacha20-mips.S
+new file mode 100644
+index 000000000000..77da2c2fb240
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips.S
+@@ -0,0 +1,474 @@
++/* SPDX-License-Identifier: GPL-2.0
++ *
++ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com>. All Rights Reserved.
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++#define MASK_U32	0x3c
++#define MASK_BYTES	0x03
++#define CHACHA20_BLOCK_SIZE 64
++#define STACK_SIZE	4*16
++
++#define X0  $t0
++#define X1  $t1
++#define X2  $t2
++#define X3  $t3
++#define X4  $t4
++#define X5  $t5
++#define X6  $t6
++#define X7  $t7
++#define X8  $v1
++#define X9  $fp
++#define X10 $s7
++#define X11 $s6
++#define X12 $s5
++#define X13 $s4
++#define X14 $s3
++#define X15 $s2
++/* Use regs which are overwritten on exit for Tx so we don't leak clear data. */
++#define T0  $s1
++#define T1  $s0
++#define T(n) T ## n
++#define X(n) X ## n
++
++/* Input arguments */
++#define OUT		$a0
++#define IN		$a1
++#define BYTES		$a2
++/* KEY and NONCE argument must be u32 aligned */
++#define KEY		$a3
++/* NONCE pointer is given via stack */
++#define NONCE		$t9
++
++/* Output argument */
++/* NONCE[0] is kept in a register and not in memory.
++ * We don't want to touch original value in memory.
++ * Must be incremented every loop iteration.
++ */
++#define NONCE_0		$v0
++
++/* SAVED_X and SAVED_CA are set in the jump table.
++ * Use regs which are overwritten on exit else we don't leak clear data.
++ * They are used to handling the last bytes which are not multiple of 4.
++ */
++#define SAVED_X		X15
++#define SAVED_CA	$ra
++
++#define PTR_LAST_ROUND	$t8
++
++/* ChaCha20 constants and stack location */
++#define CONSTANT_OFS_SP	48
++#define UNALIGNED_OFS_SP 40
++
++#define CONSTANT_1	0x61707865
++#define CONSTANT_2	0x3320646e
++#define CONSTANT_3	0x79622d32
++#define CONSTANT_4	0x6b206574
++
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#define MSB 0
++#define LSB 3
++#define ROTx rotl
++#define ROTR(n) rotr n, 24
++#define	CPU_TO_LE32(n) \
++	wsbh	n; \
++	rotr	n, 16;
++#else
++#define MSB 3
++#define LSB 0
++#define ROTx rotr
++#define CPU_TO_LE32(n)
++#define ROTR(n)
++#endif
++
++#define STORE_UNALIGNED(x, a, s, o) \
++.Lchacha20_mips_xor_unaligned_ ## x ## _b: ; \
++	.if ((s != NONCE) || (o != 0)); \
++		lw	T0, o(s); \
++	.endif; \
++	lwl	T1, x-4+MSB ## (IN); \
++	lwr	T1, x-4+LSB ## (IN); \
++	.if ((s == NONCE) && (o == 0)); \
++		addu	X ## a, NONCE_0; \
++	.else; \
++		addu	X ## a, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## a); \
++	xor	X ## a, T1; \
++	swl	X ## a, x-4+MSB ## (OUT); \
++	swr	X ## a, x-4+LSB ## (OUT);
++
++#define STORE_ALIGNED(x, a, s, o) \
++.Lchacha20_mips_xor_aligned_ ## x ## _b: ; \
++	.if ((s != NONCE) || (o != 0)); \
++		lw	T0, o(s); \
++	.endif; \
++	lw	T1, x-4 ## (IN); \
++	.if ((s == NONCE) && (o == 0)); \
++		addu	X ## a, NONCE_0; \
++	.else; \
++		addu	X ## a, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## a); \
++	xor	X ## a, T1; \
++	sw	X ## a, x-4 ## (OUT);
++
++/* Jump table macro.
++ * Used for setup and handling the last bytes, which are not multiple of 4.
++ * X15 is free to store Xn
++ * Every jumptable entry must be equal in size.
++ */
++#define JMPTBL_ALIGNED(x, a, s, o) \
++.Lchacha20_mips_jmptbl_aligned_ ## a: ; \
++	.if ((s == NONCE) && (o == 0)); \
++		move	SAVED_CA, NONCE_0; \
++	.else; \
++		lw	SAVED_CA, o(s);\
++	.endif; \
++	b	.Lchacha20_mips_xor_aligned_ ## x ## _b; \
++	move	SAVED_X, X ## a;
++
++#define JMPTBL_UNALIGNED(x, a, s, o) \
++.Lchacha20_mips_jmptbl_unaligned_ ## a: ; \
++	.if ((s == NONCE) && (o == 0)); \
++		move	SAVED_CA, NONCE_0; \
++	.else; \
++		lw	SAVED_CA, o(s);\
++	.endif; \
++	b	.Lchacha20_mips_xor_unaligned_ ## x ## _b; \
++	move	SAVED_X, X ## a;
++
++#define AXR(A, B, C, D,  K, L, M, N,  V, W, Y, Z,  S) \
++	addu	X(A), X(K); \
++	addu	X(B), X(L); \
++	addu	X(C), X(M); \
++	addu	X(D), X(N); \
++	xor	X(V), X(A); \
++	xor	X(W), X(B); \
++	xor	X(Y), X(C); \
++	xor	X(Z), X(D); \
++	rotl	X(V), S;    \
++	rotl	X(W), S;    \
++	rotl	X(Y), S;    \
++	rotl	X(Z), S;
++
++.text
++.set reorder
++.set noat
++.globl chacha20_mips
++.ent   chacha20_mips
++chacha20_mips:
++	.frame $sp, STACK_SIZE, $ra
++	/* This is in the fifth argument */
++	lw	NONCE, 16($sp)
++
++	/* Return bytes = 0. */
++	.set noreorder
++	beqz	BYTES, .Lchacha20_mips_end
++	addiu	$sp, -STACK_SIZE
++	.set reorder
++
++	/* Calculate PTR_LAST_ROUND */
++	addiu	PTR_LAST_ROUND, BYTES, -1
++	ins	PTR_LAST_ROUND, $zero, 0, 6
++	addu	PTR_LAST_ROUND, OUT
++
++	/* Save s0-s7, fp, ra. */
++	sw	$ra,  0($sp)
++	sw	$fp,  4($sp)
++	sw	$s0,  8($sp)
++	sw	$s1, 12($sp)
++	sw	$s2, 16($sp)
++	sw	$s3, 20($sp)
++	sw	$s4, 24($sp)
++	sw	$s5, 28($sp)
++	sw	$s6, 32($sp)
++	sw	$s7, 36($sp)
++
++	lw	NONCE_0, 0(NONCE)
++	/* Test IN or OUT is unaligned.
++	 * UNALIGNED (T1) = ( IN | OUT ) & 0x00000003
++	 */
++	or	T1, IN, OUT
++	andi	T1, 0x3
++
++	/* Load constant */
++	lui	X0, %hi(CONSTANT_1)
++	lui	X1, %hi(CONSTANT_2)
++	lui	X2, %hi(CONSTANT_3)
++	lui	X3, %hi(CONSTANT_4)
++	ori	X0, %lo(CONSTANT_1)
++	ori	X1, %lo(CONSTANT_2)
++	ori	X2, %lo(CONSTANT_3)
++	ori	X3, %lo(CONSTANT_4)
++
++	/* Store constant on stack. */
++	sw	X0,  0+CONSTANT_OFS_SP($sp)
++	sw	X1,  4+CONSTANT_OFS_SP($sp)
++	sw	X2,  8+CONSTANT_OFS_SP($sp)
++	sw	X3, 12+CONSTANT_OFS_SP($sp)
++
++	sw	T1, UNALIGNED_OFS_SP($sp)
++
++	.set	noreorder
++	b	.Lchacha20_rounds_start
++	andi	BYTES, (CHACHA20_BLOCK_SIZE-1)
++	.set	reorder
++
++.align 4
++.Loop_chacha20_rounds:
++	addiu	IN,  CHACHA20_BLOCK_SIZE
++	addiu	OUT, CHACHA20_BLOCK_SIZE
++	addiu	NONCE_0, 1
++
++	lw	X0,  0+CONSTANT_OFS_SP($sp)
++	lw	X1,  4+CONSTANT_OFS_SP($sp)
++	lw	X2,  8+CONSTANT_OFS_SP($sp)
++	lw	X3, 12+CONSTANT_OFS_SP($sp)
++	lw	T1,   UNALIGNED_OFS_SP($sp)
++
++.Lchacha20_rounds_start:
++	lw	X4,   0(KEY)
++	lw	X5,   4(KEY)
++	lw	X6,   8(KEY)
++	lw	X7,  12(KEY)
++	lw	X8,  16(KEY)
++	lw	X9,  20(KEY)
++	lw	X10, 24(KEY)
++	lw	X11, 28(KEY)
++
++	move	X12, NONCE_0
++	lw	X13,  4(NONCE)
++	lw	X14,  8(NONCE)
++	lw	X15, 12(NONCE)
++
++	li	$at, 9
++.Loop_chacha20_xor_rounds:
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15, 16);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7, 12);
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15,  8);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7,  7);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14, 16);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4, 12);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14,  8);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4,  7);
++	.set noreorder
++	bnez	$at, .Loop_chacha20_xor_rounds
++	addiu	$at, -1
++
++	/* Unaligned? Jump */
++	bnez	T1, .Loop_chacha20_unaligned
++	andi	$at, BYTES, MASK_U32
++
++	/* Last round? No jump */
++	bne	OUT, PTR_LAST_ROUND, .Lchacha20_mips_xor_aligned_64_b
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_aligned_0)
++
++	/* Full block? Jump */
++	beqz	BYTES, .Lchacha20_mips_xor_aligned_64_b
++	/* Calculate lower half jump table addr and offset */
++	ins	T0, $at, 2, 6
++
++	subu	T0, $at
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_aligned_0)
++
++	jr	T0
++	/* Delay slot */
++	nop
++
++	.set	reorder
++
++.Loop_chacha20_unaligned:
++	.set noreorder
++
++	/* Last round? no jump */
++	bne	OUT, PTR_LAST_ROUND, .Lchacha20_mips_xor_unaligned_64_b
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	/* Full block? Jump */
++	beqz	BYTES, .Lchacha20_mips_xor_unaligned_64_b
++
++	/* Calculate lower half jump table addr and offset */
++	ins     T0, $at, 2, 6
++	subu	T0, $at
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	jr	T0
++	/* Delay slot */
++	nop
++
++	.set	reorder
++
++/* Aligned code path
++ */
++.align 4
++	STORE_ALIGNED(64, 15, NONCE,12)
++	STORE_ALIGNED(60, 14, NONCE, 8)
++	STORE_ALIGNED(56, 13, NONCE, 4)
++	STORE_ALIGNED(52, 12, NONCE, 0)
++	STORE_ALIGNED(48, 11, KEY, 28)
++	STORE_ALIGNED(44, 10, KEY, 24)
++	STORE_ALIGNED(40,  9, KEY, 20)
++	STORE_ALIGNED(36,  8, KEY, 16)
++	STORE_ALIGNED(32,  7, KEY, 12)
++	STORE_ALIGNED(28,  6, KEY,  8)
++	STORE_ALIGNED(24,  5, KEY,  4)
++	STORE_ALIGNED(20,  4, KEY,  0)
++	STORE_ALIGNED(16,  3, $sp, 12+CONSTANT_OFS_SP)
++	STORE_ALIGNED(12,  2, $sp,  8+CONSTANT_OFS_SP)
++	STORE_ALIGNED( 8,  1, $sp,  4+CONSTANT_OFS_SP)
++.Lchacha20_mips_xor_aligned_4_b:
++	/* STORE_ALIGNED( 4,  0, $sp, 0+CONSTANT_OFS_SP) */
++	lw	T0, 0+CONSTANT_OFS_SP($sp)
++	lw	T1, 0(IN)
++	addu	X0, T0
++	CPU_TO_LE32(X0)
++	xor	X0, T1
++	.set noreorder
++	bne	OUT, PTR_LAST_ROUND, .Loop_chacha20_rounds
++	sw	X0, 0(OUT)
++	.set reorder
++
++	.set noreorder
++	bne	$at, BYTES, .Lchacha20_mips_xor_bytes
++	/* Empty delayslot, Increase NONCE_0, return NONCE_0 value */
++	addiu	NONCE_0, 1
++	.set noreorder
++
++.Lchacha20_mips_xor_done:
++	/* Restore used registers */
++	lw	$ra,  0($sp)
++	lw	$fp,  4($sp)
++	lw	$s0,  8($sp)
++	lw	$s1, 12($sp)
++	lw	$s2, 16($sp)
++	lw	$s3, 20($sp)
++	lw	$s4, 24($sp)
++	lw	$s5, 28($sp)
++	lw	$s6, 32($sp)
++	lw	$s7, 36($sp)
++.Lchacha20_mips_end:
++	.set noreorder
++	jr	$ra
++	addiu	$sp, STACK_SIZE
++	.set reorder
++
++	.set noreorder
++	/* Start jump table */
++	JMPTBL_ALIGNED( 0,  0, $sp,  0+CONSTANT_OFS_SP)
++	JMPTBL_ALIGNED( 4,  1, $sp,  4+CONSTANT_OFS_SP)
++	JMPTBL_ALIGNED( 8,  2, $sp,  8+CONSTANT_OFS_SP)
++	JMPTBL_ALIGNED(12,  3, $sp, 12+CONSTANT_OFS_SP)
++	JMPTBL_ALIGNED(16,  4, KEY,  0)
++	JMPTBL_ALIGNED(20,  5, KEY,  4)
++	JMPTBL_ALIGNED(24,  6, KEY,  8)
++	JMPTBL_ALIGNED(28,  7, KEY, 12)
++	JMPTBL_ALIGNED(32,  8, KEY, 16)
++	JMPTBL_ALIGNED(36,  9, KEY, 20)
++	JMPTBL_ALIGNED(40, 10, KEY, 24)
++	JMPTBL_ALIGNED(44, 11, KEY, 28)
++	JMPTBL_ALIGNED(48, 12, NONCE, 0)
++	JMPTBL_ALIGNED(52, 13, NONCE, 4)
++	JMPTBL_ALIGNED(56, 14, NONCE, 8)
++	JMPTBL_ALIGNED(60, 15, NONCE,12)
++	/* End jump table */
++	.set reorder
++
++/* Unaligned code path
++ */
++	STORE_UNALIGNED(64, 15, NONCE,12)
++	STORE_UNALIGNED(60, 14, NONCE, 8)
++	STORE_UNALIGNED(56, 13, NONCE, 4)
++	STORE_UNALIGNED(52, 12, NONCE, 0)
++	STORE_UNALIGNED(48, 11, KEY, 28)
++	STORE_UNALIGNED(44, 10, KEY, 24)
++	STORE_UNALIGNED(40,  9, KEY, 20)
++	STORE_UNALIGNED(36,  8, KEY, 16)
++	STORE_UNALIGNED(32,  7, KEY, 12)
++	STORE_UNALIGNED(28,  6, KEY,  8)
++	STORE_UNALIGNED(24,  5, KEY,  4)
++	STORE_UNALIGNED(20,  4, KEY,  0)
++	STORE_UNALIGNED(16,  3, $sp, 12+CONSTANT_OFS_SP)
++	STORE_UNALIGNED(12,  2, $sp,  8+CONSTANT_OFS_SP)
++	STORE_UNALIGNED( 8,  1, $sp,  4+CONSTANT_OFS_SP)
++.Lchacha20_mips_xor_unaligned_4_b:
++	/* STORE_UNALIGNED( 4,  0, $sp, 0+CONSTANT_OFS_SP) */
++	lw	T0, 0+CONSTANT_OFS_SP($sp)
++	lwl	T1, 0+MSB(IN)
++	lwr	T1, 0+LSB(IN)
++	addu	X0, T0
++	CPU_TO_LE32(X0)
++	xor	X0, T1
++	swl	X0, 0+MSB(OUT)
++	.set noreorder
++	bne	OUT, PTR_LAST_ROUND, .Loop_chacha20_rounds
++	swr	X0, 0+LSB(OUT)
++	.set reorder
++
++	/* Fall through to byte handling */
++	.set noreorder
++	beq	$at, BYTES, .Lchacha20_mips_xor_done
++	/* Empty delayslot, increase NONCE_0, return NONCE_0 value */
++.Lchacha20_mips_xor_unaligned_0_b:
++.Lchacha20_mips_xor_aligned_0_b:
++	addiu	NONCE_0, 1
++	.set reorder
++
++.Lchacha20_mips_xor_bytes:
++	addu	OUT, $at
++	addu	IN, $at
++	addu	SAVED_X, SAVED_CA
++	/* First byte */
++	lbu	T1, 0(IN)
++	andi	$at, BYTES, 2
++	CPU_TO_LE32(SAVED_X)
++	ROTR(SAVED_X)
++	xor	T1, SAVED_X
++	.set noreorder
++	beqz	$at, .Lchacha20_mips_xor_done
++	sb	T1, 0(OUT)
++	.set reorder
++	/* Second byte */
++	lbu	T1, 1(IN)
++	andi	$at, BYTES, 1
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	.set noreorder
++	beqz	$at, .Lchacha20_mips_xor_done
++	sb	T1, 1(OUT)
++	.set reorder
++	/* Third byte */
++	lbu	T1, 2(IN)
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	.set noreorder
++	b	.Lchacha20_mips_xor_done
++	sb	T1, 2(OUT)
++	.set reorder
++.set noreorder
++
++.Lchacha20_mips_jmptbl_unaligned:
++	/* Start jump table */
++	JMPTBL_UNALIGNED( 0,  0, $sp,  0+CONSTANT_OFS_SP)
++	JMPTBL_UNALIGNED( 4,  1, $sp,  4+CONSTANT_OFS_SP)
++	JMPTBL_UNALIGNED( 8,  2, $sp,  8+CONSTANT_OFS_SP)
++	JMPTBL_UNALIGNED(12,  3, $sp, 12+CONSTANT_OFS_SP)
++	JMPTBL_UNALIGNED(16,  4, KEY,  0)
++	JMPTBL_UNALIGNED(20,  5, KEY,  4)
++	JMPTBL_UNALIGNED(24,  6, KEY,  8)
++	JMPTBL_UNALIGNED(28,  7, KEY, 12)
++	JMPTBL_UNALIGNED(32,  8, KEY, 16)
++	JMPTBL_UNALIGNED(36,  9, KEY, 20)
++	JMPTBL_UNALIGNED(40, 10, KEY, 24)
++	JMPTBL_UNALIGNED(44, 11, KEY, 28)
++	JMPTBL_UNALIGNED(48, 12, NONCE, 0)
++	JMPTBL_UNALIGNED(52, 13, NONCE, 4)
++	JMPTBL_UNALIGNED(56, 14, NONCE, 8)
++	JMPTBL_UNALIGNED(60, 15, NONCE,12)
++	/* End jump table */
++.set reorder
++
++.end chacha20_mips
++.set at
+-- 
+2.18.0

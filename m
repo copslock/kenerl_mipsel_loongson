@@ -1,52 +1,160 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2018 23:40:31 +0200 (CEST)
-Received: from frisell.zx2c4.com ([192.95.5.64]:50219 "EHLO frisell.zx2c4.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Aug 2018 12:53:23 +0200 (CEST)
+Received: from mout.gmx.net ([212.227.15.19]:43453 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994572AbeHXVkSRxc3I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Aug 2018 23:40:18 +0200
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id f0db58f3;
-        Fri, 24 Aug 2018 21:25:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
-        :subject:date:message-id:in-reply-to:references:mime-version
-        :content-type:content-transfer-encoding; s=mail; bh=jRRnuNcrsYzS
-        QNF/IobGiAqNyaI=; b=g8dy1xCscYtRbBfiNulWiHcwL5jvGbwuTR7yeWGXsVJP
-        vHdl+Szo96XvUlpBzZCzsBhEaZvwuo6P3f/FgWp2vp029xNgSDeJjPJRnzLoGAoq
-        ksmQqIw/jNoVzQ2sgKLlRDszUFgBbcwRB8lBE8DSCCTwqg0NvF6pEyViSTc+gnFk
-        tE4eHLxY6tvUWDSeRh1MrgBbKcrckKsCvMz9mvJPf16eZnIErhIfg00UP6XjJQBk
-        Y8TQvyE4XiDSrfIPdQe+k/Bt8QS8ZSng45Wg8armQyhbqK5PYRaxMrz2M5+gFDlh
-        oFg/jtYEtzGPHuV3v69EnL21lQEm8QTDnUbkwJPKhQ==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 09ded246 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
-        Fri, 24 Aug 2018 21:25:49 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        davem@davemloft.net
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Samuel Neves <sneves@dei.uc.pt>,
-        Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
-        Andy Polyakov <appro@openssl.org>,
-        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+        id S23994551AbeHYKxIFpiNK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 25 Aug 2018 12:53:08 +0200
+Received: from [192.168.20.60] ([92.116.128.156]) by mail.gmx.com (mrgmx001
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0MRGTX-1gNX4804tD-00UWoM; Sat, 25
+ Aug 2018 12:49:07 +0200
+Subject: Re: [PATCH] treewide: remove current_text_addr
+To:     Nick Desaulniers <ndesaulniers@google.com>,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org
+Cc:     ebiederm@xmission.com, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, horms@verge.net.au, natechancellor@gmail.com,
+        pombredanne@nexb.com, kstewart@linuxfoundation.org,
+        gregkh@linuxfoundation.org, Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linux-crypto@vger.kernel.org
-Subject: [PATCH v2 10/17] zinc: Poly1305 MIPS32r2 and MIPS64 implementations
-Date:   Fri, 24 Aug 2018 15:38:42 -0600
-Message-Id: <20180824213849.23647-11-Jason@zx2c4.com>
-In-Reply-To: <20180824213849.23647-1-Jason@zx2c4.com>
-References: <20180824213849.23647-1-Jason@zx2c4.com>
+        James Hogan <jhogan@kernel.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Tobias Klauser <tklauser@distanz.ch>,
+        Noam Camus <noamc@ezchip.com>,
+        Mickael GUENE <mickael.guene@st.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Yury Norov <ynorov@caviumnetworks.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Philippe Bergheaud <felix@linux.vnet.ibm.com>,
+        Ram Pai <linuxram@us.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Vasily Gorbik <gor@linux.vnet.ibm.com>,
+        Nick Alcock <nick.alcock@oracle.com>,
+        Shannon Nelson <shannon.nelson@oracle.com>,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jiri Kosina <jkosina@suse.cz>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org
+References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
+ <20180821202900.208417-1-ndesaulniers@google.com>
+From:   Helge Deller <deller@gmx.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=deller@gmx.de; prefer-encrypt=mutual; keydata=
+ xsBNBFDPIPYBCAC6PdtagIE06GASPWQJtfXiIzvpBaaNbAGgmd3Iv7x+3g039EV7/zJ1do/a
+ y9jNEDn29j0/jyd0A9zMzWEmNO4JRwkMd5Z0h6APvlm2D8XhI94r/8stwroXOQ8yBpBcP0yX
+ +sqRm2UXgoYWL0KEGbL4XwzpDCCapt+kmarND12oFj30M1xhTjuFe0hkhyNHkLe8g6MC0xNg
+ KW3x7B74Rk829TTAtj03KP7oA+dqsp5hPlt/hZO0Lr0kSAxf3kxtaNA7+Z0LLiBqZ1nUerBh
+ OdiCasCF82vQ4/y8rUaKotXqdhGwD76YZry9AQ9p6ccqKaYEzWis078Wsj7p0UtHoYDbABEB
+ AAHNHEhlbGdlIERlbGxlciA8ZGVsbGVyQGdteC5kZT7CwJIEEwECADwCGwMGCwkIBwMCBhUI
+ AgkKCwQWAgMBAh4BAheAFiEE9M/0wAvkPPtRU6Boh8nBUbUeOGQFAlrHzIICGQEACgkQh8nB
+ UbUeOGT1GAgAt+EeoHB4DbAx+pZoGbBYp6ZY8L6211n8fSi7wiwgM5VppucJ+C+wILoPkqiU
+ +ZHKlcWRbttER2oBUvKOt0+yDfAGcoZwHS0P+iO3HtxR81h3bosOCwek+TofDXl+TH/WSQJa
+ iaitof6iiPZLygzUmmW+aLSSeIAHBunpBetRpFiep1e5zujCglKagsW78Pq0DnzbWugGe26A
+ 288JcK2W939bT1lZc22D9NhXXRHfX2QdDdrCQY7UsI6g/dAm1d2ldeFlGleqPMdaaQMcv5+E
+ vDOur20qjTlenjnR/TFm9tA1zV+K7ePh+JfwKc6BSbELK4EHv8J8WQJjfTphakYLVM7ATQRQ
+ zyD2AQgA2SJJapaLvCKdz83MHiTMbyk8yj2AHsuuXdmB30LzEQXjT3JEqj1mpvcEjXrX1B3h
+ +0nLUHPI2Q4XWRazrzsseNMGYqfVIhLsK6zT3URPkEAp7R1JxoSiLoh4qOBdJH6AJHex4CWu
+ UaSXX5HLqxKl1sq1tO8rq2+hFxY63zbWINvgT0FUEME27Uik9A5t8l9/dmF0CdxKdmrOvGMw
+ T770cTt76xUryzM3fAyjtOEVEglkFtVQNM/BN/dnq4jDE5fikLLs8eaJwsWG9k9wQUMtmLpL
+ gRXeFPRRK+IT48xuG8rK0g2NOD8aW5ThTkF4apznZe74M7OWr/VbuZbYW443QQARAQABwsBf
+ BBgBAgAJBQJQzyD2AhsMAAoJEIfJwVG1HjhkNTgH/idWz2WjLE8DvTi7LvfybzvnXyx6rWUs
+ 91tXUdCzLuOtjqWVsqBtSaZynfhAjlbqRlrFZQ8i8jRyJY1IwqgvHP6PO9s+rIxKlfFQtqhl
+ kR1KUdhNGtiI90sTpi4aeXVsOyG3572KV3dKeFe47ALU6xE5ZL5U2LGhgQkbjr44I3EhPWc/
+ lJ/MgLOPkfIUgjRXt0ZcZEN6pAMPU95+u1N52hmqAOQZvyoyUOJFH1siBMAFRbhgWyv+YE2Y
+ ZkAyVDL2WxAedQgD/YCCJ+16yXlGYGNAKlvp07SimS6vBEIXk/3h5Vq4Hwgg0Z8+FRGtYZyD
+ KrhlU0uMP9QTB5WAUvxvGy8=
+Message-ID: <207784db-4fcc-85e7-a0b2-fec26b7dab81@gmx.de>
+Date:   Sat, 25 Aug 2018 12:48:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <Jason@zx2c4.com>
+In-Reply-To: <20180821202900.208417-1-ndesaulniers@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:TQVxMhqGwVY9ejfXg9b+8lBJETviyUpv7IsvOwVi9WcgnyrEObK
+ ifHRqFfSwpfyw8FTh6CVlM/EPZ0gnxj2kTnDgP1EESkknKUWjPmiMn6VkpjYlwHqzA7bRpN
+ N3auDnw92xjIJYYta7cUdBbut8P+XeQ1hkKtCQNcIyW3hYMhXKXXsTXOpuUjrH+u/tPq9Xg
+ iCVZor/TOPclsQRDfdGYw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:3YwzMKbBL1g=:E3Fqfe92RI88yaiWhfDAYB
+ AjAQXw2PhUravOyKc8k25aCEnJ97wY0BWSBh4XYH2MxkW1zzZLC0jfDC/eVKVuqCA7cjEOFqu
+ 2moLHtkJ0oXtMnE2vxRvmgxN0TWBdbbb3uVVk1kRItmInQAHAQ1hJ4bRcLvafMBcqalJQfvm8
+ 7pEq6E3HmaL9y37lAr77Py1eB41zEbsUA1OqbQ3JIR1IjNnpTwxjUP6Iy1ncP4vUWGISv25i0
+ VhKHKKThLK1LjsmnZr6WfG0GJYkPaViKrsGFZdh2wvqpxXIwYlcyaLdMZQg7iUVLUkrSZ64zX
+ fgXjXJCTeDT0iHApo13kTQfx7sACh9muZg+gecVRJq+0TUyX6n+Un+0q0wNQ6GB/j7V/QW0Qn
+ 7/3lgmdj9hD93b6fsBZsuvL8Yjs+sDGR70+UzshF8bGnJJb7NbGUHVfqoqBxSzSv9g5Xrcafg
+ goUniaSSQ6X2bmVohHZbSvS2aVKiYibzcyORDbOmiq9t/izQVotO2UbJXpWFX3aUg4IPxO1i5
+ e2rOASJRuZHmyKYSt//LXuylNJCCdNkLmOL4Bn0Cr79G4uny5+8u4Feklxkrzowpe2m+rb4KJ
+ ++c74bcNfF4UFyxBmU5RGMsTvpmeGllfm09+J4Su4Rud2kbdrEk6dskWm5d/+VbSKNUa0G2RH
+ xt0PCX+LYE4ZLCqGuYW5LYgWy81uq9WfWUT56/qP00ejtvs5pO6QccV6HuRjW3srSngjlEQMx
+ DMnY4jHsZ1JPgt+KsMxAq1vU4UjdKOllIMHJwmF5K9SUAuMM0OSSdlTf67s3wPzhNKSniGl09
+ 4xagd8T
+Return-Path: <deller@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65726
+X-archive-position: 65727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: deller@gmx.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,875 +167,582 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This MIPS32r2 implementation comes from René van Dorst and me and
-results in a nice speedup on the usual OpenWRT targets. The MIPS64
-implementation comes from Andy Polyakov with some kernel-friendly
-modifications from me and results in a nice speedup on commodity Octeon
-hardware.
+On 21.08.2018 22:28, Nick Desaulniers wrote:
+> Prefer _THIS_IP_ defined in linux/kernel.h.
+> 
+> Most definitions of current_text_addr were the same as _THIS_IP_, but
+> a few archs had inline assembly instead.
+> 
+> This patch removes the final call site of current_text_addr, making all
+> of the definitions dead code.
+> 
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> ---
+> I suspect that current_text_addr predated GNU C extensions for statement
+> expressions and/or taking the address of a label, then the macro was
+> reimplemented for every new archs include/asm/processor.h, even though
+> there were very few call sites, and none required an assembly
+> implementation vs the C implementation.
+> 
+> I am sad to see a few neat arch specific ways of getting the ip/pc, but
+> we should prefer the higher level C in cases where assembly is not
+> required. And the definitions can always be found again in git history.
 
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Samuel Neves <sneves@dei.uc.pt>
-Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-Cc: Andy Polyakov <appro@openssl.org>
-Cc: René van Dorst <opensource@vdorst.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-crypto@vger.kernel.org
----
- lib/zinc/Makefile                      |   8 +
- lib/zinc/poly1305/poly1305-mips-glue.h |  31 ++
- lib/zinc/poly1305/poly1305-mips.S      | 417 +++++++++++++++++++++++++
- lib/zinc/poly1305/poly1305-mips64.S    | 357 +++++++++++++++++++++
- 4 files changed, 813 insertions(+)
- create mode 100644 lib/zinc/poly1305/poly1305-mips-glue.h
- create mode 100644 lib/zinc/poly1305/poly1305-mips.S
- create mode 100644 lib/zinc/poly1305/poly1305-mips64.S
+Currently alpha, s390, sparc, sh, c6x, ia64 and parisc provide an
+inline assembly function to get the current instruction pointer. 
+As mentioned in an earlier thread, I personally would *prefer* if 
+_THIS_IP_ would use those inline assembly instructions on those
+architectures instead of the (currently used) higher C-level
+implementation.
 
-diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
-index 57fe42b7f97c..6b21ed4464c6 100644
---- a/lib/zinc/Makefile
-+++ b/lib/zinc/Makefile
-@@ -36,6 +36,14 @@ ifeq ($(CONFIG_ARM64),y)
- zinc-y += poly1305/poly1305-arm64.o
- CFLAGS_poly1305.o += -include $(srctree)/$(src)/poly1305/poly1305-arm-glue.h
- endif
-+ifeq ($(CONFIG_MIPS)$(CONFIG_CPU_MIPS32_R2),yy)
-+zinc-y += poly1305/poly1305-mips.o
-+CFLAGS_poly1305.o += -include $(srctree)/$(src)/poly1305/poly1305-mips-glue.h
-+endif
-+ifeq ($(CONFIG_MIPS)$(CONFIG_64BIT),yy)
-+zinc-y += poly1305/poly1305-mips64.o
-+CFLAGS_poly1305.o += -include $(srctree)/$(src)/poly1305/poly1305-mips-glue.h
-+endif
- endif
- 
- zinc-y += main.o
-diff --git a/lib/zinc/poly1305/poly1305-mips-glue.h b/lib/zinc/poly1305/poly1305-mips-glue.h
-new file mode 100644
-index 000000000000..3eb7d4c7be94
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips-glue.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+#include <zinc/poly1305.h>
-+
-+asmlinkage void poly1305_init_mips(void *ctx, const u8 key[16]);
-+asmlinkage void poly1305_blocks_mips(void *ctx, const u8 *inp, const size_t len, const u32 padbit);
-+asmlinkage void poly1305_emit_mips(void *ctx, u8 mac[16], const u32 nonce[4]);
-+void __init poly1305_fpu_init(void) { }
-+
-+static inline bool poly1305_init_arch(void *ctx, const u8 key[POLY1305_KEY_SIZE], simd_context_t simd_context)
-+{
-+	poly1305_init_mips(ctx, key);
-+	return true;
-+}
-+
-+static inline bool poly1305_blocks_arch(void *ctx, const u8 *inp, const size_t len, const u32 padbit, simd_context_t simd_context)
-+{
-+	poly1305_blocks_mips(ctx, inp, len, padbit);
-+	return true;
-+}
-+
-+static inline bool poly1305_emit_arch(void *ctx, u8 mac[POLY1305_MAC_SIZE], const u32 nonce[4], simd_context_t simd_context)
-+{
-+	poly1305_emit_mips(ctx, mac, nonce);
-+	return true;
-+}
-+
-+#define HAVE_POLY1305_ARCH_IMPLEMENTATION
-diff --git a/lib/zinc/poly1305/poly1305-mips.S b/lib/zinc/poly1305/poly1305-mips.S
-new file mode 100644
-index 000000000000..32d8558d8601
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips.S
-@@ -0,0 +1,417 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com> All Rights Reserved.
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+#define MSB 0
-+#define LSB 3
-+#else
-+#define MSB 3
-+#define LSB 0
-+#endif
-+
-+#define POLY1305_BLOCK_SIZE 16
-+.text
-+#define H0 $t0
-+#define H1 $t1
-+#define H2 $t2
-+#define H3 $t3
-+#define H4 $t4
-+
-+#define R0 $t5
-+#define R1 $t6
-+#define R2 $t7
-+#define R3 $t8
-+
-+#define O0 $s0
-+#define O1 $s4
-+#define O2 $v1
-+#define O3 $t9
-+#define O4 $s5
-+
-+#define S1 $s1
-+#define S2 $s2
-+#define S3 $s3
-+
-+#define SC $at
-+#define CA $v0
-+
-+/* Input arguments */
-+#define poly	$a0
-+#define src	$a1
-+#define srclen	$a2
-+#define hibit	$a3
-+
-+/* Location in the opaque buffer
-+ * R[0..3], CA, H[0..4]
-+ */
-+#define PTR_POLY1305_R(n) ( 0 + (n*4)) ## ($a0)
-+#define PTR_POLY1305_CA   (16        ) ## ($a0)
-+#define PTR_POLY1305_H(n) (20 + (n*4)) ## ($a0)
-+
-+#define POLY1305_BLOCK_SIZE 16
-+#define POLY1305_STACK_SIZE 8 * 4
-+
-+.set reorder
-+.set noat
-+.align 4
-+.globl poly1305_blocks_mips
-+.ent poly1305_blocks_mips
-+poly1305_blocks_mips:
-+	.frame  $sp,POLY1305_STACK_SIZE,$31
-+	/* srclen &= 0xFFFFFFF0 */
-+	ins	srclen, $zero, 0, 4
-+
-+	.set noreorder
-+	/* check srclen >= 16 bytes */
-+	beqz	srclen, .Lpoly1305_blocks_mips_end
-+	addiu	$sp, -(POLY1305_STACK_SIZE)
-+	.set reorder
-+
-+	/* Calculate last round based on src address pointer.
-+	 * last round src ptr (srclen) = src + (srclen & 0xFFFFFFF0)
-+	 */
-+	addu	srclen, src
-+
-+	lw	R0, PTR_POLY1305_R(0)
-+	lw	R1, PTR_POLY1305_R(1)
-+	lw	R2, PTR_POLY1305_R(2)
-+	lw	R3, PTR_POLY1305_R(3)
-+
-+	/* store the used save registers. */
-+	sw	$s0, 0($sp)
-+	sw	$s1, 4($sp)
-+	sw	$s2, 8($sp)
-+	sw	$s3, 12($sp)
-+	sw	$s4, 16($sp)
-+	sw	$s5, 20($sp)
-+
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Sx = Rx + (Rx >> 2) */
-+	srl	S1, R1, 2
-+	srl	S2, R2, 2
-+	srl	S3, R3, 2
-+	addu	S1, R1
-+	addu	S2, R2
-+	addu	S3, R3
-+
-+	addiu	SC, $zero, 1
-+
-+.Lpoly1305_loop:
-+	lwl	O0, 0+MSB(src)
-+	lwl	O1, 4+MSB(src)
-+	lwl	O2, 8+MSB(src)
-+	lwl	O3,12+MSB(src)
-+	lwr	O0, 0+LSB(src)
-+	lwr	O1, 4+LSB(src)
-+	lwr	O2, 8+LSB(src)
-+	lwr	O3,12+LSB(src)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	O0
-+	wsbh	O1
-+	wsbh	O2
-+	wsbh	O3
-+	rotr	O0, 16
-+	rotr	O1, 16
-+	rotr	O2, 16
-+	rotr	O3, 16
-+#endif
-+
-+	/* h0 = (u32)(d0 = (u64)h0 + inp[0] + c 'Carry_previous cycle'); */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	O0, H0
-+	sltu	H0, O0, H0
-+	addu	CA, H0
-+
-+	/* h1 = (u32)(d1 = (u64)h1 + (d0 >> 32) + inp[4]); */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	O1, H1
-+	sltu	H1, O1, H1
-+	addu	CA, H1
-+
-+	/* h2 = (u32)(d2 = (u64)h2 + (d1 >> 32) + inp[8]); */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	O2, H2
-+	sltu	H2, O2, H2
-+	addu	CA, H2
-+
-+	/* h3 = (u32)(d3 = (u64)h3 + (d2 >> 32) + inp[12]); */
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	O3, H3
-+	sltu	H3, O3, H3
-+	addu	CA, H3
-+
-+	/* h4 += (u32)(d3 >> 32) + padbit; */
-+	addu	H4, hibit
-+	addu	O4, H4, CA
-+
-+	/* D0 */
-+	multu	O0, R0
-+	maddu	O1, S3
-+	maddu	O2, S2
-+	maddu	O3, S1
-+	mfhi	CA
-+	mflo	H0
-+
-+	/* D1 */
-+	multu	O0, R1
-+	maddu	O1, R0
-+	maddu	O2, S3
-+	maddu	O3, S2
-+	maddu	O4, S1
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H1
-+
-+	/* D2 */
-+	multu	O0, R2
-+	maddu	O1, R1
-+	maddu	O2, R0
-+	maddu	O3, S3
-+	maddu	O4, S2
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H2
-+
-+	/* D4 */
-+	mul	H4, O4, R0
-+
-+	/* D3 */
-+	multu	O0, R3
-+	maddu	O1, R2
-+	maddu	O2, R1
-+	maddu	O3, R0
-+	maddu	O4, S3
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H3
-+
-+	addiu	src, POLY1305_BLOCK_SIZE
-+
-+	/* h4 += (u32)(d3 >> 32); */
-+	addu	O4, H4, CA
-+	/* h4 &= 3 */
-+	andi	H4, O4, 3
-+	/* c = (h4 >> 2) + (h4 & ~3U); */
-+	srl	CA, O4, 2
-+	ins	O4, $zero, 0, 2
-+
-+	/* able to do a 16 byte block. */
-+	.set noreorder
-+	bne	src, srclen, .Lpoly1305_loop
-+	/* Delay slot is always executed. */
-+	addu	CA, O4
-+	.set reorder
-+
-+	/* restore the used save registers. */
-+	lw	$s0, 0($sp)
-+	lw	$s1, 4($sp)
-+	lw	$s2, 8($sp)
-+	lw	$s3, 12($sp)
-+	lw	$s4, 16($sp)
-+	lw	$s5, 20($sp)
-+
-+	/* store Hx and Carry */
-+	sw	CA, PTR_POLY1305_CA
-+	sw	H0, PTR_POLY1305_H(0)
-+	sw	H1, PTR_POLY1305_H(1)
-+	sw	H2, PTR_POLY1305_H(2)
-+	sw	H3, PTR_POLY1305_H(3)
-+	sw	H4, PTR_POLY1305_H(4)
-+
-+.Lpoly1305_blocks_mips_end:
-+	/* Jump Back */
-+	.set noreorder
-+	jr	$ra
-+	addiu	$sp, POLY1305_STACK_SIZE
-+	.set reorder
-+.end poly1305_blocks_mips
-+.set at
-+.set reorder
-+
-+/* Input arguments CTX=$a0, MAC=$a1, NONCE=$a2 */
-+#define MAC	$a1
-+#define NONCE	$a2
-+
-+#define G0	$t5
-+#define G1	$t6
-+#define G2	$t7
-+#define G3	$t8
-+#define G4	$t9
-+
-+.set reorder
-+.set noat
-+.align 4
-+.globl poly1305_emit_mips
-+.ent poly1305_emit_mips
-+poly1305_emit_mips:
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Add left over carry */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	H4, CA
-+
-+	/* compare to modulus by computing h + -p */
-+	addiu	G0, H0, 5
-+	sltu	CA, G0, H0
-+	addu	G1, H1, CA
-+	sltu	CA, G1, H1
-+	addu	G2, H2, CA
-+	sltu	CA, G2, H2
-+	addu	G3, H3, CA
-+	sltu	CA, G3, H3
-+	addu	G4, H4, CA
-+
-+	srl	SC, G4, 2
-+
-+	/* if there was carry into 131st bit, h3:h0 = g3:g0 */
-+	movn	H0, G0, SC
-+	movn	H1, G1, SC
-+	movn	H2, G2, SC
-+	movn	H3, G3, SC
-+
-+	lwl	G0, 0+MSB(NONCE)
-+	lwl	G1, 4+MSB(NONCE)
-+	lwl	G2, 8+MSB(NONCE)
-+	lwl	G3,12+MSB(NONCE)
-+	lwr	G0, 0+LSB(NONCE)
-+	lwr	G1, 4+LSB(NONCE)
-+	lwr	G2, 8+LSB(NONCE)
-+	lwr	G3,12+LSB(NONCE)
-+
-+	/* mac = (h + nonce) % (2^128) */
-+	addu	H0, G0
-+	sltu	CA, H0, G0
-+
-+	/* H1 */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H1, G1
-+	sltu	G1, H1, G1
-+	addu	CA, G1
-+
-+	/* H2 */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H2, G2
-+	sltu	G2, H2, G2
-+	addu	CA, G2
-+
-+	/* H3 */
-+	addu	H3, CA
-+	addu	H3, G3
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	H0
-+	wsbh	H1
-+	wsbh	H2
-+	wsbh	H3
-+	rotr	H0, 16
-+	rotr	H1, 16
-+	rotr	H2, 16
-+	rotr	H3, 16
-+#endif
-+
-+	/* store MAC */
-+	swl	H0, 0+MSB(MAC)
-+	swl	H1, 4+MSB(MAC)
-+	swl	H2, 8+MSB(MAC)
-+	swl	H3,12+MSB(MAC)
-+	swr	H0, 0+LSB(MAC)
-+	swr	H1, 4+LSB(MAC)
-+	swr	H2, 8+LSB(MAC)
-+	.set noreorder
-+	jr	$ra
-+	swr	H3,12+LSB(MAC)
-+	.set reorder
-+.end poly1305_emit_mips
-+
-+#define PR0 $t0
-+#define PR1 $t1
-+#define PR2 $t2
-+#define PR3 $t3
-+#define PT0 $t4
-+
-+/* Input arguments CTX=$a0, KEY=$a1 */
-+
-+.align 4
-+.globl poly1305_init_mips
-+.ent poly1305_init_mips
-+poly1305_init_mips:
-+	lwl	PR0, 0+MSB($a1)
-+	lwl	PR1, 4+MSB($a1)
-+	lwl	PR2, 8+MSB($a1)
-+	lwl	PR3,12+MSB($a1)
-+	lwr	PR0, 0+LSB($a1)
-+	lwr	PR1, 4+LSB($a1)
-+	lwr	PR2, 8+LSB($a1)
-+	lwr	PR3,12+LSB($a1)
-+
-+	/* store Hx and Carry */
-+	sw	$zero, PTR_POLY1305_CA
-+	sw	$zero, PTR_POLY1305_H(0)
-+	sw	$zero, PTR_POLY1305_H(1)
-+	sw	$zero, PTR_POLY1305_H(2)
-+	sw	$zero, PTR_POLY1305_H(3)
-+	sw	$zero, PTR_POLY1305_H(4)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	PR0
-+	wsbh	PR1
-+	wsbh	PR2
-+	wsbh	PR3
-+	rotr	PR0, 16
-+	rotr	PR1, 16
-+	rotr	PR2, 16
-+	rotr	PR3, 16
-+#endif
-+
-+	lui	PT0, 0x0FFF
-+	ori	PT0, 0xFFFC
-+
-+	/* AND 0x0fffffff; */
-+	ext	PR0, PR0, 0, (32-4)
-+
-+	/* AND 0x0ffffffc; */
-+	and	PR1, PT0
-+	and	PR2, PT0
-+	and	PR3, PT0
-+
-+	/* store Rx */
-+	sw	PR0, PTR_POLY1305_R(0)
-+	sw	PR1, PTR_POLY1305_R(1)
-+	sw	PR2, PTR_POLY1305_R(2)
-+
-+	.set noreorder
-+	/* Jump Back  */
-+	jr	$ra
-+	sw	PR3, PTR_POLY1305_R(3)
-+	.set reorder
-+.end poly1305_init_mips
-diff --git a/lib/zinc/poly1305/poly1305-mips64.S b/lib/zinc/poly1305/poly1305-mips64.S
-new file mode 100644
-index 000000000000..1a45fbee3c7f
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips64.S
-@@ -0,0 +1,357 @@
-+/* SPDX-License-Identifier: OpenSSL OR (BSD-3-Clause OR GPL-2.0)
-+ *
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
-+ */
-+
-+#if !defined(CONFIG_64BIT)
-+#error "This is only for 64-bit kernels."
-+#endif
-+
-+#ifdef __MIPSEB__
-+#define MSB 0
-+#define LSB 7
-+#else
-+#define MSB 7
-+#define LSB 0
-+#endif
-+
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+#define dmultu(rs,rt)
-+#define mflo(rd,rs,rt)	dmulu	rd,rs,rt
-+#define mfhi(rd,rs,rt)	dmuhu	rd,rs,rt
-+#else
-+#define dmultu(rs,rt)		dmultu	rs,rt
-+#define multu(rs,rt)		multu	rs,rt
-+#define mflo(rd,rs,rt)	mflo	rd
-+#define mfhi(rd,rs,rt)	mfhi	rd
-+#endif
-+
-+.text
-+.set	noat
-+.set	noreorder
-+
-+/* While most of the assembly in the kernel prefers ENTRY() and ENDPROC(),
-+ * there is no existing MIPS assembly that uses it, and MIPS assembler seems
-+ * to like its own .ent/.end notation, which the MIPS include files don't
-+ * provide in a MIPS-specific ENTRY/ENDPROC definition. So, we skip these
-+ * for now, until somebody complains. */
-+
-+.align	5
-+.globl	poly1305_init_mips
-+.ent	poly1305_init_mips
-+poly1305_init_mips:
-+	.frame	$29,0,$31
-+	.set	reorder
-+
-+	sd	$0,0($4)
-+	sd	$0,8($4)
-+	sd	$0,16($4)
-+
-+	beqz	$5,.Lno_key
-+
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	ld	$8,0($5)
-+	ld	$9,8($5)
-+#else
-+	ldl	$8,0+MSB($5)
-+	ldl	$9,8+MSB($5)
-+	ldr	$8,0+LSB($5)
-+	ldr	$9,8+LSB($5)
-+#endif
-+#ifdef	__MIPSEB__
-+#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	dsbh	$8,$8		# byte swap
-+	 dsbh	$9,$9
-+	dshd	$8,$8
-+	 dshd	$9,$9
-+#else
-+	ori	$10,$0,0xFF
-+	dsll	$1,$10,32
-+	or	$10,$1		# 0x000000FF000000FF
-+
-+	and	$11,$8,$10	# byte swap
-+	 and	$2,$9,$10
-+	dsrl	$1,$8,24
-+	 dsrl	$24,$9,24
-+	dsll	$11,24
-+	 dsll	$2,24
-+	and	$1,$10
-+	 and	$24,$10
-+	dsll	$10,8			# 0x0000FF000000FF00
-+	or	$11,$1
-+	 or	$2,$24
-+	and	$1,$8,$10
-+	 and	$24,$9,$10
-+	dsrl	$8,8
-+	 dsrl	$9,8
-+	dsll	$1,8
-+	 dsll	$24,8
-+	and	$8,$10
-+	 and	$9,$10
-+	or	$11,$1
-+	 or	$2,$24
-+	or	$8,$11
-+	 or	$9,$2
-+	dsrl	$11,$8,32
-+	 dsrl	$2,$9,32
-+	dsll	$8,32
-+	 dsll	$9,32
-+	or	$8,$11
-+	 or	$9,$2
-+#endif
-+#endif
-+	li	$10,1
-+	dsll	$10,32
-+	daddiu	$10,-63
-+	dsll	$10,28
-+	daddiu	$10,-1		# 0ffffffc0fffffff
-+
-+	and	$8,$10
-+	daddiu	$10,-3		# 0ffffffc0ffffffc
-+	and	$9,$10
-+
-+	sd	$8,24($4)
-+	dsrl	$10,$9,2
-+	sd	$9,32($4)
-+	daddu	$10,$9		# s1 = r1 + (r1 >> 2)
-+	sd	$10,40($4)
-+
-+.Lno_key:
-+	li	$2,0			# return 0
-+	jr	$31
-+.end	poly1305_init_mips
-+
-+.align	5
-+.globl	poly1305_blocks_mips
-+.ent	poly1305_blocks_mips
-+poly1305_blocks_mips:
-+	.set	noreorder
-+	dsrl	$6,4			# number of complete blocks
-+	bnez	$6,poly1305_blocks_internal
-+	nop
-+	jr	$31
-+	nop
-+.end	poly1305_blocks_mips
-+
-+.align	5
-+.ent	poly1305_blocks_internal
-+poly1305_blocks_internal:
-+	.frame	$29,6*8,$31
-+	.mask	0x00030000,-8
-+	.set	noreorder
-+	dsubu	$29,6*8
-+	sd	$17,40($29)
-+	sd	$16,32($29)
-+	.set	reorder
-+
-+	ld	$12,0($4)		# load hash value
-+	ld	$13,8($4)
-+	ld	$14,16($4)
-+
-+	ld	$15,24($4)		# load key
-+	ld	$16,32($4)
-+	ld	$17,40($4)
-+
-+.Loop:
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	ld	$8,0($5)		# load input
-+	ld	$9,8($5)
-+#else
-+	ldl	$8,0+MSB($5)	# load input
-+	ldl	$9,8+MSB($5)
-+	ldr	$8,0+LSB($5)
-+	ldr	$9,8+LSB($5)
-+#endif
-+	daddiu	$6,-1
-+	daddiu	$5,16
-+#ifdef	__MIPSEB__
-+#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	dsbh	$8,$8		# byte swap
-+	 dsbh	$9,$9
-+	dshd	$8,$8
-+	 dshd	$9,$9
-+#else
-+	ori	$10,$0,0xFF
-+	dsll	$1,$10,32
-+	or	$10,$1		# 0x000000FF000000FF
-+
-+	and	$11,$8,$10	# byte swap
-+	 and	$2,$9,$10
-+	dsrl	$1,$8,24
-+	 dsrl	$24,$9,24
-+	dsll	$11,24
-+	 dsll	$2,24
-+	and	$1,$10
-+	 and	$24,$10
-+	dsll	$10,8			# 0x0000FF000000FF00
-+	or	$11,$1
-+	 or	$2,$24
-+	and	$1,$8,$10
-+	 and	$24,$9,$10
-+	dsrl	$8,8
-+	 dsrl	$9,8
-+	dsll	$1,8
-+	 dsll	$24,8
-+	and	$8,$10
-+	 and	$9,$10
-+	or	$11,$1
-+	 or	$2,$24
-+	or	$8,$11
-+	 or	$9,$2
-+	dsrl	$11,$8,32
-+	 dsrl	$2,$9,32
-+	dsll	$8,32
-+	 dsll	$9,32
-+	or	$8,$11
-+	 or	$9,$2
-+#endif
-+#endif
-+	daddu	$12,$8		# accumulate input
-+	daddu	$13,$9
-+	sltu	$10,$12,$8
-+	sltu	$11,$13,$9
-+	daddu	$13,$10
-+
-+	dmultu	($15,$12)		# h0*r0
-+	 daddu	$14,$7
-+	 sltu	$10,$13,$10
-+	mflo	($8,$15,$12)
-+	mfhi	($9,$15,$12)
-+
-+	dmultu	($17,$13)		# h1*5*r1
-+	 daddu	$10,$11
-+	 daddu	$14,$10
-+	mflo	($10,$17,$13)
-+	mfhi	($11,$17,$13)
-+
-+	dmultu	($16,$12)		# h0*r1
-+	 daddu	$8,$10
-+	 daddu	$9,$11
-+	mflo	($1,$16,$12)
-+	mfhi	($25,$16,$12)
-+	 sltu	$10,$8,$10
-+	 daddu	$9,$10
-+
-+	dmultu	($15,$13)		# h1*r0
-+	 daddu	$9,$1
-+	 sltu	$1,$9,$1
-+	mflo	($10,$15,$13)
-+	mfhi	($11,$15,$13)
-+	 daddu	$25,$1
-+
-+	dmultu	($17,$14)		# h2*5*r1
-+	 daddu	$9,$10
-+	 daddu	$25,$11
-+	mflo	($1,$17,$14)
-+
-+	dmultu	($15,$14)		# h2*r0
-+	 sltu	$10,$9,$10
-+	 daddu	$25,$10
-+	mflo	($2,$15,$14)
-+
-+	daddu	$9,$1
-+	daddu	$25,$2
-+	sltu	$1,$9,$1
-+	daddu	$25,$1
-+
-+	li	$10,-4		# final reduction
-+	and	$10,$25
-+	dsrl	$11,$25,2
-+	andi	$14,$25,3
-+	daddu	$10,$11
-+	daddu	$12,$8,$10
-+	sltu	$10,$12,$10
-+	daddu	$13,$9,$10
-+	sltu	$10,$13,$10
-+	daddu	$14,$14,$10
-+
-+	bnez	$6,.Loop
-+
-+	sd	$12,0($4)		# store hash value
-+	sd	$13,8($4)
-+	sd	$14,16($4)
-+
-+	.set	noreorder
-+	ld	$17,40($29)		# epilogue
-+	ld	$16,32($29)
-+	jr	$31
-+	daddu	$29,6*8
-+.end	poly1305_blocks_internal
-+
-+.align	5
-+.globl	poly1305_emit_mips
-+.ent	poly1305_emit_mips
-+poly1305_emit_mips:
-+	.frame	$29,0,$31
-+	.set	reorder
-+
-+	ld	$10,0($4)
-+	ld	$11,8($4)
-+	ld	$1,16($4)
-+
-+	daddiu	$8,$10,5		# compare to modulus
-+	sltiu	$2,$8,5
-+	daddu	$9,$11,$2
-+	sltu	$2,$9,$2
-+	daddu	$1,$1,$2
-+
-+	dsrl	$1,2			# see if it carried/borrowed
-+	dsubu	$1,$0,$1
-+	nor	$2,$0,$1
-+
-+	and	$8,$1
-+	and	$10,$2
-+	and	$9,$1
-+	and	$11,$2
-+	or	$8,$10
-+	or	$9,$11
-+
-+	lwu	$10,0($6)		# load nonce
-+	lwu	$11,4($6)
-+	lwu	$1,8($6)
-+	lwu	$2,12($6)
-+	dsll	$11,32
-+	dsll	$2,32
-+	or	$10,$11
-+	or	$1,$2
-+
-+	daddu	$8,$10		# accumulate nonce
-+	daddu	$9,$1
-+	sltu	$10,$8,$10
-+	daddu	$9,$10
-+
-+	dsrl	$10,$8,8		# write mac value
-+	dsrl	$11,$8,16
-+	dsrl	$1,$8,24
-+	sb	$8,0($5)
-+	dsrl	$2,$8,32
-+	sb	$10,1($5)
-+	dsrl	$10,$8,40
-+	sb	$11,2($5)
-+	dsrl	$11,$8,48
-+	sb	$1,3($5)
-+	dsrl	$1,$8,56
-+	sb	$2,4($5)
-+	dsrl	$2,$9,8
-+	sb	$10,5($5)
-+	dsrl	$10,$9,16
-+	sb	$11,6($5)
-+	dsrl	$11,$9,24
-+	sb	$1,7($5)
-+
-+	sb	$9,8($5)
-+	dsrl	$1,$9,32
-+	sb	$2,9($5)
-+	dsrl	$2,$9,40
-+	sb	$10,10($5)
-+	dsrl	$10,$9,48
-+	sb	$11,11($5)
-+	dsrl	$11,$9,56
-+	sb	$1,12($5)
-+	sb	$2,13($5)
-+	sb	$10,14($5)
-+	sb	$11,15($5)
-+
-+	jr	$31
-+.end	poly1305_emit_mips
--- 
-2.18.0
+Helge
+
+
+>  arch/alpha/include/asm/processor.h      |  6 ------
+>  arch/arc/include/asm/processor.h        |  8 --------
+>  arch/arm/include/asm/processor.h        |  6 ------
+>  arch/arm64/include/asm/processor.h      |  7 -------
+>  arch/c6x/include/asm/processor.h        | 11 -----------
+>  arch/h8300/include/asm/processor.h      |  6 ------
+>  arch/hexagon/include/asm/processor.h    |  3 ---
+>  arch/ia64/include/asm/processor.h       |  6 ------
+>  arch/m68k/include/asm/processor.h       |  6 ------
+>  arch/microblaze/include/asm/processor.h | 12 ------------
+>  arch/mips/include/asm/processor.h       |  5 -----
+>  arch/nds32/include/asm/processor.h      |  6 ------
+>  arch/nios2/include/asm/processor.h      |  6 ------
+>  arch/openrisc/include/asm/processor.h   |  5 -----
+>  arch/parisc/include/asm/processor.h     | 11 -----------
+>  arch/powerpc/include/asm/processor.h    |  6 ------
+>  arch/riscv/include/asm/processor.h      |  6 ------
+>  arch/s390/include/asm/processor.h       |  6 ------
+>  arch/sh/include/asm/processor_32.h      |  6 ------
+>  arch/sh/include/asm/processor_64.h      | 15 ---------------
+>  arch/sparc/include/asm/processor_32.h   |  6 ------
+>  arch/sparc/include/asm/processor_64.h   |  6 ------
+>  arch/unicore32/include/asm/processor.h  |  6 ------
+>  arch/x86/include/asm/kexec.h            |  3 ++-
+>  arch/x86/include/asm/processor.h        | 12 ------------
+>  arch/x86/um/asm/processor_32.h          |  8 --------
+>  arch/x86/um/asm/processor_64.h          |  3 ---
+>  arch/xtensa/include/asm/processor.h     |  8 --------
+>  28 files changed, 2 insertions(+), 193 deletions(-)
+> 
+> diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
+> index cb05d045efe3..6100431da07a 100644
+> --- a/arch/alpha/include/asm/processor.h
+> +++ b/arch/alpha/include/asm/processor.h
+> @@ -10,12 +10,6 @@
+>  
+>  #include <linux/personality.h>	/* for ADDR_LIMIT_32BIT */
+>  
+> -/*
+> - * Returns current instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() \
+> -  ({ void *__pc; __asm__ ("br %0,.+4" : "=r"(__pc)); __pc; })
+> -
+>  /*
+>   * We have a 42-bit user address space: 4TB user VM...
+>   */
+> diff --git a/arch/arc/include/asm/processor.h b/arch/arc/include/asm/processor.h
+> index 8ee41e988169..10346d6cf926 100644
+> --- a/arch/arc/include/asm/processor.h
+> +++ b/arch/arc/include/asm/processor.h
+> @@ -98,14 +98,6 @@ extern void start_thread(struct pt_regs * regs, unsigned long pc,
+>  
+>  extern unsigned int get_wchan(struct task_struct *p);
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - * Should the PC register be read instead ? This macro does not seem to
+> - * be used in many places so this wont be all that bad.
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  #endif /* !__ASSEMBLY__ */
+>  
+>  /*
+> diff --git a/arch/arm/include/asm/processor.h b/arch/arm/include/asm/processor.h
+> index 1bf65b47808a..120f4c9bbfde 100644
+> --- a/arch/arm/include/asm/processor.h
+> +++ b/arch/arm/include/asm/processor.h
+> @@ -11,12 +11,6 @@
+>  #ifndef __ASM_ARM_PROCESSOR_H
+>  #define __ASM_ARM_PROCESSOR_H
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  #ifdef __KERNEL__
+>  
+>  #include <asm/hw_breakpoint.h>
+> diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+> index 79657ad91397..966214f473b4 100644
+> --- a/arch/arm64/include/asm/processor.h
+> +++ b/arch/arm64/include/asm/processor.h
+> @@ -25,13 +25,6 @@
+>  #define USER_DS		(TASK_SIZE_64 - 1)
+>  
+>  #ifndef __ASSEMBLY__
+> -
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  #ifdef __KERNEL__
+>  
+>  #include <linux/build_bug.h>
+> diff --git a/arch/c6x/include/asm/processor.h b/arch/c6x/include/asm/processor.h
+> index 8f7cce829f8e..a8581f5b27f6 100644
+> --- a/arch/c6x/include/asm/processor.h
+> +++ b/arch/c6x/include/asm/processor.h
+> @@ -17,17 +17,6 @@
+>  #include <asm/page.h>
+>  #include <asm/current.h>
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr()			\
+> -({						\
+> -	void *__pc;				\
+> -	asm("mvc .S2 pce1,%0\n" : "=b"(__pc));	\
+> -	__pc;					\
+> -})
+> -
+>  /*
+>   * User space process size. This is mostly meaningless for NOMMU
+>   * but some C6X processors may have RAM addresses up to 0xFFFFFFFF.
+> diff --git a/arch/h8300/include/asm/processor.h b/arch/h8300/include/asm/processor.h
+> index 985346393e4a..a060b41b2d31 100644
+> --- a/arch/h8300/include/asm/processor.h
+> +++ b/arch/h8300/include/asm/processor.h
+> @@ -12,12 +12,6 @@
+>  #ifndef __ASM_H8300_PROCESSOR_H
+>  #define __ASM_H8300_PROCESSOR_H
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  #include <linux/compiler.h>
+>  #include <asm/segment.h>
+>  #include <asm/ptrace.h>
+> diff --git a/arch/hexagon/include/asm/processor.h b/arch/hexagon/include/asm/processor.h
+> index ce67940860a5..227bcb9cfdac 100644
+> --- a/arch/hexagon/include/asm/processor.h
+> +++ b/arch/hexagon/include/asm/processor.h
+> @@ -27,9 +27,6 @@
+>  #include <asm/registers.h>
+>  #include <asm/hexagon_vm.h>
+>  
+> -/*  must be a macro  */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  /*  task_struct, defined elsewhere, is the "process descriptor" */
+>  struct task_struct;
+>  
+> diff --git a/arch/ia64/include/asm/processor.h b/arch/ia64/include/asm/processor.h
+> index 10061ccf0440..c91ef98ed6bf 100644
+> --- a/arch/ia64/include/asm/processor.h
+> +++ b/arch/ia64/include/asm/processor.h
+> @@ -602,12 +602,6 @@ ia64_set_unat (__u64 *unat, void *spill_addr, unsigned long nat)
+>  	*unat = (*unat & ~mask) | (nat << bit);
+>  }
+>  
+> -/*
+> - * Get the current instruction/program counter value.
+> - */
+> -#define current_text_addr() \
+> -	({ void *_pc; _pc = (void *)ia64_getreg(_IA64_REG_IP); _pc; })
+> -
+>  static inline __u64
+>  ia64_get_ivr (void)
+>  {
+> diff --git a/arch/m68k/include/asm/processor.h b/arch/m68k/include/asm/processor.h
+> index 464e9f5f50ee..3750819ac5a1 100644
+> --- a/arch/m68k/include/asm/processor.h
+> +++ b/arch/m68k/include/asm/processor.h
+> @@ -8,12 +8,6 @@
+>  #ifndef __ASM_M68K_PROCESSOR_H
+>  #define __ASM_M68K_PROCESSOR_H
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  #include <linux/thread_info.h>
+>  #include <asm/segment.h>
+>  #include <asm/fpu.h>
+> diff --git a/arch/microblaze/include/asm/processor.h b/arch/microblaze/include/asm/processor.h
+> index 330d556860ba..66b537b8d138 100644
+> --- a/arch/microblaze/include/asm/processor.h
+> +++ b/arch/microblaze/include/asm/processor.h
+> @@ -45,12 +45,6 @@ extern void ret_from_kernel_thread(void);
+>   */
+>  # define TASK_SIZE	(0x81000000 - 0x80000000)
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -# define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  /*
+>   * This decides where the kernel will search for a free chunk of vm
+>   * space during mmap's. We won't be using it
+> @@ -92,12 +86,6 @@ extern unsigned long get_wchan(struct task_struct *p);
+>  
+>  #  ifndef __ASSEMBLY__
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#  define current_text_addr()	({ __label__ _l; _l: &&_l; })
+> -
+>  /* If you change this, you must change the associated assembly-languages
+>   * constants defined below, THREAD_*.
+>   */
+> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+> index b2fa62922d88..f08417f8772e 100644
+> --- a/arch/mips/include/asm/processor.h
+> +++ b/arch/mips/include/asm/processor.h
+> @@ -22,11 +22,6 @@
+>  #include <asm/mipsregs.h>
+>  #include <asm/prefetch.h>
+>  
+> -/*
+> - * Return current * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  /*
+>   * System setup and hardware flags..
+>   */
+> diff --git a/arch/nds32/include/asm/processor.h b/arch/nds32/include/asm/processor.h
+> index 9c83caf4269f..c2660f566bac 100644
+> --- a/arch/nds32/include/asm/processor.h
+> +++ b/arch/nds32/include/asm/processor.h
+> @@ -4,12 +4,6 @@
+>  #ifndef __ASM_NDS32_PROCESSOR_H
+>  #define __ASM_NDS32_PROCESSOR_H
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  #ifdef __KERNEL__
+>  
+>  #include <asm/ptrace.h>
+> diff --git a/arch/nios2/include/asm/processor.h b/arch/nios2/include/asm/processor.h
+> index 4944e2e1d8b0..94bcb86f679f 100644
+> --- a/arch/nios2/include/asm/processor.h
+> +++ b/arch/nios2/include/asm/processor.h
+> @@ -38,12 +38,6 @@
+>  #define KUSER_SIZE		(PAGE_SIZE)
+>  #ifndef __ASSEMBLY__
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  # define TASK_SIZE		0x7FFF0000UL
+>  # define TASK_UNMAPPED_BASE	(PAGE_ALIGN(TASK_SIZE / 3))
+>  
+> diff --git a/arch/openrisc/include/asm/processor.h b/arch/openrisc/include/asm/processor.h
+> index af31a9fe736a..351d3aed7a06 100644
+> --- a/arch/openrisc/include/asm/processor.h
+> +++ b/arch/openrisc/include/asm/processor.h
+> @@ -30,11 +30,6 @@
+>  		   | SPR_SR_DCE | SPR_SR_SM)
+>  #define USER_SR   (SPR_SR_DME | SPR_SR_IME | SPR_SR_ICE \
+>  		   | SPR_SR_DCE | SPR_SR_IEE | SPR_SR_TEE)
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+>  
+>  /*
+>   * User space process size. This is hardcoded into a few places,
+> diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
+> index 2dbe5580a1a4..0d7f64ef9c7d 100644
+> --- a/arch/parisc/include/asm/processor.h
+> +++ b/arch/parisc/include/asm/processor.h
+> @@ -20,17 +20,6 @@
+>  #include <asm/percpu.h>
+>  #endif /* __ASSEMBLY__ */
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#ifdef CONFIG_PA20
+> -#define current_ia(x)	__asm__("mfia %0" : "=r"(x))
+> -#else /* mfia added in pa2.0 */
+> -#define current_ia(x)	__asm__("blr 0,%0\n\tnop" : "=r"(x))
+> -#endif
+> -#define current_text_addr() ({ void *pc; current_ia(pc); pc; })
+> -
+>  #define HAVE_ARCH_PICK_MMAP_LAYOUT
+>  
+>  #define TASK_SIZE_OF(tsk)       ((tsk)->thread.task_size)
+> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+> index 52fadded5c1e..1fff74df06e6 100644
+> --- a/arch/powerpc/include/asm/processor.h
+> +++ b/arch/powerpc/include/asm/processor.h
+> @@ -67,12 +67,6 @@ extern int _chrp_type;
+>  
+>  #endif /* defined(__KERNEL__) && defined(CONFIG_PPC32) */
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l;})
+> -
+>  /* Macros for adjusting thread priority (hardware multi-threading) */
+>  #define HMT_very_low()   asm volatile("or 31,31,31   # very low priority")
+>  #define HMT_low()	 asm volatile("or 1,1,1	     # low priority")
+> diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+> index 3fe4af8147d2..020e35947060 100644
+> --- a/arch/riscv/include/asm/processor.h
+> +++ b/arch/riscv/include/asm/processor.h
+> @@ -33,12 +33,6 @@
+>  struct task_struct;
+>  struct pt_regs;
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr()	({ __label__ _l; _l: &&_l; })
+> -
+>  /* CPU-specific state of a task */
+>  struct thread_struct {
+>  	/* Callee-saved registers */
+> diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+> index 7f2953c15c37..f8028d37bb18 100644
+> --- a/arch/s390/include/asm/processor.h
+> +++ b/arch/s390/include/asm/processor.h
+> @@ -73,12 +73,6 @@ static inline int test_cpu_flag_of(int flag, int cpu)
+>  
+>  #define arch_needs_cpu() test_cpu_flag(CIF_NOHZ_DELAY)
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ void *pc; asm("basr %0,0" : "=a" (pc)); pc; })
+> -
+>  static inline void get_cpu_id(struct cpuid *ptr)
+>  {
+>  	asm volatile("stidp %0" : "=Q" (*ptr));
+> diff --git a/arch/sh/include/asm/processor_32.h b/arch/sh/include/asm/processor_32.h
+> index 95100d8a0b7b..0e0ecc0132e3 100644
+> --- a/arch/sh/include/asm/processor_32.h
+> +++ b/arch/sh/include/asm/processor_32.h
+> @@ -16,12 +16,6 @@
+>  #include <asm/types.h>
+>  #include <asm/hw_breakpoint.h>
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ void *pc; __asm__("mova	1f, %0\n.align 2\n1:":"=z" (pc)); pc; })
+> -
+>  /* Core Processor Version Register */
+>  #define CCN_PVR		0xff000030
+>  #define CCN_CVR		0xff000040
+> diff --git a/arch/sh/include/asm/processor_64.h b/arch/sh/include/asm/processor_64.h
+> index 777a16318aff..f3d7075648d0 100644
+> --- a/arch/sh/include/asm/processor_64.h
+> +++ b/arch/sh/include/asm/processor_64.h
+> @@ -19,21 +19,6 @@
+>  #include <asm/types.h>
+>  #include <cpu/registers.h>
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ \
+> -void *pc; \
+> -unsigned long long __dummy = 0; \
+> -__asm__("gettr	tr0, %1\n\t" \
+> -	"pta	4, tr0\n\t" \
+> -	"gettr	tr0, %0\n\t" \
+> -	"ptabs	%1, tr0\n\t"	\
+> -	:"=r" (pc), "=r" (__dummy) \
+> -	: "1" (__dummy)); \
+> -pc; })
+> -
+>  #endif
+>  
+>  /*
+> diff --git a/arch/sparc/include/asm/processor_32.h b/arch/sparc/include/asm/processor_32.h
+> index 192493c257fa..3c4bc2189092 100644
+> --- a/arch/sparc/include/asm/processor_32.h
+> +++ b/arch/sparc/include/asm/processor_32.h
+> @@ -7,12 +7,6 @@
+>  #ifndef __ASM_SPARC_PROCESSOR_H
+>  #define __ASM_SPARC_PROCESSOR_H
+>  
+> -/*
+> - * Sparc32 implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ void *pc; __asm__("sethi %%hi(1f), %0; or %0, %%lo(1f), %0;\n1:" : "=r" (pc)); pc; })
+> -
+>  #include <asm/psr.h>
+>  #include <asm/ptrace.h>
+>  #include <asm/head.h>
+> diff --git a/arch/sparc/include/asm/processor_64.h b/arch/sparc/include/asm/processor_64.h
+> index aac23d4a4ddd..5cf145f18f36 100644
+> --- a/arch/sparc/include/asm/processor_64.h
+> +++ b/arch/sparc/include/asm/processor_64.h
+> @@ -8,12 +8,6 @@
+>  #ifndef __ASM_SPARC64_PROCESSOR_H
+>  #define __ASM_SPARC64_PROCESSOR_H
+>  
+> -/*
+> - * Sparc64 implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ void *pc; __asm__("rd %%pc, %0" : "=r" (pc)); pc; })
+> -
+>  #include <asm/asi.h>
+>  #include <asm/pstate.h>
+>  #include <asm/ptrace.h>
+> diff --git a/arch/unicore32/include/asm/processor.h b/arch/unicore32/include/asm/processor.h
+> index 4eaa42167667..b772ed1c0f25 100644
+> --- a/arch/unicore32/include/asm/processor.h
+> +++ b/arch/unicore32/include/asm/processor.h
+> @@ -13,12 +13,6 @@
+>  #ifndef __UNICORE_PROCESSOR_H__
+>  #define __UNICORE_PROCESSOR_H__
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr() ({ __label__ _l; _l: &&_l; })
+> -
+>  #ifdef __KERNEL__
+>  
+>  #include <asm/ptrace.h>
+> diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+> index f327236f0fa7..86924d594ecd 100644
+> --- a/arch/x86/include/asm/kexec.h
+> +++ b/arch/x86/include/asm/kexec.h
+> @@ -21,6 +21,7 @@
+>  #ifndef __ASSEMBLY__
+>  
+>  #include <linux/string.h>
+> +#include <linux/kernel.h>
+>  
+>  #include <asm/page.h>
+>  #include <asm/ptrace.h>
+> @@ -132,7 +133,7 @@ static inline void crash_setup_regs(struct pt_regs *newregs,
+>  		asm volatile("movl %%cs, %%eax;" :"=a"(newregs->cs));
+>  		asm volatile("pushfq; popq %0" :"=m"(newregs->flags));
+>  #endif
+> -		newregs->ip = (unsigned long)current_text_addr();
+> +		newregs->ip = _THIS_IP_;
+>  	}
+>  }
+>  
+> diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+> index 682286aca881..20080b303605 100644
+> --- a/arch/x86/include/asm/processor.h
+> +++ b/arch/x86/include/asm/processor.h
+> @@ -42,18 +42,6 @@ struct vm86;
+>  #define NET_IP_ALIGN	0
+>  
+>  #define HBP_NUM 4
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -static inline void *current_text_addr(void)
+> -{
+> -	void *pc;
+> -
+> -	asm volatile("mov $1f, %0; 1:":"=r" (pc));
+> -
+> -	return pc;
+> -}
+>  
+>  /*
+>   * These alignment constraints are for performance in the vSMP case,
+> diff --git a/arch/x86/um/asm/processor_32.h b/arch/x86/um/asm/processor_32.h
+> index c112de81c9e1..5fb1b8449adf 100644
+> --- a/arch/x86/um/asm/processor_32.h
+> +++ b/arch/x86/um/asm/processor_32.h
+> @@ -47,14 +47,6 @@ static inline void arch_copy_thread(struct arch_thread *from,
+>          memcpy(&to->tls_array, &from->tls_array, sizeof(from->tls_array));
+>  }
+>  
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter"). Stolen
+> - * from asm-i386/processor.h
+> - */
+> -#define current_text_addr() \
+> -	({ void *pc; __asm__("movl $1f,%0\n1:":"=g" (pc)); pc; })
+> -
+>  #define current_sp() ({ void *sp; __asm__("movl %%esp, %0" : "=r" (sp) : ); sp; })
+>  #define current_bp() ({ unsigned long bp; __asm__("movl %%ebp, %0" : "=r" (bp) : ); bp; })
+>  
+> diff --git a/arch/x86/um/asm/processor_64.h b/arch/x86/um/asm/processor_64.h
+> index c3be85205a65..1ef9c21877bc 100644
+> --- a/arch/x86/um/asm/processor_64.h
+> +++ b/arch/x86/um/asm/processor_64.h
+> @@ -31,9 +31,6 @@ static inline void arch_copy_thread(struct arch_thread *from,
+>  	to->fs = from->fs;
+>  }
+>  
+> -#define current_text_addr() \
+> -	({ void *pc; __asm__("movq $1f,%0\n1:":"=g" (pc)); pc; })
+> -
+>  #define current_sp() ({ void *sp; __asm__("movq %%rsp, %0" : "=r" (sp) : ); sp; })
+>  #define current_bp() ({ unsigned long bp; __asm__("movq %%rbp, %0" : "=r" (bp) : ); bp; })
+>  
+> diff --git a/arch/xtensa/include/asm/processor.h b/arch/xtensa/include/asm/processor.h
+> index 5b0027d4ecc0..68891c992105 100644
+> --- a/arch/xtensa/include/asm/processor.h
+> +++ b/arch/xtensa/include/asm/processor.h
+> @@ -153,14 +153,6 @@ struct thread_struct {
+>  	int align[0] __attribute__ ((aligned(16)));
+>  };
+>  
+> -
+> -/*
+> - * Default implementation of macro that returns current
+> - * instruction pointer ("program counter").
+> - */
+> -#define current_text_addr()  ({ __label__ _l; _l: &&_l;})
+> -
+> -
+>  /* This decides where the kernel will search for a free chunk of vm
+>   * space during mmap's.
+>   */
+> 

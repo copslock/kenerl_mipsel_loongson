@@ -1,39 +1,141 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Aug 2018 16:26:53 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:23966 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994552AbeHYO0qkmGk8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 25 Aug 2018 16:26:46 +0200
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 4239E48CB5;
-        Sat, 25 Aug 2018 16:26:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id wRpLuhN9WlgT; Sat, 25 Aug 2018 16:26:39 +0200 (CEST)
-Subject: Re: [PATCH] MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
-To:     Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-References: <20180819192023.18463-1-tuomas.tynkkynen@iki.fi>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <8b81db2e-050f-c467-04b5-d81244f2f500@hauke-m.de>
-Date:   Sat, 25 Aug 2018 16:26:38 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Aug 2018 23:03:05 +0200 (CEST)
+Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:33880
+        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994561AbeHYVDBbbhpV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Aug 2018 23:03:01 +0200
+Received: by mail-io0-x243.google.com with SMTP id c22-v6so9860492iob.1;
+        Sat, 25 Aug 2018 14:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZJE4B6eA+W3iZhwqnRGz2FAQ/QDMOA2EZwNKQJzar6g=;
+        b=evDel4DiMe2DRvSNssNFeZiN0LSsFD0TCJaQq0lyprQ3Ac3ljg3/uzk/PrSWhb6wSm
+         jgCPEBxdp9nSAehEGexGM9u+FAB8Yf+/kEWcm9n8816uHzIIcqz8E8fDtlSeB4JmxMng
+         9O7FKBtuY87vfVQCmDcI0Up0jlgIM8A3SwDDs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZJE4B6eA+W3iZhwqnRGz2FAQ/QDMOA2EZwNKQJzar6g=;
+        b=kSxRtUw6DgHJw9l2G/DrpWTmeu+iz6vh6SkqIGlxzlyKamn8dtepCN1dGHGcwjwTLZ
+         6jOLgGItiuzle5bT7L1Th4TdNvUEnZvKtFG4WhaNGIi4KVEO5TNdhNzTShw9O3R5CB8r
+         Fn18XpHUolwMc1sDhrXnrozF53otDXF6U7tO6oOpA6WrwlnLrZy7rWDxQ/HXsduR71WD
+         +YU63EBdXYBW+PxTtCkC5IbP40lzpks8fHm5qwARGseau+wT5n8aYWSEouGMNn7E3TUb
+         d2a0TiRtyWI2iY2OMXNHNpK4UUDOHHCLB2irIl1KnsXh8ip/3vXeo/JhyjLmZems8HzA
+         QJIw==
+X-Gm-Message-State: APzg51AYpI3frdAUlRqwE960rq8UEl2rCnIMYHqt2xkeSxQJ7EW4pKR7
+        Orj0Qv2+Ct7JHbeK+WpQAHdvkFrauMMMOYMzBLA=
+X-Google-Smtp-Source: ANB0VdZsz/LlDcNWTotprzqO/Dp/NYFQ+O2JkLsawy4Lm6L1X37lCqxuTtoOCx68NEk0xSoN1razF6gqj32hb4tSLmA=
+X-Received: by 2002:a6b:f815:: with SMTP id o21-v6mr5881201ioh.203.1535230974881;
+ Sat, 25 Aug 2018 14:02:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180819192023.18463-1-tuomas.tynkkynen@iki.fi>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
+ <20180821202900.208417-1-ndesaulniers@google.com>
+In-Reply-To: <20180821202900.208417-1-ndesaulniers@google.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 25 Aug 2018 14:02:43 -0700
+Message-ID: <CA+55aFxL-u3uvGGv0GOoHhEwV8fy=BCN1yScxKQiVMPoHtg=Wg@mail.gmail.com>
+Subject: Re: [PATCH] treewide: remove current_text_addr
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Peter Anvin <hpa@zytor.com>,
+        Simon Horman <horms@verge.net.au>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>, jacquiot.aurelien@gmail.com,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Greentime Hu <green.hu@gmail.com>, deanbo422@gmail.com,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>, aou@eecs.berkeley.edu,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        David Miller <davem@davemloft.net>, gxt@pku.edu.cn,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Tobias Klauser <tklauser@distanz.ch>, noamc@ezchip.com,
+        mickael.guene@st.com, Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>, alex.bennee@linaro.org,
+        Laura Abbott <labbott@redhat.com>, ynorov@caviumnetworks.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        "chenhc@lemote.com" <chenhc@lemote.com>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        sukadev@linux.vnet.ibm.com, Nick Piggin <npiggin@gmail.com>,
+        "Aneesh Kumar K. V" <aneesh.kumar@linux.vnet.ibm.com>,
+        felix@linux.vnet.ibm.com, Ram Pai <linuxram@us.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Cornelia Huck <cohuck@redhat.com>, gor@linux.vnet.ibm.com,
+        nick.alcock@oracle.com, shannon.nelson@oracle.com,
+        nagarathnam.muthusamy@oracle.com,
+        Andrew Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jiri Kosina <jkosina@suse.cz>, linux-alpha@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-c6x-dev@linux-c6x.org,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "Linux/m68k" <linux-m68k@lists.linux-m68k.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>, openrisc@lists.librecores.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65728
+X-archive-position: 65729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,49 +148,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Tue, Aug 21, 2018 at 1:31 PM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+>
+> I suspect that current_text_addr predated GNU C extensions for statement
+> expressions and/or taking the address of a label, then the macro was
+> reimplemented for every new archs include/asm/processor.h, even though
+> there were very few call sites, and none required an assembly
+> implementation vs the C implementation.
 
+I actually have this very dim memory that we had some compiler issues
+where a label in the code resulted in gcc generating worse code
+elsewhere in that same function.
 
-On 08/19/2018 09:20 PM, Tuomas Tynkkynen wrote:
-> Setting GPIO 21 high seems to be required to enable power to USB ports
-> on the WNDR3400v3. As there is already similar code for WNR3500L,
-> make the existing USB power GPIO code generic and use that.
-> 
-> Signed-off-by: Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
+But current_text_addr() predates both the git and the BK history, so
+it's all shrouded in antiquity, and even if my dim recollection is
+true, it may not be true any more. There aren't so many call sites
+that it is likely to matter anyway.
 
-I didn't runtime tested this and didn't checked the board, but this
-looks good.
-
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-
-> ---
->  arch/mips/bcm47xx/workarounds.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/mips/bcm47xx/workarounds.c b/arch/mips/bcm47xx/workarounds.c
-> index 1a8a07e7a563..46eddbec8d9f 100644
-> --- a/arch/mips/bcm47xx/workarounds.c
-> +++ b/arch/mips/bcm47xx/workarounds.c
-> @@ -5,9 +5,8 @@
->  #include <bcm47xx_board.h>
->  #include <bcm47xx.h>
->  
-> -static void __init bcm47xx_workarounds_netgear_wnr3500l(void)
-> +static void __init bcm47xx_workarounds_enable_usb_power(int usb_power)
->  {
-> -	const int usb_power = 12;
->  	int err;
->  
->  	err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
-> @@ -23,7 +22,10 @@ void __init bcm47xx_workarounds(void)
->  
->  	switch (board) {
->  	case BCM47XX_BOARD_NETGEAR_WNR3500L:
-> -		bcm47xx_workarounds_netgear_wnr3500l();
-> +		bcm47xx_workarounds_enable_usb_power(12);
-> +		break;
-> +	case BCM47XX_BOARD_NETGEAR_WNDR3400_V3:
-> +		bcm47xx_workarounds_enable_usb_power(21);
->  		break;
->  	default:
->  		/* No workaround(s) needed */
-> 
+             Linus

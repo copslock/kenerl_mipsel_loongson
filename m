@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2018 05:18:15 +0200 (CEST)
-Received: from terminus.zytor.com ([198.137.202.136]:56303 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2018 06:57:54 +0200 (CEST)
+Received: from terminus.zytor.com ([198.137.202.136]:37451 "EHLO
         mail.zytor.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990394AbeHZDSKcCxYn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2018 05:18:10 +0200
+        with ESMTP id S23992735AbeHZE5tw9SjX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2018 06:57:49 +0200
 Received: from carbon-x1.hos.anvin.org (c-24-5-245-234.hsd1.ca.comcast.net [24.5.245.234] (may be forged))
         (authenticated bits=0)
-        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id w7Q3Gien059219
+        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id w7Q4uG0h083636
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Sat, 25 Aug 2018 20:16:44 -0700
+        Sat, 25 Aug 2018 21:56:17 -0700
 Subject: Re: [PATCH] treewide: remove current_text_addr
 From:   "H. Peter Anvin" <hpa@zytor.com>
 To:     Helge Deller <deller@gmx.de>,
@@ -100,20 +100,21 @@ References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
  <20180821202900.208417-1-ndesaulniers@google.com>
  <207784db-4fcc-85e7-a0b2-fec26b7dab81@gmx.de>
  <c62e4e00-fb8f-19a6-f3eb-bde60118cb1a@zytor.com>
-Message-ID: <81141365-8168-799b-f34f-da5f92efaaf9@zytor.com>
-Date:   Sat, 25 Aug 2018 20:16:39 -0700
+ <81141365-8168-799b-f34f-da5f92efaaf9@zytor.com>
+Message-ID: <7f49eeab-a5cc-867f-58fb-abd266f9c2c9@zytor.com>
+Date:   Sat, 25 Aug 2018 21:56:11 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <c62e4e00-fb8f-19a6-f3eb-bde60118cb1a@zytor.com>
-Content-Type: multipart/mixed;
- boundary="------------E7C8783F0513F369AAD19004"
+In-Reply-To: <81141365-8168-799b-f34f-da5f92efaaf9@zytor.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65732
+X-archive-position: 65733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -130,93 +131,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------E7C8783F0513F369AAD19004
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-On 08/25/18 19:38, H. Peter Anvin wrote:
->
-> If it was worthwhile it would make more sense to at least force this
-> into the rodata section with the string, something like the attached
-> file for an example; however, I have a hunch it doesn't matter.
+On 08/25/18 20:16, H. Peter Anvin wrote:
+> On 08/25/18 19:38, H. Peter Anvin wrote:
+>>
+>> If it was worthwhile it would make more sense to at least force this
+>> into the rodata section with the string, something like the attached
+>> file for an example; however, I have a hunch it doesn't matter.
+>>
+> 
+> An even nuttier version which avoids the extra pointer indirection.
+> Read it and fear.
+> 
+> 	-hpa
 > 
 
-An even nuttier version which avoids the extra pointer indirection.
-Read it and fear.
+OK, so one more thing, I guess: it is necessary to suppress the tailcall
+optimization for _RET_IP_ to make any sense, but that should be pretty
+simple:
+
+static inline void notailcall(void)
+{
+	asm volatile("");
+}
 
 	-hpa
-
-
---------------E7C8783F0513F369AAD19004
-Content-Type: text/x-csrc;
- name="str.c"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="str.c"
-
-#include <stddef.h>
-#include <string.h>
-
-#define _RET_IP_ ((unsigned long)__builtin_return_address(0))
-#define no_inline __attribute__((noinline))
-#define must_inline __attribute__((always_inline)) inline
-
-struct myputs_string {
-	unsigned short len;
-	char str[0];
-};
-
-int _myputs_struct(const struct myputs_string * const strs);
-int _myputs_string(const char *str);
-int __myputs(unsigned long ip, const char *str, size_t len);
-
-int no_inline _myputs_struct(const struct myputs_string * const strs)
-{
-	return __myputs(_RET_IP_, strs->str, strs->len);
-}
-
-int no_inline _myputs_string(const char *str)
-{
-	return __myputs(_RET_IP_, str, strlen(str)+1);
-}
-
-#define ifconst(x,y)	__builtin_choose_expr(__builtin_constant_p(x),(x),(y))
-
-#define myputs(s)							\
-({									\
-	int _rv;							\
-	if (__builtin_constant_p(s) &&					\
-	    __builtin_constant_p(strlen(s)) &&				\
-	    strlen(s)+1 == sizeof(s) &&					\
-	    sizeof(s) <= (size_t)65535) {				\
-	static const struct {						\
-		struct myputs_string _mps_hdr;				\
-		char _mps_str[sizeof(s)];				\
-	} _mps = {							\
-		._mps_hdr.len = sizeof(s),				\
-		._mps_str = ifconst(s,""),				\
-	};								\
-		_rv = _myputs_struct(&_mps._mps_hdr);			\
-	} else {							\
-		_rv = _myputs_string(s);				\
-	}								\
-	_rv;								\
-})
-
-int test1(void);
-int test2(const char *strx);
-
-int test1(void)
-{
-	return myputs("Foobar");
-}
-
-int test2(const char *strx)
-{
-	return myputs(strx);
-}
-
-		
-
---------------E7C8783F0513F369AAD19004--

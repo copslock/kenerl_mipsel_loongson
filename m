@@ -1,89 +1,350 @@
-From: "Rafał Miłecki" <rafal@milecki.pl>
-Date: Fri, 27 Jul 2018 13:13:39 +0200
-Subject: Revert "MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum"
-Content-Type: text/plain; charset="UTF-8"
-Message-ID: <20180727111339.31TmL6tG_G7YtbM3Zd1VcKJSXJbKkeplhQCrupQr5Uw@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2018 21:32:28 +0200 (CEST)
+Received: from terminus.zytor.com ([198.137.202.136]:49705 "EHLO
+        mail.zytor.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993057AbeHZTcXFumq7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2018 21:32:23 +0200
+Received: from carbon-x1.hos.anvin.org (c-24-5-245-234.hsd1.ca.comcast.net [24.5.245.234] (may be forged))
+        (authenticated bits=0)
+        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id w7QJUgnC310741
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Sun, 26 Aug 2018 12:30:44 -0700
+Subject: Re: [PATCH] treewide: remove current_text_addr
+From:   "H. Peter Anvin" <hpa@zytor.com>
+To:     Helge Deller <deller@gmx.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org
+Cc:     ebiederm@xmission.com, tglx@linutronix.de, mingo@redhat.com,
+        horms@verge.net.au, natechancellor@gmail.com, pombredanne@nexb.com,
+        kstewart@linuxfoundation.org, gregkh@linuxfoundation.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Tobias Klauser <tklauser@distanz.ch>,
+        Noam Camus <noamc@ezchip.com>,
+        Mickael GUENE <mickael.guene@st.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Yury Norov <ynorov@caviumnetworks.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        "Maciej W. Rozycki" <macro@mips.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+        Philippe Bergheaud <felix@linux.vnet.ibm.com>,
+        Ram Pai <linuxram@us.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Vasily Gorbik <gor@linux.vnet.ibm.com>,
+        Nick Alcock <nick.alcock@oracle.com>,
+        Shannon Nelson <shannon.nelson@oracle.com>,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jiri Kosina <jkosina@suse.cz>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org
+References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
+ <20180821202900.208417-1-ndesaulniers@google.com>
+ <207784db-4fcc-85e7-a0b2-fec26b7dab81@gmx.de>
+ <c62e4e00-fb8f-19a6-f3eb-bde60118cb1a@zytor.com>
+ <81141365-8168-799b-f34f-da5f92efaaf9@zytor.com>
+ <7f49eeab-a5cc-867f-58fb-abd266f9c2c9@zytor.com>
+Message-ID: <6ca8a1d3-ff95-e9f4-f003-0a5af85bcb6f@zytor.com>
+Date:   Sun, 26 Aug 2018 12:30:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <7f49eeab-a5cc-867f-58fb-abd266f9c2c9@zytor.com>
+Content-Type: multipart/mixed;
+ boundary="------------5E98DEB96C9E8225D80004DF"
+Content-Language: en-US
+Return-Path: <hpa@zytor.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 65736
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: hpa@zytor.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: "Rafał Miłecki" <rafal@milecki.pl>
+This is a multi-part message in MIME format.
+--------------5E98DEB96C9E8225D80004DF
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-[ Upstream commit d5ea019f8a381f88545bb26993b62ec24a2796b7 ]
+Here is a full-blown (user space) test program demonstrating the whole
+technique and how to use it.
 
-This reverts commit 2a027b47dba6 ("MIPS: BCM47XX: Enable 74K Core
-ExternalSync for PCIe erratum").
-
-Enabling ExternalSync caused a regression for BCM4718A1 (used e.g. in
-Netgear E3000 and ASUS RT-N16): it simply hangs during PCIe
-initialization. It's likely that BCM4717A1 is also affected.
-
-I didn't notice that earlier as the only BCM47XX devices with PCIe I
-own are:
-1) BCM4706 with 2 x 14e4:4331
-2) BCM4706 with 14e4:4360 and 14e4:4331
-it appears that BCM4706 is unaffected.
-
-While BCM5300X-ES300-RDS.pdf seems to document that erratum and its
-workarounds (according to quotes provided by Tokunori) it seems not even
-Broadcom follows them.
-
-According to the provided info Broadcom should define CONF7_ES in their
-SDK's mipsinc.h and implement workaround in the si_mips_init(). Checking
-both didn't reveal such code. It *could* mean Broadcom also had some
-problems with the given workaround.
-
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Michael Marley <michael@michaelmarley.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20032/
-URL: https://bugs.openwrt.org/index.php?do=details&task_id=1688
-Cc: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/bcm47xx/setup.c        |    6 ------
- arch/mips/include/asm/mipsregs.h |    3 ---
- 2 files changed, 9 deletions(-)
-
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -212,12 +212,6 @@ static int __init bcm47xx_cpu_fixes(void
- 		 */
- 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
- 			cpu_wait = NULL;
--
--		/*
--		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
--		 * Enable ExternalSync for sync instruction to take effect
--		 */
--		set_c0_config7(MIPS_CONF7_ES);
- 		break;
- #endif
- 	}
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -663,8 +663,6 @@
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
- 
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
--/* ExternalSync */
--#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
- 
- #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
- #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -2643,7 +2641,6 @@ __BUILD_SET_C0(status)
- __BUILD_SET_C0(cause)
- __BUILD_SET_C0(config)
- __BUILD_SET_C0(config5)
--__BUILD_SET_C0(config7)
- __BUILD_SET_C0(intcontrol)
- __BUILD_SET_C0(intctl)
- __BUILD_SET_C0(srsmap)
+	-hpa
 
 
-Patches currently in stable-queue which might be from rafal@milecki.pl are
+--------------5E98DEB96C9E8225D80004DF
+Content-Type: text/x-csrc;
+ name="str.c"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="str.c"
 
-queue-4.9/revert-mips-bcm47xx-enable-74k-core-externalsync-for-pcie-erratum.patch
+#include <stddef.h>
+#include <string.h>
+
+#define _RET_IP_ ((unsigned long)__builtin_return_address(0))
+#define noinline __attribute__((noinline))
+#define used __attribute__((used))
+/* __always_inline is defined in glibc already */
+#define ifconst(x,y)	__builtin_choose_expr(__builtin_constant_p(x),(x),(y))
+static inline void notailcall(void)
+{
+	asm volatile("");
+}
+
+/* Change this to a null string to make all functions global */
+#define STATIC static
+
+struct myputs_string {
+	unsigned short len;
+	char str[0];
+};
+
+STATIC int _myputs_struct(const struct myputs_string * const strs);
+STATIC int _myputs_string(const char *str);
+STATIC int __myputs(unsigned long ip, const char *str, size_t len);
+
+#if 1
+
+#include <stdio.h>
+
+STATIC void dump_caller(unsigned long where)
+{
+	const char *opname = NULL;
+	const char *wheretoname = NULL;
+	char ichar;
+	unsigned long whereto = 0;
+
+#if defined(__i386__) || defined(__x86_64__)
+	char opname_buf[4];
+	unsigned char opcode;
+	
+	where -= 5;
+	opcode = *(unsigned char *)where;
+
+	switch (opcode) {
+	case 0xe8:
+		opname = "call";
+		whereto = where + 5 + *(signed int *)(where + 1);
+		break;
+	case 0xe9:
+		opname = "jmp";
+		whereto = where + 5 + *(signed int *)(where + 1);
+		break;
+	default:
+		snprintf(opname_buf, sizeof opname_buf, "?%02x", opcode);
+		opname = opname_buf;
+		break;
+	}
+
+#elif defined(__sparc__)
+	const char regtype[4] = "gilo";
+	unsigned int opcode, op1, op3, ibit;
+	signed int simm13, simm30;
+	char opname_buf[32];
+	char *p;
+
+	where -= 8;
+	
+	opcode = *(signed int *)where;
+	op1 = opcode >> 30;
+	op3 = (opcode >> 19) & 0x3f;
+	ibit = (opcode >> 13) & 1;
+	simm13 = (opcode & 0x1fff) << 2;
+	simm30 = (opcode & 0x3fffffff) << 2;
+
+	opname = opname_buf;
+	
+	if (op1 == 1) {
+		opname = "call";
+		whereto = where + simm30;
+	} else if (op1 == 2 && op3 == 0x38) {
+		if (ibit) {
+			snprintf(opname_buf, sizeof opname_buf,
+				 "jmpl %%%c%u %c 0x%x",
+				 regtype[(opcode >> 17) & 3],
+				 (opcode >> 14) & 7,
+				 simm13 < 0 ? '-' : '+',
+				 abs(simm13));
+		} else {
+			snprintf(opname_buf, sizeof opname_buf,
+				 "jmpl %%%c%u + %%%c%u",
+				 regtype[(opcode >> 17) & 3],
+				 (opcode >> 14) & 7,
+				 regtype[(opcode >> 3) & 3],
+				 opcode & 7);
+		}
+	} else {
+		snprintf(opname_buf, sizeof opname_buf,
+			 "?0x08x", opcode);
+	}
+#else
+	/* Unknown architecture */
+#endif
+	if (whereto == (unsigned long)_myputs_struct) {
+		wheretoname = "_myputs_struct";
+	} else if (whereto == (unsigned long)_myputs_string) {
+		wheretoname = "_myputs_string";
+	} else {
+		wheretoname = "?";
+	}
+
+	ichar = '[';
+	
+	if (opname) {
+		printf("%c%p: %s",
+		       ichar, (void *)where, opname);
+		ichar = ' ';
+	}
+	if (whereto) {
+		printf("%c%p <%s>", ichar, (void *)whereto, wheretoname);
+		ichar = ' ';
+	}
+	if (ichar != '[')
+		putchar(']');
+}
+	
+STATIC int __myputs(unsigned long where, const char *str, size_t len)
+{
+	size_t slen = strlen(str);
+	size_t rv;
+	
+	len--;
+	rv = printf("%p: \"%.*s\"%*s", (void *)where, (int)len, str,
+		    16-(int)slen, "");
+	dump_caller(where);
+	if (slen != len)
+		printf(" <err: strlen = %zu, len = %zu>\n", slen, len);
+	else
+		printf(" <ok: len = %zu>\n", len);
+	
+	return rv;
+}
+
+STATIC int noinline _myputs_struct(const struct myputs_string * const strs)
+{
+	return __myputs(_RET_IP_, strs->str, strs->len);
+}
+
+STATIC int noinline _myputs_string(const char *str)
+{
+	return __myputs(_RET_IP_, str, strlen(str)+1);
+}
+#endif
+
+#define myputs(s)							\
+({									\
+	int _rv;							\
+	if (__builtin_constant_p(s) &&					\
+	    __builtin_constant_p(strlen(s)) &&				\
+	    strlen(s)+1 == sizeof(s) &&					\
+	    sizeof(s) <= (size_t)65535) {				\
+	static const struct {						\
+		struct myputs_string _mps_hdr;				\
+		char _mps_str[sizeof(s)];				\
+	} _mps = {							\
+		._mps_hdr.len = sizeof(s),				\
+		._mps_str = ifconst(s,""),				\
+	};								\
+		_rv = _myputs_struct(&_mps._mps_hdr);			\
+	} else {							\
+		_rv = _myputs_string(s);				\
+	}								\
+	notailcall();							\
+	_rv;								\
+})
+
+STATIC int test1(void);
+STATIC int test2(const char *strx);
+
+STATIC int test1(void)
+{
+	return myputs("Foobar");
+}
+
+STATIC int test2(const char *strx)
+{
+	return myputs(strx);
+}
+
+int main(int argc, char *argv[])
+{
+	(void)argc;
+
+	test1();
+	test2(argv[0]);
+	return 0;
+}
+
+--------------5E98DEB96C9E8225D80004DF--

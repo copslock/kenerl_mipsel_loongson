@@ -1,141 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Aug 2018 23:03:05 +0200 (CEST)
-Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:33880
-        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994561AbeHYVDBbbhpV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Aug 2018 23:03:01 +0200
-Received: by mail-io0-x243.google.com with SMTP id c22-v6so9860492iob.1;
-        Sat, 25 Aug 2018 14:03:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZJE4B6eA+W3iZhwqnRGz2FAQ/QDMOA2EZwNKQJzar6g=;
-        b=evDel4DiMe2DRvSNssNFeZiN0LSsFD0TCJaQq0lyprQ3Ac3ljg3/uzk/PrSWhb6wSm
-         jgCPEBxdp9nSAehEGexGM9u+FAB8Yf+/kEWcm9n8816uHzIIcqz8E8fDtlSeB4JmxMng
-         9O7FKBtuY87vfVQCmDcI0Up0jlgIM8A3SwDDs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZJE4B6eA+W3iZhwqnRGz2FAQ/QDMOA2EZwNKQJzar6g=;
-        b=kSxRtUw6DgHJw9l2G/DrpWTmeu+iz6vh6SkqIGlxzlyKamn8dtepCN1dGHGcwjwTLZ
-         6jOLgGItiuzle5bT7L1Th4TdNvUEnZvKtFG4WhaNGIi4KVEO5TNdhNzTShw9O3R5CB8r
-         Fn18XpHUolwMc1sDhrXnrozF53otDXF6U7tO6oOpA6WrwlnLrZy7rWDxQ/HXsduR71WD
-         +YU63EBdXYBW+PxTtCkC5IbP40lzpks8fHm5qwARGseau+wT5n8aYWSEouGMNn7E3TUb
-         d2a0TiRtyWI2iY2OMXNHNpK4UUDOHHCLB2irIl1KnsXh8ip/3vXeo/JhyjLmZems8HzA
-         QJIw==
-X-Gm-Message-State: APzg51AYpI3frdAUlRqwE960rq8UEl2rCnIMYHqt2xkeSxQJ7EW4pKR7
-        Orj0Qv2+Ct7JHbeK+WpQAHdvkFrauMMMOYMzBLA=
-X-Google-Smtp-Source: ANB0VdZsz/LlDcNWTotprzqO/Dp/NYFQ+O2JkLsawy4Lm6L1X37lCqxuTtoOCx68NEk0xSoN1razF6gqj32hb4tSLmA=
-X-Received: by 2002:a6b:f815:: with SMTP id o21-v6mr5881201ioh.203.1535230974881;
- Sat, 25 Aug 2018 14:02:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2018 04:07:06 +0200 (CEST)
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:42823 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994572AbeHZCG5ArYNH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2018 04:06:57 +0200
+Received: from mail-vk0-f45.google.com (mail-vk0-f45.google.com [209.85.213.45]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id w7Q26PIO013801;
+        Sun, 26 Aug 2018 11:06:25 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com w7Q26PIO013801
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1535249186;
+        bh=ekYIqTw0WViuXiSJxcysUsEsdxW24/MIqdY5yedEIpQ=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=Z1zNyd3Q1YGhv8yCztcV6hB9XvXJRCxxF1ebui5GDZqMXgYN+mevQUoZPAVkmTZS5
+         thZY/GT+kr+u5ZJw/nDXRhhTuMrpVWaBqK5OhHf/Rz5Wu4gqdsbyV9ncYdTM3zwSn0
+         IcdgzgBkvO9tgXVAiK0ByeOz9pZTy1EB8LybUNPgGA+LI2xQ1sfj9+JP5IM58z5tRH
+         pjA5Wji7GSlAsj/4p0t8UC96XGRxNEsTnDlRHr4u1HOoPWWND+u9f17ZCbFYuk8dgq
+         PWbM/w55GKp0Qnu0nUA6AIEgBvjFu6ejLpMd37G7EghuvT0L+PORv6pc9bZ+EQNc2U
+         20EROGXH8IKCg==
+X-Nifty-SrcIP: [209.85.213.45]
+Received: by mail-vk0-f45.google.com with SMTP id t4-v6so6024723vke.9;
+        Sat, 25 Aug 2018 19:06:25 -0700 (PDT)
+X-Gm-Message-State: APzg51B2TDV2oh9yEacDLYZk8sTsHmWcOf16MlfqU+d5BcnjqgDtPjMp
+        7di7n7TYmeWOiZYuk4z11dbzB4BiQiElmXz11P4=
+X-Google-Smtp-Source: ANB0VdYZRrRibxlI/cRQziq6OVkYoGqkECa90pFFlaMEBhVaZNOqOlSBhxEGnn0C+fl1l1l/r7cTdQUnN8HZl3YFHoI=
+X-Received: by 2002:a1f:4049:: with SMTP id n70-v6mr4827732vka.140.1535249184406;
+ Sat, 25 Aug 2018 19:06:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKwvOdkWL_2yTnJqM6n6R9UCPwY4iz-9BQYGN2MDAk9EzumUvA@mail.gmail.com>
- <20180821202900.208417-1-ndesaulniers@google.com>
-In-Reply-To: <20180821202900.208417-1-ndesaulniers@google.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sat, 25 Aug 2018 14:02:43 -0700
-Message-ID: <CA+55aFxL-u3uvGGv0GOoHhEwV8fy=BCN1yScxKQiVMPoHtg=Wg@mail.gmail.com>
-Subject: Re: [PATCH] treewide: remove current_text_addr
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Peter Anvin <hpa@zytor.com>,
-        Simon Horman <horms@verge.net.au>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+Received: by 2002:ab0:2642:0:0:0:0:0 with HTTP; Sat, 25 Aug 2018 19:05:43
+ -0700 (PDT)
+In-Reply-To: <20180821215524.23040-7-robh@kernel.org>
+References: <20180821215524.23040-1-robh@kernel.org> <20180821215524.23040-7-robh@kernel.org>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Sun, 26 Aug 2018 11:05:43 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATcYSvwh0BEEdyUuDa_Y9X-AqQAzA5MrbNhOSMmSzqhTg@mail.gmail.com>
+Message-ID: <CAK7LNATcYSvwh0BEEdyUuDa_Y9X-AqQAzA5MrbNhOSMmSzqhTg@mail.gmail.com>
+Subject: Re: [PATCH 6/8] kbuild: consolidate Devicetree dtb build rules
+To:     Rob Herring <robh@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
         Vineet Gupta <vgupta@synopsys.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
-        Mark Salter <msalter@redhat.com>, jacquiot.aurelien@gmail.com,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Greentime Hu <green.hu@gmail.com>, deanbo422@gmail.com,
         Ley Foon Tan <lftan@altera.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@sifive.com>, aou@eecs.berkeley.edu,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>, gxt@pku.edu.cn,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
         Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
-        Tobias Klauser <tklauser@distanz.ch>, noamc@ezchip.com,
-        mickael.guene@st.com, Nicolas Pitre <nicolas.pitre@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Marc Zyngier <marc.zyngier@arm.com>, alex.bennee@linaro.org,
-        Laura Abbott <labbott@redhat.com>, ynorov@caviumnetworks.com,
-        Mark Rutland <mark.rutland@arm.com>,
-        "chenhc@lemote.com" <chenhc@lemote.com>,
-        "Maciej W. Rozycki" <macro@mips.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        sukadev@linux.vnet.ibm.com, Nick Piggin <npiggin@gmail.com>,
-        "Aneesh Kumar K. V" <aneesh.kumar@linux.vnet.ibm.com>,
-        felix@linux.vnet.ibm.com, Ram Pai <linuxram@us.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Cornelia Huck <cohuck@redhat.com>, gor@linux.vnet.ibm.com,
-        nick.alcock@oracle.com, shannon.nelson@oracle.com,
-        nagarathnam.muthusamy@oracle.com,
-        Andrew Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jiri Kosina <jkosina@suse.cz>, linux-alpha@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-snps-arc@lists.infradead.org,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "Linux/m68k" <linux-m68k@lists.linux-m68k.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>, openrisc@lists.librecores.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        nios2-dev@lists.rocketboards.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-xtensa@linux-xtensa.org
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus971@gmail.com>
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65729
+X-archive-position: 65730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -148,22 +85,237 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 21, 2018 at 1:31 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
+Hi Rob,
+
+
+2018-08-22 6:55 GMT+09:00 Rob Herring <robh@kernel.org>:
+> There is nothing arch specific about building dtb files other than their
+> location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
+> The dependencies and supported targets are all slightly different.
+> Also, a cross-compiler for each arch is needed, but really the host
+> compiler preprocessor is perfectly fine for building dtbs. Move the
+> build rules to a common location and remove the arch specific ones. This
+> is done in a single step to avoid warnings about overriding rules.
 >
-> I suspect that current_text_addr predated GNU C extensions for statement
-> expressions and/or taking the address of a label, then the macro was
-> reimplemented for every new archs include/asm/processor.h, even though
-> there were very few call sites, and none required an assembly
-> implementation vs the C implementation.
+> The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
+> These pull in several dependencies some of which need a target compiler
+> (specifically devicetable-offsets.h) and aren't needed to build dtbs.
+> All that is really needed is dtc, so adjust the dependencies to only be
+> dtc.
+>
+> This change enables support 'dtbs_install' on some arches which were
+> missing the target.
+>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will.deacon@arm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Ley Foon Tan <lftan@altera.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: uclinux-h8-devel@lists.sourceforge.jp
+> Cc: linux-mips@linux-mips.org
+> Cc: nios2-dev@lists.rocketboards.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-xtensa@linux-xtensa.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  Makefile                 | 30 ++++++++++++++++++++++++++++++
+>  arch/arc/Makefile        |  6 ------
+>  arch/arm/Makefile        | 20 +-------------------
+>  arch/arm64/Makefile      | 17 +----------------
+>  arch/c6x/Makefile        |  2 --
+>  arch/h8300/Makefile      | 11 +----------
+>  arch/microblaze/Makefile |  4 +---
+>  arch/mips/Makefile       | 15 +--------------
+>  arch/nds32/Makefile      |  2 +-
+>  arch/nios2/Makefile      |  7 -------
+>  arch/nios2/boot/Makefile |  4 ----
+>  arch/powerpc/Makefile    |  3 ---
+>  arch/xtensa/Makefile     | 12 +-----------
+>  scripts/Makefile         |  1 -
+>  scripts/Makefile.lib     |  2 +-
+>  15 files changed, 38 insertions(+), 98 deletions(-)
+>
+> diff --git a/Makefile b/Makefile
+> index c13f8b85ba60..6d89e673f192 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1212,6 +1212,30 @@ kselftest-merge:
+>                 $(srctree)/tools/testing/selftests/*/config
+>         +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+>
+> +# ---------------------------------------------------------------------------
+> +# Devicetree files
+> +
+> +dtstree := $(wildcard arch/$(SRCARCH)/boot/dts)
+> +
+> +ifdef CONFIG_OF_EARLY_FLATTREE
+> +
+> +%.dtb %.dtb.S %.dtb.o: | dtc
 
-I actually have this very dim memory that we had some compiler issues
-where a label in the code resulted in gcc generating worse code
-elsewhere in that same function.
+I think the pipe operator is unnecessary
+because Kbuild will descend to $(dtstree) anyway.
 
-But current_text_addr() predates both the git and the BK history, so
-it's all shrouded in antiquity, and even if my dim recollection is
-true, it may not be true any more. There aren't so many call sites
-that it is likely to matter anyway.
 
-             Linus
+> +       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
+> +
+> +PHONY += dtbs
+> +dtbs: | dtc
+
+Ditto.
+
+
+> +       $(Q)$(MAKE) $(build)=$(dtstree)
+> +
+> +dtbs_install: dtbs
+> +       $(Q)$(MAKE) $(dtbinst)=$(dtstree)
+> +
+> +all: dtbs
+> +
+> +dtc:
+> +       $(Q)$(MAKE) $(build)=scripts/dtc
+> +
+> +endif
+> +
+
+
+arch/*/boot/dts/ are not only directories that
+require dtc.
+
+
+$ find  drivers/  -name '*.dts'
+drivers/staging/mt7621-dts/gbpc1.dts
+drivers/staging/pi433/Documentation/devicetree/pi433-overlay.dts
+drivers/of/unittest-data/overlay_12.dts
+drivers/of/unittest-data/overlay.dts
+drivers/of/unittest-data/overlay_5.dts
+drivers/of/unittest-data/overlay_bad_symbol.dts
+drivers/of/unittest-data/overlay_1.dts
+drivers/of/unittest-data/overlay_bad_phandle.dts
+drivers/of/unittest-data/overlay_2.dts
+drivers/of/unittest-data/overlay_15.dts
+drivers/of/unittest-data/overlay_10.dts
+drivers/of/unittest-data/testcases.dts
+drivers/of/unittest-data/overlay_6.dts
+drivers/of/unittest-data/overlay_13.dts
+drivers/of/unittest-data/overlay_4.dts
+drivers/of/unittest-data/overlay_9.dts
+drivers/of/unittest-data/overlay_3.dts
+drivers/of/unittest-data/overlay_8.dts
+drivers/of/unittest-data/overlay_7.dts
+drivers/of/unittest-data/overlay_11.dts
+drivers/of/unittest-data/overlay_0.dts
+drivers/of/unittest-data/overlay_base.dts
+drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7796.dts
+drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7795.dts
+drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7793.dts
+drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7790.dts
+drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7791.dts
+
+
+
+
+
+dtc must be built before descending into any directory.
+
+
+
+
+
+$ git clean -f -x
+$ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  defconfig
+drivers/gpu/drm/rcar-du/
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  YACC    scripts/kconfig/zconf.tab.c
+  LEX     scripts/kconfig/zconf.lex.c
+  HOSTCC  scripts/kconfig/zconf.tab.o
+  HOSTLD  scripts/kconfig/conf
+*** Default configuration is based on 'multi_v7_defconfig'
+#
+# configuration written to .config
+#
+scripts/kconfig/conf  --syncconfig Kconfig
+  CC      kernel/bounds.s
+  CC      arch/arm/kernel/asm-offsets.s
+  CALL    scripts/checksyscalls.sh
+<stdin>:1332:2: warning: #warning syscall io_pgetevents not implemented [-Wcpp]
+  CC      scripts/mod/empty.o
+  HOSTCC  scripts/mod/mk_elfconfig
+  MKELF   scripts/mod/elfconfig.h
+  HOSTCC  scripts/mod/modpost.o
+  CC      scripts/mod/devicetable-offsets.s
+  UPD     scripts/mod/devicetable-offsets.h
+  HOSTCC  scripts/mod/file2alias.o
+  HOSTCC  scripts/mod/sumversion.o
+  HOSTLD  scripts/mod/modpost
+  HOSTCC  scripts/kallsyms
+  HOSTCC  scripts/conmakehash
+  HOSTCC  scripts/sortextable
+  HOSTCC  scripts/asn1_compiler
+  HOSTCC  scripts/extract-cert
+  CC      drivers/gpu/drm/rcar-du/rcar_lvds.o
+  AR      drivers/gpu/drm/rcar-du/built-in.a
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_crtc.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_drv.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_encoder.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_group.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_kms.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_plane.o
+  CC [M]  drivers/gpu/drm/rcar-du/rcar_du_of.o
+make[2]: *** No rule to make target
+'drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7790.dtb', needed by
+'drivers/gpu/drm/rcar-du/rcar_du_of_lvds_r8a7790.dtb.S'.  Stop.
+Makefile:1721: recipe for target 'drivers/gpu/drm/rcar-du/' failed
+make[1]: *** [drivers/gpu/drm/rcar-du/] Error 2
+Makefile:286: recipe for target '__build_one_by_one' failed
+make: *** [__build_one_by_one] Error 2
+
+
+
+
+
+
+
+
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index 61affa300d25..a716a6b10954 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -39,7 +39,6 @@ build_unifdef: $(obj)/unifdef
+>  subdir-$(CONFIG_MODVERSIONS) += genksyms
+>  subdir-y                     += mod
+>  subdir-$(CONFIG_SECURITY_SELINUX) += selinux
+> -subdir-$(CONFIG_DTC)         += dtc
+>  subdir-$(CONFIG_GDB_SCRIPTS) += gdb
+>
+>  # Let clean descend into subdirs
+
+
+You need to 'dtc' here to clean-up scripts/dtc by "make mrproper".
+
+subdir- += basic kconfig package gcc-plugins dtc
+
+
+
+
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

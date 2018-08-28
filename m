@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2018 19:23:24 +0200 (CEST)
-Received: from mail-cys01nam02on0134.outbound.protection.outlook.com ([104.47.37.134]:13664
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2018 19:31:14 +0200 (CEST)
+Received: from mail-co1nam03on0109.outbound.protection.outlook.com ([104.47.40.109]:30540
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992907AbeH1RXTj38hd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Aug 2018 19:23:19 +0200
+        id S23994571AbeH1RbKYsLl9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Aug 2018 19:31:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RYlSSjvMrl/FUnf4G4RTDXMzUJcLqN8/x5tdh3Qgz44=;
- b=WRvEIFeH5reqBqt7ZpMOK/Mnqy6vDKgEjF/lNo6CuKJc4ICEaU8RX5xYr4OfS3h1560rbqbC+yva2B1tTSUrmSPTdl+arfnNdg196peLiC/ijL1OOVYqQNGxWbAECTUkeU9L0kTxAgz+cgGrZRwJ+MaBJDknBB2j+AE9or5MsTU=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
+ bh=zhAt41GkKE/dfAvTVeAeOr0Z1O/NNzeP0Sb8YPzRpjQ=;
+ b=EE5estAc33j07shULFqvtm/XY4snFnoglYDYGftCjFlHjB9CrL0Y5BfU5FFnYZWanpnCfLI7DdEpfcmH3aFrS5ch/7SydWiz2LezNrHXSStQ9ovZF0s/d5dpUX4GsZ7/409TkfGYxA8o5+NlkoQTm0j9i6XtaBl38+KAwn30ex8=
 Received: from localhost (4.16.204.77) by
- BYAPR08MB4934.namprd08.prod.outlook.com (2603:10b6:a03:6a::15) with Microsoft
+ BYAPR08MB4933.namprd08.prod.outlook.com (2603:10b6:a03:6a::14) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1080.15; Tue, 28 Aug 2018 17:23:09 +0000
-Date:   Tue, 28 Aug 2018 10:23:05 -0700
+ 15.20.1080.15; Tue, 28 Aug 2018 17:30:58 +0000
+Date:   Tue, 28 Aug 2018 10:30:54 -0700
 From:   Paul Burton <paul.burton@mips.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     Thierry Reding <thierry.reding@gmail.com>
 Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Jonathan Corbet <corbet@lwn.net>, od@zcrc.me,
@@ -30,72 +28,76 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH v7 05/24] clocksource: Add a new timer-ingenic driver
-Message-ID: <20180828172305.bohg6cggnzm3wsuj@pburton-laptop>
+Subject: Re: [PATCH v7 12/24] pwm: jz4740: Use regmap and clocks from TCU
+ driver
+Message-ID: <20180828173054.jlzczfxwjipdwntt@pburton-laptop>
 References: <20180821171635.22740-1-paul@crapouillou.net>
- <20180821171635.22740-6-paul@crapouillou.net>
+ <20180821171635.22740-13-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180821171635.22740-6-paul@crapouillou.net>
+In-Reply-To: <20180821171635.22740-13-paul@crapouillou.net>
 User-Agent: NeoMutt/20180716
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: MWHPR15CA0058.namprd15.prod.outlook.com
- (2603:10b6:301:4c::20) To BYAPR08MB4934.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::15)
+X-ClientProxiedBy: BN6PR1001CA0032.namprd10.prod.outlook.com
+ (2603:10b6:405:28::45) To BYAPR08MB4933.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::14)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 20d84fed-0324-4cdb-ab8a-08d60d0aecec
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4934;
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;3:PbD79V2gK4pxgAUmuC1MAEUuqUeOzquO9mfB4TMP8CefYlJgMWUURbF2bpIlpoVhg7YDOVeMFCi/xGDiv8y0DPuOPftkWo7mySUG82ilMI+yYGSPPuMGKwq+obB2+7NmE8emgsDbnZBOljSaY4tocoPyT2C8PEKR2FXgog7aol3fZCVDm/1M4CPbai9PG9A8DnIsmFOE5EtnF+ZY3dh1tHsFRXRdNtGZc+JmyJK8VilOgTp9fhAavp+4joL67hyo;25:POpwW0LmfzDJikW3FB/0R80UYg+BTmxw9eAu46UAha24EKFHXtHQhooXJRbAzDjjIDlFL7OldidlVpD4pjZ14K5hyUVE8TTQbZ/8NnocbCaV1iL43hBvbkWaikJ3IDWwoqKBp9s3fQV4a9zkoJBGJsYPP9IsDmw6aF4W0mK0+wfdPZlqy8eHn2VHm0UiFwOlN4oHRdSLKjMNzC4OuOdzmXcspRPuSVjoIs24Fe7dIc0p5O7mbZBznVOw6Q2X6KhveqQCo+UfWNCoHQa0+9W175KSvv7PrSPQnrXejTPsbm5YvofgjzRhhoUXoWpWSoPy3UzSVh4xgWgUHOJEPmbNkg==;31:v4O/UrM3roH1dLy1qoUHHULMBDhp177lKsaBmL2UlJiKFI/YmOmmERgX1yp0NxtxqEU/pp/AOqsUaZHfOumSTEcVVqWfAhpF2uR49LjZ1iUGfft1lpKNBP+TYjHRSeV3dG7+2f6cCslKK5ULAPyA9cbsZ1D/ewpv9tKdSB7eIDlKLKZ2KpUatUAeLhs40BNbAk4L6o80BKiqOO2ZTWR6NqDlKdIFGrmHDhx5ryd1tg8=
-X-MS-TrafficTypeDiagnostic: BYAPR08MB4934:
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;20:rYQc/KcCig3E4IzTnFViAHBbkga/wOinVCsSj/O7igseEQP3b4ktY9nnuRmkFz3bndM6uHx63+90LG2RyzlMlMoGPztaotT7vbBeBEQ4Gp0TNrGt684zthZwMov6kLyarWFKaiaCvpgW1SMBV4O7ExdJnBZ+zK7VUqxS/N8ClsN+DH50cNmMucsNjU8/++B5w7Xbv+uOBheKQmIBT5H/K+AbafjdOLmzHp3/0Fk+Wki54eC7lfFNK9CaZvcWxlaj;4:2m6/PjPmTSY2y9DhpH9v56zGXIoht8mXgy1g4ggCj6IFJ2HTsjGRmVbqgOPRsIgb6y95R4tsqiVne3W0r0RiFVSRBvdbY6QSeFaN9Q4pS6N5Vxv5VUAjecDkF2rVEDN/2v9i/vEe2zdkCffVzgon7fngL1fgCcp+y+0om8Tu+bcnrUjY+Kd0ZG/Aw6TnTIvFprWNFw1zcCGRgpGPihg/rnjJuA6CcCNnzFsdgGW+hzBqKm5tgOaQZA3B51cWT0I9AJDYZMlN5plHAOCDCS8KEw==
-X-Microsoft-Antispam-PRVS: <BYAPR08MB4934078B2D9FB24DC614E8DDC10A0@BYAPR08MB4934.namprd08.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 3fa05353-eef0-42ec-a5b2-08d60d0c0487
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4933;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;3:Tf5CY40xRp/tVsXK8bHyKGBe8S9cihp+8CAObBMPmCLLYmOTOLWOzvPYd3qj5ZclWzKBcQi7lF6xwpFVng3NF7fWsU1BsvsP4ebL+/Jz5eWb2m3BNIs1/ESOhRrC23gW2YkNxllBbifP2WMvlw2oM2H8n3lw+hrkY3j5jv542ZimKEUrI0RIRpsF4P4zhS/76MDLZe7N/GP5LvbbEW8AZz7eENSmxe3gSb+xHx+mBiWtOXujhKWrKK3jGTl2k+aF;25:UG1a1HZRHMv+5p9NOBXXlv1FUYnPp+4h5xFlZjvH38FhBHy1afubUhDlvvE+573nr5N65XVOQFxHG5g/N+Iw0vHjz5smucKNP1A6wofzYpGSg38r1D8Rq3G2mrpHx/eooDbXGplh/a3nXFpiGjNkS9eWfzdgSgWIW6p92zVk5lv8nm4pBLUtqBgI86QxhRKxH57nauSXuijW7NHtP1ykcDykWuQL2cKK9rY1VVdCt+b7kSn7oIbK0MqU6u66w9y83rnWVALDyRPp0E2TXhG91YrOewd44oxV1M6BWVnLicG6dpBegV7siIJnhRFO7qr1ZWuHuj5hF8A6q4qz8TElsA==;31:QfsxoRLjF7tuFMcQNGaYw+crQlAMalwucrudcL0IHUvL+fv8u+G3wmnXLvlzPxSLwMebkBWDBaxt9PfwjbDaY8rUbCU8BqDFz9abS+yfkZK+1ZsQ9mEkXmvuqjS8K73qDCNBsjCcXL4KL/+soGyzaRNx9O8N+0miRyJ7nf3ep/kgDSq+xE7u2RJQk2ApQ7E11YhxjxAd20KRHCVf59FbAB+ik+psN5roqmjULmZ7Oy4=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4933:
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;20:VC5hlrQduLLniHm1c2jAipxdrQ25isMfvBPFvBE4PhSDwX/8mNlQYBUqyeIxOY69Wo5uyqIHlxjhYJz4DEXZJW2N4AaR8Ece+vKdiUbIymL9dp8YN/vY19lyUej4r48cGPLb9fZqoruAC5IgLNPJsMckKSo1G7nC0DeOLsJHRUQk9W5S4k6KjadM4o3Igac7Y9cl7IGFoowkML+4PTvg0iue022UZ2+IEkGCebHA/E2UshZ/1CdagaG8ONO8Jiht;4:fT8PZciN0XaGXC4VZ00h8tNpmXfrmo9yASrKwqhSzyomFRcjXTEpLn8yf53ncofy0wi7zex7OJ662nAov76ei99MVEosvHrE8p5AVpFqzgvCpP+ZAx8j7VltOCmRhTRw86g3/TwyeTNWPgtVLizuT25VNx52cXjhbC5wzBgIi83iXdLUsx5h3PqZrVGse8Grmseb2hgFrc2wfxIDZ4ndwB/uzKJVX4A4C7rQjozqzd97DC4iWcl7PCTnsLehmJowgYFQz6bgYkX4COffLa1ULw==
+X-Microsoft-Antispam-PRVS: <BYAPR08MB4933EF29DE9C4F27E58BD141C10A0@BYAPR08MB4933.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3231311)(944501410)(52105095)(93006095)(3002001)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(20161123560045)(20161123558120)(201708071742011)(7699016);SRVR:BYAPR08MB4934;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4934;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3002001)(10201501046)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123560045)(20161123564045)(201708071742011)(7699016);SRVR:BYAPR08MB4933;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4933;
 X-Forefront-PRVS: 077884B8B5
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(396003)(346002)(366004)(136003)(376002)(39850400004)(199004)(189003)(6666003)(11346002)(5660300001)(956004)(476003)(14444005)(26005)(53936002)(33716001)(106356001)(8936002)(47776003)(97736004)(16526019)(42882007)(386003)(105586002)(76506005)(6116002)(446003)(68736007)(3846002)(2906002)(186003)(6486002)(50466002)(478600001)(486006)(7416002)(9686003)(52116002)(25786009)(229853002)(1076002)(16586007)(305945005)(6246003)(23726003)(66066001)(58126008)(7736002)(8676002)(54906003)(110136005)(316002)(39060400002)(6496006)(33896004)(76176011)(44832011)(81166006)(81156014)(4326008);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4934;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(366004)(376002)(396003)(346002)(39850400004)(136003)(199004)(189003)(229853002)(23726003)(9686003)(76176011)(6486002)(305945005)(386003)(6496006)(47776003)(66066001)(14444005)(4326008)(7736002)(5660300001)(486006)(1076002)(44832011)(25786009)(956004)(53936002)(50466002)(52116002)(6246003)(97736004)(68736007)(476003)(33896004)(6346003)(33716001)(16526019)(16586007)(58126008)(54906003)(186003)(11346002)(76506005)(6666003)(446003)(7416002)(8676002)(6916009)(3716004)(478600001)(39060400002)(2906002)(3846002)(106356001)(316002)(105586002)(6116002)(81166006)(42882007)(8936002)(26005)(81156014);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4933;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4934;23:eFwmgid4gcxxKvablZqm0L3kwWjgrm//GjIoZyk+d?=
- =?us-ascii?Q?vlTnt4zu2UVKPE9dn3K2DMgmJgUO01HgI3d2irPNIiAiVAOkors7SAfNz6Ez?=
- =?us-ascii?Q?v/yUjIT6fD9/clOli2UMd2/gU/d8VVqvHWTX7uS5iYCHkXoar2i4O8is5+gl?=
- =?us-ascii?Q?I1TPad+j6sTl5znRkopEqHvMQj6KtUxguHck2AMYyCNFNCpcJL0ULv0aETD3?=
- =?us-ascii?Q?j3E1XiZLEorhk0Pb9LBMK6rrg0akl/EZ+NxA4P90QNrKTheRJrFLhlMGsiBs?=
- =?us-ascii?Q?hNQGQ+cgLp+Lwbs965nX6fNaRy5U+IMgjaTCTeBvcoIZd19p+aopCvpbyvxu?=
- =?us-ascii?Q?1hWBE10iXmj2F0v/RYQ9q++9fGLf3YojOz6LfcakzRKNdN9arRHrnCSTtPop?=
- =?us-ascii?Q?/oyD+w08D0qRNNyQuAbK+UpMeqkkQqwchGD20oir9K0MdAvoNOVcwDdIE/V5?=
- =?us-ascii?Q?XOisezX2Hx9Ojsv1GKaBx2xbRojWYLrYDApjbbMPrhj/EitiFLtwpnv9f8hs?=
- =?us-ascii?Q?gO+NF4ns5nnW2lDnreXjGn1zx1QlzCWNXxZ15gfA3wjT4JVUacxU3tELZfAq?=
- =?us-ascii?Q?pk7hrPAsTYp783csKObskzEHtSfUVq/dS+0O65YveXhkuE8w5RMwZuHlTsh2?=
- =?us-ascii?Q?pRHmmfVn8R2zxRY9I1NkXN8PQ/Knc1Dnu8A5v/wjBhl26v6aswAJtPCRE0zU?=
- =?us-ascii?Q?i6BxJazdWtjTrMEnEAat+9/GV1bGOoESC4F2sXnGUakONjNHP40ekYNzIZDl?=
- =?us-ascii?Q?7hNXVUPVuvPq6rI2B9xkuklVs7xHUvKwdBznaVblB8O0QKrjLbux+SW1Os9d?=
- =?us-ascii?Q?vIv2f8vgP2POKiFmv8wOpbqnlxfPnhTSy7/KM2p3CFl5+z/7OgbaS2Jokkq+?=
- =?us-ascii?Q?WCK8uKQ7iX16q0WjbDD9y0TAOjMyMTC7MUiIaAM6bRq9dDLJCJvD5r3nRVoq?=
- =?us-ascii?Q?jObCJB+4A21ymeI94U5KW9dscD1c5q8Gnp0eOV1M2ouT6enuBhUq+rL71Tmh?=
- =?us-ascii?Q?gYqPYCgaviaYpaYQBclkSy5H7ipXWCDETwI8O3+AnHEaM/sYB4RWzptp7hB9?=
- =?us-ascii?Q?LFmPe48qLXhaptrMzrt4Ycr4b3Y4uh0/fFNbcC4Rnn/6S/0Tc44VTzJwqIfL?=
- =?us-ascii?Q?KwtzmIIoYOb0ArxSOl1IkGTl2CDJRuo2bxMAMXDTblXK2Mx16YKOfjg/fA6/?=
- =?us-ascii?Q?oY95oCghkDxRc/40wGMuByXzTCBOX6YJg0aaYN5inU/tz2KShkqSKfzdWECy?=
- =?us-ascii?Q?HQ0KH2dOhel64jjVVIO7wC6cO7/AcSv8uTnn0jnhMJ/6HX1TilpkdsopVp2W?=
- =?us-ascii?Q?1wkNSi1ad+hsB0nQZ1GIakZCVu1qaFMt7ypRGWmUYZumH/eCz1FuDbEaKR0Y?=
- =?us-ascii?Q?nnd3YKm70NVhzf1XVL4wd0OrMg=3D?=
-X-Microsoft-Antispam-Message-Info: Mt53RD86QyXanH8NBI/Dlc4zhItnC49YT5gbrkbXjpH2BHJpTO6FoEqLVe87IvKiDvo8EN0FxhEhShliO0Y4Q2je+4WzNtCFTDFSp9n+UxgbTDgStQ6l3cdsrMYdMvvWJCcz+MXz6qfiwgSXFc6SIk0voUffJ5q8NFQFzmbTwiTXm1NslDHfXBxRqtW3Qt3PocVcQiKFR/X4oeVc/esfd9d5XVTczvyC6oYl0fovAminR39uFSX0UlsoTIIIkE6sJNqKP9e2oe+2JUFlyRcaS2bdAH7Svujdr03DrTa/+Spy+hKNDXUg4q4rQz0Cwf2ZkDTuwndQ0KCerh4oX/2NWA==
-X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;6:Sh7Gtqn+M+MdeMYnhwoZiNuSjccLgv/YZqTQvbeSJOqRUAkRtz4w3mUq/tb3W9NH4PdTZDoYu8J6a3/iYBYen8ISaCfy+5bf0m8mmgZqH+eyfxfhBwsz7gUuxXIih5nsnNFhPGOx9yvV2ICrJ5PFM61ZSO3ExpuUZ9/XpUlZ/eLpnWx4Df8FYAck8xTXBm4tS+UmNDtav0oQtPDN9MbfeATexYEqJXh5oMp5sbZKHMwja6aNM83ta9PzW57fsqnT1apRqM49mEYC0wFig0Jq7YEEYtX2lyizrt09DgMNGOo4C5Xi4sf+q8l4gwlUkM1Ea4z26ohGud/Cb4hEvembXMaBog2xLliSF5jJhi68RgbQPe+xyx8Ue+a56fGquaDG3bnLtPhV/seE7iJ9Tkem65Ll8JMIrxMvRkLyx8FsAVb7r+546POrQRR7heYTYpFHysTEnymGraBgrQY+3GY1jw==;5:OF/9CClp7gLFDxACO7UJW2RdqLaM5pmYTNCXo48/M3BtMfzS/0O9W3xAnlfP0WSKUAQV8Jl2lA9QfHX46JwfId4J7kXwVnAZ+0C2NLcSDtknKJOHITmOz8t3qLnD93vL8NFS7To3Tk6bmd7oiPo+XdpfzgJEJKx27dFL3mY+pIY=;7:tb2V6arIbusy/ddx4qR7lPQ/tbarTBV4NokNoMcXX4jcqBAM+IwzBajo+q5eLEjrSctNMM75w6w5moMK5r2/8b4BR+dRZzFez4W53GVVALYzcLgxlbav/A2exa9LA4yBw2E/CQi8h6G+80kvX+w7CfBwPb5YcdqjgjkG7bYbiFz/haIaKvADsJsSB+QsvBWGwM1e1vZjM4K9qwG28lP2WYbOqVA7XynbMUBCcnhoDCMjzfoWuTdldrKRRcU5rLzk
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4933;23:P1+DoDszfukMNIdHiDvTpytffkw9FcgUF10qnFeVK?=
+ =?us-ascii?Q?6Qr/0IXbszrXGTxmeOWk9N+7Yzzu/muFjiDBGKYCdXZatvoOAX8r+78fNJc8?=
+ =?us-ascii?Q?KVGteA/WLOzagXTWQwKE97PGRKmLDcmEcRVfweUCoIvKwVqRF6PfWEqmdl2F?=
+ =?us-ascii?Q?2xyDO57GBSWg26LZUurgQvuiEm41WvAUfcBPoBxPuzI2E48FwGvW8SVEeo1R?=
+ =?us-ascii?Q?tCe1vESF6/6m+keVyBwN5gPqrZJmH39JacGt8HjVwf1+2rlf7yjWJCqfaP54?=
+ =?us-ascii?Q?JZ9HWL2VeefDN+ajy1o+ob6uMw/9ZfmNG/kI8jVDleVB3w1hcMLnYExOc8h2?=
+ =?us-ascii?Q?Z4KRZLwqBJWdY36K2Nt1Blfjrs3/Vqsp7X1tbFlCRodafWyokjCFvInYspbU?=
+ =?us-ascii?Q?4kxQrI0AROwBeTvNmH2wrnssbiY1DOPPyPiNuQXaaw9fOR3PD6lXs6H72LxQ?=
+ =?us-ascii?Q?FOyMya8/ZkZwv78eoKBiMzRwm6z+zdEViJLIiQvBBlOb1RyYcpQl7KPr9QKo?=
+ =?us-ascii?Q?Hd93A2ucj+UsWQpGYBTKF0uBdYCk6BBmy1ed+tm79t5ZaCKIUy+p0DdtlCfx?=
+ =?us-ascii?Q?N1ONVHHYre6ZtGWHyRH66fTMLTDBrf/imCdkjBUAg3qu6E0bbzzFXaMCulX/?=
+ =?us-ascii?Q?LV7ZiCXgiDHXSyTXOubGJNwH4n2Q7wzhZSJAPbUNtfTjfJOJtfjR7NVoMkOj?=
+ =?us-ascii?Q?kg2lxslP4Sn2+ew0tRrfH0Jw+c5/sVtmGDRpmphKYipe4VgTOSp1TkETGOzf?=
+ =?us-ascii?Q?WYgxoIq9JAQ1FWPaKp4MYX6rRL8LumnnaFUrdWxQtxEavabpC2NROe1uWcPM?=
+ =?us-ascii?Q?sDT1/UyRgbVQKHmehsTiuSeAQJzerwFcJTepquyndvhK32pfInkzEaU4qH4f?=
+ =?us-ascii?Q?+coPliEU7qlJ8pyq5ygtnGRdhTAFEWyKlOBfcXJE0g1ea/YGe6UIkPavFNIN?=
+ =?us-ascii?Q?aceYV3xXYb0PYb9eUoF2pzseop327dUhq7IaB3dhO2L3HaWwpaEzrr1toQ2L?=
+ =?us-ascii?Q?/d9ldwL+GQkt6qzW2pCwoyOqI5/jAGzW9ZLBiTT6al1AXcIxFMFcpp7zhYxE?=
+ =?us-ascii?Q?XD+2T3DJSVYSySan6V2obaN/I2UuTzITKq+xStXz+aP/HISNGUQnqhD3rp0w?=
+ =?us-ascii?Q?0EpR04bleEoxvOzZ/j1jCyLg1BPCm8ss5MAb6KRmyE7xlyP8u3yytM9OxUVh?=
+ =?us-ascii?Q?JW624hU8tD1mPybTCXR6TSR5oqV+mTzzFYpPjjDCjv8r7+L6Aekmo5F/2NfU?=
+ =?us-ascii?Q?Bp88Ft/0d2vLiqcp/2tOoOe95ILv2de+M5WbxUmKeaHZnV69yNUWqBAAUaxc?=
+ =?us-ascii?Q?NnEjL0il1Kb9r9vaLcx9OzXTdLkfsTyQEdgmsXP3h8irVjA6l8ql7pGIXfNW?=
+ =?us-ascii?Q?t/XyrIHGDz8eRBZhVluyvv03i/3JTk1w87ckQZzJSF0+oPpeH39J2bzQESpZ?=
+ =?us-ascii?Q?TWwELENTg=3D=3D?=
+X-Microsoft-Antispam-Message-Info: rGRlCVIYBc/8dEx8O6xkvi/N9rMcO4c3kqx5M6Vv0VfU/dmok8YQEA3kpB8JqaG6DMxvoHfcHptzp81vjtR2ZNVFwo+Qh2Rh77gnK4NRRaEEZ/J7A9qjInfL7pC0kbMcbeCxhRAf1F9MuU9VxNl34EMQcyRBLBdSvHlMDtQQtGBpUAyBYTUBnKucaJtYt80DAun3lCx3fb415XxQqXY9EwR7BccgAzjzKqlm6WQvL+6Szo4KSrQL67sYRvYdN7JhGxJcVHoNKBUpG7hzbfE1Xc6LKNgOgPsynsGehB4GsNx6O3fxvyi2n/mMrvs/Ksmcl57bz87O4Yk6ElL7YmzX12d9Kmz7VRiwV/W+LIvSBew=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4933;6:BCcQUqucGWQOoS6Vj0I3oLEP9kWEmsuKPNwjlT0SknwE2aT/Rjtpmousb3xKfP3Svli2WK4SsjdM4XJVmgLK27w3CD6ujsoDWXbR62urTr3zxyGs9BJxr23BI/+IGO4J8pVXjUhb3EXSPns7v36m4odJ9YTqxmdndyrjTOG2UBLvNCSzlXZtwNta+cIynFbw4dIRVpVPwSthLHbIMdR6Oht/8P3lZwIXTSiSTB1OMLEKKC6LdpY5bsR/Bq9gZMOsMXj/DkDwLD52hN6LuEndKSHWSRoE/gmKERRYDsxx4WpBjh2oVhLSaQHIhOJUTNa/OG0cxqVjWkR+dRozWzFyBHjxPfEK+MFbZVmnOE8Cj4Jc08SEzIowvrWLwUaPPXDE91NfYPRP77iagFURzCDGDNC8173MTG6n35w5sJlWKw6H8MCigUm0i/qilLFWaLvHIvdRdIQWc8dWcNG/FYwY0g==;5:xCegXTYwfdqyZpGqGJW6IHWUlWjw5aVDuhpunUAlKcL3iEIp6Z4tBGe6+qCxw7RsNrizR0wVTiXhWtTMsK66DBKYMzkC5ddw3H4h9nPyE7teHyHppDDEjq6Y4GOFk1NHkMBGXsqqR/4zhnu8x4/CLdfRciiGASIRm9oTN7y52ZE=;7:KW2Ojl44CVUeGsDGH1wSHSvMWg4IRwNxSFcq5K0MQsBFIMrecODMknJ4zebPjhPdwKenIer3hkmfvIUWdXJd5uHGRKN4aTyllr9FQJBiJ1ZtBaqVZTekDqr61Fonjl+iClk8NB9kWGiWQI7HHrfdx0itBmXRp/s9bsh+2o1kv8+PMbBJq9uV+qAj8+2W+LaHn65NerYcNHEsbMt7HyI0HU1z25fAKoIYdhpbdbOwENnfWg/Zyn2O4HFNSECqXLpK
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2018 17:23:09.4090 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20d84fed-0324-4cdb-ab8a-08d60d0aecec
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2018 17:30:58.3146 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fa05353-eef0-42ec-a5b2-08d60d0c0487
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4934
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4933
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65767
+X-archive-position: 65768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -112,63 +114,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Daniel & Thomas,
+Hi Thierry,
 
-On Tue, Aug 21, 2018 at 07:16:16PM +0200, Paul Cercueil wrote:
-> This driver handles the TCU (Timer Counter Unit) present on the Ingenic
-> JZ47xx SoCs, and provides the kernel with a system timer, and optionally
-> with a clocksource and a sched_clock.
+On Tue, Aug 21, 2018 at 07:16:23PM +0200, Paul Cercueil wrote:
+> The ingenic-timer "TCU" driver provides us with a regmap, that we can
+> use to safely access the TCU registers.
 > 
-> It also provides clocks and interrupt handling to client drivers.
+> It also provides us with clocks, that can be (un)gated, reparented or
+> reclocked from devicetree, instead of having these settings hardcoded in
+> this driver.
+> 
+> While this driver is devicetree-compatible, it is never (as of now)
+> probed from devicetree, so this change does not introduce a ABI problem
+> with current devicetree files.
 > 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > ---
 > 
 > Notes:
->      v2: Use SPDX identifier for the license
+>      v5: New patch
 >     
->      v3: - Move documentation to its own patch
->          - Search the devicetree for PWM clients, and use all the TCU
->     	   channels that won't be used for PWM
+>      v6: Drop requirement of probing from devicetree
 >     
->      v4: - Add documentation about why we search for PWM clients
->          - Verify that the PWM clients are for the TCU PWM driver
->     
->      v5: Major overhaul. Too many changes to list. Consider it's a new
->          patch.
->     
->      v6: - Add two API functions ingenic_tcu_request_channel and
->            ingenic_tcu_release_channel. To be used by the PWM driver to
->            request the use of a TCU channel. The driver will now dynamically
->            move away the system timer or clocksource to a new TCU channel.
->          - The system timer now defaults to channel 0, the clocksource now
->            defaults to channel 1 and is no more optional. The
->            ingenic,timer-channel and ingenic,clocksource-channel devicetree
->            properties are now gone.
->          - Fix round_rate / set_rate not calculating the prescale divider
->            the same way. This caused problems when (parent_rate / div) would
->            give a non-integer result. The behaviour is correct now.
->          - The clocksource clock is turned off on suspend now.
->     
->      v7: Fix section mismatch by using builtin_platform_driver_probe()
+>      v7: No change
 > 
->  drivers/clocksource/Kconfig         |   10 +
->  drivers/clocksource/Makefile        |    1 +
->  drivers/clocksource/ingenic-timer.c | 1124 +++++++++++++++++++++++++++++++++++
->  drivers/clocksource/ingenic-timer.h |   15 +
->  include/linux/mfd/ingenic-tcu.h     |    3 +
->  5 files changed, 1153 insertions(+)
->  create mode 100644 drivers/clocksource/ingenic-timer.c
->  create mode 100644 drivers/clocksource/ingenic-timer.h
->%
+>  drivers/pwm/Kconfig      |   2 +
+>  drivers/pwm/pwm-jz4740.c | 124 +++++++++++++++++++++++++++++++----------------
+>  2 files changed, 83 insertions(+), 43 deletions(-)
 
-How is this & patch 6 of the series looking to you from a
-drivers/clocksource perspective?
+How do patches 12-16 of this series look to you from a drivers/pwm
+perspective?
 
 If you're happy with them it'd be great to get an ack so I can take this
-through the MIPS tree with the rest of the series. The alternative would
-be to get the drivers in first then the MIPS bits in the next release
-cycle.
+through the MIPS tree along with the rest of the series.
 
 Thanks,
     Paul

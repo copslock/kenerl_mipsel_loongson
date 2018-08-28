@@ -1,51 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2018 16:27:54 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.133]:35811 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992494AbeH1O1vtWUnq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Aug 2018 16:27:51 +0200
-Received: from wuerfel.lan ([109.193.40.16]) by mrelayeu.kundenserver.de
- (mreue004 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LpiwE-1fPQwz3sBi-00fTIF; Tue, 28 Aug 2018 16:27:28 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-rtc@vger.kernel.org
-Cc:     a.zummo@towertech.it, alexandre.belloni@bootlin.com,
-        keguang.zhang@gmail.com, y2038@lists.linaro.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] rtc: mips: default to rtc-cmos on mips
-Date:   Tue, 28 Aug 2018 16:26:30 +0200
-Message-Id: <20180828142724.4067857-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.18.0
-X-Provags-ID: V03:K1:DmjXOi4/gJR2KnJwod3hWwHoDox+Y29gAUi3IYfc8UHwkVPajxY
- B6crdUCfMGVsn5WsMRO9snGl5u+SWAv5fNi0Hb2Me2emXh8lofVX06RIu0k8SZXugAp+xOU
- yfFyomLDPGY6qi4WUKxomKX6KGDoPjS7+/WgMjsIl0HEytGgBmqZRGQHCY1WYCvyne//2FM
- CikQb1SKhD3tChAuQpZ8A==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:iE5WrV4a8O0=:v+nti9amxgnZBwOPU9RL9C
- mzHOjgaX2Wzk0tGsmZVblac5fnMWdl9Xc/PlwHkuhw97oCLamrdLDyZkHK1pKZKP87yMXbwIi
- vFzrDtIZuM492miLk7AoDGPaRaMELfkGRlvKf3BT4j1gSS3UTirs115I4ceBb17glWxdcQCQ7
- uH1DhkkoceNSrXP91RDdqNnSQiwmm20NADZaI/Srb0AE8hF4P4CLxQS19lajNUEkVCURq1X26
- x7RZA2R1pL9D20BaUIMsz8s/h5gT9viwDhq1xNjhwBhi2E53UsEJ+hblzsVvKUL0HNxoLF6yA
- cS7mmcfbYU11Q8DGf0eyf+xDN7uJAKezpGfP1MDpLM/Q/N/fdi5mkuuuUMd0+QOJsM4ryx5yV
- fZOqerY4yUK7a4Gy+CN51+QlUBLTDLRFydatCdQ8ityufEOJV9x2qGl+qCufW917dlzDXmFke
- BMd9yaXhF346/HqYn7bGg5wALEM62R3XvY3QaesY2fkwE1iaa5XWGvRS5yWnGCAj7Qgf7EDAy
- 19QFB0ArsybuxLEh8Fs9NcO4mULf7p93OfQFtm2QTzUrxS2i72bDVxBIy7lkBfkPa1twP2+rb
- 5wkBj6rP6bXcx30mZcWskNIk03P55aJr25bQ7W/buue4cASIFlNOV3+LRb6AlAOyZByeb54ST
- RQ59FuMXIHwGJ2OUKLu3b5SyyA0is92klbTBUnoq7K5EwZnS5uqPPUwYMo9tCzvi1S0g=
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2018 17:54:18 +0200 (CEST)
+Received: from vrout30.yaziba.net ([185.56.204.33]:42535 "EHLO
+        vrout30.yaziba.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992482AbeH1PyPfigFG convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Aug 2018 17:54:15 +0200
+Received: from mtaout20.int.yaziba.net (mtaout20.int.yaziba.net [10.4.20.37])
+        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by vrout30.yaziba.net (mx10.yaziba.net) with ESMTPS id BB284520F6;
+        Tue, 28 Aug 2018 17:54:14 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mtaout20.int.yaziba.net (Postfix) with ESMTP id B0F6216043D;
+        Tue, 28 Aug 2018 17:54:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mtaout20.int.yaziba.net
+Received: from mtaout20.int.yaziba.net ([127.0.0.1])
+        by localhost (mtaout20.int.yaziba.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id xqaux8cbxp4W; Tue, 28 Aug 2018 17:54:14 +0200 (CEST)
+Received: from sahnlpt0333.softathome.com (unknown [149.6.166.170])
+        by mtaout20.int.yaziba.net (Postfix) with ESMTPSA id 9112A1603C0;
+        Tue, 28 Aug 2018 17:54:14 +0200 (CEST)
+From:   Philippe Reynes <philippe.reynes@softathome.com>
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Philippe Reynes <philippe.reynes@softathome.com>
+Subject: [PATCH] MIPS: Fix computation on entry point
+Date:   Tue, 28 Aug 2018 17:52:50 +0200
+Message-Id: <1535471570-19033-1-git-send-email-philippe.reynes@softathome.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-DRWEB-SCAN: ok
+X-VRSPAM-SCORE: 0
+X-VRSPAM-STATE: legit
+X-VRSPAM-CAUSE: gggruggvucftvghtrhhoucdtuddrgedtjedrgeeggdelhecutefuodetggdotefrucfrrhhofhhilhgvmecuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofggtgfgsehtqhertdertdejnecuhfhrohhmpefrhhhilhhiphhpvgcutfgvhihnvghsuceophhhihhlihhpphgvrdhrvgihnhgvshesshhofhhtrghthhhomhgvrdgtohhmqeenucfkphepudegledriedrudeiiedrudejtdenucfrrghrrghmpehmohguvgepshhmthhpohhuth
+X-VRSPAM-EXTCAUSE: mhhouggvpehsmhhtphhouhht
+Return-Path: <philippe.reynes@softathome.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65761
+X-archive-position: 65762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: philippe.reynes@softathome.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,42 +55,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The old rtc driver is getting in the way of some compat_ioctl
-simplification. Looking up the loongson64 git history, it seems
-that everyone uses the more modern but compatible RTC_CMOS driver
-anyway, so let's remove the special case for loongson64.
+Since commit 27c524d17430 ("MIPS: Use the entry point from the ELF
+file header"), the kernel entry point is computed with a grep on
+"start address" on the output of objdump. It works fine when the
+default language is english but it may fail on other language (for
+example in French, the grep should be done on "adresse de départ").
+To fix this computation on most machine, I propose to force the
+language to english with "LC_ALL=C".
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 27c524d17430 ("MIPS: Use the entry point from the ELF file header")
+
+Signed-off-by: Philippe Reynes <philippe.reynes@softathome.com>
 ---
- arch/mips/Kconfig    | 2 +-
- drivers/char/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 35511999156a..c695825d9377 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -75,7 +75,7 @@ config MIPS
- 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
- 	select MODULES_USE_ELF_REL if MODULES
- 	select PERF_USE_VMALLOC
--	select RTC_LIB if !MACH_LOONGSON64
-+	select RTC_LIB
- 	select SYSCTL_EXCEPTION_TRACE
- 	select VIRT_TO_BUS
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index d74b374..835aa8f 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -258,7 +258,7 @@ load-y					= $(CONFIG_PHYSICAL_START)
+ endif
  
-diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
-index ce277ee0a28a..131b4c300050 100644
---- a/drivers/char/Kconfig
-+++ b/drivers/char/Kconfig
-@@ -268,7 +268,7 @@ if RTC_LIB=n
- 
- config RTC
- 	tristate "Enhanced Real Time Clock Support (legacy PC RTC driver)"
--	depends on ALPHA || (MIPS && MACH_LOONGSON64)
-+	depends on ALPHA
- 	---help---
- 	  If you say Y here and create a character special file /dev/rtc with
- 	  major number 10 and minor number 135 using mknod ("man mknod"), you
+ # Sign-extend the entry point to 64 bits if retrieved as a 32-bit number.
+-entry-y		= $(shell $(OBJDUMP) -f vmlinux 2>/dev/null \
++entry-y		= $(shell LC_ALL=C $(OBJDUMP) -f vmlinux 2>/dev/null \
+ 			| sed -n '/^start address / { \
+ 				s/^.* //; \
+ 				s/0x\([0-7].......\)$$/0x00000000\1/; \
 -- 
-2.18.0
+2.7.4

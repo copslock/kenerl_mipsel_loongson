@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:35:40 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:40008 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:35:59 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:40260 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994601AbeH2VdPxa8rp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2018 23:33:15 +0200
+        with ESMTP id S23994608AbeH2VdRGZVlp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2018 23:33:17 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 Cc:     od@zcrc.me, dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Daniel Silsby <dansilsby@gmail.com>,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 10/18] dmaengine: dma-jz4780: Enable Fast DMA to the AIC
-Date:   Wed, 29 Aug 2018 23:32:52 +0200
-Message-Id: <20180829213300.22829-11-paul@crapouillou.net>
+Subject: [PATCH v5 11/18] dmaengine: dma-jz4780: Add missing residue DTC mask
+Date:   Wed, 29 Aug 2018 23:32:53 +0200
+Message-Id: <20180829213300.22829-12-paul@crapouillou.net>
 In-Reply-To: <20180829213300.22829-1-paul@crapouillou.net>
 References: <20180829213300.22829-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1535578395; bh=z2e3/aCQfj6VxrU2S4Co+YeTfYqdN+KW7jNUxMBwa3s=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=A6ou0YShkEH6ZsGIfdH3ktKzwFSbXcnKRbcgfkfAK9Rc9qyPtsnh+a29/k8VuHsXML7T8E+PeVlqGznm7itsVcZYIZbvOEudHkUOf11G1Qk9W7syS7M7J7ZndfE611qVU0iyIrmKpr255qRB5MiYNpDUGdfYNFOzSE4kewZQGq0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1535578396; bh=4SorUfGw5ULg7eEdZSV9f55fjo4XlGbzh8mo49ABBsw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tqtcHoZ60fDHc5YItWTn6fx0y3FA41NFbaNEidbmSXMcBAVCddf0dfdrCIqkuVA9cp9NnIMkHljx464AKDYt3C5Ov0UXEVzxVYJZ5ICOU8Q1y5nuXerO1rhi6Xsd0Y/gNpweacDmCpqXRmiERMk2GdgZiTnPvsHKitU1h0aQmCw=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65789
+X-archive-position: 65790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,12 +37,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With the fast DMA bit set, the DMA will transfer twice as much data
-per clock period to the AIC, so there is little point not to set it.
+From: Daniel Silsby <dansilsby@gmail.com>
 
+The 'dtc' word in jz DMA descriptors contains two fields: The
+lowest 24 bits are the transfer count, and upper 8 bits are the DOA
+offset to next descriptor. The upper 8 bits are now correctly masked
+off when computing residue in jz4780_dma_desc_residue(). Note that
+reads of the DTCn hardware reg are automatically masked this way.
+
+Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 ---
 
 Notes:
@@ -49,35 +55,26 @@ Notes:
     
      v3: No change
     
-     v4: No change
+     v4: Add my Signed-off-by
     
-     v5: No change
+     v5: Use GENMASK macro
 
- drivers/dma/dma-jz4780.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/dma/dma-jz4780.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index 565971c2a33c..3a4d0a4b550d 100644
+index 3a4d0a4b550d..bd3cecb800c5 100644
 --- a/drivers/dma/dma-jz4780.c
 +++ b/drivers/dma/dma-jz4780.c
-@@ -52,6 +52,7 @@
- #define JZ_DMA_DMAC_DMAE	BIT(0)
- #define JZ_DMA_DMAC_AR		BIT(2)
- #define JZ_DMA_DMAC_HLT		BIT(3)
-+#define JZ_DMA_DMAC_FAIC	BIT(27)
- #define JZ_DMA_DMAC_FMSC	BIT(31)
+@@ -616,7 +616,8 @@ static size_t jz4780_dma_desc_residue(struct jz4780_dma_chan *jzchan,
+ 	residue = 0;
  
- #define JZ_DMA_DRT_AUTO		0x8
-@@ -923,8 +924,8 @@ static int jz4780_dma_probe(struct platform_device *pdev)
- 	 * Also set the FMSC bit - it increases MSC performance, so it makes
- 	 * little sense not to enable it.
- 	 */
--	jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DMAC,
--			  JZ_DMA_DMAC_DMAE | JZ_DMA_DMAC_FMSC);
-+	jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DMAC, JZ_DMA_DMAC_DMAE |
-+			       JZ_DMA_DMAC_FAIC | JZ_DMA_DMAC_FMSC);
+ 	for (i = next_sg; i < desc->count; i++)
+-		residue += desc->desc[i].dtc << jzchan->transfer_shift;
++		residue += (desc->desc[i].dtc & GENMASK(23, 0)) <<
++			jzchan->transfer_shift;
  
- 	if (soc_data->flags & JZ_SOC_DATA_PROGRAMMABLE_DMA)
- 		jz4780_dma_ctrl_writel(jzdma, JZ_DMA_REG_DMACP, 0);
+ 	if (next_sg != 0) {
+ 		count = jz4780_dma_chn_readl(jzdma, jzchan->id,
 -- 
 2.11.0

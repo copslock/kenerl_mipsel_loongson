@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:36:35 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:41096 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:37:00 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:41414 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993946AbeH2VdUGguEp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2018 23:33:20 +0200
+        with ESMTP id S23994615AbeH2VdVKJmcp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2018 23:33:21 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Vinod Koul <vkoul@kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
@@ -10,17 +10,17 @@ Cc:     od@zcrc.me, dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Daniel Silsby <dansilsby@gmail.com>,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 14/18] dmaengine: dma-jz4780: Further residue status fix
-Date:   Wed, 29 Aug 2018 23:32:56 +0200
-Message-Id: <20180829213300.22829-15-paul@crapouillou.net>
+Subject: [PATCH v5 15/18] dmaengine: dma-jz4780: Use dma_set_residue()
+Date:   Wed, 29 Aug 2018 23:32:57 +0200
+Message-Id: <20180829213300.22829-16-paul@crapouillou.net>
 In-Reply-To: <20180829213300.22829-1-paul@crapouillou.net>
 References: <20180829213300.22829-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1535578399; bh=DlDnbpEDKjFmeiXU/E5155BZtoBzBOLXoOhxAu0xxIY=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=wOVcYoIauOs39k6KCN4TYJGyWZinvJkH6LvT0vQlMztSaR6+sYg9kOtMXK4Zo/TgC4KYbRZ3y6DJfGWYkFStdBoYvoxNZXk7qpmkbqRP/b1AmwklqHUO8E1vzVWnaFahZcaDknhDgpQWa/wS3SrInWpvi2Rl4I+phzHD+/DEbdQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1535578400; bh=F1tcdqpoPSsW/DsB3jM/0tloGacwvl2SREq78SCgIfo=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=VAQRCB9TIK8T8JzVhqiJPg6CtcX/yooLxCObfKxgJf9mGNa7Btwr5sHKnZQ6NtvzJOcxxKfB97x1dedJedJMOnUyMuCi4MHMepXwf7NelyPy0NVK2+jh/PVAFC5XvHEC2AIt4zb+QPftr2SOdqXI/bV1x97dfrXMPnQNieJL9OQ=
 Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65793
+X-archive-position: 65794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,17 +39,7 @@ X-list: linux-mips
 
 From: Daniel Silsby <dansilsby@gmail.com>
 
-Func jz4780_dma_desc_residue() expects the index to the next hw
-descriptor as its last parameter. Caller func jz4780_dma_tx_status(),
-however, applied modulus before passing it. When the current hw
-descriptor was last in the list, the index passed became zero.
-
-The resulting excess of reported residue especially caused problems
-with cyclic DMA transfer clients, i.e. ALSA AIC audio output, which
-rely on this for determining current DMA location within buffer.
-
-Combined with the recent and related residue-reporting fixes, spurious
-ALSA audio underruns on jz4770 hardware are now fixed.
+This is the standard method provided by dmaengine header.
 
 Signed-off-by: Daniel Silsby <dansilsby@gmail.com>
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
@@ -65,21 +55,38 @@ Notes:
     
      v5: No change
 
- drivers/dma/dma-jz4780.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dma-jz4780.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index d3b915ec8a09..b73d96166637 100644
+index b73d96166637..e1bb93dd32ba 100644
 --- a/drivers/dma/dma-jz4780.c
 +++ b/drivers/dma/dma-jz4780.c
-@@ -653,7 +653,7 @@ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
+@@ -639,6 +639,7 @@ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
+ 	struct virt_dma_desc *vdesc;
+ 	enum dma_status status;
+ 	unsigned long flags;
++	unsigned long residue = 0;
+ 
+ 	status = dma_cookie_status(chan, cookie, txstate);
+ 	if ((status == DMA_COMPLETE) || (txstate == NULL))
+@@ -649,13 +650,13 @@ static enum dma_status jz4780_dma_tx_status(struct dma_chan *chan,
+ 	vdesc = vchan_find_desc(&jzchan->vchan, cookie);
+ 	if (vdesc) {
+ 		/* On the issued list, so hasn't been processed yet */
+-		txstate->residue = jz4780_dma_desc_residue(jzchan,
++		residue = jz4780_dma_desc_residue(jzchan,
  					to_jz4780_dma_desc(vdesc), 0);
  	} else if (cookie == jzchan->desc->vdesc.tx.cookie) {
- 		txstate->residue = jz4780_dma_desc_residue(jzchan, jzchan->desc,
--			  (jzchan->curr_hwdesc + 1) % jzchan->desc->count);
-+					jzchan->curr_hwdesc + 1);
- 	} else
- 		txstate->residue = 0;
+-		txstate->residue = jz4780_dma_desc_residue(jzchan, jzchan->desc,
++		residue = jz4780_dma_desc_residue(jzchan, jzchan->desc,
+ 					jzchan->curr_hwdesc + 1);
+-	} else
+-		txstate->residue = 0;
++	}
++	dma_set_residue(txstate, residue);
  
+ 	if (vdesc && jzchan->desc && vdesc == &jzchan->desc->vdesc
+ 	    && jzchan->desc->status & (JZ_DMA_DCS_AR | JZ_DMA_DCS_HLT))
 -- 
 2.11.0

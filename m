@@ -1,27 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:54:27 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 23:54:37 +0200 (CEST)
 Received: from mail-by2nam01on0093.outbound.protection.outlook.com ([104.47.34.93]:17536
         "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993920AbeH2VyXwSl7p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Aug 2018 23:54:23 +0200
+        id S23993945AbeH2VyYetIhp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Aug 2018 23:54:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s+vIdJyjDO8tpDSxpWQ7p7f4ChviniaDhNehsr81G9Q=;
- b=lFRf2mu+ThTei4KUPWeBI+mRcSdvrpJtysO96x4M846NZPKjrZDldf+iQyw86RmaCP5Qls9gk8olHqKOFNm2NAAd9NBCPTnnPAOakh231yoMO9EL+2Gbc8IA+N39JpSI7+BvgUkGWuXzUUCiAJsGZ5togkd1Hkj48Wh7TWTED3g=
+ bh=awE9/bk3TWNCEIunk7zRHAOcf7g5ebYLDWu37XNxl7I=;
+ b=Seb1FXIsJQbdbMGX1JaHApUrfz/8LLrtPmXquI6mpqqQIOG/LX/lURfTKtYQciO4Yxc0l+Ww8csdkyNvC+i8YnHl0uImj8p+1zjMLD8ZhY6pADlkHa/FVTGU+d65fwwCrwIIOR9HdeHCv2OAT67u2Trs+IRMCSqZucRI34DQctA=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 Received: from pburton-laptop.mipstec.com (4.16.204.77) by
  DM6PR08MB4937.namprd08.prod.outlook.com (2603:10b6:5:4b::18) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1080.17; Wed, 29 Aug 2018 21:54:12 +0000
+ 15.20.1080.17; Wed, 29 Aug 2018 21:54:13 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     Paul Burton <paul.burton@mips.com>
-Subject: [PATCH 1/2] MIPS: Use GENERIC_IOMAP
-Date:   Wed, 29 Aug 2018 14:54:00 -0700
-Message-Id: <20180829215401.874-1-paul.burton@mips.com>
+Subject: [PATCH 2/2] MIPS: Remove SLOW_DOWN_IO
+Date:   Wed, 29 Aug 2018 14:54:01 -0700
+Message-Id: <20180829215401.874-2-paul.burton@mips.com>
 X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180829215401.874-1-paul.burton@mips.com>
+References: <20180829215401.874-1-paul.burton@mips.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [4.16.204.77]
@@ -29,49 +31,51 @@ X-ClientProxiedBy: DM5PR06CA0068.namprd06.prod.outlook.com
  (2603:10b6:3:37::30) To DM6PR08MB4937.namprd08.prod.outlook.com
  (2603:10b6:5:4b::18)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 37824e46-d9c0-4e9c-44ef-08d60df9f532
+X-MS-Office365-Filtering-Correlation-Id: 98de5a83-4706-46d6-fe4f-08d60df9f5a7
 X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4937;
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;3:CK1/W+8CB/BYFUhEvkoyFaf0vuHDt2BcmFDRJfP/fe2RMqP+d3MsErmmA5n7N0vNk3OB58ie/W+3w6OfUixrOCSLs0h8JAOlpEvW4Eij5dh3JJGR6FnFcOzTVGgWXWm9u0MOxt+SFP8PpdyitidvTNQS6fMJlLMNofGFajX7Bv6cFjhKBW3E8jvyQ4oPEfdZUiZEERwhEi0rm4VUSuvl9mahijd9g85KTlniuM0PZ6ccHjJ45hAgOwCgcBcP1yEH;25:NoqCum6/lQFixho9m0a5RQeIh1csTg/OmGDgCkb9ukjb3G5XdVvYLN01UgV41SbMRg9NOM/TDxGC2fTxrqO/gi3FwdUOTjgVHuxuE9isSl6xetwmKgOOhxM71NWi+MEaqKvROoNIEdFFAIf4GWnaD66f74pxtvfNlG4RQJ+DY1+dVxGEvckEWAS04tFOtUeTQB8CjejVvsKyiGy6dU4N4BjTZwKy9nIdv6dc/EC6UF4vJAwVzkIgihsNKzhA/mBBF4mgrpxX2YR3sZuVWCFce365fwNOv+eDFvMhriQXS8OCCRLD1R/wumTvcDw+FEE2MKPg3wSPmHNEnRmmnb7WdQ==;31:lP4/psJbNDMQLUjTVGxZSGoSZTeeG54/b1I6TAu0H4dZlGudgKbHMmmLGDhiJhSMF9fB/jJdaLTOnlb85uvLRbTUWNUdSiPpASU/Ud+CmSSysxmrUpRjDnoFZw2mSw+vvVIVqlom+zm8VpT6/AywU9+wcc/fwdki/sGAWbfjaRmyVXsw+FzCIuGL85wX7UUKA8doXaiH4BfsOg8Z2TXZkQ3KSL0/m5F661sHTmt1sy0=
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;3:cBOhl17wfUV/vPGhprYrTQUSq1Db3O4N+AxF+9UsGoihe/X3ma1os4LC9J/ANN7Znyvagdw8s23zo14CY/k/PZf2ILOHQHBVKBFJwgPoU85AiLCJ8/c62M+kH3Z2aVd/85XgNzK+6gjdmVESMLGctZprt4e5vetVxnvAz4NKeLqIU28GAo9FmEVtMyxklwPU7oTCEHU0IJTdC9sC06A51378NwptKvZ4BlKhD8P6idgepH66JBWvTbbVlBDuJLUk;25:t8lbJdJERfGdRORHsF1P+JDVIDLRsWzhxB7D/0V7GutxCmG0/0mdn0nCmSgS+PcMBxGxsmTg4YjNFNkIpqkLhO+uGCKSNIphnVYcc0qfOtVBDAVJLNxcWpRNaIMcIvfcyMKPw8RJHndK8j2aX7Cb2wd6hj0S2CDmAW7WJiL0MzkYDViboX2uHUITuydoqz4QQZPlqaixmvCSVH+GRvz2Qr7EZO+Tyfnlbw+IlGf3Qq+TJShtKzdRmcCXplWASkVM9SAvhptIdnGNZ5IJeNE+HqDOobWlUzixS3dWoujrUPuZCAJdYElFX2xIS4pStN7xO54nYjw/hxnJmuQun4b6Ng==;31:ZASc2yveIC6Atp2NN3xq2us06bRZ0ylRWNsYzmBjs3MACX6pgTN/Ve8rmfYJpne14slsjVEn1q3tFShKxh0AAVlXFUlJuJ4pP7PLi6IkUEwkvShinfy/nWs5J9pASHzj7UCH0O3VvLXUC2TnBjT2M30J739LXxGijQrZLIt1owcJGcndf2fkYOUnKD9aAoH3qWzjEO6gJc0SlBadgg8lbWUYecxU1eyP3BZsEykQxy0=
 X-MS-TrafficTypeDiagnostic: DM6PR08MB4937:
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;20:qOssKkPE7ikH8r8/mTFmEMhlUuW1qyPgJJMScKP5NcVmtp7H8T/Vtq8YGmUshLSDcJh65GNz/GOgl5Shia7BpTRJtYhaK4XqTYb7Lh/UY2riMZiqrzTmpA9oAzFw848dNCbpWmKVWN1WYfbTFcEtcSdQeC63DzYcO29TPOAfPQi/a3+BHEJ5YVpGrkifw4YC7KPE46SnP7BxdeMqE85kpQQgO2zk/Q5miZDm4QAa2TxkuXwFhysm63Vldk25NbpC;4:vfquWsRIxaNfWCj9BerMypYkoHXfFzOGUIK4O3EdLuSnlbHCIXRZ0o4wzzkrI+9/Cnlb3GH+jdj4wDiAENJpdoknmezRLK2Fa0FUp8QsfsgOBV/UStxGm9KB/XAwn/P/K7PRA+P4qCmJ5tImMeiesB9j8vzZN/aOuDM89XDKMUPCFcy6Sby4ErRnWIVCsNMz/cAIMbWkFMDPigkWwVK0Kwg7tfy2l5hwpOKVrwmRtz7fk7wfRnkB4xeEJeCyM3WhjJ/g8eH8VA0fjxY5B94Rsw==
-X-Microsoft-Antispam-PRVS: <DM6PR08MB49375D244AA89F4B4BA8A834C1090@DM6PR08MB4937.namprd08.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;20:kjYEGEebZZFjf5nr8AgdQVeqqiqX0svLhAnYKG5rD23G6KndnNpxuMQwU+6/6PaWYg8qfkjFgbqH/PmuHxUhTHwkjIPIovP2A4uW5K+0tV8g+LDNxYAzIxyDN+ibIjfCw076O0f2EyE0gJPBGCAIZV3U5OYq8bNV/jVXnsjwAxl/vT+1xon4q6PFs8ZeaUyWKevHfHlPwlB6Wgjg2Cn281n80w6ixHG01quAFJ836YUX/wCPFWBsFVOfBjNyLWoJ;4:e5BU6jEYoDnIrYtVwRR5OfO7+uQePMoseIejIdxgkeuErYQ6dCroFV8XPRthMWcAGLTHuqRfOu1U2UmkO24476A0OmU6MxFLlP2SampjUOzRUEE1//XCPSIZTfBD3JxWGNY+vwcNdk3aXzpfHFNr8xyRehCSCG4ij7t9ETGvJVtgnvwb/WHZmXwGuZBINLC2dNyqajmltXmUMt6HeJCT6cWVywDMSzLYUJGR4tHMyahTPsZZj1+6lPYT9ezq9jersNHToqHTUTIP+c0OcxDB8A==
+X-Microsoft-Antispam-PRVS: <DM6PR08MB4937703FE8512E366E72DC35C1090@DM6PR08MB4937.namprd08.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(3231311)(944501410)(52105095)(93006095)(149027)(150027)(6041310)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(201708071742011)(7699016);SRVR:DM6PR08MB4937;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4937;
 X-Forefront-PRVS: 077929D941
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(39850400004)(136003)(346002)(396003)(366004)(376002)(189003)(199004)(52314003)(66066001)(186003)(575784001)(6506007)(386003)(2351001)(53936002)(6116002)(69596002)(50466002)(48376002)(50226002)(8936002)(3846002)(47776003)(1076002)(476003)(486006)(26005)(2616005)(956004)(16586007)(53416004)(316002)(478600001)(106356001)(105586002)(16526019)(4326008)(42882007)(52116002)(107886003)(25786009)(14444005)(5660300001)(305945005)(81156014)(6666003)(8676002)(81166006)(6916009)(51416003)(7736002)(2906002)(36756003)(2361001)(68736007)(6486002)(44832011)(97736004)(6512007)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4937;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(979002)(39850400004)(136003)(346002)(396003)(366004)(376002)(189003)(199004)(66066001)(186003)(575784001)(6506007)(386003)(2351001)(53936002)(6116002)(69596002)(50466002)(48376002)(50226002)(8936002)(3846002)(47776003)(1076002)(476003)(486006)(26005)(2616005)(956004)(16586007)(53416004)(316002)(76176011)(11346002)(446003)(478600001)(106356001)(105586002)(16526019)(4326008)(42882007)(52116002)(107886003)(25786009)(14444005)(5660300001)(305945005)(81156014)(6666003)(8676002)(81166006)(6916009)(51416003)(7736002)(2906002)(36756003)(2361001)(68736007)(6486002)(44832011)(97736004)(6512007)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4937;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4937;23:ckvVPCnv6/qRcuMcq7t15KxzXxXjMlF2nP8MLuN0P?=
- =?us-ascii?Q?eQx5r4JnyEKOFFSYDPkV+dgSh+wWyiQSYKksVjQ0R9VzjJT3iDBVYO1DEKNf?=
- =?us-ascii?Q?/5Z/dFkaN3eDAwca+E30wX9dsQc5/CtkwugwCw3849IzUb+wA3Wf9njTco21?=
- =?us-ascii?Q?jBAnLWAyoODaIRfkpPEceND7wUnKJ1xmD3txKttTHRsAHoBwx0FY5Zf/x2QV?=
- =?us-ascii?Q?vy7W5/foJUYFdM5VzSIsjAJuK8nvnSCD70va0PZBKPYGe++YF80QeypkRuJH?=
- =?us-ascii?Q?I/w9nxzRtcJ0Kgt/jmlvkCQEBKimlgA1hIOPRlwijLsvuDHlGR0B5hmdqCC7?=
- =?us-ascii?Q?6Hu/t4Mfhpa+3J43M0Wz9mMNuuCsGz8jJwCBPojTNi2YXiapADXzyg7VwzRo?=
- =?us-ascii?Q?lMXOLa8pResErCJMYH2eaX/bewa7CHXSSfKqonScmfWqRRj0EDEIr2bjRIjv?=
- =?us-ascii?Q?CFEKm3PK1xtDciGRQs2zxw6+Oo7lYuR6nJIwHGmDQ7NbCP3svSHivHlZtxsT?=
- =?us-ascii?Q?L3ybL1V3PP9nQvwFxiGHz9p74uEdL8YMf/oq/FkeOg3bSvEKTx1U0C9Hud60?=
- =?us-ascii?Q?v9BDQI2F+j7JDQJnUHrPaoUFFK+khP/FcjFEOHoqBiFld9U59SFtk5jg+r7k?=
- =?us-ascii?Q?KKI3EPdKQff85345GIGZHf8NuebzPylCWPpUN7nWkRGLRvDpn7hHp8W1haaI?=
- =?us-ascii?Q?PQyu1Cpz6WiMxv+ayw+8M2IjuOJe+OmpF5TeiyB1xZOg4JgcD7gW3OhpX/pU?=
- =?us-ascii?Q?UvE+g6FrUCFQjOyw0faMMaI+WH6mdT4mGVDiurn6426spkV0tL/A2N7Asbgt?=
- =?us-ascii?Q?kcuO+T5ywIUoMJwCan7KNlU81VY5ZHNYDe6n/KkEUaXXdRzgvP+7VvEV1vIf?=
- =?us-ascii?Q?5h/mhU8HWcqHeMmPklauYLGQa/iaUtV039qw2e//wMR2a+CP0JmF2L2uKVvA?=
- =?us-ascii?Q?2hYNvejiopiUrQPMNaC4v28xhxLtaSgl+DWiDIYQTYtzM9Q8HEdxHeS7JLmp?=
- =?us-ascii?Q?bJSx/MHdAQJlwlcTVXBCSFHaRopgKlxKutoA9hmlEAC5BLEOy7rVAIDft8Fu?=
- =?us-ascii?Q?zTw8Ml8kKusd2Z6hemj1Hygo+eO64PrjYuDNaAGR+6EnA4zBQ7WUBnEVkLbu?=
- =?us-ascii?Q?WB1U7CJ4MQu20APA4wt2ChygZgOWC3SbO6X9i83pEsv0vRMhv8DWpouIJA1c?=
- =?us-ascii?Q?5fHxS4OF3pLwJ4bZBDwM98H/YsC6o8KiKlyfDL/ndALO0BYZLzcBovMbbs+n?=
- =?us-ascii?Q?DdGobrVoqAcJKO8fJ6nz1Wbal2QNcIPd6olqumKODwCulzg9UPOneZpDeNUg?=
- =?us-ascii?Q?puazFmGuXfAD5RgvZkmqNlSLbBETbAOzmZf5szxKEhR?=
-X-Microsoft-Antispam-Message-Info: J0/aGCd8c/n0Me37ckXHAHNzKUVXE8nIzG38gqGDhxsQDYk+CARyEQjWww2Qm/msLmjvvzz/6WadFbn0hztcX5R/elOz8jg23tja4v9vpSH8bYzPQ8i/H1UuZCpMspmSKYYsrsMd/BGwmrc9IB42sSqO2e1H25vwoca+Ge0rb5M4VijzDszOM6XIN/wgXlMm400O4u4tPUnuYcOK+CG7vlBjqQ+6WCpjIQXB+vFeWhHtSkTeobKFGZMfwuIQc+GfpMT4VsCR6QU949c4kbYzftAtmMyfM6ZbcEAIq6Ukyr0QytlVVz51AqKwHWtxps5PqugsrACaKuS79cF2SkhsB67qHq8ku4WeEQAsy4j8bzg=
-X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;6:M577WVujENVrWdkMRnDur00mLWcnlySy8GGTg7yJAx5wcVqVudqnnmgZxhaqyuFU43euwVar6HU+cqL06UfyTNtjADmNL7/MoI1/8+LPFmbLaZ/pVf0N94WjFjsz/KhZIwwqZpn2uGWLMrO1wgly6AgFNWUyzUXlwcEn7LItkAf5OCcRNQC7UfG8v8G9K+yWp0b4YF+/uZjLpC80YOmdy9TM7wQ4f0bN4+jsIrbvrF0ExNV0Y2WuFKdUTD4/NpcITDRvDbuucgNTzF+AuUnNwv+tRP4enSc33DiQzbBiSoIzpkZpaCnd81gtnCZgu4no8y9yz5Ssttflh9lO0Ot68VhLs3BCHMPfgWJv0QBheBd1VYvPl8M4L6DFlrk58jcM7+TyH4ZFV365JpqnNbBbEOEjS3oTHPrI9rsh8xMGOvvKLVKnBVfJaNzih6yMijqvu0rMMPEnhuAOJko1t6Cz0w==;5:3VibcLWpLz1D4JiFUw5CMZ3f1ESmzrxenmFSPPA7BFz9KgCjSOqHIFPm2e3YO4CRBVA8tXpD9zSpm3gyeM6ljbr/nXopaOGTzI7mwmxYqvqX5xBl7VD30pK1PrXvzrYE7vlo2E/eFZtkqinTqzRO0PaCgABM7ON1mx2mny1h7KE=;7:utIpWq/rzS0AG9SbPBAhbXNZ5lHt4dolEunFHDI0JNz0HiUM76tx2tujS5oeHRJMefRyXszpVCYzmLJeT8L8zat+CUB8rawqFwGukWOzXryvu0bbuvzDjP+lfaB9voeZ9rRv5Xoahme+L7wAU4aBtgzOC9/R4Axw8kFLIBj+8FyZZfQgSRTqsBYmm0PW2QZNNNcPP2La1wRI2gcnoJMCwYlcRPIRenDDn3GHSdLqQ+/r7JsEWHUqxzYvwGf5Y2go
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;DM6PR08MB4937;23:f6OmNnNUpCThL3vzKRzHnaaRCBcSsAeVYdiQhM7Ot?=
+ =?us-ascii?Q?GTVz181HYuvxKz003w6gnHLPPRysXvaF5V6pAOz83yVIrMDGRoa5J38AdEdQ?=
+ =?us-ascii?Q?X8dnl6KDJ/viGEK6K1xNSRLo12zCsLANj6RULpDK2LlP3EjCZ8uvGG60FAEA?=
+ =?us-ascii?Q?k7Zgk60nQb4RNLHbzXVmTs8bpYi3A0scmSgfDR1KxJczHXGZLn7iOjh5clMy?=
+ =?us-ascii?Q?m6EueKp39oGAfkDzj/o9NM/Su7/GeenJkw0QlDzZrkLn+bKPV50Wd1Sv/L0I?=
+ =?us-ascii?Q?TK7vmgBG+tMt9MwSkQ60PHqq9kBECCRFlvVeaEq+TXu+FUa5GpJeKHAC8ldM?=
+ =?us-ascii?Q?FTNBMiRyNHJ/61i9ws2uxc+xBdjXbKH5542YO+e34UxLwFIUGlawJXVY9KJq?=
+ =?us-ascii?Q?YoHuSG+dDPkBQxYY/Zv/yG6ieNMlTaUZqsVxQ0ECcFa/dhAKUr2cN0pF56w7?=
+ =?us-ascii?Q?Ipi49TvycTokJBg/np+nIJmisIE/GZEbsfMOqGZXChlxozuu4jDjJgaCzXMk?=
+ =?us-ascii?Q?An8qgtAX4CjP1yfo6pKHJqyY2W4kBENbkge4UOpV18OVafjaKKH3xZMRN916?=
+ =?us-ascii?Q?fX0ftMeUMQD36yzkiCzFJxRJvthpTYbBoEJnDAHlxsCwcxxglmgx5uki+PBP?=
+ =?us-ascii?Q?544J7eOgJKu7tGGxbrgcFRZd3Pjj0YZmVy7GEZitFM20ovViKy4xXMIMnzxD?=
+ =?us-ascii?Q?BZijU/LfEmX1XzjO8v/eyakGkjsT2Rz7Ymfzc/x0dNFggLv2wnaiOunWxeaK?=
+ =?us-ascii?Q?KOV+2oineXXlGGYs9zgWqb438R7mHOqTyGtvwdM/IvPYwdUWH7IltWlO9vnf?=
+ =?us-ascii?Q?gSer97y/CbJrRyNDG0YtZx5rhaPM/e+a1JPIFMb4G2TZZhGaTHZPLhDL2z1f?=
+ =?us-ascii?Q?u4/JzoXKWMgD4zEwljZgEKK0gcaqyBGB/g3eCjWy0/FE+F84HLzAm6YEG51U?=
+ =?us-ascii?Q?bTsQYxFjDo6dIzxevmrjpKDYntiLsw6o7bpOP0ZsGtH4deOETCtqbHgQ4L5g?=
+ =?us-ascii?Q?P1+I2IjW1qCrwRQW/QN5JMHXJPOaDYdZJnWUd+LDRFySqHETVCD1upISFHW9?=
+ =?us-ascii?Q?Xof64Y1XACmVeIcOA45e2ksOCvKKndj7Xq02Mrs6dYsncvUQxOn5xRUeI9yz?=
+ =?us-ascii?Q?iwuYbVLqg1XDYbJse4/LXwWsl6sos14/6EEqWjVprKgU0ym+CHO+nSPiWvJv?=
+ =?us-ascii?Q?CBCiv3gF5+TY6KblxZVX+GhmVDlC3XUygu6vkvEXZISJzT5BYTY0RFZhI//u?=
+ =?us-ascii?Q?YDOFHgTlQ+PxgABP6Vzx+qz1mvPHCzvvtZLcGOY06kHPmkXnqUWo62bysr95?=
+ =?us-ascii?Q?PLvMxRqGy7HJ2tWY0A73G2x8fDgwIp7+FfaC9rardaT1/1cD/qgLZZSzYNlA?=
+ =?us-ascii?Q?G5f7cvDcQ5afeeBlyZ99Jcuov/i9CriVCOkTwfKmGyh4LlDBVRGATmbfydeD?=
+ =?us-ascii?Q?NxEVq/gRVawMK2jO0O/0Cug6q64qD4=3D?=
+X-Microsoft-Antispam-Message-Info: RKfeZz7MkNkpypg8xXVg3qAhq7TxHd8bbACskgRSFjUd8+udJ/YEI8p44MfEiOAd7D5Kr+XC+2tf1CT5yde3k7UG484+8cOpchNvz2tnFSnDRob38H955u86B4WatNYSxo68M5oc5DCfnmd6KjgrZqLwkR2hDYom6CmKSPzaISNfl+8sdoLeMjQGVyQzclvNlmPUZIkCjjbUiCM0VLs6q9ofWt+CC7gsFN6A86cqaPVWravujPWVOaSNsQHSr/Ts6tRseRi3NOGh7SJBPgkjZKa1YvYtH7fsHLAaaIDQX2VMaLPGMx2cWj4OvJKUZ9bCs+1QDrFsAGZp9dvtZIR1V47m4K0pEylD2fwAiOGK7Ro=
+X-Microsoft-Exchange-Diagnostics: 1;DM6PR08MB4937;6:CIXq/sSwa1oC60xHJt50mh7tfzXbSij4zrpB8B4jGkjGiYT1xEH8VZePF1+c6Ja9zzVoAI2u1T/ZovJF56eoRY5WdzpxRxwa7tIm/OetMZUWsHNJZI0i3IJezA96sVSvTTKrQFmLVyFE0rT+dzxuMmh0G5i0AAZnpoD7Ng8PjRbN7KIL4W6quhczQQ3pK9ssxmLOikNb0+w+f4/SbuePDLrCkVeA7iI6Ew+7g3RUtBuBTSBkBLLuirB1vfLjH5HRKg87cG1+yglNMz4AyQ9CuTWR36j3oQe7uNwTvwyjrHs/NQunaeyB6zEyoUqO+SdSS+YvEW5eNn843Oc1w+khFihBa1tcT+njWMqaJXrw1Mkn3r9K15UP5Lem+beqEf7HLaA9uQw8/tlghiQpAebYUuad+PYuBBhhGoDeBjCbiPwUInGHBwAJo4w4ooQREF3qU5VDlRjMbIwnKu8kaf4DlQ==;5:RyKo8bjjxBYYp0lDwLJ4qtQRetei2yLgF3eBala90l/jGq9NVF9ZnUsHc1uBpflYrsfJPJVBcoTBoMDJBrqY97+0zGR9MlTB64/KUz8RFtELwRlHze37iY864e0946JRIuPToewGBYCRPl4n8sfiyvHMa9wDw0bqmpWXc6qqJ64=;7:Hz2KVohm00CkWD0qwterflXVsuY75r3H9zV0BnIf0bbyXrLEkBQSnUcCwLDrt7P3DNLycrwiabbl/snK3tw/+PcPlAeu5o/Y74FVEt1B6kpO+TLoxd9m09F2TnayKWiFYa+qEAyT5lhVoTuHz+I+PXes8t7najmggagD1pH8zgl6t9u9Sg7BQj86GArFJXGrEJO99l3QMwi6mn9VduWeIUMppLghGvK4OP0vKU+k201VSmsc009B62sm9WrVoWmm
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2018 21:54:12.9252 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37824e46-d9c0-4e9c-44ef-08d60df9f532
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2018 21:54:13.6967 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98de5a83-4706-46d6-fe4f-08d60df9f5a7
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4937
@@ -79,7 +83,7 @@ Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65798
+X-archive-position: 65799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -96,345 +100,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS has a copy of lib/iomap.c with minor alterations, none of which are
-necessary given appropriate definitions of PIO_OFFSET, PIO_MASK &
-PIO_RESERVED. Provide such definitions, select GENERIC_IOMAP & remove
-arch/mips/lib/iomap.c to cut back on the needless duplication.
+arch/mips appears to have inherited SLOW_DOWN_IO from arch/x86 in
+antiquity, but we never define CONF_SLOWDOWN_IO so this is unused code.
 
-The one change this does make is to our mmio_{in,out}s[bwl] functions,
-which began to deviate from their generic counterparts with commit
-0845bb721ebb ("MIPS: iomap: Use __mem_{read,write}{b,w,l} for MMIO"). I
-suspect that this commit was incorrect, and that the SEAD-3 platform
-should have instead selected CONFIG_SWAP_IO_SPACE. Since the SEAD-3
-platform code is now gone & the board is instead supported by the
-generic platform (CONFIG_MIPS_GENERIC) which selects
-CONFIG_SWAP_IO_SPACE anyway, this shouldn't be a problem any more.
+Perhaps it was once useful to keep the MIPS header close to the x86
+version to ease comparisons or porting changes, but they've diverged
+significantly at this point & x86 does this differently now anyway.
+
+Delete the dead code.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/Kconfig          |   2 +-
- arch/mips/include/asm/io.h |  15 ++-
- arch/mips/lib/Makefile     |   2 +-
- arch/mips/lib/iomap-pci.c  |   7 --
- arch/mips/lib/iomap.c      | 227 -------------------------------------
- 5 files changed, 12 insertions(+), 241 deletions(-)
- delete mode 100644 arch/mips/lib/iomap.c
+ arch/mips/include/asm/io.h | 40 +++-----------------------------------
+ 1 file changed, 3 insertions(+), 37 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 35511999156a..1a119fd7324d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -21,6 +21,7 @@ config MIPS
- 	select GENERIC_CLOCKEVENTS
- 	select GENERIC_CMOS_UPDATE
- 	select GENERIC_CPU_AUTOPROBE
-+	select GENERIC_IOMAP
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_LIB_ASHLDI3
-@@ -28,7 +29,6 @@ config MIPS
- 	select GENERIC_LIB_CMPDI2
- 	select GENERIC_LIB_LSHRDI3
- 	select GENERIC_LIB_UCMPDI2
--	select GENERIC_PCI_IOMAP
- 	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
 diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 54c730aed327..bbbeede9fea1 100644
+index bbbeede9fea1..44f766b6b5af 100644
 --- a/arch/mips/include/asm/io.h
 +++ b/arch/mips/include/asm/io.h
-@@ -79,6 +79,16 @@ static inline void set_io_port_base(unsigned long base)
- 	barrier();
- }
+@@ -33,11 +33,6 @@
+ #include <ioremap.h>
+ #include <mangle-port.h>
  
-+/*
-+ * Provide the necessary definitions for generic iomap. We make use of
-+ * mips_io_port_base for iomap(), but we don't reserve any low addresses for
-+ * use with I/O ports.
-+ */
-+#define HAVE_ARCH_PIO_SIZE
-+#define PIO_OFFSET	mips_io_port_base
-+#define PIO_MASK	IO_SPACE_LIMIT
-+#define PIO_RESERVED	0x0UL
-+
+-/*
+- * Slowdown I/O port space accesses for antique hardware.
+- */
+-#undef CONF_SLOWDOWN_IO
+-
  /*
-  * Thanks to James van Artsdalen for a better timing-fix than
-  * the two short jumps: using outb's to a nonexistent port seems
-@@ -172,11 +182,6 @@ static inline void *isa_bus_to_virt(unsigned long address)
- extern void __iomem * __ioremap(phys_addr_t offset, phys_addr_t size, unsigned long flags);
- extern void __iounmap(const volatile void __iomem *addr);
+  * Raw operations are never swapped in software.  OTOH values that raw
+  * operations are working on may or may not have been swapped by the bus
+@@ -89,33 +84,6 @@ static inline void set_io_port_base(unsigned long base)
+ #define PIO_MASK	IO_SPACE_LIMIT
+ #define PIO_RESERVED	0x0UL
  
--#ifndef CONFIG_PCI
--struct pci_dev;
--static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
+-/*
+- * Thanks to James van Artsdalen for a better timing-fix than
+- * the two short jumps: using outb's to a nonexistent port seems
+- * to guarantee better timings even on fast machines.
+- *
+- * On the other hand, I'd like to be sure of a non-existent port:
+- * I feel a bit unsafe about using 0x80 (should be safe, though)
+- *
+- *		Linus
+- *
+- */
+-
+-#define __SLOW_DOWN_IO \
+-	__asm__ __volatile__( \
+-		"sb\t$0,0x80(%0)" \
+-		: : "r" (mips_io_port_base));
+-
+-#ifdef CONF_SLOWDOWN_IO
+-#ifdef REALLY_SLOW_IO
+-#define SLOW_DOWN_IO { __SLOW_DOWN_IO; __SLOW_DOWN_IO; __SLOW_DOWN_IO; __SLOW_DOWN_IO; }
+-#else
+-#define SLOW_DOWN_IO __SLOW_DOWN_IO
+-#endif
+-#else
+-#define SLOW_DOWN_IO
 -#endif
 -
- static inline void __iomem * __ioremap_mode(phys_addr_t offset, unsigned long size,
- 	unsigned long flags)
- {
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 6537e022ef62..479f50559c83 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -7,7 +7,7 @@ lib-y	+= bitops.o csum_partial.o delay.o memcpy.o memset.o \
- 	   mips-atomic.o strncpy_user.o \
- 	   strnlen_user.o uncached.o
- 
--obj-y			+= iomap.o iomap_copy.o
-+obj-y			+= iomap_copy.o
- obj-$(CONFIG_PCI)	+= iomap-pci.o
- lib-$(CONFIG_GENERIC_CSUM)	:= $(filter-out csum_partial.o, $(lib-y))
- 
-diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
-index 4850509c5534..210f5a95ecb1 100644
---- a/arch/mips/lib/iomap-pci.c
-+++ b/arch/mips/lib/iomap-pci.c
-@@ -44,10 +44,3 @@ void __iomem *__pci_ioport_map(struct pci_dev *dev,
+ /*
+  *     virt_to_phys    -       map virtual addresses to physical
+  *     @address: address to remap
+@@ -399,7 +367,7 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
+ 	return pfx##ioswab##bwlq(__mem, __val);				\
  }
  
- #endif /* CONFIG_PCI_DRIVERS_LEGACY */
--
--void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
--{
--	iounmap(addr);
--}
--
--EXPORT_SYMBOL(pci_iounmap);
-diff --git a/arch/mips/lib/iomap.c b/arch/mips/lib/iomap.c
-deleted file mode 100644
-index 9b31653f318c..000000000000
---- a/arch/mips/lib/iomap.c
-+++ /dev/null
-@@ -1,227 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Implement the default iomap interfaces
-- *
-- * (C) Copyright 2004 Linus Torvalds
-- * (C) Copyright 2006 Ralf Baechle <ralf@linux-mips.org>
-- * (C) Copyright 2007 MIPS Technologies, Inc.
-- *     written by Ralf Baechle <ralf@linux-mips.org>
-- */
--#include <linux/export.h>
--#include <asm/io.h>
--
--/*
-- * Read/write from/to an (offsettable) iomem cookie. It might be a PIO
-- * access or a MMIO access, these functions don't care. The info is
-- * encoded in the hardware mapping set up by the mapping functions
-- * (or the cookie itself, depending on implementation and hw).
-- *
-- * The generic routines don't assume any hardware mappings, and just
-- * encode the PIO/MMIO as part of the cookie. They coldly assume that
-- * the MMIO IO mappings are not in the low address range.
-- *
-- * Architectures for which this is not true can't use this generic
-- * implementation and should do their own copy.
-- */
--
--#define PIO_MASK	0x0ffffUL
--
--unsigned int ioread8(void __iomem *addr)
--{
--	return readb(addr);
--}
--
--EXPORT_SYMBOL(ioread8);
--
--unsigned int ioread16(void __iomem *addr)
--{
--	return readw(addr);
--}
--
--EXPORT_SYMBOL(ioread16);
--
--unsigned int ioread16be(void __iomem *addr)
--{
--	return be16_to_cpu(__raw_readw(addr));
--}
--
--EXPORT_SYMBOL(ioread16be);
--
--unsigned int ioread32(void __iomem *addr)
--{
--	return readl(addr);
--}
--
--EXPORT_SYMBOL(ioread32);
--
--unsigned int ioread32be(void __iomem *addr)
--{
--	return be32_to_cpu(__raw_readl(addr));
--}
--
--EXPORT_SYMBOL(ioread32be);
--
--void iowrite8(u8 val, void __iomem *addr)
--{
--	writeb(val, addr);
--}
--
--EXPORT_SYMBOL(iowrite8);
--
--void iowrite16(u16 val, void __iomem *addr)
--{
--	writew(val, addr);
--}
--
--EXPORT_SYMBOL(iowrite16);
--
--void iowrite16be(u16 val, void __iomem *addr)
--{
--	__raw_writew(cpu_to_be16(val), addr);
--}
--
--EXPORT_SYMBOL(iowrite16be);
--
--void iowrite32(u32 val, void __iomem *addr)
--{
--	writel(val, addr);
--}
--
--EXPORT_SYMBOL(iowrite32);
--
--void iowrite32be(u32 val, void __iomem *addr)
--{
--	__raw_writel(cpu_to_be32(val), addr);
--}
--
--EXPORT_SYMBOL(iowrite32be);
--
--/*
-- * These are the "repeat MMIO read/write" functions.
-- * Note the "__mem" accesses, since we want to convert
-- * to CPU byte order if the host bus happens to not match the
-- * endianness of PCI/ISA (see mach-generic/mangle-port.h).
-- */
--static inline void mmio_insb(void __iomem *addr, u8 *dst, int count)
--{
--	while (--count >= 0) {
--		u8 data = __mem_readb(addr);
--		*dst = data;
--		dst++;
--	}
--}
--
--static inline void mmio_insw(void __iomem *addr, u16 *dst, int count)
--{
--	while (--count >= 0) {
--		u16 data = __mem_readw(addr);
--		*dst = data;
--		dst++;
--	}
--}
--
--static inline void mmio_insl(void __iomem *addr, u32 *dst, int count)
--{
--	while (--count >= 0) {
--		u32 data = __mem_readl(addr);
--		*dst = data;
--		dst++;
--	}
--}
--
--static inline void mmio_outsb(void __iomem *addr, const u8 *src, int count)
--{
--	while (--count >= 0) {
--		__mem_writeb(*src, addr);
--		src++;
--	}
--}
--
--static inline void mmio_outsw(void __iomem *addr, const u16 *src, int count)
--{
--	while (--count >= 0) {
--		__mem_writew(*src, addr);
--		src++;
--	}
--}
--
--static inline void mmio_outsl(void __iomem *addr, const u32 *src, int count)
--{
--	while (--count >= 0) {
--		__mem_writel(*src, addr);
--		src++;
--	}
--}
--
--void ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
--{
--	mmio_insb(addr, dst, count);
--}
--
--EXPORT_SYMBOL(ioread8_rep);
--
--void ioread16_rep(void __iomem *addr, void *dst, unsigned long count)
--{
--	mmio_insw(addr, dst, count);
--}
--
--EXPORT_SYMBOL(ioread16_rep);
--
--void ioread32_rep(void __iomem *addr, void *dst, unsigned long count)
--{
--	mmio_insl(addr, dst, count);
--}
--
--EXPORT_SYMBOL(ioread32_rep);
--
--void iowrite8_rep(void __iomem *addr, const void *src, unsigned long count)
--{
--	mmio_outsb(addr, src, count);
--}
--
--EXPORT_SYMBOL(iowrite8_rep);
--
--void iowrite16_rep(void __iomem *addr, const void *src, unsigned long count)
--{
--	mmio_outsw(addr, src, count);
--}
--
--EXPORT_SYMBOL(iowrite16_rep);
--
--void iowrite32_rep(void __iomem *addr, const void *src, unsigned long count)
--{
--	mmio_outsl(addr, src, count);
--}
--
--EXPORT_SYMBOL(iowrite32_rep);
--
--/*
-- * Create a virtual mapping cookie for an IO port range
-- *
-- * This uses the same mapping are as the in/out family which has to be setup
-- * by the platform initialization code.
-- *
-- * Just to make matters somewhat more interesting on MIPS systems with
-- * multiple host bridge each will have it's own ioport address space.
-- */
--static void __iomem *ioport_map_legacy(unsigned long port, unsigned int nr)
--{
--	return (void __iomem *) (mips_io_port_base + port);
--}
--
--void __iomem *ioport_map(unsigned long port, unsigned int nr)
--{
--	if (port > PIO_MASK)
--		return NULL;
--
--	return ioport_map_legacy(port, nr);
--}
--
--EXPORT_SYMBOL(ioport_map);
--
--void ioport_unmap(void __iomem *addr)
--{
--	/* Nothing to do */
--}
--
--EXPORT_SYMBOL(ioport_unmap);
+-#define __BUILD_IOPORT_SINGLE(pfx, bwlq, type, p, slow)			\
++#define __BUILD_IOPORT_SINGLE(pfx, bwlq, type, p)			\
+ 									\
+ static inline void pfx##out##bwlq##p(type val, unsigned long port)	\
+ {									\
+@@ -416,7 +384,6 @@ static inline void pfx##out##bwlq##p(type val, unsigned long port)	\
+ 	BUILD_BUG_ON(sizeof(type) > sizeof(unsigned long));		\
+ 									\
+ 	*__addr = __val;						\
+-	slow;								\
+ }									\
+ 									\
+ static inline type pfx##in##bwlq##p(unsigned long port)			\
+@@ -429,7 +396,6 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
+ 	BUILD_BUG_ON(sizeof(type) > sizeof(unsigned long));		\
+ 									\
+ 	__val = *__addr;						\
+-	slow;								\
+ 									\
+ 	/* prevent prefetching of coherent DMA data prematurely */	\
+ 	rmb();								\
+@@ -452,8 +418,8 @@ BUILDIO_MEM(l, u32)
+ BUILDIO_MEM(q, u64)
+ 
+ #define __BUILD_IOPORT_PFX(bus, bwlq, type)				\
+-	__BUILD_IOPORT_SINGLE(bus, bwlq, type, ,)			\
+-	__BUILD_IOPORT_SINGLE(bus, bwlq, type, _p, SLOW_DOWN_IO)
++	__BUILD_IOPORT_SINGLE(bus, bwlq, type,)				\
++	__BUILD_IOPORT_SINGLE(bus, bwlq, type, _p)
+ 
+ #define BUILDIO_IOPORT(bwlq, type)					\
+ 	__BUILD_IOPORT_PFX(, bwlq, type)				\
 -- 
 2.18.0

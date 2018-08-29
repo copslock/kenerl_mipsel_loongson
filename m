@@ -1,62 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2018 22:13:52 +0200 (CEST)
-Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:34012
-        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993070AbeH1UNq6vQ0R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Aug 2018 22:13:46 +0200
-Received: by mail-pf1-x444.google.com with SMTP id k19-v6so1209066pfi.1
-        for <linux-mips@linux-mips.org>; Tue, 28 Aug 2018 13:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Nrx5BjLid6WRT0H+QOg8OOAOoYWBRl3aOyPeYKp49o8=;
-        b=ORg3rM9pJcwi49nThhGQpNPutYZBoA/O1ef4eqv121X6OBjeGxolkgnBpuB0eoWRiz
-         1LngNeT655sV1/LHNHc+GZuS31pBFBtZKb7CMgZ6zgiuuHWg3hWeGv9PJq3rp0a1jAwz
-         4adSGw6C3lFKRLwSKyWlcTIdLcMdM8gaZIRi4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Nrx5BjLid6WRT0H+QOg8OOAOoYWBRl3aOyPeYKp49o8=;
-        b=FVnsU8bSMe0pMzg8q2ED9h9aBW0qeS5mDBRg8QX4GV4QIP15Enu/qZt5beZo4VK7HJ
-         50tSYGAHs+VMmze+BV7IVEKZm/qUopCcHW1fGk3/FhiPkzUR9PMrDIEnWSbOyLaNOLR2
-         Ya1atr9f+NOQ8nyS3Vx9CZ05LYeYstydWHHhvUlV4C3vIe+T0GQOIMW7albIkIGWd4lE
-         cCBkAO/4ptl6tBjgXmeJ3yMhv6Krx8HkkVgbt2wmMM9roxuBcsx+jWjuxfRV4+m1+Wk7
-         Nc4SoK/vpMm2HsI75wUQ3Nawoksduu7eJfkGVj2ZEZNZGYwqUXxEJ1RUUtpV1yDB1lGx
-         Goxw==
-X-Gm-Message-State: APzg51DDEr4ndp5yVkqmTaCrtLiJNuk4PYJAf9EiCJD4MEABEV1u/+PA
-        lsbALBHZzDMO0nfQD2R67xVD8g==
-X-Google-Smtp-Source: ANB0VdYnLkGyIBEfvQozaS1KFD8EqKhmXlAZbz8e/TpB8TwCSHR5OufdUIzOmCaUofKA6WjIhvbZPQ==
-X-Received: by 2002:a62:808c:: with SMTP id j134-v6mr2969815pfd.120.1535487220306;
-        Tue, 28 Aug 2018 13:13:40 -0700 (PDT)
-Received: from localhost.localdomain ([49.207.48.21])
-        by smtp.gmail.com with ESMTPSA id t86-v6sm3098181pfe.109.2018.08.28.13.13.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 28 Aug 2018 13:13:38 -0700 (PDT)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Stable <stable@vger.kernel.org>,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, Jamie Iles <jamie.iles@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH for-4.9.y 03/14] kthread: fix boot hang (regression) on MIPS/OpenRISC
-Date:   Wed, 29 Aug 2018 01:43:14 +0530
-Message-Id: <1535487205-26280-4-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1535487205-26280-1-git-send-email-amit.pundir@linaro.org>
-References: <1535487205-26280-1-git-send-email-amit.pundir@linaro.org>
-Return-Path: <amit.pundir@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 08:56:39 +0200 (CEST)
+Received: from mga07.intel.com ([134.134.136.100]:10788 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990403AbeH2G4ai0qit (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Aug 2018 08:56:30 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Aug 2018 23:56:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.53,301,1531810800"; 
+   d="scan'208";a="85383511"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Aug 2018 23:56:27 -0700
+Received: from [10.226.39.0] (zhuyixin-mobl.gar.corp.intel.com [10.226.39.0])
+        by linux.intel.com (Postfix) with ESMTP id E38BF580146;
+        Tue, 28 Aug 2018 23:56:23 -0700 (PDT)
+Subject: Re: [PATCH v2 02/18] clk: intel: Add clock driver for Intel MIPS SoCs
+To:     Stephen Boyd <sboyd@kernel.org>,
+        Songjun Wu <songjun.wu@linux.intel.com>,
+        chuanhua.lei@linux.intel.com, hua.ma@linux.intel.com,
+        qi-ming.wu@intel.com
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
+ <20180803030237.3366-3-songjun.wu@linux.intel.com>
+ <153370742214.220756.2039365625963765922@swboyd.mtv.corp.google.com>
+ <571d2d40-8728-fa7c-5d89-73d2a7b6293b@linux.intel.com>
+ <153539697928.129321.2605078315090527674@swboyd.mtv.corp.google.com>
+From:   "Zhu, Yi Xin" <yixin.zhu@linux.intel.com>
+Message-ID: <75f8313b-42e6-e741-196d-af27ad1e4f9b@linux.intel.com>
+Date:   Wed, 29 Aug 2018 14:56:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.0
+MIME-Version: 1.0
+In-Reply-To: <153539697928.129321.2605078315090527674@swboyd.mtv.corp.google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Return-Path: <yixin.zhu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65771
+X-archive-position: 65772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit.pundir@linaro.org
+X-original-sender: yixin.zhu@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,78 +61,140 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
 
-commit b0f5a8f32e8bbdaae1abb8abe2d3cbafaba57e08 upstream.
+On 8/28/2018 3:09 AM, Stephen Boyd wrote:
+> Quoting yixin zhu (2018-08-08 01:52:20)
+>> On 8/8/2018 1:50 PM, Stephen Boyd wrote:
+>>> Quoting Songjun Wu (2018-08-02 20:02:21)
+>>>> +       struct clk *clk;
+>>>> +       int idx;
+>>>> +
+>>>> +       for (idx = 0; idx < nr_clks; idx++, osc++) {
+>>>> +               if (!osc->dt_freq ||
+>>>> +                   of_property_read_u32(ctx->np, osc->dt_freq, &freq))
+>>>> +                       freq = osc->def_rate;
+>>>> +
+>>>> +               clk = clk_register_fixed_rate(NULL, osc->name, NULL, 0, freq);
+>>> Should come from DT itself.
+>> Yes. It can be defined as fixed-clock node in device tree.
+>> Do you mean it should be defined in device tree and driver reference it
+>> via device tree?
+> Yes the oscillator should be in DT and then the DT node here can call
+> clk_get() or just hardcode the parent name to be what it knows it is.
+> Eventually we'd like to be able to move away from string names for
+> hierarchy descriptions but that's far off. To get there, we would need
+> DT nodes for clock controllers to indicate their clk parents with the
+> clocks and clock-names properties. So for the oscillator, DT would
+> define it and then the driver would eventually have a way to specify
+> that some parent is index 5 or clock name "foo" and then the clk core
+> could figure out the linkage. I haven't written that code yet, but I'll
+> probably do it soon if nobody beats me to it.
 
-This fixes a regression in commit 4d6501dce079 where I didn't notice
-that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-NULL after our initialisation in copy_process().
+Thanks.  Will update.
 
-We can simply get rid of the arch-specific initialisation here since it
-is now always done in copy_process() before hitting copy_thread{,_tls}().
 
-Review notes:
+>
+>>>> +/**
+>>>> + * struct intel_clk_provider
+>>>> + * @map: regmap type base address for register.
+>>>> + * @np: device node
+>>>> + * @clk_data: array of hw clocks and clk number.
+>>>> + */
+>>>> +struct intel_clk_provider {
+>>>> +       struct regmap           *map;
+>>>> +       struct device_node      *np;
+>>>> +       struct clk_onecell_data clk_data;
+>>> Please register clk_hw pointers instead of clk pointers with the of
+>>> provider APIs.
+>> Sorry.  I'm not sure I understand you correctly.
+>> If only registering clk_hw pointer,  not registering of_provider API, then
+>> how to reference it in the user drivers ?
+>> Could you please give me more hints ?
+> Clk provider drivers shouldn't be using clk pointers directly. Usually
+> when that happens something is wrong. So new clk drivers should register
+> clk_hw pointers and pretty much only deal with clk_hw pointers instead
+> of struct clk pointers. You still register an of_provider, but that
+> provider hands out clk_hw pointers so that clk provider drivers aren't
+> tempted to use struct clk pointers.
 
- - As far as I can tell, copy_process() is the only user of
-   copy_thread_tls(), which is the only caller of copy_thread() for
-   architectures that don't implement copy_thread_tls().
+Understood.  Will update to use clk_hw_onecell_data and change the 
+registration accordingly.
 
- - After this patch, there is no arch-specific code touching
-   p->set_child_tid or p->clear_child_tid whatsoever.
 
- - It may look like MIPS/OpenRISC wanted to always have these fields be
-   NULL, but that's not true, as copy_process() would unconditionally
-   set them again _after_ calling copy_thread_tls() before commit
-   4d6501dce079.
+>>
+>>>> + */
+>>>> +struct intel_pll_clk {
+>>>> +       unsigned int            id;
+>>>> +       const char              *name;
+>>>> +       const char              *const *parent_names;
+>>>> +       u8                      num_parents;
+>>> Can the PLL have multiple parents?
+>> Yes. But not in this platform.
+>> The define here make it easy to expand to support new platform.
+>>
+> Ok, so it has a mux inside.
+>
+>>>> +       unsigned int                    id;
+>>>> +       enum intel_clk_type             type;
+>>>> +       const char                      *name;
+>>>> +       const char                      *const *parent_names;
+>>>> +       u8                              num_parents;
+>>>> +       unsigned long                   flags;
+>>>> +       unsigned int                    mux_off;
+>>>> +       u8                              mux_shift;
+>>>> +       u8                              mux_width;
+>>>> +       unsigned long                   mux_flags;
+>>>> +       unsigned int                    mux_val;
+>>>> +       unsigned int                    div_off;
+>>>> +       u8                              div_shift;
+>>>> +       u8                              div_width;
+>>>> +       unsigned long                   div_flags;
+>>>> +       unsigned int                    div_val;
+>>>> +       const struct clk_div_table      *div_table;
+>>>> +       unsigned int                    gate_off;
+>>>> +       u8                              gate_shift;
+>>>> +       unsigned long                   gate_flags;
+>>>> +       unsigned int                    gate_val;
+>>>> +       unsigned int                    mult;
+>>>> +       unsigned int                    div;
+>>>> +};
+>>>> +
+>>>> +/* clock flags definition */
+>>>> +#define CLOCK_FLAG_VAL_INIT    BIT(16)
+>>>> +#define GATE_CLK_HW            BIT(17)
+>>>> +#define GATE_CLK_SW            BIT(18)
+>>>> +#define GATE_CLK_VT            BIT(19)
+>>> What does VT mean? Virtual?
+>> Yes. VT means virtual here.
+>> Will change to GATE_CLK_VIRT.
+>>
+> Is it a hardware concept? Or virtualization with hypervisor?
 
-Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
-Acked-by: Stafford Horne <shorne@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: openrisc@lists.librecores.org
-Cc: Jamie Iles <jamie.iles@oracle.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
-To be applied on 4.4.y and 3.18.y as well.
-Build tested on v4.4.153 and v3.18.120.
+Some peripheral drivers want to use same code cross platforms.
 
- arch/mips/kernel/process.c     | 1 -
- arch/openrisc/kernel/process.c | 2 --
- 2 files changed, 3 deletions(-)
+But not all platforms provide HW gate clock.  So in this case, clock 
+driver creates
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 513a63b9b991..ba315e523b33 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -118,7 +118,6 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
- 	struct thread_info *ti = task_thread_info(p);
- 	struct pt_regs *childregs, *regs = current_pt_regs();
- 	unsigned long childksp;
--	p->set_child_tid = p->clear_child_tid = NULL;
- 
- 	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
- 
-diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-index 7095dfe7666b..962372143fda 100644
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -152,8 +152,6 @@ copy_thread(unsigned long clone_flags, unsigned long usp,
- 
- 	top_of_kernel_stack = sp;
- 
--	p->set_child_tid = p->clear_child_tid = NULL;
--
- 	/* Locate userspace context on stack... */
- 	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
- 	sp -= sizeof(struct pt_regs);
--- 
-2.7.4
+a virtual gate clock to make it work if no HW gate clock in the SoC.
+
+
+>
+>>>> +}
+>>>> +
+>>>> +CLK_OF_DECLARE(intel_grx500_cgu, "intel,grx500-cgu", grx500_clk_init);
+>>> Any reason a platform driver can't be used instead of CLK_OF_DECLARE()?
+>> It provides CPU clock which is used in early boot stage.
+>>
+> Ok. What is the CPU clock doing in early boot stage? Some sort of timer
+> frequency? If the driver can be split into two pieces, one to handle the
+> really early stuff that must be in place to get timers up and running
+> and the other to register the rest of the clks that aren't critical from
+> a regular platform driver it would be good. That's preferred model if
+> something is super critical.
+
+Yes, CPU clock is providing CPU frequency in the early boot stage.
+
+Will put the non-critical clocks in the platform driver.
+
+
+>

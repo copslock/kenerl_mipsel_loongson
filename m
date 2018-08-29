@@ -1,54 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 08:56:39 +0200 (CEST)
-Received: from mga07.intel.com ([134.134.136.100]:10788 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990403AbeH2G4ai0qit (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Aug 2018 08:56:30 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Aug 2018 23:56:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.53,301,1531810800"; 
-   d="scan'208";a="85383511"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga001.fm.intel.com with ESMTP; 28 Aug 2018 23:56:27 -0700
-Received: from [10.226.39.0] (zhuyixin-mobl.gar.corp.intel.com [10.226.39.0])
-        by linux.intel.com (Postfix) with ESMTP id E38BF580146;
-        Tue, 28 Aug 2018 23:56:23 -0700 (PDT)
-Subject: Re: [PATCH v2 02/18] clk: intel: Add clock driver for Intel MIPS SoCs
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Songjun Wu <songjun.wu@linux.intel.com>,
-        chuanhua.lei@linux.intel.com, hua.ma@linux.intel.com,
-        qi-ming.wu@intel.com
-Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-References: <20180803030237.3366-1-songjun.wu@linux.intel.com>
- <20180803030237.3366-3-songjun.wu@linux.intel.com>
- <153370742214.220756.2039365625963765922@swboyd.mtv.corp.google.com>
- <571d2d40-8728-fa7c-5d89-73d2a7b6293b@linux.intel.com>
- <153539697928.129321.2605078315090527674@swboyd.mtv.corp.google.com>
-From:   "Zhu, Yi Xin" <yixin.zhu@linux.intel.com>
-Message-ID: <75f8313b-42e6-e741-196d-af27ad1e4f9b@linux.intel.com>
-Date:   Wed, 29 Aug 2018 14:56:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2018 11:10:56 +0200 (CEST)
+Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:46830
+        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990509AbeH2JKwSUr1f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2018 11:10:52 +0200
+Received: by mail-wr1-x442.google.com with SMTP id a108-v6so4043333wrc.13
+        for <linux-mips@linux-mips.org>; Wed, 29 Aug 2018 02:10:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dUh4W5vgn6WUDKihwUsC0LGuZ0iu/ZvNvIjJGT4Tl6I=;
+        b=de+3+7R6XKdMFiFjJUdi2tjU0hsne6og+9s6iiujLaJ9+F5nM5naq3PIwYYgLSfr4P
+         pCzbqsxTCvh/usbQoW+CxfRbSAnpYS2D9R8MYZ9jwd6nyI4EPiaLTS3Z1v4FoVDPrjf2
+         a6MLk6TC+R2u6vQ9/ZNY6n9K/SmZBZfmjLIqU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dUh4W5vgn6WUDKihwUsC0LGuZ0iu/ZvNvIjJGT4Tl6I=;
+        b=ivIoQqfAhJ/TtLBjcweqQblkRiUxn05ZYeNFw0ozDDeRA0/lh4pau8AgryDDhLL06O
+         Ewg0NbVYfJgLwtXQ1FdsBAzMen4lcBzesxsGYTUZK5d9NjVz4kpnsXbGZpwwwqM0p40+
+         zQJIbC1juZp2qPdYtVZd3GqE0NuxqZA6VNeAMwyMz5nvc9moBbr/xI/lTs6dExvqwnSL
+         5Pho8rcypE/kbUghdckwHwBrYlKTrJU4hCgddsQxENcBcIcuHUqg1Aaayrat8VGfmUKK
+         +BxCIaDUQeUkKkoxK8WPEC8ZK/O5QcQ4PQ589ymcp70IhRb1i1w8Dao17c6uZEWOoD/p
+         bHdA==
+X-Gm-Message-State: APzg51ARUGMHvuUNzllw5+AGSUq3jzPrtmyz0FZmeBLpZbgpJg5/obYQ
+        tGu+zRYpnvVUHynWfvgCnmFs6Q==
+X-Google-Smtp-Source: ANB0VdaXWPxggKdVIjWOHF2QWnHVcWXsNcx7yFOEF5g9LUjCBMoci6z/Y4sxOZLMLkFAGHTTOq2+JQ==
+X-Received: by 2002:adf:f5c9:: with SMTP id k9-v6mr3643055wrp.59.1535533846592;
+        Wed, 29 Aug 2018 02:10:46 -0700 (PDT)
+Received: from [192.168.0.22] (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
+        by smtp.googlemail.com with ESMTPSA id j44-v6sm6940439wre.40.2018.08.29.02.10.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Aug 2018 02:10:45 -0700 (PDT)
+Subject: Re: [PATCH v7 05/24] clocksource: Add a new timer-ingenic driver
+To:     Paul Burton <paul.burton@mips.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonathan Corbet <corbet@lwn.net>, od@zcrc.me,
+        Mathieu Malaterre <malat@debian.org>,
+        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org
+References: <20180821171635.22740-1-paul@crapouillou.net>
+ <20180821171635.22740-6-paul@crapouillou.net>
+ <20180828172305.bohg6cggnzm3wsuj@pburton-laptop>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <62569807-7be8-51df-4683-82392224432d@linaro.org>
+Date:   Wed, 29 Aug 2018 11:10:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <153539697928.129321.2605078315090527674@swboyd.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20180828172305.bohg6cggnzm3wsuj@pburton-laptop>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Return-Path: <yixin.zhu@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65772
+X-archive-position: 65773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yixin.zhu@linux.intel.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,140 +82,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-On 8/28/2018 3:09 AM, Stephen Boyd wrote:
-> Quoting yixin zhu (2018-08-08 01:52:20)
->> On 8/8/2018 1:50 PM, Stephen Boyd wrote:
->>> Quoting Songjun Wu (2018-08-02 20:02:21)
->>>> +       struct clk *clk;
->>>> +       int idx;
->>>> +
->>>> +       for (idx = 0; idx < nr_clks; idx++, osc++) {
->>>> +               if (!osc->dt_freq ||
->>>> +                   of_property_read_u32(ctx->np, osc->dt_freq, &freq))
->>>> +                       freq = osc->def_rate;
->>>> +
->>>> +               clk = clk_register_fixed_rate(NULL, osc->name, NULL, 0, freq);
->>> Should come from DT itself.
->> Yes. It can be defined as fixed-clock node in device tree.
->> Do you mean it should be defined in device tree and driver reference it
->> via device tree?
-> Yes the oscillator should be in DT and then the DT node here can call
-> clk_get() or just hardcode the parent name to be what it knows it is.
-> Eventually we'd like to be able to move away from string names for
-> hierarchy descriptions but that's far off. To get there, we would need
-> DT nodes for clock controllers to indicate their clk parents with the
-> clocks and clock-names properties. So for the oscillator, DT would
-> define it and then the driver would eventually have a way to specify
-> that some parent is index 5 or clock name "foo" and then the clk core
-> could figure out the linkage. I haven't written that code yet, but I'll
-> probably do it soon if nobody beats me to it.
-
-Thanks.  Will update.
-
-
->
->>>> +/**
->>>> + * struct intel_clk_provider
->>>> + * @map: regmap type base address for register.
->>>> + * @np: device node
->>>> + * @clk_data: array of hw clocks and clk number.
->>>> + */
->>>> +struct intel_clk_provider {
->>>> +       struct regmap           *map;
->>>> +       struct device_node      *np;
->>>> +       struct clk_onecell_data clk_data;
->>> Please register clk_hw pointers instead of clk pointers with the of
->>> provider APIs.
->> Sorry.  I'm not sure I understand you correctly.
->> If only registering clk_hw pointer,  not registering of_provider API, then
->> how to reference it in the user drivers ?
->> Could you please give me more hints ?
-> Clk provider drivers shouldn't be using clk pointers directly. Usually
-> when that happens something is wrong. So new clk drivers should register
-> clk_hw pointers and pretty much only deal with clk_hw pointers instead
-> of struct clk pointers. You still register an of_provider, but that
-> provider hands out clk_hw pointers so that clk provider drivers aren't
-> tempted to use struct clk pointers.
-
-Understood.  Will update to use clk_hw_onecell_data and change the 
-registration accordingly.
-
-
+On 28/08/2018 19:23, Paul Burton wrote:
+> Hi Daniel & Thomas,
+> 
+> On Tue, Aug 21, 2018 at 07:16:16PM +0200, Paul Cercueil wrote:
+>> This driver handles the TCU (Timer Counter Unit) present on the Ingenic
+>> JZ47xx SoCs, and provides the kernel with a system timer, and optionally
+>> with a clocksource and a sched_clock.
 >>
->>>> + */
->>>> +struct intel_pll_clk {
->>>> +       unsigned int            id;
->>>> +       const char              *name;
->>>> +       const char              *const *parent_names;
->>>> +       u8                      num_parents;
->>> Can the PLL have multiple parents?
->> Yes. But not in this platform.
->> The define here make it easy to expand to support new platform.
+>> It also provides clocks and interrupt handling to client drivers.
 >>
-> Ok, so it has a mux inside.
->
->>>> +       unsigned int                    id;
->>>> +       enum intel_clk_type             type;
->>>> +       const char                      *name;
->>>> +       const char                      *const *parent_names;
->>>> +       u8                              num_parents;
->>>> +       unsigned long                   flags;
->>>> +       unsigned int                    mux_off;
->>>> +       u8                              mux_shift;
->>>> +       u8                              mux_width;
->>>> +       unsigned long                   mux_flags;
->>>> +       unsigned int                    mux_val;
->>>> +       unsigned int                    div_off;
->>>> +       u8                              div_shift;
->>>> +       u8                              div_width;
->>>> +       unsigned long                   div_flags;
->>>> +       unsigned int                    div_val;
->>>> +       const struct clk_div_table      *div_table;
->>>> +       unsigned int                    gate_off;
->>>> +       u8                              gate_shift;
->>>> +       unsigned long                   gate_flags;
->>>> +       unsigned int                    gate_val;
->>>> +       unsigned int                    mult;
->>>> +       unsigned int                    div;
->>>> +};
->>>> +
->>>> +/* clock flags definition */
->>>> +#define CLOCK_FLAG_VAL_INIT    BIT(16)
->>>> +#define GATE_CLK_HW            BIT(17)
->>>> +#define GATE_CLK_SW            BIT(18)
->>>> +#define GATE_CLK_VT            BIT(19)
->>> What does VT mean? Virtual?
->> Yes. VT means virtual here.
->> Will change to GATE_CLK_VIRT.
+>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>> ---
 >>
-> Is it a hardware concept? Or virtualization with hypervisor?
-
-Some peripheral drivers want to use same code cross platforms.
-
-But not all platforms provide HW gate clock.  So in this case, clock 
-driver creates
-
-a virtual gate clock to make it work if no HW gate clock in the SoC.
-
-
->
->>>> +}
->>>> +
->>>> +CLK_OF_DECLARE(intel_grx500_cgu, "intel,grx500-cgu", grx500_clk_init);
->>> Any reason a platform driver can't be used instead of CLK_OF_DECLARE()?
->> It provides CPU clock which is used in early boot stage.
+>> Notes:
+>>      v2: Use SPDX identifier for the license
+>>     
+>>      v3: - Move documentation to its own patch
+>>          - Search the devicetree for PWM clients, and use all the TCU
+>>     	   channels that won't be used for PWM
+>>     
+>>      v4: - Add documentation about why we search for PWM clients
+>>          - Verify that the PWM clients are for the TCU PWM driver
+>>     
+>>      v5: Major overhaul. Too many changes to list. Consider it's a new
+>>          patch.
+>>     
+>>      v6: - Add two API functions ingenic_tcu_request_channel and
+>>            ingenic_tcu_release_channel. To be used by the PWM driver to
+>>            request the use of a TCU channel. The driver will now dynamically
+>>            move away the system timer or clocksource to a new TCU channel.
+>>          - The system timer now defaults to channel 0, the clocksource now
+>>            defaults to channel 1 and is no more optional. The
+>>            ingenic,timer-channel and ingenic,clocksource-channel devicetree
+>>            properties are now gone.
+>>          - Fix round_rate / set_rate not calculating the prescale divider
+>>            the same way. This caused problems when (parent_rate / div) would
+>>            give a non-integer result. The behaviour is correct now.
+>>          - The clocksource clock is turned off on suspend now.
+>>     
+>>      v7: Fix section mismatch by using builtin_platform_driver_probe()
 >>
-> Ok. What is the CPU clock doing in early boot stage? Some sort of timer
-> frequency? If the driver can be split into two pieces, one to handle the
-> really early stuff that must be in place to get timers up and running
-> and the other to register the rest of the clks that aren't critical from
-> a regular platform driver it would be good. That's preferred model if
-> something is super critical.
+>>  drivers/clocksource/Kconfig         |   10 +
+>>  drivers/clocksource/Makefile        |    1 +
+>>  drivers/clocksource/ingenic-timer.c | 1124 +++++++++++++++++++++++++++++++++++
+>>  drivers/clocksource/ingenic-timer.h |   15 +
+>>  include/linux/mfd/ingenic-tcu.h     |    3 +
+>>  5 files changed, 1153 insertions(+)
+>>  create mode 100644 drivers/clocksource/ingenic-timer.c
+>>  create mode 100644 drivers/clocksource/ingenic-timer.h
+>> %
+> 
+> How is this & patch 6 of the series looking to you from a
+> drivers/clocksource perspective?
 
-Yes, CPU clock is providing CPU frequency in the early boot stage.
+The presence of completion, mutexes, etc ... makes me think the driver
+is not going to the right direction.
 
-Will put the non-critical clocks in the platform driver.
+I have to review the drivers again but it will take some time because
+I'm returning from vacations and there are a trillion emails to sort out :/
+
+> If you're happy with them it'd be great to get an ack so I can take this
+> through the MIPS tree with the rest of the series. The alternative would
+> be to get the drivers in first then the MIPS bits in the next release
+> cycle.
+> 
+> Thanks,
+>     Paul
+> 
 
 
->
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

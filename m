@@ -1,93 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2018 19:35:05 +0200 (CEST)
-Received: from mail-by2nam05on0704.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe52::704]:38720
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2018 20:02:47 +0200 (CEST)
+Received: from mail-co1nam05on0705.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe50::705]:60933
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993973AbeH3RfBXxYLS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Aug 2018 19:35:01 +0200
+        id S23994002AbeH3SCm640zS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Aug 2018 20:02:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v7jmaN8unYDDj0PP8a5hR9JhHuYpvxcIB/vsrMFpGxs=;
- b=OLMYglLxD8uX1cA+9xwje6rFtb80bs8+L8EQqlU0mdH//liBK2IjNxqqDjmWIxxYFYICmClU4Bp1BjwdWk37+r7phTbUpTG2mObVop4Va5Tqq0H5HPl4GYmZKqKbF32JYmuEBVKZLvdLYnxvyO/gmqr9+xKS7eKtgEfmWtOrQM8=
+ bh=PwOAO0r1bjrIUypCl8H6GMl1MMfAMb4FtU7lNswfkSQ=;
+ b=Ud1EV8Sib9sWgqo3SSEHFkR7ip0asaN0j9P0DiZKBQ9YSfuFeOWzzZRoIr4FSkntqv2+o+PjGyXWn6NSjZfLFvB+IDihoLPOFctSqhyND+zWf+blk9voXCrpDSKtKFV51oiU1+SAdihXZpG0rrSmyAIntE76Zukl6iykI3pkVXw=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- SN6PR08MB4942.namprd08.prod.outlook.com (2603:10b6:805:69::32) with Microsoft
+Received: from pburton-laptop.mipstec.com (4.16.204.77) by
+ BYAPR08MB4934.namprd08.prod.outlook.com (2603:10b6:a03:6a::15) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1080.15; Thu, 30 Aug 2018 17:34:17 +0000
-Date:   Thu, 30 Aug 2018 10:34:14 -0700
+ 15.20.1080.15; Thu, 30 Aug 2018 18:01:58 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Philippe REYNES <philippe.reynes@softathome.com>
-Cc:     linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Use a custom elf-entry program to find kernel
- entry point
-Message-ID: <20180830173414.qnpd6dafahh5jxyk@pburton-laptop>
-References: <20180829175747.bo4l36aptncduyuc@pburton-laptop>
- <20180829180130.21463-1-paul.burton@mips.com>
- <236153873.582890.1535631758594.JavaMail.zimbra@softathome.com>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Rene Nielsen <rene.nielsen@microsemi.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] MIPS: VDSO: Match data page cache colouring when D$ aliases
+Date:   Thu, 30 Aug 2018 11:01:21 -0700
+Message-Id: <20180830180121.25363-1-paul.burton@mips.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180828160254.GC16561@piout.net>
+References: <20180828160254.GC16561@piout.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <236153873.582890.1535631758594.JavaMail.zimbra@softathome.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
 X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: MWHPR2201CA0076.namprd22.prod.outlook.com
- (2603:10b6:301:5e::29) To SN6PR08MB4942.namprd08.prod.outlook.com
- (2603:10b6:805:69::32)
+X-ClientProxiedBy: MWHPR1201CA0017.namprd12.prod.outlook.com
+ (2603:10b6:301:4a::27) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: adfbc9d4-ecfa-4e17-7e4a-08d60e9ecfff
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4942;
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;3:glTbDc5ug+tph9rkQSnQWv659GrUOMlaNnNn6fJTFvMDcDYSb0pBLGpVq37EcJvSwV1LEotuY4pCwgnzDdBzL6eWSj3PKbNZxS5osRoGYmzHydoZNs6T182+YqG5zcCUwtu7x2oHOYU5GMeZeBDjJfCzXOcHomWtj4e2m2XOFvldG6RCoPc2S16M/37LC51G/rdrjw75A8Gt6UGLzCpTXDzBxemiKWlIOg+LbW7LCRYconBqzaneP2gmpESxnkIz;25:MESbWlcr/s4VryIaXAaGsKBXxrFus738o8BQkbLhGK0PuYsEeY7PBvcAU04Sb+skXrcQRhwxlktYLW7JfltOeHYKAXqB/oPOegTDWsBVOArer46cuSojGXZNcqz6z3GOslkn5jVxGpuySbjDoFBQgZ9hN8kvSYhrDls1C4zYjVBFluF1LWilBVatp8kolq/1YKnCJbEuYXPBVzkgEeIkVfREuLZ16wD7N1uV7r5H2Ax2ceuPjrV81ziksCMiLG33obGM9UUxk/+CdX07mbL+1vSrhE6N30UewGr6EMpyEVDyX3D0TdZRXML/Top/hk2OEBV45xjPfCPDS9zReiyrMw==;31:monmP7b57ABXImU0ireu3ZL0CrLiZcREd+MoYQ1zyLUjoUV0/rE9tDIHplSTHix6U47Zsg+OpDV3GlNg8Kn9jflqmb0jy6y+e8RvShZvW3bZ7p/Xox/cg9+oDn3eEUxXiRtVt8MXSpi3fqo0+ABmOc9gZCiHNJ858T+J+T9VkR+aJf16532XAz/BZv7co1AHgvPVugzfU4iZ3FhLSAS5Vq0EupK9vUgsbGuB7+ttbGc=
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4942:
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;20:kmC4k2qaCldQImqJWdMxiPehmCzGsmrUXt8boCSRJdOO8VvloNUg+1mYip+CEmGcWLsuc0IPHAYpYA9OqLRKRmf8FhOjfKOu2TmkRGdiUxeti7GGUJetPCCj9H/7h7x/dII4vRzUCfXlKHSPZw55R0FXTonYMifmpaJ2EiE9rg86SOcU7pg5DOT8ce9oKrIyBcDqBUFFXxA9CH/l0AYV834JibnX3Ato7TN078qfEIZSTsPLjZtYCHIwDKoCh0F0;4:/+/hq8jQzSI/J/lRqSM5zzcoBsyS7SKsnM/M/a5DXkHFPqLzgYC1lXeB05k5YisQL/h6sAK/yi4CHIAVK0CzzOAwfU+oNZ4T0fWsFYZb+BJuEVrjqiN/WmfxJz7VUFGLb+jMwukzjOqkzE6HY/vrB4IwSyh8tFL7p2lMVCuoy66W65KyKXmTDgJFHkUPM37PGnzKnrJxyHZehAXHsKtzpfXQHIWwld9C768vZ+m0LNDuWSoFuVjugMzaqZcTa8MlLsCRKTVYI1AYjUHa7yR+0Q==
-X-Microsoft-Antispam-PRVS: <SN6PR08MB494256D02B97254D88C61ADEC1080@SN6PR08MB4942.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
+X-MS-Office365-Filtering-Correlation-Id: c8968fba-6b5b-4190-61ec-08d60ea2ae2c
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4934;
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;3:64oR05rnd9jrTD/DNFAL9EfTKdaBJJ5aa2H5rc+/UuyNgwWpcFiV2NS+5lBBF7YkTgsHTJSmFBJ1lxpKRuhTt1KErO4shfw5YbglAHbxGHsIfrNuyKKspt8xb7atJPvzcN/ZME5qs7+QwA0oMNeiYoAL5BP1GtyYJXVV3gXY3eDb+xlDLaQMV9iEjSsGpvqtaFx6n4K05D+JBPfPdSPD1f0D3/rX0FWKUzfgTrgbi8END17MxAJQbdPAs2QFNh5x;25:zcWMxObq+U7Uz67/XxPfeEG2rZOk+J6OdHNXWCYQpXG3BhrcunEFi4v/zBKy6mvUF/uDE25jqHP6kG8fH2drzv7WATjd46A0F9SXxuDew0MvkLjsbGDsn057jfoqrUNJjCX+AmTCJoHOpjckukkrmvr9udmTHdAJjHJ/7NDgwZtlR7oCX3sruth6QmMFV2/DiaZVQq9BKK55xN/WVQtgr75GHawxiYNXYgb3Kcy0cn4VQEbymgHqO/Fv7/GmvKt7a/7Tl6A9p7D+sCgKmfgAcd8VygORIlylQsX4rAh6ohC8Vv/ECCgREbtzMzudB6UT+rEWSJ7AS9sxJT61LTcvGg==;31:LV0HGnOFXrdUJl1cO3vu+paWE0hUhGNXbCql+pKVdf3OTGFAzXyZgf6V5tlVZgmYJcloavVgO6U1wjKSs88hsT7nSazS1dAxR1Y6lbQTm3lFQGFNYo/K4gV3+jdCsN5ojgroQ5dBwc1bJd+bOoeFojBumtfLdIxsTOCDElElgrObsZysagvLgQ3TWkdsmOroEtprI6xwOD3cIjZYLqXOqJoqMetYNy3e+ENPUzGDhsw=
+X-MS-TrafficTypeDiagnostic: BYAPR08MB4934:
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;20:hVecd1nwKjKYBJI6Zq5ggDfggABSCesgopBo8WumGvB3qjQXIG3gspBeUO22dCX1Z4NnX+YN1ef3ZxpJCYZLsmkpX5X2F4MtLF+gmMv4oV2tXP5HxWPKoAW9CvTi7aKwCoz/Qonmv/DNJBlTApGZr+cbMp4tKZmK/pjr6roVKFvtBm/tpqmBtg1E2h1lPtBJ2JfKlaDMlrc3fxtup5RAXaXXpAC5lCutw4uYdvA4ldXe2BL+UBUtpET7MNGKPnmL;4:036P0O+u1mTVnoFCOg15cBOJstVv+F1KTTknYbhh2FggV85HZPB2Avq+TQDlfg5p1qg4lTz5UgPipG2GhXOhgXc8zWIEEwG/Wgi46NCovohX8Zx0LAuTIZZNcLSJDfZ4zrakSRYsfIQueDGhk3CiqvZSwvodLNybYrff+tXgRD0mYfozY0j0iZtIvnWmq3hq9Ruv9/GR8WwNiJeVz2+92ePVrn9VXoZdcORSL4ezEn5bFb/gsHuu1eDKAhj0ew0j8/LS7m1HpOTJ6J2mcDJaC4815AqxxZf4lEgflWC8lzfMtr2Ssgv23EGV2SfTQjlkQT99Wr5ghAkgA/0+xWovTW2oGSRevHp4Va6uQqIqqtFIL62vP9J9e6w8D2eghcAc
+X-Microsoft-Antispam-PRVS: <BYAPR08MB49346F231E31FC412605ACE3C1080@BYAPR08MB4934.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(190756311086443)(9452136761055)(72170198267865);
 X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3231311)(944501410)(52105095)(3002001)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(20161123564045)(20161123558120)(20161123560045)(201708071742011)(7699016);SRVR:SN6PR08MB4942;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4942;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231311)(944501410)(52105095)(93006095)(10201501046)(3002001)(149027)(150027)(6041310)(20161123562045)(20161123560045)(20161123564045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(201708071742011)(7699016);SRVR:BYAPR08MB4934;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4934;
 X-Forefront-PRVS: 07807C55DC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(396003)(136003)(39850400004)(366004)(376002)(346002)(199004)(189003)(23726003)(66066001)(53936002)(47776003)(229853002)(68736007)(8936002)(42882007)(486006)(6486002)(6116002)(26005)(186003)(3846002)(1076002)(9686003)(16526019)(44832011)(446003)(2906002)(956004)(11346002)(386003)(50466002)(476003)(16586007)(558084003)(305945005)(6916009)(7736002)(52116002)(76176011)(6666003)(54906003)(33896004)(81156014)(81166006)(316002)(8676002)(97736004)(5660300001)(58126008)(76506005)(105586002)(33716001)(4326008)(6246003)(39060400002)(6496006)(106356001)(25786009)(478600001)(37363001);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4942;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(136003)(366004)(39850400004)(346002)(376002)(396003)(199004)(189003)(81166006)(8676002)(44832011)(25786009)(4326008)(6512007)(305945005)(110136005)(446003)(54906003)(11346002)(316002)(486006)(42882007)(2616005)(956004)(476003)(478600001)(48376002)(51416003)(76176011)(52116002)(14444005)(6486002)(8936002)(81156014)(6116002)(3846002)(7736002)(1076002)(16586007)(50226002)(53936002)(26005)(97736004)(53416004)(47776003)(16526019)(105586002)(36756003)(386003)(5660300001)(106356001)(68736007)(66066001)(50466002)(69596002)(2906002)(1857600001)(6506007)(186003)(6666003);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4934;H:pburton-laptop.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4942;23:wij9SkPQXAbaZFFQJp67BT9ld1ISFRNInkyYK1dYw?=
- =?us-ascii?Q?73LPl8l1yhQLqqCWcDAAEAyhm8/X5qsTGPNl7kda20xUtDkojM4SDnVS+9+v?=
- =?us-ascii?Q?HENvxI3DxYs1XPMFOFwsW5tIL5j2v1jWxkVyGi9SzedzOooPx8JoYUw5gYyD?=
- =?us-ascii?Q?9lnnNnljmk8g4DWXMS32oYXFRlqN0sIXam2Jdf5KzpwtoxRdj+7zv4OOznEN?=
- =?us-ascii?Q?kubuYxjOL2gsG8PEWsgWu9Lx4Wn/4t2D4sJwhFrz0ld3ZaMjEe4iL53lm8CN?=
- =?us-ascii?Q?D76mmDV8qV3JeBa6NRzwwpvJxJAzA4Ad9xfSufb8kNU4lXnjWan42GT+rIZD?=
- =?us-ascii?Q?q8X1CBHI1EZ2J1JEqbZwf18Zgm4wLmWNV3CrGUCLxZ50QQ8iY/ulaKEG/FUu?=
- =?us-ascii?Q?yNxBjhmP7E6oBoBl5cr//NP55LRtxRBeT4QhJ7LGpCU0l122KC8aJskazujl?=
- =?us-ascii?Q?uREIYSzP81JFqyxfn4PXcqy7mzAARgjUy/yGMQ/SiNCZ1dtUS4SwtWzcCser?=
- =?us-ascii?Q?ZXw4OOzzd63BrmX5H7OuxOnQ4BMStH+87By/zt+xnRHbgDFc75xIvv4He/uL?=
- =?us-ascii?Q?No02zUifHWbyGBaMZ4mPDqqgyIDxAdXORphYySDPtohv968dclWgC/FqNEX1?=
- =?us-ascii?Q?i5OfyO8rysTsbm789zs1bZ9ZSNETmUPWPEX59N9rhU+dXsbBzI0/9Jg58BI4?=
- =?us-ascii?Q?5YBdzFy0ohbzel55z1ON+VH3uKIbktiUWUrzLhu7/e7rJECrO7A3PfU24p5v?=
- =?us-ascii?Q?y4gKJKjoNpT3kV0CwEP5O99wbLpNOMAn6YKdB791thAyFM//OX0pmvrY79Ea?=
- =?us-ascii?Q?YW/CKvavpZHq6m3QupgGCkhyesimw6KpklQ0jD6fPVG52sjaM6xJ+A23vSqv?=
- =?us-ascii?Q?V35gNx2VT8dsi3P4Fosj0K6pbI58PlfoqlC7NKkh/CkodjA44taxJVvZUJSq?=
- =?us-ascii?Q?odw3T20xb4z9f12Vv78dMyZ5ObzIvHCT6GATaDDAZdHx2pZezxuV6mD983WM?=
- =?us-ascii?Q?8kM1hEb2zRnxMkQP+pUtIF9J6EY0RPqhGUqptTmX0w8yNbCRL+mwEdF/JXhf?=
- =?us-ascii?Q?41o3n5pDeqczX8/OzaIgZpPpiw0X2PxIQY+QDxcwwKxoezSVrrwPUhvPkGGX?=
- =?us-ascii?Q?lzbWvmcDs9dXVmWHAqTSVLVTIu1k+zZhteK7BL35kdTj3uFdxPcKJtf8Uw25?=
- =?us-ascii?Q?bYyWNfGcMu+NUd3kzLqnKjVc0a24s9GKzp7uIBRcRAhJqtudv6hcplRIfjYU?=
- =?us-ascii?Q?FDmgfa47tMmOG3bC24/1C58sy7i9V1Fpwehv/9NbWcOOow3jUxRIai37+0yM?=
- =?us-ascii?Q?6Y6pjyLrxhTPaE1QWFHD3O4MjHHg9yIZ81cq1NFoa0A5wzTQdRZMeH7V8cOB?=
- =?us-ascii?Q?xqFKcXNkcjmEORzBmA4nCBngn8=3D?=
-X-Microsoft-Antispam-Message-Info: ArT4nQh5smfuUTF4O/Zh+l8g+Zy5LoaInOlkDK3n6+6IjH7yDiNVzadeGb5ELp95uZxj9u3TuQCkZ6bxHFmUw5bkd9rXGamX21Zngvfr7/Pb2vgBgUoiU8GRESWrM729ecs2QGqcpEwKUj421KjNIkD20sH/3MS682H36WHInaVsgGZvo3Ojmu2umOrXQojErbYFwe7wFRHHV31Isb6IQWcj9GqsmKRnButMj2aWWn19473tO+QXj3FpknVaL6bkjU9RPnRAHyVY4RfQb6MTfinmYyDEUbcTNL8c60Lr6/Q8EBWnqYcDv+BV/RMDs7/FvUgOZLxZOS1Z5V/J4U6aMboXY0p93pSLcvY7tvIwx5U=
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4942;6:h9Rn8j5476NYTNSZ6DWwIx8a2yjSw/IdLSGbLp8DTP+cswfKVPNSYNFU/pMv+kkSYdf1x4ws9wCV23Xikhh+xPhhDh+m1jGIRSze90e2OsE643GPYcaaOGQK4yYK+epe2Y/SyeXNyJP3JTgYmgnXYxj+PKOp3kl3VSRKvDtPMskrwjSxCRpI1P2HLtoy+HNdyB1TIfouCa3g9sgOVaVVY+kKA2vqYuRQqTx5vlZm3OZ/VlBHVDG/RhjAwcqpKqdmVSpzRJqIlz0JSa8qtfIRRBnE4hgKzVK4dOXL7D+sUeeDaKs0tFRSUqPhmKsH6julae1umMXdvS1WFzV+MWmDkfxMHUPALajTF9HcLRGQ81GzCqGQG2J8DBOlE+bDxsO6Y213BL4DaznWsNCXVXJAlXYAQB2C2xnXwyx1NfYS1QoMlYTFN/wqRFM3a2An6804NgwuH7cEb+Rk2Nc+FxoL4w==;5:+216mLdWtVHwEjx8aoBeBOfRjLj33CGHXLyubrAzBCM0gbh5UZJp2mQSgRUl3VuUSYYdJ8OI1o6RdZQ+QYUne9JJ4fqDMGYJrHgdkDHhAcPJ2QU8RQRSBYEihMr4v16gBciH//Xn8PQJGdtutjJxcExI7EKqy9TFHFnxY/To4mA=;7:8FLVLp7NwAoxh6ekKVxUkeigOjZCqO6cKI+Mm7t5jySUsWdWXTh+PAZ8KMFeJNNiTIsu1ft0AZ18ZaAzN6sfI2gaD3Ux6iSJVahOLehv6FoqFuM2Pdst5bkHvgYB3jiZAssTRX/5xxYcRoYA5PdXwzmqWdH7LfDANAT8UnoKP18aWmlF7nWOo9gIINMQVTA4boqLNP341NPc/t02DqDOkEYeegXiz9SVuDVkytTR9wQh2iEEyOYkQnFb8L9OFwcM
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BYAPR08MB4934;23:7lsq7E5T+dXKFuDB2/gqcDl84QsobgOXohJxrUPht?=
+ =?us-ascii?Q?DwrN+hdjCWxMEKKdYF/+onJmF5+dmCfbNeptKkhZwvozh8uAT6bXVCCc2ejW?=
+ =?us-ascii?Q?Mbscl/q8mXYkIyuL1VFwd7Eu8Om7A1nmYK0/SlofrGOMQpXoqi2PkXGc78/h?=
+ =?us-ascii?Q?bYp+IXa68L5JU8XVyvoaiRAaKRM4Hk/o7pqnDWT6OlWTIXbNO60v7IVDbIWW?=
+ =?us-ascii?Q?CyU81TIlMCG6RYjemv/9ejqM57Fe4O6usyoQlMYG89okcx5JlyNv8AvvX1cQ?=
+ =?us-ascii?Q?y0VvB0sM6T/i7eT8BbctvAEWA4d2TQ1umu38K+ob/PZVSFIXLnNNv39qZ9wY?=
+ =?us-ascii?Q?ExTvond8j6Ui1E42ychYv+/yIEXcGcwcRtNk34KdF0d3mi8RshMmSF0w0dDn?=
+ =?us-ascii?Q?RyZkaLZVuVYp4HGuvs1ZbztUwVmZ5tG5NH4rnnfgESJnsoSkSNdOPIDdPMee?=
+ =?us-ascii?Q?MGiJdJtJQQ4HpTigwylSzhVMceVT73Q10UD+YGrSoRSLNEaNAOetGE0Oh27b?=
+ =?us-ascii?Q?SRRk2ZkD25xgQYHRyaj4joKUgWofGyOOGn29osM1/XXv7UCepVeSBxICiFRu?=
+ =?us-ascii?Q?7JAzuBr4yj3v+LFQrzWNiSfJdylsTtt3oE9AsMmb8vf7jP2V0DAVRZnKnWIT?=
+ =?us-ascii?Q?s+z40OGiZ9Z6a/cZshUQVP0sqwY/OsMfutPwFFFAopFoYzFNMdDJon2rJkeK?=
+ =?us-ascii?Q?LhOEJ6JXJi6ZoE0RMulvDuxWjrKhF5EFjZxLSRthUXYJWYDJGn4hFA5Dsof6?=
+ =?us-ascii?Q?k7Y4LLWQ6Ey33Oj94964EzEOWdDXhEKuWP3EaHjW/pgmG3Q+ui099zKv8TN+?=
+ =?us-ascii?Q?aIqtIrG14BJLJ0OP3kYBg5hflMjjSvSBavk80t0Cjdeb0Z+O7MPrBpgpJnCI?=
+ =?us-ascii?Q?qaYyPQo6TVtbBW2w7CUCnqrl9ZxVuJiUjRqLedQ2F6tMi1dgdy3JNYzhmNpv?=
+ =?us-ascii?Q?VHZaflRdzd4eXvkMbyP8rwK6uTfdWZs/7+nM1cwMPfciZyYnuI67aos987bD?=
+ =?us-ascii?Q?6g7gh7POf333BR4UIe0VO54pyR4TpJUoCL172WwOpWiUxE0NTKLDSi5WIXBo?=
+ =?us-ascii?Q?x24CiNHjPn3s8Nc9Y6+20oW2sV6paH64HkcLc0wIPzzuCkuTX3rLYIEXISP4?=
+ =?us-ascii?Q?5oZ3Qnxh8KOehHVvY/UJy2XXj+y0YiDBqIY3xj51f0qfvAI3WsLUQGrLFgwd?=
+ =?us-ascii?Q?gAHkGUI0z2R+0siSI5Zoux1BMC2NisTJVbAl9PmWbm8wykI5LZvuTzPL8rUe?=
+ =?us-ascii?Q?htAxWNRxtDribz9P7gSnp+lxDolK4XlMVWJJF5G2Sw12znPQaFbGV4XUa+dU?=
+ =?us-ascii?Q?uYv3RodBbW9VVtJbmpGknU=3D?=
+X-Microsoft-Antispam-Message-Info: rQNqExH4XpNUnE6ECkCD68z/zlAa4KunWV2WLNFmNvIDmClkXh59CXeKv0edZuIjDHrAZgHOIcjRFnTXDPqCj6lhulkuTy4v5D5UrFvkd+6uE97SrnYADo4SVMK80H718JrSCMWg8+JTu0nQUHX+4zw+wy+u+njXbdfLEYrTXlNSmzTV/2u1APzxnmm9sAjSMS79RCDXxb15TQ/9PLaxThhkqtxmET9sLUihD9YJoAvyOhPBPAUNyr40TICeHGODB67/Xa2O5JmAUK48g7NjWBSYAqs4dHhXdaNxlS/aGgGRrJk4ZdJBQ54+H4UXV8OG6g5gHHx1vNyJcOnGXmQ9j32h0sldHzX6EbfqlZlAOeY=
+X-Microsoft-Exchange-Diagnostics: 1;BYAPR08MB4934;6:tSKpc9F8yaIOcNAF4aeOtHFAM/50K0AGpMOMi/yF5xKpNVxTZcEtUcAtNZyoraAdUwYeWNQwrvxtc1lTjbJaJl+I9pDOqWUiqTUIdbSoGRGxxEKTtxDG9lLiTqhsRh6fZ3S+R1d+wPHiQmyAAcHXxDGPuQ/b7fF0ZeXbaOBiTK4jhfGrkdLsto5vWkLkNjxXzYr446AVZANy/Dg8ZjuqtRqLwmAZrVSAitbwNpc8IgkDL6nTrr6rIJGR7YzolZean3QFqEtE/csK+Nr/WO8TY1HluPL+IlwUsOl8LbKGWlBDgiPhi54hipIia6U64phsxSRpGzz0Wq1639RIIbvVhZ0DwrpMeFsnSFZMzjBp8UoArw2BveZdgm6S9uVAYnA+2uu3J+LlGBKyvHf8qZo8Iw0wNr+zknf5E+1M3LZFe5t75EUtvBMu5uu1OkNp4MHgQTh2kkwaNAYDR7E9wRAScA==;5:YCVwwivmn+XWjwPD/ZueBTEwPvIctVFI7/r7xBQIzKA9lAUh4XYTf0mcv9c+/Bp2vO4A7cXUFL7CqcVTyNDl/PH2lhhp44Vv9SZTLqUbpW6HYm72Or/Yxfy1qGnfKjESGO+tBBubwYVSWttux3BiPYnWFPQN0SUh1/GXNV+uj0w=;7:xLfHrYKF3ki1yE5TzEozhFVcGW8SVNWzQcFwfWylBI9NfCb/UmN0CtdoaXnZhAwTxXoEfVF0yuNeD9KwDcnzkvgo8/Rd04mHst28PqbzeEGd5hLRkBMtm3OaCTC3RNSAuNmsWhBznF7a9o1fGBAhkukLERMZmnm3LL9g2lTLFzc39XnYbVqhWKbmENBNM05+uFCfMY9vMnMArF4NIB8VD7QyYbWNlO3ox83RP0mijrD4BIWjf6fEl2lHanTvsSd0
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2018 17:34:17.4821 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: adfbc9d4-ecfa-4e17-7e4a-08d60e9ecfff
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2018 18:01:58.4995 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8968fba-6b5b-4190-61ec-08d60ea2ae2c
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4942
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4934
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65802
+X-archive-position: 65803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,13 +101,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Philippe,
+When a system suffers from dcache aliasing a user program may observe
+stale VDSO data from an aliased cache line. Notably this can break the
+expectation that clock_gettime(CLOCK_MONOTONIC, ...) is, as its name
+suggests, monotonic.
 
-On Thu, Aug 30, 2018 at 02:22:38PM +0200, Philippe REYNES wrote:
-> I've tested on my "french" machine, and it works fine.
-> 
-> Tested-by: Philippe Reynes <philippe.reynes@softathome.com>
+In order to ensure that users observe updates to the VDSO data page as
+intended, align the user mappings of the VDSO data page such that their
+cache colouring matches that of the virtual address range which the
+kernel will use to update the data page - typically its unmapped address
+within kseg0.
 
-Merci beaucoup :)
+This ensures that we don't introduce aliasing cache lines for the VDSO
+data page, and therefore that userland will observe updates without
+requiring cache invalidation.
 
-Paul
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+Reported-by: Rene Nielsen <rene.nielsen@microsemi.com>
+Reported-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # v4.4+
+---
+Hi Alexandre,
+
+Could you try this out on your Ocelot system? Hopefully it'll solve the
+problem just as well as James' patch but doesn't need the questionable
+change to arch_get_unmapped_area_common().
+
+Thanks,
+    Paul
+---
+ arch/mips/kernel/vdso.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 019035d7225c..5fb617a42335 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/init.h>
+ #include <linux/ioport.h>
++#include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+@@ -20,6 +21,7 @@
+ 
+ #include <asm/abi.h>
+ #include <asm/mips-cps.h>
++#include <asm/page.h>
+ #include <asm/vdso.h>
+ 
+ /* Kernel-provided data used by the VDSO. */
+@@ -128,12 +130,30 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ 	vvar_size = gic_size + PAGE_SIZE;
+ 	size = vvar_size + image->size;
+ 
++	/*
++	 * Find a region that's large enough for us to perform the
++	 * colour-matching alignment below.
++	 */
++	if (cpu_has_dc_aliases)
++		size += shm_align_mask + 1;
++
+ 	base = get_unmapped_area(NULL, 0, size, 0, 0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+ 		goto out;
+ 	}
+ 
++	/*
++	 * If we suffer from dcache aliasing, ensure that the VDSO data page is
++	 * coloured the same as the kernel's mapping of that memory. This
++	 * ensures that when the kernel updates the VDSO data userland will see
++	 * it without requiring cache invalidations.
++	 */
++	if (cpu_has_dc_aliases) {
++		base = __ALIGN_MASK(base, shm_align_mask);
++		base += ((unsigned long)&vdso_data - gic_size) & shm_align_mask;
++	}
++
+ 	data_addr = base + gic_size;
+ 	vdso_addr = data_addr + PAGE_SIZE;
+ 
+-- 
+2.18.0

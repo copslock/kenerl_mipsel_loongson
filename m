@@ -1,25 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2018 20:50:44 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:43450 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2018 21:43:54 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:58110 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994002AbeH3SujsLNeK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Aug 2018 20:50:39 +0200
-Received: from jouet.infradead.org (unknown [189.43.51.114])
+        id S23994059AbeH3TntzKJpG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Aug 2018 21:43:49 +0200
+Received: from gandalf.local.home (cpe-66-24-56-78.stny.res.rr.com [66.24.56.78])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E8B7205F4;
-        Thu, 30 Aug 2018 18:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1535655033;
-        bh=n9F6AzQMSS0Zpr7/zZgP12eOlMwdFpq3YhYoAGdW49I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yPQopcs+BXtSUpQBdZGV9wLiBHCZ+CVI0U7LrivdFFUVkxNbcaDAZhyx5zNndNHtu
-         BU4dSdfB2F2ioay1qmrC6tVX1ksWi2jsDG2G6rAIYu1OnhG4YFxOmQQ1V9NramSqtD
-         wLKcDeyPViVPwhSYB6W5tqO8/f7pWbXib56JKQlY=
-Received: by jouet.infradead.org (Postfix, from userid 1000)
-        id 0F18B141C3F; Thu, 30 Aug 2018 15:50:27 -0300 (-03)
-Date:   Thu, 30 Aug 2018 15:50:27 -0300
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 4FADB20835;
+        Thu, 30 Aug 2018 19:43:41 +0000 (UTC)
+Date:   Thu, 30 Aug 2018 15:43:39 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Arnaldo Carvalho de Melo <acme@kernel.org>
 Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         srikar@linux.vnet.ibm.com, oleg@redhat.com, mhiramat@kernel.org,
         liu.song.a23@gmail.com, peterz@infradead.org, mingo@redhat.com,
@@ -31,25 +22,25 @@ Cc:     Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
         linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com
 Subject: Re: [PATCH v9 4/4] perf probe: Support SDT markers having reference
  counter (semaphore)
-Message-ID: <20180830185026.GI6097@kernel.org>
+Message-ID: <20180830154339.1a14e4bf@gandalf.local.home>
+In-Reply-To: <20180830185026.GI6097@kernel.org>
 References: <20180820044250.11659-1-ravi.bangoria@linux.ibm.com>
- <20180820044250.11659-5-ravi.bangoria@linux.ibm.com>
- <20180830144531.3011e185@gandalf.local.home>
+        <20180820044250.11659-5-ravi.bangoria@linux.ibm.com>
+        <20180830144531.3011e185@gandalf.local.home>
+        <20180830185026.GI6097@kernel.org>
+X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180830144531.3011e185@gandalf.local.home>
-X-Url:  http://acmel.wordpress.com
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <acme@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <SRS0=8yld=LN=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65805
+X-archive-position: 65806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: acme@kernel.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,45 +53,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Em Thu, Aug 30, 2018 at 02:45:31PM -0400, Steven Rostedt escreveu:
-> 
-> Arnaldo,
-> 
-> I'm going to be playing with some of the probe code which may conflict
-> with these patches, so I would like to pull these in my tree. But this
-> patch requires an Acked-by from you before I can pull it in.
-> 
-> You OK with this?
+On Thu, 30 Aug 2018 15:50:27 -0300
+Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
 
-Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
- 
-> Thanks!
-> 
-> -- Steve
-> 
-> 
-> On Mon, 20 Aug 2018 10:12:50 +0530
-> Ravi Bangoria <ravi.bangoria@linux.ibm.com> wrote:
-> 
-> > With this, perf buildid-cache will save SDT markers with reference
-> > counter in probe cache. Perf probe will be able to probe markers
-> > having reference counter. Ex,
+> Em Thu, Aug 30, 2018 at 02:45:31PM -0400, Steven Rostedt escreveu:
 > > 
-> >   # readelf -n /tmp/tick | grep -A1 loop2
-> >     Name: loop2
-> >     ... Semaphore: 0x0000000010020036
+> > Arnaldo,
 > > 
-> >   # ./perf buildid-cache --add /tmp/tick
-> >   # ./perf probe sdt_tick:loop2
-> >   # ./perf stat -e sdt_tick:loop2 /tmp/tick
-> >     hi: 0
-> >     hi: 1
-> >     hi: 2
-> >     ^C
-> >      Performance counter stats for '/tmp/tick':
-> >                  3      sdt_tick:loop2
-> >        2.561851452 seconds time elapsed
+> > I'm going to be playing with some of the probe code which may conflict
+> > with these patches, so I would like to pull these in my tree. But this
+> > patch requires an Acked-by from you before I can pull it in.
 > > 
-> > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > Acked-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > You OK with this?  
+> 
+> Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+>  
+
+Awesome, thanks Arnaldo,
+
+-- Steve

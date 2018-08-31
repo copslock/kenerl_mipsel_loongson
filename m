@@ -1,97 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2018 18:47:26 +0200 (CEST)
-Received: from mail-by2nam01on0126.outbound.protection.outlook.com ([104.47.34.126]:55987
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994590AbeHaQrXtjJ4Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 31 Aug 2018 18:47:23 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2018 18:49:19 +0200 (CEST)
+Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:37883
+        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994609AbeHaQtP01PLQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Aug 2018 18:49:15 +0200
+Received: by mail-pg1-x543.google.com with SMTP id 2-v6so5176732pgo.4
+        for <linux-mips@linux-mips.org>; Fri, 31 Aug 2018 09:49:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cdelr/qncBiy+m7m5lLhtrlFR72wTNPFL5IpjiqqkHE=;
- b=bNtNwZ5GEWJRXJAHqWKx65HAVPiITO8B58dlALCgv2ZUgaEI2yyGlItw1DxtSiXOj/eGm+Ku0OuOKdbh+iAL1nLgBrX6TG7jatMuY3bvZsNnLtM3/IVJTCzEE5aiiWcPhb5sMzThj9EC96vpX8AVxaCbQ7Nq+JGWEp/tXI1dSw0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- SN6PR08MB4943.namprd08.prod.outlook.com (2603:10b6:805:69::33) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1101.16; Fri, 31 Aug 2018 16:47:12 +0000
-Date:   Fri, 31 Aug 2018 09:47:08 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Rene.Nielsen@microchip.com
-Cc:     alexandre.belloni@bootlin.com, hauke@hauke-m.de,
-        linux-mips@linux-mips.org, jhogan@kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: VDSO: Match data page cache colouring when D$
- aliases
-Message-ID: <20180831164708.xuhybphyai3qwcyf@pburton-laptop>
-References: <20180828160254.GC16561@piout.net>
- <20180830180121.25363-1-paul.burton@mips.com>
- <CY4PR11MB0069B3A54A04467564CDA481990F0@CY4PR11MB0069.namprd11.prod.outlook.com>
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bCAuXK2OzX1Y32o4nfX28eLgRp+6m9IIcFWuemVE5WY=;
+        b=N18YRpr8Sb1LGBugLd2WKciz/6inmAgY4pGO/BJSgASuLXw3cUZK9Fc91sHLPyPzur
+         h59KQ9BlIUiAigm8ubE55V4N6/53+5jD/Kbcq0N4xoPSeBxIkDwJwdwSUWzEzVMbb0TZ
+         MFQdDCBv+rpJUkfTRi2D3PtRo5/qh6AEEdTLb/aEIliVhnpYKjp4Q2bakgARP51iJNrC
+         01+GpwMzT5JyHtVWTwLziSLHTD5MwGA+OqGWBpU6VPF6Pu/NKBJ6SM3aDjR6VSQ6Wq36
+         zTPjlA8/quUpxZwtwYw69Qzm4KCXQAHE0iJNTjbS/JujWES9LuRc4lxfgVtesjPXWf5A
+         nGaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bCAuXK2OzX1Y32o4nfX28eLgRp+6m9IIcFWuemVE5WY=;
+        b=eFLN4TbmCVMZepmCugDhEvLKtrxos6JohXUvJC4vmvxbxflBpg1jmch6qax0gRoiix
+         BWpFZR/TxDWXmQa/pOleh6FC9KOAKKY5mrsKB07P6ZYM/odmMfRym5Iqb/isAIczEHU/
+         gWlBSNcM1z2wSZ8905x6JmrBarrMpxgrKe0xTw7lftMTSiQFbPY/hzo43RlA4kSauvSl
+         Z63kVtVzWYvW2T4dt9wKYVrxDRzDrRa1IpojY0q/8DeJqJcX9GROmYU481NhTSS5Pb+p
+         6AHbyIl87D9XJnV645Qc5LNzpovwMCW7nwncBMuciqm/wBnK1/nBLWhZ/ghA7W8Frwqi
+         s6Gg==
+X-Gm-Message-State: APzg51DN7gqA63/YuG1umlISW59dIfTv7GLwmm9BujqDG2cCdrebTJGu
+        LZuT+ZAj7sQOQT8cNzmUMgpLkND70a681Z7VAPBbxQ==
+X-Google-Smtp-Source: ANB0VdbRCc3PpGAdVeCprV2/GhB/CLIRt66A5Es0TtK/QPaElj4MkPRSFfBiaWIFkeOLJu35AGY3WpglDxV6XSZ036A=
+X-Received: by 2002:a63:c245:: with SMTP id l5-v6mr15273352pgg.255.1535734148077;
+ Fri, 31 Aug 2018 09:49:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY4PR11MB0069B3A54A04467564CDA481990F0@CY4PR11MB0069.namprd11.prod.outlook.com>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BN6PR18CA0004.namprd18.prod.outlook.com
- (2603:10b6:404:121::14) To SN6PR08MB4943.namprd08.prod.outlook.com
- (2603:10b6:805:69::33)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b48d6477-99c9-4194-f4a8-08d60f616695
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4943;
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;3:Z1oSM7xmMp+V6KxKHw+SLn70aQ/z/3C+Hg/xbxFcCK3s96AYMrzy6px1ZlJ+LDXVaYjOhWVuccBLj88Jkc7vipLyUL7Bh4fNFCDjmw6A8vNFEbR20GiawCMEQv+2zN+lj2M99/pbwN3wcsqz5UCxQUfCye5gGd9BDTnXT6HVfDbjAJ5bP7S2ebuHON26+5ad+3agrO6EENJUoHjmI2jFQWprJ66Fy7cDkzoSl8rcVy9yBxKoQyP5CEbkXkMonY8g;25:QpgqLKMYir+U0zPtjBO8H2vGGLuupckFMIaPZzpvO8XzNeeQlJBRzpYsLPZ6ObGjRXiLZWm/OYp2zWYTUlWYBAVyAB9gqdZbzyYmF1j5WSr7zsFZr31MnNk5BIeSc89z3gfOOT207nVy3VqLUO0UZyus+tgiMjh6Ze3UFUVc0OteGFzv++M5nZ+muaX1WAyi7c6krmWQ8dEHdBc6IdErhbZ1a3CgAxi6aCrZc25t973hJA6dtXoDMew1XOQO0v2+HF47kFLyL/C8lzAYeMI/OZnfyID6+EyS1A7Kw7u7E99Ol7tz+byktyykDtYhwYcqjTgldYpRhjE1FwlbGCrQXg==;31:50i00Ndz2Sc+GuTNFMNEMeSvoz+GquT5brkj9zZr9wsTKIKVb7hluvz645xh9wuTGZvpHrFp/5en9XIBABUgED4A4GHc+Swt1WdbybGNpbc8I4SGUXWZ4viIZg/t5Wy6GjJlptgATHOxbCH1bJSMPr7Y0E3Ak2VjhdVpgmDdMoWwqkAS54U0W0kwp/nx3is0Zx66XM8x6XJ45tH4NMCz0uP19cEspQ9zSQalJPqHk1k=
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4943:
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;20:Jn/oqJnjQmHqWX9hdO9g+9W2BBXBxROJnzhmWlwwEdJLlOw1ggiG1SncYceoSb67eaxw/cjqXswBGamYn7ilfC8fobvMcJVEoEtBR+8XPFsgyDSjoTXEJKIUstRZqqJqvLJNtKOWhEhQr9PqxdERV5hVxOPa+92oL9mL0XSWeSrrDzfcdXDDp4indkeJ8FsWhpat5BD3fYCJNU+GkW7XGp7tFYb/fAeuiF3taaYnckhdelESmEXnUhEAKa1Af3dK;4:FQm+0Gojw3rPdNjeYD8Kfyn1q3pxhbkKg7F6JPObyw94mTaPabWvUh5/W344MCH9c/ijjwkVrHlBxVTcpiLUlEVoLZrXiUKQpLXHtNVVjeueW1VetqP9/pPffUdxthEycpd9cWWzi9FPLoZ3w6psHjdpdeHNH1P1d+D8TSmz/NXhvqGWeP/26xv4SxQZMs0Rwx9TzTlkTmY733SjIYRJjPji4FciNjs4jShljDEUQt5qEtgkFDg9ewEl5JmjYuD52vxhycd95iG8czvmLKZUrA==
-X-Microsoft-Antispam-PRVS: <SN6PR08MB4943977F9AE680090E36019AC10F0@SN6PR08MB4943.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(93006095)(3231311)(944501410)(52105095)(3002001)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(201708071742011)(7699016);SRVR:SN6PR08MB4943;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4943;
-X-Forefront-PRVS: 07817FCC2D
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(136003)(39840400004)(366004)(346002)(396003)(376002)(199004)(189003)(16526019)(186003)(229853002)(6486002)(42882007)(52116002)(68736007)(478600001)(66066001)(97736004)(33716001)(26005)(47776003)(446003)(7736002)(76176011)(305945005)(25786009)(11346002)(8676002)(53936002)(4326008)(33896004)(6246003)(956004)(6116002)(386003)(3846002)(2906002)(476003)(6496006)(6916009)(76506005)(2351001)(23726003)(2361001)(50466002)(58126008)(81156014)(1076002)(105586002)(16586007)(486006)(316002)(81166006)(44832011)(106356001)(9686003)(8936002)(5660300001)(6666003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4943;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4943;23:WIT6qVbOcaYSyNmBQayAZ3XphVRukQ9JPBDlnLoRC?=
- =?us-ascii?Q?Fxh9+80ztqBNkBY2AoOzvNARQQ4L3QNrGJ62qBTc98IwOa3QwNFIdWjpWQEC?=
- =?us-ascii?Q?utbE5Cy9LXJq6Ex86py828U6Ls/SR5B1phbQ60EIWoZM47uLIw7BtRF5EZc1?=
- =?us-ascii?Q?5n9FRUnu6YWsebV37r6hsK/a0Si7ZhUEPd+2kxi5t2//GTgUbqPbeyh8A0/o?=
- =?us-ascii?Q?rHJv9188FUJ7SU0kluH/Bdm/oEU1d5qLrHGXDuar/5GdlbJNsoZHZDoO0bAn?=
- =?us-ascii?Q?oLw1W5KIAzGz7d1pFl4G6/IIigZ0+Vv0eoWmfU8VztyXx7glWCfQVlRzQsV4?=
- =?us-ascii?Q?Ej84UJdrSqe5zLKAmr9zM4kWr9dQu/QnrBKEw8QenEY7+3ySHDRfqwiuLtjn?=
- =?us-ascii?Q?S9i1+isaIYj4ZdkW0jzfwmKEfJZDDumNIEAjgSt4p7n52nhqZQ5K343S1Bvw?=
- =?us-ascii?Q?X2MGjvYdIo0bQJXn807wOQQpRZ2+DqZfBgNFF3rnOKSBYxiW+d5ih3sjdEj3?=
- =?us-ascii?Q?flmd8ZBEAtixgXY4q0QTjQk25/BMSzWcGemql4g/IRyuLVLC4Zaq/oVXWVlM?=
- =?us-ascii?Q?QeybXDKt4cvrpMadvk+sl6oy39WYWjD3bYBkHB4LWuIW6YTPTGHaG81gDwlD?=
- =?us-ascii?Q?uIK6W2G+b7Dz/0E0lFqd4bTqPffJkywwM+TSiwKFj7ON+MHir1yEZBAYXRzx?=
- =?us-ascii?Q?c3Tg8TYCd2Zm2UmgDLXSCWoqdWQDaadDAX0YQIMTBTPZxj8Pvv9RmOW+pAKe?=
- =?us-ascii?Q?ay5LP5NaDNlj9nZ7Ndcl6WoeuKZsP0HQzzo763GyqGIcfuzj3aso7q6DKipE?=
- =?us-ascii?Q?N7l9Suaz6VbVWRUQxrD1YQyHSzuDe9jAxVEZpWoGCuV/kLE24A3gtJkgTCLf?=
- =?us-ascii?Q?lehk/PzC+4MHQi9xr3vBVe6SSEqYZCN+UD1mkBQ9gA67yi49oaOiLlh85HfL?=
- =?us-ascii?Q?48sFe3Q0DTl5wqJ0KYHoirh6lnYd0l6/mrwX2gYRoj1kNumFYq4VsUZGCs7z?=
- =?us-ascii?Q?0Mifgg315nQrSM2a9dhWorzYI/lYxI4DRE9rCQKfEpkWUQQVbKrQZfKMvUAy?=
- =?us-ascii?Q?rbIFYOeaaWwZvEEEP85NX4niVWHMb6p8r0L0kEd2lKcYA7c7/SPA+0/a2F6+?=
- =?us-ascii?Q?ce2Cw/eLSo4iidrXyOkWnnJjRTQk+Cp6tKoSJIfS47qvcOyf6ntmhhJFku1q?=
- =?us-ascii?Q?nCJYcJwfUvMb4ZAxOHHyeSoDyWngOhnJIvYTQIYCNiUWH/nmMkgApw7pifqL?=
- =?us-ascii?Q?56zYun7P8VlNHQEjb+qQYpr9mdMT0OsAN3WSRIML6kTDPsgjPOSz3REw7HsR?=
- =?us-ascii?Q?s99OonvQ4g28N6e/mTekaY+16Flx0/h3BoV1gxItgr/?=
-X-Microsoft-Antispam-Message-Info: fzMwesXIdI2WOWXTnARSrtNyUzn5x+D79Y26ZneNUzGpKT7ZXHRfC8CeGz/gkQ+r7kWurMqAVHzKdAcrg05xl+0SJIwtJN9Qw73gDAGYENrjhCMktOvnIIQn5coE+fWI/Yiat5gdY15qIcuvl+gG3AxRe83FsQz/jcpzUgkaCjQ3jl/cVYGv5R6IJ5FQF09eX56aqkiuu0w5AOaGQ+YHo1tYhzCxfaWXSg0G4QyYsJfyWt8J+2NTv5iBCmM7xI4lC6eBkX6JXCDqcImOUbLpZqeyU2Jf8wFs2X5nvfebzuGVJphb4YVlIZOwD3Psp0pB623vnrrXCDn3L0c5HjUR5fNSA7tYoMsjMFy+VT9gfVg=
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4943;6:YVI8zoebTqTuWCXdX5/W+TJRxgk+QTEia2vZRXqZ2Zd8mdeZtQVvTQ+MjQyAPKmvrH2DXtwSoBsjU2Ev6gQzizRJY3zEmLYugMc5/54IIDc6m507qKpWHLNIPujg7s8N7JZiYVJYtMmCPJOPnbGlNpZaq/kCCFLGbYdx9eVTynSb9yApPjmhanMVW2iKxFc+24QGS72u14RXjV8yp2U6tOh+ufk7xF7HQOeMS3IxWRwR/g6BLzFnbGJ8CAb/34qYAXZIFYqwn6aNux+1nE3VEUo/zJYwjlmMw2kQG4Z93uwHSjFdQcEBp2mzCjEz1AWV5paxD0IpF628FTK0hPEOKj0DBfRlLeCnsUgYs5OPjBKhTbmoF6Pqdk9IvWV6Omx1g/nEgra/z6SjNXFTquseZJsrHJSyiqt3+vsG9Xx6PGe2yOo2IUJwd0LiedzxwrkKUjeMNTz4MfzrRSs2kUMCXA==;5:lnntMDqAc6gVhTRlReARcezXfZXdUfo9CXaahvmtIEx+EHrtNTgaWHr0wrzvjEzavjjOBEsonRVjlBc5btUKbnG/mIfF0EHmZp2q4MewGeVic22EBU+VCkdW2DtGeStpNU/tpyIx41qnMbPrOD4lLkIfnu5b4yqSV5wBqdsjosQ=;7:ov3wXoVAbYIhxF+yO58tvSbBvUceSDchOLpEenqIrkt9aWR0+yNfy63qQC88zE5TcBEcSalV2r1yjSCk7TfP4CxKb6Zk5Q9c6w6af6kAlmKZ313zlFugVVawD0lIOd3szlnJh7KkmFLtdnmMhhM8w/8UTNukKpuYLWQXB11iY+HUuSlr4gDq2yoBEY/ajLMJUBhxjscdcneAzOXTyRYsV0YQABZ0l2tDqOLiGby86FnqFr5F170R6REBR6aJSOrL
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2018 16:47:12.4195 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b48d6477-99c9-4194-f4a8-08d60f616695
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4943
-Return-Path: <pburton@wavecomp.com>
+References: <20180821202900.208417-1-ndesaulniers@google.com>
+ <207784db-4fcc-85e7-a0b2-fec26b7dab81@gmx.de> <c62e4e00-fb8f-19a6-f3eb-bde60118cb1a@zytor.com>
+ <81141365-8168-799b-f34f-da5f92efaaf9@zytor.com> <7f49eeab-a5cc-867f-58fb-abd266f9c2c9@zytor.com>
+ <6ca8a1d3-ff95-e9f4-f003-0a5af85bcb6f@zytor.com> <CA+55aFzuSCKfmgT9efHuwtan+m3+bPh4BpwbZwn5gGX_H=Thuw@mail.gmail.com>
+ <CAKwvOd=wAaPBkFHAcWxgMW91a--9gbvu7xrt3j-q8c+-mT=7Lw@mail.gmail.com>
+ <20180827073358.GV24124@hirez.programming.kicks-ass.net> <f9896d68-4a49-e666-cea5-a9c0522f1658@zytor.com>
+ <20180827131103.GD24124@hirez.programming.kicks-ass.net> <4d1a8f35-e2fc-70d2-ca0e-44b8574c86f1@zytor.com>
+In-Reply-To: <4d1a8f35-e2fc-70d2-ca0e-44b8574c86f1@zytor.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 31 Aug 2018 09:48:56 -0700
+Message-ID: <CAKwvOdmXhRZJ5bQw+W0Ro+oeWSTRJzG1UAJnjyjciR1JFs+ubA@mail.gmail.com>
+Subject: Re: [PATCH] treewide: remove current_text_addr
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>, deller@gmx.de,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Thomas Gleixner <tglx@linutronix.de>, mingo@redhat.com,
+        Simon Horman <horms@verge.net.au>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg KH <gregkh@linuxfoundation.org>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, Matt Turner <mattst88@gmail.com>,
+        vgupta@synopsys.com, linux@armlinux.org.uk,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>, msalter@redhat.com,
+        jacquiot.aurelien@gmail.com,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        rkuo@codeaurora.org, tony.luck@intel.com, fenghua.yu@intel.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org,
+        Green Hu <green.hu@gmail.com>, deanbo422@gmail.com,
+        lftan@altera.com, Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>, jejb@parisc-linux.org,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        palmer@sifive.com, aou@eecs.berkeley.edu, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, dalias@libc.org,
+        "David S. Miller" <davem@davemloft.net>, gxt@pku.edu.cn,
+        x86@kernel.org, jdike@addtoit.com, richard@nod.at,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Tobias Klauser <tklauser@distanz.ch>, noamc@ezchip.com,
+        mickael.guene@st.com, Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Yury Norov <ynorov@caviumnetworks.com>,
+        Mark Rutland <mark.rutland@arm.com>, chenhc@lemote.com,
+        macro@mips.com, Arnd Bergmann <arnd@arndb.de>, dhowells@redhat.com,
+        sukadev@linux.vnet.ibm.com, Nicholas Piggin <npiggin@gmail.com>,
+        aneesh.kumar@linux.vnet.ibm.com, felix@linux.vnet.ibm.com,
+        linuxram@us.ibm.com, christophe.leroy@c-s.fr, cohuck@redhat.com,
+        gor@linux.vnet.ibm.com, nick.alcock@oracle.com,
+        shannon.nelson@oracle.com,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        luto@kernel.org, bp@suse.de, dave.hansen@linux.intel.com,
+        vkuznets@redhat.com, jkosina@suse.cz, linux-alpha@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-snps-arc@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-c6x-dev@linux-c6x.org, uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, hpa@zytor.com
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <ndesaulniers@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65823
+X-archive-position: 65824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: ndesaulniers@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -104,37 +127,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rene,
+On Mon, Aug 27, 2018 at 6:34 AM H. Peter Anvin <hpa@zytor.com> wrote:
+>
+> On 08/27/18 06:11, Peter Zijlstra wrote:
+> > On Mon, Aug 27, 2018 at 05:26:53AM -0700, H. Peter Anvin wrote:
+> >
+> >> _THIS_IP_, however, is completely ill-defined, other than being an
+> >> address *somewhere* in the same global function (not even necessarily
+> >> the same function if the function is static!)  As my experiment show, in
+> >> many (nearly) cases gcc will hoist the address all the way to the top of
+> >> the function, at least for the current generic implementation.
+> >
+> > It seems to have mostly worked so far... did anything change?
+> >
+>
+> Most likely because the major architectures contain a arch-specific
+> assembly implementation.  The generic implementation used in some places
+> is completely broken, as my experiments show.
+>
+> >> For the case where _THIS_IP_ is passed to an out-of-line function in all
+> >> cases, it is extra pointless because all it does is increase the
+> >> footprint of every caller: _RET_IP_ is inherently passed to the function
+> >> anyway, and with tailcall protection it will uniquely identify a callsite.
+> >
+> > So I think we can convert many of the lockdep _THIS_IP_ calls to
+> > _RET_IP_ on the other side, with a wee bit of care.
+> >
+> > A little something like so perhaps...
+>
+> I don't have time to look at this right now (I'm on sabbatical, and I'm
+> dealing with personal legal stuff right at the moment), but I think it
+> is the right direction.
+>
+>         -hpa
 
-On Fri, Aug 31, 2018 at 08:58:27AM +0000, Rene.Nielsen@microchip.com wrote:
-> With the error-producing version of vdso-chk-X.patch applied, apply
-> Paul's patch and run the 'provoke' program again.
-> 
-> This also works.
+Linus,
+Can this patch please be merged?  Then we can polish off Peter's
+change to lockdep to not even use _THIS_IP_.
 
-Thanks - can I add your Tested-by?
-
-> Paul's patch allocates twice the amount of needed VM, but I guess
-> that's fine, as it's also less intrusive (no changes to mmap.c).
-
-Note that get_unmapped_area() only finds an unmapped area - it doesn't
-allocate it in the sense that further calls to get_unmapped_area() can
-return the exact same memory. The actual use of the virtual address
-ranges takes place when we call _install_special_mapping, and we still
-use the same sizes there that we were before.
-
-So my patch just causes us to look for a larger unmapped area (which
-will typically be easy to find since we haven't even executed the
-program yet), it doesn't actually use any more memory. We just find a
-large area & then use only the part of it that we need to.
-
-Since James' patch constrained get_unmapped_area() to look for a
-suitably aligned piece of memory the result would have been much the
-same - see the code in unmapped_area() where it also adds align_mask to
-the length of the area we're looking for. It's just that with my patch
-the alignment is being done by arch_setup_additional_pages() rather than
-get_unmapped_area()/vm_unmapped_area(). That's not unprecedented either
-- arch/nds32 already does something similar.
-
+-- 
 Thanks,
-    Paul
+~Nick Desaulniers

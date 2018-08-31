@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2018 17:12:38 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:49002 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2018 17:12:47 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:49018 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994609AbeHaPLz1bBMK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 31 Aug 2018 17:11:55 +0200
+        id S23994614AbeHaPMANpwpK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Aug 2018 17:12:00 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 9F61D207EB; Fri, 31 Aug 2018 17:11:50 +0200 (CEST)
+        id 6E5D02072D; Fri, 31 Aug 2018 17:11:55 +0200 (CEST)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id EE3A0215E6;
-        Fri, 31 Aug 2018 17:11:27 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 9958722A3A;
+        Fri, 31 Aug 2018 17:11:28 +0200 (CEST)
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Wolfram Sang <wsa@the-dreams.de>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -20,9 +20,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Allan Nielsen <allan.nielsen@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v5 2/7] i2c: designware: move #ifdef CONFIG_OF to the top
-Date:   Fri, 31 Aug 2018 17:11:09 +0200
-Message-Id: <20180831151114.25739-3-alexandre.belloni@bootlin.com>
+Subject: [PATCH v5 4/7] dt-bindings: i2c: designware: document MSCC Ocelot bindings
+Date:   Fri, 31 Aug 2018 17:11:11 +0200
+Message-Id: <20180831151114.25739-5-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.19.0.rc1
 In-Reply-To: <20180831151114.25739-1-alexandre.belloni@bootlin.com>
 References: <20180831151114.25739-1-alexandre.belloni@bootlin.com>
@@ -32,7 +32,7 @@ Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65817
+X-archive-position: 65818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,49 +49,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move the #ifdef CONFIG_OF section to the top of the file, after the ACPI
-section so functions defined there can be used in dw_i2c_plat_probe.
+Document bindings for the Microsemi Ocelot integration of the Designware
+I2C controller.
 
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ Documentation/devicetree/bindings/i2c/i2c-designware.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 72f403e75fa6..e88090a62cb5 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -156,6 +156,14 @@ static inline int dw_i2c_acpi_configure(struct platform_device *pdev)
- }
- #endif
+diff --git a/Documentation/devicetree/bindings/i2c/i2c-designware.txt b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
+index fbb0a6d8b964..3e4bcc2fb6f7 100644
+--- a/Documentation/devicetree/bindings/i2c/i2c-designware.txt
++++ b/Documentation/devicetree/bindings/i2c/i2c-designware.txt
+@@ -3,6 +3,7 @@
+ Required properties :
  
-+#ifdef CONFIG_OF
-+static const struct of_device_id dw_i2c_of_match[] = {
-+	{ .compatible = "snps,designware-i2c", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
-+#endif
+  - compatible : should be "snps,designware-i2c"
++                or "mscc,ocelot-i2c" with "snps,designware-i2c" for fallback
+  - reg : Offset and length of the register set for the device
+  - interrupts : <IRQ> where IRQ is the interrupt number.
+ 
+@@ -11,8 +12,12 @@ Recommended properties :
+  - clock-frequency : desired I2C bus clock frequency in Hz.
+ 
+ Optional properties :
++ - reg : for "mscc,ocelot-i2c", a second register set to configure the SDA hold
++   time, named ICPU_CFG:TWI_DELAY in the datasheet.
 +
- static void i2c_dw_configure_master(struct dw_i2c_dev *dev)
- {
- 	struct i2c_timings *t = &dev->timings;
-@@ -390,14 +398,6 @@ static int dw_i2c_plat_remove(struct platform_device *pdev)
- 	return 0;
- }
+  - i2c-sda-hold-time-ns : should contain the SDA hold time in nanoseconds.
+-   This option is only supported in hardware blocks version 1.11a or newer.
++   This option is only supported in hardware blocks version 1.11a or newer and
++   on Microsemi SoCs ("mscc,ocelot-i2c" compatible).
  
--#ifdef CONFIG_OF
--static const struct of_device_id dw_i2c_of_match[] = {
--	{ .compatible = "snps,designware-i2c", },
--	{},
--};
--MODULE_DEVICE_TABLE(of, dw_i2c_of_match);
--#endif
--
- #ifdef CONFIG_PM_SLEEP
- static int dw_i2c_plat_prepare(struct device *dev)
- {
+  - i2c-scl-falling-time-ns : should contain the SCL falling time in nanoseconds.
+    This value which is by default 300ns is used to compute the tLOW period.
 -- 
 2.19.0.rc1

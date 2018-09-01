@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2018 13:46:34 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:57570 "EHLO mx1.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2018 13:46:45 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:38012 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992492AbeIALqTeZiad (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 1 Sep 2018 13:46:19 +0200
+        id S23992747AbeIALqVcIlId (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 1 Sep 2018 13:46:21 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 4D1124927A;
-        Sat,  1 Sep 2018 13:46:13 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 8C4C742744;
+        Sat,  1 Sep 2018 13:46:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id ZMqh0fK0RBmQ; Sat,  1 Sep 2018 13:46:12 +0200 (CEST)
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id 3QHk4kPrWLK0; Sat,  1 Sep 2018 13:46:13 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     davem@davemloft.net
 Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
@@ -19,16 +19,16 @@ Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
         john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
         hauke.mehrtens@intel.com, devicetree@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 net-next 1/7] MIPS: lantiq: dma: add dev pointer
-Date:   Sat,  1 Sep 2018 13:45:29 +0200
-Message-Id: <20180901114535.9070-2-hauke@hauke-m.de>
+Subject: [PATCH v2 net-next 2/7] MIPS: lantiq: Do not enable IRQs in dma open
+Date:   Sat,  1 Sep 2018 13:45:30 +0200
+Message-Id: <20180901114535.9070-3-hauke@hauke-m.de>
 In-Reply-To: <20180901114535.9070-1-hauke@hauke-m.de>
 References: <20180901114535.9070-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65835
+X-archive-position: 65836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,64 +45,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-dma_zalloc_coherent() now crashes if no dev pointer is given.
-Add a dev pointer to the ltq_dma_channel structure and fill it in the
-driver using it.
-
-This fixes a bug introduced in kernel 4.19.
+When a DMA channel is opened the IRQ should not get activated
+automatically, this allows it to pull data out manually without the help
+of interrupts. This is needed for a workaround in the vrx200 Ethernet
+driver.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Acked-by: Paul Burton <paul.burton@mips.com>
 ---
- arch/mips/include/asm/mach-lantiq/xway/xway_dma.h | 1 +
- arch/mips/lantiq/xway/dma.c                       | 4 ++--
- drivers/net/ethernet/lantiq_etop.c                | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/lantiq/xway/dma.c        | 1 -
+ drivers/net/ethernet/lantiq_etop.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-index 4901833498f7..8441b2698e64 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-@@ -40,6 +40,7 @@ struct ltq_dma_channel {
- 	int desc;			/* the current descriptor */
- 	struct ltq_dma_desc *desc_base; /* the descriptor base */
- 	int phys;			/* physical addr */
-+	struct device *dev;
- };
- 
- enum {
 diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 4b9fbb6744ad..664f2f7f55c1 100644
+index 664f2f7f55c1..982859f2b2a3 100644
 --- a/arch/mips/lantiq/xway/dma.c
 +++ b/arch/mips/lantiq/xway/dma.c
-@@ -130,7 +130,7 @@ ltq_dma_alloc(struct ltq_dma_channel *ch)
- 	unsigned long flags;
- 
- 	ch->desc = 0;
--	ch->desc_base = dma_zalloc_coherent(NULL,
-+	ch->desc_base = dma_zalloc_coherent(ch->dev,
- 				LTQ_DESC_NUM * LTQ_DESC_SIZE,
- 				&ch->phys, GFP_ATOMIC);
- 
-@@ -182,7 +182,7 @@ ltq_dma_free(struct ltq_dma_channel *ch)
- 	if (!ch->desc_base)
- 		return;
- 	ltq_dma_close(ch);
--	dma_free_coherent(NULL, LTQ_DESC_NUM * LTQ_DESC_SIZE,
-+	dma_free_coherent(ch->dev, LTQ_DESC_NUM * LTQ_DESC_SIZE,
- 		ch->desc_base, ch->phys);
+@@ -106,7 +106,6 @@ ltq_dma_open(struct ltq_dma_channel *ch)
+ 	spin_lock_irqsave(&ltq_dma_lock, flag);
+ 	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
+ 	ltq_dma_w32_mask(0, DMA_CHAN_ON, LTQ_DMA_CCTRL);
+-	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
+ 	spin_unlock_irqrestore(&ltq_dma_lock, flag);
  }
- EXPORT_SYMBOL_GPL(ltq_dma_free);
+ EXPORT_SYMBOL_GPL(ltq_dma_open);
 diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 7a637b51c7d2..e08301d833e2 100644
+index e08301d833e2..379db19a303c 100644
 --- a/drivers/net/ethernet/lantiq_etop.c
 +++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -274,6 +274,7 @@ ltq_etop_hw_init(struct net_device *dev)
- 		struct ltq_etop_chan *ch = &priv->ch[i];
- 
- 		ch->idx = ch->dma.nr = i;
-+		ch->dma.dev = &priv->pdev->dev;
- 
- 		if (IS_TX(i)) {
- 			ltq_dma_alloc_tx(&ch->dma);
+@@ -439,6 +439,7 @@ ltq_etop_open(struct net_device *dev)
+ 		if (!IS_TX(i) && (!IS_RX(i)))
+ 			continue;
+ 		ltq_dma_open(&ch->dma);
++		ltq_dma_enable_irq(&ch->dma);
+ 		napi_enable(&ch->napi);
+ 	}
+ 	phy_start(dev->phydev);
 -- 
 2.11.0

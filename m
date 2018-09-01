@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2018 14:44:22 +0200 (CEST)
-Received: from sauhun.de ([88.99.104.3]:59818 "EHLO pokefinder.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2018 16:57:30 +0200 (CEST)
+Received: from vps0.lunn.ch ([185.16.172.187]:55352 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990471AbeIAMoR0CYPN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 1 Sep 2018 14:44:17 +0200
-Received: from localhost (mue-88-130-111-030.dsl.tropolys.de [88.130.111.30])
-        by pokefinder.org (Postfix) with ESMTPSA id 40DD036488B;
-        Sat,  1 Sep 2018 14:44:17 +0200 (CEST)
-Date:   Sat, 1 Sep 2018 14:44:16 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>
-Subject: Re: [PATCH v5 5/7] i2c: designware: add MSCC Ocelot support
-Message-ID: <20180901124416.GC1196@kunai>
-References: <20180831151114.25739-1-alexandre.belloni@bootlin.com>
- <20180831151114.25739-6-alexandre.belloni@bootlin.com>
+        id S23990471AbeIAO51ASrRw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 1 Sep 2018 16:57:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
+        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=r687OzTzHsNQAk+R1W9pVc1G9KyksXTjC3ztJ36+H7w=;
+        b=L9Ft3MbWVuNfFM3Fh34k6aJ7k6ixIewbdZVxD2e1OWgjlhr/SMI1okwZLvSlR601fEMpXUr2MvcbGuoGFA97+oi37apNq14PRChhFLG5SFN4RyxrIO7p1FDr5wjKHoV9jfZ6ZYG1bvfJ2Vu1QozuNzGtIO94MvHq9WYQpmIGN6I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1fw7Ke-0001jc-HO; Sat, 01 Sep 2018 16:57:00 +0200
+Date:   Sat, 1 Sep 2018 16:57:00 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 1/7] MIPS: lantiq: dma: add dev pointer
+Message-ID: <20180901145700.GB6305@lunn.ch>
+References: <20180901114535.9070-1-hauke@hauke-m.de>
+ <20180901114535.9070-2-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="WfZ7S8PLGjBY9Voh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180831151114.25739-6-alexandre.belloni@bootlin.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <wsa@the-dreams.de>
+In-Reply-To: <20180901114535.9070-2-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65843
+X-archive-position: 65844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,35 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sat, Sep 01, 2018 at 01:45:29PM +0200, Hauke Mehrtens wrote:
+> dma_zalloc_coherent() now crashes if no dev pointer is given.
+> Add a dev pointer to the ltq_dma_channel structure and fill it in the
+> driver using it.
+> 
+> This fixes a bug introduced in kernel 4.19.
 
---WfZ7S8PLGjBY9Voh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Hauke
 
+Should this be added to stable so that it appears in 4.19-rcX?  If so,
+please send it to net, not net-next.
 
-> +int dw_i2c_of_configure(struct platform_device *pdev)
-
-I made this 'static' as well.
-
-
---WfZ7S8PLGjBY9Voh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAluKiaAACgkQFA3kzBSg
-KbYlpQ/8Dpz1rwpriPCRczKfGEpM49wx/FAypJOs0rSQQEjDcMgpYjRhUGZOHdL/
-o/chajkvs1hyXilHjudAb99SuEqZyHk9cOJIoSurborwizJfsVRnZ0NIdb3BuWVb
-XN8+eZ7CrEbWCOwv/PPC3glB9hkysLMOSU1xk4QPhTtAn1jv7LKd0ZN2HcALb6Ux
-gTqjOxw26USwhuxswSP2LPO53SfHvdu83skDAtJSIcyDFRbDoXJELJBUzLvDS+LH
-WuVNBSfUVKRGPK0GH/wB3ZQly5te0GDrMO6k1NQeJ8swGasTapDU9seEKAfcN0JO
-NRsDDY0eJ/XcFMS2ew2+EH7B59rEhLuvNuZm6KvCf1xMcVeH01qGapOt17pQFkL7
-1Aswcr/R512cI37O+HtwZY941lHX4f2/8nJ0LXnerxxJFZT1AnmBtoIuJRfCN+HV
-EqezURSkVhHH6XhUxmsPPcG0L5IcHbu0RHbPaHa1AAVREk0anYXFyIY1JogrUHqs
-XXowZch8YpIGsqLcussrU+noU49VCMuyllLr7K8pQHBvggTsuE3XFhGK9zTG5EFP
-a0H3rHKDCCMH46F9s11MhvlCvRbjKd6vDKzzHCV/yU7qVP4h4sGcGEmjk2p8+pGq
-n9MCZAfkMuoMpAwoACOP2TzGQonf0ZDMIzuPqux/+zMBE3foM0M=
-=0MVY
------END PGP SIGNATURE-----
-
---WfZ7S8PLGjBY9Voh--
+       Andrew

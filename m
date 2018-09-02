@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2018 15:14:42 +0200 (CEST)
-Received: from mail-co1nam03on0118.outbound.protection.outlook.com ([104.47.40.118]:38816
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2018 15:15:10 +0200 (CEST)
+Received: from mail-co1nam03on0129.outbound.protection.outlook.com ([104.47.40.129]:11569
         "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994074AbeIBNOjD0h1R convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2018 15:14:39 +0200
+        id S23994617AbeIBNPAW-aSR convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2018 15:15:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d13S8VPu6XUkd7FETJ2ADnFTbPW/vQjb1CegKJs6NoQ=;
- b=WYNL/1EnrKXHKERJs69xWY1fc2BzgbODAGjLSz5KtLeJ5+QGujVmQWQO/a7+ifQWrCsYMyS67qSrYUqi5w8PLMAiA3mvgqJrhs40dRniTQ9aXrBZ1RauH6wD2RJGGONPdQvfuaAxNHYcdRpXOxCKLOcOv12zBfvIZYRSOS6pzz4=
+ bh=Axv9/f215bohpog8R5xOtJwtX6zVxkShRa9sq1Ll/74=;
+ b=C3HjyzSDL7WirA/9/Sm4uFsUDj5Jym2INJWzlRyIOdoyU6KI2UtFdeWB+YlhsTzRDKRfD1/WMBPHiK1IXJYL6A7tAJRNOb+Fx44cpF+scARb4axi0EyqKKadpT1VqJN4C7H2ZAQ2Lp+4704QOS1YAn60noC90z4T1cCbLYlPaZM=
 Received: from CY4PR21MB0776.namprd21.prod.outlook.com (10.173.192.22) by
- CY4PR21MB0120.namprd21.prod.outlook.com (10.173.189.14) with Microsoft SMTP
+ CY4PR21MB0741.namprd21.prod.outlook.com (10.173.189.7) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1122.2; Sun, 2 Sep 2018 13:14:28 +0000
+ 15.20.1122.2; Sun, 2 Sep 2018 13:14:49 +0000
 Received: from CY4PR21MB0776.namprd21.prod.outlook.com
  ([fe80::7c3a:eea8:1391:1611]) by CY4PR21MB0776.namprd21.prod.outlook.com
  ([fe80::7c3a:eea8:1391:1611%7]) with mapi id 15.20.1143.000; Sun, 2 Sep 2018
- 13:14:28 +0000
+ 13:14:49 +0000
 From:   Sasha Levin <Alexander.Levin@microsoft.com>
 To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
+CC:     Nicholas Mc Guire <hofrat@osadl.org>,
+        Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
         Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL 4.9 22/62] MIPS: Fix ISA virt/bus conversion for
- non-zero PHYS_OFFSET
-Thread-Topic: [PATCH AUTOSEL 4.9 22/62] MIPS: Fix ISA virt/bus conversion for
- non-zero PHYS_OFFSET
-Thread-Index: AQHUQr7gHyU5UJdoIE+Rx6Md3cnc6Q==
-Date:   Sun, 2 Sep 2018 13:14:28 +0000
-Message-ID: <20180902131411.183978-12-alexander.levin@microsoft.com>
+Subject: [PATCH AUTOSEL 4.9 36/62] MIPS: Octeon: add missing of_node_put()
+Thread-Topic: [PATCH AUTOSEL 4.9 36/62] MIPS: Octeon: add missing
+ of_node_put()
+Thread-Index: AQHUQr7tuXcV6eS0MUuVej0Gi22fSg==
+Date:   Sun, 2 Sep 2018 13:14:49 +0000
+Message-ID: <20180902131411.183978-26-alexander.levin@microsoft.com>
 References: <20180902131411.183978-1-alexander.levin@microsoft.com>
 In-Reply-To: <20180902131411.183978-1-alexander.levin@microsoft.com>
 Accept-Language: en-US
@@ -41,39 +40,39 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator: 
 x-originating-ip: [52.168.54.252]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR21MB0120;6:7TPTUjGu5WZSMYcQb2nhePgrQYU06wJhJFxOjBJS190/DiSc3CxPZqZygu6g1R0u4sBN/l9Mk1FYV/IPrEoq75f0CoJ6BdqfTAkQE8ot7byc6WEsDzRxLSdQn0KGtx/Zt4R2IxvlVeYTZ01AiDuhmVzdQWBuPTs9FYdh0V/CUQvmbpCOmw6RuMGtz9vDSfg0nsnfr9eRkHymJtzQr+QcdpmE4MkE46SzgF2rW0zi7pByjVyTWcsUwyYrTIgc8AMhn7MnwK7KLUKmx4VjPYVxHtTgKi9x2aBT/J8+7rPzQjqo4EbH6odCpr1rPsXTjpPiY4DMNwdqO7ZKbwl9MbDfNnebZc0V+JXB927fk3XqDjXYoaFFOj1JrgMNeTig/C4UlvH5O0eDIkHb1HWI7myxZEdzJqiDDXHdIAqlkqmNlf2cyy4gfU0+DJauqaQv25iO35cnZzWvVxYz4eY7kxKF2g==;5:4l3NXB3D3Ge6OXUcnxtSu3sr76Cye8mCYSdaNCm5+8z+hw2YAhqeqqZm/+PaNYOJgY+zgB7lyIgV8L7y8qVaNqiP59DyIWWvFevdWdv9ONdCLvoYekxzWwDBXzsWXly8V9zBKQWX2Nbpgu/ojHzFIjAvijh9xaZ4vodWXX8AZv8=;7:+qROScjEtEMJlAEzPjjB14h4zx/DNz5z+WhWeoeqZMZO9hL9cAyhYzyzF9/hNtRdQ+eTat1nNuldaRfM/L6kx/LojNIQAB9qoD+F82Rr01Hvmi6o/ZcP5hibkPJdVZUVRFna8XmRzOyQSykSjmg7fSX/bQxJP8GvPlnF5/b1IkPuDJtKvI2WRkF/s9sTMR+5e40fEdyLN3zemnNrHNAA6YDdhW4ljfNuMib2siIN97hI9+O56kVSPQ9qgLmo8UKv
-x-ms-office365-filtering-correlation-id: c16787b8-4d64-4ccd-b740-08d610d60338
+x-microsoft-exchange-diagnostics: 1;CY4PR21MB0741;6:U7TDvTA3CB5v8SU8gYcw/fWKuNar1kXcPtP8t1ZcODcwnbcpaEjEc5cxXOriOoHtWmbPHkcYBQ6IN+6XLrhIaKPpEx+P2hHkInenXTukolnCVEqt9j5LcYks6uTTijwFqENYgJ/YIDtzrNXeNePqs+YLiQNyGEsrGPoPLmYcrsMT78jZvGQx2vz6IVIRCUDWD8y2ntGP8w+z//UUFMDS8nTyoJA5sWXiVdbK43BABkXYuWeFY3nLloMqoAon1IYCoFScSy8/C8X+fvq5ISo/ISoUvx5e+u7ZnRXrHFc7t+EAljqYSU7bCaiJO1iELUQp6b0JOH5XMt9VsU6mauXw+JJPEvqCfUTpCs7N/YF7SKTM8PZW5iXYeXxMVTsJ6+S1T2CHq/jitBYdG2sl/XnRngykUqS8ZxfCBxQdi2S0+YRBtafffLsXuBLYKMpo4qsMCMXWLr886unrYRuhhD/LRQ==;5:vPUYBcoa9d7UXJnr7ES3x5T7RqFV2hY+P+DRSWDXnMr/0zfluH4VvEe/c/UszPZxHEinn9zgT5lVJZS8WP8iJhrhU6mcHUmvAVCmABUqIhcfSodGnWXWZaOKVLQtmSaJHR2O5mnlkVgaqVj1IzljBVCIf4SFvbywp3Qo7OA7A1w=;7:n83Jpwu9wMQPlLhCvb6BfQufZeMqIm2ezUaQ7EfrZMoI8cmsuTeSy2HHkr/Pp6Wk3/OsMSGoiue0X5amEoIuqpoXOBcigGxG1PzYmX4nwzR12Rzk/m4++zlZokGBiCqBPBtdowYKErWuC7QmEYs8bp+VLP/qFv7nK5YDCMSBLAtkIGevpV8y6ZLR9kwcDob4eLr+PStEWisr5FiMCvrJAwJaEeAjmy7csUz/hbzH3AiqQlsvPP+SfNI+6rzSRiNz
+x-ms-office365-filtering-correlation-id: edcf1edc-8da1-40bf-001c-08d610d60ff5
 x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(4534165)(4627221)(201703031133081)(201702281549075)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0120;
-x-ms-traffictypediagnostic: CY4PR21MB0120:
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(4534165)(4627221)(201703031133081)(201702281549075)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0741;
+x-ms-traffictypediagnostic: CY4PR21MB0741:
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-prvs: <CY4PR21MB0120BF7D0F220C3582DCAA8FFB0D0@CY4PR21MB0120.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(228905959029699);
+x-microsoft-antispam-prvs: <CY4PR21MB0741DAD2C05E0AA3467E87BAFB0D0@CY4PR21MB0741.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(9452136761055);
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(93006095)(93001095)(3231340)(944501410)(52105095)(2018427008)(6055026)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(201708071742011)(7699049)(76991033);SRVR:CY4PR21MB0120;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0120;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(93006095)(93001095)(10201501046)(3231340)(944501410)(52105095)(2018427008)(3002001)(6055026)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(201708071742011)(7699049)(76991033);SRVR:CY4PR21MB0741;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0741;
 x-forefront-prvs: 078310077C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(346002)(136003)(376002)(396003)(366004)(189003)(199004)(106356001)(53936002)(72206003)(966005)(5250100002)(22452003)(97736004)(6306002)(6512007)(10090500001)(2616005)(2501003)(446003)(11346002)(478600001)(10290500003)(476003)(14454004)(81166006)(186003)(486006)(25786009)(4326008)(36756003)(102836004)(8676002)(81156014)(105586002)(8936002)(2900100001)(99286004)(66066001)(68736007)(110136005)(26005)(107886003)(6506007)(5660300001)(76176011)(54906003)(316002)(1076002)(86612001)(3846002)(6116002)(256004)(7736002)(6486002)(86362001)(6436002)(305945005)(217873002)(2906002);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0120;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39860400002)(136003)(346002)(396003)(376002)(199004)(189003)(97736004)(2906002)(186003)(26005)(256004)(102836004)(11346002)(25786009)(476003)(486006)(2616005)(446003)(305945005)(66066001)(5250100002)(2501003)(7736002)(6506007)(8676002)(68736007)(76176011)(99286004)(6486002)(105586002)(81156014)(81166006)(53936002)(5660300001)(22452003)(478600001)(6436002)(86362001)(575784001)(14454004)(54906003)(36756003)(106356001)(110136005)(6512007)(4326008)(6306002)(107886003)(217873002)(3846002)(2900100001)(316002)(8936002)(1076002)(10090500001)(6116002)(72206003)(86612001)(966005)(10290500003);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0741;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: microsoft.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: 35TBCwINyQS7p84CoS9TV3raY55CqG4l7Zb30ZaZexKNBtARPTTXqlapHlxmpLj59P8o25FXolE3Ze3pp/Vj3hZUQZt6LO/3nJxKtmWmkiy2a+wcPq+ar28Jy8BsZykd8IyrUjHA8GSl0/kr0RcIf+j8gCMjJYH4RIsAldRcL8o1X8oeU3z38Pz7hhvggx/QCVbW6N0MHX85JHU7Q6emopOE9L24SgyGiuSbAVA/EkYEgBd/OE67H9+9Y/5NxLGDPKBixzkj2zJJNwwazuP/8R72c3ZYD1GH1UPPi3L4ZciKSxQbbImvabMdIOT8fJ0VPqEabiFYjM3NvhdZHXxgmB1QjpdsN84m8qYFotVzV7s=
+x-microsoft-antispam-message-info: 3lyIf2P6PxgjI797/qfMgAb8yvafmLTI/BL3Jlv76DfLz1LQZFBMNhhxxpj+ZAU/DGzmpywD3e01Ta49i8gEWVIacCHE0WAQC/bh5j3PZvV+9eCRP+12nLqwtVexCrOBRVGo1rA7VjaCIaDvoYzULMA+9AS+oM5XNMYBwwjTLyOhObjtO0teh3ds/MWNnlC6va0zTxZMKczPtuaME6Qk/zHva2lKCX847UuYcHeBGC6h48hNjEKJ4vMlH+siqNTyACUBVThbLavmU4MiKcwkRznjsDQksyk7R2GFtSJRgehELgRKgcFwk8mRZT1bgLKFLOeX/7Qr5VtPg6wAyFLIQ+NK3JPK3PvgvZhJCpk1yQk=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c16787b8-4d64-4ccd-b740-08d610d60338
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2018 13:14:28.0706
+X-MS-Exchange-CrossTenant-Network-Message-Id: edcf1edc-8da1-40bf-001c-08d610d60ff5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2018 13:14:49.4292
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0120
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0741
 Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65859
+X-archive-position: 65860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,51 +89,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 
-[ Upstream commit 0494d7ffdcebc6935410ea0719b24ab626675351 ]
+[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
 
-isa_virt_to_bus() & isa_bus_to_virt() claim to treat ISA bus addresses
-as being identical to physical addresses, but they fail to do so in the
-presence of a non-zero PHYS_OFFSET.
+The call to of_find_node_by_name returns a node pointer with refcount
+incremented thus it must be explicitly decremented here after the last
+usage.
 
-Correct this by having them use virt_to_phys() & phys_to_virt(), which
-consolidates the calculations to one place & ensures that ISA bus
-addresses do indeed match physical addresses.
-
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20047/
-Cc: James Hogan <jhogan@kernel.org>
+Patchwork: https://patchwork.linux-mips.org/patch/19558/
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 ---
- arch/mips/include/asm/io.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/cavium-octeon/octeon-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 853b2f4954fa..06049b6b3ddd 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -141,14 +141,14 @@ static inline void * phys_to_virt(unsigned long address)
- /*
-  * ISA I/O bus memory addresses are 1:1 with the physical address.
-  */
--static inline unsigned long isa_virt_to_bus(volatile void * address)
-+static inline unsigned long isa_virt_to_bus(volatile void *address)
- {
--	return (unsigned long)address - PAGE_OFFSET;
-+	return virt_to_phys(address);
- }
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 37a932d9148c..1ba6bcf98570 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -366,6 +366,7 @@ static int __init octeon_ehci_device_init(void)
+ 		return 0;
  
--static inline void * isa_bus_to_virt(unsigned long address)
-+static inline void *isa_bus_to_virt(unsigned long address)
- {
--	return (void *)(address + PAGE_OFFSET);
-+	return phys_to_virt(address);
- }
+ 	pd = of_find_device_by_node(ehci_node);
++	of_node_put(ehci_node);
+ 	if (!pd)
+ 		return 0;
  
- #define isa_page_to_bus page_to_phys
+@@ -428,6 +429,7 @@ static int __init octeon_ohci_device_init(void)
+ 		return 0;
+ 
+ 	pd = of_find_device_by_node(ohci_node);
++	of_node_put(ohci_node);
+ 	if (!pd)
+ 		return 0;
+ 
 -- 
 2.17.1

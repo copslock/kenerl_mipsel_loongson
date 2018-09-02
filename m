@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2018 15:08:16 +0200 (CEST)
-Received: from mail-sn1nam02on0135.outbound.protection.outlook.com ([104.47.36.135]:2420
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2018 15:09:10 +0200 (CEST)
+Received: from mail-bn3nam01on0139.outbound.protection.outlook.com ([104.47.33.139]:41576
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994659AbeIBNIASGmsR convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2018 15:08:00 +0200
+        id S23993890AbeIBNJGyo5GR convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2018 15:09:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bMHlz7015KLytnd06ZvV1sVyRzy0hQ3RfSzGvObMnVE=;
- b=XPue7BMozBy1s7ghekmxzrnMfHVeRmpq6rleuIVDL3usbZzkN3q566EKOFbqs90B02+kvHm5aMdOSDUMrtjHb4KKr7JNxgvSjcBxp7MkhmajQBQSgQGkXWqVvcTx6kWwmgmzMGngUCWlu6dFbLla3DZRuX3HBDvgtidmEDMeYKU=
+ bh=NAkjcfewxpI2QlG19WEufUMyDX8xZOWLvvRwYidC080=;
+ b=Qjs+n6bFssyuBcno3kbfEyAdprrbpM0cC+Ss5r2KxBV71LH/ZD2scaRGye6G2DUgwInZ8Q6btBb0t0XFvuY+ZEUx/ec6ll6uvdfMzl4mnduBGzTbhODLLUYXcsVAvK95EsfbACLVGsiBRZBM99DX/jc/rmF8KN5yq0IgBVsGHIg=
 Received: from CY4PR21MB0776.namprd21.prod.outlook.com (10.173.192.22) by
- CY4PR21MB0503.namprd21.prod.outlook.com (10.172.122.13) with Microsoft SMTP
+ CY4PR21MB0469.namprd21.prod.outlook.com (10.172.121.147) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1122.2; Sun, 2 Sep 2018 13:07:48 +0000
+ 15.20.1122.2; Sun, 2 Sep 2018 13:08:52 +0000
 Received: from CY4PR21MB0776.namprd21.prod.outlook.com
  ([fe80::7c3a:eea8:1391:1611]) by CY4PR21MB0776.namprd21.prod.outlook.com
  ([fe80::7c3a:eea8:1391:1611%7]) with mapi id 15.20.1143.000; Sun, 2 Sep 2018
- 13:07:48 +0000
+ 13:08:52 +0000
 From:   Sasha Levin <Alexander.Levin@microsoft.com>
 To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Nicholas Mc Guire <hofrat@osadl.org>,
+CC:     Paul Burton <paul.burton@imgtec.com>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL 4.14 60/89] MIPS: Octeon: add missing of_node_put()
-Thread-Topic: [PATCH AUTOSEL 4.14 60/89] MIPS: Octeon: add missing
- of_node_put()
-Thread-Index: AQHUQr3jBTeYmFMQIEm8h2/5t8TyIg==
-Date:   Sun, 2 Sep 2018 13:07:23 +0000
-Message-ID: <20180902064918.183387-60-alexander.levin@microsoft.com>
+Subject: [PATCH AUTOSEL 4.14 87/89] MIPS: WARN_ON invalid DMA cache
+ maintenance, not BUG_ON
+Thread-Topic: [PATCH AUTOSEL 4.14 87/89] MIPS: WARN_ON invalid DMA cache
+ maintenance, not BUG_ON
+Thread-Index: AQHUQr37btZZ94ApKE6wyQXJVJIgaw==
+Date:   Sun, 2 Sep 2018 13:08:03 +0000
+Message-ID: <20180902064918.183387-87-alexander.levin@microsoft.com>
 References: <20180902064918.183387-1-alexander.levin@microsoft.com>
 In-Reply-To: <20180902064918.183387-1-alexander.levin@microsoft.com>
 Accept-Language: en-US
@@ -40,39 +40,39 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator: 
 x-originating-ip: [52.168.54.252]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR21MB0503;6:+SLr0tx2+ovoXEKSJxus4Sc0GjiNHuaiVYwNLN0u8CGiuASnqbG8qeHQ06uDqprxVWFKMmlbw6esQPnkXAxUYgSTi+0X2pAj1awOzG/D+2t13iO0Kkq6h3cwI2tHb51DzhYAeRQpXboS0rcvTpPTxiVDpJbIAKDhyt/LOioD+zo2eDXeWp2DLtZVjdPr2diWMsHSx2zbGBq/sdi2BqujAfK8PtI/aWwGYUH1FWJwuCVxSnXeUDSAYY8Jn0UhMslehf0L7VtVtP9whD/g9PC6tqbXttCgZRqNuQpyGi+CTgY5D2s/M/0eRnVuAKyIzP+PXp9OFv19/O/WxxnyDOJbd9UWT6pVlgpcFVTE0FQg3IUktE8EBpbiwSKH5Q6rreqbNieV7HrwIpXCV/VnpaLMXIM5yNTxAoDENaoolpsSn1ae05PLVC9afUZ4BxKutUJmkCN2+FFLeIzzP3MZGE4awg==;5:+A5WwZKrunuZ24DtiNV2EZSXBhd2mWWUkcL15XCGZ5KoXDxT9afHcbvnAIpDoH3V6xq+cjo3AuEzQNmzCFDsHgVeSM6ShOhN9+RNLkRY6GYzsefYW8UDKQVHQBM7kHUo8F6b0CENECY9J/cz5QiyLj8gapvTljy3fp3BHn4dWvg=;7:LWcLYkUdwOf3c8Im2uUs26KKerr0VwDdpil+6wVCOCKgVlVu6kq3OFDCyEZonHH3EQlMyJGLWX1Bjb56E/VtcwPIDf0HqKccaxM8OaHgdgUoP4dRUVUWNYQWYyc+z3mxCENVC7b+5msWbryuQqh7FTG+9YG0U08C84R+SWQm6P0VoMOLHMKOOJPWR/lZWpa7/sTjNde6n9qd2sEpXwnfVOvm+NNpFAGq6dptjI/YOe3RCPw2iyHHocTfmyyOlxxY
-x-ms-office365-filtering-correlation-id: c5a4bbc7-1aea-47bd-4a84-08d610d514f0
+x-microsoft-exchange-diagnostics: 1;CY4PR21MB0469;6:2Z2IJ6JTD1Ch3TuAvRZXytsYowNZkdbyQgZWNrF+v9SbQQYV5flscHCEeGJ4u90KyhrqrS0oKLeGoCvo8unAFd287VJbEIhqRDVlIxXZEbI02tlB7kxrVv+UvkxIkyhpDeFhh/fqKIUdsMsl1EfPZ8JoZ9PUC9jXHPUcQrwghrnEifa504k82UgFSDYP7ZK1jOhFCniEjz8FMDeIoWax0QqD8uaubeuxeFmTJbttbexaNUAdwCSYyAq22Sd5ky9V8kuY4fgJ5kNPnUBN2dGK+sruF+O9JxowJDZlfr2QTMltfkE+GQ/UE9Ne0+z0kGJbW60UuBlI/+WzCzuD/gLIEoWB4DEEfFK+7G4NOXTuSHgSdaJUOsYMHeIHHTpzPrskSAq+Hr8PkzA7ghxHLOSt4JnvhKQYxkzwQNyAdTARm3YfqyTIaV5lkEv8uw/mlhwiNiCUQXAmFHVSvd6YniC9Dw==;5:flQOWE/CAKE2SZw0EhnfWfwZZ6A4n2HI24uM8BN0r2wChxIFZ2doD1LVwhRAwSk5yvOWOguTA3b1fIlW14RQNnxLEyFkJsCygZghUxSKDkwJS7uiN+8v+rLkFr+CuUIXF79UxU4jbsvXSN+Lo3qnryH61ZzAOxPJPQYq2S9VmUs=;7:70S5GOT69BBhNEBeeo1cyAS+m4yMhVqoy1QecQgjqPmNY2LdsZxh6Ejyn1cEOIIpPU5cpiYRQgqKb3JO0237cPW53VpOJUchFWUIKJsWmW/3Uiku5l7Xdv8aLepMJ1RkYbczn7aMad5veAk6fy3eT+j1MEaVDQNFDOZEB8UuE4dsmK78B5UBQC/itjOklzm5MZWGQyxfANsKSE4K5m36ahbtUWs0QFH6Y0qHMZhglkH2REBZaaiGi761VdnkgoEq
+x-ms-office365-filtering-correlation-id: 93deb4e1-e8f5-4f5b-33f0-08d610d53ad5
 x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(4534165)(4627221)(201703031133081)(201702281549075)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0503;
-x-ms-traffictypediagnostic: CY4PR21MB0503:
-x-microsoft-antispam-prvs: <CY4PR21MB05033B99BA169533DBA6C292FB0D0@CY4PR21MB0503.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(9452136761055);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(2017102700009)(2017102701064)(6040522)(2401047)(5005006)(8121501046)(2017102702064)(20171027021009)(20171027022009)(20171027023009)(20171027024009)(20171027025009)(20171027026009)(2017102703076)(93006095)(93001095)(10201501046)(3231340)(944501410)(52105095)(2018427008)(3002001)(6055026)(149027)(150027)(6041310)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(201708071742011)(7699049)(76991033);SRVR:CY4PR21MB0503;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0503;
-x-forefront-prvs: 078310077C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39860400002)(136003)(376002)(346002)(366004)(189003)(199004)(105586002)(8936002)(102836004)(6346003)(68736007)(2900100001)(6116002)(217873002)(186003)(36756003)(81156014)(81166006)(1076002)(99286004)(26005)(5660300001)(66066001)(6666003)(8676002)(54906003)(256004)(316002)(305945005)(22452003)(3846002)(10090500001)(7736002)(110136005)(106356001)(2906002)(6506007)(10290500003)(2501003)(966005)(478600001)(2616005)(72206003)(6512007)(53936002)(575784001)(86362001)(86612001)(107886003)(6436002)(14454004)(76176011)(486006)(25786009)(476003)(97736004)(446003)(11346002)(6486002)(4326008)(6306002)(5250100002);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0503;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(4534165)(4627221)(201703031133081)(201702281549075)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0469;
+x-ms-traffictypediagnostic: CY4PR21MB0469:
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-message-info: eU/fEwEP5ArTsM4etQj16qCdrhFd88SGEihXf1QMy5pmXElFPlbsTziWduR/GhRZGBiIp8GiPuF5n9yGadi4jWfeiB+QlBv8acuF59HTaqWlGSkUhVQc0CxITh603yYmMiC3CNszeqU1TKObbq5oLiZMKuZo3Z6XSh9r8RxXnC0A8JmSsvUMhGH0qeoMw0lEUN7Q1Q/LWipbhB04f2cdvtcAFF1vj1p4RQlKp/Vg3RfVpTInN/Srb9o5g16M6weJSXDAH3nh1qxAxsK17F9n+CzJa9PGbNVEika0DHJyaJd5pr09djLVc54z51ZopHr+mUMMYOidXtU74BDHTUkLwuLEG4vGFq4sDPN71+UgIDU=
+x-microsoft-antispam-prvs: <CY4PR21MB0469038223B3A0D6EB7AEE4DFB0D0@CY4PR21MB0469.namprd21.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(85827821059158);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(3231340)(944501410)(52105095)(2018427008)(3002001)(10201501046)(93006095)(93001095)(6055026)(149027)(150027)(6041310)(20161123560045)(20161123558120)(20161123564045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(201708071742011)(7699049)(76991033);SRVR:CY4PR21MB0469;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0469;
+x-forefront-prvs: 078310077C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(39860400002)(136003)(366004)(346002)(199004)(189003)(110136005)(68736007)(36756003)(966005)(316002)(72206003)(54906003)(2501003)(81166006)(81156014)(8936002)(14454004)(97736004)(10090500001)(25786009)(106356001)(7736002)(2900100001)(4326008)(2906002)(8676002)(105586002)(305945005)(5660300001)(53936002)(1076002)(6116002)(478600001)(5250100002)(6666003)(3846002)(107886003)(10290500003)(76176011)(11346002)(99286004)(6486002)(6512007)(6306002)(6436002)(2616005)(66066001)(6506007)(22452003)(446003)(26005)(186003)(86362001)(575784001)(217873002)(476003)(486006)(256004)(102836004)(86612001)(14444005);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0469;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: qZojJxV1HDmPAnlRUPyqvVsJ5KOX1pXMUZWGbbKKMCEfdF8M/PFrCd65hNHOghfznp71ov5pGjGebkyJLwo1epHTchZXCDJWepuLb1yC+qulqYkcTCDwirHC0mmbsp6/UHhZsV67lFdS4p4VIPzL1zFtt9WSyiBvlhd0v9F2zNdbN4gmkadgrUnHneosx6B9CxEdwhhPsoQn7nuXxXH3RNBbAym+UB2jZnNDYB6m4bUD9ViKvNakKS4zwKj7ENMJEkDX0H2dRYPU9wyDZY2HfPTBWgoQZ0tAWFtj35RGOq28aADQnz1qnAQeWqBIkZMYtj7RzpWZdbJ+qfpOU0cDjSFSvGsZmgit5qkIUkoqai4=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c5a4bbc7-1aea-47bd-4a84-08d610d514f0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2018 13:07:23.5907
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93deb4e1-e8f5-4f5b-33f0-08d610d53ad5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2018 13:08:03.6805
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0503
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0469
 Return-Path: <Alexander.Levin@microsoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65857
+X-archive-position: 65858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -89,45 +89,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+From: Paul Burton <paul.burton@imgtec.com>
 
-[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
+[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
 
-The call to of_find_node_by_name returns a node pointer with refcount
-incremented thus it must be explicitly decremented here after the last
-usage.
+If a driver causes DMA cache maintenance with a zero length then we
+currently BUG and kill the kernel. As this is a scenario that we may
+well be able to recover from, WARN & return in the condition instead.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19558/
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14623/
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mm/c-r4k.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 8505db478904..1d92efb82c37 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -322,6 +322,7 @@ static int __init octeon_ehci_device_init(void)
- 		return 0;
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index e12dfa48b478..a5893b2cdc0e 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -835,7 +835,8 @@ static void r4k_flush_icache_user_range(unsigned long start, unsigned long end)
+ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
- 	pd = of_find_device_by_node(ehci_node);
-+	of_node_put(ehci_node);
- 	if (!pd)
- 		return 0;
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+@@ -871,7 +872,8 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
-@@ -384,6 +385,7 @@ static int __init octeon_ohci_device_init(void)
- 		return 0;
- 
- 	pd = of_find_device_by_node(ohci_node);
-+	of_node_put(ohci_node);
- 	if (!pd)
- 		return 0;
- 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
 -- 
 2.17.1

@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 15:45:32 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:54645 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991344AbeICNp2cLmZP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 3 Sep 2018 15:45:28 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 9F1DD208A1; Mon,  3 Sep 2018 15:45:23 +0200 (CEST)
-Received: from localhost (unknown [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 7934220799;
-        Mon,  3 Sep 2018 15:45:23 +0200 (CEST)
-Date:   Mon, 3 Sep 2018 15:45:22 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Quentin Schulz <quentin.schulz@bootlin.com>, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
-        f.fainelli@gmail.com, allan.nielsen@microchip.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH v2 00/11] mscc: ocelot: add support for SerDes muxing
- configuration
-Message-ID: <20180903134522.GC13888@piout.net>
-References: <20180903093308.24366-1-quentin.schulz@bootlin.com>
- <20180903133415.GF4445@lunn.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 18:52:49 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56682 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993961AbeICQwli5XIH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 18:52:41 +0200
+Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6BAD7CF3;
+        Mon,  3 Sep 2018 16:52:34 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-fsdevel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 3.18 53/56] MIPS: Correct the 64-bit DSP accumulator register size
+Date:   Mon,  3 Sep 2018 18:49:43 +0200
+Message-Id: <20180903164926.744858268@linuxfoundation.org>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20180903164924.078355019@linuxfoundation.org>
+References: <20180903164924.078355019@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180903133415.GF4445@lunn.ch>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65897
+X-archive-position: 65898
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,20 +46,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/09/2018 15:34:15+0200, Andrew Lunn wrote:
-> > I suggest patches 1 and 8 go through MIPS tree, 2 to 5 and 11 go through
-> > net while the others (6, 7, 9 and 10) go through the generic PHY subsystem.
-> 
-> Hi Quentin
-> 
-> Are you expecting merge conflicts? If not, it might be simpler to gets
-> ACKs from each maintainer, and then merge it though one tree.
-> 
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
-There are some other DT changes for this cycle so those should probably
-go through MIPS.
+------------------
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+From: Maciej W. Rozycki <macro@mips.com>
+
+commit f5958b4cf4fc38ed4583ab83fb7c4cd1ab05f47b upstream.
+
+Use the `unsigned long' rather than `__u32' type for DSP accumulator
+registers, like with the regular MIPS multiply/divide accumulator and
+general-purpose registers, as all are 64-bit in 64-bit implementations
+and using a 32-bit data type leads to contents truncation on context
+saving.
+
+Update `arch_ptrace' and `compat_arch_ptrace' accordingly, removing
+casts that are similarly not used with multiply/divide accumulator or
+general-purpose register accesses.
+
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Patchwork: https://patchwork.linux-mips.org/patch/19329/
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # 2.6.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/include/asm/processor.h |    2 +-
+ arch/mips/kernel/ptrace.c         |    2 +-
+ arch/mips/kernel/ptrace32.c       |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -143,7 +143,7 @@ struct mips_fpu_struct {
+ 
+ #define NUM_DSP_REGS   6
+ 
+-typedef __u32 dspreg_t;
++typedef unsigned long dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -751,7 +751,7 @@ long arch_ptrace(struct task_struct *chi
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -140,7 +140,7 @@ long compat_arch_ptrace(struct task_stru
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:

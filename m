@@ -1,82 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2018 15:17:16 +0200 (CEST)
-Received: from mail-sn1nam01on0102.outbound.protection.outlook.com ([104.47.32.102]:19034
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994604AbeIBNRNJdWcR convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2018 15:17:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WBvlyOLCcy7D+Vpf4C1GReY5O54R7hm8KnUsjQaFGe0=;
- b=lZxsd/wozxlCXXZI659nBXLt/uOAkcpkS7CW3xayi9YnYBPN3x4rDOle1k+H+lDNIkAu0fGeqRl2VMWZezNpYCvyjPrx3yrcchXfs/+z1phJCkZ7HEhElP2QaLDbBEv1gvSqb9BGCVMv3czD+VjOOqTIfE0el+NMyoj7XQWNmHw=
-Received: from CY4PR21MB0776.namprd21.prod.outlook.com (10.173.192.22) by
- CY4PR21MB0167.namprd21.prod.outlook.com (10.173.192.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1122.2; Sun, 2 Sep 2018 13:17:03 +0000
-Received: from CY4PR21MB0776.namprd21.prod.outlook.com
- ([fe80::7c3a:eea8:1391:1611]) by CY4PR21MB0776.namprd21.prod.outlook.com
- ([fe80::7c3a:eea8:1391:1611%7]) with mapi id 15.20.1143.000; Sun, 2 Sep 2018
- 13:17:03 +0000
-From:   Sasha Levin <Alexander.Levin@microsoft.com>
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL 4.4 45/47] MIPS: WARN_ON invalid DMA cache
- maintenance, not BUG_ON
-Thread-Topic: [PATCH AUTOSEL 4.4 45/47] MIPS: WARN_ON invalid DMA cache
- maintenance, not BUG_ON
-Thread-Index: AQHUQr8qsOr6YmFPaUmIYcE7QL10dg==
-Date:   Sun, 2 Sep 2018 13:16:32 +0000
-Message-ID: <20180902131533.184092-45-alexander.levin@microsoft.com>
-References: <20180902131533.184092-1-alexander.levin@microsoft.com>
-In-Reply-To: <20180902131533.184092-1-alexander.levin@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [52.168.54.252]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR21MB0167;6:NAcJNCayNor9dycczAEVxayrsbVxy6ry3rexMnSYHvw7aqhVhdH3jnUGO8Ecw3/3BxcNYCKY/J8dmnHgFX4a1nQpjEhv1vwrSt89nQE321i1p6nzkjHMFj/Yn45rr9gX4mk+HwE682ON67oEAV/pU1c8JO6akuqkRr9/tZGNTznXCbL1A4kEEiHHnnH+xIOU0mMkh5mt44OCJHU16iljePDLd+clXWagbz2y3Ahp3qvd5t5xMy6WOd6dr6nFJ3OpH5wM7MmLWqrSqaWxh/ORpcXbhXYsmff1tLOFJipmupYPo6RSQmiaGiOcxS7ddTt4Wj4P8bg7C+dYsD/RtBO79XlLr6vMDRujjOuXllWd5qc+CDT16cYE08eNlsAKUrxkj3foXtps6y6Y+/thzvvqF5H19QXR4gBYPCnmo9f2w6Pc4jm+k9FUGqj5alULpqGoO51+STFfDHv5i41NPPSlmQ==;5:iaiHuQZZSCjqnh2MjxocUtwGDKO2GkkL7qRETTuhPN8JV0p6E/wZ1/myUYIIhzZJ/F1jD2awKOK/2kIQmkc1KNpItNCAMOY3CtNHp9eHfbpxxK3wH5bGUcDMaXGX5+uhJodm6+3evF1aADux4EqPBcOWXUIWJ1pU7JAIDED/kKA=;7:1RK7s4DD83FyQliUVlbV+4BUv+g1JC6iCWfsJ55pkdSyWl1wDPOwTXbWwYTGiLZuYqwn5sI02dI+DRoGXRnOmwaUgpE8uSYuCMjqFpnFKaZR7lZdH1n/I76GuGYjy8E7LOvz6ywgwYKwINGX1KdUwRAoZQum8BAVUWWpBB1sudaoDk8HBKaNVxaK/8liHh7mmtL4UTtFVD0EvpewXO/xwhdUb+CaFcjzhgFWkW0xbNvVW9pmy7jg3f/LDT1ruF7n
-x-ms-office365-filtering-correlation-id: 028c8dab-a72e-473a-e588-08d610d65fcb
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0167;
-x-ms-traffictypediagnostic: CY4PR21MB0167:
-x-microsoft-antispam-prvs: <CY4PR21MB016792D4A7581E6D34402F26FB0D0@CY4PR21MB0167.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171)(85827821059158);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(93006095)(93001095)(3231340)(944501410)(52105095)(2018427008)(6055026)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(201708071742011)(7699049)(76991033);SRVR:CY4PR21MB0167;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0167;
-x-forefront-prvs: 078310077C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(39860400002)(376002)(346002)(366004)(396003)(199004)(189003)(305945005)(6436002)(7736002)(6486002)(106356001)(105586002)(6512007)(6306002)(53936002)(8676002)(36756003)(6666003)(6346003)(186003)(476003)(486006)(26005)(2616005)(11346002)(446003)(5660300001)(2501003)(5250100002)(10090500001)(102836004)(97736004)(6506007)(2900100001)(81156014)(316002)(81166006)(66066001)(22452003)(217873002)(2906002)(99286004)(54906003)(1076002)(8936002)(76176011)(68736007)(110136005)(3846002)(10290500003)(4326008)(25786009)(478600001)(6116002)(86612001)(575784001)(86362001)(107886003)(72206003)(966005)(14454004)(14444005)(256004);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0167;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-message-info: PTKIRa/5V5plvSHodFb4Y0VqKTCMwHmgPzd5FrE7JGWTI7MuxWiM94WKlioCmgoYo1IlWS23wf2b1K5aW30z/1z1WCxXKcR/ThfirfzJaeciqEG9zQPlZrupESXEzoIEGoNt64M2jxQ63uJvFySrMmMxseUEz2rTS+5T4qfozoNPjYAGti3R3abUk6e8MyLRbEFmfleMKbQ4XwuVvcz0Q6cMOufv+YArMfP9pJckc1nGvf2hH6Z3vC05/VBm+GV1SREwKTdSVFHJ3BQYUVcY87O0n+hcbtUgAgQDcILlwFICwo7SMLdbfdCwhrOI++RrmZkf+i7KLw4tI2UfdvVoXz47B3KeRyK0cToqj5rTw2Q=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 08:15:36 +0200 (CEST)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:34536 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991063AbeICGPdGTw9o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 08:15:33 +0200
+Received: by mail-oi0-f68.google.com with SMTP id 13-v6so31766603ois.1;
+        Sun, 02 Sep 2018 23:15:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q2ZCunzbkkFXTlYNcvypMLR2svkaZRvfiiTFPiOaAzA=;
+        b=KLI0vVGbXrw6prMBrfb7nYCQ32f7/atcGvgmwhiGJvY01s+x8GCTbPI9fodsl9bYs8
+         SN0WY7jzsKfZIVdVkfKb2YgYDiok2uGwVpH9StSkRrqqpHTUNktjAAytzmcDVQjuDZqD
+         4DKwtHDruJJLFDpnkDp5zmIbqsTrSwK6hdMOsZdQcatThzOiO87t2qUPkwbSU5wj6XxB
+         Qjhm0X21jYNVyq+kxVrOmRL1qM6zMuJGA1fWvrMjbh9Q3uhU8nQWt6Y+XDNess4Itid8
+         DpsvF4LwY4fGemG/e7UK9EeT3K+UsB3u/NozOMEXyxyg13HDGf62qW9+wChpM4gcv2fb
+         fzYg==
+X-Gm-Message-State: APzg51AgJjFR+MOaJysxUjKoJXlozd8o9R4hV1+ke3eVNR2J33bpb+kB
+        NtZihZnTpdlLQUJkImF526TLf6WYA71u4DrI/Bc=
+X-Google-Smtp-Source: ANB0Vdb/hJo0L/AShWTtV6kB9uWAxVDLJRB1IrivJiAO+cstM53oCiRK5hGGTFr7rH0L7nXLWkMpJr+vbn6Fdim7jvg=
+X-Received: by 2002:aca:c7c2:: with SMTP id x185-v6mr17274435oif.43.1535955326907;
+ Sun, 02 Sep 2018 23:15:26 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 028c8dab-a72e-473a-e588-08d610d65fcb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2018 13:16:32.3830
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0167
-Return-Path: <Alexander.Levin@microsoft.com>
+References: <20180606193811.16007-1-malat@debian.org> <20180724204757.qrgjttepzcfdzxlv@pburton-laptop>
+ <20180831203752.37rsceiwotcmeses@pburton-laptop> <20180831205857.nb3ij3rzhfs2fu42@pburton-laptop>
+In-Reply-To: <20180831205857.nb3ij3rzhfs2fu42@pburton-laptop>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Mon, 3 Sep 2018 08:15:14 +0200
+Message-ID: <CA+7wUswC1SfC3G0RRH7OV4C6nQsp59R62FN_NiDSyCpxRDf__Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] MIPS: jz4780: Allow access to jz4740-i2s
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     James Hogan <jhogan@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>, alsa-devel@alsa-project.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65865
+X-archive-position: 65866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Alexander.Levin@microsoft.com
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,47 +63,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+On Fri, Aug 31, 2018 at 10:59 PM Paul Burton <paul.burton@mips.com> wrote:
+>
+> On Fri, Aug 31, 2018 at 01:37:52PM -0700, Paul Burton wrote:
+> > Further to that, this series doesn't seem to work for me. With
+> > v4.19-rc1, with the patch from [1] & then this series applied I see the
+> > following when booting a ci20_defconfig kernel:
+> >
+> >   [    0.846684] ALSA device list:
+> >   [    0.849642]   No soundcards found.
+>
+> D'oh! Apparently I haven't drunk enough coffee today - missing link can
+> be found below:
+>
+> [1] https://www.spinics.net/lists/linux-gpio/msg31965.html
 
-[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
+Awesome, thanks for testing. I'll return to this series once I receive
+replacement for my laptop hard drive.
 
-If a driver causes DMA cache maintenance with a zero length then we
-currently BUG and kill the kernel. As this is a scenario that we may
-well be able to recover from, WARN & return in the condition instead.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/14623/
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
----
- arch/mips/mm/c-r4k.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 5d3a25e1cfae..52e8c2026853 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -712,7 +712,8 @@ static void r4k_flush_icache_range(unsigned long start, unsigned long end)
- static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- {
- 	/* Catch bad driver code */
--	BUG_ON(size == 0);
-+	if (WARN_ON(size == 0))
-+		return;
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
-@@ -745,7 +746,8 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- {
- 	/* Catch bad driver code */
--	BUG_ON(size == 0);
-+	if (WARN_ON(size == 0))
-+		return;
- 
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
--- 
-2.17.1
+thanks,
+-M

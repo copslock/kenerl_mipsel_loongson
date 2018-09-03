@@ -1,69 +1,68 @@
-From: Paul Burton <paul.burton@mips.com>
-Date: Tue, 21 Aug 2018 12:12:59 -0700
-Subject: MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
-Message-ID: <20180821191259.MYeQ6QX052dEyjR_XGRZPLtEZLdperIDA050IsvXeV4@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 15:45:32 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:54645 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991344AbeICNp2cLmZP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Sep 2018 15:45:28 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 9F1DD208A1; Mon,  3 Sep 2018 15:45:23 +0200 (CEST)
+Received: from localhost (unknown [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 7934220799;
+        Mon,  3 Sep 2018 15:45:23 +0200 (CEST)
+Date:   Mon, 3 Sep 2018 15:45:22 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Quentin Schulz <quentin.schulz@bootlin.com>, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
+        f.fainelli@gmail.com, allan.nielsen@microchip.com,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH v2 00/11] mscc: ocelot: add support for SerDes muxing
+ configuration
+Message-ID: <20180903134522.GC13888@piout.net>
+References: <20180903093308.24366-1-quentin.schulz@bootlin.com>
+ <20180903133415.GF4445@lunn.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180903133415.GF4445@lunn.ch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <alexandre.belloni@bootlin.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 65897
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: alexandre.belloni@bootlin.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+On 03/09/2018 15:34:15+0200, Andrew Lunn wrote:
+> > I suggest patches 1 and 8 go through MIPS tree, 2 to 5 and 11 go through
+> > net while the others (6, 7, 9 and 10) go through the generic PHY subsystem.
+> 
+> Hi Quentin
+> 
+> Are you expecting merge conflicts? If not, it might be simpler to gets
+> ACKs from each maintainer, and then merge it though one tree.
+> 
 
-commit 690d9163bf4b8563a2682e619f938e6a0443947f upstream.
+There are some other DT changes for this cycle so those should probably
+go through MIPS.
 
-Some versions of GCC suboptimally generate calls to the __multi3()
-intrinsic for MIPS64r6 builds, resulting in link failures due to the
-missing function:
-
-    LD      vmlinux.o
-    MODPOST vmlinux.o
-  kernel/bpf/verifier.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  fs/select.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  ...
-
-We already have a workaround for this in which we provide the
-instrinsic, but we do so selectively for GCC 7 only. Unfortunately the
-issue occurs with older GCC versions too - it has been observed with
-both GCC 5.4.0 & GCC 6.4.0.
-
-MIPSr6 support was introduced in GCC 5, so all major GCC versions prior
-to GCC 8 are affected and we extend our workaround accordingly to all
-MIPS64r6 builds using GCC versions older than GCC 8.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
-Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
-Patchwork: https://patchwork.linux-mips.org/patch/20297/
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.15+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/lib/multi3.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
---- a/arch/mips/lib/multi3.c
-+++ b/arch/mips/lib/multi3.c
-@@ -4,12 +4,12 @@
- #include "libgcc.h"
- 
- /*
-- * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
-- * specific case only we'll implement it here.
-+ * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
-+ * that specific case only we implement that intrinsic here.
-  *
-  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-  */
--#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
- 
- /* multiply 64-bit values, low 64-bits returned */
- static inline long long notrace dmulu(long long a, long long b)
-
-
-Patches currently in stable-queue which might be from paul.burton@mips.com are
-
-queue-4.9/mips-lib-provide-mips64r6-__multi3-for-gcc-7.patch
-queue-4.9/mips-correct-the-64-bit-dsp-accumulator-register-size.patch
-queue-4.9/revert-mips-bcm47xx-enable-74k-core-externalsync-for-pcie-erratum.patch
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 19:28:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36838 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 19:38:36 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39488 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994562AbeICR1jkj4xO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 19:27:39 +0200
+        by eddie.linux-mips.org with ESMTP id S23994248AbeICRicfBTjO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 19:38:32 +0200
 Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6C77CD01;
-        Mon,  3 Sep 2018 17:27:33 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A9780BAE;
+        Mon,  3 Sep 2018 17:38:25 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 152/165] MIPS: lib: Provide MIPS64r6 __multi3() for GCC < 7
-Date:   Mon,  3 Sep 2018 18:57:18 +0200
-Message-Id: <20180903165704.702197566@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-fsdevel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 4.18 099/123] MIPS: Correct the 64-bit DSP accumulator register size
+Date:   Mon,  3 Sep 2018 18:57:23 +0200
+Message-Id: <20180903165723.697586429@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180903165655.003605184@linuxfoundation.org>
-References: <20180903165655.003605184@linuxfoundation.org>
+In-Reply-To: <20180903165719.499675257@linuxfoundation.org>
+References: <20180903165719.499675257@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -27,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65910
+X-archive-position: 65911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,62 +46,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Maciej W. Rozycki <macro@mips.com>
 
-commit 690d9163bf4b8563a2682e619f938e6a0443947f upstream.
+commit f5958b4cf4fc38ed4583ab83fb7c4cd1ab05f47b upstream.
 
-Some versions of GCC suboptimally generate calls to the __multi3()
-intrinsic for MIPS64r6 builds, resulting in link failures due to the
-missing function:
+Use the `unsigned long' rather than `__u32' type for DSP accumulator
+registers, like with the regular MIPS multiply/divide accumulator and
+general-purpose registers, as all are 64-bit in 64-bit implementations
+and using a 32-bit data type leads to contents truncation on context
+saving.
 
-    LD      vmlinux.o
-    MODPOST vmlinux.o
-  kernel/bpf/verifier.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  fs/select.o: In function `kmalloc_array':
-  include/linux/slab.h:631: undefined reference to `__multi3'
-  ...
+Update `arch_ptrace' and `compat_arch_ptrace' accordingly, removing
+casts that are similarly not used with multiply/divide accumulator or
+general-purpose register accesses.
 
-We already have a workaround for this in which we provide the
-instrinsic, but we do so selectively for GCC 7 only. Unfortunately the
-issue occurs with older GCC versions too - it has been observed with
-both GCC 5.4.0 & GCC 6.4.0.
-
-MIPSr6 support was introduced in GCC 5, so all major GCC versions prior
-to GCC 8 are affected and we extend our workaround accordingly to all
-MIPS64r6 builds using GCC versions older than GCC 8.
-
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
-Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
-Patchwork: https://patchwork.linux-mips.org/patch/20297/
+Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Patchwork: https://patchwork.linux-mips.org/patch/19329/
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.15+
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # 2.6.15+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/arch/mips/lib/multi3.c b/arch/mips/lib/multi3.c
-index 111ad475aa0c..4c2483f410c2 100644
---- a/arch/mips/lib/multi3.c
-+++ b/arch/mips/lib/multi3.c
-@@ -4,12 +4,12 @@
- #include "libgcc.h"
+---
+ arch/mips/include/asm/processor.h |    2 +-
+ arch/mips/kernel/ptrace.c         |    2 +-
+ arch/mips/kernel/ptrace32.c       |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -141,7 +141,7 @@ struct mips_fpu_struct {
  
- /*
-- * GCC 7 suboptimally generates __multi3 calls for mips64r6, so for that
-- * specific case only we'll implement it here.
-+ * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
-+ * that specific case only we implement that intrinsic here.
-  *
-  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
-  */
--#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ == 7)
-+#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
+ #define NUM_DSP_REGS   6
  
- /* multiply 64-bit values, low 64-bits returned */
- static inline long long notrace dmulu(long long a, long long b)
+-typedef __u32 dspreg_t;
++typedef unsigned long dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -856,7 +856,7 @@ long arch_ptrace(struct task_struct *chi
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -142,7 +142,7 @@ long compat_arch_ptrace(struct task_stru
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 18:53:02 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56742 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 18:54:46 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57136 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993928AbeICQw5NgHXH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 18:52:57 +0200
+        by eddie.linux-mips.org with ESMTP id S23993961AbeICQyhYtRvH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 18:54:37 +0200
 Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 73922CF5;
-        Mon,  3 Sep 2018 16:52:50 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6C009CF5;
+        Mon,  3 Sep 2018 16:54:30 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -19,12 +19,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 28/56] Revert "MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum"
-Date:   Mon,  3 Sep 2018 18:49:18 +0200
-Message-Id: <20180903164925.486558352@linuxfoundation.org>
+Subject: [PATCH 4.4 33/80] Revert "MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum"
+Date:   Mon,  3 Sep 2018 18:49:11 +0200
+Message-Id: <20180903164935.471471870@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20180903164924.078355019@linuxfoundation.org>
-References: <20180903164924.078355019@linuxfoundation.org>
+In-Reply-To: <20180903164934.171677301@linuxfoundation.org>
+References: <20180903164934.171677301@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -33,7 +33,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65899
+X-archive-position: 65900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,7 +50,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,7 +100,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -269,12 +269,6 @@ static int __init bcm47xx_cpu_fixes(void
+@@ -249,12 +249,6 @@ static int __init bcm47xx_cpu_fixes(void
  		 */
  		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
  			cpu_wait = NULL;
@@ -115,7 +115,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -667,8 +667,6 @@
+@@ -605,8 +605,6 @@
  #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
  
  #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
@@ -124,7 +124,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
  #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -1865,7 +1863,6 @@ __BUILD_SET_C0(status)
+@@ -2014,7 +2012,6 @@ __BUILD_SET_C0(status)
  __BUILD_SET_C0(cause)
  __BUILD_SET_C0(config)
  __BUILD_SET_C0(config5)

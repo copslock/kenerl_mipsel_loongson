@@ -1,27 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 19:22:44 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35868 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2018 19:27:31 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36788 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993900AbeICRWjxyy1H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 19:22:39 +0200
+        by eddie.linux-mips.org with ESMTP id S23994552AbeICR11UTE4O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2018 19:27:27 +0200
 Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7F6F8D0A;
-        Mon,  3 Sep 2018 17:22:32 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2402BD09;
+        Mon,  3 Sep 2018 17:27:17 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
         Paul Burton <paul.burton@mips.com>,
-        Michael Marley <michael@michaelmarley.com>,
-        Tokunori Ikegami <ikegami@allied-telesis.co.jp>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 059/165] Revert "MIPS: BCM47XX: Enable 74K Core ExternalSync for PCIe erratum"
-Date:   Mon,  3 Sep 2018 18:55:45 +0200
-Message-Id: <20180903165658.087169226@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-fsdevel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 4.14 149/165] MIPS: Correct the 64-bit DSP accumulator register size
+Date:   Mon,  3 Sep 2018 18:57:15 +0200
+Message-Id: <20180903165704.558076450@linuxfoundation.org>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20180903165655.003605184@linuxfoundation.org>
 References: <20180903165655.003605184@linuxfoundation.org>
@@ -33,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65906
+X-archive-position: 65907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,81 +50,69 @@ X-list: linux-mips
 
 ------------------
 
-From: "Rafał Miłecki" <rafal@milecki.pl>
+From: Maciej W. Rozycki <macro@mips.com>
 
-[ Upstream commit d5ea019f8a381f88545bb26993b62ec24a2796b7 ]
+commit f5958b4cf4fc38ed4583ab83fb7c4cd1ab05f47b upstream.
 
-This reverts commit 2a027b47dba6 ("MIPS: BCM47XX: Enable 74K Core
-ExternalSync for PCIe erratum").
+Use the `unsigned long' rather than `__u32' type for DSP accumulator
+registers, like with the regular MIPS multiply/divide accumulator and
+general-purpose registers, as all are 64-bit in 64-bit implementations
+and using a 32-bit data type leads to contents truncation on context
+saving.
 
-Enabling ExternalSync caused a regression for BCM4718A1 (used e.g. in
-Netgear E3000 and ASUS RT-N16): it simply hangs during PCIe
-initialization. It's likely that BCM4717A1 is also affected.
+Update `arch_ptrace' and `compat_arch_ptrace' accordingly, removing
+casts that are similarly not used with multiply/divide accumulator or
+general-purpose register accesses.
 
-I didn't notice that earlier as the only BCM47XX devices with PCIe I
-own are:
-1) BCM4706 with 2 x 14e4:4331
-2) BCM4706 with 14e4:4360 and 14e4:4331
-it appears that BCM4706 is unaffected.
-
-While BCM5300X-ES300-RDS.pdf seems to document that erratum and its
-workarounds (according to quotes provided by Tokunori) it seems not even
-Broadcom follows them.
-
-According to the provided info Broadcom should define CONF7_ES in their
-SDK's mipsinc.h and implement workaround in the si_mips_init(). Checking
-both didn't reveal such code. It *could* mean Broadcom also had some
-problems with the given workaround.
-
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Signed-off-by: Maciej W. Rozycki <macro@mips.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reported-by: Michael Marley <michael@michaelmarley.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20032/
-URL: https://bugs.openwrt.org/index.php?do=details&task_id=1688
-Cc: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Fixes: e50c0a8fa60d ("Support the MIPS32 / MIPS64 DSP ASE.")
+Patchwork: https://patchwork.linux-mips.org/patch/19329/
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # 2.6.15+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/bcm47xx/setup.c        |    6 ------
- arch/mips/include/asm/mipsregs.h |    3 ---
- 2 files changed, 9 deletions(-)
 
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -212,12 +212,6 @@ static int __init bcm47xx_cpu_fixes(void
- 		 */
- 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
- 			cpu_wait = NULL;
--
--		/*
--		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
--		 * Enable ExternalSync for sync instruction to take effect
--		 */
--		set_c0_config7(MIPS_CONF7_ES);
- 		break;
- #endif
- 	}
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -680,8 +680,6 @@
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
+---
+ arch/mips/include/asm/processor.h |    2 +-
+ arch/mips/kernel/ptrace.c         |    2 +-
+ arch/mips/kernel/ptrace32.c       |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -141,7 +141,7 @@ struct mips_fpu_struct {
  
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
--/* ExternalSync */
--#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
+ #define NUM_DSP_REGS   6
  
- #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
- #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -2747,7 +2745,6 @@ __BUILD_SET_C0(status)
- __BUILD_SET_C0(cause)
- __BUILD_SET_C0(config)
- __BUILD_SET_C0(config5)
--__BUILD_SET_C0(config7)
- __BUILD_SET_C0(intcontrol)
- __BUILD_SET_C0(intctl)
- __BUILD_SET_C0(srsmap)
+-typedef __u32 dspreg_t;
++typedef unsigned long dspreg_t;
+ 
+ struct mips_dsp_state {
+ 	dspreg_t	dspr[NUM_DSP_REGS];
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -847,7 +847,7 @@ long arch_ptrace(struct task_struct *chi
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:
+--- a/arch/mips/kernel/ptrace32.c
++++ b/arch/mips/kernel/ptrace32.c
+@@ -141,7 +141,7 @@ long compat_arch_ptrace(struct task_stru
+ 				goto out;
+ 			}
+ 			dregs = __get_dsp_regs(child);
+-			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
++			tmp = dregs[addr - DSP_BASE];
+ 			break;
+ 		}
+ 		case DSP_CONTROL:

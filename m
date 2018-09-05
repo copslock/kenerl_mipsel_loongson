@@ -1,92 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:02:27 +0200 (CEST)
-Received: from mail-eopbgr680090.outbound.protection.outlook.com ([40.107.68.90]:45312
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994647AbeIEQAWXH8ZO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Sep 2018 18:00:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2hbUvdQi4coNpNCtVIqF6cx9X9eLsXxwA7X0H0+9/l0=;
- b=XVf4VSA8Y6B35D+6grf6dgEmCtYvRXnHRxRoh24or6jNxd2x1P3HlhdYhJZGHGfc/FyS5Gp3XLmRk5BzuG+y+8mcRAKUvnstELz0YVqr3HMT55Ul42Q+dB6no76cek2bRfV1bG+hHHfZ7vU2fdpLAcLphA6Kozw4enEHYG2rGiw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=dzhu@wavecomp.com; 
-Received: from box.mipstec.com (4.16.204.77) by
- BN3PR0801MB2145.namprd08.prod.outlook.com (2a01:111:e400:7bb5::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1101.18; Wed, 5 Sep
- 2018 16:00:04 +0000
-From:   Dengcheng Zhu <dzhu@wavecomp.com>
-To:     pburton@wavecomp.com, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
-        Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v4 6/6] MIPS: kexec: Use prepare method from Generic for UHI platforms
-Date:   Wed,  5 Sep 2018 08:59:09 -0700
-Message-Id: <20180905155909.30454-7-dzhu@wavecomp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180905155909.30454-1-dzhu@wavecomp.com>
-References: <20180905155909.30454-1-dzhu@wavecomp.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR2001CA0003.namprd20.prod.outlook.com
- (2603:10b6:4:16::13) To BN3PR0801MB2145.namprd08.prod.outlook.com
- (2a01:111:e400:7bb5::18)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: adfa14f7-08ad-465f-bc8d-08d61348a557
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2145;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:IzU7La3+uCH0USBt/k0SviFe+KW0TeeFVazklb48ZKPEDCVQIc3plWLXGcewbDbvAKqZWo9j7q3BPP7LHQK3RntsiaSBSWzxDaqDFlV/adOUaXfdl7seODRzln/jgCOr8CXff6IGmsC3VVJBwAzZvVYKfdOQE2rucYTRyaTXy9KdkYRsNHgKIu7GFW30lfhkQnHpouGHQyTcmxR8GfTRWYaNY2K7GzK9ZzPcZJUlbquwJL38VKlmb0RmreYaiJIq;25:T+7PsAqbEf+lvAlQL1+N0vOGeHWg2FrxnCEmVxRLAMW9K5uULtk+Y5uX6oCiKMjB8RVUxOEG4PA4Y3HcfXBthTPHupFmjJPSLc64hM6fwVXO2+3dZUisytaTwRUfLAgOdkCcuYWzd5QHuFI3XUrhqSTUQZzdFHHYOklPnDtbsi/PeNTHIgZoW+YoXcgVCgv6j/Dl9yEjd+29Ig5De4iEnngxWsJVE/QaYKXOjiFprOc/80FN6MgHv+GNG9kwRks/NoH0lDap9YW9jdrpGeEv6FdoBit5y/9y/wfUb0cpWseyjaF3HZhKBDYSN4XXTKgCzg7gNPgQPfh9VBOtJUim5w==;31:qtWGl3pU6zQ2H0ayP1jUWyH6wNqXDgNzdkccHYMtv1nWxGDXCesvP60HCL1ilge7EU6MTCwIytoF97kL8e/+6+o14eXXBlElT4lhgXQwFTTGOtVHwdoeLyn3vFJUJbrdt1tBQ3Rz48gL+33YJXPj3D8pO3gQiaDB/fkIByphgrfqmAxOl571e1/zWMcGIc1qR4SQ2euBBmaIJfc5f/7l03Gz3FmXF9AESwynOitBlCo=
-X-MS-TrafficTypeDiagnostic: BN3PR0801MB2145:
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:K8+e5XVyWRYRwRBYQ4X/NGofM4ckRWujcAEBcfXRGXk35PmqyGI/Dt4+AbIHsvc+RxjlLGd3R1QpiiM3uzbAT6Gbcrhz03yQSX3+9GijGsgXxemUZfNAutEYxJRS1y1E/CzjpCB8kTEovUahvvkINqY1Mr1QNfCRohelHLBRaeRv+mH8wehidUSWxn64Kl9toMDMsAdKMromovsUS9YrGS9civs4Ybh6UaG/vKurX5O+fJuNEDSe8dppEoTmWuqd;4:72ZnnRtHlJPcUaH6eqkooHwvMnLYm6lBYRYKf9mgFI3uF3deP0Ms3TrqfpSVSVwOaijTUQzCQWY00AT9sy2Pq/LpvhWRS1C/JriAOtMgJZwhZ63mQfuZdqbvqCqawAyVKQarI6ZSBq6LxDpcpzAY/uuBG4vdGyrwmWtgJ1QiuCG2HBp19dAgAUvYBmHGLli0DxWikVUdsmyNHhIsOkWdXAW7V08T3gdjDiOKjbTwKok2cwomwClj7P5ClLBCuiKvO3Qqz4BoSnQniqXKd6Wvn6uKKR2Kk0wW7r0bErrQTGRxLnsSr0EKiyzCblxzj9bp
-X-Microsoft-Antispam-PRVS: <BN3PR0801MB21457574BAFF1A9EAE41C924A2020@BN3PR0801MB2145.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(93001095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201708071742011)(7699016);SRVR:BN3PR0801MB2145;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2145;
-X-Forefront-PRVS: 078693968A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(366004)(396003)(136003)(346002)(39840400004)(376002)(199004)(189003)(11346002)(956004)(476003)(446003)(486006)(16526019)(26005)(53936002)(6506007)(386003)(81156014)(81166006)(5660300001)(53416004)(14444005)(8676002)(2906002)(8936002)(25786009)(48376002)(106356001)(4326008)(51416003)(105586002)(50226002)(66066001)(47776003)(68736007)(107886003)(76176011)(50466002)(305945005)(2616005)(52116002)(7736002)(316002)(37156001)(86362001)(97736004)(69596002)(16586007)(1076002)(6512007)(6486002)(6116002)(36756003)(478600001)(3846002)(41533002)(2004002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:uL0IBWXofqPTEpvB360w816K8IRaU4arIM2aE6D?=
- =?us-ascii?Q?1lNVtcVCsKSYwLHiLkSwaMFIrXwYPyiQ2LGa7ujFrB1Q86bqNnFixsTVKaZ/?=
- =?us-ascii?Q?yksPUYjJtUAXHltNMN46Hmdf8KsmaxIqQWp9VJ/4wkCnW6/xRHUknuKGv3cW?=
- =?us-ascii?Q?+Ce3Xi7dfwxZEqiV7JP06GxGVd8JwoNUXke9pzBJOhp/mYiiruAM3F6Tx692?=
- =?us-ascii?Q?/DvnhzR8+WPWQj230hWDN2dEk1RwgN5YBGbt/q6E9VklP2PKmyPJbT0D0Giu?=
- =?us-ascii?Q?EpSgtwQgHzf54rg2/3fJfWNRcuSCA4JPXR6bwfsWQnUC9NZeFkCveAXZBUBE?=
- =?us-ascii?Q?psKolF1ngVtQ8nmfzSMKu6Fc7xY8sWhULpsysNffQ1lSGkB4D5b6v9Mek8XA?=
- =?us-ascii?Q?OGDs1nYaPip/EpkK+ol8mIxHrxB6Gb0LajQCP0DXAjZmu7ZQB+ikKuPd3f6G?=
- =?us-ascii?Q?2flpigWrz9HdPju5KoDrTeQXaxXpzD0kJNz69DWPiVEZP2kIkvBNoEg73COQ?=
- =?us-ascii?Q?ACcbZtuiuwU/AKIggQvXHjsllIPYwqnBDTheE14YMROosu3gEq/QfU+aK2/+?=
- =?us-ascii?Q?fq7xkRFbmzdDws2a18E/Sbc5FtJjf835MgsNakURYB5m46CsK6g0bh7Mj73f?=
- =?us-ascii?Q?9yo8meAp/00JD5p6c/uCGl7IecizRu4b3RujWuKteOfmWEuHpkc1cOr3yqzz?=
- =?us-ascii?Q?PV2ToJtntMLhbb+Ybpox1QdjUI0oXTBXiV4NZ7YVSNgpK+XLICiBjZAMD02H?=
- =?us-ascii?Q?cx6S0TSZqPGiX40+KT4T90xi6WhfbvzmTwu25wg+RsaAuS78O+MUzjCqXb/w?=
- =?us-ascii?Q?Yfed0AKDJtB/GPwNzhMCUl5N3uTiSqXA7v0Io5ZKerRMj/1M4/Fc7X4Il9QA?=
- =?us-ascii?Q?OVnYaOSMntdILhRVSuQW9zt+G9QVNaHVREHFjswF/CUQQR67LdDrWIRFYWKS?=
- =?us-ascii?Q?uKIUuMDDLR3yTLi7O2XwcLErv2GhfBDTzNR7pSnTHhPr91Gz1gRrUV+pG79R?=
- =?us-ascii?Q?vs6sX2YhrdhFge25RFIZLygS3NyTJzLbdZ+UUCXucYRM3MpVUdtp1QnTbxhD?=
- =?us-ascii?Q?YhVT9gD9RDv78Nh4+Pg3SMSn1ns/GPBhO+J/nXngDzLDe1tBqcjegiOiclBp?=
- =?us-ascii?Q?sUAJ22f3wTuiCn3d0tPPof1mQim+p5unjpPW+vdD+xamlHgJ+NLJcBUTzQqr?=
- =?us-ascii?Q?ND6QG8sHtqV257vOD44iwJ+WFOfNIdhU0RudP0A0khm8ZyM0ZRhYpXcTEY5o?=
- =?us-ascii?Q?RDZBcfD5XpCiH1jJPfw8TulOOslAY9cDLtFBcl2KH?=
-X-Microsoft-Antispam-Message-Info: UOJ+mq6DWRnqXiYYeuN8UnCXGnde7te1dbefhtH2rTuISMzxCdYp059Yx4as9mwv6JTvkSzDP5D69AGsAShLOC7ME51wmVlxNvz9bsSqFJIUappaUNFuDSiqR0IsZt3Jinrs5HrTaLx5Cy3i9gZNo+qP79xsIPysn+BDIpEabDPciI0pjiXzyNuqrdC7Sg23ibOxNewP6XwWymgG3OL1joDEIyH71PQlpA46Ckaw6tc7qy1nLDwcR/ISdMIpXbqg9msO/DpWMkF2KnLZTU1XON3+33VN6kKD4B8Aabl66gay9eobUTg8RalwdtjQUbzMxl69r3RGfufT9tJuZIcsBfmGAJ4DIXCAh1fB3DWpgmw=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:Wv4Xy4axFuUh2tlcJvZJjbVsnRWJwHvzbri0BU/YFIs/2IXDXcW4FK4D0erO9ZDaefS/DkUXUFStnWDcKOG3kKIoY9WW7VhZWTAUPRecYCsm4lKffzOEH5iO62vlv9r801vxDv74MSK5VBujlx9e7exkxVDwe+a0lTGaIhpHNvGXCewudGvxcl7v+PsyMubuiVg7udj0OvQBA4TmeL1HBp6nUKumQTA80B4fqI/0zkItjkvOHvEooIYtVKwfmy3hPAnG5RWCSCvbxnPCzLbldHipLvpDoiVjG9ZMED4XhDcPaFVJQ7jP/+U6Hqr2ljQaKhaezpcXIceHeEZTahQJTM3u9qPIaAN2pUfwJtuJdJW3bMFZ4/sr7pgs3nfJ/TyMHwcVsd2bOm1dL8VVvdsCVEo1d11+ZXT9o4jB+rmhcaVLD6zUeIVaw//lZ2heCmT2hrMU5dWRpUF5JQOsexTLGA==;5:VPAQqqYg3ekBjmfrm/hGauukvm+lb4/Q6m6zSu6zckNprI6S7xL+zSkBNEB2MHlCKqNCts7NbakDXxgvpaIXIY7iuHPmfcsDISjjRjncT8UOC1gD1TnoUFgdacv5grctxpDuTcKvyoSQa1MGd4LMW4+Ovvp29Q5Y40rHOpLGKeY=;7:XC2v1C/qY2wV4feqEVhTtDf1wquF3xzzOdT+G5h5KFhrR51uTLw+mG77/Oc6l8OiBpU6DfXce9vFu32gqlU6YPuvBObrN1yjl16ZrhgzdBRaSuECfwSgP5Phy6FMrQUIJRYCsigmZw1to5y5/LE09PL/D21/7808frTlnX0cl0wD/eXG7SqiFiY6tLe1EOUKV4anQBTBP4BtIeRV8jaDm8LtnhHP8PFlDaT1+nPC4oXcnl2kunboRDpxNAE+45Gx
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2018 16:00:04.5973 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: adfa14f7-08ad-465f-bc8d-08d61348a557
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2145
-Return-Path: <dzhu@wavecomp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:02:39 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:40028 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994650AbeIEQAWgxUrO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:22 +0200
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FuTKf043195
+        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:20 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2mahf5ancq-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:16 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Wed, 5 Sep 2018 17:00:13 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 5 Sep 2018 17:00:08 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85G07af43122752
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 5 Sep 2018 16:00:07 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2DF824C05A;
+        Wed,  5 Sep 2018 19:00:02 +0100 (BST)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1570F4C04E;
+        Wed,  5 Sep 2018 19:00:00 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.92])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed,  5 Sep 2018 18:59:59 +0100 (BST)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 19:00:04 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Subject: [RFC PATCH 07/29] memblock: remove _virt from APIs returning virtual address
+Date:   Wed,  5 Sep 2018 18:59:22 +0300
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 18090516-0016-0000-0000-00000200C381
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18090516-0017-0000-0000-000032576827
+Message-Id: <1536163184-26356-8-git-send-email-rppt@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-05_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1809050164
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65964
+X-archive-position: 65965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dzhu@wavecomp.com
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,173 +84,981 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The kexec_prepare method for the Generic platform should be applicable to
-others using UHI boot protocol. In arch/mips/Kconfig, "select UHI_BOOT" is
-needed for such platforms.
+The conversion is done using
 
-If the platform has its own method for _machine_kexec_prepare(), that one
-will be used.
+sed -i 's@memblock_virt_alloc@memblock_alloc@g' \
+	$(git grep -l memblock_virt_alloc)
 
-Tested-by: Rachel Mozes <rachel.mozes@intel.com>
-Reported-by: Rachel Mozes <rachel.mozes@intel.com>
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
-Changes:
+ arch/arm/kernel/setup.c                   |  4 ++--
+ arch/arm/mach-omap2/omap_hwmod.c          |  2 +-
+ arch/arm64/mm/kasan_init.c                |  2 +-
+ arch/arm64/mm/numa.c                      |  2 +-
+ arch/powerpc/kernel/pci_32.c              |  2 +-
+ arch/powerpc/lib/alloc.c                  |  2 +-
+ arch/powerpc/mm/mmu_context_nohash.c      |  6 ++---
+ arch/powerpc/platforms/powermac/nvram.c   |  2 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c |  6 ++---
+ arch/powerpc/platforms/ps3/setup.c        |  2 +-
+ arch/powerpc/sysdev/msi_bitmap.c          |  2 +-
+ arch/s390/kernel/setup.c                  | 12 +++++-----
+ arch/s390/kernel/smp.c                    |  2 +-
+ arch/s390/kernel/topology.c               |  4 ++--
+ arch/s390/numa/mode_emu.c                 |  2 +-
+ arch/s390/numa/toptree.c                  |  2 +-
+ arch/x86/mm/kasan_init_64.c               |  4 ++--
+ arch/xtensa/mm/kasan_init.c               |  2 +-
+ drivers/clk/ti/clk.c                      |  2 +-
+ drivers/firmware/memmap.c                 |  2 +-
+ drivers/of/fdt.c                          |  2 +-
+ drivers/of/unittest.c                     |  2 +-
+ include/linux/bootmem.h                   | 38 +++++++++++++++----------------
+ init/main.c                               |  6 ++---
+ kernel/dma/swiotlb.c                      |  8 +++----
+ kernel/power/snapshot.c                   |  2 +-
+ kernel/printk/printk.c                    |  4 ++--
+ lib/cpumask.c                             |  2 +-
+ mm/hugetlb.c                              |  2 +-
+ mm/kasan/kasan_init.c                     |  2 +-
+ mm/memblock.c                             | 26 ++++++++++-----------
+ mm/page_alloc.c                           |  8 +++----
+ mm/page_ext.c                             |  2 +-
+ mm/percpu.c                               | 28 +++++++++++------------
+ mm/sparse-vmemmap.c                       |  2 +-
+ mm/sparse.c                               | 12 +++++-----
+ 36 files changed, 105 insertions(+), 105 deletions(-)
 
-* The kexec_prepare method for the Generic platform is defined as
-  uhi_machine_kexec_prepare() for all platforms using UHI boot protocol.
-
- arch/mips/Kconfig                |  4 +++
- arch/mips/generic/Makefile       |  1 -
- arch/mips/generic/kexec.c        | 44 --------------------------------
- arch/mips/kernel/machine_kexec.c | 38 ++++++++++++++++++++++++++-
- 4 files changed, 41 insertions(+), 46 deletions(-)
- delete mode 100644 arch/mips/generic/kexec.c
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 08c10c518f83..260f2ee083ac 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -129,6 +129,7 @@ config MIPS_GENERIC
- 	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
- 	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
- 	select USE_OF
-+	select UHI_BOOT
- 	help
- 	  Select this to build a kernel which aims to support multiple boards,
- 	  generally using a flattened device tree passed from the bootloader
-@@ -2907,6 +2908,9 @@ config USE_OF
- 	select OF_EARLY_FLATTREE
- 	select IRQ_DOMAIN
+diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+index 4c249cb..39e6090 100644
+--- a/arch/arm/kernel/setup.c
++++ b/arch/arm/kernel/setup.c
+@@ -857,7 +857,7 @@ static void __init request_standard_resources(const struct machine_desc *mdesc)
+ 		 */
+ 		boot_alias_start = phys_to_idmap(start);
+ 		if (arm_has_idmap_alias() && boot_alias_start != IDMAP_INVALID_ADDR) {
+-			res = memblock_virt_alloc(sizeof(*res), 0);
++			res = memblock_alloc(sizeof(*res), 0);
+ 			res->name = "System RAM (boot alias)";
+ 			res->start = boot_alias_start;
+ 			res->end = phys_to_idmap(end);
+@@ -865,7 +865,7 @@ static void __init request_standard_resources(const struct machine_desc *mdesc)
+ 			request_resource(&iomem_resource, res);
+ 		}
  
-+config UHI_BOOT
-+	bool
-+
- config BUILTIN_DTB
- 	bool
+-		res = memblock_virt_alloc(sizeof(*res), 0);
++		res = memblock_alloc(sizeof(*res), 0);
+ 		res->name  = "System RAM";
+ 		res->start = start;
+ 		res->end = end;
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index cd65ea4..314284e 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -725,7 +725,7 @@ static int __init _setup_clkctrl_provider(struct device_node *np)
+ 	struct clkctrl_provider *provider;
+ 	u64 size;
  
-diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
-index d03a36f869a4..181aa1335419 100644
---- a/arch/mips/generic/Makefile
-+++ b/arch/mips/generic/Makefile
-@@ -15,5 +15,4 @@ obj-y += proc.o
- obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
- obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
- obj-$(CONFIG_LEGACY_BOARD_OCELOT)	+= board-ocelot.o
--obj-$(CONFIG_KEXEC)			+= kexec.o
- obj-$(CONFIG_VIRT_BOARD_RANCHU)		+= board-ranchu.o
-diff --git a/arch/mips/generic/kexec.c b/arch/mips/generic/kexec.c
-deleted file mode 100644
-index 1ca409f58929..000000000000
---- a/arch/mips/generic/kexec.c
-+++ /dev/null
-@@ -1,44 +0,0 @@
--/*
-- * Copyright (C) 2016 Imagination Technologies
-- * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License as published by the
-- * Free Software Foundation; either version 2 of the License, or (at your
-- * option) any later version.
-- */
--
--#include <linux/kexec.h>
--#include <linux/libfdt.h>
--#include <linux/uaccess.h>
--
--static int generic_kexec_prepare(struct kimage *image)
--{
--	int i;
--
--	for (i = 0; i < image->nr_segments; i++) {
--		struct fdt_header fdt;
--
--		if (image->segment[i].memsz <= sizeof(fdt))
--			continue;
--
--		if (copy_from_user(&fdt, image->segment[i].buf, sizeof(fdt)))
--			continue;
--
--		if (fdt_check_header(&fdt))
--			continue;
--
--		kexec_args[0] = -2;
--		kexec_args[1] = (unsigned long)
--			phys_to_virt((unsigned long)image->segment[i].mem);
--		break;
--	}
--	return 0;
--}
--
--static int __init register_generic_kexec(void)
--{
--	_machine_kexec_prepare = generic_kexec_prepare;
--	return 0;
--}
--arch_initcall(register_generic_kexec);
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index c2119e448490..209196b195c5 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -9,6 +9,7 @@
- #include <linux/kexec.h>
- #include <linux/mm.h>
- #include <linux/delay.h>
-+#include <linux/libfdt.h>
+-	provider = memblock_virt_alloc(sizeof(*provider), 0);
++	provider = memblock_alloc(sizeof(*provider), 0);
+ 	if (!provider)
+ 		return -ENOMEM;
  
- #include <asm/cacheflush.h>
- #include <asm/page.h>
-@@ -23,7 +24,6 @@ static unsigned long reboot_code_buffer;
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index 1214587..2391560 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -38,7 +38,7 @@ static pgd_t tmp_pg_dir[PTRS_PER_PGD] __initdata __aligned(PGD_SIZE);
  
- typedef void (*noretfun_t)(void) __noreturn;
+ static phys_addr_t __init kasan_alloc_zeroed_page(int node)
+ {
+-	void *p = memblock_virt_alloc_try_nid(PAGE_SIZE, PAGE_SIZE,
++	void *p = memblock_alloc_try_nid(PAGE_SIZE, PAGE_SIZE,
+ 					      __pa(MAX_DMA_ADDRESS),
+ 					      MEMBLOCK_ALLOC_ACCESSIBLE, node);
+ 	return __pa(p);
+diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+index e5aacd6..8f2e0e8 100644
+--- a/arch/arm64/mm/numa.c
++++ b/arch/arm64/mm/numa.c
+@@ -168,7 +168,7 @@ static void * __init pcpu_fc_alloc(unsigned int cpu, size_t size,
+ {
+ 	int nid = early_cpu_to_node(cpu);
  
--int (*_machine_kexec_prepare)(struct kimage *) = NULL;
- void (*_machine_kexec_shutdown)(void) = NULL;
- void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
- #ifdef CONFIG_SMP
-@@ -65,6 +65,42 @@ static void kexec_image_info(const struct kimage *kimage)
- 	}
+-	return  memblock_virt_alloc_try_nid(size, align,
++	return  memblock_alloc_try_nid(size, align,
+ 			__pa(MAX_DMA_ADDRESS), MEMBLOCK_ALLOC_ACCESSIBLE, nid);
  }
  
-+#ifdef CONFIG_UHI_BOOT
-+static int uhi_machine_kexec_prepare(struct kimage *kimage)
-+{
-+	int i;
-+
-+	/*
-+	 * In case DTB file is not passed to the new kernel, a flat device
-+	 * tree will be created by kexec tool. It holds modified command
-+	 * line for the new kernel.
-+	 */
-+	for (i = 0; i < kimage->nr_segments; i++) {
-+		struct fdt_header fdt;
-+
-+		if (kimage->segment[i].memsz <= sizeof(fdt))
-+			continue;
-+
-+		if (copy_from_user(&fdt, kimage->segment[i].buf, sizeof(fdt)))
-+			continue;
-+
-+		if (fdt_check_header(&fdt))
-+			continue;
-+
-+		kexec_args[0] = -2;
-+		kexec_args[1] = (unsigned long)
-+			phys_to_virt((unsigned long)kimage->segment[i].mem);
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+int (*_machine_kexec_prepare)(struct kimage *) = uhi_machine_kexec_prepare;
-+#else
-+int (*_machine_kexec_prepare)(struct kimage *) = NULL;
-+#endif /* CONFIG_UHI_BOOT */
-+
- int
- machine_kexec_prepare(struct kimage *kimage)
+diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
+index d63b488..2fb4781 100644
+--- a/arch/powerpc/kernel/pci_32.c
++++ b/arch/powerpc/kernel/pci_32.c
+@@ -204,7 +204,7 @@ pci_create_OF_bus_map(void)
+ 	struct property* of_prop;
+ 	struct device_node *dn;
+ 
+-	of_prop = memblock_virt_alloc(sizeof(struct property) + 256, 0);
++	of_prop = memblock_alloc(sizeof(struct property) + 256, 0);
+ 	dn = of_find_node_by_path("/");
+ 	if (dn) {
+ 		memset(of_prop, -1, sizeof(struct property) + 256);
+diff --git a/arch/powerpc/lib/alloc.c b/arch/powerpc/lib/alloc.c
+index 06796de..bf87d6e 100644
+--- a/arch/powerpc/lib/alloc.c
++++ b/arch/powerpc/lib/alloc.c
+@@ -14,7 +14,7 @@ void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
+ 	if (slab_is_available())
+ 		p = kzalloc(size, mask);
+ 	else {
+-		p = memblock_virt_alloc(size, 0);
++		p = memblock_alloc(size, 0);
+ 	}
+ 	return p;
+ }
+diff --git a/arch/powerpc/mm/mmu_context_nohash.c b/arch/powerpc/mm/mmu_context_nohash.c
+index 4d80239..954f198 100644
+--- a/arch/powerpc/mm/mmu_context_nohash.c
++++ b/arch/powerpc/mm/mmu_context_nohash.c
+@@ -461,10 +461,10 @@ void __init mmu_context_init(void)
+ 	/*
+ 	 * Allocate the maps used by context management
+ 	 */
+-	context_map = memblock_virt_alloc(CTX_MAP_SIZE, 0);
+-	context_mm = memblock_virt_alloc(sizeof(void *) * (LAST_CONTEXT + 1), 0);
++	context_map = memblock_alloc(CTX_MAP_SIZE, 0);
++	context_mm = memblock_alloc(sizeof(void *) * (LAST_CONTEXT + 1), 0);
+ #ifdef CONFIG_SMP
+-	stale_map[boot_cpuid] = memblock_virt_alloc(CTX_MAP_SIZE, 0);
++	stale_map[boot_cpuid] = memblock_alloc(CTX_MAP_SIZE, 0);
+ 
+ 	cpuhp_setup_state_nocalls(CPUHP_POWERPC_MMU_CTX_PREPARE,
+ 				  "powerpc/mmu/ctx:prepare",
+diff --git a/arch/powerpc/platforms/powermac/nvram.c b/arch/powerpc/platforms/powermac/nvram.c
+index 60b03a1..f45b369 100644
+--- a/arch/powerpc/platforms/powermac/nvram.c
++++ b/arch/powerpc/platforms/powermac/nvram.c
+@@ -513,7 +513,7 @@ static int __init core99_nvram_setup(struct device_node *dp, unsigned long addr)
+ 		printk(KERN_ERR "nvram: no address\n");
+ 		return -EINVAL;
+ 	}
+-	nvram_image = memblock_virt_alloc(NVRAM_SIZE, 0);
++	nvram_image = memblock_alloc(NVRAM_SIZE, 0);
+ 	nvram_data = ioremap(addr, NVRAM_SIZE*2);
+ 	nvram_naddrs = 1; /* Make sure we get the correct case */
+ 
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index cde7102..23a67b5 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -3770,7 +3770,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+ 	phb_id = be64_to_cpup(prop64);
+ 	pr_debug("  PHB-ID  : 0x%016llx\n", phb_id);
+ 
+-	phb = memblock_virt_alloc(sizeof(*phb), 0);
++	phb = memblock_alloc(sizeof(*phb), 0);
+ 
+ 	/* Allocate PCI controller */
+ 	phb->hose = hose = pcibios_alloc_controller(np);
+@@ -3816,7 +3816,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+ 	else
+ 		phb->diag_data_size = PNV_PCI_DIAG_BUF_SIZE;
+ 
+-	phb->diag_data = memblock_virt_alloc(phb->diag_data_size, 0);
++	phb->diag_data = memblock_alloc(phb->diag_data_size, 0);
+ 
+ 	/* Parse 32-bit and IO ranges (if any) */
+ 	pci_process_bridge_OF_ranges(hose, np, !hose->global_number);
+@@ -3875,7 +3875,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+ 	}
+ 	pemap_off = size;
+ 	size += phb->ioda.total_pe_num * sizeof(struct pnv_ioda_pe);
+-	aux = memblock_virt_alloc(size, 0);
++	aux = memblock_alloc(size, 0);
+ 	phb->ioda.pe_alloc = aux;
+ 	phb->ioda.m64_segmap = aux + m64map_off;
+ 	phb->ioda.m32_segmap = aux + m32map_off;
+diff --git a/arch/powerpc/platforms/ps3/setup.c b/arch/powerpc/platforms/ps3/setup.c
+index 77a3752..1251985 100644
+--- a/arch/powerpc/platforms/ps3/setup.c
++++ b/arch/powerpc/platforms/ps3/setup.c
+@@ -126,7 +126,7 @@ static void __init prealloc(struct ps3_prealloc *p)
+ 	if (!p->size)
+ 		return;
+ 
+-	p->address = memblock_virt_alloc(p->size, p->align);
++	p->address = memblock_alloc(p->size, p->align);
+ 
+ 	printk(KERN_INFO "%s: %lu bytes at %p\n", p->name, p->size,
+ 	       p->address);
+diff --git a/arch/powerpc/sysdev/msi_bitmap.c b/arch/powerpc/sysdev/msi_bitmap.c
+index e64a411..349a9ff 100644
+--- a/arch/powerpc/sysdev/msi_bitmap.c
++++ b/arch/powerpc/sysdev/msi_bitmap.c
+@@ -128,7 +128,7 @@ int __ref msi_bitmap_alloc(struct msi_bitmap *bmp, unsigned int irq_count,
+ 	if (bmp->bitmap_from_slab)
+ 		bmp->bitmap = kzalloc(size, GFP_KERNEL);
+ 	else {
+-		bmp->bitmap = memblock_virt_alloc(size, 0);
++		bmp->bitmap = memblock_alloc(size, 0);
+ 		/* the bitmap won't be freed from memblock allocator */
+ 		kmemleak_not_leak(bmp->bitmap);
+ 	}
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index 2f2ee43..2e29456 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -311,7 +311,7 @@ static void __init setup_lowcore(void)
+ 	 * Setup lowcore for boot cpu
+ 	 */
+ 	BUILD_BUG_ON(sizeof(struct lowcore) != LC_PAGES * PAGE_SIZE);
+-	lc = memblock_virt_alloc_low(sizeof(*lc), sizeof(*lc));
++	lc = memblock_alloc_low(sizeof(*lc), sizeof(*lc));
+ 	lc->restart_psw.mask = PSW_KERNEL_BITS;
+ 	lc->restart_psw.addr = (unsigned long) restart_int_handler;
+ 	lc->external_new_psw.mask = PSW_KERNEL_BITS |
+@@ -332,10 +332,10 @@ static void __init setup_lowcore(void)
+ 	lc->kernel_stack = ((unsigned long) &init_thread_union)
+ 		+ THREAD_SIZE - STACK_FRAME_OVERHEAD - sizeof(struct pt_regs);
+ 	lc->async_stack = (unsigned long)
+-		memblock_virt_alloc(ASYNC_SIZE, ASYNC_SIZE)
++		memblock_alloc(ASYNC_SIZE, ASYNC_SIZE)
+ 		+ ASYNC_SIZE - STACK_FRAME_OVERHEAD - sizeof(struct pt_regs);
+ 	lc->panic_stack = (unsigned long)
+-		memblock_virt_alloc(PAGE_SIZE, PAGE_SIZE)
++		memblock_alloc(PAGE_SIZE, PAGE_SIZE)
+ 		+ PAGE_SIZE - STACK_FRAME_OVERHEAD - sizeof(struct pt_regs);
+ 	lc->current_task = (unsigned long)&init_task;
+ 	lc->lpp = LPP_MAGIC;
+@@ -357,7 +357,7 @@ static void __init setup_lowcore(void)
+ 	lc->last_update_timer = S390_lowcore.last_update_timer;
+ 	lc->last_update_clock = S390_lowcore.last_update_clock;
+ 
+-	restart_stack = memblock_virt_alloc(ASYNC_SIZE, ASYNC_SIZE);
++	restart_stack = memblock_alloc(ASYNC_SIZE, ASYNC_SIZE);
+ 	restart_stack += ASYNC_SIZE;
+ 
+ 	/*
+@@ -423,7 +423,7 @@ static void __init setup_resources(void)
+ 	bss_resource.end = (unsigned long) __bss_stop - 1;
+ 
+ 	for_each_memblock(memory, reg) {
+-		res = memblock_virt_alloc(sizeof(*res), 8);
++		res = memblock_alloc(sizeof(*res), 8);
+ 		res->flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM;
+ 
+ 		res->name = "System RAM";
+@@ -437,7 +437,7 @@ static void __init setup_resources(void)
+ 			    std_res->start > res->end)
+ 				continue;
+ 			if (std_res->end > res->end) {
+-				sub_res = memblock_virt_alloc(sizeof(*sub_res), 8);
++				sub_res = memblock_alloc(sizeof(*sub_res), 8);
+ 				*sub_res = *std_res;
+ 				sub_res->end = res->end;
+ 				std_res->start = res->end + 1;
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index 2f8f7d7..8f3aafc 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -751,7 +751,7 @@ void __init smp_detect_cpus(void)
+ 	u16 address;
+ 
+ 	/* Get CPU information */
+-	info = memblock_virt_alloc(sizeof(*info), 8);
++	info = memblock_alloc(sizeof(*info), 8);
+ 	smp_get_core_info(info, 1);
+ 	/* Find boot CPU type */
+ 	if (sclp.has_core_type) {
+diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+index e8184a1..799a918 100644
+--- a/arch/s390/kernel/topology.c
++++ b/arch/s390/kernel/topology.c
+@@ -519,7 +519,7 @@ static void __init alloc_masks(struct sysinfo_15_1_x *info,
+ 		nr_masks *= info->mag[TOPOLOGY_NR_MAG - offset - 1 - i];
+ 	nr_masks = max(nr_masks, 1);
+ 	for (i = 0; i < nr_masks; i++) {
+-		mask->next = memblock_virt_alloc(sizeof(*mask->next), 8);
++		mask->next = memblock_alloc(sizeof(*mask->next), 8);
+ 		mask = mask->next;
+ 	}
+ }
+@@ -537,7 +537,7 @@ void __init topology_init_early(void)
+ 	}
+ 	if (!MACHINE_HAS_TOPOLOGY)
+ 		goto out;
+-	tl_info = memblock_virt_alloc(PAGE_SIZE, PAGE_SIZE);
++	tl_info = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 	info = tl_info;
+ 	store_topology(info);
+ 	pr_info("The CPU configuration topology of the machine is: %d %d %d %d %d %d / %d\n",
+diff --git a/arch/s390/numa/mode_emu.c b/arch/s390/numa/mode_emu.c
+index 83b222c..5a381fc 100644
+--- a/arch/s390/numa/mode_emu.c
++++ b/arch/s390/numa/mode_emu.c
+@@ -313,7 +313,7 @@ static void __ref create_core_to_node_map(void)
  {
+ 	int i;
+ 
+-	emu_cores = memblock_virt_alloc(sizeof(*emu_cores), 8);
++	emu_cores = memblock_alloc(sizeof(*emu_cores), 8);
+ 	for (i = 0; i < ARRAY_SIZE(emu_cores->to_node_id); i++)
+ 		emu_cores->to_node_id[i] = NODE_ID_FREE;
+ }
+diff --git a/arch/s390/numa/toptree.c b/arch/s390/numa/toptree.c
+index 21d1e8a..7f61cc3 100644
+--- a/arch/s390/numa/toptree.c
++++ b/arch/s390/numa/toptree.c
+@@ -34,7 +34,7 @@ struct toptree __ref *toptree_alloc(int level, int id)
+ 	if (slab_is_available())
+ 		res = kzalloc(sizeof(*res), GFP_KERNEL);
+ 	else
+-		res = memblock_virt_alloc(sizeof(*res), 8);
++		res = memblock_alloc(sizeof(*res), 8);
+ 	if (!res)
+ 		return res;
+ 
+diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+index e3e7752..77b857c 100644
+--- a/arch/x86/mm/kasan_init_64.c
++++ b/arch/x86/mm/kasan_init_64.c
+@@ -28,10 +28,10 @@ static p4d_t tmp_p4d_table[MAX_PTRS_PER_P4D] __initdata __aligned(PAGE_SIZE);
+ static __init void *early_alloc(size_t size, int nid, bool panic)
+ {
+ 	if (panic)
+-		return memblock_virt_alloc_try_nid(size, size,
++		return memblock_alloc_try_nid(size, size,
+ 			__pa(MAX_DMA_ADDRESS), BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ 	else
+-		return memblock_virt_alloc_try_nid_nopanic(size, size,
++		return memblock_alloc_try_nid_nopanic(size, size,
+ 			__pa(MAX_DMA_ADDRESS), BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ }
+ 
+diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
+index 6b532b6..1a30a25 100644
+--- a/arch/xtensa/mm/kasan_init.c
++++ b/arch/xtensa/mm/kasan_init.c
+@@ -43,7 +43,7 @@ static void __init populate(void *start, void *end)
+ 	unsigned long vaddr = (unsigned long)start;
+ 	pgd_t *pgd = pgd_offset_k(vaddr);
+ 	pmd_t *pmd = pmd_offset(pgd, vaddr);
+-	pte_t *pte = memblock_virt_alloc(n_pages * sizeof(pte_t), PAGE_SIZE);
++	pte_t *pte = memblock_alloc(n_pages * sizeof(pte_t), PAGE_SIZE);
+ 
+ 	pr_debug("%s: %p - %p\n", __func__, start, end);
+ 
+diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
+index 33001a7..a0136ed 100644
+--- a/drivers/clk/ti/clk.c
++++ b/drivers/clk/ti/clk.c
+@@ -347,7 +347,7 @@ void __init omap2_clk_legacy_provider_init(int index, void __iomem *mem)
+ {
+ 	struct clk_iomap *io;
+ 
+-	io = memblock_virt_alloc(sizeof(*io), 0);
++	io = memblock_alloc(sizeof(*io), 0);
+ 
+ 	io->mem = mem;
+ 
+diff --git a/drivers/firmware/memmap.c b/drivers/firmware/memmap.c
+index 5de3ed2..03cead6 100644
+--- a/drivers/firmware/memmap.c
++++ b/drivers/firmware/memmap.c
+@@ -333,7 +333,7 @@ int __init firmware_map_add_early(u64 start, u64 end, const char *type)
+ {
+ 	struct firmware_map_entry *entry;
+ 
+-	entry = memblock_virt_alloc(sizeof(struct firmware_map_entry), 0);
++	entry = memblock_alloc(sizeof(struct firmware_map_entry), 0);
+ 	if (WARN_ON(!entry))
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index bd841bb..34dd878 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1198,7 +1198,7 @@ int __init __weak early_init_dt_reserve_memory_arch(phys_addr_t base,
+ 
+ static void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ {
+-	return memblock_virt_alloc(size, align);
++	return memblock_alloc(size, align);
+ }
+ 
+ bool __init early_init_dt_verify(void *params)
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index d9d0121..bc2a78f 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -2182,7 +2182,7 @@ static struct device_node *overlay_base_root;
+ 
+ static void * __init dt_alloc_memory(u64 size, u64 align)
+ {
+-	return memblock_virt_alloc(size, align);
++	return memblock_alloc(size, align);
+ }
+ 
+ /*
+diff --git a/include/linux/bootmem.h b/include/linux/bootmem.h
+index b74bafd1..7d91f0f 100644
+--- a/include/linux/bootmem.h
++++ b/include/linux/bootmem.h
+@@ -95,78 +95,78 @@ extern void *__alloc_bootmem_low(unsigned long size,
+ #define BOOTMEM_ALLOC_ANYWHERE		(~(phys_addr_t)0)
+ 
+ /* FIXME: Move to memblock.h at a point where we remove nobootmem.c */
+-void *memblock_virt_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
++void *memblock_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
+ 				      phys_addr_t min_addr,
+ 				      phys_addr_t max_addr, int nid);
+-void *memblock_virt_alloc_try_nid_nopanic(phys_addr_t size,
++void *memblock_alloc_try_nid_nopanic(phys_addr_t size,
+ 		phys_addr_t align, phys_addr_t min_addr,
+ 		phys_addr_t max_addr, int nid);
+-void *memblock_virt_alloc_try_nid(phys_addr_t size, phys_addr_t align,
++void *memblock_alloc_try_nid(phys_addr_t size, phys_addr_t align,
+ 		phys_addr_t min_addr, phys_addr_t max_addr, int nid);
+ void __memblock_free_early(phys_addr_t base, phys_addr_t size);
+ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
+ 
+-static inline void * __init memblock_virt_alloc(
++static inline void * __init memblock_alloc(
+ 					phys_addr_t size,  phys_addr_t align)
+ {
+-	return memblock_virt_alloc_try_nid(size, align, BOOTMEM_LOW_LIMIT,
++	return memblock_alloc_try_nid(size, align, BOOTMEM_LOW_LIMIT,
+ 					    BOOTMEM_ALLOC_ACCESSIBLE,
+ 					    NUMA_NO_NODE);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_raw(
++static inline void * __init memblock_alloc_raw(
+ 					phys_addr_t size,  phys_addr_t align)
+ {
+-	return memblock_virt_alloc_try_nid_raw(size, align, BOOTMEM_LOW_LIMIT,
++	return memblock_alloc_try_nid_raw(size, align, BOOTMEM_LOW_LIMIT,
+ 					    BOOTMEM_ALLOC_ACCESSIBLE,
+ 					    NUMA_NO_NODE);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_nopanic(
++static inline void * __init memblock_alloc_nopanic(
+ 					phys_addr_t size, phys_addr_t align)
+ {
+-	return memblock_virt_alloc_try_nid_nopanic(size, align,
++	return memblock_alloc_try_nid_nopanic(size, align,
+ 						    BOOTMEM_LOW_LIMIT,
+ 						    BOOTMEM_ALLOC_ACCESSIBLE,
+ 						    NUMA_NO_NODE);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_low(
++static inline void * __init memblock_alloc_low(
+ 					phys_addr_t size, phys_addr_t align)
+ {
+-	return memblock_virt_alloc_try_nid(size, align,
++	return memblock_alloc_try_nid(size, align,
+ 						   BOOTMEM_LOW_LIMIT,
+ 						   ARCH_LOW_ADDRESS_LIMIT,
+ 						   NUMA_NO_NODE);
+ }
+-static inline void * __init memblock_virt_alloc_low_nopanic(
++static inline void * __init memblock_alloc_low_nopanic(
+ 					phys_addr_t size, phys_addr_t align)
+ {
+-	return memblock_virt_alloc_try_nid_nopanic(size, align,
++	return memblock_alloc_try_nid_nopanic(size, align,
+ 						   BOOTMEM_LOW_LIMIT,
+ 						   ARCH_LOW_ADDRESS_LIMIT,
+ 						   NUMA_NO_NODE);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_from_nopanic(
++static inline void * __init memblock_alloc_from_nopanic(
+ 		phys_addr_t size, phys_addr_t align, phys_addr_t min_addr)
+ {
+-	return memblock_virt_alloc_try_nid_nopanic(size, align, min_addr,
++	return memblock_alloc_try_nid_nopanic(size, align, min_addr,
+ 						    BOOTMEM_ALLOC_ACCESSIBLE,
+ 						    NUMA_NO_NODE);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_node(
++static inline void * __init memblock_alloc_node(
+ 						phys_addr_t size, int nid)
+ {
+-	return memblock_virt_alloc_try_nid(size, 0, BOOTMEM_LOW_LIMIT,
++	return memblock_alloc_try_nid(size, 0, BOOTMEM_LOW_LIMIT,
+ 					    BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ }
+ 
+-static inline void * __init memblock_virt_alloc_node_nopanic(
++static inline void * __init memblock_alloc_node_nopanic(
+ 						phys_addr_t size, int nid)
+ {
+-	return memblock_virt_alloc_try_nid_nopanic(size, 0, BOOTMEM_LOW_LIMIT,
++	return memblock_alloc_try_nid_nopanic(size, 0, BOOTMEM_LOW_LIMIT,
+ 						    BOOTMEM_ALLOC_ACCESSIBLE,
+ 						    nid);
+ }
+diff --git a/init/main.c b/init/main.c
+index 18f8f01..d0b92bd 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -375,10 +375,10 @@ static inline void smp_prepare_cpus(unsigned int maxcpus) { }
+ static void __init setup_command_line(char *command_line)
+ {
+ 	saved_command_line =
+-		memblock_virt_alloc(strlen(boot_command_line) + 1, 0);
++		memblock_alloc(strlen(boot_command_line) + 1, 0);
+ 	initcall_command_line =
+-		memblock_virt_alloc(strlen(boot_command_line) + 1, 0);
+-	static_command_line = memblock_virt_alloc(strlen(command_line) + 1, 0);
++		memblock_alloc(strlen(boot_command_line) + 1, 0);
++	static_command_line = memblock_alloc(strlen(command_line) + 1, 0);
+ 	strcpy(saved_command_line, boot_command_line);
+ 	strcpy(static_command_line, command_line);
+ }
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 4f8a6db..d9fd062 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -215,7 +215,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 	/*
+ 	 * Get the overflow emergency buffer
+ 	 */
+-	v_overflow_buffer = memblock_virt_alloc_low_nopanic(
++	v_overflow_buffer = memblock_alloc_low_nopanic(
+ 						PAGE_ALIGN(io_tlb_overflow),
+ 						PAGE_SIZE);
+ 	if (!v_overflow_buffer)
+@@ -228,10 +228,10 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 	 * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE
+ 	 * between io_tlb_start and io_tlb_end.
+ 	 */
+-	io_tlb_list = memblock_virt_alloc(
++	io_tlb_list = memblock_alloc(
+ 				PAGE_ALIGN(io_tlb_nslabs * sizeof(int)),
+ 				PAGE_SIZE);
+-	io_tlb_orig_addr = memblock_virt_alloc(
++	io_tlb_orig_addr = memblock_alloc(
+ 				PAGE_ALIGN(io_tlb_nslabs * sizeof(phys_addr_t)),
+ 				PAGE_SIZE);
+ 	for (i = 0; i < io_tlb_nslabs; i++) {
+@@ -266,7 +266,7 @@ swiotlb_init(int verbose)
+ 	bytes = io_tlb_nslabs << IO_TLB_SHIFT;
+ 
+ 	/* Get IO TLB memory from the low pages */
+-	vstart = memblock_virt_alloc_low_nopanic(PAGE_ALIGN(bytes), PAGE_SIZE);
++	vstart = memblock_alloc_low_nopanic(PAGE_ALIGN(bytes), PAGE_SIZE);
+ 	if (vstart && !swiotlb_init_with_tbl(vstart, io_tlb_nslabs, verbose))
+ 		return;
+ 
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 3d37c27..34116a6 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -963,7 +963,7 @@ void __init __register_nosave_region(unsigned long start_pfn,
+ 		BUG_ON(!region);
+ 	} else {
+ 		/* This allocation cannot fail */
+-		region = memblock_virt_alloc(sizeof(struct nosave_region), 0);
++		region = memblock_alloc(sizeof(struct nosave_region), 0);
+ 	}
+ 	region->start_pfn = start_pfn;
+ 	region->end_pfn = end_pfn;
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index fd6f8ed..72e6d38 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -1107,9 +1107,9 @@ void __init setup_log_buf(int early)
+ 
+ 	if (early) {
+ 		new_log_buf =
+-			memblock_virt_alloc(new_log_buf_len, LOG_ALIGN);
++			memblock_alloc(new_log_buf_len, LOG_ALIGN);
+ 	} else {
+-		new_log_buf = memblock_virt_alloc_nopanic(new_log_buf_len,
++		new_log_buf = memblock_alloc_nopanic(new_log_buf_len,
+ 							  LOG_ALIGN);
+ 	}
+ 
+diff --git a/lib/cpumask.c b/lib/cpumask.c
+index beca624..1405cb2 100644
+--- a/lib/cpumask.c
++++ b/lib/cpumask.c
+@@ -163,7 +163,7 @@ EXPORT_SYMBOL(zalloc_cpumask_var);
+  */
+ void __init alloc_bootmem_cpumask_var(cpumask_var_t *mask)
+ {
+-	*mask = memblock_virt_alloc(cpumask_size(), 0);
++	*mask = memblock_alloc(cpumask_size(), 0);
+ }
+ 
+ /**
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 9530d7c..3f5419c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2100,7 +2100,7 @@ int __alloc_bootmem_huge_page(struct hstate *h)
+ 	for_each_node_mask_to_alloc(h, nr_nodes, node, &node_states[N_MEMORY]) {
+ 		void *addr;
+ 
+-		addr = memblock_virt_alloc_try_nid_raw(
++		addr = memblock_alloc_try_nid_raw(
+ 				huge_page_size(h), huge_page_size(h),
+ 				0, BOOTMEM_ALLOC_ACCESSIBLE, node);
+ 		if (addr) {
+diff --git a/mm/kasan/kasan_init.c b/mm/kasan/kasan_init.c
+index 7a2a2f1..24d734b 100644
+--- a/mm/kasan/kasan_init.c
++++ b/mm/kasan/kasan_init.c
+@@ -83,7 +83,7 @@ static inline bool kasan_zero_page_entry(pte_t pte)
+ 
+ static __init void *early_alloc(size_t size, int node)
+ {
+-	return memblock_virt_alloc_try_nid(size, size, __pa(MAX_DMA_ADDRESS),
++	return memblock_alloc_try_nid(size, size, __pa(MAX_DMA_ADDRESS),
+ 					BOOTMEM_ALLOC_ACCESSIBLE, node);
+ }
+ 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 0ab9507..8d35107 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1394,7 +1394,7 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
+ }
+ 
+ /**
+- * memblock_virt_alloc_internal - allocate boot memory block
++ * memblock_alloc_internal - allocate boot memory block
+  * @size: size of memory block to be allocated in bytes
+  * @align: alignment of the region and block's size
+  * @min_addr: the lower bound of the memory region to allocate (phys address)
+@@ -1420,7 +1420,7 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
+  * Return:
+  * Virtual address of allocated memory block on success, NULL on failure.
+  */
+-static void * __init memblock_virt_alloc_internal(
++static void * __init memblock_alloc_internal(
+ 				phys_addr_t size, phys_addr_t align,
+ 				phys_addr_t min_addr, phys_addr_t max_addr,
+ 				int nid)
+@@ -1487,7 +1487,7 @@ static void * __init memblock_virt_alloc_internal(
+ }
+ 
+ /**
+- * memblock_virt_alloc_try_nid_raw - allocate boot memory block without zeroing
++ * memblock_alloc_try_nid_raw - allocate boot memory block without zeroing
+  * memory and without panicking
+  * @size: size of memory block to be allocated in bytes
+  * @align: alignment of the region and block's size
+@@ -1505,7 +1505,7 @@ static void * __init memblock_virt_alloc_internal(
+  * Return:
+  * Virtual address of allocated memory block on success, NULL on failure.
+  */
+-void * __init memblock_virt_alloc_try_nid_raw(
++void * __init memblock_alloc_try_nid_raw(
+ 			phys_addr_t size, phys_addr_t align,
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+@@ -1516,7 +1516,7 @@ void * __init memblock_virt_alloc_try_nid_raw(
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+-	ptr = memblock_virt_alloc_internal(size, align,
++	ptr = memblock_alloc_internal(size, align,
+ 					   min_addr, max_addr, nid);
+ #ifdef CONFIG_DEBUG_VM
+ 	if (ptr && size > 0)
+@@ -1526,7 +1526,7 @@ void * __init memblock_virt_alloc_try_nid_raw(
+ }
+ 
+ /**
+- * memblock_virt_alloc_try_nid_nopanic - allocate boot memory block
++ * memblock_alloc_try_nid_nopanic - allocate boot memory block
+  * @size: size of memory block to be allocated in bytes
+  * @align: alignment of the region and block's size
+  * @min_addr: the lower bound of the memory region from where the allocation
+@@ -1542,7 +1542,7 @@ void * __init memblock_virt_alloc_try_nid_raw(
+  * Return:
+  * Virtual address of allocated memory block on success, NULL on failure.
+  */
+-void * __init memblock_virt_alloc_try_nid_nopanic(
++void * __init memblock_alloc_try_nid_nopanic(
+ 				phys_addr_t size, phys_addr_t align,
+ 				phys_addr_t min_addr, phys_addr_t max_addr,
+ 				int nid)
+@@ -1553,7 +1553,7 @@ void * __init memblock_virt_alloc_try_nid_nopanic(
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+-	ptr = memblock_virt_alloc_internal(size, align,
++	ptr = memblock_alloc_internal(size, align,
+ 					   min_addr, max_addr, nid);
+ 	if (ptr)
+ 		memset(ptr, 0, size);
+@@ -1561,7 +1561,7 @@ void * __init memblock_virt_alloc_try_nid_nopanic(
+ }
+ 
+ /**
+- * memblock_virt_alloc_try_nid - allocate boot memory block with panicking
++ * memblock_alloc_try_nid - allocate boot memory block with panicking
+  * @size: size of memory block to be allocated in bytes
+  * @align: alignment of the region and block's size
+  * @min_addr: the lower bound of the memory region from where the allocation
+@@ -1571,14 +1571,14 @@ void * __init memblock_virt_alloc_try_nid_nopanic(
+  *	      allocate only from memory limited by memblock.current_limit value
+  * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
+  *
+- * Public panicking version of memblock_virt_alloc_try_nid_nopanic()
++ * Public panicking version of memblock_alloc_try_nid_nopanic()
+  * which provides debug information (including caller info), if enabled,
+  * and panics if the request can not be satisfied.
+  *
+  * Return:
+  * Virtual address of allocated memory block on success, NULL on failure.
+  */
+-void * __init memblock_virt_alloc_try_nid(
++void * __init memblock_alloc_try_nid(
+ 			phys_addr_t size, phys_addr_t align,
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+@@ -1588,7 +1588,7 @@ void * __init memblock_virt_alloc_try_nid(
+ 	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pF\n",
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+-	ptr = memblock_virt_alloc_internal(size, align,
++	ptr = memblock_alloc_internal(size, align,
+ 					   min_addr, max_addr, nid);
+ 	if (ptr) {
+ 		memset(ptr, 0, size);
+@@ -1605,7 +1605,7 @@ void * __init memblock_virt_alloc_try_nid(
+  * @base: phys starting address of the  boot memory block
+  * @size: size of the boot memory block in bytes
+  *
+- * Free boot memory block previously allocated by memblock_virt_alloc_xx() API.
++ * Free boot memory block previously allocated by memblock_alloc_xx() API.
+  * The freeing memory will not be released to the buddy allocator.
+  */
+ void __init __memblock_free_early(phys_addr_t base, phys_addr_t size)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index a4985cd..2ade7b6 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6131,7 +6131,7 @@ static void __ref setup_usemap(struct pglist_data *pgdat,
+ 	zone->pageblock_flags = NULL;
+ 	if (usemapsize)
+ 		zone->pageblock_flags =
+-			memblock_virt_alloc_node_nopanic(usemapsize,
++			memblock_alloc_node_nopanic(usemapsize,
+ 							 pgdat->node_id);
+ }
+ #else
+@@ -6373,7 +6373,7 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
+ 		end = pgdat_end_pfn(pgdat);
+ 		end = ALIGN(end, MAX_ORDER_NR_PAGES);
+ 		size =  (end - start) * sizeof(struct page);
+-		map = memblock_virt_alloc_node_nopanic(size, pgdat->node_id);
++		map = memblock_alloc_node_nopanic(size, pgdat->node_id);
+ 		pgdat->node_mem_map = map + offset;
+ 	}
+ 	pr_debug("%s: node %d, pgdat %08lx, node_mem_map %08lx\n",
+@@ -7626,9 +7626,9 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 		size = bucketsize << log2qty;
+ 		if (flags & HASH_EARLY) {
+ 			if (flags & HASH_ZERO)
+-				table = memblock_virt_alloc_nopanic(size, 0);
++				table = memblock_alloc_nopanic(size, 0);
+ 			else
+-				table = memblock_virt_alloc_raw(size, 0);
++				table = memblock_alloc_raw(size, 0);
+ 		} else if (hashdist) {
+ 			table = __vmalloc(size, gfp_flags, PAGE_KERNEL);
+ 		} else {
+diff --git a/mm/page_ext.c b/mm/page_ext.c
+index a9826da..e77c0f0 100644
+--- a/mm/page_ext.c
++++ b/mm/page_ext.c
+@@ -161,7 +161,7 @@ static int __init alloc_node_page_ext(int nid)
+ 
+ 	table_size = get_entry_size() * nr_pages;
+ 
+-	base = memblock_virt_alloc_try_nid_nopanic(
++	base = memblock_alloc_try_nid_nopanic(
+ 			table_size, PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
+ 			BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ 	if (!base)
+diff --git a/mm/percpu.c b/mm/percpu.c
+index a749d4d..86bb9f6 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1101,7 +1101,7 @@ static struct pcpu_chunk * __init pcpu_alloc_first_chunk(unsigned long tmp_addr,
+ 	region_size = ALIGN(start_offset + map_size, lcm_align);
+ 
+ 	/* allocate chunk */
+-	chunk = memblock_virt_alloc(sizeof(struct pcpu_chunk) +
++	chunk = memblock_alloc(sizeof(struct pcpu_chunk) +
+ 				    BITS_TO_LONGS(region_size >> PAGE_SHIFT),
+ 				    0);
+ 
+@@ -1114,11 +1114,11 @@ static struct pcpu_chunk * __init pcpu_alloc_first_chunk(unsigned long tmp_addr,
+ 	chunk->nr_pages = region_size >> PAGE_SHIFT;
+ 	region_bits = pcpu_chunk_map_bits(chunk);
+ 
+-	chunk->alloc_map = memblock_virt_alloc(BITS_TO_LONGS(region_bits) *
++	chunk->alloc_map = memblock_alloc(BITS_TO_LONGS(region_bits) *
+ 					       sizeof(chunk->alloc_map[0]), 0);
+-	chunk->bound_map = memblock_virt_alloc(BITS_TO_LONGS(region_bits + 1) *
++	chunk->bound_map = memblock_alloc(BITS_TO_LONGS(region_bits + 1) *
+ 					       sizeof(chunk->bound_map[0]), 0);
+-	chunk->md_blocks = memblock_virt_alloc(pcpu_chunk_nr_blocks(chunk) *
++	chunk->md_blocks = memblock_alloc(pcpu_chunk_nr_blocks(chunk) *
+ 					       sizeof(chunk->md_blocks[0]), 0);
+ 	pcpu_init_md_blocks(chunk);
+ 
+@@ -1887,7 +1887,7 @@ struct pcpu_alloc_info * __init pcpu_alloc_alloc_info(int nr_groups,
+ 			  __alignof__(ai->groups[0].cpu_map[0]));
+ 	ai_size = base_size + nr_units * sizeof(ai->groups[0].cpu_map[0]);
+ 
+-	ptr = memblock_virt_alloc_nopanic(PFN_ALIGN(ai_size), PAGE_SIZE);
++	ptr = memblock_alloc_nopanic(PFN_ALIGN(ai_size), PAGE_SIZE);
+ 	if (!ptr)
+ 		return NULL;
+ 	ai = ptr;
+@@ -2074,12 +2074,12 @@ int __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
+ 	PCPU_SETUP_BUG_ON(pcpu_verify_alloc_info(ai) < 0);
+ 
+ 	/* process group information and build config tables accordingly */
+-	group_offsets = memblock_virt_alloc(ai->nr_groups *
++	group_offsets = memblock_alloc(ai->nr_groups *
+ 					     sizeof(group_offsets[0]), 0);
+-	group_sizes = memblock_virt_alloc(ai->nr_groups *
++	group_sizes = memblock_alloc(ai->nr_groups *
+ 					   sizeof(group_sizes[0]), 0);
+-	unit_map = memblock_virt_alloc(nr_cpu_ids * sizeof(unit_map[0]), 0);
+-	unit_off = memblock_virt_alloc(nr_cpu_ids * sizeof(unit_off[0]), 0);
++	unit_map = memblock_alloc(nr_cpu_ids * sizeof(unit_map[0]), 0);
++	unit_off = memblock_alloc(nr_cpu_ids * sizeof(unit_off[0]), 0);
+ 
+ 	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+ 		unit_map[cpu] = UINT_MAX;
+@@ -2143,7 +2143,7 @@ int __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
+ 	 * empty chunks.
+ 	 */
+ 	pcpu_nr_slots = __pcpu_size_to_slot(pcpu_unit_size) + 2;
+-	pcpu_slot = memblock_virt_alloc(
++	pcpu_slot = memblock_alloc(
+ 			pcpu_nr_slots * sizeof(pcpu_slot[0]), 0);
+ 	for (i = 0; i < pcpu_nr_slots; i++)
+ 		INIT_LIST_HEAD(&pcpu_slot[i]);
+@@ -2457,7 +2457,7 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
+ 	size_sum = ai->static_size + ai->reserved_size + ai->dyn_size;
+ 	areas_size = PFN_ALIGN(ai->nr_groups * sizeof(void *));
+ 
+-	areas = memblock_virt_alloc_nopanic(areas_size, 0);
++	areas = memblock_alloc_nopanic(areas_size, 0);
+ 	if (!areas) {
+ 		rc = -ENOMEM;
+ 		goto out_free;
+@@ -2598,7 +2598,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size,
+ 	/* unaligned allocations can't be freed, round up to page size */
+ 	pages_size = PFN_ALIGN(unit_pages * num_possible_cpus() *
+ 			       sizeof(pages[0]));
+-	pages = memblock_virt_alloc(pages_size, 0);
++	pages = memblock_alloc(pages_size, 0);
+ 
+ 	/* allocate pages */
+ 	j = 0;
+@@ -2687,7 +2687,7 @@ EXPORT_SYMBOL(__per_cpu_offset);
+ static void * __init pcpu_dfl_fc_alloc(unsigned int cpu, size_t size,
+ 				       size_t align)
+ {
+-	return  memblock_virt_alloc_from_nopanic(
++	return  memblock_alloc_from_nopanic(
+ 			size, align, __pa(MAX_DMA_ADDRESS));
+ }
+ 
+@@ -2736,7 +2736,7 @@ void __init setup_per_cpu_areas(void)
+ 	void *fc;
+ 
+ 	ai = pcpu_alloc_alloc_info(1, 1);
+-	fc = memblock_virt_alloc_from_nopanic(unit_size,
++	fc = memblock_alloc_from_nopanic(unit_size,
+ 					      PAGE_SIZE,
+ 					      __pa(MAX_DMA_ADDRESS));
+ 	if (!ai || !fc)
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 8301293..91c2c3d 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -42,7 +42,7 @@ static void * __ref __earlyonly_bootmem_alloc(int node,
+ 				unsigned long align,
+ 				unsigned long goal)
+ {
+-	return memblock_virt_alloc_try_nid_raw(size, align, goal,
++	return memblock_alloc_try_nid_raw(size, align, goal,
+ 					       BOOTMEM_ALLOC_ACCESSIBLE, node);
+ }
+ 
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 10b07ee..04e97af 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -68,7 +68,7 @@ static noinline struct mem_section __ref *sparse_index_alloc(int nid)
+ 	if (slab_is_available())
+ 		section = kzalloc_node(array_size, GFP_KERNEL, nid);
+ 	else
+-		section = memblock_virt_alloc_node(array_size, nid);
++		section = memblock_alloc_node(array_size, nid);
+ 
+ 	return section;
+ }
+@@ -216,7 +216,7 @@ void __init memory_present(int nid, unsigned long start, unsigned long end)
+ 
+ 		size = sizeof(struct mem_section*) * NR_SECTION_ROOTS;
+ 		align = 1 << (INTERNODE_CACHE_SHIFT);
+-		mem_section = memblock_virt_alloc(size, align);
++		mem_section = memblock_alloc(size, align);
+ 	}
+ #endif
+ 
+@@ -306,7 +306,7 @@ sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
+ 	limit = goal + (1UL << PA_SECTION_SHIFT);
+ 	nid = early_pfn_to_nid(goal >> PAGE_SHIFT);
+ again:
+-	p = memblock_virt_alloc_try_nid_nopanic(size,
++	p = memblock_alloc_try_nid_nopanic(size,
+ 						SMP_CACHE_BYTES, goal, limit,
+ 						nid);
+ 	if (!p && limit) {
+@@ -362,7 +362,7 @@ static unsigned long * __init
+ sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
+ 					 unsigned long size)
+ {
+-	return memblock_virt_alloc_node_nopanic(size, pgdat->node_id);
++	return memblock_alloc_node_nopanic(size, pgdat->node_id);
+ }
+ 
+ static void __init check_usemap_section_nr(int nid, unsigned long *usemap)
+@@ -391,7 +391,7 @@ struct page __init *sparse_mem_map_populate(unsigned long pnum, int nid,
+ 	if (map)
+ 		return map;
+ 
+-	map = memblock_virt_alloc_try_nid(size,
++	map = memblock_alloc_try_nid(size,
+ 					  PAGE_SIZE, __pa(MAX_DMA_ADDRESS),
+ 					  BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ 	return map;
+@@ -405,7 +405,7 @@ static void __init sparse_buffer_init(unsigned long size, int nid)
+ {
+ 	WARN_ON(sparsemap_buf);	/* forgot to call sparse_buffer_fini()? */
+ 	sparsemap_buf =
+-		memblock_virt_alloc_try_nid_raw(size, PAGE_SIZE,
++		memblock_alloc_try_nid_raw(size, PAGE_SIZE,
+ 						__pa(MAX_DMA_ADDRESS),
+ 						BOOTMEM_ALLOC_ACCESSIBLE, nid);
+ 	sparsemap_buf_end = sparsemap_buf + size;
 -- 
-2.17.1
+2.7.4

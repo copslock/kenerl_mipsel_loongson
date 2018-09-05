@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:04:44 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:43124 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994666AbeIEQAqgxUrO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:46 +0200
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FvMPN044975
-        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:45 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2magp9w3wx-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:04:55 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:44064 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994668AbeIEQAuf8GkO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:50 +0200
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FvwR6104069
+        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:47 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2maj3wrk39-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:40 -0400
+        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:47 -0400
 Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Wed, 5 Sep 2018 17:00:34 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 5 Sep 2018 17:00:45 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 5 Sep 2018 17:00:30 +0100
+        Wed, 5 Sep 2018 17:00:41 +0100
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85G0TCw38862914
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85G0e8841418756
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 5 Sep 2018 16:00:29 GMT
+        Wed, 5 Sep 2018 16:00:40 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BA7D511C04C;
-        Wed,  5 Sep 2018 19:00:21 +0100 (BST)
+        by IMSVA (Postfix) with ESMTP id C347D11C064;
+        Wed,  5 Sep 2018 19:00:32 +0100 (BST)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AC10211C050;
-        Wed,  5 Sep 2018 19:00:19 +0100 (BST)
+        by IMSVA (Postfix) with ESMTP id AA80811C06E;
+        Wed,  5 Sep 2018 19:00:30 +0100 (BST)
 Received: from rapoport-lnx (unknown [9.148.8.92])
         by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed,  5 Sep 2018 19:00:19 +0100 (BST)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 19:00:26 +0300
+        Wed,  5 Sep 2018 19:00:30 +0100 (BST)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 19:00:37 +0300
 From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
 To:     linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -46,28 +46,27 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mike Rapoport <rppt@linux.vnet.ibm.com>
-Subject: [RFC PATCH 15/29] memblock: replace alloc_bootmem_pages_node with memblock_alloc_node
-Date:   Wed,  5 Sep 2018 18:59:30 +0300
+Subject: [RFC PATCH 19/29] memblock: replace alloc_bootmem_pages with memblock_alloc
+Date:   Wed,  5 Sep 2018 18:59:34 +0300
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
 References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 18090516-0008-0000-0000-0000026CBA34
+x-cbid: 18090516-0028-0000-0000-000002F4BF53
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18090516-0009-0000-0000-000021D4D859
-Message-Id: <1536163184-26356-16-git-send-email-rppt@linux.vnet.ibm.com>
+x-cbparentid: 18090516-0029-0000-0000-000023AE4010
+Message-Id: <1536163184-26356-20-git-send-email-rppt@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-05_09:,,
  signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=734 adultscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=981 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1807170000 definitions=main-1809050164
 Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65975
+X-archive-position: 65976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,38 +83,187 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The conversion is done using the following semantic patch:
+
+@@
+expression e;
+@@
+- alloc_bootmem_pages(e)
++ memblock_alloc(e, PAGE_SIZE)
+
 Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
- arch/ia64/mm/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/c6x/mm/init.c             | 3 ++-
+ arch/h8300/mm/init.c           | 2 +-
+ arch/m68k/mm/init.c            | 2 +-
+ arch/m68k/mm/mcfmmu.c          | 4 ++--
+ arch/m68k/mm/motorola.c        | 2 +-
+ arch/m68k/mm/sun3mmu.c         | 4 ++--
+ arch/sh/mm/init.c              | 4 ++--
+ arch/x86/kernel/apic/io_apic.c | 3 ++-
+ arch/x86/mm/init_64.c          | 2 +-
+ drivers/xen/swiotlb-xen.c      | 3 ++-
+ 10 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 3b85c3e..ffcc358 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -447,19 +447,19 @@ int __init create_mem_map_page_table(u64 start, u64 end, void *arg)
- 	for (address = start_page; address < end_page; address += PAGE_SIZE) {
- 		pgd = pgd_offset_k(address);
- 		if (pgd_none(*pgd))
--			pgd_populate(&init_mm, pgd, alloc_bootmem_pages_node(NODE_DATA(node), PAGE_SIZE));
-+			pgd_populate(&init_mm, pgd, memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node));
- 		pud = pud_offset(pgd, address);
+diff --git a/arch/c6x/mm/init.c b/arch/c6x/mm/init.c
+index 4cc72b0..dc369ad 100644
+--- a/arch/c6x/mm/init.c
++++ b/arch/c6x/mm/init.c
+@@ -38,7 +38,8 @@ void __init paging_init(void)
+ 	struct pglist_data *pgdat = NODE_DATA(0);
+ 	unsigned long zones_size[MAX_NR_ZONES] = {0, };
  
- 		if (pud_none(*pud))
--			pud_populate(&init_mm, pud, alloc_bootmem_pages_node(NODE_DATA(node), PAGE_SIZE));
-+			pud_populate(&init_mm, pud, memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node));
- 		pmd = pmd_offset(pud, address);
+-	empty_zero_page      = (unsigned long) alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page      = (unsigned long) memblock_alloc(PAGE_SIZE,
++							      PAGE_SIZE);
+ 	memset((void *)empty_zero_page, 0, PAGE_SIZE);
  
- 		if (pmd_none(*pmd))
--			pmd_populate_kernel(&init_mm, pmd, alloc_bootmem_pages_node(NODE_DATA(node), PAGE_SIZE));
-+			pmd_populate_kernel(&init_mm, pmd, memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node));
- 		pte = pte_offset_kernel(pmd, address);
+ 	/*
+diff --git a/arch/h8300/mm/init.c b/arch/h8300/mm/init.c
+index 015287a..5d31ac9 100644
+--- a/arch/h8300/mm/init.c
++++ b/arch/h8300/mm/init.c
+@@ -67,7 +67,7 @@ void __init paging_init(void)
+ 	 * Initialize the bad page table and bad page to point
+ 	 * to a couple of allocated pages.
+ 	 */
+-	empty_zero_page = (unsigned long)alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page = (unsigned long)memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 	memset((void *)empty_zero_page, 0, PAGE_SIZE);
  
- 		if (pte_none(*pte))
--			set_pte(pte, pfn_pte(__pa(alloc_bootmem_pages_node(NODE_DATA(node), PAGE_SIZE)) >> PAGE_SHIFT,
-+			set_pte(pte, pfn_pte(__pa(memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node))) >> PAGE_SHIFT,
- 					     PAGE_KERNEL));
+ 	/*
+diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+index 38e2b27..977363e 100644
+--- a/arch/m68k/mm/init.c
++++ b/arch/m68k/mm/init.c
+@@ -93,7 +93,7 @@ void __init paging_init(void)
+ 
+ 	high_memory = (void *) end_mem;
+ 
+-	empty_zero_page = alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 
+ 	/*
+ 	 * Set up SFC/DFC registers (user data space).
+diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+index f5453d9..38a1d92 100644
+--- a/arch/m68k/mm/mcfmmu.c
++++ b/arch/m68k/mm/mcfmmu.c
+@@ -44,7 +44,7 @@ void __init paging_init(void)
+ 	enum zone_type zone;
+ 	int i;
+ 
+-	empty_zero_page = (void *) alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page = (void *) memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 	memset((void *) empty_zero_page, 0, PAGE_SIZE);
+ 
+ 	pg_dir = swapper_pg_dir;
+@@ -52,7 +52,7 @@ void __init paging_init(void)
+ 
+ 	size = num_pages * sizeof(pte_t);
+ 	size = (size + PAGE_SIZE) & ~(PAGE_SIZE-1);
+-	next_pgtable = (unsigned long) alloc_bootmem_pages(size);
++	next_pgtable = (unsigned long) memblock_alloc(size, PAGE_SIZE);
+ 
+ 	bootmem_end = (next_pgtable + size + PAGE_SIZE) & PAGE_MASK;
+ 	pg_dir += PAGE_OFFSET >> PGDIR_SHIFT;
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index 8bcf57e..2113eec 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -276,7 +276,7 @@ void __init paging_init(void)
+ 	 * initialize the bad page table and bad page to point
+ 	 * to a couple of allocated pages
+ 	 */
+-	empty_zero_page = alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 
+ 	/*
+ 	 * Set up SFC/DFC registers
+diff --git a/arch/m68k/mm/sun3mmu.c b/arch/m68k/mm/sun3mmu.c
+index 4a99799..19c05ab 100644
+--- a/arch/m68k/mm/sun3mmu.c
++++ b/arch/m68k/mm/sun3mmu.c
+@@ -45,7 +45,7 @@ void __init paging_init(void)
+ 	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
+ 	unsigned long size;
+ 
+-	empty_zero_page = alloc_bootmem_pages(PAGE_SIZE);
++	empty_zero_page = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 
+ 	address = PAGE_OFFSET;
+ 	pg_dir = swapper_pg_dir;
+@@ -55,7 +55,7 @@ void __init paging_init(void)
+ 	size = num_pages * sizeof(pte_t);
+ 	size = (size + PAGE_SIZE) & ~(PAGE_SIZE-1);
+ 
+-	next_pgtable = (unsigned long)alloc_bootmem_pages(size);
++	next_pgtable = (unsigned long)memblock_alloc(size, PAGE_SIZE);
+ 	bootmem_end = (next_pgtable + size + PAGE_SIZE) & PAGE_MASK;
+ 
+ 	/* Map whole memory from PAGE_OFFSET (0x0E000000) */
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index 7713c08..c884b76 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -128,7 +128,7 @@ static pmd_t * __init one_md_table_init(pud_t *pud)
+ 	if (pud_none(*pud)) {
+ 		pmd_t *pmd;
+ 
+-		pmd = alloc_bootmem_pages(PAGE_SIZE);
++		pmd = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 		pud_populate(&init_mm, pud, pmd);
+ 		BUG_ON(pmd != pmd_offset(pud, 0));
  	}
- 	return 0;
+@@ -141,7 +141,7 @@ static pte_t * __init one_page_table_init(pmd_t *pmd)
+ 	if (pmd_none(*pmd)) {
+ 		pte_t *pte;
+ 
+-		pte = alloc_bootmem_pages(PAGE_SIZE);
++		pte = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 		pmd_populate_kernel(&init_mm, pmd, pte);
+ 		BUG_ON(pte != pte_offset_kernel(pmd, 0));
+ 	}
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index ff0d14c..e25118f 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -2621,7 +2621,8 @@ void __init io_apic_init_mappings(void)
+ #ifdef CONFIG_X86_32
+ fake_ioapic_page:
+ #endif
+-			ioapic_phys = (unsigned long)alloc_bootmem_pages(PAGE_SIZE);
++			ioapic_phys = (unsigned long)memblock_alloc(PAGE_SIZE,
++								    PAGE_SIZE);
+ 			ioapic_phys = __pa(ioapic_phys);
+ 		}
+ 		set_fixmap_nocache(idx, ioapic_phys);
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index dd519f3..f39b512 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -197,7 +197,7 @@ static __ref void *spp_getpage(void)
+ 	if (after_bootmem)
+ 		ptr = (void *) get_zeroed_page(GFP_ATOMIC);
+ 	else
+-		ptr = alloc_bootmem_pages(PAGE_SIZE);
++		ptr = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 
+ 	if (!ptr || ((unsigned long)ptr & ~PAGE_MASK)) {
+ 		panic("set_pte_phys: cannot allocate page data %s\n",
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index a6f9ba8..8d849b4 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -217,7 +217,8 @@ int __ref xen_swiotlb_init(int verbose, bool early)
+ 	 * Get IO TLB memory from any location.
+ 	 */
+ 	if (early)
+-		xen_io_tlb_start = alloc_bootmem_pages(PAGE_ALIGN(bytes));
++		xen_io_tlb_start = memblock_alloc(PAGE_ALIGN(bytes),
++						  PAGE_SIZE);
+ 	else {
+ #define SLABS_PER_PAGE (1 << (PAGE_SHIFT - IO_TLB_SHIFT))
+ #define IO_TLB_MIN_SLABS ((1<<20) >> IO_TLB_SHIFT)
 -- 
 2.7.4

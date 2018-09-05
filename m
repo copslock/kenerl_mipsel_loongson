@@ -1,92 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:01 +0200 (CEST)
-Received: from mail-eopbgr680114.outbound.protection.outlook.com ([40.107.68.114]:38103
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994640AbeIEQAJoV03O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Sep 2018 18:00:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9QMObg3on5LmU6jcvjzbMAByB4e+7nUzk9+pjeSxFAY=;
- b=UKHGcz+cpvTYQ+JbPNnZTrrr3/npm94Jt+463orfzC6XsJh5oORdzWXDoUo6/Ryf2bb8b9nVHjDyytGReTcNgFAOFmGn7af5GW1Qld/0bpZ5uiikvyTgw5FBVLRFPDMsddCVjk5I98v2M0Xg8GP4FJul879PiHHDb5eGJJSBvOo=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=dzhu@wavecomp.com; 
-Received: from box.mipstec.com (4.16.204.77) by
- BN3PR0801MB2145.namprd08.prod.outlook.com (2a01:111:e400:7bb5::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1101.18; Wed, 5 Sep
- 2018 16:00:00 +0000
-From:   Dengcheng Zhu <dzhu@wavecomp.com>
-To:     pburton@wavecomp.com, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
-        Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v4 2/6] MIPS: kexec: Let the new kernel handle all CPUs
-Date:   Wed,  5 Sep 2018 08:59:05 -0700
-Message-Id: <20180905155909.30454-3-dzhu@wavecomp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180905155909.30454-1-dzhu@wavecomp.com>
-References: <20180905155909.30454-1-dzhu@wavecomp.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR2001CA0003.namprd20.prod.outlook.com
- (2603:10b6:4:16::13) To BN3PR0801MB2145.namprd08.prod.outlook.com
- (2a01:111:e400:7bb5::18)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 051a2f7d-aa42-4191-7dc8-08d61348a2be
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2145;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:sOx4TqvNoU8lKKnERTfBVudo/6zyZSull2v1sDlZSx58In2u9ues6n5ZpUJiyAF2dxOIZ/krpNcMcdtnqyhlrAYLln9TFC1s292c9eeK0+vVT4vganyzH82a3M0y74vID9j3TP9bJsREwZ2hcOZl+z7puzgAfJSkRRMNGJJNKCWVkAyMA1wR36tEt7mBAieSPupDvTBf0WBUxPgROexOetmJJePo5dIYztjUgLJ7lbBaI2ydXa3qhfEFWLmFCGJw;25:BPMNSPRDogkmOALpjbrgPNiPZjTVQ4YMf9bLIrnw7Z/GrThWAvy3KW1z4YdAhJa6C+gNGyT/iXoGx2lVK63q9i6F63S8pjIQ2QYzD/J3ZNnzPIDxjLdDFWYkRSYIIuPgnE4hv9LQ8/Br28BFWqATh+xqCVwWazTG31x4sPgFeXs847JkVUUfGRgtNXd+U8iJledhqilJPmlfyU1iWc9lD4g2PAgt7X0FXAiJOxRjGczAYFymm8WYaQ+0rRXgtHmFu8D3DuD8WypnHQTFl7ppVLSnxLByMHxMNCMO2nS7whwusUtwEJRcQX9hmq7L8Q1kao34MuPl1bYOZtqCAE9DFA==;31:nNWrxuC2w+vub8JoOFMaFhKmKKod/Ir9BzBGPK9W2sO/+MyKHskyK03SN1MB4PlqUUlTGrurdt3pv/eU5G5AqugIOxcMl3qP8Neqjf9Zp1OM7MaDg+uGlyNcK/9q70DbWmB27np22RbVpz5KbL8YAXL2qOjO1rRJiVp9/+xI6IXT9kh0TCfUtcP8G9iG4c+PF+AzZzCn4JFzXX2L/aS1+XGYUmWqed/wprvi3pt38BY=
-X-MS-TrafficTypeDiagnostic: BN3PR0801MB2145:
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:aA3pdHbcwyppplA/ww8WOGCTWpgDhLxtNiKL0GRVDaKvOW3aIk3YIeLk1ifPXvfdJ6PJrZjbU4YSbi5jEa3s9lDCYHug0xweJwK8ePSHxxXfSXT7xH5Y2ndUMfuLStOZJzKsLtZjPbQn8KulgJituECYsm6QC0dsOZZVKuWF1cP9C8Qve5sKoOffEK7rvZbkbBgVc3MqiO/mykBWRMUiAjNFUobdITpIpxsLapk+g+eQziMikqsUW9+LMv6a6t/v;4:7sAalg+w042J7izf60+9chFU1VyCI8h8gvYQ7zRQm/qDwdUeHoaxHM+x2VFxgzvtzbmeOu4DZeOk8uP4QgrnZ8mKD7i9HY3L5dixoqbfBglXU9pFdxEspNVNphF4Nx8jiOfybErvidJg4fvwYIr++GPudCLwtpruRAESzktDCeGgdDzYHySOfoMKlPvts+nRDeYKt6nndswMCDjSVjcplWuJs22YluE4y8aXPohmr5JbyyNlBRchMQLcO759cquqf+L6hOjVfWbfx4Du1rXRE2ofI24PjcfhIs6qiHSczPGAY3/0Mzpneq7MLrOCU5Go
-X-Microsoft-Antispam-PRVS: <BN3PR0801MB21450C60886A54C957D18994A2020@BN3PR0801MB2145.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(93001095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201708071742011)(7699016);SRVR:BN3PR0801MB2145;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2145;
-X-Forefront-PRVS: 078693968A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(366004)(396003)(136003)(346002)(39840400004)(376002)(199004)(189003)(11346002)(956004)(476003)(446003)(486006)(16526019)(26005)(53936002)(6506007)(386003)(81156014)(81166006)(5660300001)(53416004)(8676002)(2906002)(8936002)(25786009)(48376002)(106356001)(4326008)(51416003)(105586002)(50226002)(66066001)(47776003)(68736007)(107886003)(76176011)(50466002)(305945005)(2616005)(52116002)(7736002)(316002)(37156001)(86362001)(575784001)(97736004)(69596002)(16586007)(1076002)(6512007)(6486002)(6116002)(36756003)(478600001)(3846002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:vlXHBFk6WBQCuBfxxVEDjCLgJmcrznIaJx/FU4k?=
- =?us-ascii?Q?/TlOr/+AnEbbpldO/bDyfvMbj8LF3xOHvfimc3zALEmIwbTJ5VRt4gj3Nfym?=
- =?us-ascii?Q?leL1HyIb5GhI4K9Yzsfz8eOa/qHz+IY51tVYSQs3gFmNHnRDQs6Id0p5zmAe?=
- =?us-ascii?Q?f+SIc4qWp32kG9tKVN41BgwkjYByvvoIIivVp6Iv3wLeFAD0+dNDcAo0zXng?=
- =?us-ascii?Q?JNujQ8GTEAafDlajx+EJniFi+9s647MWw499ithTKFL81S2bO7C6O0RPGshc?=
- =?us-ascii?Q?RVBkvPxADrdREqP8kDEFy1UiBxoTo2FHMC+zvE+YdNv77EqbqkVlvcrAbGo2?=
- =?us-ascii?Q?+BDhfZsXgr7/9Rer2iHZ2iMt4p/eomH6q0tinnwYIRBslnqta4vDP8BuXN0X?=
- =?us-ascii?Q?9ldgUh7kD+ANVrOPtlz6MSgbLNav8llkQ9Rn51IfyUb1rGF8mi/D5HP2f9jF?=
- =?us-ascii?Q?ePhOWvMsESQw8sASeYVdnIHM7MmA2DblkvwizP7dEy60bwyB3fETwDqtOSPD?=
- =?us-ascii?Q?IGycqpaSDPoV3tu8YqoIgWsMWROabF7BkLwLaFaJmKAANdQJNo4/+4P93go3?=
- =?us-ascii?Q?tAtQr/TeR5iG57ZfxDQ/dz6dTutLg9VTKKJ3yQnmKEEZWHXaVEavE4mWLuzd?=
- =?us-ascii?Q?zC74T+uxeVWbRwzpDZcNe0Eg5FFBRD/+/Tx1dEb7yHTZA2E5G/MKSYZvyfvk?=
- =?us-ascii?Q?VaqdLlaFpvkgXK9CO/ZUEdqNe0988wsf5KRZ89Ztd/2NDaBtiVIxyRq1rgYd?=
- =?us-ascii?Q?w0x8uyFeeYo8q2khk/DvRbMqvK7amJYOOz7LYDUcbhEgYt18dc5sOFnw53MO?=
- =?us-ascii?Q?mgSy7p3ShkFR3mJoG8qg/1a06T3INHsc66nBRzzMHiXhgptZ8JAusH3TBDVd?=
- =?us-ascii?Q?5QWe1N3iHd6wCQeHhMGwnBIBbjw1SVt1susiL1s7jwEoHLZn74uuDpZqXDyN?=
- =?us-ascii?Q?MnpIxoxipze+zZnJkFv9NeH93MOgKkeJeg/aIkZ7bXhDKhEVStV0SE0Q7otf?=
- =?us-ascii?Q?7jz20o98OsLellPf/w6cyamtYw1uoUqx/P/o7S3hU3JDjRBnmrTWi7DUo0DA?=
- =?us-ascii?Q?kEllhJoCO44fZRb2Lvo93Fj5XTVfaBPcxgLaMbeOh9+4kS9LIQy8/rApiI1h?=
- =?us-ascii?Q?u/hrG7FKKOHrUHhuEAoL+RPmx7MR3zCz9c6tu6iEHqWR04Dgz1PB+g/hFL8R?=
- =?us-ascii?Q?WiaTa3ntCJj3Kviqja2PHpHheALnfdVU18uj07GVveJZuExMisMQCrqIHKCk?=
- =?us-ascii?Q?WlVrlk0oeU6RTXBZYXZ8=3D?=
-X-Microsoft-Antispam-Message-Info: OTL8r1VTVs+2R19n1F39cPCmTUCbaqlhnhr7dzb5N7MoX2Mv2qHlzEYlR9k9V/J216uJqDVCYekf/qPFJEzbbGHKXOwtUBWNlbOjR58bOOQnMLe7Y9DGVF4/u7hDqP5YZv1dd68ufVF/cjzADvr6SUcw4CVibEQFOm4u/tCnJQvMWLPvtKXj0qM5HcmwfmaXOFROYudlIkgAh62EsbzCys6WKiHIIJOoBMZUissuglM4+C6IBobVMBeSQ/haO8SfdQJmI7A5aDF3TwXNZ8w+tg5M6cgKcpjTleKIWp+kXljUPj4kMt9ac5L9zleHNeLgBAjmkHG30Vi/Jo47Crv1H7xo9XTolewuBOGqcuNjPXI=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:u9XV2XYkBvjvbofciynH9d0WayH1Cvb6mUs/i7wbiIRVP4QEqtzSWIxnk4nKMqBlgERyg5uUYVTLfptGUjdplAK8r4IpGNiX+di0tYkl76hZDgZwV2tL1rHxL6ymWQFqwH85TjTbU0NRVjkRnJnfkv8HJPKAEc05ZHT1tEynbq8HJSub9V9vKW+34tGn+ayMXc24K38AL6lP01g85gWIiePVyg/KxwzPjqRdjx1j2oJqfMJi+hEO0tMoSbZwGfUDYnxeL/3oOnsblKaqgfjc3yDwyNcLJodX7+4zQDk8U6XOf8DQ60qfCpbZslf2wsKn06ucj4hws3UK+ShAPlc5fR24IDnaCw6S4+iZFXamdKDiLhaCCTp/U8AR9i8Fk2hCy0r7SSf6u8712FuugOIXBgzHPspvyR0DwMHo50e1cR+Nqdl8AnCQInnuTum9s7h0KogQlE/kI43yBvBpBmFizQ==;5:TOZCq9ssmU2hNdL73BOgEkRfgM+f8IIqI3AVIjszYuJq9/wcCJ/2SGHeRGhikzZIvrKLWAnL5Ecr+UjWqpLgeHoTK50rcBj3OitZXC12U4bj6Bv3qR6AbrFKiasOaO1pRbRbjboczCSJR/fLSdTuiAqBqCcu66MY2iqawHlNThg=;7:dly+/5JhzGZ9d8mXohfcOfbPf7mL1QhVDJo4PYYSnrkW67bXgBQiQSCvA8SHoEbW/c7Kn64R2m27Tiq9cabC37jDeX5BY7JfBWUrT9r5ffcia6okp6sUpyYSSGGx+eEb0/r6LB8DeIyTqfv7rMfHLEgKW+zdHe84sJYz2vGTAguZaeHw6Ppz5mYaShMyhttxsUKtn93x70LLEAB2l8jTE68vUoomB06HMQE/umSxhH9tNSJsaaG4uPItemDk0QpQ
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2018 16:00:00.2531 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 051a2f7d-aa42-4191-7dc8-08d61348a2be
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2145
-Return-Path: <dzhu@wavecomp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:16 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36032 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994637AbeIEQAJrQ5WO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:09 +0200
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FvuYP103974
+        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:08 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2maj3wrhwy-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:06 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Wed, 5 Sep 2018 17:00:04 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 5 Sep 2018 17:00:00 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85FxxvK46268448
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 5 Sep 2018 15:59:59 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 81AFD11C050;
+        Wed,  5 Sep 2018 18:59:51 +0100 (BST)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 67D0B11C052;
+        Wed,  5 Sep 2018 18:59:49 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.92])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed,  5 Sep 2018 18:59:49 +0100 (BST)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 18:59:56 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Subject: [RFC PATCH 04/29] mm: remove bootmem allocator implementation.
+Date:   Wed,  5 Sep 2018 18:59:19 +0300
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 18090516-0012-0000-0000-000002A43AD2
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18090516-0013-0000-0000-000020D85DE6
+Message-Id: <1536163184-26356-5-git-send-email-rppt@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-05_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1809050164
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65957
+X-archive-position: 65958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dzhu@wavecomp.com
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,131 +84,866 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use play_dead() to prepare an environment for the new kernel. Do not rely
-on non-crashing CPUs jumping to kexec_start_address.
+All architectures have been converted to use MEMBLOCK + NO_BOOTMEM. The
+bootmem allocator implementation can be removed.
 
-Tested-by: Rachel Mozes <rachel.mozes@intel.com>
-Reported-by: Rachel Mozes <rachel.mozes@intel.com>
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
-Changes:
+ include/linux/bootmem.h |  16 -
+ mm/bootmem.c            | 811 ------------------------------------------------
+ 2 files changed, 827 deletions(-)
+ delete mode 100644 mm/bootmem.c
 
-* Use play_dead() without an extra parameter.
-
- arch/mips/cavium-octeon/setup.c  |  2 +-
- arch/mips/include/asm/kexec.h    |  3 ++-
- arch/mips/kernel/crash.c         |  4 +++-
- arch/mips/kernel/machine_kexec.c | 28 ++++++++++++++++++++++++----
- 4 files changed, 30 insertions(+), 7 deletions(-)
-
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index a8034d0dcade..3a1f7fa42413 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -95,7 +95,7 @@ static void octeon_kexec_smp_down(void *ignored)
- 	"	sync						\n"
- 	"	synci	($0)					\n");
+diff --git a/include/linux/bootmem.h b/include/linux/bootmem.h
+index ee61ac3..fce6278 100644
+--- a/include/linux/bootmem.h
++++ b/include/linux/bootmem.h
+@@ -26,14 +26,6 @@ extern unsigned long max_pfn;
+  */
+ extern unsigned long long max_possible_pfn;
  
--	relocated_kexec_smp_wait(NULL);
-+	kexec_smp_reboot();
- }
- #endif
- 
-diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index 493a3cc7c39a..a8e0bfc0da19 100644
---- a/arch/mips/include/asm/kexec.h
-+++ b/arch/mips/include/asm/kexec.h
-@@ -39,12 +39,13 @@ extern unsigned long kexec_args[4];
- extern int (*_machine_kexec_prepare)(struct kimage *);
- extern void (*_machine_kexec_shutdown)(void);
- extern void (*_machine_crash_shutdown)(struct pt_regs *regs);
--extern void default_machine_crash_shutdown(struct pt_regs *regs);
-+void default_machine_crash_shutdown(struct pt_regs *regs);
- #ifdef CONFIG_SMP
- extern const unsigned char kexec_smp_wait[];
- extern unsigned long secondary_kexec_args[4];
- extern void (*relocated_kexec_smp_wait) (void *);
- extern atomic_t kexec_ready_to_reboot;
-+void kexec_smp_reboot(void);
- extern void (*_crash_smp_send_stop)(void);
- #endif
- #endif
-diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index d455363d51c3..6d4320067cff 100644
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -43,7 +43,9 @@ static void crash_shutdown_secondary(void *passed_regs)
- 
- 	while (!atomic_read(&kexec_ready_to_reboot))
- 		cpu_relax();
--	relocated_kexec_smp_wait(NULL);
-+
-+	kexec_smp_reboot();
-+
- 	/* NOTREACHED */
- }
- 
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 8b574bcd39ba..900475ae256d 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -19,6 +19,10 @@ extern const size_t relocate_new_kernel_size;
- extern unsigned long kexec_start_address;
- extern unsigned long kexec_indirection_page;
- 
-+static unsigned long reboot_code_buffer;
-+
-+typedef void (*noretfun_t)(void) __noreturn;
-+
- int (*_machine_kexec_prepare)(struct kimage *) = NULL;
- void (*_machine_kexec_shutdown)(void) = NULL;
- void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
-@@ -26,6 +30,20 @@ void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
- void (*relocated_kexec_smp_wait) (void *);
- atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
- void (*_crash_smp_send_stop)(void) = NULL;
-+
-+void kexec_smp_reboot(void)
-+{
-+	if (smp_processor_id() > 0) {
-+		/*
-+		 * Instead of cpu_relax() or wait, this is needed for kexec
-+		 * smp reboot. Kdump usually doesn't require an smp new
-+		 * kernel, but kexec may do.
-+		 */
-+		play_dead();
-+	} else {
-+		((noretfun_t)reboot_code_buffer)();
-+	}
-+}
- #endif
- 
- static void kexec_image_info(const struct kimage *kimage)
-@@ -79,12 +97,9 @@ machine_crash_shutdown(struct pt_regs *regs)
- 		default_machine_crash_shutdown(regs);
- }
- 
--typedef void (*noretfun_t)(void) __noreturn;
+-extern unsigned long bootmem_bootmap_pages(unsigned long);
 -
- void
- machine_kexec(struct kimage *image)
- {
--	unsigned long reboot_code_buffer;
- 	unsigned long entry;
- 	unsigned long *ptr;
+-extern unsigned long init_bootmem_node(pg_data_t *pgdat,
+-				       unsigned long freepfn,
+-				       unsigned long startpfn,
+-				       unsigned long endpfn);
+-extern unsigned long init_bootmem(unsigned long addr, unsigned long memend);
+-
+ extern unsigned long free_all_bootmem(void);
+ extern void reset_node_managed_pages(pg_data_t *pgdat);
+ extern void reset_all_zones_managed_pages(void);
+@@ -55,14 +47,6 @@ extern void free_bootmem_late(unsigned long physaddr, unsigned long size);
+ #define BOOTMEM_DEFAULT		0
+ #define BOOTMEM_EXCLUSIVE	(1<<0)
  
-@@ -132,6 +147,11 @@ machine_kexec(struct kimage *image)
- 		(void *)(kexec_smp_wait - relocate_new_kernel);
- 	smp_wmb();
- 	atomic_set(&kexec_ready_to_reboot, 1);
+-extern int reserve_bootmem(unsigned long addr,
+-			   unsigned long size,
+-			   int flags);
+-extern int reserve_bootmem_node(pg_data_t *pgdat,
+-				unsigned long physaddr,
+-				unsigned long size,
+-				int flags);
+-
+ extern void *__alloc_bootmem(unsigned long size,
+ 			     unsigned long align,
+ 			     unsigned long goal);
+diff --git a/mm/bootmem.c b/mm/bootmem.c
+deleted file mode 100644
+index 97db0e8..0000000
+--- a/mm/bootmem.c
++++ /dev/null
+@@ -1,811 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- *  bootmem - A boot-time physical memory allocator and configurator
+- *
+- *  Copyright (C) 1999 Ingo Molnar
+- *                1999 Kanoj Sarcar, SGI
+- *                2008 Johannes Weiner
+- *
+- * Access to this subsystem has to be serialized externally (which is true
+- * for the boot process anyway).
+- */
+-#include <linux/init.h>
+-#include <linux/pfn.h>
+-#include <linux/slab.h>
+-#include <linux/export.h>
+-#include <linux/kmemleak.h>
+-#include <linux/range.h>
+-#include <linux/bug.h>
+-#include <linux/io.h>
+-#include <linux/bootmem.h>
+-
+-#include "internal.h"
+-
+-/**
+- * DOC: bootmem overview
+- *
+- * Bootmem is a boot-time physical memory allocator and configurator.
+- *
+- * It is used early in the boot process before the page allocator is
+- * set up.
+- *
+- * Bootmem is based on the most basic of allocators, a First Fit
+- * allocator which uses a bitmap to represent memory. If a bit is 1,
+- * the page is allocated and 0 if unallocated. To satisfy allocations
+- * of sizes smaller than a page, the allocator records the Page Frame
+- * Number (PFN) of the last allocation and the offset the allocation
+- * ended at. Subsequent small allocations are merged together and
+- * stored on the same page.
+- *
+- * The information used by the bootmem allocator is represented by
+- * :c:type:`struct bootmem_data`. An array to hold up to %MAX_NUMNODES
+- * such structures is statically allocated and then it is discarded
+- * when the system initialization completes. Each entry in this array
+- * corresponds to a node with memory. For UMA systems only entry 0 is
+- * used.
+- *
+- * The bootmem allocator is initialized during early architecture
+- * specific setup. Each architecture is required to supply a
+- * :c:func:`setup_arch` function which, among other tasks, is
+- * responsible for acquiring the necessary parameters to initialise
+- * the boot memory allocator. These parameters define limits of usable
+- * physical memory:
+- *
+- * * @min_low_pfn - the lowest PFN that is available in the system
+- * * @max_low_pfn - the highest PFN that may be addressed by low
+- *   memory (%ZONE_NORMAL)
+- * * @max_pfn - the last PFN available to the system.
+- *
+- * After those limits are determined, the :c:func:`init_bootmem` or
+- * :c:func:`init_bootmem_node` function should be called to initialize
+- * the bootmem allocator. The UMA case should use the `init_bootmem`
+- * function. It will initialize ``contig_page_data`` structure that
+- * represents the only memory node in the system. In the NUMA case the
+- * `init_bootmem_node` function should be called to initialize the
+- * bootmem allocator for each node.
+- *
+- * Once the allocator is set up, it is possible to use either single
+- * node or NUMA variant of the allocation APIs.
+- */
+-
+-#ifndef CONFIG_NEED_MULTIPLE_NODES
+-struct pglist_data __refdata contig_page_data = {
+-	.bdata = &bootmem_node_data[0]
+-};
+-EXPORT_SYMBOL(contig_page_data);
 -#endif
-+
-+	kexec_smp_reboot();
-+
-+	/* NOT REACHED */
-+#else
- 	((noretfun_t) reboot_code_buffer)();
-+#endif
- }
+-
+-unsigned long max_low_pfn;
+-unsigned long min_low_pfn;
+-unsigned long max_pfn;
+-unsigned long long max_possible_pfn;
+-
+-bootmem_data_t bootmem_node_data[MAX_NUMNODES] __initdata;
+-
+-static struct list_head bdata_list __initdata = LIST_HEAD_INIT(bdata_list);
+-
+-static int bootmem_debug;
+-
+-static int __init bootmem_debug_setup(char *buf)
+-{
+-	bootmem_debug = 1;
+-	return 0;
+-}
+-early_param("bootmem_debug", bootmem_debug_setup);
+-
+-#define bdebug(fmt, args...) ({				\
+-	if (unlikely(bootmem_debug))			\
+-		pr_info("bootmem::%s " fmt,		\
+-			__func__, ## args);		\
+-})
+-
+-static unsigned long __init bootmap_bytes(unsigned long pages)
+-{
+-	unsigned long bytes = DIV_ROUND_UP(pages, BITS_PER_BYTE);
+-
+-	return ALIGN(bytes, sizeof(long));
+-}
+-
+-/**
+- * bootmem_bootmap_pages - calculate bitmap size in pages
+- * @pages: number of pages the bitmap has to represent
+- *
+- * Return: the number of pages needed to hold the bitmap.
+- */
+-unsigned long __init bootmem_bootmap_pages(unsigned long pages)
+-{
+-	unsigned long bytes = bootmap_bytes(pages);
+-
+-	return PAGE_ALIGN(bytes) >> PAGE_SHIFT;
+-}
+-
+-/*
+- * link bdata in order
+- */
+-static void __init link_bootmem(bootmem_data_t *bdata)
+-{
+-	bootmem_data_t *ent;
+-
+-	list_for_each_entry(ent, &bdata_list, list) {
+-		if (bdata->node_min_pfn < ent->node_min_pfn) {
+-			list_add_tail(&bdata->list, &ent->list);
+-			return;
+-		}
+-	}
+-
+-	list_add_tail(&bdata->list, &bdata_list);
+-}
+-
+-/*
+- * Called once to set up the allocator itself.
+- */
+-static unsigned long __init init_bootmem_core(bootmem_data_t *bdata,
+-	unsigned long mapstart, unsigned long start, unsigned long end)
+-{
+-	unsigned long mapsize;
+-
+-	mminit_validate_memmodel_limits(&start, &end);
+-	bdata->node_bootmem_map = phys_to_virt(PFN_PHYS(mapstart));
+-	bdata->node_min_pfn = start;
+-	bdata->node_low_pfn = end;
+-	link_bootmem(bdata);
+-
+-	/*
+-	 * Initially all pages are reserved - setup_arch() has to
+-	 * register free RAM areas explicitly.
+-	 */
+-	mapsize = bootmap_bytes(end - start);
+-	memset(bdata->node_bootmem_map, 0xff, mapsize);
+-
+-	bdebug("nid=%td start=%lx map=%lx end=%lx mapsize=%lx\n",
+-		bdata - bootmem_node_data, start, mapstart, end, mapsize);
+-
+-	return mapsize;
+-}
+-
+-/**
+- * init_bootmem_node - register a node as boot memory
+- * @pgdat: node to register
+- * @freepfn: pfn where the bitmap for this node is to be placed
+- * @startpfn: first pfn on the node
+- * @endpfn: first pfn after the node
+- *
+- * Return: the number of bytes needed to hold the bitmap for this node.
+- */
+-unsigned long __init init_bootmem_node(pg_data_t *pgdat, unsigned long freepfn,
+-				unsigned long startpfn, unsigned long endpfn)
+-{
+-	return init_bootmem_core(pgdat->bdata, freepfn, startpfn, endpfn);
+-}
+-
+-/**
+- * init_bootmem - register boot memory
+- * @start: pfn where the bitmap is to be placed
+- * @pages: number of available physical pages
+- *
+- * Return: the number of bytes needed to hold the bitmap.
+- */
+-unsigned long __init init_bootmem(unsigned long start, unsigned long pages)
+-{
+-	max_low_pfn = pages;
+-	min_low_pfn = start;
+-	return init_bootmem_core(NODE_DATA(0)->bdata, start, 0, pages);
+-}
+-
+-void __init free_bootmem_late(unsigned long physaddr, unsigned long size)
+-{
+-	unsigned long cursor, end;
+-
+-	kmemleak_free_part_phys(physaddr, size);
+-
+-	cursor = PFN_UP(physaddr);
+-	end = PFN_DOWN(physaddr + size);
+-
+-	for (; cursor < end; cursor++) {
+-		__free_pages_bootmem(pfn_to_page(cursor), cursor, 0);
+-		totalram_pages++;
+-	}
+-}
+-
+-static unsigned long __init free_all_bootmem_core(bootmem_data_t *bdata)
+-{
+-	struct page *page;
+-	unsigned long *map, start, end, pages, cur, count = 0;
+-
+-	if (!bdata->node_bootmem_map)
+-		return 0;
+-
+-	map = bdata->node_bootmem_map;
+-	start = bdata->node_min_pfn;
+-	end = bdata->node_low_pfn;
+-
+-	bdebug("nid=%td start=%lx end=%lx\n",
+-		bdata - bootmem_node_data, start, end);
+-
+-	while (start < end) {
+-		unsigned long idx, vec;
+-		unsigned shift;
+-
+-		idx = start - bdata->node_min_pfn;
+-		shift = idx & (BITS_PER_LONG - 1);
+-		/*
+-		 * vec holds at most BITS_PER_LONG map bits,
+-		 * bit 0 corresponds to start.
+-		 */
+-		vec = ~map[idx / BITS_PER_LONG];
+-
+-		if (shift) {
+-			vec >>= shift;
+-			if (end - start >= BITS_PER_LONG)
+-				vec |= ~map[idx / BITS_PER_LONG + 1] <<
+-					(BITS_PER_LONG - shift);
+-		}
+-		/*
+-		 * If we have a properly aligned and fully unreserved
+-		 * BITS_PER_LONG block of pages in front of us, free
+-		 * it in one go.
+-		 */
+-		if (IS_ALIGNED(start, BITS_PER_LONG) && vec == ~0UL) {
+-			int order = ilog2(BITS_PER_LONG);
+-
+-			__free_pages_bootmem(pfn_to_page(start), start, order);
+-			count += BITS_PER_LONG;
+-			start += BITS_PER_LONG;
+-		} else {
+-			cur = start;
+-
+-			start = ALIGN(start + 1, BITS_PER_LONG);
+-			while (vec && cur != start) {
+-				if (vec & 1) {
+-					page = pfn_to_page(cur);
+-					__free_pages_bootmem(page, cur, 0);
+-					count++;
+-				}
+-				vec >>= 1;
+-				++cur;
+-			}
+-		}
+-	}
+-
+-	cur = bdata->node_min_pfn;
+-	page = virt_to_page(bdata->node_bootmem_map);
+-	pages = bdata->node_low_pfn - bdata->node_min_pfn;
+-	pages = bootmem_bootmap_pages(pages);
+-	count += pages;
+-	while (pages--)
+-		__free_pages_bootmem(page++, cur++, 0);
+-	bdata->node_bootmem_map = NULL;
+-
+-	bdebug("nid=%td released=%lx\n", bdata - bootmem_node_data, count);
+-
+-	return count;
+-}
+-
+-static int reset_managed_pages_done __initdata;
+-
+-void reset_node_managed_pages(pg_data_t *pgdat)
+-{
+-	struct zone *z;
+-
+-	for (z = pgdat->node_zones; z < pgdat->node_zones + MAX_NR_ZONES; z++)
+-		z->managed_pages = 0;
+-}
+-
+-void __init reset_all_zones_managed_pages(void)
+-{
+-	struct pglist_data *pgdat;
+-
+-	if (reset_managed_pages_done)
+-		return;
+-
+-	for_each_online_pgdat(pgdat)
+-		reset_node_managed_pages(pgdat);
+-
+-	reset_managed_pages_done = 1;
+-}
+-
+-unsigned long __init free_all_bootmem(void)
+-{
+-	unsigned long total_pages = 0;
+-	bootmem_data_t *bdata;
+-
+-	reset_all_zones_managed_pages();
+-
+-	list_for_each_entry(bdata, &bdata_list, list)
+-		total_pages += free_all_bootmem_core(bdata);
+-
+-	totalram_pages += total_pages;
+-
+-	return total_pages;
+-}
+-
+-static void __init __free(bootmem_data_t *bdata,
+-			unsigned long sidx, unsigned long eidx)
+-{
+-	unsigned long idx;
+-
+-	bdebug("nid=%td start=%lx end=%lx\n", bdata - bootmem_node_data,
+-		sidx + bdata->node_min_pfn,
+-		eidx + bdata->node_min_pfn);
+-
+-	if (WARN_ON(bdata->node_bootmem_map == NULL))
+-		return;
+-
+-	if (bdata->hint_idx > sidx)
+-		bdata->hint_idx = sidx;
+-
+-	for (idx = sidx; idx < eidx; idx++)
+-		if (!test_and_clear_bit(idx, bdata->node_bootmem_map))
+-			BUG();
+-}
+-
+-static int __init __reserve(bootmem_data_t *bdata, unsigned long sidx,
+-			unsigned long eidx, int flags)
+-{
+-	unsigned long idx;
+-	int exclusive = flags & BOOTMEM_EXCLUSIVE;
+-
+-	bdebug("nid=%td start=%lx end=%lx flags=%x\n",
+-		bdata - bootmem_node_data,
+-		sidx + bdata->node_min_pfn,
+-		eidx + bdata->node_min_pfn,
+-		flags);
+-
+-	if (WARN_ON(bdata->node_bootmem_map == NULL))
+-		return 0;
+-
+-	for (idx = sidx; idx < eidx; idx++)
+-		if (test_and_set_bit(idx, bdata->node_bootmem_map)) {
+-			if (exclusive) {
+-				__free(bdata, sidx, idx);
+-				return -EBUSY;
+-			}
+-			bdebug("silent double reserve of PFN %lx\n",
+-				idx + bdata->node_min_pfn);
+-		}
+-	return 0;
+-}
+-
+-static int __init mark_bootmem_node(bootmem_data_t *bdata,
+-				unsigned long start, unsigned long end,
+-				int reserve, int flags)
+-{
+-	unsigned long sidx, eidx;
+-
+-	bdebug("nid=%td start=%lx end=%lx reserve=%d flags=%x\n",
+-		bdata - bootmem_node_data, start, end, reserve, flags);
+-
+-	BUG_ON(start < bdata->node_min_pfn);
+-	BUG_ON(end > bdata->node_low_pfn);
+-
+-	sidx = start - bdata->node_min_pfn;
+-	eidx = end - bdata->node_min_pfn;
+-
+-	if (reserve)
+-		return __reserve(bdata, sidx, eidx, flags);
+-	else
+-		__free(bdata, sidx, eidx);
+-	return 0;
+-}
+-
+-static int __init mark_bootmem(unsigned long start, unsigned long end,
+-				int reserve, int flags)
+-{
+-	unsigned long pos;
+-	bootmem_data_t *bdata;
+-
+-	pos = start;
+-	list_for_each_entry(bdata, &bdata_list, list) {
+-		int err;
+-		unsigned long max;
+-
+-		if (pos < bdata->node_min_pfn ||
+-		    pos >= bdata->node_low_pfn) {
+-			BUG_ON(pos != start);
+-			continue;
+-		}
+-
+-		max = min(bdata->node_low_pfn, end);
+-
+-		err = mark_bootmem_node(bdata, pos, max, reserve, flags);
+-		if (reserve && err) {
+-			mark_bootmem(start, pos, 0, 0);
+-			return err;
+-		}
+-
+-		if (max == end)
+-			return 0;
+-		pos = bdata->node_low_pfn;
+-	}
+-	BUG();
+-}
+-
+-void __init free_bootmem_node(pg_data_t *pgdat, unsigned long physaddr,
+-			      unsigned long size)
+-{
+-	unsigned long start, end;
+-
+-	kmemleak_free_part_phys(physaddr, size);
+-
+-	start = PFN_UP(physaddr);
+-	end = PFN_DOWN(physaddr + size);
+-
+-	mark_bootmem_node(pgdat->bdata, start, end, 0, 0);
+-}
+-
+-void __init free_bootmem(unsigned long physaddr, unsigned long size)
+-{
+-	unsigned long start, end;
+-
+-	kmemleak_free_part_phys(physaddr, size);
+-
+-	start = PFN_UP(physaddr);
+-	end = PFN_DOWN(physaddr + size);
+-
+-	mark_bootmem(start, end, 0, 0);
+-}
+-
+-/**
+- * reserve_bootmem_node - mark a page range as reserved
+- * @pgdat: node the range resides on
+- * @physaddr: starting address of the range
+- * @size: size of the range in bytes
+- * @flags: reservation flags (see linux/bootmem.h)
+- *
+- * Partial pages will be reserved.
+- *
+- * The range must reside completely on the specified node.
+- *
+- * Return: 0 on success, -errno on failure.
+- */
+-int __init reserve_bootmem_node(pg_data_t *pgdat, unsigned long physaddr,
+-				 unsigned long size, int flags)
+-{
+-	unsigned long start, end;
+-
+-	start = PFN_DOWN(physaddr);
+-	end = PFN_UP(physaddr + size);
+-
+-	return mark_bootmem_node(pgdat->bdata, start, end, 1, flags);
+-}
+-
+-/**
+- * reserve_bootmem - mark a page range as reserved
+- * @addr: starting address of the range
+- * @size: size of the range in bytes
+- * @flags: reservation flags (see linux/bootmem.h)
+- *
+- * Partial pages will be reserved.
+- *
+- * The range must be contiguous but may span node boundaries.
+- *
+- * Return: 0 on success, -errno on failure.
+- */
+-int __init reserve_bootmem(unsigned long addr, unsigned long size,
+-			    int flags)
+-{
+-	unsigned long start, end;
+-
+-	start = PFN_DOWN(addr);
+-	end = PFN_UP(addr + size);
+-
+-	return mark_bootmem(start, end, 1, flags);
+-}
+-
+-static unsigned long __init align_idx(struct bootmem_data *bdata,
+-				      unsigned long idx, unsigned long step)
+-{
+-	unsigned long base = bdata->node_min_pfn;
+-
+-	/*
+-	 * Align the index with respect to the node start so that the
+-	 * combination of both satisfies the requested alignment.
+-	 */
+-
+-	return ALIGN(base + idx, step) - base;
+-}
+-
+-static unsigned long __init align_off(struct bootmem_data *bdata,
+-				      unsigned long off, unsigned long align)
+-{
+-	unsigned long base = PFN_PHYS(bdata->node_min_pfn);
+-
+-	/* Same as align_idx for byte offsets */
+-
+-	return ALIGN(base + off, align) - base;
+-}
+-
+-static void * __init alloc_bootmem_bdata(struct bootmem_data *bdata,
+-					unsigned long size, unsigned long align,
+-					unsigned long goal, unsigned long limit)
+-{
+-	unsigned long fallback = 0;
+-	unsigned long min, max, start, sidx, midx, step;
+-
+-	bdebug("nid=%td size=%lx [%lu pages] align=%lx goal=%lx limit=%lx\n",
+-		bdata - bootmem_node_data, size, PAGE_ALIGN(size) >> PAGE_SHIFT,
+-		align, goal, limit);
+-
+-	BUG_ON(!size);
+-	BUG_ON(align & (align - 1));
+-	BUG_ON(limit && goal + size > limit);
+-
+-	if (!bdata->node_bootmem_map)
+-		return NULL;
+-
+-	min = bdata->node_min_pfn;
+-	max = bdata->node_low_pfn;
+-
+-	goal >>= PAGE_SHIFT;
+-	limit >>= PAGE_SHIFT;
+-
+-	if (limit && max > limit)
+-		max = limit;
+-	if (max <= min)
+-		return NULL;
+-
+-	step = max(align >> PAGE_SHIFT, 1UL);
+-
+-	if (goal && min < goal && goal < max)
+-		start = ALIGN(goal, step);
+-	else
+-		start = ALIGN(min, step);
+-
+-	sidx = start - bdata->node_min_pfn;
+-	midx = max - bdata->node_min_pfn;
+-
+-	if (bdata->hint_idx > sidx) {
+-		/*
+-		 * Handle the valid case of sidx being zero and still
+-		 * catch the fallback below.
+-		 */
+-		fallback = sidx + 1;
+-		sidx = align_idx(bdata, bdata->hint_idx, step);
+-	}
+-
+-	while (1) {
+-		int merge;
+-		void *region;
+-		unsigned long eidx, i, start_off, end_off;
+-find_block:
+-		sidx = find_next_zero_bit(bdata->node_bootmem_map, midx, sidx);
+-		sidx = align_idx(bdata, sidx, step);
+-		eidx = sidx + PFN_UP(size);
+-
+-		if (sidx >= midx || eidx > midx)
+-			break;
+-
+-		for (i = sidx; i < eidx; i++)
+-			if (test_bit(i, bdata->node_bootmem_map)) {
+-				sidx = align_idx(bdata, i, step);
+-				if (sidx == i)
+-					sidx += step;
+-				goto find_block;
+-			}
+-
+-		if (bdata->last_end_off & (PAGE_SIZE - 1) &&
+-				PFN_DOWN(bdata->last_end_off) + 1 == sidx)
+-			start_off = align_off(bdata, bdata->last_end_off, align);
+-		else
+-			start_off = PFN_PHYS(sidx);
+-
+-		merge = PFN_DOWN(start_off) < sidx;
+-		end_off = start_off + size;
+-
+-		bdata->last_end_off = end_off;
+-		bdata->hint_idx = PFN_UP(end_off);
+-
+-		/*
+-		 * Reserve the area now:
+-		 */
+-		if (__reserve(bdata, PFN_DOWN(start_off) + merge,
+-				PFN_UP(end_off), BOOTMEM_EXCLUSIVE))
+-			BUG();
+-
+-		region = phys_to_virt(PFN_PHYS(bdata->node_min_pfn) +
+-				start_off);
+-		memset(region, 0, size);
+-		/*
+-		 * The min_count is set to 0 so that bootmem allocated blocks
+-		 * are never reported as leaks.
+-		 */
+-		kmemleak_alloc(region, size, 0, 0);
+-		return region;
+-	}
+-
+-	if (fallback) {
+-		sidx = align_idx(bdata, fallback - 1, step);
+-		fallback = 0;
+-		goto find_block;
+-	}
+-
+-	return NULL;
+-}
+-
+-static void * __init alloc_bootmem_core(unsigned long size,
+-					unsigned long align,
+-					unsigned long goal,
+-					unsigned long limit)
+-{
+-	bootmem_data_t *bdata;
+-	void *region;
+-
+-	if (WARN_ON_ONCE(slab_is_available()))
+-		return kzalloc(size, GFP_NOWAIT);
+-
+-	list_for_each_entry(bdata, &bdata_list, list) {
+-		if (goal && bdata->node_low_pfn <= PFN_DOWN(goal))
+-			continue;
+-		if (limit && bdata->node_min_pfn >= PFN_DOWN(limit))
+-			break;
+-
+-		region = alloc_bootmem_bdata(bdata, size, align, goal, limit);
+-		if (region)
+-			return region;
+-	}
+-
+-	return NULL;
+-}
+-
+-static void * __init ___alloc_bootmem_nopanic(unsigned long size,
+-					      unsigned long align,
+-					      unsigned long goal,
+-					      unsigned long limit)
+-{
+-	void *ptr;
+-
+-restart:
+-	ptr = alloc_bootmem_core(size, align, goal, limit);
+-	if (ptr)
+-		return ptr;
+-	if (goal) {
+-		goal = 0;
+-		goto restart;
+-	}
+-
+-	return NULL;
+-}
+-
+-void * __init __alloc_bootmem_nopanic(unsigned long size, unsigned long align,
+-					unsigned long goal)
+-{
+-	unsigned long limit = 0;
+-
+-	return ___alloc_bootmem_nopanic(size, align, goal, limit);
+-}
+-
+-static void * __init ___alloc_bootmem(unsigned long size, unsigned long align,
+-					unsigned long goal, unsigned long limit)
+-{
+-	void *mem = ___alloc_bootmem_nopanic(size, align, goal, limit);
+-
+-	if (mem)
+-		return mem;
+-	/*
+-	 * Whoops, we cannot satisfy the allocation request.
+-	 */
+-	pr_alert("bootmem alloc of %lu bytes failed!\n", size);
+-	panic("Out of memory");
+-	return NULL;
+-}
+-
+-void * __init __alloc_bootmem(unsigned long size, unsigned long align,
+-			      unsigned long goal)
+-{
+-	unsigned long limit = 0;
+-
+-	return ___alloc_bootmem(size, align, goal, limit);
+-}
+-
+-void * __init ___alloc_bootmem_node_nopanic(pg_data_t *pgdat,
+-				unsigned long size, unsigned long align,
+-				unsigned long goal, unsigned long limit)
+-{
+-	void *ptr;
+-
+-	if (WARN_ON_ONCE(slab_is_available()))
+-		return kzalloc_node(size, GFP_NOWAIT, pgdat->node_id);
+-again:
+-
+-	/* do not panic in alloc_bootmem_bdata() */
+-	if (limit && goal + size > limit)
+-		limit = 0;
+-
+-	ptr = alloc_bootmem_bdata(pgdat->bdata, size, align, goal, limit);
+-	if (ptr)
+-		return ptr;
+-
+-	ptr = alloc_bootmem_core(size, align, goal, limit);
+-	if (ptr)
+-		return ptr;
+-
+-	if (goal) {
+-		goal = 0;
+-		goto again;
+-	}
+-
+-	return NULL;
+-}
+-
+-void * __init __alloc_bootmem_node_nopanic(pg_data_t *pgdat, unsigned long size,
+-				   unsigned long align, unsigned long goal)
+-{
+-	return ___alloc_bootmem_node_nopanic(pgdat, size, align, goal, 0);
+-}
+-
+-void * __init ___alloc_bootmem_node(pg_data_t *pgdat, unsigned long size,
+-				    unsigned long align, unsigned long goal,
+-				    unsigned long limit)
+-{
+-	void *ptr;
+-
+-	ptr = ___alloc_bootmem_node_nopanic(pgdat, size, align, goal, 0);
+-	if (ptr)
+-		return ptr;
+-
+-	pr_alert("bootmem alloc of %lu bytes failed!\n", size);
+-	panic("Out of memory");
+-	return NULL;
+-}
+-
+-void * __init __alloc_bootmem_node(pg_data_t *pgdat, unsigned long size,
+-				   unsigned long align, unsigned long goal)
+-{
+-	if (WARN_ON_ONCE(slab_is_available()))
+-		return kzalloc_node(size, GFP_NOWAIT, pgdat->node_id);
+-
+-	return  ___alloc_bootmem_node(pgdat, size, align, goal, 0);
+-}
+-
+-void * __init __alloc_bootmem_node_high(pg_data_t *pgdat, unsigned long size,
+-				   unsigned long align, unsigned long goal)
+-{
+-#ifdef MAX_DMA32_PFN
+-	unsigned long end_pfn;
+-
+-	if (WARN_ON_ONCE(slab_is_available()))
+-		return kzalloc_node(size, GFP_NOWAIT, pgdat->node_id);
+-
+-	/* update goal according ...MAX_DMA32_PFN */
+-	end_pfn = pgdat_end_pfn(pgdat);
+-
+-	if (end_pfn > MAX_DMA32_PFN + (128 >> (20 - PAGE_SHIFT)) &&
+-	    (goal >> PAGE_SHIFT) < MAX_DMA32_PFN) {
+-		void *ptr;
+-		unsigned long new_goal;
+-
+-		new_goal = MAX_DMA32_PFN << PAGE_SHIFT;
+-		ptr = alloc_bootmem_bdata(pgdat->bdata, size, align,
+-						 new_goal, 0);
+-		if (ptr)
+-			return ptr;
+-	}
+-#endif
+-
+-	return __alloc_bootmem_node(pgdat, size, align, goal);
+-
+-}
+-
+-void * __init __alloc_bootmem_low(unsigned long size, unsigned long align,
+-				  unsigned long goal)
+-{
+-	return ___alloc_bootmem(size, align, goal, ARCH_LOW_ADDRESS_LIMIT);
+-}
+-
+-void * __init __alloc_bootmem_low_nopanic(unsigned long size,
+-					  unsigned long align,
+-					  unsigned long goal)
+-{
+-	return ___alloc_bootmem_nopanic(size, align, goal,
+-					ARCH_LOW_ADDRESS_LIMIT);
+-}
+-
+-void * __init __alloc_bootmem_low_node(pg_data_t *pgdat, unsigned long size,
+-				       unsigned long align, unsigned long goal)
+-{
+-	if (WARN_ON_ONCE(slab_is_available()))
+-		return kzalloc_node(size, GFP_NOWAIT, pgdat->node_id);
+-
+-	return ___alloc_bootmem_node(pgdat, size, align,
+-				     goal, ARCH_LOW_ADDRESS_LIMIT);
+-}
 -- 
-2.17.1
+2.7.4

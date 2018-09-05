@@ -1,33 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 09:41:44 +0200 (CEST)
-Received: from cmccmta3.chinamobile.com ([221.176.66.81]:11227 "EHLO
-        cmccmta3.chinamobile.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992066AbeIEHlktzOsB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 09:41:40 +0200
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.5]) by rmmx-syy-dmz-app10-12010 (RichMail) with SMTP id 2eea5b8f88aa618-e6827; Wed, 05 Sep 2018 15:41:30 +0800 (CST)
-X-RM-TRANSID: 2eea5b8f88aa618-e6827
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from localhost.localdomain (unknown[223.105.0.243])
-        by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee35b8f88a8ed6-94b61;
-        Wed, 05 Sep 2018 15:41:30 +0800 (CST)
-X-RM-TRANSID: 2ee35b8f88a8ed6-94b61
-From:   Ding Xiang <dingxiang@cmss.chinamobile.com>
-To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     dingxiang@cmss.chinamobile.com
-Subject: [PATCH] mips: txx9: fix resource leak after register fail
-Date:   Wed,  5 Sep 2018 15:41:27 +0800
-Message-Id: <1536133287-21110-1-git-send-email-dingxiang@cmss.chinamobile.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <dingxiang@cmss.chinamobile.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 11:08:11 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:57589 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994565AbeIEJIGTjA6o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Sep 2018 11:08:06 +0200
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 4689520737; Wed,  5 Sep 2018 11:08:01 +0200 (CEST)
+Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 19B6A20618;
+        Wed,  5 Sep 2018 11:07:51 +0200 (CEST)
+Date:   Wed, 5 Sep 2018 11:07:50 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Quentin Schulz <quentin.schulz@bootlin.com>,
+        David Miller <davem@davemloft.net>, andrew@lunn.ch,
+        ralf@linux-mips.org, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, kishon@ti.com, f.fainelli@gmail.com,
+        allan.nielsen@microchip.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH v2 00/11] mscc: ocelot: add support for SerDes muxing
+ configuration
+Message-ID: <20180905090750.GM13888@piout.net>
+References: <20180903093308.24366-1-quentin.schulz@bootlin.com>
+ <20180903133415.GF4445@lunn.ch>
+ <20180903134522.GC13888@piout.net>
+ <20180903.220910.899357653888940454.davem@davemloft.net>
+ <20180904151653.GI13888@piout.net>
+ <20180904161028.nh5ejrtj22r5az5e@pburton-laptop>
+ <20180904180006.d5th3jrbhr4vtahi@qschulz>
+ <20180904230351.vwlq2s7joulvqw2i@pburton-laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180904230351.vwlq2s7joulvqw2i@pburton-laptop>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65936
+X-archive-position: 65937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dingxiang@cmss.chinamobile.com
+X-original-sender: alexandre.belloni@bootlin.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,33 +55,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-the memory allocated and ioremap address need free after
-device_register return error.
+On 04/09/2018 16:03:51-0700, Paul Burton wrote:
+> Well, it sounded like David is OK with this all going through the MIPS
+> tree, though we'd need an ack for the PHY parts.
+> 
+> Alternatively I'd be happy for the DT changes to go through the net-next
+> tree, which may make more sense given that the .dts changes are pretty
+> trivial in comparison with the driver changes. If David wants to do that
+> then for patches 1 & 8:
+> 
+>     Acked-by: Paul Burton <paul.burton@mips.com>
+> 
+> Either way there may be conflicts for ocelot.dtsi when it comes to
+> merging to master, but they should be simple to resolve. It seems
+> Wolfram already took your DT changes for I2C so there's probably going
+> to be multiple trees updating that file this cycle already anyway.
+> 
 
-Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
----
- arch/mips/txx9/generic/setup.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Actually, I think Wolfram meant that he took the bindings so you can
+take the DT patches for i2c.
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index f6d9182..7f4fd2b 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -961,11 +961,13 @@ void __init txx9_sramc_init(struct resource *r)
- 	err = sysfs_create_bin_file(&dev->dev.kobj, &dev->bindata_attr);
- 	if (err) {
- 		device_unregister(&dev->dev);
--		iounmap(dev->base);
--		kfree(dev);
-+		goto exit_free;
- 	}
- 	return;
- exit_put:
- 	put_device(&dev->dev);
-+exit_free:
-+	iounmap(dev->base);
-+	kfree(dev);
- 	return;
- }
+> Ideally I'd say "don't break bisection" but that's sort of a separate
+> issue here since even if you restructure your series to do that it would
+> still need to go through one tree. For example you could adjust
+> mscc_ocelot_probe() to handle either the reg property or the syscon,
+> then adjust the DT to use the syscon, then remove the code dealing with
+> the reg property, and I'd consider that a good idea anyway but it would
+> still probably all need to go through one tree to make sure things get
+> merged in the right order & avoid breaking bisection.
+> 
+
+I don't really think bisection is important at this stage but if you
+don't want to break it, then I guess it makes more sense to have the
+whole series through net.
+
+
 -- 
-1.9.1
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

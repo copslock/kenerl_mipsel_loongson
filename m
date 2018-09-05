@@ -1,77 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:42 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:44126 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994642AbeIEQAKmMlZO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:10 +0200
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FtVgZ013500
-        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:09 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2maj5w0gsj-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:04 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Wed, 5 Sep 2018 17:00:02 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 5 Sep 2018 16:59:57 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85FxuXZ41615396
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 5 Sep 2018 15:59:56 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F10F042041;
-        Wed,  5 Sep 2018 18:59:50 +0100 (BST)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D76CD4203F;
-        Wed,  5 Sep 2018 18:59:48 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.8.92])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed,  5 Sep 2018 18:59:48 +0100 (BST)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 18:59:53 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@suse.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>
-Subject: [RFC PATCH 03/29] mm: remove CONFIG_HAVE_MEMBLOCK
-Date:   Wed,  5 Sep 2018 18:59:18 +0300
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
-References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 18090516-0008-0000-0000-0000026CBA23
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18090515-0009-0000-0000-000021D4D847
-Message-Id: <1536163184-26356-4-git-send-email-rppt@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-05_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1809050164
-Return-Path: <rppt@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:54 +0200 (CEST)
+Received: from mail-eopbgr680090.outbound.protection.outlook.com ([40.107.68.90]:45312
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994646AbeIEQAVYBKcO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Sep 2018 18:00:21 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I61mbHHlUlGoVoPzMb9XVR/lf5x978gbN2xmfBkv6DA=;
+ b=XuDESyFCB737aDe1l7oMk4YwEQOZrKum7nHgC+3EQbc3NMrqRd0EX7X+b2dtxQjMIsNidc4smS4Wg6hvzKWwGKI7lEv5mnDhidALRZuyN4U3wBlQyzgV1STaLDld6w2n9paYbAIl5KvOTyAIM2FPurgEoPW/8OUX17zE16+0pGI=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=dzhu@wavecomp.com; 
+Received: from box.mipstec.com (4.16.204.77) by
+ BN3PR0801MB2145.namprd08.prod.outlook.com (2a01:111:e400:7bb5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1101.18; Wed, 5 Sep
+ 2018 15:59:59 +0000
+From:   Dengcheng Zhu <dzhu@wavecomp.com>
+To:     pburton@wavecomp.com, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
+        Dengcheng Zhu <dzhu@wavecomp.com>
+Subject: [PATCH v4 1/6] MIPS: Make play_dead() work for kexec
+Date:   Wed,  5 Sep 2018 08:59:04 -0700
+Message-Id: <20180905155909.30454-2-dzhu@wavecomp.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20180905155909.30454-1-dzhu@wavecomp.com>
+References: <20180905155909.30454-1-dzhu@wavecomp.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: DM5PR2001CA0003.namprd20.prod.outlook.com
+ (2603:10b6:4:16::13) To BN3PR0801MB2145.namprd08.prod.outlook.com
+ (2a01:111:e400:7bb5::18)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 2c89a8e8-128b-4fac-3335-08d61348a215
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2145;
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:cmruDVRnLPSyYQHw9P2bd90n3pfXJ8Y6p5Fpu9K3ucQRyXF648aI2PDtakfNwORiA5QEEZKmmMNcG4JpTtA8gmaEw3jfGYilzJ50c9N+n5yxAY4yD2i7AdRvETYNKgUCFdR5LpiRZ/aNfPoKjMmm0GrEzJiNyUUo87d/opfi3rjCNefyEM0iidcwwX5oDKTcAXW+dKAbhtxEphjV+FFyOZyFNe1OZnbcHwOVlMYahHGb/0zvOQStalFb52iLBP+K;25:6uQkdhwgBKIUzkk8BjpGycY64jUE8Vt27iU1lJgXBKauKBP27G5csfJ9zcsiLsvJdGgpJ/qXM3MjzqMi2SIjAAQeghhBRCrGVHIwdU+5+UDr4N4LPbX2WU53dXSc2BWR+ERrYEGi0TTHEmxnBFgBmiggY7FvirXXYDTbaH03m2RICMRNI9kBKQXk2HqKBpr8yi2fZqlWxGnUh+x2mqxHonXyyjpIeQZ4YNGniwe7egTMY96YfP9c2WW9cr3JxLCQ+73qSHmHFwjhNWnAMc64i771fzVOqy8H7M7J7RVw8kVHzdWwV3kJFX/OsrmBMM4/EvN4AFl1aYrRFp0n4DfJKA==;31:2tgj1Tjr4I3ofYeLhiYw0ZWP/vaNGHNcInVMxoluKY/G7QvS0jlXdTPAS1XjyJqQcwZ0luzo5PlJ8V40O5wnYM5APsTVz2XwX+9sEBMEEVTn2vXkog1X9TDA8ivN+rgJ7mFR3Y3pnPVD7vCiQbFgGN6kMR9PH4dD+MEFeu5RhtWD6u94/dlxQK7dNAx1AIsxQaBV4QOQcddHHl89s7PPBzM/HXpi2WStiGY1GCwoDXQ=
+X-MS-TrafficTypeDiagnostic: BN3PR0801MB2145:
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:dE1x/uFSMicTkJLEHWm+gXNWS1C3UPBJf99SVR00QBf/3nNjssrPfJAIWlSG7BedzcOFUKJ6eos5EFeyki/VfRwmFLA1DiRrTbMdJlcyJu/XaGB7f0CkD+wIeGA1lGe+noSZY2iNhDkZbN++xz9v0SXxtjj4x5LbraG5S9gFcLiNIlb+3TFULQT/2G+iY/FD6oZasdM3sANvPcjE0k/5u3cdqPQVc6yD8hP3zmjqEezPBxo8aEyXiIo/qb1d8F/G;4:NDPkD+b/CBDFvMfeithEf0wttSTUALUPYFnsuz/S7qT8FUHR/J9khta85SpK97UxxHOuxsh8pck3i/wBxjOntqOiarX+3XZIijki4zUVG+vIfpmnOJ/OYQoyQdsiPV5hxQ10T8UagsAc3SbyW0Ir01TxaL+1/T+XWjO7IgAFQ+o5WKEuY/bUdhRZGLg/nG38gsCvU2GRC4IlYuIehA6IDcZ78RjEiNaTTAtt62cwEnZOuMCE+uXsBn93MRneTehKvp+pDDqOEtukf/mYDdIbutck+TA6VdQjCkhEcx8UEzgF2dXsoW/XQ08FVU6Q7g30
+X-Microsoft-Antispam-PRVS: <BN3PR0801MB214559F7141F5A49B841CFC8A2020@BN3PR0801MB2145.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(93001095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201708071742011)(7699016);SRVR:BN3PR0801MB2145;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2145;
+X-Forefront-PRVS: 078693968A
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(366004)(396003)(136003)(346002)(39840400004)(376002)(199004)(189003)(11346002)(956004)(476003)(446003)(486006)(16526019)(26005)(53936002)(6506007)(386003)(81156014)(81166006)(5660300001)(53416004)(6666003)(8676002)(2906002)(8936002)(25786009)(48376002)(106356001)(4326008)(51416003)(105586002)(50226002)(66066001)(47776003)(68736007)(107886003)(76176011)(50466002)(305945005)(2616005)(52116002)(7736002)(316002)(37156001)(86362001)(575784001)(97736004)(69596002)(16586007)(1076002)(6512007)(6486002)(6116002)(36756003)(478600001)(3846002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:cUWqZyKswkmb3XH1H1/ml697zl5cwd+LvD+V8Ec?=
+ =?us-ascii?Q?4JS7aQU8j9RcWHKRu/a/G7I+qmNeTnVktF63dPHaxomqIxTaraJ3UTKZo0QX?=
+ =?us-ascii?Q?I2Du1IjC3alhJvLxt7AZIR98VE6QpAaRMLFI6nWh6V8wI9tzFhwdN56rXJEa?=
+ =?us-ascii?Q?bEdxgnncd74C4GiEkUXw7kerLc2YEmGU9zSp7P+oBuyhk9+6qhVtO9vm1jJb?=
+ =?us-ascii?Q?FxZUkyZtlw/ymDpZSYUOsYGo/aOw7XmV3FUqMYECzhtF8QBN8bBeGCcIwVNy?=
+ =?us-ascii?Q?2b3SY0/IJiwGR4KSx7wTtV9DRmbeK36yv+sXWrs8vu522iL2Vl+WhE49RnyT?=
+ =?us-ascii?Q?+L615ek/Jcmjz3Ug2ndst5w6Zh2Iwo6PQmJeAqlcEpn4BgTUBcsfKp7diGuI?=
+ =?us-ascii?Q?njV7JL1VDZPQchsEv8pKdFk4MCh/cejg34YceOpBD1wGzyKE9Y1QIo8oeM5H?=
+ =?us-ascii?Q?qKRaRLh8zxk91Bg8yd1hSxJrQjXHvZTKo0ix1oehGzZ4jYkCTK6e8BzBPjMp?=
+ =?us-ascii?Q?DWDCZcp3U1/Naw5I4M7L2u3iGYZU/YaoaZogCcXsGi+mfl6ZE7OGpvxoSnle?=
+ =?us-ascii?Q?USF9qxiq/JDlHFGNoDqqgAdBPjzw2hXQP9bqJUPQEOjsAXcJao9HK69O3qrm?=
+ =?us-ascii?Q?6HuofY+OOA45sjPFi07SWFaGWVuCWMqo4lxG0Mca7Dhld/rsOhuo1bDMyOqW?=
+ =?us-ascii?Q?2LJB22uqdaYyxdwGKDxXINBQoZs8V5XuiwlaD7cBjwr6C/J5cwQApfDqobLX?=
+ =?us-ascii?Q?NBx3qDD3vKvba1w6zN4LCVCS3x1m39ztwVpNV7m+/4qLR04ccvsXAkuuFugC?=
+ =?us-ascii?Q?25+bi9aSSVXX4qMNK82FwK6nMUbegm3WXwDT7RLq9UD5KU+scdc/7Elgm8BZ?=
+ =?us-ascii?Q?iOP0KEbMaCqisIVkNwiFpbdXqcbK8A6HxShQl0yXtt+qowznkbvhiu8ApdSC?=
+ =?us-ascii?Q?23rUE17jaaP7kvPK6fEiUUyTWj4fn99hbri+QGVnFtMb01fnOVN8r3IkQolx?=
+ =?us-ascii?Q?18D6xsiGacSOOjrKNOg6WT0XLw5xEH7lvrgYivw0KRROwyBlGL3AutojTU4i?=
+ =?us-ascii?Q?Zd/1M3oNNgfR+jBANE2M5SQBBQqW+1xHIhKRV7Td1G3Mj4MrMryYBDYueDJ/?=
+ =?us-ascii?Q?Be4QemNjxnTRPwv6PvVKwAw8evXkz4pAlvypfLZIVQM25q5JsIug4yknuuCi?=
+ =?us-ascii?Q?dFKpNEtYZ2JkFfsbRJGiKjnUcGHrSdQSyUXi+peuNf+NmQyqOQTYYmF6MyqV?=
+ =?us-ascii?Q?kScVhnKTft+PbhpDdsNrud8Ncq3eZiYbKYO6kkBap?=
+X-Microsoft-Antispam-Message-Info: DXtGtETyxa+jatncbGqCZCn+BM86LMZtLDvYQLOx9HHoECTPw9e5vr8MXD3yHdTpXcyYsU3xdqWninDHOgQqU+JqGYGJz87yIU+Ne2GVcAcsSUp9mB+3O0ymGc2UijaTgH6UPmCV74Il+uTl27jf41aCMh6lwBg9WGk/VdsqqqvUYq3uLv070ju8IG2ilS2yjGnLfxYHTHlIk8MQPg/IuBVzghdfRIv6StPV1wwSAzhf1duSuE+MYRrXZTwowShN14fFza8iAhZF6EqxJSPmCSmKpDNHFuDTQ32/bMsg+DG56T10NaB0wYeMh8OHunS0qPU/RKeyR4O8MjRu2+nZoe1FW6wElbqPbswsAV97jqY=
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:NbdaBZBbSilOs3gix2eLO78n9eB984iPj/1g7HX7XKp3lmzJyzBhaG0jG6m9nU0AwPf7MQdzn3q8qmNLAd1vMp+nzFrrBKYgM5XfieSZTlMxPQ9Db+1dfF94TTno2Pd1ZhHvap9psCuhpqgM2939Yn41R0JDPt4BQU4YDbXvGHs84OAHmhWkQvg/DIB32ZLJPMTuHk6l/FgBpvFYNDw80S9f3CQWaAuSy9LcSJQ7VNYNDngFtnlvgkiw94JehNN2TaQ+clFeJ2GP5zbVVh+QyluN8ndh70rAUMbe4lT9BmGHL+lGLmhq/+T9aH3zhgiooc2yYeva2b5og1kDIoPF3Vjyai1y2CG60BSWw+uurPe5/D4etOy/WFKAG4VgQQmvlRewe6LDrZohCFQLdGi6O8i+qGGj4zwDN9dGv4g3vTXMjZl01/rqxO76HVhSOlQFC9GqTdRskSM/aIkcvaaBSg==;5:+ypDMiH+moNpUSFRy8cqNTbS6nVw8gdP7Rs6Ock4zLaAYwm9TIZ+KaPHz1yQESC5vSRqHh8PZqxaOTyfAK9+ILojUy2XH9Ikp7R1Ia+u49cShwLq/XREisuC2XuL8b6UCXWKwddWlZxYUTBkK+9ZXooH/UFrMNvKKmTPVga0BDs=;7:5VcyRBnqMqOPYqUGcDII0+cxesYFAFJ0VCmNnBA7irBubQSXCTGTarGZsibM77iPTE+Ee9ktDpXvsSmRVHOZF/88haUqj0MOJL23doGQ58AJ5BPpxQjCx9A9H5+HU15C3KTWmalGySbaDtjwnvsfVt57pzIdyGFnE1IuDEqlVPNw+0k1LWeh33vCmpoLbPI+2kiVQPBtVrGyg+GRFfR4rQILX32XCUTOuFPB2O9Ld/9Vx9/A8q5AMqhPR/572QIA
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: wavecomp.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2018 15:59:59.1437 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c89a8e8-128b-4fac-3335-08d61348a215
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2145
+Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65960
+X-archive-position: 65961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: dzhu@wavecomp.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,675 +99,339 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All architecures use memblock for early memory management. There is no need
-for the CONFIG_HAVE_MEMBLOCK configuration option.
+Extract play_dead() from CONFIG_HOTPLUG_CPU and share with CONFIG_KEXEC.
+Meanwhile, move idle_task_exit() out to arch_cpu_idle_dead() because it's
+not meant for kexec.
 
-Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
+This is needed to correctly support SMP new kernel in kexec. Before doing
+this, all non-crashing CPUs are waiting for the reboot signal
+(kexec_ready_to_reboot) to jump to kexec_start_address in kexec_smp_wait(),
+which creates some problems like incorrect CPU topology upon booting from
+new UP kernel, sluggish performance in MT environment during and after
+reboot, new SMP kernel not able to bring up secondary CPU etc.
+
+It would make sense to let the new (SMP) kernel manage all CPUs, instead of
+crashing CPU booting from reboot_code_buffer whereas others jumping to
+kexec_start_address. To do this, play_dead() is well suitable for preparing
+a boot environment for the new kernel.
+
+Tested-by: Rachel Mozes <rachel.mozes@intel.com>
+Reported-by: Rachel Mozes <rachel.mozes@intel.com>
+Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 ---
- arch/alpha/Kconfig                  |   1 -
- arch/arc/Kconfig                    |   1 -
- arch/arm/Kconfig                    |   1 -
- arch/arm64/Kconfig                  |   1 -
- arch/c6x/Kconfig                    |   1 -
- arch/h8300/Kconfig                  |   1 -
- arch/hexagon/Kconfig                |   1 -
- arch/ia64/Kconfig                   |   1 -
- arch/m68k/Kconfig                   |   1 -
- arch/microblaze/Kconfig             |   1 -
- arch/mips/Kconfig                   |   1 -
- arch/nds32/Kconfig                  |   1 -
- arch/nios2/Kconfig                  |   1 -
- arch/openrisc/Kconfig               |   1 -
- arch/parisc/Kconfig                 |   1 -
- arch/powerpc/Kconfig                |   1 -
- arch/riscv/Kconfig                  |   1 -
- arch/s390/Kconfig                   |   1 -
- arch/sh/Kconfig                     |   1 -
- arch/sparc/Kconfig                  |   1 -
- arch/um/Kconfig                     |   1 -
- arch/unicore32/Kconfig              |   1 -
- arch/x86/Kconfig                    |   1 -
- arch/xtensa/Kconfig                 |   1 -
- drivers/of/fdt.c                    |   2 -
- drivers/of/of_reserved_mem.c        |  13 +----
- drivers/staging/android/ion/Kconfig |   2 +-
- fs/pstore/Kconfig                   |   1 -
- include/linux/bootmem.h             | 112 ------------------------------------
- include/linux/memblock.h            |   2 -
- include/linux/mm.h                  |   2 +-
- lib/Kconfig.debug                   |   3 +-
- mm/Kconfig                          |   5 +-
- mm/Makefile                         |   2 +-
- mm/nobootmem.c                      |   4 --
- mm/page_alloc.c                     |   4 +-
- 36 files changed, 8 insertions(+), 168 deletions(-)
+Changes:
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 04de6be..5b4f883 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -31,7 +31,6 @@ config ALPHA
- 	select ODD_RT_SIGACTION
- 	select OLD_SIGSUSPEND
- 	select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
--	select HAVE_MEMBLOCK
- 	help
- 	  The Alpha is a 64-bit general-purpose processor designed and
- 	  marketed by the Digital Equipment Corporation of blessed memory,
-diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-index 04ebead..5260440 100644
---- a/arch/arc/Kconfig
-+++ b/arch/arc/Kconfig
-@@ -37,7 +37,6 @@ config ARC
- 	select HAVE_KERNEL_LZMA
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
--	select HAVE_MEMBLOCK
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_OPROFILE
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 61ea3dd..07468e6 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -82,7 +82,6 @@ config ARM
- 	select HAVE_KERNEL_XZ
- 	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
- 	select HAVE_KRETPROBES if (HAVE_KPROBES)
--	select HAVE_MEMBLOCK
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
- 	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 0065653..7d7d813 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -133,7 +133,6 @@ config ARM64
- 	select HAVE_GENERIC_DMA_COHERENT
- 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
- 	select HAVE_IRQ_TIME_ACCOUNTING
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP if NUMA
- 	select HAVE_NMI
- 	select HAVE_PATA_PLATFORM
-diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-index a641b0b..833fdb0 100644
---- a/arch/c6x/Kconfig
-+++ b/arch/c6x/Kconfig
-@@ -13,7 +13,6 @@ config C6X
- 	select GENERIC_ATOMIC64
- 	select GENERIC_IRQ_SHOW
- 	select HAVE_ARCH_TRACEHOOK
--	select HAVE_MEMBLOCK
- 	select SPARSE_IRQ
- 	select IRQ_DOMAIN
- 	select OF
-diff --git a/arch/h8300/Kconfig b/arch/h8300/Kconfig
-index 5e89d40..d19c6b16 100644
---- a/arch/h8300/Kconfig
-+++ b/arch/h8300/Kconfig
-@@ -15,7 +15,6 @@ config H8300
- 	select OF
- 	select OF_IRQ
- 	select OF_EARLY_FLATTREE
--	select HAVE_MEMBLOCK
- 	select TIMER_OF
- 	select H8300_TMR8
- 	select HAVE_KERNEL_GZIP
-diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-index fb7e0ba..d86e134 100644
---- a/arch/hexagon/Kconfig
-+++ b/arch/hexagon/Kconfig
-@@ -29,7 +29,6 @@ config HEXAGON
- 	select GENERIC_CLOCKEVENTS_BROADCAST
- 	select MODULES_USE_ELF_RELA
- 	select GENERIC_CPU_DEVICES
--	select HAVE_MEMBLOCK
- 	select ARCH_DISCARD_MEMBLOCK
- 	---help---
- 	  Qualcomm Hexagon is a processor architecture designed for high
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 2bf4ef7..36773de 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -26,7 +26,6 @@ config IA64
- 	select HAVE_FUNCTION_TRACER
- 	select TTY
- 	select HAVE_ARCH_TRACEHOOK
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_VIRT_CPU_ACCOUNTING
- 	select ARCH_HAS_DMA_MARK_CLEAN
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index 8c7111d..e88588b 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -27,7 +27,6 @@ config M68K
- 	select OLD_SIGSUSPEND3
- 	select OLD_SIGACTION
- 	select DMA_NONCOHERENT_OPS if HAS_DMA
--	select HAVE_MEMBLOCK
- 	select ARCH_DISCARD_MEMBLOCK
- 
- config CPU_BIG_ENDIAN
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 56379b9..c77eaef 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -28,7 +28,6 @@ config MICROBLAZE
- 	select HAVE_FTRACE_MCOUNT_RECORD
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_FUNCTION_TRACER
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_OPROFILE
- 	select IRQ_DOMAIN
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 1a119fd..be5786b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -60,7 +60,6 @@ config MIPS
- 	select HAVE_IRQ_TIME_ACCOUNTING
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
-diff --git a/arch/nds32/Kconfig b/arch/nds32/Kconfig
-index 06b1259..605d148 100644
---- a/arch/nds32/Kconfig
-+++ b/arch/nds32/Kconfig
-@@ -29,7 +29,6 @@ config NDS32
- 	select HANDLE_DOMAIN_IRQ
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_DEBUG_KMEMLEAK
--	select HAVE_MEMBLOCK
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select IRQ_DOMAIN
- 	select LOCKDEP_SUPPORT
-diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
-index ebfae50..6f43bc4 100644
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -23,7 +23,6 @@ config NIOS2
- 	select SPARSE_IRQ
- 	select USB_ARCH_HAS_HCD if USB_SUPPORT
- 	select CPU_NO_EFFICIENT_FFS
--	select HAVE_MEMBLOCK
- 	select ARCH_DISCARD_MEMBLOCK
- 
- config GENERIC_CSUM
-diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-index 25c6c2e..2ba6c6d 100644
---- a/arch/openrisc/Kconfig
-+++ b/arch/openrisc/Kconfig
-@@ -12,7 +12,6 @@ config OPENRISC
- 	select OF_EARLY_FLATTREE
- 	select IRQ_DOMAIN
- 	select HANDLE_DOMAIN_IRQ
--	select HAVE_MEMBLOCK
- 	select GPIOLIB
-         select HAVE_ARCH_TRACEHOOK
- 	select SPARSE_IRQ
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 1d6332c..c8a6fda 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -15,7 +15,6 @@ config PARISC
- 	select RTC_CLASS
- 	select RTC_DRV_GENERIC
- 	select INIT_ALL_POSSIBLE
--	select HAVE_MEMBLOCK
- 	select BUG
- 	select BUILDTIME_EXTABLE_SORT
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 304cdce..47c16ae 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -203,7 +203,6 @@ config PPC
- 	select HAVE_KRETPROBES
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
- 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 63301c8..b92ee2f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -28,7 +28,6 @@ config RISCV
- 	select GENERIC_STRNLEN_USER
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_ATOMIC64 if !64BIT || !RISCV_ISA_A
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_DMA_CONTIGUOUS
- 	select HAVE_GENERIC_DMA_COHERENT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index b388e05..2ccad0b 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -154,7 +154,6 @@ config S390
- 	select HAVE_LIVEPATCH
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MEMBLOCK_PHYS_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index e254226..f89a172 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -8,7 +8,6 @@ config SUPERH
- 	select HAVE_PATA_PLATFORM
- 	select CLKDEV_LOOKUP
- 	select HAVE_IDE if HAS_IOPORT_MAP
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select ARCH_DISCARD_MEMBLOCK
- 	select HAVE_OPROFILE
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 5e8aaee..3b2a2f3 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -45,7 +45,6 @@ config SPARC
- 	select LOCKDEP_SMALL if LOCKDEP
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
--	select HAVE_MEMBLOCK
- 
- config SPARC32
- 	def_bool !64BIT
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index ce3d562..6b99389 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -12,7 +12,6 @@ config UML
- 	select HAVE_UID16
- 	select HAVE_FUTEX_CMPXCHG if FUTEX
- 	select HAVE_DEBUG_KMEMLEAK
--	select HAVE_MEMBLOCK
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_CPU_DEVICES
- 	select GENERIC_CLOCKEVENTS
-diff --git a/arch/unicore32/Kconfig b/arch/unicore32/Kconfig
-index 60eae74..8726acd 100644
---- a/arch/unicore32/Kconfig
-+++ b/arch/unicore32/Kconfig
-@@ -4,7 +4,6 @@ config UNICORE32
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
--	select HAVE_MEMBLOCK
- 	select HAVE_GENERIC_DMA_COHERENT
- 	select HAVE_KERNEL_GZIP
- 	select HAVE_KERNEL_BZIP2
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 5a861bd..875bef8e 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -167,7 +167,6 @@ config X86
- 	select HAVE_KRETPROBES
- 	select HAVE_KVM
- 	select HAVE_LIVEPATCH			if X86_64
--	select HAVE_MEMBLOCK
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MIXED_BREAKPOINTS_REGS
- 	select HAVE_MOD_ARCH_SPECIFIC
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index e4f7d12..2f7c086 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -27,7 +27,6 @@ config XTENSA
- 	select HAVE_FUTEX_CMPXCHG if !MMU
- 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
- 	select HAVE_IRQ_TIME_ACCOUNTING
--	select HAVE_MEMBLOCK
- 	select HAVE_OPROFILE
- 	select HAVE_PERF_EVENTS
- 	select HAVE_STACKPROTECTOR
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 76c83c1..bd841bb 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1115,13 +1115,11 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
- 	return 1;
+* idle_task_exit() is moved out from play_dead() to its sole caller
+  arch_cpu_idle_dead(). So no interface change of play_dead().
+
+ arch/mips/cavium-octeon/smp.c         | 34 ++++++-----
+ arch/mips/include/asm/smp.h           |  4 +-
+ arch/mips/kernel/process.c            |  2 +
+ arch/mips/kernel/smp-bmips.c          |  8 ++-
+ arch/mips/kernel/smp-cps.c            | 49 +++++++++-------
+ arch/mips/loongson64/loongson-3/smp.c | 82 ++++++++++++++-------------
+ 6 files changed, 99 insertions(+), 80 deletions(-)
+
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 75e7c8625659..19dea9622fe5 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -280,11 +280,29 @@ static void octeon_smp_finish(void)
+ 	local_irq_enable();
  }
  
--#ifdef CONFIG_HAVE_MEMBLOCK
- #ifndef MIN_MEMBLOCK_ADDR
- #define MIN_MEMBLOCK_ADDR	__pa(PAGE_OFFSET)
- #endif
- #ifndef MAX_MEMBLOCK_ADDR
- #define MAX_MEMBLOCK_ADDR	((phys_addr_t)~0)
--#endif
+-#ifdef CONFIG_HOTPLUG_CPU
++#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
  
- void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
+ /* State of each CPU. */
+ DEFINE_PER_CPU(int, cpu_state);
+ 
++void play_dead(void)
++{
++	int cpu = cpu_number_map(cvmx_get_core_num());
++
++	octeon_processor_boot = 0xff;
++	per_cpu(cpu_state, cpu) = CPU_DEAD;
++
++	/* make the change visible before going off */
++	mb();
++
++	while (1)	/* core will be reset here */
++		;
++}
++
++#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
++
++#ifdef CONFIG_HOTPLUG_CPU
++
+ static int octeon_cpu_disable(void)
  {
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 895c83e..d6255c2 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -20,13 +20,12 @@
- #include <linux/of_reserved_mem.h>
- #include <linux/sort.h>
- #include <linux/slab.h>
-+#include <linux/memblock.h>
- 
- #define MAX_RESERVED_REGIONS	32
- static struct reserved_mem reserved_mem[MAX_RESERVED_REGIONS];
- static int reserved_mem_count;
- 
--#if defined(CONFIG_HAVE_MEMBLOCK)
--#include <linux/memblock.h>
- int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
- 	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
- 	phys_addr_t *res_base)
-@@ -54,16 +53,6 @@ int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
- 		return memblock_remove(base, size);
- 	return 0;
- }
--#else
--int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
--	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
--	phys_addr_t *res_base)
--{
--	pr_err("Reserved memory not supported, ignoring region 0x%llx%s\n",
--		  size, nomap ? " (nomap)" : "");
--	return -ENOSYS;
--}
--#endif
- 
- /**
-  * res_mem_save_node() - save fdt node for second pass initialization
-diff --git a/drivers/staging/android/ion/Kconfig b/drivers/staging/android/ion/Kconfig
-index c16dd16..0fdda6f 100644
---- a/drivers/staging/android/ion/Kconfig
-+++ b/drivers/staging/android/ion/Kconfig
-@@ -1,6 +1,6 @@
- menuconfig ION
- 	bool "Ion Memory Manager"
--	depends on HAVE_MEMBLOCK && HAS_DMA && MMU
-+	depends on HAS_DMA && MMU
- 	select GENERIC_ALLOCATOR
- 	select DMA_SHARED_BUFFER
- 	help
-diff --git a/fs/pstore/Kconfig b/fs/pstore/Kconfig
-index 503086f..0d19d19 100644
---- a/fs/pstore/Kconfig
-+++ b/fs/pstore/Kconfig
-@@ -141,7 +141,6 @@ config PSTORE_RAM
- 	tristate "Log panic/oops to a RAM buffer"
- 	depends on PSTORE
- 	depends on HAS_IOMEM
--	depends on HAVE_MEMBLOCK
- 	select REED_SOLOMON
- 	select REED_SOLOMON_ENC8
- 	select REED_SOLOMON_DEC8
-diff --git a/include/linux/bootmem.h b/include/linux/bootmem.h
-index 1f005b5..ee61ac3 100644
---- a/include/linux/bootmem.h
-+++ b/include/linux/bootmem.h
-@@ -132,9 +132,6 @@ extern void *__alloc_bootmem_low_node(pg_data_t *pgdat,
- #define alloc_bootmem_low_pages_node(pgdat, x) \
- 	__alloc_bootmem_low_node(pgdat, x, PAGE_SIZE, 0)
- 
--
--#if defined(CONFIG_HAVE_MEMBLOCK)
--
- /* FIXME: use MEMBLOCK_ALLOC_* variants here */
- #define BOOTMEM_ALLOC_ACCESSIBLE	0
- #define BOOTMEM_ALLOC_ANYWHERE		(~(phys_addr_t)0)
-@@ -234,115 +231,6 @@ static inline void __init memblock_free_late(
- 	__memblock_free_late(base, size);
+ 	unsigned int cpu = smp_processor_id();
+@@ -343,20 +361,6 @@ static void octeon_cpu_die(unsigned int cpu)
+ 	cvmx_write_csr(CVMX_CIU_PP_RST, 0);
  }
  
--#else
--
--#define BOOTMEM_ALLOC_ACCESSIBLE	0
--
--
--/* Fall back to all the existing bootmem APIs */
--static inline void * __init memblock_virt_alloc(
--					phys_addr_t size,  phys_addr_t align)
+-void play_dead(void)
 -{
--	if (!align)
--		align = SMP_CACHE_BYTES;
--	return __alloc_bootmem(size, align, BOOTMEM_LOW_LIMIT);
+-	int cpu = cpu_number_map(cvmx_get_core_num());
+-
+-	idle_task_exit();
+-	octeon_processor_boot = 0xff;
+-	per_cpu(cpu_state, cpu) = CPU_DEAD;
+-
+-	mb();
+-
+-	while (1)	/* core will be reset here */
+-		;
 -}
 -
--static inline void * __init memblock_virt_alloc_raw(
--					phys_addr_t size,  phys_addr_t align)
--{
--	if (!align)
--		align = SMP_CACHE_BYTES;
--	return __alloc_bootmem_nopanic(size, align, BOOTMEM_LOW_LIMIT);
--}
--
--static inline void * __init memblock_virt_alloc_nopanic(
--					phys_addr_t size, phys_addr_t align)
--{
--	if (!align)
--		align = SMP_CACHE_BYTES;
--	return __alloc_bootmem_nopanic(size, align, BOOTMEM_LOW_LIMIT);
--}
--
--static inline void * __init memblock_virt_alloc_low(
--					phys_addr_t size, phys_addr_t align)
--{
--	if (!align)
--		align = SMP_CACHE_BYTES;
--	return __alloc_bootmem_low(size, align, 0);
--}
--
--static inline void * __init memblock_virt_alloc_low_nopanic(
--					phys_addr_t size, phys_addr_t align)
--{
--	if (!align)
--		align = SMP_CACHE_BYTES;
--	return __alloc_bootmem_low_nopanic(size, align, 0);
--}
--
--static inline void * __init memblock_virt_alloc_from_nopanic(
--		phys_addr_t size, phys_addr_t align, phys_addr_t min_addr)
--{
--	return __alloc_bootmem_nopanic(size, align, min_addr);
--}
--
--static inline void * __init memblock_virt_alloc_node(
--						phys_addr_t size, int nid)
--{
--	return __alloc_bootmem_node(NODE_DATA(nid), size, SMP_CACHE_BYTES,
--				     BOOTMEM_LOW_LIMIT);
--}
--
--static inline void * __init memblock_virt_alloc_node_nopanic(
--						phys_addr_t size, int nid)
--{
--	return __alloc_bootmem_node_nopanic(NODE_DATA(nid), size,
--					     SMP_CACHE_BYTES,
--					     BOOTMEM_LOW_LIMIT);
--}
--
--static inline void * __init memblock_virt_alloc_try_nid(phys_addr_t size,
--	phys_addr_t align, phys_addr_t min_addr, phys_addr_t max_addr, int nid)
--{
--	return __alloc_bootmem_node_high(NODE_DATA(nid), size, align,
--					  min_addr);
--}
--
--static inline void * __init memblock_virt_alloc_try_nid_raw(
--			phys_addr_t size, phys_addr_t align,
--			phys_addr_t min_addr, phys_addr_t max_addr, int nid)
--{
--	return ___alloc_bootmem_node_nopanic(NODE_DATA(nid), size, align,
--				min_addr, max_addr);
--}
--
--static inline void * __init memblock_virt_alloc_try_nid_nopanic(
--			phys_addr_t size, phys_addr_t align,
--			phys_addr_t min_addr, phys_addr_t max_addr, int nid)
--{
--	return ___alloc_bootmem_node_nopanic(NODE_DATA(nid), size, align,
--				min_addr, max_addr);
--}
--
--static inline void __init memblock_free_early(
--					phys_addr_t base, phys_addr_t size)
--{
--	free_bootmem(base, size);
--}
--
--static inline void __init memblock_free_early_nid(
--				phys_addr_t base, phys_addr_t size, int nid)
--{
--	free_bootmem_node(NODE_DATA(nid), base, size);
--}
--
--static inline void __init memblock_free_late(
--					phys_addr_t base, phys_addr_t size)
--{
--	free_bootmem_late(base, size);
--}
--#endif /* defined(CONFIG_HAVE_MEMBLOCK) */
--
- extern void *alloc_large_system_hash(const char *tablename,
- 				     unsigned long bucketsize,
- 				     unsigned long numentries,
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 58697ad..3c96a16 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -2,7 +2,6 @@
- #define _LINUX_MEMBLOCK_H
- #ifdef __KERNEL__
- 
--#ifdef CONFIG_HAVE_MEMBLOCK
- /*
-  * Logical memory blocks.
-  *
-@@ -462,7 +461,6 @@ static inline phys_addr_t memblock_alloc(phys_addr_t size, phys_addr_t align)
+ static void start_after_reset(void)
  {
- 	return 0;
+ 	kernel_entry(0, 0, 0);	/* set a2 = 0 for secondary core */
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index 88ebd83b3bf9..cad5e78889c0 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -77,8 +77,10 @@ static inline void __cpu_die(unsigned int cpu)
+ 
+ 	mp_ops->cpu_die(cpu);
  }
--#endif /* CONFIG_HAVE_MEMBLOCK */
++#endif
  
- #endif /* __KERNEL__ */
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bd5e246..6215168 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2143,7 +2143,7 @@ extern int __meminit __early_pfn_to_nid(unsigned long pfn,
- 					struct mminit_pfnnid_cache *state);
+-extern void play_dead(void);
++#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
++void play_dead(void);
  #endif
  
--#if defined(CONFIG_HAVE_MEMBLOCK) && !defined(CONFIG_FLAT_NODE_MEM_MAP)
-+#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
- void zero_resv_unavail(void);
- #else
- static inline void zero_resv_unavail(void) {}
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 121d869..321117f 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1311,7 +1311,7 @@ config DEBUG_KOBJECT
- 	depends on DEBUG_KERNEL
- 	help
- 	  If you say Y here, some extra kobject debugging messages will be sent
--	  to the syslog. 
-+	  to the syslog.
- 
- config DEBUG_KOBJECT_RELEASE
- 	bool "kobject release debugging"
-@@ -1988,7 +1988,6 @@ endif # RUNTIME_TESTING_MENU
- 
- config MEMTEST
- 	bool "Memtest"
--	depends on HAVE_MEMBLOCK
- 	---help---
- 	  This option adds a kernel parameter 'memtest', which allows memtest
- 	  to be set.
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 16ceea0..c6a0d82 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -127,9 +127,6 @@ config SPARSEMEM_VMEMMAP
- 	 pfn_to_page and page_to_pfn operations.  This is the most
- 	 efficient option when sufficient kernel resources are available.
- 
--config HAVE_MEMBLOCK
--	bool
--
- config HAVE_MEMBLOCK_NODE_MAP
- 	bool
- 
-@@ -481,7 +478,7 @@ config FRONTSWAP
- 
- config CMA
- 	bool "Contiguous Memory Allocator"
--	depends on HAVE_MEMBLOCK && MMU
-+	depends on MMU
- 	select MIGRATION
- 	select MEMORY_ISOLATION
- 	help
-diff --git a/mm/Makefile b/mm/Makefile
-index c4da6de..0a3e72e 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -43,11 +43,11 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
- 
- obj-y += init-mm.o
- obj-y += nobootmem.o
-+obj-y += memblock.o
- 
- ifdef CONFIG_MMU
- 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
- endif
--obj-$(CONFIG_HAVE_MEMBLOCK) += memblock.o
- 
- obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o swap_slots.o
- obj-$(CONFIG_FRONTSWAP)	+= frontswap.o
-diff --git a/mm/nobootmem.c b/mm/nobootmem.c
-index 439af3b..d4d0cd4 100644
---- a/mm/nobootmem.c
-+++ b/mm/nobootmem.c
-@@ -23,10 +23,6 @@
- 
- #include "internal.h"
- 
--#ifndef CONFIG_HAVE_MEMBLOCK
--#error CONFIG_HAVE_MEMBLOCK not defined
--#endif
--
- #ifndef CONFIG_NEED_MULTIPLE_NODES
- struct pglist_data __refdata contig_page_data;
- EXPORT_SYMBOL(contig_page_data);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 61e664d..a4985cd 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6442,7 +6442,7 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
- 	free_area_init_core(pgdat);
- }
- 
--#if defined(CONFIG_HAVE_MEMBLOCK) && !defined(CONFIG_FLAT_NODE_MEM_MAP)
-+#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
  /*
-  * Only struct pages that are backed by physical memory are zeroed and
-  * initialized by going through __init_single_page(). But, there are some
-@@ -6483,7 +6483,7 @@ void __init zero_resv_unavail(void)
- 	if (pgcnt)
- 		pr_info("Reserved but unavailable: %lld pages", pgcnt);
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 8d85046adcc8..8e5868362e55 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -14,6 +14,7 @@
+ #include <linux/sched/debug.h>
+ #include <linux/sched/task.h>
+ #include <linux/sched/task_stack.h>
++#include <linux/sched/hotplug.h>
+ #include <linux/tick.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+@@ -53,6 +54,7 @@
+ #ifdef CONFIG_HOTPLUG_CPU
+ void arch_cpu_idle_dead(void)
+ {
++	idle_task_exit();
+ 	play_dead();
  }
--#endif /* CONFIG_HAVE_MEMBLOCK && !CONFIG_FLAT_NODE_MEM_MAP */
-+#endif /* !CONFIG_FLAT_NODE_MEM_MAP */
+ #endif
+diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+index 159e83add4bb..284e49c8222f 100644
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -381,10 +381,12 @@ static void bmips_cpu_die(unsigned int cpu)
+ {
+ }
  
- #ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
++#endif /* CONFIG_HOTPLUG_CPU */
++
++#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
++
+ void __ref play_dead(void)
+ {
+-	idle_task_exit();
+-
+ 	/* flush data cache */
+ 	_dma_cache_wback_inv(0, ~0);
  
+@@ -409,7 +411,7 @@ void __ref play_dead(void)
+ 	: : : "memory");
+ }
+ 
+-#endif /* CONFIG_HOTPLUG_CPU */
++#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
+ 
+ const struct plat_smp_ops bmips43xx_smp_ops = {
+ 	.smp_setup		= bmips_smp_setup,
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 03f1026ad148..2b0ab25109f9 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -398,27 +398,7 @@ static void cps_smp_finish(void)
+ 	local_irq_enable();
+ }
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+-
+-static int cps_cpu_disable(void)
+-{
+-	unsigned cpu = smp_processor_id();
+-	struct core_boot_config *core_cfg;
+-
+-	if (!cpu)
+-		return -EBUSY;
+-
+-	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
+-		return -EINVAL;
+-
+-	core_cfg = &mips_cps_core_bootcfg[cpu_core(&current_cpu_data)];
+-	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
+-	smp_mb__after_atomic();
+-	set_cpu_online(cpu, false);
+-	calculate_cpu_foreign_map();
+-
+-	return 0;
+-}
++#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
+ 
+ static unsigned cpu_death_sibling;
+ static enum {
+@@ -431,7 +411,7 @@ void play_dead(void)
+ 	unsigned int cpu, core, vpe_id;
+ 
+ 	local_irq_disable();
+-	idle_task_exit();
++
+ 	cpu = smp_processor_id();
+ 	core = cpu_core(&cpu_data[cpu]);
+ 	cpu_death = CPU_DEATH_POWER;
+@@ -480,6 +460,31 @@ void play_dead(void)
+ 	panic("Failed to offline CPU %u", cpu);
+ }
+ 
++#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
++
++#ifdef CONFIG_HOTPLUG_CPU
++
++static int cps_cpu_disable(void)
++{
++	unsigned int cpu = smp_processor_id();
++	struct core_boot_config *core_cfg;
++
++	if (!cpu)
++		return -EBUSY;
++
++	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
++		return -EINVAL;
++
++	core_cfg = &mips_cps_core_bootcfg[cpu_core(&current_cpu_data)];
++	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
++	/* make sure the change is perceived before setting offline */
++	smp_mb__after_atomic();
++	set_cpu_online(cpu, false);
++	calculate_cpu_foreign_map();
++
++	return 0;
++}
++
+ static void wait_for_sibling_halt(void *ptr_cpu)
+ {
+ 	unsigned cpu = (unsigned long)ptr_cpu;
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 8501109bb0f0..29628beed0f2 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -455,6 +455,48 @@ static void loongson3_cpu_die(unsigned int cpu)
+ 	mb();
+ }
+ 
++static int loongson3_disable_clock(unsigned int cpu)
++{
++	u64 core_id = cpu_core(&cpu_data[cpu]);
++	u64 package_id = cpu_data[cpu].package;
++
++	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
++		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
++	} else {
++		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
++			LOONGSON_FREQCTRL(package_id) &=
++				~(1 << (core_id * 4 + 3));
++	}
++	return 0;
++}
++
++static int loongson3_enable_clock(unsigned int cpu)
++{
++	u64 core_id = cpu_core(&cpu_data[cpu]);
++	u64 package_id = cpu_data[cpu].package;
++
++	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
++		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
++	} else {
++		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
++			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
++	}
++	return 0;
++}
++
++static int register_loongson3_notifier(void)
++{
++	return cpuhp_setup_state_nocalls(CPUHP_MIPS_SOC_PREPARE,
++					 "mips/loongson:prepare",
++					 loongson3_enable_clock,
++					 loongson3_disable_clock);
++}
++early_initcall(register_loongson3_notifier);
++
++#endif /* CONFIG_HOTPLUG_CPU */
++
++#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_KEXEC)
++
+ /* To shutdown a core in Loongson 3, the target core should go to CKSEG1 and
+  * flush all L1 entries at first. Then, another core (usually Core 0) can
+  * safely disable the clock of the target core. loongson3_play_dead() is
+@@ -674,7 +716,6 @@ void play_dead(void)
+ 	unsigned int cpu = smp_processor_id();
+ 	void (*play_dead_at_ckseg1)(int *);
+ 
+-	idle_task_exit();
+ 	switch (read_c0_prid() & PRID_REV_MASK) {
+ 	case PRID_REV_LOONGSON3A_R1:
+ 	default:
+@@ -697,44 +738,7 @@ void play_dead(void)
+ 	play_dead_at_ckseg1(state_addr);
+ }
+ 
+-static int loongson3_disable_clock(unsigned int cpu)
+-{
+-	uint64_t core_id = cpu_core(&cpu_data[cpu]);
+-	uint64_t package_id = cpu_data[cpu].package;
+-
+-	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
+-		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
+-	} else {
+-		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
+-			LOONGSON_FREQCTRL(package_id) &= ~(1 << (core_id * 4 + 3));
+-	}
+-	return 0;
+-}
+-
+-static int loongson3_enable_clock(unsigned int cpu)
+-{
+-	uint64_t core_id = cpu_core(&cpu_data[cpu]);
+-	uint64_t package_id = cpu_data[cpu].package;
+-
+-	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
+-		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
+-	} else {
+-		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
+-			LOONGSON_FREQCTRL(package_id) |= 1 << (core_id * 4 + 3);
+-	}
+-	return 0;
+-}
+-
+-static int register_loongson3_notifier(void)
+-{
+-	return cpuhp_setup_state_nocalls(CPUHP_MIPS_SOC_PREPARE,
+-					 "mips/loongson:prepare",
+-					 loongson3_enable_clock,
+-					 loongson3_disable_clock);
+-}
+-early_initcall(register_loongson3_notifier);
+-
+-#endif
++#endif /* CONFIG_HOTPLUG_CPU || CONFIG_KEXEC */
+ 
+ const struct plat_smp_ops loongson3_smp_ops = {
+ 	.send_ipi_single = loongson3_send_ipi_single,
 -- 
-2.7.4
+2.17.1

@@ -1,92 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:25 +0200 (CEST)
-Received: from mail-eopbgr680114.outbound.protection.outlook.com ([40.107.68.114]:38103
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994641AbeIEQAKHVDIO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Sep 2018 18:00:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7gUp+V6ruzOGOhR5dHDTuEzTKa7ZDS0VtQcph1jia/I=;
- b=nEiqazquaEdWkuX580kvOi8/oHaxl8zPBdc8qzEG1tcwmtIklMhUzvOWPUmeHAOm+JZaKFBMMkLHx9NnPTdpHGPfkI7TVnBx5mAiK3Z3mWxKx8YewnVdlPZCcMGEM0fnbOY0rgmmN4DB2q6EJkpRvHPw5WsSxVsm+Z8hmunHFDo=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=dzhu@wavecomp.com; 
-Received: from box.mipstec.com (4.16.204.77) by
- BN3PR0801MB2145.namprd08.prod.outlook.com (2a01:111:e400:7bb5::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1101.18; Wed, 5 Sep
- 2018 16:00:01 +0000
-From:   Dengcheng Zhu <dzhu@wavecomp.com>
-To:     pburton@wavecomp.com, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
-        Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v4 3/6] MIPS: kexec: Deprecate (relocated_)kexec_smp_wait
-Date:   Wed,  5 Sep 2018 08:59:06 -0700
-Message-Id: <20180905155909.30454-4-dzhu@wavecomp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180905155909.30454-1-dzhu@wavecomp.com>
-References: <20180905155909.30454-1-dzhu@wavecomp.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: DM5PR2001CA0003.namprd20.prod.outlook.com
- (2603:10b6:4:16::13) To BN3PR0801MB2145.namprd08.prod.outlook.com
- (2a01:111:e400:7bb5::18)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 257d4525-3c50-43c4-dc95-08d61348a35b
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2145;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:WAqRm/Yirvsob612EyUNixhiS1hOX9KVfT7mMH0fmiY/d6rYSsxJdJRgQbSsWdk6JiJlT8wy4V1Ozqd4ndt78EWGJGYVsxc7nUEBApVUACRizR9B1dMcqXJyuy/KIIs6GAvw2JPdVQHmIjfOvWAN1m51sPcuKsodOHWMBPQMdYSpjnIfQkYr6VyFv7yU8XFqQnFqkgiIo3rlew06knnwmfs91wZddnF8d2MELYPs9n6AeE0h4zl2xHrJ3pZ404at;25:vz6YAOyeLKWH5FqkpRYWb91OzERkrgDPVqEGsE4FzJrOd7O1E4LEH2SYzfaF0ZpDJoD9eSx1MwXjR4kypuTs/2BqCy4ZWducob64ZAm5lv4q0ub5qhJQ01aknrFw1GQWQJK8k8e+xEl8956EBua4ctliuh6ffO4poQeYv838+RDefuAm3wit3NnJW3jCvJxF9ecpj6IYTzX6E5alOv87lTtr6+gLatMaRKtBHH7O1IQl52GNYqoK1LvPUQA4HNscl19GUtB3Yi7aDKAvG6pEZG1t6PtwJ2KpG5DFTEsgi2TWbD6pOIKk0qlgtltIBAYf05k9hbUTbNrb+iJIjJc3+g==;31:zIUhf0xensN3+Uhe4/8YapFSVZdy2YACMcMTpdWqXDCaphBs9ox7YIaAtLepYKoz2b1pOksNV73qcfYVvgCqeloluwJaaFcopYhjxlOzZh00+VUO0NXTldOyK6cAg3VysH1CEilxY1L7LGoWobNAstlM5sRB+WH/2MkAVZeCw6P8ttiHVbpZRh/FJgpw80gdljp47MBSZc8k1j+gBXRAOarmX3kyp+zzZzFco5ZITQs=
-X-MS-TrafficTypeDiagnostic: BN3PR0801MB2145:
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:3b6niSbEbw1r4PFbkMecTdOtu1R7Re63uOfy8mqZi7QXyxeTSmvvUe28fsbsuYxtehwvJN0x6+5yYTjkRJAs2W4JtMaRnZmK9wyHRfI13cEgpN1Jem0W3YsnMay5gCL+kwp2Newf1kQKTPoTerM1ch6NrIYB8GhXU9JT4xdUZlGstSmsUQm/b1a2huZ6n4YjA+y4/kEEVVyhzez47sh/sNB5FtWiC6wf5GB9aVZn8RGYl5st5JI9gWeXJ0dYy+35;4:x9o+Y8Jzy+9T3QZUSsOZZx8URs7rH8lsVeT5OSQ7Z9GYR/nebny56K6auknmNWL8ClmQbts6LpA8oUBJ/gCde1Xe8BEOth2CyNOiV493KLIXwEljlzLxQdBCSabg654ga6v8Uv2ngN6t4uBKgl791V0Wq8nYsKehagTz6Dw3UDmaGmT1RhzMM3oqT8pDJCf6fiE8wdRNoqlCGm44FW4womq2vsSZEW3FYcaqPsAlPl+4LpAaYWbjOwXcCjHQtoDgeoaFlG4QIqP/mO87nCz0pokmXXxAViZLHDtsvDglz1rLGK9wop6iUHFZYuR5/39I
-X-Microsoft-Antispam-PRVS: <BN3PR0801MB2145BDDD20A6D88DF0EB6F65A2020@BN3PR0801MB2145.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(93006095)(93001095)(3231311)(944501410)(52105095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201708071742011)(7699016);SRVR:BN3PR0801MB2145;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2145;
-X-Forefront-PRVS: 078693968A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(366004)(396003)(136003)(346002)(39840400004)(376002)(199004)(189003)(11346002)(956004)(476003)(446003)(486006)(16526019)(26005)(53936002)(6506007)(386003)(81156014)(81166006)(5660300001)(53416004)(8676002)(2906002)(8936002)(25786009)(48376002)(106356001)(4326008)(51416003)(105586002)(50226002)(66066001)(47776003)(68736007)(107886003)(76176011)(50466002)(305945005)(2616005)(52116002)(7736002)(316002)(37156001)(86362001)(575784001)(97736004)(69596002)(16586007)(1076002)(6512007)(6486002)(6116002)(36756003)(478600001)(3846002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:/E4uqizwgwpMMfpH1w0JzMtWsKyc/3b32/qIa9n?=
- =?us-ascii?Q?5WbeSvNKbt5NUdl+fGSdXJy//avPQI+TGgTZyCyIYWZLrPVdYSKqITVJaevU?=
- =?us-ascii?Q?hrzJ9JLZkKo0QtLgdr5Frb10FzeaHes5cgH+m3JE+i++A+/8p+GPbHtQkZ8V?=
- =?us-ascii?Q?p026Z/c6tPK0BAViemk9KW6MGDJ8WMigyS13tSuxs0uS7O0lCbc9HzDHsz3y?=
- =?us-ascii?Q?widAl60C7sKe8ultoRtgrCZAoHMrykDAROAq997n+Vj30Odc+X8MS1mueCPB?=
- =?us-ascii?Q?3VhgCB86+KqG11TUpQMcNemiF3TrcllzXojJCQ4EliSbmFa7xZZxZhOLZS1e?=
- =?us-ascii?Q?QX7X1yx9EYA7s9MLGqyL1hsVmWKfujPKkENBUuZ+zOm+iWieWyYJxHROJ2jJ?=
- =?us-ascii?Q?Senr9jQax3PrRr1Btw/GgaZO5ujymNxksCw5L+kcN4IIDTxCuogBPv1SqgKv?=
- =?us-ascii?Q?vaI9rjpsTZOUvT+GjCgZTBkFVZLTyfbRDfNLJPIQbZNy/omij8j+QQSU+tLP?=
- =?us-ascii?Q?KAO2FPWnFS9S1kIS8kVHN3/PqCrdWwfkfkSlcA35b66z0GtABehpUtzTPpER?=
- =?us-ascii?Q?HmhofMSbz63ngvPPezDhlH9jPoysiSHrup0s7EePoYIjMCgFiJuP5xkoOWS2?=
- =?us-ascii?Q?OjZzCjSBXl9kIianbaAiJjGDsWLvJjNH5wEFr4ybNtpKjGuu6FvhYm1/mJCR?=
- =?us-ascii?Q?gEVzeIq1sGkx91l5LJw8y0sURdVxIqg7OMx3963YeFfkmgX3zxfgW3Zpm2/n?=
- =?us-ascii?Q?wlGShNvRfFSfw2hRiVb+gO5DLMU24Y7PQOHWvI0oyi8FV9k4OBUoeu5UIHWq?=
- =?us-ascii?Q?Y8ZLKZiZERsDDiEoEK+ARdBeWePjZPxA9+hUx0atCb8XUvEt/WZAwibyph3B?=
- =?us-ascii?Q?ZPEp4XKNn6eviYEFL5w3kq9qSlCqOmTtvP48M+7vshXEqOZsC4Ya5xYCLrxx?=
- =?us-ascii?Q?g/mG360zzIuzOOvCA9yZ9KRtzxiCkDigP6Y+kYlfXFt2o89oswhQApQyuQ+J?=
- =?us-ascii?Q?P8FK06aBzeZCNRIwaeOX1IC0/1V3qGHVlvVszt4Y8Bt+TaoftwSz/AtWAKeA?=
- =?us-ascii?Q?TSin8s5Rr3Q8iGTS/da8o5jDFyW2UhmHOcwa8aHZfIqm79x7Fff+8bF3ptcE?=
- =?us-ascii?Q?ctgQRQDhlnEiS+7IrGfsy99cfapSE5+eP/xA20d38SY+D8VknCSXgX4XVLB8?=
- =?us-ascii?Q?UVFjrIJbFfuEEkvnh2f0QN6YOlo7Lwv3Y7dEO3OwCfuZ1gbafogcHXsLHKJ1?=
- =?us-ascii?Q?gV1ydlCB5+JJHcClbA28=3D?=
-X-Microsoft-Antispam-Message-Info: G0eOkmvFoQ4gX06A8E2omaKA0J4ClW7qKMpknmlcs4dCYdfIuJqUnEHv+7bLUkJOcnert5K1Kb0NssJ0lEnogz/o/XdaVwdVaf+u12CJAZu9pn5Q0Ckm7KaZUcTTuQPVqmSdw/UvFDEnFtwdmZ1LQ1YCVDp74mUpdR5+anCD981sa+xdgZl3ne5xkLlCFsnssuObOHdNbjX4u77E7e9SkTelxMfgUkq9IV0tveRbWNd48w5c9L9FL58Q0GeZ2VoXq9NgG0Bww7PlsHRwv3w1EZU0jwl827w/9shABqtz6/nHu2Gh78c0GDOZgLMEKyvDTPbvzfudDD6ythSjYjBWstzBVTpBzdrEtFksUQL2eEI=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:Ab20Y+4HvllGDjKsi5zQgm021lKBUMlxjuBDNFDGkXnfsKsIFhK3uctaQz0Gm8KZqBGp8GUQ9koVS0T5b7OwvqWi6L2stmmUs8XOhWji8/L89M1h5Z+JNbCZb+R7RtnsySjlZuOhoW3qls+/i7Lfu6SMDF8fW71Holv68uveifIt3gOZ2QHuTQCUFaUpWgFd9Jyqa32E15zRH6zICOiBXXfQ8KseUjGMjDCYaalpU9s3XMjiztTvjCNUqCzqx5yu1KEtfvGX/l5pCq6Bv0LKoD7puubJnBlyikx1TiS3/lfC8EBzdf8olhLb6pHV5yL8790f80M9QDY1a+v1zoj1TgjuPBv6q6UPYkVSxfaQ+zth4WlGoDZcu6Je/nXMoeSvROjZdM8OfCT+A0K4l0mP9/rRLGftXpB0rIN9JgVjpKFzYVDsEqQT4XX7pZMF4CEcfjEN16M9Ytgoa++YYW4saA==;5:6utADULTlnwBjZRlFo49ShvPqteBWmccfvrDDkJn1X9Sw2rxVyrzY3eWRs9xa+y45e2ShIJBXDTlyaayoinRVlv+QZEdJgO80xMTGCDEWW8iBgoMNdO2xRNFeyoq2Nprc4sXv3i14JXazlpaFUcqTVtMW9KnbkkitChcfQg8TB4=;7:f1dbCc60JyN60m8iFDXnq1aGa5w9vvwexe17AMzpEGvw+gE694wmTXezck51PTGbiYNzLJRQq2XufPwPqpF2kb8yB5g3qlyYwCZm4CLzOBkXn9ymSh5hpLAcQGb/m2Nn0i9y8aRzdGUPHsKUgITvgrLjL35m1f77Sq4DqNxTBzU5rvROWsHjIFnmAqTWv+RRv5DpmrQfWlWBfJ+fiBzqUnfNMd52Zi/CnsblvIdWZgl0NW3t41FlHcLwvs0/Ffpp
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2018 16:00:01.3001 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 257d4525-3c50-43c4-dc95-08d61348a35b
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2145
-Return-Path: <dzhu@wavecomp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2018 18:01:42 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:44126 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23994642AbeIEQAKmMlZO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2018 18:00:10 +0200
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w85FtVgZ013500
+        for <linux-mips@linux-mips.org>; Wed, 5 Sep 2018 12:00:09 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2maj5w0gsj-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 12:00:04 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Wed, 5 Sep 2018 17:00:02 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 5 Sep 2018 16:59:57 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w85FxuXZ41615396
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 5 Sep 2018 15:59:56 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F10F042041;
+        Wed,  5 Sep 2018 18:59:50 +0100 (BST)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D76CD4203F;
+        Wed,  5 Sep 2018 18:59:48 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.8.92])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed,  5 Sep 2018 18:59:48 +0100 (BST)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 05 Sep 2018 18:59:53 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Subject: [RFC PATCH 03/29] mm: remove CONFIG_HAVE_MEMBLOCK
+Date:   Wed,  5 Sep 2018 18:59:18 +0300
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 18090516-0008-0000-0000-0000026CBA23
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18090515-0009-0000-0000-000021D4D847
+Message-Id: <1536163184-26356-4-git-send-email-rppt@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-05_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1809050164
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65959
+X-archive-position: 65960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dzhu@wavecomp.com
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,104 +84,675 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since we've changed the SMP boot mechanism (by having the new kernel handle
-all CPUs), now remove (relocated_)kexec_smp_wait.
+All architecures use memblock for early memory management. There is no need
+for the CONFIG_HAVE_MEMBLOCK configuration option.
 
-Tested-by: Rachel Mozes <rachel.mozes@intel.com>
-Reported-by: Rachel Mozes <rachel.mozes@intel.com>
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 ---
- arch/mips/include/asm/kexec.h      |  2 --
- arch/mips/kernel/machine_kexec.c   |  5 ----
- arch/mips/kernel/relocate_kernel.S | 39 ------------------------------
- 3 files changed, 46 deletions(-)
+ arch/alpha/Kconfig                  |   1 -
+ arch/arc/Kconfig                    |   1 -
+ arch/arm/Kconfig                    |   1 -
+ arch/arm64/Kconfig                  |   1 -
+ arch/c6x/Kconfig                    |   1 -
+ arch/h8300/Kconfig                  |   1 -
+ arch/hexagon/Kconfig                |   1 -
+ arch/ia64/Kconfig                   |   1 -
+ arch/m68k/Kconfig                   |   1 -
+ arch/microblaze/Kconfig             |   1 -
+ arch/mips/Kconfig                   |   1 -
+ arch/nds32/Kconfig                  |   1 -
+ arch/nios2/Kconfig                  |   1 -
+ arch/openrisc/Kconfig               |   1 -
+ arch/parisc/Kconfig                 |   1 -
+ arch/powerpc/Kconfig                |   1 -
+ arch/riscv/Kconfig                  |   1 -
+ arch/s390/Kconfig                   |   1 -
+ arch/sh/Kconfig                     |   1 -
+ arch/sparc/Kconfig                  |   1 -
+ arch/um/Kconfig                     |   1 -
+ arch/unicore32/Kconfig              |   1 -
+ arch/x86/Kconfig                    |   1 -
+ arch/xtensa/Kconfig                 |   1 -
+ drivers/of/fdt.c                    |   2 -
+ drivers/of/of_reserved_mem.c        |  13 +----
+ drivers/staging/android/ion/Kconfig |   2 +-
+ fs/pstore/Kconfig                   |   1 -
+ include/linux/bootmem.h             | 112 ------------------------------------
+ include/linux/memblock.h            |   2 -
+ include/linux/mm.h                  |   2 +-
+ lib/Kconfig.debug                   |   3 +-
+ mm/Kconfig                          |   5 +-
+ mm/Makefile                         |   2 +-
+ mm/nobootmem.c                      |   4 --
+ mm/page_alloc.c                     |   4 +-
+ 36 files changed, 8 insertions(+), 168 deletions(-)
 
-diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index a8e0bfc0da19..33f31a8bd8d3 100644
---- a/arch/mips/include/asm/kexec.h
-+++ b/arch/mips/include/asm/kexec.h
-@@ -41,9 +41,7 @@ extern void (*_machine_kexec_shutdown)(void);
- extern void (*_machine_crash_shutdown)(struct pt_regs *regs);
- void default_machine_crash_shutdown(struct pt_regs *regs);
- #ifdef CONFIG_SMP
--extern const unsigned char kexec_smp_wait[];
- extern unsigned long secondary_kexec_args[4];
--extern void (*relocated_kexec_smp_wait) (void *);
- extern atomic_t kexec_ready_to_reboot;
- void kexec_smp_reboot(void);
- extern void (*_crash_smp_send_stop)(void);
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 900475ae256d..baffc7113204 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -27,7 +27,6 @@ int (*_machine_kexec_prepare)(struct kimage *) = NULL;
- void (*_machine_kexec_shutdown)(void) = NULL;
- void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
- #ifdef CONFIG_SMP
--void (*relocated_kexec_smp_wait) (void *);
- atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
- void (*_crash_smp_send_stop)(void) = NULL;
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 04de6be..5b4f883 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -31,7 +31,6 @@ config ALPHA
+ 	select ODD_RT_SIGACTION
+ 	select OLD_SIGSUSPEND
+ 	select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
+-	select HAVE_MEMBLOCK
+ 	help
+ 	  The Alpha is a 64-bit general-purpose processor designed and
+ 	  marketed by the Digital Equipment Corporation of blessed memory,
+diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+index 04ebead..5260440 100644
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -37,7 +37,6 @@ config ARC
+ 	select HAVE_KERNEL_LZMA
+ 	select HAVE_KPROBES
+ 	select HAVE_KRETPROBES
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_OPROFILE
+ 	select HAVE_PERF_EVENTS
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 61ea3dd..07468e6 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -82,7 +82,6 @@ config ARM
+ 	select HAVE_KERNEL_XZ
+ 	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
+ 	select HAVE_KRETPROBES if (HAVE_KPROBES)
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI
+ 	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 0065653..7d7d813 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -133,7 +133,6 @@ config ARM64
+ 	select HAVE_GENERIC_DMA_COHERENT
+ 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
+ 	select HAVE_IRQ_TIME_ACCOUNTING
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP if NUMA
+ 	select HAVE_NMI
+ 	select HAVE_PATA_PLATFORM
+diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
+index a641b0b..833fdb0 100644
+--- a/arch/c6x/Kconfig
++++ b/arch/c6x/Kconfig
+@@ -13,7 +13,6 @@ config C6X
+ 	select GENERIC_ATOMIC64
+ 	select GENERIC_IRQ_SHOW
+ 	select HAVE_ARCH_TRACEHOOK
+-	select HAVE_MEMBLOCK
+ 	select SPARSE_IRQ
+ 	select IRQ_DOMAIN
+ 	select OF
+diff --git a/arch/h8300/Kconfig b/arch/h8300/Kconfig
+index 5e89d40..d19c6b16 100644
+--- a/arch/h8300/Kconfig
++++ b/arch/h8300/Kconfig
+@@ -15,7 +15,6 @@ config H8300
+ 	select OF
+ 	select OF_IRQ
+ 	select OF_EARLY_FLATTREE
+-	select HAVE_MEMBLOCK
+ 	select TIMER_OF
+ 	select H8300_TMR8
+ 	select HAVE_KERNEL_GZIP
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index fb7e0ba..d86e134 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -29,7 +29,6 @@ config HEXAGON
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
+ 	select MODULES_USE_ELF_RELA
+ 	select GENERIC_CPU_DEVICES
+-	select HAVE_MEMBLOCK
+ 	select ARCH_DISCARD_MEMBLOCK
+ 	---help---
+ 	  Qualcomm Hexagon is a processor architecture designed for high
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 2bf4ef7..36773de 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -26,7 +26,6 @@ config IA64
+ 	select HAVE_FUNCTION_TRACER
+ 	select TTY
+ 	select HAVE_ARCH_TRACEHOOK
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_VIRT_CPU_ACCOUNTING
+ 	select ARCH_HAS_DMA_MARK_CLEAN
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index 8c7111d..e88588b 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -27,7 +27,6 @@ config M68K
+ 	select OLD_SIGSUSPEND3
+ 	select OLD_SIGACTION
+ 	select DMA_NONCOHERENT_OPS if HAS_DMA
+-	select HAVE_MEMBLOCK
+ 	select ARCH_DISCARD_MEMBLOCK
  
-@@ -142,10 +141,6 @@ machine_kexec(struct kimage *image)
- 	printk("Bye ...\n");
- 	__flush_cache_all();
- #ifdef CONFIG_SMP
--	/* All secondary cpus now may jump to kexec_wait cycle */
--	relocated_kexec_smp_wait = reboot_code_buffer +
--		(void *)(kexec_smp_wait - relocate_new_kernel);
--	smp_wmb();
- 	atomic_set(&kexec_ready_to_reboot, 1);
+ config CPU_BIG_ENDIAN
+diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
+index 56379b9..c77eaef 100644
+--- a/arch/microblaze/Kconfig
++++ b/arch/microblaze/Kconfig
+@@ -28,7 +28,6 @@ config MICROBLAZE
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_TRACER
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_OPROFILE
+ 	select IRQ_DOMAIN
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 1a119fd..be5786b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -60,7 +60,6 @@ config MIPS
+ 	select HAVE_IRQ_TIME_ACCOUNTING
+ 	select HAVE_KPROBES
+ 	select HAVE_KRETPROBES
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI
+diff --git a/arch/nds32/Kconfig b/arch/nds32/Kconfig
+index 06b1259..605d148 100644
+--- a/arch/nds32/Kconfig
++++ b/arch/nds32/Kconfig
+@@ -29,7 +29,6 @@ config NDS32
+ 	select HANDLE_DOMAIN_IRQ
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_DEBUG_KMEMLEAK
+-	select HAVE_MEMBLOCK
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select IRQ_DOMAIN
+ 	select LOCKDEP_SUPPORT
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index ebfae50..6f43bc4 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -23,7 +23,6 @@ config NIOS2
+ 	select SPARSE_IRQ
+ 	select USB_ARCH_HAS_HCD if USB_SUPPORT
+ 	select CPU_NO_EFFICIENT_FFS
+-	select HAVE_MEMBLOCK
+ 	select ARCH_DISCARD_MEMBLOCK
  
- 	kexec_smp_reboot();
-diff --git a/arch/mips/kernel/relocate_kernel.S b/arch/mips/kernel/relocate_kernel.S
-index c6bbf2165051..14e0eaf12306 100644
---- a/arch/mips/kernel/relocate_kernel.S
-+++ b/arch/mips/kernel/relocate_kernel.S
-@@ -100,45 +100,6 @@ done:
- 	j		s1
- 	END(relocate_new_kernel)
+ config GENERIC_CSUM
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index 25c6c2e..2ba6c6d 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -12,7 +12,6 @@ config OPENRISC
+ 	select OF_EARLY_FLATTREE
+ 	select IRQ_DOMAIN
+ 	select HANDLE_DOMAIN_IRQ
+-	select HAVE_MEMBLOCK
+ 	select GPIOLIB
+         select HAVE_ARCH_TRACEHOOK
+ 	select SPARSE_IRQ
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 1d6332c..c8a6fda 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -15,7 +15,6 @@ config PARISC
+ 	select RTC_CLASS
+ 	select RTC_DRV_GENERIC
+ 	select INIT_ALL_POSSIBLE
+-	select HAVE_MEMBLOCK
+ 	select BUG
+ 	select BUILDTIME_EXTABLE_SORT
+ 	select HAVE_PERF_EVENTS
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 304cdce..47c16ae 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -203,7 +203,6 @@ config PPC
+ 	select HAVE_KRETPROBES
+ 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
+ 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 63301c8..b92ee2f 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -28,7 +28,6 @@ config RISCV
+ 	select GENERIC_STRNLEN_USER
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_ATOMIC64 if !64BIT || !RISCV_ISA_A
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_GENERIC_DMA_COHERENT
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index b388e05..2ccad0b 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -154,7 +154,6 @@ config S390
+ 	select HAVE_LIVEPATCH
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_MEMBLOCK_PHYS_MAP
+ 	select HAVE_MOD_ARCH_SPECIFIC
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index e254226..f89a172 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -8,7 +8,6 @@ config SUPERH
+ 	select HAVE_PATA_PLATFORM
+ 	select CLKDEV_LOOKUP
+ 	select HAVE_IDE if HAS_IOPORT_MAP
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select ARCH_DISCARD_MEMBLOCK
+ 	select HAVE_OPROFILE
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 5e8aaee..3b2a2f3 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -45,7 +45,6 @@ config SPARC
+ 	select LOCKDEP_SMALL if LOCKDEP
+ 	select NEED_DMA_MAP_STATE
+ 	select NEED_SG_DMA_LENGTH
+-	select HAVE_MEMBLOCK
  
--#ifdef CONFIG_SMP
--/*
-- * Other CPUs should wait until code is relocated and
-- * then start at entry (?) point.
-- */
--LEAF(kexec_smp_wait)
--	PTR_L		a0, s_arg0
--	PTR_L		a1, s_arg1
--	PTR_L		a2, s_arg2
--	PTR_L		a3, s_arg3
--	PTR_L		s1, kexec_start_address
--
--	/* Non-relocated address works for args and kexec_start_address ( old
--	 * kernel is not overwritten). But we need relocated address of
--	 * kexec_flag.
--	 */
--
--	bal		1f
--1:	move		t1,ra;
--	PTR_LA		t2,1b
--	PTR_LA		t0,kexec_flag
--	PTR_SUB		t0,t0,t2;
--	PTR_ADD		t0,t1,t0;
--
--1:	LONG_L		s0, (t0)
--	bne		s0, zero,1b
--
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--	.set push
--	.set noreorder
--	synci		0($0)
--	.set pop
+ config SPARC32
+ 	def_bool !64BIT
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index ce3d562..6b99389 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -12,7 +12,6 @@ config UML
+ 	select HAVE_UID16
+ 	select HAVE_FUTEX_CMPXCHG if FUTEX
+ 	select HAVE_DEBUG_KMEMLEAK
+-	select HAVE_MEMBLOCK
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_CPU_DEVICES
+ 	select GENERIC_CLOCKEVENTS
+diff --git a/arch/unicore32/Kconfig b/arch/unicore32/Kconfig
+index 60eae74..8726acd 100644
+--- a/arch/unicore32/Kconfig
++++ b/arch/unicore32/Kconfig
+@@ -4,7 +4,6 @@ config UNICORE32
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+-	select HAVE_MEMBLOCK
+ 	select HAVE_GENERIC_DMA_COHERENT
+ 	select HAVE_KERNEL_GZIP
+ 	select HAVE_KERNEL_BZIP2
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 5a861bd..875bef8e 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -167,7 +167,6 @@ config X86
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KVM
+ 	select HAVE_LIVEPATCH			if X86_64
+-	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_MIXED_BREAKPOINTS_REGS
+ 	select HAVE_MOD_ARCH_SPECIFIC
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index e4f7d12..2f7c086 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -27,7 +27,6 @@ config XTENSA
+ 	select HAVE_FUTEX_CMPXCHG if !MMU
+ 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
+ 	select HAVE_IRQ_TIME_ACCOUNTING
+-	select HAVE_MEMBLOCK
+ 	select HAVE_OPROFILE
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_STACKPROTECTOR
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 76c83c1..bd841bb 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1115,13 +1115,11 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ 	return 1;
+ }
+ 
+-#ifdef CONFIG_HAVE_MEMBLOCK
+ #ifndef MIN_MEMBLOCK_ADDR
+ #define MIN_MEMBLOCK_ADDR	__pa(PAGE_OFFSET)
+ #endif
+ #ifndef MAX_MEMBLOCK_ADDR
+ #define MAX_MEMBLOCK_ADDR	((phys_addr_t)~0)
+-#endif
+ 
+ void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
+ {
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+index 895c83e..d6255c2 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -20,13 +20,12 @@
+ #include <linux/of_reserved_mem.h>
+ #include <linux/sort.h>
+ #include <linux/slab.h>
++#include <linux/memblock.h>
+ 
+ #define MAX_RESERVED_REGIONS	32
+ static struct reserved_mem reserved_mem[MAX_RESERVED_REGIONS];
+ static int reserved_mem_count;
+ 
+-#if defined(CONFIG_HAVE_MEMBLOCK)
+-#include <linux/memblock.h>
+ int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+ 	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
+ 	phys_addr_t *res_base)
+@@ -54,16 +53,6 @@ int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+ 		return memblock_remove(base, size);
+ 	return 0;
+ }
 -#else
--	sync
+-int __init __weak early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+-	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
+-	phys_addr_t *res_base)
+-{
+-	pr_err("Reserved memory not supported, ignoring region 0x%llx%s\n",
+-		  size, nomap ? " (nomap)" : "");
+-	return -ENOSYS;
+-}
 -#endif
--	j		s1
--	END(kexec_smp_wait)
+ 
+ /**
+  * res_mem_save_node() - save fdt node for second pass initialization
+diff --git a/drivers/staging/android/ion/Kconfig b/drivers/staging/android/ion/Kconfig
+index c16dd16..0fdda6f 100644
+--- a/drivers/staging/android/ion/Kconfig
++++ b/drivers/staging/android/ion/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig ION
+ 	bool "Ion Memory Manager"
+-	depends on HAVE_MEMBLOCK && HAS_DMA && MMU
++	depends on HAS_DMA && MMU
+ 	select GENERIC_ALLOCATOR
+ 	select DMA_SHARED_BUFFER
+ 	help
+diff --git a/fs/pstore/Kconfig b/fs/pstore/Kconfig
+index 503086f..0d19d19 100644
+--- a/fs/pstore/Kconfig
++++ b/fs/pstore/Kconfig
+@@ -141,7 +141,6 @@ config PSTORE_RAM
+ 	tristate "Log panic/oops to a RAM buffer"
+ 	depends on PSTORE
+ 	depends on HAS_IOMEM
+-	depends on HAVE_MEMBLOCK
+ 	select REED_SOLOMON
+ 	select REED_SOLOMON_ENC8
+ 	select REED_SOLOMON_DEC8
+diff --git a/include/linux/bootmem.h b/include/linux/bootmem.h
+index 1f005b5..ee61ac3 100644
+--- a/include/linux/bootmem.h
++++ b/include/linux/bootmem.h
+@@ -132,9 +132,6 @@ extern void *__alloc_bootmem_low_node(pg_data_t *pgdat,
+ #define alloc_bootmem_low_pages_node(pgdat, x) \
+ 	__alloc_bootmem_low_node(pgdat, x, PAGE_SIZE, 0)
+ 
+-
+-#if defined(CONFIG_HAVE_MEMBLOCK)
+-
+ /* FIXME: use MEMBLOCK_ALLOC_* variants here */
+ #define BOOTMEM_ALLOC_ACCESSIBLE	0
+ #define BOOTMEM_ALLOC_ANYWHERE		(~(phys_addr_t)0)
+@@ -234,115 +231,6 @@ static inline void __init memblock_free_late(
+ 	__memblock_free_late(base, size);
+ }
+ 
+-#else
+-
+-#define BOOTMEM_ALLOC_ACCESSIBLE	0
+-
+-
+-/* Fall back to all the existing bootmem APIs */
+-static inline void * __init memblock_virt_alloc(
+-					phys_addr_t size,  phys_addr_t align)
+-{
+-	if (!align)
+-		align = SMP_CACHE_BYTES;
+-	return __alloc_bootmem(size, align, BOOTMEM_LOW_LIMIT);
+-}
+-
+-static inline void * __init memblock_virt_alloc_raw(
+-					phys_addr_t size,  phys_addr_t align)
+-{
+-	if (!align)
+-		align = SMP_CACHE_BYTES;
+-	return __alloc_bootmem_nopanic(size, align, BOOTMEM_LOW_LIMIT);
+-}
+-
+-static inline void * __init memblock_virt_alloc_nopanic(
+-					phys_addr_t size, phys_addr_t align)
+-{
+-	if (!align)
+-		align = SMP_CACHE_BYTES;
+-	return __alloc_bootmem_nopanic(size, align, BOOTMEM_LOW_LIMIT);
+-}
+-
+-static inline void * __init memblock_virt_alloc_low(
+-					phys_addr_t size, phys_addr_t align)
+-{
+-	if (!align)
+-		align = SMP_CACHE_BYTES;
+-	return __alloc_bootmem_low(size, align, 0);
+-}
+-
+-static inline void * __init memblock_virt_alloc_low_nopanic(
+-					phys_addr_t size, phys_addr_t align)
+-{
+-	if (!align)
+-		align = SMP_CACHE_BYTES;
+-	return __alloc_bootmem_low_nopanic(size, align, 0);
+-}
+-
+-static inline void * __init memblock_virt_alloc_from_nopanic(
+-		phys_addr_t size, phys_addr_t align, phys_addr_t min_addr)
+-{
+-	return __alloc_bootmem_nopanic(size, align, min_addr);
+-}
+-
+-static inline void * __init memblock_virt_alloc_node(
+-						phys_addr_t size, int nid)
+-{
+-	return __alloc_bootmem_node(NODE_DATA(nid), size, SMP_CACHE_BYTES,
+-				     BOOTMEM_LOW_LIMIT);
+-}
+-
+-static inline void * __init memblock_virt_alloc_node_nopanic(
+-						phys_addr_t size, int nid)
+-{
+-	return __alloc_bootmem_node_nopanic(NODE_DATA(nid), size,
+-					     SMP_CACHE_BYTES,
+-					     BOOTMEM_LOW_LIMIT);
+-}
+-
+-static inline void * __init memblock_virt_alloc_try_nid(phys_addr_t size,
+-	phys_addr_t align, phys_addr_t min_addr, phys_addr_t max_addr, int nid)
+-{
+-	return __alloc_bootmem_node_high(NODE_DATA(nid), size, align,
+-					  min_addr);
+-}
+-
+-static inline void * __init memblock_virt_alloc_try_nid_raw(
+-			phys_addr_t size, phys_addr_t align,
+-			phys_addr_t min_addr, phys_addr_t max_addr, int nid)
+-{
+-	return ___alloc_bootmem_node_nopanic(NODE_DATA(nid), size, align,
+-				min_addr, max_addr);
+-}
+-
+-static inline void * __init memblock_virt_alloc_try_nid_nopanic(
+-			phys_addr_t size, phys_addr_t align,
+-			phys_addr_t min_addr, phys_addr_t max_addr, int nid)
+-{
+-	return ___alloc_bootmem_node_nopanic(NODE_DATA(nid), size, align,
+-				min_addr, max_addr);
+-}
+-
+-static inline void __init memblock_free_early(
+-					phys_addr_t base, phys_addr_t size)
+-{
+-	free_bootmem(base, size);
+-}
+-
+-static inline void __init memblock_free_early_nid(
+-				phys_addr_t base, phys_addr_t size, int nid)
+-{
+-	free_bootmem_node(NODE_DATA(nid), base, size);
+-}
+-
+-static inline void __init memblock_free_late(
+-					phys_addr_t base, phys_addr_t size)
+-{
+-	free_bootmem_late(base, size);
+-}
+-#endif /* defined(CONFIG_HAVE_MEMBLOCK) */
+-
+ extern void *alloc_large_system_hash(const char *tablename,
+ 				     unsigned long bucketsize,
+ 				     unsigned long numentries,
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 58697ad..3c96a16 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -2,7 +2,6 @@
+ #define _LINUX_MEMBLOCK_H
+ #ifdef __KERNEL__
+ 
+-#ifdef CONFIG_HAVE_MEMBLOCK
+ /*
+  * Logical memory blocks.
+  *
+@@ -462,7 +461,6 @@ static inline phys_addr_t memblock_alloc(phys_addr_t size, phys_addr_t align)
+ {
+ 	return 0;
+ }
+-#endif /* CONFIG_HAVE_MEMBLOCK */
+ 
+ #endif /* __KERNEL__ */
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index bd5e246..6215168 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2143,7 +2143,7 @@ extern int __meminit __early_pfn_to_nid(unsigned long pfn,
+ 					struct mminit_pfnnid_cache *state);
+ #endif
+ 
+-#if defined(CONFIG_HAVE_MEMBLOCK) && !defined(CONFIG_FLAT_NODE_MEM_MAP)
++#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
+ void zero_resv_unavail(void);
+ #else
+ static inline void zero_resv_unavail(void) {}
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 121d869..321117f 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1311,7 +1311,7 @@ config DEBUG_KOBJECT
+ 	depends on DEBUG_KERNEL
+ 	help
+ 	  If you say Y here, some extra kobject debugging messages will be sent
+-	  to the syslog. 
++	  to the syslog.
+ 
+ config DEBUG_KOBJECT_RELEASE
+ 	bool "kobject release debugging"
+@@ -1988,7 +1988,6 @@ endif # RUNTIME_TESTING_MENU
+ 
+ config MEMTEST
+ 	bool "Memtest"
+-	depends on HAVE_MEMBLOCK
+ 	---help---
+ 	  This option adds a kernel parameter 'memtest', which allows memtest
+ 	  to be set.
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 16ceea0..c6a0d82 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -127,9 +127,6 @@ config SPARSEMEM_VMEMMAP
+ 	 pfn_to_page and page_to_pfn operations.  This is the most
+ 	 efficient option when sufficient kernel resources are available.
+ 
+-config HAVE_MEMBLOCK
+-	bool
+-
+ config HAVE_MEMBLOCK_NODE_MAP
+ 	bool
+ 
+@@ -481,7 +478,7 @@ config FRONTSWAP
+ 
+ config CMA
+ 	bool "Contiguous Memory Allocator"
+-	depends on HAVE_MEMBLOCK && MMU
++	depends on MMU
+ 	select MIGRATION
+ 	select MEMORY_ISOLATION
+ 	help
+diff --git a/mm/Makefile b/mm/Makefile
+index c4da6de..0a3e72e 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -43,11 +43,11 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+ 
+ obj-y += init-mm.o
+ obj-y += nobootmem.o
++obj-y += memblock.o
+ 
+ ifdef CONFIG_MMU
+ 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
+ endif
+-obj-$(CONFIG_HAVE_MEMBLOCK) += memblock.o
+ 
+ obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o swap_slots.o
+ obj-$(CONFIG_FRONTSWAP)	+= frontswap.o
+diff --git a/mm/nobootmem.c b/mm/nobootmem.c
+index 439af3b..d4d0cd4 100644
+--- a/mm/nobootmem.c
++++ b/mm/nobootmem.c
+@@ -23,10 +23,6 @@
+ 
+ #include "internal.h"
+ 
+-#ifndef CONFIG_HAVE_MEMBLOCK
+-#error CONFIG_HAVE_MEMBLOCK not defined
 -#endif
 -
- #ifdef __mips64
-        /* all PTR's must be aligned to 8 byte in 64-bit mode */
-        .align  3
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+ struct pglist_data __refdata contig_page_data;
+ EXPORT_SYMBOL(contig_page_data);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 61e664d..a4985cd 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6442,7 +6442,7 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
+ 	free_area_init_core(pgdat);
+ }
+ 
+-#if defined(CONFIG_HAVE_MEMBLOCK) && !defined(CONFIG_FLAT_NODE_MEM_MAP)
++#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
+ /*
+  * Only struct pages that are backed by physical memory are zeroed and
+  * initialized by going through __init_single_page(). But, there are some
+@@ -6483,7 +6483,7 @@ void __init zero_resv_unavail(void)
+ 	if (pgcnt)
+ 		pr_info("Reserved but unavailable: %lld pages", pgcnt);
+ }
+-#endif /* CONFIG_HAVE_MEMBLOCK && !CONFIG_FLAT_NODE_MEM_MAP */
++#endif /* !CONFIG_FLAT_NODE_MEM_MAP */
+ 
+ #ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
+ 
 -- 
-2.17.1
+2.7.4

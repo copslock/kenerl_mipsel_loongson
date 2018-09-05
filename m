@@ -1,101 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 01:09:39 +0200 (CEST)
-Received: from mail-sn1nam01on0129.outbound.protection.outlook.com ([104.47.32.129]:8519
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994640AbeIEXJd30few (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 01:09:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Md9BlBIgU60bfzqSFe/Sq+euB9LrjGradln1/ccGkOY=;
- b=lid49bBIhmU2hLFag0uZBJkWYvmQGBq6Ybk6LXQTofsb9k2XDOLHYY4DubJxKvESru/4duHowq9vpqoaYFIx76XlF1n5zloIGAQMAZGVlJgcoX0Jc09PrlcFQbO6wKWIy5iYL1gD0qGbM9IfhejJQzoUYLyDkRe/9dyggNVtgBQ=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (4.16.204.77) by
- SN6PR08MB4941.namprd08.prod.outlook.com (2603:10b6:805:69::31) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1101.17; Wed, 5 Sep 2018 23:09:22 +0000
-Date:   Wed, 5 Sep 2018 16:09:19 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Wolfram Sang <wsa@the-dreams.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 01:53:41 +0200 (CEST)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:34459 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994553AbeIEXxf6LXOM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 01:53:35 +0200
+Received: by mail-oi0-f68.google.com with SMTP id 13-v6so17209918ois.1;
+        Wed, 05 Sep 2018 16:53:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=OyvN1cpM7RnrgXuUADJuSHYQfVp0emDNRAOJvT0826M=;
+        b=TDsylVh+UaDNBvT5mKGHLE3mCm1WruMUSx9ltRSDRITznYTOcKUIg19zhIYqau1CM3
+         EZWM1pv+XxIl6Jxe+p6VnktdoHVWdvRgFGw1MkOin9YUWM+TJOSTP44AcCIqrEUf0H7F
+         kwaYQB9+aEdGVDmqMdf96/+nzjtlUoEdp2M8X+j/H8MEADpaKcJSi8CmFak3/Dq09tXo
+         wfOoPBcvIUe7oebOCGVsiM6QYXQ0dqRDu4bBCk/+w9Q9UKreBA4wl7QV7QIXHJtwiNDc
+         +BE/z8HfcaKxDoEGqIRvqW2ig18yUS7v9sPOv2MgxDS5/e4C4GMgEG6HvaLIlkuzoCIB
+         3MOg==
+X-Gm-Message-State: APzg51Aasmc03s3zwNO2i3soHenIRgIrQp+qKAbeqNYFIdSdnHfRq/2w
+        inbvhgYb128nqY1iAVQv5g==
+X-Google-Smtp-Source: ANB0Vdbrs88ccsQdrBIRLBtLdSR97TqWwYDgS5lwH0uZpOeHileUmLg6NL7k2yURyLmt0IsbFGmK6Q==
+X-Received: by 2002:aca:6541:: with SMTP id j1-v6mr100231oiw.157.1536191609819;
+        Wed, 05 Sep 2018 16:53:29 -0700 (PDT)
+Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.googlemail.com with ESMTPSA id h186-v6sm3860624oib.55.2018.09.05.16.53.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Sep 2018 16:53:29 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     Frank Rowand <frowand.list@gmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Allan Nielsen <allan.nielsen@microchip.com>
-Subject: Re: [PATCH v5 0/7] Add support for MSCC Ocelot i2c
-Message-ID: <20180905230919.ycqmkohubym5foz3@pburton-laptop>
-References: <20180831151114.25739-1-alexandre.belloni@bootlin.com>
- <20180901124353.GB1196@kunai>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180901124353.GB1196@kunai>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [4.16.204.77]
-X-ClientProxiedBy: BN6PR18CA0002.namprd18.prod.outlook.com
- (2603:10b6:404:121::12) To SN6PR08MB4941.namprd08.prod.outlook.com
- (2603:10b6:805:69::31)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 28fa1882-898f-4c99-90e3-08d613849e42
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4941;
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4941;3:jnpQLxaJDV3Dt2y4c+GKw4jNwTpHW6SzIvFh3i9DqvA9QUnXrQHMa9tucqB20rQjjlNMeLE6MebXbTlXBtCf9j50hqd5YPjSbIdHKdSSP+8Idl89COP1Rctrfw53J7+41M5YHwwm4eN1Sf57TAVxZOVmJHkdmjji5oAYkYQpFEFTj/j1QZhGYFSFdajjS2M/rYN7Hj9JfUUnGGCPq8ZEUcWJW2FTeRmLJe7uH7eD//GdZVrILIPHW08DLWFIUxNQ;25:vJI7wzfWu8aYjnjfYvt3O3X1+VYNKxQMBtBL2kpiyoiNRzm8+khv2ESnzexaYYZz1KgxfsOqNL/b/VF8bK/5ZEuVK2RUSmhfexat5Cdj5tE+cK8JTdMCGuExFQCb573wItaL3QFpg9QF50XgYpcQ68TzX5NJG9hXfp4NrPrzjOyQYU/JTuBgNi6XsdiIXv3BdGqrff0PdB/MGCvD7UFiSs0Rq77WfUWPt5JM1zJY2pnD3cgR50ufQue3zp6+O7jUHaNv8cNUjpEeyPJOQdax+/QWhvpDpWYVi2otjnNhtQDMPU3MNSru9ZUXWDGKSsr/X1pKEFk6vTJBT+5EUNFWsw==;31:7zmP/zYpqmZP4h7MSedg6QcGgeT5wTd6e6s5MprS0MhU5WOSlLRWIuNzdQbFXKMDgphtn4fCfhiz4p7psVEhu36D0y3zTWtD86xCqMT5WKV80q+P8ZdM4TuBICOdFeoiesm/NxFdV5XWqv4UBzYeAA5MLfiBjCQYIbFz6hrSRDCP3tPEpdbFaC5+qwByQgYjjaAcnPUqtw79rapUmlGB1/3oFkwfMu3g4uQ2LVt6Eg0=
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4941:
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4941;20:Fk6zcfVCynK60NvwNBuzsPBvkD0TdSIj5Mrvv0ggKK86sXK2LxeqtCYO8KhbmzBvaZPlUAYGBYxPfdEFZ7Nbo6P0Jh7w+tRscJO3ODnP3fb+lrQrFI9i6qORtHPhKoLwnDs7+pUZNQP92rKy1bKJ2yHKQylFCpIqnHXJWx+eRrTqEhNUGNrZUclaw6wo0KSzWZZl8FGmMPOZoFMmr7lk7A2GZezTXpnDSRdB8muo3mVCJZLZipsYTlhl2pL4ExIx;4:sbwaCswcxZAU3/2xLy5agVJKxGm4NpKzq1eXeG32NLGE3lo3oris07jYcE4vrmaeT3aH92ep6jN5mDP79hKVSNfprqj6yKoIkLvnJx2dbElAKCnKaPkv9hH2cvSe9jazEj22b6voWc68vAzpl2uRk6tX0BTwCZLdnLKOXCmxhJ2iq1wVMht84nZrwn/0RDsUxWFVJ5VKGT7utEXigXlhH61JVVDhzuZJwHHinjnPnI025i2b5uXTCFQHMfMcrjpIZdBuQr3PWj/F6QC1RBIuAQ==
-X-Microsoft-Antispam-PRVS: <SN6PR08MB494112ED6AD6B7A7DFBAB96AC1020@SN6PR08MB4941.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(93006095)(3231311)(944501410)(52105095)(3002001)(149027)(150027)(6041310)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(201708071742011)(7699016);SRVR:SN6PR08MB4941;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4941;
-X-Forefront-PRVS: 078693968A
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(39840400004)(136003)(376002)(396003)(366004)(189003)(199004)(8936002)(305945005)(7736002)(9686003)(47776003)(7416002)(2906002)(66066001)(76506005)(8676002)(105586002)(81166006)(229853002)(106356001)(81156014)(478600001)(33896004)(50466002)(6486002)(76176011)(316002)(16586007)(58126008)(6496006)(52116002)(486006)(16526019)(26005)(186003)(42882007)(11346002)(446003)(956004)(44832011)(476003)(33716001)(386003)(4326008)(54906003)(110136005)(23726003)(6246003)(68736007)(3846002)(6116002)(1076002)(53936002)(25786009)(5660300001)(97736004)(6666003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4941;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4941;23:/CelLE0m0wqsc+mA/4FhhwbzBbnPx+kMLlNrueUBE?=
- =?us-ascii?Q?XITs5wVaahkaAIFAbGG26BkciczNF9syEtxobIVbLyuk6XgajHe/v+GU1hJ+?=
- =?us-ascii?Q?LLE/xRbjUL3S5PAXoPB+Uqidmu6J8vnXeuUDP5tjejda6fQazPF836M6uogJ?=
- =?us-ascii?Q?1okBGyMJV83S1trbHIZyRaerXoeSqCaRDVTCPuMjl/4vlwK93gZ5WMhoV/r4?=
- =?us-ascii?Q?zCl5VWzCjwdldQ3yjs8oa+SnQf0jB/knMoeaboAwG0GDNokeg/tqTwT5WHlK?=
- =?us-ascii?Q?ADyIaBIw471XoVX0rUWTBs/TEIz76MOxYDJLM9tKffNQJVbUYtyAcrzPmJfW?=
- =?us-ascii?Q?M6LscrME2uAsExcbxA9RpIi6aVoyLbGWwmyE/gOlmHXRt+OuO1sm/Bc5iEZX?=
- =?us-ascii?Q?6zsFC6m0I9TNfds2FvuDu+u4I0ul070qVSJ3SWfrL2mpQJJ3F1FN8Shk8r3A?=
- =?us-ascii?Q?s6O6JeqyKtLKCyg8nMILA6s+Fl/N8LWYigMghF76ADqoynYyAp35cBOtaIyY?=
- =?us-ascii?Q?ftyE7+BiOiPy2XctPZSMNFOVjXCMfRg3EHsFjjt+tPPH9OzevFGMRjyvj7cZ?=
- =?us-ascii?Q?r5SAJsizJv5NkfNVq8rQlkV+H6YVRwf1/GMt7dhnKrOYb/PT6Eu84mwjgwVA?=
- =?us-ascii?Q?/gGIqMjCSlxtmWrQvyXQUqacP+x3zBWr/liw1VBWJj8c5D6JEqFOALMpqZV0?=
- =?us-ascii?Q?IN9lx+M0rGLcS9lYh5cn2TmVlo0CYlWIjG5qdSCwh/NxKkZHwJdQMq7CRgeJ?=
- =?us-ascii?Q?ZxXB4Nn72r52Y5KcXWiqMSPVHZwR1W4wfXgP9qij9XRPJVolg+6Hb4x0w5ii?=
- =?us-ascii?Q?Dia9pdbNC6v3bgKhK5L/tFCrJ18ll5HEupZqPw9NqFx160LwfKykDoWm4bhJ?=
- =?us-ascii?Q?V4B12vezuTw4p5/E2frFvwZMw6466qjLU+JBuxVyJ1Lo8F5LlTlV09olFwfL?=
- =?us-ascii?Q?by5RUB4gqK+OBPVo8q5hG/yV0YaCf3XGzZEKKA4Zu0ubgEZY+6/pcRYF30Pn?=
- =?us-ascii?Q?0vZ3hPbFwAw+3dX79UZUeFH6zfW+oSFa2WDzVrkIBhHJdx63BE1PhklX3bP8?=
- =?us-ascii?Q?vdqtGpoM+90M0uGAbVqp+N40nbOfm+8JFIWhPmHCR8MU0xrOph6rP7lEHeZV?=
- =?us-ascii?Q?hlFNGotY4h19cDmVtUlUhb/mSvTN1m3xx64qiMVG4k1E3gB50alqZDShUwr8?=
- =?us-ascii?Q?zd3m1vM/mjY7kGsY8ipVnENCXqb1anV0kKcpr2rxUB4jLv+ye4iX62miSWhL?=
- =?us-ascii?Q?wtsFXLsl9wUNH1wpaxbt1PpiLNcVNJLKhN3XRd4Bg4kilQZWj48EQzihMH8M?=
- =?us-ascii?Q?TCeMKVtHMyivCefv7k2+gO7WoDTWQttne/QHot8O/vp?=
-X-Microsoft-Antispam-Message-Info: L1mc9O2yhrrJGp1zeCBH/RrO53vObd9E50TbMFnwlMHA5Nsu5oVzCqb4UZIJfHDR223dhEn3K4sD0N86DF2KHeqcdCFaAIpudVJpem/2U4igasAaqv8e1GqZcZ12S4Qovw08DCxHRAw0qdBYORqtSJz+xquVCbbL19rfOvQTBJyRRiJWUZH8v34UFERnrCLku1qLo7nrFM1DPjOkvB5D8mmg0TXSVH67LI/T5Fmcr5sD6N+0PF4SkCzbWMEjm6Vui+QBeJxAB2gfKyaUTPqEzyIIhqx1eLu6vb0xRoY2o2LY6Ku9YkuY/7HH1VbapklwLCQax9Prn2wp+ETskVslHuvQADMu2Q+ag1gGT3PDgAg=
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4941;6:0La/9V7+mmZBKVocRVonc1j3VGShDegJ7xYBlTFfH2UIETkloFtx3NOc6Wx0KNhCTGBQfzJgxKAiGvJjP2zcCyfBmtJ8BbVVwCub7K3CgwBfJsRwUN7YqR+8JL+ehTyvyiOcBQEr3X27We/e5jV938bXbCNLPQfDMmefxCK6/si6K9UrSm9c8HQ5jN1Fho+sfw1cg0YujQCZV+pGaJfTMC7fXcVXZKiOiKFqwmHIPEQhMe/YwD7gn8Ne7a6aLJnYUY12+PQ/PZvIUbYPdTAoYIMwKBUiF/01OG2eJZrBFWbtfgsZ9RWtWCVWXNc9nyv0JVMv3Pf5Z0peEF7bfdjTw1hDlvnx0V3MSbGXpryxJmFMQxe5N737OpR63oHcaIMxLaSY7808sBhFuJt46lmK4xmmhVSJUmRR6mZrMcxZgSWuL8sd5DpzfS4pqX47Rn0ZxmYuxbvoGs5DFweHP00vug==;5:voKkVsVhA/0ABC8nSj19+2C0IV2uLPWFsRElcRrxbtQkcwC1FkYKNF39OSf/JsFrH+L/91Bdj60B61I7Hzw0MLcjg+kKCTayveVD0nGm+MnTEFmv4IFg1qT2z04b98+G5oYDFA0tJ6g5ngjVDqwZGYPhI1CGT8eXghwYKL4AHGo=;7:7XY5eQVUF6iLJUulTjHuSWlYdn+/0BgO3Q2zdLDh8Z7jRayuOVIs9wfgVwsOyJmiL1or96u53XkLbynwbV3bSBJayK+p1HTwnk9uhPEMxNHh0NC0XR05kyCz3Cg9fq533hcZtPbgWUnNQJK1HI0AAZJFohs1dwHZWKKnPN9PuaAaqIEa+/hgZ7lb2Uei3Ri+MM0L1PG6dhzVdiQI4nVlPhzqjl12V6+z+a//ws1v9s1YBPyN3DqVmfY+mPni0zpE
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2018 23:09:22.8620 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28fa1882-898f-4c99-90e3-08d613849e42
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4941
-Return-Path: <pburton@wavecomp.com>
+        Ley Foon Tan <lftan@altera.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-kbuild@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp, linux-mips@linux-mips.org,
+        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
+        linux-xtensa@linux-xtensa.org
+Subject: [PATCH v2 0/9] Devicetree build consolidation
+Date:   Wed,  5 Sep 2018 18:53:18 -0500
+Message-Id: <20180905235327.5996-1-robh@kernel.org>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 65996
+X-archive-position: 65997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -108,22 +74,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Alexandre & Wolfram,
+This series addresses a couple of issues I have with building dts files.
 
-On Sat, Sep 01, 2018 at 02:43:53PM +0200, Wolfram Sang wrote:
-> > Because the designware IP was not able to handle the SDA hold time before
-> > version 1.11a, MSCC has its own implementation. Add support for it and then add
-> > i2c on ocelot boards.
-> > 
-> > I would expect patches 1 to 5 to go through the i2c tree.
-> 
-> Applied to for-next, thanks!
-> 
-> > Pathces 6-7 can go through the mips tree now that the bindings have been
-> > reviewed.
-> 
-> They have been reviewed by Rob and are applied now to my tree.
+First, the ability to build all the dts files in the tree. This has been
+supported on most arches for some time with powerpc being the main
+exception. The reason powerpc wasn't supported was it needed a change
+in the location built dtb files are put.
 
-Patches 6 & 7 applied to mips-next for 4.20 - thanks!
+Secondly, it's a pain to acquire all the cross-compilers needed to build
+dtbs for each arch. There's no reason to build with the cross compiler and
+the host compiler is perfectly fine as we only need the pre-processor.
 
-Paul
+I started addressing just those 2 problems, but kept finding small
+differences such as target dependencies and dtbs_install support across
+architectures. Instead of trying to align all these, I've consolidated the
+build targets moving them out of the arch makefiles.
+
+I'd like to take the series via the DT tree.
+
+Rob
+
+v2:
+ - Fix $arch/boot/dts path check for out of tree builds
+ - Fix dtc dependency for building built-in dtbs
+ - Fix microblaze built-in dtb building
+ - Add dtbs target for microblaze
+
+Rob Herring (9):
+  powerpc: build .dtb files in dts directory
+  nios2: build .dtb files in dts directory
+  nios2: use common rules to build built-in dtb
+  nios2: fix building all dtbs
+  c6x: use common built-in dtb support
+  kbuild: consolidate Devicetree dtb build rules
+  powerpc: enable building all dtbs
+  c6x: enable building all dtbs
+  microblaze: enable building all dtbs
+
+ Makefile                           | 32 +++++++++++++++++++
+ arch/arc/Makefile                  |  6 ----
+ arch/arm/Makefile                  | 20 +-----------
+ arch/arm64/Makefile                | 17 +----------
+ arch/c6x/Makefile                  |  2 --
+ arch/c6x/boot/dts/Makefile         | 17 +++++------
+ arch/c6x/boot/dts/linked_dtb.S     |  2 --
+ arch/c6x/include/asm/sections.h    |  1 -
+ arch/c6x/kernel/setup.c            |  4 +--
+ arch/c6x/kernel/vmlinux.lds.S      | 10 ------
+ arch/h8300/Makefile                | 11 +------
+ arch/microblaze/Makefile           |  4 +--
+ arch/microblaze/boot/dts/Makefile  |  4 +++
+ arch/mips/Makefile                 | 15 +--------
+ arch/nds32/Makefile                |  2 +-
+ arch/nios2/Makefile                | 11 +------
+ arch/nios2/boot/Makefile           | 22 --------------
+ arch/nios2/boot/dts/Makefile       |  6 ++++
+ arch/nios2/boot/linked_dtb.S       | 19 ------------
+ arch/powerpc/Makefile              |  3 --
+ arch/powerpc/boot/Makefile         | 49 ++++++++++++++----------------
+ arch/powerpc/boot/dts/Makefile     |  6 ++++
+ arch/powerpc/boot/dts/fsl/Makefile |  4 +++
+ arch/xtensa/Makefile               | 12 +-------
+ scripts/Makefile.lib               |  2 +-
+ 25 files changed, 93 insertions(+), 188 deletions(-)
+ delete mode 100644 arch/c6x/boot/dts/linked_dtb.S
+ create mode 100644 arch/nios2/boot/dts/Makefile
+ delete mode 100644 arch/nios2/boot/linked_dtb.S
+ create mode 100644 arch/powerpc/boot/dts/Makefile
+ create mode 100644 arch/powerpc/boot/dts/fsl/Makefile
+
+--
+2.17.1

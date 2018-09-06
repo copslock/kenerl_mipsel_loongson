@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2018 00:42:45 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:35873 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2018 00:42:58 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:35919 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994658AbeIFWjfNH3pL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Sep 2018 00:39:35 +0200
+        id S23994660AbeIFWjkYUkJL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Sep 2018 00:39:40 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 3C88320877; Fri,  7 Sep 2018 00:39:29 +0200 (CEST)
+        id E01BD208A1; Fri,  7 Sep 2018 00:39:29 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 762B2208A1;
-        Fri,  7 Sep 2018 00:39:18 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 11C20208D6;
+        Fri,  7 Sep 2018 00:39:19 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -40,17 +40,20 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH 17/19] mtd: rawnand: Move legacy code to nand_legacy.c
-Date:   Fri,  7 Sep 2018 00:38:49 +0200
-Message-Id: <20180906223851.6964-18-boris.brezillon@bootlin.com>
+Subject: [PATCH 18/19] mtd: rawnand: Move ONFI code to nand_onfi.c
+Date:   Fri,  7 Sep 2018 00:38:50 +0200
+Message-Id: <20180906223851.6964-19-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180906223851.6964-1-boris.brezillon@bootlin.com>
 References: <20180906223851.6964-1-boris.brezillon@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66118
+X-archive-position: 66119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,759 +70,392 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allows us to move a few hundred lines of deprecated code out of the
-core file which is quite big.
+This moves ONFI related code to nand_onfi.c and ONFI related
+struct/macros to include/linux/mtd/onfi.h.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/Makefile      |   2 +-
- drivers/mtd/nand/raw/internals.h   |   6 +
- drivers/mtd/nand/raw/nand_base.c   | 618 +----------------------------------
- drivers/mtd/nand/raw/nand_legacy.c | 642 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 660 insertions(+), 608 deletions(-)
- create mode 100644 drivers/mtd/nand/raw/nand_legacy.c
+ drivers/mtd/nand/raw/Makefile    |   1 +
+ drivers/mtd/nand/raw/internals.h |   7 +
+ drivers/mtd/nand/raw/nand_base.c | 296 +------------------------------------
+ drivers/mtd/nand/raw/nand_onfi.c | 305 +++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/onfi.h         | 178 +++++++++++++++++++++++
+ include/linux/mtd/rawnand.h      | 164 +--------------------
+ 6 files changed, 496 insertions(+), 455 deletions(-)
+ create mode 100644 drivers/mtd/nand/raw/nand_onfi.c
+ create mode 100644 include/linux/mtd/onfi.h
 
 diff --git a/drivers/mtd/nand/raw/Makefile b/drivers/mtd/nand/raw/Makefile
-index a6ef0673e29e..78f67de2e60b 100644
+index 78f67de2e60b..cc9f50f3ad1b 100644
 --- a/drivers/mtd/nand/raw/Makefile
 +++ b/drivers/mtd/nand/raw/Makefile
-@@ -57,7 +57,7 @@ obj-$(CONFIG_MTD_NAND_QCOM)		+= qcom_nandc.o
- obj-$(CONFIG_MTD_NAND_MTK)		+= mtk_ecc.o mtk_nand.o
+@@ -58,6 +58,7 @@ obj-$(CONFIG_MTD_NAND_MTK)		+= mtk_ecc.o mtk_nand.o
  obj-$(CONFIG_MTD_NAND_TEGRA)		+= tegra_nand.o
  
--nand-objs := nand_base.o nand_bbt.o nand_timings.o nand_ids.o
-+nand-objs := nand_base.o nand_legacy.o nand_bbt.o nand_timings.o nand_ids.o
+ nand-objs := nand_base.o nand_legacy.o nand_bbt.o nand_timings.o nand_ids.o
++nand-objs += nand_onfi.o
  nand-objs += nand_amd.o
  nand-objs += nand_hynix.o
  nand-objs += nand_macronix.o
 diff --git a/drivers/mtd/nand/raw/internals.h b/drivers/mtd/nand/raw/internals.h
-index 1d2edddb6127..289a4b8f7974 100644
+index 289a4b8f7974..1ce720a8d756 100644
 --- a/drivers/mtd/nand/raw/internals.h
 +++ b/drivers/mtd/nand/raw/internals.h
-@@ -89,10 +89,16 @@ int nand_write_page_raw_notsupp(struct nand_chip *chip, const u8 *buf,
+@@ -88,8 +88,11 @@ int nand_read_page_raw_notsupp(struct nand_chip *chip, u8 *buf,
+ int nand_write_page_raw_notsupp(struct nand_chip *chip, const u8 *buf,
  				int oob_required, int page);
  int nand_exit_status_op(struct nand_chip *chip);
++int nand_read_param_page_op(struct nand_chip *chip, u8 page, void *buf,
++			    unsigned int len);
  void nand_decode_ext_id(struct nand_chip *chip);
-+void panic_nand_wait(struct nand_chip *chip, unsigned long timeo);
+ void panic_nand_wait(struct nand_chip *chip, unsigned long timeo);
++void sanitize_string(uint8_t *s, size_t len);
  
  /* BBT functions */
  int nand_markbad_bbt(struct nand_chip *chip, loff_t offs);
- int nand_isreserved_bbt(struct nand_chip *chip, loff_t offs);
- int nand_isbad_bbt(struct nand_chip *chip, loff_t offs, int allowbbt);
+@@ -101,4 +104,8 @@ void nand_legacy_set_defaults(struct nand_chip *chip);
+ void nand_legacy_adjust_cmdfunc(struct nand_chip *chip);
+ int nand_legacy_check_hooks(struct nand_chip *chip);
  
-+/* Legacy */
-+void nand_legacy_set_defaults(struct nand_chip *chip);
-+void nand_legacy_adjust_cmdfunc(struct nand_chip *chip);
-+int nand_legacy_check_hooks(struct nand_chip *chip);
++/* ONFI functions */
++u16 onfi_crc16(u16 crc, u8 const *p, size_t len);
++int nand_onfi_detect(struct nand_chip *chip);
 +
  #endif /* __LINUX_RAWNAND_INTERNALS */
 diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index d48c588d1abe..4ef00cefd5da 100644
+index 4ef00cefd5da..812e8bd6ad82 100644
 --- a/drivers/mtd/nand/raw/nand_base.c
 +++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -36,7 +36,6 @@
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/mm.h>
--#include <linux/nmi.h>
- #include <linux/types.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/nand_ecc.h>
-@@ -253,150 +252,6 @@ static void nand_release_device(struct mtd_info *mtd)
- 	spin_unlock(&chip->controller->lock);
+@@ -986,8 +986,8 @@ EXPORT_SYMBOL_GPL(nand_read_page_op);
+  *
+  * Returns 0 on success, a negative error code otherwise.
+  */
+-static int nand_read_param_page_op(struct nand_chip *chip, u8 page, void *buf,
+-				   unsigned int len)
++int nand_read_param_page_op(struct nand_chip *chip, u8 page, void *buf,
++			    unsigned int len)
+ {
+ 	unsigned int i;
+ 	u8 *p = buf;
+@@ -4370,7 +4370,7 @@ static void nand_set_defaults(struct nand_chip *chip)
  }
  
--/**
-- * nand_read_byte - [DEFAULT] read one byte from the chip
-- * @chip: NAND chip object
-- *
-- * Default read function for 8bit buswidth
-- */
--static uint8_t nand_read_byte(struct nand_chip *chip)
+ /* Sanitize ONFI strings so we can safely print them */
+-static void sanitize_string(uint8_t *s, size_t len)
++void sanitize_string(uint8_t *s, size_t len)
+ {
+ 	ssize_t i;
+ 
+@@ -4387,294 +4387,6 @@ static void sanitize_string(uint8_t *s, size_t len)
+ 	strim(s);
+ }
+ 
+-static u16 onfi_crc16(u16 crc, u8 const *p, size_t len)
 -{
--	return readb(chip->legacy.IO_ADDR_R);
--}
--
--/**
-- * nand_read_byte16 - [DEFAULT] read one byte endianness aware from the chip
-- * @chip: NAND chip object
-- *
-- * Default read function for 16bit buswidth with endianness conversion.
-- *
-- */
--static uint8_t nand_read_byte16(struct nand_chip *chip)
--{
--	return (uint8_t) cpu_to_le16(readw(chip->legacy.IO_ADDR_R));
--}
--
--/**
-- * nand_select_chip - [DEFAULT] control CE line
-- * @chip: NAND chip object
-- * @chipnr: chipnumber to select, -1 for deselect
-- *
-- * Default select function for 1 chip devices.
-- */
--static void nand_select_chip(struct nand_chip *chip, int chipnr)
--{
--	switch (chipnr) {
--	case -1:
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--				      0 | NAND_CTRL_CHANGE);
--		break;
--	case 0:
--		break;
--
--	default:
--		BUG();
+-	int i;
+-	while (len--) {
+-		crc ^= *p++ << 8;
+-		for (i = 0; i < 8; i++)
+-			crc = (crc << 1) ^ ((crc & 0x8000) ? 0x8005 : 0);
 -	}
+-
+-	return crc;
 -}
 -
--/**
-- * nand_write_byte - [DEFAULT] write single byte to chip
-- * @chip: NAND chip object
-- * @byte: value to write
-- *
-- * Default function to write a byte to I/O[7:0]
-- */
--static void nand_write_byte(struct nand_chip *chip, uint8_t byte)
+-/* Parse the Extended Parameter Page. */
+-static int nand_flash_detect_ext_param_page(struct nand_chip *chip,
+-					    struct nand_onfi_params *p)
 -{
--	chip->legacy.write_buf(chip, &byte, 1);
--}
--
--/**
-- * nand_write_byte16 - [DEFAULT] write single byte to a chip with width 16
-- * @chip: NAND chip object
-- * @byte: value to write
-- *
-- * Default function to write a byte to I/O[7:0] on a 16-bit wide chip.
-- */
--static void nand_write_byte16(struct nand_chip *chip, uint8_t byte)
--{
--	uint16_t word = byte;
--
--	/*
--	 * It's not entirely clear what should happen to I/O[15:8] when writing
--	 * a byte. The ONFi spec (Revision 3.1; 2012-09-19, Section 2.16) reads:
--	 *
--	 *    When the host supports a 16-bit bus width, only data is
--	 *    transferred at the 16-bit width. All address and command line
--	 *    transfers shall use only the lower 8-bits of the data bus. During
--	 *    command transfers, the host may place any value on the upper
--	 *    8-bits of the data bus. During address transfers, the host shall
--	 *    set the upper 8-bits of the data bus to 00h.
--	 *
--	 * One user of the write_byte callback is nand_set_features. The
--	 * four parameters are specified to be written to I/O[7:0], but this is
--	 * neither an address nor a command transfer. Let's assume a 0 on the
--	 * upper I/O lines is OK.
--	 */
--	chip->legacy.write_buf(chip, (uint8_t *)&word, 2);
--}
--
--/**
-- * nand_write_buf - [DEFAULT] write buffer to chip
-- * @chip: NAND chip object
-- * @buf: data buffer
-- * @len: number of bytes to write
-- *
-- * Default write function for 8bit buswidth.
-- */
--static void nand_write_buf(struct nand_chip *chip, const uint8_t *buf, int len)
--{
--	iowrite8_rep(chip->legacy.IO_ADDR_W, buf, len);
--}
--
--/**
-- * nand_read_buf - [DEFAULT] read chip data into buffer
-- * @chip: NAND chip object
-- * @buf: buffer to store date
-- * @len: number of bytes to read
-- *
-- * Default read function for 8bit buswidth.
-- */
--static void nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
--{
--	ioread8_rep(chip->legacy.IO_ADDR_R, buf, len);
--}
--
--/**
-- * nand_write_buf16 - [DEFAULT] write buffer to chip
-- * @chip: NAND chip object
-- * @buf: data buffer
-- * @len: number of bytes to write
-- *
-- * Default write function for 16bit buswidth.
-- */
--static void nand_write_buf16(struct nand_chip *chip, const uint8_t *buf,
--			     int len)
--{
--	u16 *p = (u16 *) buf;
--
--	iowrite16_rep(chip->legacy.IO_ADDR_W, p, len >> 1);
--}
--
--/**
-- * nand_read_buf16 - [DEFAULT] read chip data into buffer
-- * @chip: NAND chip object
-- * @buf: buffer to store date
-- * @len: number of bytes to read
-- *
-- * Default read function for 16bit buswidth.
-- */
--static void nand_read_buf16(struct nand_chip *chip, uint8_t *buf, int len)
--{
--	u16 *p = (u16 *) buf;
--
--	ioread16_rep(chip->legacy.IO_ADDR_R, p, len >> 1);
--}
--
- /**
-  * nand_block_bad - [DEFAULT] Read bad block marker from the chip
-  * @chip: NAND chip object
-@@ -611,81 +466,6 @@ static int nand_block_checkbad(struct mtd_info *mtd, loff_t ofs, int allowbbt)
- 	return nand_isbad_bbm(chip, ofs);
- }
- 
--/**
-- * panic_nand_wait_ready - [GENERIC] Wait for the ready pin after commands.
-- * @mtd: MTD device structure
-- * @timeo: Timeout
-- *
-- * Helper function for nand_wait_ready used when needing to wait in interrupt
-- * context.
-- */
--static void panic_nand_wait_ready(struct mtd_info *mtd, unsigned long timeo)
--{
--	struct nand_chip *chip = mtd_to_nand(mtd);
+-	struct onfi_ext_param_page *ep;
+-	struct onfi_ext_section *s;
+-	struct onfi_ext_ecc_info *ecc;
+-	uint8_t *cursor;
+-	int ret;
+-	int len;
 -	int i;
 -
--	/* Wait for the device to get ready */
--	for (i = 0; i < timeo; i++) {
--		if (chip->legacy.dev_ready(chip))
--			break;
--		touch_softlockup_watchdog();
--		mdelay(1);
--	}
--}
+-	len = le16_to_cpu(p->ext_param_page_length) * 16;
+-	ep = kmalloc(len, GFP_KERNEL);
+-	if (!ep)
+-		return -ENOMEM;
 -
--/**
-- * nand_wait_ready - [GENERIC] Wait for the ready pin after commands.
-- * @chip: NAND chip object
-- *
-- * Wait for the ready pin after a command, and warn if a timeout occurs.
-- */
--void nand_wait_ready(struct nand_chip *chip)
--{
--	struct mtd_info *mtd = nand_to_mtd(chip);
--	unsigned long timeo = 400;
--
--	if (in_interrupt() || oops_in_progress)
--		return panic_nand_wait_ready(mtd, timeo);
--
--	/* Wait until command is processed or timeout occurs */
--	timeo = jiffies + msecs_to_jiffies(timeo);
--	do {
--		if (chip->legacy.dev_ready(chip))
--			return;
--		cond_resched();
--	} while (time_before(jiffies, timeo));
--
--	if (!chip->legacy.dev_ready(chip))
--		pr_warn_ratelimited("timeout while waiting for chip to become ready\n");
--}
--EXPORT_SYMBOL_GPL(nand_wait_ready);
--
--/**
-- * nand_wait_status_ready - [GENERIC] Wait for the ready status after commands.
-- * @mtd: MTD device structure
-- * @timeo: Timeout in ms
-- *
-- * Wait for status ready (i.e. command done) or timeout.
-- */
--static void nand_wait_status_ready(struct mtd_info *mtd, unsigned long timeo)
--{
--	register struct nand_chip *chip = mtd_to_nand(mtd);
--	int ret;
--
--	timeo = jiffies + msecs_to_jiffies(timeo);
--	do {
--		u8 status;
--
--		ret = nand_read_data_op(chip, &status, sizeof(status), true);
--		if (ret)
--			return;
--
--		if (status & NAND_STATUS_READY)
--			break;
--		touch_softlockup_watchdog();
--	} while (time_before(jiffies, timeo));
--};
--
- /**
-  * nand_soft_waitrdy - Poll STATUS reg until RDY bit is set to 1
-  * @chip: NAND chip structure
-@@ -751,275 +531,6 @@ int nand_soft_waitrdy(struct nand_chip *chip, unsigned long timeout_ms)
- };
- EXPORT_SYMBOL_GPL(nand_soft_waitrdy);
- 
--/**
-- * nand_command - [DEFAULT] Send command to NAND device
-- * @chip: NAND chip object
-- * @command: the command to be sent
-- * @column: the column address for this command, -1 if none
-- * @page_addr: the page address for this command, -1 if none
-- *
-- * Send command to NAND device. This function is used for small page devices
-- * (512 Bytes per page).
-- */
--static void nand_command(struct nand_chip *chip, unsigned int command,
--			 int column, int page_addr)
--{
--	struct mtd_info *mtd = nand_to_mtd(chip);
--	int ctrl = NAND_CTRL_CLE | NAND_CTRL_CHANGE;
--
--	/* Write out the command to the device */
--	if (command == NAND_CMD_SEQIN) {
--		int readcmd;
--
--		if (column >= mtd->writesize) {
--			/* OOB area */
--			column -= mtd->writesize;
--			readcmd = NAND_CMD_READOOB;
--		} else if (column < 256) {
--			/* First 256 bytes --> READ0 */
--			readcmd = NAND_CMD_READ0;
--		} else {
--			column -= 256;
--			readcmd = NAND_CMD_READ1;
--		}
--		chip->legacy.cmd_ctrl(chip, readcmd, ctrl);
--		ctrl &= ~NAND_CTRL_CHANGE;
--	}
--	if (command != NAND_CMD_NONE)
--		chip->legacy.cmd_ctrl(chip, command, ctrl);
--
--	/* Address cycle, when necessary */
--	ctrl = NAND_CTRL_ALE | NAND_CTRL_CHANGE;
--	/* Serially input address */
--	if (column != -1) {
--		/* Adjust columns for 16 bit buswidth */
--		if (chip->options & NAND_BUSWIDTH_16 &&
--				!nand_opcode_8bits(command))
--			column >>= 1;
--		chip->legacy.cmd_ctrl(chip, column, ctrl);
--		ctrl &= ~NAND_CTRL_CHANGE;
--	}
--	if (page_addr != -1) {
--		chip->legacy.cmd_ctrl(chip, page_addr, ctrl);
--		ctrl &= ~NAND_CTRL_CHANGE;
--		chip->legacy.cmd_ctrl(chip, page_addr >> 8, ctrl);
--		if (chip->options & NAND_ROW_ADDR_3)
--			chip->legacy.cmd_ctrl(chip, page_addr >> 16, ctrl);
--	}
--	chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--			      NAND_NCE | NAND_CTRL_CHANGE);
--
--	/*
--	 * Program and erase have their own busy handlers status and sequential
--	 * in needs no delay
--	 */
--	switch (command) {
--
--	case NAND_CMD_NONE:
--	case NAND_CMD_PAGEPROG:
--	case NAND_CMD_ERASE1:
--	case NAND_CMD_ERASE2:
--	case NAND_CMD_SEQIN:
--	case NAND_CMD_STATUS:
--	case NAND_CMD_READID:
--	case NAND_CMD_SET_FEATURES:
--		return;
--
--	case NAND_CMD_RESET:
--		if (chip->legacy.dev_ready)
--			break;
--		udelay(chip->legacy.chip_delay);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_STATUS,
--				      NAND_CTRL_CLE | NAND_CTRL_CHANGE);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--				      NAND_NCE | NAND_CTRL_CHANGE);
--		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
--		nand_wait_status_ready(mtd, 250);
--		return;
--
--		/* This applies to read commands */
--	case NAND_CMD_READ0:
--		/*
--		 * READ0 is sometimes used to exit GET STATUS mode. When this
--		 * is the case no address cycles are requested, and we can use
--		 * this information to detect that we should not wait for the
--		 * device to be ready.
--		 */
--		if (column == -1 && page_addr == -1)
--			return;
--
--	default:
--		/*
--		 * If we don't have access to the busy pin, we apply the given
--		 * command delay
--		 */
--		if (!chip->legacy.dev_ready) {
--			udelay(chip->legacy.chip_delay);
--			return;
--		}
--	}
--	/*
--	 * Apply this short delay always to ensure that we do wait tWB in
--	 * any case on any machine.
--	 */
--	ndelay(100);
--
--	nand_wait_ready(chip);
--}
--
--static void nand_ccs_delay(struct nand_chip *chip)
--{
--	/*
--	 * The controller already takes care of waiting for tCCS when the RNDIN
--	 * or RNDOUT command is sent, return directly.
--	 */
--	if (!(chip->options & NAND_WAIT_TCCS))
--		return;
--
--	/*
--	 * Wait tCCS_min if it is correctly defined, otherwise wait 500ns
--	 * (which should be safe for all NANDs).
--	 */
--	if (chip->setup_data_interface)
--		ndelay(chip->data_interface.timings.sdr.tCCS_min / 1000);
--	else
--		ndelay(500);
--}
--
--/**
-- * nand_command_lp - [DEFAULT] Send command to NAND large page device
-- * @chip: NAND chip object
-- * @command: the command to be sent
-- * @column: the column address for this command, -1 if none
-- * @page_addr: the page address for this command, -1 if none
-- *
-- * Send command to NAND device. This is the version for the new large page
-- * devices. We don't have the separate regions as we have in the small page
-- * devices. We must emulate NAND_CMD_READOOB to keep the code compatible.
-- */
--static void nand_command_lp(struct nand_chip *chip, unsigned int command,
--			    int column, int page_addr)
--{
--	struct mtd_info *mtd = nand_to_mtd(chip);
--
--	/* Emulate NAND_CMD_READOOB */
--	if (command == NAND_CMD_READOOB) {
--		column += mtd->writesize;
--		command = NAND_CMD_READ0;
--	}
--
--	/* Command latch cycle */
--	if (command != NAND_CMD_NONE)
--		chip->legacy.cmd_ctrl(chip, command,
--				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--
--	if (column != -1 || page_addr != -1) {
--		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
--
--		/* Serially input address */
--		if (column != -1) {
--			/* Adjust columns for 16 bit buswidth */
--			if (chip->options & NAND_BUSWIDTH_16 &&
--					!nand_opcode_8bits(command))
--				column >>= 1;
--			chip->legacy.cmd_ctrl(chip, column, ctrl);
--			ctrl &= ~NAND_CTRL_CHANGE;
--
--			/* Only output a single addr cycle for 8bits opcodes. */
--			if (!nand_opcode_8bits(command))
--				chip->legacy.cmd_ctrl(chip, column >> 8, ctrl);
--		}
--		if (page_addr != -1) {
--			chip->legacy.cmd_ctrl(chip, page_addr, ctrl);
--			chip->legacy.cmd_ctrl(chip, page_addr >> 8,
--					     NAND_NCE | NAND_ALE);
--			if (chip->options & NAND_ROW_ADDR_3)
--				chip->legacy.cmd_ctrl(chip, page_addr >> 16,
--						      NAND_NCE | NAND_ALE);
--		}
--	}
--	chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--			      NAND_NCE | NAND_CTRL_CHANGE);
--
--	/*
--	 * Program and erase have their own busy handlers status, sequential
--	 * in and status need no delay.
--	 */
--	switch (command) {
--
--	case NAND_CMD_NONE:
--	case NAND_CMD_CACHEDPROG:
--	case NAND_CMD_PAGEPROG:
--	case NAND_CMD_ERASE1:
--	case NAND_CMD_ERASE2:
--	case NAND_CMD_SEQIN:
--	case NAND_CMD_STATUS:
--	case NAND_CMD_READID:
--	case NAND_CMD_SET_FEATURES:
--		return;
--
--	case NAND_CMD_RNDIN:
--		nand_ccs_delay(chip);
--		return;
--
--	case NAND_CMD_RESET:
--		if (chip->legacy.dev_ready)
--			break;
--		udelay(chip->legacy.chip_delay);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_STATUS,
--				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--				      NAND_NCE | NAND_CTRL_CHANGE);
--		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
--		nand_wait_status_ready(mtd, 250);
--		return;
--
--	case NAND_CMD_RNDOUT:
--		/* No ready / busy check necessary */
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_RNDOUTSTART,
--				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--				      NAND_NCE | NAND_CTRL_CHANGE);
--
--		nand_ccs_delay(chip);
--		return;
--
--	case NAND_CMD_READ0:
--		/*
--		 * READ0 is sometimes used to exit GET STATUS mode. When this
--		 * is the case no address cycles are requested, and we can use
--		 * this information to detect that READSTART should not be
--		 * issued.
--		 */
--		if (column == -1 && page_addr == -1)
--			return;
--
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_READSTART,
--				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
--				      NAND_NCE | NAND_CTRL_CHANGE);
--
--		/* This applies to read commands */
--	default:
--		/*
--		 * If we don't have access to the busy pin, we apply the given
--		 * command delay.
--		 */
--		if (!chip->legacy.dev_ready) {
--			udelay(chip->legacy.chip_delay);
--			return;
--		}
--	}
--
--	/*
--	 * Apply this short delay always to ensure that we do wait tWB in
--	 * any case on any machine.
--	 */
--	ndelay(100);
--
--	nand_wait_ready(chip);
--}
--
- /**
-  * panic_nand_get_device - [GENERIC] Get chip for selected access
-  * @chip: the nand chip descriptor
-@@ -1087,7 +598,7 @@ nand_get_device(struct mtd_info *mtd, int new_state)
-  * we are in interrupt context. May happen when in panic and trying to write
-  * an oops through mtdoops.
-  */
--static void panic_nand_wait(struct nand_chip *chip, unsigned long timeo)
-+void panic_nand_wait(struct nand_chip *chip, unsigned long timeo)
- {
- 	int i;
- 	for (i = 0; i < timeo; i++) {
-@@ -1110,60 +621,6 @@ static void panic_nand_wait(struct nand_chip *chip, unsigned long timeo)
- 	}
- }
- 
--/**
-- * nand_wait - [DEFAULT] wait until the command is done
-- * @mtd: MTD device structure
-- * @chip: NAND chip structure
-- *
-- * Wait for command done. This applies to erase and program only.
-- */
--static int nand_wait(struct nand_chip *chip)
--{
--
--	unsigned long timeo = 400;
--	u8 status;
--	int ret;
--
--	/*
--	 * Apply this short delay always to ensure that we do wait tWB in any
--	 * case on any machine.
--	 */
--	ndelay(100);
--
--	ret = nand_status_op(chip, NULL);
+-	/* Send our own NAND_CMD_PARAM. */
+-	ret = nand_read_param_page_op(chip, 0, NULL, 0);
 -	if (ret)
--		return ret;
+-		goto ext_out;
 -
--	if (in_interrupt() || oops_in_progress)
--		panic_nand_wait(chip, timeo);
--	else {
--		timeo = jiffies + msecs_to_jiffies(timeo);
--		do {
--			if (chip->legacy.dev_ready) {
--				if (chip->legacy.dev_ready(chip))
--					break;
--			} else {
--				ret = nand_read_data_op(chip, &status,
--							sizeof(status), true);
--				if (ret)
--					return ret;
+-	/* Use the Change Read Column command to skip the ONFI param pages. */
+-	ret = nand_change_read_column_op(chip,
+-					 sizeof(*p) * p->num_of_param_pages,
+-					 ep, len, true);
+-	if (ret)
+-		goto ext_out;
 -
--				if (status & NAND_STATUS_READY)
--					break;
+-	ret = -EINVAL;
+-	if ((onfi_crc16(ONFI_CRC_BASE, ((uint8_t *)ep) + 2, len - 2)
+-		!= le16_to_cpu(ep->crc))) {
+-		pr_debug("fail in the CRC.\n");
+-		goto ext_out;
+-	}
+-
+-	/*
+-	 * Check the signature.
+-	 * Do not strictly follow the ONFI spec, maybe changed in future.
+-	 */
+-	if (strncmp(ep->sig, "EPPS", 4)) {
+-		pr_debug("The signature is invalid.\n");
+-		goto ext_out;
+-	}
+-
+-	/* find the ECC section. */
+-	cursor = (uint8_t *)(ep + 1);
+-	for (i = 0; i < ONFI_EXT_SECTION_MAX; i++) {
+-		s = ep->sections + i;
+-		if (s->type == ONFI_SECTION_TYPE_2)
+-			break;
+-		cursor += s->length * 16;
+-	}
+-	if (i == ONFI_EXT_SECTION_MAX) {
+-		pr_debug("We can not find the ECC section.\n");
+-		goto ext_out;
+-	}
+-
+-	/* get the info we want. */
+-	ecc = (struct onfi_ext_ecc_info *)cursor;
+-
+-	if (!ecc->codeword_size) {
+-		pr_debug("Invalid codeword size\n");
+-		goto ext_out;
+-	}
+-
+-	chip->ecc_strength_ds = ecc->ecc_bits;
+-	chip->ecc_step_ds = 1 << ecc->codeword_size;
+-	ret = 0;
+-
+-ext_out:
+-	kfree(ep);
+-	return ret;
+-}
+-
+-/*
+- * Recover data with bit-wise majority
+- */
+-static void nand_bit_wise_majority(const void **srcbufs,
+-				   unsigned int nsrcbufs,
+-				   void *dstbuf,
+-				   unsigned int bufsize)
+-{
+-	int i, j, k;
+-
+-	for (i = 0; i < bufsize; i++) {
+-		u8 val = 0;
+-
+-		for (j = 0; j < 8; j++) {
+-			unsigned int cnt = 0;
+-
+-			for (k = 0; k < nsrcbufs; k++) {
+-				const u8 *srcbuf = srcbufs[k];
+-
+-				if (srcbuf[i] & BIT(j))
+-					cnt++;
 -			}
--			cond_resched();
--		} while (time_before(jiffies, timeo));
+-
+-			if (cnt > nsrcbufs / 2)
+-				val |= BIT(j);
+-		}
+-
+-		((u8 *)dstbuf)[i] = val;
+-	}
+-}
+-
+-/*
+- * Check if the NAND chip is ONFI compliant, returns 1 if it is, 0 otherwise.
+- */
+-static int nand_flash_detect_onfi(struct nand_chip *chip)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct nand_onfi_params *p;
+-	struct onfi_params *onfi;
+-	int onfi_version = 0;
+-	char id[4];
+-	int i, ret, val;
+-
+-	/* Try ONFI for unknown chip or LP */
+-	ret = nand_readid_op(chip, 0x20, id, sizeof(id));
+-	if (ret || strncmp(id, "ONFI", 4))
+-		return 0;
+-
+-	/* ONFI chip: allocate a buffer to hold its parameter page */
+-	p = kzalloc((sizeof(*p) * 3), GFP_KERNEL);
+-	if (!p)
+-		return -ENOMEM;
+-
+-	ret = nand_read_param_page_op(chip, 0, NULL, 0);
+-	if (ret) {
+-		ret = 0;
+-		goto free_onfi_param_page;
 -	}
 -
--	ret = nand_read_data_op(chip, &status, sizeof(status), true);
--	if (ret)
--		return ret;
--
--	/* This can happen if in case of timeout or buggy dev_ready */
--	WARN_ON(!(status & NAND_STATUS_READY));
--	return status;
--}
--
- static bool nand_supports_get_features(struct nand_chip *chip, int addr)
- {
- 	return (chip->parameters.supports_set_get_features &&
-@@ -4864,22 +4321,6 @@ static int nand_max_bad_blocks(struct mtd_info *mtd, loff_t ofs, size_t len)
- 	return chip->max_bb_per_die * (part_end_die - part_start_die + 1);
- }
- 
--/**
-- * nand_get_set_features_notsupp - set/get features stub returning -ENOTSUPP
-- * @chip: nand chip info structure
-- * @addr: feature address.
-- * @subfeature_param: the subfeature parameters, a four bytes array.
-- *
-- * Should be used by NAND controller drivers that do not support the SET/GET
-- * FEATURES operations.
-- */
--int nand_get_set_features_notsupp(struct nand_chip *chip, int addr,
--				  u8 *subfeature_param)
--{
--	return -ENOTSUPP;
--}
--EXPORT_SYMBOL(nand_get_set_features_notsupp);
--
- /**
-  * nand_suspend - [MTD Interface] Suspend the NAND flash
-  * @mtd: MTD device structure
-@@ -4917,32 +4358,7 @@ static void nand_shutdown(struct mtd_info *mtd)
- /* Set default functions */
- static void nand_set_defaults(struct nand_chip *chip)
- {
--	unsigned int busw = chip->options & NAND_BUSWIDTH_16;
--
--	/* check for proper chip_delay setup, set 20us if not */
--	if (!chip->legacy.chip_delay)
--		chip->legacy.chip_delay = 20;
--
--	/* check, if a user supplied command function given */
--	if (!chip->legacy.cmdfunc && !chip->exec_op)
--		chip->legacy.cmdfunc = nand_command;
--
--	/* check, if a user supplied wait function given */
--	if (chip->legacy.waitfunc == NULL)
--		chip->legacy.waitfunc = nand_wait;
--
--	if (!chip->select_chip)
--		chip->select_chip = nand_select_chip;
--
--	/* If called twice, pointers that depend on busw may need to be reset */
--	if (!chip->legacy.read_byte || chip->legacy.read_byte == nand_read_byte)
--		chip->legacy.read_byte = busw ? nand_read_byte16 : nand_read_byte;
--	if (!chip->legacy.write_buf || chip->legacy.write_buf == nand_write_buf)
--		chip->legacy.write_buf = busw ? nand_write_buf16 : nand_write_buf;
--	if (!chip->legacy.write_byte || chip->legacy.write_byte == nand_write_byte)
--		chip->legacy.write_byte = busw ? nand_write_byte16 : nand_write_byte;
--	if (!chip->legacy.read_buf || chip->legacy.read_buf == nand_read_buf)
--		chip->legacy.read_buf = busw ? nand_read_buf16 : nand_read_buf;
-+	nand_legacy_set_defaults(chip);
- 
- 	if (!chip->controller) {
- 		chip->controller = &chip->dummy_controller;
-@@ -5212,9 +4628,7 @@ static int nand_flash_detect_onfi(struct nand_chip *chip)
- 		 * chip->legacy.cmdfunc now. We do not replace user supplied
- 		 * command function.
- 		 */
--		if (mtd->writesize > 512 &&
--		    chip->legacy.cmdfunc == nand_command)
--			chip->legacy.cmdfunc = nand_command_lp;
-+		nand_legacy_adjust_cmdfunc(chip);
- 
- 		/* The Extended Parameter Page is supported since ONFI 2.1. */
- 		if (nand_flash_detect_ext_param_page(chip, p))
-@@ -5737,9 +5151,7 @@ static int nand_detect(struct nand_chip *chip, struct nand_flash_dev *type)
- 
- 	chip->badblockbits = 8;
- 
--	/* Do not replace user supplied command function! */
--	if (mtd->writesize > 512 && chip->legacy.cmdfunc == nand_command)
--		chip->legacy.cmdfunc = nand_command_lp;
-+	nand_legacy_adjust_cmdfunc(chip);
- 
- 	pr_info("device found, Manufacturer ID: 0x%02x, Chip ID: 0x%02x\n",
- 		maf_id, dev_id);
-@@ -5935,23 +5347,15 @@ static int nand_scan_ident(struct nand_chip *chip, unsigned int maxchips,
- 	if (!mtd->name && mtd->dev.parent)
- 		mtd->name = dev_name(mtd->dev.parent);
- 
--	/*
--	 * ->legacy.cmdfunc() is legacy and will only be used if ->exec_op() is
--	 * not populated.
--	 */
--	if (!chip->exec_op) {
--		/*
--		 * Default functions assigned for ->legacy.cmdfunc() and
--		 * ->select_chip() both expect ->legacy.cmd_ctrl() to be
--		 *  populated.
--		 */
--		if ((!chip->legacy.cmdfunc || !chip->select_chip) &&
--		    !chip->legacy.cmd_ctrl) {
--			pr_err("->legacy.cmd_ctrl() should be provided\n");
--			return -EINVAL;
+-	for (i = 0; i < 3; i++) {
+-		ret = nand_read_data_op(chip, &p[i], sizeof(*p), true);
+-		if (ret) {
+-			ret = 0;
+-			goto free_onfi_param_page;
 -		}
-+	if (chip->exec_op && !chip->select_chip) {
-+		pr_err("->select_chip() is mandatory when implementing ->exec_op()\n");
-+		return -EINVAL;
- 	}
+-
+-		if (onfi_crc16(ONFI_CRC_BASE, (u8 *)&p[i], 254) ==
+-				le16_to_cpu(p->crc)) {
+-			if (i)
+-				memcpy(p, &p[i], sizeof(*p));
+-			break;
+-		}
+-	}
+-
+-	if (i == 3) {
+-		const void *srcbufs[3] = {p, p + 1, p + 2};
+-
+-		pr_warn("Could not find a valid ONFI parameter page, trying bit-wise majority to recover it\n");
+-		nand_bit_wise_majority(srcbufs, ARRAY_SIZE(srcbufs), p,
+-				       sizeof(*p));
+-
+-		if (onfi_crc16(ONFI_CRC_BASE, (u8 *)p, 254) !=
+-				le16_to_cpu(p->crc)) {
+-			pr_err("ONFI parameter recovery failed, aborting\n");
+-			goto free_onfi_param_page;
+-		}
+-	}
+-
+-	if (chip->manufacturer.desc && chip->manufacturer.desc->ops &&
+-	    chip->manufacturer.desc->ops->fixup_onfi_param_page)
+-		chip->manufacturer.desc->ops->fixup_onfi_param_page(chip, p);
+-
+-	/* Check version */
+-	val = le16_to_cpu(p->revision);
+-	if (val & ONFI_VERSION_2_3)
+-		onfi_version = 23;
+-	else if (val & ONFI_VERSION_2_2)
+-		onfi_version = 22;
+-	else if (val & ONFI_VERSION_2_1)
+-		onfi_version = 21;
+-	else if (val & ONFI_VERSION_2_0)
+-		onfi_version = 20;
+-	else if (val & ONFI_VERSION_1_0)
+-		onfi_version = 10;
+-
+-	if (!onfi_version) {
+-		pr_info("unsupported ONFI version: %d\n", val);
+-		goto free_onfi_param_page;
+-	}
+-
+-	sanitize_string(p->manufacturer, sizeof(p->manufacturer));
+-	sanitize_string(p->model, sizeof(p->model));
+-	chip->parameters.model = kstrdup(p->model, GFP_KERNEL);
+-	if (!chip->parameters.model) {
+-		ret = -ENOMEM;
+-		goto free_onfi_param_page;
+-	}
+-
+-	mtd->writesize = le32_to_cpu(p->byte_per_page);
+-
+-	/*
+-	 * pages_per_block and blocks_per_lun may not be a power-of-2 size
+-	 * (don't ask me who thought of this...). MTD assumes that these
+-	 * dimensions will be power-of-2, so just truncate the remaining area.
+-	 */
+-	mtd->erasesize = 1 << (fls(le32_to_cpu(p->pages_per_block)) - 1);
+-	mtd->erasesize *= mtd->writesize;
+-
+-	mtd->oobsize = le16_to_cpu(p->spare_bytes_per_page);
+-
+-	/* See erasesize comment */
+-	chip->chipsize = 1 << (fls(le32_to_cpu(p->blocks_per_lun)) - 1);
+-	chip->chipsize *= (uint64_t)mtd->erasesize * p->lun_count;
+-	chip->bits_per_cell = p->bits_per_cell;
+-
+-	chip->max_bb_per_die = le16_to_cpu(p->bb_per_lun);
+-	chip->blocks_per_die = le32_to_cpu(p->blocks_per_lun);
+-
+-	if (le16_to_cpu(p->features) & ONFI_FEATURE_16_BIT_BUS)
+-		chip->options |= NAND_BUSWIDTH_16;
+-
+-	if (p->ecc_bits != 0xff) {
+-		chip->ecc_strength_ds = p->ecc_bits;
+-		chip->ecc_step_ds = 512;
+-	} else if (onfi_version >= 21 &&
+-		(le16_to_cpu(p->features) & ONFI_FEATURE_EXT_PARAM_PAGE)) {
+-
+-		/*
+-		 * The nand_flash_detect_ext_param_page() uses the
+-		 * Change Read Column command which maybe not supported
+-		 * by the chip->legacy.cmdfunc. So try to update the
+-		 * chip->legacy.cmdfunc now. We do not replace user supplied
+-		 * command function.
+-		 */
+-		nand_legacy_adjust_cmdfunc(chip);
+-
+-		/* The Extended Parameter Page is supported since ONFI 2.1. */
+-		if (nand_flash_detect_ext_param_page(chip, p))
+-			pr_warn("Failed to detect ONFI extended param page\n");
+-	} else {
+-		pr_warn("Could not retrieve ONFI ECC requirements\n");
+-	}
+-
+-	/* Save some parameters from the parameter page for future use */
+-	if (le16_to_cpu(p->opt_cmd) & ONFI_OPT_CMD_SET_GET_FEATURES) {
+-		chip->parameters.supports_set_get_features = true;
+-		bitmap_set(chip->parameters.get_feature_list,
+-			   ONFI_FEATURE_ADDR_TIMING_MODE, 1);
+-		bitmap_set(chip->parameters.set_feature_list,
+-			   ONFI_FEATURE_ADDR_TIMING_MODE, 1);
+-	}
+-
+-	onfi = kzalloc(sizeof(*onfi), GFP_KERNEL);
+-	if (!onfi) {
+-		ret = -ENOMEM;
+-		goto free_model;
+-	}
+-
+-	onfi->version = onfi_version;
+-	onfi->tPROG = le16_to_cpu(p->t_prog);
+-	onfi->tBERS = le16_to_cpu(p->t_bers);
+-	onfi->tR = le16_to_cpu(p->t_r);
+-	onfi->tCCS = le16_to_cpu(p->t_ccs);
+-	onfi->async_timing_mode = le16_to_cpu(p->async_timing_mode);
+-	onfi->vendor_revision = le16_to_cpu(p->vendor_revision);
+-	memcpy(onfi->vendor, p->vendor, sizeof(p->vendor));
+-	chip->parameters.onfi = onfi;
+-
+-	/* Identification done, free the full ONFI parameter page and exit */
+-	kfree(p);
+-
+-	return 1;
+-
+-free_model:
+-	kfree(chip->parameters.model);
+-free_onfi_param_page:
+-	kfree(p);
+-
+-	return ret;
+-}
+-
+ /*
+  * Check if the NAND chip is JEDEC compliant, returns 1 if it is, 0 otherwise.
+  */
+@@ -5076,7 +4788,7 @@ static int nand_detect(struct nand_chip *chip, struct nand_flash_dev *type)
  
-+	ret = nand_legacy_check_hooks(chip);
-+	if (ret)
-+		return ret;
-+
- 	/* Set the default functions */
- 	nand_set_defaults(chip);
- 
-diff --git a/drivers/mtd/nand/raw/nand_legacy.c b/drivers/mtd/nand/raw/nand_legacy.c
+ 	if (!type->name || !type->pagesize) {
+ 		/* Check if the chip is ONFI compliant */
+-		ret = nand_flash_detect_onfi(chip);
++		ret = nand_onfi_detect(chip);
+ 		if (ret < 0)
+ 			return ret;
+ 		else if (ret)
+diff --git a/drivers/mtd/nand/raw/nand_onfi.c b/drivers/mtd/nand/raw/nand_onfi.c
 new file mode 100644
-index 000000000000..c5ddc86cd98c
+index 000000000000..d8184cf591ad
 --- /dev/null
-+++ b/drivers/mtd/nand/raw/nand_legacy.c
-@@ -0,0 +1,642 @@
++++ b/drivers/mtd/nand/raw/nand_onfi.c
+@@ -0,0 +1,305 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)
@@ -831,636 +467,672 @@ index 000000000000..c5ddc86cd98c
 + *	Aleph One Ltd. and Toby Churchill Ltd. for supporting the
 + *	rework for 2K page size chips
 + *
-+ * This file contains all legacy helpers/code that should be removed
-+ * at some point.
++ * This file contains all ONFI helpers.
 + */
 +
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/nmi.h>
++#include <linux/slab.h>
 +
 +#include "internals.h"
 +
-+/**
-+ * nand_read_byte - [DEFAULT] read one byte from the chip
-+ * @chip: NAND chip object
-+ *
-+ * Default read function for 8bit buswidth
-+ */
-+static uint8_t nand_read_byte(struct nand_chip *chip)
++u16 onfi_crc16(u16 crc, u8 const *p, size_t len)
 +{
-+	return readb(chip->legacy.IO_ADDR_R);
-+}
-+
-+/**
-+ * nand_read_byte16 - [DEFAULT] read one byte endianness aware from the chip
-+ * @chip: NAND chip object
-+ *
-+ * Default read function for 16bit buswidth with endianness conversion.
-+ *
-+ */
-+static uint8_t nand_read_byte16(struct nand_chip *chip)
-+{
-+	return (uint8_t) cpu_to_le16(readw(chip->legacy.IO_ADDR_R));
-+}
-+
-+/**
-+ * nand_select_chip - [DEFAULT] control CE line
-+ * @chip: NAND chip object
-+ * @chipnr: chipnumber to select, -1 for deselect
-+ *
-+ * Default select function for 1 chip devices.
-+ */
-+static void nand_select_chip(struct nand_chip *chip, int chipnr)
-+{
-+	switch (chipnr) {
-+	case -1:
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+				      0 | NAND_CTRL_CHANGE);
-+		break;
-+	case 0:
-+		break;
-+
-+	default:
-+		BUG();
++	int i;
++	while (len--) {
++		crc ^= *p++ << 8;
++		for (i = 0; i < 8; i++)
++			crc = (crc << 1) ^ ((crc & 0x8000) ? 0x8005 : 0);
 +	}
++
++	return crc;
 +}
 +
-+/**
-+ * nand_write_byte - [DEFAULT] write single byte to chip
-+ * @chip: NAND chip object
-+ * @byte: value to write
-+ *
-+ * Default function to write a byte to I/O[7:0]
-+ */
-+static void nand_write_byte(struct nand_chip *chip, uint8_t byte)
++/* Parse the Extended Parameter Page. */
++static int nand_flash_detect_ext_param_page(struct nand_chip *chip,
++					    struct nand_onfi_params *p)
 +{
-+	chip->legacy.write_buf(chip, &byte, 1);
-+}
-+
-+/**
-+ * nand_write_byte16 - [DEFAULT] write single byte to a chip with width 16
-+ * @chip: NAND chip object
-+ * @byte: value to write
-+ *
-+ * Default function to write a byte to I/O[7:0] on a 16-bit wide chip.
-+ */
-+static void nand_write_byte16(struct nand_chip *chip, uint8_t byte)
-+{
-+	uint16_t word = byte;
-+
-+	/*
-+	 * It's not entirely clear what should happen to I/O[15:8] when writing
-+	 * a byte. The ONFi spec (Revision 3.1; 2012-09-19, Section 2.16) reads:
-+	 *
-+	 *    When the host supports a 16-bit bus width, only data is
-+	 *    transferred at the 16-bit width. All address and command line
-+	 *    transfers shall use only the lower 8-bits of the data bus. During
-+	 *    command transfers, the host may place any value on the upper
-+	 *    8-bits of the data bus. During address transfers, the host shall
-+	 *    set the upper 8-bits of the data bus to 00h.
-+	 *
-+	 * One user of the write_byte callback is nand_set_features. The
-+	 * four parameters are specified to be written to I/O[7:0], but this is
-+	 * neither an address nor a command transfer. Let's assume a 0 on the
-+	 * upper I/O lines is OK.
-+	 */
-+	chip->legacy.write_buf(chip, (uint8_t *)&word, 2);
-+}
-+
-+/**
-+ * nand_write_buf - [DEFAULT] write buffer to chip
-+ * @chip: NAND chip object
-+ * @buf: data buffer
-+ * @len: number of bytes to write
-+ *
-+ * Default write function for 8bit buswidth.
-+ */
-+static void nand_write_buf(struct nand_chip *chip, const uint8_t *buf, int len)
-+{
-+	iowrite8_rep(chip->legacy.IO_ADDR_W, buf, len);
-+}
-+
-+/**
-+ * nand_read_buf - [DEFAULT] read chip data into buffer
-+ * @chip: NAND chip object
-+ * @buf: buffer to store date
-+ * @len: number of bytes to read
-+ *
-+ * Default read function for 8bit buswidth.
-+ */
-+static void nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
-+{
-+	ioread8_rep(chip->legacy.IO_ADDR_R, buf, len);
-+}
-+
-+/**
-+ * nand_write_buf16 - [DEFAULT] write buffer to chip
-+ * @chip: NAND chip object
-+ * @buf: data buffer
-+ * @len: number of bytes to write
-+ *
-+ * Default write function for 16bit buswidth.
-+ */
-+static void nand_write_buf16(struct nand_chip *chip, const uint8_t *buf,
-+			     int len)
-+{
-+	u16 *p = (u16 *) buf;
-+
-+	iowrite16_rep(chip->legacy.IO_ADDR_W, p, len >> 1);
-+}
-+
-+/**
-+ * nand_read_buf16 - [DEFAULT] read chip data into buffer
-+ * @chip: NAND chip object
-+ * @buf: buffer to store date
-+ * @len: number of bytes to read
-+ *
-+ * Default read function for 16bit buswidth.
-+ */
-+static void nand_read_buf16(struct nand_chip *chip, uint8_t *buf, int len)
-+{
-+	u16 *p = (u16 *) buf;
-+
-+	ioread16_rep(chip->legacy.IO_ADDR_R, p, len >> 1);
-+}
-+
-+/**
-+ * panic_nand_wait_ready - [GENERIC] Wait for the ready pin after commands.
-+ * @mtd: MTD device structure
-+ * @timeo: Timeout
-+ *
-+ * Helper function for nand_wait_ready used when needing to wait in interrupt
-+ * context.
-+ */
-+static void panic_nand_wait_ready(struct mtd_info *mtd, unsigned long timeo)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct onfi_ext_param_page *ep;
++	struct onfi_ext_section *s;
++	struct onfi_ext_ecc_info *ecc;
++	uint8_t *cursor;
++	int ret;
++	int len;
 +	int i;
 +
-+	/* Wait for the device to get ready */
-+	for (i = 0; i < timeo; i++) {
-+		if (chip->legacy.dev_ready(chip))
-+			break;
-+		touch_softlockup_watchdog();
-+		mdelay(1);
-+	}
-+}
++	len = le16_to_cpu(p->ext_param_page_length) * 16;
++	ep = kmalloc(len, GFP_KERNEL);
++	if (!ep)
++		return -ENOMEM;
 +
-+/**
-+ * nand_wait_ready - [GENERIC] Wait for the ready pin after commands.
-+ * @chip: NAND chip object
-+ *
-+ * Wait for the ready pin after a command, and warn if a timeout occurs.
-+ */
-+void nand_wait_ready(struct nand_chip *chip)
-+{
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	unsigned long timeo = 400;
-+
-+	if (in_interrupt() || oops_in_progress)
-+		return panic_nand_wait_ready(mtd, timeo);
-+
-+	/* Wait until command is processed or timeout occurs */
-+	timeo = jiffies + msecs_to_jiffies(timeo);
-+	do {
-+		if (chip->legacy.dev_ready(chip))
-+			return;
-+		cond_resched();
-+	} while (time_before(jiffies, timeo));
-+
-+	if (!chip->legacy.dev_ready(chip))
-+		pr_warn_ratelimited("timeout while waiting for chip to become ready\n");
-+}
-+EXPORT_SYMBOL_GPL(nand_wait_ready);
-+
-+/**
-+ * nand_wait_status_ready - [GENERIC] Wait for the ready status after commands.
-+ * @mtd: MTD device structure
-+ * @timeo: Timeout in ms
-+ *
-+ * Wait for status ready (i.e. command done) or timeout.
-+ */
-+static void nand_wait_status_ready(struct mtd_info *mtd, unsigned long timeo)
-+{
-+	register struct nand_chip *chip = mtd_to_nand(mtd);
-+	int ret;
-+
-+	timeo = jiffies + msecs_to_jiffies(timeo);
-+	do {
-+		u8 status;
-+
-+		ret = nand_read_data_op(chip, &status, sizeof(status), true);
-+		if (ret)
-+			return;
-+
-+		if (status & NAND_STATUS_READY)
-+			break;
-+		touch_softlockup_watchdog();
-+	} while (time_before(jiffies, timeo));
-+};
-+
-+/**
-+ * nand_command - [DEFAULT] Send command to NAND device
-+ * @chip: NAND chip object
-+ * @command: the command to be sent
-+ * @column: the column address for this command, -1 if none
-+ * @page_addr: the page address for this command, -1 if none
-+ *
-+ * Send command to NAND device. This function is used for small page devices
-+ * (512 Bytes per page).
-+ */
-+static void nand_command(struct nand_chip *chip, unsigned int command,
-+			 int column, int page_addr)
-+{
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	int ctrl = NAND_CTRL_CLE | NAND_CTRL_CHANGE;
-+
-+	/* Write out the command to the device */
-+	if (command == NAND_CMD_SEQIN) {
-+		int readcmd;
-+
-+		if (column >= mtd->writesize) {
-+			/* OOB area */
-+			column -= mtd->writesize;
-+			readcmd = NAND_CMD_READOOB;
-+		} else if (column < 256) {
-+			/* First 256 bytes --> READ0 */
-+			readcmd = NAND_CMD_READ0;
-+		} else {
-+			column -= 256;
-+			readcmd = NAND_CMD_READ1;
-+		}
-+		chip->legacy.cmd_ctrl(chip, readcmd, ctrl);
-+		ctrl &= ~NAND_CTRL_CHANGE;
-+	}
-+	if (command != NAND_CMD_NONE)
-+		chip->legacy.cmd_ctrl(chip, command, ctrl);
-+
-+	/* Address cycle, when necessary */
-+	ctrl = NAND_CTRL_ALE | NAND_CTRL_CHANGE;
-+	/* Serially input address */
-+	if (column != -1) {
-+		/* Adjust columns for 16 bit buswidth */
-+		if (chip->options & NAND_BUSWIDTH_16 &&
-+				!nand_opcode_8bits(command))
-+			column >>= 1;
-+		chip->legacy.cmd_ctrl(chip, column, ctrl);
-+		ctrl &= ~NAND_CTRL_CHANGE;
-+	}
-+	if (page_addr != -1) {
-+		chip->legacy.cmd_ctrl(chip, page_addr, ctrl);
-+		ctrl &= ~NAND_CTRL_CHANGE;
-+		chip->legacy.cmd_ctrl(chip, page_addr >> 8, ctrl);
-+		if (chip->options & NAND_ROW_ADDR_3)
-+			chip->legacy.cmd_ctrl(chip, page_addr >> 16, ctrl);
-+	}
-+	chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+			      NAND_NCE | NAND_CTRL_CHANGE);
-+
-+	/*
-+	 * Program and erase have their own busy handlers status and sequential
-+	 * in needs no delay
-+	 */
-+	switch (command) {
-+
-+	case NAND_CMD_NONE:
-+	case NAND_CMD_PAGEPROG:
-+	case NAND_CMD_ERASE1:
-+	case NAND_CMD_ERASE2:
-+	case NAND_CMD_SEQIN:
-+	case NAND_CMD_STATUS:
-+	case NAND_CMD_READID:
-+	case NAND_CMD_SET_FEATURES:
-+		return;
-+
-+	case NAND_CMD_RESET:
-+		if (chip->legacy.dev_ready)
-+			break;
-+		udelay(chip->legacy.chip_delay);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_STATUS,
-+				      NAND_CTRL_CLE | NAND_CTRL_CHANGE);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+				      NAND_NCE | NAND_CTRL_CHANGE);
-+		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
-+		nand_wait_status_ready(mtd, 250);
-+		return;
-+
-+		/* This applies to read commands */
-+	case NAND_CMD_READ0:
-+		/*
-+		 * READ0 is sometimes used to exit GET STATUS mode. When this
-+		 * is the case no address cycles are requested, and we can use
-+		 * this information to detect that we should not wait for the
-+		 * device to be ready.
-+		 */
-+		if (column == -1 && page_addr == -1)
-+			return;
-+
-+	default:
-+		/*
-+		 * If we don't have access to the busy pin, we apply the given
-+		 * command delay
-+		 */
-+		if (!chip->legacy.dev_ready) {
-+			udelay(chip->legacy.chip_delay);
-+			return;
-+		}
-+	}
-+	/*
-+	 * Apply this short delay always to ensure that we do wait tWB in
-+	 * any case on any machine.
-+	 */
-+	ndelay(100);
-+
-+	nand_wait_ready(chip);
-+}
-+
-+static void nand_ccs_delay(struct nand_chip *chip)
-+{
-+	/*
-+	 * The controller already takes care of waiting for tCCS when the RNDIN
-+	 * or RNDOUT command is sent, return directly.
-+	 */
-+	if (!(chip->options & NAND_WAIT_TCCS))
-+		return;
-+
-+	/*
-+	 * Wait tCCS_min if it is correctly defined, otherwise wait 500ns
-+	 * (which should be safe for all NANDs).
-+	 */
-+	if (chip->setup_data_interface)
-+		ndelay(chip->data_interface.timings.sdr.tCCS_min / 1000);
-+	else
-+		ndelay(500);
-+}
-+
-+/**
-+ * nand_command_lp - [DEFAULT] Send command to NAND large page device
-+ * @chip: NAND chip object
-+ * @command: the command to be sent
-+ * @column: the column address for this command, -1 if none
-+ * @page_addr: the page address for this command, -1 if none
-+ *
-+ * Send command to NAND device. This is the version for the new large page
-+ * devices. We don't have the separate regions as we have in the small page
-+ * devices. We must emulate NAND_CMD_READOOB to keep the code compatible.
-+ */
-+static void nand_command_lp(struct nand_chip *chip, unsigned int command,
-+			    int column, int page_addr)
-+{
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
-+	/* Emulate NAND_CMD_READOOB */
-+	if (command == NAND_CMD_READOOB) {
-+		column += mtd->writesize;
-+		command = NAND_CMD_READ0;
-+	}
-+
-+	/* Command latch cycle */
-+	if (command != NAND_CMD_NONE)
-+		chip->legacy.cmd_ctrl(chip, command,
-+				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
-+
-+	if (column != -1 || page_addr != -1) {
-+		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
-+
-+		/* Serially input address */
-+		if (column != -1) {
-+			/* Adjust columns for 16 bit buswidth */
-+			if (chip->options & NAND_BUSWIDTH_16 &&
-+					!nand_opcode_8bits(command))
-+				column >>= 1;
-+			chip->legacy.cmd_ctrl(chip, column, ctrl);
-+			ctrl &= ~NAND_CTRL_CHANGE;
-+
-+			/* Only output a single addr cycle for 8bits opcodes. */
-+			if (!nand_opcode_8bits(command))
-+				chip->legacy.cmd_ctrl(chip, column >> 8, ctrl);
-+		}
-+		if (page_addr != -1) {
-+			chip->legacy.cmd_ctrl(chip, page_addr, ctrl);
-+			chip->legacy.cmd_ctrl(chip, page_addr >> 8,
-+					     NAND_NCE | NAND_ALE);
-+			if (chip->options & NAND_ROW_ADDR_3)
-+				chip->legacy.cmd_ctrl(chip, page_addr >> 16,
-+						      NAND_NCE | NAND_ALE);
-+		}
-+	}
-+	chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+			      NAND_NCE | NAND_CTRL_CHANGE);
-+
-+	/*
-+	 * Program and erase have their own busy handlers status, sequential
-+	 * in and status need no delay.
-+	 */
-+	switch (command) {
-+
-+	case NAND_CMD_NONE:
-+	case NAND_CMD_CACHEDPROG:
-+	case NAND_CMD_PAGEPROG:
-+	case NAND_CMD_ERASE1:
-+	case NAND_CMD_ERASE2:
-+	case NAND_CMD_SEQIN:
-+	case NAND_CMD_STATUS:
-+	case NAND_CMD_READID:
-+	case NAND_CMD_SET_FEATURES:
-+		return;
-+
-+	case NAND_CMD_RNDIN:
-+		nand_ccs_delay(chip);
-+		return;
-+
-+	case NAND_CMD_RESET:
-+		if (chip->legacy.dev_ready)
-+			break;
-+		udelay(chip->legacy.chip_delay);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_STATUS,
-+				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+				      NAND_NCE | NAND_CTRL_CHANGE);
-+		/* EZ-NAND can take upto 250ms as per ONFi v4.0 */
-+		nand_wait_status_ready(mtd, 250);
-+		return;
-+
-+	case NAND_CMD_RNDOUT:
-+		/* No ready / busy check necessary */
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_RNDOUTSTART,
-+				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+				      NAND_NCE | NAND_CTRL_CHANGE);
-+
-+		nand_ccs_delay(chip);
-+		return;
-+
-+	case NAND_CMD_READ0:
-+		/*
-+		 * READ0 is sometimes used to exit GET STATUS mode. When this
-+		 * is the case no address cycles are requested, and we can use
-+		 * this information to detect that READSTART should not be
-+		 * issued.
-+		 */
-+		if (column == -1 && page_addr == -1)
-+			return;
-+
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_READSTART,
-+				      NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
-+		chip->legacy.cmd_ctrl(chip, NAND_CMD_NONE,
-+				      NAND_NCE | NAND_CTRL_CHANGE);
-+
-+		/* This applies to read commands */
-+	default:
-+		/*
-+		 * If we don't have access to the busy pin, we apply the given
-+		 * command delay.
-+		 */
-+		if (!chip->legacy.dev_ready) {
-+			udelay(chip->legacy.chip_delay);
-+			return;
-+		}
-+	}
-+
-+	/*
-+	 * Apply this short delay always to ensure that we do wait tWB in
-+	 * any case on any machine.
-+	 */
-+	ndelay(100);
-+
-+	nand_wait_ready(chip);
-+}
-+
-+/**
-+ * nand_get_set_features_notsupp - set/get features stub returning -ENOTSUPP
-+ * @chip: nand chip info structure
-+ * @addr: feature address.
-+ * @subfeature_param: the subfeature parameters, a four bytes array.
-+ *
-+ * Should be used by NAND controller drivers that do not support the SET/GET
-+ * FEATURES operations.
-+ */
-+int nand_get_set_features_notsupp(struct nand_chip *chip, int addr,
-+				  u8 *subfeature_param)
-+{
-+	return -ENOTSUPP;
-+}
-+EXPORT_SYMBOL(nand_get_set_features_notsupp);
-+
-+/**
-+ * nand_wait - [DEFAULT] wait until the command is done
-+ * @mtd: MTD device structure
-+ * @chip: NAND chip structure
-+ *
-+ * Wait for command done. This applies to erase and program only.
-+ */
-+static int nand_wait(struct nand_chip *chip)
-+{
-+
-+	unsigned long timeo = 400;
-+	u8 status;
-+	int ret;
-+
-+	/*
-+	 * Apply this short delay always to ensure that we do wait tWB in any
-+	 * case on any machine.
-+	 */
-+	ndelay(100);
-+
-+	ret = nand_status_op(chip, NULL);
++	/* Send our own NAND_CMD_PARAM. */
++	ret = nand_read_param_page_op(chip, 0, NULL, 0);
 +	if (ret)
-+		return ret;
++		goto ext_out;
 +
-+	if (in_interrupt() || oops_in_progress)
-+		panic_nand_wait(chip, timeo);
-+	else {
-+		timeo = jiffies + msecs_to_jiffies(timeo);
-+		do {
-+			if (chip->legacy.dev_ready) {
-+				if (chip->legacy.dev_ready(chip))
-+					break;
-+			} else {
-+				ret = nand_read_data_op(chip, &status,
-+							sizeof(status), true);
-+				if (ret)
-+					return ret;
++	/* Use the Change Read Column command to skip the ONFI param pages. */
++	ret = nand_change_read_column_op(chip,
++					 sizeof(*p) * p->num_of_param_pages,
++					 ep, len, true);
++	if (ret)
++		goto ext_out;
 +
-+				if (status & NAND_STATUS_READY)
-+					break;
++	ret = -EINVAL;
++	if ((onfi_crc16(ONFI_CRC_BASE, ((uint8_t *)ep) + 2, len - 2)
++		!= le16_to_cpu(ep->crc))) {
++		pr_debug("fail in the CRC.\n");
++		goto ext_out;
++	}
++
++	/*
++	 * Check the signature.
++	 * Do not strictly follow the ONFI spec, maybe changed in future.
++	 */
++	if (strncmp(ep->sig, "EPPS", 4)) {
++		pr_debug("The signature is invalid.\n");
++		goto ext_out;
++	}
++
++	/* find the ECC section. */
++	cursor = (uint8_t *)(ep + 1);
++	for (i = 0; i < ONFI_EXT_SECTION_MAX; i++) {
++		s = ep->sections + i;
++		if (s->type == ONFI_SECTION_TYPE_2)
++			break;
++		cursor += s->length * 16;
++	}
++	if (i == ONFI_EXT_SECTION_MAX) {
++		pr_debug("We can not find the ECC section.\n");
++		goto ext_out;
++	}
++
++	/* get the info we want. */
++	ecc = (struct onfi_ext_ecc_info *)cursor;
++
++	if (!ecc->codeword_size) {
++		pr_debug("Invalid codeword size\n");
++		goto ext_out;
++	}
++
++	chip->ecc_strength_ds = ecc->ecc_bits;
++	chip->ecc_step_ds = 1 << ecc->codeword_size;
++	ret = 0;
++
++ext_out:
++	kfree(ep);
++	return ret;
++}
++
++/*
++ * Recover data with bit-wise majority
++ */
++static void nand_bit_wise_majority(const void **srcbufs,
++				   unsigned int nsrcbufs,
++				   void *dstbuf,
++				   unsigned int bufsize)
++{
++	int i, j, k;
++
++	for (i = 0; i < bufsize; i++) {
++		u8 val = 0;
++
++		for (j = 0; j < 8; j++) {
++			unsigned int cnt = 0;
++
++			for (k = 0; k < nsrcbufs; k++) {
++				const u8 *srcbuf = srcbufs[k];
++
++				if (srcbuf[i] & BIT(j))
++					cnt++;
 +			}
-+			cond_resched();
-+		} while (time_before(jiffies, timeo));
++
++			if (cnt > nsrcbufs / 2)
++				val |= BIT(j);
++		}
++
++		((u8 *)dstbuf)[i] = val;
 +	}
-+
-+	ret = nand_read_data_op(chip, &status, sizeof(status), true);
-+	if (ret)
-+		return ret;
-+
-+	/* This can happen if in case of timeout or buggy dev_ready */
-+	WARN_ON(!(status & NAND_STATUS_READY));
-+	return status;
 +}
 +
-+void nand_legacy_set_defaults(struct nand_chip *chip)
-+{
-+	unsigned int busw = chip->options & NAND_BUSWIDTH_16;
-+
-+	if (chip->exec_op)
-+		return;
-+
-+	/* check for proper chip_delay setup, set 20us if not */
-+	if (!chip->legacy.chip_delay)
-+		chip->legacy.chip_delay = 20;
-+
-+	/* check, if a user supplied command function given */
-+	if (!chip->legacy.cmdfunc && !chip->exec_op)
-+		chip->legacy.cmdfunc = nand_command;
-+
-+	/* check, if a user supplied wait function given */
-+	if (chip->legacy.waitfunc == NULL)
-+		chip->legacy.waitfunc = nand_wait;
-+
-+	if (!chip->select_chip)
-+		chip->select_chip = nand_select_chip;
-+
-+	/* If called twice, pointers that depend on busw may need to be reset */
-+	if (!chip->legacy.read_byte || chip->legacy.read_byte == nand_read_byte)
-+		chip->legacy.read_byte = busw ? nand_read_byte16 : nand_read_byte;
-+	if (!chip->legacy.write_buf || chip->legacy.write_buf == nand_write_buf)
-+		chip->legacy.write_buf = busw ? nand_write_buf16 : nand_write_buf;
-+	if (!chip->legacy.write_byte || chip->legacy.write_byte == nand_write_byte)
-+		chip->legacy.write_byte = busw ? nand_write_byte16 : nand_write_byte;
-+	if (!chip->legacy.read_buf || chip->legacy.read_buf == nand_read_buf)
-+		chip->legacy.read_buf = busw ? nand_read_buf16 : nand_read_buf;
-+}
-+
-+void nand_legacy_adjust_cmdfunc(struct nand_chip *chip)
++/*
++ * Check if the NAND chip is ONFI compliant, returns 1 if it is, 0 otherwise.
++ */
++int nand_onfi_detect(struct nand_chip *chip)
 +{
 +	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct nand_onfi_params *p;
++	struct onfi_params *onfi;
++	int onfi_version = 0;
++	char id[4];
++	int i, ret, val;
 +
-+	/* Do not replace user supplied command function! */
-+	if (mtd->writesize > 512 && chip->legacy.cmdfunc == nand_command)
-+		chip->legacy.cmdfunc = nand_command_lp;
-+}
-+
-+int nand_legacy_check_hooks(struct nand_chip *chip)
-+{
-+	/*
-+	 * ->legacy.cmdfunc() is legacy and will only be used if ->exec_op() is
-+	 * not populated.
-+	 */
-+	if (chip->exec_op)
++	/* Try ONFI for unknown chip or LP */
++	ret = nand_readid_op(chip, 0x20, id, sizeof(id));
++	if (ret || strncmp(id, "ONFI", 4))
 +		return 0;
 +
-+	/*
-+	 * Default functions assigned for ->legacy.cmdfunc() and
-+	 * ->select_chip() both expect ->legacy.cmd_ctrl() to be populated.
-+	 */
-+	if ((!chip->legacy.cmdfunc || !chip->select_chip) &&
-+	    !chip->legacy.cmd_ctrl) {
-+		pr_err("->legacy.cmd_ctrl() should be provided\n");
-+		return -EINVAL;
++	/* ONFI chip: allocate a buffer to hold its parameter page */
++	p = kzalloc((sizeof(*p) * 3), GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++
++	ret = nand_read_param_page_op(chip, 0, NULL, 0);
++	if (ret) {
++		ret = 0;
++		goto free_onfi_param_page;
 +	}
 +
-+	return 0;
++	for (i = 0; i < 3; i++) {
++		ret = nand_read_data_op(chip, &p[i], sizeof(*p), true);
++		if (ret) {
++			ret = 0;
++			goto free_onfi_param_page;
++		}
++
++		if (onfi_crc16(ONFI_CRC_BASE, (u8 *)&p[i], 254) ==
++				le16_to_cpu(p->crc)) {
++			if (i)
++				memcpy(p, &p[i], sizeof(*p));
++			break;
++		}
++	}
++
++	if (i == 3) {
++		const void *srcbufs[3] = {p, p + 1, p + 2};
++
++		pr_warn("Could not find a valid ONFI parameter page, trying bit-wise majority to recover it\n");
++		nand_bit_wise_majority(srcbufs, ARRAY_SIZE(srcbufs), p,
++				       sizeof(*p));
++
++		if (onfi_crc16(ONFI_CRC_BASE, (u8 *)p, 254) !=
++				le16_to_cpu(p->crc)) {
++			pr_err("ONFI parameter recovery failed, aborting\n");
++			goto free_onfi_param_page;
++		}
++	}
++
++	if (chip->manufacturer.desc && chip->manufacturer.desc->ops &&
++	    chip->manufacturer.desc->ops->fixup_onfi_param_page)
++		chip->manufacturer.desc->ops->fixup_onfi_param_page(chip, p);
++
++	/* Check version */
++	val = le16_to_cpu(p->revision);
++	if (val & ONFI_VERSION_2_3)
++		onfi_version = 23;
++	else if (val & ONFI_VERSION_2_2)
++		onfi_version = 22;
++	else if (val & ONFI_VERSION_2_1)
++		onfi_version = 21;
++	else if (val & ONFI_VERSION_2_0)
++		onfi_version = 20;
++	else if (val & ONFI_VERSION_1_0)
++		onfi_version = 10;
++
++	if (!onfi_version) {
++		pr_info("unsupported ONFI version: %d\n", val);
++		goto free_onfi_param_page;
++	}
++
++	sanitize_string(p->manufacturer, sizeof(p->manufacturer));
++	sanitize_string(p->model, sizeof(p->model));
++	chip->parameters.model = kstrdup(p->model, GFP_KERNEL);
++	if (!chip->parameters.model) {
++		ret = -ENOMEM;
++		goto free_onfi_param_page;
++	}
++
++	mtd->writesize = le32_to_cpu(p->byte_per_page);
++
++	/*
++	 * pages_per_block and blocks_per_lun may not be a power-of-2 size
++	 * (don't ask me who thought of this...). MTD assumes that these
++	 * dimensions will be power-of-2, so just truncate the remaining area.
++	 */
++	mtd->erasesize = 1 << (fls(le32_to_cpu(p->pages_per_block)) - 1);
++	mtd->erasesize *= mtd->writesize;
++
++	mtd->oobsize = le16_to_cpu(p->spare_bytes_per_page);
++
++	/* See erasesize comment */
++	chip->chipsize = 1 << (fls(le32_to_cpu(p->blocks_per_lun)) - 1);
++	chip->chipsize *= (uint64_t)mtd->erasesize * p->lun_count;
++	chip->bits_per_cell = p->bits_per_cell;
++
++	chip->max_bb_per_die = le16_to_cpu(p->bb_per_lun);
++	chip->blocks_per_die = le32_to_cpu(p->blocks_per_lun);
++
++	if (le16_to_cpu(p->features) & ONFI_FEATURE_16_BIT_BUS)
++		chip->options |= NAND_BUSWIDTH_16;
++
++	if (p->ecc_bits != 0xff) {
++		chip->ecc_strength_ds = p->ecc_bits;
++		chip->ecc_step_ds = 512;
++	} else if (onfi_version >= 21 &&
++		(le16_to_cpu(p->features) & ONFI_FEATURE_EXT_PARAM_PAGE)) {
++
++		/*
++		 * The nand_flash_detect_ext_param_page() uses the
++		 * Change Read Column command which maybe not supported
++		 * by the chip->legacy.cmdfunc. So try to update the
++		 * chip->legacy.cmdfunc now. We do not replace user supplied
++		 * command function.
++		 */
++		nand_legacy_adjust_cmdfunc(chip);
++
++		/* The Extended Parameter Page is supported since ONFI 2.1. */
++		if (nand_flash_detect_ext_param_page(chip, p))
++			pr_warn("Failed to detect ONFI extended param page\n");
++	} else {
++		pr_warn("Could not retrieve ONFI ECC requirements\n");
++	}
++
++	/* Save some parameters from the parameter page for future use */
++	if (le16_to_cpu(p->opt_cmd) & ONFI_OPT_CMD_SET_GET_FEATURES) {
++		chip->parameters.supports_set_get_features = true;
++		bitmap_set(chip->parameters.get_feature_list,
++			   ONFI_FEATURE_ADDR_TIMING_MODE, 1);
++		bitmap_set(chip->parameters.set_feature_list,
++			   ONFI_FEATURE_ADDR_TIMING_MODE, 1);
++	}
++
++	onfi = kzalloc(sizeof(*onfi), GFP_KERNEL);
++	if (!onfi) {
++		ret = -ENOMEM;
++		goto free_model;
++	}
++
++	onfi->version = onfi_version;
++	onfi->tPROG = le16_to_cpu(p->t_prog);
++	onfi->tBERS = le16_to_cpu(p->t_bers);
++	onfi->tR = le16_to_cpu(p->t_r);
++	onfi->tCCS = le16_to_cpu(p->t_ccs);
++	onfi->async_timing_mode = le16_to_cpu(p->async_timing_mode);
++	onfi->vendor_revision = le16_to_cpu(p->vendor_revision);
++	memcpy(onfi->vendor, p->vendor, sizeof(p->vendor));
++	chip->parameters.onfi = onfi;
++
++	/* Identification done, free the full ONFI parameter page and exit */
++	kfree(p);
++
++	return 1;
++
++free_model:
++	kfree(chip->parameters.model);
++free_onfi_param_page:
++	kfree(p);
++
++	return ret;
 +}
+diff --git a/include/linux/mtd/onfi.h b/include/linux/mtd/onfi.h
+new file mode 100644
+index 000000000000..339ac798568e
+--- /dev/null
++++ b/include/linux/mtd/onfi.h
+@@ -0,0 +1,178 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright © 2000-2010 David Woodhouse <dwmw2@infradead.org>
++ *			 Steven J. Hill <sjhill@realitydiluted.com>
++ *			 Thomas Gleixner <tglx@linutronix.de>
++ *
++ * Contains all ONFI related definitions
++ */
++
++#ifndef __LINUX_MTD_ONFI_H
++#define __LINUX_MTD_ONFI_H
++
++#include <linux/types.h>
++
++/* ONFI version bits */
++#define ONFI_VERSION_1_0		BIT(1)
++#define ONFI_VERSION_2_0		BIT(2)
++#define ONFI_VERSION_2_1		BIT(3)
++#define ONFI_VERSION_2_2		BIT(4)
++#define ONFI_VERSION_2_3		BIT(5)
++#define ONFI_VERSION_3_0		BIT(6)
++#define ONFI_VERSION_3_1		BIT(7)
++#define ONFI_VERSION_3_2		BIT(8)
++#define ONFI_VERSION_4_0		BIT(9)
++
++/* ONFI features */
++#define ONFI_FEATURE_16_BIT_BUS		(1 << 0)
++#define ONFI_FEATURE_EXT_PARAM_PAGE	(1 << 7)
++
++/* ONFI timing mode, used in both asynchronous and synchronous mode */
++#define ONFI_TIMING_MODE_0		(1 << 0)
++#define ONFI_TIMING_MODE_1		(1 << 1)
++#define ONFI_TIMING_MODE_2		(1 << 2)
++#define ONFI_TIMING_MODE_3		(1 << 3)
++#define ONFI_TIMING_MODE_4		(1 << 4)
++#define ONFI_TIMING_MODE_5		(1 << 5)
++#define ONFI_TIMING_MODE_UNKNOWN	(1 << 6)
++
++/* ONFI feature number/address */
++#define ONFI_FEATURE_NUMBER		256
++#define ONFI_FEATURE_ADDR_TIMING_MODE	0x1
++
++/* Vendor-specific feature address (Micron) */
++#define ONFI_FEATURE_ADDR_READ_RETRY	0x89
++#define ONFI_FEATURE_ON_DIE_ECC		0x90
++#define   ONFI_FEATURE_ON_DIE_ECC_EN	BIT(3)
++
++/* ONFI subfeature parameters length */
++#define ONFI_SUBFEATURE_PARAM_LEN	4
++
++/* ONFI optional commands SET/GET FEATURES supported? */
++#define ONFI_OPT_CMD_SET_GET_FEATURES	(1 << 2)
++
++struct nand_onfi_params {
++	/* rev info and features block */
++	/* 'O' 'N' 'F' 'I'  */
++	u8 sig[4];
++	__le16 revision;
++	__le16 features;
++	__le16 opt_cmd;
++	u8 reserved0[2];
++	__le16 ext_param_page_length; /* since ONFI 2.1 */
++	u8 num_of_param_pages;        /* since ONFI 2.1 */
++	u8 reserved1[17];
++
++	/* manufacturer information block */
++	char manufacturer[12];
++	char model[20];
++	u8 jedec_id;
++	__le16 date_code;
++	u8 reserved2[13];
++
++	/* memory organization block */
++	__le32 byte_per_page;
++	__le16 spare_bytes_per_page;
++	__le32 data_bytes_per_ppage;
++	__le16 spare_bytes_per_ppage;
++	__le32 pages_per_block;
++	__le32 blocks_per_lun;
++	u8 lun_count;
++	u8 addr_cycles;
++	u8 bits_per_cell;
++	__le16 bb_per_lun;
++	__le16 block_endurance;
++	u8 guaranteed_good_blocks;
++	__le16 guaranteed_block_endurance;
++	u8 programs_per_page;
++	u8 ppage_attr;
++	u8 ecc_bits;
++	u8 interleaved_bits;
++	u8 interleaved_ops;
++	u8 reserved3[13];
++
++	/* electrical parameter block */
++	u8 io_pin_capacitance_max;
++	__le16 async_timing_mode;
++	__le16 program_cache_timing_mode;
++	__le16 t_prog;
++	__le16 t_bers;
++	__le16 t_r;
++	__le16 t_ccs;
++	__le16 src_sync_timing_mode;
++	u8 src_ssync_features;
++	__le16 clk_pin_capacitance_typ;
++	__le16 io_pin_capacitance_typ;
++	__le16 input_pin_capacitance_typ;
++	u8 input_pin_capacitance_max;
++	u8 driver_strength_support;
++	__le16 t_int_r;
++	__le16 t_adl;
++	u8 reserved4[8];
++
++	/* vendor */
++	__le16 vendor_revision;
++	u8 vendor[88];
++
++	__le16 crc;
++} __packed;
++
++#define ONFI_CRC_BASE	0x4F4E
++
++/* Extended ECC information Block Definition (since ONFI 2.1) */
++struct onfi_ext_ecc_info {
++	u8 ecc_bits;
++	u8 codeword_size;
++	__le16 bb_per_lun;
++	__le16 block_endurance;
++	u8 reserved[2];
++} __packed;
++
++#define ONFI_SECTION_TYPE_0	0	/* Unused section. */
++#define ONFI_SECTION_TYPE_1	1	/* for additional sections. */
++#define ONFI_SECTION_TYPE_2	2	/* for ECC information. */
++struct onfi_ext_section {
++	u8 type;
++	u8 length;
++} __packed;
++
++#define ONFI_EXT_SECTION_MAX 8
++
++/* Extended Parameter Page Definition (since ONFI 2.1) */
++struct onfi_ext_param_page {
++	__le16 crc;
++	u8 sig[4];             /* 'E' 'P' 'P' 'S' */
++	u8 reserved0[10];
++	struct onfi_ext_section sections[ONFI_EXT_SECTION_MAX];
++
++	/*
++	 * The actual size of the Extended Parameter Page is in
++	 * @ext_param_page_length of nand_onfi_params{}.
++	 * The following are the variable length sections.
++	 * So we do not add any fields below. Please see the ONFI spec.
++	 */
++} __packed;
++
++/**
++ * struct onfi_params - ONFI specific parameters that will be reused
++ * @version: ONFI version (BCD encoded), 0 if ONFI is not supported
++ * @tPROG: Page program time
++ * @tBERS: Block erase time
++ * @tR: Page read time
++ * @tCCS: Change column setup time
++ * @async_timing_mode: Supported asynchronous timing mode
++ * @vendor_revision: Vendor specific revision number
++ * @vendor: Vendor specific data
++ */
++struct onfi_params {
++	int version;
++	u16 tPROG;
++	u16 tBERS;
++	u16 tR;
++	u16 tCCS;
++	u16 async_timing_mode;
++	u16 vendor_revision;
++	u8 vendor[88];
++};
++
++#endif /* __LINUX_MTD_ONFI_H */
+diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
+index fbe7686cfc59..f4fc0cce7c55 100644
+--- a/include/linux/mtd/rawnand.h
++++ b/include/linux/mtd/rawnand.h
+@@ -21,6 +21,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/flashchip.h>
+ #include <linux/mtd/bbm.h>
++#include <linux/mtd/onfi.h>
+ #include <linux/of.h>
+ #include <linux/types.h>
+ 
+@@ -204,147 +205,6 @@ enum nand_ecc_algo {
+ #define NAND_CI_CELLTYPE_MSK	0x0C
+ #define NAND_CI_CELLTYPE_SHIFT	2
+ 
+-/* ONFI version bits */
+-#define ONFI_VERSION_1_0		BIT(1)
+-#define ONFI_VERSION_2_0		BIT(2)
+-#define ONFI_VERSION_2_1		BIT(3)
+-#define ONFI_VERSION_2_2		BIT(4)
+-#define ONFI_VERSION_2_3		BIT(5)
+-#define ONFI_VERSION_3_0		BIT(6)
+-#define ONFI_VERSION_3_1		BIT(7)
+-#define ONFI_VERSION_3_2		BIT(8)
+-#define ONFI_VERSION_4_0		BIT(9)
+-
+-/* ONFI features */
+-#define ONFI_FEATURE_16_BIT_BUS		(1 << 0)
+-#define ONFI_FEATURE_EXT_PARAM_PAGE	(1 << 7)
+-
+-/* ONFI timing mode, used in both asynchronous and synchronous mode */
+-#define ONFI_TIMING_MODE_0		(1 << 0)
+-#define ONFI_TIMING_MODE_1		(1 << 1)
+-#define ONFI_TIMING_MODE_2		(1 << 2)
+-#define ONFI_TIMING_MODE_3		(1 << 3)
+-#define ONFI_TIMING_MODE_4		(1 << 4)
+-#define ONFI_TIMING_MODE_5		(1 << 5)
+-#define ONFI_TIMING_MODE_UNKNOWN	(1 << 6)
+-
+-/* ONFI feature number/address */
+-#define ONFI_FEATURE_NUMBER		256
+-#define ONFI_FEATURE_ADDR_TIMING_MODE	0x1
+-
+-/* Vendor-specific feature address (Micron) */
+-#define ONFI_FEATURE_ADDR_READ_RETRY	0x89
+-#define ONFI_FEATURE_ON_DIE_ECC		0x90
+-#define   ONFI_FEATURE_ON_DIE_ECC_EN	BIT(3)
+-
+-/* ONFI subfeature parameters length */
+-#define ONFI_SUBFEATURE_PARAM_LEN	4
+-
+-/* ONFI optional commands SET/GET FEATURES supported? */
+-#define ONFI_OPT_CMD_SET_GET_FEATURES	(1 << 2)
+-
+-struct nand_onfi_params {
+-	/* rev info and features block */
+-	/* 'O' 'N' 'F' 'I'  */
+-	u8 sig[4];
+-	__le16 revision;
+-	__le16 features;
+-	__le16 opt_cmd;
+-	u8 reserved0[2];
+-	__le16 ext_param_page_length; /* since ONFI 2.1 */
+-	u8 num_of_param_pages;        /* since ONFI 2.1 */
+-	u8 reserved1[17];
+-
+-	/* manufacturer information block */
+-	char manufacturer[12];
+-	char model[20];
+-	u8 jedec_id;
+-	__le16 date_code;
+-	u8 reserved2[13];
+-
+-	/* memory organization block */
+-	__le32 byte_per_page;
+-	__le16 spare_bytes_per_page;
+-	__le32 data_bytes_per_ppage;
+-	__le16 spare_bytes_per_ppage;
+-	__le32 pages_per_block;
+-	__le32 blocks_per_lun;
+-	u8 lun_count;
+-	u8 addr_cycles;
+-	u8 bits_per_cell;
+-	__le16 bb_per_lun;
+-	__le16 block_endurance;
+-	u8 guaranteed_good_blocks;
+-	__le16 guaranteed_block_endurance;
+-	u8 programs_per_page;
+-	u8 ppage_attr;
+-	u8 ecc_bits;
+-	u8 interleaved_bits;
+-	u8 interleaved_ops;
+-	u8 reserved3[13];
+-
+-	/* electrical parameter block */
+-	u8 io_pin_capacitance_max;
+-	__le16 async_timing_mode;
+-	__le16 program_cache_timing_mode;
+-	__le16 t_prog;
+-	__le16 t_bers;
+-	__le16 t_r;
+-	__le16 t_ccs;
+-	__le16 src_sync_timing_mode;
+-	u8 src_ssync_features;
+-	__le16 clk_pin_capacitance_typ;
+-	__le16 io_pin_capacitance_typ;
+-	__le16 input_pin_capacitance_typ;
+-	u8 input_pin_capacitance_max;
+-	u8 driver_strength_support;
+-	__le16 t_int_r;
+-	__le16 t_adl;
+-	u8 reserved4[8];
+-
+-	/* vendor */
+-	__le16 vendor_revision;
+-	u8 vendor[88];
+-
+-	__le16 crc;
+-} __packed;
+-
+-#define ONFI_CRC_BASE	0x4F4E
+-
+-/* Extended ECC information Block Definition (since ONFI 2.1) */
+-struct onfi_ext_ecc_info {
+-	u8 ecc_bits;
+-	u8 codeword_size;
+-	__le16 bb_per_lun;
+-	__le16 block_endurance;
+-	u8 reserved[2];
+-} __packed;
+-
+-#define ONFI_SECTION_TYPE_0	0	/* Unused section. */
+-#define ONFI_SECTION_TYPE_1	1	/* for additional sections. */
+-#define ONFI_SECTION_TYPE_2	2	/* for ECC information. */
+-struct onfi_ext_section {
+-	u8 type;
+-	u8 length;
+-} __packed;
+-
+-#define ONFI_EXT_SECTION_MAX 8
+-
+-/* Extended Parameter Page Definition (since ONFI 2.1) */
+-struct onfi_ext_param_page {
+-	__le16 crc;
+-	u8 sig[4];             /* 'E' 'P' 'P' 'S' */
+-	u8 reserved0[10];
+-	struct onfi_ext_section sections[ONFI_EXT_SECTION_MAX];
+-
+-	/*
+-	 * The actual size of the Extended Parameter Page is in
+-	 * @ext_param_page_length of nand_onfi_params{}.
+-	 * The following are the variable length sections.
+-	 * So we do not add any fields below. Please see the ONFI spec.
+-	 */
+-} __packed;
+-
+ struct jedec_ecc_info {
+ 	u8 ecc_bits;
+ 	u8 codeword_size;
+@@ -423,28 +283,6 @@ struct nand_jedec_params {
+ 	__le16 crc;
+ } __packed;
+ 
+-/**
+- * struct onfi_params - ONFI specific parameters that will be reused
+- * @version: ONFI version (BCD encoded), 0 if ONFI is not supported
+- * @tPROG: Page program time
+- * @tBERS: Block erase time
+- * @tR: Page read time
+- * @tCCS: Change column setup time
+- * @async_timing_mode: Supported asynchronous timing mode
+- * @vendor_revision: Vendor specific revision number
+- * @vendor: Vendor specific data
+- */
+-struct onfi_params {
+-	int version;
+-	u16 tPROG;
+-	u16 tBERS;
+-	u16 tR;
+-	u16 tCCS;
+-	u16 async_timing_mode;
+-	u16 vendor_revision;
+-	u8 vendor[88];
+-};
+-
+ /**
+  * struct nand_parameters - NAND generic parameters from the parameter page
+  * @model: Model name
 -- 
 2.14.1

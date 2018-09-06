@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:51:08 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:35072 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:58:21 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:39874 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993041AbeIFMu4HqSoZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 14:50:56 +0200
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w86CmwC6044926
-        for <linux-mips@linux-mips.org>; Thu, 6 Sep 2018 08:50:54 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2mb3vna6k3-1
+        by eddie.linux-mips.org with ESMTP id S23993041AbeIFM6N49OyZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 14:58:13 +0200
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w86Cnari110245
+        for <linux-mips@linux-mips.org>; Thu, 6 Sep 2018 08:58:12 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2mb24jp9bk-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 06 Sep 2018 08:50:53 -0400
+        for <linux-mips@linux-mips.org>; Thu, 06 Sep 2018 08:58:12 -0400
 Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Thu, 6 Sep 2018 13:50:51 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 6 Sep 2018 13:58:09 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 6 Sep 2018 13:50:46 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w86Cojqr40632516
+        Thu, 6 Sep 2018 13:58:04 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w86Cw3Rg35717268
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 6 Sep 2018 12:50:45 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 86F7E4C044;
-        Thu,  6 Sep 2018 15:50:39 +0100 (BST)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5DF954C050;
-        Thu,  6 Sep 2018 15:50:38 +0100 (BST)
+        Thu, 6 Sep 2018 12:58:03 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BC1FCA404D;
+        Thu,  6 Sep 2018 15:57:55 +0100 (BST)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 98706A4051;
+        Thu,  6 Sep 2018 15:57:54 +0100 (BST)
 Received: from rapoport-lnx (unknown [9.148.8.92])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu,  6 Sep 2018 15:50:38 +0100 (BST)
-Date:   Thu, 6 Sep 2018 15:50:42 +0300
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu,  6 Sep 2018 15:57:54 +0100 (BST)
+Date:   Thu, 6 Sep 2018 15:58:00 +0300
 From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
 To:     Michal Hocko <mhocko@kernel.org>
 Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
@@ -44,21 +44,21 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 16/29] memblock: replace __alloc_bootmem_node with
- appropriate memblock_ API
+Subject: Re: [RFC PATCH 20/29] memblock: replace __alloc_bootmem with
+ memblock_alloc_from
 References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
- <1536163184-26356-17-git-send-email-rppt@linux.vnet.ibm.com>
- <20180906083841.GA14951@dhcp22.suse.cz>
+ <1536163184-26356-21-git-send-email-rppt@linux.vnet.ibm.com>
+ <20180906085205.GE14951@dhcp22.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180906083841.GA14951@dhcp22.suse.cz>
+In-Reply-To: <20180906085205.GE14951@dhcp22.suse.cz>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-TM-AS-GCONF: 00
-x-cbid: 18090612-0020-0000-0000-000002C22E1C
+x-cbid: 18090612-0012-0000-0000-000002A4B780
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18090612-0021-0000-0000-0000210F6479
-Message-Id: <20180906125041.GG27492@rapoport-lnx>
+x-cbparentid: 18090612-0013-0000-0000-000020D8DF78
+Message-Id: <20180906125800.GH27492@rapoport-lnx>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-06_03:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -70,7 +70,7 @@ Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66058
+X-archive-position: 66060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,64 +87,307 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 06, 2018 at 10:38:41AM +0200, Michal Hocko wrote:
-> On Wed 05-09-18 18:59:31, Mike Rapoport wrote:
-> > Use memblock_alloc_try_nid whenever goal (i.e. mininal address is
-> > specified) and memblock_alloc_node otherwise.
+On Thu, Sep 06, 2018 at 10:52:05AM +0200, Michal Hocko wrote:
+> On Wed 05-09-18 18:59:35, Mike Rapoport wrote:
+> > The conversion is done using the following semantic patch:
+> > 
+> > @@
+> > expression e1, e2, e3;
+> > @@
+> > - __alloc_bootmem(e1, e2, e3)
+> > + memblock_alloc(e1, e2, e3)
 > 
-> I suspect you wanted to say (i.e. minimal address) is specified
+> This is not that straightforward. memblock_virt_alloc with 0 alignment
+> uses SMP_CACHE_BYTES implicitly. I do not see this being handled here.
+> I do not expect this should cause any problems, it would be worse other
+> way around, but it should be at least documented.
 
-Yep
+Huh, I've copied the contents of the wrong coccinelle script to the
+changelog. This should have been
+
+- __alloc_bootmem(e1, e2, e3)
++ memblock_alloc_from(e1, e2, e3)
+
+Or if replace e1, e2, e3 with more meaningful names
+
+- __alloc_bootmem(size, align, goal)
++ memblock_alloc_from(size, align, min_addr)
+
+That said, the parameters have the exact mapping and the same meaning, so
+the alignment and the goal requirements will be handled.
+
+I'll update all the scripts in the changelogs with normal names and add
+more elaborate descriptions for all patches.
  
 > > Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> 
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-> One note below
-> 
 > > ---
-> >  arch/ia64/mm/discontig.c       |  6 ++++--
-> >  arch/ia64/mm/init.c            |  2 +-
-> >  arch/powerpc/kernel/setup_64.c |  6 ++++--
-> >  arch/sparc/kernel/setup_64.c   | 10 ++++------
-> >  arch/sparc/kernel/smp_64.c     |  4 ++--
-> >  5 files changed, 15 insertions(+), 13 deletions(-)
+> >  arch/alpha/kernel/core_cia.c  |  2 +-
+> >  arch/alpha/kernel/pci_iommu.c |  4 ++--
+> >  arch/alpha/kernel/setup.c     |  2 +-
+> >  arch/ia64/kernel/mca.c        |  4 ++--
+> >  arch/ia64/mm/contig.c         |  5 +++--
+> >  arch/mips/kernel/traps.c      |  2 +-
+> >  arch/sparc/kernel/prom_32.c   |  2 +-
+> >  arch/sparc/kernel/smp_64.c    | 10 +++++-----
+> >  arch/sparc/mm/init_32.c       |  2 +-
+> >  arch/sparc/mm/init_64.c       |  9 ++++++---
+> >  arch/sparc/mm/srmmu.c         | 10 +++++-----
+> >  include/linux/bootmem.h       |  8 ++++++++
+> >  12 files changed, 36 insertions(+), 24 deletions(-)
 > > 
-> > diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-> > index 1928d57..918dda9 100644
-> > --- a/arch/ia64/mm/discontig.c
-> > +++ b/arch/ia64/mm/discontig.c
-> > @@ -451,8 +451,10 @@ static void __init *memory_less_node_alloc(int nid, unsigned long pernodesize)
-> >  	if (bestnode == -1)
-> >  		bestnode = anynode;
+> > diff --git a/arch/alpha/kernel/core_cia.c b/arch/alpha/kernel/core_cia.c
+> > index 4b38386..026ee95 100644
+> > --- a/arch/alpha/kernel/core_cia.c
+> > +++ b/arch/alpha/kernel/core_cia.c
+> > @@ -331,7 +331,7 @@ cia_prepare_tbia_workaround(int window)
+> >  	long i;
 > >  
-> > -	ptr = __alloc_bootmem_node(pgdat_list[bestnode], pernodesize,
-> > -		PERCPU_PAGE_SIZE, __pa(MAX_DMA_ADDRESS));
-> > +	ptr = memblock_alloc_try_nid(pernodesize, PERCPU_PAGE_SIZE,
-> > +				     __pa(MAX_DMA_ADDRESS),
-> > +				     BOOTMEM_ALLOC_ACCESSIBLE,
-> > +				     bestnode);
+> >  	/* Use minimal 1K map. */
+> > -	ppte = __alloc_bootmem(CIA_BROKEN_TBIA_SIZE, 32768, 0);
+> > +	ppte = memblock_alloc_from(CIA_BROKEN_TBIA_SIZE, 32768, 0);
+> >  	pte = (virt_to_phys(ppte) >> (PAGE_SHIFT - 1)) | 1;
 > >  
-> >  	return ptr;
-> >  }
-> > diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-> > index ffcc358..2169ca5 100644
-> > --- a/arch/ia64/mm/init.c
-> > +++ b/arch/ia64/mm/init.c
-> > @@ -459,7 +459,7 @@ int __init create_mem_map_page_table(u64 start, u64 end, void *arg)
-> >  		pte = pte_offset_kernel(pmd, address);
-> >  
-> >  		if (pte_none(*pte))
-> > -			set_pte(pte, pfn_pte(__pa(memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node))) >> PAGE_SHIFT,
-> > +			set_pte(pte, pfn_pte(__pa(memblock_alloc_node(PAGE_SIZE, PAGE_SIZE, node)) >> PAGE_SHIFT,
-> >  					     PAGE_KERNEL));
-> 
-> This doesn't seem to belong to the patch, right?
-
-Right, will fix.
- 
+> >  	for (i = 0; i < CIA_BROKEN_TBIA_SIZE / sizeof(unsigned long); ++i)
+> > diff --git a/arch/alpha/kernel/pci_iommu.c b/arch/alpha/kernel/pci_iommu.c
+> > index b52d76f..0c05493 100644
+> > --- a/arch/alpha/kernel/pci_iommu.c
+> > +++ b/arch/alpha/kernel/pci_iommu.c
+> > @@ -87,13 +87,13 @@ iommu_arena_new_node(int nid, struct pci_controller *hose, dma_addr_t base,
+> >  		printk("%s: couldn't allocate arena ptes from node %d\n"
+> >  		       "    falling back to system-wide allocation\n",
+> >  		       __func__, nid);
+> > -		arena->ptes = __alloc_bootmem(mem_size, align, 0);
+> > +		arena->ptes = memblock_alloc_from(mem_size, align, 0);
 > >  	}
-> >  	return 0;
+> >  
+> >  #else /* CONFIG_DISCONTIGMEM */
+> >  
+> >  	arena = alloc_bootmem(sizeof(*arena));
+> > -	arena->ptes = __alloc_bootmem(mem_size, align, 0);
+> > +	arena->ptes = memblock_alloc_from(mem_size, align, 0);
+> >  
+> >  #endif /* CONFIG_DISCONTIGMEM */
+> >  
+> > diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
+> > index 4f0d944..64c06a0 100644
+> > --- a/arch/alpha/kernel/setup.c
+> > +++ b/arch/alpha/kernel/setup.c
+> > @@ -294,7 +294,7 @@ move_initrd(unsigned long mem_limit)
+> >  	unsigned long size;
+> >  
+> >  	size = initrd_end - initrd_start;
+> > -	start = __alloc_bootmem(PAGE_ALIGN(size), PAGE_SIZE, 0);
+> > +	start = memblock_alloc_from(PAGE_ALIGN(size), PAGE_SIZE, 0);
+> >  	if (!start || __pa(start) + size > mem_limit) {
+> >  		initrd_start = initrd_end = 0;
+> >  		return NULL;
+> > diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
+> > index 6115464..5586926 100644
+> > --- a/arch/ia64/kernel/mca.c
+> > +++ b/arch/ia64/kernel/mca.c
+> > @@ -1835,8 +1835,8 @@ format_mca_init_stack(void *mca_data, unsigned long offset,
+> >  /* Caller prevents this from being called after init */
+> >  static void * __ref mca_bootmem(void)
+> >  {
+> > -	return __alloc_bootmem(sizeof(struct ia64_mca_cpu),
+> > -	                    KERNEL_STACK_SIZE, 0);
+> > +	return memblock_alloc_from(sizeof(struct ia64_mca_cpu),
+> > +				   KERNEL_STACK_SIZE, 0);
+> >  }
+> >  
+> >  /* Do per-CPU MCA-related initialization.  */
+> > diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
+> > index e2e40bb..9e5c23a 100644
+> > --- a/arch/ia64/mm/contig.c
+> > +++ b/arch/ia64/mm/contig.c
+> > @@ -85,8 +85,9 @@ void *per_cpu_init(void)
+> >  static inline void
+> >  alloc_per_cpu_data(void)
+> >  {
+> > -	cpu_data = __alloc_bootmem(PERCPU_PAGE_SIZE * num_possible_cpus(),
+> > -				   PERCPU_PAGE_SIZE, __pa(MAX_DMA_ADDRESS));
+> > +	cpu_data = memblock_alloc_from(PERCPU_PAGE_SIZE * num_possible_cpus(),
+> > +				       PERCPU_PAGE_SIZE,
+> > +				       __pa(MAX_DMA_ADDRESS));
+> >  }
+> >  
+> >  /**
+> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> > index 576aeef..31566d5 100644
+> > --- a/arch/mips/kernel/traps.c
+> > +++ b/arch/mips/kernel/traps.c
+> > @@ -2261,7 +2261,7 @@ void __init trap_init(void)
+> >  		phys_addr_t ebase_pa;
+> >  
+> >  		ebase = (unsigned long)
+> > -			__alloc_bootmem(size, 1 << fls(size), 0);
+> > +			memblock_alloc_from(size, 1 << fls(size), 0);
+> >  
+> >  		/*
+> >  		 * Try to ensure ebase resides in KSeg0 if possible.
+> > diff --git a/arch/sparc/kernel/prom_32.c b/arch/sparc/kernel/prom_32.c
+> > index b51cbb9..4389944 100644
+> > --- a/arch/sparc/kernel/prom_32.c
+> > +++ b/arch/sparc/kernel/prom_32.c
+> > @@ -32,7 +32,7 @@ void * __init prom_early_alloc(unsigned long size)
+> >  {
+> >  	void *ret;
+> >  
+> > -	ret = __alloc_bootmem(size, SMP_CACHE_BYTES, 0UL);
+> > +	ret = memblock_alloc_from(size, SMP_CACHE_BYTES, 0UL);
+> >  	if (ret != NULL)
+> >  		memset(ret, 0, size);
+> >  
+> > diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+> > index 83ff88d..337febd 100644
+> > --- a/arch/sparc/kernel/smp_64.c
+> > +++ b/arch/sparc/kernel/smp_64.c
+> > @@ -1588,7 +1588,7 @@ static void * __init pcpu_alloc_bootmem(unsigned int cpu, size_t size,
+> >  	void *ptr;
+> >  
+> >  	if (!node_online(node) || !NODE_DATA(node)) {
+> > -		ptr = __alloc_bootmem(size, align, goal);
+> > +		ptr = memblock_alloc_from(size, align, goal);
+> >  		pr_info("cpu %d has no node %d or node-local memory\n",
+> >  			cpu, node);
+> >  		pr_debug("per cpu data for cpu%d %lu bytes at %016lx\n",
+> > @@ -1601,7 +1601,7 @@ static void * __init pcpu_alloc_bootmem(unsigned int cpu, size_t size,
+> >  	}
+> >  	return ptr;
+> >  #else
+> > -	return __alloc_bootmem(size, align, goal);
+> > +	return memblock_alloc_from(size, align, goal);
+> >  #endif
+> >  }
+> >  
+> > @@ -1627,7 +1627,7 @@ static void __init pcpu_populate_pte(unsigned long addr)
+> >  	if (pgd_none(*pgd)) {
+> >  		pud_t *new;
+> >  
+> > -		new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> >  		pgd_populate(&init_mm, pgd, new);
+> >  	}
+> >  
+> > @@ -1635,7 +1635,7 @@ static void __init pcpu_populate_pte(unsigned long addr)
+> >  	if (pud_none(*pud)) {
+> >  		pmd_t *new;
+> >  
+> > -		new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> >  		pud_populate(&init_mm, pud, new);
+> >  	}
+> >  
+> > @@ -1643,7 +1643,7 @@ static void __init pcpu_populate_pte(unsigned long addr)
+> >  	if (!pmd_present(*pmd)) {
+> >  		pte_t *new;
+> >  
+> > -		new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> >  		pmd_populate_kernel(&init_mm, pmd, new);
+> >  	}
+> >  }
+> > diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
+> > index 92634d4..885dd38 100644
+> > --- a/arch/sparc/mm/init_32.c
+> > +++ b/arch/sparc/mm/init_32.c
+> > @@ -265,7 +265,7 @@ void __init mem_init(void)
+> >  	i = last_valid_pfn >> ((20 - PAGE_SHIFT) + 5);
+> >  	i += 1;
+> >  	sparc_valid_addr_bitmap = (unsigned long *)
+> > -		__alloc_bootmem(i << 2, SMP_CACHE_BYTES, 0UL);
+> > +		memblock_alloc_from(i << 2, SMP_CACHE_BYTES, 0UL);
+> >  
+> >  	if (sparc_valid_addr_bitmap == NULL) {
+> >  		prom_printf("mem_init: Cannot alloc valid_addr_bitmap.\n");
+> > diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> > index 578ec3d..51cd583 100644
+> > --- a/arch/sparc/mm/init_64.c
+> > +++ b/arch/sparc/mm/init_64.c
+> > @@ -1810,7 +1810,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+> >  		if (pgd_none(*pgd)) {
+> >  			pud_t *new;
+> >  
+> > -			new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+> > +						  PAGE_SIZE);
+> >  			alloc_bytes += PAGE_SIZE;
+> >  			pgd_populate(&init_mm, pgd, new);
+> >  		}
+> > @@ -1822,7 +1823,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+> >  				vstart = kernel_map_hugepud(vstart, vend, pud);
+> >  				continue;
+> >  			}
+> > -			new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+> > +						  PAGE_SIZE);
+> >  			alloc_bytes += PAGE_SIZE;
+> >  			pud_populate(&init_mm, pud, new);
+> >  		}
+> > @@ -1835,7 +1837,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+> >  				vstart = kernel_map_hugepmd(vstart, vend, pmd);
+> >  				continue;
+> >  			}
+> > -			new = __alloc_bootmem(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> > +			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+> > +						  PAGE_SIZE);
+> >  			alloc_bytes += PAGE_SIZE;
+> >  			pmd_populate_kernel(&init_mm, pmd, new);
+> >  		}
+> > diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+> > index be9cb00..b48fea5 100644
+> > --- a/arch/sparc/mm/srmmu.c
+> > +++ b/arch/sparc/mm/srmmu.c
+> > @@ -303,13 +303,13 @@ static void __init srmmu_nocache_init(void)
+> >  
+> >  	bitmap_bits = srmmu_nocache_size >> SRMMU_NOCACHE_BITMAP_SHIFT;
+> >  
+> > -	srmmu_nocache_pool = __alloc_bootmem(srmmu_nocache_size,
+> > -		SRMMU_NOCACHE_ALIGN_MAX, 0UL);
+> > +	srmmu_nocache_pool = memblock_alloc_from(srmmu_nocache_size,
+> > +						 SRMMU_NOCACHE_ALIGN_MAX, 0UL);
+> >  	memset(srmmu_nocache_pool, 0, srmmu_nocache_size);
+> >  
+> >  	srmmu_nocache_bitmap =
+> > -		__alloc_bootmem(BITS_TO_LONGS(bitmap_bits) * sizeof(long),
+> > -				SMP_CACHE_BYTES, 0UL);
+> > +		memblock_alloc_from(BITS_TO_LONGS(bitmap_bits) * sizeof(long),
+> > +				    SMP_CACHE_BYTES, 0UL);
+> >  	bit_map_init(&srmmu_nocache_map, srmmu_nocache_bitmap, bitmap_bits);
+> >  
+> >  	srmmu_swapper_pg_dir = __srmmu_get_nocache(SRMMU_PGD_TABLE_SIZE, SRMMU_PGD_TABLE_SIZE);
+> > @@ -467,7 +467,7 @@ static void __init sparc_context_init(int numctx)
+> >  	unsigned long size;
+> >  
+> >  	size = numctx * sizeof(struct ctx_list);
+> > -	ctx_list_pool = __alloc_bootmem(size, SMP_CACHE_BYTES, 0UL);
+> > +	ctx_list_pool = memblock_alloc_from(size, SMP_CACHE_BYTES, 0UL);
+> >  
+> >  	for (ctx = 0; ctx < numctx; ctx++) {
+> >  		struct ctx_list *clist;
+> > diff --git a/include/linux/bootmem.h b/include/linux/bootmem.h
+> > index 3896af2..c97c105 100644
+> > --- a/include/linux/bootmem.h
+> > +++ b/include/linux/bootmem.h
+> > @@ -122,6 +122,14 @@ static inline void * __init memblock_alloc_raw(
+> >  					    NUMA_NO_NODE);
+> >  }
+> >  
+> > +static inline void * __init memblock_alloc_from(
+> > +		phys_addr_t size, phys_addr_t align, phys_addr_t min_addr)
+> > +{
+> > +	return memblock_alloc_try_nid(size, align, min_addr,
+> > +				      BOOTMEM_ALLOC_ACCESSIBLE,
+> > +				      NUMA_NO_NODE);
+> > +}
+> > +
+> >  static inline void * __init memblock_alloc_nopanic(
+> >  					phys_addr_t size, phys_addr_t align)
+> >  {
+> > -- 
+> > 2.7.4
+> > 
+> 
 > -- 
 > Michal Hocko
 > SUSE Labs

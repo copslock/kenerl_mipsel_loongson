@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 09:49:31 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:46638 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 09:53:29 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:46954 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992907AbeIFHt1krti0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 09:49:27 +0200
+        id S23993041AbeIFHxZJRjW0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 09:53:25 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 83F29ADF4;
-        Thu,  6 Sep 2018 07:49:21 +0000 (UTC)
-Date:   Thu, 6 Sep 2018 09:49:19 +0200
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 7D165ADF4;
+        Thu,  6 Sep 2018 07:53:19 +0000 (UTC)
+Date:   Thu, 6 Sep 2018 09:53:19 +0200
 From:   Michal Hocko <mhocko@kernel.org>
 To:     Mike Rapoport <rppt@linux.vnet.ibm.com>
 Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
@@ -20,21 +20,21 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
         linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
         sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 10/29] memblock: replace __alloc_bootmem_node_nopanic
- with memblock_alloc_try_nid_nopanic
-Message-ID: <20180906074919.GS14951@dhcp22.suse.cz>
+Subject: Re: [RFC PATCH 11/29] memblock: replace alloc_bootmem_pages_nopanic
+ with memblock_alloc_nopanic
+Message-ID: <20180906075319.GT14951@dhcp22.suse.cz>
 References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
- <1536163184-26356-11-git-send-email-rppt@linux.vnet.ibm.com>
+ <1536163184-26356-12-git-send-email-rppt@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1536163184-26356-11-git-send-email-rppt@linux.vnet.ibm.com>
+In-Reply-To: <1536163184-26356-12-git-send-email-rppt@linux.vnet.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <mhocko@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66009
+X-archive-position: 66010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,41 +51,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed 05-09-18 18:59:25, Mike Rapoport wrote:
-> The __alloc_bootmem_node_nopanic() is used only once, there is no reason to
-> add a wrapper for memblock_alloc_try_nid_nopanic for it.
+On Wed 05-09-18 18:59:26, Mike Rapoport wrote:
+> The alloc_bootmem_pages_nopanic(size) is a shortcut for
+> __alloc_bootmem_nopanic(x, PAGE_SIZE, BOOTMEM_LOW_LIMIT) and can be
+> replaced by memblock_alloc_nopanic(size, PAGE_SIZE)
 
-OK, it took me a bit longer to see they are equivalent. Both zero the
-memory and fallback to a different node if the given one doesn't have a
-proper range. So good. Lack of proper documentation didn't really help.
- 
+It is not so straightforward because you really have to go deep down the
+callpath to see they are doing the same thing essentially.
+
 > Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
 
 Acked-by: Michal Hocko <mhocko@suse.com>
 
 > ---
->  arch/x86/kernel/setup_percpu.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/usb/early/xhci-dbc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/x86/kernel/setup_percpu.c b/arch/x86/kernel/setup_percpu.c
-> index ea554f8..67d48e26 100644
-> --- a/arch/x86/kernel/setup_percpu.c
-> +++ b/arch/x86/kernel/setup_percpu.c
-> @@ -112,8 +112,10 @@ static void * __init pcpu_alloc_bootmem(unsigned int cpu, unsigned long size,
->  		pr_debug("per cpu data for cpu%d %lu bytes at %016lx\n",
->  			 cpu, size, __pa(ptr));
->  	} else {
-> -		ptr = __alloc_bootmem_node_nopanic(NODE_DATA(node),
-> -						   size, align, goal);
-> +		ptr = memblock_alloc_try_nid_nopanic(size, align, goal,
-> +						     BOOTMEM_ALLOC_ACCESSIBLE,
-> +						     node);
-> +
->  		pr_debug("per cpu data for cpu%d %lu bytes on node%d at %016lx\n",
->  			 cpu, size, node, __pa(ptr));
->  	}
+> diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
+> index e15e896..16df968 100644
+> --- a/drivers/usb/early/xhci-dbc.c
+> +++ b/drivers/usb/early/xhci-dbc.c
+> @@ -94,7 +94,7 @@ static void * __init xdbc_get_page(dma_addr_t *dma_addr)
+>  {
+>  	void *virt;
+>  
+> -	virt = alloc_bootmem_pages_nopanic(PAGE_SIZE);
+> +	virt = memblock_alloc_nopanic(PAGE_SIZE, PAGE_SIZE);
+>  	if (!virt)
+>  		return NULL;
+>  
 > -- 
 > 2.7.4
+> 
 
 -- 
 Michal Hocko

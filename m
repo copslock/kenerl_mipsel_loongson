@@ -1,44 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 23:11:59 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:23278 "EHLO mx2.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994644AbeIFVL4DkrKQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 23:11:56 +0200
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id 538E9489EA;
-        Thu,  6 Sep 2018 23:11:50 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id TlgnV2lCU3Lv; Thu,  6 Sep 2018 23:11:49 +0200 (CEST)
-Subject: Re: [PATCH v2 net-next 7/7] net: dsa: Add Lantiq / Intel DSA driver
- for vrx200
-To:     Florian Fainelli <f.fainelli@gmail.com>, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
-        vivien.didelot@savoirfairelinux.com, john@phrozen.org,
-        linux-mips@linux-mips.org, dev@kresin.me, hauke.mehrtens@intel.com,
-        devicetree@vger.kernel.org
-References: <20180901114535.9070-1-hauke@hauke-m.de>
- <20180901120511.10112-1-hauke@hauke-m.de>
- <eb5c0815-e80c-7fd7-a14a-ccc3f28a7c93@gmail.com>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <d0da3eb2-8adb-677a-0f88-b6fe7989ae45@hauke-m.de>
-Date:   Thu, 6 Sep 2018 23:11:44 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 23:17:24 +0200 (CEST)
+Received: from mail-co1nam05on0714.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe50::714]:40202
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994644AbeIFVRVUJ0HQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 23:17:21 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lf1N5Nq4sSdkOZmJRSzYHsEgP2IVCNyJb4+8LOhVtEM=;
+ b=k38ikjvOlb0H7qfaok3/7mdt3aeRolQX3mPF2NeThKqSwOXtetX3JHTVTdbpO0pGkZN67OY8Fp/g78bgwHH6Da+FtfJyaCQimhBu14BGJTBSLoJ19qlc/veANcIt10a3+1d8Rwtzo7GPrxcAgwdy9zXm4x/cp9nT3c5hrdEkW70=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+Received: from localhost (4.16.204.77) by
+ BN7PR08MB4929.namprd08.prod.outlook.com (2603:10b6:408:28::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1101.13; Thu, 6 Sep 2018 21:16:40 +0000
+Date:   Thu, 6 Sep 2018 14:16:37 -0700
+From:   Paul Burton <paul.burton@mips.com>
+To:     Ding Xiang <dingxiang@cmss.chinamobile.com>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:     ralf@linux-mips.org, jhogan@kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mips: txx9: fix iounmap related issue
+Message-ID: <20180906211637.3vfo77vrgrcftglp@pburton-laptop>
+References: <1536207559-31543-1-git-send-email-dingxiang@cmss.chinamobile.com>
 MIME-Version: 1.0
-In-Reply-To: <eb5c0815-e80c-7fd7-a14a-ccc3f28a7c93@gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="f8zxV6bgqOCHeUJRH1PDQ9Dq0YLtECOiw"
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1536207559-31543-1-git-send-email-dingxiang@cmss.chinamobile.com>
+User-Agent: NeoMutt/20180716
+X-Originating-IP: [4.16.204.77]
+X-ClientProxiedBy: DM5PR21CA0043.namprd21.prod.outlook.com
+ (2603:10b6:3:ed::29) To BN7PR08MB4929.namprd08.prod.outlook.com
+ (2603:10b6:408:28::15)
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 560c6afd-c39b-4f80-adee-08d6143e09f3
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4929;
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;3:wgeC6WjciBVPuMq731PP362bGFGq4REkEUENSJexGNnCG2prPQr5AK1ePpXNNzVwr1COe9kkAvzm7QvPZu1DtU5S1XIanIw5zLukgTPKJ2c48favon2VrmyKWuS0rrnz8Q4VftKcvkMHl6EUePiAjBn+OLdG7tYTzWZNSekH6RFGDTxCi8xqywohO1KLzaf7c2BWVdqc851iyqwGjCnPsWv0jtTi26yh+9dIqswlYBoD8M7a9hafADMCyqhezfQS;25:7h4YXbCrQQcDRWrLsDmmdBpaYs7ZLyX4JCv8on+k3sRzugbWv8p8IA9Bl7fMTtM9GoBs8IGUUQFGIkgxQOEPEgkn3E2pIs74v2Olcpqtvo0Mo0KOYgt2tW8TozKPFcEyD/2nRIIE8yOemIG/P3jK8CHe8/kXFsXkdUl91VFuDDbkYPB+EMe9EYzvYeAY+q97h+v4iPJVPLHuKoKM/HnI95ZQGJNK/GRvsTlhn+Z/GxhLnkfR3LSb5X0NdOc48LOGu2TX3QZ3tyJWhVUAIcxSOs5WyYFuxIhvEmFwNlf5BhqkhGxgzKrnVGgyo2+isWxN54vaS7HI0uSrI0MrNV97KA==;31:5HZCVEH0fyo79TR+Ow/pwaOLVKnjgEi3STBC0XZpqTHiEtgEr3xmTOzOAp4Tzb+I88o4GB2nmg4kQcDTUwOdMxY4GPr8LntlIz5QZABxzuvnOzhXrRhdhns5i86NeGPK9UyqS1eWOub/dipI0y6FKT+KuOjS+jlyxzkCtgqqqttUjuV9v3RXZmLQkRDUkvqR0ZymjNB0dtpln7wtNu33V6k8pvqoPb4va/dT5UAIJng=
+X-MS-TrafficTypeDiagnostic: BN7PR08MB4929:
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;20:fJodHu2/pf6ON4ndyPl5O4WHSDvBon0W+/O2R1WmP0Se/8lQdrVoM2LcNCh9IFWA+wk3ckdLpZwxYlAgBqqqMAcUDyP/w6hf0WzPjKXCgvEmxUloT9Vxr05S5DUjUmUhAoHCLr4iIU+FH8Yfx75v564nNMj5J4QDBfWOkz0U74Kzmw+pZjUkxqbthcsLGbJl/02hzzS2tlAjjmk+JUKySMk+80rk8iJJOHvyHXTlOXwX5BxM4go5j8ZG646OA0Wy;4:e04AIZwx1QBktXjTJO1DBYWp3HPecusydhVkvmlNnfkpN97ayeZSk5romABmZXHEzuvqw7raWCXdsnjGwfL7aFIwdqAqC84Yie6kqaQwY4GWrCIQbm/Ai+mr2LXFcFXZv/LWP7q9+AY8CGLGRy7sFXfpKUouXlM0iDswJHeKl7q5TaJCP5l3rKU4oWV4VTC8b0lpmbcrc6ZsKKwsvAwua1s5IoeVuV42AEUTHVWLRQtOIaRIW0eMkNndVxaZqT0PXBT3Zk3zH6JwD7Ph8qBQ4/k5u1JiwYuC9TE14ljwpm+UPqXxkOQt6bGAouvc8dvl
+X-Microsoft-Antispam-PRVS: <BN7PR08MB492915DAC1F0F0981AD324BCC1010@BN7PR08MB4929.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(173505980823694);
+X-MS-Exchange-SenderADCheck: 1
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231311)(944501410)(52105095)(93006095)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(201708071742011)(7699016);SRVR:BN7PR08MB4929;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4929;
+X-Forefront-PRVS: 0787459938
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(136003)(346002)(366004)(376002)(396003)(39850400004)(199004)(189003)(8676002)(42882007)(6496006)(105586002)(476003)(446003)(7736002)(305945005)(956004)(11346002)(52116002)(186003)(76176011)(33896004)(386003)(26005)(478600001)(6486002)(76506005)(229853002)(50466002)(16526019)(81156014)(9686003)(106356001)(486006)(44832011)(8936002)(2906002)(1076002)(23726003)(3846002)(81166006)(6116002)(16586007)(58126008)(33716001)(4326008)(316002)(47776003)(66066001)(25786009)(68736007)(5660300001)(53936002)(110136005)(97736004)(6666003)(6246003);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4929;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4929;23:4/ogSQHl0hxzK0UN555USIVCMShBpjrdS1JW2adjv?=
+ =?us-ascii?Q?Rw9mzu8tztuKJqGxyJ9fdnQQHn4r+FNG2olkcZyKJCiY3VgbkiwTqLExDn07?=
+ =?us-ascii?Q?2MuDZzSGt/CTT6HmN8FdLpaMyWEksdAF8gO15zOLNhZL1YrXYVZ2VZwyyPSo?=
+ =?us-ascii?Q?/CyEQ59CZDAmA9sLmcFF3bs5BVSLaIF/3dAJjs4NfkHDVD7w17GPBOkWhDa8?=
+ =?us-ascii?Q?eMmViaDmtmCazlAEDQW7Q/HVq5K5KpE23RmkFK+MlmdvHwI68DpBauhM6g3I?=
+ =?us-ascii?Q?GPzcfWUEqOGexrsAE5eKOjTftxJhNOgIiPmkbMuXsuXfEljJaBQPO+HOj+hk?=
+ =?us-ascii?Q?a2b29wG/mQQGd3DT6iG1WjgHuRAD3MdOr1nQARz8sXl4zjEJ5rvHycQqR23G?=
+ =?us-ascii?Q?fKXeVqftsQOsqOPhF9caQeprdI3No75x5CQ5HGUxP8oCFcnOvoiHO+74ct25?=
+ =?us-ascii?Q?7Nw3oVJaVSNovFdBZh2FwLmaq3PtkeGHkG+eQIgvKLT3eLy9H4GZS8mdI4JT?=
+ =?us-ascii?Q?qPZbB2v1OSHOJSafJEJML8ppQbtjiliSOjdUm5UKjqSlIYMGGFIDctd04z+L?=
+ =?us-ascii?Q?cppxzib1r8W44ljGFVxcT+/YR1of3gpMIdkMFXEAfntg0jVluDNKy4Fo3rJ0?=
+ =?us-ascii?Q?s4h9A1LfhSOO5WxFV/vKPzyEmUpecglTVMa5UhsCJ/cb6YieguBdk4K4wjjG?=
+ =?us-ascii?Q?EBxOv/uXmwqkAnPRKn30SHGO12F6U3RySbk4CJQPao/kJ+2/xmPrzAs1Zy3P?=
+ =?us-ascii?Q?kVqsfa1ruPsg0P4bdigcayLEtVPf0A8+RiTC4MdiwsM8tHP2f9kbpXfi2hxq?=
+ =?us-ascii?Q?5vqG4yAfvYMRmp2bVVM58BEo22gXc3FX5ATI3ewH7/stk+g0diJU40NVG7nA?=
+ =?us-ascii?Q?0iUKYZF9kqBQFY6tSQuO1O1YVdZykqkTqXxg0kl+JPfW2V8EBG+isMc1KZ5l?=
+ =?us-ascii?Q?jRHeUVvvX7d8P9/5ScHXZ0x/nkd+orH1H/8uDbnOOEaf0aseJNI1vOv2PFu4?=
+ =?us-ascii?Q?sVHzmWGYWp+QNrQOvlRqkOGGsuV9AwiOX1pkLRG66AQ3BoHDbF9gq9LBmO6K?=
+ =?us-ascii?Q?xloKeSPfBMI+WRZbRFZ3fCo+MvV1Q4Xrk+0Tg7y6Fyo70tqpt9jgXQIhBfnl?=
+ =?us-ascii?Q?Dw2oSeKDl1U+s73CWvFvYLsjjVbFHU2KAow8E/+iSkndFDfJUKYZuOHnQe8r?=
+ =?us-ascii?Q?QGDBPDUKSHdsloAjhmEaUtk8tseNoAIcpF66STW6GUjI70bI4Tnrscpgrl7a?=
+ =?us-ascii?Q?gAMMmdGEdgCVVyOt2E0El3oCWjQDeY3qe3bqxw7trl62TU9NKeDoBZCVTM+n?=
+ =?us-ascii?B?QT09?=
+X-Microsoft-Antispam-Message-Info: osshO+MNfU1gqro8GxtV/yZp0/2QoZx2WOPe1e5ZdQYx2LJd5bDh0hxlmXBR8n8D2Odp5YHyIWotcTBs8u6QEJVxVeovSHifN6shnsSiCtDbC0V7r0RmEupoZTlEsN3eVD8v43Qz9wO6NREAfnmeq3ridMhPyZWOsFSnDO8FpzW3U4ISy417qf2jkQcTDkPhbyytaK7B4I/l86T7+V6N1WQeLjnf7Phd/yeeoF2Qkj/UkCkj4+ypmSxu+rMsq7W4W7cOvfhuIJvmRdqXjFyOxYBrRGJhJq+Wlx8j+xCzLtqp0nKGlwUZesI0zX9zfsA2gan8LmUjtg2onw5RRTODr7dBHygsKvG1fErExtKhJNs=
+X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4929;6:75E7zQN/BoOBPJ2O7DNbVomh3Ek6rfyNI5IIedso2XcVmKAS784+J4xzvjGI8A1lqEViq2o7milFkle+vbDJjIZJszmnNUizlN98dpp3TKnJCymnhq8aagxbTppyoQPR3m/sPMNkuq+4U932UyoTyJQamtRmEH9ppfXbeOMdErMattWbP1T4IBJyTwzEzSYJCokIKBL/vHWrTQdEkFdcQaKdk8hES0Sfe0CV4Grgt6r+26A/CUXGSfYqPSNZ9dQn7tFIc1HGO4yJ8RbE9U9N9GBnnJDZizFxlbuITCyyVkGbVwY8J3GtBbD3/AdCQCSC5SkP+OPXwNSwOwqjp1cXNerfg027zzKMN6x5qoGWu5/Oa4oHrSORBF02e4fVfEE6TbVLeYWkHM4x1jsGHufxjNDHzxH2pZpSee7Ux7nYJzXc0zaf645giBMBZ7+l/B0odorZ+ex+ksXDDe3ox9nvkg==;5:Lml8mDCQtTflzd4EUBvI9zF318Sj4ueU5aGPmn260H14HxcBrtDQUMIbtDL5APUIsvunQgxZ3vFPT5x9aYSw7L6lZS6MeyYWV6/WRaVc25iGSJ/UnoMF6NHgGlCaJsFF6vA39OaHGT0/85cIzswSAcDP/GqQMnv4hQG5+BRzNQo=;7:XldhMVCjuXUSo6ZvWB3RxxJgRUDVVxq0Ou+ofJ9b1DtGbp6echY7onDK9tYU3uS6rOHd1i3CVIbtu5SEX6JnJsjTU+Vze6l6IhQbfH7nLFetK3KFy8uSYjTZ6JQAdSo4isuzIGj32WafRNpNCC6fOnFm/OBS5vHwKrXBDh5spISAnrysd58TazUdmm27XnznOL6nsIxxQ3T/PeIyK3hEDLTc7foBxXrbKduBotCM/pEmXwtPVQCBizuvmtlkbC2d
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2018 21:16:40.4652 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 560c6afd-c39b-4f80-adee-08d6143e09f3
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4929
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66090
+X-archive-position: 66091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,168 +101,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---f8zxV6bgqOCHeUJRH1PDQ9Dq0YLtECOiw
-Content-Type: multipart/mixed; boundary="JxGgAqcZ6lc0NM66VWueg5G2cOJXSCE7d";
- protected-headers="v1"
-From: Hauke Mehrtens <hauke@hauke-m.de>
-To: Florian Fainelli <f.fainelli@gmail.com>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, andrew@lunn.ch,
- vivien.didelot@savoirfairelinux.com, john@phrozen.org,
- linux-mips@linux-mips.org, dev@kresin.me, hauke.mehrtens@intel.com,
- devicetree@vger.kernel.org
-Message-ID: <d0da3eb2-8adb-677a-0f88-b6fe7989ae45@hauke-m.de>
-Subject: Re: [PATCH v2 net-next 7/7] net: dsa: Add Lantiq / Intel DSA driver
- for vrx200
-References: <20180901114535.9070-1-hauke@hauke-m.de>
- <20180901120511.10112-1-hauke@hauke-m.de>
- <eb5c0815-e80c-7fd7-a14a-ccc3f28a7c93@gmail.com>
-In-Reply-To: <eb5c0815-e80c-7fd7-a14a-ccc3f28a7c93@gmail.com>
+Hi Ding,
 
---JxGgAqcZ6lc0NM66VWueg5G2cOJXSCE7d
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+On Thu, Sep 06, 2018 at 12:19:19PM +0800, Ding Xiang wrote:
+> if device_register return error, iounmap should be called, also iounmap
+> need to call before put_device.
+> 
+> Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
+> ---
+>  arch/mips/txx9/generic/setup.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 
-On 09/03/2018 09:54 PM, Florian Fainelli wrote:
->=20
->=20
-> On 9/1/2018 5:05 AM, Hauke Mehrtens wrote:
->> This adds the DSA driver for the GSWIP Switch found in the VRX200 SoC.=
+Applied to mips-next for 4.20 - thanks, and thanks to Atsushi for
+reviewing too!
 
->> This switch is integrated in the DSL SoC, this SoC uses a GSWIP versio=
-n
->> 2.1, there are other SoCs using different versions of this IP block, b=
-ut
->> this driver was only tested with the version found in the VRX200.
->> Currently only the basic features are implemented which will forward a=
-ll
->> packages to the CPU and let the CPU do the forwarding. The hardware al=
-so
->> support Layer 2 offloading which is not yet implemented in this driver=
-=2E
->>
->> The GPHY FW loaded is now done by this driver and not any more by the
->> separate driver in drivers/soc/lantiq/gphy.c, I will remove this drive=
-r
->> is a separate patch. to make use of the GPHY this switch driver is
->> needed anyway. Other SoCs have more embedded GPHYs so this driver shou=
-ld
->> support a variable number of GPHYs. After the firmware was loaded the
->> GPHY can be probed on the MDIO bus and it behaves like an external GPH=
-Y,
->> without the firmware it can not be probed on the MDIO bus.
->>
->> Currently this depends on SOC_TYPE_XWAY because the SoC revision
->> detection function ltq_soc_type() is used to load the correct GPHY
->> firmware on the VRX200 SoCs.
->>
->> The clock names in the sysctrl.c file have to be changed because the
->> clocks are now used by a different driver. This should be cleaned up a=
-nd
->> a real common clock driver should provide the clocks instead.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> ---
->=20
-> Looks great, just a few suggestions below
->=20
-> [snip]
->=20
->> +static void gswip_adjust_link(struct dsa_switch *ds, int port,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct phy_device *phydev)
->> +{
->> +=C2=A0=C2=A0=C2=A0 struct gswip_priv *priv =3D ds->priv;
->> +=C2=A0=C2=A0=C2=A0 u16 macconf =3D phydev->mdio.addr & GSWIP_MDIO_PHY=
-_ADDR_MASK;
->> +=C2=A0=C2=A0=C2=A0 u16 miirate =3D 0;
->> +=C2=A0=C2=A0=C2=A0 u16 miimode;
->> +=C2=A0=C2=A0=C2=A0 u16 lcl_adv =3D 0, rmt_adv =3D 0;
->> +=C2=A0=C2=A0=C2=A0 u8 flowctrl;
->> +
->> +=C2=A0=C2=A0=C2=A0 /* do not run this for the CPU port */
->> +=C2=A0=C2=A0=C2=A0 if (dsa_is_cpu_port(ds, port))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->=20
-> Typically we expect the adjust_link callback to run for fixed link
-> ports, that is inter-switch links (between switches) or between the CPU=
-
-> port and the Ethernet MAC attached to the switch. Here you are running
-> this for the user facing ports (IIRC), which should really not be
-> necessary, most Ethernet switches will be able to look at their built-i=
-n
-> PHY's state and configure the switch's port automatically. Maybe this i=
-s
-> not possible here because you had to disable polling?
-
-I deactivated the PHY auto polling, I can activate it again. Some PHYs
-could also be external on the same MDIO bus as the internal PHYs.
-
-The CPU facing fixed link is a special MAC in the switch, at least in
-this version of the switch IP which is embedded in the networking SoCs.
-The MAC is more or less integrated in the switch and the driver can not
-configure the link between the MAC and the switch.
-
-> Can you consider implementing PHYLINK operations which would make the
-> driver more future proof, should you consider newer generations of
-> switches that support 10G PHY, SGMII, SFP/SFF and so on?
-
-I will have a look at this later. I just saw that you pushed some
-branches adding SFP support to b53. ;-)
-
-The next step will be adding layer 2 offload. This is planned for the
-next patch series after this was merged. The switch uses internal VLANs
-for the offloading, so you configure a VLAN in the hardware and then add
-ports to it. I saw that multiple switches use this model, but converting
-the not VLAN aware layer 2 offloading to it looks a little bit strange,
-is there a good practice?
-
-> [snip]
->=20
->> +=C2=A0=C2=A0=C2=A0 if (priv->ds->dst->cpu_dp->index !=3D priv->hw_inf=
-o->cpu_port) {
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_err(dev, "wrong CPU po=
-rt defined, HW only supports port:
->> %i",
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr=
-iv->hw_info->cpu_port);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D -EINVAL;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto mdio_bus;
->> +=C2=A0=C2=A0=C2=A0 }
->=20
-> There are a number of switches (b53, qca8k, mt7530) that have this
-> requirement, we should probably be moving this check down into the core=
-
-> DSA layer and allow either to continue but disable switch tagging, if i=
-t
-> was requested. Andrew what do you think?
-
-As the CPU port is a special port many registers are only available for
-the normal front facing Ethernet ports and not for the CPU port so I
-have to make sure the correct port was selected as CPU port, otherwise
-the driver will write to the wrong register offsets.
-
-Hauke
-
-
---JxGgAqcZ6lc0NM66VWueg5G2cOJXSCE7d--
-
---f8zxV6bgqOCHeUJRH1PDQ9Dq0YLtECOiw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAluRmBMACgkQ8bdnhZyy
-68d5OQf/V/uZJ04P/wNYovxsP0LUDgSZqS2ESHD6JWn/TI23gSWik9Y1S4ZrtRui
-7gJk0vgfWUvYZHpvmI7YYohVhqbcasbK9Mh7kZUQMXnzw64L9ePeu59P++1xGR/8
-p4Au1+J7wFc/CstnysBfOVLDmuWObCa6tL9lRT/7ugE0UmbJD2nsrJszQAPaep/g
-xGv2CMkyRaLlAXCS7T6p2gb02+cbeDs8TLNKK0dbU0HYb5tq7DYY0BOAOhYMgIbj
-zTYgw1R/B4Iov1+YRUF5qVJx73+T9fBmSrdLO741lS9yTUCdaD7fOi+fSREaML8F
-yDR5UUv9tUxHkDwk5CxKbbgkMqc5eg==
-=oRXS
------END PGP SIGNATURE-----
-
---f8zxV6bgqOCHeUJRH1PDQ9Dq0YLtECOiw--
+Paul

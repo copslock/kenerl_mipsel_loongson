@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:09:34 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:09:43 +0200 (CEST)
 Received: from mail.bootlin.com ([62.4.15.54]:43521 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994655AbeIFMF6fXoQe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 14:05:58 +0200
+        id S23993041AbeIFMF7pNH3e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 14:05:59 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id CFD9622A6D; Thu,  6 Sep 2018 14:05:58 +0200 (CEST)
+        id CE00B22AEB; Thu,  6 Sep 2018 14:05:59 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-30-219.w90-88.abo.wanadoo.fr [90.88.15.219])
-        by mail.bootlin.com (Postfix) with ESMTPSA id CBDE722A4C;
-        Thu,  6 Sep 2018 14:05:57 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id C734222A63;
+        Thu,  6 Sep 2018 14:05:58 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -61,9 +61,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH v2 18/23] mtd: rawnand: Pass a nand_chip object to chip->erase()
-Date:   Thu,  6 Sep 2018 14:05:30 +0200
-Message-Id: <20180906120535.21255-19-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 19/23] mtd: rawnand: Pass a nand_chip object to chip->{get,set}_features()
+Date:   Thu,  6 Sep 2018 14:05:31 +0200
+Message-Id: <20180906120535.21255-20-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180906120535.21255-1-boris.brezillon@bootlin.com>
 References: <20180906120535.21255-1-boris.brezillon@bootlin.com>
@@ -71,7 +71,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66048
+X-archive-position: 66049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,90 +92,161 @@ Let's make the raw NAND API consistent by patching all helpers and
 hooks to take a nand_chip object instead of an mtd_info one or
 remove the mtd_info object when both are passed.
 
-Let's tackle the chip->erase() hook.
+Let's tackle the chip->{get,set}_features() hooks.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/denali.c    | 4 ++--
- drivers/mtd/nand/raw/docg4.c     | 4 ++--
- drivers/mtd/nand/raw/nand_base.c | 7 +++----
- include/linux/mtd/rawnand.h      | 2 +-
- 4 files changed, 8 insertions(+), 9 deletions(-)
+ drivers/mtd/nand/raw/mxc_nand.c  | 16 ++++++++--------
+ drivers/mtd/nand/raw/nand_base.c | 21 ++++++---------------
+ include/linux/mtd/rawnand.h      | 12 ++++++------
+ 3 files changed, 20 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/denali.c b/drivers/mtd/nand/raw/denali.c
-index 0c3fff9d65af..bb4ad3b822ad 100644
---- a/drivers/mtd/nand/raw/denali.c
-+++ b/drivers/mtd/nand/raw/denali.c
-@@ -915,9 +915,9 @@ static int denali_waitfunc(struct nand_chip *chip)
- 	return irq_status & INTR__INT_ACT ? 0 : NAND_STATUS_FAIL;
+diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
+index a03a33656cf4..ec150e19a368 100644
+--- a/drivers/mtd/nand/raw/mxc_nand.c
++++ b/drivers/mtd/nand/raw/mxc_nand.c
+@@ -1393,11 +1393,11 @@ static void mxc_nand_command(struct nand_chip *nand_chip, unsigned command,
+ 	}
  }
  
--static int denali_erase(struct mtd_info *mtd, int page)
-+static int denali_erase(struct nand_chip *chip, int page)
+-static int mxc_nand_set_features(struct mtd_info *mtd, struct nand_chip *chip,
+-				 int addr, u8 *subfeature_param)
++static int mxc_nand_set_features(struct nand_chip *chip, int addr,
++				 u8 *subfeature_param)
  {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = mtd_to_denali(nand_to_mtd(chip));
- 	uint32_t irq_status;
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
++	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
+ 	int i;
  
- 	denali_reset_irq(denali);
-diff --git a/drivers/mtd/nand/raw/docg4.c b/drivers/mtd/nand/raw/docg4.c
-index ae20172f1b60..49500cae3d2f 100644
---- a/drivers/mtd/nand/raw/docg4.c
-+++ b/drivers/mtd/nand/raw/docg4.c
-@@ -892,9 +892,9 @@ static int docg4_read_oob(struct nand_chip *nand, int page)
+ 	host->buf_start = 0;
+@@ -1413,11 +1413,11 @@ static int mxc_nand_set_features(struct mtd_info *mtd, struct nand_chip *chip,
  	return 0;
  }
  
--static int docg4_erase_block(struct mtd_info *mtd, int page)
-+static int docg4_erase_block(struct nand_chip *nand, int page)
+-static int mxc_nand_get_features(struct mtd_info *mtd, struct nand_chip *chip,
+-				 int addr, u8 *subfeature_param)
++static int mxc_nand_get_features(struct nand_chip *chip, int addr,
++				 u8 *subfeature_param)
  {
--	struct nand_chip *nand = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(nand);
- 	struct docg4_priv *doc = nand_get_controller_data(nand);
- 	void __iomem *docptr = doc->virtadr;
- 	uint16_t g4_page;
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
++	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
+ 	int i;
+ 
+ 	host->devtype_data->send_cmd(host, NAND_CMD_GET_FEATURES, false);
 diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 9be0f98c1244..26be436eb8f1 100644
+index 26be436eb8f1..0ae597ced5b4 100644
 --- a/drivers/mtd/nand/raw/nand_base.c
 +++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -4623,14 +4623,13 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
+@@ -1163,12 +1163,10 @@ static bool nand_supports_set_features(struct nand_chip *chip, int addr)
+ int nand_get_features(struct nand_chip *chip, int addr,
+ 		      u8 *subfeature_param)
+ {
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+-
+ 	if (!nand_supports_get_features(chip, addr))
+ 		return -ENOTSUPP;
+ 
+-	return chip->get_features(mtd, chip, addr, subfeature_param);
++	return chip->get_features(chip, addr, subfeature_param);
+ }
+ EXPORT_SYMBOL_GPL(nand_get_features);
+ 
+@@ -1184,12 +1182,10 @@ EXPORT_SYMBOL_GPL(nand_get_features);
+ int nand_set_features(struct nand_chip *chip, int addr,
+ 		      u8 *subfeature_param)
+ {
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+-
+ 	if (!nand_supports_set_features(chip, addr))
+ 		return -ENOTSUPP;
+ 
+-	return chip->set_features(mtd, chip, addr, subfeature_param);
++	return chip->set_features(chip, addr, subfeature_param);
+ }
+ EXPORT_SYMBOL_GPL(nand_set_features);
+ 
+@@ -4846,13 +4842,11 @@ static int nand_max_bad_blocks(struct mtd_info *mtd, loff_t ofs, size_t len)
  
  /**
-  * single_erase - [GENERIC] NAND standard block erase command function
+  * nand_default_set_features- [REPLACEABLE] set NAND chip features
 - * @mtd: MTD device structure
-+ * @chip: NAND chip object
-  * @page: the page address of the block which will be erased
-  *
-  * Standard erase command for NAND chips. Returns NAND status.
+  * @chip: nand chip info structure
+  * @addr: feature address.
+  * @subfeature_param: the subfeature parameters, a four bytes array.
   */
--static int single_erase(struct mtd_info *mtd, int page)
-+static int single_erase(struct nand_chip *chip, int page)
+-static int nand_default_set_features(struct mtd_info *mtd,
+-				     struct nand_chip *chip, int addr,
++static int nand_default_set_features(struct nand_chip *chip, int addr,
+ 				     uint8_t *subfeature_param)
  {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	unsigned int eraseblock;
+ 	return nand_set_features_op(chip, addr, subfeature_param);
+@@ -4860,13 +4854,11 @@ static int nand_default_set_features(struct mtd_info *mtd,
  
- 	/* Send commands to erase a block */
-@@ -4715,7 +4714,7 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 		    (page + pages_per_block))
- 			chip->pagebuf = -1;
+ /**
+  * nand_default_get_features- [REPLACEABLE] get NAND chip features
+- * @mtd: MTD device structure
+  * @chip: nand chip info structure
+  * @addr: feature address.
+  * @subfeature_param: the subfeature parameters, a four bytes array.
+  */
+-static int nand_default_get_features(struct mtd_info *mtd,
+-				     struct nand_chip *chip, int addr,
++static int nand_default_get_features(struct nand_chip *chip, int addr,
+ 				     uint8_t *subfeature_param)
+ {
+ 	return nand_get_features_op(chip, addr, subfeature_param);
+@@ -4874,7 +4866,6 @@ static int nand_default_get_features(struct mtd_info *mtd,
  
--		status = chip->erase(mtd, page & chip->pagemask);
-+		status = chip->erase(chip, page & chip->pagemask);
- 
- 		/* See if block erase succeeded */
- 		if (status) {
+ /**
+  * nand_get_set_features_notsupp - set/get features stub returning -ENOTSUPP
+- * @mtd: MTD device structure
+  * @chip: nand chip info structure
+  * @addr: feature address.
+  * @subfeature_param: the subfeature parameters, a four bytes array.
+@@ -4882,8 +4873,8 @@ static int nand_default_get_features(struct mtd_info *mtd,
+  * Should be used by NAND controller drivers that do not support the SET/GET
+  * FEATURES operations.
+  */
+-int nand_get_set_features_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
+-				  int addr, u8 *subfeature_param)
++int nand_get_set_features_notsupp(struct nand_chip *chip, int addr,
++				  u8 *subfeature_param)
+ {
+ 	return -ENOTSUPP;
+ }
 diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index c00e571d09ca..8c8315d977de 100644
+index 8c8315d977de..7c639070c512 100644
 --- a/include/linux/mtd/rawnand.h
 +++ b/include/linux/mtd/rawnand.h
-@@ -1298,7 +1298,7 @@ struct nand_chip {
- 	int (*exec_op)(struct nand_chip *chip,
+@@ -1299,10 +1299,10 @@ struct nand_chip {
  		       const struct nand_operation *op,
  		       bool check_only);
--	int (*erase)(struct mtd_info *mtd, int page);
-+	int (*erase)(struct nand_chip *chip, int page);
- 	int (*set_features)(struct mtd_info *mtd, struct nand_chip *chip,
- 			    int feature_addr, uint8_t *subfeature_para);
- 	int (*get_features)(struct mtd_info *mtd, struct nand_chip *chip,
+ 	int (*erase)(struct nand_chip *chip, int page);
+-	int (*set_features)(struct mtd_info *mtd, struct nand_chip *chip,
+-			    int feature_addr, uint8_t *subfeature_para);
+-	int (*get_features)(struct mtd_info *mtd, struct nand_chip *chip,
+-			    int feature_addr, uint8_t *subfeature_para);
++	int (*set_features)(struct nand_chip *chip, int feature_addr,
++			    uint8_t *subfeature_para);
++	int (*get_features)(struct nand_chip *chip, int feature_addr,
++			    uint8_t *subfeature_para);
+ 	int (*setup_read_retry)(struct mtd_info *mtd, int retry_mode);
+ 	int (*setup_data_interface)(struct mtd_info *mtd, int chipnr,
+ 				    const struct nand_data_interface *conf);
+@@ -1681,8 +1681,8 @@ int nand_read_oob_syndrome(struct nand_chip *chip, int page);
+ int nand_get_features(struct nand_chip *chip, int addr, u8 *subfeature_param);
+ int nand_set_features(struct nand_chip *chip, int addr, u8 *subfeature_param);
+ /* Stub used by drivers that do not support GET/SET FEATURES operations */
+-int nand_get_set_features_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
+-				  int addr, u8 *subfeature_param);
++int nand_get_set_features_notsupp(struct nand_chip *chip, int addr,
++				  u8 *subfeature_param);
+ 
+ /* Default read_page_raw implementation */
+ int nand_read_page_raw(struct nand_chip *chip, uint8_t *buf, int oob_required,
 -- 
 2.14.1

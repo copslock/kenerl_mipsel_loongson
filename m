@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 15:46:37 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:58658 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993041AbeIFNqeRfua1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 15:46:34 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 8199DAFA6;
-        Thu,  6 Sep 2018 13:46:28 +0000 (UTC)
-Date:   Thu, 6 Sep 2018 15:46:27 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc:     Rob Herring <robh@kernel.org>, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>, davem@davemloft.net,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        mingo@redhat.com, Michael Ellerman <mpe@ellerman.id.au>,
-        paul.burton@mips.com, Thomas Gleixner <tglx@linutronix.de>,
-        tony.luck@intel.com, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 07/29] memblock: remove _virt from APIs returning
- virtual address
-Message-ID: <20180906134627.GZ14951@dhcp22.suse.cz>
-References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
- <1536163184-26356-8-git-send-email-rppt@linux.vnet.ibm.com>
- <CABGGiswdb1x-=vqrgxZ9i2dnLdsgtXq4+5H9Y1JRd90YVMW69A@mail.gmail.com>
- <20180905172017.GA2203@rapoport-lnx>
- <20180906072800.GN14951@dhcp22.suse.cz>
- <20180906124321.GD27492@rapoport-lnx>
- <20180906130102.GY14951@dhcp22.suse.cz>
- <20180906133958.GM27492@rapoport-lnx>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180906133958.GM27492@rapoport-lnx>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <mhocko@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 17:04:16 +0200 (CEST)
+Received: from mogw1033.ocn.ad.jp ([153.149.231.39]:60939 "EHLO
+        mogw1033.ocn.ad.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993041AbeIFPEMmmlCf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 17:04:12 +0200
+Received: from mf-smf-ucb026c2 (mf-smf-ucb026c2.ocn.ad.jp [153.153.66.167])
+        by mogw1033.ocn.ad.jp (Postfix) with ESMTP id 868F180023A;
+        Fri,  7 Sep 2018 00:04:08 +0900 (JST)
+Received: from ntt.pod01.mv-mta-ucb021 ([153.149.142.84])
+        by mf-smf-ucb026c2 with ESMTP
+        id xvpIfNQqaZVYwxvpIf38J0; Fri, 07 Sep 2018 00:04:08 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+        by ntt.pod01.mv-mta-ucb021 with 
+        id YF481y0012vuoep01F489c; Thu, 06 Sep 2018 15:04:08 +0000
+Received: from localhost (p935071-ipngn2102funabasi.chiba.ocn.ne.jp [180.56.175.71])
+        by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+        Fri,  7 Sep 2018 00:04:08 +0900 (JST)
+Date:   Fri, 07 Sep 2018 00:04:07 +0900 (JST)
+Message-Id: <20180907.000407.1493498061297805737.anemo@mba.ocn.ne.jp>
+To:     dingxiang@cmss.chinamobile.com
+Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mips: txx9: fix iounmap related issue
+From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1536207559-31543-1-git-send-email-dingxiang@cmss.chinamobile.com>
+References: <1536207559-31543-1-git-send-email-dingxiang@cmss.chinamobile.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66068
+X-archive-position: 66069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mhocko@kernel.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,46 +51,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu 06-09-18 16:39:58, Mike Rapoport wrote:
-> On Thu, Sep 06, 2018 at 03:01:02PM +0200, Michal Hocko wrote:
-> > On Thu 06-09-18 15:43:21, Mike Rapoport wrote:
-> > > On Thu, Sep 06, 2018 at 09:28:00AM +0200, Michal Hocko wrote:
-> > > > On Wed 05-09-18 20:20:18, Mike Rapoport wrote:
-> > > > > On Wed, Sep 05, 2018 at 12:04:36PM -0500, Rob Herring wrote:
-> > > > > > On Wed, Sep 5, 2018 at 11:00 AM Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
-> > > > > > >
-> > > > > > > The conversion is done using
-> > > > > > >
-> > > > > > > sed -i 's@memblock_virt_alloc@memblock_alloc@g' \
-> > > > > > >         $(git grep -l memblock_virt_alloc)
-> > > > > > 
-> > > > > > What's the reason to do this? It seems like a lot of churn even if a
-> > > > > > mechanical change.
-> > > > > 
-> > > > > I felt that memblock_virt_alloc_ is too long for a prefix, e.g:
-> > > > > memblock_virt_alloc_node_nopanic, memblock_virt_alloc_low_nopanic.
-> > > > > 
-> > > > > And for consistency I've changed the memblock_virt_alloc as well.
-> > > > 
-> > > > I would keep the current API unless the name is terribly misleading or
-> > > > it can be improved a lot. Neither seems to be the case here. So I would
-> > > > rather stick with the status quo.
-> > > 
-> > > I'm ok with the memblock_virt_alloc by itself, but having 'virt' in
-> > > 'memblock_virt_alloc_try_nid_nopanic' and 'memblock_virt_alloc_low_nopanic'
-> > > reduces code readability in my opinion.
-> > 
-> > Well, is _nopanic really really useful in the name. Do we even need/want
-> > implicit panic/nopanic semantic? The code should rather check for the
-> > return value and decide depending on the code path. I suspect removing
-> > panic/nopanic would make the API slightly lighter.
->  
-> I agree that panic/nopanic should be removed. But I prefer to start with
-> equivalent replacement to make it as automated as possible and update
-> memblock API when the dust settles a bit.
+On Thu,  6 Sep 2018 12:19:19 +0800, Ding Xiang <dingxiang@cmss.chinamobile.com> wrote:
+> if device_register return error, iounmap should be called, also iounmap
+> need to call before put_device.
+> 
+> Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
+> ---
+>  arch/mips/txx9/generic/setup.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 
-Yes, I agree with that approach. But that also doesn't justify the
-renaming
--- 
-Michal Hocko
-SUSE Labs
+Thank you for fixing this long standing issue.  It looks OK for me.
+
+Reviewed-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+---
+Atsushi Nemoto

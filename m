@@ -1,41 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 04:17:49 +0200 (CEST)
-Received: from cmccmta2.chinamobile.com ([221.176.66.80]:62914 "EHLO
-        cmccmta2.chinamobile.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990423AbeIFCRppQgNP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 04:17:45 +0200
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.11]) by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee65b908e3f4b4-f8a2f; Thu, 06 Sep 2018 10:17:35 +0800 (CST)
-X-RM-TRANSID: 2ee65b908e3f4b4-f8a2f
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from [172.20.21.81] (unknown[112.25.154.148])
-        by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee65b908e3e48e-c7e9c;
-        Thu, 06 Sep 2018 10:17:34 +0800 (CST)
-X-RM-TRANSID: 2ee65b908e3e48e-c7e9c
-Subject: Re: [PATCH V2] mips: txx9: fix resource leak after register fail
-To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-References: <1536146539-26131-1-git-send-email-dingxiang@cmss.chinamobile.com>
- <20180906.003701.1191480642819924726.anemo@mba.ocn.ne.jp>
-From:   Ding Xiang <dingxiang@cmss.chinamobile.com>
-Message-ID: <d0386546-cb09-0ff6-2cc6-c6816f723289@cmss.chinamobile.com>
-Date:   Thu, 6 Sep 2018 10:17:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 04:34:35 +0200 (CEST)
+Received: from mail-vk0-x244.google.com ([IPv6:2607:f8b0:400c:c05::244]:38263
+        "EHLO mail-vk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbeIFCeboWxrg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 04:34:31 +0200
+Received: by mail-vk0-x244.google.com with SMTP id h200-v6so3494777vke.5
+        for <linux-mips@linux-mips.org>; Wed, 05 Sep 2018 19:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=8GbrTSHm4Lsu+kJCxDeaCv1TtTTacTb81H9Kc/eTDp0=;
+        b=vTLXTr4fC8fgQkLW5Sct4/hZIovSgg1d0neRS8hGoRgRfZS/tlb8K+8i3Xw32hblbt
+         C4lcTRVOlKz2vBlPJVGEOOfshz0YsvxvCICvuy3q1PBdTNDJHAX/93kaEt8876fzg4b4
+         SK4fZU5svelRQxgBRXOh6/ZfPp/o4YWR1xC20IKbB1IisRNs6UgN+9Jn/gfTzE4RPCv8
+         RNwaNQ49LgzD+L8stF2xZA2RfNKqVFPltc8YTjygt3X6Kq9/lJPOIuEUpyus3AgIwu87
+         Gfc0f7Qe356+NUawn9D9qZYGBg9X/jsDgxQ90kN/50hbjL9uzhXK8O1PZsa3IRLoBcev
+         Y5Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=8GbrTSHm4Lsu+kJCxDeaCv1TtTTacTb81H9Kc/eTDp0=;
+        b=RwYoEdn9Rf/c//B6qfLJxu+RGSrBnHZQAJ8PXIIeTI39MMg+Y//7Qknr3zbhCp0/Mm
+         v3kuaZzL8JgdCFFhzB4lvg/Vwai7N+dzTUUg3XjPexPvPjk9/0lYkshBUwfhCRGZ/yVN
+         L+geeFs2lUIMPBttvdhhsXOBDx9YFGYEQPZYYnuqmyULkC0h1yTesivjJJVZ7isSKSHd
+         cn17dPMuw4uwsxbf2yvfIAg5PDhHYZ2VJbtcODbxwUcmTfLQeOisQTKits7YjUSrTrYa
+         vJWviXzB8BUQZrK+X+LFzeFF3bGtxHr3aaJH7Pv4o1rZ4d3I9u1WgnJ4t1Bco5l6CHjs
+         M27w==
+X-Gm-Message-State: APzg51A39p9boZGss7CaRUoHC0ZjtUcG16J54CIQJuSJ8v82NQlJxtX9
+        tmBkheOjUHtof/2M/Ezb5WW26OHg8drrmsXTBag=
+X-Google-Smtp-Source: ANB0Vdb8gvf/ZxS9AueOu1GlInJxPnckdmEb0TgyF7PbzKdJ8kWninxcZIqOjDuAdzlUvyI+i0lw7Pk4mbuCyNiR8KU=
+X-Received: by 2002:a1f:f8c2:: with SMTP id w185-v6mr192338vkh.135.1536201265474;
+ Wed, 05 Sep 2018 19:34:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20180906.003701.1191480642819924726.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-Return-Path: <dingxiang@cmss.chinamobile.com>
+References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+In-Reply-To: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
+From:   Greentime Hu <green.hu@gmail.com>
+Date:   Thu, 6 Sep 2018 10:33:48 +0800
+Message-ID: <CAEbi=3dKL1zOYc0DC3yXm=7srw6tUfx-JR=o9n4pVrGp+Sosug@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/29] mm: remove bootmem allocator
+To:     rppt@linux.vnet.ibm.com
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        David Miller <davem@davemloft.net>, gregkh@linuxfoundation.org,
+        mingo@redhat.com, mpe@ellerman.id.au, mhocko@suse.com,
+        paul.burton@mips.com, Thomas Gleixner <tglx@linutronix.de>,
+        tony.luck@intel.com, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <green.hu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66000
+X-archive-position: 66001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dingxiang@cmss.chinamobile.com
+X-original-sender: green.hu@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,25 +72,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-On 9/5/2018 11:37 PM, Atsushi Nemoto wrote:
-> On Wed,  5 Sep 2018 19:22:19 +0800, Ding Xiang <dingxiang@cmss.chinamobile.com> wrote:
->> the memory allocated and ioremap address need free after
->> device_register return error.
-> ...
->>   exit_put:
->>   	put_device(&dev->dev);
->> -	return;
->> +exit_free:
->> +	iounmap(dev->base);
->> +	kfree(dev);
-> This change will break exit_put error path.
-> I think kfree will be called from txx9_device_release by put_device.
+Mike Rapoport <rppt@linux.vnet.ibm.com> 於 2018年9月6日 週四 上午12:04寫道：
 >
-> Please refer James's comment on previous trial:
-> <https://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20180305221833.GJ4197%40saruman>
+> Hi,
+>
+> These patches switch early memory managment to use memblock directly
+> without any bootmem compatibility wrappers. As the result both bootmem and
+> nobootmem are removed.
+>
+> There are still a couple of things to sort out, the most important is the
+> removal of bootmem usage in MIPS.
+>
+> Still, IMHO, the series is in sufficient state to post and get the early
+> feedback.
+>
+> The patches are build-tested with defconfig for most architectures (I
+> couldn't find a compiler for nds32 and unicore32) and boot-tested on x86
+> VM.
+>
+Hi Mike,
 
-yes, put_device will call txx9_device_release and free txx9_sramc_dev, 
-and kfree in  sysfs_create_bin_file() error handle
+There are nds32 toolchains.
+https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/x86_64-gcc-8.1.0-nolibc-nds32le-linux.tar.gz
+https://github.com/vincentzwc/prebuilt-nds32-toolchain/releases/download/20180521/nds32le-linux-glibc-v3-upstream.tar.gz
 
-is also unneeded, I will send a new patch soon
+Sorry, we have no qemu yet.

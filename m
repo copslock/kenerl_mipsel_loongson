@@ -1,107 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 23:37:17 +0200 (CEST)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:34927
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994648AbeIFVhNmTOfw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 23:37:13 +0200
-Received: by mail-wm0-x241.google.com with SMTP id o18-v6so12725827wmc.0
-        for <linux-mips@linux-mips.org>; Thu, 06 Sep 2018 14:37:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 23:39:55 +0200 (CEST)
+Received: from mail-it0-x243.google.com ([IPv6:2607:f8b0:4001:c0b::243]:38531
+        "EHLO mail-it0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994648AbeIFVjtz03bw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 23:39:49 +0200
+Received: by mail-it0-x243.google.com with SMTP id p129-v6so17218972ite.3
+        for <linux-mips@linux-mips.org>; Thu, 06 Sep 2018 14:39:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Dc38cfVKKU0Jwgy1NEcwnkUgQeVGAYICyUsiyZDxKN4=;
-        b=Tt8SF3IpbPWF2asL4kuATL9UM+wZ46/ASf7EZAxQVij+ILa/rHae23n7EYy+qO4CVY
-         5/+btLNNPIVNj5xQ4tnspAHlHSWw3bh4t/OZsex+3WT9KZIvS3md7pcis4gTNDjf26u2
-         Io1NNRUibLdolZ6/RIaQtQ5cG9wgBIT4X68XdRhEY6nhtvOf6Dqzfo3gDZZU42Zj+2AS
-         f/wRLNsNyS6op+1/ih3JuKerI8kevRTrJJEESjRrhJHdZd6Ky+KYB4dpKyHDc+8Y9iAi
-         4DazXCm27fIzx9yu6BZakHBXTUVvwyRWYKR4zSaRHO/Qa13OHVM4CAo+XpAyOuwISIU2
-         Tn7g==
+        d=ffwll.ch; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=KjKh80UufIY2dCSimg20mtMQG5JxcdRjILM735qSlgw=;
+        b=PHAerKGVibYNrKcFrYx29XCBy44tZUnGMdTqOKSzbxlBCZLjwYskBmbs6jmKvnnBlR
+         08294d0fV/h8PtzOU+SpRnw2w0j7XQYu5xTBL8lq67YYCz1z1cJ/afD7Gy2evboYK+dA
+         6txSgX8m5DlHvKCblGilMREcCxDzA+x0Nifbk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=Dc38cfVKKU0Jwgy1NEcwnkUgQeVGAYICyUsiyZDxKN4=;
-        b=J72j+/KOZmRDEd/6LTllZct33EzDPXisNVJGFBjv5Vep+vodXLVtLQ4x6z5s7DEj1s
-         1F7buNbbTReLe9/UpCUOhuDTj39jZN/N3js67mdkg89bBHriSTONnZzS1cbEyL+pLV6g
-         8SvrG7nNdjCk5nMeoB2T4/b9vuZNral9AweGXxkdAbTir4HGmylVDJuFb6/TBShOOalM
-         0WjAU/pURxRIpgSrIoX9Int33zH4zcuUJYfEoTjXWbrnmrspIFqx91XLbXAbxQgygezp
-         GgC/YmXBtsVZzw8e/evM0L+d88bRTSV5gLbf79WdbTWtz4bO2Bv4orGJOdugwx9F1O4o
-         hZAg==
-X-Gm-Message-State: APzg51DSjaS7MUfXHDV1d4mx/Oypi4A+MdkfuRaoskRs8Lq8kQ+2EebJ
-        EJ43xJXQrcmlr9CHZ/3sPmk=
-X-Google-Smtp-Source: ANB0Vdbp4dui/fr9sDWYbQ4i1W+zAj2zPLIuS+jt4uief318RtUKFgUC4qBDmqhOfA0xQFmdJioDmA==
-X-Received: by 2002:a1c:1745:: with SMTP id 66-v6mr3171304wmx.38.1536269828125;
-        Thu, 06 Sep 2018 14:37:08 -0700 (PDT)
-Received: from [10.69.41.93] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id k5-v6sm14259081wrm.96.2018.09.06.14.37.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 06 Sep 2018 14:37:07 -0700 (PDT)
-Subject: Re: [PATCH v2 net-next 7/7] net: dsa: Add Lantiq / Intel DSA driver
- for vrx200
-To:     Hauke Mehrtens <hauke@hauke-m.de>, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
-        vivien.didelot@savoirfairelinux.com, john@phrozen.org,
-        linux-mips@linux-mips.org, dev@kresin.me, hauke.mehrtens@intel.com,
-        devicetree@vger.kernel.org
-References: <20180901114535.9070-1-hauke@hauke-m.de>
- <20180901120511.10112-1-hauke@hauke-m.de>
- <eb5c0815-e80c-7fd7-a14a-ccc3f28a7c93@gmail.com>
- <d0da3eb2-8adb-677a-0f88-b6fe7989ae45@hauke-m.de>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-Message-ID: <d344e75f-92f8-cbf2-9f69-fb17007a01cf@gmail.com>
-Date:   Thu, 6 Sep 2018 14:36:56 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=KjKh80UufIY2dCSimg20mtMQG5JxcdRjILM735qSlgw=;
+        b=PtF+iqqKuyuSufqMUTrPATAQOizWd9CdUdHT878a9Lq3HALGOSobDhY3mM+Wl6jUVa
+         VWCYcgQMBDc8w9Po46Q4ABvQDqqhUKxkJt8E7SLa0TYsiVZxIV8JodTmuXox/g3C5kCL
+         xgDaVEkY5oX4EOsoCrvx9UYd2waR2uR6FrH4g8po/Cmt+QnLzpSE62l6gZJy8u/O4oJY
+         z2I8qLIiORNpBWiF2Vrs0wWUuSOofsEJhOjBCau79wkmYJXe3J7v5heoR43Z1YcB4qAz
+         SiDac6PAIksnGSM2mkk5GKXX5e36gv/+sAXNlr1SO7sgF3YCKVkRAtNkddFX6nPqY/RZ
+         +p2A==
+X-Gm-Message-State: APzg51CXDSYkPqVmULQuUFUXcwvYMLDpEWNiDOsMhz9zf4sIhRaKx/H8
+        2PXDCabPotHN76q8fZF81ZJkXQ/BBdmIDtajSmzuaA==
+X-Google-Smtp-Source: ANB0VdaZYS6CGCUSkits1K36FzJ8O2eKhaBbPBRcK3xgoKPqUi4IlqCBaQM3QhkFFKX9EQvpTGJrhlPpAFWl3aj1uRA=
+X-Received: by 2002:a24:3507:: with SMTP id k7-v6mr4355830ita.13.1536269983556;
+ Thu, 06 Sep 2018 14:39:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <d0da3eb2-8adb-677a-0f88-b6fe7989ae45@hauke-m.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Received: by 2002:a4f:bf05:0:0:0:0:0 with HTTP; Thu, 6 Sep 2018 14:39:42 -0700 (PDT)
+X-Originating-IP: [2a02:168:569e:0:3106:d637:d723:e855]
+In-Reply-To: <20180906120120.3dd1fc91@gandalf.local.home>
+References: <1536012923-16275-1-git-send-email-henrik@austad.us>
+ <20180904113030.GB25177@amd> <20180904095908.13298b3d@gandalf.local.home>
+ <20180906095804.5ab2716f@lwn.net> <20180906120120.3dd1fc91@gandalf.local.home>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Thu, 6 Sep 2018 23:39:42 +0200
+X-Google-Sender-Auth: HnWLIkneOlckhuh6DKOnc742aWI
+Message-ID: <CAKMK7uHoeB89-VVS8qVaoNiP_0waHHJ=dFCUgXkRDTnRkXz69g@mail.gmail.com>
+Subject: Re: [PATCH] [RFC v2] Drop all 00-INDEX files from Documentation/
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        X86 ML <x86@kernel.org>, kvm@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        James Hogan <jhogan@kernel.org>,
+        Henrik Austad <henrik@austad.us>,
+        Will Deacon <will.deacon@arm.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jan Kandziora <jjj@gmx.de>, Paul Mackerras <paulus@samba.org>,
+        Henrik Austad <haustad@cisco.com>, Pavel Machek <pavel@ucw.cz>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Evgeniy Polyakov <zbr@ioremap.net>, linux-s390@vger.kernel.org,
+        Ian Kent <raven@themaw.net>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Helge Deller <deller@gmx.de>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Len Brown <len.brown@intel.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kbuild@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-parisc@vger.kernel.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-ide@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-spi@vger.kernel.org,
+        Paul Burton <paul.burton@mips.com>,
+        Mark Brown <broonie@kernel.org>, netdev@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <daniel.vetter@ffwll.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66095
+X-archive-position: 66096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: daniel@ffwll.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -114,129 +119,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/06/2018 02:11 PM, Hauke Mehrtens wrote:
-> On 09/03/2018 09:54 PM, Florian Fainelli wrote:
+On Thu, Sep 6, 2018 at 6:01 PM, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On Thu, 6 Sep 2018 09:58:04 -0600
+> Jonathan Corbet <corbet@lwn.net> wrote:
+>
+>> Thanks,
 >>
->>
->> On 9/1/2018 5:05 AM, Hauke Mehrtens wrote:
->>> This adds the DSA driver for the GSWIP Switch found in the VRX200 SoC.
->>> This switch is integrated in the DSL SoC, this SoC uses a GSWIP version
->>> 2.1, there are other SoCs using different versions of this IP block, but
->>> this driver was only tested with the version found in the VRX200.
->>> Currently only the basic features are implemented which will forward all
->>> packages to the CPU and let the CPU do the forwarding. The hardware also
->>> support Layer 2 offloading which is not yet implemented in this driver.
->>>
->>> The GPHY FW loaded is now done by this driver and not any more by the
->>> separate driver in drivers/soc/lantiq/gphy.c, I will remove this driver
->>> is a separate patch. to make use of the GPHY this switch driver is
->>> needed anyway. Other SoCs have more embedded GPHYs so this driver should
->>> support a variable number of GPHYs. After the firmware was loaded the
->>> GPHY can be probed on the MDIO bus and it behaves like an external GPHY,
->>> without the firmware it can not be probed on the MDIO bus.
->>>
->>> Currently this depends on SOC_TYPE_XWAY because the SoC revision
->>> detection function ltq_soc_type() is used to load the correct GPHY
->>> firmware on the VRX200 SoCs.
->>>
->>> The clock names in the sysctrl.c file have to be changed because the
->>> clocks are now used by a different driver. This should be cleaned up and
->>> a real common clock driver should provide the clocks instead.
->>>
->>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>> ---
->>
->> Looks great, just a few suggestions below
->>
->> [snip]
->>
->>> +static void gswip_adjust_link(struct dsa_switch *ds, int port,
->>> +                  struct phy_device *phydev)
->>> +{
->>> +    struct gswip_priv *priv = ds->priv;
->>> +    u16 macconf = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
->>> +    u16 miirate = 0;
->>> +    u16 miimode;
->>> +    u16 lcl_adv = 0, rmt_adv = 0;
->>> +    u8 flowctrl;
->>> +
->>> +    /* do not run this for the CPU port */
->>> +    if (dsa_is_cpu_port(ds, port))
->>> +        return;
->>
->> Typically we expect the adjust_link callback to run for fixed link
->> ports, that is inter-switch links (between switches) or between the CPU
->> port and the Ethernet MAC attached to the switch. Here you are running
->> this for the user facing ports (IIRC), which should really not be
->> necessary, most Ethernet switches will be able to look at their built-in
->> PHY's state and configure the switch's port automatically. Maybe this is
->> not possible here because you had to disable polling?
-> 
-> I deactivated the PHY auto polling, I can activate it again. Some PHYs
-> could also be external on the same MDIO bus as the internal PHYs.
-> 
-> The CPU facing fixed link is a special MAC in the switch, at least in
-> this version of the switch IP which is embedded in the networking SoCs.
-> The MAC is more or less integrated in the switch and the driver can not
-> configure the link between the MAC and the switch.
+>> jon  (who is increasingly inclined to apply this patch)
+>
+> As Colin Kaepernick now says... "Just do it!"
+>
+> ;-)
 
-OK
++1
 
-> 
->> Can you consider implementing PHYLINK operations which would make the
->> driver more future proof, should you consider newer generations of
->> switches that support 10G PHY, SGMII, SFP/SFF and so on?
-> 
-> I will have a look at this later. I just saw that you pushed some
-> branches adding SFP support to b53. ;-)
-
-I would really add PHYLINK callbacks now what you have is fairly simple
-to extract into separate functions doing the MAC configuration, and then
-setting link up/down, that's pretty much all you need. Once you start
-adding SFP/SFF support, things can get a bit more complicated
-configuration wise.
-
-> 
-> The next step will be adding layer 2 offload. This is planned for the
-> next patch series after this was merged. The switch uses internal VLANs
-> for the offloading, so you configure a VLAN in the hardware and then add
-> ports to it. I saw that multiple switches use this model, but converting
-> the not VLAN aware layer 2 offloading to it looks a little bit strange,
-> is there a good practice?
-> 
-
-Not VLAN aware layer 2 offload is actually quite common, the switch must
-accept all frames in that case (not checking VID). L2 offload is really
-about the following use case create a bridge, enslave ports of the
-switch into it, and you should now have the switch forward from/to/
-port0/port1 without this traffic going all the way to the CPU. If it
-does, then there is no point having a switch in the first place :)
-
->> [snip]
->>
->>> +    if (priv->ds->dst->cpu_dp->index != priv->hw_info->cpu_port) {
->>> +        dev_err(dev, "wrong CPU port defined, HW only supports port:
->>> %i",
->>> +            priv->hw_info->cpu_port);
->>> +        err = -EINVAL;
->>> +        goto mdio_bus;
->>> +    }
->>
->> There are a number of switches (b53, qca8k, mt7530) that have this
->> requirement, we should probably be moving this check down into the core
->> DSA layer and allow either to continue but disable switch tagging, if it
->> was requested. Andrew what do you think?
-> 
-> As the CPU port is a special port many registers are only available for
-> the normal front facing Ethernet ports and not for the CPU port so I
-> have to make sure the correct port was selected as CPU port, otherwise
-> the driver will write to the wrong register offsets.
-
-OK, my comment was mostly for Andrew, this is not the first switch that
-has specific requirements on which port of the switch is the
-"CPU/management" port. So we should probably add some core functionality
-within DSA to say "here are the ports that I can accept for management",
-if the port you connected your switch to any other than those, then you
-just lose tagging.
+But I'm biased, I'm part of the party that is responsible for the new
+shiny documentation system ...
+-Daniel
 -- 
-Florian
+Daniel Vetter
+Software Engineer, Intel Corporation
++41 (0) 79 365 57 48 - http://blog.ffwll.ch

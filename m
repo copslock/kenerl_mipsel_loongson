@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:07:55 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:43497 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:08:08 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:43521 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994646AbeIFMFwyr39e (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 14:05:52 +0200
+        id S23994648AbeIFMFzexW-e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 14:05:55 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id AEAAB22513; Thu,  6 Sep 2018 14:05:48 +0200 (CEST)
+        id D51E022A52; Thu,  6 Sep 2018 14:05:55 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-30-219.w90-88.abo.wanadoo.fr [90.88.15.219])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 8BA86208DD;
-        Thu,  6 Sep 2018 14:05:47 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id B55E222A48;
+        Thu,  6 Sep 2018 14:05:54 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -61,9 +61,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH v2 08/23] mtd: rawnand: Pass a nand_chip object to ecc->read_xxx() hooks
-Date:   Thu,  6 Sep 2018 14:05:20 +0200
-Message-Id: <20180906120535.21255-9-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 15/23] mtd: rawnand: Pass a nand_chip object to chip->dev_ready()
+Date:   Thu,  6 Sep 2018 14:05:27 +0200
+Message-Id: <20180906120535.21255-16-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180906120535.21255-1-boris.brezillon@bootlin.com>
 References: <20180906120535.21255-1-boris.brezillon@bootlin.com>
@@ -71,7 +71,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66040
+X-archive-position: 66041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,1433 +92,733 @@ Let's make the raw NAND API consistent by patching all helpers and
 hooks to take a nand_chip object instead of an mtd_info one or
 remove the mtd_info object when both are passed.
 
-Let's tackle all ecc->read_xxx() hooks at once.
+Let's tackle the chip->dev_ready() hook.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-Acked-by: Stefan Agner <stefan@agner.ch>
 ---
-Changes in v2:
-- Add Stefan A-b
-- Patched the Toshiba driver
----
- drivers/mtd/nand/raw/atmel/nand-controller.c  | 12 ++---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c      | 21 ++++----
- drivers/mtd/nand/raw/cafe_nand.c              | 10 ++--
- drivers/mtd/nand/raw/denali.c                 | 17 +++---
- drivers/mtd/nand/raw/docg4.c                  | 20 ++++----
- drivers/mtd/nand/raw/fsl_elbc_nand.c          |  5 +-
- drivers/mtd/nand/raw/fsl_ifc_nand.c           |  5 +-
- drivers/mtd/nand/raw/fsmc_nand.c              |  6 +--
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c    | 23 ++++-----
- drivers/mtd/nand/raw/hisi504_nand.c           |  9 ++--
- drivers/mtd/nand/raw/lpc32xx_mlc.c            | 10 ++--
- drivers/mtd/nand/raw/lpc32xx_slc.c            | 14 ++---
- drivers/mtd/nand/raw/marvell_nand.c           | 30 +++++------
- drivers/mtd/nand/raw/mtk_nand.c               | 23 +++++----
- drivers/mtd/nand/raw/mxc_nand.c               | 11 ++--
- drivers/mtd/nand/raw/nand_base.c              | 74 +++++++++++++--------------
- drivers/mtd/nand/raw/nand_micron.c            |  6 +--
- drivers/mtd/nand/raw/nand_toshiba.c           | 10 ++--
- drivers/mtd/nand/raw/omap2.c                  |  6 +--
- drivers/mtd/nand/raw/qcom_nandc.c             | 11 ++--
- drivers/mtd/nand/raw/r852.c                   |  5 +-
- drivers/mtd/nand/raw/sh_flctl.c               |  6 ++-
- drivers/mtd/nand/raw/sunxi_nand.c             | 26 +++++-----
- drivers/mtd/nand/raw/tango_nand.c             | 16 +++---
- drivers/mtd/nand/raw/tegra_nand.c             | 15 +++---
- drivers/mtd/nand/raw/vf610_nfc.c              | 18 +++----
- drivers/staging/mt29f_spinand/mt29f_spinand.c |  5 +-
- include/linux/mtd/rawnand.h                   | 30 +++++------
- 28 files changed, 221 insertions(+), 223 deletions(-)
+ drivers/mtd/nand/raw/ams-delta.c                 |  2 +-
+ drivers/mtd/nand/raw/atmel/nand-controller.c     |  6 ++----
+ drivers/mtd/nand/raw/au1550nd.c                  |  6 +++---
+ drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c |  3 +--
+ drivers/mtd/nand/raw/cafe_nand.c                 |  3 +--
+ drivers/mtd/nand/raw/cmx270_nand.c               |  2 +-
+ drivers/mtd/nand/raw/cs553x_nand.c               |  3 +--
+ drivers/mtd/nand/raw/davinci_nand.c              |  4 ++--
+ drivers/mtd/nand/raw/denali.c                    |  4 ++--
+ drivers/mtd/nand/raw/diskonchip.c                |  5 ++---
+ drivers/mtd/nand/raw/fsl_upm.c                   |  6 +++---
+ drivers/mtd/nand/raw/gpio.c                      |  4 ++--
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c       |  3 +--
+ drivers/mtd/nand/raw/jz4740_nand.c               |  4 ++--
+ drivers/mtd/nand/raw/jz4780_nand.c               |  4 ++--
+ drivers/mtd/nand/raw/lpc32xx_mlc.c               |  3 +--
+ drivers/mtd/nand/raw/lpc32xx_slc.c               |  3 +--
+ drivers/mtd/nand/raw/mpc5121_nfc.c               |  2 +-
+ drivers/mtd/nand/raw/mtk_nand.c                  |  4 ++--
+ drivers/mtd/nand/raw/mxc_nand.c                  |  2 +-
+ drivers/mtd/nand/raw/nand_base.c                 | 10 +++++-----
+ drivers/mtd/nand/raw/nandsim.c                   |  2 +-
+ drivers/mtd/nand/raw/ndfc.c                      |  3 +--
+ drivers/mtd/nand/raw/nuc900_nand.c               |  6 +++---
+ drivers/mtd/nand/raw/omap2.c                     |  4 ++--
+ drivers/mtd/nand/raw/pasemi_nand.c               |  2 +-
+ drivers/mtd/nand/raw/plat_nand.c                 | 12 +-----------
+ drivers/mtd/nand/raw/r852.c                      |  6 +++---
+ drivers/mtd/nand/raw/s3c2410.c                   |  9 ++++++---
+ drivers/mtd/nand/raw/sharpsl.c                   |  4 ++--
+ drivers/mtd/nand/raw/socrates_nand.c             |  3 +--
+ drivers/mtd/nand/raw/sunxi_nand.c                |  3 +--
+ drivers/mtd/nand/raw/tango_nand.c                |  3 +--
+ drivers/mtd/nand/raw/tmio_nand.c                 |  8 ++++----
+ drivers/mtd/nand/raw/txx9ndfmc.c                 |  4 ++--
+ drivers/mtd/nand/raw/xway_nand.c                 |  2 +-
+ include/linux/mtd/rawnand.h                      |  2 +-
+ 37 files changed, 68 insertions(+), 88 deletions(-)
 
+diff --git a/drivers/mtd/nand/raw/ams-delta.c b/drivers/mtd/nand/raw/ams-delta.c
+index 8121d26194cf..48413203dbc2 100644
+--- a/drivers/mtd/nand/raw/ams-delta.c
++++ b/drivers/mtd/nand/raw/ams-delta.c
+@@ -130,7 +130,7 @@ static void ams_delta_hwcontrol(struct nand_chip *this, int cmd,
+ 		ams_delta_write_byte(this, cmd);
+ }
+ 
+-static int ams_delta_nand_ready(struct mtd_info *mtd)
++static int ams_delta_nand_ready(struct nand_chip *this)
+ {
+ 	return gpio_get_value(AMS_DELTA_GPIO_PIN_NAND_RB);
+ }
 diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index cef22a79f3a6..45061b591346 100644
+index f088bff06723..2dcd8aa0ce0b 100644
 --- a/drivers/mtd/nand/raw/atmel/nand-controller.c
 +++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -895,15 +895,13 @@ static int atmel_nand_pmecc_read_pg(struct nand_chip *chip, u8 *buf,
- 	return ret;
+@@ -475,9 +475,8 @@ static void atmel_nand_write_buf(struct nand_chip *chip, const u8 *buf, int len)
+ 		iowrite8_rep(nand->activecs->io.virt, buf, len);
  }
  
--static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
--				      struct nand_chip *chip, u8 *buf,
-+static int atmel_nand_pmecc_read_page(struct nand_chip *chip, u8 *buf,
- 				      int oob_required, int page)
+-static int atmel_nand_dev_ready(struct mtd_info *mtd)
++static int atmel_nand_dev_ready(struct nand_chip *chip)
  {
- 	return atmel_nand_pmecc_read_pg(chip, buf, oob_required, page, false);
+-	struct nand_chip *chip = mtd_to_nand(mtd);
+ 	struct atmel_nand *nand = to_atmel_nand(chip);
+ 
+ 	return gpiod_get_value(nand->activecs->rb.gpio);
+@@ -499,9 +498,8 @@ static void atmel_nand_select_chip(struct nand_chip *chip, int cs)
+ 		chip->dev_ready = atmel_nand_dev_ready;
  }
  
--static int atmel_nand_pmecc_read_page_raw(struct mtd_info *mtd,
--					  struct nand_chip *chip, u8 *buf,
-+static int atmel_nand_pmecc_read_page_raw(struct nand_chip *chip, u8 *buf,
- 					  int oob_required, int page)
+-static int atmel_hsmc_nand_dev_ready(struct mtd_info *mtd)
++static int atmel_hsmc_nand_dev_ready(struct nand_chip *chip)
  {
- 	return atmel_nand_pmecc_read_pg(chip, buf, oob_required, page, true);
-@@ -1037,16 +1035,14 @@ static int atmel_hsmc_nand_pmecc_read_pg(struct nand_chip *chip, u8 *buf,
- 	return ret;
+-	struct nand_chip *chip = mtd_to_nand(mtd);
+ 	struct atmel_nand *nand = to_atmel_nand(chip);
+ 	struct atmel_hsmc_nand_controller *nc;
+ 	u32 status;
+diff --git a/drivers/mtd/nand/raw/au1550nd.c b/drivers/mtd/nand/raw/au1550nd.c
+index 1bae3b2779aa..1f0fba8d87c6 100644
+--- a/drivers/mtd/nand/raw/au1550nd.c
++++ b/drivers/mtd/nand/raw/au1550nd.c
+@@ -213,7 +213,7 @@ static void au1550_hwcontrol(struct mtd_info *mtd, int cmd)
+ 	wmb(); /* Drain the writebuffer */
  }
  
--static int atmel_hsmc_nand_pmecc_read_page(struct mtd_info *mtd,
--					   struct nand_chip *chip, u8 *buf,
-+static int atmel_hsmc_nand_pmecc_read_page(struct nand_chip *chip, u8 *buf,
- 					   int oob_required, int page)
+-int au1550_device_ready(struct mtd_info *mtd)
++int au1550_device_ready(struct nand_chip *this)
  {
- 	return atmel_hsmc_nand_pmecc_read_pg(chip, buf, oob_required, page,
- 					     false);
+ 	return (alchemy_rdsmem(AU1000_MEM_STSTAT) & 0x1) ? 1 : 0;
+ }
+@@ -341,7 +341,7 @@ static void au1550_command(struct mtd_info *mtd, unsigned command, int column, i
+ 		/* Apply a short delay always to ensure that we do wait tWB. */
+ 		ndelay(100);
+ 		/* Wait for a chip to become ready... */
+-		for (i = this->chip_delay; !this->dev_ready(mtd) && i > 0; --i)
++		for (i = this->chip_delay; !this->dev_ready(this) && i > 0; --i)
+ 			udelay(1);
+ 
+ 		/* Release -CE and re-enable interrupts. */
+@@ -352,7 +352,7 @@ static void au1550_command(struct mtd_info *mtd, unsigned command, int column, i
+ 	/* Apply this short delay always to ensure that we do wait tWB. */
+ 	ndelay(100);
+ 
+-	while(!this->dev_ready(mtd));
++	while(!this->dev_ready(this));
  }
  
--static int atmel_hsmc_nand_pmecc_read_page_raw(struct mtd_info *mtd,
--					       struct nand_chip *chip,
-+static int atmel_hsmc_nand_pmecc_read_page_raw(struct nand_chip *chip,
- 					       u8 *buf, int oob_required,
- 					       int page)
- {
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 19e6e918f896..a17ae692aee9 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -1689,7 +1689,7 @@ static int brcmstb_nand_verify_erased_page(struct mtd_info *mtd,
- 	sas = mtd->oobsize / chip->ecc.steps;
- 
- 	/* read without ecc for verification */
--	ret = chip->ecc.read_page_raw(mtd, chip, buf, true, page);
-+	ret = chip->ecc.read_page_raw(chip, buf, true, page);
- 	if (ret)
- 		return ret;
- 
-@@ -1786,9 +1786,10 @@ static int brcmnand_read(struct mtd_info *mtd, struct nand_chip *chip,
- 	return 0;
+ static int find_nand_cs(unsigned long nand_base)
+diff --git a/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c b/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
+index d326f9d3648b..f6f694b3cd8e 100644
+--- a/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
++++ b/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
+@@ -196,9 +196,8 @@ static void bcm47xxnflash_ops_bcm4706_select_chip(struct nand_chip *chip,
+ 	return;
  }
  
--static int brcmnand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			      uint8_t *buf, int oob_required, int page)
-+static int brcmnand_read_page(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
+-static int bcm47xxnflash_ops_bcm4706_dev_ready(struct mtd_info *mtd)
++static int bcm47xxnflash_ops_bcm4706_dev_ready(struct nand_chip *nand_chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct brcmnand_host *host = nand_get_controller_data(chip);
- 	u8 *oob = oob_required ? (u8 *)chip->oob_poi : NULL;
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+ 	struct bcm47xxnflash *b47n = nand_get_controller_data(nand_chip);
  
-@@ -1798,10 +1799,11 @@ static int brcmnand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 			mtd->writesize >> FC_SHIFT, (u32 *)buf, oob);
- }
- 
--static int brcmnand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				  uint8_t *buf, int oob_required, int page)
-+static int brcmnand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
-+				  int oob_required, int page)
- {
- 	struct brcmnand_host *host = nand_get_controller_data(chip);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	u8 *oob = oob_required ? (u8 *)chip->oob_poi : NULL;
- 	int ret;
- 
-@@ -1814,17 +1816,18 @@ static int brcmnand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return ret;
- }
- 
--static int brcmnand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			     int page)
-+static int brcmnand_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return brcmnand_read(mtd, chip, (u64)page << chip->page_shift,
- 			mtd->writesize >> FC_SHIFT,
- 			NULL, (u8 *)chip->oob_poi);
- }
- 
--static int brcmnand_read_oob_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				 int page)
-+static int brcmnand_read_oob_raw(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct brcmnand_host *host = nand_get_controller_data(chip);
- 
- 	brcmnand_set_ecc_enabled(host, 0);
+ 	return !!(bcma_cc_read32(b47n->cc, BCMA_CC_NFLASH_CTL) & NCTL_READY);
 diff --git a/drivers/mtd/nand/raw/cafe_nand.c b/drivers/mtd/nand/raw/cafe_nand.c
-index 94e5f7a56084..c6071d71cc1b 100644
+index af6870269f9c..60a2eecc2b2a 100644
 --- a/drivers/mtd/nand/raw/cafe_nand.c
 +++ b/drivers/mtd/nand/raw/cafe_nand.c
-@@ -354,9 +354,10 @@ static int cafe_nand_write_oob(struct mtd_info *mtd,
- }
+@@ -100,9 +100,8 @@ static const char *part_probes[] = { "cmdlinepart", "RedBoot", NULL };
+ #define cafe_readl(cafe, addr)			readl((cafe)->mmio + CAFE_##addr)
+ #define cafe_writel(cafe, datum, addr)		writel(datum, (cafe)->mmio + CAFE_##addr)
  
- /* Don't use -- use nand_read_oob_std for now */
--static int cafe_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			      int page)
-+static int cafe_nand_read_oob(struct nand_chip *chip, int page)
+-static int cafe_device_ready(struct mtd_info *mtd)
++static int cafe_device_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return nand_read_oob_op(chip, page, 0, chip->oob_poi, mtd->oobsize);
- }
- /**
-@@ -369,9 +370,10 @@ static int cafe_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
-  * The hw generator calculates the error syndrome automatically. Therefore
-  * we need a special oob layout and handling.
-  */
--static int cafe_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			       uint8_t *buf, int oob_required, int page)
-+static int cafe_nand_read_page(struct nand_chip *chip, uint8_t *buf,
-+			       int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct nand_chip *chip = mtd_to_nand(mtd);
  	struct cafe_priv *cafe = nand_get_controller_data(chip);
- 	unsigned int max_bitflips = 0;
+ 	int result = !!(cafe_readl(cafe, NAND_STATUS) & 0x40000000);
+ 	uint32_t irqs = cafe_readl(cafe, NAND_IRQ);
+diff --git a/drivers/mtd/nand/raw/cmx270_nand.c b/drivers/mtd/nand/raw/cmx270_nand.c
+index a0f0ad2da6f1..e8458036419b 100644
+--- a/drivers/mtd/nand/raw/cmx270_nand.c
++++ b/drivers/mtd/nand/raw/cmx270_nand.c
+@@ -119,7 +119,7 @@ static void cmx270_hwcontrol(struct nand_chip *this, int dat,
+ /*
+  *	read device ready pin
+  */
+-static int cmx270_device_ready(struct mtd_info *mtd)
++static int cmx270_device_ready(struct nand_chip *this)
+ {
+ 	dsb();
  
+diff --git a/drivers/mtd/nand/raw/cs553x_nand.c b/drivers/mtd/nand/raw/cs553x_nand.c
+index b7432f086f9b..c1628c03282a 100644
+--- a/drivers/mtd/nand/raw/cs553x_nand.c
++++ b/drivers/mtd/nand/raw/cs553x_nand.c
+@@ -141,9 +141,8 @@ static void cs553x_hwcontrol(struct nand_chip *this, int cmd,
+ 		cs553x_write_byte(this, cmd);
+ }
+ 
+-static int cs553x_device_ready(struct mtd_info *mtd)
++static int cs553x_device_ready(struct nand_chip *this)
+ {
+-	struct nand_chip *this = mtd_to_nand(mtd);
+ 	void __iomem *mmio_base = this->IO_ADDR_R;
+ 	unsigned char foo = readb(mmio_base + MM_NAND_STS);
+ 
+diff --git a/drivers/mtd/nand/raw/davinci_nand.c b/drivers/mtd/nand/raw/davinci_nand.c
+index c2a3ad10610c..4b261c73b240 100644
+--- a/drivers/mtd/nand/raw/davinci_nand.c
++++ b/drivers/mtd/nand/raw/davinci_nand.c
+@@ -460,9 +460,9 @@ static void nand_davinci_write_buf(struct nand_chip *chip, const uint8_t *buf,
+  * Check hardware register for wait status. Returns 1 if device is ready,
+  * 0 if it is still busy.
+  */
+-static int nand_davinci_dev_ready(struct mtd_info *mtd)
++static int nand_davinci_dev_ready(struct nand_chip *chip)
+ {
+-	struct davinci_nand_info *info = to_davinci_nand(mtd);
++	struct davinci_nand_info *info = to_davinci_nand(nand_to_mtd(chip));
+ 
+ 	return davinci_nand_readl(info, NANDFSR_OFFSET) & BIT(0);
+ }
 diff --git a/drivers/mtd/nand/raw/denali.c b/drivers/mtd/nand/raw/denali.c
-index 958619fd4d1b..994921814d76 100644
+index 6529780e31a4..7258dd13b3f9 100644
 --- a/drivers/mtd/nand/raw/denali.c
 +++ b/drivers/mtd/nand/raw/denali.c
-@@ -676,9 +676,10 @@ static void denali_oob_xfer(struct mtd_info *mtd, struct nand_chip *chip,
- 					   false);
+@@ -296,9 +296,9 @@ static void denali_cmd_ctrl(struct nand_chip *chip, int dat, unsigned int ctrl)
+ 	denali->host_write(denali, DENALI_BANK(denali) | type, dat);
  }
  
--static int denali_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int denali_read_page_raw(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
+-static int denali_dev_ready(struct mtd_info *mtd)
++static int denali_dev_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct denali_nand_info *denali = mtd_to_denali(mtd);
- 	int writesize = mtd->writesize;
- 	int oobsize = mtd->oobsize;
-@@ -751,9 +752,10 @@ static int denali_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return 0;
+-	struct denali_nand_info *denali = mtd_to_denali(mtd);
++	struct denali_nand_info *denali = mtd_to_denali(nand_to_mtd(chip));
+ 
+ 	return !!(denali_check_irq(denali) & INTR__INT_ACT);
+ }
+diff --git a/drivers/mtd/nand/raw/diskonchip.c b/drivers/mtd/nand/raw/diskonchip.c
+index 16498b277764..e40a4e120c7b 100644
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -739,12 +739,11 @@ static void doc2001plus_command(struct mtd_info *mtd, unsigned command, int colu
+ 	 * any case on any machine. */
+ 	ndelay(100);
+ 	/* wait until command is processed */
+-	while (!this->dev_ready(mtd)) ;
++	while (!this->dev_ready(this)) ;
  }
  
--static int denali_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			   int page)
-+static int denali_read_oob(struct nand_chip *chip, int page)
+-static int doc200x_dev_ready(struct mtd_info *mtd)
++static int doc200x_dev_ready(struct nand_chip *this)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	denali_oob_xfer(mtd, chip, page, 0);
- 
- 	return 0;
-@@ -771,9 +773,10 @@ static int denali_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
- 	return nand_prog_page_end_op(chip);
- }
- 
--static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			    uint8_t *buf, int oob_required, int page)
-+static int denali_read_page(struct nand_chip *chip, uint8_t *buf,
-+			    int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct denali_nand_info *denali = mtd_to_denali(mtd);
- 	unsigned long uncor_ecc_flags = 0;
- 	int stat = 0;
-@@ -792,7 +795,7 @@ static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 		return stat;
- 
- 	if (uncor_ecc_flags) {
--		ret = denali_read_oob(mtd, chip, page);
-+		ret = denali_read_oob(chip, page);
- 		if (ret)
- 			return ret;
- 
-diff --git a/drivers/mtd/nand/raw/docg4.c b/drivers/mtd/nand/raw/docg4.c
-index 2d86bc5a886d..ebaa479ffcb2 100644
---- a/drivers/mtd/nand/raw/docg4.c
-+++ b/drivers/mtd/nand/raw/docg4.c
-@@ -845,21 +845,21 @@ static int read_page(struct mtd_info *mtd, struct nand_chip *nand,
- }
- 
- 
--static int docg4_read_page_raw(struct mtd_info *mtd, struct nand_chip *nand,
--			       uint8_t *buf, int oob_required, int page)
-+static int docg4_read_page_raw(struct nand_chip *nand, uint8_t *buf,
-+			       int oob_required, int page)
- {
--	return read_page(mtd, nand, buf, page, false);
-+	return read_page(nand_to_mtd(nand), nand, buf, page, false);
- }
- 
--static int docg4_read_page(struct mtd_info *mtd, struct nand_chip *nand,
--			   uint8_t *buf, int oob_required, int page)
-+static int docg4_read_page(struct nand_chip *nand, uint8_t *buf,
-+			   int oob_required, int page)
- {
--	return read_page(mtd, nand, buf, page, true);
-+	return read_page(nand_to_mtd(nand), nand, buf, page, true);
- }
- 
--static int docg4_read_oob(struct mtd_info *mtd, struct nand_chip *nand,
--			  int page)
-+static int docg4_read_oob(struct nand_chip *nand, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(nand);
- 	struct docg4_priv *doc = nand_get_controller_data(nand);
+-	struct nand_chip *this = mtd_to_nand(mtd);
+ 	struct doc_priv *doc = nand_get_controller_data(this);
  	void __iomem *docptr = doc->virtadr;
- 	uint16_t status;
-@@ -1059,7 +1059,7 @@ static int __init read_factory_bbt(struct mtd_info *mtd)
- 		return -ENOMEM;
  
- 	read_page_prologue(mtd, g4_addr);
--	docg4_read_page(mtd, nand, buf, 0, DOCG4_FACTORY_BBT_PAGE);
-+	docg4_read_page(nand, buf, 0, DOCG4_FACTORY_BBT_PAGE);
- 
- 	/*
- 	 * If no memory-based bbt was created, exit.  This will happen if module
-@@ -1077,7 +1077,7 @@ static int __init read_factory_bbt(struct mtd_info *mtd)
- 		 * It is stored redundantly, so we get another chance.
- 		 */
- 		eccfailed_stats = mtd->ecc_stats.failed;
--		docg4_read_page(mtd, nand, buf, 0, DOCG4_REDUNDANT_BBT_PAGE);
-+		docg4_read_page(nand, buf, 0, DOCG4_REDUNDANT_BBT_PAGE);
- 		if (mtd->ecc_stats.failed > eccfailed_stats) {
- 			dev_warn(doc->dev,
- 				 "The factory bbt could not be read!\n");
-diff --git a/drivers/mtd/nand/raw/fsl_elbc_nand.c b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-index 22bcd64a66c8..26fcb8ea0c2e 100644
---- a/drivers/mtd/nand/raw/fsl_elbc_nand.c
-+++ b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-@@ -710,9 +710,10 @@ static const struct nand_controller_ops fsl_elbc_controller_ops = {
- 	.attach_chip = fsl_elbc_attach_chip,
- };
- 
--static int fsl_elbc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			      uint8_t *buf, int oob_required, int page)
-+static int fsl_elbc_read_page(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct fsl_elbc_mtd *priv = nand_get_controller_data(chip);
- 	struct fsl_lbc_ctrl *ctrl = priv->ctrl;
- 	struct fsl_elbc_fcm_ctrl *elbc_fcm_ctrl = ctrl->nand;
-diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-index 70bf8e1552a5..8c6016932aaa 100644
---- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
-+++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-@@ -679,9 +679,10 @@ static int check_erased_page(struct nand_chip *chip, u8 *buf)
- 	return bitflips;
+diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
+index 7a2488c6c212..48c5215f9a0e 100644
+--- a/drivers/mtd/nand/raw/fsl_upm.c
++++ b/drivers/mtd/nand/raw/fsl_upm.c
+@@ -52,9 +52,9 @@ static inline struct fsl_upm_nand *to_fsl_upm_nand(struct mtd_info *mtdinfo)
+ 			    chip);
  }
  
--static int fsl_ifc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			     uint8_t *buf, int oob_required, int page)
-+static int fsl_ifc_read_page(struct nand_chip *chip, uint8_t *buf,
-+			     int oob_required, int page)
+-static int fun_chip_ready(struct mtd_info *mtd)
++static int fun_chip_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct fsl_ifc_mtd *priv = nand_get_controller_data(chip);
- 	struct fsl_ifc_ctrl *ctrl = priv->ctrl;
- 	struct fsl_ifc_nand_ctrl *nctrl = ifc_nand_ctrl;
-diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
-index b41fd09fa389..5fc036c89cc8 100644
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -707,7 +707,6 @@ static int fsmc_exec_op(struct nand_chip *chip, const struct nand_operation *op,
+-	struct fsl_upm_nand *fun = to_fsl_upm_nand(mtd);
++	struct fsl_upm_nand *fun = to_fsl_upm_nand(nand_to_mtd(chip));
  
- /*
-  * fsmc_read_page_hwecc
-- * @mtd:	mtd info structure
-  * @chip:	nand chip info structure
-  * @buf:	buffer to store read data
-  * @oob_required:	caller expects OOB data read to chip->oob_poi
-@@ -719,9 +718,10 @@ static int fsmc_exec_op(struct nand_chip *chip, const struct nand_operation *op,
-  * After this read, fsmc hardware generates and reports error data bits(up to a
-  * max of 8 bits)
-  */
--static int fsmc_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
--				 uint8_t *buf, int oob_required, int page)
-+static int fsmc_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
+ 	if (gpio_get_value(fun->rnb_gpio[fun->mchip_number]))
+ 		return 1;
+@@ -69,7 +69,7 @@ static void fun_wait_rnb(struct fsl_upm_nand *fun)
+ 		struct mtd_info *mtd = nand_to_mtd(&fun->chip);
+ 		int cnt = 1000000;
+ 
+-		while (--cnt && !fun_chip_ready(mtd))
++		while (--cnt && !fun_chip_ready(&fun->chip))
+ 			cpu_relax();
+ 		if (!cnt)
+ 			dev_err(fun->dev, "tired waiting for RNB\n");
+diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/gpio.c
+index 722a930ac836..273437c1ae6c 100644
+--- a/drivers/mtd/nand/raw/gpio.c
++++ b/drivers/mtd/nand/raw/gpio.c
+@@ -94,9 +94,9 @@ static void gpio_nand_cmd_ctrl(struct nand_chip *chip, int cmd,
+ 	gpio_nand_dosync(gpiomtd);
+ }
+ 
+-static int gpio_nand_devready(struct mtd_info *mtd)
++static int gpio_nand_devready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, j, s, stat, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
+-	struct gpiomtd *gpiomtd = gpio_nand_getpriv(mtd);
++	struct gpiomtd *gpiomtd = gpio_nand_getpriv(nand_to_mtd(chip));
+ 
+ 	return gpiod_get_value(gpiomtd->rdy);
+ }
 diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index fe99d9323d4a..5650ebf28903 100644
+index 460f2f77a424..1ed594a155ed 100644
 --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
 +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -1085,8 +1085,8 @@ static int gpmi_ecc_read_page_data(struct nand_chip *chip,
- 	return max_bitflips;
+@@ -816,9 +816,8 @@ static void gpmi_cmd_ctrl(struct nand_chip *chip, int data, unsigned int ctrl)
+ 	this->command_length = 0;
  }
  
--static int gpmi_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			      uint8_t *buf, int oob_required, int page)
-+static int gpmi_ecc_read_page(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
+-static int gpmi_dev_ready(struct mtd_info *mtd)
++static int gpmi_dev_ready(struct nand_chip *chip)
  {
- 	nand_read_page_op(chip, page, 0, NULL, 0);
- 
-@@ -1094,8 +1094,8 @@ static int gpmi_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- }
- 
- /* Fake a virtual small page for the subpage read */
--static int gpmi_ecc_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
--			uint32_t offs, uint32_t len, uint8_t *buf, int page)
-+static int gpmi_ecc_read_subpage(struct nand_chip *chip, uint32_t offs,
-+				 uint32_t len, uint8_t *buf, int page)
- {
- 	struct gpmi_nand_data *this = nand_get_controller_data(chip);
- 	void __iomem *bch_regs = this->resources.bch_regs;
-@@ -1130,7 +1130,7 @@ static int gpmi_ecc_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
- 			dev_dbg(this->dev,
- 				"page:%d, first:%d, last:%d, marker at:%d\n",
- 				page, first, last, marker_pos);
--			return gpmi_ecc_read_page(mtd, chip, buf, 0, page);
-+			return gpmi_ecc_read_page(chip, buf, 0, page);
- 		}
- 	}
- 
-@@ -1324,9 +1324,9 @@ static int gpmi_ecc_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-  * ECC-based or raw view of the page is implicit in which function it calls
-  * (there is a similar pair of ECC-based/raw functions for writing).
-  */
--static int gpmi_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--				int page)
-+static int gpmi_ecc_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct nand_chip *chip = mtd_to_nand(mtd);
  	struct gpmi_nand_data *this = nand_get_controller_data(chip);
  
- 	dev_dbg(this->dev, "page number is %d\n", page);
-@@ -1380,10 +1380,10 @@ gpmi_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip, int page)
-  * See set_geometry_by_ecc_info inline comments to have a full description
-  * of the layout used by the GPMI controller.
-  */
--static int gpmi_ecc_read_page_raw(struct mtd_info *mtd,
--				  struct nand_chip *chip, uint8_t *buf,
-+static int gpmi_ecc_read_page_raw(struct nand_chip *chip, uint8_t *buf,
- 				  int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct gpmi_nand_data *this = nand_get_controller_data(chip);
- 	struct bch_geometry *nfc_geo = &this->bch_geometry;
- 	int eccsize = nfc_geo->ecc_chunk_size;
-@@ -1536,10 +1536,9 @@ static int gpmi_ecc_write_page_raw(struct mtd_info *mtd,
- 				 mtd->writesize + mtd->oobsize);
+ 	return gpmi_is_ready(this, this->current_chip);
+diff --git a/drivers/mtd/nand/raw/jz4740_nand.c b/drivers/mtd/nand/raw/jz4740_nand.c
+index 7999e691e636..946a71cf816d 100644
+--- a/drivers/mtd/nand/raw/jz4740_nand.c
++++ b/drivers/mtd/nand/raw/jz4740_nand.c
+@@ -127,9 +127,9 @@ static void jz_nand_cmd_ctrl(struct nand_chip *chip, int dat,
+ 		writeb(dat, chip->IO_ADDR_W);
  }
  
--static int gpmi_ecc_read_oob_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				 int page)
-+static int gpmi_ecc_read_oob_raw(struct nand_chip *chip, int page)
+-static int jz_nand_dev_ready(struct mtd_info *mtd)
++static int jz_nand_dev_ready(struct nand_chip *chip)
  {
--	return gpmi_ecc_read_page_raw(mtd, chip, NULL, 1, page);
-+	return gpmi_ecc_read_page_raw(chip, NULL, 1, page);
+-	struct jz_nand *nand = mtd_to_jz_nand(mtd);
++	struct jz_nand *nand = mtd_to_jz_nand(nand_to_mtd(chip));
+ 	return gpiod_get_value_cansleep(nand->busy_gpio);
  }
  
- static int gpmi_ecc_write_oob_raw(struct mtd_info *mtd, struct nand_chip *chip,
-diff --git a/drivers/mtd/nand/raw/hisi504_nand.c b/drivers/mtd/nand/raw/hisi504_nand.c
-index 9106a1d60bca..f4078086c14c 100644
---- a/drivers/mtd/nand/raw/hisi504_nand.c
-+++ b/drivers/mtd/nand/raw/hisi504_nand.c
-@@ -528,9 +528,10 @@ static irqreturn_t hinfc_irq_handle(int irq, void *devid)
- 	return IRQ_HANDLED;
+diff --git a/drivers/mtd/nand/raw/jz4780_nand.c b/drivers/mtd/nand/raw/jz4780_nand.c
+index 1d2cba546258..d54b2774f7f9 100644
+--- a/drivers/mtd/nand/raw/jz4780_nand.c
++++ b/drivers/mtd/nand/raw/jz4780_nand.c
+@@ -109,9 +109,9 @@ static void jz4780_nand_cmd_ctrl(struct nand_chip *chip, int cmd,
+ 		writeb(cmd, cs->base + OFFSET_CMD);
  }
  
--static int hisi_nand_read_page_hwecc(struct mtd_info *mtd,
--	struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int hisi_nand_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
-+				     int oob_required, int page)
+-static int jz4780_nand_dev_ready(struct mtd_info *mtd)
++static int jz4780_nand_dev_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct hinfc_host *host = nand_get_controller_data(chip);
- 	int max_bitflips = 0, stat = 0, stat_max = 0, status_ecc;
- 	int stat_1, stat_2;
-@@ -560,9 +561,9 @@ static int hisi_nand_read_page_hwecc(struct mtd_info *mtd,
- 	return max_bitflips;
+-	struct jz4780_nand_chip *nand = to_jz4780_nand_chip(mtd);
++	struct jz4780_nand_chip *nand = to_jz4780_nand_chip(nand_to_mtd(chip));
+ 
+ 	return !gpiod_get_value_cansleep(nand->busy_gpio);
  }
- 
--static int hisi_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--				int page)
-+static int hisi_nand_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct hinfc_host *host = nand_get_controller_data(chip);
- 
- 	nand_read_oob_op(chip, page, 0, chip->oob_poi, mtd->oobsize);
 diff --git a/drivers/mtd/nand/raw/lpc32xx_mlc.c b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-index 84e421710297..1849e9858d45 100644
+index 0e989d944ddb..726cd8868ac3 100644
 --- a/drivers/mtd/nand/raw/lpc32xx_mlc.c
 +++ b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-@@ -442,9 +442,10 @@ static int lpc32xx_xmit_dma(struct mtd_info *mtd, void *mem, int len,
- 	return -ENXIO;
- }
- 
--static int lpc32xx_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			     uint8_t *buf, int oob_required, int page)
-+static int lpc32xx_read_page(struct nand_chip *chip, uint8_t *buf,
-+			     int oob_required, int page)
+@@ -302,9 +302,8 @@ static void lpc32xx_nand_cmd_ctrl(struct nand_chip *nand_chip, int cmd,
+ /*
+  * Read Device Ready (NAND device _and_ controller ready)
+  */
+-static int lpc32xx_nand_device_ready(struct mtd_info *mtd)
++static int lpc32xx_nand_device_ready(struct nand_chip *nand_chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct lpc32xx_nand_host *host = nand_get_controller_data(chip);
- 	int i, j;
- 	uint8_t *oobbuf = chip->oob_poi;
-@@ -557,13 +558,12 @@ static int lpc32xx_write_page_lowlevel(struct mtd_info *mtd,
- 	return nand_prog_page_end_op(chip);
- }
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+ 	struct lpc32xx_nand_host *host = nand_get_controller_data(nand_chip);
  
--static int lpc32xx_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			    int page)
-+static int lpc32xx_read_oob(struct nand_chip *chip, int page)
- {
- 	struct lpc32xx_nand_host *host = nand_get_controller_data(chip);
- 
- 	/* Read whole page - necessary with MLC controller! */
--	lpc32xx_read_page(mtd, chip, host->dummy_buf, 1, page);
-+	lpc32xx_read_page(chip, host->dummy_buf, 1, page);
- 
- 	return 0;
- }
+ 	if ((readb(MLC_ISR(host->io_base)) &
 diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
-index d5cb1b40a235..a9cb089923be 100644
+index e42584de875c..26d27a81f814 100644
 --- a/drivers/mtd/nand/raw/lpc32xx_slc.c
 +++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
-@@ -396,9 +396,10 @@ static void lpc32xx_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf, int
+@@ -303,9 +303,8 @@ static void lpc32xx_nand_cmd_ctrl(struct nand_chip *chip, int cmd,
  /*
-  * Read the OOB data from the device without ECC using FIFO method
+  * Read the Device Ready pin
   */
--static int lpc32xx_nand_read_oob_syndrome(struct mtd_info *mtd,
--					  struct nand_chip *chip, int page)
-+static int lpc32xx_nand_read_oob_syndrome(struct nand_chip *chip, int page)
+-static int lpc32xx_nand_device_ready(struct mtd_info *mtd)
++static int lpc32xx_nand_device_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return nand_read_oob_op(chip, page, 0, chip->oob_poi, mtd->oobsize);
- }
- 
-@@ -610,10 +611,10 @@ static int lpc32xx_xfer(struct mtd_info *mtd, uint8_t *buf, int eccsubpages,
-  * Read the data and OOB data from the device, use ECC correction with the
-  * data, disable ECC for the OOB data
-  */
--static int lpc32xx_nand_read_page_syndrome(struct mtd_info *mtd,
--					   struct nand_chip *chip, uint8_t *buf,
-+static int lpc32xx_nand_read_page_syndrome(struct nand_chip *chip, uint8_t *buf,
- 					   int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct nand_chip *chip = mtd_to_nand(mtd);
  	struct lpc32xx_nand_host *host = nand_get_controller_data(chip);
- 	struct mtd_oob_region oobregion = { };
- 	int stat, i, status, error;
-@@ -657,11 +658,12 @@ static int lpc32xx_nand_read_page_syndrome(struct mtd_info *mtd,
-  * Read the data and OOB data from the device, no ECC correction with the
-  * data or OOB data
-  */
--static int lpc32xx_nand_read_page_raw_syndrome(struct mtd_info *mtd,
--					       struct nand_chip *chip,
-+static int lpc32xx_nand_read_page_raw_syndrome(struct nand_chip *chip,
- 					       uint8_t *buf, int oob_required,
- 					       int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	/* Issue read command */
- 	nand_read_page_op(chip, page, 0, NULL, 0);
+ 	int rdy = 0;
  
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 5a9836c5093c..a81018f3a2f4 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -1026,18 +1026,15 @@ static int marvell_nfc_hw_ecc_hmg_do_read_page(struct nand_chip *chip,
- 	return ret;
+diff --git a/drivers/mtd/nand/raw/mpc5121_nfc.c b/drivers/mtd/nand/raw/mpc5121_nfc.c
+index c2002c4d467b..ba7af061c0eb 100644
+--- a/drivers/mtd/nand/raw/mpc5121_nfc.c
++++ b/drivers/mtd/nand/raw/mpc5121_nfc.c
+@@ -320,7 +320,7 @@ static void ads5121_select_chip(struct nand_chip *nand, int chip)
  }
  
--static int marvell_nfc_hw_ecc_hmg_read_page_raw(struct mtd_info *mtd,
--						struct nand_chip *chip, u8 *buf,
-+static int marvell_nfc_hw_ecc_hmg_read_page_raw(struct nand_chip *chip, u8 *buf,
- 						int oob_required, int page)
+ /* Read NAND Ready/Busy signal */
+-static int mpc5121_nfc_dev_ready(struct mtd_info *mtd)
++static int mpc5121_nfc_dev_ready(struct nand_chip *nand)
  {
- 	return marvell_nfc_hw_ecc_hmg_do_read_page(chip, buf, chip->oob_poi,
- 						   true, page);
- }
- 
--static int marvell_nfc_hw_ecc_hmg_read_page(struct mtd_info *mtd,
--					    struct nand_chip *chip,
--					    u8 *buf, int oob_required,
--					    int page)
-+static int marvell_nfc_hw_ecc_hmg_read_page(struct nand_chip *chip, u8 *buf,
-+					    int oob_required, int page)
- {
- 	const struct marvell_hw_ecc_layout *lt = to_marvell_nand(chip)->layout;
- 	unsigned int full_sz = lt->data_bytes + lt->spare_bytes + lt->ecc_bytes;
-@@ -1075,8 +1072,7 @@ static int marvell_nfc_hw_ecc_hmg_read_page(struct mtd_info *mtd,
-  * it appears before the ECC bytes when reading), the ->read_oob_raw() function
-  * also stands for ->read_oob().
-  */
--static int marvell_nfc_hw_ecc_hmg_read_oob_raw(struct mtd_info *mtd,
--					       struct nand_chip *chip, int page)
-+static int marvell_nfc_hw_ecc_hmg_read_oob_raw(struct nand_chip *chip, int page)
- {
- 	/* Invalidate page cache */
- 	chip->pagebuf = -1;
-@@ -1183,10 +1179,10 @@ static int marvell_nfc_hw_ecc_hmg_write_oob_raw(struct mtd_info *mtd,
- }
- 
- /* BCH read helpers */
--static int marvell_nfc_hw_ecc_bch_read_page_raw(struct mtd_info *mtd,
--						struct nand_chip *chip, u8 *buf,
-+static int marvell_nfc_hw_ecc_bch_read_page_raw(struct nand_chip *chip, u8 *buf,
- 						int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	const struct marvell_hw_ecc_layout *lt = to_marvell_nand(chip)->layout;
- 	u8 *oob = chip->oob_poi;
- 	int chunk_size = lt->data_bytes + lt->spare_bytes + lt->ecc_bytes;
-@@ -1295,11 +1291,11 @@ static void marvell_nfc_hw_ecc_bch_read_chunk(struct nand_chip *chip, int chunk,
- 	}
- }
- 
--static int marvell_nfc_hw_ecc_bch_read_page(struct mtd_info *mtd,
--					    struct nand_chip *chip,
-+static int marvell_nfc_hw_ecc_bch_read_page(struct nand_chip *chip,
- 					    u8 *buf, int oob_required,
- 					    int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	const struct marvell_hw_ecc_layout *lt = to_marvell_nand(chip)->layout;
- 	int data_len = lt->data_bytes, spare_len = lt->spare_bytes, ecc_len;
- 	u8 *data = buf, *spare = chip->oob_poi, *ecc;
-@@ -1392,22 +1388,20 @@ static int marvell_nfc_hw_ecc_bch_read_page(struct mtd_info *mtd,
- 	return max_bitflips;
- }
- 
--static int marvell_nfc_hw_ecc_bch_read_oob_raw(struct mtd_info *mtd,
--					       struct nand_chip *chip, int page)
-+static int marvell_nfc_hw_ecc_bch_read_oob_raw(struct nand_chip *chip, int page)
- {
- 	/* Invalidate page cache */
- 	chip->pagebuf = -1;
- 
--	return chip->ecc.read_page_raw(mtd, chip, chip->data_buf, true, page);
-+	return chip->ecc.read_page_raw(chip, chip->data_buf, true, page);
- }
- 
--static int marvell_nfc_hw_ecc_bch_read_oob(struct mtd_info *mtd,
--					   struct nand_chip *chip, int page)
-+static int marvell_nfc_hw_ecc_bch_read_oob(struct nand_chip *chip, int page)
- {
- 	/* Invalidate page cache */
- 	chip->pagebuf = -1;
- 
--	return chip->ecc.read_page(mtd, chip, chip->data_buf, true, page);
-+	return chip->ecc.read_page(chip, chip->data_buf, true, page);
- }
- 
- /* BCH write helpers */
+ 	/*
+ 	 * NFC handles ready/busy signal internally. Therefore, this function
 diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index 46d447f148f1..32d5b59eb879 100644
+index 6baa41483931..cf8c42fb8feb 100644
 --- a/drivers/mtd/nand/raw/mtk_nand.c
 +++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -969,23 +969,25 @@ static int mtk_nfc_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
- 	return bitflips;
+@@ -402,9 +402,9 @@ static void mtk_nfc_select_chip(struct nand_chip *nand, int chip)
+ 	nfi_writel(nfc, mtk_nand->sels[chip], NFI_CSEL);
  }
  
--static int mtk_nfc_read_subpage_hwecc(struct mtd_info *mtd,
--				      struct nand_chip *chip, u32 off,
-+static int mtk_nfc_read_subpage_hwecc(struct nand_chip *chip, u32 off,
- 				      u32 len, u8 *p, int pg)
+-static int mtk_nfc_dev_ready(struct mtd_info *mtd)
++static int mtk_nfc_dev_ready(struct nand_chip *nand)
  {
--	return mtk_nfc_read_subpage(mtd, chip, off, len, p, pg, 0);
-+	return mtk_nfc_read_subpage(nand_to_mtd(chip), chip, off, len, p, pg,
-+				    0);
- }
+-	struct mtk_nfc *nfc = nand_get_controller_data(mtd_to_nand(mtd));
++	struct mtk_nfc *nfc = nand_get_controller_data(nand);
  
--static int mtk_nfc_read_page_hwecc(struct mtd_info *mtd,
--				   struct nand_chip *chip, u8 *p,
--				   int oob_on, int pg)
-+static int mtk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *p, int oob_on,
-+				   int pg)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return mtk_nfc_read_subpage(mtd, chip, 0, mtd->writesize, p, pg, 0);
- }
- 
--static int mtk_nfc_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				 u8 *buf, int oob_on, int page)
-+static int mtk_nfc_read_page_raw(struct nand_chip *chip, u8 *buf, int oob_on,
-+				 int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mtk_nfc_nand_chip *mtk_nand = to_mtk_nand(chip);
- 	struct mtk_nfc *nfc = nand_get_controller_data(chip);
- 	struct mtk_nfc_fdm *fdm = &mtk_nand->fdm;
-@@ -1011,10 +1013,9 @@ static int mtk_nfc_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return ret;
- }
- 
--static int mtk_nfc_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
--				int page)
-+static int mtk_nfc_read_oob_std(struct nand_chip *chip, int page)
- {
--	return mtk_nfc_read_page_raw(mtd, chip, NULL, 1, page);
-+	return mtk_nfc_read_page_raw(chip, NULL, 1, page);
- }
- 
- static inline void mtk_nfc_hw_init(struct mtk_nfc *nfc)
+ 	if (nfi_readl(nfc, NFI_STA) & STA_BUSY)
+ 		return 0;
 diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
-index 3c57e14e1c7c..35fcec595c3e 100644
+index d070ce461b69..82e5b1864399 100644
 --- a/drivers/mtd/nand/raw/mxc_nand.c
 +++ b/drivers/mtd/nand/raw/mxc_nand.c
-@@ -816,8 +816,8 @@ static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
- 	return max_bitflips;
+@@ -701,7 +701,7 @@ static void mxc_nand_enable_hwecc_v3(struct nand_chip *chip, bool enable)
  }
  
--static int mxc_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			      uint8_t *buf, int oob_required, int page)
-+static int mxc_nand_read_page(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
+ /* This functions is used by upper layer to checks if device is ready */
+-static int mxc_nand_dev_ready(struct mtd_info *mtd)
++static int mxc_nand_dev_ready(struct nand_chip *chip)
  {
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
- 	void *oob_buf;
-@@ -830,8 +830,8 @@ static int mxc_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 	return host->devtype_data->read_page(chip, buf, oob_buf, 1, page);
- }
- 
--static int mxc_nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--				  uint8_t *buf, int oob_required, int page)
-+static int mxc_nand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
-+				  int oob_required, int page)
- {
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
- 	void *oob_buf;
-@@ -844,8 +844,7 @@ static int mxc_nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return host->devtype_data->read_page(chip, buf, oob_buf, 0, page);
- }
- 
--static int mxc_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			     int page)
-+static int mxc_nand_read_oob(struct nand_chip *chip, int page)
- {
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
- 
+ 	/*
+ 	 * NFC handles R/B internally. Therefore, this function
 diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 0444bd23c84b..e1f60c841348 100644
+index f0d70164a2f1..66dae8b69fe8 100644
 --- a/drivers/mtd/nand/raw/nand_base.c
 +++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -427,7 +427,7 @@ static int nand_block_bad(struct mtd_info *mtd, loff_t ofs)
- 	page_end = page + (chip->bbt_options & NAND_BBT_SCAN2NDPAGE ? 2 : 1);
+@@ -603,7 +603,7 @@ static void panic_nand_wait_ready(struct mtd_info *mtd, unsigned long timeo)
  
- 	for (; page < page_end; page++) {
--		res = chip->ecc.read_oob(mtd, chip, page);
-+		res = chip->ecc.read_oob(chip, page);
- 		if (res < 0)
- 			return res;
- 
-@@ -2978,7 +2978,6 @@ EXPORT_SYMBOL(nand_check_erased_ecc_chunk);
- 
- /**
-  * nand_read_page_raw_notsupp - dummy read raw page function
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -2986,8 +2985,8 @@ EXPORT_SYMBOL(nand_check_erased_ecc_chunk);
-  *
-  * Returns -ENOTSUPP unconditionally.
-  */
--int nand_read_page_raw_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
--			       u8 *buf, int oob_required, int page)
-+int nand_read_page_raw_notsupp(struct nand_chip *chip, u8 *buf,
-+			       int oob_required, int page)
- {
- 	return -ENOTSUPP;
- }
-@@ -2995,7 +2994,6 @@ EXPORT_SYMBOL(nand_read_page_raw_notsupp);
- 
- /**
-  * nand_read_page_raw - [INTERN] read raw page data without ecc
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -3003,9 +3001,10 @@ EXPORT_SYMBOL(nand_read_page_raw_notsupp);
-  *
-  * Not for syndrome calculating ECC controllers, which use a special oob layout.
-  */
--int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--		       uint8_t *buf, int oob_required, int page)
-+int nand_read_page_raw(struct nand_chip *chip, uint8_t *buf, int oob_required,
-+		       int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
- 
- 	ret = nand_read_page_op(chip, page, 0, buf, mtd->writesize);
-@@ -3025,7 +3024,6 @@ EXPORT_SYMBOL(nand_read_page_raw);
- 
- /**
-  * nand_read_page_raw_syndrome - [INTERN] read raw page data without ecc
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -3033,10 +3031,10 @@ EXPORT_SYMBOL(nand_read_page_raw);
-  *
-  * We need a special oob layout and handling even when OOB isn't used.
-  */
--static int nand_read_page_raw_syndrome(struct mtd_info *mtd,
--				       struct nand_chip *chip, uint8_t *buf,
-+static int nand_read_page_raw_syndrome(struct nand_chip *chip, uint8_t *buf,
- 				       int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	uint8_t *oob = chip->oob_poi;
-@@ -3090,15 +3088,15 @@ static int nand_read_page_raw_syndrome(struct mtd_info *mtd,
- 
- /**
-  * nand_read_page_swecc - [REPLACEABLE] software ECC based page read function
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-  * @page: page number to read
-  */
--static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int nand_read_page_swecc(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size, ret;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -3107,7 +3105,7 @@ static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
- 	uint8_t *ecc_code = chip->ecc.code_buf;
- 	unsigned int max_bitflips = 0;
- 
--	chip->ecc.read_page_raw(mtd, chip, buf, 1, page);
-+	chip->ecc.read_page_raw(chip, buf, 1, page);
- 
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
- 		chip->ecc.calculate(chip, p, &ecc_calc[i]);
-@@ -3136,17 +3134,16 @@ static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
- 
- /**
-  * nand_read_subpage - [REPLACEABLE] ECC based sub-page read function
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @data_offs: offset of requested data within the page
-  * @readlen: data length
-  * @bufpoi: buffer to store read data
-  * @page: page number to read
-  */
--static int nand_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
--			uint32_t data_offs, uint32_t readlen, uint8_t *bufpoi,
--			int page)
-+static int nand_read_subpage(struct nand_chip *chip, uint32_t data_offs,
-+			     uint32_t readlen, uint8_t *bufpoi, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int start_step, end_step, num_steps, ret;
- 	uint8_t *p;
- 	int data_col_addr, i, gaps = 0;
-@@ -3248,7 +3245,6 @@ static int nand_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
- 
- /**
-  * nand_read_page_hwecc - [REPLACEABLE] hardware ECC based page read function
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -3256,9 +3252,10 @@ static int nand_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
-  *
-  * Not for syndrome calculating ECC controllers which need a special oob layout.
-  */
--static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int nand_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size, ret;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -3318,7 +3315,6 @@ static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
- 
- /**
-  * nand_read_page_hwecc_oob_first - [REPLACEABLE] hw ecc, read oob first
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -3330,9 +3326,10 @@ static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
-  * multiple ECC steps, follows the "infix ECC" scheme and reads/writes ECC from
-  * the data area, by overwriting the NAND manufacturer bad block markings.
-  */
--static int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
--	struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int nand_read_page_hwecc_oob_first(struct nand_chip *chip, uint8_t *buf,
-+					  int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size, ret;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -3388,7 +3385,6 @@ static int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
- 
- /**
-  * nand_read_page_syndrome - [REPLACEABLE] hardware ECC syndrome based page read
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @buf: buffer to store read data
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-@@ -3397,9 +3393,10 @@ static int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
-  * The hw generator calculates the error syndrome automatically. Therefore we
-  * need a special oob layout and handling.
-  */
--static int nand_read_page_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
--				   uint8_t *buf, int oob_required, int page)
-+static int nand_read_page_syndrome(struct nand_chip *chip, uint8_t *buf,
-+				   int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret, i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -3610,16 +3607,15 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 			 * the read methods return max bitflips per ecc step.
- 			 */
- 			if (unlikely(ops->mode == MTD_OPS_RAW))
--				ret = chip->ecc.read_page_raw(mtd, chip, bufpoi,
-+				ret = chip->ecc.read_page_raw(chip, bufpoi,
- 							      oob_required,
- 							      page);
- 			else if (!aligned && NAND_HAS_SUBPAGE_READ(chip) &&
- 				 !oob)
--				ret = chip->ecc.read_subpage(mtd, chip,
--							col, bytes, bufpoi,
--							page);
-+				ret = chip->ecc.read_subpage(chip, col, bytes,
-+							     bufpoi, page);
- 			else
--				ret = chip->ecc.read_page(mtd, chip, bufpoi,
-+				ret = chip->ecc.read_page(chip, bufpoi,
- 							  oob_required, page);
- 			if (ret < 0) {
- 				if (use_bufpoi)
-@@ -3723,12 +3719,13 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 
- /**
-  * nand_read_oob_std - [REPLACEABLE] the most common OOB data read function
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @page: page number to read
-  */
--int nand_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip, int page)
-+int nand_read_oob_std(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return nand_read_oob_op(chip, page, 0, chip->oob_poi, mtd->oobsize);
- }
- EXPORT_SYMBOL(nand_read_oob_std);
-@@ -3736,13 +3733,12 @@ EXPORT_SYMBOL(nand_read_oob_std);
- /**
-  * nand_read_oob_syndrome - [REPLACEABLE] OOB data read function for HW ECC
-  *			    with syndromes
-- * @mtd: mtd info structure
-  * @chip: nand chip info structure
-  * @page: page number to read
-  */
--int nand_read_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
--			   int page)
-+int nand_read_oob_syndrome(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int length = mtd->oobsize;
- 	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
- 	int eccsize = chip->ecc.size;
-@@ -3913,9 +3909,9 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- 
- 	while (1) {
- 		if (ops->mode == MTD_OPS_RAW)
--			ret = chip->ecc.read_oob_raw(mtd, chip, page);
-+			ret = chip->ecc.read_oob_raw(chip, page);
- 		else
--			ret = chip->ecc.read_oob(mtd, chip, page);
-+			ret = chip->ecc.read_oob(chip, page);
- 
- 		if (ret < 0)
+ 	/* Wait for the device to get ready */
+ 	for (i = 0; i < timeo; i++) {
+-		if (chip->dev_ready(mtd))
++		if (chip->dev_ready(chip))
  			break;
-diff --git a/drivers/mtd/nand/raw/nand_micron.c b/drivers/mtd/nand/raw/nand_micron.c
-index f5dc0a7a2456..d83a86ba9d09 100644
---- a/drivers/mtd/nand/raw/nand_micron.c
-+++ b/drivers/mtd/nand/raw/nand_micron.c
-@@ -290,10 +290,10 @@ static int micron_nand_on_die_ecc_status_8(struct nand_chip *chip, u8 status)
+ 		touch_softlockup_watchdog();
+ 		mdelay(1);
+@@ -627,12 +627,12 @@ void nand_wait_ready(struct nand_chip *chip)
+ 	/* Wait until command is processed or timeout occurs */
+ 	timeo = jiffies + msecs_to_jiffies(timeo);
+ 	do {
+-		if (chip->dev_ready(mtd))
++		if (chip->dev_ready(chip))
+ 			return;
+ 		cond_resched();
+ 	} while (time_before(jiffies, timeo));
+ 
+-	if (!chip->dev_ready(mtd))
++	if (!chip->dev_ready(chip))
+ 		pr_warn_ratelimited("timeout while waiting for chip to become ready\n");
+ }
+ EXPORT_SYMBOL_GPL(nand_wait_ready);
+@@ -1068,7 +1068,7 @@ static void panic_nand_wait(struct mtd_info *mtd, struct nand_chip *chip,
+ 	int i;
+ 	for (i = 0; i < timeo; i++) {
+ 		if (chip->dev_ready) {
+-			if (chip->dev_ready(mtd))
++			if (chip->dev_ready(chip))
+ 				break;
+ 		} else {
+ 			int ret;
+@@ -1116,7 +1116,7 @@ static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
+ 		timeo = jiffies + msecs_to_jiffies(timeo);
+ 		do {
+ 			if (chip->dev_ready) {
+-				if (chip->dev_ready(mtd))
++				if (chip->dev_ready(chip))
+ 					break;
+ 			} else {
+ 				ret = nand_read_data_op(chip, &status,
+diff --git a/drivers/mtd/nand/raw/nandsim.c b/drivers/mtd/nand/raw/nandsim.c
+index a6b626c935a8..f750783d5d6a 100644
+--- a/drivers/mtd/nand/raw/nandsim.c
++++ b/drivers/mtd/nand/raw/nandsim.c
+@@ -2099,7 +2099,7 @@ static void ns_hwcontrol(struct nand_chip *chip, int cmd, unsigned int bitmask)
+ 		ns_nand_write_byte(chip, cmd);
  }
  
- static int
--micron_nand_read_page_on_die_ecc(struct mtd_info *mtd, struct nand_chip *chip,
--				 uint8_t *buf, int oob_required,
--				 int page)
-+micron_nand_read_page_on_die_ecc(struct nand_chip *chip, uint8_t *buf,
-+				 int oob_required, int page)
+-static int ns_device_ready(struct mtd_info *mtd)
++static int ns_device_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	u8 status;
- 	int ret, max_bitflips = 0;
- 
-diff --git a/drivers/mtd/nand/raw/nand_toshiba.c b/drivers/mtd/nand/raw/nand_toshiba.c
-index 8aec3fa6c5d9..952fe9e62ab4 100644
---- a/drivers/mtd/nand/raw/nand_toshiba.c
-+++ b/drivers/mtd/nand/raw/nand_toshiba.c
-@@ -48,13 +48,13 @@ static int toshiba_nand_benand_eccstatus(struct mtd_info *mtd,
+ 	NS_DBG("device_ready\n");
+ 	return 1;
+diff --git a/drivers/mtd/nand/raw/ndfc.c b/drivers/mtd/nand/raw/ndfc.c
+index 05ac7bf94874..b96070a3afff 100644
+--- a/drivers/mtd/nand/raw/ndfc.c
++++ b/drivers/mtd/nand/raw/ndfc.c
+@@ -71,9 +71,8 @@ static void ndfc_hwcontrol(struct nand_chip *chip, int cmd, unsigned int ctrl)
+ 		writel(cmd & 0xFF, ndfc->ndfcbase + NDFC_ALE);
  }
  
- static int
--toshiba_nand_read_page_benand(struct mtd_info *mtd,
--			      struct nand_chip *chip, uint8_t *buf,
-+toshiba_nand_read_page_benand(struct nand_chip *chip, uint8_t *buf,
- 			      int oob_required, int page)
+-static int ndfc_ready(struct mtd_info *mtd)
++static int ndfc_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
+-	struct nand_chip *chip = mtd_to_nand(mtd);
+ 	struct ndfc_controller *ndfc = nand_get_controller_data(chip);
  
--	ret = nand_read_page_raw(mtd, chip, buf, oob_required, page);
-+	ret = nand_read_page_raw(chip, buf, oob_required, page);
- 	if (ret)
- 		return ret;
- 
-@@ -62,10 +62,10 @@ toshiba_nand_read_page_benand(struct mtd_info *mtd,
+ 	return in_be32(ndfc->ndfcbase + NDFC_STAT) & NDFC_STAT_IS_READY;
+diff --git a/drivers/mtd/nand/raw/nuc900_nand.c b/drivers/mtd/nand/raw/nuc900_nand.c
+index 357b3cf03195..4029b802243d 100644
+--- a/drivers/mtd/nand/raw/nuc900_nand.c
++++ b/drivers/mtd/nand/raw/nuc900_nand.c
+@@ -120,9 +120,9 @@ static int nuc900_check_rb(struct nuc900_nand *nand)
+ 	return val;
  }
  
- static int
--toshiba_nand_read_subpage_benand(struct mtd_info *mtd,
--				 struct nand_chip *chip, uint32_t data_offs,
-+toshiba_nand_read_subpage_benand(struct nand_chip *chip, uint32_t data_offs,
- 				 uint32_t readlen, uint8_t *bufpoi, int page)
+-static int nuc900_nand_devready(struct mtd_info *mtd)
++static int nuc900_nand_devready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
+-	struct nuc900_nand *nand = mtd_to_nuc900(mtd);
++	struct nuc900_nand *nand = mtd_to_nuc900(nand_to_mtd(chip));
+ 	int ready;
  
- 	ret = nand_read_page_op(chip, page, data_offs,
+ 	ready = (nuc900_check_rb(nand)) ? 1 : 0;
+@@ -205,7 +205,7 @@ static void nuc900_nand_command_lp(struct mtd_info *mtd, unsigned int command,
+ 	 * any case on any machine. */
+ 	ndelay(100);
+ 
+-	while (!chip->dev_ready(mtd))
++	while (!chip->dev_ready(chip))
+ 		;
+ }
+ 
 diff --git a/drivers/mtd/nand/raw/omap2.c b/drivers/mtd/nand/raw/omap2.c
-index 4e0bc2da63fd..dfe96098f3f6 100644
+index 4bae782cd877..eef9cbadd3c4 100644
 --- a/drivers/mtd/nand/raw/omap2.c
 +++ b/drivers/mtd/nand/raw/omap2.c
-@@ -1616,7 +1616,6 @@ static int omap_write_subpage_bch(struct mtd_info *mtd,
- 
- /**
-  * omap_read_page_bch - BCH ecc based page read function for entire page
-- * @mtd:		mtd info structure
-  * @chip:		nand chip info structure
-  * @buf:		buffer to store read data
-  * @oob_required:	caller requires OOB data read to chip->oob_poi
-@@ -1629,9 +1628,10 @@ static int omap_write_subpage_bch(struct mtd_info *mtd,
-  * ecc engine enabled. ecc vector updated after read of OOB data.
-  * For non error pages ecc vector reported as zero.
+@@ -1021,9 +1021,9 @@ static int omap_wait(struct mtd_info *mtd, struct nand_chip *chip)
+  *
+  * Returns true if ready and false if busy.
   */
--static int omap_read_page_bch(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int omap_read_page_bch(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
+-static int omap_dev_ready(struct mtd_info *mtd)
++static int omap_dev_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	uint8_t *ecc_calc = chip->ecc.calc_buf;
- 	uint8_t *ecc_code = chip->ecc.code_buf;
- 	int stat, ret;
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index 312cfd786b0f..49113d4cee10 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -1948,8 +1948,8 @@ static int copy_last_cw(struct qcom_nand_host *host, int page)
+-	struct omap_nand_info *info = mtd_to_omap(mtd);
++	struct omap_nand_info *info = mtd_to_omap(nand_to_mtd(chip));
+ 
+ 	return gpiod_get_value(info->ready_gpiod);
+ }
+diff --git a/drivers/mtd/nand/raw/pasemi_nand.c b/drivers/mtd/nand/raw/pasemi_nand.c
+index 661ba57f2934..a1e3bf7a276b 100644
+--- a/drivers/mtd/nand/raw/pasemi_nand.c
++++ b/drivers/mtd/nand/raw/pasemi_nand.c
+@@ -80,7 +80,7 @@ static void pasemi_hwcontrol(struct nand_chip *chip, int cmd,
+ 	inl(lpcctl);
  }
  
- /* implements ecc->read_page() */
--static int qcom_nandc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int qcom_nandc_read_page(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
+-int pasemi_device_ready(struct mtd_info *mtd)
++int pasemi_device_ready(struct nand_chip *chip)
  {
- 	struct qcom_nand_host *host = to_qcom_nand_host(chip);
- 	struct qcom_nand_controller *nandc = get_qcom_nand_controller(chip);
-@@ -1965,10 +1965,10 @@ static int qcom_nandc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
+ 	return !!(inl(lpcctl) & LBICTRL_LPCCTL_NR);
  }
+diff --git a/drivers/mtd/nand/raw/plat_nand.c b/drivers/mtd/nand/raw/plat_nand.c
+index bfb5d8e7b00b..d65e4084dea4 100644
+--- a/drivers/mtd/nand/raw/plat_nand.c
++++ b/drivers/mtd/nand/raw/plat_nand.c
+@@ -23,13 +23,6 @@ struct plat_nand_data {
+ 	void __iomem		*io_base;
+ };
  
- /* implements ecc->read_page_raw() */
--static int qcom_nandc_read_page_raw(struct mtd_info *mtd,
--				    struct nand_chip *chip, uint8_t *buf,
-+static int qcom_nandc_read_page_raw(struct nand_chip *chip, uint8_t *buf,
- 				    int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct qcom_nand_host *host = to_qcom_nand_host(chip);
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int cw, ret;
-@@ -1988,8 +1988,7 @@ static int qcom_nandc_read_page_raw(struct mtd_info *mtd,
- }
- 
- /* implements ecc->read_oob() */
--static int qcom_nandc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			       int page)
-+static int qcom_nandc_read_oob(struct nand_chip *chip, int page)
- {
- 	struct qcom_nand_host *host = to_qcom_nand_host(chip);
- 	struct qcom_nand_controller *nandc = get_qcom_nand_controller(chip);
+-static int plat_nand_dev_ready(struct mtd_info *mtd)
+-{
+-	struct platform_nand_data *pdata = dev_get_platdata(mtd->dev.parent);
+-
+-	return pdata->ctrl.dev_ready(mtd_to_nand(mtd));
+-}
+-
+ /*
+  * Probe for the NAND device.
+  */
+@@ -70,10 +63,7 @@ static int plat_nand_probe(struct platform_device *pdev)
+ 	data->chip.IO_ADDR_R = data->io_base;
+ 	data->chip.IO_ADDR_W = data->io_base;
+ 	data->chip.cmd_ctrl = pdata->ctrl.cmd_ctrl;
+-
+-	if (pdata->ctrl.dev_ready)
+-		data->chip.dev_ready = plat_nand_dev_ready;
+-
++	data->chip.dev_ready = pdata->ctrl.dev_ready;
+ 	data->chip.select_chip = pdata->ctrl.select_chip;
+ 	data->chip.write_buf = pdata->ctrl.write_buf;
+ 	data->chip.read_buf = pdata->ctrl.read_buf;
 diff --git a/drivers/mtd/nand/raw/r852.c b/drivers/mtd/nand/raw/r852.c
-index 7673aa140009..aa5516b3b45f 100644
+index e90549e031a7..4331ff856fa5 100644
 --- a/drivers/mtd/nand/raw/r852.c
 +++ b/drivers/mtd/nand/raw/r852.c
-@@ -521,9 +521,10 @@ static int r852_ecc_correct(struct nand_chip *chip, uint8_t *dat,
-  * This is copy of nand_read_oob_std
-  * nand_read_oob_syndrome assumes we can send column address - we can't
+@@ -373,7 +373,7 @@ static int r852_wait(struct mtd_info *mtd, struct nand_chip *chip)
+ 		msecs_to_jiffies(400) : msecs_to_jiffies(20));
+ 
+ 	while (time_before(jiffies, timeout))
+-		if (chip->dev_ready(mtd))
++		if (chip->dev_ready(chip))
+ 			break;
+ 
+ 	nand_status_op(chip, &status);
+@@ -390,9 +390,9 @@ static int r852_wait(struct mtd_info *mtd, struct nand_chip *chip)
+  * Check if card is ready
   */
--static int r852_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			     int page)
-+static int r852_read_oob(struct nand_chip *chip, int page)
+ 
+-static int r852_ready(struct mtd_info *mtd)
++static int r852_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return nand_read_oob_op(chip, page, 0, chip->oob_poi, mtd->oobsize);
+-	struct r852_device *dev = r852_get_dev(mtd);
++	struct r852_device *dev = r852_get_dev(nand_to_mtd(chip));
+ 	return !(r852_read_reg(dev, R852_CARD_STA) & R852_CARD_STA_BUSY);
  }
  
-diff --git a/drivers/mtd/nand/raw/sh_flctl.c b/drivers/mtd/nand/raw/sh_flctl.c
-index 2580fd981077..fb5df6099d7b 100644
---- a/drivers/mtd/nand/raw/sh_flctl.c
-+++ b/drivers/mtd/nand/raw/sh_flctl.c
-@@ -611,9 +611,11 @@ static void set_cmd_regs(struct mtd_info *mtd, uint32_t cmd, uint32_t flcmcdr_va
- 	writel(flcmcdr_val, FLCMCDR(flctl));
- }
+diff --git a/drivers/mtd/nand/raw/s3c2410.c b/drivers/mtd/nand/raw/s3c2410.c
+index 98ba94936631..1d549f5e53f5 100644
+--- a/drivers/mtd/nand/raw/s3c2410.c
++++ b/drivers/mtd/nand/raw/s3c2410.c
+@@ -493,20 +493,23 @@ static void s3c2440_nand_hwcontrol(struct nand_chip *chip, int cmd,
+  * returns 0 if the nand is busy, 1 if it is ready
+ */
  
--static int flctl_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int flctl_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
-+				 int oob_required, int page)
+-static int s3c2410_nand_devready(struct mtd_info *mtd)
++static int s3c2410_nand_devready(struct nand_chip *chip)
  {
 +	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	nand_read_page_op(chip, page, 0, buf, mtd->writesize);
- 	if (oob_required)
- 		chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
+ 	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
+ 	return readb(info->regs + S3C2410_NFSTAT) & S3C2410_NFSTAT_BUSY;
+ }
+ 
+-static int s3c2440_nand_devready(struct mtd_info *mtd)
++static int s3c2440_nand_devready(struct nand_chip *chip)
+ {
++	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
+ 	return readb(info->regs + S3C2440_NFSTAT) & S3C2440_NFSTAT_READY;
+ }
+ 
+-static int s3c2412_nand_devready(struct mtd_info *mtd)
++static int s3c2412_nand_devready(struct nand_chip *chip)
+ {
++	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
+ 	return readb(info->regs + S3C2412_NFSTAT) & S3C2412_NFSTAT_READY;
+ }
+diff --git a/drivers/mtd/nand/raw/sharpsl.c b/drivers/mtd/nand/raw/sharpsl.c
+index 7486a00b1ae5..31abbe33798e 100644
+--- a/drivers/mtd/nand/raw/sharpsl.c
++++ b/drivers/mtd/nand/raw/sharpsl.c
+@@ -78,9 +78,9 @@ static void sharpsl_nand_hwcontrol(struct nand_chip *chip, int cmd,
+ 		writeb(cmd, chip->IO_ADDR_W);
+ }
+ 
+-static int sharpsl_nand_dev_ready(struct mtd_info *mtd)
++static int sharpsl_nand_dev_ready(struct nand_chip *chip)
+ {
+-	struct sharpsl_nand *sharpsl = mtd_to_sharpsl(mtd);
++	struct sharpsl_nand *sharpsl = mtd_to_sharpsl(nand_to_mtd(chip));
+ 	return !((readb(sharpsl->io + FLASHCTL) & FLRYBY) == 0);
+ }
+ 
+diff --git a/drivers/mtd/nand/raw/socrates_nand.c b/drivers/mtd/nand/raw/socrates_nand.c
+index c44b19fc1350..64ea9a014054 100644
+--- a/drivers/mtd/nand/raw/socrates_nand.c
++++ b/drivers/mtd/nand/raw/socrates_nand.c
+@@ -112,9 +112,8 @@ static void socrates_nand_cmd_ctrl(struct nand_chip *nand_chip, int cmd,
+ /*
+  * Read the Device Ready pin.
+  */
+-static int socrates_nand_device_ready(struct mtd_info *mtd)
++static int socrates_nand_device_ready(struct nand_chip *nand_chip)
+ {
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+ 	struct socrates_nand_host *host = nand_get_controller_data(nand_chip);
+ 
+ 	if (in_be32(host->io_base) & FPGA_NAND_BUSY)
 diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-index e31ab86bebee..26d5c6c41c49 100644
+index 1d85ff02afdb..fe30fb589ffb 100644
 --- a/drivers/mtd/nand/raw/sunxi_nand.c
 +++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1189,10 +1189,10 @@ static void sunxi_nfc_hw_ecc_write_extra_oob(struct mtd_info *mtd,
- 		*cur_off = mtd->oobsize + mtd->writesize;
+@@ -400,9 +400,8 @@ static void sunxi_nfc_dma_op_cleanup(struct mtd_info *mtd,
+ 	       nfc->regs + NFC_REG_CTL);
  }
  
--static int sunxi_nfc_hw_ecc_read_page(struct mtd_info *mtd,
--				      struct nand_chip *chip, uint8_t *buf,
-+static int sunxi_nfc_hw_ecc_read_page(struct nand_chip *chip, uint8_t *buf,
- 				      int oob_required, int page)
+-static int sunxi_nfc_dev_ready(struct mtd_info *mtd)
++static int sunxi_nfc_dev_ready(struct nand_chip *nand)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	unsigned int max_bitflips = 0;
- 	int ret, i, cur_off = 0;
-@@ -1227,10 +1227,10 @@ static int sunxi_nfc_hw_ecc_read_page(struct mtd_info *mtd,
- 	return max_bitflips;
- }
- 
--static int sunxi_nfc_hw_ecc_read_page_dma(struct mtd_info *mtd,
--					  struct nand_chip *chip, u8 *buf,
-+static int sunxi_nfc_hw_ecc_read_page_dma(struct nand_chip *chip, u8 *buf,
- 					  int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
- 
- 	nand_read_page_op(chip, page, 0, NULL, 0);
-@@ -1241,14 +1241,14 @@ static int sunxi_nfc_hw_ecc_read_page_dma(struct mtd_info *mtd,
- 		return ret;
- 
- 	/* Fallback to PIO mode */
--	return sunxi_nfc_hw_ecc_read_page(mtd, chip, buf, oob_required, page);
-+	return sunxi_nfc_hw_ecc_read_page(chip, buf, oob_required, page);
- }
- 
--static int sunxi_nfc_hw_ecc_read_subpage(struct mtd_info *mtd,
--					 struct nand_chip *chip,
-+static int sunxi_nfc_hw_ecc_read_subpage(struct nand_chip *chip,
- 					 u32 data_offs, u32 readlen,
- 					 u8 *bufpoi, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int ret, i, cur_off = 0;
- 	unsigned int max_bitflips = 0;
-@@ -1278,11 +1278,11 @@ static int sunxi_nfc_hw_ecc_read_subpage(struct mtd_info *mtd,
- 	return max_bitflips;
- }
- 
--static int sunxi_nfc_hw_ecc_read_subpage_dma(struct mtd_info *mtd,
--					     struct nand_chip *chip,
-+static int sunxi_nfc_hw_ecc_read_subpage_dma(struct nand_chip *chip,
- 					     u32 data_offs, u32 readlen,
- 					     u8 *buf, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int nchunks = DIV_ROUND_UP(data_offs + readlen, chip->ecc.size);
- 	int ret;
- 
-@@ -1293,7 +1293,7 @@ static int sunxi_nfc_hw_ecc_read_subpage_dma(struct mtd_info *mtd,
- 		return ret;
- 
- 	/* Fallback to PIO mode */
--	return sunxi_nfc_hw_ecc_read_subpage(mtd, chip, data_offs, readlen,
-+	return sunxi_nfc_hw_ecc_read_subpage(chip, data_offs, readlen,
- 					     buf, page);
- }
- 
-@@ -1428,13 +1428,11 @@ static int sunxi_nfc_hw_ecc_write_page_dma(struct mtd_info *mtd,
- 	return sunxi_nfc_hw_ecc_write_page(mtd, chip, buf, oob_required, page);
- }
- 
--static int sunxi_nfc_hw_ecc_read_oob(struct mtd_info *mtd,
--				     struct nand_chip *chip,
--				     int page)
-+static int sunxi_nfc_hw_ecc_read_oob(struct nand_chip *chip, int page)
- {
- 	chip->pagebuf = -1;
- 
--	return chip->ecc.read_page(mtd, chip, chip->data_buf, 1, page);
-+	return chip->ecc.read_page(chip, chip->data_buf, 1, page);
- }
- 
- static int sunxi_nfc_hw_ecc_write_oob(struct mtd_info *mtd,
+-	struct nand_chip *nand = mtd_to_nand(mtd);
+ 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+ 	struct sunxi_nfc *nfc = to_sunxi_nfc(sunxi_nand->nand.controller);
+ 	u32 mask;
 diff --git a/drivers/mtd/nand/raw/tango_nand.c b/drivers/mtd/nand/raw/tango_nand.c
-index 1061eb60ee60..c53d47159195 100644
+index c8fb03f71a3b..cc719bc49b68 100644
 --- a/drivers/mtd/nand/raw/tango_nand.c
 +++ b/drivers/mtd/nand/raw/tango_nand.c
-@@ -277,14 +277,15 @@ static int do_dma(struct tango_nfc *nfc, enum dma_data_direction dir, int cmd,
- 	return err;
+@@ -127,9 +127,8 @@ static void tango_cmd_ctrl(struct nand_chip *chip, int dat, unsigned int ctrl)
+ 		writeb_relaxed(dat, tchip->base + PBUS_ADDR);
  }
  
--static int tango_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--			   u8 *buf, int oob_required, int page)
-+static int tango_read_page(struct nand_chip *chip, u8 *buf,
-+			   int oob_required, int page)
+-static int tango_dev_ready(struct mtd_info *mtd)
++static int tango_dev_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct nand_chip *chip = mtd_to_nand(mtd);
  	struct tango_nfc *nfc = to_tango_nfc(chip->controller);
- 	int err, res, len = mtd->writesize;
  
- 	if (oob_required)
--		chip->ecc.read_oob(mtd, chip, page);
-+		chip->ecc.read_oob(chip, page);
- 
- 	err = do_dma(nfc, DMA_FROM_DEVICE, NFC_READ, buf, len, page);
- 	if (err)
-@@ -292,7 +293,7 @@ static int tango_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 
- 	res = decode_error_report(chip);
- 	if (res < 0) {
--		chip->ecc.read_oob_raw(mtd, chip, page);
-+		chip->ecc.read_oob_raw(chip, page);
- 		res = check_erased_page(chip, buf);
- 	}
- 
-@@ -424,8 +425,8 @@ static void raw_write(struct nand_chip *chip, const u8 *buf, const u8 *oob)
- 	aux_write(chip, &oob, ecc_size, &pos);
+ 	return readl_relaxed(nfc->pbus_base + PBUS_CS_CTRL) & PBUS_IORDY;
+diff --git a/drivers/mtd/nand/raw/tmio_nand.c b/drivers/mtd/nand/raw/tmio_nand.c
+index 1221353b11a7..7096fa3d50ab 100644
+--- a/drivers/mtd/nand/raw/tmio_nand.c
++++ b/drivers/mtd/nand/raw/tmio_nand.c
+@@ -158,9 +158,9 @@ static void tmio_nand_hwcontrol(struct nand_chip *chip, int cmd,
+ 		tmio_iowrite8(cmd, chip->IO_ADDR_W);
  }
  
--static int tango_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--			       u8 *buf, int oob_required, int page)
-+static int tango_read_page_raw(struct nand_chip *chip, u8 *buf,
-+			       int oob_required, int page)
+-static int tmio_nand_dev_ready(struct mtd_info *mtd)
++static int tmio_nand_dev_ready(struct nand_chip *chip)
  {
- 	nand_read_page_op(chip, page, 0, NULL, 0);
- 	raw_read(chip, buf, chip->oob_poi);
-@@ -440,8 +441,7 @@ static int tango_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return nand_prog_page_end_op(chip);
+-	struct tmio_nand *tmio = mtd_to_tmio(mtd);
++	struct tmio_nand *tmio = mtd_to_tmio(nand_to_mtd(chip));
+ 
+ 	return !(tmio_ioread8(tmio->fcr + FCR_STATUS) & FCR_STATUS_BUSY);
+ }
+@@ -198,10 +198,10 @@ tmio_nand_wait(struct mtd_info *mtd, struct nand_chip *nand_chip)
+ 	tmio_iowrite8(0x81, tmio->fcr + FCR_IMR);
+ 
+ 	timeout = wait_event_timeout(nand_chip->controller->wq,
+-		tmio_nand_dev_ready(mtd),
++		tmio_nand_dev_ready(nand_chip),
+ 		msecs_to_jiffies(nand_chip->state == FL_ERASING ? 400 : 20));
+ 
+-	if (unlikely(!tmio_nand_dev_ready(mtd))) {
++	if (unlikely(!tmio_nand_dev_ready(nand_chip))) {
+ 		tmio_iowrite8(0x00, tmio->fcr + FCR_IMR);
+ 		dev_warn(&tmio->dev->dev, "still busy with %s after %d ms\n",
+ 			nand_chip->state == FL_ERASING ? "erase" : "program",
+diff --git a/drivers/mtd/nand/raw/txx9ndfmc.c b/drivers/mtd/nand/raw/txx9ndfmc.c
+index f3bce6fb1fac..c84b2ad84cf7 100644
+--- a/drivers/mtd/nand/raw/txx9ndfmc.c
++++ b/drivers/mtd/nand/raw/txx9ndfmc.c
+@@ -162,9 +162,9 @@ static void txx9ndfmc_cmd_ctrl(struct nand_chip *chip, int cmd,
+ 	mmiowb();
  }
  
--static int tango_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			  int page)
-+static int tango_read_oob(struct nand_chip *chip, int page)
+-static int txx9ndfmc_dev_ready(struct mtd_info *mtd)
++static int txx9ndfmc_dev_ready(struct nand_chip *chip)
  {
- 	nand_read_page_op(chip, page, 0, NULL, 0);
- 	raw_read(chip, NULL, chip->oob_poi);
-diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/tegra_nand.c
-index 5dcee20e2a8c..bcc3a2888c4f 100644
---- a/drivers/mtd/nand/raw/tegra_nand.c
-+++ b/drivers/mtd/nand/raw/tegra_nand.c
-@@ -615,10 +615,10 @@ static int tegra_nand_page_xfer(struct mtd_info *mtd, struct nand_chip *chip,
- 	return ret;
+-	struct platform_device *dev = mtd_to_platdev(mtd);
++	struct platform_device *dev = mtd_to_platdev(nand_to_mtd(chip));
+ 
+ 	return !(txx9ndfmc_read(dev, TXX9_NDFSR) & TXX9_NDFSR_BUSY);
+ }
+diff --git a/drivers/mtd/nand/raw/xway_nand.c b/drivers/mtd/nand/raw/xway_nand.c
+index 3b38d31c59c6..3d91e98df5a8 100644
+--- a/drivers/mtd/nand/raw/xway_nand.c
++++ b/drivers/mtd/nand/raw/xway_nand.c
+@@ -121,7 +121,7 @@ static void xway_cmd_ctrl(struct nand_chip *chip, int cmd, unsigned int ctrl)
+ 		;
  }
  
--static int tegra_nand_read_page_raw(struct mtd_info *mtd,
--				    struct nand_chip *chip, u8 *buf,
-+static int tegra_nand_read_page_raw(struct nand_chip *chip, u8 *buf,
- 				    int oob_required, int page)
+-static int xway_dev_ready(struct mtd_info *mtd)
++static int xway_dev_ready(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	void *oob_buf = oob_required ? chip->oob_poi : NULL;
- 
- 	return tegra_nand_page_xfer(mtd, chip, buf, oob_buf,
-@@ -635,9 +635,10 @@ static int tegra_nand_write_page_raw(struct mtd_info *mtd,
- 				     mtd->oobsize, page, false);
+ 	return ltq_ebu_r32(EBU_NAND_WAIT) & NAND_WAIT_RD;
  }
- 
--static int tegra_nand_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			       int page)
-+static int tegra_nand_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	return tegra_nand_page_xfer(mtd, chip, NULL, chip->oob_poi,
- 				    mtd->oobsize, page, true);
- }
-@@ -649,10 +650,10 @@ static int tegra_nand_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
- 				    mtd->oobsize, page, false);
- }
- 
--static int tegra_nand_read_page_hwecc(struct mtd_info *mtd,
--				      struct nand_chip *chip, u8 *buf,
-+static int tegra_nand_read_page_hwecc(struct nand_chip *chip, u8 *buf,
- 				      int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct tegra_nand_controller *ctrl = to_tegra_ctrl(chip->controller);
- 	struct tegra_nand_chip *nand = to_tegra_chip(chip);
- 	void *oob_buf = oob_required ? chip->oob_poi : NULL;
-@@ -716,7 +717,7 @@ static int tegra_nand_read_page_hwecc(struct mtd_info *mtd,
- 		 * erased or if error correction just failed for all sub-
- 		 * pages.
- 		 */
--		ret = tegra_nand_read_oob(mtd, chip, page);
-+		ret = tegra_nand_read_oob(chip, page);
- 		if (ret < 0)
- 			return ret;
- 
-diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
-index a73213c835a5..7cbcc41cea95 100644
---- a/drivers/mtd/nand/raw/vf610_nfc.c
-+++ b/drivers/mtd/nand/raw/vf610_nfc.c
-@@ -557,9 +557,10 @@ static void vf610_nfc_fill_row(struct nand_chip *chip, int page, u32 *code,
- 	}
- }
- 
--static int vf610_nfc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
--				uint8_t *buf, int oob_required, int page)
-+static int vf610_nfc_read_page(struct nand_chip *chip, uint8_t *buf,
-+			       int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
- 	int trfr_sz = mtd->writesize + mtd->oobsize;
- 	u32 row = 0, cmd1 = 0, cmd2 = 0, code = 0;
-@@ -643,15 +644,15 @@ static int vf610_nfc_write_page(struct mtd_info *mtd, struct nand_chip *chip,
- 	return 0;
- }
- 
--static int vf610_nfc_read_page_raw(struct mtd_info *mtd,
--				   struct nand_chip *chip, u8 *buf,
-+static int vf610_nfc_read_page_raw(struct nand_chip *chip, u8 *buf,
- 				   int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
- 	int ret;
- 
- 	nfc->data_access = true;
--	ret = nand_read_page_raw(mtd, chip, buf, oob_required, page);
-+	ret = nand_read_page_raw(chip, buf, oob_required, page);
- 	nfc->data_access = false;
- 
- 	return ret;
-@@ -677,14 +678,13 @@ static int vf610_nfc_write_page_raw(struct mtd_info *mtd,
- 	return nand_prog_page_end_op(chip);
- }
- 
--static int vf610_nfc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			      int page)
-+static int vf610_nfc_read_oob(struct nand_chip *chip, int page)
- {
--	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
-+	struct vf610_nfc *nfc = mtd_to_nfc(nand_to_mtd(chip));
- 	int ret;
- 
- 	nfc->data_access = true;
--	ret = nand_read_oob_std(mtd, chip, page);
-+	ret = nand_read_oob_std(chip, page);
- 	nfc->data_access = false;
- 
- 	return ret;
-diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-index b50788b2d1d9..0776d38d4498 100644
---- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-+++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-@@ -643,14 +643,15 @@ static int spinand_write_page_hwecc(struct mtd_info *mtd,
- 	return nand_prog_page_op(chip, page, 0, p, eccsize * eccsteps);
- }
- 
--static int spinand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
--				   u8 *buf, int oob_required, int page)
-+static int spinand_read_page_hwecc(struct nand_chip *chip, u8 *buf,
-+				   int oob_required, int page)
- {
- 	int retval;
- 	u8 status;
- 	u8 *p = buf;
- 	int eccsize = chip->ecc.size;
- 	int eccsteps = chip->ecc.steps;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct spinand_info *info = nand_get_controller_data(chip);
- 
- 	enable_read_hw_ecc = 1;
 diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 24434310d126..a5f4a585f749 100644
+index b53ccc7139c2..404ac7d4b279 100644
 --- a/include/linux/mtd/rawnand.h
 +++ b/include/linux/mtd/rawnand.h
-@@ -652,14 +652,14 @@ struct nand_ecc_ctrl {
- 			 uint8_t *ecc_code);
- 	int (*correct)(struct nand_chip *chip, uint8_t *dat, uint8_t *read_ecc,
- 		       uint8_t *calc_ecc);
--	int (*read_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
--			uint8_t *buf, int oob_required, int page);
-+	int (*read_page_raw)(struct nand_chip *chip, uint8_t *buf,
-+			     int oob_required, int page);
- 	int (*write_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
- 			const uint8_t *buf, int oob_required, int page);
--	int (*read_page)(struct mtd_info *mtd, struct nand_chip *chip,
--			uint8_t *buf, int oob_required, int page);
--	int (*read_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
--			uint32_t offs, uint32_t len, uint8_t *buf, int page);
-+	int (*read_page)(struct nand_chip *chip, uint8_t *buf,
-+			 int oob_required, int page);
-+	int (*read_subpage)(struct nand_chip *chip, uint32_t offs,
-+			    uint32_t len, uint8_t *buf, int page);
- 	int (*write_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
- 			uint32_t offset, uint32_t data_len,
- 			const uint8_t *data_buf, int oob_required, int page);
-@@ -667,9 +667,8 @@ struct nand_ecc_ctrl {
- 			const uint8_t *buf, int oob_required, int page);
- 	int (*write_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
- 			int page);
--	int (*read_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
--			int page);
--	int (*read_oob)(struct mtd_info *mtd, struct nand_chip *chip, int page);
-+	int (*read_oob_raw)(struct nand_chip *chip, int page);
-+	int (*read_oob)(struct nand_chip *chip, int page);
- 	int (*write_oob)(struct mtd_info *mtd, struct nand_chip *chip,
- 			int page);
- };
-@@ -1676,11 +1675,10 @@ int nand_write_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
- 			    int page);
- 
- /* Default read_oob implementation */
--int nand_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip, int page);
-+int nand_read_oob_std(struct nand_chip *chip, int page);
- 
- /* Default read_oob syndrome implementation */
--int nand_read_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
--			   int page);
-+int nand_read_oob_syndrome(struct nand_chip *chip, int page);
- 
- /* Wrapper to use in order for controllers/vendors to GET/SET FEATURES */
- int nand_get_features(struct nand_chip *chip, int addr, u8 *subfeature_param);
-@@ -1690,10 +1688,10 @@ int nand_get_set_features_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
- 				  int addr, u8 *subfeature_param);
- 
- /* Default read_page_raw implementation */
--int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
--		       uint8_t *buf, int oob_required, int page);
--int nand_read_page_raw_notsupp(struct mtd_info *mtd, struct nand_chip *chip,
--			       u8 *buf, int oob_required, int page);
-+int nand_read_page_raw(struct nand_chip *chip, uint8_t *buf, int oob_required,
-+		       int page);
-+int nand_read_page_raw_notsupp(struct nand_chip *chip, u8 *buf,
-+			       int oob_required, int page);
- 
- /* Default write_page_raw implementation */
- int nand_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
+@@ -1291,7 +1291,7 @@ struct nand_chip {
+ 	int (*block_bad)(struct nand_chip *chip, loff_t ofs);
+ 	int (*block_markbad)(struct nand_chip *chip, loff_t ofs);
+ 	void (*cmd_ctrl)(struct nand_chip *chip, int dat, unsigned int ctrl);
+-	int (*dev_ready)(struct mtd_info *mtd);
++	int (*dev_ready)(struct nand_chip *chip);
+ 	void (*cmdfunc)(struct mtd_info *mtd, unsigned command, int column,
+ 			int page_addr);
+ 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
 -- 
 2.14.1

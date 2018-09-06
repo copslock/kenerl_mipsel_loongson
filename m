@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:06:15 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:43301 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 14:06:29 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:43329 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994630AbeIFMFr0uYAe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Sep 2018 14:05:47 +0200
+        id S23994637AbeIFMFs16yne (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Sep 2018 14:05:48 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 957A420812; Thu,  6 Sep 2018 14:05:42 +0200 (CEST)
+        id 97530208A1; Thu,  6 Sep 2018 14:05:43 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-30-219.w90-88.abo.wanadoo.fr [90.88.15.219])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 7718F2079D;
-        Thu,  6 Sep 2018 14:05:41 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id 7F2AF20763;
+        Thu,  6 Sep 2018 14:05:42 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -61,9 +61,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH v2 02/23] mtd: rawnand: Pass a nand_chip object to nand_scan()
-Date:   Thu,  6 Sep 2018 14:05:14 +0200
-Message-Id: <20180906120535.21255-3-boris.brezillon@bootlin.com>
+Subject: [PATCH v2 03/23] mtd: rawnand: Pass a nand_chip object to nand_release()
+Date:   Thu,  6 Sep 2018 14:05:15 +0200
+Message-Id: <20180906120535.21255-4-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180906120535.21255-1-boris.brezillon@bootlin.com>
 References: <20180906120535.21255-1-boris.brezillon@bootlin.com>
@@ -71,7 +71,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66033
+X-archive-position: 66034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -88,824 +88,850 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Let's make the raw NAND API consistent by patching all helpers to take
-a nand_chip object instead of an mtd_info one.
+Let's make the raw NAND API consistent by patching all helpers to
+take a nand_chip object instead of an mtd_info one.
 
-We start with nand_scan().
+Now is nand_release()'s turn.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
-Changes in v2:
-- Fix commit message
----
- Documentation/driver-api/mtdnand.rst             |  2 +-
- drivers/mtd/nand/raw/ams-delta.c                 |  2 +-
- drivers/mtd/nand/raw/atmel/nand-controller.c     |  2 +-
- drivers/mtd/nand/raw/au1550nd.c                  |  2 +-
- drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c |  2 +-
- drivers/mtd/nand/raw/brcmnand/brcmnand.c         |  2 +-
- drivers/mtd/nand/raw/cafe_nand.c                 |  2 +-
- drivers/mtd/nand/raw/cmx270_nand.c               |  2 +-
- drivers/mtd/nand/raw/cs553x_nand.c               |  2 +-
- drivers/mtd/nand/raw/davinci_nand.c              |  2 +-
- drivers/mtd/nand/raw/denali.c                    |  2 +-
- drivers/mtd/nand/raw/diskonchip.c                |  2 +-
- drivers/mtd/nand/raw/docg4.c                     |  2 +-
- drivers/mtd/nand/raw/fsl_elbc_nand.c             |  2 +-
- drivers/mtd/nand/raw/fsl_ifc_nand.c              |  2 +-
- drivers/mtd/nand/raw/fsl_upm.c                   |  2 +-
- drivers/mtd/nand/raw/fsmc_nand.c                 |  2 +-
- drivers/mtd/nand/raw/gpio.c                      |  2 +-
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c       |  2 +-
- drivers/mtd/nand/raw/hisi504_nand.c              |  2 +-
- drivers/mtd/nand/raw/jz4740_nand.c               |  2 +-
- drivers/mtd/nand/raw/jz4780_nand.c               |  2 +-
- drivers/mtd/nand/raw/lpc32xx_mlc.c               |  2 +-
- drivers/mtd/nand/raw/lpc32xx_slc.c               |  2 +-
- drivers/mtd/nand/raw/marvell_nand.c              |  2 +-
- drivers/mtd/nand/raw/mpc5121_nfc.c               |  2 +-
- drivers/mtd/nand/raw/mtk_nand.c                  |  2 +-
- drivers/mtd/nand/raw/mxc_nand.c                  |  2 +-
- drivers/mtd/nand/raw/nand_base.c                 | 21 ++++++++++-----------
- drivers/mtd/nand/raw/nandsim.c                   |  2 +-
- drivers/mtd/nand/raw/ndfc.c                      |  2 +-
- drivers/mtd/nand/raw/nuc900_nand.c               |  2 +-
- drivers/mtd/nand/raw/omap2.c                     |  2 +-
- drivers/mtd/nand/raw/orion_nand.c                |  2 +-
- drivers/mtd/nand/raw/oxnas_nand.c                |  2 +-
- drivers/mtd/nand/raw/pasemi_nand.c               |  2 +-
- drivers/mtd/nand/raw/plat_nand.c                 |  2 +-
- drivers/mtd/nand/raw/qcom_nandc.c                |  2 +-
- drivers/mtd/nand/raw/s3c2410.c                   |  2 +-
- drivers/mtd/nand/raw/sh_flctl.c                  |  2 +-
- drivers/mtd/nand/raw/sharpsl.c                   |  2 +-
- drivers/mtd/nand/raw/sm_common.c                 |  2 +-
- drivers/mtd/nand/raw/socrates_nand.c             |  2 +-
- drivers/mtd/nand/raw/sunxi_nand.c                |  2 +-
- drivers/mtd/nand/raw/tango_nand.c                |  2 +-
- drivers/mtd/nand/raw/tegra_nand.c                |  2 +-
- drivers/mtd/nand/raw/tmio_nand.c                 |  2 +-
- drivers/mtd/nand/raw/txx9ndfmc.c                 |  2 +-
- drivers/mtd/nand/raw/vf610_nfc.c                 |  2 +-
- drivers/mtd/nand/raw/xway_nand.c                 |  2 +-
- drivers/staging/mt29f_spinand/mt29f_spinand.c    |  2 +-
- include/linux/mtd/rawnand.h                      |  7 ++++---
- 52 files changed, 64 insertions(+), 64 deletions(-)
+ Documentation/driver-api/mtdnand.rst       | 2 +-
+ drivers/mtd/nand/raw/ams-delta.c           | 2 +-
+ drivers/mtd/nand/raw/au1550nd.c            | 2 +-
+ drivers/mtd/nand/raw/bcm47xxnflash/main.c  | 2 +-
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c   | 2 +-
+ drivers/mtd/nand/raw/cafe_nand.c           | 2 +-
+ drivers/mtd/nand/raw/cmx270_nand.c         | 2 +-
+ drivers/mtd/nand/raw/cs553x_nand.c         | 2 +-
+ drivers/mtd/nand/raw/davinci_nand.c        | 2 +-
+ drivers/mtd/nand/raw/denali.c              | 4 +---
+ drivers/mtd/nand/raw/diskonchip.c          | 4 ++--
+ drivers/mtd/nand/raw/docg4.c               | 2 +-
+ drivers/mtd/nand/raw/fsl_elbc_nand.c       | 3 +--
+ drivers/mtd/nand/raw/fsl_ifc_nand.c        | 3 +--
+ drivers/mtd/nand/raw/fsl_upm.c             | 2 +-
+ drivers/mtd/nand/raw/fsmc_nand.c           | 2 +-
+ drivers/mtd/nand/raw/gpio.c                | 2 +-
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 2 +-
+ drivers/mtd/nand/raw/hisi504_nand.c        | 3 +--
+ drivers/mtd/nand/raw/jz4740_nand.c         | 2 +-
+ drivers/mtd/nand/raw/jz4780_nand.c         | 4 ++--
+ drivers/mtd/nand/raw/lpc32xx_mlc.c         | 3 +--
+ drivers/mtd/nand/raw/lpc32xx_slc.c         | 3 +--
+ drivers/mtd/nand/raw/marvell_nand.c        | 4 ++--
+ drivers/mtd/nand/raw/mpc5121_nfc.c         | 2 +-
+ drivers/mtd/nand/raw/mtk_nand.c            | 4 ++--
+ drivers/mtd/nand/raw/mxc_nand.c            | 2 +-
+ drivers/mtd/nand/raw/nand_base.c           | 8 ++++----
+ drivers/mtd/nand/raw/nandsim.c             | 4 ++--
+ drivers/mtd/nand/raw/ndfc.c                | 2 +-
+ drivers/mtd/nand/raw/nuc900_nand.c         | 2 +-
+ drivers/mtd/nand/raw/omap2.c               | 2 +-
+ drivers/mtd/nand/raw/orion_nand.c          | 5 ++---
+ drivers/mtd/nand/raw/oxnas_nand.c          | 4 ++--
+ drivers/mtd/nand/raw/pasemi_nand.c         | 2 +-
+ drivers/mtd/nand/raw/plat_nand.c           | 4 ++--
+ drivers/mtd/nand/raw/qcom_nandc.c          | 2 +-
+ drivers/mtd/nand/raw/r852.c                | 4 ++--
+ drivers/mtd/nand/raw/s3c2410.c             | 2 +-
+ drivers/mtd/nand/raw/sh_flctl.c            | 2 +-
+ drivers/mtd/nand/raw/sharpsl.c             | 4 ++--
+ drivers/mtd/nand/raw/socrates_nand.c       | 5 ++---
+ drivers/mtd/nand/raw/sunxi_nand.c          | 4 ++--
+ drivers/mtd/nand/raw/tango_nand.c          | 2 +-
+ drivers/mtd/nand/raw/tmio_nand.c           | 4 ++--
+ drivers/mtd/nand/raw/txx9ndfmc.c           | 2 +-
+ drivers/mtd/nand/raw/vf610_nfc.c           | 2 +-
+ drivers/mtd/nand/raw/xway_nand.c           | 4 ++--
+ include/linux/mtd/rawnand.h                | 2 +-
+ 49 files changed, 66 insertions(+), 75 deletions(-)
 
 diff --git a/Documentation/driver-api/mtdnand.rst b/Documentation/driver-api/mtdnand.rst
-index c55a6034c397..1ab6f35b6410 100644
+index 1ab6f35b6410..5470a3d6bd9e 100644
 --- a/Documentation/driver-api/mtdnand.rst
 +++ b/Documentation/driver-api/mtdnand.rst
-@@ -246,7 +246,7 @@ necessary information about the device.
-         this->eccmode = NAND_ECC_SOFT;
+@@ -277,7 +277,7 @@ unregisters the partitions in the MTD layer.
+     static void __exit board_cleanup (void)
+     {
+         /* Release resources, unregister device */
+-        nand_release (board_mtd);
++        nand_release (mtd_to_nand(board_mtd));
  
-         /* Scan to find existence of the device */
--        if (nand_scan (board_mtd, 1)) {
-+        if (nand_scan (this, 1)) {
-             err = -ENXIO;
-             goto out_ior;
-         }
+         /* unmap physical address */
+         iounmap(baseaddr);
 diff --git a/drivers/mtd/nand/raw/ams-delta.c b/drivers/mtd/nand/raw/ams-delta.c
-index 37a3cc21c7bc..24ba7296ec08 100644
+index 24ba7296ec08..acf7971e815d 100644
 --- a/drivers/mtd/nand/raw/ams-delta.c
 +++ b/drivers/mtd/nand/raw/ams-delta.c
-@@ -235,7 +235,7 @@ static int ams_delta_init(struct platform_device *pdev)
- 		goto out_gpio;
+@@ -264,7 +264,7 @@ static int ams_delta_cleanup(struct platform_device *pdev)
+ 	void __iomem *io_base = platform_get_drvdata(pdev);
  
- 	/* Scan to find existence of the device */
--	err = nand_scan(ams_delta_mtd, 1);
-+	err = nand_scan(this, 1);
- 	if (err)
- 		goto out_mtd;
+ 	/* Release resources, unregister device */
+-	nand_release(ams_delta_mtd);
++	nand_release(mtd_to_nand(ams_delta_mtd));
  
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 8b9e05ac24ee..cef22a79f3a6 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1683,7 +1683,7 @@ atmel_nand_controller_add_nand(struct atmel_nand_controller *nc,
- 
- 	nc->caps->ops->nand_init(nc, nand);
- 
--	ret = nand_scan(mtd, nand->numcs);
-+	ret = nand_scan(chip, nand->numcs);
- 	if (ret) {
- 		dev_err(nc->dev, "NAND scan failed: %d\n", ret);
- 		return ret;
+ 	gpio_free_array(_mandatory_gpio, ARRAY_SIZE(_mandatory_gpio));
+ 	gpio_free(AMS_DELTA_GPIO_PIN_NAND_RB);
 diff --git a/drivers/mtd/nand/raw/au1550nd.c b/drivers/mtd/nand/raw/au1550nd.c
-index 32c0440141fb..614f5d447ba5 100644
+index 614f5d447ba5..d277a141c7d3 100644
 --- a/drivers/mtd/nand/raw/au1550nd.c
 +++ b/drivers/mtd/nand/raw/au1550nd.c
-@@ -451,7 +451,7 @@ static int au1550nd_probe(struct platform_device *pdev)
- 	this->write_buf = (pd->devwidth) ? au_write_buf16 : au_write_buf;
- 	this->read_buf = (pd->devwidth) ? au_read_buf16 : au_read_buf;
+@@ -477,7 +477,7 @@ static int au1550nd_remove(struct platform_device *pdev)
+ 	struct au1550nd_ctx *ctx = platform_get_drvdata(pdev);
+ 	struct resource *r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
  
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(this, 1);
- 	if (ret) {
- 		dev_err(&pdev->dev, "NAND scan failed with %d\n", ret);
- 		goto out3;
-diff --git a/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c b/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
-index 60874de430eb..9b62bc2d25a0 100644
---- a/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
-+++ b/drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c
-@@ -423,7 +423,7 @@ int bcm47xxnflash_ops_bcm4706_init(struct bcm47xxnflash *b47n)
- 			(w4 << 24 | w3 << 18 | w2 << 12 | w1 << 6 | w0));
+-	nand_release(nand_to_mtd(&ctx->chip));
++	nand_release(&ctx->chip);
+ 	iounmap(ctx->base);
+ 	release_mem_region(r->start, 0x1000);
+ 	kfree(ctx);
+diff --git a/drivers/mtd/nand/raw/bcm47xxnflash/main.c b/drivers/mtd/nand/raw/bcm47xxnflash/main.c
+index fb31429b70a9..d79694160845 100644
+--- a/drivers/mtd/nand/raw/bcm47xxnflash/main.c
++++ b/drivers/mtd/nand/raw/bcm47xxnflash/main.c
+@@ -65,7 +65,7 @@ static int bcm47xxnflash_remove(struct platform_device *pdev)
+ {
+ 	struct bcm47xxnflash *nflash = platform_get_drvdata(pdev);
  
- 	/* Scan NAND */
--	err = nand_scan(nand_to_mtd(&b47n->nand_chip), 1);
-+	err = nand_scan(&b47n->nand_chip, 1);
- 	if (err) {
- 		pr_err("Could not scan NAND flash: %d\n", err);
- 		goto exit;
+-	nand_release(nand_to_mtd(&nflash->nand_chip));
++	nand_release(&nflash->nand_chip);
+ 
+ 	return 0;
+ }
 diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 4b90d5b380c2..a9a94c102654 100644
+index a9a94c102654..19e6e918f896 100644
 --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
 +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2301,7 +2301,7 @@ static int brcmnand_init_cs(struct brcmnand_host *host, struct device_node *dn)
- 	nand_writereg(ctrl, cfg_offs,
- 		      nand_readreg(ctrl, cfg_offs) & ~CFG_BUS_WIDTH);
+@@ -2616,7 +2616,7 @@ int brcmnand_remove(struct platform_device *pdev)
+ 	struct brcmnand_host *host;
  
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
- 		return ret;
+ 	list_for_each_entry(host, &ctrl->host_list, node)
+-		nand_release(nand_to_mtd(&host->chip));
++		nand_release(&host->chip);
+ 
+ 	clk_disable_unprepare(ctrl->clk);
  
 diff --git a/drivers/mtd/nand/raw/cafe_nand.c b/drivers/mtd/nand/raw/cafe_nand.c
-index 1dbe43adcfe7..e497b95d624e 100644
+index e497b95d624e..3304594177c6 100644
 --- a/drivers/mtd/nand/raw/cafe_nand.c
 +++ b/drivers/mtd/nand/raw/cafe_nand.c
-@@ -783,7 +783,7 @@ static int cafe_nand_probe(struct pci_dev *pdev,
- 
- 	/* Scan to find existence of the device */
- 	cafe->nand.dummy_controller.ops = &cafe_nand_controller_ops;
--	err = nand_scan(mtd, 2);
-+	err = nand_scan(&cafe->nand, 2);
- 	if (err)
- 		goto out_irq;
- 
+@@ -819,7 +819,7 @@ static void cafe_nand_remove(struct pci_dev *pdev)
+ 	/* Disable NAND IRQ in global IRQ mask register */
+ 	cafe_writel(cafe, ~1 & cafe_readl(cafe, GLOBAL_IRQ_MASK), GLOBAL_IRQ_MASK);
+ 	free_irq(pdev->irq, mtd);
+-	nand_release(mtd);
++	nand_release(chip);
+ 	free_rs(cafe->rs);
+ 	pci_iounmap(pdev, cafe->mmio);
+ 	dma_free_coherent(&cafe->pdev->dev, 2112, cafe->dmabuf, cafe->dmaaddr);
 diff --git a/drivers/mtd/nand/raw/cmx270_nand.c b/drivers/mtd/nand/raw/cmx270_nand.c
-index b66e254b6802..e92c0f113eb3 100644
+index e92c0f113eb3..2eb933a8f99e 100644
 --- a/drivers/mtd/nand/raw/cmx270_nand.c
 +++ b/drivers/mtd/nand/raw/cmx270_nand.c
-@@ -193,7 +193,7 @@ static int __init cmx270_init(void)
- 	this->write_buf = cmx270_write_buf;
+@@ -228,7 +228,7 @@ module_init(cmx270_init);
+ static void __exit cmx270_cleanup(void)
+ {
+ 	/* Release resources, unregister device */
+-	nand_release(cmx270_nand_mtd);
++	nand_release(mtd_to_nand(cmx270_nand_mtd));
  
- 	/* Scan to find existence of the device */
--	ret = nand_scan(cmx270_nand_mtd, 1);
-+	ret = nand_scan(this, 1);
- 	if (ret) {
- 		pr_notice("No NAND device\n");
- 		goto err_scan;
+ 	gpio_free(GPIO_NAND_RB);
+ 	gpio_free(GPIO_NAND_CS);
 diff --git a/drivers/mtd/nand/raw/cs553x_nand.c b/drivers/mtd/nand/raw/cs553x_nand.c
-index beafad62e7d5..4065bcd12e64 100644
+index 4065bcd12e64..d4be416bb2fa 100644
 --- a/drivers/mtd/nand/raw/cs553x_nand.c
 +++ b/drivers/mtd/nand/raw/cs553x_nand.c
-@@ -241,7 +241,7 @@ static int __init cs553x_init_one(int cs, int mmio, unsigned long adr)
- 	}
+@@ -336,7 +336,7 @@ static void __exit cs553x_cleanup(void)
+ 		mmio_base = this->IO_ADDR_R;
  
- 	/* Scan to find existence of the device */
--	err = nand_scan(new_mtd, 1);
-+	err = nand_scan(this, 1);
- 	if (err)
- 		goto out_free;
+ 		/* Release resources, unregister device */
+-		nand_release(mtd);
++		nand_release(this);
+ 		kfree(mtd->name);
+ 		cs553x_mtd[i] = NULL;
  
 diff --git a/drivers/mtd/nand/raw/davinci_nand.c b/drivers/mtd/nand/raw/davinci_nand.c
-index 40145e206a6b..1021624195f7 100644
+index 1021624195f7..66d3d5966013 100644
 --- a/drivers/mtd/nand/raw/davinci_nand.c
 +++ b/drivers/mtd/nand/raw/davinci_nand.c
-@@ -807,7 +807,7 @@ static int nand_davinci_probe(struct platform_device *pdev)
+@@ -841,7 +841,7 @@ static int nand_davinci_remove(struct platform_device *pdev)
+ 		ecc4_busy = false;
+ 	spin_unlock_irq(&davinci_nand_lock);
  
- 	/* Scan to find existence of the device(s) */
- 	info->chip.dummy_controller.ops = &davinci_nand_controller_ops;
--	ret = nand_scan(mtd, pdata->mask_chipsel ? 2 : 1);
-+	ret = nand_scan(&info->chip, pdata->mask_chipsel ? 2 : 1);
- 	if (ret < 0) {
- 		dev_dbg(&pdev->dev, "no NAND chip(s) found\n");
- 		return ret;
+-	nand_release(nand_to_mtd(&info->chip));
++	nand_release(&info->chip);
+ 
+ 	return 0;
+ }
 diff --git a/drivers/mtd/nand/raw/denali.c b/drivers/mtd/nand/raw/denali.c
-index 177453dfaa07..2e8a825c740e 100644
+index 2e8a825c740e..958619fd4d1b 100644
 --- a/drivers/mtd/nand/raw/denali.c
 +++ b/drivers/mtd/nand/raw/denali.c
-@@ -1355,7 +1355,7 @@ int denali_init(struct denali_nand_info *denali)
- 		chip->setup_data_interface = denali_setup_data_interface;
+@@ -1378,9 +1378,7 @@ EXPORT_SYMBOL(denali_init);
  
- 	chip->dummy_controller.ops = &denali_controller_ops;
--	ret = nand_scan(mtd, denali->max_banks);
-+	ret = nand_scan(chip, denali->max_banks);
- 	if (ret)
- 		goto disable_irq;
- 
+ void denali_remove(struct denali_nand_info *denali)
+ {
+-	struct mtd_info *mtd = nand_to_mtd(&denali->nand);
+-
+-	nand_release(mtd);
++	nand_release(&denali->nand);
+ 	denali_disable_irq(denali);
+ }
+ EXPORT_SYMBOL(denali_remove);
 diff --git a/drivers/mtd/nand/raw/diskonchip.c b/drivers/mtd/nand/raw/diskonchip.c
-index 3c46188dd6d2..9159748a2ef0 100644
+index 9159748a2ef0..43d1e08133ce 100644
 --- a/drivers/mtd/nand/raw/diskonchip.c
 +++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -1620,7 +1620,7 @@ static int __init doc_probe(unsigned long physadr)
- 	else
- 		numchips = doc2001_init(mtd);
+@@ -1627,7 +1627,7 @@ static int __init doc_probe(unsigned long physadr)
+ 		/* nand_release will call mtd_device_unregister, but we
+ 		   haven't yet added it.  This is handled without incident by
+ 		   mtd_device_unregister, as far as I can tell. */
+-		nand_release(mtd);
++		nand_release(nand);
+ 		goto fail;
+ 	}
  
--	if ((ret = nand_scan(mtd, numchips)) || (ret = doc->late_init(mtd))) {
-+	if ((ret = nand_scan(nand, numchips)) || (ret = doc->late_init(mtd))) {
- 		/* DBB note: i believe nand_release is necessary here, as
- 		   buffers may have been allocated in nand_base.  Check with
- 		   Thomas. FIX ME! */
+@@ -1662,7 +1662,7 @@ static void release_nanddoc(void)
+ 		doc = nand_get_controller_data(nand);
+ 
+ 		nextmtd = doc->nextdoc;
+-		nand_release(mtd);
++		nand_release(nand);
+ 		iounmap(doc->virtadr);
+ 		release_mem_region(doc->physadr, DOC_IOREMAP_LEN);
+ 		free_rs(doc->rs_decoder);
 diff --git a/drivers/mtd/nand/raw/docg4.c b/drivers/mtd/nand/raw/docg4.c
-index 427fcbc1b71c..69f60755f38a 100644
+index 69f60755f38a..2d86bc5a886d 100644
 --- a/drivers/mtd/nand/raw/docg4.c
 +++ b/drivers/mtd/nand/raw/docg4.c
-@@ -1391,7 +1391,7 @@ static int __init probe_docg4(struct platform_device *pdev)
- 	 * ->attach_chip callback.
- 	 */
- 	nand->dummy_controller.ops = &docg4_controller_ops;
--	retval = nand_scan(mtd, 0);
-+	retval = nand_scan(nand, 0);
- 	if (retval)
- 		goto free_nand;
- 
+@@ -1420,7 +1420,7 @@ static int __init probe_docg4(struct platform_device *pdev)
+ static int __exit cleanup_docg4(struct platform_device *pdev)
+ {
+ 	struct docg4_priv *doc = platform_get_drvdata(pdev);
+-	nand_release(doc->mtd);
++	nand_release(mtd_to_nand(doc->mtd));
+ 	kfree(mtd_to_nand(doc->mtd));
+ 	iounmap(doc->virtadr);
+ 	return 0;
 diff --git a/drivers/mtd/nand/raw/fsl_elbc_nand.c b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-index 55f449b711fd..541343d142e0 100644
+index 541343d142e0..22bcd64a66c8 100644
 --- a/drivers/mtd/nand/raw/fsl_elbc_nand.c
 +++ b/drivers/mtd/nand/raw/fsl_elbc_nand.c
-@@ -915,7 +915,7 @@ static int fsl_elbc_nand_probe(struct platform_device *pdev)
- 		goto err;
+@@ -942,9 +942,8 @@ static int fsl_elbc_nand_remove(struct platform_device *pdev)
+ {
+ 	struct fsl_elbc_fcm_ctrl *elbc_fcm_ctrl = fsl_lbc_ctrl_dev->nand;
+ 	struct fsl_elbc_mtd *priv = dev_get_drvdata(&pdev->dev);
+-	struct mtd_info *mtd = nand_to_mtd(&priv->chip);
  
- 	priv->chip.controller->ops = &fsl_elbc_controller_ops;
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(&priv->chip, 1);
- 	if (ret)
- 		goto err;
+-	nand_release(mtd);
++	nand_release(&priv->chip);
+ 	fsl_elbc_chip_remove(priv);
  
+ 	mutex_lock(&fsl_elbc_nand_mutex);
 diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-index 7e7729df7827..ad010c72df78 100644
+index ad010c72df78..70bf8e1552a5 100644
 --- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
 +++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-@@ -1079,7 +1079,7 @@ static int fsl_ifc_nand_probe(struct platform_device *dev)
- 		goto err;
+@@ -1105,9 +1105,8 @@ static int fsl_ifc_nand_probe(struct platform_device *dev)
+ static int fsl_ifc_nand_remove(struct platform_device *dev)
+ {
+ 	struct fsl_ifc_mtd *priv = dev_get_drvdata(&dev->dev);
+-	struct mtd_info *mtd = nand_to_mtd(&priv->chip);
  
- 	priv->chip.controller->ops = &fsl_ifc_controller_ops;
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(&priv->chip, 1);
- 	if (ret)
- 		goto err;
+-	nand_release(mtd);
++	nand_release(&priv->chip);
+ 	fsl_ifc_chip_remove(priv);
  
+ 	mutex_lock(&fsl_ifc_nand_mutex);
 diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
-index ca82727eca94..99edae365d16 100644
+index 99edae365d16..ffddfc9721ac 100644
 --- a/drivers/mtd/nand/raw/fsl_upm.c
 +++ b/drivers/mtd/nand/raw/fsl_upm.c
-@@ -191,7 +191,7 @@ static int fun_chip_init(struct fsl_upm_nand *fun,
- 		goto err;
- 	}
+@@ -326,7 +326,7 @@ static int fun_remove(struct platform_device *ofdev)
+ 	struct mtd_info *mtd = nand_to_mtd(&fun->chip);
+ 	int i;
  
--	ret = nand_scan(mtd, fun->mchip_count);
-+	ret = nand_scan(&fun->chip, fun->mchip_count);
- 	if (ret)
- 		goto err;
+-	nand_release(mtd);
++	nand_release(&fun->chip);
+ 	kfree(mtd->name);
  
+ 	for (i = 0; i < fun->mchip_count; i++) {
 diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
-index f418236fa020..9991e3b8e237 100644
+index 9991e3b8e237..25d354e9448e 100644
 --- a/drivers/mtd/nand/raw/fsmc_nand.c
 +++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -1125,7 +1125,7 @@ static int __init fsmc_nand_probe(struct platform_device *pdev)
- 	 * Scan to find existence of the device
- 	 */
- 	nand->dummy_controller.ops = &fsmc_nand_controller_ops;
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(nand, 1);
- 	if (ret)
- 		goto release_dma_write_chan;
+@@ -1161,7 +1161,7 @@ static int fsmc_nand_remove(struct platform_device *pdev)
+ 	struct fsmc_nand_data *host = platform_get_drvdata(pdev);
  
+ 	if (host) {
+-		nand_release(nand_to_mtd(&host->nand));
++		nand_release(&host->nand);
+ 
+ 		if (host->mode == USE_DMA_ACCESS) {
+ 			dma_release_channel(host->write_dma_chan);
 diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/gpio.c
-index 2780af26d9ab..983d3be48019 100644
+index 983d3be48019..0e7d00faf33c 100644
 --- a/drivers/mtd/nand/raw/gpio.c
 +++ b/drivers/mtd/nand/raw/gpio.c
-@@ -289,7 +289,7 @@ static int gpio_nand_probe(struct platform_device *pdev)
+@@ -194,7 +194,7 @@ static int gpio_nand_remove(struct platform_device *pdev)
+ {
+ 	struct gpiomtd *gpiomtd = platform_get_drvdata(pdev);
+ 
+-	nand_release(nand_to_mtd(&gpiomtd->nand_chip));
++	nand_release(&gpiomtd->nand_chip);
+ 
+ 	/* Enable write protection and disable the chip */
  	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
- 		gpiod_direction_output(gpiomtd->nwp, 1);
- 
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
- 		goto err_wp;
- 
 diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index 1c1ebbc82824..7af207bc3ab5 100644
+index 7af207bc3ab5..fe99d9323d4a 100644
 --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
 +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -1934,7 +1934,7 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
- 		goto err_out;
+@@ -2026,7 +2026,7 @@ static int gpmi_nand_remove(struct platform_device *pdev)
+ {
+ 	struct gpmi_nand_data *this = platform_get_drvdata(pdev);
  
- 	chip->dummy_controller.ops = &gpmi_nand_controller_ops;
--	ret = nand_scan(mtd, GPMI_IS_MX6(this) ? 2 : 1);
-+	ret = nand_scan(chip, GPMI_IS_MX6(this) ? 2 : 1);
- 	if (ret)
- 		goto err_out;
- 
+-	nand_release(nand_to_mtd(&this->nand));
++	nand_release(&this->nand);
+ 	gpmi_free_dma_buffer(this);
+ 	release_resources(this);
+ 	return 0;
 diff --git a/drivers/mtd/nand/raw/hisi504_nand.c b/drivers/mtd/nand/raw/hisi504_nand.c
-index 0f5c48aa5673..81baa2e6ae56 100644
+index 81baa2e6ae56..9106a1d60bca 100644
 --- a/drivers/mtd/nand/raw/hisi504_nand.c
 +++ b/drivers/mtd/nand/raw/hisi504_nand.c
-@@ -801,7 +801,7 @@ static int hisi_nfc_probe(struct platform_device *pdev)
- 	}
+@@ -818,9 +818,8 @@ static int hisi_nfc_probe(struct platform_device *pdev)
+ static int hisi_nfc_remove(struct platform_device *pdev)
+ {
+ 	struct hinfc_host *host = platform_get_drvdata(pdev);
+-	struct mtd_info *mtd = nand_to_mtd(&host->chip);
  
- 	chip->dummy_controller.ops = &hisi_nfc_controller_ops;
--	ret = nand_scan(mtd, max_chips);
-+	ret = nand_scan(chip, max_chips);
- 	if (ret)
- 		return ret;
+-	nand_release(mtd);
++	nand_release(&host->chip);
  
+ 	return 0;
+ }
 diff --git a/drivers/mtd/nand/raw/jz4740_nand.c b/drivers/mtd/nand/raw/jz4740_nand.c
-index a7515452bc59..75bb26645c82 100644
+index 75bb26645c82..27603d78b157 100644
 --- a/drivers/mtd/nand/raw/jz4740_nand.c
 +++ b/drivers/mtd/nand/raw/jz4740_nand.c
-@@ -331,7 +331,7 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+@@ -507,7 +507,7 @@ static int jz_nand_remove(struct platform_device *pdev)
+ 	struct jz_nand *nand = platform_get_drvdata(pdev);
+ 	size_t i;
  
- 	if (chipnr == 0) {
- 		/* Detect first chip. */
--		ret = nand_scan(mtd, 1);
-+		ret = nand_scan(chip, 1);
- 		if (ret)
- 			goto notfound_id;
+-	nand_release(nand_to_mtd(&nand->chip));
++	nand_release(&nand->chip);
  
+ 	/* Deassert and disable all chips */
+ 	writel(0, nand->base + JZ_REG_NAND_CTRL);
 diff --git a/drivers/mtd/nand/raw/jz4780_nand.c b/drivers/mtd/nand/raw/jz4780_nand.c
-index ac6239588f26..80f29b28bcc4 100644
+index 80f29b28bcc4..7d008aeae165 100644
 --- a/drivers/mtd/nand/raw/jz4780_nand.c
 +++ b/drivers/mtd/nand/raw/jz4780_nand.c
-@@ -286,7 +286,7 @@ static int jz4780_nand_init_chip(struct platform_device *pdev,
- 	nand_set_flash_node(chip, np);
+@@ -292,7 +292,7 @@ static int jz4780_nand_init_chip(struct platform_device *pdev,
  
- 	chip->controller->ops = &jz4780_nand_controller_ops;
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
+ 	ret = mtd_device_register(mtd, NULL, 0);
+ 	if (ret) {
+-		nand_release(mtd);
++		nand_release(chip);
  		return ret;
+ 	}
  
+@@ -307,7 +307,7 @@ static void jz4780_nand_cleanup_chips(struct jz4780_nand_controller *nfc)
+ 
+ 	while (!list_empty(&nfc->chips)) {
+ 		chip = list_first_entry(&nfc->chips, struct jz4780_nand_chip, chip_list);
+-		nand_release(nand_to_mtd(&chip->chip));
++		nand_release(&chip->chip);
+ 		list_del(&chip->chip_list);
+ 	}
+ }
 diff --git a/drivers/mtd/nand/raw/lpc32xx_mlc.c b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-index e82abada130a..453a83b82d73 100644
+index 453a83b82d73..d240b8ff40ca 100644
 --- a/drivers/mtd/nand/raw/lpc32xx_mlc.c
 +++ b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-@@ -802,7 +802,7 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
- 	 * SMALL block or LARGE block.
- 	 */
- 	nand_chip->dummy_controller.ops = &lpc32xx_nand_controller_ops;
--	res = nand_scan(mtd, 1);
-+	res = nand_scan(nand_chip, 1);
- 	if (res)
- 		goto free_irq;
+@@ -839,9 +839,8 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
+ static int lpc32xx_nand_remove(struct platform_device *pdev)
+ {
+ 	struct lpc32xx_nand_host *host = platform_get_drvdata(pdev);
+-	struct mtd_info *mtd = nand_to_mtd(&host->nand_chip);
  
+-	nand_release(mtd);
++	nand_release(&host->nand_chip);
+ 	free_irq(host->irq, host);
+ 	if (use_dma)
+ 		dma_release_channel(host->dma_chan);
 diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
-index a4e8b7e75135..ad6eff0591d2 100644
+index ad6eff0591d2..607e4bdfae03 100644
 --- a/drivers/mtd/nand/raw/lpc32xx_slc.c
 +++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
-@@ -925,7 +925,7 @@ static int lpc32xx_nand_probe(struct platform_device *pdev)
+@@ -956,9 +956,8 @@ static int lpc32xx_nand_remove(struct platform_device *pdev)
+ {
+ 	uint32_t tmp;
+ 	struct lpc32xx_nand_host *host = platform_get_drvdata(pdev);
+-	struct mtd_info *mtd = nand_to_mtd(&host->nand_chip);
  
- 	/* Find NAND device */
- 	chip->dummy_controller.ops = &lpc32xx_nand_controller_ops;
--	res = nand_scan(mtd, 1);
-+	res = nand_scan(chip, 1);
- 	if (res)
- 		goto release_dma;
+-	nand_release(mtd);
++	nand_release(&host->nand_chip);
+ 	dma_release_channel(host->dma_chan);
  
+ 	/* Force CE high */
 diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 270f281067ab..dde64609415f 100644
+index dde64609415f..5a9836c5093c 100644
 --- a/drivers/mtd/nand/raw/marvell_nand.c
 +++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2605,7 +2605,7 @@ static int marvell_nand_chip_init(struct device *dev, struct marvell_nfc *nfc,
- 
- 	chip->options |= NAND_BUSWIDTH_AUTO;
- 
--	ret = nand_scan(mtd, marvell_nand->nsels);
-+	ret = nand_scan(chip, marvell_nand->nsels);
+@@ -2618,7 +2618,7 @@ static int marvell_nand_chip_init(struct device *dev, struct marvell_nfc *nfc,
+ 		ret = mtd_device_register(mtd, NULL, 0);
  	if (ret) {
- 		dev_err(dev, "could not scan the nand chip\n");
+ 		dev_err(dev, "failed to register mtd device: %d\n", ret);
+-		nand_release(mtd);
++		nand_release(chip);
  		return ret;
+ 	}
+ 
+@@ -2673,7 +2673,7 @@ static void marvell_nand_chips_cleanup(struct marvell_nfc *nfc)
+ 	struct marvell_nand_chip *entry, *temp;
+ 
+ 	list_for_each_entry_safe(entry, temp, &nfc->chips, node) {
+-		nand_release(nand_to_mtd(&entry->chip));
++		nand_release(&entry->chip);
+ 		list_del(&entry->node);
+ 	}
+ }
 diff --git a/drivers/mtd/nand/raw/mpc5121_nfc.c b/drivers/mtd/nand/raw/mpc5121_nfc.c
-index c0be9c30b4cf..efaaec462bd7 100644
+index efaaec462bd7..3c90d6955476 100644
 --- a/drivers/mtd/nand/raw/mpc5121_nfc.c
 +++ b/drivers/mtd/nand/raw/mpc5121_nfc.c
-@@ -767,7 +767,7 @@ static int mpc5121_nfc_probe(struct platform_device *op)
- 	}
+@@ -817,7 +817,7 @@ static int mpc5121_nfc_remove(struct platform_device *op)
+ 	struct device *dev = &op->dev;
+ 	struct mtd_info *mtd = dev_get_drvdata(dev);
  
- 	/* Detect NAND chips */
--	retval = nand_scan(mtd, be32_to_cpup(chips_no));
-+	retval = nand_scan(chip, be32_to_cpup(chips_no));
- 	if (retval) {
- 		dev_err(dev, "NAND Flash not found !\n");
- 		goto error;
+-	nand_release(mtd);
++	nand_release(mtd_to_nand(mtd));
+ 	mpc5121_nfc_free(dev, mtd);
+ 
+ 	return 0;
 diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index 57b5ed1699e3..7a2ce405f914 100644
+index 7a2ce405f914..46d447f148f1 100644
 --- a/drivers/mtd/nand/raw/mtk_nand.c
 +++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -1365,7 +1365,7 @@ static int mtk_nfc_nand_chip_init(struct device *dev, struct mtk_nfc *nfc,
- 
- 	mtk_nfc_hw_init(nfc);
- 
--	ret = nand_scan(mtd, nsels);
-+	ret = nand_scan(nand, nsels);
- 	if (ret)
+@@ -1372,7 +1372,7 @@ static int mtk_nfc_nand_chip_init(struct device *dev, struct mtk_nfc *nfc,
+ 	ret = mtd_device_register(mtd, NULL, 0);
+ 	if (ret) {
+ 		dev_err(dev, "mtd parse partition error\n");
+-		nand_release(mtd);
++		nand_release(nand);
  		return ret;
+ 	}
+ 
+@@ -1538,7 +1538,7 @@ static int mtk_nfc_remove(struct platform_device *pdev)
+ 	while (!list_empty(&nfc->chips)) {
+ 		chip = list_first_entry(&nfc->chips, struct mtk_nfc_nand_chip,
+ 					node);
+-		nand_release(nand_to_mtd(&chip->nand));
++		nand_release(&chip->nand);
+ 		list_del(&chip->node);
+ 	}
  
 diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
-index a0884a621053..1ca03d88adf1 100644
+index 1ca03d88adf1..3c57e14e1c7c 100644
 --- a/drivers/mtd/nand/raw/mxc_nand.c
 +++ b/drivers/mtd/nand/raw/mxc_nand.c
-@@ -1887,7 +1887,7 @@ static int mxcnd_probe(struct platform_device *pdev)
+@@ -1915,7 +1915,7 @@ static int mxcnd_remove(struct platform_device *pdev)
+ {
+ 	struct mxc_nand_host *host = platform_get_drvdata(pdev);
  
- 	/* Scan the NAND device */
- 	this->dummy_controller.ops = &mxcnd_controller_ops;
--	err = nand_scan(mtd, is_imx25_nfc(host) ? 4 : 1);
-+	err = nand_scan(this, is_imx25_nfc(host) ? 4 : 1);
- 	if (err)
- 		goto escan;
+-	nand_release(nand_to_mtd(&host->nand));
++	nand_release(&host->nand);
+ 	if (host->clk_act)
+ 		clk_disable_unprepare(host->clk);
  
 diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 306ef6ec41db..974cbfbde5e2 100644
+index 974cbfbde5e2..f937efe145af 100644
 --- a/drivers/mtd/nand/raw/nand_base.c
 +++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -5960,7 +5960,7 @@ static int nand_dt_init(struct nand_chip *chip)
- 
+@@ -6853,12 +6853,12 @@ EXPORT_SYMBOL_GPL(nand_cleanup);
  /**
-  * nand_scan_ident - Scan for the NAND device
+  * nand_release - [NAND Interface] Unregister the MTD device and free resources
+  *		  held by the NAND device
 - * @mtd: MTD device structure
 + * @chip: NAND chip object
-  * @maxchips: number of chips to scan for
-  * @table: alternative NAND ID table
-  *
-@@ -5972,11 +5972,11 @@ static int nand_dt_init(struct nand_chip *chip)
-  * prevented dynamic allocations during this phase which was unconvenient and
-  * as been banned for the benefit of the ->init_ecc()/cleanup_ecc() hooks.
   */
--static int nand_scan_ident(struct mtd_info *mtd, int maxchips,
-+static int nand_scan_ident(struct nand_chip *chip, int maxchips,
- 			   struct nand_flash_dev *table)
+-void nand_release(struct mtd_info *mtd)
++void nand_release(struct nand_chip *chip)
  {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, nand_maf_id, nand_dev_id;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret;
- 
- 	/* Enforce the right timings for reset/detection */
-@@ -6430,15 +6430,15 @@ static bool nand_ecc_strength_good(struct mtd_info *mtd)
- 
- /**
-  * nand_scan_tail - Scan for the NAND device
-- * @mtd: MTD device structure
-+ * @chip: NAND chip object
-  *
-  * This is the second phase of the normal nand_scan() function. It fills out
-  * all the uninitialized function pointers with the defaults and scans for a
-  * bad block table if appropriate.
-  */
--static int nand_scan_tail(struct mtd_info *mtd)
-+static int nand_scan_tail(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int ret, i;
- 
-@@ -6777,7 +6777,7 @@ static void nand_detach(struct nand_chip *chip)
- 
- /**
-  * nand_scan_with_ids - [NAND Interface] Scan for the NAND device
-- * @mtd: MTD device structure
-+ * @chip: NAND chip object
-  * @maxchips: number of chips to scan for. @nand_scan_ident() will not be run if
-  *	      this parameter is zero (useful for specific drivers that must
-  *	      handle this part of the process themselves, e.g docg4).
-@@ -6787,14 +6787,13 @@ static void nand_detach(struct nand_chip *chip)
-  * The flash ID is read and the mtd/chip structures are filled with the
-  * appropriate values.
-  */
--int nand_scan_with_ids(struct mtd_info *mtd, int maxchips,
-+int nand_scan_with_ids(struct nand_chip *chip, int maxchips,
- 		       struct nand_flash_dev *ids)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret;
- 
- 	if (maxchips) {
--		ret = nand_scan_ident(mtd, maxchips, ids);
-+		ret = nand_scan_ident(chip, maxchips, ids);
- 		if (ret)
- 			return ret;
- 	}
-@@ -6803,7 +6802,7 @@ int nand_scan_with_ids(struct mtd_info *mtd, int maxchips,
- 	if (ret)
- 		goto cleanup_ident;
- 
--	ret = nand_scan_tail(mtd);
-+	ret = nand_scan_tail(chip);
- 	if (ret)
- 		goto detach_chip;
+-	mtd_device_unregister(mtd);
+-	nand_cleanup(mtd_to_nand(mtd));
++	mtd_device_unregister(nand_to_mtd(chip));
++	nand_cleanup(chip);
+ }
+ EXPORT_SYMBOL_GPL(nand_release);
  
 diff --git a/drivers/mtd/nand/raw/nandsim.c b/drivers/mtd/nand/raw/nandsim.c
-index 47a81d1b1397..60761175e531 100644
+index 60761175e531..e9f7b9e1aead 100644
 --- a/drivers/mtd/nand/raw/nandsim.c
 +++ b/drivers/mtd/nand/raw/nandsim.c
-@@ -2309,7 +2309,7 @@ static int __init ns_init_module(void)
- 		goto error;
+@@ -2354,7 +2354,7 @@ static int __init ns_init_module(void)
  
- 	chip->dummy_controller.ops = &ns_controller_ops;
--	retval = nand_scan(nsmtd, 1);
-+	retval = nand_scan(chip, 1);
- 	if (retval) {
- 		NS_ERR("Could not scan NAND Simulator device\n");
- 		goto error;
+ err_exit:
+ 	free_nandsim(nand);
+-	nand_release(nsmtd);
++	nand_release(chip);
+ 	for (i = 0;i < ARRAY_SIZE(nand->partitions); ++i)
+ 		kfree(nand->partitions[i].name);
+ error:
+@@ -2376,7 +2376,7 @@ static void __exit ns_cleanup_module(void)
+ 	int i;
+ 
+ 	free_nandsim(ns);    /* Free nandsim private resources */
+-	nand_release(nsmtd); /* Unregister driver */
++	nand_release(chip); /* Unregister driver */
+ 	for (i = 0;i < ARRAY_SIZE(ns->partitions); ++i)
+ 		kfree(ns->partitions[i].name);
+ 	kfree(mtd_to_nand(nsmtd));        /* Free other structures */
 diff --git a/drivers/mtd/nand/raw/ndfc.c b/drivers/mtd/nand/raw/ndfc.c
-index b193f373f235..7ce7f37dc67a 100644
+index 7ce7f37dc67a..ab24e9ca769b 100644
 --- a/drivers/mtd/nand/raw/ndfc.c
 +++ b/drivers/mtd/nand/raw/ndfc.c
-@@ -181,7 +181,7 @@ static int ndfc_chip_init(struct ndfc_controller *ndfc,
- 		goto err;
- 	}
+@@ -258,7 +258,7 @@ static int ndfc_remove(struct platform_device *ofdev)
+ 	struct ndfc_controller *ndfc = dev_get_drvdata(&ofdev->dev);
+ 	struct mtd_info *mtd = nand_to_mtd(&ndfc->chip);
  
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
- 		goto err;
+-	nand_release(mtd);
++	nand_release(&ndfc->chip);
+ 	kfree(mtd->name);
  
+ 	return 0;
 diff --git a/drivers/mtd/nand/raw/nuc900_nand.c b/drivers/mtd/nand/raw/nuc900_nand.c
-index af5b32c9a791..41ed993b9523 100644
+index 41ed993b9523..0c675b6c0b6e 100644
 --- a/drivers/mtd/nand/raw/nuc900_nand.c
 +++ b/drivers/mtd/nand/raw/nuc900_nand.c
-@@ -270,7 +270,7 @@ static int nuc900_nand_probe(struct platform_device *pdev)
+@@ -284,7 +284,7 @@ static int nuc900_nand_remove(struct platform_device *pdev)
+ {
+ 	struct nuc900_nand *nuc900_nand = platform_get_drvdata(pdev);
  
- 	nuc900_nand_enable(nuc900_nand);
+-	nand_release(nand_to_mtd(&nuc900_nand->chip));
++	nand_release(&nuc900_nand->chip);
+ 	clk_disable(nuc900_nand->clk);
  
--	if (nand_scan(mtd, 1))
-+	if (nand_scan(chip, 1))
- 		return -ENXIO;
- 
- 	mtd_device_register(mtd, partitions, ARRAY_SIZE(partitions));
+ 	return 0;
 diff --git a/drivers/mtd/nand/raw/omap2.c b/drivers/mtd/nand/raw/omap2.c
-index 4546ac0bed4a..c2aff2492fa1 100644
+index c2aff2492fa1..b243f2ab3622 100644
 --- a/drivers/mtd/nand/raw/omap2.c
 +++ b/drivers/mtd/nand/raw/omap2.c
-@@ -2254,7 +2254,7 @@ static int omap_nand_probe(struct platform_device *pdev)
- 	/* scan NAND device connected to chip controller */
- 	nand_chip->options |= info->devsize & NAND_BUSWIDTH_16;
- 
--	err = nand_scan(mtd, 1);
-+	err = nand_scan(nand_chip, 1);
- 	if (err)
- 		goto return_error;
- 
-diff --git a/drivers/mtd/nand/raw/orion_nand.c b/drivers/mtd/nand/raw/orion_nand.c
-index 52d435285a3f..256a6b018bdc 100644
---- a/drivers/mtd/nand/raw/orion_nand.c
-+++ b/drivers/mtd/nand/raw/orion_nand.c
-@@ -174,7 +174,7 @@ static int __init orion_nand_probe(struct platform_device *pdev)
- 		return ret;
+@@ -2290,7 +2290,7 @@ static int omap_nand_remove(struct platform_device *pdev)
  	}
- 
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(nc, 1);
- 	if (ret)
- 		goto no_dev;
- 
-diff --git a/drivers/mtd/nand/raw/oxnas_nand.c b/drivers/mtd/nand/raw/oxnas_nand.c
-index 01b00bb69c1e..9aeb024c2a0e 100644
---- a/drivers/mtd/nand/raw/oxnas_nand.c
-+++ b/drivers/mtd/nand/raw/oxnas_nand.c
-@@ -142,7 +142,7 @@ static int oxnas_nand_probe(struct platform_device *pdev)
- 		chip->chip_delay = 30;
- 
- 		/* Scan to find existence of the device */
--		err = nand_scan(mtd, 1);
-+		err = nand_scan(chip, 1);
- 		if (err)
- 			goto err_clk_unprepare;
- 
-diff --git a/drivers/mtd/nand/raw/pasemi_nand.c b/drivers/mtd/nand/raw/pasemi_nand.c
-index a47a7e4bd25a..eca4e41d2be3 100644
---- a/drivers/mtd/nand/raw/pasemi_nand.c
-+++ b/drivers/mtd/nand/raw/pasemi_nand.c
-@@ -156,7 +156,7 @@ static int pasemi_nand_probe(struct platform_device *ofdev)
- 	chip->bbt_options = NAND_BBT_USE_FLASH;
- 
- 	/* Scan to find existence of the device */
--	err = nand_scan(pasemi_nand_mtd, 1);
-+	err = nand_scan(chip, 1);
- 	if (err)
- 		goto out_lpc;
- 
-diff --git a/drivers/mtd/nand/raw/plat_nand.c b/drivers/mtd/nand/raw/plat_nand.c
-index 24f904300c44..c9a23fb21718 100644
---- a/drivers/mtd/nand/raw/plat_nand.c
-+++ b/drivers/mtd/nand/raw/plat_nand.c
-@@ -131,7 +131,7 @@ static int plat_nand_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Scan to find existence of the device */
--	err = nand_scan(mtd, pdata->chip.nr_chips);
-+	err = nand_scan(&data->chip, pdata->chip.nr_chips);
- 	if (err)
- 		goto out;
- 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index d2831b0b28fb..d800347e74da 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2834,7 +2834,7 @@ static int qcom_nand_host_init_and_register(struct qcom_nand_controller *nandc,
- 	/* set up initial status value */
- 	host->status = NAND_STATUS_READY | NAND_STATUS_WP;
- 
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/mtd/nand/raw/s3c2410.c b/drivers/mtd/nand/raw/s3c2410.c
-index c21e8892394a..7f30d801d642 100644
---- a/drivers/mtd/nand/raw/s3c2410.c
-+++ b/drivers/mtd/nand/raw/s3c2410.c
-@@ -1170,7 +1170,7 @@ static int s3c24xx_nand_probe(struct platform_device *pdev)
- 		mtd->dev.parent = &pdev->dev;
- 		s3c2410_nand_init_chip(info, nmtd, sets);
- 
--		err = nand_scan(mtd, sets ? sets->nr_chips : 1);
-+		err = nand_scan(&nmtd->chip, sets ? sets->nr_chips : 1);
- 		if (err)
- 			goto exit_error;
- 
-diff --git a/drivers/mtd/nand/raw/sh_flctl.c b/drivers/mtd/nand/raw/sh_flctl.c
-index ef3036d9bf15..abcc3be89b89 100644
---- a/drivers/mtd/nand/raw/sh_flctl.c
-+++ b/drivers/mtd/nand/raw/sh_flctl.c
-@@ -1193,7 +1193,7 @@ static int flctl_probe(struct platform_device *pdev)
- 	flctl_setup_dma(flctl);
- 
- 	nand->dummy_controller.ops = &flctl_nand_controller_ops;
--	ret = nand_scan(flctl_mtd, 1);
-+	ret = nand_scan(nand, 1);
- 	if (ret)
- 		goto err_chip;
- 
-diff --git a/drivers/mtd/nand/raw/sharpsl.c b/drivers/mtd/nand/raw/sharpsl.c
-index fc171b17a39b..4afacb0dcf00 100644
---- a/drivers/mtd/nand/raw/sharpsl.c
-+++ b/drivers/mtd/nand/raw/sharpsl.c
-@@ -171,7 +171,7 @@ static int sharpsl_nand_probe(struct platform_device *pdev)
- 	this->ecc.correct = nand_correct_data;
- 
- 	/* Scan to find existence of the device */
--	err = nand_scan(mtd, 1);
-+	err = nand_scan(this, 1);
- 	if (err)
- 		goto err_scan;
- 
-diff --git a/drivers/mtd/nand/raw/sm_common.c b/drivers/mtd/nand/raw/sm_common.c
-index 73aafe8c3ef3..02ac6e9b2d16 100644
---- a/drivers/mtd/nand/raw/sm_common.c
-+++ b/drivers/mtd/nand/raw/sm_common.c
-@@ -195,7 +195,7 @@ int sm_register_device(struct mtd_info *mtd, int smartmedia)
- 	/* Scan for card properties */
- 	chip->dummy_controller.ops = &sm_controller_ops;
- 	flash_ids = smartmedia ? nand_smartmedia_flash_ids : nand_xd_flash_ids;
--	ret = nand_scan_with_ids(mtd, 1, flash_ids);
-+	ret = nand_scan_with_ids(chip, 1, flash_ids);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/mtd/nand/raw/socrates_nand.c b/drivers/mtd/nand/raw/socrates_nand.c
-index 36c45aa21f66..e335560f87af 100644
---- a/drivers/mtd/nand/raw/socrates_nand.c
-+++ b/drivers/mtd/nand/raw/socrates_nand.c
-@@ -173,7 +173,7 @@ static int socrates_nand_probe(struct platform_device *ofdev)
- 
- 	dev_set_drvdata(&ofdev->dev, host);
- 
--	res = nand_scan(mtd, 1);
-+	res = nand_scan(nand_chip, 1);
- 	if (res)
- 		goto out;
- 
-diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-index 1f0b7ee38df5..179f74b6edf6 100644
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1940,7 +1940,7 @@ static int sunxi_nand_chip_init(struct device *dev, struct sunxi_nfc *nfc,
- 	mtd = nand_to_mtd(nand);
- 	mtd->dev.parent = dev;
- 
--	ret = nand_scan(mtd, nsels);
-+	ret = nand_scan(nand, nsels);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/mtd/nand/raw/tango_nand.c b/drivers/mtd/nand/raw/tango_nand.c
-index 72698691727d..45beb87aec93 100644
---- a/drivers/mtd/nand/raw/tango_nand.c
-+++ b/drivers/mtd/nand/raw/tango_nand.c
-@@ -588,7 +588,7 @@ static int chip_init(struct device *dev, struct device_node *np)
- 	mtd_set_ooblayout(mtd, &tango_nand_ooblayout_ops);
- 	mtd->dev.parent = dev;
- 
--	err = nand_scan(mtd, 1);
-+	err = nand_scan(chip, 1);
- 	if (err)
- 		return err;
- 
-diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/tegra_nand.c
-index 79da1efc88d1..5dcee20e2a8c 100644
---- a/drivers/mtd/nand/raw/tegra_nand.c
-+++ b/drivers/mtd/nand/raw/tegra_nand.c
-@@ -1119,7 +1119,7 @@ static int tegra_nand_chips_init(struct device *dev,
- 	chip->select_chip = tegra_nand_select_chip;
- 	chip->setup_data_interface = tegra_nand_setup_data_interface;
- 
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/mtd/nand/raw/tmio_nand.c b/drivers/mtd/nand/raw/tmio_nand.c
-index dcaa924502de..6df499a239ae 100644
---- a/drivers/mtd/nand/raw/tmio_nand.c
-+++ b/drivers/mtd/nand/raw/tmio_nand.c
-@@ -436,7 +436,7 @@ static int tmio_probe(struct platform_device *dev)
- 	nand_chip->waitfunc = tmio_nand_wait;
- 
- 	/* Scan to find existence of the device */
--	retval = nand_scan(mtd, 1);
-+	retval = nand_scan(nand_chip, 1);
- 	if (retval)
- 		goto err_irq;
- 
-diff --git a/drivers/mtd/nand/raw/txx9ndfmc.c b/drivers/mtd/nand/raw/txx9ndfmc.c
-index 4d61a14fcb65..169e8bcee61e 100644
---- a/drivers/mtd/nand/raw/txx9ndfmc.c
-+++ b/drivers/mtd/nand/raw/txx9ndfmc.c
-@@ -359,7 +359,7 @@ static int __init txx9ndfmc_probe(struct platform_device *dev)
- 		if (plat->wide_mask & (1 << i))
- 			chip->options |= NAND_BUSWIDTH_16;
- 
--		if (nand_scan(mtd, 1)) {
-+		if (nand_scan(chip, 1)) {
- 			kfree(txx9_priv->mtdname);
- 			kfree(txx9_priv);
- 			continue;
-diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
-index 6f6dcbf9095b..3b486f4ce868 100644
---- a/drivers/mtd/nand/raw/vf610_nfc.c
-+++ b/drivers/mtd/nand/raw/vf610_nfc.c
-@@ -892,7 +892,7 @@ static int vf610_nfc_probe(struct platform_device *pdev)
- 
- 	/* Scan the NAND chip */
- 	chip->dummy_controller.ops = &vf610_nfc_controller_ops;
--	err = nand_scan(mtd, 1);
-+	err = nand_scan(chip, 1);
- 	if (err)
- 		goto err_disable_clk;
- 
-diff --git a/drivers/mtd/nand/raw/xway_nand.c b/drivers/mtd/nand/raw/xway_nand.c
-index 9926b4e3d69d..e670d3b5a646 100644
---- a/drivers/mtd/nand/raw/xway_nand.c
-+++ b/drivers/mtd/nand/raw/xway_nand.c
-@@ -205,7 +205,7 @@ static int xway_nand_probe(struct platform_device *pdev)
- 		    | cs_flag, EBU_NAND_CON);
- 
- 	/* Scan to find existence of the device */
--	err = nand_scan(mtd, 1);
-+	err = nand_scan(&data->chip, 1);
- 	if (err)
- 		return err;
- 
-diff --git a/drivers/staging/mt29f_spinand/mt29f_spinand.c b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-index 448478451c4c..b50788b2d1d9 100644
---- a/drivers/staging/mt29f_spinand/mt29f_spinand.c
-+++ b/drivers/staging/mt29f_spinand/mt29f_spinand.c
-@@ -934,7 +934,7 @@ static int spinand_probe(struct spi_device *spi_nand)
- 	mtd_set_ooblayout(mtd, &spinand_oob_64_ops);
- #endif
- 
--	if (nand_scan(mtd, 1))
-+	if (nand_scan(chip, 1))
- 		return -ENXIO;
- 
- 	return mtd_device_register(mtd, NULL, 0);
-diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 818cdc0a4dbb..733b228d94a5 100644
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -24,15 +24,16 @@
- #include <linux/of.h>
- #include <linux/types.h>
- 
-+struct nand_chip;
- struct nand_flash_dev;
- 
- /* Scan and identify a NAND device */
--int nand_scan_with_ids(struct mtd_info *mtd, int max_chips,
-+int nand_scan_with_ids(struct nand_chip *chip, int max_chips,
- 		       struct nand_flash_dev *ids);
- 
--static inline int nand_scan(struct mtd_info *mtd, int max_chips)
-+static inline int nand_scan(struct nand_chip *chip, int max_chips)
- {
--	return nand_scan_with_ids(mtd, max_chips, NULL);
-+	return nand_scan_with_ids(chip, max_chips, NULL);
+ 	if (info->dma)
+ 		dma_release_channel(info->dma);
+-	nand_release(mtd);
++	nand_release(nand_chip);
+ 	return 0;
  }
  
- /* Internal helper for board drivers which need to override command function */
+diff --git a/drivers/mtd/nand/raw/orion_nand.c b/drivers/mtd/nand/raw/orion_nand.c
+index 256a6b018bdc..5c58d91ffaee 100644
+--- a/drivers/mtd/nand/raw/orion_nand.c
++++ b/drivers/mtd/nand/raw/orion_nand.c
+@@ -181,7 +181,7 @@ static int __init orion_nand_probe(struct platform_device *pdev)
+ 	mtd->name = "orion_nand";
+ 	ret = mtd_device_register(mtd, board->parts, board->nr_parts);
+ 	if (ret) {
+-		nand_release(mtd);
++		nand_release(nc);
+ 		goto no_dev;
+ 	}
+ 
+@@ -196,9 +196,8 @@ static int orion_nand_remove(struct platform_device *pdev)
+ {
+ 	struct orion_nand_info *info = platform_get_drvdata(pdev);
+ 	struct nand_chip *chip = &info->chip;
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+ 
+-	nand_release(mtd);
++	nand_release(chip);
+ 
+ 	clk_disable_unprepare(info->clk);
+ 
+diff --git a/drivers/mtd/nand/raw/oxnas_nand.c b/drivers/mtd/nand/raw/oxnas_nand.c
+index 9aeb024c2a0e..5bc180536320 100644
+--- a/drivers/mtd/nand/raw/oxnas_nand.c
++++ b/drivers/mtd/nand/raw/oxnas_nand.c
+@@ -148,7 +148,7 @@ static int oxnas_nand_probe(struct platform_device *pdev)
+ 
+ 		err = mtd_device_register(mtd, NULL, 0);
+ 		if (err) {
+-			nand_release(mtd);
++			nand_release(chip);
+ 			goto err_clk_unprepare;
+ 		}
+ 
+@@ -176,7 +176,7 @@ static int oxnas_nand_remove(struct platform_device *pdev)
+ 	struct oxnas_nand_ctrl *oxnas = platform_get_drvdata(pdev);
+ 
+ 	if (oxnas->chips[0])
+-		nand_release(nand_to_mtd(oxnas->chips[0]));
++		nand_release(oxnas->chips[0]);
+ 
+ 	clk_disable_unprepare(oxnas->clk);
+ 
+diff --git a/drivers/mtd/nand/raw/pasemi_nand.c b/drivers/mtd/nand/raw/pasemi_nand.c
+index eca4e41d2be3..c8e2ac04fb86 100644
+--- a/drivers/mtd/nand/raw/pasemi_nand.c
++++ b/drivers/mtd/nand/raw/pasemi_nand.c
+@@ -191,7 +191,7 @@ static int pasemi_nand_remove(struct platform_device *ofdev)
+ 	chip = mtd_to_nand(pasemi_nand_mtd);
+ 
+ 	/* Release resources, unregister device */
+-	nand_release(pasemi_nand_mtd);
++	nand_release(chip);
+ 
+ 	release_region(lpcctl, 4);
+ 
+diff --git a/drivers/mtd/nand/raw/plat_nand.c b/drivers/mtd/nand/raw/plat_nand.c
+index c9a23fb21718..80e1a44f0465 100644
+--- a/drivers/mtd/nand/raw/plat_nand.c
++++ b/drivers/mtd/nand/raw/plat_nand.c
+@@ -144,7 +144,7 @@ static int plat_nand_probe(struct platform_device *pdev)
+ 	if (!err)
+ 		return err;
+ 
+-	nand_release(mtd);
++	nand_release(&data->chip);
+ out:
+ 	if (pdata->ctrl.remove)
+ 		pdata->ctrl.remove(pdev);
+@@ -159,7 +159,7 @@ static int plat_nand_remove(struct platform_device *pdev)
+ 	struct plat_nand_data *data = platform_get_drvdata(pdev);
+ 	struct platform_nand_data *pdata = dev_get_platdata(&pdev->dev);
+ 
+-	nand_release(nand_to_mtd(&data->chip));
++	nand_release(&data->chip);
+ 	if (pdata->ctrl.remove)
+ 		pdata->ctrl.remove(pdev);
+ 
+diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+index d800347e74da..312cfd786b0f 100644
+--- a/drivers/mtd/nand/raw/qcom_nandc.c
++++ b/drivers/mtd/nand/raw/qcom_nandc.c
+@@ -2999,7 +2999,7 @@ static int qcom_nandc_remove(struct platform_device *pdev)
+ 	struct qcom_nand_host *host;
+ 
+ 	list_for_each_entry(host, &nandc->host_list, node)
+-		nand_release(nand_to_mtd(&host->chip));
++		nand_release(&host->chip);
+ 
+ 
+ 	qcom_nandc_unalloc(nandc);
+diff --git a/drivers/mtd/nand/raw/r852.c b/drivers/mtd/nand/raw/r852.c
+index dcdeb0660e5e..bb74a0ac697e 100644
+--- a/drivers/mtd/nand/raw/r852.c
++++ b/drivers/mtd/nand/raw/r852.c
+@@ -656,7 +656,7 @@ static int r852_register_nand_device(struct r852_device *dev)
+ 	dev->card_registred = 1;
+ 	return 0;
+ error3:
+-	nand_release(mtd);
++	nand_release(dev->chip);
+ error1:
+ 	/* Force card redetect */
+ 	dev->card_detected = 0;
+@@ -675,7 +675,7 @@ static void r852_unregister_nand_device(struct r852_device *dev)
+ 		return;
+ 
+ 	device_remove_file(&mtd->dev, &dev_attr_media_type);
+-	nand_release(mtd);
++	nand_release(dev->chip);
+ 	r852_engine_disable(dev);
+ 	dev->card_registred = 0;
+ }
+diff --git a/drivers/mtd/nand/raw/s3c2410.c b/drivers/mtd/nand/raw/s3c2410.c
+index 7f30d801d642..cf045813c160 100644
+--- a/drivers/mtd/nand/raw/s3c2410.c
++++ b/drivers/mtd/nand/raw/s3c2410.c
+@@ -781,7 +781,7 @@ static int s3c24xx_nand_remove(struct platform_device *pdev)
+ 
+ 		for (mtdno = 0; mtdno < info->mtd_count; mtdno++, ptr++) {
+ 			pr_debug("releasing mtd %d (%p)\n", mtdno, ptr);
+-			nand_release(nand_to_mtd(&ptr->chip));
++			nand_release(&ptr->chip);
+ 		}
+ 	}
+ 
+diff --git a/drivers/mtd/nand/raw/sh_flctl.c b/drivers/mtd/nand/raw/sh_flctl.c
+index abcc3be89b89..2580fd981077 100644
+--- a/drivers/mtd/nand/raw/sh_flctl.c
++++ b/drivers/mtd/nand/raw/sh_flctl.c
+@@ -1216,7 +1216,7 @@ static int flctl_remove(struct platform_device *pdev)
+ 	struct sh_flctl *flctl = platform_get_drvdata(pdev);
+ 
+ 	flctl_release_dma(flctl);
+-	nand_release(nand_to_mtd(&flctl->chip));
++	nand_release(&flctl->chip);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	return 0;
+diff --git a/drivers/mtd/nand/raw/sharpsl.c b/drivers/mtd/nand/raw/sharpsl.c
+index 4afacb0dcf00..c8eb4654bb1c 100644
+--- a/drivers/mtd/nand/raw/sharpsl.c
++++ b/drivers/mtd/nand/raw/sharpsl.c
+@@ -187,7 +187,7 @@ static int sharpsl_nand_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_add:
+-	nand_release(mtd);
++	nand_release(this);
+ 
+ err_scan:
+ 	iounmap(sharpsl->io);
+@@ -205,7 +205,7 @@ static int sharpsl_nand_remove(struct platform_device *pdev)
+ 	struct sharpsl_nand *sharpsl = platform_get_drvdata(pdev);
+ 
+ 	/* Release resources, unregister device */
+-	nand_release(nand_to_mtd(&sharpsl->chip));
++	nand_release(&sharpsl->chip);
+ 
+ 	iounmap(sharpsl->io);
+ 
+diff --git a/drivers/mtd/nand/raw/socrates_nand.c b/drivers/mtd/nand/raw/socrates_nand.c
+index e335560f87af..82ba371a8e18 100644
+--- a/drivers/mtd/nand/raw/socrates_nand.c
++++ b/drivers/mtd/nand/raw/socrates_nand.c
+@@ -181,7 +181,7 @@ static int socrates_nand_probe(struct platform_device *ofdev)
+ 	if (!res)
+ 		return res;
+ 
+-	nand_release(mtd);
++	nand_release(nand_chip);
+ 
+ out:
+ 	iounmap(host->io_base);
+@@ -194,9 +194,8 @@ static int socrates_nand_probe(struct platform_device *ofdev)
+ static int socrates_nand_remove(struct platform_device *ofdev)
+ {
+ 	struct socrates_nand_host *host = dev_get_drvdata(&ofdev->dev);
+-	struct mtd_info *mtd = nand_to_mtd(&host->nand_chip);
+ 
+-	nand_release(mtd);
++	nand_release(&host->nand_chip);
+ 
+ 	iounmap(host->io_base);
+ 
+diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
+index 179f74b6edf6..e31ab86bebee 100644
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1947,7 +1947,7 @@ static int sunxi_nand_chip_init(struct device *dev, struct sunxi_nfc *nfc,
+ 	ret = mtd_device_register(mtd, NULL, 0);
+ 	if (ret) {
+ 		dev_err(dev, "failed to register mtd device: %d\n", ret);
+-		nand_release(mtd);
++		nand_release(nand);
+ 		return ret;
+ 	}
+ 
+@@ -1986,7 +1986,7 @@ static void sunxi_nand_chips_cleanup(struct sunxi_nfc *nfc)
+ 	while (!list_empty(&nfc->chips)) {
+ 		chip = list_first_entry(&nfc->chips, struct sunxi_nand_chip,
+ 					node);
+-		nand_release(nand_to_mtd(&chip->nand));
++		nand_release(&chip->nand);
+ 		sunxi_nand_ecc_cleanup(&chip->nand.ecc);
+ 		list_del(&chip->node);
+ 	}
+diff --git a/drivers/mtd/nand/raw/tango_nand.c b/drivers/mtd/nand/raw/tango_nand.c
+index 45beb87aec93..1061eb60ee60 100644
+--- a/drivers/mtd/nand/raw/tango_nand.c
++++ b/drivers/mtd/nand/raw/tango_nand.c
+@@ -617,7 +617,7 @@ static int tango_nand_remove(struct platform_device *pdev)
+ 
+ 	for (cs = 0; cs < MAX_CS; ++cs) {
+ 		if (nfc->chips[cs])
+-			nand_release(nand_to_mtd(&nfc->chips[cs]->nand_chip));
++			nand_release(&nfc->chips[cs]->nand_chip);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/mtd/nand/raw/tmio_nand.c b/drivers/mtd/nand/raw/tmio_nand.c
+index 6df499a239ae..39594910e6f0 100644
+--- a/drivers/mtd/nand/raw/tmio_nand.c
++++ b/drivers/mtd/nand/raw/tmio_nand.c
+@@ -449,7 +449,7 @@ static int tmio_probe(struct platform_device *dev)
+ 	if (!retval)
+ 		return retval;
+ 
+-	nand_release(mtd);
++	nand_release(nand_chip);
+ 
+ err_irq:
+ 	tmio_hw_stop(dev, tmio);
+@@ -460,7 +460,7 @@ static int tmio_remove(struct platform_device *dev)
+ {
+ 	struct tmio_nand *tmio = platform_get_drvdata(dev);
+ 
+-	nand_release(nand_to_mtd(&tmio->chip));
++	nand_release(&tmio->chip);
+ 	tmio_hw_stop(dev, tmio);
+ 	return 0;
+ }
+diff --git a/drivers/mtd/nand/raw/txx9ndfmc.c b/drivers/mtd/nand/raw/txx9ndfmc.c
+index 169e8bcee61e..f722aae2b244 100644
+--- a/drivers/mtd/nand/raw/txx9ndfmc.c
++++ b/drivers/mtd/nand/raw/txx9ndfmc.c
+@@ -390,7 +390,7 @@ static int __exit txx9ndfmc_remove(struct platform_device *dev)
+ 		chip = mtd_to_nand(mtd);
+ 		txx9_priv = nand_get_controller_data(chip);
+ 
+-		nand_release(mtd);
++		nand_release(chip);
+ 		kfree(txx9_priv->mtdname);
+ 		kfree(txx9_priv);
+ 	}
+diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
+index 3b486f4ce868..a73213c835a5 100644
+--- a/drivers/mtd/nand/raw/vf610_nfc.c
++++ b/drivers/mtd/nand/raw/vf610_nfc.c
+@@ -916,7 +916,7 @@ static int vf610_nfc_remove(struct platform_device *pdev)
+ 	struct mtd_info *mtd = platform_get_drvdata(pdev);
+ 	struct vf610_nfc *nfc = mtd_to_nfc(mtd);
+ 
+-	nand_release(mtd);
++	nand_release(mtd_to_nand(mtd));
+ 	clk_disable_unprepare(nfc->clk);
+ 	return 0;
+ }
+diff --git a/drivers/mtd/nand/raw/xway_nand.c b/drivers/mtd/nand/raw/xway_nand.c
+index e670d3b5a646..1adb41acebfc 100644
+--- a/drivers/mtd/nand/raw/xway_nand.c
++++ b/drivers/mtd/nand/raw/xway_nand.c
+@@ -211,7 +211,7 @@ static int xway_nand_probe(struct platform_device *pdev)
+ 
+ 	err = mtd_device_register(mtd, NULL, 0);
+ 	if (err)
+-		nand_release(mtd);
++		nand_release(&data->chip);
+ 
+ 	return err;
+ }
+@@ -223,7 +223,7 @@ static int xway_nand_remove(struct platform_device *pdev)
+ {
+ 	struct xway_nand_data *data = platform_get_drvdata(pdev);
+ 
+-	nand_release(nand_to_mtd(&data->chip));
++	nand_release(&data->chip);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
+index 733b228d94a5..e9c59f0624ad 100644
+--- a/include/linux/mtd/rawnand.h
++++ b/include/linux/mtd/rawnand.h
+@@ -1739,7 +1739,7 @@ int nand_write_data_op(struct nand_chip *chip, const void *buf,
+  */
+ void nand_cleanup(struct nand_chip *chip);
+ /* Unregister the MTD device and calls nand_cleanup() */
+-void nand_release(struct mtd_info *mtd);
++void nand_release(struct nand_chip *chip);
+ 
+ /* Default extended ID decoding function */
+ void nand_decode_ext_id(struct nand_chip *chip);
 -- 
 2.14.1

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 22:45:30 +0200 (CEST)
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:55374 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2018 22:45:41 +0200 (CEST)
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:55504 "EHLO
         rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994642AbeIFUoeWlkBQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 22:44:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23994644AbeIFUojqXz-Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2018 22:44:39 +0200
 Received: from nis-sj1-27.broadcom.com (nis-sj1-27.lvn.broadcom.net [10.75.144.136])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 21E0D30C03C;
-        Thu,  6 Sep 2018 13:44:31 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 21E0D30C03C
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 7698630C050;
+        Thu,  6 Sep 2018 13:44:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 7698630C050
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1536266671;
-        bh=b8SqhYIa98j6QJKcqazRbESozGEnMqNNLmzIfxbx2L0=;
+        s=dkimrelay; t=1536266676;
+        bh=144KIBZrtmLDsXDOrAg3hFTHOfFFmEI6kfwR97dUkpg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l/pYmr89OPe5roXjqvNIwVFApF79VFn9xrb2vpRNzH5q0TF5kWHZ2wDsNUAm1kTnI
-         sICbBbODo4ijWbcYBW3igaJjuQau3AV1qnCPmLgEJusJG5Mb5hPDwJLIua4VydguDI
-         y7DbYVI4DS3MROtVXAoi5wuD25bru82gQIXa8uGk=
+        b=LoS4cxZiCyyYgRkX+mGo13OIunb8ziJgzQLXc1QTRUEqJwFK13AX4pE2SdF8Iz4Bs
+         gfaepYsbVU3mFyEClQY9lAZtMJ8IlkepLSsqQHa/4guBGyc4/aBM2a71ePj7/pKsOZ
+         4BY0XwDPvon3S+lrP9SQdRa5XGp9DYY73DrxxR2c=
 Received: from stbsrv-and-3.and.broadcom.com (stbsrv-and-3.and.broadcom.com [10.28.16.21])
-        by nis-sj1-27.broadcom.com (Postfix) with ESMTP id D2870AC075B;
-        Thu,  6 Sep 2018 13:44:26 -0700 (PDT)
+        by nis-sj1-27.broadcom.com (Postfix) with ESMTP id 389A5AC071C;
+        Thu,  6 Sep 2018 13:44:32 -0700 (PDT)
 From:   Jim Quinlan <jim2101024@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Bjorn Helgaas <bhelgaas@google.com>,
@@ -66,9 +66,9 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         Doug Berger <opendmb@gmail.com>, linux-pci@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v5 09/12] MIPS: BMIPS: enable PCI
-Date:   Thu,  6 Sep 2018 16:42:58 -0400
-Message-Id: <1536266581-7308-10-git-send-email-jim2101024@gmail.com>
+Subject: [PATCH v5 10/12] ARM64: declare __phys_to_dma on ARCH_HAS_PHYS_TO_DMA
+Date:   Thu,  6 Sep 2018 16:42:59 -0400
+Message-Id: <1536266581-7308-11-git-send-email-jim2101024@gmail.com>
 X-Mailer: git-send-email 1.9.0.138.g2de3478
 In-Reply-To: <1536266581-7308-1-git-send-email-jim2101024@gmail.com>
 References: <1536266581-7308-1-git-send-email-jim2101024@gmail.com>
@@ -76,7 +76,7 @@ Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66086
+X-archive-position: 66087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -93,27 +93,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds the Kconfig hooks to enable the Broadcom STB PCIe root complex
-driver for Broadcom MIPS systems.
+This change allows one to define custom routines for __phys_to_dma()
+and __dma_to_phys() for the ARM64 architecture by selecting
+ARCH_HAS_PHYS_TO_DMA.  This is done for similar reasons that caused
+arch/x86/include/asm/dma-direct.h to exist (see CONFIG_STA2X11).
 
 Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 ---
- arch/mips/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/dma-direct.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+ create mode 100644 arch/arm64/include/asm/dma-direct.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3551199..a15c0da 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -220,6 +220,9 @@ config BMIPS_GENERIC
- 	select BOOT_RAW
- 	select NO_EXCEPT_FILL
- 	select USE_OF
-+	select HW_HAS_PCI
-+	select PCI_DRIVERS_GENERIC
-+	select PCI
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select SYNC_R4K
+diff --git a/arch/arm64/include/asm/dma-direct.h b/arch/arm64/include/asm/dma-direct.h
+new file mode 100644
+index 0000000..d87da92
+--- /dev/null
++++ b/arch/arm64/include/asm/dma-direct.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ARM64_DMA_DIRECT_H
++#define _ARM64_DMA_DIRECT_H 1
++
++static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
++{
++	if (!dev->dma_mask)
++		return false;
++
++	return addr + size - 1 <= *dev->dma_mask;
++}
++
++dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr);
++phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr);
++
++#endif /* _ARM64_DMA_DIRECT_H */
 -- 
 1.9.0.138.g2de3478

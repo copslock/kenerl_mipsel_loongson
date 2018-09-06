@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2018 00:42:06 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:35772 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2018 00:42:20 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:35826 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994671AbeIFWj3BIp2L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Sep 2018 00:39:29 +0200
+        id S23994674AbeIFWjckWt0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Sep 2018 00:39:32 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 4672220A32; Fri,  7 Sep 2018 00:39:24 +0200 (CEST)
+        id E0D0F20A31; Fri,  7 Sep 2018 00:39:27 +0200 (CEST)
 Received: from localhost.localdomain (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 9919520379;
-        Fri,  7 Sep 2018 00:39:12 +0200 (CEST)
+        by mail.bootlin.com (Postfix) with ESMTPSA id CE13920877;
+        Fri,  7 Sep 2018 00:39:16 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@bootlin.com>
 To:     Boris Brezillon <boris.brezillon@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -40,9 +40,9 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
-Subject: [PATCH 13/19] mtd: rawnand: Get rid of a few unused definitions
-Date:   Fri,  7 Sep 2018 00:38:45 +0200
-Message-Id: <20180906223851.6964-14-boris.brezillon@bootlin.com>
+Subject: [PATCH 15/19] mtd: rawnand: Inline onfi_get_async_timing_mode()
+Date:   Fri,  7 Sep 2018 00:38:47 +0200
+Message-Id: <20180906223851.6964-16-boris.brezillon@bootlin.com>
 X-Mailer: git-send-email 2.14.1
 In-Reply-To: <20180906223851.6964-1-boris.brezillon@bootlin.com>
 References: <20180906223851.6964-1-boris.brezillon@bootlin.com>
@@ -50,7 +50,7 @@ Return-Path: <boris.brezillon@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66115
+X-archive-position: 66116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,72 +67,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Those definitions are not used, let's remove them.
+onfi_get_async_timing_mode() is only used in one place inside
+nand_base.c. Let's inline the code and kill the helper.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
 ---
- drivers/mtd/nand/raw/nand_timings.c | 14 --------------
- include/linux/mtd/rawnand.h         |  8 --------
- 2 files changed, 22 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c | 5 +++--
+ include/linux/mtd/rawnand.h      | 9 ---------
+ 2 files changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_timings.c b/drivers/mtd/nand/raw/nand_timings.c
-index ebc7b5f76f77..cb4f0007b65c 100644
---- a/drivers/mtd/nand/raw/nand_timings.c
-+++ b/drivers/mtd/nand/raw/nand_timings.c
-@@ -270,20 +270,6 @@ static const struct nand_data_interface onfi_sdr_timings[] = {
- 	},
- };
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index 2f8bbc3bca7a..136ccdc61a06 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -1310,8 +1310,9 @@ static int nand_init_data_interface(struct nand_chip *chip)
+ 	 * if the NAND does not support ONFI, fallback to the default ONFI
+ 	 * timing mode.
+ 	 */
+-	modes = onfi_get_async_timing_mode(chip);
+-	if (modes == ONFI_TIMING_MODE_UNKNOWN) {
++	if (chip->parameters.onfi) {
++		modes = chip->parameters.onfi->async_timing_mode;
++	} else {
+ 		if (!chip->onfi_timing_mode_default)
+ 			return 0;
  
--/**
-- * onfi_async_timing_mode_to_sdr_timings - [NAND Interface] Retrieve NAND
-- * timings according to the given ONFI timing mode
-- * @mode: ONFI timing mode
-- */
--const struct nand_sdr_timings *onfi_async_timing_mode_to_sdr_timings(int mode)
--{
--	if (mode < 0 || mode >= ARRAY_SIZE(onfi_sdr_timings))
--		return ERR_PTR(-EINVAL);
--
--	return &onfi_sdr_timings[mode].timings.sdr;
--}
--EXPORT_SYMBOL(onfi_async_timing_mode_to_sdr_timings);
--
- /**
-  * onfi_fill_data_interface - [NAND Interface] Initialize a data interface from
-  * given ONFI mode
 diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 608279104aae..8aa8b57ca4b1 100644
+index 04e11a314e9c..7f0e3dc222ed 100644
 --- a/include/linux/mtd/rawnand.h
 +++ b/include/linux/mtd/rawnand.h
-@@ -119,10 +119,6 @@ enum nand_ecc_algo {
- #define NAND_ECC_GENERIC_ERASED_CHECK	BIT(0)
- #define NAND_ECC_MAXIMIZE		BIT(1)
+@@ -1540,15 +1540,6 @@ int nand_isbad_bbt(struct nand_chip *chip, loff_t offs, int allowbbt);
+ int nand_erase_nand(struct nand_chip *chip, struct erase_info *instr,
+ 		    int allowbbt);
  
--/* Bit mask for flags passed to do_nand_read_ecc */
--#define NAND_GET_DEVICE		0x80
+-/* return the supported asynchronous timing mode. */
+-static inline int onfi_get_async_timing_mode(struct nand_chip *chip)
+-{
+-	if (!chip->parameters.onfi)
+-		return ONFI_TIMING_MODE_UNKNOWN;
 -
+-	return chip->parameters.onfi->async_timing_mode;
+-}
 -
- /*
-  * Option constants for bizarre disfunctionality and real
-  * features.
-@@ -163,9 +159,7 @@ enum nand_ecc_algo {
- #define NAND_SAMSUNG_LP_OPTIONS NAND_CACHEPRG
- 
- /* Macros to identify the above */
--#define NAND_HAS_CACHEPROG(chip) ((chip->options & NAND_CACHEPRG))
- #define NAND_HAS_SUBPAGE_READ(chip) ((chip->options & NAND_SUBPAGE_READ))
--#define NAND_HAS_SUBPAGE_WRITE(chip) !((chip)->options & NAND_NO_SUBPAGE_WRITE)
- 
- /* Non chip related options */
- /* This option skips the bbt scan during initialization. */
-@@ -1649,8 +1643,6 @@ static inline int nand_opcode_8bits(unsigned int command)
- 	return 0;
- }
- 
--/* get timing characteristics from ONFI timing mode. */
--const struct nand_sdr_timings *onfi_async_timing_mode_to_sdr_timings(int mode);
- 
- int nand_check_erased_ecc_chunk(void *data, int datalen,
- 				void *ecc, int ecclen,
+ int onfi_fill_data_interface(struct nand_chip *chip,
+ 			     enum nand_data_interface_type type,
+ 			     int timing_mode);
 -- 
 2.14.1

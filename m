@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Sep 2018 22:17:36 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:9906 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Sep 2018 22:17:46 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:9936 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992279AbeIIUR0Zjyw1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992363AbeIIUR05geM1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sun, 9 Sep 2018 22:17:26 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id E5C3241FF7;
-        Sun,  9 Sep 2018 22:17:20 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 42E2A415D9;
+        Sun,  9 Sep 2018 22:17:21 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
-        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
-        with ESMTP id D6pSI3uZ2M6P; Sun,  9 Sep 2018 22:17:19 +0200 (CEST)
+        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
+        with ESMTP id eZlj6JM_VD6I; Sun,  9 Sep 2018 22:17:20 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     davem@davemloft.net
 Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
@@ -19,16 +19,16 @@ Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
         john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
         hauke.mehrtens@intel.com, devicetree@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3 net-next 1/6] MIPS: lantiq: Do not enable IRQs in dma open
-Date:   Sun,  9 Sep 2018 22:16:42 +0200
-Message-Id: <20180909201647.32727-2-hauke@hauke-m.de>
+Subject: [PATCH v3 net-next 2/6] net: dsa: Add Lantiq / Intel GSWIP tag support
+Date:   Sun,  9 Sep 2018 22:16:43 +0200
+Message-Id: <20180909201647.32727-3-hauke@hauke-m.de>
 In-Reply-To: <20180909201647.32727-1-hauke@hauke-m.de>
 References: <20180909201647.32727-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66159
+X-archive-position: 66160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,41 +45,227 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a DMA channel is opened the IRQ should not get activated
-automatically, this allows it to pull data out manually without the help
-of interrupts. This is needed for a workaround in the vrx200 Ethernet
-driver.
+This handles the tag added by the PMAC on the VRX200 SoC line.
+
+The GSWIP uses internally a GSWIP special tag which is located after the
+Ethernet header. The PMAC which connects the GSWIP to the CPU converts
+this special tag used by the GSWIP into the PMAC special tag which is
+added in front of the Ethernet header.
+
+This was tested with GSWIP 2.1 found in the VRX200 SoCs, other GSWIP
+versions use slightly different PMAC special tags.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Paul Burton <paul.burton@mips.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/lantiq/xway/dma.c        | 1 -
- drivers/net/ethernet/lantiq_etop.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS         |   6 +++
+ include/net/dsa.h   |   1 +
+ net/dsa/Kconfig     |   3 ++
+ net/dsa/Makefile    |   1 +
+ net/dsa/dsa.c       |   3 ++
+ net/dsa/dsa_priv.h  |   3 ++
+ net/dsa/tag_gswip.c | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 126 insertions(+)
+ create mode 100644 net/dsa/tag_gswip.c
 
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 664f2f7f55c1..982859f2b2a3 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -106,7 +106,6 @@ ltq_dma_open(struct ltq_dma_channel *ch)
- 	spin_lock_irqsave(&ltq_dma_lock, flag);
- 	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
- 	ltq_dma_w32_mask(0, DMA_CHAN_ON, LTQ_DMA_CCTRL);
--	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
- 	spin_unlock_irqrestore(&ltq_dma_lock, flag);
- }
- EXPORT_SYMBOL_GPL(ltq_dma_open);
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index e08301d833e2..379db19a303c 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -439,6 +439,7 @@ ltq_etop_open(struct net_device *dev)
- 		if (!IS_TX(i) && (!IS_RX(i)))
- 			continue;
- 		ltq_dma_open(&ch->dma);
-+		ltq_dma_enable_irq(&ch->dma);
- 		napi_enable(&ch->napi);
- 	}
- 	phy_start(dev->phydev);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a5b256b25905..4b2ee65f6086 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8166,6 +8166,12 @@ S:	Maintained
+ F:	net/l3mdev
+ F:	include/net/l3mdev.h
+ 
++LANTIQ / INTEL Ethernet drivers
++M:	Hauke Mehrtens <hauke@hauke-m.de>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	net/dsa/tag_gswip.c
++
+ LANTIQ MIPS ARCHITECTURE
+ M:	John Crispin <john@phrozen.org>
+ L:	linux-mips@linux-mips.org
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 461e8a7661b7..23690c44e167 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -35,6 +35,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_BRCM_PREPEND,
+ 	DSA_TAG_PROTO_DSA,
+ 	DSA_TAG_PROTO_EDSA,
++	DSA_TAG_PROTO_GSWIP,
+ 	DSA_TAG_PROTO_KSZ,
+ 	DSA_TAG_PROTO_LAN9303,
+ 	DSA_TAG_PROTO_MTK,
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index 4183e4ba27a5..48c41918fb35 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -38,6 +38,9 @@ config NET_DSA_TAG_DSA
+ config NET_DSA_TAG_EDSA
+ 	bool
+ 
++config NET_DSA_TAG_GSWIP
++	bool
++
+ config NET_DSA_TAG_KSZ
+ 	bool
+ 
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index 9e4d3536f977..6e721f7a2947 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -9,6 +9,7 @@ dsa_core-$(CONFIG_NET_DSA_TAG_BRCM) += tag_brcm.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_BRCM_PREPEND) += tag_brcm.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_DSA) += tag_dsa.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_EDSA) += tag_edsa.o
++dsa_core-$(CONFIG_NET_DSA_TAG_GSWIP) += tag_gswip.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_KSZ) += tag_ksz.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_LAN9303) += tag_lan9303.o
+ dsa_core-$(CONFIG_NET_DSA_TAG_MTK) += tag_mtk.o
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index e63c554e0623..81212109c507 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -54,6 +54,9 @@ const struct dsa_device_ops *dsa_device_ops[DSA_TAG_LAST] = {
+ #ifdef CONFIG_NET_DSA_TAG_EDSA
+ 	[DSA_TAG_PROTO_EDSA] = &edsa_netdev_ops,
+ #endif
++#ifdef CONFIG_NET_DSA_TAG_GSWIP
++	[DSA_TAG_PROTO_GSWIP] = &gswip_netdev_ops,
++#endif
+ #ifdef CONFIG_NET_DSA_TAG_KSZ
+ 	[DSA_TAG_PROTO_KSZ] = &ksz_netdev_ops,
+ #endif
+diff --git a/net/dsa/dsa_priv.h b/net/dsa/dsa_priv.h
+index 3964c6f7a7c0..824ca07a30aa 100644
+--- a/net/dsa/dsa_priv.h
++++ b/net/dsa/dsa_priv.h
+@@ -205,6 +205,9 @@ extern const struct dsa_device_ops dsa_netdev_ops;
+ /* tag_edsa.c */
+ extern const struct dsa_device_ops edsa_netdev_ops;
+ 
++/* tag_gswip.c */
++extern const struct dsa_device_ops gswip_netdev_ops;
++
+ /* tag_ksz.c */
+ extern const struct dsa_device_ops ksz_netdev_ops;
+ 
+diff --git a/net/dsa/tag_gswip.c b/net/dsa/tag_gswip.c
+new file mode 100644
+index 000000000000..49e9b73f1be3
+--- /dev/null
++++ b/net/dsa/tag_gswip.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Intel / Lantiq GSWIP V2.0 PMAC tag support
++ *
++ * Copyright (C) 2017 - 2018 Hauke Mehrtens <hauke@hauke-m.de>
++ */
++
++#include <linux/bitops.h>
++#include <linux/etherdevice.h>
++#include <linux/skbuff.h>
++#include <net/dsa.h>
++
++#include "dsa_priv.h"
++
++#define GSWIP_TX_HEADER_LEN		4
++
++/* special tag in TX path header */
++/* Byte 0 */
++#define GSWIP_TX_SLPID_SHIFT		0	/* source port ID */
++#define  GSWIP_TX_SLPID_CPU		2
++#define  GSWIP_TX_SLPID_APP1		3
++#define  GSWIP_TX_SLPID_APP2		4
++#define  GSWIP_TX_SLPID_APP3		5
++#define  GSWIP_TX_SLPID_APP4		6
++#define  GSWIP_TX_SLPID_APP5		7
++
++/* Byte 1 */
++#define GSWIP_TX_CRCGEN_DIS		BIT(7)
++#define GSWIP_TX_DPID_SHIFT		0	/* destination group ID */
++#define  GSWIP_TX_DPID_ELAN		0
++#define  GSWIP_TX_DPID_EWAN		1
++#define  GSWIP_TX_DPID_CPU		2
++#define  GSWIP_TX_DPID_APP1		3
++#define  GSWIP_TX_DPID_APP2		4
++#define  GSWIP_TX_DPID_APP3		5
++#define  GSWIP_TX_DPID_APP4		6
++#define  GSWIP_TX_DPID_APP5		7
++
++/* Byte 2 */
++#define GSWIP_TX_PORT_MAP_EN		BIT(7)
++#define GSWIP_TX_PORT_MAP_SEL		BIT(6)
++#define GSWIP_TX_LRN_DIS		BIT(5)
++#define GSWIP_TX_CLASS_EN		BIT(4)
++#define GSWIP_TX_CLASS_SHIFT		0
++#define GSWIP_TX_CLASS_MASK		GENMASK(3, 0)
++
++/* Byte 3 */
++#define GSWIP_TX_DPID_EN		BIT(0)
++#define GSWIP_TX_PORT_MAP_SHIFT		1
++#define GSWIP_TX_PORT_MAP_MASK		GENMASK(6, 1)
++
++#define GSWIP_RX_HEADER_LEN	8
++
++/* special tag in RX path header */
++/* Byte 7 */
++#define GSWIP_RX_SPPID_SHIFT		4
++#define GSWIP_RX_SPPID_MASK		GENMASK(6, 4)
++
++static struct sk_buff *gswip_tag_xmit(struct sk_buff *skb,
++				      struct net_device *dev)
++{
++	struct dsa_port *dp = dsa_slave_to_port(dev);
++	int err;
++	u8 *gswip_tag;
++
++	err = skb_cow_head(skb, GSWIP_TX_HEADER_LEN);
++	if (err)
++		return NULL;
++
++	skb_push(skb, GSWIP_TX_HEADER_LEN);
++
++	gswip_tag = skb->data;
++	gswip_tag[0] = GSWIP_TX_SLPID_CPU;
++	gswip_tag[1] = GSWIP_TX_DPID_ELAN;
++	gswip_tag[2] = GSWIP_TX_PORT_MAP_EN | GSWIP_TX_PORT_MAP_SEL;
++	gswip_tag[3] = BIT(dp->index + GSWIP_TX_PORT_MAP_SHIFT) & GSWIP_TX_PORT_MAP_MASK;
++	gswip_tag[3] |= GSWIP_TX_DPID_EN;
++
++	return skb;
++}
++
++static struct sk_buff *gswip_tag_rcv(struct sk_buff *skb,
++				     struct net_device *dev,
++				     struct packet_type *pt)
++{
++	int port;
++	u8 *gswip_tag;
++
++	if (unlikely(!pskb_may_pull(skb, GSWIP_RX_HEADER_LEN)))
++		return NULL;
++
++	gswip_tag = skb->data - ETH_HLEN;
++
++	/* Get source port information */
++	port = (gswip_tag[7] & GSWIP_RX_SPPID_MASK) >> GSWIP_RX_SPPID_SHIFT;
++	skb->dev = dsa_master_find_slave(dev, 0, port);
++	if (!skb->dev)
++		return NULL;
++
++	/* remove GSWIP tag */
++	skb_pull_rcsum(skb, GSWIP_RX_HEADER_LEN);
++
++	return skb;
++}
++
++const struct dsa_device_ops gswip_netdev_ops = {
++	.xmit = gswip_tag_xmit,
++	.rcv = gswip_tag_rcv,
++};
 -- 
 2.11.0

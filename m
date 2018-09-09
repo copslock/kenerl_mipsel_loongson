@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Sep 2018 21:27:15 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:43738 "EHLO mx1.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Sep 2018 22:17:26 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:9838 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990642AbeIIT1M0KMF1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 9 Sep 2018 21:27:12 +0200
+        id S23992087AbeIIURX2etp1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 9 Sep 2018 22:17:23 +0200
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 9DE4D49621;
-        Sun,  9 Sep 2018 21:27:06 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 70BA541F46;
+        Sun,  9 Sep 2018 22:17:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp1.mailbox.org ([80.241.60.240])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id nPzuJ2OKOs4O; Sun,  9 Sep 2018 21:27:04 +0200 (CEST)
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id 2l1QHRkmo237; Sun,  9 Sep 2018 22:17:15 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     davem@davemloft.net
-Cc:     netdev@vger.kernel.org, andrew@lunn.ch, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org,
-        hauke.mehrtens@intel.com, paul.burton@mips.com,
+Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com, devicetree@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 net] MIPS: lantiq: dma: add dev pointer
-Date:   Sun,  9 Sep 2018 21:26:23 +0200
-Message-Id: <20180909192623.14998-1-hauke@hauke-m.de>
+Subject: [PATCH v3 net-next 0/6] Add support for Lantiq / Intel vrx200 network
+Date:   Sun,  9 Sep 2018 22:16:41 +0200
+Message-Id: <20180909201647.32727-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66157
+X-archive-position: 66158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,71 +43,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-dma_zalloc_coherent() now crashes if no dev pointer is given.
-Add a dev pointer to the ltq_dma_channel structure and fill it in the
-driver using it.
+This adds basic support for the GSWIP (Gigabit Switch) found in the
+VRX200 SoC.
+There are different versions of this IP core used in different SoCs, but
+this driver was currently only tested on the VRX200 SoC line, for other
+SoCs this driver probably need some adoptions to work.
 
-This fixes a bug introduced in kernel 4.19.
+I also plan to add Layer 2 offloading to the DSA driver and later also
+layer 3 offloading which is supported by the PPE HW block.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
+All these patches should go through the net-next tree.
 
-no changes since v1.
+This depends on the patch "MIPS: lantiq: dma: add dev pointer" which 
+should go into 4.19.
 
-This should go into kernel 4.19 and I have some other patches adding new 
-features for kernel 4.20 which are depending on this, so I would prefer 
-if this goes through the net tree. 
+Changes since:
+v2:
+ * Send patch "MIPS: lantiq: dma: add dev pointer" separately
+ * all: removed return in register write functions
+ * switch: uses phylink
+ * switch: uses hardware MDIO auto polling
+ * switch: use usleep_range() in MDIO busy check
+ * switch: configure MDIO bus to 2.5 MHz
+ * switch: disable xMII link when it is not used
+ * Ethernet: use NAPI for TX cleanups
+ * Ethernet: enable clock in open callback
+ * Ethernet: improve skb allocation
+ * Ethernet: use net_dev->stats
 
- arch/mips/include/asm/mach-lantiq/xway/xway_dma.h | 1 +
- arch/mips/lantiq/xway/dma.c                       | 4 ++--
- drivers/net/ethernet/lantiq_etop.c                | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+v1:
+ * Add "MIPS: lantiq: dma: add dev pointer"
+ * checkpatch fixes a all patches
+ * Added binding documentation
+ * use readx_poll_timeout function and ETIMEOUT error code
+ * integrate GPHY firmware loading into DSA driver
+ * renamed to NET_DSA_LANTIQ_GSWIP
+ * removed some needed casts
+ * added of_device_id.data information about the detected switch
+ * fixed John's email address
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-index 4901833498f7..8441b2698e64 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
-@@ -40,6 +40,7 @@ struct ltq_dma_channel {
- 	int desc;			/* the current descriptor */
- 	struct ltq_dma_desc *desc_base; /* the descriptor base */
- 	int phys;			/* physical addr */
-+	struct device *dev;
- };
- 
- enum {
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 4b9fbb6744ad..664f2f7f55c1 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -130,7 +130,7 @@ ltq_dma_alloc(struct ltq_dma_channel *ch)
- 	unsigned long flags;
- 
- 	ch->desc = 0;
--	ch->desc_base = dma_zalloc_coherent(NULL,
-+	ch->desc_base = dma_zalloc_coherent(ch->dev,
- 				LTQ_DESC_NUM * LTQ_DESC_SIZE,
- 				&ch->phys, GFP_ATOMIC);
- 
-@@ -182,7 +182,7 @@ ltq_dma_free(struct ltq_dma_channel *ch)
- 	if (!ch->desc_base)
- 		return;
- 	ltq_dma_close(ch);
--	dma_free_coherent(NULL, LTQ_DESC_NUM * LTQ_DESC_SIZE,
-+	dma_free_coherent(ch->dev, LTQ_DESC_NUM * LTQ_DESC_SIZE,
- 		ch->desc_base, ch->phys);
- }
- EXPORT_SYMBOL_GPL(ltq_dma_free);
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 7a637b51c7d2..e08301d833e2 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -274,6 +274,7 @@ ltq_etop_hw_init(struct net_device *dev)
- 		struct ltq_etop_chan *ch = &priv->ch[i];
- 
- 		ch->idx = ch->dma.nr = i;
-+		ch->dma.dev = &priv->pdev->dev;
- 
- 		if (IS_TX(i)) {
- 			ltq_dma_alloc_tx(&ch->dma);
+Hauke Mehrtens (6):
+  MIPS: lantiq: Do not enable IRQs in dma open
+  net: dsa: Add Lantiq / Intel GSWIP tag support
+  dt-bindings: net: Add lantiq,xrx200-net DT bindings
+  net: lantiq: Add Lantiq / Intel VRX200 Ethernet driver
+  dt-bindings: net: dsa: Add lantiq,xrx200-gswip DT bindings
+  net: dsa: Add Lantiq / Intel DSA driver for vrx200
+
+ .../devicetree/bindings/net/dsa/lantiq-gswip.txt   |  141 +++
+ .../devicetree/bindings/net/lantiq,xrx200-net.txt  |   21 +
+ MAINTAINERS                                        |    9 +
+ arch/mips/lantiq/xway/dma.c                        |    1 -
+ arch/mips/lantiq/xway/sysctrl.c                    |   14 +-
+ drivers/net/dsa/Kconfig                            |    8 +
+ drivers/net/dsa/Makefile                           |    1 +
+ drivers/net/dsa/lantiq_gswip.c                     | 1169 ++++++++++++++++++++
+ drivers/net/dsa/lantiq_pce.h                       |  153 +++
+ drivers/net/ethernet/Kconfig                       |    7 +
+ drivers/net/ethernet/Makefile                      |    1 +
+ drivers/net/ethernet/lantiq_etop.c                 |    1 +
+ drivers/net/ethernet/lantiq_xrx200.c               |  564 ++++++++++
+ include/net/dsa.h                                  |    1 +
+ net/dsa/Kconfig                                    |    3 +
+ net/dsa/Makefile                                   |    1 +
+ net/dsa/dsa.c                                      |    3 +
+ net/dsa/dsa_priv.h                                 |    3 +
+ net/dsa/tag_gswip.c                                |  109 ++
+ 19 files changed, 2202 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
+ create mode 100644 Documentation/devicetree/bindings/net/lantiq,xrx200-net.txt
+ create mode 100644 drivers/net/dsa/lantiq_gswip.c
+ create mode 100644 drivers/net/dsa/lantiq_pce.h
+ create mode 100644 drivers/net/ethernet/lantiq_xrx200.c
+ create mode 100644 net/dsa/tag_gswip.c
+
 -- 
 2.11.0

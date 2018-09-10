@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 16:37:40 +0200 (CEST)
-Received: from mail-lj1-x241.google.com ([IPv6:2a00:1450:4864:20::241]:45469
-        "EHLO mail-lj1-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993030AbeIJOhgVTdvl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2018 16:37:36 +0200
-Received: by mail-lj1-x241.google.com with SMTP id u83-v6so18066749lje.12;
-        Mon, 10 Sep 2018 07:37:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 16:43:07 +0200 (CEST)
+Received: from mail-lj1-x244.google.com ([IPv6:2a00:1450:4864:20::244]:43885
+        "EHLO mail-lj1-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992869AbeIJOnDaL6sl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2018 16:43:03 +0200
+Received: by mail-lj1-x244.google.com with SMTP id m84-v6so18090796lje.10;
+        Mon, 10 Sep 2018 07:43:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Mt07X8Zmz1G3uxvR/fZyYOcCG9AjEq9iEAcCAq83phQ=;
-        b=h/Kdph18ELX6NChXtcVkdABtkp/JfFncOKojMs3R/RDvgYRWfGehi8VjLnhf12yJih
-         7tl4YpneipBSPLAgQqIioVSLxhvIfwm3WtoqmjfEmGOoTZpQXHLBMG+u6XqaZz2BzKdT
-         hB1EmgN+rIK6IavVYSQtMqKIKRDtrb9vRuWJYBDInpyOkPyRsb9Xwewf7MSOwzB8O8DA
-         2oPyJ08qe/wPNp/59Pet2HlgdJyccqcqtcNmMBpLQaJoTNbiB88eWSlWI7CGVOFhJXK6
-         HxK7UwHQuLL8sooUzwqlX66o3Lhryt0oX9PMN6LopVIhGveRNevSAxzFBJtOTOAjabFc
-         +52A==
+        bh=vnFGGnHhWxIC6mS7/G9pK9gNLGNPEC7YGgvXN1jUgoY=;
+        b=jZrfBJq+k1aIaVzDefoJgKNzgUZV6xK1qgWMf6qOYb3mcNVF6EAjR+hR+Rj3CKn4BT
+         c0KCxAq9w8DGoNbtdq7Yy9tsRaS+nYbM1zzm5hrsxd6RXd9kiBWQb5Hw3Nl5ZYW67qiW
+         yS9BYViSRBTyoGBinEpg78G0GfOCkxAfMA626U72seN5ucKcV/LvKs+OC8KXudCdRMAI
+         6jacOZz7lzn0qOKGJnjjqDxKOj/DHLkgxtSlzkLazT6P61B9t/nbWSGUb1qsQJkLU8AQ
+         P5EAkzbWibB7kRs37K1PlTiCmtgM2o/jzTQfg/yyI3Zc1K5QTi9uC7rGFOPNx6RVm86Z
+         BQ/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Mt07X8Zmz1G3uxvR/fZyYOcCG9AjEq9iEAcCAq83phQ=;
-        b=I44RV6EGa7/AYb3iUO/f8p2wYzTaemmuusHfq72AxO99DaN6aoIIR2xFthzXezqwEk
-         Ze1K9B3MUGXqmK75B6gShqAcBLfN5GP8e/Sj9vkJI0B3PZr810Oqfr8lVCjgxKDhOcm9
-         ihHyL//LZyk40Mu2SsKgMnILrMNaO9E2amK1awDgjlqPmTgGlPOqOEQR8ZHZVzGDWpOt
-         E0DoMhNFAnHn8EwnM6xkTVT5f8F3vgyDAKa+tJ9hUajWjLjFv3beHhuKxtaOOjLZhrh6
-         8Sg4z6qGX1QtL52DcUmgXimCY7eSVykMoPXq+vNq8cIb8JOb80rc2yqy0VFZkwTuQjJv
-         8GOA==
-X-Gm-Message-State: APzg51BJPjfHd+TAY8Z8oQsF+d5O6Gaqpl4JdSqfCw4EDvOq3rTIQMtc
-        BzkWj2wnrGRwRoBL+8F/hGcTaK8/KRAmT1HwS8s=
-X-Google-Smtp-Source: ANB0VdbrBbbVM+4zL9VsiZVVdCRlmZjidZAtKeGLZB9fdH7E4/ZGK+Zf8eSdNAfnIpqNVfNm5Sm8rnMpY5GTefC1Cy0=
-X-Received: by 2002:a2e:8098:: with SMTP id i24-v6mr12506697ljg.36.1536590250686;
- Mon, 10 Sep 2018 07:37:30 -0700 (PDT)
+        bh=vnFGGnHhWxIC6mS7/G9pK9gNLGNPEC7YGgvXN1jUgoY=;
+        b=cWE2SyFdyt/zG2QVA5mnhCHL9U1y+R0S2XAbvc55qm5bNf9WEiJs5dpGWij8hrhmtC
+         JtZd+uPY1B946zTO6GIN0+aZ6Y+HJnWzVj15NvAR+52xobHIE3ZYOrGEVab9kICAtv0F
+         vV3ozaRhE3AKQObgJBDGgNjYE5dQL6hUa5i9n34xK8i7BomZO6ourICtrsnAkiNl9FyH
+         a+9vmCAMjThPKvtOavgAglgkZovXcVyIXo51cTQpmXXpN7gAz7yDdMq110tt3tuoKEgJ
+         HFo84pVqA1ONfQCPXkFYf78lAC7PfuXdJh8Uwb4UP6bIg+cuQ3z6yVqWv4iLC+Apkmmf
+         BF0w==
+X-Gm-Message-State: APzg51CNbJXm1fDSQ+YXpO1vY3syrWzhb6AvEubL3Y2bOvK98RWymkFx
+        FHR3VQ2cLUUYrGn4GwxKHDuKeWHP8GKrk9kTm90=
+X-Google-Smtp-Source: ANB0VdbyqplGAFSaQceSQIFoHVANC9x+c6lkT4mDnnK7uO/rAMRp2hUQnnxDbmS+tlk3Cr3s1q4sQ5Q6SjVPT+mkg/4=
+X-Received: by 2002:a2e:3e0d:: with SMTP id l13-v6mr12673531lja.151.1536590574469;
+ Mon, 10 Sep 2018 07:42:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <1536266581-7308-1-git-send-email-jim2101024@gmail.com>
- <1536266581-7308-9-git-send-email-jim2101024@gmail.com> <20180906214955.2yzyj6tkmflnnvdx@pburton-laptop>
-In-Reply-To: <20180906214955.2yzyj6tkmflnnvdx@pburton-laptop>
+ <1536266581-7308-8-git-send-email-jim2101024@gmail.com> <20180906214549.y4xpleiukzw5rmqs@pburton-laptop>
+In-Reply-To: <20180906214549.y4xpleiukzw5rmqs@pburton-laptop>
 From:   Jim Quinlan <jim2101024@gmail.com>
-Date:   Mon, 10 Sep 2018 10:37:19 -0400
-Message-ID: <CANCKTBumoy6mw2n+V7hN_T1SYxhq3JQMxgQUUSmOLuMX-Kv=zw@mail.gmail.com>
-Subject: Re: [PATCH v5 08/12] MIPS: BMIPS: add PCI bindings for 7425, 7435
+Date:   Mon, 10 Sep 2018 10:42:43 -0400
+Message-ID: <CANCKTBsuEaeW=95tpjOPF2RecfTbdUP+C7a1QwFdvOBFG6o8Vg@mail.gmail.com>
+Subject: Re: [PATCH v5 07/12] PCI/MSI: enable PCI_MSI_IRQ_DOMAIN support for MIPS
 To:     paul.burton@mips.com
 Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -80,7 +80,7 @@ Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66180
+X-archive-position: 66181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,36 +97,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 6, 2018 at 5:50 PM Paul Burton <paul.burton@mips.com> wrote:
+On Thu, Sep 6, 2018 at 5:46 PM Paul Burton <paul.burton@mips.com> wrote:
 >
 > Hi Jim,
 >
-> On Thu, Sep 06, 2018 at 04:42:57PM -0400, Jim Quinlan wrote:
-> > Adds the PCIe nodes for the Broadcom STB PCIe root complex.
-> >
-> > Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
-> > ---
-> >  arch/mips/boot/dts/brcm/bcm7425.dtsi     | 28 ++++++++++++++++++++++++++++
-> >  arch/mips/boot/dts/brcm/bcm7435.dtsi     | 28 ++++++++++++++++++++++++++++
-> >  arch/mips/boot/dts/brcm/bcm97425svmb.dts |  4 ++++
-> >  arch/mips/boot/dts/brcm/bcm97435svmb.dts |  4 ++++
-> >  4 files changed, 64 insertions(+)
+> On Thu, Sep 06, 2018 at 04:42:56PM -0400, Jim Quinlan wrote:
+> > Add MIPS as an arch that supports PCI_MSI_IRQ_DOMAIN and add
+> > generation of msi.h in the MIPS arch.
 >
-> Do you have a preference for how this gets merged? If it goes via the
-> PCI tree then for patches 8 & 9:
->
->     Acked-by: Paul Burton <paul.burton@mips.com>
->
+> I guess the second part of this probably became untrue after rebasing
+> atop something including commit 34a4399f196c ("mips: use asm-generic
+> version of msi.h"), and ought to be removed.
 Hi Paul,
 
-I hope that the 12 commits  go together and will go through the PCI
-tree.  I'm inclined to think I will have to do a V6, and in the cover
-leter I will mention this request.
+Yes, the second clause of this commit message will be removed.
 
-Thanks!
+Thanks,
 Jim
 
-> Still looking at patch 6.
+>
+> > Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> > ---
+> >  drivers/pci/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> Otherwise this looks fine:
+>
+>     Acked-by: Paul Burton <paul.burton@mips.com>
 >
 > Thanks,
 >     Paul

@@ -1,40 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 15:28:07 +0200 (CEST)
-Received: from vps0.lunn.ch ([185.16.172.187]:35031 "EHLO vps0.lunn.ch"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 16:36:08 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:60094 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992492AbeIJN2EuL2FF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Sep 2018 15:28:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch; s=20171124;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=TtmovV74FKuWTBb+D94+Aoen8twR0slVwOJEOUxc4D0=;
-        b=jBhN14v45XLi+hyi10wkEwrGpu3BhSjZ+b2haRwaDQYJFeSC4T+B2F7QSGGZ2CPSUqa4T/88wSDT7EU1knpJ5NnqQSLgjGNBpnDqFwoEBTf27taH7NiGpyPB074UYl5mcWQ9Sbo8zQolIt+OBHTDQ2bd9lthJAkEKNiC2Q9EH6Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.84_2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1fzMED-0000AO-CX; Mon, 10 Sep 2018 15:27:45 +0200
-Date:   Mon, 10 Sep 2018 15:27:45 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org,
-        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
-        hauke.mehrtens@intel.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 6/6] net: dsa: Add Lantiq / Intel DSA driver
- for vrx200
-Message-ID: <20180910132745.GE30395@lunn.ch>
-References: <20180909201647.32727-1-hauke@hauke-m.d>
- <20180909202039.471-1-hauke@hauke-m.de>
+        id S23992759AbeIJOfuEQdhl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Sep 2018 16:35:50 +0200
+Received: from mail-qt0-f176.google.com (mail-qt0-f176.google.com [209.85.216.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6114D208A4;
+        Mon, 10 Sep 2018 14:35:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1536590142;
+        bh=VwD4VB4mc463qlRBNmS4+JtAy54cv2VmaVAhFmBiNm8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=aU+sqIj6voqeU/ldmscAB/w6c0sWp1jhCtw49nmHA10GUpQKSfBJX2IIgz8hK9wzZ
+         vGGlY31+nUPkVrEjqc9J+qm2i9oUCWGtkkq15J91my+29eyISMVNlG0tYLC73WY8CD
+         z8ulXWkztozM5rCFoaqwVjyq4cNajJAHB9GHG+8o=
+Received: by mail-qt0-f176.google.com with SMTP id g53-v6so24323693qtg.10;
+        Mon, 10 Sep 2018 07:35:42 -0700 (PDT)
+X-Gm-Message-State: APzg51ApypQ3RYgf4IxswrZm7jDpVPmdUmueADWgDRk5NJtiQZaVKWxt
+        ZQHlLLrJFzZdg0uTaQOPhtxo8Y4VK63GoaHGeQ==
+X-Google-Smtp-Source: ANB0VdbtTO6ttnsb68A9Shh3FsJ20XorjkY40MHKBJzxvL5wuZEmvYvrH2k4z/tXtR4sV0+I2AcpnemaXLMcKJi/SIo=
+X-Received: by 2002:ac8:46d3:: with SMTP id h19-v6mr16113770qto.188.1536590141286;
+ Mon, 10 Sep 2018 07:35:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180909202039.471-1-hauke@hauke-m.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <andrew@lunn.ch>
+References: <20180905235327.5996-1-robh@kernel.org> <20180905235327.5996-7-robh@kernel.org>
+ <CAK7LNAS5uEUMDpL8oCJmFWKu1YF8tof5d=2h8jzt-MLHGAEAhg@mail.gmail.com>
+In-Reply-To: <CAK7LNAS5uEUMDpL8oCJmFWKu1YF8tof5d=2h8jzt-MLHGAEAhg@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 10 Sep 2018 09:35:29 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKS+h0B5AuUh=vk0m1_7KSj4h2zZUo22rdt1w7oee=QwA@mail.gmail.com>
+Message-ID: <CAL_JsqKS+h0B5AuUh=vk0m1_7KSj4h2zZUo22rdt1w7oee=QwA@mail.gmail.com>
+Subject: Re: [PATCH v2 6/9] kbuild: consolidate Devicetree dtb build rules
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        nios2-dev@lists.rocketboards.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-xtensa@linux-xtensa.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66178
+X-archive-position: 66179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,94 +82,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Sep 09, 2018 at 10:20:39PM +0200, Hauke Mehrtens wrote:
-> +static void gswip_phylink_validate(struct dsa_switch *ds, int port,
-> +				   unsigned long *supported,
-> +				   struct phylink_link_state *state)
-> +{
-> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = { 0, };
-> +
-> +	switch (port) {
-> +	case 0:
-> +	case 1:
-> +		if (!phy_interface_mode_is_rgmii(state->interface) &&
-> +		    state->interface != PHY_INTERFACE_MODE_MII &&
-> +		    state->interface != PHY_INTERFACE_MODE_REVMII &&
-> +		    state->interface != PHY_INTERFACE_MODE_RMII) {
-> +			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
-> +			dev_err(ds->dev,
-> +			"Unsupported interface: %d\n", state->interface);
-> +			return;
-> +		}
-> +		break;
-> +	case 2:
-> +	case 3:
-> +	case 4:
-> +		if (state->interface != PHY_INTERFACE_MODE_INTERNAL) {
-> +			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
-> +			dev_err(ds->dev,
-> +			"Unsupported interface: %d\n", state->interface);
-> +			return;
-> +		}
-> +		break;
-> +	case 5:
-> +		if (!phy_interface_mode_is_rgmii(state->interface) &&
-> +		    state->interface != PHY_INTERFACE_MODE_INTERNAL) {
-> +			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
-> +			dev_err(ds->dev,
-> +			"Unsupported interface: %d\n", state->interface);
-> +			return;
+On Sun, Sep 9, 2018 at 6:28 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> 2018-09-06 8:53 GMT+09:00 Rob Herring <robh@kernel.org>:
+> > There is nothing arch specific about building dtb files other than their
+> > location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
+> > The dependencies and supported targets are all slightly different.
+> > Also, a cross-compiler for each arch is needed, but really the host
+> > compiler preprocessor is perfectly fine for building dtbs. Move the
+> > build rules to a common location and remove the arch specific ones. This
+> > is done in a single step to avoid warnings about overriding rules.
+> >
+> > The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
+> > These pull in several dependencies some of which need a target compiler
+> > (specifically devicetable-offsets.h) and aren't needed to build dtbs.
+> > All that is really needed is dtc, so adjust the dependencies to only be
+> > dtc.
+> >
+> > This change enables support 'dtbs_install' on some arches which were
+> > missing the target.
+> >
+> > Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > Cc: Michal Marek <michal.lkml@markovi.net>
+> > Cc: Vineet Gupta <vgupta@synopsys.com>
+> > Cc: Russell King <linux@armlinux.org.uk>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will.deacon@arm.com>
+> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> > Cc: Michal Simek <monstr@monstr.eu>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: Paul Burton <paul.burton@mips.com>
+> > Cc: James Hogan <jhogan@kernel.org>
+> > Cc: Ley Foon Tan <lftan@altera.com>
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Chris Zankel <chris@zankel.net>
+> > Cc: Max Filippov <jcmvbkbc@gmail.com>
+> > Cc: linux-kbuild@vger.kernel.org
+> > Cc: linux-snps-arc@lists.infradead.org
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: uclinux-h8-devel@lists.sourceforge.jp
+> > Cc: linux-mips@linux-mips.org
+> > Cc: nios2-dev@lists.rocketboards.org
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: linux-xtensa@linux-xtensa.org
+> > Signed-off-by: Rob Herring <robh@kernel.org>
+> > ---
+> > Please ack so I can take the whole series via the DT tree.
+> >
+> > v2:
+> >  - Fix $arch/boot/dts path check for out of tree builds
+> >  - Fix dtc dependency for building built-in dtbs
+> >  - Fix microblaze built-in dtb building
+> >
+> >  Makefile                          | 32 +++++++++++++++++++++++++++++++
+> >  arch/arc/Makefile                 |  6 ------
+> >  arch/arm/Makefile                 | 20 +------------------
+> >  arch/arm64/Makefile               | 17 +---------------
+> >  arch/c6x/Makefile                 |  2 --
+> >  arch/h8300/Makefile               | 11 +----------
+> >  arch/microblaze/Makefile          |  4 +---
+> >  arch/microblaze/boot/dts/Makefile |  2 ++
+> >  arch/mips/Makefile                | 15 +--------------
+> >  arch/nds32/Makefile               |  2 +-
+> >  arch/nios2/Makefile               |  7 -------
+> >  arch/nios2/boot/Makefile          |  4 ----
+> >  arch/powerpc/Makefile             |  3 ---
+> >  arch/xtensa/Makefile              | 12 +-----------
+> >  scripts/Makefile.lib              |  2 +-
+> >  15 files changed, 42 insertions(+), 97 deletions(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index 2b458801ba74..bc18dbbc16c5 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -1212,6 +1212,32 @@ kselftest-merge:
+> >                 $(srctree)/tools/testing/selftests/*/config
+> >         +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+> >
+> > +# ---------------------------------------------------------------------------
+> > +# Devicetree files
+> > +
+> > +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/boot/dts/),)
+> > +dtstree := arch/$(SRCARCH)/boot/dts
+> > +endif
+> > +
+> > +ifdef CONFIG_OF_EARLY_FLATTREE
+> > +
+> > +%.dtb %.dtb.S %.dtb.o: | dtc
+> > +       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
+>
+>
+> Hmm, I was worried about '%.dtb.o: | dtc'
+> but seems working.
+>
+> Compiling %.S -> %.o requires objtool for x86,
+> but x86 does not support DT.
 
-Hi Hauke
+Well, x86 does support DT to some extent. There's 2 platforms and the
+DT unittests build and run on x86.
 
-Minor nit. You have the same thing repeated three times. Maybe change
-it to a goto out; and have the error block only once at the out:
-label.
+Actually, we can remove "%.dtb.S %.dtb.o" because we don't need those
+as top-level build targets. Must have been a copy-n-paste relic from
+before having common rules.
 
-> +static int gswip_gphy_fw_list(struct gswip_priv *priv,
-> +			      struct device_node *gphy_fw_list_np, u32 version)
-> +{
-> +	struct device *dev = priv->dev;
-> +	struct device_node *gphy_fw_np;
-> +	const struct of_device_id *match;
-> +	int err;
-> +	int i = 0;
-> +
-> +	/* The The VRX200 rev 1.1 uses the GSWIP 2.0 and needs the older
+>
+> If CONFIG_MODVERSIONS=y, scripts/genksyms/genksyms is required,
+> %.dtb.S does not contain EXPORT_SYMBOL.
 
-Double The.
+Okay, but that shouldn't affect any of this. We only build *.dtb.S
+when doing built-in dtbs.
 
-> +
-> +	/* bring up the mdio bus */
-> +	mdio_np = of_find_compatible_node(pdev->dev.of_node, NULL,
-> +					  "lantiq,xrx200-mdio");
-> +	if (mdio_np) {
-> +		err = gswip_mdio(priv, mdio_np);
-> +		if (err) {
-> +			dev_err(dev, "mdio probe failed\n");
-> +			goto gphy_fw;
-> +		}
-> +	}
-> +
-> +	err = dsa_register_switch(priv->ds);
-> +	if (err) {
-> +		dev_err(dev, "dsa switch register failed: %i\n", err);
-> +		goto mdio_bus;
-> +	}
+> BTW, 'dtc' should be a PHONY target.
 
-> +	if (priv->ds->dst->cpu_dp->index != priv->hw_info->cpu_port) {
+Right, I found that too.
 
-I think that can be simplified to
-
-        if (!dsa_is_cpu_port(ds, priv->hw_info->cpu_port))
-
-which is probably more readable.
-
-Florian was also considering that we should move this test into the
-DSA core. But for the moment, doing it here is O.K.
-
-This is otherwise looking good.
-
-Thanks
-
-    Andrew
+Rob

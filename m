@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 18:06:53 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:36164 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994571AbeIJQGueE9Vg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Sep 2018 18:06:50 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF80418A;
-        Mon, 10 Sep 2018 09:06:43 -0700 (PDT)
-Received: from [10.4.12.131] (e110467-lin.emea.arm.com [10.4.12.131])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7B8603F557;
-        Mon, 10 Sep 2018 09:06:42 -0700 (PDT)
-Subject: Re: [PATCH 2/5] dma-mapping: move the dma_coherent flag to struct
- device
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2018 18:14:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35892 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994584AbeIJQOAA-vSg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2018 18:14:00 +0200
+Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 79262F73;
+        Mon, 10 Sep 2018 16:13:53 +0000 (UTC)
+Date:   Mon, 10 Sep 2018 18:13:50 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     iommu@lists.linux-foundation.org,
         Marek Szyprowski <m.szyprowski@samsung.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+        Robin Murphy <robin.murphy@arm.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] dma-mapping: move the dma_coherent flag to struct
+ device
+Message-ID: <20180910161350.GA10380@kroah.com>
 References: <20180910060533.27172-1-hch@lst.de>
  <20180910060533.27172-3-hch@lst.de>
- <71ec3eef-54c1-f692-5a17-4302c4dd4b05@arm.com>
- <20180910154747.GA23578@lst.de>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <aa6f49f8-24ea-f166-9c58-aecb13df0418@arm.com>
-Date:   Mon, 10 Sep 2018 17:06:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20180910154747.GA23578@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <robin.murphy@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180910060533.27172-3-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66187
+X-archive-position: 66188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robin.murphy@arm.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,40 +45,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/09/18 16:47, Christoph Hellwig wrote:
->>> --- a/kernel/dma/Kconfig
->>> +++ b/kernel/dma/Kconfig
->>> @@ -13,6 +13,9 @@ config NEED_DMA_MAP_STATE
->>>    config ARCH_DMA_ADDR_T_64BIT
->>>    	def_bool 64BIT || PHYS_ADDR_T_64BIT
->>>    +config ARCH_HAS_DMA_COHERENCE_H
->>> +	bool
->>
->> This seems a little crude - is it unbearably churny to make an
->> asm-generic/dma-coherence.h implementation for everyone else?
-> 
-> The case of having something else than the per-device flag is rather
-> odd, and I hope we don't grow any new user in addition to mips.
-> 
-> In fact I'm already thinking of ways to get rid of it for mips by
-> e.g. iterating over all devices and just setting dma_coherent,
-> but for now I wanted to solve the more urgen issues and tackle this
-> later, as this unification blocks a few other things
+On Mon, Sep 10, 2018 at 08:05:30AM +0200, Christoph Hellwig wrote:
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index 8f882549edee..983506789402 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -927,6 +927,8 @@ struct dev_links_info {
+>   * @offline:	Set after successful invocation of bus type's .offline().
+>   * @of_node_reused: Set if the device-tree node is shared with an ancestor
+>   *              device.
+> + * @dma_coherent: this particular device is dma coherent, even if the
+> + *		architecture supports non-coherent devices.
+>   *
+>   * At the lowest level, every device in a Linux system is represented by an
+>   * instance of struct device. The device structure contains the information
+> @@ -1016,6 +1018,11 @@ struct device {
+>  	bool			offline_disabled:1;
+>  	bool			offline:1;
+>  	bool			of_node_reused:1;
+> +#if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
+> +    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
+> +    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
+> +	bool			dma_coherent:1;
+> +#endif
 
-Ah, somehow I started thinking that arm(64) would need to implement 
-their own as well, but I see the point now. In that case, TBH I'd be 
-quite happy with just a simple #ifdef CONFIG_MIPS in 
-linux/dma-noncoherent.h - plus then it looks even more like something 
-nobody else is expected to do.
+It's just one bit, why not always have it enabled here?  If the arch
+uses it or doesn't, no big deal.
 
->> Nits aside, this otherwise looks sane to me for factoring out the
->> equivalent Xen and arm64 DMA ops cases.
-> 
-> Like this? :)
-> 
-> http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-maybe-coherent
+Or are you using this to "catch" arches that mess something up?
 
-Man, that's going to take me a *lot* of time to pick through. All those 
-horrendous subtleties that I barely remember!
+thanks,
 
-Robin.
+greg k-h

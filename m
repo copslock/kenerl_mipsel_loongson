@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 09:30:11 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:60734 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990947AbeIKHaInd0O4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Sep 2018 09:30:08 +0200
-Received: from localhost (unknown [171.76.126.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D6AA20865;
-        Tue, 11 Sep 2018 07:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1536651002;
-        bh=2ADZAPA+oOEOKQA5tW1u/Y95m+EabwiGs8TtKaRMAeU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ebTtlnHiECsYWtz8LVq4xtXzjNXCdKi6CeuDCB6k0PzyryReOAccPFAnJ33z5jN1n
-         4U/4ObxrF8TYDAyTeJhZ6HWPhlapfVonDNoX7aK5m70nKvzlCk4GpzMA9QRWnyPaqU
-         GEhcRwFPurz19DrzgmJpgmoPpUdB+u/8dVbTiV2E=
-Date:   Tue, 11 Sep 2018 12:59:52 +0530
-From:   Vinod <vkoul@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>, od@zcrc.me,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v5 00/18] JZ4780 DMA patchset v5
-Message-ID: <20180911072952.GJ2634@vkoul-mobl>
-References: <20180829213300.22829-1-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 10:20:08 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57466 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992925AbeIKIUEXYCo4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2018 10:20:04 +0200
+Received: from localhost (ip-213-127-74-90.ip.prioritytelecom.net [213.127.74.90])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 74596B9E;
+        Tue, 11 Sep 2018 08:19:55 +0000 (UTC)
+Date:   Tue, 11 Sep 2018 10:19:52 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] dma-mapping: move the dma_coherent flag to struct
+ device
+Message-ID: <20180911081952.GA17267@kroah.com>
+References: <20180910060533.27172-1-hch@lst.de>
+ <20180910060533.27172-3-hch@lst.de>
+ <20180910161350.GA10380@kroah.com>
+ <20180911064636.GA6214@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20180829213300.22829-1-paul@crapouillou.net>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-Return-Path: <vkoul@kernel.org>
+In-Reply-To: <20180911064636.GA6214@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66197
+X-archive-position: 66198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vkoul@kernel.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,20 +47,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29-08-18, 23:32, Paul Cercueil wrote:
-> Hi Vinod,
+On Tue, Sep 11, 2018 at 08:46:36AM +0200, Christoph Hellwig wrote:
+> On Mon, Sep 10, 2018 at 06:13:50PM +0200, Greg Kroah-Hartman wrote:
+> > > +#if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
+> > > +    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
+> > > +    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
+> > > +	bool			dma_coherent:1;
+> > > +#endif
+> > 
+> > It's just one bit, why not always have it enabled here?  If the arch
+> > uses it or doesn't, no big deal.
+> > 
+> > Or are you using this to "catch" arches that mess something up?
 > 
-> This is the V5 of my Ingenic JZ4780 DMA patchset.
+> Yes, that is the intent - I don't want architectures to accidentally
+> set it while not selecting the non-coherent infrastructure, as it
+> won't have an effect.
 
-Applied all, thanks
-
-> 
-> - Patch [01/18] dropped the "doc:" in the patch title;
-> - Patches [11/18] and [12/18] now use the GENMASK() macro.
-> - The rest is untouched.
-> 
-> Thanks,
-> -Paul Cercueil
-
--- 
-~Vinod
+Ok, fine with me:
+	Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

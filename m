@@ -1,36 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 08:54:19 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:59155 "EHLO newverein.lst.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 09:30:11 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:60734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990473AbeIKGyQVh6e0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Sep 2018 08:54:16 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id BAE5367357; Tue, 11 Sep 2018 08:58:39 +0200 (CEST)
-Date:   Tue, 11 Sep 2018 08:58:39 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] dma-mapping: move the dma_coherent flag to struct
- device
-Message-ID: <20180911065839.GA6479@lst.de>
-References: <20180910060533.27172-1-hch@lst.de> <20180910060533.27172-3-hch@lst.de> <71ec3eef-54c1-f692-5a17-4302c4dd4b05@arm.com>
+        id S23990947AbeIKHaInd0O4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Sep 2018 09:30:08 +0200
+Received: from localhost (unknown [171.76.126.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2D6AA20865;
+        Tue, 11 Sep 2018 07:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1536651002;
+        bh=2ADZAPA+oOEOKQA5tW1u/Y95m+EabwiGs8TtKaRMAeU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ebTtlnHiECsYWtz8LVq4xtXzjNXCdKi6CeuDCB6k0PzyryReOAccPFAnJ33z5jN1n
+         4U/4ObxrF8TYDAyTeJhZ6HWPhlapfVonDNoX7aK5m70nKvzlCk4GpzMA9QRWnyPaqU
+         GEhcRwFPurz19DrzgmJpgmoPpUdB+u/8dVbTiV2E=
+Date:   Tue, 11 Sep 2018 12:59:52 +0530
+From:   Vinod <vkoul@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, od@zcrc.me,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v5 00/18] JZ4780 DMA patchset v5
+Message-ID: <20180911072952.GJ2634@vkoul-mobl>
+References: <20180829213300.22829-1-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <71ec3eef-54c1-f692-5a17-4302c4dd4b05@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <hch@lst.de>
+In-Reply-To: <20180829213300.22829-1-paul@crapouillou.net>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+Return-Path: <vkoul@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66196
+X-archive-position: 66197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: vkoul@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,56 +51,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 10, 2018 at 04:19:30PM +0100, Robin Murphy wrote:
-> If we're likely to refer to it more than once, is it worth wrapping that 
-> condition up in something like ARCH_HAS_NONCOHERENT_DMA?
+On 29-08-18, 23:32, Paul Cercueil wrote:
+> Hi Vinod,
+> 
+> This is the V5 of my Ingenic JZ4780 DMA patchset.
 
-Below is what we'd need.  Which to me doesn't look wortwhile for just
-those two conditionals:
+Applied all, thanks
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 983506789402..d260536f6f46 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1018,9 +1018,7 @@ struct device {
- 	bool			offline_disabled:1;
- 	bool			offline:1;
- 	bool			of_node_reused:1;
--#if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
--    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
--    defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
-+#ifdef CONFIG_ARCH_HAS_NONCOHERENT_DMA
- 	bool			dma_coherent:1;
- #endif
- };
-diff --git a/include/linux/dma-noncoherent.h b/include/linux/dma-noncoherent.h
-index 9051b055beec..9e3adf924d1e 100644
---- a/include/linux/dma-noncoherent.h
-+++ b/include/linux/dma-noncoherent.h
-@@ -6,9 +6,7 @@
- 
- #ifdef CONFIG_ARCH_HAS_DMA_COHERENCE_H
- #include <asm/dma-coherence.h>
--#elif defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
--	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
--	defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
-+#elif defined(CONFIG_ARCH_HAS_NONCOHERENT_DMA)
- static inline bool dev_is_dma_coherent(struct device *dev)
- {
- 	return dev->dma_coherent;
-diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-index 645c7a2ecde8..06283d6e305b 100644
---- a/kernel/dma/Kconfig
-+++ b/kernel/dma/Kconfig
-@@ -29,6 +29,11 @@ config ARCH_HAS_SYNC_DMA_FOR_CPU
- config ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
- 	bool
- 
-+config ARCH_HAS_NONCOHERENT_DMA
-+	def_bool ARCH_HAS_SYNC_DMA_FOR_DEVICE || \
-+		ARCH_HAS_SYNC_DMA_FOR_CPU || \
-+		ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
-+
- config ARCH_HAS_DMA_COHERENT_TO_PFN
- 	bool
- 
+> 
+> - Patch [01/18] dropped the "doc:" in the patch title;
+> - Patches [11/18] and [12/18] now use the GENMASK() macro.
+> - The rest is untouched.
+> 
+> Thanks,
+> -Paul Cercueil
+
+-- 
+~Vinod

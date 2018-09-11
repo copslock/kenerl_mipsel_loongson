@@ -1,65 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2018 02:22:15 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:56428 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993060AbeKNBVj4IzFZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Nov 2018 02:21:39 +0100
-Received: from localhost (unknown [64.114.255.97])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E243822360;
-        Wed, 14 Nov 2018 01:21:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1542158498;
-        bh=VtmI1XvauVMvKQb2t4DnND22D1zBNB0FsKtC16gXoTU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=SXv8QfZUwmdcP24E/L2qK3Jd9A927y9ZCGlmrE7in3zIZ9H6fJr9EAGuAuXwF3kWB
-         8JEbXCX5WHBhOD4vjbxKpNaQyNbB8xfLrMuan/bYulcdXmo+O41gS1HaOHcH+ChdT9
-         Qrgko1gUKJ9Zdwlj007OOJmeQIQKeIuFgQAt4c74=
-Subject: Patch "MIPS: kexec: Mark CPU offline before disabling local IRQ" has been added to the 4.18-stable tree
-To:     dzhu@wavecomp.com, gregkh@linuxfoundation.org,
-        linux-mips@linux-mips.org, paul.burton@mips.com,
-        pburton@wavecomp.com, rachel.mozes@intel.com, ralf@linux-mips.org,
-        sashal@kernel.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 13 Nov 2018 17:21:32 -0800
-Message-ID: <154215849272124@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=PMNE=NZ=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67285
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Dengcheng Zhu <dzhu@wavecomp.com>
+Date: Tue, 11 Sep 2018 14:49:20 -0700
+Subject: MIPS: kexec: Mark CPU offline before disabling local IRQ
+Message-ID: <20180911214920.DVWws8GCw0QRGZltv6zh8t7dYJzPF4YTMXB6dJazvPc@z>
+
+From: Dengcheng Zhu <dzhu@wavecomp.com>
+
+[ Upstream commit dc57aaf95a516f70e2d527d8287a0332c481a226 ]
+
+After changing CPU online status, it will not be sent any IPIs such as in
+__flush_cache_all() on software coherency systems. Do this before disabling
+local IRQ.
+
+Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/20571/
+Cc: pburton@wavecomp.com
+Cc: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Cc: rachel.mozes@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/kernel/crash.c         |    3 +++
+ arch/mips/kernel/machine_kexec.c |    3 +++
+ 2 files changed, 6 insertions(+)
+
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -36,6 +36,9 @@ static void crash_shutdown_secondary(voi
+ 	if (!cpu_online(cpu))
+ 		return;
+ 
++	/* We won't be sent IPIs any more. */
++	set_cpu_online(cpu, false);
++
+ 	local_irq_disable();
+ 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
+ 		crash_save_cpu(regs, cpu);
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -118,6 +118,9 @@ machine_kexec(struct kimage *image)
+ 			*ptr = (unsigned long) phys_to_virt(*ptr);
+ 	}
+ 
++	/* Mark offline BEFORE disabling local irq. */
++	set_cpu_online(smp_processor_id(), false);
++
+ 	/*
+ 	 * we do not want to be bothered.
+ 	 */
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from dzhu@wavecomp.com are
 
-    MIPS: kexec: Mark CPU offline before disabling local IRQ
-
-to the 4.18-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-kexec-mark-cpu-offline-before-disabling-local-irq.patch
-and it can be found in the queue-4.18 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.18/mips-kexec-mark-cpu-offline-before-disabling-local-irq.patch

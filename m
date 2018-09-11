@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 23:51:02 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 23:51:15 +0200 (CEST)
 Received: from mail-by2nam05on070e.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe52::70e]:27336
         "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992869AbeIKVulklJPb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Sep 2018 23:50:41 +0200
+        id S23992871AbeIKVumXL2Cb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Sep 2018 23:50:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kdyxzR72XnAi66S//XEvG+0+hFg8uFldf7oKs3pmObQ=;
- b=YCg1rD4O2M2E7UBTDVDUBx66C+QfHlzLvl+WFnM/OQ3FpcPUa+cTtDdOK2aXax9TdiA8txeKVedgYOYoJs0CI7dv9/nAPJ9DT1Hx3VPRyl9m2NVo9H+LhLd6FaTc5/kbS5HRdkKhTgD4HDcc2UtkVXPd+5cK9YTVpDX9aPuI6is=
+ bh=s36KzIFUHC8JUYn07GbAsCqopYy8LVbEi4cO86fFu6Q=;
+ b=VdF4SpzOOefqsKZ90KBaGLxKeWsr7RyjA/4i8sY1WcR5wuWAfqi+jKVAtp9w5KgUqA4M7jodLK3ibl/VlsiFTOvyMSGVRd5jRsVf3YUnbYMp9n/1Mjov1N2eomt9PpVa5EXTjKWJ0ZWv+tZ/33MEMl661AMKVkdndsWm7+X2Yh0=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=dzhu@wavecomp.com; 
 Received: from box.mipstec.com (4.16.204.77) by
  BN3PR0801MB2145.namprd08.prod.outlook.com (2a01:111:e400:7bb5::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1122.18; Tue, 11 Sep
- 2018 21:49:57 +0000
+ 2018 21:49:58 +0000
 From:   Dengcheng Zhu <dzhu@wavecomp.com>
 To:     pburton@wavecomp.com, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, rachel.mozes@intel.com,
         Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [PATCH v5 4/5] MIPS: kexec: Relax memory restriction
-Date:   Tue, 11 Sep 2018 14:49:23 -0700
-Message-Id: <20180911214924.21993-5-dzhu@wavecomp.com>
+Subject: [PATCH v5 5/5] MIPS: kexec: Use prepare method from Generic for UHI platforms
+Date:   Tue, 11 Sep 2018 14:49:24 -0700
+Message-Id: <20180911214924.21993-6-dzhu@wavecomp.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180911214924.21993-1-dzhu@wavecomp.com>
 References: <20180911214924.21993-1-dzhu@wavecomp.com>
@@ -33,48 +33,49 @@ X-ClientProxiedBy: DM5PR21CA0055.namprd21.prod.outlook.com
  (2603:10b6:3:129::17) To BN3PR0801MB2145.namprd08.prod.outlook.com
  (2a01:111:e400:7bb5::18)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b52b085b-f09b-46fa-fe8c-08d61830848a
+X-MS-Office365-Filtering-Correlation-Id: 7e69961d-4580-42a4-b42c-08d61830852e
 X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN3PR0801MB2145;
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:hSMT9sVIxsQSVCX5XxQ+45UDClzM97jjOGELtaTCVuBADcTrqJhudFmBLyRKVSXrexVsKp1YalmyqNynRR2fg8GQgf+vB57yQ+OEpOf5jJ8d0bJcTLqhLb3SkL61illUe5aG+1mVqRowumcB0Z93SPk2um/MiDwTbrwQL5YNOZo6971CEhnnHPsWufl4OG0CrUPYJ4BJNEK+bI+b9vBxFd9N7Pw52jOfNlCxD2V6qcQb3XCCiL1cPCtlUuWPK0ew;25:g9lHUCi09SsnfL0rMebA7tBWgCc2D6fHD3vlkGSrJTI/QxO7JUSUw1gMtxVOVhqZ2Qg2mjgg+CHjH+SV/LD6np42Ngn059o0jkMp2ownfVPnHEk3pjQJZyKZ179C2C+MZjW3gTACmcRkjhq4b0OOLMmme1JzZ5fz55qvVjwsTsECRqiItA+7ovAAjuVz0Z6dZTlqUUi1gslK64rZa7HCkyLaMEBj0vHn8qX7dlZcu6CiSXQBaEQnk0KWSZ60zsb+CGo+SYC2EDfO1FOGufVK8sfEHPiRRADN1t0EdNNYzkNQ3rkXm4MhoZ8fM37YQyqWa9h2BWM/VnCez4NxA8PLuw==;31:hj+RlvSjVNV6XBya4TSPAcZXMcSRC4jLAMWCjWaD4HHaicqiFOVgmdLzoF4x9+4c99Jaba6X5D8NxynWu4gYUzroPIMbemjcBPugiVoteN4Xhec3ml5eCo5AEma45Z1obk6TvUuFjmxhC/mYB5mRL135uoonSQcxdpoqtwJ1jBmolvKDezog9Tt1iPFCvu3POqOU8HsmTS59o98pdeJNTCnI7IBVprAY1VAeGTbqAYI=
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;3:ehF/4A9XrmtyapVOGP7OgsnnGShWD/0ul8/Hvs88tlsZHDrG8lK7ujV4Ibd4+1no0fYZVyggvggAQdCS62uQ2LrC1UHRjHjRDjqxJbNoJipfat3Mo2sNESr1yKjLwvRKrZUoohVM2uwpDt3MhheOokny0Tmuv9/d/3WMOTA8zOnDLgzjDjvSykDi7Rx2bFYSLT4o3E8w2nKb7JE2OSp8w4QQtPNO79qNLIOtbnG3ob9ipbjFxaqgtWH89D/EWlcn;25:d6BebVJcWlpRfZ4dXIMcteUYNWjZNV3M0N9p1N7xjytmWpNsrZZ4KylgoAPlE8vjD51omZA25ZA4bJSJk/BJJxO7KU8l9PY88+5su9NAdhx4WAm/72Wfmv4nHvOPhvsTE3GstyhHLt+eO8OUzbYyIeP/dE2lLOom3pcfhdC1gWb2WYsA8UtvoyYtUlW/zKRRKAnmPRj9kKh9hQbnF+DSMqKsqW2fxhpj3lQ2pD50zprsz2z0oD/AJ+ggyRSMRU73LOajDx7ZRyiFovtkLLOH2QOQZELqDhPeuFFIV7taTfcc2yFIAnEAI0GMYxma913FxoRkg2YeVnNGjiKVFF5wLg==;31:PIDYdnftUGFqmLTYsXOxviFESQSXv9G+5JNeVOqKhSFBOj4f0GAIylSn2A8ePs1dkkRYA/X0VcWUg2BdxLUFfZyq6wbPNJTigLTmPIVbh3f6FPFkS4JmihPjuq2gugMvpNJaI9Rsp1eDTe536na6Iqdjzm+G5RwGa3BcpvFUpVQrq+BBzVxS6tYSs/510GAZsn4uGOG6LRIDkJ5/GqFBgIFdlJGQlOe2TKraYZ9Uc14=
 X-MS-TrafficTypeDiagnostic: BN3PR0801MB2145:
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:dNRuw19LguiJUAD6x2eJny83yX9o35767C4a9SG/3cq/1NNHY6/p0GbNLUnI/tlsZ2flY154Zhyx6TecqMTGf/hcoXtbR0v/agDwWc4pfbbl63ut6hehsUXgaGRA79JpX6GUhAhgx9GGn9S0gKgbW43egCS8WYL2aQ2po5gAI1ZJbLNubypOgFT4h2K3Mngpu5zcvrGG4LQrqlhv5iUmKmojHNY7WScjpR1hukZN8Hdf4E2JJzouAmi6zCOXYyI1;4:lAyqMx8rQ5Y65ydtBpVU7dS/w65GoywRbflSLFMroGf4eh6D7qEOSUzF78oeY8f+bz+mgEC5w2eaxN8us57jml6atGMG2z5luh6OJ76Lvw1Dc1N+jZU535W8RWBzJTXjKaWWfroJOFgGH/P3fgs61xbJn+AJ5BpJT23AlVV6vLYLVDPEfMvTq7RBTXtTcKX6YGtjrRtf/c+zDpSlzY+ILvUJmAGqNSNDb6gzvCWq+7g5otZAe1P2XqPPWYy2KA5l2Z8/dhCnlqDnbDwNYG+ccMl28PZ0ZTOzyiNdZFuY7WzAvaHWsfJvxXxZBf911vXA
-X-Microsoft-Antispam-PRVS: <BN3PR0801MB2145AE9A51FB67FF0D112ECFA2040@BN3PR0801MB2145.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(228905959029699);
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;20:T8GqNKY1mSEahqZBMPo2KTHKL/1zWkPXaH6UtrQvEys5dV6bACsy/iaxYar9ofDpjbrf0fZL+ed5i3Q/kwGLuCDPGlqQDwAYORHkxnIcAUHjM40igreG3nsTOutZ6x27D1eqIRoxBqQzHesAdSLdu57KjvcLijTXzx12JomheKMEYaDxnhUmvOeMR8FS7nbp+z4MD+JyyjjiRHoZ9I/RFq9IAnreoDByVTOGQIRo8nuBKpRfVSwJ+1dKSYy3zKtS;4:d1nXivFjGCptipKbe2nCQJd2AVWqcxnY9NSM4jV9WMavRHhRqaARnf6xb1OAegYK2hgVmiJGc1s1Fvs8fFOCgHDldDBw54RPCIkNJNmx9IIjfSeQ3nB8m6TopJcwYMCm0bGVdnhdvSso7X5mHS/nvL3lLVNpLbDmF2CcwapKbMWKJXXbnGI9agKq3mIyUXvMW5K61QPoTztoBUnYho+6gqm9MlI97quwjUdXWBdLdtqO4arFKZjB7x1hdSKql8mkIQj8OMcUWp32DNfpXij7V42+i60UzkUnvf9tQuFifLxXc3wUAylB1PGphFx4kr9UvfQlpkTazMT0mc3miZ3kktaP3jScl/XLeyVwi5wxyVs=
+X-Microsoft-Antispam-PRVS: <BN3PR0801MB2145B8E78A070C72499B7D7BA2040@BN3PR0801MB2145.namprd08.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:(209352067349851)(228905959029699);
 X-MS-Exchange-SenderADCheck: 1
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(93001095)(3002001)(3231311)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(201708071742011)(7699050);SRVR:BN3PR0801MB2145;BCL:0;PCL:0;RULEID:;SRVR:BN3PR0801MB2145;
 X-Forefront-PRVS: 0792DBEAD0
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(396003)(376002)(39840400004)(136003)(366004)(199004)(189003)(6486002)(4326008)(316002)(2906002)(68736007)(8676002)(36756003)(16586007)(8936002)(53416004)(105586002)(37156001)(86362001)(48376002)(106356001)(25786009)(50226002)(50466002)(6666003)(66066001)(47776003)(305945005)(53936002)(5660300001)(76176011)(81156014)(52116002)(69596002)(16526019)(51416003)(6512007)(97736004)(3846002)(6116002)(6506007)(7736002)(386003)(26005)(81166006)(1076002)(2616005)(11346002)(446003)(478600001)(107886003)(486006)(956004)(14444005)(476003);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(396003)(376002)(39840400004)(136003)(366004)(199004)(189003)(6486002)(4326008)(316002)(2906002)(68736007)(8676002)(36756003)(16586007)(8936002)(53416004)(105586002)(37156001)(86362001)(48376002)(106356001)(25786009)(50226002)(50466002)(6666003)(66066001)(47776003)(305945005)(53936002)(5660300001)(76176011)(81156014)(52116002)(69596002)(16526019)(51416003)(6512007)(97736004)(3846002)(6116002)(6506007)(7736002)(386003)(26005)(81166006)(1076002)(2616005)(11346002)(446003)(478600001)(107886003)(486006)(956004)(14444005)(476003)(41533002)(2004002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN3PR0801MB2145;H:box.mipstec.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:daHu3hOhFTXvfzzP51vapy5V6k8rQKCTGl08Rqp?=
- =?us-ascii?Q?dHjpGVLKYOOUqNUKakdCmnsxO07se4OSy+0X62ocU+OL6L10llJn27i8UKWI?=
- =?us-ascii?Q?EBOiCSfNJP2ZzuEiBCsGrdF5Hkfkl2JrTEKU+bxT28DhuT1kxcS16+Szrn0B?=
- =?us-ascii?Q?E0XHEz607n7eNOkoHZY9Xpr8wAGKbdkz+QFCIFpAhtVRlIjM+w74q+RbaIBh?=
- =?us-ascii?Q?AB6qEuWU+tjljgrta4JLR+jSlU/61Ir3YdoHyBxkCDFjmetSFpBD+qkTpDLK?=
- =?us-ascii?Q?hKKdCxqAvVLYhx0/0gwjpTVBhVaiGSepUqNw8wbNXLvuDxQ8WPf++TeMEa9z?=
- =?us-ascii?Q?bP74IyP436ye41ibjbJuEqEg1tVAVCx3hHeu74iYtkcxWUIwo7dJV7YEELjI?=
- =?us-ascii?Q?9osh/0jLZb46s91dSRhVCX86CgYo8IlDZx2Ss2tUPha7izWvD4RoZVOJPo9t?=
- =?us-ascii?Q?ndgZAc558bjblz0/Kj//w8JWtjFPmDvUHsXd0syfkSVf3xdA5TFPuYqjQxdj?=
- =?us-ascii?Q?rH7xiVBLordjxy7NIv5uYkkSLyDZfd06Cfz8iVQBf8oJMVDbisUszEPDLin+?=
- =?us-ascii?Q?txnh+t+jRAu9feUPzNEvRo4vHt2pVfChJTMhDfRvmc9HU+19s1YE09FGDy0e?=
- =?us-ascii?Q?XKprkw0C3W9FGisWXjurET+QQx9PvMwotge/G/MqyHrPZG3F4IiY6j0iEkas?=
- =?us-ascii?Q?rmrjeBIV9tGJLm72PjURqkBk95KlNgVyu8UFi/uUjbNifY1l0gzrOj1ERaIz?=
- =?us-ascii?Q?G6imA1ZP5WP/RCeBXk97eJfgc6lx9gHGmfWqefrPY8YxaW+7eetohK2GE7Eg?=
- =?us-ascii?Q?G5u28bDk3kKMiV933cvFPEWTANacNTEf2/ht3TZCvxkgX+IbLxXDxmoaaeIp?=
- =?us-ascii?Q?sGDqyOpsXtnL3rV25U6Vui18NnI3Y7FWEjyiOfPigLD0MhyJpNimBymEnHVo?=
- =?us-ascii?Q?PIO7VVRKk4LRpE+c3ZNd0KdzZ7NSxpZPwfH7/0249VxfcQfz8BwiJXIXa0GV?=
- =?us-ascii?Q?PKEcbl5qTqHgdGI6lH+KHSvv8w9DP9aW3eJ0nUaKbBALHQ+4cpRZbyCz1abY?=
- =?us-ascii?Q?ak1/I0gqWx9DwpjN3b0vmTPMq62Ofj5eSbXqYGdXChOreNwfVIDHZ26XB4Yk?=
- =?us-ascii?Q?WvDaCRiSQoj/w5gGiGyLIWpUAhohVddqpa/Tf0Bf/kKC7xxnlbz9Jbl/ciur?=
- =?us-ascii?Q?Lx/ZIaKe+7zcRKPjepZ+420C3C8W6z0hlauvNhzn9FOhbUyz2DM5i+coq2r6?=
- =?us-ascii?Q?YRJk8PtwPNYzLhdEV320=3D?=
-X-Microsoft-Antispam-Message-Info: PDKOXgamnkVNWggoCL+8lPs8EhK4D8gjEKcSPkXqW18gcCn1aMvRTuvrSi4qu24rb4L6EKbe4a47m9zPJU42gSIyvr6vfHWlUMuvhAhVagK0YyHx9uKo9Nv9vDhSNafW7BIrRqBW6qDlSC0+vKSXaKtFYL5BIXS+h6k+gjRrnj0zJNorbixz3LJkgUy5jS01MpgezrX0UFkxp2zZJHjEjV1UzCFzE6qKTSteGF+MkDLe1Qa7nfbtCLAfcb1ObuNj+O5zyAQGgrMtPkEF2f4Gz4dkGUoMCpm5V8Kz75j3kRfFCMo6mx+gEshPk9VrxAC2I3dmSB6bPkB+eJL4jSo4Knb7Kd9ZauhuFFFcEO3bncE=
-X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:7UXv/BrWKHEkvqgzKXfe7hMND4YUA1ieM1K1KP5Djg0PEX4Ll4X0UeYHf3iOx5NCvKB96WejVd6ueYdUBj+guOXafup4yYOj8KYFdsMRo8aUruRF6Jc19abifI4vWxxf2WXSJ9X/vY/8lynO5GovRX5jdrGZxV5INN59t51uAN4auGD9KemiAIG1hOzZRC9xFlL5ajquXi2euzwVkBM1XrjZK/tR7rRH/v2xNTJe3O/sUtD7+P/BlqmSAzf7xQ0Lv7EHkb3VoHo29B76+A8wnavioQuEFg6JjBmFH9ASR5mhR+u3nTL9/IQbbQnG2e6zv7OcR9/bXZbRXxstY8zdDSnpx05Uj8fg7eiolXW75NJJlrMnE1XKv2lhnn4S1q7KNnQYWIOUeLbya+YadnOViHa+KptvZVUABQq4LOWwO0ksJ+6Seqyff2XQ5Zch++r+VXSfjL8Xjp+FuVpgmUimiA==;5:ubZUMPgn6P0siUAiZJLfNuZ3IM7AhM1NjHpsTuKTvfXGjKivprAYrSU1JPjE+y8nTGo2uBNNZPkMhtFnhBlERAcrgrnCD7IGzyEXGBDqGq4V4l4fQ1tE3jJVRX7tXe6x2A7Cxw/fB/XjO52XnCAs6ITdKYPVDj+/WZB+GWmLtkc=;7:nlM/eYrHmNRYUNtI6HgtMeSio0boWYKlciDmkL+Z0zCWXqqXWQRYFsM57Qhe9B+kWFyq0ZDZmoWH7jyUbpP8rt+njZiHNvugSZRmsFTIVAnpjb2SJ/zDVRlNuZI8aBkC6pCvRIMWtmSi0/PfOzfmYhAyDPCBSij/kBccf5UoMHIISN6Z35+K62RNjpiLCUx/R6wuMMpYibLdRxhtsOYnU0AQyarVdvdcwX7ORj8u3UYNy/QnqQWQVQkaB1Rqr4gJ
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN3PR0801MB2145;23:iCPftPJridkqlcKZ3kRF8C+DnNXwk3LH9ySKaJA?=
+ =?us-ascii?Q?GvtAo247TgiJIhaMDYVEr65HkN9b9vUfgjKJhPxZr5E0NX33arv6FTOPCFT+?=
+ =?us-ascii?Q?DPJG1vi41vt6lpuTJL8rQKTzOW4/k8r2D3WrSV1tREoavvX0hRPq2N1QabtQ?=
+ =?us-ascii?Q?rmbRvLEmtqj9Z4bn4MgD0TH71wQDRhCTQBj5XF79JKd0pokiDJewSgsfF30u?=
+ =?us-ascii?Q?ZJIzdX4bUIJR+B9UPv/7c1fOKUqbunA2az7GCYaG0FcwhacQdCa3yOkmdgbN?=
+ =?us-ascii?Q?b0bW86132esBqNiwGZKKSjjYVSEA1Q2ClxMmAzUGcPzP8Lk5CHpZDLPZjdXO?=
+ =?us-ascii?Q?KOaAQo4v2nMeowFrnMURGyr6t1NvOr9Kr9o5XaQQ56dKSPv1W05K+bf4X+C4?=
+ =?us-ascii?Q?EyVgxBOBaX/g0jpJWa8eMNjoNg6odvrd/Dy7OmvBOHNIXLFj9Fo0LeUdfiYC?=
+ =?us-ascii?Q?btHyKKjhh9GbmHr/WtJzH29VvVsSv45TkxB2/LtcjD5UeE/+0x+GaLM1mtmO?=
+ =?us-ascii?Q?6Z2HXqw3NqcKGSrtFrvenO4AZuzkqEUMl+rb0v0CNg/XgdHpJ1oTO+ar+ADv?=
+ =?us-ascii?Q?nd20I1U8w2gnY/XB1riB1TOmCpztgfKYVacyE1U58h9O7I33iEYmoSfS4jog?=
+ =?us-ascii?Q?JDpy1Tb4nkSp7KdHLytweU3M9GPPzkR8LDVKo5MjkenpWzTBdOmceGw/vBex?=
+ =?us-ascii?Q?DpZMHYmXY/tm7/6JFJ1adL50JXBzlYTe2THwmCRaYHTbCSDzLC+wC2uJdpAS?=
+ =?us-ascii?Q?wLqEUTvjIpLruf0GufG1j8LuGtMlC3Pv4pjkZgUt8LZVbFAnbwuZrffrS1ah?=
+ =?us-ascii?Q?L7OKulUh0CP0fSmnTJDnRSqOh+NrgQ7oW60EeQey4j1955Zg0M8gYcnDpPA2?=
+ =?us-ascii?Q?6HMaQy+Cy92RRiqt4kulLTtZsKaEh/c4/qV42guvgVykHmb/T+IXqAHbozRc?=
+ =?us-ascii?Q?xNe444D88oKyUZ4LmsXeUlAoRHvOynqrt3uVNY+owFbR7pkxXvpYnYezDvia?=
+ =?us-ascii?Q?stlmattDAc15btmoe556T4bEFYf883pz9fqbkfBs8PHW/FrMRX0j884irO7b?=
+ =?us-ascii?Q?HzuvkddJ1+tlsnvjyibr27AM0l7wOmwvX7YojHeAF9/JDHcPuOupVJ+GkLHi?=
+ =?us-ascii?Q?CaLEGxTxVeYLAeg5NmCfFVmLPH8fknbLVXQY7EAkTqKHg99nfK2h5e7AmCfB?=
+ =?us-ascii?Q?SDHNFbJeLVRsNjQ+uLPQSrsEenUtymusCScxvcSgTUvTtCx3rjvK/oW+y92h?=
+ =?us-ascii?Q?SphML0M39ZjjZA+/WJoM9MAIdoAHGzsGePV49hbu3vaK+sDMCgHwHC3W21i7?=
+ =?us-ascii?Q?OLg=3D=3D?=
+X-Microsoft-Antispam-Message-Info: OxrFepXF6zVRF/Slish+TBHYyiiEz7PPuBow6AaZ5+ck1M1bTKzlTfWatevbSsx69a+s9f69eYhAOemP40CEa/JMIbKPjC5oRXys4mUXAoEYiQDvUJCd3VZ/QueWfick4nSWJMShYTBDqHPTbmHpFxXpuMMDsafATLmVzBUw0SKN3/VNwo7yYcKnn7dXLW0gX8W9+p69L5hyhffhdRfUoR1I1be2s1KvenqaSM70mFRYWE5I3pn+rHVAogKD0FzXM5+ll1pXqPIZJOjXpOhNCA9EzvgQd6EwlXAwX7OiWeNkdhOQmSCTvBiH7pm5HumTj3rxCgwG63IXQKpRldTEjKdD7/NrLYlY4YvZo5W728s=
+X-Microsoft-Exchange-Diagnostics: 1;BN3PR0801MB2145;6:LR+7Rbn2LDevBKnZm0ALUuQ4MC+hF8+ck3q7j8V6DXODc94MmzaGmBlJc7auRnngIwaGjbFlhKpmIx8ZuJ23xkP9X/6BIuTQGWzBtMjWvVHg8R4lP9jBXcOU+X5FtSP39OpmzdqkmtclMkOzVRvGvMyO1enZbn4XTjjfZQJlWMxhaBKdrciu7NPSm3F6PxjLsvmAHZERK60F3uZ+jrXlgEzEGHV3trSU90JXfq2Tho3nj2lk/At4+3wzuoAeZHfrflop3Ka4FQ8Ahb/2FJRciFPRJx1nzg9S89yeIMVZWuBQ1sf+H+caH5RFFnosFXC3gparJhlv1dy1avgrOfdwcf2x06rnb8Pr9y5Ul+7rsZSBWnOcwcD6snUtpKNGTDp0q1hvoasMkJTZLAblHmVpxFIqSEXdvIDIxgY4Xfx4rLBYGsdOiACsqLJF4fHn8hwieTLyhcFYagp3XtPLGgF0KQ==;5:lEhF8sQh9U+0sNfv+JgBQ3aBtqJLnJ/ndarQnC8i/j7eljumpLidS5ELmU4wp+s2IPGTcTZuGwvE9T4sVe01Teqt4f3X73yisAyJs22+62P6W4D2zSXUM/4tFedpFyHzhmXckFFhdoObcWE+xSLRtjVYdWRIwCRSyt1DDi7e120=;7:m2sP9Cho50fTeVnQtbL29B+ecpSgCIAMYmGOA8//ycUbACHbHHml50Y7tU0pk0vCp65lLnTTbciU9H2VQZ19uXaIJCaFTcZut4BjW+GSr6BgWC4d5kdfsSdF707EStFolVYdGlFBToonRXkqSkjNfH42acwsN6FPVtcbbLdS8DiwWxsx24jcJ75a0clpUDLiBpTtY9btxM6wGsXaZnsCHNYZtpjLgSTYa/3YWWGEWmJziL+3LF3I1rXVTKZsv71X
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2018 21:49:57.4907 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b52b085b-f09b-46fa-fe8c-08d61830848a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2018 21:49:58.5656 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e69961d-4580-42a4-b42c-08d61830852e
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR0801MB2145
@@ -82,7 +83,7 @@ Return-Path: <dzhu@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66209
+X-archive-position: 66210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -99,37 +100,175 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We can rely on the system kernel and the dump capture kernel themselves in
-memory usage.
+Out-of-tree platforms may not be based on Generic as shown in customer
+communication. Share the prepare method with all using UHI boot protocol,
+and put into machine_kexec.c.
 
-Being restrictive with 512MB limit may cause kexec tool failure on some
-platforms.
+The benefit is that, when having kexec_args related problems, developers
+will naturally look into machine_kexec.c, where "CONFIG_UHI_BOOT" will be
+found, prompting them to add "select UHI_BOOT" to the platform Kconfig. It
+would otherwise require a lot debugging or online searching to be aware
+that the solution is in Generic code.
 
 Tested-by: Rachel Mozes <rachel.mozes@intel.com>
 Reported-by: Rachel Mozes <rachel.mozes@intel.com>
 Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 ---
- arch/mips/include/asm/kexec.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/Kconfig                |  4 +++
+ arch/mips/generic/Makefile       |  1 -
+ arch/mips/generic/kexec.c        | 44 --------------------------------
+ arch/mips/kernel/machine_kexec.c | 42 +++++++++++++++++++++++++++++-
+ 4 files changed, 45 insertions(+), 46 deletions(-)
+ delete mode 100644 arch/mips/generic/kexec.c
 
-diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index 5eeb648c4e3a..40795ca89961 100644
---- a/arch/mips/include/asm/kexec.h
-+++ b/arch/mips/include/asm/kexec.h
-@@ -12,11 +12,11 @@
- #include <asm/stacktrace.h>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 35511999156a..71afb3593cb6 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -132,6 +132,7 @@ config MIPS_GENERIC
+ 	select USB_UHCI_BIG_ENDIAN_DESC if CPU_BIG_ENDIAN
+ 	select USB_UHCI_BIG_ENDIAN_MMIO if CPU_BIG_ENDIAN
+ 	select USE_OF
++	select UHI_BOOT
+ 	help
+ 	  Select this to build a kernel which aims to support multiple boards,
+ 	  generally using a flattened device tree passed from the bootloader
+@@ -2898,6 +2899,9 @@ config USE_OF
+ 	select OF_EARLY_FLATTREE
+ 	select IRQ_DOMAIN
  
- /* Maximum physical address we can use pages from */
--#define KEXEC_SOURCE_MEMORY_LIMIT (0x20000000)
-+#define KEXEC_SOURCE_MEMORY_LIMIT (-1UL)
- /* Maximum address we can reach in physical address mode */
--#define KEXEC_DESTINATION_MEMORY_LIMIT (0x20000000)
-+#define KEXEC_DESTINATION_MEMORY_LIMIT (-1UL)
-  /* Maximum address we can use for the control code buffer */
--#define KEXEC_CONTROL_MEMORY_LIMIT (0x20000000)
-+#define KEXEC_CONTROL_MEMORY_LIMIT (-1UL)
- /* Reserve 3*4096 bytes for board-specific info */
- #define KEXEC_CONTROL_PAGE_SIZE (4096 + 3*4096)
++config UHI_BOOT
++	bool
++
+ config BUILTIN_DTB
+ 	bool
  
+diff --git a/arch/mips/generic/Makefile b/arch/mips/generic/Makefile
+index d03a36f869a4..181aa1335419 100644
+--- a/arch/mips/generic/Makefile
++++ b/arch/mips/generic/Makefile
+@@ -15,5 +15,4 @@ obj-y += proc.o
+ obj-$(CONFIG_YAMON_DT_SHIM)		+= yamon-dt.o
+ obj-$(CONFIG_LEGACY_BOARD_SEAD3)	+= board-sead3.o
+ obj-$(CONFIG_LEGACY_BOARD_OCELOT)	+= board-ocelot.o
+-obj-$(CONFIG_KEXEC)			+= kexec.o
+ obj-$(CONFIG_VIRT_BOARD_RANCHU)		+= board-ranchu.o
+diff --git a/arch/mips/generic/kexec.c b/arch/mips/generic/kexec.c
+deleted file mode 100644
+index 1ca409f58929..000000000000
+--- a/arch/mips/generic/kexec.c
++++ /dev/null
+@@ -1,44 +0,0 @@
+-/*
+- * Copyright (C) 2016 Imagination Technologies
+- * Author: Marcin Nowakowski <marcin.nowakowski@mips.com>
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms of the GNU General Public License as published by the
+- * Free Software Foundation; either version 2 of the License, or (at your
+- * option) any later version.
+- */
+-
+-#include <linux/kexec.h>
+-#include <linux/libfdt.h>
+-#include <linux/uaccess.h>
+-
+-static int generic_kexec_prepare(struct kimage *image)
+-{
+-	int i;
+-
+-	for (i = 0; i < image->nr_segments; i++) {
+-		struct fdt_header fdt;
+-
+-		if (image->segment[i].memsz <= sizeof(fdt))
+-			continue;
+-
+-		if (copy_from_user(&fdt, image->segment[i].buf, sizeof(fdt)))
+-			continue;
+-
+-		if (fdt_check_header(&fdt))
+-			continue;
+-
+-		kexec_args[0] = -2;
+-		kexec_args[1] = (unsigned long)
+-			phys_to_virt((unsigned long)image->segment[i].mem);
+-		break;
+-	}
+-	return 0;
+-}
+-
+-static int __init register_generic_kexec(void)
+-{
+-	_machine_kexec_prepare = generic_kexec_prepare;
+-	return 0;
+-}
+-arch_initcall(register_generic_kexec);
+diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
+index c63c1f52d1c5..93b8353eece4 100644
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -9,6 +9,7 @@
+ #include <linux/kexec.h>
+ #include <linux/mm.h>
+ #include <linux/delay.h>
++#include <linux/libfdt.h>
+ 
+ #include <asm/cacheflush.h>
+ #include <asm/page.h>
+@@ -28,7 +29,6 @@ atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
+ void (*_crash_smp_send_stop)(void) = NULL;
+ #endif
+ 
+-int (*_machine_kexec_prepare)(struct kimage *) = NULL;
+ void (*_machine_kexec_shutdown)(void) = NULL;
+ void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
+ 
+@@ -52,6 +52,46 @@ static void kexec_image_info(const struct kimage *kimage)
+ 	}
+ }
+ 
++#ifdef CONFIG_UHI_BOOT
++
++static int uhi_machine_kexec_prepare(struct kimage *kimage)
++{
++	int i;
++
++	/*
++	 * In case DTB file is not passed to the new kernel, a flat device
++	 * tree will be created by kexec tool. It holds modified command
++	 * line for the new kernel.
++	 */
++	for (i = 0; i < kimage->nr_segments; i++) {
++		struct fdt_header fdt;
++
++		if (kimage->segment[i].memsz <= sizeof(fdt))
++			continue;
++
++		if (copy_from_user(&fdt, kimage->segment[i].buf, sizeof(fdt)))
++			continue;
++
++		if (fdt_check_header(&fdt))
++			continue;
++
++		kexec_args[0] = -2;
++		kexec_args[1] = (unsigned long)
++			phys_to_virt((unsigned long)kimage->segment[i].mem);
++		break;
++	}
++
++	return 0;
++}
++
++int (*_machine_kexec_prepare)(struct kimage *) = uhi_machine_kexec_prepare;
++
++#else
++
++int (*_machine_kexec_prepare)(struct kimage *) = NULL;
++
++#endif /* CONFIG_UHI_BOOT */
++
+ int
+ machine_kexec_prepare(struct kimage *kimage)
+ {
 -- 
 2.17.1

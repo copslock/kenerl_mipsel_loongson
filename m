@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 23:33:45 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:26402 "EHLO mx1.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 23:36:15 +0200 (CEST)
+Received: from mx1.mailbox.org ([80.241.60.212]:28198 "EHLO mx1.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990945AbeIKVdlUUVSb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Sep 2018 23:33:41 +0200
+        id S23992554AbeIKVgLux3Sb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Sep 2018 23:36:11 +0200
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id B2A0749851;
-        Tue, 11 Sep 2018 23:33:35 +0200 (CEST)
+        by mx1.mailbox.org (Postfix) with ESMTPS id DFC98493C6;
+        Tue, 11 Sep 2018 23:36:05 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id fkvXsl2TFCZt; Tue, 11 Sep 2018 23:33:34 +0200 (CEST)
-Subject: Re: [PATCH v3 net-next 3/6] dt-bindings: net: Add lantiq,xrx200-net
- DT bindings
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id hchZKBxYnsoJ; Tue, 11 Sep 2018 23:36:03 +0200 (CEST)
+Subject: Re: [PATCH v2 net] MIPS: lantiq: dma: add dev pointer
 To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org,
-        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
-        hauke.mehrtens@intel.com, devicetree@vger.kernel.org
-References: <20180909201647.32727-1-hauke@hauke-m.de>
- <20180909201647.32727-4-hauke@hauke-m.de> <20180910125308.GC30395@lunn.ch>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org,
+        hauke.mehrtens@intel.com, paul.burton@mips.com
+References: <20180909192623.14998-1-hauke@hauke-m.de>
+ <20180910124542.GB30395@lunn.ch>
 From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <72fed78d-bc75-b88a-faa8-d2032be59d0f@hauke-m.de>
-Date:   Tue, 11 Sep 2018 23:33:29 +0200
+Message-ID: <e7185ec8-8426-9359-ab17-26b9a64c41cb@hauke-m.de>
+Date:   Tue, 11 Sep 2018 23:36:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <20180910125308.GC30395@lunn.ch>
+In-Reply-To: <20180910124542.GB30395@lunn.ch>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="oLEE0ykZURaRGF50ipN8ayXlYLC9wULer"
+ boundary="TMVKD074rZT5hLW1NTmmWLUWM3o5KJwky"
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66205
+X-archive-position: 66206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,112 +49,76 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---oLEE0ykZURaRGF50ipN8ayXlYLC9wULer
-Content-Type: multipart/mixed; boundary="pLkFwJQBS6Z446jNBrt5JyTNjHDv7HOdD";
+--TMVKD074rZT5hLW1NTmmWLUWM3o5KJwky
+Content-Type: multipart/mixed; boundary="E8aVpwwVI6TFhZuozTovmum5dv2t1jheL";
  protected-headers="v1"
 From: Hauke Mehrtens <hauke@hauke-m.de>
 To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com, john@phrozen.org,
- linux-mips@linux-mips.org, dev@kresin.me, hauke.mehrtens@intel.com,
- devicetree@vger.kernel.org
-Message-ID: <72fed78d-bc75-b88a-faa8-d2032be59d0f@hauke-m.de>
-Subject: Re: [PATCH v3 net-next 3/6] dt-bindings: net: Add lantiq,xrx200-net
- DT bindings
-References: <20180909201647.32727-1-hauke@hauke-m.de>
- <20180909201647.32727-4-hauke@hauke-m.de> <20180910125308.GC30395@lunn.ch>
-In-Reply-To: <20180910125308.GC30395@lunn.ch>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, f.fainelli@gmail.com,
+ john@phrozen.org, linux-mips@linux-mips.org, hauke.mehrtens@intel.com,
+ paul.burton@mips.com
+Message-ID: <e7185ec8-8426-9359-ab17-26b9a64c41cb@hauke-m.de>
+Subject: Re: [PATCH v2 net] MIPS: lantiq: dma: add dev pointer
+References: <20180909192623.14998-1-hauke@hauke-m.de>
+ <20180910124542.GB30395@lunn.ch>
+In-Reply-To: <20180910124542.GB30395@lunn.ch>
 
---pLkFwJQBS6Z446jNBrt5JyTNjHDv7HOdD
+--E8aVpwwVI6TFhZuozTovmum5dv2t1jheL
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
 
-On 09/10/2018 02:53 PM, Andrew Lunn wrote:
-> On Sun, Sep 09, 2018 at 10:16:44PM +0200, Hauke Mehrtens wrote:
->> This adds the binding for the PMAC core between the CPU and the GSWIP
->> switch found on the xrx200 / VR9 Lantiq / Intel SoC.
+On 09/10/2018 02:45 PM, Andrew Lunn wrote:
+> On Sun, Sep 09, 2018 at 09:26:23PM +0200, Hauke Mehrtens wrote:
+>> dma_zalloc_coherent() now crashes if no dev pointer is given.
+>> Add a dev pointer to the ltq_dma_channel structure and fill it in the
+>> driver using it.
+>>
+>> This fixes a bug introduced in kernel 4.19.
 >>
 >> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> Cc: devicetree@vger.kernel.org
 >> ---
->>  .../devicetree/bindings/net/lantiq,xrx200-net.txt   | 21 ++++++++++++=
-+++++++++
->>  1 file changed, 21 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/net/lantiq,xrx20=
-0-net.txt
 >>
->> diff --git a/Documentation/devicetree/bindings/net/lantiq,xrx200-net.t=
-xt b/Documentation/devicetree/bindings/net/lantiq,xrx200-net.txt
->> new file mode 100644
->> index 000000000000..8a2fe5200cdc
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/lantiq,xrx200-net.txt
->> @@ -0,0 +1,21 @@
->> +Lantiq xRX200 GSWIP PMAC Ethernet driver
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +Required properties:
->> +
->> +- compatible	: "lantiq,xrx200-net" for the PMAC of the embedded
->> +		: GSWIP in the xXR200
->> +- reg		: memory range of the PMAC core inside of the GSWIP core
->> +- interrupts	: TX and RX DMA interrupts. Use interrupt-names "tx" for=
-
->> +		: the TX interrupt and "rx" for the RX interrupt.
->> +
->> +Example:
->> +
->> +eth0: eth@E10B308 {
->> +	#address-cells =3D <1>;
->> +	#size-cells =3D <0>;
->> +	compatible =3D "lantiq,xrx200-net";
->> +	reg =3D <0xE10B308 0x30>;
+>> no changes since v1.
+>>
+>> This should go into kernel 4.19 and I have some other patches adding n=
+ew=20
+>> features for kernel 4.20 which are depending on this, so I would prefe=
+r=20
+>> if this goes through the net tree.=20
 >=20
 > Hi Hauke
 >=20
-> This binding itself looks fine. I just find this address range a bit
-> odd. What are 0xe10b300-0xe10b307 used for? Are all 0x30 bytes used in
-> the range? The address range ending at 0xe10b338 seems a bit
-> odd. 0xe10b33f would be more typical.
+> Is this a build time dependency, or a runtime dependency?
 >=20
-> I'm asking because it can be messy when you find out you need to
-> change the address range, and not break backwards compatibility.
+> What we don't want to do is add the switch driver to net-next and find
+> it does not compile because this change is not in net-next yet.
 >=20
->      Andrew
+>    Andrew
+>=20
 
-Hi Andrew,
-
-Thank you for the question, there were multiple problems with the
-register size in this description.
-It is a bit more complicated because the PMAC is part of the switch and
-does not start at an even address.
-
-It is correct that this starts at 0xE10B308, but the size is 0xCF8.
-
-0xe10b300 is unused and 0xe10B304 is used to enable debug modes.
+Yes, this has a compile dependency because I had to extend the API.
 
 Hauke
 
 
---pLkFwJQBS6Z446jNBrt5JyTNjHDv7HOdD--
+--E8aVpwwVI6TFhZuozTovmum5dv2t1jheL--
 
---oLEE0ykZURaRGF50ipN8ayXlYLC9wULer
+--TMVKD074rZT5hLW1NTmmWLUWM3o5KJwky
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAluYNKkACgkQ8bdnhZyy
-68fFqQf/ar1w8DpUFeNPTvJ7UATq7XPntradeex7oov4OspvWegtgNT6nBoUKW21
-5RQveHc/Jg2EX+45Xfjfzb9+kH/gQjsqHIbcim1/dSVvUkotp++SdhoNZypVlIPP
-/HeGsfW65HiquxqvvqDSvbYKGuYatvPcPO/h3dYOysROJlnG1/grQKRc7PrecWgL
-i+TP/d07m0xlg7YKBwBW7FriJIqytAPB4srDbGLIJKYKcyFZlmAX3hXPG1hpYRGV
-71+J8VSOf+2rFmx345GKi5pWCXaQuPgGMsoVTL6K8+d9gu+mcBFzzL9C63i/MXeI
-30go5Qps1UGOMPtb8KwcIPw5+J2Y3w==
-=hjwI
+iQEzBAEBCAAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAluYNUEACgkQ8bdnhZyy
+68dsTAgAzmWaKTYsCVYewVL1vYoBCc3CsdjTsxmhXAn9eZNg5l+fdXxjxUIcY+s+
+hkf/1dEvDCAT+Odpiwaq9xSFKRMx9pFQJhnO0YRZQoo3+jQ8zaB2RcSV7hp4qo4Y
+sXWxQ6CiPiufwcLSZh3GxGuSFYJx3gcKtkltMUbmHlmrPM9a5Nm/4m+8s2Vp7opn
+uu479Zl6xCsv5DOOG9qNHIRyVji6nejA/XXSv/Ncdg0WPt+MPusjuT/n64yBy0Z1
+vEeqBj30pSo3YGtv8UVNmX21NqhpZ4PRvzUYIPCFxquFpJP5rVase7Z6NSxdLfyF
+SGHHngB7fEO300LO+Q2DaF+SZ9NXGQ==
+=sAXk
 -----END PGP SIGNATURE-----
 
---oLEE0ykZURaRGF50ipN8ayXlYLC9wULer--
+--TMVKD074rZT5hLW1NTmmWLUWM3o5KJwky--

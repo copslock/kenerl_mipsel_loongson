@@ -1,102 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 19:23:57 +0200 (CEST)
-Received: from mail-eopbgr700126.outbound.protection.outlook.com ([40.107.70.126]:61696
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992241AbeIKRXyIkoF1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Sep 2018 19:23:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tnZDfr5csmZ8Qs+HOUfb9PLl5Tfza2qrsw7k99YYvCk=;
- b=RUYUIjtguEI+UZlcDiRi7kPzkq0Wj+3aXxigWTUpSEkumQ2Ej/2D7Bgi/X8YE3qwr1x3TesBQy/OH+6tkIH3913ipxeRi4lJdeAgH56AcrKxvRCvnVQ2JrrnNDVGEq9EmJdXMUT+PPLp3uRF7rJ0fm1XyNRbgs24h9qxObTVack=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-Received: from localhost (2601:647:4100:4687:76db:7cfe:65a3:6aea) by
- BN7PR08MB4931.namprd08.prod.outlook.com (2603:10b6:408:28::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1122.18; Tue, 11 Sep 2018 17:23:42 +0000
-Date:   Tue, 11 Sep 2018 10:23:38 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Jaedon Shin <jaedon.shin@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "# v4 . 11" <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] MIPS: Fix CONFIG_CMDLINE handling
-Message-ID: <20180911172338.xdqmkmp3brut4ish@pburton-laptop>
-References: <20180907185414.2630-1-paul.burton@mips.com>
- <20180907185414.2630-2-paul.burton@mips.com>
- <CA+7wUsx8gmDNh_kYAxx=PUR2gNJFRCLNYq=hZE79jT=yjNrj+w@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2018 23:01:30 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:32876 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990945AbeIKVBYH10he (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Sep 2018 23:01:24 +0200
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id BB98642B17;
+        Tue, 11 Sep 2018 23:01:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
+        with ESMTP id jkAWS7gC_Q2p; Tue, 11 Sep 2018 23:01:17 +0200 (CEST)
+Subject: Re: [PATCH v3 net-next 5/6] dt-bindings: net: dsa: Add
+ lantiq,xrx200-gswip DT bindings
+To:     Rob Herring <robh@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, andrew@lunn.ch,
+        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
+        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
+        hauke.mehrtens@intel.com, devicetree@vger.kernel.org
+References: <20180909201647.32727-1-hauke@hauke-m.d>
+ <20180909202027.411-1-hauke@hauke-m.de> <20180910220119.GA32582@bogus>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <6ba09412-e801-0a5c-03ee-20813a9d7b27@hauke-m.de>
+Date:   Tue, 11 Sep 2018 23:01:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+7wUsx8gmDNh_kYAxx=PUR2gNJFRCLNYq=hZE79jT=yjNrj+w@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [2601:647:4100:4687:76db:7cfe:65a3:6aea]
-X-ClientProxiedBy: BL0PR02CA0088.namprd02.prod.outlook.com
- (2603:10b6:208:51::29) To BN7PR08MB4931.namprd08.prod.outlook.com
- (2603:10b6:408:28::17)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cf362691-d919-4d5f-3e76-08d6180b52b8
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BN7PR08MB4931;
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;3:nIMj8UGFLX3FbXHYzOMqmx6Kf+l3zHDkdMZTXKBb4vVILoymDErn5hYpSASd5Jntcaw1Pu6qePs6ICICgLHfpc/uyPTZY2K9cXB4/L+MkKIp4A1cUmCsHQkP8U4uE3T06w6NPRdHZwPwFxcsMXrKEwy85fk+/3eifP+WjlTfnGTCoZt8EFqy8ii5o36oX2ruM0nxwD/wCOzTKs7QbHhTZwE/oEGb//Kg9GSWnk02zcl5ve9/7zIlTRjFWvfZg/jB;25:+7h2fzupb2PUyRXD9uIPgsgc0CUG8Pbr4UufHR+NGoq/DVjA2UrZBU0B485CYvZBLF+mDvo4U3dboe+fmyoBaYOaU+ZFPSu9Fem09qZtMJdsA+sKMp6CmmjLAmalHdgtskGJFjIZv8t10QLd9c1NTH4XpURH0EwD/tlKilwrO8fbptoVL4A18sHHyN4QmwemaUmp/kE6No+u183aSL/2utRxnFW2fkPFvvYgWiHoViCmI4dv1KBE1DfdJxgOB4qPslJdwqARmsiZNydDLX0bZGs43LuzGS6fjc7S9D9zZ7Xmb0jaihXXpXia4jMsNDc/gjYFIEG1/C/n9Vs7eowa3w==;31:8U3fTYS4SZFvP6G3E3Kc9YBvrIRxq2SDBN+GlXiX6wHoRm5bwJX0Y8v6hgu7DThumdtHmLWb13VZuS0VWW5CEktNZslw7E2Ib3pOuShhd4XuvMtBPu7zjgFw9oK4T5o5HwLvXkBTA0ITT4x2FalN8fIHnDBTIzKduupWV+PHZY2zQF6dFDu/Qlnx7YHNdaeT+0kk/5/qHX5/hK/jq9VlzLvPOoVNWSEerU3n0u1HzEI=
-X-MS-TrafficTypeDiagnostic: BN7PR08MB4931:
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;20:0koyYKv23fhdFcWjtPh2n0hatbgrbtifnCnvshvsQeSNSQBCX3hGZ8KDpaeEDBLwv7GTexypP4AL1+hXAa0VKjypVZld9YjszyEu2mHYbq2/B8RNL9wS5SnY4ynTh7OCxYtzGCyYz8ql1x7CiRt+MTCqgmdk+b8C6eCKf1eWnNnUMqjSBxDfyP2NdVvohLmVIl3gZrU+kwqqM57fnsJS7Nwg9b+Fac053Bv+46oaNsOd7U9wBblIOhk7RULRnA3x;4:fwsM4kctnEyfrTDqzKFNDGZrY30NyfR8FhBA48kQbhjC1SKo+4uMzFLcPqlpmpiQJHWfHdTu6ynyLC1N7jihsBs77jvXFcZSlBhF828khf5yJda/kgj2hiSZH15wZqnz/VD6TTe+AtgO/wX9/lbuXDpax4GtbGK6pKOwg8h5hGS3e5J5d38N7v9kmx7MtT4U2k97dajk2Hqq4MJyg2X4L7R2ryaynyeb1PyfvBrRPV+eAZ1uVF0KZ6Pn/YLVCrpLc//HK567FsA5mVxY+RcKhw==
-X-Microsoft-Antispam-PRVS: <BN7PR08MB49313F5D3A5C79E012B74E78C1040@BN7PR08MB4931.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3231311)(944501410)(52105095)(10201501046)(3002001)(149027)(150027)(6041310)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(201708071742011)(7699050);SRVR:BN7PR08MB4931;BCL:0;PCL:0;RULEID:;SRVR:BN7PR08MB4931;
-X-Forefront-PRVS: 0792DBEAD0
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(136003)(346002)(376002)(396003)(366004)(39840400004)(199004)(189003)(81166006)(81156014)(46003)(53546011)(50466002)(386003)(7736002)(106356001)(105586002)(42882007)(6666003)(16526019)(6246003)(68736007)(6916009)(8936002)(186003)(486006)(316002)(23726003)(16586007)(11346002)(446003)(1076002)(58126008)(6116002)(476003)(54906003)(47776003)(2906002)(478600001)(76176011)(4326008)(6496006)(305945005)(52116002)(52396003)(39060400002)(44832011)(33896004)(5660300001)(33716001)(25786009)(6486002)(76506005)(8676002)(97736004)(14444005)(9686003)(229853002)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR08MB4931;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN7PR08MB4931;23:O/DxZvgMKENmhco1lQEOG8JGdfa1SBT6FFVdoDYq1?=
- =?us-ascii?Q?6Y9pah1z+Bo6xxz/jZNjOGN6XTN9kUy1v8fIb0uQxnhhlGdfQzT9EtqD2QJg?=
- =?us-ascii?Q?rMkictG9rgDy0ZAr4GmQYxgLCb3szX2b/i3DqBW4CNRdTmnJAphMd0cNnczX?=
- =?us-ascii?Q?6AiKPdwAEkTXTCGDfez8ABicrCNKG534FX4oohludw/DmsxHcnqLC+6N0FpG?=
- =?us-ascii?Q?LkhIS6Bv4sY95UjBUc8/FjjGktW4ndNYvcyRfC9QK4BGsmYJTPX3e0+JeVJZ?=
- =?us-ascii?Q?iOkJ2MZRfYy7hovjg0otflVOS0sMh9esmVp85NlEeR6XDYsygJ1Uv53L20nY?=
- =?us-ascii?Q?5Q1GTsBuJi4SmsckENYMe1l4oNAbDBTnhvopSnxmiuSCNMYZPNNv1tA74J7e?=
- =?us-ascii?Q?1FeNGwkdszmmFlVMAb2yVt4jSqtJ7EsTnyN4Vwkjmx5+t4WJnyhWlL8up8p/?=
- =?us-ascii?Q?ImLISgylIW6JzEPYzuYH7E6HnMa01iGa5oeOxNUBSY4In1MEu0GRpSoX0JbJ?=
- =?us-ascii?Q?v++sDmGXyLogTh+L2PlwD8QN1N4dFFHRjmKoxOnadlwsdXXLD7o88Yw6CMN/?=
- =?us-ascii?Q?mMIdusOtQf+i9icWvYcHXKLQ8p+/4cdBTJ+CGjXT+9nb9dHG+/rtAD4Mglfm?=
- =?us-ascii?Q?mXuzy2/rVcuemcDXb59MLqdodgVKjXjZ1J1uIIkwejuOeISCabpzLff4YEvG?=
- =?us-ascii?Q?12geyEypX3VmKcCvpW0PvZRfMLLkAydx7Q5a81OWrB0IbnE+5BR6P3q+Bd7B?=
- =?us-ascii?Q?Dmgi8WUbEsfpoGViRyNhKEGizdKAz+HpoW9Y6NowOjqLwl6VAF6oTr354Hyq?=
- =?us-ascii?Q?NoZfmSHnTdUCjdBuSU/lStSfGrsyMP30ck9mqfbS9zkT1LRchWipn/oDc39M?=
- =?us-ascii?Q?Aj5QScXaH4SKMK6JmMbxZujL42k2RpevWLzROgohmgEydMwljHGtvYly8Dmk?=
- =?us-ascii?Q?qR6nnwKddN1n2qOfOEl8PLrcwFtjZZqqSqHKJ/uitrE8Qln4R9Xk0uZvr/Ci?=
- =?us-ascii?Q?ROxwY39p2de+y7yK7op6VAg/HNb+jYiRjiyT5Lenhlmk8DPFbTCg4xm6OJN3?=
- =?us-ascii?Q?QBRWwceR9OvVIez20PKSoiAgLOFkLHnlB8xxRuqqjOhZMsDLgakurMhwhGJ1?=
- =?us-ascii?Q?OjulJeIVuapS1FOkw53ufB6R/ozscN3I9vCifSkA2Xq472lQVHrxAZsnqUrs?=
- =?us-ascii?Q?8PHDPkZWb20/26f03kBoIg6hRRr/LGUifMVPplTp/PYEDIBH75EkUvtMw9Ns?=
- =?us-ascii?Q?XJXG7+etbnur4GVuxzAKDNM0kkw7TrG5JUwLtd0fp7JG56qZ6zO1NMGF7RbX?=
- =?us-ascii?Q?V79jeXhmdLytdIEhuRu+ReH8HD0wxW1UpLUmSSc0T44?=
-X-Microsoft-Antispam-Message-Info: CD90r6igtleh2Jg+AhLcws5Dj1gEyWhhZwB48ab5rbMW7xWXJBGETHUWF3iV6O6co/it9Z4lGzEmo3uFAXAfv8I4auXta7jE4Zkng9Z89gDgV9nJI6ia1iKLWxnDJYKkUY86YYtccdTJLcUANNgN/0b3fBHH8DTa7YSecQQFI/YH/N3/wq9x9kVYzRvfnfV0+bw2ryBHzircgNk2SfgmS9WmImmP6h3hVvL6B2KrkyudsYMDj0qEaFPA4GRNxm4ckjxOGzQmkRTakPCHLbJudlVw/LFspj8iyaysrdp7q+NukAMgYHkScr2/8gsqJeaGhLrc4VgP50BLunLYJLZ3mL1cjOcHwllqfoZQA6QyTGk=
-X-Microsoft-Exchange-Diagnostics: 1;BN7PR08MB4931;6:0RjYQSFdnRvQ/RFR9roTyNTif6Z+tffHjFWlHQCmN7tqzeUYOL1pw1a3IR/b85GMcTKYRzneguVZZYfndCAtgRuTOmFwXwyBOit0vtRidE8cMPn9Iygx8kDdTCnChPq0wyMlFVZRKRfFarn5nqUBHDnZxZr12EJZE40rBBEb5OKAVYIiPwMpiBaneDTChMjvXaKRFXJAodWA3T/dMI/qBt/7/EKLXqNN/gZ5UIwDujSqIfu7iNTuu7J2+uWIkQuYBDi32wPGA5UtLwAnIe8S6WY8t7kTHF395NZ8/5DCbds5jJ4LooGsDXv77Gy+5bB/y8CJYlZzytCoJU/+cA7UHgCWdqMcEDlwnTqHqjZHEkqcJoNdpRUzJ8qu67dDXGNRInhvKiMqszEDWuqCBfSVA+anNC6LmNBBpRY+XHGRgEilBKWo0iAb3oBg8++usYJ/te3OYiUd1jwdRRTgMWiXIg==;5:LGt2goXkz24GAYPD+Z1YvOYAO6+Gk0YtAbg5TmlxGxNY1xK3X24v/mBkO0SjWZhxiQjUsYwCzif8RtnQFdKIAIQkR2CT77YJ94+gGA41mLK5LCgZ+ZRIYPTHmOIEkaEiBF8zYK3YYzGtb2dfNXHfCS2nWMjqGGtlbV9tPmakhMo=;7:Yow/NMODJ6fs6Fdp7k5U97ZtSIb2Zk3BQ8SgO5uYxmu+8rEo8O5Ljz71b4IUn1LIvQWVfb+sARVhlpGSusVXYVAJvlDKPsEUYbSf8Gf1JD5A1rE2948QeeMOwwwLz7+Bf0kDmS6ve0WNkymhDRt3wtjNa1eht1i2MZp0meMcMzf6ZEjPWXLC5EjHC/6lSIMMGqTmq5BN8aiIe2EA53zumk+MDKdssjHazNwZEmuHVuEMrYL7c5XYtZSFZyzEkd58
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2018 17:23:42.8755 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf362691-d919-4d5f-3e76-08d6180b52b8
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4931
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <20180910220119.GA32582@bogus>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="4WnIr7sTAoGLvsWN03G8tmxZUdXteV065"
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66203
+X-archive-position: 66204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -109,49 +50,271 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Matthieu,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--4WnIr7sTAoGLvsWN03G8tmxZUdXteV065
+Content-Type: multipart/mixed; boundary="aIWsEDcI2rzvSBmmZaYMdcKNF2YFAI5pF";
+ protected-headers="v1"
+From: Hauke Mehrtens <hauke@hauke-m.de>
+To: Rob Herring <robh@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, andrew@lunn.ch,
+ vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com, john@phrozen.org,
+ linux-mips@linux-mips.org, dev@kresin.me, hauke.mehrtens@intel.com,
+ devicetree@vger.kernel.org
+Message-ID: <6ba09412-e801-0a5c-03ee-20813a9d7b27@hauke-m.de>
+Subject: Re: [PATCH v3 net-next 5/6] dt-bindings: net: dsa: Add
+ lantiq,xrx200-gswip DT bindings
+References: <20180909201647.32727-1-hauke@hauke-m.d>
+ <20180909202027.411-1-hauke@hauke-m.de> <20180910220119.GA32582@bogus>
+In-Reply-To: <20180910220119.GA32582@bogus>
 
-On Mon, Sep 10, 2018 at 02:09:21PM +0200, Mathieu Malaterre wrote:
-> On Fri, Sep 7, 2018 at 8:55 PM Paul Burton <paul.burton@mips.com> wrote:
-> > Commit 8ce355cf2e38 ("MIPS: Setup boot_command_line before
-> > plat_mem_setup") fixed a problem for systems which have
-> > CONFIG_CMDLINE_BOOL=y & use a DT with a chosen node that has either no
-> > bootargs property or an empty one. In this configuration
-> > early_init_dt_scan_chosen() copies CONFIG_CMDLINE into
-> > boot_command_line, but the MIPS code doesn't know this so it appends
-> > CONFIG_CMDLINE (via builtin_cmdline) to boot_command_line again. The
-> > result is that boot_command_line contains the arguments from
-> > CONFIG_CMDLINE twice.
-> >
-> > That commit took the approach of simply setting up boot_command_line
-> > from the MIPS code before early_init_dt_scan_chosen() runs, causing it
-> > not to copy CONFIG_CMDLINE to boot_command_line if a chosen node with no
-> > bootargs property is found.
-> >
-> > Unfortunately this is problematic for systems which do have a non-empty
-> > bootargs property & CONFIG_CMDLINE_BOOL=y. There
-> > early_init_dt_scan_chosen() will overwrite boot_command_line with the
-> > arguments from DT, which means we lose those from CONFIG_CMDLINE
-> > entirely. This breaks CONFIG_MIPS_CMDLINE_DTB_EXTEND. If we have
-> > CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER or
-> > CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND selected and the DT has a bootargs
-> > property which we should ignore, it will instead be honoured breaking
-> > those configurations too.
-> >
-> > Fix this by reverting commit 8ce355cf2e38 ("MIPS: Setup
-> > boot_command_line before plat_mem_setup") to restore the former
-> > behaviour, and fixing the CONFIG_CMDLINE duplication issue by instead
-> > providing a no-op implementation of early_init_dt_fixup_cmdline_arch()
-> > to prevent early_init_dt_scan_chosen() from using CONFIG_CMDLINE.
-> 
-> Sorry I cannot test this patch ATM. I've simply CCed Paul C. just in case.
+--aIWsEDcI2rzvSBmmZaYMdcKNF2YFAI5pF
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-Thanks - for the record I did test on a Ci20, though I was booting using
-my ci20-usb-boot tool which doesn't currently provide a command line to
-the kernel. CONFIG_CMDLINE didn't get duplicated though.
+On 09/11/2018 12:01 AM, Rob Herring wrote:
+> On Sun, Sep 09, 2018 at 10:20:27PM +0200, Hauke Mehrtens wrote:
+>> This adds the binding for the GSWIP (Gigabit switch) core found in the=
 
-I'll get back to a v2 for this & hopefully get it fixed up for 4.19, but
-it might take a little while because my son was just born on Saturday :)
+>> xrx200 / VR9 Lantiq / Intel SoC.
+>>
+>> This part takes care of the switch, MDIO bus, and loading the FW into
+>> the embedded GPHYs.
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> Cc: devicetree@vger.kernel.org
+>> ---
+>>  .../devicetree/bindings/net/dsa/lantiq-gswip.txt   | 141 ++++++++++++=
++++++++++
+>>  1 file changed, 141 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/net/dsa/lantiq-g=
+swip.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.tx=
+t b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
+>> new file mode 100644
+>> index 000000000000..a089f5856778
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
+>> @@ -0,0 +1,141 @@
+>> +Lantiq GSWIP Ethernet switches
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> +
+>> +Required properties for GSWIP core:
+>> +
+>> +- compatible	: "lantiq,xrx200-gswip" for the embedded GSWIP in the
+>> +		  xRX200 SoC
+>> +- reg		: memory range of the GSWIP core registers
+>> +		: memory range of the GSWIP MDIO registers
+>> +		: memory range of the GSWIP MII registers
+>> +
+>> +See Documentation/devicetree/bindings/net/dsa/dsa.txt for a list of
+>> +additional required and optional properties.
+>> +
+>> +
+>> +Required properties for MDIO bus:
+>> +- compatible	: "lantiq,xrx200-mdio" for the MDIO bus inside the GSWIP=
 
-Thanks,
-    Paul
+>> +		  core of the xRX200 SoC and the PHYs connected to it.
+>> +
+>> +See Documentation/devicetree/bindings/net/mdio.txt for a list of addi=
+tional
+>> +required and optional properties.
+>> +
+>> +
+>> +Required properties for GPHY firmware loading:
+>> +- compatible	: "lantiq,gphy-fw" and "lantiq,xrx200-gphy-fw",
+>> +		  "lantiq,xrx200a1x-gphy-fw", "lantiq,xrx200a2x-gphy-fw",
+>> +		  "lantiq,xrx300-gphy-fw", or "lantiq,xrx330-gphy-fw"
+>> +		  for the loading of the firmware into the embedded
+>> +		  GPHY core of the SoC.
+>=20
+> One valid combination of compatibles per line please.
+
+Ok, I will update this.
+
+>=20
+>> +- lantiq,rcu	: reference to the rcu syscon
+>> +
+>> +The GPHY firmware loader has a list of GPHY entries, one for each
+>> +embedded GPHY
+>> +
+>> +- reg		: Offset of the GPHY firmware register in the RCU
+>> +		  register range
+>=20
+> This use of reg is strange. This node should probably be a child of=20
+> the RCU.
+
+The SoC Designers put all registers for which they didn't want to create
+a new register block into the RCU (Reset controller unit) range. The
+switch itself is on the main crossbar, and has his own memory range, but
+the registers to load the GPHY FW are in the RCU register. We have to
+load the GPHY firmware before we can assess the GPHY, after the FW is
+loaded we control the GPHY through the MDIO bus of the switch.
+
+The GPHY is now part of the switch driver, so we moved the GPHY node
+also as a sub node to the switch, when it would be under the RCU we
+somehow have to make sure it gets loaded before the switch gets loaded,
+which is more complicated. The GPHY itself is also part of the switch IP
+block and not the reset controller unit.
+
+>> +- resets	: list of resets of the embedded GPHY
+>> +- reset-names	: list of names of the resets
+>> +
+>> +Example:
+>> +
+>> +Ethernet switch on the VRX200 SoC:
+>> +
+>> +gswip: gswip@E108000 {
+>=20
+> switch@... or ethernet-switch@...
+>=20
+> We need a standard name here and add it to the DT spec.
+
+Ok, I will change this.
+
+>=20
+>> +	#address-cells =3D <1>;
+>> +	#size-cells =3D <0>;
+>> +	compatible =3D "lantiq,xrx200-gswip";
+>> +	reg =3D <	0xE108000 0x3000 /* switch */
+>> +		0xE10B100 0x70 /* mdio */
+>> +		0xE10B1D8 0x30 /* mii */
+>> +		>;
+>> +	dsa,member =3D <0 0>;
+>=20
+> Not documented.
+
+This is part of the general dsa binding.
+
+>=20
+>> +
+>> +	ports {
+>> +		#address-cells =3D <1>;
+>> +		#size-cells =3D <0>;
+>> +
+>> +		port@0 {
+>> +			reg =3D <0>;
+>> +			label =3D "lan3";
+>> +			phy-mode =3D "rgmii";
+>> +			phy-handle =3D <&phy0>;
+>> +		};
+>> +
+>> +		port@1 {
+>> +			reg =3D <1>;
+>> +			label =3D "lan4";
+>> +			phy-mode =3D "rgmii";
+>> +			phy-handle =3D <&phy1>;
+>> +		};
+>> +
+>> +		port@2 {
+>> +			reg =3D <2>;
+>> +			label =3D "lan2";
+>> +			phy-mode =3D "internal";
+>> +			phy-handle =3D <&phy11>;
+>> +		};
+>> +
+>> +		port@4 {
+>> +			reg =3D <4>;
+>> +			label =3D "lan1";
+>> +			phy-mode =3D "internal";
+>> +			phy-handle =3D <&phy13>;
+>> +		};
+>> +
+>> +		port@5 {
+>> +			reg =3D <5>;
+>> +			label =3D "wan";
+>> +			phy-mode =3D "rgmii";
+>> +			phy-handle =3D <&phy5>;
+>> +		};
+>> +
+>> +		port@6 {
+>> +			reg =3D <0x6>;
+>> +			label =3D "cpu";
+>> +			ethernet =3D <&eth0>;
+>> +		};
+>> +	};
+>> +
+>> +	mdio@0 {
+>=20
+> What's the address 0 here?
+
+I will remove this, there is only one MDIO bus under the switch.
+
+>=20
+>> +		#address-cells =3D <1>;
+>> +		#size-cells =3D <0>;
+>> +		compatible =3D "lantiq,xrx200-mdio";
+>> +		reg =3D <0>;
+>> +
+>> +		phy0: ethernet-phy@0 {
+>> +			reg =3D <0x0>;
+>> +		};
+>> +		phy1: ethernet-phy@1 {
+>> +			reg =3D <0x1>;
+>> +		};
+>> +		phy5: ethernet-phy@5 {
+>> +			reg =3D <0x5>;
+>> +		};
+>> +		phy11: ethernet-phy@11 {
+>> +			reg =3D <0x11>;
+>> +		};
+>> +		phy13: ethernet-phy@13 {
+>> +			reg =3D <0x13>;
+>> +		};
+>> +	};
+>> +
+>> +	gphy-fw {
+>> +		compatible =3D "lantiq,xrx200-gphy-fw", "lantiq,gphy-fw";
+>> +		lantiq,rcu =3D <&rcu0>;
+>=20
+> Missing #size-cells and #address-cells, but this should change as I sai=
+d=20
+> above.
+
+Ok, I will change this.
+
+>=20
+>> +
+>> +		gphy@20 {
+>> +			reg =3D <0x20>;
+>> +
+>> +			resets =3D <&reset0 31 30>;
+>> +			reset-names =3D "gphy";
+>> +		};
+>> +
+>> +		gphy@68 {
+>> +			reg =3D <0x68>;
+>> +
+>> +			resets =3D <&reset0 29 28>;
+>> +			reset-names =3D "gphy";
+>> +		};
+>> +	};
+>> +};
+>> --=20
+>> 2.11.0
+>>
+
+
+
+--aIWsEDcI2rzvSBmmZaYMdcKNF2YFAI5pF--
+
+--4WnIr7sTAoGLvsWN03G8tmxZUdXteV065
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAluYLRoACgkQ8bdnhZyy
+68czXAgAmZYkeIoir2eLM38adoasy6ROv+j9NNWfnKbmP6InFS5J3qVOchv+mIYm
+LCdQFSLzZmquyy6I3MqWDR2H7w9/2kOfDwbpOYlneHdnxTw19Zdd/WsZYPzy3A1V
+BIGley+czvrkodUCdlEHHTPm7qN7KOFVLJ6iH4HU88HIHBKJPYfd+rSlj6j/xyQR
+k6aVOH5Niz/30vUfALcTdN7EczCnPce3auJA1A5w0emEgsO8Ti3O0HWHNDLMtsBF
+a9XN8759GilBc0zKgy+Qy/QTx6LewCXiHVmBOYNgyuHI7kffiVsLlktm9BJm1MT1
+NhEcgJR8vfu0oy4qzBMVz2ZDovA3/w==
+=Vjf7
+-----END PGP SIGNATURE-----
+
+--4WnIr7sTAoGLvsWN03G8tmxZUdXteV065--

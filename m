@@ -1,50 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 13:32:22 +0200 (CEST)
-Received: from mail-lj1-x243.google.com ([IPv6:2a00:1450:4864:20::243]:38873
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 13:32:31 +0200 (CEST)
+Received: from mail-lj1-x243.google.com ([IPv6:2a00:1450:4864:20::243]:41793
         "EHLO mail-lj1-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992925AbeILLcTtHyj2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 13:32:19 +0200
-Received: by mail-lj1-x243.google.com with SMTP id p6-v6so1311494ljc.5
-        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2018 04:32:19 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23992871AbeILLcVljM52 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 13:32:21 +0200
+Received: by mail-lj1-x243.google.com with SMTP id y17-v6so1304418ljy.8
+        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2018 04:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=3NDQXcdXcfEDAbxxV89gwSIl7m2F4uMsFBrhFLub3cI=;
-        b=Xdz+9IVJ4SObNaS++vS4tx4bA4DEyvZBUcfHwOZCMwLx7ZRIXzUixcrN7cRgwEs4lm
-         7+Hdl7hRfGXh5ni2iIwVoq7rEjiSS7s9/03KNPfo/L+1kcC9l4OJ+K2XqETEzAx87UxN
-         qXrm3iXc+N+1gQMTkG0/acnFdtxTacofCM0Rk=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=pR42x8AIhEMBTbExVmiy65uEYfsTpfnjsPzSIQbJS0M=;
+        b=aUBvBHoaolIh1TD5koccfrqnsFV8wVEAjGPi8FDwIyBMMzXR78S2s26Ct2FFiBIbX7
+         ahfECwIhJD7QjS6XNjbm+ycssVYpq0XG6Zn0gzG3tuotjvwRAtlFKJT2bgxijWE6O7rH
+         +Mfo61HFCzYRSKpExaes4OBpabZukJBeUnRCU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=3NDQXcdXcfEDAbxxV89gwSIl7m2F4uMsFBrhFLub3cI=;
-        b=myz31LhNqQVb5VH9nyMx4T8fONRKFWWVsSfbDh+AeQcj9lLQG8Ff5glUFzFkGg7NSL
-         wGrfoc6MybfKM+Jq00QZT9MCsBWL+bdpijCR3xg8mZhZiGWlc8mtoAkgkBSAZjoM1281
-         ib/PGWsQfdBkKUQiLPSihj3IKbTEi7PxVibf8e/tLcP5xcUvjo800+oqL7DTbf8L6KJQ
-         pjIbAzMPvFtnQHfxscS6iyKnLwnH2R51Sp4jD5ZFd2tQwuXfV1LCdZGesyOArkZTc1O/
-         ADikv76K57ugfYJMByPJcgDx99s1OPOZl5tjWMyOEQquP4/OxyUTkywyZza/CFqum3fU
-         n/jQ==
-X-Gm-Message-State: APzg51CfdD3xXIvlJJ+yryphCtpquasqhJNQakLNq9RungxS7K+RDczn
-        VXoc5g022QSdu8cBJhN+nm6idg==
-X-Google-Smtp-Source: ANB0VdYJgFuriFTKv/0Y1TOVYSD/O5BdmRNO0Oov1QoRG1OH1nqF4Zn9Gdi0CKekeG/QeCuY9SdwPA==
-X-Received: by 2002:a2e:6301:: with SMTP id x1-v6mr1158929ljb.9.1536751933575;
-        Wed, 12 Sep 2018 04:32:13 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=pR42x8AIhEMBTbExVmiy65uEYfsTpfnjsPzSIQbJS0M=;
+        b=C9vKgL3XomSaEnXX5HQiGGTdvs5O860o5Pl3flDN/KUb2ztATzN5PnSROcrFPVZLSe
+         dcPPoWqdy3YBdzHF5hMHfi9Gs11nEXwi+xYgcAoQ1XN00H7wRnJ4JbKtZ6T3YfISQFHI
+         XnID65qQ9GXr8Q+NedNPEGZOo4gIFAR7cREzf+BCymvtl4/8iCwVTZPZ6FMOaciuEIaQ
+         XBVOWWw0V3F5iOW0nylUKOBPE7eFmLiDToaHPgJQ5fBL3atphtg7gwc8LTL1WkKhwWOw
+         lDh6EVfCV1Q3v7qlo2kqO8Ys0QIws53isZySid/2XzdJt/Q9hWt97iMgoz5uggJG8VgQ
+         NIqQ==
+X-Gm-Message-State: APzg51DbuHKMhWHsrKpbE3M2mLnYxNT9BVfd2XOCOOE4ZeT45FH1e/Ir
+        PA0NOUCM9kAfBTD+pP/lMVw7Bg==
+X-Google-Smtp-Source: ANB0Vda+FhZ+aXc4sLKiRHD+1nKAKP6C0u7ftfHq7GsxecLbXARfUrgq8vOWe6I01pIkJtOYyARpkA==
+X-Received: by 2002:a2e:7c12:: with SMTP id x18-v6mr1074072ljc.71.1536751936172;
+        Wed, 12 Sep 2018 04:32:16 -0700 (PDT)
 Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id q19-v6sm144182lje.29.2018.09.12.04.32.11
+        by smtp.gmail.com with ESMTPSA id q19-v6sm144182lje.29.2018.09.12.04.32.14
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Sep 2018 04:32:12 -0700 (PDT)
+        Wed, 12 Sep 2018 04:32:15 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-gpio@vger.kernel.org
 Cc:     linux-mips@linux-mips.org,
         Linus Walleij <linus.walleij@linaro.org>,
         Yoichi Yuasa <yuasa@linux-mips.org>
-Subject: [PATCH 1/3] gpio: vr41xx: Include the right header
-Date:   Wed, 12 Sep 2018 13:32:02 +0200
-Message-Id: <20180912113204.1064-1-linus.walleij@linaro.org>
+Subject: [PATCH 2/3] gpio: vr41xx: Cut down on boilerplate
+Date:   Wed, 12 Sep 2018 13:32:03 +0200
+Message-Id: <20180912113204.1064-2-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20180912113204.1064-1-linus.walleij@linaro.org>
+References: <20180912113204.1064-1-linus.walleij@linaro.org>
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66215
+X-archive-position: 66216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,26 +64,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a GPIO driver so include only <linux/gpio/driver.h>.
+This switches this file to use the SPDX license tag.
 
 Cc: Yoichi Yuasa <yuasa@linux-mips.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/gpio/gpio-vr41xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-vr41xx.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
 diff --git a/drivers/gpio/gpio-vr41xx.c b/drivers/gpio/gpio-vr41xx.c
-index 027699cec911..7ffb58b0d239 100644
+index 7ffb58b0d239..7d40104b8586 100644
 --- a/drivers/gpio/gpio-vr41xx.c
 +++ b/drivers/gpio/gpio-vr41xx.c
-@@ -21,7 +21,7 @@
+@@ -1,23 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0+
+ /*
+  *  Driver for NEC VR4100 series General-purpose I/O Unit.
+  *
+  *  Copyright (C) 2002 MontaVista Software Inc.
+  *	Author: Yoichi Yuasa <source@mvista.com>
+  *  Copyright (C) 2003-2009  Yoichi Yuasa <yuasa@linux-mips.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
   */
  #include <linux/errno.h>
  #include <linux/fs.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/driver.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
 -- 
 2.17.1

@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 13:32:31 +0200 (CEST)
-Received: from mail-lj1-x243.google.com ([IPv6:2a00:1450:4864:20::243]:41793
-        "EHLO mail-lj1-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992871AbeILLcVljM52 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 13:32:21 +0200
-Received: by mail-lj1-x243.google.com with SMTP id y17-v6so1304418ljy.8
-        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2018 04:32:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 13:32:40 +0200 (CEST)
+Received: from mail-lj1-x244.google.com ([IPv6:2a00:1450:4864:20::244]:42640
+        "EHLO mail-lj1-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993030AbeILLcYH7522 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 13:32:24 +0200
+Received: by mail-lj1-x244.google.com with SMTP id f1-v6so1294132ljc.9
+        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2018 04:32:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pR42x8AIhEMBTbExVmiy65uEYfsTpfnjsPzSIQbJS0M=;
-        b=aUBvBHoaolIh1TD5koccfrqnsFV8wVEAjGPi8FDwIyBMMzXR78S2s26Ct2FFiBIbX7
-         ahfECwIhJD7QjS6XNjbm+ycssVYpq0XG6Zn0gzG3tuotjvwRAtlFKJT2bgxijWE6O7rH
-         +Mfo61HFCzYRSKpExaes4OBpabZukJBeUnRCU=
+        bh=WmDKNuVL2nQEOx4lnKKMauhr7amwXHX432D2ciaX0bw=;
+        b=HrD+V0EsTf+MrjTIH4eYswSpyPOL7PSO08bFHpYQVdrzZ1PORD4B6NmdS0uXwm0MRO
+         ahzgswREMBpiDcO9d6xjUleZSNRHYPy/g+wo7xaEprCb/HSS0y07tgEJlWYYyVCURDWE
+         VdR+6pjuO6H5eC7iTaB/T9/8vfqwKqRDJFcpU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=pR42x8AIhEMBTbExVmiy65uEYfsTpfnjsPzSIQbJS0M=;
-        b=C9vKgL3XomSaEnXX5HQiGGTdvs5O860o5Pl3flDN/KUb2ztATzN5PnSROcrFPVZLSe
-         dcPPoWqdy3YBdzHF5hMHfi9Gs11nEXwi+xYgcAoQ1XN00H7wRnJ4JbKtZ6T3YfISQFHI
-         XnID65qQ9GXr8Q+NedNPEGZOo4gIFAR7cREzf+BCymvtl4/8iCwVTZPZ6FMOaciuEIaQ
-         XBVOWWw0V3F5iOW0nylUKOBPE7eFmLiDToaHPgJQ5fBL3atphtg7gwc8LTL1WkKhwWOw
-         lDh6EVfCV1Q3v7qlo2kqO8Ys0QIws53isZySid/2XzdJt/Q9hWt97iMgoz5uggJG8VgQ
-         NIqQ==
-X-Gm-Message-State: APzg51DbuHKMhWHsrKpbE3M2mLnYxNT9BVfd2XOCOOE4ZeT45FH1e/Ir
-        PA0NOUCM9kAfBTD+pP/lMVw7Bg==
-X-Google-Smtp-Source: ANB0Vda+FhZ+aXc4sLKiRHD+1nKAKP6C0u7ftfHq7GsxecLbXARfUrgq8vOWe6I01pIkJtOYyARpkA==
-X-Received: by 2002:a2e:7c12:: with SMTP id x18-v6mr1074072ljc.71.1536751936172;
-        Wed, 12 Sep 2018 04:32:16 -0700 (PDT)
+        bh=WmDKNuVL2nQEOx4lnKKMauhr7amwXHX432D2ciaX0bw=;
+        b=uhgDTEf0kd68SAt/AfiT+ObbDP2yWFWkpZilkw45utv4SVt/iJJMxYdLNSxevW5SZ1
+         8MFtcMlRJrV3vE0iwYlp6nILgkTVByq27dZBtU81yHK0Xeakwj09JDJhFjpqFzIeHhfq
+         M1ZKTdt1rhawIbtp68Z/ocalTP37ERZ+H48tuWnFVFWaqsNQejhYQfQ2awz2Qe8BQev3
+         m0pljf4nHuOcGgnRv4vheJBtWlJoeaMnD1WnJ6aUohAPp7vg82eUKA74gbvAXsqmliJ1
+         Ofj7RqS7+9uX5xrD8dKVAwLSBGYkc3pJqbEqMs7ZNtPevmE6kC/uZ0kf2PJxmRP/7n9V
+         mSLw==
+X-Gm-Message-State: APzg51A5EppysBowwgY36n5ukiQXtL+pXtvMSb4H1/9wNEvNCvgW8KtJ
+        qfZ8JyONa/Lfjp3Ry4Z7WBg86Q==
+X-Google-Smtp-Source: ANB0Vdah9MVHlSN4EzBxG0L6XtAdIelBzktmjZlICGvIJKiSIxWDpqYzWG56Ki11VPdC3cwxZWjq6A==
+X-Received: by 2002:a2e:85d5:: with SMTP id h21-v6mr1090903ljj.103.1536751938551;
+        Wed, 12 Sep 2018 04:32:18 -0700 (PDT)
 Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id q19-v6sm144182lje.29.2018.09.12.04.32.14
+        by smtp.gmail.com with ESMTPSA id q19-v6sm144182lje.29.2018.09.12.04.32.17
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Sep 2018 04:32:15 -0700 (PDT)
+        Wed, 12 Sep 2018 04:32:17 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-gpio@vger.kernel.org
 Cc:     linux-mips@linux-mips.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        Yoichi Yuasa <yuasa@linux-mips.org>
-Subject: [PATCH 2/3] gpio: vr41xx: Cut down on boilerplate
-Date:   Wed, 12 Sep 2018 13:32:03 +0200
-Message-Id: <20180912113204.1064-2-linus.walleij@linaro.org>
+        Yoichi Yuasa <yuasa@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3/3] gpio: vr41xx: Delete vr41xx_gpio_pullupdown() callback
+Date:   Wed, 12 Sep 2018 13:32:04 +0200
+Message-Id: <20180912113204.1064-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20180912113204.1064-1-linus.walleij@linaro.org>
 References: <20180912113204.1064-1-linus.walleij@linaro.org>
@@ -47,7 +48,7 @@ Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66216
+X-archive-position: 66217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,42 +65,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This switches this file to use the SPDX license tag.
+This API is not used anywhere in the kernel and has remained
+unused for years after being introduced.
+
+Over time, we have developed a subsystem to deal with pin
+control and this now managed pull up/down.
+
+Delete the old and unused API. If this platform needs it,
+we should implement a proper pin controller for it instead.
 
 Cc: Yoichi Yuasa <yuasa@linux-mips.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/gpio/gpio-vr41xx.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ arch/mips/include/asm/vr41xx/giu.h |  8 -------
+ drivers/gpio/gpio-vr41xx.c         | 38 ------------------------------
+ 2 files changed, 46 deletions(-)
 
+diff --git a/arch/mips/include/asm/vr41xx/giu.h b/arch/mips/include/asm/vr41xx/giu.h
+index 6a90bc1d916b..ecda4cf300de 100644
+--- a/arch/mips/include/asm/vr41xx/giu.h
++++ b/arch/mips/include/asm/vr41xx/giu.h
+@@ -51,12 +51,4 @@ typedef enum {
+ 
+ extern void vr41xx_set_irq_level(unsigned int pin, irq_level_t level);
+ 
+-typedef enum {
+-	GPIO_PULL_DOWN,
+-	GPIO_PULL_UP,
+-	GPIO_PULL_DISABLE,
+-} gpio_pull_t;
+-
+-extern int vr41xx_gpio_pullupdown(unsigned int pin, gpio_pull_t pull);
+-
+ #endif /* __NEC_VR41XX_GIU_H */
 diff --git a/drivers/gpio/gpio-vr41xx.c b/drivers/gpio/gpio-vr41xx.c
-index 7ffb58b0d239..7d40104b8586 100644
+index 7d40104b8586..b13a49c89cc1 100644
 --- a/drivers/gpio/gpio-vr41xx.c
 +++ b/drivers/gpio/gpio-vr41xx.c
-@@ -1,23 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0+
- /*
-  *  Driver for NEC VR4100 series General-purpose I/O Unit.
-  *
-  *  Copyright (C) 2002 MontaVista Software Inc.
-  *	Author: Yoichi Yuasa <source@mvista.com>
-  *  Copyright (C) 2003-2009  Yoichi Yuasa <yuasa@linux-mips.org>
-- *
-- *  This program is free software; you can redistribute it and/or modify
-- *  it under the terms of the GNU General Public License as published by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
-- *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
-- *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the Free Software
-- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  */
- #include <linux/errno.h>
- #include <linux/fs.h>
+@@ -371,44 +371,6 @@ static int giu_set_direction(struct gpio_chip *chip, unsigned pin, int dir)
+ 	return 0;
+ }
+ 
+-int vr41xx_gpio_pullupdown(unsigned int pin, gpio_pull_t pull)
+-{
+-	u16 reg, mask;
+-	unsigned long flags;
+-
+-	if ((giu_flags & GPIO_HAS_PULLUPDOWN_IO) != GPIO_HAS_PULLUPDOWN_IO)
+-		return -EPERM;
+-
+-	if (pin >= 15)
+-		return -EINVAL;
+-
+-	mask = 1 << pin;
+-
+-	spin_lock_irqsave(&giu_lock, flags);
+-
+-	if (pull == GPIO_PULL_UP || pull == GPIO_PULL_DOWN) {
+-		reg = giu_read(GIUTERMUPDN);
+-		if (pull == GPIO_PULL_UP)
+-			reg |= mask;
+-		else
+-			reg &= ~mask;
+-		giu_write(GIUTERMUPDN, reg);
+-
+-		reg = giu_read(GIUUSEUPDN);
+-		reg |= mask;
+-		giu_write(GIUUSEUPDN, reg);
+-	} else {
+-		reg = giu_read(GIUUSEUPDN);
+-		reg &= ~mask;
+-		giu_write(GIUUSEUPDN, reg);
+-	}
+-
+-	spin_unlock_irqrestore(&giu_lock, flags);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(vr41xx_gpio_pullupdown);
+-
+ static int vr41xx_gpio_get(struct gpio_chip *chip, unsigned pin)
+ {
+ 	u16 reg, mask;
 -- 
 2.17.1

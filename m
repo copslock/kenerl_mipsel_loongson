@@ -1,58 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 13:32:40 +0200 (CEST)
-Received: from mail-lj1-x244.google.com ([IPv6:2a00:1450:4864:20::244]:42640
-        "EHLO mail-lj1-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993030AbeILLcYH7522 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 13:32:24 +0200
-Received: by mail-lj1-x244.google.com with SMTP id f1-v6so1294132ljc.9
-        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2018 04:32:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2018 16:37:24 +0200 (CEST)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:50589
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992871AbeILOhURkZMt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2018 16:37:20 +0200
+Received: by mail-wm0-x242.google.com with SMTP id s12-v6so2703426wmc.0;
+        Wed, 12 Sep 2018 07:37:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=WmDKNuVL2nQEOx4lnKKMauhr7amwXHX432D2ciaX0bw=;
-        b=HrD+V0EsTf+MrjTIH4eYswSpyPOL7PSO08bFHpYQVdrzZ1PORD4B6NmdS0uXwm0MRO
-         ahzgswREMBpiDcO9d6xjUleZSNRHYPy/g+wo7xaEprCb/HSS0y07tgEJlWYYyVCURDWE
-         VdR+6pjuO6H5eC7iTaB/T9/8vfqwKqRDJFcpU=
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=RaPdjDggpSScvgAXTgCTVtzfZXKAR9gjcl9YQq6a0WY=;
+        b=ogVQ3XUgCYPPDO/KHW+tx3upbcTnBenlDSoGeX2z2qtaI5bGXJmMKe9xuvtDUc3ke0
+         rANc7UAjvsanFRSAiiGanUZPdfUPtAgjLRgbiWIaGAnHDjznK9+4kRLf1X32OC/fqucO
+         jteE+/9jp9UftMQ43LU6TqMHpwj/XNYl8Le+9wA+XOC54X0QhZHjoEIZpoxxS9lq4JV0
+         PzSvrR6K9MVSDDYxbaz5Upt46X9npCLIRZDPwC3IeSfI0j8iEMQvExuyYBHXpJBlyxAM
+         UpTcoqZysslQoUcgufpwwPi6PEaYoKeOmrTUeJxLc144GE/Dn/qzhiFPSuma2Hj37iul
+         4zwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=WmDKNuVL2nQEOx4lnKKMauhr7amwXHX432D2ciaX0bw=;
-        b=uhgDTEf0kd68SAt/AfiT+ObbDP2yWFWkpZilkw45utv4SVt/iJJMxYdLNSxevW5SZ1
-         8MFtcMlRJrV3vE0iwYlp6nILgkTVByq27dZBtU81yHK0Xeakwj09JDJhFjpqFzIeHhfq
-         M1ZKTdt1rhawIbtp68Z/ocalTP37ERZ+H48tuWnFVFWaqsNQejhYQfQ2awz2Qe8BQev3
-         m0pljf4nHuOcGgnRv4vheJBtWlJoeaMnD1WnJ6aUohAPp7vg82eUKA74gbvAXsqmliJ1
-         Ofj7RqS7+9uX5xrD8dKVAwLSBGYkc3pJqbEqMs7ZNtPevmE6kC/uZ0kf2PJxmRP/7n9V
-         mSLw==
-X-Gm-Message-State: APzg51A5EppysBowwgY36n5ukiQXtL+pXtvMSb4H1/9wNEvNCvgW8KtJ
-        qfZ8JyONa/Lfjp3Ry4Z7WBg86Q==
-X-Google-Smtp-Source: ANB0Vdah9MVHlSN4EzBxG0L6XtAdIelBzktmjZlICGvIJKiSIxWDpqYzWG56Ki11VPdC3cwxZWjq6A==
-X-Received: by 2002:a2e:85d5:: with SMTP id h21-v6mr1090903ljj.103.1536751938551;
-        Wed, 12 Sep 2018 04:32:18 -0700 (PDT)
-Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id q19-v6sm144182lje.29.2018.09.12.04.32.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Sep 2018 04:32:17 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-gpio@vger.kernel.org
-Cc:     linux-mips@linux-mips.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Yoichi Yuasa <yuasa@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3/3] gpio: vr41xx: Delete vr41xx_gpio_pullupdown() callback
-Date:   Wed, 12 Sep 2018 13:32:04 +0200
-Message-Id: <20180912113204.1064-3-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20180912113204.1064-1-linus.walleij@linaro.org>
-References: <20180912113204.1064-1-linus.walleij@linaro.org>
-Return-Path: <linus.walleij@linaro.org>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=RaPdjDggpSScvgAXTgCTVtzfZXKAR9gjcl9YQq6a0WY=;
+        b=CZw+h9AnvND9Y6fOqW2OPaG3Z8X4NhmOE1DT8pDMA4sh6/SAc0HLKcVAhV187gtUD8
+         CgwRpaSxIxnTYi67d2avd52NNXSDuHMRygSvJxN8Ru8IC+aSJ6hmFPpIiKIzo4lLAu8D
+         8u5Z6AgyzjzPZ6Adko9zsjOR7hO/m5DqJ6llALhG+1GVaUq41bEgD5kyR59e4+p5H9Mm
+         SN8nqtqsLKBwImk7wvt2Vc2kmk7pMCpz6bcNTKKh8hy6ZHKUe2bmN3qNMseDLxQq9mLd
+         hvlmNaa3jAF331tKDxpoGa7MiI7tZKIdJxLrnfp/6XshW1MSjB8Vo6DVdCii5sfqkWAU
+         uWkQ==
+X-Gm-Message-State: APzg51A5osGM72RUJtoUS+i+D/1ogZ4jBqNxod5afR2/Js3que6eLOBH
+        SHmrDeTH/s5ZUT1Ymeowi0pV/0cfU7IPGC0i4wM=
+X-Google-Smtp-Source: ANB0VdbtIlMt7wgTdUBbpsNnGOGZuMXWGVVxk3tnIJgmSgp/R5a/55daARobDrQ2k54/pPfRKq/FcApLRA8BtS/FRTo=
+X-Received: by 2002:a7b:c086:: with SMTP id r6-v6mr1695737wmh.119.1536763034806;
+ Wed, 12 Sep 2018 07:37:14 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a5d:4c86:0:0:0:0:0 with HTTP; Wed, 12 Sep 2018 07:36:54
+ -0700 (PDT)
+In-Reply-To: <CANCKTBumoy6mw2n+V7hN_T1SYxhq3JQMxgQUUSmOLuMX-Kv=zw@mail.gmail.com>
+References: <1536266581-7308-1-git-send-email-jim2101024@gmail.com>
+ <1536266581-7308-9-git-send-email-jim2101024@gmail.com> <20180906214955.2yzyj6tkmflnnvdx@pburton-laptop>
+ <CANCKTBumoy6mw2n+V7hN_T1SYxhq3JQMxgQUUSmOLuMX-Kv=zw@mail.gmail.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Wed, 12 Sep 2018 16:36:54 +0200
+Message-ID: <CAOiHx=khXs6x-EByPXRF=xEpL4eSiBfwxgJFV=3X8J5rXWNEMw@mail.gmail.com>
+Subject: Re: [PATCH v5 08/12] MIPS: BMIPS: add PCI bindings for 7425, 7435
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     paul.burton@mips.com, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ray Jui <ray.jui@broadcom.com>,
+        Scott Branden <scott.branden@broadcom.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Arnd Bergmann <arnd@arndb.de>, nicolas.pitre@linaro.org,
+        keescook@chromium.org, jinb.park7@gmail.com,
+        vladimir.murzin@arm.com, alexandre.belloni@bootlin.com,
+        palmer@sifive.com, stefan@agner.ch, eric@anholt.net,
+        Simon Horman <horms+renesas@verge.net.au>, tony@atomide.com,
+        stefan.wahren@i2se.com,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Olof Johansson <olof@lixom.net>, thellstrom@vmware.com,
+        alexander.deucher@amd.com, dirk@hohndel.org,
+        Thomas Gleixner <tglx@linutronix.de>, pombredanne@nexb.com,
+        kstewart@linuxfoundation.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robin Murphy <robin.murphy@arm.com>, justinpopo6@gmail.com,
+        markus.mayer@broadcom.com, gpowell@broadcom.com, opendmb@gmail.com,
+        linux-pci <linux-pci@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66217
+X-archive-position: 66218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,88 +106,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This API is not used anywhere in the kernel and has remained
-unused for years after being introduced.
+On 10 September 2018 at 16:37, Jim Quinlan <jim2101024@gmail.com> wrote:
+> On Thu, Sep 6, 2018 at 5:50 PM Paul Burton <paul.burton@mips.com> wrote:
+>>
+>> Hi Jim,
+>>
+>> On Thu, Sep 06, 2018 at 04:42:57PM -0400, Jim Quinlan wrote:
+>> > Adds the PCIe nodes for the Broadcom STB PCIe root complex.
+>> >
+>> > Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+>> > ---
+>> >  arch/mips/boot/dts/brcm/bcm7425.dtsi     | 28 ++++++++++++++++++++++++++++
+>> >  arch/mips/boot/dts/brcm/bcm7435.dtsi     | 28 ++++++++++++++++++++++++++++
+>> >  arch/mips/boot/dts/brcm/bcm97425svmb.dts |  4 ++++
+>> >  arch/mips/boot/dts/brcm/bcm97435svmb.dts |  4 ++++
+>> >  4 files changed, 64 insertions(+)
+>>
+>> Do you have a preference for how this gets merged? If it goes via the
+>> PCI tree then for patches 8 & 9:
+>>
+>>     Acked-by: Paul Burton <paul.burton@mips.com>
+>>
+> Hi Paul,
+>
+> I hope that the 12 commits  go together and will go through the PCI
+> tree.  I'm inclined to think I will have to do a V6, and in the cover
+> leter I will mention this request.
 
-Over time, we have developed a subsystem to deal with pin
-control and this now managed pull up/down.
+Somehow nothing of the v5 patch series seem to have made it to any
+mailing lists, at least I can't find them in my inbox (or spam) in any
+of the mailing lists, nor through the public archives of e.g. LKML.
+Patchwork (ozlabs and kernel) doesn't know of them either.
 
-Delete the old and unused API. If this platform needs it,
-we should implement a proper pin controller for it instead.
 
-Cc: Yoichi Yuasa <yuasa@linux-mips.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/mips/include/asm/vr41xx/giu.h |  8 -------
- drivers/gpio/gpio-vr41xx.c         | 38 ------------------------------
- 2 files changed, 46 deletions(-)
-
-diff --git a/arch/mips/include/asm/vr41xx/giu.h b/arch/mips/include/asm/vr41xx/giu.h
-index 6a90bc1d916b..ecda4cf300de 100644
---- a/arch/mips/include/asm/vr41xx/giu.h
-+++ b/arch/mips/include/asm/vr41xx/giu.h
-@@ -51,12 +51,4 @@ typedef enum {
- 
- extern void vr41xx_set_irq_level(unsigned int pin, irq_level_t level);
- 
--typedef enum {
--	GPIO_PULL_DOWN,
--	GPIO_PULL_UP,
--	GPIO_PULL_DISABLE,
--} gpio_pull_t;
--
--extern int vr41xx_gpio_pullupdown(unsigned int pin, gpio_pull_t pull);
--
- #endif /* __NEC_VR41XX_GIU_H */
-diff --git a/drivers/gpio/gpio-vr41xx.c b/drivers/gpio/gpio-vr41xx.c
-index 7d40104b8586..b13a49c89cc1 100644
---- a/drivers/gpio/gpio-vr41xx.c
-+++ b/drivers/gpio/gpio-vr41xx.c
-@@ -371,44 +371,6 @@ static int giu_set_direction(struct gpio_chip *chip, unsigned pin, int dir)
- 	return 0;
- }
- 
--int vr41xx_gpio_pullupdown(unsigned int pin, gpio_pull_t pull)
--{
--	u16 reg, mask;
--	unsigned long flags;
--
--	if ((giu_flags & GPIO_HAS_PULLUPDOWN_IO) != GPIO_HAS_PULLUPDOWN_IO)
--		return -EPERM;
--
--	if (pin >= 15)
--		return -EINVAL;
--
--	mask = 1 << pin;
--
--	spin_lock_irqsave(&giu_lock, flags);
--
--	if (pull == GPIO_PULL_UP || pull == GPIO_PULL_DOWN) {
--		reg = giu_read(GIUTERMUPDN);
--		if (pull == GPIO_PULL_UP)
--			reg |= mask;
--		else
--			reg &= ~mask;
--		giu_write(GIUTERMUPDN, reg);
--
--		reg = giu_read(GIUUSEUPDN);
--		reg |= mask;
--		giu_write(GIUUSEUPDN, reg);
--	} else {
--		reg = giu_read(GIUUSEUPDN);
--		reg &= ~mask;
--		giu_write(GIUUSEUPDN, reg);
--	}
--
--	spin_unlock_irqrestore(&giu_lock, flags);
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(vr41xx_gpio_pullupdown);
--
- static int vr41xx_gpio_get(struct gpio_chip *chip, unsigned pin)
- {
- 	u16 reg, mask;
--- 
-2.17.1
+Regards
+Jonas

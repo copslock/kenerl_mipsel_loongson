@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 16:59:03 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:43242 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 17:01:21 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:43401 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994243AbeINO67D7Ute (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Sep 2018 16:58:59 +0200
+        id S23994243AbeINPBPleZce (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Sep 2018 17:01:15 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id DE63720701; Fri, 14 Sep 2018 16:58:52 +0200 (CEST)
+        id B28452071D; Fri, 14 Sep 2018 17:01:09 +0200 (CEST)
 Received: from localhost (242.171.71.37.rev.sfr.net [37.71.171.242])
-        by mail.bootlin.com (Postfix) with ESMTPSA id B1AFC20379;
-        Fri, 14 Sep 2018 16:58:52 +0200 (CEST)
-Date:   Fri, 14 Sep 2018 16:58:53 +0200
+        by mail.bootlin.com (Postfix) with ESMTPSA id 8066220379;
+        Fri, 14 Sep 2018 17:00:59 +0200 (CEST)
+Date:   Fri, 14 Sep 2018 17:00:59 +0200
 From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Quentin Schulz <quentin.schulz@bootlin.com>
 Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
@@ -17,20 +17,20 @@ Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         thomas.petazzoni@bootlin.com, antoine.tenart@bootlin.com
-Subject: Re: [PATCH 6/7] MIPS: mscc: add DT for Ocelot PCB120
-Message-ID: <20180914145853.GR14988@piout.net>
+Subject: Re: [PATCH 7/7] MIPS: mscc: add PCB120 to the ocelot fitImage
+Message-ID: <20180914150059.GS14988@piout.net>
 References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
- <f2ef1137991cabde5e9529403982d84b5b0fe0a6.1536916714.git-series.quentin.schulz@bootlin.com>
+ <87ab2f80e3942dfca4eab896ba087e7b69bb7b12.1536916714.git-series.quentin.schulz@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f2ef1137991cabde5e9529403982d84b5b0fe0a6.1536916714.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <87ab2f80e3942dfca4eab896ba087e7b69bb7b12.1536916714.git-series.quentin.schulz@bootlin.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <alexandre.belloni@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66294
+X-archive-position: 66295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,148 +47,127 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14/09/2018 11:44:27+0200, Quentin Schulz wrote:
-> The Ocelot PCB120 evaluation board is different from the PCB123 in that
-> it has 4 external VSC8584 (or VSC8574) PHYs.
-> 
-> It uses the SoC's second MDIO bus for external PHYs which have a
-> reversed address on the bus (i.e. PHY4 is on address 3, PHY5 is on
-> address 2, PHY6 on 1 and PHY7 on 0).
-> 
-> Here is how the PHYs are connected to the switch ports:
-> port 0: phy0 (internal)
-> port 1: phy1 (internal)
-> port 2: phy2 (internal)
-> port 3: phy3 (internal)
-> port 4: phy7
-> port 5: phy4
-> port 6: phy6
-> port 9: phy5
+On 14/09/2018 11:44:28+0200, Quentin Schulz wrote:
+> PCB120 and PCB123 are both development boards based on Microsemi Ocelot
+> so let's use the same fitImage for both.
 > 
 > Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
 > ---
->  arch/mips/boot/dts/mscc/Makefile          |   2 +-
->  arch/mips/boot/dts/mscc/ocelot_pcb120.dts | 100 +++++++++++++++++++++++-
->  2 files changed, 101 insertions(+), 1 deletion(-)
->  create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb120.dts
+>  arch/mips/generic/Kconfig                   |  6 +--
+>  arch/mips/generic/Platform                  |  2 +-
+>  arch/mips/generic/board-ocelot.its.S        | 40 ++++++++++++++++++++++-
+>  arch/mips/generic/board-ocelot_pcb123.its.S | 23 +-------------
+>  4 files changed, 44 insertions(+), 27 deletions(-)
+>  create mode 100644 arch/mips/generic/board-ocelot.its.S
+>  delete mode 100644 arch/mips/generic/board-ocelot_pcb123.its.S
 > 
-> diff --git a/arch/mips/boot/dts/mscc/Makefile b/arch/mips/boot/dts/mscc/Makefile
-> index 9a9bb7e..ec6f5b2 100644
-> --- a/arch/mips/boot/dts/mscc/Makefile
-> +++ b/arch/mips/boot/dts/mscc/Makefile
-> @@ -1,3 +1,3 @@
-> -dtb-$(CONFIG_MSCC_OCELOT)	+= ocelot_pcb123.dtb
-> +dtb-$(CONFIG_MSCC_OCELOT)	+= ocelot_pcb123.dtb ocelot_pcb120.dtb
+> diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
+> index 08e33c6..fd60198 100644
+> --- a/arch/mips/generic/Kconfig
+> +++ b/arch/mips/generic/Kconfig
+> @@ -65,11 +65,11 @@ config FIT_IMAGE_FDT_XILFPGA
+>  	  Enable this to include the FDT for the MIPSfpga platform
+>  	  from Imagination Technologies in the FIT kernel image.
 >  
->  obj-$(CONFIG_BUILTIN_DTB)	+= $(addsuffix .o, $(dtb-y))
-> diff --git a/arch/mips/boot/dts/mscc/ocelot_pcb120.dts b/arch/mips/boot/dts/mscc/ocelot_pcb120.dts
+> -config FIT_IMAGE_FDT_OCELOT_PCB123
+> -	bool "Include FDT for Microsemi Ocelot PCB123"
+> +config FIT_IMAGE_FDT_OCELOT
+> +	bool "Include FDT for Microsemi Ocelot development platforms"
+>  	select MSCC_OCELOT
+>  	help
+> -	  Enable this to include the FDT for the Ocelot PCB123 platform
+> +	  Enable this to include the FDT for the Ocelot development platforms
+>  	  from Microsemi in the FIT kernel image.
+>  	  This requires u-boot on the platform.
+>  
+> diff --git a/arch/mips/generic/Platform b/arch/mips/generic/Platform
+> index 879cb80..eaa19d1 100644
+> --- a/arch/mips/generic/Platform
+> +++ b/arch/mips/generic/Platform
+> @@ -16,5 +16,5 @@ all-$(CONFIG_MIPS_GENERIC)	:= vmlinux.gz.itb
+>  its-y					:= vmlinux.its.S
+>  its-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= board-boston.its.S
+>  its-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= board-ni169445.its.S
+> -its-$(CONFIG_FIT_IMAGE_FDT_OCELOT_PCB123) += board-ocelot_pcb123.its.S
+> +its-$(CONFIG_FIT_IMAGE_FDT_OCELOT)	+= board-ocelot.its.S
+>  its-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= board-xilfpga.its.S
+> diff --git a/arch/mips/generic/board-ocelot.its.S b/arch/mips/generic/board-ocelot.its.S
 > new file mode 100644
-> index 0000000..8eb03a5
+> index 0000000..3da2398
 > --- /dev/null
-> +++ b/arch/mips/boot/dts/mscc/ocelot_pcb120.dts
-> @@ -0,0 +1,100 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +/* Copyright (c) 2017 Microsemi Corporation */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +#include <dt-bindings/phy/phy-ocelot-serdes.h>
-> +#include "ocelot.dtsi"
-> +
+> +++ b/arch/mips/generic/board-ocelot.its.S
+> @@ -0,0 +1,40 @@
+> +/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
 > +/ {
-> +	compatible = "mscc,ocelot-pcb120", "mscc,ocelot";
+> +	images {
+> +		fdt@ocelot_pcb123 {
+> +			description = "MSCC Ocelot PCB123 Device Tree";
+> +			data = /incbin/("boot/dts/mscc/ocelot_pcb123.dtb");
+> +			type = "flat_dt";
+> +			arch = "mips";
+> +			compression = "none";
+> +			hash@0 {
+> +				algo = "sha1";
+> +			};
+> +		};
 > +
-> +	chosen {
-> +		stdout-path = "serial0:115200n8";
+> +		fdt@ocelot_pcb120 {
+> +			description = "MSCC Ocelot PCB120 Device Tree";
+> +			data = /incbin/("boot/dts/mscc/ocelot_pcb120.dtb");
+> +			type = "flat_dt";
+> +			arch = "mips";
+> +			compression = "none";
+> +			hash@0 {
+> +				algo = "sha1";
+> +			};
+> +		};
 > +	};
 > +
-> +	memory@0 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x0e000000>;
+> +	configurations {
+> +		conf@ocelot_pcb123 {
+> +			description = "Ocelot Linux kernel";
+> +			kernel = "kernel@0";
+> +			fdt = "fdt@ocelot_pcb123";
+> +		};
+> +
+> +		conf@ocelot_pcb120 {
+> +			description = "Ocelot Linux kernel";
+> +			kernel = "kernel@0";
+> +			fdt = "fdt@ocelot_pcb120";
+> +		};
 > +	};
 > +};
-> +
-> +&mdio0 {
-> +	status = "okay";
-> +};
-> +
-> +&mdio1 {
-> +	status = "okay";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&miim1>, <&gpio4>;
-> +
-> +	phy7: ethernet-phy@0 {
-> +		reg = <0>;
-> +		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent = <&gpio>;
-> +	};
-> +	phy6: ethernet-phy@1 {
-> +		reg = <1>;
-> +		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent = <&gpio>;
-> +	};
-> +	phy5: ethernet-phy@2 {
-> +		reg = <2>;
-> +		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent = <&gpio>;
-> +	};
-> +	phy4: ethernet-phy@3 {
-> +		reg = <3>;
-> +		interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-parent = <&gpio>;
-> +	};
-> +};
-> +
-> +&port0 {
-> +	phy-handle = <&phy0>;
-> +};
-> +
-> +&port1 {
-> +	phy-handle = <&phy1>;
-> +};
-> +
-> +&port2 {
-> +	phy-handle = <&phy2>;
-> +};
-> +
-> +&port3 {
-> +	phy-handle = <&phy3>;
-> +};
-> +
-> +&port4 {
-> +	phy-handle = <&phy7>;
-> +	phy-mode = "sgmii";
-> +	phys = <&serdes 4 SERDES1G_2>;
-> +};
-> +
-> +&port5 {
-> +	phy-handle = <&phy4>;
-> +	phy-mode = "sgmii";
-> +	phys = <&serdes 5 SERDES1G_5>;
-> +};
-> +
-> +&port6 {
-> +	phy-handle = <&phy6>;
-> +	phy-mode = "sgmii";
-> +	phys = <&serdes 6 SERDES1G_3>;
-> +};
-> +
-> +&port9 {
-> +	phy-handle = <&phy5>;
-> +	phy-mode = "sgmii";
-> +	phys = <&serdes 9 SERDES1G_4>;
-> +};
-> +
-> +&uart0 {
-> +	status = "okay";
-> +};
-> +
-> +&uart2 {
-> +	status = "okay";
-> +};
+> diff --git a/arch/mips/generic/board-ocelot_pcb123.its.S b/arch/mips/generic/board-ocelot_pcb123.its.S
+> deleted file mode 100644
+> index 5a7d5e1..0000000
+> --- a/arch/mips/generic/board-ocelot_pcb123.its.S
+> +++ /dev/null
+> @@ -1,23 +0,0 @@
+> -/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
+> -/ {
+> -	images {
+> -		fdt@ocelot_pcb123 {
+> -			description = "MSCC Ocelot PCB123 Device Tree";
+> -			data = /incbin/("boot/dts/mscc/ocelot_pcb123.dtb");
+> -			type = "flat_dt";
+> -			arch = "mips";
+> -			compression = "none";
+> -			hash@0 {
+> -				algo = "sha1";
+> -			};
+> -		};
+> -	};
+> -
+> -	configurations {
+> -		conf@ocelot_pcb123 {
+> -			description = "Ocelot Linux kernel";
+> -			kernel = "kernel@0";
+> -			fdt = "fdt@ocelot_pcb123";
+> -		};
+> -	};
+> -};
 > -- 
 > git-series 0.9.1
 

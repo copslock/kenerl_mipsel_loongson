@@ -1,97 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 21:58:59 +0200 (CEST)
-Received: from mail-by2nam03on0106.outbound.protection.outlook.com ([104.47.42.106]:23392
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994560AbeINT6tOjcdp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Sep 2018 21:58:49 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 22:26:37 +0200 (CEST)
+Received: from mail-wm1-x342.google.com ([IPv6:2a00:1450:4864:20::342]:34899
+        "EHLO mail-wm1-x342.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994561AbeINU0d0yoAU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Sep 2018 22:26:33 +0200
+Received: by mail-wm1-x342.google.com with SMTP id o18-v6so3232023wmc.0;
+        Fri, 14 Sep 2018 13:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zMFbAEQqKnGRuFvcC4S2jUuKCljazzFeh3MNTfblZIM=;
- b=dz8udEgNwLKJZswse2lIc77MZCefVzD1U44667GwmqzqwHLrZf3dwl6swo+H5iO1gWgjNZer65Lr8Q8ohiDh/V9VDt6KETJ5Z/4gnkQQhgSGeJu7Ozi4FnWYouiIkWe+UthIIhr2E3KoyWS4MdayUyXbR0jqCNvI7lzZYi2k0fQ=
-Received: from localhost (63.83.14.10) by
- SN6PR08MB4944.namprd08.prod.outlook.com (2603:10b6:805:6e::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1143.15; Fri, 14 Sep 2018 19:58:37 +0000
-Date:   Fri, 14 Sep 2018 12:58:34 -0700
-From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org, linux-mips@linux-mips.org,
-        Yoichi Yuasa <yuasa@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/3] gpio: vr41xx: Delete vr41xx_gpio_pullupdown()
- callback
-Message-ID: <20180914195834.5cosv4zpt6lph4c4@pburton-laptop>
-References: <20180912113204.1064-1-linus.walleij@linaro.org>
- <20180912113204.1064-3-linus.walleij@linaro.org>
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=+6WweJG3cNmqHj1KtQAx0yWvgxqkZic98Vsg5Ugv0KA=;
+        b=kgT8pVJ19sHQlTNqbj+gj6T9ze1PFLhltYLuPv8KNtZWX42HsfrCjmYli73uuYmMV7
+         ZZOgY81y9TlQflB4ILRrjBXtVrV71zP69afNlO/jaVSeojwbL+xpzMMAHIauJOVn/X2B
+         qvHiICjkvqjJJjTz/q1+ews6xPrzbp+OjGK0XKFB9V4DJsp7rvt8iZ5u6hblk8mQRWQw
+         aa9G6CI4rB1wBklRcnpQgr/8bJv6uKTnuAyo8Fy5rCoSA7jvePzGdvIgBjs9ujTQa/cz
+         KGG5Tbfch33nNHgoINgRqJJ9TMhdcAjCy0HY+r4FA+Hum70n9G1AUy/OY0lP9+ENNxi4
+         uIbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=+6WweJG3cNmqHj1KtQAx0yWvgxqkZic98Vsg5Ugv0KA=;
+        b=EHnVZiuhOVAh9tqaq/Np0ujQf13x8suqprsspE2TpulFW0FRR32+kLJLaP/ifFsP6s
+         COYqsuC0gfoqBzm/A2y81WITX6s/hpNsUtV0NXsjlMgxm1n9qjQn0s0wrKaVKkYChxNa
+         fFu25v06Te14Pq+Zuqn6P9pKuIgHoOW6785SJYd07qMRsYjXt9UoM9DEXd/DTr97ovr7
+         USy4KVOjky2vtC/yNuXMth8USBLcK29JrgZkieOEpXxq8FdlQx7wDXOK9yNgg2i+O5xH
+         5n+1wPGIVl4hUh1hDWGSCdqO7+EQlbbnS0dvEr8DgcD7jb+lHykLlrXerCicFLdEeU43
+         tZ8Q==
+X-Gm-Message-State: APzg51Btshqa9/C5k+5fccq0vJdf1L4JKMlAU8LaHVh7XkE9mtI8iw1o
+        H/CXk4/pMnfoUksi9bg+UJ0=
+X-Google-Smtp-Source: ANB0VdY32Jsz+Ft5AcOqG7j66CnRtA3Pki4ikdgzgm/zGhnQx5XpF5pTjM+KLmKhWLX5+BTNOigtDg==
+X-Received: by 2002:a1c:a94d:: with SMTP id s74-v6mr3678270wme.39.1536956787828;
+        Fri, 14 Sep 2018 13:26:27 -0700 (PDT)
+Received: from [10.67.50.87] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id d12-v6sm8615717wru.36.2018.09.14.13.26.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 14 Sep 2018 13:26:26 -0700 (PDT)
+Subject: Re: [PATCH net-next 4/7] net: phy: mscc: add support for VSC8574 PHY
+To:     Quentin Schulz <quentin.schulz@bootlin.com>,
+        alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net, andrew@lunn.ch
+Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        antoine.tenart@bootlin.com
+References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
+ <236ef7815c0bec6048e79ef06868719b65c63892.1536916714.git-series.quentin.schulz@bootlin.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+Message-ID: <bc95fae7-cf2f-5cf1-4e24-59fcc231fd64@gmail.com>
+Date:   Fri, 14 Sep 2018 13:26:06 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180912113204.1064-3-linus.walleij@linaro.org>
-User-Agent: NeoMutt/20180716
-X-Originating-IP: [63.83.14.10]
-X-ClientProxiedBy: BN6PR10CA0032.namprd10.prod.outlook.com
- (2603:10b6:404:109::18) To SN6PR08MB4944.namprd08.prod.outlook.com
- (2603:10b6:805:6e::16)
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 86403a06-5f3a-4f45-b3a9-08d61a7c7663
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:SN6PR08MB4944;
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4944;3:gQfOq4+vuP/HT91rlNOkWBIkofOzBczjK9xlAF9fyMyx7Ow6ZUl2heu9sXrgeO9BupWEkh5/SVmDu5kDRLP+N4HaAPOkgkFboQEpGgxRu0hX/pe9Irp5vjv6Npr1a7cWTg5WQWaI+yXKzfjE6Uc6/qQYUHsldiOajEfsybAwWgYPSkIsZdISCiXR6BdK6RJf3TwJuIbcaO2tKKDWj27ZPAyN7+M2RQWclWhwF7sIjQoOWtyUO52qQLIffBwuBrZr;25:AudvMPtuw31fB4yQ/WCjlt2vTZpYyfIatkh6+2Dm48oA9ruekRv9aD7GPNkDLsAJVnMfDKxX4VQG640Xd6ZCypTnI2RKXkK0QP7huIOjHC8CBrp84Ll3ooFMObwCqZr6UTwdssg4ZNzcUytW6rD3OR/r7+3iRXi51jYB7Pjua5NkFl0LLLFZbpp6slhPwvpMRqtjQgiib14RwPJl7RVIMXjWY2/c473hOG+Ct+PRMY+31R1vNH5LdynCQQialvj9eSnyV8hyE19gxfjqEj2/YqlnAWfXG7AuuPuOMgWOQvvciM7BjhZyVU5tlVogJaCkz4cd2VkQr3DlKBOd17qsBQ==;31:RMBbnAXWA3u4bNwU9H3mdeVQAylrgqaGULdOUEqWOHx+in0/6b7HEzsY1foxIFFo5hyXfylyhKVPlIdPItDj1G+oi+F5DHDOVE5A42plDnbRDlTnr+UuXI9hs8Xz+9ZGuR+YnbnHc+vSCPSRRpkvWNfjdzQpkFvcAfBwKyMDjiag94/OU/R3obKARI3aiShLo/vowW1uhh/h5EkbX1j4XNJuwk+jNmxcGt225kMXDM4=
-X-MS-TrafficTypeDiagnostic: SN6PR08MB4944:
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4944;20:OQbyYAGfouoZGKFIoFvibAuDlDzssyubLyShsBp/LFxtx3wd+DalDSBI2a0tWPiBJWuOTO6IDKzjhF7ocZ4MD60aCvHsC/DsPywhB5GCH6LhLhYofqP6P6qdn/lA0MCzlSVVtm7yFJ/9pQzD6foeApVvuXvEOS1qd0xHusavQNDjraAmx4bFaHJ8+qu+oD/3IE0W9k+ATZFcJNNTTWAjjN9gEJhcwnO80VoIJ9kvj1JDQ5PigGYORlAz8k8I15xP;4:p/6ASddpt9Ln0CqtzzpZCOjoPOc1b2QVyXDNmPvcxaO2yRtuUz2QUbjC7VYk1mTlQzorLo6kjQxhW9IXU4A+tRjzl6dc5uRDasTvMYOSrn0DCg+k+Cjgf0GJV0ePC5ux/N28lS8ystaJlRxKOsS3R1h0Q4JUmTrNHTBDZmIKkB364DmaG+LouqyBT5sOrXGNN9yNwW0ssvsCp8DS3p4vhrf1ghJLJw+VDL7k2RHPVTYxJuHmcDgT2T7u4VxhblfQvhyOCF9N1wk99DoaJdbGHQ==
-X-Microsoft-Antispam-PRVS: <SN6PR08MB494490692F11A8CDC4941F36C1190@SN6PR08MB4944.namprd08.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-MS-Exchange-SenderADCheck: 1
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(93006095)(3231344)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(20161123560045)(20161123562045)(20161123564045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(201708071742011)(7699050)(76991041);SRVR:SN6PR08MB4944;BCL:0;PCL:0;RULEID:;SRVR:SN6PR08MB4944;
-X-Forefront-PRVS: 07954CC105
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(6069001)(7916004)(346002)(136003)(366004)(376002)(39840400004)(396003)(189003)(199004)(2906002)(23726003)(3846002)(58126008)(7736002)(76506005)(6496006)(305945005)(76176011)(42882007)(446003)(478600001)(47776003)(11346002)(15760500003)(476003)(956004)(81156014)(53936002)(6116002)(16586007)(97736004)(81166006)(9686003)(52116002)(105586002)(1076002)(68736007)(16526019)(316002)(66066001)(8676002)(106356001)(44832011)(54906003)(6666003)(5660300001)(25786009)(6246003)(14444005)(26005)(33896004)(6916009)(8936002)(229853002)(33716001)(6486002)(486006)(6346003)(386003)(50466002)(186003)(4326008);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB4944;H:localhost;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SN6PR08MB4944;23:glumuUA5DkaaT2nxzLPhpCXZD1vN38HXqhTWuI3zD?=
- =?us-ascii?Q?OYSnysdvvOxXncMNUywWFV8nqCLnH5m9xZqHexGbKGAREjblE6A9TwnPnuYl?=
- =?us-ascii?Q?lX242N8KkpQ9jYQTtQp/Wh4wY6K/YTHh2+q3MK5w3gYx45LvzCQrUPNR8hyd?=
- =?us-ascii?Q?OLx+KvWCEmwbC15lHZgHtUVbeKemrcbLy2yzwZqxc7NM68EW/wvBXnfE34PG?=
- =?us-ascii?Q?6oU1P7xkA7cLi6+MBaC+4GNoK7kIMDLEgcSFVsLJ711g6zFesGyhk9uBswMA?=
- =?us-ascii?Q?ZwCYs5N2tv7honge+Ig4XP3toxmBZsPJ+fMtAmFz5BX4hEpulatf+MwcHUgd?=
- =?us-ascii?Q?GCG5bmJR1/bly8Lwh+As0YWpKjUFozI1pPVNj7yolplpmg+6/qyuUDWTiF5R?=
- =?us-ascii?Q?uwP4CJva8aLxJZVajPJ4yGCSUMDsc2IxnHujlGpqQn9ukdN4CBGPUeDyTQI0?=
- =?us-ascii?Q?qOFwo6fFWFjWLq49LN+XE1NYoCJlHwc3y+ZKIYabACBG7AfrTnD4Ro7RIN5k?=
- =?us-ascii?Q?9DPhDcYvAkyI+AwmZQP2/doosnJLBAS+GQcGAdPQyJ1XN5JrnAsy3j+69X7H?=
- =?us-ascii?Q?3ggQ+M6ZCLiLwIpY9+mfzLsTcrzjiK4YKgV+j7jnVRDPT6GXHCTh3kGhtM7K?=
- =?us-ascii?Q?Kz1tIcDQ0t1zxu1lPaC5ckQJm/e611jerD8LJKyMwh4dePl9YJ9kNVmSaUIc?=
- =?us-ascii?Q?Wf4qykZGFbsvFtyDXMcyxv197oLoMOafxgtD3dDA9sr527uvDyliWgSLGBe5?=
- =?us-ascii?Q?y/urW/8Fq9OPkLgeJd9brnstH1kRXJyJiSX1hmAeWkf3jZKpTi0YCg+EMeeT?=
- =?us-ascii?Q?JvGqibTZ+Y1PvpSFxqf+r8PTdLzLdZO1OfTxxDJShmSP0aR3UXNXT19SRI+q?=
- =?us-ascii?Q?6bTZxdjcE3Ndadg92XVVdKKIH7aAi2uoVwp/eEkBSi2PJvWMh0c9rrCaF6oB?=
- =?us-ascii?Q?UgKOBbKD4cCOW3aoBfJ8MmiN7O/WkWFVVZjmrRiv1x/KFmRAtAlvxilt0Z7w?=
- =?us-ascii?Q?JedfZ1VwK6mJmzQlpTLyas2dVv3+iilzelmh/U4ZqzoSs2nwyoPWaLklsFY1?=
- =?us-ascii?Q?gqGc6yZ8GfWPg4nncdSNhtW3QAOcM6TIbCRxvkzT9OeOwldyMXafV0P+c0x2?=
- =?us-ascii?Q?bDqOvZXI+PFfI2rujCH2vN5FdSO+j3A+suvQhG9LMhPdUn6scM8mzQgzfcLn?=
- =?us-ascii?Q?xaGcDBjmVoOGk/kW1wdYLzUUxbHVVlGDJh5GvNBNduQWkZfzk2sed+rFMb1I?=
- =?us-ascii?Q?cOBa1Z9GIle7IaBsP/A2RU0boEajn98vihsW3YwlnyAVbpPsgo653XOvYOFA?=
- =?us-ascii?Q?iY2E3qhtMhui0bObNRg4fGMI26z7bfcq5snqgVT/ZQEpxca1gKBBlkZxLW+H?=
- =?us-ascii?Q?RaAeL2Ihx5qi52TrVvMl0FBcFk=3D?=
-X-Microsoft-Antispam-Message-Info: OnjE/ouWmBmjwGtPAlMVR9DrmkFdfkNFzOLCkQaDiQcvLW6Lapi7GJq0C7TB7tD+X5RnTEl5VNiwJUlKvs7Jf4W8Hsc4lDyNOl+pY4CbzK0RgWcmocPJ8hkER6LdPtHx4+hETXYXaV9ZY+4K2ALfHYnAEAFPvu407F/vUYQKTDMhQRWc2nMxeGKW1bB7o6DKtmdRgoGTM/0zBiuMDW4+NHFsl6x5MxqByAGCsu1kuOiQBraSHbfI7jEs7CiBrAG4i9BeNydIPWOCJGOoE7akjgkCJpoje8BJcTTRD5bNaKh8IRcCmktCfNAU/jcBmDgQmoYRp54j5Qw3uYN7IOY4Ce0uzNG1l7VxTTypFkAS3qU=
-X-Microsoft-Exchange-Diagnostics: 1;SN6PR08MB4944;6:UHYsGK7eL2/3Vn8loe7r0pWMOiLJkGIOyF2D43WMyC3+MeUn+OE6Mc9DUbbzMtnRhBAQR4Mfb5+2cpnDNFXTnscrjRGhvxQ2HOCxN50L655oMiF2Psdi82SMWOGu5MzfXtThpMYKI0HOqbyLh9LJKVGsz84farkbD+ltU2wqPvh8YFp7qqMFF1XLmfgnEOmA4yhBd3IwK0NkhI9i5IzjerQSvwC1guXrw46J4x6sE2HUmk36l4l04g/YKjyx/rYnrchA/IbftQiqCSkApLvq/Ak+jxKYaSOOzBXvyNWWCWihWy08BGK7vtYfBHu5+M3V9f/trnUmRviVkHklvTSu5K4AH7t/sWyMtguqg79xaumzWY+kegKNJrdMmGMcezFdh58tXbPknVCmt3vNzkQ6vCch5Og2bSlslz3yCVGcJ/C9utE4SzVSpWcRpCJCrXsmkXJXWtwwOBE8OxCq165BMw==;5:tNweuLP43nSX1EBhcX0P04KvgZcB0T6EDe6gezSH26zjXv/kpxAQcu1sG9txPqyMQZUlqFkdrQ50j1vPw7XsMzqDtT6recpedle9xETsVJuxgRZph8ZwgfaVF8DEHl6ETWe8+MIeqeFgz3Y/fjDqwCz4L5D9uvwdyQIXKcxO3Gc=;7:ZgfWvWappPMGHoBZ/5cvwrr2p4rpuWaySwfcEoSYQwceywvis6apJZpFZ1/c7BiqXizNPo+iVDTkH1Zerh6xkCllyOk9GgbD3c+ZQOildQWTqPBZ7xoUxJ2wgZHRiKU8xl+1rwiiyTQmoOG4Vt48nWEGMfmJt19F34250mfTJGF/YJ8Pd/lnPBvYA3Kx7+FlkyWSn/HSHmonqDwbbZoIM4yd/Sc/31ITQPSyyGrt9MVkZOSFP/E+W1xaJzmmmcPt
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2018 19:58:37.9983 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86403a06-5f3a-4f45-b3a9-08d61a7c7663
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4944
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <236ef7815c0bec6048e79ef06868719b65c63892.1536916714.git-series.quentin.schulz@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66309
+X-archive-position: 66310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -104,29 +114,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Linus,
-
-On Wed, Sep 12, 2018 at 01:32:04PM +0200, Linus Walleij wrote:
-> This API is not used anywhere in the kernel and has remained
-> unused for years after being introduced.
+On 09/14/2018 02:44 AM, Quentin Schulz wrote:
+> The VSC8574 PHY is a 4-ports PHY that is 10/100/1000BASE-T, 100BASE-FX,
+> 1000BASE-X and triple-speed copper SFP capable, can communicate with
+> the MAC via SGMII, QSGMII or 1000BASE-X, supports WOL, downshifting and
+> can set the blinking pattern of each of its 4 LEDs, supports SyncE as
+> well as HP Auto-MDIX detection.
 > 
-> Over time, we have developed a subsystem to deal with pin
-> control and this now managed pull up/down.
+> This adds support for 10/100/1000BASE-T, SGMII/QSGMII link with the MAC,
+> WOL, downshifting, HP Auto-MDIX detection and blinking pattern for its 4
+> LEDs.
 > 
-> Delete the old and unused API. If this platform needs it,
-> we should implement a proper pin controller for it instead.
+> The VSC8574 has also an internal Intel 8051 microcontroller whose
+> firmware needs to be patched when the PHY is reset. If the 8051's
+> firmware has the expected CRC, its patching can be skipped. The
+> microcontroller can be accessed from any port of the PHY, though the CRC
+> function can only be done through the PHY that is the base PHY of the
+> package (internal address 0) due to a limitation of the firmware.
 > 
-> Cc: Yoichi Yuasa <yuasa@linux-mips.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> The GPIO register bank is a set of registers that are common to all PHYs
+> in the package. So any modification in any register of this bank affects
+> all PHYs of the package.
+> 
+> If the PHYs haven't been reset before booting the Linux kernel and were
+> configured to use interrupts for e.g. link status updates, it is
+> required to clear the interrupts mask register of all PHYs before being
+> able to use interrupts with any PHY. The first PHY of the package that
+> will be init will take care of clearing all PHYs interrupts mask
+> registers. Thus, we need to keep track of the init sequence in the
+> package, if it's already been done or if it's to be done.
+> 
+> Most of the init sequence of a PHY of the package is common to all PHYs
+> in the package, thus we use the SMI broadcast feature which enables us
+> to propagate a write in one register of one PHY to all PHYs in the
+> package.
+> 
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 > ---
->  arch/mips/include/asm/vr41xx/giu.h |  8 -------
->  drivers/gpio/gpio-vr41xx.c         | 38 ------------------------------
->  2 files changed, 46 deletions(-)
 
-I presume you'll take this through the GPIO tree?
+[snip]
 
-    Acked-by: Paul Burton <paul.burton@mips.com>
+> +	reg = __mdiobus_read(bus, phy, MSCC_PHY_TEST_PAGE_8);
+> +	reg |= 0x8000;
 
-Thanks,
-    Paul
+Having a define would be nice here? This looks like a write enable?
+
+> +	__mdiobus_write(bus, phy, MSCC_PHY_TEST_PAGE_8, reg);
+> +
+> +	__mdiobus_write(bus, phy, MSCC_EXT_PAGE_ACCESS, MSCC_PHY_PAGE_TR);
+> +
+> +	vsc8584_csr_write(bus, phy, 0x8fae, 0x000401bd);
+
+Just make this an array of address + value pairs and blast it to the
+PHY, having them be inlined here is both error prone and does not scale
+well at all.
+[snip]
+> +	vsc8584_csr_write(bus, phy, 0x84a8, 0x00000000);
+> +	vsc8584_csr_write(bus, phy, 0x84aa, 0x00000000);
+> +	vsc8584_csr_write(bus, phy, 0x84ae, 0x007df7dd);
+> +	vsc8584_csr_write(bus, phy, 0x84b0, 0x006d95d4);
+> +	vsc8584_csr_write(bus, phy, 0x84b2, 0x00492410);
+
+Likewise
+
+[snip]
+-- 
+Florian

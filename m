@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 10:19:16 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:58257 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 10:19:36 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:58256 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994561AbeINIRBzu9mY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994560AbeINIRBxO7jY (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 14 Sep 2018 10:17:01 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 751A9208D9; Fri, 14 Sep 2018 10:16:51 +0200 (CEST)
+        id C8C45208DC; Fri, 14 Sep 2018 10:16:51 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-99-10.w90-88.abo.wanadoo.fr [90.88.4.10])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 8B4D9208F0;
+        by mail.bootlin.com (Postfix) with ESMTPSA id DAA50208F1;
         Fri, 14 Sep 2018 10:16:33 +0200 (CEST)
 From:   Quentin Schulz <quentin.schulz@bootlin.com>
 To:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
@@ -17,9 +17,9 @@ Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
         Quentin Schulz <quentin.schulz@bootlin.com>
-Subject: [PATCH net-next v3 10/11] phy: add driver for Microsemi Ocelot SerDes muxing
-Date:   Fri, 14 Sep 2018 10:16:08 +0200
-Message-Id: <cde4ccafdbd948db7ccbb263dd5b1a803e63a83e.1536912834.git-series.quentin.schulz@bootlin.com>
+Subject: [PATCH net-next v3 11/11] net: mscc: ocelot: make use of SerDes PHYs for handling their configuration
+Date:   Fri, 14 Sep 2018 10:16:09 +0200
+Message-Id: <00989856964175eafbe1435a70862c2ac66cffc0.1536912834.git-series.quentin.schulz@bootlin.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
 References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <quentin.schulz@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66235
+X-archive-position: 66236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,368 +46,174 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Microsemi Ocelot can mux SerDes lanes (aka macros) to different
-switch ports or even make it act as a PCIe interface.
+Previously, the SerDes muxing was hardcoded to a given mode in the MAC
+controller driver. Now, the SerDes muxing is configured within the
+Device Tree and is enforced in the MAC controller driver so we can have
+a lot of different SerDes configurations.
 
-This adds support for the muxing of the SerDes.
+Make use of the SerDes PHYs in the MAC controller to set up the SerDes
+according to the SerDes<->switch port mapping and the communication mode
+with the Ethernet PHY.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 ---
- drivers/phy/Kconfig                  |   1 +-
- drivers/phy/Makefile                 |   1 +-
- drivers/phy/mscc/Kconfig             |  11 +-
- drivers/phy/mscc/Makefile            |   5 +-
- drivers/phy/mscc/phy-ocelot-serdes.c | 288 ++++++++++++++++++++++++++++-
- 5 files changed, 306 insertions(+)
- create mode 100644 drivers/phy/mscc/Kconfig
- create mode 100644 drivers/phy/mscc/Makefile
- create mode 100644 drivers/phy/mscc/phy-ocelot-serdes.c
+ drivers/net/ethernet/mscc/Kconfig        |  2 +-
+ drivers/net/ethernet/mscc/ocelot.c       | 16 +++++++-
+ drivers/net/ethernet/mscc/ocelot.h       |  5 +++-
+ drivers/net/ethernet/mscc/ocelot_board.c | 50 ++++++++++++++++++++-----
+ 4 files changed, 62 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
-index 5c8d452..c89d3ef 100644
---- a/drivers/phy/Kconfig
-+++ b/drivers/phy/Kconfig
-@@ -48,6 +48,7 @@ source "drivers/phy/lantiq/Kconfig"
- source "drivers/phy/marvell/Kconfig"
- source "drivers/phy/mediatek/Kconfig"
- source "drivers/phy/motorola/Kconfig"
-+source "drivers/phy/mscc/Kconfig"
- source "drivers/phy/qualcomm/Kconfig"
- source "drivers/phy/ralink/Kconfig"
- source "drivers/phy/renesas/Kconfig"
-diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-index 84e3bd9..ce8339f 100644
---- a/drivers/phy/Makefile
-+++ b/drivers/phy/Makefile
-@@ -18,6 +18,7 @@ obj-y					+= broadcom/	\
- 					   hisilicon/	\
- 					   marvell/	\
- 					   motorola/	\
-+					   mscc/	\
- 					   qualcomm/	\
- 					   ralink/	\
- 					   samsung/	\
-diff --git a/drivers/phy/mscc/Kconfig b/drivers/phy/mscc/Kconfig
-new file mode 100644
-index 0000000..2e2a466
---- /dev/null
-+++ b/drivers/phy/mscc/Kconfig
-@@ -0,0 +1,11 @@
-+#
-+# Phy drivers for Microsemi devices
-+#
+diff --git a/drivers/net/ethernet/mscc/Kconfig b/drivers/net/ethernet/mscc/Kconfig
+index 36c8462..bcec058 100644
+--- a/drivers/net/ethernet/mscc/Kconfig
++++ b/drivers/net/ethernet/mscc/Kconfig
+@@ -23,6 +23,8 @@ config MSCC_OCELOT_SWITCH
+ config MSCC_OCELOT_SWITCH_OCELOT
+ 	tristate "Ocelot switch driver on Ocelot"
+ 	depends on MSCC_OCELOT_SWITCH
++	depends on GENERIC_PHY
++	depends on OF_NET
+ 	help
+ 	  This driver supports the Ocelot network switch device as present on
+ 	  the Ocelot SoCs.
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index 1a4f2bb..8f11fdb 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -472,6 +472,7 @@ static int ocelot_port_open(struct net_device *dev)
+ {
+ 	struct ocelot_port *port = netdev_priv(dev);
+ 	struct ocelot *ocelot = port->ocelot;
++	enum phy_mode phy_mode;
+ 	int err;
+ 
+ 	/* Enable receiving frames on the port, and activate auto-learning of
+@@ -482,8 +483,21 @@ static int ocelot_port_open(struct net_device *dev)
+ 			 ANA_PORT_PORT_CFG_PORTID_VAL(port->chip_port),
+ 			 ANA_PORT_PORT_CFG, port->chip_port);
+ 
++	if (port->serdes) {
++		if (port->phy_mode == PHY_INTERFACE_MODE_SGMII)
++			phy_mode = PHY_MODE_SGMII;
++		else
++			phy_mode = PHY_MODE_QSGMII;
 +
-+config PHY_OCELOT_SERDES
-+	tristate "SerDes PHY driver for Microsemi Ocelot"
-+	select GENERIC_PHY
-+	depends on OF
-+	depends on MFD_SYSCON
-+	help
-+	  Enable this for supporting SerDes muxing with Microsemi Ocelot.
-diff --git a/drivers/phy/mscc/Makefile b/drivers/phy/mscc/Makefile
-new file mode 100644
-index 0000000..e147491
---- /dev/null
-+++ b/drivers/phy/mscc/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for the Microsemi phy drivers.
-+#
++		err = phy_set_mode(port->serdes, phy_mode);
++		if (err) {
++			netdev_err(dev, "Could not set mode of SerDes\n");
++			return err;
++		}
++	}
 +
-+obj-$(CONFIG_PHY_OCELOT_SERDES) := phy-ocelot-serdes.o
-diff --git a/drivers/phy/mscc/phy-ocelot-serdes.c b/drivers/phy/mscc/phy-ocelot-serdes.c
-new file mode 100644
-index 0000000..c2d34cb
---- /dev/null
-+++ b/drivers/phy/mscc/phy-ocelot-serdes.c
-@@ -0,0 +1,288 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * SerDes PHY driver for Microsemi Ocelot
-+ *
-+ * Copyright (c) 2018 Microsemi
-+ *
-+ */
-+
-+#include <linux/err.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
+ 	err = phy_connect_direct(dev, port->phy, &ocelot_port_adjust_link,
+-				 PHY_INTERFACE_MODE_NA);
++				 port->phy_mode);
+ 	if (err) {
+ 		netdev_err(dev, "Could not attach to PHY\n");
+ 		return err;
+diff --git a/drivers/net/ethernet/mscc/ocelot.h b/drivers/net/ethernet/mscc/ocelot.h
+index 3720e51..62c7c8e 100644
+--- a/drivers/net/ethernet/mscc/ocelot.h
++++ b/drivers/net/ethernet/mscc/ocelot.h
+@@ -11,6 +11,8 @@
+ #include <linux/bitops.h>
+ #include <linux/etherdevice.h>
+ #include <linux/if_vlan.h>
++#include <linux/phy.h>
 +#include <linux/phy/phy.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <soc/mscc/ocelot_hsio.h>
-+#include <dt-bindings/phy/phy-ocelot-serdes.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ 
+@@ -453,6 +455,9 @@ struct ocelot_port {
+ 	u8 vlan_aware;
+ 
+ 	u64 *stats;
 +
-+struct serdes_ctrl {
-+	struct regmap		*regs;
-+	struct device		*dev;
-+	struct phy		*phys[SERDES_MAX];
-+};
++	phy_interface_t phy_mode;
++	struct phy *serdes;
+ };
+ 
+ u32 __ocelot_read_ix(struct ocelot *ocelot, u32 reg, u32 offset);
+diff --git a/drivers/net/ethernet/mscc/ocelot_board.c b/drivers/net/ethernet/mscc/ocelot_board.c
+index b7d755b..a26a06e 100644
+--- a/drivers/net/ethernet/mscc/ocelot_board.c
++++ b/drivers/net/ethernet/mscc/ocelot_board.c
+@@ -6,6 +6,7 @@
+  */
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
++#include <linux/of_net.h>
+ #include <linux/netdevice.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_platform.h>
+@@ -247,18 +248,12 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+ 	INIT_LIST_HEAD(&ocelot->multicast);
+ 	ocelot_init(ocelot);
+ 
+-	ocelot_rmw(ocelot, HSIO_HW_CFG_DEV1G_4_MODE |
+-		     HSIO_HW_CFG_DEV1G_6_MODE |
+-		     HSIO_HW_CFG_DEV1G_9_MODE,
+-		     HSIO_HW_CFG_DEV1G_4_MODE |
+-		     HSIO_HW_CFG_DEV1G_6_MODE |
+-		     HSIO_HW_CFG_DEV1G_9_MODE,
+-		     HSIO_HW_CFG);
+-
+ 	for_each_available_child_of_node(ports, portnp) {
+ 		struct device_node *phy_node;
+ 		struct phy_device *phy;
+ 		struct resource *res;
++		struct phy *serdes;
++		enum phy_mode phy_mode;
+ 		void __iomem *regs;
+ 		char res_name[8];
+ 		u32 port;
+@@ -283,10 +278,45 @@ static int mscc_ocelot_probe(struct platform_device *pdev)
+ 			continue;
+ 
+ 		err = ocelot_probe_port(ocelot, port, regs, phy);
+-		if (err) {
+-			dev_err(&pdev->dev, "failed to probe ports\n");
++		if (err)
++			return err;
 +
-+struct serdes_macro {
-+	u8			idx;
-+	/* Not used when in QSGMII or PCIe mode */
-+	int			port;
-+	struct serdes_ctrl	*ctrl;
-+};
++		err = of_get_phy_mode(portnp);
++		if (err < 0)
++			ocelot->ports[port]->phy_mode = PHY_INTERFACE_MODE_NA;
++		else
++			ocelot->ports[port]->phy_mode = err;
 +
-+#define MCB_S1G_CFG_TIMEOUT     50
-+
-+static int __serdes_write_mcb_s1g(struct regmap *regmap, u8 macro, u32 op)
-+{
-+	unsigned int regval;
-+
-+	regmap_write(regmap, HSIO_MCB_S1G_ADDR_CFG, op |
-+		     HSIO_MCB_S1G_ADDR_CFG_SERDES1G_ADDR(BIT(macro)));
-+
-+	return regmap_read_poll_timeout(regmap, HSIO_MCB_S1G_ADDR_CFG, regval,
-+					(regval & op) != op, 100,
-+					MCB_S1G_CFG_TIMEOUT * 1000);
-+}
-+
-+static int serdes_commit_mcb_s1g(struct regmap *regmap, u8 macro)
-+{
-+	return __serdes_write_mcb_s1g(regmap, macro,
-+		HSIO_MCB_S1G_ADDR_CFG_SERDES1G_WR_ONE_SHOT);
-+}
-+
-+static int serdes_update_mcb_s1g(struct regmap *regmap, u8 macro)
-+{
-+	return __serdes_write_mcb_s1g(regmap, macro,
-+		HSIO_MCB_S1G_ADDR_CFG_SERDES1G_RD_ONE_SHOT);
-+}
-+
-+static int serdes_init_s1g(struct regmap *regmap, u8 serdes)
-+{
-+	int ret;
-+
-+	ret = serdes_update_mcb_s1g(regmap, serdes);
-+	if (ret)
-+		return ret;
-+
-+	regmap_update_bits(regmap, HSIO_S1G_COMMON_CFG,
-+			   HSIO_S1G_COMMON_CFG_SYS_RST |
-+			   HSIO_S1G_COMMON_CFG_ENA_LANE |
-+			   HSIO_S1G_COMMON_CFG_ENA_ELOOP |
-+			   HSIO_S1G_COMMON_CFG_ENA_FLOOP,
-+			   HSIO_S1G_COMMON_CFG_ENA_LANE);
-+
-+	regmap_update_bits(regmap, HSIO_S1G_PLL_CFG,
-+			   HSIO_S1G_PLL_CFG_PLL_FSM_ENA |
-+			   HSIO_S1G_PLL_CFG_PLL_FSM_CTRL_DATA_M,
-+			   HSIO_S1G_PLL_CFG_PLL_FSM_CTRL_DATA(200) |
-+			   HSIO_S1G_PLL_CFG_PLL_FSM_ENA);
-+
-+	regmap_update_bits(regmap, HSIO_S1G_MISC_CFG,
-+			   HSIO_S1G_MISC_CFG_DES_100FX_CPMD_ENA |
-+			   HSIO_S1G_MISC_CFG_LANE_RST,
-+			   HSIO_S1G_MISC_CFG_LANE_RST);
-+
-+	ret = serdes_commit_mcb_s1g(regmap, serdes);
-+	if (ret)
-+		return ret;
-+
-+	regmap_update_bits(regmap, HSIO_S1G_COMMON_CFG,
-+			   HSIO_S1G_COMMON_CFG_SYS_RST,
-+			   HSIO_S1G_COMMON_CFG_SYS_RST);
-+
-+	regmap_update_bits(regmap, HSIO_S1G_MISC_CFG,
-+			   HSIO_S1G_MISC_CFG_LANE_RST, 0);
-+
-+	ret = serdes_commit_mcb_s1g(regmap, serdes);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+struct serdes_mux {
-+	u8			idx;
-+	u8			port;
-+	enum phy_mode		mode;
-+	u32			mask;
-+	u32			mux;
-+};
-+
-+#define SERDES_MUX(_idx, _port, _mode, _mask, _mux) {	\
-+	.idx = _idx,						\
-+	.port = _port,						\
-+	.mode = _mode,						\
-+	.mask = _mask,						\
-+	.mux = _mux,						\
-+}
-+
-+static const struct serdes_mux ocelot_serdes_muxes[] = {
-+	SERDES_MUX(SERDES1G_0, 0, PHY_MODE_SGMII, 0, 0),
-+	SERDES_MUX(SERDES1G_1, 1, PHY_MODE_SGMII, HSIO_HW_CFG_DEV1G_5_MODE, 0),
-+	SERDES_MUX(SERDES1G_1, 5, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
-+		   HSIO_HW_CFG_DEV1G_5_MODE, HSIO_HW_CFG_DEV1G_5_MODE),
-+	SERDES_MUX(SERDES1G_2, 2, PHY_MODE_SGMII, HSIO_HW_CFG_DEV1G_4_MODE, 0),
-+	SERDES_MUX(SERDES1G_2, 4, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
-+		   HSIO_HW_CFG_DEV1G_4_MODE, HSIO_HW_CFG_DEV1G_4_MODE),
-+	SERDES_MUX(SERDES1G_3, 3, PHY_MODE_SGMII, HSIO_HW_CFG_DEV1G_6_MODE, 0),
-+	SERDES_MUX(SERDES1G_3, 6, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
-+		   HSIO_HW_CFG_DEV1G_6_MODE, HSIO_HW_CFG_DEV1G_6_MODE),
-+	SERDES_MUX(SERDES1G_4, 4, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
-+		   HSIO_HW_CFG_DEV1G_4_MODE | HSIO_HW_CFG_DEV1G_9_MODE, 0),
-+	SERDES_MUX(SERDES1G_4, 9, PHY_MODE_SGMII, HSIO_HW_CFG_DEV1G_4_MODE |
-+		   HSIO_HW_CFG_DEV1G_9_MODE, HSIO_HW_CFG_DEV1G_4_MODE |
-+		   HSIO_HW_CFG_DEV1G_9_MODE),
-+	SERDES_MUX(SERDES1G_5, 5, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
-+		   HSIO_HW_CFG_DEV1G_5_MODE | HSIO_HW_CFG_DEV2G5_10_MODE, 0),
-+	SERDES_MUX(SERDES1G_5, 10, PHY_MODE_SGMII, HSIO_HW_CFG_PCIE_ENA |
-+		   HSIO_HW_CFG_DEV1G_5_MODE | HSIO_HW_CFG_DEV2G5_10_MODE,
-+		   HSIO_HW_CFG_DEV1G_5_MODE | HSIO_HW_CFG_DEV2G5_10_MODE),
-+	SERDES_MUX(SERDES6G_0, 4, PHY_MODE_QSGMII, HSIO_HW_CFG_QSGMII_ENA,
-+		   HSIO_HW_CFG_QSGMII_ENA),
-+	SERDES_MUX(SERDES6G_0, 5, PHY_MODE_QSGMII, HSIO_HW_CFG_QSGMII_ENA,
-+		   HSIO_HW_CFG_QSGMII_ENA),
-+	SERDES_MUX(SERDES6G_0, 6, PHY_MODE_QSGMII, HSIO_HW_CFG_QSGMII_ENA,
-+		   HSIO_HW_CFG_QSGMII_ENA),
-+	SERDES_MUX(SERDES6G_0, 7, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA, 0),
-+	SERDES_MUX(SERDES6G_0, 7, PHY_MODE_QSGMII, HSIO_HW_CFG_QSGMII_ENA,
-+		   HSIO_HW_CFG_QSGMII_ENA),
-+	SERDES_MUX(SERDES6G_1, 8, PHY_MODE_SGMII, 0, 0),
-+	SERDES_MUX(SERDES6G_2, 10, PHY_MODE_SGMII, HSIO_HW_CFG_PCIE_ENA |
-+		   HSIO_HW_CFG_DEV2G5_10_MODE, 0),
-+	SERDES_MUX(SERDES6G_2, 10, PHY_MODE_PCIE, HSIO_HW_CFG_PCIE_ENA,
-+		   HSIO_HW_CFG_PCIE_ENA),
-+};
-+
-+static int serdes_set_mode(struct phy *phy, enum phy_mode mode)
-+{
-+	struct serdes_macro *macro = phy_get_drvdata(phy);
-+	int ret, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ocelot_serdes_muxes); i++) {
-+		if (macro->idx != ocelot_serdes_muxes[i].idx ||
-+		    mode != ocelot_serdes_muxes[i].mode)
++		switch (ocelot->ports[port]->phy_mode) {
++		case PHY_INTERFACE_MODE_NA:
 +			continue;
++		case PHY_INTERFACE_MODE_SGMII:
++			phy_mode = PHY_MODE_SGMII;
++			break;
++		case PHY_INTERFACE_MODE_QSGMII:
++			phy_mode = PHY_MODE_QSGMII;
++			break;
++		default:
++			dev_err(ocelot->dev,
++				"invalid phy mode for port%d, (Q)SGMII only\n",
++				port);
++			return -EINVAL;
++		}
 +
-+		if (mode != PHY_MODE_QSGMII &&
-+		    macro->port != ocelot_serdes_muxes[i].port)
-+			continue;
++		serdes = devm_of_phy_get(ocelot->dev, portnp, NULL);
++		if (IS_ERR(serdes)) {
++			err = PTR_ERR(serdes);
++			if (err == -EPROBE_DEFER) {
++				dev_dbg(ocelot->dev, "deferring probe\n");
++				goto err_probe_ports;
++			}
 +
-+		ret = regmap_update_bits(macro->ctrl->regs, HSIO_HW_CFG,
-+					 ocelot_serdes_muxes[i].mask,
-+					 ocelot_serdes_muxes[i].mux);
-+		if (ret)
-+			return ret;
++			dev_err(ocelot->dev, "missing SerDes phys for port%d\n",
++				port);
+ 			goto err_probe_ports;
+ 		}
 +
-+		if (macro->idx < SERDES1G_MAX)
-+			return serdes_init_s1g(macro->ctrl->regs, macro->idx);
-+
-+		/* SERDES6G and PCIe not supported yet */
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static const struct phy_ops serdes_ops = {
-+	.set_mode	= serdes_set_mode,
-+	.owner		= THIS_MODULE,
-+};
-+
-+static struct phy *serdes_simple_xlate(struct device *dev,
-+				       struct of_phandle_args *args)
-+{
-+	struct serdes_ctrl *ctrl = dev_get_drvdata(dev);
-+	int port, idx, i;
-+
-+	if (args->args_count != 2)
-+		return ERR_PTR(-EINVAL);
-+
-+	port = args->args[0];
-+	idx = args->args[1];
-+
-+	for (i = 0; i < SERDES_MAX; i++) {
-+		struct serdes_macro *macro = phy_get_drvdata(ctrl->phys[i]);
-+
-+		if (idx != macro->idx)
-+			continue;
-+
-+		/* SERDES6G_0 is the only SerDes capable of QSGMII */
-+		if (idx != SERDES6G_0 && macro->port >= 0)
-+			return ERR_PTR(-EBUSY);
-+
-+		macro->port = port;
-+		return ctrl->phys[i];
-+	}
-+
-+	return ERR_PTR(-ENODEV);
-+}
-+
-+static int serdes_phy_create(struct serdes_ctrl *ctrl, u8 idx, struct phy **phy)
-+{
-+	struct serdes_macro *macro;
-+
-+	*phy = devm_phy_create(ctrl->dev, NULL, &serdes_ops);
-+	if (IS_ERR(*phy))
-+		return PTR_ERR(*phy);
-+
-+	macro = devm_kzalloc(ctrl->dev, sizeof(*macro), GFP_KERNEL);
-+	if (!macro)
-+		return -ENOMEM;
-+
-+	macro->idx = idx;
-+	macro->ctrl = ctrl;
-+	macro->port = -1;
-+
-+	phy_set_drvdata(*phy, macro);
-+
-+	return 0;
-+}
-+
-+static int serdes_probe(struct platform_device *pdev)
-+{
-+	struct phy_provider *provider;
-+	struct serdes_ctrl *ctrl;
-+	int i, ret;
-+
-+	ctrl = devm_kzalloc(&pdev->dev, sizeof(*ctrl), GFP_KERNEL);
-+	if (!ctrl)
-+		return -ENOMEM;
-+
-+	ctrl->dev = &pdev->dev;
-+	ctrl->regs = syscon_node_to_regmap(pdev->dev.parent->of_node);
-+	if (!ctrl->regs)
-+		return -ENODEV;
-+
-+	for (i = 0; i <= SERDES_MAX; i++) {
-+		ret = serdes_phy_create(ctrl, i, &ctrl->phys[i]);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	dev_set_drvdata(&pdev->dev, ctrl);
-+
-+	provider = devm_of_phy_provider_register(ctrl->dev,
-+						 serdes_simple_xlate);
-+
-+	return PTR_ERR_OR_ZERO(provider);
-+}
-+
-+static const struct of_device_id serdes_ids[] = {
-+	{ .compatible = "mscc,vsc7514-serdes", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, serdes_ids);
-+
-+static struct platform_driver mscc_ocelot_serdes = {
-+	.probe		= serdes_probe,
-+	.driver		= {
-+		.name	= "mscc,ocelot-serdes",
-+		.of_match_table = of_match_ptr(serdes_ids),
-+	},
-+};
-+
-+module_platform_driver(mscc_ocelot_serdes);
-+
-+MODULE_AUTHOR("Quentin Schulz <quentin.schulz@bootlin.com>");
-+MODULE_DESCRIPTION("SerDes driver for Microsemi Ocelot");
-+MODULE_LICENSE("Dual MIT/GPL");
++		ocelot->ports[port]->serdes = serdes;
+ 	}
+ 
+ 	register_netdevice_notifier(&ocelot_netdevice_nb);
 -- 
 git-series 0.9.1

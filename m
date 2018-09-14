@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 10:18:41 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:58224 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 10:18:53 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:58221 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994551AbeINIQ5FfLHY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994544AbeINIQ5El9AY (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 14 Sep 2018 10:16:57 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 20B11208AC; Fri, 14 Sep 2018 10:16:51 +0200 (CEST)
+        id 1CE1120877; Fri, 14 Sep 2018 10:16:51 +0200 (CEST)
 Received: from localhost.localdomain (AAubervilliers-681-1-99-10.w90-88.abo.wanadoo.fr [90.88.4.10])
-        by mail.bootlin.com (Postfix) with ESMTPSA id E562C208DC;
+        by mail.bootlin.com (Postfix) with ESMTPSA id 97A59208D9;
         Fri, 14 Sep 2018 10:16:32 +0200 (CEST)
 From:   Quentin Schulz <quentin.schulz@bootlin.com>
 To:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
@@ -17,9 +17,9 @@ Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
         Quentin Schulz <quentin.schulz@bootlin.com>
-Subject: [PATCH net-next v3 08/11] MIPS: mscc: ocelot: add SerDes mux DT node
-Date:   Fri, 14 Sep 2018 10:16:06 +0200
-Message-Id: <ba95add3d931177ef55666e856164523903d1148.1536912834.git-series.quentin.schulz@bootlin.com>
+Subject: [PATCH net-next v3 07/11] dt-bindings: phy: add DT binding for Microsemi Ocelot SerDes muxing
+Date:   Fri, 14 Sep 2018 10:16:05 +0200
+Message-Id: <f392dafca9165800439fc09cd7d16e6a9506d457.1536912834.git-series.quentin.schulz@bootlin.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
 References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
@@ -29,7 +29,7 @@ Return-Path: <quentin.schulz@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66232
+X-archive-position: 66233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,31 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Microsemi Ocelot has a set of register for SerDes/switch port muxing
-as well as PCIe muxing for a specific SerDes, so let's add the device
-and all SerDes in the Device Tree.
-
-Acked-by: Paul Burton <paul.burton@mips.com>
 Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 ---
- arch/mips/boot/dts/mscc/ocelot.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt | 40 +++++++-
+ 1 file changed, 40 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
 
-diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
-index 149b1a7..8ce317c 100644
---- a/arch/mips/boot/dts/mscc/ocelot.dtsi
-+++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
-@@ -234,6 +234,11 @@
- 		hsio: syscon@10d0000 {
- 			compatible = "mscc,ocelot-hsio", "syscon", "simple-mfd";
- 			reg = <0x10d0000 0x10000>;
+diff --git a/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+new file mode 100644
+index 0000000..2a88cc3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+@@ -0,0 +1,40 @@
++Microsemi Ocelot SerDes muxing driver
++-------------------------------------
 +
-+			serdes: serdes {
-+				compatible = "mscc,vsc7514-serdes";
-+				#phy-cells = <2>;
-+			};
- 		};
- 	};
- };
++On Microsemi Ocelot, there is a handful of registers in HSIO address
++space for setting up the SerDes to switch port muxing.
++
++A SerDes X can be "muxed" to work with switch port Y or Z for example.
++One specific SerDes can also be used as a PCIe interface.
++
++Hence, a SerDes represents an interface, be it an Ethernet or a PCIe one.
++
++There are two kinds of SerDes: SERDES1G supports 10/100Mbps in
++half/full-duplex and 1000Mbps in full-duplex mode while SERDES6G supports
++10/100Mbps in half/full-duplex and 1000/2500Mbps in full-duplex mode.
++
++Also, SERDES6G number (aka "macro") 0 is the only interface supporting
++QSGMII.
++
++Required properties:
++
++- compatible: should be "mscc,vsc7514-serdes"
++- #phy-cells : from the generic phy bindings, must be 2.
++	       The first number defines the input port to use for a given
++	       SerDes macro. The second defines the macro to use. They are
++	       defined in dt-bindings/phy/phy-ocelot-serdes.h
++
++Example:
++
++	serdes: serdes {
++		compatible = "mscc,vsc7514-serdes";
++		#phy-cells = <2>;
++	};
++
++	ethernet {
++		port1 {
++			phy-handle = <&phy_foo>;
++			/* Link SERDES1G_5 to port1 */
++			phys = <&serdes 1 SERDES1G_5>;
++		};
++	};
 -- 
 git-series 0.9.1

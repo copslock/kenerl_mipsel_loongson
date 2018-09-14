@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 11:46:24 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:33226 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994552AbeINJpIIpxSI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Sep 2018 11:45:08 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id B26A020731; Fri, 14 Sep 2018 11:44:58 +0200 (CEST)
-Received: from localhost.localdomain (AAubervilliers-681-1-99-10.w90-88.abo.wanadoo.fr [90.88.4.10])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 580CE206F6;
-        Fri, 14 Sep 2018 11:44:58 +0200 (CEST)
-From:   Quentin Schulz <quentin.schulz@bootlin.com>
-To:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, davem@davemloft.net, andrew@lunn.ch,
-        f.fainelli@gmail.com
-Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
-        antoine.tenart@bootlin.com,
-        Quentin Schulz <quentin.schulz@bootlin.com>
-Subject: [PATCH 7/7] MIPS: mscc: add PCB120 to the ocelot fitImage
-Date:   Fri, 14 Sep 2018 11:44:28 +0200
-Message-Id: <87ab2f80e3942dfca4eab896ba087e7b69bb7b12.1536916714.git-series.quentin.schulz@bootlin.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
-References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
-In-Reply-To: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
-References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
-Return-Path: <quentin.schulz@bootlin.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2018 11:58:27 +0200 (CEST)
+Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:47552 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992066AbeINJ6YiCmaI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Sep 2018 11:58:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=5nXA/hHUO0A19w4qcEUepqG2LtudD+S0SQEZjFE/eCQ=; b=BwmtMJuEf+S2fisZZhmhrH3A2
+        KpRlKFzcO61nfARMjUIhTdk7BaydewlFBjOc7iC/Rx/+MY6LNno41dhGiUpMUuZZv9ex3Dn160p+I
+        5DFBiwmdrui8zsxidJ43+baJu6TGLny7L8RkkuPuZtk7PWBBDLv1TKqok6YpcyJwhO2WcKCZWlILX
+        oxXJWujvTgJjJ0nKyXzMkSIlBMhpGXuE2BzNacuX9htz+7NV8qsb5A9R9tC90KItJU307oxbCV765
+        KgzZ0g/C5q455L8YOYUOatK6Fffdpe6vyYQgpfCmgOXbXyCerbua3VGk7Uv8Wfrd+z+/xL8zkbYMr
+        QBEidK6dA==;
+Received: from 089144198037.atnat0007.highway.a1.net ([89.144.198.37] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1g0krc-0000NR-IY; Fri, 14 Sep 2018 09:58:12 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     iommu@lists.linux-foundation.org
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: merge dma_direct_ops and dma_noncoherent_ops v3
+Date:   Fri, 14 Sep 2018 11:58:02 +0200
+Message-Id: <20180914095808.22202-1-hch@lst.de>
+X-Mailer: git-send-email 2.18.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Return-Path: <BATV+df237881911bfff71047+5500+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66248
+X-archive-position: 66249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: quentin.schulz@bootlin.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,123 +51,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-PCB120 and PCB123 are both development boards based on Microsemi Ocelot
-so let's use the same fitImage for both.
+While most architectures are either always or never dma coherent for a
+given build, the arm, arm64, mips and soon arc architectures can have
+different dma coherent settings on a per-device basis.  Additionally
+some mips builds can decide at boot time if dma is coherent or not.
 
-Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
----
- arch/mips/generic/Kconfig                   |  6 +--
- arch/mips/generic/Platform                  |  2 +-
- arch/mips/generic/board-ocelot.its.S        | 40 ++++++++++++++++++++++-
- arch/mips/generic/board-ocelot_pcb123.its.S | 23 +-------------
- 4 files changed, 44 insertions(+), 27 deletions(-)
- create mode 100644 arch/mips/generic/board-ocelot.its.S
- delete mode 100644 arch/mips/generic/board-ocelot_pcb123.its.S
+I've started to look into handling noncoherent dma in swiotlb, and
+moving the dma-iommu ops into common code [1], and for that we need a
+generic way to check if a given device is coherent or not.  Moving
+this flag into struct device also simplifies the conditionally coherent
+architecture implementations.
 
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index 08e33c6..fd60198 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -65,11 +65,11 @@ config FIT_IMAGE_FDT_XILFPGA
- 	  Enable this to include the FDT for the MIPSfpga platform
- 	  from Imagination Technologies in the FIT kernel image.
- 
--config FIT_IMAGE_FDT_OCELOT_PCB123
--	bool "Include FDT for Microsemi Ocelot PCB123"
-+config FIT_IMAGE_FDT_OCELOT
-+	bool "Include FDT for Microsemi Ocelot development platforms"
- 	select MSCC_OCELOT
- 	help
--	  Enable this to include the FDT for the Ocelot PCB123 platform
-+	  Enable this to include the FDT for the Ocelot development platforms
- 	  from Microsemi in the FIT kernel image.
- 	  This requires u-boot on the platform.
- 
-diff --git a/arch/mips/generic/Platform b/arch/mips/generic/Platform
-index 879cb80..eaa19d1 100644
---- a/arch/mips/generic/Platform
-+++ b/arch/mips/generic/Platform
-@@ -16,5 +16,5 @@ all-$(CONFIG_MIPS_GENERIC)	:= vmlinux.gz.itb
- its-y					:= vmlinux.its.S
- its-$(CONFIG_FIT_IMAGE_FDT_BOSTON)	+= board-boston.its.S
- its-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= board-ni169445.its.S
--its-$(CONFIG_FIT_IMAGE_FDT_OCELOT_PCB123) += board-ocelot_pcb123.its.S
-+its-$(CONFIG_FIT_IMAGE_FDT_OCELOT)	+= board-ocelot.its.S
- its-$(CONFIG_FIT_IMAGE_FDT_XILFPGA)	+= board-xilfpga.its.S
-diff --git a/arch/mips/generic/board-ocelot.its.S b/arch/mips/generic/board-ocelot.its.S
-new file mode 100644
-index 0000000..3da2398
---- /dev/null
-+++ b/arch/mips/generic/board-ocelot.its.S
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
-+/ {
-+	images {
-+		fdt@ocelot_pcb123 {
-+			description = "MSCC Ocelot PCB123 Device Tree";
-+			data = /incbin/("boot/dts/mscc/ocelot_pcb123.dtb");
-+			type = "flat_dt";
-+			arch = "mips";
-+			compression = "none";
-+			hash@0 {
-+				algo = "sha1";
-+			};
-+		};
-+
-+		fdt@ocelot_pcb120 {
-+			description = "MSCC Ocelot PCB120 Device Tree";
-+			data = /incbin/("boot/dts/mscc/ocelot_pcb120.dtb");
-+			type = "flat_dt";
-+			arch = "mips";
-+			compression = "none";
-+			hash@0 {
-+				algo = "sha1";
-+			};
-+		};
-+	};
-+
-+	configurations {
-+		conf@ocelot_pcb123 {
-+			description = "Ocelot Linux kernel";
-+			kernel = "kernel@0";
-+			fdt = "fdt@ocelot_pcb123";
-+		};
-+
-+		conf@ocelot_pcb120 {
-+			description = "Ocelot Linux kernel";
-+			kernel = "kernel@0";
-+			fdt = "fdt@ocelot_pcb120";
-+		};
-+	};
-+};
-diff --git a/arch/mips/generic/board-ocelot_pcb123.its.S b/arch/mips/generic/board-ocelot_pcb123.its.S
-deleted file mode 100644
-index 5a7d5e1..0000000
---- a/arch/mips/generic/board-ocelot_pcb123.its.S
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
--/ {
--	images {
--		fdt@ocelot_pcb123 {
--			description = "MSCC Ocelot PCB123 Device Tree";
--			data = /incbin/("boot/dts/mscc/ocelot_pcb123.dtb");
--			type = "flat_dt";
--			arch = "mips";
--			compression = "none";
--			hash@0 {
--				algo = "sha1";
--			};
--		};
--	};
--
--	configurations {
--		conf@ocelot_pcb123 {
--			description = "Ocelot Linux kernel";
--			kernel = "kernel@0";
--			fdt = "fdt@ocelot_pcb123";
--		};
--	};
--};
--- 
-git-series 0.9.1
+These patches are also available in a git tree given that they have
+a few previous posted dependencies:
+
+    git://git.infradead.org/users/hch/misc.git dma-direct-noncoherent-merge
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-direct-noncoherent-merge
+
+Changes since v2:
+ - return bool from dev_is_dma_coherent
+
+Changes since v1:
+ - rebased to the latest Linus' tree which includes coherent dma support
+   for arc
+ - a couple tidyups suggested by Paul Burton

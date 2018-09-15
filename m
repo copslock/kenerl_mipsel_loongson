@@ -1,66 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2018 02:21:58 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:57016 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993094AbeKNBVy1hjqZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Nov 2018 02:21:54 +0100
-Received: from localhost (unknown [64.114.255.97])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FEFA2254D;
-        Wed, 14 Nov 2018 01:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1542158513;
-        bh=3XDjDdzTXZA89dVGXrFS7L7/kf3tFctG+0tRuS5g13o=;
-        h=Subject:To:Cc:From:Date:From;
-        b=dxl4EdHsZCiwCBns2w5XSOdsoi7iKCQZtavMkOglBNjDCxves+lGqe8bR4nbH/Wvy
-         bmJOhj7khlA0N4kLPf3xjM4sRvusAhxxHHz/qiFP63KDOb4bRnanXuJknHV1vXock2
-         YmsgyH0CjuZghhyaR8JK6ARFga0ZINW+etXVE79M=
-Subject: Patch "MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS" has been added to the 4.9-stable tree
-To:     chenhc@lemote.com, chenhuacai@gmail.com,
-        gregkh@linuxfoundation.org, jhogan@kernel.org,
-        linux-mips@linux-mips.org, paul.burton@mips.com,
-        ralf@linux-mips.org, sashal@kernel.org, wuzhangjin@gmail.com,
-        zhangfx@lemote.com
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 13 Nov 2018 17:21:51 -0800
-Message-ID: <154215851119276@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=PMNE=NZ=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67281
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Huacai Chen <chenhc@lemote.com>
+Date: Sat, 15 Sep 2018 14:01:12 +0800
+Subject: MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS
+Message-ID: <20180915060112.0QqENV2HYna70-DV5zyYGRV4-PqJy8d8eOdDwDmEETY@z>
+
+From: Huacai Chen <chenhc@lemote.com>
+
+[ Upstream commit 2794f688b2c336e0da85e9f91fed33febbd9f54a ]
+
+Call pcie_bus_configure_settings() on MIPS, like for other platforms.
+The function pcie_bus_configure_settings() makes sure the MPS (Max
+Payload Size) across the bus is uniform and provides the ability to
+tune the MRSS (Max Read Request Size) and MPS (Max Payload Size) to
+higher performance values. Some devices will not operate properly if
+these aren't set correctly because the firmware doesn't always do it.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/20649/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/pci/pci-legacy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/arch/mips/pci/pci-legacy.c
++++ b/arch/mips/pci/pci-legacy.c
+@@ -116,8 +116,12 @@ static void pcibios_scanbus(struct pci_c
+ 	if (pci_has_flag(PCI_PROBE_ONLY)) {
+ 		pci_bus_claim_resources(bus);
+ 	} else {
++		struct pci_bus *child;
++
+ 		pci_bus_size_bridges(bus);
+ 		pci_bus_assign_resources(bus);
++		list_for_each_entry(child, &bus->children, node)
++			pcie_bus_configure_settings(child);
+ 	}
+ 	pci_bus_add_devices(bus);
+ }
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from chenhc@lemote.com are
 
-    MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS
-
-to the 4.9-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-pci-call-pcie_bus_configure_settings-to-set-mps-mrrs.patch
-and it can be found in the queue-4.9 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.9/mips-pci-call-pcie_bus_configure_settings-to-set-mps-mrrs.patch

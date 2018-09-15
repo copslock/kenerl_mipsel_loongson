@@ -1,83 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 03:36:13 +0200 (CEST)
-Received: from mail-sn1nam01on0138.outbound.protection.outlook.com ([104.47.32.138]:2925
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994687AbeIOBfgU0Tbg convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2018 03:35:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rL34QdyXweb6H1OD992oFwT65VdvgQ6U738O6f2tPjM=;
- b=YlmaxTYke0a1jflls9A4PSMXoqK/Pug1wU3HTm6QI/QupgZJEinjyaZDgIvsab8SxkwIkk5QC7xzjjY6Ngrb9teNaWAYY6mszLZh0f0hH0g4BL92KOSaaH4mwsm8u99irmMGWA9HQi3P4RwhOg5uOWagS+roYBWxYWfTmrJIutY=
-Received: from CY4PR21MB0776.namprd21.prod.outlook.com (10.173.192.22) by
- CY4PR21MB0280.namprd21.prod.outlook.com (10.173.193.146) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1164.5; Sat, 15 Sep 2018 01:35:27 +0000
-Received: from CY4PR21MB0776.namprd21.prod.outlook.com
- ([fe80::151:b6fe:32c8:cccd]) by CY4PR21MB0776.namprd21.prod.outlook.com
- ([fe80::151:b6fe:32c8:cccd%9]) with mapi id 15.20.1164.008; Sat, 15 Sep 2018
- 01:35:26 +0000
-From:   Sasha Levin <Alexander.Levin@microsoft.com>
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Paul Burton <paul.burton@mips.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Sasha Levin <Alexander.Levin@microsoft.com>
-Subject: [PATCH AUTOSEL 3.18 04/11] MIPS: loongson64: cs5536: Fix
- PCI_OHCI_INT_REG reads
-Thread-Topic: [PATCH AUTOSEL 3.18 04/11] MIPS: loongson64: cs5536: Fix
- PCI_OHCI_INT_REG reads
-Thread-Index: AQHUTJRhvqRzDhjlN029EPsyzudlTA==
-Date:   Sat, 15 Sep 2018 01:35:26 +0000
-Message-ID: <20180915013521.180178-4-alexander.levin@microsoft.com>
-References: <20180915013521.180178-1-alexander.levin@microsoft.com>
-In-Reply-To: <20180915013521.180178-1-alexander.levin@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [52.168.54.252]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR21MB0280;6:2Q8pd6OYIJcnV+5F3vPEQoSsDehZTDcb0G3wbDA1zhTWE9lsauNyN/pjElBAgdbnqGa0NHYaw/pTXWk0jxuKvTKN5T94alwPUVoRq6Cv7MQPgZq12pWW+kTuI38i46kYNJgq9SZE8fxYGcuQ1XfWAOHynjl3nFdaodhG3EdkVDVrGgQ5fdnR4RO5yO/PlMzjiFMMqtiLbTFH7qm9miZbJqLHOEzLPTr3QXcD+G7IbMdTvRJl95iwwAj0XoZwl/f9YW34iFhj6OizTREh7T0fP/ZfWR3AtvXIc2FWGoEh8Qncy/vRDcbH58WqV8zPWYAout5+1F0ZHXbZwwAEw7Qw5r5MSwtc2K3sqBorPUrGkn+Ux8qltvzRRS2kC9WIybU8OyAidIiQWmY4mMG/6baO8CuQenduyaw51GFQj2rA3QQF2ko//cEyIHyyfSxOR8r7WlxIzt9Zs5ttMTRGejUKBA==;5:pAW2EIW2k3ymR3TIG6/GYxt+J2bFEB8yAcQ5c4wSEZbGubmpxfPIE8ZjMNSS4O3lThY4Ujjsxg8DywAaWoYdrsFRPo7vNB+4eCFDJqp+khJANrUUXJYBc9+SDJratAOzpc7dtCL/JPOPfNXkHeVP9SVCvKjtBzySN7Rq+KIM+kw=;7:qK5GXnDUoPMyL0MbQRjSplfBK735IiMMtz4NhCluB92i7cHZvcRiS/APGIafPBJJqCaosM3Tsl745Meszw7Vwq6zVLEdpGZos187ddcSNlj5mFj1KmP4GdWs/resovvsUJ06LlNvV9+QiGAAFo64ff1fET2OtHtoQdZ7SB0VqTrpS4V2+Ts9Bp0K/MLSzK8ydBnZfbHu2DmtbPsKbzC6bwYC2IwwAc6kFWjf6NfG64IH3Ui5HdHY76K1dGydGkxH
-x-ms-office365-filtering-correlation-id: dcf57f31-47e7-41a4-46c0-08d61aab83a5
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(4618075)(2017052603328)(7193020);SRVR:CY4PR21MB0280;
-x-ms-traffictypediagnostic: CY4PR21MB0280:
-x-microsoft-antispam-prvs: <CY4PR21MB0280B0F22758AD06E2A55AF4FB180@CY4PR21MB0280.namprd21.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(28532068793085)(89211679590171);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(10201501046)(93006095)(93001095)(3002001)(3231354)(944501410)(52105095)(2018427008)(6055026)(149027)(150027)(6041310)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123560045)(201708071742011)(7699050)(76991041);SRVR:CY4PR21MB0280;BCL:0;PCL:0;RULEID:;SRVR:CY4PR21MB0280;
-x-forefront-prvs: 0796EBEDE1
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(136003)(366004)(39860400002)(396003)(199004)(189003)(966005)(25786009)(14454004)(10290500003)(2906002)(4326008)(6436002)(107886003)(72206003)(14444005)(256004)(217873002)(478600001)(5660300001)(6512007)(5250100002)(2501003)(6306002)(97736004)(53936002)(6116002)(3846002)(8676002)(7736002)(305945005)(1076002)(6486002)(36756003)(105586002)(10090500001)(106356001)(22452003)(11346002)(2616005)(476003)(2900100001)(486006)(446003)(66066001)(76176011)(99286004)(316002)(54906003)(110136005)(6346003)(68736007)(26005)(186003)(86612001)(6506007)(102836004)(575784001)(86362001)(8936002)(81156014)(81166006);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0280;H:CY4PR21MB0776.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Alexander.Levin@microsoft.com; 
-x-microsoft-antispam-message-info: f2k3XD6P3Q1rLLOeCk2r3JKgNRP5nkhlZcLR64DA02orBvS3ACznFlQsBRkTPQQtsv5CXVWmP8xa2SIfdVnbVx2UPmgAPp5mqvOTGhgeEbyun4ZMPqpxQNHb4mu6gwCgOZS2AxbmOTbtQVD6R/gaIfFisyitW8XxrzDct+sqlqfYR46cqbuj66w1xnxzD8aTDNcMtlep/fQBlvAGWStfP5vuisFN2tA5t9ZfjF/T0kdOnSdZUjMEy4FRRcYi/jNzrmH2LRaYApt/IMSMl/zGVMsGSWydrY887OjKNjjVKqTkRJNh8XIgOlKeVS53+l5Ko1Zbbp6NynG4t5HDk+V0GzvfUq+2Prb9LaEAoBtqYCc=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dcf57f31-47e7-41a4-46c0-08d61aab83a5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2018 01:35:26.8943
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0280
-Return-Path: <Alexander.Levin@microsoft.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 07:50:35 +0200 (CEST)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:40884
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990475AbeIOFucS0vlX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2018 07:50:32 +0200
+Received: by mail-pf1-x444.google.com with SMTP id s13-v6so5220823pfi.7;
+        Fri, 14 Sep 2018 22:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=oF015cDzQJ9UTBvMCkiQB2+Ypti3191FxmHaSrbmCvM=;
+        b=MsG4SRZzhmBUB9S2CQdqRWB9qz+PT5hwMrCqFJKKEVgMHVA2GmA50+7F+RPRxdcIsY
+         BwwW9/rMExvCi8WUb02U/t08A56RVt7U1UJ5W3uSg7exq0BKn6VfXvbP/TOHYRNcwOsA
+         DM52308k0i+kopQnlb1dJ8e3cg06JSInIuoN983ASrS9em7QL9i2oUmwu7taAzyXf12S
+         cwvrp8InKPEg/kpUn0a1godhXW7iqoPDK+HXMxDuIgJiO8BeEISNvTdXIhstq7vAEFOB
+         iS1pKwPs2Webp/PHjohposfqGXIqllCys8HTnKyM4dJzK7YjWGrQN1EFpAInCYSioCCX
+         LyKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=oF015cDzQJ9UTBvMCkiQB2+Ypti3191FxmHaSrbmCvM=;
+        b=VGHHTLdvyHHXdjWlOHqqnw7czE818jD5JR/bvwct04DXt7ch82ruS77ymHVfXt7lPi
+         YYZxvOJ7c7jJv6BAXEyAH/pPiTVMk4gSv28AMqZcuq9WaW0rfjrE74pxgrIuqntPvx5a
+         O14/STkWayyeTQWCZWjA3eHOcE7T3VpshJRy+c0PjnKUnYm7MfhDbiJwUHStmEf12ejs
+         FokU5yNzERD111hOJARjYIsi6p/6VVQlRi0BPAvk+K8j8qsMqtvDIhfV9M88htJV2tge
+         2JL8H4oWxpJ+ci9yyprJD/K/xXKs4H892N6xxKRqJSAa97SbzkcFkQIuAO7/Q335wk80
+         e2vg==
+X-Gm-Message-State: APzg51BTKDIesUxCK5ot/cljKiuCdnIBgLYYnKy257K0XXOjdCnoPWen
+        h9IuI8RZd/L+UdzI26YoH6560kHsao4=
+X-Google-Smtp-Source: ANB0VdagVwyTk0xFLz4rQBCouy7r6t+t5ZmJsPOB4PRiz8aLXhCo+SIcm7fCFOAhuyxZjmUrt9idMQ==
+X-Received: by 2002:a63:d401:: with SMTP id a1-v6mr14560542pgh.414.1536990625390;
+        Fri, 14 Sep 2018 22:50:25 -0700 (PDT)
+Received: from software.domain.org ([172.247.34.138])
+        by smtp.gmail.com with ESMTPSA id p19-v6sm18177406pgh.60.2018.09.14.22.50.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 14 Sep 2018 22:50:24 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH Resend] MIPS: Ensure VDSO pages mapped above STACK_TOP
+Date:   Sat, 15 Sep 2018 13:51:30 +0800
+Message-Id: <1536990690-17778-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66321
+X-archive-position: 66322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Alexander.Levin@microsoft.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,50 +67,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+Unlimited stack size (ulimit -s unlimited) causes kernel to use legacy
+layout for applications. Thus, if VDSO isn't mapped above STACK_TOP, it
+will be mapped at a very low address. This will probably cause an early
+brk() failure, because the application's initial mm->brk is usually
+below VDSO (especially when COMPAT_BRK is enabled) and there is no more
+room to expand its heap.
 
-[ Upstream commit cd87668d601f622e0ebcfea4f78d116d5f572f4d ]
+This patch reserve 4 MB space above STACK_TOP, and use the low 2 MB for
+VDSO randomization (as a result, VDSO pages can use as much as 2 MB).
 
-The PCI_OHCI_INT_REG case in pci_ohci_read_reg() contains the following
-if statement:
-
-  if ((lo & 0x00000f00) == CS5536_USB_INTR)
-
-CS5536_USB_INTR expands to the constant 11, which gives us the following
-condition which can never evaluate true:
-
-  if ((lo & 0xf00) == 11)
-
-At least when using GCC 8.1.0 this falls foul of the tautoligcal-compare
-warning, and since the code is built with the -Werror flag the build
-fails.
-
-Fix this by shifting lo right by 8 bits in order to match the
-corresponding PCI_OHCI_INT_REG case in pci_ohci_write_reg().
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19861/
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson/common/cs5536/cs5536_ohci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/processor.h |  5 +++--
+ arch/mips/kernel/vdso.c           | 16 +++++++++++++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/loongson/common/cs5536/cs5536_ohci.c b/arch/mips/loongson/common/cs5536/cs5536_ohci.c
-index f7c905e50dc4..92dc6bafc127 100644
---- a/arch/mips/loongson/common/cs5536/cs5536_ohci.c
-+++ b/arch/mips/loongson/common/cs5536/cs5536_ohci.c
-@@ -138,7 +138,7 @@ u32 pci_ohci_read_reg(int reg)
- 		break;
- 	case PCI_OHCI_INT_REG:
- 		_rdmsr(DIVIL_MSR_REG(PIC_YSEL_LOW), &hi, &lo);
--		if ((lo & 0x00000f00) == CS5536_USB_INTR)
-+		if (((lo >> PIC_YSEL_LOW_USB_SHIFT) & 0xf) == CS5536_USB_INTR)
- 			conf_data = 1;
- 		break;
- 	default:
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index b2fa629..8964eca 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/atomic.h>
+ #include <linux/cpumask.h>
++#include <linux/sizes.h>
+ #include <linux/threads.h>
+ 
+ #include <asm/cachectl.h>
+@@ -82,9 +83,9 @@ extern unsigned int vced_count, vcei_count;
+ 
+ /*
+  * One page above the stack is used for branch delay slot "emulation".
+- * See dsemul.c for details.
++ * See dsemul.c for details, other pages are for VDSO.
+  */
+-#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - PAGE_SIZE)
++#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - SZ_4M)
+ 
+ /*
+  * This decides where the kernel will search for a free chunk of vm
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 8f845f6..9a17467 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -15,6 +15,7 @@
+ #include <linux/ioport.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
++#include <linux/random.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/timekeeper_internal.h>
+@@ -97,6 +98,19 @@ void update_vsyscall_tz(void)
+ 	}
+ }
+ 
++static unsigned long vdso_base(void)
++{
++	unsigned long offset = 0UL;
++
++	if (current->flags & PF_RANDOMIZE) {
++		offset = get_random_int();
++		offset <<= PAGE_SHIFT;
++		offset &= 0x1ffffful; /* 2 MB */
++	}
++
++	return STACK_TOP + PAGE_SIZE + offset;
++}
++
+ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ {
+ 	struct mips_vdso_image *image = current->thread.abi->vdso;
+@@ -137,7 +151,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ 	if (cpu_has_dc_aliases)
+ 		size += shm_align_mask + 1;
+ 
+-	base = get_unmapped_area(NULL, 0, size, 0, 0);
++	base = get_unmapped_area(NULL, vdso_base(), size, 0, 0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+ 		goto out;
 -- 
-2.17.1
+2.7.0

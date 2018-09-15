@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 14:09:40 +0200 (CEST)
-Received: from mx2.mailbox.org ([80.241.60.215]:58554 "EHLO mx2.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 14:09:49 +0200 (CEST)
+Received: from mx1.mailbox.org ([80.241.60.212]:60086 "EHLO mx1.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992153AbeIOMJR2rUk2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 15 Sep 2018 14:09:17 +0200
+        id S23992494AbeIOMJSGU-s2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 15 Sep 2018 14:09:18 +0200
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id C678341A35;
-        Sat, 15 Sep 2018 14:09:11 +0200 (CEST)
+        by mx1.mailbox.org (Postfix) with ESMTPS id 6C55849808;
+        Sat, 15 Sep 2018 14:09:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
         by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id UzqPRY1IUBEa; Sat, 15 Sep 2018 14:09:10 +0200 (CEST)
+        with ESMTP id ZUYxFAa2uGKT; Sat, 15 Sep 2018 14:09:09 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     davem@davemloft.net
 Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
@@ -19,16 +19,16 @@ Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
         john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
         hauke.mehrtens@intel.com, devicetree@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH net-next 3/5] net: lantiq: lantiq_xrx200: Move clock prepare to probe function
-Date:   Sat, 15 Sep 2018 14:08:47 +0200
-Message-Id: <20180915120849.24630-4-hauke@hauke-m.de>
+Subject: [PATCH net-next 2/5] dt-bindings: net: dsa: lantiq,xrx200-gswip: Fix minor style fixes
+Date:   Sat, 15 Sep 2018 14:08:46 +0200
+Message-Id: <20180915120849.24630-3-hauke@hauke-m.de>
 In-Reply-To: <20180915120849.24630-1-hauke@hauke-m.de>
 References: <20180915120849.24630-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66327
+X-archive-position: 66328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,87 +45,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The switch and the MAC are in one IP core and they use the same clock
-signal from the clock generation unit.
-Currently the clock architecture in the lantiq SoC code does not allow
-to easily share the same clocks, this has to be fixed by switching to
-the common clock framework.
-As a workaround the clock of the switch and MAC should be activated when
-the MAC gets probed and only disabled when the MAC gets removed. This
-way it is ensured that the clock is always enabled when the switch or
-MAC is used. The switch can not be used without the MAC.
+* Use one compatible line per line in the documentation
+* Remove SoC revision depended compatible lines, we can detect that in
+  the driver
+* Use lower case letters in hex addresses
+* Fix the size of the address ranges in the example, this now matches
+  the sizes used by the SoC. The old ones will also work, this just adds
+  some empty address space.
+* Change the reg size of the gphy-fw node
 
-This fixes a data bus error when rebooting the system and deactivating
-the switch and mac and later accessing some registers in the cleanup
-while the clocks are disabled.
-
-Fixes: fe1a56420cf2 ("net: lantiq: Add Lantiq / Intel VRX200 Ethernet driver")
+Fixes: 86ce2bc73c7a ("dt-bindings: net: dsa: Add lantiq, xrx200-gswip DT bindings")
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: devicetree@vger.kernel.org
 ---
- drivers/net/ethernet/lantiq_xrx200.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/net/dsa/lantiq-gswip.txt       | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/lantiq_xrx200.c b/drivers/net/ethernet/lantiq_xrx200.c
-index c8b6d908f0cc..14b20ce0dd43 100644
---- a/drivers/net/ethernet/lantiq_xrx200.c
-+++ b/drivers/net/ethernet/lantiq_xrx200.c
-@@ -115,12 +115,6 @@ static void xrx200_flush_dma(struct xrx200_chan *ch)
- static int xrx200_open(struct net_device *net_dev)
- {
- 	struct xrx200_priv *priv = netdev_priv(net_dev);
--	int err;
--
--	/* enable clock gate */
--	err = clk_prepare_enable(priv->clk);
--	if (err)
--		return err;
+diff --git a/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
+index a089f5856778..886cbe8ffb38 100644
+--- a/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
++++ b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
+@@ -22,9 +22,9 @@ required and optional properties.
  
- 	napi_enable(&priv->chan_tx.napi);
- 	ltq_dma_open(&priv->chan_tx.dma);
-@@ -155,8 +149,6 @@ static int xrx200_close(struct net_device *net_dev)
- 	napi_disable(&priv->chan_tx.napi);
- 	ltq_dma_close(&priv->chan_tx.dma);
  
--	clk_disable_unprepare(priv->clk);
--
- 	return 0;
- }
+ Required properties for GPHY firmware loading:
+-- compatible	: "lantiq,gphy-fw" and "lantiq,xrx200-gphy-fw",
+-		  "lantiq,xrx200a1x-gphy-fw", "lantiq,xrx200a2x-gphy-fw",
+-		  "lantiq,xrx300-gphy-fw", or "lantiq,xrx330-gphy-fw"
++- compatible	: "lantiq,xrx200-gphy-fw", "lantiq,gphy-fw"
++		  "lantiq,xrx300-gphy-fw", "lantiq,gphy-fw"
++		  "lantiq,xrx330-gphy-fw", "lantiq,gphy-fw"
+ 		  for the loading of the firmware into the embedded
+ 		  GPHY core of the SoC.
+ - lantiq,rcu	: reference to the rcu syscon
+@@ -41,13 +41,13 @@ Example:
  
-@@ -497,6 +489,11 @@ static int xrx200_probe(struct platform_device *pdev)
- 	if (err)
- 		return err;
+ Ethernet switch on the VRX200 SoC:
  
-+	/* enable clock gate */
-+	err = clk_prepare_enable(priv->clk);
-+	if (err)
-+		goto err_uninit_dma;
-+
- 	/* set IPG to 12 */
- 	xrx200_pmac_mask(priv, PMAC_RX_IPG_MASK, 0xb, PMAC_RX_IPG);
+-gswip: gswip@E108000 {
++switch@e108000 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	compatible = "lantiq,xrx200-gswip";
+-	reg = <	0xE108000 0x3000 /* switch */
+-		0xE10B100 0x70 /* mdio */
+-		0xE10B1D8 0x30 /* mii */
++	reg = <	0xe108000 0x3100	/* switch */
++		0xe10b100 0xd8		/* mdio */
++		0xe10b1d8 0x130		/* mii */
+ 		>;
+ 	dsa,member = <0 0>;
  
-@@ -514,9 +511,12 @@ static int xrx200_probe(struct platform_device *pdev)
+@@ -97,7 +97,7 @@ gswip: gswip@E108000 {
+ 		};
+ 	};
  
- 	err = register_netdev(net_dev);
- 	if (err)
--		goto err_uninit_dma;
-+		goto err_unprepare_clk;
- 	return err;
+-	mdio@0 {
++	mdio {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "lantiq,xrx200-mdio";
+@@ -123,6 +123,8 @@ gswip: gswip@E108000 {
+ 	gphy-fw {
+ 		compatible = "lantiq,xrx200-gphy-fw", "lantiq,gphy-fw";
+ 		lantiq,rcu = <&rcu0>;
++		#address-cells = <1>;
++		#size-cells = <0>;
  
-+err_unprepare_clk:
-+	clk_disable_unprepare(priv->clk);
-+
- err_uninit_dma:
- 	xrx200_hw_cleanup(priv);
- 
-@@ -536,6 +536,9 @@ static int xrx200_remove(struct platform_device *pdev)
- 	/* remove the actual device */
- 	unregister_netdev(net_dev);
- 
-+	/* release the clock */
-+	clk_disable_unprepare(priv->clk);
-+
- 	/* shut down hardware */
- 	xrx200_hw_cleanup(priv);
- 
+ 		gphy@20 {
+ 			reg = <0x20>;
 -- 
 2.11.0

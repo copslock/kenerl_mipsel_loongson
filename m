@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 14:09:49 +0200 (CEST)
-Received: from mx1.mailbox.org ([80.241.60.212]:60086 "EHLO mx1.mailbox.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2018 14:10:01 +0200 (CEST)
+Received: from mx2.mailbox.org ([80.241.60.215]:58582 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992494AbeIOMJSGU-s2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992482AbeIOMJSJbLN2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 15 Sep 2018 14:09:18 +0200
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 6C55849808;
+        by mx2.mailbox.org (Postfix) with ESMTPS id 72E4F41A5F;
         Sat, 15 Sep 2018 14:09:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id ZUYxFAa2uGKT; Sat, 15 Sep 2018 14:09:09 +0200 (CEST)
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id 4KchZA8hN2Yc; Sat, 15 Sep 2018 14:09:11 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     davem@davemloft.net
 Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
@@ -19,16 +19,16 @@ Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
         john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
         hauke.mehrtens@intel.com, devicetree@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH net-next 2/5] dt-bindings: net: dsa: lantiq,xrx200-gswip: Fix minor style fixes
-Date:   Sat, 15 Sep 2018 14:08:46 +0200
-Message-Id: <20180915120849.24630-3-hauke@hauke-m.de>
+Subject: [PATCH net-next 4/5] net: dsa: lantiq_gswip: Minor code style improvements
+Date:   Sat, 15 Sep 2018 14:08:48 +0200
+Message-Id: <20180915120849.24630-5-hauke@hauke-m.de>
 In-Reply-To: <20180915120849.24630-1-hauke@hauke-m.de>
 References: <20180915120849.24630-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66328
+X-archive-position: 66329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,74 +45,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-* Use one compatible line per line in the documentation
-* Remove SoC revision depended compatible lines, we can detect that in
-  the driver
-* Use lower case letters in hex addresses
-* Fix the size of the address ranges in the example, this now matches
-  the sizes used by the SoC. The old ones will also work, this just adds
-  some empty address space.
-* Change the reg size of the gphy-fw node
+Use one code block when returning because the interface type is
+unsupported and also check if some unsupported port gets configured.
+In addition fix a double the and use dsa_is_cpu_port() instated of
+manually getting the CPU port.
 
-Fixes: 86ce2bc73c7a ("dt-bindings: net: dsa: Add lantiq, xrx200-gswip DT bindings")
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: devicetree@vger.kernel.org
 ---
- .../devicetree/bindings/net/dsa/lantiq-gswip.txt       | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/net/dsa/lantiq_gswip.c | 38 ++++++++++++++++++--------------------
+ 1 file changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
-index a089f5856778..886cbe8ffb38 100644
---- a/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
-+++ b/Documentation/devicetree/bindings/net/dsa/lantiq-gswip.txt
-@@ -22,9 +22,9 @@ required and optional properties.
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index 9c28d0b2fcdb..4e3732b5790f 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -615,32 +615,24 @@ static void gswip_phylink_validate(struct dsa_switch *ds, int port,
+ 		if (!phy_interface_mode_is_rgmii(state->interface) &&
+ 		    state->interface != PHY_INTERFACE_MODE_MII &&
+ 		    state->interface != PHY_INTERFACE_MODE_REVMII &&
+-		    state->interface != PHY_INTERFACE_MODE_RMII) {
+-			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
+-			dev_err(ds->dev,
+-			"Unsupported interface: %d\n", state->interface);
+-			return;
+-		}
++		    state->interface != PHY_INTERFACE_MODE_RMII)
++			goto unsupported;
+ 		break;
+ 	case 2:
+ 	case 3:
+ 	case 4:
+-		if (state->interface != PHY_INTERFACE_MODE_INTERNAL) {
+-			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
+-			dev_err(ds->dev,
+-			"Unsupported interface: %d\n", state->interface);
+-			return;
+-		}
++		if (state->interface != PHY_INTERFACE_MODE_INTERNAL)
++			goto unsupported;
+ 		break;
+ 	case 5:
+ 		if (!phy_interface_mode_is_rgmii(state->interface) &&
+-		    state->interface != PHY_INTERFACE_MODE_INTERNAL) {
+-			bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
+-			dev_err(ds->dev,
+-			"Unsupported interface: %d\n", state->interface);
+-			return;
+-		}
++		    state->interface != PHY_INTERFACE_MODE_INTERNAL)
++			goto unsupported;
+ 		break;
++	default:
++		bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
++		dev_err(ds->dev, "Unsupported port: %i\n", port);
++		return;
+ 	}
  
+ 	/* Allow all the expected bits */
+@@ -667,6 +659,12 @@ static void gswip_phylink_validate(struct dsa_switch *ds, int port,
+ 		   __ETHTOOL_LINK_MODE_MASK_NBITS);
+ 	bitmap_and(state->advertising, state->advertising, mask,
+ 		   __ETHTOOL_LINK_MODE_MASK_NBITS);
++	return;
++
++unsupported:
++	bitmap_zero(supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
++	dev_err(ds->dev, "Unsupported interface: %d\n", state->interface);
++	return;
+ }
  
- Required properties for GPHY firmware loading:
--- compatible	: "lantiq,gphy-fw" and "lantiq,xrx200-gphy-fw",
--		  "lantiq,xrx200a1x-gphy-fw", "lantiq,xrx200a2x-gphy-fw",
--		  "lantiq,xrx300-gphy-fw", or "lantiq,xrx330-gphy-fw"
-+- compatible	: "lantiq,xrx200-gphy-fw", "lantiq,gphy-fw"
-+		  "lantiq,xrx300-gphy-fw", "lantiq,gphy-fw"
-+		  "lantiq,xrx330-gphy-fw", "lantiq,gphy-fw"
- 		  for the loading of the firmware into the embedded
- 		  GPHY core of the SoC.
- - lantiq,rcu	: reference to the rcu syscon
-@@ -41,13 +41,13 @@ Example:
+ static void gswip_phylink_mac_config(struct dsa_switch *ds, int port,
+@@ -970,7 +968,7 @@ static int gswip_gphy_fw_list(struct gswip_priv *priv,
+ 	int err;
+ 	int i = 0;
  
- Ethernet switch on the VRX200 SoC:
- 
--gswip: gswip@E108000 {
-+switch@e108000 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
- 	compatible = "lantiq,xrx200-gswip";
--	reg = <	0xE108000 0x3000 /* switch */
--		0xE10B100 0x70 /* mdio */
--		0xE10B1D8 0x30 /* mii */
-+	reg = <	0xe108000 0x3100	/* switch */
-+		0xe10b100 0xd8		/* mdio */
-+		0xe10b1d8 0x130		/* mii */
- 		>;
- 	dsa,member = <0 0>;
- 
-@@ -97,7 +97,7 @@ gswip: gswip@E108000 {
- 		};
- 	};
- 
--	mdio@0 {
-+	mdio {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "lantiq,xrx200-mdio";
-@@ -123,6 +123,8 @@ gswip: gswip@E108000 {
- 	gphy-fw {
- 		compatible = "lantiq,xrx200-gphy-fw", "lantiq,gphy-fw";
- 		lantiq,rcu = <&rcu0>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 
- 		gphy@20 {
- 			reg = <0x20>;
+-	/* The The VRX200 rev 1.1 uses the GSWIP 2.0 and needs the older
++	/* The VRX200 rev 1.1 uses the GSWIP 2.0 and needs the older
+ 	 * GPHY firmware. The VRX200 rev 1.2 uses the GSWIP 2.1 and also
+ 	 * needs a different GPHY firmware.
+ 	 */
+@@ -1097,7 +1095,7 @@ static int gswip_probe(struct platform_device *pdev)
+ 		dev_err(dev, "dsa switch register failed: %i\n", err);
+ 		goto mdio_bus;
+ 	}
+-	if (priv->ds->dst->cpu_dp->index != priv->hw_info->cpu_port) {
++	if (!dsa_is_cpu_port(priv->ds, priv->hw_info->cpu_port)) {
+ 		dev_err(dev, "wrong CPU port defined, HW only supports port: %i",
+ 			priv->hw_info->cpu_port);
+ 		err = -EINVAL;
 -- 
 2.11.0

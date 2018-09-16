@@ -1,79 +1,59 @@
-From: Vegard Nossum <vegard.nossum@oracle.com>
-Date: Mon, 29 May 2017 09:22:07 +0200
-Subject: kthread: fix boot hang (regression) on MIPS/OpenRISC
-Message-ID: <20170529072207.vBNelLN9dhzvYoVejC6QV9iD91LEplbHAm7f9fX1VKs@z>
-
-From: Vegard Nossum <vegard.nossum@oracle.com>
-
-commit b0f5a8f32e8bbdaae1abb8abe2d3cbafaba57e08 upstream.
-
-This fixes a regression in commit 4d6501dce079 where I didn't notice
-that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-NULL after our initialisation in copy_process().
-
-We can simply get rid of the arch-specific initialisation here since it
-is now always done in copy_process() before hitting copy_thread{,_tls}().
-
-Review notes:
-
- - As far as I can tell, copy_process() is the only user of
-   copy_thread_tls(), which is the only caller of copy_thread() for
-   architectures that don't implement copy_thread_tls().
-
- - After this patch, there is no arch-specific code touching
-   p->set_child_tid or p->clear_child_tid whatsoever.
-
- - It may look like MIPS/OpenRISC wanted to always have these fields be
-   NULL, but that's not true, as copy_process() would unconditionally
-   set them again _after_ calling copy_thread_tls() before commit
-   4d6501dce079.
-
-Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
-Acked-by: Stafford Horne <shorne@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: openrisc@lists.librecores.org
-Cc: Jamie Iles <jamie.iles@oracle.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/process.c     |    1 -
- arch/openrisc/kernel/process.c |    2 --
- 2 files changed, 3 deletions(-)
-
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -115,7 +115,6 @@ int copy_thread(unsigned long clone_flag
- 	struct thread_info *ti = task_thread_info(p);
- 	struct pt_regs *childregs, *regs = current_pt_regs();
- 	unsigned long childksp;
--	p->set_child_tid = p->clear_child_tid = NULL;
- 
- 	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
- 
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -152,8 +152,6 @@ copy_thread(unsigned long clone_flags, u
- 
- 	top_of_kernel_stack = sp;
- 
--	p->set_child_tid = p->clear_child_tid = NULL;
--
- 	/* Locate userspace context on stack... */
- 	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
- 	sp -= sizeof(struct pt_regs);
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2018 15:41:20 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53204 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993946AbeIPNlIPGltZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2018 15:41:08 +0200
+Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BFEB5BE0;
+        Sun, 16 Sep 2018 13:41:00 +0000 (UTC)
+Subject: Patch "kthread: fix boot hang (regression) on MIPS/OpenRISC" has been added to the 4.9-stable tree
+To:     amit.pundir@linaro.org, gregkh@linuxfoundation.org,
+        jamie.iles@oracle.com, jonas@southpole.se,
+        linux-mips@linux-mips.org, linux@roeck-us.net, oleg@redhat.com,
+        openrisc@lists.librecores.org, ralf@linux-mips.org,
+        shorne@gmail.com, stefan.kristiansson@saunalahti.fi,
+        tglx@linutronix.de, torvalds@linux-foundation.org,
+        vegard.nossum@oracle.com
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 16 Sep 2018 15:40:38 +0200
+Message-ID: <153710523813649@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 66347
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from vegard.nossum@oracle.com are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.4/kthread-fix-use-after-free-if-kthread-fork-fails.patch
-queue-4.4/kthread-fix-boot-hang-regression-on-mips-openrisc.patch
+    kthread: fix boot hang (regression) on MIPS/OpenRISC
+
+to the 4.9-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     kthread-fix-boot-hang-regression-on-mips-openrisc.patch
+and it can be found in the queue-4.9 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

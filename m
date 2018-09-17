@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 00:50:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35428 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 00:51:33 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35544 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994585AbeIQWuefPmuY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 00:50:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23994609AbeIQWvZWMP-Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 00:51:25 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 977DECAE;
-        Mon, 17 Sep 2018 22:50:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6088FCAC;
+        Mon, 17 Sep 2018 22:51:14 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.4 36/56] MIPS: Octeon: add missing of_node_put()
-Date:   Tue, 18 Sep 2018 00:42:09 +0200
-Message-Id: <20180917213829.419730920@linuxfoundation.org>
+Subject: [PATCH 4.4 44/56] MIPS: WARN_ON invalid DMA cache maintenance, not BUG_ON
+Date:   Tue, 18 Sep 2018 00:42:17 +0200
+Message-Id: <20180917213829.738082688@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180917213827.913122591@linuxfoundation.org>
 References: <20180917213827.913122591@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66375
+X-archive-position: 66376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,42 +49,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+From: Paul Burton <paul.burton@imgtec.com>
 
-[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
+[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
 
-The call to of_find_node_by_name returns a node pointer with refcount
-incremented thus it must be explicitly decremented here after the last
-usage.
+If a driver causes DMA cache maintenance with a zero length then we
+currently BUG and kill the kernel. As this is a scenario that we may
+well be able to recover from, WARN & return in the condition instead.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19558/
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14623/
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/cavium-octeon/octeon-platform.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mm/c-r4k.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -349,6 +349,7 @@ static int __init octeon_ehci_device_ini
- 		return 0;
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -712,7 +712,8 @@ static void r4k_flush_icache_range(unsig
+ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
- 	pd = of_find_device_by_node(ehci_node);
-+	of_node_put(ehci_node);
- 	if (!pd)
- 		return 0;
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+@@ -745,7 +746,8 @@ static void r4k_dma_cache_wback_inv(unsi
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
-@@ -411,6 +412,7 @@ static int __init octeon_ohci_device_ini
- 		return 0;
- 
- 	pd = of_find_device_by_node(ohci_node);
-+	of_node_put(ohci_node);
- 	if (!pd)
- 		return 0;
- 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {

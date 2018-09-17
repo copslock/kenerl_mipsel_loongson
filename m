@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:00:03 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38488 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:02:28 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38996 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994641AbeIQW7sgfh4Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 00:59:48 +0200
+        by eddie.linux-mips.org with ESMTP id S23994637AbeIQXCYCKcrY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:02:24 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 271CEC49;
-        Mon, 17 Sep 2018 22:59:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7A561C49;
+        Mon, 17 Sep 2018 23:02:16 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 52/70] MIPS: generic: fix missing of_node_put()
-Date:   Tue, 18 Sep 2018 00:42:25 +0200
-Message-Id: <20180917211653.282736183@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Rene Nielsen <rene.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.14 007/126] MIPS: VDSO: Match data page cache colouring when D$ aliases
+Date:   Tue, 18 Sep 2018 00:40:55 +0200
+Message-Id: <20180917211704.293713196@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
-In-Reply-To: <20180917211649.099135838@linuxfoundation.org>
-References: <20180917211649.099135838@linuxfoundation.org>
+In-Reply-To: <20180917211703.481236999@linuxfoundation.org>
+References: <20180917211703.481236999@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66381
+X-archive-position: 66382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,40 +46,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+From: Paul Burton <paul.burton@mips.com>
 
-[ Upstream commit 28ec2238f37e72a3a40a7eb46893e7651bcc40a6 ]
+commit 0f02cfbc3d9e413d450d8d0fd660077c23f67eff upstream.
 
-of_find_compatible_node() returns a device_node pointer with refcount
-incremented and must be decremented explicitly.
- As this code is using the result only to check presence of the interrupt
-controller (!NULL) but not actually using the result otherwise the
-refcount can be decremented here immediately again.
+When a system suffers from dcache aliasing a user program may observe
+stale VDSO data from an aliased cache line. Notably this can break the
+expectation that clock_gettime(CLOCK_MONOTONIC, ...) is, as its name
+suggests, monotonic.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+In order to ensure that users observe updates to the VDSO data page as
+intended, align the user mappings of the VDSO data page such that their
+cache colouring matches that of the virtual address range which the
+kernel will use to update the data page - typically its unmapped address
+within kseg0.
+
+This ensures that we don't introduce aliasing cache lines for the VDSO
+data page, and therefore that userland will observe updates without
+requiring cache invalidation.
+
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19820/
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+Reported-by: Rene Nielsen <rene.nielsen@microsemi.com>
+Reported-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Patchwork: https://patchwork.linux-mips.org/patch/20344/
+Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Tested-by: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Cc: stable@vger.kernel.org # v4.4+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/generic/init.c |    1 +
- 1 file changed, 1 insertion(+)
 
---- a/arch/mips/generic/init.c
-+++ b/arch/mips/generic/init.c
-@@ -159,6 +159,7 @@ void __init arch_init_irq(void)
- 					    "mti,cpu-interrupt-controller");
- 	if (!cpu_has_veic && !intc_node)
- 		mips_cpu_irq_init();
-+	of_node_put(intc_node);
+---
+ arch/mips/kernel/vdso.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/init.h>
+ #include <linux/ioport.h>
++#include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+@@ -20,6 +21,7 @@
  
- 	irqchip_init();
- }
+ #include <asm/abi.h>
+ #include <asm/mips-cps.h>
++#include <asm/page.h>
+ #include <asm/vdso.h>
+ 
+ /* Kernel-provided data used by the VDSO. */
+@@ -128,12 +130,30 @@ int arch_setup_additional_pages(struct l
+ 	vvar_size = gic_size + PAGE_SIZE;
+ 	size = vvar_size + image->size;
+ 
++	/*
++	 * Find a region that's large enough for us to perform the
++	 * colour-matching alignment below.
++	 */
++	if (cpu_has_dc_aliases)
++		size += shm_align_mask + 1;
++
+ 	base = get_unmapped_area(NULL, 0, size, 0, 0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+ 		goto out;
+ 	}
+ 
++	/*
++	 * If we suffer from dcache aliasing, ensure that the VDSO data page
++	 * mapping is coloured the same as the kernel's mapping of that memory.
++	 * This ensures that when the kernel updates the VDSO data userland
++	 * will observe it without requiring cache invalidations.
++	 */
++	if (cpu_has_dc_aliases) {
++		base = __ALIGN_MASK(base, shm_align_mask);
++		base += ((unsigned long)&vdso_data - gic_size) & shm_align_mask;
++	}
++
+ 	data_addr = base + gic_size;
+ 	vdso_addr = data_addr + PAGE_SIZE;
+ 

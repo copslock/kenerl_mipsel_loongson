@@ -1,40 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 17:13:39 +0200 (CEST)
-Received: from shards.monkeyblade.net ([IPv6:2620:137:e000::1:9]:43032 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994002AbeIQPNgEOUuq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Sep 2018 17:13:36 +0200
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F3420144B43B9;
-        Mon, 17 Sep 2018 08:13:30 -0700 (PDT)
-Date:   Mon, 17 Sep 2018 08:13:30 -0700 (PDT)
-Message-Id: <20180917.081330.921984316304814099.davem@davemloft.net>
-To:     hauke@hauke-m.de
-Cc:     netdev@vger.kernel.org, andrew@lunn.ch,
-        vivien.didelot@savoirfairelinux.com, f.fainelli@gmail.com,
-        john@phrozen.org, linux-mips@linux-mips.org, dev@kresin.me,
-        hauke.mehrtens@intel.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 0/5] net: lantiq: Minor fixes for vrx200 and
- gswip
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20180915120849.24630-1-hauke@hauke-m.de>
-References: <20180915120849.24630-1-hauke@hauke-m.de>
-X-Mailer: Mew version 6.7 on Emacs 25.3 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 17 Sep 2018 08:13:31 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 19:18:13 +0200 (CEST)
+Received: from mail-co1nam05on0709.outbound.protection.outlook.com ([IPv6:2a01:111:f400:fe50::709]:10546
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992501AbeIQRSKybT7- convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Sep 2018 19:18:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3vOhViUDDqZ7J903qqO1iW0U960vlS6rfenVKuzoaGs=;
+ b=qtym/Rh5GIz5fplI2PzT0tW4h9Rpw9CAsIsrT7ZADCTGlxIlULiO4qHGlICpUGzPtKZu+JiTqDBwaHyQgqSORRkl9IFpPoL3wsp/YQQi82vyJV0Bz7Ee/20StzkbJFd+NMDoBvUxEcF4VcjA1mcRLz/NjZvYvzcAltk+N+5EUdE=
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com (20.176.255.143) by
+ BYAPR08MB4952.namprd08.prod.outlook.com (20.176.255.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1143.15; Mon, 17 Sep 2018 17:17:24 +0000
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981]) by BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981%5]) with mapi id 15.20.1143.017; Mon, 17 Sep 2018
+ 17:17:24 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Firoz Khan <firoz.khan@linaro.org>
+CC:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        "y2038@lists.linaro.org" <y2038@lists.linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "deepa.kernel@gmail.com" <deepa.kernel@gmail.com>,
+        "marcin.juszkiewicz@linaro.org" <marcin.juszkiewicz@linaro.org>
+Subject: Re: [PATCH 0/3] System call table generation support
+Thread-Topic: [PATCH 0/3] System call table generation support
+Thread-Index: AQHUTAZndJ66Nr5INkGiO2D9iPvZmKT0vIcA
+Date:   Mon, 17 Sep 2018 17:17:23 +0000
+Message-ID: <20180917171720.wda5qrl7hyyacmwl@pburton-laptop>
+References: <1536914314-5026-1-git-send-email-firoz.khan@linaro.org>
+In-Reply-To: <1536914314-5026-1-git-send-email-firoz.khan@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BN6PR03CA0019.namprd03.prod.outlook.com
+ (2603:10b6:404:23::29) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;BYAPR08MB4952;6:caE0P+ERJZc/nLirQzwrkjaBiLnDSM2y4M3T0g9s4FipxF9++GJKcYGDol/dV85WffY3P7co8o3kgDmoqhsqe3FKR+l5LEKLPO7Dnija2gcyvduXnUZPOz7vgY3V8g/W9aKwdUPwsxc/q89QTWoKLE0mK7h813GZb9KjMq2rac6OXH3fqLLFyAdXCPW0mHjFqGz//joamQM4lXXQZStKZYZ1nlipW0pOjWFcPGs2FWjmRky3TGDlCITIM4C4CKhcqzb1kdLmcr0SqjT3s9v8rjKpvoObaCiOCMx4lHjqriKW8b/3nzijQ++yVqZ7rWpbvLwFsoun2HIo3MRUszK/1XwUoGfCz3iHqkwjowgl/crITju2pT1XU8FP4V8tLkITxkC5Mva2INnIvgqiyxjFALanrT8jQkwLF8ZC23hC+yko3SfkWHeVn8nujRrXipPzNT3aRQtdhG/KXWkiu3Xywg==;5:xlzDj7JLvHFzK/hWz9EpFeDgt3iOwBIN6CTQz5IBqDiYk2rlUIdogTHzt1WbQbjv7MuQcsEene8zQd2xwfC5sLs2ALXC6Hkiq5zd/6wdGTRzEts7kB1TUy0KQ9XTfU/1PWNAsef6xlHQ61rR33tRky/tCYVvvCa1TklmQHG+AGw=;7:qM5YxSvZL0zGlRXv30KWEYPjtPafSX08QSsANxyhUTouQrBf7VPOAue3L3r25rKi+xIPzf5N2x9esBY971dBW/k9WzFDG0kIWvpesDGNmIgZjequS79yLsxaLJjzuDhWfha8+gMcnnqbRdvnWo9BUZbUtPDQMcfjflrrwc1w0KzRdVDWCdMlooZ7Tr357Jo/bRXdorA3Ov4fGQT0e5lOBE4HsUXRScszWw7tDk8hFdPJ/Q48booCTp7nJ3YtICww
+x-ms-office365-filtering-correlation-id: 27c7ab09-452f-45fe-eb80-08d61cc16eae
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989137)(4534165)(4627221)(201703031133081)(201702281549075)(8990107)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4952;
+x-ms-traffictypediagnostic: BYAPR08MB4952:
+x-microsoft-antispam-prvs: <BYAPR08MB4952B325C77D5364DFC055F3C11E0@BYAPR08MB4952.namprd08.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(84791874153150);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3231355)(944501410)(52105095)(3002001)(10201501046)(93006095)(149027)(150027)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123560045)(20161123562045)(20161123558120)(201708071742011)(7699050);SRVR:BYAPR08MB4952;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4952;
+x-forefront-prvs: 0798146F16
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(346002)(366004)(396003)(376002)(39830400003)(189003)(199004)(44832011)(5250100002)(486006)(8676002)(58126008)(99286004)(5660300001)(106356001)(42882007)(81166006)(39060400002)(68736007)(54906003)(33716001)(105586002)(476003)(11346002)(2900100001)(446003)(25786009)(6506007)(102836004)(386003)(4326008)(6246003)(2906002)(6916009)(97736004)(53936002)(66066001)(52116002)(6306002)(76176011)(256004)(478600001)(14454004)(305945005)(33896004)(14444005)(8936002)(7416002)(26005)(229853002)(1076002)(3846002)(9686003)(6486002)(6116002)(81156014)(6436002)(6512007)(316002)(7736002)(186003)(966005);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4952;H:BYAPR08MB4934.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: Wkm9XnrlP5iM7pm0CZpn03L7aSjevjAsf3V10pVwVTN0SKYWMuNO6o9BOUA1xqFDK9EkgKANwMcHMD1GAfiOPr0woUEyo2QqsEJuO1Wouvw1Nwg3+dyUtXCNuqHaH864C/W958R783ZGTKS6VmcAkFNKJbGC7BPHeWNT6hE8EI+FcPecc+8w+3MPDRHG+WnV7gul3K+GVBYz90/rcQJEM7a1p5Wx7HqxsmYI/+LhLECZG4J9G3mQvjkhXWZ8Us+aOjKH/9H6D4bLYxjjxLWi5oNQX4QmV10dV3pjqt22qfS4E/sPTVPitRHA7IbXfeyLAWxu0ODMe/clkmdwD9n9nuhbbCKpH5gQP9q4qqND/0U=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-2"
+Content-ID: <E013BB721669064EBAB7919B20DB00F1@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27c7ab09-452f-45fe-eb80-08d61cc16eae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2018 17:17:23.9002
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4952
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66368
+X-archive-position: 66369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,12 +101,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Date: Sat, 15 Sep 2018 14:08:44 +0200
+Hi Firoz,
 
-> These are mostly minor fixes to problems addresses in the latests round 
-> of the review of the original series adding these driver, which were not 
-> applied before the patches got merged into net-next.
-> In addition it fixes a data bus error on poweroff.
+On Fri, Sep 14, 2018 at 02:08:31PM +0530, Firoz Khan wrote:
+> The purpose of this patch series is:
+> 1. We can easily add/modify/delete system call by changing entry 
+> in syscall.tbl file. No need to manually edit many files.
+> 
+> 2. It is easy to unify the system call implementation across all 
+> the architectures. 
+> 
+> The system call tables are in different format in all architecture 
+> and it will be difficult to manually add or modify the system calls
+> in the respective files manually. To make it easy by keeping a script 
+> and which'll generate the header file and syscall table file so this 
+> change will unify them across all architectures.
 
-Series applied.
+Interesting :)
+
+I actually started on something similar recently with the goals of
+reducing the need to adjust both asm/unistd.h & the syscall entry tables
+when adding syscalls, clean up asm/unistd.h a bit & make it
+easier/cleaner to add support for nanoMIPS & the P32 ABI.
+
+My branch still needed some work but it's here if you're interested:
+
+    git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git wip-mips-syscalls
+
+    https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/?h=wip-mips-syscalls
+
+There are some differences:
+
+  - I'd placed syscall numbers the 3 current MIPS ABIs in one table,
+    rather than splitting it up. I can see pros & cons to both though so
+    I'm not tied to having a single all-encompassing table.
+
+  - I'd mostly inferred the entry point names from the syscall names,
+    only specifying them where they differ. Again I'm not particularly
+    tied to this.
+
+  - I'd made asm/unistd.h behave like asm-generic/unistd.h with the
+    __SYSCALL() macro, where you generate separate syscall_table_*
+    headers. I'm fine with that too.
+
+So I'm pretty happy to go with your series, though I agree with Arnd on
+the ABI/file naming & the missing syscalls that were added in the 4.18
+cycle. We probably need to provide mipsmt_sys_sched_[gs]etaffinity as
+aliases to sys_sched_[gs]etaffinity when CONFIG_MIPS_MT_FPAFF isn't
+enabled in order to fix the issue the kbuild test robot reported.
+
+But I'm looking forward to v2 :)
+
+Thanks,
+    Paul

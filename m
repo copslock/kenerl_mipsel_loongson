@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:04:00 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39514 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:04:38 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39662 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994629AbeIQXDryypDY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:03:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23994644AbeIQXE12-IBY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:04:27 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 758F4C03;
-        Mon, 17 Sep 2018 23:03:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 002B8C49;
+        Mon, 17 Sep 2018 23:04:20 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 075/126] MIPS: generic: fix missing of_node_put()
-Date:   Tue, 18 Sep 2018 00:42:03 +0200
-Message-Id: <20180917211709.129879473@linuxfoundation.org>
+Subject: [PATCH 4.14 089/126] MIPS: WARN_ON invalid DMA cache maintenance, not BUG_ON
+Date:   Tue, 18 Sep 2018 00:42:17 +0200
+Message-Id: <20180917211709.866145677@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180917211703.481236999@linuxfoundation.org>
 References: <20180917211703.481236999@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66385
+X-archive-position: 66386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,36 +49,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+From: Paul Burton <paul.burton@imgtec.com>
 
-[ Upstream commit 28ec2238f37e72a3a40a7eb46893e7651bcc40a6 ]
+[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
 
-of_find_compatible_node() returns a device_node pointer with refcount
-incremented and must be decremented explicitly.
- As this code is using the result only to check presence of the interrupt
-controller (!NULL) but not actually using the result otherwise the
-refcount can be decremented here immediately again.
+If a driver causes DMA cache maintenance with a zero length then we
+currently BUG and kill the kernel. As this is a scenario that we may
+well be able to recover from, WARN & return in the condition instead.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19820/
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14623/
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/generic/init.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mm/c-r4k.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/generic/init.c
-+++ b/arch/mips/generic/init.c
-@@ -204,6 +204,7 @@ void __init arch_init_irq(void)
- 					    "mti,cpu-interrupt-controller");
- 	if (!cpu_has_veic && !intc_node)
- 		mips_cpu_irq_init();
-+	of_node_put(intc_node);
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -835,7 +835,8 @@ static void r4k_flush_icache_user_range(
+ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
- 	irqchip_init();
- }
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+@@ -871,7 +872,8 @@ static void r4k_dma_cache_wback_inv(unsi
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ {
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {

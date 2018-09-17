@@ -1,62 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 10:30:04 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:53904 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993016AbeIQI36JAFjI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Sep 2018 10:29:58 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id D029B20798; Mon, 17 Sep 2018 10:29:49 +0200 (CEST)
-Received: from bbrezillon (AAubervilliers-681-1-99-10.w90-88.abo.wanadoo.fr [90.88.4.10])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 1B35320741;
-        Mon, 17 Sep 2018 10:29:39 +0200 (CEST)
-Date:   Mon, 17 Sep 2018 10:29:39 +0200
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Ryan Mallon <rmallon@gmail.com>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <fabio.estevam@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Subject: Re: [PATCH 00/19] mtd: rawnand: API cleanup (2nd batch)
-Message-ID: <20180917102939.3ff716db@bbrezillon>
-In-Reply-To: <20180915195440.251fea18@xps13>
-References: <20180906223851.6964-1-boris.brezillon@bootlin.com>
-        <20180915195440.251fea18@xps13>
-X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 11:48:03 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35860 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991947AbeIQJryhcjjk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Sep 2018 11:47:54 +0200
+Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5B626BBD;
+        Mon, 17 Sep 2018 09:47:47 +0000 (UTC)
+Subject: Patch "MIPS: Fix ISA virt/bus conversion for non-zero PHYS_OFFSET" has been added to the 3.18-stable tree
+To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
+        jhogan@kernel.org, linux-mips@linux-mips.org, paul.burton@mips.com,
+        ralf@linux-mips.org, vladimir.kondratiev@intel.com
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 17 Sep 2018 11:46:56 +0200
+Message-ID: <1537177616112137@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66349
+X-archive-position: 66350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,156 +39,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 15 Sep 2018 19:54:40 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Hi Boris,
-> 
-> Boris Brezillon <boris.brezillon@bootlin.com> wrote on Fri,  7 Sep 2018
-> 00:38:32 +0200:
-> 
-> > Hello,
-> > 
-> > This is the 2nd batch of API cleanup patches. This time we move
-> > deprecated hooks/fields to the nand_legacy struct, and then move some
-> > of the code found in nand_base.c into separate source/header files.
-> > 
-> > With this new organization, new comers should more easily identify the
-> > bits they can use in their NAND controller drivers and those that are
-> > only meant for core code. It also shrink a bit nand_base.c which was
-> > over 6000 lines of code.
-> > 
-> > Note that existing coding style issues (reported by checkpatch) in arch
-> > or driver code are intentionally not fixed to keep the series focused
-> > on the API/core cleanup.
-> > 
-> > Regards,
-> > 
-> > Boris
-> > 
-> > Boris Brezillon (19):
-> >   mtd: rawnand: Leave chip->IO_ADDR_{R,W} to NULL when unused
-> >   mtd: rawnand: Create a legacy struct and move ->IO_ADDR_{R,W} there
-> >   mtd: rawnand: Deprecate ->{read,write}_{byte,buf}() hooks
-> >   mtd: rawnand: Deprecate ->cmd_ctrl() and ->cmdfunc()
-> >   mtd: rawnand: Deprecate ->dev_ready() and ->waitfunc()
-> >   mtd: rawnand: Deprecate ->block_{bad,markbad}() hooks
-> >   mtd: rawnand: Deprecate ->erase()
-> >   mtd: rawnand: Deprecate ->{set,get}_features() hooks
-> >   mtd: rawnand: Deprecate ->chip_delay
-> >   mtd: rawnand: Move function prototypes after struct declarations
-> >   mtd: rawnand: Get rid of nand_flash_dev forward declation
-> >   mtd: rawnand: Get rid of the duplicate nand_chip forward declaration
-> >   mtd: rawnand: Get rid of a few unused definitions
-> >   mtd: rawnand: Move platform_nand_xxx definitions out of rawnand.h
-> >   mtd: rawnand: Inline onfi_get_async_timing_mode()
-> >   mtd: rawnand: Keep all internal stuff private
-> >   mtd: rawnand: Move legacy code to nand_legacy.c
-> >   mtd: rawnand: Move ONFI code to nand_onfi.c
-> >   mtd: rawnand: Move JEDEC code to nand_jedec.c
-> > 
-> >  Documentation/driver-api/mtdnand.rst             |   30 +-
-> >  arch/arm/mach-ep93xx/snappercl15.c               |    8 +-
-> >  arch/arm/mach-ep93xx/ts72xx.c                    |    9 +-
-> >  arch/arm/mach-imx/mach-qong.c                    |    6 +-
-> >  arch/arm/mach-ixp4xx/ixdp425-setup.c             |    2 +-
-> >  arch/arm/mach-omap1/board-fsample.c              |    3 +-
-> >  arch/arm/mach-omap1/board-h2.c                   |    3 +-
-> >  arch/arm/mach-omap1/board-h3.c                   |    2 +-
-> >  arch/arm/mach-omap1/board-nand.c                 |    2 +-
-> >  arch/arm/mach-omap1/board-perseus2.c             |    3 +-
-> >  arch/arm/mach-orion5x/ts78xx-setup.c             |    9 +-
-> >  arch/arm/mach-pxa/balloon3.c                     |    5 +-
-> >  arch/arm/mach-pxa/em-x270.c                      |    9 +-
-> >  arch/arm/mach-pxa/palmtx.c                       |    5 +-
-> >  arch/mips/alchemy/devboards/db1200.c             |    9 +-
-> >  arch/mips/alchemy/devboards/db1300.c             |    9 +-
-> >  arch/mips/alchemy/devboards/db1550.c             |    9 +-
-> >  arch/mips/netlogic/xlr/platform-flash.c          |    3 +-
-> >  arch/mips/pnx833x/common/platform.c              |    5 +-
-> >  arch/mips/rb532/devices.c                        |    5 +-
-> >  arch/sh/boards/mach-migor/setup.c                |    8 +-
-> >  drivers/mtd/nand/raw/Makefile                    |    4 +-
-> >  drivers/mtd/nand/raw/ams-delta.c                 |   22 +-
-> >  drivers/mtd/nand/raw/atmel/nand-controller.c     |   22 +-
-> >  drivers/mtd/nand/raw/au1550nd.c                  |   43 +-
-> >  drivers/mtd/nand/raw/bcm47xxnflash/ops_bcm4706.c |   22 +-
-> >  drivers/mtd/nand/raw/brcmnand/brcmnand.c         |   15 +-
-> >  drivers/mtd/nand/raw/cafe_nand.c                 |   22 +-
-> >  drivers/mtd/nand/raw/cmx270_nand.c               |   28 +-
-> >  drivers/mtd/nand/raw/cs553x_nand.c               |   42 +-
-> >  drivers/mtd/nand/raw/davinci_nand.c              |   34 +-
-> >  drivers/mtd/nand/raw/denali.c                    |   23 +-
-> >  drivers/mtd/nand/raw/diskonchip.c                |   50 +-
-> >  drivers/mtd/nand/raw/fsl_elbc_nand.c             |   18 +-
-> >  drivers/mtd/nand/raw/fsl_ifc_nand.c              |   24 +-
-> >  drivers/mtd/nand/raw/fsl_upm.c                   |   30 +-
-> >  drivers/mtd/nand/raw/fsmc_nand.c                 |    1 -
-> >  drivers/mtd/nand/raw/gpio.c                      |   16 +-
-> >  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c       |   22 +-
-> >  drivers/mtd/nand/raw/hisi504_nand.c              |   18 +-
-> >  drivers/mtd/nand/raw/internals.h                 |  114 ++
-> >  drivers/mtd/nand/raw/jz4740_nand.c               |   14 +-
-> >  drivers/mtd/nand/raw/jz4780_nand.c               |   10 +-
-> >  drivers/mtd/nand/raw/lpc32xx_mlc.c               |   12 +-
-> >  drivers/mtd/nand/raw/lpc32xx_slc.c               |   26 +-
-> >  drivers/mtd/nand/raw/mpc5121_nfc.c               |   14 +-
-> >  drivers/mtd/nand/raw/mtk_nand.c                  |   12 +-
-> >  drivers/mtd/nand/raw/mxc_nand.c                  |   20 +-
-> >  drivers/mtd/nand/raw/nand_amd.c                  |    2 +-
-> >  drivers/mtd/nand/raw/nand_base.c                 | 1260 +++-------------------
-> >  drivers/mtd/nand/raw/nand_bbt.c                  |    5 +-
-> >  drivers/mtd/nand/raw/nand_hynix.c                |    9 +-
-> >  drivers/mtd/nand/raw/nand_ids.c                  |    4 +-
-> >  drivers/mtd/nand/raw/nand_jedec.c                |  113 ++
-> >  drivers/mtd/nand/raw/nand_legacy.c               |  642 +++++++++++
-> >  drivers/mtd/nand/raw/nand_macronix.c             |    2 +-
-> >  drivers/mtd/nand/raw/nand_micron.c               |    3 +-
-> >  drivers/mtd/nand/raw/nand_onfi.c                 |  305 ++++++
-> >  drivers/mtd/nand/raw/nand_samsung.c              |    2 +-
-> >  drivers/mtd/nand/raw/nand_timings.c              |   18 +-
-> >  drivers/mtd/nand/raw/nand_toshiba.c              |    2 +-
-> >  drivers/mtd/nand/raw/nandsim.c                   |   14 +-
-> >  drivers/mtd/nand/raw/ndfc.c                      |   14 +-
-> >  drivers/mtd/nand/raw/nuc900_nand.c               |   22 +-
-> >  drivers/mtd/nand/raw/omap2.c                     |   62 +-
-> >  drivers/mtd/nand/raw/orion_nand.c                |   12 +-
-> >  drivers/mtd/nand/raw/oxnas_nand.c                |   10 +-
-> >  drivers/mtd/nand/raw/pasemi_nand.c               |   32 +-
-> >  drivers/mtd/nand/raw/plat_nand.c                 |   17 +-
-> >  drivers/mtd/nand/raw/qcom_nandc.c                |   39 +-
-> >  drivers/mtd/nand/raw/r852.c                      |   14 +-
-> >  drivers/mtd/nand/raw/s3c2410.c                   |   34 +-
-> >  drivers/mtd/nand/raw/sh_flctl.c                  |   18 +-
-> >  drivers/mtd/nand/raw/sharpsl.c                   |   12 +-
-> >  drivers/mtd/nand/raw/sm_common.c                 |    2 +-
-> >  drivers/mtd/nand/raw/socrates_nand.c             |   16 +-
-> >  drivers/mtd/nand/raw/sunxi_nand.c                |   14 +-
-> >  drivers/mtd/nand/raw/tango_nand.c                |   12 +-
-> >  drivers/mtd/nand/raw/tmio_nand.c                 |   20 +-
-> >  drivers/mtd/nand/raw/txx9ndfmc.c                 |   12 +-
-> >  drivers/mtd/nand/raw/xway_nand.c                 |   12 +-
-> >  drivers/staging/mt29f_spinand/mt29f_spinand.c    |   16 +-
-> >  include/linux/mtd/jedec.h                        |   91 ++
-> >  include/linux/mtd/onfi.h                         |  178 +++
-> >  include/linux/mtd/platnand.h                     |   74 ++
-> >  include/linux/mtd/rawnand.h                      |  555 ++--------
-> >  86 files changed, 2300 insertions(+), 2191 deletions(-)
-> >  create mode 100644 drivers/mtd/nand/raw/internals.h
-> >  create mode 100644 drivers/mtd/nand/raw/nand_jedec.c
-> >  create mode 100644 drivers/mtd/nand/raw/nand_legacy.c
-> >  create mode 100644 drivers/mtd/nand/raw/nand_onfi.c
-> >  create mode 100644 include/linux/mtd/jedec.h
-> >  create mode 100644 include/linux/mtd/onfi.h
-> >  create mode 100644 include/linux/mtd/platnand.h
-> >   
-> 
-> Series reviewed, there is one typo in patch 2/19 and 16/19 and a
-> s/ONFI/JEDEC/ in patch 19/19, otherwise I like the cleanup very much!
-> Can I modify when applying or you plan to do more/other changes?
+This is a note to let you know that I've just added the patch titled
 
-Yep, you can fix+apply the series if you're happy with it.
+    MIPS: Fix ISA virt/bus conversion for non-zero PHYS_OFFSET
 
-Thanks,
+to the 3.18-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-Boris
+The filename of the patch is:
+     mips-fix-isa-virt-bus-conversion-for-non-zero-phys_offset.patch
+and it can be found in the queue-3.18 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

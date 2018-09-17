@@ -1,28 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 00:53:16 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:35946 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 00:57:23 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37086 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994615AbeIQWxMHK8fY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 00:53:12 +0200
+        by eddie.linux-mips.org with ESMTP id S23994608AbeIQW5P2CFtY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 00:57:15 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 281F8CAE;
-        Mon, 17 Sep 2018 22:53:05 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D7B7ECB2;
+        Mon, 17 Sep 2018 22:57:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Stafford Horne <shorne@gmail.com>,
-        Oleg Nesterov <oleg@redhat.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, Jamie Iles <jamie.iles@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.9 07/70] kthread: fix boot hang (regression) on MIPS/OpenRISC
-Date:   Tue, 18 Sep 2018 00:41:40 +0200
-Message-Id: <20180917211649.775405318@linuxfoundation.org>
+        Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
+        Sasha Levin <alexander.levin@microsoft.com>
+Subject: [PATCH 4.9 38/70] MIPS: Fix ISA virt/bus conversion for non-zero PHYS_OFFSET
+Date:   Tue, 18 Sep 2018 00:42:11 +0200
+Message-Id: <20180917211652.310113015@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180917211649.099135838@linuxfoundation.org>
 References: <20180917211649.099135838@linuxfoundation.org>
@@ -35,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66377
+X-archive-position: 66378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,71 +50,48 @@ X-list: linux-mips
 
 ------------------
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+From: Paul Burton <paul.burton@mips.com>
 
-commit b0f5a8f32e8bbdaae1abb8abe2d3cbafaba57e08 upstream.
+[ Upstream commit 0494d7ffdcebc6935410ea0719b24ab626675351 ]
 
-This fixes a regression in commit 4d6501dce079 where I didn't notice
-that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-NULL after our initialisation in copy_process().
+isa_virt_to_bus() & isa_bus_to_virt() claim to treat ISA bus addresses
+as being identical to physical addresses, but they fail to do so in the
+presence of a non-zero PHYS_OFFSET.
 
-We can simply get rid of the arch-specific initialisation here since it
-is now always done in copy_process() before hitting copy_thread{,_tls}().
+Correct this by having them use virt_to_phys() & phys_to_virt(), which
+consolidates the calculations to one place & ensures that ISA bus
+addresses do indeed match physical addresses.
 
-Review notes:
-
- - As far as I can tell, copy_process() is the only user of
-   copy_thread_tls(), which is the only caller of copy_thread() for
-   architectures that don't implement copy_thread_tls().
-
- - After this patch, there is no arch-specific code touching
-   p->set_child_tid or p->clear_child_tid whatsoever.
-
- - It may look like MIPS/OpenRISC wanted to always have these fields be
-   NULL, but that's not true, as copy_process() would unconditionally
-   set them again _after_ calling copy_thread_tls() before commit
-   4d6501dce079.
-
-Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
-Acked-by: Stafford Horne <shorne@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/20047/
+Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: openrisc@lists.librecores.org
-Cc: Jamie Iles <jamie.iles@oracle.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Cc: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/kernel/process.c     |    1 -
- arch/openrisc/kernel/process.c |    2 --
- 2 files changed, 3 deletions(-)
+ arch/mips/include/asm/io.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -118,7 +118,6 @@ int copy_thread(unsigned long clone_flag
- 	struct thread_info *ti = task_thread_info(p);
- 	struct pt_regs *childregs, *regs = current_pt_regs();
- 	unsigned long childksp;
--	p->set_child_tid = p->clear_child_tid = NULL;
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -141,14 +141,14 @@ static inline void * phys_to_virt(unsign
+ /*
+  * ISA I/O bus memory addresses are 1:1 with the physical address.
+  */
+-static inline unsigned long isa_virt_to_bus(volatile void * address)
++static inline unsigned long isa_virt_to_bus(volatile void *address)
+ {
+-	return (unsigned long)address - PAGE_OFFSET;
++	return virt_to_phys(address);
+ }
  
- 	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
+-static inline void * isa_bus_to_virt(unsigned long address)
++static inline void *isa_bus_to_virt(unsigned long address)
+ {
+-	return (void *)(address + PAGE_OFFSET);
++	return phys_to_virt(address);
+ }
  
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -152,8 +152,6 @@ copy_thread(unsigned long clone_flags, u
- 
- 	top_of_kernel_stack = sp;
- 
--	p->set_child_tid = p->clear_child_tid = NULL;
--
- 	/* Locate userspace context on stack... */
- 	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
- 	sp -= sizeof(struct pt_regs);
+ #define isa_page_to_bus page_to_phys

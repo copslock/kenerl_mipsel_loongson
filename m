@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:02:43 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39046 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:03:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39498 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994637AbeIQXCiP3MGY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:02:38 +0200
+        by eddie.linux-mips.org with ESMTP id S23994682AbeIQXDozcmiY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:03:44 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8F452C03;
-        Mon, 17 Sep 2018 23:02:31 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 430ACC77;
+        Mon, 17 Sep 2018 23:03:38 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
+        stable@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 056/126] MIPS: Fix ISA virt/bus conversion for non-zero PHYS_OFFSET
-Date:   Tue, 18 Sep 2018 00:41:44 +0200
-Message-Id: <20180917211708.156626486@linuxfoundation.org>
+Subject: [PATCH 4.14 074/126] MIPS: Octeon: add missing of_node_put()
+Date:   Tue, 18 Sep 2018 00:42:02 +0200
+Message-Id: <20180917211709.070481335@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180917211703.481236999@linuxfoundation.org>
 References: <20180917211703.481236999@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66383
+X-archive-position: 66384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,48 +50,42 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 
-[ Upstream commit 0494d7ffdcebc6935410ea0719b24ab626675351 ]
+[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
 
-isa_virt_to_bus() & isa_bus_to_virt() claim to treat ISA bus addresses
-as being identical to physical addresses, but they fail to do so in the
-presence of a non-zero PHYS_OFFSET.
+The call to of_find_node_by_name returns a node pointer with refcount
+incremented thus it must be explicitly decremented here after the last
+usage.
 
-Correct this by having them use virt_to_phys() & phys_to_virt(), which
-consolidates the calculations to one place & ensures that ISA bus
-addresses do indeed match physical addresses.
-
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20047/
-Cc: James Hogan <jhogan@kernel.org>
+Patchwork: https://patchwork.linux-mips.org/patch/19558/
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/io.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/cavium-octeon/octeon-platform.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -141,14 +141,14 @@ static inline void * phys_to_virt(unsign
- /*
-  * ISA I/O bus memory addresses are 1:1 with the physical address.
-  */
--static inline unsigned long isa_virt_to_bus(volatile void * address)
-+static inline unsigned long isa_virt_to_bus(volatile void *address)
- {
--	return (unsigned long)address - PAGE_OFFSET;
-+	return virt_to_phys(address);
- }
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -322,6 +322,7 @@ static int __init octeon_ehci_device_ini
+ 		return 0;
  
--static inline void * isa_bus_to_virt(unsigned long address)
-+static inline void *isa_bus_to_virt(unsigned long address)
- {
--	return (void *)(address + PAGE_OFFSET);
-+	return phys_to_virt(address);
- }
+ 	pd = of_find_device_by_node(ehci_node);
++	of_node_put(ehci_node);
+ 	if (!pd)
+ 		return 0;
  
- #define isa_page_to_bus page_to_phys
+@@ -384,6 +385,7 @@ static int __init octeon_ohci_device_ini
+ 		return 0;
+ 
+ 	pd = of_find_device_by_node(ohci_node);
++	of_node_put(ohci_node);
+ 	if (!pd)
+ 		return 0;
+ 

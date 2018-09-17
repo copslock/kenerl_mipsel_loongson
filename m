@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:13:39 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41484 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 01:13:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41500 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994756AbeIQXNd0ENIY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:13:33 +0200
+        by eddie.linux-mips.org with ESMTP id S23994757AbeIQXNfcUr5Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 01:13:35 +0200
 Received: from localhost (li1825-44.members.linode.com [172.104.248.44])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DBC8DC49;
-        Mon, 17 Sep 2018 23:13:25 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0FBBDC9D;
+        Mon, 17 Sep 2018 23:13:28 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,9 +14,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.18 124/158] MIPS: Octeon: add missing of_node_put()
-Date:   Tue, 18 Sep 2018 00:42:34 +0200
-Message-Id: <20180917211716.933629993@linuxfoundation.org>
+Subject: [PATCH 4.18 125/158] MIPS: generic: fix missing of_node_put()
+Date:   Tue, 18 Sep 2018 00:42:35 +0200
+Message-Id: <20180917211716.978587196@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180917211710.383360696@linuxfoundation.org>
 References: <20180917211710.383360696@linuxfoundation.org>
@@ -29,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66389
+X-archive-position: 66390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,15 +52,17 @@ X-list: linux-mips
 
 From: Nicholas Mc Guire <hofrat@osadl.org>
 
-[ Upstream commit b1259519e618d479ede8a0db5474b3aff99f5056 ]
+[ Upstream commit 28ec2238f37e72a3a40a7eb46893e7651bcc40a6 ]
 
-The call to of_find_node_by_name returns a node pointer with refcount
-incremented thus it must be explicitly decremented here after the last
-usage.
+of_find_compatible_node() returns a device_node pointer with refcount
+incremented and must be decremented explicitly.
+ As this code is using the result only to check presence of the interrupt
+controller (!NULL) but not actually using the result otherwise the
+refcount can be decremented here immediately again.
 
 Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19558/
+Patchwork: https://patchwork.linux-mips.org/patch/19820/
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
@@ -68,24 +70,16 @@ Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/cavium-octeon/octeon-platform.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/generic/init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -322,6 +322,7 @@ static int __init octeon_ehci_device_ini
- 		return 0;
+--- a/arch/mips/generic/init.c
++++ b/arch/mips/generic/init.c
+@@ -204,6 +204,7 @@ void __init arch_init_irq(void)
+ 					    "mti,cpu-interrupt-controller");
+ 	if (!cpu_has_veic && !intc_node)
+ 		mips_cpu_irq_init();
++	of_node_put(intc_node);
  
- 	pd = of_find_device_by_node(ehci_node);
-+	of_node_put(ehci_node);
- 	if (!pd)
- 		return 0;
- 
-@@ -384,6 +385,7 @@ static int __init octeon_ohci_device_ini
- 		return 0;
- 
- 	pd = of_find_device_by_node(ohci_node);
-+	of_node_put(ohci_node);
- 	if (!pd)
- 		return 0;
- 
+ 	irqchip_init();
+ }

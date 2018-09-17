@@ -1,79 +1,75 @@
-From: Vegard Nossum <vegard.nossum@oracle.com>
-Date: Mon, 29 May 2017 09:22:07 +0200
-Subject: kthread: fix boot hang (regression) on MIPS/OpenRISC
-Message-ID: <20170529072207.y6r8YpRiImOwbTY-uWyWQ5-nLOz9Y4bbDRNZ5xspMNc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2018 07:46:04 +0200 (CEST)
+Received: from mail-it0-f65.google.com ([209.85.214.65]:37285 "EHLO
+        mail-it0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991947AbeIQFqBJJLSf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Sep 2018 07:46:01 +0200
+Received: by mail-it0-f65.google.com with SMTP id h20-v6so9435690itf.2;
+        Sun, 16 Sep 2018 22:46:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:subject:references
+         :in-reply-to:cc:cc:to:status:lines;
+        bh=KIw/x8W1l3CD1XMcIMlujZb+tObZ0rj5ISpe1kiVgR0=;
+        b=SrFpCVffbTNRJNj/yaJDrBeqZeeeh0iHax0rxpHiCzJrEWoQunMVMTDlP2j1zAfYfO
+         XsOQh8VSh/nWsZ89fRhX8J2auMr+nR8pPH7dWTU/02kvVvCFbkgFQmq1wvX0Wvnwp5WX
+         CzKNuoj9MgSza7qDX9GnNn/j/Nvf/o5Tg0yBaz7atur0lqYsdqkM4DR20ozAxKt9bAki
+         dhuiY9nXTL9FhkIGFSeQkETMZihRCMg6I3+yaY4unFJCNGN6xymekzVBAOgQTnGr6v1d
+         HP18Lda0lBmZN0LB4y8iu+OmRA/63fyiJ3dokYsyuQ/ilqrErejAzowaF3aNlSPcy8Pc
+         Gekw==
+X-Gm-Message-State: APzg51C5veCWKUNSNCRJ9TOBB8fR2RurAU7cmD/2MreLZOWJBu20+BGJ
+        w7DBaE0+Li2Hgs0sSR1jlw==
+X-Google-Smtp-Source: ANB0VdYYYsfOF3L5eeZfQjD3KogswNs6NB3YDi+1bhA0kWi9G413wkcmvzxUjgAA2EGAi0MJU7zzcA==
+X-Received: by 2002:a02:1b18:: with SMTP id l24-v6mr22010627jad.23.1537163154985;
+        Sun, 16 Sep 2018 22:45:54 -0700 (PDT)
+Received: from localhost ([209.82.80.116])
+        by smtp.gmail.com with ESMTPSA id n140-v6sm3328551itb.37.2018.09.16.22.45.54
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 16 Sep 2018 22:45:54 -0700 (PDT)
+Message-ID: <5b9f3f92.1c69fb81.9131a.468f@mx.google.com>
+Date:   Mon, 17 Sep 2018 01:45:52 -0400
+From:   Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH net-next 1/7] dt-bindings: net: vsc8531: add two additional LED modes for VSC8584
+References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com> <f54f6cda7f505d99531e33626f8d4e6f1dc084ec.1536916714.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <f54f6cda7f505d99531e33626f8d4e6f1dc084ec.1536916714.git-series.quentin.schulz@bootlin.com>
+Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net, andrew@lunn.ch,
+        f.fainelli@gmail.com
+Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        antoine.tenart@bootlin.com,
+        Quentin Schulz <quentin.schulz@bootlin.com>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+Return-Path: <robherring2@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 66348
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: robh@kernel.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+On Fri, 14 Sep 2018 11:44:22 +0200, Quentin Schulz wrote:
+> The VSC8584 (and most likely other PHYs in the same generation) has two
+> additional LED modes that can be picked, so let's add them.
+> 
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+> ---
+>  include/dt-bindings/net/mscc-phy-vsc8531.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-commit b0f5a8f32e8bbdaae1abb8abe2d3cbafaba57e08 upstream.
-
-This fixes a regression in commit 4d6501dce079 where I didn't notice
-that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-NULL after our initialisation in copy_process().
-
-We can simply get rid of the arch-specific initialisation here since it
-is now always done in copy_process() before hitting copy_thread{,_tls}().
-
-Review notes:
-
- - As far as I can tell, copy_process() is the only user of
-   copy_thread_tls(), which is the only caller of copy_thread() for
-   architectures that don't implement copy_thread_tls().
-
- - After this patch, there is no arch-specific code touching
-   p->set_child_tid or p->clear_child_tid whatsoever.
-
- - It may look like MIPS/OpenRISC wanted to always have these fields be
-   NULL, but that's not true, as copy_process() would unconditionally
-   set them again _after_ calling copy_thread_tls() before commit
-   4d6501dce079.
-
-Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
-Acked-by: Stafford Horne <shorne@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: openrisc@lists.librecores.org
-Cc: Jamie Iles <jamie.iles@oracle.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/process.c     |    1 -
- arch/openrisc/kernel/process.c |    2 --
- 2 files changed, 3 deletions(-)
-
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -118,7 +118,6 @@ int copy_thread(unsigned long clone_flag
- 	struct thread_info *ti = task_thread_info(p);
- 	struct pt_regs *childregs, *regs = current_pt_regs();
- 	unsigned long childksp;
--	p->set_child_tid = p->clear_child_tid = NULL;
- 
- 	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
- 
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -152,8 +152,6 @@ copy_thread(unsigned long clone_flags, u
- 
- 	top_of_kernel_stack = sp;
- 
--	p->set_child_tid = p->clear_child_tid = NULL;
--
- 	/* Locate userspace context on stack... */
- 	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
- 	sp -= sizeof(struct pt_regs);
-
-
-Patches currently in stable-queue which might be from vegard.nossum@oracle.com are
-
-queue-4.9/kthread-fix-use-after-free-if-kthread-fork-fails.patch
-queue-4.9/kthread-fix-boot-hang-regression-on-mips-openrisc.patch
+Reviewed-by: Rob Herring <robh@kernel.org>

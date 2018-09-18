@@ -1,51 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 18:19:01 +0200 (CEST)
-Received: from frisell.zx2c4.com ([192.95.5.64]:39017 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994614AbeIRQSwOVhPk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Sep 2018 18:18:52 +0200
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 5583ec30;
-        Tue, 18 Sep 2018 16:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
-        :subject:date:message-id:in-reply-to:references:mime-version
-        :content-type:content-transfer-encoding; s=mail; bh=i624yYaOwkG4
-        40+GjAAWMBXJrSc=; b=paJRmt/fQmUTQI7qIe/66sGWBrYlrax2oToa7D3CdPnA
-        0fK/JaRmgKvy0sBD2oOUxFnFwef62gDq3xHnR2Z5JU3vNcHXTC2aGTJuFQB0nHjG
-        ZAllWVKUT0cSTND2apUmOcSR6iBdyZGAJGF9p2i2AncbAIiiBqBNntiNDHINz6DQ
-        bI8pxnitH9Degsw4tHTTLei6/Um+1/RsNmfRgNgBksGAVr+0h3gmWuJtUDpkXOEi
-        V/iAOAwwSEDFAC5RrC2eSWiDcfXxY95NaJyLiPwOvR0lWeVoCdAwXXBjzrUUKydc
-        dVC+bPDzWLG82eCDHzgd0SxpZ57WntayDu0kER41pw==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c4b6fe84 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
-        Tue, 18 Sep 2018 16:01:06 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-crypto@vger.kernel.org, davem@davemloft.net,
-        gregkh@linuxfoundation.org
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2018 22:26:09 +0200 (CEST)
+Received: from mail-eopbgr700129.outbound.protection.outlook.com ([40.107.70.129]:24800
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994619AbeIRU0BsIkLR convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Sep 2018 22:26:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6cV6xLE5nFzoVkhmpUPced5pRHl4l0LXr6P8TG1tUC4=;
+ b=CXBtuuZGNmZsiQJ24mUOJwX4wutgAVET55laXOA9qVjW5VDmkO7pAiyP9E8ZBuC+AIumVoYwRueye+e6woXjWEeguVdZNjcQpy62bxVeK9klQ9KEijJ9J/fnos3IJ68PCbYF9H0lG8Ve4sRjUXgTblXvTELYfa3uC/PI6XuOzGw=
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com (20.176.255.143) by
+ BYAPR08MB4597.namprd08.prod.outlook.com (52.135.234.31) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1122.17; Tue, 18 Sep 2018 20:25:51 +0000
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981]) by BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981%5]) with mapi id 15.20.1143.017; Tue, 18 Sep 2018
+ 20:25:51 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        =?iso-8859-1?Q?Ren=E9_van_Dorst?= <opensource@vdorst.com>,
         Samuel Neves <sneves@dei.uc.pt>,
         Andy Lutomirski <luto@kernel.org>,
         Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
-        Andy Polyakov <appro@openssl.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH net-next v5 10/20] zinc: Poly1305 MIPS32r2 and MIPS64 implementations
-Date:   Tue, 18 Sep 2018 18:16:36 +0200
-Message-Id: <20180918161646.19105-11-Jason@zx2c4.com>
-In-Reply-To: <20180918161646.19105-1-Jason@zx2c4.com>
+        James Hogan <jhogan@kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH net-next v5 06/20] zinc: ChaCha20 MIPS32r2 implementation
+Thread-Topic: [PATCH net-next v5 06/20] zinc: ChaCha20 MIPS32r2 implementation
+Thread-Index: AQHUT2ssvD8BQbrqKUCOadU3V+C8vaT2fLyA
+Date:   Tue, 18 Sep 2018 20:25:51 +0000
+Message-ID: <20180918202549.ogfyunppxaha7sfu@pburton-laptop>
 References: <20180918161646.19105-1-Jason@zx2c4.com>
+ <20180918161646.19105-7-Jason@zx2c4.com>
+In-Reply-To: <20180918161646.19105-7-Jason@zx2c4.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BN6PR18CA0002.namprd18.prod.outlook.com
+ (2603:10b6:404:121::12) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;BYAPR08MB4597;6:7n2JfPGE8scowTsBHT61lvrg7GYBrH1oL7yZozFroNUNiHlLohN0I84ESK999jx3eFy+0EiqUtLk4rAvPb9h4ztyyh455lQ7S9kAA7w0WIJJKXZBV9xd8rk9Py1rW7enjbmZ04qrAzdLBJyY3AklYZ38Mmub85quMK2ms7l4N14Gke26YVXcxtFqaTsdSFHAaKTeFmgnj+FbOqGGtJcUrsHcw7+caStNlkoiFIdfQ7MBv7DSVIZt/LtQHnrizV24YOt3Q22J+tZ0YHtBaMWT+JBcXuZdeSE0K1P4BoGex1+7Gyo/+KXc3J6VBVC3gCFa+gyETVYbitCaEjgtuVLl6Y2YckL464V+jjLPh3GelITescgnjYAY9K6wrBoJLxdtMU+VNe1qumD8MSbThXiCUOfQ7xzVrG8Mj66qjLnqsf4/Q0LUXtyxyBeSlNlwqMFQpfmPdwaZwLik0tiRKlwKuw==;5:w0UsW0vSagoTFZBw3SXAgFj00OvCT6ulnbckDmjgsHgQC5GsI8UhPdCpWlNBhAcuYBQgSSExKjcAf5HR0j3jJ5twk6qwp1s/A++rFsNLV5k1/2PkdrAgdjLTQJ4w3fh564TfJTg/JerGuXuSrmSh1u9kOBTg70ltnmBzQynd1ZE=;7:/ofrDs5YUNVogYQ/474tXR9o+nwiu6DntMzoZQzsRSbQGOw02VjOznRFSFM1UlKNqVjam8bnoiQXIrFPZh4788+OHA+AQwni6T8AgAbsTRsnhz+ZiJBGt7sT8TWshZWQwjxaPPNYaezI2TCFaPFj5070EyEJdml/9ISYQ6FRR+u3lYk37QeR/eck2B5YAs1Hzq9cRAkPQ/oj66jnDz2P/263NL1lVPe6pAeuF3nrGssRwThmNuXv74mC8Sxm0s5W
+x-ms-office365-filtering-correlation-id: 5121a821-adfe-47dc-3a53-08d61da4ed3b
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989299)(4534165)(4627221)(201703031133081)(201702281549075)(8990200)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4597;
+x-ms-traffictypediagnostic: BYAPR08MB4597:
+x-microsoft-antispam-prvs: <BYAPR08MB4597F1FA409D13DD73E4948FC11D0@BYAPR08MB4597.namprd08.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3002001)(3231355)(944501410)(52105095)(10201501046)(149027)(150027)(6041310)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(20161123558120)(20161123564045)(201708071742011)(7699050);SRVR:BYAPR08MB4597;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4597;
+x-forefront-prvs: 0799B1B2D7
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(346002)(136003)(39850400004)(366004)(376002)(189003)(199004)(54906003)(68736007)(8936002)(6116002)(9686003)(3846002)(102836004)(99286004)(25786009)(42882007)(6916009)(97736004)(186003)(81156014)(316002)(58126008)(4326008)(81166006)(446003)(26005)(386003)(33716001)(2900100001)(5660300001)(2906002)(6512007)(6506007)(11346002)(39060400002)(229853002)(6246003)(1076002)(44832011)(486006)(6436002)(52116002)(8676002)(76176011)(305945005)(476003)(6486002)(5250100002)(106356001)(7416002)(14454004)(7736002)(53936002)(33896004)(256004)(478600001)(105586002)(66066001);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4597;H:BYAPR08MB4934.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: aHJ2780nfB468I/tmdBO1iPw3DX7E0vBANbSs/T4TFzc+JPzbm1GkplZO1ovKfVWW1h/ffh6CcsturI1KGFfpTnBypEGIK2Z1N8O+nn76LUWdGLix814IRJsLtjzv1urGxEyE8T+XQtVAgBEWa0/WUx1hr3PkoBmeE9oo7jZNgvDgUlVIzCiy7UzXfB4nd6yknwB+EIKxdMMP2MpFsSMBmydFq+GymkpK5Jnhp170icGNbS39iMwJKFnbZSC4iBLl3Knm4mewvPe9hi9fP+XBZ2TuKQX33dYc06wXjrohY9kB57XtOyotUX0QP/DQ2JAg07QIisaX4L6VC8mrirrkX50oLXT7T3SXMXM/3CbRLg=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <63642532067635489B41DE900E363F85@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <Jason@zx2c4.com>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5121a821-adfe-47dc-3a53-08d61da4ed3b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2018 20:25:51.7351
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4597
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66398
+X-archive-position: 66399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,891 +99,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This MIPS32r2 implementation comes from René van Dorst and me and
-results in a nice speedup on the usual OpenWRT targets. The MIPS64
-implementation comes from Andy Polyakov results in a nice speedup on
-commodity Octeon hardware, and has been modified slightly from the
-original:
+Hi Jason,
 
-- The function names have been renamed to fit kernel conventions.
-- A comment has been added.
+On Tue, Sep 18, 2018 at 06:16:32PM +0200, Jason A. Donenfeld wrote:
+> +.Lchacha20_mips_xor_aligned_4_b:
+> +	/* STORE_ALIGNED( 4,  0, $sp, 0+CONSTANT_OFS_SP) */
+> +	lw	T0, 0+CONSTANT_OFS_SP($sp)
+> +	lw	T1, 0(IN)
+> +	addu	X0, T0
+> +	CPU_TO_LE32(X0)
+> +	xor	X0, T1
+> +	.set noreorder
+> +	bne	OUT, PTR_LAST_ROUND, .Loop_chacha20_rounds
+> +	sw	X0, 0(OUT)
+> +	.set reorder
+> +
+> +	.set noreorder
+> +	bne	$at, BYTES, .Lchacha20_mips_xor_bytes
+> +	/* Empty delayslot, Increase NONCE_0, return NONCE_0 value */
+> +	addiu	NONCE_0, 1
+> +	.set noreorder
 
-No changes have been made to the actual instructions.
+Should this be .set reorder?
 
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: René van Dorst <opensource@vdorst.com>
-Cc: Samuel Neves <sneves@dei.uc.pt>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-Cc: Andy Polyakov <appro@openssl.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@linux-mips.org
----
- lib/zinc/Makefile                      |   2 +
- lib/zinc/poly1305/poly1305-mips-glue.h |  35 +++
- lib/zinc/poly1305/poly1305-mips.S      | 417 +++++++++++++++++++++++++
- lib/zinc/poly1305/poly1305-mips64.S    | 359 +++++++++++++++++++++
- lib/zinc/poly1305/poly1305.c           |   2 +
- 5 files changed, 815 insertions(+)
- create mode 100644 lib/zinc/poly1305/poly1305-mips-glue.h
- create mode 100644 lib/zinc/poly1305/poly1305-mips.S
- create mode 100644 lib/zinc/poly1305/poly1305-mips64.S
+Even better - could we not just place the addiu before the bne & drop
+the .set noreorder, allowing the assembler to fill the delay slot with
+the addiu? Likewise in many other places throughout the patch.
 
-diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
-index 1970d912b4df..db51764a9c05 100644
---- a/lib/zinc/Makefile
-+++ b/lib/zinc/Makefile
-@@ -14,4 +14,6 @@ zinc_poly1305-y := poly1305/poly1305.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_X86_64) += poly1305/poly1305-x86_64.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM) += poly1305/poly1305-arm.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM64) += poly1305/poly1305-arm64.o
-+zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS) += poly1305/poly1305-mips.o
-+zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS64) += poly1305/poly1305-mips64.o
- obj-$(CONFIG_ZINC_POLY1305) += zinc_poly1305.o
-diff --git a/lib/zinc/poly1305/poly1305-mips-glue.h b/lib/zinc/poly1305/poly1305-mips-glue.h
-new file mode 100644
-index 000000000000..2932bb987fd9
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips-glue.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+asmlinkage void poly1305_init_mips(void *ctx, const u8 key[16]);
-+asmlinkage void poly1305_blocks_mips(void *ctx, const u8 *inp, const size_t len,
-+				     const u32 padbit);
-+asmlinkage void poly1305_emit_mips(void *ctx, u8 mac[16], const u32 nonce[4]);
-+static void __init poly1305_fpu_init(void)
-+{
-+}
-+
-+static inline bool poly1305_init_arch(void *ctx,
-+				      const u8 key[POLY1305_KEY_SIZE])
-+{
-+	poly1305_init_mips(ctx, key);
-+	return true;
-+}
-+
-+static inline bool poly1305_blocks_arch(void *ctx, const u8 *inp,
-+					const size_t len, const u32 padbit,
-+					simd_context_t *simd_context)
-+{
-+	poly1305_blocks_mips(ctx, inp, len, padbit);
-+	return true;
-+}
-+
-+static inline bool poly1305_emit_arch(void *ctx, u8 mac[POLY1305_MAC_SIZE],
-+				      const u32 nonce[4],
-+				      simd_context_t *simd_context)
-+{
-+	poly1305_emit_mips(ctx, mac, nonce);
-+	return true;
-+}
-diff --git a/lib/zinc/poly1305/poly1305-mips.S b/lib/zinc/poly1305/poly1305-mips.S
-new file mode 100644
-index 000000000000..48c950602799
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips.S
-@@ -0,0 +1,417 @@
-+/* SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com> All Rights Reserved.
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+#define MSB 0
-+#define LSB 3
-+#else
-+#define MSB 3
-+#define LSB 0
-+#endif
-+
-+#define POLY1305_BLOCK_SIZE 16
-+.text
-+#define H0 $t0
-+#define H1 $t1
-+#define H2 $t2
-+#define H3 $t3
-+#define H4 $t4
-+
-+#define R0 $t5
-+#define R1 $t6
-+#define R2 $t7
-+#define R3 $t8
-+
-+#define O0 $s0
-+#define O1 $s4
-+#define O2 $v1
-+#define O3 $t9
-+#define O4 $s5
-+
-+#define S1 $s1
-+#define S2 $s2
-+#define S3 $s3
-+
-+#define SC $at
-+#define CA $v0
-+
-+/* Input arguments */
-+#define poly	$a0
-+#define src	$a1
-+#define srclen	$a2
-+#define hibit	$a3
-+
-+/* Location in the opaque buffer
-+ * R[0..3], CA, H[0..4]
-+ */
-+#define PTR_POLY1305_R(n) ( 0 + (n*4)) ## ($a0)
-+#define PTR_POLY1305_CA   (16        ) ## ($a0)
-+#define PTR_POLY1305_H(n) (20 + (n*4)) ## ($a0)
-+
-+#define POLY1305_BLOCK_SIZE 16
-+#define POLY1305_STACK_SIZE 8 * 4
-+
-+.set reorder
-+.set noat
-+.align 4
-+.globl poly1305_blocks_mips
-+.ent poly1305_blocks_mips
-+poly1305_blocks_mips:
-+	.frame  $sp,POLY1305_STACK_SIZE,$31
-+	/* srclen &= 0xFFFFFFF0 */
-+	ins	srclen, $zero, 0, 4
-+
-+	.set noreorder
-+	/* check srclen >= 16 bytes */
-+	beqz	srclen, .Lpoly1305_blocks_mips_end
-+	addiu	$sp, -(POLY1305_STACK_SIZE)
-+	.set reorder
-+
-+	/* Calculate last round based on src address pointer.
-+	 * last round src ptr (srclen) = src + (srclen & 0xFFFFFFF0)
-+	 */
-+	addu	srclen, src
-+
-+	lw	R0, PTR_POLY1305_R(0)
-+	lw	R1, PTR_POLY1305_R(1)
-+	lw	R2, PTR_POLY1305_R(2)
-+	lw	R3, PTR_POLY1305_R(3)
-+
-+	/* store the used save registers. */
-+	sw	$s0, 0($sp)
-+	sw	$s1, 4($sp)
-+	sw	$s2, 8($sp)
-+	sw	$s3, 12($sp)
-+	sw	$s4, 16($sp)
-+	sw	$s5, 20($sp)
-+
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Sx = Rx + (Rx >> 2) */
-+	srl	S1, R1, 2
-+	srl	S2, R2, 2
-+	srl	S3, R3, 2
-+	addu	S1, R1
-+	addu	S2, R2
-+	addu	S3, R3
-+
-+	addiu	SC, $zero, 1
-+
-+.Lpoly1305_loop:
-+	lwl	O0, 0+MSB(src)
-+	lwl	O1, 4+MSB(src)
-+	lwl	O2, 8+MSB(src)
-+	lwl	O3,12+MSB(src)
-+	lwr	O0, 0+LSB(src)
-+	lwr	O1, 4+LSB(src)
-+	lwr	O2, 8+LSB(src)
-+	lwr	O3,12+LSB(src)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	O0
-+	wsbh	O1
-+	wsbh	O2
-+	wsbh	O3
-+	rotr	O0, 16
-+	rotr	O1, 16
-+	rotr	O2, 16
-+	rotr	O3, 16
-+#endif
-+
-+	/* h0 = (u32)(d0 = (u64)h0 + inp[0] + c 'Carry_previous cycle'); */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	O0, H0
-+	sltu	H0, O0, H0
-+	addu	CA, H0
-+
-+	/* h1 = (u32)(d1 = (u64)h1 + (d0 >> 32) + inp[4]); */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	O1, H1
-+	sltu	H1, O1, H1
-+	addu	CA, H1
-+
-+	/* h2 = (u32)(d2 = (u64)h2 + (d1 >> 32) + inp[8]); */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	O2, H2
-+	sltu	H2, O2, H2
-+	addu	CA, H2
-+
-+	/* h3 = (u32)(d3 = (u64)h3 + (d2 >> 32) + inp[12]); */
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	O3, H3
-+	sltu	H3, O3, H3
-+	addu	CA, H3
-+
-+	/* h4 += (u32)(d3 >> 32) + padbit; */
-+	addu	H4, hibit
-+	addu	O4, H4, CA
-+
-+	/* D0 */
-+	multu	O0, R0
-+	maddu	O1, S3
-+	maddu	O2, S2
-+	maddu	O3, S1
-+	mfhi	CA
-+	mflo	H0
-+
-+	/* D1 */
-+	multu	O0, R1
-+	maddu	O1, R0
-+	maddu	O2, S3
-+	maddu	O3, S2
-+	maddu	O4, S1
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H1
-+
-+	/* D2 */
-+	multu	O0, R2
-+	maddu	O1, R1
-+	maddu	O2, R0
-+	maddu	O3, S3
-+	maddu	O4, S2
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H2
-+
-+	/* D4 */
-+	mul	H4, O4, R0
-+
-+	/* D3 */
-+	multu	O0, R3
-+	maddu	O1, R2
-+	maddu	O2, R1
-+	maddu	O3, R0
-+	maddu	O4, S3
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H3
-+
-+	addiu	src, POLY1305_BLOCK_SIZE
-+
-+	/* h4 += (u32)(d3 >> 32); */
-+	addu	O4, H4, CA
-+	/* h4 &= 3 */
-+	andi	H4, O4, 3
-+	/* c = (h4 >> 2) + (h4 & ~3U); */
-+	srl	CA, O4, 2
-+	ins	O4, $zero, 0, 2
-+
-+	/* able to do a 16 byte block. */
-+	.set noreorder
-+	bne	src, srclen, .Lpoly1305_loop
-+	/* Delay slot is always executed. */
-+	addu	CA, O4
-+	.set reorder
-+
-+	/* restore the used save registers. */
-+	lw	$s0, 0($sp)
-+	lw	$s1, 4($sp)
-+	lw	$s2, 8($sp)
-+	lw	$s3, 12($sp)
-+	lw	$s4, 16($sp)
-+	lw	$s5, 20($sp)
-+
-+	/* store Hx and Carry */
-+	sw	CA, PTR_POLY1305_CA
-+	sw	H0, PTR_POLY1305_H(0)
-+	sw	H1, PTR_POLY1305_H(1)
-+	sw	H2, PTR_POLY1305_H(2)
-+	sw	H3, PTR_POLY1305_H(3)
-+	sw	H4, PTR_POLY1305_H(4)
-+
-+.Lpoly1305_blocks_mips_end:
-+	/* Jump Back */
-+	.set noreorder
-+	jr	$ra
-+	addiu	$sp, POLY1305_STACK_SIZE
-+	.set reorder
-+.end poly1305_blocks_mips
-+.set at
-+.set reorder
-+
-+/* Input arguments CTX=$a0, MAC=$a1, NONCE=$a2 */
-+#define MAC	$a1
-+#define NONCE	$a2
-+
-+#define G0	$t5
-+#define G1	$t6
-+#define G2	$t7
-+#define G3	$t8
-+#define G4	$t9
-+
-+.set reorder
-+.set noat
-+.align 4
-+.globl poly1305_emit_mips
-+.ent poly1305_emit_mips
-+poly1305_emit_mips:
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Add left over carry */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	H4, CA
-+
-+	/* compare to modulus by computing h + -p */
-+	addiu	G0, H0, 5
-+	sltu	CA, G0, H0
-+	addu	G1, H1, CA
-+	sltu	CA, G1, H1
-+	addu	G2, H2, CA
-+	sltu	CA, G2, H2
-+	addu	G3, H3, CA
-+	sltu	CA, G3, H3
-+	addu	G4, H4, CA
-+
-+	srl	SC, G4, 2
-+
-+	/* if there was carry into 131st bit, h3:h0 = g3:g0 */
-+	movn	H0, G0, SC
-+	movn	H1, G1, SC
-+	movn	H2, G2, SC
-+	movn	H3, G3, SC
-+
-+	lwl	G0, 0+MSB(NONCE)
-+	lwl	G1, 4+MSB(NONCE)
-+	lwl	G2, 8+MSB(NONCE)
-+	lwl	G3,12+MSB(NONCE)
-+	lwr	G0, 0+LSB(NONCE)
-+	lwr	G1, 4+LSB(NONCE)
-+	lwr	G2, 8+LSB(NONCE)
-+	lwr	G3,12+LSB(NONCE)
-+
-+	/* mac = (h + nonce) % (2^128) */
-+	addu	H0, G0
-+	sltu	CA, H0, G0
-+
-+	/* H1 */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H1, G1
-+	sltu	G1, H1, G1
-+	addu	CA, G1
-+
-+	/* H2 */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H2, G2
-+	sltu	G2, H2, G2
-+	addu	CA, G2
-+
-+	/* H3 */
-+	addu	H3, CA
-+	addu	H3, G3
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	H0
-+	wsbh	H1
-+	wsbh	H2
-+	wsbh	H3
-+	rotr	H0, 16
-+	rotr	H1, 16
-+	rotr	H2, 16
-+	rotr	H3, 16
-+#endif
-+
-+	/* store MAC */
-+	swl	H0, 0+MSB(MAC)
-+	swl	H1, 4+MSB(MAC)
-+	swl	H2, 8+MSB(MAC)
-+	swl	H3,12+MSB(MAC)
-+	swr	H0, 0+LSB(MAC)
-+	swr	H1, 4+LSB(MAC)
-+	swr	H2, 8+LSB(MAC)
-+	.set noreorder
-+	jr	$ra
-+	swr	H3,12+LSB(MAC)
-+	.set reorder
-+.end poly1305_emit_mips
-+
-+#define PR0 $t0
-+#define PR1 $t1
-+#define PR2 $t2
-+#define PR3 $t3
-+#define PT0 $t4
-+
-+/* Input arguments CTX=$a0, KEY=$a1 */
-+
-+.align 4
-+.globl poly1305_init_mips
-+.ent poly1305_init_mips
-+poly1305_init_mips:
-+	lwl	PR0, 0+MSB($a1)
-+	lwl	PR1, 4+MSB($a1)
-+	lwl	PR2, 8+MSB($a1)
-+	lwl	PR3,12+MSB($a1)
-+	lwr	PR0, 0+LSB($a1)
-+	lwr	PR1, 4+LSB($a1)
-+	lwr	PR2, 8+LSB($a1)
-+	lwr	PR3,12+LSB($a1)
-+
-+	/* store Hx and Carry */
-+	sw	$zero, PTR_POLY1305_CA
-+	sw	$zero, PTR_POLY1305_H(0)
-+	sw	$zero, PTR_POLY1305_H(1)
-+	sw	$zero, PTR_POLY1305_H(2)
-+	sw	$zero, PTR_POLY1305_H(3)
-+	sw	$zero, PTR_POLY1305_H(4)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	PR0
-+	wsbh	PR1
-+	wsbh	PR2
-+	wsbh	PR3
-+	rotr	PR0, 16
-+	rotr	PR1, 16
-+	rotr	PR2, 16
-+	rotr	PR3, 16
-+#endif
-+
-+	lui	PT0, 0x0FFF
-+	ori	PT0, 0xFFFC
-+
-+	/* AND 0x0fffffff; */
-+	ext	PR0, PR0, 0, (32-4)
-+
-+	/* AND 0x0ffffffc; */
-+	and	PR1, PT0
-+	and	PR2, PT0
-+	and	PR3, PT0
-+
-+	/* store Rx */
-+	sw	PR0, PTR_POLY1305_R(0)
-+	sw	PR1, PTR_POLY1305_R(1)
-+	sw	PR2, PTR_POLY1305_R(2)
-+
-+	.set noreorder
-+	/* Jump Back  */
-+	jr	$ra
-+	sw	PR3, PTR_POLY1305_R(3)
-+	.set reorder
-+.end poly1305_init_mips
-diff --git a/lib/zinc/poly1305/poly1305-mips64.S b/lib/zinc/poly1305/poly1305-mips64.S
-new file mode 100644
-index 000000000000..7da946824104
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips64.S
-@@ -0,0 +1,359 @@
-+/* SPDX-License-Identifier: BSD-3-Clause
-+ *
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ * Copyright (C) 2006-2017 CRYPTOGAMS by <appro@openssl.org>. All Rights Reserved.
-+ *
-+ * This is based in part on Andy Polyakov's implementation from CRYPTOGAMS.
-+ */
-+
-+#if !defined(CONFIG_64BIT)
-+#error "This is only for 64-bit kernels."
-+#endif
-+
-+#ifdef __MIPSEB__
-+#define MSB 0
-+#define LSB 7
-+#else
-+#define MSB 7
-+#define LSB 0
-+#endif
-+
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+#define dmultu(rs,rt)
-+#define mflo(rd,rs,rt)	dmulu	rd,rs,rt
-+#define mfhi(rd,rs,rt)	dmuhu	rd,rs,rt
-+#else
-+#define dmultu(rs,rt)		dmultu	rs,rt
-+#define multu(rs,rt)		multu	rs,rt
-+#define mflo(rd,rs,rt)	mflo	rd
-+#define mfhi(rd,rs,rt)	mfhi	rd
-+#endif
-+
-+.text
-+.set	noat
-+.set	noreorder
-+
-+/* While most of the assembly in the kernel prefers ENTRY() and ENDPROC(),
-+ * there is no existing MIPS assembly that uses it, and MIPS assembler seems
-+ * to like its own .ent/.end notation, which the MIPS include files don't
-+ * provide in a MIPS-specific ENTRY/ENDPROC definition. So, we skip these
-+ * for now, until somebody complains. */
-+
-+.align	5
-+.globl	poly1305_init_mips
-+.ent	poly1305_init_mips
-+poly1305_init_mips:
-+	.frame	$29,0,$31
-+	.set	reorder
-+
-+	sd	$0,0($4)
-+	sd	$0,8($4)
-+	sd	$0,16($4)
-+
-+	beqz	$5,.Lno_key
-+
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	ld	$8,0($5)
-+	ld	$9,8($5)
-+#else
-+	ldl	$8,0+MSB($5)
-+	ldl	$9,8+MSB($5)
-+	ldr	$8,0+LSB($5)
-+	ldr	$9,8+LSB($5)
-+#endif
-+#ifdef	__MIPSEB__
-+#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	dsbh	$8,$8		# byte swap
-+	 dsbh	$9,$9
-+	dshd	$8,$8
-+	 dshd	$9,$9
-+#else
-+	ori	$10,$0,0xFF
-+	dsll	$1,$10,32
-+	or	$10,$1		# 0x000000FF000000FF
-+
-+	and	$11,$8,$10	# byte swap
-+	 and	$2,$9,$10
-+	dsrl	$1,$8,24
-+	 dsrl	$24,$9,24
-+	dsll	$11,24
-+	 dsll	$2,24
-+	and	$1,$10
-+	 and	$24,$10
-+	dsll	$10,8			# 0x0000FF000000FF00
-+	or	$11,$1
-+	 or	$2,$24
-+	and	$1,$8,$10
-+	 and	$24,$9,$10
-+	dsrl	$8,8
-+	 dsrl	$9,8
-+	dsll	$1,8
-+	 dsll	$24,8
-+	and	$8,$10
-+	 and	$9,$10
-+	or	$11,$1
-+	 or	$2,$24
-+	or	$8,$11
-+	 or	$9,$2
-+	dsrl	$11,$8,32
-+	 dsrl	$2,$9,32
-+	dsll	$8,32
-+	 dsll	$9,32
-+	or	$8,$11
-+	 or	$9,$2
-+#endif
-+#endif
-+	li	$10,1
-+	dsll	$10,32
-+	daddiu	$10,-63
-+	dsll	$10,28
-+	daddiu	$10,-1		# 0ffffffc0fffffff
-+
-+	and	$8,$10
-+	daddiu	$10,-3		# 0ffffffc0ffffffc
-+	and	$9,$10
-+
-+	sd	$8,24($4)
-+	dsrl	$10,$9,2
-+	sd	$9,32($4)
-+	daddu	$10,$9		# s1 = r1 + (r1 >> 2)
-+	sd	$10,40($4)
-+
-+.Lno_key:
-+	li	$2,0			# return 0
-+	jr	$31
-+.end	poly1305_init_mips
-+
-+.align	5
-+.globl	poly1305_blocks_mips
-+.ent	poly1305_blocks_mips
-+poly1305_blocks_mips:
-+	.set	noreorder
-+	dsrl	$6,4			# number of complete blocks
-+	bnez	$6,poly1305_blocks_internal
-+	nop
-+	jr	$31
-+	nop
-+.end	poly1305_blocks_mips
-+
-+.align	5
-+.ent	poly1305_blocks_internal
-+poly1305_blocks_internal:
-+	.frame	$29,6*8,$31
-+	.mask	0x00030000,-8
-+	.set	noreorder
-+	dsubu	$29,6*8
-+	sd	$17,40($29)
-+	sd	$16,32($29)
-+	.set	reorder
-+
-+	ld	$12,0($4)		# load hash value
-+	ld	$13,8($4)
-+	ld	$14,16($4)
-+
-+	ld	$15,24($4)		# load key
-+	ld	$16,32($4)
-+	ld	$17,40($4)
-+
-+.Loop:
-+#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	ld	$8,0($5)		# load input
-+	ld	$9,8($5)
-+#else
-+	ldl	$8,0+MSB($5)	# load input
-+	ldl	$9,8+MSB($5)
-+	ldr	$8,0+LSB($5)
-+	ldr	$9,8+LSB($5)
-+#endif
-+	daddiu	$6,-1
-+	daddiu	$5,16
-+#ifdef	__MIPSEB__
-+#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
-+	dsbh	$8,$8		# byte swap
-+	 dsbh	$9,$9
-+	dshd	$8,$8
-+	 dshd	$9,$9
-+#else
-+	ori	$10,$0,0xFF
-+	dsll	$1,$10,32
-+	or	$10,$1		# 0x000000FF000000FF
-+
-+	and	$11,$8,$10	# byte swap
-+	 and	$2,$9,$10
-+	dsrl	$1,$8,24
-+	 dsrl	$24,$9,24
-+	dsll	$11,24
-+	 dsll	$2,24
-+	and	$1,$10
-+	 and	$24,$10
-+	dsll	$10,8			# 0x0000FF000000FF00
-+	or	$11,$1
-+	 or	$2,$24
-+	and	$1,$8,$10
-+	 and	$24,$9,$10
-+	dsrl	$8,8
-+	 dsrl	$9,8
-+	dsll	$1,8
-+	 dsll	$24,8
-+	and	$8,$10
-+	 and	$9,$10
-+	or	$11,$1
-+	 or	$2,$24
-+	or	$8,$11
-+	 or	$9,$2
-+	dsrl	$11,$8,32
-+	 dsrl	$2,$9,32
-+	dsll	$8,32
-+	 dsll	$9,32
-+	or	$8,$11
-+	 or	$9,$2
-+#endif
-+#endif
-+	daddu	$12,$8		# accumulate input
-+	daddu	$13,$9
-+	sltu	$10,$12,$8
-+	sltu	$11,$13,$9
-+	daddu	$13,$10
-+
-+	dmultu	($15,$12)		# h0*r0
-+	 daddu	$14,$7
-+	 sltu	$10,$13,$10
-+	mflo	($8,$15,$12)
-+	mfhi	($9,$15,$12)
-+
-+	dmultu	($17,$13)		# h1*5*r1
-+	 daddu	$10,$11
-+	 daddu	$14,$10
-+	mflo	($10,$17,$13)
-+	mfhi	($11,$17,$13)
-+
-+	dmultu	($16,$12)		# h0*r1
-+	 daddu	$8,$10
-+	 daddu	$9,$11
-+	mflo	($1,$16,$12)
-+	mfhi	($25,$16,$12)
-+	 sltu	$10,$8,$10
-+	 daddu	$9,$10
-+
-+	dmultu	($15,$13)		# h1*r0
-+	 daddu	$9,$1
-+	 sltu	$1,$9,$1
-+	mflo	($10,$15,$13)
-+	mfhi	($11,$15,$13)
-+	 daddu	$25,$1
-+
-+	dmultu	($17,$14)		# h2*5*r1
-+	 daddu	$9,$10
-+	 daddu	$25,$11
-+	mflo	($1,$17,$14)
-+
-+	dmultu	($15,$14)		# h2*r0
-+	 sltu	$10,$9,$10
-+	 daddu	$25,$10
-+	mflo	($2,$15,$14)
-+
-+	daddu	$9,$1
-+	daddu	$25,$2
-+	sltu	$1,$9,$1
-+	daddu	$25,$1
-+
-+	li	$10,-4		# final reduction
-+	and	$10,$25
-+	dsrl	$11,$25,2
-+	andi	$14,$25,3
-+	daddu	$10,$11
-+	daddu	$12,$8,$10
-+	sltu	$10,$12,$10
-+	daddu	$13,$9,$10
-+	sltu	$10,$13,$10
-+	daddu	$14,$14,$10
-+
-+	bnez	$6,.Loop
-+
-+	sd	$12,0($4)		# store hash value
-+	sd	$13,8($4)
-+	sd	$14,16($4)
-+
-+	.set	noreorder
-+	ld	$17,40($29)		# epilogue
-+	ld	$16,32($29)
-+	jr	$31
-+	daddu	$29,6*8
-+.end	poly1305_blocks_internal
-+
-+.align	5
-+.globl	poly1305_emit_mips
-+.ent	poly1305_emit_mips
-+poly1305_emit_mips:
-+	.frame	$29,0,$31
-+	.set	reorder
-+
-+	ld	$10,0($4)
-+	ld	$11,8($4)
-+	ld	$1,16($4)
-+
-+	daddiu	$8,$10,5		# compare to modulus
-+	sltiu	$2,$8,5
-+	daddu	$9,$11,$2
-+	sltu	$2,$9,$2
-+	daddu	$1,$1,$2
-+
-+	dsrl	$1,2			# see if it carried/borrowed
-+	dsubu	$1,$0,$1
-+	nor	$2,$0,$1
-+
-+	and	$8,$1
-+	and	$10,$2
-+	and	$9,$1
-+	and	$11,$2
-+	or	$8,$10
-+	or	$9,$11
-+
-+	lwu	$10,0($6)		# load nonce
-+	lwu	$11,4($6)
-+	lwu	$1,8($6)
-+	lwu	$2,12($6)
-+	dsll	$11,32
-+	dsll	$2,32
-+	or	$10,$11
-+	or	$1,$2
-+
-+	daddu	$8,$10		# accumulate nonce
-+	daddu	$9,$1
-+	sltu	$10,$8,$10
-+	daddu	$9,$10
-+
-+	dsrl	$10,$8,8		# write mac value
-+	dsrl	$11,$8,16
-+	dsrl	$1,$8,24
-+	sb	$8,0($5)
-+	dsrl	$2,$8,32
-+	sb	$10,1($5)
-+	dsrl	$10,$8,40
-+	sb	$11,2($5)
-+	dsrl	$11,$8,48
-+	sb	$1,3($5)
-+	dsrl	$1,$8,56
-+	sb	$2,4($5)
-+	dsrl	$2,$9,8
-+	sb	$10,5($5)
-+	dsrl	$10,$9,16
-+	sb	$11,6($5)
-+	dsrl	$11,$9,24
-+	sb	$1,7($5)
-+
-+	sb	$9,8($5)
-+	dsrl	$1,$9,32
-+	sb	$2,9($5)
-+	dsrl	$2,$9,40
-+	sb	$10,10($5)
-+	dsrl	$10,$9,48
-+	sb	$11,11($5)
-+	dsrl	$11,$9,56
-+	sb	$1,12($5)
-+	sb	$2,13($5)
-+	sb	$10,14($5)
-+	sb	$11,15($5)
-+
-+	jr	$31
-+.end	poly1305_emit_mips
-diff --git a/lib/zinc/poly1305/poly1305.c b/lib/zinc/poly1305/poly1305.c
-index 75032146fd50..ac53a1e36d5b 100644
---- a/lib/zinc/poly1305/poly1305.c
-+++ b/lib/zinc/poly1305/poly1305.c
-@@ -19,6 +19,8 @@
- #include "poly1305-x86_64-glue.h"
- #elif defined(CONFIG_ZINC_ARCH_ARM) || defined(CONFIG_ZINC_ARCH_ARM64)
- #include "poly1305-arm-glue.h"
-+#elif defined(CONFIG_ZINC_ARCH_MIPS) || defined(CONFIG_ZINC_ARCH_MIPS64)
-+#include "poly1305-mips-glue.h"
- #else
- static inline bool poly1305_init_arch(void *ctx,
- 				      const u8 key[POLY1305_KEY_SIZE])
--- 
-2.19.0
+That would be more future proof - particularly if we ever want to adjust
+this for use with the nanoMIPS ISA which has no delay slots. It may also
+allow the assembler the choice to use compact branches (ie. branches
+without visible delay slots) when targeting MIPS32r6. I know neither of
+these will currently build this code, but I think avoiding all the
+noreorder blocks would be a nice cleanup just for the sake of
+readability anyway.
+
+Thanks,
+    Paul

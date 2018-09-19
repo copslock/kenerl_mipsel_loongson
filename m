@@ -1,53 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2018 16:33:17 +0200 (CEST)
-Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:46025
-        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994642AbeISOdNQroV9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Sep 2018 16:33:13 +0200
-Received: by mail-qt0-x243.google.com with SMTP id l2-v6so111444qtr.12;
-        Wed, 19 Sep 2018 07:33:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2018 16:33:27 +0200 (CEST)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:43308
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994645AbeISOdQ7axK9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Sep 2018 16:33:16 +0200
+Received: by mail-qt0-x241.google.com with SMTP id g53-v6so5244372qtg.10;
+        Wed, 19 Sep 2018 07:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4Tps4s77D23i3fxKoeF6dPhKuUaEwXZQhu6RTBKsY3Q=;
-        b=g9zX9L4TawPVaK0YzSox8YB+x+ct5iD9mIvHFYybGnpR33u0gqEd2UOQudYG85camN
-         Cx7+EXRNbZ6eHeigZFjjGvLB0N4PZzuvoX1Mj7r1hmvMS7TGND3uMUJngMJ8gq4vRJae
-         UHd49aMvIpAzAHUutSS1b+F4zimhEumQsd4Jm0Ok339EhweMKe8Y7qBy3b21IN6ykVbP
-         EgIXdekqa4leU6khqF7T1l+8aJU9aKQfm5tjQqQt4n1xa43U9zGFUSaxaMfhAkJmPhgk
-         x1pSKwu4I/LVTcdqMMgGPB5gYS00Qi7sF1uP3CIGatW8DDvxzRhYswE/Bc64K9gR4ecF
-         ZK8Q==
+        bh=6PZHZXzG2gUqodrftrjrMv9UkVaRrpj6xkdisoH7P94=;
+        b=rbeZJ4ZRqjo4gMVplAcKiFPGdAUiBm9YmN08wucsOcjwpqggZ3LNvLFxG9YUk6Hlbk
+         Q5dCrS8njA6aWAk3mqXsKcrsoty/IYS6WoTIyQmzspub7WQwdeDe5O3IjRsPDxLM9GXG
+         TGlE3ePbSSwegWOlyVZ1JOjCVcMrgqNMsnXyrICPf35V9Ff91p3+RhfZBYEXFzLE1AKQ
+         rx8F/6J/4xIaBwOHlDmZSwkBSutJDHXiv3Jg0wrLKseXpxwqJTteShj5syDk1zq+5A0o
+         SoCj7i0erZyrIdxrJBPe8VkrCpwDAxu0C87+Fwz61CeHnLVVsjKu3+BbMF25x4xfDcP3
+         1VOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=4Tps4s77D23i3fxKoeF6dPhKuUaEwXZQhu6RTBKsY3Q=;
-        b=lcgbjQMy5mkFjRIJand2N03eeIGIVYuJ4XCGrjaKCGRBto61G0wq43UdZtukVrLb9V
-         +8EC2M/GdOuSWmbSY5N6W9Ou9z/AxByvKdNmmSl6MbaUQj9rzVBPdbJxIRmzjmJP+MIB
-         cKyVOMSQEh6xSKimXqYbEKmhzEQxPCjZs/comO1pG4yGE+/fWURDgnfwLagEOMo3u7mC
-         6zP3xJ27pG7Y+g8H4dsSyaNsSB8KFCl2qNNpwFSWeL7I5bS5GMxYioPIukwTYivL0DYG
-         UQplxwpsCIrYFi4AQe/BEmchrYw/CyscNNt6OC/3twBqmlwjJ4cyatOR0U5t9/d5iqBA
-         mGPg==
-X-Gm-Message-State: APzg51Bh1mzZ0rOezkEgfHl+6u9YHc9+7NO+roBWf7/LqGA5qkcrO4UJ
-        5cKmE7OIgl7jr1gQGpAWKI4=
-X-Google-Smtp-Source: ANB0VdZWEaFuArm9yR6P9tSrGkSsNGQWEsFlKiiurX0rfbtQn8V05GJJL5BNMXv88Hw35aRVffzFSA==
-X-Received: by 2002:aed:2ec6:: with SMTP id k64-v6mr25044676qtd.177.1537367587181;
-        Wed, 19 Sep 2018 07:33:07 -0700 (PDT)
+        bh=6PZHZXzG2gUqodrftrjrMv9UkVaRrpj6xkdisoH7P94=;
+        b=OkRtsyRyGZ2/8346LOpr5EmlqWszj1V91Q5ZReQI6PN/k690yxC+Rq+V7sTCabY+9I
+         DpHkwkTrRhvP1mWIjJ3AeS+VZ+HPwpbY3c4MWGDQVICbj34n1iReOPZ2zBTTB5BBIK5w
+         CW449NeSc2OFAI7Igw6FNPoKOwMcZzTsGviksBZT0KP8HHcY4GeYKPjS4D8ixIaa5CTZ
+         IH4ysJpv/hXZGOw7AdfeUVKMUfOXFDRTmYDQ2xU5cgKEbs+E+TZCNFFCwzjz42wUOVFq
+         qcYirekHyZMLkA3JZVrfwLeoZ4M/bttktj75S55BYUkhOYOlZmJtBZGZ6tJmCM7KvA65
+         77xg==
+X-Gm-Message-State: APzg51AsePvQjnfitHQwBGXFUed6lCY4KtEcJX2ceVYL/VGT5WmeMumF
+        wKoYm/JpQ2iEs6vlucrYyzI=
+X-Google-Smtp-Source: ANB0VdYMCF7809XbGq2W0XuyXMf2X9OtjIgXOlkST6NLOe2qPMVvwdvEQTsW2HE6/XTy6lM78PzukA==
+X-Received: by 2002:ad4:4089:: with SMTP id l9-v6mr25041164qvp.160.1537367591135;
+        Wed, 19 Sep 2018 07:33:11 -0700 (PDT)
 Received: from stbsrv-and-3.and.broadcom.com ([192.19.231.250])
-        by smtp.gmail.com with ESMTPSA id 17-v6sm2104051qkf.74.2018.09.19.07.33.05
+        by smtp.gmail.com with ESMTPSA id 17-v6sm2104051qkf.74.2018.09.19.07.33.09
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 19 Sep 2018 07:33:06 -0700 (PDT)
+        Wed, 19 Sep 2018 07:33:10 -0700 (PDT)
 From:   Jim Quinlan <jim2101024@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Jim Quinlan <jim2101024@gmail.com>,
         Kevin Cernekee <cernekee@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        bcm-kernel-feedback-list@broadcom.com, linux-pci@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v5 06/12] MIPS: BMIPS: add dma remap for BrcmSTB PCIe
-Date:   Wed, 19 Sep 2018 10:32:01 -0400
-Message-Id: <1537367527-20773-7-git-send-email-jim2101024@gmail.com>
+        devicetree@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v5 08/12] MIPS: BMIPS: add PCI bindings for 7425, 7435
+Date:   Wed, 19 Sep 2018 10:32:03 -0400
+Message-Id: <1537367527-20773-9-git-send-email-jim2101024@gmail.com>
 X-Mailer: git-send-email 1.9.0.138.g2de3478
 In-Reply-To: <1537367527-20773-1-git-send-email-jim2101024@gmail.com>
 References: <1537367527-20773-1-git-send-email-jim2101024@gmail.com>
@@ -55,7 +57,7 @@ Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66410
+X-archive-position: 66411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,59 +74,113 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The design of the Broadcom PCIe RC controller requires us to remap its
-DMA addresses for inbound traffic.  We do this by modifying the
-definitions of __phys_to_dma() and __dma_to_phys().
-
-In arch/mips/bmips/dma.c, these functions are already in use to remap
-DMA addresses for the 338x SOC chips.  We leave this code alone -- and
-give its mapping priority -- but if it is not in use, the PCIe DMA
-mapping is in effect.
-
-One might think that the two DMA remapping systems of dma.c could be
-combined, but they cannot: one governs only DMA addresses for the PCIe
-controller of BrcmSTB ARM/ARM64/MIPs chips, while the other governs
-the PCIe controller *and* other peripherals for only MIPs 338x
-chips.
+Adds the PCIe nodes for the Broadcom STB PCIe root complex.
 
 Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 ---
- arch/mips/bmips/dma.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/mips/boot/dts/brcm/bcm7425.dtsi     | 28 ++++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi     | 28 ++++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts |  4 ++++
+ 4 files changed, 64 insertions(+)
 
-diff --git a/arch/mips/bmips/dma.c b/arch/mips/bmips/dma.c
-index 3d13c77..292994f 100644
---- a/arch/mips/bmips/dma.c
-+++ b/arch/mips/bmips/dma.c
-@@ -18,6 +18,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <asm/bmips.h>
-+#include <soc/brcmstb/common.h>
- 
- /*
-  * BCM338x has configurable address translation windows which allow the
-@@ -44,6 +45,10 @@ dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pa)
- {
- 	struct bmips_dma_range *r;
- 
-+#ifdef CONFIG_PCIE_BRCMSTB
-+	if (!bmips_dma_ranges)
-+		return brcm_phys_to_dma(dev, pa);
-+#endif
- 	for (r = bmips_dma_ranges; r && r->size; r++) {
- 		if (pa >= r->child_addr &&
- 		    pa < (r->child_addr + r->size))
-@@ -56,6 +61,10 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
- {
- 	struct bmips_dma_range *r;
- 
-+#ifdef CONFIG_PCIE_BRCMSTB
-+	if (!bmips_dma_ranges)
-+		return (unsigned long)brcm_dma_to_phys(dev, dma_addr);
-+#endif
- 	for (r = bmips_dma_ranges; r && r->size; r++) {
- 		if (dma_addr >= r->parent_addr &&
- 		    dma_addr < (r->parent_addr + r->size))
+diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+index 410e61e..0edcbe4 100644
+--- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+@@ -584,4 +584,32 @@
+ 			};
+ 		};
+ 	};
++
++	pcie: pcie@10410000 {
++		reg = <0x10410000 0x830c>;
++		compatible = "brcm,bcm7425-pcie";
++		interrupts = <37>, <37>;
++		interrupt-names = "pcie", "msi";
++		interrupt-parent = <&periph_intc>;
++		#address-cells = <3>;
++		#size-cells = <2>;
++		linux,pci-domain = <0>;
++		brcm,enable-ssc;
++		bus-range = <0x00 0xff>;
++		msi-controller;
++		#interrupt-cells = <1>;
++		/* 4x128mb windows */
++		ranges = <0x2000000 0x0 0xd0000000 0xd0000000 0x0 0x20000000>;
++		/* 768M or 1GB memc0, 0-1GB memc1 */
++		dma-ranges =
++			<0x02000000 0x0 0x00000000 0x00000000 0x0 0x10000000>,
++			<0x02000000 0x0 0x10000000 0x20000000 0x0 0x30000000>,
++			<0x02000000 0x0 0x40000000 0x90000000 0x0 0x40000000>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0 0 0 1 &periph_intc 33
++				 0 0 0 2 &periph_intc 34
++				 0 0 0 3 &periph_intc 35
++				 0 0 0 4 &periph_intc 36>;
++	};
++
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+index 8398b7f..50bc7a0 100644
+--- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+@@ -599,4 +599,32 @@
+ 			};
+ 		};
+ 	};
++
++	pcie: pcie@10410000 {
++		reg = <0x10410000 0x930c>;
++		interrupts = <0x27>, <0x27>;
++		interrupt-names = "pcie", "msi";
++		interrupt-parent = <&periph_intc>;
++		compatible = "brcm,bcm7435-pcie";
++		#address-cells = <3>;
++		#size-cells = <2>;
++		linux,pci-domain = <0>;
++		brcm,enable-ssc;
++		bus-range = <0x00 0xff>;
++		msi-controller;
++		#interrupt-cells = <1>;
++		ranges = <0x2000000 0x0 0xd0000000 0xd0000000 0x0 0x20000000>;
++		/* 768M or 1GB memc0, 0-1GB memc1 */
++		dma-ranges =
++			<0x02000000 0x0 0x00000000 0x00000000 0x0 0x10000000>,
++			<0x02000000 0x0 0x10000000 0x20000000 0x0 0x30000000>,
++			<0x02000000 0x0 0x40000000 0x90000000 0x0 0x40000000>;
++		interrupt-map-mask = <0 0 0 7>;
++		interrupt-map = <0 0 0 1 &periph_intc 35
++				 0 0 0 2 &periph_intc 36
++				 0 0 0 3 &periph_intc 37
++				 0 0 0 4 &periph_intc 38>;
++		status = "disabled";
++	};
++
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+index 0ed2221..22270a9 100644
+--- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+@@ -152,3 +152,7 @@
+ &waketimer {
+ 	status = "okay";
+ };
++
++&pcie {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+index 2c145a8..91bc1ec 100644
+--- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+@@ -128,3 +128,7 @@
+ &waketimer {
+ 	status = "okay";
+ };
++
++&pcie {
++	status = "okay";
++};
 -- 
 1.9.0.138.g2de3478

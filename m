@@ -1,83 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2018 12:57:23 +0200 (CEST)
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:37372 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992408AbeISK5TyqHBb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Sep 2018 12:57:19 +0200
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w8JAurVq140267
-        for <linux-mips@linux-mips.org>; Wed, 19 Sep 2018 06:57:18 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2mkm6ftf12-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Wed, 19 Sep 2018 06:57:05 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
-        Wed, 19 Sep 2018 11:55:21 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 19 Sep 2018 11:55:17 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w8JAtGFv54460514
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 19 Sep 2018 10:55:16 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0DD8311C04A;
-        Wed, 19 Sep 2018 13:55:01 +0100 (BST)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7C95D11C05C;
-        Wed, 19 Sep 2018 13:54:59 +0100 (BST)
-Received: from rapoport-lnx (unknown [9.148.207.135])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 19 Sep 2018 13:54:59 +0100 (BST)
-Date:   Wed, 19 Sep 2018 13:55:12 +0300
-From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Hocko <mhocko@suse.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2018 16:33:17 +0200 (CEST)
+Received: from mail-qt0-x243.google.com ([IPv6:2607:f8b0:400d:c0d::243]:46025
+        "EHLO mail-qt0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994642AbeISOdNQroV9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Sep 2018 16:33:13 +0200
+Received: by mail-qt0-x243.google.com with SMTP id l2-v6so111444qtr.12;
+        Wed, 19 Sep 2018 07:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=4Tps4s77D23i3fxKoeF6dPhKuUaEwXZQhu6RTBKsY3Q=;
+        b=g9zX9L4TawPVaK0YzSox8YB+x+ct5iD9mIvHFYybGnpR33u0gqEd2UOQudYG85camN
+         Cx7+EXRNbZ6eHeigZFjjGvLB0N4PZzuvoX1Mj7r1hmvMS7TGND3uMUJngMJ8gq4vRJae
+         UHd49aMvIpAzAHUutSS1b+F4zimhEumQsd4Jm0Ok339EhweMKe8Y7qBy3b21IN6ykVbP
+         EgIXdekqa4leU6khqF7T1l+8aJU9aKQfm5tjQqQt4n1xa43U9zGFUSaxaMfhAkJmPhgk
+         x1pSKwu4I/LVTcdqMMgGPB5gYS00Qi7sF1uP3CIGatW8DDvxzRhYswE/Bc64K9gR4ecF
+         ZK8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=4Tps4s77D23i3fxKoeF6dPhKuUaEwXZQhu6RTBKsY3Q=;
+        b=lcgbjQMy5mkFjRIJand2N03eeIGIVYuJ4XCGrjaKCGRBto61G0wq43UdZtukVrLb9V
+         +8EC2M/GdOuSWmbSY5N6W9Ou9z/AxByvKdNmmSl6MbaUQj9rzVBPdbJxIRmzjmJP+MIB
+         cKyVOMSQEh6xSKimXqYbEKmhzEQxPCjZs/comO1pG4yGE+/fWURDgnfwLagEOMo3u7mC
+         6zP3xJ27pG7Y+g8H4dsSyaNsSB8KFCl2qNNpwFSWeL7I5bS5GMxYioPIukwTYivL0DYG
+         UQplxwpsCIrYFi4AQe/BEmchrYw/CyscNNt6OC/3twBqmlwjJ4cyatOR0U5t9/d5iqBA
+         mGPg==
+X-Gm-Message-State: APzg51Bh1mzZ0rOezkEgfHl+6u9YHc9+7NO+roBWf7/LqGA5qkcrO4UJ
+        5cKmE7OIgl7jr1gQGpAWKI4=
+X-Google-Smtp-Source: ANB0VdZWEaFuArm9yR6P9tSrGkSsNGQWEsFlKiiurX0rfbtQn8V05GJJL5BNMXv88Hw35aRVffzFSA==
+X-Received: by 2002:aed:2ec6:: with SMTP id k64-v6mr25044676qtd.177.1537367587181;
+        Wed, 19 Sep 2018 07:33:07 -0700 (PDT)
+Received: from stbsrv-and-3.and.broadcom.com ([192.19.231.250])
+        by smtp.gmail.com with ESMTPSA id 17-v6sm2104051qkf.74.2018.09.19.07.33.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 19 Sep 2018 07:33:06 -0700 (PDT)
+From:   Jim Quinlan <jim2101024@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jim Quinlan <jim2101024@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxarm@huawei.com
-Subject: Re: [RFC PATCH 03/29] mm: remove CONFIG_HAVE_MEMBLOCK
-References: <1536163184-26356-1-git-send-email-rppt@linux.vnet.ibm.com>
- <1536163184-26356-4-git-send-email-rppt@linux.vnet.ibm.com>
- <20180919100449.00006df9@huawei.com>
- <20180919103457.GA20545@rapoport-lnx>
- <20180919114507.000059f3@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180919114507.000059f3@huawei.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 18091910-0008-0000-0000-0000027376B0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 18091910-0009-0000-0000-000021DBCFBC
-Message-Id: <20180919105511.GB20545@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-19_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1807170000 definitions=main-1809190113
-Return-Path: <rppt@linux.vnet.ibm.com>
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        bcm-kernel-feedback-list@broadcom.com, linux-pci@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v5 06/12] MIPS: BMIPS: add dma remap for BrcmSTB PCIe
+Date:   Wed, 19 Sep 2018 10:32:01 -0400
+Message-Id: <1537367527-20773-7-git-send-email-jim2101024@gmail.com>
+X-Mailer: git-send-email 1.9.0.138.g2de3478
+In-Reply-To: <1537367527-20773-1-git-send-email-jim2101024@gmail.com>
+References: <1537367527-20773-1-git-send-email-jim2101024@gmail.com>
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66409
+X-archive-position: 66410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rppt@linux.vnet.ibm.com
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,104 +72,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 19, 2018 at 11:45:07AM +0100, Jonathan Cameron wrote:
-> On Wed, 19 Sep 2018 13:34:57 +0300
-> Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
-> 
-> > Hi Jonathan,
-> > 
-> > On Wed, Sep 19, 2018 at 10:04:49AM +0100, Jonathan Cameron wrote:
-> > > On Wed, 5 Sep 2018 18:59:18 +0300
-> > > Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
-> > >   
-> > > > All architecures use memblock for early memory management. There is no need
-> > > > for the CONFIG_HAVE_MEMBLOCK configuration option.
-> > > > 
-> > > > Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>  
-> > > 
-> > > Hi Mike,
-> > > 
-> > > A minor editing issue in here that is stopping boot on arm64 platforms with latest
-> > > version of the mm tree.  
-> > 
-> > Can you please try the following patch:
-> > 
-> > 
-> > From 079bd5d24a01df3df9500d0a33d89cb9f7da4588 Mon Sep 17 00:00:00 2001
-> > From: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> > Date: Wed, 19 Sep 2018 13:29:27 +0300
-> > Subject: [PATCH] of/fdt: fixup #ifdefs after removal of HAVE_MEMBLOCK config
-> >  option
-> > 
-> > The removal of HAVE_MEMBLOCK configuration option, mistakenly dropped the
-> > wrong #endif. This patch restores that #endif and removes the part that
-> > should have been actually removed, starting from #else and up to the
-> > correct #endif
-> > 
-> > Reported-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> 
-> Hi Mike,
-> 
-> That's identical to the local patch I'm carrying to fix this so looks good to me.
-> 
-> For what it's worth given you'll probably fold this into the larger patch.
-> 
-> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The design of the Broadcom PCIe RC controller requires us to remap its
+DMA addresses for inbound traffic.  We do this by modifying the
+definitions of __phys_to_dma() and __dma_to_phys().
 
-Well, this is up to Andrew now, as the broken patch is already in the -mm
-tree.
+In arch/mips/bmips/dma.c, these functions are already in use to remap
+DMA addresses for the 338x SOC chips.  We leave this code alone -- and
+give its mapping priority -- but if it is not in use, the PCIe DMA
+mapping is in effect.
+
+One might think that the two DMA remapping systems of dma.c could be
+combined, but they cannot: one governs only DMA addresses for the PCIe
+controller of BrcmSTB ARM/ARM64/MIPs chips, while the other governs
+the PCIe controller *and* other peripherals for only MIPs 338x
+chips.
+
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+---
+ arch/mips/bmips/dma.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/mips/bmips/dma.c b/arch/mips/bmips/dma.c
+index 3d13c77..292994f 100644
+--- a/arch/mips/bmips/dma.c
++++ b/arch/mips/bmips/dma.c
+@@ -18,6 +18,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <asm/bmips.h>
++#include <soc/brcmstb/common.h>
  
-> Thanks for the quick reply.
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/of/fdt.c | 21 +--------------------
-> >  1 file changed, 1 insertion(+), 20 deletions(-)
-> > 
-> > diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> > index 48314e9..bb532aa 100644
-> > --- a/drivers/of/fdt.c
-> > +++ b/drivers/of/fdt.c
-> > @@ -1119,6 +1119,7 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
-> >  #endif
-> >  #ifndef MAX_MEMBLOCK_ADDR
-> >  #define MAX_MEMBLOCK_ADDR	((phys_addr_t)~0)
-> > +#endif
-> >  
-> >  void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
-> >  {
-> > @@ -1175,26 +1176,6 @@ int __init __weak early_init_dt_reserve_memory_arch(phys_addr_t base,
-> >  	return memblock_reserve(base, size);
-> >  }
-> >  
-> > -#else
-> > -void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
-> > -{
-> > -	WARN_ON(1);
-> > -}
-> > -
-> > -int __init __weak early_init_dt_mark_hotplug_memory_arch(u64 base, u64 size)
-> > -{
-> > -	return -ENOSYS;
-> > -}
-> > -
-> > -int __init __weak early_init_dt_reserve_memory_arch(phys_addr_t base,
-> > -					phys_addr_t size, bool nomap)
-> > -{
-> > -	pr_err("Reserved memory not supported, ignoring range %pa - %pa%s\n",
-> > -		  &base, &size, nomap ? " (nomap)" : "");
-> > -	return -ENOSYS;
-> > -}
-> > -#endif
-> > -
-> >  static void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
-> >  {
-> >  	return memblock_alloc(size, align);
-> 
-> 
-
+ /*
+  * BCM338x has configurable address translation windows which allow the
+@@ -44,6 +45,10 @@ dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pa)
+ {
+ 	struct bmips_dma_range *r;
+ 
++#ifdef CONFIG_PCIE_BRCMSTB
++	if (!bmips_dma_ranges)
++		return brcm_phys_to_dma(dev, pa);
++#endif
+ 	for (r = bmips_dma_ranges; r && r->size; r++) {
+ 		if (pa >= r->child_addr &&
+ 		    pa < (r->child_addr + r->size))
+@@ -56,6 +61,10 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+ {
+ 	struct bmips_dma_range *r;
+ 
++#ifdef CONFIG_PCIE_BRCMSTB
++	if (!bmips_dma_ranges)
++		return (unsigned long)brcm_dma_to_phys(dev, dma_addr);
++#endif
+ 	for (r = bmips_dma_ranges; r && r->size; r++) {
+ 		if (dma_addr >= r->parent_addr &&
+ 		    dma_addr < (r->parent_addr + r->size))
 -- 
-Sincerely yours,
-Mike.
+1.9.0.138.g2de3478

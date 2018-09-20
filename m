@@ -1,60 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 03:11:18 +0200 (CEST)
-Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:36353
-        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994647AbeITBLPNd0C8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2018 03:11:15 +0200
-Received: by mail-pg1-x543.google.com with SMTP id d1-v6so3572735pgo.3;
-        Wed, 19 Sep 2018 18:11:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=lHW1Zlf6phvU3ocHGZkCDM9zdhKihHsq24H8fSL8vBE=;
-        b=sAIzUsef5LMCtGfHULFfH0fTWIYNM5ys2+aPmw7fRZnwKYQkKK6mQQ+ZyjuEK/Ojg+
-         eb9TcfrSzeBl50+2P1ZZW1vkIpH2XZ5oUh9jLKcnUa7Nm/DDzG+ZgQCVqvM6vKD3OGXA
-         CzrMIHXCmrnaGugHVvMq1CxCy8GAhZa3U3kgcy/UksMnhLaiwXc3RqG4q7vnsiUIQy+c
-         Mz9K+ZCNHoA9p+8ADH/nzZ9CRapYbiwmXZD4IXgVydhw8+VmpfJoaMi2WScG2f0D4eCL
-         9v61FBw2YwU2H5Jo62WFJ21zc5oP2kmmvfzwDP1RCqDDg3eSGMf1hRDCb8Knub9gXALI
-         TcQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=lHW1Zlf6phvU3ocHGZkCDM9zdhKihHsq24H8fSL8vBE=;
-        b=kmbAuuhfiglMzRozbI62XejvaoxRHImjVLsgkrqALiMSHqGyqwXwm1GW9oS3P/VQxO
-         oyuS/1AAugIrI+lIf3xkm18sD+eaM/r8lQ61Zd98hB9SEma8TJ3i6IqsQHfph2nSG+9g
-         tS/B5qy23itnuFxbQ0wTXWmAJNBDfMkXfe6OI1teftbz75n1/ocySfTzomN2fytzNQ0e
-         xK8cb8LgHZ6akPJ5u37v4e9vJe25tGjX23m/SdtssHchQ6VNq7++hWED55yw4u80LkSV
-         T1hEM7Z1BOLYA6+6Iezwjesr0RaTjgZQmgqNTWcb3lCrejcmNytL4vpEzGZDrree99ky
-         /wZg==
-X-Gm-Message-State: APzg51AS3LEcexkh2mfE8Ez8Y20uHFOxP0RWtqtu4/q+prTlNC8KlBW1
-        4QmLMq+CBOkta3TMaXnS5y5fKCaN6/Y=
-X-Google-Smtp-Source: ANB0VdbKWHARneVlxsL1JQlBeeE7zSJo+F0jCiWBqwTw92JkMBDzDtclgaPnfKR3ISAJUiEG55Tfpw==
-X-Received: by 2002:a63:d10c:: with SMTP id k12-v6mr35034116pgg.49.1537405868239;
-        Wed, 19 Sep 2018 18:11:08 -0700 (PDT)
-Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id n79-v6sm45395656pfh.2.2018.09.19.18.11.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 19 Sep 2018 18:11:07 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2] MIPS/PCI: Let Loongson-3 pci_ops access extended config space
-Date:   Thu, 20 Sep 2018 09:11:03 +0800
-Message-Id: <1537405863-31484-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-Return-Path: <chenhuacai@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 08:04:32 +0200 (CEST)
+Received: from relay1-d.mail.gandi.net ([217.70.183.193]:46585 "EHLO
+        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990423AbeITGE3dmStq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2018 08:04:29 +0200
+X-Originating-IP: 79.86.19.127
+Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 67E5F24000D;
+        Thu, 20 Sep 2018 06:04:01 +0000 (UTC)
+From:   Alexandre Ghiti <alex@ghiti.fr>
+To:     akpm@linux-foundation.org
+Cc:     linux-mm@kvack.org, mike.kravetz@oracle.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, tony.luck@intel.com,
+        fenghua.yu@intel.com, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, jejb@parisc-linux.org, deller@gmx.de,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v7 00/11] hugetlb: Factorize hugetlb architecture primitives 
+Date:   Thu, 20 Sep 2018 06:03:47 +0000
+Message-Id: <20180920060358.16606-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.16.2
+Return-Path: <alex@ghiti.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66416
+X-archive-position: 66417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: alex@ghiti.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,65 +48,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Original Loongson-3 pci_ops can only access standard pci config space,
-this patch let it be able to access extended pci config space.
+Hi Andrew,
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/pci/ops-loongson3.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+As suggested by people who reviewed/acked this series, please consider
+including this series into -mm tree.
 
-diff --git a/arch/mips/pci/ops-loongson3.c b/arch/mips/pci/ops-loongson3.c
-index 9e11843..9588769 100644
---- a/arch/mips/pci/ops-loongson3.c
-+++ b/arch/mips/pci/ops-loongson3.c
-@@ -17,24 +17,36 @@ static int loongson3_pci_config_access(unsigned char access_type,
- 		struct pci_bus *bus, unsigned int devfn,
- 		int where, u32 *data)
- {
--	unsigned char busnum = bus->number;
--	u_int64_t addr, type;
-+	u_int64_t addr;
- 	void *addrp;
-+	unsigned char busnum = bus->number;
- 	int device = PCI_SLOT(devfn);
- 	int function = PCI_FUNC(devfn);
- 	int reg = where & ~3;
- 
--	addr = (busnum << 16) | (device << 11) | (function << 8) | reg;
--	if (busnum == 0) {
--		if (device > 31)
-+	if (where < PCI_CFG_SPACE_SIZE) { /* standard config */
-+		addr = (busnum << 16) | (device << 11) | (function << 8) | reg;
-+		if (busnum == 0) {
-+			if (device > 31)
-+				return PCIBIOS_DEVICE_NOT_FOUND;
-+			addrp = (void *)TO_UNCAC(HT1LO_PCICFG_BASE | addr);
-+		} else {
-+			addrp = (void *)TO_UNCAC(HT1LO_PCICFG_BASE_TP1 | addr);
-+		}
-+	} else if (where < PCI_CFG_SPACE_EXP_SIZE) {  /* extended config */
-+		struct pci_dev *rootdev;
-+
-+		rootdev = pci_get_domain_bus_and_slot(0, 0, 0);
-+		if (!rootdev)
- 			return PCIBIOS_DEVICE_NOT_FOUND;
--		addrp = (void *)(TO_UNCAC(HT1LO_PCICFG_BASE) | (addr & 0xffff));
--		type = 0;
- 
--	} else {
--		addrp = (void *)(TO_UNCAC(HT1LO_PCICFG_BASE_TP1) | (addr));
--		type = 0x10000;
--	}
-+		addr = pci_resource_start(rootdev, 3);
-+		if (!addr)
-+			return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+		addrp = (void *)TO_UNCAC(addr | busnum << 20 | device << 15 | function << 12 | reg);
-+	} else
-+		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	if (access_type == PCI_ACCESS_WRITE)
- 		writel(*data, addrp);
+In order to reduce copy/paste of functions across architectures and then         
+make riscv hugetlb port (and future ports) simpler and smaller, this             
+patchset intends to factorize the numerous hugetlb primitives that are           
+defined across all the architectures.                                            
+                                                                                 
+Except for prepare_hugepage_range, this patchset moves the versions that         
+are just pass-through to standard pte primitives into                            
+asm-generic/hugetlb.h by using the same #ifdef semantic that can be              
+found in asm-generic/pgtable.h, i.e. __HAVE_ARCH_***.                            
+                                                                                 
+s390 architecture has not been tackled in this serie since it does not           
+use asm-generic/hugetlb.h at all.                                                
+                                                                                 
+This patchset has been compiled on all addressed architectures with              
+success (except for parisc, but the problem does not come from this              
+series).                 
+
+v7:
+  Add Ingo Molnar Acked-By for x86.
+
+v6:                                                                              
+  - Remove nohash/32 and book3s/32 powerpc specific implementations in
+    order to use the generic ones.                                                        
+  - Add all the Reviewed-by, Acked-by and Tested-by in the commits,              
+    thanks to everyone.                                                          
+                                                                                 
+v5:                                                                              
+  As suggested by Mike Kravetz, no need to move the #include                     
+  <asm-generic/hugetlb.h> for arm and x86 architectures, let it live at          
+  the top of the file.                                                           
+                                                                                 
+v4:                                                                              
+  Fix powerpc build error due to misplacing of #include                          
+  <asm-generic/hugetlb.h> outside of #ifdef CONFIG_HUGETLB_PAGE, as              
+  pointed by Christophe Leroy.                                                   
+                                                                                 
+v1, v2, v3:                                                                      
+  Same version, just problems with email provider and misuse of                  
+  --batch-size option of git send-email
+
+Alexandre Ghiti (11):
+  hugetlb: Harmonize hugetlb.h arch specific defines with pgtable.h
+  hugetlb: Introduce generic version of hugetlb_free_pgd_range
+  hugetlb: Introduce generic version of set_huge_pte_at
+  hugetlb: Introduce generic version of huge_ptep_get_and_clear
+  hugetlb: Introduce generic version of huge_ptep_clear_flush
+  hugetlb: Introduce generic version of huge_pte_none
+  hugetlb: Introduce generic version of huge_pte_wrprotect
+  hugetlb: Introduce generic version of prepare_hugepage_range
+  hugetlb: Introduce generic version of huge_ptep_set_wrprotect
+  hugetlb: Introduce generic version of huge_ptep_set_access_flags
+  hugetlb: Introduce generic version of huge_ptep_get
+
+ arch/arm/include/asm/hugetlb-3level.h        | 32 +---------
+ arch/arm/include/asm/hugetlb.h               | 30 ----------
+ arch/arm64/include/asm/hugetlb.h             | 39 +++---------
+ arch/ia64/include/asm/hugetlb.h              | 47 ++-------------
+ arch/mips/include/asm/hugetlb.h              | 40 +++----------
+ arch/parisc/include/asm/hugetlb.h            | 33 +++--------
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  6 --
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
+ arch/powerpc/include/asm/hugetlb.h           | 43 ++------------
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  6 --
+ arch/powerpc/include/asm/nohash/64/pgtable.h |  1 +
+ arch/sh/include/asm/hugetlb.h                | 54 ++---------------
+ arch/sparc/include/asm/hugetlb.h             | 40 +++----------
+ arch/x86/include/asm/hugetlb.h               | 69 ----------------------
+ include/asm-generic/hugetlb.h                | 88 +++++++++++++++++++++++++++-
+ 15 files changed, 135 insertions(+), 394 deletions(-)
+
 -- 
-2.7.0
+2.16.2

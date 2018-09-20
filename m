@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:49:32 +0200 (CEST)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2182 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:49:53 +0200 (CEST)
+Received: from szxga07-in.huawei.com ([45.249.212.35]:40940 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994651AbeITMs2TE6Op (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23994647AbeITMs2MVyVp (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 20 Sep 2018 14:48:28 +0200
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 1621C7A851765;
-        Thu, 20 Sep 2018 20:48:20 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
- 20:48:11 +0800
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A4ACA63259119;
+        Thu, 20 Sep 2018 20:48:19 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
+ 20:48:13 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <davem@davemloft.net>, <dmitry.tarnyagin@lockless.no>,
         <wg@grandegger.com>, <mkl@pengutronix.de>,
@@ -30,9 +30,9 @@ CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <devel@linuxdriverproject.org>, <linux-usb@vger.kernel.org>,
         <xen-devel@lists.xenproject.org>, <dev@openvswitch.org>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH net-next 06/22] net: wiznet: fix return type of ndo_start_xmit function
-Date:   Thu, 20 Sep 2018 20:32:50 +0800
-Message-ID: <20180920123306.14772-7-yuehaibing@huawei.com>
+Subject: [PATCH net-next 07/22] net: i825xx: fix return type of ndo_start_xmit function
+Date:   Thu, 20 Sep 2018 20:32:51 +0800
+Message-ID: <20180920123306.14772-8-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20180920123306.14772-1-yuehaibing@huawei.com>
 References: <20180920123306.14772-1-yuehaibing@huawei.com>
@@ -44,7 +44,7 @@ Return-Path: <yuehaibing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66436
+X-archive-position: 66437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,35 +70,79 @@ Found by coccinelle.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ethernet/wiznet/w5100.c | 2 +-
- drivers/net/ethernet/wiznet/w5300.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/i825xx/ether1.c     | 5 +++--
+ drivers/net/ethernet/i825xx/lib82596.c   | 4 ++--
+ drivers/net/ethernet/i825xx/sun3_82586.c | 6 ++++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
-index 2bdfb39..d8ba512 100644
---- a/drivers/net/ethernet/wiznet/w5100.c
-+++ b/drivers/net/ethernet/wiznet/w5100.c
-@@ -835,7 +835,7 @@ static void w5100_tx_work(struct work_struct *work)
- 	w5100_tx_skb(priv->ndev, skb);
+diff --git a/drivers/net/ethernet/i825xx/ether1.c b/drivers/net/ethernet/i825xx/ether1.c
+index dc98345..35f6291 100644
+--- a/drivers/net/ethernet/i825xx/ether1.c
++++ b/drivers/net/ethernet/i825xx/ether1.c
+@@ -64,7 +64,8 @@
+ #define RX_AREA_END	0x0fc00
+ 
+ static int ether1_open(struct net_device *dev);
+-static int ether1_sendpacket(struct sk_buff *skb, struct net_device *dev);
++static netdev_tx_t ether1_sendpacket(struct sk_buff *skb,
++				     struct net_device *dev);
+ static irqreturn_t ether1_interrupt(int irq, void *dev_id);
+ static int ether1_close(struct net_device *dev);
+ static void ether1_setmulticastlist(struct net_device *dev);
+@@ -667,7 +668,7 @@
+ 	netif_wake_queue(dev);
  }
  
--static int w5100_start_tx(struct sk_buff *skb, struct net_device *ndev)
-+static netdev_tx_t w5100_start_tx(struct sk_buff *skb, struct net_device *ndev)
+-static int
++static netdev_tx_t
+ ether1_sendpacket (struct sk_buff *skb, struct net_device *dev)
  {
- 	struct w5100_priv *priv = netdev_priv(ndev);
+ 	int tmp, tst, nopaddr, txaddr, tbdaddr, dataddr;
+diff --git a/drivers/net/ethernet/i825xx/lib82596.c b/drivers/net/ethernet/i825xx/lib82596.c
+index f00a1dc..2f7ae11 100644
+--- a/drivers/net/ethernet/i825xx/lib82596.c
++++ b/drivers/net/ethernet/i825xx/lib82596.c
+@@ -347,7 +347,7 @@ struct i596_private {
+ 	0x7f /*  *multi IA */ };
  
-diff --git a/drivers/net/ethernet/wiznet/w5300.c b/drivers/net/ethernet/wiznet/w5300.c
-index 56ae573..80fdbff 100644
---- a/drivers/net/ethernet/wiznet/w5300.c
-+++ b/drivers/net/ethernet/wiznet/w5300.c
-@@ -365,7 +365,7 @@ static void w5300_tx_timeout(struct net_device *ndev)
- 	netif_wake_queue(ndev);
+ static int i596_open(struct net_device *dev);
+-static int i596_start_xmit(struct sk_buff *skb, struct net_device *dev);
++static netdev_tx_t i596_start_xmit(struct sk_buff *skb, struct net_device *dev);
+ static irqreturn_t i596_interrupt(int irq, void *dev_id);
+ static int i596_close(struct net_device *dev);
+ static void i596_add_cmd(struct net_device *dev, struct i596_cmd *cmd);
+@@ -966,7 +966,7 @@ static void i596_tx_timeout (struct net_device *dev)
  }
  
--static int w5300_start_tx(struct sk_buff *skb, struct net_device *ndev)
-+static netdev_tx_t w5300_start_tx(struct sk_buff *skb, struct net_device *ndev)
- {
- 	struct w5300_priv *priv = netdev_priv(ndev);
  
+-static int i596_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t i596_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct i596_private *lp = netdev_priv(dev);
+ 	struct tx_cmd *tx_cmd;
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 8bb15a8..1a86184 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -121,7 +121,8 @@
+ static irqreturn_t sun3_82586_interrupt(int irq,void *dev_id);
+ static int     sun3_82586_open(struct net_device *dev);
+ static int     sun3_82586_close(struct net_device *dev);
+-static int     sun3_82586_send_packet(struct sk_buff *,struct net_device *);
++static netdev_tx_t     sun3_82586_send_packet(struct sk_buff *,
++					      struct net_device *);
+ static struct  net_device_stats *sun3_82586_get_stats(struct net_device *dev);
+ static void    set_multicast_list(struct net_device *dev);
+ static void    sun3_82586_timeout(struct net_device *dev);
+@@ -1002,7 +1003,8 @@ static void sun3_82586_timeout(struct net_device *dev)
+  * send frame
+  */
+ 
+-static int sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t
++sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	int len,i;
+ #ifndef NO_NOPCOMMANDS
 -- 
 1.8.3.1

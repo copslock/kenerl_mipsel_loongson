@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:51:40 +0200 (CEST)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2187 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:51:49 +0200 (CEST)
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2188 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994670AbeITMswxw4Np (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Sep 2018 14:48:52 +0200
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 29139C8200FF3;
-        Thu, 20 Sep 2018 20:48:45 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
- 20:48:38 +0800
+        id S23994671AbeITMs6N8yIp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Sep 2018 14:48:58 +0200
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 93C8E70D8388E;
+        Thu, 20 Sep 2018 20:48:47 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
+ 20:48:42 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <davem@davemloft.net>, <dmitry.tarnyagin@lockless.no>,
         <wg@grandegger.com>, <mkl@pengutronix.de>,
@@ -30,9 +30,9 @@ CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <devel@linuxdriverproject.org>, <linux-usb@vger.kernel.org>,
         <xen-devel@lists.xenproject.org>, <dev@openvswitch.org>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH net-next 15/22] net: hamradio: fix return type of ndo_start_xmit function
-Date:   Thu, 20 Sep 2018 20:32:59 +0800
-Message-ID: <20180920123306.14772-16-yuehaibing@huawei.com>
+Subject: [PATCH net-next 16/22] usbnet: ipheth: fix return type of ndo_start_xmit function
+Date:   Thu, 20 Sep 2018 20:33:00 +0800
+Message-ID: <20180920123306.14772-17-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20180920123306.14772-1-yuehaibing@huawei.com>
 References: <20180920123306.14772-1-yuehaibing@huawei.com>
@@ -44,7 +44,7 @@ Return-Path: <yuehaibing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66444
+X-archive-position: 66445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,45 +70,21 @@ Found by coccinelle.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/hamradio/baycom_epp.c | 3 ++-
- drivers/net/hamradio/dmascc.c     | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/hamradio/baycom_epp.c b/drivers/net/hamradio/baycom_epp.c
-index 1e62d00..f4ceccf 100644
---- a/drivers/net/hamradio/baycom_epp.c
-+++ b/drivers/net/hamradio/baycom_epp.c
-@@ -772,7 +772,8 @@ static void epp_bh(struct work_struct *work)
-  * ===================== network driver interface =========================
-  */
- 
--static int baycom_send_packet(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t
-+baycom_send_packet(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct baycom_state *bc = netdev_priv(dev);
- 
-diff --git a/drivers/net/hamradio/dmascc.c b/drivers/net/hamradio/dmascc.c
-index cde4120..2798870 100644
---- a/drivers/net/hamradio/dmascc.c
-+++ b/drivers/net/hamradio/dmascc.c
-@@ -239,7 +239,7 @@ struct scc_info {
- static int scc_open(struct net_device *dev);
- static int scc_close(struct net_device *dev);
- static int scc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd);
--static int scc_send_packet(struct sk_buff *skb, struct net_device *dev);
-+static netdev_tx_t scc_send_packet(struct sk_buff *skb, struct net_device *dev);
- static int scc_set_mac_address(struct net_device *dev, void *sa);
- 
- static inline void tx_on(struct scc_priv *priv);
-@@ -921,7 +921,7 @@ static int scc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 7275761..53eab6fb 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -413,7 +413,7 @@ static int ipheth_close(struct net_device *net)
+ 	return 0;
  }
  
- 
--static int scc_send_packet(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t scc_send_packet(struct sk_buff *skb, struct net_device *dev)
+-static int ipheth_tx(struct sk_buff *skb, struct net_device *net)
++static netdev_tx_t ipheth_tx(struct sk_buff *skb, struct net_device *net)
  {
- 	struct scc_priv *priv = dev->ml_priv;
- 	unsigned long flags;
+ 	struct ipheth_device *dev = netdev_priv(net);
+ 	struct usb_device *udev = dev->udev;
 -- 
 1.8.3.1

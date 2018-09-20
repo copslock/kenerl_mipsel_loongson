@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:51:49 +0200 (CEST)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2188 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:52:15 +0200 (CEST)
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2243 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994671AbeITMs6N8yIp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Sep 2018 14:48:58 +0200
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 93C8E70D8388E;
-        Thu, 20 Sep 2018 20:48:47 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS405-HUB.china.huawei.com
- (10.3.19.205) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
- 20:48:42 +0800
+        id S23994673AbeITMtCp9Vlp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Sep 2018 14:49:02 +0200
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C52AE7C16A8C3;
+        Thu, 20 Sep 2018 20:48:51 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
+ 20:48:45 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <davem@davemloft.net>, <dmitry.tarnyagin@lockless.no>,
         <wg@grandegger.com>, <mkl@pengutronix.de>,
@@ -30,9 +30,9 @@ CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <devel@linuxdriverproject.org>, <linux-usb@vger.kernel.org>,
         <xen-devel@lists.xenproject.org>, <dev@openvswitch.org>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH net-next 16/22] usbnet: ipheth: fix return type of ndo_start_xmit function
-Date:   Thu, 20 Sep 2018 20:33:00 +0800
-Message-ID: <20180920123306.14772-17-yuehaibing@huawei.com>
+Subject: [PATCH net-next 17/22] hv_netvsc: fix return type of ndo_start_xmit function
+Date:   Thu, 20 Sep 2018 20:33:01 +0800
+Message-ID: <20180920123306.14772-18-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20180920123306.14772-1-yuehaibing@huawei.com>
 References: <20180920123306.14772-1-yuehaibing@huawei.com>
@@ -44,7 +44,7 @@ Return-Path: <yuehaibing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66445
+X-archive-position: 66446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,21 +70,36 @@ Found by coccinelle.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/usb/ipheth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 7275761..53eab6fb 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -413,7 +413,7 @@ static int ipheth_close(struct net_device *net)
- 	return 0;
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 3af6d8d..056c472 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -511,7 +511,8 @@ static int netvsc_vf_xmit(struct net_device *net, struct net_device *vf_netdev,
+ 	return rc;
  }
  
--static int ipheth_tx(struct sk_buff *skb, struct net_device *net)
-+static netdev_tx_t ipheth_tx(struct sk_buff *skb, struct net_device *net)
+-static int netvsc_start_xmit(struct sk_buff *skb, struct net_device *net)
++static netdev_tx_t
++netvsc_start_xmit(struct sk_buff *skb, struct net_device *net)
  {
- 	struct ipheth_device *dev = netdev_priv(net);
- 	struct usb_device *udev = dev->udev;
+ 	struct net_device_context *net_device_ctx = netdev_priv(net);
+ 	struct hv_netvsc_packet *packet = NULL;
+@@ -528,8 +529,11 @@ static int netvsc_start_xmit(struct sk_buff *skb, struct net_device *net)
+ 	 */
+ 	vf_netdev = rcu_dereference_bh(net_device_ctx->vf_netdev);
+ 	if (vf_netdev && netif_running(vf_netdev) &&
+-	    !netpoll_tx_running(net))
+-		return netvsc_vf_xmit(net, vf_netdev, skb);
++	    !netpoll_tx_running(net)) {
++		ret = netvsc_vf_xmit(net, vf_netdev, skb);
++		if (ret)
++			return NETDEV_TX_BUSY;
++	}
+ 
+ 	/* We will atmost need two pages to describe the rndis
+ 	 * header. We can only transmit MAX_PAGE_BUFFER_COUNT number
 -- 
 1.8.3.1

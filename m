@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:51:20 +0200 (CEST)
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2186 "EHLO huawei.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 14:51:40 +0200 (CEST)
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2187 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994668AbeITMspdY10p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Sep 2018 14:48:45 +0200
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 785A769E0E4C6;
-        Thu, 20 Sep 2018 20:48:37 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
- 20:48:32 +0800
+        id S23994670AbeITMswxw4Np (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Sep 2018 14:48:52 +0200
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 29139C8200FF3;
+        Thu, 20 Sep 2018 20:48:45 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.399.0; Thu, 20 Sep 2018
+ 20:48:38 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <davem@davemloft.net>, <dmitry.tarnyagin@lockless.no>,
         <wg@grandegger.com>, <mkl@pengutronix.de>,
@@ -30,9 +30,9 @@ CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <devel@linuxdriverproject.org>, <linux-usb@vger.kernel.org>,
         <xen-devel@lists.xenproject.org>, <dev@openvswitch.org>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH net-next 13/22] net: xen-netback: fix return type of ndo_start_xmit function
-Date:   Thu, 20 Sep 2018 20:32:57 +0800
-Message-ID: <20180920123306.14772-14-yuehaibing@huawei.com>
+Subject: [PATCH net-next 15/22] net: hamradio: fix return type of ndo_start_xmit function
+Date:   Thu, 20 Sep 2018 20:32:59 +0800
+Message-ID: <20180920123306.14772-16-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20180920123306.14772-1-yuehaibing@huawei.com>
 References: <20180920123306.14772-1-yuehaibing@huawei.com>
@@ -44,7 +44,7 @@ Return-Path: <yuehaibing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66443
+X-archive-position: 66444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,22 +70,45 @@ Found by coccinelle.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/xen-netback/interface.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/hamradio/baycom_epp.c | 3 ++-
+ drivers/net/hamradio/dmascc.c     | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/xen-netback/interface.c b/drivers/net/xen-netback/interface.c
-index 92274c2..7e3ea39 100644
---- a/drivers/net/xen-netback/interface.c
-+++ b/drivers/net/xen-netback/interface.c
-@@ -165,7 +165,8 @@ static u16 xenvif_select_queue(struct net_device *dev, struct sk_buff *skb,
- 	return vif->hash.mapping[skb_get_hash_raw(skb) % size];
+diff --git a/drivers/net/hamradio/baycom_epp.c b/drivers/net/hamradio/baycom_epp.c
+index 1e62d00..f4ceccf 100644
+--- a/drivers/net/hamradio/baycom_epp.c
++++ b/drivers/net/hamradio/baycom_epp.c
+@@ -772,7 +772,8 @@ static void epp_bh(struct work_struct *work)
+  * ===================== network driver interface =========================
+  */
+ 
+-static int baycom_send_packet(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t
++baycom_send_packet(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct baycom_state *bc = netdev_priv(dev);
+ 
+diff --git a/drivers/net/hamradio/dmascc.c b/drivers/net/hamradio/dmascc.c
+index cde4120..2798870 100644
+--- a/drivers/net/hamradio/dmascc.c
++++ b/drivers/net/hamradio/dmascc.c
+@@ -239,7 +239,7 @@ struct scc_info {
+ static int scc_open(struct net_device *dev);
+ static int scc_close(struct net_device *dev);
+ static int scc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd);
+-static int scc_send_packet(struct sk_buff *skb, struct net_device *dev);
++static netdev_tx_t scc_send_packet(struct sk_buff *skb, struct net_device *dev);
+ static int scc_set_mac_address(struct net_device *dev, void *sa);
+ 
+ static inline void tx_on(struct scc_priv *priv);
+@@ -921,7 +921,7 @@ static int scc_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
  }
  
--static int xenvif_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t
-+xenvif_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+-static int scc_send_packet(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t scc_send_packet(struct sk_buff *skb, struct net_device *dev)
  {
- 	struct xenvif *vif = netdev_priv(dev);
- 	struct xenvif_queue *queue = NULL;
+ 	struct scc_priv *priv = dev->ml_priv;
+ 	unsigned long flags;
 -- 
 1.8.3.1

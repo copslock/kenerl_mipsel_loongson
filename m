@@ -1,89 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 22:53:37 +0200 (CEST)
-Received: from mail-by2nam01on0095.outbound.protection.outlook.com ([104.47.34.95]:35336
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994601AbeITUx2j7By0 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2018 22:53:28 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2018 23:39:08 +0200 (CEST)
+Received: from mail-io1-xd43.google.com ([IPv6:2607:f8b0:4864:20::d43]:38029
+        "EHLO mail-io1-xd43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994648AbeITVjEeAuMu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2018 23:39:04 +0200
+Received: by mail-io1-xd43.google.com with SMTP id y3-v6so9918009ioc.5
+        for <linux-mips@linux-mips.org>; Thu, 20 Sep 2018 14:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+RvCmkmO6Bzcbv5AgjJNwbGU3N91G5zuOIMgi03OnGY=;
- b=Vkox50BEUMBW0rfOsZ/lJAhtVb986YkMIYgYfm01u2QRO/pOjx77r89BCGZn8j+Ci4ytGsCxw5i3+Pl4QJmouh8B4c+2jQaaqhIpCzGHbQhNBUgydtTCLBtr47ZFY7KgzpS6G22/ZgyJRS2x7fPDeudBaSyPu3IVe6wS26KffAs=
-Received: from BYAPR08MB4934.namprd08.prod.outlook.com (20.176.255.143) by
- BYAPR08MB4821.namprd08.prod.outlook.com (20.176.255.74) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1143.15; Thu, 20 Sep 2018 20:53:17 +0000
-Received: from BYAPR08MB4934.namprd08.prod.outlook.com
- ([fe80::d9a4:818:86af:8981]) by BYAPR08MB4934.namprd08.prod.outlook.com
- ([fe80::d9a4:818:86af:8981%5]) with mapi id 15.20.1143.017; Thu, 20 Sep 2018
- 20:53:17 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 2/2] MIPS/PCI: Let Loongson-3 pci_ops access extended
- config space
-Thread-Topic: [PATCH 2/2] MIPS/PCI: Let Loongson-3 pci_ops access extended
- config space
-Thread-Index: AQHUTLlv55mCPi4wOkyVU5zYQaVnDqT2sgQAgAAhKACAAttJAA==
-Date:   Thu, 20 Sep 2018 20:53:17 +0000
-Message-ID: <20180920205316.vbme4nupvge4n2t2@pburton-laptop>
-References: <1536991273-20649-1-git-send-email-chenhc@lemote.com>
- <1536991273-20649-2-git-send-email-chenhc@lemote.com>
- <20180918231714.oibdygquyojqud45@pburton-laptop>
- <CAAhV-H6r0Zy8KXLvPm12dRqNAEVm-YBztPAGefe6V1-NGn_zXA@mail.gmail.com>
-In-Reply-To: <CAAhV-H6r0Zy8KXLvPm12dRqNAEVm-YBztPAGefe6V1-NGn_zXA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0015.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::28) To BYAPR08MB4934.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::15)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;BYAPR08MB4821;6:VqkAAoubvYN1PkDzybjgIZmXmpQnRwsrdapIjcHl1ITyNgUUDWXSVQPoDh419HzQHcLepKhZ+AAneJzux+suRoDCnOM9erguooV+DrzDz/BzKVwPaVFHpQzceE3SmL8lo96G6aFj2GqsYVzOGdbKelWB7M9jTn/u5+5hKbwrhA1r5VSjfm16WY+O5dcFxZdXRztyoFeUsjwNNJxIQixu6A46p7wFB4/1YHZjCbcgocGEJW97P9xv/7dVUGeCSjHgs502Wr+AfO+8DXB56+2YQZ1j3tgLFoidGyUVVZR6KDLz9iSHoI3R7SMApFl8WJiUQ4yRZOGm2bnNgZVjRXahMDGUH5A0zMAgeBAnw13w3QWAX4+0GKsOxY5PAgqTZnYtr5mqt4J5Cif0YGz82u+5e1eFl3Jte/6QkBeQf5AGfXH2u/686Fk29V55xQQ7X6URt7JlZcOH07XeUssJ8wj++A==;5:/wLO592yNdgFUTI5CRrNPOVh2lXBK5fzKGLdNZGdylXtw7ifP243UC7ybeTPaHoMB6MHwfxSSKSbIAV02vAJpeoOJRyukN7cwc9uLgB9a4znBgFf9qmMcfZK7UUvcwGcvRIobu2ba53KAx4KZGGw8p25BpzCCQxh27KNeKuNas4=;7:9Y9zC15tvWlVvgbQRjTfa60gPYrXG6uRF4h36kjIBZS2ji33ZlxuXlbZYabP62TwLrQVlBrQH+VUj72zaYqDhrp1k0AWN/2PytEeW08Tbp2T1D+xct/+bWDWyz/WH2RutR8kVSaSiMNQZ7VJI2DsOJoyzLkNAwl06+EeRvYW/RhkDgkUwcwCREkU7Gfs1CjsL26HOheSwKglwpxVTdtPRdI4lG3UGQa7Ee2sglPHZY0PI0UxQXzOl0CH4puA7Ok7
-x-ms-office365-filtering-correlation-id: 1e59110b-9212-490d-05f7-08d61f3b173e
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989299)(4534165)(4627221)(201703031133081)(201702281549075)(8990200)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4821;
-x-ms-traffictypediagnostic: BYAPR08MB4821:
-x-microsoft-antispam-prvs: <BYAPR08MB4821956BB698011F610E679FC1130@BYAPR08MB4821.namprd08.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3231355)(944501410)(52105095)(3002001)(10201501046)(149027)(150027)(6041310)(20161123562045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123558120)(20161123560045)(201708071742011)(7699051);SRVR:BYAPR08MB4821;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4821;
-x-forefront-prvs: 0801F2E62B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(376002)(136003)(39850400004)(396003)(366004)(199004)(189003)(2900100001)(42882007)(26005)(5660300001)(9686003)(3846002)(11346002)(8936002)(446003)(93886005)(7736002)(81166006)(33716001)(2906002)(8676002)(6486002)(53936002)(97736004)(14454004)(6436002)(6916009)(229853002)(66066001)(6512007)(44832011)(4326008)(1076002)(6506007)(316002)(106356001)(102836004)(58126008)(81156014)(186003)(54906003)(33896004)(478600001)(39060400002)(99286004)(76176011)(305945005)(5250100002)(105586002)(486006)(6116002)(25786009)(6246003)(256004)(476003)(386003)(68736007)(52116002)(71190400001)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4821;H:BYAPR08MB4934.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: OL3NgSDlE1xEeTGfACOpuwtIQKC1CYt9/r4/gA0YGUT7z8WhZ8kdQcXOoS4qTG+RjlNN03t8VSsxy18Y7RgjP7oxziCEc8s37iV+lqHf8JFd/hnz7mB67rmCY/wKJvrN0bdQzuRGumviCodh9ZMyQL/848sNT7lGeRIRpuezu4O7YoDtJz6rIibgifyN7XiXIlv6533o6OosUf6u6WnskHrjbPBMvjn6KdWdzZUQNguOou1/m8dw3JE1kOdL1uABrRq9ypQWCez/tEbn9Mm7AWDmw64TbH2+ocFC08iHNWduTTQ5/RFuxeXSyzUC9bRNlPkPF9TAwOr+VohIGJ23Q7UgUeP2CTSV4SaGrwwZrl0=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <C5B06A631900864A9D5DD4250C3375F3@namprd08.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eg+vd5ggFSRvBp1nMxn8WnsMDdMW/WuDRawGX4bRb64=;
+        b=CMU491cecrua94hYBC1oJl50GK+SchZvptcORr8XA3cjCM1fji485Wl3tL+KvebnjM
+         N1pOyziM58hsWkAWZS4z8wxyTk1DdIo43a1XokIibPD2Fi8Rr1dwKwqH4n/apfrK/tX6
+         Z22qTJdltEKlV0zIEMOqLhSUM/q/whkSc+PRg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eg+vd5ggFSRvBp1nMxn8WnsMDdMW/WuDRawGX4bRb64=;
+        b=HJqrDt2ZYh76hTS8+exoM5IA6REM8DNJUse2mpYxaku64RLjo50W8qRYsKZSLaKbHM
+         DUpV8bRo4PbG3nqx7JsPpNFZ4hhdXqZi0YEtC7vwKOmqPSRnglg913yRBiLZFCjy38VO
+         bgNP2eHgFYGqVJf9QVUOQVUdKMk84V642lJIeOwO5De+d6C099PCr/XYVpFoQqffvLyr
+         bJpa4VIveNrUAmKpL520J14ZDXXc6hR9gLciZk1bAyhpP4+E0OJw0Iy81taRmEDPdMAU
+         IF6IyAc/ZzBIISluQNlQ7K01nItURVu2fu6KvjzZ5+ErImnmCocupXt6zbT9EKvG0olr
+         daOA==
+X-Gm-Message-State: APzg51AstGHxPULHEmZfActzVrt3D4uVfoMj4RjoglR8a/JDwrcvVp5k
+        uagX0cZgi/iD1X18l9ivwaG2TBYK4EHdfXwTo43Z9g==
+X-Google-Smtp-Source: ANB0VdYVaju2MILde8XiDVZ3Y4Ywjp9Hck54iuCB7EJPzxXUu5SAa6qhxP182TFkVlA9l8QqgFb4LZCmIMm58oQM11A=
+X-Received: by 2002:a24:9d84:: with SMTP id f126-v6mr3865756itd.130.1537479538060;
+ Thu, 20 Sep 2018 14:38:58 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e59110b-9212-490d-05f7-08d61f3b173e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2018 20:53:17.7599
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4821
-Return-Path: <pburton@wavecomp.com>
+References: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
+In-Reply-To: <cover.b921b010b6d6bde1c11e69551ae38f3b2818645b.1536916714.git-series.quentin.schulz@bootlin.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 20 Sep 2018 14:38:44 -0700
+Message-ID: <CACRpkdZYpDJGzexRr7y4LO+hyJ92aEu_eRquK50iBWaaox5H5Q@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/7] add support for VSC8584 and VSC8574
+ Microsemi quad-port PHYs
+To:     quentin.schulz@bootlin.com
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
+        James Hogan <jhogan@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        allan.nielsen@microchip.com,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Antoine Tenart <antoine.tenart@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66468
+X-archive-position: 66469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -96,15 +76,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Huacai,
+Just as a drive-by comment this seems vaguely related to the Vitesse
+DSA switch I merged in drivers/net/dsa/vitesse-vsc73xx.c
+The VSC* product name handily gives away the origin in Vitesse's
+product line.
 
-On Wed, Sep 19, 2018 at 09:15:54AM +0800, Huacai Chen wrote:
-> I will improve this patch, and could you please read my new comments
-> on the VDSO patch?
+The VSC73xx also have the 8051 CPU and internal RAM, but are
+accessed (typically) over SPI, and AFAICT this thing is talking over
+MDIO.
 
-Yes, I saw your response. As mentioned I'm not keen to unconditionally
-take away 4MB of the user address space, so I'm looking at whether we
-can fix your issue without that.
+The Vitesse 73xx however also supports a WAN port and VLANs
+which makes it significantly different, falling into switch class I
+guess.
 
-Thanks,
-    Paul
+These VSC85*4's does have an SPI interface as well, according
+to the data sheet but I assume your target boards don't even
+connect it?
+
+When it comes to 8051 code we have quite a lot of this in the kernel
+these days, I suspect the 8051 snippets in this code could be
+disassembled and put into linux-firmware in source form, but
+that is maybe a bit overly ambitious. We have done that for a few
+USB to serial controllers using the EzUSB 8051 though:
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/keyspan_pda
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/usbdux
+
+These can rebuild their firmware using the as31 assembler.
+https://github.com/nitsky/as31
+
+Yours,
+Linus Walleij

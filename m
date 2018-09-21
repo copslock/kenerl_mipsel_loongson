@@ -1,49 +1,55 @@
-From: Paul Cercueil <paul@crapouillou.net>
-Date: Sun, 8 Jul 2018 17:07:12 +0200
-Subject: MIPS: jz4740: Bump zload address
-Message-ID: <20180708150712.R8ziNqEn1z5uUUZ6sIFtXNHHg2JAnrxy2txOosgq6ZA@z>
-
-From: Paul Cercueil <paul@crapouillou.net>
-
-[ Upstream commit c6ea7e9747318e5a6774995f4f8e3e0f7c0fa8ba ]
-
-Having the zload address at 0x8060.0000 means the size of the
-uncompressed kernel cannot be bigger than around 6 MiB, as it is
-deflated at address 0x8001.0000.
-
-This limit is too small; a kernel with some built-in drivers and things
-like debugfs enabled will already be over 6 MiB in size, and so will
-fail to extract properly.
-
-To fix this, we bump the zload address from 0x8060.0000 to 0x8100.0000.
-
-This is fine, as all the boards featuring Ingenic JZ SoCs have at least
-32 MiB of RAM, and use u-boot or compatible bootloaders which won't
-hardcode the load address but read it from the uImage's header.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19787/
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/jz4740/Platform |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/jz4740/Platform
-+++ b/arch/mips/jz4740/Platform
-@@ -1,4 +1,4 @@
- platform-$(CONFIG_MACH_INGENIC)	+= jz4740/
- cflags-$(CONFIG_MACH_INGENIC)	+= -I$(srctree)/arch/mips/include/asm/mach-jz4740
- load-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80010000
--zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80600000
-+zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff81000000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2018 10:02:39 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:39264 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991532AbeIUICeuwRaC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2018 10:02:34 +0200
+Received: from localhost (unknown [37.170.50.219])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D15CCD29;
+        Fri, 21 Sep 2018 08:02:25 +0000 (UTC)
+Subject: Patch "MIPS: ath79: fix system restart" has been added to the 4.14-stable tree
+To:     alexander.levin@microsoft.com, gregkh@linuxfoundation.org,
+        jhogan@kernel.org, john@phrozen.org, linux-mips@linux-mips.org,
+        nbd@nbd.name, paul.burton@mips.com, ralf@linux-mips.org
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 21 Sep 2018 09:53:30 +0200
+Message-ID: <153751641012650@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <gregkh@linuxfoundation.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 66481
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
 
-Patches currently in stable-queue which might be from paul@crapouillou.net are
+This is a note to let you know that I've just added the patch titled
 
-queue-4.9/mips-jz4740-bump-zload-address.patch
+    MIPS: ath79: fix system restart
+
+to the 4.14-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     mips-ath79-fix-system-restart.patch
+and it can be found in the queue-4.14 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

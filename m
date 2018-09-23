@@ -1,60 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2018 08:20:40 +0200 (CEST)
-Received: from mail-ot1-x32a.google.com ([IPv6:2607:f8b0:4864:20::32a]:33847
-        "EHLO mail-ot1-x32a.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990396AbeIWGUfbakyL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Sep 2018 08:20:35 +0200
-Received: by mail-ot1-x32a.google.com with SMTP id i12-v6so16990496otl.1
-        for <linux-mips@linux-mips.org>; Sat, 22 Sep 2018 23:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=fGMZisMSU0oco4B/fQ3Dg0oB9MsTWPF8Oxorw6sa2hc=;
-        b=Xiw4tcBwY/CgGsieXcImtcImbhxwDrXUuNztO924yObeNy1EVYQzrLBz+bGvE5lXWB
-         piDlEReWFXK9cPZEXj8v1HYDXHu0VdTk1JrpdjkSbT+xBCh3aKkcr0i7oidQmXP1ArbE
-         tsrrLbxVEb3tKnVtdFhGUoxcnrOiMuGug4B/r187zpbefBVO5sdzysr8wdbTu5x+Ie4f
-         lVYc6VAydJP0Shc0lRf/Su5WMzsAo+o/lnM4O6C8kTcPq7dLX97Xq5ZCXmxxtzrcT/oV
-         Zo5AivDYdfM4sFwPj1OEjDRH56EGTY9w2u7KrJf+yb1UjY+fMH49e5U3ZgC2+Cl4BHOC
-         9cuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=fGMZisMSU0oco4B/fQ3Dg0oB9MsTWPF8Oxorw6sa2hc=;
-        b=OLzp5ho64Hz1LqSArROlYxNmWdQp1rFM25fxDFq09+7g7GhgNK5RNSrZUiZWpfy9QD
-         ZiFIv+cUay6wo9l1/RYjQMQtB/s1wbCPKlLvVquDXoXnH2jLofzYi9o6Idv3PVh0yES5
-         gmpo0Iy6aE77gzCzqEI4xifxZQtqMvzHzYaZe5hvsUqLkxPVPGjZTdQLQyZ+QXaWyP4u
-         yfvFC80095YL/yMlmLX04XCcHbFkt29y6oDeKFevAgapOLIwS2eknFOZdUrv22NKd9q/
-         +Aw4JOFjrzOKeze/lCibozGVQGumKES4WHnkD5ZwPd0xWpBQMSr81YbPtQmE0DunL3Hz
-         QFPQ==
-X-Gm-Message-State: ABuFfohe8P9vw4Tu5jtgZn8Mi+0WgUVdyl+vZsx8qJeMnX+Am5hw5qdN
-        HMZw5suNTmsqLE6Uy9nUl1hHRgke161ONe/vFbo=
-X-Google-Smtp-Source: ACcGV630rkyUWkV0Sh+NDjjtdZ/TPMNx7wLqxBvJ+GIIW1gAWoeaCy98kjfRDg2xkaHrzdxTkPMlCBwVFP6/WUgILv4=
-X-Received: by 2002:a9d:5cc3:: with SMTP id r3-v6mr3105936oti.301.1537683629107;
- Sat, 22 Sep 2018 23:20:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2018 12:32:48 +0200 (CEST)
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:54923 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbeIWKckjNpQ9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Sep 2018 12:32:40 +0200
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id w8NAVtQw030453;
+        Sun, 23 Sep 2018 19:31:56 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com w8NAVtQw030453
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1537698716;
+        bh=sPmhyrc6mKSYCiXyM3hiinn4c+Ysm7ufqvHC63hOpCM=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=ZzhuBOxDINiY3QzHKXPruG3DyaNK4A8Kcau4NK5lX2cf2/yxCmhjgvez7GWfDm92D
+         dXGulvNXjjccNJ2E3bbjMhLn8iLILlS8Ypm0GGXMGyBVmRJ39M+Ee8VgD/ZYEre28+
+         pdcjDsYBR97cyWQNaQki9dNqNu3xyAzGKqG8tRWoTqFIF5yz+U0f+WmTuGwfjGpftx
+         RY984/PL/teRX7SDTX/UKby1j8+kDhpldeRmY1Mk9ilHc6dudrCv0OULSY+0uuOnp3
+         aA/1XNufgP/pc/F3/BJYEyov+YLTXM3jI9ZOncExvYDu81MsGKqbvtP4uKREvvuzGU
+         FtCoaXCGGjQvw==
+X-Nifty-SrcIP: [209.85.217.49]
+Received: by mail-vs1-f49.google.com with SMTP id w8-v6so6846161vsl.4;
+        Sun, 23 Sep 2018 03:31:55 -0700 (PDT)
+X-Gm-Message-State: APzg51CKnEjbVB+ROIjt4YM+rTyfARJTN7aWQqMgEiPI82/Bqgx+JNUQ
+        ns7JkdUlrYHtK3gDO6c5Amf3FJllPq06rEri9xU=
+X-Google-Smtp-Source: ANB0VdbLl/e1DgeRnzFsB+/1XuQjAx4zIp+iZ6A7uhkvjFYbPSupkT/aiHGK3tXFYDWtTLAMiDzVLFCOTEvPPMu5SUI=
+X-Received: by 2002:a67:e09d:: with SMTP id f29-v6mr1260499vsl.181.1537698714732;
+ Sun, 23 Sep 2018 03:31:54 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a9d:521f:0:0:0:0:0 with HTTP; Sat, 22 Sep 2018 23:20:28
+Received: by 2002:ab0:7111:0:0:0:0:0 with HTTP; Sun, 23 Sep 2018 03:31:14
  -0700 (PDT)
-In-Reply-To: <8fd595af-53fa-c100-c369-8c7a30eba8e3@gmail.com>
-References: <8fd595af-53fa-c100-c369-8c7a30eba8e3@gmail.com>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Sun, 23 Sep 2018 08:20:28 +0200
-Message-ID: <CAMhs-H-CM3bb9fg2eX6G_534bmuQYcoFa+pJSuNeArXLSXO4=Q@mail.gmail.com>
-Subject: Re: mt7621/mt7628 PCIe linux driver
-To:     Petr Cvek <petrcvekcz@gmail.com>
-Cc:     ryder.lee@mediatek.com, blogic@openwrt.org,
-        linux-mediatek@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-pci@vger.kernel.org
+In-Reply-To: <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
+References: <20180910150403.19476-1-robh@kernel.org> <20180910150403.19476-7-robh@kernel.org>
+ <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
+ <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com> <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Sun, 23 Sep 2018 06:31:14 -0400
+X-Gmail-Original-Message-ID: <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
+Message-ID: <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
+Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        nios2-dev@lists.rocketboards.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <sergio.paracuellos@gmail.com>
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66490
+X-archive-position: 66492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergio.paracuellos@gmail.com
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,51 +89,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Petr,
-
-On Sat, Sep 22, 2018 at 11:06 PM, Petr Cvek <petrcvekcz@gmail.com> wrote:
-> Hello,
+2018-09-13 11:51 GMT-04:00 Geert Uytterhoeven <geert@linux-m68k.org>:
+> Hi Yamada-san,
 >
-> I'm trying to play with mt7628 PCIe (and it's old driver mt7620), but
-> the system keeps freezing. It is probably because of bus master access
-> of my PCIe cards but I don't see any memory access controls for PCIe <->
-> RAM in the datasheet. The same problem is with MSI. It seems the root
-> complex supports MSI (it has an MSI capability field), but there isn't
-> any mention in the MT7628 datasheet too. As it seems the MT7628 PCIe is
-> based on MT7621 PCIe, I went for an MT7621 datasheet, but sadly in the
-> datasheet the PCIe section is missing completely.
-
-AFAIK, MT7628 should be covered with mt7620 driver. The source code is in
-arch/mips/pci/pci-mt7620.c. For initialization in really depends on
-the "ralink_soc"
-variable exported in arch/mips/ralink/prom.c.
-
-You have to figure out why and where is really freezing. Does a clean kernel
-boots and success on setting up PCI? A 'dmesg' would be helpful.
-
+> On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
+> <yamada.masahiro@socionext.com> wrote:
+>> 2018-09-12 0:40 GMT+09:00 Rob Herring <robh@kernel.org>:
+>> > On Mon, Sep 10, 2018 at 10:04 AM Rob Herring <robh@kernel.org> wrote:
+>> >> There is nothing arch specific about building dtb files other than their
+>> >> location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
+>> >> The dependencies and supported targets are all slightly different.
+>> >> Also, a cross-compiler for each arch is needed, but really the host
+>> >> compiler preprocessor is perfectly fine for building dtbs. Move the
+>> >> build rules to a common location and remove the arch specific ones. This
+>> >> is done in a single step to avoid warnings about overriding rules.
+>> >>
+>> >> The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
+>> >> These pull in several dependencies some of which need a target compiler
+>> >> (specifically devicetable-offsets.h) and aren't needed to build dtbs.
+>> >> All that is really needed is dtc, so adjust the dependencies to only be
+>> >> dtc.
+>> >>
+>> >> This change enables support 'dtbs_install' on some arches which were
+>> >> missing the target.
+>> >
+>> > [...]
+>> >
+>> >> @@ -1215,6 +1215,33 @@ kselftest-merge:
+>> >>                 $(srctree)/tools/testing/selftests/*/config
+>> >>         +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+>> >>
+>> >> +# ---------------------------------------------------------------------------
+>> >> +# Devicetree files
+>> >> +
+>> >> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/boot/dts/),)
+>> >> +dtstree := arch/$(SRCARCH)/boot/dts
+>> >> +endif
+>> >> +
+>> >> +ifdef CONFIG_OF_EARLY_FLATTREE
+>> >
+>> > This can be true when dtstree is unset. So this line should be this
+>> > instead to fix the 0-day reported error:
+>> >
+>> > ifneq ($(dtstree),)
+>> >
+>> >> +
+>> >> +%.dtb : scripts_dtc
+>> >> +       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
+>> >> +
+>> >> +PHONY += dtbs dtbs_install
+>> >> +dtbs: scripts_dtc
+>> >> +       $(Q)$(MAKE) $(build)=$(dtstree)
+>> >> +
+>> >> +dtbs_install: dtbs
+>> >> +       $(Q)$(MAKE) $(dtbinst)=$(dtstree)
+>> >> +
+>> >> +all: dtbs
+>> >> +
+>> >> +endif
+>>
+>>
+>> Ah, right.
+>> Even x86 can enable OF and OF_UNITTEST.
+>>
+>>
+>>
+>> Another solution might be,
+>> guard it by 'depends on ARCH_SUPPORTS_OF'.
+>>
+>>
+>>
+>> This is actually what ACPI does.
+>>
+>> menuconfig ACPI
+>>         bool "ACPI (Advanced Configuration and Power Interface) Support"
+>>         depends on ARCH_SUPPORTS_ACPI
+>>          ...
 >
-> Does anybody have a working MT7621/28 bus master setup or a more
-> completed datasheet? I would like to get some information for fixing the
-> mt7620 PCIe driver. It is possible the MSI/bus master is controlled by
-> the undocumented bridge registers (in the pci-mt7621 they controls the
-> manual oscillator settings, I've found a link quality register at
-> 0x101490c4) or in a PCI config space of the root complex (around 0x700
-> offset). If you have a working SoC with MSI/bus mastering (= mem access
-> from card), can you send me the dump of there spaces?
-
-The datasheet for the mt7620 contains information about PCI registers.
-Linux initializes the
-pci topology but master bit of command registers for endpoints is
-disabled and is mission of final
-card driver to enable it in order to allow memory accessing to the card.
-
-Hope this helps.
-
+> ACPI is a real platform feature, as it depends on firmware.
 >
-> Thanks
+> CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
+> even if it has ACPI ;-)
 >
-> best regards,
-> Petr
 
-Best regards,
-    Sergio Paracuellos
+OK, understood.
+
+Thanks!
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

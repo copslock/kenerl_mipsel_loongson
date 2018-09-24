@@ -1,82 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2018 12:32:48 +0200 (CEST)
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:54923 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990395AbeIWKckjNpQ9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Sep 2018 12:32:40 +0200
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id w8NAVtQw030453;
-        Sun, 23 Sep 2018 19:31:56 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com w8NAVtQw030453
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1537698716;
-        bh=sPmhyrc6mKSYCiXyM3hiinn4c+Ysm7ufqvHC63hOpCM=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=ZzhuBOxDINiY3QzHKXPruG3DyaNK4A8Kcau4NK5lX2cf2/yxCmhjgvez7GWfDm92D
-         dXGulvNXjjccNJ2E3bbjMhLn8iLILlS8Ypm0GGXMGyBVmRJ39M+Ee8VgD/ZYEre28+
-         pdcjDsYBR97cyWQNaQki9dNqNu3xyAzGKqG8tRWoTqFIF5yz+U0f+WmTuGwfjGpftx
-         RY984/PL/teRX7SDTX/UKby1j8+kDhpldeRmY1Mk9ilHc6dudrCv0OULSY+0uuOnp3
-         aA/1XNufgP/pc/F3/BJYEyov+YLTXM3jI9ZOncExvYDu81MsGKqbvtP4uKREvvuzGU
-         FtCoaXCGGjQvw==
-X-Nifty-SrcIP: [209.85.217.49]
-Received: by mail-vs1-f49.google.com with SMTP id w8-v6so6846161vsl.4;
-        Sun, 23 Sep 2018 03:31:55 -0700 (PDT)
-X-Gm-Message-State: APzg51CKnEjbVB+ROIjt4YM+rTyfARJTN7aWQqMgEiPI82/Bqgx+JNUQ
-        ns7JkdUlrYHtK3gDO6c5Amf3FJllPq06rEri9xU=
-X-Google-Smtp-Source: ANB0VdbLl/e1DgeRnzFsB+/1XuQjAx4zIp+iZ6A7uhkvjFYbPSupkT/aiHGK3tXFYDWtTLAMiDzVLFCOTEvPPMu5SUI=
-X-Received: by 2002:a67:e09d:: with SMTP id f29-v6mr1260499vsl.181.1537698714732;
- Sun, 23 Sep 2018 03:31:54 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab0:7111:0:0:0:0:0 with HTTP; Sun, 23 Sep 2018 03:31:14
- -0700 (PDT)
-In-Reply-To: <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
-References: <20180910150403.19476-1-robh@kernel.org> <20180910150403.19476-7-robh@kernel.org>
- <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
- <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com> <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Sun, 23 Sep 2018 06:31:14 -0400
-X-Gmail-Original-Message-ID: <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
-Message-ID: <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
-Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Rob Herring <robh@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 05:12:43 +0200 (CEST)
+Received: from mail-wm1-x341.google.com ([IPv6:2a00:1450:4864:20::341]:51952
+        "EHLO mail-wm1-x341.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990396AbeIXDMhE2bfe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 05:12:37 +0200
+Received: by mail-wm1-x341.google.com with SMTP id y25-v6so690404wmi.1
+        for <linux-mips@linux-mips.org>; Sun, 23 Sep 2018 20:12:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=+SNeM+3rEiB9AOJ7flDOpSJUnC15RRsbdFD5lT7uKC0=;
+        b=SnqAMKCCGlWIo/gOYkuoAs6fkjlHU+/PYDwsByRhX8K9QEb0k+OOvp7jo0cYnz0VoJ
+         gYfDgSLx7YBuZk5tL1/bvp/R+CYcS+ic+3Urbh28xnTHUWHPmUSnSFi47oIsT+OaVRP3
+         Wdr13LB00WqD50k9N2Q7Wke0wOF97W/UopqT4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=+SNeM+3rEiB9AOJ7flDOpSJUnC15RRsbdFD5lT7uKC0=;
+        b=FOL+Dh2grU3OzMwJGL8OWK4N0Bo5Sd0OgbEDZ7MoNHVLdYFjb+THjxFLRvFt5op1Fr
+         UHmEoiMOQblwpmEjcf7tUIDXI00JCWElifHkPG99W1kXGG8QAN6z2k6kTEuud3kotdRH
+         KTBCWO08sL4Li8OroO0G1ig7v6LScxl9UV7MNsa/MreAun8RZfanLpOtmsmiTjChLqGW
+         YfCCKJUU+5UztTdjw1XMP1BIUXCN4guk8zuBWJx/82AgKSh5DOvE1cDivV7fb+okh+Po
+         ma6cewrtCjNknwEFSCH9WdH961AtHm+hk6R/67dYD8y1DiF82SSvR78NR9ZAOKijlMaV
+         Iy2w==
+X-Gm-Message-State: ABuFfohg83TTrJuNsby6TRfmoAfPyioLhvHj+axpsrwLpy/ZCBoiPTUi
+        ZI9K+RH/C60DplhjOAcSz+OQBw==
+X-Google-Smtp-Source: ANB0Vdays2jX5iJ+DbdDiAqzMmKDj57HlI7Zx1ZrlnPZ6HnjXxnmIM3fgkhpedb1bS6kSJDV7g3VIA==
+X-Received: by 2002:a1c:7711:: with SMTP id t17-v6mr5661512wmi.35.1537758751389;
+        Sun, 23 Sep 2018 20:12:31 -0700 (PDT)
+Received: from [192.168.0.41] (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
+        by smtp.googlemail.com with ESMTPSA id k63-v6sm31067102wmd.46.2018.09.23.20.12.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Sep 2018 20:12:30 -0700 (PDT)
+Subject: Re: [PATCH v7 05/24] clocksource: Add a new timer-ingenic driver
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
         Paul Burton <paul.burton@mips.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <yamada.masahiro@socionext.com>
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     od@zcrc.me, Mathieu Malaterre <malat@debian.org>,
+        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org
+References: <20180821171635.22740-1-paul@crapouillou.net>
+ <20180821171635.22740-6-paul@crapouillou.net>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <e0836866-552f-374b-d271-a4ea2d4953ac@linaro.org>
+Date:   Mon, 24 Sep 2018 05:12:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20180821171635.22740-6-paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66492
+X-archive-position: 66493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,95 +81,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2018-09-13 11:51 GMT-04:00 Geert Uytterhoeven <geert@linux-m68k.org>:
-> Hi Yamada-san,
->
-> On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
-> <yamada.masahiro@socionext.com> wrote:
->> 2018-09-12 0:40 GMT+09:00 Rob Herring <robh@kernel.org>:
->> > On Mon, Sep 10, 2018 at 10:04 AM Rob Herring <robh@kernel.org> wrote:
->> >> There is nothing arch specific about building dtb files other than their
->> >> location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
->> >> The dependencies and supported targets are all slightly different.
->> >> Also, a cross-compiler for each arch is needed, but really the host
->> >> compiler preprocessor is perfectly fine for building dtbs. Move the
->> >> build rules to a common location and remove the arch specific ones. This
->> >> is done in a single step to avoid warnings about overriding rules.
->> >>
->> >> The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
->> >> These pull in several dependencies some of which need a target compiler
->> >> (specifically devicetable-offsets.h) and aren't needed to build dtbs.
->> >> All that is really needed is dtc, so adjust the dependencies to only be
->> >> dtc.
->> >>
->> >> This change enables support 'dtbs_install' on some arches which were
->> >> missing the target.
->> >
->> > [...]
->> >
->> >> @@ -1215,6 +1215,33 @@ kselftest-merge:
->> >>                 $(srctree)/tools/testing/selftests/*/config
->> >>         +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
->> >>
->> >> +# ---------------------------------------------------------------------------
->> >> +# Devicetree files
->> >> +
->> >> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/boot/dts/),)
->> >> +dtstree := arch/$(SRCARCH)/boot/dts
->> >> +endif
->> >> +
->> >> +ifdef CONFIG_OF_EARLY_FLATTREE
->> >
->> > This can be true when dtstree is unset. So this line should be this
->> > instead to fix the 0-day reported error:
->> >
->> > ifneq ($(dtstree),)
->> >
->> >> +
->> >> +%.dtb : scripts_dtc
->> >> +       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
->> >> +
->> >> +PHONY += dtbs dtbs_install
->> >> +dtbs: scripts_dtc
->> >> +       $(Q)$(MAKE) $(build)=$(dtstree)
->> >> +
->> >> +dtbs_install: dtbs
->> >> +       $(Q)$(MAKE) $(dtbinst)=$(dtstree)
->> >> +
->> >> +all: dtbs
->> >> +
->> >> +endif
->>
->>
->> Ah, right.
->> Even x86 can enable OF and OF_UNITTEST.
->>
->>
->>
->> Another solution might be,
->> guard it by 'depends on ARCH_SUPPORTS_OF'.
->>
->>
->>
->> This is actually what ACPI does.
->>
->> menuconfig ACPI
->>         bool "ACPI (Advanced Configuration and Power Interface) Support"
->>         depends on ARCH_SUPPORTS_ACPI
->>          ...
->
-> ACPI is a real platform feature, as it depends on firmware.
->
-> CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
-> even if it has ACPI ;-)
->
+On 21/08/2018 19:16, Paul Cercueil wrote:
+> This driver handles the TCU (Timer Counter Unit) present on the Ingenic
+> JZ47xx SoCs, and provides the kernel with a system timer, and optionally
+> with a clocksource and a sched_clock.
+> 
+> It also provides clocks and interrupt handling to client drivers.
 
-OK, understood.
+Can you provide a much more complete description of the timer in order
+to make my life easier for the review of this patch?
 
-Thanks!
+Thanks
 
-
+  -- Daniel
 
 -- 
-Best Regards
-Masahiro Yamada
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

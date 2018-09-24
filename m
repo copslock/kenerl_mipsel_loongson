@@ -1,27 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 14:24:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:47324 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 14:29:02 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48064 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992066AbeIXMY3Ap6or (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 14:24:29 +0200
+        by eddie.linux-mips.org with ESMTP id S23994074AbeIXM25zxFT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 14:28:57 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BC88D108D;
-        Mon, 24 Sep 2018 12:24:19 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4BF761018;
+        Mon, 24 Sep 2018 12:28:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>,
         Paul Burton <paul.burton@mips.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
         James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-fsdevel@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.14 107/173] binfmt_elf: Respect error return from `regset->active
-Date:   Mon, 24 Sep 2018 13:52:21 +0200
-Message-Id: <20180924113123.918383061@linuxfoundation.org>
+Subject: [PATCH 4.18 038/235] MIPS: ath79: fix system restart
+Date:   Mon, 24 Sep 2018 13:50:24 +0200
+Message-Id: <20180924113108.866333740@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
-In-Reply-To: <20180924113114.334025954@linuxfoundation.org>
-References: <20180924113114.334025954@linuxfoundation.org>
+In-Reply-To: <20180924113103.999624566@linuxfoundation.org>
+References: <20180924113103.999624566@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -31,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66539
+X-archive-position: 66540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,49 +47,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Maciej W. Rozycki" <macro@mips.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 2f819db565e82e5f73cd42b39925098986693378 ]
+[ Upstream commit f8a7bfe1cb2c1ebfa07775c9c8ac0ad3ba8e5ff5 ]
 
-The regset API documented in <linux/regset.h> defines -ENODEV as the
-result of the `->active' handler to be used where the feature requested
-is not available on the hardware found.  However code handling core file
-note generation in `fill_thread_core_info' interpretes any non-zero
-result from the `->active' handler as the regset requested being active.
-Consequently processing continues (and hopefully gracefully fails later
-on) rather than being abandoned right away for the regset requested.
+This patch disables irq on reboot to fix hang issues that were observed
+due to pending interrupts.
 
-Fix the problem then by making the code proceed only if a positive
-result is returned from the `->active' handler.
-
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 4206d3aa1978 ("elf core dump: notes user_regset")
-Patchwork: https://patchwork.linux-mips.org/patch/19332/
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Patchwork: https://patchwork.linux-mips.org/patch/19913/
 Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_elf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath79/setup.c                  |    1 +
+ arch/mips/include/asm/mach-ath79/ath79.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1725,7 +1725,7 @@ static int fill_thread_core_info(struct
- 		const struct user_regset *regset = &view->regsets[i];
- 		do_thread_regset_writeback(t->task, regset);
- 		if (regset->core_note_type && regset->get &&
--		    (!regset->active || regset->active(t->task, regset))) {
-+		    (!regset->active || regset->active(t->task, regset) > 0)) {
- 			int ret;
- 			size_t size = regset->n * regset->size;
- 			void *data = kmalloc(size, GFP_KERNEL);
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYP
+ 
+ static void ath79_restart(char *command)
+ {
++	local_irq_disable();
+ 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
+ 	for (;;)
+ 		if (cpu_wait)
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -134,6 +134,7 @@ static inline u32 ath79_pll_rr(unsigned
+ static inline void ath79_reset_wr(unsigned reg, u32 val)
+ {
+ 	__raw_writel(val, ath79_reset_base + reg);
++	(void) __raw_readl(ath79_reset_base + reg); /* flush */
+ }
+ 
+ static inline u32 ath79_reset_rr(unsigned reg)

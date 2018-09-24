@@ -1,23 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:40:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41374 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:41:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41514 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992375AbeIXLkrl3XEU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:40:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23994243AbeIXLlXvpbQU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:41:23 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3B3C21070;
-        Mon, 24 Sep 2018 11:40:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EB12B1073;
+        Mon, 24 Sep 2018 11:41:13 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
+        stable@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Stafford Horne <shorne@gmail.com>,
+        Oleg Nesterov <oleg@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 066/105] MIPS: ath79: fix system restart
-Date:   Mon, 24 Sep 2018 13:33:52 +0200
-Message-Id: <20180924113120.038927034@linuxfoundation.org>
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        openrisc@lists.librecores.org, Jamie Iles <jamie.iles@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 3.18 036/105] kthread: fix boot hang (regression) on MIPS/OpenRISC
+Date:   Mon, 24 Sep 2018 13:33:22 +0200
+Message-Id: <20180924113117.566426729@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180924113113.268650190@linuxfoundation.org>
 References: <20180924113113.268650190@linuxfoundation.org>
@@ -30,7 +35,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66521
+X-archive-position: 66522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,44 +56,71 @@ X-list: linux-mips
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit f8a7bfe1cb2c1ebfa07775c9c8ac0ad3ba8e5ff5 ]
+commit b0f5a8f32e8bbdaae1abb8abe2d3cbafaba57e08 upstream.
 
-This patch disables irq on reboot to fix hang issues that were observed
-due to pending interrupts.
+This fixes a regression in commit 4d6501dce079 where I didn't notice
+that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
+NULL after our initialisation in copy_process().
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: John Crispin <john@phrozen.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19913/
-Cc: James Hogan <jhogan@kernel.org>
+We can simply get rid of the arch-specific initialisation here since it
+is now always done in copy_process() before hitting copy_thread{,_tls}().
+
+Review notes:
+
+ - As far as I can tell, copy_process() is the only user of
+   copy_thread_tls(), which is the only caller of copy_thread() for
+   architectures that don't implement copy_thread_tls().
+
+ - After this patch, there is no arch-specific code touching
+   p->set_child_tid or p->clear_child_tid whatsoever.
+
+ - It may look like MIPS/OpenRISC wanted to always have these fields be
+   NULL, but that's not true, as copy_process() would unconditionally
+   set them again _after_ calling copy_thread_tls() before commit
+   4d6501dce079.
+
+Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
+Acked-by: Stafford Horne <shorne@gmail.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: openrisc@lists.librecores.org
+Cc: Jamie Iles <jamie.iles@oracle.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/ath79/setup.c                  |    1 +
- arch/mips/include/asm/mach-ath79/ath79.h |    1 +
- 2 files changed, 2 insertions(+)
 
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYP
+---
+ arch/mips/kernel/process.c     |    1 -
+ arch/openrisc/kernel/process.c |    2 --
+ 2 files changed, 3 deletions(-)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -87,7 +87,6 @@ int copy_thread(unsigned long clone_flag
+ 	struct thread_info *ti = task_thread_info(p);
+ 	struct pt_regs *childregs, *regs = current_pt_regs();
+ 	unsigned long childksp;
+-	p->set_child_tid = p->clear_child_tid = NULL;
  
- static void ath79_restart(char *command)
- {
-+	local_irq_disable();
- 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
- 	for (;;)
- 		if (cpu_wait)
---- a/arch/mips/include/asm/mach-ath79/ath79.h
-+++ b/arch/mips/include/asm/mach-ath79/ath79.h
-@@ -132,6 +132,7 @@ static inline u32 ath79_pll_rr(unsigned
- static inline void ath79_reset_wr(unsigned reg, u32 val)
- {
- 	__raw_writel(val, ath79_reset_base + reg);
-+	(void) __raw_readl(ath79_reset_base + reg); /* flush */
- }
+ 	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
  
- static inline u32 ath79_reset_rr(unsigned reg)
+--- a/arch/openrisc/kernel/process.c
++++ b/arch/openrisc/kernel/process.c
+@@ -152,8 +152,6 @@ copy_thread(unsigned long clone_flags, u
+ 
+ 	top_of_kernel_stack = sp;
+ 
+-	p->set_child_tid = p->clear_child_tid = NULL;
+-
+ 	/* Locate userspace context on stack... */
+ 	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
+ 	sp -= sizeof(struct pt_regs);

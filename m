@@ -1,27 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 12:32:11 +0200 (CEST)
-Received: from mga05.intel.com ([192.55.52.43]:6673 "EHLO mga05.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 12:34:23 +0200 (CEST)
+Received: from mga17.intel.com ([192.55.52.151]:4384 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992066AbeIXKcH6ruxU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Sep 2018 12:32:07 +0200
+        id S23992066AbeIXKeUnyHnU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Sep 2018 12:34:20 +0200
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2018 03:32:05 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2018 03:34:18 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.54,297,1534834800"; 
-   d="scan'208";a="91386610"
+   d="scan'208";a="92721442"
 Received: from sgsxdev001.isng.intel.com (HELO localhost) ([10.226.88.11])
-  by fmsmga004.fm.intel.com with ESMTP; 24 Sep 2018 03:28:41 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 24 Sep 2018 03:28:27 -0700
 From:   Songjun Wu <songjun.wu@linux.intel.com>
 To:     yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
         hauke.mehrtens@intel.com
-Cc:     Songjun Wu <songjun.wu@linux.intel.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Songjun Wu <songjun.wu@linux.intel.com>,
+        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 05/14] MIPS: lantiq: Unselect SWAP_IO_SPACE when LANTIQ is selected
-Date:   Mon, 24 Sep 2018 18:27:54 +0800
-Message-Id: <20180924102803.30263-6-songjun.wu@linux.intel.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 01/14] MIPS: dts: Change upper case to lower case
+Date:   Mon, 24 Sep 2018 18:27:50 +0800
+Message-Id: <20180924102803.30263-2-songjun.wu@linux.intel.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20180924102803.30263-1-songjun.wu@linux.intel.com>
 References: <20180924102803.30263-1-songjun.wu@linux.intel.com>
@@ -29,7 +36,7 @@ Return-Path: <songjun.wu@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66512
+X-archive-position: 66513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,39 +53,168 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SWAP_IO_SPACE macro prevents serial driver /drivers/tty/serial/lantiq.c
-to use readl/writel to replace ltq_r32/w32 which are SoC or platform
-specific APIs.
+All the upper case in unit-address and hex constants are
+changed to lower case according to the DT conventions.
 
-readl/writel are used for this serial driver to support multiple
-platforms and multiple architectures. The legacy lantiq platform(Danube)
-enables SWAP_IO_SPACE for supporting PCI due to some hardware bugs.
-
-It's a little-endian bus plus PCI TX/RX swap enable impacted both data
-and control path for MIPS based platforms. But it is better to let PCI
-device driver to do endian swap since SWAP_IO_SPACE is a global wide macro
-which potentially impacts other peripheral like USB.
-ltq_r32/ltq_w32 is not impacted in other device drivers based on MIPS when
-SWAP_IO_SPACE is not selected as they use non-byte swapping OS API
-(__raw_read/__raw_writel).
-
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
 ---
 
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/boot/dts/lantiq/danube.dtsi   | 42 ++++++++++++++++-----------------
+ arch/mips/boot/dts/lantiq/easy50712.dts | 14 +++++------
+ 2 files changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 138d60cf19bc..dcc1fd39cbf3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -406,7 +406,6 @@ config LANTIQ
- 	select SYS_SUPPORTS_VPE_LOADER
- 	select SYS_HAS_EARLY_PRINTK
- 	select GPIOLIB
--	select SWAP_IO_SPACE
- 	select BOOT_RAW
- 	select CLKDEV_LOOKUP
- 	select USE_OF
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index 2dd950181f8a..510be63c8bdf 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -10,12 +10,12 @@
+ 		};
+ 	};
+ 
+-	biu@1F800000 {
++	biu@1f800000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "lantiq,biu", "simple-bus";
+-		reg = <0x1F800000 0x800000>;
+-		ranges = <0x0 0x1F800000 0x7FFFFF>;
++		reg = <0x1f800000 0x800000>;
++		ranges = <0x0 0x1f800000 0x7fffff>;
+ 
+ 		icu0: icu@80200 {
+ 			#interrupt-cells = <1>;
+@@ -24,18 +24,18 @@
+ 			reg = <0x80200 0x120>;
+ 		};
+ 
+-		watchdog@803F0 {
++		watchdog@803f0 {
+ 			compatible = "lantiq,wdt";
+-			reg = <0x803F0 0x10>;
++			reg = <0x803f0 0x10>;
+ 		};
+ 	};
+ 
+-	sram@1F000000 {
++	sram@1f000000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "lantiq,sram";
+-		reg = <0x1F000000 0x800000>;
+-		ranges = <0x0 0x1F000000 0x7FFFFF>;
++		reg = <0x1f000000 0x800000>;
++		ranges = <0x0 0x1f000000 0x7fffff>;
+ 
+ 		eiu0: eiu@101000 {
+ 			#interrupt-cells = <1>;
+@@ -66,41 +66,41 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "lantiq,fpi", "simple-bus";
+-		ranges = <0x0 0x10000000 0xEEFFFFF>;
+-		reg = <0x10000000 0xEF00000>;
++		ranges = <0x0 0x10000000 0xeefffff>;
++		reg = <0x10000000 0xef00000>;
+ 
+-		gptu@E100A00 {
++		gptu@e100a00 {
+ 			compatible = "lantiq,gptu-xway";
+-			reg = <0xE100A00 0x100>;
++			reg = <0xe100a00 0x100>;
+ 		};
+ 
+-		serial@E100C00 {
++		serial@e100c00 {
+ 			compatible = "lantiq,asc";
+-			reg = <0xE100C00 0x400>;
++			reg = <0xe100c00 0x400>;
+ 			interrupt-parent = <&icu0>;
+ 			interrupts = <112 113 114>;
+ 		};
+ 
+-		dma0: dma@E104100 {
++		dma0: dma@e104100 {
+ 			compatible = "lantiq,dma-xway";
+-			reg = <0xE104100 0x800>;
++			reg = <0xe104100 0x800>;
+ 		};
+ 
+-		ebu0: ebu@E105300 {
++		ebu0: ebu@e105300 {
+ 			compatible = "lantiq,ebu-xway";
+-			reg = <0xE105300 0x100>;
++			reg = <0xe105300 0x100>;
+ 		};
+ 
+-		pci0: pci@E105400 {
++		pci0: pci@e105400 {
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			#interrupt-cells = <1>;
+ 			compatible = "lantiq,pci-xway";
+ 			bus-range = <0x0 0x0>;
+ 			ranges = <0x2000000 0 0x8000000 0x8000000 0 0x2000000	/* pci memory */
+-				  0x1000000 0 0x00000000 0xAE00000 0 0x200000>; /* io space */
++				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
+ 			reg = <0x7000000 0x8000		/* config space */
+-				0xE105400 0x400>;	/* pci bridge */
++				0xe105400 0x400>;	/* pci bridge */
+ 		};
+ 	};
+ };
+diff --git a/arch/mips/boot/dts/lantiq/easy50712.dts b/arch/mips/boot/dts/lantiq/easy50712.dts
+index c37a33962f28..1ce20b7d05cb 100644
+--- a/arch/mips/boot/dts/lantiq/easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/easy50712.dts
+@@ -52,14 +52,14 @@
+ 			};
+ 		};
+ 
+-		gpio: pinmux@E100B10 {
++		gpio: pinmux@e100b10 {
+ 			compatible = "lantiq,danube-pinctrl";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&state_default>;
+ 
+ 			#gpio-cells = <2>;
+ 			gpio-controller;
+-			reg = <0xE100B10 0xA0>;
++			reg = <0xe100b10 0xa0>;
+ 
+ 			state_default: pinmux {
+ 				stp {
+@@ -82,26 +82,26 @@
+ 			};
+ 		};
+ 
+-		etop@E180000 {
++		etop@e180000 {
+ 			compatible = "lantiq,etop-xway";
+-			reg = <0xE180000 0x40000>;
++			reg = <0xe180000 0x40000>;
+ 			interrupt-parent = <&icu0>;
+ 			interrupts = <73 78>;
+ 			phy-mode = "rmii";
+ 			mac-address = [ 00 11 22 33 44 55 ];
+ 		};
+ 
+-		stp0: stp@E100BB0 {
++		stp0: stp@e100bb0 {
+ 			#gpio-cells = <2>;
+ 			compatible = "lantiq,gpio-stp-xway";
+ 			gpio-controller;
+-			reg = <0xE100BB0 0x40>;
++			reg = <0xe100bb0 0x40>;
+ 
+ 			lantiq,shadow = <0xfff>;
+ 			lantiq,groups = <0x3>;
+ 		};
+ 
+-		pci@E105400 {
++		pci@e105400 {
+ 			lantiq,bus-clock = <33333333>;
+ 			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
+ 			interrupt-map = <
 -- 
 2.11.0

@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:40:20 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41280 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:40:52 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41374 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993094AbeIXLkPojedU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:40:15 +0200
+        by eddie.linux-mips.org with ESMTP id S23992375AbeIXLkrl3XEU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:40:47 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EF5931070;
-        Mon, 24 Sep 2018 11:40:08 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3B3C21070;
+        Mon, 24 Sep 2018 11:40:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 058/105] MIPS: WARN_ON invalid DMA cache maintenance, not BUG_ON
-Date:   Mon, 24 Sep 2018 13:33:44 +0200
-Message-Id: <20180924113119.415172318@linuxfoundation.org>
+Subject: [PATCH 3.18 066/105] MIPS: ath79: fix system restart
+Date:   Mon, 24 Sep 2018 13:33:52 +0200
+Message-Id: <20180924113120.038927034@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180924113113.268650190@linuxfoundation.org>
 References: <20180924113113.268650190@linuxfoundation.org>
@@ -28,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66520
+X-archive-position: 66521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,44 +51,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
+[ Upstream commit f8a7bfe1cb2c1ebfa07775c9c8ac0ad3ba8e5ff5 ]
 
-If a driver causes DMA cache maintenance with a zero length then we
-currently BUG and kill the kernel. As this is a scenario that we may
-well be able to recover from, WARN & return in the condition instead.
+This patch disables irq on reboot to fix hang issues that were observed
+due to pending interrupts.
 
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/14623/
+Patchwork: https://patchwork.linux-mips.org/patch/19913/
+Cc: James Hogan <jhogan@kernel.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/c-r4k.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/ath79/setup.c                  |    1 +
+ arch/mips/include/asm/mach-ath79/ath79.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -703,7 +703,8 @@ static void r4k_flush_icache_range(unsig
- static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- {
- 	/* Catch bad driver code */
--	BUG_ON(size == 0);
-+	if (WARN_ON(size == 0))
-+		return;
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -40,6 +40,7 @@ static char ath79_sys_type[ATH79_SYS_TYP
  
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
-@@ -736,7 +737,8 @@ static void r4k_dma_cache_wback_inv(unsi
- static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ static void ath79_restart(char *command)
  {
- 	/* Catch bad driver code */
--	BUG_ON(size == 0);
-+	if (WARN_ON(size == 0))
-+		return;
++	local_irq_disable();
+ 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
+ 	for (;;)
+ 		if (cpu_wait)
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -132,6 +132,7 @@ static inline u32 ath79_pll_rr(unsigned
+ static inline void ath79_reset_wr(unsigned reg, u32 val)
+ {
+ 	__raw_writel(val, ath79_reset_base + reg);
++	(void) __raw_readl(ath79_reset_base + reg); /* flush */
+ }
  
- 	preempt_disable();
- 	if (cpu_has_inclusive_pcaches) {
+ static inline u32 ath79_reset_rr(unsigned reg)

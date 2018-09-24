@@ -1,46 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 12:34:23 +0200 (CEST)
-Received: from mga17.intel.com ([192.55.52.151]:4384 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992066AbeIXKeUnyHnU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Sep 2018 12:34:20 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2018 03:34:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.54,297,1534834800"; 
-   d="scan'208";a="92721442"
-Received: from sgsxdev001.isng.intel.com (HELO localhost) ([10.226.88.11])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Sep 2018 03:28:27 -0700
-From:   Songjun Wu <songjun.wu@linux.intel.com>
-To:     yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
-        hauke.mehrtens@intel.com
-Cc:     Songjun Wu <songjun.wu@linux.intel.com>,
-        devicetree@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 01/14] MIPS: dts: Change upper case to lower case
-Date:   Mon, 24 Sep 2018 18:27:50 +0800
-Message-Id: <20180924102803.30263-2-songjun.wu@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20180924102803.30263-1-songjun.wu@linux.intel.com>
-References: <20180924102803.30263-1-songjun.wu@linux.intel.com>
-Return-Path: <songjun.wu@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:00:29 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:59663 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992066AbeIXLAY4LsuU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:00:24 +0200
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id DA01D21A7B;
+        Mon, 24 Sep 2018 07:00:23 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Mon, 24 Sep 2018 07:00:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :content-type:date:from:in-reply-to:message-id:mime-version
+        :references:subject:to:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; bh=+3Zq1T085IioVZUG6ygk2FVuGAGypzfDUMvE/zb+64k=; b=PVnNhusD
+        z3Wu6ADcNVDXSQiz88+bAj0mmDqVjgxxztFGS+HHz++hdqQJk5z6/LfJuHmtJgge
+        loH9O3Zne+4a3BOqwZ6yezriVEc9jyrpIgSQrpyzvEK6WNeaJy90wXNdNLRaHfyO
+        AHkRWJyFuavbqUEKfIEv3BohaQ9+0ZLD8B1Z9OqNkdYklzG3cu4oH8A/j1HiC/F3
+        FRxK3lrbJspl6OElJ92KfhlenAZ+B6RpqRjmW9He0mP9/PiANjmQaZFslak/njA9
+        21PBfkJQF0j/xqbCopuHXq2lpsNuxWzxUCJ+zA2gpfsaeSEAzu4r1/y64R000Vwu
+        eRAwWxPOFoGQlQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm3; bh=+3Zq1T085IioVZUG6ygk2FVuGAGyp
+        zfDUMvE/zb+64k=; b=uY1eNbWhc6RMxPuWf2vmk2GnbkJZlr2V4lsohMKgDFvWx
+        9qYKAbv6yggyEl0doECF8fkJ3W3RYd11DQ2rC7UG2EVXzXDvWvKrsJ6n2ULgrPBK
+        oZjeljhwa2SGwSK7IqA6kNMRw3XmgWi4IfS69YqxbCbKdYONAuVV9I3xlVi7Q3iF
+        0tPwuztF28XwbctioqbsDg1P3KhHciqp5SLD6N85056pfSyoCdBwnnzmgr5ZBLgh
+        rwFmh7bZ2IO6BQi+FuvEeeiDync5vy9bd6KlTtaZMnhuDu6Idq2hRHtbTfJhRFyH
+        cau0A9AQfBpPPcmPGGAcwMhJciCxpDrNHVWdeqnTw==
+X-ME-Proxy: <xmx:x8OoW2_YG259n-3OpUToHhX0wA9qxr_8gp0EnRVwLOllXmpL1tv5wA>
+    <xmx:x8OoW5EHFZIOiboWnQE_uxth7LZYMGKSNvvKsnf6BNZc1iHWMUezRw>
+    <xmx:x8OoW1SA_8hA3FX81z23emkBSW8gn-F4L7_4nhEQObDTpftZtl_kAg>
+    <xmx:x8OoWxnHRdNsNmolceJr8mxjmghFYrtgDw5wI38emJMGb7nkGD7clA>
+    <xmx:x8OoW9lEFSDlpOaRpuxN3SXfop2vf67AsDqd7ra3FnWwm0noTqb0Rw>
+    <xmx:x8OoW2tUCT-eIDe-A4j7ll1TxIJgTh1nNY0mJrn6BZntNROj174kTQ>
+X-ME-Sender: <xms:xsOoW4oQmhnCkeIOyd2A6g3jA7v2FvBfTCnXrfOlxVcSiRKRtOicfw>
+Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 8C958102D2;
+        Mon, 24 Sep 2018 07:00:22 -0400 (EDT)
+Date:   Mon, 24 Sep 2018 13:00:21 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Rene Nielsen <rene.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Paul Burton <pburton@wavecomp.com>,
+        James Hogan <jhogan@kernel.org>
+Subject: Re: [PATCH 4.4] MIPS: VDSO: Match data page cache colouring when D$
+ aliases
+Message-ID: <20180924110021.GH16476@kroah.com>
+References: <20180919212044.21385-1-paul.burton@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180919212044.21385-1-paul.burton@mips.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66513
+X-archive-position: 66514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: songjun.wu@linux.intel.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,168 +78,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All the upper case in unit-address and hex constants are
-changed to lower case according to the DT conventions.
+On Wed, Sep 19, 2018 at 09:20:59PM +0000, Paul Burton wrote:
+> [ Upstream commit 0f02cfbc3d9e413d450d8d0fd660077c23f67eff ]
+> 
+> When a system suffers from dcache aliasing a user program may observe
+> stale VDSO data from an aliased cache line. Notably this can break the
+> expectation that clock_gettime(CLOCK_MONOTONIC, ...) is, as its name
+> suggests, monotonic.
+> 
+> In order to ensure that users observe updates to the VDSO data page as
+> intended, align the user mappings of the VDSO data page such that their
+> cache colouring matches that of the virtual address range which the
+> kernel will use to update the data page - typically its unmapped address
+> within kseg0.
+> 
+> This ensures that we don't introduce aliasing cache lines for the VDSO
+> data page, and therefore that userland will observe updates without
+> requiring cache invalidation.
+> 
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Reported-by: Rene Nielsen <rene.nielsen@microsemi.com>
+> Reported-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+> Patchwork: https://patchwork.linux-mips.org/patch/20344/
+> Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Tested-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: stable@vger.kernel.org # v4.4+
+> ---
+>  arch/mips/kernel/vdso.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
----
+This, and the 4.9.y backport, are now applied, thanks.
 
- arch/mips/boot/dts/lantiq/danube.dtsi   | 42 ++++++++++++++++-----------------
- arch/mips/boot/dts/lantiq/easy50712.dts | 14 +++++------
- 2 files changed, 28 insertions(+), 28 deletions(-)
-
-diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
-index 2dd950181f8a..510be63c8bdf 100644
---- a/arch/mips/boot/dts/lantiq/danube.dtsi
-+++ b/arch/mips/boot/dts/lantiq/danube.dtsi
-@@ -10,12 +10,12 @@
- 		};
- 	};
- 
--	biu@1F800000 {
-+	biu@1f800000 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "lantiq,biu", "simple-bus";
--		reg = <0x1F800000 0x800000>;
--		ranges = <0x0 0x1F800000 0x7FFFFF>;
-+		reg = <0x1f800000 0x800000>;
-+		ranges = <0x0 0x1f800000 0x7fffff>;
- 
- 		icu0: icu@80200 {
- 			#interrupt-cells = <1>;
-@@ -24,18 +24,18 @@
- 			reg = <0x80200 0x120>;
- 		};
- 
--		watchdog@803F0 {
-+		watchdog@803f0 {
- 			compatible = "lantiq,wdt";
--			reg = <0x803F0 0x10>;
-+			reg = <0x803f0 0x10>;
- 		};
- 	};
- 
--	sram@1F000000 {
-+	sram@1f000000 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "lantiq,sram";
--		reg = <0x1F000000 0x800000>;
--		ranges = <0x0 0x1F000000 0x7FFFFF>;
-+		reg = <0x1f000000 0x800000>;
-+		ranges = <0x0 0x1f000000 0x7fffff>;
- 
- 		eiu0: eiu@101000 {
- 			#interrupt-cells = <1>;
-@@ -66,41 +66,41 @@
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "lantiq,fpi", "simple-bus";
--		ranges = <0x0 0x10000000 0xEEFFFFF>;
--		reg = <0x10000000 0xEF00000>;
-+		ranges = <0x0 0x10000000 0xeefffff>;
-+		reg = <0x10000000 0xef00000>;
- 
--		gptu@E100A00 {
-+		gptu@e100a00 {
- 			compatible = "lantiq,gptu-xway";
--			reg = <0xE100A00 0x100>;
-+			reg = <0xe100a00 0x100>;
- 		};
- 
--		serial@E100C00 {
-+		serial@e100c00 {
- 			compatible = "lantiq,asc";
--			reg = <0xE100C00 0x400>;
-+			reg = <0xe100c00 0x400>;
- 			interrupt-parent = <&icu0>;
- 			interrupts = <112 113 114>;
- 		};
- 
--		dma0: dma@E104100 {
-+		dma0: dma@e104100 {
- 			compatible = "lantiq,dma-xway";
--			reg = <0xE104100 0x800>;
-+			reg = <0xe104100 0x800>;
- 		};
- 
--		ebu0: ebu@E105300 {
-+		ebu0: ebu@e105300 {
- 			compatible = "lantiq,ebu-xway";
--			reg = <0xE105300 0x100>;
-+			reg = <0xe105300 0x100>;
- 		};
- 
--		pci0: pci@E105400 {
-+		pci0: pci@e105400 {
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 			#interrupt-cells = <1>;
- 			compatible = "lantiq,pci-xway";
- 			bus-range = <0x0 0x0>;
- 			ranges = <0x2000000 0 0x8000000 0x8000000 0 0x2000000	/* pci memory */
--				  0x1000000 0 0x00000000 0xAE00000 0 0x200000>; /* io space */
-+				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
- 			reg = <0x7000000 0x8000		/* config space */
--				0xE105400 0x400>;	/* pci bridge */
-+				0xe105400 0x400>;	/* pci bridge */
- 		};
- 	};
- };
-diff --git a/arch/mips/boot/dts/lantiq/easy50712.dts b/arch/mips/boot/dts/lantiq/easy50712.dts
-index c37a33962f28..1ce20b7d05cb 100644
---- a/arch/mips/boot/dts/lantiq/easy50712.dts
-+++ b/arch/mips/boot/dts/lantiq/easy50712.dts
-@@ -52,14 +52,14 @@
- 			};
- 		};
- 
--		gpio: pinmux@E100B10 {
-+		gpio: pinmux@e100b10 {
- 			compatible = "lantiq,danube-pinctrl";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&state_default>;
- 
- 			#gpio-cells = <2>;
- 			gpio-controller;
--			reg = <0xE100B10 0xA0>;
-+			reg = <0xe100b10 0xa0>;
- 
- 			state_default: pinmux {
- 				stp {
-@@ -82,26 +82,26 @@
- 			};
- 		};
- 
--		etop@E180000 {
-+		etop@e180000 {
- 			compatible = "lantiq,etop-xway";
--			reg = <0xE180000 0x40000>;
-+			reg = <0xe180000 0x40000>;
- 			interrupt-parent = <&icu0>;
- 			interrupts = <73 78>;
- 			phy-mode = "rmii";
- 			mac-address = [ 00 11 22 33 44 55 ];
- 		};
- 
--		stp0: stp@E100BB0 {
-+		stp0: stp@e100bb0 {
- 			#gpio-cells = <2>;
- 			compatible = "lantiq,gpio-stp-xway";
- 			gpio-controller;
--			reg = <0xE100BB0 0x40>;
-+			reg = <0xe100bb0 0x40>;
- 
- 			lantiq,shadow = <0xfff>;
- 			lantiq,groups = <0x3>;
- 		};
- 
--		pci@E105400 {
-+		pci@e105400 {
- 			lantiq,bus-clock = <33333333>;
- 			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
- 			interrupt-map = <
--- 
-2.11.0
+greg k-h

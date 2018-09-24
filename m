@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:54:53 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42320 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:56:17 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42512 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992375AbeIXLysAr7BU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:54:48 +0200
+        by eddie.linux-mips.org with ESMTP id S23993941AbeIXL4KSr9bU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:56:10 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 062651071;
-        Mon, 24 Sep 2018 11:54:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9FEBC1072;
+        Mon, 24 Sep 2018 11:56:03 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>,
         Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.4 20/70] MIPS: jz4740: Bump zload address
-Date:   Mon, 24 Sep 2018 13:52:19 +0200
-Message-Id: <20180924113100.766290405@linuxfoundation.org>
+Subject: [PATCH 4.4 09/70] MIPS: ath79: fix system restart
+Date:   Mon, 24 Sep 2018 13:52:08 +0200
+Message-Id: <20180924113059.416057452@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180924113058.420454070@linuxfoundation.org>
 References: <20180924113058.420454070@linuxfoundation.org>
@@ -29,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66525
+X-archive-position: 66526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,42 +51,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit c6ea7e9747318e5a6774995f4f8e3e0f7c0fa8ba ]
+[ Upstream commit f8a7bfe1cb2c1ebfa07775c9c8ac0ad3ba8e5ff5 ]
 
-Having the zload address at 0x8060.0000 means the size of the
-uncompressed kernel cannot be bigger than around 6 MiB, as it is
-deflated at address 0x8001.0000.
+This patch disables irq on reboot to fix hang issues that were observed
+due to pending interrupts.
 
-This limit is too small; a kernel with some built-in drivers and things
-like debugfs enabled will already be over 6 MiB in size, and so will
-fail to extract properly.
-
-To fix this, we bump the zload address from 0x8060.0000 to 0x8100.0000.
-
-This is fine, as all the boards featuring Ingenic JZ SoCs have at least
-32 MiB of RAM, and use u-boot or compatible bootloaders which won't
-hardcode the load address but read it from the uImage's header.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/19787/
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/19913/
 Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/jz4740/Platform |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath79/setup.c                  |    1 +
+ arch/mips/include/asm/mach-ath79/ath79.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/mips/jz4740/Platform
-+++ b/arch/mips/jz4740/Platform
-@@ -1,4 +1,4 @@
- platform-$(CONFIG_MACH_INGENIC)	+= jz4740/
- cflags-$(CONFIG_MACH_INGENIC)	+= -I$(srctree)/arch/mips/include/asm/mach-jz4740
- load-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80010000
--zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff80600000
-+zload-$(CONFIG_MACH_INGENIC)	+= 0xffffffff81000000
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -44,6 +44,7 @@ static char ath79_sys_type[ATH79_SYS_TYP
+ 
+ static void ath79_restart(char *command)
+ {
++	local_irq_disable();
+ 	ath79_device_reset_set(AR71XX_RESET_FULL_CHIP);
+ 	for (;;)
+ 		if (cpu_wait)
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -133,6 +133,7 @@ static inline u32 ath79_pll_rr(unsigned
+ static inline void ath79_reset_wr(unsigned reg, u32 val)
+ {
+ 	__raw_writel(val, ath79_reset_base + reg);
++	(void) __raw_readl(ath79_reset_base + reg); /* flush */
+ }
+ 
+ static inline u32 ath79_reset_rr(unsigned reg)

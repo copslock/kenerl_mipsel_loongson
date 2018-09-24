@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:39:11 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41088 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 13:40:20 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41280 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992087AbeIXLjGVA6xU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:39:06 +0200
+        by eddie.linux-mips.org with ESMTP id S23993094AbeIXLkPojedU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 13:40:15 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 665AA106F;
-        Mon, 24 Sep 2018 11:38:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EF5931070;
+        Mon, 24 Sep 2018 11:40:08 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Vladimir Kondratiev <vladimir.kondratiev@intel.com>,
         Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 3.18 046/105] MIPS: Fix ISA virt/bus conversion for non-zero PHYS_OFFSET
-Date:   Mon, 24 Sep 2018 13:33:32 +0200
-Message-Id: <20180924113118.525753361@linuxfoundation.org>
+Subject: [PATCH 3.18 058/105] MIPS: WARN_ON invalid DMA cache maintenance, not BUG_ON
+Date:   Mon, 24 Sep 2018 13:33:44 +0200
+Message-Id: <20180924113119.415172318@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180924113113.268650190@linuxfoundation.org>
 References: <20180924113113.268650190@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66519
+X-archive-position: 66520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,48 +49,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-[ Upstream commit 0494d7ffdcebc6935410ea0719b24ab626675351 ]
+[ Upstream commit d4da0e97baea8768b3d66ccef3967bebd50dfc3b ]
 
-isa_virt_to_bus() & isa_bus_to_virt() claim to treat ISA bus addresses
-as being identical to physical addresses, but they fail to do so in the
-presence of a non-zero PHYS_OFFSET.
-
-Correct this by having them use virt_to_phys() & phys_to_virt(), which
-consolidates the calculations to one place & ensures that ISA bus
-addresses do indeed match physical addresses.
+If a driver causes DMA cache maintenance with a zero length then we
+currently BUG and kill the kernel. As this is a scenario that we may
+well be able to recover from, WARN & return in the condition instead.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20047/
-Cc: James Hogan <jhogan@kernel.org>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14623/
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: Vladimir Kondratiev <vladimir.kondratiev@intel.com>
 Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/io.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/mm/c-r4k.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -141,14 +141,14 @@ static inline void * phys_to_virt(unsign
- /*
-  * ISA I/O bus memory addresses are 1:1 with the physical address.
-  */
--static inline unsigned long isa_virt_to_bus(volatile void * address)
-+static inline unsigned long isa_virt_to_bus(volatile void *address)
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -703,7 +703,8 @@ static void r4k_flush_icache_range(unsig
+ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
  {
--	return (unsigned long)address - PAGE_OFFSET;
-+	return virt_to_phys(address);
- }
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
--static inline void * isa_bus_to_virt(unsigned long address)
-+static inline void *isa_bus_to_virt(unsigned long address)
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+@@ -736,7 +737,8 @@ static void r4k_dma_cache_wback_inv(unsi
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
  {
--	return (void *)(address + PAGE_OFFSET);
-+	return phys_to_virt(address);
- }
+ 	/* Catch bad driver code */
+-	BUG_ON(size == 0);
++	if (WARN_ON(size == 0))
++		return;
  
- #define isa_page_to_bus page_to_phys
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {

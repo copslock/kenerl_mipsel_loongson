@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 14:07:38 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44822 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2018 14:07:58 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44880 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994427AbeIXMHcckuQU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 14:07:32 +0200
+        by eddie.linux-mips.org with ESMTP id S23994427AbeIXMHvYSqgU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2018 14:07:51 +0200
 Received: from localhost (ip-213-127-77-73.ip.prioritytelecom.net [213.127.77.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5BAE4107B;
-        Mon, 24 Sep 2018 12:07:22 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4C867107F;
+        Mon, 24 Sep 2018 12:07:45 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@mips.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-fsdevel@vger.kernel.org, linux-mips@linux-mips.org,
-        Sasha Levin <alexander.levin@microsoft.com>
-Subject: [PATCH 4.9 073/111] binfmt_elf: Respect error return from `regset->active
-Date:   Mon, 24 Sep 2018 13:52:40 +0200
-Message-Id: <20180924113112.214343805@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Rene Nielsen <rene.nielsen@microsemi.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.9 104/111] MIPS: VDSO: Match data page cache colouring when D$ aliases
+Date:   Mon, 24 Sep 2018 13:53:11 +0200
+Message-Id: <20180924113115.517136861@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180924113103.337261320@linuxfoundation.org>
 References: <20180924113103.337261320@linuxfoundation.org>
@@ -31,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66533
+X-archive-position: 66534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,45 +50,88 @@ X-list: linux-mips
 
 ------------------
 
-From: "Maciej W. Rozycki" <macro@mips.com>
+From: Paul Burton <paul.burton@mips.com>
 
-[ Upstream commit 2f819db565e82e5f73cd42b39925098986693378 ]
+commit 0f02cfbc3d9e413d450d8d0fd660077c23f67eff upstream.
 
-The regset API documented in <linux/regset.h> defines -ENODEV as the
-result of the `->active' handler to be used where the feature requested
-is not available on the hardware found.  However code handling core file
-note generation in `fill_thread_core_info' interpretes any non-zero
-result from the `->active' handler as the regset requested being active.
-Consequently processing continues (and hopefully gracefully fails later
-on) rather than being abandoned right away for the regset requested.
+When a system suffers from dcache aliasing a user program may observe
+stale VDSO data from an aliased cache line. Notably this can break the
+expectation that clock_gettime(CLOCK_MONOTONIC, ...) is, as its name
+suggests, monotonic.
 
-Fix the problem then by making the code proceed only if a positive
-result is returned from the `->active' handler.
+In order to ensure that users observe updates to the VDSO data page as
+intended, align the user mappings of the VDSO data page such that their
+cache colouring matches that of the virtual address range which the
+kernel will use to update the data page - typically its unmapped address
+within kseg0.
 
-Signed-off-by: Maciej W. Rozycki <macro@mips.com>
+This ensures that we don't introduce aliasing cache lines for the VDSO
+data page, and therefore that userland will observe updates without
+requiring cache invalidation.
+
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 4206d3aa1978 ("elf core dump: notes user_regset")
-Patchwork: https://patchwork.linux-mips.org/patch/19332/
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+Reported-by: Rene Nielsen <rene.nielsen@microsemi.com>
+Reported-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Patchwork: https://patchwork.linux-mips.org/patch/20344/
+Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Tested-by: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+Cc: stable@vger.kernel.org # v4.4+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/binfmt_elf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1706,7 +1706,7 @@ static int fill_thread_core_info(struct
- 		const struct user_regset *regset = &view->regsets[i];
- 		do_thread_regset_writeback(t->task, regset);
- 		if (regset->core_note_type && regset->get &&
--		    (!regset->active || regset->active(t->task, regset))) {
-+		    (!regset->active || regset->active(t->task, regset) > 0)) {
- 			int ret;
- 			size_t size = regset->n * regset->size;
- 			void *data = kmalloc(size, GFP_KERNEL);
+
+---
+ arch/mips/kernel/vdso.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -14,12 +14,14 @@
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+ #include <linux/irqchip/mips-gic.h>
++#include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/timekeeper_internal.h>
+ 
+ #include <asm/abi.h>
++#include <asm/page.h>
+ #include <asm/vdso.h>
+ 
+ /* Kernel-provided data used by the VDSO. */
+@@ -129,12 +131,30 @@ int arch_setup_additional_pages(struct l
+ 	vvar_size = gic_size + PAGE_SIZE;
+ 	size = vvar_size + image->size;
+ 
++	/*
++	 * Find a region that's large enough for us to perform the
++	 * colour-matching alignment below.
++	 */
++	if (cpu_has_dc_aliases)
++		size += shm_align_mask + 1;
++
+ 	base = get_unmapped_area(NULL, 0, size, 0, 0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+ 		goto out;
+ 	}
+ 
++	/*
++	 * If we suffer from dcache aliasing, ensure that the VDSO data page
++	 * mapping is coloured the same as the kernel's mapping of that memory.
++	 * This ensures that when the kernel updates the VDSO data userland
++	 * will observe it without requiring cache invalidations.
++	 */
++	if (cpu_has_dc_aliases) {
++		base = __ALIGN_MASK(base, shm_align_mask);
++		base += ((unsigned long)&vdso_data - gic_size) & shm_align_mask;
++	}
++
+ 	data_addr = base + gic_size;
+ 	vdso_addr = data_addr + PAGE_SIZE;
+ 

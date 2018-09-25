@@ -1,50 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 20:09:14 +0200 (CEST)
-Received: from mail-wm1-x342.google.com ([IPv6:2a00:1450:4864:20::342]:52842
-        "EHLO mail-wm1-x342.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993946AbeIYSI5AifAH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 20:08:57 +0200
-Received: by mail-wm1-x342.google.com with SMTP id l7-v6so9623709wme.2;
-        Tue, 25 Sep 2018 11:08:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 20:09:24 +0200 (CEST)
+Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:45120
+        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993094AbeIYSI7S1JDH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 20:08:59 +0200
+Received: by mail-wr1-x441.google.com with SMTP id m16so7841030wrx.12;
+        Tue, 25 Sep 2018 11:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QcsiSHC0IriMHLUqwataqDFFhjE03MSei2N5kMdLovo=;
-        b=ILilAhzmHg3sw6pL13xeTdJOGIsluDxAm3sABWjPa7BWKiLJU5oUSkgnRSzSF+yjtV
-         THXQQ4a77+AWvPdjc07c0LI9BQhvumu64ew4clbmLy2nKg7KQHdfPJBWO5mfw4OtDV6l
-         KcujJ3S1cBd/GGc8faJ3dZmWgJ91Xy+OLjahjqyJGB3FWjwuhzIRgvpzTHmfnnaZBbKc
-         R69d/m2qrGS9RcmVFZOdcNiVHFDHw5BZyA5/EczB9FVGgHNYVIsCpLctBZTs/GkQNI+5
-         ezcW8DCcBvdI9PJ3k+GNGyYtBoF1LL7ZIBmasxdaLFjLJjZKIeB+KXKEP0kob0Eu9v8o
-         7v4A==
+        bh=aL5T5Qh+oA9oOnuNZ5zxuTk7P9cDVFLf0HY33WTeFy0=;
+        b=ikVarA4eJIcV29KoWwcVVYKHU+saFjDeb+Jjoy17lHNYqW6OpFW4WhRK3WWnpqpWIW
+         XPvWWTDno4cDf+keHs6qhWQalwvb3UMZazRPrl88KsU0iYbONyQCYBjvFXbdwvpwFA2w
+         vwIdEPTLUIejSCuJO1P3Q0MD2ZEaVaRhy7B3ujEWAJUE+uk6RaqoLcCn1SzO9nwthVfn
+         wrfrzoPHojlraI80JkdT/56deg4YQG7VCUljuskbuInm2WxfhdEPttyEFO4DYcMPX/SX
+         mKfjC2kWkYfXfwbMQHYY3GxNbmTQDPuI0+wZjnKlL3FtPDRKiftFqVyWi2x2EpFzSp6s
+         mmbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QcsiSHC0IriMHLUqwataqDFFhjE03MSei2N5kMdLovo=;
-        b=refqUWvXeWnVFYRPGLI3R/ONfg0X5hWjWTRej6aUnBzpKyshoQGy9YYUH0WBYz2YyO
-         D5ZViAXDvl+7IJFJgZ20Q38rl0FJIaYDpxeXiB4Iek9FsFnYtxppUKKa9xgowAYV8Jbm
-         J9VGKqmYip5970l01AkiUiIBXB0qBTLRHoxWfnyUw7GWLN2/Oa2tOvEAnjWmOQPl+rGX
-         cktW7fstC1HOFFr7kYpSTMJBhNiZpj3yv1lks2JE/BQkKtgteU7p3A1vc6d+BiqrLPzK
-         QcnrOsvCdrsFJY3Ba5jNG1V+SgLTUNSnS3bFaLat47Y7CXhb9/LOhCMVUrJX297u7QLu
-         vC5A==
-X-Gm-Message-State: ABuFfoiBP3dVETnNQ+gY8uS8vcVZLwxTRvD6Wx9p33nrN1LseZd/Ej/+
-        aNVZKY1V0CfGIM6IlG8emPq3a3nK/NQ=
-X-Google-Smtp-Source: ACcGV60qL4SXJHtBZOWibWIdpZmktz3VnDAyONE3q0jTsn3JyrXZmO0MOvX0JI82I/o5KDaYx/007A==
-X-Received: by 2002:a1c:7f93:: with SMTP id a141-v6mr1732086wmd.45.1537898931422;
-        Tue, 25 Sep 2018 11:08:51 -0700 (PDT)
+        bh=aL5T5Qh+oA9oOnuNZ5zxuTk7P9cDVFLf0HY33WTeFy0=;
+        b=WCJA+B0apQthVFfdys5ykKTpwvbeF0GFFaetKHcBW/hf0ILIbB9N139SdkWkDt8biN
+         FWiLh+4DLp0CrUqT9AR0uaJNuxrVqAEZ8aLNh8hRdckaS1107OV1af2DIlykEfWd19qa
+         eYOHI2aWmPwgwKjLiJNzqvNHZFUVmnGj2XFrWKx7+vRRLX0zUsHi8U0gm3WjAvGh8ihd
+         bw6+BEwMLkYVqoUgsrkusUDFgrlZYAoaDK42hQHV5bw2pd4bVonfcmVQmv8qdRMyQH4I
+         xKyLP56YV+4XQEDdggJVEOjLj/VNt6P4X9APYoRfePFi5DjUItxkiwinLO8J9+XGmM+/
+         JhXg==
+X-Gm-Message-State: ABuFfojGy828hXqeKtJzfWKvzzgxqN958KrJGToxfj2/b41hHz8J2IgU
+        vOeGQyFANOBB/GY1iDGMCDUyk1vyQdU=
+X-Google-Smtp-Source: ACcGV61O0Ko6JP0N3FE8Wa+75Rdo37r87nrfq17PpgBScoOQ0+aBhHeXjl8G19n9HOdHENsYec+ytQ==
+X-Received: by 2002:adf:ac4a:: with SMTP id v68-v6mr1915078wrc.165.1537898933774;
+        Tue, 25 Sep 2018 11:08:53 -0700 (PDT)
 Received: from laptop.localdomain ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id v6-v6sm2755827wro.66.2018.09.25.11.08.49
+        by smtp.gmail.com with ESMTPSA id v6-v6sm2755827wro.66.2018.09.25.11.08.52
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Sep 2018 11:08:51 -0700 (PDT)
+        Tue, 25 Sep 2018 11:08:53 -0700 (PDT)
 From:   Yasha Cherikovsky <yasha.che3@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
 Cc:     Yasha Cherikovsky <yasha.che3@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] MIPS/head: Store ELF appended dtb in a global variable too
-Date:   Tue, 25 Sep 2018 21:08:23 +0300
-Message-Id: <20180925180825.24659-3-yasha.che3@gmail.com>
+Subject: [PATCH 3/4] MIPS: BMIPS: Remove special handling of CONFIG_MIPS_ELF_APPENDED_DTB=y
+Date:   Tue, 25 Sep 2018 21:08:24 +0300
+Message-Id: <20180925180825.24659-4-yasha.che3@gmail.com>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20180925180825.24659-1-yasha.che3@gmail.com>
 References: <20180925180825.24659-1-yasha.che3@gmail.com>
@@ -54,7 +56,7 @@ Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66554
+X-archive-position: 66555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,53 +73,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since commit 15f37e158892 ("MIPS: store the appended
-dtb address in a variable"),
-in kernels with MIPS_RAW_APPENDED_DTB=y, the early boot code detects
-the dtb and stores it in the 'fw_passed_dtb' variable.
+The ELF appended dtb can be accessed now via 'fw_passed_dtb'.
 
-However, the dtb is not stored in 'fw_passed_dtb' in kernels with
-MIPS_ELF_APPENDED_DTB=y.
-
-Under MIPS_ELF_APPENDED_DTB=y, the dtb is also located in the
-__appended_dtb section, so we just need to update the #ifdef.
-
-This will allow to access the dtb in a more uniform way.
-
-Fixes: 15f37e158892 ("MIPS: store the appended dtb address in a variable")
 Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
+Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
 ---
- arch/mips/kernel/head.S | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/bmips/setup.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index fef2f61c5394..351d40fe0859 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -94,7 +94,9 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
- 0:
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 3b6f687f177c..b71b6eaaf7ed 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -153,8 +153,6 @@ void __init plat_time_init(void)
+ 	mips_hpt_frequency = freq;
+ }
  
- #ifdef CONFIG_USE_OF
--#ifdef CONFIG_MIPS_RAW_APPENDED_DTB
-+#if defined(CONFIG_MIPS_RAW_APPENDED_DTB) || \
-+	defined(CONFIG_MIPS_ELF_APPENDED_DTB)
-+
- 	PTR_LA		t2, __appended_dtb
+-extern const char __appended_dtb;
+-
+ void __init plat_mem_setup(void)
+ {
+ 	void *dtb;
+@@ -164,15 +162,10 @@ void __init plat_mem_setup(void)
+ 	ioport_resource.start = 0;
+ 	ioport_resource.end = ~0;
  
- #ifdef CONFIG_CPU_BIG_ENDIAN
-@@ -104,7 +106,7 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
- #endif /* !CONFIG_CPU_BIG_ENDIAN */
- 	lw		t0, (t2)
- 	beq		t0, t1, dtb_found
--#endif /* CONFIG_MIPS_RAW_APPENDED_DTB */
-+#endif /* CONFIG_MIPS_RAW_APPENDED_DTB || CONFIG_MIPS_ELF_APPENDED_DTB */
- 	li		t1, -2
- 	move		t2, a1
- 	beq		a0, t1, dtb_found
+-#ifdef CONFIG_MIPS_ELF_APPENDED_DTB
+-	if (!fdt_check_header(&__appended_dtb))
+-		dtb = (void *)&__appended_dtb;
+-	else
+-#endif
+ 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
+ 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
+ 		dtb = phys_to_virt(fw_arg2);
+-	else if (fw_passed_dtb) /* UHI interface */
++	else if (fw_passed_dtb) /* UHI interface or appended dtb */
+ 		dtb = (void *)fw_passed_dtb;
+ 	else if (__dtb_start != __dtb_end)
+ 		dtb = (void *)__dtb_start;
 -- 
 2.19.0

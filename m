@@ -1,86 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 19:45:27 +0200 (CEST)
-Received: from mail-bn3nam01on0091.outbound.protection.outlook.com ([104.47.33.91]:6216
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993070AbeIYRpYvj7YH convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 19:45:24 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 20:08:52 +0200 (CEST)
+Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:45119
+        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993094AbeIYSItOqkVH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 20:08:49 +0200
+Received: by mail-wr1-x441.google.com with SMTP id m16so7840500wrx.12;
+        Tue, 25 Sep 2018 11:08:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x00XLd1EsebUWUDTxJ48cbAuLxMfNSqA5AfFBb0lkyI=;
- b=alHZUandHauFDdDZO/OdavBX5HJgJhCzYXdjNvqX/p57o7CzHxKPobjROvBSBCT315qDwU4EAjNaMlkL4Dt93qfKrA86XH4cx0ib4FQOl9t26mGlCnEZBrjM46eUrGGC/EupMAtty8wu5YXmtr1xzv8p2N0RHCi85SKtZBi1Ny8=
-Received: from BYAPR08MB4934.namprd08.prod.outlook.com (20.176.255.143) by
- BYAPR08MB4776.namprd08.prod.outlook.com (20.176.255.25) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1164.25; Tue, 25 Sep 2018 17:45:12 +0000
-Received: from BYAPR08MB4934.namprd08.prod.outlook.com
- ([fe80::d9a4:818:86af:8981]) by BYAPR08MB4934.namprd08.prod.outlook.com
- ([fe80::d9a4:818:86af:8981%5]) with mapi id 15.20.1143.022; Tue, 25 Sep 2018
- 17:45:12 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Yasha Cherikovsky <yasha.che3@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] MIPS: Add new Kconfig variable to avoid unaligned
- access instructions
-Thread-Topic: [PATCH 1/1] MIPS: Add new Kconfig variable to avoid unaligned
- access instructions
-Thread-Index: AQHUUQPr1ACo6zXNjUStgfMebG/ND6UBTPoA
-Date:   Tue, 25 Sep 2018 17:45:12 +0000
-Message-ID: <20180925174510.rg3j4lfmwvlecnqt@pburton-laptop>
-References: <20180920170306.9157-1-yasha.che3@gmail.com>
- <20180920170306.9157-2-yasha.che3@gmail.com>
-In-Reply-To: <20180920170306.9157-2-yasha.che3@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: DM3PR12CA0050.namprd12.prod.outlook.com
- (2603:10b6:0:56::18) To BYAPR08MB4934.namprd08.prod.outlook.com
- (2603:10b6:a03:6a::15)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;BYAPR08MB4776;6:CdS98fmSVrLr/rQPHkBHAs1UV6YCw0WBBQU7m+5bLh1aIkCTwSN3p9lzbd8zPkY3t1IqlQnZPZbWtHJUK7onIO8wm8hN8OXwBpWf5N2HghXIk2IHWUMRQoKsM4rUtDADMGoHKqq32iOwZVlIPHmFVBnOcrsp1CCwtcSTfGbk8E88EZ6lxxhgTO5tCM71GHT+QPyGzC+sSWUEXtnDndNcg/lJE+enS9nzRL+cS5WF/wvDoIdlmHmdYJdYf3Syhp9riNcR01Vfkn6paWYr9vS3c0sSWXNgDIrgBHx2zQoJy5CJLqnVzmAJlvsa94n7C0O++gTPbUTgN3fHjRSX3Ljbt9uyEQlkCf9Rj9MHxfmLRESrGo8p/QoagBl9Llw74ZqNGBsxzH4TjsOfpHtkYLAbQrdfxmJD7YBQojfe495pH68mQtawt6cA248F50RCwzM9FLryOa9+OdFmuEn/UA58zw==;5:fFpm+Az4KHsjTFGJ8ioQThaktXVAp/PCRTFZHeMow0ngI4qeh93iFWbUKyY6mC3tKAHSVoG/bhqMnu6ee71PJSFeMHaksuKGDg/mfGnPWl9oTDetIig5Yxs9OtWh0lRe0BmrDh8S2j4mCLow5aKKwhMuNRFN/+GSrldy1t+IVDk=;7:/bkpvmiuiCMYaghf1YL5+kzSDXSRN379W4dQeyc7p5OCBKQNhegEdxrh2JAD/4ALkcmLsGV/AribLu1pw5pEPT6brSXdqxCOKw3uEG/y6pt+QYMw487RwANCpvePCOvU5wDJ1qUiyf8S1J6Zni2UtLQ+l8d4whTep+CDvWP0lt9AfJKAI03/lsWFuK8+LnmI3X8PdS+nKx53llA37U+9Jjq2CPR8usrzMIX7Mb/GhxMuRWHi8yUU9riX73vvuNbO
-x-ms-office365-filtering-correlation-id: bf333ea9-c7e4-4429-ae46-08d6230ea4ee
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4776;
-x-ms-traffictypediagnostic: BYAPR08MB4776:
-x-microsoft-antispam-prvs: <BYAPR08MB4776A03B6796094FB2513960C1160@BYAPR08MB4776.namprd08.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(93006095)(3231355)(944501410)(52105095)(3002001)(149066)(150027)(6041310)(20161123564045)(20161123558120)(20161123562045)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:BYAPR08MB4776;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4776;
-x-forefront-prvs: 08062C429B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(136003)(376002)(346002)(396003)(39840400004)(189003)(199004)(106356001)(486006)(14454004)(476003)(508600001)(25786009)(446003)(11346002)(4326008)(5250100002)(105586002)(316002)(99286004)(26005)(71200400001)(71190400001)(102836004)(44832011)(186003)(305945005)(97736004)(58126008)(8676002)(33716001)(42882007)(81156014)(54906003)(81166006)(6246003)(7736002)(39060400002)(8936002)(9686003)(53936002)(256004)(6506007)(66066001)(14444005)(2906002)(2900100001)(386003)(6512007)(6916009)(6116002)(6436002)(76176011)(68736007)(229853002)(5660300001)(6486002)(52116002)(3846002)(33896004)(34290500001)(1076002);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4776;H:BYAPR08MB4934.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: 9KcSuYX+wrTOmtSDBQIY+Kh0JcRu29jpll9pA3swjwRUO158GZxDoAyf/be2vSd9HHXeYqaMbe3evgiQ8bYsTYvJlwtnGn46EUXdEsa7rnAU3ng6jGVA3VVb84nCNL7RDgwh7nohLlTUTOwdxSoc3hRa/I0NZzlDnUuydNTSezofzVCD1TPdcnN2XXoEq4D+1U3bVMc7W94S44irab0ZVit9xczaGHnasm5+29aCyi1dVzyLmk4iJDTnjvA+O3aQBMYwFdb6xc9WCWQ2LGksmcHLU+OgPVXTjF5RPuDZ1HYeZ+wK4WllMC13+yrUYpnnsCpdm1rLfx2yBltpfPPSgttdGP3Cc9RgGwRsTH+zVlU=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <544FC21DF38F2043A71E42A58CABC6B0@namprd08.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CI0hLS/bvI0Hqo/pfglI7FYYUsJ/cwY74alonubtd24=;
+        b=auC+OaKCTtg9cJXRa7nmpzJdX50yTxyrVVNvZZnoKthSRJIAXkoq0QJW8U5FvqUbF+
+         wUHDJ0HzDVf0tfUlj59ToPdGjq9fH5TMjUHOLzSIzx7aJNXOEbcbPIT2FSicVRaepJet
+         1ngKpu4E+3o8RJqRgcVvlLyD9dgD9ifsJdf5fRBnRhcHqE3owMk/Mjt2MptFWHgo2/jJ
+         QsMNgO5dxxn0m/81Pfwc2mzfu1t8QmyyUquvaXDeFwotVsl91LgMsnJNTZQiVsv+EwnC
+         qf8XWYQX9W56c53iJ091ghM1rKELrOXCaWAZ9nuBGIiOU7OUiLvpWLhKkJTw4zJMOoA1
+         xszA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CI0hLS/bvI0Hqo/pfglI7FYYUsJ/cwY74alonubtd24=;
+        b=YhRhaM0XhxZnJD1gAfFNEiWwmKoAvQhTMfEg5ZnzMNTTvi1DMO0ge2eZ1kHWpbDWqf
+         t6eQRUsJZ9r1AZN+mY8923qX8uNcfaayzHcUzel/12F8HIk9OPXGUUxD9KLKkVAz2ypS
+         GJRshZa9g6jaAErXzg1zCPkhgFgp5IK729hNaje4ofWBCvNdjIVjWB31IPoX5Suv+1Dt
+         zV3FZhjcs16FMlX8vSz4BT1BP6osV5C6IV73Qosmo3vIov5L4JGrzCcT1SUTuTQmes0C
+         wjZdjMynCd282/AFl80LGekZJF7K0razVx8TnT2bWdGcFd7rVyi8nahxTg0S+xD6ODNs
+         x0TQ==
+X-Gm-Message-State: ABuFfogv1kqVnP0IE8Ir1b2luicvB6CzxYbpQmmus1/8huf3xqNd6Guc
+        kjr9evms72cakBV/Zx/N8tzv8+6IJUs=
+X-Google-Smtp-Source: ACcGV60fRVuHt4vkMnJmbNqf0FIUohzkZQQchrgpkJqKoDBbpKvqDDa8UWYE/X+zukw+qWjKv+c8aA==
+X-Received: by 2002:adf:93a5:: with SMTP id 34-v6mr2114197wrp.244.1537898923546;
+        Tue, 25 Sep 2018 11:08:43 -0700 (PDT)
+Received: from laptop.localdomain ([37.122.159.87])
+        by smtp.gmail.com with ESMTPSA id v6-v6sm2755827wro.66.2018.09.25.11.08.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Sep 2018 11:08:43 -0700 (PDT)
+From:   Yasha Cherikovsky <yasha.che3@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Cc:     Yasha Cherikovsky <yasha.che3@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
+Date:   Tue, 25 Sep 2018 21:08:21 +0300
+Message-Id: <20180925180825.24659-1-yasha.che3@gmail.com>
+X-Mailer: git-send-email 2.19.0
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf333ea9-c7e4-4429-ae46-08d6230ea4ee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2018 17:45:12.6025
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4776
-Return-Path: <pburton@wavecomp.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66551
+X-archive-position: 66552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: yasha.che3@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -93,49 +69,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yasha,
+Hi,
 
-On Thu, Sep 20, 2018 at 08:03:06PM +0300, Yasha Cherikovsky wrote:
-> MIPSR6 doesn't support unaligned access instructions (lwl, lwr, swl, swr).
-> The MIPS tree has some special cases to avoid these instructions,
-> and currently the code is testing for CONFIG_CPU_MIPSR6.
-> 
-> Declare a new Kconfig variable: CONFIG_CPU_HAS_NO_UNALIGNED_LOAD_STORE,
-> and make CONFIG_CPU_MIPSR6 select it.
-> And switch all the special cases to test for the new variable.
-> 
-> Also, the new variable selects CONFIG_GENERIC_CSUM, to use
-> generic C checksum code (to avoid special assembly code that uses
-> the unsupported instructions).
+This patch series simplifies and cleans up the handling of
+CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
 
-Thanks for your patch :)
+Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
+also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
 
-I think it would be cleaner to invert this logic & instead have the
-Kconfig entry indicate when kernel's build target *does* support the
-[ls]w[lr] instructions.
+This allows to remove special platform code that handled the ELF
+appended dtb case, and replace it with the generic appended dtb
+case (fw_passed_dtb).
 
-It would be good for the name to be clear that these instructions are
-what it's about too - "unaligned load store" is a little too vague for
-my liking. For example one could easily misconstrue it to mean something
-akin to the inverse of CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS, whereas
-in the MIPSr6 case many CPUs actually handle unaligned accesses in
-hardware when using the regular load/store instructions. They don't have
-the [ls]w[lr] instructions, but they don't need them because they handle
-unaligned accesses more naturally without needing us to be explicit
-about them.
+There's also a bonus: platforms that already handle 'fw_passed_dtb',
+gain now automatic support for detecting a DT blob under
+CONFIG_MIPS_ELF_APPENDED_DTB=y.
 
-How about we:
 
-  - Add a Kconfig option CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and select
-    it for all existing pre-r6 targets (probably from CONFIG_CPU_*).
+Patches:
+- Patch 1 adds only comments (to make the file more readable for patch 2).
+- Patch 2 fixes 'fw_passed_dtb' under CONFIG_MIPS_ELF_APPENDED_DTB=y.
+- Patch 3 simplifies CONFIG_MIPS_ELF_APPENDED_DTB handling on the BMIPS platform.
+- Patch 4 simplifies CONFIG_MIPS_ELF_APPENDED_DTB handling on the Octeon platform.
 
-  - Change CONFIG_GENERIC_CSUM to default y if
-    !CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and drop the selects of it.
+Patches 3 and 4 depend on patch 2.
 
-That would avoid the double-negative ("if we don't not support this")
-that the #ifndef's currently represent. It would also mean any future
-architecture/ISA targets beyond MIPSr6 automatically avoid the
-instructions.
+The patches are on top of v4.18.
+
+The patches are also available at:
+https://github.com/yashac3/linux-rtl8186/commits/elf_appended_dtb_changes_on_4_18
+
+Please review.
 
 Thanks,
-    Paul
+Yasha
+
+Cc: linux-kernel@vger.kernel.org
+
+
+Yasha Cherikovsky (4):
+  MIPS/head: Add comments after #endif and #else
+  MIPS/head: Store ELF appended dtb in a global variable too
+  MIPS: BMIPS: Remove special handling of CONFIG_MIPS_ELF_APPENDED_DTB=y
+  MIPS: Octeon: Remove special handling of
+    CONFIG_MIPS_ELF_APPENDED_DTB=y
+
+ arch/mips/bmips/setup.c         |  9 +--------
+ arch/mips/cavium-octeon/setup.c | 10 +++-------
+ arch/mips/kernel/head.S         | 18 ++++++++++--------
+ 3 files changed, 14 insertions(+), 23 deletions(-)
+
+-- 
+2.19.0

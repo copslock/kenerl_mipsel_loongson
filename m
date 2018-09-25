@@ -1,37 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 16:01:16 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:59490 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990434AbeIYOBMlL6Bu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 16:01:12 +0200
-Date:   Tue, 25 Sep 2018 15:38:35 +0200
-Subject: Re: [PATCH v7 05/24] clocksource: Add a new timer-ingenic driver
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Mathieu Malaterre <malat@debian.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-doc@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-watchdog@vger.kernel.org, od@zcrc.me,
-        linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
-        Mark Rutland <mark.rutland@arm.com>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 16:57:08 +0200 (CEST)
+Received: from frisell.zx2c4.com ([192.95.5.64]:32943 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991923AbeIYO5AnB-km (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Sep 2018 16:57:00 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 4f461687;
+        Tue, 25 Sep 2018 14:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
+        :subject:date:message-id:in-reply-to:references:mime-version
+        :content-type:content-transfer-encoding; s=mail; bh=nMspqwfANYff
+        FGnVL2YBgVtndLU=; b=VZQf9YoQ9koFHyGxNfG7VmXUzFHLfsqmspRHOHwAFibz
+        1fHugC1dkGVr/7PnVmJoMwW7PLtfnHObCwrNvX1V0FA2B9Y5hgUQW5b/7y6/ePEi
+        OJRmmOzGH2PQxG1/i8hP17QxViNthR505vdjCqowUUBXIZKCmGcIawYkSZbj7Pa6
+        sWCKKfmZzU08dQNqAmD0s2S2l/eaxkAgw6KRDmbtrVjnMiPPTSQxCZJmJNxJKe1+
+        jshwjrUjyYvWoDzDYyaTBtwo31sSpzkNDxZXRYSQ3YA3gJuqZAq6Jdtd0o6vxtlK
+        z17WaJyyAX2SliOUArOk59jIb02Nj6Jh94uhKpvM8Q==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8e96da90 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
+        Tue, 25 Sep 2018 14:38:25 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-crypto@vger.kernel.org, davem@davemloft.net,
+        gregkh@linuxfoundation.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+        Samuel Neves <sneves@dei.uc.pt>,
+        Andy Lutomirski <luto@kernel.org>,
+        Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-pwm@vger.kernel.org
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Subject: [PATCH net-next v6 08/23] zinc: ChaCha20 MIPS32r2 implementation
+Date:   Tue, 25 Sep 2018 16:56:07 +0200
+Message-Id: <20180925145622.29959-9-Jason@zx2c4.com>
+In-Reply-To: <20180925145622.29959-1-Jason@zx2c4.com>
+References: <20180925145622.29959-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1537884071; bh=CDczmZaAaQF0jT1Eq5AWCYcS9WssS2/ck0xWvHWlMYQ=; h=Date:Subject:From:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding; b=KS1QK4ePXPmbwv+qKq2iw5ItF8ROeR2/FYtpEcRH2Z8lk5qVuOx5SKKfQixf+u7YXQ/RKsQkBEBGc/6GkVgJgQvbYMBSbfeA9ugV3uBM+eS7GwOusPa7EvpHAHvjXjVaAUqRm+gsRAyJRhCVKc4GMZQVbPg7f0bf9uaJyQUmEBw=
-Message-Id: <S23990434AbeIYOBMlL6Bu/20180925140112Z+681@eddie.linux-mips.org>
-Return-Path: <paul@crapouillou.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66548
+X-archive-position: 66549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,49 +57,515 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CkxlIDI0IHNlcHQuIDIwMTggOToxNCBBTSwgRGFuaWVsIExlemNhbm8gPGRhbmllbC5sZXpjYW5v
-QGxpbmFyby5vcmc+IGEgw6ljcml0IDoKPgo+IE9uIDI0LzA5LzIwMTggMDg6NTMsIFBhdWwgQ2Vy
-Y3VlaWwgd3JvdGU6IAo+ID4gCj4gPiBMZSAyNCBzZXB0LiAyMDE4IDA3OjU4LCBEYW5pZWwgTGV6
-Y2FubyA8ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSDDqWNyaXQgOiAKPiA+PiAKPiA+PiBP
-biAyNC8wOS8yMDE4IDA3OjQ5LCBQYXVsIENlcmN1ZWlsIHdyb3RlOiAKPiA+Pj4gCj4gPj4+IExl
-IDI0IHNlcHQuIDIwMTggMDc6MzUsIERhbmllbCBMZXpjYW5vIDxkYW5pZWwubGV6Y2Fub0BsaW5h
-cm8ub3JnPiBhIAo+ID4+PiDDqWNyaXQgOiAKPiA+Pj4+IAo+ID4+Pj4gT24gMjQvMDkvMjAxOCAw
-NzoyNCwgUGF1bCBDZXJjdWVpbCB3cm90ZTogCj4gPj4+Pj4gSGkgRGFuaWVsLCAKPiA+Pj4+PiAK
-PiA+Pj4+PiBMZSAyNCBzZXB0LiAyMDE4IDA1OjEyLCBEYW5pZWwgTGV6Y2FubyAKPiA+Pj4+PiA8
-ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSDDqWNyaXQgOiAKPiA+Pj4+Pj4gCj4gPj4+Pj4+
-IE9uIDIxLzA4LzIwMTggMTk6MTYsIFBhdWwgQ2VyY3VlaWwgd3JvdGU6IAo+ID4+Pj4+Pj4gVGhp
-cyBkcml2ZXIgaGFuZGxlcyB0aGUgVENVIChUaW1lciBDb3VudGVyIFVuaXQpIHByZXNlbnQgb24g
-Cj4gPj4+Pj4+PiB0aGUgSW5nZW5pYyBKWjQ3eHggU29DcywgYW5kIHByb3ZpZGVzIHRoZSBrZXJu
-ZWwgd2l0aCBhIAo+ID4+Pj4+Pj4gc3lzdGVtIHRpbWVyLCBhbmQgb3B0aW9uYWxseSB3aXRoIGEg
-Y2xvY2tzb3VyY2UgYW5kIGEgCj4gPj4+Pj4+PiBzY2hlZF9jbG9jay4gCj4gPj4+Pj4+PiAKPiA+
-Pj4+Pj4+IEl0IGFsc28gcHJvdmlkZXMgY2xvY2tzIGFuZCBpbnRlcnJ1cHQgaGFuZGxpbmcgdG8g
-Y2xpZW50IAo+ID4+Pj4+Pj4gZHJpdmVycy4gCj4gPj4+Pj4+IAo+ID4+Pj4+PiBDYW4geW91IHBy
-b3ZpZGUgYSBtdWNoIG1vcmUgY29tcGxldGUgZGVzY3JpcHRpb24gb2YgdGhlIHRpbWVyIAo+ID4+
-Pj4+PiBpbiBvcmRlciB0byBtYWtlIG15IGxpZmUgZWFzaWVyIGZvciB0aGUgcmV2aWV3IG9mIHRo
-aXMgcGF0Y2g/IAo+ID4+Pj4+IAo+ID4+Pj4+IFNlZSBwYXRjaCBbMDMvMjRdLCBpdCBhZGRzIGEg
-ZG9jIGZpbGUgdGhhdCBkZXNjcmliZXMgdGhlIAo+ID4+Pj4+IGhhcmR3YXJlLiAKPiA+Pj4+IAo+
-ID4+Pj4gVGhhbmtzLCBJIHdlbnQgdGhyb3VnaCBidXQgaXQgaXMgaW5jb21wbGV0ZSB0byB1bmRl
-cnN0YW5kIHdoYXQgdGhlIAo+ID4+Pj4gdGltZXIgZG8uIEkgd2lsbCByZXZlcnNlLWVuZ2luZWVy
-IHRoZSBjb2RlIGJ1dCBpdCB3b3VsZCBoZWxwIGlmIHlvdSAKPiA+Pj4+IGNhbiBnaXZlIHRoZSBn
-cm9zcyBhcHByb2FjaC4gV2h5IG11bHRpcGxlIGNoYW5uZWxzID8gbXV0ZXhlcyBhbmQgCj4gPj4+
-PiBjb21wbGV0aW9uID8gCj4gPj4+IAo+ID4+PiBNdWNoIG9mIHRoZSBjb21wbGV4aXR5IGlzIGJl
-Y2F1c2Ugb2YgdGhlIG11bHRpLXB1cnBvc2UgbmF0dXJlIG9mIHRoZSAKPiA+Pj4gVENVIGNoYW5u
-ZWxzLiBFYWNoIG9uZSBjYW4gYmUgdXNlZCBhcyB0aW1lci9jbG9ja3NvdXJjZSwgb3IgUFdNLiAK
-PiA+Pj4gCj4gPj4+IFRoZSBkcml2ZXIgc3RhcnRzIGJ5IHVzaW5nIGNoYW5uZWxzIDAgYW5kIDEg
-YXMgc3lzdGVtIHRpbWVyIGFuZCAKPiA+Pj4gY2xvY2tzb3VyY2UsIHJlc3BlY3RpdmVseSwgdGhl
-IG90aGVyIG9uZXMgYmVpbmcgdW51c2VkIGZvciBub3cuIFRoZW4sIAo+ID4+PiAqaWYqIHRoZSBQ
-V00gZHJpdmVyIHJlcXVlc3RzIG9uZSBvZiB0aGUgY2hhbm5lbHMgaW4gdXNlIGJ5IHRoZSAKPiA+
-Pj4gdGltZXIvY2xvY2tzb3VyY2UgZHJpdmVyLCBzYXkgY2hhbm5lbCAwLCB0aGUgdGltZXIvY2xv
-Y2tzb3VyY2UgZHJpdmVyIAo+ID4+PiB3aWxsIGR5bmFtaWNhbGx5IHJlYXNzaWduIHRoZSBzeXN0
-ZW0gdGltZXIgdG8gYSBmcmVlIGNoYW5uZWwsIGZyb20gCj4gPj4+IGNoYW5uZWwgMCB0byBlLmcu
-IGNoYW5uZWwgMi4gT25seSBpbiB0aGF0IGNhc2UgdGhlIGNvbXBsZXRpb24vbXV0ZXggCj4gPj4+
-IGFyZSBhY3R1YWxseSB1c2VkLiAKPiA+PiAKPiA+PiBXaHkgZG8geW91IG5lZWQgdG8gZG8gdGhp
-cz8gQ2FuJ3QgYmUgdGhlIGNoYW5uZWxzIGRlZGljYXRlZCBhbmQgcmVzZXJ2ZWQgCj4gPj4gZm9y
-IGNsb2Nrc291cmNlIGFuZCBjbG9ja2V2ZW50PyAKPiA+IAo+ID4gVGhhdCdzIHdoYXQgSSBoYWQg
-aW4gcGxhY2UgKGluZ2VuaWMsdGltZXItY2hhbm5lbCBhbmQgaW5nZW5pYyxjbG9ja3NvdXJjZS1j
-aGFubmVsIERUIHByb3BlcnRpZXMpLCBidXQgUm9iIGRpZG4ndCB3YW50IGFueSBsaW51eC1zcGVj
-aWZpYyBwcm9wZXJ0aWVzIGluIHRoZSBkZXZpY2V0cmVlIGJpbmRpbmcgOiggCj4KPiBJc24ndCBw
-b3NzaWJsZSB0byBzcGVjaWZ5IHRoZSBjaGFubmVsIHRvIHVzZSBpbiB0aGUgRFQ/IGxpa2UgcmVu
-ZXNhczE2ID8gCgpUaGF0J3Mgd2hhdCBJIGRpZCBpbiBWNiAoYW5kIGJlZm9yZSksIGJ1dCBSb2Ig
-ZGlkIG5vdCB3YW50IG1lIHRvIGFkZCBwcm9wZXJ0aWVzIGZvciBMaW51eC1zcGVjaWZpYyBjb25j
-ZXB0cyBzdWNoIGFzIGNsb2Nrc291cmNlLgoKLVBhdWw=
+This MIPS32r2 implementation comes from René van Dorst and me and
+results in a nice speedup on the usual OpenWRT targets.
+
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: René van Dorst <opensource@vdorst.com>
+Co-developed-by: René van Dorst <opensource@vdorst.com>
+Cc: Samuel Neves <sneves@dei.uc.pt>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+---
+ lib/zinc/Makefile                      |   2 +
+ lib/zinc/chacha20/chacha20-mips-glue.h |  27 ++
+ lib/zinc/chacha20/chacha20-mips.S      | 424 +++++++++++++++++++++++++
+ lib/zinc/chacha20/chacha20.c           |   2 +
+ 4 files changed, 455 insertions(+)
+ create mode 100644 lib/zinc/chacha20/chacha20-mips-glue.h
+ create mode 100644 lib/zinc/chacha20/chacha20-mips.S
+
+diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
+index e47f64e12bbd..60d568cf5206 100644
+--- a/lib/zinc/Makefile
++++ b/lib/zinc/Makefile
+@@ -6,4 +6,6 @@ zinc_chacha20-y := chacha20/chacha20.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_X86_64) += chacha20/chacha20-x86_64.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM) += chacha20/chacha20-arm.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM64) += chacha20/chacha20-arm64.o
++zinc_chacha20-$(CONFIG_ZINC_ARCH_MIPS) += chacha20/chacha20-mips.o
++AFLAGS_chacha20-mips.o += -O2 # This is required to fill the branch delay slots
+ obj-$(CONFIG_ZINC_CHACHA20) += zinc_chacha20.o
+diff --git a/lib/zinc/chacha20/chacha20-mips-glue.h b/lib/zinc/chacha20/chacha20-mips-glue.h
+new file mode 100644
+index 000000000000..6e70dd6817d2
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips-glue.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0 OR MIT */
++/*
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++asmlinkage void chacha20_mips(u32 state[16], u8 *out, const u8 *in,
++			      const size_t len);
++static void __init chacha20_fpu_init(void)
++{
++}
++
++static inline bool chacha20_arch(struct chacha20_ctx *state, u8 *dst,
++				 const u8 *src, const size_t len,
++				 simd_context_t *simd_context)
++{
++	chacha20_mips((u32 *)state, dst, src, len);
++	return true;
++}
++
++
++static inline bool hchacha20_arch(u32 derived_key[CHACHA20_KEY_WORDS],
++				  const u8 nonce[HCHACHA20_NONCE_SIZE],
++				  const u8 key[HCHACHA20_KEY_SIZE],
++				  simd_context_t *simd_context)
++{
++	return false;
++}
+diff --git a/lib/zinc/chacha20/chacha20-mips.S b/lib/zinc/chacha20/chacha20-mips.S
+new file mode 100644
+index 000000000000..031ee5e794df
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips.S
+@@ -0,0 +1,424 @@
++/* SPDX-License-Identifier: GPL-2.0 OR MIT */
++/*
++ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com>. All Rights Reserved.
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++#define MASK_U32		0x3c
++#define CHACHA20_BLOCK_SIZE	64
++#define STACK_SIZE		32
++
++#define X0	$t0
++#define X1	$t1
++#define X2	$t2
++#define X3	$t3
++#define X4	$t4
++#define X5	$t5
++#define X6	$t6
++#define X7	$t7
++#define X8	$t8
++#define X9	$t9
++#define X10	$v1
++#define X11	$s6
++#define X12	$s5
++#define X13	$s4
++#define X14	$s3
++#define X15	$s2
++/* Use regs which are overwritten on exit for Tx so we don't leak clear data. */
++#define T0	$s1
++#define T1	$s0
++#define T(n)	T ## n
++#define X(n)	X ## n
++
++/* Input arguments */
++#define STATE		$a0
++#define OUT		$a1
++#define IN		$a2
++#define BYTES		$a3
++
++/* Output argument */
++/* NONCE[0] is kept in a register and not in memory.
++ * We don't want to touch original value in memory.
++ * Must be incremented every loop iteration.
++ */
++#define NONCE_0		$v0
++
++/* SAVED_X and SAVED_CA are set in the jump table.
++ * Use regs which are overwritten on exit else we don't leak clear data.
++ * They are used to handling the last bytes which are not multiple of 4.
++ */
++#define SAVED_X		X15
++#define SAVED_CA	$s7
++
++#define IS_UNALIGNED	$s7
++
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#define MSB 0
++#define LSB 3
++#define ROTx rotl
++#define ROTR(n) rotr n, 24
++#define	CPU_TO_LE32(n) \
++	wsbh	n; \
++	rotr	n, 16;
++#else
++#define MSB 3
++#define LSB 0
++#define ROTx rotr
++#define CPU_TO_LE32(n)
++#define ROTR(n)
++#endif
++
++#define FOR_EACH_WORD(x) \
++	x( 0); \
++	x( 1); \
++	x( 2); \
++	x( 3); \
++	x( 4); \
++	x( 5); \
++	x( 6); \
++	x( 7); \
++	x( 8); \
++	x( 9); \
++	x(10); \
++	x(11); \
++	x(12); \
++	x(13); \
++	x(14); \
++	x(15);
++
++#define FOR_EACH_WORD_REV(x) \
++	x(15); \
++	x(14); \
++	x(13); \
++	x(12); \
++	x(11); \
++	x(10); \
++	x( 9); \
++	x( 8); \
++	x( 7); \
++	x( 6); \
++	x( 5); \
++	x( 4); \
++	x( 3); \
++	x( 2); \
++	x( 1); \
++	x( 0);
++
++#define PLUS_ONE_0	 1
++#define PLUS_ONE_1	 2
++#define PLUS_ONE_2	 3
++#define PLUS_ONE_3	 4
++#define PLUS_ONE_4	 5
++#define PLUS_ONE_5	 6
++#define PLUS_ONE_6	 7
++#define PLUS_ONE_7	 8
++#define PLUS_ONE_8	 9
++#define PLUS_ONE_9	10
++#define PLUS_ONE_10	11
++#define PLUS_ONE_11	12
++#define PLUS_ONE_12	13
++#define PLUS_ONE_13	14
++#define PLUS_ONE_14	15
++#define PLUS_ONE_15	16
++#define PLUS_ONE(x)	PLUS_ONE_ ## x
++#define _CONCAT3(a,b,c)	a ## b ## c
++#define CONCAT3(a,b,c)	_CONCAT3(a,b,c)
++
++#define STORE_UNALIGNED(x) \
++CONCAT3(.Lchacha20_mips_xor_unaligned_, PLUS_ONE(x), _b: ;) \
++	.if (x != 12); \
++		lw	T0, (x*4)(STATE); \
++	.endif; \
++	lwl	T1, (x*4)+MSB ## (IN); \
++	lwr	T1, (x*4)+LSB ## (IN); \
++	.if (x == 12); \
++		addu	X ## x, NONCE_0; \
++	.else; \
++		addu	X ## x, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## x); \
++	xor	X ## x, T1; \
++	swl	X ## x, (x*4)+MSB ## (OUT); \
++	swr	X ## x, (x*4)+LSB ## (OUT);
++
++#define STORE_ALIGNED(x) \
++CONCAT3(.Lchacha20_mips_xor_aligned_, PLUS_ONE(x), _b: ;) \
++	.if (x != 12); \
++		lw	T0, (x*4)(STATE); \
++	.endif; \
++	lw	T1, (x*4) ## (IN); \
++	.if (x == 12); \
++		addu	X ## x, NONCE_0; \
++	.else; \
++		addu	X ## x, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## x); \
++	xor	X ## x, T1; \
++	sw	X ## x, (x*4) ## (OUT);
++
++/* Jump table macro.
++ * Used for setup and handling the last bytes, which are not multiple of 4.
++ * X15 is free to store Xn
++ * Every jumptable entry must be equal in size.
++ */
++#define JMPTBL_ALIGNED(x) \
++.Lchacha20_mips_jmptbl_aligned_ ## x: ; \
++	.set	noreorder; \
++	b	.Lchacha20_mips_xor_aligned_ ## x ## _b; \
++	.if (x == 12); \
++		addu	SAVED_X, X ## x, NONCE_0; \
++	.else; \
++		addu	SAVED_X, X ## x, SAVED_CA; \
++	.endif; \
++	.set	reorder
++
++#define JMPTBL_UNALIGNED(x) \
++.Lchacha20_mips_jmptbl_unaligned_ ## x: ; \
++	.set	noreorder; \
++	b	.Lchacha20_mips_xor_unaligned_ ## x ## _b; \
++	.if (x == 12); \
++		addu	SAVED_X, X ## x, NONCE_0; \
++	.else; \
++		addu	SAVED_X, X ## x, SAVED_CA; \
++	.endif; \
++	.set	reorder
++
++#define AXR(A, B, C, D,  K, L, M, N,  V, W, Y, Z,  S) \
++	addu	X(A), X(K); \
++	addu	X(B), X(L); \
++	addu	X(C), X(M); \
++	addu	X(D), X(N); \
++	xor	X(V), X(A); \
++	xor	X(W), X(B); \
++	xor	X(Y), X(C); \
++	xor	X(Z), X(D); \
++	rotl	X(V), S;    \
++	rotl	X(W), S;    \
++	rotl	X(Y), S;    \
++	rotl	X(Z), S;
++
++.text
++.set	reorder
++.set	noat
++.globl	chacha20_mips
++.ent	chacha20_mips
++chacha20_mips:
++	.frame	$sp, STACK_SIZE, $ra
++
++	addiu	$sp, -STACK_SIZE
++
++	/* Return bytes = 0. */
++	beqz	BYTES, .Lchacha20_mips_end
++
++	lw	NONCE_0, 48(STATE)
++
++	/* Save s0-s7 */
++	sw	$s0,  0($sp)
++	sw	$s1,  4($sp)
++	sw	$s2,  8($sp)
++	sw	$s3, 12($sp)
++	sw	$s4, 16($sp)
++	sw	$s5, 20($sp)
++	sw	$s6, 24($sp)
++	sw	$s7, 28($sp)
++
++	/* Test IN or OUT is unaligned.
++	 * IS_UNALIGNED = ( IN | OUT ) & 0x00000003
++	 */
++	or	IS_UNALIGNED, IN, OUT
++	andi	IS_UNALIGNED, 0x3
++
++	/* Set number of rounds */
++	li	$at, 20
++
++	b	.Lchacha20_rounds_start
++
++.align 4
++.Loop_chacha20_rounds:
++	addiu	IN,  CHACHA20_BLOCK_SIZE
++	addiu	OUT, CHACHA20_BLOCK_SIZE
++	addiu	NONCE_0, 1
++
++.Lchacha20_rounds_start:
++	lw	X0,  0(STATE)
++	lw	X1,  4(STATE)
++	lw	X2,  8(STATE)
++	lw	X3,  12(STATE)
++
++	lw	X4,  16(STATE)
++	lw	X5,  20(STATE)
++	lw	X6,  24(STATE)
++	lw	X7,  28(STATE)
++	lw	X8,  32(STATE)
++	lw	X9,  36(STATE)
++	lw	X10, 40(STATE)
++	lw	X11, 44(STATE)
++
++	move	X12, NONCE_0
++	lw	X13, 52(STATE)
++	lw	X14, 56(STATE)
++	lw	X15, 60(STATE)
++
++.Loop_chacha20_xor_rounds:
++	addiu	$at, -2
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15, 16);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7, 12);
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15,  8);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7,  7);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14, 16);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4, 12);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14,  8);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4,  7);
++	bnez	$at, .Loop_chacha20_xor_rounds
++
++	addiu	BYTES, -(CHACHA20_BLOCK_SIZE)
++
++	/* Is data src/dst unaligned? Jump */
++	bnez	IS_UNALIGNED, .Loop_chacha20_unaligned
++
++	/* Set number rounds here to fill delayslot. */
++	li	$at, 20
++
++	/* BYTES < 0, it has no full block. */
++	bltz	BYTES, .Lchacha20_mips_no_full_block_aligned
++
++	FOR_EACH_WORD_REV(STORE_ALIGNED)
++
++	/* BYTES > 0? Loop again. */
++	bgtz	BYTES, .Loop_chacha20_rounds
++
++	/* Place this here to fill delay slot */
++	addiu	NONCE_0, 1
++
++	/* BYTES < 0? Handle last bytes */
++	bltz	BYTES, .Lchacha20_mips_xor_bytes
++
++.Lchacha20_mips_xor_done:
++	/* Restore used registers */
++	lw	$s0,  0($sp)
++	lw	$s1,  4($sp)
++	lw	$s2,  8($sp)
++	lw	$s3, 12($sp)
++	lw	$s4, 16($sp)
++	lw	$s5, 20($sp)
++	lw	$s6, 24($sp)
++	lw	$s7, 28($sp)
++
++	/* Write NONCE_0 back to right location in state */
++	sw	NONCE_0, 48(STATE)
++
++.Lchacha20_mips_end:
++	addiu	$sp, STACK_SIZE
++	jr	$ra
++
++.Lchacha20_mips_no_full_block_aligned:
++	/* Restore the offset on BYTES */
++	addiu	BYTES, CHACHA20_BLOCK_SIZE
++
++	/* Get number of full WORDS */
++	andi	$at, BYTES, MASK_U32
++
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_aligned_0)
++
++	/* Calculate lower half jump table offset */
++	ins	T0, $at, 1, 6
++
++	/* Add offset to STATE */
++	addu	T1, STATE, $at
++
++	/* Add lower half jump table addr */
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_aligned_0)
++
++	/* Read value from STATE */
++	lw	SAVED_CA, 0(T1)
++
++	/* Store remaining bytecounter as negative value */
++	subu	BYTES, $at, BYTES
++
++	jr	T0
++
++	/* Jump table */
++	FOR_EACH_WORD(JMPTBL_ALIGNED)
++
++
++.Loop_chacha20_unaligned:
++	/* Set number rounds here to fill delayslot. */
++	li	$at, 20
++
++	/* BYTES > 0, it has no full block. */
++	bltz	BYTES, .Lchacha20_mips_no_full_block_unaligned
++
++	FOR_EACH_WORD_REV(STORE_UNALIGNED)
++
++	/* BYTES > 0? Loop again. */
++	bgtz	BYTES, .Loop_chacha20_rounds
++
++	/* Write NONCE_0 back to right location in state */
++	sw	NONCE_0, 48(STATE)
++
++	.set noreorder
++	/* Fall through to byte handling */
++	bgez	BYTES, .Lchacha20_mips_xor_done
++.Lchacha20_mips_xor_unaligned_0_b:
++.Lchacha20_mips_xor_aligned_0_b:
++	/* Place this here to fill delay slot */
++	addiu	NONCE_0, 1
++	.set reorder
++
++.Lchacha20_mips_xor_bytes:
++	addu	IN, $at
++	addu	OUT, $at
++	/* First byte */
++	lbu	T1, 0(IN)
++	addiu	$at, BYTES, 1
++	CPU_TO_LE32(SAVED_X)
++	ROTR(SAVED_X)
++	xor	T1, SAVED_X
++	sb	T1, 0(OUT)
++	beqz	$at, .Lchacha20_mips_xor_done
++	/* Second byte */
++	lbu	T1, 1(IN)
++	addiu	$at, BYTES, 2
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	sb	T1, 1(OUT)
++	beqz	$at, .Lchacha20_mips_xor_done
++	/* Third byte */
++	lbu	T1, 2(IN)
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	sb	T1, 2(OUT)
++	b	.Lchacha20_mips_xor_done
++
++.Lchacha20_mips_no_full_block_unaligned:
++	/* Restore the offset on BYTES */
++	addiu	BYTES, CHACHA20_BLOCK_SIZE
++
++	/* Get number of full WORDS */
++	andi	$at, BYTES, MASK_U32
++
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	/* Calculate lower half jump table offset */
++	ins	T0, $at, 1, 6
++
++	/* Add offset to STATE */
++	addu	T1, STATE, $at
++
++	/* Add lower half jump table addr */
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	/* Read value from STATE */
++	lw	SAVED_CA, 0(T1)
++
++	/* Store remaining bytecounter as negative value */
++	subu	BYTES, $at, BYTES
++
++	jr	T0
++
++	/* Jump table */
++	FOR_EACH_WORD(JMPTBL_UNALIGNED)
++.end chacha20_mips
++.set at
+diff --git a/lib/zinc/chacha20/chacha20.c b/lib/zinc/chacha20/chacha20.c
+index fc4f74fca653..34cb35528c3d 100644
+--- a/lib/zinc/chacha20/chacha20.c
++++ b/lib/zinc/chacha20/chacha20.c
+@@ -18,6 +18,8 @@
+ #include "chacha20-x86_64-glue.h"
+ #elif defined(CONFIG_ZINC_ARCH_ARM) || defined(CONFIG_ZINC_ARCH_ARM64)
+ #include "chacha20-arm-glue.h"
++#elif defined(CONFIG_ZINC_ARCH_MIPS)
++#include "chacha20-mips-glue.h"
+ #else
+ void __init chacha20_fpu_init(void)
+ {
+-- 
+2.19.0

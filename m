@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 16:57:08 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 16:57:22 +0200 (CEST)
 Received: from frisell.zx2c4.com ([192.95.5.64]:32943 "EHLO frisell.zx2c4.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991923AbeIYO5AnB-km (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 25 Sep 2018 16:57:00 +0200
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 4f461687;
-        Tue, 25 Sep 2018 14:38:25 +0000 (UTC)
+        id S23993070AbeIYO5IKbKym (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Sep 2018 16:57:08 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 717b8b06;
+        Tue, 25 Sep 2018 14:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
         :subject:date:message-id:in-reply-to:references:mime-version
-        :content-type:content-transfer-encoding; s=mail; bh=nMspqwfANYff
-        FGnVL2YBgVtndLU=; b=VZQf9YoQ9koFHyGxNfG7VmXUzFHLfsqmspRHOHwAFibz
-        1fHugC1dkGVr/7PnVmJoMwW7PLtfnHObCwrNvX1V0FA2B9Y5hgUQW5b/7y6/ePEi
-        OJRmmOzGH2PQxG1/i8hP17QxViNthR505vdjCqowUUBXIZKCmGcIawYkSZbj7Pa6
-        sWCKKfmZzU08dQNqAmD0s2S2l/eaxkAgw6KRDmbtrVjnMiPPTSQxCZJmJNxJKe1+
-        jshwjrUjyYvWoDzDYyaTBtwo31sSpzkNDxZXRYSQ3YA3gJuqZAq6Jdtd0o6vxtlK
-        z17WaJyyAX2SliOUArOk59jIb02Nj6Jh94uhKpvM8Q==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8e96da90 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
-        Tue, 25 Sep 2018 14:38:25 +0000 (UTC)
+        :content-type:content-transfer-encoding; s=mail; bh=AhnHOipkBP28
+        BlZnBo714jb7Vkg=; b=nj07/BfJDEdyLujj0v/MBCUKflOIovUuhq2q15Ou3bIY
+        /7XWJP5B0EVyJ2h5/rhQ2rg5YYzIkJ+QzzRDVY0UbxUh1oZJyce4emChbqJuiXno
+        ksH/YhLCtD3N4lUp9/24DKwm/o1MnjpzTNYMMOKoRwcJmu5otkbHBWRR+HlEuNwG
+        voF2kfLY/jZBB9apvG42wJyZ9OHnWMp4Ew4anEiJGxdHwWtSyiFQxIQvVCPUEDcq
+        iBzir/G/VTP1QDghiRKn3y2NVkNx297q5270WdmrcCkmL5Irh19UB4kGuQXzJbdU
+        o9BaU9AyzMuKkJRHA2gpHx112V4ut/VF3uKO1un8Og==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id fd5bc941 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
+        Tue, 25 Sep 2018 14:38:39 +0000 (UTC)
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
 To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-crypto@vger.kernel.org, davem@davemloft.net,
@@ -25,12 +25,13 @@ Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Samuel Neves <sneves@dei.uc.pt>,
         Andy Lutomirski <luto@kernel.org>,
         Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
+        Andy Polyakov <appro@openssl.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH net-next v6 08/23] zinc: ChaCha20 MIPS32r2 implementation
-Date:   Tue, 25 Sep 2018 16:56:07 +0200
-Message-Id: <20180925145622.29959-9-Jason@zx2c4.com>
+Subject: [PATCH net-next v6 13/23] zinc: Poly1305 MIPS32r2 and MIPS64 implementations
+Date:   Tue, 25 Sep 2018 16:56:12 +0200
+Message-Id: <20180925145622.29959-14-Jason@zx2c4.com>
 In-Reply-To: <20180925145622.29959-1-Jason@zx2c4.com>
 References: <20180925145622.29959-1-Jason@zx2c4.com>
 MIME-Version: 1.0
@@ -40,7 +41,7 @@ Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66549
+X-archive-position: 66550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,514 +59,882 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 This MIPS32r2 implementation comes from René van Dorst and me and
-results in a nice speedup on the usual OpenWRT targets.
+results in a nice speedup on the usual OpenWRT targets. The MIPS64
+implementation comes from Andy Polyakov results in a nice speedup on
+commodity Octeon hardware, and has been modified slightly from the
+original:
+
+- The function names have been renamed to fit kernel conventions.
+- A comment has been added.
+
+No changes have been made to the actual instructions.
+
+While MIPS64 is CRYPTOGAMS code, the originating code for this happens to
+be the same as OpenSSL's commit 947716c1872d210828122212d076d503ae68b928
 
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: René van Dorst <opensource@vdorst.com>
 Co-developed-by: René van Dorst <opensource@vdorst.com>
+Based-on-code-from: Andy Polyakov <appro@openssl.org>
 Cc: Samuel Neves <sneves@dei.uc.pt>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Greg KH <gregkh@linuxfoundation.org>
 Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+Cc: Andy Polyakov <appro@openssl.org>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
 ---
- lib/zinc/Makefile                      |   2 +
- lib/zinc/chacha20/chacha20-mips-glue.h |  27 ++
- lib/zinc/chacha20/chacha20-mips.S      | 424 +++++++++++++++++++++++++
- lib/zinc/chacha20/chacha20.c           |   2 +
- 4 files changed, 455 insertions(+)
- create mode 100644 lib/zinc/chacha20/chacha20-mips-glue.h
- create mode 100644 lib/zinc/chacha20/chacha20-mips.S
+ lib/zinc/Makefile                      |   3 +
+ lib/zinc/poly1305/poly1305-mips-glue.h |  35 +++
+ lib/zinc/poly1305/poly1305-mips.S      | 407 +++++++++++++++++++++++++
+ lib/zinc/poly1305/poly1305-mips64.S    | 355 +++++++++++++++++++++
+ lib/zinc/poly1305/poly1305.c           |   2 +
+ 5 files changed, 802 insertions(+)
+ create mode 100644 lib/zinc/poly1305/poly1305-mips-glue.h
+ create mode 100644 lib/zinc/poly1305/poly1305-mips.S
+ create mode 100644 lib/zinc/poly1305/poly1305-mips64.S
 
 diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
-index e47f64e12bbd..60d568cf5206 100644
+index c09fd3de60f9..5c4b1d51cb03 100644
 --- a/lib/zinc/Makefile
 +++ b/lib/zinc/Makefile
-@@ -6,4 +6,6 @@ zinc_chacha20-y := chacha20/chacha20.o
- zinc_chacha20-$(CONFIG_ZINC_ARCH_X86_64) += chacha20/chacha20-x86_64.o
- zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM) += chacha20/chacha20-arm.o
- zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM64) += chacha20/chacha20-arm64.o
-+zinc_chacha20-$(CONFIG_ZINC_ARCH_MIPS) += chacha20/chacha20-mips.o
-+AFLAGS_chacha20-mips.o += -O2 # This is required to fill the branch delay slots
- obj-$(CONFIG_ZINC_CHACHA20) += zinc_chacha20.o
-diff --git a/lib/zinc/chacha20/chacha20-mips-glue.h b/lib/zinc/chacha20/chacha20-mips-glue.h
+@@ -14,4 +14,7 @@ zinc_poly1305-y := poly1305/poly1305.o
+ zinc_poly1305-$(CONFIG_ZINC_ARCH_X86_64) += poly1305/poly1305-x86_64.o
+ zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM) += poly1305/poly1305-arm.o
+ zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM64) += poly1305/poly1305-arm64.o
++zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS) += poly1305/poly1305-mips.o
++AFLAGS_poly1305-mips.o += -O2 # This is required to fill the branch delay slots
++zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS64) += poly1305/poly1305-mips64.o
+ obj-$(CONFIG_ZINC_POLY1305) += zinc_poly1305.o
+diff --git a/lib/zinc/poly1305/poly1305-mips-glue.h b/lib/zinc/poly1305/poly1305-mips-glue.h
 new file mode 100644
-index 000000000000..6e70dd6817d2
+index 000000000000..eb38cd5a75ae
 --- /dev/null
-+++ b/lib/zinc/chacha20/chacha20-mips-glue.h
-@@ -0,0 +1,27 @@
++++ b/lib/zinc/poly1305/poly1305-mips-glue.h
+@@ -0,0 +1,35 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
 +/*
 + * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
 + */
 +
-+asmlinkage void chacha20_mips(u32 state[16], u8 *out, const u8 *in,
-+			      const size_t len);
-+static void __init chacha20_fpu_init(void)
++asmlinkage void poly1305_init_mips(void *ctx, const u8 key[16]);
++asmlinkage void poly1305_blocks_mips(void *ctx, const u8 *inp, const size_t len,
++				     const u32 padbit);
++asmlinkage void poly1305_emit_mips(void *ctx, u8 mac[16], const u32 nonce[4]);
++static void __init poly1305_fpu_init(void)
 +{
 +}
 +
-+static inline bool chacha20_arch(struct chacha20_ctx *state, u8 *dst,
-+				 const u8 *src, const size_t len,
-+				 simd_context_t *simd_context)
++static inline bool poly1305_init_arch(void *ctx,
++				      const u8 key[POLY1305_KEY_SIZE])
 +{
-+	chacha20_mips((u32 *)state, dst, src, len);
++	poly1305_init_mips(ctx, key);
 +	return true;
 +}
 +
-+
-+static inline bool hchacha20_arch(u32 derived_key[CHACHA20_KEY_WORDS],
-+				  const u8 nonce[HCHACHA20_NONCE_SIZE],
-+				  const u8 key[HCHACHA20_KEY_SIZE],
-+				  simd_context_t *simd_context)
++static inline bool poly1305_blocks_arch(void *ctx, const u8 *inp,
++					const size_t len, const u32 padbit,
++					simd_context_t *simd_context)
 +{
-+	return false;
++	poly1305_blocks_mips(ctx, inp, len, padbit);
++	return true;
 +}
-diff --git a/lib/zinc/chacha20/chacha20-mips.S b/lib/zinc/chacha20/chacha20-mips.S
++
++static inline bool poly1305_emit_arch(void *ctx, u8 mac[POLY1305_MAC_SIZE],
++				      const u32 nonce[4],
++				      simd_context_t *simd_context)
++{
++	poly1305_emit_mips(ctx, mac, nonce);
++	return true;
++}
+diff --git a/lib/zinc/poly1305/poly1305-mips.S b/lib/zinc/poly1305/poly1305-mips.S
 new file mode 100644
-index 000000000000..031ee5e794df
+index 000000000000..4d695eef1091
 --- /dev/null
-+++ b/lib/zinc/chacha20/chacha20-mips.S
-@@ -0,0 +1,424 @@
++++ b/lib/zinc/poly1305/poly1305-mips.S
+@@ -0,0 +1,407 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
 +/*
-+ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com>. All Rights Reserved.
++ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com> All Rights Reserved.
 + * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
 + */
-+
-+#define MASK_U32		0x3c
-+#define CHACHA20_BLOCK_SIZE	64
-+#define STACK_SIZE		32
-+
-+#define X0	$t0
-+#define X1	$t1
-+#define X2	$t2
-+#define X3	$t3
-+#define X4	$t4
-+#define X5	$t5
-+#define X6	$t6
-+#define X7	$t7
-+#define X8	$t8
-+#define X9	$t9
-+#define X10	$v1
-+#define X11	$s6
-+#define X12	$s5
-+#define X13	$s4
-+#define X14	$s3
-+#define X15	$s2
-+/* Use regs which are overwritten on exit for Tx so we don't leak clear data. */
-+#define T0	$s1
-+#define T1	$s0
-+#define T(n)	T ## n
-+#define X(n)	X ## n
-+
-+/* Input arguments */
-+#define STATE		$a0
-+#define OUT		$a1
-+#define IN		$a2
-+#define BYTES		$a3
-+
-+/* Output argument */
-+/* NONCE[0] is kept in a register and not in memory.
-+ * We don't want to touch original value in memory.
-+ * Must be incremented every loop iteration.
-+ */
-+#define NONCE_0		$v0
-+
-+/* SAVED_X and SAVED_CA are set in the jump table.
-+ * Use regs which are overwritten on exit else we don't leak clear data.
-+ * They are used to handling the last bytes which are not multiple of 4.
-+ */
-+#define SAVED_X		X15
-+#define SAVED_CA	$s7
-+
-+#define IS_UNALIGNED	$s7
 +
 +#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 +#define MSB 0
 +#define LSB 3
-+#define ROTx rotl
-+#define ROTR(n) rotr n, 24
-+#define	CPU_TO_LE32(n) \
-+	wsbh	n; \
-+	rotr	n, 16;
 +#else
 +#define MSB 3
 +#define LSB 0
-+#define ROTx rotr
-+#define CPU_TO_LE32(n)
-+#define ROTR(n)
 +#endif
 +
-+#define FOR_EACH_WORD(x) \
-+	x( 0); \
-+	x( 1); \
-+	x( 2); \
-+	x( 3); \
-+	x( 4); \
-+	x( 5); \
-+	x( 6); \
-+	x( 7); \
-+	x( 8); \
-+	x( 9); \
-+	x(10); \
-+	x(11); \
-+	x(12); \
-+	x(13); \
-+	x(14); \
-+	x(15);
-+
-+#define FOR_EACH_WORD_REV(x) \
-+	x(15); \
-+	x(14); \
-+	x(13); \
-+	x(12); \
-+	x(11); \
-+	x(10); \
-+	x( 9); \
-+	x( 8); \
-+	x( 7); \
-+	x( 6); \
-+	x( 5); \
-+	x( 4); \
-+	x( 3); \
-+	x( 2); \
-+	x( 1); \
-+	x( 0);
-+
-+#define PLUS_ONE_0	 1
-+#define PLUS_ONE_1	 2
-+#define PLUS_ONE_2	 3
-+#define PLUS_ONE_3	 4
-+#define PLUS_ONE_4	 5
-+#define PLUS_ONE_5	 6
-+#define PLUS_ONE_6	 7
-+#define PLUS_ONE_7	 8
-+#define PLUS_ONE_8	 9
-+#define PLUS_ONE_9	10
-+#define PLUS_ONE_10	11
-+#define PLUS_ONE_11	12
-+#define PLUS_ONE_12	13
-+#define PLUS_ONE_13	14
-+#define PLUS_ONE_14	15
-+#define PLUS_ONE_15	16
-+#define PLUS_ONE(x)	PLUS_ONE_ ## x
-+#define _CONCAT3(a,b,c)	a ## b ## c
-+#define CONCAT3(a,b,c)	_CONCAT3(a,b,c)
-+
-+#define STORE_UNALIGNED(x) \
-+CONCAT3(.Lchacha20_mips_xor_unaligned_, PLUS_ONE(x), _b: ;) \
-+	.if (x != 12); \
-+		lw	T0, (x*4)(STATE); \
-+	.endif; \
-+	lwl	T1, (x*4)+MSB ## (IN); \
-+	lwr	T1, (x*4)+LSB ## (IN); \
-+	.if (x == 12); \
-+		addu	X ## x, NONCE_0; \
-+	.else; \
-+		addu	X ## x, T0; \
-+	.endif; \
-+	CPU_TO_LE32(X ## x); \
-+	xor	X ## x, T1; \
-+	swl	X ## x, (x*4)+MSB ## (OUT); \
-+	swr	X ## x, (x*4)+LSB ## (OUT);
-+
-+#define STORE_ALIGNED(x) \
-+CONCAT3(.Lchacha20_mips_xor_aligned_, PLUS_ONE(x), _b: ;) \
-+	.if (x != 12); \
-+		lw	T0, (x*4)(STATE); \
-+	.endif; \
-+	lw	T1, (x*4) ## (IN); \
-+	.if (x == 12); \
-+		addu	X ## x, NONCE_0; \
-+	.else; \
-+		addu	X ## x, T0; \
-+	.endif; \
-+	CPU_TO_LE32(X ## x); \
-+	xor	X ## x, T1; \
-+	sw	X ## x, (x*4) ## (OUT);
-+
-+/* Jump table macro.
-+ * Used for setup and handling the last bytes, which are not multiple of 4.
-+ * X15 is free to store Xn
-+ * Every jumptable entry must be equal in size.
-+ */
-+#define JMPTBL_ALIGNED(x) \
-+.Lchacha20_mips_jmptbl_aligned_ ## x: ; \
-+	.set	noreorder; \
-+	b	.Lchacha20_mips_xor_aligned_ ## x ## _b; \
-+	.if (x == 12); \
-+		addu	SAVED_X, X ## x, NONCE_0; \
-+	.else; \
-+		addu	SAVED_X, X ## x, SAVED_CA; \
-+	.endif; \
-+	.set	reorder
-+
-+#define JMPTBL_UNALIGNED(x) \
-+.Lchacha20_mips_jmptbl_unaligned_ ## x: ; \
-+	.set	noreorder; \
-+	b	.Lchacha20_mips_xor_unaligned_ ## x ## _b; \
-+	.if (x == 12); \
-+		addu	SAVED_X, X ## x, NONCE_0; \
-+	.else; \
-+		addu	SAVED_X, X ## x, SAVED_CA; \
-+	.endif; \
-+	.set	reorder
-+
-+#define AXR(A, B, C, D,  K, L, M, N,  V, W, Y, Z,  S) \
-+	addu	X(A), X(K); \
-+	addu	X(B), X(L); \
-+	addu	X(C), X(M); \
-+	addu	X(D), X(N); \
-+	xor	X(V), X(A); \
-+	xor	X(W), X(B); \
-+	xor	X(Y), X(C); \
-+	xor	X(Z), X(D); \
-+	rotl	X(V), S;    \
-+	rotl	X(W), S;    \
-+	rotl	X(Y), S;    \
-+	rotl	X(Z), S;
-+
++#define POLY1305_BLOCK_SIZE 16
 +.text
-+.set	reorder
++#define H0 $t0
++#define H1 $t1
++#define H2 $t2
++#define H3 $t3
++#define H4 $t4
++
++#define R0 $t5
++#define R1 $t6
++#define R2 $t7
++#define R3 $t8
++
++#define O0 $s0
++#define O1 $s4
++#define O2 $v1
++#define O3 $t9
++#define O4 $s5
++
++#define S1 $s1
++#define S2 $s2
++#define S3 $s3
++
++#define SC $at
++#define CA $v0
++
++/* Input arguments */
++#define poly	$a0
++#define src	$a1
++#define srclen	$a2
++#define hibit	$a3
++
++/* Location in the opaque buffer
++ * R[0..3], CA, H[0..4]
++ */
++#define PTR_POLY1305_R(n) ( 0 + (n*4)) ## ($a0)
++#define PTR_POLY1305_CA   (16        ) ## ($a0)
++#define PTR_POLY1305_H(n) (20 + (n*4)) ## ($a0)
++
++#define POLY1305_BLOCK_SIZE 16
++#define POLY1305_STACK_SIZE 32
++
 +.set	noat
-+.globl	chacha20_mips
-+.ent	chacha20_mips
-+chacha20_mips:
-+	.frame	$sp, STACK_SIZE, $ra
++.align	4
++.globl	poly1305_blocks_mips
++.ent	poly1305_blocks_mips
++poly1305_blocks_mips:
++	.frame	$sp, POLY1305_STACK_SIZE, $ra
++	/* srclen &= 0xFFFFFFF0 */
++	ins	srclen, $zero, 0, 4
 +
-+	addiu	$sp, -STACK_SIZE
++	addiu	$sp, -(POLY1305_STACK_SIZE)
 +
-+	/* Return bytes = 0. */
-+	beqz	BYTES, .Lchacha20_mips_end
++	/* check srclen >= 16 bytes */
++	beqz	srclen, .Lpoly1305_blocks_mips_end
 +
-+	lw	NONCE_0, 48(STATE)
++	/* Calculate last round based on src address pointer.
++	 * last round src ptr (srclen) = src + (srclen & 0xFFFFFFF0)
++	 */
++	addu	srclen, src
 +
-+	/* Save s0-s7 */
-+	sw	$s0,  0($sp)
-+	sw	$s1,  4($sp)
-+	sw	$s2,  8($sp)
++	lw	R0, PTR_POLY1305_R(0)
++	lw	R1, PTR_POLY1305_R(1)
++	lw	R2, PTR_POLY1305_R(2)
++	lw	R3, PTR_POLY1305_R(3)
++
++	/* store the used save registers. */
++	sw	$s0, 0($sp)
++	sw	$s1, 4($sp)
++	sw	$s2, 8($sp)
 +	sw	$s3, 12($sp)
 +	sw	$s4, 16($sp)
 +	sw	$s5, 20($sp)
-+	sw	$s6, 24($sp)
-+	sw	$s7, 28($sp)
 +
-+	/* Test IN or OUT is unaligned.
-+	 * IS_UNALIGNED = ( IN | OUT ) & 0x00000003
-+	 */
-+	or	IS_UNALIGNED, IN, OUT
-+	andi	IS_UNALIGNED, 0x3
++	/* load Hx and Carry */
++	lw	CA, PTR_POLY1305_CA
++	lw	H0, PTR_POLY1305_H(0)
++	lw	H1, PTR_POLY1305_H(1)
++	lw	H2, PTR_POLY1305_H(2)
++	lw	H3, PTR_POLY1305_H(3)
++	lw	H4, PTR_POLY1305_H(4)
 +
-+	/* Set number of rounds */
-+	li	$at, 20
++	/* Sx = Rx + (Rx >> 2) */
++	srl	S1, R1, 2
++	srl	S2, R2, 2
++	srl	S3, R3, 2
++	addu	S1, R1
++	addu	S2, R2
++	addu	S3, R3
 +
-+	b	.Lchacha20_rounds_start
++	addiu	SC, $zero, 1
 +
-+.align 4
-+.Loop_chacha20_rounds:
-+	addiu	IN,  CHACHA20_BLOCK_SIZE
-+	addiu	OUT, CHACHA20_BLOCK_SIZE
-+	addiu	NONCE_0, 1
++.Lpoly1305_loop:
++	lwl	O0, 0+MSB(src)
++	lwl	O1, 4+MSB(src)
++	lwl	O2, 8+MSB(src)
++	lwl	O3,12+MSB(src)
++	lwr	O0, 0+LSB(src)
++	lwr	O1, 4+LSB(src)
++	lwr	O2, 8+LSB(src)
++	lwr	O3,12+LSB(src)
 +
-+.Lchacha20_rounds_start:
-+	lw	X0,  0(STATE)
-+	lw	X1,  4(STATE)
-+	lw	X2,  8(STATE)
-+	lw	X3,  12(STATE)
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++	wsbh	O0
++	wsbh	O1
++	wsbh	O2
++	wsbh	O3
++	rotr	O0, 16
++	rotr	O1, 16
++	rotr	O2, 16
++	rotr	O3, 16
++#endif
 +
-+	lw	X4,  16(STATE)
-+	lw	X5,  20(STATE)
-+	lw	X6,  24(STATE)
-+	lw	X7,  28(STATE)
-+	lw	X8,  32(STATE)
-+	lw	X9,  36(STATE)
-+	lw	X10, 40(STATE)
-+	lw	X11, 44(STATE)
++	/* h0 = (u32)(d0 = (u64)h0 + inp[0] + c 'Carry_previous cycle'); */
++	addu	H0, CA
++	sltu	CA, H0, CA
++	addu	O0, H0
++	sltu	H0, O0, H0
++	addu	CA, H0
 +
-+	move	X12, NONCE_0
-+	lw	X13, 52(STATE)
-+	lw	X14, 56(STATE)
-+	lw	X15, 60(STATE)
++	/* h1 = (u32)(d1 = (u64)h1 + (d0 >> 32) + inp[4]); */
++	addu	H1, CA
++	sltu	CA, H1, CA
++	addu	O1, H1
++	sltu	H1, O1, H1
++	addu	CA, H1
 +
-+.Loop_chacha20_xor_rounds:
-+	addiu	$at, -2
-+	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15, 16);
-+	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7, 12);
-+	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15,  8);
-+	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7,  7);
-+	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14, 16);
-+	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4, 12);
-+	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14,  8);
-+	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4,  7);
-+	bnez	$at, .Loop_chacha20_xor_rounds
++	/* h2 = (u32)(d2 = (u64)h2 + (d1 >> 32) + inp[8]); */
++	addu	H2, CA
++	sltu	CA, H2, CA
++	addu	O2, H2
++	sltu	H2, O2, H2
++	addu	CA, H2
 +
-+	addiu	BYTES, -(CHACHA20_BLOCK_SIZE)
++	/* h3 = (u32)(d3 = (u64)h3 + (d2 >> 32) + inp[12]); */
++	addu	H3, CA
++	sltu	CA, H3, CA
++	addu	O3, H3
++	sltu	H3, O3, H3
++	addu	CA, H3
 +
-+	/* Is data src/dst unaligned? Jump */
-+	bnez	IS_UNALIGNED, .Loop_chacha20_unaligned
++	/* h4 += (u32)(d3 >> 32) + padbit; */
++	addu	H4, hibit
++	addu	O4, H4, CA
 +
-+	/* Set number rounds here to fill delayslot. */
-+	li	$at, 20
++	/* D0 */
++	multu	O0, R0
++	maddu	O1, S3
++	maddu	O2, S2
++	maddu	O3, S1
++	mfhi	CA
++	mflo	H0
 +
-+	/* BYTES < 0, it has no full block. */
-+	bltz	BYTES, .Lchacha20_mips_no_full_block_aligned
++	/* D1 */
++	multu	O0, R1
++	maddu	O1, R0
++	maddu	O2, S3
++	maddu	O3, S2
++	maddu	O4, S1
++	maddu	CA, SC
++	mfhi	CA
++	mflo	H1
 +
-+	FOR_EACH_WORD_REV(STORE_ALIGNED)
++	/* D2 */
++	multu	O0, R2
++	maddu	O1, R1
++	maddu	O2, R0
++	maddu	O3, S3
++	maddu	O4, S2
++	maddu	CA, SC
++	mfhi	CA
++	mflo	H2
 +
-+	/* BYTES > 0? Loop again. */
-+	bgtz	BYTES, .Loop_chacha20_rounds
++	/* D4 */
++	mul	H4, O4, R0
 +
-+	/* Place this here to fill delay slot */
-+	addiu	NONCE_0, 1
++	/* D3 */
++	multu	O0, R3
++	maddu	O1, R2
++	maddu	O2, R1
++	maddu	O3, R0
++	maddu	O4, S3
++	maddu	CA, SC
++	mfhi	CA
++	mflo	H3
 +
-+	/* BYTES < 0? Handle last bytes */
-+	bltz	BYTES, .Lchacha20_mips_xor_bytes
++	addiu	src, POLY1305_BLOCK_SIZE
 +
-+.Lchacha20_mips_xor_done:
-+	/* Restore used registers */
-+	lw	$s0,  0($sp)
-+	lw	$s1,  4($sp)
-+	lw	$s2,  8($sp)
++	/* h4 += (u32)(d3 >> 32); */
++	addu	O4, H4, CA
++	/* h4 &= 3 */
++	andi	H4, O4, 3
++	/* c = (h4 >> 2) + (h4 & ~3U); */
++	srl	CA, O4, 2
++	ins	O4, $zero, 0, 2
++
++	addu	CA, O4
++
++	/* able to do a 16 byte block. */
++	bne	src, srclen, .Lpoly1305_loop
++
++	/* restore the used save registers. */
++	lw	$s0, 0($sp)
++	lw	$s1, 4($sp)
++	lw	$s2, 8($sp)
 +	lw	$s3, 12($sp)
 +	lw	$s4, 16($sp)
 +	lw	$s5, 20($sp)
-+	lw	$s6, 24($sp)
-+	lw	$s7, 28($sp)
 +
-+	/* Write NONCE_0 back to right location in state */
-+	sw	NONCE_0, 48(STATE)
++	/* store Hx and Carry */
++	sw	CA, PTR_POLY1305_CA
++	sw	H0, PTR_POLY1305_H(0)
++	sw	H1, PTR_POLY1305_H(1)
++	sw	H2, PTR_POLY1305_H(2)
++	sw	H3, PTR_POLY1305_H(3)
++	sw	H4, PTR_POLY1305_H(4)
 +
-+.Lchacha20_mips_end:
-+	addiu	$sp, STACK_SIZE
++.Lpoly1305_blocks_mips_end:
++	addiu	$sp, POLY1305_STACK_SIZE
++
++	/* Jump Back */
 +	jr	$ra
-+
-+.Lchacha20_mips_no_full_block_aligned:
-+	/* Restore the offset on BYTES */
-+	addiu	BYTES, CHACHA20_BLOCK_SIZE
-+
-+	/* Get number of full WORDS */
-+	andi	$at, BYTES, MASK_U32
-+
-+	/* Load upper half of jump table addr */
-+	lui	T0, %hi(.Lchacha20_mips_jmptbl_aligned_0)
-+
-+	/* Calculate lower half jump table offset */
-+	ins	T0, $at, 1, 6
-+
-+	/* Add offset to STATE */
-+	addu	T1, STATE, $at
-+
-+	/* Add lower half jump table addr */
-+	addiu	T0, %lo(.Lchacha20_mips_jmptbl_aligned_0)
-+
-+	/* Read value from STATE */
-+	lw	SAVED_CA, 0(T1)
-+
-+	/* Store remaining bytecounter as negative value */
-+	subu	BYTES, $at, BYTES
-+
-+	jr	T0
-+
-+	/* Jump table */
-+	FOR_EACH_WORD(JMPTBL_ALIGNED)
-+
-+
-+.Loop_chacha20_unaligned:
-+	/* Set number rounds here to fill delayslot. */
-+	li	$at, 20
-+
-+	/* BYTES > 0, it has no full block. */
-+	bltz	BYTES, .Lchacha20_mips_no_full_block_unaligned
-+
-+	FOR_EACH_WORD_REV(STORE_UNALIGNED)
-+
-+	/* BYTES > 0? Loop again. */
-+	bgtz	BYTES, .Loop_chacha20_rounds
-+
-+	/* Write NONCE_0 back to right location in state */
-+	sw	NONCE_0, 48(STATE)
-+
-+	.set noreorder
-+	/* Fall through to byte handling */
-+	bgez	BYTES, .Lchacha20_mips_xor_done
-+.Lchacha20_mips_xor_unaligned_0_b:
-+.Lchacha20_mips_xor_aligned_0_b:
-+	/* Place this here to fill delay slot */
-+	addiu	NONCE_0, 1
-+	.set reorder
-+
-+.Lchacha20_mips_xor_bytes:
-+	addu	IN, $at
-+	addu	OUT, $at
-+	/* First byte */
-+	lbu	T1, 0(IN)
-+	addiu	$at, BYTES, 1
-+	CPU_TO_LE32(SAVED_X)
-+	ROTR(SAVED_X)
-+	xor	T1, SAVED_X
-+	sb	T1, 0(OUT)
-+	beqz	$at, .Lchacha20_mips_xor_done
-+	/* Second byte */
-+	lbu	T1, 1(IN)
-+	addiu	$at, BYTES, 2
-+	ROTx	SAVED_X, 8
-+	xor	T1, SAVED_X
-+	sb	T1, 1(OUT)
-+	beqz	$at, .Lchacha20_mips_xor_done
-+	/* Third byte */
-+	lbu	T1, 2(IN)
-+	ROTx	SAVED_X, 8
-+	xor	T1, SAVED_X
-+	sb	T1, 2(OUT)
-+	b	.Lchacha20_mips_xor_done
-+
-+.Lchacha20_mips_no_full_block_unaligned:
-+	/* Restore the offset on BYTES */
-+	addiu	BYTES, CHACHA20_BLOCK_SIZE
-+
-+	/* Get number of full WORDS */
-+	andi	$at, BYTES, MASK_U32
-+
-+	/* Load upper half of jump table addr */
-+	lui	T0, %hi(.Lchacha20_mips_jmptbl_unaligned_0)
-+
-+	/* Calculate lower half jump table offset */
-+	ins	T0, $at, 1, 6
-+
-+	/* Add offset to STATE */
-+	addu	T1, STATE, $at
-+
-+	/* Add lower half jump table addr */
-+	addiu	T0, %lo(.Lchacha20_mips_jmptbl_unaligned_0)
-+
-+	/* Read value from STATE */
-+	lw	SAVED_CA, 0(T1)
-+
-+	/* Store remaining bytecounter as negative value */
-+	subu	BYTES, $at, BYTES
-+
-+	jr	T0
-+
-+	/* Jump table */
-+	FOR_EACH_WORD(JMPTBL_UNALIGNED)
-+.end chacha20_mips
++.end poly1305_blocks_mips
 +.set at
-diff --git a/lib/zinc/chacha20/chacha20.c b/lib/zinc/chacha20/chacha20.c
-index fc4f74fca653..34cb35528c3d 100644
---- a/lib/zinc/chacha20/chacha20.c
-+++ b/lib/zinc/chacha20/chacha20.c
-@@ -18,6 +18,8 @@
- #include "chacha20-x86_64-glue.h"
++
++/* Input arguments CTX=$a0, MAC=$a1, NONCE=$a2 */
++#define MAC	$a1
++#define NONCE	$a2
++
++#define G0	$t5
++#define G1	$t6
++#define G2	$t7
++#define G3	$t8
++#define G4	$t9
++
++.set	noat
++.align	4
++.globl	poly1305_emit_mips
++.ent	poly1305_emit_mips
++poly1305_emit_mips:
++	/* load Hx and Carry */
++	lw	CA, PTR_POLY1305_CA
++	lw	H0, PTR_POLY1305_H(0)
++	lw	H1, PTR_POLY1305_H(1)
++	lw	H2, PTR_POLY1305_H(2)
++	lw	H3, PTR_POLY1305_H(3)
++	lw	H4, PTR_POLY1305_H(4)
++
++	/* Add left over carry */
++	addu	H0, CA
++	sltu	CA, H0, CA
++	addu	H1, CA
++	sltu	CA, H1, CA
++	addu	H2, CA
++	sltu	CA, H2, CA
++	addu	H3, CA
++	sltu	CA, H3, CA
++	addu	H4, CA
++
++	/* compare to modulus by computing h + -p */
++	addiu	G0, H0, 5
++	sltu	CA, G0, H0
++	addu	G1, H1, CA
++	sltu	CA, G1, H1
++	addu	G2, H2, CA
++	sltu	CA, G2, H2
++	addu	G3, H3, CA
++	sltu	CA, G3, H3
++	addu	G4, H4, CA
++
++	srl	SC, G4, 2
++
++	/* if there was carry into 131st bit, h3:h0 = g3:g0 */
++	movn	H0, G0, SC
++	movn	H1, G1, SC
++	movn	H2, G2, SC
++	movn	H3, G3, SC
++
++	lwl	G0, 0+MSB(NONCE)
++	lwl	G1, 4+MSB(NONCE)
++	lwl	G2, 8+MSB(NONCE)
++	lwl	G3,12+MSB(NONCE)
++	lwr	G0, 0+LSB(NONCE)
++	lwr	G1, 4+LSB(NONCE)
++	lwr	G2, 8+LSB(NONCE)
++	lwr	G3,12+LSB(NONCE)
++
++	/* mac = (h + nonce) % (2^128) */
++	addu	H0, G0
++	sltu	CA, H0, G0
++
++	/* H1 */
++	addu	H1, CA
++	sltu	CA, H1, CA
++	addu	H1, G1
++	sltu	G1, H1, G1
++	addu	CA, G1
++
++	/* H2 */
++	addu	H2, CA
++	sltu	CA, H2, CA
++	addu	H2, G2
++	sltu	G2, H2, G2
++	addu	CA, G2
++
++	/* H3 */
++	addu	H3, CA
++	addu	H3, G3
++
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++	wsbh	H0
++	wsbh	H1
++	wsbh	H2
++	wsbh	H3
++	rotr	H0, 16
++	rotr	H1, 16
++	rotr	H2, 16
++	rotr	H3, 16
++#endif
++
++	/* store MAC */
++	swl	H0, 0+MSB(MAC)
++	swl	H1, 4+MSB(MAC)
++	swl	H2, 8+MSB(MAC)
++	swl	H3,12+MSB(MAC)
++	swr	H0, 0+LSB(MAC)
++	swr	H1, 4+LSB(MAC)
++	swr	H2, 8+LSB(MAC)
++	swr	H3,12+LSB(MAC)
++
++	jr	$ra
++.end poly1305_emit_mips
++
++#define PR0 $t0
++#define PR1 $t1
++#define PR2 $t2
++#define PR3 $t3
++#define PT0 $t4
++
++/* Input arguments CTX=$a0, KEY=$a1 */
++
++.align	4
++.globl	poly1305_init_mips
++.ent	poly1305_init_mips
++poly1305_init_mips:
++	lwl	PR0, 0+MSB($a1)
++	lwl	PR1, 4+MSB($a1)
++	lwl	PR2, 8+MSB($a1)
++	lwl	PR3,12+MSB($a1)
++	lwr	PR0, 0+LSB($a1)
++	lwr	PR1, 4+LSB($a1)
++	lwr	PR2, 8+LSB($a1)
++	lwr	PR3,12+LSB($a1)
++
++	/* store Hx and Carry */
++	sw	$zero, PTR_POLY1305_CA
++	sw	$zero, PTR_POLY1305_H(0)
++	sw	$zero, PTR_POLY1305_H(1)
++	sw	$zero, PTR_POLY1305_H(2)
++	sw	$zero, PTR_POLY1305_H(3)
++	sw	$zero, PTR_POLY1305_H(4)
++
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++	wsbh	PR0
++	wsbh	PR1
++	wsbh	PR2
++	wsbh	PR3
++	rotr	PR0, 16
++	rotr	PR1, 16
++	rotr	PR2, 16
++	rotr	PR3, 16
++#endif
++
++	lui	PT0, 0x0FFF
++	ori	PT0, 0xFFFC
++
++	/* AND 0x0fffffff; */
++	ext	PR0, PR0, 0, (32-4)
++
++	/* AND 0x0ffffffc; */
++	and	PR1, PT0
++	and	PR2, PT0
++	and	PR3, PT0
++
++	/* store Rx */
++	sw	PR0, PTR_POLY1305_R(0)
++	sw	PR1, PTR_POLY1305_R(1)
++	sw	PR2, PTR_POLY1305_R(2)
++	sw	PR3, PTR_POLY1305_R(3)
++
++	/* Jump Back  */
++	jr	$ra
++.end poly1305_init_mips
+diff --git a/lib/zinc/poly1305/poly1305-mips64.S b/lib/zinc/poly1305/poly1305-mips64.S
+new file mode 100644
+index 000000000000..d95d83f75b99
+--- /dev/null
++++ b/lib/zinc/poly1305/poly1305-mips64.S
+@@ -0,0 +1,355 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ * Copyright (C) 2006-2017 CRYPTOGAMS by <appro@openssl.org>. All Rights Reserved.
++ *
++ * This is based in part on Andy Polyakov's implementation from CRYPTOGAMS.
++ */
++
++#ifdef __MIPSEB__
++#define MSB 0
++#define LSB 7
++#else
++#define MSB 7
++#define LSB 0
++#endif
++
++#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
++#define dmultu(rs,rt)
++#define mflo(rd,rs,rt)	dmulu	rd,rs,rt
++#define mfhi(rd,rs,rt)	dmuhu	rd,rs,rt
++#else
++#define dmultu(rs,rt)		dmultu	rs,rt
++#define multu(rs,rt)		multu	rs,rt
++#define mflo(rd,rs,rt)	mflo	rd
++#define mfhi(rd,rs,rt)	mfhi	rd
++#endif
++
++.text
++.set	noat
++.set	noreorder
++
++/* While most of the assembly in the kernel prefers ENTRY() and ENDPROC(),
++ * there is no existing MIPS assembly that uses it, and MIPS assembler seems
++ * to like its own .ent/.end notation, which the MIPS include files don't
++ * provide in a MIPS-specific ENTRY/ENDPROC definition. So, we skip these
++ * for now, until somebody complains. */
++
++.align	5
++.globl	poly1305_init_mips
++.ent	poly1305_init_mips
++poly1305_init_mips:
++	.frame	$29,0,$31
++	.set	reorder
++
++	sd	$0,0($4)
++	sd	$0,8($4)
++	sd	$0,16($4)
++
++	beqz	$5,.Lno_key
++
++#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
++	ld	$8,0($5)
++	ld	$9,8($5)
++#else
++	ldl	$8,0+MSB($5)
++	ldl	$9,8+MSB($5)
++	ldr	$8,0+LSB($5)
++	ldr	$9,8+LSB($5)
++#endif
++#ifdef	__MIPSEB__
++#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
++	dsbh	$8,$8		# byte swap
++	 dsbh	$9,$9
++	dshd	$8,$8
++	 dshd	$9,$9
++#else
++	ori	$10,$0,0xFF
++	dsll	$1,$10,32
++	or	$10,$1		# 0x000000FF000000FF
++
++	and	$11,$8,$10	# byte swap
++	 and	$2,$9,$10
++	dsrl	$1,$8,24
++	 dsrl	$24,$9,24
++	dsll	$11,24
++	 dsll	$2,24
++	and	$1,$10
++	 and	$24,$10
++	dsll	$10,8			# 0x0000FF000000FF00
++	or	$11,$1
++	 or	$2,$24
++	and	$1,$8,$10
++	 and	$24,$9,$10
++	dsrl	$8,8
++	 dsrl	$9,8
++	dsll	$1,8
++	 dsll	$24,8
++	and	$8,$10
++	 and	$9,$10
++	or	$11,$1
++	 or	$2,$24
++	or	$8,$11
++	 or	$9,$2
++	dsrl	$11,$8,32
++	 dsrl	$2,$9,32
++	dsll	$8,32
++	 dsll	$9,32
++	or	$8,$11
++	 or	$9,$2
++#endif
++#endif
++	li	$10,1
++	dsll	$10,32
++	daddiu	$10,-63
++	dsll	$10,28
++	daddiu	$10,-1		# 0ffffffc0fffffff
++
++	and	$8,$10
++	daddiu	$10,-3		# 0ffffffc0ffffffc
++	and	$9,$10
++
++	sd	$8,24($4)
++	dsrl	$10,$9,2
++	sd	$9,32($4)
++	daddu	$10,$9		# s1 = r1 + (r1 >> 2)
++	sd	$10,40($4)
++
++.Lno_key:
++	li	$2,0			# return 0
++	jr	$31
++.end	poly1305_init_mips
++
++.align	5
++.globl	poly1305_blocks_mips
++.ent	poly1305_blocks_mips
++poly1305_blocks_mips:
++	.set	noreorder
++	dsrl	$6,4			# number of complete blocks
++	bnez	$6,poly1305_blocks_internal
++	nop
++	jr	$31
++	nop
++.end	poly1305_blocks_mips
++
++.align	5
++.ent	poly1305_blocks_internal
++poly1305_blocks_internal:
++	.frame	$29,6*8,$31
++	.mask	0x00030000,-8
++	.set	noreorder
++	dsubu	$29,6*8
++	sd	$17,40($29)
++	sd	$16,32($29)
++	.set	reorder
++
++	ld	$12,0($4)		# load hash value
++	ld	$13,8($4)
++	ld	$14,16($4)
++
++	ld	$15,24($4)		# load key
++	ld	$16,32($4)
++	ld	$17,40($4)
++
++.Loop:
++#if defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
++	ld	$8,0($5)		# load input
++	ld	$9,8($5)
++#else
++	ldl	$8,0+MSB($5)	# load input
++	ldl	$9,8+MSB($5)
++	ldr	$8,0+LSB($5)
++	ldr	$9,8+LSB($5)
++#endif
++	daddiu	$6,-1
++	daddiu	$5,16
++#ifdef	__MIPSEB__
++#if defined(CONFIG_CPU_MIPS64_R2) || defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPS64_R6) || defined(CONFIG_CPU_MIPSR6)
++	dsbh	$8,$8		# byte swap
++	 dsbh	$9,$9
++	dshd	$8,$8
++	 dshd	$9,$9
++#else
++	ori	$10,$0,0xFF
++	dsll	$1,$10,32
++	or	$10,$1		# 0x000000FF000000FF
++
++	and	$11,$8,$10	# byte swap
++	 and	$2,$9,$10
++	dsrl	$1,$8,24
++	 dsrl	$24,$9,24
++	dsll	$11,24
++	 dsll	$2,24
++	and	$1,$10
++	 and	$24,$10
++	dsll	$10,8			# 0x0000FF000000FF00
++	or	$11,$1
++	 or	$2,$24
++	and	$1,$8,$10
++	 and	$24,$9,$10
++	dsrl	$8,8
++	 dsrl	$9,8
++	dsll	$1,8
++	 dsll	$24,8
++	and	$8,$10
++	 and	$9,$10
++	or	$11,$1
++	 or	$2,$24
++	or	$8,$11
++	 or	$9,$2
++	dsrl	$11,$8,32
++	 dsrl	$2,$9,32
++	dsll	$8,32
++	 dsll	$9,32
++	or	$8,$11
++	 or	$9,$2
++#endif
++#endif
++	daddu	$12,$8		# accumulate input
++	daddu	$13,$9
++	sltu	$10,$12,$8
++	sltu	$11,$13,$9
++	daddu	$13,$10
++
++	dmultu	($15,$12)		# h0*r0
++	 daddu	$14,$7
++	 sltu	$10,$13,$10
++	mflo	($8,$15,$12)
++	mfhi	($9,$15,$12)
++
++	dmultu	($17,$13)		# h1*5*r1
++	 daddu	$10,$11
++	 daddu	$14,$10
++	mflo	($10,$17,$13)
++	mfhi	($11,$17,$13)
++
++	dmultu	($16,$12)		# h0*r1
++	 daddu	$8,$10
++	 daddu	$9,$11
++	mflo	($1,$16,$12)
++	mfhi	($25,$16,$12)
++	 sltu	$10,$8,$10
++	 daddu	$9,$10
++
++	dmultu	($15,$13)		# h1*r0
++	 daddu	$9,$1
++	 sltu	$1,$9,$1
++	mflo	($10,$15,$13)
++	mfhi	($11,$15,$13)
++	 daddu	$25,$1
++
++	dmultu	($17,$14)		# h2*5*r1
++	 daddu	$9,$10
++	 daddu	$25,$11
++	mflo	($1,$17,$14)
++
++	dmultu	($15,$14)		# h2*r0
++	 sltu	$10,$9,$10
++	 daddu	$25,$10
++	mflo	($2,$15,$14)
++
++	daddu	$9,$1
++	daddu	$25,$2
++	sltu	$1,$9,$1
++	daddu	$25,$1
++
++	li	$10,-4		# final reduction
++	and	$10,$25
++	dsrl	$11,$25,2
++	andi	$14,$25,3
++	daddu	$10,$11
++	daddu	$12,$8,$10
++	sltu	$10,$12,$10
++	daddu	$13,$9,$10
++	sltu	$10,$13,$10
++	daddu	$14,$14,$10
++
++	bnez	$6,.Loop
++
++	sd	$12,0($4)		# store hash value
++	sd	$13,8($4)
++	sd	$14,16($4)
++
++	.set	noreorder
++	ld	$17,40($29)		# epilogue
++	ld	$16,32($29)
++	jr	$31
++	daddu	$29,6*8
++.end	poly1305_blocks_internal
++
++.align	5
++.globl	poly1305_emit_mips
++.ent	poly1305_emit_mips
++poly1305_emit_mips:
++	.frame	$29,0,$31
++	.set	reorder
++
++	ld	$10,0($4)
++	ld	$11,8($4)
++	ld	$1,16($4)
++
++	daddiu	$8,$10,5		# compare to modulus
++	sltiu	$2,$8,5
++	daddu	$9,$11,$2
++	sltu	$2,$9,$2
++	daddu	$1,$1,$2
++
++	dsrl	$1,2			# see if it carried/borrowed
++	dsubu	$1,$0,$1
++	nor	$2,$0,$1
++
++	and	$8,$1
++	and	$10,$2
++	and	$9,$1
++	and	$11,$2
++	or	$8,$10
++	or	$9,$11
++
++	lwu	$10,0($6)		# load nonce
++	lwu	$11,4($6)
++	lwu	$1,8($6)
++	lwu	$2,12($6)
++	dsll	$11,32
++	dsll	$2,32
++	or	$10,$11
++	or	$1,$2
++
++	daddu	$8,$10		# accumulate nonce
++	daddu	$9,$1
++	sltu	$10,$8,$10
++	daddu	$9,$10
++
++	dsrl	$10,$8,8		# write mac value
++	dsrl	$11,$8,16
++	dsrl	$1,$8,24
++	sb	$8,0($5)
++	dsrl	$2,$8,32
++	sb	$10,1($5)
++	dsrl	$10,$8,40
++	sb	$11,2($5)
++	dsrl	$11,$8,48
++	sb	$1,3($5)
++	dsrl	$1,$8,56
++	sb	$2,4($5)
++	dsrl	$2,$9,8
++	sb	$10,5($5)
++	dsrl	$10,$9,16
++	sb	$11,6($5)
++	dsrl	$11,$9,24
++	sb	$1,7($5)
++
++	sb	$9,8($5)
++	dsrl	$1,$9,32
++	sb	$2,9($5)
++	dsrl	$2,$9,40
++	sb	$10,10($5)
++	dsrl	$10,$9,48
++	sb	$11,11($5)
++	dsrl	$11,$9,56
++	sb	$1,12($5)
++	sb	$2,13($5)
++	sb	$10,14($5)
++	sb	$11,15($5)
++
++	jr	$31
++.end	poly1305_emit_mips
+diff --git a/lib/zinc/poly1305/poly1305.c b/lib/zinc/poly1305/poly1305.c
+index 647aa3354d38..361647054aff 100644
+--- a/lib/zinc/poly1305/poly1305.c
++++ b/lib/zinc/poly1305/poly1305.c
+@@ -19,6 +19,8 @@
+ #include "poly1305-x86_64-glue.h"
  #elif defined(CONFIG_ZINC_ARCH_ARM) || defined(CONFIG_ZINC_ARCH_ARM64)
- #include "chacha20-arm-glue.h"
-+#elif defined(CONFIG_ZINC_ARCH_MIPS)
-+#include "chacha20-mips-glue.h"
+ #include "poly1305-arm-glue.h"
++#elif defined(CONFIG_ZINC_ARCH_MIPS) || defined(CONFIG_ZINC_ARCH_MIPS64)
++#include "poly1305-mips-glue.h"
  #else
- void __init chacha20_fpu_init(void)
- {
+ static inline bool poly1305_init_arch(void *ctx,
+ 				      const u8 key[POLY1305_KEY_SIZE])
 -- 
 2.19.0

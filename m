@@ -1,58 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 20:08:52 +0200 (CEST)
-Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:45119
-        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993094AbeIYSItOqkVH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 20:08:49 +0200
-Received: by mail-wr1-x441.google.com with SMTP id m16so7840500wrx.12;
-        Tue, 25 Sep 2018 11:08:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 20:09:02 +0200 (CEST)
+Received: from mail-wm1-x342.google.com ([IPv6:2a00:1450:4864:20::342]:40678
+        "EHLO mail-wm1-x342.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993941AbeIYSIygAaeH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 20:08:54 +0200
+Received: by mail-wm1-x342.google.com with SMTP id o2-v6so8028234wmh.5;
+        Tue, 25 Sep 2018 11:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CI0hLS/bvI0Hqo/pfglI7FYYUsJ/cwY74alonubtd24=;
-        b=auC+OaKCTtg9cJXRa7nmpzJdX50yTxyrVVNvZZnoKthSRJIAXkoq0QJW8U5FvqUbF+
-         wUHDJ0HzDVf0tfUlj59ToPdGjq9fH5TMjUHOLzSIzx7aJNXOEbcbPIT2FSicVRaepJet
-         1ngKpu4E+3o8RJqRgcVvlLyD9dgD9ifsJdf5fRBnRhcHqE3owMk/Mjt2MptFWHgo2/jJ
-         QsMNgO5dxxn0m/81Pfwc2mzfu1t8QmyyUquvaXDeFwotVsl91LgMsnJNTZQiVsv+EwnC
-         qf8XWYQX9W56c53iJ091ghM1rKELrOXCaWAZ9nuBGIiOU7OUiLvpWLhKkJTw4zJMOoA1
-         xszA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=BgszxiMh7UVkNVfekl9HVziiNCKJdcqkbKDqES3JS2E=;
+        b=DtNHjdpn0/ZJiP0HFIxH3ajPaRp5xGtcpwUQP/J2HwZQ921pbrV4NErK+b+YWxXher
+         Eo3d8DFNtXGM4L/hoaZFDJsHgHJr+W6wcz73yEHSVoCgQISWgI4EZ+wYgmKM5O0sQqlS
+         mvntX8dRkekWByiuRrU//tK0G4dJP0PK2NRlIsM3ckOHGkCBsCTUPXm/BGtS6TmBkdYH
+         e5CaDu0/mDL5tnPJJf96O2zq2LuLo1Sn3Ni7mTPX2X2O0E3TpUq19tCjKMN8bBF+tCO3
+         Vn2CrKAYd48VCvqJuDzqv8nv+YDHvBAPKzl+qApjvq4esTgZg+AOYjDKKd5W7TLRUxWQ
+         tPBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CI0hLS/bvI0Hqo/pfglI7FYYUsJ/cwY74alonubtd24=;
-        b=YhRhaM0XhxZnJD1gAfFNEiWwmKoAvQhTMfEg5ZnzMNTTvi1DMO0ge2eZ1kHWpbDWqf
-         t6eQRUsJZ9r1AZN+mY8923qX8uNcfaayzHcUzel/12F8HIk9OPXGUUxD9KLKkVAz2ypS
-         GJRshZa9g6jaAErXzg1zCPkhgFgp5IK729hNaje4ofWBCvNdjIVjWB31IPoX5Suv+1Dt
-         zV3FZhjcs16FMlX8vSz4BT1BP6osV5C6IV73Qosmo3vIov5L4JGrzCcT1SUTuTQmes0C
-         wjZdjMynCd282/AFl80LGekZJF7K0razVx8TnT2bWdGcFd7rVyi8nahxTg0S+xD6ODNs
-         x0TQ==
-X-Gm-Message-State: ABuFfogv1kqVnP0IE8Ir1b2luicvB6CzxYbpQmmus1/8huf3xqNd6Guc
-        kjr9evms72cakBV/Zx/N8tzv8+6IJUs=
-X-Google-Smtp-Source: ACcGV60fRVuHt4vkMnJmbNqf0FIUohzkZQQchrgpkJqKoDBbpKvqDDa8UWYE/X+zukw+qWjKv+c8aA==
-X-Received: by 2002:adf:93a5:: with SMTP id 34-v6mr2114197wrp.244.1537898923546;
-        Tue, 25 Sep 2018 11:08:43 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=BgszxiMh7UVkNVfekl9HVziiNCKJdcqkbKDqES3JS2E=;
+        b=I1gTus2RvPO9AZ106Wyehn1a43SGmFD0YX6X7duJCkdibwjScXIQokGmw1jKilRj04
+         tGrOdkTzP6a1pXP8fiuSGMrImdJGfyDxDoZpdbytQIEQ4GnH3vN21o3ojrJ4LFMHy3fi
+         uu7FQ8VADFXuGZN1AEfuxi3sh/zOCj4jRLJHDNvfVm5zA+NIqkcnEbNMecJgRW89hv32
+         ARx9ENpsYBJKP6/Lfzms7YpXvTJ4yZRTCpxhCWEgD2URtRo1cHSaRtoP/Qya/o8AUXJh
+         nvaLH4da3ouKD9YOV7Xtqb74XVWcSltJ9qpbz053XRU1LN1fp+p4FJS5HNSMbBoGxAjv
+         QBOA==
+X-Gm-Message-State: ABuFfog3LgwmWMbY731VpPpR6mo3MHSXWWO4yzbEX+UfbSJsHOdnbtWG
+        bqFJFFV26/3SM6UhBvjBgy87kt11GKI=
+X-Google-Smtp-Source: ACcGV62vMgRK4yc9TMrankAW6e0MueWfOvXEsQhFo5i1xY7Fzx9REi1eHY1+vhX5oZQKhdQh1fv/rg==
+X-Received: by 2002:a1c:7412:: with SMTP id p18-v6mr1788391wmc.49.1537898928946;
+        Tue, 25 Sep 2018 11:08:48 -0700 (PDT)
 Received: from laptop.localdomain ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id v6-v6sm2755827wro.66.2018.09.25.11.08.41
+        by smtp.gmail.com with ESMTPSA id v6-v6sm2755827wro.66.2018.09.25.11.08.47
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Sep 2018 11:08:43 -0700 (PDT)
+        Tue, 25 Sep 2018 11:08:48 -0700 (PDT)
 From:   Yasha Cherikovsky <yasha.che3@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
 Cc:     Yasha Cherikovsky <yasha.che3@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
-Date:   Tue, 25 Sep 2018 21:08:21 +0300
-Message-Id: <20180925180825.24659-1-yasha.che3@gmail.com>
+Subject: [PATCH 1/4] MIPS/head: Add comments after #endif and #else
+Date:   Tue, 25 Sep 2018 21:08:22 +0300
+Message-Id: <20180925180825.24659-2-yasha.che3@gmail.com>
 X-Mailer: git-send-email 2.19.0
+In-Reply-To: <20180925180825.24659-1-yasha.che3@gmail.com>
+References: <20180925180825.24659-1-yasha.che3@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66552
+X-archive-position: 66553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,55 +71,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+It makes the code more readable, especially in the nested ifdefs.
 
-This patch series simplifies and cleans up the handling of
-CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
-
-Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
-also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
-
-This allows to remove special platform code that handled the ELF
-appended dtb case, and replace it with the generic appended dtb
-case (fw_passed_dtb).
-
-There's also a bonus: platforms that already handle 'fw_passed_dtb',
-gain now automatic support for detecting a DT blob under
-CONFIG_MIPS_ELF_APPENDED_DTB=y.
-
-
-Patches:
-- Patch 1 adds only comments (to make the file more readable for patch 2).
-- Patch 2 fixes 'fw_passed_dtb' under CONFIG_MIPS_ELF_APPENDED_DTB=y.
-- Patch 3 simplifies CONFIG_MIPS_ELF_APPENDED_DTB handling on the BMIPS platform.
-- Patch 4 simplifies CONFIG_MIPS_ELF_APPENDED_DTB handling on the Octeon platform.
-
-Patches 3 and 4 depend on patch 2.
-
-The patches are on top of v4.18.
-
-The patches are also available at:
-https://github.com/yashac3/linux-rtl8186/commits/elf_appended_dtb_changes_on_4_18
-
-Please review.
-
-Thanks,
-Yasha
-
+Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
+---
+ arch/mips/kernel/head.S | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-
-Yasha Cherikovsky (4):
-  MIPS/head: Add comments after #endif and #else
-  MIPS/head: Store ELF appended dtb in a global variable too
-  MIPS: BMIPS: Remove special handling of CONFIG_MIPS_ELF_APPENDED_DTB=y
-  MIPS: Octeon: Remove special handling of
-    CONFIG_MIPS_ELF_APPENDED_DTB=y
-
- arch/mips/bmips/setup.c         |  9 +--------
- arch/mips/cavium-octeon/setup.c | 10 +++-------
- arch/mips/kernel/head.S         | 18 ++++++++++--------
- 3 files changed, 14 insertions(+), 23 deletions(-)
-
+diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+index d1bb506adc10..fef2f61c5394 100644
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -77,7 +77,7 @@ EXPORT(_stext)
+ 	 */
+ FEXPORT(__kernel_entry)
+ 	j	kernel_entry
+-#endif
++#endif /* CONFIG_BOOT_RAW */
+ 
+ 	__REF
+ 
+@@ -99,19 +99,19 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
+ 
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ 	li		t1, 0xd00dfeed
+-#else
++#else  /* !CONFIG_CPU_BIG_ENDIAN */
+ 	li		t1, 0xedfe0dd0
+-#endif
++#endif /* !CONFIG_CPU_BIG_ENDIAN */
+ 	lw		t0, (t2)
+ 	beq		t0, t1, dtb_found
+-#endif
++#endif /* CONFIG_MIPS_RAW_APPENDED_DTB */
+ 	li		t1, -2
+ 	move		t2, a1
+ 	beq		a0, t1, dtb_found
+ 
+ 	li		t2, 0
+ dtb_found:
+-#endif
++#endif /* CONFIG_USE_OF */
+ 	PTR_LA		t0, __bss_start		# clear .bss
+ 	LONG_S		zero, (t0)
+ 	PTR_LA		t1, __bss_stop - LONGSIZE
+@@ -156,9 +156,9 @@ dtb_found:
+ 	 * newly sync'd icache.
+ 	 */
+ 	jr.hb		v0
+-#else
++#else  /* !CONFIG_RELOCATABLE */
+ 	j		start_kernel
+-#endif
++#endif /* !CONFIG_RELOCATABLE */
+ 	END(kernel_entry)
+ 
+ #ifdef CONFIG_SMP
 -- 
 2.19.0

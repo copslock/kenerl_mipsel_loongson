@@ -1,68 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 21:31:05 +0200 (CEST)
-Received: from mail-wm1-x343.google.com ([IPv6:2a00:1450:4864:20::343]:33103
-        "EHLO mail-wm1-x343.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993941AbeIYTbAO7rNk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 21:31:00 +0200
-Received: by mail-wm1-x343.google.com with SMTP id r1-v6so13418119wmh.0;
-        Tue, 25 Sep 2018 12:31:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2018 21:58:16 +0200 (CEST)
+Received: from mail-sn1nam01on0093.outbound.protection.outlook.com ([104.47.32.93]:6322
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993945AbeIYT6KXKKjk convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2018 21:58:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=Ql9pVet2eun9Mn9AWv9RhcECS2xztA7i3bnKEiMZGLE=;
-        b=PGt3Q1as+F+pJr9RREZ4/P20w7bSdYAblkqJnXKmKOhrzzvFX1SkFdDuxqWb0AwQrk
-         zSYt9oCu2gnL+Y1sNeKW8WL3sI4iOUBDZBBnxwqNyVh8WTDNeKkyHvhw4Qr6O+ghFwST
-         /6K19UMQRq6Aj6FNVLJkTf/8mu6lqfg94RrFEq+FEy/xOoVq7Y+mzEB8MPafAtpzcw1u
-         So+2DJBc4c4T+5/T6xYI7Vg3JmMKEeZHLqUo1OkIqo8UXdVJirvabL3yem1ylAfhnuGS
-         CDVsljo4R3g8LeTbUS/guwmNoqM4fY2k64Gfi/vhJS26pUTaTjvG3CciojyqFl5ykNze
-         kiJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=Ql9pVet2eun9Mn9AWv9RhcECS2xztA7i3bnKEiMZGLE=;
-        b=P6mpYDKvfvadtVmLH/tl2G1MjklZ1sCX4nyekrTArqn2AWcIbASAU4tJseTDUaJcVx
-         gKcWW5QaKvvPydWMfCC1dIKC6ehKZlSDX+nC0x3EfPdOg34Sopnxi5ouQPpJkB8/1l7a
-         F9HR6/CUJG2bE8KkUOSbm0lZygiorpnWx5KC2/QUyNX882cpOXxaO2Cj2hyaI2Jhh53Z
-         dg2EInoE+ZAGtNlrIQmCc3/47uQICPgN7qT7BYOUbB4I6v7zuZAJIWJZ4b4MZWw8t1Rp
-         emYkrWIX7WYJM4mPiRUtWKr1vE9paHup0trE7LTaWOt/kQsuhpuUjDDcGZTOA34Z3o9i
-         ZLfA==
-X-Gm-Message-State: ABuFfojpf80B9S28rVKJJyZQQ1KWcv1Aul4qObQMixfGTC5Ezj2+6mJg
-        XNX7dk1FNp/MegDfDG3Jd1A=
-X-Google-Smtp-Source: ACcGV62dJhWbz8defye/tcdE5LSEKxWuWA+zArm/zfBqrG1YC7sTHQD0jBmmvvrerBeBFAKg/bdGbA==
-X-Received: by 2002:a1c:90e:: with SMTP id 14-v6mr1948045wmj.130.1537903854838;
-        Tue, 25 Sep 2018 12:30:54 -0700 (PDT)
-Received: from laptop ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id c12-v6sm3353630wrr.6.2018.09.25.12.30.53
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 25 Sep 2018 12:30:54 -0700 (PDT)
-Message-ID: <fc0016b8c3d08fc139356c39668c6ab5d8c297fd.camel@gmail.com>
-Subject: Re: [PATCH 1/1] MIPS: Add new Kconfig variable to avoid unaligned
- access instructions
-From:   Yasha Cherikovsky <yasha.che3@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K48w7GP2DcTWXlrVwpO0fXCDGDDHQHJfOd21KWeb+UE=;
+ b=A7574bBw64MZX+iT+PTZhs3uadB8EwCGByZZhOeuNLwiZ7fcuEkkJJetanZNjhfKxmVnWfyGbCzVAsYUeb01nEo4uybKcsb1bWfQWrGldMA+G1mvRZCiOtdWCYpGoA4l5zdf/znTalkxQmhit+x5VxpB2iq40LurJMg2Gp/vZUQ=
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com (20.176.255.143) by
+ BYAPR08MB4373.namprd08.prod.outlook.com (52.135.211.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1164.22; Tue, 25 Sep 2018 19:57:59 +0000
+Received: from BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981]) by BYAPR08MB4934.namprd08.prod.outlook.com
+ ([fe80::d9a4:818:86af:8981%5]) with mapi id 15.20.1143.022; Tue, 25 Sep 2018
+ 19:57:59 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Yasha Cherikovsky <yasha.che3@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Tue, 25 Sep 2018 22:30:52 +0300
-In-Reply-To: <20180925174510.rg3j4lfmwvlecnqt@pburton-laptop>
+Subject: Re: [PATCH 1/1] MIPS: Add new Kconfig variable to avoid unaligned
+ access instructions
+Thread-Topic: [PATCH 1/1] MIPS: Add new Kconfig variable to avoid unaligned
+ access instructions
+Thread-Index: AQHUUQPr1ACo6zXNjUStgfMebG/ND6UBTPoAgAAdiACAAAeRgA==
+Date:   Tue, 25 Sep 2018 19:57:59 +0000
+Message-ID: <20180925195757.glglc6q3ghn3dhs5@pburton-laptop>
 References: <20180920170306.9157-1-yasha.che3@gmail.com>
-         <20180920170306.9157-2-yasha.che3@gmail.com>
-         <20180925174510.rg3j4lfmwvlecnqt@pburton-laptop>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <yasha.che3@gmail.com>
+ <20180920170306.9157-2-yasha.che3@gmail.com>
+ <20180925174510.rg3j4lfmwvlecnqt@pburton-laptop>
+ <fc0016b8c3d08fc139356c39668c6ab5d8c297fd.camel@gmail.com>
+In-Reply-To: <fc0016b8c3d08fc139356c39668c6ab5d8c297fd.camel@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0018.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::31) To BYAPR08MB4934.namprd08.prod.outlook.com
+ (2603:10b6:a03:6a::15)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;BYAPR08MB4373;6:T8LuSYveAfhCEt1d6Y6LMqAjaanhWFsTStkCPSqM6PX1nmN1xoMB99l8OTPl0mwTSYl/KIbEyb98EnVNpQINYtfFqf3STMvsoY2tq//aO4NkSFbCYpluvFUmySqea3zP8bO34I1fEzQcTlRUmIyLf2LvLzDNar42C1/e97tJfyxW23/6wP5rJWx+hheBDskcPt/vhUiDrKp/kf5m5P3VIbHwxGcam9Zn1YjYm+fX7RMzNAYtzFTehSMeM1mUkW2C/8OMnhIReRabrpQOIFcKMXlpgUT8gMi6lM4c/ZqD+WFvLT7ZereelVsM0svRTUpzkbihyMEZ66jRRqETWktkl8+vBuBcExQdRjJoX2w+3lkuUzH6T3Fd+4gYydWvlRXJg8fhR1geo19I+MRF1Ga+yrEL7gyypNPJzd+8EVQ/pAdXZ2z5lkWkOSz2CVZHksVRIwX0EtQCH/nhLwxeHVl1fw==;5:rxqH8a/et1CbccXNccXF3Ogq9XlugIupV0SP+ybC5HlRo+L7ae+B+uee6GHUg007Q4fz+f5e9kLz0xa3R8ieQRXyOekwCiGq0AfjUkvEotTYFlvQTGw1mfuuVlrabIDPRxq1Wm8wAfceRaK+e2avaX4i1ezohRLSly9V++hSo38=;7:+jTWO8IreMW0WcPS8GxM2n6+PN1+8/LOl++0yloBuqJO/jCRZmh5FM0MkXQgIbMH6qMENqwZwcwVIuiha3yXg3cQtjkjW3yhvmnCmvIjqZveEKBT9L/8HTbypTuMGpNmdJ8WCM5ufSl+Wviome1H0ek/vAco57SLGAJR3dAfUmFqWghRMS+OF9COAfj5ESTDqO8BWisU3cEZJdkKrfb50luR1K4F2D1A5jT1Pc/GEW9Rg0G/Tj93b1s8hoprESm1
+x-ms-office365-filtering-correlation-id: 17f7d68f-4ef8-4864-3f9d-08d623213145
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:BYAPR08MB4373;
+x-ms-traffictypediagnostic: BYAPR08MB4373:
+x-microsoft-antispam-prvs: <BYAPR08MB437312C22299E9D87DF4F7B1C1160@BYAPR08MB4373.namprd08.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(52105095)(93006095)(3002001)(10201501046)(149066)(150027)(6041310)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(2016111802025)(6043046)(201708071742011)(7699051);SRVR:BYAPR08MB4373;BCL:0;PCL:0;RULEID:;SRVR:BYAPR08MB4373;
+x-forefront-prvs: 08062C429B
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(396003)(39840400004)(366004)(346002)(136003)(199004)(189003)(66066001)(6916009)(25786009)(105586002)(97736004)(305945005)(106356001)(2906002)(71190400001)(14454004)(256004)(53936002)(5660300001)(39060400002)(8676002)(34290500001)(81156014)(8936002)(7736002)(68736007)(508600001)(71200400001)(6246003)(2900100001)(81166006)(99286004)(1076002)(54906003)(58126008)(76176011)(33896004)(44832011)(229853002)(6436002)(386003)(6116002)(486006)(6486002)(52116002)(6506007)(33716001)(93886005)(26005)(102836004)(42882007)(9686003)(6512007)(3846002)(446003)(5250100002)(186003)(4326008)(11346002)(476003)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR08MB4373;H:BYAPR08MB4934.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: TYkI1hQ3bawm56tJua470oaoXeAhxTGuJmw81pKPOeMf9koSiKb+k91nuhlhoXCPMF70ZZ3pj5EKWZSMNslA4/MRXc5Xdv4scM+NAd+kkS3GiMXJRaZZpT9ZWjNwsYRXlPVYQ4ZMwCGIRog2SGLJx0vQO9ANYRutJmeLrhrhyhcqeVByM30GjnAeqtdT4CfJG6yX1LFiTgS91yl4WTqiwbXVvxQbTAh7iEt8RPw6jaHT1wfMYnbNEG/DvOWK4BPP6b3aXc1YnCY0W8CzFQPMOdmtVwYlkv9poDmgllTpu+q0WTpEXDnW23j/luRh9FWOJ3M5u43TxOY1s7Cm+cHVZEB7MiK+gqybukN/WBNy5Sg=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <B71A8E97ABDADD479D680C9C56B18ECD@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17f7d68f-4ef8-4864-3f9d-08d623213145
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2018 19:57:59.1611
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR08MB4373
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66557
+X-archive-position: 66558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yasha.che3@gmail.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,69 +95,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Hi Yasha,
 
-On Tue, 2018-09-25 at 17:45 +0000, Paul Burton wrote:
-> Hi Yasha,
-> 
-> On Thu, Sep 20, 2018 at 08:03:06PM +0300, Yasha Cherikovsky wrote:
-> > MIPSR6 doesn't support unaligned access instructions (lwl, lwr,
-> > swl, swr).
-> > The MIPS tree has some special cases to avoid these instructions,
-> > and currently the code is testing for CONFIG_CPU_MIPSR6.
+On Tue, Sep 25, 2018 at 10:30:52PM +0300, Yasha Cherikovsky wrote:
+> On Tue, 2018-09-25 at 17:45 +0000, Paul Burton wrote:
+> > How about we:
 > > 
-> > Declare a new Kconfig variable:
-> > CONFIG_CPU_HAS_NO_UNALIGNED_LOAD_STORE,
-> > and make CONFIG_CPU_MIPSR6 select it.
-> > And switch all the special cases to test for the new variable.
+> >   - Add a Kconfig option CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and
+> > select
+> >     it for all existing pre-r6 targets (probably from CONFIG_CPU_*).
 > > 
-> > Also, the new variable selects CONFIG_GENERIC_CSUM, to use
-> > generic C checksum code (to avoid special assembly code that uses
-> > the unsupported instructions).
+> >   - Change CONFIG_GENERIC_CSUM to default y if
+> >     !CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and drop the selects of it.
+> > 
+> > That would avoid the double-negative ("if we don't not support this")
+> > that the #ifndef's currently represent. It would also mean any future
+> > architecture/ISA targets beyond MIPSr6 automatically avoid the
+> > instructions.
 > 
-> Thanks for your patch :)
+> Thanks for your feedback, I'll start preparing v2.
 > 
-> I think it would be cleaner to invert this logic & instead have the
-> Kconfig entry indicate when kernel's build target *does* support the
-> [ls]w[lr] instructions.
-> 
-> It would be good for the name to be clear that these instructions are
-> what it's about too - "unaligned load store" is a little too vague
-> for
-> my liking. For example one could easily misconstrue it to mean
-> something
-> akin to the inverse of CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS,
-> whereas
-> in the MIPSr6 case many CPUs actually handle unaligned accesses in
-> hardware when using the regular load/store instructions. They don't
-> have
-> the [ls]w[lr] instructions, but they don't need them because they
-> handle
-> unaligned accesses more naturally without needing us to be explicit
-> about them.
-> 
-> How about we:
-> 
->   - Add a Kconfig option CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and
-> select
->     it for all existing pre-r6 targets (probably from CONFIG_CPU_*).
-> 
->   - Change CONFIG_GENERIC_CSUM to default y if
->     !CONFIG_CPU_SUPPORTS_LOAD_STORE_LR, and drop the selects of it.
-> 
-> That would avoid the double-negative ("if we don't not support this")
-> that the #ifndef's currently represent. It would also mean any future
-> architecture/ISA targets beyond MIPSr6 automatically avoid the
-> instructions.
-> 
-> Thanks,
->     Paul
+> Looking in arch/mips/Kconfig, some CPU options start
+> with CPU_SUPPORTS_ and some with CPU_HAS_.
+> Which perfix should we use here?
 
-Thanks for your feedback, I'll start preparing v2.
+That's a good question :)
 
-Looking in arch/mips/Kconfig, some CPU options start
-with CPU_SUPPORTS_ and some with CPU_HAS_.
-Which perfix should we use here?
+To be honest I don't think either of them is perfect, since what we're
+really describing is what's supported by the ISA that the kernel build
+is targeting - and in theory the CPU we actually run on could support
+extra things.
+
+But considering it I think CPU_HAS_ is probably the best choice for
+this, since it's already used similarly to indicate support for pref &
+sync instructions.
 
 Thanks,
-Yasha
+    Paul

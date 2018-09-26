@@ -1,80 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 21:49:24 +0200 (CEST)
-Received: from mail-by2nam01on0095.outbound.protection.outlook.com ([104.47.34.95]:29037
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 22:36:35 +0200 (CEST)
+Received: from mail-eopbgr680121.outbound.protection.outlook.com ([40.107.68.121]:60240
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990393AbeIZTtVFguKQ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 21:49:21 +0200
+        id S23992328AbeIZUgbpukCv convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 22:36:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mFAdWqauGD6X7JnOJZNBb2C01eficrEzMuE4+6MLTPE=;
- b=QuBBjc8gcdRRYYs6sicskdxO4sqt0h0OMkiv7jruZz5aS24/FThoE9QbJG17VOuKBE4HQxEPjYeb9vcij59u4zUDRy7OpsWlxjfRSAPPCJMlusdenDQzb/dTkjkBpDF64iczb1SKWtIyGfqhaeHbqRArl0J/sMd6CFUQ0mPochM=
-Received: from MWHPR2201MB1280.namprd22.prod.outlook.com (10.174.162.20) by
- MWHPR2201MB1183.namprd22.prod.outlook.com (10.174.169.159) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1143.18; Wed, 26 Sep 2018 19:49:10 +0000
-Received: from MWHPR2201MB1280.namprd22.prod.outlook.com
- ([fe80::4883:508b:d10b:64fe]) by MWHPR2201MB1280.namprd22.prod.outlook.com
- ([fe80::4883:508b:d10b:64fe%5]) with mapi id 15.20.1164.024; Wed, 26 Sep 2018
- 19:49:10 +0000
-From:   Dengcheng Zhu <dzhu@wavecomp.com>
-To:     Paul Burton <pburton@wavecomp.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "rachel.mozes@intel.com" <rachel.mozes@intel.com>,
-        Dengcheng Zhu <dzhu@wavecomp.com>
-Subject: [mips-next PATCH] MIPS: kdump: Mark cpu back online before rebooting
-Thread-Topic: [mips-next PATCH] MIPS: kdump: Mark cpu back online before
- rebooting
-Thread-Index: AQHUVdH9j/uWdUY7e0u9VIL9wrCY1g==
-Date:   Wed, 26 Sep 2018 19:49:10 +0000
-Message-ID: <20180926194847.8734-1-dzhu@wavecomp.com>
+ bh=wmPesnn08rhG10R77SbvUV44FkfEAZggdL4vDU6Obf8=;
+ b=p2/B9lBXPMhZRf4fKzRJuRsVxDOsBF8nPzpSp0c4fYYNdYKFIOuccCRLq2O+mbsyApSQTUL99DpFSeRIuBx7bacii4chLbz2t7/jHQv7B8MOat/s+KDqcaqiQUmUkkzZKhEBPZfTB/xFqSwL70/bpPeYpxDX/tNGdaK1w2DZ9IA=
+Received: from DM6PR08MB4939.namprd08.prod.outlook.com (20.176.115.212) by
+ DM6PR08MB4778.namprd08.prod.outlook.com (20.176.115.91) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1164.25; Wed, 26 Sep 2018 20:36:20 +0000
+Received: from DM6PR08MB4939.namprd08.prod.outlook.com
+ ([fe80::7591:512a:df59:3d3d]) by DM6PR08MB4939.namprd08.prod.outlook.com
+ ([fe80::7591:512a:df59:3d3d%3]) with mapi id 15.20.1143.022; Wed, 26 Sep 2018
+ 20:36:20 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Yasha Cherikovsky <yasha.che3@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
+Thread-Topic: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
+Thread-Index: AQHUVPrPNYZ9JDT4CEqqYSbscSo9JKUDBzEA
+Date:   Wed, 26 Sep 2018 20:36:20 +0000
+Message-ID: <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
+References: <20180925180825.24659-1-yasha.che3@gmail.com>
+In-Reply-To: <20180925180825.24659-1-yasha.che3@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BN6PR04CA0035.namprd04.prod.outlook.com
- (2603:10b6:405:3b::24) To MWHPR2201MB1280.namprd22.prod.outlook.com
- (2603:10b6:301:24::20)
-x-originating-ip: [4.16.204.77]
+x-clientproxiedby: CY4PR18CA0050.namprd18.prod.outlook.com
+ (2603:10b6:903:13f::12) To DM6PR08MB4939.namprd08.prod.outlook.com
+ (2603:10b6:5:4b::20)
+user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
- smtp.mailfrom=dzhu@wavecomp.com; 
+ smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1183;6:YtMt+6svUtmMexHykTFExd8U+zFCxKG8c45B/6tW41Z9RqOoOZfLft1+0WpdOySbRn4pwxaHdTjFFexDGVaEx3O0EjguVl0cfAfXWXWZqp27qoIRkF0biR5s1ve+rxMmvNYj7SDUPi14igm0JWPWPjLyalSf0AuKQbwI133MDUWr/Z7StX8KDY6ngEQ4Sy/936rRJNm5Eg68+zhIdmb5gCw7amO+MrPjp2wkv2c7IWHRodCTeDMUqjO90qiT+IIl5c9h1CDgwMJQM3bDyZPUESljGbprKUN56w+NRc5TV3Ll/zrAOde5i1+ghMov36pdSMcmTDpVJZn7aR12TVaes2HBn0DhN5EvCORS0ACxbiAto0OBkgTrzQgO0cZdxV077eLfotIgj4t4PRZFLPH1wMFhDmGkRjPZ9y5ic97J7QzTBc3jBONrzNxLP78/JZNnbnd+KiwQULpQ8aifCak7Bw==;5:khlwjKZHmgjDDtTC9hgrmF0vRBDBmKqhtputbLK1pZshbPKpFVEXVu0uKA2Iv/LnjY4N0rTM0VNfn9cFfODMHJguo6FZ9X2nAio1jWBLBZqsblmj2xvSBUhT6WEIj2RkwYnBY+01zxRR50RIZ3SCi+AuZui+bgc2oQen5lNwvrM=;7:imR27Ijvg5q6L1QdUPzduijUsTf/ruW2wF9g2XkUoP3c3RjMqhN6GBXk8oBlgroc8v5hy6WCqgkD4n6nCIHxe1ltDwAE7cHX65ktVLjHIRuPdLxb+u07d/Cq2JOGxB3YNvlbXVjYzieFnPJFY/aUQU4/5Z7/EtN+TEwykrQ2yZqgrjoJCs+YmgwHgQonIJobL8tUWp5/Eez8bxTZEt/5ifOISOo0tDUsuNpmwjCXyV6a5aJ3bL2plx3Cm/nOB0tl
-x-ms-office365-filtering-correlation-id: e6aaf8ee-8a2c-42b6-1b6a-08d623e91fd7
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989299)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1183;
-x-ms-traffictypediagnostic: MWHPR2201MB1183:
-x-microsoft-antispam-prvs: <MWHPR2201MB1183BB28EA114CDE1057F4B0A2150@MWHPR2201MB1183.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(209352067349851)(190756311086443);
+x-microsoft-exchange-diagnostics: 1;DM6PR08MB4778;6:sBY0fb0bPLPCwe1ArugTC+h7JHL+ZS/0cTXsYh4SM3KPFPPGFJMi/Yx9VXwZ8pG0rl2SXeQe6oLKlABO7/Z5fGobOmgAi2KVTllWrBBeS4fZStZIwyg6oas8XpjXZYzMPPLU7ypUmC/onNgNkk5MNHLot1uLVgGmeXjsuXz+i+Ewu/HJxvH187AiciORpu1SwbbSgYoKqgKoaQ0yl/LQNNVoztU4XCMDsJPy+RyUAblPk2mK6eRNAiACpcEEQJ/3pwtxyHdV8qpAPnF4Oz8foswGCo7toeas/Mlctlw6rWQcaY7PF7IJE3sz5+LM+TuzDC6mgD08wRvBkyQS/aQ0DdSX6556esgSZGsRlAb8szv0U4zinPBi86IYHuDMiwJVoizn4h8fjX+Ce8zwl5kz85thF8xjYkaoXc4SXxlmU1l98Q4RiKWctLhJiz0Suix0otnIHkGWiubcCUfwC0N9SQ==;5:qyEyZE6BOfqgfYoZ59vhVuZp3PcJNt4l3ETiYGRWJ/8yPYODdRlKFAWtoYlTK4D4unfNNhYukWxafqC6TfX6FDnpuEv8r45gxdsiYtHZMmxDpIqCZj2FklOWhmJeJRZWpR6jQHw3DjxAZRx3p9eSRgEu+Ib45DTp1/RrinVvNTE=;7:j0Kt+LYuvHXoviE4LaQyWfgMfL3e3ciBijArg1J43h/WXzMoDGdDCL2m8ljQI/6fiiOImVserBZI70IkBJDVPXtofwJM7h9mjM4mzs+eBYEw3daG5kOEX41wqX1ly3X7A7IzqGtElHZjqTktW1lMK/x0HXYsY16y51zulEyE0LURiOFbUGuh8uykIrjuPOmtMyN6tyjmGhdjvc2ShY1n9nn4k3JUHf9vLxC8nF8wRyKIWj2wbqgzoHne4+VsHWfu
+x-ms-office365-filtering-correlation-id: 0a2fdfaf-4f47-4c9b-f92e-08d623efb773
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4778;
+x-ms-traffictypediagnostic: DM6PR08MB4778:
+x-microsoft-antispam-prvs: <DM6PR08MB47787F7FF224A4527C89E106C1150@DM6PR08MB4778.namprd08.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(788757137089);
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3231355)(944501410)(52105095)(93006095)(93001095)(10201501046)(3002001)(149066)(150057)(6041310)(20161123564045)(20161123560045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123558120)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1183;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1183;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(10201501046)(3231355)(944501410)(52105095)(93006095)(149066)(150057)(6041310)(20161123558120)(2016111802025)(20161123564045)(20161123562045)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:DM6PR08MB4778;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4778;
 x-forefront-prvs: 08076ABC99
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(396003)(366004)(136003)(39850400004)(376002)(199004)(189003)(486006)(102836004)(2900100001)(107886003)(4326008)(81156014)(81166006)(86362001)(2616005)(99286004)(476003)(8676002)(26005)(256004)(386003)(71190400001)(71200400001)(25786009)(54906003)(34290500001)(110136005)(6506007)(316002)(52116002)(97736004)(2501003)(105586002)(6436002)(68736007)(66066001)(305945005)(5250100002)(53936002)(106356001)(7736002)(6486002)(36756003)(6116002)(3846002)(1076002)(8936002)(478600001)(5660300001)(2906002)(14454004)(6512007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1183;H:MWHPR2201MB1280.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(136003)(39850400004)(396003)(346002)(366004)(199004)(189003)(25786009)(229853002)(2906002)(386003)(97736004)(39060400002)(53936002)(9686003)(6436002)(6486002)(6506007)(42882007)(2900100001)(4326008)(71190400001)(5660300001)(5250100002)(68736007)(6116002)(6916009)(1076002)(3846002)(14454004)(71200400001)(6246003)(316002)(34290500001)(508600001)(305945005)(7736002)(44832011)(476003)(486006)(106356001)(81166006)(33716001)(11346002)(105586002)(8676002)(446003)(81156014)(102836004)(186003)(66066001)(256004)(54906003)(76176011)(58126008)(8936002)(52116002)(33896004)(99286004)(6512007)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4778;H:DM6PR08MB4939.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: eY2CPpK4FBdtdpN6D3b6DX3Pp3V4oz2hW9LNPTEGa4FH5/pHGyFrTeJFzfFvTKG+zK1bv/0bzeobwId9mJ2hCwxkyPLZ/7xMjWQFf5gB72IOwJR2ieYgykMBG5WIrtFgykf3UsFWsSFW+FkL34fb0LVJRbeRIUvV9hR63l9Qqaz2rwWbNsQg2hFk4VKtV5bqNMLDjC2ysONQRdmLMjdz8CjnGtkGJz2fZ4vE4Z0I/ue3nTloJdaPNnYJCzZm+8TIijtslons4TrKEV8VadBrRxyAP/GMbQ5tWwWsASSJBvK11rLV3GOmepCvE2wEhfT76Q+32CD4OejvZrWJybW4/KwYyZk8mDR37Wxg5PcFpKY=
+x-microsoft-antispam-message-info: lTl8IqZhMwa7+PD0tqgTqVUL+pFNWF5rel5a1z8xMaqLHnLkbRk/lIKE/jrUfJBU0oGoeUKeJfUqlKPJQJiWHOlC1l5MpO/pxafYy29W98U2OjcCHnRtbpllZVLO5K/JZwm/6EmvGnVikNv5rnWf2Zvj9D7q158Jf4WOvP2iQu8hf206zKN0nIO2e6L5Er+7nr4vJdiDjr3S9s7J1xc7KLE3TUjnuWXVpnAeDVvSBMSPiT1vw3Utm1y7J2c3JnhRwXsPMCO0urmqjtGiZ8qC/0W+bymVnotXL2jktnNIXyJoe/8+wJ/bBhgMoiYlG/1KikWvD3fusT9ra3rmsBhaMA6NTd7ydP2c3r6dPK6/DeE=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1CCE8EA02E16AA46ACB96346DF4E06F1@namprd08.prod.outlook.com>
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-OriginatorOrg: wavecomp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6aaf8ee-8a2c-42b6-1b6a-08d623e91fd7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2018 19:49:10.2109
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a2fdfaf-4f47-4c9b-f92e-08d623efb773
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2018 20:36:20.7404
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1183
-Return-Path: <dzhu@wavecomp.com>
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4778
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66584
+X-archive-position: 66585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dzhu@wavecomp.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,39 +90,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The crash utility initializes cpu state by reading the system kernel
-memory, which is copied into vmcore.
+Hi Yasha,
 
-It is also natural to preserve the online state for CPUs at crash.
+On Tue, Sep 25, 2018 at 09:08:21PM +0300, Yasha Cherikovsky wrote:
+> Hi,
+> 
+> This patch series simplifies and cleans up the handling of
+> CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
+> 
+> Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
+> also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
+> 
+> This allows to remove special platform code that handled the ELF
+> appended dtb case, and replace it with the generic appended dtb
+> case (fw_passed_dtb).
+> 
+> There's also a bonus: platforms that already handle 'fw_passed_dtb',
+> gain now automatic support for detecting a DT blob under
+> CONFIG_MIPS_ELF_APPENDED_DTB=y.
 
-Failing to do so could make the analysis tool present info for only 1 CPU
-by default, and unable to find panic task.
+Thanks - applied to mips-next for 4.20.
 
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
----
- arch/mips/kernel/machine_kexec.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 93b8353eece4..5c5b4351893e 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -171,6 +171,16 @@ void kexec_reboot(void)
- {
- 	void (*do_kexec)(void) __noreturn;
- 
-+	/*
-+	 * We know we were online, and there will be no incoming IPIs at
-+	 * this point. Mark online again before rebooting so that the crash
-+	 * analysis tool will see us correctly.
-+	 */
-+	set_cpu_online(smp_processor_id(), true);
-+
-+	/* Ensure remote CPUs observe that we're online before rebooting. */
-+	smp_mb__after_atomic();
-+
- #ifdef CONFIG_SMP
- 	if (smp_processor_id() > 0) {
- 		/*
--- 
-2.17.1
+Paul

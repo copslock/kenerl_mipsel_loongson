@@ -1,66 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 22:52:33 +0200 (CEST)
-Received: from mail-wm1-x341.google.com ([IPv6:2a00:1450:4864:20::341]:39591
-        "EHLO mail-wm1-x341.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992328AbeIZUw3qnyJv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 22:52:29 +0200
-Received: by mail-wm1-x341.google.com with SMTP id q8-v6so3793767wmq.4;
-        Wed, 26 Sep 2018 13:52:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=wkGCeYtE2WgVZ1DvgQhO4F4mu1Ob35imFAmQvQskoTY=;
-        b=dFRXczT9p+P4Gb4hxCIRZOcYO9T3Jn+AOYEz3tJFTbcA/Qs+Kutq8s0MN805H51rYZ
-         3HJCpDaYXnTIN6Kh0+yGkRaLUK4sOPQtChyUedIJJCI7u7wP/3oIFdo4qpMmjrOVxpPA
-         N/UsFy4BrlRaMqnRceSUBQdvOfHH9Dq9Zvxx6dbMcW+cWq/4lA0MLnf+hnbwseIbQv4+
-         0g1Zs9ZxmdnDQ1O61GF+Ta8D1wtHvpvLZeK3Wcu2K7+WCsniRBAmuskfXXeG3GqUHArN
-         bgNKavs8x2PPFtMHKefsUMyBb6YGN0ZaNabWNesuNa7tBSHKMiuoeKeJmNF1b0juHl6s
-         x+ng==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 23:35:22 +0200 (CEST)
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:42523 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992328AbeIZVfRRSOz8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 23:35:17 +0200
+Received: by mail-oi1-f193.google.com with SMTP id v198-v6so395851oif.9;
+        Wed, 26 Sep 2018 14:35:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=wkGCeYtE2WgVZ1DvgQhO4F4mu1Ob35imFAmQvQskoTY=;
-        b=J+Z+onc7l/geI/8UneHS9QXlU1prkreGYWzFFLmQKIw2luS6k0BSsbrzw8wfHDKYCl
-         4oHNv7BzylaSDubEaCbe5VjmaybkkBKxWLsBsGLGXsKYcLvXzXC4AXUYahrcYDO0l8QK
-         uxf1DufAwj2w744yaqbxB4jX55UhMJLNfxrXJwahD/RB9i8tDgDQJtu7kKXVE2HefUZu
-         V/3Rtxb5XtWEa9QU9DIKBxol2WLZHcmSVc3dMEkpY/6DRBVNGDyAcR356Wo/dh1vB39p
-         K9Np0lBRQswmRUCZgxa/Dn7onx34ep8hQC/QQC42LDLBYH0P+vLbYYjwFCgm4PLVYNp3
-         VNpw==
-X-Gm-Message-State: ABuFfoh5GnKIs03x8gSMRzE6QFmvyLg294rwCxuZ37qAB8eQhHVEFaKZ
-        lveUtb9ra3rV4pBB8D5emLw=
-X-Google-Smtp-Source: ACcGV63tbgcYNOZMK/QDdUH16L8liNwT+0VL0wn8zikXAR6CQjSc3c/QqquSkIHUh8QECUPUti9WKA==
-X-Received: by 2002:a1c:908b:: with SMTP id s133-v6mr5388140wmd.69.1537995144850;
-        Wed, 26 Sep 2018 13:52:24 -0700 (PDT)
-Received: from laptop ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id b193-v6sm262323wmb.31.2018.09.26.13.52.23
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=XpuiZxTm/LyHp68Wieb6rdyIqn1THyhmdL6yKRpa8vY=;
+        b=KsUhk9LhRXGxp0hkktGERr7zkTNPSpLnobiuLKhxW318Dv2fNFyqlvHPndoxmaeth9
+         cYYrOm33T4+tA3c/UJbAdgJTfgiTBuwwKFcS+ayOYqGxaMF3U/NTjVmQHiBVQlokN6GD
+         8eCThU4M1C+nDekpcMoDZSTAbFFMnFPDZFou96MjKom4bzeknjMBKEFzhoU+aYRdz9dK
+         BpgrzCMH7gP8e7st3xVu+jDc//wYalMzRHVa177y3JTwq+y/48jMw3tztZzMhx8m2+IY
+         UzhXMRv4uXeSfde0NknaVvOtIOGajeXIWDSUtPozsi6Lhxo+Rg63lmdYa7eRpeUxBntU
+         jw0g==
+X-Gm-Message-State: ABuFfohYSi/NBuM6MCj0rpE5KK2OSjV3aa7Q4Hc8n/xiuZJzxaeWFyoc
+        F4b6zUgbbY+Wqc+STJyxpQ==
+X-Google-Smtp-Source: ACcGV62UJH5Dzd1JkSxkHJSgwOWCpzSfp3pqKqavLsDYLPGHrfFJxlDJHrTjMOfHf6eGzJJYz/f9lA==
+X-Received: by 2002:aca:b154:: with SMTP id a81-v6mr1781307oif.34.1537997711144;
+        Wed, 26 Sep 2018 14:35:11 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id y26-v6sm44579otk.64.2018.09.26.14.35.10
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 26 Sep 2018 13:52:24 -0700 (PDT)
-Message-ID: <5dad38f5158860a4c8da4d122af89d3e84def312.camel@gmail.com>
-Subject: Re: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
-From:   Yasha Cherikovsky <yasha.che3@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Wed, 26 Sep 2018 23:52:22 +0300
-In-Reply-To: <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
-References: <20180925180825.24659-1-yasha.che3@gmail.com>
-         <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <yasha.che3@gmail.com>
+        Wed, 26 Sep 2018 14:35:10 -0700 (PDT)
+Date:   Wed, 26 Sep 2018 16:35:09 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, mark.rutland@arm.com,
+        davem@davemloft.net, kishon@ti.com, andrew@lunn.ch,
+        f.fainelli@gmail.com, allan.nielsen@microchip.com,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH net-next v3 07/11] dt-bindings: phy: add DT binding for
+ Microsemi Ocelot SerDes muxing
+Message-ID: <20180926213509.GA7454@bogus>
+References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
+ <f392dafca9165800439fc09cd7d16e6a9506d457.1536912834.git-series.quentin.schulz@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f392dafca9165800439fc09cd7d16e6a9506d457.1536912834.git-series.quentin.schulz@bootlin.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66586
+X-archive-position: 66587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yasha.che3@gmail.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,32 +66,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
-
-On Wed, 2018-09-26 at 20:36 +0000, Paul Burton wrote:
-> Hi Yasha,
+On Fri, Sep 14, 2018 at 10:16:05AM +0200, Quentin Schulz wrote:
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+> ---
+>  Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt | 40 +++++++-
+>  1 file changed, 40 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
 > 
-> On Tue, Sep 25, 2018 at 09:08:21PM +0300, Yasha Cherikovsky wrote:
-> > Hi,
-> > 
-> > This patch series simplifies and cleans up the handling of
-> > CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
-> > 
-> > Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
-> > also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
-> > 
-> > This allows to remove special platform code that handled the ELF
-> > appended dtb case, and replace it with the generic appended dtb
-> > case (fw_passed_dtb).
-> > 
-> > There's also a bonus: platforms that already handle 'fw_passed_dtb',
-> > gain now automatic support for detecting a DT blob under
-> > CONFIG_MIPS_ELF_APPENDED_DTB=y.
-> 
-> Thanks - applied to mips-next for 4.20.
-> 
-> Paul
+> diff --git a/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+> new file mode 100644
+> index 0000000..2a88cc3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
+> @@ -0,0 +1,40 @@
+> +Microsemi Ocelot SerDes muxing driver
+> +-------------------------------------
+> +
+> +On Microsemi Ocelot, there is a handful of registers in HSIO address
+> +space for setting up the SerDes to switch port muxing.
+> +
+> +A SerDes X can be "muxed" to work with switch port Y or Z for example.
+> +One specific SerDes can also be used as a PCIe interface.
+> +
+> +Hence, a SerDes represents an interface, be it an Ethernet or a PCIe one.
+> +
+> +There are two kinds of SerDes: SERDES1G supports 10/100Mbps in
+> +half/full-duplex and 1000Mbps in full-duplex mode while SERDES6G supports
+> +10/100Mbps in half/full-duplex and 1000/2500Mbps in full-duplex mode.
+> +
+> +Also, SERDES6G number (aka "macro") 0 is the only interface supporting
+> +QSGMII.
+> +
+> +Required properties:
+> +
+> +- compatible: should be "mscc,vsc7514-serdes"
+> +- #phy-cells : from the generic phy bindings, must be 2.
+> +	       The first number defines the input port to use for a given
+> +	       SerDes macro. The second defines the macro to use. They are
+> +	       defined in dt-bindings/phy/phy-ocelot-serdes.h
 
-Thanks!
+You need to define what this is a child of.
 
-Yasha
+> +
+> +Example:
+> +
+> +	serdes: serdes {
+> +		compatible = "mscc,vsc7514-serdes";
+> +		#phy-cells = <2>;
+
+However, if there are no other resources associated with this, then you 
+don't even need this child node. The parent can be a phy provider and 
+provider of other functions too.
+
+> +	};
+> +
+> +	ethernet {
+> +		port1 {
+> +			phy-handle = <&phy_foo>;
+> +			/* Link SERDES1G_5 to port1 */
+> +			phys = <&serdes 1 SERDES1G_5>;
+> +		};
+> +	};
+> -- 
+> git-series 0.9.1

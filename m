@@ -1,12 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 09:07:19 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:49150 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990393AbeIZHHQAfnlt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 09:07:16 +0200
-Date:   Wed, 26 Sep 2018 08:01:03 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 10:05:32 +0200 (CEST)
+Received: from mail-wm1-x343.google.com ([IPv6:2a00:1450:4864:20::343]:54789
+        "EHLO mail-wm1-x343.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991082AbeIZIFVjwIri (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 10:05:21 +0200
+Received: by mail-wm1-x343.google.com with SMTP id c14-v6so1192728wmb.4
+        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2018 01:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ONWisPtFURwS+Dv/RY9Ijg+ZXudgqyV5XWp/wD93EE4=;
+        b=KDukd2ySxu3ajHjovgrOo8VKtSSAwHEUxFESObdGL6Gp9oEw5g8aXWSVu3aHB3ar5a
+         4GrQte6urNaoeZ4/7RB2JAyflTfF8kZHR/ksDpGVqNXl0nfznGnNOAYQN8YnCX84ROiO
+         c14ErtmL52sfmrXmUbmK39VwmE55Rr07MRCSw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ONWisPtFURwS+Dv/RY9Ijg+ZXudgqyV5XWp/wD93EE4=;
+        b=b7RM/SWG8t7TLMBtSyHCw5Py6lTm3Co4JYSeO4nAyJRzFiiAD/BCa11EQqIpA4/uYF
+         imdU/YPWAI//mAdq2E0Zyw2E7914zBMSQZcD7+MI0ggGzT3jpdx5fxDZSfDZgpuJ9Xbc
+         WES9i+2At0SLJded1z4DSBjFEgHv3nc+1BGHAJ+8XAkI1jvjuZ0rBvKTyD48sneG1P5W
+         uSpt289L1BcA40GYml6qtT6Y6utf1gF5hOxOZJWJxcqaOONqZWUq7UNQxEIOvV1f3j/g
+         XXD5M4WyrMb9FbkHQ3ZAs57HZZEuX+Gs6N4gPOAwyBQ8FYDZg87ejyBJcUAKSGZoyq8J
+         bJNA==
+X-Gm-Message-State: ABuFfoinS8N6hbSVwrKaxzeVumY463H9D28FxZxN9cSoyY2xvogFQ5Ak
+        ATKtD7XjCxiliKMJZVAIgoZ/aA==
+X-Google-Smtp-Source: ACcGV61YB0//qGNB5fJ37rThZMXcjhFfRTt3HGmJf+URWtGGKGr19WXg+SGonBnZo+OihsEdZHK8cw==
+X-Received: by 2002:a1c:b58e:: with SMTP id e136-v6mr3234019wmf.114.1537949115637;
+        Wed, 26 Sep 2018 01:05:15 -0700 (PDT)
+Received: from [192.168.0.41] (42.168.88.92.rev.sfr.net. [92.88.168.42])
+        by smtp.googlemail.com with ESMTPSA id k7-v6sm4468535wmf.41.2018.09.26.01.05.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 26 Sep 2018 01:05:14 -0700 (PDT)
 Subject: Re: [PATCH v7 05/24] clocksource: Add a new timer-ingenic driver
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Mathieu Malaterre <malat@debian.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Rob Herring <robh+dt@kernel.org>, linux-doc@vger.kernel.org,
@@ -18,20 +47,26 @@ Cc:     Mathieu Malaterre <malat@debian.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         linux-pwm@vger.kernel.org
+References: <5bab3024.1c69fb81.b6a71.9c38SMTPIN_ADDED_MISSING@mx.google.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <5af26854-0752-312b-6148-3ffa9abb2570@linaro.org>
+Date:   Wed, 26 Sep 2018 10:05:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <5bab3024.1c69fb81.b6a71.9c38SMTPIN_ADDED_MISSING@mx.google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1537945634; bh=LQXapE9YDbJqDuIoIRAkwR+2Lh0rEuYfZEpHFWjyx9I=; h=Date:Subject:From:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding; b=KfgpS8zYow+k73lyYDbWs9jmw6qAjk6gN0wH9VlrRPYd/CzKbCjwSAcTGUoCGjaKlyAfofsf0WGPBhWp4jyGr3OFG7W222ceQ4ndB/5hgMNAe37pwbDOl0tQosfX8IsZpO6vvAtyoMpMHIUYN3w188CPaKlo+SbB53Ft+WNQSNg=
-Message-Id: <S23990393AbeIZHHQAfnlt/20180926070716Z+817@eddie.linux-mips.org>
-Return-Path: <paul@crapouillou.net>
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <daniel.lezcano@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66564
+X-archive-position: 66565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: daniel.lezcano@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,58 +79,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CkxlIDI1IHNlcHQuIDIwMTggMTA6MTIgUE0sIERhbmllbCBMZXpjYW5vIDxkYW5pZWwubGV6Y2Fu
-b0BsaW5hcm8ub3JnPiBhIMOpY3JpdCA6Cj4KPiBPbiAyNS8wOS8yMDE4IDE1OjM4LCBQYXVsIENl
-cmN1ZWlsIHdyb3RlOiAKPiA+IAo+ID4gTGUgMjQgc2VwdC4gMjAxOCA5OjE0IEFNLCBEYW5pZWwg
-TGV6Y2FubyA8ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSDDqWNyaXQgOiAKPiA+PiAKPiA+
-PiBPbiAyNC8wOS8yMDE4IDA4OjUzLCBQYXVsIENlcmN1ZWlsIHdyb3RlOiAKPiA+Pj4gCj4gPj4+
-IExlIDI0IHNlcHQuIDIwMTggMDc6NTgsIERhbmllbCBMZXpjYW5vIDxkYW5pZWwubGV6Y2Fub0Bs
-aW5hcm8ub3JnPiBhIMOpY3JpdCA6IAo+ID4+Pj4gCj4gPj4+PiBPbiAyNC8wOS8yMDE4IDA3OjQ5
-LCBQYXVsIENlcmN1ZWlsIHdyb3RlOiAKPiA+Pj4+PiAKPiA+Pj4+PiBMZSAyNCBzZXB0LiAyMDE4
-IDA3OjM1LCBEYW5pZWwgTGV6Y2FubyA8ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSAKPiA+
-Pj4+PiDDqWNyaXQgOiAKPiA+Pj4+Pj4gCj4gPj4+Pj4+IE9uIDI0LzA5LzIwMTggMDc6MjQsIFBh
-dWwgQ2VyY3VlaWwgd3JvdGU6IAo+ID4+Pj4+Pj4gSGkgRGFuaWVsLCAKPiA+Pj4+Pj4+IAo+ID4+
-Pj4+Pj4gTGUgMjQgc2VwdC4gMjAxOCAwNToxMiwgRGFuaWVsIExlemNhbm8gCj4gPj4+Pj4+PiA8
-ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSDDqWNyaXQgOiAKPiA+Pj4+Pj4+PiAKPiA+Pj4+
-Pj4+PiBPbiAyMS8wOC8yMDE4IDE5OjE2LCBQYXVsIENlcmN1ZWlsIHdyb3RlOiAKPiA+Pj4+Pj4+
-Pj4gVGhpcyBkcml2ZXIgaGFuZGxlcyB0aGUgVENVIChUaW1lciBDb3VudGVyIFVuaXQpIHByZXNl
-bnQgb24gCj4gPj4+Pj4+Pj4+IHRoZSBJbmdlbmljIEpaNDd4eCBTb0NzLCBhbmQgcHJvdmlkZXMg
-dGhlIGtlcm5lbCB3aXRoIGEgCj4gPj4+Pj4+Pj4+IHN5c3RlbSB0aW1lciwgYW5kIG9wdGlvbmFs
-bHkgd2l0aCBhIGNsb2Nrc291cmNlIGFuZCBhIAo+ID4+Pj4+Pj4+PiBzY2hlZF9jbG9jay4gCj4g
-Pj4+Pj4+Pj4+IAo+ID4+Pj4+Pj4+PiBJdCBhbHNvIHByb3ZpZGVzIGNsb2NrcyBhbmQgaW50ZXJy
-dXB0IGhhbmRsaW5nIHRvIGNsaWVudCAKPiA+Pj4+Pj4+Pj4gZHJpdmVycy4gCj4gPj4+Pj4+Pj4g
-Cj4gPj4+Pj4+Pj4gQ2FuIHlvdSBwcm92aWRlIGEgbXVjaCBtb3JlIGNvbXBsZXRlIGRlc2NyaXB0
-aW9uIG9mIHRoZSB0aW1lciAKPiA+Pj4+Pj4+PiBpbiBvcmRlciB0byBtYWtlIG15IGxpZmUgZWFz
-aWVyIGZvciB0aGUgcmV2aWV3IG9mIHRoaXMgcGF0Y2g/IAo+ID4+Pj4+Pj4gCj4gPj4+Pj4+PiBT
-ZWUgcGF0Y2ggWzAzLzI0XSwgaXQgYWRkcyBhIGRvYyBmaWxlIHRoYXQgZGVzY3JpYmVzIHRoZSAK
-PiA+Pj4+Pj4+IGhhcmR3YXJlLiAKPiA+Pj4+Pj4gCj4gPj4+Pj4+IFRoYW5rcywgSSB3ZW50IHRo
-cm91Z2ggYnV0IGl0IGlzIGluY29tcGxldGUgdG8gdW5kZXJzdGFuZCB3aGF0IHRoZSAKPiA+Pj4+
-Pj4gdGltZXIgZG8uIEkgd2lsbCByZXZlcnNlLWVuZ2luZWVyIHRoZSBjb2RlIGJ1dCBpdCB3b3Vs
-ZCBoZWxwIGlmIHlvdSAKPiA+Pj4+Pj4gY2FuIGdpdmUgdGhlIGdyb3NzIGFwcHJvYWNoLiBXaHkg
-bXVsdGlwbGUgY2hhbm5lbHMgPyBtdXRleGVzIGFuZCAKPiA+Pj4+Pj4gY29tcGxldGlvbiA/IAo+
-ID4+Pj4+IAo+ID4+Pj4+IE11Y2ggb2YgdGhlIGNvbXBsZXhpdHkgaXMgYmVjYXVzZSBvZiB0aGUg
-bXVsdGktcHVycG9zZSBuYXR1cmUgb2YgdGhlIAo+ID4+Pj4+IFRDVSBjaGFubmVscy4gRWFjaCBv
-bmUgY2FuIGJlIHVzZWQgYXMgdGltZXIvY2xvY2tzb3VyY2UsIG9yIFBXTS4gCj4gPj4+Pj4gCj4g
-Pj4+Pj4gVGhlIGRyaXZlciBzdGFydHMgYnkgdXNpbmcgY2hhbm5lbHMgMCBhbmQgMSBhcyBzeXN0
-ZW0gdGltZXIgYW5kIAo+ID4+Pj4+IGNsb2Nrc291cmNlLCByZXNwZWN0aXZlbHksIHRoZSBvdGhl
-ciBvbmVzIGJlaW5nIHVudXNlZCBmb3Igbm93LiBUaGVuLCAKPiA+Pj4+PiAqaWYqIHRoZSBQV00g
-ZHJpdmVyIHJlcXVlc3RzIG9uZSBvZiB0aGUgY2hhbm5lbHMgaW4gdXNlIGJ5IHRoZSAKPiA+Pj4+
-PiB0aW1lci9jbG9ja3NvdXJjZSBkcml2ZXIsIHNheSBjaGFubmVsIDAsIHRoZSB0aW1lci9jbG9j
-a3NvdXJjZSBkcml2ZXIgCj4gPj4+Pj4gd2lsbCBkeW5hbWljYWxseSByZWFzc2lnbiB0aGUgc3lz
-dGVtIHRpbWVyIHRvIGEgZnJlZSBjaGFubmVsLCBmcm9tIAo+ID4+Pj4+IGNoYW5uZWwgMCB0byBl
-LmcuIGNoYW5uZWwgMi4gT25seSBpbiB0aGF0IGNhc2UgdGhlIGNvbXBsZXRpb24vbXV0ZXggCj4g
-Pj4+Pj4gYXJlIGFjdHVhbGx5IHVzZWQuIAo+ID4+Pj4gCj4gPj4+PiBXaHkgZG8geW91IG5lZWQg
-dG8gZG8gdGhpcz8gQ2FuJ3QgYmUgdGhlIGNoYW5uZWxzIGRlZGljYXRlZCBhbmQgcmVzZXJ2ZWQg
-Cj4gPj4+PiBmb3IgY2xvY2tzb3VyY2UgYW5kIGNsb2NrZXZlbnQ/IAo+ID4+PiAKPiA+Pj4gVGhh
-dCdzIHdoYXQgSSBoYWQgaW4gcGxhY2UgKGluZ2VuaWMsdGltZXItY2hhbm5lbCBhbmQgaW5nZW5p
-YyxjbG9ja3NvdXJjZS1jaGFubmVsIERUIHByb3BlcnRpZXMpLCBidXQgUm9iIGRpZG4ndCB3YW50
-IGFueSBsaW51eC1zcGVjaWZpYyBwcm9wZXJ0aWVzIGluIHRoZSBkZXZpY2V0cmVlIGJpbmRpbmcg
-OiggCj4gPj4gCj4gPj4gSXNuJ3QgcG9zc2libGUgdG8gc3BlY2lmeSB0aGUgY2hhbm5lbCB0byB1
-c2UgaW4gdGhlIERUPyBsaWtlIHJlbmVzYXMxNiA/IAo+ID4gCj4gPiBUaGF0J3Mgd2hhdCBJIGRp
-ZCBpbiBWNiAoYW5kIGJlZm9yZSksIGJ1dCBSb2IgZGlkIG5vdCB3YW50IG1lIHRvIGFkZCBwcm9w
-ZXJ0aWVzIGZvciBMaW51eC1zcGVjaWZpYyBjb25jZXB0cyBzdWNoIGFzIGNsb2Nrc291cmNlLiAK
-Pgo+IEhtbSwgSSByZW1lbWJlciBzb21ldGhpbmcgbGlrZSB0aGF0LCB5ZXMgYnV0IEkgZGlkIGEg
-ZGVsZXRlIG9mIHRoZSAKPiBwcmV2aW91cyB2ZXJzaW9uIHdoZW4geW91IHBvc3RlZCB0aGUgdjcu
-IENhbiB5b3UgZ2l2ZSBhIHBvaW50ZXIgdG8gaXRzIAo+IGFuc3dlciA/IAoKWWVzLCB0aGlzIHdh
-cyBoaXMgYW5zd2VyOgpodHRwczovL2xrbWwub3JnL2xrbWwvMjAxOC83LzI1LzUwOAoKVGhlbiBt
-aW5lOgpodHRwczovL2xrbWwub3JnL2xrbWwvMjAxOC83LzMwLzg4MwoKLVBhdWw=
+On 26/09/2018 08:01, Paul Cercueil wrote:
+> 
+> Le 25 sept. 2018 10:12 PM, Daniel Lezcano <daniel.lezcano@linaro.org> a écrit :
+>>
+>> On 25/09/2018 15:38, Paul Cercueil wrote: 
+>>>
+>>> Le 24 sept. 2018 9:14 AM, Daniel Lezcano <daniel.lezcano@linaro.org> a écrit : 
+>>>>
+>>>> On 24/09/2018 08:53, Paul Cercueil wrote: 
+>>>>>
+>>>>> Le 24 sept. 2018 07:58, Daniel Lezcano <daniel.lezcano@linaro.org> a écrit : 
+>>>>>>
+>>>>>> On 24/09/2018 07:49, Paul Cercueil wrote: 
+>>>>>>>
+>>>>>>> Le 24 sept. 2018 07:35, Daniel Lezcano <daniel.lezcano@linaro.org> a 
+>>>>>>> écrit : 
+>>>>>>>>
+>>>>>>>> On 24/09/2018 07:24, Paul Cercueil wrote: 
+>>>>>>>>> Hi Daniel, 
+>>>>>>>>>
+>>>>>>>>> Le 24 sept. 2018 05:12, Daniel Lezcano 
+>>>>>>>>> <daniel.lezcano@linaro.org> a écrit : 
+>>>>>>>>>>
+>>>>>>>>>> On 21/08/2018 19:16, Paul Cercueil wrote: 
+>>>>>>>>>>> This driver handles the TCU (Timer Counter Unit) present on 
+>>>>>>>>>>> the Ingenic JZ47xx SoCs, and provides the kernel with a 
+>>>>>>>>>>> system timer, and optionally with a clocksource and a 
+>>>>>>>>>>> sched_clock. 
+>>>>>>>>>>>
+>>>>>>>>>>> It also provides clocks and interrupt handling to client 
+>>>>>>>>>>> drivers. 
+>>>>>>>>>>
+>>>>>>>>>> Can you provide a much more complete description of the timer 
+>>>>>>>>>> in order to make my life easier for the review of this patch? 
+>>>>>>>>>
+>>>>>>>>> See patch [03/24], it adds a doc file that describes the 
+>>>>>>>>> hardware. 
+>>>>>>>>
+>>>>>>>> Thanks, I went through but it is incomplete to understand what the 
+>>>>>>>> timer do. I will reverse-engineer the code but it would help if you 
+>>>>>>>> can give the gross approach. Why multiple channels ? mutexes and 
+>>>>>>>> completion ? 
+>>>>>>>
+>>>>>>> Much of the complexity is because of the multi-purpose nature of the 
+>>>>>>> TCU channels. Each one can be used as timer/clocksource, or PWM. 
+>>>>>>>
+>>>>>>> The driver starts by using channels 0 and 1 as system timer and 
+>>>>>>> clocksource, respectively, the other ones being unused for now. Then, 
+>>>>>>> *if* the PWM driver requests one of the channels in use by the 
+>>>>>>> timer/clocksource driver, say channel 0, the timer/clocksource driver 
+>>>>>>> will dynamically reassign the system timer to a free channel, from 
+>>>>>>> channel 0 to e.g. channel 2. Only in that case the completion/mutex 
+>>>>>>> are actually used. 
+>>>>>>
+>>>>>> Why do you need to do this? Can't be the channels dedicated and reserved 
+>>>>>> for clocksource and clockevent? 
+>>>>>
+>>>>> That's what I had in place (ingenic,timer-channel and ingenic,clocksource-channel DT properties), but Rob didn't want any linux-specific properties in the devicetree binding :( 
+>>>>
+>>>> Isn't possible to specify the channel to use in the DT? like renesas16 ? 
+>>>
+>>> That's what I did in V6 (and before), but Rob did not want me to add properties for Linux-specific concepts such as clocksource. 
+>>
+>> Hmm, I remember something like that, yes but I did a delete of the 
+>> previous version when you posted the v7. Can you give a pointer to its 
+>> answer ? 
+> 
+> Yes, this was his answer:
+> https://lkml.org/lkml/2018/7/25/508
+> 
+> Then mine:
+> https://lkml.org/lkml/2018/7/30/883
+
+Thanks !
+
+
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

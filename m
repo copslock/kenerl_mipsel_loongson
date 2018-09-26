@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 18:59:03 +0200 (CEST)
-Received: from mail-it1-x141.google.com ([IPv6:2607:f8b0:4864:20::141]:39324
-        "EHLO mail-it1-x141.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992891AbeIZQ67FLhwu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 18:58:59 +0200
-Received: by mail-it1-x141.google.com with SMTP id w200-v6so3827836itc.4
-        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2018 09:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sk4phsQMsWm/uLqtYjyTCCVZkWmOftfD6xEiXH8xJ4U=;
-        b=oHraBigdw5BEX0LUXs9GlUBIE7zHK53SIga1HWIx81sxIHv+NoQQonTbfj0UDv0Z+J
-         EQSG24+ZrTq2bjXRoMcoLR9rgJsgajjfUmZPLqE2bDOYvYgnz360+UkBGbEDzcJnF0tq
-         6K5wSTz3jRyehlYV6yPMPvwuOsdYapx5l6cpXY8Mkbi6V3d1SE8CtJm9K5lGwAdAUrlN
-         acztf9YRzQth69K5a8XlkVNbBBuLDtkA07DrDWyTfFom8LBLIbsW7dzc+R1LcNm7lpk9
-         76Exn3TO6BvTde5ueWmipdKNRWdyh+ywfJROOPd3cOVszLtHI3cLSo+bqjdR/FhrC/tH
-         cEAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sk4phsQMsWm/uLqtYjyTCCVZkWmOftfD6xEiXH8xJ4U=;
-        b=X4ahc/y1LijquR0nXl8oyI11CIRogcQFAAWxMCD1w+9qXUH5ANswO6L+UfjzoegD48
-         98WWJyVaVShpW2cuNoF805z8yTmbFH9/zr/yXan9dUjN7i6pPqmc7NegrKM23IyoeoXd
-         JiR7HItvP1qr6rSdh3zKms3DSxj8fz8ZFuWmv5VXT17H6XJN56AE9wnuTZDMil9+cnyM
-         YsRRqnF1GwUMR9trjVrjnBNXCrvL4Cn/yHiNLysmlitsazPcUQoJVWlBlzXe6jaf3BzM
-         tzUUZOePIPdJmAxM9fauyBmSJgShaYv37FLfDIgLmEgr+F6/wTab+KsVW1LALRc0IQmn
-         EBBQ==
-X-Gm-Message-State: ABuFfoizD2Ad9KhKqzbal87LIIQ/C/8fKYrJ1RZ70GB6qD21MA/y199S
-        3XVQCm94zgbXo9cDG6FXJGL/WDjR2r1aKBLu0RQ=
-X-Google-Smtp-Source: ACcGV61r76+3aUI+rvs9VbR2N0bAv7M/QbDxsEezQCK5N1Ftrt8LN0aVWm4RPYDKt2cA/F5iz5Vl4HGEmxZqV8pRXgw=
-X-Received: by 2002:a24:9a83:: with SMTP id l125-v6mr6225072ite.76.1537981132489;
- Wed, 26 Sep 2018 09:58:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <1536927045-23536-1-git-send-email-rppt@linux.vnet.ibm.com> <1536927045-23536-4-git-send-email-rppt@linux.vnet.ibm.com>
-In-Reply-To: <1536927045-23536-4-git-send-email-rppt@linux.vnet.ibm.com>
-From:   Alexander Duyck <alexander.duyck@gmail.com>
-Date:   Wed, 26 Sep 2018 09:58:41 -0700
-Message-ID: <CAKgT0UdP=78RsWHMxFu4PD8a3AhA3eNcG68Z_9aGY0vhOKf7xA@mail.gmail.com>
-Subject: Re: [PATCH 03/30] mm: remove CONFIG_HAVE_MEMBLOCK
-To:     rppt@linux.vnet.ibm.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 20:32:28 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:46978 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992891AbeIZScX2aT4i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 20:32:23 +0200
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w8QIT8Xo025093
+        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2018 14:32:19 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2mrf8r0kgv-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2018 14:32:19 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Wed, 26 Sep 2018 19:32:12 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 26 Sep 2018 19:32:00 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w8QIVxwW65994892
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Sep 2018 18:31:59 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 826B4A405D;
+        Wed, 26 Sep 2018 21:31:40 +0100 (BST)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0C9ACA4040;
+        Wed, 26 Sep 2018 21:31:36 +0100 (BST)
+Received: from rapoport-lnx (unknown [9.148.204.125])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 26 Sep 2018 21:31:35 +0100 (BST)
+Date:   Wed, 26 Sep 2018 21:31:53 +0300
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+To:     Alexander Duyck <alexander.duyck@gmail.com>
 Cc:     linux-mm <linux-mm@kvack.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Catalin Marinas <catalin.marinas@arm.com>, chris@zankel.net,
@@ -69,16 +63,36 @@ Cc:     linux-mm <linux-mm@kvack.org>,
         linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
         nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
         sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <alexander.duyck@gmail.com>
+Subject: Re: [PATCH 03/30] mm: remove CONFIG_HAVE_MEMBLOCK
+References: <1536927045-23536-1-git-send-email-rppt@linux.vnet.ibm.com>
+ <1536927045-23536-4-git-send-email-rppt@linux.vnet.ibm.com>
+ <CAKgT0UdP=78RsWHMxFu4PD8a3AhA3eNcG68Z_9aGY0vhOKf7xA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKgT0UdP=78RsWHMxFu4PD8a3AhA3eNcG68Z_9aGY0vhOKf7xA@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18092618-0020-0000-0000-000002CBF8A0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18092618-0021-0000-0000-0000211A1CA6
+Message-Id: <20180926183152.GA4597@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-09-26_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1809260172
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66582
+X-archive-position: 66583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.duyck@gmail.com
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,34 +105,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Sep 14, 2018 at 5:11 AM Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
->
-> All architecures use memblock for early memory management. There is no need
-> for the CONFIG_HAVE_MEMBLOCK configuration option.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
+On Wed, Sep 26, 2018 at 09:58:41AM -0700, Alexander Duyck wrote:
+> On Fri, Sep 14, 2018 at 5:11 AM Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
+> >
+> > All architecures use memblock for early memory management. There is no need
+> > for the CONFIG_HAVE_MEMBLOCK configuration option.
+> >
+> > Signed-off-by: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> 
+> <snip>
+> 
+> > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > index 5169205..4ae91fc 100644
+> > --- a/include/linux/memblock.h
+> > +++ b/include/linux/memblock.h
+> > @@ -2,7 +2,6 @@
+> >  #define _LINUX_MEMBLOCK_H
+> >  #ifdef __KERNEL__
+> >
+> > -#ifdef CONFIG_HAVE_MEMBLOCK
+> >  /*
+> >   * Logical memory blocks.
+> >   *
+> > @@ -460,7 +459,6 @@ static inline phys_addr_t memblock_alloc(phys_addr_t size, phys_addr_t align)
+> >  {
+> >         return 0;
+> >  }
+> > -#endif /* CONFIG_HAVE_MEMBLOCK */
+> >
+> >  #endif /* __KERNEL__ */
+> 
+> There was an #else above this section and I believe it and the code
+> after it needs to be stripped as well.
 
-<snip>
+Right, I've already sent the fix [1] and it's in mmots.
 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 5169205..4ae91fc 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -2,7 +2,6 @@
->  #define _LINUX_MEMBLOCK_H
->  #ifdef __KERNEL__
->
-> -#ifdef CONFIG_HAVE_MEMBLOCK
->  /*
->   * Logical memory blocks.
->   *
-> @@ -460,7 +459,6 @@ static inline phys_addr_t memblock_alloc(phys_addr_t size, phys_addr_t align)
->  {
->         return 0;
->  }
-> -#endif /* CONFIG_HAVE_MEMBLOCK */
->
->  #endif /* __KERNEL__ */
+[1] https://lkml.org/lkml/2018/9/19/416
 
-There was an #else above this section and I believe it and the code
-after it needs to be stripped as well.
+-- 
+Sincerely yours,
+Mike.

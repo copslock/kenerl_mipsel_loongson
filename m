@@ -1,83 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 22:36:35 +0200 (CEST)
-Received: from mail-eopbgr680121.outbound.protection.outlook.com ([40.107.68.121]:60240
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992328AbeIZUgbpukCv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 22:36:31 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2018 22:52:33 +0200 (CEST)
+Received: from mail-wm1-x341.google.com ([IPv6:2a00:1450:4864:20::341]:39591
+        "EHLO mail-wm1-x341.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992328AbeIZUw3qnyJv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2018 22:52:29 +0200
+Received: by mail-wm1-x341.google.com with SMTP id q8-v6so3793767wmq.4;
+        Wed, 26 Sep 2018 13:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wmPesnn08rhG10R77SbvUV44FkfEAZggdL4vDU6Obf8=;
- b=p2/B9lBXPMhZRf4fKzRJuRsVxDOsBF8nPzpSp0c4fYYNdYKFIOuccCRLq2O+mbsyApSQTUL99DpFSeRIuBx7bacii4chLbz2t7/jHQv7B8MOat/s+KDqcaqiQUmUkkzZKhEBPZfTB/xFqSwL70/bpPeYpxDX/tNGdaK1w2DZ9IA=
-Received: from DM6PR08MB4939.namprd08.prod.outlook.com (20.176.115.212) by
- DM6PR08MB4778.namprd08.prod.outlook.com (20.176.115.91) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1164.25; Wed, 26 Sep 2018 20:36:20 +0000
-Received: from DM6PR08MB4939.namprd08.prod.outlook.com
- ([fe80::7591:512a:df59:3d3d]) by DM6PR08MB4939.namprd08.prod.outlook.com
- ([fe80::7591:512a:df59:3d3d%3]) with mapi id 15.20.1143.022; Wed, 26 Sep 2018
- 20:36:20 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Yasha Cherikovsky <yasha.che3@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=wkGCeYtE2WgVZ1DvgQhO4F4mu1Ob35imFAmQvQskoTY=;
+        b=dFRXczT9p+P4Gb4hxCIRZOcYO9T3Jn+AOYEz3tJFTbcA/Qs+Kutq8s0MN805H51rYZ
+         3HJCpDaYXnTIN6Kh0+yGkRaLUK4sOPQtChyUedIJJCI7u7wP/3oIFdo4qpMmjrOVxpPA
+         N/UsFy4BrlRaMqnRceSUBQdvOfHH9Dq9Zvxx6dbMcW+cWq/4lA0MLnf+hnbwseIbQv4+
+         0g1Zs9ZxmdnDQ1O61GF+Ta8D1wtHvpvLZeK3Wcu2K7+WCsniRBAmuskfXXeG3GqUHArN
+         bgNKavs8x2PPFtMHKefsUMyBb6YGN0ZaNabWNesuNa7tBSHKMiuoeKeJmNF1b0juHl6s
+         x+ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=wkGCeYtE2WgVZ1DvgQhO4F4mu1Ob35imFAmQvQskoTY=;
+        b=J+Z+onc7l/geI/8UneHS9QXlU1prkreGYWzFFLmQKIw2luS6k0BSsbrzw8wfHDKYCl
+         4oHNv7BzylaSDubEaCbe5VjmaybkkBKxWLsBsGLGXsKYcLvXzXC4AXUYahrcYDO0l8QK
+         uxf1DufAwj2w744yaqbxB4jX55UhMJLNfxrXJwahD/RB9i8tDgDQJtu7kKXVE2HefUZu
+         V/3Rtxb5XtWEa9QU9DIKBxol2WLZHcmSVc3dMEkpY/6DRBVNGDyAcR356Wo/dh1vB39p
+         K9Np0lBRQswmRUCZgxa/Dn7onx34ep8hQC/QQC42LDLBYH0P+vLbYYjwFCgm4PLVYNp3
+         VNpw==
+X-Gm-Message-State: ABuFfoh5GnKIs03x8gSMRzE6QFmvyLg294rwCxuZ37qAB8eQhHVEFaKZ
+        lveUtb9ra3rV4pBB8D5emLw=
+X-Google-Smtp-Source: ACcGV63tbgcYNOZMK/QDdUH16L8liNwT+0VL0wn8zikXAR6CQjSc3c/QqquSkIHUh8QECUPUti9WKA==
+X-Received: by 2002:a1c:908b:: with SMTP id s133-v6mr5388140wmd.69.1537995144850;
+        Wed, 26 Sep 2018 13:52:24 -0700 (PDT)
+Received: from laptop ([37.122.159.87])
+        by smtp.gmail.com with ESMTPSA id b193-v6sm262323wmb.31.2018.09.26.13.52.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Sep 2018 13:52:24 -0700 (PDT)
+Message-ID: <5dad38f5158860a4c8da4d122af89d3e84def312.camel@gmail.com>
+Subject: Re: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
+From:   Yasha Cherikovsky <yasha.che3@gmail.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
-Thread-Topic: [PATCH 0/4] MIPS: Simplify ELF appended dtb handling
-Thread-Index: AQHUVPrPNYZ9JDT4CEqqYSbscSo9JKUDBzEA
-Date:   Wed, 26 Sep 2018 20:36:20 +0000
-Message-ID: <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
+Date:   Wed, 26 Sep 2018 23:52:22 +0300
+In-Reply-To: <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
 References: <20180925180825.24659-1-yasha.che3@gmail.com>
-In-Reply-To: <20180925180825.24659-1-yasha.che3@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: CY4PR18CA0050.namprd18.prod.outlook.com
- (2603:10b6:903:13f::12) To DM6PR08MB4939.namprd08.prod.outlook.com
- (2603:10b6:5:4b::20)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;DM6PR08MB4778;6:sBY0fb0bPLPCwe1ArugTC+h7JHL+ZS/0cTXsYh4SM3KPFPPGFJMi/Yx9VXwZ8pG0rl2SXeQe6oLKlABO7/Z5fGobOmgAi2KVTllWrBBeS4fZStZIwyg6oas8XpjXZYzMPPLU7ypUmC/onNgNkk5MNHLot1uLVgGmeXjsuXz+i+Ewu/HJxvH187AiciORpu1SwbbSgYoKqgKoaQ0yl/LQNNVoztU4XCMDsJPy+RyUAblPk2mK6eRNAiACpcEEQJ/3pwtxyHdV8qpAPnF4Oz8foswGCo7toeas/Mlctlw6rWQcaY7PF7IJE3sz5+LM+TuzDC6mgD08wRvBkyQS/aQ0DdSX6556esgSZGsRlAb8szv0U4zinPBi86IYHuDMiwJVoizn4h8fjX+Ce8zwl5kz85thF8xjYkaoXc4SXxlmU1l98Q4RiKWctLhJiz0Suix0otnIHkGWiubcCUfwC0N9SQ==;5:qyEyZE6BOfqgfYoZ59vhVuZp3PcJNt4l3ETiYGRWJ/8yPYODdRlKFAWtoYlTK4D4unfNNhYukWxafqC6TfX6FDnpuEv8r45gxdsiYtHZMmxDpIqCZj2FklOWhmJeJRZWpR6jQHw3DjxAZRx3p9eSRgEu+Ib45DTp1/RrinVvNTE=;7:j0Kt+LYuvHXoviE4LaQyWfgMfL3e3ciBijArg1J43h/WXzMoDGdDCL2m8ljQI/6fiiOImVserBZI70IkBJDVPXtofwJM7h9mjM4mzs+eBYEw3daG5kOEX41wqX1ly3X7A7IzqGtElHZjqTktW1lMK/x0HXYsY16y51zulEyE0LURiOFbUGuh8uykIrjuPOmtMyN6tyjmGhdjvc2ShY1n9nn4k3JUHf9vLxC8nF8wRyKIWj2wbqgzoHne4+VsHWfu
-x-ms-office365-filtering-correlation-id: 0a2fdfaf-4f47-4c9b-f92e-08d623efb773
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:DM6PR08MB4778;
-x-ms-traffictypediagnostic: DM6PR08MB4778:
-x-microsoft-antispam-prvs: <DM6PR08MB47787F7FF224A4527C89E106C1150@DM6PR08MB4778.namprd08.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(788757137089);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(10201501046)(3231355)(944501410)(52105095)(93006095)(149066)(150057)(6041310)(20161123558120)(2016111802025)(20161123564045)(20161123562045)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:DM6PR08MB4778;BCL:0;PCL:0;RULEID:;SRVR:DM6PR08MB4778;
-x-forefront-prvs: 08076ABC99
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(136003)(39850400004)(396003)(346002)(366004)(199004)(189003)(25786009)(229853002)(2906002)(386003)(97736004)(39060400002)(53936002)(9686003)(6436002)(6486002)(6506007)(42882007)(2900100001)(4326008)(71190400001)(5660300001)(5250100002)(68736007)(6116002)(6916009)(1076002)(3846002)(14454004)(71200400001)(6246003)(316002)(34290500001)(508600001)(305945005)(7736002)(44832011)(476003)(486006)(106356001)(81166006)(33716001)(11346002)(105586002)(8676002)(446003)(81156014)(102836004)(186003)(66066001)(256004)(54906003)(76176011)(58126008)(8936002)(52116002)(33896004)(99286004)(6512007)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR08MB4778;H:DM6PR08MB4939.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: lTl8IqZhMwa7+PD0tqgTqVUL+pFNWF5rel5a1z8xMaqLHnLkbRk/lIKE/jrUfJBU0oGoeUKeJfUqlKPJQJiWHOlC1l5MpO/pxafYy29W98U2OjcCHnRtbpllZVLO5K/JZwm/6EmvGnVikNv5rnWf2Zvj9D7q158Jf4WOvP2iQu8hf206zKN0nIO2e6L5Er+7nr4vJdiDjr3S9s7J1xc7KLE3TUjnuWXVpnAeDVvSBMSPiT1vw3Utm1y7J2c3JnhRwXsPMCO0urmqjtGiZ8qC/0W+bymVnotXL2jktnNIXyJoe/8+wJ/bBhgMoiYlG/1KikWvD3fusT9ra3rmsBhaMA6NTd7ydP2c3r6dPK6/DeE=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1CCE8EA02E16AA46ACB96346DF4E06F1@namprd08.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a2fdfaf-4f47-4c9b-f92e-08d623efb773
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2018 20:36:20.7404
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4778
-Return-Path: <pburton@wavecomp.com>
+         <20180926203618.bnmo5ys4ay24tbrr@pburton-laptop>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66585
+X-archive-position: 66586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: yasha.che3@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,25 +73,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yasha,
+Hi Paul,
 
-On Tue, Sep 25, 2018 at 09:08:21PM +0300, Yasha Cherikovsky wrote:
-> Hi,
+On Wed, 2018-09-26 at 20:36 +0000, Paul Burton wrote:
+> Hi Yasha,
 > 
-> This patch series simplifies and cleans up the handling of
-> CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
+> On Tue, Sep 25, 2018 at 09:08:21PM +0300, Yasha Cherikovsky wrote:
+> > Hi,
+> > 
+> > This patch series simplifies and cleans up the handling of
+> > CONFIG_MIPS_ELF_APPENDED_DTB in the MIPS tree.
+> > 
+> > Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
+> > also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
+> > 
+> > This allows to remove special platform code that handled the ELF
+> > appended dtb case, and replace it with the generic appended dtb
+> > case (fw_passed_dtb).
+> > 
+> > There's also a bonus: platforms that already handle 'fw_passed_dtb',
+> > gain now automatic support for detecting a DT blob under
+> > CONFIG_MIPS_ELF_APPENDED_DTB=y.
 > 
-> Specifically, it makes sure that the dtb appears in 'fw_passed_dtb'
-> also under CONFIG_MIPS_ELF_APPENDED_DTB=y.
+> Thanks - applied to mips-next for 4.20.
 > 
-> This allows to remove special platform code that handled the ELF
-> appended dtb case, and replace it with the generic appended dtb
-> case (fw_passed_dtb).
-> 
-> There's also a bonus: platforms that already handle 'fw_passed_dtb',
-> gain now automatic support for detecting a DT blob under
-> CONFIG_MIPS_ELF_APPENDED_DTB=y.
+> Paul
 
-Thanks - applied to mips-next for 4.20.
+Thanks!
 
-Paul
+Yasha

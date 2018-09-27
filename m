@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2018 20:16:21 +0200 (CEST)
-Received: from mail-sn1nam02on0112.outbound.protection.outlook.com ([104.47.36.112]:58000
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2018 20:56:46 +0200 (CEST)
+Received: from mail-cys01nam02on0107.outbound.protection.outlook.com ([104.47.37.107]:24498
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992501AbeI0SQSuh2SS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Sep 2018 20:16:18 +0200
+        id S23993946AbeI0S4lphXCR convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2018 20:56:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aPvzFSbwGCGl1VJPngx2cvKaiSFm3CstEMwV6zpQa+M=;
- b=b60OhXTm3Hlj7ZIdI2AApT5D2SiawrRcSpsHmRrO5O8tEwRK3Uua/JcUABONtBWtAiPUW01RCI+Y+JBK9JGdFdQwW39tLiAwaOZAEJLKrsndG7qXrw5ApUOnfsown4odz3Bo8IN5opberXYye3tDZeh3MlRe9XdNkoPuI8/iFh4=
+ bh=UwIVDSXc5rPcGnJWCfwUxitJGJo7nCzXH23+dhDdPqI=;
+ b=Wuf0SiJ2K5yPsxoi3JhxV/aKagX24hJz/cVuWXhw4LFJSQ+EBUMy9t+aYDH1fQEmGqkRUeHcn0KK7q6Xb1UA0P2EDlPDYJiRZ7znSD9pIt3gmisjn0XYVqiJBaZktmIQeFlNZvW0s2Y9QiQ9nOrdJhWYQDkmp//jbAMKKqZuyi0=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1710.namprd22.prod.outlook.com (10.164.206.152) with Microsoft
+ MWHPR2201MB1375.namprd22.prod.outlook.com (10.174.160.150) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1164.22; Thu, 27 Sep 2018 18:16:07 +0000
+ 15.20.1143.18; Thu, 27 Sep 2018 18:56:29 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::1886:62b2:fbe4:9627]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::1886:62b2:fbe4:9627%9]) with mapi id 15.20.1164.024; Thu, 27 Sep 2018
- 18:16:07 +0000
+ 18:56:29 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
-CC:     Huacai Chen <chenhuacai@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        stable <stable@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>
-Subject: Re: [PATCH] MIPS: VDSO: Always map near top of user memory
-Thread-Topic: [PATCH] MIPS: VDSO: Always map near top of user memory
-Thread-Index: AQHUVo4oFdgskwzc3kCgvnsq+/h4VQ==
-Date:   Thu, 27 Sep 2018 18:16:07 +0000
-Message-ID: <20180927181604.4kczgxeaot7utnuh@pburton-laptop>
-References: <1536990690-17778-1-git-send-email-chenhc@lemote.com>
- <20180925232221.28953-1-paul.burton@mips.com>
- <tencent_7D95F91F120F9BCE2DCAC958@qq.com>
-In-Reply-To: <tencent_7D95F91F120F9BCE2DCAC958@qq.com>
+To:     Maksym Kokhan <maksym.kokhan@globallogic.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Daniel Walker <danielwa@cisco.com>,
+        Andrii Bordunov <aborduno@cisco.com>,
+        Ruslan Bilovol <rbilovol@cisco.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 7/8] mips: convert to generic builtin command line
+Thread-Topic: [PATCH 7/8] mips: convert to generic builtin command line
+Thread-Index: AQHUVoMf+XdDhAaEwESEN/TIkkcHlKUEeo4A
+Date:   Thu, 27 Sep 2018 18:56:29 +0000
+Message-ID: <20180927185626.gcvx5qjemxbff3zt@pburton-laptop>
+References: <1538067417-6007-1-git-send-email-maksym.kokhan@globallogic.com>
+In-Reply-To: <1538067417-6007-1-git-send-email-maksym.kokhan@globallogic.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: CY4PR14CA0025.namprd14.prod.outlook.com
- (2603:10b6:903:101::11) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BN6PR10CA0029.namprd10.prod.outlook.com
+ (2603:10b6:404:109::15) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -45,37 +47,37 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1710;6:IkZMVHIM8qFnRFSFy1pA+HB8YX9W3bkBOZRurbOAaJL/yV2JbY8M/wguGmEnz8IcKqTqZxZxyxBnLJV0PnxiqFk5LU8tiTNl6509bJQKY3nU1smLTONh0Og2vyn28cdT9zhS+A9wW785rbXpEc7gNwJac88nlQIs2ZkBNkWNb7sgTvlwbdRg3x9CQj4dMiHobCGm5DfX4IZ81V4V42pKCW/oxFBdpKsR0Jv9TLjYJnPc4V/tONHy/N5oxwIvIF21QzGJMWpS/XxfHChkMw3PTzy0eTAgbmQNOFCikgVRQlX46nOwnEAFoSbY5uNYT1/P7Gv5zcQQOIBiMSkUgGTmGmsEF4YYZ6ZP7ZzURN6vunCZwCHMYhTXFzZfg6HBgpGUKyNd1ZWV8J57cXIqjjrDq3L3VoSzIZZ9mIGuvA4xjKxUqno06LrMOskQxXYrChr/vWV0PXo624gRViZnln26WQ==;5:JUSCsLpbf/xOszaWfuhtOyoKf+Wfw74baBTducvsn+VV71BN0rZQKmD6b+tA674TaVTWkf0PVeTkS+C3WuuHnVoESHgHEZK17OpLtQ08PlMtKRXQiHpjWv2004LT6lshmzfh7t6E2cNlHj+q87+XRojaTSlsfK0gxlWBnT8Y14g=;7:vSdqc1h5cVXWlvMWJQZjUoudYoWSO0PJYnbEc2wWww416nHzbYGwrEX6UtfMoyYn7BYBXQ2F9KJcuMMNICMyyIKv9WMOKiU9coA8iYOeG4xUPitoPC0DV65oydF6QvHHMjRUlUp235WSuQ6z87pxHZxMLIJLUvkonMMANn1tnLytVFDcW5yie5tOPq5wU+rObpv+AnIiCWsZ4bZXKkiJ5jOdySPbjnGKzrt5epG2yhGOgniFy9hJ7NuW7Tl8Mnxy
-x-ms-office365-filtering-correlation-id: d13132df-0276-4ae5-8545-08d624a54b17
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(5600074)(711020)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1710;
-x-ms-traffictypediagnostic: MWHPR2201MB1710:
-x-microsoft-antispam-prvs: <MWHPR2201MB1710E6F3AB867AC3FCF42BEFC1140@MWHPR2201MB1710.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1375;6:2Uw269i1mLYYw3W11MeowmBs4RyMW+sqM7/bpaP+XSj57bcCXB2GtwzWEYv3eoe7xUDUxm+0iLJkoul4N7KOtQrsIgJ60hBT5ItbLepWiNQ7zMEKdVqcBFQORlCF/A1+FIn26QTFt0RU419p0xNSnC3RovVm7YHI4bUTca6qIgWvyMIvJAAEut/oGS5Ngy544ufQ4IHkVtiBZk0PA/y1qp71w5AuigI+RnZNsy2qbbRnf1V9do0iGF44VY3rVfU5Snb0T49AozkXpU1aNYgm0xvuEN8ye4zxEB670uv4+BS9FvQ6qyV538DMXoxJISbQKacV8qopwRapKD9CKMXmX97gSjtSdcxvkemscNwV3dCSmokh4ONTReR4cSQeqkJnWAUbkHAp+jWWWGXiMCGeBblIagmkBKdUQMYu712L1k9XNuAoqJoE6I2rsBm6oKzbJDziFHxMtcms+uJifeKBqA==;5:CtIkYX7F46WybmJNiO/3rmy6JIao7O8/tWfLVbV59KjPmQ37GNQ/DczZcfVDxiDzhJU0h1CutTL5uEf/c2q3U4+IufGEcEU22dlqnoCMQMdQFRkza1lRpC5hhtZYJMSG5E8glq5uXOOypCXPi8ghQWLs3kauEx4LgIAt4tDM6wk=;7:maavMCuCox/fP/VrdKBPnxshAAYF4CBB1jwuzagcdofkV81QwxTervsJvSHxu2Ofei4IYXtLlDqCUUmcSOgDQUhWvTgcdIoiGe5ZjfpIqbdR5NkF7MXVYgNCK4lvFjPE3CU5LEDLKCtbTdphxIS8psqSqave1b9K021h2rNnK0oLNthkNB2Ete1V3dhAeWai5WJEjDKpi/OBT7eptfxNDM/AAhMzxhhIt0g27pnLVpCLexTe2t72joTwB0l2tkFu
+x-ms-office365-filtering-correlation-id: ca593865-cfe1-49d2-1cfa-08d624aaeeda
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1375;
+x-ms-traffictypediagnostic: MWHPR2201MB1375:
+x-microsoft-antispam-prvs: <MWHPR2201MB13752F58FA661195A6437734C1140@MWHPR2201MB1375.namprd22.prod.outlook.com>
 x-exchange-antispam-report-test: UriScan:;
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(93006095)(3231355)(944501410)(52105095)(10201501046)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123560045)(2016111802025)(20161123558120)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1710;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1710;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231355)(944501410)(52105095)(149066)(150057)(6041310)(20161123562045)(20161123560045)(20161123564045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1375;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1375;
 x-forefront-prvs: 0808323E97
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(346002)(366004)(376002)(396003)(39840400004)(52314003)(189003)(199004)(81166006)(81156014)(8676002)(42882007)(5660300001)(26005)(25786009)(54906003)(5250100002)(53936002)(6246003)(107886003)(39060400002)(4326008)(186003)(316002)(34290500001)(58126008)(575784001)(229853002)(33716001)(68736007)(102836004)(14444005)(6486002)(256004)(6506007)(66066001)(71190400001)(476003)(71200400001)(386003)(11346002)(33896004)(76176011)(446003)(6916009)(6116002)(52116002)(1076002)(106356001)(99286004)(44832011)(8936002)(105586002)(6512007)(9686003)(14454004)(2906002)(305945005)(7736002)(486006)(97736004)(6436002)(3846002)(2900100001)(508600001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1710;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39850400004)(366004)(396003)(376002)(346002)(136003)(199004)(189003)(52314003)(6506007)(6512007)(476003)(386003)(44832011)(2900100001)(11346002)(446003)(66066001)(33716001)(97736004)(58126008)(34290500001)(9686003)(6246003)(6436002)(316002)(102836004)(486006)(52116002)(68736007)(4326008)(229853002)(14454004)(71200400001)(71190400001)(54906003)(6116002)(3846002)(1076002)(5660300001)(256004)(25786009)(8936002)(6486002)(8676002)(5250100002)(106356001)(81166006)(7736002)(6916009)(186003)(105586002)(2906002)(99286004)(53936002)(81156014)(305945005)(76176011)(42882007)(508600001)(33896004)(26005)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1375;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: zQQkdM1wxehkVjHRp1l0Tx1uZJCIWDGi1A7nugFRTDGbe1hYzSTDkP5MKfnYF707eKT6sq0seFwjlxL1wdyDTWJABeoTxGUOAeANN7SeReWbTJSN2+dYMgFVOBFP3pMYznjtcIGfE/XhVqWPKC0PvLHlRgkCEG1EGH/1+/lpy5vhPKD+PYyPq8tzGfy4AfpyDHsVVBUU56tQ0JX9eSZUKQpZFkJhUvIy50IWS6SihwzoqMt1rw2pxgqcFMl96HJbznG0U18Zoxtl1ovCB/8M/B3yA4pRkch7sVYW/ssr+NnIJdqpbBY8dGcaX5TuZupumn/qYT9e89G9iZ32FGteBqcFoZZidRScPZwg+B9dxac=
+x-microsoft-antispam-message-info: SsAdYPFOUTvkKZeLue3buUHf5i6ccXjnGs2NwaTB2y96Q8Uvn5tcs/jb2TB2U4AZkdXWg225P/E41jCn0sx+wf5kVUrkjLVIL+wtpzNflqqd/FkcelWZ1z62inOlkC2AeqKuRSpnv6zgxkMPhBu1w5xW9adkhfOxs12LJfVRRUYpN6FaT3t7NLLmen8a5LEoWR4LRjvS5kitWzjvNeNSNZfnuUeoFsOEdRXLDdA7lL30tyRnRqwL6lSD5YwEZ8SyIWasAniwIP4444pME3yZBXtBOvTGp50VrXKGw/jZPoEH3jLXYmMpij/Be+srl85Pb7EYl/OoEJhVXm8tDc62mwJF3qnx4LFnCcxOH/oazbc=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <930E4EFE3D97EB4BADB2F6C480814F71@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <722920533DA03D4EB1C4EC7F1E25BB1E@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d13132df-0276-4ae5-8545-08d624a54b17
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2018 18:16:07.5707
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca593865-cfe1-49d2-1cfa-08d624aaeeda
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2018 18:56:29.7492
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1710
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1375
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66602
+X-archive-position: 66603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,24 +94,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGkgSHVhY2FpLA0KDQpPbiBUaHUsIFNlcCAyNywgMjAxOCBhdCAwMjoyNjo0MlBNICswODAwLCDp
-mYjljY7miY0gd3JvdGU6DQo+IEkgdGhpbmsgdGhpcyBwYXRjaCBjYW4gc29sdmUgbXkgcHJvYmxl
-bSwgYnV0IEkgaGF2ZSBzb21ldGhpbmcgdG8gc2F5Og0KPg0KPiAxLCBWRFNPIHJhbmRvbWl6YXRp
-b24gaXMgaW50cm9kdWNlZCBpbiBjb21taXQNCj4gY2NkMzk4ODA4NjM2NDgzN2QwYzBmYjQ1NjNk
-NyBpbiAzLjE5LiBTbyB0aGlzIHBhdGNoIHNob3VsZCBiYWNrcG9ydGVkDQo+IGFzIGVhcmx5IGFz
-IDMuMTkuDQoNClVnaCwgT0sgc28gdGhlIG5vdC1yZWFsbHktYS1WRFNPIHBhZ2UgdGhhdCB3ZSBj
-YWxsZWQgVkRTTyBiZWZvcmUgd2UNCnJlYWxseSBoYWQgYSBWRFNPIHdhcyByYW5kb21seSBsb2Nh
-dGVkIHRvby4gQSBiYWNrcG9ydCB0byB0aGF0IHdvdWxkDQpuZWVkIHRvIGJlIHNpZ25pZmljYW50
-bHkgZGlmZmVyZW50Lg0KDQpIb3dldmVyIHRoZSBvbmx5IGN1cnJlbnRseSBzdXBwb3J0ZWQgTFRT
-IGtlcm5lbCBvbGRlciB0aGFuIDQuNCAod2hpY2gNCmludHJvZHVjZWQgdGhlIHJlYWwgVkRTTykg
-aXMgMy4xNi4gMy4xNiBkaWRuJ3Qgc3VwcG9ydCB0aGUgcmFuZG9taXphdGlvbg0KYW55d2F5LCBJ
-IGRvbid0IHRoaW5rIGl0J3Mgd29ydGggdGhlIGVmZm9ydCB0byBiYWNrcG9ydCBhbnkgZnVydGhl
-ciB0aGFuDQo0LjQuDQoNCj4gMiwgdmRzb19iYXNlKCkgbWF5IG5lZWQgdG8gYmUgbW9kaWZpZWQg
-Zm9yIDQuNCwgYmVjYXVzZSA0LjQgaGFzIG5vDQo+IGRlbGF5IHNsb3QgZW11bGF0aW9uLg0KDQpZ
-ZXMgSSBrbm93LiBUaGUgR0lDIGNvZGUgY2hhbmdlZCBpbiA0LjE0IHRvbyBzbyBiYWNrcG9ydHMg
-d2lsbCBuZWVkIHRvDQp0YWtlIHRoYXQgaW50byBhY2NvdW50IHRvby4NCg0KPiAzLCBNYXliZSBp
-dCBpcyBiZXR0ZXIgdG8gc2V0IFZEU09fUkFORE9NSVpFX1NJWkUgdG8gMTZNQiBmb3IgNjRiaXQN
-Cj4ga2VybmVsLCBiZWNhdXNlIGNvbW1pdCBjY2QzOTg4MDg2MzY0ODM3ZDBjMGZiNDU2M2Q3IHVz
-ZSAxNk1CLg0KDQpJdCBhY3R1YWxseSB1c2VzIDI1Nk1CIGZvciBNSVBTNjQuIFNpbmNlIGFkZHJl
-c3Mgc3BhY2UgaXNuJ3Qgc2NhcmNlDQpmb3IgTUlQUzY0IEknbGwgZ28gd2l0aCB0aGF0Lg0KDQpU
-aGFua3MsDQogICAgUGF1bA0K
+Hi Maksym,
+
+On Thu, Sep 27, 2018 at 07:56:57PM +0300, Maksym Kokhan wrote:
+> -choice
+> -	prompt "Kernel command line type" if !CMDLINE_OVERRIDE
+> -	default MIPS_CMDLINE_FROM_DTB if USE_OF && !ATH79 && !MACH_INGENIC && \
+> -					 !MIPS_MALTA && \
+> -					 !CAVIUM_OCTEON_SOC
+> -	default MIPS_CMDLINE_FROM_BOOTLOADER
+> -
+> -	config MIPS_CMDLINE_FROM_DTB
+> -		depends on USE_OF
+> -		bool "Dtb kernel arguments if available"
+> -
+> -	config MIPS_CMDLINE_DTB_EXTEND
+> -		depends on USE_OF
+> -		bool "Extend dtb kernel arguments with bootloader arguments"
+> -
+> -	config MIPS_CMDLINE_FROM_BOOTLOADER
+> -		bool "Bootloader kernel arguments if available"
+> -
+> -	config MIPS_CMDLINE_BUILTIN_EXTEND
+> -		depends on CMDLINE_BOOL
+> -		bool "Extend builtin kernel arguments with bootloader arguments"
+> -endchoice
+>%
+> -#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
+> -#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
+> -#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_DTB_EXTEND)
+> -#define BUILTIN_EXTEND_WITH_PROM	\
+> -	IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND)
+> -
+>  static void __init arch_mem_init(char **cmdline_p)
+>  {
+>  	struct memblock_region *reg;
+>  	extern void plat_mem_setup(void);
+>  
+> -#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+> -	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+> -#else
+> -	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
+> -	    (USE_DTB_CMDLINE && !boot_command_line[0]))
+> -		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+> -
+> -	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
+> -		if (boot_command_line[0])
+> -			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+> -		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+> -	}
+> -
+> -#if defined(CONFIG_CMDLINE_BOOL)
+> -	if (builtin_cmdline[0]) {
+> -		if (boot_command_line[0])
+> -			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+> -		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+> -	}
+> -
+> -	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
+> -		if (boot_command_line[0])
+> -			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+> -		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+> -	}
+> -#endif
+> -#endif
+> -
+>  	/* call board setup routine */
+>  	plat_mem_setup();
+>  
+> @@ -893,6 +856,8 @@ static void __init arch_mem_init(char **cmdline_p)
+>  	pr_info("Determined physical RAM map:\n");
+>  	print_memory_map();
+>  
+> +	cmdline_add_builtin(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+> +
+>  	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+>  
+>  	*cmdline_p = command_line;
+
+I love the idea of simplifying this & sharing code with other
+architectures, but unfortunately I believe the above will be problematic
+for systems using arguments from device tree.
+
+At the point you call cmdline_add_builtin we should expect that:
+
+  - boot_command_line contains arguments from the DT, if any, and
+    otherwise may contain CONFIG_CMDLINE copied there by
+    early_init_dt_scan_chosen().
+
+  - arcs_cmdline contains arguments from the bootloader, if any.
+
+If I understand correctly you overwrite boot_command_line with the
+concatenation of CONFIG_CMDLINE_PREPEND, arcs_cmdline &
+CONFIG_CMDLINE_APPEND. This will clobber/lose the DT arguments.
+
+I'd expect this to be reproducible under QEMU using its boston emulation
+(ie. -M boston) and a kernel built for the generic platform that
+includes boston support (eg. 64r6el_defconfig).
+
+It also doesn't allow for the various Kconfig options which allow us to
+ignore some of the sources of command line arguments, nor does it honor
+the ordering that those existing options allow. In practice perhaps we
+can cut down on some of this configurability anyway, but if we do that
+it needs to be thought through & the commit message should describe the
+changes in behaviour.
+
+Thanks,
+    Paul

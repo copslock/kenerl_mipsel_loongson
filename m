@@ -1,64 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 15:09:50 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:50850 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992759AbeJPNJqtacg7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Oct 2018 15:09:46 +0200
-Received: from localhost (ip-213-127-77-176.ip.prioritytelecom.net [213.127.77.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2FAC320866;
-        Tue, 16 Oct 2018 13:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1539695380;
-        bh=f/s6WhxNJBYpjYQE9pbfp1kw+v5N+2m8ElCL6LBtkao=;
-        h=Subject:To:Cc:From:Date:From;
-        b=TnxBtICiZVsLRsaHneH6q9XtymucYKeKUlrgFmAqS+JOhxmYW+ihb22oBX0c2mHyn
-         J6LT1+H3GYhMGbPqDDt10Mth0UMspjWGvEhXEsS+RaGw2KHkrUYnSqDxsVCiQOoWOa
-         gZyVOpg/uJsYQNIyvGd0gfx0GkIc5bI8qezn9HfE=
-Subject: Patch "MIPS: Fix CONFIG_CMDLINE handling" has been added to the 4.18-stable tree
-To:     frowand.list@gmail.com, gregkh@linuxfoundation.org,
-        jaedon.shin@gmail.com, linux-mips@linux-mips.org, malat@debian.org,
-        paul.burton@mips.com, robh+dt@kernel.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 16 Oct 2018 15:08:57 +0200
-Message-ID: <153969533782122@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <SRS0=yPgj=M4=linuxfoundation.org=gregkh@kernel.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66869
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@mips.com>
+Date: Thu, 27 Sep 2018 22:59:18 +0000
+Subject: MIPS: Fix CONFIG_CMDLINE handling
+Message-ID: <20180927225918.w1dtNVkHPiLJfDas62iufjKqK2siksUGYVJmiBDIf3Q@z>
+
+From: Paul Burton <paul.burton@mips.com>
+
+commit 951d223c6c16ed5d2a71a4d1f13c1e65d6882156 upstream.
+
+Commit 8ce355cf2e38 ("MIPS: Setup boot_command_line before
+plat_mem_setup") fixed a problem for systems which have
+CONFIG_CMDLINE_BOOL=y & use a DT with a chosen node that has either no
+bootargs property or an empty one. In this configuration
+early_init_dt_scan_chosen() copies CONFIG_CMDLINE into
+boot_command_line, but the MIPS code doesn't know this so it appends
+CONFIG_CMDLINE (via builtin_cmdline) to boot_command_line again. The
+result is that boot_command_line contains the arguments from
+CONFIG_CMDLINE twice.
+
+That commit took the approach of simply setting up boot_command_line
+from the MIPS code before early_init_dt_scan_chosen() runs, causing it
+not to copy CONFIG_CMDLINE to boot_command_line if a chosen node with no
+bootargs property is found.
+
+Unfortunately this is problematic for systems which do have a non-empty
+bootargs property & CONFIG_CMDLINE_BOOL=y. There
+early_init_dt_scan_chosen() will overwrite boot_command_line with the
+arguments from DT, which means we lose those from CONFIG_CMDLINE
+entirely. This breaks CONFIG_MIPS_CMDLINE_DTB_EXTEND. If we have
+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER or
+CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND selected and the DT has a bootargs
+property which we should ignore, it will instead be honoured breaking
+those configurations too.
+
+Fix this by reverting commit 8ce355cf2e38 ("MIPS: Setup
+boot_command_line before plat_mem_setup") to restore the former
+behaviour, and fixing the CONFIG_CMDLINE duplication issue by
+initializing boot_command_line to a non-empty string that
+early_init_dt_scan_chosen() will not overwrite with CONFIG_CMDLINE.
+
+This is a little ugly, but cleanup in this area is on its way. In the
+meantime this is at least easy to backport & contains the ugliness
+within arch/mips/.
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 8ce355cf2e38 ("MIPS: Setup boot_command_line before plat_mem_setup")
+References: https://patchwork.linux-mips.org/patch/18804/
+Patchwork: https://patchwork.linux-mips.org/patch/20813/
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Jaedon Shin <jaedon.shin@gmail.com>
+Cc: Mathieu Malaterre <malat@debian.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org # v4.16+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/setup.c |   48 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
+
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -835,6 +835,34 @@ static void __init arch_mem_init(char **
+ 	struct memblock_region *reg;
+ 	extern void plat_mem_setup(void);
+ 
++	/*
++	 * Initialize boot_command_line to an innocuous but non-empty string in
++	 * order to prevent early_init_dt_scan_chosen() from copying
++	 * CONFIG_CMDLINE into it without our knowledge. We handle
++	 * CONFIG_CMDLINE ourselves below & don't want to duplicate its
++	 * content because repeating arguments can be problematic.
++	 */
++	strlcpy(boot_command_line, " ", COMMAND_LINE_SIZE);
++
++	/* call board setup routine */
++	plat_mem_setup();
++
++	/*
++	 * Make sure all kernel memory is in the maps.  The "UP" and
++	 * "DOWN" are opposite for initdata since if it crosses over
++	 * into another memory section you don't want that to be
++	 * freed when the initdata is freed.
++	 */
++	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
++			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
++			 BOOT_MEM_RAM);
++	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
++			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
++			 BOOT_MEM_INIT_RAM);
++
++	pr_info("Determined physical RAM map:\n");
++	print_memory_map();
++
+ #if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+ 	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+ #else
+@@ -862,26 +890,6 @@ static void __init arch_mem_init(char **
+ 	}
+ #endif
+ #endif
+-
+-	/* call board setup routine */
+-	plat_mem_setup();
+-
+-	/*
+-	 * Make sure all kernel memory is in the maps.  The "UP" and
+-	 * "DOWN" are opposite for initdata since if it crosses over
+-	 * into another memory section you don't want that to be
+-	 * freed when the initdata is freed.
+-	 */
+-	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
+-			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
+-			 BOOT_MEM_RAM);
+-	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
+-			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
+-			 BOOT_MEM_INIT_RAM);
+-
+-	pr_info("Determined physical RAM map:\n");
+-	print_memory_map();
+-
+ 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	*cmdline_p = command_line;
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from paul.burton@mips.com are
 
-    MIPS: Fix CONFIG_CMDLINE handling
-
-to the 4.18-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-fix-config_cmdline-handling.patch
-and it can be found in the queue-4.18 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.18/mips-vdso-always-map-near-top-of-user-memory.patch
+queue-4.18/mips-fix-config_cmdline-handling.patch

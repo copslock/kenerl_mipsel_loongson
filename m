@@ -1,75 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2018 20:09:08 +0200 (CEST)
-Received: from rcdn-iport-2.cisco.com ([173.37.86.73]:55827 "EHLO
-        rcdn-iport-2.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992501AbeI0SJEb27JS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2018 20:09:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=843; q=dns/txt; s=iport;
-  t=1538071744; x=1539281344;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=cAG8rOD6AL/BWLmyRIVLF6FwD6JtQPyY8cfvn+rw6AM=;
-  b=cLr6yvOtc2iKCkvbs6IxcdGvC7RPGTFajKvwabNJXTco20g/SwDYY4HS
-   ExcWRAH8MNqU6JgfF3hUU15Yd7ApPdu1Kw+aQt6m2BPX+9rIrWUk/aJdA
-   CaeUs87njLK3tMW+ZVopVDtIcP06rWrzDAg+x1rnXeVzTar/84N4m0i1g
-   o=;
-X-IronPort-AV: E=Sophos;i="5.54,311,1534809600"; 
-   d="scan'208";a="461535457"
-Received: from alln-core-10.cisco.com ([173.36.13.132])
-  by rcdn-iport-2.cisco.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Sep 2018 18:08:56 +0000
-Received: from [10.24.65.89] ([10.24.65.89])
-        by alln-core-10.cisco.com (8.15.2/8.15.2) with ESMTP id w8RI8pMg000694;
-        Thu, 27 Sep 2018 18:08:54 GMT
-Subject: Re: [PATCH 0/8] add generic builtin command line
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Maksym Kokhan <maksym.kokhan@globallogic.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Andrii Bordunov <aborduno@cisco.com>,
-        Ruslan Bilovol <rbilovol@cisco.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Devicetree List <devicetree@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2018 20:16:21 +0200 (CEST)
+Received: from mail-sn1nam02on0112.outbound.protection.outlook.com ([104.47.36.112]:58000
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992501AbeI0SQSuh2SS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Sep 2018 20:16:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aPvzFSbwGCGl1VJPngx2cvKaiSFm3CstEMwV6zpQa+M=;
+ b=b60OhXTm3Hlj7ZIdI2AApT5D2SiawrRcSpsHmRrO5O8tEwRK3Uua/JcUABONtBWtAiPUW01RCI+Y+JBK9JGdFdQwW39tLiAwaOZAEJLKrsndG7qXrw5ApUOnfsown4odz3Bo8IN5opberXYye3tDZeh3MlRe9XdNkoPuI8/iFh4=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1710.namprd22.prod.outlook.com (10.164.206.152) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1164.22; Thu, 27 Sep 2018 18:16:07 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627%9]) with mapi id 15.20.1164.024; Thu, 27 Sep 2018
+ 18:16:07 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+CC:     Huacai Chen <chenhuacai@gmail.com>,
         linux-mips <linux-mips@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <1538067309-5711-1-git-send-email-maksym.kokhan@globallogic.com>
- <CAKv+Gu-AxtOO04iwPSri12tkb9NRugXV9E2LGrfJT-LJjf4_ow@mail.gmail.com>
-From:   Daniel Walker <danielwa@cisco.com>
-Message-ID: <3320a561-2287-63f7-2162-84a639a22a8a@cisco.com>
-Date:   Thu, 27 Sep 2018 11:08:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <CAKv+Gu-AxtOO04iwPSri12tkb9NRugXV9E2LGrfJT-LJjf4_ow@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        stable <stable@vger.kernel.org>,
+        Paul Burton <pburton@wavecomp.com>
+Subject: Re: [PATCH] MIPS: VDSO: Always map near top of user memory
+Thread-Topic: [PATCH] MIPS: VDSO: Always map near top of user memory
+Thread-Index: AQHUVo4oFdgskwzc3kCgvnsq+/h4VQ==
+Date:   Thu, 27 Sep 2018 18:16:07 +0000
+Message-ID: <20180927181604.4kczgxeaot7utnuh@pburton-laptop>
+References: <1536990690-17778-1-git-send-email-chenhc@lemote.com>
+ <20180925232221.28953-1-paul.burton@mips.com>
+ <tencent_7D95F91F120F9BCE2DCAC958@qq.com>
+In-Reply-To: <tencent_7D95F91F120F9BCE2DCAC958@qq.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Outbound-SMTP-Client: 10.24.65.89, [10.24.65.89]
-X-Outbound-Node: alln-core-10.cisco.com
-Return-Path: <danielwa@cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CY4PR14CA0025.namprd14.prod.outlook.com
+ (2603:10b6:903:101::11) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1710;6:IkZMVHIM8qFnRFSFy1pA+HB8YX9W3bkBOZRurbOAaJL/yV2JbY8M/wguGmEnz8IcKqTqZxZxyxBnLJV0PnxiqFk5LU8tiTNl6509bJQKY3nU1smLTONh0Og2vyn28cdT9zhS+A9wW785rbXpEc7gNwJac88nlQIs2ZkBNkWNb7sgTvlwbdRg3x9CQj4dMiHobCGm5DfX4IZ81V4V42pKCW/oxFBdpKsR0Jv9TLjYJnPc4V/tONHy/N5oxwIvIF21QzGJMWpS/XxfHChkMw3PTzy0eTAgbmQNOFCikgVRQlX46nOwnEAFoSbY5uNYT1/P7Gv5zcQQOIBiMSkUgGTmGmsEF4YYZ6ZP7ZzURN6vunCZwCHMYhTXFzZfg6HBgpGUKyNd1ZWV8J57cXIqjjrDq3L3VoSzIZZ9mIGuvA4xjKxUqno06LrMOskQxXYrChr/vWV0PXo624gRViZnln26WQ==;5:JUSCsLpbf/xOszaWfuhtOyoKf+Wfw74baBTducvsn+VV71BN0rZQKmD6b+tA674TaVTWkf0PVeTkS+C3WuuHnVoESHgHEZK17OpLtQ08PlMtKRXQiHpjWv2004LT6lshmzfh7t6E2cNlHj+q87+XRojaTSlsfK0gxlWBnT8Y14g=;7:vSdqc1h5cVXWlvMWJQZjUoudYoWSO0PJYnbEc2wWww416nHzbYGwrEX6UtfMoyYn7BYBXQ2F9KJcuMMNICMyyIKv9WMOKiU9coA8iYOeG4xUPitoPC0DV65oydF6QvHHMjRUlUp235WSuQ6z87pxHZxMLIJLUvkonMMANn1tnLytVFDcW5yie5tOPq5wU+rObpv+AnIiCWsZ4bZXKkiJ5jOdySPbjnGKzrt5epG2yhGOgniFy9hJ7NuW7Tl8Mnxy
+x-ms-office365-filtering-correlation-id: d13132df-0276-4ae5-8545-08d624a54b17
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(5600074)(711020)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1710;
+x-ms-traffictypediagnostic: MWHPR2201MB1710:
+x-microsoft-antispam-prvs: <MWHPR2201MB1710E6F3AB867AC3FCF42BEFC1140@MWHPR2201MB1710.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(93006095)(3231355)(944501410)(52105095)(10201501046)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123560045)(2016111802025)(20161123558120)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1710;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1710;
+x-forefront-prvs: 0808323E97
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(346002)(366004)(376002)(396003)(39840400004)(52314003)(189003)(199004)(81166006)(81156014)(8676002)(42882007)(5660300001)(26005)(25786009)(54906003)(5250100002)(53936002)(6246003)(107886003)(39060400002)(4326008)(186003)(316002)(34290500001)(58126008)(575784001)(229853002)(33716001)(68736007)(102836004)(14444005)(6486002)(256004)(6506007)(66066001)(71190400001)(476003)(71200400001)(386003)(11346002)(33896004)(76176011)(446003)(6916009)(6116002)(52116002)(1076002)(106356001)(99286004)(44832011)(8936002)(105586002)(6512007)(9686003)(14454004)(2906002)(305945005)(7736002)(486006)(97736004)(6436002)(3846002)(2900100001)(508600001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1710;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: zQQkdM1wxehkVjHRp1l0Tx1uZJCIWDGi1A7nugFRTDGbe1hYzSTDkP5MKfnYF707eKT6sq0seFwjlxL1wdyDTWJABeoTxGUOAeANN7SeReWbTJSN2+dYMgFVOBFP3pMYznjtcIGfE/XhVqWPKC0PvLHlRgkCEG1EGH/1+/lpy5vhPKD+PYyPq8tzGfy4AfpyDHsVVBUU56tQ0JX9eSZUKQpZFkJhUvIy50IWS6SihwzoqMt1rw2pxgqcFMl96HJbznG0U18Zoxtl1ovCB/8M/B3yA4pRkch7sVYW/ssr+NnIJdqpbBY8dGcaX5TuZupumn/qYT9e89G9iZ32FGteBqcFoZZidRScPZwg+B9dxac=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <930E4EFE3D97EB4BADB2F6C480814F71@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d13132df-0276-4ae5-8545-08d624a54b17
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2018 18:16:07.5707
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1710
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66601
+X-archive-position: 66602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danielwa@cisco.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,23 +92,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/27/2018 10:05 AM, Ard Biesheuvel wrote:
-> On 27 September 2018 at 18:55, Maksym Kokhan
-> <maksym.kokhan@globallogic.com> wrote:
->> There were series of patches [1] for 4.3.0-rc3, that allowed
->> architectures to use a generic builtin command line. I have rebased
->> these patches on kernel 4.19.0-rc4.
->>
-> 
-> Could you please elaborate on the purpose of this series? Is it simply
-> to align between architectures? Does it solve an actual problem?
-
-1) It removed a lot of code duplication between architecture
-
-2) At Cisco we have issues where our bootloaders having default boot 
-arguments. Some platforms we can't update the boot loader and it's 
-helpful to be able to have boot arguments which are prepended to the 
-bootloader arguments , and some parameters which are appended. These 
-changes allow that.
-
-Daniel
+SGkgSHVhY2FpLA0KDQpPbiBUaHUsIFNlcCAyNywgMjAxOCBhdCAwMjoyNjo0MlBNICswODAwLCDp
+mYjljY7miY0gd3JvdGU6DQo+IEkgdGhpbmsgdGhpcyBwYXRjaCBjYW4gc29sdmUgbXkgcHJvYmxl
+bSwgYnV0IEkgaGF2ZSBzb21ldGhpbmcgdG8gc2F5Og0KPg0KPiAxLCBWRFNPIHJhbmRvbWl6YXRp
+b24gaXMgaW50cm9kdWNlZCBpbiBjb21taXQNCj4gY2NkMzk4ODA4NjM2NDgzN2QwYzBmYjQ1NjNk
+NyBpbiAzLjE5LiBTbyB0aGlzIHBhdGNoIHNob3VsZCBiYWNrcG9ydGVkDQo+IGFzIGVhcmx5IGFz
+IDMuMTkuDQoNClVnaCwgT0sgc28gdGhlIG5vdC1yZWFsbHktYS1WRFNPIHBhZ2UgdGhhdCB3ZSBj
+YWxsZWQgVkRTTyBiZWZvcmUgd2UNCnJlYWxseSBoYWQgYSBWRFNPIHdhcyByYW5kb21seSBsb2Nh
+dGVkIHRvby4gQSBiYWNrcG9ydCB0byB0aGF0IHdvdWxkDQpuZWVkIHRvIGJlIHNpZ25pZmljYW50
+bHkgZGlmZmVyZW50Lg0KDQpIb3dldmVyIHRoZSBvbmx5IGN1cnJlbnRseSBzdXBwb3J0ZWQgTFRT
+IGtlcm5lbCBvbGRlciB0aGFuIDQuNCAod2hpY2gNCmludHJvZHVjZWQgdGhlIHJlYWwgVkRTTykg
+aXMgMy4xNi4gMy4xNiBkaWRuJ3Qgc3VwcG9ydCB0aGUgcmFuZG9taXphdGlvbg0KYW55d2F5LCBJ
+IGRvbid0IHRoaW5rIGl0J3Mgd29ydGggdGhlIGVmZm9ydCB0byBiYWNrcG9ydCBhbnkgZnVydGhl
+ciB0aGFuDQo0LjQuDQoNCj4gMiwgdmRzb19iYXNlKCkgbWF5IG5lZWQgdG8gYmUgbW9kaWZpZWQg
+Zm9yIDQuNCwgYmVjYXVzZSA0LjQgaGFzIG5vDQo+IGRlbGF5IHNsb3QgZW11bGF0aW9uLg0KDQpZ
+ZXMgSSBrbm93LiBUaGUgR0lDIGNvZGUgY2hhbmdlZCBpbiA0LjE0IHRvbyBzbyBiYWNrcG9ydHMg
+d2lsbCBuZWVkIHRvDQp0YWtlIHRoYXQgaW50byBhY2NvdW50IHRvby4NCg0KPiAzLCBNYXliZSBp
+dCBpcyBiZXR0ZXIgdG8gc2V0IFZEU09fUkFORE9NSVpFX1NJWkUgdG8gMTZNQiBmb3IgNjRiaXQN
+Cj4ga2VybmVsLCBiZWNhdXNlIGNvbW1pdCBjY2QzOTg4MDg2MzY0ODM3ZDBjMGZiNDU2M2Q3IHVz
+ZSAxNk1CLg0KDQpJdCBhY3R1YWxseSB1c2VzIDI1Nk1CIGZvciBNSVBTNjQuIFNpbmNlIGFkZHJl
+c3Mgc3BhY2UgaXNuJ3Qgc2NhcmNlDQpmb3IgTUlQUzY0IEknbGwgZ28gd2l0aCB0aGF0Lg0KDQpU
+aGFua3MsDQogICAgUGF1bA0K

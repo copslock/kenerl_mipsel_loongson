@@ -1,80 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 20:42:14 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:40760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993964AbeI1SmLI2ppr convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 20:42:11 +0200
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1FBBF2086E;
-        Fri, 28 Sep 2018 18:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1538160124;
-        bh=ucBQEM+GHr4wAfjxvfsvuLdN+zja3rG4l1rL7brbDIY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rWOwApxPVXhTZzLNGDNie7QGQ6zjYUNWaw9gD1Nn/xr1OKMkD8Z06XO0fA0tskmq4
-         GiZLo4ieCTrrgPVTTHYmPfRsuY3axXgvJYF1TFpJn3W5WPBdBaG/IixaS50cJC/P0L
-         aQjtpJvYErvzH3GNSEMwRHca/3fju5penFgw6Dtc=
-Received: by mail-qk1-f171.google.com with SMTP id v18-v6so4456097qka.10;
-        Fri, 28 Sep 2018 11:42:04 -0700 (PDT)
-X-Gm-Message-State: ABuFfoghUYSzW1tYkvjrc3boc6/FWI1h3bhfrZu8yqTtZwE/o4w+E68N
-        mi37hU+WZO7ABbamX6GyyyYLgd/8+CaTcuc0cw==
-X-Google-Smtp-Source: ACcGV621ZkVMH2JDxjibLp+pDwz3KJn7xglLxR2Ca15PWxniRLjeSUc+Io2a4Km0KoyI6YxAzRAeW+wnTH0sratRei4=
-X-Received: by 2002:a37:ddcf:: with SMTP id u76-v6mr12468517qku.184.1538160123207;
- Fri, 28 Sep 2018 11:42:03 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 23:48:23 +0200 (CEST)
+Received: from mail-lf1-x144.google.com ([IPv6:2a00:1450:4864:20::144]:45850
+        "EHLO mail-lf1-x144.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993981AbeI1VsSQ8aRA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 23:48:18 +0200
+Received: by mail-lf1-x144.google.com with SMTP id m80-v6so6014225lfi.12;
+        Fri, 28 Sep 2018 14:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aXMoAqM9r4NaN21CI8lgLEpYGKDp9ejOhdEFf2jry4k=;
+        b=UDrVigNGakKD4/2ayNH5DDSzkxezOVk6v4KNgh99OUp4Ey+DhEWAKsHFrIzeshiNa1
+         89uN7ISSKS7pimmnagJ4p0dJKw5q4p6J2wOmXNAzPsmQCSCd03/d78gLjAWB5E2+E79L
+         UQExrPfpvDt9eOVnf4bqr2UQOm9sNn1qe5haYv6SNvka16x+i4NBgIj+nKC5fB88DUV2
+         F6wZrS2q3nLt93ZyPAaygxWOiu8elavHK2N8BZzO8J3vMxj7U5fSJnE4bfy+5uTJNfFt
+         w8UdcGXEZN8f8+EvlAvjWHd/vUyIDrcxRodv/gdcYvf4FRgLNd18/m+vi2giAPx7YsLm
+         S+jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aXMoAqM9r4NaN21CI8lgLEpYGKDp9ejOhdEFf2jry4k=;
+        b=UbQT//OZchVJsoVwPYmGHQRV4Y4eh+jYdwPSF7qQhwMKPkc+MPiEGLTWOzUXYJGpDx
+         O+3UZu4ru4K/tnBIEGTuAfUymxmsjrTG46BkYKPw27K7Ev+fKzBSpDOtT5FaEQ/ieioD
+         PgkzpIE0Oyw/pS0BDCRnhMZ/IFck8t68LhPqkXdGQqiNSyaOJLPc/xeqX9vE22hUt7Aw
+         +qYDq12sucvghjG+gbNBnxIsjQu/zmCIIkVqgX1tEvfSreLhWiz5+zYDD2VmihdQuaL9
+         fhZdtmlINus7AsvQJbA3HK0O6VNBg6PkbWsY7l7e3cS/ehlvxxs1Xsjudfnw8JSdSbg3
+         PbRQ==
+X-Gm-Message-State: ABuFfogZKQ7C72DqIcqkC+ZQQKyD0R89MEcGGSjYgYaWCBQJeZXLDFsV
+        RdP1Q12+0smbrSy4I3XgkUda2xyn/ZPUjdqTE6U=
+X-Google-Smtp-Source: ACcGV62Rps4gGqqHgUTqH4D7uYfGbRQseCkclr7u4Y/WS5FoeKHU1tao+6bHcVO0XYrHUaPL7BqNM5lr3+7xzMGBJ1Y=
+X-Received: by 2002:a19:e44b:: with SMTP id b72-v6mr251910lfh.77.1538171292608;
+ Fri, 28 Sep 2018 14:48:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20180910150403.19476-1-robh@kernel.org> <20180910150403.19476-7-robh@kernel.org>
- <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
- <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com>
- <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com> <75740733-d0d4-4c0c-838c-f01a5e7291d3@suse.de>
-In-Reply-To: <75740733-d0d4-4c0c-838c-f01a5e7291d3@suse.de>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 28 Sep 2018 13:41:51 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKLOohxGx0Je9niMQ5H3o0Y=EcMQTB6YkbV0sfUOZHu8g@mail.gmail.com>
-Message-ID: <CAL_JsqKLOohxGx0Je9niMQ5H3o0Y=EcMQTB6YkbV0sfUOZHu8g@mail.gmail.com>
-Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
-To:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
+References: <1537367527-20773-1-git-send-email-jim2101024@gmail.com>
+ <1537367527-20773-7-git-send-email-jim2101024@gmail.com> <20180926220703.4ocppooccuot55i5@pburton-laptop>
+In-Reply-To: <20180926220703.4ocppooccuot55i5@pburton-laptop>
+From:   Jim Quinlan <jim2101024@gmail.com>
+Date:   Fri, 28 Sep 2018 17:48:00 -0400
+Message-ID: <CANCKTBs--M6FHHp4YMcTGox+OeKanz2-QJ8-1_R99XHq2iR37g@mail.gmail.com>
+Subject: Re: [PATCH v5 06/12] MIPS: BMIPS: add dma remap for BrcmSTB PCIe
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     linux-kernel@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
         Linux-MIPS <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <robh@kernel.org>
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66610
+X-archive-position: 66611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,41 +71,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Sep 28, 2018 at 12:21 PM Andreas Färber <afaerber@suse.de> wrote:
+On Wed, Sep 26, 2018 at 6:07 PM Paul Burton <paul.burton@mips.com> wrote:
 >
-> Hi Geert,
+> Hi Jim,
 >
-> Am 13.09.18 um 17:51 schrieb Geert Uytterhoeven:
-> > On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
-> > <yamada.masahiro@socionext.com> wrote:
-> >> Even x86 can enable OF and OF_UNITTEST.
-> >>
-> >> Another solution might be,
-> >> guard it by 'depends on ARCH_SUPPORTS_OF'.
-> >>
-> >> This is actually what ACPI does.
-> >>
-> >> menuconfig ACPI
-> >>         bool "ACPI (Advanced Configuration and Power Interface) Support"
-> >>         depends on ARCH_SUPPORTS_ACPI
-> >>          ...
+> On Wed, Sep 19, 2018 at 10:32:01AM -0400, Jim Quinlan wrote:
+> > The design of the Broadcom PCIe RC controller requires us to remap its
+> > DMA addresses for inbound traffic.  We do this by modifying the
+> > definitions of __phys_to_dma() and __dma_to_phys().
 > >
-> > ACPI is a real platform feature, as it depends on firmware.
+> > In arch/mips/bmips/dma.c, these functions are already in use to remap
+> > DMA addresses for the 338x SOC chips.  We leave this code alone -- and
+> > give its mapping priority -- but if it is not in use, the PCIe DMA
+> > mapping is in effect.
 > >
-> > CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
-> > even if it has ACPI ;-)
+> > One might think that the two DMA remapping systems of dma.c could be
+> > combined, but they cannot: one governs only DMA addresses for the PCIe
+> > controller of BrcmSTB ARM/ARM64/MIPs chips, while the other governs
+> > the PCIe controller *and* other peripherals for only MIPs 338x
+> > chips.
+> >
+> > Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> > ---
+> >  arch/mips/bmips/dma.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
 >
-> How would loading a DT overlay work on an ACPI platform? I.e., what
-> would it overlay against and how to practically load such a file?
+> Please copy me/linux-mips on the whole series next time - I seem to have
+> only received patches 6, 8 & 9 which means I have no idea whether they
+> have dependencies & if so whether those dependencies have been accepted
+> or rejected. I also have no clue whether these patches make sense to
+> take through the MIPS tree or if it would make more sense for someone
+> else to take them with acks.
+Hi Paul,
+I had problem with the first time I sent this out and someone said I
+should reduce me email list so I used the "git email --cc_cmd
+get_mainters.pl".  I'll switch back to an aggregate email list.
 
-The DT unittests do just that. I run them on x86 and UM builds. In
-this case, the loading source is built-in.
+>
+> > diff --git a/arch/mips/bmips/dma.c b/arch/mips/bmips/dma.c
+> > index 3d13c77..292994f 100644
+> > --- a/arch/mips/bmips/dma.c
+> > +++ b/arch/mips/bmips/dma.c
+> > @@ -18,6 +18,7 @@
+> >  #include <linux/slab.h>
+> >  #include <linux/types.h>
+> >  #include <asm/bmips.h>
+> > +#include <soc/brcmstb/common.h>
+> >
+> >  /*
+> >   * BCM338x has configurable address translation windows which allow the
+> > @@ -44,6 +45,10 @@ dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pa)
+> >  {
+> >       struct bmips_dma_range *r;
+> >
+> > +#ifdef CONFIG_PCIE_BRCMSTB
+> > +     if (!bmips_dma_ranges)
+> > +             return brcm_phys_to_dma(dev, pa);
+> > +#endif
+> >       for (r = bmips_dma_ranges; r && r->size; r++) {
+> >               if (pa >= r->child_addr &&
+> >                   pa < (r->child_addr + r->size))
+>
+> I can't tell because I presume brcm_phys_to_dma() is added in one of
+> those patches I wasn't copied on, but perhaps you could avoid the #ifdef
+> by just returning brcm_phys_to_dma(dev, pa) after the loop?
 
-> I wonder whether that could be helpful for USB devices and serdev...
+Yes, will rectify in next version.
 
-How to load the overlays is pretty orthogonal to the issues to be
-solved here. It would certainly be possible to move forward with
-prototyping this and just have the overlay built-in. It may not even
-need to be an overlay if we can support multiple root nodes.
-
-Rob
+>
+> > @@ -56,6 +61,10 @@ phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+> >  {
+> >       struct bmips_dma_range *r;
+> >
+> > +#ifdef CONFIG_PCIE_BRCMSTB
+> > +     if (!bmips_dma_ranges)
+> > +             return (unsigned long)brcm_dma_to_phys(dev, dma_addr);
+> > +#endif
+> >       for (r = bmips_dma_ranges; r && r->size; r++) {
+> >               if (dma_addr >= r->parent_addr &&
+> >                   dma_addr < (r->parent_addr + r->size))
+>
+> And similar here.
+>
+Okay, thanks,
+Jim
+> Thanks,
+>     Paul

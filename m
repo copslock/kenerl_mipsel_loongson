@@ -1,84 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 17:42:01 +0200 (CEST)
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:40218 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992267AbeI1Pl6VLdFl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 17:41:58 +0200
-Received: by mail-ot1-f68.google.com with SMTP id e23-v6so2213162otl.7;
-        Fri, 28 Sep 2018 08:41:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Awlj99FgZ/YEXpgjtWqB9fdQVuQH2oVxCsOpG+r2+7E=;
-        b=kluPNMPTzVhvfXpD3+siN0ZBaGYuS53cLGxj5oniP+hyHHvTy/BNlEbk9vNe58cUBp
-         F0Xg/ydu+19JmjrQjOOsFTRVlyA1jk4zQXfHT5Ar70rHW8dxQbdLK5pXNqacOFfM9Uq3
-         YlM0NG9DbJvgp+cnlTQwFtFqtjct1fIiA0VDwTBCGn6MXD3RRpL6iLCE5SSYIs/hJYFx
-         G6zB9m+QWQfpxVsF10B3WvlcSiQXDJ5wkKUCCuIeniYx8V1aTayAdo02iuIDnqpUt8ZW
-         QGe9Qu5pk7zvRb//303DXBfuWoEDnVtQhn8T42R353S0v2LLixbqcJScZE9kA3oAZWbP
-         8wUg==
-X-Gm-Message-State: ABuFfohYWYoCOoJXCZmUnFfOMYoGIliQny1hC45KhrU9TwnrcY2Q6LH4
-        7V3MnuKNWxj3bdzk8UYisg==
-X-Google-Smtp-Source: ACcGV63Srp0ldQSrIctZT4UQV6IqBMA8o6ihwirFprd6xuVCSZCJqUWFTEixZBqscIfRTKuidGdkCQ==
-X-Received: by 2002:a9d:3cb9:: with SMTP id z54-v6mr9422754otc.22.1538149312058;
-        Fri, 28 Sep 2018 08:41:52 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id r3-v6sm662372oih.44.2018.09.28.08.41.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 28 Sep 2018 08:41:51 -0700 (PDT)
-Date:   Fri, 28 Sep 2018 10:41:50 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>
-Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
-Message-ID: <20180928154150.GA25013@bogus>
-References: <20180910150403.19476-1-robh@kernel.org>
- <20180910150403.19476-7-robh@kernel.org>
- <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
- <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com>
- <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
- <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 19:10:48 +0200 (CEST)
+Received: from mail-bl2nam02on0118.outbound.protection.outlook.com ([104.47.38.118]:43901
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992267AbeI1RKlzQX5Y convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 19:10:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1NOSLITz4k1txKVAxWnEmKzn1TYe2XdKgUCF8FidtS4=;
+ b=YFmkrIb5tv2HxtIttE37c5IdPQ2wy969bNpg3Pz9kZsaIWnGlsw/AUY2De+Ma9t3aLAMIM0UeuhDPl9fzwtIhAyn1YFwPSg/vP+wJxaHHi6w1qTrHxBRXRfKWBx+L4ahW219P/FYh/viZigVD79cvhlvpLEa6SWAv8q84Qvuo+Q=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1344.namprd22.prod.outlook.com (10.174.162.147) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1185.22; Fri, 28 Sep 2018 17:10:31 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627%9]) with mapi id 15.20.1164.024; Fri, 28 Sep 2018
+ 17:10:30 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Dengcheng Zhu <dzhu@wavecomp.com>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "rachel.mozes@intel.com" <rachel.mozes@intel.com>
+Subject: Re: [mips-next PATCH] MIPS: kdump: Mark cpu back online before
+ rebooting
+Thread-Topic: [mips-next PATCH] MIPS: kdump: Mark cpu back online before
+ rebooting
+Thread-Index: AQHUVdH9j/uWdUY7e0u9VIL9wrCY1qUF8KoA
+Date:   Fri, 28 Sep 2018 17:10:30 +0000
+Message-ID: <20180928171028.a4ww7vyrzf4fvyqd@pburton-laptop>
+References: <20180926194847.8734-1-dzhu@wavecomp.com>
+In-Reply-To: <20180926194847.8734-1-dzhu@wavecomp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR2201CA0095.namprd22.prod.outlook.com
+ (2603:10b6:301:5e::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1344;6:FZQ/caAPZpXP/9zepJPUYDJlxEzKtVxlDCKagmrDuS0+YHLwYaMwr49SowZm4oBHDkh0of4Jkx9GEbho/S79xbS7lpDmTGFjk5KWqmmyEVfFne+1giOSojSFxe3e6EfssXonG7vr6ipnLHIGV9Vg+MoVEYMvs9iYjNZgyh/gxKbzPHwaNNlH9T0bAxWlRfFEObLpXLgeXhfVU3enUxOz6c5QOMrAjPa0z7McnZE5qU9K6V5UEL41QreoBn8cjOM3//MoOaGgeNBjljaaCf0uR5dp5J69jKn/JLnEGuID7YcphKQZBVQyFU4bKbijUm2v4mUe9ZsmcQAQg1NPefz1lEmv0QIlz/+CXEYonVyUHgfM1Tx6y5Oy7wk/BlZu611a6+pmglfRUdYtXpu7Csfdd/lFFacEBBocLJMnrp4uwx77jy1Qpfxis2qSDVNAjrt47pQ4oL8XhUa3fC4neTPUUw==;5:/9EMPbZL+64J1rltu17CfF63JYZN2wYMrANAr5Vu/G7o0DLuvjynqd05wvH9flxFpnM6vfR0Ntiw/5etgPJ8W9mxy9HhcrPycd9BTpyVZfvNWj9gqljSN8ikgooLuG37Xfm8qntdN03+hjj+kyJGFivnJ3FexMkIeJBhagTIKYw=;7:6h65en2VherwBmp4sk2+cWHNk2aIcWJ6FtkSqJS7NRBvh6ULJzQgfX1c7iSphIgt0IR5fwcJZCK/NM8O/LhSu+nA409uNRvzQXqUvcq+CDOiAlmBEMqWC79CQfVhPuEhbkLu5TJCrly6OJkrGn//sDGb7p1a7yp3OmRCuJI3tNPW1/9PdrYtW9QWeVmQ/5aqL8gnRZfcywNGv+NINt4P9KGpU+X37ZiP/eso9fy67XIeB8/UoML+1zTuxrgWALGB
+x-ms-office365-filtering-correlation-id: 4c2b2e0a-430a-4c02-b552-08d625654ab5
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989299)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1344;
+x-ms-traffictypediagnostic: MWHPR2201MB1344:
+x-microsoft-antispam-prvs: <MWHPR2201MB134423EDF466202BB78E649AC1EC0@MWHPR2201MB1344.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(209352067349851);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(52105095)(93006095)(3002001)(10201501046)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1344;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1344;
+x-forefront-prvs: 0809C12563
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(39830400003)(136003)(346002)(366004)(376002)(189003)(199004)(256004)(478600001)(26005)(476003)(6512007)(9686003)(446003)(8936002)(106356001)(81166006)(2900100001)(2906002)(8676002)(6436002)(6862004)(305945005)(42882007)(33716001)(81156014)(14454004)(102836004)(6486002)(44832011)(1076002)(11346002)(34290500001)(71200400001)(71190400001)(7736002)(54906003)(316002)(486006)(58126008)(229853002)(52116002)(53936002)(66066001)(5660300001)(68736007)(4326008)(3846002)(6116002)(5250100002)(76176011)(105586002)(33896004)(25786009)(97736004)(6506007)(99286004)(386003)(6246003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1344;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: +neruXfgMp7UK6nBQWVp5IAFKlyJU9scuJpdpqa4Fa3Kn5m3shFFc9bks1OqZrYKYV273phlnwdtqA/+lW2MfUlpNX7xzenf+ukeK5hB1w7fhHm3ntPSoDx8CYm6P77gR5Q+x37zxXNXIwEWVtjWAaekXkK5Bklpn1F0Yhn9FgupckjHngkEeDA+M7DCDRuXauixcnztJ3aamm3W3yVsZcROR723QHoVcTOT5N9apODc6I6dpedwIj3CSxjBuLq2V8FLiAQXYQGvotUL9tl4TwDcOIn2Py5jQg8YF4LGKnTToWAwWST/Hjb8dqyVAameC+gyEw3Vu96R2BcuUaZGrw==
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <EE9E2EEEA6F86940AC7D820051C7A5C3@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNATkkOiYPj2RLubcgZ_z59Bhz4GkgWqPMbnaHBk7EisXLg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <robherring2@gmail.com>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c2b2e0a-430a-4c02-b552-08d625654ab5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2018 17:10:30.7911
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1344
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66606
+X-archive-position: 66607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,140 +92,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Sep 23, 2018 at 06:31:14AM -0400, Masahiro Yamada wrote:
-> 2018-09-13 11:51 GMT-04:00 Geert Uytterhoeven <geert@linux-m68k.org>:
-> > Hi Yamada-san,
-> >
-> > On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
-> > <yamada.masahiro@socionext.com> wrote:
-> >> 2018-09-12 0:40 GMT+09:00 Rob Herring <robh@kernel.org>:
-> >> > On Mon, Sep 10, 2018 at 10:04 AM Rob Herring <robh@kernel.org> wrote:
-> >> >> There is nothing arch specific about building dtb files other than their
-> >> >> location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
-> >> >> The dependencies and supported targets are all slightly different.
-> >> >> Also, a cross-compiler for each arch is needed, but really the host
-> >> >> compiler preprocessor is perfectly fine for building dtbs. Move the
-> >> >> build rules to a common location and remove the arch specific ones. This
-> >> >> is done in a single step to avoid warnings about overriding rules.
-> >> >>
-> >> >> The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
-> >> >> These pull in several dependencies some of which need a target compiler
-> >> >> (specifically devicetable-offsets.h) and aren't needed to build dtbs.
-> >> >> All that is really needed is dtc, so adjust the dependencies to only be
-> >> >> dtc.
-> >> >>
-> >> >> This change enables support 'dtbs_install' on some arches which were
-> >> >> missing the target.
-> >> >
-> >> > [...]
-> >> >
-> >> >> @@ -1215,6 +1215,33 @@ kselftest-merge:
-> >> >>                 $(srctree)/tools/testing/selftests/*/config
-> >> >>         +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
-> >> >>
-> >> >> +# ---------------------------------------------------------------------------
-> >> >> +# Devicetree files
-> >> >> +
-> >> >> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/boot/dts/),)
-> >> >> +dtstree := arch/$(SRCARCH)/boot/dts
-> >> >> +endif
-> >> >> +
-> >> >> +ifdef CONFIG_OF_EARLY_FLATTREE
-> >> >
-> >> > This can be true when dtstree is unset. So this line should be this
-> >> > instead to fix the 0-day reported error:
-> >> >
-> >> > ifneq ($(dtstree),)
-> >> >
-> >> >> +
-> >> >> +%.dtb : scripts_dtc
-> >> >> +       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
-> >> >> +
-> >> >> +PHONY += dtbs dtbs_install
-> >> >> +dtbs: scripts_dtc
-> >> >> +       $(Q)$(MAKE) $(build)=$(dtstree)
-> >> >> +
-> >> >> +dtbs_install: dtbs
-> >> >> +       $(Q)$(MAKE) $(dtbinst)=$(dtstree)
-> >> >> +
-> >> >> +all: dtbs
-> >> >> +
-> >> >> +endif
-> >>
-> >>
-> >> Ah, right.
-> >> Even x86 can enable OF and OF_UNITTEST.
-> >>
-> >>
-> >>
-> >> Another solution might be,
-> >> guard it by 'depends on ARCH_SUPPORTS_OF'.
-> >>
-> >>
-> >>
-> >> This is actually what ACPI does.
-> >>
-> >> menuconfig ACPI
-> >>         bool "ACPI (Advanced Configuration and Power Interface) Support"
-> >>         depends on ARCH_SUPPORTS_ACPI
-> >>          ...
-> >
-> > ACPI is a real platform feature, as it depends on firmware.
-> >
-> > CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
-> > even if it has ACPI ;-)
-> >
+Hi Dengcheng,
+
+On Wed, Sep 26, 2018 at 12:49:10PM -0700, Dengcheng Zhu wrote:
+> The crash utility initializes cpu state by reading the system kernel
+> memory, which is copied into vmcore.
 > 
-> OK, understood.
+> It is also natural to preserve the online state for CPUs at crash.
+> 
+> Failing to do so could make the analysis tool present info for only 1 CPU
+> by default, and unable to find panic task.
+> 
+> Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+> ---
+>  arch/mips/kernel/machine_kexec.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 
-Any other comments on this? I'd like to get the series into linux-next 
-soon.
+Thanks - applied to mips-next for 4.20.
 
-There was one other problem 0-day reported when building with 
-CONFIG_OF=n while setting CONFIG_OF_ALL_DTBS=y on the kernel command 
-line. The problem is dtc is not built as setting options on the command 
-line doesn't invoke kconfig select(s). This can be fixed by also 
-adding CONFIG_DTC=y to the command line, always building dtc regardless 
-of Kconfig, or making 'all' conditionally dependent on 'dtbs'. I've gone 
-with the last option as that is how this problem was avoided before. 
-
-So the hunk in question with the 2 fixes now looks like this:
-
-@@ -1215,6 +1215,35 @@ kselftest-merge:
-                $(srctree)/tools/testing/selftests/*/config
-        +$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- 
-+# 
----------------------------------------------------------------------------
-+# Devicetree files
-+
-+ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/boot/dts/),)
-+dtstree := arch/$(SRCARCH)/boot/dts
-+endif
-+
-+ifneq ($(dtstree),)
-+
-+%.dtb : scripts_dtc
-+       $(Q)$(MAKE) $(build)=$(dtstree) $(dtstree)/$@
-+
-+PHONY += dtbs dtbs_install
-+dtbs: scripts_dtc
-+       $(Q)$(MAKE) $(build)=$(dtstree)
-+
-+dtbs_install: dtbs
-+       $(Q)$(MAKE) $(dtbinst)=$(dtstree)
-+
-+ifdef CONFIG_OF_EARLY_FLATTREE
-+all: dtbs
-+endif
-+
-+endif
-+
-+PHONY += scripts_dtc
-+scripts_dtc: scripts_basic
-+       $(Q)$(MAKE) $(build)=scripts/dtc
-+
- # 
----------------------------------------------------------------------------
- # Modules
- 
+Paul

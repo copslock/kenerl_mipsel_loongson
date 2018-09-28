@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 23:58:36 +0200 (CEST)
-Received: from smtprelay0129.hostedemail.com ([216.40.44.129]:44480 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 23:59:36 +0200 (CEST)
+Received: from smtprelay0182.hostedemail.com ([216.40.44.182]:38509 "EHLO
         smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993976AbeI1V6cLsiCA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 23:58:32 +0200
+        by eddie.linux-mips.org with ESMTP id S23993976AbeI1V7ceDSkA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 23:59:32 +0200
 Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 41E68181D3417;
-        Fri, 28 Sep 2018 21:58:30 +0000 (UTC)
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 86B14100E86C2;
+        Fri, 28 Sep 2018 21:59:30 +0000 (UTC)
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: tank87_84587560e661f
-X-Filterd-Recvd-Size: 2729
+X-HE-Tag: silk25_8d1bd519aea45
+X-Filterd-Recvd-Size: 2750
 Received: from joe-laptop.perches.com (unknown [47.151.153.53])
         (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 28 Sep 2018 21:58:29 +0000 (UTC)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 28 Sep 2018 21:59:29 +0000 (UTC)
 From:   Joe Perches <joe@perches.com>
 To:     linux-kernel@vger.kernel.org
-Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@linux-mips.org
-Subject: Bad MAINTAINERS pattern in section 'MIPS/LOONGSON2 ARCHITECTURE'
-Date:   Fri, 28 Sep 2018 14:58:27 -0700
-Message-Id: <20180928215828.30526-1-joe@perches.com>
+Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
+Subject: Bad MAINTAINERS pattern in section 'MIPS/LOONGSON3 ARCHITECTURE'
+Date:   Fri, 28 Sep 2018 14:59:28 -0700
+Message-Id: <20180928215928.30611-1-joe@perches.com>
 X-Mailer: git-send-email 2.15.0
 Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66612
+X-archive-position: 66613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,14 +45,15 @@ Please fix this defect appropriately.
 
 linux-next MAINTAINERS section:
 
-	9757	MIPS/LOONGSON2 ARCHITECTURE
-	9758	M:	Jiaxun Yang <jiaxun.yang@flygoat.com>
-	9759	L:	linux-mips@linux-mips.org
-	9760	S:	Maintained
-	9761	F:	arch/mips/loongson64/*{2e/2f}*
-	9762	F:	arch/mips/include/asm/mach-loongson64/
-	9763	F:	drivers/*/*loongson2*
--->	9764	F:	drivers/*/*/*loongson2*
+	9766	MIPS/LOONGSON3 ARCHITECTURE
+	9767	M:	Huacai Chen <chenhc@lemote.com>
+	9768	L:	linux-mips@linux-mips.org
+	9769	S:	Maintained
+	9770	F:	arch/mips/loongson64/
+	9771	F:	arch/mips/include/asm/mach-loongson64/
+	9772	F:	drivers/platform/mips/cpu_hwmon.c
+-->	9773	F:	drivers/*/*loongson3*
+	9774	F:	drivers/*/*/*loongson3*
 
 Commit that introduced this:
 
@@ -98,4 +99,4 @@ commit ffe1f9356fbe55df7dd7f7f6b050ee8b7136611f
   MAINTAINERS | 19 +++++++++++++++++++
   1 file changed, 19 insertions(+)
 
-No commit with drivers/*/*/*loongson2* found
+No commit with drivers/*/*loongson3* found

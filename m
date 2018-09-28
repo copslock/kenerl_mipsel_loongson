@@ -1,85 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 19:10:48 +0200 (CEST)
-Received: from mail-bl2nam02on0118.outbound.protection.outlook.com ([104.47.38.118]:43901
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2018 19:21:56 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:52464 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992267AbeI1RKlzQX5Y convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2018 19:10:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1NOSLITz4k1txKVAxWnEmKzn1TYe2XdKgUCF8FidtS4=;
- b=YFmkrIb5tv2HxtIttE37c5IdPQ2wy969bNpg3Pz9kZsaIWnGlsw/AUY2De+Ma9t3aLAMIM0UeuhDPl9fzwtIhAyn1YFwPSg/vP+wJxaHHi6w1qTrHxBRXRfKWBx+L4ahW219P/FYh/viZigVD79cvhlvpLEa6SWAv8q84Qvuo+Q=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1344.namprd22.prod.outlook.com (10.174.162.147) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1185.22; Fri, 28 Sep 2018 17:10:31 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::1886:62b2:fbe4:9627]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::1886:62b2:fbe4:9627%9]) with mapi id 15.20.1164.024; Fri, 28 Sep 2018
- 17:10:30 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Dengcheng Zhu <dzhu@wavecomp.com>
-CC:     Paul Burton <pburton@wavecomp.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "rachel.mozes@intel.com" <rachel.mozes@intel.com>
-Subject: Re: [mips-next PATCH] MIPS: kdump: Mark cpu back online before
- rebooting
-Thread-Topic: [mips-next PATCH] MIPS: kdump: Mark cpu back online before
- rebooting
-Thread-Index: AQHUVdH9j/uWdUY7e0u9VIL9wrCY1qUF8KoA
-Date:   Fri, 28 Sep 2018 17:10:30 +0000
-Message-ID: <20180928171028.a4ww7vyrzf4fvyqd@pburton-laptop>
-References: <20180926194847.8734-1-dzhu@wavecomp.com>
-In-Reply-To: <20180926194847.8734-1-dzhu@wavecomp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR2201CA0095.namprd22.prod.outlook.com
- (2603:10b6:301:5e::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1344;6:FZQ/caAPZpXP/9zepJPUYDJlxEzKtVxlDCKagmrDuS0+YHLwYaMwr49SowZm4oBHDkh0of4Jkx9GEbho/S79xbS7lpDmTGFjk5KWqmmyEVfFne+1giOSojSFxe3e6EfssXonG7vr6ipnLHIGV9Vg+MoVEYMvs9iYjNZgyh/gxKbzPHwaNNlH9T0bAxWlRfFEObLpXLgeXhfVU3enUxOz6c5QOMrAjPa0z7McnZE5qU9K6V5UEL41QreoBn8cjOM3//MoOaGgeNBjljaaCf0uR5dp5J69jKn/JLnEGuID7YcphKQZBVQyFU4bKbijUm2v4mUe9ZsmcQAQg1NPefz1lEmv0QIlz/+CXEYonVyUHgfM1Tx6y5Oy7wk/BlZu611a6+pmglfRUdYtXpu7Csfdd/lFFacEBBocLJMnrp4uwx77jy1Qpfxis2qSDVNAjrt47pQ4oL8XhUa3fC4neTPUUw==;5:/9EMPbZL+64J1rltu17CfF63JYZN2wYMrANAr5Vu/G7o0DLuvjynqd05wvH9flxFpnM6vfR0Ntiw/5etgPJ8W9mxy9HhcrPycd9BTpyVZfvNWj9gqljSN8ikgooLuG37Xfm8qntdN03+hjj+kyJGFivnJ3FexMkIeJBhagTIKYw=;7:6h65en2VherwBmp4sk2+cWHNk2aIcWJ6FtkSqJS7NRBvh6ULJzQgfX1c7iSphIgt0IR5fwcJZCK/NM8O/LhSu+nA409uNRvzQXqUvcq+CDOiAlmBEMqWC79CQfVhPuEhbkLu5TJCrly6OJkrGn//sDGb7p1a7yp3OmRCuJI3tNPW1/9PdrYtW9QWeVmQ/5aqL8gnRZfcywNGv+NINt4P9KGpU+X37ZiP/eso9fy67XIeB8/UoML+1zTuxrgWALGB
-x-ms-office365-filtering-correlation-id: 4c2b2e0a-430a-4c02-b552-08d625654ab5
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(8989299)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1344;
-x-ms-traffictypediagnostic: MWHPR2201MB1344:
-x-microsoft-antispam-prvs: <MWHPR2201MB134423EDF466202BB78E649AC1EC0@MWHPR2201MB1344.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(209352067349851);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(52105095)(93006095)(3002001)(10201501046)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1344;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1344;
-x-forefront-prvs: 0809C12563
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(39830400003)(136003)(346002)(366004)(376002)(189003)(199004)(256004)(478600001)(26005)(476003)(6512007)(9686003)(446003)(8936002)(106356001)(81166006)(2900100001)(2906002)(8676002)(6436002)(6862004)(305945005)(42882007)(33716001)(81156014)(14454004)(102836004)(6486002)(44832011)(1076002)(11346002)(34290500001)(71200400001)(71190400001)(7736002)(54906003)(316002)(486006)(58126008)(229853002)(52116002)(53936002)(66066001)(5660300001)(68736007)(4326008)(3846002)(6116002)(5250100002)(76176011)(105586002)(33896004)(25786009)(97736004)(6506007)(99286004)(386003)(6246003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1344;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: +neruXfgMp7UK6nBQWVp5IAFKlyJU9scuJpdpqa4Fa3Kn5m3shFFc9bks1OqZrYKYV273phlnwdtqA/+lW2MfUlpNX7xzenf+ukeK5hB1w7fhHm3ntPSoDx8CYm6P77gR5Q+x37zxXNXIwEWVtjWAaekXkK5Bklpn1F0Yhn9FgupckjHngkEeDA+M7DCDRuXauixcnztJ3aamm3W3yVsZcROR723QHoVcTOT5N9apODc6I6dpedwIj3CSxjBuLq2V8FLiAQXYQGvotUL9tl4TwDcOIn2Py5jQg8YF4LGKnTToWAwWST/Hjb8dqyVAameC+gyEw3Vu96R2BcuUaZGrw==
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <EE9E2EEEA6F86940AC7D820051C7A5C3@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        id S23993946AbeI1RVxM-sMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Sep 2018 19:21:53 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id E0F8AAECE;
+        Fri, 28 Sep 2018 17:21:46 +0000 (UTC)
+Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        H8/300 ARCHITECTURE <uclinux-h8-devel@lists.sourceforge.jp>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        nios2-dev@lists.rocketboards.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
+        Paul Burton <paul.burton@mips.com>, ley.foon.tan@intel.com
+References: <20180910150403.19476-1-robh@kernel.org>
+ <20180910150403.19476-7-robh@kernel.org>
+ <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
+ <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com>
+ <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
+From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=afaerber@suse.de; prefer-encrypt=mutual; keydata=
+ xsFNBE6W6ZQBEAC/BIukDnkVenIkK9O14UucicBIVvRB5WSMHC23msS+R2h915mW7/vXfn+V
+ 0nrr5ECmEg/5OjujKf0x/uhJYrsxcp45nDyYCk+RYoOJmGzzUFya1GvT/c04coZ8VmgFUWGE
+ vCfhHJro85dZUL99IoLP21VXEVlCPyIngSstikeuf14SY17LPTN1aIpGQDI2Qt8HHY1zOVWv
+ iz53aiFLFeIVhQlBmOABH2Ifr2M9loRC9yOyGcE2GhlzgyHGlQxEVGFn/QptX6iYbtaTBTU0
+ c72rpmbe1Nec6hWuzSwu2uE8lF+HYcYi+22ml1XBHNMBeAdSEbSfDbwc///8QKtckUzbDvME
+ S8j4KuqQhwvYkSg7dV9rs53WmjO2Wd4eygkC3tBhPM5s38/6CVGl3ABiWJs3kB08asUNy8Wk
+ juusU/nRJbXDzxu1d+hv0d+s5NOBy/5+7Pa6HeyBnh1tUmCs5/f1D/cJnuzzYwAmZTHFUsfQ
+ ygGBRRKpAVu0VxCFNPSYKW0ULi5eZV6bcj+NAhtafGsWcv8WPFXgVE8s2YU38D1VtlBvCo5/
+ 0MPtQORqAQ/Itag1EHHtnfuK3MBtA0fNxQbb2jha+/oMAi5hKpmB/zAlFoRtYHwjFPFldHfv
+ Iljpe1S0rDASaF9NsQPfUBEm7dA5UUkyvvi00HZ3e7/uyBGb0QARAQABzSJBbmRyZWFzIEbD
+ pHJiZXIgPGFmYWVyYmVyQHN1c2UuZGU+wsF7BBMBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgID
+ AQIeAQIXgAUCTqGJnQIZAQAKCRD6LtEtPn4BPzetD/4rF6k/HF+9U9KqykfJaWdUHJvXpI85
+ Roab12rQbiIrL4hVEYKrYwPEKpCf+FthXpgOq+JdTGJ831DMlTx7Ed5/QJ9KAAQuhZlSNjSc
+ +FNobJm7EbFv9jWFjQC0JcOl17Ji1ikgRcIRDCul1nQh9jCdfh1b848GerZmzteNdT9afRJm
+ 7rrvMqXs1Y52/dTlfIW0ygMA2n5Vv3EwykXJOPF6fRimkErKO84sFMNg0eJV9mXs+Zyionfi
+ g2sZJfVeKjkDqjxy7sDDBZZR68I9HWq5VJQrXqQkCZUvtr6TBLI+uiDLbGRUDNxA3wgjVdS2
+ v9bhjYceSOHpKU+h3H2S8ju9rjhOADT2F5lUQMTSpjlzglh8IatV5rXLGkXEyum4MzMo2sCE
+ Cr+GD6i2M3pHCtaIVV3xV0nRGALa6DdF7jBWqM54KHaKsE883kFH2+6ARcPCPrnPm7LX98h2
+ 4VpG984ysoq6fpzHHG/KCaYCEOe1bpr3Plmmp3sqj0utA6lwzJy0hj5dqug+lqmg7QKAnxl+
+ porgluoY56U0X0PIVBc0yO0dWqRxtylJa9kDX/TKwFYNVddMn2NQNjOJXzx2H9hf0We7rG7+
+ F/vgwALVVYbiTzvp2L0XATTv/oX4BHagAa/Qc3dIsBYJH+KVhBp+ZX4uguxk4xlc2hm75b1s
+ cqeAD87BTQROlumUARAAzd7eu+tw/52FB7xQZWDv5aF+6CAkoz7AuY4s1fo0AQQDqjLOdpQF
+ bifdH7B8SnsA4eo0syfs+1tZW6nn9hdy1GHEMbeuvdhNwkhEfYGDYpSue7oVxB4jajKvRHAP
+ VcewKZIxvIiZ5aSp5n1Bd7B0c0C443DHiWE/0XWSpvbU7fTzTNvdz+2OZmGtqCn610gBqScv
+ 1BOiP3OfLly8ghxcJsos23c0mkB/1iWlzh3UMFIGrzsK3sZJ/3uRaLYFimmqqPlSwFqx3b0M
+ 1gFdHWKfOpvQ4wwP5P10xwvqNXLWC30wB1QmJGD/X8aAoVNnGsmEL7GcWF4cLoOSRidSoccz
+ znShE+Ap+FVDD6MRyesNT4D67l792//B38CGJRdELtNacdwazaFgxH9O85Vnd70ZC7fIcwzG
+ yg/4ZEf96DlAvrSOnu/kgklofEYdzpZmW+Fqas6cnk6ZaHa35uHuBPesdE13MVz5TeiHGQTW
+ xP1jbgWQJGPvJZ+htERT8SZGBQRb1paoRd1KWQ1mlr3CQvXtfA/daq8p/wL48sXrKNwedrLV
+ iZOeJOFwfpJgsFU4xLoO/8N0RNFsnelBgWgZE3ZEctEd4BsWFUw+czYCPYfqOcJ556QUGA9y
+ DeDcxSitpYrNIvpk4C5CHbvskVLKPIUVXxTNl8hAGo1Ahm1VbNkYlocAEQEAAcLBXwQYAQIA
+ CQUCTpbplAIbDAAKCRD6LtEtPn4BPzA6D/9TbSBOPM99SHPX9JiEQAw4ITCBF2oTWeZQ6RJg
+ RKpB15lzyPfyFbNSceJp9dCiwDWe+pzKaX6KYOFZ5+YTS0Ph2eCR+uT2l6Mt6esAun8dvER/
+ xlPDW7p88dwGUcV8mHEukWdurSEDTj8V3K29vpgvIgRq2lHCn2wqRQBGpiJAt72Vg0HxUlwN
+ GAJNvhpeW8Yb43Ek7lWExkUgOfNsDCTvDInF8JTFtEXMnUcPxC0d/GdAuvBilL9SlmzvoDIZ
+ 5k2k456bkY3+3/ydDvKU5WIgThydyCEQUHlmE6RdA3C1ccIrIvKjVEwSH27Pzy5jKQ78qnhv
+ dtLLAavOXyBJnOGlNDOpOyBXfv02x91RoRiyrSIM7dKmMEINKQlAMgB/UU/6B+mvzosbs5d3
+ 4FPzBLuuRz9WYzXmnC460m2gaEVk1GjpidBWw0yY6kgnAM3KhwCFSecqUQCvwKFDGSXDDbCr
+ w08b3GDk40UoCoUq9xrGfhlf05TUSFTg2NlSrK7+wAEsTUgs2ZYLpHyEeftoDDnKpM4ghs/O
+ ceCeyZUP1zSgRSjgITQp691Uli5Nd1mIzaaM8RjOE/Rw67FwgblKR6HAhSy/LYw1HVOu+Ees
+ RAEdbtRt37A8brlb/ENxbLd9SGC8/j20FQjit7oPNMkTJDs7Uo2eb7WxOt5pSTVVqZkv7Q==
+Organization: SUSE Linux GmbH
+Message-ID: <75740733-d0d4-4c0c-838c-f01a5e7291d3@suse.de>
+Date:   Fri, 28 Sep 2018 19:21:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.0
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c2b2e0a-430a-4c02-b552-08d625654ab5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2018 17:10:30.7911
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1344
-Return-Path: <pburton@wavecomp.com>
+In-Reply-To: <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Return-Path: <afaerber@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66607
+X-archive-position: 66608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: afaerber@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,22 +115,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Dengcheng,
+Hi Geert,
 
-On Wed, Sep 26, 2018 at 12:49:10PM -0700, Dengcheng Zhu wrote:
-> The crash utility initializes cpu state by reading the system kernel
-> memory, which is copied into vmcore.
+Am 13.09.18 um 17:51 schrieb Geert Uytterhoeven:
+> On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
+> <yamada.masahiro@socionext.com> wrote:
+>> Even x86 can enable OF and OF_UNITTEST.
+>>
+>> Another solution might be,
+>> guard it by 'depends on ARCH_SUPPORTS_OF'.
+>>
+>> This is actually what ACPI does.
+>>
+>> menuconfig ACPI
+>>         bool "ACPI (Advanced Configuration and Power Interface) Support"
+>>         depends on ARCH_SUPPORTS_ACPI
+>>          ...
 > 
-> It is also natural to preserve the online state for CPUs at crash.
+> ACPI is a real platform feature, as it depends on firmware.
 > 
-> Failing to do so could make the analysis tool present info for only 1 CPU
-> by default, and unable to find panic task.
-> 
-> Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
-> ---
->  arch/mips/kernel/machine_kexec.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
+> even if it has ACPI ;-)
 
-Thanks - applied to mips-next for 4.20.
+How would loading a DT overlay work on an ACPI platform? I.e., what
+would it overlay against and how to practically load such a file?
 
-Paul
+I wonder whether that could be helpful for USB devices and serdev...
+
+Cheers,
+Andreas
+
+-- 
+SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

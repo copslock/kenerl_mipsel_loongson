@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 12:30:50 +0200 (CEST)
-Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:42972
-        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994540AbeJAKaXxDsmd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2018 12:30:23 +0200
-Received: by mail-wr1-x442.google.com with SMTP id b11-v6so13282951wru.9;
-        Mon, 01 Oct 2018 03:30:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 12:31:03 +0200 (CEST)
+Received: from mail-wm1-x341.google.com ([IPv6:2a00:1450:4864:20::341]:52398
+        "EHLO mail-wm1-x341.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994541AbeJAKa0DWTYd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2018 12:30:26 +0200
+Received: by mail-wm1-x341.google.com with SMTP id 189-v6so7902703wmw.2;
+        Mon, 01 Oct 2018 03:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=eE/ETHLbMl3NJJvo+UMJ+v7fpw1vrx7CW0hC0Ws6guA=;
-        b=nMwW5LBA8WrGgwePmDgiisPk20YadWq/BoIoR2xiCHcd3dVahu1j7gm3Ptj8UyG2Kk
-         aDbVRCXsGw/K14OOcrI9onnJGTXQAoe97X2vusHOz91XlO9HQkWfo1wKWD9QH5b17cUv
-         ioiA9JMAndcT3I8yORBY8Maf+3y/sk5lmJV0D/3DX9rS7Q5zS8FAyFUIfvWu7a9lNKex
-         hUOMfoBrrKbYu/PWqVs+EUfFLj1+MxaidtMCaifeqZdvM6wWnA41RjTd933NYI9rwVW/
-         7Cos9wND2zaFb0D1rDVqYRGq8xgJKk0nlTSXL8RoIeoRTYqhjysxGSpLStgr3DUpCsQi
-         OzMQ==
+        bh=lv5fgwVngiSUCZ65IESqPJcG9y3aI8hBjWgPOfOBa3o=;
+        b=WAllNThrKjrHE3iAEPkzNM6UZAHVYcLBnVNrDRjbtMLthkl0ftZ7/UxSP67oR4eLvb
+         TSlsnjw5xrmVMEjhOJYpP5Ga9VNdyq5nNiM3JtS3au56l9UisEJMFnbIAJhlye0qmYDD
+         otwOp0qiAUZJDsqRAFG8xBcVhkvygzcCA1AErF9Eu0DM1dmTO9nXNp7P5UIe/ETFcV0Y
+         yQLp5WEhWNa0qUBfN7eRCKUaGRiJi5aAtyiJZjmY6QlwBEwx/tf3AbJuUDEiEqz6CBLB
+         cwRomLgPGF0iafpnszpGt3dRB4OPuqsugbYLNFiR0UIqZLR06codfuCy3IL7eRq+0Djf
+         cvQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=eE/ETHLbMl3NJJvo+UMJ+v7fpw1vrx7CW0hC0Ws6guA=;
-        b=l/3Za6c0yjLvEm7gd6EGxMSmheKKvXa58rhBACV6Fwb155IcgzJa5S+9gPSiTDtMV2
-         GzbXQegZbJ0pnub3bjss3kqAi8EdcsuG0zuem2SyD0AI1JE/TLXkkiMSlj8aQ2i4I2NS
-         zvLYT4A70GZ9eCI/3isxCmV471xq9I34RO8VmFEwEkgFJBNzrQg4vEHJWJzRbjCmyf1Y
-         LcTzPFfKG/kbTH1ClDtTYh2zCFxMryic8MACvSOAinumcqZmAKr9mtdhoQGhjlZMde74
-         q98RsPNQVgYgcob3x824oKtFASIw71sGIJ4ugiCNn1lXzP+xzCRTtobFcgn06cDKd1cv
-         u1Pw==
-X-Gm-Message-State: ABuFfojrTMb8vOJkjnfCyfEXleo4GtNKq51cJ+mOPQm/iFYhc/BfiDrP
-        oYVYLqhO1nmRWo3PsTe66cmy0L5rqZ4=
-X-Google-Smtp-Source: ACcGV63/RMHbOik+vGmGQqIGsQNnD0Fe03xJoZK71lbaIqBrkaoXo3pXhiUsog7bMr2UAR3HymSzLQ==
-X-Received: by 2002:a5d:5342:: with SMTP id t2-v6mr6469966wrv.257.1538389818383;
-        Mon, 01 Oct 2018 03:30:18 -0700 (PDT)
+        bh=lv5fgwVngiSUCZ65IESqPJcG9y3aI8hBjWgPOfOBa3o=;
+        b=WfZTj2dWj0neMcc2Pxxc22Lw7WoWnPJANlx+eYCC1aZUrbTRrIkizhtgR/0A+eQtsK
+         L1u2yDeF0a8OOa9XiUxiBWUD6j36+tBqg9nHG1CfQ/klhlkRH1Gx0iWnpTEt9nWyrxBU
+         a7qOcyzsUkazqdA9Jwk/T+X8q6vFGepaZwQsmGWGF+7AfqpIObGNIJQ87tY91mM/kX5f
+         u4wNpAGbDvPHZDoZEadhqhvORCgq1oMeURMxCjxvhV4Db4o1fb1D4fTRmMPwwARxxeGq
+         KM7ARpSv4QVhwu90ahxLBcT8FL1SpV3nk6Qb8sNVKpzvdw/i3/vtE2jIDzLa2U2IgONb
+         P2Iw==
+X-Gm-Message-State: ABuFfoh1O9VgCY17UrrlyS1Cw2TpQTGe7T6lIplc04QigVvp6H0mprb7
+        EOXhE1W6MiTFeDtljuq6YYAUCR1FavM=
+X-Google-Smtp-Source: ACcGV617gxDpdT9e+aAeQLFvWcMl+0rX0Iw9v9tF1rhgXMs3g+iSea78C/GLDyMZDNhwOJBNmKyW/Q==
+X-Received: by 2002:a1c:ed1a:: with SMTP id l26-v6mr8806025wmh.61.1538389820465;
+        Mon, 01 Oct 2018 03:30:20 -0700 (PDT)
 Received: from laptop.localdomain ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id g8-v6sm2461169wmf.45.2018.10.01.03.30.16
+        by smtp.gmail.com with ESMTPSA id g8-v6sm2461169wmf.45.2018.10.01.03.30.18
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Oct 2018 03:30:18 -0700 (PDT)
+        Mon, 01 Oct 2018 03:30:19 -0700 (PDT)
 From:   Yasha Cherikovsky <yasha.che3@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -49,9 +49,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         devicetree@vger.kernel.org
 Cc:     Yasha Cherikovsky <yasha.che3@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [RFC v2 2/7] dt-binding: interrupt-controller: Document RTL8186 SoC DT bindings
-Date:   Mon,  1 Oct 2018 13:29:47 +0300
-Message-Id: <20181001102952.7913-3-yasha.che3@gmail.com>
+Subject: [RFC v2 3/7] irqchip/rtl8186: Add RTL8186 interrupt controller driver
+Date:   Mon,  1 Oct 2018 13:29:48 +0300
+Message-Id: <20181001102952.7913-4-yasha.che3@gmail.com>
 X-Mailer: git-send-email 2.19.0
 In-Reply-To: <20181001102952.7913-1-yasha.che3@gmail.com>
 References: <20181001102952.7913-1-yasha.che3@gmail.com>
@@ -61,7 +61,7 @@ Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66640
+X-archive-position: 66641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,49 +78,169 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds device tree binding doc for the
-Realtek RTL8186 SoC interrupt controller.
+The Realtek RTL8186 SoC is a MIPS based SoC
+used in some home routers [1][2].
+
+This adds a driver to handle the interrupt controller
+on this SoC.
+
+[1] https://www.linux-mips.org/wiki/Realtek_SOC#Realtek_RTL8186
+[2] https://wikidevi.com/wiki/Realtek_RTL8186
 
 Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@mips.com>
 Cc: James Hogan <jhogan@kernel.org>
-Cc: devicetree@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 ---
- .../interrupt-controller/realtek,rtl8186-intc  | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/realtek,rtl8186-intc
+ drivers/irqchip/Kconfig       |   5 ++
+ drivers/irqchip/Makefile      |   1 +
+ drivers/irqchip/irq-rtl8186.c | 107 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 113 insertions(+)
+ create mode 100644 drivers/irqchip/irq-rtl8186.c
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/realtek,rtl8186-intc b/Documentation/devicetree/bindings/interrupt-controller/realtek,rtl8186-intc
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index e9233db16e03..83099905a871 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -371,4 +371,9 @@ config QCOM_PDC
+ 	  Power Domain Controller driver to manage and configure wakeup
+ 	  IRQs for Qualcomm Technologies Inc (QTI) mobile chips.
+ 
++config RTL8186_IRQ
++	bool
++	depends on MACH_RTL8186
++	select IRQ_DOMAIN
++
+ endmenu
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index 15f268f646bf..2e0bb859a8f4 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -87,3 +87,4 @@ obj-$(CONFIG_MESON_IRQ_GPIO)		+= irq-meson-gpio.o
+ obj-$(CONFIG_GOLDFISH_PIC) 		+= irq-goldfish-pic.o
+ obj-$(CONFIG_NDS32)			+= irq-ativic32.o
+ obj-$(CONFIG_QCOM_PDC)			+= qcom-pdc.o
++obj-$(CONFIG_RTL8186_IRQ)		+= irq-rtl8186.o
+diff --git a/drivers/irqchip/irq-rtl8186.c b/drivers/irqchip/irq-rtl8186.c
 new file mode 100644
-index 000000000000..21956d210021
+index 000000000000..3eb6b947d5a0
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/realtek,rtl8186-intc
-@@ -0,0 +1,18 @@
-+Realtek RTL8186 SoC interrupt controller
++++ b/drivers/irqchip/irq-rtl8186.c
+@@ -0,0 +1,107 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Realtek RTL8186 SoC interrupt controller driver.
++ *
++ * Copyright (C) 2018 Yasha Cherikovsky
++ */
 +
-+Required properties:
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqchip.h>
++#include <linux/irqdomain.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
 +
-+- compatible : should be "realtek,rtl8186-intc"
-+- interrupt-controller : Identifies the node as an interrupt controller.
-+- #interrupt-cells : Specifies the number of cells needed to encode an
-+  interrupt source. The value shall be 1.
-+- reg : Specifies base physical address and size of the registers.
++#define RTL8186_NR_IRQS 11
 +
-+Example:
++#define GIMR 0x00
++#define GISR 0x04
 +
-+intc: interrupt-controller@1d010000 {
-+	compatible = "realtek,rtl8186-intc";
-+	interrupt-controller;
-+	#interrupt-cells = <1>;
-+	reg = <0x1d010000 0x8>;
++static struct {
++	void __iomem *base;
++	struct irq_domain *domain;
++} intc;
++
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	u32 hwirq, virq;
++	u32 gimr = readl(intc.base + GIMR);
++	u32 gisr = readl(intc.base + GISR);
++	u32 pending = gimr & gisr & ((1 << RTL8186_NR_IRQS) - 1);
++
++	if (!pending) {
++		spurious_interrupt();
++		return;
++	}
++
++	while (pending) {
++		hwirq = fls(pending) - 1;
++		virq = irq_linear_revmap(intc.domain, hwirq);
++		do_IRQ(virq);
++		pending &= ~BIT(hwirq);
++	}
++}
++
++static void rtl8186_irq_mask(struct irq_data *data)
++{
++	unsigned long irq = data->hwirq;
++
++	writel(readl(intc.base + GIMR) & (~(BIT(irq))), intc.base + GIMR);
++}
++
++static void rtl8186_irq_unmask(struct irq_data *data)
++{
++	unsigned long irq = data->hwirq;
++
++	writel((readl(intc.base + GIMR) | (BIT(irq))), intc.base + GIMR);
++}
++
++static struct irq_chip rtl8186_irq_chip = {
++	.name = "RTL8186",
++	.irq_mask = rtl8186_irq_mask,
++	.irq_unmask = rtl8186_irq_unmask,
 +};
++
++static int rtl8186_intc_irq_domain_map(struct irq_domain *d, unsigned int virq,
++				       irq_hw_number_t hw)
++{
++	irq_set_chip_and_handler(virq, &rtl8186_irq_chip, handle_level_irq);
++	return 0;
++}
++
++static const struct irq_domain_ops rtl8186_irq_ops = {
++	.map = rtl8186_intc_irq_domain_map,
++	.xlate = irq_domain_xlate_onecell,
++};
++
++static int __init rtl8186_intc_of_init(struct device_node *node,
++				       struct device_node *parent)
++{
++	intc.base = of_io_request_and_map(node, 0, of_node_full_name(node));
++
++	if (IS_ERR(intc.base))
++		panic("%pOF: unable to map resource", node);
++
++	intc.domain = irq_domain_add_linear(node, RTL8186_NR_IRQS,
++					    &rtl8186_irq_ops, NULL);
++
++	if (!intc.domain)
++		panic("%pOF: unable to create IRQ domain\n", node);
++
++	/* Start with all interrupts disabled */
++	writel(0, intc.base + GIMR);
++
++	/*
++	 * Enable all hardware interrupts in CP0 status register.
++	 * Software interrupts are disabled.
++	 */
++	set_c0_status(ST0_IM);
++	clear_c0_status(STATUSF_IP0 | STATUSF_IP1);
++	clear_c0_cause(CAUSEF_IP);
++
++	return 0;
++}
++
++IRQCHIP_DECLARE(rtl8186_intc, "realtek,rtl8186-intc", rtl8186_intc_of_init);
 -- 
 2.19.0

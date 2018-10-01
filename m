@@ -1,79 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 09:53:39 +0200 (CEST)
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:35515 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991162AbeJAHxfawT7G convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Oct 2018 09:53:35 +0200
-Received: by mail-vs1-f66.google.com with SMTP id c10so1610365vsk.2;
-        Mon, 01 Oct 2018 00:53:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Fse7KpQK4D3pkd1OwWmBP3xPIZzYRxGU9L0taz7PM74=;
-        b=HiZfiqc+5DsTw1F1kYj0hSutJ51KS3icxev2edjga2OcwpPViNN4qgVRmQjOcogmTl
-         FFSAdg3Z4CgaEhckehRUmjh3T12w8Hy9znREjvYSjTQ7Ob1G6VuRBHAOMxil8kdKNJsD
-         qtMVD6t+xw+e1yeR4uEpXdAt9d2tJ0RiY8YODdRia62EGiXkxWjCHd5HFCOc/NZp0hfF
-         Itwi0oQvYdhXvvEm0aeLG2MYz2W4RzIRFtG2iwVQOzc8x1oWsZ6gPG4fMVtTPS67g8XJ
-         3vgbszWR9mi7kLF6le1/pMtNabukM9ezKjL2FF1EhlWljcxuY2Qmxg3vTmZEdtu9ne6r
-         E/mg==
-X-Gm-Message-State: ABuFfogMOtsqTnriiwgupvXEGWDKJuu5O4xejY8HywsuJF3J8AljlpD9
-        Z4XtUB9ALwtZ1fDu+1oCYY3TUpCyePeD0owWOZ0=
-X-Google-Smtp-Source: ACcGV609Lnu4FrPRGnyP3xS+u5v5KhwZ0H6OXDWYS6T9uI8bo8Xc8VsCR1ipQNkeRLUb/myWD7qYgFOZKy5VkxSRMSA=
-X-Received: by 2002:a67:68ce:: with SMTP id d197-v6mr3626847vsc.152.1538380409478;
- Mon, 01 Oct 2018 00:53:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20180910150403.19476-1-robh@kernel.org> <20180910150403.19476-7-robh@kernel.org>
- <CAL_Jsq+=VbdcVLiwXbOA5d+R2YY6=2Pw2bQpci-jj-JvereD1A@mail.gmail.com>
- <CAK7LNAQFqhWw+LwDoypGG=OP6tH4qf2tT=LvtchK2GoiNyzDXg@mail.gmail.com>
- <CAMuHMdWEnoh97_jiDWMq=ke4PrhSFbToYnx91CPLBuq3mOGzoQ@mail.gmail.com>
- <75740733-d0d4-4c0c-838c-f01a5e7291d3@suse.de> <CAL_JsqKLOohxGx0Je9niMQ5H3o0Y=EcMQTB6YkbV0sfUOZHu8g@mail.gmail.com>
-In-Reply-To: <CAL_JsqKLOohxGx0Je9niMQ5H3o0Y=EcMQTB6YkbV0sfUOZHu8g@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 1 Oct 2018 09:53:15 +0200
-Message-ID: <CAMuHMdW_+PNZrh5JXo8MxVwg3YSZL7bszMcUJjCqMFfBz8HDPQ@mail.gmail.com>
-Subject: Re: [PATCH v3 6/9] kbuild: consolidate Devicetree dtb build rules
-To:     Rob Herring <robh@kernel.org>
-Cc:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 10:20:06 +0200 (CEST)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:49198 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991808AbeJAIUBY6mAG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2018 10:20:01 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1FCCD7A9;
+        Mon,  1 Oct 2018 01:19:54 -0700 (PDT)
+Received: from [10.4.13.85] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 185E03F5B3;
+        Mon,  1 Oct 2018 01:19:51 -0700 (PDT)
+Subject: Re: [RFC 5/5] MIPS: Add Realtek RTL8186 SoC support
+To:     Yasha Cherikovsky <yasha.che3@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
-        Paul Burton <paul.burton@mips.com>, ley.foon.tan@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20180930141510.2690-1-yasha.che3@gmail.com>
+ <20180930141510.2690-6-yasha.che3@gmail.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <a7bba9bd-dab3-4f92-465f-e05beee2b9e3@arm.com>
+Date:   Mon, 1 Oct 2018 09:19:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20180930141510.2690-6-yasha.che3@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66625
+X-archive-position: 66626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,54 +54,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Sep 28, 2018 at 8:42 PM Rob Herring <robh@kernel.org> wrote:
-> On Fri, Sep 28, 2018 at 12:21 PM Andreas Färber <afaerber@suse.de> wrote:
-> > Am 13.09.18 um 17:51 schrieb Geert Uytterhoeven:
-> > > On Wed, Sep 12, 2018 at 3:02 AM Masahiro Yamada
-> > > <yamada.masahiro@socionext.com> wrote:
-> > >> Even x86 can enable OF and OF_UNITTEST.
-> > >>
-> > >> Another solution might be,
-> > >> guard it by 'depends on ARCH_SUPPORTS_OF'.
-> > >>
-> > >> This is actually what ACPI does.
-> > >>
-> > >> menuconfig ACPI
-> > >>         bool "ACPI (Advanced Configuration and Power Interface) Support"
-> > >>         depends on ARCH_SUPPORTS_ACPI
-> > >>          ...
-> > >
-> > > ACPI is a real platform feature, as it depends on firmware.
-> > >
-> > > CONFIG_OF can be enabled, and DT overlays can be loaded, on any platform,
-> > > even if it has ACPI ;-)
-> >
-> > How would loading a DT overlay work on an ACPI platform? I.e., what
-> > would it overlay against and how to practically load such a file?
->
-> The DT unittests do just that. I run them on x86 and UM builds. In
-> this case, the loading source is built-in.
->
-> > I wonder whether that could be helpful for USB devices and serdev...
->
-> How to load the overlays is pretty orthogonal to the issues to be
-> solved here. It would certainly be possible to move forward with
-> prototyping this and just have the overlay built-in. It may not even
-> need to be an overlay if we can support multiple root nodes.
+Hi Yasha,
 
-You indeed need to refer to some anchors for most use cases, although a
-simple MMIO device could just be anchored to the root node.
+On 30/09/18 15:15, Yasha Cherikovsky wrote:
+> The Realtek RTL8186 SoC is a MIPS based SoC
+> used in some home routers [1][2].
+> 
+> The hardware includes Lexra LX5280 CPU with a TLB,
+> two Ethernet controllers, a WLAN controller and more.
+> 
+> With this patch, it is possible to successfully boot
+> the kernel and load userspace on the Edimax BR-6204Wg
+> router.
+> Network drivers support will come in future patches.
+> 
+> This patch includes:
+> - New MIPS rtl8186 platform
+>      - Core platform setup code (mostly DT based)
+>      - New Kconfig option
+>      - defconfig file
+>      - MIPS zboot UART support
+> - RTL8186 interrupt controller driver
+> - RTL8186 timer driver
+> - Device tree files for the RTL8186 SoC and Edimax BR-6204Wg
+>    router
+> 
+> [1] https://www.linux-mips.org/wiki/Realtek_SOC#Realtek_RTL8186
+> [2] https://wikidevi.com/wiki/Realtek_RTL8186
+> 
+> Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jason Cooper <jason@lakedaemon.net>
+> Cc: Marc Zyngier <marc.zyngier@arm.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>   arch/mips/Kbuild.platforms                    |   1 +
+>   arch/mips/Kconfig                             |  17 ++
+>   arch/mips/boot/compressed/uart-16550.c        |   5 +
+>   arch/mips/boot/dts/Makefile                   |   1 +
+>   arch/mips/boot/dts/realtek/Makefile           |   4 +
+>   arch/mips/boot/dts/realtek/rtl8186.dtsi       |  86 +++++++
+>   .../dts/realtek/rtl8186_edimax_br_6204wg.dts  |  45 ++++
+>   arch/mips/configs/rtl8186_defconfig           | 112 +++++++++
+>   arch/mips/include/asm/mach-rtl8186/rtl8186.h  |  37 +++
+>   arch/mips/rtl8186/Makefile                    |   2 +
+>   arch/mips/rtl8186/Platform                    |   7 +
+>   arch/mips/rtl8186/irq.c                       |   8 +
+>   arch/mips/rtl8186/prom.c                      |  15 ++
+>   arch/mips/rtl8186/setup.c                     |  80 +++++++
+>   arch/mips/rtl8186/time.c                      |  10 +
+>   drivers/clocksource/Kconfig                   |   9 +
+>   drivers/clocksource/Makefile                  |   1 +
+>   drivers/clocksource/timer-rtl8186.c           | 220 ++++++++++++++++++
+>   drivers/irqchip/Kconfig                       |   5 +
+>   drivers/irqchip/Makefile                      |   1 +
+>   drivers/irqchip/irq-rtl8186.c                 | 107 +++++++++
 
-Topologies hanging off a USB device would be my first use case, too,
-for serdev, or for e.g. the mcp2210 USB-SPI bridge.
+Could you please split this into at least three patches (arch code, 
+clocksource, irqchip) to ease the review?
 
-Gr{oetje,eeting}s,
+Thanks,
 
-                        Geert
-
+	M.
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Jazz is not dead. It just smells funny...

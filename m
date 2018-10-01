@@ -1,110 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 18:29:24 +0200 (CEST)
-Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:42218
-        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994561AbeJAQ3UiRhfe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2018 18:29:20 +0200
-Received: by mail-pg1-x543.google.com with SMTP id i4-v6so9223232pgq.9;
-        Mon, 01 Oct 2018 09:29:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 18:58:05 +0200 (CEST)
+Received: from mail-cys01nam02on0139.outbound.protection.outlook.com ([104.47.37.139]:22365
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994571AbeJAQ6BYnxbe convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2018 18:58:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=A8TF4IWy5uCszANSwOHyeP56CISUU3UvyLB1eGP0Zg0=;
-        b=ZYknXN1ED5+wVNWHSbMpzTUukxG3MmFNSS3JSwS85dzPZx9Ee8mu6/FBK7c46LC6zG
-         u5Y2KVNqBww9tdOTyDmIIuqh8Og1TbJSEmt5sS5sy3E9a3PapL+hx4RugDZbZFkUrrFZ
-         xQYT73MjzqzkQqiuBBoptkqnd7EuSXnmsQBmPNv8dWgBAITZ45JtoXeFMoWdhYhmYxDI
-         BbTiAC1Cng6+Nzx1cOcM80fyAFGLOCgrdJfq92jOtALbekD6Ubgzd32osjjltOrNgaRv
-         BSfyNkvqgZ/nvwgxYcC1fmIUn0JNia+zWnI8l1n8d0Jk6OJoa+Ko6cp1UKiAPcFRSj5T
-         i+Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=A8TF4IWy5uCszANSwOHyeP56CISUU3UvyLB1eGP0Zg0=;
-        b=V1CPtSsYoXiTyBT3wWL9MrESyq4aqnS4n9qrZHgp2DU4UIsDfAzTMjcWu9bEtxMVNt
-         9N5jKIy+8WhAuLF73m6Sx47XzphrGgjMckOtQqZZIhoJ8Ex+L8jR572P3kJhGQv87RgI
-         C4S/syBaTcHLrpzpti/EoZhhz+Y2xinJOWYgxNFDM3AX1XXN4kyam/0j2aH892EZfDmZ
-         83ejTIjQJPXGfBgcLk7m9qmWkoLYdwRmBcc3sIT1ysJQfckpz6+01aJBCsZWjOw0qKrL
-         n7qnAVYcJuQkXC5C8xpSjacVEKH4wYQjbIkrRjq8rTKCQE4YgwUJxgPpsD2e/D5uZY1G
-         jsCw==
-X-Gm-Message-State: ABuFfoidw1jrhjSgCivHNpKNtb2bNnWTkuKIWGyZiqO3kuUV9d8ZbIHx
-        sTG2SEBtJqkmZ4GcrPmQ+mk=
-X-Google-Smtp-Source: ACcGV60J9WCxH/RgtEmPzIrJbMB99hwRuECLsKLaqW6KgtvrRH7Ggw7n11PNDEI927DEjc5aMpk0yQ==
-X-Received: by 2002:a63:5d55:: with SMTP id o21-v6mr10713994pgm.349.1538411350663;
-        Mon, 01 Oct 2018 09:29:10 -0700 (PDT)
-Received: from [10.67.50.87] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id e2-v6sm16123349pgv.25.2018.10.01.09.29.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Oct 2018 09:29:09 -0700 (PDT)
-Subject: Re: [PATCH net-next v3 11/11] net: mscc: ocelot: make use of SerDes
- PHYs for handling their configuration
-To:     Quentin Schulz <quentin.schulz@bootlin.com>
-Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
-        andrew@lunn.ch, allan.nielsen@microchip.com,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        thomas.petazzoni@bootlin.com
-References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
- <00989856964175eafbe1435a70862c2ac66cffc0.1536912834.git-series.quentin.schulz@bootlin.com>
- <0f762d63-a392-d2fe-a121-a013a13a8584@gmail.com>
- <20181001094245.cr4hdcechrqkjymq@qschulz>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-Message-ID: <228f9d74-be17-5157-9755-b265a6e234b8@gmail.com>
-Date:   Mon, 1 Oct 2018 09:29:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20181001094245.cr4hdcechrqkjymq@qschulz>
-Content-Type: text/plain; charset=utf-8
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xy5dMP9yOoSuWZHjYQ1yvHhxbQtm6TdU5Yy8AbOde/I=;
+ b=NH5KUHyNqabJYPiOctQLt00xh1mdUPdUXE2e2LQMk8o0Y/MGePVcJ3ruFKaYbZ3Ic6NvWwunIcCfAoMv4WFbTnMjU+LzZhwHhdgqADsMXn5a/TIMMKZHqjSjvVU9FAUtxVIUCfP+J6Iu+D2RelQIXTQUS4qKFeTp36AWPM8xxho=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1455.namprd22.prod.outlook.com (10.174.170.140) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1143.18; Mon, 1 Oct 2018 16:57:49 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::1886:62b2:fbe4:9627%9]) with mapi id 15.20.1164.029; Mon, 1 Oct 2018
+ 16:57:49 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Joe Perches <joe@perches.com>
+CC:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: MIPS/LOONGSON2 ARCHITECTURE - Use the normal
+ wildcard style
+Thread-Topic: [PATCH] MAINTAINERS: MIPS/LOONGSON2 ARCHITECTURE - Use the
+ normal wildcard style
+Thread-Index: AQHUWNm140eMuj4cxUiV2sr2DrgbeKUKng0A
+Date:   Mon, 1 Oct 2018 16:57:49 +0000
+Message-ID: <20181001165746.t7nqhvw5hktj2bdk@pburton-laptop>
+References: <ae2126ad8eab7d87b8a13cbe75d3ba27e2df22a7.camel@perches.com>
+In-Reply-To: <ae2126ad8eab7d87b8a13cbe75d3ba27e2df22a7.camel@perches.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CY4PR1101CA0007.namprd11.prod.outlook.com
+ (2603:10b6:910:15::17) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1455;6:KFaNldsWlsonMec0GiAxAeyNeWAOiGi0A/KFwfWjbLCrGXYGsxK8IUap5JnAeTFLArRr2VGCDcNQ+UGjBCl2iAKM3sbpNACrfut99TE40FgCSStl2f55mwXwLIeBrOUOFhzRpKeXW1efwbi4DjW7VtYBS8t0k8YeYbarSVgjRsrN8xtwRDcNZTGJdkQsVobr4C5OywDORPPJPeVzBmhsF7ISGZp/PATrYRvWg2kVk1h5BKw9wzXuKRU6TAgJcT1qxy0IaNL+qSN949KUtd516xDQGFGU79x3JbYJgUJCeSILtMu14smkElfbf1mSk8V1uFnfXmSz/SePQpQ5s0Crkh2hAG8OaMT6CRtoPfZU8EsTk8045yJeW2Jai4M5IQvjAYAc1YWmVlB1t2Vyibbi757HcOYTZ7SnXyAX3yMVT2H9b88F+lwS5Sl83hsOjVGzlEPzReANt2hiTAJFY4TK/Q==;5:1WgSQCa8lUZmxg0IL1wbrqDLzsMIYsoO51AcRe2LgefUE4idUohoV3jZ09sW1oFQs6uTe534w+yThgqsdFuIE2sV2b+qLsZKL/aGXod5mUyWdAx50cpLgLdVcOk0CYR4rd2z5nLzDuGw3Ke+PP/HAN76q8wysrWUc9zKHb0neDI=;7:ikFU1G2Pn/Tbv1tCsccXXT2dO26AehE+R5/YhUGei3Gixo+4CMNEg6zuYEcx+vYhpheAE5zGAc0B87LqQWfjyUBCAulIOp0enDbefvM3yNNDYGiES2gApP3OlcC9ahE4xOq9noqMmoGUg4Whw5coeFa7sjnwYDQWiqNEEeFblwRC4AQc4RWYEePrWIbBbS/ozl+VPEQXl2dA5gfA29cpKGwSaqBBzVVBManjIhmiGcWWr8HHYeT0s8f+IiW4lQK/
+x-ms-office365-filtering-correlation-id: 90ff773f-080e-4558-379c-08d627bf047a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021125)(8989299)(4534165)(7022125)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1455;
+x-ms-traffictypediagnostic: MWHPR2201MB1455:
+x-microsoft-antispam-prvs: <MWHPR2201MB1455739E085341887B06420EC1EF0@MWHPR2201MB1455.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(10201501046)(3231355)(944501410)(52105095)(3002001)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1455;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1455;
+x-forefront-prvs: 0812095267
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(376002)(366004)(136003)(39840400004)(396003)(189003)(199004)(33716001)(102836004)(6486002)(68736007)(6506007)(42882007)(5250100002)(53936002)(6916009)(386003)(34290500001)(229853002)(6436002)(105586002)(6246003)(106356001)(11346002)(76176011)(54906003)(316002)(97736004)(58126008)(3846002)(476003)(8676002)(1076002)(8936002)(81166006)(186003)(99286004)(26005)(33896004)(81156014)(446003)(6116002)(52116002)(71190400001)(71200400001)(44832011)(5660300001)(14444005)(256004)(2906002)(14454004)(25786009)(305945005)(9686003)(6512007)(66066001)(508600001)(2900100001)(7736002)(4326008)(486006);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1455;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: k+hDis8OtnVAo+O6dsgBhASuIu0yjX5JEdsFRxUZ9D1KbbcfBwUyU/iFVT5Gkmt/rk1cPHZ8LiEcloPx/QDmKx+NFIsbzFcyZJ7Ot3ifQzTLP0j5BCJrKG6vlLX3HnjAAb8qiBRwmb/cxuw9eEthNm8FWJNdbSFspQUGC7lIbEnTFMX7vzNFrgvX+vlAoI2LQqSQUbA8r4eqeC9TKSeof02/U7xroxlk/+tVSpfcotbltfRO0POsgnR6T0cyYuNRBRHfl4Z9LpTUoBBjtyqHBSAJ4h123IKkSJs5U5yN0tWLvzjgZmliZOV5rOqTvPbGcf5uZL5rV46/PVZiNZJfHqERMI2kXWaKDTuADJkFtiY=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F74004492B8C194881F500E4899EED00@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90ff773f-080e-4558-379c-08d627bf047a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2018 16:57:49.5536
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1455
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66652
+X-archive-position: 66653
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -117,91 +92,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/01/2018 02:42 AM, Quentin Schulz wrote:
-> Hi Florian,
-> 
-> On Sat, Sep 15, 2018 at 02:25:05PM -0700, Florian Fainelli wrote:
->>
->>
->> On 09/14/18 01:16, Quentin Schulz wrote:
->>> Previously, the SerDes muxing was hardcoded to a given mode in the MAC
->>> controller driver. Now, the SerDes muxing is configured within the
->>> Device Tree and is enforced in the MAC controller driver so we can have
->>> a lot of different SerDes configurations.
->>>
->>> Make use of the SerDes PHYs in the MAC controller to set up the SerDes
->>> according to the SerDes<->switch port mapping and the communication mode
->>> with the Ethernet PHY.
->>
->> This looks good, just a few comments below:
->>
->> [snip]
->>
->>> +		err = of_get_phy_mode(portnp);
->>> +		if (err < 0)
->>> +			ocelot->ports[port]->phy_mode = PHY_INTERFACE_MODE_NA;
->>> +		else
->>> +			ocelot->ports[port]->phy_mode = err;
->>> +
->>> +		switch (ocelot->ports[port]->phy_mode) {
->>> +		case PHY_INTERFACE_MODE_NA:
->>> +			continue;
->>
->> Would not you want to issue a message indicating that the Device Tree
->> must be updated here? AFAICT with your patch series, this should no
->> longer be a condition that you will hit unless you kept the old DTB
->> around, right?
->>
-> 
-> It'll occur for internal PHYs. On the PCB123[1], there are four of them,
-> so we need to be able to give no mode in the DT for those. For the
-> upcoming PCB120, there'll be 4 external PHYs that require a mode in the
-> DT and 4 internal PHYs that do not require any mode. I could put a debug
-> message that says this or that PHY is configured as an internal PHY but
-> I wouldn't put a message that is printed with the default log level.
-> 
-> So I think we should keep it, shouldn't we?
+Hi Joe,
 
-Internal PHYs either use a standard connection internally (e.g: GMII) or
-they are using a proprietary connection interface, in which case
-phy-mode = "internal" is what we defined to represent those.
+On Sun, Sep 30, 2018 at 09:21:34AM -0700, Joe Perches wrote:
+> Neither git nor get_maintainer understands the curly brace style.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-> 
-> [1] https://elixir.bootlin.com/linux/latest/source/arch/mips/boot/dts/mscc/ocelot_pcb123.dts
-> 
->>> +		case PHY_INTERFACE_MODE_SGMII:
->>> +			phy_mode = PHY_MODE_SGMII;
->>> +			break;
->>> +		case PHY_INTERFACE_MODE_QSGMII:
->>> +			phy_mode = PHY_MODE_QSGMII;
->>> +			break;
->>> +		default:
->>> +			dev_err(ocelot->dev,
->>> +				"invalid phy mode for port%d, (Q)SGMII only\n",
->>> +				port);
->>> +			return -EINVAL;
->>> +		}
->>> +
->>> +		serdes = devm_of_phy_get(ocelot->dev, portnp, NULL);
->>> +		if (IS_ERR(serdes)) {
->>> +			err = PTR_ERR(serdes);
->>> +			if (err == -EPROBE_DEFER) {
->>
->> This can be simplified into:
->>
->> 			if (err == -EPROBE_DEFER)
->> 				dev_dbg();
->> 			else
->> 				dev_err();
->> 			goto err_probe_ports;
->>
-> 
-> Indeed, good catch.
-> 
-> Thanks,
-> Quentin
-> 
+Thanks - applied to mips-fixes, which I intend to submit a pull request
+for later this week.
 
-
--- 
-Florian
+Paul

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 11:43:06 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:47569 "EHLO mail.bootlin.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 12:02:40 +0200 (CEST)
+Received: from mail.bootlin.com ([62.4.15.54]:48369 "EHLO mail.bootlin.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992925AbeJAJnCCJgte (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Oct 2018 11:43:02 +0200
+        id S23992925AbeJAKCdttdIe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Oct 2018 12:02:33 +0200
 Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 6A4B5208F4; Mon,  1 Oct 2018 11:42:55 +0200 (CEST)
+        id 212FE20A90; Mon,  1 Oct 2018 12:02:27 +0200 (CEST)
 Received: from qschulz (AAubervilliers-681-1-24-95.w90-88.abo.wanadoo.fr [90.88.144.95])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 05FD3206FF;
-        Mon,  1 Oct 2018 11:42:45 +0200 (CEST)
-Date:   Mon, 1 Oct 2018 11:42:45 +0200
+        by mail.bootlin.com (Postfix) with ESMTPSA id B3DE920A95;
+        Mon,  1 Oct 2018 12:02:16 +0200 (CEST)
+Date:   Mon, 1 Oct 2018 12:02:16 +0200
 From:   Quentin Schulz <quentin.schulz@bootlin.com>
 To:     Florian Fainelli <f.fainelli@gmail.com>
 Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
@@ -18,23 +18,23 @@ Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH net-next v3 11/11] net: mscc: ocelot: make use of SerDes
- PHYs for handling their configuration
-Message-ID: <20181001094245.cr4hdcechrqkjymq@qschulz>
+Subject: Re: [PATCH net-next v3 10/11] phy: add driver for Microsemi Ocelot
+ SerDes muxing
+Message-ID: <20181001100216.fm3ojqx4zwnmyy5a@qschulz>
 References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
- <00989856964175eafbe1435a70862c2ac66cffc0.1536912834.git-series.quentin.schulz@bootlin.com>
- <0f762d63-a392-d2fe-a121-a013a13a8584@gmail.com>
+ <cde4ccafdbd948db7ccbb263dd5b1a803e63a83e.1536912834.git-series.quentin.schulz@bootlin.com>
+ <1dc66b5d-e60e-dad2-eed9-e283de260dc3@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7qj7oqpfzhozt23v"
+        protocol="application/pgp-signature"; boundary="ha3eirq52wwwupq7"
 Content-Disposition: inline
-In-Reply-To: <0f762d63-a392-d2fe-a121-a013a13a8584@gmail.com>
+In-Reply-To: <1dc66b5d-e60e-dad2-eed9-e283de260dc3@gmail.com>
 User-Agent: NeoMutt/20171215
 Return-Path: <quentin.schulz@bootlin.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66636
+X-archive-position: 66637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,108 +52,146 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---7qj7oqpfzhozt23v
+--ha3eirq52wwwupq7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi Florian,
 
-On Sat, Sep 15, 2018 at 02:25:05PM -0700, Florian Fainelli wrote:
+On Sat, Sep 15, 2018 at 02:20:25PM -0700, Florian Fainelli wrote:
 >=20
 >=20
 > On 09/14/18 01:16, Quentin Schulz wrote:
-> > Previously, the SerDes muxing was hardcoded to a given mode in the MAC
-> > controller driver. Now, the SerDes muxing is configured within the
-> > Device Tree and is enforced in the MAC controller driver so we can have
-> > a lot of different SerDes configurations.
+> > The Microsemi Ocelot can mux SerDes lanes (aka macros) to different
+> > switch ports or even make it act as a PCIe interface.
 > >=20
-> > Make use of the SerDes PHYs in the MAC controller to set up the SerDes
-> > according to the SerDes<->switch port mapping and the communication mode
-> > with the Ethernet PHY.
->=20
-> This looks good, just a few comments below:
+> > This adds support for the muxing of the SerDes.
+> >=20
+> > Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
+> > ---
 >=20
 > [snip]
 >=20
-> > +		err =3D of_get_phy_mode(portnp);
-> > +		if (err < 0)
-> > +			ocelot->ports[port]->phy_mode =3D PHY_INTERFACE_MODE_NA;
-> > +		else
-> > +			ocelot->ports[port]->phy_mode =3D err;
 > > +
-> > +		switch (ocelot->ports[port]->phy_mode) {
-> > +		case PHY_INTERFACE_MODE_NA:
+> > +struct serdes_macro {
+> > +	u8			idx;
+> > +	/* Not used when in QSGMII or PCIe mode */
+> > +	int			port;
+>=20
+> u8 port to be consistent with the mux table?
+>=20
+
+Not wanted in the current implementation.
+
+In serdes_phy_create, I put the port to -1. In serdes_simple_xlate, I
+make sure that once port is set to anything else than -1, it cannot be
+set again (cannot have 2+ PHYs sharing the same SerDes (except for
+SERDES6G_0 which is used for QSGMII)).
+
+I cannot use u8 for this simple reason. However, I'm all ears for a
+nicer solution :)
+
+> [snip]
+>=20
+> > +#define SERDES_MUX(_idx, _port, _mode, _mask, _mux) {	\
+> > +	.idx =3D _idx,						\
+> > +	.port =3D _port,						\
+> > +	.mode =3D _mode,						\
+> > +	.mask =3D _mask,						\
+> > +	.mux =3D _mux,						\
+> > +}
+> > +
+> > +static const struct serdes_mux ocelot_serdes_muxes[] =3D {
+> > +	SERDES_MUX(SERDES1G_0, 0, PHY_MODE_SGMII, 0, 0),
+> > +	SERDES_MUX(SERDES1G_1, 1, PHY_MODE_SGMII, HSIO_HW_CFG_DEV1G_5_MODE, 0=
+),
+> > +	SERDES_MUX(SERDES1G_1, 5, PHY_MODE_SGMII, HSIO_HW_CFG_QSGMII_ENA |
+> > +		   HSIO_HW_CFG_DEV1G_5_MODE, HSIO_HW_CFG_DEV1G_5_MODE),
+>=20
+> Why not go one step further and define a SERDES_MUX_SGMII() macro which
+> automatically resolves the correct bit definitions to use?
+>=20
+> The current macro does not make this particularly easy to read :/
+>=20
+
+I agree on the readability. But SERDES_MUX_SGMII would basically just
+abstract the third argument (mode) and that's it, right? That's still
+one argument less but do you see something even more intuitive and more
+readable?
+
+[...]
+
+> > +
+> > +	for (i =3D 0; i < ARRAY_SIZE(ocelot_serdes_muxes); i++) {
+> > +		if (macro->idx !=3D ocelot_serdes_muxes[i].idx ||
+> > +		    mode !=3D ocelot_serdes_muxes[i].mode)
 > > +			continue;
->=20
-> Would not you want to issue a message indicating that the Device Tree
-> must be updated here? AFAICT with your patch series, this should no
-> longer be a condition that you will hit unless you kept the old DTB
-> around, right?
->=20
-
-It'll occur for internal PHYs. On the PCB123[1], there are four of them,
-so we need to be able to give no mode in the DT for those. For the
-upcoming PCB120, there'll be 4 external PHYs that require a mode in the
-DT and 4 internal PHYs that do not require any mode. I could put a debug
-message that says this or that PHY is configured as an internal PHY but
-I wouldn't put a message that is printed with the default log level.
-
-So I think we should keep it, shouldn't we?
-
-[1] https://elixir.bootlin.com/linux/latest/source/arch/mips/boot/dts/mscc/=
-ocelot_pcb123.dts
-
-> > +		case PHY_INTERFACE_MODE_SGMII:
-> > +			phy_mode =3D PHY_MODE_SGMII;
-> > +			break;
-> > +		case PHY_INTERFACE_MODE_QSGMII:
-> > +			phy_mode =3D PHY_MODE_QSGMII;
-> > +			break;
-> > +		default:
-> > +			dev_err(ocelot->dev,
-> > +				"invalid phy mode for port%d, (Q)SGMII only\n",
-> > +				port);
-> > +			return -EINVAL;
-> > +		}
 > > +
-> > +		serdes =3D devm_of_phy_get(ocelot->dev, portnp, NULL);
-> > +		if (IS_ERR(serdes)) {
-> > +			err =3D PTR_ERR(serdes);
-> > +			if (err =3D=3D -EPROBE_DEFER) {
+> > +		if (mode !=3D PHY_MODE_QSGMII &&
+> > +		    macro->port !=3D ocelot_serdes_muxes[i].port)
+> > +			continue;
+> > +
+> > +		ret =3D regmap_update_bits(macro->ctrl->regs, HSIO_HW_CFG,
+> > +					 ocelot_serdes_muxes[i].mask,
+> > +					 ocelot_serdes_muxes[i].mux);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		if (macro->idx < SERDES1G_MAX)
+> > +			return serdes_init_s1g(macro->ctrl->regs, macro->idx);
+> > +
+> > +		/* SERDES6G and PCIe not supported yet */
+> > +		return 0;
 >=20
-> This can be simplified into:
->=20
-> 			if (err =3D=3D -EPROBE_DEFER)
-> 				dev_dbg();
-> 			else
-> 				dev_err();
-> 			goto err_probe_ports;
+> Would not returning -EOPNOTSUPP be more helpful rather than leaving the
+> PHY unconfigured (or did the bootloader somehow configure it before for u=
+s)?
 >=20
 
-Indeed, good catch.
+Yup, you're right, if the SerDes needs to be configured by the kernel,
+the user of the SerDes mux is "broken" anyway so it makes sense to
+return -EOPNOTSUPP.
+
+[...]
+
+> > +
+> > +	ctrl =3D devm_kzalloc(&pdev->dev, sizeof(*ctrl), GFP_KERNEL);
+> > +	if (!ctrl)
+> > +		return -ENOMEM;
+> > +
+> > +	ctrl->dev =3D &pdev->dev;
+> > +	ctrl->regs =3D syscon_node_to_regmap(pdev->dev.parent->of_node);
+> > +	if (!ctrl->regs)
+> > +		return -ENODEV;
+> > +
+> > +	for (i =3D 0; i <=3D SERDES_MAX; i++) {
+>=20
+> Every other loop you have is using <, is this one off-by-one?
+
+That is an error.
 
 Thanks,
 Quentin
 
---7qj7oqpfzhozt23v
+--ha3eirq52wwwupq7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEXeEYjDsJh38OoyMzhLiadT7g8aMFAlux7BQACgkQhLiadT7g
-8aPvNw//VDHvFuh5HkcKrjXm3ZNai+qsn4woktOqsrFvbcgzLUqpIs6Ha51RPcQi
-tFzDmQcIm8YExKYWyLZbGCWruA6sAPVz520gQW/ezRoXyRdnlfmtyAsVsSfQmy+Y
-dg2KPBFSicM7BA7sDy841H0qGqhsWZpEm3b1ks+T+APCd124FpFcc7bakJeuEWuu
-hkSso9320Aw4BNwu23p4qGOd3RvoGj0Yqrw+7gCWmsk6+N7qzDmx+msDJZdsgjNp
-5pxX8myoIHqiSA2dB7fx3hwmxYB+ds4m02YI0QqmsFWzsUqSMDnMklswKXq/6qEp
-AZm/nJXXFZPlFIAx4N0jDDH7bI7Wvqrpbl/Nrc6NuEuBklt2UKSJ1aqkt5WGuJ+w
-L7cC1abHEHREa2asWMqbyQtL7KwTdRRDEPK0ndjX0gjx4ngZNloI4FYzx/fe+Uzz
-9Fo1NL+WYY5wSy9MDRUKc91ivbXCf/F75R+P5BFAblWW/RUsfYZXbacjDXC0y02N
-S0Eu1gsVeyns0Jun5KKZE+biZrs3mf+3QiDX11LesNTu1eSSCZphIojX1ZiMR9jP
-+9d7i8HPbCiPbIcj1cQhnOy1VdgxNFTngF0SPXpm9UpiEI+I30V84CG1QxeiOODt
-qNRlZnxG5B6WnVB3+DbPKPUim9hqqu8P8gWeMrGBbQtPOMs3MYg=
-=8aU4
+iQIzBAEBCgAdFiEEXeEYjDsJh38OoyMzhLiadT7g8aMFAlux8KgACgkQhLiadT7g
+8aM7nBAAkQBdAHrGxa7Cg/8n+FhDPSAp9KXppLEraJru1T6XXu2BpYjEQ4GabimS
+9D9Dj5PUjBMJ9CiOLm/O58gLbXaC0famPGtzbZbiKW2jEtxt6PGmUAhnOXC3p0vo
+VwXnfKDiW0GEcN4qnK++7Y1iPQknKHWENQqcv5AKZPsfUKmp4iLoEel5XcHshYUF
+x5vX7y34V1pfGz0omcxwPLnPKV3AjPbk5TffntPGRhBlFVq5oH0jtyDiKE1UjxUd
+c47IT5A/hOEc6wNsyJ0kMrzFtkCghcUJtPCscIGTSSAYeswfN63JWXO1SNOYlpRf
+dctN2nQ6KY2m5ajbwujiLvrXVf7mI2GO1YClDMZRxBrktUxRoUWKY/lleuiQBxKO
+pHV8AQVogCyTwjWXzRByNvQqj5zZGhoGPiHpOWctWsKMiShPstIDjOiC3CPHxn8Z
+azn98xmDky8CuK2HGziEnAUtfep9mnh4ZlGGHtXUQsz8wIxM5gG4pnocAvRKelX2
+5+JU+1TiuvRT+k/UtGSvoYrq43M+2vAOfG00a6+YnkVXiC4Wfwc0UP1RuIXD2rgy
+XO599eXbvMTwQhS+yNCLrV6PTq6CQvHF9sRCOwzQdRKyM6ZbVfNNSW0DxESQ9JeQ
+cFPZDl5qTTgqCe0CPY1b0hhRWn1RwalTqHxlNFj3J269OErCcOc=
+=YAEa
 -----END PGP SIGNATURE-----
 
---7qj7oqpfzhozt23v--
+--ha3eirq52wwwupq7--

@@ -1,64 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 19:11:26 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:44048 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994571AbeJARLPUVXOe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Oct 2018 19:11:15 +0200
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 707F221470;
-        Mon,  1 Oct 2018 17:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1538413868;
-        bh=JiNqzpBDwcNPo4raTWE6okV3EIt1/ouSQDUVcYWMmNQ=;
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2018 22:35:44 +0200 (CEST)
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:27829 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994572AbeJAUferoaYk convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Oct 2018 22:35:34 +0200
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id w91KYt0q025700;
+        Tue, 2 Oct 2018 05:34:55 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com w91KYt0q025700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1538426096;
+        bh=crINlLoca/1Qw0ty2P7MMy0I1W6bm6wuQCAcy4YHf6U=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=M1bW1Tjx5rF8O+0XPU7moIFhoKHSGCioCoAZzAC1foGR3Tqr3N/5PtxDv6dNlK0cj
-         5lTuxNrC/4oWa0kar5ECMArVdfTXe4wlLi/jwG5qppm+fUkrp7RhFc06bxjhUJ2typ
-         HpBWHDrAVxYEYX0/+XqV7tjGJUdXMyCQU5hkKokM=
-Received: by mail-qt1-f182.google.com with SMTP id n6-v6so14845677qtl.4;
-        Mon, 01 Oct 2018 10:11:08 -0700 (PDT)
-X-Gm-Message-State: ABuFfog+Pqw8IVFnjFjPZusgQkMMZFdlc6g4xr4mB9vaE5AVids+zjV9
-        gJvc9kTTClYTJQoWlWGBtr0XfFlzS408Fz6qug==
-X-Google-Smtp-Source: ACcGV60lO+BPU6O8XsXefBW0T3/yU8b7Wctk79plwgNua7poYYFXr58PXWC5/j+J5r+NG5i4hu01jTzqMxaWkYiZ9TA=
-X-Received: by 2002:ac8:190e:: with SMTP id t14-v6mr9398912qtj.327.1538413867616;
- Mon, 01 Oct 2018 10:11:07 -0700 (PDT)
+        b=KuHSjyCGhfzXhhj6+gaC/vT05CXZovTISWav+Lz4kH5tVF+kPHoio3M0OZWkzhklE
+         ea2IxzyRcGFFsXDYj0fK+tpTU8qeHRg8JXsJ4oOkcq5p1fv27Cee4F1GFwtUwwX7ma
+         tspzF+yE7FTAmb5MiYPumqkYoQ4EcFA5OpU5dyr95qt76XL9Yfnxtm8ZPGAJorOvVY
+         q+PbXH8J1CDPVoGjXTpPj5Q/h3oEdRKIPD7ad/Y8hKIJ3Mmsw5c5wUIeOLwWvLAIL6
+         sJaddmaTyjai1Pd6LMYkzfTLZF4OrtRweOTiCpnvqbDTMQ89WQB278DNo4+/Iss8qf
+         SHxmmeSDgB2sg==
+X-Nifty-SrcIP: [209.85.221.170]
+Received: by mail-vk1-f170.google.com with SMTP id q184-v6so3324606vke.7;
+        Mon, 01 Oct 2018 13:34:55 -0700 (PDT)
+X-Gm-Message-State: ABuFfogTxF9wBAWOYhxmh3to5/a1oIwkEHivksumRp3eEdh0RiJjwUGH
+        /XhloVG5y4apIuIkJ8ZHLcovOSOEjsR7TdzLXYc=
+X-Google-Smtp-Source: ACcGV60Pd9WWEg1hsoyzigccquA3CNUAcmf6KrjaELgDyi7k5BYGyye3aWLhUZj0Tuhnyhs/psh9gI9MnOFqGKP5GFk=
+X-Received: by 2002:a1f:8f06:: with SMTP id r6-v6mr4916628vkd.0.1538426094648;
+ Mon, 01 Oct 2018 13:34:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.ff40d591b548a6da31716e6e600f11a303e0e643.1536912834.git-series.quentin.schulz@bootlin.com>
- <f392dafca9165800439fc09cd7d16e6a9506d457.1536912834.git-series.quentin.schulz@bootlin.com>
- <20180926213509.GA7454@bogus> <20181001124605.jxiechvp6ztvh77p@qschulz>
-In-Reply-To: <20181001124605.jxiechvp6ztvh77p@qschulz>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 1 Oct 2018 12:10:52 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLKNfFDPqev9uubrMn0cz04E5-BKA5dbcwfkzVePKy4LA@mail.gmail.com>
-Message-ID: <CAL_JsqLKNfFDPqev9uubrMn0cz04E5-BKA5dbcwfkzVePKy4LA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 07/11] dt-bindings: phy: add DT binding for
- Microsemi Ocelot SerDes muxing
-To:     Quentin Schulz <quentin.schulz@bootlin.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+References: <20181001152531.3385-1-robh@kernel.org> <20181001152531.3385-7-robh@kernel.org>
+In-Reply-To: <20181001152531.3385-7-robh@kernel.org>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Tue, 2 Oct 2018 05:34:18 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQAG1pAOMbnrFd5VbmUfcN5337tcGdeFrRo92rPWkVWAg@mail.gmail.com>
+Message-ID: <CAK7LNAQAG1pAOMbnrFd5VbmUfcN5337tcGdeFrRo92rPWkVWAg@mail.gmail.com>
+Subject: Re: [PATCH v4 6/9] kbuild: consolidate Devicetree dtb build rules
+To:     Rob Herring <robh@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        David Miller <davem@davemloft.net>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        allan.nielsen@microchip.com,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
         Linux-MIPS <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+        nios2-dev@lists.rocketboards.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-xtensa@linux-xtensa.org, Will Deacon <will.deacon@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66654
+X-archive-position: 66655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,102 +85,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 1, 2018 at 7:46 AM Quentin Schulz
-<quentin.schulz@bootlin.com> wrote:
+2018年10月2日(火) 0:26 Rob Herring <robh@kernel.org>:
 >
-> Hi Rob,
+> There is nothing arch specific about building dtb files other than their
+> location under /arch/*/boot/dts/. Keeping each arch aligned is a pain.
+> The dependencies and supported targets are all slightly different.
+> Also, a cross-compiler for each arch is needed, but really the host
+> compiler preprocessor is perfectly fine for building dtbs. Move the
+> build rules to a common location and remove the arch specific ones. This
+> is done in a single step to avoid warnings about overriding rules.
 >
-> I'm not sure I've understood the way you wanted me to so let me know if
-> I'm not on the right path.
+> The build dependencies had been a mixture of 'scripts' and/or 'prepare'.
+> These pull in several dependencies some of which need a target compiler
+> (specifically devicetable-offsets.h) and aren't needed to build dtbs.
+> All that is really needed is dtc, so adjust the dependencies to only be
+> dtc.
 >
-> On Wed, Sep 26, 2018 at 04:35:09PM -0500, Rob Herring wrote:
-> > On Fri, Sep 14, 2018 at 10:16:05AM +0200, Quentin Schulz wrote:
-> > > Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt | 40 +++++++-
-> > >  1 file changed, 40 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
-> > > new file mode 100644
-> > > index 0000000..2a88cc3
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/phy/phy-ocelot-serdes.txt
-> > > @@ -0,0 +1,40 @@
-> > > +Microsemi Ocelot SerDes muxing driver
-> > > +-------------------------------------
-> > > +
-> > > +On Microsemi Ocelot, there is a handful of registers in HSIO address
-> > > +space for setting up the SerDes to switch port muxing.
-> > > +
-> > > +A SerDes X can be "muxed" to work with switch port Y or Z for example.
-> > > +One specific SerDes can also be used as a PCIe interface.
-> > > +
-> > > +Hence, a SerDes represents an interface, be it an Ethernet or a PCIe one.
-> > > +
-> > > +There are two kinds of SerDes: SERDES1G supports 10/100Mbps in
-> > > +half/full-duplex and 1000Mbps in full-duplex mode while SERDES6G supports
-> > > +10/100Mbps in half/full-duplex and 1000/2500Mbps in full-duplex mode.
-> > > +
-> > > +Also, SERDES6G number (aka "macro") 0 is the only interface supporting
-> > > +QSGMII.
-> > > +
-> > > +Required properties:
-> > > +
-> > > +- compatible: should be "mscc,vsc7514-serdes"
-> > > +- #phy-cells : from the generic phy bindings, must be 2.
-> > > +          The first number defines the input port to use for a given
-> > > +          SerDes macro. The second defines the macro to use. They are
-> > > +          defined in dt-bindings/phy/phy-ocelot-serdes.h
-> >
-> > You need to define what this is a child of.
-> >
+> This change enables support 'dtbs_install' on some arches which were
+> missing the target.
 >
-> This is a child of the HSIO syscon on the Microsemi Ocelot. I don't
-> expect all Microsemi SoCs that could use this driver to have the SerDes
-> node in the HSIO syscon.
->
-> Among the latest additions in Documentation/devicetree/bindings/phy I
-> couldn't find anything close to my understanding of "define what this is
-> a child of", could you elaborate on what you want exactly?
+> Acked-by: Will Deacon <will.deacon@arm.com>
+> Acked-by: Paul Burton <paul.burton@mips.com>
+> Acked-by: Ley Foon Tan <ley.foon.tan@intel.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Essentially what you've said here, but specifically what is the
-compatible property of the HSIO syscon (the specific one, not
-"syscon").
+Please change this to
 
-> > > +
-> > > +Example:
-> > > +
-> > > +   serdes: serdes {
-> > > +           compatible = "mscc,vsc7514-serdes";
-> > > +           #phy-cells = <2>;
-> >
-> > However, if there are no other resources associated with this, then you
-> > don't even need this child node. The parent can be a phy provider and
-> > provider of other functions too.
-> >
->
-> The parent is a syscon with multiple features (SerDes, PLL
-> configuration, temp sensor, SyncE, ...) so I'm not sure it's possible to
-> do what you're asking me to. For now, there is only a SerDes node but
-> ultimately there'll be more than one I guess.
+Acked-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-There's no reason you can't have:
 
-syscon {
-  compatible = "some-soc-syscon-block";
-  #clock-cells = <1>;
-  #phy-cells = <2>;
-  ...
-};
+Thanks.
 
-As it stands, you only have a child node because you want to
-instantiate some driver. A single node can be multiple providers and
-DT is not the only way to instantiate drivers.
 
-This could change if your sub-nodes need child nodes as well (e.g.
-pinctrl) or have their own resources such as clocks, interrupts, etc.
-But with an incomplete binding, I can't really tell you what makes
-sense.
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: uclinux-h8-devel@lists.sourceforge.jp
+> Cc: linux-mips@linux-mips.org
+> Cc: nios2-dev@lists.rocketboards.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-xtensa@linux-xtensa.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> v4:
+>  - Make dtbs and %.dtb rules depend on arch/$ARCH/boot/dts path rather than
+>    CONFIG_OF_EARLY_FLATTREE
+>  - Fix install path missing kernel version for dtbs_install
+>  - Fix "make CONFIG_OF_ALL_DTBS=y" for arches like ARM which selectively
+>    enable CONFIG_OF (and therefore dtc)
 
-Rob
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

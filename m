@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2018 22:15:52 +0200 (CEST)
-Received: from mail-qt1-x842.google.com ([IPv6:2607:f8b0:4864:20::842]:34187
-        "EHLO mail-qt1-x842.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994612AbeJDUPq5kXie (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2018 22:15:46 +0200
-Received: by mail-qt1-x842.google.com with SMTP id x23-v6so11410447qtr.1;
-        Thu, 04 Oct 2018 13:15:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2018 22:17:06 +0200 (CEST)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:43702
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994608AbeJDUQztdgae (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2018 22:16:55 +0200
+Received: by mail-pf1-x444.google.com with SMTP id p24-v6so3912895pff.10;
+        Thu, 04 Oct 2018 13:16:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=1Q1go12HLtc90YPynS8xBT3ZaYwTO0tIWQ1i0fd/CeE=;
-        b=JhzFmhQs0VGmeNCxRnMiM42bQLcPbVvcuKrv+i9NnI8kNRc3obx5Z0nRlldw8XYrFI
-         UFwwWNfgV1fgPZT5Wh9sUw08/nsESixTzPHEvxvXqoSAVwNQh4th6ycbtSSnjlAaq+lI
-         XhcDTXfFnhhd3lDp0Pxq/9DRntI+m+FEUheYR+tRd8/TU/EOyrG4qsnXff3gVn/kixip
-         rMFGPW2Ed74LrrKZW7WpvIbU4wWbWxSiHWD9RP6kKbFqNKQOVjAB84aTSEuYbJJQNg5g
-         Szf/zmp1eLtg/d9NtxesX9kgKLk/uZ8CVXrLVfwyG5WJ8CEf/49LQqLJlyQLzDFFl79G
-         i7qw==
+        bh=cYWGTrpZ7lK9/2jkEbRj+C2jjHpWqvNW96h+T1WbRLo=;
+        b=SBXbkTgU0O0DCt8PqldnEAtGiNWb6adgks6bQBOpePKreHV6sOComHzSfgjwKjrWw/
+         Vm6gywM34A96Ra77hWyE5vez2saqHmZDAW4ws0jIG4oW6RxnhkcnGlTI98UQFJ49TMG6
+         6huVX9Vl2RqEvTBUPOfQQif7CjJ+SlQMixieK8Axm+HdUfu2TRV79I1awvyspXG9Zk1U
+         B5m1RbGKywUpD1auF4NKkfYwoPCXQ0ylBmixjCbeCBvpnvTiNAc+e6Uu19VFcCh5agta
+         V/PajDW81XKxyBM5dgN8m0sSWiZ39tgCIv2+txoADfEDDn2UNfKgW1AhJHHk1nVAQVR9
+         MIFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=1Q1go12HLtc90YPynS8xBT3ZaYwTO0tIWQ1i0fd/CeE=;
-        b=McX4f/OnN+hJ/KgSyhq/0c4wI9vZ8Xs+2AfhlhQZHrVB29xDO3KtaDZ3DoXFcY3gGB
-         dQ/D7DyCz4R+/JTFdQi9gOGUjvu3cGwwZyLTv4U7GkEABn5ix5d6tZsbwfEJGF8ydSvn
-         a6e13gTaER6Wa21AhuXnPyQOzEftCzz0De2uq0RTXayve2aQAlkPtEhqzKDWfgpB0n5t
-         qtLcTmgyBgr1WlT1ZMgfBa0vOO86Vb1hEGmAs+AMOGSMuVPG8ZsEu4/yYoT4dfUcIauh
-         RG9vQJJn3n3faAHN03Hp7hb2wCLqQp9KjtVMJdTm8YG8oyqUsOrRTrPD3uc/4kY+eHHR
-         LUFw==
-X-Gm-Message-State: ABuFfoi+1BLpnCBVisURummno5Cup4MXFVl1OyB2l2396OR2xwuf1WZg
-        4bEiUuklltORXPyiAk3FawE=
-X-Google-Smtp-Source: ACcGV63VwoheWp495h3T6TfGS2QH8eI5rFMuo/No6NBTLgrVbdbzcNEnEKeTTOJXm355f2gxTb/aLw==
-X-Received: by 2002:aed:2807:: with SMTP id r7-v6mr6752350qtd.68.1538684140686;
-        Thu, 04 Oct 2018 13:15:40 -0700 (PDT)
+        bh=cYWGTrpZ7lK9/2jkEbRj+C2jjHpWqvNW96h+T1WbRLo=;
+        b=JuRRjw15Zg6ZYgNUMxug9lL/wcQIvuPD3W88XrIoSnJss0/djFC15t/Tq3/2X+7p5Y
+         C8wNWz0ZfDU5eoBtIAU/05+1LA+6DrtdyXSW3eiTVBXJ8wL0GdKSt7KKk13LohSJI8zs
+         fsifzR0vh2NGsimcxLB6b5IkxhSJdpzb6R7ytn6XZ4UvuMRO2cZZ7+fMym7c41/1LnYl
+         yRr8enRYqPX0TlJ5NM2Mng9MIh1BzJiIArsrxwDk7eFU4ChY819kcjr1+/9CvCssF9OI
+         /Q/FZDdHWJ62c4uOLZrqFiM+rS9oiiL/BzEAlTWwL4b5S/zePLGJsXaAXYw/N0U9GFWq
+         00rQ==
+X-Gm-Message-State: ABuFfog+IzI83ujUKhm6WCBgrqW4AmNxWrXpyvzhoFH4mjxGQAO/oqBJ
+        RexPCHgBcG9QsRvUeUl0ktA=
+X-Google-Smtp-Source: ACcGV61DGAOaOI0JfPgEhyIsm/9PCGKawZ2tt+sc28vjDMptqGpi7jA2pLO1PmveR6cYx/F4hRprMg==
+X-Received: by 2002:a62:db46:: with SMTP id f67-v6mr8262508pfg.1.1538684210316;
+        Thu, 04 Oct 2018 13:16:50 -0700 (PDT)
 Received: from [10.67.50.87] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id e8-v6sm3200029qkj.0.2018.10.04.13.15.37
+        by smtp.googlemail.com with ESMTPSA id 74-v6sm8407444pfx.182.2018.10.04.13.16.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Oct 2018 13:15:39 -0700 (PDT)
-Subject: Re: [PATCH net-next v4 09/11] dt-bindings: add constants for
- Microsemi Ocelot SerDes driver
+        Thu, 04 Oct 2018 13:16:49 -0700 (PDT)
+Subject: Re: [PATCH net-next v4 11/11] net: mscc: ocelot: make use of SerDes
+ PHYs for handling their configuration
 To:     Quentin Schulz <quentin.schulz@bootlin.com>,
         alexandre.belloni@bootlin.com, ralf@linux-mips.org,
         paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
@@ -49,7 +49,7 @@ Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org, thomas.petazzoni@bootlin.com
 References: <20181004122208.32272-1-quentin.schulz@bootlin.com>
- <20181004122208.32272-10-quentin.schulz@bootlin.com>
+ <20181004122208.32272-12-quentin.schulz@bootlin.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -85,12 +85,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-Message-ID: <8529862a-1a68-509b-9512-1ef0f8cdbea0@gmail.com>
-Date:   Thu, 4 Oct 2018 13:15:30 -0700
+Message-ID: <5031bcfa-d32f-3ac7-b8b6-0deaecdc06a1@gmail.com>
+Date:   Thu, 4 Oct 2018 13:16:45 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20181004122208.32272-10-quentin.schulz@bootlin.com>
+In-Reply-To: <20181004122208.32272-12-quentin.schulz@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,7 +98,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66697
+X-archive-position: 66698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -116,12 +116,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 10/04/2018 05:22 AM, Quentin Schulz wrote:
-> The Microsemi Ocelot has multiple SerDes and requires that the SerDes be
-> muxed accordingly to the hardware representation.
+> Previously, the SerDes muxing was hardcoded to a given mode in the MAC
+> controller driver. Now, the SerDes muxing is configured within the
+> Device Tree and is enforced in the MAC controller driver so we can have
+> a lot of different SerDes configurations.
 > 
-> Let's add a constant for each SerDes available in the Microsemi Ocelot.
+> Make use of the SerDes PHYs in the MAC controller to set up the SerDes
+> according to the SerDes<->switch port mapping and the communication mode
+> with the Ethernet PHY.
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>

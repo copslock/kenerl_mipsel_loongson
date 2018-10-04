@@ -1,28 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2018 22:09:24 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23994608AbeJDUJOEsqze (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2018 22:09:14 +0200
-Date:   Thu, 4 Oct 2018 21:09:14 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Fredrik Noring <noring@nocrew.org>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>
-Subject: Re: [PATCH] TC: Set DMA masks for devices
-In-Reply-To: <20181004165720.GA2361@sx-9>
-Message-ID: <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org>
-References: <alpine.LFD.2.21.1810030109210.5483@eddie.linux-mips.org> <20181004165720.GA2361@sx-9>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2018 22:15:52 +0200 (CEST)
+Received: from mail-qt1-x842.google.com ([IPv6:2607:f8b0:4864:20::842]:34187
+        "EHLO mail-qt1-x842.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994612AbeJDUPq5kXie (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2018 22:15:46 +0200
+Received: by mail-qt1-x842.google.com with SMTP id x23-v6so11410447qtr.1;
+        Thu, 04 Oct 2018 13:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1Q1go12HLtc90YPynS8xBT3ZaYwTO0tIWQ1i0fd/CeE=;
+        b=JhzFmhQs0VGmeNCxRnMiM42bQLcPbVvcuKrv+i9NnI8kNRc3obx5Z0nRlldw8XYrFI
+         UFwwWNfgV1fgPZT5Wh9sUw08/nsESixTzPHEvxvXqoSAVwNQh4th6ycbtSSnjlAaq+lI
+         XhcDTXfFnhhd3lDp0Pxq/9DRntI+m+FEUheYR+tRd8/TU/EOyrG4qsnXff3gVn/kixip
+         rMFGPW2Ed74LrrKZW7WpvIbU4wWbWxSiHWD9RP6kKbFqNKQOVjAB84aTSEuYbJJQNg5g
+         Szf/zmp1eLtg/d9NtxesX9kgKLk/uZ8CVXrLVfwyG5WJ8CEf/49LQqLJlyQLzDFFl79G
+         i7qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=1Q1go12HLtc90YPynS8xBT3ZaYwTO0tIWQ1i0fd/CeE=;
+        b=McX4f/OnN+hJ/KgSyhq/0c4wI9vZ8Xs+2AfhlhQZHrVB29xDO3KtaDZ3DoXFcY3gGB
+         dQ/D7DyCz4R+/JTFdQi9gOGUjvu3cGwwZyLTv4U7GkEABn5ix5d6tZsbwfEJGF8ydSvn
+         a6e13gTaER6Wa21AhuXnPyQOzEftCzz0De2uq0RTXayve2aQAlkPtEhqzKDWfgpB0n5t
+         qtLcTmgyBgr1WlT1ZMgfBa0vOO86Vb1hEGmAs+AMOGSMuVPG8ZsEu4/yYoT4dfUcIauh
+         RG9vQJJn3n3faAHN03Hp7hb2wCLqQp9KjtVMJdTm8YG8oyqUsOrRTrPD3uc/4kY+eHHR
+         LUFw==
+X-Gm-Message-State: ABuFfoi+1BLpnCBVisURummno5Cup4MXFVl1OyB2l2396OR2xwuf1WZg
+        4bEiUuklltORXPyiAk3FawE=
+X-Google-Smtp-Source: ACcGV63VwoheWp495h3T6TfGS2QH8eI5rFMuo/No6NBTLgrVbdbzcNEnEKeTTOJXm355f2gxTb/aLw==
+X-Received: by 2002:aed:2807:: with SMTP id r7-v6mr6752350qtd.68.1538684140686;
+        Thu, 04 Oct 2018 13:15:40 -0700 (PDT)
+Received: from [10.67.50.87] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id e8-v6sm3200029qkj.0.2018.10.04.13.15.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 04 Oct 2018 13:15:39 -0700 (PDT)
+Subject: Re: [PATCH net-next v4 09/11] dt-bindings: add constants for
+ Microsemi Ocelot SerDes driver
+To:     Quentin Schulz <quentin.schulz@bootlin.com>,
+        alexandre.belloni@bootlin.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, davem@davemloft.net, kishon@ti.com,
+        andrew@lunn.ch
+Cc:     allan.nielsen@microchip.com, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com
+References: <20181004122208.32272-1-quentin.schulz@bootlin.com>
+ <20181004122208.32272-10-quentin.schulz@bootlin.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+Message-ID: <8529862a-1a68-509b-9512-1ef0f8cdbea0@gmail.com>
+Date:   Thu, 4 Oct 2018 13:15:30 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+In-Reply-To: <20181004122208.32272-10-quentin.schulz@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66696
+X-archive-position: 66697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,90 +115,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
-
-> A complication with the PS2 OHCI is that DMA addresses 0-0x200000 map to
-> 0x1c000000-0x1c200000 as seen by the kernel. Robin suggested that the mask
-> might correspond to the effective addressing capability, which would be
-> DMA_BIT_MASK(21),
-
- I take it you mean 0-0x1fffff obviously; let's be accurate in a technical 
-discussion and avoid ambiguous cases.
-
- Well, the need to map between the CPU and the DMA address space is not 
-uncommon.  As I recall the Galileo/Marvell GT-64xxx system controllers 
-have a BAR for PCI master accesses to local DRAM (so that multiple such 
-controllers can coexist in a NUMA system) and any non-identity mapping has 
-to be taken into account with DMA of course
-
- And indeed e.g. `dma_map_single' does handle that and given a CPU-side 
-physical memory address returns a corresponding DMA-side address.  And the 
-DMA mask has to reflect that and describe the DMA side, as it's the device 
-side that has an address space limitation here and any offset resulting 
-from a non-identity mapping does not change that limitation, although the 
-offset does have of course to be taken into account by `dma_map_single', 
-etc. in determining whether the memory area requested for use by a DMA 
-device can be used directly or whether a bounce buffer will be required 
-for that mapping.
-
-> but it does not seem to be entirely clear, since his
-> commit message said that
+On 10/04/2018 05:22 AM, Quentin Schulz wrote:
+> The Microsemi Ocelot has multiple SerDes and requires that the SerDes be
+> muxed accordingly to the hardware representation.
 > 
->     A somewhat similar line of reasoning also applies at the other end for
->     the mask check in dma_alloc_attrs() too - indeed, a device which cannot
->     access anything other than its own local memory probably *shouldn't*
->     have a valid mask for the general coherent DMA API.
+> Let's add a constant for each SerDes available in the Microsemi Ocelot.
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Quentin Schulz <quentin.schulz@bootlin.com>
 
- Well, how can such a device use the DMA API in the first place?  If the 
-device has local memory, than the driver has to manage it itself somehow 
-if needed, and then arrange copying it to main memory, either by a CPU or 
-a third-party DMA controller (data mover) if available.  Of course in the 
-latter case a driver for the DMA controller may have to use the DMA API.
-
- I'll be resubmitting a driver for such a device shortly, the DEFZA (the 
-previous submission can be found here: 
-<https://marc.info/?l=linux-netdev&m=139841853827404>).  It is interesting 
-in that the FDDI engine supports host DMA on the reception side (and 
-consequently the driver uses the DMA API to handle that), while on the 
-transmission side (as well as with a couple of maintenance queues) it only 
-does DMA with its onboard buffer memory, the contents of which need to be 
-copied by the CPU.  So there's no use of the DMA API on the transmission 
-or maintenance side.  However usual DMA rings (all located in board memory 
-too) are used for all data moves.
-
- The DEFTA is a follow-up and an upgrade to the DEFZA, more integrated 
-(the DEFZA uses a pair of PCBs while the DEFTA fits on one, of the size of 
-each in the former pair), and with the extra silicon space gained it was 
-possible to squeeze in circuitry required to do host DMA for all data 
-moves, and also the DMA rings.
-
-> A special circumstance here is the use of HCD_LOCAL_MEM that is a kind of
-> DMA bounce buffer. Are you using anything similar with your DEFTA driver?
-
- The driver does need either an IOMMU or bounce buffers in system RAM in 
-the case of 64-bit PCI systems, as the PFI PCI ASIC that the FDDI PDQ ASIC 
-interfaces on the DEFPA does not AFAIK support 64-bit addressing (be it 
-directly or with the use of DAC), although the PDQ itself does support 
-48-bit addressing (i.e. DMA descriptor addresses hold bits 47:2 of host 
-addresses), which would be sufficient for the usual cases.
-
- Not in the DEFTA (or for that matter DEFEA; possibly the only EISA device 
-using the DMA API) case though, as the most equipped TURBOchannel systems, 
-i.e. the DEC 3000 AXP models 500, 800 and 900 only support up to 1GiB of 
-memory, which is well below the 34-bit addressing limit.
-
- The PDQ ASIC was used to interface FDDI to many host buses and in 
-addition to the 3 bus attachments mentioned above, all of which we have 
-support for in Linux, it was also used for Q-bus (the DEFQA) and FutureBus 
-(the DEFAA).  We may have support for the DEFQA one day as I have both 
-such a board and a suitable system to use it with.  We are unlikely to 
-have support for the DEFAA, as FutureBus was only used in high-end VAX and 
-Alpha systems, the size of a full 19" rack at the very least, but it is 
-there I believe only that the full PDQ addressing capability was actually 
-utilised.
-
- NB I sat on this fix from 2014, well before the warning was introduced in 
-the first place, and it's only now that I got to unloading my patch queue. 
-:(
-
-  Maciej
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian

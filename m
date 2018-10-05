@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2018 23:42:50 +0200 (CEST)
-Received: from shards.monkeyblade.net ([IPv6:2620:137:e000::1:9]:43740 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994640AbeJEVmsA5jxG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Oct 2018 23:42:48 +0200
-Received: from localhost (c-67-183-145-105.hsd1.wa.comcast.net [67.183.145.105])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 87FA813ADF961;
-        Fri,  5 Oct 2018 14:42:44 -0700 (PDT)
-Date:   Fri, 05 Oct 2018 14:42:43 -0700 (PDT)
-Message-Id: <20181005.144243.1971242720262167660.davem@davemloft.net>
-To:     quentin.schulz@bootlin.com
-Cc:     alexandre.belloni@bootlin.com, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, andrew@lunn.ch, f.fainelli@gmail.com,
-        allan.nielsen@microchip.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, thomas.petazzoni@bootlin.com,
-        antoine.tenart@bootlin.com
-Subject: Re: [PATCH v2 0/5] net: phy: mscc: add support for VSC8584 and
- VSC8574 Microsemi quad-port PHYs
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20181004131710.14978-1-quentin.schulz@bootlin.com>
-References: <20181004131710.14978-1-quentin.schulz@bootlin.com>
-X-Mailer: Mew version 6.7 on Emacs 26 / Mule 6.0 (HANACHIRUSATO)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 00:19:46 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55784 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994642AbeJEWTnNadcG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Oct 2018 00:19:43 +0200
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5A51BD22;
+        Fri,  5 Oct 2018 22:19:35 +0000 (UTC)
+Date:   Fri, 5 Oct 2018 15:19:34 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc:     linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Ingo Molnar <mingo@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Hocko <mhocko@suse.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Burton <paul.burton@mips.com>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-um@lists.infradead.org
+Subject: Re: [PATCH] memblock: stop using implicit alignement to
+ SMP_CACHE_BYTES
+Message-Id: <20181005151934.87226fa92825c3002a475413@linux-foundation.org>
+In-Reply-To: <1538687224-17535-1-git-send-email-rppt@linux.vnet.ibm.com>
+References: <1538687224-17535-1-git-send-email-rppt@linux.vnet.ibm.com>
+X-Mailer: Sylpheed 3.6.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 05 Oct 2018 14:42:45 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66706
+X-archive-position: 66707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,14 +56,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Quentin Schulz <quentin.schulz@bootlin.com>
-Date: Thu,  4 Oct 2018 15:17:05 +0200
+On Fri,  5 Oct 2018 00:07:04 +0300 Mike Rapoport <rppt@linux.vnet.ibm.com> wrote:
 
-> I suggest patches 1 to 3 go through net tree and patches 4 and 5 go
-> through MIPS tree. Patches going through net tree and those going through
-> MIPS tree do not depend on one another.
+> When a memblock allocation APIs are called with align = 0, the alignment is
+> implicitly set to SMP_CACHE_BYTES.
+> 
+> Replace all such uses of memblock APIs with the 'align' parameter explicitly
+> set to SMP_CACHE_BYTES and stop implicit alignment assignment in the
+> memblock internal allocation functions.
+> 
+> For the case when memblock APIs are used via helper functions, e.g. like
+> iommu_arena_new_node() in Alpha, the helper functions were detected with
+> Coccinelle's help and then manually examined and updated where appropriate.
+> 
+> ...
+>
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1298,9 +1298,6 @@ static phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
+>  {
+>  	phys_addr_t found;
+>  
+> -	if (!align)
+> -		align = SMP_CACHE_BYTES;
+> -
 
-Sounds like a good plan but patches 1-3 do not apply to net-next, please
-respin.
-
-Thank you.
+Can we add a WARN_ON_ONCE(!align) here?  To catch unconverted code
+which sneaks in later on.

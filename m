@@ -1,43 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2018 16:56:19 +0200 (CEST)
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:54933 "EHLO
-        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990423AbeJEO4P0qayA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Oct 2018 16:56:15 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id EBC453F519;
-        Fri,  5 Oct 2018 16:56:14 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bDGz6261yrce; Fri,  5 Oct 2018 16:56:13 +0200 (CEST)
-Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 22B543F390;
-        Fri,  5 Oct 2018 16:56:12 +0200 (CEST)
-Date:   Fri, 5 Oct 2018 16:56:12 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
-Subject: Re: [PATCH] TC: Set DMA masks for devices
-Message-ID: <20181005145612.GA2341@sx-9>
-References: <alpine.LFD.2.21.1810030109210.5483@eddie.linux-mips.org>
- <20181004165720.GA2361@sx-9>
- <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2018 17:05:58 +0200 (CEST)
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:58812 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990947AbeJEPFzfizvA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 5 Oct 2018 17:05:55 +0200
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w95F4hXD027614
+        for <linux-mips@linux-mips.org>; Fri, 5 Oct 2018 11:05:53 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2mx9pvab5g-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Fri, 05 Oct 2018 11:05:53 -0400
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.vnet.ibm.com>;
+        Fri, 5 Oct 2018 16:05:51 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 5 Oct 2018 16:05:44 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w95F5h3u63897732
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 5 Oct 2018 15:05:43 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1D453AE045;
+        Fri,  5 Oct 2018 18:04:33 +0100 (BST)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C216EAE051;
+        Fri,  5 Oct 2018 18:04:32 +0100 (BST)
+Received: from [9.148.204.169] (unknown [9.148.204.169])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri,  5 Oct 2018 18:04:32 +0100 (BST)
+Date:   Fri, 05 Oct 2018 18:05:01 +0300
+User-Agent: K-9 Mail for Android
+In-Reply-To: <8891277c7de92e93d3bfc409df95810ee6f103cd.camel@kernel.crashing.org>
+References: <1538687224-17535-1-git-send-email-rppt@linux.vnet.ibm.com> <8891277c7de92e93d3bfc409df95810ee6f103cd.camel@kernel.crashing.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <noring@nocrew.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Subject: Re: [PATCH] memblock: stop using implicit alignement to SMP_CACHE_BYTES
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-mm@kvack.org
+CC:     linux-mips@linux-mips.org, Michal Hocko <mhocko@suse.com>,
+        linux-ia64@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Matt Turner <mattst88@gmail.com>, linux-um@lists.infradead.org,
+        linux-m68k@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        linux-arm-kernel@lists.infradead.org,
+        Chris Zankel <chris@zankel.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+        Paul Burton <paul.burton@mips.com>,
+        linux-alpha@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org
+From:   Mike Rapoport <rppt@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 18100515-0020-0000-0000-000002D00A38
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18100515-0021-0000-0000-0000211E6102
+Message-Id: <59C9470E-F718-4A11-BC65-FD68901723AC@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-10-05_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=680 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1810050153
+Return-Path: <rppt@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66703
+X-archive-position: 66704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: rppt@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,175 +95,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
 
-> > A complication with the PS2 OHCI is that DMA addresses 0-0x200000 map to
-> > 0x1c000000-0x1c200000 as seen by the kernel. Robin suggested that the mask
-> > might correspond to the effective addressing capability, which would be
-> > DMA_BIT_MASK(21),
-> 
->  I take it you mean 0-0x1fffff obviously; let's be accurate in a technical 
-> discussion and avoid ambiguous cases.
 
-That's interesting. :) 0x1fffff is not a valid DMA address due to alignment
-restrictions, so if one wants to indicate a closed [inclusive] DMA address
-interval it would be 0-0x1ffffc, since the 32-bit word rather than the byte
-is the unit of the IOP DMA. In mathematics and programming languages it is
-often convenient to work with half-open intervals denoted by "[0,0x200000)"
-in this case. I think both notations are technically accurate, but they do
-emphasize different aspects of addresses and memory. I can switch to your
-byte-centric notation if that helps. :)
+On October 5, 2018 6:25:38 AM GMT+03:00, Benjamin Herrenschmidt <benh@kernel.crashing.org> wrote:
+>On Fri, 2018-10-05 at 00:07 +0300, Mike Rapoport wrote:
+>> When a memblock allocation APIs are called with align = 0, the
+>alignment is
+>> implicitly set to SMP_CACHE_BYTES.
+>> 
+>> Replace all such uses of memblock APIs with the 'align' parameter
+>explicitly
+>> set to SMP_CACHE_BYTES and stop implicit alignment assignment in the
+>> memblock internal allocation functions.
+>> 
+>> For the case when memblock APIs are used via helper functions, e.g.
+>like
+>> iommu_arena_new_node() in Alpha, the helper functions were detected
+>with
+>> Coccinelle's help and then manually examined and updated where
+>appropriate.
+>> 
+>> The direct memblock APIs users were updated using the semantic patch
+>below:
+>
+>What is the purpose of this ? It sounds rather counter-intuitive...
 
->  Well, the need to map between the CPU and the DMA address space is not 
-> uncommon.  As I recall the Galileo/Marvell GT-64xxx system controllers 
-> have a BAR for PCI master accesses to local DRAM (so that multiple such 
-> controllers can coexist in a NUMA system) and any non-identity mapping has 
-> to be taken into account with DMA of course
-> 
->  And indeed e.g. `dma_map_single' does handle that and given a CPU-side 
-> physical memory address returns a corresponding DMA-side address.  And the 
-> DMA mask has to reflect that and describe the DMA side, as it's the device 
-> side that has an address space limitation here and any offset resulting 
-> from a non-identity mapping does not change that limitation, although the 
-> offset does have of course to be taken into account by `dma_map_single', 
-> etc. in determining whether the memory area requested for use by a DMA 
-> device can be used directly or whether a bounce buffer will be required 
-> for that mapping.
+Why?
+I think it actually more intuitive to explicitly set alignment to SMP_CACHE_BYTES rather than use align = 0 because deeply inside allocator it will be implicitly reset to SMP_CACHE_BYTES...
 
-Ah... memory that is known to be DMA compatible is allocated separately,
-and then handed over to the DMA subsystem using dma_declare_coherent_memory.
-This is done once during driver initialisation. The drivers ohci-sm501.c and
-ohci-tmio.c do that too, which is why I suspect they might broken as well.
+>Ben.
 
-The SM501 driver has this explanation:
-
-	/* The sm501 chip is equipped with local memory that may be used
-	 * by on-chip devices such as the video controller and the usb host.
-	 * This driver uses dma_declare_coherent_memory() to make sure
-	 * usb allocations with dma_alloc_coherent() allocate from
-	 * this local memory. The dma_handle returned by dma_alloc_coherent()
-	 * will be an offset starting from 0 for the first local memory byte.
-	 *
-	 * So as long as data is allocated using dma_alloc_coherent() all is
-	 * fine. This is however not always the case - buffers may be allocated
-	 * using kmalloc() - so the usb core needs to be told that it must copy
-	 * data into our local memory if the buffers happen to be placed in
-	 * regular memory. The HCD_LOCAL_MEM flag does just that.
-	 */
-
-	retval = dma_declare_coherent_memory(dev, mem->start,
-					 mem->start - mem->parent->start,
-					 resource_size(mem),
-					 DMA_MEMORY_EXCLUSIVE);
-
-The corresponding code in the PS2 OHCI driver does
-
-	ps2priv->iop_dma_addr = iop_alloc(size);
-	if (ps2priv->iop_dma_addr == 0) {
-		dev_err(dev, "iop_alloc failed\n");
-		return -ENOMEM;
-	}
-
-	if (dma_declare_coherent_memory(dev,
-			iop_bus_to_phys(ps2priv->iop_dma_addr),
-			ps2priv->iop_dma_addr, size, flags)) {
-		dev_err(dev, "dma_declare_coherent_memory failed\n");
-		iop_free(ps2priv->iop_dma_addr);
-		ps2priv->iop_dma_addr = 0;
-		return -ENOMEM;
-	}
-
-where iop_alloc is a special IOP memory allocation function and its return
-value stored in iop_dma_addr is handed over to dma_declare_coherent_memory.
-
-> > but it does not seem to be entirely clear, since his
-> > commit message said that
-> > 
-> >     A somewhat similar line of reasoning also applies at the other end for
-> >     the mask check in dma_alloc_attrs() too - indeed, a device which cannot
-> >     access anything other than its own local memory probably *shouldn't*
-> >     have a valid mask for the general coherent DMA API.
-> 
->  Well, how can such a device use the DMA API in the first place?  If the 
-> device has local memory, than the driver has to manage it itself somehow 
-> if needed, and then arrange copying it to main memory, either by a CPU or 
-> a third-party DMA controller (data mover) if available.  Of course in the 
-> latter case a driver for the DMA controller may have to use the DMA API.
-
-The coherently declared memory given to the DMA subsystem is used for a
-fixed sized DMA pool and no additional allocations are permitted. One could
-choose a DMA mask that pretends to be reasonable, or the opposite, a mask
-such as 1 that is unreasonable on purpose, as Robin writes:
-
-	Alternatively, there is perhaps some degree of argument for
-	deliberately picking a nonzero but useless value like 1,
-	although it looks like the MIPS allocator (at least the dma-
-	default one) never actually checks whether the page it gets
-	is within range of the device's coherent mask, which it
-	probably should do.
-
-	https://lkml.org/lkml/2018/7/6/697
-
->  I'll be resubmitting a driver for such a device shortly, the DEFZA (the 
-> previous submission can be found here: 
-> <https://marc.info/?l=linux-netdev&m=139841853827404>).  It is interesting 
-> in that the FDDI engine supports host DMA on the reception side (and 
-> consequently the driver uses the DMA API to handle that), while on the 
-> transmission side (as well as with a couple of maintenance queues) it only 
-> does DMA with its onboard buffer memory, the contents of which need to be 
-> copied by the CPU.  So there's no use of the DMA API on the transmission 
-> or maintenance side.  However usual DMA rings (all located in board memory 
-> too) are used for all data moves.
-
-The DMA for its onboard buffer memory appears to be very similar to the
-IOP and its DMA? That memory is currently copied by the EE, but there are
-other DMA controllers that could handle that, possibly synchronised using
-DMA chaining, which would assist the EE significantly.
-
-Apart from USB, the IOP does networking, FireWire, harddisks, etc. Some
-or all of the peripherals could be accelerated with DMA, which is an
-interesting challenge.
-
->  The DEFTA is a follow-up and an upgrade to the DEFZA, more integrated 
-> (the DEFZA uses a pair of PCBs while the DEFTA fits on one, of the size of 
-> each in the former pair), and with the extra silicon space gained it was 
-> possible to squeeze in circuitry required to do host DMA for all data 
-> moves, and also the DMA rings.
-
-Nice. :)
-
-> > A special circumstance here is the use of HCD_LOCAL_MEM that is a kind of
-> > DMA bounce buffer. Are you using anything similar with your DEFTA driver?
-> 
->  The driver does need either an IOMMU or bounce buffers in system RAM in 
-> the case of 64-bit PCI systems, as the PFI PCI ASIC that the FDDI PDQ ASIC 
-> interfaces on the DEFPA does not AFAIK support 64-bit addressing (be it 
-> directly or with the use of DAC), although the PDQ itself does support 
-> 48-bit addressing (i.e. DMA descriptor addresses hold bits 47:2 of host 
-> addresses), which would be sufficient for the usual cases.
-> 
->  Not in the DEFTA (or for that matter DEFEA; possibly the only EISA device 
-> using the DMA API) case though, as the most equipped TURBOchannel systems, 
-> i.e. the DEC 3000 AXP models 500, 800 and 900 only support up to 1GiB of 
-> memory, which is well below the 34-bit addressing limit.
-> 
->  The PDQ ASIC was used to interface FDDI to many host buses and in 
-> addition to the 3 bus attachments mentioned above, all of which we have 
-> support for in Linux, it was also used for Q-bus (the DEFQA) and FutureBus 
-> (the DEFAA).  We may have support for the DEFQA one day as I have both 
-> such a board and a suitable system to use it with.  We are unlikely to 
-> have support for the DEFAA, as FutureBus was only used in high-end VAX and 
-> Alpha systems, the size of a full 19" rack at the very least, but it is 
-> there I believe only that the full PDQ addressing capability was actually 
-> utilised.
-
-Thanks! By the way, is it possible to find spare parts for such vintage
-hardware these days in case of irrepairable failures?
-
->  NB I sat on this fix from 2014, well before the warning was introduced in 
-> the first place, and it's only now that I got to unloading my patch queue. 
-> :(
-
-Do you have the latest kernel running on your DECstation machines now? :)
-
-Fredrik
+-- 
+Sincerely yours,
+Mike.

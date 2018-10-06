@@ -1,29 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 00:53:02 +0200 (CEST)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23994642AbeJEWw5eJE6g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Oct 2018 00:52:57 +0200
-Date:   Fri, 5 Oct 2018 23:52:57 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Fredrik Noring <noring@nocrew.org>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?UTF-8?Q?J=C3=BCrgen_Urban?= <JuergenUrban@gmx.de>
-Subject: Re: [PATCH] TC: Set DMA masks for devices
-In-Reply-To: <20181005145612.GA2341@sx-9>
-Message-ID: <alpine.LFD.2.21.1810051602280.22125@eddie.linux-mips.org>
-References: <alpine.LFD.2.21.1810030109210.5483@eddie.linux-mips.org> <20181004165720.GA2361@sx-9> <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org> <20181005145612.GA2341@sx-9>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 04:58:13 +0200 (CEST)
+Received: from frisell.zx2c4.com ([192.95.5.64]:48487 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994650AbeJFC6G7TZrS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 6 Oct 2018 04:58:06 +0200
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id ff105865;
+        Sat, 6 Oct 2018 02:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
+        :subject:date:message-id:in-reply-to:references:mime-version
+        :content-type:content-transfer-encoding; s=mail; bh=KpwH8NF0fwsV
+        PvpV3wJNynv5LzU=; b=gixXm+U5Sm3i47NPAQbrJaQrihPHjuoIyS1IrSf7gqlG
+        VsXOP6tyLcqazkQO6y0jjgc6lQprAOieB8ZBr31/h8p0LEXzhMWd6PZWqIkKXelW
+        /VTI8js2Fq0Zen6uakUU4rTevvj4F4GXb6dRSRMUPwJUS27esyA0IBbWxG0STlub
+        xex8ghgAnI0VY91Numlw/zc/NI2eOZ86SYpnimN85PAke8G48FeK8gJgxOypKCW+
+        hh3aSWmRhJZGd33XBlgnwjFplispw/vl++SRGKMWrJV2wkd3LgOAK7avK0SFXHXA
+        pWGp154EFvNMNIdbhbaO2qOu8wZThwRlEJEH7tnSEg==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id aa6459ae (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
+        Sat, 6 Oct 2018 02:57:27 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        davem@davemloft.net, gregkh@linuxfoundation.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Samuel Neves <sneves@dei.uc.pt>,
+        Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel-hardening@lists.openwall.com, linux-crypto@vger.kernel.org
+Subject: [PATCH net-next v7 10/28] zinc: ChaCha20 MIPS32r2 implementation
+Date:   Sat,  6 Oct 2018 04:56:51 +0200
+Message-Id: <20181006025709.4019-11-Jason@zx2c4.com>
+In-Reply-To: <20181006025709.4019-1-Jason@zx2c4.com>
+References: <20181006025709.4019-1-Jason@zx2c4.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <macro@linux-mips.org>
+Content-Transfer-Encoding: 8bit
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66708
+X-archive-position: 66709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,371 +59,520 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Fredrik,
+This MIPS32r2 implementation comes from René van Dorst and me and
+results in a nice speedup on the usual OpenWRT targets.
 
-> >  I take it you mean 0-0x1fffff obviously; let's be accurate in a technical 
-> > discussion and avoid ambiguous cases.
-> 
-> That's interesting. :) 0x1fffff is not a valid DMA address due to alignment
-> restrictions, so if one wants to indicate a closed [inclusive] DMA address
-> interval it would be 0-0x1ffffc, since the 32-bit word rather than the byte
-> is the unit of the IOP DMA. In mathematics and programming languages it is
-> often convenient to work with half-open intervals denoted by "[0,0x200000)"
-> in this case. I think both notations are technically accurate, but they do
-> emphasize different aspects of addresses and memory. I can switch to your
-> byte-centric notation if that helps. :)
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: René van Dorst <opensource@vdorst.com>
+Co-developed-by: René van Dorst <opensource@vdorst.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: Samuel Neves <sneves@dei.uc.pt>
+Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kernel-hardening@lists.openwall.com
+Cc: linux-crypto@vger.kernel.org
+---
+ lib/zinc/Makefile                      |   2 +
+ lib/zinc/chacha20/chacha20-mips-glue.c |  28 ++
+ lib/zinc/chacha20/chacha20-mips.S      | 424 +++++++++++++++++++++++++
+ lib/zinc/chacha20/chacha20.c           |   2 +
+ 4 files changed, 456 insertions(+)
+ create mode 100644 lib/zinc/chacha20/chacha20-mips-glue.c
+ create mode 100644 lib/zinc/chacha20/chacha20-mips.S
 
- Well, the byte at 0x1fffff may not be individually addressable by this 
-particular DMA engine, but surely it is there included in DMA transfers 
-accessing the location that spans it.  If instead you prefer to use the 
-mathematical notation to specify inclusive/exclusive ranges, then of 
-course I'm fine with that too.
-
-> >  And indeed e.g. `dma_map_single' does handle that and given a CPU-side 
-> > physical memory address returns a corresponding DMA-side address.  And the 
-> > DMA mask has to reflect that and describe the DMA side, as it's the device 
-> > side that has an address space limitation here and any offset resulting 
-> > from a non-identity mapping does not change that limitation, although the 
-> > offset does have of course to be taken into account by `dma_map_single', 
-> > etc. in determining whether the memory area requested for use by a DMA 
-> > device can be used directly or whether a bounce buffer will be required 
-> > for that mapping.
-> 
-> Ah... memory that is known to be DMA compatible is allocated separately,
-> and then handed over to the DMA subsystem using dma_declare_coherent_memory.
-
- Well, that does specify both a CPU-side and a corresponding DMA-side 
-address too.
-
-> This is done once during driver initialisation. The drivers ohci-sm501.c and
-> ohci-tmio.c do that too, which is why I suspect they might broken as well.
-> 
-> The SM501 driver has this explanation:
-> 
-> 	/* The sm501 chip is equipped with local memory that may be used
-> 	 * by on-chip devices such as the video controller and the usb host.
-> 	 * This driver uses dma_declare_coherent_memory() to make sure
-> 	 * usb allocations with dma_alloc_coherent() allocate from
-> 	 * this local memory. The dma_handle returned by dma_alloc_coherent()
-> 	 * will be an offset starting from 0 for the first local memory byte.
-
- From the description I take it it is some MMIO memory rather than host 
-memory.  I fail to see how it is supposed to work with these calls for 
-non-system memory, which certainly any MMIO memory is, which surely is not 
-under the supervision of the kernel memory allocator.
-
- There are calls for MMIO memory defined in the DMA API, specifically 
-`dma_map_resource' and `dma_unmap_resource'.  I've never used them myself, 
-and I gather they provide you with a way for CPUs to access MMIO memory 
-with caching enabled and without the need to use the MMIO accessors only, 
-such as `readl', `writel', etc., which are expected to avoid going through 
-any CPU cache.  Maybe these are what you're after?
-
- But maybe I'm missing something.
-
-> 	 *
-> 	 * So as long as data is allocated using dma_alloc_coherent() all is
-> 	 * fine. This is however not always the case - buffers may be allocated
-> 	 * using kmalloc() - so the usb core needs to be told that it must copy
-> 	 * data into our local memory if the buffers happen to be placed in
-> 	 * regular memory. The HCD_LOCAL_MEM flag does just that.
-> 	 */
-
- This raises a hack alert to me TBH.
-
-> >  Well, how can such a device use the DMA API in the first place?  If the 
-> > device has local memory, than the driver has to manage it itself somehow 
-> > if needed, and then arrange copying it to main memory, either by a CPU or 
-> > a third-party DMA controller (data mover) if available.  Of course in the 
-> > latter case a driver for the DMA controller may have to use the DMA API.
-> 
-> The coherently declared memory given to the DMA subsystem is used for a
-> fixed sized DMA pool and no additional allocations are permitted. One could
-> choose a DMA mask that pretends to be reasonable, or the opposite, a mask
-> such as 1 that is unreasonable on purpose, as Robin writes:
-> 
-> 	Alternatively, there is perhaps some degree of argument for
-> 	deliberately picking a nonzero but useless value like 1,
-> 	although it looks like the MIPS allocator (at least the dma-
-> 	default one) never actually checks whether the page it gets
-> 	is within range of the device's coherent mask, which it
-> 	probably should do.
-> 
-> 	https://lkml.org/lkml/2018/7/6/697
-
- It does look like an API abuse to me, as I noted above.
-
-> >  I'll be resubmitting a driver for such a device shortly, the DEFZA (the 
-> > previous submission can be found here: 
-> > <https://marc.info/?l=linux-netdev&m=139841853827404>).  It is interesting 
-> > in that the FDDI engine supports host DMA on the reception side (and 
-> > consequently the driver uses the DMA API to handle that), while on the 
-> > transmission side (as well as with a couple of maintenance queues) it only 
-> > does DMA with its onboard buffer memory, the contents of which need to be 
-> > copied by the CPU.  So there's no use of the DMA API on the transmission 
-> > or maintenance side.  However usual DMA rings (all located in board memory 
-> > too) are used for all data moves.
-> 
-> The DMA for its onboard buffer memory appears to be very similar to the
-> IOP and its DMA? That memory is currently copied by the EE, but there are
-> other DMA controllers that could handle that, possibly synchronised using
-> DMA chaining, which would assist the EE significantly.
-
- Mind that the DEFZA runs its own RTOS for initialization and management 
-support, including in particular SMT (Station Management).  This is run on 
-an MC68000 processor.  That processor is interfaced to a bus where board 
-memory is attached as well as the RMC (Ring Memory Controller) chip, which 
-acts as a DMA master on that bus, like does the host bus interface.  Also 
-certain control register writes from the host raise interrupts to the 
-MC68000 for special situations to handle.
-
- All the PDQ-based FDDI adapters also have an M68000 which runs an RTOS, 
-however the presence of the PDQ ASIC makes their architecture slightly 
-different as the FDDI chipset does host DMA via the PDQ ASIC, which acts 
-as a master on the host bus (possibly through a bridge chip like the PFI, 
-though TURBOchannel for example is interfaced directly).
-
- These adapters went through several revisions, all using the Motorola 
-FDDI chipset (originally designed by DEC and then sold to Motorola for 
-fabrication and marketing, with DEC retaining an unlimited licence to 
-use), but with the PDQ (Packet Data Queue, I believe; not officially 
-confirmed) replacing the FSI (FDDI System Interface) block, and the CAMEL 
-(MAC and ELM (Media Access Controller and Elasticity Buffer and Link 
-Management)) and FCG (FDDI Clock Generator) blocks both retained.
-
-> >  The PDQ ASIC was used to interface FDDI to many host buses and in 
-> > addition to the 3 bus attachments mentioned above, all of which we have 
-> > support for in Linux, it was also used for Q-bus (the DEFQA) and FutureBus 
-> > (the DEFAA).  We may have support for the DEFQA one day as I have both 
-> > such a board and a suitable system to use it with.  We are unlikely to 
-> > have support for the DEFAA, as FutureBus was only used in high-end VAX and 
-> > Alpha systems, the size of a full 19" rack at the very least, but it is 
-> > there I believe only that the full PDQ addressing capability was actually 
-> > utilised.
-> 
-> Thanks! By the way, is it possible to find spare parts for such vintage
-> hardware these days in case of irrepairable failures?
-
- What do you mean by spare parts?  ICs?  Complete modules can certainly be 
-chased, though obviously there are the more common ones, and then there 
-are the exotic ones.
-
- The biggest challenge has turned out to be electrolytic capacitor 
-failures in power supplies.  Unfortunately in late 1980s to mid 1990s 
-several lines of low-ESR capacitors, used in output filters in switch-mode 
-PSUs, were made with a new electrolyte formula based on a quaternary 
-ammonium salt.  All they have turned out to suffer from excessive 
-corrosion caused by that electrolyte, shortening the lifespan of those 
-parts well below the expectations even in the enhanced lines specifically 
-made with long life in mind.  Consequently those parts start leaking even 
-if unused (or indeed never used) and then obviously cause PSU breakage if 
-powered up.
-
- Those were all from reputable manufacturers, such as Chemi-con, Nichicon 
-or Panasonic; not to be confused with the bulged capacitor problem, aka 
-capacitor plague, which many ATX PSUs have suffered from mid 1990s to mid 
-2000s where cheap parts were used from less reputable manufacturers.
-
- Sadly I have ruined a couple of PSUs before I realised what the problem 
-was and I have been struggling since with tracking down other parts that 
-have failed as a result.  I plan to get back to it sometime.
-
- Some DECstation models are affected, as is other DEC (and non-DEC) 
-hardware:
-
-* The 5000/200, /240 and /260 are not affected.
-
-* The 2100 and 3100 are not if stored in their working orientation, as the 
-  capacitors are mounted leads up in their PSUs and corrosion only breaks 
-  the seal and not the aluminium can.
-
-* The 5000/120, /125, /133 and /150 are all affected and are better 
-  recapped -- all SXF Chemi-con parts have to be replaced at the very 
-  least.  Newer PSUs use newer LXF Chemi-con parts that haven't failed for 
-  me (yet?), but are expected to too.
-
-* I can't speak of the 5000/20, /25, /33, /50 as I haven't got one of 
-  these.
-
-* Other pieces of hardware would have to be inspected by their respective 
-  owners, e.g. I had a case where I had to recap the PSU of a small Cisco
-  Ethernet switch with an FDDI bridge module from that era (that actually 
-  used a stock industrial PSU you can still buy new, although at ~£500 + 
-  VAT -- not exactly cheaply).
-
- Other parts that have been failing are the usual Dallas RTC chips having 
-an integrated Lithium coin cell depleted; either the DS1287 or the DS1287A 
-depending on the specific model of hardware.  DECstations have these chips 
-located in the TURBOchannel slot area with little clearance around them.  
-Therefore I have been slowly converting them to a version with a discrete 
-coin cell embedded in the IC case instead, as photographically documented 
-here: <ftp://ftp.linux-mips.org/pub/linux/mips/people/macro/ds1287/>.
-
- You can still get recently manufactured brand new DS12887 or DS12887A 
-parts from Maxim through the usual distribution channels, however for 
-reference systems, such as I consider mine, I prefer to use original parts 
-to avoid surprises, as the DS12887/A chips have 104 bytes of general NVRAM 
-as opposed to 50 bytes with the DS1287/A.
-
- NB according to HP end of sales for the DEFPA was only 2004-2005 and 
-based on occasional enquiries I get as the maintainer it remains deployed 
-in production environments.  These boards remain readily available on the 
-second-hand market; sometimes you can get at unused old stock even.  
-Unless you look for the less common SMF variants, that is.  I own a couple 
-of universal-PCI DEFPA boards that use the most recent PFI-3 ASIC (earlier 
-versions were 5V-only), some of which have HP recorded as the vendor in 
-the subsystem ID.
-
- Also new TURBOchannel option hardware has been designed and manufactured 
-recently, see: <http://www.flxd.de/tc-usb/>. :)  We'll get a Linux driver 
-sometime.
-
-> >  NB I sat on this fix from 2014, well before the warning was introduced in 
-> > the first place, and it's only now that I got to unloading my patch queue. 
-> > :(
-> 
-> Do you have the latest kernel running on your DECstation machines now? :)
-
- Yep:
-
-Linux version 4.19.0-rc6 (macro@tp) (gcc version 4.1.2) #3 Mon Oct 1 00:22:03 BST 2018
-bootconsole [prom0] enabled
-This is a DECstation 5000/2x0
-CPU0 revision is: 00000440 (R4400SC)
-FPU revision is: 00000500
-Checking for the multiply/shift bug... no.
-Checking for the daddiu bug... yes, workaround... yes.
-Determined physical RAM map:
- memory: 0000000004000000 @ 0000000000000000 (usable)
-Primary instruction cache 16kB, VIPT, direct mapped, linesize 16 bytes.
-Primary data cache 16kB, direct mapped, VIPT, no aliases, linesize 16 bytes
-Unified secondary cache 1024kB direct mapped, linesize 32 bytes.
-Zone ranges:
-  Normal   [mem 0x0000000000000000-0x0000000003ffffff]
-Movable zone start for each node
-Early memory node ranges
-  node   0: [mem 0x0000000000000000-0x0000000003ffffff]
-Initmem setup node 0 [mem 0x0000000000000000-0x0000000003ffffff]
-On node 0 totalpages: 4096
-  Normal zone: 14 pages used for memmap
-  Normal zone: 0 pages reserved
-  Normal zone: 4096 pages, LIFO batch:0
-pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
-pcpu-alloc: [0] 0
-Built 1 zonelists, mobility grouping off.  Total pages: 4082
-Kernel command line: rw console=ttyS3 debug panic=60 ip=bootp root=/dev/nfs
-Dentry cache hash table entries: 8192 (order: 2, 65536 bytes)
-Inode-cache hash table entries: 4096 (order: 1, 32768 bytes)
-Memory: 57632K/65536K available (5279K kernel code, 338K rwdata, 1004K rodata, 272K init, 216K bss, 7904K reserved, 0K cma-reserved)
-NR_IRQS: 128
-I/O ASIC clock frequency 24999536Hz
-clocksource: dec-ioasic: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 76451836814 ns
-sched_clock: 32 bits at 24MHz, resolution 40ns, wraps every 85900940267ns
-MIPS counter frequency 60000464Hz
-clocksource: MIPS: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 31854094440 ns
-sched_clock: 32 bits at 60MHz, resolution 16ns, wraps every 35791117303ns
-Console: colour dummy device 160x64
-console [ttyS3] enabled
-bootconsole [prom0] disabled
-Calibrating delay loop... 59.33 BogoMIPS (lpj=231424)
-pid_max: default: 32768 minimum: 301
-Mount-cache hash table entries: 2048 (order: 0, 16384 bytes)
-Mountpoint-cache hash table entries: 2048 (order: 0, 16384 bytes)
-Checking for the daddi bug... no.
-random: get_random_u32 called from bucket_table_alloc+0xbc/0x2e8 with crng_init=0
-clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 14931722236523437 ns
-futex hash table entries: 256 (order: -2, 6144 bytes)
-NET: Registered protocol family 16
-Can't analyze schedule() prologue at (____ptrval____)
-HugeTLB registered 32.0 MiB page size, pre-allocated 0 pages
-SCSI subsystem initialized
-tc: TURBOchannel rev. 1 at 25.0 MHz (without parity)
-tc0: DEC      PMAG-AA  V1.0a
-tc1: DEC      PMAF-FD  V3.1D
-tc2: DEC      PMAF-AA  T5.2P-
-clocksource: Switched to clocksource MIPS
-NET: Registered protocol family 2
-tcp_listen_portaddr_hash hash table entries: 1024 (order: 0, 16384 bytes)
-TCP established hash table entries: 2048 (order: 0, 16384 bytes)
-TCP bind hash table entries: 2048 (order: 0, 16384 bytes)
-TCP: Hash tables configured (established 2048 bind 2048)
-UDP hash table entries: 512 (order: 0, 16384 bytes)
-UDP-Lite hash table entries: 512 (order: 0, 16384 bytes)
-NET: Registered protocol family 1
-RPC: Registered named UNIX socket transport module.
-RPC: Registered udp transport module.
-RPC: Registered tcp transport module.
-RPC: Registered tcp NFSv4.1 backchannel transport module.
-workingset: timestamp_bits=62 max_order=12 bucket_order=0
-Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
-io scheduler noop registered
-io scheduler deadline registered
-io scheduler cfq registered (default)
-Console: switching to mono frame buffer device 160x64
-fb0: PMAG-AA frame buffer device at tc0
-DECstation Z85C30 serial driver version 0.10
-ttyS0 at MMIO 0x1f900008 (irq = 14, base_baud = 460800) is a Z85C30 SCC
-ttyS1 at MMIO 0x1f900000 (irq = 14, base_baud = 460800) is a Z85C30 SCC
-ttyS2 at MMIO 0x1f980008 (irq = 15, base_baud = 460800) is a Z85C30 SCC
-ttyS3 at MMIO 0x1f980000 (irq = 15, base_baud = 460800) is a Z85C30 SCC
-ms02-nv.c: v.1.0.0  13 Aug 2001  Maciej W. Rozycki.
-mtd0: DEC MS02-NV NVRAM at 0x07000000, size 1MiB.
-declance.c: v0.011 by Linux MIPS DECstation task force
-declance0: IOASIC onboard LANCE, addr = 08:00:2b:35:62:c1, irq = 16
-declance0: registered as eth0.
-defxx: v1.11 2014/07/01  Lawrence V. Stefani and others
-random: fast init done
-tc1: DEFTA at MMIO addr = 0x1e900000, IRQ = 20, Hardware addr = 08-00-2b-a3-a3-29
-tc1: registered as fddi0
-defza: v.1.1.4  Oct  2 2018  Maciej W. Rozycki
-tc2: DEC FDDIcontroller 700 or 700-C at 0x1f000000, irq 21
-tc2: resetting the board...
-tc2: OK
-tc2: model 700 (DEFZA-AA), MMF PMD, address 08-00-2b-2e-6d-75
-tc2: ROM rev. 1.0, firmware rev. 1.2, RMC rev. A, SMT ver. 1
-tc2: link unavailable
-tc2: registered as fddi1
-mousedev: PS/2 mouse device common for all mice
-rtc_cmos rtc_cmos: registered as rtc0
-rtc_cmos rtc_cmos: no alarms, 50 bytes nvram
-NET: Registered protocol family 10
-Segment Routing with IPv6
-sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
-NET: Registered protocol family 17
-rtc_cmos rtc_cmos: setting system clock to 2018-10-01 00:45:12 UTC (1538354712)
-Sending BOOTP requests . OK
-IP-Config: Got BOOTP answer from xxx.xxx.xxx.xxx, my address is xxx.xxx.xxx.xxx
-IP-Config: Complete:
-     device=eth0, hwaddr=08:00:2b:35:62:c1, ipaddr=xxx.xxx.xxx.xxx, mask=xxx.xxx.xxx.xxx, gw=xxx.xxx.xxx.xxx
-fddi1: link available
-     host=hhh.hhh.hhh.hhh, domain=, nis-domain=(none)
-     bootserver=xxx.xxx.xxx.xxx, rootserver=xxx.xxx.xxx.xxx, rootpath=/ddd/ddd
-     nameserver0=xxx.xxx.xxx.xxx
-fddi1: link unavailable
-VFS: Mounted root (nfs filesystem) on device 0:11.
-Freeing unused PROM memory: 112k freed
-Freeing unused kernel memory: 272K
-This architecture does not have kernel memory protection.
-Run /sbin/init as init process
-[...]
-
-I had to revert recent changes forcing the minimum of GCC 4.6, and then 
-patch up the breakage that was the motivation for the version bump, as I 
-cannot easily upgrade my compiler (the newest one I was able to make 
-working without NPTL), which will be a process.
-
- Still 4.18 can be used pristine with CONFIG_32BIT, except for a recent 
-build breakage with the RTC driver, my small fix for which has already 
-been accepted.  I think 4.17 will build and boot just fine out of the box, 
-and I expect the RTC fix to be backported to 4.18 too.
-
- For CONFIG_64BIT a fix for memory corruption with `memset' is required 
-that applies to 4.17 and later versions, and is pending maintainer's 
-acceptance.  So I think 4.16 will work just fine, but you need the 
-toolchain (GCC+binutils) from my site with a DADDI and DADDIU workarounds 
-implemented to build such a kernel.  I think the workarounds will never 
-make it upstream due to their intrusiveness, but I mean to maintain them 
-indefinitely (though as I mentioned above it'll make me a little bit yet 
-to get beyond GCC 4.1.2).
-
-  Maciej
+diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
+index e47f64e12bbd..60d568cf5206 100644
+--- a/lib/zinc/Makefile
++++ b/lib/zinc/Makefile
+@@ -6,4 +6,6 @@ zinc_chacha20-y := chacha20/chacha20.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_X86_64) += chacha20/chacha20-x86_64.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM) += chacha20/chacha20-arm.o
+ zinc_chacha20-$(CONFIG_ZINC_ARCH_ARM64) += chacha20/chacha20-arm64.o
++zinc_chacha20-$(CONFIG_ZINC_ARCH_MIPS) += chacha20/chacha20-mips.o
++AFLAGS_chacha20-mips.o += -O2 # This is required to fill the branch delay slots
+ obj-$(CONFIG_ZINC_CHACHA20) += zinc_chacha20.o
+diff --git a/lib/zinc/chacha20/chacha20-mips-glue.c b/lib/zinc/chacha20/chacha20-mips-glue.c
+new file mode 100644
+index 000000000000..917d8fa8e3f4
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips-glue.c
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0 OR MIT
++/*
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++asmlinkage void chacha20_mips(u32 state[16], u8 *out, const u8 *in,
++			      const size_t len);
++static bool *const chacha20_nobs[] __initconst = { };
++static void __init chacha20_fpu_init(void)
++{
++}
++
++static inline bool chacha20_arch(struct chacha20_ctx *ctx, u8 *dst,
++				 const u8 *src, size_t len,
++				 simd_context_t *simd_context)
++{
++	chacha20_mips(ctx->state, dst, src, len);
++	return true;
++}
++
++
++static inline bool hchacha20_arch(u32 derived_key[CHACHA20_KEY_WORDS],
++				  const u8 nonce[HCHACHA20_NONCE_SIZE],
++				  const u8 key[HCHACHA20_KEY_SIZE],
++				  simd_context_t *simd_context)
++{
++	return false;
++}
+diff --git a/lib/zinc/chacha20/chacha20-mips.S b/lib/zinc/chacha20/chacha20-mips.S
+new file mode 100644
+index 000000000000..031ee5e794df
+--- /dev/null
++++ b/lib/zinc/chacha20/chacha20-mips.S
+@@ -0,0 +1,424 @@
++/* SPDX-License-Identifier: GPL-2.0 OR MIT */
++/*
++ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com>. All Rights Reserved.
++ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++#define MASK_U32		0x3c
++#define CHACHA20_BLOCK_SIZE	64
++#define STACK_SIZE		32
++
++#define X0	$t0
++#define X1	$t1
++#define X2	$t2
++#define X3	$t3
++#define X4	$t4
++#define X5	$t5
++#define X6	$t6
++#define X7	$t7
++#define X8	$t8
++#define X9	$t9
++#define X10	$v1
++#define X11	$s6
++#define X12	$s5
++#define X13	$s4
++#define X14	$s3
++#define X15	$s2
++/* Use regs which are overwritten on exit for Tx so we don't leak clear data. */
++#define T0	$s1
++#define T1	$s0
++#define T(n)	T ## n
++#define X(n)	X ## n
++
++/* Input arguments */
++#define STATE		$a0
++#define OUT		$a1
++#define IN		$a2
++#define BYTES		$a3
++
++/* Output argument */
++/* NONCE[0] is kept in a register and not in memory.
++ * We don't want to touch original value in memory.
++ * Must be incremented every loop iteration.
++ */
++#define NONCE_0		$v0
++
++/* SAVED_X and SAVED_CA are set in the jump table.
++ * Use regs which are overwritten on exit else we don't leak clear data.
++ * They are used to handling the last bytes which are not multiple of 4.
++ */
++#define SAVED_X		X15
++#define SAVED_CA	$s7
++
++#define IS_UNALIGNED	$s7
++
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#define MSB 0
++#define LSB 3
++#define ROTx rotl
++#define ROTR(n) rotr n, 24
++#define	CPU_TO_LE32(n) \
++	wsbh	n; \
++	rotr	n, 16;
++#else
++#define MSB 3
++#define LSB 0
++#define ROTx rotr
++#define CPU_TO_LE32(n)
++#define ROTR(n)
++#endif
++
++#define FOR_EACH_WORD(x) \
++	x( 0); \
++	x( 1); \
++	x( 2); \
++	x( 3); \
++	x( 4); \
++	x( 5); \
++	x( 6); \
++	x( 7); \
++	x( 8); \
++	x( 9); \
++	x(10); \
++	x(11); \
++	x(12); \
++	x(13); \
++	x(14); \
++	x(15);
++
++#define FOR_EACH_WORD_REV(x) \
++	x(15); \
++	x(14); \
++	x(13); \
++	x(12); \
++	x(11); \
++	x(10); \
++	x( 9); \
++	x( 8); \
++	x( 7); \
++	x( 6); \
++	x( 5); \
++	x( 4); \
++	x( 3); \
++	x( 2); \
++	x( 1); \
++	x( 0);
++
++#define PLUS_ONE_0	 1
++#define PLUS_ONE_1	 2
++#define PLUS_ONE_2	 3
++#define PLUS_ONE_3	 4
++#define PLUS_ONE_4	 5
++#define PLUS_ONE_5	 6
++#define PLUS_ONE_6	 7
++#define PLUS_ONE_7	 8
++#define PLUS_ONE_8	 9
++#define PLUS_ONE_9	10
++#define PLUS_ONE_10	11
++#define PLUS_ONE_11	12
++#define PLUS_ONE_12	13
++#define PLUS_ONE_13	14
++#define PLUS_ONE_14	15
++#define PLUS_ONE_15	16
++#define PLUS_ONE(x)	PLUS_ONE_ ## x
++#define _CONCAT3(a,b,c)	a ## b ## c
++#define CONCAT3(a,b,c)	_CONCAT3(a,b,c)
++
++#define STORE_UNALIGNED(x) \
++CONCAT3(.Lchacha20_mips_xor_unaligned_, PLUS_ONE(x), _b: ;) \
++	.if (x != 12); \
++		lw	T0, (x*4)(STATE); \
++	.endif; \
++	lwl	T1, (x*4)+MSB ## (IN); \
++	lwr	T1, (x*4)+LSB ## (IN); \
++	.if (x == 12); \
++		addu	X ## x, NONCE_0; \
++	.else; \
++		addu	X ## x, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## x); \
++	xor	X ## x, T1; \
++	swl	X ## x, (x*4)+MSB ## (OUT); \
++	swr	X ## x, (x*4)+LSB ## (OUT);
++
++#define STORE_ALIGNED(x) \
++CONCAT3(.Lchacha20_mips_xor_aligned_, PLUS_ONE(x), _b: ;) \
++	.if (x != 12); \
++		lw	T0, (x*4)(STATE); \
++	.endif; \
++	lw	T1, (x*4) ## (IN); \
++	.if (x == 12); \
++		addu	X ## x, NONCE_0; \
++	.else; \
++		addu	X ## x, T0; \
++	.endif; \
++	CPU_TO_LE32(X ## x); \
++	xor	X ## x, T1; \
++	sw	X ## x, (x*4) ## (OUT);
++
++/* Jump table macro.
++ * Used for setup and handling the last bytes, which are not multiple of 4.
++ * X15 is free to store Xn
++ * Every jumptable entry must be equal in size.
++ */
++#define JMPTBL_ALIGNED(x) \
++.Lchacha20_mips_jmptbl_aligned_ ## x: ; \
++	.set	noreorder; \
++	b	.Lchacha20_mips_xor_aligned_ ## x ## _b; \
++	.if (x == 12); \
++		addu	SAVED_X, X ## x, NONCE_0; \
++	.else; \
++		addu	SAVED_X, X ## x, SAVED_CA; \
++	.endif; \
++	.set	reorder
++
++#define JMPTBL_UNALIGNED(x) \
++.Lchacha20_mips_jmptbl_unaligned_ ## x: ; \
++	.set	noreorder; \
++	b	.Lchacha20_mips_xor_unaligned_ ## x ## _b; \
++	.if (x == 12); \
++		addu	SAVED_X, X ## x, NONCE_0; \
++	.else; \
++		addu	SAVED_X, X ## x, SAVED_CA; \
++	.endif; \
++	.set	reorder
++
++#define AXR(A, B, C, D,  K, L, M, N,  V, W, Y, Z,  S) \
++	addu	X(A), X(K); \
++	addu	X(B), X(L); \
++	addu	X(C), X(M); \
++	addu	X(D), X(N); \
++	xor	X(V), X(A); \
++	xor	X(W), X(B); \
++	xor	X(Y), X(C); \
++	xor	X(Z), X(D); \
++	rotl	X(V), S;    \
++	rotl	X(W), S;    \
++	rotl	X(Y), S;    \
++	rotl	X(Z), S;
++
++.text
++.set	reorder
++.set	noat
++.globl	chacha20_mips
++.ent	chacha20_mips
++chacha20_mips:
++	.frame	$sp, STACK_SIZE, $ra
++
++	addiu	$sp, -STACK_SIZE
++
++	/* Return bytes = 0. */
++	beqz	BYTES, .Lchacha20_mips_end
++
++	lw	NONCE_0, 48(STATE)
++
++	/* Save s0-s7 */
++	sw	$s0,  0($sp)
++	sw	$s1,  4($sp)
++	sw	$s2,  8($sp)
++	sw	$s3, 12($sp)
++	sw	$s4, 16($sp)
++	sw	$s5, 20($sp)
++	sw	$s6, 24($sp)
++	sw	$s7, 28($sp)
++
++	/* Test IN or OUT is unaligned.
++	 * IS_UNALIGNED = ( IN | OUT ) & 0x00000003
++	 */
++	or	IS_UNALIGNED, IN, OUT
++	andi	IS_UNALIGNED, 0x3
++
++	/* Set number of rounds */
++	li	$at, 20
++
++	b	.Lchacha20_rounds_start
++
++.align 4
++.Loop_chacha20_rounds:
++	addiu	IN,  CHACHA20_BLOCK_SIZE
++	addiu	OUT, CHACHA20_BLOCK_SIZE
++	addiu	NONCE_0, 1
++
++.Lchacha20_rounds_start:
++	lw	X0,  0(STATE)
++	lw	X1,  4(STATE)
++	lw	X2,  8(STATE)
++	lw	X3,  12(STATE)
++
++	lw	X4,  16(STATE)
++	lw	X5,  20(STATE)
++	lw	X6,  24(STATE)
++	lw	X7,  28(STATE)
++	lw	X8,  32(STATE)
++	lw	X9,  36(STATE)
++	lw	X10, 40(STATE)
++	lw	X11, 44(STATE)
++
++	move	X12, NONCE_0
++	lw	X13, 52(STATE)
++	lw	X14, 56(STATE)
++	lw	X15, 60(STATE)
++
++.Loop_chacha20_xor_rounds:
++	addiu	$at, -2
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15, 16);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7, 12);
++	AXR( 0, 1, 2, 3,  4, 5, 6, 7, 12,13,14,15,  8);
++	AXR( 8, 9,10,11, 12,13,14,15,  4, 5, 6, 7,  7);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14, 16);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4, 12);
++	AXR( 0, 1, 2, 3,  5, 6, 7, 4, 15,12,13,14,  8);
++	AXR(10,11, 8, 9, 15,12,13,14,  5, 6, 7, 4,  7);
++	bnez	$at, .Loop_chacha20_xor_rounds
++
++	addiu	BYTES, -(CHACHA20_BLOCK_SIZE)
++
++	/* Is data src/dst unaligned? Jump */
++	bnez	IS_UNALIGNED, .Loop_chacha20_unaligned
++
++	/* Set number rounds here to fill delayslot. */
++	li	$at, 20
++
++	/* BYTES < 0, it has no full block. */
++	bltz	BYTES, .Lchacha20_mips_no_full_block_aligned
++
++	FOR_EACH_WORD_REV(STORE_ALIGNED)
++
++	/* BYTES > 0? Loop again. */
++	bgtz	BYTES, .Loop_chacha20_rounds
++
++	/* Place this here to fill delay slot */
++	addiu	NONCE_0, 1
++
++	/* BYTES < 0? Handle last bytes */
++	bltz	BYTES, .Lchacha20_mips_xor_bytes
++
++.Lchacha20_mips_xor_done:
++	/* Restore used registers */
++	lw	$s0,  0($sp)
++	lw	$s1,  4($sp)
++	lw	$s2,  8($sp)
++	lw	$s3, 12($sp)
++	lw	$s4, 16($sp)
++	lw	$s5, 20($sp)
++	lw	$s6, 24($sp)
++	lw	$s7, 28($sp)
++
++	/* Write NONCE_0 back to right location in state */
++	sw	NONCE_0, 48(STATE)
++
++.Lchacha20_mips_end:
++	addiu	$sp, STACK_SIZE
++	jr	$ra
++
++.Lchacha20_mips_no_full_block_aligned:
++	/* Restore the offset on BYTES */
++	addiu	BYTES, CHACHA20_BLOCK_SIZE
++
++	/* Get number of full WORDS */
++	andi	$at, BYTES, MASK_U32
++
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_aligned_0)
++
++	/* Calculate lower half jump table offset */
++	ins	T0, $at, 1, 6
++
++	/* Add offset to STATE */
++	addu	T1, STATE, $at
++
++	/* Add lower half jump table addr */
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_aligned_0)
++
++	/* Read value from STATE */
++	lw	SAVED_CA, 0(T1)
++
++	/* Store remaining bytecounter as negative value */
++	subu	BYTES, $at, BYTES
++
++	jr	T0
++
++	/* Jump table */
++	FOR_EACH_WORD(JMPTBL_ALIGNED)
++
++
++.Loop_chacha20_unaligned:
++	/* Set number rounds here to fill delayslot. */
++	li	$at, 20
++
++	/* BYTES > 0, it has no full block. */
++	bltz	BYTES, .Lchacha20_mips_no_full_block_unaligned
++
++	FOR_EACH_WORD_REV(STORE_UNALIGNED)
++
++	/* BYTES > 0? Loop again. */
++	bgtz	BYTES, .Loop_chacha20_rounds
++
++	/* Write NONCE_0 back to right location in state */
++	sw	NONCE_0, 48(STATE)
++
++	.set noreorder
++	/* Fall through to byte handling */
++	bgez	BYTES, .Lchacha20_mips_xor_done
++.Lchacha20_mips_xor_unaligned_0_b:
++.Lchacha20_mips_xor_aligned_0_b:
++	/* Place this here to fill delay slot */
++	addiu	NONCE_0, 1
++	.set reorder
++
++.Lchacha20_mips_xor_bytes:
++	addu	IN, $at
++	addu	OUT, $at
++	/* First byte */
++	lbu	T1, 0(IN)
++	addiu	$at, BYTES, 1
++	CPU_TO_LE32(SAVED_X)
++	ROTR(SAVED_X)
++	xor	T1, SAVED_X
++	sb	T1, 0(OUT)
++	beqz	$at, .Lchacha20_mips_xor_done
++	/* Second byte */
++	lbu	T1, 1(IN)
++	addiu	$at, BYTES, 2
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	sb	T1, 1(OUT)
++	beqz	$at, .Lchacha20_mips_xor_done
++	/* Third byte */
++	lbu	T1, 2(IN)
++	ROTx	SAVED_X, 8
++	xor	T1, SAVED_X
++	sb	T1, 2(OUT)
++	b	.Lchacha20_mips_xor_done
++
++.Lchacha20_mips_no_full_block_unaligned:
++	/* Restore the offset on BYTES */
++	addiu	BYTES, CHACHA20_BLOCK_SIZE
++
++	/* Get number of full WORDS */
++	andi	$at, BYTES, MASK_U32
++
++	/* Load upper half of jump table addr */
++	lui	T0, %hi(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	/* Calculate lower half jump table offset */
++	ins	T0, $at, 1, 6
++
++	/* Add offset to STATE */
++	addu	T1, STATE, $at
++
++	/* Add lower half jump table addr */
++	addiu	T0, %lo(.Lchacha20_mips_jmptbl_unaligned_0)
++
++	/* Read value from STATE */
++	lw	SAVED_CA, 0(T1)
++
++	/* Store remaining bytecounter as negative value */
++	subu	BYTES, $at, BYTES
++
++	jr	T0
++
++	/* Jump table */
++	FOR_EACH_WORD(JMPTBL_UNALIGNED)
++.end chacha20_mips
++.set at
+diff --git a/lib/zinc/chacha20/chacha20.c b/lib/zinc/chacha20/chacha20.c
+index 3698fcd8ae7f..0b833310a7d8 100644
+--- a/lib/zinc/chacha20/chacha20.c
++++ b/lib/zinc/chacha20/chacha20.c
+@@ -20,6 +20,8 @@
+ #include "chacha20-x86_64-glue.c"
+ #elif defined(CONFIG_ZINC_ARCH_ARM) || defined(CONFIG_ZINC_ARCH_ARM64)
+ #include "chacha20-arm-glue.c"
++#elif defined(CONFIG_ZINC_ARCH_MIPS)
++#include "chacha20-mips-glue.c"
+ #else
+ static bool *const chacha20_nobs[] __initconst = { };
+ static void __init chacha20_fpu_init(void)
+-- 
+2.19.0

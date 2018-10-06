@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 11:21:11 +0200 (CEST)
-Received: from mail.bootlin.com ([62.4.15.54]:55611 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990394AbeJFJVGDCid0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 6 Oct 2018 11:21:06 +0200
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 4CD9820802; Sat,  6 Oct 2018 11:20:59 +0200 (CEST)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 19B52206A2;
-        Sat,  6 Oct 2018 11:20:49 +0200 (CEST)
-Date:   Sat, 6 Oct 2018 11:20:50 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>, robh@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Guenter Roeck <linux@roeck-us.net>, linux-doc@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-mips@linux-mips.org, Stephen Boyd <sboyd@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v5 04/21] dt-bindings: Add doc for the Ingenic TCU drivers
-Message-ID: <20181006092050.GA32272@piout.net>
-References: <S23990757AbeJCKjwPaYBe/20181003103952Z+1106@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 11:22:03 +0200 (CEST)
+Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:44150 "EHLO
+        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990394AbeJFJV7ED260 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Oct 2018 11:21:59 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 78D793F5A2;
+        Sat,  6 Oct 2018 11:21:58 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id gWgjjzcoHPBo; Sat,  6 Oct 2018 11:21:57 +0200 (CEST)
+Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
+        (Authenticated sender: mb547485)
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 328253F3B6;
+        Sat,  6 Oct 2018 11:21:57 +0200 (CEST)
+Date:   Sat, 6 Oct 2018 11:21:56 +0200
+From:   Fredrik Noring <noring@nocrew.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
+Subject: Re: [PATCH] TC: Set DMA masks for devices
+Message-ID: <20181006092156.GA6783@sx-9>
+References: <alpine.LFD.2.21.1810030109210.5483@eddie.linux-mips.org>
+ <20181004165720.GA2361@sx-9>
+ <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org>
+ <20181005145612.GA2341@sx-9>
+ <alpine.LFD.2.21.1810051602280.22125@eddie.linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <S23990757AbeJCKjwPaYBe/20181003103952Z+1106@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.21.1810051602280.22125@eddie.linux-mips.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <alexandre.belloni@bootlin.com>
+Return-Path: <noring@nocrew.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66712
+X-archive-position: 66713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@bootlin.com
+X-original-sender: noring@nocrew.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,74 +52,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/10/2018 12:32:51+0200, Paul Cercueil wrote:
-> 
-> Le 1 oct. 2018 10:48, Daniel Lezcano <daniel.lezcano@linaro.org> a écrit :
-> >
-> > On 31/07/2018 00:01, Paul Cercueil wrote: 
-> >
-> > [ ... ] 
-> >
-> > >>>  +- ingenic,timer-channel: Specifies the TCU channel that should be 
-> > >>> used as 
-> > >>>  +  system timer. If not provided, the TCU channel 0 is used for the 
-> > >>> system timer. 
-> > >>>  + 
-> > >>>  +- ingenic,clocksource-channel: Specifies the TCU channel that 
-> > >>> should be used 
-> > >>>  +  as clocksource and sched_clock. It must be a different channel 
-> > >>> than the one 
-> > >>>  +  used as system timer. If not provided, neither a clocksource nor a 
-> > >>>  +  sched_clock is instantiated. 
-> > >> 
-> > >> clocksource and sched_clock are Linux specific and don't belong in DT. 
-> > >> You should define properties of the hardware or use existing properties 
-> > >> like interrupts or clocks to figure out which channel to use. For 
-> > >> example, if some channels don't have an interrupt, then use them for 
-> > >> clocksource and not a clockevent. Or you could have timers that run in 
-> > >> low-power modes or not. If all the channels are identical, then it 
-> > >> shouldn't matter which ones the OS picks. 
-> >
-> > It can't work in this case because the pmw and the timer driver are not 
-> > communicating and the first one can stole a channel to the last one. 
-> 
-> In that particular case the timer driver will always request its channels first; with no timer set the system hangs before subsys_initcall, and the PWM driver is a subnode of the timer node, so is probed only after the timer probed.
-> 
-> > > We already talked about that. All the TCU channels can be used for PWM. 
-> > > The problem is I cannot know from the driver's scope which channels will 
-> > > be free and which channels will be requested for PWM. You suggested that I 
-> > > parse the devicetree for clients, and I did that in the V3/V4 patchset. But 
-> > > it only works for clients requesting through devicetree, not from platform 
-> > > code or even sysfs. 
-> > > 
-> > > One thing I can try is to dynamically change the channels the system timer 
-> > > and clocksource are using when the current ones are requested for PWM. But 
-> > > that sounds hardcore... 
-> >
-> > Yes, it is :/ 
-> >
-> > Sorry for letting you wasting time and effort to write an overkill code 
-> > not suitable for upstream. 
-> >
-> > A very gross thought, wouldn't be possible to "register" a channel from 
-> > the timer driver code in a shared data area (but well self-encapsulated) 
-> > and the pwm code will check such channel isn't in use ? 
-> 
-> Probably, but it's the contrary I need to do. The timer driver code can use any channel, and probes first. The PWM driver code must use specific channels, and probes last. So either the timer driver knows what channels it can't use, thanks to a device property, or it adapts itself when a channel in use is requested for PWM, which is what I tried in v7.
-> 
-> I think we could find a way to use a devicetree property that doesn't trigger Rob. That would still be the easiest and cleanest solution. 
-> 
-> Maybe "ingenic,reserved-channels-mask", which would contain a mask of channels that can only be used by the timer driver. And what the timer driver does with these channels, would be specific to the implementation and would not appear in the bindings. I hope Rob can work with that.
-> 
+Hi Maciej,
 
-Rob did ack the following binding:
+> > Ah... memory that is known to be DMA compatible is allocated separately,
+> > and then handed over to the DMA subsystem using dma_declare_coherent_memory.
+> 
+>  Well, that does specify both a CPU-side and a corresponding DMA-side 
+> address too.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
+Yes, side-stepping any practical use of a DMA mask, which is why it
+probably could have an arbitrary value except 0 that causes this warning.
 
-another subdevice is a PWM (not documented here).
+> > This is done once during driver initialisation. The drivers ohci-sm501.c and
+> > ohci-tmio.c do that too, which is why I suspect they might broken as well.
+> > 
+> > The SM501 driver has this explanation:
+> > 
+> > 	/* The sm501 chip is equipped with local memory that may be used
+> > 	 * by on-chip devices such as the video controller and the usb host.
+> > 	 * This driver uses dma_declare_coherent_memory() to make sure
+> > 	 * usb allocations with dma_alloc_coherent() allocate from
+> > 	 * this local memory. The dma_handle returned by dma_alloc_coherent()
+> > 	 * will be an offset starting from 0 for the first local memory byte.
+> 
+>  From the description I take it it is some MMIO memory rather than host 
+> memory.  I fail to see how it is supposed to work with these calls for 
+> non-system memory, which certainly any MMIO memory is, which surely is not 
+> under the supervision of the kernel memory allocator.
 
+I agree, this is obscure to me too.
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+>  There are calls for MMIO memory defined in the DMA API, specifically 
+> `dma_map_resource' and `dma_unmap_resource'.  I've never used them myself, 
+> and I gather they provide you with a way for CPUs to access MMIO memory 
+> with caching enabled and without the need to use the MMIO accessors only, 
+> such as `readl', `writel', etc., which are expected to avoid going through 
+> any CPU cache.  Maybe these are what you're after?
+> 
+>  But maybe I'm missing something.
+
+That is handled within the USB OHCI subsystem. I don't know the details,
+actually.
+
+> > 	 *
+> > 	 * So as long as data is allocated using dma_alloc_coherent() all is
+> > 	 * fine. This is however not always the case - buffers may be allocated
+> > 	 * using kmalloc() - so the usb core needs to be told that it must copy
+> > 	 * data into our local memory if the buffers happen to be placed in
+> > 	 * regular memory. The HCD_LOCAL_MEM flag does just that.
+> > 	 */
+> 
+>  This raises a hack alert to me TBH.
+
+Christoph Hellwig raised concerns too, but I don't know how an OHCI driver
+could do things differently given the circumstances, at least for a simple
+initial implementation. For sure, the IOP has the capability and was most
+likely designed for handling USB devices and other peripherals to a much
+greater extent than allowed by the current PS2 OHCI driver, where the EE
+manipulates the OHCI registers directly, which is quite inefficient.
+
+> > The DMA for its onboard buffer memory appears to be very similar to the
+> > IOP and its DMA? That memory is currently copied by the EE, but there are
+> > other DMA controllers that could handle that, possibly synchronised using
+> > DMA chaining, which would assist the EE significantly.
+> 
+>  Mind that the DEFZA runs its own RTOS for initialization and management 
+> support, including in particular SMT (Station Management).  This is run on 
+> an MC68000 processor.  That processor is interfaced to a bus where board 
+> memory is attached as well as the RMC (Ring Memory Controller) chip, which 
+> acts as a DMA master on that bus, like does the host bus interface.  Also 
+> certain control register writes from the host raise interrupts to the 
+> MC68000 for special situations to handle.
+> 
+>  All the PDQ-based FDDI adapters also have an M68000 which runs an RTOS, 
+> however the presence of the PDQ ASIC makes their architecture slightly 
+> different as the FDDI chipset does host DMA via the PDQ ASIC, which acts 
+> as a master on the host bus (possibly through a bridge chip like the PFI, 
+> though TURBOchannel for example is interfaced directly).
+
+How is its firmware handled? The Linux MIPS wiki entry for the DECstation
+firmware
+
+https://www.linux-mips.org/wiki/DECstation#Firmware
+
+is a TODO. :) The main reason I'm asking is that the IOP is a MIPS R3000
+(apparently in later product models replaced with a PowerPC 405GP and its
+DECKARD software emulator) that also needs firmware. The IOP most likely
+ought to handle multiple firmware files, in the IRX format, depending on
+its set of services.
+
+Have you implemented sysfs structures to inspect the DEFZA RTOS? That is
+something I would like to do for the IOP.
+
+>  The biggest challenge has turned out to be electrolytic capacitor 
+> failures in power supplies.  Unfortunately in late 1980s to mid 1990s 
+> several lines of low-ESR capacitors, used in output filters in switch-mode 
+> PSUs, were made with a new electrolyte formula based on a quaternary 
+> ammonium salt.  All they have turned out to suffer from excessive 
+> corrosion caused by that electrolyte, shortening the lifespan of those 
+> parts well below the expectations even in the enhanced lines specifically 
+> made with long life in mind.  Consequently those parts start leaking even 
+> if unused (or indeed never used) and then obviously cause PSU breakage if 
+> powered up.
+> 
+>  Those were all from reputable manufacturers, such as Chemi-con, Nichicon 
+> or Panasonic; not to be confused with the bulged capacitor problem, aka 
+> capacitor plague, which many ATX PSUs have suffered from mid 1990s to mid 
+> 2000s where cheap parts were used from less reputable manufacturers.
+
+Interesting!
+
+> This is a DECstation 5000/2x0
+> CPU0 revision is: 00000440 (R4400SC)
+> FPU revision is: 00000500
+> Checking for the multiply/shift bug... no.
+> Checking for the daddiu bug... yes, workaround... yes.
+> Determined physical RAM map:
+>  memory: 0000000004000000 @ 0000000000000000 (usable)
+
+Considering the amount of memory, how do compile for it?
+
+Fredrik

@@ -1,45 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Oct 2018 11:22:03 +0200 (CEST)
-Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:44150 "EHLO
-        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990394AbeJFJV7ED260 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Oct 2018 11:21:59 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 78D793F5A2;
-        Sat,  6 Oct 2018 11:21:58 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id gWgjjzcoHPBo; Sat,  6 Oct 2018 11:21:57 +0200 (CEST)
-Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 328253F3B6;
-        Sat,  6 Oct 2018 11:21:57 +0200 (CEST)
-Date:   Sat, 6 Oct 2018 11:21:56 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
-Subject: Re: [PATCH] TC: Set DMA masks for devices
-Message-ID: <20181006092156.GA6783@sx-9>
-References: <alpine.LFD.2.21.1810030109210.5483@eddie.linux-mips.org>
- <20181004165720.GA2361@sx-9>
- <alpine.LFD.2.21.1810041916420.12089@eddie.linux-mips.org>
- <20181005145612.GA2341@sx-9>
- <alpine.LFD.2.21.1810051602280.22125@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Oct 2018 15:24:14 +0200 (CEST)
+Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:34248
+        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992554AbeJGNYLHLKA0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Oct 2018 15:24:11 +0200
+Received: by mail-wr1-x442.google.com with SMTP id z4-v6so17943708wrb.1
+        for <linux-mips@linux-mips.org>; Sun, 07 Oct 2018 06:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=aAL3fZUFBVwRXWuu2uhsqoK4mzwzp8b9HpzY6V1JSxM=;
+        b=vIKampcexcLkv0S+mOD2T5pGgtpBVKtgtdbPNsTZ4GOkoOrzV9vMbEQ45/9qEOIrKy
+         ZjOvvFgL8O3hvcyGcWAk6DPIXvqJ7ywZ+dpyWQK7NIr55MSHm1nSordrg3VhEuF9dV0H
+         ZAbmBwPoPjwrC381O6kOt/sWmHdDE96xY4kJFM8yPzFeXFFEptxJGPO9Byo6FkUa4/2l
+         BXpQbd9IfMJdbn5uZrL3CMvs2fhFtFbJh7GYGRaHzJPKCAxSgQw1V/tVjA7miAkMMNsK
+         5/oFWq3LngX1i8MiPkXfRT/4gPC1x8X2tjNJUfuC6O4oLPmQSLIeEsKEZtb2XDKtrDIO
+         Acwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=aAL3fZUFBVwRXWuu2uhsqoK4mzwzp8b9HpzY6V1JSxM=;
+        b=KJ0fvi39JjaJE9kCAYlQu7CxQ7GiYyM8DpP8pSBjYDkl0M/WDiTHHQE4o/jsWGUFFR
+         2hjDpID+CvF9S8EqmGprY2OcVu2SchMZFYOT4FzUYo1YpChVhA1e1MLRU2aaVEEz8UKu
+         9IRubMkQ+xdOo3EpiAz5c0Qxjq+oivEwTqpbrAMALpwtBUNRORJTJAsRahuirrjk5giW
+         vNP8r0GpL17/lErxSUzz0h/1QxyobB8QpkFzfX5HJ5UoPna8zTcaOMG4Io/mWYH/VOmp
+         WA8c57ztqbxS41JxssuEAnRgMlleOPLOI7rtmWW6Gnw57D64BryEHPjE3ruiQdcImAbF
+         53zA==
+X-Gm-Message-State: ABuFfoi1zJdUCRXi8qAQvVHdeklwdlBsTvBGpq28Nrfq/SdnqmGPIjeZ
+        a67UX/zd2LkpU45D5rVUDMw=
+X-Google-Smtp-Source: ACcGV63XTPHlSZ6IkGp1k+LpH19058bcC+ck+1788NKi323frKDrOK7DUYWm3G3ikQB68NrTl3+CnQ==
+X-Received: by 2002:adf:bc84:: with SMTP id g4-v6mr14406546wrh.250.1538918645598;
+        Sun, 07 Oct 2018 06:24:05 -0700 (PDT)
+Received: from kontron.lan (2001-1ae9-0ff1-f191-4cf5-3d33-8e4a-f17f.ip6.tmcz.cz. [2001:1ae9:ff1:f191:4cf5:3d33:8e4a:f17f])
+        by smtp.gmail.com with ESMTPSA id l67-v6sm21435540wma.20.2018.10.07.06.24.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 07 Oct 2018 06:24:04 -0700 (PDT)
+From:   Petr Cvek <petrcvekcz@gmail.com>
+Subject: Re: mt7621/mt7628 PCIe linux driver
+To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Cc:     ryder.lee@mediatek.com, blogic@openwrt.org,
+        linux-mediatek@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-pci@vger.kernel.org
+References: <8fd595af-53fa-c100-c369-8c7a30eba8e3@gmail.com>
+ <CAMhs-H-CM3bb9fg2eX6G_534bmuQYcoFa+pJSuNeArXLSXO4=Q@mail.gmail.com>
+Message-ID: <283247bf-fa56-875a-6669-eddd6142d399@gmail.com>
+Date:   Sun, 7 Oct 2018 15:25:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <CAMhs-H-CM3bb9fg2eX6G_534bmuQYcoFa+pJSuNeArXLSXO4=Q@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.21.1810051602280.22125@eddie.linux-mips.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <noring@nocrew.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <petrcvekcz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66713
+X-archive-position: 66714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noring@nocrew.org
+X-original-sender: petrcvekcz@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,124 +75,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+Hello,
 
-> > Ah... memory that is known to be DMA compatible is allocated separately,
-> > and then handed over to the DMA subsystem using dma_declare_coherent_memory.
+sorry for a late reaction and thanks for your input. It took me two
+weeks to get MT7628 ethernet driver to start working (so I could use the
+current kernel version).
+
+Dne 23.9.2018 v 08:20 Sergio Paracuellos napsal(a):
+> Hi Petr,
 > 
->  Well, that does specify both a CPU-side and a corresponding DMA-side 
-> address too.
-
-Yes, side-stepping any practical use of a DMA mask, which is why it
-probably could have an arbitrary value except 0 that causes this warning.
-
-> > This is done once during driver initialisation. The drivers ohci-sm501.c and
-> > ohci-tmio.c do that too, which is why I suspect they might broken as well.
-> > 
-> > The SM501 driver has this explanation:
-> > 
-> > 	/* The sm501 chip is equipped with local memory that may be used
-> > 	 * by on-chip devices such as the video controller and the usb host.
-> > 	 * This driver uses dma_declare_coherent_memory() to make sure
-> > 	 * usb allocations with dma_alloc_coherent() allocate from
-> > 	 * this local memory. The dma_handle returned by dma_alloc_coherent()
-> > 	 * will be an offset starting from 0 for the first local memory byte.
+> On Sat, Sep 22, 2018 at 11:06 PM, Petr Cvek <petrcvekcz@gmail.com> wrote:
+>> Hello,
+>>
+>> I'm trying to play with mt7628 PCIe (and it's old driver mt7620), but
+>> the system keeps freezing. It is probably because of bus master access
+>> of my PCIe cards but I don't see any memory access controls for PCIe <->
+>> RAM in the datasheet. The same problem is with MSI. It seems the root
+>> complex supports MSI (it has an MSI capability field), but there isn't
+>> any mention in the MT7628 datasheet too. As it seems the MT7628 PCIe is
+>> based on MT7621 PCIe, I went for an MT7621 datasheet, but sadly in the
+>> datasheet the PCIe section is missing completely.
 > 
->  From the description I take it it is some MMIO memory rather than host 
-> memory.  I fail to see how it is supposed to work with these calls for 
-> non-system memory, which certainly any MMIO memory is, which surely is not 
-> under the supervision of the kernel memory allocator.
-
-I agree, this is obscure to me too.
-
->  There are calls for MMIO memory defined in the DMA API, specifically 
-> `dma_map_resource' and `dma_unmap_resource'.  I've never used them myself, 
-> and I gather they provide you with a way for CPUs to access MMIO memory 
-> with caching enabled and without the need to use the MMIO accessors only, 
-> such as `readl', `writel', etc., which are expected to avoid going through 
-> any CPU cache.  Maybe these are what you're after?
+> AFAIK, MT7628 should be covered with mt7620 driver. The source code is in
+> arch/mips/pci/pci-mt7620.c. For initialization in really depends on
+> the "ralink_soc"
+> variable exported in arch/mips/ralink/prom.c.
 > 
->  But maybe I'm missing something.
 
-That is handled within the USB OHCI subsystem. I don't know the details,
-actually.
+I was able to fix some of the problems. But still there are still
+missing pieces.
 
-> > 	 *
-> > 	 * So as long as data is allocated using dma_alloc_coherent() all is
-> > 	 * fine. This is however not always the case - buffers may be allocated
-> > 	 * using kmalloc() - so the usb core needs to be told that it must copy
-> > 	 * data into our local memory if the buffers happen to be placed in
-> > 	 * regular memory. The HCD_LOCAL_MEM flag does just that.
-> > 	 */
+The PCI driver (from pci-mt7620.c) isn't working in the vanilla version.
+It has a lot of problems:
+- Wrong access to the reset register (the wrong writing function used)
+- IO access is not working at all. There is a function call missing to
+setting MMIO base. The indirect access base register has a wrong value
+and I've had to force code some other IOPORT related stuff.
+- Forcing BAR0 is irrelevant for a root complex and it interferes with
+kernel resources assignment.
+- Cards other than 01:00.0 will have no IRQ set (and the drivers will fail).
+- Some minor problem like using the mdelay vs msleep.
+
+
+> You have to figure out why and where is really freezing. Does a clean kernel
+> boots and success on setting up PCI? A 'dmesg' would be helpful.
 > 
->  This raises a hack alert to me TBH.
-
-Christoph Hellwig raised concerns too, but I don't know how an OHCI driver
-could do things differently given the circumstances, at least for a simple
-initial implementation. For sure, the IOP has the capability and was most
-likely designed for handling USB devices and other peripherals to a much
-greater extent than allowed by the current PS2 OHCI driver, where the EE
-manipulates the OHCI registers directly, which is quite inefficient.
-
-> > The DMA for its onboard buffer memory appears to be very similar to the
-> > IOP and its DMA? That memory is currently copied by the EE, but there are
-> > other DMA controllers that could handle that, possibly synchronised using
-> > DMA chaining, which would assist the EE significantly.
+>>
+>> Does anybody have a working MT7621/28 bus master setup or a more
+>> completed datasheet? I would like to get some information for fixing the
+>> mt7620 PCIe driver. It is possible the MSI/bus master is controlled by
+>> the undocumented bridge registers (in the pci-mt7621 they controls the
+>> manual oscillator settings, I've found a link quality register at
+>> 0x101490c4) or in a PCI config space of the root complex (around 0x700
+>> offset). If you have a working SoC with MSI/bus mastering (= mem access
+>> from card), can you send me the dump of there spaces?
 > 
->  Mind that the DEFZA runs its own RTOS for initialization and management 
-> support, including in particular SMT (Station Management).  This is run on 
-> an MC68000 processor.  That processor is interfaced to a bus where board 
-> memory is attached as well as the RMC (Ring Memory Controller) chip, which 
-> acts as a DMA master on that bus, like does the host bus interface.  Also 
-> certain control register writes from the host raise interrupts to the 
-> MC68000 for special situations to handle.
+> The datasheet for the mt7620 contains information about PCI registers.
+> Linux initializes the
+> pci topology but master bit of command registers for endpoints is
+> disabled and is mission of final
+> card driver to enable it in order to allow memory accessing to the card.
 > 
->  All the PDQ-based FDDI adapters also have an M68000 which runs an RTOS, 
-> however the presence of the PDQ ASIC makes their architecture slightly 
-> different as the FDDI chipset does host DMA via the PDQ ASIC, which acts 
-> as a master on the host bus (possibly through a bridge chip like the PFI, 
-> though TURBOchannel for example is interfaced directly).
 
-How is its firmware handled? The Linux MIPS wiki entry for the DECstation
-firmware
+But even with things (above) in the driver fixed, there will be still
+questions for the documentation left:
+- No MSI support or at least documentation for implementation (I could
+do it myself probably). The MSI functionality is IMO required for PCIe
+hosts, the MT7628 root complex itself has MSI capability.
+- The 3.10 kernel from linux-mips.org had a support for spread spectrum
+and manual PLL setting (no documentation for these registers too).
+- No additional documentation for the interrupt of the controller
+events. It could be useful to have its behavior because the PCIe
+controller resets itself when it loses the link connection (and the
+mention of this behavior could be useful to have in the datasheet too).
+- Can the PCIe device/bus-master card access all 4 GiB of the MT7628
+address space? What about 64bit address access?
+- Does MT7628 support PCIe device mode (as observed from the hardware
+behavior, when it sets it's own config space to a device/wireless
+network class, from the residual mentions in the datasheet, from PCIe
+device oriented registers and from similarities with MT SoCs which
+support PCIe host/device mode)
+- No documentation if there are any PCIe resistive terminations on chip
+(I cannot get a connection without external resistors)
+- I would like to have the documentation of 0x101490c4 register as it is
+link quality oriented (which I've had to reverse engineer from hw
+behavior when I was searching for a solution to resistor termination
+problem).
 
-https://www.linux-mips.org/wiki/DECstation#Firmware
+> Hope this helps.
 
-is a TODO. :) The main reason I'm asking is that the IOP is a MIPS R3000
-(apparently in later product models replaced with a PowerPC 405GP and its
-DECKARD software emulator) that also needs firmware. The IOP most likely
-ought to handle multiple firmware files, in the IRX format, depending on
-its set of services.
+Well in a way it did ;-).
 
-Have you implemented sysfs structures to inspect the DEFZA RTOS? That is
-something I would like to do for the IOP.
+BTW the idea about merging with MT7621 is from TODO file from MT7621 driver:
 
->  The biggest challenge has turned out to be electrolytic capacitor 
-> failures in power supplies.  Unfortunately in late 1980s to mid 1990s 
-> several lines of low-ESR capacitors, used in output filters in switch-mode 
-> PSUs, were made with a new electrolyte formula based on a quaternary 
-> ammonium salt.  All they have turned out to suffer from excessive 
-> corrosion caused by that electrolyte, shortening the lifespan of those 
-> parts well below the expectations even in the enhanced lines specifically 
-> made with long life in mind.  Consequently those parts start leaking even 
-> if unused (or indeed never used) and then obviously cause PSU breakage if 
-> powered up.
+https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/staging/mt7621-pci/TODO#L8
+
+... and from that 3.10 kernel where all ralink/mediatek PCIe drivers
+were in a single file (it seems the controllers are really similar).
+
 > 
->  Those were all from reputable manufacturers, such as Chemi-con, Nichicon 
-> or Panasonic; not to be confused with the bulged capacitor problem, aka 
-> capacitor plague, which many ATX PSUs have suffered from mid 1990s to mid 
-> 2000s where cheap parts were used from less reputable manufacturers.
+> Best regards,
+>     Sergio Paracuellos
+> 
 
-Interesting!
-
-> This is a DECstation 5000/2x0
-> CPU0 revision is: 00000440 (R4400SC)
-> FPU revision is: 00000500
-> Checking for the multiply/shift bug... no.
-> Checking for the daddiu bug... yes, workaround... yes.
-> Determined physical RAM map:
->  memory: 0000000004000000 @ 0000000000000000 (usable)
-
-Considering the amount of memory, how do compile for it?
-
-Fredrik
+cheers,
+Petr

@@ -1,68 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Oct 2018 15:24:14 +0200 (CEST)
-Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:34248
-        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992554AbeJGNYLHLKA0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Oct 2018 15:24:11 +0200
-Received: by mail-wr1-x442.google.com with SMTP id z4-v6so17943708wrb.1
-        for <linux-mips@linux-mips.org>; Sun, 07 Oct 2018 06:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aAL3fZUFBVwRXWuu2uhsqoK4mzwzp8b9HpzY6V1JSxM=;
-        b=vIKampcexcLkv0S+mOD2T5pGgtpBVKtgtdbPNsTZ4GOkoOrzV9vMbEQ45/9qEOIrKy
-         ZjOvvFgL8O3hvcyGcWAk6DPIXvqJ7ywZ+dpyWQK7NIr55MSHm1nSordrg3VhEuF9dV0H
-         ZAbmBwPoPjwrC381O6kOt/sWmHdDE96xY4kJFM8yPzFeXFFEptxJGPO9Byo6FkUa4/2l
-         BXpQbd9IfMJdbn5uZrL3CMvs2fhFtFbJh7GYGRaHzJPKCAxSgQw1V/tVjA7miAkMMNsK
-         5/oFWq3LngX1i8MiPkXfRT/4gPC1x8X2tjNJUfuC6O4oLPmQSLIeEsKEZtb2XDKtrDIO
-         Acwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aAL3fZUFBVwRXWuu2uhsqoK4mzwzp8b9HpzY6V1JSxM=;
-        b=KJ0fvi39JjaJE9kCAYlQu7CxQ7GiYyM8DpP8pSBjYDkl0M/WDiTHHQE4o/jsWGUFFR
-         2hjDpID+CvF9S8EqmGprY2OcVu2SchMZFYOT4FzUYo1YpChVhA1e1MLRU2aaVEEz8UKu
-         9IRubMkQ+xdOo3EpiAz5c0Qxjq+oivEwTqpbrAMALpwtBUNRORJTJAsRahuirrjk5giW
-         vNP8r0GpL17/lErxSUzz0h/1QxyobB8QpkFzfX5HJ5UoPna8zTcaOMG4Io/mWYH/VOmp
-         WA8c57ztqbxS41JxssuEAnRgMlleOPLOI7rtmWW6Gnw57D64BryEHPjE3ruiQdcImAbF
-         53zA==
-X-Gm-Message-State: ABuFfoi1zJdUCRXi8qAQvVHdeklwdlBsTvBGpq28Nrfq/SdnqmGPIjeZ
-        a67UX/zd2LkpU45D5rVUDMw=
-X-Google-Smtp-Source: ACcGV63XTPHlSZ6IkGp1k+LpH19058bcC+ck+1788NKi323frKDrOK7DUYWm3G3ikQB68NrTl3+CnQ==
-X-Received: by 2002:adf:bc84:: with SMTP id g4-v6mr14406546wrh.250.1538918645598;
-        Sun, 07 Oct 2018 06:24:05 -0700 (PDT)
-Received: from kontron.lan (2001-1ae9-0ff1-f191-4cf5-3d33-8e4a-f17f.ip6.tmcz.cz. [2001:1ae9:ff1:f191:4cf5:3d33:8e4a:f17f])
-        by smtp.gmail.com with ESMTPSA id l67-v6sm21435540wma.20.2018.10.07.06.24.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 Oct 2018 06:24:04 -0700 (PDT)
-From:   Petr Cvek <petrcvekcz@gmail.com>
-Subject: Re: mt7621/mt7628 PCIe linux driver
-To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Cc:     ryder.lee@mediatek.com, blogic@openwrt.org,
-        linux-mediatek@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-pci@vger.kernel.org
-References: <8fd595af-53fa-c100-c369-8c7a30eba8e3@gmail.com>
- <CAMhs-H-CM3bb9fg2eX6G_534bmuQYcoFa+pJSuNeArXLSXO4=Q@mail.gmail.com>
-Message-ID: <283247bf-fa56-875a-6669-eddd6142d399@gmail.com>
-Date:   Sun, 7 Oct 2018 15:25:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Oct 2018 21:14:40 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:40676 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993030AbeJGTOh2xZYe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Oct 2018 21:14:37 +0200
+Date:   Sun, 07 Oct 2018 21:14:07 +0200
+Subject: Re: [PATCH v5 04/21] dt-bindings: Add doc for the Ingenic TCU
+ drivers
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Guenter Roeck <linux@roeck-us.net>, linux-doc@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>, robh@kernel.org,
+        linux-mips@linux-mips.org, Stephen Boyd <sboyd@kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-pwm@vger.kernel.org
 MIME-Version: 1.0
-In-Reply-To: <CAMhs-H-CM3bb9fg2eX6G_534bmuQYcoFa+pJSuNeArXLSXO4=Q@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <petrcvekcz@gmail.com>
+Content-Transfer-Encoding: base64
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1538939675; bh=fnt4MJ6YPBDmbl9QXYDE1XyUACeR0yhGZtwR9KmIwWE=; h=Date:Subject:From:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding; b=SjZcJJWVJ0ZmeaR4tZTYHMhszOE1SorhpuaQZPhHLAEA4xTIu5u+IqYFvgsIHo0YkoR8QZvJ8MvinqvSARgvaqaUdLb3JV+8wSe/nZawMdMghQLRnaU9QchOZIfdQBTSN/WbXQiFyNHOalk11wleypIs8tgeOwijbLBuQDXPnsE=
+Message-Id: <S23993030AbeJGTOh2xZYe/20181007191437Z+1908@eddie.linux-mips.org>
+Return-Path: <paul@crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66714
+X-archive-position: 66715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: petrcvekcz@gmail.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,108 +49,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
-
-sorry for a late reaction and thanks for your input. It took me two
-weeks to get MT7628 ethernet driver to start working (so I could use the
-current kernel version).
-
-Dne 23.9.2018 v 08:20 Sergio Paracuellos napsal(a):
-> Hi Petr,
-> 
-> On Sat, Sep 22, 2018 at 11:06 PM, Petr Cvek <petrcvekcz@gmail.com> wrote:
->> Hello,
->>
->> I'm trying to play with mt7628 PCIe (and it's old driver mt7620), but
->> the system keeps freezing. It is probably because of bus master access
->> of my PCIe cards but I don't see any memory access controls for PCIe <->
->> RAM in the datasheet. The same problem is with MSI. It seems the root
->> complex supports MSI (it has an MSI capability field), but there isn't
->> any mention in the MT7628 datasheet too. As it seems the MT7628 PCIe is
->> based on MT7621 PCIe, I went for an MT7621 datasheet, but sadly in the
->> datasheet the PCIe section is missing completely.
-> 
-> AFAIK, MT7628 should be covered with mt7620 driver. The source code is in
-> arch/mips/pci/pci-mt7620.c. For initialization in really depends on
-> the "ralink_soc"
-> variable exported in arch/mips/ralink/prom.c.
-> 
-
-I was able to fix some of the problems. But still there are still
-missing pieces.
-
-The PCI driver (from pci-mt7620.c) isn't working in the vanilla version.
-It has a lot of problems:
-- Wrong access to the reset register (the wrong writing function used)
-- IO access is not working at all. There is a function call missing to
-setting MMIO base. The indirect access base register has a wrong value
-and I've had to force code some other IOPORT related stuff.
-- Forcing BAR0 is irrelevant for a root complex and it interferes with
-kernel resources assignment.
-- Cards other than 01:00.0 will have no IRQ set (and the drivers will fail).
-- Some minor problem like using the mdelay vs msleep.
-
-
-> You have to figure out why and where is really freezing. Does a clean kernel
-> boots and success on setting up PCI? A 'dmesg' would be helpful.
-> 
->>
->> Does anybody have a working MT7621/28 bus master setup or a more
->> completed datasheet? I would like to get some information for fixing the
->> mt7620 PCIe driver. It is possible the MSI/bus master is controlled by
->> the undocumented bridge registers (in the pci-mt7621 they controls the
->> manual oscillator settings, I've found a link quality register at
->> 0x101490c4) or in a PCI config space of the root complex (around 0x700
->> offset). If you have a working SoC with MSI/bus mastering (= mem access
->> from card), can you send me the dump of there spaces?
-> 
-> The datasheet for the mt7620 contains information about PCI registers.
-> Linux initializes the
-> pci topology but master bit of command registers for endpoints is
-> disabled and is mission of final
-> card driver to enable it in order to allow memory accessing to the card.
-> 
-
-But even with things (above) in the driver fixed, there will be still
-questions for the documentation left:
-- No MSI support or at least documentation for implementation (I could
-do it myself probably). The MSI functionality is IMO required for PCIe
-hosts, the MT7628 root complex itself has MSI capability.
-- The 3.10 kernel from linux-mips.org had a support for spread spectrum
-and manual PLL setting (no documentation for these registers too).
-- No additional documentation for the interrupt of the controller
-events. It could be useful to have its behavior because the PCIe
-controller resets itself when it loses the link connection (and the
-mention of this behavior could be useful to have in the datasheet too).
-- Can the PCIe device/bus-master card access all 4 GiB of the MT7628
-address space? What about 64bit address access?
-- Does MT7628 support PCIe device mode (as observed from the hardware
-behavior, when it sets it's own config space to a device/wireless
-network class, from the residual mentions in the datasheet, from PCIe
-device oriented registers and from similarities with MT SoCs which
-support PCIe host/device mode)
-- No documentation if there are any PCIe resistive terminations on chip
-(I cannot get a connection without external resistors)
-- I would like to have the documentation of 0x101490c4 register as it is
-link quality oriented (which I've had to reverse engineer from hw
-behavior when I was searching for a solution to resistor termination
-problem).
-
-> Hope this helps.
-
-Well in a way it did ;-).
-
-BTW the idea about merging with MT7621 is from TODO file from MT7621 driver:
-
-https://elixir.bootlin.com/linux/v4.19-rc5/source/drivers/staging/mt7621-pci/TODO#L8
-
-... and from that 3.10 kernel where all ralink/mediatek PCIe drivers
-were in a single file (it seems the controllers are really similar).
-
-> 
-> Best regards,
->     Sergio Paracuellos
-> 
-
-cheers,
-Petr
+CkxlIDYgb2N0LiAyMDE4IDExOjIwIEFNLCBBbGV4YW5kcmUgQmVsbG9uaSA8YWxleGFuZHJlLmJl
+bGxvbmlAYm9vdGxpbi5jb20+IGEgw6ljcml0IDoKPgo+IE9uIDAzLzEwLzIwMTggMTI6MzI6NTEr
+MDIwMCwgUGF1bCBDZXJjdWVpbCB3cm90ZTogCj4gPiAKPiA+IExlIDEgb2N0LiAyMDE4IDEwOjQ4
+LCBEYW5pZWwgTGV6Y2FubyA8ZGFuaWVsLmxlemNhbm9AbGluYXJvLm9yZz4gYSDDqWNyaXQgOiAK
+PiA+ID4gCj4gPiA+IE9uIDMxLzA3LzIwMTggMDA6MDEsIFBhdWwgQ2VyY3VlaWwgd3JvdGU6IAo+
+ID4gPiAKPiA+ID4gWyAuLi4gXSAKPiA+ID4gCj4gPiA+ID4+PiDCoCstIGluZ2VuaWMsdGltZXIt
+Y2hhbm5lbDogU3BlY2lmaWVzIHRoZSBUQ1UgY2hhbm5lbCB0aGF0IHNob3VsZCBiZSAKPiA+ID4g
+Pj4+IHVzZWQgYXMgCj4gPiA+ID4+PiDCoCvCoCBzeXN0ZW0gdGltZXIuIElmIG5vdCBwcm92aWRl
+ZCwgdGhlIFRDVSBjaGFubmVsIDAgaXMgdXNlZCBmb3IgdGhlIAo+ID4gPiA+Pj4gc3lzdGVtIHRp
+bWVyLiAKPiA+ID4gPj4+IMKgKyAKPiA+ID4gPj4+IMKgKy0gaW5nZW5pYyxjbG9ja3NvdXJjZS1j
+aGFubmVsOiBTcGVjaWZpZXMgdGhlIFRDVSBjaGFubmVsIHRoYXQgCj4gPiA+ID4+PiBzaG91bGQg
+YmUgdXNlZCAKPiA+ID4gPj4+IMKgK8KgIGFzIGNsb2Nrc291cmNlIGFuZCBzY2hlZF9jbG9jay4g
+SXQgbXVzdCBiZSBhIGRpZmZlcmVudCBjaGFubmVsIAo+ID4gPiA+Pj4gdGhhbiB0aGUgb25lIAo+
+ID4gPiA+Pj4gwqArwqAgdXNlZCBhcyBzeXN0ZW0gdGltZXIuIElmIG5vdCBwcm92aWRlZCwgbmVp
+dGhlciBhIGNsb2Nrc291cmNlIG5vciBhIAo+ID4gPiA+Pj4gwqArwqAgc2NoZWRfY2xvY2sgaXMg
+aW5zdGFudGlhdGVkLiAKPiA+ID4gPj4gCj4gPiA+ID4+IGNsb2Nrc291cmNlIGFuZCBzY2hlZF9j
+bG9jayBhcmUgTGludXggc3BlY2lmaWMgYW5kIGRvbid0IGJlbG9uZyBpbiBEVC4gCj4gPiA+ID4+
+IFlvdSBzaG91bGQgZGVmaW5lIHByb3BlcnRpZXMgb2YgdGhlIGhhcmR3YXJlIG9yIHVzZSBleGlz
+dGluZyBwcm9wZXJ0aWVzIAo+ID4gPiA+PiBsaWtlIGludGVycnVwdHMgb3IgY2xvY2tzIHRvIGZp
+Z3VyZSBvdXQgd2hpY2ggY2hhbm5lbCB0byB1c2UuIEZvciAKPiA+ID4gPj4gZXhhbXBsZSwgaWYg
+c29tZSBjaGFubmVscyBkb24ndCBoYXZlIGFuIGludGVycnVwdCwgdGhlbiB1c2UgdGhlbSBmb3Ig
+Cj4gPiA+ID4+IGNsb2Nrc291cmNlIGFuZCBub3QgYSBjbG9ja2V2ZW50LiBPciB5b3UgY291bGQg
+aGF2ZSB0aW1lcnMgdGhhdCBydW4gaW4gCj4gPiA+ID4+IGxvdy1wb3dlciBtb2RlcyBvciBub3Qu
+IElmIGFsbCB0aGUgY2hhbm5lbHMgYXJlIGlkZW50aWNhbCwgdGhlbiBpdCAKPiA+ID4gPj4gc2hv
+dWxkbid0IG1hdHRlciB3aGljaCBvbmVzIHRoZSBPUyBwaWNrcy4gCj4gPiA+IAo+ID4gPiBJdCBj
+YW4ndCB3b3JrIGluIHRoaXMgY2FzZSBiZWNhdXNlIHRoZSBwbXcgYW5kIHRoZSB0aW1lciBkcml2
+ZXIgYXJlIG5vdCAKPiA+ID4gY29tbXVuaWNhdGluZyBhbmQgdGhlIGZpcnN0IG9uZSBjYW4gc3Rv
+bGUgYSBjaGFubmVsIHRvIHRoZSBsYXN0IG9uZS4gCj4gPiAKPiA+IEluIHRoYXQgcGFydGljdWxh
+ciBjYXNlIHRoZSB0aW1lciBkcml2ZXIgd2lsbCBhbHdheXMgcmVxdWVzdCBpdHMgY2hhbm5lbHMg
+Zmlyc3Q7IHdpdGggbm8gdGltZXIgc2V0IHRoZSBzeXN0ZW0gaGFuZ3MgYmVmb3JlIHN1YnN5c19p
+bml0Y2FsbCwgYW5kIHRoZSBQV00gZHJpdmVyIGlzIGEgc3Vibm9kZSBvZiB0aGUgdGltZXIgbm9k
+ZSwgc28gaXMgcHJvYmVkIG9ubHkgYWZ0ZXIgdGhlIHRpbWVyIHByb2JlZC4gCj4gPiAKPiA+ID4g
+PiBXZSBhbHJlYWR5IHRhbGtlZCBhYm91dCB0aGF0LiBBbGwgdGhlIFRDVSBjaGFubmVscyBjYW4g
+YmUgdXNlZCBmb3IgUFdNLiAKPiA+ID4gPiBUaGUgcHJvYmxlbSBpcyBJIGNhbm5vdCBrbm93IGZy
+b20gdGhlIGRyaXZlcidzIHNjb3BlIHdoaWNoIGNoYW5uZWxzIHdpbGwgCj4gPiA+ID4gYmUgZnJl
+ZSBhbmQgd2hpY2ggY2hhbm5lbHMgd2lsbCBiZSByZXF1ZXN0ZWQgZm9yIFBXTS4gWW91IHN1Z2dl
+c3RlZCB0aGF0IEkgCj4gPiA+ID4gcGFyc2UgdGhlIGRldmljZXRyZWUgZm9yIGNsaWVudHMsIGFu
+ZCBJIGRpZCB0aGF0IGluIHRoZSBWMy9WNCBwYXRjaHNldC4gQnV0IAo+ID4gPiA+IGl0IG9ubHkg
+d29ya3MgZm9yIGNsaWVudHMgcmVxdWVzdGluZyB0aHJvdWdoIGRldmljZXRyZWUsIG5vdCBmcm9t
+IHBsYXRmb3JtIAo+ID4gPiA+IGNvZGUgb3IgZXZlbiBzeXNmcy4gCj4gPiA+ID4gCj4gPiA+ID4g
+T25lIHRoaW5nIEkgY2FuIHRyeSBpcyB0byBkeW5hbWljYWxseSBjaGFuZ2UgdGhlIGNoYW5uZWxz
+IHRoZSBzeXN0ZW0gdGltZXIgCj4gPiA+ID4gYW5kIGNsb2Nrc291cmNlIGFyZSB1c2luZyB3aGVu
+IHRoZSBjdXJyZW50IG9uZXMgYXJlIHJlcXVlc3RlZCBmb3IgUFdNLiBCdXQgCj4gPiA+ID4gdGhh
+dCBzb3VuZHMgaGFyZGNvcmUuLi4gCj4gPiA+IAo+ID4gPiBZZXMsIGl0IGlzIDovIAo+ID4gPiAK
+PiA+ID4gU29ycnkgZm9yIGxldHRpbmcgeW91IHdhc3RpbmcgdGltZSBhbmQgZWZmb3J0IHRvIHdy
+aXRlIGFuIG92ZXJraWxsIGNvZGUgCj4gPiA+IG5vdCBzdWl0YWJsZSBmb3IgdXBzdHJlYW0uIAo+
+ID4gPiAKPiA+ID4gQSB2ZXJ5IGdyb3NzIHRob3VnaHQsIHdvdWxkbid0IGJlIHBvc3NpYmxlIHRv
+ICJyZWdpc3RlciIgYSBjaGFubmVsIGZyb20gCj4gPiA+IHRoZSB0aW1lciBkcml2ZXIgY29kZSBp
+biBhIHNoYXJlZCBkYXRhIGFyZWEgKGJ1dCB3ZWxsIHNlbGYtZW5jYXBzdWxhdGVkKSAKPiA+ID4g
+YW5kIHRoZSBwd20gY29kZSB3aWxsIGNoZWNrIHN1Y2ggY2hhbm5lbCBpc24ndCBpbiB1c2UgPyAK
+PiA+IAo+ID4gUHJvYmFibHksIGJ1dCBpdCdzIHRoZSBjb250cmFyeSBJIG5lZWQgdG8gZG8uIFRo
+ZSB0aW1lciBkcml2ZXIgY29kZSBjYW4gdXNlIGFueSBjaGFubmVsLCBhbmQgcHJvYmVzIGZpcnN0
+LiBUaGUgUFdNIGRyaXZlciBjb2RlIG11c3QgdXNlIHNwZWNpZmljIGNoYW5uZWxzLCBhbmQgcHJv
+YmVzIGxhc3QuIFNvIGVpdGhlciB0aGUgdGltZXIgZHJpdmVyIGtub3dzIHdoYXQgY2hhbm5lbHMg
+aXQgY2FuJ3QgdXNlLCB0aGFua3MgdG8gYSBkZXZpY2UgcHJvcGVydHksIG9yIGl0IGFkYXB0cyBp
+dHNlbGYgd2hlbiBhIGNoYW5uZWwgaW4gdXNlIGlzIHJlcXVlc3RlZCBmb3IgUFdNLCB3aGljaCBp
+cyB3aGF0IEkgdHJpZWQgaW4gdjcuIAo+ID4gCj4gPiBJIHRoaW5rIHdlIGNvdWxkIGZpbmQgYSB3
+YXkgdG8gdXNlIGEgZGV2aWNldHJlZSBwcm9wZXJ0eSB0aGF0IGRvZXNuJ3QgdHJpZ2dlciBSb2Iu
+IFRoYXQgd291bGQgc3RpbGwgYmUgdGhlIGVhc2llc3QgYW5kIGNsZWFuZXN0IHNvbHV0aW9uLiAK
+PiA+IAo+ID4gTWF5YmUgImluZ2VuaWMscmVzZXJ2ZWQtY2hhbm5lbHMtbWFzayIsIHdoaWNoIHdv
+dWxkIGNvbnRhaW4gYSBtYXNrIG9mIGNoYW5uZWxzIHRoYXQgY2FuIG9ubHkgYmUgdXNlZCBieSB0
+aGUgdGltZXIgZHJpdmVyLiBBbmQgd2hhdCB0aGUgdGltZXIgZHJpdmVyIGRvZXMgd2l0aCB0aGVz
+ZSBjaGFubmVscywgd291bGQgYmUgc3BlY2lmaWMgdG8gdGhlIGltcGxlbWVudGF0aW9uIGFuZCB3
+b3VsZCBub3QgYXBwZWFyIGluIHRoZSBiaW5kaW5ncy4gSSBob3BlIFJvYiBjYW4gd29yayB3aXRo
+IHRoYXQuIAo+ID4gCj4KPiBSb2IgZGlkIGFjayB0aGUgZm9sbG93aW5nIGJpbmRpbmc6IAo+Cj4g
+aHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFsZHMv
+bGludXguZ2l0L3RyZWUvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21mZC9hdG1l
+bC10Y2IudHh0IAo+Cj4gYW5vdGhlciBzdWJkZXZpY2UgaXMgYSBQV00gKG5vdCBkb2N1bWVudGVk
+IGhlcmUpLiAKCkknbSBub3Qgc3VyZSB0aGF0IGl0IHdvdWxkIGJlIHRoZSBjbGVhbmVzdCBpbiBt
+eSBjYXNlLCBteSBQV00gYW5kIHdhdGNoZG9nIHN1Yi1ub2RlcyBhbHJlYWR5IHNwZWNpZnkgbWVt
+b3J5IHJlc291cmNlcyBpbiB0aGVpciAicmVnIiBwcm9wZXJ0eS4gQW5kIGlmIEkgYWRkIG1lbW9y
+eSByZXNvdXJjZXMgdG8gdGhlIHNhbWUgInRpbWVycyIgc3ViLW5vZGVzIGFzIGluIHlvdXIgZXhh
+bXBsZSwgdGhlIHJhbmdlcyB3aWxsIG92ZXJsYXAgYW5kIFJvYiBzdGlsbCB3b24ndCBiZSBoYXBw
+eSA6KQoKLVBhdWw=

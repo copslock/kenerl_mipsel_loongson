@@ -1,14 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:37:00 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:37:12 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23994248AbeJHAgz10KrL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:36:55 +0200
-Date:   Mon, 8 Oct 2018 01:36:55 +0100 (BST)
+        with ESMTP id S23994427AbeJHAhBnNEAL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:37:01 +0200
+Date:   Mon, 8 Oct 2018 01:37:01 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] MIPS: Ordering enforcement fixes for MMIO accessors
-Message-ID: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
+Subject: [PATCH 1/4] MIPS: Define MMIO ordering barriers
+In-Reply-To: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.21.1810070232470.7757@eddie.linux-mips.org>
+References: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -16,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66716
+X-archive-position: 66717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,61 +35,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Define MMIO ordering barriers as separate operations so as to allow 
+making places where such a barrier is required distinct from places 
+where a memory or a DMA barrier is needed.
 
- This patch series is a follow-up to my earlier consideration about MMIO 
-access ordering recorded here: <https://lkml.org/lkml/2014/4/28/201>.
+Architecturally MIPS does not specify ordering requirements for uncached 
+bus accesses such as MMIO operations normally use and therefore explicit 
+barriers have to be inserted between MMIO accesses where unspecified 
+ordering of operations would cause unpredictable results.
 
- As I have learnt in a recent Alpha/Linux discussion starting here: 
-<https://marc.info/?i=alpine.LRH.2.02.1808161556450.13597%20()%20file01%20!%20intranet%20!%20prod%20!%20int%20!%20rdu2%20!%20redhat%20!%20com> 
-related to MMIO accessor ordering barriers ports are actually required to 
-follow the x86 strongly ordered semantics.  As the ordering is not 
-specified in the MIPS architecture except for the SYNC instruction we do 
-have to put explicit barriers in MMIO accessors as otherwise ordering may 
-not be guaranteed.
+MIPS MMIO ordering barriers are implemented using the same underlying 
+mechanism that memory or a DMA barrier ordering barriers use, that is 
+either a suitable SYNC instruction or a platform-specific `wbflush' 
+call.  However platforms may implement different ordering rules for 
+different kinds of bus activity, so having a separate API makes it 
+possible to remove unnecessary barriers and avoid a performance hit they 
+may cause due to unrelated bus activity by making their implementation 
+expand to nil while keeping the necessary ones.
 
- Fortunately on strongly ordered systems SYNC is expected to be as cheap 
-as a NOP, and on weakly ordered ones it is needed anyway.  As from 
-revision 2.60 of the MIPS architecture specification however we have a 
-number of SYNC operations defined, and SYNC 0 has been upgraded from an 
-ordering to a completion barrier.  We currently don't make use of these 
-extra operations and always use SYNC 0 instead, which this means that we 
-may be doing too much synchronisation with the barriers we have already 
-defined.
+Also having distinct barriers for each kind of use makes it easier for 
+the reader to understand what code has been intended to do.
 
- This patch series does not make an attempt to optimise for SYNC operation 
-use, which belongs to a separate improvement.  Instead it focuses on 
-fixing MMIO accesses so that drivers can rely on our own API definition.
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ arch/mips/include/asm/io.h |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
- Following the original consideration specific MMIO barrier operations are 
-added.  As they have turned out to be required to be implied by MMIO 
-accessors there is no immediate need to make them form a generic 
-cross-architecture internal Linux API.  Therefore I defined them for the 
-MIPS architecture only, using the names originally coined by mostly taking 
-them from the PowerPC port.
-
- Then I have used them to fix `mmiowb', and then `readX' and `writeX' 
-accessors.  Finally I have updated the `_relaxed' accessors to avoid 
-unnecessary synchronisation WRT DMA.
-
- See individual commit descriptions for further details.
-
- As a follow-up clean-up places across the architecture tree could be 
-reviewed for barrier use that is actually related to MMIO rather than 
-memory and updated to use the new names of the MMIO barrier operations.  I 
-plan to do this for the DECstation and possibly the SiByte platform, 
-however I am leaving it for someone else to do it elsewhere.
-
- Similarly I think the DMA barrier in `readX' and `inX' should be using 
-`dma_rmb' rather than `rmb', but I'm leaving it for someone else to 
-handle.
-
- These changes have been verified at run time with an R3000 (MIPS I) 
-DECstation machine (32-bit kernel, little endianness), an R4400 (MIPS III) 
-DECstation machine (64-bit kernel, little endianness) and an SB-1 (MIPS64) 
-SWARM machine (64-bit kernel, big endianness), by booting them into the 
-multiuser mode and running them for a couple of hours.
-
- Please apply.
-
-  Maciej
+linux-mips-iobarrier.patch
+Index: linux-20180930-3maxp/arch/mips/include/asm/io.h
+===================================================================
+--- linux-20180930-3maxp.orig/arch/mips/include/asm/io.h
++++ linux-20180930-3maxp/arch/mips/include/asm/io.h
+@@ -20,6 +20,7 @@
+ #include <linux/irqflags.h>
+ 
+ #include <asm/addrspace.h>
++#include <asm/barrier.h>
+ #include <asm/bug.h>
+ #include <asm/byteorder.h>
+ #include <asm/cpu.h>
+@@ -80,6 +81,17 @@ static inline void set_io_port_base(unsi
+ }
+ 
+ /*
++ * Enforce in-order execution of data I/O.  In the MIPS architecture
++ * these are equivalent to corresponding platform-specific memory
++ * barriers defined in <asm/barrier.h>.  API pinched from PowerPC,
++ * with sync additionally defined.
++ */
++#define iobarrier_rw() mb()
++#define iobarrier_r() rmb()
++#define iobarrier_w() wmb()
++#define iobarrier_sync() iob()
++
++/*
+  * Thanks to James van Artsdalen for a better timing-fix than
+  * the two short jumps: using outb's to a nonexistent port seems
+  * to guarantee better timings even on fast machines.

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:37:12 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:37:31 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23994427AbeJHAhBnNEAL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:37:01 +0200
-Date:   Mon, 8 Oct 2018 01:37:01 +0100 (BST)
+        with ESMTP id S23994248AbeJHAhHk-6vL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:37:07 +0200
+Date:   Mon, 8 Oct 2018 01:37:07 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/4] MIPS: Define MMIO ordering barriers
+Subject: [PATCH 2/4] MIPS: Correct `mmiowb' barrier for `wbflush' platforms
 In-Reply-To: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.21.1810070232470.7757@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.21.1810070303380.7757@eddie.linux-mips.org>
 References: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
@@ -18,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66717
+X-archive-position: 66718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,60 +35,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Define MMIO ordering barriers as separate operations so as to allow 
-making places where such a barrier is required distinct from places 
-where a memory or a DMA barrier is needed.
+Redefine `mmiowb' in terms of `iobarrier_w' so that it works correctly 
+for MIPS I platforms, which have no SYNC machine instruction and use a 
+call to `wbflush' instead.
 
-Architecturally MIPS does not specify ordering requirements for uncached 
-bus accesses such as MMIO operations normally use and therefore explicit 
-barriers have to be inserted between MMIO accesses where unspecified 
-ordering of operations would cause unpredictable results.
-
-MIPS MMIO ordering barriers are implemented using the same underlying 
-mechanism that memory or a DMA barrier ordering barriers use, that is 
-either a suitable SYNC instruction or a platform-specific `wbflush' 
-call.  However platforms may implement different ordering rules for 
-different kinds of bus activity, so having a separate API makes it 
-possible to remove unnecessary barriers and avoid a performance hit they 
-may cause due to unrelated bus activity by making their implementation 
-expand to nil while keeping the necessary ones.
-
-Also having distinct barriers for each kind of use makes it easier for 
-the reader to understand what code has been intended to do.
+This doesn't change the semantics for CONFIG_CPU_CAVIUM_OCTEON, because 
+`iobarrier_w' expands to `wmb', which is ultimately the same as the 
+current arrangement.  For MIPS I platforms this not only makes any code 
+that would happen to use `mmiowb' build and run, but it actually 
+enforces the ordering required as well, as `iobarrier_w' has it already 
+covered with the use of `wmb'.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- arch/mips/include/asm/io.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/include/asm/io.h |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-linux-mips-iobarrier.patch
+linux-mips-mmiowb.patch
 Index: linux-20180930-3maxp/arch/mips/include/asm/io.h
 ===================================================================
 --- linux-20180930-3maxp.orig/arch/mips/include/asm/io.h
 +++ linux-20180930-3maxp/arch/mips/include/asm/io.h
-@@ -20,6 +20,7 @@
- #include <linux/irqflags.h>
+@@ -91,6 +91,9 @@ static inline void set_io_port_base(unsi
+ #define iobarrier_w() wmb()
+ #define iobarrier_sync() iob()
  
- #include <asm/addrspace.h>
-+#include <asm/barrier.h>
- #include <asm/bug.h>
- #include <asm/byteorder.h>
- #include <asm/cpu.h>
-@@ -80,6 +81,17 @@ static inline void set_io_port_base(unsi
- }
- 
- /*
-+ * Enforce in-order execution of data I/O.  In the MIPS architecture
-+ * these are equivalent to corresponding platform-specific memory
-+ * barriers defined in <asm/barrier.h>.  API pinched from PowerPC,
-+ * with sync additionally defined.
-+ */
-+#define iobarrier_rw() mb()
-+#define iobarrier_r() rmb()
-+#define iobarrier_w() wmb()
-+#define iobarrier_sync() iob()
++/* Some callers use this older API instead.  */
++#define mmiowb() iobarrier_w()
 +
-+/*
+ /*
   * Thanks to James van Artsdalen for a better timing-fix than
   * the two short jumps: using outb's to a nonexistent port seems
-  * to guarantee better timings even on fast machines.
+@@ -573,14 +576,6 @@ BUILDSTRING(l, u32)
+ BUILDSTRING(q, u64)
+ #endif
+ 
+-
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-#define mmiowb() wmb()
+-#else
+-/* Depends on MIPS II instruction set */
+-#define mmiowb() asm volatile ("sync" ::: "memory")
+-#endif
+-
+ static inline void memset_io(volatile void __iomem *addr, unsigned char val, int count)
+ {
+ 	memset((void __force *) addr, val, count);

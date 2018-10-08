@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:37:31 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2018 02:38:02 +0200 (CEST)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23994248AbeJHAhHk-6vL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:37:07 +0200
-Date:   Mon, 8 Oct 2018 01:37:07 +0100 (BST)
+        with ESMTP id S23994541AbeJHAhQNouZL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Oct 2018 02:37:16 +0200
+Date:   Mon, 8 Oct 2018 01:37:16 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] MIPS: Correct `mmiowb' barrier for `wbflush' platforms
+Subject: [PATCH 3/4] MIPS: Enforce strong ordering for MMIO accessors
 In-Reply-To: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.21.1810070303380.7757@eddie.linux-mips.org>
+Message-ID: <alpine.LFD.2.21.1810070307160.7757@eddie.linux-mips.org>
 References: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
@@ -18,7 +18,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66718
+X-archive-position: 66719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,49 +35,188 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Redefine `mmiowb' in terms of `iobarrier_w' so that it works correctly 
-for MIPS I platforms, which have no SYNC machine instruction and use a 
-call to `wbflush' instead.
+Architecturally the MIPS ISA does not specify ordering requirements for 
+uncached bus accesses such as MMIO operations normally use and therefore 
+explicit barriers have to be inserted between MMIO accesses where 
+unspecified ordering of operations would cause unpredictable results.
 
-This doesn't change the semantics for CONFIG_CPU_CAVIUM_OCTEON, because 
-`iobarrier_w' expands to `wmb', which is ultimately the same as the 
-current arrangement.  For MIPS I platforms this not only makes any code 
-that would happen to use `mmiowb' build and run, but it actually 
-enforces the ordering required as well, as `iobarrier_w' has it already 
-covered with the use of `wmb'.
+For example the R2020 write buffer implements write gathering and 
+combining[1] and as used with the DECstation models 2100 and 3100 for 
+MMIO accesses it bypasses the read buffer entirely, because conflicts 
+are resolved by the memory controller for DRAM accesses only[2] (NB the 
+R2020 and R3020 buffers are the same except for the maximum clock rate).
+
+Consequently if a device has say a 16-bit control register at offset 0, 
+a 16-bit event mask register at offset 2 and a 16-bit reset register at 
+offset 4, and the initial value of the control register is 0x1111, then 
+in the absence of barriers a hypothetical code sequence like this:
+
+u16 init_dev(u16 __iomem *dev);
+	u16 x;
+
+	write16(dev + 2, 0xffff);
+	write16(dev + 0, 0x2222);
+	x = read16(dev + 0);
+	write16(dev + 1, 0x3333);
+	write16(dev + 0, 0x4444);
+
+	return x;
+}
+
+will return 0x1111 and issue a single 32-bit write of 0x33334444 (in the 
+little-endian bus configuration) to offset 0 on the system bus.
+
+This is because the read to set `x' from offset 0 bypasses the write of 
+0x2222 that is still in the write buffer pending the completion of the 
+write of 0xffff to the reset register.  Then the write of 0x3333 to the 
+event mask register is merged with the preceding write to the control 
+register as they share the same word address, making it a 32-bit write 
+of 0x33332222 to offset 0.  Finally the write of 0x4444 to the control 
+register is combined with the outstanding 32-bit write of 0x33332222 to 
+offset 0, because, again, it shares the same address.
+
+This is an example from a legacy system, given here because it is well 
+documented and affects a machine we actually support.  But likewise 
+modern MIPS systems may implement weak MMIO ordering, possibly even 
+without having it clearly documented except for being compliant with the 
+architecture specification with respect to the currently defined SYNC 
+instruction variants[3].
+
+Considering the above and that we are required to implement MMIO 
+accessors such that individual accesses made with them are strongly 
+ordered with respect to each other[4], add the necessary barriers to our 
+`inX', `outX', `readX' and `writeX' handlers, as well the associated 
+special use variants.  It's up to platforms then to possibly define the 
+respective barriers so as to expand to nil if no ordering enforcement is 
+actually needed for a given system; SYNC is supposed to be as cheap as 
+a NOP on strongly ordered MIPS implementations though.
+
+Retain the option to generate weakly-ordered accessors, so that the 
+arrangement for `war_io_reorder_wmb' is not lost in case we need it for 
+fully raw accessors in the future.  The reason for this is that it is 
+unclear from commit 1e820da3c9af ("MIPS: Loongson-3: Introduce 
+CONFIG_LOONGSON3_ENHANCEMENT") and especially commit 8faca49a6731 
+("MIPS: Modify core io.h macros to account for the Octeon Errata 
+Core-301.") why they are needed there under the previous assumption that 
+these accessors can be weakly ordered.
+
+References:
+
+[1] "LR3020 Write Buffer", LSI Logic Corporation, September 1988, 
+    Section "Byte Gathering", pp. 6-7
+
+[2] "DECstation 3100 Desktop Workstation Functional Specification", 
+    Digital Equipment Corporation, Revision 1.3, August 28, 1990, 
+    Section 6.1 "Processor", p. 4
+
+[3] "MIPS Architecture For Programmers, Volume II-A: The MIPS32 
+    Instruction Set Manual", Imagination Technologies LTD, Document 
+    Number: MD00086, Revision 6.06, December 15, 2016, Table 5.5 
+    "Encodings of the Bits[10:6] of the SYNC instruction; the SType 
+    Field", p. 409
+
+[4] "LINUX KERNEL MEMORY BARRIERS", Documentation/memory-barriers.txt, 
+    Section "KERNEL I/O BARRIER EFFECTS"
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+References: 8faca49a6731 ("MIPS: Modify core io.h macros to account for the Octeon Errata Core-301.")
+References: 1e820da3c9af ("MIPS: Loongson-3: Introduce CONFIG_LOONGSON3_ENHANCEMENT")
 ---
- arch/mips/include/asm/io.h |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/io.h |   28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-linux-mips-mmiowb.patch
+linux-mips-readx-writex-barrier.patch
 Index: linux-20180930-3maxp/arch/mips/include/asm/io.h
 ===================================================================
 --- linux-20180930-3maxp.orig/arch/mips/include/asm/io.h
 +++ linux-20180930-3maxp/arch/mips/include/asm/io.h
-@@ -91,6 +91,9 @@ static inline void set_io_port_base(unsi
- #define iobarrier_w() wmb()
- #define iobarrier_sync() iob()
- 
-+/* Some callers use this older API instead.  */
-+#define mmiowb() iobarrier_w()
-+
- /*
-  * Thanks to James van Artsdalen for a better timing-fix than
-  * the two short jumps: using outb's to a nonexistent port seems
-@@ -573,14 +576,6 @@ BUILDSTRING(l, u32)
- BUILDSTRING(q, u64)
+@@ -337,7 +337,7 @@ static inline void iounmap(const volatil
+ #define war_io_reorder_wmb()		barrier()
  #endif
  
--
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--#define mmiowb() wmb()
--#else
--/* Depends on MIPS II instruction set */
--#define mmiowb() asm volatile ("sync" ::: "memory")
--#endif
--
- static inline void memset_io(volatile void __iomem *addr, unsigned char val, int count)
- {
- 	memset((void __force *) addr, val, count);
+-#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
++#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, barrier, irq)		\
+ 									\
+ static inline void pfx##write##bwlq(type val,				\
+ 				    volatile void __iomem *mem)		\
+@@ -345,7 +345,10 @@ static inline void pfx##write##bwlq(type
+ 	volatile type *__mem;						\
+ 	type __val;							\
+ 									\
+-	war_io_reorder_wmb();					\
++	if (barrier)							\
++		iobarrier_rw();						\
++	else								\
++		war_io_reorder_wmb();					\
+ 									\
+ 	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
+ 									\
+@@ -382,6 +385,9 @@ static inline type pfx##read##bwlq(const
+ 									\
+ 	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
+ 									\
++	if (barrier)							\
++		iobarrier_rw();						\
++									\
+ 	if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long)) \
+ 		__val = *__mem;						\
+ 	else if (cpu_has_64bits) {					\
+@@ -409,14 +415,17 @@ static inline type pfx##read##bwlq(const
+ 	return pfx##ioswab##bwlq(__mem, __val);				\
+ }
+ 
+-#define __BUILD_IOPORT_SINGLE(pfx, bwlq, type, p, slow)			\
++#define __BUILD_IOPORT_SINGLE(pfx, bwlq, type, barrier, p, slow)		\
+ 									\
+ static inline void pfx##out##bwlq##p(type val, unsigned long port)	\
+ {									\
+ 	volatile type *__addr;						\
+ 	type __val;							\
+ 									\
+-	war_io_reorder_wmb();					\
++	if (barrier)							\
++		iobarrier_rw();						\
++	else								\
++		war_io_reorder_wmb();					\
+ 									\
+ 	__addr = (void *)__swizzle_addr_##bwlq(mips_io_port_base + port); \
+ 									\
+@@ -438,6 +447,9 @@ static inline type pfx##in##bwlq##p(unsi
+ 									\
+ 	BUILD_BUG_ON(sizeof(type) > sizeof(unsigned long));		\
+ 									\
++	if (barrier)							\
++		iobarrier_rw();						\
++									\
+ 	__val = *__addr;						\
+ 	slow;								\
+ 									\
+@@ -448,7 +460,7 @@ static inline type pfx##in##bwlq##p(unsi
+ 
+ #define __BUILD_MEMORY_PFX(bus, bwlq, type)				\
+ 									\
+-__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1)
++__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1, 1)
+ 
+ #define BUILDIO_MEM(bwlq, type)						\
+ 									\
+@@ -462,8 +474,8 @@ BUILDIO_MEM(l, u32)
+ BUILDIO_MEM(q, u64)
+ 
+ #define __BUILD_IOPORT_PFX(bus, bwlq, type)				\
+-	__BUILD_IOPORT_SINGLE(bus, bwlq, type, ,)			\
+-	__BUILD_IOPORT_SINGLE(bus, bwlq, type, _p, SLOW_DOWN_IO)
++	__BUILD_IOPORT_SINGLE(bus, bwlq, type, 1, ,)			\
++	__BUILD_IOPORT_SINGLE(bus, bwlq, type, 1, _p, SLOW_DOWN_IO)
+ 
+ #define BUILDIO_IOPORT(bwlq, type)					\
+ 	__BUILD_IOPORT_PFX(, bwlq, type)				\
+@@ -478,7 +490,7 @@ BUILDIO_IOPORT(q, u64)
+ 
+ #define __BUILDIO(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
++__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 1, 0)
+ 
+ __BUILDIO(q, u64)
+ 

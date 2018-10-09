@@ -1,54 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2018 20:00:13 +0200 (CEST)
-Received: from mail-eopbgr710119.outbound.protection.outlook.com ([40.107.71.119]:44736
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2018 22:30:33 +0200 (CEST)
+Received: from mail-sn1nam01on0123.outbound.protection.outlook.com ([104.47.32.123]:63568
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994573AbeJISAKHKMC4 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Oct 2018 20:00:10 +0200
+        id S23994565AbeJIUaaBHq07 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 9 Oct 2018 22:30:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NoyJzHoQjAyWLVtmSMXMCGYUpm+9zV9Pd4sQByZUQos=;
- b=Ap50zMde1+DXseaUpIOD3PTBsctTcjHXzjk1BKvY+EcP9yPPK2Kj+7ckTZ8YZjX0Zco0IeYnqetiD1fe30NDW37+ENpeGurYhkOA/9gvvtQLI5ih9t0dqtlwUVtb71MNkbVaAOAWdiFdsNEvJDdp4g9e1TLXV+xhxKyyFRf0L2s=
+ bh=jTJZG6f3hwlXEiJE15AxpAucqRxucq6fA1ceA9ixNVs=;
+ b=cpSVau3r3JPb6nWcoOCXOeDeyYJ3/HwyPKfcbfdXpBeE1x8QzLU4wM3OkHkA2G//VWEBjP8OMTf+MAnt6JrBM/x1vTQB2PaoQ9kzzyw0dcEPUFo73cSwdsPSIrI3MHtPQDV9I3tgO27G6+SL9OVXOkfu/AGAPRHSWHiG0gJnTHw=
 Received: from CY4PR2201MB1272.namprd22.prod.outlook.com (10.171.216.146) by
- CY4PR2201MB1175.namprd22.prod.outlook.com (10.171.240.37) with Microsoft SMTP
+ CY4PR2201MB1109.namprd22.prod.outlook.com (10.171.223.35) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1207.26; Tue, 9 Oct 2018 17:59:56 +0000
+ 15.20.1207.28; Tue, 9 Oct 2018 20:30:19 +0000
 Received: from CY4PR2201MB1272.namprd22.prod.outlook.com
  ([fe80::149c:90e9:9414:1330]) by CY4PR2201MB1272.namprd22.prod.outlook.com
  ([fe80::149c:90e9:9414:1330%5]) with mapi id 15.20.1207.024; Tue, 9 Oct 2018
- 17:59:56 +0000
+ 20:30:19 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Quentin Schulz <quentin.schulz@bootlin.com>
-CC:     "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "andrew@lunn.ch" <andrew@lunn.ch>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "allan.nielsen@microchip.com" <allan.nielsen@microchip.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>,
-        "antoine.tenart@bootlin.com" <antoine.tenart@bootlin.com>
-Subject: Re: [RESEND PATCH v2 0/5] net: phy: mscc: add support for VSC8584 and
- VSC8574 Microsemi quad-port PHYs
-Thread-Topic: [RESEND PATCH v2 0/5] net: phy: mscc: add support for VSC8584
- and VSC8574 Microsemi quad-port PHYs
-Thread-Index: AQHUXu/JQnRspSa340Se5a+sqepvm6UXNeEA
-Date:   Tue, 9 Oct 2018 17:59:56 +0000
-Message-ID: <20181009175952.sobaj4xedkpkjaqw@pburton-laptop>
-References: <20181008101445.25946-1-quentin.schulz@bootlin.com>
-In-Reply-To: <20181008101445.25946-1-quentin.schulz@bootlin.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Linus Torvalds <torvalds@linux-foundation.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: [GIT PULL] MIPS fixes for 4.19
+Thread-Topic: [GIT PULL] MIPS fixes for 4.19
+Thread-Index: AQHUYA7kTpNisTG1p0aIyQ5Ww86v/A==
+Date:   Tue, 9 Oct 2018 20:30:18 +0000
+Message-ID: <20181009203016.twicrnkxfoo4p2yl@pburton-laptop>
 Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach: 
+X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BN3PR03CA0089.namprd03.prod.outlook.com
- (2a01:111:e400:7a4d::49) To CY4PR2201MB1272.namprd22.prod.outlook.com
+x-clientproxiedby: DM5PR06CA0050.namprd06.prod.outlook.com
+ (2603:10b6:3:37::12) To CY4PR2201MB1272.namprd22.prod.outlook.com
  (2603:10b6:910:61::18)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -56,37 +41,36 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR2201MB1175;6:tglw1IHLox0IfvaJa6zYVwzQSpS8u5w5PSFCTVys+oSu62h4p/nBRCFvt+II0MnuJ3OgMA2InjROTJBcQj+grCBrKI8ClDnFBojOm9yuSbyj8CmlmuPStfY5cM55yg4DBVI097uagI7VxULhh2vUHK0ZWSu9UJrqIxLwykTYwUYn+RLyZkQ3WAmiFl6CAbVBE1XIwXaouaRs3sHDzw/CGtVBKN3xQnMq+AMpjD7+H70xzEALlAJ0tpR+a3UwmhGIxLKLaxy2WdeCXWiIHlRlbKaMOMi8G2MVvLZ3qCXCOv0B+tfIfoI7Nt/J0jGGpOybDniOjR32lYzPszMd1gcTCL//CqQ12N8zdzpwuIHhu2XuXJvORx52t2+ZiZpYMN+W7MWuMgS9d2QjoAXmpkwVphbslRXmgHpkv661h+fZ26P4dwlN93R/AnBZVOoiOwu/n/oFcD3htPfF/BcN4VbERA==;5:HoNd4vtylO/qC5gX/NDg4tpii2mziJ0kJuyrCrmxrbPPT/MSxOxzmTgRYTbvC6k9d70A5EJnZWoiOsBEGlZ2REYL7J44WdK5Ys73DA66cx9jpFLccxToGvL3TMX0RbOjuSKS4SNHlPsmQfAHlq8x/1k3iCtN1TrZNYr9WHt89vw=;7:OXdHzHeBVpb9NEaiqDSOMkZx2HyIv/RD0JYiLnW0DUkz7hnQYF3BzqSl2H21CdgV5Dq5m5U0v3z6+ZvRJKHt5wUcFRAxsq4JmzYnvgEHuNzSTX2y8s/JXm73HmAoL26J+M5XNsol9JbooSqMTHqVtiJnI2oB4UUebIFPolNhJEnBTJmcrIujiAATh4d7D5nzzBKF2C4nxh6a5kugeF3EPcwmfO4J1fLPv8v2CKrKn8BhMtduYOKKMmxS8lC3MxLH
-x-ms-office365-filtering-correlation-id: 5ae9bedb-52cd-4756-f54c-08d62e1104f0
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:CY4PR2201MB1175;
-x-ms-traffictypediagnostic: CY4PR2201MB1175:
-x-microsoft-antispam-prvs: <CY4PR2201MB11758DBC8C08112A8DC02A22C1E70@CY4PR2201MB1175.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
+x-microsoft-exchange-diagnostics: 1;CY4PR2201MB1109;6:6hu7Ekm6JZFfIXMCwY4kXU4bkinzd0ZLwngQc50A4WbIiBWgkwn9U3B5+r1CCOvDcdkDf4VZR39DBtRlsYibii1LV3OUp8R9VQPU0LDA11vqIQ9zGbGkQmAV31nBU+e3oAhZiVEJFzRIdsNoe1ycpv48KePITh9VUi2TU4WCP1xTTedUtnB03lLEPrDwayk+0TPeP9eD5xsn7o+8AfNvoP+kBWSNHcfO6vFjxcGRBydXI8XwLzaDxVnQ1WtvvNSajxib4hDN+vALuG10u2XDtc8LnRsrWK5bTkk5hwYLFMNLgBNVn+7s2/R9lEKYGtDW7QYvHf+od4LcjgKS96lzi/m2lIk5oNW8RmJmAWqRuB0D2Fnk2FizLT3kevBrJS9IKNN91O1EDm073zkuJVfMiWDyCpxBY8M65tD3uEuYtOHcU2qMFk4bhlBSzy+S4hg33Jo5wsuNfh8trIKi77MY3Q==;5:9Yz/clH/WQwTwtCo2O4PJVst7A/EpdjTHt4WjcZ1pAX1+eNfqiHegf/XndfBG+6P4ZC45l4gCwdZ02NFeC/4YU6RCT8gKTXnnceRxFZSWay971o0zFhZnO49s9a1w9kBmGDAy/8mMhwJOK2Xqk+nN/DPUALQpDHuCEt3mmizngU=;7:otq7uHYAeX++NzlUS0i5yR4hgcpyw6QqcQ50CzdAkTMmBAtHw+1fAoB8cw4HYvZspU+GBr9lbTiWJ7l7kBqdDuHI5y3RDDqUlQfARxALJv4JDcxGWsTyl9Y4LkWR7BR3kHrw8q2gZ1Rc9DXyEXneRgYM6H5aWvm20E3IKTgTxk1/pngDFCkKjq6+AAubCdHEMeaBWq4oD7lygKRjkJAX2gPrczKImQTvgLfmkyw8OahDRuAu3yMRZoKFGNE4YTlG
+x-ms-office365-filtering-correlation-id: 597a207e-129f-4dea-1d59-08d62e260716
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(49563074)(7193020);SRVR:CY4PR2201MB1109;
+x-ms-traffictypediagnostic: CY4PR2201MB1109:
+x-microsoft-antispam-prvs: <CY4PR2201MB11092EE56FB2521FA1D31098C1E70@CY4PR2201MB1109.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(84791874153150);
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231355)(944501410)(52105095)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:CY4PR2201MB1175;BCL:0;PCL:0;RULEID:;SRVR:CY4PR2201MB1175;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(102415395)(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(4983020)(52105095)(3002001)(93006095)(10201501046)(149066)(150057)(6041310)(20161123560045)(2016111802025)(20161123562045)(20161123564045)(20161123558120)(6043046)(201708071742011)(7699051);SRVR:CY4PR2201MB1109;BCL:0;PCL:0;RULEID:;SRVR:CY4PR2201MB1109;
 x-forefront-prvs: 08200063E9
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(136003)(39850400004)(376002)(396003)(346002)(189003)(199004)(6506007)(33896004)(2906002)(386003)(446003)(6916009)(44832011)(7736002)(14454004)(11346002)(68736007)(186003)(508600001)(5250100002)(7416002)(229853002)(476003)(26005)(66066001)(305945005)(42882007)(106356001)(102836004)(105586002)(4326008)(5660300001)(52116002)(81156014)(99286004)(39060400002)(76176011)(8676002)(6486002)(6246003)(6436002)(81166006)(6512007)(9686003)(486006)(8936002)(54906003)(53936002)(256004)(71200400001)(71190400001)(25786009)(1076002)(316002)(6116002)(3846002)(97736004)(33716001)(217873002)(2900100001)(58126008);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR2201MB1175;H:CY4PR2201MB1272.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(396003)(366004)(39840400004)(346002)(376002)(189003)(199004)(6116002)(81166006)(316002)(3846002)(81156014)(5660300001)(6506007)(6436002)(71200400001)(6916009)(8936002)(1076002)(256004)(71190400001)(97736004)(2900100001)(33896004)(6486002)(14454004)(8676002)(508600001)(25786009)(52116002)(386003)(106356001)(33716001)(486006)(5250100002)(44832011)(58126008)(2906002)(54906003)(575784001)(105586002)(68736007)(26005)(476003)(102836004)(4326008)(9686003)(6512007)(66066001)(53936002)(7736002)(186003)(305945005)(99286004)(42882007)(99936001);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR2201MB1109;H:CY4PR2201MB1272.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: 8UUTnPYli1c8dac9vOgSXxMO49LhQsRyWXRFk8dITPBUP2b9ZXX3yA3kepi4yyeDS9MVoiCSxXRW/w0SDMOFpd1rDq6ZFXjFqQN9Q0qEjdW+kL7tGfKA6EDS22U8QM40QTYjKwQ3GFI5kt1Ksyf1BEPO8UFRWKn4OCzvc/w87eg4Lg79F1y9l0Zn7++1jMqaT4iuQlwwbODM2LaVDNs3emDSEGKFQQNsy/79AsJm5KWFpwKTlTFhbSo3QB29b36EnR5XuLJ1zgIzY95QbbwuN3+KDy1/qKGLeI2QnS1wxFQXi4C0bMmzd0VPwTTKBZ+L9nIWZG//u781L5cSCO02ZJ35z93CCrdgFCHKE0z60aA=
+x-microsoft-antispam-message-info: B8Hit503SySC0ma4eO9wdZ95uecFvVVWLj+u8w+iVXS3pOOenhZ3eEWAcG5ke7oWv9ifpUAkJlLxuirznm0EZBz3R6ZG2ya+Rr2kEnhAcYsfDskPDiqr/EsVP+eWG38A0HvyujR1CLFh8co+qroXmavtdmk3FK8/xgP8mZHibBaZBKABTaFFEHMkk0jCM2PTfukWQ4cwSS86ZcXq27fIKFKvpnhUrHZI8W6GqBFNlSlkQBS9bjR76QTeYpDWnkaphJilp9QoUXhEJD4XdobFwH3ah2kzOPBORZdE1WXr6x3UhMWrB00MpaJcNlEKPZkWHQqLo0aWI7w+GyW7YpwNMDFYDLH535KWBq4/vhDbMUE=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4599D8FCF11813488A788AE19D1C3179@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="uhfh2ppu5sjddbap"
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae9bedb-52cd-4756-f54c-08d62e1104f0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2018 17:59:56.3165
+X-MS-Exchange-CrossTenant-Network-Message-Id: 597a207e-129f-4dea-1d59-08d62e260716
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2018 20:30:18.9855
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1175
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1109
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66736
+X-archive-position: 66737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -103,19 +87,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Quentin,
+--uhfh2ppu5sjddbap
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Mon, Oct 08, 2018 at 12:14:40PM +0200, Quentin Schulz wrote:
-> RESEND: rebased on top of latest net-next and on top of latest version of
-> "net: phy: mscc: various improvements to Microsemi PHY driver" patch
-> series.
-> 
->%
-> 
-> I suggest patches 1 to 3 go through net tree and patches 4 and 5 go
-> through MIPS tree. Patches going through net tree and those going through
-> MIPS tree do not depend on one another.
+Hi Greg,
 
-Patches 4 & 5 applied to mips-next for 4.20, thanks!
+Here are a few MIPS fixes for 4.19, dealing with regressions from the
+past few release cycles. Please pull.
 
-Paul
+Thanks,
+    Paul
+
+The following changes since commit 6bf4ca7fbc85d80446ac01c0d1d77db4d91a6d84:
+
+  Linux 4.19-rc5 (2018-09-23 19:15:18 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_fixes_4.19_2
+
+for you to fetch changes up to 148b9aba99e0bbadf361747d21456e1589015f74:
+
+  MIPS: memset: Fix CPU_DADDI_WORKAROUNDS `small_fixup' regression (2018-10-05 09:41:39 -0700)
+
+----------------------------------------------------------------
+A few MIPS fixes for 4.19:
+
+- Avoid suboptimal placement of our VDSO when using the legacy mmap
+  layout, which can prevent statically linked programs that were able to
+  allocate large amounts of memory using the brk syscall prior to the
+  introduction of our VDSO from functioning correctly.
+
+- Fix up CONFIG_CMDLINE handling for platforms which ought to ignore DT
+  arguments but have incorrectly used them & lost other arguments since
+  v3.16.
+
+- Fix a path in MAINTAINERS to use valid wildcards.
+
+- Fixup a regression from v4.17 in memset() for systems using
+  CPU_DADDI_WORKAROUNDS.
+
+----------------------------------------------------------------
+Joe Perches (1):
+      MAINTAINERS: MIPS/LOONGSON2 ARCHITECTURE - Use the normal wildcard style
+
+Maciej W. Rozycki (1):
+      MIPS: memset: Fix CPU_DADDI_WORKAROUNDS `small_fixup' regression
+
+Paul Burton (2):
+      MIPS: VDSO: Always map near top of user memory
+      MIPS: Fix CONFIG_CMDLINE handling
+
+ MAINTAINERS                       |  3 ++-
+ arch/mips/include/asm/processor.h | 10 ++++----
+ arch/mips/kernel/process.c        | 25 ++++++++++++++++++++
+ arch/mips/kernel/setup.c          | 48 +++++++++++++++++++++++----------------
+ arch/mips/kernel/vdso.c           | 18 ++++++++++++++-
+ arch/mips/lib/memset.S            |  4 +++-
+ 6 files changed, 80 insertions(+), 28 deletions(-)
+
+--uhfh2ppu5sjddbap
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCW70P2AAKCRA+p5+stXUA
+3V6fAP4j8DmTv1jX2GPBPnW63SUsvxUM1yPiXQ0GOai1Me5zEgEApOg/NORlvQXV
+Mdo2EPM3wahPrVbNQsxuNkK6IV2Yfgg=
+=FVs+
+-----END PGP SIGNATURE-----
+
+--uhfh2ppu5sjddbap--

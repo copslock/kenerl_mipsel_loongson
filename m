@@ -1,75 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2018 08:36:52 +0200 (CEST)
-Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:41191
-        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992363AbeJIGgsoMjN7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Oct 2018 08:36:48 +0200
-Received: by mail-wr1-x441.google.com with SMTP id x12-v6so445132wru.8
-        for <linux-mips@linux-mips.org>; Mon, 08 Oct 2018 23:36:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2018 20:00:13 +0200 (CEST)
+Received: from mail-eopbgr710119.outbound.protection.outlook.com ([40.107.71.119]:44736
+        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994573AbeJISAKHKMC4 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Oct 2018 20:00:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=f1LE+fuCOHL7G05Gu6dofBOQSogK/95XhyKefcWmaQE=;
-        b=S9ekYKVYBqkNHnV9uSe6leKpkrnidTgKHiwypc89ea30D6CJ1GaLdZjQHhK9xnPBWS
-         4HFPSE7rsosTaa1hEPsfFEmn9pYbpravqBXw8UZXM+966BUUtbHU3qxrw+Qaz4uG5VTL
-         Xmc4YF0JYAJx1yu0QwSD23OyyBsyIqPmJXR8I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=f1LE+fuCOHL7G05Gu6dofBOQSogK/95XhyKefcWmaQE=;
-        b=Bz0EX+t5Jgbfdp2pmdMsR2IcUMcxoL7/6ND6GF0gCjwE0qYpu9D5msvgavgfJ6sfdM
-         5GgeZ2mqJmPrSd80X5ZuCxD+neNlGeEdlcq9GjDuF8nrf8I3wx9yyU74cOgn9sQfx3tv
-         qlEkelJDE0KWz0djFbSubfdHSGeoJR+Cd2Z9EJWDLk3O5v8/AnBrgxAVB5yzNjstDo9R
-         u8q6wtzN50TZzpqKZpekjiSab/A93ct6T2xASGz+A5/fFAcy5nYEVk6RGxXPMSuSgAYI
-         vqWh9fUdvgVAwvO74DzpQIyL48+XW601wHUsBV4ksImLQq4m5Gc45xILuwZKB/aUd9uK
-         lzow==
-X-Gm-Message-State: ABuFfohRq4HFUFbBY0kbET1fh98kN0Fo27vc9gySrIBNfSfgkPpJ0rXR
-        zb7QIjWWDGGQt4tLMFzjgdmTKw==
-X-Google-Smtp-Source: ACcGV61IMrL1QQF4r6gLj40Ih2wDHHUO7PqKVSbYEGKfTyNLfUkFuuv6b+GRg75OQUzyNY7Vq5K0VA==
-X-Received: by 2002:adf:b64e:: with SMTP id i14-v6mr19715990wre.14.1539067003223;
-        Mon, 08 Oct 2018 23:36:43 -0700 (PDT)
-Received: from dell ([2.27.167.111])
-        by smtp.gmail.com with ESMTPSA id c21-v6sm927144wmh.26.2018.10.08.23.36.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 08 Oct 2018 23:36:42 -0700 (PDT)
-Date:   Mon, 8 Oct 2018 23:36:40 -0700
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Guenter Roeck <linux@roeck-us.net>, linux-doc@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        robh@kernel.org, linux-mips@linux-mips.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v5 04/21] dt-bindings: Add doc for the Ingenic TCU drivers
-Message-ID: <20181009063640.GB32033@dell>
-References: <5bb4c6ad.1c69fb81.42bb.93ecSMTPIN_ADDED_MISSING@mx.google.com>
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NoyJzHoQjAyWLVtmSMXMCGYUpm+9zV9Pd4sQByZUQos=;
+ b=Ap50zMde1+DXseaUpIOD3PTBsctTcjHXzjk1BKvY+EcP9yPPK2Kj+7ckTZ8YZjX0Zco0IeYnqetiD1fe30NDW37+ENpeGurYhkOA/9gvvtQLI5ih9t0dqtlwUVtb71MNkbVaAOAWdiFdsNEvJDdp4g9e1TLXV+xhxKyyFRf0L2s=
+Received: from CY4PR2201MB1272.namprd22.prod.outlook.com (10.171.216.146) by
+ CY4PR2201MB1175.namprd22.prod.outlook.com (10.171.240.37) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1207.26; Tue, 9 Oct 2018 17:59:56 +0000
+Received: from CY4PR2201MB1272.namprd22.prod.outlook.com
+ ([fe80::149c:90e9:9414:1330]) by CY4PR2201MB1272.namprd22.prod.outlook.com
+ ([fe80::149c:90e9:9414:1330%5]) with mapi id 15.20.1207.024; Tue, 9 Oct 2018
+ 17:59:56 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Quentin Schulz <quentin.schulz@bootlin.com>
+CC:     "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "andrew@lunn.ch" <andrew@lunn.ch>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "allan.nielsen@microchip.com" <allan.nielsen@microchip.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>,
+        "antoine.tenart@bootlin.com" <antoine.tenart@bootlin.com>
+Subject: Re: [RESEND PATCH v2 0/5] net: phy: mscc: add support for VSC8584 and
+ VSC8574 Microsemi quad-port PHYs
+Thread-Topic: [RESEND PATCH v2 0/5] net: phy: mscc: add support for VSC8584
+ and VSC8574 Microsemi quad-port PHYs
+Thread-Index: AQHUXu/JQnRspSa340Se5a+sqepvm6UXNeEA
+Date:   Tue, 9 Oct 2018 17:59:56 +0000
+Message-ID: <20181009175952.sobaj4xedkpkjaqw@pburton-laptop>
+References: <20181008101445.25946-1-quentin.schulz@bootlin.com>
+In-Reply-To: <20181008101445.25946-1-quentin.schulz@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BN3PR03CA0089.namprd03.prod.outlook.com
+ (2a01:111:e400:7a4d::49) To CY4PR2201MB1272.namprd22.prod.outlook.com
+ (2603:10b6:910:61::18)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;CY4PR2201MB1175;6:tglw1IHLox0IfvaJa6zYVwzQSpS8u5w5PSFCTVys+oSu62h4p/nBRCFvt+II0MnuJ3OgMA2InjROTJBcQj+grCBrKI8ClDnFBojOm9yuSbyj8CmlmuPStfY5cM55yg4DBVI097uagI7VxULhh2vUHK0ZWSu9UJrqIxLwykTYwUYn+RLyZkQ3WAmiFl6CAbVBE1XIwXaouaRs3sHDzw/CGtVBKN3xQnMq+AMpjD7+H70xzEALlAJ0tpR+a3UwmhGIxLKLaxy2WdeCXWiIHlRlbKaMOMi8G2MVvLZ3qCXCOv0B+tfIfoI7Nt/J0jGGpOybDniOjR32lYzPszMd1gcTCL//CqQ12N8zdzpwuIHhu2XuXJvORx52t2+ZiZpYMN+W7MWuMgS9d2QjoAXmpkwVphbslRXmgHpkv661h+fZ26P4dwlN93R/AnBZVOoiOwu/n/oFcD3htPfF/BcN4VbERA==;5:HoNd4vtylO/qC5gX/NDg4tpii2mziJ0kJuyrCrmxrbPPT/MSxOxzmTgRYTbvC6k9d70A5EJnZWoiOsBEGlZ2REYL7J44WdK5Ys73DA66cx9jpFLccxToGvL3TMX0RbOjuSKS4SNHlPsmQfAHlq8x/1k3iCtN1TrZNYr9WHt89vw=;7:OXdHzHeBVpb9NEaiqDSOMkZx2HyIv/RD0JYiLnW0DUkz7hnQYF3BzqSl2H21CdgV5Dq5m5U0v3z6+ZvRJKHt5wUcFRAxsq4JmzYnvgEHuNzSTX2y8s/JXm73HmAoL26J+M5XNsol9JbooSqMTHqVtiJnI2oB4UUebIFPolNhJEnBTJmcrIujiAATh4d7D5nzzBKF2C4nxh6a5kugeF3EPcwmfO4J1fLPv8v2CKrKn8BhMtduYOKKMmxS8lC3MxLH
+x-ms-office365-filtering-correlation-id: 5ae9bedb-52cd-4756-f54c-08d62e1104f0
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:CY4PR2201MB1175;
+x-ms-traffictypediagnostic: CY4PR2201MB1175:
+x-microsoft-antispam-prvs: <CY4PR2201MB11758DBC8C08112A8DC02A22C1E70@CY4PR2201MB1175.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231355)(944501410)(52105095)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:CY4PR2201MB1175;BCL:0;PCL:0;RULEID:;SRVR:CY4PR2201MB1175;
+x-forefront-prvs: 08200063E9
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(136003)(39850400004)(376002)(396003)(346002)(189003)(199004)(6506007)(33896004)(2906002)(386003)(446003)(6916009)(44832011)(7736002)(14454004)(11346002)(68736007)(186003)(508600001)(5250100002)(7416002)(229853002)(476003)(26005)(66066001)(305945005)(42882007)(106356001)(102836004)(105586002)(4326008)(5660300001)(52116002)(81156014)(99286004)(39060400002)(76176011)(8676002)(6486002)(6246003)(6436002)(81166006)(6512007)(9686003)(486006)(8936002)(54906003)(53936002)(256004)(71200400001)(71190400001)(25786009)(1076002)(316002)(6116002)(3846002)(97736004)(33716001)(217873002)(2900100001)(58126008);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR2201MB1175;H:CY4PR2201MB1272.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: 8UUTnPYli1c8dac9vOgSXxMO49LhQsRyWXRFk8dITPBUP2b9ZXX3yA3kepi4yyeDS9MVoiCSxXRW/w0SDMOFpd1rDq6ZFXjFqQN9Q0qEjdW+kL7tGfKA6EDS22U8QM40QTYjKwQ3GFI5kt1Ksyf1BEPO8UFRWKn4OCzvc/w87eg4Lg79F1y9l0Zn7++1jMqaT4iuQlwwbODM2LaVDNs3emDSEGKFQQNsy/79AsJm5KWFpwKTlTFhbSo3QB29b36EnR5XuLJ1zgIzY95QbbwuN3+KDy1/qKGLeI2QnS1wxFQXi4C0bMmzd0VPwTTKBZ+L9nIWZG//u781L5cSCO02ZJ35z93CCrdgFCHKE0z60aA=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4599D8FCF11813488A788AE19D1C3179@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5bb4c6ad.1c69fb81.42bb.93ecSMTPIN_ADDED_MISSING@mx.google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <lee.jones@linaro.org>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae9bedb-52cd-4756-f54c-08d62e1104f0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2018 17:59:56.3165
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1175
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66735
+X-archive-position: 66736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lee.jones@linaro.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,30 +103,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 03 Oct 2018, Paul Cercueil wrote:
-> Le 3 oct. 2018 3:02 PM, Daniel Lezcano <daniel.lezcano@linaro.org> a écrit :
-> > On 03/10/2018 14:51, Paul Cercueil wrote: 
-> > > 
-> > > Le 3 oct. 2018 2:47 PM, Daniel Lezcano <daniel.lezcano@linaro.org> a 
-> > > écrit : 
-> > >> 
-> > >> On 03/10/2018 12:32, Paul Cercueil wrote: 
-> > >>> 
-> > >>> Le 1 oct. 2018 10:48, Daniel Lezcano <daniel.lezcano@linaro.org> 
-> > >>> a écrit : 
-> > >>>> 
-> > >>>> On 31/07/2018 00:01, Paul Cercueil wrote: 
-> > >>>> 
-> > >>>> [ ... ] 
+Hi Quentin,
 
-Paul,
+On Mon, Oct 08, 2018 at 12:14:40PM +0200, Quentin Schulz wrote:
+> RESEND: rebased on top of latest net-next and on top of latest version of
+> "net: phy: mscc: various improvements to Microsemi PHY driver" patch
+> series.
+> 
+>%
+> 
+> I suggest patches 1 to 3 go through net tree and patches 4 and 5 go
+> through MIPS tree. Patches going through net tree and those going through
+> MIPS tree do not depend on one another.
 
-I think there is something wrong with your mailer since your replies
-are being scattered across my inbox un-threaded, making conversations
-very difficult to follow.
+Patches 4 & 5 applied to mips-next for 4.20, thanks!
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Paul

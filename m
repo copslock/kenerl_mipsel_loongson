@@ -1,82 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2018 18:41:12 +0200 (CEST)
-Received: from mail-sn1nam02on0122.outbound.protection.outlook.com ([104.47.36.122]:64896
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994635AbeJKQlIBL2pV convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2018 18:41:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ELynzicc1WbbL4ZzhQC5NAcGBHgkaj5N4yd6c14JI04=;
- b=dLYVLi8dhnYIzDMPnfGihmu+isGw1WKDUzkQls6vnKArd+Ih9om/cSIYwI9mQMgxi38vu2OTnq+E9sWMvaxhODBONLh0hWDSfwmqAKv2IBLLT3FlflcsgqraX1ELFr+MolhUNuhPdqjzV7mgoY5mGxwvVNeqAD89Qn0Lev4mpPI=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1759.namprd22.prod.outlook.com (10.164.206.39) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1228.21; Thu, 11 Oct 2018 16:40:56 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf%10]) with mapi id 15.20.1228.020; Thu, 11 Oct 2018
- 16:40:56 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/4] MIPS: Ordering enforcement fixes for MMIO accessors
-Thread-Topic: [PATCH 0/4] MIPS: Ordering enforcement fixes for MMIO accessors
-Thread-Index: AQHUXp8F1GkQChn9TkCSJG6lsid2I6UaRRuA
-Date:   Thu, 11 Oct 2018 16:40:55 +0000
-Message-ID: <20181011164053.3irkm5dvl7sjzhao@pburton-laptop>
-References: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.21.1810070229190.7757@eddie.linux-mips.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: DM5PR06CA0098.namprd06.prod.outlook.com
- (2603:10b6:4:3a::39) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2601:647:4100:4687:76db:7cfe:65a3:6aea]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1759;6:e7th/+Lt6XmiwBFanuc+N2yu8YQy+BdmmSEnp9Ov4BMnSnSpMVUwEi45+7ng1M+Z8rHGC4FE8YvLZR+4cDFwHq2AryOp6n5nEeIPahACgncSb9whoOxLbVy9gjqR4pNBalO5Pg95oaov8Uw7gc+/h/v6Jps7qAJB5Np2caw8mKVziu1gTfgNVVTxu0Oo5XpKLY4bi5rLi/ers2az3CLBnuSJLMUJASaYWl/hrDnkq2acwayLFmBkuvOqqudFhX132PZyMIHclwpj2F7z2sF1lbdgsaVZEFwZFiavQHWnKKPqDOdfC/JhBTFfjPry0itC5QtOE8KzjJ5/ByTAYfQ4sOe+PCpJPIPgA51fXq3UA0VJRT3hkfYaGTa4BnDU/UsYYqwe5KhB2MUj4JiKtxm1xyJCIEVBRIsirDwrOuT/SBTAbgJ2Sv1OBREaWeyLcDxcZmC2eka/b3eTa8w2xCOarg==;5:C0UEcHZTT08DdotGU6pjmIMijlcugUKE6CkVyiYEvss8qBKcQxy6P33G1GLVLpCFHBULvcffDzUrYiBr7FIx1lifLAvZnKTuxxVh2HzxRVLWBVbM3Dety3f3ca7atmYKY1cvsR2lUsGGdDjOk2OAQNR0NOSQANdOzznr30G7wsU=;7:c05kpYwlj9FOdlgfWrK2eHkNVzW26TjzsCI4P0+FNU1Hh830WH+kBWPfqDmXV0e0hkZFKcF0N+tOCpagCWg4PjDa6JCu5QX4nu127h5XhKMw+u/fhsx4Dc6I8AUiY4tFczwCHX6VNDu47zRkNPVDihRjYeQnG5eZEPIV14gQGnU8s9x1qV44MoJTE+WmuBv743X0zLgK4WtrfhNEQYsjcxGhYOUy0lEIxSY5z1xtEiWr+M9jI3ch6VUCFzR8Rz2o
-x-ms-office365-filtering-correlation-id: f3688df0-b98b-473f-728b-08d62f98509e
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1759;
-x-ms-traffictypediagnostic: MWHPR2201MB1759:
-x-microsoft-antispam-prvs: <MWHPR2201MB175970B61439C9C4036270DDC1E10@MWHPR2201MB1759.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231355)(944501410)(52105095)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1759;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1759;
-x-forefront-prvs: 08220FA8D6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(39840400004)(346002)(136003)(366004)(396003)(199004)(189003)(7736002)(256004)(14444005)(4326008)(76176011)(6116002)(33896004)(52116002)(316002)(1076002)(81156014)(229853002)(8936002)(8676002)(6246003)(81166006)(2900100001)(102836004)(186003)(2906002)(58126008)(446003)(11346002)(54906003)(105586002)(106356001)(476003)(386003)(6506007)(6436002)(5250100002)(6306002)(53936002)(97736004)(9686003)(6512007)(14454004)(5660300001)(508600001)(486006)(44832011)(33716001)(25786009)(99286004)(6486002)(71200400001)(71190400001)(42882007)(305945005)(68736007)(46003)(6916009)(6606295002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1759;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: tqO7gVcqdsYvMy4Fq0GjbOopxYyoNde+JHyZp9MzEzE7bi7Iq8EqubkSyJiXlbqzYjMXSOR3Jex0LNmkWQ1uwlze8YUcOlLWPZmFW9A1PyEy5Dr4if31eVN6AoNZjpuDVMXqZIskfLuyeqx2p0Ep4B5ja3b/YZvzzu3b6i5+DLNKW/hbhfF0wv4F8JMSCD8LjhW3k4M46epS5gUFs2xwYgr9bCWDyVFY9cgvKh34/k+6FMLnMA9sZ3mhvziow+Itb7qdSfGQoXIkZ2FHak7IWplysfaOYdX1BBzNT8W72Bzz5xTgWKLSnsZ87hpwpMrY05Pr7ZkDbn3juvtlcaeFwOrOCBgN+3ZGeYFc1a/mXZY=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <A8CD445476D4EC4184F2380902058EF5@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 01:40:15 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:12378 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994648AbeJKXkFsDMDx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Oct 2018 01:40:05 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2018 16:40:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.54,370,1534834800"; 
+   d="scan'208";a="96792899"
+Received: from rpedgeco-desk5.jf.intel.com ([10.54.75.168])
+  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2018 16:40:01 -0700
+From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
+To:     kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
+        keescook@chromium.org, catalin.marinas@arm.com,
+        will.deacon@arm.com, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, x86@kernel.org, arnd@arndb.de,
+        jeyu@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
+Cc:     kristen@linux.intel.com, dave.hansen@intel.com,
+        arjan@linux.intel.com, deneen.t.dock@intel.com,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: [PATCH v2 0/7] Rlimit for module space
+Date:   Thu, 11 Oct 2018 16:31:10 -0700
+Message-Id: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3688df0-b98b-473f-728b-08d62f98509e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Oct 2018 16:40:55.8912
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1759
-Return-Path: <pburton@wavecomp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <rick.p.edgecombe@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66746
+X-archive-position: 66747
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: rick.p.edgecombe@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,52 +52,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
+Hi,
 
-On Mon, Oct 08, 2018 at 01:36:55AM +0100, Maciej W. Rozycki wrote:
->  This patch series is a follow-up to my earlier consideration about MMIO 
-> access ordering recorded here: <https://lkml.org/lkml/2014/4/28/201>.
-> 
->  As I have learnt in a recent Alpha/Linux discussion starting here: 
-> <https://marc.info/?i=alpine.LRH.2.02.1808161556450.13597%20()%20file01%20!%20intranet%20!%20prod%20!%20int%20!%20rdu2%20!%20redhat%20!%20com> 
-> related to MMIO accessor ordering barriers ports are actually required to 
-> follow the x86 strongly ordered semantics.  As the ordering is not 
-> specified in the MIPS architecture except for the SYNC instruction we do 
-> have to put explicit barriers in MMIO accessors as otherwise ordering may 
-> not be guaranteed.
-> 
->  Fortunately on strongly ordered systems SYNC is expected to be as cheap 
-> as a NOP, and on weakly ordered ones it is needed anyway.  As from 
-> revision 2.60 of the MIPS architecture specification however we have a 
-> number of SYNC operations defined, and SYNC 0 has been upgraded from an 
-> ordering to a completion barrier.  We currently don't make use of these 
-> extra operations and always use SYNC 0 instead, which this means that we 
-> may be doing too much synchronisation with the barriers we have already 
-> defined.
-> 
->  This patch series does not make an attempt to optimise for SYNC operation 
-> use, which belongs to a separate improvement.  Instead it focuses on 
-> fixing MMIO accesses so that drivers can rely on our own API definition.
+This is v2 of a patch series that was first sent to security@kernel.org. The
+recommendation was to pursue the fix on public lists. First I’ll describe the
+issue that this is trying to solve, and then the general solution being
+proposed, and lastly summarize the feedback so far. At a high level, this is
+coming from a local DOS on eBPF, a KASLR module offset leak and desire for
+general hardening of module space usage.
 
-Agreed, using the lightweight sync types is a whole other can of worms.
-I did speak with the architecture team about the description of SYNC
-recently (in the context of nanoMIPS documentation if I recall) and hope
-the tweaks that were made to the architectural description of it might
-help with using them one day soon.
+Problem
+-------
+If BPF JIT is on, there is no effective limit to prevent filling the entire
+module space with JITed e/BPF filters. For classic BPF filters attached with
+setsockopt SO_ATTACH_FILTER, there is no memlock rlimit check to limit the
+number of insertions like this is for the bpf syscall. The cBPF gets converted
+to eBPF and then handled by the JIT depending on if JIT is enabled. There is a
+low enough default limit for open file descriptors per process, but this can be
+worked around easily by forking before inserting. If the memlock rlimit is set
+high for some other reason, eBPF programs inserted with the bpf syscall can also
+exhaust the space.
 
->  Following the original consideration specific MMIO barrier operations are 
-> added.  As they have turned out to be required to be implied by MMIO 
-> accessors there is no immediate need to make them form a generic 
-> cross-architecture internal Linux API.  Therefore I defined them for the 
-> MIPS architecture only, using the names originally coined by mostly taking 
-> them from the PowerPC port.
-> 
->  Then I have used them to fix `mmiowb', and then `readX' and `writeX' 
-> accessors.  Finally I have updated the `_relaxed' accessors to avoid 
-> unnecessary synchronisation WRT DMA.
+This can cause problems not limited to:
+ - Filling the entire module space with filters so that kernel modules cannot
+   be loaded.
+ - If CONFIG_BPF_JIT_ALWAYS_ON is configured, then if the module space is full,
+   other BPF insertions will fail. This could cause filters that apps are
+   relying on for security to fail to insert.
+ - Counting the allocations until failure, since the module space is
+   allocated linearly, the number of allocations can be used to de-randomize
+   modules, with KASLR module base randomization. (This has been POCed with some
+   assumptions)
 
-Thanks - this definitely leaves us in a better place than we were :)
+Thanks to Daniel Borkmann for helping me understand what was happening with the
+classic BPF JIT compilation and CONFIG_BPF_JIT_ALWAYS_ON config.
 
-All 4 patches applied to mips-next for 4.20.
+Proposed solution
+-----------------
+The solution being proposed here is to add a per user rlimit for module space,
+similar to memlock rlimit. For the case of fds with attached filters being sent
+over domain sockets, there is tracking for the uid of each module allocation.
 
-Paul
+Hopefully this could also be used for helping prevent BPF JIT spray type attacks
+if a lower, more locked down setting is used.
+
+The default memlock rlimit is pretty low, so just adding a check to classic BPF
+similar to what happens in the bpf syscall may cause breakages. In addition,
+some usages may increase the memlock limit for other reasons, which will remove
+the protection for exhausting the module space.
+
+There is unfortunately no cross platform place to perform this accounting
+during allocation in the module space, so instead two helpers are created to be
+inserted into the various arch’s that implement module_alloc. These helpers
+perform the checks and help with tracking. The intention is that they can be
+added to the other arch’s as easily as possible.
+
+For decrementing the module space usage when an area is free, there _is_ a
+cross-platform place to do this, so its done there. The behavior is that if the
+helpers to increment and check are not added into an arch’s module_alloc, then
+the decrement should have no effect. This is due to the allocation being missing
+from the allocation-uid tracking.
+
+Changes since v1 RFC
+--------------------
+Some feedback from Kees Cook was to try to plug this in for every architecture
+and so this is done in this set for every architecture that has a BPF JIT
+implementation. I have only done testing on x86.
+
+There was also a suggestion from Daniel Borkmann to have default value for the
+rlimit scale with the module size. This was complicated because the module space
+size is not named the same accross architectures. It also is not always a
+compile time constant and so the struct initilization would need to be changed.
+So instead for this version a default value is added that can be overridden for
+each architecture. For this set it is just defined for x86, all others get the
+default.
+
+Questions
+---------
+ - Should there be any special behavior for root or users with superuser
+   capabilities?
+
+Rick Edgecombe (7):
+  modules: Create rlimit for module space
+  x86/modules: Add rlimit checking for x86 modules
+  arm/modules: Add rlimit checking for arm modules
+  arm64/modules: Add rlimit checking for arm64 modules
+  mips/modules: Add rlimit checking for mips modules
+  sparc/modules: Add rlimit for sparc modules
+  s390/modules: Add rlimit checking for s390 modules
+
+ arch/arm/kernel/module.c                |  12 +-
+ arch/arm64/kernel/module.c              |   5 +
+ arch/mips/kernel/module.c               |  11 +-
+ arch/s390/kernel/module.c               |  12 +-
+ arch/sparc/kernel/module.c              |   5 +
+ arch/x86/include/asm/pgtable_32_types.h |   3 +
+ arch/x86/include/asm/pgtable_64_types.h |   2 +
+ arch/x86/kernel/module.c                |   7 +-
+ fs/proc/base.c                          |   1 +
+ include/asm-generic/resource.h          |   8 ++
+ include/linux/moduleloader.h            |   3 +
+ include/linux/sched/user.h              |   4 +
+ include/uapi/asm-generic/resource.h     |   3 +-
+ kernel/module.c                         | 141 +++++++++++++++++++++++-
+ 14 files changed, 210 insertions(+), 7 deletions(-)
+
+-- 
+2.17.1

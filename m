@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 01:41:10 +0200 (CEST)
-Received: from mga01.intel.com ([192.55.52.88]:12384 "EHLO mga01.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 01:41:20 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:12389 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994655AbeJKXkH4oU2x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Oct 2018 01:40:07 +0200
+        id S23994656AbeJKXkIawr0x (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Oct 2018 01:40:08 +0200
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
   by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2018 16:40:06 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.54,370,1534834800"; 
-   d="scan'208";a="96792944"
+   d="scan'208";a="96792951"
 Received: from rpedgeco-desk5.jf.intel.com ([10.54.75.168])
-  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2018 16:40:05 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2018 16:40:06 -0700
 From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
 To:     kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
         keescook@chromium.org, catalin.marinas@arm.com,
@@ -24,9 +24,9 @@ To:     kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
 Cc:     kristen@linux.intel.com, dave.hansen@intel.com,
         arjan@linux.intel.com, deneen.t.dock@intel.com,
         Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v2 5/7] mips/modules: Add rlimit checking for mips modules
-Date:   Thu, 11 Oct 2018 16:31:15 -0700
-Message-Id: <20181011233117.7883-6-rick.p.edgecombe@intel.com>
+Subject: [PATCH v2 6/7] sparc/modules: Add rlimit for sparc modules
+Date:   Thu, 11 Oct 2018 16:31:16 -0700
+Message-Id: <20181011233117.7883-7-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
 References: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
@@ -34,7 +34,7 @@ Return-Path: <rick.p.edgecombe@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66752
+X-archive-position: 66753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,38 +51,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This adds in the rlimit checking for the mips module allocator.
+This adds in the rlimit checking for the sparc module allocator.
 
 This has not been tested.
 
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/mips/kernel/module.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/sparc/kernel/module.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
-index 491605137b03..7a23392512d1 100644
---- a/arch/mips/kernel/module.c
-+++ b/arch/mips/kernel/module.c
-@@ -47,9 +47,18 @@ static DEFINE_SPINLOCK(dbe_lock);
- #ifdef MODULE_START
- void *module_alloc(unsigned long size)
+diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
+index df39580f398d..24854fdfa7c3 100644
+--- a/arch/sparc/kernel/module.c
++++ b/arch/sparc/kernel/module.c
+@@ -44,10 +44,15 @@ void *module_alloc(unsigned long size)
  {
--	return __vmalloc_node_range(size, 1, MODULE_START, MODULE_END,
-+	void *p;
-+
+ 	void *ret;
+ 
 +	if (check_inc_mod_rlimit(size))
 +		return NULL;
 +
-+	p = __vmalloc_node_range(size, 1, MODULE_START, MODULE_END,
- 				GFP_KERNEL, PAGE_KERNEL, 0, NUMA_NO_NODE,
- 				__builtin_return_address(0));
+ 	ret = module_map(size);
+ 	if (ret)
+ 		memset(ret, 0, size);
+ 
++	update_mod_rlimit(ret, size);
 +
-+	update_mod_rlimit(p, size);
-+
-+	return p;
+ 	return ret;
  }
- #endif
  
 -- 
 2.17.1

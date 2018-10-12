@@ -1,95 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 01:48:04 +0200 (CEST)
-Received: from mga01.intel.com ([192.55.52.88]:13308 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994648AbeJKXsCNxfVx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Oct 2018 01:48:02 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2018 16:48:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.54,370,1534834800"; 
-   d="scan'208";a="98673601"
-Received: from kgowx-mobl9.amr.corp.intel.com (HELO [10.254.73.197]) ([10.254.73.197])
-  by orsmga001.jf.intel.com with ESMTP; 11 Oct 2018 16:47:29 -0700
-Subject: Re: [PATCH v2 4/7] arm64/modules: Add rlimit checking for arm64
- modules
-To:     Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
-        keescook@chromium.org, catalin.marinas@arm.com,
-        will.deacon@arm.com, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, x86@kernel.org, arnd@arndb.de,
-        jeyu@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
- <20181011233117.7883-5-rick.p.edgecombe@intel.com>
-Cc:     kristen@linux.intel.com, arjan@linux.intel.com,
-        deneen.t.dock@intel.com
-From:   Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <25951d99-8ba7-5c9e-938e-baf92395f9e0@intel.com>
-Date:   Thu, 11 Oct 2018 16:47:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 02:36:04 +0200 (CEST)
+Received: from mail-ot1-x343.google.com ([IPv6:2607:f8b0:4864:20::343]:35769
+        "EHLO mail-ot1-x343.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994648AbeJLAgBnKAef convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Oct 2018 02:36:01 +0200
+Received: by mail-ot1-x343.google.com with SMTP id 14so6788910oth.2
+        for <linux-mips@linux-mips.org>; Thu, 11 Oct 2018 17:36:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=O3dVQ2VpkzyEy5AtqvYVsyf5CfAZqFhRMHYDEQWhI2o=;
+        b=bS69ll8SS+45FdCeCQXRdeyX1WZ70u0jLFH95oHGj594lfmYJy5ZlueYOW4wgzxCAA
+         i+6QwpNRSKZohJK1iHuKzd2ud6l0Rpmw4iF0tAFO64asFxetHsUth2VjoF3CNPMsJJn7
+         YDCiv46PJbZMlJCkp5hAzP9OE0BVbOVuPJ50gvEPBU/FLXlyaSry4LZxFt2JEWdQOXma
+         lkwGxMYIxta7tId0ea1pAdPtbZRnQp+Ow8+ZeqoRWZPRalg8zWzJ3vOHGJ4+sb3rbhnm
+         cVlcKFWX5CeQk354e6EbK4LxQsPditor+/Tr7mtd+IkNvVeLJqVZv6Z6m/DeFztSi4kq
+         sBxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=O3dVQ2VpkzyEy5AtqvYVsyf5CfAZqFhRMHYDEQWhI2o=;
+        b=R98YY/+/HyS7AyzLLl09zozBcY36FYIAx+6H67dqvbvuamREMfVm1x0QC9is6utWAE
+         R8xomcOBjGg28mQGxK1c5ODCwZMnErJN2lU2H6ssfproeBHYwfRaYoy/AJVEmKeWAb7z
+         g2Ply9UMdiHn2BYg+4eeZZ20ZYhH02riuJ8TLSdVtg7tPwIq96xihGrtGOMuy2FaEcfZ
+         722UkFU3ikeSYNT4bdJw7CSdpyD+NYBs+i7iwQYqnDEJYy/CBGjd1/ZXjv/8Wid7sYox
+         piPAPjl/9RkyXw0AUk0rSspDku7PpYbLaNTNBQGtQLaMO1k/wds5B1ZVhtBu5rL3qMR5
+         ng4A==
+X-Gm-Message-State: ABuFfojNWasnVeXZEjRg/07yvhVCe0FUV8ooSJv11dHfaAlHmn0zXp0O
+        VpgeI3n1dE1plc8P1SaknH2fRaORZhxU6NdkN2CEcQ==
+X-Google-Smtp-Source: ACcGV60wE/h4NRkFdQ03NEnOmZoRdeLRTJcSpJ1zcAmPTq5izdvagVxIQ4ZJUoHY5xKfIgBlSsz+ANnQ9QlcAlC5H3g=
+X-Received: by 2002:a9d:4917:: with SMTP id e23mr2664587otf.73.1539304555105;
+ Thu, 11 Oct 2018 17:35:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20181011233117.7883-5-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <dave.hansen@intel.com>
+References: <20181011233117.7883-1-rick.p.edgecombe@intel.com> <20181011233117.7883-2-rick.p.edgecombe@intel.com>
+In-Reply-To: <20181011233117.7883-2-rick.p.edgecombe@intel.com>
+From:   Jann Horn <jannh@google.com>
+Date:   Fri, 12 Oct 2018 02:35:28 +0200
+Message-ID: <CAG48ez2fWg64nGxDXUQS3695KpVNrakAbarXJnYPd6xv5wOD+A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] modules: Create rlimit for module space
+To:     rick.p.edgecombe@intel.com
+Cc:     Kernel Hardening <kernel-hardening@lists.openwall.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Kees Cook <keescook@chromium.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, jeyu@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>, kristen@linux.intel.com,
+        Dave Hansen <dave.hansen@intel.com>,
+        Arjan van de Ven <arjan@linux.intel.com>,
+        deneen.t.dock@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Return-Path: <jannh@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66755
+X-archive-position: 66756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave.hansen@intel.com
+X-original-sender: jannh@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,29 +82,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/11/2018 04:31 PM, Rick Edgecombe wrote:
-> +	if (check_inc_mod_rlimit(size))
-> +		return NULL;
+On Fri, Oct 12, 2018 at 1:40 AM Rick Edgecombe
+<rick.p.edgecombe@intel.com> wrote:
+> This introduces a new rlimit, RLIMIT_MODSPACE, which limits the amount of
+> module space a user can use. The intention is to be able to limit module space
+> allocations that may come from un-privlidged users inserting e/BPF filters.
+
+Note that in some configurations (iirc e.g. the default Ubuntu
+config), normal users can use the subuid mechanism (the /etc/subuid
+config file and the /usr/bin/newuidmap setuid helper) to gain access
+to 65536 UIDs, which means that in such a configuration,
+RLIMIT_MODSPACE*65537 is the actual limit for one user. (Same thing
+applies to RLIMIT_MEMLOCK.)
+
+Also, it is probably possible to waste a few times as much virtual
+memory as permitted by the limit by deliberately fragmenting virtual
+memory?
+
+> There is unfortunately no cross platform place to perform this accounting
+> during allocation in the module space, so instead two helpers are created to be
+> inserted into the various arch’s that implement module_alloc. These
+> helpers perform the checks and help with tracking. The intention is that they
+> an be added to the various arch’s as easily as possible.
+
+nit: s/an/can/
+
+[...]
+> diff --git a/kernel/module.c b/kernel/module.c
+> index 6746c85511fe..2ef9ed95bf60 100644
+> --- a/kernel/module.c
+> +++ b/kernel/module.c
+> @@ -2110,9 +2110,139 @@ static void free_module_elf(struct module *mod)
+>  }
+>  #endif /* CONFIG_LIVEPATCH */
+>
+> +struct mod_alloc_user {
+> +       struct rb_node node;
+> +       unsigned long addr;
+> +       unsigned long pages;
+> +       kuid_t uid;
+> +};
 > +
->  	p = __vmalloc_node_range(size, MODULE_ALIGN, module_alloc_base,
->  				module_alloc_base + MODULES_VSIZE,
->  				gfp_mask, PAGE_KERNEL_EXEC, 0,
-> @@ -65,6 +68,8 @@ void *module_alloc(unsigned long size)
->  		return NULL;
->  	}
->  
-> +	update_mod_rlimit(p, size);
+> +static struct rb_root alloc_users = RB_ROOT;
+> +static DEFINE_SPINLOCK(alloc_users_lock);
 
-Is there a reason we couldn't just rename all of the existing per-arch
-module_alloc() calls to be called, say, "arch_module_alloc()", then put
-this new rlimit code in a generic helper that does:
+Why all the rbtree stuff instead of stashing a pointer in struct
+vmap_area, or something like that?
 
+[...]
+> +int check_inc_mod_rlimit(unsigned long size)
+> +{
+> +       struct user_struct *user = get_current_user();
+> +       unsigned long modspace_pages = rlimit(RLIMIT_MODSPACE) >> PAGE_SHIFT;
+> +       unsigned long cur_pages = atomic_long_read(&user->module_vm);
+> +       unsigned long new_pages = get_mod_page_cnt(size);
+> +
+> +       if (rlimit(RLIMIT_MODSPACE) != RLIM_INFINITY
+> +                       && cur_pages + new_pages > modspace_pages) {
+> +               free_uid(user);
+> +               return 1;
+> +       }
+> +
+> +       atomic_long_add(new_pages, &user->module_vm);
+> +
+> +       if (atomic_long_read(&user->module_vm) > modspace_pages) {
+> +               atomic_long_sub(new_pages, &user->module_vm);
+> +               free_uid(user);
+> +               return 1;
+> +       }
+> +
+> +       free_uid(user);
 
-	if (check_inc_mod_rlimit(size))
-		return NULL;
+If you drop the reference on the user_struct, an attacker with two
+UIDs can charge module allocations to UID A, keep the associated
+sockets alive as UID B, and then log out and back in again as UID A.
+At that point, nobody is charged for the module space anymore. If you
+look at the eBPF implementation, you'll see that
+bpf_prog_charge_memlock() actually stores a refcounted pointer to the
+user_struct.
 
-	p = arch_module_alloc(...);
-
-	...
-
-	update_mod_rlimit(p, size);
+> +       return 0;
+> +}

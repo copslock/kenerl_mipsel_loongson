@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 12:42:42 +0200 (CEST)
-Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:38520
-        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992267AbeJLKmigocNQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 12:42:38 +0200
-Received: by mail-wr1-x442.google.com with SMTP id a13-v6so12911227wrt.5;
-        Fri, 12 Oct 2018 03:42:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 12:43:23 +0200 (CEST)
+Received: from mail-wr1-x444.google.com ([IPv6:2a00:1450:4864:20::444]:44845
+        "EHLO mail-wr1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992267AbeJLKnTPLZ2Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 12:43:19 +0200
+Received: by mail-wr1-x444.google.com with SMTP id 63-v6so12899440wra.11;
+        Fri, 12 Oct 2018 03:43:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=jAZc40z4iCg8HXnJNjcYhwdy1UtTUGPD1xND8ey1V3g=;
-        b=DCG5HTBwn7D1uSVwIXgDw5NRHO0fJeNlRMIE+bSOvwkglu3/YgTXVWpgIwLSEp9NZx
-         I58j2b7Ntlffzet4jm5o0SP7/tG4eLl6WHGtAO0CyCAor4zLlnqOZrIlUi629TTMWrms
-         Oo9D2qRu11n/8JIZV0SyYO6rLqPU1D2pax4pbXfVvvVJuFs8hpTYIYBRw0/x2tEYeWLG
-         kC8KRpXZ9FvlCKoQsSVqkacnPOK3Nz6Y9HTejJ2PmWm3+/uTlzlnOqunuGzZrbSD9SPG
-         PT/6I9fb4HppbCMD0A5MUUjuJ2Xlea2+AsPuTYudLMEGj2N0j1KLLwjNE3nQy+CySevm
-         FmxA==
+        bh=+MvIpKzcTAhwZa+2gA4ijL4Bg+X482ReRYyrDcy6zTw=;
+        b=bbLQCpBX/Ce3u/WyUZRtcrafmQ5FCpl3hL8YaIR5JwXgNxqkRKMA8AyssokuqUL+m2
+         a2SuxgSTyusKaW/q2gjACYvIF3eFb7ZfgaFSUiWpT35RRyBMb9DJua3p0VKO4fV7GRtk
+         P5wgr11FZvE8qGLcmZgKnZWQ1j+RO6goIEe85pa9BOGI8+JyEvYXcBziVaKyX02bV6kt
+         DBRpF9tVyaWMubz0Rxlm9jdrvWsvkV6VGv59KmtFr/y3cMZU5BLsZm66pfHsAWYDh9bE
+         GR+1zbpZ38Si6Du6AWDqWw0ag//Ga+ToxYg6gZgetEASn+bTzM00QRjHwAXlaPFbB6si
+         U9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jAZc40z4iCg8HXnJNjcYhwdy1UtTUGPD1xND8ey1V3g=;
-        b=EGIIQqPSIlz8lwM5z6eXkDKnAiRkVv7E2VMk2UxPb+kb2S2sq/CPqfXyxqp7u3MOq4
-         U2hUZV/VcweqeBsdvwF+DdxJiKJn1HqFUBKjc40aEYooX3RxWGGxng4PoDZ6ODD6cj6J
-         WWt+fKU59xgrZK0vcivvm03+h5z9OIEUBjYMdoVL7lstd5AF2O5Fef/yGtO2f3PS7lZ/
-         uNwoC2NHqLY844IXksL1D6E5edaTNTBgG2a4vDwuMNpZuVZzDHn6xejwyV9t0QG/2aIE
-         JeUiKg6vzSUjktmzpp+y8rs19mXzyG/g7A2ca9aDuk964mXCoYtxBaIbK0Ssy49xi9T+
-         IrXA==
-X-Gm-Message-State: ABuFfog/PNrovQ04APuFjzbm1e6fGJMSMvzAep9le1pnrXOdSAukwtiV
-        9ev+VQkMRvNVq1MzmA3bn/vwsN56
-X-Google-Smtp-Source: ACcGV61bVNRDyXyl8kw/vgJ1DnmBhq/SRKWIseLYbKg30uu4g7z9+FBngoSrZOW/zmdj3mzqMBINSA==
-X-Received: by 2002:a5d:4e0a:: with SMTP id p10-v6mr5001263wrt.320.1539340953246;
-        Fri, 12 Oct 2018 03:42:33 -0700 (PDT)
+        bh=+MvIpKzcTAhwZa+2gA4ijL4Bg+X482ReRYyrDcy6zTw=;
+        b=djST+PyQt7e4/w9ICqcL5zSv3W9fhrsZ+xHZ9v0fYOAqal3BrPbGtAk0q0u9CTQ9iM
+         /bc5IHsS1GH6XpnwYzCeaCMUNBQ1PRdsc5+G9FhXdOCSGG8ZM19C+1EqWZ2I7J4OBNEm
+         G60eD/GZxm1KrhLzWhAcnEWiNcC3Haq2xWDTrlb5/3Ee/QJhSWp64ImJAxVUH7Oaw9IS
+         PlGu8wc+ahlQZQrDi1xRB86pp3Un3VnLPta7WMM6g0TpP6HnqBhVvkA0I58/DC2Y18Cv
+         P2W0TPWsSgVaeI/dwX08LifU4MsyQbNWzupHV0ic065hjS3TWMOOEFmdIc8+NNHke8ia
+         06/g==
+X-Gm-Message-State: ABuFfoiML3LQZJSEF5tGFLFrjNszUqJN8marQX4iH7VD/E29Y408Go94
+        uaQ8QlPH0Nlgf46le4l73m8=
+X-Google-Smtp-Source: ACcGV63yYY1cBT/RQapQt8J9P8I3lr83iCHHozSQXWYMa3eiJMvvxEAwuWYXqJ0hN6BFdBWN0cB4EQ==
+X-Received: by 2002:a5d:4dd2:: with SMTP id f18-v6mr5247537wru.80.1539340993866;
+        Fri, 12 Oct 2018 03:43:13 -0700 (PDT)
 Received: from localhost (p2E5BEEEA.dip0.t-ipconnect.de. [46.91.238.234])
-        by smtp.gmail.com with ESMTPSA id o17-v6sm1094742wro.2.2018.10.12.03.42.32
+        by smtp.gmail.com with ESMTPSA id v76-v6sm1236456wmd.32.2018.10.12.03.43.13
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Oct 2018 03:42:32 -0700 (PDT)
-Date:   Fri, 12 Oct 2018 12:42:31 +0200
+        Fri, 12 Oct 2018 03:43:13 -0700 (PDT)
+Date:   Fri, 12 Oct 2018 12:43:12 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
@@ -51,22 +51,21 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH v7 15/24] pwm: jz4740: Remove unused devicetree
- compatible strings
-Message-ID: <20181012104231.GI9162@ulmo>
+Subject: Re: [PATCH v7 16/24] pwm: jz4740: Add support for the JZ4725B
+Message-ID: <20181012104312.GJ9162@ulmo>
 References: <20180821171635.22740-1-paul@crapouillou.net>
- <20180821171635.22740-16-paul@crapouillou.net>
+ <20180821171635.22740-17-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0XMZdl/q8hSSmFeD"
+        protocol="application/pgp-signature"; boundary="ONvqYzh+7ST5RsLk"
 Content-Disposition: inline
-In-Reply-To: <20180821171635.22740-16-paul@crapouillou.net>
+In-Reply-To: <20180821171635.22740-17-paul@crapouillou.net>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66762
+X-archive-position: 66763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,16 +83,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---0XMZdl/q8hSSmFeD
+--ONvqYzh+7ST5RsLk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 21, 2018 at 07:16:26PM +0200, Paul Cercueil wrote:
-> Right now none of the Ingenic-based boards probe this driver from
-> devicetree. This driver defined three compatible strings for the exact
-> same behaviour. Before these strings are used, we can remove two of
-> them.
+On Tue, Aug 21, 2018 at 07:16:27PM +0200, Paul Cercueil wrote:
+> The PWM in the JZ4725B works the same as in the JZ4740, except that it
+> only has 6 channels available instead of 8.
 >=20
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > ---
@@ -101,33 +98,35 @@ On Tue, Aug 21, 2018 at 07:16:26PM +0200, Paul Cercueil wrote:
 > Notes:
 >      v5: New patch
 >    =20
->      v6: No change
+>      v6: - Move of_device_id structure back at the bottom (less noise in
+>            patch)
+>          - Use device_get_match_data() instead of of_* variant
 >    =20
 >      v7: No change
 >=20
->  drivers/pwm/pwm-jz4740.c | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/pwm/pwm-jz4740.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
 
 Acked-by: Thierry Reding <thierry.reding@gmail.com>
 
---0XMZdl/q8hSSmFeD
+--ONvqYzh+7ST5RsLk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlvAepcACgkQ3SOs138+
-s6HYNA/+ONd+BCqmE0Z29A+IoPCHFyLIVoy/aZWszgeBoqk9D9PAKKbi2eHSBBL2
-Iq0GqudniRWhko8hmM9NU0XhYgDm8sq98sTAQReqW1ctn7/Fx5FNwM9Rtxe9yKfx
-EWELqIPbypO7nHU/6kC9ekdf7KI+a35Envx+/8oOdgF//KqzzVMQsuVCFlnzPCvp
-tXHT+2zHxrxMnaDVSxJQsXC5lnrFeP+lAE6+XN0W/d9x+wAtL56Nh0DOO8OJIfpm
-aJYZHN8hmZxTMxNUV5j3gip0uF4+m9iumnwAXAY1SZH84NPBviqGho5P/I9NqCwO
-GvncripVWrqlJVAGYfh5c/2Vg6mEGTE3gqjDumEpvPh6nyqAS4U/rmiB9wr2pE7u
-FlmbeqgUe8FBm9gm/uaP7iMxkeH2ChSsQ3OKtYUv+frGhte1iCbpe4RSIK4q4FGN
-Wxc5rJcOzud1GGhbrPmARDE9RzjX68N7XlIZtpDsxDLakwkmh1rJLk5wHWSLkYeh
-nGRXMhOm1R5jTaipnpJ6C+h14xp7+5N4ccXHa+2Uu1x8wn01L1SL2jg4JpfidAnO
-9z5i5OjGgs8ZsJOR0u3zaZSKq/fdgkw+CGXxvz3sQXRvZ/HjOpdXAXvDeweO87Ax
-7H9hEhbaGvSzmyBSP0Sn5KxlE+5xfOpajThQsJhWBASaWaTlKUk=
-=81jk
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlvAesAACgkQ3SOs138+
+s6FK7g//XMqm9tY/j9ebBHkmvyejEcCSzNYK6TscB0/JcxIikY5BBEPT3Zu4yk5K
+jvy11nwiuGXxqeoCCvrprgWlMskRbB0vfjaXbkbium0WtcDWECGAD2q0PQ61wT2Q
+HwtIecyTHVHp5vTht3FuqhRW/ISdQo/h4aN54HiX3GTvFEPXIobrW/52smXWIGLw
+BBE0fz2a94H3zVewmeiqwzViQAfBTT3FqKl13AH0iAfmfT3mjgxsPgnnCGmQo9gc
+zt8cvqS9LAPy1cw07bFfiyPGVn3DL4KhlybPi2NTOn+zGKIMJeza0iYKpyh/PcGX
+xMgk1VSLKNFQTITXllRnw69ad9QfW2hs3kHqy1W3oTaQe7VmXuUAS0LlFkX4WRG7
+vhnwdCZVlGjpdzmt9IduRBUBhZuTkqNLdzF4WhoeQjEeohvmmvKFGjy5OwMw0F9Y
+pDYjp0bfECwQNKynPVF+pPSw7B3nh1D97o5VGZGILYXYFIE5MlKOXqMVXpSd2HIj
+NmjziYKpPZk6auyQlbdsijlZ/jra0RYGvLdi8bWBJVbpo4IqC9iFjtC4/9vJ0m+R
+YLwQlJoZGqRKCVpwdQKDEEBx+4bQxdQcQJZrYueZXMCRIimzWC2H2cmxKpRWdjqw
+mokR4lpnDhHpADP3A7wPVKCvMoJn39U1saRvscYMRxkH8cV1J9g=
+=OX+r
 -----END PGP SIGNATURE-----
 
---0XMZdl/q8hSSmFeD--
+--ONvqYzh+7ST5RsLk--

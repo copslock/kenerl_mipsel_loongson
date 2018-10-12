@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 13:09:22 +0200 (CEST)
-Received: from mail-pf1-x441.google.com ([IPv6:2607:f8b0:4864:20::441]:41882
-        "EHLO mail-pf1-x441.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992066AbeJLLJTQXoQQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 13:09:19 +0200
-Received: by mail-pf1-x441.google.com with SMTP id m77-v6so6029432pfi.8
-        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 04:09:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 13:31:11 +0200 (CEST)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:39319
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992267AbeJLLbImLxfT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 13:31:08 +0200
+Received: by mail-pf1-x444.google.com with SMTP id c25-v6so6060868pfe.6
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 04:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=RX5FjI3wwkptc5sfX4+NkcctA+fCkcVF8HC/oTZQueA=;
-        b=qeudmJU6+nqktNq8hagWevdDYJTTFMn+WENyVU02czllfS+fQup8X2aAcQtu2Lo0Fp
-         dhBWK+IUAJCVJxMgLR2Q+5FdwzcoZDri19DNWDDMDN459vxsWd4gd90pvEzqmj7i/Fk+
-         4GmiBbPPBQxYkEOU63G/QIHHt6iTrlm7BZWRGLnI42WPtnHHGUwiFQgxxz6a5lmwlVkh
-         RLNcciTpu4deyuzzSogUrxoQpB41XxnBfDW3RTICetpaoKpeC37wL/mNktpm48Nj7dgI
-         Xa/aCwwYycAOdNSNZVdcW5B/PKAoIddEyh93084VotBhdiNKJBPYH3SrKS+IeMKOkimb
-         sY+A==
+        bh=l7AhKnmfvmp8KBJvG0N/KXKa/mMdyWfz5lA4HnS7BL8=;
+        b=g54sfYi+w0crnYiSByxg5Nkl3eGqhJ6PN3wZFl+ctMzP2ovV+r5fma35R0NtLVm7f4
+         n5dBPdHh/h+S00ymRa9yXbYyWCDNbz5qTo9fbzEBNajxgbVXHatOXKhWE2ymaeXn4b5+
+         3y3wh4nrJJVcwBsKyp1ZdwGny9fgiF2ZGJoiLdnlO2hbOpRXU/jsB85IrZoJ+NpUk4uq
+         jaOW+U4M0qLfRnRGAkxWtj5pjU2u4VJgE+Mmaw1D6h2dqW+o9dFjgqSLLoVlGTHQkemb
+         O2qFRHSU7x5ebQd3d+IhwBYfRwpZqwIx0EmzYxOFIjiVnHWgdZ7DEtkH2GtuE3Iit1L9
+         iriw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RX5FjI3wwkptc5sfX4+NkcctA+fCkcVF8HC/oTZQueA=;
-        b=LkfogYAdtYQE0tUlzjkLMjGPzQfF+nvVoNUrm9lEoEXokDT4+RznhPY8Srz24QwhqU
-         oL5qd18rM5gxgEJyRE7k8HADNVMjhizkoaCMBCH9tWz7n+wnf9Yi71s+QexwoJSOFCm2
-         Ooj6nt4e5+sOsFX6zo7EIOFv2kwJCAvwkBWG3cdFPgdtA0gisMOwclQZR+iTbLWjG1ke
-         +7KJznQyVNNQoP3PBVezq5ISI1BckSMCxhWrNzlZ8CQNM3MXC/Pz5oRXgJrHRfD21XAV
-         EkJMigSWA/vzxOgBouoyh/4Noh3mBy4TcsYDjLyLMNYKcNbhwl3ygJlGJJYU1/ZyeUf2
-         +nRQ==
-X-Gm-Message-State: ABuFfojaap9Sof39iuiwNB1be7f22JksqapLBrRYpPIm9FbaTTReJuJ4
-        BE4Kz7AVmATA2Kc5KSPzGGC0IQ==
-X-Google-Smtp-Source: ACcGV62AMJmSqYHUXksz43gsqwXiRDEZmpQoYbBa2QiJukAYc0ejyNX8clN1YjM/qERtSA9meBw2Jg==
-X-Received: by 2002:a63:2356:: with SMTP id u22-v6mr5097385pgm.122.1539342552151;
-        Fri, 12 Oct 2018 04:09:12 -0700 (PDT)
+        bh=l7AhKnmfvmp8KBJvG0N/KXKa/mMdyWfz5lA4HnS7BL8=;
+        b=H+9vLkuqlOm3Qgx/EDiPxw7gRqYCmcgTMGlOYB+QgjUvPRN/1yN6LvHHY8tGH8a25d
+         4f9ISwNC+0636ILyG2sHKJN8Pu8xu/XHzmZl8uviJ8/nnfGoFh40loraTu+orNrMWY78
+         FKiAuCR5TlOzgSEl6pbq3NedwcbqqA8fZe9cSgPQDO1jxI1leF7yFAvSrGWB890x32Yk
+         iMqyaW80E2YRAKxkLVfzZS/Mbp0rh2GFVc9FubfRLoEykvOfPs8YApUwescPE6n2uMkk
+         2eSiOMfN0fXRKDeHizoPdTVGUIqs8URVmg4Du4s93J3DNvKp83nHHvsXyRZXfWRT/A+B
+         jdWQ==
+X-Gm-Message-State: ABuFfogfepWD5m6kC7kybpJmN6cP+FfrIU4j3sUxC54Ab1xfyyzWUsL5
+        esveTtkwUEi3xGGEP2hvOGpDjg==
+X-Google-Smtp-Source: ACcGV62lBfke4Nd6rzFvvGEYe+NYu7uJH2YfYRGmsZVhWDnzIbZPXUe0wUiVZh6jfZwYAfZZwYDRWA==
+X-Received: by 2002:a63:194a:: with SMTP id 10-v6mr5233013pgz.192.1539343861937;
+        Fri, 12 Oct 2018 04:31:01 -0700 (PDT)
 Received: from kshutemo-mobl1.localdomain ([192.55.54.42])
-        by smtp.gmail.com with ESMTPSA id r18-v6sm1479496pgj.51.2018.10.12.04.09.10
+        by smtp.gmail.com with ESMTPSA id o12-v6sm1985263pfh.20.2018.10.12.04.30.59
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 12 Oct 2018 04:09:10 -0700 (PDT)
+        Fri, 12 Oct 2018 04:31:00 -0700 (PDT)
 Received: by kshutemo-mobl1.localdomain (Postfix, from userid 1000)
-        id B9B73300030; Fri, 12 Oct 2018 14:09:06 +0300 (+03)
-Date:   Fri, 12 Oct 2018 14:09:06 +0300
+        id 6FFFA300030; Fri, 12 Oct 2018 14:30:56 +0300 (+03)
+Date:   Fri, 12 Oct 2018 14:30:56 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Michal Hocko <mhocko@kernel.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        elfring@users.sourceforge.net,
+        minchan@kernel.org, pantin@google.com, hughd@google.com,
+        lokeshgidra@google.com, dancol@google.com, mhocko@kernel.org,
+        akpm@linux-foundation.org,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>, dancol@google.com,
+        Chris Zankel <chris@zankel.net>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
         "James E.J. Bottomley" <jejb@parisc-linux.org>,
         Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
         kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
         Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
@@ -67,10 +68,8 @@ Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, pantin@google.com,
-        lokeshgidra@google.com, Max Filippov <jcmvbkbc@gmail.com>,
-        minchan@kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
         Peter Zijlstra <peterz@infradead.org>,
         Richard Weinberger <richard@nod.at>,
         Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
@@ -80,22 +79,21 @@ Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
         Tony Luck <tony.luck@intel.com>,
         Will Deacon <will.deacon@arm.com>,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        akpm@linux-foundation.org
-Subject: Re: [PATCH v2 1/2] treewide: remove unused address argument from
- pte_alloc functions
-Message-ID: <20181012110906.fpfttp4nhvsr2ps7@kshutemo-mobl1>
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
+Message-ID: <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
 References: <20181012013756.11285-1-joel@joelfernandes.org>
+ <20181012013756.11285-2-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181012013756.11285-1-joel@joelfernandes.org>
+In-Reply-To: <20181012013756.11285-2-joel@joelfernandes.org>
 User-Agent: NeoMutt/20180716
 Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66766
+X-archive-position: 66767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -112,70 +110,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 11, 2018 at 06:37:55PM -0700, Joel Fernandes (Google) wrote:
-> diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
-> index 12fe700632f4..4399d712f6db 100644
-> --- a/arch/m68k/include/asm/mcf_pgalloc.h
-> +++ b/arch/m68k/include/asm/mcf_pgalloc.h
-> @@ -12,8 +12,7 @@ extern inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
->  
->  extern const char bad_pmd_string[];
->  
-> -extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm,
-> -	unsigned long address)
-> +extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
->  {
->  	unsigned long page = __get_free_page(GFP_DMA);
->  
-> @@ -32,8 +31,6 @@ extern inline pmd_t *pmd_alloc_kernel(pgd_t *pgd, unsigned long address)
->  #define pmd_alloc_one_fast(mm, address) ({ BUG(); ((pmd_t *)1); })
->  #define pmd_alloc_one(mm, address)      ({ BUG(); ((pmd_t *)2); })
->  
-> -#define pte_alloc_one_fast(mm, addr) pte_alloc_one(mm, addr)
-> -
+On Thu, Oct 11, 2018 at 06:37:56PM -0700, Joel Fernandes (Google) wrote:
+> Android needs to mremap large regions of memory during memory management
+> related operations. The mremap system call can be really slow if THP is
+> not enabled. The bottleneck is move_page_tables, which is copying each
+> pte at a time, and can be really slow across a large map. Turning on THP
+> may not be a viable option, and is not for us. This patch speeds up the
+> performance for non-THP system by copying at the PMD level when possible.
+> 
+> The speed up is three orders of magnitude. On a 1GB mremap, the mremap
+> completion times drops from 160-250 millesconds to 380-400 microseconds.
+> 
+> Before:
+> Total mremap time for 1GB data: 242321014 nanoseconds.
+> Total mremap time for 1GB data: 196842467 nanoseconds.
+> Total mremap time for 1GB data: 167051162 nanoseconds.
+> 
+> After:
+> Total mremap time for 1GB data: 385781 nanoseconds.
+> Total mremap time for 1GB data: 388959 nanoseconds.
+> Total mremap time for 1GB data: 402813 nanoseconds.
+> 
+> Incase THP is enabled, the optimization is skipped. I also flush the
+> tlb every time we do this optimization since I couldn't find a way to
+> determine if the low-level PTEs are dirty. It is seen that the cost of
+> doing so is not much compared the improvement, on both x86-64 and arm64.
 
-I believe this was one done manually, right?
-Please explicitely state everthing you did on not of sematic patch
+I looked into the code more and noticed move_pte() helper called from
+move_ptes(). It changes PTE entry to suite new address.
 
-...
+It is only defined in non-trivial way on Sparc. I don't know much about
+Sparc and it's hard for me to say if the optimization will break anything
+there.
 
-> diff --git a/arch/microblaze/include/asm/pgalloc.h b/arch/microblaze/include/asm/pgalloc.h
-> index 7c89390c0c13..f4cc9ffc449e 100644
-> --- a/arch/microblaze/include/asm/pgalloc.h
-> +++ b/arch/microblaze/include/asm/pgalloc.h
-> @@ -108,10 +108,9 @@ static inline void free_pgd_slow(pgd_t *pgd)
->  #define pmd_alloc_one_fast(mm, address)	({ BUG(); ((pmd_t *)1); })
->  #define pmd_alloc_one(mm, address)	({ BUG(); ((pmd_t *)2); })
->  
-> -extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm, unsigned long addr);
-> +extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm);
->  
-> -static inline struct page *pte_alloc_one(struct mm_struct *mm,
-> -		unsigned long address)
-> +static inline struct page *pte_alloc_one(struct mm_struct *mm)
->  {
->  	struct page *ptepage;
->  
-> @@ -132,20 +131,6 @@ static inline struct page *pte_alloc_one(struct mm_struct *mm,
->  	return ptepage;
->  }
->  
-> -static inline pte_t *pte_alloc_one_fast(struct mm_struct *mm,
-> -		unsigned long address)
-> -{
-> -	unsigned long *ret;
-> -
-> -	ret = pte_quicklist;
-> -	if (ret != NULL) {
-> -		pte_quicklist = (unsigned long *)(*ret);
-> -		ret[0] = 0;
-> -		pgtable_cache_size--;
-> -	}
-> -	return (pte_t *)ret;
-> -}
-> -
+I think it worth to disable the optimization if __HAVE_ARCH_MOVE_PTE is
+defined. Or make architectures state explicitely that the optimization is
+safe.
 
-Ditto.
+> @@ -239,7 +287,21 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
+>  			split_huge_pmd(vma, old_pmd, old_addr);
+>  			if (pmd_trans_unstable(old_pmd))
+>  				continue;
+> +		} else if (extent == PMD_SIZE) {
+
+Hm. What guarantees that new_addr is PMD_SIZE-aligned?
+It's not obvious to me.
 
 -- 
  Kirill A. Shutemov

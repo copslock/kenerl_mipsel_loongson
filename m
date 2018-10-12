@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 12:41:06 +0200 (CEST)
-Received: from mail-wm1-x343.google.com ([IPv6:2a00:1450:4864:20::343]:38943
-        "EHLO mail-wm1-x343.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992066AbeJLKlAdHjtQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 12:41:00 +0200
-Received: by mail-wm1-x343.google.com with SMTP id y144-v6so12386213wmd.4;
-        Fri, 12 Oct 2018 03:41:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 12:42:04 +0200 (CEST)
+Received: from mail-wr1-x444.google.com ([IPv6:2a00:1450:4864:20::444]:44835
+        "EHLO mail-wr1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992267AbeJLKl5pOAUQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 12:41:57 +0200
+Received: by mail-wr1-x444.google.com with SMTP id 63-v6so12894666wra.11;
+        Fri, 12 Oct 2018 03:41:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=wk+vNsLznpsQ2NbdI/5nVh3LcdRCwmJqVyrDgud0B9Q=;
-        b=JVbPw3bAJh5hbOsWFNP0Ta/pfVsJuDaDQzvo4K9L8M7AUagC6TvYJ6cKVL4clxtp+a
-         coOyullKRk1qoMbPqBd7rptTgRiOO9khNO39R73nGE+uJ9K99zjWqvs+BL7Wqkla8b/T
-         XEMEU/rbsSTPkXIGI/qenefG+LRuOD9mXYsfEm0UjmiXGlBLTk9E2WC/hdIv0xDzZtOX
-         GQuC7ZaRp9FhsqYVKxGlZTuYTb1rHRe0WooaBpBXVP59JpwR1vsV9l8y+tSbl7hryQOW
-         0PgpRi93PDqjKlRok9Docoa6flHI7usUBqDMaE6Ah+RMOVvXyO322wPkZ3qmyc1zMoLV
-         EQDQ==
+        bh=fPDxcroJciIMsvfFT+WvfSSZGRz40ykKSUracXzD23Y=;
+        b=dqIFSLUjkJDFGfPIgZkmQBCwM8kEXq6NKnTbWTDm6aAYo0uQeU3tF1pwEm+EzWRr+V
+         irxU+MhlM0Pu1BJn/oN3AyX6GTLmbFk9tri4OqIGipwkZMTtgdaXDADFTeFnnwLudt52
+         n3qt98gr7qbwk9zbnZ5w9ioaIUBgc+6AHmvYCT8gNFzxqUkGMMETyb0gUmGIAePJZjVP
+         jLxmlj/ygZYrfSXLLmtfVkzgIlxpBKPpGe6V5sicYryd1qVkWS+kNJ6olEkdM9c0BT53
+         sCyRMCYTZADaCjHu/q7GzqdCwzl6dsT+QJi9i1dTw6mdlcYB56v/VnkHN2rA/hT1NaHN
+         dQNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wk+vNsLznpsQ2NbdI/5nVh3LcdRCwmJqVyrDgud0B9Q=;
-        b=rWrpowHLzcDftKq9cuDZOnFT1c2h9qB1ETr/iNq92nTRjPayTgsaR3C5XoFGiv0Gwh
-         MbZRlAX5vNV7OcLaZ04Nkg5p/DoZX3iOrnX3g+tSFuLTUs0P9x9rWMANWk2OCVtY7VaB
-         1IQjbaxD45eeW/khj5EC8WcDzTPMRfiEDcjmdJorZyBkuk6qcwgtUHRTRNpnE1uh5wtQ
-         dub/r0Nh3VzF4pu4ma62K5DRnQk4AeENgNnEvogvW1+ied6mQaqivv9vKhxhyuAq07fh
-         iGmO49jc3Bpnwuq8UzE6XMUWJGFvM0PjXNlTSxKIBfjzaZs/Trn4J1UmV5MRrPVjFywf
-         7bFQ==
-X-Gm-Message-State: ABuFfoj/duHRkbVhIsBJQYP3SWD73wq/hG2aiumfhnTy1oCVVIgnlhnD
-        LuiPRVckFAbAnkhmnRs5hX0=
-X-Google-Smtp-Source: ACcGV62bp0wi0QYrsD9rhsK2/0pyaXXXT56A5UVO1KWQRvsnMhEbgK/JnzX4P273tjeDCXE1xGkwRw==
-X-Received: by 2002:a1c:cc0f:: with SMTP id h15-v6mr4786928wmb.1.1539340855134;
-        Fri, 12 Oct 2018 03:40:55 -0700 (PDT)
+        bh=fPDxcroJciIMsvfFT+WvfSSZGRz40ykKSUracXzD23Y=;
+        b=HfxmHbR4H39kQzG23++QIqUiz7W43RIkAU6O74XYq3qKpEOqLfkjc1g3/xb7xg215q
+         jKZMQHXodQwb49tXCYx54y3Jc/pEnw2qhTSZ3Yv36/rT1pad1bPJ2tr/fkTQD5T31eOS
+         6P+U1f95espdfMc+tg7GWmfsIQZTm0Bquw0jvlu5O/D/Ad1WeKQ4Sgdv6xdB45JwQ4Ma
+         hILeS5B23Xzjs0lAqCzDJJZFBkgRVA5yT/gaOs6P5lo4SPjofjJad3J/UYDxQa/YCXxp
+         9AsAUiW6CUr4i04QD6A+liSa1+QRQLWi4VJlEPr1mwUwcd2lPvnrz3EF6Fo4tdxd6IKA
+         1vKw==
+X-Gm-Message-State: ABuFfoh61FctaLYs8X4R8x0xGmTJ2jH3DTxa9V0qJEx2IHYvRG2D0DPr
+        fRd7KXPROBKEPBHR2nB+IlAMZJZI
+X-Google-Smtp-Source: ACcGV63S61DkjUKnutYPOSb34zVjavbTjZzNkDDVOTY37UfcPpm6CDzvOmoTNoM1o2OLE3U0MnLZbw==
+X-Received: by 2002:a5d:620b:: with SMTP id y11-v6mr4788024wru.105.1539340912279;
+        Fri, 12 Oct 2018 03:41:52 -0700 (PDT)
 Received: from localhost (p2E5BEEEA.dip0.t-ipconnect.de. [46.91.238.234])
-        by smtp.gmail.com with ESMTPSA id m12sm886473wrx.75.2018.10.12.03.40.54
+        by smtp.gmail.com with ESMTPSA id a1-v6sm818238wrt.79.2018.10.12.03.41.51
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Oct 2018 03:40:54 -0700 (PDT)
-Date:   Fri, 12 Oct 2018 12:40:53 +0200
+        Fri, 12 Oct 2018 03:41:51 -0700 (PDT)
+Date:   Fri, 12 Oct 2018 12:41:50 +0200
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
@@ -51,22 +51,22 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: Re: [PATCH v7 13/24] pwm: jz4740: Allow selection of PWM channels 0
- and 1
-Message-ID: <20181012104053.GG9162@ulmo>
+Subject: Re: [PATCH v7 14/24] pwm: jz4740: Drop dependency on MACH_INGENIC,
+ use COMPILE_TEST
+Message-ID: <20181012104150.GH9162@ulmo>
 References: <20180821171635.22740-1-paul@crapouillou.net>
- <20180821171635.22740-14-paul@crapouillou.net>
+ <20180821171635.22740-15-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HB4mHL4PVvkpZAgW"
+        protocol="application/pgp-signature"; boundary="J/zg8ciPNcraoWb6"
 Content-Disposition: inline
-In-Reply-To: <20180821171635.22740-14-paul@crapouillou.net>
+In-Reply-To: <20180821171635.22740-15-paul@crapouillou.net>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <thierry.reding@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66760
+X-archive-position: 66761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,50 +84,53 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---HB4mHL4PVvkpZAgW
+--J/zg8ciPNcraoWb6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 21, 2018 at 07:16:24PM +0200, Paul Cercueil wrote:
-> The TCU channels 0 and 1 were previously reserved for system tasks, and
-> thus unavailable for PWM.
+On Tue, Aug 21, 2018 at 07:16:25PM +0200, Paul Cercueil wrote:
+> Depending on MACH_INGENIC prevent us from creating a generic kernel that
+> works on more than one MIPS board. Instead, we just depend on MIPS being
+> set.
 >=20
-> This commit uses the newly introduced API functions of the ingenic-timer
-> driver to request/release the TCU channels that should be used as PWM.
-> This allows all the TCU channels to be used as PWM.
+> On other architectures, this driver can still be built, thanks to
+> COMPILE_TEST. This is used by automated tools to find bugs, for
+> instance.
 >=20
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > ---
 >=20
 > Notes:
->      v6: New patch
+>      v5: New patch
+>    =20
+>      v6: No change
 >    =20
 >      v7: No change
 >=20
->  drivers/pwm/pwm-jz4740.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
+>  drivers/pwm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Acked-by: Thierry Reding <treding@nvidia.com>
 
---HB4mHL4PVvkpZAgW
+--J/zg8ciPNcraoWb6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlvAejUACgkQ3SOs138+
-s6FhYw/9FW8lZprZj6ntLye6m/IyGDHZalykPoLYefvS8bTuDn3qwMPId77gLA8m
-t8XjWmPCnwAJlXJO6v4L9Ttix2VAGpApZ5fyIAK9pv9Q5XhwCVYVbgyrPOnz1at7
-EsBxEwRNKMR79BkCA9JbT4eQy5tC/bpFadpItJxgRLyJAtTJX0kWa5piOvn3typ2
-zPm3osA5C1Og8EIS8kk1SxlRP9+gOcollqUqkFDMsG+h82RAzWZqCMOU+c3kmyvr
-v5EelQuSbw+H4Y6ZOZj6tEeIiyzUnedD07NbjRdkK33JUnE8xt33anbe5X/6P6e0
-AhUlG4y8kqN0mxhkWgpgIrJh/VOEsjTj18gMCU4LFNBDzj1MLon0wukTaZ7mq4yg
-lKMbQq0l+Il5Ii7JBKzz9LrbUzard4dVGDYQD2ChSQmLUTS5Yh0lAMzlYiIui+ja
-/Hv5+KuxJnii1KcKenvxOgOlOyJMk6AmTfD57Wk/wM2wm3IotiV1TFhAUG8we//3
-KAGPr83Uvpcx2oDhvcPplPK05TolV9W6b2QoxRaQfAcr4pEoSI3Fq7I4Mo1FvOT1
-0k/zXI6YUADZY55+6B8b6oqMk+OM+lZxipHgtIQo3LmtI8JysGBzkpT+MTyQZSvI
-/+neLH2EXccv9Ut5s5yYQw/uSq36oAO34Tu3zk+GsPx8XZB+Zqk=
-=1+ye
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlvAem4ACgkQ3SOs138+
+s6G1TRAAux8060Bb39lvD0m2DyAcY+wj728JjVVoR4ewIrMKra16L/zRXspBZiK5
+NE29yVOUrXx3h/C0/JD5zNTx7b6LajBoTYJ48FS2UVh3u04rky6MLHCyH97SnIA7
+WKt+PWrDi5pXZ5ooh6tNURClbe5iETYuVjjXudUFjVtNC0ptAEaY9PvX7HrlcB0R
+Eu1OUbp0k/RBhktlJJPkX/K/NqpBhncHo1GqHa2SRKf7+xkLia3V2SrszJC4q/g/
+EtLjaOrsOjHkcolpePxX9Gc1V52Jpy6yDuB/TSmsAAkZGLbUBDZWh5VH21XJlbBZ
+EDC28EJRnPDp3L6i9S2Kpy2anUNFblez+DAYY+takC3q/B+pKs/z4crRI9EwcVBA
+AQFDwWbovRGB0Ery54rZSUYIOBKclO1hlBbMYROpd7bsadsA/PE4VtjGjrlkSJhz
+GDF3anIdsvB5h23zZySwW3rOAKr8hGehlrWWu9tPCxacnKLZavMOHOThSDG2St9v
+60glgFNZCH86gcJ47HOgg3pr+xejpvwF9s85dN378nNIqxiMEPiF6rrvELG+YzFp
+Tv89gFw+06At4es9Gh+BlTqwYoiNGuIakwJHKoczVXCKxRThMiLkrjzhpomgh28y
+x9DLbMSigzYstEPL1Q/VlRZGEYWRRa/vCWqu9Y0RMSSxnmMSLkc=
+=ywfF
 -----END PGP SIGNATURE-----
 
---HB4mHL4PVvkpZAgW--
+--J/zg8ciPNcraoWb6--

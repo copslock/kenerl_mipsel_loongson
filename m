@@ -1,77 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 12:44:24 +0200 (CEST)
-Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:37782
-        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992066AbeJLKoT5QgqQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 12:44:19 +0200
-Received: by mail-wr1-x441.google.com with SMTP id y11-v6so12895811wrd.4;
-        Fri, 12 Oct 2018 03:44:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 13:09:22 +0200 (CEST)
+Received: from mail-pf1-x441.google.com ([IPv6:2607:f8b0:4864:20::441]:41882
+        "EHLO mail-pf1-x441.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992066AbeJLLJTQXoQQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 13:09:19 +0200
+Received: by mail-pf1-x441.google.com with SMTP id m77-v6so6029432pfi.8
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 04:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=TG27+xIK25GzwB3sLm2rIdsHlo9uLNjnjrSgSL3ZnIA=;
-        b=MuKYxT3WxdCe3DNB4E+EIrsXFel+QDJZLORESJgPvIaGSwL/9W2f5bkeBEp/d6ZflK
-         huEIqSLTUawcjlyD8/tLviy+4aExa3LRzi1zWMMfqQkELfEnlLC8e6yXyY34kTCrB9cw
-         uW2Ol2Ph8x1XzqnbKXfuIhdvpBQm9yy7cgddMPSz6Cl48KnYbnSKt9MbCAmBWGw4enQC
-         m5lKsOLDctFYJWDWVylYuqBTdQ+W2V628P6Ssgm/obW1Jp5S50cNwAZIsBT3jXpXAypa
-         +Zpn+xej+fVe0gCw3e/CGyLGKeeJa8S663VY3CVAfwLxfzetb0kJcL0xlpDWAHghUylD
-         +rRQ==
+        bh=RX5FjI3wwkptc5sfX4+NkcctA+fCkcVF8HC/oTZQueA=;
+        b=qeudmJU6+nqktNq8hagWevdDYJTTFMn+WENyVU02czllfS+fQup8X2aAcQtu2Lo0Fp
+         dhBWK+IUAJCVJxMgLR2Q+5FdwzcoZDri19DNWDDMDN459vxsWd4gd90pvEzqmj7i/Fk+
+         4GmiBbPPBQxYkEOU63G/QIHHt6iTrlm7BZWRGLnI42WPtnHHGUwiFQgxxz6a5lmwlVkh
+         RLNcciTpu4deyuzzSogUrxoQpB41XxnBfDW3RTICetpaoKpeC37wL/mNktpm48Nj7dgI
+         Xa/aCwwYycAOdNSNZVdcW5B/PKAoIddEyh93084VotBhdiNKJBPYH3SrKS+IeMKOkimb
+         sY+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=TG27+xIK25GzwB3sLm2rIdsHlo9uLNjnjrSgSL3ZnIA=;
-        b=bfVjqfKoBozBrjTVZnKQbB+8sgOg5qQWBZeEEvq057mVQ9BSovxpq3jtLEIaOhlwzB
-         8svKsJMq5tvxDHGI06RMsXmKXg0CERWjppvLQAVq/M3DE7ICW3kB3ITpm/j7jhNzCF1l
-         aI9iusT3QkDy5KISI5VsOnM/7gwJzJMlhg9wMvuX7qHnHzpGwnnph1E8v0AGVOAdOv6w
-         ktuf2rdUdear5FQhYV/AbXcCAJn5GIVB12tRpivIgFMLy+71ekBjFqdCzgnxSwcsM3O8
-         uQCyf7Vlr4vdhSPzb6O+edAHmZPUStwI+6yXqx6eeN7BEN5O+xn9Kzv36p08oKVP97cy
-         dZtA==
-X-Gm-Message-State: ABuFfoj4IZOTfcnqOza8C8pK5HVmzjpzkmIrP59NAjyeOnm/iLFi4FYf
-        UT8Ye9aNnFofd1H+5W1ufKI=
-X-Google-Smtp-Source: ACcGV600/DfgP3odqNjuoljwtfkJMsad/+0s5NUbtEdoHcQeyydpu8eODNn904bIOnkQFF3K3l/mmA==
-X-Received: by 2002:a5d:4c4d:: with SMTP id n13-v6mr4475150wrt.120.1539341054544;
-        Fri, 12 Oct 2018 03:44:14 -0700 (PDT)
-Received: from localhost (p2E5BEEEA.dip0.t-ipconnect.de. [46.91.238.234])
-        by smtp.gmail.com with ESMTPSA id j46-v6sm1139280wre.91.2018.10.12.03.44.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Oct 2018 03:44:14 -0700 (PDT)
-Date:   Fri, 12 Oct 2018 12:44:13 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Jonathan Corbet <corbet@lwn.net>, od@zcrc.me,
-        Mathieu Malaterre <malat@debian.org>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH v7 14/24] pwm: jz4740: Drop dependency on MACH_INGENIC,
- use COMPILE_TEST
-Message-ID: <20181012104413.GL9162@ulmo>
-References: <20180821171635.22740-1-paul@crapouillou.net>
- <20180821171635.22740-15-paul@crapouillou.net>
- <20181012104150.GH9162@ulmo>
+        bh=RX5FjI3wwkptc5sfX4+NkcctA+fCkcVF8HC/oTZQueA=;
+        b=LkfogYAdtYQE0tUlzjkLMjGPzQfF+nvVoNUrm9lEoEXokDT4+RznhPY8Srz24QwhqU
+         oL5qd18rM5gxgEJyRE7k8HADNVMjhizkoaCMBCH9tWz7n+wnf9Yi71s+QexwoJSOFCm2
+         Ooj6nt4e5+sOsFX6zo7EIOFv2kwJCAvwkBWG3cdFPgdtA0gisMOwclQZR+iTbLWjG1ke
+         +7KJznQyVNNQoP3PBVezq5ISI1BckSMCxhWrNzlZ8CQNM3MXC/Pz5oRXgJrHRfD21XAV
+         EkJMigSWA/vzxOgBouoyh/4Noh3mBy4TcsYDjLyLMNYKcNbhwl3ygJlGJJYU1/ZyeUf2
+         +nRQ==
+X-Gm-Message-State: ABuFfojaap9Sof39iuiwNB1be7f22JksqapLBrRYpPIm9FbaTTReJuJ4
+        BE4Kz7AVmATA2Kc5KSPzGGC0IQ==
+X-Google-Smtp-Source: ACcGV62AMJmSqYHUXksz43gsqwXiRDEZmpQoYbBa2QiJukAYc0ejyNX8clN1YjM/qERtSA9meBw2Jg==
+X-Received: by 2002:a63:2356:: with SMTP id u22-v6mr5097385pgm.122.1539342552151;
+        Fri, 12 Oct 2018 04:09:12 -0700 (PDT)
+Received: from kshutemo-mobl1.localdomain ([192.55.54.42])
+        by smtp.gmail.com with ESMTPSA id r18-v6sm1479496pgj.51.2018.10.12.04.09.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Oct 2018 04:09:10 -0700 (PDT)
+Received: by kshutemo-mobl1.localdomain (Postfix, from userid 1000)
+        id B9B73300030; Fri, 12 Oct 2018 14:09:06 +0300 (+03)
+Date:   Fri, 12 Oct 2018 14:09:06 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Michal Hocko <mhocko@kernel.org>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        elfring@users.sourceforge.net,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>, dancol@google.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
+        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, pantin@google.com,
+        lokeshgidra@google.com, Max Filippov <jcmvbkbc@gmail.com>,
+        minchan@kernel.org, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        akpm@linux-foundation.org
+Subject: Re: [PATCH v2 1/2] treewide: remove unused address argument from
+ pte_alloc functions
+Message-ID: <20181012110906.fpfttp4nhvsr2ps7@kshutemo-mobl1>
+References: <20181012013756.11285-1-joel@joelfernandes.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KIbT1ud6duwZIwNL"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181012104150.GH9162@ulmo>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <thierry.reding@gmail.com>
+In-Reply-To: <20181012013756.11285-1-joel@joelfernandes.org>
+User-Agent: NeoMutt/20180716
+Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66765
+X-archive-position: 66766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: kirill@shutemov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,59 +112,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Oct 11, 2018 at 06:37:55PM -0700, Joel Fernandes (Google) wrote:
+> diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
+> index 12fe700632f4..4399d712f6db 100644
+> --- a/arch/m68k/include/asm/mcf_pgalloc.h
+> +++ b/arch/m68k/include/asm/mcf_pgalloc.h
+> @@ -12,8 +12,7 @@ extern inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+>  
+>  extern const char bad_pmd_string[];
+>  
+> -extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm,
+> -	unsigned long address)
+> +extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+>  {
+>  	unsigned long page = __get_free_page(GFP_DMA);
+>  
+> @@ -32,8 +31,6 @@ extern inline pmd_t *pmd_alloc_kernel(pgd_t *pgd, unsigned long address)
+>  #define pmd_alloc_one_fast(mm, address) ({ BUG(); ((pmd_t *)1); })
+>  #define pmd_alloc_one(mm, address)      ({ BUG(); ((pmd_t *)2); })
+>  
+> -#define pte_alloc_one_fast(mm, addr) pte_alloc_one(mm, addr)
+> -
 
---KIbT1ud6duwZIwNL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I believe this was one done manually, right?
+Please explicitely state everthing you did on not of sematic patch
 
-On Fri, Oct 12, 2018 at 12:41:50PM +0200, Thierry Reding wrote:
-> On Tue, Aug 21, 2018 at 07:16:25PM +0200, Paul Cercueil wrote:
-> > Depending on MACH_INGENIC prevent us from creating a generic kernel that
-> > works on more than one MIPS board. Instead, we just depend on MIPS being
-> > set.
-> >=20
-> > On other architectures, this driver can still be built, thanks to
-> > COMPILE_TEST. This is used by automated tools to find bugs, for
-> > instance.
-> >=20
-> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > ---
-> >=20
-> > Notes:
-> >      v5: New patch
-> >    =20
-> >      v6: No change
-> >    =20
-> >      v7: No change
-> >=20
-> >  drivers/pwm/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> Acked-by: Thierry Reding <treding@nvidia.com>
+...
 
-Again, technically:
+> diff --git a/arch/microblaze/include/asm/pgalloc.h b/arch/microblaze/include/asm/pgalloc.h
+> index 7c89390c0c13..f4cc9ffc449e 100644
+> --- a/arch/microblaze/include/asm/pgalloc.h
+> +++ b/arch/microblaze/include/asm/pgalloc.h
+> @@ -108,10 +108,9 @@ static inline void free_pgd_slow(pgd_t *pgd)
+>  #define pmd_alloc_one_fast(mm, address)	({ BUG(); ((pmd_t *)1); })
+>  #define pmd_alloc_one(mm, address)	({ BUG(); ((pmd_t *)2); })
+>  
+> -extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm, unsigned long addr);
+> +extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm);
+>  
+> -static inline struct page *pte_alloc_one(struct mm_struct *mm,
+> -		unsigned long address)
+> +static inline struct page *pte_alloc_one(struct mm_struct *mm)
+>  {
+>  	struct page *ptepage;
+>  
+> @@ -132,20 +131,6 @@ static inline struct page *pte_alloc_one(struct mm_struct *mm,
+>  	return ptepage;
+>  }
+>  
+> -static inline pte_t *pte_alloc_one_fast(struct mm_struct *mm,
+> -		unsigned long address)
+> -{
+> -	unsigned long *ret;
+> -
+> -	ret = pte_quicklist;
+> -	if (ret != NULL) {
+> -		pte_quicklist = (unsigned long *)(*ret);
+> -		ret[0] = 0;
+> -		pgtable_cache_size--;
+> -	}
+> -	return (pte_t *)ret;
+> -}
+> -
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
+Ditto.
 
---KIbT1ud6duwZIwNL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlvAevwACgkQ3SOs138+
-s6GelQ/+IO3/3WkTMSnpQ2QJHnzotuHHGdyWg9WiVsJXTCWZBd3gXvHrg8HwLrDH
-DrxXd4eh/0ZJLoY5/HO0UdtsWcSkCm5DyL3UrZ8WeIYjxZAQGTnxsHGip1yMnOtN
-grZXhj171MGsvyJlnjULrWYRjOKQaHlMNusp1J54zLH9gsfKAiv3kjhunxPTCfWT
-5yxsy7dAlKp2mlwKg5nT3PFEJvRIk803EvKcivowpSIzhiK5uijW0vWYM/KpyGUJ
-1zHK1HJsm097AJrb1d7MXbVx72uMjclZTmVk8RXgqESYGOSHqt5LdenA2xlqUwZ5
-Myp5bbr2I0F45H8A8NCw7BYQwXUkSLoCLw+Up9U142QAEjG02rV09vgBzC2gAbxB
-piSs6XMY5IHmf6oR7ujMLM/14epj1BdrGPwG/VH7dSKt+VERC6QZ4eNYdyOUzkHr
-RtdrCk2Vol8cedHbk70hdWQMMSY8sB3QurTCYaTg/ZIIyViUxR/lu2Zf3xwFqbt7
-w/+ICttqjsY750sU/aFUv7lIS40skAgYEIPXxu3Nj95nkaWmrEtfvFQ7YJ+GkPgT
-5j4g6cStKFoJ498CDkZGThTGD8Eyb5vJZGFMS768xKdlRkXajXOwoP9cSuqBJGaS
-/IbRlVmrzOy7/VYQzJNWzwfEUz+6a5CUi51+6na99M/eT0xsBDE=
-=yYfr
------END PGP SIGNATURE-----
-
---KIbT1ud6duwZIwNL--
+-- 
+ Kirill A. Shutemov

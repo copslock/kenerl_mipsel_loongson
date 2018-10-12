@@ -1,88 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 19:01:09 +0200 (CEST)
-Received: from ivanoab6.miniserver.com ([5.153.251.140]:34064 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993945AbeJLRAzsCZsf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 19:00:55 +0200
-Received: from [192.168.17.6] (helo=smaug.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <anton.ivanov@kot-begemot.co.uk>)
-        id 1gB0lv-0003Z8-81; Fri, 12 Oct 2018 16:58:43 +0000
-Received: from amistad.kot-begemot.co.uk ([192.168.3.89])
-        by smaug.kot-begemot.co.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <anton.ivanov@kot-begemot.co.uk>)
-        id 1gB0lu-0006ul-Ts; Fri, 12 Oct 2018 17:58:42 +0100
-Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Will Deacon <will.deacon@arm.com>, mhocko@kernel.org,
-        linux-mm@kvack.org, lokeshgidra@google.com,
-        linux-riscv@lists.infradead.org, elfring@users.sourceforge.net,
-        Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
-        dancol@google.com, Yoshinori Sato <ysato@users.sourceforge.jp>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
-        "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
-        hughd@google.com, "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        linux-snps-arc@lists.infradead.org, kernel-team@android.com,
-        Sam Creasey <sammy@sammy.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        nios2-dev@lists.rocketboards.org,
-        Stafford Horne <shorne@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org,
-        Chris Zankel <chris@zankel.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-parisc@vger.kernel.org, pantin@google.com,
-        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
-        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <20181012013756.11285-1-joel@joelfernandes.org>
- <20181012013756.11285-2-joel@joelfernandes.org>
- <9ed82f9e-88c4-8e4f-8c45-3ef153469603@kot-begemot.co.uk>
- <20181012143728.t42uvr6etg7gp7fh@kshutemo-mobl1>
- <4dd52e22-5b51-9b30-7178-fde603a08f88@kot-begemot.co.uk>
- <97cb3fe1-7bc1-12ff-d602-56c72a5496c5@kot-begemot.co.uk>
- <20181012165012.GD223066@joelaf.mtv.corp.google.com>
-From:   Anton Ivanov <anton.ivanov@kot-begemot.co.uk>
-Message-ID: <4f969958-913e-cb9f-48fb-e3a88e1d288c@kot-begemot.co.uk>
-Date:   Fri, 12 Oct 2018 17:58:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.0
-MIME-Version: 1.0
-In-Reply-To: <20181012165012.GD223066@joelaf.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 19:04:54 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:45010 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993946AbeJLREvDRgJf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Oct 2018 19:04:51 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Oct 2018 10:04:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.54,373,1534834800"; 
+   d="scan'208";a="265185673"
+Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
+  by orsmga005.jf.intel.com with ESMTP; 12 Oct 2018 10:04:47 -0700
+Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
+ ORSMSX107.amr.corp.intel.com (10.22.240.5) with Microsoft SMTP Server (TLS)
+ id 14.3.319.2; Fri, 12 Oct 2018 10:04:47 -0700
+Received: from orsmsx112.amr.corp.intel.com ([169.254.3.23]) by
+ ORSMSX111.amr.corp.intel.com ([169.254.12.89]) with mapi id 14.03.0319.002;
+ Fri, 12 Oct 2018 10:04:46 -0700
+From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To:     "jannh@google.com" <jannh@google.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "jeyu@kernel.org" <jeyu@kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "arjan@linux.intel.com" <arjan@linux.intel.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kristen@linux.intel.com" <kristen@linux.intel.com>,
+        "Dock, Deneen T" <deneen.t.dock@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "kernel-hardening@lists.openwall.com" 
+        <kernel-hardening@lists.openwall.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v2 1/7] modules: Create rlimit for module space
+Thread-Topic: [PATCH v2 1/7] modules: Create rlimit for module space
+Thread-Index: AQHUYbu9YVGPZz5pJkS2xS0Q9I41w6UbONMAgAEU74A=
+Date:   Fri, 12 Oct 2018 17:04:46 +0000
+Message-ID: <7b0714e26c7c2216721641d7df16a49687927e37.camel@intel.com>
+References: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
+         <20181011233117.7883-2-rick.p.edgecombe@intel.com>
+         <CAG48ez2fWg64nGxDXUQS3695KpVNrakAbarXJnYPd6xv5wOD+A@mail.gmail.com>
+In-Reply-To: <CAG48ez2fWg64nGxDXUQS3695KpVNrakAbarXJnYPd6xv5wOD+A@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-X-Clacks-Overhead: GNU Terry Pratchett
-Return-Path: <anton.ivanov@kot-begemot.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.54.75.168]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D4DFCCCDEC8AE842B5E2158F760E7365@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Return-Path: <rick.p.edgecombe@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66784
+X-archive-position: 66785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anton.ivanov@kot-begemot.co.uk
+X-original-sender: rick.p.edgecombe@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,219 +84,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-On 10/12/18 5:50 PM, Joel Fernandes wrote:
-> On Fri, Oct 12, 2018 at 05:42:24PM +0100, Anton Ivanov wrote:
->> On 10/12/18 3:48 PM, Anton Ivanov wrote:
->>> On 12/10/2018 15:37, Kirill A. Shutemov wrote:
->>>> On Fri, Oct 12, 2018 at 03:09:49PM +0100, Anton Ivanov wrote:
->>>>> On 10/12/18 2:37 AM, Joel Fernandes (Google) wrote:
->>>>>> Android needs to mremap large regions of memory during
->>>>>> memory management
->>>>>> related operations. The mremap system call can be really
->>>>>> slow if THP is
->>>>>> not enabled. The bottleneck is move_page_tables, which is copying each
->>>>>> pte at a time, and can be really slow across a large map.
->>>>>> Turning on THP
->>>>>> may not be a viable option, and is not for us. This patch
->>>>>> speeds up the
->>>>>> performance for non-THP system by copying at the PMD level
->>>>>> when possible.
->>>>>>
->>>>>> The speed up is three orders of magnitude. On a 1GB mremap, the mremap
->>>>>> completion times drops from 160-250 millesconds to 380-400
->>>>>> microseconds.
->>>>>>
->>>>>> Before:
->>>>>> Total mremap time for 1GB data: 242321014 nanoseconds.
->>>>>> Total mremap time for 1GB data: 196842467 nanoseconds.
->>>>>> Total mremap time for 1GB data: 167051162 nanoseconds.
->>>>>>
->>>>>> After:
->>>>>> Total mremap time for 1GB data: 385781 nanoseconds.
->>>>>> Total mremap time for 1GB data: 388959 nanoseconds.
->>>>>> Total mremap time for 1GB data: 402813 nanoseconds.
->>>>>>
->>>>>> Incase THP is enabled, the optimization is skipped. I also flush the
->>>>>> tlb every time we do this optimization since I couldn't find a way to
->>>>>> determine if the low-level PTEs are dirty. It is seen that the cost of
->>>>>> doing so is not much compared the improvement, on both
->>>>>> x86-64 and arm64.
->>>>>>
->>>>>> Cc: minchan@kernel.org
->>>>>> Cc: pantin@google.com
->>>>>> Cc: hughd@google.com
->>>>>> Cc: lokeshgidra@google.com
->>>>>> Cc: dancol@google.com
->>>>>> Cc: mhocko@kernel.org
->>>>>> Cc: kirill@shutemov.name
->>>>>> Cc: akpm@linux-foundation.org
->>>>>> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
->>>>>> ---
->>>>>>     mm/mremap.c | 62
->>>>>> +++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>>>     1 file changed, 62 insertions(+)
->>>>>>
->>>>>> diff --git a/mm/mremap.c b/mm/mremap.c
->>>>>> index 9e68a02a52b1..d82c485822ef 100644
->>>>>> --- a/mm/mremap.c
->>>>>> +++ b/mm/mremap.c
->>>>>> @@ -191,6 +191,54 @@ static void move_ptes(struct
->>>>>> vm_area_struct *vma, pmd_t *old_pmd,
->>>>>>             drop_rmap_locks(vma);
->>>>>>     }
->>>>>> +static bool move_normal_pmd(struct vm_area_struct *vma,
->>>>>> unsigned long old_addr,
->>>>>> +          unsigned long new_addr, unsigned long old_end,
->>>>>> +          pmd_t *old_pmd, pmd_t *new_pmd, bool *need_flush)
->>>>>> +{
->>>>>> +    spinlock_t *old_ptl, *new_ptl;
->>>>>> +    struct mm_struct *mm = vma->vm_mm;
->>>>>> +
->>>>>> +    if ((old_addr & ~PMD_MASK) || (new_addr & ~PMD_MASK)
->>>>>> +        || old_end - old_addr < PMD_SIZE)
->>>>>> +        return false;
->>>>>> +
->>>>>> +    /*
->>>>>> +     * The destination pmd shouldn't be established, free_pgtables()
->>>>>> +     * should have release it.
->>>>>> +     */
->>>>>> +    if (WARN_ON(!pmd_none(*new_pmd)))
->>>>>> +        return false;
->>>>>> +
->>>>>> +    /*
->>>>>> +     * We don't have to worry about the ordering of src and dst
->>>>>> +     * ptlocks because exclusive mmap_sem prevents deadlock.
->>>>>> +     */
->>>>>> +    old_ptl = pmd_lock(vma->vm_mm, old_pmd);
->>>>>> +    if (old_ptl) {
->>>>>> +        pmd_t pmd;
->>>>>> +
->>>>>> +        new_ptl = pmd_lockptr(mm, new_pmd);
->>>>>> +        if (new_ptl != old_ptl)
->>>>>> +            spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
->>>>>> +
->>>>>> +        /* Clear the pmd */
->>>>>> +        pmd = *old_pmd;
->>>>>> +        pmd_clear(old_pmd);
->>>>>> +
->>>>>> +        VM_BUG_ON(!pmd_none(*new_pmd));
->>>>>> +
->>>>>> +        /* Set the new pmd */
->>>>>> +        set_pmd_at(mm, new_addr, new_pmd, pmd);
->>>>> UML does not have set_pmd_at at all
->>>> Every architecture does. :)
->>> I tried to build it patching vs 4.19-rc before I made this statement and
->>> ran into that.
->>>
->>> Presently it does not.
->>>
->>> https://elixir.bootlin.com/linux/v4.19-rc7/ident/set_pmd_at - UML is not
->>> on the list.
->> Once this problem as well as the omissions in the include changes for UML in
->> patch one have been fixed it appears to be working.
->>
->> What it needs is attached.
->>
->>
->>>> But it may come not from the arch code.
->>> There is no generic definition as far as I can see. All 12 defines in
->>> 4.19 are in arch specific code. Unless i am missing something...
->>>
->>>>> If I read the code right, MIPS completely ignores the address
->>>>> argument so
->>>>> set_pmd_at there may not have the effect which this patch is trying to
->>>>> achieve.
->>>> Ignoring address is fine. Most architectures do that..
->>>> The ideas is to move page table to the new pmd slot. It's nothing to do
->>>> with the address passed to set_pmd_at().
->>> If that is it's only function, then I am going to appropriate the code
->>> out of the MIPS tree for further uml testing. It does exactly that -
->>> just move the pmd the new slot.
->>>
->>> A.
->>
->> A.
->>
->>  From ac265d96897a346b05646fce91784ed4922c7f8d Mon Sep 17 00:00:00 2001
->> From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
->> Date: Fri, 12 Oct 2018 17:24:10 +0100
->> Subject: [PATCH] Incremental fixes to the mmremap patch
->>
->> Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
->> ---
->>   arch/um/include/asm/pgalloc.h | 4 ++--
->>   arch/um/include/asm/pgtable.h | 3 +++
->>   arch/um/kernel/tlb.c          | 6 ++++++
->>   3 files changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/um/include/asm/pgalloc.h b/arch/um/include/asm/pgalloc.h
->> index bf90b2aa2002..99eb5682792a 100644
->> --- a/arch/um/include/asm/pgalloc.h
->> +++ b/arch/um/include/asm/pgalloc.h
->> @@ -25,8 +25,8 @@
->>   extern pgd_t *pgd_alloc(struct mm_struct *);
->>   extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
->>   
->> -extern pte_t *pte_alloc_one_kernel(struct mm_struct *, unsigned long);
->> -extern pgtable_t pte_alloc_one(struct mm_struct *, unsigned long);
->> +extern pte_t *pte_alloc_one_kernel(struct mm_struct *);
->> +extern pgtable_t pte_alloc_one(struct mm_struct *);
-> If its Ok, let me handle this bit since otherwise it complicates things for
-> me.
->
->>   static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
->>   {
->> diff --git a/arch/um/include/asm/pgtable.h b/arch/um/include/asm/pgtable.h
->> index 7485398d0737..1692da55e63a 100644
->> --- a/arch/um/include/asm/pgtable.h
->> +++ b/arch/um/include/asm/pgtable.h
->> @@ -359,4 +359,7 @@ do {						\
->>   	__flush_tlb_one((vaddr));		\
->>   } while (0)
->>   
->> +extern void set_pmd_at(struct mm_struct *mm, unsigned long addr,
->> +		pmd_t *pmdp, pmd_t pmd);
->> +
->>   #endif
->> diff --git a/arch/um/kernel/tlb.c b/arch/um/kernel/tlb.c
->> index 763d35bdda01..d17b74184ba0 100644
->> --- a/arch/um/kernel/tlb.c
->> +++ b/arch/um/kernel/tlb.c
->> @@ -647,3 +647,9 @@ void force_flush_all(void)
->>   		vma = vma->vm_next;
->>   	}
->>   }
->> +void set_pmd_at(struct mm_struct *mm, unsigned long addr,
->> +		pmd_t *pmdp, pmd_t pmd)
->> +{
->> +	*pmdp = pmd;
->> +}
->> +
-> I believe this should be included in a separate patch since it is not related
-> specifically to pte_alloc argument removal. If you want, I could split it
-> into a separate patch for my series with you as author.
-
-
-Whichever is more convenient for you.
-
-One thing to note - tlb flush is extremely expensive on uml.
-
-I have lifted the definition of set_pmd_at from the mips tree and 
-removed the tlb_flush_all from it for this exact reason.
-
-If I read the original patch correctly, it does its own flush control so 
-set_pmd_at does not need to do a force flush every time. It is done 
-further up the chain.
-
-Brgds,
-
-A.
-
-
->
-> thanks,
->
-> - Joel
->
->
+T24gRnJpLCAyMDE4LTEwLTEyIGF0IDAyOjM1ICswMjAwLCBKYW5uIEhvcm4gd3JvdGU6DQo+IE9u
+IEZyaSwgT2N0IDEyLCAyMDE4IGF0IDE6NDAgQU0gUmljayBFZGdlY29tYmUNCj4gPHJpY2sucC5l
+ZGdlY29tYmVAaW50ZWwuY29tPiB3cm90ZToNCj4gPiBUaGlzIGludHJvZHVjZXMgYSBuZXcgcmxp
+bWl0LCBSTElNSVRfTU9EU1BBQ0UsIHdoaWNoIGxpbWl0cyB0aGUgYW1vdW50IG9mDQo+ID4gbW9k
+dWxlIHNwYWNlIGEgdXNlciBjYW4gdXNlLiBUaGUgaW50ZW50aW9uIGlzIHRvIGJlIGFibGUgdG8g
+bGltaXQgbW9kdWxlDQo+ID4gc3BhY2UNCj4gPiBhbGxvY2F0aW9ucyB0aGF0IG1heSBjb21lIGZy
+b20gdW4tcHJpdmxpZGdlZCB1c2VycyBpbnNlcnRpbmcgZS9CUEYgZmlsdGVycy4NCj4gDQo+IE5v
+dGUgdGhhdCBpbiBzb21lIGNvbmZpZ3VyYXRpb25zIChpaXJjIGUuZy4gdGhlIGRlZmF1bHQgVWJ1
+bnR1DQo+IGNvbmZpZyksIG5vcm1hbCB1c2VycyBjYW4gdXNlIHRoZSBzdWJ1aWQgbWVjaGFuaXNt
+ICh0aGUgL2V0Yy9zdWJ1aWQNCj4gY29uZmlnIGZpbGUgYW5kIHRoZSAvdXNyL2Jpbi9uZXd1aWRt
+YXAgc2V0dWlkIGhlbHBlcikgdG8gZ2FpbiBhY2Nlc3MNCj4gdG8gNjU1MzYgVUlEcywgd2hpY2gg
+bWVhbnMgdGhhdCBpbiBzdWNoIGEgY29uZmlndXJhdGlvbiwNCj4gUkxJTUlUX01PRFNQQUNFKjY1
+NTM3IGlzIHRoZSBhY3R1YWwgbGltaXQgZm9yIG9uZSB1c2VyLiAoU2FtZSB0aGluZw0KPiBhcHBs
+aWVzIHRvIFJMSU1JVF9NRU1MT0NLLikNCkFoLCB0aGF0IGlzIGEgcHJvYmxlbS4gVGhlcmUgaXMg
+b25seSByb29tIGZvciBhYm91dCAxMzAsMDAwIGZpbHRlcnMgb24geDg2IHdpdGgNCktBU0xSLCBz
+byBpdCBjb3VsZG4ndCByZWFsbHkgYmUgc2V0IHNtYWxsIGVub3VnaC4NCg0KSSdsbCBoYXZlIHRv
+IGxvb2sgaW50byB3aGF0IHRoaXMgaXMuIFRoYW5rcyBmb3IgcG9pbnRpbmcgaXQgb3V0Lg0KDQo+
+IEFsc28sIGl0IGlzIHByb2JhYmx5IHBvc3NpYmxlIHRvIHdhc3RlIGEgZmV3IHRpbWVzIGFzIG11
+Y2ggdmlydHVhbA0KPiBtZW1vcnkgYXMgcGVybWl0dGVkIGJ5IHRoZSBsaW1pdCBieSBkZWxpYmVy
+YXRlbHkgZnJhZ21lbnRpbmcgdmlydHVhbA0KPiBtZW1vcnk/DQpHb29kIHBvaW50LiBJIGd1ZXNz
+IGlmIHRoZSBmaXJzdCBwb2ludCBjYW4gYmUgYWRkcmVzc2VkIHNvbWVob3csIHRoaXMgb25lIGNv
+dWxkDQptYXliZSBiZSBzb2x2ZWQgYnkganVzdCBwaWNraW5nIGEgbG93ZXIgbGltaXQuDQoNCkFu
+eSB0aG91Z2h0cyBvbiBpZiBpbnN0ZWFkIG9mIGFsbCB0aGlzIHRoZXJlIHdhcyBqdXN0IGEgc3lz
+dGVtIHdpZGUgbGltaXQgb24gQlBGDQpKSVQgbW9kdWxlIHNwYWNlIHVzYWdlPw0KDQo+ID4gVGhl
+cmUgaXMgdW5mb3J0dW5hdGVseSBubyBjcm9zcyBwbGF0Zm9ybSBwbGFjZSB0byBwZXJmb3JtIHRo
+aXMgYWNjb3VudGluZw0KPiA+IGR1cmluZyBhbGxvY2F0aW9uIGluIHRoZSBtb2R1bGUgc3BhY2Us
+IHNvIGluc3RlYWQgdHdvIGhlbHBlcnMgYXJlIGNyZWF0ZWQgdG8NCj4gPiBiZQ0KPiA+IGluc2Vy
+dGVkIGludG8gdGhlIHZhcmlvdXMgYXJjaOKAmXMgdGhhdCBpbXBsZW1lbnQgbW9kdWxlX2FsbG9j
+LiBUaGVzZQ0KPiA+IGhlbHBlcnMgcGVyZm9ybSB0aGUgY2hlY2tzIGFuZCBoZWxwIHdpdGggdHJh
+Y2tpbmcuIFRoZSBpbnRlbnRpb24gaXMgdGhhdA0KPiA+IHRoZXkNCj4gPiBhbiBiZSBhZGRlZCB0
+byB0aGUgdmFyaW91cyBhcmNo4oCZcyBhcyBlYXNpbHkgYXMgcG9zc2libGUuDQo+IA0KPiBuaXQ6
+IHMvYW4vY2FuLw0KPiANCj4gWy4uLl0NCj4gPiBkaWZmIC0tZ2l0IGEva2VybmVsL21vZHVsZS5j
+IGIva2VybmVsL21vZHVsZS5jDQo+ID4gaW5kZXggNjc0NmM4NTUxMWZlLi4yZWY5ZWQ5NWJmNjAg
+MTAwNjQ0DQo+ID4gLS0tIGEva2VybmVsL21vZHVsZS5jDQo+ID4gKysrIGIva2VybmVsL21vZHVs
+ZS5jDQo+ID4gQEAgLTIxMTAsOSArMjExMCwxMzkgQEAgc3RhdGljIHZvaWQgZnJlZV9tb2R1bGVf
+ZWxmKHN0cnVjdCBtb2R1bGUgKm1vZCkNCj4gPiAgfQ0KPiA+ICAjZW5kaWYgLyogQ09ORklHX0xJ
+VkVQQVRDSCAqL2l0IA0KPiA+IA0KPiA+ICtzdHJ1Y3QgbW9kX2FsbG9jX3VzZXIgew0KPiA+ICsg
+ICAgICAgc3RydWN0IHJiX25vZGUgbm9kZTsNCj4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcgYWRk
+cjsNCj4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcgcGFnZXM7DQo+ID4gKyAgICAgICBrdWlkX3Qg
+dWlkOw0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArc3RhdGljIHN0cnVjdCByYl9yb290IGFsbG9jX3Vz
+ZXJzID0gUkJfUk9PVDsNCj4gPiArc3RhdGljIERFRklORV9TUElOTE9DSyhhbGxvY191c2Vyc19s
+b2NrKTsNCj4gDQo+IFdoeSBhbGwgdGhlIHJidHJlZSBzdHVmZiBpbnN0ZWFkIG9mIHN0YXNoaW5n
+IGEgcG9pbnRlciBpbiBzdHJ1Y3QNCj4gdm1hcF9hcmVhLCBvciBzb21ldGhpbmcgbGlrZSB0aGF0
+Pw0KDQpTaW5jZSB0aGUgdHJhY2tpbmcgd2FzIG5vdCBmb3IgYWxsIHZtYWxsb2MgdXNhZ2UsIHRo
+ZSBpbnRlbnRpb24gd2FzIHRvIG5vdCBibG9hdA0KdGhlIHN0cnVjdHVyZSBmb3Igb3RoZXIgdXNh
+Z2VzIGxpa2VzIHN0YWNrcy4gSSB0aG91Z2h0IHVzdWFsbHkgdGhlcmUgd291bGRuJ3QgYmUNCm5l
+YXJseSBhcyBtdWNoIG1vZHVsZSBzcGFjZSBhbGxvY2F0aW9ucyBhcyB0aGVyZSB3b3VsZCBiZSBr
+ZXJuZWwgc3RhY2tzLCBidXQgSQ0KZGlkbid0IGRvIGFueSBhY3R1YWwgbWVhc3VyZW1lbnRzIG9u
+IHRoZSB0cmFkZW9mZnMuDQoNCj4gWy4uLl0NCj4gPiAraW50IGNoZWNrX2luY19tb2RfcmxpbWl0
+KHVuc2lnbmVkIGxvbmcgc2l6ZSkNCj4gPiArew0KPiA+ICsgICAgICAgc3RydWN0IHVzZXJfc3Ry
+dWN0ICp1c2VyID0gZ2V0X2N1cnJlbnRfdXNlcigpOw0KPiA+ICsgICAgICAgdW5zaWduZWQgbG9u
+ZyBtb2RzcGFjZV9wYWdlcyA9IHJsaW1pdChSTElNSVRfTU9EU1BBQ0UpID4+DQo+ID4gUEFHRV9T
+SElGVDsNCj4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcgY3VyX3BhZ2VzID0gYXRvbWljX2xvbmdf
+cmVhZCgmdXNlci0+bW9kdWxlX3ZtKTsNCj4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcgbmV3X3Bh
+Z2VzID0gZ2V0X21vZF9wYWdlX2NudChzaXplKTsNCj4gPiArDQo+ID4gKyAgICAgICBpZiAocmxp
+bWl0KFJMSU1JVF9NT0RTUEFDRSkgIT0gUkxJTV9JTkZJTklUWQ0KPiA+ICsgICAgICAgICAgICAg
+ICAgICAgICAgICYmIGN1cl9wYWdlcyArIG5ld19wYWdlcyA+IG1vZHNwYWNlX3BhZ2VzKSB7DQo+
+ID4gKyAgICAgICAgICAgICAgIGZyZWVfdWlkKHVzZXIpOw0KPiA+ICsgICAgICAgICAgICAgICBy
+ZXR1cm4gMTsNCj4gPiArICAgICAgIH0NCj4gPiArDQo+ID4gKyAgICAgICBhdG9taWNfbG9uZ19h
+ZGQobmV3X3BhZ2VzLCAmdXNlci0+bW9kdWxlX3ZtKTsNCj4gPiArDQo+ID4gKyAgICAgICBpZiAo
+YXRvbWljX2xvbmdfcmVhZCgmdXNlci0+bW9kdWxlX3ZtKSA+IG1vZHNwYWNlX3BhZ2VzKSB7DQo+
+ID4gKyAgICAgICAgICAgICAgIGF0b21pY19sb25nX3N1YihuZXdfcGFnZXMsICZ1c2VyLT5tb2R1
+bGVfdm0pOw0KPiA+ICsgICAgICAgICAgICAgICBmcmVlX3VpZCh1c2VyKTsNCj4gPiArICAgICAg
+ICAgICAgICAgcmV0dXJuIDE7DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsgICAgICAgZnJl
+ZV91aWQodXNlcik7DQo+IA0KPiBJZiB5b3UgZHJvcCB0aGUgcmVmZXJlbmNlIG9uIHRoZSB1c2Vy
+X3N0cnVjdCwgYW4gYXR0YWNrZXIgd2l0aCB0d28NCj4gVUlEcyBjYW4gY2hhcmdlIG1vZHVsZSBh
+bGxvY2F0aW9ucyB0byBVSUQgQSwga2VlcCB0aGUgYXNzb2NpYXRlZA0KPiBzb2NrZXRzIGFsaXZl
+IGFzIFVJRCBCLCBhbmQgdGhlbiBsb2cgb3V0IGFuZCBiYWNrIGluIGFnYWluIGFzIFVJRCBBLg0K
+PiBBdCB0aGF0IHBvaW50LCBub2JvZHkgaXMgY2hhcmdlZCBmb3IgdGhlIG1vZHVsZSBzcGFjZSBh
+bnltb3JlLiBJZiB5b3UNCj4gbG9vayBhdCB0aGUgZUJQRiBpbXBsZW1lbnRhdGlvbiwgeW91J2xs
+IHNlZSB0aGF0DQo+IGJwZl9wcm9nX2NoYXJnZV9tZW1sb2NrKCkgYWN0dWFsbHkgc3RvcmVzIGEg
+cmVmY291bnRlZCBwb2ludGVyIHRvIHRoZQ0KPiB1c2VyX3N0cnVjdC4NCk9rLCBJJ2xsIHRha2Ug
+YSBsb29rLiBUaGFua3MgSmFubi4NCj4gPiArICAgICAgIHJldHVybiAwOw0KPiA+ICt9DQo=

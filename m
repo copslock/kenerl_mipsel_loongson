@@ -1,89 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 23:02:02 +0200 (CEST)
-Received: from mail-eopbgr720090.outbound.protection.outlook.com ([40.107.72.90]:15236
-        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994542AbeJLVB7MZXjK convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 23:01:59 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 23:34:15 +0200 (CEST)
+Received: from mail-pf1-x442.google.com ([IPv6:2607:f8b0:4864:20::442]:43982
+        "EHLO mail-pf1-x442.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993946AbeJLVeMulgE6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 23:34:12 +0200
+Received: by mail-pf1-x442.google.com with SMTP id p24-v6so6792564pff.10
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 14:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AGRwn8YE4jZ84dvnO7Kq0GeuWtvukM3AjHK4dk9dSlA=;
- b=FXMPX+XWVkcC5O4xfgHRYUd+PmxvYpm/g41u1HZkjzEpnipJbaLO5hzLTXiNr0rPnKBvmJgRnM8Ph8pDa43hKW4RlcAYW0C+vsWX+viQDBReKZC6QSYWQFmWVBVsdKMOVCH+M8AU9VFJHA4szt047FgcFGprzLoaXpJKZrEOw9M=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1422.namprd22.prod.outlook.com (10.172.63.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1228.21; Fri, 12 Oct 2018 21:01:49 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf%10]) with mapi id 15.20.1228.020; Fri, 12 Oct 2018
- 21:01:49 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Maksym Kokhan <maksym.kokhan@globallogic.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Daniel Walker <danielwa@cisco.com>,
-        Andrii Bordunov <aborduno@cisco.com>,
-        Ruslan Bilovol <rbilovol@cisco.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 7/8] mips: convert to generic builtin command line
-Thread-Topic: [PATCH 7/8] mips: convert to generic builtin command line
-Thread-Index: AQHUVoMf+XdDhAaEwESEN/TIkkcHlKUEeo4AgBE44YCABn0egA==
-Date:   Fri, 12 Oct 2018 21:01:49 +0000
-Message-ID: <20181012210147.32x4gy6o5ilfdy7l@pburton-laptop>
-References: <1538067417-6007-1-git-send-email-maksym.kokhan@globallogic.com>
- <20180927185626.gcvx5qjemxbff3zt@pburton-laptop>
- <CAMT6-xi+E1-ATYRXpkmcAprrwykLVHnUc2D+QBQLgPBv4hhwUg@mail.gmail.com>
-In-Reply-To: <CAMT6-xi+E1-ATYRXpkmcAprrwykLVHnUc2D+QBQLgPBv4hhwUg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR21CA0035.namprd21.prod.outlook.com
- (2603:10b6:300:129::21) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1422;6:qB2XmPo/JNPai1VGfOGl78X3XDYuxZ4ZS3cEMIv23mkzMZoyoxNhGMPVfWqPKnlHS/mZXG1vaDiPSZ8K+HAWXVhjRBBnCo0gWz19sKRdm6+n6ZENv4pTFunaAH6LnbMNCWCLbPiYYd9f0qFM95sP3yqvG0NSf2RuROQACjxyIz5Gjd3doDGdcJyC4TQijywa6YgzOm7lBZvIJ2DRCiw5SIgUcWxftVvUYhM4KONZM0WEwOwZAbMzOhAlVsRe+9HLygGqCV5KO1v9crMrBzTrIf8q7MTmgfoaegsM4RSREeysecFWaIO3zZl8YzEjahpU4pjPd2FFuyIc+YjBO0Vcg2XGGR6xeOF0s9nXWctYSjcmiUUdcRwJjGKLBinru2God3hpbx3ovq4GMlGnl7pDXIdp07VwgcXo20a4ZxTXwsCRkWpsL0V5xRznQwDddQSl9FL+pQJMmRH5nlqgjjg/YQ==;5:6EW0XTz0OmIg5XoQ6c89kJTjaJ7mml4NkojEe0E5xiYiI8Z84w+/RsaHwl2IkdRwn+NLWYo6WtvF9xtD7ECZTlIovQqkihIpbW0nXdxlSHDU+dchDR2y9fB8F5SAtrJUfbCIQzf8F2aEruWmhbMttKfG3jCsPqVSF9wGW8EA5hw=;7:M/FJTWxRW0Gb4pHZtZqNnGjFVKB3dFCoGXS+SDv6L0uwhEeCgwIkzV3A6uo5ax0SuiXXkaI7rEIRsrkYCSVv2eWA0H8rHmI58Hp7V6HhzfhcHxBqYuKA8S0wVep1nmdooXNbCSfeM6FpCOjL8b1b05QBnmQjrB5wDysK0cwO2d3N/5UOLPJd/9/l0+bk23b9S89oSqFwQxIQS2QACLtM85rYFl0J8pRU40vklKX62L0pJOeZTIdZOYCIA4jPNLCk
-x-ms-office365-filtering-correlation-id: 95091703-dfe1-468e-580d-08d63085ed11
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1422;
-x-ms-traffictypediagnostic: MWHPR2201MB1422:
-x-microsoft-antispam-prvs: <MWHPR2201MB1422365C9101C2BCEAC28278C1E20@MWHPR2201MB1422.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(52105095)(3002001)(10201501046)(93006095)(149066)(150057)(6041310)(20161123560045)(20161123558120)(2016111802025)(20161123562045)(20161123564045)(6043046)(201708071742011)(7699051);SRVR:MWHPR2201MB1422;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1422;
-x-forefront-prvs: 0823A5777B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(136003)(346002)(39850400004)(376002)(396003)(199004)(189003)(52314003)(8936002)(7736002)(54906003)(2906002)(81166006)(6246003)(4326008)(25786009)(305945005)(8676002)(14454004)(68736007)(81156014)(229853002)(106356001)(5250100002)(1076002)(6916009)(9686003)(105586002)(5660300001)(6116002)(6512007)(3846002)(42882007)(53936002)(486006)(14444005)(186003)(2900100001)(71200400001)(71190400001)(256004)(386003)(6506007)(26005)(53546011)(102836004)(6436002)(44832011)(11346002)(476003)(33716001)(446003)(97736004)(6486002)(52116002)(316002)(58126008)(99286004)(66066001)(76176011)(33896004)(508600001)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1422;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: OnQaXaJLfYd+vCN/dEml1+plDTqvA/rKteuKPTYCCWXQYUDEJwHJQlEn88lMitjNMFUACzvMAW7A9CC8NCyfMuq21vqQJUohOWK2M4rVjJKHGvz/6TDKU8GNKkd+Ty6AkQI5sMFsC0LWvzjYqY0OdEB/f8CvlHNQwFLIEDoocNrH6h71V1133M7Pe3FobctuYq2q6L4xGwUJciKCRTBstNm8OospVpaYlEE8rSIydY6GjS1bht28y2JJHbZ9DzF1d/uLrQBL/p+1K5a7XaCibHS0xjnVtXxtB+JCuhGHWbeRqgHCLPz7ViNNLllPZvMQMfSjbOud6BmhGxCLXnzP3WJJWhC9qFUTHGbpixtxOqg=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <D8C593175FBA95469D59F1E1F08DBA22@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=LHzipgUbb9bD6KKi7C8OH4ai2uXb2G2QZZei89osBiM=;
+        b=tt4haWxvZLIGYgzjVvsH+gjFwfPR7DwtAHjZBdy13UoFAue6QtBjQ7yFpwdRLddwrz
+         5M7Rt9vrVAomTaqAQJ7suNm3XfxtViA+swo1shgRv6b5mcASOaSfl1jxY9Io26x/3N43
+         kJHc/sqKzp2v6SuHG2C8dEeJBeZpx9rXlnSqNr5HyQtCYHzhqAX/snQjGfm5BB5VdZSs
+         MEUpJyErXmrbzyP5LvHp09wHHqO17A1BhLGE8wPOnD0xxGQXTAOimdYT+DkyVwz2AN51
+         go/7rEXftCDBj/fYKEoPC9lVN9fdUs5TJXPwZPZIVEu19exs/DzqHb05FsfuzodtJKAK
+         +mQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LHzipgUbb9bD6KKi7C8OH4ai2uXb2G2QZZei89osBiM=;
+        b=pPYjDC+PBeywfSqf/UHNyLmjiamcm7/8D6mjbJ4cGnbej4LH4gvruT1pldsMWkoPIo
+         gXaDl2wPMEdIo5AYGQJYJxkx1NuymoGGYPoCuwHM8UTHcMVBvJ78RYbLT0oK9f53AVf6
+         o+2ZtRTOx6Eirths42EzTdcaGGgC6vidC1BUTrlkYwueU1wKqZ6gd/A8Gz+rROVCF53O
+         TzgIuK6SxC/SBf91PAgfFyWsnKjLMqUuDXYuuOnAwRnv1oG4aO0bUKz3c6C9YfmOEMxi
+         QAomLtbFVdjyGW/ykqZFh1TLLefdfOQ7UX+uUrmtOeiqZLvLBoQlyeomfNAUYgNLE1S7
+         k52w==
+X-Gm-Message-State: ABuFfoi5gSccv4S9O5XX5mj8xxFNVbPufVaMxoiJqjiF29F8zbo3esLH
+        HEYNvLD/TF+c+Xn8L1RwMp+ZVA==
+X-Google-Smtp-Source: ACcGV60SvcDuwwFfUZrEoWm25R56HMmg4aebudF5owuY6h5Fceo65AszhVv0RP3+l3Jd652Z5Qm4rw==
+X-Received: by 2002:a63:7b09:: with SMTP id w9-v6mr7023932pgc.385.1539380045793;
+        Fri, 12 Oct 2018 14:34:05 -0700 (PDT)
+Received: from kshutemo-mobl1.localdomain (fmdmzpr03-ext.fm.intel.com. [192.55.54.38])
+        by smtp.gmail.com with ESMTPSA id t85-v6sm3751969pfi.73.2018.10.12.14.34.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Oct 2018 14:34:04 -0700 (PDT)
+Received: by kshutemo-mobl1.localdomain (Postfix, from userid 1000)
+        id 0D98A300030; Sat, 13 Oct 2018 00:34:00 +0300 (+03)
+Date:   Sat, 13 Oct 2018 00:33:59 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        minchan@kernel.org, pantin@google.com, hughd@google.com,
+        lokeshgidra@google.com, dancol@google.com, mhocko@kernel.org,
+        akpm@linux-foundation.org,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
+        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
+Message-ID: <20181012213359.qpvq3obugbvy73bg@kshutemo-mobl1>
+References: <20181012013756.11285-1-joel@joelfernandes.org>
+ <20181012013756.11285-2-joel@joelfernandes.org>
+ <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
+ <20181012125046.GA170912@joelaf.mtv.corp.google.com>
+ <20181012131946.zoab2lpfmrycmuju@kshutemo-mobl1>
+ <20181012165719.GE223066@joelaf.mtv.corp.google.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95091703-dfe1-468e-580d-08d63085ed11
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2018 21:01:49.2811
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1422
-Return-Path: <pburton@wavecomp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181012165719.GE223066@joelaf.mtv.corp.google.com>
+User-Agent: NeoMutt/20180716
+Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66796
+X-archive-position: 66797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: kirill@shutemov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -96,29 +114,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maksym,
-
-On Mon, Oct 08, 2018 at 08:56:25PM +0300, Maksym Kokhan wrote:
-> On Thu, Sep 27, 2018 at 9:56 PM Paul Burton <paul.burton@mips.com> wrote:
-> > It also doesn't allow for the various Kconfig options which allow us to
-> > ignore some of the sources of command line arguments, nor does it honor
-> > the ordering that those existing options allow. In practice perhaps we
-> > can cut down on some of this configurability anyway, but if we do that
-> > it needs to be thought through & the commit message should describe the
-> > changes in behaviour.
+On Fri, Oct 12, 2018 at 09:57:19AM -0700, Joel Fernandes wrote:
+> On Fri, Oct 12, 2018 at 04:19:46PM +0300, Kirill A. Shutemov wrote:
+> > On Fri, Oct 12, 2018 at 05:50:46AM -0700, Joel Fernandes wrote:
+> > > On Fri, Oct 12, 2018 at 02:30:56PM +0300, Kirill A. Shutemov wrote:
+> > > > On Thu, Oct 11, 2018 at 06:37:56PM -0700, Joel Fernandes (Google) wrote:
+> > > > > Android needs to mremap large regions of memory during memory management
+> > > > > related operations. The mremap system call can be really slow if THP is
+> > > > > not enabled. The bottleneck is move_page_tables, which is copying each
+> > > > > pte at a time, and can be really slow across a large map. Turning on THP
+> > > > > may not be a viable option, and is not for us. This patch speeds up the
+> > > > > performance for non-THP system by copying at the PMD level when possible.
+> > > > > 
+> > > > > The speed up is three orders of magnitude. On a 1GB mremap, the mremap
+> > > > > completion times drops from 160-250 millesconds to 380-400 microseconds.
+> > > > > 
+> > > > > Before:
+> > > > > Total mremap time for 1GB data: 242321014 nanoseconds.
+> > > > > Total mremap time for 1GB data: 196842467 nanoseconds.
+> > > > > Total mremap time for 1GB data: 167051162 nanoseconds.
+> > > > > 
+> > > > > After:
+> > > > > Total mremap time for 1GB data: 385781 nanoseconds.
+> > > > > Total mremap time for 1GB data: 388959 nanoseconds.
+> > > > > Total mremap time for 1GB data: 402813 nanoseconds.
+> > > > > 
+> > > > > Incase THP is enabled, the optimization is skipped. I also flush the
+> > > > > tlb every time we do this optimization since I couldn't find a way to
+> > > > > determine if the low-level PTEs are dirty. It is seen that the cost of
+> > > > > doing so is not much compared the improvement, on both x86-64 and arm64.
+> > > > 
+> > > > I looked into the code more and noticed move_pte() helper called from
+> > > > move_ptes(). It changes PTE entry to suite new address.
+> > > > 
+> > > > It is only defined in non-trivial way on Sparc. I don't know much about
+> > > > Sparc and it's hard for me to say if the optimization will break anything
+> > > > there.
+> > > 
+> > > Sparc's move_pte seems to be flushing the D-cache to prevent aliasing. It is
+> > > not modifying the PTE itself AFAICS:
+> > > 
+> > > #ifdef DCACHE_ALIASING_POSSIBLE
+> > > #define __HAVE_ARCH_MOVE_PTE
+> > > #define move_pte(pte, prot, old_addr, new_addr)                         \
+> > > ({                                                                      \
+> > >         pte_t newpte = (pte);                                           \
+> > >         if (tlb_type != hypervisor && pte_present(pte)) {               \
+> > >                 unsigned long this_pfn = pte_pfn(pte);                  \
+> > >                                                                         \
+> > >                 if (pfn_valid(this_pfn) &&                              \
+> > >                     (((old_addr) ^ (new_addr)) & (1 << 13)))            \
+> > >                         flush_dcache_page_all(current->mm,              \
+> > >                                               pfn_to_page(this_pfn));   \
+> > >         }                                                               \
+> > >         newpte;                                                         \
+> > > })
+> > > #endif
+> > > 
+> > > If its an issue, then how do transparent huge pages work on Sparc?  I don't
+> > > see the huge page code (move_huge_pages) during mremap doing anything special
+> > > for Sparc architecture when moving PMDs..
+> > 
+> > My *guess* is that it will work fine on Sparc as it apprarently it only
+> > cares about change in bit 13 of virtual address. It will never happen for
+> > huge pages or when PTE page tables move.
+> > 
+> > But I just realized that the problem is bigger: since we pass new_addr to
+> > the set_pte_at() we would need to audit all implementations that they are
+> > safe with just moving PTE page table.
+> > 
+> > I would rather go with per-architecture enabling. It's much safer.
 > 
-> Yes, this generic command line implementation lacks some of the
-> features, existing in the current mips command line code, and we
-> are going to expand functionality of generic command line code to
-> correspond it, but it would be easier to initially merge this simple
-> implementation and then develop it step by step.
+> I'm Ok with the per-arch enabling, I agree its safer. So I should be adding a
+> a new __HAVE_ARCH_MOVE_PMD right, or did you have a better name for that?
 
-The problem occurs if merging the simple implementation breaks currently
-working systems. That is a no-go, and that is what I believe will happen
-with the current patchset.
+I believe Kconfig option is more cononical way to do this nowadays.
+So CONFIG_HAVE_ARCH_MOVE_PMD, I guess. Or CONFIG_HAVE_MOVE_PMD.
+An arch that supports it would select the option.
 
-"Knowingly break it now & say we'll fix it later" is not an acceptable
-approach.
+> Also, do you feel we should still need to remove the address argument from
+> set_pte_alloc? Or should we leave that alone if we do per-arch?
+> I figure I spent a bunch of time on that already anyway, and its a clean up
+> anyway, so may as well do it. But perhaps that "pte_alloc cleanup" can then
+> be a separate patch independent of this series?
 
-Thanks,
-    Paul
+Yeah. The cleanup makes sense anyway.
+
+-- 
+ Kirill A. Shutemov

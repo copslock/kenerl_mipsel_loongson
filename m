@@ -1,20 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 20:54:42 +0200 (CEST)
-Received: from mout.web.de ([217.72.192.78]:53335 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993941AbeJLSyew9hJj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Oct 2018 20:54:34 +0200
-Received: from [192.168.1.2] ([77.182.238.221]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6V1T-1fRTIY0mGx-00yNhT; Fri, 12
- Oct 2018 20:52:01 +0200
-Received: from [192.168.1.2] ([77.182.238.221]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6V1T-1fRTIY0mGx-00yNhT; Fri, 12
- Oct 2018 20:52:01 +0200
-Subject: Re: [PATCH v2 1/2] treewide: remove unused address argument from
- pte_alloc functions
-To:     Joel Fernandes <joel@joelfernandes.org>,
-        kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Michal Hocko <mhocko@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2018 21:42:22 +0200 (CEST)
+Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:36191
+        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992289AbeJLTmTZ496p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Oct 2018 21:42:19 +0200
+Received: by mail-pf1-x443.google.com with SMTP id l81-v6so6696133pfg.3
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 12:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=7HZNZsB1jLEFaholpalHaVYnkWxxqdQS2UbsT4fFuJY=;
+        b=Z8gYJNm7ONxx3qybdg27wFRSoVULBn2tUUBtRitXwUvZz3AhLFXo+FQIkGmVSgFidC
+         qSw7CPJOp1WJWKXTflv0xxIw2LNh5s0xIfzOfYgIhSxjNXxUmUyqLzzwB0ATx3kCdzlg
+         oxaGTQ7SptXZTjdi/GmovUe6gMn7aR4yslCfc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=7HZNZsB1jLEFaholpalHaVYnkWxxqdQS2UbsT4fFuJY=;
+        b=rGKRL6QTlKhvpRaKv+Y9l64ctFJhlf6hVo4WEtThqu4uv95RrUVMvsz8RULWb2qKi7
+         zsx0bGdlUBWkM59gJPb88ufBbg8VNAROUXNp46A3YMlDVC85k5IWxI89D7b1CyCM/qI+
+         T9Z0Kh3Ba9oKZf4LsYBwDDQ6/eD/cgjRMXcBCL1AkqpF9Kj7mTBpDZcWVIGekjbx02c+
+         Jyh+zz//VyQrLUCiPLRVi8/26VTBXbGgfazEyJAk1F/1yKQKHk6zm8AWx7qggjWIuGHj
+         KE7Kr5roYJEpwOZ3eELi3tFZQSocc/rHXrS2NTWgSMFWCZq8eoXwKuTJFbLSqh5cefu/
+         r5Ew==
+X-Gm-Message-State: ABuFfohPmiSYiQZ5GFKMXPGqiatD70TgvaRkR4qbNXGvYZ5YFXcyJrU7
+        fQRfnIMXOEb5BFuwtXso6D17hQ==
+X-Google-Smtp-Source: ACcGV62ghsr+2nsme8ztf1h/ejIwFwjRsZeeKiC6kJsMYRGK5dHID+ZMDEAPamf9Lz3JQcU3Yz/xdw==
+X-Received: by 2002:a63:f922:: with SMTP id h34-v6mr6748971pgi.154.1539373332263;
+        Fri, 12 Oct 2018 12:42:12 -0700 (PDT)
+Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id k70-v6sm3054384pfc.76.2018.10.12.12.42.10
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 12 Oct 2018 12:42:11 -0700 (PDT)
+Date:   Fri, 12 Oct 2018 12:42:10 -0700
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     SF Markus Elfring <elfring@users.sourceforge.net>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-team@android.com, Michal Hocko <mhocko@kernel.org>,
         Julia Lawall <Julia.Lawall@lip6.fr>,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Andy Lutomirski <luto@kernel.org>,
@@ -56,43 +81,26 @@ Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         "Kirill A. Shutemov" <kirill@shutemov.name>,
         Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 1/2] treewide: remove unused address argument from
+ pte_alloc functions
+Message-ID: <20181012194210.GA27630@joelaf.mtv.corp.google.com>
 References: <20181012013756.11285-1-joel@joelfernandes.org>
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Message-ID: <03b524f3-5f3a-baa0-2254-9c588103d2d6@users.sourceforge.net>
-Date:   Fri, 12 Oct 2018 20:51:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+ <03b524f3-5f3a-baa0-2254-9c588103d2d6@users.sourceforge.net>
 MIME-Version: 1.0
-In-Reply-To: <20181012013756.11285-1-joel@joelfernandes.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:kL1jfGghCfX5IqF0iVRDf8mQoouSapQgO45dI9woF05xgJDfw/d
- AA5sy1osx5PoQoz8e05NX77GNXJPHw9DPR0si3tMAft3cP3Og/UHQyAFEv44VXROloUsniB
- Y8tHxhnCqGSXk3sDOvyIeh0eyIwAL0z+iO5ZuRU8MJFacaGuv/K0/oO3MnIdqboq2zbaeLx
- atswja9Z0HU2X9bmK8r2Q==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:VYhd+82Fahk=:8qKapuTAK9PGC3QZTGFm93
- Cv2uqZ6//UeJGJZRMh8t6n/D607bhM1JOv0wjRaxbPn/FW+RXDkMkih/t/gcO0hiGvN00WxSH
- IUOZ5UtG4kENR0gAMawuKNvB3LYcHHG1grcbSDqQP/BP66NmXdnncdyC/Fje3KSEJqrBsRHgS
- flHBVB2rkw+Sy4wZAzvjDgK9v1jeeixWlZcCGq1hd6V8ua/ZFailYZ5twLThZPB30GH0alEeN
- 4BtcuJtue0qkcUIWFRl1hmdRR5yZvHjT9G3LVxNawPDJYbR2E/TSC2W1COIT8+YT5YBMm0Fxv
- CVCdMWpPV1NaDj8bAFDmchFSwtoFeQlsxVrDtyH0gnZIAcDL1j4j4uaSLVIWcBXN5rhNFjK9H
- 3NwtAoLBOLVGX9Ls6HdRK6GTJaYuo5EsxJI16AX32mKNB++RlDhqyr7bqfkkb/WqHXKs3eOTu
- c8F8lqPWVCFAApAGqYnH9taUkWETaXUpGv5nUcYPfjs4TbvOf7jgv4u2azPEp6x+w1COYQJo7
- p13QwmpRRaU/KPxmSbvhunzILyYWG1dQCFpQhDnbuYICSC2DtHVit2NMrNANj+BTHJ4SCceSi
- jTT9dKo7bVCOEQXehz7gqeY5s8xdjd8k+jT4gurpwowY5OZKnVS/YEw7tIuTSEOGTzURUzy9C
- kgRV9hC2Zaqx2MJYmkpaBJigq+1QkIcVVkao5vfZ7Aku6ztfDwqaN8kp6lTzAFV5YGDmPnfvt
- BNOLByR2sgQDnjzgmDIlkBLnLlcavYosoSLzlNhWeLW698K8b0Z67v3JhT9bQ9nF9ogTFxMZj
- +jTqXiDQcHh5AF+SdBNXVw6FkD2x241wRX0cbutTUEyrGYduAY=
-Return-Path: <elfring@users.sourceforge.net>
+In-Reply-To: <03b524f3-5f3a-baa0-2254-9c588103d2d6@users.sourceforge.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66791
+X-archive-position: 66792
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: joel@joelfernandes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -105,50 +113,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> The changes were obtained by applying the following Coccinelle script.
+On Fri, Oct 12, 2018 at 08:51:45PM +0200, SF Markus Elfring wrote:
+> > The changes were obtained by applying the following Coccinelle script.
+> 
+> A bit of clarification happened for its implementation details.
+> https://systeme.lip6.fr/pipermail/cocci/2018-October/005374.html
+> 
+> I have taken also another look at the following SmPL code.
+> 
+> 
+> > identifier fn =~
+> > "^(__pte_alloc|pte_alloc_one|pte_alloc|__pte_alloc_kernel|pte_alloc_one_kernel)$";
+> 
+> I suggest to adjust the regular expression for this constraint
+> and in subsequent SmPL rules.
+> "^(?:pte_alloc(?:_one(?:_kernel)?)?|__pte_alloc(?:_kernel)?)$";
 
-A bit of clarification happened for its implementation details.
-https://systeme.lip6.fr/pipermail/cocci/2018-October/005374.html
+Sure it looks more clever, but why? Ugh that's harder to read and confusing.
 
-I have taken also another look at the following SmPL code.
-
-
-> identifier fn =~
-> "^(__pte_alloc|pte_alloc_one|pte_alloc|__pte_alloc_kernel|pte_alloc_one_kernel)$";
-
-I suggest to adjust the regular expression for this constraint
-and in subsequent SmPL rules.
-
-"^(?:pte_alloc(?:_one(?:_kernel)?)?|__pte_alloc(?:_kernel)?)$";
-
-
+> > (
+> > - T3 fn(T1 E1, T2 E2);
+> > + T3 fn(T1 E1);
+> > |
+> > - T3 fn(T1 E1, T2 E2, T4 E4);
+> > + T3 fn(T1 E1, T2 E2);
+> > )
+> 
+> I propose to take an other SmPL disjunction into account here.
+> 
+>  T3 fn(T1 E1,
 > (
-> - T3 fn(T1 E1, T2 E2);
-> + T3 fn(T1 E1);
-> |
-> - T3 fn(T1 E1, T2 E2, T4 E4);
-> + T3 fn(T1 E1, T2 E2);
-> )
+> -      T2 E2
+> |      T2 E2,
+> -      T4 E4
+> )      );
 
-I propose to take an other SmPL disjunction into account here.
+Again this is confusing. It makes one think that maybe the second argument
+can also be removed and requires careful observation that the ");" follows.
 
- T3 fn(T1 E1,
-(
--      T2 E2
-|      T2 E2,
--      T4 E4
-)      );
+> > (
+> > - #define fn(a, b, c)@p e
+> > + #define fn(a, b) e
+> > |
+> > - #define fn(a, b)@p e
+> > + #define fn(a) e
+> > )
+> 
+> How do you think about to omit the metavariable “position p” here?
 
+Right, I don't need it in this case. But the script works either way.
 
-> (
-> - #define fn(a, b, c)@p e
-> + #define fn(a, b) e
-> |
-> - #define fn(a, b)@p e
-> + #define fn(a) e
-> )
+I like to take more of a problem solving approach that makes sense, than
+aiming for perfection, after all this is a useful script that we do not
+need to check in once we finish with it.
 
-How do you think about to omit the metavariable “position p” here?
-
-Regards,
-Markus
+ - Joel

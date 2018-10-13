@@ -1,93 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:33:10 +0200 (CEST)
-Received: from mail-pl1-x644.google.com ([IPv6:2607:f8b0:4864:20::644]:39103
-        "EHLO mail-pl1-x644.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993973AbeJMBcfKNkuy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:32:35 +0200
-Received: by mail-pl1-x644.google.com with SMTP id w14-v6so6676397plp.6
-        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:32:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:35:52 +0200 (CEST)
+Received: from mail-pl1-x643.google.com ([IPv6:2607:f8b0:4864:20::643]:40306
+        "EHLO mail-pl1-x643.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994586AbeJMBftTgezy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:35:49 +0200
+Received: by mail-pl1-x643.google.com with SMTP id 1-v6so6684528plv.7
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:35:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=joelfernandes.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jtAK3pAlFMeOO6SUm8Lh3Bmb29tPAciRzUtn881iM5M=;
-        b=hu1RRoD4zGFkh1NvswXMY0Mcf7RReZIxK6TbDCgMDMi1xCXvjQWNtmb8jA6UW1Q5ZI
-         bybcFeJfratqjTeqEb7mRWAGReU9tL9VCuSkWsUqyCZbL3y+XtXFIKgHbMuC6INYU+VH
-         z4FmPqYFb3J2yvvfenwn9pAR6sobi8QuQFyFE=
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=WNSmz6gPUWl0psy6VYdrKZKj8jjeGLoBOEaYk7PTF5E=;
+        b=t/bdXm4ahfHUsC1W/kmIGtZM4IaaXFvhptMHyl/MsEl85wogOLcBRPLXwHtXoa2xTR
+         d2M48uB6euL4d5IaKV5t6nT5ABUr0y0qRBKJlUNuiclAcNB1bktYaPSMWAk89SYK1P2v
+         +doypv+PPbaJGW2yXU+EaPjAWnWnd1ZXLhamE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jtAK3pAlFMeOO6SUm8Lh3Bmb29tPAciRzUtn881iM5M=;
-        b=iQYDh/Jmv94SZ2W8RgvJbpQem/tdBNeNmZCkuIaxOUs4ohf4DdmBBaVSDqeBlid+MP
-         H98C22dJFmbNe0hpYHPnLbKppIqkMDWaPxbDmQ+9JQfIOTod1fYmzAg7m4pYA9p63wAZ
-         dXNu/n8y3sS5rJ10EkjO1Ih4ESYrcYMl1YKW6uZ3RT5FUkcfey6fbqpaHzYVWTbJ9YK/
-         K3V7EkMlt9RVIE3G3FKQAsoCKd5rwwHIumZw9ptEEl/JJHGRtAAGg5YzGqARV1lXxc0F
-         WtFBm167sWreT3rZFHNw3z9eflghb29Sugx5bIJliDORLMIot53/TGBOI6FXnxazWXEf
-         I6BQ==
-X-Gm-Message-State: ABuFfohlykd9spRgDMUnq6uBNAAyngUS7hSY6PB6S/8eyZaRXKHljd5Q
-        Wq5omzsgAM97j+l40eMYST5hOA==
-X-Google-Smtp-Source: ACcGV60cRgU0XyfJPBpItPjBh+EP7iRiHLZbhDbgbD69TJC4FgrTPRZLx9S2q81RSPgQ8LHOmiT4Xw==
-X-Received: by 2002:a17:902:8687:: with SMTP id g7-v6mr8297604plo.30.1539394348522;
-        Fri, 12 Oct 2018 18:32:28 -0700 (PDT)
-Received: from joelaf.mtv.corp.google.com ([2620:0:1000:1601:3aef:314f:b9ea:889f])
-        by smtp.gmail.com with ESMTPSA id q7-v6sm6507828pfd.164.2018.10.12.18.32.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 12 Oct 2018 18:32:27 -0700 (PDT)
-From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     kernel-team@android.com,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        akpm@linux-foundation.org,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>, dancol@google.com,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        kasan-dev@googlegroups.com,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        kvmarm@lists.cs.columbia.edu, Ley Foon Tan <lftan@altera.com>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@linux-mips.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        lokeshgidra@google.com, Max Filippov <jcmvbkbc@gmail.com>,
-        mhocko@kernel.org, minchan@kernel.org,
-        nios2-dev@lists.rocketboards.org, pantin@google.com,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
-        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Will Deacon <will.deacon@arm.com>,
-        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH 4/4] x86: select HAVE_MOVE_PMD for faster mremap (v1)
-Date:   Fri, 12 Oct 2018 18:32:00 -0700
-Message-Id: <20181013013200.206928-5-joel@joelfernandes.org>
-X-Mailer: git-send-email 2.19.0.605.g01d371f741-goog
-In-Reply-To: <20181013013200.206928-1-joel@joelfernandes.org>
-References: <20181013013200.206928-1-joel@joelfernandes.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=WNSmz6gPUWl0psy6VYdrKZKj8jjeGLoBOEaYk7PTF5E=;
+        b=HC2ZcC7cJMsrBtl9RzahuzNpqlIUZXTGeYP2G9JapzgXYmLWatwPbZnuolCiDMyNft
+         O7JWusowEGfGTP11n9oJf2uz8ginTRV3GDqyFXwZUTo31cyYtNbQ/mRgmqhXG29vZ90Q
+         GOaHcHCkyHrtTmThaJOktO9Rf5A8LGMBmnTisoHgIpMsEVIClIxb9njZHtlt/QfAyDeE
+         Be2u+hxmpDeizDui3qIkIaA0apeJky4n+BBFuGQsOfea6b2hSbKJNcbpeSyarT9RdJap
+         3NV32ejDmerYtAbNPwlFWQce0l8twwD5m2YWlKQ/UjWg16QKCwghZVjoAlx4cLyWgY0h
+         bWRA==
+X-Gm-Message-State: ABuFfojKTrIcDkcvDxeWfDkBDK/h03cUhCwUt8PU62FjmLKo5UDtBTvm
+        SUhLlrcbPnDTPoivNMANv4C/Zg==
+X-Google-Smtp-Source: ACcGV63YcGHLeWFH+zMcDfPGfwOAvPK81iWmstN1Bsc/dCjm29V/T1DgWrxlTjwp6QBDN3hA/VReOg==
+X-Received: by 2002:a17:902:d20a:: with SMTP id t10-v6mr8118444ply.256.1539394543039;
+        Fri, 12 Oct 2018 18:35:43 -0700 (PDT)
+Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id 20-v6sm3688934pge.77.2018.10.12.18.35.41
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 12 Oct 2018 18:35:41 -0700 (PDT)
+Date:   Fri, 12 Oct 2018 18:35:40 -0700
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     kirill@shutemov.name, linux-kernel@vger.kernel.org,
+        kernel-team@android.com, minchan@kernel.org, pantin@google.com,
+        hughd@google.com, lokeshgidra@google.com, dancol@google.com,
+        mhocko@kernel.org, akpm@linux-foundation.org,
+        aryabinin@virtuozzo.com, luto@kernel.org, bp@alien8.de,
+        catalin.marinas@arm.com, chris@zankel.net,
+        dave.hansen@linux.intel.com, elfring@users.sourceforge.net,
+        fenghua.yu@intel.com, geert@linux-m68k.org, gxt@pku.edu.cn,
+        deller@gmx.de, mingo@redhat.com, jejb@parisc-linux.org,
+        jdike@addtoit.com, jonas@southpole.se, Julia.Lawall@lip6.fr,
+        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
+        lftan@altera.com, linux-alpha@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, jcmvbkbc@gmail.com,
+        nios2-dev@lists.rocketboards.org, peterz@infradead.org,
+        richard@nod.at
+Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
+Message-ID: <20181013013540.GA207108@joelaf.mtv.corp.google.com>
+References: <20181012013756.11285-2-joel@joelfernandes.org>
+ <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
+ <20181012125046.GA170912@joelaf.mtv.corp.google.com>
+ <20181012.111836.1569129998592378186.davem@davemloft.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181012.111836.1569129998592378186.davem@davemloft.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66807
+X-archive-position: 66808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -104,25 +89,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Moving page-tables at the PMD-level on x86 is known to be safe. Enable
-this option so that we can do fast mremap when possible.
+On Fri, Oct 12, 2018 at 11:18:36AM -0700, David Miller wrote:
+> From: Joel Fernandes <joel@joelfernandes.org>
+[...]
+> > Also, do we not flush the caches from any path when we munmap
+> > address space?  We do call do_munmap on the old mapping from mremap
+> > after moving to the new one.
+> 
+> Sparc makes sure that shared mapping have consistent colors.  Therefore
+> all that's left are private mappings and those will be initialized by
+> block stores to clear the page out or similar.
+> 
+> Also, when creating new mappings, we flush the D-cache when necessary
+> in update_mmu_cache().
+> 
+> We also maintain a bit in the page struct to track when a page which
+> was potentially written to on one cpu ends up mapped into another
+> address space and flush as necessary.
+> 
+> The cache is write-through, which simplifies the preconditions we have
+> to maintain.
 
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
----
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Makes sense, thanks. For the moment I sent patches to enable this on arm64
+and x86. We can enable it on sparc as well at a later time as it sounds it
+could be a safe optimization to apply to that architecture as well.
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1a0be022f91d..01c02a9d7825 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -171,6 +171,7 @@ config X86
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MIXED_BREAKPOINTS_REGS
- 	select HAVE_MOD_ARCH_SPECIFIC
-+	select HAVE_MOVE_PMD
- 	select HAVE_NMI
- 	select HAVE_OPROFILE
- 	select HAVE_OPTPROBES
--- 
-2.19.0.605.g01d371f741-goog
+thanks,
+
+ - Joel

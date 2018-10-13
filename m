@@ -1,77 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 02:09:49 +0200 (CEST)
-Received: from mail-ot1-x344.google.com ([IPv6:2607:f8b0:4864:20::344]:40475
-        "EHLO mail-ot1-x344.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994542AbeJMAJoF0vMH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 02:09:44 +0200
-Received: by mail-ot1-x344.google.com with SMTP id w67so13948362ota.7
-        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 17:09:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:32:28 +0200 (CEST)
+Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:43901
+        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeJMBcYxXaiy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:32:24 +0200
+Received: by mail-pf1-x443.google.com with SMTP id p24-v6so6998241pff.10
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:32:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Bkp1b3yp9z/uWXQetbOuaWLTZ1A7P1tg/9UbWkaLl2U=;
-        b=cH0qqB3xp23UP5zCLNHJdfLzwXH7r0jEYiv6Fhmz84qb+A1HG2VB4uhPK6actazg2v
-         HCK8L9nc7sKOgKKifRc3kWRetfRH43bJ4uIslFeRhr9hWqu/POfn0D1N230NRboPPDbK
-         QVrq6r3q9K66gJgvb0rA1j/ZopvqhVU6Pp+6E7JXafPP9q3YilHPXLhMQlyXxr5XAd5r
-         nBr2FLrSHMaswOgEjVuwyvIlzcuGzFQtu0h1fCik6yu9No3T2Zp/8id7XRicCx2lfQeW
-         dumipPxVWTeQEl9uxEjZOhkKevgyUD5QEjLkITDYs/+2VKUjsyoSL4vY1z3QaHuzR/Gl
-         zGbQ==
+        d=joelfernandes.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/tt52pA472dSwsAAwQJ939rJwzTfqkSaNx9EwvICru0=;
+        b=aZ2XsHZUVMUuO5DvSG7J3SKtJwMjFPFkNKSdOTMVPxEWZUBHqCq91bWsY5lJSZ5abW
+         MspF88SV9xG3kBt1cxNpgjwLM9fjqG9Qr8THIveYjgxWMmIJI/3CsoQ1euVVO+u9jU3b
+         84AjE6qoveKMUd+TSCAUYFppegkJuFE12F9Zo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Bkp1b3yp9z/uWXQetbOuaWLTZ1A7P1tg/9UbWkaLl2U=;
-        b=OFtYqf0a47iU5gHjMowPNdJ1acstsrzzF3SLxFV0PEU12G0QBttmozbEybQoiFGA4V
-         UHvj70zIBDU2lnC8nd0fJGNUuKsW/sebwAdHF7IAlKsftU7VV36z1SQZ/KXrmgaIBiyq
-         2v0kgDsWgeHz9YjQd6FvEcdkZo0ejxrCeg4p35S+/xFChoDjrlXBd5wCTg5qH8+uhBBV
-         QDYxVAmk68T/+SwVaLWsgdZVXyP7ja+qeDmqNXpcRD6wEmDvX7KwRGjSQybxMfzFkg3k
-         QYwJSdszvNLaXxcGo3Fq3ILYAQoRheEq1FfJsQPZoq3MJ+lQvp1otiE37nFKfz4Tz9Oh
-         z01Q==
-X-Gm-Message-State: ABuFfojv5s/MeRDSuPTvcL3vLo6xXvDLxOgo2cqSFwy3rUXIsf3c6CKq
-        FShNWMv6Fk5NitY3l8c+mAKMEfWbJoA4InyJ9zzlXg==
-X-Google-Smtp-Source: ACcGV639M41DQtJ3Bzi3FPu0+wsilAuqX9fxY3z3OebtRwmZSMx/ZNfJJHLHlwhGi7OSBLGGl7Zp8YllhCcioSPxoiQ=
-X-Received: by 2002:a9d:5733:: with SMTP id p48mr4824449oth.292.1539389376689;
- Fri, 12 Oct 2018 17:09:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20181011233117.7883-1-rick.p.edgecombe@intel.com>
- <20181011233117.7883-2-rick.p.edgecombe@intel.com> <CAG48ez2fWg64nGxDXUQS3695KpVNrakAbarXJnYPd6xv5wOD+A@mail.gmail.com>
- <7b0714e26c7c2216721641d7df16a49687927e37.camel@intel.com>
- <CAG48ez0XfGFAWDYa75COMPCsKqqGfBFOtcNuGD4_dubGf2YeAQ@mail.gmail.com> <657e6d0ada18e8ca0350bc6b3a80c49b3c0b341c.camel@intel.com>
-In-Reply-To: <657e6d0ada18e8ca0350bc6b3a80c49b3c0b341c.camel@intel.com>
-From:   Jann Horn <jannh@google.com>
-Date:   Sat, 13 Oct 2018 02:09:09 +0200
-Message-ID: <CAG48ez383rjt+v_DvLF902X33od_SwMh8dZ-6=w1DZ-YPZ_U9Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] modules: Create rlimit for module space
-To:     rick.p.edgecombe@intel.com
-Cc:     linux-fsdevel@vger.kernel.org,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Kees Cook <keescook@chromium.org>, jeyu@kernel.org,
-        Arjan van de Ven <arjan@linux.intel.com>,
-        linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        kristen@linux.intel.com, deneen.t.dock@intel.com,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/tt52pA472dSwsAAwQJ939rJwzTfqkSaNx9EwvICru0=;
+        b=rQFqUrZHhfVcm2T2E5TnaYs67bDalYDmVsncl3C2E2h2zkrtq0hfDRuLRCfh//QR8E
+         XGVp9pYHnoAKozglCktW9dhcozR8TboK+r29FlYE1qYfqE09b4mIQKciaJ+dtoBLao8v
+         aNGshxqn6wvfwlP8MU3uOmdAYfMsthB3i1aOk2/SuIfNBdoE5wTqXvq61JNUhHmzJ1sD
+         1UfT9uszqKcxIF9lyWQsF2Vz1yHFLfJKL6CC472vsPII3W5Ms9T5iIMkOqbwna+iIGf8
+         eVadgJrl79toTPe82Q3m3RjvKrOHAvI/UU4m2IJixNCwXun429cmEdEo4W0kM3UQkpZG
+         siqQ==
+X-Gm-Message-State: ABuFfoiRppGG4RZvkBt9rSS0wzqwyt0Pon7hFeiUK0CRgopHlzCUXtCP
+        NtRYlnxAGV7zuQY4zhfi9X0x8Q==
+X-Google-Smtp-Source: ACcGV63QPVBHwSaBapNX/Xe3if6+zBlb78Rh0S4DGfzofyGyhDp7+M5q3Vlq+GIpXS8LG6/GNUgmRw==
+X-Received: by 2002:a63:ae4d:: with SMTP id e13-v6mr7685442pgp.315.1539394337561;
+        Fri, 12 Oct 2018 18:32:17 -0700 (PDT)
+Received: from joelaf.mtv.corp.google.com ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id q7-v6sm6507828pfd.164.2018.10.12.18.32.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Oct 2018 18:32:16 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel-team@android.com,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        akpm@linux-foundation.org,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
+        Chris Zankel <chris@zankel.net>, dancol@google.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <jannh@google.com>
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        kasan-dev@googlegroups.com,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        kvmarm@lists.cs.columbia.edu, Ley Foon Tan <lftan@altera.com>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        lokeshgidra@google.com, Max Filippov <jcmvbkbc@gmail.com>,
+        mhocko@kernel.org, minchan@kernel.org,
+        nios2-dev@lists.rocketboards.org, pantin@google.com,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH 0/4] Add support for fast mremap
+Date:   Fri, 12 Oct 2018 18:31:56 -0700
+Message-Id: <20181013013200.206928-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.19.0.605.g01d371f741-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66802
+X-archive-position: 66803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jannh@google.com
+X-original-sender: joel@joelfernandes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,34 +102,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Oct 13, 2018 at 2:04 AM Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
-> On Fri, 2018-10-12 at 19:22 +0200, Jann Horn wrote:
-> > On Fri, Oct 12, 2018 at 7:04 PM Edgecombe, Rick P
-> > <rick.p.edgecombe@intel.com> wrote:
-> > > On Fri, 2018-10-12 at 02:35 +0200, Jann Horn wrote:
-> > > > Why all the rbtree stuff instead of stashing a pointer in struct
-> > > > vmap_area, or something like that?
-> > >
-> > > Since the tracking was not for all vmalloc usage, the intention was to not
-> > > bloat
-> > > the structure for other usages likes stacks. I thought usually there
-> > > wouldn't be
-> > > nearly as much module space allocations as there would be kernel stacks, but
-> > > I
-> > > didn't do any actual measurements on the tradeoffs.
-> >
-> > I imagine that one extra pointer in there - pointing to your struct
-> > mod_alloc_user - would probably not be terrible. 8 bytes more per
-> > kernel stack shouldn't be so bad?
->
-> I looked into this and it starts to look a little messy. The nommu.c version of
-> vmalloc doesn't use or expose access to vmap_area or vm_struct. So it starts to
-> look like a bunch of IFDEFs to remove the rlimit in the nommu case or making a
-> stand in that maintains pretend vm struct's in nommu.c. I had actually
-> previously tried to at least pull the allocations size from vmalloc structs, but it broke on nommu.
->
-> Thought I would check back and see. How important do you think this is?
+Hi,
+Here is the latest "fast mremap" series. The main change in this submission is
+to enable the fast mremap optimization on a per-architecture basis to prevent
+possible issues with architectures that may not behave well with such change.
 
-I don't think it's important - I just thought that it would be nice to
-avoid the extra complexity if it is easily avoidable.
+x86: select HAVE_MOVE_PMD for faster mremap (v1)
+
+arm64: select HAVE_MOVE_PMD for faster mremap (v1)
+
+mm: speed up mremap by 500x on large regions (v2)
+v1->v2: Added support for per-arch enablement (Kirill Shutemov)
+
+treewide: remove unused address argument from pte_alloc functions (v2)
+v1->v2: fix arch/um/ prototype which was missed in v1 (Anton Ivanov)
+        update changelog with manual fixups for m68k and microblaze.
+
+Joel Fernandes (Google) (4):
+  treewide: remove unused address argument from pte_alloc functions (v2)
+  mm: speed up mremap by 500x on large regions (v2)
+  arm64: select HAVE_MOVE_PMD for faster mremap (v1)
+  x86: select HAVE_MOVE_PMD for faster mremap (v1)
+
+ arch/Kconfig                                 |  5 ++
+ arch/alpha/include/asm/pgalloc.h             |  6 +-
+ arch/arc/include/asm/pgalloc.h               |  5 +-
+ arch/arm/include/asm/pgalloc.h               |  4 +-
+ arch/arm64/Kconfig                           |  1 +
+ arch/arm64/include/asm/pgalloc.h             |  4 +-
+ arch/hexagon/include/asm/pgalloc.h           |  6 +-
+ arch/ia64/include/asm/pgalloc.h              |  5 +-
+ arch/m68k/include/asm/mcf_pgalloc.h          |  8 +--
+ arch/m68k/include/asm/motorola_pgalloc.h     |  4 +-
+ arch/m68k/include/asm/sun3_pgalloc.h         |  6 +-
+ arch/microblaze/include/asm/pgalloc.h        | 19 +-----
+ arch/microblaze/mm/pgtable.c                 |  3 +-
+ arch/mips/include/asm/pgalloc.h              |  6 +-
+ arch/nds32/include/asm/pgalloc.h             |  5 +-
+ arch/nios2/include/asm/pgalloc.h             |  6 +-
+ arch/openrisc/include/asm/pgalloc.h          |  5 +-
+ arch/openrisc/mm/ioremap.c                   |  3 +-
+ arch/parisc/include/asm/pgalloc.h            |  4 +-
+ arch/powerpc/include/asm/book3s/32/pgalloc.h |  4 +-
+ arch/powerpc/include/asm/book3s/64/pgalloc.h | 12 ++--
+ arch/powerpc/include/asm/nohash/32/pgalloc.h |  4 +-
+ arch/powerpc/include/asm/nohash/64/pgalloc.h |  6 +-
+ arch/powerpc/mm/pgtable-book3s64.c           |  2 +-
+ arch/powerpc/mm/pgtable_32.c                 |  4 +-
+ arch/riscv/include/asm/pgalloc.h             |  6 +-
+ arch/s390/include/asm/pgalloc.h              |  4 +-
+ arch/sh/include/asm/pgalloc.h                |  6 +-
+ arch/sparc/include/asm/pgalloc_32.h          |  5 +-
+ arch/sparc/include/asm/pgalloc_64.h          |  6 +-
+ arch/sparc/mm/init_64.c                      |  6 +-
+ arch/sparc/mm/srmmu.c                        |  4 +-
+ arch/um/include/asm/pgalloc.h                |  4 +-
+ arch/um/kernel/mem.c                         |  4 +-
+ arch/unicore32/include/asm/pgalloc.h         |  4 +-
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/pgalloc.h               |  4 +-
+ arch/x86/mm/pgtable.c                        |  4 +-
+ arch/xtensa/include/asm/pgalloc.h            |  8 +--
+ include/linux/mm.h                           | 13 ++--
+ mm/huge_memory.c                             |  8 +--
+ mm/kasan/kasan_init.c                        |  2 +-
+ mm/memory.c                                  | 17 +++--
+ mm/migrate.c                                 |  2 +-
+ mm/mremap.c                                  | 67 +++++++++++++++++++-
+ mm/userfaultfd.c                             |  2 +-
+ virt/kvm/arm/mmu.c                           |  2 +-
+ 47 files changed, 169 insertions(+), 147 deletions(-)
+
+-- 
+2.19.0.605.g01d371f741-goog

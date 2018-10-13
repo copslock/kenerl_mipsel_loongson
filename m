@@ -1,99 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 11:25:36 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.14]:37645 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990406AbeJMJZdmYC1G (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Oct 2018 11:25:33 +0200
-Received: from [192.168.1.2] ([77.182.109.121]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Ljgd6-1fe7F90cKO-00bZio; Sat, 13
- Oct 2018 11:23:11 +0200
-Received: from [192.168.1.2] ([77.182.109.121]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Ljgd6-1fe7F90cKO-00bZio; Sat, 13
- Oct 2018 11:23:11 +0200
-Subject: Re: [PATCH v2 1/2] treewide: remove unused address argument from
- pte_alloc functions
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-team@android.com, Michal Hocko <mhocko@kernel.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Daniel Colascione <dancol@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        Hugh Dickins <hughd@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "James E. J. Bottomley" <jejb@parisc-linux.org>,
-        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
-        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        pantin@google.com, Lokesh Gidra <lokeshgidra@google.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Minchan Kim <minchan@kernel.org>,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
-        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20181012013756.11285-1-joel@joelfernandes.org>
- <03b524f3-5f3a-baa0-2254-9c588103d2d6@users.sourceforge.net>
- <20181012194210.GA27630@joelaf.mtv.corp.google.com>
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Message-ID: <e1be1dda-90ab-052d-496b-3de01ffc80d1@users.sourceforge.net>
-Date:   Sat, 13 Oct 2018 11:22:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
-MIME-Version: 1.0
-In-Reply-To: <20181012194210.GA27630@joelaf.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:opVsTsdRSQYHnglK8xvkCUZUswSzgAiKoS+KIhCNIvHd3Yq3Ufx
- ceTjZIQMEq4s0BqtUDsQA+V/NSZ/iWF9ovz8l3V5T+EzWg7BbDd+DB1TsHw9ObirhajDCPf
- m94io4so/kUaQ+paPJXJjuENjQDWI0XLcPpR7a3huBeUNpGTXKQjSmr/JDL+b4gW6p57u4Z
- 1BzRLcEsMoiZQwc663VQA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:v6MarwJQGgc=:Ymq3Px86/PQtPzMwB8SDWz
- 2sVTW3LAMS2aIZ8Ekzl7/SDvldDrpm06rM73xwb0uYPMZ3GHwT//p8vaal6x17s8ay7WilQrz
- K1Bg967tVvkE9O+bHYv3RH85K5N3GlfnSnpVrzbF5FATwM77bmyW3MOdfKY7APM2E6r4svqKH
- MjIc6EhkL1944Pl4HVJszGwMBqx/ea3HMQWVGQE7Fd0Ebm1oh0deQfClHVkLGh8/eDgF8Djb6
- zhE9SKkfVZD6CWg7y9Zr8UuLknPaHhds4jQlAMO+YyPfNMHH3UXbXN3LViy8PQi9Sfu/wr8jr
- 3+NabdySRdW+Eh9PkizWR+WbpiupacwKtItrKdb/mvDoVJACLixppwElNeEYZJCv3pD52wuiM
- eNEH08JILjZld6narndqV/zqIowHw7k2AsltgBKw0Mqlcd3QvKYQQZP0kzRbToXq5ZBasFKx6
- U+BMMQhDfw/6IIb5b051oCjD+wiruFio921rpsNCRU5y6aHnm+w7j8hRQukryGIa8LOrD4JCW
- yaRthF7hb06kDcJkklIkR9xn6uu3m37H3Ya+z/Dsj+VDmHFNkctUwe9XY3r0EKO0MJqy4riYs
- Lund5+9Dymq/dXSENAL9MmfFRdRSfOQ12yYUHLRKcOYrSNFpBluxLsiBkqcJq5jwuxdjSZhRe
- QzXp5jsYL6wwfiq9dly7RAYyGqQBu1TI8IMDHj5CyOWHrrPCt6S8e7162OjoHxsMqNTW8Aaoo
- z0PdDLyq3fVbSyAsDljIS3uoxrzwE7ryXbtER5vO5qv8MegP+wfnql8gFgSZR2DOoTwd1GhVk
- Nw4MxMBjGx6rPT068O9XO/l/2SyaNynS07fdGT4KUxwYM+p1nk=
-Return-Path: <elfring@users.sourceforge.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 16:54:32 +0200 (CEST)
+Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:36530
+        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990406AbeJMOy3Hq0Zw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 16:54:29 +0200
+Received: by mail-pg1-x543.google.com with SMTP id f18-v6so7173998pgv.3;
+        Sat, 13 Oct 2018 07:54:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=qRIE2f33zVx7l+zax50LPFwdkUfPKlzQ2ecUdzjJB3w=;
+        b=iptJbN9c7EXhdMtLuNVDWpdEX79VyhZ/htZ+sDq/0gR2dP1AIYzptr3iNcS4dIhKuE
+         gKw0scn4icIEQk2lUAZ2WgG/ONCcoYfNbDD4oYWQfMASgZKFuZjGjOA4PRN7GaECv8ck
+         n/2kTGtpkX8cnOiPay1nwjGWywFo4yOAGytbQfkZwU2tg0ewFBKfSh4JEH7fgTcNBwrc
+         eGHD3EwzUxJ3gViIkr7q00cmyxGixm8OBwWOPUEZH6uvOyR8FlWKtsQNRJ2u6hGGQBlu
+         a80KlkxdLjlR2NpXkH6zCVl+LXrXD6GK0Y+vwxzGldrKVK2BpTpUNoGAtxqIFg4xo6bA
+         OOaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=qRIE2f33zVx7l+zax50LPFwdkUfPKlzQ2ecUdzjJB3w=;
+        b=NLn8Exdo6UcCfh17NLU8vXKKs5idYUBjpLQthQF8D+ZK3tDAR411f1SbCbTSVp0FKq
+         W27XBx0h+aeI+5oVIlOZlCphxQwx00DzlfIEzqA6Vkax1Yi0DryRTnqYekQM+g3A2a2T
+         t81GMb4OTWww4Bd+pkXueQCxePQO5Y8QDJII1uUh8Cq+wLqbtlkOBH2gNLBRKyrDmWlk
+         TMDpTPZo/weZEts+w9ECx/Auwp3EAZuE0ff7pHNGm+NOqmAohLoyMm3G8CpUI4DacjoB
+         BwLSu84bQhH8wykzbCqeGOXMXFIj3SIOckbIQq9cUfpyje0f2s+bku/g2a+NtHhQgsiR
+         iRbg==
+X-Gm-Message-State: ABuFfojIwIwGzeDG1ZA4NlF1+eONIebglvRk4G/Ikc6a23/SQ5shOczD
+        r0WihJLPJS3M8R7gVTRA7os=
+X-Google-Smtp-Source: ACcGV61HMe2w0niUJncct3r9sXFquEOhFIAsw/cgsgxD0CgIn25ejhdalgbJmm99gXA+gxqlvxuKnQ==
+X-Received: by 2002:a63:5605:: with SMTP id k5-v6mr9644403pgb.189.1539442462441;
+        Sat, 13 Oct 2018 07:54:22 -0700 (PDT)
+Received: from localhost.corp.microsoft.com ([2404:f801:9000:18:d9bf:62c6:740b:9fc4])
+        by smtp.googlemail.com with ESMTPSA id v81-v6sm8688724pfj.25.2018.10.13.07.54.14
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 13 Oct 2018 07:54:21 -0700 (PDT)
+From:   lantianyu1986@gmail.com
+X-Google-Original-From: Tianyu.Lan@microsoft.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
+        catalin.marinas@arm.com, christoffer.dall@arm.com,
+        devel@linuxdriverproject.org, haiyangz@microsoft.com,
+        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
+        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
+        linux-arm-kernel@lists.infradead.org, linux@armlinux.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
+        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
+        paulus@ozlabs.org, pbonzini@redhat.com, ralf@linux-mips.org,
+        rkrcmar@redhat.com, sthemmin@microsoft.com, tglx@linutronix.de,
+        will.deacon@arm.com, x86@kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
+Subject: [PATCH V4 00/15] x86/KVM/Hyper-v: Add HV ept tlb range flush hypercall support in KVM
+Date:   Sat, 13 Oct 2018 22:53:51 +0800
+Message-Id: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
+X-Mailer: git-send-email 2.14.4
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <lantianyu1986@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66815
+X-archive-position: 66816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: lantianyu1986@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -106,93 +75,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->>> The changes were obtained by applying the following Coccinelle script.
+From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-How do you think about to adjust the order of provided information
-in the commit description?
-1. Update goals
-2. Transformation implementation at the end
+For nested memory virtualization, Hyper-v doesn't set write-protect
+L1 hypervisor EPT page directory and page table node to track changes 
+while it relies on guest to tell it changes via HvFlushGuestAddressLlist
+hypercall. HvFlushGuestAddressLlist hypercall provides a way to flush
+EPT page table with ranges which are specified by L1 hypervisor.
 
-
->> "^(?:pte_alloc(?:_one(?:_kernel)?)?|__pte_alloc(?:_kernel)?)$";
-> 
-> Sure it looks more clever, but why?
-
-1. Usage of non-capturing parentheses
-2. Clearer specification which parts can be treated as optional
-   in the search pattern.
+If L1 hypervisor uses INVEPT or HvFlushGuestAddressSpace hypercall to
+flush EPT tlb, Hyper-V will invalidate associated EPT shadow page table
+and sync L1's EPT table when next EPT page fault is triggered.
+HvFlushGuestAddressLlist hypercall helps to avoid such redundant EPT
+page fault and synchronization of shadow page table.
 
 
-> Ugh that's harder to read and confusing.
+Change since v3:
+	1) Remove code of updating "tlbs_dirty" in kvm_flush_remote_tlbs_with_range()
+	2) Remove directly tlb flush in the kvm_handle_hva_range()
+	3) Move tlb flush in kvm_set_pte_rmapp() to kvm_mmu_notifier_change_pte()
+	4) Combine Vitaly's "don't pass EPT configuration info to
+vmx_hv_remote_flush_tlb()" fix
 
-* Do you care for coding style and execution speed of regular expressions?
+Change since v2:
+       1) Fix comment in the kvm_flush_remote_tlbs_with_range()
+       2) Move HV_MAX_FLUSH_PAGES and HV_MAX_FLUSH_REP_COUNT to
+	hyperv-tlfs.h.
+       3) Calculate HV_MAX_FLUSH_REP_COUNT in the macro definition
+       4) Use HV_MAX_FLUSH_REP_COUNT to define length of gpa_list in
+	struct hv_guest_mapping_flush_list.
 
-* If you would prefer to list function names without placeholders,
-  you can eventually specify them also within SmPL disjunctions directly.
-
-* It can look simpler to use an identifier list as a constraint variant.
-  http://coccinelle.lip6.fr/docs/main_grammar002.html
-
-
-> Again this is confusing.
-
-The view points can be different for such SmPL code.
-
- T3 fn(T1 E1
-(
--           , T2 E2
-|           , T2 E2
--           , T4 E4
-)     );
-
-
-> It makes one think that maybe the second argument can also be removed
-
-You expressed this as the first transformation possibility, didn't you?
-
-You would like to delete an argument from the end of a function
-or macro parameter (or expression) list.
-I suggest then again to avoid the SmPL specification of source code additions
-(plus lines in the file difference format).
+Change since v1:
+       1) Convert "end_gfn" of struct kvm_tlb_range to "pages" in order
+          to avoid confusion as to whether "end_gfn" is inclusive or exlusive.
+       2) Add hyperv tlb range struct and replace kvm tlb range struct
+          with new struct in order to avoid using kvm struct in the hyperv
+	  code directly.
 
 
-> and requires careful observation that the ");" follows.
 
-Yes, of course.
+Lan Tianyu (15):
+  KVM: Add tlb_remote_flush_with_range callback in kvm_x86_ops
+  KVM/MMU: Add tlb flush with range helper function
+  KVM: Replace old tlb flush function with new one to flush a specified
+    range.
+  KVM: Make kvm_set_spte_hva() return int
+  KVM/MMU: Move tlb flush in kvm_set_pte_rmapp() to
+    kvm_mmu_notifier_change_pte()
+  KVM/MMU: Flush tlb directly in the kvm_set_pte_rmapp()
+  KVM/MMU: Flush tlb directly in the kvm_zap_gfn_range()
+  KVM/MMU: Flush tlb directly in kvm_mmu_zap_collapsible_spte()
+  KVM: Add flush_link and parent_pte in the struct kvm_mmu_page
+  KVM: Add spte's point in the struct kvm_mmu_page
+  KVM/MMU: Replace tlb flush function with range list flush function
+  x86/hyper-v: Add HvFlushGuestAddressList hypercall support
+  x86/Hyper-v: Add trace in the
+    hyperv_nested_flush_guest_mapping_range()
+  KVM/VMX: Change hv flush logic when ept tables are mismatched.
+  KVM/VMX: Add hv tlb range flush support
 
-Would you care more in the distinction which code parts should be kept unchanged?
+ arch/arm/include/asm/kvm_host.h     |   2 +-
+ arch/arm64/include/asm/kvm_host.h   |   2 +-
+ arch/mips/include/asm/kvm_host.h    |   2 +-
+ arch/mips/kvm/mmu.c                 |   3 +-
+ arch/powerpc/include/asm/kvm_host.h |   2 +-
+ arch/powerpc/kvm/book3s.c           |   3 +-
+ arch/powerpc/kvm/e500_mmu_host.c    |   3 +-
+ arch/x86/hyperv/nested.c            |  85 ++++++++++++++++++++++
+ arch/x86/include/asm/hyperv-tlfs.h  |  32 +++++++++
+ arch/x86/include/asm/kvm_host.h     |  12 +++-
+ arch/x86/include/asm/mshyperv.h     |  16 +++++
+ arch/x86/include/asm/trace/hyperv.h |  14 ++++
+ arch/x86/kvm/mmu.c                  | 138 ++++++++++++++++++++++++++++++------
+ arch/x86/kvm/paging_tmpl.h          |  10 ++-
+ arch/x86/kvm/vmx.c                  |  70 +++++++++++++++---
+ virt/kvm/arm/mmu.c                  |   6 +-
+ virt/kvm/kvm_main.c                 |   5 +-
+ 17 files changed, 360 insertions(+), 45 deletions(-)
 
-
-> Right, I don't need it in this case.
-
-Thanks for your understanding that the metavariable “position p”
-can be deleted in the SmPL rule “pte_alloc_macro”.
-
-
-> But the script works either way.
-
-I imagine that you can become interested in a bit nicer run time characteristics.
-
-
-> I like to take more of a problem solving approach that makes sense,
-
-This is usual.
-
-
-> than aiming for perfection,
-
-If you will work more with scripts for the semantic patch language,
-you might become used to additional coding variants.
-
-
-> after all this is a useful script that we do not need to check
-> in once we finish with it.
-
-I am curious if there will evolve a need to add similar transformation approaches
-to a known script collection.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/coccinelle?id=79fc170b1f5c36f486d886bfbd59eb4e62321128
-
-Would you eventually like to run such scripts once more?
-
-Regards,
-Markus
+-- 
+2.14.4

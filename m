@@ -1,93 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 19:50:56 +0200 (CEST)
-Received: from mail-pg1-x544.google.com ([IPv6:2607:f8b0:4864:20::544]:33032
-        "EHLO mail-pg1-x544.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990418AbeJMRusvmAKn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 19:50:48 +0200
-Received: by mail-pg1-x544.google.com with SMTP id y18-v6so7289326pge.0
-        for <linux-mips@linux-mips.org>; Sat, 13 Oct 2018 10:50:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 21:42:20 +0200 (CEST)
+Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:44810
+        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990406AbeJMTmMtaL1w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 21:42:12 +0200
+Received: by mail-wr1-x442.google.com with SMTP id 63-v6so16824186wra.11;
+        Sat, 13 Oct 2018 12:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=GoWsMygASIRyu7PZgD3N2dBBnQZB9nQ/7GbuLV2HYnY=;
-        b=gtX/3bFKdysbo0S38lPP9ATjDdsTysp7ptOg+SsEzBQmc5jRhOODzCYik6fd+BjPNr
-         xu2Vp+XyGO4o3VTbAkLtyvZfSWRtUUHxernM8wIzLOXHfZUYx/YsB2m5iu16tCWuQG1m
-         dx/4Vn6wKESA5zdAVp2ssOawvrRQIiujDiDAU=
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=ENsa8mKA+KYkiEx8WLYfD1y5jJU/TfSdYYuBy4wsARY=;
+        b=MfEqni4r7gugGbRVeFZc/OiTvtv96qeAh4+PCJqG0vDxOZ+QVNgmyq3KvIxBtrfb0s
+         ckcfJJyAJUK+NzxITaqCII+ohHnuGNSSBprb0axyBcV1sqCDqQbTrKsRaZoJLPfJYrcs
+         7LJt53TAX/4p4fgWzQak3awH50Meh8vQ5U6792qHISQZYwgFWGlCcXjGyj/GEMGSHYRZ
+         +7YJQcAjuQ7nFr3SVte+QPHrq4JBZEBVeUma0olj8nA2PYX0KH06RGOwXphzeBGW8io0
+         A9jAqqu+BEqitG6uA17NM4+/9iFWAFxAquILG1pHN77uzFAs7sKAikadc0PgceRU1FUL
+         hOkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GoWsMygASIRyu7PZgD3N2dBBnQZB9nQ/7GbuLV2HYnY=;
-        b=hUZv8Ev73Em7+q3yVjrodkNg1lcCzrDwnw5AR5MHL11RJbHsx8FA9sk5fbGuB62/9+
-         QNhCLX2QJmFhibvH0k8SC4Fo7+PwHpvZui60ekiIpE55wxtR8dydjWK6gt1zkVjffky2
-         Mbeub8mbB7BxhyARP8PXRXGX9iP6VKqEAQbRHzwz79hIamHmXBh2kJyuRwFH8hHQn6mx
-         QBBMWR8ybrTDetiRmgJt1FS6KlpcydxZ/UwWrln6X4CozjNsSVsshu8cYh2bXS6SytPH
-         5IoJuSIFauCVLyV8DOMXguHqhLrT95rg1pn1jFjtCAWuGqz+SyRR7uMksHkfFnJQsJUt
-         R3HQ==
-X-Gm-Message-State: ABuFfoi6Off7a1DfW5xdRJk8NxHLT0xWSkJ32uyK3KbbaVSxxB685oBP
-        GT7+2ceGJsOzWUCA9/gf0x+mzQ==
-X-Google-Smtp-Source: ACcGV61mIIBnEva6K1s4pwIUv1udY8Qs2DvoHn+puuc+AYRgF7l/b6wUFQE1+gRiz97iAhmfFDPhRQ==
-X-Received: by 2002:a63:f64f:: with SMTP id u15-v6mr10134944pgj.258.1539453041895;
-        Sat, 13 Oct 2018 10:50:41 -0700 (PDT)
-Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
-        by smtp.gmail.com with ESMTPSA id t26-v6sm7479626pfa.158.2018.10.13.10.50.40
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=ENsa8mKA+KYkiEx8WLYfD1y5jJU/TfSdYYuBy4wsARY=;
+        b=PBg2qSRp1vbzP9pgEA8gBTUdO9xrTOPAujkPnb8S0cHuG0kmisoH4hLVievtxwzptA
+         e9gNAemOsqAjUFrYf8W4StpV9x/6LfLkJOPya+k0H5iAWrWhBE9SNdoN4OC7BeHiptEp
+         TGVrRn27XQZYFxsKZPrfdJ/pffzAJuDZiOC0e4lluQ2orb2T27HyBgztWyXfILm6q+ho
+         gzhB1qF7bFy5d8dH85fMsIyH+tBJnK8MkssMCxWWRkmgRIBXepqqF3Qs41as3pK0P/Z/
+         JKFndZxyLLJ5bkKcWr7XmiBYyKKxcBUtT5OmD0qlsQL+5fbruSmcGMY7BTVZIJkbW5GK
+         IPhA==
+X-Gm-Message-State: ABuFfojQoDb2g8S6WngZN6eGV7iBR8TlemHZ3fIfwD4d8h+Hrqxx242s
+        HKtIOzkx+HwhVrykBgfGQHw=
+X-Google-Smtp-Source: ACcGV634FjblERVVJ6u7MGTI2CnjquLzD+eRer3J/7Pdf6zgNuNqHJwiF/g3rAfNzrDjxMTjOWzy5g==
+X-Received: by 2002:adf:8141:: with SMTP id 59-v6mr8715867wrm.127.1539459727435;
+        Sat, 13 Oct 2018 12:42:07 -0700 (PDT)
+Received: from laptop ([37.122.159.87])
+        by smtp.gmail.com with ESMTPSA id s1-v6sm4229601wrw.35.2018.10.13.12.42.05
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 13 Oct 2018 10:50:40 -0700 (PDT)
-Date:   Sat, 13 Oct 2018 10:50:39 -0700
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     dancol@google.com
-Cc:     David Miller <davem@davemloft.net>, kirill@shutemov.name,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Minchan Kim <minchan@kernel.org>,
-        Ramon Pantin <pantin@google.com>,
-        Hugh Dickins <hughd@google.com>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        aryabinin@virtuozzo.com, luto@kernel.org, bp@alien8.de,
-        catalin.marinas@arm.com, Chris Zankel <chris@zankel.net>,
-        dave.hansen@linux.intel.com, elfring@users.sourceforge.net,
-        fenghua.yu@intel.com, geert@linux-m68k.org, gxt@pku.edu.cn,
-        deller@gmx.de, mingo@redhat.com, jejb@parisc-linux.org,
-        jdike@addtoit.com, Jonas Bonn <jonas@southpole.se>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
-        lftan@altera.com, linux-alpha@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-mm <linux-mm@kvack.org>, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
-        nios2-dev@lists.rocketboards.org,
-        Peter Zijlstra <peterz@infradead.org>, richard@nod.at
-Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
-Message-ID: <20181013175039.GB213522@joelaf.mtv.corp.google.com>
-References: <20181012013756.11285-2-joel@joelfernandes.org>
- <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
- <20181012125046.GA170912@joelaf.mtv.corp.google.com>
- <20181012.111836.1569129998592378186.davem@davemloft.net>
- <20181013013540.GA207108@joelaf.mtv.corp.google.com>
- <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
- <20181013014429.GB207108@joelaf.mtv.corp.google.com>
- <CAKOZues25aaKz3_AiyfJ=r2QBd5MghgY3ky_ptg4Z8=ST4DCgw@mail.gmail.com>
- <20181013021057.GA213522@joelaf.mtv.corp.google.com>
- <CAKOZueu2wdkeUFYLQ8qE48yJs1_uRz-9RVJRkp==CL=jp=Q8+g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKOZueu2wdkeUFYLQ8qE48yJs1_uRz-9RVJRkp==CL=jp=Q8+g@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <joel@joelfernandes.org>
+        Sat, 13 Oct 2018 12:42:06 -0700 (PDT)
+Message-ID: <a6e3c6c059a4a593d7c9228ed260ea24f993a3f6.camel@gmail.com>
+Subject: Re: [RFC v2 2/7] dt-binding: interrupt-controller: Document RTL8186
+ SoC DT bindings
+From:   Yasha Cherikovsky <yasha.che3@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Sat, 13 Oct 2018 22:42:04 +0300
+In-Reply-To: <20181012201346.GA17471@bogus>
+References: <20181001102952.7913-1-yasha.che3@gmail.com>
+         <20181001102952.7913-3-yasha.che3@gmail.com> <20181012201346.GA17471@bogus>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66821
+X-archive-position: 66822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joel@joelfernandes.org
+X-original-sender: yasha.che3@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -100,42 +79,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 12, 2018 at 07:25:08PM -0700, Daniel Colascione wrote:
-[...] 
-> > But anyway, I think this runtime detection thing is not needed. THP is
-> > actually expected to be as fast as this anyway, so if that's available then
-> > we should already be as fast.
+On Fri, 2018-10-12 at 15:13 -0500, Rob Herring wrote:
+> On Mon, Oct 01, 2018 at 01:29:47PM +0300, Yasha Cherikovsky wrote:
+> > This patch adds device tree binding doc for the
+> > Realtek RTL8186 SoC interrupt controller.
+> > 
+> > Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Jason Cooper <jason@lakedaemon.net>
+> > Cc: Marc Zyngier <marc.zyngier@arm.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: Paul Burton <paul.burton@mips.com>
+> > Cc: James Hogan <jhogan@kernel.org>
+> > Cc: devicetree@vger.kernel.org
+> > Cc: linux-mips@linux-mips.org
+> > Cc: linux-kernel@vger.kernel.org
+> > ---
+> >  .../interrupt-controller/realtek,rtl8186-intc  | 18 ++++++++++++++++++
 > 
-> Ah, I think the commit message is confusing. (Or else I'm misreading
-> the patch now.) It's not quite that we're disabling the feature when
-> THP is enabled anywhere, but rather that we use the move_huge_pmd path
-> for huge PMDs and use the new code only for non-huge PMDs. (Right?) If
-> that's the case, the commit message shouldn't say "Incase THP is
-> enabled, the optimization is skipped". Even if THP is enabled on a
-> system generally, we might use the new PMD-moving code for mapping
-> types that don't support THP-ization, right?
-
-That is true. Ok, I guess I can update the commit message to be more accurate
-about that.
-
-> > This is for non-THP where THP cannot be enabled
-> > and there is still room for some improvement. Most/all architectures will be
-> > just fine with this. This flag is more of a safety-net type of thing where in
-> > the future if there is this one or two weird architectures that don't play
-> > well, then they can turn it off at the architecture level by not selecting
-> > the flag. See my latest patches for the per-architecture compile-time
-> > controls. Ideally we'd like to blanket turn it on on all, but this is just
-> > playing it extra safe as Kirill and me were discussing on other threads.
+> .txt
 > 
-> Sure. I'm just pointing out that the 500x performance different turns
-> the operation into a qualitatively different feature, so if we expect
-> to actually ship a mainstream architecture without support for this
-> thing, we should make it explicit. If we're not, we shouldn't.
+> With that,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-We can make it explicit by enabling it in such a mainstream architecture is
-my point. Also if the optimization is not doing what its supposed to, then
-userspace will also just know by measuring the time.
-
-thanks,
-
- - Joel
+Thanks, will fix for v3.

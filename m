@@ -1,49 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:39:56 +0200 (CEST)
-Received: from mail-io1-xd42.google.com ([IPv6:2607:f8b0:4864:20::d42]:41483
-        "EHLO mail-io1-xd42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994583AbeJMBjxKZFNy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:39:53 +0200
-Received: by mail-io1-xd42.google.com with SMTP id q4-v6so10537567iob.8
-        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:39:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:44:44 +0200 (CEST)
+Received: from mail-pg1-x542.google.com ([IPv6:2607:f8b0:4864:20::542]:35597
+        "EHLO mail-pg1-x542.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993973AbeJMBoilnvCy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:44:38 +0200
+Received: by mail-pg1-x542.google.com with SMTP id v133-v6so6616693pgb.2
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:44:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Wde0HcwExXY831MfxZDBcHjXK7XvngyeZU1X9StNjyk=;
-        b=mRAnllfVhCFMlnCIOcENVRpZ9fWtdthn5GIa/84lOa1zfYRyC7orxaopMW45sB8eGB
-         ivJ95/M5otzqwf+a9a0kBxZZQSGJZfhDMo+nmJKVkyBRnP8qxtUI1xy15rJyzhFmnyt0
-         8+wcDDhVwfzIxE7o4UdypM1uFOyBZO+dsZHL9V9EjcRk/t9uN1N8+jXX+FQbQNwLNM6+
-         Yw/NuPi1khJ60fOVJAglTvakPu+RdegP9nyurUbv1ptWNwxhwQDL9ydwtFB3Y4wuPcbb
-         mQP4MZorbCaZStz3SOglr9oedZvionoAiMgHFAr+d3BHihJaHkX9rSbjnDxfL9w+LOjP
-         xsfg==
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=EOwbPFoajGZi3/uQe5h542M6UYdoOEkmWBYBoXp9OV8=;
+        b=TX0jPv1mV+ruD3G3qgqRA9UMXe+0i0YS6UXGUy6KTVLywoPyxQGhhjXFi4dn2iQI3x
+         x/BukZ3beT2AFdW61n55JqI5ANyPOWfr1rNKfv8VAcertpXgkQEbv+tQZOTO68qVwDHs
+         51gxQI0b3N3xdtlX+SiDVTyY2dpjIIcZ8JErQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Wde0HcwExXY831MfxZDBcHjXK7XvngyeZU1X9StNjyk=;
-        b=r5rd9B4owF4WcaPRRMZy79KjakthbW5b+c1MVcha1c0MJ1OLnLkUGto/QYE3uI2zNc
-         HNnimdREdjlcy2mwdiw6KQ0fFRKdjNdO8MTzVrU1kztXT2YAg2DjsqKnPOmyEjEXUsGT
-         tGjYhpmLoGHFuhL+bsikMcG5f/HEYH8vIMaBfKVTfa+otYaAs0jp6RP24YnF3044td44
-         ZeqAcAetP4h833jep5IJ16STFmmNxZ/6FT3uThY64wFMcHrkRLfPV1VEJiGBjVST2hlp
-         21coymXbn+tVuF4xOsEGNQwjpRpLIKYfxLuvn/IwrH05FmB37QKivrlLpsRIfuekJiiF
-         ithQ==
-X-Gm-Message-State: ABuFfoj2tAzJxWPfuWo5Gk/X28d5EFtXPHHJTifvnnzs6yJ6zSzFaN0u
-        p50ReEn2SA3w151bLR9f80YcM6mll2pJcr8TSxoRrw==
-X-Google-Smtp-Source: ACcGV63O+2oHow+MnmDFFN/fGr+ypIXJq0Jebw7vm8a3hwEac10cSSqcJGLdjRO5qFIM+0mJ+lFBqqSZgai2siyMk8M=
-X-Received: by 2002:a6b:b249:: with SMTP id b70-v6mr5998814iof.252.1539394786418;
- Fri, 12 Oct 2018 18:39:46 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a4f:d604:0:0:0:0:0 with HTTP; Fri, 12 Oct 2018 18:39:45
- -0700 (PDT)
-In-Reply-To: <20181013013540.GA207108@joelaf.mtv.corp.google.com>
-References: <20181012013756.11285-2-joel@joelfernandes.org>
- <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1> <20181012125046.GA170912@joelaf.mtv.corp.google.com>
- <20181012.111836.1569129998592378186.davem@davemloft.net> <20181013013540.GA207108@joelaf.mtv.corp.google.com>
-From:   Daniel Colascione <dancol@google.com>
-Date:   Fri, 12 Oct 2018 18:39:45 -0700
-Message-ID: <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
-To:     Joel Fernandes <joel@joelfernandes.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=EOwbPFoajGZi3/uQe5h542M6UYdoOEkmWBYBoXp9OV8=;
+        b=PBjT8iMIc0pslLpYxbDRxcXYSWNUqFqs/dCnPKfA+2VSqIRs67I6sSdavwaBeiv8PN
+         awMAqvpacR968kwlz8PtS1R6RCoh7nFhymh3eXp/UhDGDkYlsciue+XxIZrVIUyLWOtj
+         3KTHSNjP9QcOHlKAKYpbxXmmrC1W4Opnuco3ciei9h4+aYyK0AiqYPU/h5k17lZRQuLX
+         r0IzkDwh8ryPYteaOLXKTnc2yG2v+iIdeQdSD7NaXLtROUIxAIpLIoTJQLzbysXjewZB
+         elv+prNxnnuDyZEDzmPgQGlZ45+lE61ZwacT5NMn/fFb91GLKHYnF5KPD1dEhknSUKyP
+         d9lg==
+X-Gm-Message-State: ABuFfohSTovMjiATGCoAG5ImR58fAf9N4EcNY5Kqb2so+NVRNYODiRi/
+        oB5gJi75FvIl0sxhBZs3lmidBA==
+X-Google-Smtp-Source: ACcGV63XxXW9pGHxVnF8xzzLyeXhR7XaYBjfw87dDDQ+CF+OqnNRmShTWlj1H1kUQbwXg/j2G4ghiQ==
+X-Received: by 2002:a62:968a:: with SMTP id s10-v6mr8356398pfk.191.1539395071806;
+        Fri, 12 Oct 2018 18:44:31 -0700 (PDT)
+Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id r81-v6sm6155322pfa.110.2018.10.12.18.44.30
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 12 Oct 2018 18:44:30 -0700 (PDT)
+Date:   Fri, 12 Oct 2018 18:44:29 -0700
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Daniel Colascione <dancol@google.com>
 Cc:     David Miller <davem@davemloft.net>, kirill@shutemov.name,
         linux-kernel <linux-kernel@vger.kernel.org>,
         kernel-team@android.com, Minchan Kim <minchan@kernel.org>,
@@ -68,16 +60,28 @@ Cc:     David Miller <davem@davemloft.net>, kirill@shutemov.name,
         linux-xtensa@linux-xtensa.org, jcmvbkbc@gmail.com,
         nios2-dev@lists.rocketboards.org,
         Peter Zijlstra <peterz@infradead.org>, richard@nod.at
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <dancol@google.com>
+Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
+Message-ID: <20181013014429.GB207108@joelaf.mtv.corp.google.com>
+References: <20181012013756.11285-2-joel@joelfernandes.org>
+ <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
+ <20181012125046.GA170912@joelaf.mtv.corp.google.com>
+ <20181012.111836.1569129998592378186.davem@davemloft.net>
+ <20181013013540.GA207108@joelaf.mtv.corp.google.com>
+ <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66809
+X-archive-position: 66810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dancol@google.com
+X-original-sender: joel@joelfernandes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,35 +94,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Not 32-bit ARM?
+On Fri, Oct 12, 2018 at 06:39:45PM -0700, Daniel Colascione wrote:
+> Not 32-bit ARM?
 
-On Fri, Oct 12, 2018 at 6:35 PM, Joel Fernandes <joel@joelfernandes.org> wrote:
-> On Fri, Oct 12, 2018 at 11:18:36AM -0700, David Miller wrote:
->> From: Joel Fernandes <joel@joelfernandes.org>
-> [...]
->> > Also, do we not flush the caches from any path when we munmap
->> > address space?  We do call do_munmap on the old mapping from mremap
->> > after moving to the new one.
->>
->> Sparc makes sure that shared mapping have consistent colors.  Therefore
->> all that's left are private mappings and those will be initialized by
->> block stores to clear the page out or similar.
->>
->> Also, when creating new mappings, we flush the D-cache when necessary
->> in update_mmu_cache().
->>
->> We also maintain a bit in the page struct to track when a page which
->> was potentially written to on one cpu ends up mapped into another
->> address space and flush as necessary.
->>
->> The cache is write-through, which simplifies the preconditions we have
->> to maintain.
->
-> Makes sense, thanks. For the moment I sent patches to enable this on arm64
-> and x86. We can enable it on sparc as well at a later time as it sounds it
-> could be a safe optimization to apply to that architecture as well.
->
-> thanks,
->
->  - Joel
->
+Well, I didn't want to enable every possible architecture we could in a
+single go. Certainly arm32 can be a follow on enablement as can be other
+architectures. The point of this series is to upstream this feature and
+enable a hand-picked few architectures as a first step.
+
+thanks,
+
+ - Joel

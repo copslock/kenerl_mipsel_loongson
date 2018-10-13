@@ -1,41 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:44:44 +0200 (CEST)
-Received: from mail-pg1-x542.google.com ([IPv6:2607:f8b0:4864:20::542]:35597
-        "EHLO mail-pg1-x542.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993973AbeJMBoilnvCy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:44:38 +0200
-Received: by mail-pg1-x542.google.com with SMTP id v133-v6so6616693pgb.2
-        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:44:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 03:54:44 +0200 (CEST)
+Received: from mail-ot1-x344.google.com ([IPv6:2607:f8b0:4864:20::344]:42581
+        "EHLO mail-ot1-x344.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994586AbeJMBylOFh7y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 03:54:41 +0200
+Received: by mail-ot1-x344.google.com with SMTP id c23so12301608otl.9
+        for <linux-mips@linux-mips.org>; Fri, 12 Oct 2018 18:54:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=EOwbPFoajGZi3/uQe5h542M6UYdoOEkmWBYBoXp9OV8=;
-        b=TX0jPv1mV+ruD3G3qgqRA9UMXe+0i0YS6UXGUy6KTVLywoPyxQGhhjXFi4dn2iQI3x
-         x/BukZ3beT2AFdW61n55JqI5ANyPOWfr1rNKfv8VAcertpXgkQEbv+tQZOTO68qVwDHs
-         51gxQI0b3N3xdtlX+SiDVTyY2dpjIIcZ8JErQ=
+        d=google.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=ruDqHADLGhUq/OqjXNRFevT5jDn0habRcwA3l0QGuG8=;
+        b=oO7CQBJ0o3h4W+oksCLNlcAMMdo7sg4Jtv1VCUZcuw6SrUuKQoC7/yRbVEByqVegR5
+         2XakAmI6gLBq49bXmjVYz4+acBeAcuwKtUHPjj2sGXy+jzOkdhqdTL0YPcZPqB+LKt6o
+         bhRful9oO7cRR8nbmHw1A7uqI9ttcB1fV31XpSXw7a9IcC+joMzcgVc8TxQKKcRQt8Re
+         zoNMfZUWu+1do2+6RW0MSWVyN/9DUjKrGt5dJpbjxpWiCS22HxYleuy9uZIoJeze7/q0
+         zCoyyhRBLvqgZ71FAynWB3xe4pRvB3ibgZGe60xwaYIUrVPx8bwkXyzud+F7R7U1MaXx
+         /VYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=EOwbPFoajGZi3/uQe5h542M6UYdoOEkmWBYBoXp9OV8=;
-        b=PBjT8iMIc0pslLpYxbDRxcXYSWNUqFqs/dCnPKfA+2VSqIRs67I6sSdavwaBeiv8PN
-         awMAqvpacR968kwlz8PtS1R6RCoh7nFhymh3eXp/UhDGDkYlsciue+XxIZrVIUyLWOtj
-         3KTHSNjP9QcOHlKAKYpbxXmmrC1W4Opnuco3ciei9h4+aYyK0AiqYPU/h5k17lZRQuLX
-         r0IzkDwh8ryPYteaOLXKTnc2yG2v+iIdeQdSD7NaXLtROUIxAIpLIoTJQLzbysXjewZB
-         elv+prNxnnuDyZEDzmPgQGlZ45+lE61ZwacT5NMn/fFb91GLKHYnF5KPD1dEhknSUKyP
-         d9lg==
-X-Gm-Message-State: ABuFfohSTovMjiATGCoAG5ImR58fAf9N4EcNY5Kqb2so+NVRNYODiRi/
-        oB5gJi75FvIl0sxhBZs3lmidBA==
-X-Google-Smtp-Source: ACcGV63XxXW9pGHxVnF8xzzLyeXhR7XaYBjfw87dDDQ+CF+OqnNRmShTWlj1H1kUQbwXg/j2G4ghiQ==
-X-Received: by 2002:a62:968a:: with SMTP id s10-v6mr8356398pfk.191.1539395071806;
-        Fri, 12 Oct 2018 18:44:31 -0700 (PDT)
-Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
-        by smtp.gmail.com with ESMTPSA id r81-v6sm6155322pfa.110.2018.10.12.18.44.30
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Oct 2018 18:44:30 -0700 (PDT)
-Date:   Fri, 12 Oct 2018 18:44:29 -0700
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Daniel Colascione <dancol@google.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=ruDqHADLGhUq/OqjXNRFevT5jDn0habRcwA3l0QGuG8=;
+        b=gSZACsvcbeQxZ+wNWVc0DlOCBAF7U2IS/19U+OONel89o35Yokac8W/cv8NsnJ45zD
+         CcxuiU89vvrXHP+mjHZ+1ln6THrOSkpV5kDUsfrPeSmKeTpzPCivXgR3x6QvUVgDUTZL
+         0J5RWhYXV7rUCsCT5yRNVYHu74Tunn1fEKx1GnBzLDOFblc5kAXMoM0LkyKY+vCKp762
+         GaklAuo0T+hAOfzSDCVQ/EAHfc+mUoR7ps7Hq6ZBrELu2y+21kjGPO1S56Yi7v+cQ6b+
+         Zhya8hot2ytscFSvHFazmrfFRpOU7C0783OR2PQG2mKUnBqn71D86nwfMTNtiF4LcAnS
+         FjGQ==
+X-Gm-Message-State: ABuFfojl23vxfDo6Wz32hxnZuZmlC0S90jINoIGZzUq7UwdVVPJC11V9
+        oGPq4EhHfWjdXkhioetNaIVsuQAtqSLCjbqhCIj88A==
+X-Google-Smtp-Source: ACcGV61wTHJT8KA0FRbB4T8HJavFhx8DCnBEFcv7It/8YmRplkdtkLJbpEFBtddWCai0iE4efhP92rfUMrMKw3tumlM=
+X-Received: by 2002:a9d:3a21:: with SMTP id j30mr2325823otc.237.1539395674440;
+ Fri, 12 Oct 2018 18:54:34 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ac9:56d8:0:0:0:0:0 with HTTP; Fri, 12 Oct 2018 18:54:33
+ -0700 (PDT)
+In-Reply-To: <20181013014429.GB207108@joelaf.mtv.corp.google.com>
+References: <20181012013756.11285-2-joel@joelfernandes.org>
+ <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1> <20181012125046.GA170912@joelaf.mtv.corp.google.com>
+ <20181012.111836.1569129998592378186.davem@davemloft.net> <20181013013540.GA207108@joelaf.mtv.corp.google.com>
+ <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com> <20181013014429.GB207108@joelaf.mtv.corp.google.com>
+From:   Daniel Colascione <dancol@google.com>
+Date:   Fri, 12 Oct 2018 18:54:33 -0700
+Message-ID: <CAKOZues25aaKz3_AiyfJ=r2QBd5MghgY3ky_ptg4Z8=ST4DCgw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
+To:     Joel Fernandes <joel@joelfernandes.org>
 Cc:     David Miller <davem@davemloft.net>, kirill@shutemov.name,
         linux-kernel <linux-kernel@vger.kernel.org>,
         kernel-team@android.com, Minchan Kim <minchan@kernel.org>,
@@ -60,28 +69,16 @@ Cc:     David Miller <davem@davemloft.net>, kirill@shutemov.name,
         linux-xtensa@linux-xtensa.org, jcmvbkbc@gmail.com,
         nios2-dev@lists.rocketboards.org,
         Peter Zijlstra <peterz@infradead.org>, richard@nod.at
-Subject: Re: [PATCH v2 2/2] mm: speed up mremap by 500x on large regions
-Message-ID: <20181013014429.GB207108@joelaf.mtv.corp.google.com>
-References: <20181012013756.11285-2-joel@joelfernandes.org>
- <20181012113056.gxhcbrqyu7k7xnyv@kshutemo-mobl1>
- <20181012125046.GA170912@joelaf.mtv.corp.google.com>
- <20181012.111836.1569129998592378186.davem@davemloft.net>
- <20181013013540.GA207108@joelaf.mtv.corp.google.com>
- <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKOZueuNvWvn18vffJWpbpg7h-uScT8gXrrudTB2pnT4M2HJ_w@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <joel@joelfernandes.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <dancol@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66810
+X-archive-position: 66811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joel@joelfernandes.org
+X-original-sender: dancol@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -94,14 +91,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 12, 2018 at 06:39:45PM -0700, Daniel Colascione wrote:
-> Not 32-bit ARM?
+I wonder whether it makes sense to expose to userspace somehow whether
+mremap is "fast" for a particular architecture. If a feature relies on
+fast mremap, it might be better for some userland component to disable
+that feature entirely rather than blindly use mremap and end up
+performing very poorly. If we're disabling fast mremap when THP is
+enabled, the userland component can't just rely on an architecture
+switch and some kind of runtime feature detection becomes even more
+important.
 
-Well, I didn't want to enable every possible architecture we could in a
-single go. Certainly arm32 can be a follow on enablement as can be other
-architectures. The point of this series is to upstream this feature and
-enable a hand-picked few architectures as a first step.
-
-thanks,
-
- - Joel
+On Fri, Oct 12, 2018 at 6:44 PM, Joel Fernandes <joel@joelfernandes.org> wrote:
+> On Fri, Oct 12, 2018 at 06:39:45PM -0700, Daniel Colascione wrote:
+>> Not 32-bit ARM?
+>
+> Well, I didn't want to enable every possible architecture we could in a
+> single go. Certainly arm32 can be a follow on enablement as can be other
+> architectures. The point of this series is to upstream this feature and
+> enable a hand-picked few architectures as a first step.
+>
+> thanks,
+>
+>  - Joel
+>

@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 16:54:41 +0200 (CEST)
-Received: from mail-pl1-x643.google.com ([IPv6:2607:f8b0:4864:20::643]:40583
-        "EHLO mail-pl1-x643.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990412AbeJMOyg6GZOw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 16:54:36 +0200
-Received: by mail-pl1-x643.google.com with SMTP id 1-v6so7261049plv.7;
-        Sat, 13 Oct 2018 07:54:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 16:54:50 +0200 (CEST)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:35974
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990474AbeJMOyohptIw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 16:54:44 +0200
+Received: by mail-pf1-x444.google.com with SMTP id l81-v6so7603967pfg.3;
+        Sat, 13 Oct 2018 07:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=px0gV+gBnpOH60iOcTCGqmbUjehg++DRdbAxzx/hWFA=;
-        b=rp6f8txFq2Z++vvFYXV5hUS6IcLak/IyxBJWHXWM8AkS6KURSFVAfxx/YE97efIsUU
-         E4e/KL8csquVEaxBw0R1BoISOtQsd75AZA16eXP5lGPyMZZxTDY94QRtVOd9z8gB+BGz
-         EyyW4yykMzbdZnZ0H78W4ERR3OJ+/BR8mDkbAw89wA4dlzgDzcDqopu7pUYAGrfWcCvd
-         nwDcS3oU1IPTjODCkh8Q1L6F4qsiz8g5B8mROcu6prFhM2YZP6/b8phF8BgMKTw+LKgf
-         2oxwPYzgHQER/la4dzJ2wKp21z2Nx7HtMZdVuZl42f8NzQV9qo+aq6M+MgYi1fijdt/y
-         cMhQ==
+        bh=GCaq3R6VmH1wWlGObzsIcMHnr3COIkQBYeAae2u7kcQ=;
+        b=ZVICMHN0AFLfvRfTF9yl5eF1LtUJio6d6J3YKdxugmdHzEsj5NXvND7pZv/SidDdek
+         6My4+c84eQCZREXmERXD0Z2ujNZD/ldNJn5zEVz37wk9/OYXYVpkpLkWRnABYIWyAmcK
+         GF3oatbiLja/B2Ge3yx9NqdUaA+1W+keyw3OOvxZQdmm2aUfq3sYKOwk9jVqTHCjDbgk
+         Wu2MFL9RTrN06WtDIlRlDY8nRY339wsHGB9T0q606/Yg7WI6wxRXmG77b0oOXGVz8pzE
+         fl3VV6iszqco6/a9twuZ2bk9dauQqmQkRQ+Pzgk77Aph5Hld8/GC2Ur3ANhrpNdgLvHZ
+         gQ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=px0gV+gBnpOH60iOcTCGqmbUjehg++DRdbAxzx/hWFA=;
-        b=C4D0r9+kD+ngRzt1rq53k3OVllGHcKS6ldaKYbak0WO2E0mRqib5MFmXHIWHSEmE7b
-         3QJd54vVObuVGxyu79TeyN0W70ei7tEwrCRfVpa/jNDHEBnovg5VQXeJDL1+QJ5Bf52y
-         3fGPPcZ46lzvPYTJQYXWW3whDU/ljGCZfE/bximX1/Ei/T0LWMKW1gW/Inrm4q7a+Zth
-         AcytGKOZiqwsMvB/vcaotox6j2rTfoTHtkWDOf/X2xZNfJEnA07f010Xh5Z2kSkQ9TWh
-         l1fHFhhTcrnxHrYEO8trrkeU2ayA3XuQA+FNHKvZWcRegVU/guqCaufCDCdMGGM3LzaZ
-         /tGA==
-X-Gm-Message-State: ABuFfogugmz5VVCeIRxm6ZEczF2323yeFI7lQAolxWMuWdaL3d/zqUYI
-        jPKMp1zFHYZdToK/XXHNxww=
-X-Google-Smtp-Source: ACcGV62HWs3gWO94ingYjrTNOd2X4hqsmsPW7d3NRYDQAgfnfqDU4fT7925KW4ssd+32230A+ZzFJA==
-X-Received: by 2002:a17:902:2825:: with SMTP id e34-v6mr1226708plb.244.1539442470478;
-        Sat, 13 Oct 2018 07:54:30 -0700 (PDT)
+        bh=GCaq3R6VmH1wWlGObzsIcMHnr3COIkQBYeAae2u7kcQ=;
+        b=E8/Q6E4HFMZ3wbk3fAoqUg1UM66mtBEQmIOijb+P++nuXL/qTEHBHuqoiRuDBN8TKk
+         zAFWUznAt0H4WRxtvkhSJNuowvbeWebD389BJc9PBoOWYpMKAaIFPOvMTuvhDUXSBRkr
+         SR/XffF5+X47Ti+VQuF+1xNvNVbe2La+mEyXOzJW217+I0PCfI3jFIlHDENqUwbXnHY7
+         dk0pIzre6/w2SM5OajgCB4h6jjgfAVpDVCVsx3OpztzVlji7TA674sGcJtOiyVpsI9JA
+         N1NEDlT9+YwyBPG/ylhxQamMH7v1/I7p193uUEu+QnKlzgcC8k+IGTRiEnSWG/FBhtn2
+         9oJw==
+X-Gm-Message-State: ABuFfog2tjm/nNb8c8bKDOOy/HhrRD9XUZv20TtWijPpRkjL5FF/c8U7
+        fzDwHJJ3a7B9vVq48LYi2TY=
+X-Google-Smtp-Source: ACcGV62EdGNQnQ/sKcjwUyLn1xDKyo7VDncjRak4c7jj414oGg3zSQN7txG6tEyPXVxX5UwcU5idzA==
+X-Received: by 2002:a65:4103:: with SMTP id w3-v6mr9732885pgp.284.1539442478487;
+        Sat, 13 Oct 2018 07:54:38 -0700 (PDT)
 Received: from localhost.corp.microsoft.com ([2404:f801:9000:18:d9bf:62c6:740b:9fc4])
-        by smtp.googlemail.com with ESMTPSA id v81-v6sm8688724pfj.25.2018.10.13.07.54.22
+        by smtp.googlemail.com with ESMTPSA id v81-v6sm8688724pfj.25.2018.10.13.07.54.30
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 13 Oct 2018 07:54:29 -0700 (PDT)
+        Sat, 13 Oct 2018 07:54:37 -0700 (PDT)
 From:   lantianyu1986@gmail.com
 X-Google-Original-From: Tianyu.Lan@microsoft.com
 Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
@@ -50,9 +50,9 @@ Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
         linuxppc-dev@lists.ozlabs.org, devel@linuxdriverproject.org,
         kvm@vger.kernel.org, michael.h.kelley@microsoft.com,
         vkuznets@redhat.com
-Subject: [PATCH V4 1/15] KVM: Add tlb_remote_flush_with_range callback in kvm_x86_ops
-Date:   Sat, 13 Oct 2018 22:53:52 +0800
-Message-Id: <20181013145406.4911-2-Tianyu.Lan@microsoft.com>
+Subject: [PATCH V4 2/15] KVM/MMU: Add tlb flush with range helper function
+Date:   Sat, 13 Oct 2018 22:53:53 +0800
+Message-Id: <20181013145406.4911-3-Tianyu.Lan@microsoft.com>
 X-Mailer: git-send-email 2.14.4
 In-Reply-To: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
 References: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
@@ -61,7 +61,7 @@ Return-Path: <lantianyu1986@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66817
+X-archive-position: 66818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,44 +80,69 @@ X-list: linux-mips
 
 From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-Add flush range call back in the kvm_x86_ops and platform can use it
-to register its associated function. The parameter "kvm_tlb_range"
-accepts a single range and flush list which contains a list of ranges.
+This patch is to add wrapper functions for tlb_remote_flush_with_range
+callback.
 
 Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
 ---
-Change since v1:
-       Change "end_gfn" to "pages" to aviod confusion as to whether
-"end_gfn" is inclusive or exlusive.
+Change sicne V3:
+       Remove code of updating "tlbs_dirty"
+Change since V2:
+       Fix comment in the kvm_flush_remote_tlbs_with_range()
 ---
- arch/x86/include/asm/kvm_host.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kvm/mmu.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 4b09d4aa9bf4..fea95aa77319 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -439,6 +439,12 @@ struct kvm_mmu {
- 	u64 pdptrs[4]; /* pae */
- };
+diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
+index c73d9f650de7..ff656d85903a 100644
+--- a/arch/x86/kvm/mmu.c
++++ b/arch/x86/kvm/mmu.c
+@@ -264,6 +264,46 @@ static void mmu_spte_set(u64 *sptep, u64 spte);
+ static union kvm_mmu_page_role
+ kvm_mmu_calc_root_page_role(struct kvm_vcpu *vcpu);
  
-+struct kvm_tlb_range {
-+	u64 start_gfn;
-+	u64 pages;
-+	struct list_head *flush_list;
-+};
 +
- enum pmc_type {
- 	KVM_PMC_GP = 0,
- 	KVM_PMC_FIXED,
-@@ -1039,6 +1045,8 @@ struct kvm_x86_ops {
- 
- 	void (*tlb_flush)(struct kvm_vcpu *vcpu, bool invalidate_gpa);
- 	int  (*tlb_remote_flush)(struct kvm *kvm);
-+	int  (*tlb_remote_flush_with_range)(struct kvm *kvm,
-+			struct kvm_tlb_range *range);
- 
- 	/*
- 	 * Flush any TLB entries associated with the given GVA.
++static inline bool kvm_available_flush_tlb_with_range(void)
++{
++	return kvm_x86_ops->tlb_remote_flush_with_range;
++}
++
++static void kvm_flush_remote_tlbs_with_range(struct kvm *kvm,
++		struct kvm_tlb_range *range)
++{
++	int ret = -ENOTSUPP;
++
++	if (range && kvm_x86_ops->tlb_remote_flush_with_range)
++		ret = kvm_x86_ops->tlb_remote_flush_with_range(kvm, range);
++
++	if (ret)
++		kvm_flush_remote_tlbs(kvm);
++}
++
++static void kvm_flush_remote_tlbs_with_list(struct kvm *kvm,
++		struct list_head *flush_list)
++{
++	struct kvm_tlb_range range;
++
++	range.flush_list = flush_list;
++
++	kvm_flush_remote_tlbs_with_range(kvm, &range);
++}
++
++static void kvm_flush_remote_tlbs_with_address(struct kvm *kvm,
++		u64 start_gfn, u64 pages)
++{
++	struct kvm_tlb_range range;
++
++	range.start_gfn = start_gfn;
++	range.pages = pages;
++	range.flush_list = NULL;
++
++	kvm_flush_remote_tlbs_with_range(kvm, &range);
++}
++
+ void kvm_mmu_set_mmio_spte_mask(u64 mmio_mask, u64 mmio_value)
+ {
+ 	BUG_ON((mmio_mask & mmio_value) != mmio_value);
 -- 
 2.14.4

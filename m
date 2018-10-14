@@ -1,44 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 17:53:43 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:41997 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990945AbeJNPxZgLnKA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2018 17:53:25 +0200
-Received: from [2a02:8011:400e:2:cbab:f00:c93f:614] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1gBiM1-0004cI-SV; Sun, 14 Oct 2018 16:30:54 +0100
-Received: from ben by deadeye with local (Exim 4.91)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1gBiLT-0000Mj-9r; Sun, 14 Oct 2018 16:30:19 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 19:04:35 +0200 (CEST)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:56472 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990509AbeJNREdFl20c (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2018 19:04:33 +0200
+Received: from darkstar.musicnaut.iki.fi (85-76-84-102-nat.elisa-mobile.fi [85.76.84.102])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id F0F3C3005B;
+        Sun, 14 Oct 2018 20:04:31 +0300 (EEST)
+Date:   Sun, 14 Oct 2018 20:04:31 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>
+Subject: Bug report: MIPS CI20/jz4740-mmc DMA and PREEMPT_NONE
+Message-ID: <20181014170431.GK3461@darkstar.musicnaut.iki.fi>
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Matt Redfearn" <matt.redfearn@mips.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "James Hogan" <jhogan@kernel.org>
-Date:   Sun, 14 Oct 2018 16:25:41 +0100
-Message-ID: <lsq.1539530741.699026210@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 166/366] MIPS: memset.S: Fix return of __clear_user
- from Lpartial_fixup
-In-Reply-To: <lsq.1539530740.755408431@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:cbab:f00:c93f:614
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66838
+X-archive-position: 66839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,57 +39,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.60-rc1 review patch.  If anyone has any objections, please let me know.
+Hi,
 
-------------------
+There is something wrong with jz4740-mmc in current mainline kernel
+(tested v4.18 and 4.19-rc, the MMC support for CI20 does not exist
+prior those), as the DMA support does not work properly if I disable
+kernel pre-emption. The console gets flooded with:
 
-From: Matt Redfearn <matt.redfearn@mips.com>
+[   16.461094] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 567 host->next_data.cookie 568
+[   16.473120] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 568 host->next_data.cookie 569
+[   16.485144] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 569 host->next_data.cookie 570
+[   16.497170] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 570 host->next_data.cookie 571
+[   16.509194] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 571 host->next_data.cookie 572
+[   16.532421] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 572 host->next_data.cookie 573
+[   16.544594] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 573 host->next_data.cookie 574
+[   16.556621] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 574 host->next_data.cookie 575
+[   16.568638] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 575 host->next_data.cookie 576
+[   16.601092] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 582 host->next_data.cookie 583
 
-commit daf70d89f80c6e1772233da9e020114b1254e7e0 upstream.
+etc. ad inf.
 
-The __clear_user function is defined to return the number of bytes that
-could not be cleared. From the underlying memset / bzero implementation
-this means setting register a2 to that number on return. Currently if a
-page fault is triggered within the memset_partial block, the value
-loaded into a2 on return is meaningless.
+This should be easily reproducible on CI20 board with ci20_defconfig
+and setting CONFIG_PREEMPT_NONE=y.
 
-The label .Lpartial_fixup\@ is jumped to on page fault. In order to work
-out how many bytes failed to copy, the exception handler should find how
-many bytes left in the partial block (andi a2, STORMASK), add that to
-the partial block end address (a2), and subtract the faulting address to
-get the remainder. Currently it incorrectly subtracts the partial block
-start address (t1), which has additionally been clobbered to generate a
-jump target in memset_partial. Fix this by adding the block end address
-instead.
-
-This issue was found with the following test code:
-      int j, k;
-      for (j = 0; j < 512; j++) {
-        if ((k = clear_user(NULL, j)) != j) {
-           pr_err("clear_user (NULL %d) returned %d\n", j, k);
-        }
-      }
-Which now passes on Creator Ci40 (MIPS32) and Cavium Octeon II (MIPS64).
-
-Suggested-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/19108/
-Signed-off-by: James Hogan <jhogan@kernel.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/lib/memset.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -204,7 +204,7 @@
- 	PTR_L		t0, TI_TASK($28)
- 	andi		a2, STORMASK
- 	LONG_L		t0, THREAD_BUADDR(t0)
--	LONG_ADDU	a2, t1
-+	LONG_ADDU	a2, a0
- 	jr		ra
- 	LONG_SUBU	a2, t0
- 
+A.

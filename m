@@ -1,68 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 15:34:18 +0200 (CEST)
-Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:33660
-        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbeJNNePZlUaJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2018 15:34:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2014; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4+5BIwGkZ5fzO5Jb/ZW+HgKRlS4/jDjKt+4UtGEYqSk=; b=QlxpNzxYrDrnFczwEmitjWqiz
-        wOti9c8fHhacIodmg4wyIaJV0KhST89twrFR4EZx+xCtiTUum76lq44OgTrmm2MRILa/tCkH767MT
-        N4isVxJIsZDzs5ZINYJYNYMfmb4h9L1D+JR2C6WsAEw7rnpmSPlEepV32KKltASuNPbjU=;
-Received: from n2100.armlinux.org.uk ([2001:4d48:ad52:3201:214:fdff:fe10:4f86]:39214)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1gBgWu-0003s9-82; Sun, 14 Oct 2018 14:34:00 +0100
-Received: from linux by n2100.armlinux.org.uk with local (Exim 4.90_1)
-        (envelope-from <linux@n2100.armlinux.org.uk>)
-        id 1gBgWp-0005D9-4y; Sun, 14 Oct 2018 14:33:55 +0100
-Date:   Sun, 14 Oct 2018 14:33:53 +0100
-From:   Russell King - ARM Linux <linux@armlinux.org.uk>
-To:     Tianyu Lan <lantianyu1986@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org,
-        kvm <kvm@vger.kernel.org>, Radim Krcmar <rkrcmar@redhat.com>,
-        benh@kernel.crashing.org, will.deacon@arm.com,
-        christoffer.dall@arm.com, paulus@ozlabs.org,
-        "H. Peter Anvin" <hpa@zytor.com>, kys@microsoft.com,
-        kvmarm@lists.cs.columbia.edu, sthemmin@microsoft.com,
-        mpe@ellerman.id.au, the arch/x86 maintainers <x86@kernel.org>,
-        michael.h.kelley@microsoft.com, Ingo Molnar <mingo@redhat.com>,
-        catalin.marinas@arm.com, jhogan@kernel.org,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>, marc.zyngier@arm.com,
-        haiyangz@microsoft.com, kvm-ppc@vger.kernel.org,
-        liran.alon@oracle.com, Paolo Bonzini <pbonzini@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
-        "linux-kernel@vger kernel org" <linux-kernel@vger.kernel.org>,
-        ralf@linux-mips.org, paul.burton@mips.com,
-        devel@linuxdriverproject.org, vkuznets@redhat.com,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V4 2/15] KVM/MMU: Add tlb flush with range helper function
-Message-ID: <20181014133352.GX30658@n2100.armlinux.org.uk>
-References: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
- <20181013145406.4911-3-Tianyu.Lan@microsoft.com>
- <4D709C3A-A91C-4CA7-922A-E77618EF21B4@oracle.com>
- <alpine.DEB.2.21.1810141014350.1438@nanos.tec.linutronix.de>
- <20181014092734.GV30658@n2100.armlinux.org.uk>
- <20181014093541.GW30658@n2100.armlinux.org.uk>
- <CAOLK0pzHAc1ipDbd3Trg2W_Gb_DxdEKM2ML5Fk09u0-O8y6UAg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 17:30:37 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:40203 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990509AbeJNPa0pEEHA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2018 17:30:26 +0200
+Received: from [2a02:8011:400e:2:cbab:f00:c93f:614] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1gBiLV-0004cf-IB; Sun, 14 Oct 2018 16:30:21 +0100
+Received: from ben by deadeye with local (Exim 4.91)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1gBiLT-0000MK-1y; Sun, 14 Oct 2018 16:30:19 +0100
+Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
-In-Reply-To: <CAOLK0pzHAc1ipDbd3Trg2W_Gb_DxdEKM2ML5Fk09u0-O8y6UAg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Matt Redfearn" <matt.redfearn@mips.com>,
+        "James Hogan" <jhogan@kernel.org>,
+        "Chuanhua Lei" <chuanhua.lei@intel.com>
+Date:   Sun, 14 Oct 2018 16:25:41 +0100
+Message-ID: <lsq.1539530741.226474109@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.16 161/366] MIPS: memset.S: EVA & fault support for
+ small_memset
+In-Reply-To: <lsq.1539530740.755408431@decadent.org.uk>
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:cbab:f00:c93f:614
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66830
+X-archive-position: 66831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@armlinux.org.uk
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,18 +52,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Oct 14, 2018 at 09:21:23PM +0800, Tianyu Lan wrote:
-> Sorry to confuse your. I get from CCers from get_maintainer.pl script.
+3.16.60-rc1 review patch.  If anyone has any objections, please let me know.
 
-Unfortunately you seem to have made a mistake.  My email address is
-'linux@armlinux.org.uk' not 'linux@armlinux.org'.  There is no
-'linux@armlinux.org' in MAINTAINERS, yet your emails appear to be
-copied to this address.
+------------------
 
-Consequently, if it was your intention to copy me with the entire
-series, that didn't happen.
+From: Matt Redfearn <matt.redfearn@mips.com>
 
--- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+commit 8a8158c85e1e774a44fbe81106fa41138580dfd1 upstream.
+
+The MIPS kernel memset / bzero implementation includes a small_memset
+branch which is used when the region to be set is smaller than a long (4
+bytes on 32bit, 8 bytes on 64bit). The current small_memset
+implementation uses a simple store byte loop to write the destination.
+There are 2 issues with this implementation:
+
+1. When EVA mode is active, user and kernel address spaces may overlap.
+Currently the use of the sb instruction means kernel mode addressing is
+always used and an intended write to userspace may actually overwrite
+some critical kernel data.
+
+2. If the write triggers a page fault, for example by calling
+__clear_user(NULL, 2), instead of gracefully handling the fault, an OOPS
+is triggered.
+
+Fix these issues by replacing the sb instruction with the EX() macro,
+which will emit EVA compatible instuctions as required. Additionally
+implement a fault fixup for small_memset which sets a2 to the number of
+bytes that could not be cleared (as defined by __clear_user).
+
+Reported-by: Chuanhua Lei <chuanhua.lei@intel.com>
+Signed-off-by: Matt Redfearn <matt.redfearn@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/18975/
+Signed-off-by: James Hogan <jhogan@kernel.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/lib/memset.S | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -178,7 +178,7 @@
+ 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
+ 	R10KCBARRIER(0(ra))
+ 	bne		t1, a0, 1b
+-	sb		a1, -1(a0)
++	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
+ 
+ 2:	jr		ra			/* done */
+ 	move		a2, zero
+@@ -212,6 +212,11 @@
+ 	jr		ra
+ 	andi		v1, a2, STORMASK
+ 
++.Lsmall_fixup\@:
++	PTR_SUBU	a2, t1, a0
++	jr		ra
++	 PTR_ADDIU	a2, 1
++
+ 	.endm
+ 
+ /*

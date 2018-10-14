@@ -1,73 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 14:57:43 +0200 (CEST)
-Received: from mail-pg1-x541.google.com ([IPv6:2607:f8b0:4864:20::541]:35527
-        "EHLO mail-pg1-x541.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990490AbeJNM5ksq08g convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 15:21:45 +0200 (CEST)
+Received: from mail-pl1-x642.google.com ([IPv6:2607:f8b0:4864:20::642]:38240
+        "EHLO mail-pl1-x642.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990490AbeJNNVlqK85g convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 14 Oct 2018 14:57:40 +0200
-Received: by mail-pg1-x541.google.com with SMTP id v133-v6so7887698pgb.2;
-        Sun, 14 Oct 2018 05:57:40 -0700 (PDT)
+        Sun, 14 Oct 2018 15:21:41 +0200
+Received: by mail-pl1-x642.google.com with SMTP id q19-v6so4917617pll.5;
+        Sun, 14 Oct 2018 06:21:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=QOh3/rAAMNg6qWlR3ockjsVxuDsHmKYoJ0FCAyRqfh4=;
-        b=iABS1BuuIxLgQKHch2Dlc2zTZiMd5aUIeqllYaFVgeR7hoGPuvGN0BBSP3H1vOGBVn
-         KnNmfDgbSWbJo+V1YyBGzEulGIQI4dKrQDtk/qd41E6RZlIfP2uxnp0+oBAtOmE4lG68
-         x70+eGZP6uqx3qIucJWNiOGFfutGJX0zNuk02P85pVbzAfz/cdNnL7N6mjQ9px/1vLGR
-         0JCrXbMG1TROv4dsnHtWFYQhX2S77DifFBaPTKHxH7wYOLvmaT9qB/OI8BYNCWShL/X9
-         mFcN7LHngJUy/JxGOyjI6S48h8FN8nkPma5iSqUuYea8u+8O4wp45CoWdE8sNLx2J/u+
-         jenA==
+        bh=3p7rOh3EHCcs5xJhBdJ9os0FBYpeHAf7F1aAnqF/f30=;
+        b=M4QK1ccb/idnXeaKqj+Ewbkhcgm7CdlXT/yTIpkXgaATox26SQJltMaTvHPGPG79xb
+         8FdicVlinm6TH9QQZywahbCsqU2Qo2cEeNF/BnNBRbcLzSuKYDeFaDlRsj9PNMtQl5/u
+         ZX4AYSOkwd0qBIZSPiNXtPkByaFmv+vy/1D1182c0mcu5ApITPdk/hdFU1kMcAg5ZMkg
+         VsR+cVaH4ChJ8jYBsBoXC7i04fwmIuiOlMYd8Hl4YZnQbq7dclEzhNcqcApiQBoSECiM
+         GrKvFRQUSNqIOucytr38BPo65LejZNhIRfZwDzWlLHOw8Mlxuq6P6JkUPEi+BT/bzRTj
+         FQbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QOh3/rAAMNg6qWlR3ockjsVxuDsHmKYoJ0FCAyRqfh4=;
-        b=ta8Ke/C4EU+HjdHji795qLzzMVaekxJFzeqq2QnSPxTiKipDzkLBqww9oCJQTJqKTV
-         4oel/xQUIK7CzgcwZ+CZj8hdSSxPC2mKtQdYk/pzIZYAYdpN5TfJbz1+UbcPhTf6O/cD
-         T3O1bmBGE5uL8ueJGS5A/tNiXav0TxTNLwHW4kxf3AA1/d+szotHL+Fg21bArj1Kh9zp
-         Wr2RKQQsAxfZJzvC2SvvRsKgOkjtV1SrM+UhOI1IH+mYqFrDjU8iv8uTPukNFYDmJWe2
-         HCbmU1jc26pwwJmDKcVHsT68IndG8uYfHbM18x1cKf2wj1U72I+g1Jn6+kiaLbmnCkP7
-         H9Og==
-X-Gm-Message-State: ABuFfojQ40V/9hTzFiNikrabZ3f6THGY7SnVeCJ8bxGJQa36mRzei8OB
-        y0top7OVDevKk8148ati0epnXPJTLSvhfOwofNc=
-X-Google-Smtp-Source: ACcGV60zf0Hi3mZezp2hDEDaLIs17dXAsuvuc8YysL8650sEBPqrqgQAvzNYudsoqEWRyq2I1MEzwEjavgjecjVnptw=
-X-Received: by 2002:a62:8910:: with SMTP id v16-v6mr13526160pfd.106.1539521853925;
- Sun, 14 Oct 2018 05:57:33 -0700 (PDT)
+        bh=3p7rOh3EHCcs5xJhBdJ9os0FBYpeHAf7F1aAnqF/f30=;
+        b=goLTk3zN8ZvpMrJFsNfKUrSrl27fQHoyWkOje2/NBFXNuFG0fvs5MHwT9gIF1Z6FLO
+         gt/1CLQGx9xcKt+B6BN0hqDWQMmarWle5nzDoUhhHB0phspJyZKGSAMUmEGauJ1GaQ1z
+         7rauakIRrmukcCwxxG9s1rjO8FdKgCCVNs+z15qy6hjkvi/QWKrk0vV9Q/IZozj9cNnz
+         ESQ/3idfbhjhsaw1q7sTPpr04NICLpQuPbFLnp/pBTR04wM5KBnJiDvFe0PX5SDZYWHF
+         zJlX7fqDrmBA7PpAlhnQJEzrpdBFC1xJZQJdvzEy1+KighI5ARdoOB8zSIhfo/IBnGiH
+         jbOQ==
+X-Gm-Message-State: ABuFfohgYIF6kym+5sT4vVU1vOea7n7MmPS78eOYob5uAcYGhXq/SXpG
+        hxv05m1vDfXhdSVLTkXpeMrv+4JhJJq6y1Uja1A=
+X-Google-Smtp-Source: ACcGV60Bsdv+2lbefbGLxTexZhfM8a9SDOpaKx+exqAsk4LqnWktEAF8KcHNub/RKj7H2PyE8ha/L2lfpnhhtHYxQ0w=
+X-Received: by 2002:a17:902:da4:: with SMTP id 33-v6mr12916512plv.172.1539523294880;
+ Sun, 14 Oct 2018 06:21:34 -0700 (PDT)
 MIME-Version: 1.0
 References: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
  <20181013145406.4911-3-Tianyu.Lan@microsoft.com> <4D709C3A-A91C-4CA7-922A-E77618EF21B4@oracle.com>
- <alpine.DEB.2.21.1810141014350.1438@nanos.tec.linutronix.de> <1BDC7949-CFED-46C2-9D05-42864B0AD0F0@oracle.com>
-In-Reply-To: <1BDC7949-CFED-46C2-9D05-42864B0AD0F0@oracle.com>
+ <alpine.DEB.2.21.1810141014350.1438@nanos.tec.linutronix.de>
+ <20181014092734.GV30658@n2100.armlinux.org.uk> <20181014093541.GW30658@n2100.armlinux.org.uk>
+In-Reply-To: <20181014093541.GW30658@n2100.armlinux.org.uk>
 From:   Tianyu Lan <lantianyu1986@gmail.com>
-Date:   Sun, 14 Oct 2018 20:57:22 +0800
-Message-ID: <CAOLK0pxC9S7YzoC-YmE7bw2VyPEZfxZSCOW+hW+t3Mi8V6Y-RQ@mail.gmail.com>
+Date:   Sun, 14 Oct 2018 21:21:23 +0800
+Message-ID: <CAOLK0pzHAc1ipDbd3Trg2W_Gb_DxdEKM2ML5Fk09u0-O8y6UAg@mail.gmail.com>
 Subject: Re: [PATCH V4 2/15] KVM/MMU: Add tlb flush with range helper function
-To:     liran.alon@oracle.com
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        christoffer.dall@arm.com, marc.zyngier@arm.com, linux@armlinux.org,
-        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
-        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
-        benh@kernel.crashing.org, mpe@ellerman.id.au, kys@microsoft.com,
-        haiyangz@microsoft.com, sthemmin@microsoft.com,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim Krcmar <rkrcmar@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+To:     linux@armlinux.org.uk
+Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org,
+        linux@armlinux.org, kvm <kvm@vger.kernel.org>,
+        Radim Krcmar <rkrcmar@redhat.com>, benh@kernel.crashing.org,
+        will.deacon@arm.com, christoffer.dall@arm.com, paulus@ozlabs.org,
+        "H. Peter Anvin" <hpa@zytor.com>, kys@microsoft.com,
+        kvmarm@lists.cs.columbia.edu, sthemmin@microsoft.com,
+        mpe@ellerman.id.au, "the arch/x86 maintainers" <x86@kernel.org>,
+        michael.h.kelley@microsoft.com, Ingo Molnar <mingo@redhat.com>,
+        catalin.marinas@arm.com, jhogan@kernel.org,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>, marc.zyngier@arm.com,
+        haiyangz@microsoft.com, kvm-ppc@vger.kernel.org,
+        liran.alon@oracle.com, Paolo Bonzini <pbonzini@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
         "linux-kernel@vger kernel org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, devel@linuxdriverproject.org,
-        kvm <kvm@vger.kernel.org>, michael.h.kelley@microsoft.com,
-        vkuznets@redhat.com
+        ralf@linux-mips.org, paul.burton@mips.com,
+        devel@linuxdriverproject.org, vkuznets@redhat.com,
+        linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 Return-Path: <lantianyu1986@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66828
+X-archive-position: 66829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,51 +84,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Liran & Thomas:
+Hi Russell:
               Thanks for your review.
 
+On Sun, Oct 14, 2018 at 5:36 PM Russell King - ARM Linux
+<linux@armlinux.org.uk> wrote:
+>
+> On Sun, Oct 14, 2018 at 10:27:34AM +0100, Russell King - ARM Linux wrote:
+> > On Sun, Oct 14, 2018 at 10:16:56AM +0200, Thomas Gleixner wrote:
+> > > On Sun, 14 Oct 2018, Liran Alon wrote:
+> > > > > On 13 Oct 2018, at 17:53, lantianyu1986@gmail.com wrote:
+> > > > >
+> > > > > From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> > > > >
+> > > > > This patch is to add wrapper functions for tlb_remote_flush_with_range
+> > > > > callback.
+> > > > >
+> > > > > Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> > > > > ---
+> > > > > Change sicne V3:
+> > > > >       Remove code of updating "tlbs_dirty"
+> > > > > Change since V2:
+> > > > >       Fix comment in the kvm_flush_remote_tlbs_with_range()
+> > > > > ---
+> > > > > arch/x86/kvm/mmu.c | 40 ++++++++++++++++++++++++++++++++++++++++
+> > > > > 1 file changed, 40 insertions(+)
+> > > > >
+> > > > > diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
+> > > > > index c73d9f650de7..ff656d85903a 100644
+> > > > > --- a/arch/x86/kvm/mmu.c
+> > > > > +++ b/arch/x86/kvm/mmu.c
+> > > > > @@ -264,6 +264,46 @@ static void mmu_spte_set(u64 *sptep, u64 spte);
+> > > > > static union kvm_mmu_page_role
+> > > > > kvm_mmu_calc_root_page_role(struct kvm_vcpu *vcpu);
+> > > > >
+> > > > > +
+> > > > > +static inline bool kvm_available_flush_tlb_with_range(void)
+> > > > > +{
+> > > > > +       return kvm_x86_ops->tlb_remote_flush_with_range;
+> > > > > +}
+> > > >
+> > > > Seems that kvm_available_flush_tlb_with_range() is not used in this patch…
+> > >
+> > > What's wrong with that?
+> > >
+> > > It provides the implementation and later patches make use of it. It's a
+> > > sensible way to split patches into small, self contained entities.
+> >
+> > From what I can see of the patches that follow _this_ patch in the
+> > series, this function remains unused.  So, not only is it not used
+> > in this patch, it's not used in this series.
+>
+> Note - I seem to have only received patches 1 through 4, so this is
+> based on the patches I've received.
+>
 
-On Sun, Oct 14, 2018 at 5:20 PM Liran Alon <liran.alon@oracle.com> wrote:
->
->
->
-> > On 14 Oct 2018, at 11:16, Thomas Gleixner <tglx@linutronix.de> wrote:
-> >
-> > On Sun, 14 Oct 2018, Liran Alon wrote:
-> >>> On 13 Oct 2018, at 17:53, lantianyu1986@gmail.com wrote:
-> >>>
-> >>> +
-> >>> +static inline bool kvm_available_flush_tlb_with_range(void)
-> >>> +{
-> >>> +   return kvm_x86_ops->tlb_remote_flush_with_range;
-> >>> +}
-> >>
-> >> Seems that kvm_available_flush_tlb_with_range() is not used in this patch…
-> >
-> > What's wrong with that?
-> >
-> > It provides the implementation and later patches make use of it. It's a
-> > sensible way to split patches into small, self contained entities.
-> >
-> > Thanks,
-> >
-> >       tglx
-> >
->
-> I guess it’s a matter of taste, but I prefer to not add dead-code for patches
-> in order for each commit to compile nicely without warnings of declared and unused functions.
-> I would prefer to just add this utility function on the patch that actually use it.
->
-> -Liran
->
+Sorry to confuse your. I get from CCers from get_maintainer.pl script.
+The next patch "[PATCH V4 3/15]KVM: Replace old tlb flush function with
+new one to flush a specified range" calls new function.
+https://lkml.org/lkml/2018/10/13/254
 
-Normally, I also prefer to put the function definition into the patch
-which use it.
-But the following patch "KVM: Replace old tlb flush function with new
-one to flush a specified range"
-and other patches which use new functions will change a lot of places.
-It's not friendly for review and
-so I split them into pieces.
---
+The patch "[PATCH V4 4/15] KVM: Make kvm_set_spte_hva() return int"
+changes under ARM directory. Please have a look. Thanks.
+-- 
 Best regards
 Tianyu Lan

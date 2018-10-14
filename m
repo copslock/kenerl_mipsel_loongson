@@ -1,72 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2018 21:42:20 +0200 (CEST)
-Received: from mail-wr1-x442.google.com ([IPv6:2a00:1450:4864:20::442]:44810
-        "EHLO mail-wr1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990406AbeJMTmMtaL1w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2018 21:42:12 +0200
-Received: by mail-wr1-x442.google.com with SMTP id 63-v6so16824186wra.11;
-        Sat, 13 Oct 2018 12:42:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=ENsa8mKA+KYkiEx8WLYfD1y5jJU/TfSdYYuBy4wsARY=;
-        b=MfEqni4r7gugGbRVeFZc/OiTvtv96qeAh4+PCJqG0vDxOZ+QVNgmyq3KvIxBtrfb0s
-         ckcfJJyAJUK+NzxITaqCII+ohHnuGNSSBprb0axyBcV1sqCDqQbTrKsRaZoJLPfJYrcs
-         7LJt53TAX/4p4fgWzQak3awH50Meh8vQ5U6792qHISQZYwgFWGlCcXjGyj/GEMGSHYRZ
-         +7YJQcAjuQ7nFr3SVte+QPHrq4JBZEBVeUma0olj8nA2PYX0KH06RGOwXphzeBGW8io0
-         A9jAqqu+BEqitG6uA17NM4+/9iFWAFxAquILG1pHN77uzFAs7sKAikadc0PgceRU1FUL
-         hOkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=ENsa8mKA+KYkiEx8WLYfD1y5jJU/TfSdYYuBy4wsARY=;
-        b=PBg2qSRp1vbzP9pgEA8gBTUdO9xrTOPAujkPnb8S0cHuG0kmisoH4hLVievtxwzptA
-         e9gNAemOsqAjUFrYf8W4StpV9x/6LfLkJOPya+k0H5iAWrWhBE9SNdoN4OC7BeHiptEp
-         TGVrRn27XQZYFxsKZPrfdJ/pffzAJuDZiOC0e4lluQ2orb2T27HyBgztWyXfILm6q+ho
-         gzhB1qF7bFy5d8dH85fMsIyH+tBJnK8MkssMCxWWRkmgRIBXepqqF3Qs41as3pK0P/Z/
-         JKFndZxyLLJ5bkKcWr7XmiBYyKKxcBUtT5OmD0qlsQL+5fbruSmcGMY7BTVZIJkbW5GK
-         IPhA==
-X-Gm-Message-State: ABuFfojQoDb2g8S6WngZN6eGV7iBR8TlemHZ3fIfwD4d8h+Hrqxx242s
-        HKtIOzkx+HwhVrykBgfGQHw=
-X-Google-Smtp-Source: ACcGV634FjblERVVJ6u7MGTI2CnjquLzD+eRer3J/7Pdf6zgNuNqHJwiF/g3rAfNzrDjxMTjOWzy5g==
-X-Received: by 2002:adf:8141:: with SMTP id 59-v6mr8715867wrm.127.1539459727435;
-        Sat, 13 Oct 2018 12:42:07 -0700 (PDT)
-Received: from laptop ([37.122.159.87])
-        by smtp.gmail.com with ESMTPSA id s1-v6sm4229601wrw.35.2018.10.13.12.42.05
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 13 Oct 2018 12:42:06 -0700 (PDT)
-Message-ID: <a6e3c6c059a4a593d7c9228ed260ea24f993a3f6.camel@gmail.com>
-Subject: Re: [RFC v2 2/7] dt-binding: interrupt-controller: Document RTL8186
- SoC DT bindings
-From:   Yasha Cherikovsky <yasha.che3@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 13 Oct 2018 22:42:04 +0300
-In-Reply-To: <20181012201346.GA17471@bogus>
-References: <20181001102952.7913-1-yasha.che3@gmail.com>
-         <20181001102952.7913-3-yasha.che3@gmail.com> <20181012201346.GA17471@bogus>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <yasha.che3@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2018 09:27:38 +0200 (CEST)
+Received: from aserp2120.oracle.com ([141.146.126.78]:60594 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990474AbeJNH1eak0ex convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2018 09:27:34 +0200
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.22/8.16.0.22) with SMTP id w9E7KWth090057;
+        Sun, 14 Oct 2018 07:27:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2018-07-02; bh=x1rPStnyMjgTZ4kR6etWB0TFzQLk4cy1o7iAyMPR8Vo=;
+ b=Ro7LCiAdB43Hgv9VAbgRuwwoo7nGoz/tvkwJLuKy3j7bitZKDEZ+2cSIX2wYLRDCTjC8
+ 8+bn/O6I+ifjC9ZwEv4/7hFQOrR1EOtCdtYhKm4n6xRiJbuhiRHBi039uY42lugiJ+67
+ yw0Xte6X4P5YTH47Cuvc4QwzEDpNHhK+7+6L0YAXZ/pHxCU5f08WMQ3sKH2tvjPodQ63
+ Y39eRtFhkCqrOp1q/g9DtCsmrdATn4VGH9oLAWmm7OCvNrpAhMs5yTir0HlalJ1jPIBV
+ g2ZSs3Mr+XPejy7vLLWEZPtUrKRPnJVvi2O0RiErPB2WqgGtUUspqH898xM5nWodTu3i 7w== 
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+        by aserp2120.oracle.com with ESMTP id 2n38npmcvd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 14 Oct 2018 07:27:00 +0000
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserv0021.oracle.com (8.14.4/8.14.4) with ESMTP id w9E7QvEd010730
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 14 Oct 2018 07:26:57 GMT
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id w9E7Qq6c027817;
+        Sun, 14 Oct 2018 07:26:53 GMT
+Received: from [192.168.14.112] (/79.182.224.107)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 14 Oct 2018 07:26:51 +0000
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 11.1 \(3445.4.7\))
+Subject: Re: [PATCH V4 2/15] KVM/MMU: Add tlb flush with range helper function
+From:   Liran Alon <liran.alon@oracle.com>
+In-Reply-To: <20181013145406.4911-3-Tianyu.Lan@microsoft.com>
+Date:   Sun, 14 Oct 2018 10:26:41 +0300
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
+        marc.zyngier@arm.com, linux@armlinux.org, catalin.marinas@arm.com,
+        will.deacon@arm.com, jhogan@kernel.org, ralf@linux-mips.org,
+        paul.burton@mips.com, paulus@ozlabs.org, benh@kernel.crashing.org,
+        mpe@ellerman.id.au, kys@microsoft.com, haiyangz@microsoft.com,
+        sthemmin@microsoft.com, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, pbonzini@redhat.com,
+        rkrcmar@redhat.com, linux-arm-kernel@lists.infradead.org,
+        kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, devel@linuxdriverproject.org,
+        kvm@vger.kernel.org, michael.h.kelley@microsoft.com,
+        vkuznets@redhat.com
+Content-Transfer-Encoding: 8BIT
+Message-Id: <4D709C3A-A91C-4CA7-922A-E77618EF21B4@oracle.com>
+References: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
+ <20181013145406.4911-3-Tianyu.Lan@microsoft.com>
+To:     lantianyu1986@gmail.com
+X-Mailer: Apple Mail (2.3445.4.7)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9045 signatures=668706
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=865
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1807170000 definitions=main-1810140071
+Return-Path: <liran.alon@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66822
+X-archive-position: 66823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yasha.che3@gmail.com
+X-original-sender: liran.alon@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,30 +81,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2018-10-12 at 15:13 -0500, Rob Herring wrote:
-> On Mon, Oct 01, 2018 at 01:29:47PM +0300, Yasha Cherikovsky wrote:
-> > This patch adds device tree binding doc for the
-> > Realtek RTL8186 SoC interrupt controller.
-> > 
-> > Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Jason Cooper <jason@lakedaemon.net>
-> > Cc: Marc Zyngier <marc.zyngier@arm.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: Paul Burton <paul.burton@mips.com>
-> > Cc: James Hogan <jhogan@kernel.org>
-> > Cc: devicetree@vger.kernel.org
-> > Cc: linux-mips@linux-mips.org
-> > Cc: linux-kernel@vger.kernel.org
-> > ---
-> >  .../interrupt-controller/realtek,rtl8186-intc  | 18 ++++++++++++++++++
-> 
-> .txt
-> 
-> With that,
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Thanks, will fix for v3.
+
+> On 13 Oct 2018, at 17:53, lantianyu1986@gmail.com wrote:
+> 
+> From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> 
+> This patch is to add wrapper functions for tlb_remote_flush_with_range
+> callback.
+> 
+> Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> ---
+> Change sicne V3:
+>       Remove code of updating "tlbs_dirty"
+> Change since V2:
+>       Fix comment in the kvm_flush_remote_tlbs_with_range()
+> ---
+> arch/x86/kvm/mmu.c | 40 ++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 40 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
+> index c73d9f650de7..ff656d85903a 100644
+> --- a/arch/x86/kvm/mmu.c
+> +++ b/arch/x86/kvm/mmu.c
+> @@ -264,6 +264,46 @@ static void mmu_spte_set(u64 *sptep, u64 spte);
+> static union kvm_mmu_page_role
+> kvm_mmu_calc_root_page_role(struct kvm_vcpu *vcpu);
+> 
+> +
+> +static inline bool kvm_available_flush_tlb_with_range(void)
+> +{
+> +	return kvm_x86_ops->tlb_remote_flush_with_range;
+> +}
+
+Seems that kvm_available_flush_tlb_with_range() is not used in this patch…
+
+> +
+> +static void kvm_flush_remote_tlbs_with_range(struct kvm *kvm,
+> +		struct kvm_tlb_range *range)
+> +{
+> +	int ret = -ENOTSUPP;
+> +
+> +	if (range && kvm_x86_ops->tlb_remote_flush_with_range)
+> +		ret = kvm_x86_ops->tlb_remote_flush_with_range(kvm, range);
+> +
+> +	if (ret)
+> +		kvm_flush_remote_tlbs(kvm);
+> +}
+> +
+> +static void kvm_flush_remote_tlbs_with_list(struct kvm *kvm,
+> +		struct list_head *flush_list)
+> +{
+> +	struct kvm_tlb_range range;
+> +
+> +	range.flush_list = flush_list;
+> +
+> +	kvm_flush_remote_tlbs_with_range(kvm, &range);
+> +}
+> +
+> +static void kvm_flush_remote_tlbs_with_address(struct kvm *kvm,
+> +		u64 start_gfn, u64 pages)
+> +{
+> +	struct kvm_tlb_range range;
+> +
+> +	range.start_gfn = start_gfn;
+> +	range.pages = pages;
+> +	range.flush_list = NULL;
+> +
+> +	kvm_flush_remote_tlbs_with_range(kvm, &range);
+> +}
+> +
+> void kvm_mmu_set_mmio_spte_mask(u64 mmio_mask, u64 mmio_value)
+> {
+> 	BUG_ON((mmio_mask & mmio_value) != mmio_value);
+> -- 
+> 2.14.4
+> 

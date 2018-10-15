@@ -1,81 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2018 11:42:30 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:45070 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990397AbeJOJm1YgX05 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Oct 2018 11:42:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=TxPfYwf779Yw4BFIKetBktFWPJJuEcBKL3Ct2yR20Qc=; b=VmCXSzCMVkKiDcFuxiSsbriKr
-        mxZmhy1c8qBIN2bLBh3qmBb/9bUOGvhjEpcWelg2KjhRj/11J2tAgaN3Ivd68ebPfqErXg2k2R1y2
-        qKtsREeV11ApFJVopVg33gNsl4p0D6/OEIRhDBbOnugzOnB44m7aBjnYeBb9PSJc7I3qvxlsgcSc2
-        oGLPZxS537dIy50xAAk/tc3xM+i5BzQV8V4ZPeGbzbz8gNgZp1iIoP3gWRPjatuBFQQiNEE3hp3hQ
-        th/f6p7jf+mfdGrEexXQrfSUefru+/4FVjR3jSv8H0tR1ptnynoxTs8QcFhDbbnhf+BQSKUr4s4Zx
-        TixLGjB/Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gBzO5-0001W2-VT; Mon, 15 Oct 2018 09:42:09 +0000
-Date:   Mon, 15 Oct 2018 02:42:09 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Will Deacon <will.deacon@arm.com>, mhocko@kernel.org,
-        linux-mm@kvack.org, lokeshgidra@google.com,
-        linux-riscv@lists.infradead.org, elfring@users.sourceforge.net,
-        Jonas Bonn <jonas@southpole.se>, kvmarm@lists.cs.columbia.edu,
-        dancol@google.com, Yoshinori Sato <ysato@users.sourceforge.jp>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
-        "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
-        hughd@google.com, "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        kasan-dev@googlegroups.com, anton.ivanov@kot-begemot.co.uk,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        linux-snps-arc@lists.infradead.org, kernel-team@android.com,
-        Sam Creasey <sammy@sammy.net>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-s390@vger.kernel.org,
-        Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        nios2-dev@lists.rocketboards.org, kirill@shutemov.name,
-        Stafford Horne <shorne@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, Chris Zankel <chris@zankel.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-parisc@vger.kernel.org, pantin@google.com,
-        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
-        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 2/4] mm: speed up mremap by 500x on large regions (v2)
-Message-ID: <20181015094209.GA31999@infradead.org>
-References: <20181013013200.206928-1-joel@joelfernandes.org>
- <20181013013200.206928-3-joel@joelfernandes.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2018 14:03:33 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:33774 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990398AbeJOMDZRJAHw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Oct 2018 14:03:25 +0200
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 17365120F7;
+        Mon, 15 Oct 2018 12:03:18 +0000 (UTC)
+Received: from [10.36.117.209] (ovpn-117-209.ams2.redhat.com [10.36.117.209])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id BA72D7A241;
+        Mon, 15 Oct 2018 12:03:00 +0000 (UTC)
+Subject: Re: [PATCH V4 2/15] KVM/MMU: Add tlb flush with range helper function
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Liran Alon <liran.alon@oracle.com>
+Cc:     lantianyu1986@gmail.com, Lan Tianyu <Tianyu.Lan@microsoft.com>,
+        christoffer.dall@arm.com, marc.zyngier@arm.com, linux@armlinux.org,
+        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
+        benh@kernel.crashing.org, mpe@ellerman.id.au, kys@microsoft.com,
+        haiyangz@microsoft.com, sthemmin@microsoft.com, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, rkrcmar@redhat.com,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        devel@linuxdriverproject.org, kvm@vger.kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
+References: <20181013145406.4911-1-Tianyu.Lan@microsoft.com>
+ <20181013145406.4911-3-Tianyu.Lan@microsoft.com>
+ <4D709C3A-A91C-4CA7-922A-E77618EF21B4@oracle.com>
+ <alpine.DEB.2.21.1810141014350.1438@nanos.tec.linutronix.de>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <fc78b7f2-70aa-29fa-95ca-d599f76c8f1a@redhat.com>
+Date:   Mon, 15 Oct 2018 14:02:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20181013013200.206928-3-joel@joelfernandes.org>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+d906faeb8e2e46e3163e+5531+infradead.org+hch@bombadil.srs.infradead.org>
+In-Reply-To: <alpine.DEB.2.21.1810141014350.1438@nanos.tec.linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Mon, 15 Oct 2018 12:03:18 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66843
+X-archive-position: 66845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@infradead.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,17 +99,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 12, 2018 at 06:31:58PM -0700, Joel Fernandes (Google) wrote:
-> Android needs to mremap large regions of memory during memory management
-> related operations.
+On 14/10/2018 10:16, Thomas Gleixner wrote:
+>>> +static inline bool kvm_available_flush_tlb_with_range(void)
+>>> +{
+>>> +	return kvm_x86_ops->tlb_remote_flush_with_range;
+>>> +}
+>> Seems that kvm_available_flush_tlb_with_range() is not used in this patch…
+> What's wrong with that? 
+> 
+> It provides the implementation and later patches make use of it. It's a
+> sensible way to split patches into small, self contained entities.
 
-Just curious: why?
+That's true, on the other hand I have indeed a concerns with this patch:
+this series is not bisectable at all, because all the new code is dead
+until the very last patch.  Uses of the new feature should come _after_
+the implementation.
 
-> +	if ((old_addr & ~PMD_MASK) || (new_addr & ~PMD_MASK)
-> +	    || old_end - old_addr < PMD_SIZE)
+I don't have any big problem with what Liran pointed out (and I can live
+with the unused static functions that would warn with -Wunused, too),
+but the above should be fixed in v5, basically by moving patches 12-15
+at the beginning of the series.
 
-The || goes on the first line.
-
-> +		} else if (extent == PMD_SIZE && IS_ENABLED(CONFIG_HAVE_MOVE_PMD)) {
-
-Overly long line.
+Paolo

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 19:20:06 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:54208 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 19:23:12 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:58702 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994681AbeJPRUAl8WcN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Oct 2018 19:20:00 +0200
+        id S23994705AbeJPRXH1KTkN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Oct 2018 19:23:07 +0200
 Received: from localhost (ip-213-127-77-176.ip.prioritytelecom.net [213.127.77.176])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 04FAF21476;
-        Tue, 16 Oct 2018 17:19:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A98421477;
+        Tue, 16 Oct 2018 17:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1539710392;
-        bh=h9RKDnyZEaciWvlqDeOfq2k9/2drp2PVTBj1I4yr3Tg=;
+        s=default; t=1539710580;
+        bh=sn/oKwQJlc6qaWg5c2z2LYL3L1jTFXKpZo+GyI8W2xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ToCsJz8HBs4mk2NukLNNxktbvJqvlQz52WFds6qgT8JdAUEaTNYj53bjj9OuIJJ89
-         6tV2crxgpPToEgjsdV1mZb7S6sUmo6DYcovIm3MWw/mBr1g5NHRggiPnqYvN5YFCZG
-         MsDRYCxJagRAbAd/H7+1FXOuwWs36vMjTF83o8GA=
+        b=Ng7cn00/f1as/j9QsJ8xXl15LsYed3CXyWQSH+LMzXeFIEs1Dp8Ii9Xk1UzFcpZoP
+         AA+XZnDRfDSA+6F42ZJTHBP8pYArrbM+dXy6kl0Qcu3Hd6yuuiwPFtpGKFp3Vs3Eh9
+         lvqqPGv+qvTD7nJcvkFIn2Ub2NC80VzQ5nhDH4lU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
         Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 062/109] MIPS: VDSO: Always map near top of user memory
-Date:   Tue, 16 Oct 2018 19:05:30 +0200
-Message-Id: <20181016170528.245141039@linuxfoundation.org>
+Subject: [PATCH 4.9 16/71] MIPS: VDSO: Always map near top of user memory
+Date:   Tue, 16 Oct 2018 19:09:13 +0200
+Message-Id: <20181016170540.218002691@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20181016170524.530541524@linuxfoundation.org>
-References: <20181016170524.530541524@linuxfoundation.org>
+In-Reply-To: <20181016170539.315587743@linuxfoundation.org>
+References: <20181016170539.315587743@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Return-Path: <SRS0=yPgj=M4=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66877
+X-archive-position: 66878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,7 +52,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -150,7 +150,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
   * This decides where the kernel will search for a free chunk of vm
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -31,6 +31,7 @@
+@@ -28,6 +28,7 @@
  #include <linux/prctl.h>
  #include <linux/nmi.h>
  
@@ -158,7 +158,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #include <asm/asm.h>
  #include <asm/bootinfo.h>
  #include <asm/cpu.h>
-@@ -38,6 +39,7 @@
+@@ -35,6 +36,7 @@
  #include <asm/dsp.h>
  #include <asm/fpu.h>
  #include <asm/irq.h>
@@ -166,7 +166,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #include <asm/msa.h>
  #include <asm/pgtable.h>
  #include <asm/mipsregs.h>
-@@ -644,6 +646,29 @@ out:
+@@ -621,6 +623,29 @@ out:
  	return pc;
  }
  
@@ -198,8 +198,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
   * boundary for 32-bits ABI and 16 bytes for 64-bits ABI.
 --- a/arch/mips/kernel/vdso.c
 +++ b/arch/mips/kernel/vdso.c
-@@ -15,6 +15,7 @@
- #include <linux/ioport.h>
+@@ -16,6 +16,7 @@
+ #include <linux/irqchip/mips-gic.h>
  #include <linux/kernel.h>
  #include <linux/mm.h>
 +#include <linux/random.h>
@@ -228,7 +228,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
  {
  	struct mips_vdso_image *image = current->thread.abi->vdso;
-@@ -137,7 +153,7 @@ int arch_setup_additional_pages(struct l
+@@ -138,7 +154,7 @@ int arch_setup_additional_pages(struct l
  	if (cpu_has_dc_aliases)
  		size += shm_align_mask + 1;
  

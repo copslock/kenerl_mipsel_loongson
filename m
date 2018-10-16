@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 19:16:02 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:48894 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 19:20:06 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:54208 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994650AbeJPRPpgCohN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Oct 2018 19:15:45 +0200
+        id S23994681AbeJPRUAl8WcN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Oct 2018 19:20:00 +0200
 Received: from localhost (ip-213-127-77-176.ip.prioritytelecom.net [213.127.77.176])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E625C21479;
-        Tue, 16 Oct 2018 17:15:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 04FAF21476;
+        Tue, 16 Oct 2018 17:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1539710139;
-        bh=9BXSJQ8e+glVsB6J+dP/BPQJeDblAl3d1rh1mvRZC9g=;
+        s=default; t=1539710392;
+        bh=h9RKDnyZEaciWvlqDeOfq2k9/2drp2PVTBj1I4yr3Tg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VLExPKMxAoSwBu1O4IQfuJel4Vj9414HVugGSfbZ0k+KPp2XoRRio9kqkIdWqafB8
-         fliNoM1Ox7cf43SI7AoQNCMIzb9+Ez/Miu20lWABA7tcbwP74T4F6+wJiGRcCfk6ZH
-         xDEl59t6bVnXr1SfNEb0aAABbMy50XtueuuAk6nc=
+        b=ToCsJz8HBs4mk2NukLNNxktbvJqvlQz52WFds6qgT8JdAUEaTNYj53bjj9OuIJJ89
+         6tV2crxgpPToEgjsdV1mZb7S6sUmo6DYcovIm3MWw/mBr1g5NHRggiPnqYvN5YFCZG
+         MsDRYCxJagRAbAd/H7+1FXOuwWs36vMjTF83o8GA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
         Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.18 114/135] MIPS: VDSO: Always map near top of user memory
-Date:   Tue, 16 Oct 2018 19:05:44 +0200
-Message-Id: <20181016170523.187877880@linuxfoundation.org>
+Subject: [PATCH 4.14 062/109] MIPS: VDSO: Always map near top of user memory
+Date:   Tue, 16 Oct 2018 19:05:30 +0200
+Message-Id: <20181016170528.245141039@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20181016170515.447235311@linuxfoundation.org>
-References: <20181016170515.447235311@linuxfoundation.org>
+In-Reply-To: <20181016170524.530541524@linuxfoundation.org>
+References: <20181016170524.530541524@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Return-Path: <SRS0=yPgj=M4=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66876
+X-archive-position: 66877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,7 +52,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.18-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

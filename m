@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 11:20:33 +0200 (CEST)
-Received: from mga17.intel.com ([192.55.52.151]:41585 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993003AbeJPJUId3eYF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Oct 2018 11:20:08 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Oct 2018 02:20:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.54,388,1534834800"; 
-   d="scan'208";a="266076704"
-Received: from sgsxdev001.isng.intel.com (HELO localhost) ([10.226.88.11])
-  by orsmga005.jf.intel.com with ESMTP; 16 Oct 2018 02:19:58 -0700
-From:   Songjun Wu <songjun.wu@linux.intel.com>
-To:     yixin.zhu@linux.intel.com, chuanhua.lei@linux.intel.com,
-        hauke.mehrtens@intel.com
-Cc:     gregkh@linuxfoundation.org, paul.burton@mips.com, jslaby@suse.com,
-        Songjun Wu <songjun.wu@linux.intel.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2018 12:39:03 +0200 (CEST)
+Received: from fudo.makrotopia.org ([IPv6:2a07:2ec0:3002::71]:48750 "EHLO
+        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992479AbeJPKi7TAFP2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Oct 2018 12:38:59 +0200
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+         (Exim 4.90_1)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1gCMkQ-0008Fz-Lx; Tue, 16 Oct 2018 12:38:47 +0200
+Date:   Tue, 16 Oct 2018 12:38:07 +0200
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Tom Psyborg <pozega.tomislav@gmail.com>,
+        linux-wireless@vger.kernel.org, Mathias Kresin <dev@kresin.me>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH 05/14] MIPS: lantiq: Unselect SWAP_IO_SPACE when LANTIQ is selected
-Date:   Tue, 16 Oct 2018 17:19:06 +0800
-Message-Id: <20181016091915.19909-6-songjun.wu@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20181016091915.19909-1-songjun.wu@linux.intel.com>
-References: <20181016091915.19909-1-songjun.wu@linux.intel.com>
-Return-Path: <songjun.wu@linux.intel.com>
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH v4 4/8] rt2800: fix registers init for MT7620
+Message-ID: <20181016103806.GA1544@makrotopia.org>
+References: <1539334591-9965-1-git-send-email-sgruszka@redhat.com>
+ <1539334591-9965-5-git-send-email-sgruszka@redhat.com>
+ <CAKR_QVJ60VTDjyC59BEDsRKrKR495xjGwob0QqvX333L+L+=Zg@mail.gmail.com>
+ <20181016081115.GA4401@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181016081115.GA4401@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <daniel@makrotopia.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66865
+X-archive-position: 66866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: songjun.wu@linux.intel.com
+X-original-sender: daniel@makrotopia.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,39 +48,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SWAP_IO_SPACE macro prevents serial driver /drivers/tty/serial/lantiq.c
-to use readl/writel to replace ltq_r32/w32 which are SoC or platform
-specific APIs.
+On Tue, Oct 16, 2018 at 10:11:16AM +0200, Stanislaw Gruszka wrote:
+> On Fri, Oct 12, 2018 at 12:48:07PM +0200, Tom Psyborg wrote:
+> > chip version support exist in daniel's tree since a long time ago. so
+> > don't disable registers initialization but try to upstream his
+> > changes.
+> 
+> Where is this patch ? I can not find it.
 
-readl/writel are used for this serial driver to support multiple
-platforms and multiple architectures. The legacy lantiq platform(Danube)
-enables SWAP_IO_SPACE for supporting PCI due to some hardware bugs.
+So this requires to make the chip version and package available to
+drivers like rt2x00. First of all, this is a patch for linux-mips:
 
-It's a little-endian bus plus PCI TX/RX swap enable impacted both data
-and control path for MIPS based platforms. But it is better to let PCI
-device driver to do endian swap since SWAP_IO_SPACE is a global wide macro
-which potentially impacts other peripheral like USB.
-ltq_r32/ltq_w32 is not impacted in other device drivers based on MIPS when
-SWAP_IO_SPACE is not selected as they use non-byte swapping OS API
-(__raw_read/__raw_writel).
+https://git.openwrt.org/?p=openwrt/staging/dangole.git;a=blob;f=target/linux/ramips/patches-4.4/300-mt7620-export-chip-version-and-pkg.patch;h=f6aca6c90516f9c534b3c51e9f99dff6a3f41b75;hb=709fe05dfea58728d6accb9fe56c7056d9d0715b
 
-Signed-off-by: Songjun Wu <songjun.wu@linux.intel.com>
----
+It belongs to this (very outdated) tree:
+https://git.openwrt.org/?p=openwrt/staging/dangole.git;a=shortlog;h=refs/heads/differentiate-pkg-ver-eco
 
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+I'm not sure whether this is the right way to do this, but it worked.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 138d60cf19bc..dcc1fd39cbf3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -406,7 +406,6 @@ config LANTIQ
- 	select SYS_SUPPORTS_VPE_LOADER
- 	select SYS_HAS_EARLY_PRINTK
- 	select GPIOLIB
--	select SWAP_IO_SPACE
- 	select BOOT_RAW
- 	select CLKDEV_LOOKUP
- 	select USE_OF
--- 
-2.11.0
+
+Cheers
+
+
+Daniel
+
+
+
+> 
+> Thanks
+> Stanislaw

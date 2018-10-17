@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2018 22:26:44 +0200 (CEST)
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:34124 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993976AbeJQU0lLvnaW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2018 22:26:41 +0200
-Received: by mail-ot1-f68.google.com with SMTP id v2so20420837otk.1;
-        Wed, 17 Oct 2018 13:26:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2018 22:28:29 +0200 (CEST)
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:35424 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993920AbeJQU2ZTBQbW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2018 22:28:25 +0200
+Received: by mail-oi1-f193.google.com with SMTP id 22-v6so22210328oiz.2;
+        Wed, 17 Oct 2018 13:28:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ymd5wralDBwI1+nvWrInzavSha2pjNT5R8MNAt3lHjs=;
-        b=onLYsdzoGF9QpNcl4ItWyd2krqBbGMhpfU/AJj7DG6Kf8E8K7xmXnPuo1AOoXWFW3S
-         UFnp+uqa7aesroG9lD8XLr/YuH/ruL4+zIOzZTpWaKZ4GHtKeYod5yfDAlYVxZHxY30o
-         RNOtf2z9imJ9L22aQTClYpxV3Y1CFxW7UtIurPnWnVwjUVIkJHHeVmNZS79zeF+MGRgP
-         zahDRc0kOj9Wd66x68Kxk/QJSOv9uZmmnqYCZa3ea6LTMoT/c+M6xc/P4QSK0rSPK2yX
-         lnaIemd33l62HlqOrFzf1hqEhnW8rI9iwWH3eoLQXaLzUtwwyDK5Kn0A6AArtCo0ZUhN
-         ydRw==
-X-Gm-Message-State: ABuFfogaqx3fkcvLqGG8Ygtp1tT+sq3Yva0hSNi4UOfO6AUSnuSy64qf
-        gDjGq7M/66RY0z41LaIx7TqIYO1aMSCZCX4DZhk=
-X-Google-Smtp-Source: ACcGV62x+Z7nz/E8dRPJzUgVEXNeJ6lIBa5mTdv/llLukctvmcYRZkOVFtuHkNCo+W0r/ZazXX5apH/2yWN3IscUIkM=
-X-Received: by 2002:a9d:59ae:: with SMTP id u46mr16612272oth.243.1539807994864;
- Wed, 17 Oct 2018 13:26:34 -0700 (PDT)
+        bh=nEcdy7QEDbNlcX07BFBN89zLOirmmnq91X/i2VMyaL8=;
+        b=gwWxFO7FxIx7GCCYRXaDZ/IKnj1LGE9tU/1l2qEtzjQbUzYH2qPsT2jOgsfzR+VCJz
+         OuLDmOXrnkVXe9Q4aUburXEHIGfkBpp/Q8P0zV3GEpXOL3dyRYMCQCEkezN508xE2mXp
+         0GeViYp7Adwirl+0kn2/LNNlxpPrCpHB2gQuweB41Y15ydOgHK9+3dqu05lGboExV0VW
+         Z5ns7lzLlAYyM0egtO2QvyfI1Sg7mcCAFEcvTeOY+wBDpQwIcJs19iI6AC9DY/CANXLS
+         ZOeL3VRR5YLlXxRlpZRyr7r9Mbs3aybNmzDvZvQARERZkpGso9FLZlnXTBQDHTdO/64q
+         vJTA==
+X-Gm-Message-State: ABuFfogqSPlyjAZP7GDhNG7DZSSYaOJ7mrK/ZSveTSpB+EYB3gPkbTa8
+        Cuo+9b/0YA80xT0Uk9P2jewS0Ufghq4pTLyXLoY=
+X-Google-Smtp-Source: ACcGV63AaImc1z7tHmL0M6Msh6TSOdjWNVL1mke8ThowGM2MOldlYt/WOW24+5D3Tl4K3VZSolDd5sb68toPmLpKSvg=
+X-Received: by 2002:aca:ab8b:: with SMTP id u133-v6mr15347446oie.57.1539808099156;
+ Wed, 17 Oct 2018 13:28:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20180606193811.16007-1-malat@debian.org> <20180724204757.qrgjttepzcfdzxlv@pburton-laptop>
- <20180831203752.37rsceiwotcmeses@pburton-laptop> <20180831205857.nb3ij3rzhfs2fu42@pburton-laptop>
- <CA+7wUswC1SfC3G0RRH7OV4C6nQsp59R62FN_NiDSyCpxRDf__Q@mail.gmail.com>
-In-Reply-To: <CA+7wUswC1SfC3G0RRH7OV4C6nQsp59R62FN_NiDSyCpxRDf__Q@mail.gmail.com>
+References: <20180606193811.16007-1-malat@debian.org> <20180606193811.16007-2-malat@debian.org>
+In-Reply-To: <20180606193811.16007-2-malat@debian.org>
 From:   Mathieu Malaterre <malat@debian.org>
-Date:   Wed, 17 Oct 2018 22:26:22 +0200
-Message-ID: <CA+7wUsycUxKoCEk1CW+RKfJ5e9AxOumyfKoF93JYw3qmU5r=nQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] MIPS: jz4780: Allow access to jz4740-i2s
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     James Hogan <jhogan@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Date:   Wed, 17 Oct 2018 22:28:08 +0200
+Message-ID: <CA+7wUswf1+3E12-qs0c0L7PjPWsndYo2oe_b=Gv5vXF0gd+Ttg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] MIPS: Ci20: Enable SND_JZ4740_SOC driver
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -47,7 +45,7 @@ Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66887
+X-archive-position: 66888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,36 +62,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Paul,
-
-On Mon, Sep 3, 2018 at 8:15 AM Mathieu Malaterre <malat@debian.org> wrote:
+On Wed, Jun 6, 2018 at 9:38 PM Mathieu Malaterre <malat@debian.org> wrote:
 >
-> On Fri, Aug 31, 2018 at 10:59 PM Paul Burton <paul.burton@mips.com> wrote:
-> >
-> > On Fri, Aug 31, 2018 at 01:37:52PM -0700, Paul Burton wrote:
-> > > Further to that, this series doesn't seem to work for me. With
-> > > v4.19-rc1, with the patch from [1] & then this series applied I see the
-> > > following when booting a ci20_defconfig kernel:
-> > >
-> > >   [    0.846684] ALSA device list:
-> > >   [    0.849642]   No soundcards found.
-> >
-> > D'oh! Apparently I haven't drunk enough coffee today - missing link can
-> > be found below:
-> >
-> > [1] https://www.spinics.net/lists/linux-gpio/msg31965.html
+> Update the Ci20's defconfig to enable the JZ4780's SND driver.
 >
-> Awesome, thanks for testing. I'll return to this series once I receive
-> replacement for my laptop hard drive.
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> ---
+>  arch/mips/configs/ci20_defconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+> index e1c14f6af824..0c08c7675b42 100644
+> --- a/arch/mips/configs/ci20_defconfig
+> +++ b/arch/mips/configs/ci20_defconfig
+> @@ -104,6 +104,10 @@ CONFIG_REGULATOR=y
+>  CONFIG_REGULATOR_DEBUG=y
+>  CONFIG_REGULATOR_FIXED_VOLTAGE=y
+>  # CONFIG_VGA_CONSOLE is not set
+> +CONFIG_SOUND=y
+> +CONFIG_SND=y
+> +CONFIG_SND_SOC=y
+> +CONFIG_SND_JZ4740_SOC=y
 
-I see it now :
+technically I am also missing: CONFIG_SND_JZ4740_SOC_I2S=y
 
-[    0.289701] bus: 'platform': really_probe: probing driver
-jz4740-i2s with device 10020000.i2s
-[    0.289713] jz4740-i2s 10020000.i2s: no pinctrl handle
-[    0.289782] OF: /i2s@10020000: could not find phandle
-
-I'll try to make sense of this.
-
-> thanks,
-> -M
+>  # CONFIG_HID is not set
+>  # CONFIG_USB_SUPPORT is not set
+>  CONFIG_MMC=y
+> --
+> 2.11.0
+>

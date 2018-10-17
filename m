@@ -1,117 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2018 09:41:18 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:48248 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990473AbeJQHlOjfnAm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Oct 2018 09:41:14 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 454F9AFD0;
-        Wed, 17 Oct 2018 07:41:06 +0000 (UTC)
-Subject: Re: [PATCH 2/4] mm: speed up mremap by 500x on large regions (v2)
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Will Deacon <will.deacon@arm.com>, mhocko@kernel.org,
-        linux-mm@kvack.org, lokeshgidra@google.com,
-        linux-riscv@lists.infradead.org, elfring@users.sourceforge.net,
-        Jonas Bonn <jonas@southpole.se>, kvmarm@lists.cs.columbia.edu,
-        dancol@google.com, Yoshinori Sato <ysato@users.sourceforge.jp>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
-        "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
-        hughd@google.com, "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        kasan-dev@googlegroups.com, anton.ivanov@kot-begemot.co.uk,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        linux-snps-arc@lists.infradead.org, kernel-team@android.com,
-        Sam Creasey <sammy@sammy.net>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-s390@vger.kernel.org,
-        Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        nios2-dev@lists.rocketboards.org, kirill@shutemov.name,
-        Stafford Horne <shorne@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, Chris Zankel <chris@zankel.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        linux-parisc@vger.kernel.org, pantin@google.com,
-        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
-        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <20181013013200.206928-1-joel@joelfernandes.org>
- <20181013013200.206928-3-joel@joelfernandes.org>
- <20181015094209.GA31999@infradead.org>
- <20181015223303.GA164293@joelaf.mtv.corp.google.com>
- <35b9c85a-b366-9ca3-5647-c2568c811961@suse.cz>
- <20181016194313.GA247930@joelaf.mtv.corp.google.com>
-From:   Vlastimil Babka <vbabka@suse.cz>
-Openpgp: preference=signencrypt
-Autocrypt: addr=vbabka@suse.cz; prefer-encrypt=mutual; keydata=
- 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
- cqmP8roqufIAj+Ohhzs=
-Message-ID: <80a7d851-51ca-2d81-1273-393d4f701bc4@suse.cz>
-Date:   Wed, 17 Oct 2018 09:38:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2018 15:38:30 +0200 (CEST)
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35549 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993928AbeJQNiZazbtQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2018 15:38:25 +0200
+Received: by mail-ot1-f68.google.com with SMTP id 14so22187658oth.2
+        for <linux-mips@linux-mips.org>; Wed, 17 Oct 2018 06:38:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=y5EUDX803PiowWWGJP/xW4a3xMrgwy9l/YNKviS+1pc=;
+        b=fmj8uAXbOwei0wol0cHH7vh4CovqyBYAhputXkoXetB7evR/GGXbra5FdOqAtbrIOO
+         RZpFsTNWkt1CqlPm/ExJu36XH5Z/R48GFSjREuHxZeqf3YFEC+unOmFFGa0Y+1IRnKf+
+         NKjgKOPJ6B9CJIZR35dtfD/wWgQNOpwmko5biMMXZl6PeEdd0T+M8Il+I6+tKV5rthCO
+         BKkbOOvW6uPF1lUmLafNEpX8ZSFW56EC/2ZHryF8KaxHLn9NMK0464b936EylLOP2Ym2
+         bBqxyfO++VX0P7u+SxlNmr7V9XYlR8baaGjMK7otHRtSoTr+qvtNkhRCpi8MCLZuLdXf
+         wqlw==
+X-Gm-Message-State: ABuFfoiZvFb/rLZjkH5BFsdJDs9AMS304CqAcg5sIkAZv/MnxBm1xmxm
+        tWcNNK7c+FTcsWDCzG04w7jV8muUjTBYUKbhwVw=
+X-Google-Smtp-Source: ACcGV60v7nSAKQSm8G+Heu6Ct0EUZbvudTFD5A3Z3EcQkC4tS1GOlmez/Obvr/CeaZKqPGKdaYWwd7Rn1r1v1nd8Cfw=
+X-Received: by 2002:a9d:488e:: with SMTP id d14mr17599624otf.354.1539783499285;
+ Wed, 17 Oct 2018 06:38:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20181016194313.GA247930@joelaf.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <vbabka@suse.cz>
+References: <20181014170431.GK3461@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20181014170431.GK3461@darkstar.musicnaut.iki.fi>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Wed, 17 Oct 2018 15:38:07 +0200
+Message-ID: <CA+7wUszkduiKMVx5Et3Q2-2tz72CXUKE1_kndC6V1d45uEY2Aw@mail.gmail.com>
+Subject: Re: Bug report: MIPS CI20/jz4740-mmc DMA and PREEMPT_NONE
+To:     aaro.koskinen@iki.fi
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>, linux-mmc@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <mathieu.malaterre@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66882
+X-archive-position: 66883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vbabka@suse.cz
+X-original-sender: malat@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -124,40 +55,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/16/18 9:43 PM, Joel Fernandes wrote:
-> On Tue, Oct 16, 2018 at 01:29:52PM +0200, Vlastimil Babka wrote:
->> On 10/16/18 12:33 AM, Joel Fernandes wrote:
->>> On Mon, Oct 15, 2018 at 02:42:09AM -0700, Christoph Hellwig wrote:
->>>> On Fri, Oct 12, 2018 at 06:31:58PM -0700, Joel Fernandes (Google) wrote:
->>>>> Android needs to mremap large regions of memory during memory management
->>>>> related operations.
->>>>
->>>> Just curious: why?
->>>
->>> In Android we have a requirement of moving a large (up to a GB now, but may
->>> grow bigger in future) memory range from one location to another.
->>
->> I think Christoph's "why?" was about the requirement, not why it hurts
->> applications. I admit I'm now also curious :)
-> 
-> This issue was discovered when we wanted to be able to move the physical
-> pages of a memory range to another location quickly so that, after the
-> application threads are resumed, UFFDIO_REGISTER_MODE_MISSING userfaultfd
-> faults can be received on the original memory range. The actual operations
-> performed on the memory range are beyond the scope of this discussion. The
-> user threads continue to refer to the old address which will now fault. The
-> reason we want retain the old memory range and receives faults there is to
-> avoid the need to fix the addresses all over the address space of the threads
-> after we finish with performing operations on them in the fault handlers, so
-> we mremap it and receive faults at the old addresses.
-> 
-> Does that answer your question?
+Hi,
 
-Yes, interesting, thanks!
+On Sun, Oct 14, 2018 at 7:04 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+>
+> Hi,
+>
+> There is something wrong with jz4740-mmc in current mainline kernel
+> (tested v4.18 and 4.19-rc, the MMC support for CI20 does not exist
+> prior those), as the DMA support does not work properly if I disable
+> kernel pre-emption. The console gets flooded with:
+>
+> [   16.461094] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 567 host->next_data.cookie 568
+> [   16.473120] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 568 host->next_data.cookie 569
+> [   16.485144] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 569 host->next_data.cookie 570
+> [   16.497170] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 570 host->next_data.cookie 571
+> [   16.509194] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 571 host->next_data.cookie 572
+> [   16.532421] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 572 host->next_data.cookie 573
+> [   16.544594] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 573 host->next_data.cookie 574
+> [   16.556621] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 574 host->next_data.cookie 575
+> [   16.568638] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 575 host->next_data.cookie 576
+> [   16.601092] jz4740-mmc 13450000.mmc: [jz4740_mmc_prepare_dma_data] invalid cookie: data->host_cookie 582 host->next_data.cookie 583
+>
+> etc. ad inf.
+>
+> This should be easily reproducible on CI20 board with ci20_defconfig
+> and setting CONFIG_PREEMPT_NONE=y.
 
-Vlastimil
+Since CONFIG_PREEMPT has been 'y' since at least commit 0752f92934292
+could you confirm that the original mmc driver (kernel from imgtech
+people) did work ok with PREEMPT_NONE (sorry I did not do my homework)
+?
 
-> thanks,
-> 
-> - Joel
-> 
+Thanks
+
+> A.

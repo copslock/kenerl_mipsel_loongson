@@ -1,53 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2018 16:58:38 +0200 (CEST)
-Received: from frisell.zx2c4.com ([192.95.5.64]:35545 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994564AbeJRO6XAbY3W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Oct 2018 16:58:23 +0200
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 8b6a1f0e;
-        Thu, 18 Oct 2018 14:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=from:to:cc
-        :subject:date:message-id:in-reply-to:references:mime-version
-        :content-type:content-transfer-encoding; s=mail; bh=/QQB3jZBsZKx
-        ZfMnjU6shB5l5js=; b=wWx8wtq1Tf16etGg12V9nNHw8gI6k2yK2qrqKvfpchcu
-        U5adBA1lGcOD9Xhy+4CwtN7Famw+EXRqyODQQtqLdwUV3wSMwbMMEFaLmw7SW2mX
-        5Lh1kF8MgxaRQmIHC3/162iFRT8+eQPeviEsu/iK6yBdFeS/fEcQ78hozjEjXAMp
-        akoqVTGkXG4DuyeCY6A4Kba6t8RlrctSMx7GTXHmgmJStYUXLmR3q1bVq0UNRxCG
-        oyjOWUv/voq7uL0fvlhRa4hsX5PaicuFhfv2feHKCfW+ndFAddZ90yBHqB8+aIpd
-        5Mz8DQoYAaIKBbbfNnPO+ouJmqqAU3eKrl6NjaLvug==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1b084b46 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
-        Thu, 18 Oct 2018 14:56:19 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-crypto@vger.kernel.org, davem@davemloft.net,
-        gregkh@linuxfoundation.org
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Samuel Neves <sneves@dei.uc.pt>,
-        Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        kernel-hardening@lists.openwall.com
-Subject: [PATCH net-next v8 17/28] zinc: Poly1305 MIPS32r2 and MIPS64 implementations
-Date:   Thu, 18 Oct 2018 16:57:01 +0200
-Message-Id: <20181018145712.7538-18-Jason@zx2c4.com>
-In-Reply-To: <20181018145712.7538-1-Jason@zx2c4.com>
-References: <20181018145712.7538-1-Jason@zx2c4.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2018 01:09:26 +0200 (CEST)
+Received: from mail-co1nam03on0121.outbound.protection.outlook.com ([104.47.40.121]:29968
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994558AbeJRXJXqwwsx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Oct 2018 01:09:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QlkR57KhLRS8H7YDud4phNCQSH6422rLl/c0kPSATHA=;
+ b=Q0gfUxS/4+abdeDNu+4L+VMgBcVo90FTpTTu/LVNEeHKcXYjPUCK056txiqgKz9jJEft/FWOCIh2IJTFBzMKGBZLaopvHlh6yJcRmjdvorBqOvQwoBpczDS9Pim6tz3/IrcCgX2Tx6yV9srFEKioELtjmHlgOjV/CEvQq5xd4Zo=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1040.namprd22.prod.outlook.com (10.174.169.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1228.24; Thu, 18 Oct 2018 23:09:11 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::781f:63:481a:efdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::781f:63:481a:efdf%12]) with mapi id 15.20.1250.022; Thu, 18 Oct 2018
+ 23:09:11 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Al Viro <viro@ZenIV.linux.org.uk>
+CC:     "Hongzhi, Song" <hongzhi.song@windriver.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "mm-commits@vger.kernel.org" <mm-commits@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Question about mmap syscall and POSIX standard on mips arch
+Thread-Topic: Question about mmap syscall and POSIX standard on mips arch
+Thread-Index: AQHUZpuSly8s3XkRr0+u/PPo/AMS1qUloe+A
+Date:   Thu, 18 Oct 2018 23:09:11 +0000
+Message-ID: <20181018230909.nze5ws5ro2r3kvw6@pburton-laptop>
+References: <e897b11f-1577-9298-7c82-7bbdea56e7e5@windriver.com>
+ <20181018043200.GE32577@ZenIV.linux.org.uk>
+In-Reply-To: <20181018043200.GE32577@ZenIV.linux.org.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR14CA0023.namprd14.prod.outlook.com
+ (2603:10b6:300:ae::33) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1040;6:VDxJk9ve2LD+IenGzTrmgHn79Lq9R1AnYAkMlldhKwFaIgVGY/i9eNR/TpbAD2UfClRFwG740OaT3d1Xdb2oHrwOGWsXluCjDSHRoXe8vPtROIU0YeceNE9+eYvNk3A24JojwpzkjeAYJW5urp8Ady6wmZ+QsyQ6FWgfhU7rtc8VhgdqaFDlRbhwmCgJMZ6I7SrMXd6rUOdmd3cnEDkkZLcdB5Q7F9kGe1vxRVzHzpJ46imZ48n/PodRQAgB+/MLOOekpl0DgrhMBIYkXCR4+DwQGZ28ByMKp4xPLyZN7PC2s9VKkpzyroldl6RAuHNnUtUXfTYEbaGpfV7P+n6xJnPZ4vLYNUDEZaYLhuQNzgeAojNNzNlrR5UCuuQhFI1epVauDov+REXhoMfzGBmVcVJhCuwMzZbgKusdxoYuRbCmFR0BYFVOf+dCuGxg45eOcDoY1En9FVRN2vvWfGckyg==;5:P+wzjdspUTMDc1aZWGQ5tN1HVxrFcjepldMtBHn0qnMaNZ2+PP1wLe4X/mTumkJems0EEIst/AHpHTItNM+GObIi0xlbnOPTdvVsWZaVjKH8mzMotqiJ++9jpmaiFfrL/ADodCkSWZ/yGof0tfAyhH5jgxccQkNj5D42EHL3Jkg=;7:+df2EOX/FYYSPekto8BrKYM6YyEUptaS2pn57mdpfOLPMvUp8s5Z+2EcLT6lAb53aNbIJWFWComZdPVQ0FiPQrmBTZ4AQGZfFUY8XAAdHoIazxG/x0kOMLmJFQm/fWzNiGoRI3GZt73ceYbJqx1XWt0Z2okX8+y3vXaVUFMPWstt3wVYkkG48jvAjew2Kbd8W54GUuYwLnnnTlzsnw4PBx1WcCpc2Qk6QW2ts0AfPHeDuD54upOz2joPsdcLZNS1
+x-ms-office365-filtering-correlation-id: 07d3de75-fd35-40d9-ee94-08d6354eb6a9
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1040;
+x-ms-traffictypediagnostic: MWHPR2201MB1040:
+x-microsoft-antispam-prvs: <MWHPR2201MB1040527A0C5D1A2D9DDC7C37C1F80@MWHPR2201MB1040.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(166708455590820);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3231355)(944501410)(52105095)(10201501046)(3002001)(149066)(150057)(6041310)(20161123564045)(2016111802025)(20161123562045)(20161123560045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1040;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1040;
+x-forefront-prvs: 08296C9B35
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39840400004)(136003)(376002)(396003)(346002)(366004)(199004)(53754006)(189003)(51914003)(54906003)(446003)(6916009)(66066001)(25786009)(81166006)(58126008)(53936002)(6436002)(33716001)(6512007)(106356001)(8676002)(81156014)(5250100002)(2906002)(6506007)(8936002)(33896004)(6116002)(386003)(6246003)(3846002)(99286004)(76176011)(14454004)(52116002)(105586002)(97736004)(5660300001)(11346002)(1076002)(508600001)(316002)(256004)(44832011)(42882007)(6486002)(68736007)(305945005)(71190400001)(71200400001)(476003)(966005)(9686003)(7736002)(486006)(229853002)(6306002)(4326008)(26005)(2900100001)(186003)(102836004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1040;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: CIgDRRWmKasiwW2rqLH2XDOXvdyyG2Rjd+1NWc92oQqJi6CrWEpNfAWHeNF7KAqMt9UsusvnOyYMT2xgUcm/wPR8k4t176DCm2PRaO54QOgF9YWJIRZBy80SU1QSab4AC9jKXd4msfZMwZ8qXpS0IcT3sU184IVZ9q7W7ex46ducJMtbqQuE1MogYcv5KgBTBfnc3RaQry4x2/dd42oGGyI4DF6QB9AGmLv8bSBRMjbI3IiORMB8NvuxygNG1Z+I+/mo41B8mGwvovxja5GsbM/IZTwnrSImoTOsBwIlABaLpa5tFppteGK3tOmSK0SE4oEvilRWgdzEXN8ohn+QqWsFLvuEHdlVHWiQEO1C9uY=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <04DE8EAA7DDC9046A1C2FC7C51D0C0BA@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <Jason@zx2c4.com>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07d3de75-fd35-40d9-ee94-08d6354eb6a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2018 23:09:11.4650
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1040
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66893
+X-archive-position: 66894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,688 +92,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This MIPS32r2 implementation comes from René van Dorst and me and
-results in a nice speedup on the usual OpenWRT targets. The MIPS64
-implementation from Andy Polyakov ported here  results in a nice speedup
-on commodity Octeon hardware, and has been modified slightly from the
-original:
+Hi Al,
 
-- The function names have been renamed to fit kernel conventions.
-- A comment has been added.
+On Thu, Oct 18, 2018 at 05:32:00AM +0100, Al Viro wrote:
+> [mips folks Cc'd]
+> 
+> On Thu, Oct 18, 2018 at 11:26:02AM +0800, Hongzhi, Song wrote:
+> > Hi all,
+> > 
+> > Ltp has a POSIX teatcase about mmap, 24-2.c.
+> > 
+> > https://github.com/linux-test-project/ltp/blob/e816127e5d8efbff5ae53e9c2292fae22f36838b/testcases/open_posix_testsuite/conformance/interfaces/mmap/24-2.c#L94
+> 
+> [basically, MAP_FIXED mmap with addr + len > TASK_SIZE fails with
+> -EINVAL on mips and -ENOMEM elsewhere]
+>  
+> > Under POSIX standard, the expected errno should be ENOMEM
+> > 
+> > when the specific [addr+len] exceeds the bound of memory.
+> 
+> The mmap() function may fail if:
+> 
+> [EINVAL]
+> The addr argument (if MAP_FIXED was specified) or off is not a multiple
+> of the page size as returned by sysconf(), or is considered invalid by
+>                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> the implementation.
+> ^^^^^^^^^^^^^^^^^^^
+> 
+> So that behaviour gets past POSIX.  That part is mostly about the
+> things like cache aliasing constraints, etc., but it leaves enough
+> space to weasel out.  Said that, this
+> 
+> [ENOMEM]
+> MAP_FIXED was specified, and the range [addr,addr+len) exceeds that allowed
+> for the address space of a process; or, if MAP_FIXED was not specified and
+> there is insufficient room in the address space to effect the mapping.
+> 
+> is a lot more specific, so switching to -ENOMEM there might be a good idea,
+> especially since on other architectures we do get -ENOMEM in that case,
+> AFAICS.
 
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: René van Dorst <opensource@vdorst.com>
-Co-developed-by: René van Dorst <opensource@vdorst.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: Samuel Neves <sneves@dei.uc.pt>
-Cc: Jean-Philippe Aumasson <jeanphilippe.aumasson@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kernel-hardening@lists.openwall.com
-Cc: linux-crypto@vger.kernel.org
----
- lib/zinc/Makefile                             |   3 +
- lib/zinc/poly1305/poly1305-mips-glue.c        |  37 ++
- lib/zinc/poly1305/poly1305-mips.S             | 407 ++++++++++++++++++
- ...-mips64-cryptogams.S => poly1305-mips64.S} |  80 ++--
- lib/zinc/poly1305/poly1305.c                  |   2 +
- 5 files changed, 500 insertions(+), 29 deletions(-)
- create mode 100644 lib/zinc/poly1305/poly1305-mips-glue.c
- create mode 100644 lib/zinc/poly1305/poly1305-mips.S
- rename lib/zinc/poly1305/{poly1305-mips64-cryptogams.S => poly1305-mips64.S} (75%)
+Thanks for the heads up - that does sound like reasonably clear
+non-compliance. I'll make a note to put together a patch & test it out,
+likely next week, if nobody submits one first.
 
-diff --git a/lib/zinc/Makefile b/lib/zinc/Makefile
-index c09fd3de60f9..5c4b1d51cb03 100644
---- a/lib/zinc/Makefile
-+++ b/lib/zinc/Makefile
-@@ -14,4 +14,7 @@ zinc_poly1305-y := poly1305/poly1305.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_X86_64) += poly1305/poly1305-x86_64.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM) += poly1305/poly1305-arm.o
- zinc_poly1305-$(CONFIG_ZINC_ARCH_ARM64) += poly1305/poly1305-arm64.o
-+zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS) += poly1305/poly1305-mips.o
-+AFLAGS_poly1305-mips.o += -O2 # This is required to fill the branch delay slots
-+zinc_poly1305-$(CONFIG_ZINC_ARCH_MIPS64) += poly1305/poly1305-mips64.o
- obj-$(CONFIG_ZINC_POLY1305) += zinc_poly1305.o
-diff --git a/lib/zinc/poly1305/poly1305-mips-glue.c b/lib/zinc/poly1305/poly1305-mips-glue.c
-new file mode 100644
-index 000000000000..1eba9512a05c
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips-glue.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+/*
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+asmlinkage void poly1305_init_mips(void *ctx, const u8 key[16]);
-+asmlinkage void poly1305_blocks_mips(void *ctx, const u8 *inp, const size_t len,
-+				     const u32 padbit);
-+asmlinkage void poly1305_emit_mips(void *ctx, u8 mac[16], const u32 nonce[4]);
-+
-+static bool *const poly1305_nobs[] __initconst = { };
-+static void __init poly1305_fpu_init(void)
-+{
-+}
-+
-+static inline bool poly1305_init_arch(void *ctx,
-+				      const u8 key[POLY1305_KEY_SIZE])
-+{
-+	poly1305_init_mips(ctx, key);
-+	return true;
-+}
-+
-+static inline bool poly1305_blocks_arch(void *ctx, const u8 *inp,
-+					size_t len, const u32 padbit,
-+					simd_context_t *simd_context)
-+{
-+	poly1305_blocks_mips(ctx, inp, len, padbit);
-+	return true;
-+}
-+
-+static inline bool poly1305_emit_arch(void *ctx, u8 mac[POLY1305_MAC_SIZE],
-+				      const u32 nonce[4],
-+				      simd_context_t *simd_context)
-+{
-+	poly1305_emit_mips(ctx, mac, nonce);
-+	return true;
-+}
-diff --git a/lib/zinc/poly1305/poly1305-mips.S b/lib/zinc/poly1305/poly1305-mips.S
-new file mode 100644
-index 000000000000..4d695eef1091
---- /dev/null
-+++ b/lib/zinc/poly1305/poly1305-mips.S
-@@ -0,0 +1,407 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR MIT */
-+/*
-+ * Copyright (C) 2016-2018 René van Dorst <opensource@vdorst.com> All Rights Reserved.
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-+ */
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+#define MSB 0
-+#define LSB 3
-+#else
-+#define MSB 3
-+#define LSB 0
-+#endif
-+
-+#define POLY1305_BLOCK_SIZE 16
-+.text
-+#define H0 $t0
-+#define H1 $t1
-+#define H2 $t2
-+#define H3 $t3
-+#define H4 $t4
-+
-+#define R0 $t5
-+#define R1 $t6
-+#define R2 $t7
-+#define R3 $t8
-+
-+#define O0 $s0
-+#define O1 $s4
-+#define O2 $v1
-+#define O3 $t9
-+#define O4 $s5
-+
-+#define S1 $s1
-+#define S2 $s2
-+#define S3 $s3
-+
-+#define SC $at
-+#define CA $v0
-+
-+/* Input arguments */
-+#define poly	$a0
-+#define src	$a1
-+#define srclen	$a2
-+#define hibit	$a3
-+
-+/* Location in the opaque buffer
-+ * R[0..3], CA, H[0..4]
-+ */
-+#define PTR_POLY1305_R(n) ( 0 + (n*4)) ## ($a0)
-+#define PTR_POLY1305_CA   (16        ) ## ($a0)
-+#define PTR_POLY1305_H(n) (20 + (n*4)) ## ($a0)
-+
-+#define POLY1305_BLOCK_SIZE 16
-+#define POLY1305_STACK_SIZE 32
-+
-+.set	noat
-+.align	4
-+.globl	poly1305_blocks_mips
-+.ent	poly1305_blocks_mips
-+poly1305_blocks_mips:
-+	.frame	$sp, POLY1305_STACK_SIZE, $ra
-+	/* srclen &= 0xFFFFFFF0 */
-+	ins	srclen, $zero, 0, 4
-+
-+	addiu	$sp, -(POLY1305_STACK_SIZE)
-+
-+	/* check srclen >= 16 bytes */
-+	beqz	srclen, .Lpoly1305_blocks_mips_end
-+
-+	/* Calculate last round based on src address pointer.
-+	 * last round src ptr (srclen) = src + (srclen & 0xFFFFFFF0)
-+	 */
-+	addu	srclen, src
-+
-+	lw	R0, PTR_POLY1305_R(0)
-+	lw	R1, PTR_POLY1305_R(1)
-+	lw	R2, PTR_POLY1305_R(2)
-+	lw	R3, PTR_POLY1305_R(3)
-+
-+	/* store the used save registers. */
-+	sw	$s0, 0($sp)
-+	sw	$s1, 4($sp)
-+	sw	$s2, 8($sp)
-+	sw	$s3, 12($sp)
-+	sw	$s4, 16($sp)
-+	sw	$s5, 20($sp)
-+
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Sx = Rx + (Rx >> 2) */
-+	srl	S1, R1, 2
-+	srl	S2, R2, 2
-+	srl	S3, R3, 2
-+	addu	S1, R1
-+	addu	S2, R2
-+	addu	S3, R3
-+
-+	addiu	SC, $zero, 1
-+
-+.Lpoly1305_loop:
-+	lwl	O0, 0+MSB(src)
-+	lwl	O1, 4+MSB(src)
-+	lwl	O2, 8+MSB(src)
-+	lwl	O3,12+MSB(src)
-+	lwr	O0, 0+LSB(src)
-+	lwr	O1, 4+LSB(src)
-+	lwr	O2, 8+LSB(src)
-+	lwr	O3,12+LSB(src)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	O0
-+	wsbh	O1
-+	wsbh	O2
-+	wsbh	O3
-+	rotr	O0, 16
-+	rotr	O1, 16
-+	rotr	O2, 16
-+	rotr	O3, 16
-+#endif
-+
-+	/* h0 = (u32)(d0 = (u64)h0 + inp[0] + c 'Carry_previous cycle'); */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	O0, H0
-+	sltu	H0, O0, H0
-+	addu	CA, H0
-+
-+	/* h1 = (u32)(d1 = (u64)h1 + (d0 >> 32) + inp[4]); */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	O1, H1
-+	sltu	H1, O1, H1
-+	addu	CA, H1
-+
-+	/* h2 = (u32)(d2 = (u64)h2 + (d1 >> 32) + inp[8]); */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	O2, H2
-+	sltu	H2, O2, H2
-+	addu	CA, H2
-+
-+	/* h3 = (u32)(d3 = (u64)h3 + (d2 >> 32) + inp[12]); */
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	O3, H3
-+	sltu	H3, O3, H3
-+	addu	CA, H3
-+
-+	/* h4 += (u32)(d3 >> 32) + padbit; */
-+	addu	H4, hibit
-+	addu	O4, H4, CA
-+
-+	/* D0 */
-+	multu	O0, R0
-+	maddu	O1, S3
-+	maddu	O2, S2
-+	maddu	O3, S1
-+	mfhi	CA
-+	mflo	H0
-+
-+	/* D1 */
-+	multu	O0, R1
-+	maddu	O1, R0
-+	maddu	O2, S3
-+	maddu	O3, S2
-+	maddu	O4, S1
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H1
-+
-+	/* D2 */
-+	multu	O0, R2
-+	maddu	O1, R1
-+	maddu	O2, R0
-+	maddu	O3, S3
-+	maddu	O4, S2
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H2
-+
-+	/* D4 */
-+	mul	H4, O4, R0
-+
-+	/* D3 */
-+	multu	O0, R3
-+	maddu	O1, R2
-+	maddu	O2, R1
-+	maddu	O3, R0
-+	maddu	O4, S3
-+	maddu	CA, SC
-+	mfhi	CA
-+	mflo	H3
-+
-+	addiu	src, POLY1305_BLOCK_SIZE
-+
-+	/* h4 += (u32)(d3 >> 32); */
-+	addu	O4, H4, CA
-+	/* h4 &= 3 */
-+	andi	H4, O4, 3
-+	/* c = (h4 >> 2) + (h4 & ~3U); */
-+	srl	CA, O4, 2
-+	ins	O4, $zero, 0, 2
-+
-+	addu	CA, O4
-+
-+	/* able to do a 16 byte block. */
-+	bne	src, srclen, .Lpoly1305_loop
-+
-+	/* restore the used save registers. */
-+	lw	$s0, 0($sp)
-+	lw	$s1, 4($sp)
-+	lw	$s2, 8($sp)
-+	lw	$s3, 12($sp)
-+	lw	$s4, 16($sp)
-+	lw	$s5, 20($sp)
-+
-+	/* store Hx and Carry */
-+	sw	CA, PTR_POLY1305_CA
-+	sw	H0, PTR_POLY1305_H(0)
-+	sw	H1, PTR_POLY1305_H(1)
-+	sw	H2, PTR_POLY1305_H(2)
-+	sw	H3, PTR_POLY1305_H(3)
-+	sw	H4, PTR_POLY1305_H(4)
-+
-+.Lpoly1305_blocks_mips_end:
-+	addiu	$sp, POLY1305_STACK_SIZE
-+
-+	/* Jump Back */
-+	jr	$ra
-+.end poly1305_blocks_mips
-+.set at
-+
-+/* Input arguments CTX=$a0, MAC=$a1, NONCE=$a2 */
-+#define MAC	$a1
-+#define NONCE	$a2
-+
-+#define G0	$t5
-+#define G1	$t6
-+#define G2	$t7
-+#define G3	$t8
-+#define G4	$t9
-+
-+.set	noat
-+.align	4
-+.globl	poly1305_emit_mips
-+.ent	poly1305_emit_mips
-+poly1305_emit_mips:
-+	/* load Hx and Carry */
-+	lw	CA, PTR_POLY1305_CA
-+	lw	H0, PTR_POLY1305_H(0)
-+	lw	H1, PTR_POLY1305_H(1)
-+	lw	H2, PTR_POLY1305_H(2)
-+	lw	H3, PTR_POLY1305_H(3)
-+	lw	H4, PTR_POLY1305_H(4)
-+
-+	/* Add left over carry */
-+	addu	H0, CA
-+	sltu	CA, H0, CA
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H3, CA
-+	sltu	CA, H3, CA
-+	addu	H4, CA
-+
-+	/* compare to modulus by computing h + -p */
-+	addiu	G0, H0, 5
-+	sltu	CA, G0, H0
-+	addu	G1, H1, CA
-+	sltu	CA, G1, H1
-+	addu	G2, H2, CA
-+	sltu	CA, G2, H2
-+	addu	G3, H3, CA
-+	sltu	CA, G3, H3
-+	addu	G4, H4, CA
-+
-+	srl	SC, G4, 2
-+
-+	/* if there was carry into 131st bit, h3:h0 = g3:g0 */
-+	movn	H0, G0, SC
-+	movn	H1, G1, SC
-+	movn	H2, G2, SC
-+	movn	H3, G3, SC
-+
-+	lwl	G0, 0+MSB(NONCE)
-+	lwl	G1, 4+MSB(NONCE)
-+	lwl	G2, 8+MSB(NONCE)
-+	lwl	G3,12+MSB(NONCE)
-+	lwr	G0, 0+LSB(NONCE)
-+	lwr	G1, 4+LSB(NONCE)
-+	lwr	G2, 8+LSB(NONCE)
-+	lwr	G3,12+LSB(NONCE)
-+
-+	/* mac = (h + nonce) % (2^128) */
-+	addu	H0, G0
-+	sltu	CA, H0, G0
-+
-+	/* H1 */
-+	addu	H1, CA
-+	sltu	CA, H1, CA
-+	addu	H1, G1
-+	sltu	G1, H1, G1
-+	addu	CA, G1
-+
-+	/* H2 */
-+	addu	H2, CA
-+	sltu	CA, H2, CA
-+	addu	H2, G2
-+	sltu	G2, H2, G2
-+	addu	CA, G2
-+
-+	/* H3 */
-+	addu	H3, CA
-+	addu	H3, G3
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	H0
-+	wsbh	H1
-+	wsbh	H2
-+	wsbh	H3
-+	rotr	H0, 16
-+	rotr	H1, 16
-+	rotr	H2, 16
-+	rotr	H3, 16
-+#endif
-+
-+	/* store MAC */
-+	swl	H0, 0+MSB(MAC)
-+	swl	H1, 4+MSB(MAC)
-+	swl	H2, 8+MSB(MAC)
-+	swl	H3,12+MSB(MAC)
-+	swr	H0, 0+LSB(MAC)
-+	swr	H1, 4+LSB(MAC)
-+	swr	H2, 8+LSB(MAC)
-+	swr	H3,12+LSB(MAC)
-+
-+	jr	$ra
-+.end poly1305_emit_mips
-+
-+#define PR0 $t0
-+#define PR1 $t1
-+#define PR2 $t2
-+#define PR3 $t3
-+#define PT0 $t4
-+
-+/* Input arguments CTX=$a0, KEY=$a1 */
-+
-+.align	4
-+.globl	poly1305_init_mips
-+.ent	poly1305_init_mips
-+poly1305_init_mips:
-+	lwl	PR0, 0+MSB($a1)
-+	lwl	PR1, 4+MSB($a1)
-+	lwl	PR2, 8+MSB($a1)
-+	lwl	PR3,12+MSB($a1)
-+	lwr	PR0, 0+LSB($a1)
-+	lwr	PR1, 4+LSB($a1)
-+	lwr	PR2, 8+LSB($a1)
-+	lwr	PR3,12+LSB($a1)
-+
-+	/* store Hx and Carry */
-+	sw	$zero, PTR_POLY1305_CA
-+	sw	$zero, PTR_POLY1305_H(0)
-+	sw	$zero, PTR_POLY1305_H(1)
-+	sw	$zero, PTR_POLY1305_H(2)
-+	sw	$zero, PTR_POLY1305_H(3)
-+	sw	$zero, PTR_POLY1305_H(4)
-+
-+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-+	wsbh	PR0
-+	wsbh	PR1
-+	wsbh	PR2
-+	wsbh	PR3
-+	rotr	PR0, 16
-+	rotr	PR1, 16
-+	rotr	PR2, 16
-+	rotr	PR3, 16
-+#endif
-+
-+	lui	PT0, 0x0FFF
-+	ori	PT0, 0xFFFC
-+
-+	/* AND 0x0fffffff; */
-+	ext	PR0, PR0, 0, (32-4)
-+
-+	/* AND 0x0ffffffc; */
-+	and	PR1, PT0
-+	and	PR2, PT0
-+	and	PR3, PT0
-+
-+	/* store Rx */
-+	sw	PR0, PTR_POLY1305_R(0)
-+	sw	PR1, PTR_POLY1305_R(1)
-+	sw	PR2, PTR_POLY1305_R(2)
-+	sw	PR3, PTR_POLY1305_R(3)
-+
-+	/* Jump Back  */
-+	jr	$ra
-+.end poly1305_init_mips
-diff --git a/lib/zinc/poly1305/poly1305-mips64-cryptogams.S b/lib/zinc/poly1305/poly1305-mips64.S
-similarity index 75%
-rename from lib/zinc/poly1305/poly1305-mips64-cryptogams.S
-rename to lib/zinc/poly1305/poly1305-mips64.S
-index 24a6005884c3..272a86c47bcb 100644
---- a/lib/zinc/poly1305/poly1305-mips64-cryptogams.S
-+++ b/lib/zinc/poly1305/poly1305-mips64.S
-@@ -1,26 +1,49 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-+ * Copyright (C) 2015-2018 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-  * Copyright (C) 2006-2017 CRYPTOGAMS by <appro@openssl.org>. All Rights Reserved.
-+ *
-+ * This is based in part on Andy Polyakov's implementation from CRYPTOGAMS.
-  */
- 
--#include "mips_arch.h"
-+#if (defined(_MIPS_ARCH_MIPS64R3) || defined(_MIPS_ARCH_MIPS64R5) || \
-+     defined(_MIPS_ARCH_MIPS64R6)) && !defined(_MIPS_ARCH_MIPS64R2)
-+#define _MIPS_ARCH_MIPS64R2
-+#endif
-+
-+#ifdef __MIPSEB__
-+#define MSB 0
-+#define LSB 7
-+#else
-+#define MSB 7
-+#define LSB 0
-+#endif
- 
--#ifdef MIPSEB
--# define MSB 0
--# define LSB 7
-+#if defined(_MIPS_ARCH_MIPS64R6)
-+#define dmultu(rs,rt)
-+#define mflo(rd,rs,rt)	dmulu	rd,rs,rt
-+#define mfhi(rd,rs,rt)	dmuhu	rd,rs,rt
- #else
--# define MSB 7
--# define LSB 0
-+#define dmultu(rs,rt)		dmultu	rs,rt
-+#define multu(rs,rt)		multu	rs,rt
-+#define mflo(rd,rs,rt)	mflo	rd
-+#define mfhi(rd,rs,rt)	mfhi	rd
- #endif
- 
- .text
- .set	noat
- .set	noreorder
- 
-+/* While most of the assembly in the kernel prefers ENTRY() and ENDPROC(),
-+ * there is no existing MIPS assembly that uses it, and MIPS assembler seems
-+ * to like its own .ent/.end notation, which the MIPS include files don't
-+ * provide in a MIPS-specific ENTRY/ENDPROC definition. So, we skip these
-+ * for now, until somebody complains. */
-+
- .align	5
--.globl	poly1305_init
--.ent	poly1305_init
--poly1305_init:
-+.globl	poly1305_init_mips
-+.ent	poly1305_init_mips
-+poly1305_init_mips:
- 	.frame	$29,0,$31
- 	.set	reorder
- 
-@@ -39,13 +62,13 @@ poly1305_init:
- 	ldr	$8,0+LSB($5)
- 	ldr	$9,8+LSB($5)
- #endif
--#ifdef	MIPSEB
--# if defined(_MIPS_ARCH_MIPS64R2)
-+#ifdef	__MIPSEB__
-+#if defined(_MIPS_ARCH_MIPS64R2)
- 	dsbh	$8,$8		# byte swap
- 	 dsbh	$9,$9
- 	dshd	$8,$8
- 	 dshd	$9,$9
--# else
-+#else
- 	ori	$10,$0,0xFF
- 	dsll	$1,$10,32
- 	or	$10,$1		# 0x000000FF000000FF
-@@ -79,7 +102,7 @@ poly1305_init:
- 	 dsll	$9,32
- 	or	$8,$11
- 	 or	$9,$2
--# endif
-+#endif
- #endif
- 	li	$10,1
- 	dsll	$10,32
-@@ -100,18 +123,19 @@ poly1305_init:
- .Lno_key:
- 	li	$2,0			# return 0
- 	jr	$31
--.end	poly1305_init
-+.end	poly1305_init_mips
-+
- .align	5
--.globl	poly1305_blocks
--.ent	poly1305_blocks
--poly1305_blocks:
-+.globl	poly1305_blocks_mips
-+.ent	poly1305_blocks_mips
-+poly1305_blocks_mips:
- 	.set	noreorder
- 	dsrl	$6,4			# number of complete blocks
- 	bnez	$6,poly1305_blocks_internal
- 	nop
- 	jr	$31
- 	nop
--.end	poly1305_blocks
-+.end	poly1305_blocks_mips
- 
- .align	5
- .ent	poly1305_blocks_internal
-@@ -144,13 +168,13 @@ poly1305_blocks_internal:
- #endif
- 	daddiu	$6,-1
- 	daddiu	$5,16
--#ifdef	MIPSEB
--# if defined(_MIPS_ARCH_MIPS64R2)
-+#ifdef	__MIPSEB__
-+#if defined(_MIPS_ARCH_MIPS64R2)
- 	dsbh	$8,$8		# byte swap
- 	 dsbh	$9,$9
- 	dshd	$8,$8
- 	 dshd	$9,$9
--# else
-+#else
- 	ori	$10,$0,0xFF
- 	dsll	$1,$10,32
- 	or	$10,$1		# 0x000000FF000000FF
-@@ -184,7 +208,7 @@ poly1305_blocks_internal:
- 	 dsll	$9,32
- 	or	$8,$11
- 	 or	$9,$2
--# endif
-+#endif
- #endif
- 	daddu	$12,$8		# accumulate input
- 	daddu	$13,$9
-@@ -257,10 +281,11 @@ poly1305_blocks_internal:
- 	jr	$31
- 	daddu	$29,6*8
- .end	poly1305_blocks_internal
-+
- .align	5
--.globl	poly1305_emit
--.ent	poly1305_emit
--poly1305_emit:
-+.globl	poly1305_emit_mips
-+.ent	poly1305_emit_mips
-+poly1305_emit_mips:
- 	.frame	$29,0,$31
- 	.set	reorder
- 
-@@ -332,7 +357,4 @@ poly1305_emit:
- 	sb	$11,15($5)
- 
- 	jr	$31
--.end	poly1305_emit
--.rdata
--.asciiz	"Poly1305 for MIPS64, CRYPTOGAMS by <appro@openssl.org>"
--.align	2
-+.end	poly1305_emit_mips
-diff --git a/lib/zinc/poly1305/poly1305.c b/lib/zinc/poly1305/poly1305.c
-index 21d9a0b9c11c..69e634c8a8d9 100644
---- a/lib/zinc/poly1305/poly1305.c
-+++ b/lib/zinc/poly1305/poly1305.c
-@@ -20,6 +20,8 @@
- #include "poly1305-x86_64-glue.c"
- #elif defined(CONFIG_ZINC_ARCH_ARM) || defined(CONFIG_ZINC_ARCH_ARM64)
- #include "poly1305-arm-glue.c"
-+#elif defined(CONFIG_ZINC_ARCH_MIPS) || defined(CONFIG_ZINC_ARCH_MIPS64)
-+#include "poly1305-mips-glue.c"
- #else
- static inline bool poly1305_init_arch(void *ctx,
- 				      const u8 key[POLY1305_KEY_SIZE])
--- 
-2.19.1
+Thanks,
+    Paul

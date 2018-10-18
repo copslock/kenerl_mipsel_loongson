@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2018 22:28:29 +0200 (CEST)
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:35424 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbeJQU2ZTBQbW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2018 22:28:25 +0200
-Received: by mail-oi1-f193.google.com with SMTP id 22-v6so22210328oiz.2;
-        Wed, 17 Oct 2018 13:28:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2018 03:04:18 +0200 (CEST)
+Received: from mail-it1-f194.google.com ([209.85.166.194]:38527 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994074AbeJRBENn0yOb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Oct 2018 03:04:13 +0200
+Received: by mail-it1-f194.google.com with SMTP id i76-v6so5004382ita.3;
+        Wed, 17 Oct 2018 18:04:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nEcdy7QEDbNlcX07BFBN89zLOirmmnq91X/i2VMyaL8=;
-        b=gwWxFO7FxIx7GCCYRXaDZ/IKnj1LGE9tU/1l2qEtzjQbUzYH2qPsT2jOgsfzR+VCJz
-         OuLDmOXrnkVXe9Q4aUburXEHIGfkBpp/Q8P0zV3GEpXOL3dyRYMCQCEkezN508xE2mXp
-         0GeViYp7Adwirl+0kn2/LNNlxpPrCpHB2gQuweB41Y15ydOgHK9+3dqu05lGboExV0VW
-         Z5ns7lzLlAYyM0egtO2QvyfI1Sg7mcCAFEcvTeOY+wBDpQwIcJs19iI6AC9DY/CANXLS
-         ZOeL3VRR5YLlXxRlpZRyr7r9Mbs3aybNmzDvZvQARERZkpGso9FLZlnXTBQDHTdO/64q
-         vJTA==
-X-Gm-Message-State: ABuFfogqSPlyjAZP7GDhNG7DZSSYaOJ7mrK/ZSveTSpB+EYB3gPkbTa8
-        Cuo+9b/0YA80xT0Uk9P2jewS0Ufghq4pTLyXLoY=
-X-Google-Smtp-Source: ACcGV63AaImc1z7tHmL0M6Msh6TSOdjWNVL1mke8ThowGM2MOldlYt/WOW24+5D3Tl4K3VZSolDd5sb68toPmLpKSvg=
-X-Received: by 2002:aca:ab8b:: with SMTP id u133-v6mr15347446oie.57.1539808099156;
- Wed, 17 Oct 2018 13:28:19 -0700 (PDT)
+        bh=/54642iGviT3fuBVEquGySV/2TZ1AT6y2hDZg0lxW2o=;
+        b=fBjwqBnXHzer8uUjoa6kGH0jJgPF1H6yk5D8ZLTTWHy5xnhhelkaa4mr3tOGeE0ZoT
+         oLRABFvMV48yIcybnWQyjmhV6iOGthrQkj1Fhc53zaXQNRQn57f/pNPHq/qwab/yogb9
+         PXfS40uYN7N0s1+N6t2GWshoWPCBNNFPtNyJr0Zg5oDJGeK8HA36+bwqytXUQuqma01M
+         jhPUnAqTMsormfZIotGdj8DWLLWNJjJBlBnedbJQ4hs2QOI+vHK7jnu4HBkaQay+k0uP
+         uNA7x+1uPm+Udf5MlkuguXEQcvO6cXfyDskQ0QcFTSkfrHq44j6Gl6TLp2E15i9JKIAw
+         J17Q==
+X-Gm-Message-State: ABuFfohrVHX29pr0M6+dCwTp1HkxeLO4nVF8z9QcHWhbnlhz0P/KucCE
+        Pflf1yT44MjGshQUhtkAnG02WXXMTS7yV1plvVg=
+X-Google-Smtp-Source: ACcGV61XBtg/ngyTZmVEsu7OXy5U5m4gLue2FXZQOJ0kKQ0LezN3VPXfV4VtoxOyEJtbuIwtM8CW5oTQlaLQu65S2FA=
+X-Received: by 2002:a05:660c:441:: with SMTP id d1mr3414110itl.22.1539824647585;
+ Wed, 17 Oct 2018 18:04:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20180606193811.16007-1-malat@debian.org> <20180606193811.16007-2-malat@debian.org>
-In-Reply-To: <20180606193811.16007-2-malat@debian.org>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Wed, 17 Oct 2018 22:28:08 +0200
-Message-ID: <CA+7wUswf1+3E12-qs0c0L7PjPWsndYo2oe_b=Gv5vXF0gd+Ttg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] MIPS: Ci20: Enable SND_JZ4740_SOC driver
-To:     James Hogan <jhogan@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>, alsa-devel@alsa-project.org
+References: <1539736193-27332-1-git-send-email-chenhc@lemote.com> <20181017201910.27kdwnml6kq7qff5@pburton-laptop>
+In-Reply-To: <20181017201910.27kdwnml6kq7qff5@pburton-laptop>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Thu, 18 Oct 2018 09:09:54 +0800
+Message-ID: <CAAhV-H4JXW4oQQRtFqASdS71iXLM82N3PDOQX07AXOikYq5Dvw@mail.gmail.com>
+Subject: Re: [PATCH] cacheinfo: Keep the old value if of_property_read_u32 fails
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        zhangfx <zhangfx@lemote.com>, wu zhangjin <wuzhangjin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <mathieu.malaterre@gmail.com>
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66888
+X-archive-position: 66889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: malat@debian.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,33 +55,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 6, 2018 at 9:38 PM Mathieu Malaterre <malat@debian.org> wrote:
->
-> Update the Ci20's defconfig to enable the JZ4780's SND driver.
->
-> Signed-off-by: Mathieu Malaterre <malat@debian.org>
-> ---
->  arch/mips/configs/ci20_defconfig | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-> index e1c14f6af824..0c08c7675b42 100644
-> --- a/arch/mips/configs/ci20_defconfig
-> +++ b/arch/mips/configs/ci20_defconfig
-> @@ -104,6 +104,10 @@ CONFIG_REGULATOR=y
->  CONFIG_REGULATOR_DEBUG=y
->  CONFIG_REGULATOR_FIXED_VOLTAGE=y
->  # CONFIG_VGA_CONSOLE is not set
-> +CONFIG_SOUND=y
-> +CONFIG_SND=y
-> +CONFIG_SND_SOC=y
-> +CONFIG_SND_JZ4740_SOC=y
+Hi, Paul,
 
-technically I am also missing: CONFIG_SND_JZ4740_SOC_I2S=y
+I'm sorry to send to a wrong maillist... And please review another
+patch (About VDSO, I'm sorry that I hadn't do enough tests before).
 
->  # CONFIG_HID is not set
->  # CONFIG_USB_SUPPORT is not set
->  CONFIG_MMC=y
-> --
-> 2.11.0
+Huacai
+On Thu, Oct 18, 2018 at 4:19 AM Paul Burton <paul.burton@mips.com> wrote:
 >
+> Hi Huacai,
+>
+> On Wed, Oct 17, 2018 at 08:29:53AM +0800, Huacai Chen wrote:
+> > Commit 448a5a552f336bd7b847b1951 ("drivers: base: cacheinfo: use OF
+> > property_read_u32 instead of get_property,read_number") makes cache
+> > size and number_of_sets be 0 if DT doesn't provide there values. I
+> > think this is unreasonable so make them keep the old values, which is
+> > the same as old kernels.
+> >
+> > Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> > ---
+> >  drivers/base/cacheinfo.c | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> Since this isn't a MIPS-related patch you'll need to send it to the
+> maintainers & reviewers for the file you modified. They would be:
+>
+>   $ ./scripts/get_maintainer.pl -f drivers/base/cacheinfo.c
+>   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     (supporter:DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS)
+>   "Rafael J. Wysocki" <rafael@kernel.org>
+>     (reviewer:DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS)
+>   linux-kernel@vger.kernel.org (open list)
+>
+> Thanks,
+>     Paul

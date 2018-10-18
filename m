@@ -1,48 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2018 03:04:18 +0200 (CEST)
-Received: from mail-it1-f194.google.com ([209.85.166.194]:38527 "EHLO
-        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994074AbeJRBENn0yOb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Oct 2018 03:04:13 +0200
-Received: by mail-it1-f194.google.com with SMTP id i76-v6so5004382ita.3;
-        Wed, 17 Oct 2018 18:04:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/54642iGviT3fuBVEquGySV/2TZ1AT6y2hDZg0lxW2o=;
-        b=fBjwqBnXHzer8uUjoa6kGH0jJgPF1H6yk5D8ZLTTWHy5xnhhelkaa4mr3tOGeE0ZoT
-         oLRABFvMV48yIcybnWQyjmhV6iOGthrQkj1Fhc53zaXQNRQn57f/pNPHq/qwab/yogb9
-         PXfS40uYN7N0s1+N6t2GWshoWPCBNNFPtNyJr0Zg5oDJGeK8HA36+bwqytXUQuqma01M
-         jhPUnAqTMsormfZIotGdj8DWLLWNJjJBlBnedbJQ4hs2QOI+vHK7jnu4HBkaQay+k0uP
-         uNA7x+1uPm+Udf5MlkuguXEQcvO6cXfyDskQ0QcFTSkfrHq44j6Gl6TLp2E15i9JKIAw
-         J17Q==
-X-Gm-Message-State: ABuFfohrVHX29pr0M6+dCwTp1HkxeLO4nVF8z9QcHWhbnlhz0P/KucCE
-        Pflf1yT44MjGshQUhtkAnG02WXXMTS7yV1plvVg=
-X-Google-Smtp-Source: ACcGV61XBtg/ngyTZmVEsu7OXy5U5m4gLue2FXZQOJ0kKQ0LezN3VPXfV4VtoxOyEJtbuIwtM8CW5oTQlaLQu65S2FA=
-X-Received: by 2002:a05:660c:441:: with SMTP id d1mr3414110itl.22.1539824647585;
- Wed, 17 Oct 2018 18:04:07 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2018 06:32:08 +0200 (CEST)
+Received: from zeniv.linux.org.uk ([195.92.253.2]:60016 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990437AbeJREcFjBG6k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Oct 2018 06:32:05 +0200
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1gCzya-0007M8-QA; Thu, 18 Oct 2018 04:32:00 +0000
+Date:   Thu, 18 Oct 2018 05:32:00 +0100
+From:   Al Viro <viro@ZenIV.linux.org.uk>
+To:     "Hongzhi, Song" <hongzhi.song@windriver.com>
+Cc:     linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Question about mmap syscall and POSIX standard on mips arch
+Message-ID: <20181018043200.GE32577@ZenIV.linux.org.uk>
+References: <e897b11f-1577-9298-7c82-7bbdea56e7e5@windriver.com>
 MIME-Version: 1.0
-References: <1539736193-27332-1-git-send-email-chenhc@lemote.com> <20181017201910.27kdwnml6kq7qff5@pburton-laptop>
-In-Reply-To: <20181017201910.27kdwnml6kq7qff5@pburton-laptop>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Thu, 18 Oct 2018 09:09:54 +0800
-Message-ID: <CAAhV-H4JXW4oQQRtFqASdS71iXLM82N3PDOQX07AXOikYq5Dvw@mail.gmail.com>
-Subject: Re: [PATCH] cacheinfo: Keep the old value if of_property_read_u32 fails
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        zhangfx <zhangfx@lemote.com>, wu zhangjin <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e897b11f-1577-9298-7c82-7bbdea56e7e5@windriver.com>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+Return-Path: <viro@ftp.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66889
+X-archive-position: 66890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: viro@ZenIV.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,37 +39,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Paul,
+[mips folks Cc'd]
 
-I'm sorry to send to a wrong maillist... And please review another
-patch (About VDSO, I'm sorry that I hadn't do enough tests before).
+On Thu, Oct 18, 2018 at 11:26:02AM +0800, Hongzhi, Song wrote:
+> Hi all,
+> 
+> Ltp has a POSIX teatcase about mmap, 24-2.c.
+> 
+> https://github.com/linux-test-project/ltp/blob/e816127e5d8efbff5ae53e9c2292fae22f36838b/testcases/open_posix_testsuite/conformance/interfaces/mmap/24-2.c#L94
 
-Huacai
-On Thu, Oct 18, 2018 at 4:19 AM Paul Burton <paul.burton@mips.com> wrote:
->
-> Hi Huacai,
->
-> On Wed, Oct 17, 2018 at 08:29:53AM +0800, Huacai Chen wrote:
-> > Commit 448a5a552f336bd7b847b1951 ("drivers: base: cacheinfo: use OF
-> > property_read_u32 instead of get_property,read_number") makes cache
-> > size and number_of_sets be 0 if DT doesn't provide there values. I
-> > think this is unreasonable so make them keep the old values, which is
-> > the same as old kernels.
-> >
-> > Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> > ---
-> >  drivers/base/cacheinfo.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> Since this isn't a MIPS-related patch you'll need to send it to the
-> maintainers & reviewers for the file you modified. They would be:
->
->   $ ./scripts/get_maintainer.pl -f drivers/base/cacheinfo.c
->   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     (supporter:DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS)
->   "Rafael J. Wysocki" <rafael@kernel.org>
->     (reviewer:DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS)
->   linux-kernel@vger.kernel.org (open list)
->
-> Thanks,
->     Paul
+[basically, MAP_FIXED mmap with addr + len > TASK_SIZE fails with
+-EINVAL on mips and -ENOMEM elsewhere]
+ 
+> Under POSIX standard, the expected errno should be ENOMEM
+> 
+> when the specific [addr+len] exceeds the bound of memory.
+
+The mmap() function may fail if:
+
+[EINVAL]
+The addr argument (if MAP_FIXED was specified) or off is not a multiple
+of the page size as returned by sysconf(), or is considered invalid by
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+the implementation.
+^^^^^^^^^^^^^^^^^^^
+
+So that behaviour gets past POSIX.  That part is mostly about the
+things like cache aliasing constraints, etc., but it leaves enough
+space to weasel out.  Said that, this
+
+[ENOMEM]
+MAP_FIXED was specified, and the range [addr,addr+len) exceeds that allowed
+for the address space of a process; or, if MAP_FIXED was not specified and
+there is insufficient room in the address space to effect the mapping.
+
+is a lot more specific, so switching to -ENOMEM there might be a good idea,
+especially since on other architectures we do get -ENOMEM in that case,
+AFAICS.

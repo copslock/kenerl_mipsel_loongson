@@ -1,85 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2018 01:09:26 +0200 (CEST)
-Received: from mail-co1nam03on0121.outbound.protection.outlook.com ([104.47.40.121]:29968
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994558AbeJRXJXqwwsx convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Oct 2018 01:09:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QlkR57KhLRS8H7YDud4phNCQSH6422rLl/c0kPSATHA=;
- b=Q0gfUxS/4+abdeDNu+4L+VMgBcVo90FTpTTu/LVNEeHKcXYjPUCK056txiqgKz9jJEft/FWOCIh2IJTFBzMKGBZLaopvHlh6yJcRmjdvorBqOvQwoBpczDS9Pim6tz3/IrcCgX2Tx6yV9srFEKioELtjmHlgOjV/CEvQq5xd4Zo=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1040.namprd22.prod.outlook.com (10.174.169.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1228.24; Thu, 18 Oct 2018 23:09:11 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf%12]) with mapi id 15.20.1250.022; Thu, 18 Oct 2018
- 23:09:11 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-CC:     "Hongzhi, Song" <hongzhi.song@windriver.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "mm-commits@vger.kernel.org" <mm-commits@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Question about mmap syscall and POSIX standard on mips arch
-Thread-Topic: Question about mmap syscall and POSIX standard on mips arch
-Thread-Index: AQHUZpuSly8s3XkRr0+u/PPo/AMS1qUloe+A
-Date:   Thu, 18 Oct 2018 23:09:11 +0000
-Message-ID: <20181018230909.nze5ws5ro2r3kvw6@pburton-laptop>
-References: <e897b11f-1577-9298-7c82-7bbdea56e7e5@windriver.com>
- <20181018043200.GE32577@ZenIV.linux.org.uk>
-In-Reply-To: <20181018043200.GE32577@ZenIV.linux.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR14CA0023.namprd14.prod.outlook.com
- (2603:10b6:300:ae::33) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1040;6:VDxJk9ve2LD+IenGzTrmgHn79Lq9R1AnYAkMlldhKwFaIgVGY/i9eNR/TpbAD2UfClRFwG740OaT3d1Xdb2oHrwOGWsXluCjDSHRoXe8vPtROIU0YeceNE9+eYvNk3A24JojwpzkjeAYJW5urp8Ady6wmZ+QsyQ6FWgfhU7rtc8VhgdqaFDlRbhwmCgJMZ6I7SrMXd6rUOdmd3cnEDkkZLcdB5Q7F9kGe1vxRVzHzpJ46imZ48n/PodRQAgB+/MLOOekpl0DgrhMBIYkXCR4+DwQGZ28ByMKp4xPLyZN7PC2s9VKkpzyroldl6RAuHNnUtUXfTYEbaGpfV7P+n6xJnPZ4vLYNUDEZaYLhuQNzgeAojNNzNlrR5UCuuQhFI1epVauDov+REXhoMfzGBmVcVJhCuwMzZbgKusdxoYuRbCmFR0BYFVOf+dCuGxg45eOcDoY1En9FVRN2vvWfGckyg==;5:P+wzjdspUTMDc1aZWGQ5tN1HVxrFcjepldMtBHn0qnMaNZ2+PP1wLe4X/mTumkJems0EEIst/AHpHTItNM+GObIi0xlbnOPTdvVsWZaVjKH8mzMotqiJ++9jpmaiFfrL/ADodCkSWZ/yGof0tfAyhH5jgxccQkNj5D42EHL3Jkg=;7:+df2EOX/FYYSPekto8BrKYM6YyEUptaS2pn57mdpfOLPMvUp8s5Z+2EcLT6lAb53aNbIJWFWComZdPVQ0FiPQrmBTZ4AQGZfFUY8XAAdHoIazxG/x0kOMLmJFQm/fWzNiGoRI3GZt73ceYbJqx1XWt0Z2okX8+y3vXaVUFMPWstt3wVYkkG48jvAjew2Kbd8W54GUuYwLnnnTlzsnw4PBx1WcCpc2Qk6QW2ts0AfPHeDuD54upOz2joPsdcLZNS1
-x-ms-office365-filtering-correlation-id: 07d3de75-fd35-40d9-ee94-08d6354eb6a9
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1040;
-x-ms-traffictypediagnostic: MWHPR2201MB1040:
-x-microsoft-antispam-prvs: <MWHPR2201MB1040527A0C5D1A2D9DDC7C37C1F80@MWHPR2201MB1040.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(166708455590820);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3231355)(944501410)(52105095)(10201501046)(3002001)(149066)(150057)(6041310)(20161123564045)(2016111802025)(20161123562045)(20161123560045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1040;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1040;
-x-forefront-prvs: 08296C9B35
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39840400004)(136003)(376002)(396003)(346002)(366004)(199004)(53754006)(189003)(51914003)(54906003)(446003)(6916009)(66066001)(25786009)(81166006)(58126008)(53936002)(6436002)(33716001)(6512007)(106356001)(8676002)(81156014)(5250100002)(2906002)(6506007)(8936002)(33896004)(6116002)(386003)(6246003)(3846002)(99286004)(76176011)(14454004)(52116002)(105586002)(97736004)(5660300001)(11346002)(1076002)(508600001)(316002)(256004)(44832011)(42882007)(6486002)(68736007)(305945005)(71190400001)(71200400001)(476003)(966005)(9686003)(7736002)(486006)(229853002)(6306002)(4326008)(26005)(2900100001)(186003)(102836004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1040;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: CIgDRRWmKasiwW2rqLH2XDOXvdyyG2Rjd+1NWc92oQqJi6CrWEpNfAWHeNF7KAqMt9UsusvnOyYMT2xgUcm/wPR8k4t176DCm2PRaO54QOgF9YWJIRZBy80SU1QSab4AC9jKXd4msfZMwZ8qXpS0IcT3sU184IVZ9q7W7ex46ducJMtbqQuE1MogYcv5KgBTBfnc3RaQry4x2/dd42oGGyI4DF6QB9AGmLv8bSBRMjbI3IiORMB8NvuxygNG1Z+I+/mo41B8mGwvovxja5GsbM/IZTwnrSImoTOsBwIlABaLpa5tFppteGK3tOmSK0SE4oEvilRWgdzEXN8ohn+QqWsFLvuEHdlVHWiQEO1C9uY=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <04DE8EAA7DDC9046A1C2FC7C51D0C0BA@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07d3de75-fd35-40d9-ee94-08d6354eb6a9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2018 23:09:11.4650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1040
-Return-Path: <pburton@wavecomp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2018 22:50:59 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:13377 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994583AbeJSUuxbJv1G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Oct 2018 22:50:53 +0200
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Oct 2018 13:50:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.54,401,1534834800"; 
+   d="scan'208";a="100971840"
+Received: from rpedgeco-desk5.jf.intel.com ([10.54.75.168])
+  by orsmga001.jf.intel.com with ESMTP; 19 Oct 2018 13:50:51 -0700
+From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
+To:     kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
+        keescook@chromium.org, catalin.marinas@arm.com,
+        will.deacon@arm.com, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, x86@kernel.org, arnd@arndb.de,
+        jeyu@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        jannh@google.com
+Cc:     kristen@linux.intel.com, dave.hansen@intel.com,
+        arjan@linux.intel.com, deneen.t.dock@intel.com,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: [PATCH RFC v3 0/3] Rlimit for module space
+Date:   Fri, 19 Oct 2018 13:47:20 -0700
+Message-Id: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <rick.p.edgecombe@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66894
+X-archive-position: 66896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: rick.p.edgecombe@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,50 +50,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Al,
+If BPF JIT is on, there is no effective limit to prevent filling the entire
+module space with JITed e/BPF filters. For classic BPF filters attached with
+setsockopt SO_ATTACH_FILTER, there is no memlock rlimit check to limit the
+number of insertions like there is for the bpf syscall.
 
-On Thu, Oct 18, 2018 at 05:32:00AM +0100, Al Viro wrote:
-> [mips folks Cc'd]
-> 
-> On Thu, Oct 18, 2018 at 11:26:02AM +0800, Hongzhi, Song wrote:
-> > Hi all,
-> > 
-> > Ltp has a POSIX teatcase about mmap, 24-2.c.
-> > 
-> > https://github.com/linux-test-project/ltp/blob/e816127e5d8efbff5ae53e9c2292fae22f36838b/testcases/open_posix_testsuite/conformance/interfaces/mmap/24-2.c#L94
-> 
-> [basically, MAP_FIXED mmap with addr + len > TASK_SIZE fails with
-> -EINVAL on mips and -ENOMEM elsewhere]
->  
-> > Under POSIX standard, the expected errno should be ENOMEM
-> > 
-> > when the specific [addr+len] exceeds the bound of memory.
-> 
-> The mmap() function may fail if:
-> 
-> [EINVAL]
-> The addr argument (if MAP_FIXED was specified) or off is not a multiple
-> of the page size as returned by sysconf(), or is considered invalid by
->                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> the implementation.
-> ^^^^^^^^^^^^^^^^^^^
-> 
-> So that behaviour gets past POSIX.  That part is mostly about the
-> things like cache aliasing constraints, etc., but it leaves enough
-> space to weasel out.  Said that, this
-> 
-> [ENOMEM]
-> MAP_FIXED was specified, and the range [addr,addr+len) exceeds that allowed
-> for the address space of a process; or, if MAP_FIXED was not specified and
-> there is insufficient room in the address space to effect the mapping.
-> 
-> is a lot more specific, so switching to -ENOMEM there might be a good idea,
-> especially since on other architectures we do get -ENOMEM in that case,
-> AFAICS.
+This patch adds a per user rlimit for module space, as well as a system wide
+limit for BPF JIT. In a previously reviewed patchset, Jann Horn pointed out the
+problem that in some cases a user can get access to 65536 UIDs, so the effective
+limit cannot be set low enough to stop an attacker and be useful for the general
+case. A discussed alternative solution was a system wide limit for BPF JIT
+filters. This much more simply resolves the problem of exhaustion and
+de-randomizing in the case of non-CONFIG_BPF_JIT_ALWAYS_ON. If
+CONFIG_BPF_JIT_ALWAYS_ON is on however, BPF insertions will fail if another user
+exhausts the BPF JIT limit. In this case a per user limit is still needed. If
+the subuid facility is disabled for normal users, this should still be ok
+because the higher limit will not be able to be worked around that way.
 
-Thanks for the heads up - that does sound like reasonably clear
-non-compliance. I'll make a note to put together a patch & test it out,
-likely next week, if nobody submits one first.
+The new BPF JIT limit can be set like this:
+echo 5000000 > /proc/sys/net/core/bpf_jit_limit
 
-Thanks,
-    Paul
+So I *think* this patchset should resolve that issue except for the
+configuration of CONFIG_BPF_JIT_ALWAYS_ON and subuid allowed for normal users.
+Better module space KASLR is another way to resolve the de-randomizing issue,
+and so then you would just be left with the BPF DOS in that configuration.
+
+Jann also pointed out how, with purposely fragmenting the module space, you
+could make the effective module space blockage area much larger. This is also
+somewhat un-resolved. The impact would depend on how big of a space you are
+trying to allocate. The limit has been lowered on x86_64 so that at least
+typical sized BPF filters cannot be blocked.
+
+If anyone with more experience with subuid/user namespaces has any suggestions
+I'd be glad to hear. On an Ubuntu machine it didn't seem like a un-privileged
+user could do this. I am going to keep working on this and see if I can find a
+better solution.
+
+Changes since v2:
+ - System wide BPF JIT limit (discussion with Jann Horn)
+ - Holding reference to user correctly (Jann)
+ - Having arch versions of modulde_alloc (Dave Hansen, Jessica Yu)
+ - Shrinking of default limits, to help prevent the limit being worked around
+   with fragmentation (Jann)
+
+Changes since v1:
+ - Plug in for non-x86
+ - Arch specific default values
+
+
+Rick Edgecombe (3):
+  modules: Create arch versions of module alloc/free
+  modules: Create rlimit for module space
+  bpf: Add system wide BPF JIT limit
+
+ arch/arm/kernel/module.c                |   2 +-
+ arch/arm64/kernel/module.c              |   2 +-
+ arch/mips/kernel/module.c               |   2 +-
+ arch/nds32/kernel/module.c              |   2 +-
+ arch/nios2/kernel/module.c              |   4 +-
+ arch/parisc/kernel/module.c             |   2 +-
+ arch/s390/kernel/module.c               |   2 +-
+ arch/sparc/kernel/module.c              |   2 +-
+ arch/unicore32/kernel/module.c          |   2 +-
+ arch/x86/include/asm/pgtable_32_types.h |   3 +
+ arch/x86/include/asm/pgtable_64_types.h |   2 +
+ arch/x86/kernel/module.c                |   2 +-
+ fs/proc/base.c                          |   1 +
+ include/asm-generic/resource.h          |   8 ++
+ include/linux/bpf.h                     |   7 ++
+ include/linux/filter.h                  |   1 +
+ include/linux/sched/user.h              |   4 +
+ include/uapi/asm-generic/resource.h     |   3 +-
+ kernel/bpf/core.c                       |  22 +++-
+ kernel/bpf/inode.c                      |  16 +++
+ kernel/module.c                         | 152 +++++++++++++++++++++++-
+ net/core/sysctl_net_core.c              |   7 ++
+ 22 files changed, 233 insertions(+), 15 deletions(-)
+
+-- 
+2.17.1

@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2018 22:51:39 +0200 (CEST)
-Received: from mga04.intel.com ([192.55.52.120]:13379 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994599AbeJSUu5pohrG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Oct 2018 22:50:57 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Oct 2018 13:50:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.54,401,1534834800"; 
-   d="scan'208";a="100971846"
-Received: from rpedgeco-desk5.jf.intel.com ([10.54.75.168])
-  by orsmga001.jf.intel.com with ESMTP; 19 Oct 2018 13:50:51 -0700
-From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
-To:     kernel-hardening@lists.openwall.com, daniel@iogearbox.net,
-        keescook@chromium.org, catalin.marinas@arm.com,
-        will.deacon@arm.com, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, x86@kernel.org, arnd@arndb.de,
-        jeyu@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
-        jannh@google.com
-Cc:     kristen@linux.intel.com, dave.hansen@intel.com,
-        arjan@linux.intel.com, deneen.t.dock@intel.com,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v3 2/3] modules: Create rlimit for module space
-Date:   Fri, 19 Oct 2018 13:47:22 -0700
-Message-Id: <20181019204723.3903-3-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
-References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
-Return-Path: <rick.p.edgecombe@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Oct 2018 11:31:33 +0200 (CEST)
+Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:45155
+        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992891AbeJTJbaXP2JT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Oct 2018 11:31:30 +0200
+Received: by mail-wr1-x443.google.com with SMTP id f17-v6so8040040wrs.12;
+        Sat, 20 Oct 2018 02:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GHc11vhMARtDZs1nuQq2CZe5+fQS2/S7WpD2lg9m7dE=;
+        b=GlNi1uYmhDH01oha5VpoEDlXkS+9sXfS1QZ7YVBYl0/ChpbVAY6/KIfPmejQBHajdg
+         4aRm+4+lsXylljQMxui3sco61IFhyz9zLaBuEkM4T1e0j9OxyRGjfZaUdzG2IFP3R127
+         zM//2HZ7X0oKvfUb6bLxANh29aLwWfQ2Wen0oJ3hmbfrmb5cg3loxYO7N68DRlvYA/Fv
+         Bej7oZkl97oI4DEb6tdmxqJ8PBFpOdV77gE6MQxTlbxOd9QKJV9nYcW8QFxNEFVUwl3R
+         CDiAqHhHhXO5O/sWEg5mk7rNZmHjiTzDEONxVn8Lw8F5EgNa7uKg09yXH1stI+EAQ4J8
+         FofA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GHc11vhMARtDZs1nuQq2CZe5+fQS2/S7WpD2lg9m7dE=;
+        b=CS9SO3lF9A5noyNCFhSVrLTxM4jsmlcGtIbF72+Lfg1NRmGF8jIlt9nyCr19LnpSUy
+         lwQ2L85K8cQLb96Ux+uYXSwpCXO2bM3tGxEOM6kVV8Kl7NRRm9ARFl0eFSwmuWzavfz3
+         13AJpOm3BdtvxYGNClGHseuoTeuloRFAVExbwljaPLsHspBZXDvaJyKgg8AUXL/wFOkY
+         hG9RCd9Tmubg+hxAOok+aY+UxBO4tOMhzfeVafJQhmYWlLtMu2OYORDkV7b8wnk7L6qA
+         CsFfnwA1XH46O8ZEHd9DD7wgV3XXpkCghaoEdFdwVM3XESYR4J95wnmAxaRqNkVUa1dD
+         Ng8g==
+X-Gm-Message-State: AGRZ1gIX6kmZtg5kqO45NQ2ufatmSpx3RALaQA3yaO0jzPsupsSH4FnJ
+        r4FV9CqGU0cHFtWDm+VhOrzS82qnF9A=
+X-Google-Smtp-Source: AJdET5dDu1I6n5YU0IueK92NfF6c2yp5cCIStkItK9Gy+rcWhLh9+m1/m4vm/9zXzOU8FP8YtyAkJw==
+X-Received: by 2002:a5d:524f:: with SMTP id p15-v6mr6494426wrv.192.1540027884657;
+        Sat, 20 Oct 2018 02:31:24 -0700 (PDT)
+Received: from laptop.localdomain ([37.122.159.87])
+        by smtp.gmail.com with ESMTPSA id v76-v6sm7226030wmd.32.2018.10.20.02.31.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 20 Oct 2018 02:31:24 -0700 (PDT)
+From:   Yasha Cherikovsky <yasha.che3@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
+Cc:     Yasha Cherikovsky <yasha.che3@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Ensure ELF appended dtb is relocated
+Date:   Sat, 20 Oct 2018 12:31:00 +0300
+Message-Id: <20181020093100.3810-1-yasha.che3@gmail.com>
+X-Mailer: git-send-email 2.19.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-Path: <yasha.che3@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66899
+X-archive-position: 66900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rick.p.edgecombe@intel.com
+X-original-sender: yasha.che3@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,284 +69,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This introduces a new rlimit, RLIMIT_MODSPACE, which limits the amount of
-module space a user can use. The intention is to be able to limit module space
-allocations that may come from un-privlidged users inserting e/BPF filters.
+This fixes booting with the combination of CONFIG_RELOCATABLE=y
+and CONFIG_MIPS_ELF_APPENDED_DTB=y.
 
-Since filters attached to sockets can be passed to other processes via domain
-sockets and freed there, there is new tracking for the uid of each allocation.
-This way if the allocation is freed by a different user, it will not throw off
-the accounting.
+Sections that appear after the relocation table are not relocated
+on system boot (except .bss, which has special handling).
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+With CONFIG_MIPS_ELF_APPENDED_DTB, the dtb is part of the
+vmlinux ELF, so it must be relocated together with everything else.
+
+Fixes: 069fd766271d ("MIPS: Reserve space for relocation table")
+Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/include/asm/pgtable_32_types.h |   3 +
- arch/x86/include/asm/pgtable_64_types.h |   2 +
- fs/proc/base.c                          |   1 +
- include/asm-generic/resource.h          |   8 ++
- include/linux/sched/user.h              |   4 +
- include/uapi/asm-generic/resource.h     |   3 +-
- kernel/module.c                         | 140 +++++++++++++++++++++++-
- 7 files changed, 159 insertions(+), 2 deletions(-)
+ arch/mips/kernel/vmlinux.lds.S | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable_32_types.h b/arch/x86/include/asm/pgtable_32_types.h
-index b0bc0fff5f1f..185e382fa8c3 100644
---- a/arch/x86/include/asm/pgtable_32_types.h
-+++ b/arch/x86/include/asm/pgtable_32_types.h
-@@ -68,6 +68,9 @@ extern bool __vmalloc_start_set; /* set once high_memory is set */
- #define MODULES_END	VMALLOC_END
- #define MODULES_LEN	(MODULES_VADDR - MODULES_END)
- 
-+/* Half of 128MB vmalloc space */
-+#define MODSPACE_LIMIT (1 << 25)
-+
- #define MAXMEM	(VMALLOC_END - PAGE_OFFSET - __VMALLOC_RESERVE)
- 
- #endif /* _ASM_X86_PGTABLE_32_DEFS_H */
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 04edd2d58211..39288812be5a 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -143,6 +143,8 @@ extern unsigned int ptrs_per_p4d;
- #define MODULES_END		_AC(0xffffffffff000000, UL)
- #define MODULES_LEN		(MODULES_END - MODULES_VADDR)
- 
-+#define MODSPACE_LIMIT		(MODULES_LEN / 10)
-+
- #define ESPFIX_PGD_ENTRY	_AC(-2, UL)
- #define ESPFIX_BASE_ADDR	(ESPFIX_PGD_ENTRY << P4D_SHIFT)
- 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 7e9f07bf260d..84824f50e9f8 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -562,6 +562,7 @@ static const struct limit_names lnames[RLIM_NLIMITS] = {
- 	[RLIMIT_NICE] = {"Max nice priority", NULL},
- 	[RLIMIT_RTPRIO] = {"Max realtime priority", NULL},
- 	[RLIMIT_RTTIME] = {"Max realtime timeout", "us"},
-+	[RLIMIT_MODSPACE] = {"Max module space", "bytes"},
- };
- 
- /* Display limits for a process */
-diff --git a/include/asm-generic/resource.h b/include/asm-generic/resource.h
-index 8874f681b056..94c150e3dd12 100644
---- a/include/asm-generic/resource.h
-+++ b/include/asm-generic/resource.h
-@@ -4,6 +4,13 @@
- 
- #include <uapi/asm-generic/resource.h>
- 
-+/*
-+ * If the module space rlimit is not defined in an arch specific way, leave
-+ * room for 10000 large eBPF filters.
-+ */
-+#ifndef MODSPACE_LIMIT
-+#define MODSPACE_LIMIT (5*PAGE_SIZE*10000)
-+#endif
- 
- /*
-  * boot-time rlimit defaults for the init task:
-@@ -26,6 +33,7 @@
- 	[RLIMIT_NICE]		= { 0, 0 },				\
- 	[RLIMIT_RTPRIO]		= { 0, 0 },				\
- 	[RLIMIT_RTTIME]		= {  RLIM_INFINITY,  RLIM_INFINITY },	\
-+	[RLIMIT_MODSPACE]	= {  MODSPACE_LIMIT,  MODSPACE_LIMIT },	\
- }
- 
- #endif
-diff --git a/include/linux/sched/user.h b/include/linux/sched/user.h
-index 39ad98c09c58..4c6d99d066fe 100644
---- a/include/linux/sched/user.h
-+++ b/include/linux/sched/user.h
-@@ -44,6 +44,10 @@ struct user_struct {
- 	atomic_long_t locked_vm;
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 971a504001c2..36f2e860ba3e 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -140,6 +140,13 @@ SECTIONS
+ 	PERCPU_SECTION(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
  #endif
  
-+#ifdef CONFIG_MODULES
-+	atomic_long_t module_vm;
++#ifdef CONFIG_MIPS_ELF_APPENDED_DTB
++	.appended_dtb : AT(ADDR(.appended_dtb) - LOAD_OFFSET) {
++		*(.appended_dtb)
++		KEEP(*(.appended_dtb))
++	}
 +#endif
 +
- 	/* Miscellaneous per-user rate limit */
- 	struct ratelimit_state ratelimit;
- };
-diff --git a/include/uapi/asm-generic/resource.h b/include/uapi/asm-generic/resource.h
-index f12db7a0da64..3f998340ed30 100644
---- a/include/uapi/asm-generic/resource.h
-+++ b/include/uapi/asm-generic/resource.h
-@@ -46,7 +46,8 @@
- 					   0-39 for nice level 19 .. -20 */
- #define RLIMIT_RTPRIO		14	/* maximum realtime priority */
- #define RLIMIT_RTTIME		15	/* timeout for RT tasks in us */
--#define RLIM_NLIMITS		16
-+#define RLIMIT_MODSPACE		16	/* max module space address usage */
-+#define RLIM_NLIMITS		17
+ #ifdef CONFIG_RELOCATABLE
+ 	. = ALIGN(4);
  
- /*
-  * SuS says limits have to be unsigned.
-diff --git a/kernel/module.c b/kernel/module.c
-index 41c22aba8209..c26ad50365dd 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -2110,6 +2110,134 @@ static void free_module_elf(struct module *mod)
- }
- #endif /* CONFIG_LIVEPATCH */
- 
-+struct mod_alloc_user {
-+	struct rb_node node;
-+	unsigned long addr;
-+	unsigned long pages;
-+	struct user_struct *user;
-+};
-+
-+static struct rb_root alloc_users = RB_ROOT;
-+static DEFINE_SPINLOCK(alloc_users_lock);
-+
-+static unsigned int get_mod_page_cnt(unsigned long size)
-+{
-+	/* Add one for guard page */
-+	return (PAGE_ALIGN(size) >> PAGE_SHIFT) + 1;
-+}
-+
-+void update_mod_rlimit(void *addr, unsigned long size)
-+{
-+	unsigned long addrl = (unsigned long) addr;
-+	struct rb_node **new = &(alloc_users.rb_node), *parent = NULL;
-+	struct mod_alloc_user *track = kmalloc(sizeof(struct mod_alloc_user),
-+				GFP_KERNEL);
-+	unsigned int pages = get_mod_page_cnt(size);
-+	struct user_struct *user = get_current_user();
-+
-+	/*
-+	 * If addr is NULL, then we need to reverse the earlier increment that
-+	 * would have happened in an check_inc_mod_rlimit call.
-+	 */
-+	if (!addr) {
-+		atomic_long_sub(pages, &user->module_vm);
-+		free_uid(user);
-+		return;
-+	}
-+
-+	/* Now, add tracking for the uid that allocated this */
-+	track->addr = addrl;
-+	track->pages = pages;
-+	track->user = user;
-+
-+	spin_lock(&alloc_users_lock);
-+
-+	while (*new) {
-+		struct mod_alloc_user *cur =
-+				rb_entry(*new, struct mod_alloc_user, node);
-+		parent = *new;
-+		if (cur->addr > addrl)
-+			new = &(*new)->rb_left;
-+		else
-+			new = &(*new)->rb_right;
-+	}
-+
-+	rb_link_node(&(track->node), parent, new);
-+	rb_insert_color(&(track->node), &alloc_users);
-+
-+	spin_unlock(&alloc_users_lock);
-+}
-+
-+/* Remove user allocation tracking, return NULL if allocation untracked */
-+static struct user_struct *remove_user_alloc(void *addr, unsigned long *pages)
-+{
-+	struct rb_node *cur_node = alloc_users.rb_node;
-+	unsigned long addrl = (unsigned long) addr;
-+	struct mod_alloc_user *cur_alloc_user = NULL;
-+	struct user_struct *user;
-+
-+	spin_lock(&alloc_users_lock);
-+	while (cur_node) {
-+		cur_alloc_user =
-+			rb_entry(cur_node, struct mod_alloc_user, node);
-+		if (cur_alloc_user->addr > addrl)
-+			cur_node = cur_node->rb_left;
-+		else if (cur_alloc_user->addr < addrl)
-+			cur_node = cur_node->rb_right;
-+		else
-+			goto found;
-+	}
-+	spin_unlock(&alloc_users_lock);
-+
-+	return NULL;
-+found:
-+	rb_erase(&cur_alloc_user->node, &alloc_users);
-+	spin_unlock(&alloc_users_lock);
-+
-+	user = cur_alloc_user->user;
-+	*pages = cur_alloc_user->pages;
-+	kfree(cur_alloc_user);
-+
-+	return user;
-+}
-+
-+int check_inc_mod_rlimit(unsigned long size)
-+{
-+	struct user_struct *user = get_current_user();
-+	unsigned long modspace_pages = rlimit(RLIMIT_MODSPACE) >> PAGE_SHIFT;
-+	unsigned long cur_pages = atomic_long_read(&user->module_vm);
-+	unsigned long new_pages = get_mod_page_cnt(size);
-+
-+	if (rlimit(RLIMIT_MODSPACE) != RLIM_INFINITY
-+			&& cur_pages + new_pages > modspace_pages) {
-+		free_uid(user);
-+		return 1;
-+	}
-+
-+	atomic_long_add(new_pages, &user->module_vm);
-+
-+	if (atomic_long_read(&user->module_vm) > modspace_pages) {
-+		atomic_long_sub(new_pages, &user->module_vm);
-+		free_uid(user);
-+		return 1;
-+	}
-+
-+	free_uid(user);
-+	return 0;
-+}
-+
-+void dec_mod_rlimit(void *addr)
-+{
-+	unsigned long pages;
-+	struct user_struct *user = remove_user_alloc(addr, &pages);
-+
-+	if (!user)
-+		return;
-+
-+	atomic_long_sub(pages, &user->module_vm);
-+	free_uid(user);
-+}
-+
- void __weak arch_module_memfree(void *module_region)
- {
- 	vfree(module_region);
-@@ -2118,6 +2246,7 @@ void __weak arch_module_memfree(void *module_region)
- void module_memfree(void *module_region)
- {
- 	arch_module_memfree(module_region);
-+	dec_mod_rlimit(module_region);
- }
- 
- void __weak module_arch_cleanup(struct module *mod)
-@@ -2740,7 +2869,16 @@ void * __weak arch_module_alloc(unsigned long size)
- 
- void *module_alloc(unsigned long size)
- {
--	return arch_module_alloc(size);
-+	void *p;
-+
-+	if (check_inc_mod_rlimit(size))
-+		return NULL;
-+
-+	p = arch_module_alloc(size);
-+
-+	update_mod_rlimit(p, size);
-+
-+	return p;
- }
- 
- #ifdef CONFIG_DEBUG_KMEMLEAK
+@@ -164,11 +171,6 @@ SECTIONS
+ 	__appended_dtb = .;
+ 	/* leave space for appended DTB */
+ 	. += 0x100000;
+-#elif defined(CONFIG_MIPS_ELF_APPENDED_DTB)
+-	.appended_dtb : AT(ADDR(.appended_dtb) - LOAD_OFFSET) {
+-		*(.appended_dtb)
+-		KEEP(*(.appended_dtb))
+-	}
+ #endif
+ 	/*
+ 	 * Align to 64K in attempt to eliminate holes before the
 -- 
-2.17.1
+2.19.1

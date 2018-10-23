@@ -1,88 +1,148 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2018 20:37:06 +0200 (CEST)
-Received: from mail-sn1nam02on0118.outbound.protection.outlook.com ([104.47.36.118]:22016
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994637AbeJWSg7SNvkK convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2018 20:36:59 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 01:41:15 +0200 (CEST)
+Received: from mail-pl1-x641.google.com ([IPv6:2607:f8b0:4864:20::641]:33813
+        "EHLO mail-pl1-x641.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994629AbeJWXlMw7xkx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 01:41:12 +0200
+Received: by mail-pl1-x641.google.com with SMTP id f10-v6so1366334plr.1;
+        Tue, 23 Oct 2018 16:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qgi1iGxJIZIN4fX8jfsUIjdg/uEqNP/Mfrqxj1RkYws=;
- b=Wr3PXO58JfjY1ywxofwFwwkO82vplaKQ2vIhKOsD7YoSmY9K4mNOihQUuqPuQUq/uPUNPKIiNU+lE+P4tcQKYOFjPGFN86kDSu82jO0LAyIOrP6lW2qjSvOJqPEQTO8P5xQWBtOow4RvE2exVDplA21QIe5GhNJJK4s0S/JGsX4=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1231.namprd22.prod.outlook.com (10.174.162.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1250.30; Tue, 23 Oct 2018 18:36:49 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::781f:63:481a:efdf%12]) with mapi id 15.20.1273.014; Tue, 23 Oct 2018
- 18:36:49 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH V2] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for
- 64bit
-Thread-Topic: [PATCH V2] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for
- 64bit
-Thread-Index: AQHUaHUdutnZgn13xkqnYBQ7xP2bjqUtLcqA
-Date:   Tue, 23 Oct 2018 18:36:49 +0000
-Message-ID: <20181023183647.7fq5kfjdjhualsge@pburton-laptop>
-References: <1540040491-16754-1-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1540040491-16754-1-git-send-email-chenhc@lemote.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR04CA0030.namprd04.prod.outlook.com
- (2603:10b6:300:ee::16) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1231;6:eosdcywsou2V9i3YdSDSDWqyd+TWlfWsCMR9qET55kgWXRqIA0zQLD/JtgBlITgoIA/RNeetmlfyi+jlMJEzPZUkO/qGHfWdqPMjI21Insv+4s/fNWo9Rv23AFZjd8lcO95eUwwtViC/KhpxebqwVunKfKs7PefP2y/hfK9GS9Km9MHf1D5aXWjbUD0gAIzQY4we4BMnpecC8CaiusgAgOW+VAV7KBmYsTc9e1r/s0YUps4jCAm0voV4RDZQHIlob4YAZivpEEB0K55CB5zFkFRwDvOrNjHxkJA4e9hZ09Tf994ZT+yD+HkHnCFIVU4OFgQFSt/2jbBy1J1w4QVGkewJ6R+j+LJ23AcbPUQvYvvaupSyQiNiba2Jm3sBDRu9J3viO0ZnM0olAiTN1RnooMehGgibRqRXyBVrdAGaATnKgN0lcf6/Gvf/IKMjFmMvPmkn2s2ls8+7Yyc0imGrFg==;5:RcEerJPnWw4PNG8GIvVh9ka8jz3oSx/Sse63bQVQxZAgjpyQv3VFxzGXS70OIgHF7V+jCTO/PlwNaHEEFeMK7gLnvhkzVJHLbOFsJBjOOZaGyDl14Q4Fe7+ZR/YrLSAoYyyiYcbhs+XoaA8fnaZl+1Y0ZS38VMbluKEWcnot8YU=;7:wFA2jjK1ePkzhpqR7mhbTT1qclJYijKqIE6V76zJJFDJw6ivL5PGven0evzLEZ2DY12JRjJ94tPY0s6sV4dM76ejJ1pcMZd4zCL2aXhL/uz5pZBdKtTZLk4stjnB/B0cmAs3k+tPO1RP3cXlEmYnTwJ2nBLE6Qlh4hE9Qu9IlZakBpuSr8G/ZpZ/RO8odKGJ29u6EiTwHMMXyn5xGRsWnLgfQ0Af9JLrpeHqagmQN1kWsl8VN694ehmTpAbbgMdF
-x-ms-office365-filtering-correlation-id: 5d1d497d-2c31-42d8-a83e-08d639167df1
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1231;
-x-ms-traffictypediagnostic: MWHPR2201MB1231:
-x-microsoft-antispam-prvs: <MWHPR2201MB1231357354B2DBDEA402729AC1F50@MWHPR2201MB1231.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(52105095)(3002001)(93006095)(10201501046)(148016)(149066)(150057)(6041310)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1231;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1231;
-x-forefront-prvs: 0834BAF534
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(396003)(366004)(39850400004)(136003)(346002)(189003)(199004)(446003)(6116002)(6246003)(3846002)(66066001)(25786009)(508600001)(54906003)(6436002)(316002)(58126008)(6486002)(33716001)(9686003)(4326008)(39060400002)(6512007)(53936002)(2900100001)(81166006)(71190400001)(71200400001)(2906002)(99286004)(42882007)(11346002)(106356001)(68736007)(97736004)(81156014)(5250100002)(14454004)(102836004)(52116002)(1076002)(186003)(256004)(229853002)(305945005)(14444005)(8936002)(5660300001)(8676002)(6916009)(44832011)(33896004)(486006)(476003)(105586002)(7736002)(6506007)(386003)(76176011)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1231;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: gmI4yGAgg0PG3j5xJbrNOaVzmdxa+0tUULtSRjBy5GRUmQHyFIqLMuYy6VUwJnewWSCUAQb0ybZo8oeqs2cUd/k0eCDqZmySfCVgGa8MmvxoVtbXGbFxvZntP3jjGNF7lTTz2Xo5iNW3cMeh7KLiOtbw4nS/w7ZQiuTdcEv7zt5NGBxGaLM98693qoPWL9PaNQHhGKM7mqLS6Wm4+L1sFs9apDXLCjf9nboNr38jyU2inh03GKR4+Lj+vV8GKqEFi+Gk8HFPsBnQIDO4vTRGm3mBvAiylFGUgfA/edP9pJNQZzKkNW8cXajRrtmagF0H+59TIjnv3tQFHk7ZZGs8tRdNGr/6xVlQ4w27GlRBxNE=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <D16C2668FB61CA4B9C2621F49A822E0B@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d1d497d-2c31-42d8-a83e-08d639167df1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2018 18:36:49.5245
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1231
-Return-Path: <pburton@wavecomp.com>
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=7OS2r3euy1TczlyR46QbFm62nalquqEBBOjTowUcAkM=;
+        b=JZ1FQW2sjznoZVhwKxRvzGXbACgNDowsPsyxlWZVVG7INAURVS5jcxx915CmrAtFRB
+         8hWt+dLKEAVaszN//gmUjAYoT7FDyiMui97wYDmRNVObbg407myVHSOQQZ2tzM6HKXjZ
+         mHfpSVcF4JVoAjUiAlqOz8+OgLkgiyNTMN4slZ2nQdl2qnD25v68X/twk29GWgHctS5W
+         xnYbKMErl9Jjcz+rWWWrl4jqwHUvFwF5J4+jg0wCCfi+5wfY10suO+glJ/huiOk8gQQR
+         VFWKT2AnmDQl75D4iT3d+hUeGJI3o/5MTq/bf6m/xNvsxIAEvup7H34zIhNHpVjgjKte
+         er4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=7OS2r3euy1TczlyR46QbFm62nalquqEBBOjTowUcAkM=;
+        b=DtF/sGhmS3iRfsRgoaIsjLljXqqxlXKuZ3ZW3zC0Ik4QKMYpmH0vy0R1yPNOIAmq7o
+         XoyPuM1u6mwnpk4IP58coHs21ZXMUZzIXMpzkZinCfcPcYV8gei4HyN33QHor4DQOPYk
+         6Rok9J943oyJlJrHAIWQQECUu9z90KgfSbNfL3ysztQDX26pIaKs7jLhuQfBWrmP4RfD
+         1KgwxgZSIDFX4iWlHXXX1mRFgIITBr0aE0fiwwmzcuAS3pERXHoB4HT3MH8YAbYSbCIy
+         rwybR9TSmOPkzDoUowcfD5J1DkOjt0yyiQTJITJTJtNSyXiqTSVQ333KPsWd22IKT9tO
+         gCEQ==
+X-Gm-Message-State: AGRZ1gKfxm+MxqSXqHpy9Y5SmZNgrrBNSf7MYD8Xr3D3u7SF9wO4b2OK
+        Y3Ob3KZzwIdutjWE6VUr6iU=
+X-Google-Smtp-Source: AJdET5fBJhLb6MQXskYp1eO10D2a24G6cKuepRaM3H/nhlH771jer1HqF14MUwzRYB/YVHWQB+Kq3Q==
+X-Received: by 2002:a17:902:6e08:: with SMTP id u8-v6mr162695plk.64.1540338065703;
+        Tue, 23 Oct 2018 16:41:05 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.250])
+        by smtp.gmail.com with ESMTPSA id a5-v6sm3041223pfo.53.2018.10.23.16.41.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Oct 2018 16:41:04 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     arnd@arndb.de, linux-arm-kernel@lists.infradead.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Christoffer Dall <christoffer.dall@arm.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Jan Henrik Weinstock <jan.weinstock@ice.rwth-aachen.de>,
+        Alan Kao <alankao@andestech.com>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Olof Johansson <olof@lixom.net>,
+        Hendrik Brueckner <brueckner@linux.vnet.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jessica Yu <jeyu@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-alpha@vger.kernel.org (open list:ALPHA PORT),
+        linux-snps-arc@lists.infradead.org (open list:SYNOPSYS ARC ARCHITECTURE),
+        linux-c6x-dev@linux-c6x.org (open list:C6X ARCHITECTURE),
+        uclinux-h8-devel@lists.sourceforge.jp (moderated list:H8/300
+        ARCHITECTURE),
+        linux-hexagon@vger.kernel.org (open list:QUALCOMM HEXAGON ARCHITECTURE),
+        linux-ia64@vger.kernel.org (open list:IA64 (Itanium) PLATFORM),
+        linux-m68k@lists.linux-m68k.org (open list:M68K ARCHITECTURE),
+        linux-mips@linux-mips.org (open list:MIPS),
+        nios2-dev@lists.rocketboards.org (moderated list:NIOS2 ARCHITECTURE),
+        openrisc@lists.librecores.org (open list:OPENRISC ARCHITECTURE),
+        linux-parisc@vger.kernel.org (open list:PARISC ARCHITECTURE),
+        linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND
+        64-BIT)),
+        linux-riscv@lists.infradead.org (open list:RISC-V ARCHITECTURE),
+        linux-s390@vger.kernel.org (open list:S390),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        sparclinux@vger.kernel.org (open list:SPARC + UltraSPARC
+        (sparc/sparc64)),
+        linux-um@lists.infradead.org (open list:USER-MODE LINUX (UML)),
+        linux-xtensa@linux-xtensa.org (open list:TENSILICA XTENSA PORT (xtensa)),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES)
+Subject: [PATCH 0/2] arm64: Cut rebuild time when changing CONFIG_BLK_DEV_INITRD
+Date:   Tue, 23 Oct 2018 16:40:41 -0700
+Message-Id: <20181023234044.1138-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66910
+X-archive-position: 66911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,34 +155,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Huacai,
+Hi all,
 
-On Sat, Oct 20, 2018 at 09:01:31PM +0800, Huacai Chen wrote:
-> By the way, not all VDSO_RANDOMIZE_SIZE can be used for vdso_base()
-> randomization because VDSO need some room to locate itself (in this
-> patch we reserve 64KB).
-> 
->%
-> 
-> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-> index 48a9c6b..d6232d9 100644
-> --- a/arch/mips/kernel/vdso.c
-> +++ b/arch/mips/kernel/vdso.c
-> @@ -106,7 +106,7 @@ static unsigned long vdso_base(void)
->  	base = STACK_TOP + PAGE_SIZE;
->  
->  	if (current->flags & PF_RANDOMIZE) {
-> -		base += get_random_int() & (VDSO_RANDOMIZE_SIZE - 1);
-> +		base += get_random_int() & (VDSO_RANDOMIZE_SIZE - SZ_64K - 1);
->  		base = PAGE_ALIGN(base);
->  	}
+While investigating why ARM64 required a ton of objects to be rebuilt
+when toggling CONFIG_DEV_BLK_INITRD, it became clear that this was
+because we define __early_init_dt_declare_initrd() differently and we do
+that in arch/arm64/include/asm/memory.h which gets included by a fair
+amount of other header files, and translation units as well.
 
-This change in v2 is unnecessary - STACK_TOP already accounts for the
-size of the VDSO, so we don't need to leave space for it a second time
-here.
+This patch series proposes adding an empty initrd.h to satisfy the need
+for drivers/of/fdt.c to unconditionally include that file, and moves the
+custom __early_init_dt_declare_initrd() definition away from
+asm/memory.h
 
-v1 of your patch is in mips-fixes, which I'll submit a pull request for
-soon.
+This cuts the number of objects rebuilds from 1920 down to 26, so a
+factor 73 approximately.
 
-Thanks,
-    Paul
+Apologies for the long CC list, please let me know how you would go
+about merging that and if another approach would be preferable, e.g:
+introducing a CONFIG_ARCH_INITRD_BELOW_START_OK Kconfig option or
+something like that.
+
+Florian Fainelli (2):
+  arch: Add asm-generic/initrd.h and make use of it for most
+    architectures
+  arm64: Create asm/initrd.h
+
+ arch/alpha/include/asm/Kbuild      |  1 +
+ arch/arc/include/asm/Kbuild        |  1 +
+ arch/arm/include/asm/Kbuild        |  1 +
+ arch/arm64/include/asm/initrd.h    | 13 +++++++++++++
+ arch/arm64/include/asm/memory.h    |  8 --------
+ arch/c6x/include/asm/Kbuild        |  1 +
+ arch/h8300/include/asm/Kbuild      |  1 +
+ arch/hexagon/include/asm/Kbuild    |  1 +
+ arch/ia64/include/asm/Kbuild       |  1 +
+ arch/m68k/include/asm/Kbuild       |  1 +
+ arch/microblaze/include/asm/Kbuild |  1 +
+ arch/mips/include/asm/Kbuild       |  1 +
+ arch/nds32/include/asm/Kbuild      |  1 +
+ arch/nios2/include/asm/Kbuild      |  1 +
+ arch/openrisc/include/asm/Kbuild   |  1 +
+ arch/parisc/include/asm/Kbuild     |  1 +
+ arch/powerpc/include/asm/Kbuild    |  1 +
+ arch/riscv/include/asm/Kbuild      |  1 +
+ arch/s390/include/asm/Kbuild       |  1 +
+ arch/sh/include/asm/Kbuild         |  1 +
+ arch/sparc/include/asm/Kbuild      |  1 +
+ arch/um/include/asm/Kbuild         |  1 +
+ arch/unicore32/include/asm/Kbuild  |  1 +
+ arch/x86/include/asm/Kbuild        |  1 +
+ arch/xtensa/include/asm/Kbuild     |  1 +
+ drivers/of/fdt.c                   |  1 +
+ include/asm-generic/initrd.h       |  1 +
+ 27 files changed, 38 insertions(+), 8 deletions(-)
+ create mode 100644 arch/arm64/include/asm/initrd.h
+ create mode 100644 include/asm-generic/initrd.h
+
+-- 
+2.17.1

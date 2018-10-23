@@ -1,81 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2018 13:55:08 +0200 (CEST)
-Received: from mail-io1-xd44.google.com ([IPv6:2607:f8b0:4864:20::d44]:33826
-        "EHLO mail-io1-xd44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994630AbeJWLzEeZLnm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2018 13:55:04 +0200
-Received: by mail-io1-xd44.google.com with SMTP id d80-v6so684689iof.1
-        for <linux-mips@linux-mips.org>; Tue, 23 Oct 2018 04:55:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=YG4XGz50T3lmnA+Ki9cgRwYFtP255UrlNLYFU7Q9iUU=;
-        b=Y6O2aFSLIHfp5xZFY5wcJh/qrzg4qfm3duz80htcJUe9YzstnyxHqK+ChHpQWnyosz
-         6AVAda+SYzTKyACALF12pdZQzrj7W2ZYD7wrzsxdUEI7v0A7LLZtMRYl4KxWZvsXhDAV
-         351nh/l5LN2hlIyYEHbO+7PLKBjW43qkKN304=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=YG4XGz50T3lmnA+Ki9cgRwYFtP255UrlNLYFU7Q9iUU=;
-        b=daeGS65f7uud+RINrQzbgf+SNqrPEHzlh5sBKJlykFrfwnhY6hwTezi+qZB81h60Kt
-         NEYggrYf4fFfEybqXQHEC3koOksCN7Avnfe2/sWKO531SVq/Sm1VAqq8ZzfqDn1CQ79A
-         tSeojlKHbcp+Npdod78HoSEtcWim2jwffzz/399M2mwGUj6ZmNUdMWneApXZb8M21ScN
-         MWDrHV/ozdQlRG/Ew5eg9SRrBTGbooPVwqrpFjb6RS1JwksK+/Ip/RqmhkBfevEGWUzR
-         WljGcN8zzJ1sr6g0tkJXvAT8i+z5oAtyFgcEQiEZjHtLzK/tSa75O40ACeAhMlWDp5NO
-         raVA==
-X-Gm-Message-State: AGRZ1gJOJvairnbZC4BSJoSw+8h7PhYfgkogiTyAPZvxBqwYI8jhTELT
-        7FhjdT+wSmRako/j85S8RyiECnGm7oJikP7J1sdpvQ==
-X-Google-Smtp-Source: AJdET5cpJ027tqW13DVJd2yUVmxub1/sKZ/u+SCW+pnc9/dx7IrQgY3qCkLfeNXtiEY4ZKKjZB89tsgfdGFPm88RIN4=
-X-Received: by 2002:a6b:be83:: with SMTP id o125-v6mr11329812iof.173.1540295696806;
- Tue, 23 Oct 2018 04:54:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2018 16:30:59 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:50514 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991532AbeJWOa4f3-oK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Oct 2018 16:30:56 +0200
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D870207DD
+        for <linux-mips@linux-mips.org>; Tue, 23 Oct 2018 14:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1540305048;
+        bh=6xM7crWbxD95UwlDwb7/RoC0rAz+CQAX/M7qwA8yr0o=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=nyJ4vHS1JiOoxLM7yURdbebRpz4JE6ABHKTO/cCf8xkk4XHo1iGg0NwZevkWURTb0
+         +UZa0+houUYOE0i2pgVAKhCqdhuB2nkOYMWDLVco/4j8p4YCC4h8y4n5o9XUn2Zqg/
+         y7tOg96x5JwIixHrd0J2d/oidrnEt3q6/sUc/p6E=
+Received: by mail-qt1-f176.google.com with SMTP id q40-v6so1709408qte.0
+        for <linux-mips@linux-mips.org>; Tue, 23 Oct 2018 07:30:48 -0700 (PDT)
+X-Gm-Message-State: ABuFfogG9Rim+I+HHDhBlRm7pdRP8+xbrjCZjJejHSfgrczRCWnI2aqW
+        SAACdoVmHrS7FQTvVQWaIIgQwuce89aOEFp+rg==
+X-Google-Smtp-Source: ACcGV63jeCJDhIZNqn0I0FgsM6E84jjdrLHFwigRvrZenWI/ANsBR4fhiJMAd58RZ3JVG0zm8u/8aZtWOqcPWgm9zxw=
+X-Received: by 2002:ac8:2d33:: with SMTP id n48-v6mr46236217qta.38.1540305047647;
+ Tue, 23 Oct 2018 07:30:47 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a6b:5910:0:0:0:0:0 with HTTP; Tue, 23 Oct 2018 04:54:56
- -0700 (PDT)
-In-Reply-To: <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
-References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
- <CAKv+Gu_AgPv2o4=U0-7pnpgtSufEobnta8oKhhGfCdCxM82B5Q@mail.gmail.com> <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Tue, 23 Oct 2018 08:54:56 -0300
-Message-ID: <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 0/3] Rlimit for module space
-To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "jeyu@kernel.org" <jeyu@kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "arjan@linux.intel.com" <arjan@linux.intel.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "jannh@google.com" <jannh@google.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kristen@linux.intel.com" <kristen@linux.intel.com>,
-        "Dock, Deneen T" <deneen.t.dock@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "kernel-hardening@lists.openwall.com" 
-        <kernel-hardening@lists.openwall.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+References: <20181022224213.GA25145@bogus> <mhng-08dbc241-46e4-411b-ba13-32435abde7ad@palmer-si-x1c4>
+In-Reply-To: <mhng-08dbc241-46e4-411b-ba13-32435abde7ad@palmer-si-x1c4>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 23 Oct 2018 09:30:35 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKA6_saB7Ak=BZqSth6KAZ1g2srF5BsOQRGdE2+rmcR8w@mail.gmail.com>
+Message-ID: <CAL_JsqKA6_saB7Ak=BZqSth6KAZ1g2srF5BsOQRGdE2+rmcR8w@mail.gmail.com>
+Subject: Re: [PATCH v2] OF: Handle CMDLINE when /chosen node is not present
+To:     Palmer Dabbelt <palmer@sifive.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Nick Kossifidis <mick@ics.forth.gr>,
+        devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+        linux-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ard.biesheuvel@linaro.org>
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66906
+X-archive-position: 66907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ard.biesheuvel@linaro.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,167 +57,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 22 October 2018 at 20:06, Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
-> On Sat, 2018-10-20 at 19:20 +0200, Ard Biesheuvel wrote:
->> Hi Rick,
->>
->> On 19 October 2018 at 22:47, Rick Edgecombe <rick.p.edgecombe@intel.com>
->> wrote:
->> > If BPF JIT is on, there is no effective limit to prevent filling the entire
->> > module space with JITed e/BPF filters.
->>
->> Why do BPF filters use the module space, and does this reason apply to
->> all architectures?
->>
->> On arm64, we already support loading plain modules far away from the
->> core kernel (i.e. out of range for ordinary relative jump/calll
->> instructions), and so I'd expect BPF to be able to deal with this
->> already as well. So for arm64, I wonder why an ordinary vmalloc_exec()
->> wouldn't be more appropriate.
-> AFAIK, it's like you said about relative instruction limits, but also because
-> some predictors don't predict past a certain distance. So performance as well.
-> Not sure the reasons for each arch, or if they all apply for BPF JIT. There seem
-> to be 8 by my count, that have a dedicated module space for some reason.
+On Mon, Oct 22, 2018 at 5:55 PM Palmer Dabbelt <palmer@sifive.com> wrote:
 >
->> So before refactoring the module alloc/free routines to accommodate
->> BPF, I'd like to take one step back and assess whether it wouldn't be
->> more appropriate to have a separate bpf_alloc/free API, which could be
->> totally separate from module alloc/free if the arch permits it.
->>
-> I am not a BPF JIT expert unfortunately, hopefully someone more authoritative
-> will chime in. I only ran into this because I was trying to increase
-> randomization for the module space and wanted to find out how many allocations
-> needed to be supported.
+> On Mon, 22 Oct 2018 15:42:13 PDT (-0700), robh@kernel.org wrote:
+> > On Mon, Oct 15, 2018 at 05:20:10PM +0300, Nick Kossifidis wrote:
+> >> The /chosen node is optional so we should handle CMDLINE regardless
+> >> the presence of /chosen/bootargs. Move handling of CMDLINE in
+> >> early_init_dt_scan() instead.
+> >
+> > I looked at this a while back. I'm not sure this behavior can be changed
+> > without breaking some MIPS platforms that could be relying on the
+> > current behavior. But trying to make sense of the MIPS code is a
+> > challenge and they have some other issues in this area.
+> >
+> > Can't this be fixed by making /chosen manditory? I'd expect ultimately
+> > you are always going to need it.
+> >
+> > I'd rather not resort to making this per arch. There's also some effort
+> > to consolidate cmd line handling[1].
 >
-> I'd guess though, that BPF JIT is just assuming that there will be some arch
-> specific constraints about where text can be placed optimally and they would
-> already be taken into account in the module space allocator.
->
-> If there are no constraints for some arch, I'd wonder why not just update its
-> module_alloc to use the whole space available. What exactly are the constraints
-> for arm64 for normal modules?
->
+> I'd rather make /chosen mandatory on RISC-V than to have per-arch handling, as
+> like you've said there's already too much duplication.  That said, it does seem
+> like a bug to me because the behavior seems somewhat arbitrary -- an empty
+> /chosen node causing the built-in command-line argument handling to go off the
+> rails just smells so buggy.
 
-Relative branches and the interactions with KAsan.
+Yes. Probably need to do some archaeology on this code to figure out
+some of the expectations.
 
-We just fixed something similar in the kprobes code: it was using
-RWX-mapped module memory to store kprobed instructions, and we
-replaced that with a simple vmalloc_exec() [and code to remap it
-read-only], which was possible given that relative branches are always
-emulated by arm64 kprobes.
+> If that's the case, could we at least have something like
+> "CONFIG_OF_CHOSEN_IS_MANDATORY" that provides a warning when there is no
+> /chosen node and is set on architecture where the spec mandates /chosen?
 
-So it depends on whether BPF code needs to be in relative branching
-range from the calling code, and whether the BPF code itself is
-emitted using relative branches into other parts of the code.
+I'd be okay to make it a warning unconditionally. At least then we can
+find the cases that deviate and either fix them or understand their
+expectations.
 
-> It seems fine to me for architectures to have the option of solving this a
-> different way. If potentially the rlimit ends up being the best solution for
-> some architectures though, do you think this refactor (pretty close to just a
-> name change) is that intrusive?
->
-> I guess it could be just a BPF JIT per user limit and not touch module space,
-> but I thought the module space limit was a more general solution as that is the
-> actual limited resource.
->
-
-I think it is wrong to conflate the two things. Limiting the number of
-BPF allocations and the limiting number of module allocations are two
-separate things, and the fact that BPF reuses module_alloc() out of
-convenience does not mean a single rlimit for both is appropriate.
-
-
->> > For classic BPF filters attached with
->> > setsockopt SO_ATTACH_FILTER, there is no memlock rlimit check to limit the
->> > number of insertions like there is for the bpf syscall.
->> >
->> > This patch adds a per user rlimit for module space, as well as a system wide
->> > limit for BPF JIT. In a previously reviewed patchset, Jann Horn pointed out
->> > the
->> > problem that in some cases a user can get access to 65536 UIDs, so the
->> > effective
->> > limit cannot be set low enough to stop an attacker and be useful for the
->> > general
->> > case. A discussed alternative solution was a system wide limit for BPF JIT
->> > filters. This much more simply resolves the problem of exhaustion and
->> > de-randomizing in the case of non-CONFIG_BPF_JIT_ALWAYS_ON. If
->> > CONFIG_BPF_JIT_ALWAYS_ON is on however, BPF insertions will fail if another
->> > user
->> > exhausts the BPF JIT limit. In this case a per user limit is still needed.
->> > If
->> > the subuid facility is disabled for normal users, this should still be ok
->> > because the higher limit will not be able to be worked aroThey might und
->> > that way.
->> >
->> > The new BPF JIT limit can be set like this:
->> > echo 5000000 > /proc/sys/net/core/bpf_jit_limit
->> >
->> > So I *think* this patchset should resolve that issue except for the
->> > configuration of CONFIG_BPF_JIT_ALWAYS_ON and subuid allowed for normal
->> > users.
->> > Better module space KASLR is another way to resolve the de-randomizing
->> > issue,
->> > and so then you would just be left with the BPF DOS in that configuration.
->> >
->> > Jann also pointed out how, with purposely fragmenting the module space, you
->> > could make the effective module space blockage area much larger. This is
->> > also
->> > somewhat un-resolved. The impact would depend on how big of a space you are
->> > trying to allocate. The limit has been lowered on x86_64 so that at least
->> > typical sized BPF filters cannot be blocked.
->> >
->> > If anyone with more experience with subuid/user namespaces has any
->> > suggestions
->> > I'd be glad to hear. On an Ubuntu machine it didn't seem like a un-
->> > privileged
->> > user could do this. I am going to keep working on this and see if I can find
->> > a
->> > better solution.
->> >
->> > Changes since v2:
->> >  - System wide BPF JIT limit (discussion with Jann Horn)
->> >  - Holding reference to user correctly (Jann)
->> >  - Having arch versions of modulde_alloc (Dave Hansen, Jessica Yu)
->> >  - Shrinking of default limits, to help prevent the limit being worked
->> > around
->> >    with fragmentation (Jann)
->> >
->> > Changes since v1:
->> >  - Plug in for non-x86
->> >  - Arch specific default values
->> >
->> >
->> > Rick Edgecombe (3):
->> >   modules: Create arch versions of module alloc/free
->> >   modules: Create rlimit for module space
->> >   bpf: Add system wide BPF JIT limit
->> >
->> >  arch/arm/kernel/module.c                |   2 +-
->> >  arch/arm64/kernel/module.c              |   2 +-
->> >  arch/mips/kernel/module.c               |   2 +-
->> >  arch/nds32/kernel/module.c              |   2 +-
->> >  arch/nios2/kernel/module.c              |   4 +-
->> >  arch/parisc/kernel/module.c             |   2 +-
->> >  arch/s390/kernel/module.c               |   2 +-
->> >  arch/sparc/kernel/module.c              |   2 +-
->> >  arch/unicore32/kernel/module.c          |   2 +-
->> >  arch/x86/include/asm/pgtable_32_types.h |   3 +
->> >  arch/x86/include/asm/pgtable_64_types.h |   2 +
->> >  arch/x86/kernel/module.c                |   2 +-
->> >  fs/proc/base.c                          |   1 +
->> >  include/asm-generic/resource.h          |   8 ++
->> >  include/linux/bpf.h                     |   7 ++
->> >  include/linux/filter.h                  |   1 +
->> >  include/linux/sched/user.h              |   4 +
->> >  include/uapi/asm-generic/resource.h     |   3 +-
->> >  kernel/bpf/core.c                       |  22 +++-
->> >  kernel/bpf/inode.c                      |  16 +++
->> >  kernel/module.c                         | 152 +++++++++++++++++++++++-
->> >  net/core/sysctl_net_core.c              |   7 ++
->> >  22 files changed, 233 insertions(+), 15 deletions(-)
->> >
->> > --
->> > 2.17.1
->> >
-> branching predictors may not be able to predict past a certain distance. So
-> performance as well.
+Rob

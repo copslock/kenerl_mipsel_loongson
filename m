@@ -1,72 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 11:08:27 +0200 (CEST)
-Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:48536
-        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990642AbeJXJIYINAVi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 11:08:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2014; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=93k5CqI65G3jET7vIj4u/I4TSAT+AQg6rgRWlfC0/Ro=; b=ARdskZmJnjyWWAdXWv8a7JPhk
-        dCdKcREeaHEZ6xT06CWyebSyY7biKhPd1upSW9xtJpUGZonDMB7jyEiAsYLUD8HjqpXAWBvDWEvO6
-        JjWubNmIzVcePmLtwUUqQfmftODENxiFn8RLLU/w4NagmFt/4trkno0O3V1Gs+mQNIFcg=;
-Received: from n2100.armlinux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:58099)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1gFF8c-0001CX-Sv; Wed, 24 Oct 2018 10:07:39 +0100
-Received: from linux by n2100.armlinux.org.uk with local (Exim 4.90_1)
-        (envelope-from <linux@n2100.armlinux.org.uk>)
-        id 1gFF8Y-0007Ni-3v; Wed, 24 Oct 2018 10:07:34 +0100
-Date:   Wed, 24 Oct 2018 10:07:32 +0100
-From:   Russell King - ARM Linux <linux@armlinux.org.uk>
-To:     Maksym Kokhan <maksym.kokhan@globallogic.com>
-Cc:     Daniel Walker <dwalker@fifo99.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 12:13:46 +0200 (CEST)
+Received: from mail-pl1-x641.google.com ([IPv6:2607:f8b0:4864:20::641]:36833
+        "EHLO mail-pl1-x641.google.com" rhost-flags-OK-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990947AbeJXKN1vzZ40 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 12:13:27 +0200
+Received: by mail-pl1-x641.google.com with SMTP id y11-v6so2028500plt.3
+        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 03:13:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=jjwSE14LPfje/VjGow1mCRc4iV2H58RrCA9qPOR9BBI=;
+        b=LW3rQRbs8K/P5qiShw/IjeV4JIMIBiAhuu+U9E9cikIKD48cJuEOrgryRgu/RAi5Bj
+         3cLxW44W5HajhHHvJFOUhlFSBMtQdtCFyuZNB5pWXN50urWt943X7B6IlF4lnS2P8crr
+         IK0a5dadeVb2twXxbnvoqBnwvaymW80gt6ONfdSTaWEEdiF5GMl7OFiNooArOjDtQJEc
+         VX9+WeKOJthMSmGl1YHBxsgw6f3AbqohBwSKRHD/fHYsKKW9yvNIulEI+bhq7B56IpfI
+         Yf4cEjhcH3uKS6huccQljB1CsOCeoxoVGJnLxQA4VWUlW/F/y0aI0+QL5dcA4RpObOXq
+         3F7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=jjwSE14LPfje/VjGow1mCRc4iV2H58RrCA9qPOR9BBI=;
+        b=Yk1FcQru0aci9c+d1pQ9I1fTKNVbO/u0QWQS/AJXVwe5rDuBK0gcToGi/NDhzAaVDg
+         zcUXzmgvvm7T5aw5dMa4nk+np1YE34SNkWyf3JsJFSzfVdYN+EroWz9nP3NyvRjoDm9R
+         TSV3iOWC9NkT3LJL7Y1A0EfMtTyFNDE/nRdVI6b+i44qsegNLV9ZOrE9jkdd+wC2uYUR
+         DzN2VBUlMaSWDHBECJ682zuIPRBULRDLBS1Z6clXs49yeVt/lXzRwRYkJL6swchpbqFN
+         QEPuLMn6XiEIkR4cXTzXcLNYAlXU7vYkyIARpxqRkwNYAzNWo7sYoXF9T0kcGCwSKRUu
+         cnlQ==
+X-Gm-Message-State: AGRZ1gJx7KYCPvlLoCLa8/Qy/DP0nS9ZhOKl7MuOVjYFPfWUbq6qjYtJ
+        FBcy3N2H7i10YQn7b5cHUZbM+w==
+X-Google-Smtp-Source: AJdET5d0UdURELlruNjEqupiPGen6jVsxoGb5+iKkDtucxAzZChLo1c7KZe84NtjlNKHALsCS+tdDQ==
+X-Received: by 2002:a17:902:9344:: with SMTP id g4-v6mr1939843plp.159.1540375982727;
+        Wed, 24 Oct 2018 03:13:02 -0700 (PDT)
+Received: from kshutemo-mobl1.localdomain ([134.134.139.82])
+        by smtp.gmail.com with ESMTPSA id m11-v6sm6396544pgn.39.2018.10.24.03.13.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 24 Oct 2018 03:13:01 -0700 (PDT)
+Received: by kshutemo-mobl1.localdomain (Postfix, from userid 1000)
+        id 594E3300225; Wed, 24 Oct 2018 13:12:56 +0300 (+03)
+Date:   Wed, 24 Oct 2018 13:12:56 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        minchan@kernel.org, pantin@google.com, hughd@google.com,
+        lokeshgidra@google.com, dancol@google.com, mhocko@kernel.org,
+        akpm@linux-foundation.org,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
+        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        nios2-dev@lists.rocketboards.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
         Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Daniel Walker <danielwa@cisco.com>,
-        Andrii Bordunov <aborduno@cisco.com>,
-        Ruslan Bilovol <rbilovol@cisco.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 0/8] add generic builtin command line
-Message-ID: <20181024090732.GS30658@n2100.armlinux.org.uk>
-References: <1538067309-5711-1-git-send-email-maksym.kokhan@globallogic.com>
- <20180929181725.GB27441@fifo99.com>
- <CAMT6-xiQ0vGcKpA+SiWHQWQFwU9Oo9j=Zin+UXDoPqKTz5fbeA@mail.gmail.com>
- <CAMT6-xj1rjVAy1AWFiMHc5wH36eu=TUSMtdKU=-qRtUbwr9bkg@mail.gmail.com>
- <20181023144815.GP30658@n2100.armlinux.org.uk>
- <CAMT6-xhvqy5PeQmkQ8tsLRiML_pNJTxyq7dizRRvZTEqc7uzgg@mail.gmail.com>
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH 2/4] mm: speed up mremap by 500x on large regions (v2)
+Message-ID: <20181024101255.it4lptrjogalxbey@kshutemo-mobl1>
+References: <20181013013200.206928-1-joel@joelfernandes.org>
+ <20181013013200.206928-3-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMT6-xhvqy5PeQmkQ8tsLRiML_pNJTxyq7dizRRvZTEqc7uzgg@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
+In-Reply-To: <20181013013200.206928-3-joel@joelfernandes.org>
+User-Agent: NeoMutt/20180716
+Return-Path: <kirill@shutemov.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66916
+X-archive-position: 66917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@armlinux.org.uk
+X-original-sender: kirill@shutemov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,43 +109,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 24, 2018 at 11:57:44AM +0300, Maksym Kokhan wrote:
-> Do you mean, that you haven't seen patch for ARM, which I sent on
-> September 27 along with cover and patch 1? It is strange, because
-> you was the one from recipients. If so, you can see this patch here:
-> https://lore.kernel.org/patchwork/patch/992779/
+On Fri, Oct 12, 2018 at 06:31:58PM -0700, Joel Fernandes (Google) wrote:
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 9e68a02a52b1..2fd163cff406 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -191,6 +191,54 @@ static void move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
+>  		drop_rmap_locks(vma);
+>  }
+>  
+> +static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+> +		  unsigned long new_addr, unsigned long old_end,
+> +		  pmd_t *old_pmd, pmd_t *new_pmd, bool *need_flush)
+> +{
+> +	spinlock_t *old_ptl, *new_ptl;
+> +	struct mm_struct *mm = vma->vm_mm;
+> +
+> +	if ((old_addr & ~PMD_MASK) || (new_addr & ~PMD_MASK)
+> +	    || old_end - old_addr < PMD_SIZE)
+> +		return false;
+> +
+> +	/*
+> +	 * The destination pmd shouldn't be established, free_pgtables()
+> +	 * should have release it.
+> +	 */
+> +	if (WARN_ON(!pmd_none(*new_pmd)))
+> +		return false;
+> +
+> +	/*
+> +	 * We don't have to worry about the ordering of src and dst
+> +	 * ptlocks because exclusive mmap_sem prevents deadlock.
+> +	 */
+> +	old_ptl = pmd_lock(vma->vm_mm, old_pmd);
+> +	if (old_ptl) {
 
-It seems that I have received patch 5, _but_ it's not threaded with
-the cover message and patch 1.  With 50k messages in my inbox, and 3k
-messages since you sent the series, it's virtually impossible to find
-it (I only found it by looking at my mail server logs from September
-to find the subject, and then searching my mailbox for that subject.)
+How can it ever be false?
 
-This is unnecessarily difficult.
-
-> On Tue, Oct 23, 2018 at 5:48 PM Russell King - ARM Linux
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Tue, Oct 23, 2018 at 05:43:18PM +0300, Maksym Kokhan wrote:
-> > > We still have no response to patches for x86, arm, arm64 and powerpc.
-> > > Is current generic command line implementation appropriate for these
-> > > architectures?
-> > > Is it possible to merge these patches in the current form (for x86,
-> > > arm, arm64 and powerpc)?
-> >
-> > You may wish to consider your recipients - I seem to only have received
-> > the cover and patch 1 (which doesn't include any ARM specific bits).
-> > It may be that you're not getting responses because people haven't seen
-> > your patches.
-> >
-> > Thanks.
-> >
-> > --
-> > RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-> > FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-> > According to speedtest.net: 11.9Mbps down 500kbps up
-
+> +		pmd_t pmd;
+> +
+> +		new_ptl = pmd_lockptr(mm, new_pmd);
+> +		if (new_ptl != old_ptl)
+> +			spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+> +
+> +		/* Clear the pmd */
+> +		pmd = *old_pmd;
+> +		pmd_clear(old_pmd);
+> +
+> +		VM_BUG_ON(!pmd_none(*new_pmd));
+> +
+> +		/* Set the new pmd */
+> +		set_pmd_at(mm, new_addr, new_pmd, pmd);
+> +		if (new_ptl != old_ptl)
+> +			spin_unlock(new_ptl);
+> +		spin_unlock(old_ptl);
+> +
+> +		*need_flush = true;
+> +		return true;
+> +	}
+> +	return false;
+> +}
+> +
 -- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+ Kirill A. Shutemov

@@ -1,60 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 15:32:54 +0200 (CEST)
-Received: from mailgate-4.ics.forth.gr ([139.91.1.7]:36483 "EHLO
-        mailgate-4.ics.forth.gr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991162AbeJXNcue7YwV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 15:32:50 +0200
-Received: from av1.ics.forth.gr (av3in.ics.forth.gr. [139.91.1.77])
-        by mailgate-4.ics.forth.gr (8.14.5/ICS-FORTH/V10-1.9-GATE-OUT) with ESMTP id w9ODWecg050833;
-        Wed, 24 Oct 2018 16:32:42 +0300 (EEST)
-X-AuditID: 8b5b9d4d-91bff70000000e62-cf-5bd0747878a5
-Received: from enigma.ics.forth.gr (webmail.ics.forth.gr [139.91.1.35])
-        by av1.ics.forth.gr (SMTP Outbound / FORTH / ICS) with SMTP id F8.2D.03682.87470DB5; Wed, 24 Oct 2018 16:32:40 +0300 (EEST)
-Received: from webmail.ics.forth.gr (localhost [127.0.0.1])
-        by enigma.ics.forth.gr (8.15.1//ICS-FORTH/V10.5.0C-EXTNULL-SSL-SASL) with ESMTP id w9ODWeef018524;
-        Wed, 24 Oct 2018 16:32:40 +0300
-X-ICS-AUTH-INFO: Authenticated user:  at ics.forth.gr
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 17:07:32 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:49244 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994640AbeJXPHUBa2HU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Oct 2018 17:07:20 +0200
+Received: from linux-8ccs (ip5f5adbf3.dynamic.kabel-deutschland.de [95.90.219.243])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9C9F2207DD;
+        Wed, 24 Oct 2018 15:07:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1540393633;
+        bh=WwOBXOwgr297l+RWsTyqJULARk5/y8fdD0bCYYLlECE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i2k0TtMomizu5+xtvT3as/BmHXvNPYVS1yHuFMg/3gfpIy5LZ5xFh36I/vNQalJvS
+         R5opRNXCktXi8X11V2h1uTjAjFtgBhGLJWyE0c+wG/xqigzLd979tjgIc60d9jZtMM
+         +8sHAgf8/5Ru0VWPtGfcHTREjs84ZJ0X2TS3Z0KQ=
+Date:   Wed, 24 Oct 2018 17:07:06 +0200
+From:   Jessica Yu <jeyu@kernel.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "arjan@linux.intel.com" <arjan@linux.intel.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "jannh@google.com" <jannh@google.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kristen@linux.intel.com" <kristen@linux.intel.com>,
+        "Dock, Deneen T" <deneen.t.dock@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "kernel-hardening@lists.openwall.com" 
+        <kernel-hardening@lists.openwall.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH RFC v3 0/3] Rlimit for module space
+Message-ID: <20181024150706.jewcclhhh756tupn@linux-8ccs>
+References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
+ <CAKv+Gu_AgPv2o4=U0-7pnpgtSufEobnta8oKhhGfCdCxM82B5Q@mail.gmail.com>
+ <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
+ <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 24 Oct 2018 16:32:40 +0300
-From:   Nick Kossifidis <mick@ics.forth.gr>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Palmer Dabbelt <palmer@sifive.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Nick Kossifidis <mick@ics.forth.gr>,
-        devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v2] OF: Handle CMDLINE when /chosen node is not present
-Organization: FORTH
-In-Reply-To: <CAL_JsqKA6_saB7Ak=BZqSth6KAZ1g2srF5BsOQRGdE2+rmcR8w@mail.gmail.com>
-References: <20181022224213.GA25145@bogus>
- <mhng-08dbc241-46e4-411b-ba13-32435abde7ad@palmer-si-x1c4>
- <CAL_JsqKA6_saB7Ak=BZqSth6KAZ1g2srF5BsOQRGdE2+rmcR8w@mail.gmail.com>
-Message-ID: <8e420b9dee0f246fda8e018532737b1a@mailhost.ics.forth.gr>
-X-Sender: mick@mailhost.ics.forth.gr
-User-Agent: Roundcube Webmail/1.1.2
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJLMWRmVeSWpSXmKPExsXSHc2orFtRciHa4M5sA4v5R86xWsx885/N
-        YsLUSewW2z63sFk0vzvHbrF5wgJWi/97drA7sHvsnHWX3ePhpktMHptWdbJ5HF25lslj85J6
-        j0vN19k9Pm+SC2CP4rJJSc3JLEst0rdL4Mp4fvAke8E18YoX0zqZGhgfCnUxcnJICJhIfP34
-        l6mLkYtDSOAoo8S8vjlQziFGidnvWlghqkwlZu/tZASxeQUEJU7OfMICYjMLWEhMvbKfEcKW
-        l2jeOpsZxGYRUJXoWLcDzGYT0JSYf+kgWL2IgKLE77ZprBD1Xxgl5m7yBbGFBbwlnn1eDBbn
-        FxCW+HT3IpjNKRAose71FGaIg9YxSvz9uYMF4ggXieWvzzJCHKci8eH3A3YQW1RAWeLFiems
-        ExiFZiG5dRaSW2chuXUBI/MqRoHEMmO9zORivbT8opIMvfSiTYzgCJnru4Px3AL7Q4wCHIxK
-        PLwHas9HC7EmlhVX5gJDhoNZSYRX4D9QiDclsbIqtSg/vqg0J7X4EKM0B4uSOO/hF+FBQgLp
-        iSWp2ampBalFMFkmDk6pBkbf7ZJMD39mZky5W6soFRD67bWStmDqS82fC1mCtzbJ3BBPy/qT
-        +q65v8dkg6/5uoshN948yMkLEVU4fMdNW+VjkprHys2NUkc0dpYxxTBxxq+XL5AJuPiH8e4r
-        Odtvt9/Mfy1+J2HRv6O5ohmJBmL+vdmys7iPd9i25E5t8zbfbcLTo7bzuxJLcUaioRZzUXEi
-        APw1ZcyMAgAA
-Return-Path: <mick@ics.forth.gr>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
+X-OS:   Linux linux-8ccs 4.12.14-lp150.12.16-default x86_64
+User-Agent: NeoMutt/20170912 (1.9.0)
+Return-Path: <jeyu@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66920
+X-archive-position: 66921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mick@ics.forth.gr
+X-original-sender: jeyu@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,78 +77,103 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Στις 2018-10-23 17:30, Rob Herring έγραψε:
-> On Mon, Oct 22, 2018 at 5:55 PM Palmer Dabbelt <palmer@sifive.com> 
-> wrote:
->> 
->> On Mon, 22 Oct 2018 15:42:13 PDT (-0700), robh@kernel.org wrote:
->> > On Mon, Oct 15, 2018 at 05:20:10PM +0300, Nick Kossifidis wrote:
->> >> The /chosen node is optional so we should handle CMDLINE regardless
->> >> the presence of /chosen/bootargs. Move handling of CMDLINE in
->> >> early_init_dt_scan() instead.
->> >
->> > I looked at this a while back. I'm not sure this behavior can be changed
->> > without breaking some MIPS platforms that could be relying on the
->> > current behavior. But trying to make sense of the MIPS code is a
->> > challenge and they have some other issues in this area.
->> >
->> > Can't this be fixed by making /chosen manditory? I'd expect ultimately
->> > you are always going to need it.
->> >
->> > I'd rather not resort to making this per arch. There's also some effort
->> > to consolidate cmd line handling[1].
->> 
->> I'd rather make /chosen mandatory on RISC-V than to have per-arch 
->> handling, as
->> like you've said there's already too much duplication.  That said, it 
->> does seem
->> like a bug to me because the behavior seems somewhat arbitrary -- an 
->> empty
->> /chosen node causing the built-in command-line argument handling to go 
->> off the
->> rails just smells so buggy.
-> 
-> Yes. Probably need to do some archaeology on this code to figure out
-> some of the expectations.
-> 
->> If that's the case, could we at least have something like
->> "CONFIG_OF_CHOSEN_IS_MANDATORY" that provides a warning when there is 
->> no
->> /chosen node and is set on architecture where the spec mandates 
->> /chosen?
-> 
-> I'd be okay to make it a warning unconditionally. At least then we can
-> find the cases that deviate and either fix them or understand their
-> expectations.
-> 
-> Rob
++++ Ard Biesheuvel [23/10/18 08:54 -0300]:
+>On 22 October 2018 at 20:06, Edgecombe, Rick P
+><rick.p.edgecombe@intel.com> wrote:
+>> On Sat, 2018-10-20 at 19:20 +0200, Ard Biesheuvel wrote:
+>>> Hi Rick,
+>>>
+>>> On 19 October 2018 at 22:47, Rick Edgecombe <rick.p.edgecombe@intel.com>
+>>> wrote:
+>>> > If BPF JIT is on, there is no effective limit to prevent filling the entire
+>>> > module space with JITed e/BPF filters.
+>>>
+>>> Why do BPF filters use the module space, and does this reason apply to
+>>> all architectures?
+>>>
+>>> On arm64, we already support loading plain modules far away from the
+>>> core kernel (i.e. out of range for ordinary relative jump/calll
+>>> instructions), and so I'd expect BPF to be able to deal with this
+>>> already as well. So for arm64, I wonder why an ordinary vmalloc_exec()
+>>> wouldn't be more appropriate.
+>> AFAIK, it's like you said about relative instruction limits, but also because
+>> some predictors don't predict past a certain distance. So performance as well.
+>> Not sure the reasons for each arch, or if they all apply for BPF JIT. There seem
+>> to be 8 by my count, that have a dedicated module space for some reason.
+>>
+>>> So before refactoring the module alloc/free routines to accommodate
+>>> BPF, I'd like to take one step back and assess whether it wouldn't be
+>>> more appropriate to have a separate bpf_alloc/free API, which could be
+>>> totally separate from module alloc/free if the arch permits it.
+>>>
+>> I am not a BPF JIT expert unfortunately, hopefully someone more authoritative
+>> will chime in. I only ran into this because I was trying to increase
+>> randomization for the module space and wanted to find out how many allocations
+>> needed to be supported.
+>>
+>> I'd guess though, that BPF JIT is just assuming that there will be some arch
+>> specific constraints about where text can be placed optimally and they would
+>> already be taken into account in the module space allocator.
+>>
+>> If there are no constraints for some arch, I'd wonder why not just update its
+>> module_alloc to use the whole space available. What exactly are the constraints
+>> for arm64 for normal modules?
+>>
+>
+>Relative branches and the interactions with KAsan.
+>
+>We just fixed something similar in the kprobes code: it was using
+>RWX-mapped module memory to store kprobed instructions, and we
+>replaced that with a simple vmalloc_exec() [and code to remap it
+>read-only], which was possible given that relative branches are always
+>emulated by arm64 kprobes.
+>
+>So it depends on whether BPF code needs to be in relative branching
+>range from the calling code, and whether the BPF code itself is
+>emitted using relative branches into other parts of the code.
+>
+>> It seems fine to me for architectures to have the option of solving this a
+>> different way. If potentially the rlimit ends up being the best solution for
+>> some architectures though, do you think this refactor (pretty close to just a
+>> name change) is that intrusive?
+>>
+>> I guess it could be just a BPF JIT per user limit and not touch module space,
+>> but I thought the module space limit was a more general solution as that is the
+>> actual limited resource.
+>>
+>
+>I think it is wrong to conflate the two things. Limiting the number of
+>BPF allocations and the limiting number of module allocations are two
+>separate things, and the fact that BPF reuses module_alloc() out of
+>convenience does not mean a single rlimit for both is appropriate.
 
-I don't think we can make /chosen node mandatory since it's not 
-specified as such
-by the spec 
-(https://github.com/devicetree-org/devicetree-specification/releases/tag/v0.2).
-No matter what we say from the kernel side, the device tree provider is 
-not expected
-to always provide the /chosen mode. Also device tree is not the only 
-provider of
-a command line, we might get a command line from different places 
-per-arch (e.g. atags
-on arm) or through EFI/ACPI/kexec as well. That's why my initial 
-approach for RISC-V
-was on the arch-specific code.
+Hm, I think Ard has a good point. AFAIK, and correct me if I'm wrong,
+users of module_alloc() i.e. kprobes, ftrace, bpf, seem to use it
+because it is an easy way to obtain executable kernel memory (and
+depending on the needs of the architecture, being additionally
+reachable via relative branches) during runtime. The side effect is
+that all these users share the "module" memory space, even though this
+memory region is not exclusively used by modules (well, personally I
+think it technically should be, because seeing module_alloc() usage
+outside of the module loader is kind of a misuse of the module API and
+it's confusing for people who don't know the reason behind its usage
+outside of the module loader).
 
-We shouldn't try to handle the built-in CMDLINE on each of the possible 
-command line
-providers and if we do we should at least make sure we don't depend on 
-the presence
-of a provided command line (which is the issue in this case).
+Right now I'm not sure if it makes sense to impose a blanket limit on
+all module_alloc() allocations when the real motivation behind the
+rlimit is related to BPF, i.e., to stop unprivileged users from
+hogging up all the vmalloc space for modules with JITed BPF filters.
+So the rlimit has more to do with limiting the memory usage of BPF
+filters than it has to do with modules themselves.
 
-I believe the best approach is to consolidate all the different CMDLINE 
-approaches
-for the various archs / providers and clean up the mess instead of 
-re-implementing
-the same thing again and again. I saw the patch you mentioned and it's a 
-start.
-I'll look more into it and try to come up with a similar one.
+I think Ard's suggestion of having a separate bpf_alloc/free API makes
+a lot of sense if we want to keep track of bpf-related allocations
+(and then the rlimit would be enforced for those). Maybe part of the
+module mapping space could be carved out for bpf filters (e.g. have
+BPF_VADDR, BPF_VSIZE, etc like how we have it for modules), or
+continue sharing the region but explicitly define a separate bpf_alloc
+API, depending on an architecture's needs. What do people think?
 
-Nick
+Thanks,
+
+Jessica

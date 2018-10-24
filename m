@@ -1,73 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 18:05:11 +0200 (CEST)
-Received: from www62.your-server.de ([213.133.104.62]:57710 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994645AbeJXQFFp9zYq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 18:05:05 +0200
-Received: from [88.198.220.130] (helo=sslproxy01.your-server.de)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1gFLeC-00020a-Td; Wed, 24 Oct 2018 18:04:40 +0200
-Received: from [62.203.87.61] (helo=linux.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1gFLeC-0001aV-Jo; Wed, 24 Oct 2018 18:04:40 +0200
-Subject: Re: [PATCH RFC v3 0/3] Rlimit for module space
-To:     Jessica Yu <jeyu@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "arjan@linux.intel.com" <arjan@linux.intel.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "jannh@google.com" <jannh@google.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kristen@linux.intel.com" <kristen@linux.intel.com>,
-        "Dock, Deneen T" <deneen.t.dock@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "kernel-hardening@lists.openwall.com" 
-        <kernel-hardening@lists.openwall.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        alexei.starovoitov@gmail.com, netdev@vger.kernel.org
-References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
- <CAKv+Gu_AgPv2o4=U0-7pnpgtSufEobnta8oKhhGfCdCxM82B5Q@mail.gmail.com>
- <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
- <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
- <20181024150706.jewcclhhh756tupn@linux-8ccs>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <d7cb6a8c-b7d6-5c82-6721-2b5387da673f@iogearbox.net>
-Date:   Wed, 24 Oct 2018 18:04:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <20181024150706.jewcclhhh756tupn@linux-8ccs>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.2/25066/Wed Oct 24 15:00:13 2018)
-Return-Path: <daniel@iogearbox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 21:33:38 +0200 (CEST)
+Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:39211
+        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994573AbeJXTdYnribL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 21:33:24 +0200
+Received: by mail-pf1-x443.google.com with SMTP id c25-v6so2925833pfe.6
+        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 12:33:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2Vz407YGxG3JrIcbuMcGjknc9A1ux1lohN4oRm/Cqf4=;
+        b=McA1lhaOKIJL65beGoawo5XA+sF/abwjDeA2yKaiNr8dyq/Od5ufT99E0GONMfFrB5
+         mxj/QZue6Tf1t+cRflB1mZi2fxv3IYj6NJnHFMWNkG2f8lp7SnQiYeL4NyVTjHBEdZ05
+         1dnyS5bAy3ME1/TpbS7kNt2F+Ark1Fufn3BBBGkrhPKZooIYoq2aAMK7wGQ/hNB2raHa
+         uRrvKYdU/4TXZHxUoWQfYalvnc/5tO7e0D+DFqq7jz/D1isEZXlEIx9USTvPb91olUnq
+         csiJX/2lmmct5T1tGTx9ZAQ22vlQr9LB07PUSw7pRK5YoMqLg5+eX9X1PLv+twsgdIN4
+         lSWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2Vz407YGxG3JrIcbuMcGjknc9A1ux1lohN4oRm/Cqf4=;
+        b=Dx1gAZxud9vWjxJDkQll7hfMi+M6a5XIgBaoU5a7ccD+m7ilSxEgGnuLyaNs241uAI
+         5BH/bzUFOWxAuUcZX1GzGLoSPKCWpDFHCaJYdgFKBYCcbPAICllmo7MNMMk1xzU1PYf7
+         rK90kkmBNgaPuiYgn5EMIVgR9VYufQM0WniBMPW1VGxoLbM7Ia6F/YEM/Lwx1oLc/kF5
+         MxHAmeJtmK0r3/oInHOMyPRym6/+GqT1vXQAKoSL7jCRotssAHrXt7pdU0iOWI3wu/NE
+         m8ecguC6IeLxfDtwigkuR1ea1GqL4UEVs3GxelYRaRs4nGHG7EOMEomXvmiSNOSJVNAc
+         HYBA==
+X-Gm-Message-State: AGRZ1gKzuFd9COqQfnEJFSZQETovRU6OqMB9mSuzxq2si2oRw92x4VWd
+        DNCgOrsNDCy4HeNIBrTVCC8=
+X-Google-Smtp-Source: AJdET5f4TB1KsZED30rc1ToGjGeQ0Fw4IrT5lX4Ij0zKC68JI72ZgugEVwyyG9P2X2V4HKF41Rc2IQ==
+X-Received: by 2002:a63:c54a:: with SMTP id g10-v6mr3624573pgd.201.1540409596871;
+        Wed, 24 Oct 2018 12:33:16 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.250])
+        by smtp.gmail.com with ESMTPSA id j187-v6sm9818878pfc.39.2018.10.24.12.33.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 24 Oct 2018 12:33:15 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Olof Johansson <olof@lixom.net>,
+        linux-alpha@vger.kernel.org (open list:ALPHA PORT),
+        linux-snps-arc@lists.infradead.org (open list:SYNOPSYS ARC ARCHITECTURE),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-c6x-dev@linux-c6x.org (open list:C6X ARCHITECTURE),
+        uclinux-h8-devel@lists.sourceforge.jp (moderated list:H8/300
+        ARCHITECTURE),
+        linux-hexagon@vger.kernel.org (open list:QUALCOMM HEXAGON ARCHITECTURE),
+        linux-ia64@vger.kernel.org (open list:IA64 (Itanium) PLATFORM),
+        linux-m68k@lists.linux-m68k.org (open list:M68K ARCHITECTURE),
+        linux-mips@linux-mips.org (open list:MIPS),
+        nios2-dev@lists.rocketboards.org (moderated list:NIOS2 ARCHITECTURE),
+        openrisc@lists.librecores.org (open list:OPENRISC ARCHITECTURE),
+        linux-parisc@vger.kernel.org (open list:PARISC ARCHITECTURE),
+        linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND
+        64-BIT)),
+        linux-riscv@lists.infradead.org (open list:RISC-V ARCHITECTURE),
+        linux-s390@vger.kernel.org (open list:S390),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        sparclinux@vger.kernel.org (open list:SPARC + UltraSPARC
+        (sparc/sparc64)),
+        linux-um@lists.infradead.org (open list:USER-MODE LINUX (UML)),
+        linux-xtensa@linux-xtensa.org (open list:TENSILICA XTENSA PORT (xtensa)),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES)
+Subject: [PATCH v2 0/2] arm64: Cut rebuild time when changing CONFIG_BLK_DEV_INITRD
+Date:   Wed, 24 Oct 2018 12:32:54 -0700
+Message-Id: <20181024193256.23734-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66922
+X-archive-position: 66923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@iogearbox.net
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,81 +93,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[ +Alexei, netdev ]
+Hi all,
 
-On 10/24/2018 05:07 PM, Jessica Yu wrote:
-> +++ Ard Biesheuvel [23/10/18 08:54 -0300]:
->> On 22 October 2018 at 20:06, Edgecombe, Rick P
->> <rick.p.edgecombe@intel.com> wrote:
-[...]
->> I think it is wrong to conflate the two things. Limiting the number of
->> BPF allocations and the limiting number of module allocations are two
->> separate things, and the fact that BPF reuses module_alloc() out of
->> convenience does not mean a single rlimit for both is appropriate.
-> 
-> Hm, I think Ard has a good point. AFAIK, and correct me if I'm wrong,
-> users of module_alloc() i.e. kprobes, ftrace, bpf, seem to use it
-> because it is an easy way to obtain executable kernel memory (and
-> depending on the needs of the architecture, being additionally
-> reachable via relative branches) during runtime. The side effect is
-> that all these users share the "module" memory space, even though this
-> memory region is not exclusively used by modules (well, personally I
-> think it technically should be, because seeing module_alloc() usage
-> outside of the module loader is kind of a misuse of the module API and
-> it's confusing for people who don't know the reason behind its usage
-> outside of the module loader).
-> 
-> Right now I'm not sure if it makes sense to impose a blanket limit on
-> all module_alloc() allocations when the real motivation behind the
-> rlimit is related to BPF, i.e., to stop unprivileged users from
-> hogging up all the vmalloc space for modules with JITed BPF filters.
-> So the rlimit has more to do with limiting the memory usage of BPF
-> filters than it has to do with modules themselves.
-> 
-> I think Ard's suggestion of having a separate bpf_alloc/free API makes
-> a lot of sense if we want to keep track of bpf-related allocations
-> (and then the rlimit would be enforced for those). Maybe part of the
-> module mapping space could be carved out for bpf filters (e.g. have
-> BPF_VADDR, BPF_VSIZE, etc like how we have it for modules), or
-> continue sharing the region but explicitly define a separate bpf_alloc
-> API, depending on an architecture's needs. What do people think?
+While investigating why ARM64 required a ton of objects to be rebuilt
+when toggling CONFIG_DEV_BLK_INITRD, it became clear that this was
+because we define __early_init_dt_declare_initrd() differently and we do
+that in arch/arm64/include/asm/memory.h which gets included by a fair
+amount of other header files, and translation units as well.
 
-Hmm, I think here are several issues mixed up at the same time which is just
-very confusing, imho:
+Changing the value of CONFIG_DEV_BLK_INITRD is a common thing with build
+systems that generate two kernels: one with the initramfs and one
+without. buildroot is one of these build systems, OpenWrt is also
+another one that does this.
 
-1) The fact that there are several non-module users of module_alloc()
-as Jessica notes such as kprobes, ftrace, bpf, for example. While all of
-them are not being modules, they all need to alloc some piece of executable
-memory. It's nothing new, this exists for 7 years now since 0a14842f5a3c
-("net: filter: Just In Time compiler for x86-64") from BPF side; effectively
-that is even /before/ eBPF existed. Having some different API perhaps for all
-these users seems to make sense if the goal is not to interfere with modules
-themselves. It might also help as a benefit to potentially increase that
-memory pool if we're hitting limits at scale which would not be a concern
-for normal kernel modules since there's usually just a very few of them
-needed (unlike dynamically tracing various kernel parts 24/7 w/ or w/o BPF,
-running BPF-seccomp policies, networking BPF policies, etc which need to
-scale w/ application or container deployment; so this is of much more
-dynamic and unpredictable nature).
+This patch series proposes adding an empty initrd.h to satisfy the need
+for drivers/of/fdt.c to unconditionally include that file, and moves the
+custom __early_init_dt_declare_initrd() definition away from
+asm/memory.h
 
-2) Then there is rlimit which is proposing to have a "fairer" share among
-unprivileged users. I'm not fully sure yet whether rlimit is actually a
-nice usable interface for all this. I'd agree that something is needed
-on that regard, but I also tend to like Michal Hocko's cgroup proposal,
-iow, to have such resource control as part of memory cgroup could be
-something to consider _especially_ since it already _exists_ for vmalloc()
-backed memory so this should be not much different than that. It sounds
-like 2) comes on top of 1).
+This cuts the number of objects rebuilds from 1920 down to 26, so a
+factor 73 approximately.
 
-3) Last but not least, there's a short term fix which is needed independently
-of 1) and 2) and should be done immediately which is to account for
-unprivileged users and restrict them based on a global configurable
-limit such that privileged use keeps functioning, and 2) could enforce
-based on the global upper limit, for example. Pending fix is under
-https://patchwork.ozlabs.org/patch/987971/ which we intend to ship to
-Linus as soon as possible as short term fix. Then something like memcg
-can be considered on top since it seems this makes most sense from a
-usability point.
+Apologies for the long CC list, please let me know how you would go
+about merging that and if another approach would be preferable, e.g:
+introducing a CONFIG_ARCH_INITRD_BELOW_START_OK Kconfig option or
+something like that.
 
-Thanks a lot,
-Daniel
+Changes in v2:
+
+- put an /* empty */ comment in the asm-generic/initrd.h file
+- trim down the CC list to maximize the chances of people receiving this
+
+Florian Fainelli (2):
+  arch: Add asm-generic/initrd.h and make use of it for most
+    architectures
+  arm64: Create asm/initrd.h
+
+ arch/alpha/include/asm/Kbuild      |  1 +
+ arch/arc/include/asm/Kbuild        |  1 +
+ arch/arm/include/asm/Kbuild        |  1 +
+ arch/arm64/include/asm/initrd.h    | 13 +++++++++++++
+ arch/arm64/include/asm/memory.h    |  8 --------
+ arch/c6x/include/asm/Kbuild        |  1 +
+ arch/h8300/include/asm/Kbuild      |  1 +
+ arch/hexagon/include/asm/Kbuild    |  1 +
+ arch/ia64/include/asm/Kbuild       |  1 +
+ arch/m68k/include/asm/Kbuild       |  1 +
+ arch/microblaze/include/asm/Kbuild |  1 +
+ arch/mips/include/asm/Kbuild       |  1 +
+ arch/nds32/include/asm/Kbuild      |  1 +
+ arch/nios2/include/asm/Kbuild      |  1 +
+ arch/openrisc/include/asm/Kbuild   |  1 +
+ arch/parisc/include/asm/Kbuild     |  1 +
+ arch/powerpc/include/asm/Kbuild    |  1 +
+ arch/riscv/include/asm/Kbuild      |  1 +
+ arch/s390/include/asm/Kbuild       |  1 +
+ arch/sh/include/asm/Kbuild         |  1 +
+ arch/sparc/include/asm/Kbuild      |  1 +
+ arch/um/include/asm/Kbuild         |  1 +
+ arch/unicore32/include/asm/Kbuild  |  1 +
+ arch/x86/include/asm/Kbuild        |  1 +
+ arch/xtensa/include/asm/Kbuild     |  1 +
+ drivers/of/fdt.c                   |  1 +
+ include/asm-generic/initrd.h       |  1 +
+ 27 files changed, 38 insertions(+), 8 deletions(-)
+ create mode 100644 arch/arm64/include/asm/initrd.h
+ create mode 100644 include/asm-generic/initrd.h
+
+-- 
+2.17.1

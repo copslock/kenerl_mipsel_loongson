@@ -1,84 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 10:37:59 +0200 (CEST)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:38716 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbeJXIhusFC0i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 10:37:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=d2jfpjjB7oLmUkq3D7u7NPvUnHT/Qv4wl7bB9GP1+OQ=; b=dN76Of2NrI7shDByrYt1spoOs
-        fBUYXsTsK9Kj4I1LXQDJPK2xbkMaXWpCmI4B0RLlP+9OXOkAtMmh68ZXCVO3S/pBN6dU0lgxD8gWX
-        nB/Mk2BBYcQ3IlsOKSD/gdq8fN/Vp8fQ1SEFiYUfrNVfW57MgKQ9LrENYhjAozBIELFjQvTEPJNi5
-        bz9uiXLHG17dG6EVwpehVjKZCtfq1bMHlqor9mgtNLP7WP2m2pWVDPspQzaKuMyTnFdPaDUhc/6kR
-        mJe495zAtAHoUNeijZ1k8/AMfxQaYrE6a6RZnTBSeFiJ345Pm3weHdfiQbp0l9zYh1YwhM+nt6XPS
-        SmRzIXzSw==;
-Received: from [185.7.230.213] (helo=worktop)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gFEfH-0004So-Sa; Wed, 24 Oct 2018 08:37:20 +0000
-Received: by worktop (Postfix, from userid 1000)
-        id EDB716E08AB; Wed, 24 Oct 2018 10:37:16 +0200 (CEST)
-Date:   Wed, 24 Oct 2018 10:37:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Michal Hocko <mhocko@kernel.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>, akpm@linux-foundation.org,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>, dancol@google.com,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
-        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, lokeshgidra@google.com,
-        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
-        nios2-dev@lists.rocketboards.org, pantin@google.com,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
-        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Will Deacon <will.deacon@arm.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 1/4] treewide: remove unused address argument from
- pte_alloc functions (v2)
-Message-ID: <20181024083716.GN3109@worktop.c.hoisthospitality.com>
-References: <20181013013200.206928-1-joel@joelfernandes.org>
- <20181013013200.206928-2-joel@joelfernandes.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2018 10:58:07 +0200 (CEST)
+Received: from mail-qk1-x743.google.com ([IPv6:2607:f8b0:4864:20::743]:39871
+        "EHLO mail-qk1-x743.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990945AbeJXI6CH10ci (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2018 10:58:02 +0200
+Received: by mail-qk1-x743.google.com with SMTP id e4so2650928qkh.6
+        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 01:58:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=globallogic.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=P5D5+wbYvFpm0tdJgRcE+2WrrJ+FHACmNE2eQnVA+Rs=;
+        b=T0jxbwQ/IMtXTPmiRhxrz1dyHOaxB0otLcS6qSCgIoj/ZIb3gqrvQ8n0BBzlqTgQtv
+         n2w94rrDc0HbzNRZo3fF9wCbHhKFY/okTC0mLazTecjsg6yeew3DOh6ZQFMB5gT8jiSm
+         fbe+ePGG5l0r9wTKn+fKuAJC1lbS5y/F81yJ8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P5D5+wbYvFpm0tdJgRcE+2WrrJ+FHACmNE2eQnVA+Rs=;
+        b=UNOPue9Wm1OaCg/zRAW3s12HIXNrYB24cKaTTy9X3jJt+LVAwxK4Ak5izX5Y+/ZL1P
+         NIFzmIn8p+k4lExPA2NMygjiVuArwlZ7CpLYo8wr45OIBnWflRYYhHjLJlY6ayOTzuBm
+         AfRJl7r9rS4AESwQid3ojnve/nmvXn/g09youj9CSzsbbjx3ZAaqPMaQQCKU5SwR/T45
+         CNzre6vUBIzC/Fmn9fY8VZ4woyl8Mc7oipxlqeWksUQaVYl0mtgtumpF99ZiT12W8TfN
+         xJ+l+QqRPw2NOGt7LuNIbzFUXXJW3JFKyoJeo9RF8wjFGaPacXnfiAqQgQDcBy+CaDuU
+         WOaw==
+X-Gm-Message-State: AGRZ1gKiroEFg338g06a+7ekYNZMErKhHH7HXbOUafbCT7nY6Kb8z26t
+        V6jM2eIDk446olQwAYVRwGaZf0VW4VcSAgBN71Lb5g==
+X-Google-Smtp-Source: AJdET5e9VvhF6uwwaf7KJaXHG6ft6oCIpV7twnhvj5/91jdS+1Uk2+5SdTALGVsyBN2FJrWuHdYEDwZOODMoFMEZNEI=
+X-Received: by 2002:a37:1b46:: with SMTP id b67mr1512491qkb.144.1540371475912;
+ Wed, 24 Oct 2018 01:57:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20181013013200.206928-2-joel@joelfernandes.org>
-User-Agent: Mutt/1.5.22.1 (2013-10-16)
-Return-Path: <peterz@infradead.org>
+References: <1538067309-5711-1-git-send-email-maksym.kokhan@globallogic.com>
+ <20180929181725.GB27441@fifo99.com> <CAMT6-xiQ0vGcKpA+SiWHQWQFwU9Oo9j=Zin+UXDoPqKTz5fbeA@mail.gmail.com>
+ <CAMT6-xj1rjVAy1AWFiMHc5wH36eu=TUSMtdKU=-qRtUbwr9bkg@mail.gmail.com> <20181023144815.GP30658@n2100.armlinux.org.uk>
+In-Reply-To: <20181023144815.GP30658@n2100.armlinux.org.uk>
+From:   Maksym Kokhan <maksym.kokhan@globallogic.com>
+Date:   Wed, 24 Oct 2018 11:57:44 +0300
+Message-ID: <CAMT6-xhvqy5PeQmkQ8tsLRiML_pNJTxyq7dizRRvZTEqc7uzgg@mail.gmail.com>
+Subject: Re: [PATCH 0/8] add generic builtin command line
+To:     Russell King <linux@armlinux.org.uk>
+Cc:     Daniel Walker <dwalker@fifo99.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Daniel Walker <danielwa@cisco.com>,
+        Andrii Bordunov <aborduno@cisco.com>,
+        Ruslan Bilovol <rbilovol@cisco.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <maksym.kokhan@globallogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66914
+X-archive-position: 66915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: maksym.kokhan@globallogic.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,18 +83,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 12, 2018 at 06:31:57PM -0700, Joel Fernandes (Google) wrote:
-> This series speeds up mremap(2) syscall by copying page tables at the
-> PMD level even for non-THP systems. There is concern that the extra
-> 'address' argument that mremap passes to pte_alloc may do something
-> subtle architecture related in the future that may make the scheme not
-> work.  Also we find that there is no point in passing the 'address' to
-> pte_alloc since its unused. So this patch therefore removes this
-> argument tree-wide resulting in a nice negative diff as well. Also
-> ensuring along the way that the enabled architectures do not do anything
-> funky with 'address' argument that goes unnoticed by the optimization.
-
-Did you happen to look at the history of where that address argument
-came from? -- just being curious here. ISTR something vague about
-architectures having different paging structure for different memory
-ranges.
+Do you mean, that you haven't seen patch for ARM, which I sent on
+September 27 along with cover and patch 1? It is strange, because
+you was the one from recipients. If so, you can see this patch here:
+https://lore.kernel.org/patchwork/patch/992779/
+On Tue, Oct 23, 2018 at 5:48 PM Russell King - ARM Linux
+<linux@armlinux.org.uk> wrote:
+>
+> On Tue, Oct 23, 2018 at 05:43:18PM +0300, Maksym Kokhan wrote:
+> > We still have no response to patches for x86, arm, arm64 and powerpc.
+> > Is current generic command line implementation appropriate for these
+> > architectures?
+> > Is it possible to merge these patches in the current form (for x86,
+> > arm, arm64 and powerpc)?
+>
+> You may wish to consider your recipients - I seem to only have received
+> the cover and patch 1 (which doesn't include any ARM specific bits).
+> It may be that you're not getting responses because people haven't seen
+> your patches.
+>
+> Thanks.
+>
+> --
+> RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
+> FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+> According to speedtest.net: 11.9Mbps down 500kbps up

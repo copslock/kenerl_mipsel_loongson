@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:18:01 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:41194 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:18:44 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:42322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994678AbeJYORxw76sD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 16:17:53 +0200
+        id S23994800AbeJYOSkGnpkD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Oct 2018 16:18:40 +0200
 Received: from sasha-vm.mshome.net (unknown [167.98.65.38])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D160E2085A;
-        Thu, 25 Oct 2018 14:17:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B636520868;
+        Thu, 25 Oct 2018 14:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540477067;
-        bh=5MT6hHOQSiR3K5zGoFb02vslAvaN31A2HGDpbBWDGiU=;
+        s=default; t=1540477113;
+        bh=Ox32OmEpmuVy2gOrQGYlVPNwrnkzLFnmKdiXXMRA9Uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SjUZb1yQs4Lf/AC5D6g0+mfsmVa8dhwup+82Va/PPwE3hd7JRNg/DfH/TGZrNNtN+
-         9lUY5C4HX4GfOgjVVVpGOsvGX3qVEryS2Dzgz/YV5q/etPzY5Yf09uBs2/IXNj6RmF
-         0OhnGM1v2u+46zbwQxfNF/AtDukN2lVhICHvMWjY=
+        b=ksR6iqrqtzGqIny808oXe5vRbmJ4qne/kiYksend/G0JBod8VD8OOG9sj3To5l7oG
+         xysLGhqXdBlrWDbKpukNH8Pb9HJQTvMrx35Nhz9qYq8yQchDUggDrSEZSSABEkfarw
+         871Cg0EMKMZisN8mBIrFnB3rtuyiV9y1l4sga58Q=
 From:   Sasha Levin <sashal@kernel.org>
 To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 23/65] MIPS: Fix FCSR Cause bit handling for correct SIGFPE issue
-Date:   Thu, 25 Oct 2018 10:16:23 -0400
-Message-Id: <20181025141705.213937-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 56/65] MIPS: Handle non word sized instructions when examining frame
+Date:   Thu, 25 Oct 2018 10:16:56 -0400
+Message-Id: <20181025141705.213937-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20181025141705.213937-1-sashal@kernel.org>
 References: <20181025141705.213937-1-sashal@kernel.org>
@@ -32,7 +34,7 @@ Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66942
+X-archive-position: 66943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,301 +51,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Maciej W. Rozycki" <macro@imgtec.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-[ Upstream commit 5a1aca4469fdccd5b74ba0b4e490173b2b447895 ]
+[ Upstream commit 11887ed172a6960673f130dad8f8fb42778f64d7 ]
 
-Sanitize FCSR Cause bit handling, following a trail of past attempts:
+Commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+added fairly broken support for handling 16bit microMIPS instructions in
+get_frame_info(). It adjusts the instruction pointer by 16bits in the
+case of a 16bit sp move instruction, but not any other 16bit
+instruction.
 
-* commit 4249548454f7 ("MIPS: ptrace: Fix FP context restoration FCSR
-regression"),
+Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
+function size") goes some way to fixing get_frame_info() to iterate over
+microMIPS instuctions, but the instruction pointer is still manipulated
+using a postincrement, and is of union mips_instruction type. Since the
+union is sized to the largest member (a word), but microMIPS
+instructions are a mix of halfword and word sizes, the function does not
+always iterate correctly, ending up misaligned with the instruction
+stream and interpreting it incorrectly.
 
-* commit 443c44032a54 ("MIPS: Always clear FCSR cause bits after
-emulation"),
+Since the instruction modifying the stack pointer is usually the first
+in the function, that one is usually handled correctly. But the
+instruction which saves the return address to the sp is some variable
+number of instructions into the frame and is frequently missed due to
+not being on a word boundary, leading to incomplete walking of the
+stack.
 
-* commit 64bedffe4968 ("MIPS: Clear [MSA]FPE CSR.Cause after
-notify_die()"),
+Fix this by incrementing the instruction pointer based on the size of
+the previously decoded instruction (& remove the hack introduced by
+commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+which adjusts the instruction pointer in the case of a 16bit sp move
+instruction, but not any other).
 
-* commit b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause
-bits"),
-
-* commit b54d2901517d ("Properly handle branch delay slots in connection
-with signals.").
-
-Specifically do not mask these bits out in ptrace(2) processing and send
-a SIGFPE signal instead whenever a matching pair of an FCSR Cause and
-Enable bit is seen as execution of an affected context is about to
-resume.  Only then clear Cause bits, and even then do not clear any bits
-that are set but masked with the respective Enable bits.  Adjust Cause
-bit clearing throughout code likewise, except within the FPU emulator
-proper where they are set according to IEEE 754 exceptions raised as the
-operation emulated executed.  Do so so that any IEEE 754 exceptions
-subject to their default handling are recorded like with operations
-executed by FPU hardware.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Fixes: 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14460/
+Patchwork: https://patchwork.linux-mips.org/patch/16953/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/fpu_emulator.h  | 13 +++++
- arch/mips/include/asm/switch_to.h     | 18 +++++++
- arch/mips/kernel/mips-r2-to-r6-emul.c | 10 ++--
- arch/mips/kernel/ptrace.c             |  7 ++-
- arch/mips/kernel/traps.c              | 72 +++++++++++++++------------
- 5 files changed, 78 insertions(+), 42 deletions(-)
+ arch/mips/kernel/process.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 2f021cdfba4f..742223716fc8 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -66,6 +66,8 @@ extern int do_dsemulret(struct pt_regs *xcp);
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 				    struct mips_fpu_struct *ctx, int has_fpu,
- 				    void *__user *fault_addr);
-+void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
-+		     struct task_struct *tsk);
- int process_fpemu_return(int sig, void __user *fault_addr,
- 			 unsigned long fcr31);
- int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-@@ -92,4 +94,15 @@ static inline void fpu_emulator_init_fpu(void)
- 		set_fpr64(&t->thread.fpu.fpr[i], 0, SIGNALLING_NAN);
- }
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index ed6cac4a4df0..a9cc74354df8 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -341,6 +341,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+ 	union mips_instruction insn, *ip, *ip_end;
+ 	const unsigned int max_insns = 128;
++	unsigned int last_insn_size = 0;
+ 	unsigned int i;
  
-+/*
-+ * Mask the FCSR Cause bits according to the Enable bits, observing
-+ * that Unimplemented is always enabled.
-+ */
-+static inline unsigned long mask_fcr31_x(unsigned long fcr31)
-+{
-+	return fcr31 & (FPU_CSR_UNI_X |
-+			((fcr31 & FPU_CSR_ALL_E) <<
-+			 (ffs(FPU_CSR_ALL_X) - ffs(FPU_CSR_ALL_E))));
-+}
-+
- #endif /* _ASM_FPU_EMULATOR_H */
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index ebb5c0f2f90d..c0ae27971e31 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -75,6 +75,22 @@ do {	if (cpu_has_rw_llb) {						\
- 	}								\
- } while (0)
+ 	info->pc_offset = -1;
+@@ -352,15 +353,19 @@ static int get_frame_info(struct mips_frame_info *info)
  
-+/*
-+ * Check FCSR for any unmasked exceptions pending set with `ptrace',
-+ * clear them and send a signal.
-+ */
-+#define __sanitize_fcr31(next)						\
-+do {									\
-+	unsigned long fcr31 = mask_fcr31_x(next->thread.fpu.fcr31);	\
-+	void __user *pc;						\
-+									\
-+	if (unlikely(fcr31)) {						\
-+		pc = (void __user *)task_pt_regs(next)->cp0_epc;	\
-+		next->thread.fpu.fcr31 &= ~fcr31;			\
-+		force_fcr31_sig(fcr31, pc, next);			\
-+	}								\
-+} while (0)
-+
- /*
-  * For newly created kernel threads switch_to() will return to
-  * ret_from_kernel_thread, newly created user threads to ret_from_fork.
-@@ -85,6 +101,8 @@ do {	if (cpu_has_rw_llb) {						\
- do {									\
- 	__mips_mt_fpaff_switch_to(prev);				\
- 	lose_fpu_inatomic(1, prev);					\
-+	if (tsk_used_math(next))					\
-+		__sanitize_fcr31(next);					\
- 	if (cpu_has_dsp) {						\
- 		__save_dsp(prev);					\
- 		__restore_dsp(next);					\
-diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-index cbe0f025856d..7b887027dca2 100644
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -900,7 +900,7 @@ static inline int mipsr2_find_op_func(struct pt_regs *regs, u32 inst,
-  * mipsr2_decoder: Decode and emulate a MIPS R2 instruction
-  * @regs: Process register set
-  * @inst: Instruction to decode and emulate
-- * @fcr31: Floating Point Control and Status Register returned
-+ * @fcr31: Floating Point Control and Status Register Cause bits returned
-  */
- int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
- {
-@@ -1183,13 +1183,13 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
+ 	ip_end = (void *)ip + info->func_size;
  
- 		err = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 0,
- 					       &fault_addr);
--		*fcr31 = current->thread.fpu.fcr31;
+-	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
++	for (i = 0; i < max_insns && ip < ip_end; i++) {
++		ip = (void *)ip + last_insn_size;
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 2;
+ 		} else if (is_mmips) {
+ 			insn.halfword[0] = ip->halfword[1];
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 4;
+ 		} else {
+ 			insn.word = ip->word;
++			last_insn_size = 4;
+ 		}
  
- 		/*
--		 * We can't allow the emulated instruction to leave any of
--		 * the cause bits set in $fcr31.
-+		 * We can't allow the emulated instruction to leave any
-+		 * enabled Cause bits set in $fcr31.
- 		 */
--		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
-+		*fcr31 = res = mask_fcr31_x(current->thread.fpu.fcr31);
-+		current->thread.fpu.fcr31 &= ~res;
- 
- 		/*
- 		 * this is a tricky issue - lose_fpu() uses LL/SC atomics
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 5a869515b393..9d04392f7ef0 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -79,16 +79,15 @@ void ptrace_disable(struct task_struct *child)
- }
- 
- /*
-- * Poke at FCSR according to its mask.  Don't set the cause bits as
-- * this is currently not handled correctly in FP context restoration
-- * and will cause an oops if a corresponding enable bit is set.
-+ * Poke at FCSR according to its mask.  Set the Cause bits even
-+ * if a corresponding Enable bit is set.  This will be noticed at
-+ * the time the thread is switched to and SIGFPE thrown accordingly.
-  */
- static void ptrace_setfcr31(struct task_struct *child, u32 value)
- {
- 	u32 fcr31;
- 	u32 mask;
- 
--	value &= ~FPU_CSR_ALL_X;
- 	fcr31 = child->thread.fpu.fcr31;
- 	mask = boot_cpu_data.fpu_msk31;
- 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 1b901218e3ae..6abd6b41c13d 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -706,6 +706,32 @@ asmlinkage void do_ov(struct pt_regs *regs)
- 	exception_exit(prev_state);
- }
- 
-+/*
-+ * Send SIGFPE according to FCSR Cause bits, which must have already
-+ * been masked against Enable bits.  This is impotant as Inexact can
-+ * happen together with Overflow or Underflow, and `ptrace' can set
-+ * any bits.
-+ */
-+void force_fcr31_sig(unsigned long fcr31, void __user *fault_addr,
-+		     struct task_struct *tsk)
-+{
-+	struct siginfo si = { .si_addr = fault_addr, .si_signo = SIGFPE };
-+
-+	if (fcr31 & FPU_CSR_INV_X)
-+		si.si_code = FPE_FLTINV;
-+	else if (fcr31 & FPU_CSR_DIV_X)
-+		si.si_code = FPE_FLTDIV;
-+	else if (fcr31 & FPU_CSR_OVF_X)
-+		si.si_code = FPE_FLTOVF;
-+	else if (fcr31 & FPU_CSR_UDF_X)
-+		si.si_code = FPE_FLTUND;
-+	else if (fcr31 & FPU_CSR_INE_X)
-+		si.si_code = FPE_FLTRES;
-+	else
-+		si.si_code = __SI_FAULT;
-+	force_sig_info(SIGFPE, &si, tsk);
-+}
-+
- int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
- {
- 	struct siginfo si = { 0 };
-@@ -715,27 +741,7 @@ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
- 		return 0;
- 
- 	case SIGFPE:
--		si.si_addr = fault_addr;
--		si.si_signo = sig;
--		/*
--		 * Inexact can happen together with Overflow or Underflow.
--		 * Respect the mask to deliver the correct exception.
--		 */
--		fcr31 &= (fcr31 & FPU_CSR_ALL_E) <<
--			 (ffs(FPU_CSR_ALL_X) - ffs(FPU_CSR_ALL_E));
--		if (fcr31 & FPU_CSR_INV_X)
--			si.si_code = FPE_FLTINV;
--		else if (fcr31 & FPU_CSR_DIV_X)
--			si.si_code = FPE_FLTDIV;
--		else if (fcr31 & FPU_CSR_OVF_X)
--			si.si_code = FPE_FLTOVF;
--		else if (fcr31 & FPU_CSR_UDF_X)
--			si.si_code = FPE_FLTUND;
--		else if (fcr31 & FPU_CSR_INE_X)
--			si.si_code = FPE_FLTRES;
--		else
--			si.si_code = __SI_FAULT;
--		force_sig_info(sig, &si, current);
-+		force_fcr31_sig(fcr31, fault_addr, current);
- 		return 1;
- 
- 	case SIGBUS:
-@@ -798,13 +804,13 @@ static int simulate_fp(struct pt_regs *regs, unsigned int opcode,
- 	/* Run the emulator */
- 	sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
- 				       &fault_addr);
--	fcr31 = current->thread.fpu.fcr31;
- 
- 	/*
--	 * We can't allow the emulated instruction to leave any of
--	 * the cause bits set in $fcr31.
-+	 * We can't allow the emulated instruction to leave any
-+	 * enabled Cause bits set in $fcr31.
- 	 */
--	current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
-+	fcr31 = mask_fcr31_x(current->thread.fpu.fcr31);
-+	current->thread.fpu.fcr31 &= ~fcr31;
- 
- 	/* Restore the hardware register state */
- 	own_fpu(1);
-@@ -830,7 +836,7 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
- 		goto out;
- 
- 	/* Clear FCSR.Cause before enabling interrupts */
--	write_32bit_cp1_register(CP1_STATUS, fcr31 & ~FPU_CSR_ALL_X);
-+	write_32bit_cp1_register(CP1_STATUS, fcr31 & ~mask_fcr31_x(fcr31));
- 	local_irq_enable();
- 
- 	die_if_kernel("FP exception in kernel code", regs);
-@@ -852,13 +858,13 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
- 		/* Run the emulator */
- 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
- 					       &fault_addr);
--		fcr31 = current->thread.fpu.fcr31;
- 
- 		/*
--		 * We can't allow the emulated instruction to leave any of
--		 * the cause bits set in $fcr31.
-+		 * We can't allow the emulated instruction to leave any
-+		 * enabled Cause bits set in $fcr31.
- 		 */
--		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
-+		fcr31 = mask_fcr31_x(current->thread.fpu.fcr31);
-+		current->thread.fpu.fcr31 &= ~fcr31;
- 
- 		/* Restore the hardware register state */
- 		own_fpu(1);	/* Using the FPU again.	 */
-@@ -1431,13 +1437,13 @@ asmlinkage void do_cpu(struct pt_regs *regs)
- 
- 		sig = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 0,
- 					       &fault_addr);
--		fcr31 = current->thread.fpu.fcr31;
- 
- 		/*
- 		 * We can't allow the emulated instruction to leave
--		 * any of the cause bits set in $fcr31.
-+		 * any enabled Cause bits set in $fcr31.
- 		 */
--		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
-+		fcr31 = mask_fcr31_x(current->thread.fpu.fcr31);
-+		current->thread.fpu.fcr31 &= ~fcr31;
- 
- 		/* Send a signal if required.  */
- 		if (!process_fpemu_return(sig, fault_addr, fcr31) && !err)
+ 		if (is_jump_ins(&insn))
+@@ -382,8 +387,6 @@ static int get_frame_info(struct mips_frame_info *info)
+ 						tmp = (ip->halfword[0] >> 1);
+ 						info->frame_size = -(signed short)(tmp & 0xf);
+ 					}
+-					ip = (void *) &ip->halfword[1];
+-					ip--;
+ 				} else
+ #endif
+ 				info->frame_size = - ip->i_format.simmediate;
 -- 
 2.17.1

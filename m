@@ -1,60 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 04:14:02 +0200 (CEST)
-Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:38559
-        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeJYCN7SlZQJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2018 04:13:59 +0200
-Received: by mail-pf1-x443.google.com with SMTP id b11-v6so1732499pfi.5
-        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 19:13:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 04:21:33 +0200 (CEST)
+Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:44475
+        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990401AbeJYCV2dTvyJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2018 04:21:28 +0200
+Received: by mail-pg1-x543.google.com with SMTP id w3-v6so3238896pgs.11
+        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 19:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=joelfernandes.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=5CbWcmgaWhK69oh2DEOguVgA2uKl1YpKoqaGwtGwge8=;
-        b=q/q3QTdACzUlPpDQMN1kjcezMfcsn0Yv6fXB6ODPHDCxjW91L/KWd7ad+HnYMhVDLK
-         4w8FEyzAp+rB09Si8JZs7MJE9NTlxjm6PO3Hk2MpIdxGl6P2KagjiLkUB/ExO2oGujpm
-         CSZTqm0K2zOVm+Foil/VJrYg2JhZozpJsR9l8=
+        bh=a3qWVWJhvBgQDe8YRsbgtRjpHQfuWQV3NPWrQqOgjm0=;
+        b=WhUgko4o5JcJhUwoWI8kPjvkrH9YQTvlMUDHtdL2JJ5mCTuig+Mqt2sFNrTVhmJSgZ
+         34O62c+REJyhBfJwS4DhKcn3WHO4O/TKsj/DlxdzkUHTNLB9x+bJAzgHPxnnVjbdI5DC
+         PQKlOZe6+0JIfKGXqhkPj1W7WBMfDG+7PFQCQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=5CbWcmgaWhK69oh2DEOguVgA2uKl1YpKoqaGwtGwge8=;
-        b=FIhvSz7hcL2/UuGQ19+CXFO+V+brwzV22Nwi4xisB+biFU72j8FgobQjqvOIqRlsWG
-         w8ap6eJXAyaO1kQ3F0/4WgXRqAsZd3CTe5jSvOalIbye6HfH4HFAtv61+RovkCXaUsVv
-         jYp54D0kV8bO8W+c1BAGAIQ+QKAluhUP75yDyaAtr+AjYSZcn0MFFH1UvCX8rVixYz/x
-         1q+yZeKDZXeLh2N1NUSaGPbPsmFPNSamsU+Pd0g4lCtKn9i+90hfbSHQsGWsYaL0DmD9
-         QatGuPFmRdZc6Vh8o/vRTXbFCKBITatFKo6OXe0W27FqOdPd0Zd2qFA4ghR/W8mbFifG
-         KGeA==
-X-Gm-Message-State: AGRZ1gJ8rDlIWwBzVP9YJTqwuZshwnhH4Igm29jsqGp+brjzWKNpUoqW
-        +yBGAnxxeMzLIexyMAuMcxsJ9w==
-X-Google-Smtp-Source: AJdET5dpMwn85VnY2OpxFWBdTBIZT6WEknqSNasg/mS3JU0dLY8ImJjZVFsNiBwxQlcm8wQ3lAxw+Q==
-X-Received: by 2002:a63:441f:: with SMTP id r31-v6mr4853133pga.60.1540433632120;
-        Wed, 24 Oct 2018 19:13:52 -0700 (PDT)
+        bh=a3qWVWJhvBgQDe8YRsbgtRjpHQfuWQV3NPWrQqOgjm0=;
+        b=XQJhQLvOHBcfoZxWzZeXdOd7tS239yyuL9wd6GafxjNZZZhrVEuH+raNqRaqCCfati
+         SD2ny5XfczDDehbRtGfcufZU7bbxlUV3swT8xQBZTWdw128d8AkCfG4TRlEiAgr+ZJ4u
+         OMWYrfoDCdfHS2EzXbyfxdwgDLIVlsuGbe/pscYqJS9NZRyg81S73RS887HK9ZciOxbt
+         /eYW/cGg1NqagIxYs+W/7ruD8oC5z4r7ROYvEsGaDpMIXPYCG61UxlwbCDWoA4sihpwP
+         99pHunlc/Yk7jJ+VweRpaAfiJ75P3qFwtUz64i6nLsd/uRuXojVjiD4Abq1PzPZ2/zEv
+         KFkg==
+X-Gm-Message-State: AGRZ1gJOA/O3k2oilIHYMiOjTmaVb/vLEdw0YJtxPDJvzYhkBS8J7Rok
+        hAO6wcKSqDYAq0yHfK6bSndp0w==
+X-Google-Smtp-Source: AJdET5fQ846491taIkpUacXcNZHbPUwGXEdQnQATNy2W0qACW8LZiE3r2xKx5hJLJ1WKuWwXbkkY2Q==
+X-Received: by 2002:a63:88c7:: with SMTP id l190mr4758613pgd.110.1540434081712;
+        Wed, 24 Oct 2018 19:21:21 -0700 (PDT)
 Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
-        by smtp.gmail.com with ESMTPSA id 73-v6sm774464pft.178.2018.10.24.19.13.50
+        by smtp.gmail.com with ESMTPSA id 11-v6sm8041192pfs.108.2018.10.24.19.21.20
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 24 Oct 2018 19:13:50 -0700 (PDT)
-Date:   Wed, 24 Oct 2018 19:13:50 -0700
+        Wed, 24 Oct 2018 19:21:20 -0700 (PDT)
+Date:   Wed, 24 Oct 2018 19:21:19 -0700
 From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Balbir Singh <bsingharora@gmail.com>
-Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        linux-kernel@vger.kernel.org, kernel-team@android.com,
-        minchan@kernel.org, pantin@google.com, hughd@google.com,
-        lokeshgidra@google.com, dancol@google.com, mhocko@kernel.org,
-        akpm@linux-foundation.org,
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Michal Hocko <mhocko@kernel.org>,
+        Julia Lawall <Julia.Lawall@lip6.fr>, akpm@linux-foundation.org,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Andy Lutomirski <luto@kernel.org>,
         anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>,
+        Chris Zankel <chris@zankel.net>, dancol@google.com,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "David S. Miller" <davem@davemloft.net>,
         elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        Ingo Molnar <mingo@redhat.com>,
+        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
         "James E.J. Bottomley" <jejb@parisc-linux.org>,
         Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
         kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
         Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
         linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
@@ -63,9 +61,9 @@ Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
-        nios2-dev@lists.rocketboards.org,
-        Peter Zijlstra <peterz@infradead.org>,
+        linux-xtensa@linux-xtensa.org, lokeshgidra@google.com,
+        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
+        nios2-dev@lists.rocketboards.org, pantin@google.com,
         Richard Weinberger <richard@nod.at>,
         Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
         sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
@@ -75,22 +73,22 @@ Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
         Will Deacon <will.deacon@arm.com>,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 2/4] mm: speed up mremap by 500x on large regions (v2)
-Message-ID: <20181025021350.GB13560@joelaf.mtv.corp.google.com>
+Subject: Re: [PATCH 1/4] treewide: remove unused address argument from
+ pte_alloc functions (v2)
+Message-ID: <20181025022119.GC13560@joelaf.mtv.corp.google.com>
 References: <20181013013200.206928-1-joel@joelfernandes.org>
- <20181013013200.206928-3-joel@joelfernandes.org>
- <20181024101255.it4lptrjogalxbey@kshutemo-mobl1>
- <20181024115733.GN8537@350D>
+ <20181013013200.206928-2-joel@joelfernandes.org>
+ <20181024083716.GN3109@worktop.c.hoisthospitality.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181024115733.GN8537@350D>
+In-Reply-To: <20181024083716.GN3109@worktop.c.hoisthospitality.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66932
+X-archive-position: 66933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -107,18 +105,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 24, 2018 at 10:57:33PM +1100, Balbir Singh wrote:
-[...]
-> > > +		pmd_t pmd;
-> > > +
-> > > +		new_ptl = pmd_lockptr(mm, new_pmd);
+On Wed, Oct 24, 2018 at 10:37:16AM +0200, Peter Zijlstra wrote:
+> On Fri, Oct 12, 2018 at 06:31:57PM -0700, Joel Fernandes (Google) wrote:
+> > This series speeds up mremap(2) syscall by copying page tables at the
+> > PMD level even for non-THP systems. There is concern that the extra
+> > 'address' argument that mremap passes to pte_alloc may do something
+> > subtle architecture related in the future that may make the scheme not
+> > work.  Also we find that there is no point in passing the 'address' to
+> > pte_alloc since its unused. So this patch therefore removes this
+> > argument tree-wide resulting in a nice negative diff as well. Also
+> > ensuring along the way that the enabled architectures do not do anything
+> > funky with 'address' argument that goes unnoticed by the optimization.
 > 
-> 
-> Looks like this is largely inspired by move_huge_pmd(), I guess a lot of
-> the code applies, why not just reuse as much as possible? The same comments
-> w.r.t mmap_sem helping protect against lock order issues applies as well.
+> Did you happen to look at the history of where that address argument
+> came from? -- just being curious here. ISTR something vague about
+> architectures having different paging structure for different memory
+> ranges.
 
-I thought about this and when I looked into it, it seemed there are subtle
-differences that make such sharing not worth it (or not possible).
+I didn't happen to do that analysis but from code analysis, no architecutre
+is using it. Since its unused in the kernel, may be such architectures don't
+exist or were removed, so we don't need to bother? Could you share more about
+your concern with the removal of this argument?
+
+thanks,
 
  - Joel

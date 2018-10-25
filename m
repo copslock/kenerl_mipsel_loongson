@@ -1,44 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:18:44 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:42322 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994800AbeJYOSkGnpkD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 16:18:40 +0200
-Received: from sasha-vm.mshome.net (unknown [167.98.65.38])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B636520868;
-        Thu, 25 Oct 2018 14:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540477113;
-        bh=Ox32OmEpmuVy2gOrQGYlVPNwrnkzLFnmKdiXXMRA9Uc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ksR6iqrqtzGqIny808oXe5vRbmJ4qne/kiYksend/G0JBod8VD8OOG9sj3To5l7oG
-         xysLGhqXdBlrWDbKpukNH8Pb9HJQTvMrx35Nhz9qYq8yQchDUggDrSEZSSABEkfarw
-         871Cg0EMKMZisN8mBIrFnB3rtuyiV9y1l4sga58Q=
-From:   Sasha Levin <sashal@kernel.org>
-To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 56/65] MIPS: Handle non word sized instructions when examining frame
-Date:   Thu, 25 Oct 2018 10:16:56 -0400
-Message-Id: <20181025141705.213937-56-sashal@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20181025141705.213937-1-sashal@kernel.org>
-References: <20181025141705.213937-1-sashal@kernel.org>
-Return-Path: <sashal@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:19:01 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:57738 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23994805AbeJYOSnJXX9D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Oct 2018 16:18:43 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 228DBAFDF;
+        Thu, 25 Oct 2018 14:18:37 +0000 (UTC)
+Date:   Thu, 25 Oct 2018 16:18:35 +0200
+From:   Michal Hocko <mhocko@kernel.org>
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc:     "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "jeyu@kernel.org" <jeyu@kernel.org>,
+        "ard.biesheuvel@linaro.org" <ard.biesheuvel@linaro.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jannh@google.com" <jannh@google.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "arjan@linux.intel.com" <arjan@linux.intel.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kristen@linux.intel.com" <kristen@linux.intel.com>,
+        "Dock, Deneen T" <deneen.t.dock@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "kernel-hardening@lists.openwall.com" 
+        <kernel-hardening@lists.openwall.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "alexei.starovoitov@gmail.com" <alexei.starovoitov@gmail.com>
+Subject: Re: [PATCH RFC v3 0/3] Rlimit for module space
+Message-ID: <20181025141835.GS18839@dhcp22.suse.cz>
+References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
+ <CAKv+Gu_AgPv2o4=U0-7pnpgtSufEobnta8oKhhGfCdCxM82B5Q@mail.gmail.com>
+ <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
+ <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
+ <20181024150706.jewcclhhh756tupn@linux-8ccs>
+ <d7cb6a8c-b7d6-5c82-6721-2b5387da673f@iogearbox.net>
+ <d1fec827d028168047eafbac56e8e47d37cf7fb5.camel@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1fec827d028168047eafbac56e8e47d37cf7fb5.camel@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <mhocko@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66943
+X-archive-position: 66944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sashal@kernel.org
+X-original-sender: mhocko@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,94 +74,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Matt Redfearn <matt.redfearn@imgtec.com>
+On Thu 25-10-18 01:01:44, Edgecombe, Rick P wrote:
+[...]
+> FWIW, cgroups seems like a better solution than rlimit to me too. Maybe you all
+> already know, but it looks like the cgroups vmalloc charge is done in the main
+> page allocator and counts against the whole kernel memory limit.
 
-[ Upstream commit 11887ed172a6960673f130dad8f8fb42778f64d7 ]
+I am not sure I understand what you are saying but let me clarify that
+vmalloc memory is accounted against memory cgroup associated with the
+user context calling vmalloc. All you need to do is to add __GFP_ACCOUNT
+to the gfp mask. The only challenge here is the charged memory life
+cycle. When does it get deallocated? In the worst case the memory is not
+tight to any user context and as such it doesn't get deallocated by
+killing all processes which could lead to memcg limit exhaustion.
 
-Commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
-added fairly broken support for handling 16bit microMIPS instructions in
-get_frame_info(). It adjusts the instruction pointer by 16bits in the
-case of a 16bit sp move instruction, but not any other 16bit
-instruction.
+> A user may want
+> to have a higher kernel limit than the module space size, so it seems it isn't
+> enough by itself and some new limit would need to be added.
 
-Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
-function size") goes some way to fixing get_frame_info() to iterate over
-microMIPS instuctions, but the instruction pointer is still manipulated
-using a postincrement, and is of union mips_instruction type. Since the
-union is sized to the largest member (a word), but microMIPS
-instructions are a mix of halfword and word sizes, the function does not
-always iterate correctly, ending up misaligned with the instruction
-stream and interpreting it incorrectly.
-
-Since the instruction modifying the stack pointer is usually the first
-in the function, that one is usually handled correctly. But the
-instruction which saves the return address to the sp is some variable
-number of instructions into the frame and is frequently missed due to
-not being on a word boundary, leading to incomplete walking of the
-stack.
-
-Fix this by incrementing the instruction pointer based on the size of
-the previously decoded instruction (& remove the hack introduced by
-commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
-which adjusts the instruction pointer in the case of a 16bit sp move
-instruction, but not any other).
-
-Fixes: 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16953/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/kernel/process.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index ed6cac4a4df0..a9cc74354df8 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -341,6 +341,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
- 	union mips_instruction insn, *ip, *ip_end;
- 	const unsigned int max_insns = 128;
-+	unsigned int last_insn_size = 0;
- 	unsigned int i;
- 
- 	info->pc_offset = -1;
-@@ -352,15 +353,19 @@ static int get_frame_info(struct mips_frame_info *info)
- 
- 	ip_end = (void *)ip + info->func_size;
- 
--	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
-+	for (i = 0; i < max_insns && ip < ip_end; i++) {
-+		ip = (void *)ip + last_insn_size;
- 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
- 			insn.halfword[0] = 0;
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = 2;
- 		} else if (is_mmips) {
- 			insn.halfword[0] = ip->halfword[1];
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = 4;
- 		} else {
- 			insn.word = ip->word;
-+			last_insn_size = 4;
- 		}
- 
- 		if (is_jump_ins(&insn))
-@@ -382,8 +387,6 @@ static int get_frame_info(struct mips_frame_info *info)
- 						tmp = (ip->halfword[0] >> 1);
- 						info->frame_size = -(signed short)(tmp & 0xf);
- 					}
--					ip = (void *) &ip->halfword[1];
--					ip--;
- 				} else
- #endif
- 				info->frame_size = - ip->i_format.simmediate;
+If there is another restriction on this memory then you are right.
 -- 
-2.17.1
+Michal Hocko
+SUSE Labs

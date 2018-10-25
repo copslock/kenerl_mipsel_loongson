@@ -1,98 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 04:21:33 +0200 (CEST)
-Received: from mail-pg1-x543.google.com ([IPv6:2607:f8b0:4864:20::543]:44475
-        "EHLO mail-pg1-x543.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990401AbeJYCV2dTvyJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2018 04:21:28 +0200
-Received: by mail-pg1-x543.google.com with SMTP id w3-v6so3238896pgs.11
-        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 19:21:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=a3qWVWJhvBgQDe8YRsbgtRjpHQfuWQV3NPWrQqOgjm0=;
-        b=WhUgko4o5JcJhUwoWI8kPjvkrH9YQTvlMUDHtdL2JJ5mCTuig+Mqt2sFNrTVhmJSgZ
-         34O62c+REJyhBfJwS4DhKcn3WHO4O/TKsj/DlxdzkUHTNLB9x+bJAzgHPxnnVjbdI5DC
-         PQKlOZe6+0JIfKGXqhkPj1W7WBMfDG+7PFQCQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=a3qWVWJhvBgQDe8YRsbgtRjpHQfuWQV3NPWrQqOgjm0=;
-        b=XQJhQLvOHBcfoZxWzZeXdOd7tS239yyuL9wd6GafxjNZZZhrVEuH+raNqRaqCCfati
-         SD2ny5XfczDDehbRtGfcufZU7bbxlUV3swT8xQBZTWdw128d8AkCfG4TRlEiAgr+ZJ4u
-         OMWYrfoDCdfHS2EzXbyfxdwgDLIVlsuGbe/pscYqJS9NZRyg81S73RS887HK9ZciOxbt
-         /eYW/cGg1NqagIxYs+W/7ruD8oC5z4r7ROYvEsGaDpMIXPYCG61UxlwbCDWoA4sihpwP
-         99pHunlc/Yk7jJ+VweRpaAfiJ75P3qFwtUz64i6nLsd/uRuXojVjiD4Abq1PzPZ2/zEv
-         KFkg==
-X-Gm-Message-State: AGRZ1gJOA/O3k2oilIHYMiOjTmaVb/vLEdw0YJtxPDJvzYhkBS8J7Rok
-        hAO6wcKSqDYAq0yHfK6bSndp0w==
-X-Google-Smtp-Source: AJdET5fQ846491taIkpUacXcNZHbPUwGXEdQnQATNy2W0qACW8LZiE3r2xKx5hJLJ1WKuWwXbkkY2Q==
-X-Received: by 2002:a63:88c7:: with SMTP id l190mr4758613pgd.110.1540434081712;
-        Wed, 24 Oct 2018 19:21:21 -0700 (PDT)
-Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
-        by smtp.gmail.com with ESMTPSA id 11-v6sm8041192pfs.108.2018.10.24.19.21.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 24 Oct 2018 19:21:20 -0700 (PDT)
-Date:   Wed, 24 Oct 2018 19:21:19 -0700
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Michal Hocko <mhocko@kernel.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>, akpm@linux-foundation.org,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 11:39:02 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:53626 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992328AbeJYJi7100Cn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2018 11:38:59 +0200
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id w9P9cnjp137402
+        for <linux-mips@linux-mips.org>; Thu, 25 Oct 2018 05:38:57 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2nb965xqks-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 25 Oct 2018 05:38:56 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.ibm.com>;
+        Thu, 25 Oct 2018 10:38:53 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 25 Oct 2018 10:38:45 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id w9P9cijR35061846
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 25 Oct 2018 09:38:44 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 11E1C4C052;
+        Thu, 25 Oct 2018 09:38:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8AD0C4C046;
+        Thu, 25 Oct 2018 09:38:37 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.206.29])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu, 25 Oct 2018 09:38:37 +0000 (GMT)
+Date:   Thu, 25 Oct 2018 10:38:34 +0100
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>, dancol@google.com,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
-        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
-        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, lokeshgidra@google.com,
-        Max Filippov <jcmvbkbc@gmail.com>, minchan@kernel.org,
-        nios2-dev@lists.rocketboards.org, pantin@google.com,
-        Richard Weinberger <richard@nod.at>,
-        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
-        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
         Will Deacon <will.deacon@arm.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 1/4] treewide: remove unused address argument from
- pte_alloc functions (v2)
-Message-ID: <20181025022119.GC13560@joelaf.mtv.corp.google.com>
-References: <20181013013200.206928-1-joel@joelfernandes.org>
- <20181013013200.206928-2-joel@joelfernandes.org>
- <20181024083716.GN3109@worktop.c.hoisthospitality.com>
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Olof Johansson <olof@lixom.net>, linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-c6x-dev@linux-c6x.org,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        nios2-dev@lists.rocketboards.org,
+        Openrisc <openrisc@lists.librecores.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        SH-Linux <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        devicetree@vger.kernel.org,
+        "open list:GENERIC INCLUDE/ASM HEADER FILES" 
+        <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH v2 0/2] arm64: Cut rebuild time when changing
+ CONFIG_BLK_DEV_INITRD
+References: <20181024193256.23734-1-f.fainelli@gmail.com>
+ <CAL_Jsq+KCOv6pXXHhHDZ+7-QUrmtMDvSjEVhK15yZ3qbnn61Ag@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181024083716.GN3109@worktop.c.hoisthospitality.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <joel@joelfernandes.org>
+In-Reply-To: <CAL_Jsq+KCOv6pXXHhHDZ+7-QUrmtMDvSjEVhK15yZ3qbnn61Ag@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18102509-4275-0000-0000-000002D37AFD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18102509-4276-0000-0000-000037DF8880
+Message-Id: <20181025093833.GA23607@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-10-25_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1810250088
+Return-Path: <rppt@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66933
+X-archive-position: 66934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joel@joelfernandes.org
+X-original-sender: rppt@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -105,28 +103,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 24, 2018 at 10:37:16AM +0200, Peter Zijlstra wrote:
-> On Fri, Oct 12, 2018 at 06:31:57PM -0700, Joel Fernandes (Google) wrote:
-> > This series speeds up mremap(2) syscall by copying page tables at the
-> > PMD level even for non-THP systems. There is concern that the extra
-> > 'address' argument that mremap passes to pte_alloc may do something
-> > subtle architecture related in the future that may make the scheme not
-> > work.  Also we find that there is no point in passing the 'address' to
-> > pte_alloc since its unused. So this patch therefore removes this
-> > argument tree-wide resulting in a nice negative diff as well. Also
-> > ensuring along the way that the enabled architectures do not do anything
-> > funky with 'address' argument that goes unnoticed by the optimization.
+On Wed, Oct 24, 2018 at 02:55:17PM -0500, Rob Herring wrote:
+> On Wed, Oct 24, 2018 at 2:33 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
+> >
+> > Hi all,
+> >
+> > While investigating why ARM64 required a ton of objects to be rebuilt
+> > when toggling CONFIG_DEV_BLK_INITRD, it became clear that this was
+> > because we define __early_init_dt_declare_initrd() differently and we do
+> > that in arch/arm64/include/asm/memory.h which gets included by a fair
+> > amount of other header files, and translation units as well.
 > 
-> Did you happen to look at the history of where that address argument
-> came from? -- just being curious here. ISTR something vague about
-> architectures having different paging structure for different memory
-> ranges.
+> I scratch my head sometimes as to why some config options rebuild so
+> much stuff. One down, ? to go. :)
+> 
+> > Changing the value of CONFIG_DEV_BLK_INITRD is a common thing with build
+> > systems that generate two kernels: one with the initramfs and one
+> > without. buildroot is one of these build systems, OpenWrt is also
+> > another one that does this.
+> >
+> > This patch series proposes adding an empty initrd.h to satisfy the need
+> > for drivers/of/fdt.c to unconditionally include that file, and moves the
+> > custom __early_init_dt_declare_initrd() definition away from
+> > asm/memory.h
+> >
+> > This cuts the number of objects rebuilds from 1920 down to 26, so a
+> > factor 73 approximately.
+> >
+> > Apologies for the long CC list, please let me know how you would go
+> > about merging that and if another approach would be preferable, e.g:
+> > introducing a CONFIG_ARCH_INITRD_BELOW_START_OK Kconfig option or
+> > something like that.
+> 
+> There may be a better way as of 4.20 because bootmem is now gone and
+> only memblock is used. This should unify what each arch needs to do
+> with initrd early. We need the physical address early for memblock
+> reserving. Then later on we need the virtual address to access the
+> initrd. Perhaps we should just change initrd_start and initrd_end to
+> physical addresses (or add 2 new variables would be less invasive and
+> allow for different translation than __va()). The sanity checks and
+> memblock reserve could also perhaps be moved to a common location.
+>
+> Alternatively, given arm64 is the only oddball, I'd be fine with an
+> "if (IS_ENABLED(CONFIG_ARM64))" condition in the default
+> __early_init_dt_declare_initrd as long as we have a path to removing
+> it like the above option.
 
-I didn't happen to do that analysis but from code analysis, no architecutre
-is using it. Since its unused in the kernel, may be such architectures don't
-exist or were removed, so we don't need to bother? Could you share more about
-your concern with the removal of this argument?
+I think arm64 does not have to redefine __early_init_dt_declare_initrd().
+Something like this might be just all we need (completely untested,
+probably it won't even compile):
 
-thanks,
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 9d9582c..e9ca238 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -62,6 +62,9 @@ s64 memstart_addr __ro_after_init = -1;
+ phys_addr_t arm64_dma_phys_limit __ro_after_init;
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
++
++static phys_addr_t initrd_start_phys, initrd_end_phys;
++
+ static int __init early_initrd(char *p)
+ {
+ 	unsigned long start, size;
+@@ -71,8 +74,8 @@ static int __init early_initrd(char *p)
+ 	if (*endp == ',') {
+ 		size = memparse(endp + 1, NULL);
+ 
+-		initrd_start = start;
+-		initrd_end = start + size;
++		initrd_start_phys = start;
++		initrd_end_phys = end;
+ 	}
+ 	return 0;
+ }
+@@ -407,14 +410,27 @@ void __init arm64_memblock_init(void)
+ 		memblock_add(__pa_symbol(_text), (u64)(_end - _text));
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) && initrd_start) {
++	if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) &&
++	    (initrd_start || initrd_start_phys)) {
++		/*
++		 * FIXME: ensure proper precendence between
++		 * early_initrd and DT when both are present
++		 */
++		if (initrd_start) {
++			initrd_start_phys = __phys_to_virt(initrd_start);
++			initrd_end_phys = __phys_to_virt(initrd_end);
++		} else if (initrd_start_phys) {
++			initrd_start = __va(initrd_start_phys);
++			initrd_end = __va(initrd_start_phys);
++		}
++
+ 		/*
+ 		 * Add back the memory we just removed if it results in the
+ 		 * initrd to become inaccessible via the linear mapping.
+ 		 * Otherwise, this is a no-op
+ 		 */
+-		u64 base = initrd_start & PAGE_MASK;
+-		u64 size = PAGE_ALIGN(initrd_end) - base;
++		u64 base = initrd_start_phys & PAGE_MASK;
++		u64 size = PAGE_ALIGN(initrd_end_phys) - base;
+ 
+ 		/*
+ 		 * We can only add back the initrd memory if we don't end up
+@@ -458,7 +474,7 @@ void __init arm64_memblock_init(void)
+ 	 * pagetables with memblock.
+ 	 */
+ 	memblock_reserve(__pa_symbol(_text), _end - _text);
+-#ifdef CONFIG_BLK_DEV_INITRD
++#if 0
+ 	if (initrd_start) {
+ 		memblock_reserve(initrd_start, initrd_end - initrd_start);
+ 
+ 
+> Rob
+> 
 
- - Joel
+-- 
+Sincerely yours,
+Mike.

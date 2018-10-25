@@ -1,84 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 03:01:55 +0200 (CEST)
-Received: from mga02.intel.com ([134.134.136.20]:30216 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994641AbeJYBBwBB6mo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 03:01:52 +0200
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Oct 2018 18:01:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.54,422,1534834800"; 
-   d="scan'208";a="274223090"
-Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
-  by fmsmga005.fm.intel.com with ESMTP; 24 Oct 2018 18:01:48 -0700
-Received: from orsmsx115.amr.corp.intel.com (10.22.240.11) by
- ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
- id 14.3.319.2; Wed, 24 Oct 2018 18:01:48 -0700
-Received: from orsmsx112.amr.corp.intel.com ([169.254.3.23]) by
- ORSMSX115.amr.corp.intel.com ([169.254.4.116]) with mapi id 14.03.0319.002;
- Wed, 24 Oct 2018 18:01:47 -0700
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "jeyu@kernel.org" <jeyu@kernel.org>,
-        "ard.biesheuvel@linaro.org" <ard.biesheuvel@linaro.org>,
-        "mhocko@kernel.org" <mhocko@kernel.org>
-CC:     "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jannh@google.com" <jannh@google.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "arjan@linux.intel.com" <arjan@linux.intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kristen@linux.intel.com" <kristen@linux.intel.com>,
-        "Dock, Deneen T" <deneen.t.dock@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "kernel-hardening@lists.openwall.com" 
-        <kernel-hardening@lists.openwall.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "alexei.starovoitov@gmail.com" <alexei.starovoitov@gmail.com>
-Subject: Re: [PATCH RFC v3 0/3] Rlimit for module space
-Thread-Topic: [PATCH RFC v3 0/3] Rlimit for module space
-Thread-Index: AQHUZ+1spfnb1SbseUKeGPVLPr4WMaUo18SAgAOF3YCAANZLAIAByAYAgAAQFICAAJacAA==
-Date:   Thu, 25 Oct 2018 01:01:44 +0000
-Message-ID: <d1fec827d028168047eafbac56e8e47d37cf7fb5.camel@intel.com>
-References: <20181019204723.3903-1-rick.p.edgecombe@intel.com>
-         <CAKv+Gu_AgPv2o4=U0-7pnpgtSufEobnta8oKhhGfCdCxM82B5Q@mail.gmail.com>
-         <6b1017c450d163539d2b974657baaaf697f0a138.camel@intel.com>
-         <CAKv+Gu-Rk-SQVOQ63L3DkF3=EVik3pHXzpNp5r5TrgDajTM_iQ@mail.gmail.com>
-         <20181024150706.jewcclhhh756tupn@linux-8ccs>
-         <d7cb6a8c-b7d6-5c82-6721-2b5387da673f@iogearbox.net>
-In-Reply-To: <d7cb6a8c-b7d6-5c82-6721-2b5387da673f@iogearbox.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.54.75.168]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <70B26219A7338841A85E2DAD99697A14@intel.com>
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 04:09:22 +0200 (CEST)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:33073
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990392AbeJYCJRaz0FJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2018 04:09:17 +0200
+Received: by mail-pf1-x444.google.com with SMTP id 22-v6so3393375pfz.0
+        for <linux-mips@linux-mips.org>; Wed, 24 Oct 2018 19:09:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=G78I9uM4gXdiLalpqQZcUQ0k8S9gAvq6zBmyUxhGe0M=;
+        b=LAnJhDOqLDe5rJ8W4SiC2EjUQZvQu/r5ZibVfgxKfT2epX8iHZwYQmEjB6a8btC1dW
+         r6dDSvdCvkPgsk5m3K0hxUEc1ohpdLPr/504o7kJ7XSyqWkNXqLU77+seSO2HzOgNvQs
+         hVyNi6MDrJlz77EflnU3vSDe0xbeuTe8cghrE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=G78I9uM4gXdiLalpqQZcUQ0k8S9gAvq6zBmyUxhGe0M=;
+        b=h8ADg9YexNOr9DgYnAtTclSkQEZ696o+3jzie9W8pghiSAITWwEgbJ+JuGjJPOf6yw
+         nIOonN/fSfGY1pf8NZYd6SwOch/8k+ww+BZCSpS5YJATe+jkxwUjaAY49/Rh6334Jd1b
+         JczCxgoo5Urp2rn5lkPv2xl1utLmuTaDMNtxW2fBsAAxNH3BqfppkxtGOWoP+43bxqjb
+         C6GUKcRa70mI0EIg2cYf4pZ6n/E/E/mQ9KFaNcg/X/CSPtsO0nFEdvz+tbGavOQlHxU6
+         wIf8/w5lBPCZ6kzJfgdiWZ+ckeU8ngYuwjs6aBs1m1FQ5ViRxHvdKR33AQZ5xsZeUqmc
+         PIwg==
+X-Gm-Message-State: AGRZ1gIL2jcaK0zHQfLk5SThI+RrMt/j/mxD2DDWrM3yDeajwWKM8U2e
+        2ThPpgn12cl7rIjo+QvPZrxlYQ==
+X-Google-Smtp-Source: AJdET5dUEfywPWvzS+489PJ55mfHZNUk9qKPmDa0EsEQ3lYTg7j+ER6qGO2BektCxwt9F6U/VdSRSA==
+X-Received: by 2002:aa7:814f:: with SMTP id d15-v6mr5054081pfn.78.1540433350578;
+        Wed, 24 Oct 2018 19:09:10 -0700 (PDT)
+Received: from localhost ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id 68-v6sm6748192pfg.136.2018.10.24.19.09.08
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Oct 2018 19:09:08 -0700 (PDT)
+Date:   Wed, 24 Oct 2018 19:09:07 -0700
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     Balbir Singh <bsingharora@gmail.com>, linux-kernel@vger.kernel.org,
+        kernel-team@android.com, minchan@kernel.org, pantin@google.com,
+        hughd@google.com, lokeshgidra@google.com, dancol@google.com,
+        mhocko@kernel.org, akpm@linux-foundation.org,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        kasan-dev@googlegroups.com, kvmarm@lists.cs.columbia.edu,
+        Ley Foon Tan <lftan@altera.com>, linux-alpha@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        nios2-dev@lists.rocketboards.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH 2/4] mm: speed up mremap by 500x on large regions (v2)
+Message-ID: <20181025020907.GA13560@joelaf.mtv.corp.google.com>
+References: <20181013013200.206928-1-joel@joelfernandes.org>
+ <20181013013200.206928-3-joel@joelfernandes.org>
+ <20181024101255.it4lptrjogalxbey@kshutemo-mobl1>
+ <20181024115733.GN8537@350D>
+ <20181024125724.yf6frdimjulf35do@kshutemo-mobl1>
 MIME-Version: 1.0
-Return-Path: <rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181024125724.yf6frdimjulf35do@kshutemo-mobl1>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66930
+X-archive-position: 66931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rick.p.edgecombe@intel.com
+X-original-sender: joel@joelfernandes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,114 +107,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-T24gV2VkLCAyMDE4LTEwLTI0IGF0IDE4OjA0ICswMjAwLCBEYW5pZWwgQm9ya21hbm4gd3JvdGU6
-DQo+IFsgK0FsZXhlaSwgbmV0ZGV2IF0NCj4gDQo+IE9uIDEwLzI0LzIwMTggMDU6MDcgUE0sIEpl
-c3NpY2EgWXUgd3JvdGU6DQo+ID4gKysrIEFyZCBCaWVzaGV1dmVsIFsyMy8xMC8xOCAwODo1NCAt
-MDMwMF06DQo+ID4gPiBPbiAyMiBPY3RvYmVyIDIwMTggYXQgMjA6MDYsIEVkZ2Vjb21iZSwgUmlj
-ayBQDQo+ID4gPiA8cmljay5wLmVkZ2Vjb21iZUBpbnRlbC5jb20+IHdyb3RlOg0KPiANCj4gWy4u
-Ll0NCj4gPiA+IEkgdGhpbmsgaXQgaXMgd3JvbmcgdG8gY29uZmxhdGUgdGhlIHR3byB0aGluZ3Mu
-IExpbWl0aW5nIHRoZSBudW1iZXIgb2YNCj4gPiA+IEJQRiBhbGxvY2F0aW9ucyBhbmQgdGhlIGxp
-bWl0aW5nIG51bWJlciBvZiBtb2R1bGUgYWxsb2NhdGlvbnMgYXJlIHR3bw0KPiA+ID4gc2VwYXJh
-dGUgdGhpbmdzLCBhbmQgdGhlIGZhY3QgdGhhdCBCUEYgcmV1c2VzIG1vZHVsZV9hbGxvYygpIG91
-dCBvZg0KPiA+ID4gY29udmVuaWVuY2UgZG9lcyBub3QgbWVhbiBhIHNpbmdsZSBybGltaXQgZm9y
-IGJvdGggaXMgYXBwcm9wcmlhdGUuDQo+ID4gDQo+ID4gSG0sIEkgdGhpbmsgQXJkIGhhcyBhIGdv
-b2QgcG9pbnQuIEFGQUlLLCBhbmQgY29ycmVjdCBtZSBpZiBJJ20gd3JvbmcsDQo+ID4gdXNlcnMg
-b2YgbW9kdWxlX2FsbG9jKCkgaS5lLiBrcHJvYmVzLCBmdHJhY2UsIGJwZiwgc2VlbSB0byB1c2Ug
-aXQNCj4gPiBiZWNhdXNlIGl0IGlzIGFuIGVhc3kgd2F5IHRvIG9idGFpbiBleGVjdXRhYmxlIGtl
-cm5lbCBtZW1vcnkgKGFuZA0KPiA+IGRlcGVuZGluZyBvbiB0aGUgbmVlZHMgb2YgdGhlIGFyY2hp
-dGVjdHVyZSwgYmVpbmcgYWRkaXRpb25hbGx5DQo+ID4gcmVhY2hhYmxlIHZpYSByZWxhdGl2ZSBi
-cmFuY2hlcykgZHVyaW5nIHJ1bnRpbWUuIFRoZSBzaWRlIGVmZmVjdCBpcw0KPiA+IHRoYXQgYWxs
-IHRoZXNlIHVzZXJzIHNoYXJlIHRoZSAibW9kdWxlIiBtZW1vcnkgc3BhY2UsIGV2ZW4gdGhvdWdo
-IHRoaXMNCj4gPiBtZW1vcnkgcmVnaW9uIGlzIG5vdCBleGNsdXNpdmVseSB1c2VkIGJ5IG1vZHVs
-ZXMgKHdlbGwsIHBlcnNvbmFsbHkgSQ0KPiA+IHRoaW5rIGl0IHRlY2huaWNhbGx5IHNob3VsZCBi
-ZSwgYmVjYXVzZSBzZWVpbmcgbW9kdWxlX2FsbG9jKCkgdXNhZ2UNCj4gPiBvdXRzaWRlIG9mIHRo
-ZSBtb2R1bGUgbG9hZGVyIGlzIGtpbmQgb2YgYSBtaXN1c2Ugb2YgdGhlIG1vZHVsZSBBUEkgYW5k
-DQo+ID4gaXQncyBjb25mdXNpbmcgZm9yIHBlb3BsZSB3aG8gZG9uJ3Qga25vdyB0aGUgcmVhc29u
-IGJlaGluZCBpdHMgdXNhZ2UNCj4gPiBvdXRzaWRlIG9mIHRoZSBtb2R1bGUgbG9hZGVyKS4NCj4g
-PiANCj4gPiBSaWdodCBub3cgSSdtIG5vdCBzdXJlIGlmIGl0IG1ha2VzIHNlbnNlIHRvIGltcG9z
-ZSBhIGJsYW5rZXQgbGltaXQgb24NCj4gPiBhbGwgbW9kdWxlX2FsbG9jKCkgYWxsb2NhdGlvbnMg
-d2hlbiB0aGUgcmVhbCBtb3RpdmF0aW9uIGJlaGluZCB0aGUNCj4gPiBybGltaXQgaXMgcmVsYXRl
-ZCB0byBCUEYsIGkuZS4sIHRvIHN0b3AgdW5wcml2aWxlZ2VkIHVzZXJzIGZyb20NCj4gPiBob2dn
-aW5nIHVwIGFsbCB0aGUgdm1hbGxvYyBzcGFjZSBmb3IgbW9kdWxlcyB3aXRoIEpJVGVkIEJQRiBm
-aWx0ZXJzLg0KPiA+IFNvIHRoZSBybGltaXQgaGFzIG1vcmUgdG8gZG8gd2l0aCBsaW1pdGluZyB0
-aGUgbWVtb3J5IHVzYWdlIG9mIEJQRg0KPiA+IGZpbHRlcnMgdGhhbiBpdCBoYXMgdG8gZG8gd2l0
-aCBtb2R1bGVzIHRoZW1zZWx2ZXMuDQo+ID4gDQo+ID4gSSB0aGluayBBcmQncyBzdWdnZXN0aW9u
-IG9mIGhhdmluZyBhIHNlcGFyYXRlIGJwZl9hbGxvYy9mcmVlIEFQSSBtYWtlcw0KPiA+IGEgbG90
-IG9mIHNlbnNlIGlmIHdlIHdhbnQgdG8ga2VlcCB0cmFjayBvZiBicGYtcmVsYXRlZCBhbGxvY2F0
-aW9ucw0KPiA+IChhbmQgdGhlbiB0aGUgcmxpbWl0IHdvdWxkIGJlIGVuZm9yY2VkIGZvciB0aG9z
-ZSkuIE1heWJlIHBhcnQgb2YgdGhlDQo+ID4gbW9kdWxlIG1hcHBpbmcgc3BhY2UgY291bGQgYmUg
-Y2FydmVkIG91dCBmb3IgYnBmIGZpbHRlcnMgKGUuZy4gaGF2ZQ0KPiA+IEJQRl9WQUREUiwgQlBG
-X1ZTSVpFLCBldGMgbGlrZSBob3cgd2UgaGF2ZSBpdCBmb3IgbW9kdWxlcyksIG9yDQo+ID4gY29u
-dGludWUgc2hhcmluZyB0aGUgcmVnaW9uIGJ1dCBleHBsaWNpdGx5IGRlZmluZSBhIHNlcGFyYXRl
-IGJwZl9hbGxvYw0KPiA+IEFQSSwgZGVwZW5kaW5nIG9uIGFuIGFyY2hpdGVjdHVyZSdzIG5lZWRz
-LiBXaGF0IGRvIHBlb3BsZSB0aGluaz8NCj4gDQo+IEhtbSwgSSB0aGluayBoZXJlIGFyZSBzZXZl
-cmFsIGlzc3VlcyBtaXhlZCB1cCBhdCB0aGUgc2FtZSB0aW1lIHdoaWNoIGlzIGp1c3QNCj4gdmVy
-eSBjb25mdXNpbmcsIGltaG86DQo+IA0KPiAxKSBUaGUgZmFjdCB0aGF0IHRoZXJlIGFyZSBzZXZl
-cmFsIG5vbi1tb2R1bGUgdXNlcnMgb2YgbW9kdWxlX2FsbG9jKCkNCj4gYXMgSmVzc2ljYSBub3Rl
-cyBzdWNoIGFzIGtwcm9iZXMsIGZ0cmFjZSwgYnBmLCBmb3IgZXhhbXBsZS4gV2hpbGUgYWxsIG9m
-DQo+IHRoZW0gYXJlIG5vdCBiZWluZyBtb2R1bGVzLCB0aGV5IGFsbCBuZWVkIHRvIGFsbG9jIHNv
-bWUgcGllY2Ugb2YgZXhlY3V0YWJsZQ0KPiBtZW1vcnkuIEl0J3Mgbm90aGluZyBuZXcsIHRoaXMg
-ZXhpc3RzIGZvciA3IHllYXJzIG5vdyBzaW5jZSAwYTE0ODQyZjVhM2MNCj4gKCJuZXQ6IGZpbHRl
-cjogSnVzdCBJbiBUaW1lIGNvbXBpbGVyIGZvciB4ODYtNjQiKSBmcm9tIEJQRiBzaWRlOyBlZmZl
-Y3RpdmVseQ0KPiB0aGF0IGlzIGV2ZW4gL2JlZm9yZS8gZUJQRiBleGlzdGVkLiBIYXZpbmcgc29t
-ZSBkaWZmZXJlbnQgQVBJIHBlcmhhcHMgZm9yIGFsbA0KPiB0aGVzZSB1c2VycyBzZWVtcyB0byBt
-YWtlIHNlbnNlIGlmIHRoZSBnb2FsIGlzIG5vdCB0byBpbnRlcmZlcmUgd2l0aCBtb2R1bGVzDQo+
-IHRoZW1zZWx2ZXMuIEl0IG1pZ2h0IGFsc28gaGVscCBhcyBhIGJlbmVmaXQgdG8gcG90ZW50aWFs
-bHkgaW5jcmVhc2UgdGhhdA0KPiBtZW1vcnkgcG9vbCBpZiB3ZSdyZSBoaXR0aW5nIGxpbWl0cyBh
-dCBzY2FsZSB3aGljaCB3b3VsZCBub3QgYmUgYSBjb25jZXJuDQo+IGZvciBub3JtYWwga2VybmVs
-IG1vZHVsZXMgc2luY2UgdGhlcmUncyB1c3VhbGx5IGp1c3QgYSB2ZXJ5IGZldyBvZiB0aGVtDQo+
-IG5lZWRlZCAodW5saWtlIGR5bmFtaWNhbGx5IHRyYWNpbmcgdmFyaW91cyBrZXJuZWwgcGFydHMg
-MjQvNyB3LyBvciB3L28gQlBGLA0KPiBydW5uaW5nIEJQRi1zZWNjb21wIHBvbGljaWVzLCBuZXR3
-b3JraW5nIEJQRiBwb2xpY2llcywgZXRjIHdoaWNoIG5lZWQgdG8NCj4gc2NhbGUgdy8gYXBwbGlj
-YXRpb24gb3IgY29udGFpbmVyIGRlcGxveW1lbnQ7IHNvIHRoaXMgaXMgb2YgbXVjaCBtb3JlDQo+
-IGR5bmFtaWMgYW5kIHVucHJlZGljdGFibGUgbmF0dXJlKS4NCj4gDQo+IDIpIFRoZW4gdGhlcmUg
-aXMgcmxpbWl0IHdoaWNoIGlzIHByb3Bvc2luZyB0byBoYXZlIGEgImZhaXJlciIgc2hhcmUgYW1v
-bmcNCj4gdW5wcml2aWxlZ2VkIHVzZXJzLiBJJ20gbm90IGZ1bGx5IHN1cmUgeWV0IHdoZXRoZXIg
-cmxpbWl0IGlzIGFjdHVhbGx5IGENCj4gbmljZSB1c2FibGUgaW50ZXJmYWNlIGZvciBhbGwgdGhp
-cy4gSSdkIGFncmVlIHRoYXQgc29tZXRoaW5nIGlzIG5lZWRlZA0KPiBvbiB0aGF0IHJlZ2FyZCwg
-YnV0IEkgYWxzbyB0ZW5kIHRvIGxpa2UgTWljaGFsIEhvY2tvJ3MgY2dyb3VwIHByb3Bvc2FsLA0K
-PiBpb3csIHRvIGhhdmUgc3VjaCByZXNvdXJjZSBjb250cm9sIGFzIHBhcnQgb2YgbWVtb3J5IGNn
-cm91cCBjb3VsZCBiZQ0KPiBzb21ldGhpbmcgdG8gY29uc2lkZXIgX2VzcGVjaWFsbHlfIHNpbmNl
-IGl0IGFscmVhZHkgX2V4aXN0c18gZm9yIHZtYWxsb2MoKQ0KPiBiYWNrZWQgbWVtb3J5IHNvIHRo
-aXMgc2hvdWxkIGJlIG5vdCBtdWNoIGRpZmZlcmVudCB0aGFuIHRoYXQuIEl0IHNvdW5kcw0KPiBs
-aWtlIDIpIGNvbWVzIG9uIHRvcCBvZiAxKS4NCkZXSVcsIGNncm91cHMgc2VlbXMgbGlrZSBhIGJl
-dHRlciBzb2x1dGlvbiB0aGFuIHJsaW1pdCB0byBtZSB0b28uIE1heWJlIHlvdSBhbGwNCmFscmVh
-ZHkga25vdywgYnV0IGl0IGxvb2tzIGxpa2UgdGhlIGNncm91cHMgdm1hbGxvYyBjaGFyZ2UgaXMg
-ZG9uZSBpbiB0aGUgbWFpbg0KcGFnZSBhbGxvY2F0b3IgYW5kIGNvdW50cyBhZ2FpbnN0IHRoZSB3
-aG9sZSBrZXJuZWwgbWVtb3J5IGxpbWl0LiBBIHVzZXIgbWF5IHdhbnQNCnRvIGhhdmUgYSBoaWdo
-ZXIga2VybmVsIGxpbWl0IHRoYW4gdGhlIG1vZHVsZSBzcGFjZSBzaXplLCBzbyBpdCBzZWVtcyBp
-dCBpc24ndA0KZW5vdWdoIGJ5IGl0c2VsZiBhbmQgc29tZSBuZXcgbGltaXQgd291bGQgbmVlZCB0
-byBiZSBhZGRlZC4NCg0KQXMgZm9yIHdoYXQgdGhlIGxpbWl0IHNob3VsZCBiZSwgSSB3b25kZXIg
-aWYgc29tZSBvZiB0aGUgZGlzYWdyZWVtZW50IGlzIGp1c3QNCmZyb20gdGhlIG5hbWUgIm1vZHVs
-ZSBzcGFjZSIuDQoNClRoZXJlIGlzIGEgbGltaXRlZCByZXNvdXJjZSBvZiBwaHlzaWNhbCBtZW1v
-cnksIHNvIHdlIGhhdmUgbGltaXRzIGZvciBpdC4gVGhlcmUNCmlzIGEgbGltaXRlZCByZXNvdXJj
-ZSBvZiBDUFUgdGltZSwgc28gd2UgaGF2ZSBsaW1pdHMgZm9yIGl0LiBJZiB0aGVyZSBpcyBhDQps
-aW1pdGVkIHJlc291cmNlIGZvciBwcmVmZXJyZWQgYWRkcmVzcyBzcGFjZSBmb3IgZXhlY3V0YWJs
-ZSBjb2RlLCB3aHkgbm90IGp1c3QNCmNvbnRpbnVlIHRoYXQgdHJlbmQ/IElmIG90aGVyIGZvcm1z
-IG9mIHVucHJpdmlsZWdlZCBKSVQgY29tZSBhbG9uZywgd291bGQgaXQgYmUNCmJldHRlciB0byBo
-YXZlIE4gbGltaXRzIGZvciBlYWNoIHR5cGU/IFJlcXVlc3RfbW9kdWxlIHByb2JhYmx5IGNhbid0
-IGZpbGwgdGhlDQpzcGFjZSwgYnV0IHRlY2huaWNhbGx5IHRoZXJlIGFyZSBhbHJlYWR5IDIgdW5w
-cml2aWxlZ2VkIHVzZXJzLiBTbyBJTUhPLCBpdHMgYQ0KbW9yZSBmb3J3YXJkIGxvb2tpbmcgc29s
-dXRpb24uDQoNCklmIHRoZXJlIGFyZSBzb21lIHVzYWdlL2FyY2hpdGVjdHVyZSBjb21ib3MgdGhh
-dCBkb24ndCBuZWVkIHRoZSBwcmVmZXJyZWQgc3BhY2UNCnRoZXkgY2FuIGFsbG9jYXRlIGluIHZt
-YWxsb2MgYW5kIGhhdmUgaXQgbm90IGNvdW50IGFnYWluc3QgdGhlIHByZWZlcnJlZCBzcGFjZQ0K
-bGltaXQgYnV0IHN0aWxsIGNvdW50IGFnYWluc3QgdGhlIGNncm91cHMga2VybmVsIG1lbW9yeSBs
-aW1pdC4NCg0KQW5vdGhlciBiZW5lZml0IG9mIGNlbnRyYWxpemluZyB0aGUgYWxsb2NhdGlvbiBv
-ZiB0aGUgImV4ZWN1dGFibGUgbWVtb3J5DQpwcmVmZXJyZWQgc3BhY2UiIGlzIEtBU0xSLiBSaWdo
-dCBub3cgdGhhdCBpcyBvbmx5IGRvbmUgaW4gbW9kdWxlX2FsbG9jIGFuZCBzbw0KYWxsIHVzZXJz
-IG9mIGl0IGdldCByYW5kb21pemVkLiBJZiB0aGV5IGFsbCBjYWxsIHZtYWxsb2MgYnkgdGhlbXNl
-bHZlcyB0aGV5IHdpbGwNCmp1c3QgdXNlIHRoZSBub3JtYWwgYWxsb2NhdG9yLg0KDQpBbnl3YXks
-IGl0IHNlZW1zIGxpa2UgZWl0aGVyIHR5cGUgb2YgbGltaXQgKEJQRiBKSVQgb3IgYWxsIG1vZHVs
-ZSBzcGFjZSkgd2lsbA0Kc29sdmUgdGhlIHByb2JsZW0gZXF1YWxseSB3ZWxsIHRvZGF5Lg0KDQo+
-IDMpIExhc3QgYnV0IG5vdCBsZWFzdCwgdGhlcmUncyBhIHNob3J0IHRlcm0gZml4IHdoaWNoIGlz
-IG5lZWRlZCBpbmRlcGVuZGVudGx5DQo+IG9mIDEpIGFuZCAyKSBhbmQgc2hvdWxkIGJlIGRvbmUg
-aW1tZWRpYXRlbHkgd2hpY2ggaXMgdG8gYWNjb3VudCBmb3INCj4gdW5wcml2aWxlZ2VkIHVzZXJz
-IGFuZCByZXN0cmljdCB0aGVtIGJhc2VkIG9uIGEgZ2xvYmFsIGNvbmZpZ3VyYWJsZQ0KPiBsaW1p
-dCBzdWNoIHRoYXQgcHJpdmlsZWdlZCB1c2Uga2VlcHMgZnVuY3Rpb25pbmcsIGFuZCAyKSBjb3Vs
-ZCBlbmZvcmNlDQo+IGJhc2VkIG9uIHRoZSBnbG9iYWwgdXBwZXIgbGltaXQsIGZvciBleGFtcGxl
-LiBQZW5kaW5nIGZpeCBpcyB1bmRlcg0KPiBodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3Bh
-dGNoLzk4Nzk3MS8gd2hpY2ggd2UgaW50ZW5kIHRvIHNoaXAgdG8NCj4gTGludXMgYXMgc29vbiBh
-cyBwb3NzaWJsZSBhcyBzaG9ydCB0ZXJtIGZpeC4gVGhlbiBzb21ldGhpbmcgbGlrZSBtZW1jZw0K
-PiBjYW4gYmUgY29uc2lkZXJlZCBvbiB0b3Agc2luY2UgaXQgc2VlbXMgdGhpcyBtYWtlcyBtb3N0
-IHNlbnNlIGZyb20gYQ0KPiB1c2FiaWxpdHkgcG9pbnQuDQo+IA0KPiBUaGFua3MgYSBsb3QsDQo+
-IERhbmllbA0K
+On Wed, Oct 24, 2018 at 03:57:24PM +0300, Kirill A. Shutemov wrote:
+> On Wed, Oct 24, 2018 at 10:57:33PM +1100, Balbir Singh wrote:
+> > On Wed, Oct 24, 2018 at 01:12:56PM +0300, Kirill A. Shutemov wrote:
+> > > On Fri, Oct 12, 2018 at 06:31:58PM -0700, Joel Fernandes (Google) wrote:
+> > > > diff --git a/mm/mremap.c b/mm/mremap.c
+> > > > index 9e68a02a52b1..2fd163cff406 100644
+> > > > --- a/mm/mremap.c
+> > > > +++ b/mm/mremap.c
+> > > > @@ -191,6 +191,54 @@ static void move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
+> > > >  		drop_rmap_locks(vma);
+> > > >  }
+> > > >  
+> > > > +static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+> > > > +		  unsigned long new_addr, unsigned long old_end,
+> > > > +		  pmd_t *old_pmd, pmd_t *new_pmd, bool *need_flush)
+> > > > +{
+> > > > +	spinlock_t *old_ptl, *new_ptl;
+> > > > +	struct mm_struct *mm = vma->vm_mm;
+> > > > +
+> > > > +	if ((old_addr & ~PMD_MASK) || (new_addr & ~PMD_MASK)
+> > > > +	    || old_end - old_addr < PMD_SIZE)
+> > > > +		return false;
+> > > > +
+> > > > +	/*
+> > > > +	 * The destination pmd shouldn't be established, free_pgtables()
+> > > > +	 * should have release it.
+> > > > +	 */
+> > > > +	if (WARN_ON(!pmd_none(*new_pmd)))
+> > > > +		return false;
+> > > > +
+> > > > +	/*
+> > > > +	 * We don't have to worry about the ordering of src and dst
+> > > > +	 * ptlocks because exclusive mmap_sem prevents deadlock.
+> > > > +	 */
+> > > > +	old_ptl = pmd_lock(vma->vm_mm, old_pmd);
+> > > > +	if (old_ptl) {
+> > > 
+> > > How can it ever be false?
+
+Kirill,
+It cannot, you are right. I'll remove the test.
+
+By the way, there are new changes upstream by Linus which flush the TLB
+before releasing the ptlock instead of after. I'm guessing that patch came
+about because of reviews of this patch and someone spotted an issue in the
+existing code :)
+
+Anyway the patch in concern is:
+eb66ae030829 ("mremap: properly flush TLB before releasing the page")
+
+I need to rebase on top of that with appropriate modifications, but I worry
+that this patch will slow down performance since we have to flush at every
+PMD/PTE move before releasing the ptlock. Where as with my patch, the
+intention is to flush only at once in the end of move_page_tables. When I
+tried to flush TLB on every PMD move, it was quite slow on my arm64 device [2].
+
+Further observation [1] is, it seems like the move_huge_pmds and move_ptes code
+is a bit sub optimal in the sense, we are acquiring and releasing the same
+ptlock for a bunch of PMDs if the said PMDs are on the same page-table page
+right? Instead we can do better by acquiring and release the ptlock less
+often.
+
+I think this observation [1] and the frequent TLB flush issue [2] can be solved
+by acquiring the ptlock once for a bunch of PMDs, move them all, then flush
+the tlb and then release the ptlock, and then proceed to doing the same thing
+for the PMDs in the next page-table page. What do you think?
+
+- Joel

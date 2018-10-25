@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:11:53 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:34408 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:14:52 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:36366 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994669AbeJYOLr5DI3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 16:11:47 +0200
+        id S23994654AbeJYOOiPNNrD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Oct 2018 16:14:38 +0200
 Received: from sasha-vm.mshome.net (unknown [167.98.65.38])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1A34E2085B;
-        Thu, 25 Oct 2018 14:11:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 752E52085A;
+        Thu, 25 Oct 2018 14:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540476701;
-        bh=zRqXZ8qAm6SoX/rrPFQK+gYnQuAS0k0+ulyN3hs/q60=;
+        s=default; t=1540476874;
+        bh=r3qMu/c6UMYlBb8stk9qiIBL7pfn9hhAWXa+NM3Ymzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rGPuQRsuFdUh62k129uJabF5ZNm+vJ0SPd1OlsNuIyB2NHbb3uoOS8qgCBfMIJa7F
-         6HSVBqbkhOEzVES+7uXcGNDgosh2TUV5HNqoRz1D8v+SOFS3JL4ye7nOxUrvlDKAqG
-         z6gAKLa7O8dSZ16agkqIr6vh2bW1miadT98uBGwg=
+        b=p+/Rwl6ccFzjFGa3+ITo7QsjgqpwDi08oUvpqCwvEprpeIILKdea5Mrvod/VXbSO9
+         6cypcNw175B0gY2g/E8WOCSFg8mwtqHuzh5GvwbTKFQrwDRfL7SAMreBEGxridgz2V
+         IQmLANcDyEQY4KYbN5e9kCMo5DFx/ziHXeQ87Byo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 33/46] MIPS: Workaround GCC __builtin_unreachable reordering bug
-Date:   Thu, 25 Oct 2018 10:10:40 -0400
-Message-Id: <20181025141053.213330-33-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/98] MIPS: Handle non word sized instructions when examining frame
+Date:   Thu, 25 Oct 2018 10:12:49 -0400
+Message-Id: <20181025141423.213774-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20181025141053.213330-1-sashal@kernel.org>
-References: <20181025141053.213330-1-sashal@kernel.org>
+In-Reply-To: <20181025141423.213774-1-sashal@kernel.org>
+References: <20181025141423.213774-1-sashal@kernel.org>
 Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66939
+X-archive-position: 66940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,148 +51,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@mips.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-[ Upstream commit 906d441febc0de974b2a6ef848a8f058f3bfada3 ]
+[ Upstream commit 11887ed172a6960673f130dad8f8fb42778f64d7 ]
 
-Some versions of GCC for the MIPS architecture suffer from a bug which
-can lead to instructions from beyond an unreachable statement being
-incorrectly reordered into earlier branch delay slots if the unreachable
-statement is the only content of a case in a switch statement. This can
-lead to seemingly random behaviour, such as invalid memory accesses from
-incorrectly reordered loads or stores, and link failures on microMIPS
-builds.
+Commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+added fairly broken support for handling 16bit microMIPS instructions in
+get_frame_info(). It adjusts the instruction pointer by 16bits in the
+case of a 16bit sp move instruction, but not any other 16bit
+instruction.
 
-See this potential GCC fix for details:
+Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
+function size") goes some way to fixing get_frame_info() to iterate over
+microMIPS instuctions, but the instruction pointer is still manipulated
+using a postincrement, and is of union mips_instruction type. Since the
+union is sized to the largest member (a word), but microMIPS
+instructions are a mix of halfword and word sizes, the function does not
+always iterate correctly, ending up misaligned with the instruction
+stream and interpreting it incorrectly.
 
-    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
+Since the instruction modifying the stack pointer is usually the first
+in the function, that one is usually handled correctly. But the
+instruction which saves the return address to the sp is some variable
+number of instructions into the frame and is frequently missed due to
+not being on a word boundary, leading to incomplete walking of the
+stack.
 
-Runtime problems resulting from this bug were initially observed using a
-maltasmvp_defconfig v4.4 kernel built using GCC 4.9.2 (from a Codescape
-SDK 2015.06-05 toolchain), with the result being an address exception
-taken after log messages about the L1 caches (during probe of the L2
-cache):
+Fix this by incrementing the instruction pointer based on the size of
+the previously decoded instruction (& remove the hack introduced by
+commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+which adjusts the instruction pointer in the case of a 16bit sp move
+instruction, but not any other).
 
-    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
-    VPE topology {2,2} total 4
-    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
-    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
-    <AdEL exception here>
-
-This is early enough that the kernel exception vectors are not in use,
-so any further output depends upon the bootloader. This is reproducible
-in QEMU where no further output occurs - ie. the system hangs here.
-Given the nature of the bug it may potentially be hit with differing
-symptoms. The bug is known to affect GCC versions as recent as 7.3, and
-it is unclear whether GCC 8 fixed it or just happens not to encounter
-the bug in the testcase found at the link above due to differing
-optimizations.
-
-This bug can be worked around by placing a volatile asm statement, which
-GCC is prevented from reordering past, prior to the
-__builtin_unreachable call.
-
-That was actually done already for other reasons by commit 173a3efd3edb
-("bug.h: work around GCC PR82365 in BUG()"), but creates problems for
-microMIPS builds due to the lack of a .insn directive. The microMIPS ISA
-allows for interlinking with regular MIPS32 code by repurposing bit 0 of
-the program counter as an ISA mode bit. To switch modes one changes the
-value of this bit in the PC. However typical branch instructions encode
-their offsets as multiples of 2-byte instruction halfwords, which means
-they cannot change ISA mode - this must be done using either an indirect
-branch (a jump-register in MIPS terminology) or a dedicated jalx
-instruction. In order to ensure that regular branches don't attempt to
-target code in a different ISA which they can't actually switch to, the
-linker will check that branch targets are code in the same ISA as the
-branch.
-
-Unfortunately our empty asm volatile statements don't qualify as code,
-and the link for microMIPS builds fails with errors such as:
-
-    arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA mode
-    arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA mode
-
-Resolve this by adding a .insn directive within the asm statement which
-declares that what comes next is code. This may or may not be true,
-since we don't really know what comes next, but as this code is in an
-unreachable path anyway that doesn't matter since we won't execute it.
-
-We do this in asm/compiler.h & select CONFIG_HAVE_ARCH_COMPILER_H in
-order to have this included by linux/compiler_types.h after
-linux/compiler-gcc.h. This will result in asm/compiler.h being included
-in all C compilations via the -include linux/compiler_types.h argument
-in c_flags, which should be harmless.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
-Patchwork: https://patchwork.linux-mips.org/patch/20270/
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Fixes: 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/16953/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Kconfig                |  1 +
- arch/mips/include/asm/compiler.h | 35 ++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ arch/mips/kernel/process.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c82457b0e733..23e3d3e0ee5b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -29,6 +29,7 @@ config MIPS
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select HANDLE_DOMAIN_IRQ
-+	select HAVE_ARCH_COMPILER_H
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
-index e081a265f422..cc2eb1b06050 100644
---- a/arch/mips/include/asm/compiler.h
-+++ b/arch/mips/include/asm/compiler.h
-@@ -8,6 +8,41 @@
- #ifndef _ASM_COMPILER_H
- #define _ASM_COMPILER_H
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 0211dc737a21..1cc133e7026f 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -346,6 +346,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+ 	union mips_instruction insn, *ip, *ip_end;
+ 	const unsigned int max_insns = 128;
++	unsigned int last_insn_size = 0;
+ 	unsigned int i;
  
-+/*
-+ * With GCC 4.5 onwards we can use __builtin_unreachable to indicate to the
-+ * compiler that a particular code path will never be hit. This allows it to be
-+ * optimised out of the generated binary.
-+ *
-+ * Unfortunately at least GCC 4.6.3 through 7.3.0 inclusive suffer from a bug
-+ * that can lead to instructions from beyond an unreachable statement being
-+ * incorrectly reordered into earlier delay slots if the unreachable statement
-+ * is the only content of a case in a switch statement. This can lead to
-+ * seemingly random behaviour, such as invalid memory accesses from incorrectly
-+ * reordered loads or stores. See this potential GCC fix for details:
-+ *
-+ *   https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
-+ *
-+ * It is unclear whether GCC 8 onwards suffer from the same issue - nothing
-+ * relevant is mentioned in GCC 8 release notes and nothing obviously relevant
-+ * stands out in GCC commit logs, but these newer GCC versions generate very
-+ * different code for the testcase which doesn't exhibit the bug.
-+ *
-+ * GCC also handles stack allocation suboptimally when calling noreturn
-+ * functions or calling __builtin_unreachable():
-+ *
-+ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82365
-+ *
-+ * We work around both of these issues by placing a volatile asm statement,
-+ * which GCC is prevented from reordering past, prior to __builtin_unreachable
-+ * calls.
-+ *
-+ * The .insn statement is required to ensure that any branches to the
-+ * statement, which sadly must be kept due to the asm statement, are known to
-+ * be branches to code and satisfy linker requirements for microMIPS kernels.
-+ */
-+#undef barrier_before_unreachable
-+#define barrier_before_unreachable() asm volatile(".insn")
-+
- #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
- #define GCC_IMM_ASM() "n"
- #define GCC_REG_ACCUM "$0"
+ 	info->pc_offset = -1;
+@@ -357,15 +358,19 @@ static int get_frame_info(struct mips_frame_info *info)
+ 
+ 	ip_end = (void *)ip + info->func_size;
+ 
+-	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
++	for (i = 0; i < max_insns && ip < ip_end; i++) {
++		ip = (void *)ip + last_insn_size;
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 2;
+ 		} else if (is_mmips) {
+ 			insn.halfword[0] = ip->halfword[1];
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 4;
+ 		} else {
+ 			insn.word = ip->word;
++			last_insn_size = 4;
+ 		}
+ 
+ 		if (is_jump_ins(&insn))
+@@ -387,8 +392,6 @@ static int get_frame_info(struct mips_frame_info *info)
+ 						tmp = (ip->halfword[0] >> 1);
+ 						info->frame_size = -(signed short)(tmp & 0xf);
+ 					}
+-					ip = (void *) &ip->halfword[1];
+-					ip--;
+ 				} else
+ #endif
+ 				info->frame_size = - ip->i_format.simmediate;
 -- 
 2.17.1

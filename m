@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:19:37 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:42692 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:20:57 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:45310 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994811AbeJYOSwrct9D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 16:18:52 +0200
+        id S23994654AbeJYOUpXfR1D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Oct 2018 16:20:45 +0200
 Received: from sasha-vm.mshome.net (unknown [167.98.65.38])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C5312086D;
-        Thu, 25 Oct 2018 14:18:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A8A5214ED;
+        Thu, 25 Oct 2018 14:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540477126;
-        bh=hIvPKx2oc/McEQE50nc1HYzqMBR+VVEEC3YMY/QE7vQ=;
+        s=default; t=1540477239;
+        bh=voPVtmi5Psb82y3VOxnXPsApORsVNEZ5aBnqcdZ3Pik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zDnftyW/A3FxGxfJyRxBd8yWI9xz+aRkETQnWMvKz1AD+9r3X2TK4rsYgxacqnjcp
-         pbZEolyHUir/iHi7G/Mr88oIAo20un8A0rZWqjU1Pq2pGxxH9aXrrqQOuuClI5VBEY
-         Cg4JCDc25e9qkovwreqQNxGRVEAyo96QMM6249QM=
+        b=PiktR36WAavXbvaIBPB5boOk0Mp/Tk2L3BGDSZIcc+HibHpydFbyzyLRrAKTuRJ72
+         la0pGSh+Q2fht7p4JjQrb49VZl74HWJ9JVEdrOYQGvhz9FdsO7cgqLxetlgjMqO8i8
+         detWpFRnHGb3Nw6m/KafQXC22XY8IHE5yo7JxuxU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+Cc:     Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 65/65] MIPS: DEC: Fix an int-handler.S CPU_DADDI_WORKAROUNDS regression
-Date:   Thu, 25 Oct 2018 10:17:05 -0400
-Message-Id: <20181025141705.213937-65-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 3.18 69/98] MIPS: Fix up obsolete cpu_set usage
+Date:   Thu, 25 Oct 2018 10:18:24 -0400
+Message-Id: <20181025141853.214051-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20181025141705.213937-1-sashal@kernel.org>
-References: <20181025141705.213937-1-sashal@kernel.org>
+In-Reply-To: <20181025141853.214051-1-sashal@kernel.org>
+References: <20181025141853.214051-1-sashal@kernel.org>
 Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66946
+X-archive-position: 66947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,97 +47,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
 
-[ Upstream commit 68fe55680d0f3342969f49412fceabb90bdfadba ]
+[ Upstream commit 7363cb7de3999e84243bca79ffea257fd86a2cc6 ]
 
-Fix a commit 3021773c7c3e ("MIPS: DEC: Avoid la pseudo-instruction in
-delay slots") regression and remove assembly errors:
+cpu_set was removed (along with a bunch of cpumask helpers) by
+commit 2f0f267ea072 ("cpumask: remove deprecated functions.").
 
-arch/mips/dec/int-handler.S: Assembler messages:
-arch/mips/dec/int-handler.S:162: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:163: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:229: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:230: Error: Macro used $at after ".set noat"
+Fix this by replacing cpu_set with cpumask_set_cpu. Without this
+fix the following error is triggered when CONFIG_MIPS_MT_FPAFF=y.
 
-triggering with with the CPU_DADDI_WORKAROUNDS option set and the DADDIU
-instruction.  This is because with that option in place the instruction
-becomes a macro, which expands to an LI/DADDU (or actually ADDIU/DADDU)
-sequence that uses $at as a temporary register.
+  arch/mips/kernel/smp-cps.c: In function 'cps_smp_setup':
+  arch/mips/kernel/smp-cps.c:95:3: error: implicit declaration of function 'cpu_set' [-Werror=implicit-function-declaration]
 
-With CPU_DADDI_WORKAROUNDS we only support `-msym32' compilation though,
-and this is already enforced in arch/mips/Makefile, so choose the 32-bit
-expansion variant for the supported configurations and then replace the
-64-bit variant with #error just in case.
-
-Fixes: 3021773c7c3e ("MIPS: DEC: Avoid la pseudo-instruction in delay slots")
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Fixes: 90db024f140d ("MIPS: smp-cps: cpu_set FPU mask if FPU present")
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Acked-by: Niklas Cassel <niklass@axis.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.8+
-Patchwork: https://patchwork.linux-mips.org/patch/16893/
+Patchwork: https://patchwork.linux-mips.org/patch/9912/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/dec/int-handler.S | 34 ++++++----------------------------
- 1 file changed, 6 insertions(+), 28 deletions(-)
+ arch/mips/kernel/smp-cps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/dec/int-handler.S b/arch/mips/dec/int-handler.S
-index 554d1da97743..21f4a9fe82fa 100644
---- a/arch/mips/dec/int-handler.S
-+++ b/arch/mips/dec/int-handler.S
-@@ -147,23 +147,12 @@
- 		 * Find irq with highest priority
- 		 */
- 		# open coded PTR_LA t1, cpu_mask_nr_tbl
--#if (_MIPS_SZPTR == 32)
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		# open coded la t1, cpu_mask_nr_tbl
- 		lui	t1, %hi(cpu_mask_nr_tbl)
- 		addiu	t1, %lo(cpu_mask_nr_tbl)
--
--#endif
--#if (_MIPS_SZPTR == 64)
--		# open coded dla t1, cpu_mask_nr_tbl
--		.set	push
--		.set	noat
--		lui	t1, %highest(cpu_mask_nr_tbl)
--		lui	AT, %hi(cpu_mask_nr_tbl)
--		daddiu	t1, t1, %higher(cpu_mask_nr_tbl)
--		daddiu	AT, AT, %lo(cpu_mask_nr_tbl)
--		dsll	t1, 32
--		daddu	t1, t1, AT
--		.set	pop
-+#else
-+#error GCC `-msym32' option required for 64-bit DECstation builds
- #endif
- 1:		lw	t2,(t1)
- 		nop
-@@ -214,23 +203,12 @@
- 		 * Find irq with highest priority
- 		 */
- 		# open coded PTR_LA t1,asic_mask_nr_tbl
--#if (_MIPS_SZPTR == 32)
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		# open coded la t1, asic_mask_nr_tbl
- 		lui	t1, %hi(asic_mask_nr_tbl)
- 		addiu	t1, %lo(asic_mask_nr_tbl)
--
--#endif
--#if (_MIPS_SZPTR == 64)
--		# open coded dla t1, asic_mask_nr_tbl
--		.set	push
--		.set	noat
--		lui	t1, %highest(asic_mask_nr_tbl)
--		lui	AT, %hi(asic_mask_nr_tbl)
--		daddiu	t1, t1, %higher(asic_mask_nr_tbl)
--		daddiu	AT, AT, %lo(asic_mask_nr_tbl)
--		dsll	t1, 32
--		daddu	t1, t1, AT
--		.set	pop
-+#else
-+#error GCC `-msym32' option required for 64-bit DECstation builds
- #endif
- 2:		lw	t2,(t1)
- 		nop
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 0854f17829f3..5680ff0eb599 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -92,7 +92,7 @@ static void __init cps_smp_setup(void)
+ #ifdef CONFIG_MIPS_MT_FPAFF
+ 	/* If we have an FPU, enroll ourselves in the FPU-full mask */
+ 	if (cpu_has_fpu)
+-		cpu_set(0, mt_fpu_cpumask);
++		cpumask_set_cpu(0, &mt_fpu_cpumask);
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ }
+ 
 -- 
 2.17.1

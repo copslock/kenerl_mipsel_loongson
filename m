@@ -1,74 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 15:15:41 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:36050 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2018 16:11:53 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.99]:34408 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992492AbeJYNPejNAGi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Oct 2018 15:15:34 +0200
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+        id S23994669AbeJYOLr5DI3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Oct 2018 16:11:47 +0200
+Received: from sasha-vm.mshome.net (unknown [167.98.65.38])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 83B0A2085B
-        for <linux-mips@linux-mips.org>; Thu, 25 Oct 2018 13:15:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1A34E2085B;
+        Thu, 25 Oct 2018 14:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540473327;
-        bh=bZCaLGyy/teaz6OaWjiI6j372VpbdHwQ/+uDi/xM0NA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rmQOCjMP4WlmSu7q/6GKpat6ZDwriH0k0T7uU9LpThvPbvqSZMG86LEvpMMtzWve5
-         55xfq0E+MRosHuJmT2AJk2rXXZyP6u/UFRLuY46PSLFi1yVaO2B3EDnBnmblyLBFjk
-         L9ZwTnE9FwMZZn/fKRAXLHVQrQhOMORTskyDX1WU=
-Received: by mail-qt1-f170.google.com with SMTP id u34-v6so9735220qth.3
-        for <linux-mips@linux-mips.org>; Thu, 25 Oct 2018 06:15:27 -0700 (PDT)
-X-Gm-Message-State: AGRZ1gKTgFfxBlRRbQyWqmZ5tQBObT/BO/hYni5Yd0zkGW7UazU3iRra
-        oVnxkYxXfVlxCjbIfei8VcJKRAwafVDcwrGcwA==
-X-Google-Smtp-Source: AJdET5doJEr2mxMCRhycLo9mGNj457pXXR2JyagROZiVZ07IyUKOxF1P1ly2I83sHe0Z+PkQjBByf4TUchTE15SVbu4=
-X-Received: by 2002:a0c:c3c8:: with SMTP id p8mr1490299qvi.90.1540473326445;
- Thu, 25 Oct 2018 06:15:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20181024193256.23734-1-f.fainelli@gmail.com> <CAL_Jsq+KCOv6pXXHhHDZ+7-QUrmtMDvSjEVhK15yZ3qbnn61Ag@mail.gmail.com>
- <20181025093833.GA23607@rapoport-lnx>
-In-Reply-To: <20181025093833.GA23607@rapoport-lnx>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 25 Oct 2018 08:15:15 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqL62ttsGSbE1BS5v-mX3pKE-p_HyvuZD6nB+GUbQyetzg@mail.gmail.com>
-Message-ID: <CAL_JsqL62ttsGSbE1BS5v-mX3pKE-p_HyvuZD6nB+GUbQyetzg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] arm64: Cut rebuild time when changing CONFIG_BLK_DEV_INITRD
-To:     rppt@linux.ibm.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Olof Johansson <olof@lixom.net>, linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        SH-Linux <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        devicetree@vger.kernel.org,
-        "open list:GENERIC INCLUDE/ASM HEADER FILES" 
-        <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <robh@kernel.org>
+        s=default; t=1540476701;
+        bh=zRqXZ8qAm6SoX/rrPFQK+gYnQuAS0k0+ulyN3hs/q60=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rGPuQRsuFdUh62k129uJabF5ZNm+vJ0SPd1OlsNuIyB2NHbb3uoOS8qgCBfMIJa7F
+         6HSVBqbkhOEzVES+7uXcGNDgosh2TUV5HNqoRz1D8v+SOFS3JL4ye7nOxUrvlDKAqG
+         z6gAKLa7O8dSZ16agkqIr6vh2bW1miadT98uBGwg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 33/46] MIPS: Workaround GCC __builtin_unreachable reordering bug
+Date:   Thu, 25 Oct 2018 10:10:40 -0400
+Message-Id: <20181025141053.213330-33-sashal@kernel.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181025141053.213330-1-sashal@kernel.org>
+References: <20181025141053.213330-1-sashal@kernel.org>
+Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66938
+X-archive-position: 66939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: sashal@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,142 +49,148 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+Ard
+From: Paul Burton <paul.burton@mips.com>
 
-On Thu, Oct 25, 2018 at 4:38 AM Mike Rapoport <rppt@linux.ibm.com> wrote:
->
-> On Wed, Oct 24, 2018 at 02:55:17PM -0500, Rob Herring wrote:
-> > On Wed, Oct 24, 2018 at 2:33 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
-> > >
-> > > Hi all,
-> > >
-> > > While investigating why ARM64 required a ton of objects to be rebuilt
-> > > when toggling CONFIG_DEV_BLK_INITRD, it became clear that this was
-> > > because we define __early_init_dt_declare_initrd() differently and we do
-> > > that in arch/arm64/include/asm/memory.h which gets included by a fair
-> > > amount of other header files, and translation units as well.
-> >
-> > I scratch my head sometimes as to why some config options rebuild so
-> > much stuff. One down, ? to go. :)
-> >
-> > > Changing the value of CONFIG_DEV_BLK_INITRD is a common thing with build
-> > > systems that generate two kernels: one with the initramfs and one
-> > > without. buildroot is one of these build systems, OpenWrt is also
-> > > another one that does this.
-> > >
-> > > This patch series proposes adding an empty initrd.h to satisfy the need
-> > > for drivers/of/fdt.c to unconditionally include that file, and moves the
-> > > custom __early_init_dt_declare_initrd() definition away from
-> > > asm/memory.h
-> > >
-> > > This cuts the number of objects rebuilds from 1920 down to 26, so a
-> > > factor 73 approximately.
-> > >
-> > > Apologies for the long CC list, please let me know how you would go
-> > > about merging that and if another approach would be preferable, e.g:
-> > > introducing a CONFIG_ARCH_INITRD_BELOW_START_OK Kconfig option or
-> > > something like that.
-> >
-> > There may be a better way as of 4.20 because bootmem is now gone and
-> > only memblock is used. This should unify what each arch needs to do
-> > with initrd early. We need the physical address early for memblock
-> > reserving. Then later on we need the virtual address to access the
-> > initrd. Perhaps we should just change initrd_start and initrd_end to
-> > physical addresses (or add 2 new variables would be less invasive and
-> > allow for different translation than __va()). The sanity checks and
-> > memblock reserve could also perhaps be moved to a common location.
-> >
-> > Alternatively, given arm64 is the only oddball, I'd be fine with an
-> > "if (IS_ENABLED(CONFIG_ARM64))" condition in the default
-> > __early_init_dt_declare_initrd as long as we have a path to removing
-> > it like the above option.
->
-> I think arm64 does not have to redefine __early_init_dt_declare_initrd().
-> Something like this might be just all we need (completely untested,
-> probably it won't even compile):
->
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index 9d9582c..e9ca238 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -62,6 +62,9 @@ s64 memstart_addr __ro_after_init = -1;
->  phys_addr_t arm64_dma_phys_limit __ro_after_init;
->
->  #ifdef CONFIG_BLK_DEV_INITRD
-> +
-> +static phys_addr_t initrd_start_phys, initrd_end_phys;
-> +
->  static int __init early_initrd(char *p)
->  {
->         unsigned long start, size;
-> @@ -71,8 +74,8 @@ static int __init early_initrd(char *p)
->         if (*endp == ',') {
->                 size = memparse(endp + 1, NULL);
->
-> -               initrd_start = start;
-> -               initrd_end = start + size;
-> +               initrd_start_phys = start;
-> +               initrd_end_phys = end;
->         }
->         return 0;
->  }
-> @@ -407,14 +410,27 @@ void __init arm64_memblock_init(void)
->                 memblock_add(__pa_symbol(_text), (u64)(_end - _text));
->         }
->
-> -       if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) && initrd_start) {
-> +       if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) &&
-> +           (initrd_start || initrd_start_phys)) {
-> +               /*
-> +                * FIXME: ensure proper precendence between
-> +                * early_initrd and DT when both are present
+[ Upstream commit 906d441febc0de974b2a6ef848a8f058f3bfada3 ]
 
-Command line takes precedence, so just reverse the order.
+Some versions of GCC for the MIPS architecture suffer from a bug which
+can lead to instructions from beyond an unreachable statement being
+incorrectly reordered into earlier branch delay slots if the unreachable
+statement is the only content of a case in a switch statement. This can
+lead to seemingly random behaviour, such as invalid memory accesses from
+incorrectly reordered loads or stores, and link failures on microMIPS
+builds.
 
-> +                */
-> +               if (initrd_start) {
-> +                       initrd_start_phys = __phys_to_virt(initrd_start);
-> +                       initrd_end_phys = __phys_to_virt(initrd_end);
+See this potential GCC fix for details:
 
-AIUI, the original issue was doing the P2V translation was happening
-too early and the VA could be wrong if the linear range is adjusted.
-So I don't think this would work.
+    https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
 
-I suppose you could convert the VA back to a PA before any adjustments
-and then back to a VA again after. But that's kind of hacky. 2 wrongs
-making a right.
+Runtime problems resulting from this bug were initially observed using a
+maltasmvp_defconfig v4.4 kernel built using GCC 4.9.2 (from a Codescape
+SDK 2015.06-05 toolchain), with the result being an address exception
+taken after log messages about the L1 caches (during probe of the L2
+cache):
 
-> +               } else if (initrd_start_phys) {
-> +                       initrd_start = __va(initrd_start_phys);
-> +                       initrd_end = __va(initrd_start_phys);
-> +               }
-> +
->                 /*
->                  * Add back the memory we just removed if it results in the
->                  * initrd to become inaccessible via the linear mapping.
->                  * Otherwise, this is a no-op
->                  */
-> -               u64 base = initrd_start & PAGE_MASK;
-> -               u64 size = PAGE_ALIGN(initrd_end) - base;
-> +               u64 base = initrd_start_phys & PAGE_MASK;
-> +               u64 size = PAGE_ALIGN(initrd_end_phys) - base;
->
->                 /*
->                  * We can only add back the initrd memory if we don't end up
-> @@ -458,7 +474,7 @@ void __init arm64_memblock_init(void)
->          * pagetables with memblock.
->          */
->         memblock_reserve(__pa_symbol(_text), _end - _text);
-> -#ifdef CONFIG_BLK_DEV_INITRD
-> +#if 0
->         if (initrd_start) {
->                 memblock_reserve(initrd_start, initrd_end - initrd_start);
->
->
-> > Rob
-> >
->
-> --
-> Sincerely yours,
-> Mike.
->
+    Initmem setup node 0 [mem 0x0000000080000000-0x000000009fffffff]
+    VPE topology {2,2} total 4
+    Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
+    Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 32 bytes
+    <AdEL exception here>
+
+This is early enough that the kernel exception vectors are not in use,
+so any further output depends upon the bootloader. This is reproducible
+in QEMU where no further output occurs - ie. the system hangs here.
+Given the nature of the bug it may potentially be hit with differing
+symptoms. The bug is known to affect GCC versions as recent as 7.3, and
+it is unclear whether GCC 8 fixed it or just happens not to encounter
+the bug in the testcase found at the link above due to differing
+optimizations.
+
+This bug can be worked around by placing a volatile asm statement, which
+GCC is prevented from reordering past, prior to the
+__builtin_unreachable call.
+
+That was actually done already for other reasons by commit 173a3efd3edb
+("bug.h: work around GCC PR82365 in BUG()"), but creates problems for
+microMIPS builds due to the lack of a .insn directive. The microMIPS ISA
+allows for interlinking with regular MIPS32 code by repurposing bit 0 of
+the program counter as an ISA mode bit. To switch modes one changes the
+value of this bit in the PC. However typical branch instructions encode
+their offsets as multiples of 2-byte instruction halfwords, which means
+they cannot change ISA mode - this must be done using either an indirect
+branch (a jump-register in MIPS terminology) or a dedicated jalx
+instruction. In order to ensure that regular branches don't attempt to
+target code in a different ISA which they can't actually switch to, the
+linker will check that branch targets are code in the same ISA as the
+branch.
+
+Unfortunately our empty asm volatile statements don't qualify as code,
+and the link for microMIPS builds fails with errors such as:
+
+    arch/mips/mm/dma-default.s:3265: Error: branch to a symbol in another ISA mode
+    arch/mips/mm/dma-default.s:5027: Error: branch to a symbol in another ISA mode
+
+Resolve this by adding a .insn directive within the asm statement which
+declares that what comes next is code. This may or may not be true,
+since we don't really know what comes next, but as this code is in an
+unreachable path anyway that doesn't matter since we won't execute it.
+
+We do this in asm/compiler.h & select CONFIG_HAVE_ARCH_COMPILER_H in
+order to have this included by linux/compiler_types.h after
+linux/compiler-gcc.h. This will result in asm/compiler.h being included
+in all C compilations via the -include linux/compiler_types.h argument
+in c_flags, which should be harmless.
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
+Patchwork: https://patchwork.linux-mips.org/patch/20270/
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/Kconfig                |  1 +
+ arch/mips/include/asm/compiler.h | 35 ++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c82457b0e733..23e3d3e0ee5b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -29,6 +29,7 @@ config MIPS
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_TIME_VSYSCALL
+ 	select HANDLE_DOMAIN_IRQ
++	select HAVE_ARCH_COMPILER_H
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS if MMU
+diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
+index e081a265f422..cc2eb1b06050 100644
+--- a/arch/mips/include/asm/compiler.h
++++ b/arch/mips/include/asm/compiler.h
+@@ -8,6 +8,41 @@
+ #ifndef _ASM_COMPILER_H
+ #define _ASM_COMPILER_H
+ 
++/*
++ * With GCC 4.5 onwards we can use __builtin_unreachable to indicate to the
++ * compiler that a particular code path will never be hit. This allows it to be
++ * optimised out of the generated binary.
++ *
++ * Unfortunately at least GCC 4.6.3 through 7.3.0 inclusive suffer from a bug
++ * that can lead to instructions from beyond an unreachable statement being
++ * incorrectly reordered into earlier delay slots if the unreachable statement
++ * is the only content of a case in a switch statement. This can lead to
++ * seemingly random behaviour, such as invalid memory accesses from incorrectly
++ * reordered loads or stores. See this potential GCC fix for details:
++ *
++ *   https://gcc.gnu.org/ml/gcc-patches/2015-09/msg00360.html
++ *
++ * It is unclear whether GCC 8 onwards suffer from the same issue - nothing
++ * relevant is mentioned in GCC 8 release notes and nothing obviously relevant
++ * stands out in GCC commit logs, but these newer GCC versions generate very
++ * different code for the testcase which doesn't exhibit the bug.
++ *
++ * GCC also handles stack allocation suboptimally when calling noreturn
++ * functions or calling __builtin_unreachable():
++ *
++ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82365
++ *
++ * We work around both of these issues by placing a volatile asm statement,
++ * which GCC is prevented from reordering past, prior to __builtin_unreachable
++ * calls.
++ *
++ * The .insn statement is required to ensure that any branches to the
++ * statement, which sadly must be kept due to the asm statement, are known to
++ * be branches to code and satisfy linker requirements for microMIPS kernels.
++ */
++#undef barrier_before_unreachable
++#define barrier_before_unreachable() asm volatile(".insn")
++
+ #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+ #define GCC_IMM_ASM() "n"
+ #define GCC_REG_ACCUM "$0"
+-- 
+2.17.1

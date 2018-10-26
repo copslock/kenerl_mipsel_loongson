@@ -1,63 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2018 23:44:53 +0200 (CEST)
-Received: from mail-lj1-x22c.google.com ([IPv6:2a00:1450:4864:20::22c]:38848
-        "EHLO mail-lj1-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993070AbeJZVouY1lZ4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Oct 2018 23:44:50 +0200
-Received: by mail-lj1-x22c.google.com with SMTP id k11-v6so2474990lja.5
-        for <linux-mips@linux-mips.org>; Fri, 26 Oct 2018 14:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/6uaXpECa/aYnHF17c8/9fNocsDR31Q2sd0EegIMyKU=;
-        b=KDI6mgWw0Zys95ATOut3in3zBv5v/22byfRqSZJdG4yv5BjscsTFUch5uqYxUEYxV4
-         Auqe/jlCq1ftiVJR3qgii9FMJKcPEKic967JTkMzU8Pjcy2bwDgp7l4H+CTP7kf6sHaT
-         Uw5g64rUk+BqWWjyVmSx17CK8MzDciSrF9ZSI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/6uaXpECa/aYnHF17c8/9fNocsDR31Q2sd0EegIMyKU=;
-        b=VlmqMvdw/MU3Lxgz+I5e9ZuUSS0bCHyO8x0SULV6k8jqdONliowEv9Vpdw1OSNif9L
-         MCrepfUxB9mLoQuYuRlbALfQg+tBpIxp7Ve7xN2546ujKarD4IyvluKMlFmL+0dSRlHk
-         kHdspzPdKgQUZ0iMEmMiASnQkyWAEKnWeL5OCaz1RYAO/S59ywRjcO651EBmEQ4Ov1uJ
-         rXNsAntJwftoX/iRuST7u78pF3hXFWWx+wDAnqM4yy8jj6zH7H7K2z0Qew6Xva2sXB5f
-         HyQPjEtI5A5NmmW9uZjoJw7PqwM+CesdGrefQGp9BMKLJyYhXGW24R6e64+IfzHCzECH
-         J2pw==
-X-Gm-Message-State: AGRZ1gKRk7hLl9eD3/qMobGCwHrO+XtHDeEv7hEOM/ggOq6oJafXrxU+
-        hxc+/3N3BItiyDilIcn2OB9yCGlfdd+o6Q==
-X-Google-Smtp-Source: AJdET5cx9+P0ES3DYRPufs6Nmi6s/lSZsBS+lwDN3TUyZKIPnJkqGuym9gC+2dJY4o3CpIitoRIzrA==
-X-Received: by 2002:a2e:4408:: with SMTP id r8-v6mr3803223lja.21.1540590284442;
-        Fri, 26 Oct 2018 14:44:44 -0700 (PDT)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com. [209.85.208.176])
-        by smtp.gmail.com with ESMTPSA id a8-v6sm1702695ljd.6.2018.10.26.14.44.43
-        for <linux-mips@linux-mips.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 26 Oct 2018 14:44:44 -0700 (PDT)
-Received: by mail-lj1-f176.google.com with SMTP id c4-v6so2472163lja.4
-        for <linux-mips@linux-mips.org>; Fri, 26 Oct 2018 14:44:43 -0700 (PDT)
-X-Received: by 2002:a2e:9d89:: with SMTP id c9-v6mr3165653ljj.120.1540590282826;
- Fri, 26 Oct 2018 14:44:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20181026190756.fqk2ozm2ruhmwwex@pburton-laptop>
-In-Reply-To: <20181026190756.fqk2ozm2ruhmwwex@pburton-laptop>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 26 Oct 2018 14:44:27 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgbDdxdHmnBMamB7hFbaWqz41XArmgebamuEwhSGupY7w@mail.gmail.com>
-Message-ID: <CAHk-=wgbDdxdHmnBMamB7hFbaWqz41XArmgebamuEwhSGupY7w@mail.gmail.com>
-Subject: Re: [GIT PULL] MIPS changes for 4.20
-To:     paul.burton@mips.com
-Cc:     jhogan@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <torvalds@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Oct 2018 00:47:22 +0200 (CEST)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:57034 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992907AbeJZWrTNEUGJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Oct 2018 00:47:19 +0200
+Received: from localhost.localdomain (85-76-71-107-nat.elisa-mobile.fi [85.76.71.107])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 5BDD6300BC;
+        Sat, 27 Oct 2018 01:47:18 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: OCTEON: fix out of bounds array access on CN68XX
+Date:   Sat, 27 Oct 2018 01:46:34 +0300
+Message-Id: <20181026224634.30560-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.17.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66962
+X-archive-position: 66963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,10 +36,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 26, 2018 at 12:08 PM Paul Burton <paul.burton@mips.com> wrote:
->
-> Here are the main MIPS changes for 4.20. Please pull.
+The maximum number of interfaces is returned by
+cvmx_helper_get_number_of_interfaces(), and the value is used to access
+interface_port_count[]. When CN68XX support was added, we forgot
+to increase the array size. Fix that.
 
-Pulled (along with the fixes pull request),
+Fixes: 2c8c3f0201333 ("MIPS: Octeon: Support additional interfaces on CN68XX")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/cavium-octeon/executive/cvmx-helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-                   Linus
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+index 75108ec669eb..6c79e8a16a26 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -67,7 +67,7 @@ void (*cvmx_override_pko_queue_priority) (int pko_port,
+ void (*cvmx_override_ipd_port_setup) (int ipd_port);
+ 
+ /* Port count per interface */
+-static int interface_port_count[5];
++static int interface_port_count[9];
+ 
+ /**
+  * Return the number of interfaces the chip has. Each interface
+-- 
+2.17.0

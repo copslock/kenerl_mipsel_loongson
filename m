@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2018 10:52:59 +0200 (CEST)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:55256 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2018 10:56:59 +0200 (CEST)
+Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:55404 "EHLO
         merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992869AbeJZIw4o-N7c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Oct 2018 10:52:56 +0200
+        with ESMTP id S23992869AbeJZI4sdijEc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Oct 2018 10:56:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=pbk9Jp4NpLV5KhCv2GieE6eo6VugTGuTfEvdAP/DTOU=; b=ucA2s1NEduQA2HG6o8PHl9GX1
-        1c9iAfHE+3hqIl/VOcrEC4U61PEkSMe2UlNY8ypIaHjQM2VFqPCLJW1X9TyB3wWuCgKbVPigZk0cL
-        8xXH3vrCr+QLGW8A+8M1aJInEB7Ent4aKqtrYwIq3zSx2xpx4WErOiYwf+CUPAYBaTROX2LN6wtam
-        SO+PDPDdJ9gkMza75ER7YzuuEE9Nbr1grRJK7p7fXgBxca+Uj29aAUjQiybM8sVWM4X51T4/vAu3t
-        jGJE+MJ5H5/n+ZlZg0mYiuiT+wrbdPBImX4VY03B6CnjBGen3lPKGeN206IfOOZzbJStVnZtSqh8h
-        j/PfTfURA==;
+         bh=t4U6dJOCnA0c/EZV0nmuSLy/HD8d4dYO3ZonI67d8Vk=; b=DPhftboxJNVK8gljOSI9ek+lk
+        cu0xqt1kC5w7yCxw6Jsznw1tHw2bNfFS/B99G90XrfF2EouGTY+fnjyh2fFe8Ea4pm+LfBzpKsORm
+        vHKSHxTajvN1zlzwJSY3IQRIoUSjK9Ks0EaN70/cGAc3V1cVwVubUjQU8B8T3dcCN+Cny2z4IXEkf
+        5989+J/lbf4qCCiiXPFuktGNapnha5La8DRY2VrXPeyZAvzLzZFAr0KwXyN2xKeaZefS1TlUOUz9Q
+        v3E0AoVoDPrDe463fQg0erQi1phVVaaGU+vviNvYVqHIgoubM4nIzXXBkEBYhhWFO095CIUsfkQj8
+        Onm8/N6Lg==;
 Received: from [167.98.65.38] (helo=worktop)
         by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gFxqe-000103-2S; Fri, 26 Oct 2018 08:52:04 +0000
+        id 1gFxuk-00012P-H7; Fri, 26 Oct 2018 08:56:18 +0000
 Received: by worktop (Postfix, from userid 1000)
-        id A96EE6E07CA; Fri, 26 Oct 2018 10:52:02 +0200 (CEST)
-Date:   Fri, 26 Oct 2018 10:52:02 +0200
+        id 7F67E6E07BE; Fri, 26 Oct 2018 10:50:47 +0200 (CEST)
+Date:   Fri, 26 Oct 2018 10:50:47 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        linux-kernel@vger.kernel.org, kernel-team@android.com,
         Michal Hocko <mhocko@kernel.org>,
         Julia Lawall <Julia.Lawall@lip6.fr>, akpm@linux-foundation.org,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
@@ -62,21 +62,21 @@ Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
         Yoshinori Sato <ysato@users.sourceforge.jp>
 Subject: Re: [PATCH 1/4] treewide: remove unused address argument from
  pte_alloc functions (v2)
-Message-ID: <20181026085202.GC3109@worktop.c.hoisthospitality.com>
+Message-ID: <20181026085047.GB3109@worktop.c.hoisthospitality.com>
 References: <20181013013200.206928-1-joel@joelfernandes.org>
  <20181013013200.206928-2-joel@joelfernandes.org>
  <20181024083716.GN3109@worktop.c.hoisthospitality.com>
- <20181025022119.GC13560@joelaf.mtv.corp.google.com>
+ <20181025104703.esl6wxyg2ihe4zoc@kshutemo-mobl1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181025022119.GC13560@joelaf.mtv.corp.google.com>
+In-Reply-To: <20181025104703.esl6wxyg2ihe4zoc@kshutemo-mobl1>
 User-Agent: Mutt/1.5.22.1 (2013-10-16)
 Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66954
+X-archive-position: 66955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -93,7 +93,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 24, 2018 at 07:21:19PM -0700, Joel Fernandes wrote:
+On Thu, Oct 25, 2018 at 01:47:03PM +0300, Kirill A. Shutemov wrote:
 > On Wed, Oct 24, 2018 at 10:37:16AM +0200, Peter Zijlstra wrote:
 > > On Fri, Oct 12, 2018 at 06:31:57PM -0700, Joel Fernandes (Google) wrote:
 > > > This series speeds up mremap(2) syscall by copying page tables at the
@@ -111,10 +111,10 @@ On Wed, Oct 24, 2018 at 07:21:19PM -0700, Joel Fernandes wrote:
 > > architectures having different paging structure for different memory
 > > ranges.
 > 
-> I didn't happen to do that analysis but from code analysis, no architecutre
-> is using it. Since its unused in the kernel, may be such architectures don't
-> exist or were removed, so we don't need to bother? Could you share more about
-> your concern with the removal of this argument?
+> I see some archicetures (i.e. sparc and, I believe power) used the address
+> for coloring. It's not needed anymore. Page allocator and SL?B are good
+> enough now.
+> 
+> See 3c936465249f ("[SPARC64]: Kill pgtable quicklists and use SLAB.")
 
-No concerns at all with removing it; I was purely curious as to the
-origin of the unused argument. Kirill provided that answer.
+Ah, shiny. Thanks.

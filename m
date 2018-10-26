@@ -1,135 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2018 21:05:46 +0200 (CEST)
-Received: from mail-yb1-xb44.google.com ([IPv6:2607:f8b0:4864:20::b44]:33327
-        "EHLO mail-yb1-xb44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbeJZTFnGXATc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Oct 2018 21:05:43 +0200
-Received: by mail-yb1-xb44.google.com with SMTP id i78-v6so913583ybg.0
-        for <linux-mips@linux-mips.org>; Fri, 26 Oct 2018 12:05:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2018 21:08:12 +0200 (CEST)
+Received: from mail-co1nam03on0137.outbound.protection.outlook.com ([104.47.40.137]:36160
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993070AbeJZTIIySBXc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Oct 2018 21:08:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=FAfIpbbf5i32tB0r0OpipHm6jpAr1/uuQfuj8ItsGRA=;
-        b=qf+6EyNnERQ9ISNKEs/mkjInmLhEi3e5XFQKCPEk9Rvbx9WMTSytjprKr1IKEWMkyE
-         A0TiP8GXcfT4mMjuooA8trWdBcYRNEQ/SQtCXRR7NON8uqPDwo8QOptKmAfFgOCxe1CI
-         dgBYCHD675VdwrtYHgijFyUl7N2oE8TFTqSxb5b3bWIGVo1begYx0OeNs40ZDNGviBm9
-         5Fsex7kf8CYy/FXCKbGDTA/QRFfTEZBSYEc2XefNvN7iq03zwPD0x80b0r/6iYQiMk5r
-         Aj3UYw43WcYJuAbXOui+EXjE1UDiUD5pN1Z1eXW5ZNPzki6NlRY3P6F/sfP5uidsdlY1
-         SbFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=FAfIpbbf5i32tB0r0OpipHm6jpAr1/uuQfuj8ItsGRA=;
-        b=VimyOIOXs0xU7cezmOB0ljvBMl48cnUxXs61bvZVRF50MVQjNrUxdYNYoszeckoM9W
-         68kClYSM3YlFNcu/k6u958AIs0Qw2tqgttepzNladQ7eIcUFoK60VfzRunwqosVhWMA3
-         DtEVHsOC8lEsxFKKrTADQEDQbiKc1upFwBMof4RrLGVCRyfLHbB80HtX81SCx7M+vgE6
-         g89fEzoBh+WQMPPws1rVqwWb8hm9KNsINCLIXiZqgJjPsHzey0m3FHavjdzU6P0GaEI4
-         xEK1ZCm2CsDAOU8fDfEZi4SNZu2st2AG8hHolmIekaQksKzEccmodIZyFUkY6ni+PQnz
-         lkrQ==
-X-Gm-Message-State: AGRZ1gJ0/0I6RuyZ9c/28F45mAQ7xRBW89IBN/zs3jy9c5wNInQNoHtS
-        8Lf8NtZ3RI/gywCIoSMyigo=
-X-Google-Smtp-Source: AJdET5dV1IOus9aqQsph3pmNqMsV4bLMRQ4D26c0WAXpjJOwhptLhWUaKk6TE97vVn+BFlm+D9FO6A==
-X-Received: by 2002:a25:73c2:: with SMTP id o185-v6mr4910563ybc.254.1540580736335;
-        Fri, 26 Oct 2018 12:05:36 -0700 (PDT)
-Received: from [10.67.49.121] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id r5-v6sm6493141ywr.80.2018.10.26.12.05.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 26 Oct 2018 12:05:35 -0700 (PDT)
-Subject: Re: [PATCH v2 0/2] arm64: Cut rebuild time when changing
- CONFIG_BLK_DEV_INITRD
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Olof Johansson <olof@lixom.net>, linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        nios2-dev@lists.rocketboards.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        SH-Linux <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        devicetree@vger.kernel.org,
-        "open list:GENERIC INCLUDE/ASM HEADER FILES" 
-        <linux-arch@vger.kernel.org>
-References: <20181024193256.23734-1-f.fainelli@gmail.com>
- <CAL_Jsq+KCOv6pXXHhHDZ+7-QUrmtMDvSjEVhK15yZ3qbnn61Ag@mail.gmail.com>
- <20181025093833.GA23607@rapoport-lnx>
- <CAL_JsqL62ttsGSbE1BS5v-mX3pKE-p_HyvuZD6nB+GUbQyetzg@mail.gmail.com>
- <20181025172935.GA27364@rapoport-lnx>
- <CAL_JsqJrMq+QHvuOsqEdCFchmXsd4s2XKUD_TboKzeEQprJvjg@mail.gmail.com>
- <1bb3bd63-a88e-b668-ea36-f0f985c0e2b1@gmail.com>
- <20181026110708.GA3814@rapoport-lnx>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-Message-ID: <53ec9df5-ef2a-edc5-be1c-bca32959c0bc@gmail.com>
-Date:   Fri, 26 Oct 2018 12:05:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
-MIME-Version: 1.0
-In-Reply-To: <20181026110708.GA3814@rapoport-lnx>
-Content-Type: text/plain; charset=utf-8
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BiO0CVYjNgmYlsUYd61O7Ymo3gdMxcLmLC15iMtfNFI=;
+ b=NlQ9e18IGwaSyHfwTzesLPlYBFwElk15Gvr1zNm+2F9alpR+sEde3w7R82Vz1jR/hpigqMumrCH/nj5oOviyFSXDdfFnE71Ad4ShMVDGlkB7f3pSXjdiSbB32UE2vQasYUWK7CF43krxnSrS3KCcVKUqAWt1ohzu8fL9k91h1+Y=
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
+ MWHPR2201MB1119.namprd22.prod.outlook.com (10.174.169.157) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1273.25; Fri, 26 Oct 2018 19:07:58 +0000
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1273.025; Fri, 26 Oct 2018
+ 19:07:58 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+CC:     James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: [GIT PULL] MIPS changes for 4.20
+Thread-Topic: [GIT PULL] MIPS changes for 4.20
+Thread-Index: AQHUbV803RDl80Tco0CdIK4M7ce+iw==
+Date:   Fri, 26 Oct 2018 19:07:57 +0000
+Message-ID: <20181026190756.fqk2ozm2ruhmwwex@pburton-laptop>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR1301CA0025.namprd13.prod.outlook.com
+ (2603:10b6:301:29::38) To MWHSPR00MB117.namprd22.prod.outlook.com
+ (2603:10b6:300:10c::23)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1119;6:mKK9B66JEHupf3dJjRi0RCluz3WbkqAWvp856tjKXkJA4enRHibtSR33YbYOdfwd9skuGba36woVIDBa6I960MFqVwIE/ryu86CwvEo2YF5Qv1DFHQj14yLxfvArokWO+ZqZUoCYbgpxw6djA0KBwagKDbVRr/NjYirsyn3pYy1BWSFLW5I/CcTPOSwl85evUNAKp+WbqtwIL4BfWsOfQR0iRPugvTzck2faNOBvA/nUO+8TwoV/ohPechzLqcezAe0/4mP4xQZ1wkRjgIGOxDOh/v3shQSLZYlBrjQdsGTYL+4IVhLvm2+iIy1KpUFnozNF4/87fyYnUwTge1ofTJ8yWMfHtGY4Ee13GL0FCDFBHv5BQHzbv0oEVVBS7wDPmIl8iGBo20fzu0Kf6OD2bN021IGcCs8E+3UE/1FH3M7IwVyE3GYYc/eS4H19xFaUUMRv3+Z32EP7+ZUOKx9GLQ==;5:JyCuaX35/Y5/Ye7VBLiptuwNgxPVSo08LZHnadio5csfwMvrlLAc/6WXbpRTOWYOutVDrobHfeUHaSW+z1c5Ku2gflKYVDI5GhJRQv6XXayYj18FTdb4iWjPsqNtvXrQeiyhqZk9+vOoe210pJlEeLQxGgI0UTnPr146W1bfA84=;7:w8spR3IA1YKLiw3s4MFIPo8mQ5bs2eWsFqF7kQS8SV4ixrXa9DFbFbgi0dd5MgiqzTJIGfY8djspdINLOtQUWonU8irgbHkHQgH+pf5n3BJpFm8Ye+h84yVPUq2qPK9Ve00F3fvRGp/9RJtUowSVUA==
+x-ms-office365-filtering-correlation-id: eeaba772-7284-4e52-84bf-08d63b765712
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(49563074)(7193020);SRVR:MWHPR2201MB1119;
+x-ms-traffictypediagnostic: MWHPR2201MB1119:
+x-microsoft-antispam-prvs: <MWHPR2201MB11195EB428E7EE2097F610A1C1F00@MWHPR2201MB1119.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(84791874153150)(209352067349851);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(102415395)(6040522)(2401047)(8121501046)(5005006)(3231355)(944501410)(4983020)(52105095)(3002001)(93006095)(10201501046)(148016)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(20161123560045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1119;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1119;
+x-forefront-prvs: 083751FCA6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(396003)(39840400004)(376002)(136003)(199004)(189003)(2900100001)(5250100002)(81166006)(81156014)(58126008)(97736004)(71190400001)(316002)(54906003)(14454004)(8936002)(508600001)(71200400001)(4001150100001)(476003)(25786009)(486006)(44832011)(6916009)(99936001)(106356001)(33716001)(575784001)(105586002)(8676002)(42882007)(4326008)(66066001)(6486002)(5660300001)(186003)(6436002)(305945005)(102836004)(7736002)(68736007)(33896004)(6506007)(386003)(256004)(6512007)(14444005)(9686003)(26005)(53936002)(52116002)(1076002)(99286004)(3846002)(2906002)(6116002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1119;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: koxs2gQokf2Go5uVhzXc40zmzrIN/H6BHxOPTjoCq/MVzfVl2d1qL0V4AnHXfP3x8ONHvKlvDo0ZqqDW+iE8cy4uQe+tAm4Ki155Cm18eCB6TDliS806YqypUPt/i62OmEXkkjdUuQKXpzueZFva8E9bsDxkx/7L4Jc8wrfRdVoUoVG+wmDzzyo2+TyofV5l3h3IBM+M6QMLK7JPcB3TNl0JeJjLAueBF7M4mnjGsbmCebzE1SKYyRICWoDZA+0pWcDhizIU/bwZPHQ3QBoI/uxT5IAgzyvSwFipOpl5uTVCGKENr1g6suGnOxHbi+EncDv/RxqIM8g/zlXt5iHDsgVcX1WjGModHzxvnsNm3x0=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="3aqyq7yq5vhk3w2o"
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eeaba772-7284-4e52-84bf-08d63b765712
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Oct 2018 19:07:57.9570
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1119
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66958
+X-archive-position: 66959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -142,55 +86,224 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/26/18 4:07 AM, Mike Rapoport wrote:
-> On Thu, Oct 25, 2018 at 04:07:13PM -0700, Florian Fainelli wrote:
->> On 10/25/18 2:13 PM, Rob Herring wrote:
->>> On Thu, Oct 25, 2018 at 12:30 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
->>>>
->>>> On Thu, Oct 25, 2018 at 08:15:15AM -0500, Rob Herring wrote:
->>>>> +Ard
->>>>>
->>>>> On Thu, Oct 25, 2018 at 4:38 AM Mike Rapoport <rppt@linux.ibm.com> wrote:
->>>>>>
->>>>>> On Wed, Oct 24, 2018 at 02:55:17PM -0500, Rob Herring wrote:
->>>>>>> On Wed, Oct 24, 2018 at 2:33 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
->>>>>>>>
->>>>>>>> Hi all,
->>>>>>>>
->>>>>>>> While investigating why ARM64 required a ton of objects to be rebuilt
->>>>>>>> when toggling CONFIG_DEV_BLK_INITRD, it became clear that this was
->>>>>>>> because we define __early_init_dt_declare_initrd() differently and we do
->>>>>>>> that in arch/arm64/include/asm/memory.h which gets included by a fair
->>>>>>>> amount of other header files, and translation units as well.
->>>>>>>
->>>>>> I think arm64 does not have to redefine __early_init_dt_declare_initrd().
->>>>>> Something like this might be just all we need (completely untested,
->>>>>> probably it won't even compile):
-> 
-> [ ... ]
->  
->> FWIW, I am extracting the ARM implementation that parses the initrd
->> early command line parameter and the "setup" code doing the page
->> boundary alignment and memblock checking into a helper into lib/ that
->> other architectures can re-use. So far, this removes the need for
->> unicore32, arc and arm to duplicate essentially the same logic.
-> 
-> Presuming you are going to need asm-generic/initrd.h for that as well,
-> using override for __early_init_dt_declare_initrd in arm64 version of
-> initrd.h might be the simplest option.
+--3aqyq7yq5vhk3w2o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-What I am contemplating doing is promote
-phys_initrd_start/phys_initrd_size to be global variables (similar to
-initrd_start, initrd_end) and have a generic helper function for parsing
-the initrd= command line parameter and finally removing
-__early_init_dt_declare_initrd() because we could have
-early_init_dt_check_for_initrd() just populate
-phys_initrd_start/phys_initrd_size directly as well as
-initrd_start/initrd_end using __va() to preserve compatibility with
-architectures that rely on this. Then I would convert ARM64 to check for
-phys_initrd_start which is really what it is is trying to do in
-arch/arm64/mm/init.c::arm64_memblock_init().
+Hi Linus,
 
-Does that sound like a reasonable approach?
--- 
-Florian
+Here are the main MIPS changes for 4.20. Please pull.
+
+A merge into master as of commit 18d0eae30e6a ("Merge tag
+'char-misc-4.20-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc") results
+in one minor conflict in arch/mips/lib/memset.S. Both the .set reorder &
+.set noreorder directives following the .Lsmall_fixup label should be
+removed, leaving the file matching its version as of the mips_4.20 tag.
+
+Thanks,
+    Paul
+
+The following changes since commit 5b394b2ddf0347bef56e50c69a58773c94343ff3:
+
+  Linux 4.19-rc1 (2018-08-26 14:11:59 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_4.20
+
+for you to fetch changes up to edbb4233e7efc37dbebb10f7774b38c64080dd66:
+
+  MIPS: Cleanup DSP ASE detection (2018-10-16 15:30:21 -0700)
+
+----------------------------------------------------------------
+Here are the main MIPS updates for 4.20:
+
+  - kexec support for the generic MIPS platform when running on a CPU
+    including the MIPS Coherence Manager & related hardware.
+
+  - Improvements to the definition of memory barriers used around MMIO
+    accesses, and fixes in their use.
+
+  - Switch to CONFIG_NO_BOOTMEM from Mike Rapoport, finally dropping
+    reliance on the old bootmem code.
+
+  - A number of fixes & improvements for Loongson 3 systems.
+
+  - DT & config updates for the Microsemi Ocelot platform.
+
+  - Workaround to enable USB power on the Netgear WNDR3400v3.
+
+  - Various cleanups & fixes.
+
+----------------------------------------------------------------
+Alexandre Belloni (4):
+      MIPS: dts: mscc: Add i2c on ocelot
+      MIPS: dts: mscc: enable i2c on ocelot_pcb123
+      MIPS: stop using _PTRS_PER_PGD
+      MIPS: generic: Add Network, SPI and I2C to ocelot_defconfig
+
+Dengcheng Zhu (6):
+      MIPS: kexec: Mark CPU offline before disabling local IRQ
+      MIPS: kexec: Make a framework for both jumping and halting on nonboot CPUs
+      MIPS: kexec: CPS systems to halt nonboot CPUs
+      MIPS: kexec: Relax memory restriction
+      MIPS: kexec: Use prepare method from Generic for UHI platforms
+      MIPS: kdump: Mark cpu back online before rebooting
+
+Ding Xiang (1):
+      mips: txx9: fix iounmap related issue
+
+Huacai Chen (6):
+      MIPS: Loongon64: DMA functions cleanup
+      MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS
+      MIPS: Loongson-3: Enable Store Fill Buffer at runtime
+      MIPS/PCI: Let Loongson-3 pci_ops access extended config space
+      MIPS: Loongson-3: Fix CPU UART irq delivery problem
+      MIPS: Loongson-3: Fix BRIDGE irq delivery problem
+
+Maciej W. Rozycki (6):
+      MIPS: memset: Fix CPU_DADDI_WORKAROUNDS `small_fixup' regression
+      MIPS: memset: Limit excessive `noreorder' assembly mode use
+      MIPS: Define MMIO ordering barriers
+      MIPS: Correct `mmiowb' barrier for `wbflush' platforms
+      MIPS: Enforce strong ordering for MMIO accessors
+      MIPS: Provide actually relaxed MMIO accessors
+
+Mathias Kresin (1):
+      MIPS: ralink: Add rt3352 SPI_CS1 pinmux
+
+Mike Rapoport (1):
+      mips: switch to NO_BOOTMEM
+
+Paul Burton (15):
+      MIPS: Use a custom elf-entry program to find kernel entry point
+      MIPS: Use GENERIC_IOMAP
+      MIPS: Remove SLOW_DOWN_IO
+      MIPS: Remove no-op/identity casts
+      MIPS: Move arch_mem_init() comment near definition
+      MIPS: MT: Remove unused MT single-threaded cache flush code
+      MIPS: MT: Remove obsolete cache flush repeat code
+      MIPS: Remove unused MOVN & MOVZ macros
+      MIPS: Remove unused PIC macros
+      MIPS: Remove unused TTABLE macro
+      MIPS: Add kernel_pref & user_pref helpers
+      MIPS: Remove unused CAT macro
+      MIPS: lib: Use kernel_pref & user_pref in memcpy()
+      MIPS: Remove unused PREF, PREFE & PREFX macros
+      MIPS: Cleanup DSP ASE detection
+
+Quentin Schulz (2):
+      MIPS: mscc: add DT for Ocelot PCB120
+      MIPS: mscc: add PCB120 to the ocelot fitImage
+
+Rob Herring (1):
+      MIPS: Convert to using %pOFn instead of device_node.name
+
+Songjun Wu (1):
+      MIPS: dts: Change upper case to lower case
+
+Tobias Wolf (1):
+      MIPS: pci-rt2880: set pci controller of_node
+
+Tuomas Tynkkynen (1):
+      MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
+
+Yasha Cherikovsky (5):
+      MIPS/head: Add comments after #endif and #else
+      MIPS/head: Store ELF appended dtb in a global variable too
+      MIPS: BMIPS: Remove special handling of CONFIG_MIPS_ELF_APPENDED_DTB=y
+      MIPS: Octeon: Remove special handling of CONFIG_MIPS_ELF_APPENDED_DTB=y
+      MIPS: Add Kconfig variable for CPUs with unaligned load/store instructions
+
+ arch/mips/Kconfig                                  |  42 +++-
+ arch/mips/Makefile                                 |  11 +-
+ arch/mips/bcm47xx/workarounds.c                    |   8 +-
+ arch/mips/bmips/setup.c                            |   9 +-
+ arch/mips/boot/dts/lantiq/danube.dtsi              |  42 ++--
+ arch/mips/boot/dts/lantiq/easy50712.dts            |  14 +-
+ arch/mips/boot/dts/mscc/Makefile                   |   2 +-
+ arch/mips/boot/dts/mscc/ocelot.dtsi                |  19 ++
+ arch/mips/boot/dts/mscc/ocelot_pcb120.dts          | 107 ++++++++++
+ arch/mips/boot/dts/mscc/ocelot_pcb123.dts          |   6 +
+ arch/mips/cavium-octeon/octeon-irq.c               |  16 +-
+ arch/mips/cavium-octeon/setup.c                    |   9 +-
+ arch/mips/cavium-octeon/smp.c                      |   7 +
+ arch/mips/configs/generic/board-ocelot.config      |  10 +-
+ arch/mips/generic/Kconfig                          |   6 +-
+ arch/mips/generic/Makefile                         |   1 -
+ arch/mips/generic/Platform                         |   2 +-
+ ...oard-ocelot_pcb123.its.S => board-ocelot.its.S} |  17 ++
+ arch/mips/generic/kexec.c                          |  44 ----
+ arch/mips/include/asm/asm-eva.h                    |   6 +
+ arch/mips/include/asm/asm.h                        | 116 -----------
+ arch/mips/include/asm/io.h                         | 129 ++++++------
+ arch/mips/include/asm/kexec.h                      |  11 +-
+ arch/mips/include/asm/mach-loongson64/irq.h        |   2 +-
+ .../asm/mach-loongson64/kernel-entry-init.h        |  16 +-
+ arch/mips/include/asm/mipsregs.h                   |  20 +-
+ arch/mips/include/asm/r4kcache.h                   |  73 -------
+ arch/mips/include/asm/smp-ops.h                    |   3 +
+ arch/mips/include/asm/smp.h                        |  16 ++
+ arch/mips/kernel/Makefile                          |  18 --
+ arch/mips/kernel/crash.c                           |   7 +-
+ arch/mips/kernel/head.S                            |  18 +-
+ arch/mips/kernel/machine_kexec.c                   | 143 ++++++++++++-
+ arch/mips/kernel/mips-mt.c                         |  59 ------
+ arch/mips/kernel/relocate.c                        |   2 +-
+ arch/mips/kernel/setup.c                           | 144 ++++---------
+ arch/mips/kernel/smp-bmips.c                       |   7 +
+ arch/mips/kernel/smp-cps.c                         |  80 +++++---
+ arch/mips/kernel/traps.c                           |   5 +-
+ arch/mips/kernel/unaligned.c                       |  47 +++--
+ arch/mips/lib/Makefile                             |   2 +-
+ arch/mips/lib/iomap-pci.c                          |   7 -
+ arch/mips/lib/iomap.c                              | 227 ---------------------
+ arch/mips/lib/memcpy.S                             |  22 +-
+ arch/mips/lib/memset.S                             |  60 +++---
+ arch/mips/loongson64/common/Makefile               |   1 -
+ arch/mips/loongson64/fuloong-2e/Makefile           |   2 +-
+ arch/mips/loongson64/fuloong-2e/dma.c              |  12 ++
+ arch/mips/loongson64/lemote-2f/Makefile            |   2 +-
+ arch/mips/loongson64/{common => lemote-2f}/dma.c   |   4 -
+ arch/mips/loongson64/loongson-3/irq.c              |  56 +----
+ arch/mips/loongson64/loongson-3/numa.c             |  34 ++-
+ arch/mips/loongson64/loongson-3/smp.c              |  14 +-
+ arch/mips/mm/init.c                                |   7 +-
+ arch/mips/netlogic/common/irq.c                    |  14 +-
+ arch/mips/pci/ops-loongson3.c                      |  34 ++-
+ arch/mips/pci/pci-legacy.c                         |   4 +
+ arch/mips/pci/pci-rt2880.c                         |   2 +
+ arch/mips/pmcs-msp71xx/msp_usb.c                   |   4 +-
+ arch/mips/ralink/cevt-rt3352.c                     |   6 +-
+ arch/mips/ralink/ill_acc.c                         |   2 +-
+ arch/mips/ralink/rt305x.c                          |   5 +
+ arch/mips/sgi-ip22/ip28-berr.c                     |   2 +-
+ arch/mips/sgi-ip27/ip27-memory.c                   |  11 +-
+ arch/mips/tools/.gitignore                         |   1 +
+ arch/mips/tools/Makefile                           |   5 +
+ arch/mips/tools/elf-entry.c                        |  96 +++++++++
+ arch/mips/txx9/generic/setup.c                     |   5 +-
+ 68 files changed, 919 insertions(+), 1016 deletions(-)
+ create mode 100644 arch/mips/boot/dts/mscc/ocelot_pcb120.dts
+ rename arch/mips/generic/{board-ocelot_pcb123.its.S => board-ocelot.its.S} (55%)
+ delete mode 100644 arch/mips/generic/kexec.c
+ delete mode 100644 arch/mips/lib/iomap.c
+ create mode 100644 arch/mips/loongson64/fuloong-2e/dma.c
+ rename arch/mips/loongson64/{common => lemote-2f}/dma.c (75%)
+ create mode 100644 arch/mips/tools/.gitignore
+ create mode 100644 arch/mips/tools/Makefile
+ create mode 100644 arch/mips/tools/elf-entry.c
+
+--3aqyq7yq5vhk3w2o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCW9NmDAAKCRA+p5+stXUA
+3ec0AP4m5wnKIDSf3mUaVNwTE1yRvrgRogWyk92uLJxn2ZY+wQD/X+EN9GcHrJkY
+kcoXTLttoCJJx30El+TAbDc00KVEWgM=
+=cZio
+-----END PGP SIGNATURE-----
+
+--3aqyq7yq5vhk3w2o--

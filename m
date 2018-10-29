@@ -1,68 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 09:06:52 +0100 (CET)
-Received: from mail-lj1-x242.google.com ([IPv6:2a00:1450:4864:20::242]:32960
-        "EHLO mail-lj1-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991063AbeJ2IGo3xLqz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2018 09:06:44 +0100
-Received: by mail-lj1-x242.google.com with SMTP id z21-v6so6852414ljz.0
-        for <linux-mips@linux-mips.org>; Mon, 29 Oct 2018 01:06:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ajaYwJF4Ljrrll4IuoXvlD3RjAFhr9gdHOnHhXAu5Zs=;
-        b=bgtfFerzqxC6ZUuW/O5tRqis/zoiuS3TRapqRabfRAjRT6CbGF3xgSXW/A9SlH2G4O
-         s/JXPY7DoPAYN0uosA05sDINjNfda8s2Nq6OapQWkAyjEuyKBqs10HB7CSvEe14F5iEW
-         ZroMXJabEv34xiq5PH9zA7msP+7mqsRx2TqRJCOjq5I6oYTP/WDWWSzIYrjCkIl2ptTz
-         UX4P25hpz71nbGq1MgfQfwCnRO64i/GrEXANeX6hTTT/fGunYPdkCMCIb217u0ypIPrm
-         SPg9tGHE5M7ql0UsRWXrROLk3cCNHkiWOvY98Iuzbl6d1fjcwl3/ULZmjj0krWyOOi5K
-         iQpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ajaYwJF4Ljrrll4IuoXvlD3RjAFhr9gdHOnHhXAu5Zs=;
-        b=m1SeW2sOifqEqZ4pw6H0DyVsZ7T+Kct3vhS2i/6FAOIgzoI2lJ45SGY+mENmtEDGlK
-         eJq6JUtY1HrK+JJXx0MDza5TPtquJGisN546MmIKAvt7R/p7IBi6GOh86UCR9enmNVgj
-         KdQ8ACJuNwRseRCIaw0e192xxu+8BaqAhT8EZwPYxS9iNwABcc4CKFanklN1Hr7hewFa
-         dSdU6Pbwbx4DlCelLvYDcd1ufus9EsvzNoWVVEo+h8iHE4g9alKEnTenkQxlKBJ9HJnG
-         LfIkCFL4dJ4b7YHxnEbBu8piLDqTPfVb4qMkdyqW4RqDJao6rg6yylRumqrqw8S7zuYh
-         ag7g==
-X-Gm-Message-State: AGRZ1gJ+w1QeV19ZRlBdscOuEE3Sp+Ol4fijcmpbdnaey/Z3aNGWfXwA
-        elbaQUvCFwy2YFXiuO7XfrlyIw==
-X-Google-Smtp-Source: AJdET5cKauyhWO1h2ZqTBuRWJK5O+Kd2QrHv5LHiQChZveprNqHnA11mW3b1cYjhThIm2NJUoLJRTQ==
-X-Received: by 2002:a2e:215a:: with SMTP id h87-v6mr9407080ljh.102.1540800398714;
-        Mon, 29 Oct 2018 01:06:38 -0700 (PDT)
-Received: from [192.168.0.126] ([31.173.80.69])
-        by smtp.gmail.com with ESMTPSA id c22sm2922682lfd.88.2018.10.29.01.06.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Oct 2018 01:06:37 -0700 (PDT)
-Subject: Re: [PATCH] clk: boston: fix possible memory leak in
- clk_boston_setup()
-To:     Yi Wang <wang.yi59@zte.com.cn>, paul.burton@mips.com
-Cc:     mturquette@baylibre.com, sboyd@kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhong.weidong@zte.com.cn
-References: <1540800277-24524-1-git-send-email-wang.yi59@zte.com.cn>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <5484fe07-5909-dc67-5de6-72e878060a54@cogentembedded.com>
-Date:   Mon, 29 Oct 2018 11:06:41 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <1540800277-24524-1-git-send-email-wang.yi59@zte.com.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 09:24:53 +0100 (CET)
+Received: from mxhk.zte.com.cn ([63.217.80.70]:64180 "EHLO mxhk.zte.com.cn"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990397AbeJ2IYrgwJb- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 29 Oct 2018 09:24:47 +0100
+Received: from mse02.zte.com.cn (unknown [10.30.3.21])
+        by Forcepoint Email with ESMTPS id 7086989A63154D69829C;
+        Mon, 29 Oct 2018 16:24:39 +0800 (CST)
+Received: from kjyxapp01.zte.com.cn ([10.30.12.200])
+        by mse02.zte.com.cn with SMTP id w9T8OT30094569;
+        Mon, 29 Oct 2018 16:24:29 +0800 (GMT-8)
+        (envelope-from wang.yi59@zte.com.cn)
+Received: from mapi (kjyxapp07[null])
+        by mapi (Zmail) with MAPI id mid14;
+        Mon, 29 Oct 2018 16:24:31 +0800 (CST)
+Date:   Mon, 29 Oct 2018 16:24:31 +0800 (CST)
+X-Zmail-TransId: 2b095bd6c3bfcc3d3aa6
+X-Mailer: Zmail v1.0
+Message-ID: <201810291624314997508@zte.com.cn>
+In-Reply-To: <5484fe07-5909-dc67-5de6-72e878060a54@cogentembedded.com>
+References: 1540800277-24524-1-git-send-email-wang.yi59@zte.com.cn,5484fe07-5909-dc67-5de6-72e878060a54@cogentembedded.com
+Mime-Version: 1.0
+From:   <wang.yi59@zte.com.cn>
+To:     <sergei.shtylyov@cogentembedded.com>
+Cc:     <paul.burton@mips.com>, <mturquette@baylibre.com>,
+        <sboyd@kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <zhong.weidong@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gY2xrOiBib3N0b246IGZpeCBwb3NzaWJsZSBtZW1vcnkgbGVhayBpbmNsa19ib3N0b25fc2V0dXAoKQ==?=
+Content-Type: multipart/mixed;
+        boundary="=====_001_next====="
+X-MAIL: mse02.zte.com.cn w9T8OT30094569
+Return-Path: <wang.yi59@zte.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66968
+X-archive-position: 66969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: wang.yi59@zte.com.cn
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,17 +51,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
 
-On 10/29/2018 11:04 AM, Yi Wang wrote:
 
-> 'onecell' is malloced in clk_boston_setup(), but not be freed
+--=====_001_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
 
-    Is not freed.
 
-> before leaving from the error handling cases.
-> 
-> Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
-[...]
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-MBR, Sergei
+SGkgU2VyZ2VpLAoKPiBIZWxsbyEKPgo+IE9uIDEwLzI5LzIwMTggMTE6MDQgQU0sIFlpIFdhbmcg
+d3JvdGU6Cj4KPiA+ICdvbmVjZWxsJyBpcyBtYWxsb2NlZCBpbiBjbGtfYm9zdG9uX3NldHVwKCks
+IGJ1dCBub3QgYmUgZnJlZWQKPgo+ICAgICBJcyBub3QgZnJlZWQuCgpUaGFua3MgYSBsb3QsIEkg
+d2lsbCBzZW5kIGEgdjIgcGF0Y2guCgo+Cj4gPiBiZWZvcmUgbGVhdmluZyBmcm9tIHRoZSBlcnJv
+ciBoYW5kbGluZyBjYXNlcy4KPiA+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBZaSBXYW5nIDx3YW5nLnlp
+NTlAenRlLmNvbS5jbj4KPiBbLi4uXQo+Cj4gTUJSLCBTZXJnZWkKCgotLS0KQmVzdCB3aXNoZXMK
+WWkgV2FuZw==
+
+
+--=====_003_next=====--
+
+--=====_001_next=====--

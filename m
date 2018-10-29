@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 14:36:46 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:49364 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 18:23:57 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:43844 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990824AbeJ2Ngnx18ZR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Oct 2018 14:36:43 +0100
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        id S23992446AbeJ2RXyvDszP convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2018 18:23:54 +0100
+Received: from localhost (unknown [104.132.0.74])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D6A5B2082D;
-        Mon, 29 Oct 2018 13:36:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0532C20657;
+        Mon, 29 Oct 2018 17:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1540820197;
-        bh=4dqWG0GBWPMUzwKsPqk0scqM9PAuN8RviIX3A3Xpc9U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PFObk1JasxcS2XK6LP1W8urpabcKEDkyXRuikvv7jMIv26BGgxVMeVWZofwdJQLJa
-         ox1iW3dezevmjuu8DU8b0qciPW6yRryvBFbleVNQ46oEjJwexFKq79k1AjB29t6ECs
-         T9btBMNTuBWauVTk8plP6nlsMwk50c8a04tvKe1I=
-Date:   Mon, 29 Oct 2018 09:36:35 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH AUTOSEL 4.14 33/46] MIPS: Workaround GCC
- __builtin_unreachable reordering bug
-Message-ID: <20181029133635.GM2015@sasha-vm>
-References: <20181025141053.213330-1-sashal@kernel.org>
- <20181025141053.213330-33-sashal@kernel.org>
- <20181025195254.q55noj2rdh5vyw5s@pburton-laptop>
- <CAK8P3a2eOo=9Pv4XmyX30_PYoRpp_f6rXQn+pk9z21wMvE84Ag@mail.gmail.com>
+        s=default; t=1540833828;
+        bh=w1YnWt+AnwXv/iS2szCUWKOpLQDHkLKhFgwvClfS/eA=;
+        h=To:From:In-Reply-To:Cc:References:Subject:Date:From;
+        b=MJBtKs9GnpyaQ0ZEieMECWGU9IX3goI8lnsgPjeQrGhQwWcbRJJ/6lzfYAP3biVAe
+         w5HB88qL6AbOwRLQZLb/47qCAp/9Y1Qe0ULzZ9F/X8leUWeHzUUrI2nwhsoDJUaEV1
+         Z+Bi4QsHJu3p4CrLmpwW+8i+0Nak4O8aiBgeuQfI=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2eOo=9Pv4XmyX30_PYoRpp_f6rXQn+pk9z21wMvE84Ag@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <sashal@kernel.org>
+Content-Transfer-Encoding: 8BIT
+To:     Yi Wang <wang.yi59@zte.com.cn>, paul.burton@mips.com
+From:   Stephen Boyd <sboyd@kernel.org>
+In-Reply-To: <1540801907-31544-1-git-send-email-wang.yi59@zte.com.cn>
+Cc:     mturquette@baylibre.com, linux-mips@linux-mips.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        zhong.weidong@zte.com.cn, Yi Wang <wang.yi59@zte.com.cn>
+References: <1540801907-31544-1-git-send-email-wang.yi59@zte.com.cn>
+Message-ID: <154083382731.98144.10932242759017894372@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.7
+Subject: Re: [PATCH v2] clk: boston: fix possible memory leak in clk_boston_setup()
+Date:   Mon, 29 Oct 2018 10:23:47 -0700
+Return-Path: <sboyd@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66974
+X-archive-position: 66975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sashal@kernel.org
+X-original-sender: sboyd@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,32 +50,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 26, 2018 at 09:36:30AM +0200, Arnd Bergmann wrote:
->On 10/25/18, Paul Burton <paul.burton@mips.com> wrote:
->> On Thu, Oct 25, 2018 at 10:10:40AM -0400, Sasha Levin wrote:
->>> From: Paul Burton <paul.burton@mips.com>
->>> ---
->>>  arch/mips/Kconfig                |  1 +
->>>  arch/mips/include/asm/compiler.h | 35 ++++++++++++++++++++++++++++++++
->>>  2 files changed, 36 insertions(+)
->>
->> In principle I'm fine with backporting this - it does fix broken builds.
->>
->> It's only going to be of any use though if you also backport commit
->> 04f264d3a8b0 ("compiler.h: Allow arch-specific asm/compiler.h"). I'd
->> recommend backporting both or neither.
->>
->> In practice I think it's unlikely anyone will need a microMIPS kernel &
->> be tied to the particular versions affected by the bug this patch fixed,
->> so I don't think it's a problem to backport neither.
->
->I think the current practice of the stable kernel these days is to take
->both patches in this case: They fix an actual bug in the mainline kernel,
->and it seems unlikely enough that they cause a regression if backported,
->so putting them into 4.14 has more advantages than disadvantages.
+Quoting Yi Wang (2018-10-29 01:31:47)
+> 'onecell' is malloced in clk_boston_setup(), but is not freed
+> before leaving from the error handling cases.
 
-I'll take both, thank you!
+How did you find this? Visual inspection? Some coccinelle script?
 
---
-Thanks,
-Sasha
+> 
+> Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
+> ---
+> v2: fix syntax issue in comment, thanks to  Sergei.
+> 
+>  drivers/clk/imgtec/clk-boston.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
+> index 15af423..f5d54a6 100644
+> --- a/drivers/clk/imgtec/clk-boston.c
+> +++ b/drivers/clk/imgtec/clk-boston.c
+> @@ -73,27 +73,32 @@ static void __init clk_boston_setup(struct device_node *np)
+>         hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
+>         if (IS_ERR(hw)) {
+>                 pr_err("failed to register input clock: %ld\n", PTR_ERR(hw));
+> -               return;
+> +               goto error;
+>         }
+>         onecell->hws[BOSTON_CLK_INPUT] = hw;
+>  
+>         hw = clk_hw_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
+>         if (IS_ERR(hw)) {
+>                 pr_err("failed to register sys clock: %ld\n", PTR_ERR(hw));
+> -               return;
+> +               goto error;
+>         }
+>         onecell->hws[BOSTON_CLK_SYS] = hw;
+>  
+>         hw = clk_hw_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
+>         if (IS_ERR(hw)) {
+>                 pr_err("failed to register cpu clock: %ld\n", PTR_ERR(hw));
+> -               return;
+> +               goto error;
+>         }
+>         onecell->hws[BOSTON_CLK_CPU] = hw;
+>  
+>         err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, onecell);
+>         if (err)
+>                 pr_err("failed to add DT provider: %d\n", err);
+> +
+> +       return;
+> +
+> +error:
+> +       kfree(onecell);
+
+Ok, sure. But then clks are still left registered on failure?

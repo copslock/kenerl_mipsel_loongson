@@ -1,78 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 19:08:33 +0100 (CET)
-Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:41051
-        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993997AbeJ2SI2rVxlY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2018 19:08:28 +0100
-Received: by mail-pf1-x444.google.com with SMTP id e22-v6so1394407pfn.8
-        for <linux-mips@linux-mips.org>; Mon, 29 Oct 2018 11:08:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 19:08:44 +0100 (CET)
+Received: from mail-pg1-x541.google.com ([IPv6:2607:f8b0:4864:20::541]:40673
+        "EHLO mail-pg1-x541.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994240AbeJ2SIk3CqaY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2018 19:08:40 +0100
+Received: by mail-pg1-x541.google.com with SMTP id o14-v6so4288936pgv.7
+        for <linux-mips@linux-mips.org>; Mon, 29 Oct 2018 11:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QSKKc5HMlh7M5vL937dP++TT6tmkeJeSmcqt5MVCOtY=;
-        b=hsB/gPZ2gEczir8iQUAn0e9pABW4rct9ZAh6E2jhg77MsVjPTMBQfPhvBJR1BZm+6m
-         +OqpVPHEG2Hkn5wbNSXGiP7vXlYiyracqL7uFW25m8vWND53ljm5X4RERvGv6xZKL7xn
-         jpFaHwDjmEMbTLwB1YIDBXfdvPbYN5rgtzT3s=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=5KlK5EoYecHiEwx2KYOj1AK3WWuK24K/BTuRZp/Hgn0=;
+        b=ViKF3X5QZz1G04Kuc+UrpCLOIvvtASddvUpgEhbE2NwCsDxuq6JsW/AfF3MtdzfNcH
+         x4aFvJIFkNdrS8l2CQjvpOEnAdP+LsFKZAoe9CdyAH5M9odaITFSuzPbsiwDohBeU3UQ
+         YDDibS0wr7JOOkRxMW/g3gib7jVbkYmN9FZJo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QSKKc5HMlh7M5vL937dP++TT6tmkeJeSmcqt5MVCOtY=;
-        b=PhaEhhhsVwIxdBfZCePp3JbiReFp8cprzObc3AjlHEQ0O4T98yYWc/9Fb6pm+fXOg7
-         Zy+SYKkcB04in13lyYA/JkibNz1JsjYQpt+9L9+WX5MZdh8GLSPOIkBFhxEp2NEOlIdn
-         k/jAnIjntCG41WdMTWUEKMbEOnT0afgDgFtJLvBiiWvp3ZWa6FkXA5JlxQtEqgRJbpMd
-         RSXNAWyPz9oD6zoDI+4M4JwDDj/ChLkG5mfUO7tZhgGobV8jRqWWx4rHHKptgazXTZqK
-         r52eAFarzjMFuIF5JJnZmCGBRf/1NKjaBkIWRYqqb9ODP8dQPdl+5XKzcs7A6ZhTvwde
-         dT2w==
-X-Gm-Message-State: AGRZ1gJLBSmmE28e8oo4E3ev2mxLDTJotZhJ2SqPUPnKS42TcU/ffa8e
-        hodLlFEV6Vg4CH7icwtDXxMqYA==
-X-Google-Smtp-Source: AJdET5dGhnncRm9iSJg05kgJBJDzyYpBIEP2cpS8BQk0o1rd7rDmc4oUGhklGtHfFiVvNn75kQ9R1w==
-X-Received: by 2002:a63:ea07:: with SMTP id c7-v6mr14041434pgi.361.1540836502105;
-        Mon, 29 Oct 2018 11:08:22 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=5KlK5EoYecHiEwx2KYOj1AK3WWuK24K/BTuRZp/Hgn0=;
+        b=Iw8f5EJv1yKrBQ9k4lPek0vfM/fdoWfo9bKbwwDU8DE5GYhzAQeH+WJuy4OGva/szB
+         RUbL9C8+6VNxQq9Ue1Q0qVnD7OZSEFn8Arh4t1Kx+JsHc9ybgCJPL5xKIksTgQpgnKgv
+         tsJiD+3Zmj/twrzyBEHFd8wWyTWWcM5xfGBOG0ydcLteUNEvA7XR9TUmK4Qqks6Y5LFN
+         bjv/yORP58BNrshFx6eVyKVqTQChY7IeG43u207EW0x/ri92lAMPvcjqFdvlQytkMHGn
+         NzpczMX6Lk1aUgmoxl2n03IoJwJZHVQHFBaRZgm4i0Ca+QzSxJY2OdMIFWbIWnIPKtQ/
+         r4EQ==
+X-Gm-Message-State: AGRZ1gJYhxCItRxYiY2Kd1mCkSRSFqgZhzODWkyNTCD2d/lxF/KCF9JW
+        uJ8cHiMDnuaGT7HmWzTZ7iJYJQ==
+X-Google-Smtp-Source: AJdET5dnes+lqSdsKf+M8kej513uIWGXuNg0nbxyLNaYWMhztTpOmHr2lEByvMdxDcC5rsUHz1VWbw==
+X-Received: by 2002:a62:7a92:: with SMTP id v140-v6mr9434788pfc.46.1540836514355;
+        Mon, 29 Oct 2018 11:08:34 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:c8e0:70d7:4be7:a36])
-        by smtp.gmail.com with ESMTPSA id u13-v6sm20537765pgp.18.2018.10.29.11.08.19
+        by smtp.gmail.com with ESMTPSA id u13-v6sm20537765pgp.18.2018.10.29.11.08.32
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Oct 2018 11:08:20 -0700 (PDT)
+        Mon, 29 Oct 2018 11:08:33 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Jason Wessel <jason.wessel@windriver.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         tglx@linutronix.de, mingo@kernel.org, gregkh@linuxfoundation.org
 Cc:     linux-arm-msm@vger.kernel.org,
         kgdb-bugreport@lists.sourceforge.net,
-        Douglas Anderson <dianders@chromium.org>, nm@ti.com,
-        linux-mips@linux-mips.org, dalias@libc.org,
-        catalin.marinas@arm.com, vigneshr@ti.com,
-        linux-aspeed@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        peterz@infradead.org, will.deacon@arm.com, mhocko@suse.com,
-        paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
-        marex@denx.de, sfr@canb.auug.org.au, ysato@users.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, x86@kernel.org,
-        linux@armlinux.org.uk, pombredanne@nexb.com, tony@atomide.com,
-        mingo@redhat.com, joel@jms.id.au, linux-serial@vger.kernel.org,
-        rolf.evers.fischer@aptiv.com, jhogan@kernel.org,
-        asierra@xes-inc.com, linux-snps-arc@lists.infradead.org,
-        dan.carpenter@oracle.com, ying.huang@intel.com, riel@surriel.com,
-        frederic@kernel.org, jslaby@suse.com, paul.burton@mips.com,
-        rppt@linux.vnet.ibm.com, bp@alien8.de, luto@kernel.org,
-        andriy.shevchenko@linux.intel.com,
-        linux-arm-kernel@lists.infradead.org, christophe.leroy@c-s.fr,
-        andrew@aj.id.au, linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        rkuo@codeaurora.org, Jisheng.Zhang@synaptics.com,
-        vgupta@synopsys.com, benh@kernel.crashing.org, jk@ozlabs.org,
-        mpe@ellerman.id.au, akpm@linux-foundation.org,
-        linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
-        kstewart@linuxfoundation.org
-Subject: [PATCH 0/7] serial: Finish kgdb on qcom_geni; fix many lockdep splats w/ kgdb
-Date:   Mon, 29 Oct 2018 11:07:00 -0700
-Message-Id: <20181029180707.207546-1-dianders@chromium.org>
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        peterz@infradead.org, linux-hexagon@vger.kernel.org,
+        frederic@kernel.org, riel@surriel.com,
+        linux-kernel@vger.kernel.org, luto@kernel.org,
+        sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 6/7] smp: Don't yell about IRQs disabled in kgdb_roundup_cpus()
+Date:   Mon, 29 Oct 2018 11:07:06 -0700
+Message-Id: <20181029180707.207546-7-dianders@chromium.org>
 X-Mailer: git-send-email 2.19.1.568.g152ad8e336-goog
+In-Reply-To: <20181029180707.207546-1-dianders@chromium.org>
+References: <20181029180707.207546-1-dianders@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-Path: <dianders@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66976
+X-archive-position: 66977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -89,77 +75,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I started out this series trying to make sysrq work over the serial
-console on qcom_geni_serial, then fell into a rat's nest.
+In kgdb_roundup_cpus() we've got code that looks like:
+  local_irq_enable();
+  smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+  local_irq_disable();
 
-To solve the deadlock I faced when enabling sysrq I tried to borrow
-code from '8250_port.c' which avoided grabbing the port lock in
-console_write().  ...but since these days I try to run with lockdep on
-all the time, I found it caused an annoying lockdep splat (which I
-also reproduced on my rk3399 board).  ...so I instead changed my
-qcom_geni_serial solution to borrow code from 'msm_serial.c'
+In certain cases when we drop into kgdb (like with sysrq-g on a serial
+console) we'll get a big yell that looks like:
 
-I wasn't super happy with the solution in 'msm_serial.c' though.  I
-don't like releasing the spinlock there.  Not only is it ugly but it
-means we are unlocking / re-locking _all the time_ even though sysrq
-characters are rare.  ...so I came up with what I think is a better
-solution and then implemented it for qcom_geni_serial.
+  sysrq: SysRq : DEBUG
+  ------------[ cut here ]------------
+  DEBUG_LOCKS_WARN_ON(current->hardirq_context)
+  WARNING: CPU: 0 PID: 0 at .../kernel/locking/lockdep.c:2875 lockdep_hardirqs_on+0xf0/0x160
+  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.19.0 #27
+  pstate: 604003c9 (nZCv DAIF +PAN -UAO)
+  pc : lockdep_hardirqs_on+0xf0/0x160
+  ...
+  Call trace:
+   lockdep_hardirqs_on+0xf0/0x160
+   trace_hardirqs_on+0x188/0x1ac
+   kgdb_roundup_cpus+0x14/0x3c
+   kgdb_cpu_enter+0x53c/0x5cc
+   kgdb_handle_exception+0x180/0x1d4
+   kgdb_compiled_brk_fn+0x30/0x3c
+   brk_handler+0x134/0x178
+   do_debug_exception+0xfc/0x178
+   el1_dbg+0x18/0x78
+   kgdb_breakpoint+0x34/0x58
+   sysrq_handle_dbg+0x54/0x5c
+   __handle_sysrq+0x114/0x21c
+   handle_sysrq+0x30/0x3c
+   qcom_geni_serial_isr+0x2dc/0x30c
+  ...
+  ...
+  irq event stamp: ...45
+  hardirqs last  enabled at (...44): [...] __do_softirq+0xd8/0x4e4
+  hardirqs last disabled at (...45): [...] el1_irq+0x74/0x130
+  softirqs last  enabled at (...42): [...] _local_bh_enable+0x2c/0x34
+  softirqs last disabled at (...43): [...] irq_exit+0xa8/0x100
+  ---[ end trace adf21f830c46e638 ]---
 
-Since I had a good way to test 8250-based UARTs, I also fixed that
-driver to use my new method.  When doing so, I ran into a missing
-msm_serial.c at all, so I didn't switch that (or all other serial
-drivers for that matter) to the new method.
+Let's add kgdb to the list of reasons not to warn in
+smp_call_function_many().  That will allow us (in a future patch) to
+stop calling local_irq_enable() which will get rid of the original
+splat.
 
-After fixing all the above issues, I found the next lockdep splat in
-kgdb and I think I've worked around it in a good-enough way, but I'm
-much less confident about this.  Hopefully folks can take a look at
-it.
+NOTE: with this change comes the obvious question: will we start
+deadlocking more often now when we drop into the debugger.  I can't
+say that for sure one way or the other, but the fact that we do the
+same logic for "oops_in_progress" makes me feel like it shouldn't
+happen too often.  Also note that the old logic of turning on
+interrupts temporarily wasn't exactly safe since (I presume) that
+could have violated spin_lock_irqsave() semantics and ended up with a
+deadlock of its own.
 
-In general, patches earlier in this series should be "less
-controversial" and hopefully can land even if people don't like
-patches later in the series.  ;-)
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
-Looking back, this is pretty much two series squashed that could be
-treated indepdently.  The first is a serial series and the second is a
-kgdb series.
+ kernel/smp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-For all serial patches I'd expect them to go through the tty tree once
-they've been reviewed.
-
-If folks are OK w/ the 'smp' patch it probably should go in some core
-kernel tree.  The kgdb patch won't work without it, though, so to land
-that we'd need coordination between the folks landing that and the
-folks landing the 'smp' patch.
-
-
-Douglas Anderson (7):
-  serial: qcom_geni_serial: Finish supporting sysrq
-  serial: core: Allow processing sysrq at port unlock time
-  serial: qcom_geni_serial: Process sysrq at port unlock time
-  serial: core: Include console.h from serial_core.h
-  serial: 8250: Process sysrq at port unlock time
-  smp: Don't yell about IRQs disabled in kgdb_roundup_cpus()
-  kgdb: Remove irq flags and local_irq_enable/disable from roundup
-
- arch/arc/kernel/kgdb.c                      |  4 +--
- arch/arm/kernel/kgdb.c                      |  4 +--
- arch/arm64/kernel/kgdb.c                    |  4 +--
- arch/hexagon/kernel/kgdb.c                  | 11 ++----
- arch/mips/kernel/kgdb.c                     |  4 +--
- arch/powerpc/kernel/kgdb.c                  |  2 +-
- arch/sh/kernel/kgdb.c                       |  4 +--
- arch/sparc/kernel/smp_64.c                  |  2 +-
- arch/x86/kernel/kgdb.c                      |  9 ++---
- drivers/tty/serial/8250/8250_aspeed_vuart.c |  6 +++-
- drivers/tty/serial/8250/8250_fsl.c          |  6 +++-
- drivers/tty/serial/8250/8250_omap.c         |  6 +++-
- drivers/tty/serial/8250/8250_port.c         |  8 ++---
- drivers/tty/serial/qcom_geni_serial.c       | 10 ++++--
- include/linux/kgdb.h                        |  9 ++---
- include/linux/serial_core.h                 | 38 ++++++++++++++++++++-
- kernel/debug/debug_core.c                   |  2 +-
- kernel/smp.c                                |  4 ++-
- 18 files changed, 80 insertions(+), 53 deletions(-)
-
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 163c451af42e..bb581e58c8dc 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -19,6 +19,7 @@
+ #include <linux/sched.h>
+ #include <linux/sched/idle.h>
+ #include <linux/hypervisor.h>
++#include <linux/kgdb.h>
+ 
+ #include "smpboot.h"
+ 
+@@ -413,7 +414,8 @@ void smp_call_function_many(const struct cpumask *mask,
+ 	 * can't happen.
+ 	 */
+ 	WARN_ON_ONCE(cpu_online(this_cpu) && irqs_disabled()
+-		     && !oops_in_progress && !early_boot_irqs_disabled);
++		     && !oops_in_progress && !early_boot_irqs_disabled
++		     && !in_dbg_master());
+ 
+ 	/* Try to fastpath.  So, what's a CPU they want? Ignoring this one. */
+ 	cpu = cpumask_first_and(mask, cpu_online_mask);
 -- 
 2.19.1.568.g152ad8e336-goog

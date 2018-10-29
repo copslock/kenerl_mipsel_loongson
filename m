@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 09:24:53 +0100 (CET)
-Received: from mxhk.zte.com.cn ([63.217.80.70]:64180 "EHLO mxhk.zte.com.cn"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2018 09:31:05 +0100 (CET)
+Received: from mxhk.zte.com.cn ([63.217.80.70]:28244 "EHLO mxhk.zte.com.cn"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990397AbeJ2IYrgwJb- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Oct 2018 09:24:47 +0100
-Received: from mse02.zte.com.cn (unknown [10.30.3.21])
-        by Forcepoint Email with ESMTPS id 7086989A63154D69829C;
-        Mon, 29 Oct 2018 16:24:39 +0800 (CST)
-Received: from kjyxapp01.zte.com.cn ([10.30.12.200])
-        by mse02.zte.com.cn with SMTP id w9T8OT30094569;
-        Mon, 29 Oct 2018 16:24:29 +0800 (GMT-8)
+        id S23990398AbeJ2IbAzi8cd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 29 Oct 2018 09:31:00 +0100
+Received: from mse01.zte.com.cn (unknown [10.30.3.20])
+        by Forcepoint Email with ESMTPS id E33D8BDDB8C53D2B23E1;
+        Mon, 29 Oct 2018 16:30:52 +0800 (CST)
+Received: from notes_smtp.zte.com.cn ([10.30.1.239])
+        by mse01.zte.com.cn with ESMTP id w9T8Uiji044158;
+        Mon, 29 Oct 2018 16:30:44 +0800 (GMT-8)
         (envelope-from wang.yi59@zte.com.cn)
-Received: from mapi (kjyxapp07[null])
-        by mapi (Zmail) with MAPI id mid14;
-        Mon, 29 Oct 2018 16:24:31 +0800 (CST)
-Date:   Mon, 29 Oct 2018 16:24:31 +0800 (CST)
-X-Zmail-TransId: 2b095bd6c3bfcc3d3aa6
-X-Mailer: Zmail v1.0
-Message-ID: <201810291624314997508@zte.com.cn>
-In-Reply-To: <5484fe07-5909-dc67-5de6-72e878060a54@cogentembedded.com>
-References: 1540800277-24524-1-git-send-email-wang.yi59@zte.com.cn,5484fe07-5909-dc67-5de6-72e878060a54@cogentembedded.com
-Mime-Version: 1.0
-From:   <wang.yi59@zte.com.cn>
-To:     <sergei.shtylyov@cogentembedded.com>
-Cc:     <paul.burton@mips.com>, <mturquette@baylibre.com>,
-        <sboyd@kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <zhong.weidong@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gY2xrOiBib3N0b246IGZpeCBwb3NzaWJsZSBtZW1vcnkgbGVhayBpbmNsa19ib3N0b25fc2V0dXAoKQ==?=
-Content-Type: multipart/mixed;
-        boundary="=====_001_next====="
-X-MAIL: mse02.zte.com.cn w9T8OT30094569
+Received: from fox-host8.localdomain ([10.74.120.8])
+          by szsmtp06.zte.com.cn (Lotus Domino Release 8.5.3FP6)
+          with ESMTP id 2018102916305119-7358926 ;
+          Mon, 29 Oct 2018 16:30:51 +0800 
+From:   Yi Wang <wang.yi59@zte.com.cn>
+To:     paul.burton@mips.com
+Cc:     mturquette@baylibre.com, sboyd@kernel.org,
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zhong.weidong@zte.com.cn,
+        Yi Wang <wang.yi59@zte.com.cn>
+Subject: [PATCH v2] clk: boston: fix possible memory leak in clk_boston_setup()
+Date:   Mon, 29 Oct 2018 16:31:47 +0800
+Message-Id: <1540801907-31544-1-git-send-email-wang.yi59@zte.com.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-MIMETrack: Itemize by SMTP Server on SZSMTP06/server/zte_ltd(Release 8.5.3FP6|November
+ 21, 2013) at 2018-10-29 16:30:51,
+        Serialize by Router on notes_smtp/zte_ltd(Release 9.0.1FP7|August  17, 2016) at
+ 2018-10-29 16:30:44,
+        Serialize complete at 2018-10-29 16:30:44
+X-MAIL: mse01.zte.com.cn w9T8Uiji044158
 Return-Path: <wang.yi59@zte.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66969
+X-archive-position: 66970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,27 +51,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+'onecell' is malloced in clk_boston_setup(), but is not freed
+before leaving from the error handling cases.
 
+Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
+---
+v2: fix syntax issue in comment, thanks to  Sergei.
 
---=====_001_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+ drivers/clk/imgtec/clk-boston.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-SGkgU2VyZ2VpLAoKPiBIZWxsbyEKPgo+IE9uIDEwLzI5LzIwMTggMTE6MDQgQU0sIFlpIFdhbmcg
-d3JvdGU6Cj4KPiA+ICdvbmVjZWxsJyBpcyBtYWxsb2NlZCBpbiBjbGtfYm9zdG9uX3NldHVwKCks
-IGJ1dCBub3QgYmUgZnJlZWQKPgo+ICAgICBJcyBub3QgZnJlZWQuCgpUaGFua3MgYSBsb3QsIEkg
-d2lsbCBzZW5kIGEgdjIgcGF0Y2guCgo+Cj4gPiBiZWZvcmUgbGVhdmluZyBmcm9tIHRoZSBlcnJv
-ciBoYW5kbGluZyBjYXNlcy4KPiA+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBZaSBXYW5nIDx3YW5nLnlp
-NTlAenRlLmNvbS5jbj4KPiBbLi4uXQo+Cj4gTUJSLCBTZXJnZWkKCgotLS0KQmVzdCB3aXNoZXMK
-WWkgV2FuZw==
-
-
---=====_003_next=====--
-
---=====_001_next=====--
+diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
+index 15af423..f5d54a6 100644
+--- a/drivers/clk/imgtec/clk-boston.c
++++ b/drivers/clk/imgtec/clk-boston.c
+@@ -73,27 +73,32 @@ static void __init clk_boston_setup(struct device_node *np)
+ 	hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register input clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_INPUT] = hw;
+ 
+ 	hw = clk_hw_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register sys clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_SYS] = hw;
+ 
+ 	hw = clk_hw_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register cpu clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_CPU] = hw;
+ 
+ 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, onecell);
+ 	if (err)
+ 		pr_err("failed to add DT provider: %d\n", err);
++
++	return;
++
++error:
++	kfree(onecell);
+ }
+ 
+ /*
+-- 
+1.8.3.1

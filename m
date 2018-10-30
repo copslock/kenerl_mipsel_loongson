@@ -1,55 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2018 13:42:03 +0100 (CET)
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:35948 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994198AbeJ3Ml448oQN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Oct 2018 13:41:56 +0100
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id w9UCf5Of018439;
-        Tue, 30 Oct 2018 21:41:05 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com w9UCf5Of018439
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2018 14:27:35 +0100 (CET)
+Received: from conuserg-11.nifty.com ([210.131.2.78]:29307 "EHLO
+        conuserg-11.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994248AbeJ3N13uAZk2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Oct 2018 14:27:29 +0100
+Received: from pug.e01.socionext.com (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-11.nifty.com with ESMTP id w9UDQcm0022568;
+        Tue, 30 Oct 2018 22:26:38 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com w9UDQcm0022568
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1540903265;
-        bh=YairTKVKKa5Ofh3V0oC7nmntUB8w6vB+j3hvWIgrl34=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=yco7XL5+ps/5fu/LX2WJd/Vn6jCLrxfwZ99nRQvtiPwwqI1o/vCo73M6GdEEQB1D8
-         O4xGcupg+I3OEEjPRl1grXpeKWqs5T+ooBWATik/2MCT2W/BV1USIbkd9biuLewaDH
-         LrGwfvX4cPKqhts35oFByAXEShqP3QdiHqDtLoQpaMa2T/u9s3p5pU8nD4eCAOxgdx
-         1aBt4Gx/yzFFKHcTIuf3yb0ZR8UFqT6WXNJMs8tH4XQ0tzeBvLQbhv6lYXqdBl3l4D
-         cXcTBhf5KD/aR+tWFm6b/BlArTNHVN1RZEG47FjDsveG4a+AqhEw1bVR0f+okZW7Yl
-         aVpyjtsMS8DjQ==
-X-Nifty-SrcIP: [209.85.221.181]
-Received: by mail-vk1-f181.google.com with SMTP id m199-v6so2941383vke.9;
-        Tue, 30 Oct 2018 05:41:05 -0700 (PDT)
-X-Gm-Message-State: AGRZ1gJuyn5a78rPb8dr8VLm0Tioqp22RQG2w7SU+BWkvymQnh4kKAuT
-        vDRR39P/Ou0htsNCMwvLy6Yi36Z9ObMe4KiycPk=
-X-Google-Smtp-Source: AJdET5eEUF99L4FtC2VlzofrvfFd1ZV/6/+V52Td1Afdq8arw8wITWqX1xauzd2VFT59Ji2hh1utOYimeSPgwecHJyM=
-X-Received: by 2002:a1f:c08e:: with SMTP id q136mr7771310vkf.84.1540903264092;
- Tue, 30 Oct 2018 05:41:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <1540873293-29817-1-git-send-email-yamada.masahiro@socionext.com> <877ehzk3we.fsf@concordia.ellerman.id.au>
-In-Reply-To: <877ehzk3we.fsf@concordia.ellerman.id.au>
+        s=dec2015msa; t=1540905999;
+        bh=skUFf3WNnS8Fe4IYW9gvWo00Z0AKhP9n/utRSDh/eC4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PbOFWe21d7KJAJtQgRPuTATo7B3/HuloM6ffOv3sk4aV+4bCDF3HNBKYgejbulHZ0
+         L/NMow1PfvQPfMsZcc6b3hoXxQ355jLDhk5TCabuQ0tH8ExhkHWCHkuJtSkkTBKBjg
+         LEopFs2hvA+JhbIpSeplGSrP2/w9/U2xrg4/GCnJV96ikeh+aDaAG9H+5wIEEW5p1J
+         Uy1/jk4PWgCO9hyFnfT6WYEMvYIeqZy58EQ2dGgMFSUXpnfV+dczHXJdW3BWH6aIYv
+         aCOb8uj7c1cwdOn9xm6/hPlwa2TcSgBp4YsQlxAJb96GT3uS8iQLd/RT52Qd7gu1Mq
+         oikoVXyhBHchA==
+X-Nifty-SrcIP: [153.142.97.92]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Tue, 30 Oct 2018 21:40:27 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASrdToqTrffe5XD+_LuK9+0=Bv8L_7ZWeN6iSivYe8Gmg@mail.gmail.com>
-Message-ID: <CAK7LNASrdToqTrffe5XD+_LuK9+0=Bv8L_7ZWeN6iSivYe8Gmg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: replace cc-name test with CONFIG_CC_IS_CLANG
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-mips@linux-mips.org, James Hogan <jhogan@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
         Michal Marek <michal.lkml@markovi.net>,
         Paul Mackerras <paulus@samba.org>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 1/2] kbuild: replace cc-name test with CONFIG_CC_IS_CLANG
+Date:   Tue, 30 Oct 2018 22:26:33 +0900
+Message-Id: <1540905994-6073-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
 Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 66988
+X-archive-position: 66989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,59 +55,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 30, 2018 at 9:36 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> > index 17be664..338e827 100644
-> > --- a/arch/powerpc/Makefile
-> > +++ b/arch/powerpc/Makefile
-> > @@ -96,7 +96,7 @@ aflags-$(CONFIG_CPU_BIG_ENDIAN)             += $(call cc-option,-mabi=elfv1)
-> >  aflags-$(CONFIG_CPU_LITTLE_ENDIAN)   += -mabi=elfv2
-> >  endif
-> >
-> > -ifneq ($(cc-name),clang)
-> > +ifneq ($(CONFIG_CC_IS_CLANG),y)
-> >    cflags-$(CONFIG_CPU_LITTLE_ENDIAN) += -mno-strict-align
-> >  endif
-> >
-> > @@ -175,7 +175,7 @@ endif
-> >  # Work around gcc code-gen bugs with -pg / -fno-omit-frame-pointer in gcc <= 4.8
-> >  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
-> >  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
-> > -ifneq ($(cc-name),clang)
-> > +ifneq ($(CONFIG_CC_IS_CLANG),y)
-> >  CC_FLAGS_FTRACE      += $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
-> >  endif
-> >  endif
->
-> Does this behave like other CONFIG variables, ie. it will not be defined
-> when it's false?
+Evaluating cc-name invokes the compiler every time even when you are
+not compiling anything, like 'make help'. This is not efficient.
 
-Right.
+The compiler type has been already detected in the Kconfig stage.
+Use CONFIG_CC_IS_CLANG, instead.
 
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+---
 
-> And if so can't we use ifdef/ifndef? eg:
->
-> ifndef CONFIG_CC_IS_CLANG
->   CC_FLAGS_FTRACE       += $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
->
-> That reads cleaner to me.
+Changes in v2:
+ - Use ifdef/ifndef insteaed of ifeq/ifneq
 
+ Makefile                   | 2 +-
+ arch/mips/Makefile         | 2 +-
+ arch/mips/vdso/Makefile    | 2 +-
+ arch/powerpc/Makefile      | 4 ++--
+ scripts/Makefile.extrawarn | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-OK, will do respin if you prefer ifdef/ifndef style.
-
-
-
-
-> Still this patch is fine as is:
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->
-> cheers
-
-
-
+diff --git a/Makefile b/Makefile
+index 0a42d06..1c0696d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -707,7 +707,7 @@ stackp-flags-$(CONFIG_STACKPROTECTOR_STRONG)      := -fstack-protector-strong
+ 
+ KBUILD_CFLAGS += $(stackp-flags-y)
+ 
+-ifeq ($(cc-name),clang)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
+ KBUILD_CFLAGS += $(call cc-disable-warning, format-invalid-specifier)
+ KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 15a84cf..6841049 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -128,7 +128,7 @@ cflags-y += -ffreestanding
+ # clang's output will be based upon the build machine. So for clang we simply
+ # unconditionally specify -EB or -EL as appropriate.
+ #
+-ifeq ($(cc-name),clang)
++ifdef CONFIG_CC_IS_CLANG
+ cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= -EB
+ cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -EL
+ else
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 34605ca..58a0315 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -10,7 +10,7 @@ ccflags-vdso := \
+ 	$(filter -march=%,$(KBUILD_CFLAGS)) \
+ 	-D__VDSO__
+ 
+-ifeq ($(cc-name),clang)
++ifdef CONFIG_CC_IS_CLANG
+ ccflags-vdso += $(filter --target=%,$(KBUILD_CFLAGS))
+ endif
+ 
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 17be664..8a2ce14 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -96,7 +96,7 @@ aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+ aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
+ endif
+ 
+-ifneq ($(cc-name),clang)
++ifndef CONFIG_CC_IS_CLANG
+   cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mno-strict-align
+ endif
+ 
+@@ -175,7 +175,7 @@ endif
+ # Work around gcc code-gen bugs with -pg / -fno-omit-frame-pointer in gcc <= 4.8
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
+-ifneq ($(cc-name),clang)
++ifndef CONFIG_CC_IS_CLANG
+ CC_FLAGS_FTRACE	+= $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
+ endif
+ endif
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 24b2fb1..800a10f 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -64,7 +64,7 @@ endif
+ KBUILD_CFLAGS += $(warning)
+ else
+ 
+-ifeq ($(cc-name),clang)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_CFLAGS += $(call cc-disable-warning, initializer-overrides)
+ KBUILD_CFLAGS += $(call cc-disable-warning, unused-value)
+ KBUILD_CFLAGS += $(call cc-disable-warning, format)
 -- 
-Best Regards
-Masahiro Yamada
+2.7.4

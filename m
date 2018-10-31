@@ -1,32 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 17:31:45 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-	with ESMTP id S23991025AbeJaQbkPiy6m (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2018 17:31:40 +0100
-Date:	Wed, 31 Oct 2018 16:31:40 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Christoph Hellwig <hch@lst.de>
-cc:	iommu@lists.linux-foundation.org,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Paul Burton <paul.burton@mips.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] dma-mapping: merge direct and noncoherent ops
-In-Reply-To: <alpine.LFD.2.21.1810311414200.20378@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.21.1810311559590.20378@eddie.linux-mips.org>
-References: <20180914095808.22202-1-hch@lst.de> <20180914095808.22202-5-hch@lst.de> <alpine.LFD.2.21.1810311414200.20378@eddie.linux-mips.org>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 18:02:12 +0100 (CET)
+Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:45903
+        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991065AbeJaRBkz5h0m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2018 18:01:40 +0100
+Received: by mail-wr1-x443.google.com with SMTP id n5-v6so17277208wrw.12
+        for <linux-mips@linux-mips.org>; Wed, 31 Oct 2018 10:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=w7PRsslQ+AmlGw6ESJEAEIN3Ju+lMTMOAAXzG79p0Hk=;
+        b=LcTmkgLaTJl5aqBKxMqvydqj6P3/DffuXvVPbAUygeibeDLzwTIQqXfR4uds2rIZYM
+         XhmMGb7KngDWan146d22FCM9UQ9Ko/QDf54C0Fdt16LXoigKyLTLkNkKnhAaTuALlKv5
+         25xBM+L683GMsxPWlmbZaDfh6fxO/3dRfQFIc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=w7PRsslQ+AmlGw6ESJEAEIN3Ju+lMTMOAAXzG79p0Hk=;
+        b=L1NbNI6Nsz7MZA91/mkOMnQaHazraKXDVbqJqdbACTmgeXlu+2v07Xqq2/P2d37kH8
+         T3+QJFPuKlz0Q0YRb9vg/ERK7C/ZtSMeO6OQOyqwjOH+tniC/k3wGttop4ub+ZVcCOfZ
+         zlYhuGjuvThp1gtkrhrVNUar8ZKfz7BeiIHoFQ8FRscKVulGiNJfltpdsxEqNaMgAhy7
+         AptCcTUMka7guOrkHlshSbTcFBTAXaI4s+Bfvlg+LuHYxZoYWabfgsLkg6Q37LunIlOs
+         2N17AD9+1XenPotCbn+evA3UFOT60j4+uzr53Y/uOQ9pHaAWlseS4kUEwqf5zL81OT9J
+         nmCg==
+X-Gm-Message-State: AGRZ1gJ5C4hrXbqvp/bVhmyw/1FmM7YSD41VurkwOOfiBTSGJrcv0b+y
+        On2SJA/sxzpHVPdqmV+DOUNmJw==
+X-Google-Smtp-Source: AJdET5fF9/fl4K36p+e42OouXFrTlfI2G2yyDuiZgaKxA4I7kOc22/Zb6DjVFjwUnDDuT1saAKtLCQ==
+X-Received: by 2002:adf:aa05:: with SMTP id p5-v6mr3828856wrd.56.1541005300354;
+        Wed, 31 Oct 2018 10:01:40 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id t77-v6sm39633264wme.18.2018.10.31.10.01.38
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 31 Oct 2018 10:01:39 -0700 (PDT)
+Date:   Wed, 31 Oct 2018 17:01:36 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        kgdb-bugreport@lists.sourceforge.net, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Hogan <jhogan@kernel.org>, linux-hexagon@vger.kernel.org,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Rich Felker <dalias@libc.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Burton <paul.burton@mips.com>,
+        linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 2/2] kgdb: Fix kgdb_roundup_cpus() for arches who used
+ smp_call_function()
+Message-ID: <20181031170136.s3ids6tm4rxxlpma@holly.lan>
+References: <20181030221843.121254-1-dianders@chromium.org>
+ <20181030221843.121254-3-dianders@chromium.org>
+ <20181031134926.GB13237@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181031134926.GB13237@hirez.programming.kicks-ass.net>
+User-Agent: NeoMutt/20180716
+Return-Path: <daniel.thompson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67012
+X-archive-position: 67013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: daniel.thompson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,37 +93,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 31 Oct 2018, Maciej W. Rozycki wrote:
-
-> > All the cache maintainance is already stubbed out when not enabled,
-> > but merging the two allows us to nicely handle the case where
-> > cache maintainance is required for some devices, but not others.
+On Wed, Oct 31, 2018 at 02:49:26PM +0100, Peter Zijlstra wrote:
+> On Tue, Oct 30, 2018 at 03:18:43PM -0700, Douglas Anderson wrote:
+> > Looking closely at it, it seems like a really bad idea to be calling
+> > local_irq_enable() in kgdb_roundup_cpus().  If nothing else that seems
+> > like it could violate spinlock semantics and cause a deadlock.
+> > 
+> > Instead, let's use a private csd alongside
+> > smp_call_function_single_async() to round up the other CPUs.  Using
+> > smp_call_function_single_async() doesn't require interrupts to be
+> > enabled so we can remove the offending bit of code.
 > 
->  FYI, you commit bc3ec75de545 ("dma-mapping: merge direct and noncoherent 
-> ops") has caused:
-> 
-> fddi0: DMA command request failed!
-> fddi0: Adapter open failed!
-> 
-> with the `defxx' driver on my R4400SC TURBOchannel DECstation (but not the 
-> R3400 one) and consequently the interface does not work anymore.  Both are 
-> non-coherent cache systems, however the R3400 implements the write-through 
-> policy while the policy of the R4400SC is write-back (it also has 1MiB of 
-> secondary cache), which I suspect is the reason of the difference.
+> You might want to mention that the only reason this isn't a deadlock
+> itself is because there is a timeout on waiting for the slaves to
+> check-in.
 
- Doh!  It would have helped if I actually had the right adapter installed 
-in the R3400 box.  I've got a spare one, which I have now plugged in there 
-and the R3400 actually shows the same issue as the R4400SC does.  So this 
-has nothing to do WRT write-through vs write-back.
+dbg_master_lock must be owned to call kgdb_roundup_cpus() so
+the calls to smp_call_function_single_async() should never deadlock the
+calling CPU unless there has been a previous failure to round up (e.g.
+cores that cannot react to the round up signal).
 
- Hmm, in `dfx_hw_dma_cmd_req' the driver polls the consumer block (which 
-is write-only by the adapter and read-only by the host, except for the 
-initialisation time before adapter's DMA engines have been started, and 
-write-through vs write-back indeed does not matter for this kind of use) 
-and there's no DMA synchronisation whatsoever in that.
+When there is a failure to round up when we resume, there is a window (before
+whatever locks that prevented the IPI being serviced are released) during which
+the system will deadlock if the debugger is re entered.
 
- However the block has been allocated with `dma_zalloc_coherent', which 
-means no synchronisation is supposed to be required.  For non-coherent 
-cache systems that essentially means an uncached memory allocation.
+I don't think there is any point trying to round up a CPU that did not
+previously respond... it should still have an IPI pending. The deadlock
+can be eliminated by getting the round up code to avoid CPUs whose csd->flags
+are non-zero either by checking the flag in the kgdb code or adding something
+like smp_trycall_function_single_async().
 
-  Maciej
+
+Daniel.

@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 03:43:01 +0100 (CET)
-Received: from mxhk.zte.com.cn ([63.217.80.70]:65526 "EHLO mxhk.zte.com.cn"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 04:05:50 +0100 (CET)
+Received: from mx7.zte.com.cn ([202.103.147.169]:34168 "EHLO mxct.zte.com.cn"
 	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S23990717AbeJaCm43LbxB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Oct 2018 03:42:56 +0100
-Received: from mse01.zte.com.cn (unknown [10.30.3.20])
-	by Forcepoint Email with ESMTPS id BA5C8952BF97BEADF4A0;
-	Wed, 31 Oct 2018 10:42:52 +0800 (CST)
-Received: from kjyxapp02.zte.com.cn ([10.30.12.201])
-	by mse01.zte.com.cn with SMTP id w9V2gi1G062312;
-	Wed, 31 Oct 2018 10:42:44 +0800 (GMT-8)
+	id S23990717AbeJaDFqxMwcB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 Oct 2018 04:05:46 +0100
+Received: from mse02.zte.com.cn (unknown [10.30.3.21])
+	by Forcepoint Email with ESMTPS id 8C7235ED2A8C788CD2C8;
+	Wed, 31 Oct 2018 11:05:41 +0800 (CST)
+Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
+	by mse02.zte.com.cn with SMTP id w9V353wk078082;
+	Wed, 31 Oct 2018 11:05:03 +0800 (GMT-8)
 	(envelope-from wang.yi59@zte.com.cn)
 Received: from mapi (kjyxapp07[null])
 	by mapi (Zmail) with MAPI id mid14;
-	Wed, 31 Oct 2018 10:42:45 +0800 (CST)
-Date:	Wed, 31 Oct 2018 10:42:45 +0800 (CST)
-X-Zmail-TransId: 2b095bd916a530ee47e8
+	Wed, 31 Oct 2018 11:05:04 +0800 (CST)
+Date:	Wed, 31 Oct 2018 11:05:04 +0800 (CST)
+X-Zmail-TransId: 2b095bd91be0047124f4
 X-Mailer: Zmail v1.0
-Message-ID: <201810311042457057050@zte.com.cn>
+Message-ID: <201810311105046708554@zte.com.cn>
 In-Reply-To: <154091673873.98144.2128870769302542417@swboyd.mtv.corp.google.com>
 References: 201810301413240217200@zte.com.cn,154091673873.98144.2128870769302542417@swboyd.mtv.corp.google.com
 Mime-Version: 1.0
 From:	<wang.yi59@zte.com.cn>
-To:	<sboyd@kernel.org>, <linux-kernel@vger.kernel.org>
+To:	<sboyd@kernel.org>
 Cc:	<paul.burton@mips.com>, <mturquette@baylibre.com>,
 	<linux-mips@linux-mips.org>, <linux-clk@vger.kernel.org>,
-	<zhong.weidong@zte.com.cn>, <up2wing@163.com>
+	<linux-kernel@vger.kernel.org>, <zhong.weidong@zte.com.cn>,
+	<up2wing@163.com>
 Subject: =?UTF-8?B?UmU6wqBSZTogW1BBVENIIHYyXSBjbGs6IGJvc3RvbjogZml4IHBvc3NpYmxlIG1lbW9yeSBsZWFrIGluIGNsa19ib3N0b25fc2V0dXAoKQ==?=
 Content-Type: multipart/mixed;
 	boundary="=====_001_next====="
-X-MAIL:	mse01.zte.com.cn w9V2gi1G062312
+X-MAIL:	mse02.zte.com.cn w9V353wk078082
 Return-Path: <wang.yi59@zte.com.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67002
+X-archive-position: 67003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

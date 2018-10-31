@@ -1,32 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 21:51:08 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23991065AbeJaUuxgY2vV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2018 21:50:53 +0100
-Date:   Wed, 31 Oct 2018 20:50:53 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Christoph Hellwig <hch@lst.de>
-cc:     iommu@lists.linux-foundation.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] dma-mapping: merge direct and noncoherent ops
-In-Reply-To: <20181031203206.GA28337@lst.de>
-Message-ID: <alpine.LFD.2.21.1810312043250.20378@eddie.linux-mips.org>
-References: <20180914095808.22202-1-hch@lst.de> <20180914095808.22202-5-hch@lst.de> <alpine.LFD.2.21.1810311414200.20378@eddie.linux-mips.org> <alpine.LFD.2.21.1810311559590.20378@eddie.linux-mips.org> <20181031203206.GA28337@lst.de>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2018 22:34:14 +0100 (CET)
+Received: from mail-eopbgr700121.outbound.protection.outlook.com ([40.107.70.121]:23712
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991034AbeJaVcqYWZx4 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2018 22:32:46 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ys7lbmU41IXO/uSHR3Wut7ymp7bMUmsURN0buoRSLh0=;
+ b=K/wUl7n86R8YrMbELzn7IN6tFKyOMjhp1Uh5YCV5gn+YFdQD1sdLQH0NOaHTXRvhLi8t+H1vXTyFQ3tuC07AGOI4uJ4hkcs6TI9CfqcnAYk+rFZ4dBihqwDbSeXzN3U31pcMCK/edUSSo6lTDNgkKHnxv2PDoI3AE2vnLmL7wGQ=
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
+ MWHPR2201MB1311.namprd22.prod.outlook.com (10.174.162.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.21; Wed, 31 Oct 2018 21:32:43 +0000
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.021; Wed, 31 Oct 2018
+ 21:32:43 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
+ where needed
+Thread-Topic: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
+ where needed
+Thread-Index: AQHUcVNC5jTXGaDPOkOnkxlkE4DPdqU539kA
+Date:   Wed, 31 Oct 2018 21:32:43 +0000
+Message-ID: <20181031213240.zhh7dfcm47ucuyfl@pburton-laptop>
+References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
+In-Reply-To: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR21CA0048.namprd21.prod.outlook.com
+ (2603:10b6:300:129::34) To MWHSPR00MB117.namprd22.prod.outlook.com
+ (2603:10b6:300:10c::23)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1311;6:ZwqnOBosNoeuCJ1YwqMiJWEC31c4HZW4tQSr/ccc4lacvUuyGq43hoxsh1r06wWQyokls4gEx9cIqN0t8d1bB69wH9bT9850CbGey+rMv5OL7f535mqp1ZaQApgKfOz2ISaw23qdDSY40ZROIWmOGTr36utf/HTijFfrUuWw4wUSNSXR0KROG+4Ife/rj9mIUIUfZEzqMedzmfburtTNUmsSfTvNNHeC1Uw/NPpq5HHYG0nljP9N6O63gQNP/GJjLAmjY6mFPqU6mDIEulpo0z5aAf5J7NslZWp2L3J0J8qM0EI2mFN2Qsorrra1CzdzvEbsa/HTDUPIGXJcnFT8f9cP4KngCZQMO1DAEixS4e/+mEVvOksF9rc1G3Hsv+7HURi1md0fivnbKlXiga6N7esRXul6FVNE7CKBputouN04Ykd+9yQ5jptMNDu3kSMpwO6xuTsPyRav31OqMPKXYA==;5:IMJYs2pbDuWtwHv3JcQaOI5gkJHhYjiHbyUZNIFRPFPy2HYidcKp0X5Vhz3CdM6RDnVXIbYGGtzqy3ifDfqNDarLI8rRhGWlEqh7mnrVMtrvFnqx/+PGSJXJqYWcBCSTl62xdGObBrDxd7V9QnaxDMAYncG0gspKQ7oL1SOKfT8=;7:CsWGJVf9dxBWESQvLwKkn7HDq6MMwLcrofqgGnXDUzeInYAzIYsrpOsUWldgZ7y6en6p3Gc8ItOxytGvT6Zuo6dEkTkt2kkUEfRzHYGlGrkogmw/Kqeu9EAWaGpAycC7B95GHJjNk27ybWoIdNLyiA==
+x-ms-office365-filtering-correlation-id: 1d8a36e6-99d5-49c9-a9d0-08d63f7863d8
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1311;
+x-ms-traffictypediagnostic: MWHPR2201MB1311:
+x-microsoft-antispam-prvs: <MWHPR2201MB13115DA32C22374041069F43C1CD0@MWHPR2201MB1311.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1311;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1311;
+x-forefront-prvs: 084285FC5C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39840400004)(136003)(366004)(376002)(346002)(396003)(199004)(189003)(66066001)(5250100002)(33716001)(14454004)(8936002)(81156014)(81166006)(6246003)(58126008)(53936002)(508600001)(105586002)(316002)(54906003)(8676002)(68736007)(7736002)(97736004)(2906002)(7416002)(106356001)(1076002)(305945005)(4326008)(6512007)(9686003)(14444005)(256004)(71190400001)(3846002)(6116002)(6436002)(42882007)(6486002)(76176011)(26005)(44832011)(386003)(6506007)(11346002)(446003)(5660300001)(6916009)(229853002)(25786009)(186003)(486006)(52116002)(71200400001)(2900100001)(33896004)(102836004)(476003)(99286004)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1311;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: C4g2B0ZHSjeZgre6/f8x7EvzxsnH8FuLidkhBf7TR/qnSNop+HKMvdlDt7abOsd0qoA1q35Bn0vFdF7FZ/kubaDXgMin9LVDdyJtiJItxkX70jw+bGwFXz86O0uySsGvlLjoiz0w1Sie7cW+LOCWaHvQY0HkUIyBHug/tcakrAbjV5+VpIEypI93EwrZdYdzKu0hx5Yaoib7qBE9Qv2Y8yNx+PHogBTk1E0vBRXRAWq6zFIuDCuI3azG7CPn6aRiHauk3qY3AGKD28YkWQhvc8I5R55UX4yc78gSost9H13wmC+Gl0aGNrOpQCL9zbuppotu9CPXAS68fq3ZAcAwa8GdpcGDhiYkMKOiyrMDBv8=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <CF6263EB0779FC42BD1B1A9965D7E79A@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-74151329-1430260507-1541019053=:20378"
-Return-Path: <macro@linux-mips.org>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d8a36e6-99d5-49c9-a9d0-08d63f7863d8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2018 21:32:43.4352
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1311
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67017
+X-archive-position: 67018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,161 +99,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Guenter,
 
----74151329-1430260507-1541019053=:20378
-Content-Type: text/plain; charset=US-ASCII
+On Wed, Oct 31, 2018 at 12:52:18PM -0700, Guenter Roeck wrote:
+> +/*
+> + * Generic version of __cmpxchg_u64, to be used for cmpxchg64().
+> + * Takes u64 parameters.
+> + */
+> +u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new)
+> +{
+> +	raw_spinlock_t *lock = lock_addr(ptr);
+> +	unsigned long flags;
+> +	u64 prev;
+> +
+> +	raw_spin_lock_irqsave(lock, flags);
+> +	prev = READ_ONCE(*ptr);
+> +	if (prev == old)
+> +		*ptr = new;
+> +	raw_spin_unlock_irqrestore(lock, flags);
+> +
+> +	return prev;
+> +}
+> +EXPORT_SYMBOL(__cmpxchg_u64);
 
-On Wed, 31 Oct 2018, Christoph Hellwig wrote:
+This is only going to work if we know that memory modified using
+__cmpxchg_u64() is *always* modified using __cmpxchg_u64(). Without that
+guarantee there's nothing to stop some other CPU writing to *ptr after
+the READ_ONCE() above but before we write new to it.
 
-> Can you send me your .config?
+As far as I'm aware this is not a guarantee we currently provide, so it
+would mean making that a requirement for cmpxchg64() users & auditing
+them all. That would also leave cmpxchg64() with semantics that differ
+from plain cmpxchg(), and semantics that may surprise people. In my view
+that's probably not worth it, and it would be better to avoid using
+cmpxchg64() on systems that can't properly support it.
 
- Sure, attached.
+For MIPS the problem will go away with the nanoMIPS ISA which includes &
+requires LLWP/SCWP (W = word, P = paired) instructions that we can use
+to implement cmpxchg64() properly, but of course that won't help older
+systems.
 
- This is an updated 4.19 defconfig I was going to submit as I tripped over 
-this problem, so just rename it to .config and use `make olddefconfig' to 
-regenerate a full version.
-
- Thanks,
-
-  Maciej
----74151329-1430260507-1541019053=:20378
-Content-Type: text/plain; charset=US-ASCII; name=decstation_defconfig
-Content-Transfer-Encoding: BASE64
-Content-ID: <alpine.LFD.2.21.1810312050530.20378@eddie.linux-mips.org>
-Content-Description: 
-Content-Disposition: attachment; filename=decstation_defconfig
-
-Q09ORklHX1NZU1ZJUEM9eQ0KQ09ORklHX1BPU0lYX01RVUVVRT15DQpDT05G
-SUdfSElHSF9SRVNfVElNRVJTPXkNCkNPTkZJR19CU0RfUFJPQ0VTU19BQ0NU
-PXkNCkNPTkZJR19CU0RfUFJPQ0VTU19BQ0NUX1YzPXkNCkNPTkZJR19MT0df
-QlVGX1NISUZUPTE1DQpDT05GSUdfRVhQRVJUPXkNCiMgQ09ORklHX1NHRVRN
-QVNLX1NZU0NBTEwgaXMgbm90IHNldA0KIyBDT05GSUdfU1lTRlNfU1lTQ0FM
-TCBpcyBub3Qgc2V0DQpDT05GSUdfQlBGX1NZU0NBTEw9eQ0KIyBDT05GSUdf
-Q09NUEFUX0JSSyBpcyBub3Qgc2V0DQpDT05GSUdfU0xBQj15DQpDT05GSUdf
-TUFDSF9ERUNTVEFUSU9OPXkNCkNPTkZJR19DUFVfUjMwMDA9eQ0KQ09ORklH
-X1RDPXkNCiMgQ09ORklHX1NVU1BFTkQgaXMgbm90IHNldA0KQ09ORklHX01P
-RFVMRVM9eQ0KQ09ORklHX01PRFVMRV9VTkxPQUQ9eQ0KQ09ORklHX01PRFVM
-RV9TUkNWRVJTSU9OX0FMTD15DQojIENPTkZJR19MQkRBRiBpcyBub3Qgc2V0
-DQpDT05GSUdfUEFSVElUSU9OX0FEVkFOQ0VEPXkNCkNPTkZJR19PU0ZfUEFS
-VElUSU9OPXkNCiMgQ09ORklHX0VGSV9QQVJUSVRJT04gaXMgbm90IHNldA0K
-Q09ORklHX05FVD15DQpDT05GSUdfUEFDS0VUPXkNCkNPTkZJR19VTklYPXkN
-CkNPTkZJR19ORVRfS0VZPW0NCkNPTkZJR19ORVRfS0VZX01JR1JBVEU9eQ0K
-Q09ORklHX0lORVQ9eQ0KQ09ORklHX0lQX01VTFRJQ0FTVD15DQpDT05GSUdf
-SVBfUE5QPXkNCkNPTkZJR19JUF9QTlBfQk9PVFA9eQ0KQ09ORklHX1NZTl9D
-T09LSUVTPXkNCkNPTkZJR19JTkVUX0FIPW0NCkNPTkZJR19JTkVUX0VTUD1t
-DQpDT05GSUdfSU5FVF9JUENPTVA9bQ0KQ09ORklHX0lORVRfWEZSTV9NT0RF
-X1RSQU5TUE9SVD1tDQpDT05GSUdfSU5FVF9YRlJNX01PREVfVFVOTkVMPW0N
-CkNPTkZJR19JTkVUX1hGUk1fTU9ERV9CRUVUPW0NCkNPTkZJR19UQ1BfTUQ1
-U0lHPXkNCkNPTkZJR19JUFY2X1JPVVRFUl9QUkVGPXkNCkNPTkZJR19JUFY2
-X1JPVVRFX0lORk89eQ0KQ09ORklHX0lORVQ2X0FIPW0NCkNPTkZJR19JTkVU
-Nl9FU1A9bQ0KQ09ORklHX0lORVQ2X0lQQ09NUD1tDQpDT05GSUdfSVBWNl9N
-SVA2PW0NCkNPTkZJR19JTkVUNl9YRlJNX01PREVfUk9VVEVPUFRJTUlaQVRJ
-T049bQ0KQ09ORklHX0lQVjZfTVVMVElQTEVfVEFCTEVTPXkNCkNPTkZJR19J
-UFY2X1NVQlRSRUVTPXkNCkNPTkZJR19ORVRXT1JLX1NFQ01BUks9eQ0KQ09O
-RklHX0lQX1NDVFA9bQ0KQ09ORklHX1ZMQU5fODAyMVE9bQ0KQ09ORklHX0RF
-Q05FVD1tDQpDT05GSUdfREVDTkVUX1JPVVRFUj15DQojIENPTkZJR19XSVJF
-TEVTUyBpcyBub3Qgc2V0DQojIENPTkZJR19VRVZFTlRfSEVMUEVSIGlzIG5v
-dCBzZXQNCiMgQ09ORklHX0ZXX0xPQURFUiBpcyBub3Qgc2V0DQojIENPTkZJ
-R19BTExPV19ERVZfQ09SRURVTVAgaXMgbm90IHNldA0KQ09ORklHX01URD1t
-DQpDT05GSUdfTVREX0JMT0NLPW0NCkNPTkZJR19NVERfQkxPQ0tfUk89bQ0K
-Q09ORklHX01URF9NUzAyTlY9bQ0KQ09ORklHX0JMS19ERVZfTE9PUD1tDQpD
-T05GSUdfQkxLX0RFVl9SQU09bQ0KQ09ORklHX1NDU0k9eQ0KQ09ORklHX0JM
-S19ERVZfU0Q9eQ0KQ09ORklHX0NIUl9ERVZfU1Q9bQ0KQ09ORklHX0JMS19E
-RVZfU1I9bQ0KQ09ORklHX0NIUl9ERVZfU0c9bQ0KQ09ORklHX1NDU0lfQ09O
-U1RBTlRTPXkNCkNPTkZJR19TQ1NJX1NQSV9BVFRSUz1tDQpDT05GSUdfSVND
-U0lfVENQPW0NCkNPTkZJR19ORVRERVZJQ0VTPXkNCiMgQ09ORklHX05FVF9W
-RU5ET1JfQUxBQ1JJVEVDSCBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVO
-RE9SX0FNQVpPTiBpcyBub3Qgc2V0DQpDT05GSUdfREVDTEFOQ0U9eQ0KIyBD
-T05GSUdfTkVUX1ZFTkRPUl9BUVVBTlRJQSBpcyBub3Qgc2V0DQojIENPTkZJ
-R19ORVRfVkVORE9SX0FSQyBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVO
-RE9SX0FVUk9SQSBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVORE9SX0JS
-T0FEQ09NIGlzIG5vdCBzZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfQ0FERU5D
-RSBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVORE9SX0NBVklVTSBpcyBu
-b3Qgc2V0DQojIENPTkZJR19ORVRfVkVORE9SX0NPUlRJTkEgaXMgbm90IHNl
-dA0KIyBDT05GSUdfTkVUX1ZFTkRPUl9FWkNISVAgaXMgbm90IHNldA0KIyBD
-T05GSUdfTkVUX1ZFTkRPUl9IVUFXRUkgaXMgbm90IHNldA0KIyBDT05GSUdf
-TkVUX1ZFTkRPUl9JTlRFTCBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVO
-RE9SX01BUlZFTEwgaXMgbm90IHNldA0KIyBDT05GSUdfTkVUX1ZFTkRPUl9N
-SUNSRUwgaXMgbm90IHNldA0KIyBDT05GSUdfTkVUX1ZFTkRPUl9NSUNST1NF
-TUkgaXMgbm90IHNldA0KIyBDT05GSUdfTkVUX1ZFTkRPUl9OQVRTRU1JIGlz
-IG5vdCBzZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfTkVUUk9OT01FIGlzIG5v
-dCBzZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfTkkgaXMgbm90IHNldA0KIyBD
-T05GSUdfTkVUX1ZFTkRPUl9RVUFMQ09NTSBpcyBub3Qgc2V0DQojIENPTkZJ
-R19ORVRfVkVORE9SX1JFTkVTQVMgaXMgbm90IHNldA0KIyBDT05GSUdfTkVU
-X1ZFTkRPUl9ST0NLRVIgaXMgbm90IHNldA0KIyBDT05GSUdfTkVUX1ZFTkRP
-Ul9TQU1TVU5HIGlzIG5vdCBzZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfU0VF
-USBpcyBub3Qgc2V0DQojIENPTkZJR19ORVRfVkVORE9SX1NPTEFSRkxBUkUg
-aXMgbm90IHNldA0KIyBDT05GSUdfTkVUX1ZFTkRPUl9TTVNDIGlzIG5vdCBz
-ZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfU09DSU9ORVhUIGlzIG5vdCBzZXQN
-CiMgQ09ORklHX05FVF9WRU5ET1JfU1RNSUNSTyBpcyBub3Qgc2V0DQojIENP
-TkZJR19ORVRfVkVORE9SX1NZTk9QU1lTIGlzIG5vdCBzZXQNCiMgQ09ORklH
-X05FVF9WRU5ET1JfVklBIGlzIG5vdCBzZXQNCiMgQ09ORklHX05FVF9WRU5E
-T1JfV0laTkVUIGlzIG5vdCBzZXQNCiMgQ09ORklHX05FVF9WRU5ET1JfWElM
-SU5YIGlzIG5vdCBzZXQNCkNPTkZJR19GRERJPXkNCkNPTkZJR19ERUZaQT15
-DQpDT05GSUdfREVGWFg9eQ0KIyBDT05GSUdfV0xBTiBpcyBub3Qgc2V0DQoj
-IENPTkZJR19LRVlCT0FSRF9BVEtCRCBpcyBub3Qgc2V0DQpDT05GSUdfS0VZ
-Qk9BUkRfTEtLQkQ9eQ0KIyBDT05GSUdfTU9VU0VfUFMyIGlzIG5vdCBzZXQN
-CkNPTkZJR19NT1VTRV9WU1hYWEFBPXkNCiMgQ09ORklHX0hXX1JBTkRPTSBp
-cyBub3Qgc2V0DQojIENPTkZJR19IV01PTiBpcyBub3Qgc2V0DQpDT05GSUdf
-RkI9eQ0KQ09ORklHX0ZCX1RHQT15DQpDT05GSUdfRkJfUE1BR19BQT15DQpD
-T05GSUdfRkJfUE1BR19CQT15DQpDT05GSUdfRkJfUE1BR0JfQj15DQojIENP
-TkZJR19WR0FfQ09OU09MRSBpcyBub3Qgc2V0DQpDT05GSUdfRFVNTVlfQ09O
-U09MRV9DT0xVTU5TPTE2MA0KQ09ORklHX0RVTU1ZX0NPTlNPTEVfUk9XUz02
-NA0KQ09ORklHX0ZSQU1FQlVGRkVSX0NPTlNPTEU9eQ0KQ09ORklHX0ZSQU1F
-QlVGRkVSX0NPTlNPTEVfREVURUNUX1BSSU1BUlk9eQ0KQ09ORklHX0xPR089
-eQ0KIyBDT05GSUdfTE9HT19MSU5VWF9WR0ExNiBpcyBub3Qgc2V0DQojIENP
-TkZJR19MT0dPX0xJTlVYX0NMVVQyMjQgaXMgbm90IHNldA0KIyBDT05GSUdf
-SElEIGlzIG5vdCBzZXQNCiMgQ09ORklHX1VTQl9TVVBQT1JUIGlzIG5vdCBz
-ZXQNCkNPTkZJR19SVENfQ0xBU1M9eQ0KQ09ORklHX1JUQ19JTlRGX0RFVl9V
-SUVfRU1VTD15DQpDT05GSUdfUlRDX0RSVl9DTU9TPXkNCiMgQ09ORklHX01J
-UFNfUExBVEZPUk1fREVWSUNFUyBpcyBub3Qgc2V0DQojIENPTkZJR19JT01N
-VV9TVVBQT1JUIGlzIG5vdCBzZXQNCkNPTkZJR19FWFQyX0ZTPXkNCkNPTkZJ
-R19FWFQyX0ZTX1hBVFRSPXkNCkNPTkZJR19FWFQyX0ZTX1BPU0lYX0FDTD15
-DQpDT05GSUdfRVhUMl9GU19TRUNVUklUWT15DQpDT05GSUdfRVhUM19GUz15
-DQpDT05GSUdfRVhUM19GU19QT1NJWF9BQ0w9eQ0KQ09ORklHX0VYVDNfRlNf
-U0VDVVJJVFk9eQ0KIyBDT05GSUdfTUFOREFUT1JZX0ZJTEVfTE9DS0lORyBp
-cyBub3Qgc2V0DQpDT05GSUdfSVNPOTY2MF9GUz15DQpDT05GSUdfSk9MSUVU
-PXkNCkNPTkZJR19QUk9DX0tDT1JFPXkNCkNPTkZJR19QUk9DX0NISUxEUkVO
-PXkNCkNPTkZJR19UTVBGUz15DQpDT05GSUdfVE1QRlNfUE9TSVhfQUNMPXkN
-CkNPTkZJR19DT05GSUdGU19GUz15DQpDT05GSUdfVUZTX0ZTPXkNCkNPTkZJ
-R19VRlNfRlNfV1JJVEU9eQ0KQ09ORklHX05GU19GUz15DQpDT05GSUdfTkZT
-X1YzX0FDTD15DQpDT05GSUdfTkZTX1NXQVA9eQ0KQ09ORklHX1JPT1RfTkZT
-PXkNCkNPTkZJR19ORlNEPW0NCkNPTkZJR19ORlNEX1YzPXkNCkNPTkZJR19O
-RlNEX1YzX0FDTD15DQojIENPTkZJR19SUENTRUNfR1NTX0tSQjUgaXMgbm90
-IHNldA0KQ09ORklHX05MU19JU084ODU5Xzg9bQ0KQ09ORklHX05MU19BU0NJ
-ST1tDQpDT05GSUdfTkxTX0lTTzg4NTlfMT1tDQpDT05GSUdfTkxTX0lTTzg4
-NTlfMj1tDQpDT05GSUdfTkxTX0lTTzg4NTlfMz1tDQpDT05GSUdfTkxTX0lT
-Tzg4NTlfND1tDQpDT05GSUdfTkxTX0lTTzg4NTlfNT1tDQpDT05GSUdfTkxT
-X0lTTzg4NTlfNj1tDQpDT05GSUdfTkxTX0lTTzg4NTlfNz1tDQpDT05GSUdf
-TkxTX0lTTzg4NTlfOT1tDQpDT05GSUdfTkxTX0lTTzg4NTlfMTM9bQ0KQ09O
-RklHX05MU19JU084ODU5XzE0PW0NCkNPTkZJR19OTFNfSVNPODg1OV8xNT1t
-DQpDT05GSUdfTkxTX1VURjg9bQ0KQ09ORklHX0NSWVBUT19SU0E9bQ0KQ09O
-RklHX0NSWVBUT19NQU5BR0VSPXkNCkNPTkZJR19DUllQVE9fQ0NNPW0NCkNP
-TkZJR19DUllQVE9fR0NNPW0NCkNPTkZJR19DUllQVE9fQ0hBQ0hBMjBQT0xZ
-MTMwNT1tDQpDT05GSUdfQ1JZUFRPX0NUUz1tDQpDT05GSUdfQ1JZUFRPX0xS
-Vz1tDQpDT05GSUdfQ1JZUFRPX1BDQkM9bQ0KQ09ORklHX0NSWVBUT19YVFM9
-bQ0KQ09ORklHX0NSWVBUT19LRVlXUkFQPW0NCkNPTkZJR19DUllQVE9fQ01B
-Qz1tDQpDT05GSUdfQ1JZUFRPX1hDQkM9bQ0KQ09ORklHX0NSWVBUT19WTUFD
-PW0NCkNPTkZJR19DUllQVE9fQ1JDMzI9bQ0KQ09ORklHX0NSWVBUT19DUkNU
-MTBESUY9bQ0KQ09ORklHX0NSWVBUT19NRDQ9bQ0KQ09ORklHX0NSWVBUT19N
-SUNIQUVMX01JQz1tDQpDT05GSUdfQ1JZUFRPX1JNRDEyOD1tDQpDT05GSUdf
-Q1JZUFRPX1JNRDE2MD1tDQpDT05GSUdfQ1JZUFRPX1JNRDI1Nj1tDQpDT05G
-SUdfQ1JZUFRPX1JNRDMyMD1tDQpDT05GSUdfQ1JZUFRPX1NIQTUxMj1tDQpD
-T05GSUdfQ1JZUFRPX1RHUjE5Mj1tDQpDT05GSUdfQ1JZUFRPX1dQNTEyPW0N
-CkNPTkZJR19DUllQVE9fQU5VQklTPW0NCkNPTkZJR19DUllQVE9fQVJDND1t
-DQpDT05GSUdfQ1JZUFRPX0JMT1dGSVNIPW0NCkNPTkZJR19DUllQVE9fQ0FN
-RUxMSUE9bQ0KQ09ORklHX0NSWVBUT19DQVNUNT1tDQpDT05GSUdfQ1JZUFRP
-X0NBU1Q2PW0NCkNPTkZJR19DUllQVE9fRkNSWVBUPW0NCkNPTkZJR19DUllQ
-VE9fS0hBWkFEPW0NCkNPTkZJR19DUllQVE9fU0FMU0EyMD1tDQpDT05GSUdf
-Q1JZUFRPX1NFRUQ9bQ0KQ09ORklHX0NSWVBUT19TRVJQRU5UPW0NCkNPTkZJ
-R19DUllQVE9fVEVBPW0NCkNPTkZJR19DUllQVE9fVFdPRklTSD1tDQpDT05G
-SUdfQ1JZUFRPX0xaTz1tDQpDT05GSUdfQ1JZUFRPXzg0Mj1tDQpDT05GSUdf
-Q1JZUFRPX0xaND1tDQpDT05GSUdfQ1JZUFRPX0xaNEhDPW0NCkNPTkZJR19D
-UllQVE9fQU5TSV9DUFJORz1tDQpDT05GSUdfQ1JZUFRPX0RSQkdfSEFTSD15
-DQpDT05GSUdfQ1JZUFRPX0RSQkdfQ1RSPXkNCiMgQ09ORklHX0NSWVBUT19I
-VyBpcyBub3Qgc2V0DQpDT05GSUdfRlJBTUVfV0FSTj0yMDQ4DQpDT05GSUdf
-TUFHSUNfU1lTUlE9eQ0KIyBDT05GSUdfRlRSQUNFIGlzIG5vdCBzZXQNCg==
-
----74151329-1430260507-1541019053=:20378--
+Thanks,
+    Paul

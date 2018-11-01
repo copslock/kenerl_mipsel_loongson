@@ -1,28 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 17:36:07 +0100 (CET)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:42206 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991096AbeKAQee1hCAS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 17:34:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=72R9GSVv7q61E8s94sqJXn1GeQMfmrRmyrChueXaE7o=; b=EjDVk916koSID/y6g6cHYn2U0
-        H0Dp44Xq9Z4gsV937jqvr0H8/OvdnyAJrPM4MSc0DghXIXDQYKRd7XszAq73m8jiPtcLDA3RaNcF6
-        s8jDzxwGB42zer9eDKYQt23SthtpPQlMYaFTagbfYWlXx3pkhZD6gWoS4l77j4T3ez0XXgBh4mvw5
-        pU3DqmA8ykYhW06wZLT+Vx+KEzEdOLoM+E/BtFiW1AejvhVkSTK7xo8ryt7EnpoyDHSb/MArxg/rG
-        rkuf7fCmBhGO3jJy0j1x25iy9pwUK0V1tTxDAIvfGEuqOcV+Rv+HVv4Fct2rw8aPBmQOKRKlQ7IsW
-        UFvIJi2NA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gIFtH-0002L3-Pg; Thu, 01 Nov 2018 16:32:16 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 7CAE020297B7F; Thu,  1 Nov 2018 17:32:12 +0100 (CET)
-Date:   Thu, 1 Nov 2018 17:32:12 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Trond Myklebust <trondmy@hammerspace.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 18:00:05 +0100 (CET)
+Received: from mail-pg1-x541.google.com ([IPv6:2607:f8b0:4864:20::541]:45897
+        "EHLO mail-pg1-x541.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991096AbeKAQ7lY5XnS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 17:59:41 +0100
+Received: by mail-pg1-x541.google.com with SMTP id s3-v6so9289686pga.12;
+        Thu, 01 Nov 2018 09:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=uiasgtM/p2VjObQyowWTRMYBJV4UN1vpzjydvWmpilw=;
+        b=CsL5aqC3fgiWUT/vnO3c3Iz6dowQUJGH0LtWvq37CQkceZVg7q9lfb2nJokjeut3eg
+         uutEzFXPiRF2SuEDNe2tOGJKEA0GpbIi8xfgI3bb5neR91zQr0opxUxOoe0FdWE849nL
+         ThYqgTV7KEg6hDd0vXnCAUXj/zZbx3bwxlwqUd8G9+1mw8Hrepwn695WW+cHC11z6UTk
+         B/sCZmZHaElfOybrgyjSqI/jzdQLygz8ed7V5A1XiKETD/2kKExaQPTlAuirLMj7Ucv8
+         +8bGff0edSwtGLkq56+AGyWh5lVKRWshTvFVXf5FSn1hQOog04TCVgw+d04fvk5y51bK
+         PsdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uiasgtM/p2VjObQyowWTRMYBJV4UN1vpzjydvWmpilw=;
+        b=Rb+DadaTuAfMnkbe/tUoD4ncTSqA0Su5NU2KR1SNSulg+/JHnVNLqAiVpIeM+TIlVK
+         Iz8CJJgIo1o18O/u8wCsxQLFssZ6V5sEm0p79s6xR3sUgYioDC0hN55jhLAk1rKUGSbZ
+         7z4zEOlG3xsDQIxejaturB8rBT1WBv8H5viVRwPsv7bVAeZz7nRjiyov2LZbOtx6Lndw
+         pIOwix4VUWgt2njU321JjWsSfpjYy5hDEwz71EK0MX9MOBDzdtU6OU61JcTYuH5NBPR9
+         gCbTw3YG7O5KbQs5bZ9WmTg9AUxjh+Zx8Eru7j+VrhhtRMhUxEQw1KaXpz9GFP30G+Fy
+         Lxtw==
+X-Gm-Message-State: AGRZ1gJxM/kSFErTRZU8zGBxp2S7jhHVWZbWRcnkkeCeJ/ng3wvDgU/D
+        MKId9QBewG3TuzKmVLa5wbo=
+X-Google-Smtp-Source: AJdET5dZ17VY146v8M8MAXofuxvt+4Be+sC26ENz/XUmO6FhZfoX1HeV6Bo7f7nv+PI/WAq9YyKzJQ==
+X-Received: by 2002:a62:9f90:: with SMTP id v16-v6mr8498448pfk.207.1541091580382;
+        Thu, 01 Nov 2018 09:59:40 -0700 (PDT)
+Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b? ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
+        by smtp.gmail.com with ESMTPSA id u62-v6sm53459766pfu.69.2018.11.01.09.59.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 01 Nov 2018 09:59:39 -0700 (PDT)
+Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
+ where needed
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Trond Myklebust <trondmy@hammerspace.com>
 Cc:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "ralf@linux-mips.org" <ralf@linux-mips.org>,
@@ -46,9 +64,6 @@ Cc:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
         Paul McKenney <paulmck@linux.vnet.ibm.com>,
         aryabinin@virtuozzo.com, dvyukov@google.com
-Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
- where needed
-Message-ID: <20181101163212.GF3159@hirez.programming.kicks-ass.net>
 References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
  <20181031213240.zhh7dfcm47ucuyfl@pburton-laptop>
  <20181031220253.GA15505@roeck-us.net>
@@ -57,20 +72,26 @@ References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
  <20181101131846.biyilr2msonljmij@lakrids.cambridge.arm.com>
  <20181101145926.GE3178@hirez.programming.kicks-ass.net>
  <f38e272f7a96e983549e4281aa9fd02833a4277a.camel@hammerspace.com>
+ <20181101163212.GF3159@hirez.programming.kicks-ass.net>
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <b0160f4b-b996-b0ee-405a-3d5f1866272e@gmail.com>
+Date:   Thu, 1 Nov 2018 09:59:38 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f38e272f7a96e983549e4281aa9fd02833a4277a.camel@hammerspace.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <20181101163212.GF3159@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <eric.dumazet@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67033
+X-archive-position: 67034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: eric.dumazet@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,50 +104,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 01, 2018 at 03:22:15PM +0000, Trond Myklebust wrote:
-> On Thu, 2018-11-01 at 15:59 +0100, Peter Zijlstra wrote:
-> > On Thu, Nov 01, 2018 at 01:18:46PM +0000, Mark Rutland wrote:
 
-> > > > My one question (and the reason why I went with cmpxchg() in the
-> > > > first place) would be about the overflow behaviour for
-> > > > atomic_fetch_inc() and friends. I believe those functions should
-> > > > be OK on x86, so that when we overflow the counter, it behaves
-> > > > like an unsigned value and wraps back around.  Is that the case
-> > > > for all architectures?
-> > > > 
-> > > > i.e. are atomic_t/atomic64_t always guaranteed to behave like
-> > > > u32/u64 on increment?
-> > > > 
-> > > > I could not find any documentation that explicitly stated that
-> > > > they should.
-> > > 
-> > > Peter, Will, I understand that the atomic_t/atomic64_t ops are
-> > > required to wrap per 2's-complement. IIUC the refcount code relies
-> > > on this.
-> > > 
-> > > Can you confirm?
-> > 
-> > There is quite a bit of core code that hard assumes 2s-complement.
-> > Not only for atomics but for any signed integer type. Also see the
-> > kernel using -fno-strict-overflow which implies -fwrapv, which
-> > defines signed overflow to behave like 2s-complement (and rids us of
-> > that particular UB).
+
+On 11/01/2018 09:32 AM, Peter Zijlstra wrote:
+
+>> Anyhow, if the atomic maintainers are willing to stand up and state for
+>> the record that the atomic counters are guaranteed to wrap modulo 2^n
+>> just like unsigned integers, then I'm happy to take Paul's patch.
 > 
-> Fair enough, but there have also been bugfixes to explicitly fix unsafe
-> C standards assumptions for signed integers. See, for instance commit
-> 5a581b367b5d "jiffies: Avoid undefined behavior from signed overflow"
-> from Paul McKenney.
+> I myself am certainly relying on it.
 
-Yes, I feel Paul has been to too many C/C++ committee meetings and got
-properly paranoid. Which isn't always a bad thing :-)
 
-But for us using -fno-strict-overflow which actually defines signed
-overflow, I myself am really not worried. I'm also not sure if KASAN has
-been taught about this, or if it will still (incorrectly) warn about UB
-for signed types.
+Could we get uatomic_t support maybe ?
 
-> Anyhow, if the atomic maintainers are willing to stand up and state for
-> the record that the atomic counters are guaranteed to wrap modulo 2^n
-> just like unsigned integers, then I'm happy to take Paul's patch.
+This reminds me of this sooooo silly patch :/
 
-I myself am certainly relying on it.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=adb03115f4590baa280ddc440a8eff08a6be0cb7

@@ -1,29 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 22:45:51 +0100 (CET)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:46242 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992545AbeKAVprLQU0D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 22:45:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=MEJyokPYI7oa2A6Ix9ONUmGbnct/Kvmgb/sJnQOStxc=; b=ls+xdu4ozQ7c4yvsm9ovqZ/4f
-        fiFuSHac7Q2elKhmdle5qz3kdC0phtzafFsg4Fo2K2xfxrjjRsDtWE8XnThq8D8sZp3qGvjfpHNYJ
-        KPaE2XjSwPvKGaCuIvf0YpWpc37Hen7TUH95ZQP0r4vzo5jp+Nq2MzUx1YnyYOG061j3OHyzTmnlr
-        s4Jw3VZyfp0csnbleNLXSg2xp268RVktS0DawCGK+9p+MdaTrMQynXvZgyztm7d70YjSIr84TKOug
-        92DT3I1mDBUZhew+WI6z8TpS90qReNeQaT3Sba2tf1zJwoV+RlbOUgr7lAc/5xwwbeYpK4YRYEmbD
-        9zqkC8MRw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gIKmR-00079A-Uh; Thu, 01 Nov 2018 21:45:32 +0000
-Received: by worktop (Postfix, from userid 1000)
-        id 4A4CE6E07D9; Thu,  1 Nov 2018 22:45:29 +0100 (CET)
-Date:   Thu, 1 Nov 2018 22:45:29 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Dmitry Vyukov <dvyukov@google.com>
-Cc:     "Paul E. McKenney" <paulmck@linux.ibm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 23:26:55 +0100 (CET)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:51290 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992773AbeKAW0vkMYCl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 23:26:51 +0100
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id wA1MNqFi079682
+        for <linux-mips@linux-mips.org>; Thu, 1 Nov 2018 18:26:49 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ng7vc62b8-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2018 18:26:49 -0400
+Received: from localhost
+        by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Thu, 1 Nov 2018 22:26:48 -0000
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+        by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 1 Nov 2018 22:26:41 -0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id wA1MQf7i25100518
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 1 Nov 2018 22:26:41 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EB775B205F;
+        Thu,  1 Nov 2018 22:26:40 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B4B29B2064;
+        Thu,  1 Nov 2018 22:26:40 +0000 (GMT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.70.82.141])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu,  1 Nov 2018 22:26:40 +0000 (GMT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 3AAED16C0598; Thu,  1 Nov 2018 15:26:41 -0700 (PDT)
+Date:   Thu, 1 Nov 2018 15:26:41 -0700
+From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
         Trond Myklebust <trondmy@hammerspace.com>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -46,34 +59,50 @@ Cc:     "Paul E. McKenney" <paulmck@linux.ibm.com>,
         "paulus@samba.org" <paulus@samba.org>,
         "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
         "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>
+        aryabinin@virtuozzo.com, dvyukov@google.com
 Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
  where needed
-Message-ID: <20181101214529.GB3339@worktop.programming.kicks-ass.net>
-References: <20181031220253.GA15505@roeck-us.net>
- <20181031233235.qbedw3pinxcuk7me@pburton-laptop>
- <4e2438a23d2edf03368950a72ec058d1d299c32e.camel@hammerspace.com>
+Reply-To: paulmck@linux.ibm.com
+References: <4e2438a23d2edf03368950a72ec058d1d299c32e.camel@hammerspace.com>
  <20181101131846.biyilr2msonljmij@lakrids.cambridge.arm.com>
  <20181101145926.GE3178@hirez.programming.kicks-ass.net>
  <f38e272f7a96e983549e4281aa9fd02833a4277a.camel@hammerspace.com>
  <20181101163212.GF3159@hirez.programming.kicks-ass.net>
- <20181101170146.GQ4170@linux.ibm.com>
- <20181101171846.GI3178@hirez.programming.kicks-ass.net>
- <CACT4Y+aC45BtS88DXarn3A+LV2RRRsPQoSs_3_DnKjU4O3AMHQ@mail.gmail.com>
+ <b0160f4b-b996-b0ee-405a-3d5f1866272e@gmail.com>
+ <20181101171432.GH3178@hirez.programming.kicks-ass.net>
+ <20181101172739.GA3196@hirez.programming.kicks-ass.net>
+ <20181101202910.GB4170@linux.ibm.com>
+ <20181101213834.GA3339@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACT4Y+aC45BtS88DXarn3A+LV2RRRsPQoSs_3_DnKjU4O3AMHQ@mail.gmail.com>
-User-Agent: Mutt/1.5.22.1 (2013-10-16)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <20181101213834.GA3339@worktop.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 18110122-0064-0000-0000-0000036C7196
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00009968; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000268; SDB=6.01111286; UDB=6.00575888; IPR=6.00891378;
+ MB=3.00023997; MTD=3.00000008; XFM=3.00000015; UTC=2018-11-01 22:26:47
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18110122-0065-0000-0000-00003B313D77
+Message-Id: <20181101222641.GI4170@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-11-01_16:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=633 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1811010187
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67045
+X-archive-position: 67046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: paulmck@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,24 +115,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 01, 2018 at 06:46:50PM +0100, Dmitry Vyukov wrote:
-> If there is a warning that we don't want to see at all, then we can
-> disable it. It supposed to be a useful tool, rather than a thing in
-> itself that lives own life. We already I think removed 1 particularly
-> noisy warning and made another optional via a config.
+On Thu, Nov 01, 2018 at 10:38:34PM +0100, Peter Zijlstra wrote:
+> On Thu, Nov 01, 2018 at 01:29:10PM -0700, Paul E. McKenney wrote:
+> > On Thu, Nov 01, 2018 at 06:27:39PM +0100, Peter Zijlstra wrote:
+> > > On Thu, Nov 01, 2018 at 06:14:32PM +0100, Peter Zijlstra wrote:
+> > > > > This reminds me of this sooooo silly patch :/
+> > > > > 
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=adb03115f4590baa280ddc440a8eff08a6be0cb7
+> > > 
+> > > You'd probably want to write it like so; +- some ordering stuff, that
+> > > code didn't look like it really needs the memory barriers implied by
+> > > these, but I didn't look too hard.
+> > 
+> > The atomic_fetch_add() API would need to be propagated out to the other
+> > architectures, correct?
+> 
+> Like these commits I did like 2 years ago ? :-)
 
-> But the thing with overflows is that, even if it's defined, it's not
-> necessary the intended behavior. For example, take allocation size
-> calculation done via unsigned size_t. If it overflows it does not help
-> if C defines result or not, it still gives a user controlled write
-> primitive. We've seen similar cases with timeout/deadline calculation
-> in kernel, we really don't want it to just wrap modulo-2, right. Some
-> user-space projects even test with unsigned overflow warnings or
-> implicit truncation warnings, which are formally legal, but frequently
-> bugs.
+Color me blind and stupid!  ;-)
 
-Sure; but then don't call it UB.
+							Thanx, Paul
 
-If we want to have an additional integer over/underflow checker (ideally
-with a gcc plugin that has explicit annotations like __wrap to make it
-go away) that is fine; and it can be done on unsigned and signed.
+> $ git log --oneline 6dc25876cdb1...1f51dee7ca74
+> 6dc25876cdb1 locking/atomic, arch/xtensa: Implement atomic_fetch_{add,sub,and,or,xor}()
+> a8bcccaba162 locking/atomic, arch/x86: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> 1af5de9af138 locking/atomic, arch/tile: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> 3a1adb23a52c locking/atomic, arch/sparc: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> 7d9794e75237 locking/atomic, arch/sh: Implement atomic_fetch_{add,sub,and,or,xor}()
+> 56fefbbc3f13 locking/atomic, arch/s390: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> a28cc7bbe8e3 locking/atomic, arch/powerpc: Implement atomic{,64}_fetch_{add,sub,and,or,xor}{,_relaxed,_acquire,_release}()
+> e5857a6ed600 locking/atomic, arch/parisc: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> f8d638e28d7c locking/atomic, arch/mn10300: Implement atomic_fetch_{add,sub,and,or,xor}()
+> 4edac529eb62 locking/atomic, arch/mips: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> e898eb27ffd8 locking/atomic, arch/metag: Implement atomic_fetch_{add,sub,and,or,xor}()
+> e39d88ea3ce4 locking/atomic, arch/m68k: Implement atomic_fetch_{add,sub,and,or,xor}()
+> f64937052303 locking/atomic, arch/m32r: Implement atomic_fetch_{add,sub,and,or,xor}()
+> cc102507fac7 locking/atomic, arch/ia64: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> 4be7dd393515 locking/atomic, arch/hexagon: Implement atomic_fetch_{add,sub,and,or,xor}()
+> 0c074cbc3309 locking/atomic, arch/h8300: Implement atomic_fetch_{add,sub,and,or,xor}()
+> d9c730281617 locking/atomic, arch/frv: Implement atomic{,64}_fetch_{add,sub,and,or,xor}()
+> e87fc0ec0705 locking/atomic, arch/blackfin: Implement atomic_fetch_{add,sub,and,or,xor}()
+> 1a6eafacd481 locking/atomic, arch/avr32: Implement atomic_fetch_{add,sub,and,or,xor}()
+> 2efe95fe6952 locking/atomic, arch/arm64: Implement atomic{,64}_fetch_{add,sub,and,andnot,or,xor}{,_relaxed,_acquire,_release}() for LSE instructions
+> 6822a84dd4e3 locking/atomic, arch/arm64: Generate LSE non-return cases using common macros
+> e490f9b1d3b4 locking/atomic, arch/arm64: Implement atomic{,64}_fetch_{add,sub,and,andnot,or,xor}{,_relaxed,_acquire,_release}()
+> 6da068c1beba locking/atomic, arch/arm: Implement atomic{,64}_fetch_{add,sub,and,andnot,or,xor}{,_relaxed,_acquire,_release}()
+> fbffe892e525 locking/atomic, arch/arc: Implement atomic_fetch_{add,sub,and,andnot,or,xor}()
+> 

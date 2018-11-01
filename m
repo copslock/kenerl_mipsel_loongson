@@ -1,33 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 18:56:13 +0100 (CET)
-Received: from mail-eopbgr810137.outbound.protection.outlook.com ([40.107.81.137]:11712
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991066AbeKARywOIdfQ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 18:54:52 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hcYtdtReI1luzarTOcV7r9lYj2mt5hItlg686A8e6Ik=;
- b=f/a6uHcT7hw0LMehsmd9xa7A4EWCO+FSN7TFm3GlIOEA6ijVV3ShbaF/Ke8mfdtOWhCkkQjHoEhy9occ8FAXPI2DOxI5UdpJeWr/bNE9peJEIRI45RBGF79nFPrSPGQKa85gUUiy7SrIl1N8NK5XY4en0zUv3MQ9yoXt56Shq1s=
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1325.namprd22.prod.outlook.com (10.174.162.140) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1273.25; Thu, 1 Nov 2018 17:54:50 +0000
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.024; Thu, 1 Nov 2018
- 17:54:50 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Trond Myklebust <trondmy@hammerspace.com>
-CC:     "linux@roeck-us.net" <linux@roeck-us.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2018 21:29:25 +0100 (CET)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:56084 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991066AbeKAU3WgNZEe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2018 21:29:22 +0100
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id wA1KTDpN061381
+        for <linux-mips@linux-mips.org>; Thu, 1 Nov 2018 16:29:21 -0400
+Received: from e17.ny.us.ibm.com (e17.ny.us.ibm.com [129.33.205.207])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ng7vc1sft-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2018 16:29:20 -0400
+Received: from localhost
+        by e17.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Thu, 1 Nov 2018 20:29:19 -0000
+Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
+        by e17.ny.us.ibm.com (146.89.104.204) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 1 Nov 2018 20:29:11 -0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id wA1KTAJJ46071974
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 1 Nov 2018 20:29:10 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AE47AB2067;
+        Thu,  1 Nov 2018 20:29:10 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8B88EB205F;
+        Thu,  1 Nov 2018 20:29:10 +0000 (GMT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.70.82.141])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+        Thu,  1 Nov 2018 20:29:10 +0000 (GMT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 02B6B16C3799; Thu,  1 Nov 2018 13:29:10 -0700 (PDT)
+Date:   Thu, 1 Nov 2018 13:29:10 -0700
+From:   "Paul E. McKenney" <paulmck@linux.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
+        Trond Myklebust <trondmy@hammerspace.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "ralf@linux-mips.org" <ralf@linux-mips.org>,
         "jlayton@kernel.org" <jlayton@kernel.org>,
         "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
         "bfields@fieldses.org" <bfields@fieldses.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux@roeck-us.net" <linux@roeck-us.net>,
         "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
         "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+        "paul.burton@mips.com" <paul.burton@mips.com>,
         "anna.schumaker@netapp.com" <anna.schumaker@netapp.com>,
         "jhogan@kernel.org" <jhogan@kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
@@ -35,68 +58,51 @@ CC:     "linux@roeck-us.net" <linux@roeck-us.net>,
         "arnd@arndb.de" <arnd@arndb.de>,
         "paulus@samba.org" <paulus@samba.org>,
         "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        aryabinin@virtuozzo.com, dvyukov@google.com
 Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
  where needed
-Thread-Topic: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
- where needed
-Thread-Index: AQHUcVNC5jTXGaDPOkOnkxlkE4DPdqU539kAgAAIcYCAABkQgIAADI6AgAEnZwA=
-Date:   Thu, 1 Nov 2018 17:54:50 +0000
-Message-ID: <20181101175448.sld6krwbs5n7ovak@pburton-laptop>
-References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
- <20181031213240.zhh7dfcm47ucuyfl@pburton-laptop>
- <20181031220253.GA15505@roeck-us.net>
+Reply-To: paulmck@linux.ibm.com
+References: <20181031220253.GA15505@roeck-us.net>
  <20181031233235.qbedw3pinxcuk7me@pburton-laptop>
  <4e2438a23d2edf03368950a72ec058d1d299c32e.camel@hammerspace.com>
-In-Reply-To: <4e2438a23d2edf03368950a72ec058d1d299c32e.camel@hammerspace.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR2201CA0004.namprd22.prod.outlook.com
- (2603:10b6:301:28::17) To MWHSPR00MB117.namprd22.prod.outlook.com
- (2603:10b6:300:10c::23)
-user-agent: NeoMutt/20180716
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1325;6:sphfPo3E+yvokQfm9L2JT3epAssx6+GoXoQWVmEbJD3eBNrmHRsFlnWHazxO+E5LpdSB95ZSSkS24tR/AYsasqpVMBmIiDBhY+LoeX60WeMWt4YxDxFAWFFRGiRw55tn8SFB4oz6fOsKcmZhxcsFm3hZiANwbZMVulNvrenq3PwTLyFeko7lT83MMQAIWB0BBiG20DY/7Np1HWBi5ILPgPfZbtNEkPx1M7mjCPedEdO959+w1MGBr2PXdYQILrsOVEupbTyTN++q/5DLf6ooIH91G7iohCuH32wxvnwp2qZnXCKoST/dAp1VKlYBPczPKyvWOhpYRmqRuDZuvHIsQrNXudEFbFOEMHBrmia0YuQjxhM9zN2isNERpSl/20fzPuM9ZesSRUYPh9/SCV6KfanFbFAtHp8k0AyZIcIIzjKvc3bgHTIRe4JUYaNeBLJk03Wq/NFsg+JQvho0G5So2g==;5:pX81+2CTXr0knMg7/GAKVat6rOf7MeiEXAtIUdos7DW2JIEfeiEJqXMimQaKxaU0pLKst25NNNHtqloI5gz/56VrJxnnT5HeRCwsH9wYiMNuRIQG8d/rMyzVFQ1lyPjKRyjS/CP9DBd4WRt1i/osRUdFe9G6h2m9ySPM9yxIN3U=;7:GwDWVbnHeMnZEl5cUT6d06GDgBeMJFK0t0ANuc7Xc7b2eP4aZN+bOzOhbxqCptfFHJ072IC1prbQ6vBD6Uk1QbNqVbWgX9ZagcbFzY2gHIbNGiA2SyiciBx6XnIUoZnlYyMASFxTnx50PndXiKg+xQ==
-x-ms-office365-filtering-correlation-id: 7a65a882-fdfd-4f18-4240-08d640231e54
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1325;
-x-ms-traffictypediagnostic: MWHPR2201MB1325:
-x-microsoft-antispam-prvs: <MWHPR2201MB132540D6ADEFB43DCA55BA61C1CE0@MWHPR2201MB1325.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1325;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1325;
-x-forefront-prvs: 0843C17679
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(366004)(39840400004)(346002)(376002)(396003)(199004)(189003)(52254002)(66066001)(42882007)(54906003)(256004)(58126008)(53936002)(93886005)(316002)(446003)(14454004)(6246003)(11346002)(14444005)(6306002)(9686003)(2900100001)(6512007)(186003)(6486002)(476003)(6436002)(305945005)(6346003)(7736002)(26005)(4326008)(44832011)(2906002)(71200400001)(71190400001)(5250100002)(76176011)(8676002)(25786009)(102836004)(6916009)(229853002)(4001150100001)(6116002)(508600001)(3846002)(386003)(486006)(33896004)(6506007)(1076002)(33716001)(99286004)(5660300001)(81156014)(68736007)(52116002)(966005)(8936002)(106356001)(81166006)(97736004)(105586002)(7416002)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1325;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-microsoft-antispam-message-info: yrmdLIYXw8fwji91kNi00DoE/ToNlDTRAU1dGF7Vgjvh8mXJ3Cjr+w9mC/zaoFTMnEu8AbVwFmE/C1Xq1gB09qk9ykJVWcFPDmeqpoHwB6vXELqHgh/+kYoBHEAAy2WgVvDGb0m5QT39jwNcTD9DzYOwIqhMOw4vQ79eDmaG6TfbhLOXJQkAq2lFajTXC6M46tqksQ4UzTSvyD/7Yh/GwZxcNJeAHcQFzs8RvIjog1f9z/O93hLVFaoJ+CnbTSKWjlqMN4Cqg8xex30KdWlUTWpI9iurUNdznwxcGlAf7Ro5x9PvZ0f5Paq/dLrBvnIKOF6ZBC98++UUurjzrLMf9uVDaWB/r00sl7sojs/Tyhs=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <CF3B98CF3394B54E933F2B98E3776DB7@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: 8BIT
+ <20181101131846.biyilr2msonljmij@lakrids.cambridge.arm.com>
+ <20181101145926.GE3178@hirez.programming.kicks-ass.net>
+ <f38e272f7a96e983549e4281aa9fd02833a4277a.camel@hammerspace.com>
+ <20181101163212.GF3159@hirez.programming.kicks-ass.net>
+ <b0160f4b-b996-b0ee-405a-3d5f1866272e@gmail.com>
+ <20181101171432.GH3178@hirez.programming.kicks-ass.net>
+ <20181101172739.GA3196@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a65a882-fdfd-4f18-4240-08d640231e54
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2018 17:54:50.0518
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1325
-Return-Path: <pburton@wavecomp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181101172739.GA3196@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 18110120-0040-0000-0000-0000048AF53A
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00009967; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000268; SDB=6.01111247; UDB=6.00575865; IPR=6.00891339;
+ MB=3.00023995; MTD=3.00000008; XFM=3.00000015; UTC=2018-11-01 20:29:17
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18110120-0041-0000-0000-00000893F604
+Message-Id: <20181101202910.GB4170@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-11-01_14:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=780 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1811010171
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67042
+X-archive-position: 67043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: paulmck@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -109,48 +115,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Trond,
-
-On Thu, Nov 01, 2018 at 12:17:31AM +0000, Trond Myklebust wrote:
-> On Wed, 2018-10-31 at 23:32 +0000, Paul Burton wrote:
-> > In this particular case I have no idea why
-> > net/sunrpc/auth_gss/gss_krb5_seal.c is using cmpxchg64() at all. It's
-> > essentially reinventing atomic64_fetch_inc() which is already
-> > provided
-> > everywhere via CONFIG_GENERIC_ATOMIC64 & the spinlock approach. At
-> > least
-> > for atomic64_* functions the assumption that all access will be
-> > performed using those same functions seems somewhat reasonable.
-> > 
-> > So how does the below look? Trond?
+On Thu, Nov 01, 2018 at 06:27:39PM +0100, Peter Zijlstra wrote:
+> On Thu, Nov 01, 2018 at 06:14:32PM +0100, Peter Zijlstra wrote:
+> > > This reminds me of this sooooo silly patch :/
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=adb03115f4590baa280ddc440a8eff08a6be0cb7
 > 
-> My one question (and the reason why I went with cmpxchg() in the first
-> place) would be about the overflow behaviour for atomic_fetch_inc() and
-> friends. I believe those functions should be OK on x86, so that when we
-> overflow the counter, it behaves like an unsigned value and wraps back
-> around.  Is that the case for all architectures?
+> You'd probably want to write it like so; +- some ordering stuff, that
+> code didn't look like it really needs the memory barriers implied by
+> these, but I didn't look too hard.
+
+The atomic_fetch_add() API would need to be propagated out to the other
+architectures, correct?
+
+							Thanx, Paul
+
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index c0a9d26c06ce..11deb1d7e96b 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -485,16 +485,10 @@ u32 ip_idents_reserve(u32 hash, int segs)
+>  	u32 now = (u32)jiffies;
+>  	u32 new, delta = 0;
 > 
-> i.e. are atomic_t/atomic64_t always guaranteed to behave like u32/u64
-> on increment?
+> -	if (old != now && cmpxchg(p_tstamp, old, now) == old)
+> +	if (old != now && try_cmpxchg(p_tstamp, &old, now))
+>  		delta = prandom_u32_max(now - old);
 > 
-> I could not find any documentation that explicitly stated that they
-> should.
-
-Based on other replies it seems like it's at least implicitly assumed by
-other code, even if not explicitly stated.
-
-From a MIPS perspective where atomics are implemented using load-linked
-& store-conditional instructions the actual addition will be performed
-using the same addu instruction that a plain integer addition would
-generate (regardless of signedness), so there'll be absolutely no
-difference in arithmetic between your gss_seq_send64_fetch_and_inc()
-function and atomic64_fetch_inc(). I'd expect the same to be true for
-other architectures with load-linked & store-conditional style atomics.
-
-In any case, for the benefit of anyone interested who I didn't copy on
-the patch submission, here it is:
-
-    https://lore.kernel.org/lkml/20181101175109.8621-1-paul.burton@mips.com/
-
-Thanks,
-    Paul
+> -	/* Do not use atomic_add_return() as it makes UBSAN unhappy */
+> -	do {
+> -		old = (u32)atomic_read(p_id);
+> -		new = old + delta + segs;
+> -	} while (atomic_cmpxchg(p_id, old, new) != old);
+> -
+> -	return new - segs;
+> +	return atomic_fetch_add(segs + delta, p_id) + delta;
+>  }
+>  EXPORT_SYMBOL(ip_idents_reserve);
+> 
+> 

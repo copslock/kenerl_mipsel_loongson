@@ -1,49 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2018 19:53:20 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:45506 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992934AbeKBSxJI1iyP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Nov 2018 19:53:09 +0100
-Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8EB9520848;
-        Fri,  2 Nov 2018 18:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541184788;
-        bh=UnStb8iSjgMhmvGho6Kd013wBhCng5A2W8hpvXIHyIg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vF2RtogERt7pST935hlR9O9Zmjlhb688Ak5QVmkN137DOKPUDWbAMrQ482btYnqNR
-         RDEKIja+OcZSMCtlZ21ZKKx399l1gEKbQyx2LGy6zpQV56CbxB51kpRyfQ2t1wx+xO
-         o4FYlmJD58xs+H4GadXTSnGmV6QnIlcWCzIVWkPo=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Nov 2018 05:00:56 +0100 (CET)
+Received: from mail-pf1-x441.google.com ([IPv6:2607:f8b0:4864:20::441]:43759
+        "EHLO mail-pf1-x441.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990395AbeKCEAt1V3sH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Nov 2018 05:00:49 +0100
+Received: by mail-pf1-x441.google.com with SMTP id h4-v6so1873206pfi.10
+        for <linux-mips@linux-mips.org>; Fri, 02 Nov 2018 21:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wauWrsOYZ4NO7yzxN9r9ffJEchMQCnKRjhBqfvcq730=;
+        b=hQZEI/5IkmDKiwTPcEpeRj5mdJ5f2khCIYUC+tRjECkBSTU7A0nmPfUa+oKun3ZvpC
+         QBKK3UGjzZVXQ1U3TcxSBsjIIEAUExiO5kioNqzsBdpusaZSc1GEsUpTdFXIZs++dzNb
+         Oce3FxvhzDGCV4UEuF2dXGfauQd44vDoSo9M4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wauWrsOYZ4NO7yzxN9r9ffJEchMQCnKRjhBqfvcq730=;
+        b=pdGVDp9czl3RqNmyeCkzg0yAF8S8/9VoUVhIVoU7aRYJcbgoja/LSFx4Ql7A/3aLnI
+         yN77/H2z1EcouPls7LpMcnIUf6BfaqjEFiW9lBmdcMGJwjjiXGj+vMXWBGcqv2GVRNii
+         IpgT1siTsZW6cjCYe513575QpzIsVePv50/VzYuaXgDnhaveNQ5+VX3JioWLiN/vpqKu
+         oOd/bxIB9j0hp/FKz9BBHm7/etORAmy9SxtqTnque1WYvAxWwXvGRfx9kqEe7Y/IwD5b
+         vrcvgtf35b2EcIfDMU8yIRn/eBMtNEtlZiY64XYU5ZnFV7kqw/0kDdEX0CIszNwPPlHI
+         BfBA==
+X-Gm-Message-State: AGRZ1gK8/RCgmS3DnbG0Glj+D83743Mx7X22Y0HxTannhz+ADBY9lKBE
+        e7Wdqe586kENlzq/fRgw3FNC1A==
+X-Google-Smtp-Source: AJdET5cSoldQI3hr9VnkPhkTOPGPi4e4hyOBk5/0PfLyEPfalVwQIW1MKjDzIap7cLOClQG72ynqpQ==
+X-Received: by 2002:a63:a441:: with SMTP id c1-v6mr13210874pgp.49.1541217647914;
+        Fri, 02 Nov 2018 21:00:47 -0700 (PDT)
+Received: from joelaf.mtv.corp.google.com ([2620:0:1000:1601:3aef:314f:b9ea:889f])
+        by smtp.gmail.com with ESMTPSA id x36-v6sm35836232pgl.43.2018.11.02.21.00.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 02 Nov 2018 21:00:46 -0700 (PDT)
+From:   Joel Fernandes <joel@joelfernandes.org>
+X-Google-Original-From: Joel Fernandes <joelaf@google.com>
 To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Arnd Bergmann <arnd@arndb.de>, James Hogan <jhogan@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 096/143] compiler.h: Allow arch-specific asm/compiler.h
-Date:   Fri,  2 Nov 2018 19:34:41 +0100
-Message-Id: <20181102182905.564377295@linuxfoundation.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20181102182857.064326086@linuxfoundation.org>
-References: <20181102182857.064326086@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
+Cc:     kernel-team@android.com, Joel Fernandes <joelaf@google.com>,
+        akpm@linux-foundation.org,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        anton.ivanov@kot-begemot.co.uk, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>, dancol@google.com,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        elfring@users.sourceforge.net, Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Helge Deller <deller@gmx.de>,
+        hughd@google.com, Ingo Molnar <mingo@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        kasan-dev@googlegroups.com, kirill@shutemov.name,
+        kvmarm@lists.cs.columbia.edu, Ley Foon Tan <lftan@altera.com>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        lokeshgidra@google.com, Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Hocko <mhocko@kernel.org>, minchan@kernel.org,
+        nios2-dev@lists.rocketboards.org, pantin@google.com,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>, Sam Creasey <sammy@sammy.net>,
+        sparclinux@vger.kernel.org, Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH -next 0/3] Add support for fast mremap
+Date:   Fri,  2 Nov 2018 21:00:38 -0700
+Message-Id: <20181103040041.7085-1-joelaf@google.com>
+X-Mailer: git-send-email 2.19.1.930.g4563a0d9d0-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <SRS0=l4Il=NN=linuxfoundation.org=gregkh@kernel.org>
+Return-Path: <joel@joelfernandes.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67055
+X-archive-position: 67056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: joel@joelfernandes.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,121 +101,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+Hi,
+Here is the latest "fast mremap" series. This just a repost with Kirill's
+Acked-bys added. I would like this to be considered for linux -next.  I also
+dropped the CONFIG enablement patch for arm64 since I am yet to test it with
+the new TLB flushing code that is in very recent kernel releases. (None of my
+arm64 devices run mainline right now.) so I will post the arm64 enablement once
+I get to that. The performance numbers in the series are for x86.
 
-------------------
+List of patches in series:
 
-[ Upstream commit 04f264d3a8b0eb25d378127bd78c3c9a0261c828 ]
+(1) mm: select HAVE_MOVE_PMD in x86 for faster mremap
 
-We have a need to override the definition of
-barrier_before_unreachable() for MIPS, which means we either need to add
-architecture-specific code into linux/compiler-gcc.h or we need to allow
-the architecture to provide a header that can define the macro before
-the generic definition. The latter seems like the better approach.
+(2) mm: speed up mremap by 20x on large regions (v4)
+v1->v2: Added support for per-arch enablement (Kirill Shutemov)
+v2->v3: Updated commit message to state the optimization may also
+	run for non-thp type of systems (Daniel Col).
+v3->v4: Remove useless pmd_lock check (Kirill Shutemov)
+	Rebased ontop of Linus's master, updated perf results based
+        on x86 testing. Added Kirill's Acks.
 
-A straightforward approach to the per-arch header is to make use of
-asm-generic to provide a default empty header & adjust architectures
-which don't need anything specific to make use of that by adding the
-header to generic-y. Unfortunately this doesn't work so well due to
-commit 28128c61e08e ("kconfig.h: Include compiler types to avoid missed
-struct attributes") which caused linux/compiler_types.h to be included
-in the compilation of every C file via the -include linux/kconfig.h flag
-in c_flags.
+(3) mm: treewide: remove unused address argument from pte_alloc functions (v2)
+v1->v2: fix arch/um/ prototype which was missed in v1 (Anton Ivanov)
+        update changelog with manual fixups for m68k and microblaze.
 
-Because the -include flag is present for all C files we compile, we need
-the architecture-provided header to be present before any C files are
-compiled. If any C files can be compiled prior to the asm-generic header
-wrappers being generated then we hit a build failure due to missing
-header. Such cases do exist - one pointed out by the kbuild test robot
-is the compilation of arch/ia64/kernel/nr-irqs.c, which occurs as part
-of the archprepare target [1].
+not included - (4) mm: select HAVE_MOVE_PMD in arm64 for faster mremap
+    This patch is dropped since last posting pending further performance
+    testing on arm64 with new TLB gather updates. See notes in patch
+    titled "mm: speed up mremap by 500x on large regions" for more
+    details.
 
-This leaves us with a few options:
 
-  1) Use generic-y & fix any build failures we find by enforcing
-     ordering such that the asm-generic target occurs before any C
-     compilation, such that linux/compiler_types.h can always include
-     the generated asm-generic wrapper which in turn includes the empty
-     asm-generic header. This would rely on us finding all the
-     problematic cases - I don't know for sure that the ia64 issue is
-     the only one.
+Joel Fernandes (Google) (3):
+  mm: treewide: remove unused address argument from pte_alloc functions
+    (v2)
+  mm: speed up mremap by 20x on large regions (v4)
+  mm: select HAVE_MOVE_PMD in x86 for faster mremap
 
-  2) Add an actual empty header to each architecture, so that we don't
-     need the generated asm-generic wrapper. This seems messy.
+ arch/Kconfig                                 |  5 ++
+ arch/alpha/include/asm/pgalloc.h             |  6 +-
+ arch/arc/include/asm/pgalloc.h               |  5 +-
+ arch/arm/include/asm/pgalloc.h               |  4 +-
+ arch/arm64/include/asm/pgalloc.h             |  4 +-
+ arch/hexagon/include/asm/pgalloc.h           |  6 +-
+ arch/ia64/include/asm/pgalloc.h              |  5 +-
+ arch/m68k/include/asm/mcf_pgalloc.h          |  8 +--
+ arch/m68k/include/asm/motorola_pgalloc.h     |  4 +-
+ arch/m68k/include/asm/sun3_pgalloc.h         |  6 +-
+ arch/microblaze/include/asm/pgalloc.h        | 19 +-----
+ arch/microblaze/mm/pgtable.c                 |  3 +-
+ arch/mips/include/asm/pgalloc.h              |  6 +-
+ arch/nds32/include/asm/pgalloc.h             |  5 +-
+ arch/nios2/include/asm/pgalloc.h             |  6 +-
+ arch/openrisc/include/asm/pgalloc.h          |  5 +-
+ arch/openrisc/mm/ioremap.c                   |  3 +-
+ arch/parisc/include/asm/pgalloc.h            |  4 +-
+ arch/powerpc/include/asm/book3s/32/pgalloc.h |  4 +-
+ arch/powerpc/include/asm/book3s/64/pgalloc.h | 12 ++--
+ arch/powerpc/include/asm/nohash/32/pgalloc.h |  4 +-
+ arch/powerpc/include/asm/nohash/64/pgalloc.h |  6 +-
+ arch/powerpc/mm/pgtable-book3s64.c           |  2 +-
+ arch/powerpc/mm/pgtable_32.c                 |  4 +-
+ arch/riscv/include/asm/pgalloc.h             |  6 +-
+ arch/s390/include/asm/pgalloc.h              |  4 +-
+ arch/sh/include/asm/pgalloc.h                |  6 +-
+ arch/sparc/include/asm/pgalloc_32.h          |  5 +-
+ arch/sparc/include/asm/pgalloc_64.h          |  6 +-
+ arch/sparc/mm/init_64.c                      |  6 +-
+ arch/sparc/mm/srmmu.c                        |  4 +-
+ arch/um/include/asm/pgalloc.h                |  4 +-
+ arch/um/kernel/mem.c                         |  4 +-
+ arch/unicore32/include/asm/pgalloc.h         |  4 +-
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/pgalloc.h               |  4 +-
+ arch/x86/mm/pgtable.c                        |  4 +-
+ arch/xtensa/include/asm/pgalloc.h            |  8 +--
+ include/linux/mm.h                           | 13 ++--
+ mm/huge_memory.c                             |  8 +--
+ mm/kasan/kasan_init.c                        |  2 +-
+ mm/memory.c                                  | 17 +++---
+ mm/migrate.c                                 |  2 +-
+ mm/mremap.c                                  | 62 +++++++++++++++++++-
+ mm/userfaultfd.c                             |  2 +-
+ virt/kvm/arm/mmu.c                           |  2 +-
+ 46 files changed, 163 insertions(+), 147 deletions(-)
 
-  3) Give up & add #ifdef CONFIG_MIPS or similar to
-     linux/compiler_types.h. This seems messy too.
-
-  4) Include the arch header only when it's actually needed, removing
-     the need for the asm-generic wrapper for all other architectures.
-
-This patch allows us to use approach 4, by including an asm/compiler.h
-header from linux/compiler_types.h after the inclusion of the
-compiler-specific linux/compiler-*.h header(s). We do this
-conditionally, only when CONFIG_HAVE_ARCH_COMPILER_H is selected, in
-order to avoid the need for asm-generic wrappers & the associated build
-ordering issue described above. The asm/compiler.h header is included
-after the generic linux/compiler-*.h header(s) for consistency with the
-way linux/compiler-intel.h & linux/compiler-clang.h are included after
-the linux/compiler-gcc.h header that they override.
-
-[1] https://lists.01.org/pipermail/kbuild-all/2018-August/051175.html
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20269/
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/Kconfig                   |  8 ++++++++
- include/linux/compiler_types.h | 12 ++++++++++++
- 2 files changed, 20 insertions(+)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 40dc31fea90c..77b3e21c4844 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -965,4 +965,12 @@ config REFCOUNT_FULL
- 	  against various use-after-free conditions that can be used in
- 	  security flaw exploits.
- 
-+config HAVE_ARCH_COMPILER_H
-+	bool
-+	help
-+	  An architecture can select this if it provides an
-+	  asm/compiler.h header that should be included after
-+	  linux/compiler-*.h in order to override macro definitions that those
-+	  headers generally provide.
-+
- source "kernel/gcov/Kconfig"
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 6b79a9bba9a7..4be464a07612 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -78,6 +78,18 @@ extern void __chk_io_ptr(const volatile void __iomem *);
- #include <linux/compiler-clang.h>
- #endif
- 
-+/*
-+ * Some architectures need to provide custom definitions of macros provided
-+ * by linux/compiler-*.h, and can do so using asm/compiler.h. We include that
-+ * conditionally rather than using an asm-generic wrapper in order to avoid
-+ * build failures if any C compilation, which will include this file via an
-+ * -include argument in c_flags, occurs prior to the asm-generic wrappers being
-+ * generated.
-+ */
-+#ifdef CONFIG_HAVE_ARCH_COMPILER_H
-+#include <asm/compiler.h>
-+#endif
-+
- /*
-  * Generic compiler-dependent macros required for kernel
-  * build go below this comment. Actual compiler/compiler version
 -- 
-2.17.1
+2.19.1.930.g4563a0d9d0-goog

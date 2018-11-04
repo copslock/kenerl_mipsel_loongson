@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2018 14:56:23 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:37050 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2018 14:56:39 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:38214 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992479AbeKDNyLxmiJg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 4 Nov 2018 14:54:11 +0100
+        id S23992953AbeKDNyqLszSg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 4 Nov 2018 14:54:46 +0100
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1DE0C208A3;
-        Sun,  4 Nov 2018 13:54:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 42883204FD;
+        Sun,  4 Nov 2018 13:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541339651;
-        bh=frfMtGGHcd4dx2QO0VOoda6ZFe+tTZ3la49NJQWJwDM=;
+        s=default; t=1541339685;
+        bh=Zlm4PKuz8OFnwugoDcg0ZME2aoIIqhan+w9p5e+jLqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L8XVgbXvbU9XurzpZheergLlo1Z4fkHpP6BAi2RO7o1TBZo96sV36gpf2feEZmt+x
-         VG0IsXGVMoG8Vwjet/WBR5eBmyOmKhS2Yud98MPLtmXGRsnv/uF1uiBsE/PdLb+9Oy
-         vPrIjHsP0yvDaUlgUp9ZmiN0ipmK6ucdIiGc4niI=
+        b=ghJaBaSPryWzcJ2YF3RZKoDgD8WUUnmmi8Iq7zpiwpBLOzM3JEx/XgYdN8ISq1ag9
+         i8Gg20XF4w/l/LC3qtL5tdl/6BmOHvCkQ6BK+dNWFCBYFQnZkvZOXzqszacQ5zquc+
+         OGtawpToeVNQZe1JGwhyE5EVOHpHd8Vm7k31gEMg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Dengcheng Zhu <dzhu@wavecomp.com>,
         Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
         ralf@linux-mips.org, linux-mips@linux-mips.org,
         rachel.mozes@intel.com, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 14/21] MIPS: kexec: Mark CPU offline before disabling local IRQ
-Date:   Sun,  4 Nov 2018 08:53:48 -0500
-Message-Id: <20181104135355.88602-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 3.18 10/13] MIPS: kexec: Mark CPU offline before disabling local IRQ
+Date:   Sun,  4 Nov 2018 08:54:30 -0500
+Message-Id: <20181104135433.88734-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20181104135355.88602-1-sashal@kernel.org>
-References: <20181104135355.88602-1-sashal@kernel.org>
+In-Reply-To: <20181104135433.88734-1-sashal@kernel.org>
+References: <20181104135433.88734-1-sashal@kernel.org>
 Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67077
+X-archive-position: 67078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,7 +70,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 6 insertions(+)
 
 diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index 1723b1762297..e757f36cea6f 100644
+index 26c7786d1407..e7d886b6a032 100644
 --- a/arch/mips/kernel/crash.c
 +++ b/arch/mips/kernel/crash.c
 @@ -34,6 +34,9 @@ static void crash_shutdown_secondary(void *passed_regs)
@@ -81,13 +81,13 @@ index 1723b1762297..e757f36cea6f 100644
 +	set_cpu_online(cpu, false);
 +
  	local_irq_disable();
- 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
+ 	if (!cpu_isset(cpu, cpus_in_crash))
  		crash_save_cpu(regs, cpu);
 diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 59725204105c..32b567e88b02 100644
+index 50980bf3983e..92bc066e47a3 100644
 --- a/arch/mips/kernel/machine_kexec.c
 +++ b/arch/mips/kernel/machine_kexec.c
-@@ -96,6 +96,9 @@ machine_kexec(struct kimage *image)
+@@ -95,6 +95,9 @@ machine_kexec(struct kimage *image)
  			*ptr = (unsigned long) phys_to_virt(*ptr);
  	}
  

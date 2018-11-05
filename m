@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:19:12 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:20:12 +0100 (CET)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23992479AbeKEDTA4yMnN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:19:00 +0100
-Date:   Mon, 5 Nov 2018 03:19:00 +0000 (GMT)
+        with ESMTP id S23990403AbeKEDSlwUR-N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:18:41 +0100
+Date:   Mon, 5 Nov 2018 03:18:41 +0000 (GMT)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 3/3] MIPS: DEC: Add 64-bit DECstation defconfig
-Message-ID: <alpine.LFD.2.21.1811050310580.20378@eddie.linux-mips.org>
+Subject: [PATCH 0/3] MIPS: DEC: DECstation defconfig refresh and new
+ templates
+Message-ID: <alpine.LFD.2.21.1811050219130.20378@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -16,7 +17,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67081
+X-archive-position: 67082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,255 +34,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This supports computers based on the R4000SC processor:
+Hi,
 
-* DECstation 5000/150 and DECsystem 5000/150,
+ It's been a while since the DECstation defconfig has been last actually 
+updated rather than merely regenerated.  My `git log' examination points
+at commit 3f821640341b ("[MIPS] DECstation defconfig update") from 2006.
 
-* Personal DECstation 5000/50, Personal DECsystem 5000/50,
+ We have since gained a bunch of new drivers and also some drivers were 
+unnecessarily disabled.  Therefore I have decided to refresh the defconfig 
+(1/3), and to make people's life easier also to provide an R4k version 
+(2/3) and a 64-bit version (3/3), covering all the three base DECstation 
+configurations.  Apart from being ready to use with actual systems these 
+additional defconfigs should make it easier for automated tools to verify 
+correctness of the non-R3k configurations.
 
-and computers based on the R4400SC processor:
+ These were all verified to build and boot multiuser.  Please apply.
 
-* DECstation 5000/260 and DECsystem 5000/260,
-
-* DECsystem 5900/260,
-
-in the 64-bit mode.
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
----
- arch/mips/configs/decstation_64_defconfig |  227 ++++++++++++++++++++++++++++++
- 1 file changed, 227 insertions(+)
-
-linux-mips-dec-64-defconfig-4.20-rc1.diff
-Index: linux-20181104-4maxp64-defconfig/arch/mips/configs/decstation_64_defconfig
-===================================================================
---- /dev/null
-+++ linux-20181104-4maxp64-defconfig/arch/mips/configs/decstation_64_defconfig
-@@ -0,0 +1,227 @@
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_LOG_BUF_SHIFT=15
-+CONFIG_EXPERT=y
-+# CONFIG_SGETMASK_SYSCALL is not set
-+# CONFIG_SYSFS_SYSCALL is not set
-+CONFIG_BPF_SYSCALL=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_SLAB=y
-+CONFIG_MACH_DECSTATION=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_TC=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_OSF_PARTITION=y
-+# CONFIG_EFI_PARTITION is not set
-+CONFIG_TRANSPARENT_HUGEPAGE=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_NET_KEY=m
-+CONFIG_NET_KEY_MIGRATE=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_BOOTP=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_INET_AH=m
-+CONFIG_INET_ESP=m
-+CONFIG_INET_IPCOMP=m
-+CONFIG_INET_XFRM_MODE_TRANSPORT=m
-+CONFIG_INET_XFRM_MODE_TUNNEL=m
-+CONFIG_INET_XFRM_MODE_BEET=m
-+CONFIG_TCP_MD5SIG=y
-+CONFIG_IPV6_ROUTER_PREF=y
-+CONFIG_IPV6_ROUTE_INFO=y
-+CONFIG_INET6_AH=m
-+CONFIG_INET6_ESP=m
-+CONFIG_INET6_IPCOMP=m
-+CONFIG_IPV6_MIP6=m
-+CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
-+CONFIG_IPV6_MULTIPLE_TABLES=y
-+CONFIG_IPV6_SUBTREES=y
-+CONFIG_NETWORK_SECMARK=y
-+CONFIG_IP_SCTP=m
-+CONFIG_VLAN_8021Q=m
-+CONFIG_DECNET=m
-+CONFIG_DECNET_ROUTER=y
-+# CONFIG_WIRELESS is not set
-+# CONFIG_UEVENT_HELPER is not set
-+# CONFIG_FW_LOADER is not set
-+# CONFIG_ALLOW_DEV_COREDUMP is not set
-+CONFIG_MTD=m
-+CONFIG_MTD_BLOCK=m
-+CONFIG_MTD_BLOCK_RO=m
-+CONFIG_MTD_MS02NV=m
-+CONFIG_BLK_DEV_LOOP=m
-+CONFIG_BLK_DEV_RAM=m
-+CONFIG_SCSI=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_CHR_DEV_ST=m
-+CONFIG_BLK_DEV_SR=m
-+CONFIG_CHR_DEV_SG=m
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_SPI_ATTRS=m
-+CONFIG_ISCSI_TCP=m
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_ALACRITECH is not set
-+# CONFIG_NET_VENDOR_AMAZON is not set
-+CONFIG_DECLANCE=y
-+# CONFIG_NET_VENDOR_AQUANTIA is not set
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_AURORA is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_CADENCE is not set
-+# CONFIG_NET_VENDOR_CAVIUM is not set
-+# CONFIG_NET_VENDOR_CORTINA is not set
-+# CONFIG_NET_VENDOR_EZCHIP is not set
-+# CONFIG_NET_VENDOR_HUAWEI is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MICROCHIP is not set
-+# CONFIG_NET_VENDOR_MICROSEMI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NETRONOME is not set
-+# CONFIG_NET_VENDOR_NI is not set
-+# CONFIG_NET_VENDOR_QUALCOMM is not set
-+# CONFIG_NET_VENDOR_RENESAS is not set
-+# CONFIG_NET_VENDOR_ROCKER is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SOLARFLARE is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_SOCIONEXT is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SYNOPSYS is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_NET_VENDOR_XILINX is not set
-+CONFIG_FDDI=y
-+CONFIG_DEFZA=y
-+CONFIG_DEFXX=y
-+# CONFIG_WLAN is not set
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_LKKBD=y
-+# CONFIG_MOUSE_PS2 is not set
-+CONFIG_MOUSE_VSXXXAA=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+CONFIG_FB=y
-+CONFIG_FB_TGA=y
-+CONFIG_FB_PMAG_AA=y
-+CONFIG_FB_PMAG_BA=y
-+CONFIG_FB_PMAGB_B=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_DUMMY_CONSOLE_COLUMNS=160
-+CONFIG_DUMMY_CONSOLE_ROWS=64
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
-+CONFIG_LOGO=y
-+# CONFIG_LOGO_LINUX_VGA16 is not set
-+# CONFIG_LOGO_LINUX_CLUT224 is not set
-+# CONFIG_HID is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_INTF_DEV_UIE_EMUL=y
-+CONFIG_RTC_DRV_CMOS=y
-+# CONFIG_MIPS_PLATFORM_DEVICES is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_MANDATORY_FILE_LOCKING is not set
-+CONFIG_ISO9660_FS=y
-+CONFIG_JOLIET=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_PROC_CHILDREN=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_HUGETLBFS=y
-+CONFIG_CONFIGFS_FS=y
-+CONFIG_UFS_FS=y
-+CONFIG_UFS_FS_WRITE=y
-+CONFIG_NFS_FS=y
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_SWAP=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3=y
-+CONFIG_NFSD_V3_ACL=y
-+# CONFIG_RPCSEC_GSS_KRB5 is not set
-+CONFIG_NLS_ISO8859_8=m
-+CONFIG_NLS_ASCII=m
-+CONFIG_NLS_ISO8859_1=m
-+CONFIG_NLS_ISO8859_2=m
-+CONFIG_NLS_ISO8859_3=m
-+CONFIG_NLS_ISO8859_4=m
-+CONFIG_NLS_ISO8859_5=m
-+CONFIG_NLS_ISO8859_6=m
-+CONFIG_NLS_ISO8859_7=m
-+CONFIG_NLS_ISO8859_9=m
-+CONFIG_NLS_ISO8859_13=m
-+CONFIG_NLS_ISO8859_14=m
-+CONFIG_NLS_ISO8859_15=m
-+CONFIG_NLS_UTF8=m
-+CONFIG_CRYPTO_RSA=m
-+CONFIG_CRYPTO_MANAGER=y
-+CONFIG_CRYPTO_CCM=m
-+CONFIG_CRYPTO_GCM=m
-+CONFIG_CRYPTO_CHACHA20POLY1305=m
-+CONFIG_CRYPTO_CTS=m
-+CONFIG_CRYPTO_LRW=m
-+CONFIG_CRYPTO_OFB=m
-+CONFIG_CRYPTO_PCBC=m
-+CONFIG_CRYPTO_XTS=m
-+CONFIG_CRYPTO_KEYWRAP=m
-+CONFIG_CRYPTO_CMAC=m
-+CONFIG_CRYPTO_XCBC=m
-+CONFIG_CRYPTO_VMAC=m
-+CONFIG_CRYPTO_CRC32=m
-+CONFIG_CRYPTO_CRCT10DIF=m
-+CONFIG_CRYPTO_MD4=m
-+CONFIG_CRYPTO_MICHAEL_MIC=m
-+CONFIG_CRYPTO_RMD128=m
-+CONFIG_CRYPTO_RMD160=m
-+CONFIG_CRYPTO_RMD256=m
-+CONFIG_CRYPTO_RMD320=m
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_ARC4=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAMELLIA=m
-+CONFIG_CRYPTO_CAST5=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_FCRYPT=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SALSA20=m
-+CONFIG_CRYPTO_SEED=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_LZO=m
-+CONFIG_CRYPTO_842=m
-+CONFIG_CRYPTO_LZ4=m
-+CONFIG_CRYPTO_LZ4HC=m
-+CONFIG_CRYPTO_ANSI_CPRNG=m
-+CONFIG_CRYPTO_DRBG_HASH=y
-+CONFIG_CRYPTO_DRBG_CTR=y
-+# CONFIG_CRYPTO_HW is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_FTRACE is not set
+  Maciej

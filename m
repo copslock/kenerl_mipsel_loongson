@@ -1,41 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 21:20:15 +0100 (CET)
-Received: from fudo.makrotopia.org ([IPv6:2a07:2ec0:3002::71]:44523 "EHLO
-        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992796AbeKEUTmKYLsd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 21:19:42 +0100
-Received: from local
-        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-         (Exim 4.91)
-        (envelope-from <daniel@makrotopia.org>)
-        id 1gJlLW-0002MA-00; Mon, 05 Nov 2018 21:19:38 +0100
-Date:   Mon, 5 Nov 2018 21:19:35 +0100
-From:   Daniel Golle <daniel@makrotopia.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Tom Psyborg <pozega.tomislav@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gabor Juhos <juhosg@freemail.hu>
-Subject: Re: [PATCH] mips: ralink: add accessors for MT7620 chipver and pkg
-Message-ID: <20181105201935.GF1389@makrotopia.org>
-References: <20181016103806.GA1544@makrotopia.org>
- <20181102020713.GA880@makrotopia.org>
- <20181105183615.nbvnfapug6zm42pg@pburton-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 23:06:39 +0100 (CET)
+Received: from emh03.mail.saunalahti.fi ([62.142.5.109]:50760 "EHLO
+        emh03.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992796AbeKEWGdim1bi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 23:06:33 +0100
+Received: from darkstar.musicnaut.iki.fi (85-76-96-200-nat.elisa-mobile.fi [85.76.96.200])
+        by emh03.mail.saunalahti.fi (Postfix) with ESMTP id 958314009A;
+        Tue,  6 Nov 2018 00:06:32 +0200 (EET)
+Date:   Tue, 6 Nov 2018 00:06:32 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>, Rob Herring <robh@kernel.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] OCTEON MMC driver failure with v4.19
+Message-ID: <20181105220632.GA5083@darkstar.musicnaut.iki.fi>
+References: <20181026205423.GD3792@darkstar.musicnaut.iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181105183615.nbvnfapug6zm42pg@pburton-laptop>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <daniel@makrotopia.org>
+In-Reply-To: <20181026205423.GD3792@darkstar.musicnaut.iki.fi>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67091
+X-archive-position: 67092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@makrotopia.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,91 +41,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Hi,
 
-thank you for the review!
-
-On Mon, Nov 05, 2018 at 06:36:16PM +0000, Paul Burton wrote:
-> Hi Daniel,
+On Fri, Oct 26, 2018 at 11:54:23PM +0300, Aaro Koskinen wrote:
+> OCTEON (MIPS64) MMC driver probe fails with v4.19, because with
 > 
-> On Fri, Nov 02, 2018 at 03:07:19AM +0100, Daniel Golle wrote:
-> > The RT6352 wireless core included in all MT7620 chips is implemented
-> > differently in MT7620A (TFBGA) and MT7620N (DR-QFN).
-> > Hence provide accessor functions similar to the already existing
-> > mt7620_get_eco() function which allow the rt2x00 wireless driver to
-> > figure out which WiSoC it is being run on.
-> > 
-> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> > ---
-> >  arch/mips/include/asm/mach-ralink/mt7620.h | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/arch/mips/include/asm/mach-ralink/mt7620.h b/arch/mips/include/asm/mach-ralink/mt7620.h
-> > index 66af4ccb5c6c..d0310a92a63f 100644
-> > --- a/arch/mips/include/asm/mach-ralink/mt7620.h
-> > +++ b/arch/mips/include/asm/mach-ralink/mt7620.h
-> > @@ -137,4 +137,16 @@ static inline int mt7620_get_eco(void)
-> >  	return rt_sysc_r32(SYSC_REG_CHIP_REV) & CHIP_REV_ECO_MASK;
-> >  }
-> >  
-> > +static inline int mt7620_get_chipver(void)
-> > +{
-> > +	return (rt_sysc_r32(SYSC_REG_CHIP_REV) >> CHIP_REV_VER_SHIFT) &
-> > +		CHIP_REV_VER_MASK;
-> > +}
-> > +
-> > +static inline int mt7620_get_pkg(void)
-> > +{
-> > +	return (rt_sysc_r32(SYSC_REG_CHIP_REV) >> CHIP_REV_PKG_SHIFT) &
-> > +		CHIP_REV_PKG_MASK;
-> > +}
-> > +
-> >  #endif
+> commit 6c2fb2ea76361da9b420a8e23a2a19e7842cbdda
+> Author: Robin Murphy <robin.murphy@arm.com>
+> Date:   Mon Jul 23 23:16:09 2018 +0100
 > 
-> Is there an in-tree user for these?
-
-Not yet, OpenWrt's out-of-tree Ethernet driver needs the already
-existing int mt7620_get_eco(void) and is going to be upstreamed once
-MT7530 DSA for has been completed to work with MT7621. See the driver
-in [1].
-
-The two newly introduced accessors are going to be used by the in-tree
-rt2x00 driver which gained support for the RT6352 wireless core
-included in that SoC recently. In order to be able to carry out tuning
-in the same way the vendor driver does, rt2x00 will need to access the
-pkg and chipver fields. See [2] for example.
-
+>     of/device: Set bus DMA mask as appropriate
 > 
-> Looking at it I don't see any in-tree code which uses the existing
-> mt7620_get_eco() function. I'm not fond of adding code which isn't used
-> at all in-tree, I'd much rather we either:
+> we now get a default 32-bit bus DMA mask, and the device itself has
+> 64-bit mask, so it gets rejected.
 > 
->  1) Get the driver that needs these upstreamed, and these functions
->     could be added at the same time.
-> 
-> or
-> 
->  2) Keep functions only used by out-of-tree code out-of-tree.
+> With the current mainline, the driver is again working (probably
+> because of b4ebe6063204 ("dma-direct: implement complete bus_dma_mask
+> handling")). But I think this is just because I happen to have < 4 GB RAM,
+> and it probably could still fail on bigger systems..?
 
-I understand your concerns with regard to the mt7620_get_eco(void)
-function which is currently only used by the out-of-tree Ethernet
-driver. However, the to-be-introduced functions mt7620_get_pkg(void)
-and mt7620_get_chipver(void) are to be used in-tree by
-drivers/net/wireless/ralink/rt2x00 in the very near future. I just
-wanted to consult whether the introductions of such accessors is
-generally acceptable before implementing the changes in rt2x00.
+With the below change, the MMC card probe seems to with v4.19. But it
+feels a bit hackish, don't you think... Is there some obvious simple
+fix that I'm missing? Any comments?
 
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 807cadaf554e..31fab09fadcc 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -1067,8 +1067,29 @@ int __init octeon_prune_device_tree(void)
+ 	return 0;
+ }
+ 
++static int octeon_device_notifier_call(struct notifier_block *nb,
++				       unsigned long event, void *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++
++	if (event != BUS_NOTIFY_ADD_DEVICE ||
++	    !pdev || !pdev->dev.dma_mask || !pdev->dev.of_node)
++		return NOTIFY_DONE;
++
++	if (of_device_is_compatible(pdev->dev.of_node,
++				     "cavium,octeon-6130-mmc"))
++		*pdev->dev.dma_mask = DMA_BIT_MASK(64);
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block platform_nb = {
++	.notifier_call = octeon_device_notifier_call,
++};
++
+ static int __init octeon_publish_devices(void)
+ {
++	bus_register_notifier(&platform_bus_type, &platform_nb);
+ 	return of_platform_populate(NULL, octeon_ids, NULL, NULL);
+ }
+ arch_initcall(octeon_publish_devices);
 
-Best regards
-
-
-Daniel
-
-
-[1]: git://git.openwrt.org/openwrt.git:/target/linux/ramips/files-4.14/drivers/net/ethernet/mediatek/soc_mt7620.c
-
-[2]: https://github.com/i80s/mtk-sources/blob/master/mt7620/src/chips/rt6352.c#L1019
-
-> 
-> Thanks,
->     Paul
+A.

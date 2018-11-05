@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 11:39:27 +0100 (CET)
-Received: from bombadil.infradead.org ([IPv6:2607:7c80:54:e::133]:48950 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992779AbeKEKjYDxw-Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 11:39:24 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 15:25:34 +0100 (CET)
+Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:56132 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992783AbeKEOZbeMIGc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 15:25:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=xM+5KMmwXYKR9Dl+Z8QkTOny5tVl3Bw3ZbxUOoCyscc=; b=Wv+odmWPtgTZFNxPoRYeWsf1q
-        zALPW7CCk8mgrIshGlbTfXFUH+25v16P/rUnrQRVFSzQJ//1lz+BJ744NjhIuXEOcIX4xEluFRcrz
-        RjBK/tXUJeoZmyrfmn9hjrteIoFTY/tbkBT/4VKv2LaKMUL5PkLTw/Mv7Y112A8+LzfDpD5ICbXUf
-        XU3qgzXhjmHnMMngQ1C8LfBpxSWLFHgYG1P9w81QthqXS1OQpnFoWX4lMUTr/bM9+dyqHy1op+5aq
-        30eYLR1Ig9byueGRzHCuZ9o/lmTSO7Y9hZ9OO8ulQG0sO47Dg9Q42bI+KUkaNO3o7An//O2a4ecaO
-        Tiw6aeszA==;
+         bh=bDIKyuSp9LLH9BqGVqhJP/hbXdOmufd3UQW+85NbV+8=; b=rykwNpJ5nCzznn4Jucrx26gsq
+        +JH4MPOXMJ+pyWb4JU6Gj3AHUuigkLWXl9uB/Dn7tVxRF87Ptd16aKHV8RQW0nrfm1DqdeIboPOpJ
+        w2ytLOtAu3dVg33KI46V7z703S+T8XnZkGmRqV7gYgNLAL7GqHnE5WapNvgfRsWGdMSJ3gMnO0cyk
+        gZVOd/rhM4BbpGP6BT2UJhVvVWmX/HGnTnK8eZWbA8bXiFbqStjSfBDyJ0iWJjwae4/JjrmnjZYSd
+        F2LwaakSwVKD/wKt8d3+feCrExhqyR6midZcsGLi3jSKyovhcXMJjIGoqUavssAC/YMHmpKsUr2NC
+        QLv2vSwLQ==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gJcHb-0002gD-BL; Mon, 05 Nov 2018 10:38:59 +0000
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1gJfoG-0006kE-Li; Mon, 05 Nov 2018 14:24:57 +0000
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id B1FB72029F9FF; Mon,  5 Nov 2018 11:38:57 +0100 (CET)
-Date:   Mon, 5 Nov 2018 11:38:57 +0100
+        id 3223A2029F9FF; Mon,  5 Nov 2018 15:24:53 +0100 (CET)
+Date:   Mon, 5 Nov 2018 15:24:53 +0100
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Andrey Ryabinin <aryabinin@virtuozzo.com>
 Cc:     Trond Myklebust <trondmy@hammerspace.com>,
@@ -45,10 +45,11 @@ Cc:     Trond Myklebust <trondmy@hammerspace.com>,
         "paulus@samba.org" <paulus@samba.org>,
         "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
         "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>, dvyukov@google.com
+        Paul McKenney <paulmck@linux.vnet.ibm.com>, dvyukov@google.com,
+        willy@infradead.org
 Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
  where needed
-Message-ID: <20181105103857.GB22431@hirez.programming.kicks-ass.net>
+Message-ID: <20181105142453.GA22449@hirez.programming.kicks-ass.net>
 References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
  <20181031213240.zhh7dfcm47ucuyfl@pburton-laptop>
  <20181031220253.GA15505@roeck-us.net>
@@ -68,7 +69,7 @@ Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67083
+X-archive-position: 67084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,19 +87,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Fri, Nov 02, 2018 at 07:19:15PM +0300, Andrey Ryabinin wrote:
+> UBSAN warns about signed overflows despite -fno-strict-overflow if gcc version is < 8.
+> I have learned recently that UBSAN in GCC 8 ignores signed overflows if -fno-strict-overflow of fwrapv is used.
+> 
+> $ cat signed_overflow.c 
+> #include <stdio.h>
+> 
+> __attribute__((noinline))
+> int foo(int a, int b)
+> {
+>         return a+b;
 
-> UBSAN warns about signed overflows despite -fno-strict-overflow if gcc
-> version is < 8.  I have learned recently that UBSAN in GCC 8 ignores
-> signed overflows if -fno-strict-overflow of fwrapv is used.
+ s/+/<</
 
-Ah, good.
+> }
+> 
+> int main(void)
+> {
+>         int a = 0x7fffffff;
+>         int b = 2;
+>         printf("%d\n", foo(a,b));
+>         return 0;
+> }
 
-> We can always just drop -fsanitize=signed-integer-overflow if it considered too noisy.
+It also seem to affect 'shift':
 
-I think that is the most consistent beahviour. signed overflow is not UB
-in the kernel.
-
-> Although it did catch some real bugs.
-
-If we want an over/under-flow checker, then that should be a separate
-plugin and not specific to signed or unsigned.
+peterz@hirez:~/tmp$ gcc -fsanitize=signed-integer-overflow,shift overflow.c ; ./a.out
+overflow.c:6:11: runtime error: left shift of 2147483647 by 2 places cannot be represented in type 'int'
+-4
+peterz@hirez:~/tmp$ gcc -fsanitize=signed-integer-overflow,shift -fwrapv overflow.c ; ./a.out
+-4

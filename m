@@ -1,79 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 15:25:34 +0100 (CET)
-Received: from merlin.infradead.org ([IPv6:2001:8b0:10b:1231::1]:56132 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992783AbeKEOZbeMIGc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 15:25:31 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=bDIKyuSp9LLH9BqGVqhJP/hbXdOmufd3UQW+85NbV+8=; b=rykwNpJ5nCzznn4Jucrx26gsq
-        +JH4MPOXMJ+pyWb4JU6Gj3AHUuigkLWXl9uB/Dn7tVxRF87Ptd16aKHV8RQW0nrfm1DqdeIboPOpJ
-        w2ytLOtAu3dVg33KI46V7z703S+T8XnZkGmRqV7gYgNLAL7GqHnE5WapNvgfRsWGdMSJ3gMnO0cyk
-        gZVOd/rhM4BbpGP6BT2UJhVvVWmX/HGnTnK8eZWbA8bXiFbqStjSfBDyJ0iWJjwae4/JjrmnjZYSd
-        F2LwaakSwVKD/wKt8d3+feCrExhqyR6midZcsGLi3jSKyovhcXMJjIGoqUavssAC/YMHmpKsUr2NC
-        QLv2vSwLQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gJfoG-0006kE-Li; Mon, 05 Nov 2018 14:24:57 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 3223A2029F9FF; Mon,  5 Nov 2018 15:24:53 +0100 (CET)
-Date:   Mon, 5 Nov 2018 15:24:53 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Andrey Ryabinin <aryabinin@virtuozzo.com>
-Cc:     Trond Myklebust <trondmy@hammerspace.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jlayton@kernel.org" <jlayton@kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "bfields@fieldses.org" <bfields@fieldses.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux@roeck-us.net" <linux@roeck-us.net>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-        "paul.burton@mips.com" <paul.burton@mips.com>,
-        "anna.schumaker@netapp.com" <anna.schumaker@netapp.com>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        Paul McKenney <paulmck@linux.vnet.ibm.com>, dvyukov@google.com,
-        willy@infradead.org
-Subject: Re: [RFC PATCH] lib: Introduce generic __cmpxchg_u64() and use it
- where needed
-Message-ID: <20181105142453.GA22449@hirez.programming.kicks-ass.net>
-References: <1541015538-11382-1-git-send-email-linux@roeck-us.net>
- <20181031213240.zhh7dfcm47ucuyfl@pburton-laptop>
- <20181031220253.GA15505@roeck-us.net>
- <20181031233235.qbedw3pinxcuk7me@pburton-laptop>
- <4e2438a23d2edf03368950a72ec058d1d299c32e.camel@hammerspace.com>
- <20181101131846.biyilr2msonljmij@lakrids.cambridge.arm.com>
- <20181101145926.GE3178@hirez.programming.kicks-ass.net>
- <f38e272f7a96e983549e4281aa9fd02833a4277a.camel@hammerspace.com>
- <20181101163212.GF3159@hirez.programming.kicks-ass.net>
- <5a846924-e642-d9d1-4e0e-810bd4d01c26@virtuozzo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a846924-e642-d9d1-4e0e-810bd4d01c26@virtuozzo.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Return-Path: <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 15:52:14 +0100 (CET)
+Received: from mail-pf1-x444.google.com ([IPv6:2607:f8b0:4864:20::444]:37160
+        "EHLO mail-pf1-x444.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992482AbeKEOu4Kws0c (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 15:50:56 +0100
+Received: by mail-pf1-x444.google.com with SMTP id u13-v6so4546772pfm.4;
+        Mon, 05 Nov 2018 06:50:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2B7uMq8TqOBuAo7vU8+IMU1kjMIN9Kqw1L+asdWIuHQ=;
+        b=jhHXnwi5N3/L7zBLT3i/y/rO8BSQ6O8PFmse5gtSTVsbMoUbT4PVUDiVzQ4ckcnEkB
+         dcrpGyA3hilxNjRqYsReykOqJf+GFpgA3t9AzPOO+1GJDMVbu3UB0+S+WC95LaRFBvqK
+         v5GCgaLm1L18Jk2KudnVwnmg9p52Sj6MypiRKh/Gy8saCceAeHGgn1kuzqB0HPm7JbEK
+         jZZiXF55f/NUZGokNiiVPt3TrBUCUz6N5F86FObO04OTDqYGIjTti16LiXEheTzj+V1+
+         LO9zgsYTeaFpGoJMOpv0IvRsvwkJud2L79UnzoH/+rxrMriGiX0pehDXxSXyFQSCIB8r
+         iVDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2B7uMq8TqOBuAo7vU8+IMU1kjMIN9Kqw1L+asdWIuHQ=;
+        b=BGO2Ps1dzzKSatfk9G2whgSngrkT582kunfojT2PGjwRHG3KEpgA+LJn+2YpizUoGb
+         wsI/Dbs1vGEuWEGKRxD2pXsSTe0q11qrfkDwz1kGIRduzS0aAU2HgqlYuFkCW03+smcu
+         EcMFax1tdrgr3wUyslkFpx+xa4cEljSzhn9WqbSt6MJCm2ZpCig5H8sbaU4+qnJLsi3W
+         10DxCJf97LZvMif5AYFzDzfS0E+cb9q/Q2ZnvGNp9R7K+58zktjKbhc7jTL8MTMVean6
+         Ccd+QjmB3rMOWm9+/OJq6la9YQ4+077GojSTG+mC8igA/qfEXNmS71JqT/ybarPTjo1k
+         PkEA==
+X-Gm-Message-State: AGRZ1gIjht8fogRQb676I9AhVIHZR2dRZcnLTlOXKLGs8t8GJRYqim7h
+        cKsMP/xKmVdvdEyGod2+F1/Er0A/Zvo=
+X-Google-Smtp-Source: AJdET5c+p64hChEXHWkpMFitn4qV3I8r3BonAN+kHb2NbL0DiRovQvbY//NAb++dn+M8vyVvfMCjKA==
+X-Received: by 2002:a62:1693:: with SMTP id 141-v6mr22992293pfw.183.1541429454756;
+        Mon, 05 Nov 2018 06:50:54 -0800 (PST)
+Received: from localhost (68.168.130.77.16clouds.com. [68.168.130.77])
+        by smtp.gmail.com with ESMTPSA id e204-v6sm8594336pfh.68.2018.11.05.06.50.54
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 05 Nov 2018 06:50:54 -0800 (PST)
+From:   Yangtao Li <tiny.windzz@gmail.com>
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Yangtao Li <tiny.windzz@gmail.com>
+Subject: [PATCH] MIPS: math-emu: Change to use DEFINE_SHOW_ATTRIBUTE macro
+Date:   Mon,  5 Nov 2018 09:50:49 -0500
+Message-Id: <20181105145049.6336-1-tiny.windzz@gmail.com>
+X-Mailer: git-send-email 2.17.0
+Return-Path: <tiny.windzz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67084
+X-archive-position: 67085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: tiny.windzz@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,34 +63,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 02, 2018 at 07:19:15PM +0300, Andrey Ryabinin wrote:
-> UBSAN warns about signed overflows despite -fno-strict-overflow if gcc version is < 8.
-> I have learned recently that UBSAN in GCC 8 ignores signed overflows if -fno-strict-overflow of fwrapv is used.
-> 
-> $ cat signed_overflow.c 
-> #include <stdio.h>
-> 
-> __attribute__((noinline))
-> int foo(int a, int b)
-> {
->         return a+b;
+Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
 
- s/+/<</
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+---
+ arch/mips/math-emu/me-debugfs.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-> }
-> 
-> int main(void)
-> {
->         int a = 0x7fffffff;
->         int b = 2;
->         printf("%d\n", foo(a,b));
->         return 0;
-> }
-
-It also seem to affect 'shift':
-
-peterz@hirez:~/tmp$ gcc -fsanitize=signed-integer-overflow,shift overflow.c ; ./a.out
-overflow.c:6:11: runtime error: left shift of 2147483647 by 2 places cannot be represented in type 'int'
--4
-peterz@hirez:~/tmp$ gcc -fsanitize=signed-integer-overflow,shift -fwrapv overflow.c ; ./a.out
--4
+diff --git a/arch/mips/math-emu/me-debugfs.c b/arch/mips/math-emu/me-debugfs.c
+index 62566385ce0e..58798f527356 100644
+--- a/arch/mips/math-emu/me-debugfs.c
++++ b/arch/mips/math-emu/me-debugfs.c
+@@ -183,17 +183,7 @@ static int fpuemustats_clear_show(struct seq_file *s, void *unused)
+ 	return 0;
+ }
+ 
+-static int fpuemustats_clear_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, fpuemustats_clear_show, inode->i_private);
+-}
+-
+-static const struct file_operations fpuemustats_clear_fops = {
+-	.open                   = fpuemustats_clear_open,
+-	.read			= seq_read,
+-	.llseek			= seq_lseek,
+-	.release		= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(fpuemustats_clear);
+ 
+ static int __init debugfs_fpuemu(void)
+ {
+-- 
+2.17.0

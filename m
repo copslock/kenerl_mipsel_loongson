@@ -1,16 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:18:52 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:19:00 +0100 (CET)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23990437AbeKEDSro7QfN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:18:47 +0100
-Date:   Mon, 5 Nov 2018 03:18:47 +0000 (GMT)
+        with ESMTP id S23992362AbeKEDS4B5DBN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:18:56 +0100
+Date:   Mon, 5 Nov 2018 03:18:55 +0000 (GMT)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 1/3] MIPS: DEC: Update R3k DECstation defconfig for Y2018
-In-Reply-To: <alpine.LFD.2.21.1811050219130.20378@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.21.1811050242580.20378@eddie.linux-mips.org>
-References: <alpine.LFD.2.21.1811050219130.20378@eddie.linux-mips.org>
+Subject: [PATCH 2/3] MIPS: DEC: Add R4k DECstation defconfig
+Message-ID: <alpine.LFD.2.21.1811050301260.20378@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -18,7 +16,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67079
+X-archive-position: 67080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,61 +33,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Regenerate the R3k DECstation defconfig, in particular including more 
-relevant drivers.
+This supports computers based on the R4000SC processor:
+
+* DECstation 5000/150 and DECsystem 5000/150,
+
+* Personal DECstation 5000/50, Personal DECsystem 5000/50,
+
+and computers based on the R4400SC processor:
+
+* DECstation 5000/260 and DECsystem 5000/260,
+
+* DECsystem 5900/260,
+
+in the 32-bit mode.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- arch/mips/configs/decstation_defconfig |  163 +++++++++++++++++++++++++++------
- 1 file changed, 135 insertions(+), 28 deletions(-)
+ arch/mips/configs/decstation_r4k_defconfig |  224 +++++++++++++++++++++++++++++
+ 1 file changed, 224 insertions(+)
 
-linux-mips-dec-defconfig-4.20-rc1.diff
-Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
+linux-mips-dec-r4k-defconfig-4.20-rc1.diff
+Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
 ===================================================================
---- linux-20181104-3maxp-defconfig.orig/arch/mips/configs/decstation_defconfig
-+++ linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
-@@ -1,17 +1,26 @@
--CONFIG_MACH_DECSTATION=y
--CONFIG_CPU_R3000=y
- CONFIG_SYSVIPC=y
--CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+--- /dev/null
++++ linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
+@@ -0,0 +1,224 @@
++CONFIG_SYSVIPC=y
 +CONFIG_POSIX_MQUEUE=y
 +CONFIG_HIGH_RES_TIMERS=y
 +CONFIG_BSD_PROCESS_ACCT=y
 +CONFIG_BSD_PROCESS_ACCT_V3=y
 +CONFIG_LOG_BUF_SHIFT=15
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
--# CONFIG_HOTPLUG is not set
++CONFIG_EXPERT=y
 +# CONFIG_SGETMASK_SYSCALL is not set
 +# CONFIG_SYSFS_SYSCALL is not set
 +CONFIG_BPF_SYSCALL=y
 +# CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
++CONFIG_SLAB=y
 +CONFIG_MACH_DECSTATION=y
-+CONFIG_CPU_R3000=y
 +CONFIG_TC=y
 +# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_TC=y
--CONFIG_PM=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_SRCVERSION_ALL=y
 +# CONFIG_LBDAF is not set
 +CONFIG_PARTITION_ADVANCED=y
 +CONFIG_OSF_PARTITION=y
 +# CONFIG_EFI_PARTITION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -39,37 +48,92 @@ CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IPV6_SUBTREES=y
- CONFIG_NETWORK_SECMARK=y
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_NET_KEY=m
++CONFIG_NET_KEY_MIGRATE=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=m
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_IPV6_ROUTE_INFO=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_MIP6=m
++CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
++CONFIG_IPV6_MULTIPLE_TABLES=y
++CONFIG_IPV6_SUBTREES=y
++CONFIG_NETWORK_SECMARK=y
 +CONFIG_IP_SCTP=m
- CONFIG_VLAN_8021Q=m
--CONFIG_CONNECTOR=m
++CONFIG_VLAN_8021Q=m
 +CONFIG_DECNET=m
 +CONFIG_DECNET_ROUTER=y
 +# CONFIG_WIRELESS is not set
@@ -100,23 +119,20 @@ Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
 +CONFIG_MTD_BLOCK=m
 +CONFIG_MTD_BLOCK_RO=m
 +CONFIG_MTD_MS02NV=m
- CONFIG_BLK_DEV_LOOP=m
++CONFIG_BLK_DEV_LOOP=m
 +CONFIG_BLK_DEV_RAM=m
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_CHR_DEV_ST=m
- CONFIG_BLK_DEV_SR=m
- CONFIG_CHR_DEV_SG=m
- CONFIG_SCSI_CONSTANTS=y
--CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_SPI_ATTRS=m
--CONFIG_SCSI_SAS_ATTRS=m
- CONFIG_ISCSI_TCP=m
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_ST=m
++CONFIG_BLK_DEV_SR=m
++CONFIG_CHR_DEV_SG=m
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_ISCSI_TCP=m
++CONFIG_NETDEVICES=y
 +# CONFIG_NET_VENDOR_ALACRITECH is not set
 +# CONFIG_NET_VENDOR_AMAZON is not set
- CONFIG_DECLANCE=y
++CONFIG_DECLANCE=y
 +# CONFIG_NET_VENDOR_AQUANTIA is not set
 +# CONFIG_NET_VENDOR_ARC is not set
 +# CONFIG_NET_VENDOR_AURORA is not set
@@ -147,12 +163,7 @@ Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
 +# CONFIG_NET_VENDOR_VIA is not set
 +# CONFIG_NET_VENDOR_WIZNET is not set
 +# CONFIG_NET_VENDOR_XILINX is not set
- CONFIG_FDDI=y
--CONFIG_DEFXX=m
--# CONFIG_INPUT is not set
--# CONFIG_SERIO is not set
--# CONFIG_VT is not set
--# CONFIG_SERIAL_DZ is not set
++CONFIG_FDDI=y
 +CONFIG_DEFZA=y
 +CONFIG_DEFXX=y
 +# CONFIG_WLAN is not set
@@ -160,22 +171,22 @@ Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
 +CONFIG_KEYBOARD_LKKBD=y
 +# CONFIG_MOUSE_PS2 is not set
 +CONFIG_MOUSE_VSXXXAA=y
- # CONFIG_HW_RANDOM is not set
- # CONFIG_HWMON is not set
- CONFIG_FB=y
++# CONFIG_SERIAL_DZ is not set
++# CONFIG_HW_RANDOM is not set
++# CONFIG_HWMON is not set
++CONFIG_FB=y
 +CONFIG_FB_TGA=y
 +CONFIG_FB_PMAG_AA=y
- CONFIG_FB_PMAG_BA=y
- CONFIG_FB_PMAGB_B=y
++CONFIG_FB_PMAG_BA=y
++CONFIG_FB_PMAGB_B=y
 +# CONFIG_VGA_CONSOLE is not set
 +CONFIG_DUMMY_CONSOLE_COLUMNS=160
 +CONFIG_DUMMY_CONSOLE_ROWS=64
 +CONFIG_FRAMEBUFFER_CONSOLE=y
 +CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
- CONFIG_LOGO=y
--# CONFIG_LOGO_LINUX_MONO is not set
- # CONFIG_LOGO_LINUX_VGA16 is not set
- # CONFIG_LOGO_LINUX_CLUT224 is not set
++CONFIG_LOGO=y
++# CONFIG_LOGO_LINUX_VGA16 is not set
++# CONFIG_LOGO_LINUX_CLUT224 is not set
 +# CONFIG_HID is not set
 +# CONFIG_USB_SUPPORT is not set
 +CONFIG_RTC_CLASS=y
@@ -183,35 +194,27 @@ Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
 +CONFIG_RTC_DRV_CMOS=y
 +# CONFIG_MIPS_PLATFORM_DEVICES is not set
 +# CONFIG_IOMMU_SUPPORT is not set
- CONFIG_EXT2_FS=y
- CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
-@@ -77,30 +141,60 @@ CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_FUSE_FS=m
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
 +# CONFIG_MANDATORY_FILE_LOCKING is not set
 +CONFIG_ISO9660_FS=y
 +CONFIG_JOLIET=y
- CONFIG_PROC_KCORE=y
++CONFIG_PROC_KCORE=y
 +CONFIG_PROC_CHILDREN=y
- CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CONFIGFS_FS=y
- CONFIG_UFS_FS=y
- CONFIG_UFS_FS_WRITE=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++CONFIG_CONFIGFS_FS=y
++CONFIG_UFS_FS=y
++CONFIG_UFS_FS_WRITE=y
++CONFIG_NFS_FS=y
++CONFIG_NFS_V3_ACL=y
 +CONFIG_NFS_SWAP=y
- CONFIG_ROOT_NFS=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_OSF_PARTITION=y
--CONFIG_DLM=m
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_CRYPTO_NULL=m
--CONFIG_CRYPTO_ECB=m
++CONFIG_ROOT_NFS=y
 +CONFIG_NFSD=m
 +CONFIG_NFSD_V3=y
 +CONFIG_NFSD_V3_ACL=y
@@ -236,36 +239,38 @@ Index: linux-20181104-3maxp-defconfig/arch/mips/configs/decstation_defconfig
 +CONFIG_CRYPTO_GCM=m
 +CONFIG_CRYPTO_CHACHA20POLY1305=m
 +CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_LRW=m
++CONFIG_CRYPTO_LRW=m
 +CONFIG_CRYPTO_OFB=m
- CONFIG_CRYPTO_PCBC=m
--CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_PCBC=m
 +CONFIG_CRYPTO_XTS=m
 +CONFIG_CRYPTO_KEYWRAP=m
 +CONFIG_CRYPTO_CMAC=m
- CONFIG_CRYPTO_XCBC=m
++CONFIG_CRYPTO_XCBC=m
 +CONFIG_CRYPTO_VMAC=m
 +CONFIG_CRYPTO_CRC32=m
 +CONFIG_CRYPTO_CRCT10DIF=m
- CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
 +CONFIG_CRYPTO_RMD128=m
 +CONFIG_CRYPTO_RMD160=m
 +CONFIG_CRYPTO_RMD256=m
 +CONFIG_CRYPTO_RMD320=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -112,6 +206,19 @@ CONFIG_CRYPTO_CAST5=m
- CONFIG_CRYPTO_CAST6=m
- CONFIG_CRYPTO_FCRYPT=m
- CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAMELLIA=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_FCRYPT=m
++CONFIG_CRYPTO_KHAZAD=m
 +CONFIG_CRYPTO_SALSA20=m
 +CONFIG_CRYPTO_SEED=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
 +CONFIG_CRYPTO_LZO=m
 +CONFIG_CRYPTO_842=m
 +CONFIG_CRYPTO_LZ4=m

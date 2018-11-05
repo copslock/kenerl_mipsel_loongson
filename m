@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:19:00 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 04:19:12 +0100 (CET)
 Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23992362AbeKEDS4B5DBN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:18:56 +0100
-Date:   Mon, 5 Nov 2018 03:18:55 +0000 (GMT)
+        with ESMTP id S23992479AbeKEDTA4yMnN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 04:19:00 +0100
+Date:   Mon, 5 Nov 2018 03:19:00 +0000 (GMT)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH 2/3] MIPS: DEC: Add R4k DECstation defconfig
-Message-ID: <alpine.LFD.2.21.1811050301260.20378@eddie.linux-mips.org>
+Subject: [PATCH 3/3] MIPS: DEC: Add 64-bit DECstation defconfig
+Message-ID: <alpine.LFD.2.21.1811050310580.20378@eddie.linux-mips.org>
 User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -16,7 +16,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67080
+X-archive-position: 67081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,19 +45,19 @@ and computers based on the R4400SC processor:
 
 * DECsystem 5900/260,
 
-in the 32-bit mode.
+in the 64-bit mode.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- arch/mips/configs/decstation_r4k_defconfig |  224 +++++++++++++++++++++++++++++
- 1 file changed, 224 insertions(+)
+ arch/mips/configs/decstation_64_defconfig |  227 ++++++++++++++++++++++++++++++
+ 1 file changed, 227 insertions(+)
 
-linux-mips-dec-r4k-defconfig-4.20-rc1.diff
-Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
+linux-mips-dec-64-defconfig-4.20-rc1.diff
+Index: linux-20181104-4maxp64-defconfig/arch/mips/configs/decstation_64_defconfig
 ===================================================================
 --- /dev/null
-+++ linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
-@@ -0,0 +1,224 @@
++++ linux-20181104-4maxp64-defconfig/arch/mips/configs/decstation_64_defconfig
+@@ -0,0 +1,227 @@
 +CONFIG_SYSVIPC=y
 +CONFIG_POSIX_MQUEUE=y
 +CONFIG_HIGH_RES_TIMERS=y
@@ -71,15 +71,19 @@ Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
 +# CONFIG_COMPAT_BRK is not set
 +CONFIG_SLAB=y
 +CONFIG_MACH_DECSTATION=y
++CONFIG_64BIT=y
++CONFIG_PAGE_SIZE_16KB=y
 +CONFIG_TC=y
++CONFIG_MIPS32_O32=y
++CONFIG_MIPS32_N32=y
 +# CONFIG_SUSPEND is not set
 +CONFIG_MODULES=y
 +CONFIG_MODULE_UNLOAD=y
 +CONFIG_MODULE_SRCVERSION_ALL=y
-+# CONFIG_LBDAF is not set
 +CONFIG_PARTITION_ADVANCED=y
 +CONFIG_OSF_PARTITION=y
 +# CONFIG_EFI_PARTITION is not set
++CONFIG_TRANSPARENT_HUGEPAGE=y
 +CONFIG_NET=y
 +CONFIG_PACKET=y
 +CONFIG_UNIX=y
@@ -171,7 +175,6 @@ Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
 +CONFIG_KEYBOARD_LKKBD=y
 +# CONFIG_MOUSE_PS2 is not set
 +CONFIG_MOUSE_VSXXXAA=y
-+# CONFIG_SERIAL_DZ is not set
 +# CONFIG_HW_RANDOM is not set
 +# CONFIG_HWMON is not set
 +CONFIG_FB=y
@@ -208,6 +211,7 @@ Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
 +CONFIG_PROC_CHILDREN=y
 +CONFIG_TMPFS=y
 +CONFIG_TMPFS_POSIX_ACL=y
++CONFIG_HUGETLBFS=y
 +CONFIG_CONFIGFS_FS=y
 +CONFIG_UFS_FS=y
 +CONFIG_UFS_FS_WRITE=y
@@ -279,6 +283,5 @@ Index: linux-20181104-4maxp-defconfig/arch/mips/configs/decstation_r4k_defconfig
 +CONFIG_CRYPTO_DRBG_HASH=y
 +CONFIG_CRYPTO_DRBG_CTR=y
 +# CONFIG_CRYPTO_HW is not set
-+CONFIG_FRAME_WARN=2048
 +CONFIG_MAGIC_SYSRQ=y
 +# CONFIG_FTRACE is not set

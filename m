@@ -1,42 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 19:15:12 +0100 (CET)
-Received: from mail-cys01nam02on0131.outbound.protection.outlook.com ([104.47.37.131]:49521
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2018 19:31:17 +0100 (CET)
+Received: from mail-eopbgr730138.outbound.protection.outlook.com ([40.107.73.138]:44123
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992810AbeKESPGuQV9H convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 19:15:06 +0100
+        id S23992783AbeKESbMhY8qO convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2018 19:31:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qNgPdltg4uKM1p7/sVcOF5C83VMGz36AVaqw5HteNCs=;
- b=dSKNErWw/yTQDFG2gsSugOFhW907yDpcAaK8dWiNzuk5RT0slES0B2HIsDXOygfeSxuVBDbGJ6bkNZy7IiCySe9R66uUgHjFDACK7c74pd8ZH1yDovhVQA83zcFH9P5FdR+WTIXp2Ea6OTKFXfnmYvGeXOs/13n/GcXguZNXPPY=
+ bh=McwQeVyQdQJ13KB82eJQMTDA14e3eBPq4vNYac1/GsM=;
+ b=j3OhRSjoWSNCACnYUHN7BZ2BlUxF0dl5f+LlLWQOdU//ahWMfoLnAkqK/ST3JcVTqJlpxnoPNDDFVOFCcBgH49lW0PToG3SP9SkAtVDzggV/cHMJXBtN7n4t1HDMhvR002gQ6DwaIPfQxkeWEBh0YYT3d1aJ6nggjcuDboCEOxg=
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1150.namprd22.prod.outlook.com (10.174.166.39) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.26; Mon, 5 Nov 2018 18:15:05 +0000
+ MWHPR2201MB1310.namprd22.prod.outlook.com (10.174.162.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.21; Mon, 5 Nov 2018 18:31:10 +0000
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com
  ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
  ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.032; Mon, 5 Nov 2018
- 18:15:05 +0000
+ 18:31:10 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Yangtao Li <tiny.windzz@gmail.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: math-emu: Change to use DEFINE_SHOW_ATTRIBUTE macro
-Thread-Topic: [PATCH] MIPS: math-emu: Change to use DEFINE_SHOW_ATTRIBUTE
- macro
-Thread-Index: AQHUdRb2XyecBmejX0O81GDRuHhz4KVBfMOA
-Date:   Mon, 5 Nov 2018 18:15:04 +0000
-Message-ID: <20181105181503.vcahr7horqqmbzqp@pburton-laptop>
-References: <20181105145049.6336-1-tiny.windzz@gmail.com>
-In-Reply-To: <20181105145049.6336-1-tiny.windzz@gmail.com>
+To:     Hassan Naveed <hnaveed@wavecomp.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Hassan Naveed <hnaveed@wavecomp.com>
+Subject: Re: [PATCH] MIPS: Enable IOREMAP_PROT config option for MIPS cpus
+Thread-Topic: [PATCH] MIPS: Enable IOREMAP_PROT config option for MIPS cpus
+Thread-Index: AQHUb+/jHRWLZ5VMbEKBZ3jWpNeByKVBi5AA
+Date:   Mon, 5 Nov 2018 18:31:09 +0000
+Message-ID: <20181105183108.3kzk2oxl4fpypgmw@pburton-laptop>
+References: <20181030012741.31391-1-hassan.naveed@mips.com>
+In-Reply-To: <20181030012741.31391-1-hassan.naveed@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR11CA0048.namprd11.prod.outlook.com
- (2603:10b6:300:115::34) To MWHSPR00MB117.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR1001CA0036.namprd10.prod.outlook.com
+ (2603:10b6:301:2a::49) To MWHSPR00MB117.namprd22.prod.outlook.com
  (2603:10b6:300:10c::23)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -44,37 +41,37 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1150;6:XXXU8HWTm1FQjFJTIS0V6qNsXnKcH/Pcm/k9/fg9immzAsCmoUt78QImLZOoVfR6Tp75DOI1fUG8prSVO7pxTsKwP3/ekXEMH3ft69GMbuRO7Vi525SlX/jMZFW7P03DfXoRc7IZ4Fd9xk8XtK+ZCcnhkFSSaZ5x5r3C1Ibc63fQOg9b6zfSMTpRGCBqtGh0326Kh7df6iAGhiNht7rHSXQ+PKXWHWJf4+LSBfqik4xGANktOk/w0jnydzilNEIuixYYeae67ev2vz2ahwCS2QBDP7NxhfQY6zVEBgpGYLL6QSexgylvQCbZzOweIhVs8U06Hf5fmKzr6eWAB6Nr/AqxAmYmtn5j9OV3fcFRxFw7A4ykdOC5wejrcb0+gKjaf5mLssKq1sNrbfXJ3wHYKvIEH/IWOGr45aNm7e/lH3jzhfuZjGQhHlmGdbk1MWJSom4LQa7qEVJeszg+/1Fa6g==;5:29dEdLL+svPJvb1WnYgNrq+m7vHXvYcJ1vkOpunoL3MwUIfAHbrNkJe5tNQ5EJuPPAAD9kQRytKShDyO1+VKtRALswzRCb3hAa+efTIHpbbogvKT6dS+GwLDWd+9Mg4LVWcMxqrrC6ekcDWOOehOwULhQFHeyfRgWC573bFaNoI=;7:VI0Jkv77ob4rxp3D7sIK7lEVRDP7u2gOBHK9ylQXnF7RdAAtftHtWbWqaN7QIccQ3rt4503zjgmo21OLOJVr5uh3cN6Nxt4S/ZTpXr69M5tq6BSI6wdjfhoEpykLcYhZqIBWlK6yD+yAIcCHLpBz9g==
-x-ms-office365-filtering-correlation-id: 135c72fc-269f-44b5-09f4-08d6434a9c33
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1150;
-x-ms-traffictypediagnostic: MWHPR2201MB1150:
-x-microsoft-antispam-prvs: <MWHPR2201MB11509B5EBDB67C4B39170D73C1CA0@MWHPR2201MB1150.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(85827821059158);
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1310;6:XfaeikQj15cx/PrEj6LzFJr6Qr1FJD584j6HOocFS4CiHrdcFzTJNfmqjdcijvhwXxb5yLIkoASuc2rANY+5cGTSMCABYMPh4+11ry+kTLpiFrOY9eIsjJnUmXy1mmILJKVT5SgfmZ9eZ7S3qsL3Fgp60SRWidtUeMIqteihrRoeX8jD/lz1uRpgnqAt9NaFSUiETGUV11dMfqLo0xEfg5CujUhI1H1FEmOGy2Sm161G7lItDwTp2eqykUtIES/ALUWpFxShSONNlZYlo0YG4cEHdUAEOJHNZ8f9+adeYJYE19P2nU5++eJasOKykCaE0oCavzkxhxlDiEu1BbRYXqEa4apYX1NQiXNyBSNqP7oZYWeXyjI3Y2KHBCZRcXIdZNxZzWVTU1KyywOVAHV74JfHigj5ktNAuLWTN33BWcsywYnps2/u5NNLa/SqE6E6XZUmEbnvWHNA4Uno39l9qg==;5:XBSTCdaViGZxpPseYvJn61Fl9Wc3vyDT4AypbxvTSBr2lILGD58jMFJYsc6CfUELA6FGpxQXytZi/idb1j2piP8VeSz0vHKfgKAe6AvKxf4Imd1ZRpiQ0o6GJayYCkF21oMKZoPY8kuRrOznIFIeaJkyKeS7rsRY31MgMlKc81o=;7:8aqzAq3S7F30oeWuLUN8KcJC3SlyKdKZnyF0kUWa8lBkLszHF1ia8kN2Exv1d6UxZ16EPOLle5Wh0xE0JOeySrigrQaHDiiRomNskvCe8TJD9NcRvB9HeyjPARgWmoDBhTd+IItDWFVX4s+F764oZQ==
+x-ms-office365-filtering-correlation-id: 4b0d4dad-b2fb-49df-5767-08d6434cdaf0
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1310;
+x-ms-traffictypediagnostic: MWHPR2201MB1310:
+x-microsoft-antispam-prvs: <MWHPR2201MB1310224D53123593960E3262C1CA0@MWHPR2201MB1310.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(93006095)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1150;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1150;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(20161123562045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1310;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1310;
 x-forefront-prvs: 08476BC6EF
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(346002)(396003)(39840400004)(376002)(366004)(189003)(199004)(42882007)(256004)(2900100001)(386003)(6436002)(508600001)(6486002)(9686003)(6512007)(4326008)(11346002)(446003)(53936002)(7736002)(6246003)(44832011)(71190400001)(71200400001)(305945005)(66066001)(102836004)(476003)(486006)(52116002)(76176011)(229853002)(39060400002)(14454004)(316002)(6116002)(3846002)(26005)(6916009)(5660300001)(33716001)(186003)(2906002)(97736004)(68736007)(6506007)(33896004)(54906003)(99286004)(81166006)(8936002)(8676002)(58126008)(106356001)(25786009)(1076002)(81156014)(105586002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1150;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(396003)(346002)(376002)(39840400004)(136003)(189003)(199004)(4326008)(6116002)(3846002)(1076002)(26005)(2900100001)(102836004)(52116002)(478600001)(14444005)(71190400001)(71200400001)(186003)(486006)(2906002)(256004)(99286004)(14454004)(33896004)(54906003)(386003)(6506007)(44832011)(58126008)(316002)(76176011)(6486002)(11346002)(446003)(33716001)(6246003)(6436002)(107886003)(229853002)(476003)(42882007)(66066001)(5660300001)(6862004)(25786009)(68736007)(8936002)(7736002)(81166006)(81156014)(97736004)(8676002)(9686003)(53936002)(6512007)(106356001)(105586002)(305945005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1310;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: ZwuywsOcrS3xH0mbLUApMokyMtnOzcKM//yqXOH+L/1xsHYK+G/ru47eLmpbYuPUOIaaaRR7d75D/r45ggMhd0sd70E9E9HbsKjKsVuWaSNYL5Mg/ZRMVUfgZ6I/ip94Q94D65pxlOSKEvOW+0vuHPK3Z18lhmu+r3duJ2JTOmiXtirZiX9sAabW1e7+Kn1XemZ5nwcWSOi9hjJsW9PZUWLbrY7P29MEv1YdX81DS/lwBChfrd2exPN8OHDJ+VxBpImpIfirT2BmEXWzf5uPMvKqNCRCFNTE72vdrpRDXt24/vPfJiCobGL4A+wuOkCY2pRioT4EtAFpfOdAlYTnrCEQhlP+LDsBmkiEcF3d73c=
+x-microsoft-antispam-message-info: H//syLyaFEKf/FE6gV1fG1Zb+Bqsd5wHECvEK8jgeGXIIMnO31wqP8vLtTa6LT+4GMNHUPpwQsKZRhtNucXqixSXJJrd3KcifcYix9+7pPXpKvJN+znrTDByr6Br7cAqb+qv6tvY9XUngbf2AIuRE9mb+pamLwKKgxJO+sCwKNd6LTQO6op1WZ9BGXQTakb6G9uPAKHPRXbUCJqnnvQ/eaclTQiLmKy93xd8YG6dnq7oAZB11D+nuFLbRUFLm9+iTXdA2755erBonvStV2giAnhiCrhOCbMRoqCJFQSoZurpNaSsnVzP+Q3hSfzMZse7YVZBuxltTZkDVsvpCi3oT/isiaEgR5NfHzhLWRsOmwk=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4C5D1B97C8219648AA03C57DCC9ADD60@namprd22.prod.outlook.com>
+Content-ID: <F13175BF5AD81E4E8D7A38BE7B05DF90@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 135c72fc-269f-44b5-09f4-08d6434a9c33
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2018 18:15:05.0398
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b0d4dad-b2fb-49df-5767-08d6434cdaf0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2018 18:31:09.9712
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1150
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1310
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67088
+X-archive-position: 67089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -91,15 +88,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yangtao,
+Hi Hassan,
 
-On Mon, Nov 05, 2018 at 09:50:49AM -0500, Yangtao Li wrote:
-> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+On Mon, Oct 29, 2018 at 06:27:41PM -0700, Hassan Naveed wrote:
+> From: Hassan Naveed <hnaveed@wavecomp.com>
 > 
-> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+> Allows the users of ptrace to access memory mapped by the ptraced process
+> using the same cache coherency attributes as the original process.
+> For example while using gdb with ioremap_prot() incorporated, both gdb and
+> the process being traced will have same cache coherency attributes.
+> 
+> Signed-off-by: Hassan Naveed <hnaveed@wavecomp.com>
 > ---
->  arch/mips/math-emu/me-debugfs.c | 12 +-----------
->  1 file changed, 1 insertion(+), 11 deletions(-)
+>  .../features/vm/ioremap_prot/arch-support.txt        |  2 +-
+>  arch/mips/Kconfig                                    |  1 +
+>  arch/mips/include/asm/io.h                           | 12 ++++++++++++
+>  arch/mips/include/asm/page.h                         |  1 +
+>  4 files changed, 15 insertions(+), 1 deletion(-)
 
 Thanks - applied to mips-next for v4.21.
 

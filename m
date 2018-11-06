@@ -1,45 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 23:36:12 +0100 (CET)
-Received: from mail.bootlin.com ([62.4.15.54]:33664 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992836AbeKFWedgKU7F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Nov 2018 23:34:33 +0100
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id C5E7C20712; Tue,  6 Nov 2018 23:34:32 +0100 (CET)
-Received: from bbrezillon (unknown [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 7336A2039F;
-        Tue,  6 Nov 2018 23:34:32 +0100 (CET)
-Date:   Tue, 6 Nov 2018 23:34:32 +0100
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH next] mtd: maps: physmap: Fix infinite loop crash in ROM
- type probing
-Message-ID: <20181106233432.76df6bbf@bbrezillon>
-In-Reply-To: <CAMuHMdUQhsikcBzRFAvrCwZwzFK_Coh=fqpSihFP6jEtugCMQw@mail.gmail.com>
-References: <20181106214416.11342-1-geert@linux-m68k.org>
-        <20181106225829.5ecbe19e@bbrezillon>
-        <CAMuHMdUQhsikcBzRFAvrCwZwzFK_Coh=fqpSihFP6jEtugCMQw@mail.gmail.com>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 00:18:22 +0100 (CET)
+Received: from mail-wr1-x42c.google.com ([IPv6:2a00:1450:4864:20::42c]:43116
+        "EHLO mail-wr1-x42c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991112AbeKFXQMsyy4F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 00:16:12 +0100
+Received: by mail-wr1-x42c.google.com with SMTP id y3-v6so15116799wrh.10
+        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 15:16:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=DpbdRIbQaA1wYedZxLueEoKVXd0GtXSVdWHp5s+Vj5E=;
+        b=EV6dDpilBdBrt8A3965PIlZ+GI6J0bE9Nv5NZjJ1O3eS/TGeVi/cYUaAKSt+PuRbgM
+         koMU/yG5gtqviznReNYvJjmg6cg37FHB1RHK+e9ya8d88+ZuEKysc9FRqwhVXiLHKYbS
+         mol3Q03VMKhtQ3G1LyfkX4hq51EQvE/8zFcSY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=DpbdRIbQaA1wYedZxLueEoKVXd0GtXSVdWHp5s+Vj5E=;
+        b=BaV+JgUjkOlux31Xi32lf02KApjuSkBGADXT4gqs2uaMIyJh/aqCebtMphGX4yL9RQ
+         KPq8okljPlgZ69aXxhPB0hmud/nQAtNyG+JX7MqYjeYAPuxvx8uGFXLLn9GkexPKGG0x
+         pH9FZj1kKKRNirplV/8fmsjPgO6jRC773Txd28L/Xl+iK7883Ke5vCuLwsMMobFOwMxq
+         uMCBjX3ljps/gL7MzPKA2nHHO1hoTvNo3KL5bHJih+cAMLrSDfL6C76YenY4ESS7Pzlt
+         6Sax7x8RfypuNFJEqut0kmWF3uRjiPMLWpt/8jTlt0TWbBJKCNHDTrIJVFKcS1h00Dq6
+         n4zQ==
+X-Gm-Message-State: AGRZ1gIa1kh0hfp4AMps3zH6qOFNz+dAm29goji0RbVK+tH+8IgBc71r
+        2uRTrCQnBCWOxU/AOdC05O5xtbYPtQ5yFFSiPZ/tYw==
+X-Google-Smtp-Source: AJdET5ctU7zVijdvQObNSvAkB+IVwGhySRRekx3PGLGdflOUkZauUIt6bCg/Bf6gmDu1g4NixHJEDvmfOzIULa02OK8=
+X-Received: by 2002:adf:cc81:: with SMTP id p1-v6mr7154438wrj.139.1541546172236;
+ Tue, 06 Nov 2018 15:16:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+Received: by 2002:a1c:4054:0:0:0:0:0 with HTTP; Tue, 6 Nov 2018 15:16:11 -0800 (PST)
+In-Reply-To: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
+References: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
+From:   John Stultz <john.stultz@linaro.org>
+Date:   Tue, 6 Nov 2018 15:16:11 -0800
+Message-ID: <CALAqxLWif1wjRHx5X136sBqdg0KJ8itqXPk9G6NJ70Z_QFavzQ@mail.gmail.com>
+Subject: Re: [PATCH] of/device: Really only set bus DMA mask when appropriate
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     hch@lst.de, Rob Herring <robh+dt@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        aaro.koskinen@iki.fi, jean-philippe.brucker@arm.com,
+        iommu@lists.linux-foundation.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-mips@linux-mips.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <john.stultz@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67108
+X-archive-position: 67109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: john.stultz@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,39 +67,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 6 Nov 2018 23:19:14 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Tue, Nov 6, 2018 at 3:54 AM, Robin Murphy <robin.murphy@arm.com> wrote:
+> of_dma_configure() was *supposed* to be following the same logic as
+> acpi_dma_configure() and only setting bus_dma_mask if some range was
+> specified by the firmware. However, it seems that subtlety got lost in
+> the process of fitting it into the differently-shaped control flow, and
+> as a result the force_dma==true case ends up always setting the bus mask
+> to the 32-bit default, which is not what anyone wants.
+>
+> Make sure we only touch it if the DT actually said so.
+>
+> Fixes: 6c2fb2ea7636 ("of/device: Set bus DMA mask as appropriate")
+> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Reported-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+>
+> Sorry about that... I guess I only have test setups that either have
+> dma-ranges or where a 32-bit bus mask goes unnoticed :(
+>
+> The Octeon and SMMU issues sound like they're purely down to this, and
+> it's probably related to at least one of John's Hikey woes.
 
-> Hi Boris,
-> 
-> On Tue, Nov 6, 2018 at 10:58 PM Boris Brezillon
-> <boris.brezillon@bootlin.com> wrote:
-> > On Tue,  6 Nov 2018 22:44:16 +0100
-> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:  
-> > > On Toshiba RBTX4927, where map_probe is supposed to fail:
-> > >
-> > >     Creating 2 MTD partitions on "physmap-flash.0":
-> > >     0x000000c00000-0x000001000000 : "boot"
-> > >     0x000000000000-0x000000c00000 : "user"
-> > >     physmap-flash physmap-flash.1: physmap platform flash device: [mem 0x1e000000-0x1effffff]
-> > >     CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80320f40, ra == 80321004
-> > >     ...
-> > >     Call Trace:
-> > >     [<80320f40>] get_mtd_chip_driver+0x30/0x8c
-> > >     [<80321004>] do_map_probe+0x20/0x90
-> > >     [<80328448>] physmap_flash_probe+0x484/0x4ec
-> > >
-> > > The access to rom_probe_types[] was changed from a sentinel-based loop
-> > > to an infinite loop, causing a crash when reaching the sentinel.  
-> >
-> > Oops. Do you mind if I fix that in-place (squash your changes in
-> > Ricardo's original commit)?
+Yep! This does seem to resolve the mali bifrost dma address warn-ons I
+was seeing, and makes the board seem to function more consistently, so
+that's great!
 
-Done.
+Tested-by: John Stultz <john.stultz@linaro.org>
 
-> 
-> No problem. Thanks!
+Though I still find I have to revert "swiotlb: use swiotlb_map_page in
+swiotlb_map_sg_attrs" still to boot to UI successfully with AOSP.
+Still not sure whats going on there (its sort of soft hangs where some
+userland runs ok, but other bits seem to jam up, even console commands
+sometimes hang - almost seems like io stalls).
 
-Thanks for reporting/fixing the bug.
-
-Boris
+Anyway, thanks so much again for this one!
+-john

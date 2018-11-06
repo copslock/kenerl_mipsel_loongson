@@ -1,56 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 15:38:14 +0100 (CET)
-Received: from mail-pg1-x544.google.com ([IPv6:2607:f8b0:4864:20::544]:42229
-        "EHLO mail-pg1-x544.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990697AbeKFOgk4Wuhb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2018 15:36:40 +0100
-Received: by mail-pg1-x544.google.com with SMTP id i4-v6so5894795pgq.9;
-        Tue, 06 Nov 2018 06:36:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 16:29:56 +0100 (CET)
+Received: from mail-qt1-x842.google.com ([IPv6:2607:f8b0:4864:20::842]:40579
+        "EHLO mail-qt1-x842.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992869AbeKFP3wBfz2g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2018 16:29:52 +0100
+Received: by mail-qt1-x842.google.com with SMTP id k12so3013446qtf.7
+        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 07:29:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=uNGDvFPN4zXrSe9ynX/chysgNcrdJz+M6yhXOppEXqw=;
-        b=IRuqjrLvFtNyyzsM69h7vDIEacAd3HwDNczvFQ2ugGYRaUuv1nUW1bSytwEc8m6Zgw
-         oa6QsmW9F2TIoIsHIYdZJGbkI7BSr/xgTb6o33FU1oLset9FvUzuJxGpHmgAHRkne4NY
-         PdgCP9ZHVc7svhOca9Tp5gEptb1Oc9RGXjO/rsBjSFgtn6M0vJGwyY9HK+3lE279O3Zz
-         +B1pZ6S7R0u5jADQ8P9MUPTMhHN+w2EX11JvjilJel79l/57+sGSdpQoWdUb4ofI3zf4
-         Y/vjz1sisXDXIJ57Nkshl3hAMILFKmnxypJgTtVqzetxVKsNn1TroOhSaXsimOThHkNx
-         NyiQ==
+        d=globallogic.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YLwoVVb0vdb+k7Wj3hDL/gN5lfWGYvzdtPiYZHIl41E=;
+        b=fh2SwPwfZv2CexklQmNGOLyybQM6hyTe7CTMcRH7FVaLbF5V5DkHz/HUY0HDUPSMPJ
+         nR1gdtl0+Oj7lXrYu375cn+Rz4YXIrGvdx5R28YCsqgBsvDQm6yj72CRi/7tPlxCoRLR
+         FUQawRddVWE/woFqCNKEZogln2hK8Itvz4q5w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=uNGDvFPN4zXrSe9ynX/chysgNcrdJz+M6yhXOppEXqw=;
-        b=Kb2GpkRVjLZhQD02RcAJNj/Mts9JChOeoTTP8N+TCW32c4TYiR8dV4q8o0kulw2+nC
-         VU7hAtPCDhqQCV+Tnaq9Lh3AIxHP91+dmPcyOPNUcN0WJ5w5ZqB9Dh36aevBJguNsH97
-         nS8Apio/PBcZdc3c9z2CIYMGYt6M1/Fgew6L3M10o0nr7h91MGRxKZqbho/Sk63vWLvi
-         SeLwea95T7Y9H+NT7yhRoHPJF/hfqGj/YwUuUdRiRHMfK2Yo3p6WIMt176CfkLksySD6
-         q9JdqNfAJfV1JxEBOY6qxXE3GojZB9MJSpi3/KN4xuvBqMjtpBSis97xTUL2T0S1DokY
-         79bA==
-X-Gm-Message-State: AGRZ1gKgzmXX5c7JI6UvmkbdHghyHUk8ApK+8GXSBvvsvQ1CbH8EryQh
-        QMPpEwvMqqrLk7WFJeBo41WzeanSHII=
-X-Google-Smtp-Source: AJdET5dsZZctpnYrlfXINBsLUr3ouJ/Mvi4po3bfdnRlIBrCGvZvb/VN8/5tMiV5SyXPWnsduq6UHQ==
-X-Received: by 2002:a62:5615:: with SMTP id k21-v6mr19013773pfb.190.1541514999723;
-        Tue, 06 Nov 2018 06:36:39 -0800 (PST)
-Received: from localhost (68.168.130.77.16clouds.com. [68.168.130.77])
-        by smtp.gmail.com with ESMTPSA id b75-v6sm55255142pfe.148.2018.11.06.06.36.38
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 06 Nov 2018 06:36:39 -0800 (PST)
-From:   Yangtao Li <tiny.windzz@gmail.com>
-To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Yangtao Li <tiny.windzz@gmail.com>
-Subject: [PATCH] MIPS: r2-on-r6-emu: Change to use DEFINE_SHOW_ATTRIBUTE macro
-Date:   Tue,  6 Nov 2018 09:36:36 -0500
-Message-Id: <20181106143636.8450-1-tiny.windzz@gmail.com>
-X-Mailer: git-send-email 2.17.0
-Return-Path: <tiny.windzz@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YLwoVVb0vdb+k7Wj3hDL/gN5lfWGYvzdtPiYZHIl41E=;
+        b=Vpj64hL8jZ2sgjEyBtNipKbIfpJRmpE+YojFR1cmlq7QOoUz3k6CzyuMlhGqaioALf
+         DyVe8GV+SIwTAsm4PoivfBnAPagC+Kl9UpdDPLFH23QP9MVHC2VO1lLuUcKRvVytzEJ2
+         YUgyjFrDD4el8F2zysXnSjq1dFB3lhE4ySVsw6QpKD0uYnsWxusOUa5r18AV+ATdcDN5
+         yVibU4vdoKEwtNmhmTbOxx8bHcCRx+zhiFYw9yjTJ7DiBnG23sRIixdrY4csar7rt+G2
+         pJcC6pSIusnfyqJflMUPZARiZv6a2WWhtt8a/iupWYib8QvyBUsAbbEg1YldpQrRM4xq
+         KktA==
+X-Gm-Message-State: AGRZ1gKrcG6GwjRS8ITUc4XkYbmlNeqZpI7HIm12MX59BtG2RmLfXDGV
+        F4p2FQt6DeIy/X7hJoQ+eu6VGpYkG9hk8fTDEXRkpQ==
+X-Google-Smtp-Source: AJdET5c94s+Zb+yrg0xu6oaM2qDRnSywjXiafK9ovnA3zif3V3+huIotKaZheoMOLfcPpsRR9P5qzyyWG2kqvw+Vpuc=
+X-Received: by 2002:ac8:1c50:: with SMTP id j16mr26922584qtk.320.1541518191320;
+ Tue, 06 Nov 2018 07:29:51 -0800 (PST)
+MIME-Version: 1.0
+References: <1538587415-24126-1-git-send-email-maksym.kokhan@globallogic.com>
+ <de95ca86-014d-77f6-6e2b-24f191147487@cogentembedded.com> <CAMuHMdWK0CsNsq7Sb8oG4ZvNFS3S1=8O_pUQHrY54KBV7a24FQ@mail.gmail.com>
+ <CAMT6-xhP=2wjsKJFumKUsUGVL6U_BynMv6RE0cxXgk6cyfjJkw@mail.gmail.com>
+In-Reply-To: <CAMT6-xhP=2wjsKJFumKUsUGVL6U_BynMv6RE0cxXgk6cyfjJkw@mail.gmail.com>
+From:   Maksym Kokhan <maksym.kokhan@globallogic.com>
+Date:   Tue, 6 Nov 2018 17:29:40 +0200
+Message-ID: <CAMT6-xji=XrteXm6KbUYLiKqSH_-RHzXzwn3zi5hYbtq_R_sRg@mail.gmail.com>
+Subject: Re: [PATCH] mips: delete duplication of BUILTIN_DTB selection
+To:     geert@linux-m68k.org
+Cc:     sergei.shtylyov@cogentembedded.com,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Andrii Bordunov <andrew.bordunov@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <maksym.kokhan@globallogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67100
+X-archive-position: 67101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiny.windzz@gmail.com
+X-original-sender: maksym.kokhan@globallogic.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,70 +67,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+On Thu, Oct 4, 2018 at 3:06 PM Maksym Kokhan
+<maksym.kokhan@globallogic.com> wrote:
+>
+> On Thu, Oct 4, 2018 at 12:14 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >
+> > On Thu, Oct 4, 2018 at 10:38 AM Sergei Shtylyov
+> > <sergei.shtylyov@cogentembedded.com> wrote:
+> > > On 10/3/2018 8:23 PM, Maksym Kokhan wrote:
+> > > > CONFIG_BUILTIN_DTB selection is duplicated in menu
+> > > > "Machine selection" under MIPS_MALTA.
+> > > >
+> > > > Fixes: e81a8c7dabac ("MIPS: Malta: Setup RAM regions via DT")
+> > > > Signed-off-by: Maksym Kokhan <maksym.kokhan@globallogic.com>
+> > > > Signed-off-by: Andrii Bordunov <andrew.bordunov@gmail.com>
+> > > > ---
+> > > >   arch/mips/Kconfig | 1 -
+> > > >   1 file changed, 1 deletion(-)
+> > > >
+> > > > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > > > index 3551199..71d6549 100644
+> > > > --- a/arch/mips/Kconfig
+> > > > +++ b/arch/mips/Kconfig
+> > > > @@ -539,7 +539,6 @@ config MIPS_MALTA
+> > > >       select USE_OF
+> > > >       select LIBFDT
+> > > >       select ZONE_DMA32 if 64BIT
+> > > > -     select BUILTIN_DTB
+> > > >       select LIBFDT
+> > >
+> > >     LIBFDT seems duplicated too.
+> >
+> > Using random sort order doesn't help. Keep them sorted, please?
+>
+> We are going to deal with it in the separate patch.
 
-Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
----
- arch/mips/kernel/mips-r2-to-r6-emul.c | 32 +++++----------------------
- 1 file changed, 5 insertions(+), 27 deletions(-)
+Is it OK to leave this patch as it is and make another patch/patches
+for other changes or it would be better to modify it to remove
+duplication of LIBFDT too and sort this list of configs?
 
-diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-index eb18b186e858..28cb88daa3ef 100644
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -2242,7 +2242,7 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
- 
- #ifdef CONFIG_DEBUG_FS
- 
--static int mipsr2_stats_show(struct seq_file *s, void *unused)
-+static int mipsr2_emul_show(struct seq_file *s, void *unused)
- {
- 
- 	seq_printf(s, "Instruction\tTotal\tBDslot\n------------------------------\n");
-@@ -2308,9 +2308,9 @@ static int mipsr2_stats_show(struct seq_file *s, void *unused)
- 	return 0;
- }
- 
--static int mipsr2_stats_clear_show(struct seq_file *s, void *unused)
-+static int mipsr2_clear_show(struct seq_file *s, void *unused)
- {
--	mipsr2_stats_show(s, unused);
-+	mipsr2_emul_show(s, unused);
- 
- 	__this_cpu_write((mipsr2emustats).movs, 0);
- 	__this_cpu_write((mipsr2bdemustats).movs, 0);
-@@ -2353,30 +2353,8 @@ static int mipsr2_stats_clear_show(struct seq_file *s, void *unused)
- 	return 0;
- }
- 
--static int mipsr2_stats_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, mipsr2_stats_show, inode->i_private);
--}
--
--static int mipsr2_stats_clear_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, mipsr2_stats_clear_show, inode->i_private);
--}
--
--static const struct file_operations mipsr2_emul_fops = {
--	.open                   = mipsr2_stats_open,
--	.read			= seq_read,
--	.llseek			= seq_lseek,
--	.release		= single_release,
--};
--
--static const struct file_operations mipsr2_clear_fops = {
--	.open                   = mipsr2_stats_clear_open,
--	.read			= seq_read,
--	.llseek			= seq_lseek,
--	.release		= single_release,
--};
--
-+DEFINE_SHOW_ATTRIBUTE(mipsr2_emul);
-+DEFINE_SHOW_ATTRIBUTE(mipsr2_clear);
- 
- static int __init mipsr2_init_debugfs(void)
- {
--- 
-2.17.0
+--
+Regards,
+Maksym Kokhan

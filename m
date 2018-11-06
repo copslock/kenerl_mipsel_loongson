@@ -1,60 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 16:29:56 +0100 (CET)
-Received: from mail-qt1-x842.google.com ([IPv6:2607:f8b0:4864:20::842]:40579
-        "EHLO mail-qt1-x842.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992869AbeKFP3wBfz2g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2018 16:29:52 +0100
-Received: by mail-qt1-x842.google.com with SMTP id k12so3013446qtf.7
-        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 07:29:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=globallogic.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YLwoVVb0vdb+k7Wj3hDL/gN5lfWGYvzdtPiYZHIl41E=;
-        b=fh2SwPwfZv2CexklQmNGOLyybQM6hyTe7CTMcRH7FVaLbF5V5DkHz/HUY0HDUPSMPJ
-         nR1gdtl0+Oj7lXrYu375cn+Rz4YXIrGvdx5R28YCsqgBsvDQm6yj72CRi/7tPlxCoRLR
-         FUQawRddVWE/woFqCNKEZogln2hK8Itvz4q5w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YLwoVVb0vdb+k7Wj3hDL/gN5lfWGYvzdtPiYZHIl41E=;
-        b=Vpj64hL8jZ2sgjEyBtNipKbIfpJRmpE+YojFR1cmlq7QOoUz3k6CzyuMlhGqaioALf
-         DyVe8GV+SIwTAsm4PoivfBnAPagC+Kl9UpdDPLFH23QP9MVHC2VO1lLuUcKRvVytzEJ2
-         YUgyjFrDD4el8F2zysXnSjq1dFB3lhE4ySVsw6QpKD0uYnsWxusOUa5r18AV+ATdcDN5
-         yVibU4vdoKEwtNmhmTbOxx8bHcCRx+zhiFYw9yjTJ7DiBnG23sRIixdrY4csar7rt+G2
-         pJcC6pSIusnfyqJflMUPZARiZv6a2WWhtt8a/iupWYib8QvyBUsAbbEg1YldpQrRM4xq
-         KktA==
-X-Gm-Message-State: AGRZ1gKrcG6GwjRS8ITUc4XkYbmlNeqZpI7HIm12MX59BtG2RmLfXDGV
-        F4p2FQt6DeIy/X7hJoQ+eu6VGpYkG9hk8fTDEXRkpQ==
-X-Google-Smtp-Source: AJdET5c94s+Zb+yrg0xu6oaM2qDRnSywjXiafK9ovnA3zif3V3+huIotKaZheoMOLfcPpsRR9P5qzyyWG2kqvw+Vpuc=
-X-Received: by 2002:ac8:1c50:: with SMTP id j16mr26922584qtk.320.1541518191320;
- Tue, 06 Nov 2018 07:29:51 -0800 (PST)
-MIME-Version: 1.0
-References: <1538587415-24126-1-git-send-email-maksym.kokhan@globallogic.com>
- <de95ca86-014d-77f6-6e2b-24f191147487@cogentembedded.com> <CAMuHMdWK0CsNsq7Sb8oG4ZvNFS3S1=8O_pUQHrY54KBV7a24FQ@mail.gmail.com>
- <CAMT6-xhP=2wjsKJFumKUsUGVL6U_BynMv6RE0cxXgk6cyfjJkw@mail.gmail.com>
-In-Reply-To: <CAMT6-xhP=2wjsKJFumKUsUGVL6U_BynMv6RE0cxXgk6cyfjJkw@mail.gmail.com>
-From:   Maksym Kokhan <maksym.kokhan@globallogic.com>
-Date:   Tue, 6 Nov 2018 17:29:40 +0200
-Message-ID: <CAMT6-xji=XrteXm6KbUYLiKqSH_-RHzXzwn3zi5hYbtq_R_sRg@mail.gmail.com>
-Subject: Re: [PATCH] mips: delete duplication of BUILTIN_DTB selection
-To:     geert@linux-m68k.org
-Cc:     sergei.shtylyov@cogentembedded.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 18:57:10 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:41772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992852AbeKFR5GYAxzI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 Nov 2018 18:57:06 +0100
+Received: from localhost (unknown [131.107.160.167])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9237920862;
+        Tue,  6 Nov 2018 17:57:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1541527024;
+        bh=dE8q89PzoeDFNnMvo7hPhMLTxOSh0ij9spgfVdpjT/g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0Z3le6zv0GuRjzBkMt6fBOwhgTYrTHtFAmK1HE/LAuq/g4q9I2tYG5QRJifEuOLPO
+         oYrMsBU88xQem8/ZIEa7e9Ygj75DO4yasjgoNssDcKxOTrRpOWCaFMkfAsNT7nc6MB
+         z7DMjwdx2KVzDtu3S7qM66QXBDQ5MXi3d3LgiBPY=
+Date:   Tue, 6 Nov 2018 12:56:52 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <pburton@wavecomp.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Andrii Bordunov <andrew.bordunov@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <maksym.kokhan@globallogic.com>
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+Subject: Re: [4.19 PATCH] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for
+ 64bit
+Message-ID: <20181106175652.GF151445@sasha-vm>
+References: <20181105225815.24489-1-paul.burton@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20181105225815.24489-1-paul.burton@mips.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Return-Path: <sashal@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67101
+X-archive-position: 67102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maksym.kokhan@globallogic.com
+X-original-sender: sashal@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,45 +58,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 4, 2018 at 3:06 PM Maksym Kokhan
-<maksym.kokhan@globallogic.com> wrote:
+On Mon, Nov 05, 2018 at 10:58:30PM +0000, Paul Burton wrote:
+>From: Huacai Chen <chenhc@lemote.com>
 >
-> On Thu, Oct 4, 2018 at 12:14 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> >
-> > On Thu, Oct 4, 2018 at 10:38 AM Sergei Shtylyov
-> > <sergei.shtylyov@cogentembedded.com> wrote:
-> > > On 10/3/2018 8:23 PM, Maksym Kokhan wrote:
-> > > > CONFIG_BUILTIN_DTB selection is duplicated in menu
-> > > > "Machine selection" under MIPS_MALTA.
-> > > >
-> > > > Fixes: e81a8c7dabac ("MIPS: Malta: Setup RAM regions via DT")
-> > > > Signed-off-by: Maksym Kokhan <maksym.kokhan@globallogic.com>
-> > > > Signed-off-by: Andrii Bordunov <andrew.bordunov@gmail.com>
-> > > > ---
-> > > >   arch/mips/Kconfig | 1 -
-> > > >   1 file changed, 1 deletion(-)
-> > > >
-> > > > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > > > index 3551199..71d6549 100644
-> > > > --- a/arch/mips/Kconfig
-> > > > +++ b/arch/mips/Kconfig
-> > > > @@ -539,7 +539,6 @@ config MIPS_MALTA
-> > > >       select USE_OF
-> > > >       select LIBFDT
-> > > >       select ZONE_DMA32 if 64BIT
-> > > > -     select BUILTIN_DTB
-> > > >       select LIBFDT
-> > >
-> > >     LIBFDT seems duplicated too.
-> >
-> > Using random sort order doesn't help. Keep them sorted, please?
+>[ Upstream commit c61c7def1fa0a722610d89790e0255b74f3c07dd ]
 >
-> We are going to deal with it in the separate patch.
+>Commit ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
+>set VDSO_RANDOMIZE_SIZE to 256MB for 64bit kernel. But take a look at
+>arch/mips/mm/mmap.c we can see that MIN_GAP is 128MB, which means the
+>mmap_base may be at (user_address_top - 128MB). This make the stack be
+>surrounded by mmaped areas, then stack expanding fails and causes a
+>segmentation fault. Therefore, VDSO_RANDOMIZE_SIZE should be less than
+>MIN_GAP and this patch reduce it to 64MB.
+>
+>Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>Signed-off-by: Paul Burton <paul.burton@mips.com>
+>Fixes: ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
+>Patchwork: https://patchwork.linux-mips.org/patch/20910/
+>Cc: Ralf Baechle <ralf@linux-mips.org>
+>Cc: James Hogan <jhogan@kernel.org>
+>Cc: linux-mips@linux-mips.org
+>Cc: Fuxin Zhang <zhangfx@lemote.com>
+>Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+>Cc: Huacai Chen <chenhuacai@gmail.com>
+>Cc: stable@vger.kernel.org # 4.19
 
-Is it OK to leave this patch as it is and make another patch/patches
-for other changes or it would be better to modify it to remove
-duplication of LIBFDT too and sort this list of configs?
+Now queued for 4.19, thank you.
 
 --
-Regards,
-Maksym Kokhan
+Thanks,
+Sasha

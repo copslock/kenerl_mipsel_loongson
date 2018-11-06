@@ -1,51 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 18:57:10 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:41772 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992852AbeKFR5GYAxzI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Nov 2018 18:57:06 +0100
-Received: from localhost (unknown [131.107.160.167])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9237920862;
-        Tue,  6 Nov 2018 17:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541527024;
-        bh=dE8q89PzoeDFNnMvo7hPhMLTxOSh0ij9spgfVdpjT/g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0Z3le6zv0GuRjzBkMt6fBOwhgTYrTHtFAmK1HE/LAuq/g4q9I2tYG5QRJifEuOLPO
-         oYrMsBU88xQem8/ZIEa7e9Ygj75DO4yasjgoNssDcKxOTrRpOWCaFMkfAsNT7nc6MB
-         z7DMjwdx2KVzDtu3S7qM66QXBDQ5MXi3d3LgiBPY=
-Date:   Tue, 6 Nov 2018 12:56:52 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Paul Burton <pburton@wavecomp.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>
-Subject: Re: [4.19 PATCH] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for
- 64bit
-Message-ID: <20181106175652.GF151445@sasha-vm>
-References: <20181105225815.24489-1-paul.burton@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 20:17:01 +0100 (CET)
+Received: from emh03.mail.saunalahti.fi ([62.142.5.109]:48624 "EHLO
+        emh03.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992824AbeKFTQ6DQWlr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2018 20:16:58 +0100
+Received: from darkstar.musicnaut.iki.fi (85-76-84-88-nat.elisa-mobile.fi [85.76.84.88])
+        by emh03.mail.saunalahti.fi (Postfix) with ESMTP id 4F4E440037;
+        Tue,  6 Nov 2018 21:16:56 +0200 (EET)
+Date:   Tue, 6 Nov 2018 21:16:56 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     hch@lst.de, robh+dt@kernel.org, m.szyprowski@samsung.com,
+        jean-philippe.brucker@arm.com, john.stultz@linaro.org,
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] of/device: Really only set bus DMA mask when appropriate
+Message-ID: <20181106191655.GB14958@darkstar.musicnaut.iki.fi>
+References: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20181105225815.24489-1-paul.burton@mips.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Return-Path: <sashal@kernel.org>
+In-Reply-To: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67102
+X-archive-position: 67103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sashal@kernel.org
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,33 +42,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 05, 2018 at 10:58:30PM +0000, Paul Burton wrote:
->From: Huacai Chen <chenhc@lemote.com>
->
->[ Upstream commit c61c7def1fa0a722610d89790e0255b74f3c07dd ]
->
->Commit ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
->set VDSO_RANDOMIZE_SIZE to 256MB for 64bit kernel. But take a look at
->arch/mips/mm/mmap.c we can see that MIN_GAP is 128MB, which means the
->mmap_base may be at (user_address_top - 128MB). This make the stack be
->surrounded by mmaped areas, then stack expanding fails and causes a
->segmentation fault. Therefore, VDSO_RANDOMIZE_SIZE should be less than
->MIN_GAP and this patch reduce it to 64MB.
->
->Signed-off-by: Huacai Chen <chenhc@lemote.com>
->Signed-off-by: Paul Burton <paul.burton@mips.com>
->Fixes: ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
->Patchwork: https://patchwork.linux-mips.org/patch/20910/
->Cc: Ralf Baechle <ralf@linux-mips.org>
->Cc: James Hogan <jhogan@kernel.org>
->Cc: linux-mips@linux-mips.org
->Cc: Fuxin Zhang <zhangfx@lemote.com>
->Cc: Zhangjin Wu <wuzhangjin@gmail.com>
->Cc: Huacai Chen <chenhuacai@gmail.com>
->Cc: stable@vger.kernel.org # 4.19
+Hi,
 
-Now queued for 4.19, thank you.
+On Tue, Nov 06, 2018 at 11:54:15AM +0000, Robin Murphy wrote:
+> of_dma_configure() was *supposed* to be following the same logic as
+> acpi_dma_configure() and only setting bus_dma_mask if some range was
+> specified by the firmware. However, it seems that subtlety got lost in
+> the process of fitting it into the differently-shaped control flow, and
+> as a result the force_dma==true case ends up always setting the bus mask
+> to the 32-bit default, which is not what anyone wants.
+> 
+> Make sure we only touch it if the DT actually said so.
+> 
+> Fixes: 6c2fb2ea7636 ("of/device: Set bus DMA mask as appropriate")
+> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Reported-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 
---
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+This fixes the MMC driver DMA mask issue on OCTEON.
+
 Thanks,
-Sasha
+
+A.
+
+> ---
+> 
+> Sorry about that... I guess I only have test setups that either have
+> dma-ranges or where a 32-bit bus mask goes unnoticed :(
+> 
+> The Octeon and SMMU issues sound like they're purely down to this, and
+> it's probably related to at least one of John's Hikey woes.
+> 
+> Robin.
+> 
+>  drivers/of/device.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/device.c b/drivers/of/device.c
+> index 0f27fad9fe94..757ae867674f 100644
+> --- a/drivers/of/device.c
+> +++ b/drivers/of/device.c
+> @@ -149,7 +149,8 @@ int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
+>  	 * set by the driver.
+>  	 */
+>  	mask = DMA_BIT_MASK(ilog2(dma_addr + size - 1) + 1);
+> -	dev->bus_dma_mask = mask;
+> +	if (!ret)
+> +		dev->bus_dma_mask = mask;
+>  	dev->coherent_dma_mask &= mask;
+>  	*dev->dma_mask &= mask;
+>  
+> -- 
+> 2.19.1.dirty
+> 

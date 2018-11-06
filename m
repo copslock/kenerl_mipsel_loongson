@@ -1,60 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 00:18:22 +0100 (CET)
-Received: from mail-wr1-x42c.google.com ([IPv6:2a00:1450:4864:20::42c]:43116
-        "EHLO mail-wr1-x42c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991112AbeKFXQMsyy4F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 00:16:12 +0100
-Received: by mail-wr1-x42c.google.com with SMTP id y3-v6so15116799wrh.10
-        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 15:16:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 00:38:08 +0100 (CET)
+Received: from mail-eopbgr710096.outbound.protection.outlook.com ([40.107.71.96]:29408
+        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992824AbeKFXhHu2NKY convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 00:37:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=DpbdRIbQaA1wYedZxLueEoKVXd0GtXSVdWHp5s+Vj5E=;
-        b=EV6dDpilBdBrt8A3965PIlZ+GI6J0bE9Nv5NZjJ1O3eS/TGeVi/cYUaAKSt+PuRbgM
-         koMU/yG5gtqviznReNYvJjmg6cg37FHB1RHK+e9ya8d88+ZuEKysc9FRqwhVXiLHKYbS
-         mol3Q03VMKhtQ3G1LyfkX4hq51EQvE/8zFcSY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=DpbdRIbQaA1wYedZxLueEoKVXd0GtXSVdWHp5s+Vj5E=;
-        b=BaV+JgUjkOlux31Xi32lf02KApjuSkBGADXT4gqs2uaMIyJh/aqCebtMphGX4yL9RQ
-         KPq8okljPlgZ69aXxhPB0hmud/nQAtNyG+JX7MqYjeYAPuxvx8uGFXLLn9GkexPKGG0x
-         pH9FZj1kKKRNirplV/8fmsjPgO6jRC773Txd28L/Xl+iK7883Ke5vCuLwsMMobFOwMxq
-         uMCBjX3ljps/gL7MzPKA2nHHO1hoTvNo3KL5bHJih+cAMLrSDfL6C76YenY4ESS7Pzlt
-         6Sax7x8RfypuNFJEqut0kmWF3uRjiPMLWpt/8jTlt0TWbBJKCNHDTrIJVFKcS1h00Dq6
-         n4zQ==
-X-Gm-Message-State: AGRZ1gIa1kh0hfp4AMps3zH6qOFNz+dAm29goji0RbVK+tH+8IgBc71r
-        2uRTrCQnBCWOxU/AOdC05O5xtbYPtQ5yFFSiPZ/tYw==
-X-Google-Smtp-Source: AJdET5ctU7zVijdvQObNSvAkB+IVwGhySRRekx3PGLGdflOUkZauUIt6bCg/Bf6gmDu1g4NixHJEDvmfOzIULa02OK8=
-X-Received: by 2002:adf:cc81:: with SMTP id p1-v6mr7154438wrj.139.1541546172236;
- Tue, 06 Nov 2018 15:16:12 -0800 (PST)
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3eulyuCQaH6Bk+YvOMoNnwW70Qu2NJiemAlh2SeR3ds=;
+ b=DG0istS3hk5RF2aJCw5aAu5SE3Dl39tFItb3jvOcyVOQ97dWJUgKGwZthK5tmCivq9BHxgovJFqrIvRrDpWr3dJsbH7N0My9IF9jTOBXczROUQ/xavq2ihVGf0itnPAfLJ8SDgI8KMbuLRZHtTl7argj1PebRMWiBr9XxjTQLXM=
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
+ MWHPR2201MB1023.namprd22.prod.outlook.com (10.174.167.24) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.20; Tue, 6 Nov 2018 23:37:04 +0000
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Tue, 6 Nov 2018
+ 23:37:04 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Yangtao Li <tiny.windzz@gmail.com>
+CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: r2-on-r6-emu: Change to use DEFINE_SHOW_ATTRIBUTE
+ macro
+Thread-Topic: [PATCH] MIPS: r2-on-r6-emu: Change to use DEFINE_SHOW_ATTRIBUTE
+ macro
+Thread-Index: AQHUdd4i/Gq/tSya50G2xpTcFC+Fy6VDZ4AA
+Date:   Tue, 6 Nov 2018 23:37:03 +0000
+Message-ID: <20181106233702.yk6ql3abafjv7cgk@pburton-laptop>
+References: <20181106143636.8450-1-tiny.windzz@gmail.com>
+In-Reply-To: <20181106143636.8450-1-tiny.windzz@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR21CA0038.namprd21.prod.outlook.com
+ (2603:10b6:300:129::24) To MWHSPR00MB117.namprd22.prod.outlook.com
+ (2603:10b6:300:10c::23)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1023;6:NzTIDREcpg9xCj21arKC7iAGXIJ5+6LLGlMQ7ejGfwLKXi70Fck04sV0n0mlqLOPs7XO7V7GDzEgtQXpmrazQzONjImIMalt/U35bAoV4yG6zDBoVIos9g2JEcnF02R3w3VlMwSBq9gEWW3Z6d5m+npwmak4vZoyHG7zv0vPpee7yQX5MZ/OeNTjpGll0GadSfy1dKIWII8D9GKp+EYsfxvu6X5pAHpyb81iLnIz9yA/1XZLB+2ufo3xmjVWIEMHzNyD6/Z1z1jmAv/XTGRlsb+PrVIWuoE0lN5w/5gDvSi/I//V7uLQaVJTduh5T1LrokBT5PIynYlrX65hn926STJArDJAvTuYjXyP82JmS4k2PBSz4c5WIf3vE5TpSl0xCX5OvbfaUlwo0UY7YZgqjcWU69M+0uKUKeNDgt7Fvj/Dxzx2x7KRHwtDXEXfZL2NXNpdHarqw0MMtJXD1mWpsg==;5:GLpU42n9kT2NroCY3MoWqiHRckOgjSf/TGTrxn48O4TdgpJrYZfNPfIiagUKPyCwi7wqY4+LASkPhqBT5AX4AYi6SQCsQtcM5J5e2BsUQQwNCqzBjTSb6QF6pxeDfSdqvI0WKHqh3GcjRADF0VJ7KYGksmWCWa39YIEjgBuYz68=;7:vrP+fIapgwtzzrLLJs8QrsgGf6Y0h41Ap8q71hGXYKxUI90a5yFeY3tw6pCTrrejR9qPAZcYRmuDE1+3SvWeRjnBZNh3FRgalzY/i5qSNcbTd7n51WYquUv2m1tPCHH9AS4bQ8dfrsn4I/fgMx/oSg==
+x-ms-office365-filtering-correlation-id: 8051e04a-c12e-4ee7-42da-08d64440c151
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1023;
+x-ms-traffictypediagnostic: MWHPR2201MB1023:
+x-microsoft-antispam-prvs: <MWHPR2201MB10235E39433EEF8638308B00C1CB0@MWHPR2201MB1023.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(85827821059158);
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231382)(944501410)(52105095)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123560045)(20161123562045)(20161123564045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1023;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1023;
+x-forefront-prvs: 0848C1A6AA
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(396003)(39840400004)(136003)(346002)(376002)(189003)(199004)(2906002)(14454004)(7736002)(8676002)(9686003)(6512007)(305945005)(5660300001)(68736007)(33716001)(81166006)(81156014)(53936002)(229853002)(6916009)(105586002)(2900100001)(1076002)(3846002)(106356001)(6116002)(39060400002)(58126008)(446003)(11346002)(486006)(6436002)(6486002)(6246003)(8936002)(186003)(71200400001)(71190400001)(316002)(476003)(97736004)(42882007)(54906003)(76176011)(26005)(25786009)(33896004)(4326008)(102836004)(6506007)(386003)(508600001)(52116002)(256004)(99286004)(66066001)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1023;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: LiUugWg5qsRh9CMhIPHWlWi0lhj6JOa8fR0hWIowmm4nqDRZW00EvXeqimy+24jocnIqh16hR0cmEGNhHkFfIfr4hN591xD0c5Ox0j+6KQepelm8T03GvpGuT0c7EgRt4jbY1fwBP7DdKlBkq5C+JI+LgKaUShUy4SLtylTmdYV0x9W7Fh3mjfRK8X7aB4O107XovAnO5rAU27PsOAc77qLgQnSuYFKIffoP/4e3HbXdlbb7Lepp0lQvR929bCqyu6n1VclaryTTd/q4x8JF0ieNP5bxezUA9wXwI+27wKNqkM4SN707lVUDcGMshzIIs6Faq1Y+i/LH8t1Lzrg5GaOdG1ENaZAhbi1wQSjyJEM=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <EA55B8AE93DAE846B0A116968D6070CE@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 2002:a1c:4054:0:0:0:0:0 with HTTP; Tue, 6 Nov 2018 15:16:11 -0800 (PST)
-In-Reply-To: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
-References: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
-From:   John Stultz <john.stultz@linaro.org>
-Date:   Tue, 6 Nov 2018 15:16:11 -0800
-Message-ID: <CALAqxLWif1wjRHx5X136sBqdg0KJ8itqXPk9G6NJ70Z_QFavzQ@mail.gmail.com>
-Subject: Re: [PATCH] of/device: Really only set bus DMA mask when appropriate
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     hch@lst.de, Rob Herring <robh+dt@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        aaro.koskinen@iki.fi, jean-philippe.brucker@arm.com,
-        iommu@lists.linux-foundation.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-mips@linux-mips.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <john.stultz@linaro.org>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8051e04a-c12e-4ee7-42da-08d64440c151
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2018 23:37:03.8023
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1023
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67109
+X-archive-position: 67110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john.stultz@linaro.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,39 +92,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Nov 6, 2018 at 3:54 AM, Robin Murphy <robin.murphy@arm.com> wrote:
-> of_dma_configure() was *supposed* to be following the same logic as
-> acpi_dma_configure() and only setting bus_dma_mask if some range was
-> specified by the firmware. However, it seems that subtlety got lost in
-> the process of fitting it into the differently-shaped control flow, and
-> as a result the force_dma==true case ends up always setting the bus mask
-> to the 32-bit default, which is not what anyone wants.
->
-> Make sure we only touch it if the DT actually said so.
->
-> Fixes: 6c2fb2ea7636 ("of/device: Set bus DMA mask as appropriate")
-> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Reported-by: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Hi Yangtao,
+
+On Tue, Nov 06, 2018 at 09:36:36AM -0500, Yangtao Li wrote:
+> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+> 
+> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 > ---
->
-> Sorry about that... I guess I only have test setups that either have
-> dma-ranges or where a 32-bit bus mask goes unnoticed :(
->
-> The Octeon and SMMU issues sound like they're purely down to this, and
-> it's probably related to at least one of John's Hikey woes.
+>  arch/mips/kernel/mips-r2-to-r6-emul.c | 32 +++++----------------------
+>  1 file changed, 5 insertions(+), 27 deletions(-)
 
-Yep! This does seem to resolve the mali bifrost dma address warn-ons I
-was seeing, and makes the board seem to function more consistently, so
-that's great!
+Thanks - applied to mips-next for 4.21.
 
-Tested-by: John Stultz <john.stultz@linaro.org>
-
-Though I still find I have to revert "swiotlb: use swiotlb_map_page in
-swiotlb_map_sg_attrs" still to boot to UI successfully with AOSP.
-Still not sure whats going on there (its sort of soft hangs where some
-userland runs ok, but other bits seem to jam up, even console commands
-sometimes hang - almost seems like io stalls).
-
-Anyway, thanks so much again for this one!
--john
+Paul

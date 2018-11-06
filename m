@@ -1,42 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 22:58:55 +0100 (CET)
-Received: from mail.bootlin.com ([62.4.15.54]:60947 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991112AbeKFV6lSyLGT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Nov 2018 22:58:41 +0100
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id 7716920510; Tue,  6 Nov 2018 22:58:40 +0100 (CET)
-Received: from bbrezillon (91-160-177-164.subs.proxad.net [91.160.177.164])
-        by mail.bootlin.com (Postfix) with ESMTPSA id 22D1020379;
-        Tue,  6 Nov 2018 22:58:30 +0100 (CET)
-Date:   Tue, 6 Nov 2018 22:58:29 +0100
-From:   Boris Brezillon <boris.brezillon@bootlin.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2018 23:20:16 +0100 (CET)
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:37073 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992824AbeKFWT2BvK4T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2018 23:19:28 +0100
+Received: by mail-vs1-f68.google.com with SMTP id h18so8327795vsj.4
+        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 14:19:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lQqBvSf2K+0TeJcISEsQOASNwwNH/SfmS+R8MJdBLMo=;
+        b=YZynh53xyKDVyCkHTacQlc5CBo5Iykvj1jR5xQeB447MNQG4bFcWDb9FpgLIBdqNNw
+         L2EbkU9qD8s1iaNP+o57Cwa2987Tajqb9aghFHhMMUfROTX0X7OOsS8H8JJ/ygLKsXbV
+         GcjiGO59EhHxaHRHjfJdjHTgLPuLy2kvAa7L65Gd0ONzSqcmyuG+vEP1FuVgvOaqOQho
+         szI2hovfogYyLPeqsoTopRM+unbUXmdN1XJevnR+66hVVSR/S3amo0qb4OgRfKJozymc
+         rfT2EsVnQ7TfTGH9O8EvbXV5l6QKE0wrnvucFdYT8WRUg2oqvdsvqBuywtco5JrgZrgq
+         Q0tg==
+X-Gm-Message-State: AGRZ1gKC6Dl4V7d/Kbkt8BCbiJxEhvjTaQ9kUowLKsAULG8gTpj5u1UK
+        sQdOjxQalecqJpRwiAKUkoAD5S4jF/SQTtWBzf4=
+X-Google-Smtp-Source: AJdET5d//gNbsRFPyV2otQsL4wBpytotw6ctYjhuVEQMpgM3OhHZPbiEzN1eBsWflm6kpKh1rawVckku9NHvWC4qF1Y=
+X-Received: by 2002:a67:c202:: with SMTP id i2mr10962178vsj.11.1541542767169;
+ Tue, 06 Nov 2018 14:19:27 -0800 (PST)
+MIME-Version: 1.0
+References: <20181106214416.11342-1-geert@linux-m68k.org> <20181106225829.5ecbe19e@bbrezillon>
+In-Reply-To: <20181106225829.5ecbe19e@bbrezillon>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 6 Nov 2018 23:19:14 +0100
+Message-ID: <CAMuHMdUQhsikcBzRFAvrCwZwzFK_Coh=fqpSihFP6jEtugCMQw@mail.gmail.com>
+Subject: Re: [PATCH next] mtd: maps: physmap: Fix infinite loop crash in ROM
+ type probing
+To:     Boris Brezillon <boris.brezillon@bootlin.com>
 Cc:     Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         Marek Vasut <marek.vasut@gmail.com>,
         Richard Weinberger <richard@nod.at>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH next] mtd: maps: physmap: Fix infinite loop crash in ROM
- type probing
-Message-ID: <20181106225829.5ecbe19e@bbrezillon>
-In-Reply-To: <20181106214416.11342-1-geert@linux-m68k.org>
-References: <20181106214416.11342-1-geert@linux-m68k.org>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@bootlin.com>
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67106
+X-archive-position: 67107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@bootlin.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,59 +61,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue,  6 Nov 2018 22:44:16 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+Hi Boris,
 
-> On Toshiba RBTX4927, where map_probe is supposed to fail:
-> 
->     Creating 2 MTD partitions on "physmap-flash.0":
->     0x000000c00000-0x000001000000 : "boot"
->     0x000000000000-0x000000c00000 : "user"
->     physmap-flash physmap-flash.1: physmap platform flash device: [mem 0x1e000000-0x1effffff]
->     CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80320f40, ra == 80321004
->     ...
->     Call Trace:
->     [<80320f40>] get_mtd_chip_driver+0x30/0x8c
->     [<80321004>] do_map_probe+0x20/0x90
->     [<80328448>] physmap_flash_probe+0x484/0x4ec
-> 
-> The access to rom_probe_types[] was changed from a sentinel-based loop
-> to an infinite loop, causing a crash when reaching the sentinel.
+On Tue, Nov 6, 2018 at 10:58 PM Boris Brezillon
+<boris.brezillon@bootlin.com> wrote:
+> On Tue,  6 Nov 2018 22:44:16 +0100
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Toshiba RBTX4927, where map_probe is supposed to fail:
+> >
+> >     Creating 2 MTD partitions on "physmap-flash.0":
+> >     0x000000c00000-0x000001000000 : "boot"
+> >     0x000000000000-0x000000c00000 : "user"
+> >     physmap-flash physmap-flash.1: physmap platform flash device: [mem 0x1e000000-0x1effffff]
+> >     CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80320f40, ra == 80321004
+> >     ...
+> >     Call Trace:
+> >     [<80320f40>] get_mtd_chip_driver+0x30/0x8c
+> >     [<80321004>] do_map_probe+0x20/0x90
+> >     [<80328448>] physmap_flash_probe+0x484/0x4ec
+> >
+> > The access to rom_probe_types[] was changed from a sentinel-based loop
+> > to an infinite loop, causing a crash when reaching the sentinel.
+>
+> Oops. Do you mind if I fix that in-place (squash your changes in
+> Ricardo's original commit)?
 
-Oops. Do you mind if I fix that in-place (squash your changes in
-Ricardo's original commit)?
+No problem. Thanks!
 
-> 
-> Fix this by:
->   - Removing the no longer needed sentinel,
->   - Limiting the number of loop iterations to the actual number of ROM
->     types.
-> 
-> Fixes: c7afe08496fa463e ("mtd: maps: physmap: Invert logic on if/else branch")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
->  drivers/mtd/maps/physmap-core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mtd/maps/physmap-core.c b/drivers/mtd/maps/physmap-core.c
-> index 33b77bd9022ce251..e8c3b250d8421edc 100644
-> --- a/drivers/mtd/maps/physmap-core.c
-> +++ b/drivers/mtd/maps/physmap-core.c
-> @@ -396,7 +396,7 @@ static int physmap_flash_of_init(struct platform_device *dev)
->  #endif /* IS_ENABLED(CONFIG_MTD_PHYSMAP_OF) */
->  
->  static const char * const rom_probe_types[] = {
-> -	"cfi_probe", "jedec_probe", "qinfo_probe", "map_rom", NULL
-> +	"cfi_probe", "jedec_probe", "qinfo_probe", "map_rom",
->  };
->  
->  static const char * const part_probe_types[] = {
-> @@ -524,7 +524,7 @@ static int physmap_flash_probe(struct platform_device *dev)
->  		} else {
->  			int j;
->  
-> -			for (j = 0; ARRAY_SIZE(rom_probe_types); j++) {
-> +			for (j = 0; j < ARRAY_SIZE(rom_probe_types); j++) {
->  				info->mtds[i] = do_map_probe(rom_probe_types[j],
->  							     &info->maps[i]);
->  				if (info->mtds[i])
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,43 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 17:20:11 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:42830 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992433AbeKGQTRboNbo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 17:19:17 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B17980D;
-        Wed,  7 Nov 2018 08:19:15 -0800 (PST)
-Received: from [192.168.1.123] (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CFBD3F5BD;
-        Wed,  7 Nov 2018 08:19:12 -0800 (PST)
-Subject: Re: [PATCH] of/device: Really only set bus DMA mask when appropriate
-To:     Rob Herring <robh@kernel.org>
-Cc:     Christoph Hellwig <hch@lst.de>, m.szyprowski@samsung.com,
-        aaro.koskinen@iki.fi, jean-philippe.brucker@arm.com,
-        john.stultz@linaro.org, iommu@lists.linux-foundation.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-arm-kernel@lists.infradead.org
-References: <b06321ac25a1211e572e650a630e5e1aa9f8173f.1541504601.git.robin.murphy@arm.com>
- <20181107080335.GA24511@lst.de>
- <22cbe798-612f-8c88-90e7-388202f603cf@arm.com> <20181107155235.GA18618@bogus>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <fead1118-9a19-5687-8679-60054727e898@arm.com>
-Date:   Wed, 7 Nov 2018 16:19:10 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 00:06:00 +0100 (CET)
+Received: from mail-cys01nam02on0113.outbound.protection.outlook.com ([104.47.37.113]:44066
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992869AbeKGXF5WJKMU convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 00:05:57 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TwXyZd4MHu3KBQR1Km8v78qzIzW3HGTxuO5ZMDJdi8w=;
+ b=qnzlSbn0G1mjAEoSb2JKzjdX2DhJLGRna9vcqKIMZal9dIgggi9pPP0lYSbYo/cFiMi24MIOq4z1Sj81EQY3S2+qnl/cpXsKVExhFCJLg8RcQfDgcjiBpoQ7kKGwX+AJyxER2IvfZbYaIACjH3JTrdBxOiygqa7eCDsqnZdGamE=
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
+ MWHPR2201MB1055.namprd22.prod.outlook.com (10.174.169.141) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.21; Wed, 7 Nov 2018 23:05:46 +0000
+Received: from MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
+ ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Wed, 7 Nov 2018
+ 23:05:46 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     Paul Burton <pburton@wavecomp.com>
+Subject: [PATCH] MIPS: Simplify GCC_OFF_SMALL_ASM definition
+Thread-Topic: [PATCH] MIPS: Simplify GCC_OFF_SMALL_ASM definition
+Thread-Index: AQHUdu5q3GyLMhBWSUW7VMR+ZHZNpg==
+Date:   Wed, 7 Nov 2018 23:05:46 +0000
+Message-ID: <20181107230524.3370-1-paul.burton@mips.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR21CA0070.namprd21.prod.outlook.com
+ (2603:10b6:300:db::32) To MWHSPR00MB117.namprd22.prod.outlook.com
+ (2603:10b6:300:10c::23)
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1055;6:49fhP3/Oicf3k2wxEkTyJWAU39DOG3lFUoRw5S1J5OEiUipQ0dHdHrox+Z6bENCokNVmNgkzKXI/hzSrjU0dHQJyiYqqgwgsuPSjkWZxMLXBFLinY2cjwnUAZhs5gUxeGnIo8IA624RID8wNqiTMcc1FmCokFqdscF0EVMHcQXMNjPxwgUSS90G+b9/SGz2+7+DDYMEQd4KjyBwtZhwVOfWEWpPogCSIcTlxhR1LTJ70LwPwWEY6LvjccNJutDmbGTLfD5aQjGxFERTU6DlWtPmrqVl7Jl9VN2I4iD86wPQybVxjiZEmlOlvRiYGeKaKn33SgXjkwFHVWwpKa1T9VvxFIDgm2fMrm+GBFdmGevM8m6E8shG+4cMbxvSQkrBDK7g/JwBFNttEeDquew6M4GY3U0A2p7KVMQ2QRhGaHeHyc0cU0VHUan0X2kTbvwigHw7bvI8/z1BvFVGAmO414Q==;5:A5T9EtJaHJBKkOo3HSBI+g8/U76U6DmqPwIKhs2eDiL/sFVsmHWP5udjt3A3AzpkxL/FbmeeP3LAkI2VMPDTcrziXspxu7tp24AYNS2W8pgbjOXPSX+fo5rYG/HNZ12lwPdg1IJM6d+rRXtXHcwr9uq/29FjJmlI6sjXNsEWnJc=;7:RDxwCEtHmg9NTkUTJAPtou7V/RXxgIUMT6kf+qlRn/b1wJ+36AmREwmkfOMkZSbbeE5ppQeqY1EBKVeGEhHxy9mBkaCsF57+hd9paawr/1pNzcLhh5KWfcRdMj/EdpPjQcUn3FT7+HfzFfpVRB2vGA==
+x-ms-office365-filtering-correlation-id: cfb15f90-cd4a-46bb-8bda-08d645058cc2
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1055;
+x-ms-traffictypediagnostic: MWHPR2201MB1055:
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-microsoft-antispam-prvs: <MWHPR2201MB10550D325E47449B0C590370C1C40@MWHPR2201MB1055.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3231382)(944501410)(52105095)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(20161123560045)(2016111802025)(20161123564045)(20161123562045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1055;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1055;
+x-forefront-prvs: 08497C3D99
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(346002)(376002)(136003)(39840400004)(366004)(199004)(189003)(256004)(81156014)(14444005)(4326008)(81166006)(8936002)(6116002)(71190400001)(305945005)(14454004)(36756003)(3846002)(5660300001)(1076002)(106356001)(105586002)(6506007)(102836004)(2906002)(316002)(26005)(186003)(52116002)(99286004)(44832011)(71200400001)(7736002)(486006)(508600001)(1857600001)(2351001)(386003)(42882007)(476003)(107886003)(25786009)(97736004)(6436002)(5640700003)(2616005)(2900100001)(53936002)(2501003)(6512007)(6916009)(68736007)(8676002)(6486002)(66066001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1055;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: gqNsTs1VhAEPIp4SpiqIO6iszqsEJZJ2sCLh/1qaxxB6rMf++twTsai+usuf0F6gtsv7mIegXZjjmJsy0Vp9UonuExIno7DueKI+b36A6FuuaOGxCF0uEjxxIVsgfjuO9vifVettTecnb0R6azrWI/u4tsrOpo1iK0n9/HLyAriLMnnhNaUGsB5bTzZ0JiumcO4QXJyo3wNCHmq5nEPEUp9UEBDcAV+zS1GVUhrrGZfJRYV/kqXKZ6CIa134feVO1BBb4AZtwlB4iNTraVXlmCJ1sqOIt9ufZEOY2NVfBniPbsBrI0+4hLXIvAWJPOMUVYP6T/9OOkG9LA3I1r4L6E153r0QbNtXLU8R0y4B3aI=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <20181107155235.GA18618@bogus>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <robin.murphy@arm.com>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfb15f90-cd4a-46bb-8bda-08d645058cc2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2018 23:05:46.1269
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1055
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67133
+X-archive-position: 67134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robin.murphy@arm.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,32 +83,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2018-11-07 3:52 pm, Rob Herring wrote:
-> On Wed, Nov 07, 2018 at 12:56:49PM +0000, Robin Murphy wrote:
->> On 2018-11-07 8:03 am, Christoph Hellwig wrote:
->>> On Tue, Nov 06, 2018 at 11:54:15AM +0000, Robin Murphy wrote:
->>>> of_dma_configure() was *supposed* to be following the same logic as
->>>> acpi_dma_configure() and only setting bus_dma_mask if some range was
->>>> specified by the firmware. However, it seems that subtlety got lost in
->>>> the process of fitting it into the differently-shaped control flow, and
->>>> as a result the force_dma==true case ends up always setting the bus mask
->>>> to the 32-bit default, which is not what anyone wants.
->>>>
->>>> Make sure we only touch it if the DT actually said so.
->>>
->>> This looks good, but I think it could really use a comment as the use
->>> of ret all the way down the function isn't exactly obvious.
->>
->> Fair point.
->>
->>> Let me now if you want this picked up through the OF or DMA trees.
->>
->> I don't mind either way; I figure I'll wait a bit longer to see if Rob has
->> any preference, then resend with the comment and the tags picked up so it
->> can hopefully make rc2.
-> 
-> I have other fixes to send, so I can take it.
+The GCC_OFF_SMALL_ASM macro defines the constraint to use for
+instructions needing "small offsets", typically the LL or SC
+instructions. Historically these had 16 bit offsets, but microMIPS &
+MIPS32/MIPS64r6 onwards reduced the width of the offset field.
 
-Cheers Rob, I'll send you that updated version momentarily.
+GCC 4.9 & higher supports a ZC constraint which matches the offset
+requirements of the LL & SC instructions. Where supported we can use
+the ZC constraint regardless of ISA, and it will handle the requirements
+of the ISA correctly. As such we require 3 cases:
 
-Robin.
+  - GCC 4.9 & higher can use ZC.
+
+  - GCC older than 4.9 must use the older R constraint, which does not
+    take into account microMIPS or MIPSr6.
+
+  - microMIPS builds therefore require GCC 4.9 or higher. MIPSr6 support
+    was only introduced in newer compilers anyway so it can be ignored
+    here.
+
+The current code complicates this a little by specifically having MIPSr6
+bypass the GCC version check, and using the R constraint for pre-MIPSr6
+builds even if the compiler supports ZC which would be equivalent.
+
+Simplify this such that the code straightforwardly implements the 3
+cases outlined above.
+
+For non-GCC compilers we presume that ZC is safe to use. In practice the
+only non-GCC compiler of interest is clang and it has supported the ZC
+constraint since version 3.7.0. It seems safe enough to presume that
+nobody will expect to built a working kernel using a clang version older
+than that, and if they do then they'll have bigger problems. As such we
+don't check the clang version number & just presume ZC is usable when
+the compiler is not GCC.
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+---
+
+ arch/mips/include/asm/compiler.h | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
+index 9196fca4335d..f77e99f1722e 100644
+--- a/arch/mips/include/asm/compiler.h
++++ b/arch/mips/include/asm/compiler.h
+@@ -43,18 +43,14 @@
+ #undef barrier_before_unreachable
+ #define barrier_before_unreachable() asm volatile(".insn")
+ 
+-#ifdef CONFIG_CPU_MIPSR6
+-/* All MIPS R6 toolchains support the ZC constrain */
+-#define GCC_OFF_SMALL_ASM() "ZC"
+-#else
+-#ifndef CONFIG_CPU_MICROMIPS
+-#define GCC_OFF_SMALL_ASM() "R"
+-#elif __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
+-#define GCC_OFF_SMALL_ASM() "ZC"
++#if !defined(CONFIG_CC_IS_GCC) || \
++    (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9)
++# define GCC_OFF_SMALL_ASM() "ZC"
++#elif defined(CONFIG_CPU_MICROMIPS)
++# error "microMIPS compilation unsupported with GCC older than 4.9"
+ #else
+-#error "microMIPS compilation unsupported with GCC older than 4.9"
+-#endif /* CONFIG_CPU_MICROMIPS */
+-#endif /* CONFIG_CPU_MIPSR6 */
++# define GCC_OFF_SMALL_ASM() "R"
++#endif
+ 
+ #ifdef CONFIG_CPU_MIPSR6
+ #define MIPS_ISA_LEVEL "mips64r6"
+-- 
+2.19.1

@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 00:14:55 +0100 (CET)
-Received: from mail-eopbgr740095.outbound.protection.outlook.com ([40.107.74.95]:44352
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 00:14:59 +0100 (CET)
+Received: from mail-bl2nam02on0095.outbound.protection.outlook.com ([104.47.38.95]:33683
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992926AbeKGXOKtUmUU convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 00:14:10 +0100
+        id S23992852AbeKGXOaE2M1U convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 00:14:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c5WZu8bMcgLiYiag4JJ1YBe0+m1ni6136kBzZpclo7k=;
- b=iEKJJ0T1zQvRMFZTR0vJQg7Wa+4u9QSEb07zvTo111VUXCDpMcwrMbXPFkl7FnjD4FTH8sukE0vCLFOF1S4hlTipSFTHv4UGj2yZC5b2SauIFXAHnfGG1SCNcpaw4ZuouZqiH8zb5QyvcMIWwg0vKGlMIsCAWyIbnPkNGVWCIxA=
+ bh=GSogF11VfYw2VQyqrfBvBTf3lgRj3uDC98VSjr+geCk=;
+ b=OZ0OId54+YDGnTbO4d33l68M6o4ZeF6gIRmD4pZdlzwZTo6wzhCG+hlkCog+jfNcRnHASz7gPh5aQVPcfIDrP2gK77Ct1npgINIr97U0KIaCLlxBMKX5bgSlSTk6ndgqeACqKQf6L1rpSGR2YYlXt+hL9tGaxkPMlf8jttl88yQ=
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1566.namprd22.prod.outlook.com (10.172.63.20) with Microsoft SMTP
+ MWHPR2201MB1581.namprd22.prod.outlook.com (10.174.167.30) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.21; Wed, 7 Nov 2018 23:14:08 +0000
+ 15.20.1294.21; Wed, 7 Nov 2018 23:14:09 +0000
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com
  ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
  ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Wed, 7 Nov 2018
- 23:14:08 +0000
+ 23:14:09 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 CC:     Paul Burton <pburton@wavecomp.com>
-Subject: [PATCH 15/20] MIPS: signal: Remove FP context support when
+Subject: [PATCH 17/20] MIPS: Avoid FCSR sanitization when
  CONFIG_MIPS_FP_SUPPORT=n
-Thread-Topic: [PATCH 15/20] MIPS: signal: Remove FP context support when
+Thread-Topic: [PATCH 17/20] MIPS: Avoid FCSR sanitization when
  CONFIG_MIPS_FP_SUPPORT=n
-Thread-Index: AQHUdu+Vg6YKa6xoZ0qoaKKUEcK+qg==
-Date:   Wed, 7 Nov 2018 23:14:08 +0000
-Message-ID: <20181107231341.4614-16-paul.burton@mips.com>
+Thread-Index: AQHUdu+Wguf0GIdHPEmhvjaO89ub4w==
+Date:   Wed, 7 Nov 2018 23:14:09 +0000
+Message-ID: <20181107231341.4614-18-paul.burton@mips.com>
 References: <20181107231341.4614-1-paul.burton@mips.com>
 In-Reply-To: <20181107231341.4614-1-paul.burton@mips.com>
 Accept-Language: en-US
@@ -41,36 +41,36 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1566;6:avGsSTBpLxRUSRGosK+vmaVg7hmeGnIJElh4Zh5gUNbm6ziOJkVNy+mhCgP+Qw2xJUe2SU3v7oubDkTGUNHCvSWAyJSjqLOYSV0CN3LopBTmDu2WMvUTlKI2/IsmiHILAvCqGfCYUhgSG6c7/Kb3D3wacljBOveLqUGH7m68ET9oEP6wooVja4dYhG7cvYQK+obo+W5k/VjY4Jfj8Bv7g9J8xfzLGwgxFH2mdwXEq9awM/zgCcqQflJ4gnUjAK5BrQhTG+Koz8hOJMJ/BS/gJaIl8Y789jStO2t6KaYxV/x+DgbiPhLnKcu1sbXqm0GasQM3gDKSak4tb5aosxdbFO39OD4+Q9Ql5vcCa3uQn6OeowTsSdD8MBMh++Jim/wlW1wpzISsYty+1TgUEVMuedHM08xDfyHJMINzAGI6jajwUvs88fW6JJV5Z0tmcgFimLK10vnzTxHZDFVGx7YjhA==;5:HRumGP+4xoamg79zNdhXWxEn3qwLRPKVp8Hwx2dhbOL+hpTx3XNfyVqDinO2yYiKvEVe6t16WrnAKreS6ig+KE00KtbH8VsQ5RX22PSuOPUMg168abWosCSH+144lh8HEDnkBlSJtotgJFtaa3qCPGmct4Dk8gLo3uGQ0nUkog0=;7:u+WIWFc/Lfwp8N4dOITX9iC30ccqnHPoXtpeDnxOdmP7gXmiHesDvqV7QfqcAzg8+LuXwyPvwXuu4kywTQP8JFbDu1ZNbuCrdZMNjEj60+0PUVeFNk9VxUlp5cA7QqVTPayMZntUbxw67zIxFv+8Gg==
-x-ms-office365-filtering-correlation-id: 45d9adda-687e-43ab-910b-08d64506b81a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1566;
-x-ms-traffictypediagnostic: MWHPR2201MB1566:
-x-microsoft-antispam-prvs: <MWHPR2201MB15668EDFC594F7BBDCF38844C1C40@MWHPR2201MB1566.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1581;6:U5+7mAiyxrCzZeZ8HNC47fHP+RkZKjngbRboZoD7RjZ5REUHpnCIgLfdvBgnD5zgLGx3XcAg+qtiZixmnV6jwty6UrTFljl2Mrrq0SC2JTD1m1ZerXWTJjfjgfvIrHChjuyJSLhzbCIg1JPLpJbpxIKQ/Tb1GbUZRKBjqK9/RbrqM4bvXDvWgkPDnwQMnyewbtgAr1NgSrW1f0ccnKYB2clG5soZcQDqtW1eJRnagFeLSfR5cEECsZSpoIIL0AC0PNbSK7Iy4uGPorC9F74OBAgWynwSNCEb2kkWe81jGmuh6t2Sqygvnz2U9K9VOKxQr9K/1K5liA7ijLeJdiI79C1kh3yMJxB4QY61v2Mf7d+m7h2fs0H3Nll/oiLdk6W34iL719dIcIUGecEreVyvRRbF9a5UvxMtKCeuZGO1Z2HPFNFFdhQzuGBgJwdJ7tAvC8tU2SMnd4jDtpIxBfzqog==;5:vnmeV9K3BRRcv1dOQ4O8PH8QHF6XT/wFOy8QxVdZFyoIKFQ8MF96Kocau6ps09ecdbPLNNjGM+guEPcTkvy5Cjv/afvWBAZosvip4+ylWeYz+l7fItuHgTAkCToBYIDzBxV3g3HNcvr1zKLvgyl+ERevNYk1MhqFgsfOwn3jxIs=;7:i1viUaIFJKN3Df3MQavOykEIaeJit805koOd2ZdM3Dk8qRe9KGYj7QNNAqF4giZJHNQWW0NqoMWhezNjA3t45dX7Tzwb+hFS7TnMUcJOvJ/0d+DRVxW0iphJB/8bTKBLj+n2pwCvMNQ9DzUrzg3sRA==
+x-ms-office365-filtering-correlation-id: 4dae2f1f-2baf-4cbc-cc37-08d64506b8e9
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1581;
+x-ms-traffictypediagnostic: MWHPR2201MB1581:
+x-microsoft-antispam-prvs: <MWHPR2201MB15812DD0C44578B9F863D68AC1C40@MWHPR2201MB1581.namprd22.prod.outlook.com>
 x-exchange-antispam-report-test: UriScan:;
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3231382)(944501410)(52105095)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(20161123564045)(20161123560045)(20161123558120)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1566;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1566;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1581;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1581;
 x-forefront-prvs: 08497C3D99
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(366004)(396003)(39840400004)(136003)(199004)(189003)(66066001)(2501003)(386003)(6512007)(53936002)(8936002)(6486002)(81156014)(81166006)(2906002)(3846002)(25786009)(6436002)(6116002)(71200400001)(102836004)(2900100001)(5640700003)(97736004)(1076002)(99286004)(476003)(4326008)(106356001)(186003)(42882007)(52116002)(105586002)(6916009)(71190400001)(2351001)(44832011)(36756003)(76176011)(6506007)(107886003)(508600001)(8676002)(68736007)(305945005)(316002)(5660300001)(11346002)(2616005)(14454004)(26005)(256004)(14444005)(486006)(446003)(7736002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1566;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39840400004)(396003)(136003)(376002)(346002)(189003)(199004)(14454004)(99286004)(6486002)(97736004)(36756003)(66066001)(68736007)(486006)(446003)(105586002)(11346002)(2906002)(2616005)(476003)(6116002)(44832011)(1076002)(3846002)(2351001)(106356001)(53936002)(6512007)(6436002)(5640700003)(256004)(14444005)(7736002)(25786009)(71200400001)(26005)(305945005)(386003)(186003)(6916009)(42882007)(6506007)(2501003)(76176011)(71190400001)(52116002)(5660300001)(8936002)(8676002)(316002)(4326008)(81166006)(508600001)(2900100001)(107886003)(102836004)(81156014);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1581;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: IFZoZpRbDLZA3QDljFWN4vjGNERNN6WenQTDwdNTd2aDVp8295/dE4FW7lhyZJgJDNwwW52mQKoPZroONU4lKtJjSGcmfvMjcQ3R2nWmZrvlXNlWcAiOWR+J8kdyYek0JKEEYjrPnZi0wDqzVpRJqeR+EXzqp1EfB6y8I0jgxTXoP53oEHDyEzlRh1FpX0CTRrFGoCeNaFCCfr8jv1EbJrGdb5wZR2CaUZWrn5977VRExXM+skrD2Qetj7adz8AdfNKD9o08f6GlesslIRJOyQuzEDPyGPTBTjMvOn41JM9NTODfgJhBhGsRc0DV/OD3bTu22c16GSQO6cuBz7XW4KhsDbjqhusH4MoaAIoHlz4=
+x-microsoft-antispam-message-info: j3yNL0kvTo0LHgroLAnVEA+307GeCV8z2Egtg3iqHop0pAGGGNlIsAKDlxrw9hpPcCSD1qgYqq0YmZ4m4m2QWFTyYZ17SUsNP+eqwSiyQaPzMCzA2OsYMo7cwTqv4WyhT7YVbXuOJYaUkghx1d6YqL276t09okJWECnYJZ5whROVrqWl9C1TjPkVbNPvzCrFhBNip8X4r82ZIDmGBMYNhmZbtsMlTCKlOQUQUNNIRGzD7WRvrDLNWZWAUV0SW0PdTDm/QuCvlqgU79u4MgHsq4nnP05RLUjHSYYDitkaoj7Fxd9E7eidhOQ4d7hx9IYiLkGTCGYQnBjA7enM9yAKInDy6VvO5NETbzD8AlM6iDQ=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45d9adda-687e-43ab-910b-08d64506b81a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2018 23:14:08.4276
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4dae2f1f-2baf-4cbc-cc37-08d64506b8e9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2018 23:14:09.6135
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1566
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1581
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67149
+X-archive-position: 67150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -87,111 +87,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When CONFIG_MIPS_FP_SUPPORT=n we don't support floating point, so
-there's no need to save & restore floating point context around signals.
-This prepares us for the removal of FP context from struct task_struct
-later.
-
-Since MSA context is a superset of FP context support for it similarly
-needs to be removed when MSA/FP support is disabled.
+When CONFIG_MIPS_FP_SUPPORT=n we don't support floating point, so we
+don't need to worry about floating point exceptions pending in the
+Floating point Control & Status Register (FCSR) during switch_to(). Stub
+out the __sanitize_fcr31() macro in this case.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 ---
 
- arch/mips/kernel/signal.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/switch_to.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 109ed163a6a6..d3a23758592c 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -62,6 +62,8 @@ struct rt_sigframe {
- 	struct ucontext rs_uc;
- };
- 
-+#ifdef CONFIG_MIPS_FP_SUPPORT
-+
- /*
-  * Thread saved context copy to/from a signal context presumed to be on the
-  * user stack, and therefore accessed with appropriate macros from uaccess.h.
-@@ -104,6 +106,20 @@ static int copy_fp_from_sigcontext(void __user *sc)
- 	return err;
- }
- 
-+#else /* !CONFIG_MIPS_FP_SUPPORT */
-+
-+static int copy_fp_to_sigcontext(void __user *sc)
-+{
-+	return 0;
-+}
-+
-+static int copy_fp_from_sigcontext(void __user *sc)
-+{
-+	return 0;
-+}
-+
-+#endif /* !CONFIG_MIPS_FP_SUPPORT */
-+
- /*
-  * Wrappers for the assembly _{save,restore}_fp_context functions.
+diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
+index e610473d61b8..0f813bb753c6 100644
+--- a/arch/mips/include/asm/switch_to.h
++++ b/arch/mips/include/asm/switch_to.h
+@@ -84,7 +84,8 @@ do {									\
+  * Check FCSR for any unmasked exceptions pending set with `ptrace',
+  * clear them and send a signal.
   */
-@@ -142,6 +158,8 @@ static inline void __user *sc_to_extcontext(void __user *sc)
- 	return &uc->uc_extcontext;
- }
+-#define __sanitize_fcr31(next)						\
++#ifdef CONFIG_MIPS_FP_SUPPORT
++# define __sanitize_fcr31(next)						\
+ do {									\
+ 	unsigned long fcr31 = mask_fcr31_x(next->thread.fpu.fcr31);	\
+ 	void __user *pc;						\
+@@ -95,6 +96,9 @@ do {									\
+ 		force_fcr31_sig(fcr31, pc, next);			\
+ 	}								\
+ } while (0)
++#else
++# define __sanitize_fcr31(next)
++#endif
  
-+#ifdef CONFIG_CPU_HAS_MSA
-+
- static int save_msa_extcontext(void __user *buf)
- {
- 	struct msa_extcontext __user *msa = buf;
-@@ -195,9 +213,6 @@ static int restore_msa_extcontext(void __user *buf, unsigned int size)
- 	unsigned int csr;
- 	int i, err;
- 
--	if (!IS_ENABLED(CONFIG_CPU_HAS_MSA))
--		return SIGSYS;
--
- 	if (size != sizeof(*msa))
- 		return -EINVAL;
- 
-@@ -234,6 +249,20 @@ static int restore_msa_extcontext(void __user *buf, unsigned int size)
- 	return err;
- }
- 
-+#else /* !CONFIG_CPU_HAS_MSA */
-+
-+static int save_msa_extcontext(void __user *buf)
-+{
-+	return 0;
-+}
-+
-+static int restore_msa_extcontext(void __user *buf, unsigned int size)
-+{
-+	return SIGSYS;
-+}
-+
-+#endif /* !CONFIG_CPU_HAS_MSA */
-+
- static int save_extcontext(void __user *buf)
- {
- 	int sz;
-@@ -880,7 +909,7 @@ asmlinkage void do_notify_resume(struct pt_regs *regs, void *unused,
- 	user_enter();
- }
- 
--#ifdef CONFIG_SMP
-+#if defined(CONFIG_SMP) && defined(CONFIG_MIPS_FP_SUPPORT)
- static int smp_save_fp_context(void __user *sc)
- {
- 	return raw_cpu_has_fpu
-@@ -908,7 +937,7 @@ static int signal_setup(void)
- 		     (offsetof(struct rt_sigframe, rs_uc.uc_extcontext) -
- 		      offsetof(struct rt_sigframe, rs_uc.uc_mcontext)));
- 
--#ifdef CONFIG_SMP
-+#if defined(CONFIG_SMP) && defined(CONFIG_MIPS_FP_SUPPORT)
- 	/* For now just do the cpu_has_fpu check when the functions are invoked */
- 	save_fp_context = smp_save_fp_context;
- 	restore_fp_context = smp_restore_fp_context;
+ /*
+  * For newly created kernel threads switch_to() will return to
 -- 
 2.19.1

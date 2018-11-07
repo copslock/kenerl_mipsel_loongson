@@ -1,43 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 00:38:08 +0100 (CET)
-Received: from mail-eopbgr710096.outbound.protection.outlook.com ([40.107.71.96]:29408
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 01:06:09 +0100 (CET)
+Received: from mail-eopbgr700094.outbound.protection.outlook.com ([40.107.70.94]:22559
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992824AbeKFXhHu2NKY convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 00:37:07 +0100
+        id S23992820AbeKGAF1hzTbY convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 01:05:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3eulyuCQaH6Bk+YvOMoNnwW70Qu2NJiemAlh2SeR3ds=;
- b=DG0istS3hk5RF2aJCw5aAu5SE3Dl39tFItb3jvOcyVOQ97dWJUgKGwZthK5tmCivq9BHxgovJFqrIvRrDpWr3dJsbH7N0My9IF9jTOBXczROUQ/xavq2ihVGf0itnPAfLJ8SDgI8KMbuLRZHtTl7argj1PebRMWiBr9XxjTQLXM=
+ bh=pY5UYI3bJpaaIDbKOj013jhAN+fHVy8lz9llwbKWwdE=;
+ b=hni7K78rHDqxQ7NPoLMKhvIm8YjRj5CdvITFgm2t+VTrj5KI4j+pbu1S01x5Y9HSbRGlgfh2j05FlCwulGzycQsJZhvB5+kWRx4DPMKAJLAaajmzJvxz6bMKWj9P+qwMZHUrEpzmCFvOVYswlsOfSx3YsZXfvnpxsHGyT9KtHuc=
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1023.namprd22.prod.outlook.com (10.174.167.24) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.20; Tue, 6 Nov 2018 23:37:04 +0000
+ MWHPR2201MB1215.namprd22.prod.outlook.com (10.174.161.148) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.27; Wed, 7 Nov 2018 00:05:25 +0000
 Received: from MWHSPR00MB117.namprd22.prod.outlook.com
  ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Tue, 6 Nov 2018
- 23:37:04 +0000
+ ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Wed, 7 Nov 2018
+ 00:05:25 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Yangtao Li <tiny.windzz@gmail.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: r2-on-r6-emu: Change to use DEFINE_SHOW_ATTRIBUTE
- macro
-Thread-Topic: [PATCH] MIPS: r2-on-r6-emu: Change to use DEFINE_SHOW_ATTRIBUTE
- macro
-Thread-Index: AQHUdd4i/Gq/tSya50G2xpTcFC+Fy6VDZ4AA
-Date:   Tue, 6 Nov 2018 23:37:03 +0000
-Message-ID: <20181106233702.yk6ql3abafjv7cgk@pburton-laptop>
-References: <20181106143636.8450-1-tiny.windzz@gmail.com>
-In-Reply-To: <20181106143636.8450-1-tiny.windzz@gmail.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/3] MIPS: DEC: DECstation defconfig refresh and new
+ templates
+Thread-Topic: [PATCH 0/3] MIPS: DEC: DECstation defconfig refresh and new
+ templates
+Thread-Index: AQHUdLZ2psxsCcLn20O7oQ3b64dyiaVDcbuA
+Date:   Wed, 7 Nov 2018 00:05:25 +0000
+Message-ID: <20181107000523.tp346yiwq5fgszs4@pburton-laptop>
+References: <alpine.LFD.2.21.1811050219130.20378@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.21.1811050219130.20378@eddie.linux-mips.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR21CA0038.namprd21.prod.outlook.com
- (2603:10b6:300:129::24) To MWHSPR00MB117.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR18CA0044.namprd18.prod.outlook.com
+ (2603:10b6:320:31::30) To MWHSPR00MB117.namprd22.prod.outlook.com
  (2603:10b6:300:10c::23)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -45,37 +43,37 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1023;6:NzTIDREcpg9xCj21arKC7iAGXIJ5+6LLGlMQ7ejGfwLKXi70Fck04sV0n0mlqLOPs7XO7V7GDzEgtQXpmrazQzONjImIMalt/U35bAoV4yG6zDBoVIos9g2JEcnF02R3w3VlMwSBq9gEWW3Z6d5m+npwmak4vZoyHG7zv0vPpee7yQX5MZ/OeNTjpGll0GadSfy1dKIWII8D9GKp+EYsfxvu6X5pAHpyb81iLnIz9yA/1XZLB+2ufo3xmjVWIEMHzNyD6/Z1z1jmAv/XTGRlsb+PrVIWuoE0lN5w/5gDvSi/I//V7uLQaVJTduh5T1LrokBT5PIynYlrX65hn926STJArDJAvTuYjXyP82JmS4k2PBSz4c5WIf3vE5TpSl0xCX5OvbfaUlwo0UY7YZgqjcWU69M+0uKUKeNDgt7Fvj/Dxzx2x7KRHwtDXEXfZL2NXNpdHarqw0MMtJXD1mWpsg==;5:GLpU42n9kT2NroCY3MoWqiHRckOgjSf/TGTrxn48O4TdgpJrYZfNPfIiagUKPyCwi7wqY4+LASkPhqBT5AX4AYi6SQCsQtcM5J5e2BsUQQwNCqzBjTSb6QF6pxeDfSdqvI0WKHqh3GcjRADF0VJ7KYGksmWCWa39YIEjgBuYz68=;7:vrP+fIapgwtzzrLLJs8QrsgGf6Y0h41Ap8q71hGXYKxUI90a5yFeY3tw6pCTrrejR9qPAZcYRmuDE1+3SvWeRjnBZNh3FRgalzY/i5qSNcbTd7n51WYquUv2m1tPCHH9AS4bQ8dfrsn4I/fgMx/oSg==
-x-ms-office365-filtering-correlation-id: 8051e04a-c12e-4ee7-42da-08d64440c151
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1023;
-x-ms-traffictypediagnostic: MWHPR2201MB1023:
-x-microsoft-antispam-prvs: <MWHPR2201MB10235E39433EEF8638308B00C1CB0@MWHPR2201MB1023.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(85827821059158);
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1215;6:wq7+clLz2YJWlpzqr7vfblkBvshI6IQ3coNcR3NkujLzWmpoA8qY9QsaESQLw+y8wRdCR2iHWIi2RuN1JeEs7v7VxUzrpzWOiJ8mP9AuUbGwMXog5JOJSJtX2K55NyZY+21fnE9W8p2Q0TnlNORByTP9/3X1YEEL9dxJBAxwvTcY88gW9cbk4RxWohIbKMMn9o8FcI8XNVHFCE/nVffL0X2gRSkWZeNbW/FcikqMy6BpKC4pk2QEFYtFGbcfM1UGGbJah0RVGwTZAY72OgTNrB3wmMHCFj+kf/uc4Gp5JhhBt/oBMGhbCKeDLsYxeotqqt/gFGgl3KdDQwefgbXt5xVdtZFN6ROhisHuueZ6w3qs8mhOvlY2LUfDzU01kh52JZ1MssxrZMJDIxnZ76kl0VPxZoGpbBXEsBujLz4mL8XQHJkaGDPTw5TjCXav+2DxYusydMHKlwKGTGXp/VDx6w==;5:TCUDSGjXzxWmKHjSawyqWVIBt1w2+hCIOHXD/kD59Qv+vLGWHjgeKDaNyIYJyAqRhVMWXTNvEePSPBjVIDVV0nW0HaBmCczoR9pKHi00Y0MubBJa7AmOne469NLKFPcGz7j00GWtHtMmaGeGyJzFkfGBw9lgF1hK4m/wrWc8t/Y=;7:23WvgA0mj1RNyYuT1J8G/KhPUPFwh9yCyyRgIYihiZvR2A0Bif+T+bppqmCdzZvla1TylO0Y5KslUBsy2nLDLMiV2tfTbqQFdjUWPH8HIzXSo3TFesahGMHtKLja9YLAIRT2BeGxivUFfaQM8hE2Ew==
+x-ms-office365-filtering-correlation-id: c3233329-aa81-43d6-0ed9-08d64444b758
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1215;
+x-ms-traffictypediagnostic: MWHPR2201MB1215:
+x-microsoft-antispam-prvs: <MWHPR2201MB1215556A5CB498CCFDCB8D01C1C40@MWHPR2201MB1215.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231382)(944501410)(52105095)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123560045)(20161123562045)(20161123564045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1023;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1023;
-x-forefront-prvs: 0848C1A6AA
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(396003)(39840400004)(136003)(346002)(376002)(189003)(199004)(2906002)(14454004)(7736002)(8676002)(9686003)(6512007)(305945005)(5660300001)(68736007)(33716001)(81166006)(81156014)(53936002)(229853002)(6916009)(105586002)(2900100001)(1076002)(3846002)(106356001)(6116002)(39060400002)(58126008)(446003)(11346002)(486006)(6436002)(6486002)(6246003)(8936002)(186003)(71200400001)(71190400001)(316002)(476003)(97736004)(42882007)(54906003)(76176011)(26005)(25786009)(33896004)(4326008)(102836004)(6506007)(386003)(508600001)(52116002)(256004)(99286004)(66066001)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1023;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1215;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1215;
+x-forefront-prvs: 08497C3D99
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(136003)(396003)(39840400004)(376002)(366004)(199004)(189003)(71200400001)(58126008)(54906003)(6486002)(68736007)(105586002)(6436002)(229853002)(106356001)(52116002)(76176011)(6916009)(99286004)(6506007)(6512007)(33896004)(386003)(9686003)(26005)(5660300001)(53936002)(81166006)(6246003)(8676002)(316002)(81156014)(71190400001)(305945005)(102836004)(8936002)(486006)(476003)(7736002)(44832011)(3846002)(25786009)(6116002)(14454004)(2900100001)(42882007)(1076002)(11346002)(446003)(450100002)(2906002)(33716001)(97736004)(66066001)(4326008)(256004)(186003)(14444005)(508600001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1215;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: LiUugWg5qsRh9CMhIPHWlWi0lhj6JOa8fR0hWIowmm4nqDRZW00EvXeqimy+24jocnIqh16hR0cmEGNhHkFfIfr4hN591xD0c5Ox0j+6KQepelm8T03GvpGuT0c7EgRt4jbY1fwBP7DdKlBkq5C+JI+LgKaUShUy4SLtylTmdYV0x9W7Fh3mjfRK8X7aB4O107XovAnO5rAU27PsOAc77qLgQnSuYFKIffoP/4e3HbXdlbb7Lepp0lQvR929bCqyu6n1VclaryTTd/q4x8JF0ieNP5bxezUA9wXwI+27wKNqkM4SN707lVUDcGMshzIIs6Faq1Y+i/LH8t1Lzrg5GaOdG1ENaZAhbi1wQSjyJEM=
+x-microsoft-antispam-message-info: xIctdqK4aGbipRQ8jnwwZ7ZvsT9ymUv1DALCZ5sVbRBSuXVOPCebQCnP5N8GPOZKl5AFLB+ued4vgeNGjY5OnKft1jkbzrh6hx8bLaOfPxHdSKRnWOVOvcF0rTHluth8Uoh59b61LOCdnPM4n3uYXKwN6M4zWJ+RoARj3jjLmOqeM2eedCE2+8n64TPNJEEv2t61d/i6AvgcWqlAbIW5sO9GhCQ9MxM5YB34965xWHlecGWEc1qcL6we+DFgKY3WfigdQufbx5DIJfy1CdwLAsrTUqL2EO5mtdv0ghd5l7QZKAZ95zNzEBi8XpHcoarA5pVvd9WRJGRotU2Y5KrWRH1ruAx2utq/9d6LTn4yBQQ=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <EA55B8AE93DAE846B0A116968D6070CE@namprd22.prod.outlook.com>
+Content-ID: <F16EE64B0B7E084A9B00E9ED36B9B483@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8051e04a-c12e-4ee7-42da-08d64440c151
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2018 23:37:03.8023
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3233329-aa81-43d6-0ed9-08d64444b758
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2018 00:05:25.0875
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1023
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1215
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67110
+X-archive-position: 67111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,16 +90,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yangtao,
+Hi Maciej,
 
-On Tue, Nov 06, 2018 at 09:36:36AM -0500, Yangtao Li wrote:
-> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+On Mon, Nov 05, 2018 at 03:18:41AM +0000, Maciej W. Rozycki wrote:
+>  It's been a while since the DECstation defconfig has been last actually 
+> updated rather than merely regenerated.  My `git log' examination points
+> at commit 3f821640341b ("[MIPS] DECstation defconfig update") from 2006.
 > 
-> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-> ---
->  arch/mips/kernel/mips-r2-to-r6-emul.c | 32 +++++----------------------
->  1 file changed, 5 insertions(+), 27 deletions(-)
+>  We have since gained a bunch of new drivers and also some drivers were 
+> unnecessarily disabled.  Therefore I have decided to refresh the defconfig 
+> (1/3), and to make people's life easier also to provide an R4k version 
+> (2/3) and a 64-bit version (3/3), covering all the three base DECstation 
+> configurations.  Apart from being ready to use with actual systems these 
+> additional defconfigs should make it easier for automated tools to verify 
+> correctness of the non-R3k configurations.
+> 
+>  These were all verified to build and boot multiuser.  Please apply.
 
-Thanks - applied to mips-next for 4.21.
+Thanks, applied to mips-next for 4.21.
 
 Paul

@@ -1,84 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 02:14:11 +0100 (CET)
-Received: from mail-ua1-x942.google.com ([IPv6:2607:f8b0:4864:20::942]:33620
-        "EHLO mail-ua1-x942.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991112AbeKGBKp15lw3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 02:10:45 +0100
-Received: by mail-ua1-x942.google.com with SMTP id s26so5289701uao.0
-        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 17:10:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2018 08:34:56 +0100 (CET)
+Received: from mail-lf1-x141.google.com ([IPv6:2a00:1450:4864:20::141]:40749
+        "EHLO mail-lf1-x141.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990946AbeKGHePEuw7Z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2018 08:34:15 +0100
+Received: by mail-lf1-x141.google.com with SMTP id v5so5758735lfe.7
+        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 23:34:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Q1G1nbCiejA14GAk13kwpeV5uSd2+HoRj+vWp4s6EqY=;
-        b=eFazb3c7zMawmEuLNjfsk/It40P/kZA634ojboNSO3So2qlyJ29LyFhO0/QW48NaB8
-         kbrri3Yn351FGwvXfSV9Lfr6DEeUttVtBJgkrVmcocs0A5GwSrzSsyI2B3buzW3FuyJ/
-         hyabXtsc8ANcHIyckTZ0GHWNuBf8WD4smIyJ4=
+        bh=eY3o894jFxAVpG3/rNrs3uyCqKXzBiAUwje6kIKndYM=;
+        b=R6Y2TajZLWd2azMEqm5S30HFk3GQJlbShJSGHXgx4D82LuufxtElvfPMALbb93Nu8x
+         fZK3shu1VEPdUHKVr8PRoV3k9FQzfGDm9PEnDDTM6jwAeVXZLcs5kw8sNBMDyr0Sf41t
+         jK6Yz6ejmD4xxGV73E4UVG6PqQRq3MplW96jKsrJmIydsIzUG/4oFysFkSeV8iQhhuUO
+         ZMTXgn6LHnT90Jq/hc/X5Y0uKFuug6tN6Cda5/AVPaMsAmCA7yXJ7zcewhYR7MnAUJm1
+         CEymj2puzhvCg7RLWD2C90DreW0ltTt2D18yMoY/i1kRyq5k9VOiD1Ya72qfv5nCFcpW
+         tX4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Q1G1nbCiejA14GAk13kwpeV5uSd2+HoRj+vWp4s6EqY=;
-        b=Iex3SiMZp1cfBnsINVMbxDRYwBnj35KCDkkCB95eSmzmPeLKht/U+swY2FgJVZ+lhm
-         NhB9dPU8OhBNuBPP1TQ9cZn/UZfA5OCSkuHZ3slUyV7mtHMCtN5kgfQOmkVmCDxjefxy
-         opwnb7CGQoUHrLU0AC0l8QWUUveN9wXeqsIoQY1Oo2crPz1o3edAfEjAQt6VwYnQ/rlW
-         2n+CwjbbePnbw4i8Y5R4E6FBNabaS+/yNF9LrwOLwhDhoCBIbgk78IcJeZ3awyMjCB1o
-         FRZJdrbiacV+SIX7s1/1+lPFrJ4AJsUSvHvlcav5sG70QWS8sam5gnHgqtwHR8BgNTzu
-         0sfg==
-X-Gm-Message-State: AGRZ1gIMMP/gMQUU0qzsg9b2qznwGH0omBuNvqy5XNxrL2u+TfEBt/0p
-        K6K3ZQEoYGU0mGNO7ftRAaAFKRtZzZo=
-X-Google-Smtp-Source: AJdET5f6m4Yj7vmUCp4OP0S2lHZ22xIiocvkqA/EXg6TjbNJyov01DMCGtmT7nmpwfb7M9LAkYG9kA==
-X-Received: by 2002:a9f:314c:: with SMTP id n12mr3824136uab.33.1541553044387;
-        Tue, 06 Nov 2018 17:10:44 -0800 (PST)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
-        by smtp.gmail.com with ESMTPSA id d196-v6sm3439086vkf.23.2018.11.06.17.10.44
-        for <linux-mips@linux-mips.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Nov 2018 17:10:44 -0800 (PST)
-Received: by mail-ua1-f54.google.com with SMTP id u19so4231087uae.4
-        for <linux-mips@linux-mips.org>; Tue, 06 Nov 2018 17:10:44 -0800 (PST)
-X-Received: by 2002:a9f:386c:: with SMTP id q41mr3848271uad.27.1541552692505;
- Tue, 06 Nov 2018 17:04:52 -0800 (PST)
+        bh=eY3o894jFxAVpG3/rNrs3uyCqKXzBiAUwje6kIKndYM=;
+        b=fJ1Dy/mCAx4t7GQ68pxs3b4/YQbJ/GD55Q2wBT/lJRbRxLoew6kK/6oh7xRJnI0oWZ
+         Je/GHdoL0leDsNT9siZf0hScWihAHlAhYt5jAbXISd0QpI56izlpNCtZ1GS5Y7WP/7vj
+         5uBJ3BXC3Sax1OG5F4YVn4+A8bdFTAHuYKVWHakHdszdMvYvMpWMO0+VsNN+CM7ax/aL
+         DTbdvOLZm1y7TWhoLuauXJm35bUCsP3Jsey8i7VCOFlGU35U2LHvpMX/NZVk82VXA1Rn
+         SBLt39TGTIuYjXRMm99ec1jfwANtQBaVNNdWdYqD3kVbBRDjCxOU7L5m2lT8OuS7IQab
+         q9MA==
+X-Gm-Message-State: AGRZ1gIhdEkttgIp9M14rlUEPTww0Y3wBCsD+sD8FyUK0Rk/nZD74Vzn
+        9q8JU3/UAmim5oBGt6ttAW8uq6iU4ItPwEaytdA=
+X-Google-Smtp-Source: AJdET5cqQMKwcP6/O4motqPz1HPHsBwxKn+sokHsRnH2+5s7FXN0NhF/ooIKMyTFOvzSITALcaZqQ/lB9xbXho5YVGY=
+X-Received: by 2002:a19:7019:: with SMTP id h25-v6mr479554lfc.147.1541576054326;
+ Tue, 06 Nov 2018 23:34:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20181030221843.121254-1-dianders@chromium.org>
- <20181030221843.121254-3-dianders@chromium.org> <20181031184050.sd5opni3mznaapkv@holly.lan>
- <CAD=FV=V1eHo7Wz31DTMMNi394qwEaESTxJCYVE60Q7hpDEqRmQ@mail.gmail.com> <20181103104503.eftn5btx7otgufro@holly.lan>
-In-Reply-To: <20181103104503.eftn5btx7otgufro@holly.lan>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 6 Nov 2018 17:04:39 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=XbSm48ttzXvvhTir9ViKA9T7Huiho3CNuzprqAVpHyJg@mail.gmail.com>
-Message-ID: <CAD=FV=XbSm48ttzXvvhTir9ViKA9T7Huiho3CNuzprqAVpHyJg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] kgdb: Fix kgdb_roundup_cpus() for arches who used smp_call_function()
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Jason Wessel <jason.wessel@windriver.com>,
-        kgdb-bugreport@lists.sourceforge.net,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>, jhogan@kernel.org,
-        linux-hexagon@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>, dalias@libc.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Will Deacon <will.deacon@arm.com>, paulus@samba.org,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        christophe.leroy@c-s.fr, mpe@ellerman.id.au, paul.burton@mips.com,
-        LKML <linux-kernel@vger.kernel.org>, rkuo@codeaurora.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <20181106214416.11342-1-geert@linux-m68k.org> <20181106225829.5ecbe19e@bbrezillon>
+ <CAMuHMdUQhsikcBzRFAvrCwZwzFK_Coh=fqpSihFP6jEtugCMQw@mail.gmail.com> <20181106233432.76df6bbf@bbrezillon>
+In-Reply-To: <20181106233432.76df6bbf@bbrezillon>
+From:   Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Date:   Wed, 7 Nov 2018 08:33:57 +0100
+Message-ID: <CAPybu_0c115rhqO4RTa27H2j78t9z=rfOy9ukL1h4z18J8MBDQ@mail.gmail.com>
+Subject: Re: [PATCH next] mtd: maps: physmap: Fix infinite loop crash in ROM
+ type probing
+To:     Boris Brezillon <boris.brezillon@bootlin.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <dianders@chromium.org>
+Return-Path: <ricardo.ribalda@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67118
+X-archive-position: 67119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dianders@chromium.org
+X-original-sender: ricardo.ribalda@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,60 +72,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Hi Boris and Geert
 
-On Sat, Nov 3, 2018 at 3:45 AM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
+On Tue, Nov 6, 2018 at 11:34 PM Boris Brezillon
+<boris.brezillon@bootlin.com> wrote:
 >
-> On Wed, Oct 31, 2018 at 02:41:14PM -0700, Doug Anderson wrote:
-> > > As mentioned in another part of the thread we can also add robustness
-> > > by skipping a cpu where csd->flags != 0 (and adding an appropriately
-> > > large comment regarding why). Doing the check directly is abusing
-> > > internal knowledge that smp.c normally keeps to itself so an accessor
-> > > of some kind would be needed.
-> >
-> > Sure.  I could add smp_async_func_finished() that just looked like:
-> >
-> > int smp_async_func_finished(call_single_data_t *csd)
-> > {
-> >   return !(csd->flags & CSD_FLAG_LOCK);
-> > }
-> >
-> > My understanding of all the mutual exclusion / memory barrier concepts
-> > employed by smp.c is pretty weak, though.  I'm hoping that it's safe
-> > to just access the structure and check the bit directly.
-> >
-> > ...but do you think adding a generic accessor like this is better than
-> > just keeping track of this in kgdb directly?  I could avoid the
-> > accessor by adding a "rounding_up" member to "struct
-> > debuggerinfo_struct" and doing something like this in roundup:
-> >
-> >   /* If it didn't round up last time, don't try again */
-> >   if (kgdb_info[cpu].rounding_up)
-> >     continue
-> >
-> >   kgdb_info[cpu].rounding_up = true
-> >   smp_call_function_single_async(cpu, csd);
-> >
-> > ...and then in kgdb_nmicallback() I could just add:
-> >
-> >   kgdb_info[cpu].rounding_up = false
-> >
-> > In that case we're not adding a generic accessor to smp.c that most
-> > people should never use.
+> On Tue, 6 Nov 2018 23:19:14 +0100
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
-> Whilst it is very tempting to make a sarcastic reply here ("Of course! What
-> kgdb really needs is yet another set of condition variables") I can't
-> because I actually agree with the proposal. I don't really want kgdb to
-> be too "special" especially when it doesn't need to be.
+> > Hi Boris,
+> >
+> > On Tue, Nov 6, 2018 at 10:58 PM Boris Brezillon
+> > <boris.brezillon@bootlin.com> wrote:
+> > > On Tue,  6 Nov 2018 22:44:16 +0100
+> > > Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > > On Toshiba RBTX4927, where map_probe is supposed to fail:
+> > > >
+> > > >     Creating 2 MTD partitions on "physmap-flash.0":
+> > > >     0x000000c00000-0x000001000000 : "boot"
+> > > >     0x000000000000-0x000000c00000 : "user"
+> > > >     physmap-flash physmap-flash.1: physmap platform flash device: [mem 0x1e000000-0x1effffff]
+> > > >     CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 80320f40, ra == 80321004
+> > > >     ...
+> > > >     Call Trace:
+> > > >     [<80320f40>] get_mtd_chip_driver+0x30/0x8c
+> > > >     [<80321004>] do_map_probe+0x20/0x90
+> > > >     [<80328448>] physmap_flash_probe+0x484/0x4ec
+> > > >
+> > > > The access to rom_probe_types[] was changed from a sentinel-based loop
+> > > > to an infinite loop, causing a crash when reaching the sentinel.
+> > >
+> > > Oops. Do you mind if I fix that in-place (squash your changes in
+> > > Ricardo's original commit)?
 >
-> Only thing to note is that rounding_up will not be manipulated within a
-> common spin lock so you might have to invest a bit of thought to make
-> sure any races between the master and slave as the slave CPU clears the
-> flag are benign.
+> Done.
+>
+> >
+> > No problem. Thanks!
+>
 
-OK, so I've hopefully got all this thought through and posted v3.
-I've put most of my thoughts in the patch descriptions themselves so
-let's continue the discussion there.
+Thanks to both of you for fixing this .
+> Thanks for reporting/fixing the bug.
+>
+> Boris
+>
 
--Doug
+
+-- 
+Ricardo Ribalda

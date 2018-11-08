@@ -1,29 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 23:00:50 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:44990 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 23:01:06 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:45916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994563AbeKHWA3ra90j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Nov 2018 23:00:29 +0100
+        id S23993001AbeKHWBBVFDnj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Nov 2018 23:01:01 +0100
 Received: from localhost (unknown [208.72.13.198])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 878442147A;
-        Thu,  8 Nov 2018 22:00:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4670F21479;
+        Thu,  8 Nov 2018 22:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541714428;
-        bh=QRLjPJa0EvHzrxld/BIMAmc1YWFl3p577gUNexk+cSk=;
+        s=default; t=1541714460;
+        bh=gT4w/vKH/EeSL/xNu1EjioFWFu7p9ZUEzowGZPeILkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xT4AQ50Xr8ZTMd0Q9GiYNUiRzgJ3VLNrk/KsinwZMvaTeReMWKbtp2YSya6JGGVv4
-         ejicuO7Om7MZabRRrnpDmHGLe3OP1ZmpQy92qpS4xTQxI04LPb7ZPzjmkz5fEqE/6Y
-         gb8dzIcc4clxFJjlewtaC7NB01r1cYtjR18ACEg4=
+        b=zNXMmS/Xi7IUbJgtOhUWScn0FP+zTwVCypP+GE0D9ZIRv29L4t5Urvuh/bCN+jG72
+         VzEYZjlPZOW1MTsPKoPC6XrOgGXZWhbGdgRHVkaDvX/HGYJ132DYFC86unwshJ12NI
+         VLTKbvYaWkHHGJ1x/URT1oiA89wvzlKFAmO13rtc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@linux-mips.org>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 083/114] MIPS: DEC: Fix an int-handler.S CPU_DADDI_WORKAROUNDS regression
-Date:   Thu,  8 Nov 2018 13:51:38 -0800
-Message-Id: <20181108215108.434680211@linuxfoundation.org>
+Subject: [PATCH 4.4 074/114] MIPS: Handle non word sized instructions when examining frame
+Date:   Thu,  8 Nov 2018 13:51:29 -0800
+Message-Id: <20181108215107.708860634@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181108215059.051093652@linuxfoundation.org>
 References: <20181108215059.051093652@linuxfoundation.org>
@@ -36,7 +40,7 @@ Return-Path: <SRS0=nC3z=NT=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67183
+X-archive-position: 67184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,95 +61,92 @@ X-list: linux-mips
 
 ------------------
 
-[ Upstream commit 68fe55680d0f3342969f49412fceabb90bdfadba ]
+[ Upstream commit 11887ed172a6960673f130dad8f8fb42778f64d7 ]
 
-Fix a commit 3021773c7c3e ("MIPS: DEC: Avoid la pseudo-instruction in
-delay slots") regression and remove assembly errors:
+Commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+added fairly broken support for handling 16bit microMIPS instructions in
+get_frame_info(). It adjusts the instruction pointer by 16bits in the
+case of a 16bit sp move instruction, but not any other 16bit
+instruction.
 
-arch/mips/dec/int-handler.S: Assembler messages:
-arch/mips/dec/int-handler.S:162: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:163: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:229: Error: Macro used $at after ".set noat"
-arch/mips/dec/int-handler.S:230: Error: Macro used $at after ".set noat"
+Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
+function size") goes some way to fixing get_frame_info() to iterate over
+microMIPS instuctions, but the instruction pointer is still manipulated
+using a postincrement, and is of union mips_instruction type. Since the
+union is sized to the largest member (a word), but microMIPS
+instructions are a mix of halfword and word sizes, the function does not
+always iterate correctly, ending up misaligned with the instruction
+stream and interpreting it incorrectly.
 
-triggering with with the CPU_DADDI_WORKAROUNDS option set and the DADDIU
-instruction.  This is because with that option in place the instruction
-becomes a macro, which expands to an LI/DADDU (or actually ADDIU/DADDU)
-sequence that uses $at as a temporary register.
+Since the instruction modifying the stack pointer is usually the first
+in the function, that one is usually handled correctly. But the
+instruction which saves the return address to the sp is some variable
+number of instructions into the frame and is frequently missed due to
+not being on a word boundary, leading to incomplete walking of the
+stack.
 
-With CPU_DADDI_WORKAROUNDS we only support `-msym32' compilation though,
-and this is already enforced in arch/mips/Makefile, so choose the 32-bit
-expansion variant for the supported configurations and then replace the
-64-bit variant with #error just in case.
+Fix this by incrementing the instruction pointer based on the size of
+the previously decoded instruction (& remove the hack introduced by
+commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+which adjusts the instruction pointer in the case of a 16bit sp move
+instruction, but not any other).
 
-Fixes: 3021773c7c3e ("MIPS: DEC: Avoid la pseudo-instruction in delay slots")
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Fixes: 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org # 4.8+
-Patchwork: https://patchwork.linux-mips.org/patch/16893/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/16953/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/dec/int-handler.S | 34 ++++++----------------------------
- 1 file changed, 6 insertions(+), 28 deletions(-)
+ arch/mips/kernel/process.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/dec/int-handler.S b/arch/mips/dec/int-handler.S
-index 554d1da97743..21f4a9fe82fa 100644
---- a/arch/mips/dec/int-handler.S
-+++ b/arch/mips/dec/int-handler.S
-@@ -147,23 +147,12 @@
- 		 * Find irq with highest priority
- 		 */
- 		# open coded PTR_LA t1, cpu_mask_nr_tbl
--#if (_MIPS_SZPTR == 32)
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		# open coded la t1, cpu_mask_nr_tbl
- 		lui	t1, %hi(cpu_mask_nr_tbl)
- 		addiu	t1, %lo(cpu_mask_nr_tbl)
--
--#endif
--#if (_MIPS_SZPTR == 64)
--		# open coded dla t1, cpu_mask_nr_tbl
--		.set	push
--		.set	noat
--		lui	t1, %highest(cpu_mask_nr_tbl)
--		lui	AT, %hi(cpu_mask_nr_tbl)
--		daddiu	t1, t1, %higher(cpu_mask_nr_tbl)
--		daddiu	AT, AT, %lo(cpu_mask_nr_tbl)
--		dsll	t1, 32
--		daddu	t1, t1, AT
--		.set	pop
-+#else
-+#error GCC `-msym32' option required for 64-bit DECstation builds
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index ed6cac4a4df0..a9cc74354df8 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -341,6 +341,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+ 	union mips_instruction insn, *ip, *ip_end;
+ 	const unsigned int max_insns = 128;
++	unsigned int last_insn_size = 0;
+ 	unsigned int i;
+ 
+ 	info->pc_offset = -1;
+@@ -352,15 +353,19 @@ static int get_frame_info(struct mips_frame_info *info)
+ 
+ 	ip_end = (void *)ip + info->func_size;
+ 
+-	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
++	for (i = 0; i < max_insns && ip < ip_end; i++) {
++		ip = (void *)ip + last_insn_size;
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 2;
+ 		} else if (is_mmips) {
+ 			insn.halfword[0] = ip->halfword[1];
+ 			insn.halfword[1] = ip->halfword[0];
++			last_insn_size = 4;
+ 		} else {
+ 			insn.word = ip->word;
++			last_insn_size = 4;
+ 		}
+ 
+ 		if (is_jump_ins(&insn))
+@@ -382,8 +387,6 @@ static int get_frame_info(struct mips_frame_info *info)
+ 						tmp = (ip->halfword[0] >> 1);
+ 						info->frame_size = -(signed short)(tmp & 0xf);
+ 					}
+-					ip = (void *) &ip->halfword[1];
+-					ip--;
+ 				} else
  #endif
- 1:		lw	t2,(t1)
- 		nop
-@@ -214,23 +203,12 @@
- 		 * Find irq with highest priority
- 		 */
- 		# open coded PTR_LA t1,asic_mask_nr_tbl
--#if (_MIPS_SZPTR == 32)
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		# open coded la t1, asic_mask_nr_tbl
- 		lui	t1, %hi(asic_mask_nr_tbl)
- 		addiu	t1, %lo(asic_mask_nr_tbl)
--
--#endif
--#if (_MIPS_SZPTR == 64)
--		# open coded dla t1, asic_mask_nr_tbl
--		.set	push
--		.set	noat
--		lui	t1, %highest(asic_mask_nr_tbl)
--		lui	AT, %hi(asic_mask_nr_tbl)
--		daddiu	t1, t1, %higher(asic_mask_nr_tbl)
--		daddiu	AT, AT, %lo(asic_mask_nr_tbl)
--		dsll	t1, 32
--		daddu	t1, t1, AT
--		.set	pop
-+#else
-+#error GCC `-msym32' option required for 64-bit DECstation builds
- #endif
- 2:		lw	t2,(t1)
- 		nop
+ 				info->frame_size = - ip->i_format.simmediate;
 -- 
 2.17.1

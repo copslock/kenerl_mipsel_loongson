@@ -1,32 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 15:46:06 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:58600 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992066AbeKHOog026Av (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Nov 2018 15:44:36 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id C5844AEB2;
-        Thu,  8 Nov 2018 14:44:35 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     rppt@linux.vnet.ibm.com
-Subject: [[PATCH]] mips: Fix switch to NO_BOOTMEM for SGI-IP27/loongons3 NUMA
-Date:   Thu,  8 Nov 2018 15:44:28 +0100
-Message-Id: <20181108144428.28149-1-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.13.7
-Return-Path: <tbogendoerfer@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 15:46:55 +0100 (CET)
+Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:39535
+        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992922AbeKHOqv6OI9v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 15:46:51 +0100
+Received: by mail-pf1-x443.google.com with SMTP id n11-v6so9398438pfb.6;
+        Thu, 08 Nov 2018 06:46:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=yiyADj8185+lR6YtIPxI/9OlNcR1QogQW5VAb4fNZlE=;
+        b=u+Ieh8f3qfjTxqUeTZ2algF1CEGnXeJx1sAg9socsFBe0+RezxQX80e5prVeAOHZmY
+         icR0KXzvJL4vGN0ROj0jg1ryZEx+Gi3Fb4hx4weXtMyfy2+eiUizNHGkrTX/olcFiFOY
+         WZDOeg/4+xYx2ZTTYnRZtDTF/z8OjLoSW8BJtUozZVa1lLhI07D3GmBImm1/oN+GD7e7
+         qA6K3aelJQQxFTmV3yZnIF5dj3IwsYxjYYEkhbLD0J3ibcbJSOoMKgjPuJL6BfT+XihI
+         F62rPzVl+6qgi2bTAfx30crPQUsf/q/kFe8Ej9KOG8ocX811swqDCQUfbN03fBEreMOi
+         Hnjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yiyADj8185+lR6YtIPxI/9OlNcR1QogQW5VAb4fNZlE=;
+        b=Ep1WBN4D6gboI6LlU6AW4ofyZT9yEp55Ze7n8fUn6a81IpgbdY4A75OgTbPOOZuyfl
+         fk4zsiZK6iIRwEgplyyAcPZic/cZppXR5PEitP1xoYKojIu8VgGywW5r85ysOCDFtZKA
+         M7QewWHpCt3QYlSVmBc+PNXdb+Fch28/jSyx9kDZbCdiHaMfkehArGn/BF8Sk4f/Oyc7
+         MtQ0tRcDfJBe0Mh984cag5dSmhYJTIpHZzTaSU92yKu/l1UE5uoxqwRp/Q5330HBAnMy
+         Cy0iR6531LJ3foF0P1zinxziaxJX51vcfGAsVaFtTCUDqzjOfXI6DRN/63tfZ8aKRd+u
+         g77A==
+X-Gm-Message-State: AGRZ1gJU4V8pUcymvVTBy4IsRXF1pTbrPzGTtwPVH9c+cPWoRE7bfFxc
+        qSUwU7EwHb4xnJ8IlBQ9h8A=
+X-Google-Smtp-Source: AJdET5feGS/RXRvm4uJ38TQRmWSiiTRsWmdCxatvMEDX3Rva1bkcCH0h71uVKtGhhB9g0GT/xwrfeg==
+X-Received: by 2002:a63:5e43:: with SMTP id s64mr4024148pgb.101.1541688411056;
+        Thu, 08 Nov 2018 06:46:51 -0800 (PST)
+Received: from localhost.corp.microsoft.com ([2404:f801:9000:18:d9bf:62c6:740b:9fc4])
+        by smtp.googlemail.com with ESMTPSA id k75-v6sm11526731pfb.119.2018.11.08.06.46.43
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 08 Nov 2018 06:46:50 -0800 (PST)
+From:   lantianyu1986@gmail.com
+X-Google-Original-From: Tianyu.Lan@microsoft.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
+        marc.zyngier@arm.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
+        benh@kernel.crashing.org, mpe@ellerman.id.au, kys@microsoft.com,
+        haiyangz@microsoft.com, sthemmin@microsoft.com, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, hpa@zytor.com, x86@kernel.org,
+        pbonzini@redhat.com, rkrcmar@redhat.com,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        devel@linuxdriverproject.org, kvm@vger.kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
+Subject: [Resend PATCH V5 1/10] KVM: Add tlb_remote_flush_with_range callback in kvm_x86_ops
+Date:   Thu,  8 Nov 2018 22:46:30 +0800
+Message-Id: <20181108144639.11206-1-Tianyu.Lan@microsoft.com>
+X-Mailer: git-send-email 2.14.4
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <lantianyu1986@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67161
+X-archive-position: 67162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbogendoerfer@suse.de
+X-original-sender: lantianyu1986@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,81 +75,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit bcec54bf3118 ("mips: switch to NO_BOOTMEM") broke SGI-IP27
-and NUMA enabled loongson3 by doing memblock_set_current_limit()
-before max_low_pfn has been evaluated. Both platforms need to do the
-memblock_set_current_limit() in platform specific code. For
-consistency the call to memblock_set_current_limit() is moved
-to the common bootmem_init(), where max_low_pfn is calculated
-for non NUMA enabled platforms.
+From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-Fixes: bcec54bf3118 ("mips: switch to NO_BOOTMEM")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Add flush range call back in the kvm_x86_ops and platform can use it
+to register its associated function. The parameter "kvm_tlb_range"
+accepts a single range and flush list which contains a list of ranges.
+
+Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
 ---
- arch/mips/kernel/setup.c               | 18 +++++++++---------
- arch/mips/loongson64/loongson-3/numa.c |  1 +
- arch/mips/sgi-ip27/ip27-memory.c       |  1 +
- 3 files changed, 11 insertions(+), 9 deletions(-)
+Change since v1:
+       Change "end_gfn" to "pages" to aviod confusion as to whether
+"end_gfn" is inclusive or exlusive.
+---
+ arch/x86/include/asm/kvm_host.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index ea09ed6a80a9..b5167b198231 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -576,6 +576,15 @@ static void __init bootmem_init(void)
- 	 * Reserve initrd memory if needed.
- 	 */
- 	finalize_initrd();
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 55e51ff7e421..c8a65f0a7107 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -439,6 +439,11 @@ struct kvm_mmu {
+ 	u64 pdptrs[4]; /* pae */
+ };
+ 
++struct kvm_tlb_range {
++	u64 start_gfn;
++	u64 pages;
++};
 +
-+	/*
-+	 * Prevent memblock from allocating high memory.
-+	 * This cannot be done before max_low_pfn is detected, so up
-+	 * to this point is possible to only reserve physical memory
-+	 * with memblock_reserve; memblock_alloc* can be used
-+	 * only after this point
-+	 */
-+	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
- }
+ enum pmc_type {
+ 	KVM_PMC_GP = 0,
+ 	KVM_PMC_FIXED,
+@@ -1042,6 +1047,8 @@ struct kvm_x86_ops {
  
- #endif	/* CONFIG_SGI_IP27 */
-@@ -854,15 +863,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	void (*tlb_flush)(struct kvm_vcpu *vcpu, bool invalidate_gpa);
+ 	int  (*tlb_remote_flush)(struct kvm *kvm);
++	int  (*tlb_remote_flush_with_range)(struct kvm *kvm,
++			struct kvm_tlb_range *range);
  
- 	bootmem_init();
- 
--	/*
--	 * Prevent memblock from allocating high memory.
--	 * This cannot be done before max_low_pfn is detected, so up
--	 * to this point is possible to only reserve physical memory
--	 * with memblock_reserve; memblock_alloc* can be used
--	 * only after this point
--	 */
--	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
--
- #ifdef CONFIG_PROC_VMCORE
- 	if (setup_elfcorehdr && setup_elfcorehdr_size) {
- 		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
-diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
-index 622761878cd1..5593a8e3cd88 100644
---- a/arch/mips/loongson64/loongson-3/numa.c
-+++ b/arch/mips/loongson64/loongson-3/numa.c
-@@ -265,6 +265,7 @@ void __init paging_init(void)
- 	zones_size[ZONE_DMA32] = MAX_DMA32_PFN;
- #endif
- 	zones_size[ZONE_NORMAL] = max_low_pfn;
-+	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
- 	free_area_init_nodes(zones_size);
- }
- 
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index d8b8444d6795..0d0deeae1f47 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -468,6 +468,7 @@ void __init paging_init(void)
- 			max_low_pfn = end_pfn;
- 	}
- 	zones_size[ZONE_NORMAL] = max_low_pfn;
-+	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
- 	free_area_init_nodes(zones_size);
- }
- 
+ 	/*
+ 	 * Flush any TLB entries associated with the given GVA.
 -- 
-2.13.7
+2.14.4

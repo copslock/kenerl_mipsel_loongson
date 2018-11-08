@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 23:01:06 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:45916 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 23:03:54 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:49452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993001AbeKHWBBVFDnj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Nov 2018 23:01:01 +0100
+        id S23993354AbeKHWDt5flrj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Nov 2018 23:03:49 +0100
 Received: from localhost (unknown [208.72.13.198])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4670F21479;
-        Thu,  8 Nov 2018 22:01:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA49B20844;
+        Thu,  8 Nov 2018 22:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541714460;
-        bh=gT4w/vKH/EeSL/xNu1EjioFWFu7p9ZUEzowGZPeILkc=;
+        s=default; t=1541714628;
+        bh=UxZvcv8ABelrSp5nV/dvhaKH0XEtq6rpQ2XQTkFu360=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zNXMmS/Xi7IUbJgtOhUWScn0FP+zTwVCypP+GE0D9ZIRv29L4t5Urvuh/bCN+jG72
-         VzEYZjlPZOW1MTsPKoPC6XrOgGXZWhbGdgRHVkaDvX/HGYJ132DYFC86unwshJ12NI
-         VLTKbvYaWkHHGJ1x/URT1oiA89wvzlKFAmO13rtc=
+        b=ldRVmfjcUqzYhedCNmL45vDv6O8GNz15oSIiUXtIP9rX4UKKTAqhnGp7p55mMKqIe
+         /lvwNvvk6eWOGCnIfXOcyXCG9InXFYAcQmLnfcltWJ44lZr1tSPSr3T66OYA1GHMVl
+         ftA+0A6nalqynpaj6XSvOqbarF8vYzLghj63rQ90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Miodrag Dinic <miodrag.dinic@imgtec.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>,
+        David Daney <david.daney@cavium.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 074/114] MIPS: Handle non word sized instructions when examining frame
-Date:   Thu,  8 Nov 2018 13:51:29 -0800
-Message-Id: <20181108215107.708860634@linuxfoundation.org>
+Subject: [PATCH 4.9 034/171] MIPS: microMIPS: Fix decoding of swsp16 instruction
+Date:   Thu,  8 Nov 2018 13:50:04 -0800
+Message-Id: <20181108215129.820561095@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20181108215059.051093652@linuxfoundation.org>
-References: <20181108215059.051093652@linuxfoundation.org>
+In-Reply-To: <20181108215127.257643509@linuxfoundation.org>
+References: <20181108215127.257643509@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -40,7 +42,7 @@ Return-Path: <SRS0=nC3z=NT=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67184
+X-archive-position: 67185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,96 +59,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit 11887ed172a6960673f130dad8f8fb42778f64d7 ]
+[ Upstream commit cea8cd498f4f1c30ea27e3664b3c671e495c4fce ]
 
-Commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
-added fairly broken support for handling 16bit microMIPS instructions in
-get_frame_info(). It adjusts the instruction pointer by 16bits in the
-case of a 16bit sp move instruction, but not any other 16bit
-instruction.
+When the immediate encoded in the instruction is accessed, it is sign
+extended due to being a signed value being assigned to a signed integer.
+The ISA specifies that this operation is an unsigned operation.
+The sign extension leads us to incorrectly decode:
 
-Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
-function size") goes some way to fixing get_frame_info() to iterate over
-microMIPS instuctions, but the instruction pointer is still manipulated
-using a postincrement, and is of union mips_instruction type. Since the
-union is sized to the largest member (a word), but microMIPS
-instructions are a mix of halfword and word sizes, the function does not
-always iterate correctly, ending up misaligned with the instruction
-stream and interpreting it incorrectly.
+801e9c8e:       cbf1            sw      ra,68(sp)
 
-Since the instruction modifying the stack pointer is usually the first
-in the function, that one is usually handled correctly. But the
-instruction which saves the return address to the sp is some variable
-number of instructions into the frame and is frequently missed due to
-not being on a word boundary, leading to incomplete walking of the
-stack.
+As having an immediate of 1073741809.
 
-Fix this by incrementing the instruction pointer based on the size of
-the previously decoded instruction (& remove the hack introduced by
-commit 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
-which adjusts the instruction pointer in the case of a 16bit sp move
-instruction, but not any other).
+Since the instruction format does not specify signed/unsigned, and this
+is currently the only location to use this instuction format, change it
+to an unsigned immediate.
 
-Fixes: 34c2f668d0f6b ("MIPS: microMIPS: Add unaligned access support.")
+Fixes: bb9bc4689b9c ("MIPS: Calculate microMIPS ra properly when unwinding the stack")
+Suggested-by: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Miodrag Dinic <miodrag.dinic@imgtec.com>
 Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/16953/
+Patchwork: https://patchwork.linux-mips.org/patch/16957/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/process.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/mips/include/uapi/asm/inst.h | 2 +-
+ arch/mips/kernel/process.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index 77429d1622b3..711d9b8465b8 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -964,7 +964,7 @@ struct mm16_r3_format {		/* Load from global pointer format */
+ struct mm16_r5_format {		/* Load/store from stack pointer format */
+ 	__BITFIELD_FIELD(unsigned int opcode : 6,
+ 	__BITFIELD_FIELD(unsigned int rt : 5,
+-	__BITFIELD_FIELD(signed int simmediate : 5,
++	__BITFIELD_FIELD(unsigned int imm : 5,
+ 	__BITFIELD_FIELD(unsigned int : 16, /* Ignored */
+ 	;))))
+ };
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index ed6cac4a4df0..a9cc74354df8 100644
+index ba315e523b33..0211dc737a21 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -341,6 +341,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
- 	union mips_instruction insn, *ip, *ip_end;
- 	const unsigned int max_insns = 128;
-+	unsigned int last_insn_size = 0;
- 	unsigned int i;
+@@ -212,7 +212,7 @@ static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
+ 			if (ip->mm16_r5_format.rt != 31)
+ 				return 0;
  
- 	info->pc_offset = -1;
-@@ -352,15 +353,19 @@ static int get_frame_info(struct mips_frame_info *info)
+-			*poff = ip->mm16_r5_format.simmediate;
++			*poff = ip->mm16_r5_format.imm;
+ 			*poff = (*poff << 2) / sizeof(ulong);
+ 			return 1;
  
- 	ip_end = (void *)ip + info->func_size;
- 
--	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
-+	for (i = 0; i < max_insns && ip < ip_end; i++) {
-+		ip = (void *)ip + last_insn_size;
- 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
- 			insn.halfword[0] = 0;
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = 2;
- 		} else if (is_mmips) {
- 			insn.halfword[0] = ip->halfword[1];
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = 4;
- 		} else {
- 			insn.word = ip->word;
-+			last_insn_size = 4;
- 		}
- 
- 		if (is_jump_ins(&insn))
-@@ -382,8 +387,6 @@ static int get_frame_info(struct mips_frame_info *info)
- 						tmp = (ip->halfword[0] >> 1);
- 						info->frame_size = -(signed short)(tmp & 0xf);
- 					}
--					ip = (void *) &ip->halfword[1];
--					ip--;
- 				} else
- #endif
- 				info->frame_size = - ip->i_format.simmediate;
 -- 
 2.17.1

@@ -1,76 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 00:20:06 +0100 (CET)
-Received: from mail-eopbgr690093.outbound.protection.outlook.com ([40.107.69.93]:18716
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992824AbeKGXTp1VC1U convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 00:19:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2018 10:15:39 +0100 (CET)
+Received: from mail-pl1-x642.google.com ([IPv6:2607:f8b0:4864:20::642]:43088
+        "EHLO mail-pl1-x642.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992554AbeKHJPgmRTd9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2018 10:15:36 +0100
+Received: by mail-pl1-x642.google.com with SMTP id g59-v6so9254857plb.10;
+        Thu, 08 Nov 2018 01:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HhbbUp3qCb+EpAOlEwviTZjNdof3rQPPl4GYU2wzc3o=;
- b=bhUI9wdbmLtcdvu90HbOlWgk7Ck13Ld20Om1GxLtor/fqyjZEgquS3z8pYImnejLr4iOlLvrgXmNJ5KeHAB81N4Xg7PNZi5wJQhEBNlwPsgQfWs+9A7ibPcCkIQgp4WiQMVj/Qx4WeOiJcFJLP4IEypUVf8EEI9HiWUVyqWJ144=
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1485.namprd22.prod.outlook.com (10.174.170.146) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.30; Wed, 7 Nov 2018 23:19:41 +0000
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Wed, 7 Nov 2018
- 23:19:41 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Paul Burton <pburton@wavecomp.com>
-Subject: [PATCH] MIPS: Hardcode cpu_has_mmips=1 for microMIPS kernels
-Thread-Topic: [PATCH] MIPS: Hardcode cpu_has_mmips=1 for microMIPS kernels
-Thread-Index: AQHUdvBc6FH/gm/eXUqshhyWFnaOnQ==
-Date:   Wed, 7 Nov 2018 23:19:41 +0000
-Message-ID: <20181107231931.6136-1-paul.burton@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR2001CA0005.namprd20.prod.outlook.com
- (2603:10b6:301:15::15) To MWHSPR00MB117.namprd22.prod.outlook.com
- (2603:10b6:300:10c::23)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1485;6:bAFHNuEfGfqJBZ6XIQbAdGcPMH0XHKN4rTlPWCR1R6aXArMGPG7ERB7v1jObeOx+AUkzC71vEtOttgPKrsh9zQ+AxLW0ZLYABRr0RHlOvp/i2IsjfJVsCY3Vh7tofbLIotQWG0anM3x0yQAQJSIMYFvAr04EW8pdYROOviZMuh5p9WPHrCIXnTamqwIeVKhJz5QlguPL1njzRW9zHu2O+D3uDoQ0LUvJlxDbSnuezcTSFfTgcxpClI4SF9cHqKGLtaMXkIe5A233PGDhPD4IpsZC1cOEYEjXz/5Il9XMDxuJW+dER2IwekVCl/QzWNexBVoa7rHdcpo84xf95Z6PrBqBvplR/Cuoq84juVRgkmLPJsZK8Uw0dSeMFPZ9YM56ShZoY0uJ38W1OllttzB3KxkCljlDfiyTTw4GRHi/EgpaBbf5mv4AKszA4bDQw2+bgTWxqkk1agd7uQWK8h44ww==;5:TFW3eT7INAAuyMaeknUkOd3UzE8Z0TOFRldhagkcBtiJcLxeIl4lwtIhMXaK11HlzFU6UbTmhgKKDyclWd/FBiYUQvMyRln2F0MKf+DWNtwLCk5WqT8LYqCfrHU0ZeozRYlh1974iGwtykTsXjNdLET6ZqiQO5Nmr5U6IVSn6rA=;7:NP7VxPqJHnyPnd/9psSyHsLOyw3SY8dEA/fz/Hin9sJTvH5uYJpTmZ7cO7EYsCM9QIAQUPR9VGRruFhyURjzhV1DORopJwQxgEF93bFpa26YwDx6gZjvknSS5jm/qwJtfCZfC+7KTyHbgapwazC2RA==
-x-ms-office365-filtering-correlation-id: 3f55da69-4c2d-488a-eb14-08d645077ed3
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1485;
-x-ms-traffictypediagnostic: MWHPR2201MB1485:
-x-microsoft-antispam-prvs: <MWHPR2201MB1485CFC117BFF82C5A83DCBEC1C40@MWHPR2201MB1485.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(10201501046)(3002001)(3231382)(944501410)(52105095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1485;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1485;
-x-forefront-prvs: 08497C3D99
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(396003)(346002)(376002)(39840400004)(136003)(189003)(199004)(6512007)(71200400001)(25786009)(305945005)(71190400001)(2351001)(2501003)(2616005)(44832011)(97736004)(2906002)(14454004)(42882007)(486006)(256004)(316002)(14444005)(508600001)(2900100001)(4326008)(476003)(386003)(6486002)(6436002)(6506007)(52116002)(107886003)(5640700003)(1857600001)(99286004)(105586002)(5660300001)(7736002)(26005)(106356001)(36756003)(8936002)(6916009)(6116002)(1076002)(3846002)(8676002)(53936002)(186003)(66066001)(102836004)(81156014)(81166006)(68736007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1485;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: W24ChvLQ1/FtyxBkB7Ackkx+fmYMd7f0Rhue5LZ6LBiAIWTd1zadKDLFJo8FjIyO9V4hg/4dcKTSIlMwNbRXLl+2yPJJjG4oUzw2laTqauIymE0Mdc9oOkfpq0nGk/7iTFRFDCcsOjz+hjc2ombqtLCgHshs8LF0eambqwiWha8rw7C5IBa+BZ7W0tX1AU6YMirCrK0nQ8i0ctYr3AsCBz+r0ecpRXpBF7QBio2ALzZOhPj6/n9g8iJcGXgpqfOuvfQnbaRSk1sKTX7MMP9il/8lBZBVKS5Xwn6trJxkCow2RqocLOwA0vodMxRXbknBnNHkNOXx/PnwEKmf3SSMZUbabCEuzmojs7/Dk2ISjmI=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f55da69-4c2d-488a-eb14-08d645077ed3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2018 23:19:41.7961
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1485
-Return-Path: <pburton@wavecomp.com>
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=BZQ//cVaU9tNuNQAUhzd/1Jm0JpGnlnc9pX5EOH8jfE=;
+        b=LxIFTCt/GTcyxU0v9nk4twJxEGVigy1BlU2eCQPGqVBOUFZaAlHLG32Ki6yJcGNp/s
+         xPuN5EnahHYlwz4TQ5jIcInfJ9az7mLvFgNuxRiU30b6aj2+u/60bs+5Q26rAKVSHhK+
+         sNgWw+l55/iP7cf8hrj3jUuSQjqh4ZEdq9r6CKTj9oeYH8xmR56eUgINLkkc1G9SmSic
+         ITdNvpD+CaRbBHfsPGhc76nDGi58sL/Tu/DUhBbg6YSGJVEugPvCqoU1jK18V00xzKX0
+         +5j8Wj4Uy+5p0MpVftDhSgLtHvILx8dMaugq0NghFzrFbix6ZnUojwtP1vcGr8lb84fj
+         JpmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=BZQ//cVaU9tNuNQAUhzd/1Jm0JpGnlnc9pX5EOH8jfE=;
+        b=MWJqpPs3whWJoH+eYXovvVBU/YMW761iJJc5VQ/ePCa6wpQSXwA5m3oHE5IZOPK2+g
+         K6+Yn0WDONXfNExyB+kQA7zggOScC/hzyOQkPYQMWUHkhqQqgq7kEPm8towC0/bq9xqF
+         /qIO3qzEuCJW65cM5JZv1Ch+NOJT3PgbLC6qD//Xh2OyBYDNJQiPoqVwk1Owd4RWMTAO
+         1iato1ZmQl1LmWPATTRc6pxJiOhERj66fM6UQ34xd10QOk3lGlWlHMQHFbKqZv/QkegV
+         hRMiCCdcWWTLzHA4z27TgV2iklFK/5ujGMZNrrR6+0Oqw3/L2JvPN1v7b4RrQq4aMdQv
+         aIEw==
+X-Gm-Message-State: AGRZ1gKIISIyIPgBZTrEjCy9gRE/6gK7wPy4C5N8PEIv7q80em1Kk5hl
+        Rfoz9o/rbL5ge+GVsZwUKow=
+X-Google-Smtp-Source: AJdET5cjj8OCQlI0d0gch8uRXb7ma45QoRkvqCHNOyOIR5/cXRrSxwKM/LBAsOiq6x1ABZ8iRqn4JQ==
+X-Received: by 2002:a17:902:8210:: with SMTP id x16-v6mr3812752pln.129.1541668535729;
+        Thu, 08 Nov 2018 01:15:35 -0800 (PST)
+Received: from localhost.corp.microsoft.com ([2404:f801:9000:18:d9bf:62c6:740b:9fc4])
+        by smtp.googlemail.com with ESMTPSA id w66-v6sm3284114pfb.51.2018.11.08.01.15.28
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 08 Nov 2018 01:15:35 -0800 (PST)
+From:   ltykernel@gmail.com
+X-Google-Original-From: Tianyu.Lan@microsoft.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
+        marc.zyngier@arm.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
+        benh@kernel.crashing.org, mpe@ellerman.id.au, pbonzini@redhat.com,
+        rkrcmar@redhat.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, hpa@zytor.com, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, michael.h.kelley@microsoft.com,
+        kys@microsoft.com, vkuznets@redhat.com
+Subject: [PATCH V5 4/10] KVM/VMX: Add hv tlb range flush support
+Date:   Thu,  8 Nov 2018 17:14:41 +0800
+Message-Id: <20181108091447.8275-5-Tianyu.Lan@microsoft.com>
+X-Mailer: git-send-email 2.14.4
+In-Reply-To: <20181108091447.8275-1-Tianyu.Lan@microsoft.com>
+References: <20181108091447.8275-1-Tianyu.Lan@microsoft.com>
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <ltykernel@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67157
+X-archive-position: 67158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: ltykernel@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,31 +77,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If we built the kernel targeting the microMIPS ISA then the very fact
-that the kernel is running implies that the CPU supports microMIPS. Thus
-we can hardcode cpu_has_mmips to 1 allowing the compiler greater scope
-for optimisation due to the compile-time constant.
+From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
+This patch is to register tlb_remote_flush_with_range callback with
+hv tlb range flush interface.
+
+Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
 ---
+Change since v4:
+	- Use new function kvm_fill_hv_flush_list_func() to fill flush
+       request.
+Change since v3:
+	- Merge Vitaly's don't pass EPT configuration info to
+vmx_hv_remote_flush_tlb() fix.
+Change since v1:
+	- Pass flush range with new hyper-v tlb flush struct rather
+       than KVM tlb flush struct.
+---
+ arch/x86/kvm/vmx.c | 69 ++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 20 deletions(-)
 
- arch/mips/include/asm/cpu-features.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 0edba3e75747..8669fdb503a5 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -195,7 +195,9 @@
+diff --git a/arch/x86/kvm/vmx.c b/arch/x86/kvm/vmx.c
+index edbc96cb990a..405dfbde70b2 100644
+--- a/arch/x86/kvm/vmx.c
++++ b/arch/x86/kvm/vmx.c
+@@ -1567,7 +1567,38 @@ static void check_ept_pointer_match(struct kvm *kvm)
+ 	to_kvm_vmx(kvm)->ept_pointers_match = EPT_POINTERS_MATCH;
+ }
+ 
+-static int vmx_hv_remote_flush_tlb(struct kvm *kvm)
++int kvm_fill_hv_flush_list_func(struct hv_guest_mapping_flush_list *flush,
++		void *data)
++{
++	struct kvm_tlb_range *range = data;
++
++	return hyperv_fill_flush_guest_mapping_list(flush, range->start_gfn,
++			range->pages);
++}
++
++static inline int __hv_remote_flush_tlb_with_range(struct kvm *kvm,
++		struct kvm_vcpu *vcpu, struct kvm_tlb_range *range)
++{
++	u64 ept_pointer = to_vmx(vcpu)->ept_pointer;
++
++	/* If ept_pointer is invalid pointer, bypass flush request. */
++	if (!VALID_PAGE(ept_pointer))
++		return 0;
++
++	/*
++	 * FLUSH_GUEST_PHYSICAL_ADDRESS_SPACE hypercall needs address
++	 * of the base of EPT PML4 table, strip off EPT configuration
++	 * information.
++	 */
++	if (range)
++		return hyperv_flush_guest_mapping_range(ept_pointer & PAGE_MASK,
++				kvm_fill_hv_flush_list_func, (void *)range);
++	else
++		return hyperv_flush_guest_mapping(ept_pointer & PAGE_MASK);
++}
++
++static int hv_remote_flush_tlb_with_range(struct kvm *kvm,
++		struct kvm_tlb_range *range)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	int ret = -ENOTSUPP, i;
+@@ -1577,30 +1608,23 @@ static int vmx_hv_remote_flush_tlb(struct kvm *kvm)
+ 	if (to_kvm_vmx(kvm)->ept_pointers_match == EPT_POINTERS_CHECK)
+ 		check_ept_pointer_match(kvm);
+ 
+-	/*
+-	 * FLUSH_GUEST_PHYSICAL_ADDRESS_SPACE hypercall needs the address of the
+-	 * base of EPT PML4 table, strip off EPT configuration information.
+-	 * If ept_pointer is invalid pointer, bypass the flush request.
+-	 */
+ 	if (to_kvm_vmx(kvm)->ept_pointers_match != EPT_POINTERS_MATCH) {
+-		kvm_for_each_vcpu(i, vcpu, kvm) {
+-			if (!VALID_PAGE(to_vmx(vcpu)->ept_pointer))
+-				return 0;
+-
+-			ret |= hyperv_flush_guest_mapping(
+-				to_vmx(vcpu)->ept_pointer & PAGE_MASK);
+-		}
++		kvm_for_each_vcpu(i, vcpu, kvm)
++			ret |= __hv_remote_flush_tlb_with_range(
++					kvm, vcpu, range);
+ 	} else {
+-		if (!VALID_PAGE(to_vmx(kvm_get_vcpu(kvm, 0))->ept_pointer))
+-			return 0;
+-
+-		ret = hyperv_flush_guest_mapping(
+-			to_vmx(kvm_get_vcpu(kvm, 0))->ept_pointer & PAGE_MASK);
++		ret = __hv_remote_flush_tlb_with_range(kvm,
++				kvm_get_vcpu(kvm, 0), range);
+ 	}
+ 
+ 	spin_unlock(&to_kvm_vmx(kvm)->ept_pointer_lock);
+ 	return ret;
+ }
++
++static int hv_remote_flush_tlb(struct kvm *kvm)
++{
++	return hv_remote_flush_tlb_with_range(kvm, NULL);
++}
+ #else /* !IS_ENABLED(CONFIG_HYPERV) */
+ static inline void evmcs_write64(unsigned long field, u64 value) {}
+ static inline void evmcs_write32(unsigned long field, u32 value) {}
+@@ -7957,8 +7981,11 @@ static __init int hardware_setup(void)
+ 
+ #if IS_ENABLED(CONFIG_HYPERV)
+ 	if (ms_hyperv.nested_features & HV_X64_NESTED_GUEST_MAPPING_FLUSH
+-	    && enable_ept)
+-		kvm_x86_ops->tlb_remote_flush = vmx_hv_remote_flush_tlb;
++	    && enable_ept) {
++		kvm_x86_ops->tlb_remote_flush = hv_remote_flush_tlb;
++		kvm_x86_ops->tlb_remote_flush_with_range =
++				hv_remote_flush_tlb_with_range;
++	}
  #endif
  
- #ifndef cpu_has_mmips
--# ifdef CONFIG_SYS_SUPPORTS_MICROMIPS
-+# if defined(__mips_micromips)
-+#  define cpu_has_mmips		1
-+# elif defined(CONFIG_SYS_SUPPORTS_MICROMIPS)
- #  define cpu_has_mmips		__opt(MIPS_CPU_MICROMIPS)
- # else
- #  define cpu_has_mmips		0
+ 	if (!cpu_has_vmx_ple()) {
+@@ -11567,6 +11594,8 @@ static struct kvm_vcpu *vmx_create_vcpu(struct kvm *kvm, unsigned int id)
+ 	vmx->nested.posted_intr_nv = -1;
+ 	vmx->nested.current_vmptr = -1ull;
+ 
++	vmx->ept_pointer = INVALID_PAGE;
++
+ 	vmx->msr_ia32_feature_control_valid_bits = FEATURE_CONTROL_LOCKED;
+ 
+ 	/*
 -- 
-2.19.1
+2.14.4

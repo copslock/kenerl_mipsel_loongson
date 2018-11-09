@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 20:04:23 +0100 (CET)
-Received: from tartarus.angband.pl ([IPv6:2001:41d0:602:dbe::8]:49344 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 20:04:27 +0100 (CET)
+Received: from tartarus.angband.pl ([IPv6:2001:41d0:602:dbe::8]:49374 "EHLO
         tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993032AbeKITDoJTidW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 20:03:44 +0100
+        with ESMTP id S23993041AbeKITDpEe1RW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 20:03:45 +0100
 Received: from 89-64-163-218.dynamic.chello.pl ([89.64.163.218] helo=barad-dur.angband.pl)
         by tartarus.angband.pl with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <kilobyte@angband.pl>)
-        id 1gLC47-00058o-Kd; Fri, 09 Nov 2018 20:03:37 +0100
+        id 1gLC3x-00053r-Sg; Fri, 09 Nov 2018 20:03:27 +0100
 Received: from kholdan.angband.pl ([2001:470:64f4::5])
         by barad-dur.angband.pl with smtp (Exim 4.89)
         (envelope-from <kilobyte@angband.pl>)
-        id 1gLC46-0005AP-2u; Fri, 09 Nov 2018 20:03:35 +0100
-Received: by kholdan.angband.pl (sSMTP sendmail emulation); Fri, 09 Nov 2018 20:03:34 +0100
+        id 1gLC3w-0005A4-Bc; Fri, 09 Nov 2018 20:03:25 +0100
+Received: by kholdan.angband.pl (sSMTP sendmail emulation); Fri, 09 Nov 2018 20:03:24 +0100
 From:   Adam Borowski <kilobyte@angband.pl>
 To:     linux-kernel@vger.kernel.org, Nick Terrell <terrelln@fb.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -42,8 +42,8 @@ To:     linux-kernel@vger.kernel.org, Nick Terrell <terrelln@fb.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
         linux-xtensa@linux-xtensa.org
 Cc:     Adam Borowski <kilobyte@angband.pl>
-Date:   Fri,  9 Nov 2018 20:03:03 +0100
-Message-Id: <20181109190304.8573-16-kilobyte@angband.pl>
+Date:   Fri,  9 Nov 2018 20:02:56 +0100
+Message-Id: <20181109190304.8573-9-kilobyte@angband.pl>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181109190304.8573-1-kilobyte@angband.pl>
 References: <20181109185953.xwyelyqnygbskkxk@angband.pl>
@@ -52,14 +52,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 89.64.163.218
 X-SA-Exim-Mail-From: kilobyte@angband.pl
-Subject: [PATCH 16/17] Kconfig: Update the prose for selection of compression algorithm
+Subject: [PATCH 09/17] unicore32: Remove support for BZIP2 and LZMA compressed kernel
 X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
 X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Return-Path: <kilobyte@angband.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67208
+X-archive-position: 67209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,125 +76,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It was really obsolete, and some entries contradicted each other.
-
-Let's not recommend ZSTD for kernel compression yet as it's available
-only on x86, and some distros might not have the tool installed.
-Proposing ZSTD for initrd is safer but let's test it first.
+Made redundant by newer choices -- sort of, as no one enabled support
+for XZ nor ZSTD for unicore yet...
 
 Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 ---
- init/Kconfig | 25 +++++++++++++------------
- usr/Kconfig  | 24 +++++++++++-------------
- 2 files changed, 24 insertions(+), 25 deletions(-)
+ arch/unicore32/Kconfig                  | 2 --
+ arch/unicore32/boot/compressed/Makefile | 4 +---
+ arch/unicore32/boot/compressed/misc.c   | 8 --------
+ 3 files changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 412ba93673fa..7c0180c41a3c 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -153,26 +153,27 @@ choice
- 	  version of this functionality (bzip2 only), for 2.4, was
- 	  supplied by Christian Ludwig)
+diff --git a/arch/unicore32/Kconfig b/arch/unicore32/Kconfig
+index a4c05159dca5..b7eb7e9fb0d2 100644
+--- a/arch/unicore32/Kconfig
++++ b/arch/unicore32/Kconfig
+@@ -7,10 +7,8 @@ config UNICORE32
+ 	select DMA_DIRECT_OPS
+ 	select HAVE_GENERIC_DMA_COHERENT
+ 	select HAVE_KERNEL_GZIP
+-	select HAVE_KERNEL_BZIP2
+ 	select GENERIC_ATOMIC64
+ 	select HAVE_KERNEL_LZO
+-	select HAVE_KERNEL_LZMA
+ 	select VIRT_TO_BUS
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select GENERIC_FIND_FIRST_BIT
+diff --git a/arch/unicore32/boot/compressed/Makefile b/arch/unicore32/boot/compressed/Makefile
+index 9aecdd3ddc48..79ff908ad78c 100644
+--- a/arch/unicore32/boot/compressed/Makefile
++++ b/arch/unicore32/boot/compressed/Makefile
+@@ -22,9 +22,7 @@ $(obj)/font.c: $(srctree)/lib/fonts/font_8x8.c
  
--	  High compression options are mostly useful for users, who
--	  are low on disk space (embedded systems), but for whom ram
--	  size matters less.
-+	  High compression options tend to be more useful in most cases,
-+	  as bootloaders are often egregiously slow to read the kernel
-+	  from the disk/SD card/network/etc, overcoming any boot time
-+	  savings you would get from faster decompression.
+ # piggy.S and piggy.o
+ suffix_$(CONFIG_KERNEL_GZIP)	:= gzip
+-suffix_$(CONFIG_KERNEL_BZIP2)	:= bz2
+ suffix_$(CONFIG_KERNEL_LZO)	:= lzo
+-suffix_$(CONFIG_KERNEL_LZMA)	:= lzma
  
--	  If in doubt, select 'gzip'
-+	  If in doubt, select 'xz'
+ $(obj)/piggy.$(suffix_y): $(obj)/../Image FORCE
+ 	$(call if_changed,$(suffix_y))
+@@ -39,7 +37,7 @@ targets		:= vmlinux vmlinux.lds font.o font.c head.o misc.o \
+ 			piggy.$(suffix_y) piggy.o piggy.S \
  
- config KERNEL_GZIP
- 	bool "Gzip"
- 	depends on HAVE_KERNEL_GZIP
- 	help
--	  The old and tried gzip compression. It provides a good balance
--	  between compression ratio and decompression speed.
-+	  The old and tried gzip compression. You generally want it if
-+	  some tool you use doesn't support more modern compressors.
+ # Make sure files are removed during clean
+-extra-y		+= piggy.gzip piggy.bz2 piggy.lzo piggy.lzma
++extra-y		+= piggy.gzip piggy.lzo
  
- config KERNEL_LZMA
- 	bool "LZMA"
- 	depends on HAVE_KERNEL_LZMA
- 	help
--	  This compression algorithm's ratio is best.  Decompression speed
--	  is between gzip and bzip2.  Compression is slowest.
--	  The kernel size is about 33% smaller with LZMA in comparison to gzip.
-+	  An old version of xz, like it providing strong compression at slow
-+	  speed. It lacks a header and support for filters or uncompressed
-+	  blocks, thus it's usually better to pick xz.
+ # ?
+ LDFLAGS_vmlinux += -p
+diff --git a/arch/unicore32/boot/compressed/misc.c b/arch/unicore32/boot/compressed/misc.c
+index 5c65dfee278c..ab9b56cf6907 100644
+--- a/arch/unicore32/boot/compressed/misc.c
++++ b/arch/unicore32/boot/compressed/misc.c
+@@ -91,18 +91,10 @@ void error(char *x)
+ #include "../../../../lib/decompress_inflate.c"
+ #endif
  
- config KERNEL_XZ
- 	bool "XZ"
-@@ -193,9 +194,9 @@ config KERNEL_LZO
- 	bool "LZO"
- 	depends on HAVE_KERNEL_LZO
- 	help
--	  Its compression ratio is the poorest among the choices. The kernel
--	  size is about 10% bigger than gzip; however its speed
--	  (both compression and decompression) is the fastest.
-+	  Its compression ratio is pretty poor (but still better than
-+	  LZ4). You want to pick ZSTD (similar speed but much better
-+	  compression) or LZ4 (much better speed) instead.
+-#ifdef CONFIG_KERNEL_BZIP2
+-#include "../../../../lib/decompress_bunzip2.c"
+-#endif
+-
+ #ifdef CONFIG_KERNEL_LZO
+ #include "../../../../lib/decompress_unlzo.c"
+ #endif
  
- config KERNEL_LZ4
- 	bool "LZ4"
-diff --git a/usr/Kconfig b/usr/Kconfig
-index 8d99edacabc9..f6e871585f05 100644
---- a/usr/Kconfig
-+++ b/usr/Kconfig
-@@ -131,17 +131,15 @@ config INITRAMFS_COMPRESSION_NONE
- 	  on those architectures that support this. However, not compressing the
- 	  initramfs may lead to slightly higher memory consumption during a
- 	  short time at boot, while both the cpio image and the unpacked
--	  filesystem image will be present in memory simultaneously
-+	  filesystem image will be present in memory simultaneously.
- 
- config INITRAMFS_COMPRESSION_GZIP
- 	bool "Gzip"
- 	depends on RD_GZIP
- 	help
--	  Use the old and well tested gzip compression algorithm. Gzip provides
--	  a good balance between compression ratio and decompression speed and
--	  has a reasonable compression speed. It is also more likely to be
--	  supported by your build system as the gzip tool is present by default
--	  on most distros.
-+	  Use the old and well tested gzip compression algorithm. Gzip doesn't
-+	  provide very good compression nor speed, but it's the safest choice,
-+	  with wide support.
- 
- config INITRAMFS_COMPRESSION_XZ
- 	bool "XZ"
-@@ -150,20 +148,20 @@ config INITRAMFS_COMPRESSION_XZ
- 	  XZ uses the LZMA2 algorithm and has a large dictionary which may cause
- 	  problems on memory constrained systems. The initramfs size is about
- 	  30% smaller with XZ in comparison to gzip. Decompression speed is
--	  better than that of bzip2 but worse than gzip and LZO. Compression is
--	  slow.
-+	  okayish but still slowest of all currently available algorithms.
-+	  Compression is slow.
- 
--	  If you choose this, keep in mind that you may need to install the xz
--	  tool to be able to compress the initram.
-+	  Any modern distro provides xz in its default install, but on
-+	  minimal build systems you might need to install xz-utils to be
-+	  able to compress the initram.
- 
- config INITRAMFS_COMPRESSION_LZO
- 	bool "LZO"
- 	depends on RD_LZO
- 	help
- 	  It's compression ratio is the second poorest amongst the choices. The
--	  kernel size is about 10% bigger than gzip. Despite that, it's
--	  decompression speed is the second fastest and it's compression speed
--	  is quite fast too.
-+	  kernel size is about 10% bigger than gzip. Pick ZSTD instead, or LZ4
-+	  if speed is paramount.
- 
- 	  If you choose this, keep in mind that you may need to install the lzop
- 	  tool to be able to compress the initram.
+-#ifdef CONFIG_KERNEL_LZMA
+-#include "../../../../lib/decompress_unlzma.c"
+-#endif
+-
+ unsigned long decompress_kernel(unsigned long output_start,
+ 		unsigned long free_mem_ptr_p,
+ 		unsigned long free_mem_ptr_end_p)
 -- 
 2.19.1

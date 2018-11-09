@@ -1,81 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 00:46:16 +0100 (CET)
-Received: from mail-eopbgr730129.outbound.protection.outlook.com ([40.107.73.129]:34459
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990439AbeKHXo7X2W07 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 00:44:59 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CLsfMvuFiw3nMm95TlLx3HfVMmVD1YQBeNWc7iSg9ms=;
- b=fhKRWl0aKZnmOaYV+s8ei5ceiuu+visGlTlbSWJnmawKeofQ5RM5IxOpbMZZYnSas9AJOfI3uh0rzUlBMJdQld0WD0oOvHuTqnXJZKyrqC4oCICIAFvev8HKziaf8yvV+XuoiI1GQg4QnLywN4zWF9LUVTJmcVEPc0c9m/J5wnM=
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com (10.175.52.23) by
- MWHPR2201MB1757.namprd22.prod.outlook.com (10.164.133.167) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.26; Thu, 8 Nov 2018 23:44:57 +0000
-Received: from MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045]) by MWHSPR00MB117.namprd22.prod.outlook.com
- ([fe80::b95a:a3f9:be06:b045%2]) with mapi id 15.20.1294.034; Thu, 8 Nov 2018
- 23:44:57 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>
-Subject: [PATCH 2/2] lib/gcd: Remove use of CPU_NO_EFFICIENT_FFS macro
-Thread-Topic: [PATCH 2/2] lib/gcd: Remove use of CPU_NO_EFFICIENT_FFS macro
-Thread-Index: AQHUd70OIrEKngo1F0mKIBkwbyHR9Q==
-Date:   Thu, 8 Nov 2018 23:44:56 +0000
-Message-ID: <20181108234409.21199-2-paul.burton@mips.com>
-References: <20181108234409.21199-1-paul.burton@mips.com>
-In-Reply-To: <20181108234409.21199-1-paul.burton@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR2201CA0074.namprd22.prod.outlook.com
- (2603:10b6:301:5e::27) To MWHSPR00MB117.namprd22.prod.outlook.com
- (2603:10b6:300:10c::23)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1757;6:jToF7ckdzvNJ/45n1YBdh1fjcjky1rOYjInyvAxdjJAqgstvriR9DOJnuMmAR4cVJflArMDE/oJPdVujgGU++bnG3OpesRhrnxxzFvSR6nx4WL7k3zHnZSTxTqle9B0lc+/SFmWeRc8xXWCPTXfkW5lrp6ENLEz7N6ulClU4wBQZC6N5jSUoAHl+GuCJ5eI9FWvQSsej5iM/9dq71N+ZIAj5EB4lrR5aIVSFGoM/pPKk7nmqa3hTDiA8gEpXEt+9dGj597rw70Xgu1xi1MKCMKdiBDN6rQlffBjhB9gCyscWbhEfjT7lB4SU7ymM3OEa4FmKffUKh5599Ey5+hpRk3cnGUAx5bD/JOWM+hDgymkKQXVO9qnNAg30L00DESniDN4JewPm3NJ7YexPVCai2J8VGI8yB7cxaTQH1Pz5QcsTPl2Aq3v2O6Qz13m+XvWbtrg8UDFcQqKJgpR5YyN3gQ==;5:EIEjnTiwsxR5LwihPWDx0dXCxnB5dKJDW5F1Zg0Yv+ici8s6+cvm6DpJHZMuh27EFcmYLXGXUTsj9a+uP6t9a66Z7YUnjo3FdxtKPLwHCXSccM7x8wVqlmS86shjDVAE/OnTpVoBOYjH8Yc3K5sFYrE0VoXCljnjZYAYkGkLIfs=;7:DOdrRk2kL5fBUlvUqgTuXkbIqFmZi30Mm0gSHTFPs4rN6sFbLz5kOc5aRtgUZbboBDTFW4IPfHKXSJbEljyQ1t9MMW3zcZykDxecoagd5Piz6wX520femTGLuIepJzo56FrPWtPAUQy2g1d5IdA5Bw==
-x-ms-office365-filtering-correlation-id: a5e444af-3e6c-42bc-a374-08d645d4305d
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1757;
-x-ms-traffictypediagnostic: MWHPR2201MB1757:
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-microsoft-antispam-prvs: <MWHPR2201MB1757E6E29A203C662CD7D370C1C50@MWHPR2201MB1757.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(85827821059158);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(10201501046)(3231382)(944501410)(52105095)(93006095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1757;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1757;
-x-forefront-prvs: 0850800A29
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39840400004)(136003)(376002)(396003)(346002)(189003)(199004)(186003)(1076002)(316002)(26005)(2351001)(14444005)(256004)(2906002)(105586002)(7736002)(305945005)(106356001)(575784001)(8676002)(76176011)(6116002)(81166006)(8936002)(81156014)(3846002)(99286004)(68736007)(52116002)(102836004)(386003)(54906003)(2900100001)(6506007)(39060400002)(446003)(11346002)(53936002)(4326008)(2501003)(508600001)(44832011)(25786009)(5660300001)(486006)(71200400001)(6512007)(2616005)(71190400001)(476003)(97736004)(66066001)(14454004)(6486002)(42882007)(6916009)(6436002)(5640700003)(36756003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1757;H:MWHSPR00MB117.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: L3q9uCwe7YXuipdo9mIhA56fIm+SFrpFYd+lMmGFaZvMs4AVzkKzQpY0yjyjf0VDo6M3Ichjd36bLfASiHu+kA7TfawAxDTH0adVr1cS7XVNjdVGOz7oJnM1+n5qIeenknU80KKd8O14zjARx3d8q8bSK7EQgnGZxt6OEMDpeGj8IoDCk5YWf42RqWfe2kqRLw6w+A1r1Jzz0hOhTtlzDzINo+dtZYz/UWudLe3EmTiUnKE5i6v5ocrc+3UCj7dVGvm2Px9gPjjgYOGg8lw8dlucdOcGbnkUOF4rlbLSnlI5YoMYkVtdBbD8iHpGtqHYMP+01LpqY1Z37sYtKJP4AfkCUN0DkkJ5KoGMQoVUQt8=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 09:40:05 +0100 (CET)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:40664 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991062AbeKIIi6EipuQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 09:38:58 +0100
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id wA98YLH4101931
+        for <linux-mips@linux-mips.org>; Fri, 9 Nov 2018 03:38:56 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2nn564kyh3-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Fri, 09 Nov 2018 03:38:56 -0500
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <rppt@linux.ibm.com>;
+        Fri, 9 Nov 2018 08:38:53 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 9 Nov 2018 08:38:51 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id wA98codP64684168
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 9 Nov 2018 08:38:50 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B0950A405B;
+        Fri,  9 Nov 2018 08:38:50 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DAA3AA4054;
+        Fri,  9 Nov 2018 08:38:49 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.205.51])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Fri,  9 Nov 2018 08:38:49 +0000 (GMT)
+Date:   Fri, 9 Nov 2018 10:38:48 +0200
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     =?utf-8?B?6ZmI5Y2O5omN?= <chenhc@lemote.com>
+Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        rppt <rppt@linux.vnet.ibm.com>
+Subject: Re: [[PATCH]] mips: Fix switch to NO_BOOTMEM for SGI-IP27/loongons3
+ NUMA
+References: <20181108144428.28149-1-tbogendoerfer@suse.de>
+ <20181108161823.GB15707@rapoport-lnx>
+ <20181108175217.f55065d6115edbafd6aa3487@suse.de>
+ <43783525-DEC2-46A5-A61E-4C3BF3DDE4A0@linux.ibm.com>
+ <tencent_4F1049E7045AD21E19098484@qq.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5e444af-3e6c-42bc-a374-08d645d4305d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Nov 2018 23:44:57.0053
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1757
-Return-Path: <pburton@wavecomp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_4F1049E7045AD21E19098484@qq.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 18110908-4275-0000-0000-000002DE3988
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 18110908-4276-0000-0000-000037EB3B91
+Message-Id: <20181109083847.GA7819@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2018-11-09_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1807170000 definitions=main-1811090081
+Return-Path: <rppt@linux.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67188
+X-archive-position: 67189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: rppt@linux.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,32 +87,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The CPU_NO_EFFICIENT_FFS pre-processor macro is no longer used, with all
-architectures toggling the equivalent Kconfig symbol
-CONFIG_CPU_NO_EFFICIENT_FFS instead. Remove our check for the unused
-macro.
+On Fri, Nov 09, 2018 at 10:54:26AM +0800, 陈华才 wrote:
+> Hi,
+> 
+> It seems the patch below can solve many problems after switched to NO_BOOTMEM, because the memory allocation behavior is more similar as before.
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>
-
----
-
- lib/gcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/gcd.c b/lib/gcd.c
-index 227dea924425..7948ab27f0a4 100644
---- a/lib/gcd.c
-+++ b/lib/gcd.c
-@@ -10,7 +10,7 @@
-  * has decent hardware division.
-  */
+Yes, this should work.
+Still, simplifying the max_low_pfn evaluation has it's value regardless.
  
--#if !defined(CONFIG_CPU_NO_EFFICIENT_FFS) && !defined(CPU_NO_EFFICIENT_FFS)
-+#if !defined(CONFIG_CPU_NO_EFFICIENT_FFS)
- 
- /* If __ffs is available, the even/odd algorithm benchmarks slower. */
- 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 070234b..7a449d9 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -839,6 +839,7 @@ static void __init arch_mem_init(char **cmdline_p)
+> 
+>         /* call board setup routine */
+>         plat_mem_setup();
+> +       memblock_set_bottom_up(true);
+> 
+>         /*
+>          * Make sure all kernel memory is in the maps.  The "UP" and
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 0f852e1..15e103c 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -2260,10 +2260,8 @@ void __init trap_init(void)
+>                 unsigned long size = 0x200 + VECTORSPACING*64;
+>                 phys_addr_t ebase_pa;
+> 
+> -               memblock_set_bottom_up(true);
+>                 ebase = (unsigned long)
+>                         memblock_alloc_from(size, 1 << fls(size), 0);
+> -               memblock_set_bottom_up(false);
+> 
+>                 /*
+>                  * Try to ensure ebase resides in KSeg0 if possible.
+> @@ -2307,6 +2305,7 @@ void __init trap_init(void)
+>         if (board_ebase_setup)
+>                 board_ebase_setup();
+>         per_cpu_trap_init(true);
+> +       memblock_set_bottom_up(false);
+> 
+>         /*
+>          * Copy the generic exception handlers to their final destination.
+> 
+>  
+> ------------------ Original ------------------
+> From:  "Mike Rapoport"<rppt@linux.ibm.com>;
+> Date:  Fri, Nov 9, 2018 02:01 AM
+> To:  "Thomas Bogendoerfer"<tbogendoerfer@suse.de>;
+> Cc:  "Ralf Baechle"<ralf@linux-mips.org>; "Paul Burton"<paul.burton@mips.com>; "James Hogan"<jhogan@kernel.org>; "Huacai Chen"<chenhc@lemote.com>; "linux-mips"<linux-mips@linux-mips.org>; "linux-kernel"<linux-kernel@vger.kernel.org>; "rppt"<rppt@linux.vnet.ibm.com>;
+> Subject:  Re: [[PATCH]] mips: Fix switch to NO_BOOTMEM for SGI-IP27/loongons3 NUMA
+>  
+> 
+> 
+> On November 8, 2018 6:52:17 PM GMT+02:00, Thomas Bogendoerfer <tbogendoerfer@suse.de> wrote:
+> >On Thu, 8 Nov 2018 18:18:23 +0200
+> >Mike Rapoport <rppt@linux.ibm.com> wrote:
+> >
+> >> On Thu, Nov 08, 2018 at 03:44:28PM +0100, Thomas Bogendoerfer wrote:
+> >> > Commit bcec54bf3118 ("mips: switch to NO_BOOTMEM") broke SGI-IP27
+> >> > and NUMA enabled loongson3 by doing memblock_set_current_limit()
+> >> > before max_low_pfn has been evaluated. Both platforms need to do
+> >the
+> >> > memblock_set_current_limit() in platform specific code. For
+> >> > consistency the call to memblock_set_current_limit() is moved
+> >> > to the common bootmem_init(), where max_low_pfn is calculated
+> >> > for non NUMA enabled platforms.
+> >> [..]
+> >> 
+> >> As for SGI-IP27, the initialization of max_low_pfn as late as in
+> >> paging_init() seems to be broken because it's value is used in
+> >> arch_mem_init() and in finalize_initrd() anyway.
+> >
+> >well, the patch is tested on real hardware and the first caller of
+> >a memblock_alloc* function is in a function called by
+> >free_area_init_nodes().
+>  
+> Then, apparently, I've missed something else.
+> The Onyx2 I worked on is dead for a couple of years now ;-)
+> 
+> >> AFAIU, both platforms set max_low_pfn to last available pfn, so it
+> >seems we
+> >> can simply do
+> >> 
+> >> max_low_pfn = PFN_PHYS(memblock_end_of_DRAM())
+> >>
+> 
+> Should have been PHYS_PFN, sorry.
+> 
+> >> in the prom_meminit() function for both platforms and drop the loop
+> >> evaluating max_low_pfn in paging_init().
+> >
+> >sounds like a better plan. I'll prepare a new patch.
+> >
+> >Thomas.
+> 
+> -- 
+> Sent from my Android device with K-9 Mail. Please excuse my brevity.
+
 -- 
-2.19.1
+Sincerely yours,
+Mike.

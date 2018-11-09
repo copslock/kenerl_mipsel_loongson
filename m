@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 20:04:06 +0100 (CET)
-Received: from tartarus.angband.pl ([IPv6:2001:41d0:602:dbe::8]:49228 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2018 20:04:13 +0100 (CET)
+Received: from tartarus.angband.pl ([IPv6:2001:41d0:602:dbe::8]:49320 "EHLO
         tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992969AbeKITDkSX15W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 20:03:40 +0100
+        with ESMTP id S23993001AbeKITDnH3WKW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2018 20:03:43 +0100
 Received: from 89-64-163-218.dynamic.chello.pl ([89.64.163.218] helo=barad-dur.angband.pl)
         by tartarus.angband.pl with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <kilobyte@angband.pl>)
-        id 1gLC42-00055a-0j; Fri, 09 Nov 2018 20:03:31 +0100
+        id 1gLC43-00056I-EP; Fri, 09 Nov 2018 20:03:33 +0100
 Received: from kholdan.angband.pl ([2001:470:64f4::5])
         by barad-dur.angband.pl with smtp (Exim 4.89)
         (envelope-from <kilobyte@angband.pl>)
-        id 1gLC40-0005AD-Dx; Fri, 09 Nov 2018 20:03:29 +0100
-Received: by kholdan.angband.pl (sSMTP sendmail emulation); Fri, 09 Nov 2018 20:03:28 +0100
+        id 1gLC41-0005AG-Rq; Fri, 09 Nov 2018 20:03:30 +0100
+Received: by kholdan.angband.pl (sSMTP sendmail emulation); Fri, 09 Nov 2018 20:03:29 +0100
 From:   Adam Borowski <kilobyte@angband.pl>
 To:     linux-kernel@vger.kernel.org, Nick Terrell <terrelln@fb.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -42,8 +42,8 @@ To:     linux-kernel@vger.kernel.org, Nick Terrell <terrelln@fb.com>,
         Max Filippov <jcmvbkbc@gmail.com>,
         linux-xtensa@linux-xtensa.org
 Cc:     Adam Borowski <kilobyte@angband.pl>
-Date:   Fri,  9 Nov 2018 20:02:59 +0100
-Message-Id: <20181109190304.8573-12-kilobyte@angband.pl>
+Date:   Fri,  9 Nov 2018 20:03:00 +0100
+Message-Id: <20181109190304.8573-13-kilobyte@angband.pl>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181109190304.8573-1-kilobyte@angband.pl>
 References: <20181109185953.xwyelyqnygbskkxk@angband.pl>
@@ -52,14 +52,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 89.64.163.218
 X-SA-Exim-Mail-From: kilobyte@angband.pl
-Subject: [PATCH 12/17] Kconfig: Remove support for LZMA-compressed initrd
+Subject: [PATCH 13/17] arch/*: Purge references to CONFIG_RD_BZIP2/LZMA from various defconfigs
 X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
 X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Return-Path: <kilobyte@angband.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67203
+X-archive-position: 67204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,94 +76,324 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Obsoleted by XZ.
-
-The config option for compressing the kernel stays, as some archs have a
-bootloader outside the kernel that wants LZMA.
+They don't exist anymore.
 
 Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 ---
- Makefile    |  1 -
- usr/Kconfig | 28 ++--------------------------
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ arch/arm/configs/aspeed_g4_defconfig       | 1 -
+ arch/arm/configs/aspeed_g5_defconfig       | 1 -
+ arch/arm/configs/clps711x_defconfig        | 1 -
+ arch/arm/configs/ezx_defconfig             | 2 --
+ arch/arm/configs/hisi_defconfig            | 1 -
+ arch/arm/configs/imote2_defconfig          | 2 --
+ arch/arm/configs/lpc18xx_defconfig         | 2 --
+ arch/arm/configs/vf610m4_defconfig         | 2 --
+ arch/m68k/configs/stmark2_defconfig        | 2 --
+ arch/mips/configs/ar7_defconfig            | 1 -
+ arch/mips/configs/ath25_defconfig          | 1 -
+ arch/mips/configs/ath79_defconfig          | 1 -
+ arch/mips/configs/lemote2f_defconfig       | 2 --
+ arch/mips/configs/loongson3_defconfig      | 2 --
+ arch/mips/configs/nlm_xlp_defconfig        | 2 --
+ arch/mips/configs/nlm_xlr_defconfig        | 2 --
+ arch/mips/configs/pistachio_defconfig      | 2 --
+ arch/openrisc/configs/simple_smp_defconfig | 2 --
+ arch/powerpc/configs/44x/fsp2_defconfig    | 1 -
+ arch/powerpc/configs/skiroot_defconfig     | 2 --
+ arch/sh/configs/sdk7786_defconfig          | 2 --
+ arch/xtensa/configs/cadence_csp_defconfig  | 2 --
+ arch/xtensa/configs/nommu_kc705_defconfig  | 2 --
+ 23 files changed, 38 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index c812467bfe11..97e4bf26a6d3 100644
---- a/Makefile
-+++ b/Makefile
-@@ -938,7 +938,6 @@ export mod_compress_cmd
- # This shall be used by the dracut(8) tool while creating an initramfs image.
- #
- INITRD_COMPRESS-y                  := gzip
--INITRD_COMPRESS-$(CONFIG_RD_LZMA)  := lzma
- INITRD_COMPRESS-$(CONFIG_RD_XZ)    := xz
- INITRD_COMPRESS-$(CONFIG_RD_LZO)   := lzo
- INITRD_COMPRESS-$(CONFIG_RD_LZ4)   := lz4
-diff --git a/usr/Kconfig b/usr/Kconfig
-index 05b6be569041..8d99edacabc9 100644
---- a/usr/Kconfig
-+++ b/usr/Kconfig
-@@ -61,15 +61,6 @@ config RD_GZIP
- 	  Support loading of a gzip encoded initial ramdisk or cpio buffer.
- 	  If unsure, say Y.
- 
--config RD_LZMA
--	bool "Support initial ramdisk/ramfs compressed using LZMA"
--	default y
--	depends on BLK_DEV_INITRD
--	select DECOMPRESS_LZMA
--	help
--	  Support loading of a LZMA encoded initial ramdisk or cpio buffer
--	  If unsure, say N.
--
- config RD_XZ
- 	bool "Support initial ramdisk/ramfs compressed using XZ"
- 	depends on BLK_DEV_INITRD
-@@ -118,8 +109,8 @@ choice
- 	  when building a kernel.  Decompression speed is relevant at
- 	  each boot. Also the memory usage during decompression may become
- 	  relevant on memory constrained systems. This is usually based on the
--	  dictionary size of the algorithm with algorithms like XZ and LZMA
--	  featuring large dictionary sizes.
-+	  dictionary size of the algorithm with algorithms like XZ featuring
-+	  large dictionary sizes.
- 
- 	  High compression options are mostly useful for users who are
- 	  low on RAM, since it reduces the memory consumption during
-@@ -152,19 +143,6 @@ config INITRAMFS_COMPRESSION_GZIP
- 	  supported by your build system as the gzip tool is present by default
- 	  on most distros.
- 
--config INITRAMFS_COMPRESSION_LZMA
--	bool "LZMA"
--	depends on RD_LZMA
--	help
--	  This algorithm's compression ratio is best but has a large dictionary
--	  size which might cause issues in memory constrained systems.
--	  Decompression speed is between the other choices. Compression is
--	  slowest. The initramfs size is about 33% smaller with LZMA in
--	  comparison to gzip.
--
--	  If you choose this, keep in mind that you may need to install the xz
--	  or lzma tools to be able to compress the initram.
--
- config INITRAMFS_COMPRESSION_XZ
- 	bool "XZ"
- 	depends on RD_XZ
-@@ -219,7 +197,6 @@ config INITRAMFS_COMPRESSION
- 	string
- 	default ""      if INITRAMFS_COMPRESSION_NONE
- 	default ".gz"   if INITRAMFS_COMPRESSION_GZIP
--	default ".lzma" if INITRAMFS_COMPRESSION_LZMA
- 	default ".xz"   if INITRAMFS_COMPRESSION_XZ
- 	default ".lzo"  if INITRAMFS_COMPRESSION_LZO
- 	default ".lz4"  if INITRAMFS_COMPRESSION_LZ4
-@@ -228,6 +205,5 @@ config INITRAMFS_COMPRESSION
- 	default ".lz4"  if RD_LZ4
- 	default ".lzo"  if RD_LZO
- 	default ".xz"   if RD_XZ
--	default ".lzma" if RD_LZMA
- 	default ".zst"  if RD_ZSTD
- 	default ""
+diff --git a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
+index 1446262921b4..2e978ba5fab3 100644
+--- a/arch/arm/configs/aspeed_g4_defconfig
++++ b/arch/arm/configs/aspeed_g4_defconfig
+@@ -8,7 +8,6 @@ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=16
+ CONFIG_CGROUPS=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+ # CONFIG_UID16 is not set
+diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
+index 02fa3a41add5..4fef8a5d208a 100644
+--- a/arch/arm/configs/aspeed_g5_defconfig
++++ b/arch/arm/configs/aspeed_g5_defconfig
+@@ -8,7 +8,6 @@ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=16
+ CONFIG_CGROUPS=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+ # CONFIG_UID16 is not set
+diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+index fc105c9178cc..63e029d9c5a6 100644
+--- a/arch/arm/configs/clps711x_defconfig
++++ b/arch/arm/configs/clps711x_defconfig
+@@ -2,7 +2,6 @@ CONFIG_KERNEL_LZMA=y
+ CONFIG_SYSVIPC=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_LZMA=y
+ CONFIG_EMBEDDED=y
+ CONFIG_SLOB=y
+ CONFIG_JUMP_LABEL=y
+diff --git a/arch/arm/configs/ezx_defconfig b/arch/arm/configs/ezx_defconfig
+index 484e51fbd4a6..47bbd7b20f07 100644
+--- a/arch/arm/configs/ezx_defconfig
++++ b/arch/arm/configs/ezx_defconfig
+@@ -4,8 +4,6 @@ CONFIG_SYSVIPC=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_SYSFS_DEPRECATED_V2=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_EXPERT=y
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_SLAB=y
+diff --git a/arch/arm/configs/hisi_defconfig b/arch/arm/configs/hisi_defconfig
+index 74d611e41e02..c8660e175f15 100644
+--- a/arch/arm/configs/hisi_defconfig
++++ b/arch/arm/configs/hisi_defconfig
+@@ -1,7 +1,6 @@
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_LZMA=y
+ CONFIG_ARCH_HISI=y
+ CONFIG_ARCH_HI3xxx=y
+ CONFIG_PARTITION_ADVANCED=y
+diff --git a/arch/arm/configs/imote2_defconfig b/arch/arm/configs/imote2_defconfig
+index f204017c26b9..5cd017270f1e 100644
+--- a/arch/arm/configs/imote2_defconfig
++++ b/arch/arm/configs/imote2_defconfig
+@@ -3,8 +3,6 @@ CONFIG_SYSVIPC=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_SYSFS_DEPRECATED_V2=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_EXPERT=y
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_SLAB=y
+diff --git a/arch/arm/configs/lpc18xx_defconfig b/arch/arm/configs/lpc18xx_defconfig
+index 23df2518203d..f0d36814111a 100644
+--- a/arch/arm/configs/lpc18xx_defconfig
++++ b/arch/arm/configs/lpc18xx_defconfig
+@@ -1,8 +1,6 @@
+ CONFIG_CROSS_COMPILE="arm-linux-gnueabihf-"
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/arm/configs/vf610m4_defconfig b/arch/arm/configs/vf610m4_defconfig
+index a89f035c3b01..6b34e135035b 100644
+--- a/arch/arm/configs/vf610m4_defconfig
++++ b/arch/arm/configs/vf610m4_defconfig
+@@ -1,7 +1,5 @@
+ CONFIG_NAMESPACES=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZ4 is not set
+ CONFIG_KALLSYMS_ALL=y
+diff --git a/arch/m68k/configs/stmark2_defconfig b/arch/m68k/configs/stmark2_defconfig
+index 3d07b1de7eb0..fe82d37ba81d 100644
+--- a/arch/m68k/configs/stmark2_defconfig
++++ b/arch/m68k/configs/stmark2_defconfig
+@@ -5,8 +5,6 @@ CONFIG_SYSVIPC=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_NAMESPACES=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/mips/configs/ar7_defconfig b/arch/mips/configs/ar7_defconfig
+index 5651f4d8f45c..a0ce69fb4fcb 100644
+--- a/arch/mips/configs/ar7_defconfig
++++ b/arch/mips/configs/ar7_defconfig
+@@ -12,7 +12,6 @@ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_SYSFS_DEPRECATED_V2=y
+ CONFIG_RELAY=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_LZMA=y
+ CONFIG_EXPERT=y
+ # CONFIG_KALLSYMS is not set
+ # CONFIG_ELF_CORE is not set
+diff --git a/arch/mips/configs/ath25_defconfig b/arch/mips/configs/ath25_defconfig
+index b8d48038e74f..1a83f91dad42 100644
+--- a/arch/mips/configs/ath25_defconfig
++++ b/arch/mips/configs/ath25_defconfig
+@@ -9,7 +9,6 @@ CONFIG_SYSVIPC=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_RD_GZIP is not set
+-# CONFIG_RD_BZIP2 is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
+index 951c4231bdb8..c11f1870ed6f 100644
+--- a/arch/mips/configs/ath79_defconfig
++++ b/arch/mips/configs/ath79_defconfig
+@@ -12,7 +12,6 @@ CONFIG_SYSVIPC=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_RD_GZIP is not set
+-CONFIG_RD_LZMA=y
+ # CONFIG_KALLSYMS is not set
+ # CONFIG_AIO is not set
+ CONFIG_EMBEDDED=y
+diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
+index 02be95c1b712..2e2561f1aec3 100644
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -17,8 +17,6 @@ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=15
+ CONFIG_SYSFS_DEPRECATED_V2=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+ CONFIG_EXPERT=y
+ CONFIG_PROFILING=y
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 324dfee23dfb..42eae3436bb4 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -32,8 +32,6 @@ CONFIG_SCHED_AUTOGROUP=y
+ CONFIG_SYSFS_DEPRECATED=y
+ CONFIG_RELAY=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_SYSCTL_SYSCALL=y
+ CONFIG_EMBEDDED=y
+ CONFIG_MODULES=y
+diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
+index e8e1dd8e0e99..16e44d0f1d29 100644
+--- a/arch/mips/configs/nlm_xlp_defconfig
++++ b/arch/mips/configs/nlm_xlp_defconfig
+@@ -21,8 +21,6 @@ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_CGROUPS=y
+ CONFIG_NAMESPACES=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_KALLSYMS_ALL=y
+ CONFIG_EMBEDDED=y
+ # CONFIG_COMPAT_BRK is not set
+diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
+index c4477a4d40c1..9340f42184f7 100644
+--- a/arch/mips/configs/nlm_xlr_defconfig
++++ b/arch/mips/configs/nlm_xlr_defconfig
+@@ -22,8 +22,6 @@ CONFIG_NAMESPACES=y
+ CONFIG_SCHED_AUTOGROUP=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_INITRAMFS_SOURCE=""
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_INITRAMFS_COMPRESSION_GZIP=y
+ CONFIG_EXPERT=y
+ CONFIG_KALLSYMS_ALL=y
+diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
+index b22a3cf149b6..4257f90d1272 100644
+--- a/arch/mips/configs/pistachio_defconfig
++++ b/arch/mips/configs/pistachio_defconfig
+@@ -21,8 +21,6 @@ CONFIG_CFS_BANDWIDTH=y
+ CONFIG_NAMESPACES=y
+ CONFIG_USER_NS=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+diff --git a/arch/openrisc/configs/simple_smp_defconfig b/arch/openrisc/configs/simple_smp_defconfig
+index b6e3c7e158e7..03b7633a9a2b 100644
+--- a/arch/openrisc/configs/simple_smp_defconfig
++++ b/arch/openrisc/configs/simple_smp_defconfig
+@@ -4,8 +4,6 @@ CONFIG_NO_HZ=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_RD_GZIP is not set
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
+index bae6b26bcfba..8ccae1052efb 100644
+--- a/arch/powerpc/configs/44x/fsp2_defconfig
++++ b/arch/powerpc/configs/44x/fsp2_defconfig
+@@ -9,7 +9,6 @@ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=16
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
+index cfdd08897a06..5d790a65e733 100644
+--- a/arch/powerpc/configs/skiroot_defconfig
++++ b/arch/powerpc/configs/skiroot_defconfig
+@@ -16,8 +16,6 @@ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=20
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_RD_GZIP is not set
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index e9ee0c878ead..4e71a98bc814 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -29,8 +29,6 @@ CONFIG_USER_NS=y
+ CONFIG_PID_NS=y
+ CONFIG_NET_NS=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_BZIP2=y
+-CONFIG_RD_LZMA=y
+ CONFIG_RD_LZO=y
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_SLAB=y
+diff --git a/arch/xtensa/configs/cadence_csp_defconfig b/arch/xtensa/configs/cadence_csp_defconfig
+index 3221b7053fa3..e7b295ec6acd 100644
+--- a/arch/xtensa/configs/cadence_csp_defconfig
++++ b/arch/xtensa/configs/cadence_csp_defconfig
+@@ -15,8 +15,6 @@ CONFIG_SCHED_AUTOGROUP=y
+ CONFIG_RELAY=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_INITRAMFS_SOURCE="$$KERNEL_INITRAMFS_SOURCE"
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
+diff --git a/arch/xtensa/configs/nommu_kc705_defconfig b/arch/xtensa/configs/nommu_kc705_defconfig
+index f3fc4f970ca8..9a449d13eb1e 100644
+--- a/arch/xtensa/configs/nommu_kc705_defconfig
++++ b/arch/xtensa/configs/nommu_kc705_defconfig
+@@ -15,8 +15,6 @@ CONFIG_NAMESPACES=y
+ CONFIG_SCHED_AUTOGROUP=y
+ CONFIG_RELAY=y
+ CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_BZIP2 is not set
+-# CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+ # CONFIG_RD_LZO is not set
+ # CONFIG_RD_LZ4 is not set
 -- 
 2.19.1

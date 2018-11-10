@@ -1,40 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Nov 2018 22:48:05 +0100 (CET)
-Received: from shards.monkeyblade.net ([IPv6:2620:137:e000::1:9]:39176 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992918AbeKJVsCn-yva (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Nov 2018 22:48:02 +0100
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::cf9])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9D7E614C5B7F4;
-        Sat, 10 Nov 2018 13:47:59 -0800 (PST)
-Date:   Sat, 10 Nov 2018 13:47:58 -0800 (PST)
-Message-Id: <20181110.134758.693752342395888727.davem@davemloft.net>
-To:     mirq-linux@rere.qmqm.pl
-Cc:     netdev@vger.kernel.org, ast@kernel.org, benh@kernel.crashing.org,
-        daniel@iogearbox.net, jhogan@kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
-        paul.burton@mips.com, paulus@samba.org, ralf@linux-mips.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH net-next 0/6] Remove VLAN.CFI overload
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <cover.1541876179.git.mirq-linux@rere.qmqm.pl>
-References: <cover.1541876179.git.mirq-linux@rere.qmqm.pl>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=euc-kr
-Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 10 Nov 2018 13:48:00 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Nov 2018 23:10:14 +0100 (CET)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:53884 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992066AbeKJWI1AIPTa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Nov 2018 23:08:27 +0100
+Received: from localhost.localdomain (85-76-84-189-nat.elisa-mobile.fi [85.76.84.189])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id E0F1430017;
+        Sun, 11 Nov 2018 00:08:25 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: OCTEON: cavium_octeon_defconfig: re-enable OCTEON USB driver
+Date:   Sun, 11 Nov 2018 00:06:12 +0200
+Message-Id: <20181110220612.21653-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.17.0
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67225
+X-archive-position: 67226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,16 +37,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Micha©© Miros©©aw <mirq-linux@rere.qmqm.pl>
-Date: Sat, 10 Nov 2018 19:58:29 +0100
+Re-enable OCTEON USB driver which is needed on older hardware
+(e.g. EdgeRouter Lite) for mass storage etc. This got accidentally
+deleted when config options were changed for OCTEON2/3 USB.
 
-> Fix BPF code/JITs to allow for separate VLAN_PRESENT flag
-> storage and finally move the flag to separate storage in skbuff.
-> 
-> This is final step to make CLAN.CFI transparent to core Linux
-> networking stack.
-> 
-> An #ifdef is introduced temporarily to mark fragments masking
-> VLAN_TAG_PRESENT. This is removed altogether in the final patch.
+Fixes: f922bc0ad08b ("MIPS: Octeon: cavium_octeon_defconfig: Enable more drivers")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/configs/cavium_octeon_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Daniel and Alexei, please review.
+diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
+index 490b12af103c..c52d0efacd14 100644
+--- a/arch/mips/configs/cavium_octeon_defconfig
++++ b/arch/mips/configs/cavium_octeon_defconfig
+@@ -140,6 +140,7 @@ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=y
+ CONFIG_STAGING=y
+ CONFIG_OCTEON_ETHERNET=y
++CONFIG_OCTEON_USB=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_RAS=y
+ CONFIG_EXT4_FS=y
+-- 
+2.17.0

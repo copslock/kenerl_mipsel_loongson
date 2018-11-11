@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 21:05:48 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:46094 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 21:14:05 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:46996 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993051AbeKKUFlY6Rge (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2018 21:05:41 +0100
+        by eddie.linux-mips.org with ESMTP id S23992922AbeKKUNmfk64e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2018 21:13:42 +0100
 Received: from [192.168.4.242] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1gLvsz-0000lK-OX; Sun, 11 Nov 2018 19:59:09 +0000
+        id 1gLvsz-0000l5-0O; Sun, 11 Nov 2018 19:59:09 +0000
 Received: from ben by deadeye with local (Exim 4.91)
         (envelope-from <ben@decadent.org.uk>)
-        id 1gLvsS-0001Z3-Nj; Sun, 11 Nov 2018 19:58:36 +0000
+        id 1gLvsT-0001cL-MU; Sun, 11 Nov 2018 19:58:37 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Paul Burton" <paul.burton@mips.com>,
-        "Hauke Mehrtens" <hauke@hauke-m.de>, linux-mips@linux-mips.org,
-        "=?UTF-8?Q?Rafa=C5=82=20?= =?UTF-8?Q?Mi=C5=82ecki?=" 
-        <zajec5@gmail.com>,
-        "Chris Packham" <chris.packham@alliedtelesis.co.nz>,
-        "James Hogan" <jhogan@kernel.org>,
-        "Tokunori Ikegami" <ikegami@allied-telesis.co.jp>
+CC:     akpm@linux-foundation.org, "Arnd Bergmann" <arnd@arndb.de>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org, "Thomas Gleixner" <tglx@linutronix.de>,
+        "Stephen Boyd" <sboyd@kernel.org>,
+        "John Stultz" <john.stultz@linaro.org>, linux-alpha@vger.kernel.org
 Date:   Sun, 11 Nov 2018 19:49:05 +0000
-Message-ID: <lsq.1541965745.189575243@decadent.org.uk>
+Message-ID: <lsq.1541965745.992465034@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 151/366] MIPS: BCM47XX: Enable 74K Core ExternalSync
- for PCIe erratum
+Subject: [PATCH 3.16 183/366] time: Make sure jiffies_to_msecs() preserves
+ non-zero time periods
 In-Reply-To: <lsq.1541965744.387173642@decadent.org.uk>
 X-SA-Exim-Connect-IP: 192.168.4.242
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -37,7 +35,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67236
+X-archive-position: 67237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,77 +56,62 @@ X-list: linux-mips
 
 ------------------
 
-From: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 2a027b47dba6b77ab8c8e47b589ae9bbc5ac6175 upstream.
+commit abcbcb80cd09cd40f2089d912764e315459b71f7 upstream.
 
-The erratum and workaround are described by BCM5300X-ES300-RDS.pdf as
-below.
+For the common cases where 1000 is a multiple of HZ, or HZ is a multiple of
+1000, jiffies_to_msecs() never returns zero when passed a non-zero time
+period.
 
-  R10: PCIe Transactions Periodically Fail
+However, if HZ > 1000 and not an integer multiple of 1000 (e.g. 1024 or
+1200, as used on alpha and DECstation), jiffies_to_msecs() may return zero
+for small non-zero time periods.  This may break code that relies on
+receiving back a non-zero value.
 
-    Description: The BCM5300X PCIe does not maintain transaction ordering.
-                 This may cause PCIe transaction failure.
-    Fix Comment: Add a dummy PCIe configuration read after a PCIe
-                 configuration write to ensure PCIe configuration access
-                 ordering. Set ES bit of CP0 configu7 register to enable
-                 sync function so that the sync instruction is functional.
-    Resolution:  hndpci.c: extpci_write_config()
-                 hndmips.c: si_mips_init()
-                 mipsinc.h CONF7_ES
+jiffies_to_usecs() does not need such a fix: one jiffy can only be less
+than one µs if HZ > 1000000, and such large values of HZ are already
+rejected at build time, twice:
 
-This is fixed by the CFE MIPS bcmsi chipset driver also for BCM47XX.
-Also the dummy PCIe configuration read is already implemented in the
-Linux BCMA driver.
+  - include/linux/jiffies.h does #error if HZ >= 12288,
+  - kernel/time/time.c has BUILD_BUG_ON(HZ > USEC_PER_SEC).
 
-Enable ExternalSync in Config7 when CONFIG_BCMA_DRIVER_PCI_HOSTMODE=y
-too so that the sync instruction is externalised.
+Broken since forever.
 
-Signed-off-by: Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: Rafał Miłecki <zajec5@gmail.com>
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-alpha@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/19461/
-Signed-off-by: James Hogan <jhogan@kernel.org>
+Link: https://lkml.kernel.org/r/20180622143357.7495-1-geert@linux-m68k.org
+[bwh: Backported to 3.16: adjust filename]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/bcm47xx/setup.c        | 6 ++++++
- arch/mips/include/asm/mipsregs.h | 3 +++
- 2 files changed, 9 insertions(+)
+ kernel/time.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -253,6 +253,12 @@ static int __init bcm47xx_cpu_fixes(void
- 		 */
- 		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
- 			cpu_wait = NULL;
-+
-+		/*
-+		 * BCM47XX Erratum "R10: PCIe Transactions Periodically Fail"
-+		 * Enable ExternalSync for sync instruction to take effect
-+		 */
-+		set_c0_config7(MIPS_CONF7_ES);
- 		break;
+--- a/kernel/time.c
++++ b/kernel/time.c
+@@ -28,6 +28,7 @@
+  */
+ 
+ #include <linux/export.h>
++#include <linux/kernel.h>
+ #include <linux/timex.h>
+ #include <linux/capability.h>
+ #include <linux/timekeeper_internal.h>
+@@ -253,9 +254,10 @@ unsigned int jiffies_to_msecs(const unsi
+ 	return (j + (HZ / MSEC_PER_SEC) - 1)/(HZ / MSEC_PER_SEC);
+ #else
+ # if BITS_PER_LONG == 32
+-	return (HZ_TO_MSEC_MUL32 * j) >> HZ_TO_MSEC_SHR32;
++	return (HZ_TO_MSEC_MUL32 * j + (1ULL << HZ_TO_MSEC_SHR32) - 1) >>
++	       HZ_TO_MSEC_SHR32;
+ # else
+-	return (j * HZ_TO_MSEC_NUM) / HZ_TO_MSEC_DEN;
++	return DIV_ROUND_UP(j * HZ_TO_MSEC_NUM, HZ_TO_MSEC_DEN);
+ # endif
  #endif
- 	}
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -674,6 +674,8 @@
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
- 
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
-+/* ExternalSync */
-+#define MIPS_CONF7_ES		(_ULCAST_(1) << 8)
- 
- #define MIPS_CONF7_IAR		(_ULCAST_(1) << 10)
- #define MIPS_CONF7_AR		(_ULCAST_(1) << 16)
-@@ -1817,6 +1819,7 @@ __BUILD_SET_C0(status)
- __BUILD_SET_C0(cause)
- __BUILD_SET_C0(config)
- __BUILD_SET_C0(config5)
-+__BUILD_SET_C0(config7)
- __BUILD_SET_C0(intcontrol)
- __BUILD_SET_C0(intctl)
- __BUILD_SET_C0(srsmap)
+ }

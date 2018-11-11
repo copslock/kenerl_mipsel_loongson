@@ -1,65 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 21:18:56 +0100 (CET)
-Received: from mail-wr1-x443.google.com ([IPv6:2a00:1450:4864:20::443]:42115
-        "EHLO mail-wr1-x443.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990757AbeKKURury7pe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2018 21:17:50 +0100
-Received: by mail-wr1-x443.google.com with SMTP id u5-v6so1836694wrn.9
-        for <linux-mips@linux-mips.org>; Sun, 11 Nov 2018 12:17:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sngmm96Z9HsNEvqgT2i1q25cJ7sOvu12JY9z1ptp2QY=;
-        b=Sei0tki9nJ+7IEkgAXoEnqbwalnurm67aufaTKAdYCt5CaDphlBkYlNrYR3yCqZHCz
-         mqYj+0ejf80T0Ht3Omg/nIYHh3cpfuFHRtQQ/YIX/w8JFTiNJzn+eY3UzVOgMdf8GIlL
-         f86wzp8lbcl44QESxnPkngWPGqb6xekdga2WBXc/QPSz+02C4v94YZffqHCFIV9DyPGc
-         DUxYYoCNvCOOKVDk/jj/SFpXrPItFoR2U1+sa0ULI4n6KlDvQzXp1AO3JhO1W9v9QMAC
-         JsSXrhSoTK+FjoYTZeGyS1mHpH8RuzuO/GYXplj3EkFFHGlazYCHGBkOgK9t6U6n+yWM
-         grbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sngmm96Z9HsNEvqgT2i1q25cJ7sOvu12JY9z1ptp2QY=;
-        b=DNas9OioUPwnok+F1Xwrs78cQWV6uvzqCjZ3eXMRLlPlfBA4iKVU3tcRNkyDpjxHuk
-         lhhppAKojUii5ElC6RuPOuRy4anVyrc+d89U11wAWfzckXZkl/elXHBNhxa7fAf1Waec
-         Pv1Z+gEx7RjzjgGOGGBVyKKREIGd7Fr8IMLf2NTbGtCVnoNHsd2L3l6lOK7LBspMjPFw
-         Y6/IvZHwEJ23ZECsOv1v7BKWuB0l2CojmWljIHT60xSk0kjKInAxvxsB+umpeXeUi0fl
-         0nwFvJ27vLag0WNRa8QXgibMC+vvrOZ6DJkfWq83M9TEJVgpbrfY0V4aoP8pjxqsn8Am
-         35Tg==
-X-Gm-Message-State: AGRZ1gK2tM9sLkDUk2c4+WucsD/F6h5YHTzZm/9w3He+SR6nPT1JfMST
-        PPyX8Sm/kvbqdy5KNMshOCRlHC0fs5pzgtvMkiw=
-X-Google-Smtp-Source: AJdET5eAaCZm0KE5FeZzlaJhdoUSnt8b4C1/HdMwwzpAMUyt4+nQJIQKacRGm/wU2LNNBIAyX/k71y9cQGqmqZUaNdA=
-X-Received: by 2002:a5d:4747:: with SMTP id o7-v6mr14412215wrs.256.1541967469482;
- Sun, 11 Nov 2018 12:17:49 -0800 (PST)
-MIME-Version: 1.0
-References: <lsq.1541965744.387173642@decadent.org.uk> <lsq.1541965745.189575243@decadent.org.uk>
-In-Reply-To: <lsq.1541965745.189575243@decadent.org.uk>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Sun, 11 Nov 2018 21:17:38 +0100
-Message-ID: <CACna6rx3LPxuYKtJOmZP-Pt-HMAhh99qHVsxVFv=XoPuJ1azbw@mail.gmail.com>
-Subject: Re: [PATCH 3.16 151/366] MIPS: BCM47XX: Enable 74K Core ExternalSync
- for PCIe erratum
-To:     Ben Hutchings <ben@decadent.org.uk>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 23:27:04 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:46856 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992066AbeKKW1A1qhLL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 11 Nov 2018 23:27:00 +0100
+Received: from localhost (unknown [206.108.79.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CCE9C2175B;
+        Sun, 11 Nov 2018 22:26:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1541975218;
+        bh=Rx3BK9wNQ7WRAINZj8JQsEa0Nf7iAX5LUk5+nLvsV2Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=k4E8kkqxzMhiyVwSU4uXp/4Ifen24sbTPQ1ZhP3eXuUm99c0ADcSP9ih+YD8N2w47
+         fx3bz3kPWnPHRRug3FMGOtZUEd+1tIgqsyKweaG6Q+4Z3elHVnfaaKcwu/nDK9c83G
+         8qRoheWiB6IsqcIxB4xoVApxqMy3XXYmmT/PpZFQ=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
         Paul Burton <paul.burton@mips.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        James Hogan <jhogan@kernel.org>,
-        Tokunori Ikegami <ikegami@allied-telesis.co.jp>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <zajec5@gmail.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 002/361] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for 64bit
+Date:   Sun, 11 Nov 2018 14:15:49 -0800
+Message-Id: <20181111221620.507857847@linuxfoundation.org>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20181111221619.915519183@linuxfoundation.org>
+References: <20181111221619.915519183@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <SRS0=XqPF=NW=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67238
+X-archive-position: 67239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,9 +58,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 11 Nov 2018 at 21:05, Ben Hutchings <ben@decadent.org.uk> wrote:
-> 3.16.61-rc1 review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-Nack. This patch has caused a regression and had to be reverted.
-Please check upstream repository for a revert (search git log for
-2a027b47dba6).
+------------------
+
+[ Upstream commit c61c7def1fa0a722610d89790e0255b74f3c07dd ]
+
+Commit ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
+set VDSO_RANDOMIZE_SIZE to 256MB for 64bit kernel. But take a look at
+arch/mips/mm/mmap.c we can see that MIN_GAP is 128MB, which means the
+mmap_base may be at (user_address_top - 128MB). This make the stack be
+surrounded by mmaped areas, then stack expanding fails and causes a
+segmentation fault. Therefore, VDSO_RANDOMIZE_SIZE should be less than
+MIN_GAP and this patch reduce it to 64MB.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
+Patchwork: https://patchwork.linux-mips.org/patch/20910/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
+Cc: stable@vger.kernel.org # 4.19
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 49d6046ca1d0..c373eb605040 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -81,7 +81,7 @@ extern unsigned int vced_count, vcei_count;
+ 
+ #endif
+ 
+-#define VDSO_RANDOMIZE_SIZE	(TASK_IS_32BIT_ADDR ? SZ_1M : SZ_256M)
++#define VDSO_RANDOMIZE_SIZE	(TASK_IS_32BIT_ADDR ? SZ_1M : SZ_64M)
+ 
+ extern unsigned long mips_stack_top(void);
+ #define STACK_TOP		mips_stack_top()
+-- 
+2.17.1

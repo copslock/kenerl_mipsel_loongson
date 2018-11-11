@@ -1,34 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 23:27:04 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:46856 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2018 23:28:47 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:54780 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992066AbeKKW1A1qhLL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 11 Nov 2018 23:27:00 +0100
+        id S23993169AbeKKW2jrCerL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 11 Nov 2018 23:28:39 +0100
 Received: from localhost (unknown [206.108.79.134])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCE9C2175B;
-        Sun, 11 Nov 2018 22:26:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5C4C2223AE;
+        Sun, 11 Nov 2018 22:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1541975218;
-        bh=Rx3BK9wNQ7WRAINZj8JQsEa0Nf7iAX5LUk5+nLvsV2Q=;
+        s=default; t=1541975318;
+        bh=KeildM0kEgZ7B9i7QCvDBBQuJU/0E5QYWJeRTPd8RKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k4E8kkqxzMhiyVwSU4uXp/4Ifen24sbTPQ1ZhP3eXuUm99c0ADcSP9ih+YD8N2w47
-         fx3bz3kPWnPHRRug3FMGOtZUEd+1tIgqsyKweaG6Q+4Z3elHVnfaaKcwu/nDK9c83G
-         8qRoheWiB6IsqcIxB4xoVApxqMy3XXYmmT/PpZFQ=
+        b=Yhqi11tYArVbN7Sjxy0MXf7WfGt4XhfVW75FqkE/oQpWGY1XVb5WUt11nyG8OwXuq
+         /2HibBUs+Xab4PEqP0LyUGpnWAE/3L3a+npZVtsdc7qt1lZMRf5/T0fxztzw1foLe7
+         9D3NEGHw3LdMpjiS3nBdwZgnjyCowo09C0R3aMug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
         Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 002/361] MIPS: VDSO: Reduce VDSO_RANDOMIZE_SIZE to 64MB for 64bit
-Date:   Sun, 11 Nov 2018 14:15:49 -0800
-Message-Id: <20181111221620.507857847@linuxfoundation.org>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.19 284/361] MIPS: OCTEON: fix out of bounds array access on CN68XX
+Date:   Sun, 11 Nov 2018 14:20:31 -0800
+Message-Id: <20181111221656.139132239@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181111221619.915519183@linuxfoundation.org>
 References: <20181111221619.915519183@linuxfoundation.org>
@@ -41,7 +36,7 @@ Return-Path: <SRS0=XqPF=NW=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67239
+X-archive-position: 67240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,44 +57,37 @@ X-list: linux-mips
 
 ------------------
 
-[ Upstream commit c61c7def1fa0a722610d89790e0255b74f3c07dd ]
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Commit ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
-set VDSO_RANDOMIZE_SIZE to 256MB for 64bit kernel. But take a look at
-arch/mips/mm/mmap.c we can see that MIN_GAP is 128MB, which means the
-mmap_base may be at (user_address_top - 128MB). This make the stack be
-surrounded by mmaped areas, then stack expanding fails and causes a
-segmentation fault. Therefore, VDSO_RANDOMIZE_SIZE should be less than
-MIN_GAP and this patch reduce it to 64MB.
+commit c0fae7e2452b90c31edd2d25eb3baf0c76b400ca upstream.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
+The maximum number of interfaces is returned by
+cvmx_helper_get_number_of_interfaces(), and the value is used to access
+interface_port_count[]. When CN68XX support was added, we forgot
+to increase the array size. Fix that.
+
+Fixes: 2c8c3f0201333 ("MIPS: Octeon: Support additional interfaces on CN68XX")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: ea7e0480a4b6 ("MIPS: VDSO: Always map near top of user memory")
-Patchwork: https://patchwork.linux-mips.org/patch/20910/
+Patchwork: https://patchwork.linux-mips.org/patch/20949/
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: Huacai Chen <chenhuacai@gmail.com>
-Cc: stable@vger.kernel.org # 4.19
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/include/asm/processor.h | 2 +-
+ arch/mips/cavium-octeon/executive/cvmx-helper.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 49d6046ca1d0..c373eb605040 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -81,7 +81,7 @@ extern unsigned int vced_count, vcei_count;
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
+@@ -67,7 +67,7 @@ void (*cvmx_override_pko_queue_priority)
+ void (*cvmx_override_ipd_port_setup) (int ipd_port);
  
- #endif
+ /* Port count per interface */
+-static int interface_port_count[5];
++static int interface_port_count[9];
  
--#define VDSO_RANDOMIZE_SIZE	(TASK_IS_32BIT_ADDR ? SZ_1M : SZ_256M)
-+#define VDSO_RANDOMIZE_SIZE	(TASK_IS_32BIT_ADDR ? SZ_1M : SZ_64M)
- 
- extern unsigned long mips_stack_top(void);
- #define STACK_TOP		mips_stack_top()
--- 
-2.17.1
+ /**
+  * Return the number of interfaces the chip has. Each interface

@@ -1,62 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2018 18:02:19 +0100 (CET)
-Received: from mail-wm1-x343.google.com ([IPv6:2a00:1450:4864:20::343]:51649
-        "EHLO mail-wm1-x343.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992922AbeKLRBIjOm6A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2018 18:01:08 +0100
-Received: by mail-wm1-x343.google.com with SMTP id w7-v6so9217460wmc.1
-        for <linux-mips@linux-mips.org>; Mon, 12 Nov 2018 09:01:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2018 19:27:23 +0100 (CET)
+Received: from mail-pg1-x544.google.com ([IPv6:2607:f8b0:4864:20::544]:39616
+        "EHLO mail-pg1-x544.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992919AbeKLS1SsY9Vp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2018 19:27:18 +0100
+Received: by mail-pg1-x544.google.com with SMTP id r9-v6so4431388pgv.6
+        for <linux-mips@linux-mips.org>; Mon, 12 Nov 2018 10:27:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=globallogic.com; s=google;
+        d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=C2sX+hDQ3Df81Enc00bH7e6G7yh2CFtnAPDDDHGXYwQ=;
-        b=B3VGkaJ08XpgpuGafm+ayVvlR4ORrKc6bhVJEN7pyOkfJT4TiriuxqVpWS98QQjQBU
-         nAsADKcv8yun9D4Ozp3CHwpG6KFOO5s/EtJvwPMkc9SnG1lSjLP6Dr5V9tje0/A9sC0S
-         c2FHoobH7NOy7yqWfHEhSifFgdGrAVVUwZUI8=
+        bh=HVY8BGnB1lNWlLhbHsPmWRgWnnmtteunXgKCe85mg54=;
+        b=DJ9ClPJhbwI7cBI+bAhOJIBmUBeIeUbg6YpDzqWuLVkIds6/Kjt8Hfd7f/eGix73Qn
+         mMtRbMX+kImxWFJxM1VYCIn/w1xgt9pVfiyRwiHWtnkOrJTpyka/z/M03J4OOOY5STOk
+         fnSPR+fp878pOI5rEET/wMMRYv0wXJhg+wnME=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=C2sX+hDQ3Df81Enc00bH7e6G7yh2CFtnAPDDDHGXYwQ=;
-        b=VDBYG+UQJIeN+YpTVM7+gZP6SR/rltfWX/SOrVq5Qc2pDSMPEs1lAofE4sMaBg0H3F
-         65nmFqDfhVBFTYwySZnHxIwHn9RXGU1Qx3F3MrKdFc1cevc7pq+2uzsjbTsMJLBwUsUL
-         AgHo7gX8xNdKqz8urikaKKbNLfhlWVfuOOKa3/9OSVPqlH55pNa7hUZhcI4P81x7Ggql
-         LHr2lZp2cJOsoWL5IEmYqAKaUZE5A67mH7ztjfFv8JmM9LSvEv7BRPG8YhfKCAfmhCNl
-         JtNmDKytEo5fHHIRYFZwVRoo6rF9321sHnTDd5+up76j35i8BKejESm7DvlSYYGE1cCF
-         sGxA==
-X-Gm-Message-State: AGRZ1gKfnt6muBxUoqhcRqSd1xS6hlT7WU/MBn31UUyvosx88IDiEssq
-        YoK18qc9S8aHmhJtjGq7mifygw==
-X-Google-Smtp-Source: AJdET5dNNcKoWQCY84GuyCSuaEFRfCoBglFN9SKKZ22zgzRsLdk9GZjh9lBWNR4ReNL3akS+mcc9fw==
-X-Received: by 2002:a1c:2104:: with SMTP id h4-v6mr372217wmh.130.1542042068219;
-        Mon, 12 Nov 2018 09:01:08 -0800 (PST)
-Received: from max-pc.synapse.com ([195.238.92.77])
-        by smtp.gmail.com with ESMTPSA id u13-v6sm11835344wrn.11.2018.11.12.09.01.07
+        bh=HVY8BGnB1lNWlLhbHsPmWRgWnnmtteunXgKCe85mg54=;
+        b=BuSFiCByzQSvJYqYNM6i4wYeWEQ+CXNTD/d2jJjkG4Pr93RM1Bmy1pYzvfWi/rp30m
+         jZD8vxVv6SmCF7AlABP1H7y5hvVft5110AJHung0SVyLMBmSopie94HgULVOC9n7vYVR
+         LJPw/3EO2KjGKGFBvjjzR2slzMqBTv4vBqunabY0d9vRPIL8Y0Tkhin5rUHNwHQAH6yR
+         Z4y5c2rMJk1XnNDPIcWZW3VCVilsWWltBPenaoZBy2wDF55h6fHwDhmaJYlfDnTqbDwe
+         tsLaWHTnd6qQ2IRbIqIg7uA/4APAzdY/3yr843Ul9fjLmiP9otYEPdSXj9xz9gs6VSlL
+         h0zQ==
+X-Gm-Message-State: AGRZ1gKWPKRViLuMeVce5ORBhhRXQU9t5FfUCqTtnuk5/wM0C3uzs3K1
+        I7HotNzTX9NPrvDelWYV6qRPqg==
+X-Google-Smtp-Source: AJdET5fYnsL2I1gzV/34LqR774GVIoKFs/dEOCHFn04jYztoRjnAZkPtBXsbVKWBY6FZyTM3G/GTzg==
+X-Received: by 2002:a63:7d06:: with SMTP id y6mr1729931pgc.171.1542047237854;
+        Mon, 12 Nov 2018 10:27:17 -0800 (PST)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:c8e0:70d7:4be7:a36])
+        by smtp.gmail.com with ESMTPSA id o86-v6sm18813100pfk.8.2018.11.12.10.27.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Nov 2018 09:01:07 -0800 (PST)
-From:   Maksym Kokhan <maksym.kokhan@globallogic.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+        Mon, 12 Nov 2018 10:27:17 -0800 (PST)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     kgdb-bugreport@lists.sourceforge.net,
+        Peter Zijlstra <peterz@infradead.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Hogan <jhogan@kernel.org>, linux-hexagon@vger.kernel.org,
+        x86@kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Will Deacon <will.deacon@arm.com>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     Andrii Bordunov <andrew.bordunov@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Maksym Kokhan <maksym.kokhan@globallogic.com>
-Subject: [PATCH v2 2/2] mips: sort list of configs for Malta
-Date:   Mon, 12 Nov 2018 19:00:59 +0200
-Message-Id: <20181112170059.7199-2-maksym.kokhan@globallogic.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20181112170059.7199-1-maksym.kokhan@globallogic.com>
-References: <20181112170059.7199-1-maksym.kokhan@globallogic.com>
+        Ingo Molnar <mingo@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Huang Ying <ying.huang@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rich Felker <dalias@libc.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 1/4] kgdb: Remove irq flags from roundup
+Date:   Mon, 12 Nov 2018 10:26:55 -0800
+Message-Id: <20181112182659.245726-2-dianders@chromium.org>
+X-Mailer: git-send-email 2.19.1.930.g4563a0d9d0-goog
+In-Reply-To: <20181112182659.245726-1-dianders@chromium.org>
+References: <20181112182659.245726-1-dianders@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Return-Path: <maksym.kokhan@globallogic.com>
+Return-Path: <dianders@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67251
+X-archive-position: 67252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maksym.kokhan@globallogic.com
+X-original-sender: dianders@chromium.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,64 +96,228 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sort configs in menu "Machine selection" under MIPS_MALTA.
+The function kgdb_roundup_cpus() was passed a parameter that was
+documented as:
 
-Signed-off-by: Maksym Kokhan <maksym.kokhan@globallogic.com>
-Signed-off-by: Andrii Bordunov <andrew.bordunov@gmail.com>
+> the flags that will be used when restoring the interrupts. There is
+> local_irq_save() call before kgdb_roundup_cpus().
+
+Nobody used those flags.  Anyone who wanted to temporarily turn on
+interrupts just did local_irq_enable() and local_irq_disable() without
+looking at them.  So we can definitely remove the flags.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
- arch/mips/Kconfig | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index fe4c28275271..2ac32dac90b7 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -494,22 +494,23 @@ config MIPS_MALTA
- 	select BOOT_RAW
- 	select BUILTIN_DTB
- 	select CEVT_R4K
--	select CSRC_R4K
- 	select CLKSRC_MIPS_GIC
- 	select COMMON_CLK
-+	select CSRC_R4K
- 	select DMA_MAYBE_COHERENT
- 	select GENERIC_ISA_DMA
- 	select HAVE_PCSPKR_PLATFORM
--	select IRQ_MIPS_CPU
--	select MIPS_GIC
- 	select HW_HAS_PCI
- 	select I8253
- 	select I8259
-+	select IRQ_MIPS_CPU
-+	select LIBFDT
- 	select MIPS_BONITO64
- 	select MIPS_CPU_SCACHE
-+	select MIPS_GIC
- 	select MIPS_L1_CACHE_SHIFT_6
--	select PCI_GT64XXX_PCI0
- 	select MIPS_MSC
-+	select PCI_GT64XXX_PCI0
- 	select SMP_UP if SMP
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_MIPS32_R1
-@@ -528,16 +529,15 @@ config MIPS_MALTA
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_MICROMIPS
-+	select SYS_SUPPORTS_MIPS16
- 	select SYS_SUPPORTS_MIPS_CMP
- 	select SYS_SUPPORTS_MIPS_CPS
--	select SYS_SUPPORTS_MIPS16
- 	select SYS_SUPPORTS_MULTITHREADING
-+	select SYS_SUPPORTS_RELOCATABLE
- 	select SYS_SUPPORTS_SMARTMIPS
- 	select SYS_SUPPORTS_VPE_LOADER
- 	select SYS_SUPPORTS_ZBOOT
--	select SYS_SUPPORTS_RELOCATABLE
- 	select USE_OF
--	select LIBFDT
- 	select ZONE_DMA32 if 64BIT
- 	help
- 	  This enables support for the MIPS Technologies Malta evaluation
+Changes in v4: None
+Changes in v3: None
+Changes in v2:
+- Removing irq flags separated from fixing lockdep splat.
+
+ arch/arc/kernel/kgdb.c     | 2 +-
+ arch/arm/kernel/kgdb.c     | 2 +-
+ arch/arm64/kernel/kgdb.c   | 2 +-
+ arch/hexagon/kernel/kgdb.c | 9 ++-------
+ arch/mips/kernel/kgdb.c    | 2 +-
+ arch/powerpc/kernel/kgdb.c | 2 +-
+ arch/sh/kernel/kgdb.c      | 2 +-
+ arch/sparc/kernel/smp_64.c | 2 +-
+ arch/x86/kernel/kgdb.c     | 9 ++-------
+ include/linux/kgdb.h       | 9 ++-------
+ kernel/debug/debug_core.c  | 2 +-
+ 11 files changed, 14 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arc/kernel/kgdb.c b/arch/arc/kernel/kgdb.c
+index 9a3c34af2ae8..0932851028e0 100644
+--- a/arch/arc/kernel/kgdb.c
++++ b/arch/arc/kernel/kgdb.c
+@@ -197,7 +197,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+ 	kgdb_nmicallback(raw_smp_processor_id(), NULL);
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	local_irq_enable();
+ 	smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+diff --git a/arch/arm/kernel/kgdb.c b/arch/arm/kernel/kgdb.c
+index caa0dbe3dc61..f21077b077be 100644
+--- a/arch/arm/kernel/kgdb.c
++++ b/arch/arm/kernel/kgdb.c
+@@ -175,7 +175,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+        kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+        local_irq_enable();
+        smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
+index a20de58061a8..12c339ff6e75 100644
+--- a/arch/arm64/kernel/kgdb.c
++++ b/arch/arm64/kernel/kgdb.c
+@@ -289,7 +289,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+ 	kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	local_irq_enable();
+ 	smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+diff --git a/arch/hexagon/kernel/kgdb.c b/arch/hexagon/kernel/kgdb.c
+index 16c24b22d0b2..012e0e230ac2 100644
+--- a/arch/hexagon/kernel/kgdb.c
++++ b/arch/hexagon/kernel/kgdb.c
+@@ -119,17 +119,12 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 
+ /**
+  * kgdb_roundup_cpus - Get other CPUs into a holding pattern
+- * @flags: Current IRQ state
+  *
+  * On SMP systems, we need to get the attention of the other CPUs
+  * and get them be in a known state.  This should do what is needed
+  * to get the other CPUs to call kgdb_wait(). Note that on some arches,
+  * the NMI approach is not used for rounding up all the CPUs. For example,
+- * in case of MIPS, smp_call_function() is used to roundup CPUs. In
+- * this case, we have to make sure that interrupts are enabled before
+- * calling smp_call_function(). The argument to this function is
+- * the flags that will be used when restoring the interrupts. There is
+- * local_irq_save() call before kgdb_roundup_cpus().
++ * in case of MIPS, smp_call_function() is used to roundup CPUs.
+  *
+  * On non-SMP systems, this is not called.
+  */
+@@ -139,7 +134,7 @@ static void hexagon_kgdb_nmi_hook(void *ignored)
+ 	kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	local_irq_enable();
+ 	smp_call_function(hexagon_kgdb_nmi_hook, NULL, 0);
+diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
+index eb6c0d582626..2b05effc17b4 100644
+--- a/arch/mips/kernel/kgdb.c
++++ b/arch/mips/kernel/kgdb.c
+@@ -219,7 +219,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+ 	set_fs(old_fs);
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	local_irq_enable();
+ 	smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
+index 59c578f865aa..b0e804844be0 100644
+--- a/arch/powerpc/kernel/kgdb.c
++++ b/arch/powerpc/kernel/kgdb.c
+@@ -124,7 +124,7 @@ static int kgdb_call_nmi_hook(struct pt_regs *regs)
+ }
+ 
+ #ifdef CONFIG_SMP
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	smp_send_debugger_break();
+ }
+diff --git a/arch/sh/kernel/kgdb.c b/arch/sh/kernel/kgdb.c
+index 4f04c6638a4d..cc57630f6bf2 100644
+--- a/arch/sh/kernel/kgdb.c
++++ b/arch/sh/kernel/kgdb.c
+@@ -319,7 +319,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+ 	kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
+ }
+ 
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	local_irq_enable();
+ 	smp_call_function(kgdb_call_nmi_hook, NULL, 0);
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index 4792e08ad36b..f45d876983f1 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1014,7 +1014,7 @@ void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
+ }
+ 
+ #ifdef CONFIG_KGDB
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	smp_cross_call(&xcall_kgdb_capture, 0, 0, 0);
+ }
+diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
+index 8e36f249646e..ac6291a4178d 100644
+--- a/arch/x86/kernel/kgdb.c
++++ b/arch/x86/kernel/kgdb.c
+@@ -422,21 +422,16 @@ static void kgdb_disable_hw_debug(struct pt_regs *regs)
+ #ifdef CONFIG_SMP
+ /**
+  *	kgdb_roundup_cpus - Get other CPUs into a holding pattern
+- *	@flags: Current IRQ state
+  *
+  *	On SMP systems, we need to get the attention of the other CPUs
+  *	and get them be in a known state.  This should do what is needed
+  *	to get the other CPUs to call kgdb_wait(). Note that on some arches,
+  *	the NMI approach is not used for rounding up all the CPUs. For example,
+- *	in case of MIPS, smp_call_function() is used to roundup CPUs. In
+- *	this case, we have to make sure that interrupts are enabled before
+- *	calling smp_call_function(). The argument to this function is
+- *	the flags that will be used when restoring the interrupts. There is
+- *	local_irq_save() call before kgdb_roundup_cpus().
++ *	in case of MIPS, smp_call_function() is used to roundup CPUs.
+  *
+  *	On non-SMP systems, this is not called.
+  */
+-void kgdb_roundup_cpus(unsigned long flags)
++void kgdb_roundup_cpus(void)
+ {
+ 	apic->send_IPI_allbutself(APIC_DM_NMI);
+ }
+diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
+index e465bb15912d..05e5b2eb0d32 100644
+--- a/include/linux/kgdb.h
++++ b/include/linux/kgdb.h
+@@ -178,21 +178,16 @@ kgdb_arch_handle_exception(int vector, int signo, int err_code,
+ 
+ /**
+  *	kgdb_roundup_cpus - Get other CPUs into a holding pattern
+- *	@flags: Current IRQ state
+  *
+  *	On SMP systems, we need to get the attention of the other CPUs
+  *	and get them into a known state.  This should do what is needed
+  *	to get the other CPUs to call kgdb_wait(). Note that on some arches,
+  *	the NMI approach is not used for rounding up all the CPUs. For example,
+- *	in case of MIPS, smp_call_function() is used to roundup CPUs. In
+- *	this case, we have to make sure that interrupts are enabled before
+- *	calling smp_call_function(). The argument to this function is
+- *	the flags that will be used when restoring the interrupts. There is
+- *	local_irq_save() call before kgdb_roundup_cpus().
++ *	in case of MIPS, smp_call_function() is used to roundup CPUs.
+  *
+  *	On non-SMP systems, this is not called.
+  */
+-extern void kgdb_roundup_cpus(unsigned long flags);
++extern void kgdb_roundup_cpus(void);
+ 
+ /**
+  *	kgdb_arch_set_pc - Generic call back to the program counter
+diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
+index 65c0f1363788..f3cadda45f07 100644
+--- a/kernel/debug/debug_core.c
++++ b/kernel/debug/debug_core.c
+@@ -593,7 +593,7 @@ static int kgdb_cpu_enter(struct kgdb_state *ks, struct pt_regs *regs,
+ 
+ 	/* Signal the other CPUs to enter kgdb_wait() */
+ 	else if ((!kgdb_single_step) && kgdb_do_roundup)
+-		kgdb_roundup_cpus(flags);
++		kgdb_roundup_cpus();
+ #endif
+ 
+ 	/*
 -- 
-2.19.1
+2.19.1.930.g4563a0d9d0-goog

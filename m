@@ -1,28 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2018 15:20:32 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23990398AbeKLOSfoxFW9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2018 15:18:35 +0100
-Date:   Mon, 12 Nov 2018 14:18:35 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2018 18:02:15 +0100 (CET)
+Received: from mail-wr1-x441.google.com ([IPv6:2a00:1450:4864:20::441]:42169
+        "EHLO mail-wr1-x441.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992773AbeKLRBIg9pgA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2018 18:01:08 +0100
+Received: by mail-wr1-x441.google.com with SMTP id u5-v6so4904634wrn.9
+        for <linux-mips@linux-mips.org>; Mon, 12 Nov 2018 09:01:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=globallogic.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gwiH4XNPeedEWQwSD3oXt7LL0JMYqmj9B9mAwTpqeMc=;
+        b=Q3IQm3rPlBp8TVUba6mYr/QIDE+TfijiIEfa4+ZBane96TTiFIrUKDhxHMWPCDuVLv
+         l2MywuL29YxDP8oV3ts1/MzfiZBL1kf6zUAmya5ecaZtDDoLJDG+rT0QSDF5uxjhYKzj
+         nz2IBE6afxv+GpH5GZj4pOMtuAj+NYm+H4GrY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gwiH4XNPeedEWQwSD3oXt7LL0JMYqmj9B9mAwTpqeMc=;
+        b=BWmHXHbTelCPZ5pCCsOaGnxFrgOQSx6cvY4zx3ZIlrpVNliZIef+5MiTPwYL8jVMz0
+         X2HnU3Ig/pC+M8fhTWHtHOA31e3UBLUpXHf5RCQQnXDThR3vDmE3G2dUXjr+LaFo+Ug5
+         iYJEnoiS3OAHG+ObXVCmMzROzbj2WRTXHp3lytxneNTwKSgKiLsydSD7ucpGjLmj9StZ
+         TujUdKO3ZN7g7naEnPjPN3GWUTg2VJYsHKEe+qjf/NewnZxTlkpJF6B6GF/s0+LAIxkV
+         jCKcndqDdi8aNKM0Y3s/t2xrXd5tWCySH91QAWHqSK2FusMl4qLjbGzUOiaMDuQC5JW7
+         kYxw==
+X-Gm-Message-State: AGRZ1gKm92WYYJdnfOjbfbKb+JUNc8zIvHqv5s4bFXP7Rd/sHiuYpUos
+        jgfYQ+Z6hVX/iYQDGHc6oICHCQ==
+X-Google-Smtp-Source: AJdET5cB5OobM5l1tNop9qMQ0LpNiVUMrU5rxuz9gu1Sc6EPSxFaMv1OOhmFAIZ+eyAs0KpH0ZpLsw==
+X-Received: by 2002:adf:b6a8:: with SMTP id j40-v6mr1614696wre.55.1542042067032;
+        Mon, 12 Nov 2018 09:01:07 -0800 (PST)
+Received: from max-pc.synapse.com ([195.238.92.77])
+        by smtp.gmail.com with ESMTPSA id u13-v6sm11835344wrn.11.2018.11.12.09.01.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Nov 2018 09:01:06 -0800 (PST)
+From:   Maksym Kokhan <maksym.kokhan@globallogic.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>
-cc:     Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] MIPS: SiByte: Handle PCI DMA with 64-bit memory
- addressing
-Message-ID: <alpine.LFD.2.21.1811121413230.9637@eddie.linux-mips.org>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>
+Cc:     Andrii Bordunov <andrew.bordunov@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Maksym Kokhan <maksym.kokhan@globallogic.com>
+Subject: [PATCH v2 1/2] mips: delete duplicated BUILTIN_DTB and LIBFDT configs
+Date:   Mon, 12 Nov 2018 19:00:58 +0200
+Message-Id: <20181112170059.7199-1-maksym.kokhan@globallogic.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Transfer-Encoding: 8bit
+Return-Path: <maksym.kokhan@globallogic.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67249
+X-archive-position: 67250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: maksym.kokhan@globallogic.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,29 +67,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+CONFIG_BUILTIN_DTB and CONFIG_LIBFDT selection is duplicated
+in menu "Machine selection" under MIPS_MALTA.
 
- This mini patch series enables correct support for DMA in the presence of 
-memory outside the 32-bit address range with the Broadcom SiByte SOCs and 
-the relevant development boards.
+Signed-off-by: Maksym Kokhan <maksym.kokhan@globallogic.com>
+Signed-off-by: Andrii Bordunov <andrew.bordunov@gmail.com>
+---
+ arch/mips/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
- There is a quirk in the BCM1250, BCM1125 and BCM1125H SOCs in that their 
-onchip 32-bit PCI host bridge does not support DAC, however the HT link 
-(where available) does support 40-bit addressing as per the HT spec.  
-Therefore the first patch sets the bus mask accordingly, and then the 
-second patch enables swiotlb.  See individual change descriptions for 
-additional details; there's also a further discussion alongside.
-
- This has been verified with a Broadcom SWARM board equipped with 3200MiB 
-of RAM (2176MiB of which the address decoder in the SOC maps above 4GiB), 
-a pair of DEFPA FDDI adapters and an XHCI USB adapter.  There were also 
-some other PCI and PCIe devices present in the system, though not actively 
-used beyond being probed at boot, and none has shown any symptoms of 
-breakage.
-
- This v2 of the series updates the original one according to feedback 
-received from Christoph Hellwig.
-
- Please apply.
-
-  Maciej
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 8272ea4c7264..fe4c28275271 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -539,8 +539,6 @@ config MIPS_MALTA
+ 	select USE_OF
+ 	select LIBFDT
+ 	select ZONE_DMA32 if 64BIT
+-	select BUILTIN_DTB
+-	select LIBFDT
+ 	help
+ 	  This enables support for the MIPS Technologies Malta evaluation
+ 	  board.
+-- 
+2.19.1

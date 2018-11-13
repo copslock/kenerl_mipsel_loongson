@@ -1,30 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2018 23:44:24 +0100 (CET)
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23993060AbeKMWmoZIHKx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2018 23:42:44 +0100
-Date:   Tue, 13 Nov 2018 22:42:44 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>
-cc:     Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur
- and BigSur
-In-Reply-To: <alpine.LFD.2.21.1811131653160.9637@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.21.1811132155090.9637@eddie.linux-mips.org>
-References: <alpine.LFD.2.21.1811131653160.9637@eddie.linux-mips.org>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2018 23:46:11 +0100 (CET)
+Received: from mail-eopbgr690138.outbound.protection.outlook.com ([40.107.69.138]:45065
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993112AbeKMWqBLW6nx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2018 23:46:01 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fVcPiwqOz4u9BuQ67POvi3mkxRXF2TJM3x1PcwoJ3l8=;
+ b=mGHnIzJe84mTIGS4XKxI6gP5i7iUU62005i9lZw6ut1ptCzTmy/++zzz+oRwS4dkKbGojI13/ptOPTsaALYD7EdLdw3hO8GWopuP4RcNS9q8g9WuO+O1EitaZgoH3IilhbFNRr34TGL+6ejMIIgU5RUDuTOJJOQpB3NnCW1WGf8=
+Received: from BN6PR2201MB1266.namprd22.prod.outlook.com (10.174.81.142) by
+ BN6PR2201MB1059.namprd22.prod.outlook.com (10.174.90.150) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1294.31; Tue, 13 Nov 2018 22:45:54 +0000
+Received: from BN6PR2201MB1266.namprd22.prod.outlook.com
+ ([fe80::2590:763f:1a88:c9ec]) by BN6PR2201MB1266.namprd22.prod.outlook.com
+ ([fe80::2590:763f:1a88:c9ec%9]) with mapi id 15.20.1294.045; Tue, 13 Nov 2018
+ 22:45:54 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Adam Borowski <kilobyte@angband.pl>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Nick Terrell <terrelln@fb.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "x86@kernel.org" <x86@kernel.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>
+Subject: Re: [PATCH 05/17] mips: Remove support for BZIP2 and LZMA compressed
+ kernel
+Thread-Topic: [PATCH 05/17] mips: Remove support for BZIP2 and LZMA compressed
+ kernel
+Thread-Index: AQHUeF7mOa3hFP+NiE6vOtJJlRFe06VOVHyA
+Date:   Tue, 13 Nov 2018 22:45:54 +0000
+Message-ID: <20181113224545.pamrezqxy2ay62k7@pburton-laptop>
+References: <20181109185953.xwyelyqnygbskkxk@angband.pl>
+ <20181109190304.8573-1-kilobyte@angband.pl>
+ <20181109190304.8573-5-kilobyte@angband.pl>
+In-Reply-To: <20181109190304.8573-5-kilobyte@angband.pl>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MWHPR19CA0066.namprd19.prod.outlook.com
+ (2603:10b6:300:94::28) To BN6PR2201MB1266.namprd22.prod.outlook.com
+ (2603:10b6:405:23::14)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;BN6PR2201MB1059;6:Pr08n6iPZrN8zN+5JkHT+MtgAuc5lxe+UUjOlU9frsI1OdMKJIhx3hsQDiD4lwRI5eXgLeXJuiWUCu566qJR+3xC6aGuSzozRN+GImlweE3beQSppzyfhLnupSzT8B4y1be9KoByB5t65XtczQLrB2frmuCef5Adxcv/5xzEDCpAd636bUqiiol4VHEehf+uGAfIrolkg7RWtxv4nFvtG3TuLC82yehA7hmXgx7nQLpFHZ4UawAYdt3jgJuLrPK71aKny8BZtOAROyiVRRz9aMmYzTlpNa1+kI+nmVQ1JutIF+aBN7CsRm+v5bypsyqBNy4Nghe9egP7dCZzy3YnwcVEy5mWn7Xdw6E9AqrGz0p2cudt0aG7stEhBT7zoOCTsEQbOlA809cRN1yWAqSUXG+9yJpgojvsvocECidUtp9yr//iyZOMBbOttVIFmByaWUicvGH+pkrsy60M7ff5lw==;5:sWk+b10D/0G9wFFIyhKHT0CEVf73J7vTU1LywSukcw9ZlnDQKXWr6BvXHV1CYeX5Fj9Fr7FOQ3QOeDy+FNgI7Zyr5Ws4wlzDvTIgTPJoQ1u5HVgnVDou4b/fzR9Ay2T5nHz37ZByjGK/UCm8n0ajFezZdqwJzLeF7+B3vjQ0X8U=;7:o7/9uWPjVleRXz7svySoxfGqs22cE8981qLoaEBZGzzQg5FzkU+FR8DUnQtLKthG6NyrID5DzsQvtHvHSwlGdZAXIgk66UaWlo9oWHyp7/TgYJp0x+QQ8qSsEXTi3yDWW/SeQW+mmg5ujGLoc5PJag==
+x-ms-office365-filtering-correlation-id: bdf20cfc-0c0c-47ff-2d5c-08d649b9c0eb
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390060)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:BN6PR2201MB1059;
+x-ms-traffictypediagnostic: BN6PR2201MB1059:
+x-microsoft-antispam-prvs: <BN6PR2201MB1059B02B2E409812E19ED6C1C1C20@BN6PR2201MB1059.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231382)(944501410)(52105112)(3002001)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(20161123562045)(20161123564045)(20161123560045)(20161123558120)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:BN6PR2201MB1059;BCL:0;PCL:0;RULEID:;SRVR:BN6PR2201MB1059;
+x-forefront-prvs: 085551F5A8
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39840400004)(376002)(396003)(366004)(346002)(136003)(199004)(189003)(52116002)(9686003)(6512007)(7406005)(7416002)(2900100001)(229853002)(99286004)(105586002)(53936002)(6506007)(305945005)(106356001)(186003)(26005)(508600001)(386003)(39060400002)(76176011)(7736002)(102836004)(8936002)(33896004)(6436002)(5660300001)(6486002)(14454004)(97736004)(68736007)(33716001)(8676002)(1076002)(3846002)(25786009)(6116002)(71190400001)(71200400001)(81166006)(81156014)(4326008)(66066001)(2906002)(6246003)(6916009)(11346002)(54906003)(44832011)(256004)(316002)(42882007)(58126008)(476003)(446003)(486006);DIR:OUT;SFP:1102;SCL:1;SRVR:BN6PR2201MB1059;H:BN6PR2201MB1266.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: 08ia23I/mbtO69ty+PPs/t/kjD83rwvhawv5Coze7mm1+YdVUYVt+ptB+YjPBf2rLJ/DFJAgnzaezz/DaWoZmVzduV8N1Hnqv6y2dYQ4QCMuWBvLMZZdtuiF26q7Ji37xaSKPJSBcX0TJ8Taq3s7/Xq3+H4Bt8QYlMRj++ioRTun8gLvZiZSXZajlZ0MjaEhtb7wizIVTNtvT1//uPS5/BrVYo8OGMsiAmQDUJb08qpXp0V4Oi/ga7LbiP4SBH2vIS7UabcRICkEv37jAqyi8S7giqlslg1YwwuvA1IlPXZASc0Dg6lQliie57cCPfUSYwvYYqqFo8aDjQkJPdsSVLWN2iSnDwBylCgBFSZUAqA=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <BFC22DE242750042A617941EFADC35F1@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdf20cfc-0c0c-47ff-2d5c-08d649b9c0eb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2018 22:45:54.2013
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR2201MB1059
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67275
+X-archive-position: 67276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,152 +120,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Broadcom SiByte BCM1250, BCM1125, and BCM1125H SOCs have an onchip 
-DRAM controller that supports memory amounts of up to 16GiB, and due to 
-how the address decoder has been wired in the SOC any memory beyond 1GiB 
-is actually mapped starting from 4GiB physical up, that is beyond the 
-32-bit addressable limit[1].  Consequently if the maximum amount of 
-memory has been installed, then it will span up to 19GiB.
+Hi Adam,
 
-Many of the evaluation boards we support that are based on one of these 
-SOCs have their memory soldered and the amount present fits in the 
-32-bit address range.  The BCM91250A SWARM board however has actual DIMM 
-slots and accepts, depending on the peripherals revision of the SOC, up 
-to 4GiB or 8GiB of memory in commercially available JEDEC modules[2].  
-I believe this is also the case with the BCM91250C2 LittleSur board. 
-This means that up to either 3GiB or 7GiB of memory requires 64-bit 
-addressing to access.
+On Fri, Nov 09, 2018 at 08:02:52PM +0100, Adam Borowski wrote:
+> @@ -122,7 +104,6 @@ $(obj)/vmlinux.its.S: $(addprefix $(srctree)/arch/mips/$(PLATFORM)/,$(ITS_INPUTS
+>  
+>  targets += vmlinux.its
+>  targets += vmlinux.gz.its
+> -targets += vmlinux.bz2.its
+>  targets += vmlinux.lzmo.its
+>  targets += vmlinux.lzo.its
 
-I believe the BCM91480B BigSur board, which has the BCM1480 SOC instead, 
-accepts at least as much memory, although I have no documentation or 
-actual hardware available to verify that.
+It looks to me like this "vmlinux.lzmo.its" was a typo & ought to have
+been vmlinux.lzma.its, and thus ought to be removed.
 
-Both systems have PCI slots installed for use by any PCI option boards, 
-including ones that only support 32-bit addressing (additionally the 
-32-bit PCI host bridge of the BCM1250, BCM1125, and BCM1125H SOCs limits 
-addressing to 32-bits), and there is no IOMMU available.  Therefore for 
-PCI DMA to work in the presence of memory beyond enable swiotlb for the
-affected systems.
+Apart from that I'm fine with this in general:
 
-All the other SOC onchip DMA devices use 40-bit addressing and therefore 
-can address the whole memory, so only enable swiotlb if PCI support and 
-support for DMA beyond 4GiB have been both enabled in the configuration 
-of the kernel.
+    Acked-by: Paul Burton <paul.burton@mips.com>
 
-This shows up as follows:
-
-Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
-Board type: SiByte BCM91250A (SWARM)
-Determined physical RAM map:
- memory: 000000000fe7fe00 @ 0000000000000000 (usable)
- memory: 000000001ffffe00 @ 0000000080000000 (usable)
- memory: 000000000ffffe00 @ 00000000c0000000 (usable)
- memory: 0000000087fffe00 @ 0000000100000000 (usable)
-software IO TLB: mapped [mem 0xcbffc000-0xcfffc000] (64MB)
-
-in the bootstrap log and removes failures like these:
-
-defxx 0000:02:00.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi0: Receive buffer allocation failed
-fddi0: Adapter open failed!
-IP-Config: Failed to open fddi0
-defxx 0000:09:08.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi1: Receive buffer allocation failed
-fddi1: Adapter open failed!
-IP-Config: Failed to open fddi1
-
-when memory beyond 4GiB is handed out to devices that can only do 32-bit 
-addressing.
-
-This updates commit cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need 
-DMA32.").
-
-References:
-
-[1] "BCM1250/BCM1125/BCM1125H User Manual", Revision 1250_1125-UM100-R, 
-    Broadcom Corporation, 21 Oct 2002, Section 3: "System Overview", 
-    "Memory Map", pp. 34-38
-
-[2] "BCM91250A User Manual", Revision 91250A-UM100-R, Broadcom 
-    Corporation, 18 May 2004, Section 3: "Physical Description", 
-    "Supported DRAM", p. 23
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-References: cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need DMA32.")
----
-Changes from v2:
-
-- missing reference to [1] added.
-
-Changes from v1:
-
-- title updated to include LittleSur.
----
- arch/mips/Kconfig                |    3 +++
- arch/mips/sibyte/common/Makefile |    1 +
- arch/mips/sibyte/common/dma.c    |   19 +++++++++++++++++++
- 3 files changed, 23 insertions(+)
-
-linux-mips-sibyte-swiotlb.diff
-Index: linux-20181104-swarm64-eb/arch/mips/Kconfig
-===================================================================
---- linux-20181104-swarm64-eb.orig/arch/mips/Kconfig
-+++ linux-20181104-swarm64-eb/arch/mips/Kconfig
-@@ -794,6 +794,7 @@ config SIBYTE_SWARM
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SIBYTE_LITTLESUR
- 	bool "Sibyte BCM91250C2-LittleSur"
-@@ -805,6 +806,7 @@ config SIBYTE_LITTLESUR
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SIBYTE_SENTOSA
- 	bool "Sibyte BCM91250E-Sentosa"
-@@ -826,6 +828,7 @@ config SIBYTE_BIGSUR
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SNI_RM
- 	bool "SNI RM200/300/400"
-Index: linux-20181104-swarm64-eb/arch/mips/sibyte/common/Makefile
-===================================================================
---- linux-20181104-swarm64-eb.orig/arch/mips/sibyte/common/Makefile
-+++ linux-20181104-swarm64-eb/arch/mips/sibyte/common/Makefile
-@@ -1,4 +1,5 @@
- obj-y := cfe.o
-+obj-$(CONFIG_SWIOTLB)			+= dma.o
- obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
- obj-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= cfe_console.o
- obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
-Index: linux-20181104-swarm64-eb/arch/mips/sibyte/common/dma.c
-===================================================================
---- /dev/null
-+++ linux-20181104-swarm64-eb/arch/mips/sibyte/common/dma.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ *	DMA support for Broadcom SiByte platforms.
-+ *
-+ *	Copyright (c) 2018  Maciej W. Rozycki
-+ *
-+ *	This program is free software; you can redistribute it and/or
-+ *	modify it under the terms of the GNU General Public License
-+ *	as published by the Free Software Foundation; either version
-+ *	2 of the License, or (at your option) any later version.
-+ */
-+
-+#include <linux/swiotlb.h>
-+#include <asm/bootinfo.h>
-+
-+void __init plat_swiotlb_setup(void)
-+{
-+	swiotlb_init(1);
-+}
+Thanks,
+    Paul

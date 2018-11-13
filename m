@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2018 10:33:34 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:55146 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992971AbeKMJdbuxfUK convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2018 10:33:31 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 91744B651;
-        Tue, 13 Nov 2018 09:33:30 +0000 (UTC)
-Date:   Tue, 13 Nov 2018 10:33:28 +0100
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH] MIPS: Loongson3,SGI-IP27: Simplify max_low_pfn
- calculation
-Message-Id: <20181113103328.c9f49cc7b9c632b64f179436@suse.de>
-In-Reply-To: <20181112221742.4900-1-paul.burton@mips.com>
-References: <20181112221742.4900-1-paul.burton@mips.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <tbogendoerfer@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2018 17:34:15 +0100 (CET)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S23993048AbeKMQdmj6ry9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2018 17:33:42 +0100
+Date:   Tue, 13 Nov 2018 16:33:42 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Yasha Cherikovsky <yasha.che3@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC v2 1/7] MIPS: Add support for the Lexra LX5280 CPU
+In-Reply-To: <20181001102952.7913-2-yasha.che3@gmail.com>
+Message-ID: <alpine.LFD.2.21.1811131513070.9637@eddie.linux-mips.org>
+References: <20181001102952.7913-1-yasha.che3@gmail.com> <20181001102952.7913-2-yasha.che3@gmail.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67257
+X-archive-position: 67258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbogendoerfer@suse.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,35 +43,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 12 Nov 2018 22:18:01 +0000
-Paul Burton <paul.burton@mips.com> wrote:
+On Mon, 1 Oct 2018, Yasha Cherikovsky wrote:
 
-> Both the Loongson3 & SGI-IP27 platforms set max_low_pfn to the last
-> available PFN describing memory. They both do it in paging_init() which
-> is later than ideal since max_low_pfn is used before that function is
-> called. Simplify both platforms to trivially initialize max_low_pfn
-> using the end address of DRAM, and do it earlier in prom_meminit().
-> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-> index d8b8444d6795..813d13f92957 100644
-> --- a/arch/mips/sgi-ip27/ip27-memory.c
-> +++ b/arch/mips/sgi-ip27/ip27-memory.c
-> @@ -435,6 +435,7 @@ void __init prom_meminit(void)
->  
->  	mlreset();
->  	szmem();
-> +	max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
+> The Lexra LX5280 CPU [1][2] implements the MIPS-I ISA,
+> without unaligned load/store instructions (lwl, lwr, swl, swr).
 
-this is too early, memory gets added after the following for loop.
+ I think you actually need to emulate these missing instructions for user 
+programs, so that the 32-bit MIPS psABI is supported and standard software 
+can run unmodified.  There'll be a performance hit and software will best 
+be recompiled for the limited instruction set provided by actual hardware, 
+however rebuilding is not always possible or feasible (also handcoded 
+assembly may require actual reimplementation here and there).
 
->  
->  	for (node = 0; node < MAX_COMPACT_NODES; node++) {
->  		if (node_online(node)) {
+> - RDHWR instruction emulation from the page fault handler
+>   (more details in a code comment)
 
-it should work after this loop. I have the hardware to test later this day.
+ The details are lacking I am afraid and I think it would be good to have 
+them provided for long-term support to be feasible.
 
-Thomas.
+ First, the MIPS architecture does not have a single "page fault" 
+exception.  There are three MMU exception codes defined: Mod, TLBL and 
+TLBS, and also two vectors, either the TLB Refill or the General 
+Exception.  So please be specific which of those are taken by the LX5280 
+with the RDHWR instruction.
 
--- 
-SUSE Linux GmbH
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+ Second, please explain why this MMU exception happens, i.e. does the CPU 
+decode the SPECIAL3 major opcode as an I-Type memory access instruction, 
+and then faults on `GPR[0] + offset' pointing to an unmapped page?
+
+ If documentation is publicly available this information can be inferred 
+from, then please provide a reference; otherwise please just describe the 
+observed behaviour as you know it.
+
+  Maciej

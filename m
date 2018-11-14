@@ -1,56 +1,66 @@
-From: Dengcheng Zhu <dzhu@wavecomp.com>
-Date: Tue, 11 Sep 2018 14:49:20 -0700
-Subject: MIPS: kexec: Mark CPU offline before disabling local IRQ
-Message-ID: <20180911214920.4lT57SAgglagxva5dablmrftDafuGiD7vP3W6rrTryg@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2018 02:22:05 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:55610 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993052AbeKNBUv0GQNZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Nov 2018 02:20:51 +0100
+Received: from localhost (unknown [64.114.255.97])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 26D942243E;
+        Wed, 14 Nov 2018 01:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1542158450;
+        bh=l8Ky8km/hDu9sMNAZxyFYMrPoNuh7NilXTdQ80Ptg2U=;
+        h=Subject:To:Cc:From:Date:From;
+        b=XB7jyF0y8o8VAcXsUzlsZa7A8OqYU1TcFAgUqtTXWS1g6RAnH/+B6JTvObBP+Pi/k
+         82JqsYJbt4DLfPDW9YBCZTBuWstk9tGFgDBXnUqEVp6YRR9wcVoCyjW8fDuPzj6iAm
+         QAQq5v/+Y+0UzWu5eSQcMFIgbaofDi6IHZSEpLws=
+Subject: Patch "MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS" has been added to the 4.19-stable tree
+To:     chenhc@lemote.com, chenhuacai@gmail.com,
+        gregkh@linuxfoundation.org, jhogan@kernel.org,
+        linux-mips@linux-mips.org, paul.burton@mips.com,
+        ralf@linux-mips.org, sashal@kernel.org, wuzhangjin@gmail.com,
+        zhangfx@lemote.com
+Cc:     <stable-commits@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Tue, 13 Nov 2018 17:20:42 -0800
+Message-ID: <1542158442220106@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+Return-Path: <SRS0=PMNE=NZ=linuxfoundation.org=gregkh@kernel.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 67283
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Dengcheng Zhu <dzhu@wavecomp.com>
 
-[ Upstream commit dc57aaf95a516f70e2d527d8287a0332c481a226 ]
+This is a note to let you know that I've just added the patch titled
 
-After changing CPU online status, it will not be sent any IPIs such as in
-__flush_cache_all() on software coherency systems. Do this before disabling
-local IRQ.
+    MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS
 
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20571/
-Cc: pburton@wavecomp.com
-Cc: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Cc: rachel.mozes@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/kernel/crash.c         |    3 +++
- arch/mips/kernel/machine_kexec.c |    3 +++
- 2 files changed, 6 insertions(+)
+to the 4.19-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -34,6 +34,9 @@ static void crash_shutdown_secondary(voi
- 	if (!cpu_online(cpu))
- 		return;
- 
-+	/* We won't be sent IPIs any more. */
-+	set_cpu_online(cpu, false);
-+
- 	local_irq_disable();
- 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
- 		crash_save_cpu(regs, cpu);
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -96,6 +96,9 @@ machine_kexec(struct kimage *image)
- 			*ptr = (unsigned long) phys_to_virt(*ptr);
- 	}
- 
-+	/* Mark offline BEFORE disabling local irq. */
-+	set_cpu_online(smp_processor_id(), false);
-+
- 	/*
- 	 * we do not want to be bothered.
- 	 */
+The filename of the patch is:
+     mips-pci-call-pcie_bus_configure_settings-to-set-mps-mrrs.patch
+and it can be found in the queue-4.19 subdirectory.
 
-
-Patches currently in stable-queue which might be from dzhu@wavecomp.com are
-
-queue-4.9/mips-kexec-mark-cpu-offline-before-disabling-local-irq.patch
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.

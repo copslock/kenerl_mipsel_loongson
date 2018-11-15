@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2018 08:56:15 +0100 (CET)
-Received: from mail-pf1-x442.google.com ([IPv6:2607:f8b0:4864:20::442]:45803
-        "EHLO mail-pf1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990471AbeKOHzFz8Kd4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Nov 2018 08:55:05 +0100
-Received: by mail-pf1-x442.google.com with SMTP id g62so6024391pfd.12;
-        Wed, 14 Nov 2018 23:55:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2018 08:56:19 +0100 (CET)
+Received: from mail-pf1-x443.google.com ([IPv6:2607:f8b0:4864:20::443]:42749
+        "EHLO mail-pf1-x443.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991082AbeKOHzhTKbs4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Nov 2018 08:55:37 +0100
+Received: by mail-pf1-x443.google.com with SMTP id 64so4815170pfr.9;
+        Wed, 14 Nov 2018 23:55:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=JW8UNLn1YOsollL1oxyYY67FSn+VYdBfgoLQIReOtpI=;
-        b=arlfDIqCK6MaQ5SF1rQeSAP7AzaX0fajccVstz9sRcv2A2HqKmwhA7RJxdy+1caTxC
-         jKcSOE3/LmGNWccJhGTkJ9Bw714mJ/msrOTp+yNjCUsEmhZmuOvLvJhHnEo6IWJqcB1A
-         KG4ESneRB9hIc8TK5kyhx/qJdNsombowPpg+wd+xfLngnZnL7QzSMaZhZYfA2sn2avWS
-         KcqZY3slUw9FuGb09NH08UKx57eUDptwK0e0Q0x1H2c8aYT/aHVyCJYLOKeBJHZcgJpn
-         6Y20ghvA5FlLT//PSP6jjR35i/obbmdFo2Q87sZj9ffNknPzzcYfLIvrX76PkdwLJKt0
-         /lYA==
+        bh=P1o/kNpFTynfCCO8e3CTgrAzpq+FNajDEU1dHiCL9BM=;
+        b=Q6myJgIKnFCFhEhqYSbbAD0lKI/FNAcIo6VWpvHphj2hSDhPk210jRH8LtHAL9fQiE
+         mhQdMQoyXLVTVaabdOgixgx2U9miGAwbs1WwuXNa3Y1IXVzWlIZH3vugVL2Gjqlt/1wo
+         k9s3Wqwe+ddAtp8QnMUhB4p1RKHXYHW6K+ANTUv8uhmCQXzQujv1R4YJeuz+vw6gb5th
+         jM3/4PEoogsl2SXjJyTwOyVBgL1SJ0DgCaDh79WFMfJmmXLZKpoJiIcYrgrbhHy8NcmI
+         qgE/0BYXmtUAva//AVb7GjbwGLqkuU8fxIVJGZWgldftAw6H0MjlnAHMWbCu5QUbkcsX
+         3ubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references;
-        bh=JW8UNLn1YOsollL1oxyYY67FSn+VYdBfgoLQIReOtpI=;
-        b=RrGKr1v/j7DBSo+iXr2pr/FRIMYazD6oI0i19+BZH0OcoXCkcBhAnS9Qoe8CjUrXdR
-         SdfzT++Y35fZDRCxGj6tE8zsMuR2Xleh/Kn/5A4PSr/bwejOVfuqQFHhsv0nMa0nQtfK
-         LwTXm6Pb83fXeMBtvCgjm0RBBYuwx4raZO5fbIUNScaX/JPPwRLQ+az5UJfTqsppV8Iz
-         x8qv4wBEnVqgmwjrCi+e/nZbgHmb55gyv1Ja5tYVy1jLZ0zGdSyJLswoAtZyCkX/t8NB
-         3V7TdeeB4t7ifFbuBsjjJmtKFy/fq5pO16v88Df2ccW8Io5Q6OdJIBu1CEt0VP6ZXBrD
-         /2sw==
-X-Gm-Message-State: AGRZ1gI0yQ1Vubbdo/H3Nd9+AiOWs7m3pfkyRPd5gQ4W8WNvQcRcJdIC
-        j3h9h85g3/ewwLXD/irzVFfe2nTf9vM=
-X-Google-Smtp-Source: AJdET5e0r3iiBw3+hvbrinu7j3GcAdzfh8wTSJ7M65pT4HeUiHuzXbttN9VA8+leNBq2d56g9c9Xpw==
-X-Received: by 2002:a63:d208:: with SMTP id a8mr4763203pgg.77.1542268504774;
-        Wed, 14 Nov 2018 23:55:04 -0800 (PST)
+        bh=P1o/kNpFTynfCCO8e3CTgrAzpq+FNajDEU1dHiCL9BM=;
+        b=HP5ZN8XlnwyB0ukYpa7+G9SqC7NEByM1oZopS0lNPJu09u8cc3PNWHcAzmG4IeUvL/
+         q0G6XWUfi7lSr0aNY4soSD/3x4UdTrgjIZnV9QbsjC6oucNRuHXuCqrC81Ox1W8lsLMz
+         C8TENOVm2Ycw4txvnmKQVuoeOubYRinoJzJMjYs3wbL1uU0edpCLGAOJgVV6OQNEwEXg
+         uUxr0+Xv6SVpA29KkJHpy6VsDoK9rXHjdlwE9hoH1t3Wi41n5Qna7rcxtp5+Lex3qPnh
+         44MR8J55UkRK6P4q2cx5nmGOhrd79dHqEms7CLh1Ba1hLVvJmUdhYyK6EWoTkuk6fWe2
+         Ca5A==
+X-Gm-Message-State: AGRZ1gK/xVr36FlQKAjX2Hs8iXZXzp5asOBJxiq/aqp7AY3+J3HBEVW+
+        qcVp50/MIAVu6VMgznwHrrFfUpw5vko=
+X-Google-Smtp-Source: AJdET5fhvmyqrWmxW4ULfyNxDIGKwWQ9ZX/BVEHV9n3WQ2dQuyaN8ySeRY5EYe48ORVdtbB/o1NZ+Q==
+X-Received: by 2002:a63:a552:: with SMTP id r18mr4885983pgu.176.1542268536221;
+        Wed, 14 Nov 2018 23:55:36 -0800 (PST)
 Received: from software.domain.org ([222.92.8.142])
-        by smtp.gmail.com with ESMTPSA id k24sm10366286pfj.13.2018.11.14.23.55.01
+        by smtp.gmail.com with ESMTPSA id k24sm10366286pfj.13.2018.11.14.23.55.32
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 14 Nov 2018 23:55:04 -0800 (PST)
+        Wed, 14 Nov 2018 23:55:35 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     James Hogan <james.hogan@mips.com>,
         "Steven J . Hill" <Steven.Hill@cavium.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V5 1/8] MIPS: Loongson: Add Loongson-3A R2.1 basic support
-Date:   Thu, 15 Nov 2018 15:53:52 +0800
-Message-Id: <1542268439-4146-2-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>,
+        "# 3 . 15+" <stable@vger.kernel.org>
+Subject: [PATCH V5 2/8] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+Date:   Thu, 15 Nov 2018 15:53:53 +0800
+Message-Id: <1542268439-4146-3-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1542268439-4146-1-git-send-email-chenhc@lemote.com>
 References: <1542268439-4146-1-git-send-email-chenhc@lemote.com>
@@ -52,7 +53,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67306
+X-archive-position: 67307
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,151 +70,168 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3A R2.1 is the bugfix revision of Loongson-3A R2.
+For multi-node Loongson-3 (NUMA configuration), r4k_blast_scache() can
+only flush Node-0's scache. So we add r4k_blast_scache_node() by using
+(CAC_BASE | (node_id << NODE_ADDRSPACE_SHIFT)) instead of CKSEG0 as the
+start address.
 
-All Loongson-3 CPU family:
-
-Code-name         Brand-name       PRId
-Loongson-3A R1    Loongson-3A1000  0x6305
-Loongson-3A R2    Loongson-3A2000  0x6308
-Loongson-3A R2.1  Loongson-3A2000  0x630c
-Loongson-3A R3    Loongson-3A3000  0x6309
-Loongson-3A R3.1  Loongson-3A3000  0x630d
-Loongson-3B R1    Loongson-3B1000  0x6306
-Loongson-3B R2    Loongson-3B1500  0x6307
-
+Cc: <stable@vger.kernel.org> # 3.15+
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/cpu.h                               | 3 ++-
- arch/mips/include/asm/mach-loongson64/kernel-entry-init.h | 4 ++--
- arch/mips/kernel/cpu-probe.c                              | 3 ++-
- arch/mips/kernel/idle.c                                   | 2 +-
- arch/mips/loongson64/common/env.c                         | 3 ++-
- arch/mips/loongson64/loongson-3/smp.c                     | 3 ++-
- arch/mips/mm/c-r4k.c                                      | 2 +-
- drivers/platform/mips/cpu_hwmon.c                         | 3 ++-
- 8 files changed, 14 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/mach-loongson64/mmzone.h |  1 +
+ arch/mips/include/asm/mmzone.h                 |  8 +++++
+ arch/mips/include/asm/r4kcache.h               | 25 +++++++++++++++
+ arch/mips/mm/c-r4k.c                           | 44 ++++++++++++++++++++++----
+ 4 files changed, 71 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index dacbdb8..532b49b 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -248,8 +248,9 @@
- #define PRID_REV_LOONGSON3A_R1		0x0005
- #define PRID_REV_LOONGSON3B_R1		0x0006
- #define PRID_REV_LOONGSON3B_R2		0x0007
--#define PRID_REV_LOONGSON3A_R2		0x0008
-+#define PRID_REV_LOONGSON3A_R2_0	0x0008
- #define PRID_REV_LOONGSON3A_R3_0	0x0009
-+#define PRID_REV_LOONGSON3A_R2_1	0x000c
- #define PRID_REV_LOONGSON3A_R3_1	0x000d
+diff --git a/arch/mips/include/asm/mach-loongson64/mmzone.h b/arch/mips/include/asm/mach-loongson64/mmzone.h
+index c9f7e23..59c8b11 100644
+--- a/arch/mips/include/asm/mach-loongson64/mmzone.h
++++ b/arch/mips/include/asm/mach-loongson64/mmzone.h
+@@ -21,6 +21,7 @@
+ #define NODE3_ADDRSPACE_OFFSET 0x300000000000UL
  
- /*
-diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-index cbac603..b5e288a 100644
---- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-@@ -31,7 +31,7 @@
- 	/* Enable STFill Buffer */
- 	mfc0	t0, CP0_PRID
- 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
--	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
-+	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
- 	bnez	t0, 1f
- 	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
-@@ -60,7 +60,7 @@
- 	/* Enable STFill Buffer */
- 	mfc0	t0, CP0_PRID
- 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
--	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
-+	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
- 	bnez	t0, 1f
- 	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 71dcef8..65dc2e6 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1871,7 +1871,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- 	switch (c->processor_id & PRID_IMP_MASK) {
- 	case PRID_IMP_LOONGSON_64:  /* Loongson-2/3 */
- 		switch (c->processor_id & PRID_REV_MASK) {
--		case PRID_REV_LOONGSON3A_R2:
-+		case PRID_REV_LOONGSON3A_R2_0:
-+		case PRID_REV_LOONGSON3A_R2_1:
- 			c->cputype = CPU_LOONGSON3;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index 4d335b1..695f554 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -184,7 +184,7 @@ void __init check_wait(void)
- 		cpu_wait = r4k_wait;
- 		break;
- 	case CPU_LOONGSON3:
--		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
-+		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
- 			cpu_wait = r4k_wait;
- 		break;
+ #define pa_to_nid(addr)  (((addr) & 0xf00000000000) >> NODE_ADDRSPACE_SHIFT)
++#define nid_to_addrbase(nid) ((nid) << NODE_ADDRSPACE_SHIFT)
  
-diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-index 8f68ee0..72e5f8f 100644
---- a/arch/mips/loongson64/common/env.c
-+++ b/arch/mips/loongson64/common/env.c
-@@ -197,7 +197,8 @@ void __init prom_init_env(void)
- 			cpu_clock_freq = 797000000;
- 			break;
- 		case PRID_REV_LOONGSON3A_R1:
--		case PRID_REV_LOONGSON3A_R2:
-+		case PRID_REV_LOONGSON3A_R2_0:
-+		case PRID_REV_LOONGSON3A_R2_1:
- 		case PRID_REV_LOONGSON3A_R3_0:
- 		case PRID_REV_LOONGSON3A_R3_1:
- 			cpu_clock_freq = 900000000;
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index b5c1e0a..8fba0aa 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -682,7 +682,8 @@ void play_dead(void)
- 		play_dead_at_ckseg1 =
- 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r1_play_dead);
- 		break;
--	case PRID_REV_LOONGSON3A_R2:
-+	case PRID_REV_LOONGSON3A_R2_0:
-+	case PRID_REV_LOONGSON3A_R2_1:
- 	case PRID_REV_LOONGSON3A_R3_0:
- 	case PRID_REV_LOONGSON3A_R3_1:
- 		play_dead_at_ckseg1 =
+ #define LEVELS_PER_SLICE 128
+ 
+diff --git a/arch/mips/include/asm/mmzone.h b/arch/mips/include/asm/mmzone.h
+index f085fba..2a0fe1d 100644
+--- a/arch/mips/include/asm/mmzone.h
++++ b/arch/mips/include/asm/mmzone.h
+@@ -9,6 +9,14 @@
+ #include <asm/page.h>
+ #include <mmzone.h>
+ 
++#ifndef pa_to_nid
++#define pa_to_nid(addr) 0
++#endif
++
++#ifndef nid_to_addrbase
++#define nid_to_addrbase(nid) 0
++#endif
++
+ #ifdef CONFIG_DISCONTIGMEM
+ 
+ #define pfn_to_nid(pfn)		pa_to_nid((pfn) << PAGE_SHIFT)
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index d19b2d6..0815c2a 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -674,4 +674,25 @@ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
+ __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
+ 
++/* Currently, this is very specific to Loongson-3 */
++#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
++static inline void blast_##pfx##cache##lsize##_node(long node)		\
++{									\
++	unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
++	unsigned long end = start + current_cpu_data.desc.waysize;	\
++	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
++	unsigned long ws_end = current_cpu_data.desc.ways <<		\
++			       current_cpu_data.desc.waybit;		\
++	unsigned long ws, addr;						\
++									\
++	for (ws = 0; ws < ws_end; ws += ws_inc)				\
++		for (addr = start; addr < end; addr += lsize * 32)	\
++			cache##lsize##_unroll32(addr|ws, indexop);	\
++}
++
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
++__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
++
+ #endif /* _ASM_R4KCACHE_H */
 diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 05bd777..7e430b4 100644
+index 7e430b4..96d666a 100644
 --- a/arch/mips/mm/c-r4k.c
 +++ b/arch/mips/mm/c-r4k.c
-@@ -1352,7 +1352,7 @@ static void probe_pcache(void)
- 					  c->dcache.ways *
- 					  c->dcache.linesz;
- 		c->dcache.waybit = 0;
--		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
-+		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
- 			c->options |= MIPS_CPU_PREFETCH;
+@@ -459,11 +459,28 @@ static void r4k_blast_scache_setup(void)
+ 		r4k_blast_scache = blast_scache128;
+ }
+ 
++static void (*r4k_blast_scache_node)(long node);
++
++static void r4k_blast_scache_node_setup(void)
++{
++	unsigned long sc_lsize = cpu_scache_line_size();
++
++	if (current_cpu_type() != CPU_LOONGSON3)
++		r4k_blast_scache_node = (void *)cache_noop;
++	else if (sc_lsize == 16)
++		r4k_blast_scache_node = blast_scache16_node;
++	else if (sc_lsize == 32)
++		r4k_blast_scache_node = blast_scache32_node;
++	else if (sc_lsize == 64)
++		r4k_blast_scache_node = blast_scache64_node;
++	else if (sc_lsize == 128)
++		r4k_blast_scache_node = blast_scache128_node;
++}
++
+ static inline void local_r4k___flush_cache_all(void * args)
+ {
+ 	switch (current_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-	case CPU_LOONGSON3:
+ 	case CPU_R4000SC:
+ 	case CPU_R4000MC:
+ 	case CPU_R4400SC:
+@@ -480,6 +497,11 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 		r4k_blast_scache();
  		break;
  
-diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
-index f66521c..42efcb8 100644
---- a/drivers/platform/mips/cpu_hwmon.c
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -25,9 +25,10 @@ int loongson3_cpu_temp(int cpu)
- 	case PRID_REV_LOONGSON3A_R1:
- 		reg = (reg >> 8) & 0xff;
- 		break;
--	case PRID_REV_LOONGSON3A_R2:
- 	case PRID_REV_LOONGSON3B_R1:
- 	case PRID_REV_LOONGSON3B_R2:
-+	case PRID_REV_LOONGSON3A_R2_0:
-+	case PRID_REV_LOONGSON3A_R2_1:
- 		reg = ((reg >> 8) & 0xff) - 100;
- 		break;
- 	case PRID_REV_LOONGSON3A_R3_0:
++	case CPU_LOONGSON3:
++		/* Use get_ebase_cpunum() for both NUMA=y/n */
++		r4k_blast_scache_node(get_ebase_cpunum() >> 2);
++		break;
++
+ 	case CPU_BMIPS5000:
+ 		r4k_blast_scache();
+ 		__sync();
+@@ -840,10 +862,14 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else {
+ 			blast_scache_range(addr, addr + size);
++		}
+ 		preempt_enable();
+ 		__sync();
+ 		return;
+@@ -877,9 +903,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 
+ 	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+-		if (size >= scache_size)
+-			r4k_blast_scache();
+-		else {
++		if (size >= scache_size) {
++			if (current_cpu_type() != CPU_LOONGSON3)
++				r4k_blast_scache();
++			else
++				r4k_blast_scache_node(pa_to_nid(addr));
++		} else {
+ 			/*
+ 			 * There is no clearly documented alignment requirement
+ 			 * for the cache instruction on MIPS processors and
+@@ -1918,6 +1947,7 @@ void r4k_cache_init(void)
+ 	r4k_blast_scache_page_setup();
+ 	r4k_blast_scache_page_indexed_setup();
+ 	r4k_blast_scache_setup();
++	r4k_blast_scache_node_setup();
+ #ifdef CONFIG_EVA
+ 	r4k_blast_dcache_user_page_setup();
+ 	r4k_blast_icache_user_page_setup();
 -- 
 2.7.0

@@ -1,56 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2018 14:49:52 +0100 (CET)
-Received: from mail-pf1-x442.google.com ([IPv6:2607:f8b0:4864:20::442]:45970
-        "EHLO mail-pf1-x442.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992446AbeKPNtqeNz8D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Nov 2018 14:49:46 +0100
-Received: by mail-pf1-x442.google.com with SMTP id g62so8184491pfd.12
-        for <linux-mips@linux-mips.org>; Fri, 16 Nov 2018 05:49:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=qsV8e3ChIzRv+YN4D+eZGvwvIeyccUafILnx2y9T/jKADNmV/tBrQ6pWc37bCmkTCw
-         LJjXN+4C7XfXoyu+Aq+Bd8W412IdJ/OAYpk1spKU914nw8R+2owm39NdMpqj+T9dkuQF
-         NYpKrE2g2/tTVW6rCwLXE/1rgaZZCmiheYWGQwH2yTka8bnwBnNsaH0Fto4pu0YOwm9L
-         X+udwp6Ejj+QfvtXXxu3Lk8/Dl1jJwsEyGQ2lACers1mSyTAfO0lcuV6yV6cjm5xkxRh
-         RpN+BbDIU3JlwTe2RlnCm78eL8qbdI2oEWw6y3zl4TY9+ofIBsSHH8TLzvrUu3E8kbQf
-         NmnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=BjrH5SydTJKe/wkbUC4Tx6AAqGAkDl9UdGLSNGNUEoE2j8hNl5UeS3tVPOZL4qDHFd
-         AJAh3bKaDJV3ZhJEkmijInq5n4bKEzK6aKRjj9pvhts+nOVOxjQ1CGF3jGAm4MvrQql4
-         hFPruhnApNTEipGJWCyqAftb79GKS95NvBDoIessES2I2KNr50TRKqEifRfomDZvMHxR
-         VrsnYyuWG9w1b/HL4DBk4DAmqenK/LRjt9K6CYiuT2SPyDVEhFhpXSJhiGj6C0bWRn7D
-         tAycmZo7LLv44RGs7QscWk7dyMibmD8Uw4dgb3IFiLTsIUOiosWYkKPXiefrjhWvpOTh
-         CRPA==
-X-Gm-Message-State: AGRZ1gIHRTmwWgL1E58gaTsRDOMJNDPvwlH9lTQtQEILvFDddoNretyL
-        6T92YwCIzQ830HwAcCdegsVAsxZUO1WAoSzYPFw=
-X-Google-Smtp-Source: AJdET5cC899NFz/sn5zLrOLzJwX9HPgu5KNm74gXwi9OMQwuutu6X8iidQjdDD7TrWgTgC4y4PQ+nnNs9kIG8GaEKcg=
-X-Received: by 2002:a63:b30f:: with SMTP id i15mr10064188pgf.240.1542376185552;
- Fri, 16 Nov 2018 05:49:45 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:90a:9c11:0:0:0:0 with HTTP; Fri, 16 Nov 2018 05:49:44
- -0800 (PST)
-Reply-To: lawfem15@gmail.com
-From:   moses morrow <cooperation612@gmail.com>
-Date:   Fri, 16 Nov 2018 13:49:44 +0000
-Message-ID: <CADmnDDcTxT257L4ks9CN=Xu6Ti9iDT76N4rsa2_Dwem__h15jw@mail.gmail.com>
-Subject: Re: Hello i sent you a message containing the details of the
- transaction Did you see it?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <cooperation612@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2018 16:00:48 +0100 (CET)
+Received: from relmlor2.renesas.com ([210.160.252.172]:34771 "EHLO
+        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992798AbeKPPAluFtv9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Nov 2018 16:00:41 +0100
+Received: from unknown (HELO relmlir4.idc.renesas.com) ([10.200.68.154])
+  by relmlie6.idc.renesas.com with ESMTP; 17 Nov 2018 00:00:38 +0900
+Received: from relmlii2.idc.renesas.com (relmlii2.idc.renesas.com [10.200.68.66])
+        by relmlir4.idc.renesas.com (Postfix) with ESMTP id C70ECE3B5E;
+        Sat, 17 Nov 2018 00:00:38 +0900 (JST)
+X-IronPort-AV: E=Sophos;i="5.56,240,1539615600"; 
+   d="scan'208";a="297674585"
+Received: from unknown (HELO vbox.ree.adwin.renesas.com) ([10.226.37.67])
+  by relmlii2.idc.renesas.com with ESMTP; 17 Nov 2018 00:00:36 +0900
+From:   Phil Edworthy <phil.edworthy@renesas.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org
+Subject: [PATCH v6 4/6] MIPS: AR7: Add clk_get_optional() function
+Date:   Fri, 16 Nov 2018 14:59:35 +0000
+Message-Id: <20181116145937.27660-5-phil.edworthy@renesas.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181116145937.27660-1-phil.edworthy@renesas.com>
+References: <20181116145937.27660-1-phil.edworthy@renesas.com>
+Return-Path: <phil.edworthy@renesas.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67328
+X-archive-position: 67329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cooperation612@gmail.com
+X-original-sender: phil.edworthy@renesas.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,3 +48,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+clk_get_optional() returns NULL if not found instead of -ENOENT,
+otherwise the behaviour is the same as clk_get().
+
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+---
+ arch/mips/ar7/clock.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
+index 6b64fd96dba8..b13f763948b1 100644
+--- a/arch/mips/ar7/clock.c
++++ b/arch/mips/ar7/clock.c
+@@ -454,6 +454,17 @@ struct clk *clk_get(struct device *dev, const char *id)
+ }
+ EXPORT_SYMBOL(clk_get);
+ 
++struct clk *clk_get_optional(struct device *dev, const char *id)
++{
++	struct clk *clk = clk_get(dev, id);
++
++	if (clk == ERR_PTR(-ENOENT))
++		clk = NULL;
++
++	return clk;
++}
++EXPORT_SYMBOL(clk_get_optional);
++
+ void clk_put(struct clk *clk)
+ {
+ }
+-- 
+2.17.1

@@ -1,73 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2018 02:40:08 +0100 (CET)
-Received: from mail-wm1-x341.google.com ([IPv6:2a00:1450:4864:20::341]:55500
-        "EHLO mail-wm1-x341.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992834AbeKRBje21BHx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Nov 2018 02:39:34 +0100
-Received: by mail-wm1-x341.google.com with SMTP id y139so2014795wmc.5
-        for <linux-mips@linux-mips.org>; Sat, 17 Nov 2018 17:39:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2018 08:48:02 +0100 (CET)
+Received: from mail-qk1-x741.google.com ([IPv6:2607:f8b0:4864:20::741]:44681
+        "EHLO mail-qk1-x741.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990895AbeKRHr5zbdOS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Nov 2018 08:47:57 +0100
+Received: by mail-qk1-x741.google.com with SMTP id n12so44095462qkh.11;
+        Sat, 17 Nov 2018 23:47:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=vI52ho93BaiPE3L/jNpnme5yyJsC48fUm+EVPIHK0Ro=;
-        b=Nx0pfWucMMU9pi45rz4IttZ/dm9RBdhvcThTdAPdqNuMdUkJ3dsVEAzBVBqcndACzy
-         e4j4erjHuB/L2Hgqsz5Wfl4AXzy/4ra3VGV2L87eb2Q2xKiZ43qeAwbJXkL1K0NITzDC
-         eBaLtgci18ZJLzqn4+TabBU+n6BmOgOKZVDP4=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=e9jUmSTLaGX0A7LyE7aM7FouS47os25e/5PoGajRO0w=;
+        b=jAN2iaJegYuO7y2ZKWZRRtWbl2StGyxw+Y3Ox6vHmmX1u2mpwTX33rfiW8Rnh0yT8U
+         VVfx/9FWFpzETBNWLWvFFlz9/UMtPz62DIHQFevJZPuOsK3mGmkfS/8yBtfOWU6MLJQr
+         ZPiSKBIMvUpuXc09hQBvCHHuNS5su52O3gDhV+N6L343+bjvYGBZlmwMcXyd4MqquJot
+         xZAcShyQkOZyMJx1uPOyYChnnnG7qrY88Zhd8tL4i8+2aXc5SQJFLGJBAceou0Je/K7z
+         vm3sHwjFX7SPavSdCrnjDcpaKyNhgIjiD+TnJJ7ri9uZ6eObpw/b+q63HlCLrWBxLcye
+         Y7yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vI52ho93BaiPE3L/jNpnme5yyJsC48fUm+EVPIHK0Ro=;
-        b=ngXof0t4vLavFNqL8DXUPxVDt28S/7OyKohXREB67+Ds/qGGNtP1DchHlLR70/zWtF
-         N8GS/JE9fXOkxWd0uhwRX+ee6d7FEWWEpHPcfW2FtEZAqeIbNHh52i9T/DB4KtFX9STI
-         C8bwkSkkSdzqM8FTrg8Z+Q9nc3TPU0Kjuf0kJo7vmf6akf/T50HHh2doMea5XSilpJC8
-         sIzzj9HobnBFJ65eNnfgV1zvrZ3I3iw6uCItGS1cw+tRfnFs/vI2XrZtW0tGhL40aWrP
-         iTwGOqRDs/rOPKZez1fbBiMlHhSUFoMhLqqRvvteGipy5i+FryjZf3IR1xpADhKfdhba
-         ojnA==
-X-Gm-Message-State: AGRZ1gLvPWv9VfXl7NxayRb3oMfaGwkA3EirF2Ju5VJf3kJEvZV3jXh6
-        0yFa6UnYBcPK6MshJ+3uAzA/+w==
-X-Google-Smtp-Source: AFSGD/VYiCg8YZzREyj/XCxLhCD5MMsYL/+5joIhVVaQlO1jQBwf3vgFXPgwCdRlcodDL5adV+Zojw==
-X-Received: by 2002:a1c:8d86:: with SMTP id p128-v6mr3101886wmd.48.1542505173803;
-        Sat, 17 Nov 2018 17:39:33 -0800 (PST)
-Received: from [192.168.0.40] (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
-        by smtp.googlemail.com with ESMTPSA id 64-v6sm30918216wml.22.2018.11.17.17.39.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 17 Nov 2018 17:39:33 -0800 (PST)
-Subject: Re: [RFC v2 5/7] clocksource/drivers/rtl8186: Add RTL8186 timer
- driver
-To:     Yasha Cherikovsky <yasha.che3@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-References: <20181001102952.7913-1-yasha.che3@gmail.com>
- <20181001102952.7913-6-yasha.che3@gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <dd8dbad0-efc3-fab1-e1d8-75819af66879@linaro.org>
-Date:   Sun, 18 Nov 2018 02:39:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=e9jUmSTLaGX0A7LyE7aM7FouS47os25e/5PoGajRO0w=;
+        b=On/GeaW5PpeKstl5C53Aimr3sMQAFGee3aon3qRcR36pgGEmkkhUaVBs+jHHKPn2Uo
+         SqP22mDQOQYtPf2Gc/KP/WKqWyWVhq4g026WvS0Y4jeFEFcN0p+RQXeVKBWyl0zNGeGH
+         5S89qW8WadN6PKW69ABQu8gGFYp//9reKV2/LRxRJOeXkt2Zp4g3zfpVj6AqPy9a3ngM
+         YqsPMWMjSn1i7R6VJZ2m3rfeS8MNpq3zhaBu1cZOwror2T4cw/gcjezJtO5XkK2uwXF2
+         8VWEtOchMiQTqmsKrf0xa4fiGoOrjlpqFBXIGVAULuvB+0G9QmGZ/eaae4AQrd1csqJl
+         BAcw==
+X-Gm-Message-State: AGRZ1gKiFMGnHtIvrwWj+uXEDcGtu7fsmQ42LqnCTAKnuhTRLyDwXWe+
+        Rbu4dkx125U4cVQ8OEKNLdB1zFc/foZ5hNyLXxk=
+X-Google-Smtp-Source: AJdET5d0B2HeX5Nvr+wGZPdX7m6Rl24zd7KaVOpOiDtE/8uwUkfLAjvZ94pD068kW1H4Q3oUAYfLsNkd4p788UzoOuk=
+X-Received: by 2002:a0c:bf0d:: with SMTP id m13mr16906324qvi.139.1542527276900;
+ Sat, 17 Nov 2018 23:47:56 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20181001102952.7913-6-yasha.che3@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel.lezcano@linaro.org>
+References: <20181117185715.25198-1-ard.biesheuvel@linaro.org> <20181117185715.25198-3-ard.biesheuvel@linaro.org>
+In-Reply-To: <20181117185715.25198-3-ard.biesheuvel@linaro.org>
+From:   Y Song <ys114321@gmail.com>
+Date:   Sun, 18 Nov 2018 07:47:27 +0000
+Message-ID: <CAH3MdRV85imzia+=irgbjL48wqFdorB-F1=BkwBgJgi3Z-XAKA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] net/bpf: refactor freeing of executable allocations
+To:     ard.biesheuvel@linaro.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        rick.p.edgecombe@intel.com, eric.dumazet@gmail.com,
+        jannh@google.com, Kees Cook <keescook@chromium.org>,
+        jeyu@kernel.org, arnd@arndb.de, catalin.marinas@arm.com,
+        will.deacon@arm.com, mark.rutland@arm.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, benh@kernel.crashing.org,
+        paulus@samba.org, mpe@ellerman.id.au,
+        David Miller <davem@davemloft.net>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <ys114321@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67342
+X-archive-position: 67343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: ys114321@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,149 +75,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-Hi Yasha,
-
-except the few details below, the driver looks good to me.
-
-On 01/10/2018 12:29, Yasha Cherikovsky wrote:
-> The Realtek RTL8186 SoC is a MIPS based SoC
-> used in some home routers [1][2].
-> 
-> This adds a driver to handle the built-in timers
-> on this SoC.
-> 
-> Timers 0 and 1 are 24bit timers.
-> Timers 2 and 3 are 32bit timers.
-> 
-> Use Timer2 as clocksource and Timer3 for clockevents.
-> Timer2 is also used for sched_clock.
-> 
-> [1] https://www.linux-mips.org/wiki/Realtek_SOC#Realtek_RTL8186
-> [2] https://wikidevi.com/wiki/Realtek_RTL8186
-> 
-> Signed-off-by: Yasha Cherikovsky <yasha.che3@gmail.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
+On Sat, Nov 17, 2018 at 6:58 PM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
+>
+> All arch overrides of the __weak bpf_jit_free() amount to the same
+> thing: the allocated memory was never mapped read-only, and so
+> it does not have to be remapped to read-write before being freed.
+>
+> So in preparation of permitting arches to serve allocations for BPF
+> JIT programs from other regions than the module region, refactor
+> the existing bpf_jit_free() implementations to use the shared code
+> where possible, and only specialize the remap and free operations.
+>
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 > ---
->  drivers/clocksource/Kconfig         |   9 ++
->  drivers/clocksource/Makefile        |   1 +
->  drivers/clocksource/timer-rtl8186.c | 220 ++++++++++++++++++++++++++++
->  3 files changed, 230 insertions(+)
->  create mode 100644 drivers/clocksource/timer-rtl8186.c
-> 
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index dec0dd88ec15..da87f73d0631 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -609,4 +609,13 @@ config ATCPIT100_TIMER
->  	help
->  	  This option enables support for the Andestech ATCPIT100 timers.
->  
-> +config RTL8186_TIMER
-> +	bool "RTL8186 timer driver"
-> +	depends on MACH_RTL8186
-> +	depends on COMMON_CLK
-> +	select TIMER_OF
-> +	select CLKSRC_MMIO
-> +	help
-> +	  Enables support for the RTL8186 timer driver.
-> +
+>  arch/mips/net/bpf_jit.c           |  7 ++-----
+>  arch/powerpc/net/bpf_jit_comp.c   |  7 ++-----
+>  arch/powerpc/net/bpf_jit_comp64.c |  9 +++------
+>  arch/sparc/net/bpf_jit_comp_32.c  |  7 ++-----
+>  kernel/bpf/core.c                 | 15 +++++----------
+>  5 files changed, 14 insertions(+), 31 deletions(-)
+>
+> diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+> index 1b69897274a1..5696bd7dccc7 100644
+> --- a/arch/mips/net/bpf_jit.c
+> +++ b/arch/mips/net/bpf_jit.c
+> @@ -1261,10 +1261,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
+>         kfree(ctx.offsets);
+>  }
+>
+> -void bpf_jit_free(struct bpf_prog *fp)
+> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
+>  {
+> -       if (fp->jited)
+> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
+> -
+> -       bpf_prog_unlock_free(fp);
+> +       module_memfree(hdr);
+>  }
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index a1ea1ea6b40d..5b5ce4a1b44b 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -680,10 +680,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
+>         return;
+>  }
+>
+> -void bpf_jit_free(struct bpf_prog *fp)
+> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
+>  {
+> -       if (fp->jited)
+> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
+> -
+> -       bpf_prog_unlock_free(fp);
+> +       module_memfree(hdr);
+>  }
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 84c8f013a6c6..f64f1294bd62 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -1021,11 +1021,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>         return fp;
+>  }
+>
+> -/* Overriding bpf_jit_free() as we don't set images read-only. */
+> -void bpf_jit_free(struct bpf_prog *fp)
+> +/* Overriding bpf_jit_binary_free() as we don't set images read-only. */
+> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
+>  {
+> -       if (fp->jited)
+> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
+> -
+> -       bpf_prog_unlock_free(fp);
+> +       module_memfree(hdr);
+>  }
+> diff --git a/arch/sparc/net/bpf_jit_comp_32.c b/arch/sparc/net/bpf_jit_comp_32.c
+> index 01bda6bc9e7f..589950d152cc 100644
+> --- a/arch/sparc/net/bpf_jit_comp_32.c
+> +++ b/arch/sparc/net/bpf_jit_comp_32.c
+> @@ -756,10 +756,7 @@ cond_branch:                       f_offset = addrs[i + filter[i].jf];
+>         return;
+>  }
+>
+> -void bpf_jit_free(struct bpf_prog *fp)
+> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
+>  {
+> -       if (fp->jited)
+> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
+> -
+> -       bpf_prog_unlock_free(fp);
+> +       module_memfree(hdr);
+>  }
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> index 1a796e0799ec..29f766dac203 100644
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
+> @@ -646,25 +646,20 @@ bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
+>         return hdr;
+>  }
+>
+> -void bpf_jit_binary_free(struct bpf_binary_header *hdr)
+> +void __weak bpf_jit_binary_free(struct bpf_binary_header *hdr)
+>  {
+> -       u32 pages = hdr->pages;
+> -
+> +       bpf_jit_binary_unlock_ro(hdr);
+>         module_memfree(hdr);
+> -       bpf_jit_uncharge_modmem(pages);
+>  }
+>
+> -/* This symbol is only overridden by archs that have different
+> - * requirements than the usual eBPF JITs, f.e. when they only
+> - * implement cBPF JIT, do not set images read-only, etc.
+> - */
 
-Please, convert this entry like the MTK_TIMER or the SPRD_TIMER.
+Do you want to move the above comments to
+new weak function bpf_jit_binary_free?
 
->  endmenu
-> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-> index 00caf37e52f9..734e8566e1b6 100644
-> --- a/drivers/clocksource/Makefile
-> +++ b/drivers/clocksource/Makefile
-> @@ -78,3 +78,4 @@ obj-$(CONFIG_H8300_TPU)			+= h8300_tpu.o
->  obj-$(CONFIG_CLKSRC_ST_LPC)		+= clksrc_st_lpc.o
->  obj-$(CONFIG_X86_NUMACHIP)		+= numachip.o
->  obj-$(CONFIG_ATCPIT100_TIMER)		+= timer-atcpit100.o
-> +obj-$(CONFIG_RTL8186_TIMER)		+= timer-rtl8186.o
-> diff --git a/drivers/clocksource/timer-rtl8186.c b/drivers/clocksource/timer-rtl8186.c
-> new file mode 100644
-> index 000000000000..47ef4b09ad27
-> --- /dev/null
-> +++ b/drivers/clocksource/timer-rtl8186.c
-> @@ -0,0 +1,220 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Realtek RTL8186 SoC timer driver.
-> + *
-> + * Timer0 (24bit): Unused
-> + * Timer1 (24bit): Unused
-> + * Timer2 (32bit): Used as clocksource
-> + * Timer3 (32bit): Used as clock event device
-> + *
-> + * Copyright (C) 2018 Yasha Cherikovsky
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/clockchips.h>
-> +#include <linux/clocksource.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/jiffies.h>
-> +#include <linux/sched_clock.h>
-> +#include <linux/of_clk.h>
-> +#include <linux/io.h>
-> +
-> +#include <asm/time.h>
-> +#include <asm/idle.h>
-
-Why do you need those 2 includes above ?
-
-> +#include "timer-of.h"
-> +
-> +/* Timer registers */
-> +#define TCCNR			0x0
-> +#define TCIR			0x4
-> +#define TC_DATA(t)		(0x10 + 4 * (t))
-> +#define TC_CNT(t)		(0x20 + 4 * (t))
-> +
-> +/* TCCNR register bits */
-> +#define TCCNR_TC_EN_BIT(t)		BIT((t) * 2)
-> +#define TCCNR_TC_MODE_BIT(t)		BIT((t) * 2 + 1)
-> +#define TCCNR_TC_SRC_BIT(t)		BIT((t) + 8)
-> +
-> +/* TCIR register bits */
-> +#define TCIR_TC_IE_BIT(t)		BIT(t)
-> +#define TCIR_TC_IP_BIT(t)		BIT((t) + 4)
-> +
-> +
-> +/* Forward declaration */
-> +static struct timer_of to;
-> +
-> +static void __iomem *base;
-> +
-> +
-
-nit: extra line
-
-> +#define RTL8186_TIMER_MODE_COUNTER	0
-> +#define RTL8186_TIMER_MODE_TIMER	1
-> +
-
-[ ... ]
-
-Thanks
-
-  -- Daniel
-
-
-
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+> -void __weak bpf_jit_free(struct bpf_prog *fp)
+> +void bpf_jit_free(struct bpf_prog *fp)
+>  {
+>         if (fp->jited) {
+>                 struct bpf_binary_header *hdr = bpf_jit_binary_hdr(fp);
+> +               u32 pages = hdr->pages;
+>
+> -               bpf_jit_binary_unlock_ro(hdr);
+>                 bpf_jit_binary_free(hdr);
+> +               bpf_jit_uncharge_modmem(pages);
+>
+>                 WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
+>         }
+> --
+> 2.17.1
+>

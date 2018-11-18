@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2018 08:48:02 +0100 (CET)
-Received: from mail-qk1-x741.google.com ([IPv6:2607:f8b0:4864:20::741]:44681
-        "EHLO mail-qk1-x741.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990895AbeKRHr5zbdOS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Nov 2018 08:47:57 +0100
-Received: by mail-qk1-x741.google.com with SMTP id n12so44095462qkh.11;
-        Sat, 17 Nov 2018 23:47:57 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2018 08:50:17 +0100 (CET)
+Received: from mail-qk1-x744.google.com ([IPv6:2607:f8b0:4864:20::744]:33791
+        "EHLO mail-qk1-x744.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991062AbeKRHt3ALaqS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Nov 2018 08:49:29 +0100
+Received: by mail-qk1-x744.google.com with SMTP id o89so44155360qko.0;
+        Sat, 17 Nov 2018 23:49:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=e9jUmSTLaGX0A7LyE7aM7FouS47os25e/5PoGajRO0w=;
-        b=jAN2iaJegYuO7y2ZKWZRRtWbl2StGyxw+Y3Ox6vHmmX1u2mpwTX33rfiW8Rnh0yT8U
-         VVfx/9FWFpzETBNWLWvFFlz9/UMtPz62DIHQFevJZPuOsK3mGmkfS/8yBtfOWU6MLJQr
-         ZPiSKBIMvUpuXc09hQBvCHHuNS5su52O3gDhV+N6L343+bjvYGBZlmwMcXyd4MqquJot
-         xZAcShyQkOZyMJx1uPOyYChnnnG7qrY88Zhd8tL4i8+2aXc5SQJFLGJBAceou0Je/K7z
-         vm3sHwjFX7SPavSdCrnjDcpaKyNhgIjiD+TnJJ7ri9uZ6eObpw/b+q63HlCLrWBxLcye
-         Y7yg==
+        bh=mmUp9bVLzAjLxvxpuGqKyizUS3hwC0JQZLZ/D3xx8Dw=;
+        b=E7ls5kEIfXFrL+O3NSrT0/OjSCJW5QTbXrKomsxzn2oupTGH3ZXPKGoQgkbSU8B5Zl
+         gkc+zA/bX4ToSOFH2H5o6CtP4ricuUiCt2wanR+G6FwpSQOBW3YqB07UnpSrjYVgaH9L
+         bIJlxpteq/vKIBBFHQdhciAJI7S0R4RQG3wd7Lk+SzhND9BeAx77n7nUVXQx5KdcEo3V
+         suJgNmxMeltBkBRyRUxPQ+qYIFc1ZF/O/4h+UoJUTgM+gG3V0dlSfSlKhW8T/GatjXQD
+         1Yp0kRC12IXkvaMP11VbHXkIvMeaXLe9Wc+4XDsFVSx4QSWlbZWXdcLNkeIww6Ur8c5r
+         R9sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=e9jUmSTLaGX0A7LyE7aM7FouS47os25e/5PoGajRO0w=;
-        b=On/GeaW5PpeKstl5C53Aimr3sMQAFGee3aon3qRcR36pgGEmkkhUaVBs+jHHKPn2Uo
-         SqP22mDQOQYtPf2Gc/KP/WKqWyWVhq4g026WvS0Y4jeFEFcN0p+RQXeVKBWyl0zNGeGH
-         5S89qW8WadN6PKW69ABQu8gGFYp//9reKV2/LRxRJOeXkt2Zp4g3zfpVj6AqPy9a3ngM
-         YqsPMWMjSn1i7R6VJZ2m3rfeS8MNpq3zhaBu1cZOwror2T4cw/gcjezJtO5XkK2uwXF2
-         8VWEtOchMiQTqmsKrf0xa4fiGoOrjlpqFBXIGVAULuvB+0G9QmGZ/eaae4AQrd1csqJl
-         BAcw==
-X-Gm-Message-State: AGRZ1gKiFMGnHtIvrwWj+uXEDcGtu7fsmQ42LqnCTAKnuhTRLyDwXWe+
-        Rbu4dkx125U4cVQ8OEKNLdB1zFc/foZ5hNyLXxk=
-X-Google-Smtp-Source: AJdET5d0B2HeX5Nvr+wGZPdX7m6Rl24zd7KaVOpOiDtE/8uwUkfLAjvZ94pD068kW1H4Q3oUAYfLsNkd4p788UzoOuk=
-X-Received: by 2002:a0c:bf0d:: with SMTP id m13mr16906324qvi.139.1542527276900;
- Sat, 17 Nov 2018 23:47:56 -0800 (PST)
+        bh=mmUp9bVLzAjLxvxpuGqKyizUS3hwC0JQZLZ/D3xx8Dw=;
+        b=WXMDnIqnZvPlbOaAPM+AlQVCDipLJFE9BQ14wGx0F+3rECT05eQEam3ttBJ7B9HYEf
+         RGTYrwAkm7uw62tf+s8P8mJvjkkSk+/CtU1UgK/jPI5iqKL+Dgu38koAb6Gw+gm/Bq6y
+         ghUtSWNQ6teoC3kstNfMvhrPcj7W6HRpoxxI9VWeJOgp5GQJ07nlhQCYMIRfGsZD3qaa
+         fZQPgqjHcwNdyoG7yD197L+Wi5mwYQjFKW1mdAk4pXVFNfYUNK575jwYayOaFabddjgm
+         DhdQNhOJjzt6eEqeCd84wo9gVc7NP3S3WUlzWyz5CVmHtf51Wu94pnSxhYZvsk58HEOr
+         gSxA==
+X-Gm-Message-State: AGRZ1gKmcgkTdKnmVBMH9VnnH73/m9Z2Bj3EA/BXhnz5Mxy3W7ZU2Akn
+        hhv7CL+hHw4/mwg8HqlNz+ZIK6jlh1q+54NZFJs=
+X-Google-Smtp-Source: AJdET5d3ZByMLTrTWsR1nu6Ai5Phm/hGfev7RqCiKZlcFDEKSwvvy/6aIFstM0swTZP2DkMUIuQ3wpj/VhhKU76VdPc=
+X-Received: by 2002:a37:41d2:: with SMTP id o201mr16064899qka.24.1542527368265;
+ Sat, 17 Nov 2018 23:49:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20181117185715.25198-1-ard.biesheuvel@linaro.org> <20181117185715.25198-3-ard.biesheuvel@linaro.org>
-In-Reply-To: <20181117185715.25198-3-ard.biesheuvel@linaro.org>
+References: <20181117185715.25198-1-ard.biesheuvel@linaro.org>
+In-Reply-To: <20181117185715.25198-1-ard.biesheuvel@linaro.org>
 From:   Y Song <ys114321@gmail.com>
-Date:   Sun, 18 Nov 2018 07:47:27 +0000
-Message-ID: <CAH3MdRV85imzia+=irgbjL48wqFdorB-F1=BkwBgJgi3Z-XAKA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] net/bpf: refactor freeing of executable allocations
+Date:   Sun, 18 Nov 2018 07:48:59 +0000
+Message-ID: <CAH3MdRX5MYv-QQGj25APd4-17syF3Vc_f0AWpEgUoL46qbHrGQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] bpf: permit JIT allocations to be served outside the
+ module region
 To:     ard.biesheuvel@linaro.org
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
@@ -58,7 +59,7 @@ Return-Path: <ys114321@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67343
+X-archive-position: 67344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,133 +79,72 @@ X-list: linux-mips
 On Sat, Nov 17, 2018 at 6:58 PM Ard Biesheuvel
 <ard.biesheuvel@linaro.org> wrote:
 >
-> All arch overrides of the __weak bpf_jit_free() amount to the same
-> thing: the allocated memory was never mapped read-only, and so
-> it does not have to be remapped to read-write before being freed.
+> On arm64, modules are allocated from a 128 MB window which is close to
+> the core kernel, so that relative direct branches are guaranteed to be
+> in range (except in some KASLR configurations). Also, module_alloc()
+> is in charge of allocating KASAN shadow memory when running with KASAN
+> enabled.
 >
-> So in preparation of permitting arches to serve allocations for BPF
-> JIT programs from other regions than the module region, refactor
-> the existing bpf_jit_free() implementations to use the shared code
-> where possible, and only specialize the remap and free operations.
+> This means that the way BPF reuses module_alloc()/module_memfree() is
+> undesirable on arm64 (and potentially other architectures as well),
+> and so this series refactors BPF's use of those functions to permit
+> architectures to change this behavior.
 >
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
+> Patch #1 fixes a bug introduced during the merge window, where the new
+> alloc/free tracking does not account for memory that is freed by some
+> arch code.
+>
+> Patch #2 refactors the freeing path so that architectures can switch to
+> something other than module_memfree().
+>
+> Patch #3 does the same for module_alloc().
+>
+> Patch #4 implements the new alloc/free overrides for arm64
+
+Except a minor comment, the whole patch set looks good to me.
+Acked-by: Yonghong Song <yhs@fb.com>
+
+>
+> Cc: Daniel Borkmann <daniel@iogearbox.net>
+> Cc: Alexei Starovoitov <ast@kernel.org>
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Eric Dumazet <eric.dumazet@gmail.com>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Kees Cook <keescook@chromium.org>
+>
+> Cc: Jessica Yu <jeyu@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will.deacon@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+>
+> Ard Biesheuvel (4):
+>   bpf: account for freed JIT allocations in arch code
+>   net/bpf: refactor freeing of executable allocations
+>   bpf: add __weak hook for allocating executable memory
+>   arm64/bpf: don't allocate BPF JIT programs in module memory
+>
+>  arch/arm64/net/bpf_jit_comp.c     | 11 ++++++++++
 >  arch/mips/net/bpf_jit.c           |  7 ++-----
 >  arch/powerpc/net/bpf_jit_comp.c   |  7 ++-----
->  arch/powerpc/net/bpf_jit_comp64.c |  9 +++------
+>  arch/powerpc/net/bpf_jit_comp64.c | 12 +++--------
 >  arch/sparc/net/bpf_jit_comp_32.c  |  7 ++-----
->  kernel/bpf/core.c                 | 15 +++++----------
->  5 files changed, 14 insertions(+), 31 deletions(-)
+>  kernel/bpf/core.c                 | 22 ++++++++++----------
+>  6 files changed, 31 insertions(+), 35 deletions(-)
 >
-> diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
-> index 1b69897274a1..5696bd7dccc7 100644
-> --- a/arch/mips/net/bpf_jit.c
-> +++ b/arch/mips/net/bpf_jit.c
-> @@ -1261,10 +1261,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
->         kfree(ctx.offsets);
->  }
->
-> -void bpf_jit_free(struct bpf_prog *fp)
-> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
->  {
-> -       if (fp->jited)
-> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
-> -
-> -       bpf_prog_unlock_free(fp);
-> +       module_memfree(hdr);
->  }
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index a1ea1ea6b40d..5b5ce4a1b44b 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -680,10 +680,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
->         return;
->  }
->
-> -void bpf_jit_free(struct bpf_prog *fp)
-> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
->  {
-> -       if (fp->jited)
-> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
-> -
-> -       bpf_prog_unlock_free(fp);
-> +       module_memfree(hdr);
->  }
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index 84c8f013a6c6..f64f1294bd62 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -1021,11 +1021,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
->         return fp;
->  }
->
-> -/* Overriding bpf_jit_free() as we don't set images read-only. */
-> -void bpf_jit_free(struct bpf_prog *fp)
-> +/* Overriding bpf_jit_binary_free() as we don't set images read-only. */
-> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
->  {
-> -       if (fp->jited)
-> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
-> -
-> -       bpf_prog_unlock_free(fp);
-> +       module_memfree(hdr);
->  }
-> diff --git a/arch/sparc/net/bpf_jit_comp_32.c b/arch/sparc/net/bpf_jit_comp_32.c
-> index 01bda6bc9e7f..589950d152cc 100644
-> --- a/arch/sparc/net/bpf_jit_comp_32.c
-> +++ b/arch/sparc/net/bpf_jit_comp_32.c
-> @@ -756,10 +756,7 @@ cond_branch:                       f_offset = addrs[i + filter[i].jf];
->         return;
->  }
->
-> -void bpf_jit_free(struct bpf_prog *fp)
-> +void bpf_jit_binary_free(struct bpf_binary_header *hdr)
->  {
-> -       if (fp->jited)
-> -               bpf_jit_binary_free(bpf_jit_binary_hdr(fp));
-> -
-> -       bpf_prog_unlock_free(fp);
-> +       module_memfree(hdr);
->  }
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index 1a796e0799ec..29f766dac203 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -646,25 +646,20 @@ bpf_jit_binary_alloc(unsigned int proglen, u8 **image_ptr,
->         return hdr;
->  }
->
-> -void bpf_jit_binary_free(struct bpf_binary_header *hdr)
-> +void __weak bpf_jit_binary_free(struct bpf_binary_header *hdr)
->  {
-> -       u32 pages = hdr->pages;
-> -
-> +       bpf_jit_binary_unlock_ro(hdr);
->         module_memfree(hdr);
-> -       bpf_jit_uncharge_modmem(pages);
->  }
->
-> -/* This symbol is only overridden by archs that have different
-> - * requirements than the usual eBPF JITs, f.e. when they only
-> - * implement cBPF JIT, do not set images read-only, etc.
-> - */
-
-Do you want to move the above comments to
-new weak function bpf_jit_binary_free?
-
-> -void __weak bpf_jit_free(struct bpf_prog *fp)
-> +void bpf_jit_free(struct bpf_prog *fp)
->  {
->         if (fp->jited) {
->                 struct bpf_binary_header *hdr = bpf_jit_binary_hdr(fp);
-> +               u32 pages = hdr->pages;
->
-> -               bpf_jit_binary_unlock_ro(hdr);
->                 bpf_jit_binary_free(hdr);
-> +               bpf_jit_uncharge_modmem(pages);
->
->                 WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
->         }
 > --
 > 2.17.1
 >

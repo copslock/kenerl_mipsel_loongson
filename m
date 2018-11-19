@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:02:38 +0100 (CET)
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:40560 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991708AbeKSQCAs1l7A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 17:02:00 +0100
-Received: by mail-qk1-f194.google.com with SMTP id y16so49387427qki.7;
-        Mon, 19 Nov 2018 08:02:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=k7XGE259zPHtZxyj7onWoRQ4Ox/KArkHxcJHDXcQDLk=;
-        b=NJoG86mBMUlnTOjukCQl4IsdGV/EVjDY+2tLDcETfdK5/+YSOGnFcDl03JcpqSwJUx
-         asF7I0YCg8oFLP+N/dT0TvoQtxupGYxf3K8UIwOfp3XR76H9zpPnVJOaMr+NAAt5i41V
-         CAWL2bQtdO0sOojljfoCOWLkGhkV0gdDW84iLlsPx2GH26OTYPASxCIIu/1OlgJW1mC4
-         WHEL+esf8MjkzkoASrN8aCYWzVmPsyXX/JvPgQ0jIEFMcIsTtg8/aCl6cj4ZDBDIVPyL
-         E+6/GbMHgt895vL9XAo0hZLco/aOMkpo1ibyqVsq0+uHcOr26hURBMpWMRZWTuuo107X
-         6vbw==
-X-Gm-Message-State: AGRZ1gIkOAeoBoeR+k5gzNOlc5a+fYLkUlWO4uQAUcOLHzz7d0vm3qmu
-        xtTdM64unvJIqy29h9KPnVESWLXIpFoHxh6U8Lg=
-X-Google-Smtp-Source: AJdET5cNa0GJZ2humvx++P4L6Ki0xQCssn0DfSiMQcrhmV49lRChPLUKYP70wxb7wDe0gvNTZAVy9h87pet1DTbVl4U=
-X-Received: by 2002:a0c:dc0f:: with SMTP id s15mr21478459qvk.40.1542643320063;
- Mon, 19 Nov 2018 08:02:00 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:33:02 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:43712 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994541AbeKSQczv4DUK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Nov 2018 17:32:55 +0100
+Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E89502086A;
+        Mon, 19 Nov 2018 16:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1542645174;
+        bh=y37n2POu0wVDnGWEp4rOO598CCjYLdQZYW8f/Zqwgpg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YdNUsozZ7m2/ZLJJRtAsR2anipUHBp97+bNgnCk+3AiTnSoiCW8b9Jh59Dk026z+s
+         eirlhRqu+B9OHZsZn//plqMQ4yNRLvjDk8CPt0L+anRfxIsGmnXPDuFotsgdmxCCY4
+         iTx18M4B9oiEL4eysAG0UY1Fux6BH59yOM2BWp4w=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Dengcheng Zhu <dzhu@wavecomp.com>,
+        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        rachel.mozes@intel.com, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 025/205] MIPS: kexec: Mark CPU offline before disabling local IRQ
+Date:   Mon, 19 Nov 2018 17:25:32 +0100
+Message-Id: <20181119162621.972351080@linuxfoundation.org>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20181119162616.586062722@linuxfoundation.org>
+References: <20181119162616.586062722@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
 MIME-Version: 1.0
-References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-6-git-send-email-firoz.khan@linaro.org>
-In-Reply-To: <1542262461-29024-6-git-send-email-firoz.khan@linaro.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 19 Nov 2018 17:01:43 +0100
-Message-ID: <CAK8P3a20MaFRNf8-umvrGNtjgNG98PkzcFGtHrnY835UEGv3tg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] mips: generate uapi header and system call table files
-To:     Firoz Khan <firoz.khan@linaro.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <SRS0=OXTl=N6=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67356
+X-archive-position: 67357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,26 +54,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 15, 2018 at 7:15 AM Firoz Khan <firoz.khan@linaro.org> wrote:
->
-> System call table generation script must be run to gener-
-> ate unistd_64/n32/o32.h and syscall_table_32_o32/64_64/64-
-> _n32/64-o32.h files. This patch will have changes which
-> will invokes the script.
->
-> This patch will generate unistd_64/n32/o32.h and syscall-
-> _table_32_o32/64_64/64-n32/64-o32.h files by the syscall
-> table generation script invoked by parisc/Makefile and
-> the generated files against the removed files must be
-> identical.
->
-> The generated uapi header file will be included in uapi/-
-> asm/unistd.h and generated system call table header file
-> will be included by kernel/scall32-o32/64-64/64-n32/-
-> 64-o32.Sfile.
->
-> Signed-off-by: Firoz Khan <firoz.khan@linaro.org>
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-Looks good to me.
+------------------
 
-      Arnd
+From: Dengcheng Zhu <dzhu@wavecomp.com>
+
+[ Upstream commit dc57aaf95a516f70e2d527d8287a0332c481a226 ]
+
+After changing CPU online status, it will not be sent any IPIs such as in
+__flush_cache_all() on software coherency systems. Do this before disabling
+local IRQ.
+
+Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/20571/
+Cc: pburton@wavecomp.com
+Cc: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Cc: rachel.mozes@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/kernel/crash.c         |    3 +++
+ arch/mips/kernel/machine_kexec.c |    3 +++
+ 2 files changed, 6 insertions(+)
+
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -36,6 +36,9 @@ static void crash_shutdown_secondary(voi
+ 	if (!cpu_online(cpu))
+ 		return;
+ 
++	/* We won't be sent IPIs any more. */
++	set_cpu_online(cpu, false);
++
+ 	local_irq_disable();
+ 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
+ 		crash_save_cpu(regs, cpu);
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -118,6 +118,9 @@ machine_kexec(struct kimage *image)
+ 			*ptr = (unsigned long) phys_to_virt(*ptr);
+ 	}
+ 
++	/* Mark offline BEFORE disabling local irq. */
++	set_cpu_online(smp_processor_id(), false);
++
+ 	/*
+ 	 * we do not want to be bothered.
+ 	 */

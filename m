@@ -1,75 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 16:38:14 +0100 (CET)
-Received: from mail-it1-x143.google.com ([IPv6:2607:f8b0:4864:20::143]:54729
-        "EHLO mail-it1-x143.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991175AbeKSPhwFKLxA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 16:37:52 +0100
-Received: by mail-it1-x143.google.com with SMTP id a205-v6so8860026itd.4
-        for <linux-mips@linux-mips.org>; Mon, 19 Nov 2018 07:37:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HovDyLoW9JgP2dOMddyLtoMQVzEDX+zbCzhvdFpRmKg=;
-        b=D7qcptHPzcuFLxZJDKf3/4DYoAkuBIC1/vhhevIzPorrX0vffSlkOwDgxtkWOJQ5at
-         HawzLKIlQZPHhzcg/ht+WOn2/Bwzx35gGjNcBaHjt33qZAinytdLYzklmhvd92e87Qpx
-         QdcvOzwwWfj2RygLc+IHYXpaaAK0ppUfMF4FA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 16:52:17 +0100 (CET)
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:43506 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993136AbeKSPwC1zh0A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 16:52:02 +0100
+Received: by mail-qk1-f193.google.com with SMTP id r71so49271648qkr.10;
+        Mon, 19 Nov 2018 07:52:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HovDyLoW9JgP2dOMddyLtoMQVzEDX+zbCzhvdFpRmKg=;
-        b=JTWQ4Bj13OYoRqrIzkCrDxOcsMZndmAU/4JOtIJrYTMioqHduqGL6vL6FmGYtBGNcY
-         J1vwqHXwLOJBMvCEHu3LZqkOAvnElb7vO58+2Ug3ET5zKlYFvpnQbSkrA38+hCuaimkR
-         nIDNSrNetrwYN5H65PGUObqt9Buq0J/Lz5ueNNoyCbrM9v3kEzTijqev03M7gRv1cA3K
-         bfZAnwpE8Jv8lJb/ZPy1s3F4zCxtBPsKo4GVQApUk5c8Gt11oTwb2b8X07kqacdtBeKN
-         wCP/F0D4aCs4ORCxOmC1JzF0zkiJTPkK8HT+2xBy9LO6YtHmQCGD/0LjeOEQTHs9LaVO
-         OKyA==
-X-Gm-Message-State: AA+aEWbq5ij0SOUjCJTRpbzbfwMDuI9a0mnDWckl0J0GtxDmpbinsmwH
-        iH213nawMhVcwxP/SuPqMd6GLkYClPbb/jjsPctXog==
-X-Google-Smtp-Source: AFSGD/XYGCOxtGQjZNHVynlMGnMqP3y8k20/U+DJFyEKBYt23Zja/1TkjR662SNXidQ9wGwqBoa2EOaNRg2lDyTv3Xs=
-X-Received: by 2002:a24:710:: with SMTP id f16mr1015081itf.121.1542641871167;
- Mon, 19 Nov 2018 07:37:51 -0800 (PST)
+        bh=o+5bJn4B66njPBzARi8LUL9emGuyKZAzXJwIQjlDvtM=;
+        b=dKYEnQrgHc5GjxFAg1owVMFBrbH3UcJhvMNN0NWuQqorSAQoYV0Gqlh1OLiTw0Piko
+         qQe4i9IT9Qs4g8dVUzAluiPo/gVnauKPgEWB90ifuLwXIvujvB1wP5sfjq3/HclRqynH
+         vXp+oVAC5dpkNRxnj0tod7v9u7Y5EZNyQcXWY5teHodHYzHvHyziPN126iRv8gPlm2/W
+         JVxm+/0UayxB8UfC3YKyU1IXiHcZDpwsVpacP7EbqFHhk8/xZYpyYwrk9FTqF7jEm0kl
+         zQBpJzMOCT1ppGgMo8//9csu4Y2UrQGFsLEy0k/ajin147Ojg+RNK9OlR5fXLWGXXp8J
+         MOSw==
+X-Gm-Message-State: AGRZ1gKO4Po6mPiz2duAQ6JJdC9SJ2O5fRSkDJuZ90ZXhhsDEEJCUf+M
+        kwQ72jehaijT3lfemlJX/PvDHA9PhmlfLAlhlUM=
+X-Google-Smtp-Source: AJdET5cHmp/1dPcEYWWI7tbPZ6Do3MOei8PyXIbAgc68MwufxSav+3VqTvU3aV64CpGFlwtyfyVVC8eiHkrFWwRpg40=
+X-Received: by 2002:a0c:dc0f:: with SMTP id s15mr21441655qvk.40.1542642721554;
+ Mon, 19 Nov 2018 07:52:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20181117185715.25198-1-ard.biesheuvel@linaro.org>
- <20181117185715.25198-2-ard.biesheuvel@linaro.org> <b37c3411-7950-dcb3-f0c3-6d9f589d36ab@iogearbox.net>
-In-Reply-To: <b37c3411-7950-dcb3-f0c3-6d9f589d36ab@iogearbox.net>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 19 Nov 2018 07:37:39 -0800
-Message-ID: <CAKv+Gu8mo+WkJ356wByidUDoA-xHrUH99od5N_yJoqtX_28_5g@mail.gmail.com>
-Subject: Re: [PATCH 1/4] bpf: account for freed JIT allocations in arch code
-To:     Daniel Borkmann <daniel@iogearbox.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Eric Dumazet <eric.dumazet@gmail.com>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Jessica Yu <jeyu@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-2-git-send-email-firoz.khan@linaro.org>
+In-Reply-To: <1542262461-29024-2-git-send-email-firoz.khan@linaro.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 19 Nov 2018 16:51:44 +0100
+Message-ID: <CAK8P3a2CuryCoZKaOXz=nH_WTAZ7VneNoUYHkKFDLQNQvrkWUg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] mips: add __NR_syscalls along with __NR_Linux_syscalls
+To:     Firoz Khan <firoz.khan@linaro.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        sparclinux@vger.kernel.org,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <ard.biesheuvel@linaro.org>
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67352
+X-archive-position: 67353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ard.biesheuvel@linaro.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,37 +64,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 19 Nov 2018 at 02:37, Daniel Borkmann <daniel@iogearbox.net> wrote:
+On Thu, Nov 15, 2018 at 7:14 AM Firoz Khan <firoz.khan@linaro.org> wrote:
 >
-> On 11/17/2018 07:57 PM, Ard Biesheuvel wrote:
-> > Commit ede95a63b5e84 ("bpf: add bpf_jit_limit knob to restrict unpriv
-> > allocations") added a call to bpf_jit_uncharge_modmem() to the routine
-> > bpf_jit_binary_free() which is called from the __weak bpf_jit_free().
-> > This function is overridden by arches, some of which do not call
-> > bpf_jit_binary_free() to release the memory, and so the released
-> > memory is not accounted for, potentially leading to spurious allocation
-> > failures.
-> >
-> > So replace the direct calls to module_memfree() in the arch code with
-> > calls to bpf_jit_binary_free().
->
-> Sorry but this patch is completely buggy, and above description on the
-> accounting incorrect as well. Looks like this patch was not tested at all.
->
+> The 2nd option will be the recommended one. For that, I
+> added the __NR_syscalls macro in uapi/asm/unistd.h along
+> with __NR_Linux_syscalls. The macro __NR_syscalls also
+> added for making the name convention same across all
+> architecture. While __NR_syscalls isn't strictly part of
+> the uapi, having it as part of the generated header to
+> simplifies the implementation. We also need to enclose
+> this macro with #ifdef __KERNEL__ to avoid side effects.
 
-My apologies. I went off into the weeds a bit looking at different
-versions for 32-bit and 64-bit on different architectures. So indeed,
-this patch should be dropped.
+I fear this doesn't work the way you hoped:
 
-> The below cBPF JITs that use module_memfree() which you replace with
-> bpf_jit_binary_free() are using module_alloc() internally to get the JIT
-> image buffer ...
+> --- a/arch/mips/include/uapi/asm/unistd.h
+> +++ b/arch/mips/include/uapi/asm/unistd.h
+> @@ -391,16 +391,19 @@
+>  #define __NR_rseq                      (__NR_Linux + 367)
+>  #define __NR_io_pgetevents             (__NR_Linux + 368)
 >
+> +#ifdef __KERNEL__
+> +#define __NR_syscalls                  368
+> +#endif
 
-Indeed. So would you prefer for arm64 to override bpf_jit_free() in
-its entirety, and not call bpf_jit_binary_free() but simply call
-bpf_jit_uncharge_modmem() and vfree() directly? It's either that, or
-we'd have to untangle this a bit, to avoid having one __weak function
-on top of the other just so other arches can replace the
-module_memfree() call in bpf_jit_binary_free() with vfree() (which
-amount to the same thing on arm64 anyway)
+We now have three different definitions of __NR_syscalls,
+one for each ABI. User space previously saw the correct
+one (now it doesn't see any, but that's ok).
+
+>  /*
+>   * Offset of the last Linux o32 flavoured syscall
+>   */
+> -#define __NR_Linux_syscalls            368
+> +#define __NR_Linux_syscalls            __NR_syscalls
+
+so this part part again is ok.
+
+>  #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+>
+>  #define __NR_O32_Linux                 4000
+> -#define __NR_O32_Linux_syscalls                368
+> +#define __NR_O32_Linux_syscalls                __NR_syscalls
+
+but this part is not: Now __NR_O32_Linux_syscalls is defined
+to __NR_syscalls, which may be one of the three values.
+Any usage of __NR_O32_Linux_syscalls in a 64-bit kernel
+is then clearly wrong.
+
+>  #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+>
+>  #define __NR_N32_Linux                 6000
+> -#define __NR_N32_Linux_syscalls                332
+> +#define __NR_N32_Linux_syscalls                __NR_syscalls
+
+Same for this one.
+
+       Arnd

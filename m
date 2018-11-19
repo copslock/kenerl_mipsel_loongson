@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 16:52:17 +0100 (CET)
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:43506 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993136AbeKSPwC1zh0A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 16:52:02 +0100
-Received: by mail-qk1-f193.google.com with SMTP id r71so49271648qkr.10;
-        Mon, 19 Nov 2018 07:52:02 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 16:58:01 +0100 (CET)
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:34286 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993144AbeKSP5uPaIKA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 16:57:50 +0100
+Received: by mail-qk1-f196.google.com with SMTP id a132so49392557qkg.1;
+        Mon, 19 Nov 2018 07:57:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=o+5bJn4B66njPBzARi8LUL9emGuyKZAzXJwIQjlDvtM=;
-        b=dKYEnQrgHc5GjxFAg1owVMFBrbH3UcJhvMNN0NWuQqorSAQoYV0Gqlh1OLiTw0Piko
-         qQe4i9IT9Qs4g8dVUzAluiPo/gVnauKPgEWB90ifuLwXIvujvB1wP5sfjq3/HclRqynH
-         vXp+oVAC5dpkNRxnj0tod7v9u7Y5EZNyQcXWY5teHodHYzHvHyziPN126iRv8gPlm2/W
-         JVxm+/0UayxB8UfC3YKyU1IXiHcZDpwsVpacP7EbqFHhk8/xZYpyYwrk9FTqF7jEm0kl
-         zQBpJzMOCT1ppGgMo8//9csu4Y2UrQGFsLEy0k/ajin147Ojg+RNK9OlR5fXLWGXXp8J
-         MOSw==
-X-Gm-Message-State: AGRZ1gKO4Po6mPiz2duAQ6JJdC9SJ2O5fRSkDJuZ90ZXhhsDEEJCUf+M
-        kwQ72jehaijT3lfemlJX/PvDHA9PhmlfLAlhlUM=
-X-Google-Smtp-Source: AJdET5cHmp/1dPcEYWWI7tbPZ6Do3MOei8PyXIbAgc68MwufxSav+3VqTvU3aV64CpGFlwtyfyVVC8eiHkrFWwRpg40=
-X-Received: by 2002:a0c:dc0f:: with SMTP id s15mr21441655qvk.40.1542642721554;
- Mon, 19 Nov 2018 07:52:01 -0800 (PST)
+        bh=gKVycHfx9VTyJfwD26xokE+/t85CmcDhT6zn9T7WMW8=;
+        b=L1CbTZAsNbknI0yH8RfSbTXGimGfqLAer1ZW+587Qd9vK+TATwYFCTE+qPO3sWtnfL
+         QYIUfYkNwe8dbX5kPfPYZ2Nd+H1MiijficRd6vO75TcZvj+JwwP/3Tg9i9QtD4igmMjL
+         28LZ+8JdUXx9J4Q5yjIkFfT6oiO6UKihUu7RqdrcUSxD++HPUDPq22mON1mMdBNCYD5/
+         FFSG12XqK5hzT+QrdV6c99LOe5fbHb7TOUBUhOL8h3/3zWNdTnqZ5QgzUDWhe5lq2ENx
+         dC3Xth8UBGHNX80VqXTEP17A9SxWxNYfbaJhvmlMYVRBKdFjxTS5Uv/X/49chxiEmk/x
+         cMDA==
+X-Gm-Message-State: AGRZ1gLvRy0MePXP1XHScFLytd0wGVfy01t+gRBZ6+N4nDJpG66Erhbx
+        h+eqqgqHNGux9YdsWj4uJOSmH0nQ9AVGtPdkzwY=
+X-Google-Smtp-Source: AJdET5eeZflQQnKevaRUjecuFpzfTcHB0FNkGNZkkbT+jXVXZzZVyLGpoFMdqN5TaSsNg7YTeUFdHJ9gtynGYBjzZAQ=
+X-Received: by 2002:ae9:d8c2:: with SMTP id u185mr19976776qkf.107.1542643069437;
+ Mon, 19 Nov 2018 07:57:49 -0800 (PST)
 MIME-Version: 1.0
-References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-2-git-send-email-firoz.khan@linaro.org>
-In-Reply-To: <1542262461-29024-2-git-send-email-firoz.khan@linaro.org>
+References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-3-git-send-email-firoz.khan@linaro.org>
+In-Reply-To: <1542262461-29024-3-git-send-email-firoz.khan@linaro.org>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 19 Nov 2018 16:51:44 +0100
-Message-ID: <CAK8P3a2CuryCoZKaOXz=nH_WTAZ7VneNoUYHkKFDLQNQvrkWUg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] mips: add __NR_syscalls along with __NR_Linux_syscalls
+Date:   Mon, 19 Nov 2018 16:57:32 +0100
+Message-ID: <CAK8P3a2+W64=-pFaGyN27fdYOSpOrS7oRAzvZqaJUakB0aXtCg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] mips: add +1 to __NR_syscalls in uapi header
 To:     Firoz Khan <firoz.khan@linaro.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -47,7 +47,7 @@ Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67353
+X-archive-position: 67354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,58 +64,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 15, 2018 at 7:14 AM Firoz Khan <firoz.khan@linaro.org> wrote:
+On Thu, Nov 15, 2018 at 7:15 AM Firoz Khan <firoz.khan@linaro.org> wrote:
 >
-> The 2nd option will be the recommended one. For that, I
-> added the __NR_syscalls macro in uapi/asm/unistd.h along
-> with __NR_Linux_syscalls. The macro __NR_syscalls also
-> added for making the name convention same across all
-> architecture. While __NR_syscalls isn't strictly part of
-> the uapi, having it as part of the generated header to
-> simplifies the implementation. We also need to enclose
-> this macro with #ifdef __KERNEL__ to avoid side effects.
-
-I fear this doesn't work the way you hoped:
-
-> --- a/arch/mips/include/uapi/asm/unistd.h
-> +++ b/arch/mips/include/uapi/asm/unistd.h
-> @@ -391,16 +391,19 @@
->  #define __NR_rseq                      (__NR_Linux + 367)
->  #define __NR_io_pgetevents             (__NR_Linux + 368)
+> All other architectures are hold a value for __NR_syscalls will
+> be equal to the last system call number +1.
 >
-> +#ifdef __KERNEL__
-> +#define __NR_syscalls                  368
-> +#endif
-
-We now have three different definitions of __NR_syscalls,
-one for each ABI. User space previously saw the correct
-one (now it doesn't see any, but that's ok).
-
->  /*
->   * Offset of the last Linux o32 flavoured syscall
->   */
-> -#define __NR_Linux_syscalls            368
-> +#define __NR_Linux_syscalls            __NR_syscalls
-
-so this part part again is ok.
-
->  #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+> But in mips architecture, __NR_syscalls hold the value equal to
+> total number of system exits in the architecture. One of the
+> patch in this patch series will genarate uapi header files.
 >
->  #define __NR_O32_Linux                 4000
-> -#define __NR_O32_Linux_syscalls                368
-> +#define __NR_O32_Linux_syscalls                __NR_syscalls
-
-but this part is not: Now __NR_O32_Linux_syscalls is defined
-to __NR_syscalls, which may be one of the three values.
-Any usage of __NR_O32_Linux_syscalls in a 64-bit kernel
-is then clearly wrong.
-
->  #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+> In order to make the implementation common across all architect-
+> ures, add +1 to __NR_syscalls, which will be equal to the last
+> system call number +1.
 >
->  #define __NR_N32_Linux                 6000
-> -#define __NR_N32_Linux_syscalls                332
-> +#define __NR_N32_Linux_syscalls                __NR_syscalls
+> Signed-off-by: Firoz Khan <firoz.khan@linaro.org>
 
-Same for this one.
+The patch looks correct to me, and is a nice cleanup, but I found a
+couple of things remaining that could be done slightly better.
+
+> diff --git a/arch/mips/include/asm/unistd.h b/arch/mips/include/asm/unistd.h
+> index c68b8ae..16f21c3 100644
+> --- a/arch/mips/include/asm/unistd.h
+> +++ b/arch/mips/include/asm/unistd.h
+> @@ -15,11 +15,11 @@
+>  #include <uapi/asm/unistd.h>
+>
+>  #ifdef CONFIG_MIPS32_N32
+> -#define NR_syscalls  (__NR_N32_Linux + __NR_N32_Linux_syscalls)
+> +#define NR_syscalls  (__NR_N32_Linux + __NR_N32_Linux_syscalls - 1)
+>  #elif defined(CONFIG_64BIT)
+> -#define NR_syscalls  (__NR_64_Linux + __NR_64_Linux_syscalls)
+> +#define NR_syscalls  (__NR_64_Linux + __NR_64_Linux_syscalls - 1)
+>  #else
+> -#define NR_syscalls  (__NR_O32_Linux + __NR_O32_Linux_syscalls)
+> +#define NR_syscalls  (__NR_O32_Linux + __NR_O32_Linux_syscalls - 1)
+>  #endif
+
+I suppose these can simply get removed, there are no users of NR_syscalls
+in MIPS kernels.
+
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> index 7f3dfdb..add4301 100644
+> --- a/arch/mips/kernel/ftrace.c
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -410,13 +410,13 @@ unsigned long __init arch_syscall_addr(int nr)
+>  unsigned long __init arch_syscall_addr(int nr)
+>  {
+>  #ifdef CONFIG_MIPS32_N32
+> -       if (nr >= __NR_N32_Linux && nr <= __NR_N32_Linux + __NR_N32_Linux_syscalls)
+> +       if (nr >= __NR_N32_Linux && nr <= __NR_N32_Linux + __NR_N32_Linux_syscalls - 1)
+>                 return (unsigned long)sysn32_call_table[nr - __NR_N32_Linux];
+>  #endif
+> -       if (nr >= __NR_64_Linux  && nr <= __NR_64_Linux + __NR_64_Linux_syscalls)
+> +       if (nr >= __NR_64_Linux  && nr <= __NR_64_Linux + __NR_64_Linux_syscalls - 1)
+>                 return (unsigned long)sys_call_table[nr - __NR_64_Linux];
+>  #ifdef CONFIG_MIPS32_O32
+> -       if (nr >= __NR_O32_Linux && nr <= __NR_O32_Linux + __NR_O32_Linux_syscalls)
+> +       if (nr >= __NR_O32_Linux && nr <= __NR_O32_Linux + __NR_O32_Linux_syscalls - 1)
+>                 return (unsigned long)sys32_call_table[nr - __NR_O32_Linux];
+>  #endif
+
+Here I would drop the '-1' and instead replace the '<=' with '<' for
+better readability
+
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index 91d3c8c..a9b895f 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -23,7 +23,7 @@
+>  #include <asm/asm-offsets.h>
+>
+>  /* Highest syscall used of any syscall flavour */
+> -#define MAX_SYSCALL_NO __NR_O32_Linux + __NR_O32_Linux_syscalls
+> +#define MAX_SYSCALL_NO __NR_O32_Linux + __NR_O32_Linux_syscalls - 1
+
+This is also unused as of commit 2957c9e61ee9 ("[MIPS] IRIX: Goodbye and
+thanks for all the fish"), eight years ago, so I'd remove this as well.
+
+I'd suggest doing one patch for the removal of the unused macros, and another
+patch for the other changes.
 
        Arnd

@@ -1,78 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 22:20:08 +0100 (CET)
-Received: from mail-eopbgr770128.outbound.protection.outlook.com ([40.107.77.128]:22496
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 23:30:13 +0100 (CET)
+Received: from mail-eopbgr780120.outbound.protection.outlook.com ([40.107.78.120]:17939
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992716AbeKSVRv2FeVg convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 22:17:51 +0100
+        id S23992767AbeKSW3c1l9a7 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 23:29:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9KevPPbak4+wL6spoFilkyulI4PewqKXZTxd5IfsEBE=;
- b=k3AWjbEMvspGVxy9ZGqQtBphX0KGA9nG7l+q0a8lRLRLmOgquS5RMVZN8lKMZD90U5DaCsoCzl4x+ilk2DMkt3CrdHQMRs3YRmIilcBOypwzU4iLTGA6ctuLms9IxILLGpg8wfZhzGXJJM6RVzEm0gylfhAkNFh0nrsrWXFKL68=
+ bh=OlTyT/TFl+3qCGNe5RFm/kLRXFC/pYzRRNkISVyuMMk=;
+ b=T5P4w/jc7a0liBZTQO1Rj8BnZ9tLBrOMHhsePGkKnrwC11bUTTASOAy7mWz9BLS2G+SXob2ew8+S4RDQOG9L9subjAtP58qacK1I1d5kWWE1nwdQwhs+0pvG3eVU5pXVsKJalkGsnrbgY2qssXaMB9cLAPcjjwiyo4V0eI2tlYc=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1565.namprd22.prod.outlook.com (10.172.63.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1339.26; Mon, 19 Nov 2018 21:17:49 +0000
+ MWHPR2201MB1182.namprd22.prod.outlook.com (10.174.169.158) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1339.20; Mon, 19 Nov 2018 22:29:29 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::690f:b86d:7c2:e105]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::690f:b86d:7c2:e105%6]) with mapi id 15.20.1339.027; Mon, 19 Nov 2018
- 21:17:49 +0000
+ 22:29:29 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Sean Young <sean@mess.org>
+To:     Firoz Khan <firoz.khan@linaro.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
         James Hogan <jhogan@kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "y2038@lists.linaro.org" <y2038@lists.linaro.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Remove superfluous check for __linux__
-Thread-Topic: [PATCH] MIPS: Remove superfluous check for __linux__
-Thread-Index: AQHUfcbKsm9fWZ3QzkCWmZA3XXsKNKVXnxYA
-Date:   Mon, 19 Nov 2018 21:17:48 +0000
-Message-ID: <MWHPR2201MB1277E62483AFF08E7EFFAF92C1D80@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20181116160939.22085-1-sean@mess.org>
-In-Reply-To: <20181116160939.22085-1-sean@mess.org>
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "deepa.kernel@gmail.com" <deepa.kernel@gmail.com>,
+        "marcin.juszkiewicz@linaro.org" <marcin.juszkiewicz@linaro.org>
+Subject: Re: [PATCH v2 3/5] mips: remove syscall table entries
+Thread-Topic: [PATCH v2 3/5] mips: remove syscall table entries
+Thread-Index: AQHUfKqPNeJmhHpqrECWQEltxz68yqVXtVAA
+Date:   Mon, 19 Nov 2018 22:29:29 +0000
+Message-ID: <20181119222924.ybnl7qe4hobud5fb@pburton-laptop>
+References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org>
+ <1542262461-29024-4-git-send-email-firoz.khan@linaro.org>
+In-Reply-To: <1542262461-29024-4-git-send-email-firoz.khan@linaro.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR14CA0027.namprd14.prod.outlook.com
- (2603:10b6:300:12b::13) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: CO1PR15CA0087.namprd15.prod.outlook.com
+ (2603:10b6:101:20::31) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1565;6:VVZpX40E+t5/u0d3PKdG3xv6RXYFmlkpQLO3UeB8IOgqjzqMlIKiinOvvFxvnzYV8ftJOXZZKxqqXMH1EWuQCojcpX6q3fSzi0J2OCKKLdtOGluECNBc3phXS3RpZg7+wuT6acb24x65ISTsq7eJwgjETKUWHnF+JlispHLGc2lMdOziXvlfuuD3rqgFYmmmLVP9Iqp8+0fhdlYbmh5W3mIeo6kjr10EvOA7+Q/HlGF1FGGDQoQyCPV1sbNnb+geYqWdynfzS+kJM4pjZbWUSNNWN8ez5eFZ2q7l7y+hVJBGsQds5cDEorlOWb4vq1TL7WNJpWApzV0GQFqGjxKEhWVR9p2S8J3tdi+pu0KVtemWe9G05KwGMlS3jDiKJFn8ir+uEog5phVutf2BoU+PAs+R/QSNQjC1L6ZzR+PlV4irEgv/dOd43OM4/kHDxNxO0mtF2PpnrECTz4h824NeJA==;5:mN9C51BWbcYd+P0JkSGfBo4IwJMCDElr7+RAn7DrzU7KlQe446K/brX79/GJiMshe7qPa0gnVQpgac692nyirszskTNMLDxC6Sp9Y/FSGLFiO6k7wd75Mec/dsmnIWamh9yMvvdHi9Z1N20p25iym9bAsmKAV+R9P8b45+QivXU=;7:89+yHkJ656QmQF+DBEzfXIP2bHMZ+eZCd70aBnQNxkWya3qrbypoG9ipIzn8++QKcEBhkgNs8xpobUmI8gEWavqKCUMqQxkIXBPd5wnYTN3+5sTqqrtrjpDTEZdQ/Y4n5/3JjdLEntpztILKdwLPAg==
-x-ms-office365-filtering-correlation-id: 41a8a77a-4cef-4418-d968-08d64e647519
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1565;
-x-ms-traffictypediagnostic: MWHPR2201MB1565:
-x-microsoft-antispam-prvs: <MWHPR2201MB1565C55830E1D1E2DDA391D4C1D80@MWHPR2201MB1565.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1182;6:ay2kYNz67gJ8ycpo0D+agONzSJqr7YUmce4uQjgOZI90KLc0mybK29qu2yHzjRS3SNNVJFfFPJKZw7kwbUyrs8o+UQcxykUMFbKTYvpMnI0IW/JC/qG2xRJpcmRuUJI2o7MsQLuPPopJ5yyMCQduWX/NgEL8vamProeVMyNeJKKaHzQdHkG2KMYHEhfP/EzWPidkEe1i99kKnl7BYZo2Wq1XkzJQnZ9gjDhMnnPi9Z1kKOhyZzvbniZpvluKhY0vxRs9mF+txsic9xKzR6igIU1ZVGAylDGVdgm8Cx00y4WJAB02/0QrM/oAA2612eUWkLK0pLQS62tPmwu4YhXSe3IIBF5n+kMSWbYpGFqtmTXCxdjhAK0V0eI5aK6WPkak+GDZZg5SGkU7fJRa48ce4BjgAe8pt1XkGFOlu9dhSXZk26KyBXZWvFsyKyjXUTW1cr8zXuVXdxngS9dxUpXd3g==;5:3UaVLW9DBOSvEoI0MBnlWN4mOy6Vu/0YAGpKUuFq+OmZV9eVDwHu+dGW1YOKIQKe98EhgpRrkim3e6nkmN31FQ+XcEBK+JpzFkPewHZ1zoslh2Fo3AJE1YK3RkIzPdw+OuNhAnXjSJTmymT9Tn+cTcsAHCRZ498aq2MlGmHdhls=;7:51PWvPQ4wEpgyfFvyexJw0Ut8Nxpzbg0GwCcxTRB5kekN0vxCqBEzMN78Ooh23BzYlenI/RBd7h8FvV9irFTxWNCcj7kPoiC9BPPMr7MN/7TM5bYubGjCJSfWFWqCmOcQ83JSnL9xN1I/4C2R+7RBQ==
+x-ms-office365-filtering-correlation-id: d26dc59e-3ef1-40a2-bd02-08d64e6e780b
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1182;
+x-ms-traffictypediagnostic: MWHPR2201MB1182:
+x-microsoft-antispam-prvs: <MWHPR2201MB1182C7F42E7C37E8280C9C62C1D80@MWHPR2201MB1182.namprd22.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(10201501046)(3002001)(3231415)(944501410)(52105112)(148016)(149066)(150057)(6041310)(20161123564045)(20161123560045)(20161123558120)(2016111802025)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1565;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1565;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(93006095)(3002001)(10201501046)(3231440)(944501410)(52105112)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123562045)(20161123560045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1182;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1182;
 x-forefront-prvs: 08617F610C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(39840400004)(396003)(366004)(376002)(136003)(199004)(189003)(4326008)(25786009)(6506007)(386003)(97736004)(102836004)(5660300001)(68736007)(81156014)(6246003)(71200400001)(256004)(42882007)(2900100001)(9686003)(6306002)(26005)(55016002)(186003)(71190400001)(8676002)(8936002)(76176011)(99286004)(81166006)(14454004)(53936002)(52116002)(7696005)(966005)(508600001)(486006)(476003)(105586002)(2906002)(106356001)(11346002)(44832011)(54906003)(316002)(229853002)(33656002)(6116002)(3846002)(6436002)(305945005)(7736002)(66066001)(6916009)(446003)(74316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1565;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(396003)(39840400004)(346002)(136003)(366004)(189003)(199004)(14454004)(5660300001)(53936002)(508600001)(186003)(58126008)(305945005)(6512007)(9686003)(54906003)(33716001)(7416002)(1076002)(316002)(6436002)(6486002)(6116002)(3846002)(7736002)(2906002)(476003)(52116002)(6246003)(2900100001)(446003)(106356001)(11346002)(33896004)(486006)(39060400002)(66066001)(76176011)(71190400001)(71200400001)(99286004)(42882007)(68736007)(105586002)(256004)(14444005)(26005)(25786009)(81156014)(81166006)(102836004)(229853002)(8936002)(6916009)(97736004)(386003)(6506007)(44832011)(4326008)(8676002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1182;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: t2fqrB+iXP4LejW75mH4tFyX3Y2A4V8CXchM3pR/xedTBDuyjY9Qc5j6ufkIRYPNIgJzSPsgRVJxXOV3TeJFSCZc8vhU0ARjQ6HNy6bCGr0uJzSSR7oylXDdPTmOAo91X0ZiLcPbJUT1FsxgNWnEpj6pOU2LoMBcX/oljnLF/iQYDMalbcsAWpNYO/um7ucLJQlJOMG1EPZT67BmvlU0e6mLCHxiSRl+IAkpFiOBDiXtlaSih+hFmeUaPpRRH/B8ibqoNn/hVDeYS8k+jEulRcZnbRfTTtAyXOk6f2P0vVaiyOiia2zWiXWYeM/KAQuiOURkC1mr2/oPzpNpHRAhhTIdzEsacTc1N+Mxy0YUuYM=
+x-microsoft-antispam-message-info: cKl3t7o7AE3hD35HwQ+3U7nCWSnGQm9Bbup3tKndmN3BIYghwREwwj76mGA7kOZYaaHNAB26o1PTzS/Pf7h+kjFa8LeHot6i0lD9CGw10z4UtORX5OGW8VdFXVp4y3B19J58/O9K44td++psf3ODjsS69eApDNYvZ+yb6RmwgmGYbAcSoVV98ORxsq1elusk5qZ4JZx1Pvk1TNfUcoCM9pcDR6oeDQ/E6Jr8V1XTfCSt02NMdqnvQ8VjKzPLMV99TyfYJUPCSBU9LNnNXOE/AuDY1opbxszMnCZm1GYlY36P9L6BajXfRQVwv8eBARaBAnNZ1wB2cOuJ/sUcr/1LIumqR+7dLlfhHgct0939Gg8=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <048540EEEDA7B04DAE7C3A95B96AB90D@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41a8a77a-4cef-4418-d968-08d64e647519
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2018 21:17:48.9920
+X-MS-Exchange-CrossTenant-Network-Message-Id: d26dc59e-3ef1-40a2-bd02-08d64e6e780b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2018 22:29:29.1211
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1565
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1182
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67385
+X-archive-position: 67386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -89,27 +99,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Hi Firoz,
 
-Sean Young wrote:
-> When building BPF code using "clang -target bpf -c", clang does not
-> define __linux__.
-> 
-> To build BPF IR decoders the include linux/lirc.h is needed which
-> includes linux/types.h. Currently this workaround is needed:
-> 
-> https://git.linuxtv.org/v4l-utils.git/commit/?id=dd3ff81f58c4e1e6f33765dc61ad33c48ae6bb07
-> 
-> This check might otherwise be useful to stop users from using a non-linux
-> compiler, but if you're doing that you are going to have a lot more
-> trouble anyway.
-> 
-> Signed-off-by: Sean Young <sean@mess.org>
+On Thu, Nov 15, 2018 at 11:44:19AM +0530, Firoz Khan wrote:
+> diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> index a9b895f..4eee437 100644
+> --- a/arch/mips/kernel/scall32-o32.S
+> +++ b/arch/mips/kernel/scall32-o32.S
+> @@ -208,6 +208,18 @@ einval: li	v0, -ENOSYS
+>  	jr	ra
+>  	END(sys_syscall)
+>  
+> +#ifdef CONFIG_MIPS_MT_FPAFF
+> +	/*
+> +	 * For FPU affinity scheduling on MIPS MT processors, we need to
+> +	 * intercept sys_sched_xxxaffinity() calls until we get a proper hook
+> +	 * in kernel/sched/core.c.  Considered only temporary we only support
+> +	 * these hooks for the 32-bit kernel - there is no MIPS64 MT processor
+> +	 * atm.
+> +	 */
+> +#define mipsmt_sys_sched_setaffinity sys_sched_setaffinity
+> +#define mipsmt_sys_sched_getaffinity sys_sched_getaffinity
 
-Applied to mips-next.
+Is this backwards? ie. should it be:
+
+    #define sys_sched_setaffinity mipsmt_sys_sched_setaffinity
+    #define sys_sched_getaffinity mipsmt_sys_sched_getaffinity
+
+?
+
+I don't see how the mipsmt_* functions will ever be used after this
+patch.
 
 Thanks,
     Paul
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+> +#endif /* CONFIG_MIPS_MT_FPAFF */
+> +
+>  	.align	2
+>  	.type	sys_call_table, @object
+>  EXPORT(sys_call_table)
+> @@ -450,20 +462,8 @@ EXPORT(sys_call_table)
+>  	PTR	sys_tkill
+>  	PTR	sys_sendfile64
+>  	PTR	sys_futex
+> -#ifdef CONFIG_MIPS_MT_FPAFF
+> -	/*
+> -	 * For FPU affinity scheduling on MIPS MT processors, we need to
+> -	 * intercept sys_sched_xxxaffinity() calls until we get a proper hook
+> -	 * in kernel/sched/core.c.  Considered only temporary we only support
+> -	 * these hooks for the 32-bit kernel - there is no MIPS64 MT processor
+> -	 * atm.
+> -	 */
+> -	PTR	mipsmt_sys_sched_setaffinity
+> -	PTR	mipsmt_sys_sched_getaffinity
+> -#else
+>  	PTR	sys_sched_setaffinity
+>  	PTR	sys_sched_getaffinity		/* 4240 */
+> -#endif /* CONFIG_MIPS_MT_FPAFF */
+>  	PTR	sys_io_setup
+>  	PTR	sys_io_destroy
+>  	PTR	sys_io_getevents
+> -- 
+> 1.9.1
+> 

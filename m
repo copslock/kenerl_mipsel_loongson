@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:00:56 +0100 (CET)
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:46240 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993826AbeKSQAp0fmUA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 17:00:45 +0100
-Received: by mail-qk1-f196.google.com with SMTP id q1so49330466qkf.13;
-        Mon, 19 Nov 2018 08:00:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:02:38 +0100 (CET)
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:40560 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991708AbeKSQCAs1l7A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 17:02:00 +0100
+Received: by mail-qk1-f194.google.com with SMTP id y16so49387427qki.7;
+        Mon, 19 Nov 2018 08:02:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=etJ06+iczpf28NRoBWJwPxdidTlkeRUxLcwzAMEwHB0=;
-        b=YkiHpIKO4uo3o2H2xNcjmCAWsPK1WJDrfYCpKZYObH7dl3K3HPRyHNoJ8c2od27xtK
-         gd/Hpu8DAYbb6Cr/aP1gQh5o2fEyzTICD2LvZ2eKznN6BqHV5uItgJzNidw1eFU4x4sB
-         ReO65J+K44Z34eiRZzC/ojdTzJVy4xxLOmATWVNZa+rEx4VuYgwIJJ2ZZNdVc5NuZYG+
-         rM/wBReZ/0j5jQIzOzkBrvKAVaJ2G+IBvbgaxm46DoXuIiYeMuzLziTtDRZIaiGnG4di
-         sTkoJguKusseK58J+mQwtufdqxncqWA8CN7U1auLl6z4z70qKj/b2NxwAY8T0EoPlK9j
-         g1Eg==
-X-Gm-Message-State: AGRZ1gIlg4GDTRsSORi5XuRnjgEc/deS+eL8kTfKFasshXbxUxM/7UTa
-        mFPsSYyJJzRBU5qD4k5OYT7gR8vvYfo+Rh71rhw=
-X-Google-Smtp-Source: AJdET5dw/dqcsuslp95hhoRhcw2RFHknXqo8sA0zV13CqDEv4OTFZfQgEkRmLA5biUs6ZJOABbNE2ZF/Kg1p6SyaV5U=
-X-Received: by 2002:aed:35c5:: with SMTP id d5mr21296810qte.212.1542643244719;
- Mon, 19 Nov 2018 08:00:44 -0800 (PST)
+        bh=k7XGE259zPHtZxyj7onWoRQ4Ox/KArkHxcJHDXcQDLk=;
+        b=NJoG86mBMUlnTOjukCQl4IsdGV/EVjDY+2tLDcETfdK5/+YSOGnFcDl03JcpqSwJUx
+         asF7I0YCg8oFLP+N/dT0TvoQtxupGYxf3K8UIwOfp3XR76H9zpPnVJOaMr+NAAt5i41V
+         CAWL2bQtdO0sOojljfoCOWLkGhkV0gdDW84iLlsPx2GH26OTYPASxCIIu/1OlgJW1mC4
+         WHEL+esf8MjkzkoASrN8aCYWzVmPsyXX/JvPgQ0jIEFMcIsTtg8/aCl6cj4ZDBDIVPyL
+         E+6/GbMHgt895vL9XAo0hZLco/aOMkpo1ibyqVsq0+uHcOr26hURBMpWMRZWTuuo107X
+         6vbw==
+X-Gm-Message-State: AGRZ1gIkOAeoBoeR+k5gzNOlc5a+fYLkUlWO4uQAUcOLHzz7d0vm3qmu
+        xtTdM64unvJIqy29h9KPnVESWLXIpFoHxh6U8Lg=
+X-Google-Smtp-Source: AJdET5cNa0GJZ2humvx++P4L6Ki0xQCssn0DfSiMQcrhmV49lRChPLUKYP70wxb7wDe0gvNTZAVy9h87pet1DTbVl4U=
+X-Received: by 2002:a0c:dc0f:: with SMTP id s15mr21478459qvk.40.1542643320063;
+ Mon, 19 Nov 2018 08:02:00 -0800 (PST)
 MIME-Version: 1.0
-References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-5-git-send-email-firoz.khan@linaro.org>
-In-Reply-To: <1542262461-29024-5-git-send-email-firoz.khan@linaro.org>
+References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org> <1542262461-29024-6-git-send-email-firoz.khan@linaro.org>
+In-Reply-To: <1542262461-29024-6-git-send-email-firoz.khan@linaro.org>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 19 Nov 2018 17:00:28 +0100
-Message-ID: <CAK8P3a1Ee-6unLimZ=0TH0PjdSjwu1naK=U6Jvoi_qvsf5+z7w@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] mips: add system call table generation support
+Date:   Mon, 19 Nov 2018 17:01:43 +0100
+Message-ID: <CAK8P3a20MaFRNf8-umvrGNtjgNG98PkzcFGtHrnY835UEGv3tg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] mips: generate uapi header and system call table files
 To:     Firoz Khan <firoz.khan@linaro.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -47,7 +47,7 @@ Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67355
+X-archive-position: 67356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,24 +66,24 @@ X-list: linux-mips
 
 On Thu, Nov 15, 2018 at 7:15 AM Firoz Khan <firoz.khan@linaro.org> wrote:
 >
-> The system call tables are in different format in all
-> architecture and it will be difficult to manually add,
-> modify or delete the syscall table entries in the res-
-> pective files. To make it easy by keeping a script and
-> which will generate the uapi header and syscall table
-> file. This change will also help to unify the implemen-
-> tation across all architectures.
+> System call table generation script must be run to gener-
+> ate unistd_64/n32/o32.h and syscall_table_32_o32/64_64/64-
+> _n32/64-o32.h files. This patch will have changes which
+> will invokes the script.
+>
+> This patch will generate unistd_64/n32/o32.h and syscall-
+> _table_32_o32/64_64/64-n32/64-o32.h files by the syscall
+> table generation script invoked by parisc/Makefile and
+> the generated files against the removed files must be
+> identical.
+>
+> The generated uapi header file will be included in uapi/-
+> asm/unistd.h and generated system call table header file
+> will be included by kernel/scall32-o32/64-64/64-n32/-
+> 64-o32.Sfile.
+>
+> Signed-off-by: Firoz Khan <firoz.khan@linaro.org>
 
-This looks great to me, just one question:
+Looks good to me.
 
-> +# The <abi> is always "64" for this file.
-> +#
-> +0      64      read                            sys_read
-> +1      64      write                           sys_write
-
-What is the reason for using '64', 'n32', and 'o32' respectively in
-the ABI field
-but use 'common' in other architectures that have a table of entries that are
-all for the same architecture?
-
-       Arnd
+      Arnd

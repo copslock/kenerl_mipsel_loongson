@@ -1,54 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 12:28:14 +0100 (CET)
-Received: from www62.your-server.de ([213.133.104.62]:33642 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990434AbeKSL0xZXQmB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 12:26:53 +0100
-Received: from [78.46.172.3] (helo=sslproxy06.your-server.de)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1gOhhX-0008DQ-7g; Mon, 19 Nov 2018 12:26:47 +0100
-Received: from [2a02:1203:ecb1:b710:c81f:d2d6:50a9:c2d] (helo=linux.home)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1gOhhX-0005qG-1e; Mon, 19 Nov 2018 12:26:47 +0100
-Subject: Re: [PATCH net-next 2/6] net/bpf: split VLAN_PRESENT bit handling
- from VLAN_TCI
-To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        netdev@vger.kernel.org
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 15:14:08 +0100 (CET)
+Received: from relmlor1.renesas.com ([210.160.252.171]:37435 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991185AbeKSONLNqA7z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2018 15:13:11 +0100
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 19 Nov 2018 23:13:07 +0900
+Received: from vbox.ree.adwin.renesas.com (unknown [10.226.37.67])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 5B929401BF07;
+        Mon, 19 Nov 2018 23:13:03 +0900 (JST)
+From:   Phil Edworthy <phil.edworthy@renesas.com>
+To:     Stephen Boyd <sboyd@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>
+Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Ralf Baechle <ralf@linux-mips.org>, sparclinux@vger.kernel.org
-References: <cover.1541876179.git.mirq-linux@rere.qmqm.pl>
- <b7fed809fc44d0b439adeb69d0fe98dd036b05e8.1541876179.git.mirq-linux@rere.qmqm.pl>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <c420b7a8-73df-3e9c-962a-a295ad0a6139@iogearbox.net>
-Date:   Mon, 19 Nov 2018 12:26:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <b7fed809fc44d0b439adeb69d0fe98dd036b05e8.1541876179.git.mirq-linux@rere.qmqm.pl>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.2/25134/Mon Nov 19 07:16:12 2018)
-Return-Path: <daniel@iogearbox.net>
+        James Hogan <jhogan@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>, Guan Xuetao <gxt@pku.edu.cn>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] clk: Add (devm_)clk_get_optional() functions
+Date:   Mon, 19 Nov 2018 14:12:59 +0000
+Message-Id: <20181119141259.11992-1-phil.edworthy@renesas.com>
+X-Mailer: git-send-email 2.17.1
+Return-Path: <phil.edworthy@renesas.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67350
+X-archive-position: 67351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@iogearbox.net
+X-original-sender: phil.edworthy@renesas.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,85 +51,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/10/2018 07:58 PM, Michał Mirosław wrote:
-> Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+This adds clk_get_optional() and devm_clk_get_optional() functions to get
+optional clocks.
+They behave the same as (devm_)clk_get except where there is no clock
+producer. In this case, instead of returning -ENOENT, the function
+returns NULL. This makes error checking simpler and allows
+clk_prepare_enable, etc to be called on the returned reference
+without additional checks.
 
-Why you have empty commit messages for non-trivial changes like this in
-4 out of 6 of your patches ...
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+---
+v7:
+ - Instead of messing with the core functions, simply wrap them for the
+   _optional() versions. By putting clk_get_optional() inline in the header
+   file, we can get rid of the arch specific patches as well.
+v6:
+ - Add doxygen style comment for devm_clk_get_optional() args
+v5:
+ - No changes.
+v4:
+ - No changes.
+v3:
+ - No changes.
+---
+ drivers/clk/clk-devres.c | 11 +++++++++++
+ include/linux/clk.h      | 27 +++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-How was it tested on the JITs you were changing? Did you test on both,
-big and little endian machines?
-
-> ---
->  net/core/filter.c | 40 +++++++++++++++++++++-------------------
->  1 file changed, 21 insertions(+), 19 deletions(-)
-> 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index e521c5ebc7d1..c151b906df53 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -296,22 +296,21 @@ static u32 convert_skb_access(int skb_field, int dst_reg, int src_reg,
->  		break;
->  
->  	case SKF_AD_VLAN_TAG:
-> -	case SKF_AD_VLAN_TAG_PRESENT:
->  		BUILD_BUG_ON(FIELD_SIZEOF(struct sk_buff, vlan_tci) != 2);
-> -		BUILD_BUG_ON(VLAN_TAG_PRESENT != 0x1000);
->  
->  		/* dst_reg = *(u16 *) (src_reg + offsetof(vlan_tci)) */
->  		*insn++ = BPF_LDX_MEM(BPF_H, dst_reg, src_reg,
->  				      offsetof(struct sk_buff, vlan_tci));
-> -		if (skb_field == SKF_AD_VLAN_TAG) {
-> -			*insn++ = BPF_ALU32_IMM(BPF_AND, dst_reg,
-> -						~VLAN_TAG_PRESENT);
-> -		} else {
-> -			/* dst_reg >>= 12 */
-> -			*insn++ = BPF_ALU32_IMM(BPF_RSH, dst_reg, 12);
-> -			/* dst_reg &= 1 */
-> +#ifdef VLAN_TAG_PRESENT
-> +		*insn++ = BPF_ALU32_IMM(BPF_AND, dst_reg, ~VLAN_TAG_PRESENT);
-> +#endif
-> +		break;
-> +	case SKF_AD_VLAN_TAG_PRESENT:
-> +		*insn++ = BPF_LDX_MEM(BPF_B, dst_reg, src_reg, PKT_VLAN_PRESENT_OFFSET());
-> +		if (PKT_VLAN_PRESENT_BIT)
-> +			*insn++ = BPF_ALU32_IMM(BPF_RSH, dst_reg, PKT_VLAN_PRESENT_BIT);
-> +		if (PKT_VLAN_PRESENT_BIT < 7)
->  			*insn++ = BPF_ALU32_IMM(BPF_AND, dst_reg, 1);
-> -		}
->  		break;
->  	}
->  
-> @@ -6140,19 +6139,22 @@ static u32 bpf_convert_ctx_access(enum bpf_access_type type,
->  		break;
->  
->  	case offsetof(struct __sk_buff, vlan_present):
-> +		*target_size = 1;
-> +		*insn++ = BPF_LDX_MEM(BPF_B, si->dst_reg, si->src_reg,
-> +				      PKT_VLAN_PRESENT_OFFSET());
-> +		if (PKT_VLAN_PRESENT_BIT)
-> +			*insn++ = BPF_ALU32_IMM(BPF_RSH, si->dst_reg, PKT_VLAN_PRESENT_BIT);
-> +		if (PKT_VLAN_PRESENT_BIT < 7)
-> +			*insn++ = BPF_ALU32_IMM(BPF_AND, si->dst_reg, 1);
-> +		break;
-> +
->  	case offsetof(struct __sk_buff, vlan_tci):
-> -		BUILD_BUG_ON(VLAN_TAG_PRESENT != 0x1000);
-> -
->  		*insn++ = BPF_LDX_MEM(BPF_H, si->dst_reg, si->src_reg,
->  				      bpf_target_off(struct sk_buff, vlan_tci, 2,
->  						     target_size));
-> -		if (si->off == offsetof(struct __sk_buff, vlan_tci)) {
-> -			*insn++ = BPF_ALU32_IMM(BPF_AND, si->dst_reg,
-> -						~VLAN_TAG_PRESENT);
-> -		} else {
-> -			*insn++ = BPF_ALU32_IMM(BPF_RSH, si->dst_reg, 12);
-> -			*insn++ = BPF_ALU32_IMM(BPF_AND, si->dst_reg, 1);
-> -		}
-> +#ifdef VLAN_TAG_PRESENT
-> +		*insn++ = BPF_ALU32_IMM(BPF_AND, si->dst_reg, ~VLAN_TAG_PRESENT);
-> +#endif
->  		break;
->  
->  	case offsetof(struct __sk_buff, cb[0]) ...
-> 
+diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
+index 12c87457eca1..f0033d937c39 100644
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -34,6 +34,17 @@ struct clk *devm_clk_get(struct device *dev, const char *id)
+ }
+ EXPORT_SYMBOL(devm_clk_get);
+ 
++struct clk *devm_clk_get_optional(struct device *dev, const char *id)
++{
++	struct clk *clk = devm_clk_get(dev, id);
++
++	if (clk == ERR_PTR(-ENOENT))
++		return NULL;
++	else
++		return clk;
++}
++EXPORT_SYMBOL(devm_clk_get_optional);
++
+ struct clk_bulk_devres {
+ 	struct clk_bulk_data *clks;
+ 	int num_clks;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index a7773b5c0b9f..c7bbb0678057 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -383,6 +383,17 @@ int __must_check devm_clk_bulk_get_all(struct device *dev,
+  */
+ struct clk *devm_clk_get(struct device *dev, const char *id);
+ 
++/**
++ * devm_clk_get_optional - lookup and obtain a managed reference to an optional
++ *			   clock producer.
++ * @dev: device for clock "consumer"
++ * @id: clock consumer ID
++ *
++ * Behaves the same as devm_clk_get except where there is no clock producer. In
++ * this case, instead of returning -ENOENT, the function returns NULL.
++ */
++struct clk *devm_clk_get_optional(struct device *dev, const char *id);
++
+ /**
+  * devm_get_clk_from_child - lookup and obtain a managed reference to a
+  *			     clock producer from child node.
+@@ -718,6 +729,12 @@ static inline struct clk *devm_clk_get(struct device *dev, const char *id)
+ 	return NULL;
+ }
+ 
++static inline struct clk *devm_clk_get_optional(struct device *dev,
++						const char *id)
++{
++	return NULL;
++}
++
+ static inline int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
+ 						 struct clk_bulk_data *clks)
+ {
+@@ -862,6 +879,16 @@ static inline void clk_bulk_disable_unprepare(int num_clks,
+ 	clk_bulk_unprepare(num_clks, clks);
+ }
+ 
++static inline struct clk *clk_get_optional(struct device *dev, const char *id)
++{
++	struct clk *clk = clk_get(dev, id);
++
++	if (clk == ERR_PTR(-ENOENT))
++		return NULL;
++	else
++		return clk;
++}
++
+ #if defined(CONFIG_OF) && defined(CONFIG_COMMON_CLK)
+ struct clk *of_clk_get(struct device_node *np, int index);
+ struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
+-- 
+2.17.1

@@ -1,30 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:53:44 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:44628 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:53:50 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:44796 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994944AbeKSQxgbjDcK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Nov 2018 17:53:36 +0100
+        id S23994948AbeKSQxlTkTPK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Nov 2018 17:53:41 +0100
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C61D72145D;
-        Mon, 19 Nov 2018 16:53:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B67A62147A;
+        Mon, 19 Nov 2018 16:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1542646415;
-        bh=QYhBS9a6NFQj6bGdtNwTUN0KHFT21EBnSg8aBGQ5t5k=;
+        s=default; t=1542646420;
+        bh=mjDexGUK4DKLh/ibr/9BOJ6f0CTPuk3oi4cvm2Anc8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rwAt8N1WmuMprZgxMP6QS8WKLex4ERMlz86QnVrm0qgoKbq2j37iG2CpQhP+CisF2
-         cAEIB2eENB1I5Es9/j4I/6rTJ6fmekIBw/Yk1qQfFiqiKLuwnBkWBHVP7s5EwTbRIJ
-         XqFXt19s0DI+oBWklsKL2O1ikLD5loTPPUp4rTL0=
+        b=mRc/fCw/4JrCloytPBFAsS3nytbbtlAi2K/0Z6bavqwPL1IVgowfD1FQPDhoiRCX+
+         26RRmiKwpRVO5tfnNzQZU5tqHq7p0eqhwGKgGPhNkCL5NNwO4kbVWhv0tcug0FpkOt
+         4MerlqyTfiMlrXf4eSXopw03wJyOHcG+pVZOCLic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Dengcheng Zhu <dzhu@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
-        ralf@linux-mips.org, linux-mips@linux-mips.org,
-        rachel.mozes@intel.com, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.9 07/83] MIPS: kexec: Mark CPU offline before disabling local IRQ
-Date:   Mon, 19 Nov 2018 17:28:33 +0100
-Message-Id: <20181119162613.458371436@linuxfoundation.org>
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.9 09/83] MIPS/PCI: Call pcie_bus_configure_settings() to set MPS/MRRS
+Date:   Mon, 19 Nov 2018 17:28:35 +0100
+Message-Id: <20181119162613.802222851@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181119162612.046511542@linuxfoundation.org>
 References: <20181119162612.046511542@linuxfoundation.org>
@@ -37,7 +41,7 @@ Return-Path: <SRS0=OXTl=N6=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67369
+X-archive-position: 67370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,49 +62,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Dengcheng Zhu <dzhu@wavecomp.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-[ Upstream commit dc57aaf95a516f70e2d527d8287a0332c481a226 ]
+[ Upstream commit 2794f688b2c336e0da85e9f91fed33febbd9f54a ]
 
-After changing CPU online status, it will not be sent any IPIs such as in
-__flush_cache_all() on software coherency systems. Do this before disabling
-local IRQ.
+Call pcie_bus_configure_settings() on MIPS, like for other platforms.
+The function pcie_bus_configure_settings() makes sure the MPS (Max
+Payload Size) across the bus is uniform and provides the ability to
+tune the MRSS (Max Read Request Size) and MPS (Max Payload Size) to
+higher performance values. Some devices will not operate properly if
+these aren't set correctly because the firmware doesn't always do it.
 
-Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20571/
-Cc: pburton@wavecomp.com
-Cc: ralf@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/20649/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: rachel.mozes@intel.com
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhuacai@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/crash.c         |    3 +++
- arch/mips/kernel/machine_kexec.c |    3 +++
- 2 files changed, 6 insertions(+)
+ arch/mips/pci/pci-legacy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -34,6 +34,9 @@ static void crash_shutdown_secondary(voi
- 	if (!cpu_online(cpu))
- 		return;
- 
-+	/* We won't be sent IPIs any more. */
-+	set_cpu_online(cpu, false);
+--- a/arch/mips/pci/pci-legacy.c
++++ b/arch/mips/pci/pci-legacy.c
+@@ -116,8 +116,12 @@ static void pcibios_scanbus(struct pci_c
+ 	if (pci_has_flag(PCI_PROBE_ONLY)) {
+ 		pci_bus_claim_resources(bus);
+ 	} else {
++		struct pci_bus *child;
 +
- 	local_irq_disable();
- 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
- 		crash_save_cpu(regs, cpu);
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -96,6 +96,9 @@ machine_kexec(struct kimage *image)
- 			*ptr = (unsigned long) phys_to_virt(*ptr);
+ 		pci_bus_size_bridges(bus);
+ 		pci_bus_assign_resources(bus);
++		list_for_each_entry(child, &bus->children, node)
++			pcie_bus_configure_settings(child);
  	}
- 
-+	/* Mark offline BEFORE disabling local irq. */
-+	set_cpu_online(smp_processor_id(), false);
-+
- 	/*
- 	 * we do not want to be bothered.
- 	 */
+ 	pci_bus_add_devices(bus);
+ }

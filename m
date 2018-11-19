@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 17:59:07 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:51644 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2018 18:00:23 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:53392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994766AbeKSQ7BS0VoK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Nov 2018 17:59:01 +0100
+        id S23995025AbeKSRASI1IvK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Nov 2018 18:00:18 +0100
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AC6F12148E;
-        Mon, 19 Nov 2018 16:58:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4F2622360;
+        Mon, 19 Nov 2018 17:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1542646740;
-        bh=r9IRLAFyyCcHpPyDbmwiwitQIjS8GU+v6RSyayBtP5g=;
+        s=default; t=1542646816;
+        bh=1ETCCxOCgamF3zZZ07cI68X5mOOqQr5tIp2B57J74/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T+Ay+WXtqq58fbtpEKd/6K6Y2AGdlyJcfawudp7aQkbB9zsya/6KVHXEGbc8FYrh2
-         pOc0KAEletB6wSTbRpozxwca/23/UtcHFbTD+q5Pmjzd2BnrP4uNtyyGU9vac3b/IE
-         FjK4hGdH/H+BlE+B4UewjdLhQCXxY94j/6WrQmGo=
+        b=HBK3l8prju3uVvMec6eZY3KOJcDCjt8d7DkNLZVvy346QnkPWbVWKzFW3Qkaxlzhf
+         uPasH6QdJEOpLLMGaBI99jy8rTM3SYaPDcVcW9rHefTQ2PvWK0ja6XAYm4Kgjc4JTF
+         oGK/jGVrIvTfNnBrpnIaZu6vW65mZs4nRQLeEQx4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.4 073/160] MIPS: OCTEON: fix out of bounds array access on CN68XX
-Date:   Mon, 19 Nov 2018 17:28:32 +0100
-Message-Id: <20181119162638.335410305@linuxfoundation.org>
+        stable@vger.kernel.org, Dengcheng Zhu <dzhu@wavecomp.com>,
+        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        rachel.mozes@intel.com, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 100/160] MIPS: kexec: Mark CPU offline before disabling local IRQ
+Date:   Mon, 19 Nov 2018 17:28:59 +0100
+Message-Id: <20181119162640.728699461@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20181119162630.031306128@linuxfoundation.org>
 References: <20181119162630.031306128@linuxfoundation.org>
@@ -36,7 +37,7 @@ Return-Path: <SRS0=OXTl=N6=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67373
+X-archive-position: 67374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,37 +58,49 @@ X-list: linux-mips
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Dengcheng Zhu <dzhu@wavecomp.com>
 
-commit c0fae7e2452b90c31edd2d25eb3baf0c76b400ca upstream.
+[ Upstream commit dc57aaf95a516f70e2d527d8287a0332c481a226 ]
 
-The maximum number of interfaces is returned by
-cvmx_helper_get_number_of_interfaces(), and the value is used to access
-interface_port_count[]. When CN68XX support was added, we forgot
-to increase the array size. Fix that.
+After changing CPU online status, it will not be sent any IPIs such as in
+__flush_cache_all() on software coherency systems. Do this before disabling
+local IRQ.
 
-Fixes: 2c8c3f0201333 ("MIPS: Octeon: Support additional interfaces on CN68XX")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/20949/
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/20571/
+Cc: pburton@wavecomp.com
+Cc: ralf@linux-mips.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.3+
+Cc: rachel.mozes@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/cavium-octeon/executive/cvmx-helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/crash.c         |    3 +++
+ arch/mips/kernel/machine_kexec.c |    3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -67,7 +67,7 @@ void (*cvmx_override_pko_queue_priority)
- void (*cvmx_override_ipd_port_setup) (int ipd_port);
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -34,6 +34,9 @@ static void crash_shutdown_secondary(voi
+ 	if (!cpu_online(cpu))
+ 		return;
  
- /* Port count per interface */
--static int interface_port_count[5];
-+static int interface_port_count[9];
++	/* We won't be sent IPIs any more. */
++	set_cpu_online(cpu, false);
++
+ 	local_irq_disable();
+ 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
+ 		crash_save_cpu(regs, cpu);
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -95,6 +95,9 @@ machine_kexec(struct kimage *image)
+ 			*ptr = (unsigned long) phys_to_virt(*ptr);
+ 	}
  
- /* Port last configured link info index by IPD/PKO port */
- static cvmx_helper_link_info_t
++	/* Mark offline BEFORE disabling local irq. */
++	set_cpu_online(smp_processor_id(), false);
++
+ 	/*
+ 	 * we do not want to be bothered.
+ 	 */

@@ -1,96 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 11:53:43 +0100 (CET)
-Received: from mail-eopbgr1410127.outbound.protection.outlook.com ([40.107.141.127]:25952
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990642AbeKTKxkM8jkI convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 11:53:40 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector1-renesas-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FRLec4/B40sLMkxPc8s5TslNmHflds30rdVMb7hLC7o=;
- b=AirywnqN7D3qaDQ1vei6BM9Z3DxmAqGZ/SpRT6ut1cKRjYSQi6HwWK5JY11GEfLsy7KEBwV8Ws43O2ZpsEP3Q+JJlJ4DyvjVrMnxcZ25Jj977cjuzQOyFOaiq4sg4H2dxHAQVgAtuTgtmKhGbO0yFy0y1t5qlBx1EMGxEP6FQSo=
-Received: from TY1PR01MB1769.jpnprd01.prod.outlook.com (52.133.163.146) by
- TY1PR01MB1437.jpnprd01.prod.outlook.com (10.174.227.150) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.26; Tue, 20 Nov 2018 10:53:34 +0000
-Received: from TY1PR01MB1769.jpnprd01.prod.outlook.com
- ([fe80::7484:f2b6:9b32:2c6]) by TY1PR01MB1769.jpnprd01.prod.outlook.com
- ([fe80::7484:f2b6:9b32:2c6%5]) with mapi id 15.20.1294.047; Tue, 20 Nov 2018
- 10:53:33 +0000
-From:   Phil Edworthy <phil.edworthy@renesas.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>, Guan Xuetao <gxt@pku.edu.cn>,
-        =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH] clk: Add (devm_)clk_get_optional() functions
-Thread-Topic: [PATCH] clk: Add (devm_)clk_get_optional() functions
-Thread-Index: AQHUgBH/86BQSKkv2EWPF1EFJS36QaVYejqAgAADDdA=
-Date:   Tue, 20 Nov 2018 10:53:33 +0000
-Message-ID: <TY1PR01MB176982D5E11A665D0DCC9E31F5D90@TY1PR01MB1769.jpnprd01.prod.outlook.com>
-References: <20181119141259.11992-1-phil.edworthy@renesas.com>
- <20181120103832.GV10650@smile.fi.intel.com>
-In-Reply-To: <20181120103832.GV10650@smile.fi.intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=phil.edworthy@renesas.com; 
-x-originating-ip: [193.141.220.21]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;TY1PR01MB1437;20:SoUSMmwiyhS1Amh3eIH8el9QIBFwQOezAYUHon6PLxZQFU3OJpstU8npJ7wv8ABziwMDWAr/YYAO2Kyl87Y4/dd/VfVa4AIRUOA77cKq2x8sruGvw0XWjyc3+75hEHOSFi+CJsWF6AzZL2muRAsMFu5uHWEW+KSSXyqUi+xejZk=
-x-ms-exchange-antispam-srfa-diagnostics: SOS;
-x-ms-office365-filtering-correlation-id: b697d8d4-5d7f-4c1c-529b-08d64ed66ab7
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(8989299)(5600074)(711020)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:TY1PR01MB1437;
-x-ms-traffictypediagnostic: TY1PR01MB1437:
-x-microsoft-antispam-prvs: <TY1PR01MB14377C1E3F33E2E9E4E8A743F5D90@TY1PR01MB1437.jpnprd01.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:;
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(8211001083)(6040522)(2401047)(8121501046)(5005006)(3231442)(944501410)(52105112)(93006095)(93001095)(10201501046)(3002001)(6055026)(148016)(149066)(150057)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123562045)(20161123564045)(20161123560045)(20161123558120)(201708071742011)(7699051)(76991095);SRVR:TY1PR01MB1437;BCL:0;PCL:0;RULEID:;SRVR:TY1PR01MB1437;
-x-forefront-prvs: 08626BE3A5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39840400004)(136003)(376002)(346002)(396003)(366004)(199004)(189003)(7736002)(8936002)(66066001)(54906003)(186003)(6116002)(3846002)(229853002)(8676002)(6916009)(44832011)(53936002)(7416002)(486006)(316002)(305945005)(55016002)(2900100001)(5660300001)(9686003)(81156014)(81166006)(6246003)(33656002)(14454004)(74316002)(71200400001)(71190400001)(105586002)(476003)(6436002)(106356001)(7696005)(25786009)(97736004)(256004)(4326008)(68736007)(26005)(86362001)(53546011)(11346002)(6506007)(478600001)(76176011)(99286004)(2906002)(102836004)(446003);DIR:OUT;SFP:1102;SCL:1;SRVR:TY1PR01MB1437;H:TY1PR01MB1769.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: TzLrcW+tZnC9cK+FQvd40i0PpNrGjANEwpeFDLwQNwj9LtNQaWsDzKADifoWLTw2ApYvOzuJyFr44Sj2huWHG7Br75efKddGuGUPc84UTAy8PD9Krnx+fYBxlaLMQ/fNRGLimapzwUw6J4cgV1kR+XluKQSO+DQDrfELvQTNjOYZDClVl2xbBzrv0wjPM4kARzpvxfyL1UCct5dDLpv51EqTHYUdQJ/7Wf9OJsA7PIZlyprH0CrGzyjmZ/kCS0l96h5Yq+QUqtbqGHvjHV2CREZyvJG4HVB6R0b4SKk5dPGroJ17kcZHGe817VBWXWREj7z8c96DaZUwJc0T1rZCLK42ZWaSZDX7XDjGPay1MQM=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 11:54:34 +0100 (CET)
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:40812 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990505AbeKTKycCz7zI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 11:54:32 +0100
+Received: by mail-qk1-f193.google.com with SMTP id y16so2065261qki.7;
+        Tue, 20 Nov 2018 02:54:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1ytHfs+LGC7Kt7FaIlYKMVZnBQtU1xZYDUo378mjB9o=;
+        b=D/u+NFmz7aShMhmwUWU4wSQXdOmyj3DL6vFFL1fGz2nzxoWnztx4LtGlbbooP3PoZy
+         GhPL10FIyg19BdpN33rEnsAtnHDR8hujXDqiwDJnxlgfyI7ijiPxJADiSZyLBr+qA7EG
+         DAlqTaRO8n1pEyJ1XP13i0P/gFxPwnO+olI3Ofu/O2MXU2A31pyDNdCvGGnGHtDZYtts
+         PkypyWaPIy6SB2IiREMjHpc4QeoG5vXotoqneK09S90ezKqvIBmr5pU6m+NVohCnFH5C
+         8OnuMIPfpFKvLlAvRxxCjtwEpZxBgkF/zlOY/6ALzMsSuYlusfovhQlmNiB0QYqpELD2
+         Yxrw==
+X-Gm-Message-State: AGRZ1gLb2ccPRJrBCe57w9o+tqLdGd+alcl4qes8bd4o+IFEM/LmNsNk
+        shLitxKNFevXAjYXAG0Jq0R3Le5NWkFdqomOLDk=
+X-Google-Smtp-Source: AFSGD/VizlVYkgxMIG1ZsBTMuRYvngW0qZnrMXdfe/kM5yV6rlc7zlymK9L6gA5VjGA35dK2yarO7eZvMqm8e3WfwUI=
+X-Received: by 2002:ac8:1d12:: with SMTP id d18mr1320428qtl.343.1542711271032;
+ Tue, 20 Nov 2018 02:54:31 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b697d8d4-5d7f-4c1c-529b-08d64ed66ab7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2018 10:53:33.7859
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1PR01MB1437
-Return-Path: <phil.edworthy@renesas.com>
+References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org>
+ <1542262461-29024-4-git-send-email-firoz.khan@linaro.org> <20181119222924.ybnl7qe4hobud5fb@pburton-laptop>
+In-Reply-To: <20181119222924.ybnl7qe4hobud5fb@pburton-laptop>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 20 Nov 2018 11:54:07 +0100
+Message-ID: <CAK8P3a2o+jKd0EF81TezmJbTLBPRN9frCBf3wvxySa0sEbC+-A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] mips: remove syscall table entries
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Firoz Khan <firoz.khan@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67399
+X-archive-position: 67400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phil.edworthy@renesas.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -103,46 +65,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Andy,
-
-On 20 November 2018 10:39 Andy Shevchenko wrote:
-> On Mon, Nov 19, 2018 at 02:12:59PM +0000, Phil Edworthy wrote:
-> > This adds clk_get_optional() and devm_clk_get_optional() functions to
-> > get optional clocks.
-> > They behave the same as (devm_)clk_get except where there is no clock
-> > producer. In this case, instead of returning -ENOENT, the function
-> > returns NULL. This makes error checking simpler and allows
-> > clk_prepare_enable, etc to be called on the returned reference without
-> > additional checks.
-> 
-> >  - Instead of messing with the core functions, simply wrap them for the
-> >    _optional() versions. By putting clk_get_optional() inline in the header
-> >    file, we can get rid of the arch specific patches as well.
-> 
-> Fine if it would have no surprises with error handling.
-There shouldn't be any surprises. My earlier attempts at implementing this
-were hampered by the fact that of_clk_get_by_name() can return -EINVAL
-in some circumstances. By directly wrapping the (devm_)clk_get() functions
-that problem goes away.
-
-> > +	if (ERR_PTR(-ENOENT))
-Huh? That wasn't the code I sent...
-
-> > +		return NULL;
-> > +	else
-> > +		return clk;
-> 
-> return clk == ERR_PTR(-ENOENT) ? NULL : clk;
-> 
+On Mon, Nov 19, 2018 at 11:29 PM Paul Burton <paul.burton@mips.com> wrote:
+>
+> Hi Firoz,
+>
+> On Thu, Nov 15, 2018 at 11:44:19AM +0530, Firoz Khan wrote:
+> > diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+> > index a9b895f..4eee437 100644
+> > --- a/arch/mips/kernel/scall32-o32.S
+> > +++ b/arch/mips/kernel/scall32-o32.S
+> > @@ -208,6 +208,18 @@ einval: li       v0, -ENOSYS
+> >       jr      ra
+> >       END(sys_syscall)
+> >
+> > +#ifdef CONFIG_MIPS_MT_FPAFF
+> > +     /*
+> > +      * For FPU affinity scheduling on MIPS MT processors, we need to
+> > +      * intercept sys_sched_xxxaffinity() calls until we get a proper hook
+> > +      * in kernel/sched/core.c.  Considered only temporary we only support
+> > +      * these hooks for the 32-bit kernel - there is no MIPS64 MT processor
+> > +      * atm.
+> > +      */
+> > +#define mipsmt_sys_sched_setaffinity sys_sched_setaffinity
+> > +#define mipsmt_sys_sched_getaffinity sys_sched_getaffinity
+>
+> Is this backwards? ie. should it be:
+>
+>     #define sys_sched_setaffinity mipsmt_sys_sched_setaffinity
+>     #define sys_sched_getaffinity mipsmt_sys_sched_getaffinity
+>
 > ?
-> 
-> > +	if (clk == ERR_PTR(-ENOENT))
-> > +		return NULL;
-> > +	else
-> > +		return clk;
-> 
-> Ditto.
-Sure, will fix both.
+>
+> I don't see how the mipsmt_* functions will ever be used after this
+> patch.
 
-Thanks
-Phil
+Good catch!
+
+> > -      * atm.
+> > -      */
+> > -     PTR     mipsmt_sys_sched_setaffinity
+> > -     PTR     mipsmt_sys_sched_getaffinity
+> > -#else
+> >       PTR     sys_sched_setaffinity
+> >       PTR     sys_sched_getaffinity           /* 4240 */
+> > -#endif /* CONFIG_MIPS_MT_FPAFF */
+> >       PTR     sys_io_setup
+
+My guess would be that he removed the wrong lines here instead,
+and the first half was intentional.
+
+       Arnd

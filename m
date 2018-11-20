@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 10:30:53 +0100 (CET)
-Received: from mail-it1-x143.google.com ([IPv6:2607:f8b0:4864:20::143]:33782
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 10:32:07 +0100 (CET)
+Received: from mail-it1-x143.google.com ([IPv6:2607:f8b0:4864:20::143]:39157
         "EHLO mail-it1-x143.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990945AbeKTJascM2d3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 10:30:48 +0100
-Received: by mail-it1-x143.google.com with SMTP id p11-v6so9568634itf.0
-        for <linux-mips@linux-mips.org>; Tue, 20 Nov 2018 01:30:48 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23990505AbeKTJapPYoz3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 10:30:45 +0100
+Received: by mail-it1-x143.google.com with SMTP id m15so2476225itl.4
+        for <linux-mips@linux-mips.org>; Tue, 20 Nov 2018 01:30:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=7+7EcryOeVkntJQ33r3lf00wc/gCT5Van4W1M1dtoD4=;
-        b=AVynsbC3C8Br9SQHgsQMe0+9eCpebk3CHlbeGEJsvSm7nw5Dna6afkX0dihlzSwPel
-         qLkhykmwXnj4ZBxk8rb6NNtRO1YPdNGTg5aYg9C55wmg0INM8Y7PuLzNmy2/g5rqQRC3
-         l6nLM6W/7gAQmIAmNFdRg7dT8dgdd626kkGjo=
+        bh=EiCfvnw1+dcUx/GLyJKPlb6HAVNRc+Hia63A1ARspyw=;
+        b=JAwRppYkp3Kwfc2CdYF7ci9CDuECWXqCf7UzglUwSezKbVD9Wc1KU4gCjR7H3RgEqz
+         XpYcX3ebAE25TADMKSxaJ/EB6LkBRwNskFjL2KbJz3IiHv9sod447DjYYLyk4d+ywYwP
+         Ed9vtYs+En+99TwaLHH6qQz6t/cqMCz96w+n4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=7+7EcryOeVkntJQ33r3lf00wc/gCT5Van4W1M1dtoD4=;
-        b=pLoMID+Cq31PARZBz9giOGRGwAPom3bg7ck2d0PyH/gMfMYI+PIZzboKx7JE0CxDbu
-         4AZm9BQbKWhEXhqix/1INSoIX3MGJ0vxZ1DyIAdpP1dczIpXwPqNm46uAn8tZYC3LcYD
-         1xXqOuEXNzTZvnMoffiLo7LaScXZXGyAe1zH4ethZuRNgWNPBZWePcKVbBQ9IfhVpGUV
-         Gsx4bYb5zqLKKmTZ5W/Uee128fKvlZQM9XXvIV3Y3IbdNfAXd+so8eQ0p9J6sFfqL8R/
-         U3R003puu9qNhtytvIEGtjDj96wxleSyfPvRGlirdebL4AgeN3TzcwSD+IqToO6hhppG
-         V9iQ==
-X-Gm-Message-State: AA+aEWZk86Ko1Q9RilI1q0jGsYwMRD/5+oO7kvXcOHVq0W+MKpbib792
-        X71O49RPvMqrYhkVibKAS8P/+T80JjUrwLzshDbLEg==
-X-Google-Smtp-Source: AFSGD/VepSG1tTIzPXSHxpAObGiyopTTlGXTW7r7KcOxG2Q9Zgx0o2rOvrfxr/q5Ni19HfSlHsfZVdG0ZsSY73tcAEQ=
-X-Received: by 2002:a24:108a:: with SMTP id 132-v6mr1443124ity.78.1542706247784;
- Tue, 20 Nov 2018 01:30:47 -0800 (PST)
+        bh=EiCfvnw1+dcUx/GLyJKPlb6HAVNRc+Hia63A1ARspyw=;
+        b=nGH77ImSOPLzuEkkFuKRx8d0+l9Lh5hIm22lOodk9lIz57a2pRx/TgSmwALq0vWgvF
+         EKM8Zq17gGHyWnur/Cwn6Fe2YHOojQDfvyhiPX1l1gxvbIqeO9EMCLXvJO6ua+4KyWs0
+         PC21VF2CUwvsUk5lLdUaZ5W2finAvE5/X+VUDaXtFrV0YRhxIugpf8POaUeSaLSQ1ra3
+         BpocFP6A9k56xNPshwjqkvTqPL4y83KLoX6k9/zgTrJY2Nk4c9+KOoXvCwR/lnLqhhe+
+         n0GcMbTsJvsqOR7iLs0+Lkp7vVsor7wEO1EjUelUzDnhuGuR47oP7RDzJLOneP5uG8mO
+         3DwA==
+X-Gm-Message-State: AGRZ1gJbZyGZcKeIz3YXb8R7+mnxNj7gMFc+RO49+PhXnp0iB+D2s1Jh
+        XIv2h2RJq7VP75oA6HoZywhrKWT4V7uty0FBscVwSg==
+X-Google-Smtp-Source: AFSGD/XNjva8YnIJyP7n9n5GR5ivcoLVsGa7afIIzuYw4fmL6ei6RAF+V0zV6S7uUDH/d6Xc5SouwQ8OzOCpT+ijoPg=
+X-Received: by 2002:a05:660c:206:: with SMTP id y6mr1447412itj.157.1542706243743;
+ Tue, 20 Nov 2018 01:30:43 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a02:70c8:0:0:0:0:0 with HTTP; Tue, 20 Nov 2018 01:30:07
+Received: by 2002:a02:70c8:0:0:0:0:0 with HTTP; Tue, 20 Nov 2018 01:30:03
  -0800 (PST)
-In-Reply-To: <20181112141239.19646-4-linus.walleij@linaro.org>
-References: <20181112141239.19646-1-linus.walleij@linaro.org> <20181112141239.19646-4-linus.walleij@linaro.org>
+In-Reply-To: <20181112141239.19646-3-linus.walleij@linaro.org>
+References: <20181112141239.19646-1-linus.walleij@linaro.org> <20181112141239.19646-3-linus.walleij@linaro.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 20 Nov 2018 10:30:07 +0100
-Message-ID: <CAPDyKFqVHYCBZUO273rS70veKRtuNy3iROkeAkdB_QSkzxcpPQ@mail.gmail.com>
-Subject: Re: [PATCH 03/10] mmc: jz4740: Use GPIO descriptor for power
+Date:   Tue, 20 Nov 2018 10:30:03 +0100
+Message-ID: <CAPDyKFpHPXtaNtAxfXi3nS33bpXvcWeuaDdFtamA4Bs99hZPGg@mail.gmail.com>
+Subject: Re: [PATCH 02/10] mmc: jz4740: Get CD/WP GPIOs from descriptors
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Paul Cercueil <paul@crapouillou.net>, linux-mips@linux-mips.org
@@ -46,7 +46,7 @@ Return-Path: <ulf.hansson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67395
+X-archive-position: 67396
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,15 +64,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 12 November 2018 at 15:12, Linus Walleij <linus.walleij@linaro.org> wrote:
-> The power GPIO line is passed with inversion flags and all from
-> the platform data. Switch to using an optional GPIO descriptor and
-> use this to switch the power.
+> Modifty the JZ4740 driver to retrieve card detect and write
+> protect GPIO pins from GPIO descriptors instead of hard-coded
+> global numbers. Augment the only board file using this in the
+> process and cut down on passed in platform data.
 >
-> Augment the only boardfile to pass in the proper "power" descriptor
-> in the GPIO descriptor machine table instead.
->
-> As the GPIO handling is now much simpler, we can cut down on some
-> overhead code.
+> Preserve the code setting the caps2 flags for CD and WP
+> as active low or high since the slot GPIO code currently
+> ignores the gpiolib polarity inversion semantice and uses
+> the raw accessors to read the GPIO lines, but set the right
+> polarity flags in the descriptor table for jz4740.
 >
 > Cc: Paul Cercueil <paul@crapouillou.net>
 > Cc: linux-mips@linux-mips.org
@@ -84,195 +85,97 @@ Kind regards
 Uffe
 
 > ---
->  .../mips/include/asm/mach-jz4740/jz4740_mmc.h |  2 -
->  arch/mips/jz4740/board-qi_lb60.c              |  6 +-
->  drivers/mmc/host/jz4740_mmc.c                 | 65 +++++--------------
->  3 files changed, 18 insertions(+), 55 deletions(-)
+>  .../mips/include/asm/mach-jz4740/jz4740_mmc.h |  2 --
+>  arch/mips/jz4740/board-qi_lb60.c              | 12 ++++++++---
+>  drivers/mmc/host/jz4740_mmc.c                 | 20 +++++++++----------
+>  3 files changed, 19 insertions(+), 15 deletions(-)
 >
 > diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
-> index ff50aeb1a933..9a7de47c7c79 100644
+> index e9cc62cfac99..ff50aeb1a933 100644
 > --- a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
 > +++ b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
-> @@ -3,10 +3,8 @@
->  #define __LINUX_MMC_JZ4740_MMC
+> @@ -4,8 +4,6 @@
 >
 >  struct jz4740_mmc_platform_data {
-> -       int gpio_power;
+>         int gpio_power;
+> -       int gpio_card_detect;
+> -       int gpio_read_only;
 >         unsigned card_detect_active_low:1;
 >         unsigned read_only_active_low:1;
-> -       unsigned power_active_low:1;
->
->         unsigned data_1bit:1;
->  };
+>         unsigned power_active_low:1;
 > diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-> index 705593d40d12..6718efb400f4 100644
+> index af0c8ace0141..705593d40d12 100644
 > --- a/arch/mips/jz4740/board-qi_lb60.c
 > +++ b/arch/mips/jz4740/board-qi_lb60.c
-> @@ -43,8 +43,6 @@
+> @@ -43,7 +43,6 @@
 >  #include "clock.h"
 >
 >  /* GPIOs */
-> -#define QI_LB60_GPIO_SD_VCC_EN_N       JZ_GPIO_PORTD(2)
-> -
+> -#define QI_LB60_GPIO_SD_CD             JZ_GPIO_PORTD(0)
+>  #define QI_LB60_GPIO_SD_VCC_EN_N       JZ_GPIO_PORTD(2)
+>
 >  #define QI_LB60_GPIO_KEYOUT(x)         (JZ_GPIO_PORTC(10) + (x))
->  #define QI_LB60_GPIO_KEYIN(x)          (JZ_GPIO_PORTD(18) + (x))
->  #define QI_LB60_GPIO_KEYIN8            JZ_GPIO_PORTD(26)
-> @@ -385,14 +383,14 @@ static struct platform_device qi_lb60_gpio_keys = {
+> @@ -386,12 +385,18 @@ static struct platform_device qi_lb60_gpio_keys = {
 >  };
 >
 >  static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
-> -       .gpio_power             = QI_LB60_GPIO_SD_VCC_EN_N,
-> -       .power_active_low       = 1,
-> +       /* Intentionally left blank */
+> -       .gpio_card_detect       = QI_LB60_GPIO_SD_CD,
+> -       .gpio_read_only         = -1,
+>         .gpio_power             = QI_LB60_GPIO_SD_VCC_EN_N,
+>         .power_active_low       = 1,
 >  };
 >
->  static struct gpiod_lookup_table qi_lb60_mmc_gpio_table = {
->         .dev_id = "jz4740-mmc.0",
->         .table = {
->                 GPIO_LOOKUP("GPIOD", 0, "cd", GPIO_ACTIVE_HIGH),
-> +               GPIO_LOOKUP("GPIOD", 2, "power", GPIO_ACTIVE_LOW),
->                 { },
->         },
->  };
+> +static struct gpiod_lookup_table qi_lb60_mmc_gpio_table = {
+> +       .dev_id = "jz4740-mmc.0",
+> +       .table = {
+> +               GPIO_LOOKUP("GPIOD", 0, "cd", GPIO_ACTIVE_HIGH),
+> +               { },
+> +       },
+> +};
+> +
+>  /* beeper */
+>  static struct pwm_lookup qi_lb60_pwm_lookup[] = {
+>         PWM_LOOKUP("jz4740-pwm", 4, "pwm-beeper", NULL, 0,
+> @@ -500,6 +505,7 @@ static int __init qi_lb60_init_platform_devices(void)
+>         gpiod_add_lookup_table(&qi_lb60_audio_gpio_table);
+>         gpiod_add_lookup_table(&qi_lb60_nand_gpio_table);
+>         gpiod_add_lookup_table(&qi_lb60_spigpio_gpio_table);
+> +       gpiod_add_lookup_table(&qi_lb60_mmc_gpio_table);
+>
+>         spi_register_board_info(qi_lb60_spi_board_info,
+>                                 ARRAY_SIZE(qi_lb60_spi_board_info));
 > diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-> index 44ea452add8e..6f7a99e54af0 100644
+> index 0c1efd5100b7..44ea452add8e 100644
 > --- a/drivers/mmc/host/jz4740_mmc.c
 > +++ b/drivers/mmc/host/jz4740_mmc.c
-> @@ -21,7 +21,7 @@
->  #include <linux/dmaengine.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/err.h>
-> -#include <linux/gpio.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
->  #include <linux/irq.h>
-> @@ -136,6 +136,7 @@ struct jz4740_mmc_host {
->         struct platform_device *pdev;
->         struct jz4740_mmc_platform_data *pdata;
->         struct clk *clk;
-> +       struct gpio_desc *power;
+> @@ -983,17 +983,17 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
+>         if (!pdata->read_only_active_low)
+>                 mmc->caps2 |= MMC_CAP2_RO_ACTIVE_HIGH;
 >
->         enum jz4740_mmc_version version;
->
-> @@ -903,18 +904,16 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
->         switch (ios->power_mode) {
->         case MMC_POWER_UP:
->                 jz4740_mmc_reset(host);
-> -               if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
-> -                       gpio_set_value(host->pdata->gpio_power,
-> -                                       !host->pdata->power_active_low);
-> +               if (host->power)
-> +                       gpiod_set_value(host->power, 1);
->                 host->cmdat |= JZ_MMC_CMDAT_INIT;
->                 clk_prepare_enable(host->clk);
->                 break;
->         case MMC_POWER_ON:
->                 break;
->         default:
-> -               if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
-> -                       gpio_set_value(host->pdata->gpio_power,
-> -                                       host->pdata->power_active_low);
-> +               if (host->power)
-> +                       gpiod_set_value(host->power, 0);
->                 clk_disable_unprepare(host->clk);
->                 break;
->         }
-> @@ -947,30 +946,9 @@ static const struct mmc_host_ops jz4740_mmc_ops = {
->         .enable_sdio_irq = jz4740_mmc_enable_sdio_irq,
->  };
->
-> -static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
-> -       const char *name, bool output, int value)
-> -{
-> -       int ret;
-> -
-> -       if (!gpio_is_valid(gpio))
-> -               return 0;
-> -
-> -       ret = gpio_request(gpio, name);
-> -       if (ret) {
-> -               dev_err(dev, "Failed to request %s gpio: %d\n", name, ret);
-> -               return ret;
+> -       if (gpio_is_valid(pdata->gpio_card_detect)) {
+> -               ret = mmc_gpio_request_cd(mmc, pdata->gpio_card_detect, 0);
+> -               if (ret)
+> -                       return ret;
 > -       }
-> -
-> -       if (output)
-> -               gpio_direction_output(gpio, value);
-> -       else
-> -               gpio_direction_input(gpio);
-> -
-> -       return 0;
-> -}
-> -
-> -static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
-> -       struct platform_device *pdev)
-> +static int jz4740_mmc_request_gpios(struct jz4740_mmc_host *host,
-> +                                   struct mmc_host *mmc,
-> +                                   struct platform_device *pdev)
->  {
->         struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
->         int ret = 0;
-> @@ -995,19 +973,12 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
->         if (ret == -EPROBE_DEFER)
->                 return ret;
+> +       /*
+> +        * Get optional card detect and write protect GPIOs,
+> +        * only back out on probe deferral.
+> +        */
+> +       ret = mmc_gpiod_request_cd(mmc, "cd", 0, false, 0, NULL);
+> +       if (ret == -EPROBE_DEFER)
+> +               return ret;
 >
-> -       return jz4740_mmc_request_gpio(&pdev->dev, pdata->gpio_power,
-> -                       "MMC read only", true, pdata->power_active_low);
-> -}
-> -
-> -static void jz4740_mmc_free_gpios(struct platform_device *pdev)
-> -{
-> -       struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
-> -
-> -       if (!pdata)
-> -               return;
-> +       host->power = devm_gpiod_get_optional(&pdev->dev, "power",
-> +                                             GPIOD_OUT_HIGH);
-> +       if (IS_ERR(host->power))
-> +               return PTR_ERR(host->power);
+> -       if (gpio_is_valid(pdata->gpio_read_only)) {
+> -               ret = mmc_gpio_request_ro(mmc, pdata->gpio_read_only);
+> -               if (ret)
+> -                       return ret;
+> -       }
+> +       ret = mmc_gpiod_request_ro(mmc, "wp", 0, false, 0, NULL);
+> +       if (ret == -EPROBE_DEFER)
+> +               return ret;
 >
-> -       if (gpio_is_valid(pdata->gpio_power))
-> -               gpio_free(pdata->gpio_power);
-> +       return 0;
->  }
->
->  static const struct of_device_id jz4740_mmc_of_match[] = {
-> @@ -1053,7 +1024,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
->                 mmc->caps |= MMC_CAP_SDIO_IRQ;
->                 if (!(pdata && pdata->data_1bit))
->                         mmc->caps |= MMC_CAP_4_BIT_DATA;
-> -               ret = jz4740_mmc_request_gpios(mmc, pdev);
-> +               ret = jz4740_mmc_request_gpios(host, mmc, pdev);
->                 if (ret)
->                         goto err_free_host;
->         }
-> @@ -1104,7 +1075,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
->                         dev_name(&pdev->dev), host);
->         if (ret) {
->                 dev_err(&pdev->dev, "Failed to request irq: %d\n", ret);
-> -               goto err_free_gpios;
-> +               goto err_free_host;
->         }
->
->         jz4740_mmc_clock_disable(host);
-> @@ -1135,8 +1106,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
->                 jz4740_mmc_release_dma_channels(host);
->  err_free_irq:
->         free_irq(host->irq, host);
-> -err_free_gpios:
-> -       jz4740_mmc_free_gpios(pdev);
->  err_free_host:
->         mmc_free_host(mmc);
->
-> @@ -1155,8 +1124,6 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
->
->         free_irq(host->irq, host);
->
-> -       jz4740_mmc_free_gpios(pdev);
-> -
->         if (host->use_dma)
->                 jz4740_mmc_release_dma_channels(host);
->
+>         return jz4740_mmc_request_gpio(&pdev->dev, pdata->gpio_power,
+>                         "MMC read only", true, pdata->power_active_low);
 > --
 > 2.17.2
 >

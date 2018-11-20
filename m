@@ -1,73 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 22:52:11 +0100 (CET)
-Received: from mail-eopbgr740092.outbound.protection.outlook.com ([40.107.74.92]:17680
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 23:02:15 +0100 (CET)
+Received: from mail-eopbgr720107.outbound.protection.outlook.com ([40.107.72.107]:17691
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993828AbeKTVuod9Mu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Nov 2018 22:50:44 +0100
+        id S23990509AbeKTWAfFpCI2 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 23:00:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pn6xrC9GcRVJajB4Kg1bgjEyuqy37T14RCvhtt9ucIs=;
- b=E3IJN2YH4u0YvnWgBkUPzHfSTt0x7auYXlzrp/7Q457Wp41tW6sYfIv9Q+MRLPUCSI4Ycj3qoRuQ5/AWiG+h8RfUbwj/HaBCOG/wvjiIDcZ9duEaBBlcvaxpdTzwgSlb9+GBkcGWdd8mOSjtCHvj9T0M46yA4ayCRGxIhCiV7TQ=
+ bh=dDpfCkzoIUG3/p0e3fK3bMP+fondJx15Vulq9J29FNs=;
+ b=Yws3T7U+CGYdn4b+lEGowXP6SD1FEldCfa4xytr/piTWGuk/HiXAYjz94Z1bWNm9LET1GFQZdUQXBPRR4lUWU50Xm0H6KZ4hWnINTbVDv9Vfc4dJJWLzBlGmbRLOsMxvyHgpADR3OoIH8Kbrc5t8Ur+c7CY8AGmSMTqiytbd5rs=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1373.namprd22.prod.outlook.com (10.172.60.23) with Microsoft SMTP
+ MWHPR2201MB1294.namprd22.prod.outlook.com (10.174.162.22) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1361.15; Tue, 20 Nov 2018 21:50:42 +0000
+ 15.20.1294.27; Tue, 20 Nov 2018 22:00:32 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::690f:b86d:7c2:e105]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::690f:b86d:7c2:e105%6]) with mapi id 15.20.1339.027; Tue, 20 Nov 2018
- 21:50:42 +0000
+ 22:00:32 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Hassan Naveed <hnaveed@wavecomp.com>,
+        Hassan Naveed <hnaveed@wavecomp.com>
 CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] MIPS fixes for v4.20-rc4
-Thread-Topic: [GIT PULL] MIPS fixes for v4.20-rc4
-Thread-Index: AQHUgRsVE2kwmU6CIUCvv1+iXq0ZIw==
-Date:   Tue, 20 Nov 2018 21:50:42 +0000
-Message-ID: <20181120215040.dlip2rzl334fw7bc@pburton-laptop>
+        Hassan Naveed <hnaveed@wavecomp.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Enable Undefined Behavior Sanitizer UBSAN
+Thread-Topic: [PATCH] MIPS: Enable Undefined Behavior Sanitizer UBSAN
+Thread-Index: AQHUgGr1yl/0Nqaop0qwOw3uxHV49qVZOBEA
+Date:   Tue, 20 Nov 2018 22:00:32 +0000
+Message-ID: <MWHPR2201MB1277AFC56E3D87C3B685B566C1D90@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20181120004937.8211-1-hassan.naveed@mips.com>
+In-Reply-To: <20181120004937.8211-1-hassan.naveed@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach: yes
+X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR03CA0052.namprd03.prod.outlook.com
- (2603:10b6:301:3b::41) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: CO2PR05CA0055.namprd05.prod.outlook.com
+ (2603:10b6:102:2::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1373;6:SsRlr8io8HFhC/43VQax1QHMQ2ysFIEVT/kSisXxu92VogAHTslwDpXgWq9e03xk4o/QS8uwU+h7ArXBg5RbKW92y9Bo1UTamga+Zf/AqKszXmHMB4sKcB/QXLMV08n+M3E3m7hjn1BZ2GuuSgYIaw97HiFqUePot+s58R+19JBIG0nY4fSfkKDj6L5JlzVerpgHHq02n8HOJqxR6ty6jVN1PYdHW4fxr3j+I7SJrO+8fANwAlwRYyg0LSoYKXwE4P3KaU/DKF2GbNmMu8Up1EoaqTWEd9J1KwhDj13burh9Rw7Exk+Q5c5B3ZglXdCRu4lEdk+5nx9w2ljdXq1pLndUXuzBjwG1dxBxBT3cFEDFkppAl8/HayyQvcOW8A0MFPnN8yB7AYvGDInTjO8p2H5OiSvaXPRpDjJAplb7Wdj5lPmlAZ2Phu8yg5FtXC+zJsN3Se7H649frssYMPkzAA==;5:i7oftNWmvWgCrnKFrQHWSxubM7+85SFs6SduvQPW7Ews168SA0m3K6Zb/41mcBfMgm2UfqZhja989fHb8+rmvPHiUUS/jnYcGp9fuvEAoQFPMYsmWB6Z3mg+sVutd8TdjZSRRHGs/QmAAB7qsYC+WaZhDk+ZydX9kOEUsz++0xk=;7:NblSGX1PSbZVzBF+ed6gLPTe89lrDGVla+4ggLD1mbsJJh77Y1cYFxe99ihcDViTabHtAuuowssO1FcuoiwiTqSnjAWHhKy1m7qhNqE5LhCjpgH1WIgayJ52olZ6Ss5WHisHpiLwIceNk0kXhV+FCg==
-x-ms-office365-filtering-correlation-id: f11cf1e4-ee77-4c17-d486-08d64f32378f
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(49563074)(7193020);SRVR:MWHPR2201MB1373;
-x-ms-traffictypediagnostic: MWHPR2201MB1373:
-x-microsoft-antispam-prvs: <MWHPR2201MB137320F6BBFC4EB1534C59F5C1D90@MWHPR2201MB1373.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1294;6:mSv2eEBz0MIMKWpI8bd+TUeqrOzAMkeiui1zLu1emlNt902JdYGbfI+TGaK4KCf8DVP7S8negh3mCU/7ZGcnUwOWdDJcCJat9tZY9XzqnAxiQS82aDp6X8ppWvMI2s/amltrukAGpeguhsqvP2qEZk6+Z+2wpwgbqBxJO+cgAWSsCyt/KxlsbV8C4mcgqUQM1VM+pwLJ6cMkJBLlpooHl+vVxDMrxd+6rWY93ckHyY8deqibIgKx0wvMHE+jK/rMdk/oERUgS55eDEgeWr49ZnVwQk+eJZcyfWpc/mnvUYffwm3iYUOMe1hQKh9OJ1rNU0ltLWZzLRmcObyOVriW7PRqhWrvJYW3pI7co2v0lLB5UZT/F2iiFD5/FQNtf9V3wjMEHgXHVyl+CIW5GuYSAVFm6Zc1UVPIy8wgrj5dWOlJ3MzdsZcMRNsuzhhSuSUUGeCcMRGoTr7ff5csW1CIIg==;5:8Rc+zwFmedmh9MbvEYqF1qso20s0jARoQqjMDcbrUdND9pDUmAbMMi54GUnHAu7Yu89F33As/Ph7GRmCZhaAtf6KnPeYHmMzOG6330ZQOh8Tb0A5u4qLuk9Jp+RWb/zSIjYWUN8YxMhJEY49114HBKvTf+LJZ0SCz5v22BaMmaU=;7:9Eaov+grQt+F55cV4/B89zH+wEc3+FfxIVrzoPOj2Q72Ui3iL00LFvfmDj2L0s7+YwWVd6S/4Q6VnVIvnc4NLvcDBKP5UF2miPLXT+R3juFJxOquVlKt/1tiqD06TJrRESFALX0cSTF2xWeTCaPFsg==
+x-ms-office365-filtering-correlation-id: 5c5c49a5-07d3-4ae7-bbd3-08d64f339751
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1294;
+x-ms-traffictypediagnostic: MWHPR2201MB1294:
+x-microsoft-antispam-prvs: <MWHPR2201MB12944A26D170DE5C05C91FBAC1D90@MWHPR2201MB1294.namprd22.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(102415395)(6040522)(2401047)(5005006)(8121501046)(93006095)(3231442)(944501410)(4983020)(52105112)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123562045)(20161123564045)(20161123560045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1373;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1373;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3002001)(3231442)(944501410)(52105112)(93006095)(148016)(149066)(150057)(6041310)(20161123564045)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(2016111802025)(20161123558120)(20161123562045)(20161123560045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1294;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1294;
 x-forefront-prvs: 08626BE3A5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(39840400004)(366004)(346002)(396003)(376002)(189003)(199004)(2906002)(54906003)(6916009)(58126008)(5660300001)(508600001)(3846002)(6116002)(256004)(66066001)(71200400001)(71190400001)(14454004)(1076002)(53936002)(6436002)(316002)(25786009)(9686003)(105586002)(6512007)(106356001)(186003)(2900100001)(26005)(99936001)(6486002)(42882007)(102836004)(4326008)(97736004)(4001150100001)(305945005)(6506007)(386003)(7736002)(8676002)(44832011)(476003)(81156014)(81166006)(486006)(68736007)(8936002)(33716001)(33896004)(52116002)(575784001)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1373;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(136003)(39840400004)(366004)(346002)(376002)(199004)(189003)(186003)(102836004)(11346002)(476003)(386003)(6506007)(26005)(44832011)(99286004)(25786009)(446003)(4326008)(8936002)(42882007)(66066001)(81156014)(55016002)(8676002)(256004)(105586002)(81166006)(106356001)(53936002)(6246003)(9686003)(14444005)(68736007)(6436002)(54906003)(5660300001)(7736002)(14454004)(97736004)(74316002)(316002)(478600001)(33656002)(3846002)(2900100001)(6116002)(7696005)(2906002)(52116002)(486006)(76176011)(305945005)(229853002)(71190400001)(110136005)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1294;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: O950NGKKzv9AqXvy7eZIlP9VNMWd6EMeODYf1pXPe9+8Byk2EUrhY3j1+kf4j0nwmg8HL4JX2R4azH8yQTv6F7ymyO8dP2KtgBQUJARedQcv6nN2CjnVqoTN70+uWg8HU76GL//uPD7cjFZiWtKxJ3e0SaDVbP1RFAL/k3ZRGF0V26PuzEjdb7E1SwYxVGibs7/yEEgFaA/iVhIDSrJ4uibP2t8DbRDd3rbO7gqI9ec0DzA2r2hxmAgKQbO+la90RrhGUK2hfUn0wJFNgZ8P0IfSCIlvSM90HJrbuWhnjHcH410dfp3FQ2x4vmLIRrqHQOBl//QivPiZMR/ooDbcSDUlNZn5Rjv+qxhnYN8Qcug=
+x-microsoft-antispam-message-info: GQZexCwuvRb4kiD8JUze4/vDT4YfzNg1Os2hzmF/2HhE1WFWdk+To2FWWz+DvovD56JlnUS+M6hZRcuTb8eMxb8Gq6oFW1A7VpzpYnJ3RytY2Y0WDCl/eeawNd9krPIsSa1H+u4irTn4P7uWDj0OVl820eGsiosrISz4j9JVSycB6WOd8syHsGXCXM85yVMppxtaAkLAmYN/gl0XJDaomFhwGq24kmbkH3k51/x/KRnp0zyuyGXqxR/wZVciHoyNecJ99HH2+tDRqSrOJ3TCga7BUGbUXhWLPNV9as1+MQvUUUmfzdDMI4DEW3aQzUnzGukrBckzQXYRctfmX72zlVhDMppw9GX0R/rYNP2NGR8=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jfe26injwrctlltr"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f11cf1e4-ee77-4c17-d486-08d64f32378f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2018 21:50:42.3609
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c5c49a5-07d3-4ae7-bbd3-08d64f339751
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2018 22:00:32.3719
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1373
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1294
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67408
+X-archive-position: 67409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,70 +88,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---jfe26injwrctlltr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello,
 
-Hi Linus,
+Hassan Naveed Hassan Naveed wrote:
+> From: Hassan Naveed <hnaveed@wavecomp.com>
+> 
+> Select ARCH_HAS_UBSAN_SANITIZE_ALL in order to allow the user to
+> enable CONFIG_UBSAN_SANITIZE_ALL and instrument the entire kernel for
+> ubsan checks.
+> We exclude the VDSO from this because its build doesn't include the
+> __ubsan_handle_*() functions that the kernel proper defines in from
+> lib/ubsan.c, and the VDSO would have no sane way to report errors even
+> if it had definitions of these functions.
+> 
+> Signed-off-by: Hassan Naveed <hnaveed@wavecomp.com>
+> Reviewed-by: Paul Burton <paul.burton@mips.com>
 
-Here are a few MIPS fixes for v4.20-rc4, please pull.
+Applied to mips-next.
 
 Thanks,
     Paul
 
-The following changes since commit ccda4af0f4b92f7b4c308d3acc262f4a7e3affad:
-
-  Linux 4.20-rc2 (2018-11-11 17:12:31 -0600)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_fixes_4.20_3
-
-for you to fetch changes up to 1229ace4a4a2e2c982a32fb075dc1bf95423924f:
-
-  MIPS: Loongson3,SGI-IP27: Simplify max_low_pfn calculation (2018-11-15 15:42:15 -0800)
-
-----------------------------------------------------------------
-A few MIPS fixes for 4.20:
-
-  - Re-enable the Cavium Octeon USB driver in its defconfig after it was
-    accidentally removed back in 4.14.
-
-  - Have early memblock allocations be performed bottom-up to more
-    closely match the behaviour we used to have with bootmem, which
-    seems a safer choice since we've seen fallout from the change made
-    in the 4.20 merge window.
-
-  - Simplify max_low_pfn calculation in the NUMA code for the Loongson3
-    & SGI IP27 platforms to both clean up the code & ensure max_low_pfn
-    has been set appropriately before it is used.
-
-----------------------------------------------------------------
-Aaro Koskinen (1):
-      MIPS: OCTEON: cavium_octeon_defconfig: re-enable OCTEON USB driver
-
-Huacai Chen (1):
-      MIPS: Let early memblock_alloc*() allocate memories bottom-up
-
-Paul Burton (1):
-      MIPS: Loongson3,SGI-IP27: Simplify max_low_pfn calculation
-
- arch/mips/configs/cavium_octeon_defconfig |  1 +
- arch/mips/kernel/setup.c                  |  1 +
- arch/mips/kernel/traps.c                  |  3 +--
- arch/mips/loongson64/loongson-3/numa.c    | 12 ++----------
- arch/mips/sgi-ip27/ip27-memory.c          | 11 +----------
- 5 files changed, 6 insertions(+), 22 deletions(-)
-
---jfe26injwrctlltr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCW/SBrgAKCRA+p5+stXUA
-3f19AP0V65UeChH9iLr97EUX9prH+3dE+OsJ0f+7YIwXGcCKwgEA5sncstTziKrD
-7PNp9axKlUMWNQo/s3Il8+CFjCPjeAo=
-=DhFz
------END PGP SIGNATURE-----
-
---jfe26injwrctlltr--
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

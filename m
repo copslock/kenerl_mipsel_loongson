@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 11:54:34 +0100 (CET)
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:40812 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbeKTKycCz7zI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 11:54:32 +0100
-Received: by mail-qk1-f193.google.com with SMTP id y16so2065261qki.7;
-        Tue, 20 Nov 2018 02:54:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1ytHfs+LGC7Kt7FaIlYKMVZnBQtU1xZYDUo378mjB9o=;
-        b=D/u+NFmz7aShMhmwUWU4wSQXdOmyj3DL6vFFL1fGz2nzxoWnztx4LtGlbbooP3PoZy
-         GhPL10FIyg19BdpN33rEnsAtnHDR8hujXDqiwDJnxlgfyI7ijiPxJADiSZyLBr+qA7EG
-         DAlqTaRO8n1pEyJ1XP13i0P/gFxPwnO+olI3Ofu/O2MXU2A31pyDNdCvGGnGHtDZYtts
-         PkypyWaPIy6SB2IiREMjHpc4QeoG5vXotoqneK09S90ezKqvIBmr5pU6m+NVohCnFH5C
-         8OnuMIPfpFKvLlAvRxxCjtwEpZxBgkF/zlOY/6ALzMsSuYlusfovhQlmNiB0QYqpELD2
-         Yxrw==
-X-Gm-Message-State: AGRZ1gLb2ccPRJrBCe57w9o+tqLdGd+alcl4qes8bd4o+IFEM/LmNsNk
-        shLitxKNFevXAjYXAG0Jq0R3Le5NWkFdqomOLDk=
-X-Google-Smtp-Source: AFSGD/VizlVYkgxMIG1ZsBTMuRYvngW0qZnrMXdfe/kM5yV6rlc7zlymK9L6gA5VjGA35dK2yarO7eZvMqm8e3WfwUI=
-X-Received: by 2002:ac8:1d12:: with SMTP id d18mr1320428qtl.343.1542711271032;
- Tue, 20 Nov 2018 02:54:31 -0800 (PST)
-MIME-Version: 1.0
-References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org>
- <1542262461-29024-4-git-send-email-firoz.khan@linaro.org> <20181119222924.ybnl7qe4hobud5fb@pburton-laptop>
-In-Reply-To: <20181119222924.ybnl7qe4hobud5fb@pburton-laptop>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 20 Nov 2018 11:54:07 +0100
-Message-ID: <CAK8P3a2o+jKd0EF81TezmJbTLBPRN9frCBf3wvxySa0sEbC+-A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] mips: remove syscall table entries
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Firoz Khan <firoz.khan@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 12:14:08 +0100 (CET)
+Received: from mga07.intel.com ([134.134.136.100]:3219 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990945AbeKTLM63RyKI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Nov 2018 12:12:58 +0100
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2018 03:12:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.56,256,1539673200"; 
+   d="scan'208";a="275426798"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by orsmga005.jf.intel.com with ESMTP; 20 Nov 2018 03:12:50 -0800
+Received: from andy by smile with local (Exim 4.91)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1gP3xY-0001Gy-Nw; Tue, 20 Nov 2018 13:12:48 +0200
+Date:   Tue, 20 Nov 2018 13:12:48 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Phil Edworthy <phil.edworthy@renesas.com>
+Cc:     Stephen Boyd <sboyd@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>, Guan Xuetao <gxt@pku.edu.cn>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] clk: Add (devm_)clk_get_optional() functions
+Message-ID: <20181120111248.GW10650@smile.fi.intel.com>
+References: <20181119141259.11992-1-phil.edworthy@renesas.com>
+ <20181120103832.GV10650@smile.fi.intel.com>
+ <TY1PR01MB176982D5E11A665D0DCC9E31F5D90@TY1PR01MB1769.jpnprd01.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TY1PR01MB176982D5E11A665D0DCC9E31F5D90@TY1PR01MB1769.jpnprd01.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Return-Path: <andriy.shevchenko@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67400
+X-archive-position: 67401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: andriy.shevchenko@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,53 +70,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Nov 19, 2018 at 11:29 PM Paul Burton <paul.burton@mips.com> wrote:
->
-> Hi Firoz,
->
-> On Thu, Nov 15, 2018 at 11:44:19AM +0530, Firoz Khan wrote:
-> > diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-> > index a9b895f..4eee437 100644
-> > --- a/arch/mips/kernel/scall32-o32.S
-> > +++ b/arch/mips/kernel/scall32-o32.S
-> > @@ -208,6 +208,18 @@ einval: li       v0, -ENOSYS
-> >       jr      ra
-> >       END(sys_syscall)
-> >
-> > +#ifdef CONFIG_MIPS_MT_FPAFF
-> > +     /*
-> > +      * For FPU affinity scheduling on MIPS MT processors, we need to
-> > +      * intercept sys_sched_xxxaffinity() calls until we get a proper hook
-> > +      * in kernel/sched/core.c.  Considered only temporary we only support
-> > +      * these hooks for the 32-bit kernel - there is no MIPS64 MT processor
-> > +      * atm.
-> > +      */
-> > +#define mipsmt_sys_sched_setaffinity sys_sched_setaffinity
-> > +#define mipsmt_sys_sched_getaffinity sys_sched_getaffinity
->
-> Is this backwards? ie. should it be:
->
->     #define sys_sched_setaffinity mipsmt_sys_sched_setaffinity
->     #define sys_sched_getaffinity mipsmt_sys_sched_getaffinity
->
-> ?
->
-> I don't see how the mipsmt_* functions will ever be used after this
-> patch.
+On Tue, Nov 20, 2018 at 10:53:33AM +0000, Phil Edworthy wrote:
+> On 20 November 2018 10:39 Andy Shevchenko wrote:
+> > On Mon, Nov 19, 2018 at 02:12:59PM +0000, Phil Edworthy wrote:
+> > > This adds clk_get_optional() and devm_clk_get_optional() functions to
+> > > get optional clocks.
+> > > They behave the same as (devm_)clk_get except where there is no clock
+> > > producer. In this case, instead of returning -ENOENT, the function
+> > > returns NULL. This makes error checking simpler and allows
+> > > clk_prepare_enable, etc to be called on the returned reference without
+> > > additional checks.
 
-Good catch!
+> > >  - Instead of messing with the core functions, simply wrap them for the
+> > >    _optional() versions. By putting clk_get_optional() inline in the header
+> > >    file, we can get rid of the arch specific patches as well.
 
-> > -      * atm.
-> > -      */
-> > -     PTR     mipsmt_sys_sched_setaffinity
-> > -     PTR     mipsmt_sys_sched_getaffinity
-> > -#else
-> >       PTR     sys_sched_setaffinity
-> >       PTR     sys_sched_getaffinity           /* 4240 */
-> > -#endif /* CONFIG_MIPS_MT_FPAFF */
-> >       PTR     sys_io_setup
+> > Fine if it would have no surprises with error handling.
+> There shouldn't be any surprises. My earlier attempts at implementing this
+> were hampered by the fact that of_clk_get_by_name() can return -EINVAL
+> in some circumstances. By directly wrapping the (devm_)clk_get() functions
+> that problem goes away.
 
-My guess would be that he removed the wrong lines here instead,
-and the first half was intentional.
+Good!
 
-       Arnd
+After my comments being addressed,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+
+> > > +	if (ERR_PTR(-ENOENT))
+> Huh? That wasn't the code I sent...
+
+Yup, it's my wrong editing flow. Anyway, you got the idea.
+
+> > > +		return NULL;
+> > > +	else
+> > > +		return clk;
+
+> > return clk == ERR_PTR(-ENOENT) ? NULL : clk;
+
+-- 
+With Best Regards,
+Andy Shevchenko

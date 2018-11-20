@@ -1,66 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 08:16:08 +0100 (CET)
-Received: from mail-it1-x141.google.com ([IPv6:2607:f8b0:4864:20::141]:35388
-        "EHLO mail-it1-x141.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990505AbeKTHOFPD0N4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 08:14:05 +0100
-Received: by mail-it1-x141.google.com with SMTP id v11so2045377itj.0
-        for <linux-mips@linux-mips.org>; Mon, 19 Nov 2018 23:14:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2018 10:30:53 +0100 (CET)
+Received: from mail-it1-x143.google.com ([IPv6:2607:f8b0:4864:20::143]:33782
+        "EHLO mail-it1-x143.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990945AbeKTJascM2d3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2018 10:30:48 +0100
+Received: by mail-it1-x143.google.com with SMTP id p11-v6so9568634itf.0
+        for <linux-mips@linux-mips.org>; Tue, 20 Nov 2018 01:30:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=bAts0Gb6wtX4+ypNYNFi2pnx4xhkIPqxi2UclCxVXU4=;
-        b=MXi5PceiuS3IEkmo6XQnDpfTCUNgu2agTXBDwJOp9hqkvh1Ir2LiNV56RsnH/7hRIn
-         6ppL2wpK4PqM9SlGd4PVWnK+5F4YOMYOMEdo9Vb3bfmQ/Hknn7qVMjeDlBWadDiLWClU
-         q4DCEq4t8clyQFPrInyjMauFmKdLFTwWh5FwE=
+        bh=7+7EcryOeVkntJQ33r3lf00wc/gCT5Van4W1M1dtoD4=;
+        b=AVynsbC3C8Br9SQHgsQMe0+9eCpebk3CHlbeGEJsvSm7nw5Dna6afkX0dihlzSwPel
+         qLkhykmwXnj4ZBxk8rb6NNtRO1YPdNGTg5aYg9C55wmg0INM8Y7PuLzNmy2/g5rqQRC3
+         l6nLM6W/7gAQmIAmNFdRg7dT8dgdd626kkGjo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=bAts0Gb6wtX4+ypNYNFi2pnx4xhkIPqxi2UclCxVXU4=;
-        b=SdsgBS2U4KDSUlJxP/BeZ3oEAO0GpFn2oTuBHiXzYb7HHZOyQNiD923xSI2HjXnI9O
-         M2U+0qCLS1GB+N0BMu6ZFWHwo6iClAo15RvryuqeFlztsh/M1UofgNc1q6EgY9xANEBv
-         RS4vv6sxCNsVfTuxUXCl1DaUb+6CuxHTd0XEcRABAG89cp9VmP4KnoBFcdq9I7+Ler+k
-         fqayRUYGsMlD4mxfwVGnQFZaFjT2v06l3k4stMZJXSsN6AftNKExnTHFD6k/p2KzRUcP
-         mHCnHScjg7rJo3ZPhUYn/CdWNcVVIwgVqnDcvOJw9+2G147xpV/46JxaQD9yqhZFHeQg
-         o/Lg==
-X-Gm-Message-State: AGRZ1gKaSxsiYYkUW56nsgYubjFlK/9TjnH41Ljlj/Y+Fb7Sor0vv+51
-        CeZorZVqFPptSKYenK5YwWQ1QkZLNDRAKuFCmNiPOQ==
-X-Google-Smtp-Source: AJdET5c/Uq29AUOy1iq0VOFObvACMMgpFoj9QZYyrR36nZhRYpM/cO+/cN+q8rcX4RotNwJFJ6J4A1cta8/BY8LWJAY=
-X-Received: by 2002:a02:788:: with SMTP id f130-v6mr828954jaf.58.1542698044441;
- Mon, 19 Nov 2018 23:14:04 -0800 (PST)
+        bh=7+7EcryOeVkntJQ33r3lf00wc/gCT5Van4W1M1dtoD4=;
+        b=pLoMID+Cq31PARZBz9giOGRGwAPom3bg7ck2d0PyH/gMfMYI+PIZzboKx7JE0CxDbu
+         4AZm9BQbKWhEXhqix/1INSoIX3MGJ0vxZ1DyIAdpP1dczIpXwPqNm46uAn8tZYC3LcYD
+         1xXqOuEXNzTZvnMoffiLo7LaScXZXGyAe1zH4ethZuRNgWNPBZWePcKVbBQ9IfhVpGUV
+         Gsx4bYb5zqLKKmTZ5W/Uee128fKvlZQM9XXvIV3Y3IbdNfAXd+so8eQ0p9J6sFfqL8R/
+         U3R003puu9qNhtytvIEGtjDj96wxleSyfPvRGlirdebL4AgeN3TzcwSD+IqToO6hhppG
+         V9iQ==
+X-Gm-Message-State: AA+aEWZk86Ko1Q9RilI1q0jGsYwMRD/5+oO7kvXcOHVq0W+MKpbib792
+        X71O49RPvMqrYhkVibKAS8P/+T80JjUrwLzshDbLEg==
+X-Google-Smtp-Source: AFSGD/VepSG1tTIzPXSHxpAObGiyopTTlGXTW7r7KcOxG2Q9Zgx0o2rOvrfxr/q5Ni19HfSlHsfZVdG0ZsSY73tcAEQ=
+X-Received: by 2002:a24:108a:: with SMTP id 132-v6mr1443124ity.78.1542706247784;
+ Tue, 20 Nov 2018 01:30:47 -0800 (PST)
 MIME-Version: 1.0
-References: <1542262461-29024-1-git-send-email-firoz.khan@linaro.org>
- <1542262461-29024-5-git-send-email-firoz.khan@linaro.org> <20181119223524.gsvjkf5v24ic7ilj@pburton-laptop>
-In-Reply-To: <20181119223524.gsvjkf5v24ic7ilj@pburton-laptop>
-From:   Firoz Khan <firoz.khan@linaro.org>
-Date:   Tue, 20 Nov 2018 12:43:53 +0530
-Message-ID: <CALxhOnjYzvDGdvuWitiOP46YuV6XViu9O3Fi0FU9u2jnV3W2EQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] mips: add system call table generation support
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Received: by 2002:a02:70c8:0:0:0:0:0 with HTTP; Tue, 20 Nov 2018 01:30:07
+ -0800 (PST)
+In-Reply-To: <20181112141239.19646-4-linus.walleij@linaro.org>
+References: <20181112141239.19646-1-linus.walleij@linaro.org> <20181112141239.19646-4-linus.walleij@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 20 Nov 2018 10:30:07 +0100
+Message-ID: <CAPDyKFqVHYCBZUO273rS70veKRtuNy3iROkeAkdB_QSkzxcpPQ@mail.gmail.com>
+Subject: Re: [PATCH 03/10] mmc: jz4740: Use GPIO descriptor for power
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <firoz.khan@linaro.org>
+Return-Path: <ulf.hansson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67394
+X-archive-position: 67395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: firoz.khan@linaro.org
+X-original-sender: ulf.hansson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,44 +63,216 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+On 12 November 2018 at 15:12, Linus Walleij <linus.walleij@linaro.org> wrote:
+> The power GPIO line is passed with inversion flags and all from
+> the platform data. Switch to using an optional GPIO descriptor and
+> use this to switch the power.
+>
+> Augment the only boardfile to pass in the proper "power" descriptor
+> in the GPIO descriptor machine table instead.
+>
+> As the GPIO handling is now much simpler, we can cut down on some
+> overhead code.
+>
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-On Tue, 20 Nov 2018 at 04:05, Paul Burton <paul.burton@mips.com> wrote:
->
-> Hi Firoz,
->
-> On Thu, Nov 15, 2018 at 11:44:20AM +0530, Firoz Khan wrote:
-> > diff --git a/arch/mips/kernel/syscalls/Makefile b/arch/mips/kernel/syscalls/Makefile
-> > new file mode 100644
-> > index 0000000..dc6bbb1
-> > --- /dev/null
-> > +++ b/arch/mips/kernel/syscalls/Makefile
-> > @@ -0,0 +1,71 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +kapi := arch/$(SRCARCH)/include/generated/asm
-> > +uapi := arch/$(SRCARCH)/include/generated/uapi/asm
-> > +
-> > +_dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')    \
-> > +       $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
-> > +
-> > +syscallo32 := $(srctree)/$(src)/syscall_o32.tbl
-> > +syscall64 := $(srctree)/$(src)/syscall_64.tbl
-> > +syscalln32 := $(srctree)/$(src)/syscall_n32.tbl
-> > +syshdr := $(srctree)/$(src)/syscallhdr.sh
-> > +systbl := $(srctree)/$(src)/syscalltbl.sh
->
-> Could we go with 'n64' instead of just '64'?
->
-> When we get nanoMIPS support we'll be introducing the p32 ABI, and
-> there's a reasonable chance that the equivalent p64 ABI may come along
-> in the future. Using 'n64' now would avoid confusion in that case where
-> we may have 2 different 64-bit ABIs.
+Applied for next, thanks!
 
-Sure, will do.
+Kind regards
+Uffe
 
-Thanks
-Firoz
-
+> ---
+>  .../mips/include/asm/mach-jz4740/jz4740_mmc.h |  2 -
+>  arch/mips/jz4740/board-qi_lb60.c              |  6 +-
+>  drivers/mmc/host/jz4740_mmc.c                 | 65 +++++--------------
+>  3 files changed, 18 insertions(+), 55 deletions(-)
 >
-> Thanks,
->     Paul
+> diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
+> index ff50aeb1a933..9a7de47c7c79 100644
+> --- a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
+> +++ b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
+> @@ -3,10 +3,8 @@
+>  #define __LINUX_MMC_JZ4740_MMC
+>
+>  struct jz4740_mmc_platform_data {
+> -       int gpio_power;
+>         unsigned card_detect_active_low:1;
+>         unsigned read_only_active_low:1;
+> -       unsigned power_active_low:1;
+>
+>         unsigned data_1bit:1;
+>  };
+> diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+> index 705593d40d12..6718efb400f4 100644
+> --- a/arch/mips/jz4740/board-qi_lb60.c
+> +++ b/arch/mips/jz4740/board-qi_lb60.c
+> @@ -43,8 +43,6 @@
+>  #include "clock.h"
+>
+>  /* GPIOs */
+> -#define QI_LB60_GPIO_SD_VCC_EN_N       JZ_GPIO_PORTD(2)
+> -
+>  #define QI_LB60_GPIO_KEYOUT(x)         (JZ_GPIO_PORTC(10) + (x))
+>  #define QI_LB60_GPIO_KEYIN(x)          (JZ_GPIO_PORTD(18) + (x))
+>  #define QI_LB60_GPIO_KEYIN8            JZ_GPIO_PORTD(26)
+> @@ -385,14 +383,14 @@ static struct platform_device qi_lb60_gpio_keys = {
+>  };
+>
+>  static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
+> -       .gpio_power             = QI_LB60_GPIO_SD_VCC_EN_N,
+> -       .power_active_low       = 1,
+> +       /* Intentionally left blank */
+>  };
+>
+>  static struct gpiod_lookup_table qi_lb60_mmc_gpio_table = {
+>         .dev_id = "jz4740-mmc.0",
+>         .table = {
+>                 GPIO_LOOKUP("GPIOD", 0, "cd", GPIO_ACTIVE_HIGH),
+> +               GPIO_LOOKUP("GPIOD", 2, "power", GPIO_ACTIVE_LOW),
+>                 { },
+>         },
+>  };
+> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+> index 44ea452add8e..6f7a99e54af0 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -21,7 +21,7 @@
+>  #include <linux/dmaengine.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/err.h>
+> -#include <linux/gpio.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/io.h>
+>  #include <linux/irq.h>
+> @@ -136,6 +136,7 @@ struct jz4740_mmc_host {
+>         struct platform_device *pdev;
+>         struct jz4740_mmc_platform_data *pdata;
+>         struct clk *clk;
+> +       struct gpio_desc *power;
+>
+>         enum jz4740_mmc_version version;
+>
+> @@ -903,18 +904,16 @@ static void jz4740_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+>         switch (ios->power_mode) {
+>         case MMC_POWER_UP:
+>                 jz4740_mmc_reset(host);
+> -               if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
+> -                       gpio_set_value(host->pdata->gpio_power,
+> -                                       !host->pdata->power_active_low);
+> +               if (host->power)
+> +                       gpiod_set_value(host->power, 1);
+>                 host->cmdat |= JZ_MMC_CMDAT_INIT;
+>                 clk_prepare_enable(host->clk);
+>                 break;
+>         case MMC_POWER_ON:
+>                 break;
+>         default:
+> -               if (host->pdata && gpio_is_valid(host->pdata->gpio_power))
+> -                       gpio_set_value(host->pdata->gpio_power,
+> -                                       host->pdata->power_active_low);
+> +               if (host->power)
+> +                       gpiod_set_value(host->power, 0);
+>                 clk_disable_unprepare(host->clk);
+>                 break;
+>         }
+> @@ -947,30 +946,9 @@ static const struct mmc_host_ops jz4740_mmc_ops = {
+>         .enable_sdio_irq = jz4740_mmc_enable_sdio_irq,
+>  };
+>
+> -static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
+> -       const char *name, bool output, int value)
+> -{
+> -       int ret;
+> -
+> -       if (!gpio_is_valid(gpio))
+> -               return 0;
+> -
+> -       ret = gpio_request(gpio, name);
+> -       if (ret) {
+> -               dev_err(dev, "Failed to request %s gpio: %d\n", name, ret);
+> -               return ret;
+> -       }
+> -
+> -       if (output)
+> -               gpio_direction_output(gpio, value);
+> -       else
+> -               gpio_direction_input(gpio);
+> -
+> -       return 0;
+> -}
+> -
+> -static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
+> -       struct platform_device *pdev)
+> +static int jz4740_mmc_request_gpios(struct jz4740_mmc_host *host,
+> +                                   struct mmc_host *mmc,
+> +                                   struct platform_device *pdev)
+>  {
+>         struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
+>         int ret = 0;
+> @@ -995,19 +973,12 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
+>         if (ret == -EPROBE_DEFER)
+>                 return ret;
+>
+> -       return jz4740_mmc_request_gpio(&pdev->dev, pdata->gpio_power,
+> -                       "MMC read only", true, pdata->power_active_low);
+> -}
+> -
+> -static void jz4740_mmc_free_gpios(struct platform_device *pdev)
+> -{
+> -       struct jz4740_mmc_platform_data *pdata = dev_get_platdata(&pdev->dev);
+> -
+> -       if (!pdata)
+> -               return;
+> +       host->power = devm_gpiod_get_optional(&pdev->dev, "power",
+> +                                             GPIOD_OUT_HIGH);
+> +       if (IS_ERR(host->power))
+> +               return PTR_ERR(host->power);
+>
+> -       if (gpio_is_valid(pdata->gpio_power))
+> -               gpio_free(pdata->gpio_power);
+> +       return 0;
+>  }
+>
+>  static const struct of_device_id jz4740_mmc_of_match[] = {
+> @@ -1053,7 +1024,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+>                 mmc->caps |= MMC_CAP_SDIO_IRQ;
+>                 if (!(pdata && pdata->data_1bit))
+>                         mmc->caps |= MMC_CAP_4_BIT_DATA;
+> -               ret = jz4740_mmc_request_gpios(mmc, pdev);
+> +               ret = jz4740_mmc_request_gpios(host, mmc, pdev);
+>                 if (ret)
+>                         goto err_free_host;
+>         }
+> @@ -1104,7 +1075,7 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+>                         dev_name(&pdev->dev), host);
+>         if (ret) {
+>                 dev_err(&pdev->dev, "Failed to request irq: %d\n", ret);
+> -               goto err_free_gpios;
+> +               goto err_free_host;
+>         }
+>
+>         jz4740_mmc_clock_disable(host);
+> @@ -1135,8 +1106,6 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
+>                 jz4740_mmc_release_dma_channels(host);
+>  err_free_irq:
+>         free_irq(host->irq, host);
+> -err_free_gpios:
+> -       jz4740_mmc_free_gpios(pdev);
+>  err_free_host:
+>         mmc_free_host(mmc);
+>
+> @@ -1155,8 +1124,6 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
+>
+>         free_irq(host->irq, host);
+>
+> -       jz4740_mmc_free_gpios(pdev);
+> -
+>         if (host->use_dma)
+>                 jz4740_mmc_release_dma_channels(host);
+>
+> --
+> 2.17.2
+>

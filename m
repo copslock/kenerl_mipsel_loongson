@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 23:38:33 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 23:38:38 +0100 (CET)
 Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:58432 "EHLO
         emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994248AbeKUWiDty1s- (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23994204AbeKUWiDcj-H- (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2018 23:38:03 +0100
 Received: from localhost.localdomain (85-76-84-147-nat.elisa-mobile.fi [85.76.84.147])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 9611C200A3;
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 4C2912009A;
         Thu, 22 Nov 2018 00:38:03 +0200 (EET)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 17/24] MIPS: OCTEON: cvmx-bootmem: make more functions static
-Date:   Thu, 22 Nov 2018 00:37:38 +0200
-Message-Id: <20181121223745.22792-18-aaro.koskinen@iki.fi>
+Subject: [PATCH 15/24] MIPS: OCTEON: cvmx-bootmem: delete unused functions
+Date:   Thu, 22 Nov 2018 00:37:36 +0200
+Message-Id: <20181121223745.22792-16-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20181121223745.22792-1-aaro.koskinen@iki.fi>
 References: <20181121223745.22792-1-aaro.koskinen@iki.fi>
@@ -21,7 +21,7 @@ Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67441
+X-archive-position: 67442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,95 +38,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Make cvmx_bootmem_phy_named_block_find/free() static.
+Delete unused functions.
 
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- .../cavium-octeon/executive/cvmx-bootmem.c    | 26 ++++++++++++++++--
- arch/mips/include/asm/octeon/cvmx-bootmem.h   | 27 -------------------
- 2 files changed, 24 insertions(+), 29 deletions(-)
+ .../cavium-octeon/executive/cvmx-bootmem.c    | 12 -------
+ arch/mips/include/asm/octeon/cvmx-bootmem.h   | 33 -------------------
+ 2 files changed, 45 deletions(-)
 
 diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-index 51fb34edffbf..ba8f82a29a81 100644
+index c2dbf0b8b909..dc5d1c6203a7 100644
 --- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
 +++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-@@ -557,7 +557,20 @@ int __cvmx_bootmem_phy_free(uint64_t phy_addr, uint64_t size, uint32_t flags)
- 
+@@ -155,11 +155,6 @@ void *cvmx_bootmem_alloc_address(uint64_t size, uint64_t address,
+ 					address + size);
  }
  
--struct cvmx_bootmem_named_block_desc *
-+/**
-+ * Finds a named memory block by name.
-+ * Also used for finding an unused entry in the named block table.
-+ *
-+ * @name: Name of memory block to find.	 If NULL pointer given, then
-+ *	  finds unused descriptor, if available.
-+ *
-+ * @flags: Flags to control options for the allocation.
-+ *
-+ * Returns Pointer to memory block descriptor, NULL if not found.
-+ *	   If NULL returned when name parameter is NULL, then no memory
-+ *	   block descriptors are available.
-+ */
-+static struct cvmx_bootmem_named_block_desc *
- 	cvmx_bootmem_phy_named_block_find(char *name, uint32_t flags)
- {
- 	unsigned int i;
-@@ -651,7 +664,16 @@ struct cvmx_bootmem_named_block_desc *cvmx_bootmem_find_named_block(char *name)
+-void *cvmx_bootmem_alloc(uint64_t size, uint64_t alignment)
+-{
+-	return cvmx_bootmem_alloc_range(size, alignment, 0, 0);
+-}
+-
+ void *cvmx_bootmem_alloc_named_range_once(uint64_t size, uint64_t min_addr,
+ 					  uint64_t max_addr, uint64_t align,
+ 					  char *name,
+@@ -210,13 +205,6 @@ void *cvmx_bootmem_alloc_named_range(uint64_t size, uint64_t min_addr,
+ 		return NULL;
  }
- EXPORT_SYMBOL(cvmx_bootmem_find_named_block);
  
--int cvmx_bootmem_phy_named_block_free(char *name, uint32_t flags)
-+/**
-+ * Frees a named block.
-+ *
-+ * @name:   name of block to free
-+ * @flags:  flags for passing options
-+ *
-+ * Returns 0 on failure
-+ *	   1 on success
-+ */
-+static int cvmx_bootmem_phy_named_block_free(char *name, uint32_t flags)
+-void *cvmx_bootmem_alloc_named_address(uint64_t size, uint64_t address,
+-				       char *name)
+-{
+-    return cvmx_bootmem_alloc_named_range(size, address, address + size,
+-					  0, name);
+-}
+-
+ void *cvmx_bootmem_alloc_named(uint64_t size, uint64_t alignment, char *name)
  {
- 	struct cvmx_bootmem_named_block_desc *named_block_ptr;
- 
+     return cvmx_bootmem_alloc_named_range(size, 0, 0, alignment, name);
 diff --git a/arch/mips/include/asm/octeon/cvmx-bootmem.h b/arch/mips/include/asm/octeon/cvmx-bootmem.h
-index d3ea3170714b..689a82cac740 100644
+index b762040159a1..d3ea3170714b 100644
 --- a/arch/mips/include/asm/octeon/cvmx-bootmem.h
 +++ b/arch/mips/include/asm/octeon/cvmx-bootmem.h
-@@ -301,33 +301,6 @@ int64_t cvmx_bootmem_phy_named_block_alloc(uint64_t size, uint64_t min_addr,
- 					   uint64_t alignment,
- 					   char *name, uint32_t flags);
+@@ -145,18 +145,6 @@ struct cvmx_bootmem_desc {
+  */
+ extern int cvmx_bootmem_init(void *mem_desc_ptr);
  
 -/**
-- * Finds a named memory block by name.
-- * Also used for finding an unused entry in the named block table.
+- * Allocate a block of memory from the free list that was passed
+- * to the application by the bootloader.
+- * This is an allocate-only algorithm, so freeing memory is not possible.
 - *
-- * @name: Name of memory block to find.	 If NULL pointer given, then
-- *	  finds unused descriptor, if available.
+- * @size:      Size in bytes of block to allocate
+- * @alignment: Alignment required - must be power of 2
 - *
-- * @flags: Flags to control options for the allocation.
-- *
-- * Returns Pointer to memory block descriptor, NULL if not found.
-- *	   If NULL returned when name parameter is NULL, then no memory
-- *	   block descriptors are available.
+- * Returns pointer to block of memory, NULL on error
 - */
--struct cvmx_bootmem_named_block_desc *
--cvmx_bootmem_phy_named_block_find(char *name, uint32_t flags);
--
--/**
-- * Frees a named block.
-- *
-- * @name:   name of block to free
-- * @flags:  flags for passing options
-- *
-- * Returns 0 on failure
-- *	   1 on success
-- */
--int cvmx_bootmem_phy_named_block_free(char *name, uint32_t flags);
+-extern void *cvmx_bootmem_alloc(uint64_t size, uint64_t alignment);
 -
  /**
-  * Frees a block to the bootmem allocator list.	 This must
-  * be used with care, as the size provided must match the size
+  * Allocate a block of memory from the free list that was
+  * passed to the application by the bootloader at a specific
+@@ -198,27 +186,6 @@ extern void *cvmx_bootmem_alloc_address(uint64_t size, uint64_t address,
+ extern void *cvmx_bootmem_alloc_named(uint64_t size, uint64_t alignment,
+ 				      char *name);
+ 
+-
+-
+-/**
+- * Allocate a block of memory from the free list that was passed
+- * to the application by the bootloader, and assign it a name in the
+- * global named block table.  (part of the cvmx_bootmem_descriptor_t structure)
+- * Named blocks can later be freed.
+- *
+- * @size:     Size in bytes of block to allocate
+- * @address:  Physical address to allocate memory at.  If this
+- *	      memory is not available, the allocation fails.
+- * @name:     name of block - must be less than CVMX_BOOTMEM_NAME_LEN
+- *	      bytes
+- *
+- * Returns a pointer to block of memory, NULL on error
+- */
+-extern void *cvmx_bootmem_alloc_named_address(uint64_t size, uint64_t address,
+-					      char *name);
+-
+-
+-
+ /**
+  * Allocate a block of memory from a specific range of the free list
+  * that was passed to the application by the bootloader, and assign it
 -- 
 2.17.0

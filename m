@@ -1,78 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 02:00:18 +0100 (CET)
-Received: from mail-eopbgr760114.outbound.protection.outlook.com ([40.107.76.114]:64416
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990509AbeKUA6hvMvaM convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2018 01:58:37 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iWVYXYuk4F0aD3JLV6w/KUPQyqGmPTa5Rqjpjg3Hewo=;
- b=QAzda+Ic2gDnty7xB7zNi2akR9S5GRDYQ9kFx7nUHmzILHBH7ciMyOu/44n57zuOkBMatuiW22GSFJxU41vPsCDe6A8MQTwRgOGhCalnxA1awNga9Q5QQYyLwvrxdAkWghm3l6XIblq3MApG9l+ZiCXlodUdlb2gFDkfdbOm2D8=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1166.namprd22.prod.outlook.com (10.174.168.38) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1294.36; Wed, 21 Nov 2018 00:58:32 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::690f:b86d:7c2:e105]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::690f:b86d:7c2:e105%6]) with mapi id 15.20.1339.027; Wed, 21 Nov 2018
- 00:58:32 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     Paul Burton <pburton@wavecomp.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] MIPS: Regerate defconfigs
-Thread-Topic: [PATCH] MIPS: Regerate defconfigs
-Thread-Index: AQHUgTVS3GKroqpOD0iGPcWc8UUUOw==
-Date:   Wed, 21 Nov 2018 00:58:31 +0000
-Message-ID: <20181121005819.23815-1-paul.burton@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR11CA0037.namprd11.prod.outlook.com
- (2603:10b6:300:115::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1166;6:OUE28+I2rrPvbsjWlJ9cz4zQHJbLGXWTwhmusKzO1wmqcyYLuVFRh02xjw0vsD3zGX3z4K33izsNITFQBa3qJ7GMUso/892H/Er8LsYDjOJahEqa1SgpuygILq4+4feP/vZznQd5u+v78YxeT2GmYH8Ck1TSHbDFqZ6IoDisz4lMomPXpgmWTuJ/B8LjoabDlYwIYMkXB2EDeXkmKHepSp/Ej5FVQblrk0hMxTBRAiyiTWMNBPDTMAiE6ceQboxF8KCzpMsxg++4Bb/iNyUDPgHQ/to3pCYCzlTZwPV8/V9JhGk3m59Q97DTwEnZHmG9AHOFMGsyndp+R3vanNS21qr4Ls4AKJ76l3IsnVnw7VgDye8+kI03urtH4zcIzu9E+p2aquMuFNCMtJUAdeVJ1KGd8zL4TBCR6phN3BDzRBd3GYF0h6+k+sn5ZfWeGsWA7UazgvaBfVdXoYMlk7/Xww==;5:BvD4r1PrDUQSPnl/iwVqdJ7wHOmpK7fDXwo97mdzPpz+XLrVTEv94wgU+cRUEUyXzG4gNzJh5ojO/XKd3PwK1/SGIwzNV3WHwnaM2JwEU4JbRrsluoTi9dEVZhfSgxitrDlfRqMPcmCACE8xNt3/+lLUBDlk5ZoDgzp2I/Mx6u8=;7:/vWop80kr6ldxh3iFQDK1KTunukYf5GQI1dsVnVh0FDoXMrXpkt+hnnPZD9eHesiynGYS32qoU7n2wqPp35tUQHshBVo7snvsptDodt4QOGkswtxYFzRukK3+wk6Bxmr0X9om0+HE0Ga2OSEiO4USQ==
-x-ms-office365-filtering-correlation-id: 9459f9ec-19f2-4f52-6459-08d64f4c7429
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1166;
-x-ms-traffictypediagnostic: MWHPR2201MB1166:
-x-microsoft-antispam-prvs: <MWHPR2201MB11669B0532D8A3ABE039945DC1DA0@MWHPR2201MB1166.namprd22.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(192278398808882)(166708455590820)(265634631926514);
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231442)(944501410)(52105112)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(20161123560045)(20161123562045)(20161123558120)(20161123564045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1166;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1166;
-x-forefront-prvs: 08635C03D4
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(376002)(346002)(136003)(39840400004)(366004)(396003)(189003)(199004)(3846002)(1076002)(2501003)(6116002)(305945005)(14454004)(4744004)(6436002)(7736002)(5660300001)(966005)(575784001)(508600001)(2906002)(5640700003)(25786009)(486006)(2616005)(44832011)(68736007)(6512007)(105586002)(66066001)(6916009)(476003)(186003)(6306002)(106356001)(81166006)(81156014)(26005)(1857600001)(36756003)(8676002)(52116002)(102836004)(6506007)(42882007)(5024004)(14444005)(386003)(8936002)(2351001)(256004)(99286004)(6486002)(71190400001)(71200400001)(2900100001)(316002)(54906003)(53946003)(53936002)(97736004)(4326008)(959014)(579004)(559001)(569006);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1166;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: gX3/ijb3sXMA9Tvbj4T9QIGdFCgetH8eGQgfifKECNbe8f22VeZCr1G3+/tZiA4tFpbNM5Ny4kwBsY0POvrEt0J9RdE0NW8UAq/SZj2kxTBgEtQ7yicNSsMI7RtNVT4ytP0DGoyG6XrIUODRiZs646tN1v+r6ZS0mANYJ5UyR+Qobs2OR98Zbqc16hvTBelaagnuc6Z1F+2G5k4vm5V/ttBdNvNOxH+sYLqJp+xlx1SiMlXuuTjxpTvQZCEy3/wz7Qx6lkOnduWsoxt59WZcb0yY9Isq2qGC9VC0HS20ZHvnjlANqRxhTOzsKDrVajOpYFtFz/Ss1dkOioWLZoqivII3XsPXBkYvQW/w5+0VHSs=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 03:40:08 +0100 (CET)
+Received: from mga05.intel.com ([192.55.52.43]:15026 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990509AbeKUCik3yIxe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Nov 2018 03:38:40 +0100
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2018 18:38:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.56,259,1539673200"; 
+   d="gz'50?scan'50,208,50";a="107996955"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 20 Nov 2018 18:38:35 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1gPIPS-000GAJ-Vi; Wed, 21 Nov 2018 10:38:34 +0800
+Date:   Wed, 21 Nov 2018 10:37:38 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     kbuild-all@01.org, linux-mips@linux-mips.org,
+        Paul Burton <paul.burton@mips.com>
+Subject: [mips-linux:mips-next 45/47]
+ arch/mips/include/asm/r4kcache.h:681:35: error: implicit declaration of
+ function 'nid_to_addrbase'
+Message-ID: <201811211036.KRvGkcZR%fengguang.wu@intel.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9459f9ec-19f2-4f52-6459-08d64f4c7429
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2018 00:58:31.9424
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1166
-Return-Path: <pburton@wavecomp.com>
+Content-Type: multipart/mixed; boundary="zhXaljGHf11kAtnf"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <lkp@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67415
+X-archive-position: 67416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@mips.com
+X-original-sender: lkp@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -85,7293 +50,1179 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-A couple of patches have come up recently to remove particular instances
-of obsolete Kconfig symbols from defconfigs. Rather than doing this
-piecemeal, simply regenerate them all.
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-References: https://patchwork.linux-mips.org/patch/19635/
-References: https://patchwork.linux-mips.org/patch/21156/
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+--zhXaljGHf11kAtnf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git mips-next
+head:   77e07a8a065d3102b144ff0fe555a9597990f56e
+commit: 939033a264206ede9ce6be28241cbcd22581b7c2 [45/47] MIPS: c-r4k: Add r4k_blast_scache_node for Loongson-3
+config: mips-allyesconfig (attached as .config)
+compiler: mips-linux-gnu-gcc (Debian 7.2.0-11) 7.2.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout 939033a264206ede9ce6be28241cbcd22581b7c2
+        # save the attached .config to linux build tree
+        GCC_VERSION=7.2.0 make.cross ARCH=mips 
+
+All error/warnings (new ones prefixed by >>):
+
+   In file included from arch/mips/kernel/smp-cps.c:25:0:
+   arch/mips/include/asm/r4kcache.h: In function 'blast_scache16_node':
+>> arch/mips/include/asm/r4kcache.h:681:35: error: implicit declaration of function 'nid_to_addrbase' [-Werror=implicit-function-declaration]
+     unsigned long start = CAC_BASE | nid_to_addrbase(node);  \
+                                      ^
+>> arch/mips/include/asm/r4kcache.h:693:1: note: in expansion of macro '__BUILD_BLAST_CACHE_NODE'
+    __BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
+    ^~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
+--
+   In file included from arch/mips/mm/c-r4k.c:33:0:
+   arch/mips/include/asm/r4kcache.h: In function 'blast_scache16_node':
+>> arch/mips/include/asm/r4kcache.h:681:35: error: implicit declaration of function 'nid_to_addrbase' [-Werror=implicit-function-declaration]
+     unsigned long start = CAC_BASE | nid_to_addrbase(node);  \
+                                      ^
+>> arch/mips/include/asm/r4kcache.h:693:1: note: in expansion of macro '__BUILD_BLAST_CACHE_NODE'
+    __BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
+    ^~~~~~~~~~~~~~~~~~~~~~~~
+   arch/mips/mm/c-r4k.c: In function 'r4k_dma_cache_wback_inv':
+>> arch/mips/mm/c-r4k.c:869:27: error: implicit declaration of function 'pa_to_nid'; did you mean 'page_to_nid'? [-Werror=implicit-function-declaration]
+        r4k_blast_scache_node(pa_to_nid(addr));
+                              ^~~~~~~~~
+                              page_to_nid
+   cc1: all warnings being treated as errors
+--
+   In file included from arch/mips//mm/c-r4k.c:33:0:
+   arch/mips/include/asm/r4kcache.h: In function 'blast_scache16_node':
+>> arch/mips/include/asm/r4kcache.h:681:35: error: implicit declaration of function 'nid_to_addrbase' [-Werror=implicit-function-declaration]
+     unsigned long start = CAC_BASE | nid_to_addrbase(node);  \
+                                      ^
+>> arch/mips/include/asm/r4kcache.h:693:1: note: in expansion of macro '__BUILD_BLAST_CACHE_NODE'
+    __BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
+    ^~~~~~~~~~~~~~~~~~~~~~~~
+   arch/mips//mm/c-r4k.c: In function 'r4k_dma_cache_wback_inv':
+   arch/mips//mm/c-r4k.c:869:27: error: implicit declaration of function 'pa_to_nid'; did you mean 'page_to_nid'? [-Werror=implicit-function-declaration]
+        r4k_blast_scache_node(pa_to_nid(addr));
+                              ^~~~~~~~~
+                              page_to_nid
+   cc1: all warnings being treated as errors
+
+vim +/nid_to_addrbase +681 arch/mips/include/asm/r4kcache.h
+
+   676	
+   677	/* Currently, this is very specific to Loongson-3 */
+   678	#define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
+   679	static inline void blast_##pfx##cache##lsize##_node(long node)		\
+   680	{									\
+ > 681		unsigned long start = CAC_BASE | nid_to_addrbase(node);		\
+   682		unsigned long end = start + current_cpu_data.desc.waysize;	\
+   683		unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
+   684		unsigned long ws_end = current_cpu_data.desc.ways <<		\
+   685				       current_cpu_data.desc.waybit;		\
+   686		unsigned long ws, addr;						\
+   687										\
+   688		for (ws = 0; ws < ws_end; ws += ws_inc)				\
+   689			for (addr = start; addr < end; addr += lsize * 32)	\
+   690				cache##lsize##_unroll32(addr|ws, indexop);	\
+   691	}
+   692	
+ > 693	__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
+   694	__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
+   695	__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
+   696	__BUILD_BLAST_CACHE_NODE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
+   697	
 
 ---
-This is the result of running the following script, which verifies that
-the defconfigs still produce the same .config they did before:
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
-https://gist.github.com/paulburton/36e9858a90a6391b50c782ada9ebe741
+--zhXaljGHf11kAtnf
+Content-Type: application/gzip
+Content-Disposition: attachment; filename=".config.gz"
+Content-Transfer-Encoding: base64
 
- arch/mips/configs/ar7_defconfig             |  44 +--
- arch/mips/configs/ath25_defconfig           |  25 +-
- arch/mips/configs/ath79_defconfig           |  33 +--
- arch/mips/configs/bcm47xx_defconfig         |  11 +-
- arch/mips/configs/bcm63xx_defconfig         |  37 +--
- arch/mips/configs/bigsur_defconfig          |  65 ++---
- arch/mips/configs/bmips_be_defconfig        |  22 +-
- arch/mips/configs/bmips_stb_defconfig       |  23 +-
- arch/mips/configs/capcella_defconfig        |  24 +-
- arch/mips/configs/cavium_octeon_defconfig   |  42 ++-
- arch/mips/configs/ci20_defconfig            |  27 +-
- arch/mips/configs/cobalt_defconfig          |   8 +-
- arch/mips/configs/db1xxx_defconfig          |  47 +--
- arch/mips/configs/e55_defconfig             |   8 +-
- arch/mips/configs/fuloong2e_defconfig       |  79 ++---
- arch/mips/configs/gcw0_defconfig            |  12 +-
- arch/mips/configs/generic_defconfig         |  26 +-
- arch/mips/configs/gpr_defconfig             | 112 +++----
- arch/mips/configs/ip22_defconfig            |  76 ++---
- arch/mips/configs/ip27_defconfig            | 149 ++++------
- arch/mips/configs/ip28_defconfig            |  26 +-
- arch/mips/configs/ip32_defconfig            |  41 +--
- arch/mips/configs/jazz_defconfig            |  62 +---
- arch/mips/configs/jmr3927_defconfig         |  13 +-
- arch/mips/configs/lasat_defconfig           |  24 +-
- arch/mips/configs/lemote2f_defconfig        | 143 ++-------
- arch/mips/configs/loongson1b_defconfig      |  15 +-
- arch/mips/configs/loongson1c_defconfig      |  17 +-
- arch/mips/configs/loongson3_defconfig       |  70 ++---
- arch/mips/configs/malta_defconfig           |  42 ++-
- arch/mips/configs/malta_kvm_defconfig       |  59 ++--
- arch/mips/configs/malta_kvm_guest_defconfig |  48 ++-
- arch/mips/configs/malta_qemu_32r6_defconfig |  22 +-
- arch/mips/configs/maltaaprp_defconfig       |  25 +-
- arch/mips/configs/maltasmvp_defconfig       |  30 +-
- arch/mips/configs/maltasmvp_eva_defconfig   |  30 +-
- arch/mips/configs/maltaup_defconfig         |  21 +-
- arch/mips/configs/maltaup_xpa_defconfig     |  44 ++-
- arch/mips/configs/markeins_defconfig        |  35 +--
- arch/mips/configs/mips_paravirt_defconfig   |  35 +--
- arch/mips/configs/mpc30x_defconfig          |   7 +-
- arch/mips/configs/msp71xx_defconfig         |  20 +-
- arch/mips/configs/mtx1_defconfig            | 307 +++++++-------------
- arch/mips/configs/nlm_xlp_defconfig         | 112 ++-----
- arch/mips/configs/nlm_xlr_defconfig         | 145 +++------
- arch/mips/configs/omega2p_defconfig         |  28 +-
- arch/mips/configs/pic32mzda_defconfig       |  12 +-
- arch/mips/configs/pistachio_defconfig       |  78 ++---
- arch/mips/configs/pnx8335_stb225_defconfig  |  27 +-
- arch/mips/configs/qi_lb60_defconfig         |  23 +-
- arch/mips/configs/rb532_defconfig           |  49 ++--
- arch/mips/configs/rbtx49xx_defconfig        |  24 +-
- arch/mips/configs/rm200_defconfig           |  79 ++---
- arch/mips/configs/rt305x_defconfig          |  45 ++-
- arch/mips/configs/sb1250_swarm_defconfig    |  36 +--
- arch/mips/configs/tb0219_defconfig          |  32 +-
- arch/mips/configs/tb0226_defconfig          |  17 +-
- arch/mips/configs/tb0287_defconfig          |  29 +-
- arch/mips/configs/vocore2_defconfig         |  28 +-
- arch/mips/configs/workpad_defconfig         |  18 +-
- arch/mips/configs/xway_defconfig            |  32 +-
- 61 files changed, 970 insertions(+), 1850 deletions(-)
+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
+TacDkbJLxl3koJdcbqIVHoD8H8avwAzJsgMA
 
-diff --git a/arch/mips/configs/ar7_defconfig b/arch/mips/configs/ar7_defconfig
-index 5651f4d8f45c..9fbfb6e5c7d2 100644
---- a/arch/mips/configs/ar7_defconfig
-+++ b/arch/mips/configs/ar7_defconfig
-@@ -1,29 +1,27 @@
--CONFIG_AR7=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_100=y
--CONFIG_KEXEC=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_KERNEL_LZMA=y
- CONFIG_SYSVIPC=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
--CONFIG_TINY_RCU=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_RD_LZMA=y
- CONFIG_EXPERT=y
--# CONFIG_KALLSYMS is not set
- # CONFIG_ELF_CORE is not set
--# CONFIG_PCSPKR_PLATFORM is not set
-+# CONFIG_KALLSYMS is not set
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_AR7=y
-+CONFIG_HZ_100=y
-+CONFIG_KEXEC=y
-+# CONFIG_SECCOMP is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_LBDAF is not set
- # CONFIG_BLK_DEV_BSG is not set
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_BSD_DISKLABEL=y
- # CONFIG_IOSCHED_CFQ is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -35,7 +33,6 @@ CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_IP_MROUTE=y
--CONFIG_ARPD=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
-@@ -59,13 +56,9 @@ CONFIG_NETFILTER_XT_MATCH_LIMIT=m
- CONFIG_NETFILTER_XT_MATCH_MAC=m
- CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
- CONFIG_NETFILTER_XT_MATCH_STATE=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_RAW=m
- CONFIG_ATM=m
-@@ -79,8 +72,6 @@ CONFIG_NET_ACT_POLICE=y
- CONFIG_HAMRADIO=y
- CONFIG_CFG80211=m
- CONFIG_MAC80211=m
--CONFIG_MAC80211_RC_PID=y
--CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
- CONFIG_MTD_BLOCK=y
-@@ -91,25 +82,22 @@ CONFIG_MTD_CFI_STAA=y
- CONFIG_MTD_COMPLEX_MAPPINGS=y
- CONFIG_MTD_PHYSMAP=y
- CONFIG_NETDEVICES=y
--CONFIG_FIXED_PHY=y
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
- CONFIG_CPMAC=y
-+CONFIG_FIXED_PHY=y
- CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
- CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPPOE=m
-+CONFIG_PPP_MULTILINK=y
- CONFIG_PPPOATM=m
-+CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
--# CONFIG_DEVKMEM is not set
-+# CONFIG_LEGACY_PTYS is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=2
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
--# CONFIG_LEGACY_PTYS is not set
- CONFIG_HW_RANDOM=y
- CONFIG_GPIO_SYSFS=y
- # CONFIG_HWMON is not set
-@@ -131,13 +119,9 @@ CONFIG_JFFS2_FS=y
- CONFIG_JFFS2_SUMMARY=y
- CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_SQUASHFS=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_BSD_DISKLABEL=y
-+# CONFIG_CRYPTO_HW is not set
- # CONFIG_ENABLE_MUST_CHECK is not set
- CONFIG_STRIP_ASM_SYMS=y
- CONFIG_DEBUG_FS=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="rootfstype=squashfs,jffs2"
--CONFIG_CRYPTO=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/ath25_defconfig b/arch/mips/configs/ath25_defconfig
-index b8d48038e74f..5dd6b1939e9c 100644
---- a/arch/mips/configs/ath25_defconfig
-+++ b/arch/mips/configs/ath25_defconfig
-@@ -1,11 +1,6 @@
--CONFIG_ATH25=y
--# CONFIG_COMPACTION is not set
--CONFIG_HZ_100=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- # CONFIG_CROSS_MEMORY_ATTACH is not set
--# CONFIG_FHANDLE is not set
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_GZIP is not set
-@@ -14,16 +9,21 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_LZO is not set
- # CONFIG_RD_LZ4 is not set
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+# CONFIG_FHANDLE is not set
- # CONFIG_AIO is not set
- CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_ATH25=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_IOSCHED_CFQ is not set
--# CONFIG_SUSPEND is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -75,7 +75,6 @@ CONFIG_INPUT=m
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
- # CONFIG_LEGACY_PTYS is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_PCI is not set
-@@ -104,15 +103,15 @@ CONFIG_SQUASHFS_FILE_DIRECT=y
- CONFIG_SQUASHFS_DECOMP_MULTI_PERCPU=y
- # CONFIG_SQUASHFS_ZLIB is not set
- CONFIG_SQUASHFS_XZ=y
--CONFIG_PRINTK_TIME=y
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_STRIP_ASM_SYMS=y
--CONFIG_DEBUG_FS=y
--# CONFIG_SCHED_DEBUG is not set
--# CONFIG_FTRACE is not set
- # CONFIG_XZ_DEC_X86 is not set
- # CONFIG_XZ_DEC_POWERPC is not set
- # CONFIG_XZ_DEC_IA64 is not set
- # CONFIG_XZ_DEC_ARM is not set
- # CONFIG_XZ_DEC_ARMTHUMB is not set
- # CONFIG_XZ_DEC_SPARC is not set
-+CONFIG_PRINTK_TIME=y
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
-index 951c4231bdb8..4e4ec779f182 100644
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -1,30 +1,29 @@
--CONFIG_ATH79=y
--CONFIG_ATH79_MACH_AP121=y
--CONFIG_ATH79_MACH_AP136=y
--CONFIG_ATH79_MACH_AP81=y
--CONFIG_ATH79_MACH_DB120=y
--CONFIG_ATH79_MACH_PB44=y
--CONFIG_ATH79_MACH_UBNT_XM=y
--CONFIG_HZ_100=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_GZIP is not set
--CONFIG_RD_LZMA=y
--# CONFIG_KALLSYMS is not set
- # CONFIG_AIO is not set
-+# CONFIG_KALLSYMS is not set
- CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_ATH79=y
-+CONFIG_ATH79_MACH_AP121=y
-+CONFIG_ATH79_MACH_AP136=y
-+CONFIG_ATH79_MACH_AP81=y
-+CONFIG_ATH79_MACH_DB120=y
-+CONFIG_ATH79_MACH_PB44=y
-+CONFIG_ATH79_MACH_UBNT_XM=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PCI=y
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -52,12 +51,9 @@ CONFIG_MTD_PHYSMAP=y
- CONFIG_MTD_M25P80=y
- CONFIG_MTD_SPI_NOR=y
- CONFIG_NETDEVICES=y
--# CONFIG_NET_PACKET_ENGINE is not set
--CONFIG_ATH_COMMON=m
- CONFIG_ATH9K=m
- CONFIG_ATH9K_AHB=y
- CONFIG_INPUT=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_KEYBOARD_ATKBD is not set
- CONFIG_KEYBOARD_GPIO_POLLED=m
- # CONFIG_INPUT_MOUSE is not set
-@@ -65,7 +61,6 @@ CONFIG_INPUT_MISC=y
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
- # CONFIG_LEGACY_PTYS is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_PCI is not set
-@@ -98,11 +93,9 @@ CONFIG_LEDS_GPIO=y
- # CONFIG_IOMMU_SUPPORT is not set
- # CONFIG_DNOTIFY is not set
- # CONFIG_PROC_PAGE_MONITOR is not set
-+CONFIG_CRC_ITU_T=m
- # CONFIG_ENABLE_MUST_CHECK is not set
- CONFIG_STRIP_ASM_SYMS=y
- CONFIG_DEBUG_FS=y
- # CONFIG_SCHED_DEBUG is not set
- # CONFIG_FTRACE is not set
--CONFIG_CRYPTO=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_CRC_ITU_T=m
-diff --git a/arch/mips/configs/bcm47xx_defconfig b/arch/mips/configs/bcm47xx_defconfig
-index ba800a892384..249f5285e343 100644
---- a/arch/mips/configs/bcm47xx_defconfig
-+++ b/arch/mips/configs/bcm47xx_defconfig
-@@ -1,16 +1,15 @@
--CONFIG_BCM47XX=y
- CONFIG_SYSVIPC=y
- CONFIG_HIGH_RES_TIMERS=y
--CONFIG_UIDGID_STRICT_TYPE_CHECKS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_BCM47XX=y
-+CONFIG_PCI=y
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_PARTITION_ADVANCED=y
--CONFIG_PCI=y
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -47,8 +46,6 @@ CONFIG_MTD_NAND_BCM47XXNFLASH=y
- CONFIG_NETDEVICES=y
- CONFIG_B44=y
- CONFIG_TIGON3=y
--CONFIG_BGMAC=y
--CONFIG_ATH_CARDS=y
- CONFIG_ATH5K=y
- CONFIG_B43=y
- CONFIG_B43LEGACY=y
-@@ -73,6 +70,7 @@ CONFIG_USB_HCD_BCMA=y
- CONFIG_USB_HCD_SSB=y
- CONFIG_LEDS_TRIGGER_TIMER=y
- CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
-+CONFIG_CRC32_SARWATE=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_DEBUG_INFO_REDUCED=y
-@@ -81,4 +79,3 @@ CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="console=ttyS0,115200"
--CONFIG_CRC32_SARWATE=y
-diff --git a/arch/mips/configs/bcm63xx_defconfig b/arch/mips/configs/bcm63xx_defconfig
-index 131b350f014f..d22fe62adad3 100644
---- a/arch/mips/configs/bcm63xx_defconfig
-+++ b/arch/mips/configs/bcm63xx_defconfig
-@@ -1,16 +1,7 @@
--CONFIG_BCM63XX=y
--CONFIG_BCM63XX_CPU_6338=y
--CONFIG_BCM63XX_CPU_6345=y
--CONFIG_BCM63XX_CPU_6348=y
--CONFIG_BCM63XX_CPU_6358=y
--CONFIG_NO_HZ=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- # CONFIG_SWAP is not set
--CONFIG_TINY_RCU=y
--CONFIG_SYSFS_DEPRECATED_V2=y
-+CONFIG_NO_HZ=y
- CONFIG_EXPERT=y
--# CONFIG_PCSPKR_PLATFORM is not set
- # CONFIG_FUTEX is not set
- # CONFIG_EPOLL is not set
- # CONFIG_SIGNALFD is not set
-@@ -20,12 +11,18 @@ CONFIG_EXPERT=y
- # CONFIG_AIO is not set
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
--# CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
-+CONFIG_BCM63XX=y
-+CONFIG_BCM63XX_CPU_6338=y
-+CONFIG_BCM63XX_CPU_6345=y
-+CONFIG_BCM63XX_CPU_6348=y
-+CONFIG_BCM63XX_CPU_6358=y
-+# CONFIG_SECCOMP is not set
- CONFIG_PCI=y
- CONFIG_PCCARD=y
- CONFIG_PCMCIA_BCM63XX=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_IOSCHED_CFQ is not set
- CONFIG_NET=y
- CONFIG_UNIX=y
- CONFIG_INET=y
-@@ -37,7 +34,6 @@ CONFIG_INET=y
- CONFIG_CFG80211=y
- CONFIG_NL80211_TESTMODE=y
- CONFIG_MAC80211=y
--CONFIG_MAC80211_LEDS=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_STANDALONE is not set
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
-@@ -49,18 +45,16 @@ CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_PHYSMAP=y
- # CONFIG_BLK_DEV is not set
- CONFIG_NETDEVICES=y
--CONFIG_BCM63XX_PHY=y
--CONFIG_NET_ETHERNET=y
- CONFIG_BCM63XX_ENET=y
-+CONFIG_BCM63XX_PHY=y
- CONFIG_B43=y
- # CONFIG_B43_PHY_LP is not set
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
--# CONFIG_DEVKMEM is not set
-+# CONFIG_UNIX98_PTYS is not set
- CONFIG_SERIAL_BCM63XX=y
- CONFIG_SERIAL_BCM63XX_CONSOLE=y
--# CONFIG_UNIX98_PTYS is not set
- # CONFIG_HW_RANDOM is not set
- # CONFIG_HWMON is not set
- # CONFIG_VGA_ARB is not set
-@@ -68,16 +62,11 @@ CONFIG_USB=y
- CONFIG_USB_EHCI_HCD=y
- # CONFIG_USB_EHCI_TT_NEWSCHED is not set
- CONFIG_USB_OHCI_HCD=y
--CONFIG_LEDS_CLASS=y
--CONFIG_LEDS_GPIO=y
--CONFIG_LEDS_TRIGGER_TIMER=y
--CONFIG_LEDS_TRIGGER_GPIO=y
--CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
- # CONFIG_FILE_LOCKING is not set
- # CONFIG_DNOTIFY is not set
- CONFIG_PROC_KCORE=y
- # CONFIG_NETWORK_FILESYSTEMS is not set
-+# CONFIG_CRYPTO_HW is not set
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="console=ttyS0,115200"
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/bigsur_defconfig b/arch/mips/configs/bigsur_defconfig
-index 5e73fe755be6..597bc0aa2653 100644
---- a/arch/mips/configs/bigsur_defconfig
-+++ b/arch/mips/configs/bigsur_defconfig
-@@ -1,45 +1,37 @@
--CONFIG_SIBYTE_BIGSUR=y
--CONFIG_64BIT=y
--CONFIG_SMP=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_1000=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_TASKSTATS=y
- CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_AUDIT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=16
--CONFIG_RELAY=y
- CONFIG_NAMESPACES=y
--CONFIG_UTS_NS=y
--CONFIG_IPC_NS=y
- CONFIG_USER_NS=y
--CONFIG_PID_NS=y
--CONFIG_NET_NS=y
-+CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODVERSIONS=y
--CONFIG_MODULE_SRCVERSION_ALL=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_SIBYTE_BIGSUR=y
-+CONFIG_64BIT=y
-+CONFIG_SMP=y
-+CONFIG_HZ_1000=y
- CONFIG_PCI=y
- CONFIG_PCI_DEBUG=y
--CONFIG_MIPS32_COMPAT=y
- CONFIG_MIPS32_O32=y
- CONFIG_MIPS32_N32=y
- CONFIG_PM=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+# CONFIG_BLK_DEV_BSG is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -94,7 +86,6 @@ CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
- CONFIG_IP_VS_FTP=m
- CONFIG_IP_DCCP=m
--CONFIG_SCTP_HMAC_SHA1=y
- CONFIG_BRIDGE=m
- CONFIG_VLAN_8021Q=m
- CONFIG_VLAN_8021Q_GVRP=y
-@@ -134,20 +125,18 @@ CONFIG_PATA_SIL680=y
- CONFIG_ATA_GENERIC=y
- CONFIG_PATA_LEGACY=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
- CONFIG_SB1250_MAC=y
- CONFIG_CHELSIO_T3=m
- CONFIG_NETXEN_NIC=m
- CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
--CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
- CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
- CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
- CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
- CONFIG_SLIP=m
- CONFIG_SLIP_COMPRESSED=y
- CONFIG_SLIP_SMART=y
-@@ -168,13 +157,10 @@ CONFIG_EXT2_FS=m
- CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
- CONFIG_EXT2_FS_SECURITY=y
--CONFIG_EXT2_FS_XIP=y
- CONFIG_EXT3_FS=m
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
- CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_QUOTA=y
- CONFIG_QUOTA_NETLINK_INTERFACE=y
- # CONFIG_PRINT_QUOTA_WARNING is not set
-@@ -192,10 +178,7 @@ CONFIG_NTFS_RW=y
- CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
--CONFIG_RPCSEC_GSS_KRB5=m
--CONFIG_RPCSEC_GSS_SPKM3=m
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
- CONFIG_NLS_CODEPAGE_775=m
-@@ -234,13 +217,6 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_KERNEL=y
--CONFIG_DETECT_HUNG_TASK=y
--CONFIG_DEBUG_SPINLOCK_SLEEP=y
--CONFIG_DEBUG_MEMORY_INIT=y
--CONFIG_DEBUG_LIST=y
- CONFIG_KEYS=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
-@@ -265,7 +241,6 @@ CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -283,3 +258,7 @@ CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_LZO=m
- CONFIG_CRC_T10DIF=m
- CONFIG_CRC7=m
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_DETECT_HUNG_TASK=y
-+CONFIG_DEBUG_LIST=y
-diff --git a/arch/mips/configs/bmips_be_defconfig b/arch/mips/configs/bmips_be_defconfig
-index a7072a14d396..8a91f0101134 100644
---- a/arch/mips/configs/bmips_be_defconfig
-+++ b/arch/mips/configs/bmips_be_defconfig
-@@ -1,17 +1,16 @@
--CONFIG_BMIPS_GENERIC=y
--CONFIG_HIGHMEM=y
--CONFIG_SMP=y
--CONFIG_NR_CPUS=4
--# CONFIG_SECCOMP is not set
--CONFIG_MIPS_O32_FP64_SUPPORT=y
- # CONFIG_LOCALVERSION_AUTO is not set
- # CONFIG_SWAP is not set
- CONFIG_NO_HZ=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_RD_GZIP=y
- CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
-+CONFIG_BMIPS_GENERIC=y
-+CONFIG_HIGHMEM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_O32_FP64_SUPPORT=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_IOSCHED_DEADLINE is not set
- # CONFIG_IOSCHED_CFQ is not set
-@@ -32,8 +31,6 @@ CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_STANDALONE is not set
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
--CONFIG_PRINTK_TIME=y
--CONFIG_BRCMSTB_GISB_ARB=y
- CONFIG_MTD=y
- CONFIG_MTD_BCM63XX_PARTS=y
- CONFIG_MTD_CFI=y
-@@ -50,14 +47,12 @@ CONFIG_USB_USBNET=y
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_BCM63XX=y
- CONFIG_SERIAL_BCM63XX_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
--CONFIG_POWER_SUPPLY=y
- CONFIG_POWER_RESET=y
--CONFIG_POWER_RESET_BRCMSTB=y
- CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_POWER_SUPPLY=y
- # CONFIG_HWMON is not set
- CONFIG_USB=y
- CONFIG_USB_EHCI_HCD=y
-@@ -79,8 +74,9 @@ CONFIG_CIFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
-+# CONFIG_CRYPTO_HW is not set
-+CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="earlycon"
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/bmips_stb_defconfig b/arch/mips/configs/bmips_stb_defconfig
-index 47aecb8750e6..39adcca46bb0 100644
---- a/arch/mips/configs/bmips_stb_defconfig
-+++ b/arch/mips/configs/bmips_stb_defconfig
-@@ -1,10 +1,3 @@
--CONFIG_BMIPS_GENERIC=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_HIGHMEM=y
--CONFIG_SMP=y
--CONFIG_NR_CPUS=4
--# CONFIG_SECCOMP is not set
--CONFIG_MIPS_O32_FP64_SUPPORT=y
- # CONFIG_LOCALVERSION_AUTO is not set
- # CONFIG_SWAP is not set
- CONFIG_NO_HZ=y
-@@ -12,9 +5,13 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
--# CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
-+CONFIG_BMIPS_GENERIC=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_HIGHMEM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_O32_FP64_SUPPORT=y
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_GOV_POWERSAVE=y
-@@ -23,6 +20,9 @@ CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
- CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y
- CONFIG_BMIPS_CPUFREQ=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_IOSCHED_CFQ is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_PACKET_DIAG=y
-@@ -61,7 +61,6 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_OF_PLATFORM=y
- # CONFIG_HW_RANDOM is not set
- CONFIG_POWER_RESET=y
--CONFIG_POWER_RESET_BRCMSTB=y
- CONFIG_POWER_RESET_SYSCON=y
- CONFIG_POWER_SUPPLY=y
- # CONFIG_HWMON is not set
-@@ -86,9 +85,9 @@ CONFIG_CIFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
-+# CONFIG_CRYPTO_HW is not set
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="earlycon"
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/capcella_defconfig b/arch/mips/configs/capcella_defconfig
-index bd80b5c852dd..7bf8971af53b 100644
---- a/arch/mips/configs/capcella_defconfig
-+++ b/arch/mips/configs/capcella_defconfig
-@@ -1,10 +1,9 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_ZAO_CAPCELLA=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_ZAO_CAPCELLA=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
-@@ -34,18 +33,15 @@ CONFIG_BLK_DEV_SD=y
- CONFIG_ATA=y
- CONFIG_PATA_LEGACY=y
- CONFIG_NETDEVICES=y
-+CONFIG_8139TOO=y
- CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
-+CONFIG_CICADA_PHY=m
- CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
- CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
--CONFIG_8139TOO=y
--# CONFIG_INPUT_MOUSEDEV is not set
-+CONFIG_VITESSE_PHY=m
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
-@@ -67,9 +63,6 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
--CONFIG_CMDLINE_BOOL=y
--CONFIG_CMDLINE="mem=32M console=ttyVR0,38400"
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CBC=m
- CONFIG_CRYPTO_ECB=m
- CONFIG_CRYPTO_LRW=m
-@@ -77,7 +70,6 @@ CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -95,3 +87,5 @@ CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_DEFLATE=m
- # CONFIG_CRYPTO_HW is not set
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="mem=32M console=ttyVR0,38400"
-diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
-index 490b12af103c..c3f6c3488559 100644
---- a/arch/mips/configs/cavium_octeon_defconfig
-+++ b/arch/mips/configs/cavium_octeon_defconfig
-@@ -1,13 +1,6 @@
--CONFIG_CAVIUM_OCTEON_SOC=y
--CONFIG_CAVIUM_CN63XXP1=y
--CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE=2
--CONFIG_TRANSPARENT_HUGEPAGE=y
--CONFIG_SMP=y
--CONFIG_NR_CPUS=32
--CONFIG_HZ_100=y
--CONFIG_PREEMPT=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_IKCONFIG=y
-@@ -17,14 +10,20 @@ CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_CAVIUM_OCTEON_SOC=y
-+CONFIG_CAVIUM_CN63XXP1=y
-+CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE=2
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=32
-+CONFIG_HZ_100=y
- CONFIG_PCI=y
- CONFIG_PCI_MSI=y
--CONFIG_MIPS32_COMPAT=y
- CONFIG_MIPS32_O32=y
- CONFIG_MIPS32_N32=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_TRANSPARENT_HUGEPAGE=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -42,7 +41,6 @@ CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_SYN_COOKIES=y
--CONFIG_IPV6=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
- # CONFIG_FW_LOADER is not set
-@@ -52,7 +50,6 @@ CONFIG_MTD_BLOCK=y
- CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_SLRAM=y
--CONFIG_PROC_DEVICETREE=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
-@@ -74,7 +71,6 @@ CONFIG_NETDEVICES=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -84,10 +80,9 @@ CONFIG_NETDEVICES=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -99,9 +94,9 @@ CONFIG_NETDEVICES=y
- # CONFIG_NET_VENDOR_TOSHIBA is not set
- # CONFIG_NET_VENDOR_VIA is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
--CONFIG_MARVELL_PHY=y
--CONFIG_BROADCOM_PHY=y
- CONFIG_BCM87XX_PHY=y
-+CONFIG_BROADCOM_PHY=y
-+CONFIG_MARVELL_PHY=y
- # CONFIG_WLAN is not set
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
-@@ -158,10 +153,6 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_FS=y
--# CONFIG_SCHED_DEBUG is not set
--CONFIG_DEBUG_INFO=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
- CONFIG_CRYPTO_CBC=y
-@@ -171,4 +162,7 @@ CONFIG_CRYPTO_SHA1_OCTEON=m
- CONFIG_CRYPTO_SHA256_OCTEON=m
- CONFIG_CRYPTO_SHA512_OCTEON=m
- CONFIG_CRYPTO_DES=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
-+CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
-index 030ff9c205fb..412800d5d7e0 100644
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -1,18 +1,10 @@
--CONFIG_MACH_INGENIC=y
--CONFIG_JZ4780_CI20=y
--CONFIG_HIGHMEM=y
--# CONFIG_COMPACTION is not set
--CONFIG_CMA=y
--CONFIG_HZ_100=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_KERNEL_XZ=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_FHANDLE=y
- CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
-@@ -20,7 +12,6 @@ CONFIG_CGROUPS=y
- CONFIG_MEMCG=y
- CONFIG_CGROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
--CONFIG_CPUSETS=y
- CONFIG_CGROUP_DEVICE=y
- CONFIG_CGROUP_CPUACCT=y
- CONFIG_NAMESPACES=y
-@@ -32,8 +23,15 @@ CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
--# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+CONFIG_MACH_INGENIC=y
-+CONFIG_JZ4780_CI20=y
-+CONFIG_HIGHMEM=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
- # CONFIG_SUSPEND is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_COMPACTION is not set
-+CONFIG_CMA=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -59,7 +57,6 @@ CONFIG_MTD_UBI=y
- CONFIG_MTD_UBI_FASTMAP=y
- CONFIG_NETDEVICES=y
- # CONFIG_NET_VENDOR_ARC is not set
--# CONFIG_NET_CADENCE is not set
- # CONFIG_NET_VENDOR_BROADCOM is not set
- CONFIG_DM9000=y
- CONFIG_DM9000_FORCE_SIMPLE_PHY_POLL=y
-@@ -76,13 +73,11 @@ CONFIG_DM9000_FORCE_SIMPLE_PHY_POLL=y
- # CONFIG_NET_VENDOR_VIA is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
- # CONFIG_WLAN is not set
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
- CONFIG_VT_HW_CONSOLE_BINDING=y
- CONFIG_LEGACY_PTY_COUNT=2
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=5
-@@ -95,7 +90,6 @@ CONFIG_I2C_JZ4780=y
- CONFIG_SPI=y
- CONFIG_SPI_GPIO=y
- CONFIG_GPIO_SYSFS=y
--CONFIG_GPIO_INGENIC=y
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
- CONFIG_JZ4740_WDT=y
-@@ -166,9 +160,6 @@ CONFIG_DEBUG_INFO=y
- CONFIG_STRIP_ASM_SYMS=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
--CONFIG_LOCKUP_DETECTOR=y
--CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
--CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
- CONFIG_PANIC_ON_OOPS=y
- CONFIG_PANIC_TIMEOUT=10
- # CONFIG_SCHED_DEBUG is not set
-diff --git a/arch/mips/configs/cobalt_defconfig b/arch/mips/configs/cobalt_defconfig
-index a9066f300665..20c62841827f 100644
---- a/arch/mips/configs/cobalt_defconfig
-+++ b/arch/mips/configs/cobalt_defconfig
-@@ -1,9 +1,8 @@
--CONFIG_MIPS_COBALT=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
-+CONFIG_MIPS_COBALT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-@@ -17,7 +16,6 @@ CONFIG_INET=y
- # CONFIG_IPV6 is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_MTD=y
--CONFIG_MTD_BLKDEVS=y
- CONFIG_MTD_JEDECPROBE=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_PHYSMAP=y
-@@ -28,11 +26,9 @@ CONFIG_BLK_DEV_SD=y
- CONFIG_ATA=y
- CONFIG_PATA_VIA=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
- CONFIG_NET_TULIP=y
- CONFIG_DE2104X=y
- CONFIG_TULIP=y
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=y
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
-@@ -72,10 +68,8 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CONFIGFS_FS=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFSD=y
- CONFIG_NFSD_V3=y
- CONFIG_NFSD_V3_ACL=y
--CONFIG_CRC16=y
- CONFIG_LIBCRC32C=y
-diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
-index 0108bb9f1e37..34633b7611cb 100644
---- a/arch/mips/configs/db1xxx_defconfig
-+++ b/arch/mips/configs/db1xxx_defconfig
-@@ -1,41 +1,36 @@
--CONFIG_MIPS_ALCHEMY=y
--CONFIG_MIPS_DB1XXX=y
--CONFIG_CMA=y
--CONFIG_CMA_DEBUG=y
--CONFIG_HZ_100=y
- CONFIG_LOCALVERSION="-db1xxx"
- CONFIG_KERNEL_XZ=y
- CONFIG_DEFAULT_HOSTNAME="db1xxx"
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_FHANDLE=y
- CONFIG_AUDIT=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=16
- CONFIG_CGROUPS=y
--CONFIG_CGROUP_FREEZER=y
--CONFIG_CGROUP_DEVICE=y
--CONFIG_CPUSETS=y
--CONFIG_CGROUP_CPUACCT=y
- CONFIG_MEMCG=y
- CONFIG_MEMCG_SWAP=y
--CONFIG_MEMCG_KMEM=y
-+CONFIG_BLK_CGROUP=y
- CONFIG_CGROUP_SCHED=y
- CONFIG_CFS_BANDWIDTH=y
- CONFIG_RT_GROUP_SCHED=y
--CONFIG_BLK_CGROUP=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_CGROUP_CPUACCT=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
--CONFIG_BLK_DEV_BSGLIB=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_DEFAULT_NOOP=y
-+CONFIG_MIPS_ALCHEMY=y
-+CONFIG_HZ_100=y
- CONFIG_PCI=y
--CONFIG_PCI_REALLOC_ENABLE_AUTO=y
- CONFIG_PCCARD=y
- CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
--CONFIG_PM=y
-+CONFIG_FIRMWARE_MEMMAP=y
-+CONFIG_BLK_DEV_BSGLIB=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_DEFAULT_NOOP=y
-+CONFIG_CMA=y
-+CONFIG_CMA_DEBUG=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_PACKET_DIAG=y
-@@ -78,13 +73,6 @@ CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=y
- CONFIG_IPV6_PIMSM_V2=y
- CONFIG_BRIDGE=y
- CONFIG_NETLINK_DIAG=y
--CONFIG_IRDA=y
--CONFIG_IRLAN=y
--CONFIG_IRCOMM=y
--CONFIG_IRDA_ULTRA=y
--CONFIG_IRDA_CACHE_LAST_LSAP=y
--CONFIG_IRDA_FAST_RR=y
--CONFIG_AU1000_FIR=y
- CONFIG_BT=y
- CONFIG_BT_RFCOMM=y
- CONFIG_BT_RFCOMM_TTY=y
-@@ -116,7 +104,6 @@ CONFIG_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_CHR_DEV_SG=y
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_ATA=y
- CONFIG_PATA_HPT37X=y
- CONFIG_PATA_HPT3X2N=y
-@@ -155,9 +142,9 @@ CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
- CONFIG_SOUND=y
- CONFIG_SND=y
--CONFIG_SND_SEQUENCER=y
- CONFIG_SND_HRTIMER=y
- CONFIG_SND_DYNAMIC_MINORS=y
-+CONFIG_SND_SEQUENCER=y
- CONFIG_SND_AC97_POWER_SAVE=y
- CONFIG_SND_AC97_POWER_SAVE_DEFAULT=1
- CONFIG_SND_SOC=y
-@@ -180,7 +167,6 @@ CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_STORAGE=y
- CONFIG_MMC=y
--CONFIG_MMC_CLKGATE=y
- CONFIG_SDIO_UART=y
- CONFIG_MMC_AU1X=y
- CONFIG_NEW_LEDS=y
-@@ -188,12 +174,13 @@ CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_TRIGGERS=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_AU1XXX=y
--CONFIG_FIRMWARE_MEMMAP=y
- CONFIG_EXT4_FS=y
- CONFIG_EXT4_FS_POSIX_ACL=y
- CONFIG_EXT4_FS_SECURITY=y
- CONFIG_XFS_FS=y
- CONFIG_XFS_POSIX_ACL=y
-+CONFIG_F2FS_FS=y
-+CONFIG_F2FS_FS_SECURITY=y
- CONFIG_FANOTIFY=y
- CONFIG_FUSE_FS=y
- CONFIG_CUSE=y
-@@ -211,8 +198,6 @@ CONFIG_SQUASHFS_FILE_DIRECT=y
- CONFIG_SQUASHFS_XATTR=y
- CONFIG_SQUASHFS_LZO=y
- CONFIG_SQUASHFS_XZ=y
--CONFIG_F2FS_FS=y
--CONFIG_F2FS_FS_SECURITY=y
- CONFIG_NFS_FS=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
-@@ -232,7 +217,6 @@ CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_ISO8859_2=y
- CONFIG_NLS_ISO8859_15=y
- CONFIG_NLS_UTF8=y
--CONFIG_MAGIC_SYSRQ=y
- CONFIG_SECURITYFS=y
- CONFIG_CRYPTO_USER=y
- CONFIG_CRYPTO_CRYPTD=y
-@@ -241,3 +225,4 @@ CONFIG_CRYPTO_USER_API_SKCIPHER=y
- CONFIG_CRC32_SLICEBY4=y
- CONFIG_FONTS=y
- CONFIG_FONT_8x8=y
-+CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/mips/configs/e55_defconfig b/arch/mips/configs/e55_defconfig
-index c3ac0209457c..fd82b858a8f0 100644
---- a/arch/mips/configs/e55_defconfig
-+++ b/arch/mips/configs/e55_defconfig
-@@ -1,11 +1,9 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_CASIO_E55=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_HOTPLUG is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_CASIO_E55=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
-@@ -16,7 +14,6 @@ CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_ATA=y
- CONFIG_PATA_LEGACY=y
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
-@@ -38,4 +35,3 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="console=ttyVR0,19200 ide0=0x1f0,0x3f6,40 mem=8M"
--# CONFIG_CRC32 is not set
-diff --git a/arch/mips/configs/fuloong2e_defconfig b/arch/mips/configs/fuloong2e_defconfig
-index 499f51498ecb..8bcb61a6ec15 100644
---- a/arch/mips/configs/fuloong2e_defconfig
-+++ b/arch/mips/configs/fuloong2e_defconfig
-@@ -1,39 +1,33 @@
--CONFIG_MACH_LOONGSON64=y
--CONFIG_64BIT=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_LOCALVERSION="-fuloong2e"
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
--CONFIG_PID_NS=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_PCSPKR_PLATFORM is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_MACH_LOONGSON64=y
- CONFIG_PCI=y
--CONFIG_BINFMT_MISC=y
--CONFIG_MIPS32_COMPAT=y
- CONFIG_MIPS32_O32=y
- CONFIG_MIPS32_N32=y
--CONFIG_PM=y
- # CONFIG_SUSPEND is not set
- CONFIG_HIBERNATION=y
- CONFIG_PM_STD_PARTITION="/dev/sda3"
-+CONFIG_OPROFILE=m
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_BINFMT_MISC=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -42,14 +36,11 @@ CONFIG_IP_MULTICAST=y
- CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
--CONFIG_NET_IPGRE_BROADCAST=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NETFILTER_NETLINK_LOG=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_MARK=m
-@@ -78,13 +69,11 @@ CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
- CONFIG_NETFILTER_XT_MATCH_TIME=m
- CONFIG_NETFILTER_XT_MATCH_U32=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_ECN=m
- CONFIG_IP_NF_TARGET_TTL=m
-@@ -120,32 +109,30 @@ CONFIG_PATA_VIA=y
- CONFIG_ATA_GENERIC=y
- CONFIG_PATA_LEGACY=y
- CONFIG_NETDEVICES=y
-+CONFIG_NET_FC=y
- CONFIG_MACVLAN=m
- CONFIG_VETH=m
-+CONFIG_8139TOO=y
-+# CONFIG_8139TOO_PIO is not set
- CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
-+CONFIG_CICADA_PHY=m
- CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
- CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
--CONFIG_8139TOO=y
--# CONFIG_8139TOO_PIO is not set
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
--CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
- CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
- CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
- CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
- CONFIG_SLIP=m
- CONFIG_SLIP_COMPRESSED=y
- CONFIG_SLIP_SMART=y
- CONFIG_SLIP_MODE_SLIP6=y
--CONFIG_NET_FC=y
- CONFIG_INPUT_FF_MEMLESS=y
- CONFIG_MOUSE_SERIAL=y
- CONFIG_SERIAL_8250=y
-@@ -153,7 +140,6 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=2
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
- CONFIG_HW_RANDOM=y
--CONFIG_RTC=y
- CONFIG_I2C=m
- CONFIG_I2C_CHARDEV=m
- CONFIG_I2C_VIAPRO=m
-@@ -167,9 +153,6 @@ CONFIG_SOUND=y
- CONFIG_SND=m
- CONFIG_SND_SEQUENCER=m
- CONFIG_SND_SEQ_DUMMY=m
--CONFIG_SND_MIXER_OSS=m
--CONFIG_SND_PCM_OSS=m
--CONFIG_SND_SEQUENCER_OSS=y
- CONFIG_SND_VIA82XX=m
- CONFIG_HIDRAW=y
- # CONFIG_USB_HID is not set
-@@ -183,7 +166,6 @@ CONFIG_USB_WUSB_CBAF=m
- CONFIG_USB_C67X00_HCD=m
- CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
--CONFIG_USB_ISP1760=m
- CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_UHCI_HCD=m
- CONFIG_USB_R8A66597_HCD=m
-@@ -194,16 +176,13 @@ CONFIG_USB_TMC=m
- CONFIG_USB_STORAGE=y
- CONFIG_USB_STORAGE_ONETOUCH=y
- CONFIG_USB_STORAGE_CYPRESS_ATACB=y
-+CONFIG_USB_ISP1760=m
- CONFIG_USB_SEVSEG=m
- CONFIG_USB_ISIGHTFW=m
- CONFIG_UIO=m
- CONFIG_UIO_CIF=m
- CONFIG_EXT2_FS=y
--CONFIG_EXT2_FS_XIP=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
--# CONFIG_EXT3_FS_XATTR is not set
--CONFIG_EXT4_FS=m
- CONFIG_EXT4_FS_POSIX_ACL=y
- CONFIG_EXT4_FS_SECURITY=y
- CONFIG_REISERFS_FS=m
-@@ -223,33 +202,22 @@ CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_OMFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
--CONFIG_NFS_V4=y
-+CONFIG_NFS_V4=m
- CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
--CONFIG_SMB_FS=m
--CONFIG_SMB_NLS_DEFAULT=y
--CONFIG_SMB_NLS_REMOTE="cp936"
- CONFIG_CIFS=m
--CONFIG_CIFS_STATS=y
- CONFIG_CIFS_STATS2=y
- CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_CIFS_DEBUG2=y
--CONFIG_CIFS_EXPERIMENTAL=y
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_DEFAULT="utf8"
- CONFIG_NLS_CODEPAGE_936=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_DEBUG_FS=y
--CONFIG_CRYPTO_FIPS=y
- CONFIG_CRYPTO_AUTHENC=m
--CONFIG_CRYPTO_CCM=m
- CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_PCBC=m
-@@ -266,3 +234,4 @@ CONFIG_CRYPTO_LZO=m
- # CONFIG_CRYPTO_HW is not set
- CONFIG_CRC_CCITT=y
- CONFIG_CRC7=m
-+# CONFIG_ENABLE_MUST_CHECK is not set
-diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
-index 99ac1fa3b35f..a3e3eb3c5a8b 100644
---- a/arch/mips/configs/gcw0_defconfig
-+++ b/arch/mips/configs/gcw0_defconfig
-@@ -1,14 +1,14 @@
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
-+CONFIG_EMBEDDED=y
- CONFIG_MACH_INGENIC=y
- CONFIG_JZ4770_GCW0=y
- CONFIG_HIGHMEM=y
--# CONFIG_BOUNCE is not set
--CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_SECCOMP is not set
--CONFIG_NO_HZ_IDLE=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_EMBEDDED=y
--# CONFIG_BLK_DEV_BSG is not set
- # CONFIG_SUSPEND is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_BOUNCE is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-diff --git a/arch/mips/configs/generic_defconfig b/arch/mips/configs/generic_defconfig
-index 684c9dcba126..7c138dab87df 100644
---- a/arch/mips/configs/generic_defconfig
-+++ b/arch/mips/configs/generic_defconfig
-@@ -1,10 +1,3 @@
--CONFIG_MIPS_GENERIC=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_MIPS_CPS=y
--CONFIG_CPU_HAS_MSA=y
--CONFIG_HIGHMEM=y
--CONFIG_NR_CPUS=16
--CONFIG_MIPS_O32_FP64_SUPPORT=y
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ_IDLE=y
- CONFIG_IKCONFIG=y
-@@ -28,7 +21,11 @@ CONFIG_USERFAULTFD=y
- CONFIG_EMBEDDED=y
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
--CONFIG_CC_STACKPROTECTOR_REGULAR=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_MIPS_CPS=y
-+CONFIG_HIGHMEM=y
-+CONFIG_NR_CPUS=16
-+CONFIG_MIPS_O32_FP64_SUPPORT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_TRIM_UNUSED_KSYMS=y
-@@ -43,7 +40,6 @@ CONFIG_NETFILTER=y
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_SCSI=y
--# CONFIG_SERIO is not set
- CONFIG_HW_RANDOM=y
- # CONFIG_HWMON is not set
- CONFIG_MFD_SYSCON=y
-@@ -79,6 +75,12 @@ CONFIG_NFS_V4=y
- CONFIG_NFS_V4_1=y
- CONFIG_NFS_V4_2=y
- CONFIG_ROOT_NFS=y
-+# CONFIG_XZ_DEC_X86 is not set
-+# CONFIG_XZ_DEC_POWERPC is not set
-+# CONFIG_XZ_DEC_IA64 is not set
-+# CONFIG_XZ_DEC_ARM is not set
-+# CONFIG_XZ_DEC_ARMTHUMB is not set
-+# CONFIG_XZ_DEC_SPARC is not set
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_DEBUG_INFO_REDUCED=y
-@@ -87,9 +89,3 @@ CONFIG_DEBUG_FS=y
- # CONFIG_FTRACE is not set
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="earlycon"
--# CONFIG_XZ_DEC_X86 is not set
--# CONFIG_XZ_DEC_POWERPC is not set
--# CONFIG_XZ_DEC_IA64 is not set
--# CONFIG_XZ_DEC_ARM is not set
--# CONFIG_XZ_DEC_ARMTHUMB is not set
--# CONFIG_XZ_DEC_SPARC is not set
-diff --git a/arch/mips/configs/gpr_defconfig b/arch/mips/configs/gpr_defconfig
-index 55438fc9991e..9d9af5f923c3 100644
---- a/arch/mips/configs/gpr_defconfig
-+++ b/arch/mips/configs/gpr_defconfig
-@@ -1,22 +1,21 @@
--CONFIG_MIPS_ALCHEMY=y
--CONFIG_MIPS_GPR=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
- CONFIG_PROFILING=y
-+CONFIG_MIPS_ALCHEMY=y
-+CONFIG_MIPS_GPR=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
--# CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -36,7 +35,6 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_IPV6 is not set
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NETFILTER_NETLINK_LOG=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_DSCP=m
-@@ -59,13 +57,11 @@ CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_ECN=m
- CONFIG_IP_NF_TARGET_TTL=m
-@@ -93,7 +89,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_IP_DCCP=m
- CONFIG_IP_SCTP=m
- CONFIG_TIPC=m
-@@ -106,14 +101,12 @@ CONFIG_BRIDGE=m
- CONFIG_VLAN_8021Q=m
- CONFIG_DECNET=m
- CONFIG_LLC2=m
--CONFIG_IPX=m
- CONFIG_ATALK=m
- CONFIG_DEV_APPLETALK=m
- CONFIG_IPDDP=m
- CONFIG_IPDDP_ENCAP=y
- CONFIG_X25=m
- CONFIG_LAPB=m
--CONFIG_WAN_ROUTER=m
- CONFIG_NET_SCHED=y
- CONFIG_NET_SCH_CBQ=m
- CONFIG_NET_SCH_HTB=m
-@@ -173,26 +166,50 @@ CONFIG_TIFM_CORE=m
- CONFIG_SCSI=m
- CONFIG_BLK_DEV_SD=m
- CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SPI_ATTRS=m
- CONFIG_SCSI_FC_ATTRS=m
- CONFIG_SCSI_ISCSI_ATTRS=m
- CONFIG_SCSI_SAS_LIBSAS=m
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_NETDEVICES=y
--CONFIG_MARVELL_PHY=m
-+CONFIG_NET_FC=y
-+CONFIG_NETCONSOLE=m
-+CONFIG_ATM_TCP=m
-+CONFIG_ATM_LANAI=m
-+CONFIG_ATM_ENI=m
-+CONFIG_ATM_FIRESTREAM=m
-+CONFIG_ATM_ZATM=m
-+CONFIG_ATM_NICSTAR=m
-+CONFIG_ATM_IDT77252=m
-+CONFIG_ATM_AMBASSADOR=m
-+CONFIG_ATM_HORIZON=m
-+CONFIG_ATM_IA=m
-+CONFIG_ATM_FORE200E=m
-+CONFIG_ATM_HE=m
-+CONFIG_ATM_HE_USE_SUNI=y
-+CONFIG_MIPS_AU1X00_ENET=y
-+CONFIG_CICADA_PHY=m
- CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
- CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_MIPS_AU1X00_ENET=y
--CONFIG_ATH_COMMON=y
-+CONFIG_VITESSE_PHY=m
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
-+CONFIG_PPPOATM=m
-+CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_SLIP=m
-+CONFIG_SLIP_COMPRESSED=y
-+CONFIG_SLIP_SMART=y
-+CONFIG_SLIP_MODE_SLIP6=y
- CONFIG_ATH_DEBUG=y
- CONFIG_ATH5K=y
- CONFIG_ATH5K_DEBUG=y
-@@ -212,41 +229,8 @@ CONFIG_DSCC4=m
- CONFIG_DSCC4_PCISYNC=y
- CONFIG_DSCC4_PCI_RST=y
- CONFIG_DLCI=m
--CONFIG_WAN_ROUTER_DRIVERS=m
--CONFIG_CYCLADES_SYNC=m
--CONFIG_CYCLOMX_X25=y
- CONFIG_LAPBETHER=m
- CONFIG_X25_ASY=m
--CONFIG_ATM_TCP=m
--CONFIG_ATM_LANAI=m
--CONFIG_ATM_ENI=m
--CONFIG_ATM_FIRESTREAM=m
--CONFIG_ATM_ZATM=m
--CONFIG_ATM_NICSTAR=m
--CONFIG_ATM_IDT77252=m
--CONFIG_ATM_AMBASSADOR=m
--CONFIG_ATM_HORIZON=m
--CONFIG_ATM_IA=m
--CONFIG_ATM_FORE200E=m
--CONFIG_ATM_HE=m
--CONFIG_ATM_HE_USE_SUNI=y
--CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
--CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
--CONFIG_PPP_BSDCOMP=m
--CONFIG_PPP_MPPE=m
--CONFIG_PPPOE=m
--CONFIG_PPPOATM=m
--CONFIG_SLIP=m
--CONFIG_SLIP_COMPRESSED=y
--CONFIG_SLIP_SMART=y
--CONFIG_SLIP_MODE_SLIP6=y
--CONFIG_NET_FC=y
--CONFIG_NETCONSOLE=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
-@@ -258,7 +242,6 @@ CONFIG_HW_RANDOM=y
- CONFIG_I2C=y
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_GPIO=y
--CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_SENSORS_LM83=y
- CONFIG_WATCHDOG=y
-@@ -283,7 +266,6 @@ CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_STORAGE=m
- CONFIG_USB_SERIAL=y
--CONFIG_USB_EZUSB=y
- CONFIG_USB_SERIAL_GENERIC=y
- CONFIG_USB_SERIAL_SIERRAWIRELESS=y
- CONFIG_LEDS_GPIO=y
-@@ -304,26 +286,16 @@ CONFIG_JFFS2_FS=y
- CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_JFFS2_RUBIN=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_CODEPAGE_850=y
- CONFIG_NLS_ISO8859_1=y
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_FS=y
--CONFIG_CMDLINE_BOOL=y
--CONFIG_CMDLINE="console=ttyS0,115200 root=/dev/nfs rw ip=auto"
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_AUTHENC=m
- CONFIG_CRYPTO_TEST=m
- CONFIG_CRYPTO_PCBC=m
--CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -336,3 +308,7 @@ CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_DEFLATE=m
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="console=ttyS0,115200 root=/dev/nfs rw ip=auto"
-diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-index 7ddfb4ef9479..ff40fbc2f439 100644
---- a/arch/mips/configs/ip22_defconfig
-+++ b/arch/mips/configs/ip22_defconfig
-@@ -1,35 +1,28 @@
--CONFIG_SGI_IP22=y
--CONFIG_ARC_CONSOLE=y
--CONFIG_CPU_R5000=y
-+CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_1000=y
- CONFIG_PREEMPT_VOLUNTARY=y
--CONFIG_SYSVIPC=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
--CONFIG_RELAY=y
- CONFIG_NAMESPACES=y
--CONFIG_UTS_NS=y
--CONFIG_IPC_NS=y
- CONFIG_USER_NS=y
--CONFIG_PID_NS=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
-+CONFIG_RELAY=y
- CONFIG_EXPERT=y
--# CONFIG_HOTPLUG is not set
--# CONFIG_PCSPKR_PLATFORM is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_SGI_IP22=y
-+CONFIG_ARC_CONSOLE=y
-+CONFIG_CPU_R5000=y
-+CONFIG_HZ_1000=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_PM=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -62,12 +55,9 @@ CONFIG_IPV6_MROUTE=y
- CONFIG_IPV6_PIMSM_V2=y
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -77,7 +67,6 @@ CONFIG_NF_CONNTRACK_SANE=m
- CONFIG_NF_CONNTRACK_SIP=m
- CONFIG_NF_CONNTRACK_TFTP=m
- CONFIG_NF_CT_NETLINK=m
--CONFIG_NETFILTER_TPROXY=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
- CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
-@@ -136,21 +125,12 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_IP_VS_FTP=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
--CONFIG_NF_NAT_SNMP_BASIC=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -159,8 +139,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
--CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -222,23 +200,22 @@ CONFIG_SCSI_SPI_ATTRS=m
- CONFIG_ISCSI_TCP=m
- CONFIG_SGIWD93_SCSI=y
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
--CONFIG_MACVLAN=m
-+CONFIG_DUMMY=m
- CONFIG_EQUALIZER=m
-+CONFIG_MACVLAN=m
- CONFIG_TUN=m
- CONFIG_VETH=m
-+CONFIG_SGISEEQ=y
-+CONFIG_SMC91X=m
-+CONFIG_MDIO_BITBANG=m
- CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
-+CONFIG_CICADA_PHY=m
- CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
- CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_REALTEK_PHY=m
--CONFIG_MDIO_BITBANG=m
--CONFIG_NET_ETHERNET=y
--CONFIG_SMC91X=m
--CONFIG_SGISEEQ=y
- CONFIG_HOSTAP=m
- CONFIG_INPUT_MOUSEDEV=m
- CONFIG_MOUSE_PS2=m
-@@ -261,7 +238,6 @@ CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_VGA16 is not set
- # CONFIG_LOGO_LINUX_CLUT224 is not set
- CONFIG_HIDRAW=y
--CONFIG_HID_PID=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_INTF_DEV_UIE_EMUL=y
- CONFIG_RTC_DRV_DS1286=y
-@@ -269,9 +245,6 @@ CONFIG_EXT2_FS=m
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=m
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_XFS_FS=m
- CONFIG_XFS_QUOTA=y
- CONFIG_QUOTA=y
-@@ -294,18 +267,13 @@ CONFIG_MINIX_FS=m
- CONFIG_OMFS_FS=m
- CONFIG_UFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
- CONFIG_NFSD_V3_ACL=y
--CONFIG_RPCSEC_GSS_KRB5=m
--CONFIG_SMB_FS=m
--CONFIG_SMB_NLS_DEFAULT=y
- CONFIG_CIFS=m
- CONFIG_CIFS_UPCALL=y
- CONFIG_CODA_FS=m
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
- CONFIG_NLS_CODEPAGE_775=m
-@@ -344,13 +312,8 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
--CONFIG_DEBUG_MEMORY_INIT=y
- CONFIG_KEYS=y
--CONFIG_CRYPTO_FIPS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
--CONFIG_CRYPTO_CCM=m
- CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_LRW=m
-@@ -358,13 +321,10 @@ CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_XTS=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -382,4 +342,4 @@ CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_LZO=m
- # CONFIG_CRYPTO_HW is not set
- CONFIG_CRC_T10DIF=m
--CONFIG_CRC32=m
-+CONFIG_DEBUG_MEMORY_INIT=y
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 91a9c13e2c82..81c47e18131b 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -1,32 +1,28 @@
--CONFIG_SGI_IP27=y
--CONFIG_NUMA=y
--CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
--CONFIG_SMP=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_1000=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
- CONFIG_CGROUPS=y
- CONFIG_CPUSETS=y
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_SRCVERSION_ALL=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_SGI_IP27=y
-+CONFIG_NUMA=y
-+CONFIG_SMP=y
-+CONFIG_HZ_1000=y
- CONFIG_PCI=y
--CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
--CONFIG_MIPS32_COMPAT=y
- CONFIG_MIPS32_O32=y
- CONFIG_MIPS32_N32=y
- CONFIG_PM=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -41,7 +37,6 @@ CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_IPV6_OPTIMISTIC_DAD=y
-@@ -95,12 +90,10 @@ CONFIG_NET_ACT_PEDIT=m
- CONFIG_NET_ACT_SKBEDIT=m
- CONFIG_CFG80211=m
- CONFIG_MAC80211=m
--CONFIG_MAC80211_RC_PID=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
--CONFIG_BLK_DEV_OSD=m
- CONFIG_CDROM_PKTCDVD=m
- CONFIG_ATA_OVER_ETH=m
- CONFIG_SCSI=y
-@@ -115,7 +108,6 @@ CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_SPI_ATTRS=y
- CONFIG_SCSI_FC_ATTRS=y
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- CONFIG_SCSI_CXGB3_ISCSI=m
- CONFIG_SCSI_BNX2_ISCSI=m
- CONFIG_BE2ISCSI=m
-@@ -160,69 +152,56 @@ CONFIG_DM_UEVENT=y
- CONFIG_IFB=m
- CONFIG_MACVLAN=m
- CONFIG_VETH=m
--CONFIG_PHYLIB=y
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
--CONFIG_ICPLUS_PHY=m
--CONFIG_REALTEK_PHY=m
--CONFIG_NATIONAL_PHY=m
--CONFIG_STE10XP=m
--CONFIG_LSI_ET1011C_PHY=m
--CONFIG_MDIO_BITBANG=m
--CONFIG_NET_ETHERNET=y
--CONFIG_AX88796=m
--CONFIG_AX88796_93CX6=y
--CONFIG_SGI_IOC3_ETH=y
--CONFIG_SMC91X=m
--CONFIG_ETHOC=m
--CONFIG_SMSC911X=m
--CONFIG_DNET=m
--CONFIG_B44=m
--CONFIG_KS8851_MLL=m
- CONFIG_ATL2=m
--CONFIG_E1000E=m
--CONFIG_IP1000=m
--CONFIG_IGB=m
--CONFIG_IGBVF=m
--CONFIG_VIA_VELOCITY=m
--CONFIG_QLA3XXX=m
- CONFIG_ATL1E=m
- CONFIG_ATL1C=m
--CONFIG_JME=m
-+CONFIG_B44=m
-+CONFIG_BNX2X=m
- CONFIG_ENIC=m
-+CONFIG_DNET=m
-+CONFIG_BE2NET=m
-+CONFIG_E1000E=m
-+CONFIG_IGB=m
-+CONFIG_IGBVF=m
- CONFIG_IXGBE=m
-+CONFIG_JME=m
-+CONFIG_MLX4_EN=m
-+# CONFIG_MLX4_DEBUG is not set
-+CONFIG_KS8851_MLL=m
- CONFIG_VXGE=m
-+CONFIG_AX88796=m
-+CONFIG_AX88796_93CX6=y
-+CONFIG_ETHOC=m
-+CONFIG_QLA3XXX=m
- CONFIG_NETXEN_NIC=m
-+CONFIG_SFC=m
-+CONFIG_SGI_IOC3_ETH=y
-+CONFIG_SMC91X=m
-+CONFIG_SMSC911X=m
- CONFIG_NIU=m
--CONFIG_MLX4_EN=m
--# CONFIG_MLX4_DEBUG is not set
- CONFIG_TEHUTI=m
--CONFIG_BNX2X=m
--CONFIG_SFC=m
--CONFIG_BE2NET=m
--CONFIG_LIBERTAS_THINFIRM=m
--CONFIG_ATMEL=m
--CONFIG_PCI_ATMEL=m
--CONFIG_PRISM54=m
--CONFIG_RTL8180=m
-+CONFIG_VIA_VELOCITY=m
-+CONFIG_PHYLIB=y
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
-+CONFIG_ICPLUS_PHY=m
-+CONFIG_LSI_ET1011C_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_NATIONAL_PHY=m
-+CONFIG_QSEMI_PHY=m
-+CONFIG_REALTEK_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_STE10XP=m
-+CONFIG_VITESSE_PHY=m
- CONFIG_ADM8211=m
--CONFIG_MWL8K=m
--CONFIG_ATH_COMMON=m
- CONFIG_ATH5K=m
- CONFIG_ATH9K=m
-+CONFIG_ATMEL=m
-+CONFIG_PCI_ATMEL=m
- CONFIG_B43=m
- CONFIG_B43LEGACY=m
- # CONFIG_B43LEGACY_DEBUG is not set
--CONFIG_HOSTAP=m
--CONFIG_HOSTAP_FIRMWARE=y
--CONFIG_HOSTAP_FIRMWARE_NVRAM=y
--CONFIG_HOSTAP_PLX=m
--CONFIG_HOSTAP_PCI=m
- CONFIG_IPW2100=m
- CONFIG_IPW2100_MONITOR=y
- CONFIG_IPW2100_DEBUG=y
-@@ -231,12 +210,14 @@ CONFIG_IPW2200_MONITOR=y
- CONFIG_IPW2200_PROMISCUOUS=y
- CONFIG_IPW2200_QOS=y
- CONFIG_IPW2200_DEBUG=y
--CONFIG_IWLWIFI=m
--CONFIG_IWLAGN=m
--CONFIG_IWL4965=y
--CONFIG_IWL5000=y
-+CONFIG_IWL4965=m
- CONFIG_IWL3945=m
--CONFIG_LIBERTAS=m
-+CONFIG_IWLWIFI=m
-+CONFIG_HOSTAP=m
-+CONFIG_HOSTAP_FIRMWARE=y
-+CONFIG_HOSTAP_FIRMWARE_NVRAM=y
-+CONFIG_HOSTAP_PLX=m
-+CONFIG_HOSTAP_PCI=m
- CONFIG_HERMES=m
- # CONFIG_HERMES_CACHE_FW_ON_INIT is not set
- CONFIG_PLX_HERMES=m
-@@ -244,13 +225,18 @@ CONFIG_TMD_HERMES=m
- CONFIG_NORTEL_HERMES=m
- CONFIG_P54_COMMON=m
- CONFIG_P54_PCI=m
-+CONFIG_PRISM54=m
-+CONFIG_LIBERTAS=m
-+CONFIG_LIBERTAS_THINFIRM=m
-+CONFIG_MWL8K=m
- CONFIG_RT2X00=m
- CONFIG_RT2400PCI=m
- CONFIG_RT2500PCI=m
- CONFIG_RT61PCI=m
- CONFIG_RT2800PCI=m
--CONFIG_WL12XX=m
-+CONFIG_RTL8180=m
- CONFIG_WL1251=m
-+CONFIG_WL12XX=m
- # CONFIG_INPUT is not set
- CONFIG_SERIO_LIBPS2=m
- CONFIG_SERIO_RAW=m
-@@ -262,7 +248,6 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_EXTENDED=y
- CONFIG_SERIAL_8250_MANY_PORTS=y
- CONFIG_SERIAL_8250_SHARE_IRQ=y
--CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
- CONFIG_HW_RANDOM_TIMERIOMEM=m
- CONFIG_I2C_CHARDEV=m
- CONFIG_I2C_ALI1535=m
-@@ -285,7 +270,6 @@ CONFIG_I2C_SIMTEC=m
- CONFIG_I2C_PARPORT_LIGHT=m
- CONFIG_I2C_TAOS_EVM=m
- CONFIG_I2C_STUB=m
--CONFIG_PPS=m
- # CONFIG_HWMON is not set
- CONFIG_THERMAL=m
- CONFIG_MFD_PCF50633=m
-@@ -310,12 +294,8 @@ CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
- CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_XFS_FS=m
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -334,17 +314,8 @@ CONFIG_SQUASHFS=m
- CONFIG_OMFS_FS=m
- CONFIG_EXOFS_FS=m
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
--CONFIG_RPCSEC_GSS_KRB5=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_DLM=m
--CONFIG_KEYS=y
- CONFIG_SECURITYFS=y
--CONFIG_CRYPTO_FIPS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
--CONFIG_CRYPTO_CCM=m
--CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
-@@ -357,7 +328,6 @@ CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -374,5 +344,4 @@ CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_LZO=m
--CONFIG_CRYPTO_DEV_HIFN_795X=m
- CONFIG_CRC_T10DIF=m
-diff --git a/arch/mips/configs/ip28_defconfig b/arch/mips/configs/ip28_defconfig
-index d0a4c2cfacf8..0921ef38e9fb 100644
---- a/arch/mips/configs/ip28_defconfig
-+++ b/arch/mips/configs/ip28_defconfig
-@@ -1,26 +1,24 @@
--CONFIG_SGI_IP28=y
--CONFIG_ARC_CONSOLE=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_SYSVIPC=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_HOTPLUG is not set
- CONFIG_SLAB=y
-+CONFIG_SGI_IP28=y
-+CONFIG_ARC_CONSOLE=y
-+CONFIG_EISA=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_PM=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_EISA=y
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_PM=y
--# CONFIG_SUSPEND is not set
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -43,7 +41,6 @@ CONFIG_SCSI_CONSTANTS=y
- CONFIG_SGIWD93_SCSI=y
- CONFIG_NETDEVICES=y
- CONFIG_DUMMY=m
--CONFIG_NET_ETHERNET=y
- CONFIG_SGISEEQ=y
- # CONFIG_MOUSE_PS2_ALPS is not set
- # CONFIG_MOUSE_PS2_SYNAPTICS is not set
-@@ -65,11 +62,8 @@ CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_ROOT_NFS=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_MAGIC_SYSRQ=y
- CONFIG_CRYPTO_MANAGER=y
- # CONFIG_CRYPTO_HW is not set
--# CONFIG_CRC32 is not set
-+CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/mips/configs/ip32_defconfig b/arch/mips/configs/ip32_defconfig
-index ebff297328ae..8f6d8af2e3c0 100644
---- a/arch/mips/configs/ip32_defconfig
-+++ b/arch/mips/configs/ip32_defconfig
-@@ -1,26 +1,25 @@
--CONFIG_SGI_IP32=y
--# CONFIG_SECCOMP is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_AUDIT=y
-+CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_RELAY=y
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
- CONFIG_PROFILING=y
-+CONFIG_SGI_IP32=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
- CONFIG_OPROFILE=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
--# CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_SGI_PARTITION=y
- CONFIG_BINFMT_MISC=y
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -33,7 +32,6 @@ CONFIG_IP_PNP=y
- CONFIG_IP_PNP_DHCP=y
- CONFIG_IP_PNP_BOOTP=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
- CONFIG_INET_AH=m
- CONFIG_INET_ESP=m
- CONFIG_INET_IPCOMP=m
-@@ -56,24 +54,20 @@ CONFIG_BLK_DEV_SD=y
- CONFIG_BLK_DEV_SR=y
- CONFIG_BLK_DEV_SR_VENDOR=y
- CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_SAS_LIBSAS=y
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- CONFIG_SCSI_AIC7XXX=y
- CONFIG_AIC7XXX_RESET_DELAY_MS=15000
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_SGI_O2MACE_ETH=y
-+CONFIG_DUMMY=m
- CONFIG_NET_TULIP=y
- CONFIG_DE2104X=m
- CONFIG_TULIP=m
- CONFIG_TULIP_MMIO=y
-+CONFIG_SGI_O2MACE_ETH=y
- CONFIG_INPUT_EVDEV=m
- CONFIG_SERIO_MACEPS2=y
- CONFIG_SERIO_RAW=y
-@@ -87,9 +81,6 @@ CONFIG_FIRMWARE_EDID=y
- CONFIG_FB_GBE=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_FRAMEBUFFER_CONSOLE=y
--CONFIG_FONTS=y
--CONFIG_FONT_8x8=y
--CONFIG_FONT_8x16=y
- CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_MONO is not set
- # CONFIG_LOGO_LINUX_VGA16 is not set
-@@ -100,7 +91,6 @@ CONFIG_RTC_CLASS=y
- # CONFIG_RTC_INTF_SYSFS is not set
- # CONFIG_RTC_INTF_PROC is not set
- CONFIG_RTC_DRV_DS1685_FAMILY=y
--CONFIG_RTC_DRV_DS1685=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
-@@ -124,13 +114,10 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CONFIGFS_FS=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
- CONFIG_CIFS=m
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_SGI_PARTITION=y
- CONFIG_NLS=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
-@@ -170,7 +157,6 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_MAGIC_SYSRQ=y
- CONFIG_KEYS=y
- CONFIG_CRYPTO_NULL=y
- CONFIG_CRYPTO_CBC=y
-@@ -186,7 +172,6 @@ CONFIG_CRYPTO_SHA256=y
- CONFIG_CRYPTO_SHA512=y
- CONFIG_CRYPTO_TGR192=y
- CONFIG_CRYPTO_WP512=y
--CONFIG_CRYPTO_AES=y
- CONFIG_CRYPTO_ANUBIS=y
- CONFIG_CRYPTO_ARC4=y
- CONFIG_CRYPTO_BLOWFISH=y
-@@ -200,7 +185,9 @@ CONFIG_CRYPTO_SERPENT=y
- CONFIG_CRYPTO_TEA=y
- CONFIG_CRYPTO_TWOFISH=y
- CONFIG_CRYPTO_DEFLATE=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_CRC16=y
- CONFIG_CRC_T10DIF=y
- CONFIG_LIBCRC32C=y
-+CONFIG_FONTS=y
-+CONFIG_FONT_8x8=y
-+CONFIG_FONT_8x16=y
-+CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
-index 9ad1c94376c8..328d4dfeb4cb 100644
---- a/arch/mips/configs/jazz_defconfig
-+++ b/arch/mips/configs/jazz_defconfig
-@@ -1,22 +1,20 @@
--CONFIG_MACH_JAZZ=y
--CONFIG_OLIVETTI_M700=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_JAZZ=y
-+CONFIG_OLIVETTI_M700=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=m
- CONFIG_UNIX=y
-@@ -25,8 +23,6 @@ CONFIG_NET_KEY_MIGRATE=y
- CONFIG_INET=y
- CONFIG_IP_MULTICAST=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
--CONFIG_NET_IPGRE_BROADCAST=y
- CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
-@@ -41,7 +37,6 @@ CONFIG_INET6_IPCOMP=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
-@@ -83,20 +78,12 @@ CONFIG_NETFILTER_XT_MATCH_STATE=m
- CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
--CONFIG_NF_NAT_SNMP_BASIC=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -105,7 +92,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
-@@ -140,7 +126,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE=m
- CONFIG_DECNET=m
- CONFIG_NET_SCHED=y
-@@ -230,24 +215,20 @@ CONFIG_DM_MIRROR=m
- CONFIG_DM_ZERO=m
- CONFIG_DM_MULTIPATH=m
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
-+CONFIG_DUMMY=m
- CONFIG_EQUALIZER=m
- CONFIG_TUN=m
-+CONFIG_MIPS_JAZZ_SONIC=y
-+CONFIG_NE2000=m
- CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
-+CONFIG_CICADA_PHY=m
- CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
- CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_MIPS_JAZZ_SONIC=y
--CONFIG_NET_ISA=y
--CONFIG_NE2000=m
--CONFIG_NET_PCI=y
-+CONFIG_VITESSE_PHY=m
- CONFIG_PLIP=m
- CONFIG_INPUT_FF_MEMLESS=m
- CONFIG_SERIO_PARKBD=m
-@@ -297,25 +278,11 @@ CONFIG_ROMFS_FS=m
- CONFIG_SYSV_FS=m
- CONFIG_UFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
--CONFIG_RPCSEC_GSS_KRB5=m
--CONFIG_RPCSEC_GSS_SPKM3=m
--CONFIG_SMB_FS=m
- CONFIG_CIFS=m
--CONFIG_NCP_FS=m
--CONFIG_NCPFS_PACKET_SIGNING=y
--CONFIG_NCPFS_IOCTL_LOCKING=y
--CONFIG_NCPFS_STRONG=y
--CONFIG_NCPFS_NFS_NS=y
--CONFIG_NCPFS_OS2_NS=y
--CONFIG_NCPFS_SMALLDOS=y
--CONFIG_NCPFS_NLS=y
--CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
- CONFIG_NLS_CODEPAGE_775=m
-@@ -354,21 +321,14 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
--CONFIG_CRYPTO_NULL=m
--CONFIG_CRYPTO_ECB=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
--CONFIG_CRYPTO_ARC4=m
- CONFIG_CRYPTO_BLOWFISH=m
- CONFIG_CRYPTO_CAMELLIA=m
- CONFIG_CRYPTO_CAST6=m
-diff --git a/arch/mips/configs/jmr3927_defconfig b/arch/mips/configs/jmr3927_defconfig
-index af12281a5c33..24b96faf9b4e 100644
---- a/arch/mips/configs/jmr3927_defconfig
-+++ b/arch/mips/configs/jmr3927_defconfig
-@@ -1,13 +1,10 @@
--CONFIG_MACH_TX39XX=y
--CONFIG_TOSHIBA_JMR3927=y
--# CONFIG_SECCOMP is not set
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_EXPERT=y
--# CONFIG_HOTPLUG is not set
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_TX39XX=y
-+CONFIG_TOSHIBA_JMR3927=y
-+# CONFIG_SECCOMP is not set
- CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -27,16 +24,14 @@ CONFIG_MTD_JEDECPROBE=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_PHYSMAP=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_TC35815=y
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
-+# CONFIG_UNIX98_PTYS is not set
- CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_SERIAL_TXX9_CONSOLE=y
- CONFIG_SERIAL_TXX9_STDSERIAL=y
--# CONFIG_UNIX98_PTYS is not set
- # CONFIG_HW_RANDOM is not set
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
-diff --git a/arch/mips/configs/lasat_defconfig b/arch/mips/configs/lasat_defconfig
-index 947a35c7c46c..c66ca3785655 100644
---- a/arch/mips/configs/lasat_defconfig
-+++ b/arch/mips/configs/lasat_defconfig
-@@ -1,25 +1,23 @@
--CONFIG_LASAT=y
--CONFIG_PICVUE=y
--CONFIG_PICVUE_PROC=y
--CONFIG_DS1603=y
--CONFIG_LASAT_SYSCTL=y
--CONFIG_HZ_1000=y
--# CONFIG_SECCOMP is not set
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
--# CONFIG_KALLSYMS is not set
--# CONFIG_HOTPLUG is not set
- # CONFIG_EPOLL is not set
- # CONFIG_SIGNALFD is not set
- # CONFIG_TIMERFD is not set
- # CONFIG_EVENTFD is not set
-+# CONFIG_KALLSYMS is not set
- CONFIG_SLAB=y
-+CONFIG_LASAT=y
-+CONFIG_PICVUE=y
-+CONFIG_PICVUE_PROC=y
-+CONFIG_DS1603=y
-+CONFIG_LASAT_SYSCTL=y
-+CONFIG_HZ_1000=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_IOSCHED_DEADLINE is not set
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -39,10 +37,7 @@ CONFIG_PATA_CMD64X=y
- CONFIG_ATA_GENERIC=y
- CONFIG_PATA_LEGACY=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_PCNET32=y
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_SERIO_RAW=y
-@@ -55,7 +50,6 @@ CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_USB_SUPPORT is not set
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_FS_XATTR is not set
- # CONFIG_DNOTIFY is not set
- CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index 02be95c1b712..300127b0f5b7 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -1,48 +1,33 @@
--CONFIG_MACH_LOONGSON64=y
--CONFIG_LEMOTE_MACH2F=y
--CONFIG_CS5536_MFGPT=y
--CONFIG_64BIT=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_AUDIT=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
--CONFIG_KEXEC=y
--# CONFIG_SECCOMP is not set
--# CONFIG_LOCALVERSION_AUTO is not set
--CONFIG_SYSVIPC=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
--CONFIG_AUDIT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_RD_BZIP2=y
--CONFIG_RD_LZMA=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_PROFILING=y
-+CONFIG_MACH_LOONGSON64=y
-+CONFIG_LEMOTE_MACH2F=y
-+CONFIG_KEXEC=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_HIBERNATION=y
-+CONFIG_PM_STD_PARTITION="/dev/hda3"
- CONFIG_OPROFILE=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_BLK_DEV_INTEGRITY=y
- CONFIG_IOSCHED_DEADLINE=m
--CONFIG_PCI=y
- CONFIG_BINFMT_MISC=m
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_PM=y
--CONFIG_HIBERNATION=y
--CONFIG_PM_STD_PARTITION="/dev/hda3"
--CONFIG_CPU_FREQ=y
--CONFIG_CPU_FREQ_STAT=y
--CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
--CONFIG_CPU_FREQ_GOV_POWERSAVE=m
--CONFIG_CPU_FREQ_GOV_USERSPACE=m
--CONFIG_CPU_FREQ_GOV_CONSERVATIVE=m
--CONFIG_LOONGSON2_CPUFREQ=m
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -55,11 +40,9 @@ CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
- CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
--CONFIG_ARPD=y
- CONFIG_SYN_COOKIES=y
- CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
-@@ -76,7 +59,6 @@ CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
- CONFIG_BRIDGE=m
- CONFIG_VLAN_8021Q=m
--CONFIG_IPX=m
- CONFIG_NET_SCHED=y
- CONFIG_NET_EMATCH=y
- CONFIG_NET_CLS_ACT=y
-@@ -91,8 +73,6 @@ CONFIG_BT_HCIBTUSB=m
- CONFIG_BT_HCIBFUSB=m
- CONFIG_BT_HCIVHCI=m
- CONFIG_CFG80211=m
--CONFIG_LIB80211=m
--CONFIG_LIB80211_DEBUG=y
- CONFIG_MAC80211=m
- CONFIG_MAC80211_LEDS=y
- CONFIG_RFKILL=m
-@@ -130,18 +110,14 @@ CONFIG_DM_DELAY=m
- CONFIG_DM_UEVENT=y
- CONFIG_NETDEVICES=y
- CONFIG_DUMMY=m
-+CONFIG_NETCONSOLE=m
- CONFIG_TUN=m
- CONFIG_VETH=m
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_8139TOO=y
- # CONFIG_8139TOO_PIO is not set
- CONFIG_R8169=y
--CONFIG_R8169_VLAN=y
- CONFIG_USB_USBNET=m
- CONFIG_USB_NET_CDC_EEM=m
--CONFIG_NETCONSOLE=m
--CONFIG_NETCONSOLE_DYNAMIC=y
- CONFIG_INPUT_POLLDEV=m
- CONFIG_INPUT_EVDEV=y
- # CONFIG_MOUSE_PS2_ALPS is not set
-@@ -149,6 +125,7 @@ CONFIG_INPUT_EVDEV=y
- # CONFIG_MOUSE_PS2_TRACKPOINT is not set
- CONFIG_MOUSE_APPLETOUCH=m
- # CONFIG_SERIO_SERPORT is not set
-+CONFIG_LEGACY_PTY_COUNT=16
- CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_SERIAL_8250=m
- # CONFIG_SERIAL_8250_PCI is not set
-@@ -156,50 +133,10 @@ CONFIG_SERIAL_8250_NR_UARTS=16
- CONFIG_SERIAL_8250_EXTENDED=y
- CONFIG_SERIAL_8250_MANY_PORTS=y
- CONFIG_SERIAL_8250_FOURPORT=y
--CONFIG_LEGACY_PTY_COUNT=16
- CONFIG_HW_RANDOM=y
--CONFIG_RTC=y
- CONFIG_GPIO_LOONGSON=y
- CONFIG_THERMAL=y
- CONFIG_MEDIA_SUPPORT=m
--CONFIG_VIDEO_DEV=m
--CONFIG_VIDEO_HELPER_CHIPS_AUTO=y
--CONFIG_VIDEO_VIVI=m
--CONFIG_USB_VIDEO_CLASS=m
--CONFIG_USB_M5602=m
--CONFIG_USB_STV06XX=m
--CONFIG_USB_GSPCA_CONEX=m
--CONFIG_USB_GSPCA_ETOMS=m
--CONFIG_USB_GSPCA_FINEPIX=m
--CONFIG_USB_GSPCA_MARS=m
--CONFIG_USB_GSPCA_MR97310A=m
--CONFIG_USB_GSPCA_OV519=m
--CONFIG_USB_GSPCA_OV534=m
--CONFIG_USB_GSPCA_PAC207=m
--CONFIG_USB_GSPCA_PAC7311=m
--CONFIG_USB_GSPCA_SN9C20X=m
--CONFIG_USB_GSPCA_SONIXB=m
--CONFIG_USB_GSPCA_SONIXJ=m
--CONFIG_USB_GSPCA_SPCA500=m
--CONFIG_USB_GSPCA_SPCA501=m
--CONFIG_USB_GSPCA_SPCA505=m
--CONFIG_USB_GSPCA_SPCA506=m
--CONFIG_USB_GSPCA_SPCA508=m
--CONFIG_USB_GSPCA_SPCA561=m
--CONFIG_USB_GSPCA_SQ905=m
--CONFIG_USB_GSPCA_SQ905C=m
--CONFIG_USB_GSPCA_STK014=m
--CONFIG_USB_GSPCA_SUNPLUS=m
--CONFIG_USB_GSPCA_T613=m
--CONFIG_USB_GSPCA_TV8532=m
--CONFIG_USB_GSPCA_VC032X=m
--CONFIG_USB_GSPCA_ZC3XX=m
--CONFIG_USB_ET61X251=m
--CONFIG_USB_SN9C102=m
--CONFIG_USB_ZR364XX=m
--CONFIG_USB_STKWEBCAM=m
--CONFIG_USB_S2255=m
--# CONFIG_RADIO_ADAPTERS is not set
- CONFIG_FB=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_FB_MODE_HELPERS=y
-@@ -214,27 +151,14 @@ CONFIG_BACKLIGHT_GENERIC=m
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
--CONFIG_FONTS=y
--CONFIG_FONT_8x8=y
--CONFIG_FONT_6x11=y
--CONFIG_FONT_7x14=y
--CONFIG_FONT_PEARL_8x8=y
--CONFIG_FONT_ACORN_8x8=y
--CONFIG_FONT_MINI_4x6=y
--CONFIG_FONT_SUN8x16=y
--CONFIG_FONT_SUN12x22=y
--CONFIG_FONT_10x18=y
- CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_MONO is not set
- # CONFIG_LOGO_LINUX_VGA16 is not set
- CONFIG_SOUND=m
- CONFIG_SND=m
-+CONFIG_SND_HRTIMER=m
- CONFIG_SND_SEQUENCER=m
- CONFIG_SND_SEQ_DUMMY=m
--CONFIG_SND_MIXER_OSS=m
--CONFIG_SND_PCM_OSS=m
--CONFIG_SND_SEQUENCER_OSS=y
--CONFIG_SND_HRTIMER=m
- CONFIG_SND_DUMMY=m
- CONFIG_SND_VIRMIDI=m
- CONFIG_SND_SERIAL_U16550=m
-@@ -247,7 +171,6 @@ CONFIG_SND_USB_AUDIO=m
- CONFIG_SND_USB_CAIAQ=m
- CONFIG_SND_USB_CAIAQ_INPUT=y
- CONFIG_HIDRAW=y
--CONFIG_USB_HIDDEV=y
- CONFIG_HID_A4TECH=m
- CONFIG_HID_APPLE=m
- CONFIG_HID_BELKIN=m
-@@ -283,6 +206,7 @@ CONFIG_THRUSTMASTER_FF=y
- CONFIG_HID_WACOM=m
- CONFIG_HID_ZEROPLUS=m
- CONFIG_ZEROPLUS_FF=y
-+CONFIG_USB_HIDDEV=y
- CONFIG_USB=y
- CONFIG_USB_DYNAMIC_MINORS=y
- CONFIG_USB_OTG_WHITELIST=y
-@@ -292,8 +216,6 @@ CONFIG_USB_EHCI_ROOT_HUB_TT=y
- # CONFIG_USB_EHCI_TT_NEWSCHED is not set
- CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_UHCI_HCD=m
--CONFIG_USB_WHCI_HCD=m
--CONFIG_USB_HWA_HCD=m
- CONFIG_USB_ACM=m
- CONFIG_USB_PRINTER=m
- CONFIG_USB_WDM=m
-@@ -309,18 +231,13 @@ CONFIG_USB_STORAGE_ALAUDA=m
- CONFIG_USB_SERIAL=m
- CONFIG_USB_SERIAL_GENERIC=y
- CONFIG_USB_GADGET=m
--CONFIG_USB_GADGET_M66592=y
- CONFIG_MMC=m
- CONFIG_LEDS_CLASS=y
- CONFIG_STAGING=y
--# CONFIG_STAGING_EXCLUDE_BUILD is not set
--CONFIG_FB_SM7XX=y
- CONFIG_EXT2_FS=m
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
- CONFIG_REISERFS_FS=m
- CONFIG_REISERFS_PROC_INFO=y
- CONFIG_REISERFS_FS_XATTR=y
-@@ -349,7 +266,6 @@ CONFIG_SQUASHFS=m
- CONFIG_SQUASHFS_EMBEDDED=y
- CONFIG_ROMFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V4=y
-@@ -393,32 +309,19 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=y
--CONFIG_PRINTK_TIME=y
--CONFIG_FRAME_WARN=1024
--CONFIG_STRIP_ASM_SYMS=y
--CONFIG_DEBUG_FS=y
--CONFIG_KEYS=y
--CONFIG_CRYPTO_FIPS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_AUTHENC=m
- CONFIG_CRYPTO_TEST=m
--CONFIG_CRYPTO_CCM=m
--CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_XTS=m
--CONFIG_CRYPTO_HMAC=m
- CONFIG_CRYPTO_XCBC=m
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
- CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
- CONFIG_CRYPTO_SHA1=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -435,4 +338,16 @@ CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_DEFLATE=m
- CONFIG_CRYPTO_LZO=m
--CONFIG_CRC_T10DIF=y
-+CONFIG_FONTS=y
-+CONFIG_FONT_8x8=y
-+CONFIG_FONT_6x11=y
-+CONFIG_FONT_7x14=y
-+CONFIG_FONT_PEARL_8x8=y
-+CONFIG_FONT_ACORN_8x8=y
-+CONFIG_FONT_MINI_4x6=y
-+CONFIG_FONT_10x18=y
-+CONFIG_FONT_SUN8x16=y
-+CONFIG_FONT_SUN12x22=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_STRIP_ASM_SYMS=y
-diff --git a/arch/mips/configs/loongson1b_defconfig b/arch/mips/configs/loongson1b_defconfig
-index 914c867887bd..b064d68a5424 100644
---- a/arch/mips/configs/loongson1b_defconfig
-+++ b/arch/mips/configs/loongson1b_defconfig
-@@ -1,10 +1,8 @@
--CONFIG_MACH_LOONGSON32=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_KERNEL_XZ=y
- CONFIG_SYSVIPC=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_IKCONFIG=y
-@@ -15,13 +13,15 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_MACH_LOONGSON32=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- # CONFIG_LBDAF is not set
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -43,7 +43,6 @@ CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_NAND=y
--CONFIG_MTD_NAND_LOONGSON1=y
- CONFIG_MTD_UBI=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_SCSI=m
-@@ -67,7 +66,6 @@ CONFIG_INPUT_EVDEV=y
- # CONFIG_SERIO is not set
- CONFIG_VT_HW_CONSOLE_BINDING=y
- CONFIG_LEGACY_PTY_COUNT=8
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
-@@ -116,8 +114,9 @@ CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
-+# CONFIG_CRYPTO_ECHAINIV is not set
-+# CONFIG_CRYPTO_HW is not set
- CONFIG_DYNAMIC_DEBUG=y
--# CONFIG_ENABLE_WARN_DEPRECATED is not set
- # CONFIG_ENABLE_MUST_CHECK is not set
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
-@@ -125,5 +124,3 @@ CONFIG_MAGIC_SYSRQ=y
- # CONFIG_DEBUG_PREEMPT is not set
- # CONFIG_FTRACE is not set
- # CONFIG_EARLY_PRINTK is not set
--# CONFIG_CRYPTO_ECHAINIV is not set
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/loongson1c_defconfig b/arch/mips/configs/loongson1c_defconfig
-index 68e42eff908e..5d76559b56cd 100644
---- a/arch/mips/configs/loongson1c_defconfig
-+++ b/arch/mips/configs/loongson1c_defconfig
-@@ -1,11 +1,8 @@
--CONFIG_MACH_LOONGSON32=y
--CONFIG_LOONGSON1_LS1C=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_KERNEL_XZ=y
- CONFIG_SYSVIPC=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_IKCONFIG=y
-@@ -16,13 +13,16 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_MACH_LOONGSON32=y
-+CONFIG_LOONGSON1_LS1C=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- # CONFIG_LBDAF is not set
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -44,7 +44,6 @@ CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_NAND=y
--CONFIG_MTD_NAND_LOONGSON1=y
- CONFIG_MTD_UBI=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_SCSI=m
-@@ -68,7 +67,6 @@ CONFIG_INPUT_EVDEV=y
- # CONFIG_SERIO is not set
- CONFIG_VT_HW_CONSOLE_BINDING=y
- CONFIG_LEGACY_PTY_COUNT=8
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
-@@ -117,8 +115,9 @@ CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
-+# CONFIG_CRYPTO_ECHAINIV is not set
-+# CONFIG_CRYPTO_HW is not set
- CONFIG_DYNAMIC_DEBUG=y
--# CONFIG_ENABLE_WARN_DEPRECATED is not set
- # CONFIG_ENABLE_MUST_CHECK is not set
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
-@@ -126,5 +125,3 @@ CONFIG_MAGIC_SYSRQ=y
- # CONFIG_DEBUG_PREEMPT is not set
- # CONFIG_FTRACE is not set
- # CONFIG_EARLY_PRINTK is not set
--# CONFIG_CRYPTO_ECHAINIV is not set
--# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-index 324dfee23dfb..1322adb705c8 100644
---- a/arch/mips/configs/loongson3_defconfig
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -1,15 +1,3 @@
--CONFIG_MACH_LOONGSON64=y
--CONFIG_SWIOTLB=y
--CONFIG_LOONGSON_MACH3X=y
--CONFIG_CPU_LOONGSON3=y
--CONFIG_64BIT=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_KSM=y
--CONFIG_SMP=y
--CONFIG_NR_CPUS=4
--CONFIG_HZ_256=y
--CONFIG_PREEMPT=y
--CONFIG_KEXEC=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_KERNEL_LZMA=y
- CONFIG_SYSVIPC=y
-@@ -17,6 +5,7 @@ CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_TASKSTATS=y
-@@ -24,40 +13,38 @@ CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_CPUSETS=y
- CONFIG_MEMCG=y
- CONFIG_MEMCG_SWAP=y
- CONFIG_BLK_CGROUP=y
-+CONFIG_CPUSETS=y
- CONFIG_SCHED_AUTOGROUP=y
- CONFIG_SYSFS_DEPRECATED=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_RD_BZIP2=y
--CONFIG_RD_LZMA=y
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
-+CONFIG_MACH_LOONGSON64=y
-+CONFIG_LOONGSON_MACH3X=y
-+CONFIG_SMP=y
-+CONFIG_HZ_256=y
-+CONFIG_KEXEC=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_HOTPLUG_PCI_PCIE=y
-+# CONFIG_PCIEAER is not set
-+CONFIG_PCIEASPM_PERFORMANCE=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
- CONFIG_MODULES=y
- CONFIG_MODULE_FORCE_LOAD=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_MODVERSIONS=y
--CONFIG_BLK_DEV_INTEGRITY=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_IOSCHED_DEADLINE=m
- CONFIG_CFQ_GROUP_IOSCHED=y
--CONFIG_PCI=y
--CONFIG_HT_PCI=y
--CONFIG_PCIEPORTBUS=y
--CONFIG_HOTPLUG_PCI_PCIE=y
--# CONFIG_PCIEAER is not set
--CONFIG_PCIEASPM_PERFORMANCE=y
--CONFIG_HOTPLUG_PCI=y
--CONFIG_HOTPLUG_PCI_SHPC=m
- CONFIG_BINFMT_MISC=m
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_PM=y
-+CONFIG_KSM=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -123,7 +110,6 @@ CONFIG_BLK_DEV_SD=y
- CONFIG_BLK_DEV_SR=y
- CONFIG_CHR_DEV_SG=y
- CONFIG_CHR_DEV_SCH=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SPI_ATTRS=m
-@@ -164,7 +150,6 @@ CONFIG_TUN=m
- # CONFIG_NET_VENDOR_AMD is not set
- # CONFIG_NET_VENDOR_ARC is not set
- # CONFIG_NET_VENDOR_ATHEROS is not set
--# CONFIG_NET_CADENCE is not set
- # CONFIG_NET_VENDOR_BROADCOM is not set
- # CONFIG_NET_VENDOR_BROCADE is not set
- # CONFIG_NET_VENDOR_CHELSIO is not set
-@@ -173,14 +158,13 @@ CONFIG_TUN=m
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
-+# CONFIG_NET_VENDOR_I825XX is not set
- CONFIG_E1000=y
- CONFIG_E1000E=y
- CONFIG_IGB=y
- CONFIG_IXGB=y
- CONFIG_IXGBE=y
--# CONFIG_NET_VENDOR_I825XX is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
- # CONFIG_NET_VENDOR_MELLANOX is not set
- # CONFIG_NET_VENDOR_MICREL is not set
-@@ -188,12 +172,11 @@ CONFIG_IXGBE=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
-+# CONFIG_NET_VENDOR_RDC is not set
- CONFIG_8139CP=m
- CONFIG_8139TOO=m
- CONFIG_R8169=y
--# CONFIG_NET_VENDOR_RDC is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -215,7 +198,6 @@ CONFIG_PPPOE=m
- CONFIG_PPPOL2TP=m
- CONFIG_PPP_ASYNC=m
- CONFIG_PPP_SYNC_TTY=m
--CONFIG_ATH_CARDS=m
- CONFIG_ATH9K=m
- CONFIG_HOSTAP=m
- CONFIG_INPUT_POLLDEV=m
-@@ -296,9 +278,6 @@ CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_QUOTA=y
- # CONFIG_PRINT_QUOTA_WARNING is not set
- CONFIG_AUTOFS4_FS=y
-@@ -327,13 +306,6 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_CODEPAGE_936=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_UTF8=y
--CONFIG_PRINTK_TIME=y
--CONFIG_FRAME_WARN=1024
--CONFIG_STRIP_ASM_SYMS=y
--CONFIG_MAGIC_SYSRQ=y
--# CONFIG_SCHED_DEBUG is not set
--# CONFIG_DEBUG_PREEMPT is not set
--# CONFIG_FTRACE is not set
- CONFIG_SECURITY=y
- CONFIG_SECURITYFS=y
- CONFIG_SECURITY_NETWORK=y
-@@ -345,7 +317,6 @@ CONFIG_DEFAULT_SECURITY_DAC=y
- CONFIG_CRYPTO_AUTHENC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MD5=y
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -357,3 +328,10 @@ CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_DEFLATE=m
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
-index 81058295d35f..0ee5e677662e 100644
---- a/arch/mips/configs/malta_defconfig
-+++ b/arch/mips/configs/malta_defconfig
-@@ -1,9 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_NR_CPUS=8
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-@@ -13,11 +7,17 @@ CONFIG_RELAY=y
- CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_NR_CPUS=8
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -58,8 +58,6 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -124,7 +122,6 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
-@@ -139,7 +136,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -291,26 +287,26 @@ CONFIG_CHELSIO_T3=m
- CONFIG_AX88796=m
- CONFIG_NETXEN_NIC=m
- CONFIG_TC35815=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
- CONFIG_BROADCOM_PHY=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
- CONFIG_ICPLUS_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_REALTEK_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
- CONFIG_ATMEL=m
- CONFIG_PCI_ATMEL=m
--CONFIG_PRISM54=m
-+CONFIG_IPW2100=m
-+CONFIG_IPW2100_MONITOR=y
- CONFIG_HOSTAP=m
- CONFIG_HOSTAP_FIRMWARE=y
- CONFIG_HOSTAP_FIRMWARE_NVRAM=y
- CONFIG_HOSTAP_PLX=m
- CONFIG_HOSTAP_PCI=m
--CONFIG_IPW2100=m
--CONFIG_IPW2100_MONITOR=y
-+CONFIG_PRISM54=m
- CONFIG_LIBERTAS=m
- CONFIG_INPUT_MOUSEDEV=y
- CONFIG_MOUSE_PS2_ELANTECH=y
-@@ -331,7 +327,6 @@ CONFIG_UIO=m
- CONFIG_UIO_CIF=m
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--CONFIG_EXT4_FS=y
- CONFIG_REISERFS_FS=m
- CONFIG_REISERFS_PROC_INFO=y
- CONFIG_REISERFS_FS_XATTR=y
-@@ -411,14 +406,12 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -432,4 +425,3 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
-diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
-index 5c10cddc39d3..041bffac043b 100644
---- a/arch/mips/configs/malta_kvm_defconfig
-+++ b/arch/mips/configs/malta_kvm_defconfig
-@@ -1,9 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_NR_CPUS=8
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-@@ -14,11 +8,21 @@ CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_NR_CPUS=8
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
-+CONFIG_VIRTUALIZATION=y
-+CONFIG_KVM=m
-+CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=y
-+CONFIG_VHOST_NET=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -59,8 +63,6 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -125,7 +127,6 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
-@@ -140,7 +141,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -174,7 +174,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE_EBT_NFLOG=m
- CONFIG_IP_SCTP=m
- CONFIG_BRIDGE=m
-@@ -219,8 +218,6 @@ CONFIG_NET_ACT_SKBEDIT=m
- CONFIG_NET_CLS_IND=y
- CONFIG_CFG80211=m
- CONFIG_MAC80211=m
--CONFIG_MAC80211_RC_PID=y
--CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_MAC80211_MESH=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-@@ -254,7 +251,6 @@ CONFIG_CHR_DEV_OSST=m
- CONFIG_BLK_DEV_SR=y
- CONFIG_BLK_DEV_SR_VENDOR=y
- CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
-@@ -297,32 +293,31 @@ CONFIG_IFB=m
- CONFIG_MACVLAN=m
- CONFIG_TUN=m
- CONFIG_VETH=m
--CONFIG_VHOST_NET=m
- CONFIG_PCNET32=y
- CONFIG_CHELSIO_T3=m
- CONFIG_AX88796=m
- CONFIG_NETXEN_NIC=m
- CONFIG_TC35815=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
- CONFIG_BROADCOM_PHY=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
- CONFIG_ICPLUS_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_REALTEK_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
- CONFIG_ATMEL=m
- CONFIG_PCI_ATMEL=m
--CONFIG_PRISM54=m
-+CONFIG_IPW2100=m
-+CONFIG_IPW2100_MONITOR=y
- CONFIG_HOSTAP=m
- CONFIG_HOSTAP_FIRMWARE=y
- CONFIG_HOSTAP_FIRMWARE_NVRAM=y
- CONFIG_HOSTAP_PLX=m
- CONFIG_HOSTAP_PCI=m
--CONFIG_IPW2100=m
--CONFIG_IPW2100_MONITOR=y
-+CONFIG_PRISM54=m
- CONFIG_LIBERTAS=m
- CONFIG_INPUT_MOUSEDEV=y
- CONFIG_SERIAL_8250=y
-@@ -422,16 +417,12 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_RCU_CPU_STALL_TIMEOUT=60
--CONFIG_ENABLE_DEFAULT_TRACERS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -445,9 +436,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_CRC16=m
--CONFIG_VIRTUALIZATION=y
--CONFIG_KVM=m
--CONFIG_KVM_MIPS_DYN_TRANS=y
--CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=y
-+CONFIG_RCU_CPU_STALL_TIMEOUT=60
-+CONFIG_ENABLE_DEFAULT_TRACERS=y
-diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
-index bb694f5065f1..511065e62182 100644
---- a/arch/mips/configs/malta_kvm_guest_defconfig
-+++ b/arch/mips/configs/malta_kvm_guest_defconfig
-@@ -1,10 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_KVM_GUEST=y
--CONFIG_PAGE_SIZE_16KB=y
--# CONFIG_MIPS_MT_SMP is not set
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-@@ -15,11 +8,18 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_KVM_GUEST=y
-+CONFIG_PAGE_SIZE_16KB=y
-+# CONFIG_MIPS_MT_SMP is not set
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -60,8 +60,6 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -126,7 +124,6 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
-@@ -141,7 +138,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -175,7 +171,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE_EBT_NFLOG=m
- CONFIG_IP_SCTP=m
- CONFIG_BRIDGE=m
-@@ -220,8 +215,6 @@ CONFIG_NET_ACT_SKBEDIT=m
- CONFIG_NET_CLS_IND=y
- CONFIG_CFG80211=m
- CONFIG_MAC80211=m
--CONFIG_MAC80211_RC_PID=y
--CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_MAC80211_MESH=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-@@ -256,7 +249,6 @@ CONFIG_CHR_DEV_OSST=m
- CONFIG_BLK_DEV_SR=y
- CONFIG_BLK_DEV_SR_VENDOR=y
- CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
-@@ -305,26 +297,26 @@ CONFIG_CHELSIO_T3=m
- CONFIG_AX88796=m
- CONFIG_NETXEN_NIC=m
- CONFIG_TC35815=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
- CONFIG_BROADCOM_PHY=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
- CONFIG_ICPLUS_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_REALTEK_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
- CONFIG_ATMEL=m
- CONFIG_PCI_ATMEL=m
--CONFIG_PRISM54=m
-+CONFIG_IPW2100=m
-+CONFIG_IPW2100_MONITOR=y
- CONFIG_HOSTAP=m
- CONFIG_HOSTAP_FIRMWARE=y
- CONFIG_HOSTAP_FIRMWARE_NVRAM=y
- CONFIG_HOSTAP_PLX=m
- CONFIG_HOSTAP_PCI=m
--CONFIG_IPW2100=m
--CONFIG_IPW2100_MONITOR=y
-+CONFIG_PRISM54=m
- CONFIG_LIBERTAS=m
- CONFIG_INPUT_MOUSEDEV=y
- CONFIG_SERIAL_8250=y
-@@ -426,14 +418,12 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -447,5 +437,3 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_CRC16=m
-diff --git a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
-index 5b5306b80576..299088043164 100644
---- a/arch/mips/configs/malta_qemu_32r6_defconfig
-+++ b/arch/mips/configs/malta_qemu_32r6_defconfig
-@@ -1,8 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R6=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
-@@ -13,12 +8,17 @@ CONFIG_LOG_BUF_SHIFT=15
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R6=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -100,7 +100,6 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -110,10 +109,9 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -157,7 +155,6 @@ CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_CMOS=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_XFS_FS=y
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -175,12 +172,9 @@ CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
--# CONFIG_FTRACE is not set
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -191,5 +185,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- # CONFIG_CRYPTO_HW is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
-index 85543599448f..2b4b3a24f637 100644
---- a/arch/mips/configs/maltaaprp_defconfig
-+++ b/arch/mips/configs/maltaaprp_defconfig
-@@ -1,9 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_MIPS_VPE_LOADER=y
--CONFIG_MIPS_VPE_APSP_API=y
--CONFIG_HZ_100=y
- CONFIG_LOCALVERSION="aprp"
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-@@ -14,12 +8,19 @@ CONFIG_LOG_BUF_SHIFT=15
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_MIPS_VPE_LOADER=y
-+CONFIG_MIPS_VPE_APSP_API=y
-+CONFIG_NR_CPUS=2
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -101,7 +102,6 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -111,10 +111,9 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -157,7 +156,6 @@ CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_CMOS=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_XFS_FS=y
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -175,12 +173,9 @@ CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
--# CONFIG_FTRACE is not set
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -191,5 +186,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- # CONFIG_CRYPTO_HW is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
-index 067bb84ac916..425ddfd7cd78 100644
---- a/arch/mips/configs/maltasmvp_defconfig
-+++ b/arch/mips/configs/maltasmvp_defconfig
-@@ -1,11 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_SCHED_SMT=y
--CONFIG_MIPS_CPS=y
--CONFIG_NR_CPUS=8
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
-@@ -16,12 +8,20 @@ CONFIG_LOG_BUF_SHIFT=15
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_SCHED_SMT=y
-+CONFIG_MIPS_CPS=y
-+CONFIG_NR_CPUS=8
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -101,7 +101,6 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -111,10 +110,9 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -159,9 +157,6 @@ CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_XFS_FS=y
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -179,12 +174,9 @@ CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
--# CONFIG_FTRACE is not set
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -195,5 +187,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- # CONFIG_CRYPTO_HW is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
-index dfc78c3172a3..8beaa7ba1e52 100644
---- a/arch/mips/configs/maltasmvp_eva_defconfig
-+++ b/arch/mips/configs/maltasmvp_eva_defconfig
-@@ -1,12 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_CPU_MIPS32_3_5_FEATURES=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_SCHED_SMT=y
--CONFIG_MIPS_CPS=y
--CONFIG_NR_CPUS=8
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
-@@ -17,12 +8,21 @@ CONFIG_LOG_BUF_SHIFT=15
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_CPU_MIPS32_3_5_FEATURES=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_SCHED_SMT=y
-+CONFIG_MIPS_CPS=y
-+CONFIG_NR_CPUS=8
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -104,7 +104,6 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -114,10 +113,9 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -161,7 +159,6 @@ CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_CMOS=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_XFS_FS=y
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -179,12 +176,9 @@ CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
--# CONFIG_FTRACE is not set
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -195,5 +189,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- # CONFIG_CRYPTO_HW is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
-index 50a2288c69f8..6e8b95ceb54a 100644
---- a/arch/mips/configs/maltaup_defconfig
-+++ b/arch/mips/configs/maltaup_defconfig
-@@ -1,7 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_HZ_100=y
- CONFIG_LOCALVERSION="up"
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-@@ -13,12 +9,17 @@ CONFIG_LOG_BUF_SHIFT=15
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_NR_CPUS=2
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -100,7 +101,6 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
- # CONFIG_NET_VENDOR_INTEL is not set
- # CONFIG_NET_VENDOR_MARVELL is not set
-@@ -110,10 +110,9 @@ CONFIG_PCNET32=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -156,7 +155,6 @@ CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_CMOS=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_XFS_FS=y
- CONFIG_XFS_QUOTA=y
- CONFIG_XFS_POSIX_ACL=y
-@@ -174,12 +172,9 @@ CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
--# CONFIG_FTRACE is not set
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -190,5 +185,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- # CONFIG_CRYPTO_HW is not set
-+# CONFIG_FTRACE is not set
-diff --git a/arch/mips/configs/maltaup_xpa_defconfig b/arch/mips/configs/maltaup_xpa_defconfig
-index 99a19cf5f9ba..6c026db96ff9 100644
---- a/arch/mips/configs/maltaup_xpa_defconfig
-+++ b/arch/mips/configs/maltaup_xpa_defconfig
-@@ -1,10 +1,3 @@
--CONFIG_MIPS_MALTA=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_CPU_MIPS32_R5_FEATURES=y
--CONFIG_CPU_MIPS32_R5_XPA=y
--CONFIG_PAGE_SIZE_16KB=y
--CONFIG_HZ_100=y
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-@@ -16,11 +9,19 @@ CONFIG_RELAY=y
- CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MIPS_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_CPU_MIPS32_R5_FEATURES=y
-+CONFIG_CPU_MIPS32_R5_XPA=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_NR_CPUS=2
-+CONFIG_HZ_100=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -61,8 +62,6 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -125,7 +124,6 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
-@@ -140,7 +138,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -300,26 +297,26 @@ CONFIG_CHELSIO_T3=m
- CONFIG_AX88796=m
- CONFIG_NETXEN_NIC=m
- CONFIG_TC35815=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
- CONFIG_BROADCOM_PHY=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
- CONFIG_ICPLUS_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
- CONFIG_REALTEK_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
- CONFIG_ATMEL=m
- CONFIG_PCI_ATMEL=m
--CONFIG_PRISM54=m
-+CONFIG_IPW2100=m
-+CONFIG_IPW2100_MONITOR=y
- CONFIG_HOSTAP=m
- CONFIG_HOSTAP_FIRMWARE=y
- CONFIG_HOSTAP_FIRMWARE_NVRAM=y
- CONFIG_HOSTAP_PLX=m
- CONFIG_HOSTAP_PCI=m
--CONFIG_IPW2100=m
--CONFIG_IPW2100_MONITOR=y
-+CONFIG_PRISM54=m
- CONFIG_LIBERTAS=m
- CONFIG_INPUT_MOUSEDEV=y
- CONFIG_MOUSE_PS2_ELANTECH=y
-@@ -425,7 +422,6 @@ CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-@@ -439,5 +435,3 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_CRC16=m
-diff --git a/arch/mips/configs/markeins_defconfig b/arch/mips/configs/markeins_defconfig
-index 43ce6576ab1c..ae93a94f8c71 100644
---- a/arch/mips/configs/markeins_defconfig
-+++ b/arch/mips/configs/markeins_defconfig
-@@ -1,21 +1,19 @@
--CONFIG_NEC_MARKEINS=y
--CONFIG_HZ_1000=y
--CONFIG_PREEMPT=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_NEC_MARKEINS=y
-+CONFIG_HZ_1000=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_MODVERSIONS=y
--CONFIG_PCI=y
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -82,20 +80,12 @@ CONFIG_NETFILTER_XT_MATCH_STATE=m
- CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
--CONFIG_NF_NAT_SNMP_BASIC=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -104,7 +94,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
-@@ -134,23 +123,18 @@ CONFIG_SCSI=m
- CONFIG_BLK_DEV_SD=m
- CONFIG_CHR_DEV_SG=m
- CONFIG_SCSI_SCAN_ASYNC=y
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- CONFIG_SCSI_AIC94XX=m
- # CONFIG_AIC94XX_DEBUG is not set
- CONFIG_NETDEVICES=y
- CONFIG_TUN=m
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_NET_PCI=y
-+CONFIG_CHELSIO_T3=m
- CONFIG_NATSEMI=y
- CONFIG_QLA3XXX=m
--CONFIG_CHELSIO_T3=m
- CONFIG_NETXEN_NIC=m
- CONFIG_PPP=m
-+CONFIG_PPP_DEFLATE=m
- CONFIG_PPP_ASYNC=m
- CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=m
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
-@@ -182,20 +166,15 @@ CONFIG_JFFS2_FS=y
- CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_CRAMFS=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
--CONFIG_SMB_FS=m
- CONFIG_NLS_DEFAULT=""
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ASCII=m
- CONFIG_NLS_ISO8859_1=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
--CONFIG_CMDLINE_BOOL=y
--CONFIG_CMDLINE="console=ttyS0,115200 mem=192m ip=bootp root=/dev/nfs rw"
- CONFIG_CRYPTO_ECB=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
-@@ -203,3 +182,5 @@ CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_CAMELLIA=m
- CONFIG_CRYPTO_FCRYPT=m
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="console=ttyS0,115200 mem=192m ip=bootp root=/dev/nfs rw"
-diff --git a/arch/mips/configs/mips_paravirt_defconfig b/arch/mips/configs/mips_paravirt_defconfig
-index accf0db1dc6f..8dc5d96a08de 100644
---- a/arch/mips/configs/mips_paravirt_defconfig
-+++ b/arch/mips/configs/mips_paravirt_defconfig
-@@ -1,11 +1,5 @@
--CONFIG_MIPS_PARAVIRT=y
--CONFIG_CPU_MIPS64_R2=y
--CONFIG_64BIT=y
--CONFIG_TRANSPARENT_HUGEPAGE=y
--CONFIG_SMP=y
--CONFIG_HZ_1000=y
--CONFIG_PREEMPT=y
- CONFIG_SYSVIPC=y
-+CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_IKCONFIG=y
-@@ -15,13 +9,18 @@ CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_MIPS_PARAVIRT=y
-+CONFIG_CPU_MIPS64_R2=y
-+CONFIG_64BIT=y
-+CONFIG_SMP=y
-+CONFIG_HZ_1000=y
- CONFIG_PCI=y
--CONFIG_MIPS32_COMPAT=y
- CONFIG_MIPS32_O32=y
- CONFIG_MIPS32_N32=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_TRANSPARENT_HUGEPAGE=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -39,7 +38,6 @@ CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_SYN_COOKIES=y
--CONFIG_IPV6=y
- # CONFIG_WIRELESS is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_FW_LOADER is not set
-@@ -58,9 +56,9 @@ CONFIG_VIRTIO_NET=y
- # CONFIG_NET_VENDOR_STMICRO is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
- CONFIG_PHYLIB=y
--CONFIG_MARVELL_PHY=y
--CONFIG_BROADCOM_PHY=y
- CONFIG_BCM87XX_PHY=y
-+CONFIG_BROADCOM_PHY=y
-+CONFIG_MARVELL_PHY=y
- # CONFIG_WLAN is not set
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
-@@ -90,13 +88,12 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
-+CONFIG_CRYPTO_CBC=y
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_DES=y
- CONFIG_DEBUG_INFO=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- # CONFIG_SCHED_DEBUG is not set
- # CONFIG_FTRACE is not set
--CONFIG_CRYPTO_CBC=y
--CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_MD5=y
--CONFIG_CRYPTO_DES=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
-diff --git a/arch/mips/configs/mpc30x_defconfig b/arch/mips/configs/mpc30x_defconfig
-index 3486b034f726..d4e038802510 100644
---- a/arch/mips/configs/mpc30x_defconfig
-+++ b/arch/mips/configs/mpc30x_defconfig
-@@ -1,11 +1,10 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_VICTOR_MPC30X=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_VICTOR_MPC30X=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-@@ -31,7 +30,6 @@ CONFIG_ATA=y
- CONFIG_PATA_LEGACY=y
- CONFIG_NETDEVICES=y
- CONFIG_USB_PEGASUS=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
-@@ -53,4 +51,3 @@ CONFIG_CONFIGFS_FS=m
- CONFIG_NFS_FS=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="mem=32M console=ttyVR0,19200 ide0=0x170,0x376,73"
--# CONFIG_CRC32 is not set
-diff --git a/arch/mips/configs/msp71xx_defconfig b/arch/mips/configs/msp71xx_defconfig
-index 3c8c16b10732..0fdc03fda12e 100644
---- a/arch/mips/configs/msp71xx_defconfig
-+++ b/arch/mips/configs/msp71xx_defconfig
-@@ -1,21 +1,21 @@
--CONFIG_PMC_MSP=y
--CONFIG_PMC_MSP7120_GW=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_PREEMPT=y
- CONFIG_LOCALVERSION="-pmc"
- # CONFIG_SWAP is not set
- CONFIG_SYSVIPC=y
-+CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- # CONFIG_SHMEM is not set
- CONFIG_SLAB=y
-+CONFIG_PMC_MSP=y
-+CONFIG_PMC_MSP7120_GW=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_NR_CPUS=2
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- # CONFIG_IOSCHED_DEADLINE is not set
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_UNIX=y
- CONFIG_XFRM_USER=y
-@@ -47,18 +47,15 @@ CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
- CONFIG_DUMMY=y
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
- CONFIG_PPP=y
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
- # CONFIG_SERIAL_8250_PCI is not set
- CONFIG_SERIAL_8250_NR_UARTS=2
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
--# CONFIG_LEGACY_PTYS is not set
- # CONFIG_HW_RANDOM is not set
- CONFIG_I2C=y
- CONFIG_I2C_CHARDEV=y
-@@ -80,6 +77,3 @@ CONFIG_SQUASHFS_EMBEDDED=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_KERNEL=y
--CONFIG_CRYPTO_NULL=y
--CONFIG_CRYPTO_AES=y
-diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
-index c3d0d0a6e044..16bef819fe98 100644
---- a/arch/mips/configs/mtx1_defconfig
-+++ b/arch/mips/configs/mtx1_defconfig
-@@ -1,31 +1,45 @@
--CONFIG_MIPS_ALCHEMY=y
--CONFIG_MIPS_MTX1=y
--CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
--CONFIG_AUDIT=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODVERSIONS=y
--CONFIG_MODULE_SRCVERSION_ALL=y
--# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_MIPS_ALCHEMY=y
-+CONFIG_MIPS_MTX1=y
- CONFIG_PCI=y
- CONFIG_PCCARD=m
- CONFIG_YENTA=m
- CONFIG_PD6729=m
- CONFIG_I82092=m
-+CONFIG_OPROFILE=m
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_ACORN_PARTITION=y
-+CONFIG_ACORN_PARTITION_ICS=y
-+CONFIG_ACORN_PARTITION_RISCIX=y
-+CONFIG_OSF_PARTITION=y
-+CONFIG_AMIGA_PARTITION=y
-+CONFIG_ATARI_PARTITION=y
-+CONFIG_MAC_PARTITION=y
-+CONFIG_BSD_DISKLABEL=y
-+CONFIG_MINIX_SUBPARTITION=y
-+CONFIG_SOLARIS_X86_PARTITION=y
-+CONFIG_UNIXWARE_DISKLABEL=y
-+CONFIG_LDM_PARTITION=y
-+CONFIG_SGI_PARTITION=y
-+CONFIG_ULTRIX_PARTITION=y
-+CONFIG_SUN_PARTITION=y
-+CONFIG_KARMA_PARTITION=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=m
- CONFIG_UNIX=y
-@@ -38,8 +52,6 @@ CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
--CONFIG_NET_IPGRE_BROADCAST=y
- CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
-@@ -57,7 +69,6 @@ CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NETFILTER_NETLINK_LOG=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_DSCP=m
-@@ -81,13 +92,11 @@ CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_ECN=m
- CONFIG_IP_NF_TARGET_TTL=m
-@@ -128,7 +137,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_IP_DCCP=m
- CONFIG_IP_SCTP=m
- CONFIG_TIPC=m
-@@ -141,14 +149,12 @@ CONFIG_BRIDGE=m
- CONFIG_VLAN_8021Q=m
- CONFIG_DECNET=m
- CONFIG_LLC2=m
--CONFIG_IPX=m
- CONFIG_ATALK=m
- CONFIG_DEV_APPLETALK=m
- CONFIG_IPDDP=m
- CONFIG_IPDDP_ENCAP=y
- CONFIG_X25=m
- CONFIG_LAPB=m
--CONFIG_WAN_ROUTER=m
- CONFIG_NET_SCHED=y
- CONFIG_NET_SCH_CBQ=m
- CONFIG_NET_SCH_HTB=m
-@@ -191,30 +197,6 @@ CONFIG_BPQETHER=m
- CONFIG_BAYCOM_SER_FDX=m
- CONFIG_BAYCOM_SER_HDX=m
- CONFIG_YAM=m
--CONFIG_IRDA=m
--CONFIG_IRLAN=m
--CONFIG_IRNET=m
--CONFIG_IRCOMM=m
--CONFIG_IRDA_ULTRA=y
--CONFIG_IRDA_CACHE_LAST_LSAP=y
--CONFIG_IRDA_FAST_RR=y
--CONFIG_IRDA_DEBUG=y
--CONFIG_IRTTY_SIR=m
--CONFIG_DONGLE=y
--CONFIG_ESI_DONGLE=m
--CONFIG_ACTISYS_DONGLE=m
--CONFIG_TEKRAM_DONGLE=m
--CONFIG_LITELINK_DONGLE=m
--CONFIG_MA600_DONGLE=m
--CONFIG_GIRBIL_DONGLE=m
--CONFIG_MCP2120_DONGLE=m
--CONFIG_OLD_BELKIN_DONGLE=m
--CONFIG_ACT200L_DONGLE=m
--CONFIG_USB_IRDA=m
--CONFIG_SIGMATEL_FIR=m
--CONFIG_TOSHIBA_FIR=m
--CONFIG_VLSI_FIR=m
--CONFIG_MCS_FIR=m
- CONFIG_BT=m
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
-@@ -231,7 +213,6 @@ CONFIG_BT_HCIBFUSB=m
- CONFIG_BT_HCIDTL1=m
- CONFIG_BT_HCIBT3C=m
- CONFIG_BT_HCIBLUECARD=m
--CONFIG_BT_HCIBTUART=m
- CONFIG_BT_HCIVHCI=m
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
-@@ -248,18 +229,18 @@ CONFIG_BLK_DEV_RAM_SIZE=65536
- CONFIG_SCSI=m
- CONFIG_BLK_DEV_SD=m
- CONFIG_CHR_DEV_SG=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SPI_ATTRS=m
- CONFIG_SCSI_FC_ATTRS=m
- CONFIG_SCSI_ISCSI_ATTRS=m
- CONFIG_SCSI_SAS_LIBSAS=m
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
-+CONFIG_DUMMY=m
- CONFIG_EQUALIZER=m
-+CONFIG_NET_FC=y
-+CONFIG_NETCONSOLE=m
- CONFIG_TUN=m
- CONFIG_ARCNET=m
- CONFIG_ARCNET_1201=m
-@@ -271,20 +252,33 @@ CONFIG_ARCNET_COM90xxIO=m
- CONFIG_ARCNET_RIM_I=m
- CONFIG_ARCNET_COM20020=m
- CONFIG_ARCNET_COM20020_PCI=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_HAPPYMEAL=m
--CONFIG_SUNGEM=m
--CONFIG_CASSINI=m
--CONFIG_NET_VENDOR_3COM=y
-+CONFIG_ARCNET_COM20020_CS=m
-+CONFIG_ATM_TCP=m
-+CONFIG_ATM_LANAI=m
-+CONFIG_ATM_ENI=m
-+CONFIG_ATM_FIRESTREAM=m
-+CONFIG_ATM_ZATM=m
-+CONFIG_ATM_NICSTAR=m
-+CONFIG_ATM_IDT77252=m
-+CONFIG_ATM_AMBASSADOR=m
-+CONFIG_ATM_HORIZON=m
-+CONFIG_ATM_IA=m
-+CONFIG_ATM_FORE200E=m
-+CONFIG_ATM_HE=m
-+CONFIG_ATM_HE_USE_SUNI=y
-+CONFIG_PCMCIA_3C574=m
-+CONFIG_PCMCIA_3C589=m
- CONFIG_VORTEX=m
- CONFIG_TYPHOON=m
-+CONFIG_ADAPTEC_STARFIRE=m
-+CONFIG_ACENIC=m
-+CONFIG_AMD8111_ETH=m
-+CONFIG_PCNET32=m
-+CONFIG_PCMCIA_NMCLAN=m
-+CONFIG_B44=m
-+CONFIG_BNX2=m
-+CONFIG_TIGON3=m
-+CONFIG_CHELSIO_T1=m
- CONFIG_NET_TULIP=y
- CONFIG_DE2104X=m
- CONFIG_TULIP=m
-@@ -293,49 +287,69 @@ CONFIG_WINBOND_840=m
- CONFIG_DM9102=m
- CONFIG_ULI526X=m
- CONFIG_PCMCIA_XIRCOM=m
-+CONFIG_DL2K=m
-+CONFIG_SUNDANCE=m
-+CONFIG_PCMCIA_FMVJ18X=m
- CONFIG_HP100=m
--CONFIG_NET_PCI=y
--CONFIG_PCNET32=m
--CONFIG_AMD8111_ETH=m
--CONFIG_ADAPTEC_STARFIRE=m
--CONFIG_B44=m
--CONFIG_FORCEDETH=m
- CONFIG_E100=m
-+CONFIG_E1000=m
-+CONFIG_IXGB=m
-+CONFIG_SKGE=m
-+CONFIG_SKY2=m
-+CONFIG_MYRI10GE=m
- CONFIG_FEALNX=m
- CONFIG_NATSEMI=m
-+CONFIG_NS83820=m
-+CONFIG_S2IO=m
-+CONFIG_PCMCIA_AXNET=m
- CONFIG_NE2K_PCI=m
-+CONFIG_PCMCIA_PCNET=m
-+CONFIG_FORCEDETH=m
-+CONFIG_HAMACHI=m
-+CONFIG_YELLOWFIN=m
-+CONFIG_QLA3XXX=m
- CONFIG_8139CP=m
- CONFIG_8139TOO=m
- # CONFIG_8139TOO_PIO is not set
- CONFIG_8139TOO_8129=y
-+CONFIG_R8169=m
- CONFIG_SIS900=m
-+CONFIG_SIS190=m
-+CONFIG_PCMCIA_SMC91C92=m
- CONFIG_EPIC100=m
--CONFIG_SUNDANCE=m
-+CONFIG_HAPPYMEAL=m
-+CONFIG_SUNGEM=m
-+CONFIG_CASSINI=m
- CONFIG_TLAN=m
- CONFIG_VIA_RHINE=m
--CONFIG_ACENIC=m
--CONFIG_DL2K=m
--CONFIG_E1000=m
--CONFIG_NS83820=m
--CONFIG_HAMACHI=m
--CONFIG_YELLOWFIN=m
--CONFIG_R8169=m
--CONFIG_R8169_VLAN=y
--CONFIG_SIS190=m
--CONFIG_SKGE=m
--CONFIG_SKY2=m
- CONFIG_VIA_VELOCITY=m
--CONFIG_TIGON3=m
--CONFIG_BNX2=m
--CONFIG_QLA3XXX=m
--CONFIG_CHELSIO_T1=m
--CONFIG_IXGB=m
--CONFIG_S2IO=m
--CONFIG_MYRI10GE=m
--CONFIG_IBMOL=m
--CONFIG_IBMLS=m
--CONFIG_TMSPCI=m
--CONFIG_ABYSS=m
-+CONFIG_PCMCIA_XIRC2PS=m
-+CONFIG_FDDI=y
-+CONFIG_DEFXX=m
-+CONFIG_SKFP=m
-+CONFIG_HIPPI=y
-+CONFIG_ROADRUNNER=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
-+CONFIG_PPPOATM=m
-+CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_SLIP=m
-+CONFIG_SLIP_COMPRESSED=y
-+CONFIG_SLIP_SMART=y
-+CONFIG_SLIP_MODE_SLIP6=y
- CONFIG_USB_CATC=m
- CONFIG_USB_KAWETH=m
- CONFIG_USB_PEGASUS=m
-@@ -349,16 +363,6 @@ CONFIG_USB_ALI_M5632=y
- CONFIG_USB_AN2720=y
- CONFIG_USB_EPSON2888=y
- CONFIG_USB_SIERRA_NET=m
--CONFIG_NET_PCMCIA=y
--CONFIG_PCMCIA_3C589=m
--CONFIG_PCMCIA_3C574=m
--CONFIG_PCMCIA_FMVJ18X=m
--CONFIG_PCMCIA_PCNET=m
--CONFIG_PCMCIA_NMCLAN=m
--CONFIG_PCMCIA_SMC91C92=m
--CONFIG_PCMCIA_XIRC2PS=m
--CONFIG_PCMCIA_AXNET=m
--CONFIG_ARCNET_COM20020_CS=m
- CONFIG_WAN=y
- CONFIG_LANMEDIA=m
- CONFIG_HDLC=m
-@@ -375,46 +379,8 @@ CONFIG_DSCC4=m
- CONFIG_DSCC4_PCISYNC=y
- CONFIG_DSCC4_PCI_RST=y
- CONFIG_DLCI=m
--CONFIG_WAN_ROUTER_DRIVERS=m
--CONFIG_CYCLADES_SYNC=m
--CONFIG_CYCLOMX_X25=y
- CONFIG_LAPBETHER=m
- CONFIG_X25_ASY=m
--CONFIG_ATM_TCP=m
--CONFIG_ATM_LANAI=m
--CONFIG_ATM_ENI=m
--CONFIG_ATM_FIRESTREAM=m
--CONFIG_ATM_ZATM=m
--CONFIG_ATM_NICSTAR=m
--CONFIG_ATM_IDT77252=m
--CONFIG_ATM_AMBASSADOR=m
--CONFIG_ATM_HORIZON=m
--CONFIG_ATM_IA=m
--CONFIG_ATM_FORE200E=m
--CONFIG_ATM_HE=m
--CONFIG_ATM_HE_USE_SUNI=y
--CONFIG_FDDI=y
--CONFIG_DEFXX=m
--CONFIG_SKFP=m
--CONFIG_HIPPI=y
--CONFIG_ROADRUNNER=m
--CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
--CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
--CONFIG_PPP_BSDCOMP=m
--CONFIG_PPP_MPPE=m
--CONFIG_PPPOE=m
--CONFIG_PPPOATM=m
--CONFIG_SLIP=m
--CONFIG_SLIP_COMPRESSED=y
--CONFIG_SLIP_SMART=y
--CONFIG_SLIP_MODE_SLIP6=y
--CONFIG_NET_FC=y
--CONFIG_NETCONSOLE=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_KEYBOARD_ATKBD is not set
- CONFIG_KEYBOARD_GPIO=y
- # CONFIG_INPUT_MOUSE is not set
-@@ -440,7 +406,6 @@ CONFIG_HW_RANDOM=y
- CONFIG_I2C=m
- CONFIG_I2C_CHARDEV=m
- CONFIG_I2C_GPIO=m
--CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_SENSORS_ADM1021=m
- CONFIG_SENSORS_ADM1025=m
-@@ -453,6 +418,7 @@ CONFIG_SENSORS_F71805F=m
- CONFIG_SENSORS_GL518SM=m
- CONFIG_SENSORS_GL520SM=m
- CONFIG_SENSORS_IT87=m
-+CONFIG_SENSORS_MAX1619=m
- CONFIG_SENSORS_LM63=m
- CONFIG_SENSORS_LM75=m
- CONFIG_SENSORS_LM77=m
-@@ -463,7 +429,6 @@ CONFIG_SENSORS_LM85=m
- CONFIG_SENSORS_LM87=m
- CONFIG_SENSORS_LM90=m
- CONFIG_SENSORS_LM92=m
--CONFIG_SENSORS_MAX1619=m
- CONFIG_SENSORS_PC87360=m
- CONFIG_SENSORS_PCF8591=m
- CONFIG_SENSORS_SIS5595=m
-@@ -491,23 +456,17 @@ CONFIG_SOUND=m
- CONFIG_SND=m
- CONFIG_SND_SEQUENCER=m
- CONFIG_SND_SEQ_DUMMY=m
--CONFIG_SND_MIXER_OSS=m
--CONFIG_SND_PCM_OSS=m
--CONFIG_SND_SEQUENCER_OSS=y
- CONFIG_SND_DUMMY=m
- CONFIG_SND_VIRMIDI=m
- CONFIG_SND_MTPAV=m
- CONFIG_SND_SERIAL_U16550=m
- CONFIG_SND_MPU401=m
- CONFIG_SND_AD1889=m
--CONFIG_SND_ALS300=m
--CONFIG_SND_ALI5451=m
- CONFIG_SND_ATIIXP=m
- CONFIG_SND_ATIIXP_MODEM=m
- CONFIG_SND_AU8810=m
- CONFIG_SND_AU8820=m
- CONFIG_SND_AU8830=m
--CONFIG_SND_AZT3328=m
- CONFIG_SND_BT87X=m
- CONFIG_SND_CA0106=m
- CONFIG_SND_CMIPCI=m
-@@ -525,22 +484,15 @@ CONFIG_SND_ECHO3G=m
- CONFIG_SND_INDIGO=m
- CONFIG_SND_INDIGOIO=m
- CONFIG_SND_INDIGODJ=m
--CONFIG_SND_EMU10K1=m
--CONFIG_SND_EMU10K1X=m
- CONFIG_SND_ENS1370=m
- CONFIG_SND_ENS1371=m
--CONFIG_SND_ES1938=m
--CONFIG_SND_ES1968=m
- CONFIG_SND_FM801=m
--CONFIG_SND_HDA_INTEL=m
- CONFIG_SND_HDSP=m
- CONFIG_SND_HDSPM=m
--CONFIG_SND_ICE1712=m
- CONFIG_SND_ICE1724=m
- CONFIG_SND_INTEL8X0=m
- CONFIG_SND_INTEL8X0M=m
- CONFIG_SND_KORG1212=m
--CONFIG_SND_MAESTRO3=m
- CONFIG_SND_MIXART=m
- CONFIG_SND_NM256=m
- CONFIG_SND_PCXHR=m
-@@ -548,16 +500,14 @@ CONFIG_SND_RIPTIDE=m
- CONFIG_SND_RME32=m
- CONFIG_SND_RME96=m
- CONFIG_SND_RME9652=m
--CONFIG_SND_SONICVIBES=m
--CONFIG_SND_TRIDENT=m
- CONFIG_SND_VIA82XX=m
- CONFIG_SND_VIA82XX_MODEM=m
- CONFIG_SND_VX222=m
- CONFIG_SND_YMFPCI=m
-+CONFIG_SND_HDA_INTEL=m
- CONFIG_SND_USB_AUDIO=m
- CONFIG_SND_VXPOCKET=m
- CONFIG_SND_PDAUDIOCF=m
--CONFIG_SOUND_PRIME=m
- CONFIG_USB_HIDDEV=y
- CONFIG_USB_KBD=m
- CONFIG_USB_MOUSE=m
-@@ -566,7 +516,7 @@ CONFIG_USB_MON=m
- CONFIG_USB_EHCI_HCD=m
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=m
--CONFIG_USB_OHCI_HCD_PLATFORM=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=m
- CONFIG_USB_UHCI_HCD=m
- CONFIG_USB_U132_HCD=m
- CONFIG_USB_SL811_HCD=m
-@@ -595,7 +545,6 @@ CONFIG_USB_SERIAL_DIGI_ACCELEPORT=m
- CONFIG_USB_SERIAL_CYPRESS_M8=m
- CONFIG_USB_SERIAL_EMPEG=m
- CONFIG_USB_SERIAL_FTDI_SIO=m
--CONFIG_USB_SERIAL_FUNSOFT=m
- CONFIG_USB_SERIAL_VISOR=m
- CONFIG_USB_SERIAL_IPAQ=m
- CONFIG_USB_SERIAL_IR=m
-@@ -612,7 +561,6 @@ CONFIG_USB_SERIAL_MOS7720=m
- CONFIG_USB_SERIAL_MOS7840=m
- CONFIG_USB_SERIAL_NAVMAN=m
- CONFIG_USB_SERIAL_PL2303=m
--CONFIG_USB_SERIAL_HP4X=m
- CONFIG_USB_SERIAL_SAFE=m
- CONFIG_USB_SERIAL_SIERRAWIRELESS=m
- CONFIG_USB_SERIAL_TI=m
-@@ -641,7 +589,6 @@ CONFIG_USB_CXACRU=m
- CONFIG_USB_UEAGLEATM=m
- CONFIG_USB_XUSBATM=m
- CONFIG_USB_GADGET=m
--CONFIG_USB_GADGET_NET2280=y
- CONFIG_USB_ZERO=m
- CONFIG_USB_ETH=m
- CONFIG_USB_GADGETFS=m
-@@ -677,7 +624,6 @@ CONFIG_EXT2_FS_XATTR=y
- CONFIG_EXT2_FS_POSIX_ACL=y
- CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=m
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
- CONFIG_QUOTA=y
-@@ -692,48 +638,18 @@ CONFIG_VFAT_FS=m
- CONFIG_NTFS_FS=m
- CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
--CONFIG_CONFIGFS_FS=m
- CONFIG_JFFS2_FS=y
- CONFIG_JFFS2_FS_XATTR=y
- CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_CRAMFS=y
- CONFIG_SQUASHFS=y
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
--CONFIG_NFS_V4=y
-+CONFIG_NFS_V4=m
- CONFIG_NFSD=m
- CONFIG_NFSD_V4=y
--CONFIG_RPCSEC_GSS_SPKM3=m
--CONFIG_SMB_FS=m
- CONFIG_CIFS=m
--CONFIG_NCP_FS=m
--CONFIG_NCPFS_PACKET_SIGNING=y
--CONFIG_NCPFS_IOCTL_LOCKING=y
--CONFIG_NCPFS_STRONG=y
--CONFIG_NCPFS_NFS_NS=y
--CONFIG_NCPFS_OS2_NS=y
--CONFIG_NCPFS_NLS=y
--CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_ACORN_PARTITION=y
--CONFIG_ACORN_PARTITION_ICS=y
--CONFIG_ACORN_PARTITION_RISCIX=y
--CONFIG_OSF_PARTITION=y
--CONFIG_AMIGA_PARTITION=y
--CONFIG_ATARI_PARTITION=y
--CONFIG_MAC_PARTITION=y
--CONFIG_BSD_DISKLABEL=y
--CONFIG_MINIX_SUBPARTITION=y
--CONFIG_SOLARIS_X86_PARTITION=y
--CONFIG_UNIXWARE_DISKLABEL=y
--CONFIG_LDM_PARTITION=y
--CONFIG_SGI_PARTITION=y
--CONFIG_ULTRIX_PARTITION=y
--CONFIG_SUN_PARTITION=y
--CONFIG_KARMA_PARTITION=y
--CONFIG_EFI_PARTITION=y
- CONFIG_NLS=y
- CONFIG_NLS_DEFAULT="cp437"
- CONFIG_NLS_CODEPAGE_437=m
-@@ -774,18 +690,11 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_DEBUG_FS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_TEST=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MD5=y
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -795,3 +704,5 @@ CONFIG_CRYPTO_KHAZAD=m
- CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
-index e8e1dd8e0e99..72a211d2d556 100644
---- a/arch/mips/configs/nlm_xlp_defconfig
-+++ b/arch/mips/configs/nlm_xlp_defconfig
-@@ -1,32 +1,35 @@
--CONFIG_NLM_XLP_BOARD=y
--CONFIG_64BIT=y
--CONFIG_PAGE_SIZE_16KB=y
--# CONFIG_HW_PERF_EVENTS is not set
--CONFIG_KSM=y
--CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
--CONFIG_SMP=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_TASKSTATS=y
- CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_AUDIT=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_NAMESPACES=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_RD_BZIP2=y
--CONFIG_RD_LZMA=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
-+CONFIG_NLM_XLP_BOARD=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+# CONFIG_HW_PERF_EVENTS is not set
-+CONFIG_SMP=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
-+CONFIG_PCI_DEBUG=y
-+CONFIG_PCI_STUB=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_PM=y
-+CONFIG_PM_DEBUG=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-@@ -49,19 +52,11 @@ CONFIG_SGI_PARTITION=y
- CONFIG_ULTRIX_PARTITION=y
- CONFIG_SUN_PARTITION=y
- CONFIG_KARMA_PARTITION=y
--CONFIG_EFI_PARTITION=y
- CONFIG_SYSV68_PARTITION=y
--CONFIG_PCI=y
--CONFIG_PCI_DEBUG=y
--CONFIG_PCI_REALLOC_ENABLE_AUTO=y
--CONFIG_PCI_STUB=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
- CONFIG_BINFMT_MISC=y
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_PM=y
--CONFIG_PM_DEBUG=y
-+CONFIG_KSM=y
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -93,7 +88,6 @@ CONFIG_TCP_CONG_VENO=m
- CONFIG_TCP_CONG_YEAH=m
- CONFIG_TCP_CONG_ILLINOIS=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
-@@ -104,12 +98,10 @@ CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
- CONFIG_IPV6_SIT=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
--CONFIG_NETLABEL=y
- CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -120,7 +112,6 @@ CONFIG_NF_CONNTRACK_SANE=m
- CONFIG_NF_CONNTRACK_SIP=m
- CONFIG_NF_CONNTRACK_TFTP=m
- CONFIG_NF_CT_NETLINK=m
--CONFIG_NETFILTER_TPROXY=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
- CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
-@@ -180,18 +171,12 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_IP_VS_FTP=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -201,8 +186,6 @@ CONFIG_IP_NF_SECURITY=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
--CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -238,7 +221,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE_EBT_NFLOG=m
- CONFIG_IP_DCCP=m
- CONFIG_RDS=m
-@@ -254,14 +236,12 @@ CONFIG_VLAN_8021Q=m
- CONFIG_VLAN_8021Q_GVRP=y
- CONFIG_DECNET=m
- CONFIG_LLC2=m
--CONFIG_IPX=m
- CONFIG_ATALK=m
- CONFIG_DEV_APPLETALK=m
- CONFIG_IPDDP=m
- CONFIG_IPDDP_ENCAP=y
- CONFIG_X25=m
- CONFIG_LAPB=m
--CONFIG_WAN_ROUTER=m
- CONFIG_PHONET=m
- CONFIG_IEEE802154=m
- CONFIG_NET_SCHED=y
-@@ -324,7 +304,6 @@ CONFIG_MTD_PHYSMAP_OF=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_BLK_DEV_NBD=m
--CONFIG_BLK_DEV_OSD=m
- CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_SIZE=65536
- CONFIG_CDROM_PKTCDVD=y
-@@ -335,7 +314,6 @@ CONFIG_CHR_DEV_OSST=m
- CONFIG_BLK_DEV_SR=y
- CONFIG_CHR_DEV_SG=y
- CONFIG_CHR_DEV_SCH=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
-@@ -343,7 +321,6 @@ CONFIG_SCSI_SPI_ATTRS=m
- CONFIG_SCSI_SAS_LIBSAS=m
- CONFIG_SCSI_SRP_ATTRS=m
- CONFIG_ISCSI_TCP=m
--CONFIG_LIBFCOE=m
- CONFIG_SCSI_DEBUG=m
- CONFIG_SCSI_DH=y
- CONFIG_SCSI_DH_RDAC=m
-@@ -368,10 +345,9 @@ CONFIG_NETDEVICES=y
- # CONFIG_NET_VENDOR_DEC is not set
- # CONFIG_NET_VENDOR_DLINK is not set
- # CONFIG_NET_VENDOR_EMULEX is not set
--# CONFIG_NET_VENDOR_EXAR is not set
- # CONFIG_NET_VENDOR_HP is not set
--CONFIG_E1000E=y
- # CONFIG_NET_VENDOR_I825XX is not set
-+CONFIG_E1000E=y
- CONFIG_SKY2=y
- # CONFIG_NET_VENDOR_MELLANOX is not set
- # CONFIG_NET_VENDOR_MICREL is not set
-@@ -379,10 +355,9 @@ CONFIG_SKY2=y
- # CONFIG_NET_VENDOR_NATSEMI is not set
- # CONFIG_NET_VENDOR_NVIDIA is not set
- # CONFIG_NET_VENDOR_OKI is not set
--# CONFIG_NET_PACKET_ENGINE is not set
- # CONFIG_NET_VENDOR_QLOGIC is not set
--# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_REALTEK is not set
- # CONFIG_NET_VENDOR_SEEQ is not set
- # CONFIG_NET_VENDOR_SILAN is not set
- # CONFIG_NET_VENDOR_SIS is not set
-@@ -394,7 +369,6 @@ CONFIG_SKY2=y
- # CONFIG_NET_VENDOR_TOSHIBA is not set
- # CONFIG_NET_VENDOR_VIA is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_EVBUG=m
- # CONFIG_INPUT_KEYBOARD is not set
-@@ -403,12 +377,9 @@ CONFIG_SERIO_SERPORT=m
- CONFIG_SERIO_LIBPS2=y
- CONFIG_SERIO_RAW=m
- CONFIG_VT_HW_CONSOLE_BINDING=y
--CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
- CONFIG_LEGACY_PTY_COUNT=0
- CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_N_HDLC=m
--# CONFIG_DEVKMEM is not set
--CONFIG_STALDRV=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=48
-@@ -430,7 +401,6 @@ CONFIG_THERMAL=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_DS1374=y
- CONFIG_UIO=y
--CONFIG_UIO_PDRV=m
- CONFIG_UIO_PDRV_GENIRQ=m
- # CONFIG_IOMMU_SUPPORT is not set
- CONFIG_EXT2_FS=y
-@@ -440,9 +410,6 @@ CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_GFS2_FS=m
- CONFIG_BTRFS_FS=m
- CONFIG_BTRFS_FS_POSIX_ACL=y
-@@ -487,7 +454,7 @@ CONFIG_UFS_FS=m
- CONFIG_EXOFS_FS=m
- CONFIG_NFS_FS=m
- CONFIG_NFS_V3_ACL=y
--CONFIG_NFS_V4=y
-+CONFIG_NFS_V4=m
- CONFIG_NFS_FSCACHE=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
-@@ -498,14 +465,6 @@ CONFIG_CIFS_UPCALL=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_CIFS_DFS_UPCALL=y
--CONFIG_NCP_FS=m
--CONFIG_NCPFS_PACKET_SIGNING=y
--CONFIG_NCPFS_IOCTL_LOCKING=y
--CONFIG_NCPFS_STRONG=y
--CONFIG_NCPFS_NFS_NS=y
--CONFIG_NCPFS_OS2_NS=y
--CONFIG_NCPFS_NLS=y
--CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
- CONFIG_NLS=y
-@@ -547,19 +506,6 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_PRINTK_TIME=y
--# CONFIG_ENABLE_WARN_DEPRECATED is not set
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_FRAME_WARN=1024
--CONFIG_UNUSED_SYMBOLS=y
--CONFIG_DETECT_HUNG_TASK=y
--CONFIG_SCHEDSTATS=y
--CONFIG_TIMER_STATS=y
--CONFIG_DEBUG_INFO=y
--CONFIG_DEBUG_MEMORY_INIT=y
--CONFIG_SCHED_TRACER=y
--CONFIG_BLK_DEV_IO_TRACE=y
--CONFIG_KGDB=y
- CONFIG_SECURITY=y
- CONFIG_LSM_MMAP_MIN_ADDR=0
- CONFIG_SECURITY_SELINUX=y
-@@ -568,10 +514,8 @@ CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE=0
- CONFIG_SECURITY_SELINUX_DISABLE=y
- CONFIG_SECURITY_SMACK=y
- CONFIG_SECURITY_TOMOYO=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_TEST=m
--CONFIG_CRYPTO_CCM=m
- CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_LRW=m
-@@ -585,8 +529,6 @@ CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -602,5 +544,15 @@ CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_LZO=m
--CONFIG_CRC_CCITT=m
- CONFIG_CRC7=m
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_FRAME_WARN=1024
-+CONFIG_UNUSED_SYMBOLS=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_DETECT_HUNG_TASK=y
-+CONFIG_SCHEDSTATS=y
-+CONFIG_SCHED_TRACER=y
-+CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_KGDB=y
-diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
-index c4477a4d40c1..4ecb157e56d4 100644
---- a/arch/mips/configs/nlm_xlr_defconfig
-+++ b/arch/mips/configs/nlm_xlr_defconfig
-@@ -1,47 +1,60 @@
--CONFIG_NLM_XLR_BOARD=y
--CONFIG_HIGHMEM=y
--CONFIG_KSM=y
--CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
--CONFIG_SMP=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_PREEMPT_VOLUNTARY=y
--CONFIG_KEXEC=y
--CONFIG_CROSS_COMPILE=""
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_TASKSTATS=y
- CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_AUDIT=y
- CONFIG_NAMESPACES=y
- CONFIG_SCHED_AUTOGROUP=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_INITRAMFS_SOURCE=""
--CONFIG_RD_BZIP2=y
--CONFIG_RD_LZMA=y
--CONFIG_INITRAMFS_COMPRESSION_GZIP=y
- CONFIG_EXPERT=y
--CONFIG_KALLSYMS_ALL=y
- # CONFIG_ELF_CORE is not set
-+CONFIG_KALLSYMS_ALL=y
- # CONFIG_PERF_EVENTS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
-+CONFIG_NLM_XLR_BOARD=y
-+CONFIG_HIGHMEM=y
-+CONFIG_SMP=y
-+CONFIG_KEXEC=y
-+CONFIG_PCI=y
-+CONFIG_PCI_MSI=y
-+CONFIG_PCI_DEBUG=y
-+CONFIG_PM=y
-+CONFIG_PM_DEBUG=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_BLK_DEV_INTEGRITY=y
--CONFIG_PCI=y
--CONFIG_PCI_MSI=y
--CONFIG_PCI_DEBUG=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_ACORN_PARTITION=y
-+CONFIG_ACORN_PARTITION_ICS=y
-+CONFIG_ACORN_PARTITION_RISCIX=y
-+CONFIG_OSF_PARTITION=y
-+CONFIG_AMIGA_PARTITION=y
-+CONFIG_ATARI_PARTITION=y
-+CONFIG_MAC_PARTITION=y
-+CONFIG_BSD_DISKLABEL=y
-+CONFIG_MINIX_SUBPARTITION=y
-+CONFIG_SOLARIS_X86_PARTITION=y
-+CONFIG_UNIXWARE_DISKLABEL=y
-+CONFIG_LDM_PARTITION=y
-+CONFIG_SGI_PARTITION=y
-+CONFIG_ULTRIX_PARTITION=y
-+CONFIG_SUN_PARTITION=y
-+CONFIG_KARMA_PARTITION=y
-+CONFIG_SYSV68_PARTITION=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
--CONFIG_PM_DEBUG=y
-+CONFIG_KSM=y
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -73,7 +86,6 @@ CONFIG_TCP_CONG_VENO=m
- CONFIG_TCP_CONG_YEAH=m
- CONFIG_TCP_CONG_ILLINOIS=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
-@@ -84,12 +96,10 @@ CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
- CONFIG_IPV6_SIT=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
--CONFIG_NETLABEL=y
- CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
-@@ -100,7 +110,6 @@ CONFIG_NF_CONNTRACK_SANE=m
- CONFIG_NF_CONNTRACK_SIP=m
- CONFIG_NF_CONNTRACK_TFTP=m
- CONFIG_NF_CT_NETLINK=m
--CONFIG_NETFILTER_TPROXY=m
- CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
- CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
- CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
-@@ -160,19 +169,12 @@ CONFIG_IP_VS_DH=m
- CONFIG_IP_VS_SH=m
- CONFIG_IP_VS_SED=m
- CONFIG_IP_VS_NQ=m
--CONFIG_IP_VS_FTP=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -182,8 +184,6 @@ CONFIG_IP_NF_SECURITY=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
--CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
- CONFIG_IP6_NF_MATCH_FRAG=m
-@@ -219,7 +219,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE_EBT_NFLOG=m
- CONFIG_IP_DCCP=m
- CONFIG_RDS=m
-@@ -235,14 +234,12 @@ CONFIG_VLAN_8021Q=m
- CONFIG_VLAN_8021Q_GVRP=y
- CONFIG_DECNET=m
- CONFIG_LLC2=m
--CONFIG_IPX=m
- CONFIG_ATALK=m
- CONFIG_DEV_APPLETALK=m
- CONFIG_IPDDP=m
- CONFIG_IPDDP_ENCAP=y
- CONFIG_X25=m
- CONFIG_LAPB=m
--CONFIG_WAN_ROUTER=m
- CONFIG_PHONET=m
- CONFIG_IEEE802154=m
- CONFIG_NET_SCHED=y
-@@ -295,7 +292,6 @@ CONFIG_CONNECTOR=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_BLK_DEV_NBD=m
--CONFIG_BLK_DEV_OSD=m
- CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_SIZE=65536
- CONFIG_CDROM_PKTCDVD=y
-@@ -307,7 +303,6 @@ CONFIG_CHR_DEV_OSST=m
- CONFIG_BLK_DEV_SR=y
- CONFIG_CHR_DEV_SG=y
- CONFIG_CHR_DEV_SCH=m
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_LOGGING=y
- CONFIG_SCSI_SCAN_ASYNC=y
-@@ -315,7 +310,6 @@ CONFIG_SCSI_SPI_ATTRS=m
- CONFIG_SCSI_SAS_LIBSAS=m
- CONFIG_SCSI_SRP_ATTRS=m
- CONFIG_ISCSI_TCP=m
--CONFIG_LIBFCOE=m
- CONFIG_SCSI_DEBUG=m
- CONFIG_SCSI_DH=y
- CONFIG_SCSI_DH_RDAC=m
-@@ -327,7 +321,6 @@ CONFIG_SCSI_OSD_ULD=m
- CONFIG_NETDEVICES=y
- CONFIG_E1000E=y
- CONFIG_SKY2=y
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_EVBUG=m
- # CONFIG_INPUT_KEYBOARD is not set
-@@ -336,12 +329,9 @@ CONFIG_SERIO_SERPORT=m
- CONFIG_SERIO_LIBPS2=y
- CONFIG_SERIO_RAW=m
- CONFIG_VT_HW_CONSOLE_BINDING=y
--CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
- CONFIG_LEGACY_PTY_COUNT=0
- CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_N_HDLC=m
--# CONFIG_DEVKMEM is not set
--CONFIG_STALDRV=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=48
-@@ -354,13 +344,12 @@ CONFIG_HW_RANDOM_TIMERIOMEM=m
- CONFIG_RAW_DRIVER=m
- CONFIG_I2C=y
- CONFIG_I2C_XLR=y
--CONFIG_RTC_CLASS=y
--CONFIG_RTC_DRV_DS1374=y
- # CONFIG_HWMON is not set
- # CONFIG_VGA_CONSOLE is not set
- # CONFIG_USB_SUPPORT is not set
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_DS1374=y
- CONFIG_UIO=y
--CONFIG_UIO_PDRV=m
- CONFIG_UIO_PDRV_GENIRQ=m
- CONFIG_EXT2_FS=y
- CONFIG_EXT2_FS_XATTR=y
-@@ -369,11 +358,7 @@ CONFIG_EXT2_FS_SECURITY=y
- CONFIG_EXT3_FS=y
- CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
--CONFIG_EXT4_FS=y
--CONFIG_EXT4_FS_POSIX_ACL=y
--CONFIG_EXT4_FS_SECURITY=y
- CONFIG_GFS2_FS=m
--CONFIG_GFS2_FS_LOCKING_DLM=y
- CONFIG_OCFS2_FS=m
- CONFIG_BTRFS_FS=m
- CONFIG_BTRFS_FS_POSIX_ACL=y
-@@ -420,9 +405,8 @@ CONFIG_SYSV_FS=m
- CONFIG_UFS_FS=m
- CONFIG_EXOFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFS_V3_ACL=y
--CONFIG_NFS_V4=y
-+CONFIG_NFS_V4=m
- CONFIG_NFS_FSCACHE=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
-@@ -433,35 +417,8 @@ CONFIG_CIFS_UPCALL=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_CIFS_DFS_UPCALL=y
--CONFIG_NCP_FS=m
--CONFIG_NCPFS_PACKET_SIGNING=y
--CONFIG_NCPFS_IOCTL_LOCKING=y
--CONFIG_NCPFS_STRONG=y
--CONFIG_NCPFS_NFS_NS=y
--CONFIG_NCPFS_OS2_NS=y
--CONFIG_NCPFS_NLS=y
--CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_ACORN_PARTITION=y
--CONFIG_ACORN_PARTITION_ICS=y
--CONFIG_ACORN_PARTITION_RISCIX=y
--CONFIG_OSF_PARTITION=y
--CONFIG_AMIGA_PARTITION=y
--CONFIG_ATARI_PARTITION=y
--CONFIG_MAC_PARTITION=y
--CONFIG_BSD_DISKLABEL=y
--CONFIG_MINIX_SUBPARTITION=y
--CONFIG_SOLARIS_X86_PARTITION=y
--CONFIG_UNIXWARE_DISKLABEL=y
--CONFIG_LDM_PARTITION=y
--CONFIG_SGI_PARTITION=y
--CONFIG_ULTRIX_PARTITION=y
--CONFIG_SUN_PARTITION=y
--CONFIG_KARMA_PARTITION=y
--CONFIG_EFI_PARTITION=y
--CONFIG_SYSV68_PARTITION=y
- CONFIG_NLS=y
- CONFIG_NLS_DEFAULT="cp437"
- CONFIG_NLS_CODEPAGE_437=m
-@@ -501,20 +458,7 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_PRINTK_TIME=y
--# CONFIG_ENABLE_WARN_DEPRECATED is not set
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_UNUSED_SYMBOLS=y
--CONFIG_DETECT_HUNG_TASK=y
--CONFIG_SCHEDSTATS=y
--CONFIG_TIMER_STATS=y
--CONFIG_DEBUG_INFO=y
--CONFIG_DEBUG_MEMORY_INIT=y
--CONFIG_SCHED_TRACER=y
--CONFIG_BLK_DEV_IO_TRACE=y
--CONFIG_KGDB=y
- CONFIG_SECURITY=y
--CONFIG_SECURITY_NETWORK=y
- CONFIG_LSM_MMAP_MIN_ADDR=0
- CONFIG_SECURITY_SELINUX=y
- CONFIG_SECURITY_SELINUX_BOOTPARAM=y
-@@ -522,10 +466,8 @@ CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE=0
- CONFIG_SECURITY_SELINUX_DISABLE=y
- CONFIG_SECURITY_SMACK=y
- CONFIG_SECURITY_TOMOYO=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_TEST=m
--CONFIG_CRYPTO_CCM=m
- CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CTS=m
- CONFIG_CRYPTO_LRW=m
-@@ -539,8 +481,6 @@ CONFIG_CRYPTO_RMD128=m
- CONFIG_CRYPTO_RMD160=m
- CONFIG_CRYPTO_RMD256=m
- CONFIG_CRYPTO_RMD320=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
-@@ -556,5 +496,14 @@ CONFIG_CRYPTO_SERPENT=m
- CONFIG_CRYPTO_TEA=m
- CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRYPTO_LZO=m
--CONFIG_CRC_CCITT=m
- CONFIG_CRC7=m
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_UNUSED_SYMBOLS=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_DETECT_HUNG_TASK=y
-+CONFIG_SCHEDSTATS=y
-+CONFIG_SCHED_TRACER=y
-+CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_KGDB=y
-diff --git a/arch/mips/configs/omega2p_defconfig b/arch/mips/configs/omega2p_defconfig
-index e2731c3cc7e7..0649b8f06b7c 100644
---- a/arch/mips/configs/omega2p_defconfig
-+++ b/arch/mips/configs/omega2p_defconfig
-@@ -1,17 +1,9 @@
--CONFIG_RALINK=y
--CONFIG_SOC_MT7620=y
--CONFIG_DTB_OMEGA2P=y
--CONFIG_CPU_MIPS32_R2=y
--# CONFIG_COMPACTION is not set
--CONFIG_HZ_100=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
--CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
-@@ -30,8 +22,16 @@ CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
--# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+CONFIG_RALINK=y
-+CONFIG_SOC_MT7620=y
-+CONFIG_DTB_OMEGA2P=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
- # CONFIG_SUSPEND is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -113,6 +113,10 @@ CONFIG_NLS_ISO8859_15=y
- CONFIG_NLS_KOI8_R=y
- CONFIG_NLS_KOI8_U=y
- CONFIG_NLS_UTF8=y
-+CONFIG_CRYPTO_DEFLATE=y
-+CONFIG_CRYPTO_LZO=y
-+CONFIG_CRC16=y
-+CONFIG_XZ_DEC=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_STRIP_ASM_SYMS=y
-@@ -123,7 +127,3 @@ CONFIG_PANIC_TIMEOUT=10
- # CONFIG_DEBUG_PREEMPT is not set
- CONFIG_STACKTRACE=y
- # CONFIG_FTRACE is not set
--CONFIG_CRYPTO_DEFLATE=y
--CONFIG_CRYPTO_LZO=y
--CONFIG_CRC16=y
--CONFIG_XZ_DEC=y
-diff --git a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
-index 41190c2036e6..63fe2da1b37f 100644
---- a/arch/mips/configs/pic32mzda_defconfig
-+++ b/arch/mips/configs/pic32mzda_defconfig
-@@ -1,11 +1,7 @@
--CONFIG_MACH_PIC32=y
--CONFIG_DTB_PIC32_MZDA_SK=y
--CONFIG_HZ_100=y
--CONFIG_PREEMPT_VOLUNTARY=y
--# CONFIG_SECCOMP is not set
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
-@@ -14,6 +10,11 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EMBEDDED=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_PIC32=y
-+CONFIG_DTB_PIC32_MZDA_SK=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_SUSPEND is not set
- CONFIG_JUMP_LABEL=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-@@ -23,7 +24,6 @@ CONFIG_BLK_DEV_BSGLIB=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_SGI_PARTITION=y
- CONFIG_BINFMT_MISC=m
--# CONFIG_SUSPEND is not set
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- # CONFIG_ALLOW_DEV_COREDUMP is not set
-diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
-index b22a3cf149b6..2f08d071ada6 100644
---- a/arch/mips/configs/pistachio_defconfig
-+++ b/arch/mips/configs/pistachio_defconfig
-@@ -1,23 +1,16 @@
--CONFIG_MACH_PISTACHIO=y
--CONFIG_MIPS_MT_SMP=y
--CONFIG_MIPS_CPS=y
--# CONFIG_COMPACTION is not set
--CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
--CONFIG_ZSMALLOC=y
--CONFIG_NR_CPUS=4
--CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_DEFAULT_HOSTNAME="localhost"
- CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_IKCONFIG=m
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=18
- CONFIG_CGROUPS=y
--CONFIG_CGROUP_FREEZER=y
- CONFIG_CGROUP_SCHED=y
- CONFIG_CFS_BANDWIDTH=y
-+CONFIG_CGROUP_FREEZER=y
- CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_BLK_DEV_INITRD=y
-@@ -29,14 +22,20 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EMBEDDED=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_FORCE_UNLOAD=y
--CONFIG_PARTITION_ADVANCED=y
-+CONFIG_MACH_PISTACHIO=y
-+CONFIG_MIPS_CPS=y
-+CONFIG_NR_CPUS=4
- CONFIG_PM_DEBUG=y
- CONFIG_PM_ADVANCED_DEBUG=y
- CONFIG_CPU_IDLE=y
- # CONFIG_MIPS_CPS_CPUIDLE is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_PARTITION_ADVANCED=y
-+# CONFIG_COMPACTION is not set
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
-+CONFIG_ZSMALLOC=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -66,7 +65,6 @@ CONFIG_TCP_CONG_ADVANCED=y
- # CONFIG_TCP_CONG_HTCP is not set
- CONFIG_TCP_CONG_LP=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_XFRM_MODE_TRANSPORT=m
-@@ -89,13 +87,11 @@ CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
- CONFIG_NETFILTER_XT_MATCH_DSCP=y
- CONFIG_NETFILTER_XT_MATCH_POLICY=y
- CONFIG_NETFILTER_XT_MATCH_STATE=y
--CONFIG_NF_CONNTRACK_IPV4=y
- CONFIG_NF_NAT_IPV4=m
- CONFIG_IP_NF_IPTABLES=y
- CONFIG_IP_NF_FILTER=y
- CONFIG_IP_NF_TARGET_REJECT=y
- CONFIG_IP_NF_MANGLE=y
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_NF_NAT_IPV6=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_IPV6HEADER=m
-@@ -167,15 +163,14 @@ CONFIG_USB_NET_SMSC95XX=m
- CONFIG_USB_NET_MCS7830=m
- # CONFIG_USB_NET_CDC_SUBSET is not set
- # CONFIG_USB_NET_ZAURUS is not set
--CONFIG_LIBERTAS_THINFIRM=m
--CONFIG_USB_NET_RNDIS_WLAN=m
--CONFIG_MAC80211_HWSIM=m
- CONFIG_HOSTAP=m
- CONFIG_HOSTAP_FIRMWARE=y
- CONFIG_HOSTAP_FIRMWARE_NVRAM=y
-+CONFIG_LIBERTAS_THINFIRM=m
- CONFIG_RT2X00=m
- CONFIG_RT2800USB=m
--# CONFIG_INPUT_MOUSEDEV is not set
-+CONFIG_MAC80211_HWSIM=m
-+CONFIG_USB_NET_RNDIS_WLAN=m
- CONFIG_INPUT_EVDEV=y
- # CONFIG_KEYBOARD_ATKBD is not set
- CONFIG_KEYBOARD_GPIO=y
-@@ -183,7 +178,6 @@ CONFIG_KEYBOARD_GPIO=y
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
- # CONFIG_LEGACY_PTYS is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- # CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
- CONFIG_SERIAL_8250_CONSOLE=y
-@@ -204,13 +198,10 @@ CONFIG_GPIO_SYSFS=y
- CONFIG_POWER_SUPPLY=y
- CONFIG_THERMAL=y
- CONFIG_WATCHDOG=y
--CONFIG_WATCHDOG_CORE=y
- CONFIG_IMGPDC_WDT=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
- CONFIG_REGULATOR_GPIO=y
--CONFIG_MEDIA_SUPPORT=y
- CONFIG_RC_CORE=y
--# CONFIG_RC_DECODERS is not set
- CONFIG_RC_DEVICES=y
- CONFIG_IR_IMG=y
- CONFIG_IR_IMG_NEC=y
-@@ -220,8 +211,7 @@ CONFIG_IR_IMG_SHARP=y
- CONFIG_IR_IMG_SANYO=y
- CONFIG_IR_IMG_RC5=y
- CONFIG_IR_IMG_RC6=y
--# CONFIG_DVB_TUNER_DIB0070 is not set
--# CONFIG_DVB_TUNER_DIB0090 is not set
-+CONFIG_MEDIA_SUPPORT=y
- CONFIG_FB=y
- CONFIG_FB_MODE_HELPERS=y
- CONFIG_BACKLIGHT_LCD_SUPPORT=y
-@@ -229,10 +219,10 @@ CONFIG_BACKLIGHT_LCD_SUPPORT=y
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_SOUND=y
- CONFIG_SND=y
--CONFIG_SND_SEQUENCER=m
--CONFIG_SND_SEQ_DUMMY=m
- CONFIG_SND_HRTIMER=m
- CONFIG_SND_DYNAMIC_MINORS=y
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
- # CONFIG_SND_SPI is not set
- CONFIG_SND_USB_AUDIO=m
- CONFIG_USB=y
-@@ -300,27 +290,9 @@ CONFIG_NLS_DEFAULT="utf8"
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ASCII=m
- CONFIG_NLS_ISO8859_1=m
--CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0
--CONFIG_LOCKUP_DETECTOR=y
--CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
--CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
--# CONFIG_SCHED_DEBUG is not set
--CONFIG_SCHEDSTATS=y
--CONFIG_TIMER_STATS=y
--CONFIG_DEBUG_SPINLOCK=y
--CONFIG_DEBUG_CREDENTIALS=y
--CONFIG_FUNCTION_TRACER=y
--CONFIG_BLK_DEV_IO_TRACE=y
--CONFIG_LKDTM=y
--CONFIG_TEST_UDELAY=m
--CONFIG_KEYS=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
- CONFIG_SECURITY_YAMA=y
--CONFIG_DEFAULT_SECURITY_DAC=y
- CONFIG_CRYPTO_AUTHENC=y
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_SHA1=y
-@@ -328,9 +300,19 @@ CONFIG_CRYPTO_SHA256=y
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_ARC4=y
- CONFIG_CRYPTO_DES=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- CONFIG_CRC_CCITT=y
- CONFIG_CRC_T10DIF=m
- CONFIG_CRC7=m
--CONFIG_LIBCRC32C=m
- # CONFIG_XZ_DEC_X86 is not set
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0
-+# CONFIG_SCHED_DEBUG is not set
-+CONFIG_SCHEDSTATS=y
-+CONFIG_DEBUG_SPINLOCK=y
-+CONFIG_DEBUG_CREDENTIALS=y
-+CONFIG_FUNCTION_TRACER=y
-+CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_LKDTM=y
-+CONFIG_TEST_UDELAY=m
-diff --git a/arch/mips/configs/pnx8335_stb225_defconfig b/arch/mips/configs/pnx8335_stb225_defconfig
-index e73cdb08fc6e..aa0b169800e0 100644
---- a/arch/mips/configs/pnx8335_stb225_defconfig
-+++ b/arch/mips/configs/pnx8335_stb225_defconfig
-@@ -1,23 +1,21 @@
--CONFIG_NXP_STB225=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_128=y
--CONFIG_PREEMPT_VOLUNTARY=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- # CONFIG_SWAP is not set
- CONFIG_SYSVIPC=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_NXP_STB225=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_HZ_128=y
-+# CONFIG_SECCOMP is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_IOSCHED_DEADLINE is not set
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -42,17 +40,14 @@ CONFIG_BLK_DEV_SD=y
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_ATA=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=m
- CONFIG_INPUT_EVBUG=m
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_VT_CONSOLE is not set
-+# CONFIG_LEGACY_PTYS is not set
- CONFIG_SERIAL_PNX8XXX=y
- CONFIG_SERIAL_PNX8XXX_CONSOLE=y
--# CONFIG_LEGACY_PTYS is not set
- CONFIG_HW_RANDOM=y
- CONFIG_I2C=y
- CONFIG_I2C_CHARDEV=y
-@@ -61,12 +56,9 @@ CONFIG_FB=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_SOUND=m
- CONFIG_SND=m
--CONFIG_SND_SEQUENCER=m
--CONFIG_SND_MIXER_OSS=m
--CONFIG_SND_PCM_OSS=m
--CONFIG_SND_SEQUENCER_OSS=y
- CONFIG_SND_VERBOSE_PRINTK=y
- CONFIG_SND_DEBUG=y
-+CONFIG_SND_SEQUENCER=m
- CONFIG_EXT2_FS=m
- # CONFIG_DNOTIFY is not set
- CONFIG_MSDOS_FS=m
-@@ -75,7 +67,6 @@ CONFIG_TMPFS=y
- CONFIG_JFFS2_FS=y
- CONFIG_CRAMFS=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
-diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-index d8b7211a7b0f..7671fe6a8042 100644
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -1,11 +1,7 @@
--CONFIG_MACH_INGENIC=y
--# CONFIG_COMPACTION is not set
--# CONFIG_CROSS_MEMORY_ATTACH is not set
--CONFIG_HZ_100=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
-+# CONFIG_CROSS_MEMORY_ATTACH is not set
-+CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_SYSCTL_SYSCALL=y
- CONFIG_KALLSYMS_ALL=y
-@@ -13,6 +9,9 @@ CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_INGENIC=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-@@ -20,6 +19,7 @@ CONFIG_PARTITION_ADVANCED=y
- # CONFIG_EFI_PARTITION is not set
- # CONFIG_IOSCHED_CFQ is not set
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -49,7 +49,6 @@ CONFIG_MTD_NAND_JZ4740=y
- CONFIG_MTD_UBI=y
- CONFIG_NETDEVICES=y
- # CONFIG_WLAN is not set
--# CONFIG_INPUT_MOUSEDEV is not set
- CONFIG_INPUT_EVDEV=y
- # CONFIG_KEYBOARD_ATKBD is not set
- CONFIG_KEYBOARD_GPIO=y
-@@ -58,7 +57,6 @@ CONFIG_KEYBOARD_MATRIX=y
- CONFIG_INPUT_MISC=y
- # CONFIG_SERIO is not set
- CONFIG_LEGACY_PTY_COUNT=2
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_DMA is not set
-@@ -109,7 +107,6 @@ CONFIG_USB_GADGET_DEBUG=y
- CONFIG_USB_ETH=y
- # CONFIG_USB_ETH_RNDIS is not set
- CONFIG_MMC=y
--# CONFIG_MMC_BLOCK_BOUNCE is not set
- CONFIG_MMC_JZ4740=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_JZ4740=y
-@@ -119,8 +116,6 @@ CONFIG_PWM=y
- CONFIG_PWM_JZ4740=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT3_FS=y
--# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
--# CONFIG_EXT3_FS_XATTR is not set
- # CONFIG_DNOTIFY is not set
- CONFIG_VFAT_FS=y
- CONFIG_PROC_KCORE=y
-@@ -171,6 +166,8 @@ CONFIG_NLS_ISO8859_15=y
- CONFIG_NLS_KOI8_R=y
- CONFIG_NLS_KOI8_U=y
- CONFIG_NLS_UTF8=y
-+CONFIG_FONTS=y
-+CONFIG_FONT_SUN8x16=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_STRIP_ASM_SYMS=y
-@@ -181,7 +178,3 @@ CONFIG_DEBUG_STACKOVERFLOW=y
- CONFIG_PANIC_ON_OOPS=y
- # CONFIG_FTRACE is not set
- CONFIG_KGDB=y
--CONFIG_RUNTIME_DEBUG=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_FONTS=y
--CONFIG_FONT_SUN8x16=y
-diff --git a/arch/mips/configs/rb532_defconfig b/arch/mips/configs/rb532_defconfig
-index 6fa56c6e53f5..7befe05fd813 100644
---- a/arch/mips/configs/rb532_defconfig
-+++ b/arch/mips/configs/rb532_defconfig
-@@ -1,29 +1,30 @@
--CONFIG_MIKROTIK_RB532=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_100=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
--CONFIG_TINY_RCU=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
--# CONFIG_KALLSYMS is not set
- # CONFIG_ELF_CORE is not set
-+# CONFIG_KALLSYMS is not set
- # CONFIG_VM_EVENT_COUNTERS is not set
--# CONFIG_PCI_QUIRKS is not set
- CONFIG_SLAB=y
-+CONFIG_MIKROTIK_RB532=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
-+# CONFIG_PCI_QUIRKS is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_LBDAF is not set
- # CONFIG_BLK_DEV_BSG is not set
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_MAC_PARTITION=y
-+CONFIG_BSD_DISKLABEL=y
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -33,7 +34,6 @@ CONFIG_IP_ADVANCED_ROUTER=y
- CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_ROUTE_VERBOSE=y
--CONFIG_ARPD=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
-@@ -70,13 +70,9 @@ CONFIG_NETFILTER_XT_MATCH_REALM=m
- CONFIG_NETFILTER_XT_MATCH_SCTP=m
- CONFIG_NETFILTER_XT_MATCH_STATE=y
- CONFIG_NETFILTER_XT_MATCH_U32=m
--CONFIG_NF_CONNTRACK_IPV4=y
- CONFIG_IP_NF_IPTABLES=y
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_FILTER=y
- CONFIG_IP_NF_TARGET_REJECT=y
--CONFIG_NF_NAT=y
--CONFIG_IP_NF_TARGET_MASQUERADE=y
- CONFIG_IP_NF_MANGLE=y
- CONFIG_IP_NF_RAW=m
- CONFIG_BRIDGE=y
-@@ -122,31 +118,27 @@ CONFIG_ATA=y
- CONFIG_PATA_RB532=y
- CONFIG_NETDEVICES=y
- CONFIG_IFB=m
--CONFIG_NET_ETHERNET=y
- CONFIG_KORINA=y
--CONFIG_NET_PCI=y
- CONFIG_VIA_RHINE=y
--CONFIG_ATMEL=m
- CONFIG_PPP=m
--CONFIG_PPP_MULTILINK=y
--CONFIG_PPP_FILTER=y
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_DEFLATE=m
- CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MULTILINK=y
- CONFIG_PPPOE=m
--# CONFIG_INPUT_MOUSEDEV is not set
-+CONFIG_PPP_ASYNC=m
- # CONFIG_KEYBOARD_ATKBD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_RB532_BUTTON=y
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_PCI is not set
- CONFIG_SERIAL_8250_NR_UARTS=2
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
--# CONFIG_LEGACY_PTYS is not set
- CONFIG_HW_RANDOM=y
- CONFIG_GPIO_SYSFS=y
- # CONFIG_HWMON is not set
-@@ -171,13 +163,8 @@ CONFIG_JFFS2_FS=y
- CONFIG_JFFS2_SUMMARY=y
- CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_SQUASHFS=y
--CONFIG_PARTITION_ADVANCED=y
--CONFIG_MAC_PARTITION=y
--CONFIG_BSD_DISKLABEL=y
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_STRIP_ASM_SYMS=y
--CONFIG_CRYPTO=y
- CONFIG_CRYPTO_TEST=m
- # CONFIG_CRYPTO_HW is not set
- CONFIG_CRC16=m
--CONFIG_LIBCRC32C=m
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_STRIP_ASM_SYMS=y
-diff --git a/arch/mips/configs/rbtx49xx_defconfig b/arch/mips/configs/rbtx49xx_defconfig
-index fb195e29e449..50a2c9ad583f 100644
---- a/arch/mips/configs/rbtx49xx_defconfig
-+++ b/arch/mips/configs/rbtx49xx_defconfig
-@@ -1,27 +1,24 @@
--CONFIG_MACH_TX49XX=y
--CONFIG_TOSHIBA_RBTX4927=y
--CONFIG_TOSHIBA_RBTX4938=y
--CONFIG_TOSHIBA_RBTX4939=y
--CONFIG_TOSHIBA_RBTX4938_MPLEX_KEEP=y
-+CONFIG_SYSVIPC=y
- CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
--# CONFIG_SECCOMP is not set
--CONFIG_SYSVIPC=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
--# CONFIG_HOTPLUG is not set
--# CONFIG_PCSPKR_PLATFORM is not set
- # CONFIG_EPOLL is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_TX49XX=y
-+CONFIG_TOSHIBA_RBTX4927=y
-+CONFIG_TOSHIBA_RBTX4938=y
-+CONFIG_TOSHIBA_RBTX4939=y
-+CONFIG_TOSHIBA_RBTX4938_MPLEX_KEEP=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_LBDAF is not set
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCI=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -52,10 +49,8 @@ CONFIG_IDE=y
- CONFIG_BLK_DEV_IDE_TX4938=y
- CONFIG_BLK_DEV_IDE_TX4939=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_SMC91X=y
- CONFIG_NE2000=y
--CONFIG_NET_PCI=y
-+CONFIG_SMC91X=y
- CONFIG_TC35815=y
- # CONFIG_WLAN is not set
- # CONFIG_INPUT is not set
-@@ -99,7 +94,6 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_JFFS2_FS=m
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_STRIP_ASM_SYMS=y
- CONFIG_DEBUG_FS=y
-diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
-index 5f71aa598b06..0f4b09f8a0ee 100644
---- a/arch/mips/configs/rm200_defconfig
-+++ b/arch/mips/configs/rm200_defconfig
-@@ -1,24 +1,23 @@
--CONFIG_SNI_RM=y
--CONFIG_CPU_LITTLE_ENDIAN=y
--CONFIG_ARC_CONSOLE=y
--CONFIG_HZ_1000=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_SNI_RM=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_ARC_CONSOLE=y
-+CONFIG_HZ_1000=y
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
--CONFIG_PCI=y
-+CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=m
- CONFIG_UNIX=y
-@@ -27,8 +26,6 @@ CONFIG_NET_KEY_MIGRATE=y
- CONFIG_INET=y
- CONFIG_IP_MULTICAST=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
--CONFIG_NET_IPGRE_BROADCAST=y
- CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
-@@ -48,7 +45,6 @@ CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IPV6_SUBTREES=y
- CONFIG_NETWORK_SECMARK=y
- CONFIG_NETFILTER=y
--CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
-@@ -92,20 +88,12 @@ CONFIG_NETFILTER_XT_MATCH_STATE=m
- CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
- CONFIG_NETFILTER_XT_MATCH_STRING=m
- CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
--CONFIG_IP_NF_MATCH_ADDRTYPE=m
- CONFIG_IP_NF_MATCH_AH=m
- CONFIG_IP_NF_MATCH_ECN=m
- CONFIG_IP_NF_MATCH_TTL=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
--CONFIG_IP_NF_TARGET_LOG=m
--CONFIG_NF_NAT=m
--CONFIG_IP_NF_TARGET_MASQUERADE=m
--CONFIG_IP_NF_TARGET_NETMAP=m
--CONFIG_IP_NF_TARGET_REDIRECT=m
--CONFIG_NF_NAT_SNMP_BASIC=m
- CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_CLUSTERIP=m
- CONFIG_IP_NF_TARGET_ECN=m
-@@ -114,7 +102,6 @@ CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_ARPTABLES=m
- CONFIG_IP_NF_ARPFILTER=m
- CONFIG_IP_NF_ARP_MANGLE=m
--CONFIG_NF_CONNTRACK_IPV6=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP6_NF_MATCH_AH=m
- CONFIG_IP6_NF_MATCH_EUI64=m
-@@ -149,7 +136,6 @@ CONFIG_BRIDGE_EBT_MARK_T=m
- CONFIG_BRIDGE_EBT_REDIRECT=m
- CONFIG_BRIDGE_EBT_SNAT=m
- CONFIG_BRIDGE_EBT_LOG=m
--CONFIG_BRIDGE_EBT_ULOG=m
- CONFIG_BRIDGE=m
- CONFIG_DECNET=m
- CONFIG_NET_SCHED=y
-@@ -222,7 +208,6 @@ CONFIG_BLK_DEV_SR_VENDOR=y
- CONFIG_SCSI_CONSTANTS=y
- CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_FC_ATTRS=y
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- CONFIG_ISCSI_TCP=m
- CONFIG_SCSI_AIC94XX=m
- # CONFIG_AIC94XX_DEBUG is not set
-@@ -247,34 +232,30 @@ CONFIG_DM_MIRROR=m
- CONFIG_DM_ZERO=m
- CONFIG_DM_MULTIPATH=m
- CONFIG_NETDEVICES=y
--CONFIG_DUMMY=m
- CONFIG_BONDING=m
-+CONFIG_DUMMY=m
- CONFIG_EQUALIZER=m
- CONFIG_TUN=m
--CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_ISA=y
--CONFIG_NE2000=m
--CONFIG_NET_PCI=y
- CONFIG_PCNET32=y
--CONFIG_VIA_VELOCITY=m
--CONFIG_QLA3XXX=m
- CONFIG_CHELSIO_T3=m
-+CONFIG_NE2000=m
-+CONFIG_QLA3XXX=m
- CONFIG_NETXEN_NIC=m
-+CONFIG_VIA_VELOCITY=m
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
-+CONFIG_PLIP=m
- CONFIG_USB_CATC=m
- CONFIG_USB_KAWETH=m
- CONFIG_USB_PEGASUS=m
- CONFIG_USB_RTL8150=m
- CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_CDC_SUBSET is not set
--CONFIG_PLIP=m
- CONFIG_INPUT_FF_MEMLESS=m
- CONFIG_SERIO_PARKBD=m
- CONFIG_SERIO_RAW=m
-@@ -329,7 +310,6 @@ CONFIG_USB_SERIAL_KLSI=m
- CONFIG_USB_SERIAL_KOBIL_SCT=m
- CONFIG_USB_SERIAL_MCT_U232=m
- CONFIG_USB_SERIAL_PL2303=m
--CONFIG_USB_SERIAL_HP4X=m
- CONFIG_USB_SERIAL_SAFE=m
- CONFIG_USB_SERIAL_SAFE_PADDED=y
- CONFIG_USB_SERIAL_CYBERJACK=m
-@@ -377,25 +357,11 @@ CONFIG_ROMFS_FS=m
- CONFIG_SYSV_FS=m
- CONFIG_UFS_FS=m
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
--CONFIG_RPCSEC_GSS_KRB5=m
--CONFIG_RPCSEC_GSS_SPKM3=m
--CONFIG_SMB_FS=m
- CONFIG_CIFS=m
--CONFIG_NCP_FS=m
--CONFIG_NCPFS_PACKET_SIGNING=y
--CONFIG_NCPFS_IOCTL_LOCKING=y
--CONFIG_NCPFS_STRONG=y
--CONFIG_NCPFS_NFS_NS=y
--CONFIG_NCPFS_OS2_NS=y
--CONFIG_NCPFS_SMALLDOS=y
--CONFIG_NCPFS_NLS=y
--CONFIG_NCPFS_EXTRAS=y
- CONFIG_CODA_FS=m
- CONFIG_AFS_FS=m
--CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_CODEPAGE_737=m
- CONFIG_NLS_CODEPAGE_775=m
-@@ -434,21 +400,14 @@ CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
- CONFIG_NLS_UTF8=m
--CONFIG_DLM=m
--CONFIG_CRYPTO_NULL=m
--CONFIG_CRYPTO_ECB=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
--CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
--CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
- CONFIG_CRYPTO_ANUBIS=m
--CONFIG_CRYPTO_ARC4=m
- CONFIG_CRYPTO_BLOWFISH=m
- CONFIG_CRYPTO_CAMELLIA=m
- CONFIG_CRYPTO_CAST6=m
-diff --git a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
-index dbe6a4639d05..0392e38010e6 100644
---- a/arch/mips/configs/rt305x_defconfig
-+++ b/arch/mips/configs/rt305x_defconfig
-@@ -1,32 +1,29 @@
--CONFIG_RALINK=y
--CONFIG_DTB_RT305X_EVAL=y
--CONFIG_CPU_MIPS32_R2=y
--# CONFIG_COMPACTION is not set
--# CONFIG_CROSS_MEMORY_ATTACH is not set
--CONFIG_HZ_100=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
-+# CONFIG_CROSS_MEMORY_ATTACH is not set
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_INITRAMFS_SOURCE=""
--CONFIG_INITRAMFS_ROOT_UID=1000
--CONFIG_INITRAMFS_ROOT_GID=1000
- # CONFIG_RD_GZIP is not set
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_KALLSYMS_ALL=y
- # CONFIG_AIO is not set
-+CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_RALINK=y
-+CONFIG_DTB_RT305X_EVAL=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_SUSPEND is not set
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- # CONFIG_IOSCHED_CFQ is not set
- # CONFIG_COREDUMP is not set
--# CONFIG_SUSPEND is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -38,7 +35,6 @@ CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_IP_MROUTE=y
- CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
--CONFIG_ARPD=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
-@@ -63,8 +59,6 @@ CONFIG_NETFILTER_XT_MATCH_LIMIT=m
- CONFIG_NETFILTER_XT_MATCH_MAC=m
- CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
- CONFIG_NETFILTER_XT_MATCH_STATE=m
--CONFIG_NF_CONNTRACK_IPV4=m
--# CONFIG_NF_CONNTRACK_PROC_COMPAT is not set
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
-@@ -100,14 +94,12 @@ CONFIG_PPP_ASYNC=m
- CONFIG_ISDN=y
- CONFIG_INPUT=m
- CONFIG_INPUT_POLLDEV=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_KEYBOARD_ATKBD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_INPUT_MISC=y
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
- # CONFIG_LEGACY_PTYS is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-@@ -142,17 +134,7 @@ CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_SQUASHFS=y
- # CONFIG_SQUASHFS_ZLIB is not set
- CONFIG_SQUASHFS_XZ=y
--CONFIG_PRINTK_TIME=y
--# CONFIG_ENABLE_MUST_CHECK is not set
--CONFIG_MAGIC_SYSRQ=y
--CONFIG_STRIP_ASM_SYMS=y
--CONFIG_DEBUG_FS=y
--# CONFIG_SCHED_DEBUG is not set
--# CONFIG_FTRACE is not set
--CONFIG_CMDLINE_BOOL=y
--CONFIG_CRYPTO_MANAGER=m
- CONFIG_CRYPTO_ARC4=m
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
- CONFIG_CRC_ITU_T=m
- CONFIG_CRC32_SARWATE=y
- # CONFIG_XZ_DEC_X86 is not set
-@@ -161,4 +143,11 @@ CONFIG_CRC32_SARWATE=y
- # CONFIG_XZ_DEC_ARM is not set
- # CONFIG_XZ_DEC_ARMTHUMB is not set
- # CONFIG_XZ_DEC_SPARC is not set
--CONFIG_AVERAGE=y
-+CONFIG_PRINTK_TIME=y
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_CMDLINE_BOOL=y
-diff --git a/arch/mips/configs/sb1250_swarm_defconfig b/arch/mips/configs/sb1250_swarm_defconfig
-index 1edd8430ad61..ad8981666ee4 100644
---- a/arch/mips/configs/sb1250_swarm_defconfig
-+++ b/arch/mips/configs/sb1250_swarm_defconfig
-@@ -1,30 +1,29 @@
--CONFIG_SIBYTE_SWARM=y
--CONFIG_CPU_SB1_PASS_2_2=y
--CONFIG_64BIT=y
--CONFIG_SMP=y
--CONFIG_HIGH_RES_TIMERS=y
--CONFIG_HZ_1000=y
- CONFIG_SYSVIPC=y
-+CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=15
- CONFIG_CGROUPS=y
- CONFIG_CPUSETS=y
- # CONFIG_PROC_PID_CPUSET is not set
- CONFIG_CGROUP_CPUACCT=y
--CONFIG_RELAY=y
- CONFIG_NAMESPACES=y
-+CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
-+CONFIG_SIBYTE_SWARM=y
-+CONFIG_CPU_SB1_PASS_2_2=y
-+CONFIG_64BIT=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=2
-+CONFIG_HZ_1000=y
-+CONFIG_PCI=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_PM=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_PCI=y
--CONFIG_MIPS32_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_PM=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -43,8 +42,6 @@ CONFIG_TCP_MD5SIG=y
- CONFIG_NETWORK_SECMARK=y
- CONFIG_CFG80211=m
- CONFIG_MAC80211=m
--CONFIG_MAC80211_RC_PID=y
--CONFIG_MAC80211_RC_DEFAULT_PID=y
- CONFIG_RFKILL=m
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_FW_LOADER=m
-@@ -60,10 +57,8 @@ CONFIG_BLK_DEV_IDETAPE=y
- CONFIG_RAID_ATTRS=m
- CONFIG_NETDEVICES=y
- CONFIG_MACVLAN=m
--CONFIG_BROADCOM_PHY=y
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
- CONFIG_SB1250_MAC=y
-+CONFIG_BROADCOM_PHY=y
- # CONFIG_INPUT is not set
- CONFIG_SERIO_RAW=m
- # CONFIG_VT is not set
-@@ -81,15 +76,9 @@ CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
--CONFIG_DLM=m
--CONFIG_KEYS=y
--CONFIG_CRYPTO_NULL=m
- CONFIG_CRYPTO_CRYPTD=m
- CONFIG_CRYPTO_AUTHENC=m
--CONFIG_CRYPTO_CCM=m
--CONFIG_CRYPTO_GCM=m
- CONFIG_CRYPTO_CBC=m
- CONFIG_CRYPTO_LRW=m
- CONFIG_CRYPTO_PCBC=m
-@@ -98,7 +87,6 @@ CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_XCBC=m
- CONFIG_CRYPTO_MD4=m
- CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_SHA256=m
- CONFIG_CRYPTO_SHA512=m
- CONFIG_CRYPTO_TGR192=m
- CONFIG_CRYPTO_WP512=m
-diff --git a/arch/mips/configs/tb0219_defconfig b/arch/mips/configs/tb0219_defconfig
-index 4041597e3170..f0a11a72307e 100644
---- a/arch/mips/configs/tb0219_defconfig
-+++ b/arch/mips/configs/tb0219_defconfig
-@@ -1,12 +1,9 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_TANBAC_TB0219=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_TANBAC_TB0219=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
-@@ -25,7 +22,6 @@ CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
-@@ -33,33 +29,26 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_IPV6 is not set
- CONFIG_NETWORK_SECMARK=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
--CONFIG_FW_LOADER=m
- CONFIG_BLK_DEV_LOOP=m
- CONFIG_BLK_DEV_NBD=m
- CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_XIP=y
- CONFIG_NETDEVICES=y
--CONFIG_PHYLIB=m
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_8139TOO=y
-+CONFIG_R8169=y
- CONFIG_VIA_RHINE=y
- CONFIG_VIA_RHINE_MMIO=y
--CONFIG_R8169=y
- CONFIG_VIA_VELOCITY=y
--# CONFIG_INPUT_MOUSEDEV is not set
-+CONFIG_CICADA_PHY=m
-+CONFIG_DAVICOM_PHY=m
-+CONFIG_LXT_PHY=m
-+CONFIG_MARVELL_PHY=m
-+CONFIG_QSEMI_PHY=m
-+CONFIG_SMSC_PHY=m
-+CONFIG_VITESSE_PHY=m
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
- CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_VR41XX=y
- CONFIG_SERIAL_VR41XX_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
-@@ -82,7 +71,6 @@ CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CRAMFS=m
- CONFIG_ROMFS_FS=m
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=y
- CONFIG_NFSD_V3=y
-diff --git a/arch/mips/configs/tb0226_defconfig b/arch/mips/configs/tb0226_defconfig
-index 565f0441c50d..025e45656359 100644
---- a/arch/mips/configs/tb0226_defconfig
-+++ b/arch/mips/configs/tb0226_defconfig
-@@ -1,18 +1,14 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_TANBAC_TB0226=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_TANBAC_TB0226=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
--# CONFIG_BLK_DEV_BSG is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -34,28 +30,21 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_BLK_DEV_LOOP=m
- CONFIG_BLK_DEV_NBD=m
- CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_XIP=y
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
--CONFIG_SCSI_MULTI_LUN=y
- CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_SAS_LIBSAS=m
--# CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_E100=y
- CONFIG_USB_CATC=m
- CONFIG_USB_KAWETH=m
- CONFIG_USB_PEGASUS=m
- CONFIG_USB_RTL8150=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
- CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_VR41XX=y
- CONFIG_SERIAL_VR41XX_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
-@@ -77,10 +66,8 @@ CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CRAMFS=m
- CONFIG_ROMFS_FS=m
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="cca=3 mem=32M console=ttyVR0,115200"
--CONFIG_CRC32=m
-diff --git a/arch/mips/configs/tb0287_defconfig b/arch/mips/configs/tb0287_defconfig
-index a702be602fb9..68490248e3f1 100644
---- a/arch/mips/configs/tb0287_defconfig
-+++ b/arch/mips/configs/tb0287_defconfig
-@@ -1,12 +1,8 @@
--CONFIG_MACH_VR41XX=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--CONFIG_SYSFS_DEPRECATED_V2=y
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
--# CONFIG_SYSCTL_SYSCALL is not set
--# CONFIG_PCSPKR_PLATFORM is not set
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
-@@ -25,7 +21,6 @@ CONFIG_IP_ROUTE_VERBOSE=y
- CONFIG_IP_PNP=y
- CONFIG_IP_PNP_BOOTP=y
- CONFIG_NET_IPIP=m
--CONFIG_NET_IPGRE=m
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
- # CONFIG_INET_XFRM_MODE_TUNNEL is not set
-@@ -36,36 +31,23 @@ CONFIG_TCP_CONG_CUBIC=m
- # CONFIG_IPV6 is not set
- CONFIG_NETWORK_SECMARK=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
--CONFIG_FW_LOADER=m
- CONFIG_BLK_DEV_LOOP=m
- CONFIG_BLK_DEV_NBD=m
- CONFIG_BLK_DEV_RAM=y
--CONFIG_BLK_DEV_XIP=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_SCSI_SCAN_ASYNC=y
- # CONFIG_SCSI_LOWLEVEL is not set
- CONFIG_ATA=y
- CONFIG_PATA_SIL680=y
--CONFIG_IEEE1394=m
--CONFIG_IEEE1394_OHCI1394=m
--CONFIG_IEEE1394_SBP2=m
--CONFIG_IEEE1394_ETH1394=m
--CONFIG_IEEE1394_RAWIO=m
--CONFIG_IEEE1394_VIDEO1394=m
--CONFIG_IEEE1394_DV1394=m
- CONFIG_NETDEVICES=y
--CONFIG_NET_ETHERNET=y
--CONFIG_NET_PCI=y
- CONFIG_8139TOO=y
-+CONFIG_R8169=y
- CONFIG_VIA_RHINE=y
- CONFIG_VIA_RHINE_MMIO=y
--CONFIG_R8169=y
- CONFIG_VIA_VELOCITY=y
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
--CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_VR41XX=y
- CONFIG_SERIAL_VR41XX_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
-@@ -76,9 +58,6 @@ CONFIG_FB=y
- CONFIG_FB_SM501=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_FRAMEBUFFER_CONSOLE=y
--CONFIG_FONTS=y
--CONFIG_FONT_8x8=y
--CONFIG_FONT_8x16=y
- CONFIG_USB=m
- CONFIG_USB_MON=m
- CONFIG_USB_EHCI_HCD=m
-@@ -97,9 +76,11 @@ CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_CRAMFS=m
- CONFIG_ROMFS_FS=m
- CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
- CONFIG_ROOT_NFS=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
-+CONFIG_FONTS=y
-+CONFIG_FONT_8x8=y
-+CONFIG_FONT_8x16=y
- CONFIG_CMDLINE_BOOL=y
- CONFIG_CMDLINE="cca=3 mem=64M console=ttyVR0,115200 ip=any root=/dev/nfs"
-diff --git a/arch/mips/configs/vocore2_defconfig b/arch/mips/configs/vocore2_defconfig
-index 9121e4194a63..ded3dce911d5 100644
---- a/arch/mips/configs/vocore2_defconfig
-+++ b/arch/mips/configs/vocore2_defconfig
-@@ -1,17 +1,9 @@
--CONFIG_RALINK=y
--CONFIG_SOC_MT7620=y
--CONFIG_DTB_VOCORE2=y
--CONFIG_CPU_MIPS32_R2=y
--# CONFIG_COMPACTION is not set
--CONFIG_HZ_100=y
--CONFIG_PREEMPT=y
--# CONFIG_SECCOMP is not set
--CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
-@@ -30,8 +22,16 @@ CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
--# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+CONFIG_RALINK=y
-+CONFIG_SOC_MT7620=y
-+CONFIG_DTB_VOCORE2=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
- # CONFIG_SUSPEND is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -113,6 +113,10 @@ CONFIG_NLS_ISO8859_15=y
- CONFIG_NLS_KOI8_R=y
- CONFIG_NLS_KOI8_U=y
- CONFIG_NLS_UTF8=y
-+CONFIG_CRYPTO_DEFLATE=y
-+CONFIG_CRYPTO_LZO=y
-+CONFIG_CRC16=y
-+CONFIG_XZ_DEC=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_STRIP_ASM_SYMS=y
-@@ -123,7 +127,3 @@ CONFIG_PANIC_TIMEOUT=10
- # CONFIG_DEBUG_PREEMPT is not set
- CONFIG_STACKTRACE=y
- # CONFIG_FTRACE is not set
--CONFIG_CRYPTO_DEFLATE=y
--CONFIG_CRYPTO_LZO=y
--CONFIG_CRC16=y
--CONFIG_XZ_DEC=y
-diff --git a/arch/mips/configs/workpad_defconfig b/arch/mips/configs/workpad_defconfig
-index a84eac409c9c..891a5f77305d 100644
---- a/arch/mips/configs/workpad_defconfig
-+++ b/arch/mips/configs/workpad_defconfig
-@@ -1,18 +1,17 @@
--CONFIG_MACH_VR41XX=y
--CONFIG_IBM_WORKPAD=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_EXPERT=y
- CONFIG_SLAB=y
-+CONFIG_MACH_VR41XX=y
-+CONFIG_IBM_WORKPAD=y
-+CONFIG_PCCARD=y
-+CONFIG_PCMCIA_VRC4171=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_PCCARD=y
--CONFIG_PCMCIA_VRC4171=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -31,16 +30,14 @@ CONFIG_IDE=y
- CONFIG_BLK_DEV_IDECS=m
- CONFIG_IDE_GENERIC=y
- CONFIG_NETDEVICES=y
--CONFIG_NET_PCMCIA=y
--CONFIG_PCMCIA_3C589=m
- CONFIG_PCMCIA_3C574=m
-+CONFIG_PCMCIA_3C589=m
-+CONFIG_PCMCIA_NMCLAN=m
- CONFIG_PCMCIA_FMVJ18X=m
-+CONFIG_PCMCIA_AXNET=m
- CONFIG_PCMCIA_PCNET=m
--CONFIG_PCMCIA_NMCLAN=m
- CONFIG_PCMCIA_SMC91C92=m
- CONFIG_PCMCIA_XIRC2PS=m
--CONFIG_PCMCIA_AXNET=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_INPUT_KEYBOARD is not set
- # CONFIG_INPUT_MOUSE is not set
- # CONFIG_SERIO is not set
-@@ -62,7 +59,6 @@ CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
- CONFIG_NFS_FS=m
--CONFIG_NFS_V3=y
- CONFIG_NFSD=m
- CONFIG_NFSD_V3=y
- CONFIG_CMDLINE_BOOL=y
-diff --git a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
-index fa750d501c11..c3cac29e8414 100644
---- a/arch/mips/configs/xway_defconfig
-+++ b/arch/mips/configs/xway_defconfig
-@@ -1,13 +1,3 @@
--CONFIG_LANTIQ=y
--CONFIG_PCI_LANTIQ=y
--CONFIG_XRX200_PHY_FW=y
--CONFIG_CPU_MIPS32_R2=y
--CONFIG_MIPS_MT_SMP=y
--CONFIG_MIPS_VPE_LOADER=y
--# CONFIG_COMPACTION is not set
--CONFIG_NR_CPUS=2
--CONFIG_HZ_100=y
--# CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- # CONFIG_CROSS_MEMORY_ATTACH is not set
-@@ -15,19 +5,28 @@ CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_GZIP is not set
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_KALLSYMS_ALL=y
- # CONFIG_AIO is not set
-+CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-+CONFIG_LANTIQ=y
-+CONFIG_PCI_LANTIQ=y
-+CONFIG_XRX200_PHY_FW=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_MIPS_VPE_LOADER=y
-+CONFIG_NR_CPUS=2
-+CONFIG_HZ_100=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_PCI=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- # CONFIG_IOSCHED_CFQ is not set
--CONFIG_PCI=y
- # CONFIG_COREDUMP is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -63,7 +62,6 @@ CONFIG_NETFILTER_XT_MATCH_LIMIT=m
- CONFIG_NETFILTER_XT_MATCH_MAC=m
- CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
- CONFIG_NETFILTER_XT_MATCH_STATE=m
--CONFIG_NF_CONNTRACK_IPV4=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
-@@ -102,14 +100,12 @@ CONFIG_PPP_ASYNC=m
- CONFIG_ISDN=y
- CONFIG_INPUT=m
- CONFIG_INPUT_POLLDEV=m
--# CONFIG_INPUT_MOUSEDEV is not set
- # CONFIG_KEYBOARD_ATKBD is not set
- # CONFIG_INPUT_MOUSE is not set
- CONFIG_INPUT_MISC=y
- # CONFIG_SERIO is not set
- # CONFIG_VT is not set
- # CONFIG_LEGACY_PTYS is not set
--# CONFIG_DEVKMEM is not set
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-@@ -150,6 +146,9 @@ CONFIG_JFFS2_COMPRESSION_OPTIONS=y
- CONFIG_SQUASHFS=y
- # CONFIG_SQUASHFS_ZLIB is not set
- CONFIG_SQUASHFS_XZ=y
-+CONFIG_CRYPTO_ARC4=m
-+CONFIG_CRC_ITU_T=m
-+CONFIG_CRC32_SARWATE=y
- CONFIG_PRINTK_TIME=y
- # CONFIG_ENABLE_MUST_CHECK is not set
- CONFIG_STRIP_ASM_SYMS=y
-@@ -158,6 +157,3 @@ CONFIG_MAGIC_SYSRQ=y
- # CONFIG_SCHED_DEBUG is not set
- # CONFIG_FTRACE is not set
- CONFIG_CMDLINE_BOOL=y
--CONFIG_CRYPTO_ARC4=m
--CONFIG_CRC_ITU_T=m
--CONFIG_CRC32_SARWATE=y
--- 
-2.19.1
+--zhXaljGHf11kAtnf--

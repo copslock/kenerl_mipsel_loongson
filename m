@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 23:38:42 +0100 (CET)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:58424 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2018 23:38:43 +0100 (CET)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:58432 "EHLO
         emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994220AbeKUWiDl05M- (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23994074AbeKUWiDNqqe- (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2018 23:38:03 +0100
 Received: from localhost.localdomain (85-76-84-147-nat.elisa-mobile.fi [85.76.84.147])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 710032009D;
-        Thu, 22 Nov 2018 00:38:03 +0200 (EET)
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 035DB20097;
+        Thu, 22 Nov 2018 00:38:02 +0200 (EET)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 16/24] MIPS: OCTEON: cvmx-bootmem: move code to avoid forward declarations
-Date:   Thu, 22 Nov 2018 00:37:37 +0200
-Message-Id: <20181121223745.22792-17-aaro.koskinen@iki.fi>
+Subject: [PATCH 13/24] MIPS: OCTEON: cvmx-helper-util: make cvmx_helper_setup_red_queue static
+Date:   Thu, 22 Nov 2018 00:37:34 +0200
+Message-Id: <20181121223745.22792-14-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20181121223745.22792-1-aaro.koskinen@iki.fi>
 References: <20181121223745.22792-1-aaro.koskinen@iki.fi>
@@ -21,7 +21,7 @@ Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67444
+X-archive-position: 67445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,138 +38,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move code to avoid forward declarations.
+Make cvmx_helper_setup_red_queue static, it's not used outside this file.
 
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- .../cavium-octeon/executive/cvmx-bootmem.c    | 94 +++++++++----------
- 1 file changed, 47 insertions(+), 47 deletions(-)
+ .../cavium-octeon/executive/cvmx-helper-util.c    |  3 ++-
+ arch/mips/include/asm/octeon/cvmx-helper-util.h   | 15 ---------------
+ 2 files changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-index dc5d1c6203a7..51fb34edffbf 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-@@ -155,42 +155,6 @@ void *cvmx_bootmem_alloc_address(uint64_t size, uint64_t address,
- 					address + size);
- }
- 
--void *cvmx_bootmem_alloc_named_range_once(uint64_t size, uint64_t min_addr,
--					  uint64_t max_addr, uint64_t align,
--					  char *name,
--					  void (*init) (void *))
--{
--	int64_t addr;
--	void *ptr;
--	uint64_t named_block_desc_addr;
--
--	named_block_desc_addr = (uint64_t)
--		cvmx_bootmem_phy_named_block_find(name,
--						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
--
--	if (named_block_desc_addr) {
--		addr = CVMX_BOOTMEM_NAMED_GET_FIELD(named_block_desc_addr,
--						    base_addr);
--		return cvmx_phys_to_ptr(addr);
--	}
--
--	addr = cvmx_bootmem_phy_named_block_alloc(size, min_addr, max_addr,
--						  align, name,
--						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
--
--	if (addr < 0)
--		return NULL;
--	ptr = cvmx_phys_to_ptr(addr);
--
--	if (init)
--		init(ptr);
--	else
--		memset(ptr, 0, size);
--
--	return ptr;
--}
--EXPORT_SYMBOL(cvmx_bootmem_alloc_named_range_once);
--
- void *cvmx_bootmem_alloc_named_range(uint64_t size, uint64_t min_addr,
- 				     uint64_t max_addr, uint64_t align,
- 				     char *name)
-@@ -211,17 +175,6 @@ void *cvmx_bootmem_alloc_named(uint64_t size, uint64_t alignment, char *name)
- }
- EXPORT_SYMBOL(cvmx_bootmem_alloc_named);
- 
--int cvmx_bootmem_free_named(char *name)
--{
--	return cvmx_bootmem_phy_named_block_free(name, 0);
--}
--
--struct cvmx_bootmem_named_block_desc *cvmx_bootmem_find_named_block(char *name)
--{
--	return cvmx_bootmem_phy_named_block_find(name, 0);
--}
--EXPORT_SYMBOL(cvmx_bootmem_find_named_block);
--
- void cvmx_bootmem_lock(void)
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-util.c b/arch/mips/cavium-octeon/executive/cvmx-helper-util.c
+index 5e353a91138e..53b912745dbd 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-util.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-util.c
+@@ -92,7 +92,8 @@ const char *cvmx_helper_interface_mode_to_string(cvmx_helper_interface_mode_t
+  *		 than this many free packet buffers in FPA 0.
+  * Returns Zero on success. Negative on failure
+  */
+-int cvmx_helper_setup_red_queue(int queue, int pass_thresh, int drop_thresh)
++static int cvmx_helper_setup_red_queue(int queue, int pass_thresh,
++				       int drop_thresh)
  {
- 	cvmx_spinlock_lock((cvmx_spinlock_t *) &(cvmx_bootmem_desc->lock));
-@@ -656,6 +609,48 @@ struct cvmx_bootmem_named_block_desc *
- 	return NULL;
- }
+ 	union cvmx_ipd_qosx_red_marks red_marks;
+ 	union cvmx_ipd_red_quex_param red_param;
+diff --git a/arch/mips/include/asm/octeon/cvmx-helper-util.h b/arch/mips/include/asm/octeon/cvmx-helper-util.h
+index d88e3abb16c1..e9a97e7ee604 100644
+--- a/arch/mips/include/asm/octeon/cvmx-helper-util.h
++++ b/arch/mips/include/asm/octeon/cvmx-helper-util.h
+@@ -44,21 +44,6 @@
+ extern const char
+     *cvmx_helper_interface_mode_to_string(cvmx_helper_interface_mode_t mode);
  
-+void *cvmx_bootmem_alloc_named_range_once(uint64_t size, uint64_t min_addr,
-+					  uint64_t max_addr, uint64_t align,
-+					  char *name,
-+					  void (*init) (void *))
-+{
-+	int64_t addr;
-+	void *ptr;
-+	uint64_t named_block_desc_addr;
-+
-+	named_block_desc_addr = (uint64_t)
-+		cvmx_bootmem_phy_named_block_find(name,
-+						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
-+
-+	if (named_block_desc_addr) {
-+		addr = CVMX_BOOTMEM_NAMED_GET_FIELD(named_block_desc_addr,
-+						    base_addr);
-+		return cvmx_phys_to_ptr(addr);
-+	}
-+
-+	addr = cvmx_bootmem_phy_named_block_alloc(size, min_addr, max_addr,
-+						  align, name,
-+						  (uint32_t)CVMX_BOOTMEM_FLAG_NO_LOCKING);
-+
-+	if (addr < 0)
-+		return NULL;
-+	ptr = cvmx_phys_to_ptr(addr);
-+
-+	if (init)
-+		init(ptr);
-+	else
-+		memset(ptr, 0, size);
-+
-+	return ptr;
-+}
-+EXPORT_SYMBOL(cvmx_bootmem_alloc_named_range_once);
-+
-+struct cvmx_bootmem_named_block_desc *cvmx_bootmem_find_named_block(char *name)
-+{
-+	return cvmx_bootmem_phy_named_block_find(name, 0);
-+}
-+EXPORT_SYMBOL(cvmx_bootmem_find_named_block);
-+
- int cvmx_bootmem_phy_named_block_free(char *name, uint32_t flags)
- {
- 	struct cvmx_bootmem_named_block_desc *named_block_ptr;
-@@ -700,6 +695,11 @@ int cvmx_bootmem_phy_named_block_free(char *name, uint32_t flags)
- 	return named_block_ptr != NULL; /* 0 on failure, 1 on success */
- }
- 
-+int cvmx_bootmem_free_named(char *name)
-+{
-+	return cvmx_bootmem_phy_named_block_free(name, 0);
-+}
-+
- int64_t cvmx_bootmem_phy_named_block_alloc(uint64_t size, uint64_t min_addr,
- 					   uint64_t max_addr,
- 					   uint64_t alignment,
+-/**
+- * Setup Random Early Drop on a specific input queue
+- *
+- * @queue:  Input queue to setup RED on (0-7)
+- * @pass_thresh:
+- *		 Packets will begin slowly dropping when there are less than
+- *		 this many packet buffers free in FPA 0.
+- * @drop_thresh:
+- *		 All incoming packets will be dropped when there are less
+- *		 than this many free packet buffers in FPA 0.
+- * Returns Zero on success. Negative on failure
+- */
+-extern int cvmx_helper_setup_red_queue(int queue, int pass_thresh,
+-				       int drop_thresh);
+-
+ /**
+  * Setup Random Early Drop to automatically begin dropping packets.
+  *
 -- 
 2.17.0

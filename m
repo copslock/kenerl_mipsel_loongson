@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Nov 2018 05:00:58 +0100 (CET)
-Received: from mail-ed1-x543.google.com ([IPv6:2a00:1450:4864:20::543]:35598
-        "EHLO mail-ed1-x543.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990473AbeKYEArNc0gf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 25 Nov 2018 05:00:47 +0100
-Received: by mail-ed1-x543.google.com with SMTP id x30so13123836edx.2
-        for <linux-mips@linux-mips.org>; Sat, 24 Nov 2018 20:00:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Nov 2018 05:20:06 +0100 (CET)
+Received: from mail-ed1-x544.google.com ([IPv6:2a00:1450:4864:20::544]:35665
+        "EHLO mail-ed1-x544.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990397AbeKYESDP5AMf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 25 Nov 2018 05:18:03 +0100
+Received: by mail-ed1-x544.google.com with SMTP id x30so13135700edx.2;
+        Sat, 24 Nov 2018 20:18:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=obtjhgtDDsP+5Ip6HZR8RzVAI2Sl/WwjveNuv60FNDs=;
-        b=YqOmSidS95BPQYBVzqnNeBa4T7rgsx5jQyJB8lWWrWUOypCe3UU48DBr5T6RKM/rQa
-         hPYciCQu0hNgfnKSkX29QKmwqkarhfaTT3FkHPIdeC04uGRgL0FBLnGbWv9Rw2S7521Q
-         +nVEk46+FXxcZm8WQ3ZYsHn/xr+3veZkjqDUgQdm8YINbiDQO/wN7oxCxAYLN1bcWLsw
-         GQy8by3SgVIRMl331D//UNZxLAb7EOtAVSNCQhmKf9mYCjbE/Q5X5CFVbztRRL+Kz3N7
-         8HB+Xrp3toMt+Y3gE8GdDCC2HyUJtC0ePC1rg/E8+RqQE1DgJ3w8NfPAXutLtKtIam9h
-         qFdA==
+        bh=peBHLQfMZprZ7Y8obIOHLEWYp3Ixk/YUySRgAo0Jafw=;
+        b=NjorkavKui9Tc7buhACLon/lY1784aUUvSYflHH+QPFX8yqDS6zSJEeeIkPW/eqAb+
+         /XTfFxzVG02YA3LbBnv8xXF2x3eQGCUgXH9G1rmR3PxMBOK7TRdTk0GMJfn5itImNOym
+         Xp+alG1ykMs38TNqe1LlJKPdaVabnfpGDyROppKmXzTx4Wkp31ZbJ+kkuvIsXyq9umM0
+         5rTL4qlsrJ8uOEOAPy3yFffyyIUlA5f3hJcHZbstrD5sx+H3yuhYo6E6uhok+p//g8+h
+         EJhkJguTrr6l/8stGIAo8jxAmWHOFu9/Tjh+nEE/AFVG4KJK71Y6fHTSNhQe5tYauyCP
+         Aunw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=obtjhgtDDsP+5Ip6HZR8RzVAI2Sl/WwjveNuv60FNDs=;
-        b=SPL1i8Ts5a7mnoVmbkSwm1dLupAwR9V92m/z3SqFSgBi4Dl9aQayg++PNjEBfYzO1k
-         UICkJCaEEwlHC+td0yRXDGcxGvwZLEX357C3qhOzyHW14sXtTtpsdUp71GguHHWjiaSI
-         t4tfy45yWOtM6+fYM66tNxldoqhsBrA0em1QvHQF6/NzgWBsAOYxcqXloep1ybCV5SKT
-         kRc/nAHTobYAwGtzfVyw0VCh4FGYA4OrMw+2rfvOuiKU2i6xKA6WVoHs5JKejiUTUdKS
-         GM7fkSdWtlmsMk7tf6wbAyvcM0XHWHXL6OQTRKfiV1pnQB9l/Dv47R97XjCPNSCz+V1c
-         OgOw==
-X-Gm-Message-State: AA+aEWZrPSnOZT/IrtPxfXrXIRheJuiCE2Erz9d7Y6Cu1T9Fh2R24wFS
-        1EGf2tlObb5P2h7JGCrEa8UqD6dxY0UTAnYiolW8JQ==
-X-Google-Smtp-Source: AFSGD/WZnElXfbGNhd/Endw6qrCamTs/4J1B/Q9FZt5jGoDda+QJMvhqU/aMWzRGqoIBi/YOjQkiFTOLMj9kMyN0O30=
-X-Received: by 2002:aa7:dace:: with SMTP id x14mr19123754eds.13.1543118445903;
- Sat, 24 Nov 2018 20:00:45 -0800 (PST)
+        bh=peBHLQfMZprZ7Y8obIOHLEWYp3Ixk/YUySRgAo0Jafw=;
+        b=un2rBjsOeLhJF2IiXDsVgLFaipZEHDDBnQjGw4asxAugV8gCJRoredspG7+H4BN8Ge
+         JEqNfthaWVkfhuaWhIXCq5oQwDUCrZ8BASqKjjPGMVuiCop0nxlJfnB4NNmKLGaA17cA
+         RQMr/ofLPQoCQ0Fr8CJd2rrx5mTzb9x/7554E/q1rIUslrhsMSO1rcamjHhbE11xXAUu
+         ciejNbY1m3V2jRm2UlNn7E80kHDHsypoCNCkhUbHMkhsBq9Ip0POuVJMslRGKHDMrIEX
+         aWpuA5QgBR6urFPFeKfRPv1i0E3GATmci6pk0KTfUFk3g14cfXuO8s/Q/LpKXFUHEFgH
+         QgDA==
+X-Gm-Message-State: AA+aEWbJXHD2ZDH1NMGAjUw1ArtBiPFE0a7IYVflGU6GkvMk5eFSa9FG
+        mBjqNBW7WhteRTmqw7FrqUHyU0YP9UkDmynK99Q=
+X-Google-Smtp-Source: AFSGD/WFxCqokbbTRO6Hk8K9wcilVroJIfm/Lok7h/4afEenadq1vGvymFhQe8/+ZimaS+/sLdCfXU8DeE36FK40u8M=
+X-Received: by 2002:a50:b31c:: with SMTP id q28mr18322945edd.241.1543119482776;
+ Sat, 24 Nov 2018 20:18:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20181124022035.17519-1-deepa.kernel@gmail.com> <20181124022035.17519-9-deepa.kernel@gmail.com>
-In-Reply-To: <20181124022035.17519-9-deepa.kernel@gmail.com>
+References: <20181124022035.17519-1-deepa.kernel@gmail.com>
+ <20181124022035.17519-8-deepa.kernel@gmail.com> <CAF=yD-K=ZLZ_S=Y6YnhvvkfKQS=21ujwiGd7+JB9yDMtiX_9hg@mail.gmail.com>
+In-Reply-To: <CAF=yD-K=ZLZ_S=Y6YnhvvkfKQS=21ujwiGd7+JB9yDMtiX_9hg@mail.gmail.com>
 From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Sat, 24 Nov 2018 23:00:08 -0500
-Message-ID: <CAF=yD-Jz8c2EsoKxUDbf7dygWRW49kwteUsksq3eUV00Eg94-w@mail.gmail.com>
-Subject: Re: [PATCH 8/8] socket: Add SO_TIMESTAMPING_NEW
+Date:   Sat, 24 Nov 2018 23:17:25 -0500
+Message-ID: <CAF=yD-K3Ga8qojSh5Epa6m4EYn-Lvdo=e38MnFqOKch1128VHw@mail.gmail.com>
+Subject: Re: [PATCH 7/8] socket: Add SO_TIMESTAMP[NS]_NEW
 To:     Deepa Dinamani <deepa.kernel@gmail.com>
 Cc:     David Miller <davem@davemloft.net>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -46,18 +47,16 @@ Cc:     David Miller <davem@davemloft.net>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Arnd Bergmann <arnd@arndb.de>,
         y2038 Mailman List <y2038@lists.linaro.org>,
-        chris@zankel.net, fenghua.yu@intel.com, rth@twiddle.net,
-        Thomas Gleixner <tglx@linutronix.de>, ubraun@linux.ibm.com,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+        jejb@parisc-linux.org, ralf@linux-mips.org, rth@twiddle.net,
+        linux-alpha@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linux-rdma@vger.kernel.org,
+        sparclinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <willemdebruijn.kernel@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67474
+X-archive-position: 67475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,72 +73,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Nov 24, 2018 at 3:58 AM Deepa Dinamani <deepa.kernel@gmail.com> wrote:
+On Sat, Nov 24, 2018 at 10:59 PM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
 >
-> Add SO_TIMESTAMPING_NEW variant of socket timestamp options.
-> This is the y2038 safe versions of the SO_TIMESTAMPING_OLD
-> for all architectures.
+> On Sat, Nov 24, 2018 at 3:58 AM Deepa Dinamani <deepa.kernel@gmail.com> wrote:
+> >
+> > Add SO_TIMESTAMP_NEW and SO_TIMESTAMPNS_NEW variants of
+> > socket timestamp options.
+> > These are the y2038 safe versions of the SO_TIMESTAMP_OLD
+> > and SO_TIMESTAMPNS_OLD for all architectures.
+> >
+> > Note that the format of scm_timestamping.ts[0] is not changed
+> > in this patch.
+> >
+> > Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
+> > Cc: jejb@parisc-linux.org
+> > Cc: ralf@linux-mips.org
+> > Cc: rth@twiddle.net
+> > Cc: linux-alpha@vger.kernel.org
+> > Cc: linux-mips@linux-mips.org
+> > Cc: linux-parisc@vger.kernel.org
+> > Cc: linux-rdma@vger.kernel.org
+> > Cc: netdev@vger.kernel.org
+> > Cc: sparclinux@vger.kernel.org
+> > ---
 >
-> Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
-> Cc: chris@zankel.net
-> Cc: fenghua.yu@intel.com
-> Cc: rth@twiddle.net
-> Cc: tglx@linutronix.de
-> Cc: ubraun@linux.ibm.com
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: sparclinux@vger.kernel.org
-> ---
+> > diff --git a/include/net/sock.h b/include/net/sock.h
+> > index 8143c4c1a49d..9edf909dc176 100644
+> > --- a/include/net/sock.h
+> > +++ b/include/net/sock.h
+> > @@ -801,6 +801,7 @@ enum sock_flags {
+> >         SOCK_RCU_FREE, /* wait rcu grace period in sk_destruct() */
+> >         SOCK_TXTIME,
+> >         SOCK_XDP, /* XDP is attached */
+> > +       SOCK_TSTAMP_NEW, /* Indicates 64 bit timestamps always */
+>
+> sk_flags is getting exhausted. Commit b9f40e21ef42 ("net-timestamp:
+> move timestamp flags out of sk_flags") added a new u16 sk_tsflags
+> specifically for timestamps. That may be a better choice here, too.
+>
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index e60036618205..7b485dfaa400 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -652,15 +652,23 @@ static void setsockopt_timestamp(struct sock *sk, int type, int val)
+> >         if (!val) {
+> >                 sock_reset_flag(sk, SOCK_RCVTSTAMP);
+> >                 sock_reset_flag(sk, SOCK_RCVTSTAMPNS);
+> > +               sock_reset_flag(sk, SOCK_TSTAMP_NEW);
+> >                 return;
+> >         }
+> >
+> > +       if (type == SO_TIMESTAMP_NEW || type == SO_TIMESTAMPNS_NEW)
+> > +               sock_set_flag(sk, SOCK_TSTAMP_NEW);
+> > +       else
+> > +               sock_reset_flag(sk, SOCK_TSTAMP_NEW);
+> > +
+>
+> if adding a boolean whether the socket uses new or old-style
+> timestamps, perhaps fail hard if a process tries to set a new-style
+> option while an old-style is already set and vice versa. Also include
+> SO_TIMESTAMPING_NEW as it toggles the same option.
+>
+> > diff --git a/net/socket.c b/net/socket.c
+> > index d3defba55547..9abeb6bc9cfe 100644
+> > --- a/net/socket.c
+> > +++ b/net/socket.c
+> > @@ -699,6 +699,38 @@ static void put_ts_pktinfo(struct msghdr *msg, struct sk_buff *skb)
+> >                  sizeof(ts_pktinfo), &ts_pktinfo);
+> >  }
+> >
+> > +static void sock_recv_sw_timestamp(struct msghdr *msg, struct sock *sk,
+> > +                                  struct sk_buff *skb)
+> > +{
+> > +       if (sock_flag(sk, SOCK_TSTAMP_NEW)) {
+> > +               if (!sock_flag(sk, SOCK_RCVTSTAMPNS)) {
+> > +                       struct sock_timeval tv;
+> > +
+> > +                       skb_get_new_timestamp(skb, &tv);
+> > +                       put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMP_NEW,
+> > +                                sizeof(tv), &tv);
+> > +               } else {
+> > +                       struct __kernel_timespec ts;
+> > +
+> > +                       skb_get_new_timestampns(skb, &ts);
+> > +                       put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
+> > +                                sizeof(ts), &ts);
+> > +               }
+> > +       }
+> > +       if (!sock_flag(sk, SOCK_RCVTSTAMPNS)) {
+> > +               struct __kernel_old_timeval tv;
+> > +
+> > +               skb_get_timestamp(skb, &tv);
+> > +               put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMP_OLD,
+> > +                        sizeof(tv), &tv);
+> > +       } else {
+> > +               struct timespec ts;
+> > +
+> > +               skb_get_timestampns(skb, &ts);
+> > +               put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMPNS_OLD,
+> > +                        sizeof(ts), &ts);
+> > +       }
+> > +}
+> >  /*
+> >   * called from sock_recv_timestamp() if sock_flag(sk, SOCK_RCVTSTAMP)
+> >   * or sock_flag(sk, SOCK_RCVTSTAMPNS)
+> > @@ -719,19 +751,8 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
+> >                 false_tstamp = 1;
+> >         }
+> > -       if (need_software_tstamp) {
+>
+> Considerably less code churn if adding __sock_recv_timestamp_2038 and
+> calling that here:
+>
+>                    if (sock_flag(sk, SOCK_TSTAMP_NEW))
+>                            __sock_recv_timestamp_2038(msg, sk, skb);
+>                    else if ...
+>
+> Same for the tcp case above, really, and in the case of the next patch
+> for SO_TIMESTAMPING_NEW
 
->  /*
->   * called from sock_recv_timestamp() if sock_flag(sk, SOCK_RCVTSTAMP)
->   * or sock_flag(sk, SOCK_RCVTSTAMPNS)
-> @@ -739,8 +740,8 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
->         struct sk_buff *skb)
->  {
->         int need_software_tstamp = sock_flag(sk, SOCK_RCVTSTAMP) || sock_flag(sk, SOCK_RCVTSTAMPNS);
-> -       struct scm_timestamping tss;
-> -       int empty = 1, false_tstamp = 0;
-> +       struct scm_timestamping_internal tss;
-> +       int empty = 1, false_tstamp = 0, new_tstamp = 0;
->         struct skb_shared_hwtstamps *shhwtstamps =
->                 skb_hwtstamps(skb);
->
-> @@ -756,20 +757,23 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
->
->         memset(&tss, 0, sizeof(tss));
->         if ((sk->sk_tsflags & SOF_TIMESTAMPING_SOFTWARE) &&
-> -           ktime_to_timespec_cond(skb->tstamp, tss.ts + 0))
-> +           ktime_to_timespec64_cond(skb->tstamp, tss.ts + 0))
->                 empty = 0;
->         if (shhwtstamps &&
->             (sk->sk_tsflags & SOF_TIMESTAMPING_RAW_HARDWARE) &&
->             !skb_is_swtx_tstamp(skb, false_tstamp) &&
-> -           ktime_to_timespec_cond(shhwtstamps->hwtstamp, tss.ts + 2)) {
-> +           ktime_to_timespec64_cond(shhwtstamps->hwtstamp, tss.ts + 2)) {
->                 empty = 0;
->                 if ((sk->sk_tsflags & SOF_TIMESTAMPING_OPT_PKTINFO) &&
->                     !skb_is_err_queue(skb))
->                         put_ts_pktinfo(msg, skb);
->         }
->         if (!empty) {
-> -               put_cmsg(msg, SOL_SOCKET,
-> -                        SO_TIMESTAMPING_OLD, sizeof(tss), &tss);
-> +               new_tstamp = sock_flag(sk, SOCK_TSTAMP_NEW);
-> +               if (new_tstamp)
+That naming convention, ..._2038, is not the nicest, of course. That
+is not the relevant bit in the above comment.
 
-nit: no need for explicit variable
+Come to think of it, and related to my question in patch 2 why the
+need to rename at all, could all new structs, constants and functions
+be named consistently with 64 suffix? __sock_recv_timestamp64,
+SO_TIMESTAMPING64 and timeval64 (instead of sock_timeval,
+it isn't really a sock specific struct)?
 
-> +                       put_cmsg_scm_timestamping64(msg, &tss);
-> +               else
-> +                       put_cmsg_scm_timestamping(msg, &tss);
->
->                 if (skb_is_err_queue(skb) && skb->len &&
->                     SKB_EXT_ERR(skb)->opt_stats)
-> --
-> 2.17.1
->
+I guess that there is a good reason for the renaming exercise and
+conditional mapping of SO_TIMESTAMP onto old or new interface.
+Please elucidate in the commit message.

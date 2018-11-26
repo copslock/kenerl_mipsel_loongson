@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:00:58 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.99]:53188 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:05:44 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.99]:33530 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994668AbeKZLAsDNtkO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 26 Nov 2018 12:00:48 +0100
+        id S23994800AbeKZLFfFTSfO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Nov 2018 12:05:35 +0100
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D3CAF214DB;
-        Mon, 26 Nov 2018 11:00:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 92D7F2146F;
+        Mon, 26 Nov 2018 11:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1543230046;
-        bh=QZcOUW/jyrXsUWHvWqpRZNIb58M8e3xL4OJn2NefIi0=;
+        s=default; t=1543230334;
+        bh=N3bGNCITPaJfJRcAr88hMCQMVdHi/SVfbGHQn3UHgmE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q5mJnOK1SHP0C7H773iWv9NXZrYtGVNT3MxBZUmhyfgCkQgU4cBEaOIpqAB++tNvx
-         Lm/iSSnDf95c4qg2rHiiOABVSc/ILJP7SFCpwway3ouMy65cjC6OxMvT8CIvZoKNL5
-         /sFpCopZ/JbYbDCykGQbtIGckOFrvDB6nDbcFSh8=
+        b=FBO6Y4InrkKvViyjXzvXNBymhLrf72b1ViTDKKfL+aqXuM8CIZ+TW4XezYgmPvA+3
+         aPwYg9jTNGM3RaFj49Mvp6QG7hAZRhY5r5CvD/ryPQTcoleqtt5kcmmOc12jwZ4/Tt
+         w9Ka9MDpUMhoi8cB8kSXgVaZCcTFpFo9WxCaryAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -22,12 +22,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.14 51/62] MIPS: OCTEON: cavium_octeon_defconfig: re-enable OCTEON USB driver
-Date:   Mon, 26 Nov 2018 11:51:32 +0100
-Message-Id: <20181126105054.543026226@linuxfoundation.org>
+Subject: [PATCH 4.19 096/118] MIPS: OCTEON: cavium_octeon_defconfig: re-enable OCTEON USB driver
+Date:   Mon, 26 Nov 2018 11:51:30 +0100
+Message-Id: <20181126105105.550994668@linuxfoundation.org>
 X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20181126105050.592727680@linuxfoundation.org>
-References: <20181126105050.592727680@linuxfoundation.org>
+In-Reply-To: <20181126105059.832485122@linuxfoundation.org>
+References: <20181126105059.832485122@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 MIME-Version: 1.0
@@ -37,7 +37,7 @@ Return-Path: <SRS0=UhMK=OF=linuxfoundation.org=gregkh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67486
+X-archive-position: 67487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,7 +54,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

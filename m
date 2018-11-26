@@ -1,58 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 19:22:59 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:33456 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993840AbeKZSWynSBOw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 26 Nov 2018 19:22:54 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A55731A25;
-        Mon, 26 Nov 2018 10:22:52 -0800 (PST)
-Received: from [10.1.196.93] (en101.cambridge.arm.com [10.1.196.93])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA3FD3F5AF;
-        Mon, 26 Nov 2018 10:22:48 -0800 (PST)
-Subject: Re: [PATCH v2 01/20] perf/doc: update design.txt for
- exclude_{host|guest} flags
-To:     Andrew Murray <andrew.murray@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 19:24:10 +0100 (CET)
+Received: from mail-eopbgr780105.outbound.protection.outlook.com ([40.107.78.105]:30829
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993083AbeKZSWmWp8pw convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2018 19:22:42 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hoWtzb28BwGytOIm3qmha0iTROGEOkKXn1JzxHOAunI=;
+ b=O3ThtgcL5NrjJ5fb33OuXteiBo/G9hmoOac9f0et1/qTSLkw2oAkUhYbmQ2vG47GYFN5zvvul9gnVd+BAfxG7o4T7O2B5eBBdF8Fcd1TN4/l9wwFVJ92X9lKYwHlMWWFQx4pBPSv63BSEQCxo9DJ9g7LRbjP6HMyMhHbve++LWQ=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1344.namprd22.prod.outlook.com (10.174.162.147) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1361.15; Mon, 26 Nov 2018 18:22:39 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::2d92:328e:af42:2985%3]) with mapi id 15.20.1361.019; Mon, 26 Nov 2018
+ 18:22:39 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Mathias Kresin <dev@kresin.me>
+CC:     John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        Paul Burton <pburton@wavecomp.com>,
         James Hogan <jhogan@kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
-Cc:     linux-s390@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <1543230756-15319-1-git-send-email-andrew.murray@arm.com>
- <1543230756-15319-2-git-send-email-andrew.murray@arm.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-Message-ID: <b5ba3edb-bc2a-225b-5a87-dd144104cabb@arm.com>
-Date:   Mon, 26 Nov 2018 18:22:47 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
-MIME-Version: 1.0
-In-Reply-To: <1543230756-15319-2-git-send-email-andrew.murray@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: ralink: Fix mt7620 nd_sd pinmux
+Thread-Topic: [PATCH] MIPS: ralink: Fix mt7620 nd_sd pinmux
+Thread-Index: AQHUhXJnOeDss1ppKEWXi5kmzQdw5KViXyAA
+Date:   Mon, 26 Nov 2018 18:22:39 +0000
+Message-ID: <MWHPR2201MB12777328641375E40D6F11BFC1D70@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20181126102540.5304-1-dev@kresin.me>
+In-Reply-To: <20181126102540.5304-1-dev@kresin.me>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <suzuki.poulose@arm.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CO1PR15CA0071.namprd15.prod.outlook.com
+ (2603:10b6:101:20::15) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [4.16.204.77]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1344;6:Fma9mlbTfZkREtA8bEGnXcK+cPnrTQFc1TjsEMzC3N0509k5A0Ckpj11D3ICgsQAQqT9ZLA7j0/eRUwUIK0mbtDgKXLrjx1wcPVlsMM/IXZkyaOecOaxSJYxZuTv4u1w+D/gKaxZyLk1gqSek5z8/+oPO2m8tJAa1/dfvAlYqLaGM3fJGN4uSmvPwQssc00Jmg5V8+eVtu0PyEamoTVc/dvl7rly0njoLUYOv5tEzmHBLlWilj6CvHBWxGFWzJwAhh8P8NUhtvEbmp3y+FlW0o3912oYeZP/lHKuyG8lp6Sgr4LvFzrzLj2tTS54NNFigL7vJlq6EblTVcJRyKBoCTG+bwjY9XON/6z4uH17sRyeRuXKRXDMXTAqff9E3wiWHX9GaHSRE7oMl/F3sQLR/LCNxfDs42juYcXiRRPJuOKgFZ1ueocnT3FSKLAhxHq+L+rLx5afpqIkwCMdBpnx0A==;5:YsCHHVeSLXiwX70a39SFdqBsEY3i5SidRi8ewxAvrtW84AZom2ax93nzStAovdRUwcxeBDG+qV8+LfQMTaO7avBmmHxhJ1Rctld6/3Xsejl1ZR2bmVK5Rtk5n02mV+hKnVdUcnAA3HiVYJHayHsmHsGSX0krlDCIaiiVhRbacv8=;7:FrM+2l1us0MxYnVKq6I+6o2hdjQT3ofmQB2RmFKpR9/IfdVCxC/V9ZIzCH0qKCYMjciB21THvkQZGxSCmASh0t3rZ8FPbK+veFtpOE1S9ph7FZ5StClc49s6MPCGNScJ1+m+5BSvjTh//dQWFMruEA==
+x-ms-office365-filtering-correlation-id: bc4debb3-c0e7-4277-8952-08d653cc25a1
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1344;
+x-ms-traffictypediagnostic: MWHPR2201MB1344:
+x-microsoft-antispam-prvs: <MWHPR2201MB134413FF05C63E11A319B426C1D70@MWHPR2201MB1344.namprd22.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(93006095)(3002001)(3231443)(944501410)(52105112)(10201501046)(148016)(149066)(150057)(6041310)(2016111802025)(20161123562045)(20161123560045)(20161123558120)(20161123564045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1344;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1344;
+x-forefront-prvs: 086831DFB4
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(376002)(366004)(396003)(39840400004)(189003)(199004)(8936002)(6436002)(66066001)(71200400001)(25786009)(68736007)(71190400001)(81166006)(8676002)(81156014)(229853002)(256004)(14444005)(508600001)(446003)(44832011)(55016002)(6506007)(33656002)(316002)(386003)(11346002)(42882007)(97736004)(105586002)(186003)(6116002)(3846002)(5660300001)(102836004)(476003)(486006)(74316002)(106356001)(54906003)(7736002)(305945005)(6246003)(76176011)(26005)(2906002)(99286004)(9686003)(6916009)(4326008)(7696005)(52116002)(14454004)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1344;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: sGr0NUIhPWUYp+eTTXKudr9UVAi+TOJMXwudLwhjeWcAcXIk0TbPd7AMZWnSJ5VBZDa11QHmHErvSCrKcMEWW65l6ZMZ0/eWveVtYCpuquOf07W5Ds63AtmVhut2nzs1/cIx8XwXtOpFCfZjg77kCM5DhLTyGkIp0t220sCf6gHVxiSVO9lN8RAA2MEBJPs7/DwoCajtyZs6yRtcqEGhgIEYt4bFSYly4G+2OXP558upChJPNC2JFDpbt+/ie/KrSdKXqYU/V+/1g2ZTSb6AwjB18jeJPLIjLMYGpy0JnkDqolJsqEqWM9M/d7USn4/bYcejHkNrkaZvKC1I2Th7SyzRY3SYd8Ye9wWX1dqqIGw=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc4debb3-c0e7-4277-8952-08d653cc25a1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2018 18:22:39.2249
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1344
+Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67513
+X-archive-position: 67514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: suzuki.poulose@arm.com
+X-original-sender: paul.burton@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,37 +91,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Andrew,
+Hello,
 
-On 26/11/2018 11:12, Andrew Murray wrote:
-> Update design.txt to reflect the presence of the exclude_host
-> and exclude_guest perf flags.
+Mathias Kresin wrote:
+> In case the nd_sd group is set to the sd-card function, Pins 45 + 46 are
+> configured as GPIOs. If they are blocked by the sd function, they can't
+> be used as GPIOs.
 > 
-> Signed-off-by: Andrew Murray <andrew.murray@arm.com>
+> Signed-off-by: Mathias Kresin <dev@kresin.me>
+> Reported-by: Kristian Evensen <kristian.evensen@gmail.com>
+> Fixes: f576fb6a0700 ("MIPS: ralink: cleanup the soc specific pinmux
+> data")
+> Cc: stable@vger.kernel.org # v3.18+
 
-Thanks a lot for adding this !
+Applied to mips-fixes.
 
-> ---
->   tools/perf/design.txt | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/tools/perf/design.txt b/tools/perf/design.txt
-> index a28dca2..5b2b23b 100644
-> --- a/tools/perf/design.txt
-> +++ b/tools/perf/design.txt
-> @@ -222,6 +222,10 @@ The 'exclude_user', 'exclude_kernel' and 'exclude_hv' bits provide a
->   way to request that counting of events be restricted to times when the
->   CPU is in user, kernel and/or hypervisor mode.
->   
-> +Furthermore the 'exclude_host' and 'exclude_guest' bits provide a way
-> +to request counting of events restricted to guest and host contexts when
-> +using KVM virtualisation.
+Thanks,
+    Paul
 
-minor nit: could we generalise this to :
-
-"using Linux as the hypervisor".
-
-Otherwise, looks good to me.
-
-Cheers
-Suzuki
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

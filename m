@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:14:35 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:50214 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994748AbeKZLOZxSHsO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 26 Nov 2018 12:14:25 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:14:43 +0100 (CET)
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:50254 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994751AbeKZLOa6HHJO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2018 12:14:30 +0100
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CB770356D;
-        Mon, 26 Nov 2018 03:14:24 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCC153916;
+        Mon, 26 Nov 2018 03:14:29 -0800 (PST)
 Received: from e119886-lin.cambridge.arm.com (unknown [10.37.6.11])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 200453F5AF;
-        Mon, 26 Nov 2018 03:14:19 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22EC23F5AF;
+        Mon, 26 Nov 2018 03:14:24 -0800 (PST)
 From:   Andrew Murray <andrew.murray@arm.com>
 To:     Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>,
@@ -30,9 +30,9 @@ To:     Peter Zijlstra <peterz@infradead.org>,
 Cc:     linux-s390@vger.kernel.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org
-Subject: [PATCH v2 12/20] mips: perf/core: advertise PMU exclusion capability
-Date:   Mon, 26 Nov 2018 11:12:28 +0000
-Message-Id: <1543230756-15319-13-git-send-email-andrew.murray@arm.com>
+Subject: [PATCH v2 13/20] powerpc: perf/core: advertise PMU exclusion capability
+Date:   Mon, 26 Nov 2018 11:12:29 +0000
+Message-Id: <1543230756-15319-14-git-send-email-andrew.murray@arm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1543230756-15319-1-git-send-email-andrew.murray@arm.com>
 References: <1543230756-15319-1-git-send-email-andrew.murray@arm.com>
@@ -40,7 +40,7 @@ Return-Path: <andrew.murray@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67499
+X-archive-position: 67500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,27 +57,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS PMU has the capability to exclude events based on
-context. Let's advertise that we support the PERF_PMU_CAP_EXCLUDE
-capability to ensure that perf doesn't prevent us from handling
-events where any exclusion flags are set.
+For PowerPC PMUs that have the capability to exclude events
+based on context. Let's advertise that we support the
+PERF_PMU_CAP_EXCLUDE capability to ensure that perf doesn't
+prevent us from handling events where any exclusion flags are
+set.
 
 Signed-off-by: Andrew Murray <andrew.murray@arm.com>
 ---
- arch/mips/kernel/perf_event_mipsxx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/perf/core-book3s.c  | 1 +
+ arch/powerpc/perf/core-fsl-emb.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 4138635..d7813d0 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -670,6 +670,7 @@ static struct pmu pmu = {
- 	.start		= mipspmu_start,
- 	.stop		= mipspmu_stop,
- 	.read		= mipspmu_read,
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 81f8a0c..2f44b09 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2007,6 +2007,7 @@ static struct pmu power_pmu = {
+ 	.commit_txn	= power_pmu_commit_txn,
+ 	.event_idx	= power_pmu_event_idx,
+ 	.sched_task	= power_pmu_sched_task,
 +	.capabilities	= PERF_PMU_CAP_EXCLUDE,
  };
  
- static unsigned int mipspmu_perf_event_encode(const struct mips_perf_event *pev)
+ /*
+diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
+index ba48584..cea5bcb 100644
+--- a/arch/powerpc/perf/core-fsl-emb.c
++++ b/arch/powerpc/perf/core-fsl-emb.c
+@@ -596,6 +596,7 @@ static struct pmu fsl_emb_pmu = {
+ 	.start		= fsl_emb_pmu_start,
+ 	.stop		= fsl_emb_pmu_stop,
+ 	.read		= fsl_emb_pmu_read,
++	.capabilities	= PERF_PMU_CAP_EXCLUDE,
+ };
+ 
+ /*
 -- 
 2.7.4

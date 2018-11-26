@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:14:48 +0100 (CET)
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:50296 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994753AbeKZLOgQc2-O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2018 12:14:36 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2018 12:14:51 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:50328 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994827AbeKZLOkut5yO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Nov 2018 12:14:40 +0100
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0ACD3918;
-        Mon, 26 Nov 2018 03:14:34 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3D61356D;
+        Mon, 26 Nov 2018 03:14:39 -0800 (PST)
 Received: from e119886-lin.cambridge.arm.com (unknown [10.37.6.11])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 255593F5AF;
-        Mon, 26 Nov 2018 03:14:29 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 287373F5AF;
+        Mon, 26 Nov 2018 03:14:34 -0800 (PST)
 From:   Andrew Murray <andrew.murray@arm.com>
 To:     Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>,
@@ -30,9 +30,9 @@ To:     Peter Zijlstra <peterz@infradead.org>,
 Cc:     linux-s390@vger.kernel.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org
-Subject: [PATCH v2 14/20] powerpc: perf/core: remove unnecessary checks for exclusion
-Date:   Mon, 26 Nov 2018 11:12:30 +0000
-Message-Id: <1543230756-15319-15-git-send-email-andrew.murray@arm.com>
+Subject: [PATCH v2 15/20] s390: perf/events: advertise PMU exclusion capability
+Date:   Mon, 26 Nov 2018 11:12:31 +0000
+Message-Id: <1543230756-15319-16-git-send-email-andrew.murray@arm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1543230756-15319-1-git-send-email-andrew.murray@arm.com>
 References: <1543230756-15319-1-git-send-email-andrew.murray@arm.com>
@@ -40,7 +40,7 @@ Return-Path: <andrew.murray@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67501
+X-archive-position: 67502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,94 +57,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For PowerPC PMUs that do not support context exclusion we do not
-advertise the PERF_PMU_CAP_EXCLUDE capability. This ensures that
-perf will prevent us from handling events where any exclusion
-flags are set. Let's remove the now unnecessary check for exclusion
-flags.
+The s390 cpum_cf and cpum_sf PMUs have the capability to exclude
+events based on context. Let's advertise that we support the
+PERF_PMU_CAP_EXCLUDE capability to ensure that perf doesn't
+prevent us from handling events where any exclusion flags are set.
 
 Signed-off-by: Andrew Murray <andrew.murray@arm.com>
 ---
- arch/powerpc/perf/hv-24x7.c |  9 ---------
- arch/powerpc/perf/hv-gpci.c |  9 ---------
- arch/powerpc/perf/imc-pmu.c | 18 ------------------
- 3 files changed, 36 deletions(-)
+ arch/s390/kernel/perf_cpum_cf.c | 1 +
+ arch/s390/kernel/perf_cpum_sf.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 72238ee..d13d8a9 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -1306,15 +1306,6 @@ static int h_24x7_event_init(struct perf_event *event)
- 		return -EINVAL;
- 	}
+diff --git a/arch/s390/kernel/perf_cpum_cf.c b/arch/s390/kernel/perf_cpum_cf.c
+index cc085e2..7b583ed 100644
+--- a/arch/s390/kernel/perf_cpum_cf.c
++++ b/arch/s390/kernel/perf_cpum_cf.c
+@@ -667,6 +667,7 @@ static struct pmu cpumf_pmu = {
+ 	.start_txn    = cpumf_pmu_start_txn,
+ 	.commit_txn   = cpumf_pmu_commit_txn,
+ 	.cancel_txn   = cpumf_pmu_cancel_txn,
++	.capabilities = PERF_PMU_CAP_EXCLUDE,
+ };
  
--	/* unsupported modes and filters */
--	if (event->attr.exclude_user   ||
--	    event->attr.exclude_kernel ||
--	    event->attr.exclude_hv     ||
--	    event->attr.exclude_idle   ||
--	    event->attr.exclude_host   ||
--	    event->attr.exclude_guest)
--		return -EINVAL;
--
- 	/* no branch sampling */
- 	if (has_branch_stack(event))
- 		return -EOPNOTSUPP;
-diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
-index 43fabb3..e0ce0e0 100644
---- a/arch/powerpc/perf/hv-gpci.c
-+++ b/arch/powerpc/perf/hv-gpci.c
-@@ -232,15 +232,6 @@ static int h_gpci_event_init(struct perf_event *event)
- 		return -EINVAL;
- 	}
+ static int cpumf_pmf_setup(unsigned int cpu, int flags)
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index 5c53e97..25a64aa 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1885,6 +1885,8 @@ static struct pmu cpumf_sampling = {
  
--	/* unsupported modes and filters */
--	if (event->attr.exclude_user   ||
--	    event->attr.exclude_kernel ||
--	    event->attr.exclude_hv     ||
--	    event->attr.exclude_idle   ||
--	    event->attr.exclude_host   ||
--	    event->attr.exclude_guest)
--		return -EINVAL;
--
- 	/* no branch sampling */
- 	if (has_branch_stack(event))
- 		return -EOPNOTSUPP;
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 1fafc32b..49c0b1c 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -473,15 +473,6 @@ static int nest_imc_event_init(struct perf_event *event)
- 	if (event->hw.sample_period)
- 		return -EINVAL;
+ 	.setup_aux    = aux_buffer_setup,
+ 	.free_aux     = aux_buffer_free,
++
++	.capabilities = PERF_PMU_CAP_EXCLUDE,
+ };
  
--	/* unsupported modes and filters */
--	if (event->attr.exclude_user   ||
--	    event->attr.exclude_kernel ||
--	    event->attr.exclude_hv     ||
--	    event->attr.exclude_idle   ||
--	    event->attr.exclude_host   ||
--	    event->attr.exclude_guest)
--		return -EINVAL;
--
- 	if (event->cpu < 0)
- 		return -EINVAL;
- 
-@@ -748,15 +739,6 @@ static int core_imc_event_init(struct perf_event *event)
- 	if (event->hw.sample_period)
- 		return -EINVAL;
- 
--	/* unsupported modes and filters */
--	if (event->attr.exclude_user   ||
--	    event->attr.exclude_kernel ||
--	    event->attr.exclude_hv     ||
--	    event->attr.exclude_idle   ||
--	    event->attr.exclude_host   ||
--	    event->attr.exclude_guest)
--		return -EINVAL;
--
- 	if (event->cpu < 0)
- 		return -EINVAL;
- 
+ static void cpumf_measurement_alert(struct ext_code ext_code,
 -- 
 2.7.4

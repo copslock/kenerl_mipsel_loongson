@@ -1,35 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2018 20:44:07 +0100 (CET)
-Received: from mail-eopbgr780118.outbound.protection.outlook.com ([40.107.78.118]:56271
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2018 23:33:48 +0100 (CET)
+Received: from mail-eopbgr780093.outbound.protection.outlook.com ([40.107.78.93]:57216
         "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992775AbeK1TmKembLF convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Nov 2018 20:42:10 +0100
+        id S23993973AbeK1WdpMhMb0 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Nov 2018 23:33:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zNKE0acGmrUGf2vJMRfqT6GX4G7YWTzgWzCohvK/1eE=;
- b=h8Fgdyv7lvfz66iCKMseTMDfDwE91Hdxtav0oe3craLSSyl2Hk7fZPnNdPwPms74Skkdp8DfapVofsZiTLR5BQ0zNwfgnowuR5rSIb/hufC/rYWEdzOBQ+JZWn2QPpeCu1OPGUt4SeM1bBtGem+8xME3xvvo/h6qGATLkcO0fZA=
+ bh=VHwlI4SscH9LEgqCrhwUHU69EuRcP4RVjplcQ6oaUcA=;
+ b=gT5A8Id4Li2vRhJigtgRgKSc2K3+Ees3CfpIt1JCQGK2uIce5DYatWV0QdaIWQazHeR1JBEUAcQ1jTqk6ZTosawa8x08Ltd7yWmjnBrzCE9zTgOlWulL8ENsgKaLoZW+6f2y7t6OpojuDzCrvgk3RAEIO8shbuXL3zDMxd5VyXw=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1165.namprd22.prod.outlook.com (10.174.168.37) with Microsoft SMTP
+ MWHPR2201MB1565.namprd22.prod.outlook.com (10.172.63.19) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1361.19; Wed, 28 Nov 2018 19:42:08 +0000
+ 15.20.1361.19; Wed, 28 Nov 2018 22:33:42 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::2d92:328e:af42:2985%3]) with mapi id 15.20.1361.019; Wed, 28 Nov 2018
- 19:42:07 +0000
+ 22:33:42 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: [RFC] Migration from linux-mips.org to kernel.org
-Thread-Topic: [RFC] Migration from linux-mips.org to kernel.org
-Thread-Index: AQHUh1JyYgbm8WKxf0aPFFad2WolxQ==
-Date:   Wed, 28 Nov 2018 19:42:07 +0000
-Message-ID: <20181128194206.yhdp6247xobkj5cu@pburton-laptop>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>
+Subject: Re: [PATCH] MIPS: Hardcode cpu_has_mmips=1 for microMIPS kernels
+Thread-Topic: [PATCH] MIPS: Hardcode cpu_has_mmips=1 for microMIPS kernels
+Thread-Index: AQHUdvBc6FH/gm/eXUqshhyWFnaOnaVkohCAgAFE4QA=
+Date:   Wed, 28 Nov 2018 22:33:42 +0000
+Message-ID: <20181128223340.xocdpwtb6adl4prn@pburton-laptop>
+References: <20181107231931.6136-1-paul.burton@mips.com>
+ <alpine.LFD.2.21.1811280308430.32615@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.21.1811280308430.32615@eddie.linux-mips.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR15CA0061.namprd15.prod.outlook.com
- (2603:10b6:301:4c::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR1301CA0017.namprd13.prod.outlook.com
+ (2603:10b6:301:29::30) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -37,36 +42,36 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1165;6:n6dlFiQ7DHvOOL9DsWOO+x5pPPe8DtGclREC1BxhSzBJjb/QkPxP7OvYlNYra11zOsu1W9roeu7Etcf/Nigc+XI6l06CRNMggfGUymXkQK6GFXUdHg44RpTCO1zipU4KUYWtxoF5zhloXzkTPCr+29H0KSmpuYGnpy1SEefxxW4Wm2jNt9TmmiIJ8y3ZYpW0bZ/+RHeGI1Y8IFodPLEW4Dv/Ll0keSWJY4JtiLUPEt2hJq3xrFlxZ7bah66CNQwh8CdCaR++g6idjCvObD0N3U8dA+uMXirgmfBreoUEaP5FJNmt6GBNDU3003+/LtOX1YYb6MT9K0QhhqczGguOB0z6EZKor3z9uXv6RLCc5xV1VWLJI5L/mW1e8RNBfa1RmqgU3Wa7o5/9TSzn7x6UeJBnyTfMdVbtbwk1Bzztd3Zl4mXe72Lw2KxPxcwnV0s/hhjJJEi/jrv/VJmSNq18dg==;5:Q3gIqbxXPyQoMETr3bKrbDGhX1qt5myb+oCrLCdvMrla4QKkanv8y6fgwb1Xox3VzziubZjZACrhuw4+eTpQgWlcdICCuQcc9EkAGqiK2kpeKLZS3G+wbtaNSCr27Tj3QkLMML+twJAycjv4ID4mPDmplzLrCc/Bvj1ji56fEaY=;7:fvKPMjJCyts0VsYWvDDd4xGrdF2wt1vpFk5ovO6SW8lJTW+ZeF+P3Ua7/YSKTvReNJAt4Mp4yJZQ0TvRrSu2UbXrDw1QFYMbVRc+DGppRUSH8vMgz7O3kTzcunrjST08dtV2hEA/3LIwx7Ae8YWTSA==
-x-ms-office365-filtering-correlation-id: 3af36c28-20cc-4c2d-ee47-08d6556994ae
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1165;
-x-ms-traffictypediagnostic: MWHPR2201MB1165:
-x-microsoft-antispam-prvs: <MWHPR2201MB1165D0206274F2C27A4E6309C1D10@MWHPR2201MB1165.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1565;6:YC0owICwNcTlNo4wo8D1s0I67yBJUtfjUTlOVWZtBMSiLqdwcdWyH/7NV2KLVPfvzHy6TJ+y6Ly8/rkjh46M8lG6t2xU1PFc+Z7EszboitBaZxyxpZqLr+lzdYTwj9uMsfEsweK/sRy3Y9fR/WI72dXiSrKiMn84kR6/I6usx+LBWx03iz14j6oFKHqrSHYPZokR+7gTQw+VLUaNlaqtVNQVRGRyq/ZGtazNenEZqz0ljx5/+OKy3x6y3u4T9OKkeXipryBnKa9XswEhUiZ6DK/rHEsrlXXjNYLWBdgret4HnbEi28zoQlnR6lpw+i7DT5vPpAxYSy4tCZM2jxEmDrGUZTPTncEFhb/7gNhjbOLNPzTYT2BsOB6YKAj9a3nujcU0C+i7ZwTTj+4SCIIgAdhSa2Vi5Xf1VCocEN1eo9D/vwOAoWD+wxz8o1WGzYDgPfIooE4c1roKrJ5fx8/EpQ==;5:ZNnHwF2Indw2QnrlSQ7hpwfaIf94axUfhvc8WgOwUl6Tfuo6ps5wVCaPHqmXxPXnQHF9zbcAtkzb0w6SlRlfR5qqWDGXnsdbwoGbbNYYhEtI5WgJT4DKrMFGD0ypZ8kvlM/X3rV9PyxaBqP8b7pt26C0CJj2IvarVXDcfQnSJdk=;7:eKxBIJETckSIbI94n4MQoZaZIpCbEqW5cdFUNEFI3q909ZbzfeABKtZNpBu0XNxqpUWuzDApvp6bip8ZFz7irs17dqy/6aFtSP63mRLFXs6mAzZT23xOrH4McSLY+yVT5hzNK9XblW1RwzR1zrgoeA==
+x-ms-office365-filtering-correlation-id: 5e013050-e4d5-42e1-60c3-08d655818ca3
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1565;
+x-ms-traffictypediagnostic: MWHPR2201MB1565:
+x-microsoft-antispam-prvs: <MWHPR2201MB1565953A6BA652240AE6D7DFC1D10@MWHPR2201MB1565.namprd22.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(3231443)(999002)(944501410)(52105112)(93006095)(148016)(149066)(150057)(6041310)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1165;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1165;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(10201501046)(3002001)(3231443)(999002)(944501410)(52105112)(93006095)(148016)(149066)(150057)(6041310)(20161123564045)(20161123562045)(20161123558120)(20161123560045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1565;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1565;
 x-forefront-prvs: 0870212862
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(396003)(136003)(39850400004)(376002)(199004)(189003)(53754006)(305945005)(9686003)(6512007)(53936002)(14454004)(6436002)(3846002)(6116002)(1076002)(7736002)(6486002)(486006)(44832011)(6916009)(33716001)(99286004)(14444005)(256004)(316002)(58126008)(15974865002)(5660300001)(102836004)(2501003)(68736007)(66066001)(476003)(52116002)(42882007)(33896004)(6506007)(508600001)(25786009)(386003)(81156014)(2351001)(81166006)(106356001)(105586002)(26005)(2906002)(8676002)(71200400001)(186003)(71190400001)(97736004)(8936002)(5640700003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1165;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(39840400004)(346002)(396003)(136003)(366004)(189003)(199004)(508600001)(386003)(52116002)(76176011)(97736004)(229853002)(6486002)(81166006)(14454004)(81156014)(2906002)(33896004)(6506007)(6436002)(26005)(450100002)(256004)(25786009)(99286004)(107886003)(71200400001)(186003)(102836004)(42882007)(71190400001)(66066001)(53936002)(316002)(6246003)(44832011)(68736007)(9686003)(5660300001)(6512007)(476003)(106356001)(105586002)(305945005)(6916009)(7736002)(11346002)(446003)(3846002)(6116002)(4326008)(54906003)(486006)(8936002)(58126008)(33716001)(8676002)(1076002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1565;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: GoflLUuemVG+2Xkvndbe5rE2tb7b/nmIQ/z5K9FpUkcelXDTs75CbBSCIDpDT361Ixzwe9dwpt0rflb+PnruLYEv0QOYv6f0dzj25Al/CrXQGR/7FVPTaavmlUh0KMeyNkEdR3Ixu6apMNtcHqSH87083lRSgJqRkgcX2nlEvLuUmi+kDQWoGTlHQ87Pcdm9yHWUTw8N2pfq/3hDZCkvGV3X2DlDZA+Q08sGJCMUZEPGnQx7r1957KGjRfdgI86MUh11cHH29Ds8QQSL45+k+rKQtMt1fGH6jlqYd8w2nSf1/j37rofqsvsKd2MlQ2D8yCjV9xyvPHOCqmpb9vij6SPVG11u/nE7bOlC7d5VEnw=
+x-microsoft-antispam-message-info: 1KyIRMONW9JioRmzxYbE8r+cFjec81l9I4TveFD1Bm8VJSn1b0BgtASFj6u4J3Mk5w+cDAIC3XO7F3EgYYNCh7NC+0ZNSbpHWvfpP33R5OnflPux5FauEGYgk+I0bZAOG1g466+8crrTy8SxGVd8bUAZrNzpUWzkiT11PN20mrlv8HbUhr2JM6IyUr1hNvvHXoZqIPDcxhwB9nYixFHsX6Frk1TBxF2aAxscrUsfi7aQXBjgM4n4ACG+hXk1cfT29MqT/roGuotjLWUH37FMUQgFL2JYIkkAkem0Sbp35ZYU+gxETW9NraVClyESwfyyDl8UIFTXALf0WUTW363B81hde3emvlOpOpLWrm+olGU=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <D97400AC6AE0DB40B1D6EC500F82E324@namprd22.prod.outlook.com>
+Content-ID: <466344E30320CA41BF1475A42050C4C0@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3af36c28-20cc-4c2d-ee47-08d6556994ae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2018 19:42:07.7673
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e013050-e4d5-42e1-60c3-08d655818ca3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2018 22:33:42.2694
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1165
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1565
 Return-Path: <pburton@wavecomp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67538
+X-archive-position: 67539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,62 +88,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello all,
+Hi Maciej,
 
-We've had a few issues with linux-mips.org recently:
+On Wed, Nov 28, 2018 at 03:10:53AM +0000, Maciej W. Rozycki wrote:
+> On Wed, 7 Nov 2018, Paul Burton wrote:
+> 
+> > diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+> > index 0edba3e75747..8669fdb503a5 100644
+> > --- a/arch/mips/include/asm/cpu-features.h
+> > +++ b/arch/mips/include/asm/cpu-features.h
+> > @@ -195,7 +195,9 @@
+> >  #endif
+> >  
+> >  #ifndef cpu_has_mmips
+> > -# ifdef CONFIG_SYS_SUPPORTS_MICROMIPS
+> > +# if defined(__mips_micromips)
+> 
+>  Wouldn't it be cleaner if it was written:
+> 
+> # if defined(CONFIG_CPU_MICROMIPS)
 
-  1) The SSL certificates have expired, and I don't have sufficient
-     access to the machine to fix that. This isn't the first time this
-     has happened.
-
-  2) Recently a lot of people were mass-unsubscribed from the mailing
-     list, which is not ideal. I have no idea why nor sufficient access
-     to investigate.
-
-  3) There have been periods of unexplained downtime.
-
-  4) A lot of wiki content is outdated & actively harmful if people pay
-     attention to it. Some of the key things like "which kernel should I
-     use?" are much better addressed by existing content on kernel.org.
-
-Ultimately, in my view linux-mips.org duplicates of a lot of
-infrastructure which kernel.org could likely provide for us. It hasn't
-been particularly reliable & Ralf hasn't been available to fix it.
-
-Of the services used from linux-mips.org for kernel development:
-
-  1) git.linux-mips.org is no longer where mips-next & mips-fixes are
-     maintained - they have been hosted on kernel.org for a while now.
-     As such the importance of git.linux-mips.org has diminished
-     somewhat.
-
-  2) patchwork.linux-mips.org could easily be replaced by any other
-     patchwork installation, and kernel.org has one.
-
-  3) The mailing list(s) are what I see as the biggest pain point, but
-     we could migrate towards kernel.org infrastructure for this too.
-     This may require me to monitor two lists for a while, but that's
-     fine.
-
-  4) www.linux-mips.org contains some useful information, but needs a
-     lot of work to avoid providing harmful outdated information. I
-     changed some content about obtaining the kernel to point to
-     kernel.org pages which are better updated already, but I'm sure
-     there's a lot of outdated information left.
-
-So I'm considering asking for a linux-mips mailing list to be set up at
-kernel.org, with content from linux-mips@linux-mips.org archived on
-lore.kernel.org. MAINTAINERS would be updated to reference the new list,
-and I'd monitor both lists for a while until submissions to the old one
-taper off.
-
-None of this would mean linux-mips.org will go away - I have no control
-over that. It would simply mean that kernel development is no longer
-reliant upon it, instead being based around the kernel.org
-infrastructure which is well maintained and not our problem.
-
-Before I ask for the new mailing list to be set up, I'm asking here
-whether anyone has thoughts or objections?
+I suppose it's just a matter of preference - in practice both ought to
+be defined or undefined at the same times. My personal preference is the
+standard macro provided by the compiler, so that's what I used.
 
 Thanks,
     Paul

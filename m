@@ -1,57 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Nov 2018 15:22:37 +0100 (CET)
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:46236 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994795AbeK2OWfG5bVQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Nov 2018 15:22:35 +0100
-Received: by mail-qt1-f193.google.com with SMTP id y20so2069660qtm.13;
-        Thu, 29 Nov 2018 06:22:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dp1c5m9Go758zqpd0U6yL4XdcMp/QelpMOB8347WFtA=;
-        b=r5XcfkyBJ8tFEdiaa2ebi9N+s6ioZtG+0R4eDVXdNHB3Eew1f9VHetQD5KDx7Q44wn
-         KQfLxjN5oDbIcqZlex22OGAK2yB/19CG3YxDGnsGQGWRbSa9Pifz1sR/VenLsBVnrMLw
-         qlmpNs3DDpU6w9GcNM5vwnc6x/qVzE2xgSLmishQBAtAladWPtg3xc8BNWFEEsabbF5J
-         xcjZCmrSl/Vx1lf9BktD4e7JC3+XchJBpgEE2prK4px+7Yuljzpg/Wo5JpKLfljzOodB
-         h5Ok00lvRmZb4nUKjrsc8JxrCeuyV9U/8YLCPedpPnDAFVUTte8qyP1fv8imcTaOydbp
-         7Nvw==
-X-Gm-Message-State: AA+aEWbbsAcx+/IMCjcg33MiXfzTX5Q4vvEu+F0ORZPyy1HY35mJe49v
-        D9jNu8nFCcMzhxk4/wufi6QMAyJEJb9XNzYUI40=
-X-Google-Smtp-Source: AFSGD/XJaHcKePzx11S3n8QhdfLtER9xpVM+eDuxlxPNHoa0dhNrsDTwh051V+acJkGm5sjqJhai1WbJTiA0FwaPsLA=
-X-Received: by 2002:ac8:7451:: with SMTP id h17mr1517085qtr.319.1543501354279;
- Thu, 29 Nov 2018 06:22:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Nov 2018 19:18:09 +0100 (CET)
+Received: from dev.gentoo.org ([IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4]:54793
+        "EHLO smtp.gentoo.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993829AbeK2SQZzA9mc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Nov 2018 19:16:25 +0100
+Received: from [192.168.1.13] (c-73-132-37-144.hsd1.md.comcast.net [73.132.37.144])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kumba)
+        by smtp.gentoo.org (Postfix) with ESMTPSA id 0CE33335C67;
+        Thu, 29 Nov 2018 18:16:21 +0000 (UTC)
+To:     Linux/MIPS <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: linux-mips.org SSL cert expired
+Openpgp: preference=signencrypt
+Message-ID: <665705a0-7f99-adc0-ae30-6ae858b1794b@gentoo.org>
+Date:   Thu, 29 Nov 2018 13:16:19 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <1543481016-18500-1-git-send-email-firoz.khan@linaro.org> <1543481016-18500-7-git-send-email-firoz.khan@linaro.org>
-In-Reply-To: <1543481016-18500-7-git-send-email-firoz.khan@linaro.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 29 Nov 2018 15:22:16 +0100
-Message-ID: <CAK8P3a0rTwm_pCtQXyn_fyJttihKJ6Gpq97mw-r5ySUNBksCig@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] mips: generate uapi header and system call table files
-To:     Firoz Khan <firoz.khan@linaro.org>
-Cc:     "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67551
+X-archive-position: 67552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,52 +43,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 29, 2018 at 9:45 AM Firoz Khan <firoz.khan@linaro.org> wrote:
+FYI, it looks like the SSL certificate for linux-mips.org expired on Tuesday.
 
-> diff --git a/arch/mips/include/uapi/asm/Kbuild b/arch/mips/include/uapi/asm/Kbuild
-> index 7a4becd..ed4bd03 100644
-> --- a/arch/mips/include/uapi/asm/Kbuild
-> +++ b/arch/mips/include/uapi/asm/Kbuild
-> @@ -1,5 +1,11 @@
->  # UAPI Header export list
->  include include/uapi/asm-generic/Kbuild.asm
->
-> +generated-y += unistd_n32.h
-> +generated-y += unistd_n64.h
-> +generated-y += unistd_o32.h
-> +generated-y += unistd_nr_n32.h
-> +generated-y += unistd_nr_n64.h
-> +generated-y += unistd_nr_o32.h
->  generic-y += bpf_perf_event.h
->  generic-y += ipcbuf.h
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+rsa6144/5C63F4E3F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-I'd argue that the unistd_nr_*.h headers should not be in the uapi directory
-but instead be included only from the in-kernel header.
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
 
-
-> diff --git a/arch/mips/kernel/scall64-n64.S b/arch/mips/kernel/scall64-n64.S
-> new file mode 100644
-> index 0000000..402a085
-> --- /dev/null
-> +++ b/arch/mips/kernel/scall64-n64.S
-> @@ -0,0 +1,117 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 1995, 96, 97, 98, 99, 2000, 01, 02 by Ralf Baechle
-> + * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-> + * Copyright (C) 2001 MIPS Technologies, Inc.
-> + */
-> +#include <linux/errno.h>
-> +#include <asm/asm.h>
-> +#include <asm/asmmacro.h>
-> +#include <asm/irqflags.h>
-
-It looks like you change and rename this file at the same time.
-Generally speaking, I would not do that in one patch. Either
-leave the slightly inconsistent name unchanged, or rename
-it in a separate patch.
-
-         Arnd
+--Emperor Turhan, Centauri Republic

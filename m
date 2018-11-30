@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2018 05:46:10 +0100 (CET)
-Received: from mail-it1-x143.google.com ([IPv6:2607:f8b0:4864:20::143]:33599
-        "EHLO mail-it1-x143.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990947AbeK3EqBIhRtq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2018 05:46:01 +0100
-Received: by mail-it1-x143.google.com with SMTP id m8so1040556itk.0
-        for <linux-mips@linux-mips.org>; Thu, 29 Nov 2018 20:46:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2018 06:05:19 +0100 (CET)
+Received: from mail-io1-xd41.google.com ([IPv6:2607:f8b0:4864:20::d41]:45886
+        "EHLO mail-io1-xd41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990421AbeK3FFPRWC2q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2018 06:05:15 +0100
+Received: by mail-io1-xd41.google.com with SMTP id w7so3508431iom.12
+        for <linux-mips@linux-mips.org>; Thu, 29 Nov 2018 21:05:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vIAI16RWvHVDoEJapc7NJY6TWPbkzlrPdpU8HIv23OQ=;
-        b=PVBoaMXeooyrt/QXhiKwRFgimq0aYvgyk25mjWBUmTWtrB8pIJbJRt1F56iDQKqCIe
-         gCSOYC+1gPStIrQfA/HU+crBH/esa/aHFCRerLbkA9RTaeUE8v339AhZPVEMjfNaDpUh
-         2FXviQXfDKkkNPPkSObTBy07Vlc3qSWBpvfA4=
+        bh=eY5ldt/nvbSFXjThNmQjCgsUcV0slJ0eCOAORjgvOko=;
+        b=VZ3ISqG7vJiHteR3Wc9v9zOLEZdAQyQstRiI782J1G5n1ySMxWCSYKka3klsSovgZG
+         366zRvN/ZHhlb9zmcu6yYzzunhA+UVExfUuwzH4kU4uiekLb7khZdOu/7gbOy+Lgl6Xu
+         NJr7gk5SCjikRFCsd430lskS/ZSnrr2IBySMI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vIAI16RWvHVDoEJapc7NJY6TWPbkzlrPdpU8HIv23OQ=;
-        b=OfqY+zQ0OheCK6TMfs1N88RNRFQzjSDKLIkEUNHViTWyFByENNHAwnweEherkuQVbk
-         qczX0Jupmw4qPktBhl7oavFkKSca4eii+F/L48XFj51jAIBHfQKHhD0hP0BfcLXZRCjM
-         UGUXbwIBJJsJq3s9jVF6ZcLsIMThyQVXMoQ0rjnQEkp+l8RheRfiQhuK090OtZqeZAOq
-         S0Tp6SEo4g4owbgKntgI7N2TATAygJTQM8RebBJTSJ9Kh5nNh080HMos1u1pxFINrcNG
-         VPXJmknETI0QTgNrWdqXfvTOHqa4UhlP7evpD1TB3sc/2325ln+QmjL5W9TB5PoFZDWL
-         nzgQ==
-X-Gm-Message-State: AA+aEWYtURbaodSVkYRouV27uZrlykB+RoluHQO9CoBwJ0GDhdTwn35J
-        CJb+j8V7D1TgIddSWNrpX553X91R+Hyme5M3fpQL5w==
-X-Google-Smtp-Source: AFSGD/Vz57qCVZYwJC/LBMmIhh5dfqpZAJ63RO9enhbURgbxnkH5QDt7JL0BQu9Z26eYRyJv0Nhyb2Qttoljd1gO6zE=
-X-Received: by 2002:a24:5a8f:: with SMTP id v137mr3941657ita.65.1543553160332;
- Thu, 29 Nov 2018 20:46:00 -0800 (PST)
+        bh=eY5ldt/nvbSFXjThNmQjCgsUcV0slJ0eCOAORjgvOko=;
+        b=kapx8w/adFTHuUniT54JITM+Raxpf9uOLAgzAsDeTL/BlQvoaQTT8JJh4ZZp9GFiRK
+         nMGcZQrPm3JJwKq1Jenve1BAdKlg9VgZm4UU5QsO9daIQNIFqklYl7+5/oryGcvVhHxC
+         8Yg4xV6pnxUhixXCZlNPRAmly+ODzDUSfDq48CzNenkwT2T8eIkEMhYOZ4le01vNmrN2
+         OjzhPkEfTwQV1Arz0puDN01slrOh1Ja3VbsiV7JxjcWLMtFqjIcEY4uSBmTwaQXHDgfa
+         gmUn+GukidhV96Epz0uIqexvH4pk/Sm3T2HUyQI4KBu70BFfFw4/eC0CV5NZv2fdtvm+
+         SwQQ==
+X-Gm-Message-State: AA+aEWYKt6b+SEjH0XL7I9ekEHpyPMIixb282KpppQsnfsdMCbe5zojW
+        C/Jd/JYAOVa1J4U88hewz9m+N98esZ22Z2hSsWJLyg==
+X-Google-Smtp-Source: AFSGD/VHy2GoglJpf5KuZifXucd+0itkqTW5MYI4S1kTr8TRo8fZu9CyYUvzL/AT/AQzuL9fEx7BQB9MwypD8kU4EF8=
+X-Received: by 2002:a6b:6919:: with SMTP id e25mr3440101ioc.119.1543554314477;
+ Thu, 29 Nov 2018 21:05:14 -0800 (PST)
 MIME-Version: 1.0
 References: <1543481016-18500-1-git-send-email-firoz.khan@linaro.org>
- <1543481016-18500-2-git-send-email-firoz.khan@linaro.org> <CAK8P3a1Pq=Y83p-cN9bf+m-2ZAmJdEYRaAY9FfEkVHvfSwNWNg@mail.gmail.com>
-In-Reply-To: <CAK8P3a1Pq=Y83p-cN9bf+m-2ZAmJdEYRaAY9FfEkVHvfSwNWNg@mail.gmail.com>
+ <1543481016-18500-6-git-send-email-firoz.khan@linaro.org> <CAK8P3a1KcUQEbavu1eZaoKXTmbdbxiKgVqt6XF-PeeSSbpVEVg@mail.gmail.com>
+In-Reply-To: <CAK8P3a1KcUQEbavu1eZaoKXTmbdbxiKgVqt6XF-PeeSSbpVEVg@mail.gmail.com>
 From:   Firoz Khan <firoz.khan@linaro.org>
-Date:   Fri, 30 Nov 2018 10:15:48 +0530
-Message-ID: <CALxhOniC95bKe5vLvNFdjwrzLa+mWw6hMvzESXG3MkUfVsrOzA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] mips: add __NR_syscalls along with __NR_Linux_syscalls
+Date:   Fri, 30 Nov 2018 10:35:02 +0530
+Message-ID: <CALxhOnivqOdpZ8WRK3Lx9ScApa34MS6riTwFz15aS7GTGf6QQA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/6] mips: add system call table generation support
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -56,7 +56,7 @@ Return-Path: <firoz.khan@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 67553
+X-archive-position: 67554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,43 +77,84 @@ Hi Arnd,
 
 Thanks for your email.
 
-On Thu, 29 Nov 2018 at 19:41, Arnd Bergmann <arnd@arndb.de> wrote:
+On Thu, 29 Nov 2018 at 19:46, Arnd Bergmann <arnd@arndb.de> wrote:
 >
 > On Thu, Nov 29, 2018 at 9:44 AM Firoz Khan <firoz.khan@linaro.org> wrote:
->
-> >  arch/mips/include/uapi/asm/unistd.h | 17 ++++++++++++++---
-> >  1 file changed, 14 insertions(+), 3 deletions(-)
 > >
-> > diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-> > index f25dd1d..6914be5 100644
-> > --- a/arch/mips/include/uapi/asm/unistd.h
-> > +++ b/arch/mips/include/uapi/asm/unistd.h
-> > @@ -391,11 +391,14 @@
-> >  #define __NR_rseq                      (__NR_Linux + 367)
-> >  #define __NR_io_pgetevents             (__NR_Linux + 368)
+> > The system call tables are in different format in all
+> > architecture and it will be difficult to manually add,
+> > modify or delete the syscall table entries in the res-
+> > pective files. To make it easy by keeping a script and
+> > which will generate the uapi header and syscall table
+> > file. This change will also help to unify the implemen-
+> > tation across all architectures.
 > >
-> > +#ifdef __KERNEL__
-> > +#define __NR_syscalls                  368
-> > +#endif
+> > The system call table generation script is added in
+> > kernel/syscalls directory which contain the scripts to
+> > generate both uapi header file and system call table
+> > files. The syscall.tbl will be input for the scripts.
 > >
-> >  /*
-> >   * Offset of the last Linux o32 flavoured syscall
-> >   */
-> > -#define __NR_Linux_syscalls            368
-> > +#define __NR_Linux_syscalls            __NR_syscalls
+> > syscall.tbl contains the list of available system calls
+> > along with system call number and corresponding entry
+> > point. Add a new system call in this architecture will
+> > be possible by adding new entry in the syscall.tbl file.
+> >
+> > Adding a new table entry consisting of:
+> >         - System call number.
+> >         - ABI.
+> >         - System call name.
+> >         - Entry point name.
+> >         - Compat entry name, if required.
+> >
+> > syscallhdr.sh and syscalltbl.sh will generate uapi
+> > header unistd_64/n32/o32.h and syscall_table_32_o32/-
+> > 64_64/64-n32/64-o32.h files respectively. Both .sh files
+> > will parse the content syscall.tbl to generate the header
+> > and table files. unistd_64/n32/o32.h will be included by
+> > uapi/asm/unistd.h and syscall_table_32_o32/64_64/64-n32-
+> > /64-o32.h is included by kernel/syscall_table32_o32/64-
+> > _64/64-n32/64-o32.S - the real system call table.
+> >
+> > ARM, s390 and x86 architecuture does have similar support.
+> > I leverage their implementation to come up with a generic
+> > solution.
+> >
+> > Signed-off-by: Firoz Khan <firoz.khan@linaro.org>
 >
-> This seems odd: you define __NR_Linux_syscalls outside of
-> #ifdef __KERNEL__, but the definition only works
-> with __NR_syscalls being defined first, which it isn't in
-> user space.
->
-> Since the macros are completely unused as well as unusable
-> now, how about removing them together with the other
-> ones removed in patch 2?
+> Ah, I see you added the syscallnr.sh script from ARM.  I guess
+> that is one way to handle it, and the implementation seems
+> fine. It would be good to mention it in the changelog text above
+> though.
 
-Yes, good point, will update asap.
+I came across the file name - syscallnr.sh  in ARM long back and I
+used it here.
 
+Everyone - Arnd pointed out __NR_syscalls assignment issue in my
+v2 patches. For that, I came across those macros to be part of the
+generated file. So I created another script - syscallnr.sh just write
+__NR_N32/N64/O32_Linux, __NR_N32/N64/O32_Linux_syscalls
+to the generated file. I had 1:1 chat with Paul also and he share few
+concerns to convert above macros to be variable.
+
+The advantage of adding another script is the other two scripts -
+syscallhdr.sh and syscalltbl.sh are identical across all other 10
+architecture. If we are trying to come up with a common script,
+hopefully the effort will be minimal.
+
+Yes, I can update the change log.
+
+Paul, Could you help me to review this patch series and perform
+the boot test on actual platform.
+
+FYI, I could send v4 (clean one) next week mid as I'm on a vacation
+couple of days.
+
+Thanks
 Firoz
+
+
+
+
 
 >
 >       Arnd

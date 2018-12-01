@@ -1,151 +1,138 @@
-Return-Path: <SRS0=xAuu=OJ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=T+hk=OK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PULL_REQUEST,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,USER_AGENT_NEOMUTT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1C0EC04EB8
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Nov 2018 23:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22DD0C04EB9
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Dec 2018 06:16:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 85E3C20834
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Nov 2018 23:47:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9A46920834
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Dec 2018 06:16:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="aqTP/RuI"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 85E3C20834
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="HmUdg/L0"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9A46920834
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbeLAK6u (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Dec 2018 05:58:50 -0500
-Received: from mail-eopbgr790108.outbound.protection.outlook.com ([40.107.79.108]:42850
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        id S1726124AbeLAR2j (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 1 Dec 2018 12:28:39 -0500
+Received: from mail-eopbgr710130.outbound.protection.outlook.com ([40.107.71.130]:33285
+        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725749AbeLAK6t (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 1 Dec 2018 05:58:49 -0500
+        id S1725893AbeLAR2i (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 1 Dec 2018 12:28:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ooEyNUCp78l1T8SH+rmZHDTd/Bd4xD6RnkkCa64TBJs=;
- b=aqTP/RuItTrNHE+bqa+5QZNwEJJ0ST/XWXTCJy3uSagl47+MyiyxBAZzGyVtxxcYQ3wVmfvvg+9Cc/ch3UgiEHonxnQjtkORmTBA5xFrl+SmlIfTSGUSU8UGO/RErBXUKsWWrWhbzljsp2XTGFYLDAqX6sKzCvB0gwGuuww9vFw=
-Received: from CY4PR2201MB1272.namprd22.prod.outlook.com (10.171.216.146) by
- CY4PR2201MB1079.namprd22.prod.outlook.com (10.171.222.163) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1361.19; Fri, 30 Nov 2018 23:47:44 +0000
-Received: from CY4PR2201MB1272.namprd22.prod.outlook.com
- ([fe80::5c0a:2e64:7595:eeff]) by CY4PR2201MB1272.namprd22.prod.outlook.com
- ([fe80::5c0a:2e64:7595:eeff%9]) with mapi id 15.20.1382.020; Fri, 30 Nov 2018
- 23:47:44 +0000
+ bh=jF1VFnWIiOB2rykz+2rc017IVmLlqNvg+gVAG1ElN1o=;
+ b=HmUdg/L0RMSYxpE23YHUJaFNKk1WOhKXMTndcgTHLkajuzRM7wdhY5nbdrA4cPwmlzsF87g5Mvx45KAnhb1h2A28HAs+blws8TXzU/HNoo4e8l9k+U3e1sNxDj7IFcXEMm2LK7z0hg4ZOOCHd5TQgT6suOYdh426oJ95eSC1Q74=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHSPR01MB336.namprd22.prod.outlook.com (10.174.251.165) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1339.25; Sat, 1 Dec 2018 06:16:50 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::2d92:328e:af42:2985%4]) with mapi id 15.20.1382.020; Sat, 1 Dec 2018
+ 06:16:50 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] MIPS fixes for 4.20
-Thread-Topic: [GIT PULL] MIPS fixes for 4.20
-Thread-Index: AQHUiQcXmi7k1C1oP0amISb/BgylaQ==
-Date:   Fri, 30 Nov 2018 23:47:44 +0000
-Message-ID: <20181130234743.aorz7mcxz4gygqhl@pburton-laptop>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [RFC] Migration from linux-mips.org to kernel.org
+Thread-Topic: [RFC] Migration from linux-mips.org to kernel.org
+Thread-Index: AQHUh1JyYgbm8WKxf0aPFFad2WolxaVpbDwA
+Date:   Sat, 1 Dec 2018 06:16:50 +0000
+Message-ID: <20181201061648.bj2kumoefkxcd6z2@pburton-laptop>
+References: <20181128194206.yhdp6247xobkj5cu@pburton-laptop>
+In-Reply-To: <20181128194206.yhdp6247xobkj5cu@pburton-laptop>
 Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach: yes
+X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR11CA0046.namprd11.prod.outlook.com
- (2603:10b6:300:115::32) To CY4PR2201MB1272.namprd22.prod.outlook.com
- (2603:10b6:910:61::18)
+x-clientproxiedby: BYAPR05CA0057.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
+x-originating-ip: [2601:647:4100:4687:76db:7cfe:65a3:6aea]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;CY4PR2201MB1079;6:gpTWcp3/df5iP406JRhEfXP0AhvuIUEa7brdigwvXBKicOgkM5Nxw/UW2l8HwtP6UmYqrGmJ38XrbJyr3XY9U0Y0dbuK7JRD8BX0mtKhrEYXsAw611QojzYGD2ngxjr/x63JFGMIqGXVamD8HPBuuGTK6A9A8DYWQiupOWWSMyoQzpCwXIxSxKCY1Y4Byq38kFPrbblXe+S5x85fTxEu2TZBOq4G06TO+W/UyecCtMpkS7lsuX1HR13FP20axqOU9DLaURshKcFGtftVDyOVRUbTUbLlMsVI3xcaXBUDicNw7rUSClQKjJfU76p9WYmP8Wfs8wr4DUVYuTcX0YLPgoj6KAbAPo3qXjTjO+ocSKOdwD/eYDGZouBUnuhDEhQyg9KcC8oyZ17vtNXaLDFjEyQReW0pTn3wu4XWDCnP7fD906Weh8wroYVnSiYsGchagpDNXuipWpf8IymdLOVnJA==;5:+zKgANV015dMrSssFBD+BEm2ReKB/penH+TG6doQQtbQlyJ+v+ZbvQPbpx2TciDWN6WSESOdUKeol2ZxqOw+62gS0BN5LYPUOmOupRsazyWj3u6y0cdIlibOZpp8o7b2YHlgBv2QOeAskQdwgE98jwcLdBh61GEa4pTaZCH9HRc=;7:R6pamIBmZOeKWFO+eykaVKWGJXeXNrIYPSC3RMDfJBHCkRuvB8FTcMWLFjA7ZmyMzjy7CXObCYOw7TLO2emI6SQvO6fQtwz3WT7LxI91EPBazyaSS03Mm9+ttg7FedDnKCVLfzXyuSimNqD5yzH+7A==
-x-ms-office365-filtering-correlation-id: d69db58b-5b13-499d-5a82-08d6571e3991
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(49563074)(7193020);SRVR:CY4PR2201MB1079;
-x-ms-traffictypediagnostic: CY4PR2201MB1079:
-x-microsoft-antispam-prvs: <CY4PR2201MB1079186DAC8ED8F70D8D4D86C1D30@CY4PR2201MB1079.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHSPR01MB336;6:sJSndzplnLF6MzcCANX74KfMttKk0Dfden/WEyn7vG0qaUGNzhAT/8FjmtbABBYA2jwDx77F38WMHPLeeI2Hk09rssJi7bKS7GWUIiTKuIKDidz80DZ3pIugL8UWoSiJ588VNcQD/YAA2bohT+D8ydazNipkh2axfYMfrFbFkj6/f9Dzh57285Rnc2FFXdpZt4WIZYIBN3vY0mOrloslYU6l0uvYAukhbfOcgto2sTrra/Na98tE6kzoB6ICbXSBQMhIuE/hQK7mb+GEBR2r80RzhyOSH2VtUnxLGiu1v7dN5p8+Ykpnj3OkvI+ucxoRj1MKRf7NKbV4nKgdejHMV9A8qvuQRqWA5c+jUc6WIu9ZfeZxiX6/tz4+9x/h638iGvogGRwqCadVMj71grrnsbEfQom8BUxqgmY5/yKj/O2SnrrxXK2HJmixfnev0yVbA66d4WTz/A/R61BS/fBTIw==;5:L+KqKBpJGxnH6+RxtU9dN2DdV5Cq/ZceY8cZebuLVL7EzmP/TqHs+r2dakQsqn3diBHCQXSEC8X4iRulKYYLDA7H2tB1bSoFGLFIMwYMKn1fwJAWrQlUIUWh1RjHwa6aV7oYNStRK4j9VkmNn4qg5CNle0Rw1ncThX11KPy2kto=;7:H5DlPCHH+daXMcaGfF02hh9ysrV3RjEEFA9epPTz6CwK171SydbizL6L9o/5o20OTYN0RVAu8HvuRPtH8zXfvzOEGgt+X16xDo8Lq9SfswIwVfpmmvKtf+1bagjb22b4lZEATAGL+iFoEfwxc0/HAw==
+x-ms-office365-filtering-correlation-id: 23eb8abc-66a7-482d-fbac-08d657549479
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHSPR01MB336;
+x-ms-traffictypediagnostic: MWHSPR01MB336:
+x-microsoft-antispam-prvs: <MWHSPR01MB336831AB5E19101868938C2C1AC0@MWHSPR01MB336.namprd22.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(102415395)(6040522)(2401047)(5005006)(8121501046)(10201501046)(93006095)(3231453)(999002)(944501470)(4983020)(52105112)(3002001)(148016)(149066)(150057)(6041310)(20161123558120)(20161123560045)(20161123564045)(2016111802025)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:CY4PR2201MB1079;BCL:0;PCL:0;RULEID:;SRVR:CY4PR2201MB1079;
-x-forefront-prvs: 087223B4DA
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39850400004)(396003)(376002)(346002)(136003)(366004)(199004)(189003)(5660300001)(486006)(3846002)(33716001)(2906002)(6512007)(42882007)(71190400001)(71200400001)(66066001)(26005)(6436002)(44832011)(186003)(58126008)(316002)(508600001)(6116002)(1076002)(7736002)(6486002)(68736007)(54906003)(4326008)(6916009)(476003)(33896004)(102836004)(106356001)(53936002)(386003)(14454004)(99286004)(305945005)(99936001)(8936002)(81166006)(81156014)(8676002)(52116002)(97736004)(256004)(14444005)(25786009)(4001150100001)(105586002)(6506007)(9686003);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR2201MB1079;H:CY4PR2201MB1272.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231454)(999002)(944501410)(52105112)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHSPR01MB336;BCL:0;PCL:0;RULEID:;SRVR:MWHSPR01MB336;
+x-forefront-prvs: 087396016C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(39850400004)(396003)(376002)(346002)(366004)(199004)(189003)(53754006)(316002)(14454004)(33716001)(6436002)(97736004)(2906002)(25786009)(6506007)(386003)(68736007)(6246003)(33896004)(966005)(8676002)(9686003)(6512007)(508600001)(46003)(5660300001)(256004)(110136005)(6486002)(99286004)(305945005)(58126008)(7736002)(81166006)(11346002)(229853002)(486006)(44832011)(53936002)(6116002)(71190400001)(1076002)(2501003)(8936002)(71200400001)(42882007)(81156014)(105586002)(52116002)(6306002)(186003)(102836004)(106356001)(446003)(76176011)(476003)(14444005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHSPR01MB336;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: VOvAfCE5RTAW4TRZJJ2OCDf5FEvCYlD78YBvD+UnO2kPHbtSmZDAS7dttj18RWb+6Sy2O3KMfL9am2d5lMWmt8drO4ICnigUMEoKkZUkIjK3Etz+MdpEc3Ek5qCBXDRp/pGQ5bNdkOIgP0PBhqFbLVEfqvgv3XLPQzWKUlzeUiFZKKTLHP0teQ80cJOriZOS3JVBsDybjXF/iNUvOvhyYuRpkzNeCP1odIK6dEb2njzSrP2wGK91SlhEjDaFcJF6+xSpO3MHIEqOW59MbDu2V0I6ykufanWcoHV4UvlnLfO+Oj0cKts4bD0wvCPPTuughbUD3V867ej7TY0LkgIBtPEhbYlWqRaAK3EqlO7ZhK4=
+x-microsoft-antispam-message-info: rtgYacyP/Mt5LwvO8yEznXegeIKD90G9r9ye/DwOdt/yBf7C3BTvG6oLrFk1RbY3bei0TbkC5ua4Sn/SF2yENIcme0PE7N7H7KSdAYYNX8rrkBy2HyTidpyUZYnBIe99y3/7tvYXPBLXXCDcxBrU9v8TlKAGJZyJDDB29igElbXCv8D0CNcz1+nE5soFFLxR4F/awLNcuEEnojGnDGB7smb6ttyOiJDPVdRdCPsk2NDZDoGjQY+EhubbxeZmJSvgBSfeDzppIu9Ld2B6bug9cR2NG8Hhn/7UxhRLvx4JzintqR01LD//NAsLZ2btwxNUCrUDAl8H9d83rx2Hgx7Kktp4pWu5GLNEtGqnrZ0V+u4=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="haieizvcxkbfv5tx"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <36D378DCEC5E1241A675C8C3C3158670@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d69db58b-5b13-499d-5a82-08d6571e3991
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Nov 2018 23:47:44.7697
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23eb8abc-66a7-482d-fbac-08d657549479
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2018 06:16:50.2498
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1079
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHSPR01MB336
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
---haieizvcxkbfv5tx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello all,
 
-Hi Linus,
+On Wed, Nov 28, 2018 at 07:42:07PM +0000, Paul Burton wrote:
+>   2) patchwork.linux-mips.org could easily be replaced by any other
+>      patchwork installation, and kernel.org has one.
+>=20
+>   3) The mailing list(s) are what I see as the biggest pain point, but
+>      we could migrate towards kernel.org infrastructure for this too.
+>      This may require me to monitor two lists for a while, but that's
+>      fine.
+>=20
+>%
+>=20
+> So I'm considering asking for a linux-mips mailing list to be set up at
+> kernel.org, with content from linux-mips@linux-mips.org archived on
+> lore.kernel.org. MAINTAINERS would be updated to reference the new list,
+> and I'd monitor both lists for a while until submissions to the old one
+> taper off.
+>=20
+> None of this would mean linux-mips.org will go away - I have no control
+> over that. It would simply mean that kernel development is no longer
+> reliant upon it, instead being based around the kernel.org
+> infrastructure which is well maintained and not our problem.
+>=20
+> Before I ask for the new mailing list to be set up, I'm asking here
+> whether anyone has thoughts or objections?
 
-Here are a few more MIPS fixes for 4.20, please pull.
+This is now done - please start using linux-mips@vger.kernel.org instead
+of linux-mips@linux-mips.org. The MAINTAINERS file has been updated to
+reflect this, so anyone using get_maintainers.pl should start to see the
+new list once they update to a new enough kernel.
+
+The list is being archived at https://lore.kernel.org/linux-mips/ - this
+contains the history of the @linux-mips.org list, and new mail from the
+@vger.kernel.org list going forwards.
+
+Patchwork is available at https://patchwork.kernel.org/project/linux-mips/
+
+As I said before, I'm still subscribed to linux-mips@linux-mips.org &
+I'll keep an eye on it for a while, so if you already sent a patch there
+please don't feel any need to resend it to the new list - just use the
+new list next time.
 
 Thanks,
     Paul
-
-The following changes since commit 1229ace4a4a2e2c982a32fb075dc1bf95423924f:
-
-  MIPS: Loongson3,SGI-IP27: Simplify max_low_pfn calculation (2018-11-15 15:42:15 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_fixes_4.20_4
-
-for you to fetch changes up to 6584297b78b66acb80917b664084f303317fcff1:
-
-  MAINTAINERS: Update linux-mips mailing list address (2018-11-30 15:19:36 -0800)
-
-----------------------------------------------------------------
-A few more MIPS fixes for 4.20:
-
- - Fix mips_get_syscall_arg() to operate on the task specified when
-   detecting o32 tasks running on MIPS64 kernels.
-
- - Fix some incorrect GPIO pin muxing for the MT7620 SoC.
-
- - Update the linux-mips mailing list address.
-
-----------------------------------------------------------------
-Dmitry V. Levin (1):
-      mips: fix mips_get_syscall_arg o32 check
-
-Mathias Kresin (1):
-      MIPS: ralink: Fix mt7620 nd_sd pinmux
-
-Paul Burton (1):
-      MAINTAINERS: Update linux-mips mailing list address
-
- MAINTAINERS                     | 46 ++++++++++++++++++++---------------------
- arch/mips/include/asm/syscall.h |  2 +-
- arch/mips/ralink/mt7620.c       |  2 +-
- 3 files changed, 25 insertions(+), 25 deletions(-)
-
---haieizvcxkbfv5tx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCXAHMHQAKCRA+p5+stXUA
-3dBPAPwLM7IhjJKGyDsECwbukHZgKriN1nmIVNNxOr+oSqwFSgD/UTJ0bt9OXG78
-zLojvciH6FDJiWXJ371V4ODWdwdC8gU=
-=Vesi
------END PGP SIGNATURE-----
-
---haieizvcxkbfv5tx--

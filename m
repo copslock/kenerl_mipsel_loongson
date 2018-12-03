@@ -1,138 +1,288 @@
-Return-Path: <SRS0=T+hk=OK=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=6l1E=OM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22DD0C04EB9
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Dec 2018 06:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F237C04EB9
+	for <linux-mips@archiver.kernel.org>; Mon,  3 Dec 2018 21:23:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9A46920834
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Dec 2018 06:16:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D392020666
+	for <linux-mips@archiver.kernel.org>; Mon,  3 Dec 2018 21:23:56 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="HmUdg/L0"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9A46920834
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6XZD/hm"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D392020666
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbeLAR2j (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Dec 2018 12:28:39 -0500
-Received: from mail-eopbgr710130.outbound.protection.outlook.com ([40.107.71.130]:33285
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725893AbeLAR2i (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 1 Dec 2018 12:28:38 -0500
+        id S1725908AbeLCVX4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 3 Dec 2018 16:23:56 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:50210 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725903AbeLCVX4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 3 Dec 2018 16:23:56 -0500
+Received: by mail-wm1-f68.google.com with SMTP id n190so4976562wmd.0;
+        Mon, 03 Dec 2018 13:23:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jF1VFnWIiOB2rykz+2rc017IVmLlqNvg+gVAG1ElN1o=;
- b=HmUdg/L0RMSYxpE23YHUJaFNKk1WOhKXMTndcgTHLkajuzRM7wdhY5nbdrA4cPwmlzsF87g5Mvx45KAnhb1h2A28HAs+blws8TXzU/HNoo4e8l9k+U3e1sNxDj7IFcXEMm2LK7z0hg4ZOOCHd5TQgT6suOYdh426oJ95eSC1Q74=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHSPR01MB336.namprd22.prod.outlook.com (10.174.251.165) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1339.25; Sat, 1 Dec 2018 06:16:50 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::2d92:328e:af42:2985%4]) with mapi id 15.20.1382.020; Sat, 1 Dec 2018
- 06:16:50 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [RFC] Migration from linux-mips.org to kernel.org
-Thread-Topic: [RFC] Migration from linux-mips.org to kernel.org
-Thread-Index: AQHUh1JyYgbm8WKxf0aPFFad2WolxaVpbDwA
-Date:   Sat, 1 Dec 2018 06:16:50 +0000
-Message-ID: <20181201061648.bj2kumoefkxcd6z2@pburton-laptop>
-References: <20181128194206.yhdp6247xobkj5cu@pburton-laptop>
-In-Reply-To: <20181128194206.yhdp6247xobkj5cu@pburton-laptop>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR05CA0057.namprd05.prod.outlook.com
- (2603:10b6:a03:74::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2601:647:4100:4687:76db:7cfe:65a3:6aea]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHSPR01MB336;6:sJSndzplnLF6MzcCANX74KfMttKk0Dfden/WEyn7vG0qaUGNzhAT/8FjmtbABBYA2jwDx77F38WMHPLeeI2Hk09rssJi7bKS7GWUIiTKuIKDidz80DZ3pIugL8UWoSiJ588VNcQD/YAA2bohT+D8ydazNipkh2axfYMfrFbFkj6/f9Dzh57285Rnc2FFXdpZt4WIZYIBN3vY0mOrloslYU6l0uvYAukhbfOcgto2sTrra/Na98tE6kzoB6ICbXSBQMhIuE/hQK7mb+GEBR2r80RzhyOSH2VtUnxLGiu1v7dN5p8+Ykpnj3OkvI+ucxoRj1MKRf7NKbV4nKgdejHMV9A8qvuQRqWA5c+jUc6WIu9ZfeZxiX6/tz4+9x/h638iGvogGRwqCadVMj71grrnsbEfQom8BUxqgmY5/yKj/O2SnrrxXK2HJmixfnev0yVbA66d4WTz/A/R61BS/fBTIw==;5:L+KqKBpJGxnH6+RxtU9dN2DdV5Cq/ZceY8cZebuLVL7EzmP/TqHs+r2dakQsqn3diBHCQXSEC8X4iRulKYYLDA7H2tB1bSoFGLFIMwYMKn1fwJAWrQlUIUWh1RjHwa6aV7oYNStRK4j9VkmNn4qg5CNle0Rw1ncThX11KPy2kto=;7:H5DlPCHH+daXMcaGfF02hh9ysrV3RjEEFA9epPTz6CwK171SydbizL6L9o/5o20OTYN0RVAu8HvuRPtH8zXfvzOEGgt+X16xDo8Lq9SfswIwVfpmmvKtf+1bagjb22b4lZEATAGL+iFoEfwxc0/HAw==
-x-ms-office365-filtering-correlation-id: 23eb8abc-66a7-482d-fbac-08d657549479
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHSPR01MB336;
-x-ms-traffictypediagnostic: MWHSPR01MB336:
-x-microsoft-antispam-prvs: <MWHSPR01MB336831AB5E19101868938C2C1AC0@MWHSPR01MB336.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(3002001)(3231454)(999002)(944501410)(52105112)(10201501046)(93006095)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123560045)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHSPR01MB336;BCL:0;PCL:0;RULEID:;SRVR:MWHSPR01MB336;
-x-forefront-prvs: 087396016C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(39850400004)(396003)(376002)(346002)(366004)(199004)(189003)(53754006)(316002)(14454004)(33716001)(6436002)(97736004)(2906002)(25786009)(6506007)(386003)(68736007)(6246003)(33896004)(966005)(8676002)(9686003)(6512007)(508600001)(46003)(5660300001)(256004)(110136005)(6486002)(99286004)(305945005)(58126008)(7736002)(81166006)(11346002)(229853002)(486006)(44832011)(53936002)(6116002)(71190400001)(1076002)(2501003)(8936002)(71200400001)(42882007)(81156014)(105586002)(52116002)(6306002)(186003)(102836004)(106356001)(446003)(76176011)(476003)(14444005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHSPR01MB336;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: rtgYacyP/Mt5LwvO8yEznXegeIKD90G9r9ye/DwOdt/yBf7C3BTvG6oLrFk1RbY3bei0TbkC5ua4Sn/SF2yENIcme0PE7N7H7KSdAYYNX8rrkBy2HyTidpyUZYnBIe99y3/7tvYXPBLXXCDcxBrU9v8TlKAGJZyJDDB29igElbXCv8D0CNcz1+nE5soFFLxR4F/awLNcuEEnojGnDGB7smb6ttyOiJDPVdRdCPsk2NDZDoGjQY+EhubbxeZmJSvgBSfeDzppIu9Ld2B6bug9cR2NG8Hhn/7UxhRLvx4JzintqR01LD//NAsLZ2btwxNUCrUDAl8H9d83rx2Hgx7Kktp4pWu5GLNEtGqnrZ0V+u4=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <36D378DCEC5E1241A675C8C3C3158670@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VY0CS726ctG/XTA5cA2acotby14lIXeidLt3qAUnP5A=;
+        b=g6XZD/hmUjVmC8T3y+LnBc9AHouQ8nJmYXrYF7g81N+AtjF6JeEgi8GOV9C6INzmFN
+         Tapl7XDmo1+sbakBdjuz6XGOcVhpO7+Z25aywkg63tUMp/4T9zaTD2dk8hy+6OOJ2EPv
+         Y6k53v5vE7j0F3Rthl+uaNzsm66cQgdCShng6R9OjD2NHio3g04NsbMrnQ33LHZ5ekEf
+         eWlfU7zd4A/nHySOtfkEQgOoRtB3wGkCz/6z5s5tyvglvhJ9yAqnBIiluXG+7pgJLkN0
+         7aa42Wsd+qMl7lx+cClwWmRl/Wtc5+SuD16gYU/KWylrbT+hYxMoN2UVPwZ8mqrsr3eP
+         2Sfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=VY0CS726ctG/XTA5cA2acotby14lIXeidLt3qAUnP5A=;
+        b=n6oRsGjsnyG24mmmoKxgao+lOcJB633XJS1av6/eOh3nMLHgu7OScJqDxnh+cUVud0
+         cS9HOqkc5vdCCJ6i7Ve9C+9EMN+SjetXO+YFGu2WbKKqoiyl/TFLh0CmsLh58A5TDcS0
+         1S9kbkMmWBFqV1UzLw47YcUsvMNjZAPtDkGL8ALtHcUKqZA2mS8hWCDYGoD6ByNqAkb1
+         RBBht+Fjt7HoBSUzqdyy1gppdJV3E0/S+6CiUQdSn6a/RmX3YZe4XwSXvwggnityt3vn
+         /iKGpZtrsDuKFMaVRVWMWe4cq9Z5qtrzmrmvWoXO7jgdqFN3c5xZZ8je0r/cIDpHQtxq
+         gwbQ==
+X-Gm-Message-State: AA+aEWZ4/KdD7KqeSTe8qQITpf36DC4inlW7xwqJBXqlWrkw/nr3a7Yu
+        UtKZ0NOQtxZsjYcnW/N3PS4=
+X-Google-Smtp-Source: AFSGD/UiGWzFVYkBJhWZkQ3FArjzT0Hpcpa3XZ5S+W3ANCw2SeKFYhHtR4Bg9RtZrjRAnvkqUz3oSQ==
+X-Received: by 2002:a1c:66c5:: with SMTP id a188mr9469935wmc.129.1543872232821;
+        Mon, 03 Dec 2018 13:23:52 -0800 (PST)
+Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net. [78.225.224.134])
+        by smtp.gmail.com with ESMTPSA id 14sm16869166wmv.36.2018.12.03.13.23.51
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 03 Dec 2018 13:23:52 -0800 (PST)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id 1A638114100F; Mon,  3 Dec 2018 22:23:50 +0100 (CET)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Mathieu Malaterre <malat@debian.org>,
+        Kees Cook <keescook@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mips: annotate implicit fall throughs
+Date:   Mon,  3 Dec 2018 22:23:43 +0100
+Message-Id: <20181203212344.9372-1-malat@debian.org>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23eb8abc-66a7-482d-fbac-08d657549479
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2018 06:16:50.2498
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHSPR01MB336
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello all,
+There is a plan to build the kernel with -Wimplicit-fallthrough and
+these places in the code produced warnings. Fix them up.
 
-On Wed, Nov 28, 2018 at 07:42:07PM +0000, Paul Burton wrote:
->   2) patchwork.linux-mips.org could easily be replaced by any other
->      patchwork installation, and kernel.org has one.
->=20
->   3) The mailing list(s) are what I see as the biggest pain point, but
->      we could migrate towards kernel.org infrastructure for this too.
->      This may require me to monitor two lists for a while, but that's
->      fine.
->=20
->%
->=20
-> So I'm considering asking for a linux-mips mailing list to be set up at
-> kernel.org, with content from linux-mips@linux-mips.org archived on
-> lore.kernel.org. MAINTAINERS would be updated to reference the new list,
-> and I'd monitor both lists for a while until submissions to the old one
-> taper off.
->=20
-> None of this would mean linux-mips.org will go away - I have no control
-> over that. It would simply mean that kernel development is no longer
-> reliant upon it, instead being based around the kernel.org
-> infrastructure which is well maintained and not our problem.
->=20
-> Before I ask for the new mailing list to be set up, I'm asking here
-> whether anyone has thoughts or objections?
+This patch produces no change in behaviour, but should be reviewed in
+case these are actually bugs not intentional fallthoughs.
 
-This is now done - please start using linux-mips@vger.kernel.org instead
-of linux-mips@linux-mips.org. The MAINTAINERS file has been updated to
-reflect this, so anyone using get_maintainers.pl should start to see the
-new list once they update to a new enough kernel.
+Cc: Kees Cook <keescook@google.com>
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/mips/kernel/branch.c    |  7 +++++++
+ arch/mips/kernel/cpu-probe.c |  7 +++++++
+ arch/mips/kernel/watch.c     | 13 +++++++++++++
+ arch/mips/mm/c-r4k.c         |  2 ++
+ arch/mips/mm/tlbex.c         |  1 +
+ 5 files changed, 30 insertions(+)
 
-The list is being archived at https://lore.kernel.org/linux-mips/ - this
-contains the history of the @linux-mips.org list, and new mail from the
-@vger.kernel.org list going forwards.
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index e48f6c0a9e4a..a81862493c3d 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -447,6 +447,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 		case bltzl_op:
+ 			if (NO_R6EMU)
+ 				goto sigill_r2r6;
++			/* fall through */
+ 		case bltz_op:
+ 			if ((long)regs->regs[insn.i_format.rs] < 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+@@ -460,6 +461,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 		case bgezl_op:
+ 			if (NO_R6EMU)
+ 				goto sigill_r2r6;
++			/* fall through */
+ 		case bgez_op:
+ 			if ((long)regs->regs[insn.i_format.rs] >= 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+@@ -555,6 +557,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case jalx_op:
+ 	case jal_op:
+ 		regs->regs[31] = regs->cp0_epc + 8;
++		/* fall through */
+ 	case j_op:
+ 		epc += 4;
+ 		epc >>= 28;
+@@ -571,6 +574,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case beql_op:
+ 		if (NO_R6EMU)
+ 			goto sigill_r2r6;
++		/* fall through */
+ 	case beq_op:
+ 		if (regs->regs[insn.i_format.rs] ==
+ 		    regs->regs[insn.i_format.rt]) {
+@@ -585,6 +589,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case bnel_op:
+ 		if (NO_R6EMU)
+ 			goto sigill_r2r6;
++		/* fall through */
+ 	case bne_op:
+ 		if (regs->regs[insn.i_format.rs] !=
+ 		    regs->regs[insn.i_format.rt]) {
+@@ -599,6 +604,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case blezl_op: /* not really i_format */
+ 		if (!insn.i_format.rt && NO_R6EMU)
+ 			goto sigill_r2r6;
++		/* fall through */
+ 	case blez_op:
+ 		/*
+ 		 * Compact branches for R6 for the
+@@ -634,6 +640,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	case bgtzl_op:
+ 		if (!insn.i_format.rt && NO_R6EMU)
+ 			goto sigill_r2r6;
++		/* fall through */
+ 	case bgtz_op:
+ 		/*
+ 		 * Compact branches for R6 for the
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index d535fc706a8b..7f4df795d1d2 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -489,12 +489,16 @@ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
+ 	switch (isa) {
+ 	case MIPS_CPU_ISA_M64R2:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R2 | MIPS_CPU_ISA_M64R2;
++		/* fall through */
+ 	case MIPS_CPU_ISA_M64R1:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M64R1;
++		/* fall through */
+ 	case MIPS_CPU_ISA_V:
+ 		c->isa_level |= MIPS_CPU_ISA_V;
++		/* fall through */
+ 	case MIPS_CPU_ISA_IV:
+ 		c->isa_level |= MIPS_CPU_ISA_IV;
++		/* fall through */
+ 	case MIPS_CPU_ISA_III:
+ 		c->isa_level |= MIPS_CPU_ISA_II | MIPS_CPU_ISA_III;
+ 		break;
+@@ -502,14 +506,17 @@ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
+ 	/* R6 incompatible with everything else */
+ 	case MIPS_CPU_ISA_M64R6:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R6 | MIPS_CPU_ISA_M64R6;
++		/* fall through */
+ 	case MIPS_CPU_ISA_M32R6:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R6;
+ 		/* Break here so we don't add incompatible ISAs */
+ 		break;
+ 	case MIPS_CPU_ISA_M32R2:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R2;
++		/* fall through */
+ 	case MIPS_CPU_ISA_M32R1:
+ 		c->isa_level |= MIPS_CPU_ISA_M32R1;
++		/* fall through */
+ 	case MIPS_CPU_ISA_II:
+ 		c->isa_level |= MIPS_CPU_ISA_II;
+ 		break;
+diff --git a/arch/mips/kernel/watch.c b/arch/mips/kernel/watch.c
+index 0e61a5b7647f..ba73b4077668 100644
+--- a/arch/mips/kernel/watch.c
++++ b/arch/mips/kernel/watch.c
+@@ -27,12 +27,15 @@ void mips_install_watch_registers(struct task_struct *t)
+ 	case 4:
+ 		write_c0_watchlo3(watches->watchlo[3]);
+ 		write_c0_watchhi3(watchhi | watches->watchhi[3]);
++		/* fall through */
+ 	case 3:
+ 		write_c0_watchlo2(watches->watchlo[2]);
+ 		write_c0_watchhi2(watchhi | watches->watchhi[2]);
++		/* fall through */
+ 	case 2:
+ 		write_c0_watchlo1(watches->watchlo[1]);
+ 		write_c0_watchhi1(watchhi | watches->watchhi[1]);
++		/* fall through */
+ 	case 1:
+ 		write_c0_watchlo0(watches->watchlo[0]);
+ 		write_c0_watchhi0(watchhi | watches->watchhi[0]);
+@@ -55,10 +58,13 @@ void mips_read_watch_registers(void)
+ 		BUG();
+ 	case 4:
+ 		watches->watchhi[3] = (read_c0_watchhi3() & watchhi_mask);
++		/* fall through */
+ 	case 3:
+ 		watches->watchhi[2] = (read_c0_watchhi2() & watchhi_mask);
++		/* fall through */
+ 	case 2:
+ 		watches->watchhi[1] = (read_c0_watchhi1() & watchhi_mask);
++		/* fall through */
+ 	case 1:
+ 		watches->watchhi[0] = (read_c0_watchhi0() & watchhi_mask);
+ 	}
+@@ -85,18 +91,25 @@ void mips_clear_watch_registers(void)
+ 		BUG();
+ 	case 8:
+ 		write_c0_watchlo7(0);
++		/* fall through */
+ 	case 7:
+ 		write_c0_watchlo6(0);
++		/* fall through */
+ 	case 6:
+ 		write_c0_watchlo5(0);
++		/* fall through */
+ 	case 5:
+ 		write_c0_watchlo4(0);
++		/* fall through */
+ 	case 4:
+ 		write_c0_watchlo3(0);
++		/* fall through */
+ 	case 3:
+ 		write_c0_watchlo2(0);
++		/* fall through */
+ 	case 2:
+ 		write_c0_watchlo1(0);
++		/* fall through */
+ 	case 1:
+ 		write_c0_watchlo0(0);
+ 	}
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 05bd77727fb9..4f0e1fc9f887 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1251,6 +1251,7 @@ static void probe_pcache(void)
+ 
+ 	case CPU_VR4133:
+ 		write_c0_config(config & ~VR41_CONF_P4K);
++		/* fall through */
+ 	case CPU_VR4131:
+ 		/* Workaround for cache instruction bug of VR4131 */
+ 		if (c->processor_id == 0x0c80U || c->processor_id == 0x0c81U ||
+@@ -1498,6 +1499,7 @@ static void probe_pcache(void)
+ 			c->dcache.flags |= MIPS_CACHE_PINDEX;
+ 			break;
+ 		}
++		/* fall through */
+ 	default:
+ 		if (has_74k_erratum || c->dcache.waysize > PAGE_SIZE)
+ 			c->dcache.flags |= MIPS_CACHE_ALIASES;
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 067714291643..37b1cb246332 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -576,6 +576,7 @@ void build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case CPU_R5500:
+ 		if (m4kc_tlbp_war())
+ 			uasm_i_nop(p);
++		/* fall through */
+ 	case CPU_ALCHEMY:
+ 		tlbw(p);
+ 		break;
+-- 
+2.19.2
 
-Patchwork is available at https://patchwork.kernel.org/project/linux-mips/
-
-As I said before, I'm still subscribed to linux-mips@linux-mips.org &
-I'll keep an eye on it for a while, so if you already sent a patch there
-please don't feel any need to resend it to the new list - just use the
-new list next time.
-
-Thanks,
-    Paul

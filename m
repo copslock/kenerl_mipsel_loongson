@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C971BC04EB8
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 23:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46971C04EB8
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 23:44:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6B79B2081B
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 23:24:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 6B79B2081B
+	by mail.kernel.org (Postfix) with ESMTP id E8266206B6
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 23:44:22 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Zvb5/X79"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E8266206B6
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725904AbeLDXYR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 4 Dec 2018 18:24:17 -0500
-Received: from mail-eopbgr810125.outbound.protection.outlook.com ([40.107.81.125]:36581
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+        id S1725886AbeLDXoW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 4 Dec 2018 18:44:22 -0500
+Received: from mail-eopbgr700129.outbound.protection.outlook.com ([40.107.70.129]:10686
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725875AbeLDXYQ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 4 Dec 2018 18:24:16 -0500
+        id S1726048AbeLDXoW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 4 Dec 2018 18:44:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zRx7Ntv40TAW+mv+YGLUdIXnFjtSdv2svVyUuXm8b84=;
- b=k+m4ygGxelgdtpJAxBxuU8JR9alFd+VWOqHg8ZC21Knbn9bE+o8B3TlOzR/JzXjHzHpPDtcduZucU2OqwkorsnKpascN/tqr4GyLfn9Hf4x0fEZs/zLSoz0f84kBpam8k3hJbeI4x2PIFUvOuunf5/WdYMfjPU6GcJNFU0Mk7u4=
+ bh=XPqnQmfyZCaE9XtcBFHH3StuCd1v+44okKtpE7M5BEM=;
+ b=Zvb5/X79Xx0+4JQ8P6LVuYtNmOVh/T2D17TpjI2B1CMwvfPd24WgOQ+Zjea04jyeQaE8U8EW9tajC/0MDBnt0+wXF3Ayp4TAjGljlRTa6IjhBJx1hVUi+zyKuxpfw+08n9QNehl3/y8J2GO5bD9pLMsYsrxty23qM78pX1rxrV8=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1486.namprd22.prod.outlook.com (10.174.170.147) with Microsoft
+ MWHPR2201MB1472.namprd22.prod.outlook.com (10.174.170.145) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1404.17; Tue, 4 Dec 2018 23:23:21 +0000
+ 15.20.1404.18; Tue, 4 Dec 2018 23:44:12 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::2d92:328e:af42:2985%4]) with mapi id 15.20.1382.023; Tue, 4 Dec 2018
- 23:23:21 +0000
+ 23:44:12 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-CC:     Paul Burton <pburton@wavecomp.com>,
+CC:     James Hogan <jhogan@kernel.org>,
+        Paul Burton <pburton@wavecomp.com>,
         Jiwei Sun <jiwei.sun@windriver.com>,
         Yu Huabing <yhb@ruijie.com.cn>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Expand MIPS32 ASIDs to 64 bits
-Thread-Topic: [PATCH] MIPS: Expand MIPS32 ASIDs to 64 bits
-Thread-Index: AQHUjChYskTIQmLSxkmT4w7Kl2LZlg==
-Date:   Tue, 4 Dec 2018 23:23:21 +0000
-Message-ID: <20181204232302.17519-1-paul.burton@mips.com>
+Subject: [PATCH v2] MIPS: Expand MIPS32 ASIDs to 64 bits
+Thread-Topic: [PATCH v2] MIPS: Expand MIPS32 ASIDs to 64 bits
+Thread-Index: AQHUjCtCTMEMRdKza0eGsQC+3qNFjQ==
+Date:   Tue, 4 Dec 2018 23:44:12 +0000
+Message-ID: <20181204234333.21243-1-paul.burton@mips.com>
+References: <20181204232302.17519-1-paul.burton@mips.com>
+In-Reply-To: <20181204232302.17519-1-paul.burton@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR14CA0065.namprd14.prod.outlook.com
- (2603:10b6:300:81::27) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR12CA0064.namprd12.prod.outlook.com
+ (2603:10b6:300:103::26) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1486;6:qDMDt2xu9en7hrM2GxE64Xk6PR526jkhiGQybkhmkT9fu4oik7iwx42m4/rufHkXWz6dtTxrk4kdXIhOIabxG6gnQll0uGOFQUuftEuOvDmtMWlkQwgusCsTIW0snOmo6OGfgoTXWwtrnAZKrvOJmAvspLcS5qag/BXvipOB0+XEZsG3kHY86lLyycziD3VqpdLlWDWjwBlXjbWlFvuj8VUwqklXQoyorHWuI6h37Q8sHGAVfhocE0SgXY+KAUMbC3SrRdA7/SF2s0ftKB4LS/FSQIsniCLBUWqBGcYCQnxtZs3qFRWS+9v/4ybChhnGQHDt5G/f+zEF3TDxx+0rSbVwTZryE+84zfRhF81TgzNY4jhYi26sAlPX85YFF/coq77yaiYcl4gMSa5ZsO/MDOtJ5b3zldUaspgVupavoN7xKsqptkDaqeItqa4wai6iwHSfeC1jv6vch/hQtZEAPw==;5:yBbjUgrdTnEv6HRP4kKJdEksHnmwq7HGhpUwJLydU1PikdB0+x3wJRmVETyX89d/ERo3ZB1JM7HiptqRRDpKeK3jMYO9DE2Imt//jk6OZWDlt4STp8maHi9cfckSPr3L95Hxgy5UQ4MkhAot0YZLKFO2wuTSr0iq9N9kSR04KFo=;7:eefX/dKCJ3EjX1sXei6TAB+W1GCxvZk3qLJH/8sqfT50VxQzaJ4GF6qdhYvKX02/qchnuHr8Kp2EdTDkm3KLPBcXN5j4tdA3Iq6Rx4ja2E4UsjviT1arGHASRdaNGy5o8RCup7RhQAeiJFkEXckYDw==
-x-ms-office365-filtering-correlation-id: dd88c5a4-222d-49ec-aec9-08d65a3f7af8
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1486;
-x-ms-traffictypediagnostic: MWHPR2201MB1486:
-x-microsoft-antispam-prvs: <MWHPR2201MB1486CA35AF2477D9210BC64CC1AF0@MWHPR2201MB1486.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1472;6:7kf0jzupndQmk17Bo+8GvJ+5w5WJouIa9vAmo/miDjdZ068H+G0hCp3zC1UE4UpuZ+y4s9l7EMO1N7086B2uB8ligxKUSRzCbRJWW+AFw2wRKAjemySRSKcKzhG3ez/9Kpx+V0rMcfkkLDq+8K0sF7YeKwWXnYobRca0HALqTJDmUC+FDXD/EJnYzkxWroj8TNIdiKgQJX71Xvz9nP+q7M5GQ7waxJ1MzlLln4Eh3Ag07+piPFO1O1Fl0clpvH11LPQkVQIar0leczsM1ZShN1sSyxqTPBCxGQ+hpZ5I+JIFKQhlP1UD1qM62tCnAoyA9pSLtbwyK6WIrmCDMOShwS40oU4q1NQlB5n6a78qR0TQpG0QkjtXzA8VWSZ0V/YqeHfprDv8lEdiHX8bcZ7jD9KUkqJa7rQUgZrawRoWjhlfp/fbGpIYjPw1Rb7gUBwOITk/2BrnFwkC8dpVRlugYg==;5:1IeLbzyM5GX+6L/vM8sU6mQ9yVp2jba1ESu/nkRAv58csQzm5ch7YP0hg9BqeIfre8DX8ftY3edKE6Efza8UeRCWpUksvNwJYfLcciF5VRAIRouJ8bm3UPx/kYjD0HBpn0TpnblbDqA16iB8POxd1/omaQqenYPwsaMmw0cm/2k=;7:LX3dnt5vVFKxbYyLrV29NMYGJWg47a9vqO5B9ArVv+2pMdUUK6S8DMPxaIq90D/JtZf5UErCyAJUs7GRlYWb6rGIPWZArzhgCFM7WVfSLQyJFDWM4w1GzsFGVTjVdv+hmiOcorDAs/1+lVG+Wv3DBg==
+x-ms-office365-filtering-correlation-id: d23ad327-1f45-442e-b30d-08d65a42645e
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1472;
+x-ms-traffictypediagnostic: MWHPR2201MB1472:
+x-microsoft-antispam-prvs: <MWHPR2201MB14729E7EC2C5807F48CFAD93C1AF0@MWHPR2201MB1472.namprd22.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(5005006)(8121501046)(10201501046)(3231455)(999002)(944501516)(52105112)(93006095)(3002001)(148016)(149066)(150057)(6041310)(20161123558120)(20161123560045)(20161123562045)(20161123564045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1486;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1486;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3002001)(93006095)(3231455)(999002)(944501516)(52105112)(10201501046)(148016)(149066)(150057)(6041310)(2016111802025)(20161123562045)(20161123560045)(20161123564045)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1472;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1472;
 x-forefront-prvs: 0876988AF0
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(346002)(39840400004)(136003)(376002)(366004)(199004)(189003)(476003)(44832011)(14444005)(256004)(486006)(2616005)(508600001)(25786009)(8936002)(5660300001)(2501003)(105586002)(81156014)(8676002)(81166006)(68736007)(106356001)(2351001)(386003)(186003)(6506007)(42882007)(102836004)(26005)(575784001)(52116002)(99286004)(36756003)(3846002)(6116002)(54906003)(316002)(1076002)(71200400001)(97736004)(2906002)(305945005)(6486002)(71190400001)(6436002)(53936002)(6512007)(6306002)(5640700003)(6916009)(7736002)(4326008)(966005)(66066001)(14454004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1486;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39840400004)(346002)(136003)(376002)(396003)(366004)(189003)(199004)(54906003)(316002)(97736004)(66066001)(186003)(14454004)(102836004)(966005)(99286004)(386003)(6506007)(2906002)(508600001)(5660300001)(68736007)(44832011)(6916009)(2616005)(486006)(575784001)(476003)(11346002)(446003)(25786009)(256004)(305945005)(7736002)(14444005)(42882007)(26005)(36756003)(71200400001)(71190400001)(2351001)(106356001)(6436002)(4326008)(6486002)(8936002)(81166006)(81156014)(8676002)(53936002)(2501003)(1076002)(5640700003)(52116002)(76176011)(3846002)(6116002)(6512007)(6306002)(105586002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1472;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: y429qrAGi1JHggW4WDZnLByoeIES4qs6Tl9+jN8QpR1XNQ/IaCgVBPrlBGTT2BPSV7YFG9HneEmihQOS6Ec5pzazRsBU3STBRZBci5Mjjaqa+T95MlbUc8Fh/dhg8g/nySUr919oATW+g7EYn8yA6OwNd5q9zQ7GFV44iVFVGOKM4Zf1tzmCx4uHCIeti/z0Nr5R2i18gCQqEr5CKc5XEV1rITzotvcQ2fw4z2f+LxdmcdTFiuc+68MG2af0wI9BvFWrEjMerzVpdjRnWPSr/tM39QPkg5i9pRKj+68wL94Kgxtqzh5rxpuuzWWOEb7PzSgF6tt3LeekOtrZ1nEsuL1kcx/PYMO2mZx65Easv6A=
+x-microsoft-antispam-message-info: Ghu3evENOHImeQq+EqLBVPDVivbdgfzXUwFAL1x00rE5z0iWxIXr7JLsC2+CtrzFuXMDHTF/gjchi5rEeu3kWkFHwkFetOetIouav9v9TifFgmaWDRggUpy3gj2EEoBNyBQh8K/meWGHSy8GNLpCIYiZon0r9FdNhbSabw+3D7v9R3OnQHLJoY8EGNtRsdNU0WgwMmxsGEacA76wy/uWvZOtDwFPnE+RXIRfLxAg6wEifqRHVN6nDLbo9mzFK7xpnW0kVxQTPJlxT8dhEVX9WxvPBjH+iGjemLPYF2ucESJy+nSXIarKyO9/cX/iXhtvJyR1dFZE5NZ2yU6gQkVNxlKyeORL6Hiy5T+x6wZLrq4=
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd88c5a4-222d-49ec-aec9-08d65a3f7af8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2018 23:23:21.4983
+X-MS-Exchange-CrossTenant-Network-Message-Id: d23ad327-1f45-442e-b30d-08d65a42645e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2018 23:44:12.1986
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1486
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1472
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -151,13 +157,20 @@ email-jiwei.sun@windriver.com/
 Cc: Jiwei Sun <jiwei.sun@windriver.com>
 Cc: Yu Huabing <yhb@ruijie.com.cn>
 Cc: stable@vger.kernel.org # 2.6.12+
+
 ---
 
- arch/mips/include/asm/cpu-info.h    | 2 +-
- arch/mips/include/asm/mmu.h         | 2 +-
- arch/mips/include/asm/mmu_context.h | 8 ++++----
- arch/mips/mm/c-r3k.c                | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+Changes in v2:
+- Drop the overflow asid_first_version() handling.
+- Declare asid_first_version() & asid_version_mask() static inline now
+  that they may not be used within the translation unit, in order to
+  avoid unused-function warnings.
+
+ arch/mips/include/asm/cpu-info.h    |  2 +-
+ arch/mips/include/asm/mmu.h         |  2 +-
+ arch/mips/include/asm/mmu_context.h | 10 ++++------
+ arch/mips/mm/c-r3k.c                |  2 +-
+ 4 files changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-i=
 nfo.h
@@ -188,7 +201,7 @@ index 0740be7d5d4a..24d6b42345fb 100644
 =20
 diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mm=
 u_context.h
-index 94414561de0e..fd869d538a3c 100644
+index 94414561de0e..a589585be21b 100644
 --- a/arch/mips/include/asm/mmu_context.h
 +++ b/arch/mips/include/asm/mmu_context.h
 @@ -76,14 +76,14 @@ extern unsigned long pgd_current[];
@@ -196,7 +209,7 @@ index 94414561de0e..fd869d538a3c 100644
   *  as a software asid extension.
   */
 -static unsigned long asid_version_mask(unsigned int cpu)
-+static u64 asid_version_mask(unsigned int cpu)
++static inline u64 asid_version_mask(unsigned int cpu)
  {
  	unsigned long asid_mask =3D cpu_asid_mask(&cpu_data[cpu]);
 =20
@@ -205,12 +218,12 @@ index 94414561de0e..fd869d538a3c 100644
  }
 =20
 -static unsigned long asid_first_version(unsigned int cpu)
-+static u64 asid_first_version(unsigned int cpu)
++static inline u64 asid_first_version(unsigned int cpu)
  {
  	return ~asid_version_mask(cpu) + 1;
  }
-@@ -102,7 +102,7 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,=
- struct task_struct *tsk)
+@@ -102,14 +102,12 @@ static inline void enter_lazy_tlb(struct mm_struct *m=
+m, struct task_struct *tsk)
  static inline void
  get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
  {
@@ -219,6 +232,13 @@ index 94414561de0e..fd869d538a3c 100644
 =20
  	if (!((asid +=3D cpu_asid_inc()) & cpu_asid_mask(&cpu_data[cpu]))) {
  		if (cpu_has_vtag_icache)
+ 			flush_icache_all();
+ 		local_flush_tlb_all();	/* start new asid cycle */
+-		if (!asid)		/* fix version if needed */
+-			asid =3D asid_first_version(cpu);
+ 	}
+=20
+ 	cpu_context(cpu, mm) =3D asid_cache(cpu) =3D asid;
 diff --git a/arch/mips/mm/c-r3k.c b/arch/mips/mm/c-r3k.c
 index 3466fcdae0ca..01848cdf2074 100644
 --- a/arch/mips/mm/c-r3k.c

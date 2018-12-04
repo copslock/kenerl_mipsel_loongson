@@ -2,188 +2,106 @@ Return-Path: <SRS0=TQVq=ON=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7459C04EB8
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 10:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40157C04EBF
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 13:53:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7522B2082B
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 10:00:03 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=netronome-com.20150623.gappssmtp.com header.i=@netronome-com.20150623.gappssmtp.com header.b="Stzd/LW6"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 7522B2082B
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=netronome.com
+	by mail.kernel.org (Postfix) with ESMTP id 1122720659
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 13:53:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1122720659
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725764AbeLDJ7o (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 4 Dec 2018 04:59:44 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:33219 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726079AbeLDJ7n (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 4 Dec 2018 04:59:43 -0500
-Received: by mail-wr1-f66.google.com with SMTP id c14so15235764wrr.0
-        for <linux-mips@vger.kernel.org>; Tue, 04 Dec 2018 01:59:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=BKGrt+KbiuFwPoUgniU9Rs5/SXJYxxQWK2Yv4u4cLIs=;
-        b=Stzd/LW69AwogqsnTKAyW+Gs9o1J6+oWnmM3AoMcwyol28k7hxdCzqqm1EdoiXDTBv
-         6gx6iI/Zmpx7MQI7OJXC/oTYPmFKr8ilJmZk8mrUONWIrCgspUxtCe3kyGjLgU5Cib1X
-         QfONIcUqrjxU/lYuqCibTqk8Dx85hjDrk3NzygZoYSSe1oAvC9zRbMEgAaLCTyCa1obx
-         UQzlddO/xRnYtzkG93u5QD+38CDZ1TtJ7lVVx55lKvA+hyXthqwXEPWhnWJ4pfjmzYTk
-         j/B8EtDri5ittB7+Y0GFooybAfsux3qi5kd/82RmKwBiIu+t/YOxe98FHikxK5qFDyHD
-         +sCg==
+        id S1726381AbeLDNxU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 4 Dec 2018 08:53:20 -0500
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:41197 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726356AbeLDNxU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 4 Dec 2018 08:53:20 -0500
+Received: by mail-vs1-f68.google.com with SMTP id t17so9814888vsc.8;
+        Tue, 04 Dec 2018 05:53:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=BKGrt+KbiuFwPoUgniU9Rs5/SXJYxxQWK2Yv4u4cLIs=;
-        b=mB0zKCiAVRkXKD7VQc3xUfK2kBJy/AdK3Ypm1KT/nJeeQCXnoZcV8Zb6fDsCkSZ5a4
-         vI1oFC8jbiS4mCKX0kl6gqYjd+IoEBxA7rKyeh+nvDgGtmhsDG+InoDeHwoKud3Q9j5s
-         I6T4Zk8iewvnPWE2hwxHAqQlAnfSyCKIDmn/0w2fCfRMU5rBZEfKwLQEprysSYTbGrFa
-         gGU6k7exRZuNLa8gTYD7W2PA7NFLmXs5cQr2+E/qFk/wkE9buFYXbfetwwYHDXGf1zwM
-         cOd4TbGOUaR8gCQPJQFLFptBhSIkMdwVGnYxOSJ9EY8RxgKYWzlYnD91To1ubYZtSpu7
-         gLYA==
-X-Gm-Message-State: AA+aEWbwPvsBwCFN+E/fgSprnGNS6pYLN0CI/jFxBEihE6JPIcK54f0K
-        xskLUrjar3b1W0oEuvbhVCheag==
-X-Google-Smtp-Source: AFSGD/W9FNLNfOQt4FmxqZIhYGBSei19AfcZRcVD6VVXgr0p//6iXZNzRmZirgQiKmJrPqtoMUiihw==
-X-Received: by 2002:adf:a211:: with SMTP id p17mr13985471wra.179.1543917581173;
-        Tue, 04 Dec 2018 01:59:41 -0800 (PST)
-Received: from cbtest28.netronome.com ([217.38.71.146])
-        by smtp.gmail.com with ESMTPSA id h2sm10931105wrv.87.2018.12.04.01.59.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 04 Dec 2018 01:59:40 -0800 (PST)
-From:   Jiong Wang <jiong.wang@netronome.com>
-To:     daniel@iogearbox.net, ast@kernel.org
-Cc:     netdev@vger.kernel.org, oss-drivers@netronome.com,
-        Jiong Wang <jiong.wang@netronome.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [RFC bpf-next 2/7] mips: bpf: implement jitting of BPF_ALU | BPF_ARSH | BPF_X
-Date:   Tue,  4 Dec 2018 04:56:30 -0500
-Message-Id: <1543917395-6130-3-git-send-email-jiong.wang@netronome.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1543917395-6130-1-git-send-email-jiong.wang@netronome.com>
-References: <1543917395-6130-1-git-send-email-jiong.wang@netronome.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=eKdG+iTjuP1kZgJ6VlVsCsbtPXtiOHTWrPRmZYvCpb8=;
+        b=r9wbXzE7pF9o+wKf4dOFFBx3+kdknDJdG5CMwl9dOpbYrOUHuK6zYIPO2bvQJWhv06
+         +/rvDtYfcunotEi4dNNIndBRUcjOAod9juI4G1Up7KoksodBXIF9A61GPSLaF+qVovst
+         dYLTSY9SZPnMyQWw8WGUw10czKdE/fGXCEAEIY7ih2uFvjeDWsstZCdyyk8uKi4MDU/i
+         fVDPPGrNNFYpQv8/1KQfU2mC8jLcTPj9qgJEdU+49BED7LsUv55W6DvEGvucZiPeZ99P
+         EEBX6IFQjJgV+rhr7YSTzlw7/Z64sRVCBQZZNg5eC/Vko7YlkaODor7SezT+REt6ZEM9
+         igfA==
+X-Gm-Message-State: AA+aEWao7Fg2ubnfSL5HpZB14SIJbeJmfa8IUS7pK4qOZWLJD7V9Mhz3
+        +jn6gnVB4tg8cATt1xOsYkXXIR8cMSGpXyRHChk=
+X-Google-Smtp-Source: AFSGD/WcSuKguQiZ3qH9eVDQTuYNYmLt5GKT7zt1AwQyhjxt0C2HtZ8PqftappIv1996JGCVNoePlrbA6pSQTRkQhEI=
+X-Received: by 2002:a67:f43:: with SMTP id 64mr8946495vsp.166.1543931599318;
+ Tue, 04 Dec 2018 05:53:19 -0800 (PST)
+MIME-Version: 1.0
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 4 Dec 2018 14:53:07 +0100
+Message-ID: <CAMuHMdVJr0PwvJg3FeTCy7vxuyY1=S1tPLHO7hPsoZX4wZ+-cQ@mail.gmail.com>
+Subject: NFS/TCP crashes on MIPS/RBTX4927 in v4.20-rcX (bisected)
+To:     Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        "open list:NFS, SUNRPC, AND..." <linux-nfs@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Jitting of BPF_K is supported already, but not BPF_X. This patch complete
-the support for the latter on both MIPS and microMIPS.
+        Hi Trond,
 
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
----
- arch/mips/include/asm/uasm.h      | 1 +
- arch/mips/include/uapi/asm/inst.h | 1 +
- arch/mips/mm/uasm-micromips.c     | 1 +
- arch/mips/mm/uasm-mips.c          | 1 +
- arch/mips/mm/uasm.c               | 9 +++++----
- arch/mips/net/ebpf_jit.c          | 4 ++++
- 6 files changed, 13 insertions(+), 4 deletions(-)
+Recently, I've upgraded my NFS server to Ubuntu 18.04LTS.  Apparently
+the NFS server in that release dropped support for NFS over UDP, hence I
+appended ",tcp,v3" to all my nfsroot kernel command line parameters.
+This works fine on my arm/arm64 development boards, but causes a crash
+on RBTX4927:
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index 59dae37..b1990dd 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -157,6 +157,7 @@ Ip_u2u1s3(_slti);
- Ip_u2u1s3(_sltiu);
- Ip_u3u1u2(_sltu);
- Ip_u2u1u3(_sra);
-+Ip_u3u2u1(_srav);
- Ip_u2u1u3(_srl);
- Ip_u3u2u1(_srlv);
- Ip_u3u1u2(_subu);
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 273ef58..40fbb5d 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -371,6 +371,7 @@ enum mm_32a_minor_op {
- 	mm_srl32_op = 0x040,
- 	mm_srlv32_op = 0x050,
- 	mm_sra_op = 0x080,
-+	mm_srav_op = 0x090,
- 	mm_rotr_op = 0x0c0,
- 	mm_lwxs_op = 0x118,
- 	mm_addu32_op = 0x150,
-diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
-index 24e5b0d..75ef904 100644
---- a/arch/mips/mm/uasm-micromips.c
-+++ b/arch/mips/mm/uasm-micromips.c
-@@ -104,6 +104,7 @@ static const struct insn insn_table_MM[insn_invalid] = {
- 	[insn_sltiu]	= {M(mm_sltiu32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
- 	[insn_sltu]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_sltu_op), RT | RS | RD},
- 	[insn_sra]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_sra_op), RT | RS | RD},
-+	[insn_srav]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srav_op), RT | RS | RD},
- 	[insn_srl]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srl32_op), RT | RS | RD},
- 	[insn_srlv]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srlv32_op), RT | RS | RD},
- 	[insn_rotr]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_rotr_op), RT | RS | RD},
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 60ceb93..6abe40f 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -171,6 +171,7 @@ static const struct insn insn_table[insn_invalid] = {
- 	[insn_sltiu]	= {M(sltiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM},
- 	[insn_sltu]	= {M(spec_op, 0, 0, 0, 0, sltu_op), RS | RT | RD},
- 	[insn_sra]	= {M(spec_op, 0, 0, 0, 0, sra_op),  RT | RD | RE},
-+	[insn_srav]	= {M(spec_op, 0, 0, 0, 0, srav_op), RS | RT | RD},
- 	[insn_srl]	= {M(spec_op, 0, 0, 0, 0, srl_op),  RT | RD | RE},
- 	[insn_srlv]	= {M(spec_op, 0, 0, 0, 0, srlv_op),  RS | RT | RD},
- 	[insn_subu]	= {M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD},
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index 57570c0..45b6264 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -61,10 +61,10 @@ enum opcode {
- 	insn_mthc0, insn_mthi, insn_mtlo, insn_mul, insn_multu, insn_nor,
- 	insn_or, insn_ori, insn_pref, insn_rfe, insn_rotr, insn_sb,
- 	insn_sc, insn_scd, insn_sd, insn_sh, insn_sll, insn_sllv,
--	insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra, insn_srl,
--	insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall, insn_tlbp,
--	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh, insn_xor,
--	insn_xori, insn_yield,
-+	insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra, insn_srav,
-+	insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall,
-+	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh,
-+	insn_xor, insn_xori, insn_yield,
- 	insn_invalid /* insn_invalid must be last */
- };
- 
-@@ -353,6 +353,7 @@ I_u2u1s3(_slti)
- I_u2u1s3(_sltiu)
- I_u3u1u2(_sltu)
- I_u2u1u3(_sra)
-+I_u3u2u1(_srav)
- I_u2u1u3(_srl)
- I_u3u2u1(_srlv)
- I_u2u1u3(_rotr)
-diff --git a/arch/mips/net/ebpf_jit.c b/arch/mips/net/ebpf_jit.c
-index aeb7b1b..b16710a 100644
---- a/arch/mips/net/ebpf_jit.c
-+++ b/arch/mips/net/ebpf_jit.c
-@@ -854,6 +854,7 @@ static int build_one_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 	case BPF_ALU | BPF_MOD | BPF_X: /* ALU_REG */
- 	case BPF_ALU | BPF_LSH | BPF_X: /* ALU_REG */
- 	case BPF_ALU | BPF_RSH | BPF_X: /* ALU_REG */
-+	case BPF_ALU | BPF_ARSH | BPF_X: /* ALU_REG */
- 		src = ebpf_to_mips_reg(ctx, insn, src_reg_no_fp);
- 		dst = ebpf_to_mips_reg(ctx, insn, dst_reg);
- 		if (src < 0 || dst < 0)
-@@ -913,6 +914,9 @@ static int build_one_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 		case BPF_RSH:
- 			emit_instr(ctx, srlv, dst, dst, src);
- 			break;
-+		case BPF_ARSH:
-+			emit_instr(ctx, srav, dst, dst, src);
-+			break;
- 		default:
- 			pr_err("ALU_REG NOT HANDLED\n");
- 			return -EINVAL;
+    VFS: Mounted root (nfs filesystem) on device 0:13.
+    devtmpfs: mounted
+    Freeing prom memory: 1020k freed
+    Freeing unused kernel memory: 208K
+    This architecture does not have kernel memory protection.
+    Run /sbin/init as init process
+    do_page_fault(): sending SIGSEGV to init for invalid read access
+from 57e7e414
+    epc = 77f9e188 in ld-2.19.so[77f9c000+22000]
+    ra  = 77f9d91c in ld-2.19.so[77f9c000+22000]
+    Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+
+I found similar crashes in a report from 2006, but of course the code
+has changed too much to apply the solution proposed there
+(https://www.linux-mips.org/archives/linux-mips/2006-09/msg00169.html).
+
+Userland is Debian 8 (the last release supporting "old" MIPS).
+My kernel is based on v4.20.0-rc5, but the issue happens with v4.20-rc1,
+too.
+
+However, I noticed it works in v4.19! Hence I've bisected this, to commit
+277e4ab7d530bf28 ("SUNRPC: Simplify TCP receive code by switching to using
+iterators").
+
+Dropping the ",tcp" part from the nfsroot parameter also fixes the issue.
+
+Given RBTX4926 is little endian, just like my arm/arm64 boards, it's probably
+not an endianness issue.  Sparse didn't show anything suspicious before/after
+the guilty commit.
+
+Do you have a clue?
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.7.4
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

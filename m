@@ -2,78 +2,188 @@ Return-Path: <SRS0=TQVq=ON=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 11A45C04EB8
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 20:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00397C04EB8
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 20:56:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D0D7C2082B
-	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 20:20:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D0D7C2082B
-Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=iki.fi
+	by mail.kernel.org (Postfix) with ESMTP id ACC212081B
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Dec 2018 20:56:00 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=netronome-com.20150623.gappssmtp.com header.i=@netronome-com.20150623.gappssmtp.com header.b="AsgRtrR6"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org ACC212081B
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=netronome.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726273AbeLDUU0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 4 Dec 2018 15:20:26 -0500
-Received: from emh07.mail.saunalahti.fi ([62.142.5.117]:41672 "EHLO
-        emh07.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726276AbeLDUU0 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 4 Dec 2018 15:20:26 -0500
-Received: from localhost.localdomain (85-76-96-200-nat.elisa-mobile.fi [85.76.96.200])
-        by emh07.mail.saunalahti.fi (Postfix) with ESMTP id 313F6B001C;
-        Tue,  4 Dec 2018 22:12:49 +0200 (EET)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 3/6] MIPS: OCTEON: cvmx_pko_mem_debug8: use oldest forward compatible definition
-Date:   Tue,  4 Dec 2018 22:12:17 +0200
-Message-Id: <20181204201220.12667-4-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20181204201220.12667-1-aaro.koskinen@iki.fi>
-References: <20181204201220.12667-1-aaro.koskinen@iki.fi>
+        id S1726298AbeLDUzm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 4 Dec 2018 15:55:42 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36318 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726261AbeLDUzm (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 4 Dec 2018 15:55:42 -0500
+Received: by mail-wr1-f66.google.com with SMTP id u3so17412158wrs.3
+        for <linux-mips@vger.kernel.org>; Tue, 04 Dec 2018 12:55:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=BKGrt+KbiuFwPoUgniU9Rs5/SXJYxxQWK2Yv4u4cLIs=;
+        b=AsgRtrR6bR+lrbtN7btBCimgYBlS0+Aq6f8Ph+85awqQ9D/gb1n8o1L/LCCFJV1BPX
+         F7PvzD6sXoVCtbDWRj8h/pfJcvxVpvs/dEK0EULRm6Sqr10OUyX0fmuh6h8ZaPTUdtY2
+         cmZMzKsBjM3mtXbCyN9TbaGo6Cers7iiJA8uhy2SbOczY4c5utEU50+W6+OKXVOGv5FF
+         7NlUjfAC2kpfbqTWbG6zOiuakpk8sf3xXygcY6AHAO30xzuLEQhcBf46Fhn77H1U+CDZ
+         OVPRUCRAGCwAhA66qLrgyf76Icsf8+db0U6SOeQQB4DIM2lIa4SWKQ0TfOl9QTLBdu4R
+         N5yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=BKGrt+KbiuFwPoUgniU9Rs5/SXJYxxQWK2Yv4u4cLIs=;
+        b=LQwz+qFcsn/I9j+fzCti9trCtHoidVd9M7aAYpkFygIitgQycxbNg+1EefIKVFBoph
+         PVIoFY7H7jSoF0HL38zCTuFVfAesezneTcx39OSt+yz2SIt6/eUy1lvdT/jmwJGEjair
+         zgju0T3iotYOtuRzEpauVJaro3Gq8/4DALOe+qxeIWgk4AXFzXHOgcX3y4V9aeDcTm84
+         khQIsTn2NLDygrPKMm3L8uiJvMMxWuJnZbnbO+3mIEiulFUxxStxtxvdXhFpF89nS4ru
+         9I6679vWclemAw2sElW+GC1so34xr65WwBzV9HDchWig3ob2YiMaBuOHHNMexWWqxzUI
+         sLCQ==
+X-Gm-Message-State: AA+aEWYNq1EuqdzZlRSuqFdo+gtW4+diGn7tXkZVVbm3fR90/02LQNXV
+        gDPZ2i3mmkT05OPaTJ46JA0X2w==
+X-Google-Smtp-Source: AFSGD/W1qXZBqhrYqAUOrdtN5vU0tCfTxYuAYYU868L/T/99OA9Wy3PmtX9bTta/0j/mFsVEPr/NoA==
+X-Received: by 2002:adf:9205:: with SMTP id 5mr19628916wrj.189.1543956939139;
+        Tue, 04 Dec 2018 12:55:39 -0800 (PST)
+Received: from cbtest28.netronome.com ([217.38.71.146])
+        by smtp.gmail.com with ESMTPSA id s66sm12338452wmf.34.2018.12.04.12.55.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 04 Dec 2018 12:55:38 -0800 (PST)
+From:   Jiong Wang <jiong.wang@netronome.com>
+To:     daniel@iogearbox.net, ast@kernel.org
+Cc:     netdev@vger.kernel.org, oss-drivers@netronome.com,
+        Jiong Wang <jiong.wang@netronome.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH bpf-next 1/7] mips: bpf: implement jitting of BPF_ALU | BPF_ARSH | BPF_X
+Date:   Tue,  4 Dec 2018 15:55:16 -0500
+Message-Id: <1543956922-8620-2-git-send-email-jiong.wang@netronome.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1543956922-8620-1-git-send-email-jiong.wang@netronome.com>
+References: <1543956922-8620-1-git-send-email-jiong.wang@netronome.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-cn58xx is compatible with cn52xx, so use the latter.
+Jitting of BPF_K is supported already, but not BPF_X. This patch complete
+the support for the latter on both MIPS and microMIPS.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
 ---
- arch/mips/cavium-octeon/executive/cvmx-cmd-queue.c | 2 +-
- arch/mips/include/asm/octeon/cvmx-pko.h            | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/uasm.h      | 1 +
+ arch/mips/include/uapi/asm/inst.h | 1 +
+ arch/mips/mm/uasm-micromips.c     | 1 +
+ arch/mips/mm/uasm-mips.c          | 1 +
+ arch/mips/mm/uasm.c               | 9 +++++----
+ arch/mips/net/ebpf_jit.c          | 4 ++++
+ 6 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-cmd-queue.c b/arch/mips/cavium-octeon/executive/cvmx-cmd-queue.c
-index 8241fc6aa17d..3839feba68f2 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-cmd-queue.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-cmd-queue.c
-@@ -266,7 +266,7 @@ int cvmx_cmd_queue_length(cvmx_cmd_queue_id_t queue_id)
- 		} else {
- 			union cvmx_pko_mem_debug8 debug8;
- 			debug8.u64 = cvmx_read_csr(CVMX_PKO_MEM_DEBUG8);
--			return debug8.cn58xx.doorbell;
-+			return debug8.cn50xx.doorbell;
- 		}
- 	case CVMX_CMD_QUEUE_ZIP:
- 	case CVMX_CMD_QUEUE_DFA:
-diff --git a/arch/mips/include/asm/octeon/cvmx-pko.h b/arch/mips/include/asm/octeon/cvmx-pko.h
-index 5f47f76ed510..20eb9c46a75a 100644
---- a/arch/mips/include/asm/octeon/cvmx-pko.h
-+++ b/arch/mips/include/asm/octeon/cvmx-pko.h
-@@ -611,7 +611,7 @@ static inline void cvmx_pko_get_port_status(uint64_t port_num, uint64_t clear,
- 		pko_reg_read_idx.s.index = cvmx_pko_get_base_queue(port_num);
- 		cvmx_write_csr(CVMX_PKO_REG_READ_IDX, pko_reg_read_idx.u64);
- 		debug8.u64 = cvmx_read_csr(CVMX_PKO_MEM_DEBUG8);
--		status->doorbell = debug8.cn58xx.doorbell;
-+		status->doorbell = debug8.cn50xx.doorbell;
- 	}
- }
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 59dae37..b1990dd 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -157,6 +157,7 @@ Ip_u2u1s3(_slti);
+ Ip_u2u1s3(_sltiu);
+ Ip_u3u1u2(_sltu);
+ Ip_u2u1u3(_sra);
++Ip_u3u2u1(_srav);
+ Ip_u2u1u3(_srl);
+ Ip_u3u2u1(_srlv);
+ Ip_u3u1u2(_subu);
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index 273ef58..40fbb5d 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -371,6 +371,7 @@ enum mm_32a_minor_op {
+ 	mm_srl32_op = 0x040,
+ 	mm_srlv32_op = 0x050,
+ 	mm_sra_op = 0x080,
++	mm_srav_op = 0x090,
+ 	mm_rotr_op = 0x0c0,
+ 	mm_lwxs_op = 0x118,
+ 	mm_addu32_op = 0x150,
+diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
+index 24e5b0d..75ef904 100644
+--- a/arch/mips/mm/uasm-micromips.c
++++ b/arch/mips/mm/uasm-micromips.c
+@@ -104,6 +104,7 @@ static const struct insn insn_table_MM[insn_invalid] = {
+ 	[insn_sltiu]	= {M(mm_sltiu32_op, 0, 0, 0, 0, 0), RT | RS | SIMM},
+ 	[insn_sltu]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_sltu_op), RT | RS | RD},
+ 	[insn_sra]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_sra_op), RT | RS | RD},
++	[insn_srav]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srav_op), RT | RS | RD},
+ 	[insn_srl]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srl32_op), RT | RS | RD},
+ 	[insn_srlv]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_srlv32_op), RT | RS | RD},
+ 	[insn_rotr]	= {M(mm_pool32a_op, 0, 0, 0, 0, mm_rotr_op), RT | RS | RD},
+diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
+index 60ceb93..6abe40f 100644
+--- a/arch/mips/mm/uasm-mips.c
++++ b/arch/mips/mm/uasm-mips.c
+@@ -171,6 +171,7 @@ static const struct insn insn_table[insn_invalid] = {
+ 	[insn_sltiu]	= {M(sltiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM},
+ 	[insn_sltu]	= {M(spec_op, 0, 0, 0, 0, sltu_op), RS | RT | RD},
+ 	[insn_sra]	= {M(spec_op, 0, 0, 0, 0, sra_op),  RT | RD | RE},
++	[insn_srav]	= {M(spec_op, 0, 0, 0, 0, srav_op), RS | RT | RD},
+ 	[insn_srl]	= {M(spec_op, 0, 0, 0, 0, srl_op),  RT | RD | RE},
+ 	[insn_srlv]	= {M(spec_op, 0, 0, 0, 0, srlv_op),  RS | RT | RD},
+ 	[insn_subu]	= {M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD},
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 57570c0..45b6264 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -61,10 +61,10 @@ enum opcode {
+ 	insn_mthc0, insn_mthi, insn_mtlo, insn_mul, insn_multu, insn_nor,
+ 	insn_or, insn_ori, insn_pref, insn_rfe, insn_rotr, insn_sb,
+ 	insn_sc, insn_scd, insn_sd, insn_sh, insn_sll, insn_sllv,
+-	insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra, insn_srl,
+-	insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall, insn_tlbp,
+-	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh, insn_xor,
+-	insn_xori, insn_yield,
++	insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra, insn_srav,
++	insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall,
++	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh,
++	insn_xor, insn_xori, insn_yield,
+ 	insn_invalid /* insn_invalid must be last */
+ };
  
+@@ -353,6 +353,7 @@ I_u2u1s3(_slti)
+ I_u2u1s3(_sltiu)
+ I_u3u1u2(_sltu)
+ I_u2u1u3(_sra)
++I_u3u2u1(_srav)
+ I_u2u1u3(_srl)
+ I_u3u2u1(_srlv)
+ I_u2u1u3(_rotr)
+diff --git a/arch/mips/net/ebpf_jit.c b/arch/mips/net/ebpf_jit.c
+index aeb7b1b..b16710a 100644
+--- a/arch/mips/net/ebpf_jit.c
++++ b/arch/mips/net/ebpf_jit.c
+@@ -854,6 +854,7 @@ static int build_one_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	case BPF_ALU | BPF_MOD | BPF_X: /* ALU_REG */
+ 	case BPF_ALU | BPF_LSH | BPF_X: /* ALU_REG */
+ 	case BPF_ALU | BPF_RSH | BPF_X: /* ALU_REG */
++	case BPF_ALU | BPF_ARSH | BPF_X: /* ALU_REG */
+ 		src = ebpf_to_mips_reg(ctx, insn, src_reg_no_fp);
+ 		dst = ebpf_to_mips_reg(ctx, insn, dst_reg);
+ 		if (src < 0 || dst < 0)
+@@ -913,6 +914,9 @@ static int build_one_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 		case BPF_RSH:
+ 			emit_instr(ctx, srlv, dst, dst, src);
+ 			break;
++		case BPF_ARSH:
++			emit_instr(ctx, srav, dst, dst, src);
++			break;
+ 		default:
+ 			pr_err("ALU_REG NOT HANDLED\n");
+ 			return -EINVAL;
 -- 
-2.17.0
+2.7.4
 

@@ -2,46 +2,53 @@ Return-Path: <SRS0=dj/1=OP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD9BAC04EB8
-	for <linux-mips@archiver.kernel.org>; Thu,  6 Dec 2018 18:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE1A8C64EB1
+	for <linux-mips@archiver.kernel.org>; Thu,  6 Dec 2018 20:07:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8D87920850
-	for <linux-mips@archiver.kernel.org>; Thu,  6 Dec 2018 18:06:26 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="ChCPscR8"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 8D87920850
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
+	by mail.kernel.org (Postfix) with ESMTP id A8DC420989
+	for <linux-mips@archiver.kernel.org>; Thu,  6 Dec 2018 20:07:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org A8DC420989
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725942AbeLFSG0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 6 Dec 2018 13:06:26 -0500
-Received: from mail-eopbgr680098.outbound.protection.outlook.com ([40.107.68.98]:35376
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725889AbeLFSG0 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 6 Dec 2018 13:06:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C7Ym/28FbfYFjo8Kau28UHz6Ma0/EBHpbuB4MA9ZmNI=;
- b=ChCPscR8Uxg6RfyDn0myrIV5KblnRMkUTNTTOz+L5BxblnB0gj4q09RvthSo1nfv8tE4T8W6yRsU6Aekf5vh6njYZrmlg2vhqz/XGVfu5s4jYXsxPuQaEWG5gQ71mIMSm0mfUdGMZAiZ/E1DsZ33DePsHZClPmEkRxaYd2gzuHE=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1261.namprd22.prod.outlook.com (10.174.162.13) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1404.17; Thu, 6 Dec 2018 18:05:42 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::2d92:328e:af42:2985]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::2d92:328e:af42:2985%4]) with mapi id 15.20.1404.021; Thu, 6 Dec 2018
- 18:05:42 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-CC:     Christophe Leroy <christophe.leroy@c-s.fr>,
-        Vineet Gupta <vgupta@synopsys.com>,
+        id S1726018AbeLFUHq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 6 Dec 2018 15:07:46 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:14885 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725996AbeLFUHo (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 6 Dec 2018 15:07:44 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 439mqK50xcz9tyZ4;
+        Thu,  6 Dec 2018 21:07:41 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id C1WOqrxf00Da; Thu,  6 Dec 2018 21:07:41 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 439mqK4F8Vz9tyZ2;
+        Thu,  6 Dec 2018 21:07:41 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id A1F038B89D;
+        Thu,  6 Dec 2018 21:07:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id OlXSTqPu1Pv2; Thu,  6 Dec 2018 21:07:41 +0100 (CET)
+Received: from po14163vm.idsi0.si.c-s.fr (unknown [192.168.232.3])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 009A88B88E;
+        Thu,  6 Dec 2018 21:07:40 +0100 (CET)
+Received: by po14163vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+        id 673B46C0F1; Thu,  6 Dec 2018 20:07:40 +0000 (UTC)
+Message-Id: <5e130b11680be09537913aae9649c84ede763ec8.1544083483.git.christophe.leroy@c-s.fr>
+In-Reply-To: <030d63848e4b0ef4d76ca24597ab8302a393d692.1544083483.git.christophe.leroy@c-s.fr>
+References: <030d63848e4b0ef4d76ca24597ab8302a393d692.1544083483.git.christophe.leroy@c-s.fr>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 2/2] kgdb/treewide: constify struct kgdb_arch arch_kgdb_ops
+To:     Vineet Gupta <vgupta@synopsys.com>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -49,6 +56,7 @@ CC:     Christophe Leroy <christophe.leroy@c-s.fr>,
         Richard Kuo <rkuo@codeaurora.org>,
         Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Ley Foon Tan <lftan@altera.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -58,97 +66,258 @@ CC:     Christophe Leroy <christophe.leroy@c-s.fr>,
         "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Jason Wessel <jason.wessel@windriver.com>,
+        x86@kernel.org, Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        "GitAuthor: Christophe Leroy" <christophe.leroy@c-s.fr>,
         Douglas Anderson <dianders@chromium.org>,
         Randy Dunlap <rdunlap@infradead.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "uclinux-h8-devel@lists.sourceforge.jp" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "kgdb-bugreport@lists.sourceforge.net" 
-        <kgdb-bugreport@lists.sourceforge.net>
-Subject: Re: [PATCH 1/2] mips/kgdb: prepare arch_kgdb_ops for constness
-Thread-Topic: [PATCH 1/2] mips/kgdb: prepare arch_kgdb_ops for constness
-Thread-Index: AQHUjFTCvBEAjV0a3kG9cBZbfyErZqVxwdEAgABCHIA=
-Date:   Thu, 6 Dec 2018 18:05:41 +0000
-Message-ID: <20181206180539.fezd6bqce36tgmie@pburton-laptop>
-References: <75bbcdd1e9277d66ebb06e349dda304bd01ce761.1543957194.git.christophe.leroy@c-s.fr>
- <20181206140902.ea6jlwqrbcwyxp5r@holly.lan>
-In-Reply-To: <20181206140902.ea6jlwqrbcwyxp5r@holly.lan>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR14CA0021.namprd14.prod.outlook.com
- (2603:10b6:300:ae::31) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1261;6:Kqbme/8dGXWDFEDuuT4QXLURsuOs5QbQ5Xq+jYG4BwjoQPSZnhV3jRlhRdQfuctJXIXPe3a9VsI23WnOlExtXpkwvnNq7wQhjuI3TkzXBOUa/JVLaLoSpI9v5Ii6wKPFDN6BOs1qD7cXXM8pwuOkn9jLbXltvvpZK8LJTWriTok5Rt3inDJCQhTitxWipEpiyvLWTyUkVpWukEwpCMk2ZvUD1P1AMB766mV3YinUAJ9MfxDJ6EbproA3FqyYVIpLriGqbUBZt1VtlrnXN8eUsoWY+t7MqRZVqWXNRuGrFuvprgjGTYznk4u0a4Dxc+EumglvPRgrVjIi48xKdw7neI8AQnG3N7I2NBIFA8HYgNXbH/BBET7kPBjz2fsLrwlT/xotXTpZyA1v3rrRmlQV7rnrKV3JIMreLgayu8/uZHFtAwhBgeAN9JZNdtCBVZ42JVsLYvzwgV26Ne5e/jNRrA==;5:NSOUjRz/gGVHSxNMh3SdoQ1iiEUm7fkrXVSK7S/kEUJLHBRev0JOa3E4iRLKo53Lxepw0dJZA+EuXHNOeSfDipsRCuzLW3mXnUP64AgAH/0qb573VJ63idjHf0Pp1Edg3e3gTzqo9SC6Mn3yY3eCQ6VJN/KPELUmgEbaexkKBTc=;7:i1Jr10EGoyYrJhAUUD5mSSXByVqCW64AouzJ+51Scb4b512wCU5iWtIbI+iQQHSCKmBkF6QoM9EkoktMkOVCkxQ3jlbHzmbF0+lsmRGR+P7u/36vwBNquNYZKxPXNPlNAKp6uc4VNi8pfvw8tdhRAA==
-x-ms-office365-filtering-correlation-id: 457d6553-5b22-4360-7723-08d65ba56ee3
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1261;
-x-ms-traffictypediagnostic: MWHPR2201MB1261:
-x-microsoft-antispam-prvs: <MWHPR2201MB1261BE283313A550AF3B7908C1A90@MWHPR2201MB1261.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040522)(2401047)(8121501046)(5005006)(3231455)(999002)(944501520)(52105112)(3002001)(93006095)(10201501046)(148016)(149066)(150057)(6041310)(20161123560045)(20161123564045)(20161123558120)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1261;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1261;
-x-forefront-prvs: 087894CD3C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(39840400004)(366004)(346002)(376002)(396003)(189003)(199004)(8936002)(105586002)(1076002)(2906002)(6116002)(6916009)(316002)(58126008)(25786009)(66066001)(4326008)(26005)(3846002)(186003)(305945005)(81156014)(386003)(6246003)(6506007)(42882007)(102836004)(97736004)(33896004)(81166006)(7736002)(5660300001)(7406005)(76176011)(14454004)(476003)(52116002)(53936002)(486006)(229853002)(44832011)(7416002)(68736007)(71200400001)(11346002)(446003)(6436002)(8676002)(71190400001)(99286004)(33716001)(6512007)(256004)(6486002)(106356001)(508600001)(54906003)(9686003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1261;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: RBODwkcEs7rhB+DcAO1i/msJXgIAGxA7LhCkciKDHchazPyulsxRChueCtbEa2P1WfPn+T+L6it5OcP9Pw7TyhburN49/FE9lrL6++iMpb6avG1ebwmmvLvqJUsvb92qXLWXxJ70na/PQ7dmAANPsRE+BvaUez6hM43mM3gHagVuwF6tqvogBMZfO0UTFjLI7zlaUWBmf6s2oiAZmN4gjD7MsQqSe2S7J+gEH2Yjw2aC39MugmQLJlLWpgNr0TM2DKcTfq2PqottulWd4cZnAjKuLMOcJV1iRhfUkHcDsBuMu0CBLW+pZeTGtTwyIzzGuEM3/XRyLrQ1QqTWmg+R2t43Y4ZKofXG2jZETd1BJCU=
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <502BAAE9FE2E6E45B9CE975E9FA539FF@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 457d6553-5b22-4360-7723-08d65ba56ee3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2018 18:05:41.5853
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1261
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        kgdb-bugreport@lists.sourceforge.net
+Date:   Thu,  6 Dec 2018 20:07:40 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Christophe & Daniel,
+checkpatch.pl reports the following:
 
-On Thu, Dec 06, 2018 at 02:09:02PM +0000, Daniel Thompson wrote:
-> On Wed, Dec 05, 2018 at 04:41:09AM +0000, Christophe Leroy wrote:
-> > MIPS is the only architecture modifying arch_kgdb_ops during init.
-> > This patch makes the init static, so that it can be changed to
-> > const in following patch, as recommended by checkpatch.pl
-> >=20
-> > Suggested-by: Paul Burton <paul.burton@mips.com>
-> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->=20
-> From my side this is
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
->=20
-> Since this is a dependency for the next patch I'd be happy to take via
-> my tree... but would need an ack from the MIPS guys to do that.
+  WARNING: struct kgdb_arch should normally be const
+  #28: FILE: arch/mips/kernel/kgdb.c:397:
+  +struct kgdb_arch arch_kgdb_ops = {
 
-For both patches in this series:
+This report makes sense, as all other ops struct, this
+one should also be const. This patch does the change.
 
-    Acked-by: Paul Burton <paul.burton@mips.com>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Richard Kuo <rkuo@codeaurora.org>
+Cc: Michal Simek <monstr@monstr.eu>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Ley Foon Tan <lftan@altera.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ v2: Added CCs to all maintainers/supporters identified by get_maintainer.pl and Acks from Daniel and Paul.
 
-Thanks,
-    Paul
+ arch/arc/kernel/kgdb.c        | 2 +-
+ arch/arm/kernel/kgdb.c        | 2 +-
+ arch/arm64/kernel/kgdb.c      | 2 +-
+ arch/h8300/kernel/kgdb.c      | 2 +-
+ arch/hexagon/kernel/kgdb.c    | 2 +-
+ arch/microblaze/kernel/kgdb.c | 2 +-
+ arch/mips/kernel/kgdb.c       | 2 +-
+ arch/nios2/kernel/kgdb.c      | 2 +-
+ arch/powerpc/kernel/kgdb.c    | 2 +-
+ arch/sh/kernel/kgdb.c         | 2 +-
+ arch/sparc/kernel/kgdb_32.c   | 2 +-
+ arch/sparc/kernel/kgdb_64.c   | 2 +-
+ arch/x86/kernel/kgdb.c        | 2 +-
+ include/linux/kgdb.h          | 2 +-
+ 14 files changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arc/kernel/kgdb.c b/arch/arc/kernel/kgdb.c
+index 9a3c34af2ae8..bfd04b442e36 100644
+--- a/arch/arc/kernel/kgdb.c
++++ b/arch/arc/kernel/kgdb.c
+@@ -204,7 +204,7 @@ void kgdb_roundup_cpus(unsigned long flags)
+ 	local_irq_disable();
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* breakpoint instruction: TRAP_S 0x3 */
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ 	.gdb_bpt_instr		= {0x78, 0x7e},
+diff --git a/arch/arm/kernel/kgdb.c b/arch/arm/kernel/kgdb.c
+index caa0dbe3dc61..21a6d5958955 100644
+--- a/arch/arm/kernel/kgdb.c
++++ b/arch/arm/kernel/kgdb.c
+@@ -274,7 +274,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
+  * and we handle the normal undef case within the do_undefinstr
+  * handler.
+  */
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ #ifndef __ARMEB__
+ 	.gdb_bpt_instr		= {0xfe, 0xde, 0xff, 0xe7}
+ #else /* ! __ARMEB__ */
+diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
+index a20de58061a8..fe1d1f935b90 100644
+--- a/arch/arm64/kernel/kgdb.c
++++ b/arch/arm64/kernel/kgdb.c
+@@ -357,7 +357,7 @@ void kgdb_arch_exit(void)
+ 	unregister_die_notifier(&kgdb_notifier);
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops;
++const struct kgdb_arch arch_kgdb_ops;
+ 
+ int kgdb_arch_set_breakpoint(struct kgdb_bkpt *bpt)
+ {
+diff --git a/arch/h8300/kernel/kgdb.c b/arch/h8300/kernel/kgdb.c
+index 1a1d30cb0609..602e478afbd5 100644
+--- a/arch/h8300/kernel/kgdb.c
++++ b/arch/h8300/kernel/kgdb.c
+@@ -129,7 +129,7 @@ void kgdb_arch_exit(void)
+ 	/* Nothing to do */
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: trapa #2 */
+ 	.gdb_bpt_instr = { 0x57, 0x20 },
+ };
+diff --git a/arch/hexagon/kernel/kgdb.c b/arch/hexagon/kernel/kgdb.c
+index 16c24b22d0b2..f1924d483e78 100644
+--- a/arch/hexagon/kernel/kgdb.c
++++ b/arch/hexagon/kernel/kgdb.c
+@@ -83,7 +83,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
+ 	{ "syscall_nr", GDB_SIZEOF_REG, offsetof(struct pt_regs, syscall_nr)},
+ };
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* trap0(#0xDB) 0x0cdb0054 */
+ 	.gdb_bpt_instr = {0x54, 0x00, 0xdb, 0x0c},
+ };
+diff --git a/arch/microblaze/kernel/kgdb.c b/arch/microblaze/kernel/kgdb.c
+index 6366f69d118e..130cd0f064ce 100644
+--- a/arch/microblaze/kernel/kgdb.c
++++ b/arch/microblaze/kernel/kgdb.c
+@@ -143,7 +143,7 @@ void kgdb_arch_exit(void)
+ /*
+  * Global data
+  */
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ #ifdef __MICROBLAZEEL__
+ 	.gdb_bpt_instr = {0x18, 0x00, 0x0c, 0xba}, /* brki r16, 0x18 */
+ #else
+diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
+index 31eff1bec577..edfdc2ec2d16 100644
+--- a/arch/mips/kernel/kgdb.c
++++ b/arch/mips/kernel/kgdb.c
+@@ -394,7 +394,7 @@ int kgdb_arch_handle_exception(int vector, int signo, int err_code,
+ 	return -1;
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ 	.gdb_bpt_instr = { spec_op << 2, 0x00, 0x00, break_op },
+ #else
+diff --git a/arch/nios2/kernel/kgdb.c b/arch/nios2/kernel/kgdb.c
+index 117859122d1c..37b25f844a2d 100644
+--- a/arch/nios2/kernel/kgdb.c
++++ b/arch/nios2/kernel/kgdb.c
+@@ -165,7 +165,7 @@ void kgdb_arch_exit(void)
+ 	/* Nothing to do */
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: trap 30 */
+ 	.gdb_bpt_instr = { 0xba, 0x6f, 0x3b, 0x00 },
+ };
+diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
+index 59c578f865aa..bdb588b1d8fb 100644
+--- a/arch/powerpc/kernel/kgdb.c
++++ b/arch/powerpc/kernel/kgdb.c
+@@ -477,7 +477,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
+ /*
+  * Global data
+  */
+-struct kgdb_arch arch_kgdb_ops;
++const struct kgdb_arch arch_kgdb_ops;
+ 
+ static int kgdb_not_implemented(struct pt_regs *regs)
+ {
+diff --git a/arch/sh/kernel/kgdb.c b/arch/sh/kernel/kgdb.c
+index 4f04c6638a4d..a24c48446e98 100644
+--- a/arch/sh/kernel/kgdb.c
++++ b/arch/sh/kernel/kgdb.c
+@@ -382,7 +382,7 @@ void kgdb_arch_exit(void)
+ 	unregister_die_notifier(&kgdb_notifier);
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: trapa #0x3c */
+ #ifdef CONFIG_CPU_LITTLE_ENDIAN
+ 	.gdb_bpt_instr		= { 0x3c, 0xc3 },
+diff --git a/arch/sparc/kernel/kgdb_32.c b/arch/sparc/kernel/kgdb_32.c
+index 639c8e54530a..7580775a14b9 100644
+--- a/arch/sparc/kernel/kgdb_32.c
++++ b/arch/sparc/kernel/kgdb_32.c
+@@ -166,7 +166,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long ip)
+ 	regs->npc = regs->pc + 4;
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: ta 0x7d */
+ 	.gdb_bpt_instr		= { 0x91, 0xd0, 0x20, 0x7d },
+ };
+diff --git a/arch/sparc/kernel/kgdb_64.c b/arch/sparc/kernel/kgdb_64.c
+index a68bbddbdba4..5d6c2d287e85 100644
+--- a/arch/sparc/kernel/kgdb_64.c
++++ b/arch/sparc/kernel/kgdb_64.c
+@@ -195,7 +195,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long ip)
+ 	regs->tnpc = regs->tpc + 4;
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: ta 0x72 */
+ 	.gdb_bpt_instr		= { 0x91, 0xd0, 0x20, 0x72 },
+ };
+diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
+index 8e36f249646e..e7effc02f13c 100644
+--- a/arch/x86/kernel/kgdb.c
++++ b/arch/x86/kernel/kgdb.c
+@@ -804,7 +804,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
+ 				  (char *)bpt->saved_instr, BREAK_INSTR_SIZE);
+ }
+ 
+-struct kgdb_arch arch_kgdb_ops = {
++const struct kgdb_arch arch_kgdb_ops = {
+ 	/* Breakpoint instruction: */
+ 	.gdb_bpt_instr		= { 0xcc },
+ 	.flags			= KGDB_HW_BREAKPOINT,
+diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
+index e465bb15912d..3bf313311cca 100644
+--- a/include/linux/kgdb.h
++++ b/include/linux/kgdb.h
+@@ -281,7 +281,7 @@ struct kgdb_io {
+ 	int			is_console;
+ };
+ 
+-extern struct kgdb_arch		arch_kgdb_ops;
++extern const struct kgdb_arch		arch_kgdb_ops;
+ 
+ extern unsigned long kgdb_arch_pc(int exception, struct pt_regs *regs);
+ 
+-- 
+2.13.3
+

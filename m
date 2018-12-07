@@ -2,82 +2,92 @@ Return-Path: <SRS0=6DY0=OQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45321C07E85
-	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 16:19:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CAA5C64EB1
+	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 17:42:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E409E2083D
-	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 16:19:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E409E2083D
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	by mail.kernel.org (Postfix) with ESMTP id DF77720838
+	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 17:42:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DF77720838
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=arm.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbeLGQTa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 7 Dec 2018 11:19:30 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:45811 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726041AbeLGQTa (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 7 Dec 2018 11:19:30 -0500
-Received: by mail-vs1-f66.google.com with SMTP id v10so2743385vsv.12;
-        Fri, 07 Dec 2018 08:19:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sKCXhSF44P5ohZOwcfLrWgu0vOnSIZ5gKQA9e5j6l5Y=;
-        b=X3iGtNS0KycW86yhNRYxQ/xUQU0tFcPk+86xcPoxQf4FQGQaxJ42VcLqfoX7KErvzV
-         v6uRO2FoEFufp6I92GIR8RG1JOW/ihbPp+T8XDeDmiB0Q0SwIx3+DTYpz8GrTICX+cB+
-         6Xrkx8CX2wo/KkWF4INNZ11qNyHuFTMqA7SW6xWZe4spwcmtSvR+ybYUk9EoqM+sXMAC
-         60jeYvB9upcZKSLKjOkBN/r+MUnb7tZ5BSAtis4gHjN7N0qhgGHzKXCVhHsvVnQNSh9C
-         uwfVDfKAley8141UWHWw6C8x4+w2LgHQFibC0bLFdOMV99byvAFkUPzfdvOiHWPp8QOa
-         BodQ==
-X-Gm-Message-State: AA+aEWZ7P26q3oMcNK4VnWSPdFc7Tc9/mQgfeQ/TCvBod0tU8PMXIXIk
-        9DTic7794ehvrYN6e6Lsl3BbBrAuapS2MTqnJPBHFg==
-X-Google-Smtp-Source: AFSGD/U8Hv5LkSN3xKFPIGm7iVrAT3AOBNWL2Tk84x7f30F9fCRTbTLR1MB8CV813THfv8L7Zb9N0y6lAzewBLMPOo8=
-X-Received: by 2002:a67:3885:: with SMTP id n5mr1045428vsi.96.1544199567976;
- Fri, 07 Dec 2018 08:19:27 -0800 (PST)
+        id S1726099AbeLGRml (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 7 Dec 2018 12:42:41 -0500
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:50392 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726072AbeLGRml (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 7 Dec 2018 12:42:41 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51E77EBD;
+        Fri,  7 Dec 2018 09:42:40 -0800 (PST)
+Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.113])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCE943F5AF;
+        Fri,  7 Dec 2018 09:42:34 -0800 (PST)
+Date:   Fri, 7 Dec 2018 17:42:32 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Michal Hocko <mhocko@suse.com>, linux-sh@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        kgdb-bugreport@lists.sourceforge.net,
+        Will Deacon <will.deacon@arm.com>,
+        linux-kernel@vger.kernel.org, Rich Felker <dalias@libc.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>,
+        linux-snps-arc@lists.infradead.org,
+        Huang Ying <ying.huang@intel.com>, linux-mips@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [REPOST PATCH v6 0/4] kgdb: Fix kgdb_roundup_cpus()
+Message-ID: <20181207174231.GD11961@arrakis.emea.arm.com>
+References: <20181205033828.6156-1-dianders@chromium.org>
 MIME-Version: 1.0
-References: <CAMuHMdVJr0PwvJg3FeTCy7vxuyY1=S1tPLHO7hPsoZX4wZ+-cQ@mail.gmail.com>
- <20181205.221146.969453990167463340.anemo@mba.ocn.ne.jp> <CAMuHMdU9zXXSaPHKvfG3A73h3CTsb9H2RT_gWt-Ne=qQ+HKShQ@mail.gmail.com>
- <20181207.235141.2138062629640003368.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20181207.235141.2138062629640003368.anemo@mba.ocn.ne.jp>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 7 Dec 2018 17:19:13 +0100
-Message-ID: <CAMuHMdUHxO2aTf+ixnG_U=nzHp85eoPnoqvMUHFP+TJtAL_nEA@mail.gmail.com>
-Subject: Re: NFS/TCP crashes on MIPS/RBTX4927 in v4.20-rcX (bisected)
-To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        "open list:NFS, SUNRPC, AND..." <linux-nfs@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181205033828.6156-1-dianders@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Nemoto-san,
+On Tue, Dec 04, 2018 at 07:38:24PM -0800, Douglas Anderson wrote:
+> Douglas Anderson (4):
+>   kgdb: Remove irq flags from roundup
+>   kgdb: Fix kgdb_roundup_cpus() for arches who used smp_call_function()
+>   kgdb: Don't round up a CPU that failed rounding up before
+>   kdb: Don't back trace on a cpu that didn't round up
 
-On Fri, Dec 7, 2018 at 3:51 PM Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Wed, 5 Dec 2018 14:41:30 +0100, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > My next guess is an unaligned access not using {get,put}_unaligned(), which
-> > doesn't seem to work on tx4927, but doesn't cause an exception neither.
->
-> IIRC, TX49 can raise an exception on unaligned access.
+FWIW, trying these on arm64 (ThunderX2) with CONFIG_KGDB_TESTS_ON_BOOT=y
+on top of 4.20-rc5 doesn't boot. It looks like they leave interrupts
+disabled when they shouldn't and it trips over the BUG at
+mm/vmalloc.c:1380 (called via do_fork -> copy_process).
 
-I thought so, too, but had verified that reading from an unaligned address
-didn't raise an exception, but returned a corrupt value instead.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Now, I don't think these patches make things worse on arm64 since prior
+to them the kgdb boot tests on arm64 were stuck in a loop (RUN
+singlestep).
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Catalin

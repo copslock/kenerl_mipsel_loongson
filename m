@@ -2,42 +2,42 @@ Return-Path: <SRS0=Ws2J=OR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56AE1C67839
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3693C65BAF
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1E4812146F
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BBF332082D
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iDIE0XNL"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1E4812146F
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="l5LIdgdd"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org BBF332082D
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726252AbeLHRl3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 8 Dec 2018 12:41:29 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:59666 "EHLO
+        id S1726213AbeLHRl1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 8 Dec 2018 12:41:27 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:59450 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726246AbeLHRl2 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:41:28 -0500
+        with ESMTP id S1726174AbeLHRl0 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:41:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=LeHVcCPe1tBdnY4eh3FwSo9lQX0oX2hTPrP1Ho6djDw=; b=iDIE0XNLPEPM7Sh6NQFZXnfV7W
-        wqqZbRkTJewyZxA5uolflVZFce3TsojWKgqHsgkPmq2QPwA0ZcTFM60Ozz/6nwO5RGBPROzEovCOf
-        dFknTHSziWsu3v8LPoIItxnqNNoCncERHgi5O3Zd98aH7lkGsjHLEQToEc4e0IhAPTLof59wwgR0E
-        oZv4CVXBc6cvwUOEFJLxwa2k6bIdRMFGZwBTOFw58qymzf1nGUqcH4LmEZqqg7RoGWpCz6j6Wv9b6
-        EMb+WVMZ39yayTdrBxXq+SDsK8VLyR7Sya+NQSbEOf9D+bTQzBDvv1wv+kU4nccVOJefQywXEk8Uu
-        F6nRuaUA==;
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=6Ob72hBEbKuNylYJUlObEZLdcsVMZo8eBBrMh6r51kw=; b=l5LIdgddDYhAob00ilRXfIrDR
+        fZl/FMKi6O6QKZw0chLPtbIJBTuorQUH+8doJMqVTDpceeBNQZekA5rgs37N5clIYL3APrfD7i6mc
+        3lLaApBRIcLIXxJWyHilxo5zRs00i3FtgUbU8uOqJqUQhLZ7Vk4Ema+YQZH8t+MXapwarBQFqLMfY
+        /F/gsmsY022LiTwG6k0eaPl7OWIs2HEoRf/+vxTkOvxtQT13v/gbnWSOjnXPKR4gClm7qbE5p8DBw
+        qh4a5tVrShQWiHp5O3WY+GozrcOdalb3/zcje1dQgwsmq6nVwdVdHT0t8enZEvhAD8N6LXOa4cXuN
+        N0bydnMBQ==;
 Received: from [184.48.100.57] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gVgbP-0000bv-Lf; Sat, 08 Dec 2018 17:41:19 +0000
+        id 1gVgbM-0000YE-Am; Sat, 08 Dec 2018 17:41:16 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Robin Murphy <robin.murphy@arm.com>,
@@ -50,12 +50,10 @@ Cc:     Robin Murphy <robin.murphy@arm.com>,
         dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
         openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
         linux-mips@vger.kernel.org
-Subject: [PATCH 6/6] sparc: merge 32-bit and 64-bit version of pci.h
-Date:   Sat,  8 Dec 2018 09:41:15 -0800
-Message-Id: <20181208174115.16237-7-hch@lst.de>
+Subject: make the non-consistent DMA allocator more userful (resend)
+Date:   Sat,  8 Dec 2018 09:41:09 -0800
+Message-Id: <20181208174115.16237-1-hch@lst.de>
 X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20181208174115.16237-1-hch@lst.de>
-References: <20181208174115.16237-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -64,179 +62,63 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There are enough common defintions that a single header seems nicer.
+[sorry for the spam, had to resend due a wrongly typed linux-arm-kernel
+ address]
 
-Also drop the pointless <linux/dma-mapping.h> include.
+Hi all,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/sparc/include/asm/pci.h    | 53 ++++++++++++++++++++++++++++++---
- arch/sparc/include/asm/pci_32.h | 32 --------------------
- arch/sparc/include/asm/pci_64.h | 52 --------------------------------
- 3 files changed, 49 insertions(+), 88 deletions(-)
- delete mode 100644 arch/sparc/include/asm/pci_32.h
- delete mode 100644 arch/sparc/include/asm/pci_64.h
+we had all kinds of discussions about how to best allocate DMAable memory
+without having to deal with the problem that your normal "coherent"
+DMA allocator can be very slow on platforms where DMA is not DMA
+coherent.
 
-diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
-index cad79a6ce0e4..cfec79bb1831 100644
---- a/arch/sparc/include/asm/pci.h
-+++ b/arch/sparc/include/asm/pci.h
-@@ -1,9 +1,54 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef ___ASM_SPARC_PCI_H
- #define ___ASM_SPARC_PCI_H
--#if defined(__sparc__) && defined(__arch64__)
--#include <asm/pci_64.h>
-+
-+
-+/* Can be used to override the logic in pci_scan_bus for skipping
-+ * already-configured bus numbers - to be used for buggy BIOSes
-+ * or architectures with incomplete PCI setup by the loader.
-+ */
-+#define pcibios_assign_all_busses()	0
-+
-+#define PCIBIOS_MIN_IO		0UL
-+#define PCIBIOS_MIN_MEM		0UL
-+
-+#define PCI_IRQ_NONE		0xffffffff
-+
-+
-+#ifdef CONFIG_SPARC64
-+
-+/* PCI IOMMU mapping bypass support. */
-+
-+/* PCI 64-bit addressing works for all slots on all controller
-+ * types on sparc64.  However, it requires that the device
-+ * can drive enough of the 64 bits.
-+ */
-+#define PCI64_REQUIRED_MASK	(~(u64)0)
-+#define PCI64_ADDR_BASE		0xfffc000000000000UL
-+
-+/* Return the index of the PCI controller for device PDEV. */
-+int pci_domain_nr(struct pci_bus *bus);
-+static inline int pci_proc_domain(struct pci_bus *bus)
-+{
-+	return 1;
-+}
-+
-+/* Platform support for /proc/bus/pci/X/Y mmap()s. */
-+#define HAVE_PCI_MMAP
-+#define arch_can_pci_mmap_io()	1
-+#define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
-+#define get_pci_unmapped_area get_fb_unmapped_area
-+
-+#define HAVE_ARCH_PCI_RESOURCE_TO_USER
-+#endif /* CONFIG_SPARC64 */
-+
-+#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return PCI_IRQ_NONE;
-+}
- #else
--#include <asm/pci_32.h>
--#endif
-+#include <asm-generic/pci.h>
- #endif
-+
-+#endif /* ___ASM_SPARC_PCI_H */
-diff --git a/arch/sparc/include/asm/pci_32.h b/arch/sparc/include/asm/pci_32.h
-deleted file mode 100644
-index a475380ea108..000000000000
---- a/arch/sparc/include/asm/pci_32.h
-+++ /dev/null
-@@ -1,32 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __SPARC_PCI_H
--#define __SPARC_PCI_H
--
--#ifdef __KERNEL__
--
--#include <linux/dma-mapping.h>
--
--/* Can be used to override the logic in pci_scan_bus for skipping
-- * already-configured bus numbers - to be used for buggy BIOSes
-- * or architectures with incomplete PCI setup by the loader.
-- */
--#define pcibios_assign_all_busses()	0
--
--#define PCIBIOS_MIN_IO		0UL
--#define PCIBIOS_MIN_MEM		0UL
--
--#define PCI_IRQ_NONE		0xffffffff
--
--#endif /* __KERNEL__ */
--
--#ifndef CONFIG_LEON_PCI
--/* generic pci stuff */
--#include <asm-generic/pci.h>
--#else
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return PCI_IRQ_NONE;
--}
--#endif
--
--#endif /* __SPARC_PCI_H */
-diff --git a/arch/sparc/include/asm/pci_64.h b/arch/sparc/include/asm/pci_64.h
-deleted file mode 100644
-index fac77813402c..000000000000
---- a/arch/sparc/include/asm/pci_64.h
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __SPARC64_PCI_H
--#define __SPARC64_PCI_H
--
--#ifdef __KERNEL__
--
--#include <linux/dma-mapping.h>
--
--/* Can be used to override the logic in pci_scan_bus for skipping
-- * already-configured bus numbers - to be used for buggy BIOSes
-- * or architectures with incomplete PCI setup by the loader.
-- */
--#define pcibios_assign_all_busses()	0
--
--#define PCIBIOS_MIN_IO		0UL
--#define PCIBIOS_MIN_MEM		0UL
--
--#define PCI_IRQ_NONE		0xffffffff
--
--/* PCI IOMMU mapping bypass support. */
--
--/* PCI 64-bit addressing works for all slots on all controller
-- * types on sparc64.  However, it requires that the device
-- * can drive enough of the 64 bits.
-- */
--#define PCI64_REQUIRED_MASK	(~(u64)0)
--#define PCI64_ADDR_BASE		0xfffc000000000000UL
--
--/* Return the index of the PCI controller for device PDEV. */
--
--int pci_domain_nr(struct pci_bus *bus);
--static inline int pci_proc_domain(struct pci_bus *bus)
--{
--	return 1;
--}
--
--/* Platform support for /proc/bus/pci/X/Y mmap()s. */
--
--#define HAVE_PCI_MMAP
--#define arch_can_pci_mmap_io()	1
--#define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
--#define get_pci_unmapped_area get_fb_unmapped_area
--
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return PCI_IRQ_NONE;
--}
--
--#define HAVE_ARCH_PCI_RESOURCE_TO_USER
--#endif /* __KERNEL__ */
--
--#endif /* __SPARC64_PCI_H */
--- 
-2.19.2
+To work around this drivers basically two choices at the moment:
 
+ (1) just allocate memory using the page or slab allocator and the call
+     one of the dma_map_* APIs on it.  This has a few drawbacks:
+
+       - normal GFP_KERNEL memory might not actually be DMA addressable
+	 for all devices, forcing fallbacks to slow bounce buffering
+       - there is no easy way to access the CMA allocator for large
+	 chunks, or to map small pages into single device and virtually
+	 contigous chunks using the iommu and vmap
+
+ (2) use dma_alloc_attrs with the DMA_ATTR_NON_CONSISTENT flag.  This
+     has a different set of drawbacks
+
+       - only very few architectures actually implement this API fully,
+	 if it is not implemented it falls back to the potentially
+	 uncached and slow coherent allocator
+       - the dma_cache_sync API to use with it is not very well
+	 specified and problematic in that it does not clearly
+	 transfer ownership
+
+Based on that I've been planning to introduce a proper API for
+allocating DMAable memory for a while.  In the end I've ended up
+improving the DMA_ATTR_NON_CONSISTENT flag instead of designing
+something new.  To make it useful we need to:
+
+ (a) ensure we don't fall back to the slow coherent allocator except
+     on fully coherent platforms where they are the same anyway
+ (b) replace the odd dma_cache_sync calls with the proper
+     dma_sync_* APIs that we also use for other ownership trasnfers
+
+This turned out to be surprisingly simple now that we have consolidated
+most of the direct mapping code.  Note that this series is missing
+the updates for powerpc which is in the process of being migrated to
+the common direct mapping code in another series and would be covered
+by that.
+
+Note that these patches don't use iommu/vmap coalescing as they can
+be problematic depending on the cache architecture.  But we could
+opt into those when we know we don't have cache interaction problems
+based on the API.
+
+All the patches are on top of the dma-mapping for-net tree and also
+available as a git tree here:
+
+    git://git.infradead.org/users/hch/misc.git dma-noncoherent-allocator
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-noncoherent-allocator

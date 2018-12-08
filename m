@@ -1,160 +1,116 @@
-Return-Path: <SRS0=6DY0=OQ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=Ws2J=OR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	T_DKIMWL_WL_HIGH,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8891C07E85
-	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 18:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11ED9C04EB8
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8CBDC2082D
-	for <linux-mips@archiver.kernel.org>; Fri,  7 Dec 2018 18:48:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 95E7A2081C
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:19 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Xmck1bS0"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 8CBDC2082D
-Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=chromium.org
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jcwyDbqR"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 95E7A2081C
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbeLGSsC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 7 Dec 2018 13:48:02 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:45991 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726011AbeLGSsC (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 7 Dec 2018 13:48:02 -0500
-Received: by mail-vs1-f65.google.com with SMTP id v10so3020570vsv.12
-        for <linux-mips@vger.kernel.org>; Fri, 07 Dec 2018 10:48:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SRCkAV/rwwCb6G1s504cXx97lfWxm12ZTF5AciiY020=;
-        b=Xmck1bS0DtZaa+WeJixKR5fKXvJ0b/KkgVumJ+cB+BRhf2dA1IB3yHuUry37zHpQs6
-         zaxAXd4KG8ZJT1/0HnMFp9V5QWu3sIojUVz3n8BmfxYYfJvsAIizcUxSgPQrz5Rov1t2
-         CbtwE330HXlFJIaGEy1i92cSc9oRewduTt9lw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SRCkAV/rwwCb6G1s504cXx97lfWxm12ZTF5AciiY020=;
-        b=LTTxYm1Ckk9+3bligOPV/t/rMXBALHIIQKxUBtC6KP67NV5QfzBVh4ejpk0fBxkZh1
-         6ub06BiX4J83PGeB8cl4ysbWhIbNrZxjumo9J+Nusm7CUTH0/R6Jgx6ioWG5S+2RSgvH
-         5vftc8m4It/8992BqhIRi28qRiquujtdLoXfwif4T0WeFj3Bb+jFjxcwdSbGHiV7B9Ap
-         8LdI/Z5xR0UKl4iKnWRNOFYcMRDmFd2ZPOckdqHGUlbQhtGpy7ePinKC+sPknsrkLcoU
-         u7kpHz0zNnyuBV34ktKCE0LeOaminldkO1ZwQwddxMqqiE2+jeip6HAie9H/Xfilja8M
-         oWNQ==
-X-Gm-Message-State: AA+aEWYlacq7CugafLI9tnViPiQSNzT2HVFYVaM6MGn2If6GVvc8ayxy
-        Zt386+ArmCY4kMR0fWdGIu61nSnV7wA=
-X-Google-Smtp-Source: AFSGD/UFrm9K38UuaMMwtOfIKC4M2+0u3wqAafwE3xMh7jtfl5w9K49YAlDUHqkQc0aw0iGgCyg2HQ==
-X-Received: by 2002:a67:7082:: with SMTP id l124mr1408871vsc.62.1544208480421;
-        Fri, 07 Dec 2018 10:48:00 -0800 (PST)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id z70sm1182814vsc.15.2018.12.07.10.48.00
-        for <linux-mips@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 07 Dec 2018 10:48:00 -0800 (PST)
-Received: by mail-vs1-f52.google.com with SMTP id z3so3037292vsf.7
-        for <linux-mips@vger.kernel.org>; Fri, 07 Dec 2018 10:48:00 -0800 (PST)
-X-Received: by 2002:a67:dd11:: with SMTP id y17mr1406802vsj.111.1544208038051;
- Fri, 07 Dec 2018 10:40:38 -0800 (PST)
+        id S1726226AbeLHRhT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 8 Dec 2018 12:37:19 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:42958 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726189AbeLHRhS (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:37:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=itmW2VTZOd8rUAhTAA5rXh48hRuTxgk6doJ5rJPhYhw=; b=jcwyDbqRd5uJfegfK33I29M4qZ
+        QJc+UC8+Ial6xQVasjjhwQ1tRtP0BmxeQEqhywdDfH3cd4OH/CQ/7JU9DWLtPZR5IEl4kSA2kCzo3
+        Lzfvez+RGSIyuvbCdUF6j2sXnSFkAb6JzRy8SeuoYakaPKHe9MPI38WGmSHQAlEcQ7ErbfCapSB+H
+        dWbvXWBLED/oQs/FZ31Y4Jg9uTdPn2sUnDWuNMp+y7n+lnn7XhbnrksK2CucqDuX/YYvdWwuY3dpG
+        7iPrAweJ4mJg11h/4EPW33ciDSfaVgNOsA4u7RK+Ul63Um/nT463wGQhjcHf+HGNtZElW6NmJPCPW
+        xF8pkExA==;
+Received: from [184.48.100.57] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1gVgXJ-00054P-RK; Sat, 08 Dec 2018 17:37:05 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     iommu@lists.linux-foundation.org
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "Matwey V. Kornilov" <matwey@sai.msu.ru>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-snps-arc@lists.infradead.org,
+        Ezequiel Garcia <ezequiel@collabora.com>,
+        linux-media@vger.kernel.org, linux-arm-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: [PATCH 08/10] sparc64/pci_sun4v: implement DMA_ATTR_NON_CONSISTENT
+Date:   Sat,  8 Dec 2018 09:37:00 -0800
+Message-Id: <20181208173702.15158-9-hch@lst.de>
+X-Mailer: git-send-email 2.19.2
+In-Reply-To: <20181208173702.15158-1-hch@lst.de>
+References: <20181208173702.15158-1-hch@lst.de>
 MIME-Version: 1.0
-References: <20181205033828.6156-1-dianders@chromium.org> <20181207174231.GD11961@arrakis.emea.arm.com>
-In-Reply-To: <20181207174231.GD11961@arrakis.emea.arm.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 7 Dec 2018 10:40:24 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WO2xMojkEqKCMkufwihUvnow3yEH4GZPh7hh8noNZ+=A@mail.gmail.com>
-Message-ID: <CAD=FV=WO2xMojkEqKCMkufwihUvnow3yEH4GZPh7hh8noNZ+=A@mail.gmail.com>
-Subject: Re: [REPOST PATCH v6 0/4] kgdb: Fix kgdb_roundup_cpus()
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>, mhocko@suse.com,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        kgdb-bugreport@lists.sourceforge.net,
-        Will Deacon <will.deacon@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>, dalias@libc.org,
-        paulus@samba.org, "H. Peter Anvin" <hpa@zytor.com>,
-        sparclinux@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org, x86@kernel.org,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>, jhogan@kernel.org,
-        linux-snps-arc@lists.infradead.org, ying.huang@intel.com,
-        linux-mips@vger.kernel.org, rppt@linux.vnet.ibm.com, bp@alien8.de,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
-        Ralf Baechle <ralf@linux-mips.org>, rkuo@codeaurora.org,
-        paul.burton@mips.com,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        mpe@ellerman.id.au, Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        David Miller <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+Just allocate the memory and use map_page to map the memory.
 
-On Fri, Dec 7, 2018 at 9:42 AM Catalin Marinas <catalin.marinas@arm.com> wrote:
->
-> On Tue, Dec 04, 2018 at 07:38:24PM -0800, Douglas Anderson wrote:
-> > Douglas Anderson (4):
-> >   kgdb: Remove irq flags from roundup
-> >   kgdb: Fix kgdb_roundup_cpus() for arches who used smp_call_function()
-> >   kgdb: Don't round up a CPU that failed rounding up before
-> >   kdb: Don't back trace on a cpu that didn't round up
->
-> FWIW, trying these on arm64 (ThunderX2) with CONFIG_KGDB_TESTS_ON_BOOT=y
-> on top of 4.20-rc5 doesn't boot. It looks like they leave interrupts
-> disabled when they shouldn't and it trips over the BUG at
-> mm/vmalloc.c:1380 (called via do_fork -> copy_process).
->
-> Now, I don't think these patches make things worse on arm64 since prior
-> to them the kgdb boot tests on arm64 were stuck in a loop (RUN
-> singlestep).
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/sparc/kernel/pci_sun4v.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Thanks for the report!  ...actually, I'd never tried CONFIG_KGDB_TESTS
-before.  ...so I tried them now:
+diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
+index b95c70136559..24a76ecf2986 100644
+--- a/arch/sparc/kernel/pci_sun4v.c
++++ b/arch/sparc/kernel/pci_sun4v.c
+@@ -590,6 +590,14 @@ static void *dma_4v_alloc(struct device *dev, size_t size,
+ 	first_page = (unsigned long) page_address(page);
+ 	memset((char *)first_page, 0, PAGE_SIZE << order);
+ 
++	if (attrs & DMA_ATTR_NON_CONSISTENT) {
++		*dma_addrp = dma_4v_map_page(dev, page, 0, size,
++					     DMA_BIDIRECTIONAL, 0);
++		if (*dma_addrp == DMA_MAPPING_ERROR)
++			goto range_alloc_fail;
++		return page_address(page);
++	}
++
+ 	iommu = dev->archdata.iommu;
+ 	atu = iommu->atu;
+ 
+@@ -649,6 +657,11 @@ static void dma_4v_free(struct device *dev, size_t size, void *cpu,
+ 	unsigned long iotsb_num;
+ 	u32 devhandle;
+ 
++	if (attrs & DMA_ATTR_NON_CONSISTENT) {
++		dma_4v_unmap_page(dev, dvma, size, DMA_BIDIRECTIONAL, 0);
++		goto free_pages;
++	}
++
+ 	npages = IO_PAGE_ALIGN(size) >> IO_PAGE_SHIFT;
+ 	iommu = dev->archdata.iommu;
+ 	pbm = dev->archdata.host_controller;
+@@ -665,6 +678,7 @@ static void dma_4v_free(struct device *dev, size_t size, void *cpu,
+ 	entry = ((dvma - tbl->table_map_base) >> IO_PAGE_SHIFT);
+ 	dma_4v_iommu_demap(dev, devhandle, dvma, iotsb_num, entry, npages);
+ 	iommu_tbl_range_free(tbl, dvma, npages, IOMMU_ERROR_CODE);
++free_pages:
+ 	order = get_order(size);
+ 	if (order < 10)
+ 		free_pages((unsigned long)cpu, order);
+-- 
+2.19.2
 
-A) chromeos-4.19 tree on qcom-sdm845 without this series: booted up OK
-B) chromeos-4.19 tree on qcom-sdm845 with this series: booted up OK
-C) v4.20-rc5-90-g30002dd008ed on rockchip-rk3399 (kevin) with this
-series: booted up OK
-
-Example output from B) above:
-
-localhost ~ # dmesg | grep kgdbts
-[    2.139814] KGDB: Registered I/O driver kgdbts
-[    2.144582] kgdbts:RUN plant and detach test
-[    2.165333] kgdbts:RUN sw breakpoint test
-[    2.172990] kgdbts:RUN bad memory access test
-[    2.178640] kgdbts:RUN singlestep test 1000 iterations
-[    2.187765] kgdbts:RUN singlestep [0/1000]
-[    2.559596] kgdbts:RUN singlestep [100/1000]
-[    2.931419] kgdbts:RUN singlestep [200/1000]
-[    3.303474] kgdbts:RUN singlestep [300/1000]
-[    3.675121] kgdbts:RUN singlestep [400/1000]
-[    4.046867] kgdbts:RUN singlestep [500/1000]
-[    4.418920] kgdbts:RUN singlestep [600/1000]
-[    4.790824] kgdbts:RUN singlestep [700/1000]
-[    5.162479] kgdbts:RUN singlestep [800/1000]
-[    5.534103] kgdbts:RUN singlestep [900/1000]
-[    5.902299] kgdbts:RUN do_fork for 100 breakpoints
-[    8.463900] KGDB: Unregistered I/O driver kgdbts, debugger disabled
-
-...so I guess I'm a little confused.  Either I have a different config
-than you do or something is special about your machine?
-
-
-NOTE: In general I've never considered "single step" as reliable in
-kgdb.  I mostly use kgdb as "after the fact" crash debugging to
-analyze local variables / memory / other tasks.  If it worked that'd
-actually be kinda great, but at least when I started using kgdb years
-ago I learned that it didn't work and stopped trying...
-
-
--Doug

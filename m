@@ -4,41 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2A9CC64EB1
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B771C67838
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B5F5B2146D
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 12A7220989
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:41:27 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i+aF6u7T"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B5F5B2146D
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UikEWRKH"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 12A7220989
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726232AbeLHRhT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 8 Dec 2018 12:37:19 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:42954 "EHLO
+        id S1726192AbeLHRl0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 8 Dec 2018 12:41:26 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:59394 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbeLHRhS (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:37:18 -0500
+        with ESMTP id S1726174AbeLHRl0 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:41:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=kXkzU9BzUhWvx/Zcm13Tqvhxg671ARu4x9T2MJXWUJ0=; b=i+aF6u7Tp/uOvkkcL3Ce45TtF+
-        8Fd1S1iwSUtZ4SogqwQvEZ1xHF4k2d4K9dT7lFM5yBAMnlyJ0kVJ48Snvqwldv2IosN8e96LSGugT
-        nRBz/BdyTS+o0+Sm9v0NmhIf2QzmQWyqDccG3zdcS2aRyPHb/FH6pbpPqRXBhEidRonqN7x3gEyD4
-        VrdXsbhUVtAn3/8zDvrN4y4px8BmN2kQYOtVnH7XfsjWYbvCLV2SCrxwba5i2iGxqwH8dECN1EhWS
-        1T9Pa6IwqeKxbSSAnO65hEbEvZobYTJhY1I9DKcZhjcLeAk4XjNo8su79RZe6u0XPNdsX/GVTTR/Q
-        tP6z5ebg==;
+        bh=hObTaIo8xpMKKtq041DL44o7+z+KRG1ghKvacyvzds8=; b=UikEWRKHfvZGceJA/17i1Vx660
+        DlmNKNOnIGr+og5N5YRRfLdgc16M6FCxPllQHYcScEoIW2s8LWcbdzurfbOZV1LxN7w+n+GPuu7gS
+        65yW3HEKNacBZb9to0/i4XkEiD0t9hnmH6M1xVLuIXWon/JqeSpQ89qzhXsOeb8P6TT3UIUnzuGjO
+        t5yF/7bGy7B05i16lWyyycA2kZaxH9On44C+3HKJehXrO9HhDQSgGUMgWZEfcIGa1mTldS731kZBK
+        UuZC7MDOd3BYMQNqDMe+IC4MAIda+P4cGTVj+e+PBka11UFR4fr5c8IFgBGGzIwLep4lG5yz7xWhk
+        KLUbHYZw==;
 Received: from [184.48.100.57] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gVgXH-000540-BE; Sat, 08 Dec 2018 17:37:03 +0000
+        id 1gVgbM-0000Yl-Rl; Sat, 08 Dec 2018 17:41:16 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Robin Murphy <robin.murphy@arm.com>,
@@ -47,16 +46,16 @@ Cc:     Robin Murphy <robin.murphy@arm.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         linux-snps-arc@lists.infradead.org,
         Ezequiel Garcia <ezequiel@collabora.com>,
-        linux-media@vger.kernel.org, linux-arm-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
         openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
         linux-mips@vger.kernel.org
-Subject: [PATCH 02/10] arm64/iommu: don't remap contiguous allocations for coherent devices
-Date:   Sat,  8 Dec 2018 09:36:54 -0800
-Message-Id: <20181208173702.15158-3-hch@lst.de>
+Subject: [PATCH 1/6] sparc: remove no needed sbus_dma_ops methods
+Date:   Sat,  8 Dec 2018 09:41:10 -0800
+Message-Id: <20181208174115.16237-2-hch@lst.de>
 X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20181208173702.15158-1-hch@lst.de>
-References: <20181208173702.15158-1-hch@lst.de>
+In-Reply-To: <20181208174115.16237-1-hch@lst.de>
+References: <20181208174115.16237-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -65,86 +64,58 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There is no need to have an additional kernel mapping for a contiguous
-allocation if the device already is DMA coherent, so skip it.
+No need to BUG_ON() on the cache maintainance ops - they are no-ops
+by default, and there is nothing in the DMA API contract that prohibits
+calling them on sbus devices (even if such drivers are unlikely to
+ever appear).
+
+Similarly a dma_supported method that always returns 0 is rather
+pointless.  The only thing that indicates is that no one ever calls
+the method on sbus devices.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm64/mm/dma-mapping.c | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ arch/sparc/kernel/ioport.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-index 4c0f498069e8..d39b60113539 100644
---- a/arch/arm64/mm/dma-mapping.c
-+++ b/arch/arm64/mm/dma-mapping.c
-@@ -255,13 +255,18 @@ static void *__iommu_alloc_attrs(struct device *dev, size_t size,
- 						    size >> PAGE_SHIFT);
- 			return NULL;
- 		}
-+
-+		if (coherent) {
-+			memset(addr, 0, size);
-+			return addr;
-+		}
-+
- 		addr = dma_common_contiguous_remap(page, size, VM_USERMAP,
- 						   prot,
- 						   __builtin_return_address(0));
- 		if (addr) {
- 			memset(addr, 0, size);
--			if (!coherent)
--				__dma_flush_area(page_to_virt(page), iosize);
-+			__dma_flush_area(page_to_virt(page), iosize);
- 		} else {
- 			iommu_dma_unmap_page(dev, *handle, iosize, 0, attrs);
- 			dma_release_from_contiguous(dev, page,
-@@ -309,7 +314,9 @@ static void __iommu_free_attrs(struct device *dev, size_t size, void *cpu_addr,
+diff --git a/arch/sparc/kernel/ioport.c b/arch/sparc/kernel/ioport.c
+index 6799c93c9f27..4b2167a0ec0b 100644
+--- a/arch/sparc/kernel/ioport.c
++++ b/arch/sparc/kernel/ioport.c
+@@ -391,23 +391,6 @@ static void sbus_unmap_sg(struct device *dev, struct scatterlist *sg, int n,
+ 	mmu_release_scsi_sgl(dev, sg, n);
+ }
  
- 		iommu_dma_unmap_page(dev, handle, iosize, 0, attrs);
- 		dma_release_from_contiguous(dev, page, size >> PAGE_SHIFT);
--		dma_common_free_remap(cpu_addr, size, VM_USERMAP);
-+
-+		if (!dev_is_dma_coherent(dev))
-+			dma_common_free_remap(cpu_addr, size, VM_USERMAP);
- 	} else if (is_vmalloc_addr(cpu_addr)){
- 		struct vm_struct *area = find_vm_area(cpu_addr);
+-static void sbus_sync_sg_for_cpu(struct device *dev, struct scatterlist *sg,
+-				 int n,	enum dma_data_direction dir)
+-{
+-	BUG();
+-}
+-
+-static void sbus_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
+-				    int n, enum dma_data_direction dir)
+-{
+-	BUG();
+-}
+-
+-static int sbus_dma_supported(struct device *dev, u64 mask)
+-{
+-	return 0;
+-}
+-
+ static const struct dma_map_ops sbus_dma_ops = {
+ 	.alloc			= sbus_alloc_coherent,
+ 	.free			= sbus_free_coherent,
+@@ -415,9 +398,6 @@ static const struct dma_map_ops sbus_dma_ops = {
+ 	.unmap_page		= sbus_unmap_page,
+ 	.map_sg			= sbus_map_sg,
+ 	.unmap_sg		= sbus_unmap_sg,
+-	.sync_sg_for_cpu	= sbus_sync_sg_for_cpu,
+-	.sync_sg_for_device	= sbus_sync_sg_for_device,
+-	.dma_supported		= sbus_dma_supported,
+ };
  
-@@ -336,11 +343,12 @@ static int __iommu_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
- 		return ret;
- 
- 	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS) {
--		/*
--		 * DMA_ATTR_FORCE_CONTIGUOUS allocations are always remapped,
--		 * hence in the vmalloc space.
--		 */
--		unsigned long pfn = vmalloc_to_pfn(cpu_addr);
-+		unsigned long pfn;
-+
-+		if (dev_is_dma_coherent(dev))
-+			pfn = virt_to_pfn(cpu_addr);
-+		else
-+			pfn = vmalloc_to_pfn(cpu_addr);
- 		return __swiotlb_mmap_pfn(vma, pfn, size);
- 	}
- 
-@@ -359,11 +367,12 @@ static int __iommu_get_sgtable(struct device *dev, struct sg_table *sgt,
- 	struct vm_struct *area = find_vm_area(cpu_addr);
- 
- 	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS) {
--		/*
--		 * DMA_ATTR_FORCE_CONTIGUOUS allocations are always remapped,
--		 * hence in the vmalloc space.
--		 */
--		struct page *page = vmalloc_to_page(cpu_addr);
-+		struct page *page;
-+
-+		if (dev_is_dma_coherent(dev))
-+			page = virt_to_page(cpu_addr);
-+		else
-+			page = vmalloc_to_page(cpu_addr);
- 		return __swiotlb_get_sgtable_page(sgt, page, size);
- 	}
- 
+ static int __init sparc_register_ioport(void)
 -- 
 2.19.2
 

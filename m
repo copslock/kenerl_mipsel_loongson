@@ -2,43 +2,43 @@ Return-Path: <SRS0=Ws2J=OR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 528BDC67839
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78895C04EB8
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1EEEE208E7
-	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 46A892081C
+	for <linux-mips@archiver.kernel.org>; Sat,  8 Dec 2018 17:37:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dXpk2xj6"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 1EEEE208E7
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="l3HKh0+8"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 46A892081C
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726243AbeLHRhT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1726238AbeLHRhT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sat, 8 Dec 2018 12:37:19 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:42968 "EHLO
+Received: from bombadil.infradead.org ([198.137.202.133]:42970 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726218AbeLHRhS (ORCPT
+        with ESMTP id S1726224AbeLHRhS (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sat, 8 Dec 2018 12:37:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=1gyRIvwO7YjDhu1pOGNh/fO+2+8GUnj5Y1CfvjSlDBA=; b=dXpk2xj61RcWCWZZ4AfADciXZN
-        CrEBEfqaaC/ZHW+zQQNeh12wqjEZ25C4V6DePxEhvQtGx7SfpXbEyx7ndUUmeMnhGbfYFyZZVOr7s
-        +R/6QQYvqXY+Bp3vNQfkdpqVrln3vN+0CCTrI4MPjOgr9JruP8mfxSbaSHriU3n4Fuf9WRNZ33BpJ
-        Pix4+M1ZllQIGKEX8ZqY8w+4dcYmdGV+9YA30I2SWUG8cKgm4DDtfQR1W/pzRURerMvLeVn9ph3zr
-        ieWkLw1qvOV4zpr61+QJpE+Jnk9FPaqU+dhppDUcAMFJdhiQmIq/b5eeWOCZIoUDKqTizR8M8G8Mk
-        c7tXyCug==;
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=XUde1X8jAn8yYeGMwzQeQcuKAPZfRr5Pxt+ez51/3Q4=; b=l3HKh0+8SwXSMPlCOnDZpOZYn
+        Avcsn9ArzVvXakztvqLPfKk/9jmeUhKK5JpyaH0SEFkXJNI0l7Q7j27kkN6Pe1BbqIHw4KeJfvkhh
+        r7EBVaHYxGOJE34WxwhQY4NE/oZb/OPLoizG+MHdZQvh15KZD+AAWLlfxqDHBi7TrDCToIiPfqW7c
+        jlm7sgGXruE3knvFUj4CS5GbX11RxJP/LSiaSIx4tQAmt6csGqczmf8rfJzirjkVsIfy0XMpNxVPA
+        aNz46qBQtsh/yYgMhIRDk4Ww4HoPkl6r2ydusm1Kq1xkL2QQH9qG61XgOVGymduA24/bZbHfNmp66
+        pB29lUuxw==;
 Received: from [184.48.100.57] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gVgXG-00053x-UN; Sat, 08 Dec 2018 17:37:03 +0000
+        id 1gVgXG-00053u-Gn; Sat, 08 Dec 2018 17:37:02 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Robin Murphy <robin.murphy@arm.com>,
@@ -51,12 +51,10 @@ Cc:     Robin Murphy <robin.murphy@arm.com>,
         dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
         openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
         linux-mips@vger.kernel.org
-Subject: [PATCH 01/10] dma-direct: provide a generic implementation of DMA_ATTR_NON_CONSISTENT
-Date:   Sat,  8 Dec 2018 09:36:53 -0800
-Message-Id: <20181208173702.15158-2-hch@lst.de>
+Subject: make the non-consistent DMA allocator more userful
+Date:   Sat,  8 Dec 2018 09:36:52 -0800
+Message-Id: <20181208173702.15158-1-hch@lst.de>
 X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20181208173702.15158-1-hch@lst.de>
-References: <20181208173702.15158-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -65,220 +63,60 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-If DMA_ATTR_NON_CONSISTENT is passed in the flags we can always just
-use the dma_direct_alloc_pages implementation given that the callers
-will take care of any cache maintainance on ownership transfers between
-the CPU and the device.
+Hi all,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/arc/mm/dma.c              | 21 ++++++--------------
- arch/mips/mm/dma-noncoherent.c |  5 ++---
- arch/openrisc/kernel/dma.c     | 23 +++++++++-------------
- arch/parisc/kernel/pci-dma.c   | 35 ++++++++++++----------------------
- kernel/dma/direct.c            |  4 ++--
- 5 files changed, 31 insertions(+), 57 deletions(-)
+we had all kinds of discussions about how to best allocate DMAable memory
+without having to deal with the problem that your normal "coherent"
+DMA allocator can be very slow on platforms where DMA is not DMA
+coherent.
 
-diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
-index db203ff69ccf..135759d4ea8c 100644
---- a/arch/arc/mm/dma.c
-+++ b/arch/arc/mm/dma.c
-@@ -24,7 +24,6 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	struct page *page;
- 	phys_addr_t paddr;
- 	void *kvaddr;
--	bool need_coh = !(attrs & DMA_ATTR_NON_CONSISTENT);
- 
- 	/*
- 	 * __GFP_HIGHMEM flag is cleared by upper layer functions
-@@ -46,14 +45,10 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	 * A coherent buffer needs MMU mapping to enforce non-cachability.
- 	 * kvaddr is kernel Virtual address (0x7000_0000 based).
- 	 */
--	if (need_coh) {
--		kvaddr = ioremap_nocache(paddr, size);
--		if (kvaddr == NULL) {
--			__free_pages(page, order);
--			return NULL;
--		}
--	} else {
--		kvaddr = (void *)(u32)paddr;
-+	kvaddr = ioremap_nocache(paddr, size);
-+	if (kvaddr == NULL) {
-+		__free_pages(page, order);
-+		return NULL;
- 	}
- 
- 	/*
-@@ -66,9 +61,7 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	 * Currently flush_cache_vmap nukes the L1 cache completely which
- 	 * will be optimized as a separate commit
- 	 */
--	if (need_coh)
--		dma_cache_wback_inv(paddr, size);
--
-+	dma_cache_wback_inv(paddr, size);
- 	return kvaddr;
- }
- 
-@@ -78,9 +71,7 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
- 	phys_addr_t paddr = dma_handle;
- 	struct page *page = virt_to_page(paddr);
- 
--	if (!(attrs & DMA_ATTR_NON_CONSISTENT))
--		iounmap((void __force __iomem *)vaddr);
--
-+	iounmap((void __force __iomem *)vaddr);
- 	__free_pages(page, get_order(size));
- }
- 
-diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-noncoherent.c
-index cb38461391cb..7576cd7193ba 100644
---- a/arch/mips/mm/dma-noncoherent.c
-+++ b/arch/mips/mm/dma-noncoherent.c
-@@ -50,7 +50,7 @@ void *arch_dma_alloc(struct device *dev, size_t size,
- 	void *ret;
- 
- 	ret = dma_direct_alloc_pages(dev, size, dma_handle, gfp, attrs);
--	if (ret && !(attrs & DMA_ATTR_NON_CONSISTENT)) {
-+	if (ret) {
- 		dma_cache_wback_inv((unsigned long) ret, size);
- 		ret = (void *)UNCAC_ADDR(ret);
- 	}
-@@ -61,8 +61,7 @@ void *arch_dma_alloc(struct device *dev, size_t size,
- void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
- 		dma_addr_t dma_addr, unsigned long attrs)
- {
--	if (!(attrs & DMA_ATTR_NON_CONSISTENT))
--		cpu_addr = (void *)CAC_ADDR((unsigned long)cpu_addr);
-+	cpu_addr = (void *)CAC_ADDR((unsigned long)cpu_addr);
- 	dma_direct_free_pages(dev, size, cpu_addr, dma_addr, attrs);
- }
- 
-diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
-index 159336adfa2f..483adbb000bb 100644
---- a/arch/openrisc/kernel/dma.c
-+++ b/arch/openrisc/kernel/dma.c
-@@ -98,15 +98,13 @@ arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 
- 	va = (unsigned long)page;
- 
--	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
--		/*
--		 * We need to iterate through the pages, clearing the dcache for
--		 * them and setting the cache-inhibit bit.
--		 */
--		if (walk_page_range(va, va + size, &walk)) {
--			free_pages_exact(page, size);
--			return NULL;
--		}
-+	/*
-+	 * We need to iterate through the pages, clearing the dcache for
-+	 * them and setting the cache-inhibit bit.
-+	 */
-+	if (walk_page_range(va, va + size, &walk)) {
-+		free_pages_exact(page, size);
-+		return NULL;
- 	}
- 
- 	return (void *)va;
-@@ -122,11 +120,8 @@ arch_dma_free(struct device *dev, size_t size, void *vaddr,
- 		.mm = &init_mm
- 	};
- 
--	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
--		/* walk_page_range shouldn't be able to fail here */
--		WARN_ON(walk_page_range(va, va + size, &walk));
--	}
--
-+	/* walk_page_range shouldn't be able to fail here */
-+	WARN_ON(walk_page_range(va, va + size, &walk));
- 	free_pages_exact(vaddr, size);
- }
- 
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index 04c48f1ef3fb..6780449e3e8b 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -421,29 +421,18 @@ static void *pcxl_dma_alloc(struct device *dev, size_t size,
- 	return (void *)vaddr;
- }
- 
--static void *pcx_dma_alloc(struct device *dev, size_t size,
--		dma_addr_t *dma_handle, gfp_t flag, unsigned long attrs)
-+static inline bool cpu_supports_coherent_area(void)
- {
--	void *addr;
--
--	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0)
--		return NULL;
--
--	addr = (void *)__get_free_pages(flag, get_order(size));
--	if (addr)
--		*dma_handle = (dma_addr_t)virt_to_phys(addr);
--
--	return addr;
-+	return boot_cpu_data.cpu_type == pcxl2 ||
-+		boot_cpu_data.cpu_type == pcxl;
- }
- 
- void *arch_dma_alloc(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
- {
--
--	if (boot_cpu_data.cpu_type == pcxl2 || boot_cpu_data.cpu_type == pcxl)
-+	if (cpu_supports_coherent_area())
- 		return pcxl_dma_alloc(dev, size, dma_handle, gfp, attrs);
--	else
--		return pcx_dma_alloc(dev, size, dma_handle, gfp, attrs);
-+	return NULL;
- }
- 
- void arch_dma_free(struct device *dev, size_t size, void *vaddr,
-@@ -451,14 +440,14 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
- {
- 	int order = get_order(size);
- 
--	if (boot_cpu_data.cpu_type == pcxl2 || boot_cpu_data.cpu_type == pcxl) {
--		size = 1 << (order + PAGE_SHIFT);
--		unmap_uncached_pages((unsigned long)vaddr, size);
--		pcxl_free_range((unsigned long)vaddr, size);
-+	if (WARN_ON_ONCE(!cpu_supports_coherent_area()))
-+		return;
- 
--		vaddr = __va(dma_handle);
--	}
--	free_pages((unsigned long)vaddr, get_order(size));
-+	size = 1 << (order + PAGE_SHIFT);
-+	unmap_uncached_pages((unsigned long)vaddr, size);
-+	pcxl_free_range((unsigned long)vaddr, size);
-+
-+	free_pages((unsigned long)__va(dma_handle), get_order(size));
- }
- 
- void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 308f88a750c8..4efe1188fd2e 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -206,7 +206,7 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
- void *dma_direct_alloc(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
- {
--	if (!dev_is_dma_coherent(dev))
-+	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_NON_CONSISTENT))
- 		return arch_dma_alloc(dev, size, dma_handle, gfp, attrs);
- 	return dma_direct_alloc_pages(dev, size, dma_handle, gfp, attrs);
- }
-@@ -214,7 +214,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- void dma_direct_free(struct device *dev, size_t size,
- 		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
- {
--	if (!dev_is_dma_coherent(dev))
-+	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_NON_CONSISTENT))
- 		arch_dma_free(dev, size, cpu_addr, dma_addr, attrs);
- 	else
- 		dma_direct_free_pages(dev, size, cpu_addr, dma_addr, attrs);
--- 
-2.19.2
+To work around this drivers basically two choices at the moment:
 
+ (1) just allocate memory using the page or slab allocator and the call
+     one of the dma_map_* APIs on it.  This has a few drawbacks:
+
+       - normal GFP_KERNEL memory might not actually be DMA addressable
+	 for all devices, forcing fallbacks to slow bounce buffering
+       - there is no easy way to access the CMA allocator for large
+	 chunks, or to map small pages into single device and virtually
+	 contigous chunks using the iommu and vmap
+
+ (2) use dma_alloc_attrs with the DMA_ATTR_NON_CONSISTENT flag.  This
+     has a different set of drawbacks
+
+       - only very few architectures actually implement this API fully,
+	 if it is not implemented it falls back to the potentially
+	 uncached and slow coherent allocator
+       - the dma_cache_sync API to use with it is not very well
+	 specified and problematic in that it does not clearly
+	 transfer ownership
+
+Based on that I've been planning to introduce a proper API for
+allocating DMAable memory for a while.  In the end I've ended up
+improving the DMA_ATTR_NON_CONSISTENT flag instead of designing
+something new.  To make it useful we need to:
+
+ (a) ensure we don't fall back to the slow coherent allocator except
+     on fully coherent platforms where they are the same anyway
+ (b) replace the odd dma_cache_sync calls with the proper
+     dma_sync_* APIs that we also use for other ownership trasnfers
+
+This turned out to be surprisingly simple now that we have consolidated
+most of the direct mapping code.  Note that this series is missing
+the updates for powerpc which is in the process of being migrated to
+the common direct mapping code in another series and would be covered
+by that.
+
+Note that these patches don't use iommu/vmap coalescing as they can
+be problematic depending on the cache architecture.  But we could
+opt into those when we know we don't have cache interaction problems
+based on the API.
+
+All the patches are on top of the dma-mapping for-net tree and also
+available as a git tree here:
+
+    git://git.infradead.org/users/hch/misc.git dma-noncoherent-allocator
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-noncoherent-allocator

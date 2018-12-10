@@ -2,97 +2,127 @@ Return-Path: <SRS0=Alo4=OT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.4 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EDF0C04EB8
-	for <linux-mips@archiver.kernel.org>; Mon, 10 Dec 2018 11:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFC33C04EB8
+	for <linux-mips@archiver.kernel.org>; Mon, 10 Dec 2018 13:50:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0461A20880
-	for <linux-mips@archiver.kernel.org>; Mon, 10 Dec 2018 11:40:48 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JvFWRLjv"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 0461A20880
-Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+	by mail.kernel.org (Postfix) with ESMTP id B04432086D
+	for <linux-mips@archiver.kernel.org>; Mon, 10 Dec 2018 13:50:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org B04432086D
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=arm.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbeLJLks (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 10 Dec 2018 06:40:48 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:40168 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726146AbeLJLks (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 10 Dec 2018 06:40:48 -0500
-Received: by mail-wm1-f67.google.com with SMTP id q26so10818008wmf.5
-        for <linux-mips@vger.kernel.org>; Mon, 10 Dec 2018 03:40:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=qmD7jyNre6NQL6PXpsr01qnnabW2A5X7RF5/JoSk2zo=;
-        b=JvFWRLjvYaDVCas34T2jG1+blEbOUwZHQaOZlPV63096E85XBVNtaW54mPYqO0fi1f
-         Auam36VSszcRO7Z3EK/3kKFkaLt44mQi7kYO7X/z5WCyYkfc5wlstWfiGKlTR62R7gi1
-         6N8B5zZSL45sLZ8vbEdqRvIb11DLmNT8hwa/xdPyJzeo+bnTScAv3uXc47ri44ksCT/v
-         ApjW7auYP0xRcs0DFI2ciBkSyoJTrfS0Lzc0GHu5GdYEoDgp2mPbo1gNKR0HVOVvwE71
-         ZgHYOymUXP1KwsZRrEAnqL2eDD4BXqdjLv5FCse10rX4Ic4+tnYQKcHNxUmlujqVMnT2
-         nmFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=qmD7jyNre6NQL6PXpsr01qnnabW2A5X7RF5/JoSk2zo=;
-        b=l7uF3CWgWGH6cLET/0W8iZQEe/L/lD8L2LGDfjq1ma4PRCaXcDbUtJl3EOmbfytGJz
-         BuGQDutgbXPXX+nq4xTJnR92q2Z3G1kvSJMWpwJkRJgwbev6r2GtDdCWk9mdPV72tOXV
-         1KuLY4GuzsCPxfP7ntI07WbaKGy9wjErNFeP4m73BrVXbBFcOlLmHH5XzEdkkA2mN+qA
-         iljJQwqRh/X9+shNSS1s5DaaGdebP39ySj9ub3Ge/011WevPNg6BTO7Y0JM4Ff2bDj19
-         T3fPvRvzOuZ1Tpg3daEak4ht/WQIoI/CvQWisHS39a1kT8dH8bxcS/qkfJT6y8XDPhQ/
-         JdQw==
-X-Gm-Message-State: AA+aEWYTTmN20u3pDnZ7WAo0D8EjOR70j1MetEfJju1DrLZBtfwUvEYa
-        ejwUbGQdYaIV7vLsKw0MhgPJ0bhNEeg=
-X-Google-Smtp-Source: AFSGD/WjDdQ/YRx9sF54MQeiAybikhVY/dmgDkLXITF8fAfefsZsaLqrSDeJW1F8TpPMRZwDCIxJWg==
-X-Received: by 2002:a7b:c04e:: with SMTP id u14mr9380967wmc.133.1544442046526;
-        Mon, 10 Dec 2018 03:40:46 -0800 (PST)
-Received: from localhost.localdomain ([2001:470:9e39:0:a00:27ff:fe6d:8ad3])
-        by smtp.gmail.com with ESMTPSA id k128sm16876150wmd.37.2018.12.10.03.40.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 10 Dec 2018 03:40:45 -0800 (PST)
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-To:     linux-mips@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] MIPS: BCM63XX: fix switch core reset on BCM6368
-Date:   Mon, 10 Dec 2018 12:40:38 +0100
-Message-Id: <20181210114038.24162-1-jonas.gorski@gmail.com>
-X-Mailer: git-send-email 2.13.2
+        id S1727065AbeLJNus (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 10 Dec 2018 08:50:48 -0500
+Received: from foss.arm.com ([217.140.101.70]:54278 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726902AbeLJNus (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 10 Dec 2018 08:50:48 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B336E1596;
+        Mon, 10 Dec 2018 05:50:47 -0800 (PST)
+Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.113])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2AE5F3F575;
+        Mon, 10 Dec 2018 05:50:42 -0800 (PST)
+Date:   Mon, 10 Dec 2018 13:50:39 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     mhocko@suse.com, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        kgdb-bugreport@lists.sourceforge.net,
+        Will Deacon <will.deacon@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>, dalias@libc.org,
+        paulus@samba.org, mpe@ellerman.id.au,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org, x86@kernel.org,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>, ying.huang@intel.com,
+        jhogan@kernel.org, linux-snps-arc@lists.infradead.org,
+        rppt@linux.vnet.ibm.com, bp@alien8.de,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        rkuo@codeaurora.org, paul.burton@mips.com,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [REPOST PATCH v6 0/4] kgdb: Fix kgdb_roundup_cpus()
+Message-ID: <20181210135038.GC4048@arrakis.emea.arm.com>
+References: <20181205033828.6156-1-dianders@chromium.org>
+ <20181207174231.GD11961@arrakis.emea.arm.com>
+ <CAD=FV=WO2xMojkEqKCMkufwihUvnow3yEH4GZPh7hh8noNZ+=A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAD=FV=WO2xMojkEqKCMkufwihUvnow3yEH4GZPh7hh8noNZ+=A@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The Ethernet Switch core mask was set to 0, causing the switch core to
-be not reset on BCM6368 on boot. Provide the proper mask so the switch
-core gets reset to a known good state.
+Hi Doug,
 
-Fixes: 799faa626c71 ("MIPS: BCM63XX: add core reset helper")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
----
- arch/mips/bcm63xx/reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Dec 07, 2018 at 10:40:24AM -0800, Doug Anderson wrote:
+> On Fri, Dec 7, 2018 at 9:42 AM Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > On Tue, Dec 04, 2018 at 07:38:24PM -0800, Douglas Anderson wrote:
+> > > Douglas Anderson (4):
+> > >   kgdb: Remove irq flags from roundup
+> > >   kgdb: Fix kgdb_roundup_cpus() for arches who used smp_call_function()
+> > >   kgdb: Don't round up a CPU that failed rounding up before
+> > >   kdb: Don't back trace on a cpu that didn't round up
+> >
+> > FWIW, trying these on arm64 (ThunderX2) with CONFIG_KGDB_TESTS_ON_BOOT=y
+> > on top of 4.20-rc5 doesn't boot. It looks like they leave interrupts
+> > disabled when they shouldn't and it trips over the BUG at
+> > mm/vmalloc.c:1380 (called via do_fork -> copy_process).
+> >
+> > Now, I don't think these patches make things worse on arm64 since prior
+> > to them the kgdb boot tests on arm64 were stuck in a loop (RUN
+> > singlestep).
+> 
+> Thanks for the report!  ...actually, I'd never tried CONFIG_KGDB_TESTS
+> before.  ...so I tried them now:
+> 
+> A) chromeos-4.19 tree on qcom-sdm845 without this series: booted up OK
+> B) chromeos-4.19 tree on qcom-sdm845 with this series: booted up OK
+> C) v4.20-rc5-90-g30002dd008ed on rockchip-rk3399 (kevin) with this
+> series: booted up OK
+> 
+> Example output from B) above:
+> 
+> localhost ~ # dmesg | grep kgdbts
+> [    2.139814] KGDB: Registered I/O driver kgdbts
+> [    2.144582] kgdbts:RUN plant and detach test
+> [    2.165333] kgdbts:RUN sw breakpoint test
+> [    2.172990] kgdbts:RUN bad memory access test
+> [    2.178640] kgdbts:RUN singlestep test 1000 iterations
+> [    2.187765] kgdbts:RUN singlestep [0/1000]
+> [    2.559596] kgdbts:RUN singlestep [100/1000]
+> [    2.931419] kgdbts:RUN singlestep [200/1000]
+> [    3.303474] kgdbts:RUN singlestep [300/1000]
+> [    3.675121] kgdbts:RUN singlestep [400/1000]
+> [    4.046867] kgdbts:RUN singlestep [500/1000]
+> [    4.418920] kgdbts:RUN singlestep [600/1000]
+> [    4.790824] kgdbts:RUN singlestep [700/1000]
+> [    5.162479] kgdbts:RUN singlestep [800/1000]
+> [    5.534103] kgdbts:RUN singlestep [900/1000]
+> [    5.902299] kgdbts:RUN do_fork for 100 breakpoints
+> [    8.463900] KGDB: Unregistered I/O driver kgdbts, debugger disabled
+> 
+> ...so I guess I'm a little confused.  Either I have a different config
+> than you do or something is special about your machine?
 
-diff --git a/arch/mips/bcm63xx/reset.c b/arch/mips/bcm63xx/reset.c
-index a2af38cf28a7..64574e74cb23 100644
---- a/arch/mips/bcm63xx/reset.c
-+++ b/arch/mips/bcm63xx/reset.c
-@@ -120,7 +120,7 @@
- #define BCM6368_RESET_DSL	0
- #define BCM6368_RESET_SAR	SOFTRESET_6368_SAR_MASK
- #define BCM6368_RESET_EPHY	SOFTRESET_6368_EPHY_MASK
--#define BCM6368_RESET_ENETSW	0
-+#define BCM6368_RESET_ENETSW	SOFTRESET_6368_ENETSW_MASK
- #define BCM6368_RESET_PCM	SOFTRESET_6368_PCM_MASK
- #define BCM6368_RESET_MPI	SOFTRESET_6368_MPI_MASK
- #define BCM6368_RESET_PCIE	0
+I tried it now on a Juno board both as a host and a guest and boots
+fine. It must be something that only triggers ThunderX2. Ignore the
+report for now, if I find anything interesting I'll let you know.
+
 -- 
-2.13.2
-
+Catalin

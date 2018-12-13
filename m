@@ -2,147 +2,233 @@ Return-Path: <SRS0=Dbp0=OW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.9 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,T_MIXED_ES
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E7A1C65BAE
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 14:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83881C67839
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 15:25:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 068A020851
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 14:34:59 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="T7UHAV5/"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 068A020851
-Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=crapouillou.net
+	by mail.kernel.org (Postfix) with ESMTP id 4356220849
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 15:25:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4356220849
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=denx.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbeLMOe6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Dec 2018 09:34:58 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:33626 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727618AbeLMOe6 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 13 Dec 2018 09:34:58 -0500
-Date:   Thu, 13 Dec 2018 15:34:48 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v8 11/26] pwm: jz4740: Use regmap and clocks from TCU
- driver
-To:     Uwe =?iso-8859-1?q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, od@zcrc.me
-Message-Id: <1544711688.18952.2@crapouillou.net>
-In-Reply-To: <20181213093049.rxdvf6tip7iqdj3c@pengutronix.de>
-References: <20181212220922.18759-1-paul@crapouillou.net>
-        <20181212220922.18759-12-paul@crapouillou.net>
-        <20181213093049.rxdvf6tip7iqdj3c@pengutronix.de>
+        id S1729091AbeLMPZy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Dec 2018 10:25:54 -0500
+Received: from mail-out.m-online.net ([212.18.0.10]:48160 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729429AbeLMPZy (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 13 Dec 2018 10:25:54 -0500
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 43FyDt24Fpz1qxJY;
+        Thu, 13 Dec 2018 16:25:50 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 43FyDt1PStz1qtfL;
+        Thu, 13 Dec 2018 16:25:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id KDubXfsI4KoD; Thu, 13 Dec 2018 16:25:48 +0100 (CET)
+X-Auth-Info: NzFAuzH8C7t+HfDuQ0xoc0td5AM4pZbwUefi7IB1iwM=
+Received: from [IPv6:::1] (unknown [195.140.253.167])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Thu, 13 Dec 2018 16:25:48 +0100 (CET)
+Subject: Re: [PATCH] serial: 8250: Fix clearing FIFOs in RS485 mode again
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+References: <20181213004120.yn35mzfo4skffabv@pburton-laptop>
+ <cd3e2787-48e1-ce70-0fa7-94df6dc81794@denx.de>
+ <20181213014805.77u5dzydo23cm6fq@pburton-laptop>
+ <117fda17-40e6-664b-2b8a-f1032610bf0b@denx.de>
+ <20181213033301.febmn5qt3chn3vqb@pburton-laptop>
+ <b8525991-f539-a180-2e88-a70b29319413@denx.de>
+ <20181213051154.57h2ddfcbrgh65gy@pburton-laptop>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <372cccd7-a175-2737-5af8-3072606c6b1c@denx.de>
+Date:   Thu, 13 Dec 2018 15:51:02 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1544711695; bh=vaRtKNxh69Zx4hzvWE5BlnM9SpbIUcaAwID6xRuePy8=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=T7UHAV5/VDNreRQfwVVjkZX+9isrsLbPDUyjv9HX0ECy20R2rJZgWtH8FSok79fnY87YvQff34fYuHIwmRmCVTFQGkRzUs0Lclil4Imr34ZWTQy6ETzwB2nJX8dGGZskwkrWKvJNBRbUrM+DSnhnqOcNo5FSow8chDMzWibIufs=
+In-Reply-To: <20181213051154.57h2ddfcbrgh65gy@pburton-laptop>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+On 12/13/2018 06:11 AM, Paul Burton wrote:
+> Hi Marek,
+
 Hi,
 
-Le jeu. 13 d=E9c. 2018 =E0 10:30, Uwe Kleine-K=F6nig=20
-<u.kleine-koenig@pengutronix.de> a =E9crit :
-> Hello,
->=20
-> On Wed, Dec 12, 2018 at 11:09:06PM +0100, Paul Cercueil wrote:
->>  [...]
->>   static int jz4740_pwm_enable(struct pwm_chip *chip, struct=20
->> pwm_device *pwm)
->>   {
->>  -	uint32_t ctrl =3D jz4740_timer_get_ctrl(pwm->pwm);
->>  +	struct jz4740_pwm_chip *jz =3D to_jz4740(chip);
->>=20
->>  -	ctrl |=3D JZ_TIMER_CTRL_PWM_ENABLE;
->>  -	jz4740_timer_set_ctrl(pwm->hwpwm, ctrl);
->>  -	jz4740_timer_enable(pwm->hwpwm);
->>  +	/* Enable PWM output */
->>  +	regmap_update_bits(jz->map, TCU_REG_TCSRc(pwm->hwpwm),
->>  +				TCU_TCSR_PWM_EN, TCU_TCSR_PWM_EN);
->=20
-> Usually follow-up lines are indented to the matching parenthesis.
+> On Thu, Dec 13, 2018 at 05:18:19AM +0100, Marek Vasut wrote:
+>>>>> I wonder whether the issue may be the JZ4780 UART not automatically
+>>>>> resetting the FIFOs when FCR[0] changes. This is a guess, but the manual
+>>>>> doesn't explicitly say it'll happen & the programming example it gives
+>>>>> says to explicitly clear the FIFOs using FCR[2:1]. Since this is what
+>>>>> the kernel has been doing for at least the whole git era I wouldn't be
+>>>>> surprised if other devices are bitten by the change as people start
+>>>>> trying 4.20 on them.
+>>>>
+>>>> The patch you're complaining about is doing exactly that -- it sets
+>>>> UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT in FCR , and then clears it.
+>>>> Those two bits are exactly FCR[2:1]. It also explicitly does not touch
+>>>> any other bits in FCR.
+>>>
+>>> No - your patch does that *only* if the FIFO enable bit is set, and
+>>> presumes that clearing FIFOs is a no-op when they're disabled. I don't
+>>> believe that's true on my system. I also believe that not touching the
+>>> FIFO enable bit is problematic, since some callers clearly expect that
+>>> to be cleared.
+>>
+>> Why would you disable FIFO to clear it ? This doesn't make sense to me,
+>> the FIFO must be operational for it to be cleared. Moreover, it
+>> contradicts your previous statement, "the programming example it gives
+>> says to explicitly clear the FIFOs using FCR[2:1]" .
+> 
+> No, no, not at all... I'm saying that my theory is:
+> 
+>   - The JZ4780 requires that the FIFO be reset using FCR[2:1] in order
+>     to not read garbage.
 
-OK.
+Which we do
 
->>  [...]
->>   static int jz4740_pwm_config(struct pwm_chip *chip, struct=20
->> pwm_device *pwm,
->>   			     int duty_ns, int period_ns)
->>   {
->>   	struct jz4740_pwm_chip *jz4740 =3D to_jz4740(pwm->chip);
->>  +	struct clk *clk =3D jz4740->clks[pwm->hwpwm];
->>  +	unsigned long rate, new_rate, period, duty;
->>   	unsigned long long tmp;
->>  -	unsigned long period, duty;
->>  -	unsigned int prescaler =3D 0;
->>  -	uint16_t ctrl;
->>  +	unsigned int tcsr;
->>   	bool is_enabled;
->>=20
->>  -	tmp =3D (unsigned long long)clk_get_rate(jz4740->clk) * period_ns;
->>  -	do_div(tmp, 1000000000);
->>  -	period =3D tmp;
->>  +	rate =3D clk_get_rate(clk);
->>  +
->>  +	for (;;) {
->>  +		tmp =3D (unsigned long long) rate * period_ns;
->>  +		do_div(tmp, 1000000000);
->>=20
->>  -	while (period > 0xffff && prescaler < 6) {
->>  -		period >>=3D 2;
->>  -		++prescaler;
->>  +		if (tmp <=3D 0xffff)
->>  +			break;
->>  +
->>  +		new_rate =3D clk_round_rate(clk, rate / 2);
->>  +
->>  +		if (new_rate < rate)
->>  +			rate =3D new_rate;
->>  +		else
->>  +			return -EINVAL;
->>   	}
->>=20
->>  -	if (prescaler =3D=3D 6)
->>  -		return -EINVAL;
->>  +	clk_set_rate(clk, rate);
->=20
-> Maybe this could better live in a separate patch. If you split still
-> further to have the conversion to regmap in a single patch, then the
-> conversion to the clk_* functions and then improve the algorithm for=20
-> the
-> clk settings each of the patches is easier to review than this one=20
-> patch
-> that does all three things at once.
+>   - Prior to your patch serial8250_clear_fifos() did this,
+>     unconditionally.
 
-I can try.
+btw originally, this also cleared the UME bit. Could this be what made
+the difference on the JZ4780 ?
 
-> Best regards
-> Uwe
->=20
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig       =20
->     |
-> Industrial Linux Solutions                 |=20
-> http://www.pengutronix.de/  |
-=
+Can you try this patch on the JZ4780 , just out of curiosity ?
 
+diff --git a/drivers/tty/serial/8250/8250_port.c
+b/drivers/tty/serial/8250/8250_port.c
+index c39482b961110..3dce99f4c6802 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -553,7 +553,7 @@ static unsigned int serial_icr_read(struct
+uart_8250_port *up, int offset)
+ static void serial8250_clear_fifos(struct uart_8250_port *p)
+ {
+        unsigned char fcr;
+-       unsigned char clr_mask = UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT;
++       unsigned char clr_mask = UART_FCR_CLEAR_RCVR |
+UART_FCR_CLEAR_XMIT | BIT(4) /* UME */;
+
+        if (p->capabilities & UART_CAP_FIFO) {
+
+>   - After your patch serial8250_clear_fifos() only clears the FIFOs if
+>     the FIFO is already enabled.
+
+I'd suppose this is OK, since clearing a disabled FIFO makes no sense ?
+
+>   - When called from serial8250_do_startup() during boot, the FIFO may
+>     not be enabled - for example if the bootloader didn't use the FIFO,
+>     or if the UART is used with 8250_early which zeroes FCR.
+
+If it's not enabled, do you need to clear it ?
+
+>   - Therefore after your patch the FIFO reset bits are never set if the
+>     UART was used with 8250_early, or if it wasn't but the bootloader
+>     didn't enable the FIFO.
+
+Hence my question above, do you need to clear the FIFO even if it was
+not enabled ?
+
+> I suspect that you get away with that because according to the PC16550D
+> documentation the FIFOs should reset when the FIFO enable bit changes,
+> so when the FIFO is later enabled it gets reset. I suspect that in the
+> JZ4780 this does not happen, and the FIFO contains garbage. Our previous
+> behaviour (always set FCR[2:1] to reset the FIFO) has been around for a
+> long time, so I would not be surprised to find other devices relying
+> upon it.
+
+It is well possible, but I'd like to understand what really happens
+here, not just guess.
+
+> I'm also saying that if the FIFOs are enabled during boot then your
+> patch will leave them enabled after serial8250_do_startup() calls
+> serial8250_clear_fifos(), which a comment in serial8250_do_startup()
+> clearly states is not the expected behaviour:
+
+In that case, that needs to be fixed. But serial8250_clear_fifos()
+should only do what the name says -- clear FIFOs -- not disable them.
+
+>> Clear the FIFO buffers and disable them.
+>> (they will be reenabled in set_termios())
+> 
+> (From https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/tty/serial/8250/8250_port.c?h=v4.20-rc6#n2209)
+> 
+> And further, with your patch serial8250_do_shutdown() will leave the
+> FIFO enabled which again does not match what comments suggest it expects
+> ("Disable break condition and FIFOs").
+> 
+>> What exactly does your programming example for the JZ4780 say about the
+>> FIFO clearing ? And does it work in that example ?
+> 
+> It says to set FCR[2:1] to reset the FIFO after enabling it, which as
+> far as I can tell from the PC16550D documentation would not be necessary
+> there because when you enable the FIFO it would automatically be reset.
+> Linux did this until your patch.
+
+Linux sets the FCR[2:1] if the FIFO is enabled even now.
+
+>>>>> @@ -558,25 +558,26 @@ static void serial8250_clear_fifos(struct uart_8250_port *p)
+>>>>>  	if (p->capabilities & UART_CAP_FIFO) {
+>>>>>  		/*
+>>>>>  		 * Make sure to avoid changing FCR[7:3] and ENABLE_FIFO bits.
+>>>>> -		 * In case ENABLE_FIFO is not set, there is nothing to flush
+>>>>> -		 * so just return. Furthermore, on certain implementations of
+>>>>> -		 * the 8250 core, the FCR[7:3] bits may only be changed under
+>>>>> -		 * specific conditions and changing them if those conditions
+>>>>> -		 * are not met can have nasty side effects. One such core is
+>>>>> -		 * the 8250-omap present in TI AM335x.
+>>>>> +		 * On certain implementations of the 8250 core, the FCR[7:3]
+>>>>> +		 * bits may only be changed under specific conditions and
+>>>>> +		 * changing them if those conditions are not met can have nasty
+>>>>> +		 * side effects. One such core is the 8250-omap present in TI
+>>>>> +		 * AM335x.
+>>>>>  		 */
+>>>>>  		fcr = serial_in(p, UART_FCR);
+>>>>> +		serial_out(p, UART_FCR, fcr | clr_mask);
+>>>>> +		serial_out(p, UART_FCR, fcr & ~clr);
+>>>>
+>>>> Note that, if I understand the patch correctly, this will _not_ restore
+>>>> the original (broken) behavior. The original behavior cleared the entire
+>>>> FCR at the end, which cleared even bits that were not supposed to be
+>>>> cleared .
+>>>
+>>> It will restore the original behaviour with regards to disabling the
+>>> FIFOs, so long as callers that expect that use
+>>> serial8250_clear_and_disable_fifos().
+>>
+>> Does your platform need the FIFO to be explicitly disabled for it to be
+>> cleared, can you confirm that ? And if so, does this apply to other
+>> platforms with 8250 UART or is this specific to JZ4780 implementation of
+>> the UART block ?
+>>
+>> I just remembered U-Boot has this patch for JZ4780 UART [1], which
+>> touches the FCR UME bit, so the FCR behavior on JZ4780 does differ from
+>> the generic 8250 core. Could it be that this is what you're hitting ?
+> 
+> No - we already set the UME bit & this has all worked fine until your
+> patch changed the FIFO reset behaviour.
+
+The UME bit is in the FCR, serial8250_clear_fifos() originally cleared
+it, cfr:
+-               serial_out(p, UART_FCR, 0);
+in f6aa5beb45be27968a4df90176ca36dfc4363d37 . So the code was originally
+completely disabling the UART on JZ4780 .
+
+-- 
+Best regards,
+Marek Vasut

@@ -2,147 +2,173 @@ Return-Path: <SRS0=Dbp0=OW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.9 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CAA9DC65BAE
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B4A9C67872
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:33:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 77C4120851
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:15:48 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Cy/Tnnqq"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 77C4120851
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
+	by mail.kernel.org (Postfix) with ESMTP id 2078920851
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:33:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 2078920851
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726408AbeLMUPs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Dec 2018 15:15:48 -0500
-Received: from mail-eopbgr780119.outbound.protection.outlook.com ([40.107.78.119]:20160
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726355AbeLMUPr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 13 Dec 2018 15:15:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OYSJppRypAbfSqsaVGV1DpWHTN0hqm0x7bkPHXNLG/o=;
- b=Cy/TnnqqRknZ+35W78oqUXzZvGZ+wHvx37I6MRKroNPf9NAgS52qZ5j5wwLHVvdCBDOuU4Eg9alB6ampkSB8CBOxy2I2jmI12gtyDqpoQdIbb6/ezKKKFywst1Cw7b2bMQ7ndjORFzwSOtL92ZiYasdXNoDriQcB2UXNH+sZ+CU=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1150.namprd22.prod.outlook.com (10.174.166.39) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1425.19; Thu, 13 Dec 2018 20:15:41 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435%7]) with mapi id 15.20.1425.016; Thu, 13 Dec 2018
- 20:15:41 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Firoz Khan <firoz.khan@linaro.org>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
+        id S1727426AbeLMUdB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Dec 2018 15:33:01 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:40273 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726401AbeLMUdA (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 13 Dec 2018 15:33:00 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1gXXf4-0002sW-Mz; Thu, 13 Dec 2018 21:32:46 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1gXXf1-0000z0-Sz; Thu, 13 Dec 2018 21:32:43 +0100
+Date:   Thu, 13 Dec 2018 21:32:43 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: Re: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
-Thread-Topic: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
-Thread-Index: AQHUjSNJ15+cZub/wUiwPpyZjNjVYqV4aUcAgADYI4CAAKuugIAAoKeAgAEsAwCAAK6QgIAAvqMA
-Date:   Thu, 13 Dec 2018 20:15:41 +0000
-Message-ID: <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
-References: <1544073508-13720-1-git-send-email-firoz.khan@linaro.org>
- <1544073508-13720-4-git-send-email-firoz.khan@linaro.org>
- <20181210195144.dvprpyxyddusyb5c@pburton-laptop>
- <CALxhOng7EzAd2zHKAOj3ipEd6y=DpS2JGo34s4V_cWVgmLjPwg@mail.gmail.com>
- <20181211185947.gnaachztyh3ils7o@pburton-laptop>
- <CALxhOngErLD7+CEhgSPwQUnGg7YEFTcH-v6dhR0j55SvEg1FoA@mail.gmail.com>
- <20181212222834.2zf3rb67fxfcmwuw@pburton-laptop>
- <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
-In-Reply-To: <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR19CA0067.namprd19.prod.outlook.com
- (2603:10b6:300:94::29) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [4.16.204.77]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1150;6:u5yWjmAX2D/hMNyr+AIwkZsveiP6LE2MJON8YGHrIkPyD68bRX1oI1/BhD0u2Sub7zYJFGI7OZkmHs0iR1MRK7bzomXeZAe4RpF7xKpDdYS8PmmGb9TXHeB3QTXDjqB9ov9lPUZaWa12HXE34174rgPOIWsPLrNeoqxw5sNjqSZzaNeqYN99/rsmog+ADlhNneyuunD0bugggJHLjRw55+YtMuyP5VOvSZa3XBbswXJIcXHnu8f+e4x7V2LCJbZ8q1XOy3TWANJqKGtkCsUwQ8OnnnzYp4q5PzmMvizW8lOF9JHnZunMaqeLe6lQhXjaAXLgKF9Yqjd4d5w+uTgYfiTYmpzA/uGQSZ9y3pRePxBgkpNKIQzehQvILQT3PeUJI7Y0nvpZO4+iAcMQwfJdY5+BmE3XcYh9zbi9VehOynVGC8GU6qP/6Ledh2TlC+dt5xpJekwWRf1KZ3xRLxeHxg==;5:qJaIhRXbWustMt05zwIyvF6zL7xG+BDRUo7FWEby0xNfsvkRXIBQmClmMDrp7vNfPxV4WyQUVC1/notXDP+m0cHpUiI+7HM6oGZgnbr4aQt+BLxGMIt5Yo1y4hkWk77K0Bm6LRNyHfgMiZUMzF4O3rZPFuneKROvzwDIHgHjwpI=;7:lp7U7MQL9za4aDghL95SvqHdxqoK+4ddEqlnOkZz+dVP6jmRWYATBOJl930wtNRLwq8b7iE5ZUkqkIDrnF1rBsyWTIa3i5X/hGBf+GK8Pmioyf+7RzIplfcmTbi0vgs32URLk/xQnciuaMPzSNPUjQ==
-x-ms-office365-filtering-correlation-id: d8224f74-5472-479c-964b-08d66137c0fb
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1150;
-x-ms-traffictypediagnostic: MWHPR2201MB1150:
-x-microsoft-antispam-prvs: <MWHPR2201MB115010CE2194C44F78ACB930C1A00@MWHPR2201MB1150.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(6040522)(2401047)(8121501046)(5005006)(3231475)(944501520)(52105112)(93006095)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1150;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1150;
-x-forefront-prvs: 088552DE73
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(346002)(366004)(396003)(39840400004)(136003)(199004)(189003)(7416002)(305945005)(44832011)(256004)(14444005)(66066001)(7736002)(25786009)(186003)(81156014)(316002)(53936002)(6512007)(6246003)(54906003)(9686003)(68736007)(8936002)(39060400002)(8676002)(81166006)(6306002)(5660300001)(486006)(102836004)(58126008)(476003)(26005)(42882007)(93886005)(71190400001)(52116002)(76176011)(386003)(6506007)(446003)(2906002)(4326008)(71200400001)(11346002)(97736004)(6916009)(105586002)(14454004)(33896004)(99286004)(1076002)(6116002)(229853002)(966005)(33716001)(6486002)(3846002)(508600001)(6436002)(106356001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1150;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: xmad1FMKTQB+y0Ug1BDE0Edxo2sCMptoH7wKVCrgBjfXKFQ1lDzalDtI03PwQoZK9HNWn6oL6Z4VTm436v54tUmOZaEVIPE5XtQQpMP+AVBRiXdIkV03OyLQ8qgviVOlAkHW55VgDTwd7U4JoWV90w/CN6jsnUYTdD1JWdblsSuOqcrUey9Yk0STOtr+zXAem4v4ccpvjYt9Rh8ImbeB5wt+w+xbH3vrfkqNUIhAHcQ0fAcg/9I2HxvAbVF4hkr8mT2UIIn6pztHeCtVQhTc157iiJOyCOe2MTuWbphyqijpOaKIkTq+32cxgMM3cATF
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <49E9E6D96F297A4DB4F2CB168090837C@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org, od@zcrc.me
+Subject: Re: [PATCH v8 12/26] pwm: jz4740: Allow selection of PWM channels 0
+ and 1
+Message-ID: <20181213203243.ucjwqtkyp6aboxp4@pengutronix.de>
+References: <20181212220922.18759-1-paul@crapouillou.net>
+ <20181212220922.18759-13-paul@crapouillou.net>
+ <20181213091822.r5ilpsllfhzaiqw4@pengutronix.de>
+ <1544709511.18952.0@crapouillou.net>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8224f74-5472-479c-964b-08d66137c0fb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2018 20:15:41.2093
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1150
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1544709511.18952.0@crapouillou.net>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Firoz,
+On Thu, Dec 13, 2018 at 02:58:31PM +0100, Paul Cercueil wrote:
+> Hi,
+> 
+> Le jeu. 13 déc. 2018 à 10:18, Uwe Kleine-König
+> <u.kleine-koenig@pengutronix.de> a écrit :
+> > On Wed, Dec 12, 2018 at 11:09:07PM +0100, Paul Cercueil wrote:
+> > >  The TCU channels 0 and 1 were previously reserved for system tasks,
+> > > and
+> > >  thus unavailable for PWM.
+> > > 
+> > >  The driver will now only allow a PWM channel to be requested if
+> > > memory
+> > >  resources corresponding to the register area of the channel were
+> > >  supplied to the driver. This allows the TCU channels to be reserved
+> > > for
+> > >  system tasks from within the devicetree.
+> > > 
+> > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > 
+> > While there is someone caring for this driver I'd like to complete (a
+> > bit) my picture about the different capabilities and specialities of the
+> > supported PWMs. So I have a few questions:
+> > 
+> > Is there a publicly available reference manual for this device? (If
+> > yes, adding a link to the driver would be great.)
+> 
+> I have them here: https://zcrc.me/~paul/jz_docs/
 
-On Thu, Dec 13, 2018 at 02:23:21PM +0530, Firoz Khan wrote:
-> > > So If you confirm I can send v5 without '64' to 'n64' conversion (not=
- just above
-> > > one, completely from this patch series). Or uou can take a call just
-> > > keep this macro -
-> > > _MIPS_SIM_ABI64 as it is and change it rest of the place.
-> >
-> > Let's just go ahead & leave everything as 64, and I'll do the 64 -> n64
-> > rename later. I hoped whilst you were adding n64-specific code this
-> > would be an easy change, but at this point let's just prioritize gettin=
-g
-> > the series applied without the naming change so it can sit in -next for
-> > a while before the merge window.
->=20
-> I'll keep the macro - _MIPS_SIM_ABI64 same and will not change the rest
-> of the patch series. Unfortunately, reverting back to 64 from n64 has lot=
-s of
-> work.
+Is this link good enough to add it to the driver? From a quick view I'd
+say this is another pwm implementation that gets active on pwm_disable().
+Can you confirm this?
 
-I've applied v5 but undone the change from __NR_64_* to __NR_N64_*
-because it's part of the UAPI & a github code search showed that it's
-actually used.
+> > jz4740_pwm_config looks as if the currently running period isn't
+> > completed before the new config is in effect. Is that correct? If yes,
+> > can this be fixed? A similar question for set_polarity: Does setting the
+> > JZ_TIMER_CTRL_PWM_ACTIVE_LOW bit in the control register take effect
+> > immediately or is this shadowed until the next period starts?
+> 
+> I don't really know. We only use this driver for a rumble motor and
+> backlight.
+> Somebody would have to check with a logic analyzer.
 
-Could you take a look at this branch & check that you're OK with it
-before I push it to mips-next?
+depending on the possible timings you might also be able to test this
+e.g. by setting:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git test-syscall=
-s
+	duty_cycle=1ms, period=5s
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/?h=3Dt=
-est-syscalls
+and then
 
-Thanks,
-    Paul
+	duty_cycle=5s, period=5s
+
+. If the implementation is right your display should be dark for nearly
+5 seconds. (And the second call to pwm_apply should also block until the
+display is on.)
+
+> > How does the device's output behave after the PWM is disabled?
+> > Does it complete the currently running period? How does the output
+> > behave then? (active/inactive/high/low/high-z?)
+> 
+> There's a bit to toggle between "graceful" shutdown (bit clear) and "abrupt"
+> shutdown (bit set). TCSR bit 9. I think that graceful shutdown will complete
+> the running period, then keep the level active. Abrupt shutdown will keep
+> the
+> current level of the line.
+
+Can you confirm the things you think above? I'd like to have them
+eventually documented in the driver.
+
+> > >  @@ -42,11 +68,7 @@ static int jz4740_pwm_request(struct pwm_chip
+> > > *chip, struct pwm_device *pwm)
+> > >   	char clk_name[16];
+> > >   	int ret;
+> > > 
+> > >  -	/*
+> > >  -	 * Timers 0 and 1 are used for system tasks, so they are
+> > > unavailable
+> > >  -	 * for use as PWMs.
+> > >  -	 */
+> > >  -	if (pwm->hwpwm < 2)
+> > >  +	if (!jz4740_pwm_can_use_chn(jz, pwm->hwpwm))
+> > >   		return -EBUSY;
+> > 
+> > Maybe EBUSY isn't the best choice here. If the needed register space for
+> > the requested pwm is not included in the memory resources provided to
+> > the device I'd prefer ENXIO or ENODEV.
+> 
+> The idea was that if we don't get the register space we need, that means
+> the channel is used for something else, hence the EBUSY. Should I switch
+> it to ENXIO?
+
+I understand your reasoning, but I think it's misleading. If I get
+-EBUSY from a PWM driver I'd start searching for another user of said
+resource. With ENXIO or ENODEV it's more obvious that the driver isn't
+responsible for the resource that was requested.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

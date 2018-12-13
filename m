@@ -4,65 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham
+	MENTIONS_GIT_HOSTING,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 757ECC65BAE
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 19:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAA9DC65BAE
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:15:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E689F20870
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 19:47:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 77C4120851
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:15:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Nc01EhmF"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org E689F20870
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Cy/Tnnqq"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 77C4120851
 Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbeLMTrs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Dec 2018 14:47:48 -0500
-Received: from mail-eopbgr770139.outbound.protection.outlook.com ([40.107.77.139]:32800
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        id S1726408AbeLMUPs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Dec 2018 15:15:48 -0500
+Received: from mail-eopbgr780119.outbound.protection.outlook.com ([40.107.78.119]:20160
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727684AbeLMTrs (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 13 Dec 2018 14:47:48 -0500
+        id S1726355AbeLMUPr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 13 Dec 2018 15:15:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5SZdWJ2KM5PN2yfVymq/6XYo9WBHyaK8qGBX9dCduIA=;
- b=Nc01EhmFd6ySYF7ufveOdMybO/BvKFjn28EaqeqTiV3S0ihpgUMSo9LQfWJxMng4T6x4UeGqiSI+Z+ugyIifVT/QI3KA58z4lzoEgAg+JiZBayFl0LHYnanX+FGcE0jVkpjUBbL0QMsdT++xSR9BJLJuhLkp6o1TglQ6SzYEmmQ=
+ bh=OYSJppRypAbfSqsaVGV1DpWHTN0hqm0x7bkPHXNLG/o=;
+ b=Cy/TnnqqRknZ+35W78oqUXzZvGZ+wHvx37I6MRKroNPf9NAgS52qZ5j5wwLHVvdCBDOuU4Eg9alB6ampkSB8CBOxy2I2jmI12gtyDqpoQdIbb6/ezKKKFywst1Cw7b2bMQ7ndjORFzwSOtL92ZiYasdXNoDriQcB2UXNH+sZ+CU=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1727.namprd22.prod.outlook.com (10.164.206.157) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1425.19; Thu, 13 Dec 2018 19:47:42 +0000
+ MWHPR2201MB1150.namprd22.prod.outlook.com (10.174.166.39) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1425.19; Thu, 13 Dec 2018 20:15:41 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c07a:a95:8ba9:8435%7]) with mapi id 15.20.1425.016; Thu, 13 Dec 2018
- 19:47:42 +0000
+ 20:15:41 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Stefan Roese <sr@denx.de>
-CC:     U-Boot Mailing List <u-boot@lists.denx.de>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: MIPS (mt7688): EBase change in U-Boot breaks Linux
-Thread-Topic: MIPS (mt7688): EBase change in U-Boot breaks Linux
-Thread-Index: AQHUkfNMcpdXGl+ESEeHCV0Kj78/+qV72oOAgACZdgCAADdbAIAAAhyAgAANi4CAAFqIgA==
-Date:   Thu, 13 Dec 2018 19:47:42 +0000
-Message-ID: <20181213194740.mtphrijpnkzo2za4@pburton-laptop>
-References: <e4f0fff9-a3c5-85ce-c4be-6e0aa0f74592@denx.de>
- <d81ac18d-47ed-02ec-bc37-f5a7e0ab9223@gmail.com>
- <543512d8-91ea-2a49-5423-680860c0ba9f@denx.de>
- <CACUy__X434rmJnX96i057-ir8yiCBjMac_V41HJ+pyG0xLPcRg@mail.gmail.com>
- <dad02a31-ed34-f99a-26c5-60e4a7209057@denx.de>
- <CACUy__XtyDY08KTTMnKoXXKq4oUrNYdRXZOmtuXEmnfD7UveiA@mail.gmail.com>
-In-Reply-To: <CACUy__XtyDY08KTTMnKoXXKq4oUrNYdRXZOmtuXEmnfD7UveiA@mail.gmail.com>
+To:     Firoz Khan <firoz.khan@linaro.org>
+CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: Re: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
+Thread-Topic: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
+Thread-Index: AQHUjSNJ15+cZub/wUiwPpyZjNjVYqV4aUcAgADYI4CAAKuugIAAoKeAgAEsAwCAAK6QgIAAvqMA
+Date:   Thu, 13 Dec 2018 20:15:41 +0000
+Message-ID: <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
+References: <1544073508-13720-1-git-send-email-firoz.khan@linaro.org>
+ <1544073508-13720-4-git-send-email-firoz.khan@linaro.org>
+ <20181210195144.dvprpyxyddusyb5c@pburton-laptop>
+ <CALxhOng7EzAd2zHKAOj3ipEd6y=DpS2JGo34s4V_cWVgmLjPwg@mail.gmail.com>
+ <20181211185947.gnaachztyh3ils7o@pburton-laptop>
+ <CALxhOngErLD7+CEhgSPwQUnGg7YEFTcH-v6dhR0j55SvEg1FoA@mail.gmail.com>
+ <20181212222834.2zf3rb67fxfcmwuw@pburton-laptop>
+ <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
+In-Reply-To: <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR14CA0009.namprd14.prod.outlook.com
- (2603:10b6:300:ae::19) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR19CA0067.namprd19.prod.outlook.com
+ (2603:10b6:300:94::29) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -70,93 +80,69 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [4.16.204.77]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1727;6:dJh0MtNcXWe/lgA+ViymB/WMIY0qF2nMPPfPQ0MlP4bfr20jMFxsNyQLP8SuBfWZzSnU4lp3Xc23jfSmYvFChJMHn9OLOEG753TajsAVWT/5n2YiV0ErUg4ErSr/m6PAdrMX0OXGHGdxw/R7B5SVcNHBkWvyhgMQCdBg1YkuWKa53Xz26yEJQcDdqyQpl3dLLTll6o0JY6gpPoLD0jIj8oIlWAasZlp8Q21V5uF6PobHhnn9DF3l/1A5H8WSTN0b6QLfLi1cL+QMYt6Qg2oRLkn9yNOOCHj44H0RMHFqaiY+SivHxy9qy/zM4r/SQ9FvZcwm4ju3D5+g+tEKoo1igkIEOh9QT+ohsD/24LSytcsu7j9buY5FwLeYgKhwpRc9hz5OpP4K0IyOqQTKc1j9uhc5+lke2q6wqw46fg/wKFkg1taYwnVIEzlBpvJPi5W6FT6c6ijF2DxPIYbKFge2UA==;5:qIhnPcN0sA+xyTftGg96yfJiNVse97FFVK6QZRfyD6A7yjSa+xb4VQ3v4iW7pHRW7WJWI4/WRpoW1ggLShwrCKzpg9YR6lRwH0txiCrygN41nHcwZlEQk+PwNyNjfE/3SJBsHwXTh0lEJwM1G/eJU8n/weDqtYBwJGFhNyJ/Nh4=;7:iP2gwc1qMEc5O+wsxfOET+pjs6CUGW831teAcVfcx3zuk4d7eTOPdh15psvOsaCD+9ZiLJNBo8Q2oh9W16dXGI65Lc/3rh+GbMD4uDJIoj7Qnl5MxcjuXGIx0l7VFk41MU0vrMmSxL8f19QXbPePmQ==
-x-ms-office365-filtering-correlation-id: 2b69c0c2-7083-40c6-f84b-08d66133d843
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1727;
-x-ms-traffictypediagnostic: MWHPR2201MB1727:
-x-microsoft-antispam-prvs: <MWHPR2201MB17275436B8BB13402E91EE7AC1A00@MWHPR2201MB1727.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1150;6:u5yWjmAX2D/hMNyr+AIwkZsveiP6LE2MJON8YGHrIkPyD68bRX1oI1/BhD0u2Sub7zYJFGI7OZkmHs0iR1MRK7bzomXeZAe4RpF7xKpDdYS8PmmGb9TXHeB3QTXDjqB9ov9lPUZaWa12HXE34174rgPOIWsPLrNeoqxw5sNjqSZzaNeqYN99/rsmog+ADlhNneyuunD0bugggJHLjRw55+YtMuyP5VOvSZa3XBbswXJIcXHnu8f+e4x7V2LCJbZ8q1XOy3TWANJqKGtkCsUwQ8OnnnzYp4q5PzmMvizW8lOF9JHnZunMaqeLe6lQhXjaAXLgKF9Yqjd4d5w+uTgYfiTYmpzA/uGQSZ9y3pRePxBgkpNKIQzehQvILQT3PeUJI7Y0nvpZO4+iAcMQwfJdY5+BmE3XcYh9zbi9VehOynVGC8GU6qP/6Ledh2TlC+dt5xpJekwWRf1KZ3xRLxeHxg==;5:qJaIhRXbWustMt05zwIyvF6zL7xG+BDRUo7FWEby0xNfsvkRXIBQmClmMDrp7vNfPxV4WyQUVC1/notXDP+m0cHpUiI+7HM6oGZgnbr4aQt+BLxGMIt5Yo1y4hkWk77K0Bm6LRNyHfgMiZUMzF4O3rZPFuneKROvzwDIHgHjwpI=;7:lp7U7MQL9za4aDghL95SvqHdxqoK+4ddEqlnOkZz+dVP6jmRWYATBOJl930wtNRLwq8b7iE5ZUkqkIDrnF1rBsyWTIa3i5X/hGBf+GK8Pmioyf+7RzIplfcmTbi0vgs32URLk/xQnciuaMPzSNPUjQ==
+x-ms-office365-filtering-correlation-id: d8224f74-5472-479c-964b-08d66137c0fb
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1150;
+x-ms-traffictypediagnostic: MWHPR2201MB1150:
+x-microsoft-antispam-prvs: <MWHPR2201MB115010CE2194C44F78ACB930C1A00@MWHPR2201MB1150.namprd22.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(6040522)(2401047)(5005006)(8121501046)(3231475)(944501520)(52105112)(93006095)(10201501046)(3002001)(148016)(149066)(150057)(6041310)(2016111802025)(20161123560045)(20161123564045)(20161123558120)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1727;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1727;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(6040522)(2401047)(8121501046)(5005006)(3231475)(944501520)(52105112)(93006095)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(20161123558120)(20161123560045)(20161123564045)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1150;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1150;
 x-forefront-prvs: 088552DE73
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(39850400004)(396003)(136003)(376002)(199004)(189003)(6506007)(6436002)(71190400001)(52116002)(6486002)(14454004)(186003)(14444005)(966005)(305945005)(256004)(26005)(102836004)(508600001)(7736002)(386003)(97736004)(33896004)(229853002)(316002)(42882007)(44832011)(33716001)(76176011)(446003)(6116002)(11346002)(58126008)(6512007)(486006)(110136005)(53936002)(476003)(68736007)(81156014)(99286004)(106356001)(9686003)(2906002)(39060400002)(5660300001)(575784001)(25786009)(105586002)(3846002)(4326008)(6246003)(81166006)(8676002)(1076002)(93886005)(6306002)(71200400001)(66066001)(8936002)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1727;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(346002)(366004)(396003)(39840400004)(136003)(199004)(189003)(7416002)(305945005)(44832011)(256004)(14444005)(66066001)(7736002)(25786009)(186003)(81156014)(316002)(53936002)(6512007)(6246003)(54906003)(9686003)(68736007)(8936002)(39060400002)(8676002)(81166006)(6306002)(5660300001)(486006)(102836004)(58126008)(476003)(26005)(42882007)(93886005)(71190400001)(52116002)(76176011)(386003)(6506007)(446003)(2906002)(4326008)(71200400001)(11346002)(97736004)(6916009)(105586002)(14454004)(33896004)(99286004)(1076002)(6116002)(229853002)(966005)(33716001)(6486002)(3846002)(508600001)(6436002)(106356001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1150;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
-x-microsoft-antispam-message-info: FbMNPJTBqOwQAy96R/BN2vZyQ85t6L6PgJJRC022XmThDDC6y9Y3LvkSTdMz1qHBEFKGxRgtYZe1Hs+iRR1RDu5gBQVLKxpPuv9+PG8zwj/Gz+rqxwq0bQG47pFi1sXY4oCdR3fdVQwpCu7KbGsuBvqxnEa6l04DjpONGoDwt1WYk2z0oRxjkV84szOBQQZIALnDZliwmjPcwGu3J11BbzekLaiSgxFQwRSAUs1TIzezqg0E846jn4n4ZpRj0PKoUrSSGjL1FENIUpxcBXQV8qggHNN68izq2UJ/n3SK5DBMTNs8iAFq6NMCG+gbfsZJ
+x-microsoft-antispam-message-info: xmad1FMKTQB+y0Ug1BDE0Edxo2sCMptoH7wKVCrgBjfXKFQ1lDzalDtI03PwQoZK9HNWn6oL6Z4VTm436v54tUmOZaEVIPE5XtQQpMP+AVBRiXdIkV03OyLQ8qgviVOlAkHW55VgDTwd7U4JoWV90w/CN6jsnUYTdD1JWdblsSuOqcrUey9Yk0STOtr+zXAem4v4ccpvjYt9Rh8ImbeB5wt+w+xbH3vrfkqNUIhAHcQ0fAcg/9I2HxvAbVF4hkr8mT2UIIn6pztHeCtVQhTc157iiJOyCOe2MTuWbphyqijpOaKIkTq+32cxgMM3cATF
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <B6E0533404A31543991A3638E67D7887@namprd22.prod.outlook.com>
+Content-ID: <49E9E6D96F297A4DB4F2CB168090837C@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b69c0c2-7083-40c6-f84b-08d66133d843
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2018 19:47:42.5516
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8224f74-5472-479c-964b-08d66137c0fb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2018 20:15:41.2093
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1727
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1150
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Hi Firoz,
 
-On Thu, Dec 13, 2018 at 03:23:39PM +0100, Daniel Schwierzeck wrote:
-> > >>>> Finally I found that this line in U-Boot makes Linux break:
-> > >>>>
-> > >>>> arch/mips/lib/traps.c:
-> > >>>>
-> > >>>> void trap_init(ulong reloc_addr)
-> > >>>>       unsigned long ebase =3D gd->irq_sp;
-> > >>>>       ...
-> > >>>>       write_c0_ebase(ebase);
-> > >>>>
-> > >>>> This sets EBase to something like 0x87e9b000 on my system (128MiB)=
-.
-> > >>>> And Linux then re-uses this value and copies the exceptions handle=
-rs
-> > >>>> to this address, overwriting random code and leading to an unstabl=
-e
-> > >>>> system.
-> > >>>>
-> > >>>> So my questions now is, how should this be handled on the MT7688
-> > >>>> platform instead? One way would be to set EBase back to the
-> > >>>> original value (0x80000000) before booting into Linux. Another
-> > >>>> solution would be to add some Linux code like board_ebase_setup()
-> > >>>> to the MT7688 Linux port.
->%
-> > > I could also prepare a U-Boot patch to restore the original ebase val=
-ue before
-> > > handing the control over to the OS.
+On Thu, Dec 13, 2018 at 02:23:21PM +0530, Firoz Khan wrote:
+> > > So If you confirm I can send v5 without '64' to 'n64' conversion (not=
+ just above
+> > > one, completely from this patch series). Or uou can take a call just
+> > > keep this macro -
+> > > _MIPS_SIM_ABI64 as it is and change it rest of the place.
 > >
-> > I'm not so sure, if overwriting 0x80000000 (default value of EBase on
-> > this SoC) with the exception handler is allowed. Is this address "zero"
-> > handled somewhat specific in MIPS Linux? AFAICT, the complete DDR
-> > area on my platform (0x8000.0000 - 0x87ff.ffff) is available for Linux.
-> > So allocating some memory for this exception handler seems the right
-> > way to go to me.
+> > Let's just go ahead & leave everything as 64, and I'll do the 64 -> n64
+> > rename later. I hoped whilst you were adding n64-specific code this
+> > would be an easy change, but at this point let's just prioritize gettin=
+g
+> > the series applied without the naming change so it can sit in -next for
+> > a while before the merge window.
 >=20
-> maybe that's why some platforms define a load address of 0x80002000 or si=
-milar
-> to protect this area somehow.
+> I'll keep the macro - _MIPS_SIM_ABI64 same and will not change the rest
+> of the patch series. Unfortunately, reverting back to 64 from n64 has lot=
+s of
+> work.
 
-Does this Linux patch help by any chance?
+I've applied v5 but undone the change from __NR_64_* to __NR_N64_*
+because it's part of the UAPI & a github code search showed that it's
+actually used.
 
-https://git.linux-mips.org/cgit/linux-mti.git/commit/?h=3Deng-v4.20&id=3D39=
-e4d339a4540b66e9d9a8ea0da9ee41a21473b4
+Could you take a look at this branch & check that you're OK with it
+before I push it to mips-next?
 
-I'm not sure I remember why I didn't get that upstreamed yet, I probably
-wanted to research what other systems were doing... Speaking for Malta,
-the kernel's board support has reserved the start of kseg0 for longer
-than I've been involved.
+  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git test-syscall=
+s
 
-An alternative would be for Linux to allocate a page for use with the
-exception vectors using memblock, and ignore the EBase value U-Boot left
-us with. But just marking the area U-Boot used as reserved ought to do
-the trick, and has the advantage of ensuring U-Boot's vectors don't get
-overwritten before Linux sets up its own which sometimes allows U-Boot
-to provide some useful output.
+  https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/?h=3Dt=
+est-syscalls
 
 Thanks,
     Paul

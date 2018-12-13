@@ -2,697 +2,267 @@ Return-Path: <SRS0=Dbp0=OW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,T_MIXED_ES,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_PASS,T_MIXED_ES,USER_AGENT_NEOMUTT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8C4EC65BAE
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 17:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99E9BC65BAE
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 17:48:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9E9E720870
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 17:24:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9E9E720870
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+	by mail.kernel.org (Postfix) with ESMTP id 4FD6D20811
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 17:48:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 4FD6D20811
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=mips.com
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729790AbeLMRYh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Dec 2018 12:24:37 -0500
-Received: from vmicros1.altlinux.org ([194.107.17.57]:40642 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729740AbeLMRYf (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 13 Dec 2018 12:24:35 -0500
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id E856672CC70;
-        Thu, 13 Dec 2018 20:24:20 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id C1038964E82; Thu, 13 Dec 2018 20:24:20 +0300 (MSK)
-Date:   Thu, 13 Dec 2018 20:24:20 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     Arnd Bergmann <arnd@arndb.de>, Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Eric Paris <eparis@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guan Xuetao <gxt@pku.edu.cn>, Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>
-Cc:     Palmer Dabbelt <palmer@sifive.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Kees Cook <keescook@chromium.org>,
-        Will Drewry <wad@chromium.org>,
-        Mark Salter <msalter@redhat.com>,
-        Elvira Khabirova <lineprinter@altlinux.org>,
-        Eugene Syromyatnikov <esyr@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, linux-audit@redhat.com,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v6 24/27] syscall_get_arch: add "struct task_struct *"
- argument
-Message-ID: <20181213172420.GX6024@altlinux.org>
-References: <20181213171833.GA5240@altlinux.org>
+        id S1728774AbeLMRsk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Dec 2018 12:48:40 -0500
+Received: from mail-eopbgr730117.outbound.protection.outlook.com ([40.107.73.117]:42832
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728033AbeLMRsk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 13 Dec 2018 12:48:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4RnU91v+sdMHXbx4Z/pDle/5BeQK4RQAED/Vd25XyRA=;
+ b=AJzWl2BUFappkRLXtOJRN615SEJWuEe9IHuGIGxyckQ9qG+PfL9BrwZRDkqlbmPi/ASIDAW2zSI7LYyToiKpAQK8Bhgw4ArD1UBcOH9kT3c86Doc9RE3av0LmsYntba6sLcRzLF2sls0DO/Isc3RXKEOwhYyP+vLnhu3tAVONY0=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1581.namprd22.prod.outlook.com (10.174.167.30) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1425.20; Thu, 13 Dec 2018 17:48:36 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::c07a:a95:8ba9:8435%7]) with mapi id 15.20.1425.016; Thu, 13 Dec 2018
+ 17:48:36 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Marek Vasut <marex@denx.de>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] serial: 8250: Fix clearing FIFOs in RS485 mode again
+Thread-Topic: [PATCH] serial: 8250: Fix clearing FIFOs in RS485 mode again
+Thread-Index: AQHUknyRs52wg14NwUm+r/H2374buKV72ByAgAAOsoCAAAscgIAAEjWAgAAMqICAAA75AIAAoc8AgAAxmgA=
+Date:   Thu, 13 Dec 2018 17:48:35 +0000
+Message-ID: <20181213174834.kxdy6fphaeoivqgh@pburton-laptop>
+References: <20181213004120.yn35mzfo4skffabv@pburton-laptop>
+ <cd3e2787-48e1-ce70-0fa7-94df6dc81794@denx.de>
+ <20181213014805.77u5dzydo23cm6fq@pburton-laptop>
+ <117fda17-40e6-664b-2b8a-f1032610bf0b@denx.de>
+ <20181213033301.febmn5qt3chn3vqb@pburton-laptop>
+ <b8525991-f539-a180-2e88-a70b29319413@denx.de>
+ <20181213051154.57h2ddfcbrgh65gy@pburton-laptop>
+ <372cccd7-a175-2737-5af8-3072606c6b1c@denx.de>
+In-Reply-To: <372cccd7-a175-2737-5af8-3072606c6b1c@denx.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR05CA0003.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::16) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [2601:647:4100:4687:84d1:277a:c6e5:ae34]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1581;6:Hwr8lH6lm6EbG27b4bCXJRBMJwYiGoXh++I7e2DgkFsEupS/k4rc4YuHr0jvT9q/Jz7Z7bR0oVc3U4xnNjK/fUnBQp1z/Ii+SaEBhB8eJhzoxgXCIRXKUA52eqaKr1obQlIdyQa0qlnYiLZzo5yP0A5fcTXCqpdPgzqUZgq7tfu3A0i9DLa/XjUFDTLm8Gagl8P5g9XuWIGjIskzSj61wRH4WuxgmN4/GccjYvZhqJvdXKgISktHZxMATR1dwds1cwy+TeMgcLHZnvTqksPwqnxl3sY/i0Q/VjG9AeqP0Z+8iWfi2ZnZ8NzvA8g/qu0JrDBbVFhsYS64T7t+Cy/lasm4NDEmGEtavaDQ2Pz6GTlNodjH8yVmxBxGHvmtlqq4fovrOMFXA6rBIujCbNTtPbAQHScBL+x4MbI82UVutWU2wOC1iWVEWQaVFfPcJTeyDzRr/C6fzCccRxEJq616jg==;5:iWLt1Pf4rqHXFkrRLPtiGa5SpYbmgr4jHVPrhDGV21NrulPCWEXY9a86zuB+Yt+OE5ha8tKwq1JBGIq/g1A3IiOuGXZ1eCLWfXB+PmiVmYNkApp4XeIDVOqvNJ/BZ50o4gJ0tJoXQ8i7Ob8sWLEytqB9nTV9ehKNpSfyxV1aOKg=;7:mbqYnIJK/zG2l6qSllSz+s2LRhQor0qd368q0L32fzGzGv4I9JWkoa4EltfdfltC8DA5Qk8I3Pg5+Gi1l1Nycbjvvh83jA+s3lIf7pg9uJ+bSBnM/Y6iTl7/JeOhQCbkDZvcH78jhLV13CiBcXjw2A==
+x-ms-office365-filtering-correlation-id: d17d6600-8468-4fec-af59-08d6612334b7
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390098)(7020095)(4652040)(7021145)(8989299)(5600074)(711020)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1581;
+x-ms-traffictypediagnostic: MWHPR2201MB1581:
+x-microsoft-antispam-prvs: <MWHPR2201MB1581A11CE3D7F37B24E8C80DC1A00@MWHPR2201MB1581.namprd22.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(6040522)(2401047)(5005006)(8121501046)(3002001)(10201501046)(3231475)(944501520)(52105112)(93006095)(148016)(149066)(150057)(6041310)(20161123562045)(20161123558120)(20161123564045)(20161123560045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1581;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1581;
+x-forefront-prvs: 088552DE73
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(396003)(39850400004)(366004)(136003)(346002)(189003)(199004)(316002)(256004)(7736002)(25786009)(44832011)(71190400001)(71200400001)(1076002)(33716001)(486006)(97736004)(305945005)(476003)(5660300001)(14444005)(68736007)(6116002)(8936002)(99286004)(8676002)(106356001)(81166006)(105586002)(81156014)(2906002)(52116002)(76176011)(33896004)(93886005)(6506007)(54906003)(386003)(14454004)(6486002)(229853002)(6436002)(6246003)(6916009)(102836004)(42882007)(508600001)(53936002)(4326008)(6306002)(11346002)(9686003)(446003)(6512007)(186003)(966005)(58126008)(46003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1581;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: eDWqRQ04E9m+OIf2WhuyJm5WtfDftseTv3BGsRnOxae+CSz1/9PYpTzYvXYI3+3KNtQwF6sTZO1eUi2qKssdcJAub1cvNKB65TkhCvYZSC9tzSCsW1VFRP+BoYtlp2f0s7rgRXtz0udGtiitzEMkR7kFPAtMDmgs3hzkADwzvEfoG84+qUyZ69+RJrxlG8/KB50K6vTgXBbwwMsRJf89eGgQNuE1Hv210549/rXakTkXsfbaw9jcu3ml9fH8nuU3lG3X6/KOCRNlalqN4Jox+HT1/33+ol5NbyuzMUu8wMLgW4Z97ePeBVY9orDqcKBC
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <D4DF80A75FF67744BCC104FA99B52294@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d17d6600-8468-4fec-af59-08d6612334b7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2018 17:48:35.8885
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1581
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This argument is required to extend the generic ptrace API with
-PTRACE_GET_SYSCALL_INFO request: syscall_get_arch() is going
-to be called from ptrace_request() along with syscall_get_nr(),
-syscall_get_arguments(), syscall_get_error(), and
-syscall_get_return_value() functions with a tracee as their argument.
+Hi Marek,
 
-Reverts: 5e937a9ae913 ("syscall_get_arch: remove useless function arguments")
-Reverts: 1002d94d3076 ("syscall.h: fix doc text for syscall_get_arch()")
-Reviewed-by: Andy Lutomirski <luto@kernel.org> # for x86
-Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
-Acked-by: Paul Burton <paul.burton@mips.com> # MIPS parts
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Acked-by: Kees Cook <keescook@chromium.org> # seccomp parts
-Acked-by: Mark Salter <msalter@redhat.com> # for the c6x bit
-Cc: Eric Paris <eparis@redhat.com>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Richard Kuo <rkuo@codeaurora.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Greentime Hu <green.hu@gmail.com>
-Cc: Vincent Chen <deanbo422@gmail.com>
-Cc: Ley Foon Tan <lftan@altera.com>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: James E.J. Bottomley <jejb@parisc-linux.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Guan Xuetao <gxt@pku.edu.cn>
-Cc: Jeff Dike <jdike@addtoit.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Will Drewry <wad@chromium.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Elvira Khabirova <lineprinter@altlinux.org>
-Cc: Eugene Syromyatnikov <esyr@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: x86@kernel.org
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-c6x-dev@linux-c6x.org
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
-Cc: nios2-dev@lists.rocketboards.org
-Cc: openrisc@lists.librecores.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-um@lists.infradead.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-audit@redhat.com
-Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
----
+On Thu, Dec 13, 2018 at 03:51:02PM +0100, Marek Vasut wrote:
+> >>>>> I wonder whether the issue may be the JZ4780 UART not automatically
+> >>>>> resetting the FIFOs when FCR[0] changes. This is a guess, but the m=
+anual
+> >>>>> doesn't explicitly say it'll happen & the programming example it gi=
+ves
+> >>>>> says to explicitly clear the FIFOs using FCR[2:1]. Since this is wh=
+at
+> >>>>> the kernel has been doing for at least the whole git era I wouldn't=
+ be
+> >>>>> surprised if other devices are bitten by the change as people start
+> >>>>> trying 4.20 on them.
+> >>>>
+> >>>> The patch you're complaining about is doing exactly that -- it sets
+> >>>> UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT in FCR , and then clears i=
+t.
+> >>>> Those two bits are exactly FCR[2:1]. It also explicitly does not tou=
+ch
+> >>>> any other bits in FCR.
+> >>>
+> >>> No - your patch does that *only* if the FIFO enable bit is set, and
+> >>> presumes that clearing FIFOs is a no-op when they're disabled. I don'=
+t
+> >>> believe that's true on my system. I also believe that not touching th=
+e
+> >>> FIFO enable bit is problematic, since some callers clearly expect tha=
+t
+> >>> to be cleared.
+> >>
+> >> Why would you disable FIFO to clear it ? This doesn't make sense to me=
+,
+> >> the FIFO must be operational for it to be cleared. Moreover, it
+> >> contradicts your previous statement, "the programming example it gives
+> >> says to explicitly clear the FIFOs using FCR[2:1]" .
+> >=20
+> > No, no, not at all... I'm saying that my theory is:
+> >=20
+> >   - The JZ4780 requires that the FIFO be reset using FCR[2:1] in order
+> >     to not read garbage.
+>=20
+> Which we do
 
-Notes:
-    v6: added more Acked-by
-    v5: added Cc
-    v2: cleaned up mips part, added Reviewed-by
+No - we don't... We used to, but your patch stops that from happening if
+the FIFO enable bit is clear.... And the FIFO enable bit is clear during
+serial8250_do_startup() if the UART was used with earlycon, otherwise it
+depends on state left behind by the bootloader. I don't know how many
+ways I can say this.
 
- arch/alpha/include/asm/syscall.h      |  2 +-
- arch/arc/include/asm/syscall.h        |  2 +-
- arch/arm/include/asm/syscall.h        |  2 +-
- arch/arm64/include/asm/syscall.h      |  4 ++--
- arch/c6x/include/asm/syscall.h        |  2 +-
- arch/csky/include/asm/syscall.h       |  2 +-
- arch/h8300/include/asm/syscall.h      |  2 +-
- arch/hexagon/include/asm/syscall.h    |  2 +-
- arch/ia64/include/asm/syscall.h       |  2 +-
- arch/m68k/include/asm/syscall.h       |  2 +-
- arch/microblaze/include/asm/syscall.h |  2 +-
- arch/mips/include/asm/syscall.h       |  6 +++---
- arch/mips/kernel/ptrace.c             |  2 +-
- arch/nds32/include/asm/syscall.h      |  2 +-
- arch/nios2/include/asm/syscall.h      |  2 +-
- arch/openrisc/include/asm/syscall.h   |  2 +-
- arch/parisc/include/asm/syscall.h     |  4 ++--
- arch/powerpc/include/asm/syscall.h    | 10 ++++++++--
- arch/riscv/include/asm/syscall.h      |  2 +-
- arch/s390/include/asm/syscall.h       |  4 ++--
- arch/sh/include/asm/syscall_32.h      |  2 +-
- arch/sh/include/asm/syscall_64.h      |  2 +-
- arch/sparc/include/asm/syscall.h      |  5 +++--
- arch/unicore32/include/asm/syscall.h  |  2 +-
- arch/x86/include/asm/syscall.h        |  8 +++++---
- arch/x86/um/asm/syscall.h             |  2 +-
- arch/xtensa/include/asm/syscall.h     |  2 +-
- include/asm-generic/syscall.h         |  5 +++--
- kernel/auditsc.c                      |  4 ++--
- kernel/seccomp.c                      |  4 ++--
- 30 files changed, 52 insertions(+), 42 deletions(-)
+> >   - Prior to your patch serial8250_clear_fifos() did this,
+> >     unconditionally.
+>=20
+> btw originally, this also cleared the UME bit. Could this be what made
+> the difference on the JZ4780 ?
 
-diff --git a/arch/alpha/include/asm/syscall.h b/arch/alpha/include/asm/syscall.h
-index c67d6a69d7c8..20078aef0922 100644
---- a/arch/alpha/include/asm/syscall.h
-+++ b/arch/alpha/include/asm/syscall.h
-@@ -33,7 +33,7 @@ syscall_get_return_value(struct task_struct *task, struct pt_regs *regs)
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_ALPHA;
- }
-diff --git a/arch/arc/include/asm/syscall.h b/arch/arc/include/asm/syscall.h
-index c7fc4c0c3bcb..caf2697ef5b7 100644
---- a/arch/arc/include/asm/syscall.h
-+++ b/arch/arc/include/asm/syscall.h
-@@ -70,7 +70,7 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return IS_ENABLED(CONFIG_ISA_ARCOMPACT)
- 		? (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)
-diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
-index 06dea6bce293..3940ceac0bdc 100644
---- a/arch/arm/include/asm/syscall.h
-+++ b/arch/arm/include/asm/syscall.h
-@@ -104,7 +104,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	memcpy(&regs->ARM_r0 + i, args, n * sizeof(args[0]));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	/* ARM tasks don't change audit architectures on the fly. */
- 	return AUDIT_ARCH_ARM;
-diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
-index ad8be16a39c9..1870df03f774 100644
---- a/arch/arm64/include/asm/syscall.h
-+++ b/arch/arm64/include/asm/syscall.h
-@@ -117,9 +117,9 @@ static inline void syscall_set_arguments(struct task_struct *task,
-  * We don't care about endianness (__AUDIT_ARCH_LE bit) here because
-  * AArch64 has the same system calls both on little- and big- endian.
-  */
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
--	if (is_compat_task())
-+	if (is_compat_thread(task_thread_info(task)))
- 		return AUDIT_ARCH_ARM;
- 
- 	return AUDIT_ARCH_AARCH64;
-diff --git a/arch/c6x/include/asm/syscall.h b/arch/c6x/include/asm/syscall.h
-index 39dbd1ef994c..595057191c9c 100644
---- a/arch/c6x/include/asm/syscall.h
-+++ b/arch/c6x/include/asm/syscall.h
-@@ -121,7 +121,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	}
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)
- 		? AUDIT_ARCH_C6XBE : AUDIT_ARCH_C6X;
-diff --git a/arch/csky/include/asm/syscall.h b/arch/csky/include/asm/syscall.h
-index d637445737b7..150ffb894fa2 100644
---- a/arch/csky/include/asm/syscall.h
-+++ b/arch/csky/include/asm/syscall.h
-@@ -70,7 +70,7 @@ syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_CSKY;
- }
-diff --git a/arch/h8300/include/asm/syscall.h b/arch/h8300/include/asm/syscall.h
-index 0a6565d12836..5c2ab1072700 100644
---- a/arch/h8300/include/asm/syscall.h
-+++ b/arch/h8300/include/asm/syscall.h
-@@ -62,7 +62,7 @@ syscall_get_return_value(struct task_struct *task, struct pt_regs *regs)
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_H8300;
- }
-diff --git a/arch/hexagon/include/asm/syscall.h b/arch/hexagon/include/asm/syscall.h
-index c3290c0bc458..94bdfd22f912 100644
---- a/arch/hexagon/include/asm/syscall.h
-+++ b/arch/hexagon/include/asm/syscall.h
-@@ -60,7 +60,7 @@ static inline long syscall_get_return_value(struct task_struct *task,
- 	return regs->r00;
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_HEXAGON;
- }
-diff --git a/arch/ia64/include/asm/syscall.h b/arch/ia64/include/asm/syscall.h
-index 1d0b875fec44..47ab33f5448a 100644
---- a/arch/ia64/include/asm/syscall.h
-+++ b/arch/ia64/include/asm/syscall.h
-@@ -81,7 +81,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	ia64_syscall_get_set_arguments(task, regs, i, n, args, 1);
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_IA64;
- }
-diff --git a/arch/m68k/include/asm/syscall.h b/arch/m68k/include/asm/syscall.h
-index c87b14417753..e5ea2e20d3a5 100644
---- a/arch/m68k/include/asm/syscall.h
-+++ b/arch/m68k/include/asm/syscall.h
-@@ -34,7 +34,7 @@ syscall_get_return_value(struct task_struct *task, struct pt_regs *regs)
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_M68K;
- }
-diff --git a/arch/microblaze/include/asm/syscall.h b/arch/microblaze/include/asm/syscall.h
-index 220decd605a4..77a86fafa974 100644
---- a/arch/microblaze/include/asm/syscall.h
-+++ b/arch/microblaze/include/asm/syscall.h
-@@ -101,7 +101,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- asmlinkage unsigned long do_syscall_trace_enter(struct pt_regs *regs);
- asmlinkage void do_syscall_trace_leave(struct pt_regs *regs);
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_MICROBLAZE;
- }
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 04ab927ff47d..466957d0474b 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -146,14 +146,14 @@ extern const unsigned long sys_call_table[];
- extern const unsigned long sys32_call_table[];
- extern const unsigned long sysn32_call_table[];
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	int arch = AUDIT_ARCH_MIPS;
- #ifdef CONFIG_64BIT
--	if (!test_thread_flag(TIF_32BIT_REGS)) {
-+	if (!test_tsk_thread_flag(task, TIF_32BIT_REGS)) {
- 		arch |= __AUDIT_ARCH_64BIT;
- 		/* N32 sets only TIF_32BIT_ADDR */
--		if (test_thread_flag(TIF_32BIT_ADDR))
-+		if (test_tsk_thread_flag(task, TIF_32BIT_ADDR))
- 			arch |= __AUDIT_ARCH_CONVENTION_MIPS64_N32;
- 	}
- #endif
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index e5ba56c01ee0..e112c525c3a7 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -1272,7 +1272,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
- 		unsigned long args[6];
- 
- 		sd.nr = syscall;
--		sd.arch = syscall_get_arch();
-+		sd.arch = syscall_get_arch(current);
- 		syscall_get_arguments(current, regs, 0, 6, args);
- 		for (i = 0; i < 6; i++)
- 			sd.args[i] = args[i];
-diff --git a/arch/nds32/include/asm/syscall.h b/arch/nds32/include/asm/syscall.h
-index 569149ca25da..e109acd225e6 100644
---- a/arch/nds32/include/asm/syscall.h
-+++ b/arch/nds32/include/asm/syscall.h
-@@ -187,7 +187,7 @@ void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
- 	memcpy(&regs->uregs[0] + i, args, n * sizeof(args[0]));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)
- 		? AUDIT_ARCH_NDS32BE : AUDIT_ARCH_NDS32;
-diff --git a/arch/nios2/include/asm/syscall.h b/arch/nios2/include/asm/syscall.h
-index cf35e210fc4d..f0f6ae208e78 100644
---- a/arch/nios2/include/asm/syscall.h
-+++ b/arch/nios2/include/asm/syscall.h
-@@ -136,7 +136,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	}
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_NIOS2;
- }
-diff --git a/arch/openrisc/include/asm/syscall.h b/arch/openrisc/include/asm/syscall.h
-index 2db9f1cf0694..46b10c674bd2 100644
---- a/arch/openrisc/include/asm/syscall.h
-+++ b/arch/openrisc/include/asm/syscall.h
-@@ -72,7 +72,7 @@ syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
- 	memcpy(&regs->gpr[3 + i], args, n * sizeof(args[0]));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_OPENRISC;
- }
-diff --git a/arch/parisc/include/asm/syscall.h b/arch/parisc/include/asm/syscall.h
-index 477511ff7546..310016e1925d 100644
---- a/arch/parisc/include/asm/syscall.h
-+++ b/arch/parisc/include/asm/syscall.h
-@@ -69,11 +69,11 @@ static inline void syscall_rollback(struct task_struct *task,
- 	/* do nothing */
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	int arch = AUDIT_ARCH_PARISC;
- #ifdef CONFIG_64BIT
--	if (!is_compat_task())
-+	if (!__is_compat_task(task))
- 		arch = AUDIT_ARCH_PARISC64;
- #endif
- 	return arch;
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index 1d03e753391d..70f9e538e1b3 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -110,9 +110,15 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 		regs->orig_gpr3 = args[0];
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
--	int arch = is_32bit_task() ? AUDIT_ARCH_PPC : AUDIT_ARCH_PPC64;
-+	int arch;
-+
-+	if (IS_ENABLED(CONFIG_PPC64) && !test_tsk_thread_flag(task, TIF_32BIT))
-+		arch = AUDIT_ARCH_PPC64;
-+	else
-+		arch = AUDIT_ARCH_PPC;
-+
- #ifdef __LITTLE_ENDIAN__
- 	arch |= __AUDIT_ARCH_LE;
- #endif
-diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
-index bba3da6ef157..ca120a36a037 100644
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -100,7 +100,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	memcpy(&regs->a1 + i * sizeof(regs->a1), args, n * sizeof(regs->a0));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- #ifdef CONFIG_64BIT
- 	return AUDIT_ARCH_RISCV64;
-diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
-index 96f9a9151fde..5a40ea8b90ea 100644
---- a/arch/s390/include/asm/syscall.h
-+++ b/arch/s390/include/asm/syscall.h
-@@ -92,10 +92,10 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 		regs->orig_gpr2 = args[0];
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- #ifdef CONFIG_COMPAT
--	if (test_tsk_thread_flag(current, TIF_31BIT))
-+	if (test_tsk_thread_flag(task, TIF_31BIT))
- 		return AUDIT_ARCH_S390;
- #endif
- 	return AUDIT_ARCH_S390X;
-diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
-index 6e118799831c..08de429eccd4 100644
---- a/arch/sh/include/asm/syscall_32.h
-+++ b/arch/sh/include/asm/syscall_32.h
-@@ -95,7 +95,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	}
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	int arch = AUDIT_ARCH_SH;
- 
-diff --git a/arch/sh/include/asm/syscall_64.h b/arch/sh/include/asm/syscall_64.h
-index 43882580c7f9..9b62a2404531 100644
---- a/arch/sh/include/asm/syscall_64.h
-+++ b/arch/sh/include/asm/syscall_64.h
-@@ -63,7 +63,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	memcpy(&regs->regs[2 + i], args, n * sizeof(args[0]));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	int arch = AUDIT_ARCH_SH;
- 
-diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
-index 053989e3f6a6..9ffb367c17fd 100644
---- a/arch/sparc/include/asm/syscall.h
-+++ b/arch/sparc/include/asm/syscall.h
-@@ -128,10 +128,11 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 		regs->u_regs[UREG_I0 + i + j] = args[j];
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- #if defined(CONFIG_SPARC64) && defined(CONFIG_COMPAT)
--	return in_compat_syscall() ? AUDIT_ARCH_SPARC : AUDIT_ARCH_SPARC64;
-+	return test_tsk_thread_flag(task, TIF_32BIT)
-+		? AUDIT_ARCH_SPARC : AUDIT_ARCH_SPARC64;
- #elif defined(CONFIG_SPARC64)
- 	return AUDIT_ARCH_SPARC64;
- #else
-diff --git a/arch/unicore32/include/asm/syscall.h b/arch/unicore32/include/asm/syscall.h
-index aeebb343255b..56daf3edb8e8 100644
---- a/arch/unicore32/include/asm/syscall.h
-+++ b/arch/unicore32/include/asm/syscall.h
-@@ -38,7 +38,7 @@ syscall_get_return_value(struct task_struct *task, struct pt_regs *regs)
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_UNICORE;
- }
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index d653139857af..435f3f09279c 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -107,7 +107,7 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 	memcpy(&regs->bx + i, args, n * sizeof(args[0]));
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_I386;
- }
-@@ -236,10 +236,12 @@ static inline void syscall_set_arguments(struct task_struct *task,
- 		}
- }
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- 	/* x32 tasks should be considered AUDIT_ARCH_X86_64. */
--	return in_ia32_syscall() ? AUDIT_ARCH_I386 : AUDIT_ARCH_X86_64;
-+	return (IS_ENABLED(CONFIG_IA32_EMULATION) &&
-+		task->thread_info.status & TS_COMPAT)
-+		? AUDIT_ARCH_I386 : AUDIT_ARCH_X86_64;
- }
- #endif	/* CONFIG_X86_32 */
- 
-diff --git a/arch/x86/um/asm/syscall.h b/arch/x86/um/asm/syscall.h
-index ef898af102d1..56a2f0913e3c 100644
---- a/arch/x86/um/asm/syscall.h
-+++ b/arch/x86/um/asm/syscall.h
-@@ -9,7 +9,7 @@ typedef asmlinkage long (*sys_call_ptr_t)(unsigned long, unsigned long,
- 					  unsigned long, unsigned long,
- 					  unsigned long, unsigned long);
- 
--static inline int syscall_get_arch(void)
-+static inline int syscall_get_arch(struct task_struct *task)
- {
- #ifdef CONFIG_X86_32
- 	return AUDIT_ARCH_I386;
-diff --git a/arch/xtensa/include/asm/syscall.h b/arch/xtensa/include/asm/syscall.h
-index 40c6de062ac8..0b4f8cf440d5 100644
---- a/arch/xtensa/include/asm/syscall.h
-+++ b/arch/xtensa/include/asm/syscall.h
-@@ -68,7 +68,7 @@ syscall_get_return_value(struct task_struct *task, struct pt_regs *regs)
- }
- 
- static inline int
--syscall_get_arch(void)
-+syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_XTENSA;
- }
-diff --git a/include/asm-generic/syscall.h b/include/asm-generic/syscall.h
-index fdefe27fa63f..43216b431770 100644
---- a/include/asm-generic/syscall.h
-+++ b/include/asm-generic/syscall.h
-@@ -194,16 +194,17 @@ syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
- 
- /**
-  * syscall_get_arch - return the AUDIT_ARCH for the current system call
-+ * @task:	task of interest, must be blocked
-  *
-  * Returns the AUDIT_ARCH_* based on the system call convention in use.
-  *
-- * It's only valid to call this when current is stopped on entry to a system
-+ * It's only valid to call this when @task is stopped on entry to a system
-  * call, due to %TIF_SYSCALL_TRACE, %TIF_SYSCALL_AUDIT, or %TIF_SECCOMP.
-  *
-  * Architectures which permit CONFIG_HAVE_ARCH_SECCOMP_FILTER must
-  * provide an implementation of this.
-  */
- static int
--syscall_get_arch(void);
-+syscall_get_arch(struct task_struct *task);
- 
- #endif	/* _ASM_GENERIC_SYSCALL_H */
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index b2d1f043f17f..1319e3e7b16c 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -1537,7 +1537,7 @@ void __audit_syscall_entry(int major, unsigned long a1, unsigned long a2,
- 			return;
- 	}
- 
--	context->arch	    = syscall_get_arch();
-+	context->arch	    = syscall_get_arch(current);
- 	context->major      = major;
- 	context->argv[0]    = a1;
- 	context->argv[1]    = a2;
-@@ -2495,7 +2495,7 @@ void audit_seccomp(unsigned long syscall, long signr, int code)
- 		return;
- 	audit_log_task(ab);
- 	audit_log_format(ab, " sig=%ld arch=%x syscall=%ld compat=%d ip=0x%lx code=0x%x",
--			 signr, syscall_get_arch(), syscall,
-+			 signr, syscall_get_arch(current), syscall,
- 			 in_compat_syscall(), KSTK_EIP(current), code);
- 	audit_log_end(ab);
- }
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index f2ae2324c232..77cb87bd2eae 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -82,7 +82,7 @@ static void populate_seccomp_data(struct seccomp_data *sd)
- 	unsigned long args[6];
- 
- 	sd->nr = syscall_get_nr(task, regs);
--	sd->arch = syscall_get_arch();
-+	sd->arch = syscall_get_arch(task);
- 	syscall_get_arguments(task, regs, 0, 6, args);
- 	sd->args[0] = args[0];
- 	sd->args[1] = args[1];
-@@ -529,7 +529,7 @@ static void seccomp_init_siginfo(kernel_siginfo_t *info, int syscall, int reason
- 	info->si_code = SYS_SECCOMP;
- 	info->si_call_addr = (void __user *)KSTK_EIP(current);
- 	info->si_errno = reason;
--	info->si_arch = syscall_get_arch();
-+	info->si_arch = syscall_get_arch(current);
- 	info->si_syscall = syscall;
- }
- 
--- 
-ldv
+It did not, you are wrong. serial_out() calls ingenic_uart_serial_out()
+which unconditionally or's in the UME bit for writes to FCR.
+
+> >   - After your patch serial8250_clear_fifos() only clears the FIFOs if
+> >     the FIFO is already enabled.
+>=20
+> I'd suppose this is OK, since clearing a disabled FIFO makes no sense ?
+
+This is where the brokenness seems to come from. As I said, this would
+be fine according to the PC16550D documentation but I can say based on
+experimentation that it is *not* fine on the JZ4780.
+
+Resetting a disabled FIFO makes perfect sense if it's going to be
+enabled later. That used to happen, and after your patch it doesn't.
+
+> >   - When called from serial8250_do_startup() during boot, the FIFO may
+> >     not be enabled - for example if the bootloader didn't use the FIFO,
+> >     or if the UART is used with 8250_early which zeroes FCR.
+>=20
+> If it's not enabled, do you need to clear it ?
+>=20
+> >   - Therefore after your patch the FIFO reset bits are never set if the
+> >     UART was used with 8250_early, or if it wasn't but the bootloader
+> >     didn't enable the FIFO.
+>=20
+> Hence my question above, do you need to clear the FIFO even if it was
+> not enabled ?
+
+Yes.
+
+What you asked before though was whether we need to disable the FIFO in
+order to clear it, which is a different question.
+
+> > I suspect that you get away with that because according to the PC16550D
+> > documentation the FIFOs should reset when the FIFO enable bit changes,
+> > so when the FIFO is later enabled it gets reset. I suspect that in the
+> > JZ4780 this does not happen, and the FIFO contains garbage. Our previou=
+s
+> > behaviour (always set FCR[2:1] to reset the FIFO) has been around for a
+> > long time, so I would not be surprised to find other devices relying
+> > upon it.
+>=20
+> It is well possible, but I'd like to understand what really happens
+> here, not just guess.
+
+I can only tell you what little the JZ4780 manual says & what actually
+works when I run it on my system. I used the word supect to explain my
+theory, but that's the best we can do with the documentation available.
+
+> > I'm also saying that if the FIFOs are enabled during boot then your
+> > patch will leave them enabled after serial8250_do_startup() calls
+> > serial8250_clear_fifos(), which a comment in serial8250_do_startup()
+> > clearly states is not the expected behaviour:
+>=20
+> In that case, that needs to be fixed. But serial8250_clear_fifos()
+> should only do what the name says -- clear FIFOs -- not disable them.
+
+...which is why I effectively renamed it
+serial8250_clear_and_disable_fifos() in my suggested patch. Did you test
+it? I have no OMAP3 system to check that I didn't break your setup, and
+at this point if I can't be sure it works I'll be submitting a revert of
+your broken patch.
+
+> >> Clear the FIFO buffers and disable them.
+> >> (they will be reenabled in set_termios())
+> >=20
+> > (From https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t/tree/drivers/tty/serial/8250/8250_port.c?h=3Dv4.20-rc6#n2209)
+> >=20
+> > And further, with your patch serial8250_do_shutdown() will leave the
+> > FIFO enabled which again does not match what comments suggest it expect=
+s
+> > ("Disable break condition and FIFOs").
+> >=20
+> >> What exactly does your programming example for the JZ4780 say about th=
+e
+> >> FIFO clearing ? And does it work in that example ?
+> >=20
+> > It says to set FCR[2:1] to reset the FIFO after enabling it, which as
+> > far as I can tell from the PC16550D documentation would not be necessar=
+y
+> > there because when you enable the FIFO it would automatically be reset.
+> > Linux did this until your patch.
+>=20
+> Linux sets the FCR[2:1] if the FIFO is enabled even now.
+
+Correct, but not when the FIFO is disabled in serial8250_do_startup(),
+nor when the FIFO is later enabled in serial8250_do_set_termios().
+
+> >> I just remembered U-Boot has this patch for JZ4780 UART [1], which
+> >> touches the FCR UME bit, so the FCR behavior on JZ4780 does differ fro=
+m
+> >> the generic 8250 core. Could it be that this is what you're hitting ?
+> >=20
+> > No - we already set the UME bit & this has all worked fine until your
+> > patch changed the FIFO reset behaviour.
+>=20
+> The UME bit is in the FCR, serial8250_clear_fifos() originally cleared
+> it, cfr:
+> -               serial_out(p, UART_FCR, 0);
+> in f6aa5beb45be27968a4df90176ca36dfc4363d37 . So the code was originally
+> completely disabling the UART on JZ4780 .
+
+Again, wrong. Look at what serial_out() actually does & see
+ingenic_uart_serial_out(). Again, the Ingenic UARTs have worked fine
+until your patch, and work with mainline after reverting it - the
+problem is *entirely* with the change you made & the UME bit has nothing
+to do with it.
+
+Thanks,
+    Paul

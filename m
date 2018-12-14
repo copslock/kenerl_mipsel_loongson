@@ -1,111 +1,101 @@
-Return-Path: <SRS0=Dbp0=OW=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=qAeu=OX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B190C65BAE
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86BA5C67839
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 05:51:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D178020870
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Dec 2018 20:42:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org D178020870
-Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+	by mail.kernel.org (Postfix) with ESMTP id 49BBB20645
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 05:51:11 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="jAY2/sXn"
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 49BBB20645
+Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=linaro.org
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727160AbeLMUmh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Dec 2018 15:42:37 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:32805 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726401AbeLMUmg (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 13 Dec 2018 15:42:36 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1gXXoL-0003hN-Dt; Thu, 13 Dec 2018 21:42:21 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1gXXoK-0001FF-2n; Thu, 13 Dec 2018 21:42:20 +0100
-Date:   Thu, 13 Dec 2018 21:42:19 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, od@zcrc.me,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
-Message-ID: <20181213204219.onem3q6dcmakusl2@pengutronix.de>
-References: <20181212220922.18759-1-paul@crapouillou.net>
- <20181212220922.18759-16-paul@crapouillou.net>
- <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
- <1544709795.18952.1@crapouillou.net>
+        id S1726919AbeLNFvK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 14 Dec 2018 00:51:10 -0500
+Received: from mail-it1-f193.google.com ([209.85.166.193]:33884 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726662AbeLNFvK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 14 Dec 2018 00:51:10 -0500
+Received: by mail-it1-f193.google.com with SMTP id x124so18129691itd.1
+        for <linux-mips@vger.kernel.org>; Thu, 13 Dec 2018 21:51:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Gzzd+NoopftUP3F1LEhGKqsNdMlAbNMwrc58XPeZ3cY=;
+        b=jAY2/sXnVoO81kuDmOE4YjE6uZ2cz3jXwiBn8AzhJnSPnvce3u0GQPe0oNqUadfLE0
+         cHw/7vf3YXCz0vp7wyFSa59mSYxdsKHahcloPygj8yi0Twpx0vFcga214FvmhTqXZPhn
+         eHA5zZuKB573wAMbb6fLRuDh1tP3yKfTdK864=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Gzzd+NoopftUP3F1LEhGKqsNdMlAbNMwrc58XPeZ3cY=;
+        b=eHBUFlhFNsf8XMh2BSXqYK1KFLEmAOQRXZBdcmPoX7Gkyr5XiTkkrZgYxP1BUhCIuI
+         UKt4V8YczdvHw4A4UO8HU5ox9XeS6ffqf/JmhezvZkWwhsYBLHIMMP4xgz0pyzb5JdaZ
+         twqdtKKse8kD7p6PG0g+b9Wsc5hnJvhc8E11NaRSwZMkJw9s66cceNhlu/BBC7eySbWH
+         x8sDHn79ytBmKZ2hsJL/RQ/FKjZcxyZ2uJ2XPOOWd3NPt1bw4FZbbMLl1SFXRgNW2CjI
+         3Gi5gtmVjVg018+QlVg+2G9wvY/hlZuJR07G0gCnXoCqmdcbUCazmJ4DZyY+POhdpcS5
+         qMeA==
+X-Gm-Message-State: AA+aEWabxDbKsFHH0Fy0AFqItJDBM1Hj5hJVwxULPtkdaok5HG0P6LOL
+        2BbI7C7oODPNBMvm3ivlwI8IgFGXG6acNRLS5PIE4Q==
+X-Google-Smtp-Source: AFSGD/VK/UqnjMhDgfDDGh2avN0vOB4I4qQxCQZChrGZnJ+vmS7H1eObkoEr35/YQBWuNAujLs+07Z+2uHXjUdYMLO0=
+X-Received: by 2002:a05:660c:12c7:: with SMTP id k7mr1982555itd.148.1544766669902;
+ Thu, 13 Dec 2018 21:51:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1544709795.18952.1@crapouillou.net>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@vger.kernel.org
+References: <1544073508-13720-1-git-send-email-firoz.khan@linaro.org>
+ <1544073508-13720-4-git-send-email-firoz.khan@linaro.org> <20181210195144.dvprpyxyddusyb5c@pburton-laptop>
+ <CALxhOng7EzAd2zHKAOj3ipEd6y=DpS2JGo34s4V_cWVgmLjPwg@mail.gmail.com>
+ <20181211185947.gnaachztyh3ils7o@pburton-laptop> <CALxhOngErLD7+CEhgSPwQUnGg7YEFTcH-v6dhR0j55SvEg1FoA@mail.gmail.com>
+ <20181212222834.2zf3rb67fxfcmwuw@pburton-laptop> <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
+ <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
+In-Reply-To: <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
+From:   Firoz Khan <firoz.khan@linaro.org>
+Date:   Fri, 14 Dec 2018 11:20:58 +0530
+Message-ID: <CALxhOnhAP0TRSH=otZNHdLJgy7=Q=hWOXZSNYBvWAuAzEeBzhw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-[Adding Linus Walleij to Cc:]
+Hi Paul,
 
-Hello,
+On Fri, 14 Dec 2018 at 01:45, Paul Burton <paul.burton@mips.com> wrote:
+> I've applied v5 but undone the change from __NR_64_* to __NR_N64_*
+> because it's part of the UAPI & a github code search showed that it's
+> actually used.
+>
+> Could you take a look at this branch & check that you're OK with it
+> before I push it to mips-next?
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git test-syscalls
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/?h=test-syscalls
 
-On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
-> Le jeu. 13 déc. 2018 à 10:24, Uwe Kleine-König
-> <u.kleine-koenig@pengutronix.de> a écrit :
-> > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
-> > >  The PWM in the JZ4725B works the same as in the JZ4740, except that
-> > > it
-> > >  only has 6 channels available instead of 8.
-> > 
-> > this driver is probed only from device tree? If yes, it might be
-> > sensible to specify the number of PWMs there and get it from there.
-> > There doesn't seem to be a generic binding for that, but there are
-> > several drivers that could benefit from it. (This is a bigger project
-> > though and shouldn't stop your patch. Still more as it already got
-> > Thierry's ack.)
-> 
-> I think there needs to be a proper guideline, as there doesn't seem to be
-> a consensus about this. I learned from emails with Rob and Linus (Walleij)
-> that I should not have in devicetree what I can deduce from the compatible
-> string.
+This looks good to me. Please push to mips-next.
 
-I understood them a bit differently. It is ok to deduce things from the
-compatible string. But if you define a generic property (say) "num-pwms"
-that is used uniformly in most bindings this is ok, too. (And then the
-two different devices could use the same compatible.)
-
-An upside of the generic "num-pwms" property is that the pwm core could
-sanity check pwm phandles before passing them to the hardware drivers.
-
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Thanks
+Firoz

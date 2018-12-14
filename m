@@ -2,80 +2,56 @@ Return-Path: <SRS0=qAeu=OX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.9 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86BA5C67839
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 05:51:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F30A3C67839
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 06:57:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 49BBB20645
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 05:51:11 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="jAY2/sXn"
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 49BBB20645
-Authentication-Results: mail.kernel.org; dmarc=fail (p=none dis=none) header.from=linaro.org
+	by mail.kernel.org (Postfix) with ESMTP id 9955120811
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Dec 2018 06:57:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 9955120811
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=denx.de
 Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=linux-mips-owner@vger.kernel.org
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbeLNFvK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 14 Dec 2018 00:51:10 -0500
-Received: from mail-it1-f193.google.com ([209.85.166.193]:33884 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726662AbeLNFvK (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 14 Dec 2018 00:51:10 -0500
-Received: by mail-it1-f193.google.com with SMTP id x124so18129691itd.1
-        for <linux-mips@vger.kernel.org>; Thu, 13 Dec 2018 21:51:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Gzzd+NoopftUP3F1LEhGKqsNdMlAbNMwrc58XPeZ3cY=;
-        b=jAY2/sXnVoO81kuDmOE4YjE6uZ2cz3jXwiBn8AzhJnSPnvce3u0GQPe0oNqUadfLE0
-         cHw/7vf3YXCz0vp7wyFSa59mSYxdsKHahcloPygj8yi0Twpx0vFcga214FvmhTqXZPhn
-         eHA5zZuKB573wAMbb6fLRuDh1tP3yKfTdK864=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Gzzd+NoopftUP3F1LEhGKqsNdMlAbNMwrc58XPeZ3cY=;
-        b=eHBUFlhFNsf8XMh2BSXqYK1KFLEmAOQRXZBdcmPoX7Gkyr5XiTkkrZgYxP1BUhCIuI
-         UKt4V8YczdvHw4A4UO8HU5ox9XeS6ffqf/JmhezvZkWwhsYBLHIMMP4xgz0pyzb5JdaZ
-         twqdtKKse8kD7p6PG0g+b9Wsc5hnJvhc8E11NaRSwZMkJw9s66cceNhlu/BBC7eySbWH
-         x8sDHn79ytBmKZ2hsJL/RQ/FKjZcxyZ2uJ2XPOOWd3NPt1bw4FZbbMLl1SFXRgNW2CjI
-         3Gi5gtmVjVg018+QlVg+2G9wvY/hlZuJR07G0gCnXoCqmdcbUCazmJ4DZyY+POhdpcS5
-         qMeA==
-X-Gm-Message-State: AA+aEWabxDbKsFHH0Fy0AFqItJDBM1Hj5hJVwxULPtkdaok5HG0P6LOL
-        2BbI7C7oODPNBMvm3ivlwI8IgFGXG6acNRLS5PIE4Q==
-X-Google-Smtp-Source: AFSGD/VK/UqnjMhDgfDDGh2avN0vOB4I4qQxCQZChrGZnJ+vmS7H1eObkoEr35/YQBWuNAujLs+07Z+2uHXjUdYMLO0=
-X-Received: by 2002:a05:660c:12c7:: with SMTP id k7mr1982555itd.148.1544766669902;
- Thu, 13 Dec 2018 21:51:09 -0800 (PST)
+        id S1726494AbeLNG5I (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 14 Dec 2018 01:57:08 -0500
+Received: from mx2.mailbox.org ([80.241.60.215]:9810 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726437AbeLNG5H (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 14 Dec 2018 01:57:07 -0500
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id AB7A9A10E7;
+        Fri, 14 Dec 2018 07:57:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
+        with ESMTP id eOUW4smcOwP1; Fri, 14 Dec 2018 07:57:03 +0100 (CET)
+Subject: Re: MIPS (mt7688): EBase change in U-Boot breaks Linux
+To:     Paul Burton <paul.burton@mips.com>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Cc:     U-Boot Mailing List <u-boot@lists.denx.de>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+References: <e4f0fff9-a3c5-85ce-c4be-6e0aa0f74592@denx.de>
+ <d81ac18d-47ed-02ec-bc37-f5a7e0ab9223@gmail.com>
+ <543512d8-91ea-2a49-5423-680860c0ba9f@denx.de>
+ <CACUy__X434rmJnX96i057-ir8yiCBjMac_V41HJ+pyG0xLPcRg@mail.gmail.com>
+ <dad02a31-ed34-f99a-26c5-60e4a7209057@denx.de>
+ <CACUy__XtyDY08KTTMnKoXXKq4oUrNYdRXZOmtuXEmnfD7UveiA@mail.gmail.com>
+ <20181213194740.mtphrijpnkzo2za4@pburton-laptop>
+From:   Stefan Roese <sr@denx.de>
+Message-ID: <4ff76006-c524-ebaa-235a-6b253ce9cc09@denx.de>
+Date:   Fri, 14 Dec 2018 07:56:59 +0100
 MIME-Version: 1.0
-References: <1544073508-13720-1-git-send-email-firoz.khan@linaro.org>
- <1544073508-13720-4-git-send-email-firoz.khan@linaro.org> <20181210195144.dvprpyxyddusyb5c@pburton-laptop>
- <CALxhOng7EzAd2zHKAOj3ipEd6y=DpS2JGo34s4V_cWVgmLjPwg@mail.gmail.com>
- <20181211185947.gnaachztyh3ils7o@pburton-laptop> <CALxhOngErLD7+CEhgSPwQUnGg7YEFTcH-v6dhR0j55SvEg1FoA@mail.gmail.com>
- <20181212222834.2zf3rb67fxfcmwuw@pburton-laptop> <CALxhOnht8H6r38bwm7xqbHuJs6dvLB03GCKyws2cif1mEE+sKA@mail.gmail.com>
- <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
-In-Reply-To: <20181213201540.ae6pxtm2xmrxnaaa@pburton-laptop>
-From:   Firoz Khan <firoz.khan@linaro.org>
-Date:   Fri, 14 Dec 2018 11:20:58 +0530
-Message-ID: <CALxhOnhAP0TRSH=otZNHdLJgy7=Q=hWOXZSNYBvWAuAzEeBzhw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/7] mips: rename macros and files from '64' to 'n64'
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20181213194740.mtphrijpnkzo2za4@pburton-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -83,19 +59,66 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hi Paul,
 
-On Fri, 14 Dec 2018 at 01:45, Paul Burton <paul.burton@mips.com> wrote:
-> I've applied v5 but undone the change from __NR_64_* to __NR_N64_*
-> because it's part of the UAPI & a github code search showed that it's
-> actually used.
->
-> Could you take a look at this branch & check that you're OK with it
-> before I push it to mips-next?
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git test-syscalls
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/log/?h=test-syscalls
+On 13.12.18 20:47, Paul Burton wrote:
+> On Thu, Dec 13, 2018 at 03:23:39PM +0100, Daniel Schwierzeck wrote:
+>>>>>>> Finally I found that this line in U-Boot makes Linux break:
+>>>>>>>
+>>>>>>> arch/mips/lib/traps.c:
+>>>>>>>
+>>>>>>> void trap_init(ulong reloc_addr)
+>>>>>>>        unsigned long ebase = gd->irq_sp;
+>>>>>>>        ...
+>>>>>>>        write_c0_ebase(ebase);
+>>>>>>>
+>>>>>>> This sets EBase to something like 0x87e9b000 on my system (128MiB).
+>>>>>>> And Linux then re-uses this value and copies the exceptions handlers
+>>>>>>> to this address, overwriting random code and leading to an unstable
+>>>>>>> system.
+>>>>>>>
+>>>>>>> So my questions now is, how should this be handled on the MT7688
+>>>>>>> platform instead? One way would be to set EBase back to the
+>>>>>>> original value (0x80000000) before booting into Linux. Another
+>>>>>>> solution would be to add some Linux code like board_ebase_setup()
+>>>>>>> to the MT7688 Linux port.
+>> %
+>>>> I could also prepare a U-Boot patch to restore the original ebase value before
+>>>> handing the control over to the OS.
+>>>
+>>> I'm not so sure, if overwriting 0x80000000 (default value of EBase on
+>>> this SoC) with the exception handler is allowed. Is this address "zero"
+>>> handled somewhat specific in MIPS Linux? AFAICT, the complete DDR
+>>> area on my platform (0x8000.0000 - 0x87ff.ffff) is available for Linux.
+>>> So allocating some memory for this exception handler seems the right
+>>> way to go to me.
+>>
+>> maybe that's why some platforms define a load address of 0x80002000 or similar
+>> to protect this area somehow.
+> 
+> Does this Linux patch help by any chance?
+> 
+> https://git.linux-mips.org/cgit/linux-mti.git/commit/?h=eng-v4.20&id=39e4d339a4540b66e9d9a8ea0da9ee41a21473b4
+> 
+> I'm not sure I remember why I didn't get that upstreamed yet, I probably
+> wanted to research what other systems were doing... Speaking for Malta,
+> the kernel's board support has reserved the start of kseg0 for longer
+> than I've been involved.
 
-This looks good to me. Please push to mips-next.
+No, this patch does not solve this issue (bootup still hangs or crashes
+while mounting the rootfs). I can only assume that its too late to try
+to reserve this memory region as the memblock_reserve() call returns 0
+(no error).
+  
+> An alternative would be for Linux to allocate a page for use with the
+> exception vectors using memblock, and ignore the EBase value U-Boot left
+> us with. But just marking the area U-Boot used as reserved ought to do
+> the trick, and has the advantage of ensuring U-Boot's vectors don't get
+> overwritten before Linux sets up its own which sometimes allows U-Boot
+> to provide some useful output.
 
-Thanks
-Firoz
+I agree that re-using the U-Boot value would be optimal for boot-time
+error printing. But this does not seem to work on our platform AFAICT.
+So how to proceed? Should I enable CONFIG_CPU_MIPSR2_IRQ_VI or #define
+"cpu_has_veic" to 1 as Lantiq does?
+
+Thanks,
+Stefan

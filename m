@@ -2,57 +2,59 @@ Return-Path: <SRS0=bCcf=OZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 909B0C43387
-	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 13:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F7F8C43387
+	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 14:19:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 612ED217F9
-	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 13:36:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ADD14217F9
+	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 14:19:02 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="jjmkWitk"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="kpCkiwt8"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729859AbeLPNgP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 16 Dec 2018 08:36:15 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:38846 "EHLO
+        id S1730518AbeLPOTC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 16 Dec 2018 09:19:02 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:47650 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729822AbeLPNgP (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 16 Dec 2018 08:36:15 -0500
-Date:   Sun, 16 Dec 2018 14:36:03 +0100
+        with ESMTP id S1730181AbeLPOTC (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 16 Dec 2018 09:19:02 -0500
+Date:   Sun, 16 Dec 2018 15:18:52 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v8 12/26] pwm: jz4740: Allow selection of PWM channels 0
- and 1
+Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
 To:     Uwe =?iso-8859-1?q?Kleine-K=F6nig?= 
         <u.kleine-koenig@pengutronix.de>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
         James Hogan <jhogan@kernel.org>,
         Jonathan Corbet <corbet@lwn.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Mathieu Malaterre <malat@debian.org>, ezequiel@collabora.co.uk,
+        prasannatsmkumar@gmail.com, linux-pwm@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, od@zcrc.me
-Message-Id: <1544967364.1649.0@crapouillou.net>
-In-Reply-To: <20181213203243.ucjwqtkyp6aboxp4@pengutronix.de>
+        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
+Message-Id: <1544969932.1649.1@crapouillou.net>
+In-Reply-To: <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
 References: <20181212220922.18759-1-paul@crapouillou.net>
-        <20181212220922.18759-13-paul@crapouillou.net>
-        <20181213091822.r5ilpsllfhzaiqw4@pengutronix.de>
-        <1544709511.18952.0@crapouillou.net>
-        <20181213203243.ucjwqtkyp6aboxp4@pengutronix.de>
+        <20181212220922.18759-16-paul@crapouillou.net>
+        <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
+        <1544709795.18952.1@crapouillou.net>
+        <20181213204219.onem3q6dcmakusl2@pengutronix.de>
+        <CACRpkdbABtDgwKai=8Pfji7qVb-XHsX8pDsuDdS5hhg7qEN0Bw@mail.gmail.com>
+        <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1544967370; bh=EpvwbTzVnoITU+649SqQ6u7xrC4bWXqNFlURw2eu7A8=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=jjmkWitk8ktM+EB+a7sSlaUUhAWz55Y89wD/RHBZ3mODykJ+kVxewxE72no6ys7AI0PiSHB6T6NlQYnodpoQ5dM61DNzyeqm8U2xhiA/QPa9GCIXYXAUwwrfwz/2FvUhUbTW3nSqx2XXqsJMYu/DlVRsn3YhzLGoXBB2zLdPZt0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1544969939; bh=Hq0ZCESR3VxDldevdsZM7ZBAIOVzdtDgctxCR8ptZxw=; h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding; b=kpCkiwt8CzWBqSxf3PO2XKz2pv714bSG/ju7bnOTcthGFgwwX/s/S89ZPxETnVvQu+mZCgmWYFY/fYruHETa+6BD01b8ZDJoHAl0etWfET5yqAvlsF9V1BKhn0PsicOtXTS7sRSzuHiJO2hVto2EJlpt1+mUmFAL75SX6rs40j4=
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -60,145 +62,78 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hi,
 
-Le jeu. 13 d=E9c. 2018 =E0 21:32, Uwe Kleine-K=F6nig=20
+Le ven. 14 d=E9c. 2018 =E0 15:26, Uwe Kleine-K=F6nig=20
 <u.kleine-koenig@pengutronix.de> a =E9crit :
-> On Thu, Dec 13, 2018 at 02:58:31PM +0100, Paul Cercueil wrote:
->>  Hi,
->>=20
->>  Le jeu. 13 d=E9c. 2018 =E0 10:18, Uwe Kleine-K=F6nig
->>  <u.kleine-koenig@pengutronix.de> a =E9crit :
->>  > On Wed, Dec 12, 2018 at 11:09:07PM +0100, Paul Cercueil wrote:
->>  > >  The TCU channels 0 and 1 were previously reserved for system=20
->> tasks,
->>  > > and
->>  > >  thus unavailable for PWM.
+> Hello,
+>=20
+> On Fri, Dec 14, 2018 at 02:50:20PM +0100, Linus Walleij wrote:
+>>  On Thu, Dec 13, 2018 at 9:42 PM Uwe Kleine-K=F6nig
+>>  <u.kleine-koenig@pengutronix.de> wrote:
+>>  > [Adding Linus Walleij to Cc:]
+>>  > On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
+>>  > > Le jeu. 13 d=E9c. 2018 =E0 10:24, Uwe Kleine-K=F6nig
+>>  > > <u.kleine-koenig@pengutronix.de> a =E9crit :
+>>  > > > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
+>>  > > > >  The PWM in the JZ4725B works the same as in the JZ4740,=20
+>> except that
+>>  > > > > it
+>>  > > > >  only has 6 channels available instead of 8.
+>>  > > >
+>>  > > > this driver is probed only from device tree? If yes, it might=20
+>> be
+>>  > > > sensible to specify the number of PWMs there and get it from=20
+>> there.
+>>  > > > There doesn't seem to be a generic binding for that, but=20
+>> there are
+>>  > > > several drivers that could benefit from it. (This is a bigger=20
+>> project
+>>  > > > though and shouldn't stop your patch. Still more as it=20
+>> already got
+>>  > > > Thierry's ack.)
 >>  > >
->>  > >  The driver will now only allow a PWM channel to be requested if
->>  > > memory
->>  > >  resources corresponding to the register area of the channel=20
->> were
->>  > >  supplied to the driver. This allows the TCU channels to be=20
->> reserved
->>  > > for
->>  > >  system tasks from within the devicetree.
->>  > >
->>  > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  > > I think there needs to be a proper guideline, as there doesn't=20
+>> seem to be
+>>  > > a consensus about this. I learned from emails with Rob and=20
+>> Linus (Walleij)
+>>  > > that I should not have in devicetree what I can deduce from the=20
+>> compatible
+>>  > > string.
 >>  >
->>  > While there is someone caring for this driver I'd like to=20
->> complete (a
->>  > bit) my picture about the different capabilities and specialities=20
->> of the
->>  > supported PWMs. So I have a few questions:
+>>  > I understood them a bit differently. It is ok to deduce things=20
+>> from the
+>>  > compatible string. But if you define a generic property (say)=20
+>> "num-pwms"
+>>  > that is used uniformly in most bindings this is ok, too. (And=20
+>> then the
+>>  > two different devices could use the same compatible.)
 >>  >
->>  > Is there a publicly available reference manual for this device?=20
->> (If
->>  > yes, adding a link to the driver would be great.)
+>>  > An upside of the generic "num-pwms" property is that the pwm core=20
+>> could
+>>  > sanity check pwm phandles before passing them to the hardware=20
+>> drivers.
 >>=20
->>  I have them here: https://zcrc.me/~paul/jz_docs/
->=20
-> Is this link good enough to add it to the driver? From a quick view=20
-> I'd
-> say this is another pwm implementation that gets active on=20
-> pwm_disable().
-> Can you confirm this?
-
-It's my website, so if these get moved, I can update the link.
-
-What do you mean it gets active on pwm_disable()? If pwm_disable() gets=20
-called
-the PWM line goes back to inactive state, which is what it should do.
-
->>  > jz4740_pwm_config looks as if the currently running period isn't
->>  > completed before the new config is in effect. Is that correct? If=20
->> yes,
->>  > can this be fixed? A similar question for set_polarity: Does=20
->> setting the
->>  > JZ_TIMER_CTRL_PWM_ACTIVE_LOW bit in the control register take=20
->> effect
->>  > immediately or is this shadowed until the next period starts?
+>>  I don't know if this helps, but in GPIO we have "ngpios" which is
+>>  used to augment an existing block as to the number of lines actually
+>>  used with it.
 >>=20
->>  I don't really know. We only use this driver for a rumble motor and
->>  backlight.
->>  Somebody would have to check with a logic analyzer.
->=20
-> depending on the possible timings you might also be able to test this
-> e.g. by setting:
->=20
-> 	duty_cycle=3D1ms, period=3D5s
->=20
-> and then
->=20
-> 	duty_cycle=3D5s, period=3D5s
->=20
-> . If the implementation is right your display should be dark for=20
-> nearly
-> 5 seconds. (And the second call to pwm_apply should also block until=20
-> the
-> display is on.)
-
-So it switches to full ON as soon as I set the duty cycle to 5s. Same=20
-for
-the polarity, it is updated as soon as the register is written. So the
-registers are not shadowed.
-
->>  > How does the device's output behave after the PWM is disabled?
->>  > Does it complete the currently running period? How does the output
->>  > behave then? (active/inactive/high/low/high-z?)
+>>  The typical case is that an ASIC engineer synthesize a block for
+>>  32 GPIOs but only 12 of them are routed to external pads. So
+>>  we augment the behaviour of that driver to only use 12 of the
+>>  32 lines.
 >>=20
->>  There's a bit to toggle between "graceful" shutdown (bit clear) and=20
->> "abrupt"
->>  shutdown (bit set). TCSR bit 9. I think that graceful shutdown will=20
->> complete
->>  the running period, then keep the level active. Abrupt shutdown=20
->> will keep
->>  the
->>  current level of the line.
+>>  I guess using the remaining 20 lines "works" in a sense but they
+>>  have no practical use and will just bias electrons in the silicon
+>>  for no use.
 >=20
-> Can you confirm the things you think above? I'd like to have them
-> eventually documented in the driver.
-
- From what I can see, with "abrupt" shutdown the line will always=20
-return to
-its inactive state (be it low or high, depending on the polarity).=20
-Setting
-this bit to "graceful" shutdown, the only difference is that the=20
-hardware
-will keep its current state, active or inactive. That's why we use the
-"abrupt" shutdown in the PWM driver.
-
->>  > >  @@ -42,11 +68,7 @@ static int jz4740_pwm_request(struct=20
->> pwm_chip
->>  > > *chip, struct pwm_device *pwm)
->>  > >   	char clk_name[16];
->>  > >   	int ret;
->>  > >
->>  > >  -	/*
->>  > >  -	 * Timers 0 and 1 are used for system tasks, so they are
->>  > > unavailable
->>  > >  -	 * for use as PWMs.
->>  > >  -	 */
->>  > >  -	if (pwm->hwpwm < 2)
->>  > >  +	if (!jz4740_pwm_can_use_chn(jz, pwm->hwpwm))
->>  > >   		return -EBUSY;
->>  >
->>  > Maybe EBUSY isn't the best choice here. If the needed register=20
->> space for
->>  > the requested pwm is not included in the memory resources=20
->> provided to
->>  > the device I'd prefer ENXIO or ENODEV.
->>=20
->>  The idea was that if we don't get the register space we need, that=20
->> means
->>  the channel is used for something else, hence the EBUSY. Should I=20
->> switch
->>  it to ENXIO?
+> This looks very similar to the case under discussion.
 >=20
-> I understand your reasoning, but I think it's misleading. If I get
-> -EBUSY from a PWM driver I'd start searching for another user of said
-> resource. With ENXIO or ENODEV it's more obvious that the driver isn't
-> responsible for the resource that was requested.
+>>  So if the PWM case is something similar, then by all means add
+>>  num-pwms.
+>=20
+> .. or "npwms" to use the same nomenclature as the gpio binding?
 
-OK.
+If we're going to do something like this, should it be the drivers or
+the core (within pwmchip_add) that checks for this "npwms" property?
 
 > Best regards
 > Uwe

@@ -2,149 +2,146 @@ Return-Path: <SRS0=vFX3=O2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=unavailable
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04F68C43387
-	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 07:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 819F1C43387
+	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 08:55:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D07852084D
-	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 07:53:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 58D662084D
+	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 08:55:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731517AbeLQHxg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 17 Dec 2018 02:53:36 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:34517 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726349AbeLQHxf (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 17 Dec 2018 02:53:35 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1gYniN-0000bW-FO; Mon, 17 Dec 2018 08:53:23 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1gYniL-0000uu-UU; Mon, 17 Dec 2018 08:53:21 +0100
-Date:   Mon, 17 Dec 2018 08:53:21 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mathieu Malaterre <malat@debian.org>, ezequiel@collabora.co.uk,
-        prasannatsmkumar@gmail.com, linux-pwm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
-Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
-Message-ID: <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
-References: <20181212220922.18759-1-paul@crapouillou.net>
- <20181212220922.18759-16-paul@crapouillou.net>
- <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
- <1544709795.18952.1@crapouillou.net>
- <20181213204219.onem3q6dcmakusl2@pengutronix.de>
- <CACRpkdbABtDgwKai=8Pfji7qVb-XHsX8pDsuDdS5hhg7qEN0Bw@mail.gmail.com>
- <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
- <1544969932.1649.1@crapouillou.net>
+        id S1726776AbeLQIzP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 17 Dec 2018 03:55:15 -0500
+Received: from mx2.mailbox.org ([80.241.60.215]:14228 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726754AbeLQIzP (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 17 Dec 2018 03:55:15 -0500
+Received: from smtp1.mailbox.org (unknown [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id DF015A131B;
+        Mon, 17 Dec 2018 09:55:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id KmJ9gq1op8Ux; Mon, 17 Dec 2018 09:55:08 +0100 (CET)
+Subject: Re: MIPS (mt7688): EBase change in U-Boot breaks Linux
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+References: <e4f0fff9-a3c5-85ce-c4be-6e0aa0f74592@denx.de>
+ <d81ac18d-47ed-02ec-bc37-f5a7e0ab9223@gmail.com>
+ <543512d8-91ea-2a49-5423-680860c0ba9f@denx.de>
+ <CACUy__X434rmJnX96i057-ir8yiCBjMac_V41HJ+pyG0xLPcRg@mail.gmail.com>
+ <dad02a31-ed34-f99a-26c5-60e4a7209057@denx.de>
+ <CACUy__XtyDY08KTTMnKoXXKq4oUrNYdRXZOmtuXEmnfD7UveiA@mail.gmail.com>
+ <20181213194740.mtphrijpnkzo2za4@pburton-laptop>
+ <4ff76006-c524-ebaa-235a-6b253ce9cc09@denx.de>
+ <20181214212840.xf3kqukf6ryjaiqk@pburton-laptop>
+From:   Stefan Roese <sr@denx.de>
+Message-ID: <1c1ef02f-2ab5-2a92-101e-f0873ba9e6cc@denx.de>
+Date:   Mon, 17 Dec 2018 09:55:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1544969932.1649.1@crapouillou.net>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@vger.kernel.org
+In-Reply-To: <20181214212840.xf3kqukf6ryjaiqk@pburton-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sun, Dec 16, 2018 at 03:18:52PM +0100, Paul Cercueil wrote:
-> Hi,
+Hi Paul.
+
+On 14.12.18 22:28, Paul Burton wrote:
+> On Fri, Dec 14, 2018 at 07:56:59AM +0100, Stefan Roese wrote:
+>>> Does this Linux patch help by any chance?
+>>>
+>>> https://git.linux-mips.org/cgit/linux-mti.git/commit/?h=eng-v4.20&id=39e4d339a4540b66e9d9a8ea0da9ee41a21473b4
+>>>
+>>> I'm not sure I remember why I didn't get that upstreamed yet, I probably
+>>> wanted to research what other systems were doing... Speaking for Malta,
+>>> the kernel's board support has reserved the start of kseg0 for longer
+>>> than I've been involved.
+>>
+>> No, this patch does not solve this issue (bootup still hangs or crashes
+>> while mounting the rootfs). I can only assume that its too late to try
+>> to reserve this memory region as the memblock_reserve() call returns 0
+>> (no error).
 > 
-> Le ven. 14 déc. 2018 à 15:26, Uwe Kleine-König
-> <u.kleine-koenig@pengutronix.de> a écrit :
-> > Hello,
-> > 
-> > On Fri, Dec 14, 2018 at 02:50:20PM +0100, Linus Walleij wrote:
-> > > On Thu, Dec 13, 2018 at 9:42 PM Uwe Kleine-König
-> > > <u.kleine-koenig@pengutronix.de> wrote:
-> > > > [Adding Linus Walleij to Cc:]
-> > > > On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
-> > > > > Le jeu. 13 déc. 2018 à 10:24, Uwe Kleine-König
-> > > > > <u.kleine-koenig@pengutronix.de> a écrit :
-> > > > > > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
-> > > > > > >  The PWM in the JZ4725B works the same as in the JZ4740,
-> > > > > > >  except that it only has 6 channels available instead of
-> > > > > > >  8.
-> > > > > >
-> > > > > > this driver is probed only from device tree? If yes, it
-> > > > > > might be sensible to specify the number of PWMs there and
-> > > > > > get it from there.
-> > > > > > There doesn't seem to be a generic binding for that, but there are
-> > > > > > several drivers that could benefit from it. (This is a bigger project
-> > > > > > though and shouldn't stop your patch. Still more as it already got
-> > > > > > Thierry's ack.)
-> > > > >
-> > > > > I think there needs to be a proper guideline, as there doesn't seem to be
-> > > > > a consensus about this. I learned from emails with Rob and  Linus (Walleij)
-> > > > > that I should not have in devicetree what I can deduce from the compatible
-> > > > > string.
-> > > >
-> > > > I understood them a bit differently. It is ok to deduce things from the
-> > > > compatible string. But if you define a generic property (say) "num-pwms"
-> > > > that is used uniformly in most bindings this is ok, too. (And then the
-> > > > two different devices could use the same compatible.)
-> > > >
-> > > > An upside of the generic "num-pwms" property is that the pwm core could
-> > > > sanity check pwm phandles before passing them to the hardware drivers.
-> > > 
-> > >  I don't know if this helps, but in GPIO we have "ngpios" which is
-> > >  used to augment an existing block as to the number of lines actually
-> > >  used with it.
-> > > 
-> > >  The typical case is that an ASIC engineer synthesize a block for
-> > >  32 GPIOs but only 12 of them are routed to external pads. So
-> > >  we augment the behaviour of that driver to only use 12 of the
-> > >  32 lines.
-> > > 
-> > >  I guess using the remaining 20 lines "works" in a sense but they
-> > >  have no practical use and will just bias electrons in the silicon
-> > >  for no use.
-> > 
-> > This looks very similar to the case under discussion.
-> > 
-> > >  So if the PWM case is something similar, then by all means add
-> > >  num-pwms.
-> > 
-> > .. or "npwms" to use the same nomenclature as the gpio binding?
+> Hmm, OK. Do you know what is getting overwritten? Is it part of the
+> kernel binary itself?
+
+Okay, I did a bit more research and debugging here. MIPS sets
+CONFIG_ARCH_DISCARD_MEMBLOCK in general, which results in free'ing
+the reserved memory region(s) via memblock_discard() at a later boot
+stage.
+
+I also changed arch/mips/Kconfig so that ARCH_DISCARD_MEMBLOCK is
+not defined, but this did not solve the issue either. I'm not sure
+why ARCH_DISCARD_MEMBLOCK is defined for MIPS. Here a log from
+the system running with ARCH_DISCARD_MEMBLOCK disabled and EBase
+set to some area where booting does work (for test purpose only):
+
+root@mt7688:~# cat /sys/kernel/debug/memblock/
+memory    reserved
+root@mt7688:~# cat /sys/kernel/debug/memblock/memory
+    0: 0x00000000..0x07ffffff
+root@mt7688:~# cat /sys/kernel/debug/memblock/reserved
+    0: 0x02220000..0x02220fff
+
+memblock really only seems to be suitable for early memory handling.
+Reserving memory for the complete OS lifetime does not work (AFAICT).
+Perhaps moving to CMA would help here.
+
+So back to your question: It's not kernel memory that is overwritten
+at e.g. 0x06f5f000 (128MiB memory) but its some userspace memory allocated
+dynamically when starting into the mount process of the rootfs. This
+memory region is *not* revered at that stage any more. memblock does not
+seem to be the correct way to reserve areas here.
+  
+>>> An alternative would be for Linux to allocate a page for use with the
+>>> exception vectors using memblock, and ignore the EBase value U-Boot left
+>>> us with. But just marking the area U-Boot used as reserved ought to do
+>>> the trick, and has the advantage of ensuring U-Boot's vectors don't get
+>>> overwritten before Linux sets up its own which sometimes allows U-Boot
+>>> to provide some useful output.
+>>
+>> I agree that re-using the U-Boot value would be optimal for boot-time
+>> error printing. But this does not seem to work on our platform AFAICT.
+>> So how to proceed? Should I enable CONFIG_CPU_MIPSR2_IRQ_VI or #define
+>> "cpu_has_veic" to 1 as Lantiq does?
 > 
-> If we're going to do something like this, should it be the drivers or
-> the core (within pwmchip_add) that checks for this "npwms" property?
+> I think the answer to the question above will be helpful - if it's the
+> kernel binary itself getting overwritten then we have 2 options:
+> 
+>    1) Move the kernel, ie. change load-y in arch/mips/ralink/Platform.
+> 
+>    2) Have Linux recognize that the address in EBase is unsuitable &
+>       allocate a new page.
+> 
+> Or perhaps even both - having Linux recognize & avoid the problem seems
+> good for robustness, but if the kernel binary is overwriting the
+> exception vectors it might be useful to move the kernel anyway so that
+> we don't prevent U-Boot's vectors from working in between loading the
+> kernel & booting it.
+> 
+> If it's not the kernel binary overwriting the vectors & then being
+> overwritten, then I'd be interested in knowing what is in that memory.
+> We shouldn't have allocated much of anything this early, but a possible
+> fix might be to reserve the page EBase resides in from bootmem_init().
 
-Of course this should be done in the core. The driver than can rely on
-the validity of the index. But as I wrote before, this shouldn't stop
-your patch from going in.
+That does not help (see comments about memblock usage above). I could
+add a check, if EBase resides in the system memory and if this is the
+case, allocate a page and move EBase to this new location.
 
-But if Thierry agrees that this npmws (or num-pwms) is a good idea, it
-would be great to start early to convert drivers.
+What do you think? Did I misinterpret this memblock usage on MIPS? Do
+you have other ideas on how to solve this issue?
 
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Thanks,
+Stefan

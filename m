@@ -1,142 +1,207 @@
-Return-Path: <SRS0=bCcf=OZ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=vFX3=O2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89253C43387
-	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 22:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87A7EC43387
+	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 07:43:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2F223206BA
-	for <linux-mips@archiver.kernel.org>; Sun, 16 Dec 2018 22:35:17 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="f6N7pYKQ"
+	by mail.kernel.org (Postfix) with ESMTP id 558262084D
+	for <linux-mips@archiver.kernel.org>; Mon, 17 Dec 2018 07:43:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730888AbeLPWfQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 16 Dec 2018 17:35:16 -0500
-Received: from mail-eopbgr700114.outbound.protection.outlook.com ([40.107.70.114]:30413
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730758AbeLPWfQ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 16 Dec 2018 17:35:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2OmO7ZPO2Yp4yjNqxO9lyZlft7PpxNWkQCgrCGllNpo=;
- b=f6N7pYKQjWMIesCNoi4JGpQQV8W7DMxuikGmkEbXqeyM3GqOgzryvgvTYZ+/E6OZWEp38yYpookms0JQzVJ5GEYOB8zOt9NuzL0pXu3SXeCqeF2aEDzJKvB1Tf2c2BtWEprOBwEQwzHkRZYFK/nhq8Dv/MHOsNiKlDF3rCY0Sng=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1728.namprd22.prod.outlook.com (10.164.206.158) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1425.19; Sun, 16 Dec 2018 22:35:12 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435%7]) with mapi id 15.20.1425.021; Sun, 16 Dec 2018
- 22:35:12 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-CC:     Marek Vasut <marex@denx.de>,
-        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        Daniel Jedrychowski <avistel@gmail.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Ezequiel Garcia <ezequiel@collabora.com>
-Subject: Re: [PATCH] Revert "serial: 8250: Fix clearing FIFOs in RS485 mode
- again"
-Thread-Topic: [PATCH] Revert "serial: 8250: Fix clearing FIFOs in RS485 mode
- again"
-Thread-Index: AQHUlXtT5YTLq052+E6wpTcC1lM1kqWB0eqAgAAQjYCAAAPdgIAAAhmAgAAIv4CAAAErAIAAAeYA
-Date:   Sun, 16 Dec 2018 22:35:12 +0000
-Message-ID: <20181216223510.hxsdotf332ousinh@pburton-laptop>
-References: <20181213174834.kxdy6fphaeoivqgh@pburton-laptop>
- <20181216200833.27928-1-paul.burton@mips.com>
- <f5a76d73-862f-3ebc-cd07-effc5c432103@denx.de>
- <20181216213133.kwe24pif3v4wcgwp@pburton-laptop>
- <949fdd3d-535e-d235-f406-d5bde4658c5e@denx.de>
- <CAAEAJfAad75bHX39ETCdVv9vP0dF7PLz2vvFLLqgtyikPHqJyA@mail.gmail.com>
- <20181216222411.5jkexuaqxpfudj7b@pburton-laptop>
- <CAAEAJfAQ9=B6sm=Ard+YTDN5g5r03o=t9xU3Nu2QaKrXXZ4pGw@mail.gmail.com>
-In-Reply-To: <CAAEAJfAQ9=B6sm=Ard+YTDN5g5r03o=t9xU3Nu2QaKrXXZ4pGw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR05CA0028.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::41) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2601:647:4100:4687:84d1:277a:c6e5:ae34]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1728;6:nythox7llOxJaj+VQ8Q1USnz+TQIDc2NSXzMmITKhBUu70tOtQALfG2h5NMmceW2Esun6sHklNLvaCigh8lztCp5RVdvtF/sQwpf6oMyMIF8aEVCE1QPhENvc69P0nlp8JRtHS78KbppiiJe6252OfAD9VW8JQdcBS3hzV2L7iqpOSVxOwRaOgusedQjQXU/ysZFe6hnoLvAoJIgi2kTuxaz50IzyoP1OBokiA1qkPDVMtNHPYXtd7RHq+5TznBp+gDDWF6uQ4W1L4D6C9GY+/PbdsaqBBtT0L7ApsBT+R6a8VyiQRCxjAn49FX65pRSGhZXm50XzyalxARsfevfWToZ+crcw/BOHyCYg9IBCk5k6+7hiJYD107byZkDjsd+EMx0FTloXTeI5+0pezJES+X3YUQ+STKqH6E1AsyNy42ihhK3a8djyfKNFC4/gVq6aMhOrsBVu8eAZp+U+TC/Sg==;5:XHSSoaEuqisjKfUUvPNAUgojkbbEzeaCWdROm+x/s63VRJNF9igWnLIwBQYMLVHY4x4kKxBX3ZNlW3wZXmz+C3U/n2Mj+PGpqD5DQocDz6jt/cw9eGRkKX36l8oroR4aNgEhtcCafFudg9xeySwliJEME78/DU76oUs15XoMuOc=;7:yiLHEpKID0YIRrJM1qWQSgBpQo4lDCnmJsN8OEV0SSsLlZ0u5xDs0/QFMg4mg6PRAC6ENYprsghuMkbynemS5ryIIAXwqVbdloa6Pnn/B1rpbJIj3IUwIKQoyVJVLRUmDiMlQC9cCnltTc5MV24eFg==
-x-ms-office365-filtering-correlation-id: 305ad8c4-5368-47af-c854-08d663a6bddb
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1728;
-x-ms-traffictypediagnostic: MWHPR2201MB1728:
-x-microsoft-antispam-prvs: <MWHPR2201MB1728C0EBC4767A1716759AC7C1A30@MWHPR2201MB1728.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(6040522)(2401047)(5005006)(8121501046)(93006095)(3231475)(944501520)(52105112)(3002001)(10201501046)(148016)(149066)(150057)(6041310)(2016111802025)(20161123558120)(20161123564045)(20161123562045)(20161123560045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1728;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1728;
-x-forefront-prvs: 0888B1D284
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(366004)(396003)(376002)(136003)(39830400003)(189003)(199004)(476003)(5660300001)(508600001)(71190400001)(14454004)(11346002)(446003)(54906003)(105586002)(6116002)(966005)(106356001)(316002)(1076002)(42882007)(97736004)(46003)(81166006)(81156014)(58126008)(53936002)(229853002)(9686003)(186003)(6306002)(76176011)(8676002)(6436002)(6916009)(33896004)(6506007)(102836004)(386003)(6512007)(25786009)(99286004)(6246003)(4326008)(39060400002)(52116002)(8936002)(6486002)(93886005)(2906002)(33716001)(305945005)(256004)(486006)(71200400001)(7736002)(68736007)(44832011);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1728;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: ltgI4Sy0Bpl0xuKIsJr6M210lsSXOEYbM4QivGHALrozYA0bG+91cL+5t9l4p7uw0fQ/NTNu2mdPsQ7rsS7XWP32uEb4TK8ouWQJPEd0O+9B6ObeU9298HaXmWb6iWtBw32K9oMdbU5Z4yGZYLL6eNKi9ix8C+AlaMisUnA8sp9i01vOlOZ91PlvOWxjXMHsVDo2wVCbdiJIRXBhePOhpZhn2UCqNk4MTDUyjVhdc3IGmviFQDSRBpxMxLI6DN23J10DQSee+IUICcr1t5zmxlG5WkN+w/fjifwKHdDp1Oj49mcRXn3srJlAQITVgBiZ
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <CE4E5AEA69002C469A7FED8C8B44C52B@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1731507AbeLQHni (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 17 Dec 2018 02:43:38 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:50371 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726323AbeLQHnh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 17 Dec 2018 02:43:37 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1gYnYg-0007x4-Pw; Mon, 17 Dec 2018 08:43:22 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1gYnYc-0000eS-P6; Mon, 17 Dec 2018 08:43:18 +0100
+Date:   Mon, 17 Dec 2018 08:43:18 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org, od@zcrc.me
+Subject: Re: [PATCH v8 12/26] pwm: jz4740: Allow selection of PWM channels 0
+ and 1
+Message-ID: <20181217074318.y3mtn5aqmnknae3d@pengutronix.de>
+References: <20181212220922.18759-1-paul@crapouillou.net>
+ <20181212220922.18759-13-paul@crapouillou.net>
+ <20181213091822.r5ilpsllfhzaiqw4@pengutronix.de>
+ <1544709511.18952.0@crapouillou.net>
+ <20181213203243.ucjwqtkyp6aboxp4@pengutronix.de>
+ <1544967364.1649.0@crapouillou.net>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 305ad8c4-5368-47af-c854-08d663a6bddb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Dec 2018 22:35:12.4272
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1728
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1544967364.1649.0@crapouillou.net>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Ezequiel,
+Hello Paul,
 
-On Sun, Dec 16, 2018 at 07:28:22PM -0300, Ezequiel Garcia wrote:
-> On Sun, 16 Dec 2018 at 19:24, Paul Burton <paul.burton@mips.com> wrote:
-> > This helps, but it only addresses one part of one of the 4 reasons I
-> > listed as motivation for my revert. For example serial8250_do_shutdown(=
-)
-> > also clearly intends to disable the FIFOs.
-> >
->=20
-> OK. So, let's fix that :-)
+On Sun, Dec 16, 2018 at 02:36:03PM +0100, Paul Cercueil wrote:
+> Le jeu. 13 déc. 2018 à 21:32, Uwe Kleine-König
+> <u.kleine-koenig@pengutronix.de> a écrit :
+> > On Thu, Dec 13, 2018 at 02:58:31PM +0100, Paul Cercueil wrote:
+> > >  Hi,
+> > > 
+> > >  Le jeu. 13 déc. 2018 à 10:18, Uwe Kleine-König
+> > >  <u.kleine-koenig@pengutronix.de> a écrit :
+> > >  > On Wed, Dec 12, 2018 at 11:09:07PM +0100, Paul Cercueil wrote:
+> > >  > >  The TCU channels 0 and 1 were previously reserved for system
+> > > tasks,
+> > >  > > and
+> > >  > >  thus unavailable for PWM.
+> > >  > >
+> > >  > >  The driver will now only allow a PWM channel to be requested if
+> > >  > > memory
+> > >  > >  resources corresponding to the register area of the channel
+> > > were
+> > >  > >  supplied to the driver. This allows the TCU channels to be
+> > > reserved
+> > >  > > for
+> > >  > >  system tasks from within the devicetree.
+> > >  > >
+> > >  > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > >  >
+> > >  > While there is someone caring for this driver I'd like to
+> > > complete (a
+> > >  > bit) my picture about the different capabilities and specialities
+> > > of the
+> > >  > supported PWMs. So I have a few questions:
+> > >  >
+> > >  > Is there a publicly available reference manual for this device?
+> > > (If
+> > >  > yes, adding a link to the driver would be great.)
+> > > 
+> > >  I have them here: https://zcrc.me/~paul/jz_docs/
+> > 
+> > Is this link good enough to add it to the driver? From a quick view I'd
+> > say this is another pwm implementation that gets active on
+> > pwm_disable().
+> > Can you confirm this?
+> 
+> It's my website, so if these get moved, I can update the link.
+> 
+> What do you mean it gets active on pwm_disable()? If pwm_disable() gets
+> called the PWM line goes back to inactive state, which is what it
+> should do.
 
-I already did, or at least tried to, on Thursday [1].
+The register description for TCSRn.PWM_EN reads:
 
-> By all means, it would be really nice to push forward and fix the garbage
-> issue on JZ4780, as well as the transmission issue on AM335x.
->
-> AM335x is a wildly popular platform, and it's not funny to break it.
+	1: PWM pin output enable
+	0: PWM pin output disable, and the PWM pin will be set to the
+	   initial level according to INITL
 
-Well, clearly not if it was broken in v4.10 & only just fixed..? And
-from Marek's commit message the patch in v4.10 doesn't break the whole
-system just RS485.
+As I read the manual (but that differes from the driver) you should use
+INITL=1 for an uninverted PWM such that the period starts with the
+output being 1. And with that I'd expect that the output goes high on
+disable. Given that the driver inverts this and sets INITL (called
+JZ_TIMER_CTRL_PWM_ACTIVE_LOW in the driver) for an inverted pwm that
+behaviour is ok. With this approach the bug is not the level when
+pwm_disable was called but that the period doesn't start with the active
+part of the period.
 
-> So, let's please stop discussing which board we'll break and just fix bot=
-h.
+> > >  > jz4740_pwm_config looks as if the currently running period isn't
+> > >  > completed before the new config is in effect. Is that correct? If
+> > > yes,
+> > >  > can this be fixed? A similar question for set_polarity: Does
+> > > setting the
+> > >  > JZ_TIMER_CTRL_PWM_ACTIVE_LOW bit in the control register take
+> > > effect
+> > >  > immediately or is this shadowed until the next period starts?
+> > > 
+> > >  I don't really know. We only use this driver for a rumble motor and
+> > >  backlight.
+> > >  Somebody would have to check with a logic analyzer.
+> > 
+> > depending on the possible timings you might also be able to test this
+> > e.g. by setting:
+> > 
+> > 	duty_cycle=1ms, period=5s
+> > 
+> > and then
+> > 
+> > 	duty_cycle=5s, period=5s
+> > 
+> > . If the implementation is right your display should be dark for nearly
+> > 5 seconds. (And the second call to pwm_apply should also block until the
+> > display is on.)
+> 
+> So it switches to full ON as soon as I set the duty cycle to 5s. Same for
+> the polarity, it is updated as soon as the register is written. So the
+> registers are not shadowed.
 
-I completely agree that would be ideal and I wrote a patch hoping to do
-that on Thursday, but didn't get any response on testing. It's late in
-the cycle hence a revert made sense. Simple as that.
+Then I think the right thing to do is to gracefully disable the hardware
+on a duty/period change first to ensure the currently running period is
+completed before the next configuration gets active.
 
-Thanks,
-    Paul
+> > >  > How does the device's output behave after the PWM is disabled?
+> > >  > Does it complete the currently running period? How does the output
+> > >  > behave then? (active/inactive/high/low/high-z?)
+> > > 
+> > >  There's a bit to toggle between "graceful" shutdown (bit clear) and
+> > > "abrupt"
+> > >  shutdown (bit set). TCSR bit 9. I think that graceful shutdown will
+> > > complete
+> > >  the running period, then keep the level active. Abrupt shutdown
+> > > will keep
+> > >  the
+> > >  current level of the line.
+> > 
+> > Can you confirm the things you think above? I'd like to have them
+> > eventually documented in the driver.
+> 
+> From what I can see, with "abrupt" shutdown the line will always return to
+> its inactive state (be it low or high, depending on the polarity). Setting
+> this bit to "graceful" shutdown, the only difference is that the hardware
+> will keep its current state, active or inactive. That's why we use the
+> "abrupt" shutdown in the PWM driver.
 
-[1] https://lore.kernel.org/lkml/20181213014805.77u5dzydo23cm6fq@pburton-la=
-ptop/
+That sounds backwards from your last mail and the reference manual. As I
+read the manual "graceful" means the period is completed until FULL
+matches. And I understand "aprupt" as "immediatly freeze". If this is
+the case the names in the manual are well chosen.
+
+For the pwm framework the intended behaviour is the graceful one. (For
+both, disable and duty/period change.)
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

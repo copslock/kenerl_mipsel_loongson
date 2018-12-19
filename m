@@ -7,59 +7,59 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2838FC43444
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B79A9C43387
+	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EA99621841
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 84FE421852
+	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:11 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hyTSbmdn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYE7FrNj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728151AbeLSHIJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 19 Dec 2018 02:08:09 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:52221 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728141AbeLSHIJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 19 Dec 2018 02:08:09 -0500
-Received: by mail-wm1-f68.google.com with SMTP id b11so4889317wmj.1;
-        Tue, 18 Dec 2018 23:08:08 -0800 (PST)
+        id S1728141AbeLSHIK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 19 Dec 2018 02:08:10 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40034 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728139AbeLSHIK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 19 Dec 2018 02:08:10 -0500
+Received: by mail-wr1-f66.google.com with SMTP id p4so18326290wrt.7
+        for <linux-mips@vger.kernel.org>; Tue, 18 Dec 2018 23:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=vKTUZ4jxMu7q6W0p5Lc6TisV9hX+M4ixTYtAmBCXrfY=;
-        b=hyTSbmdndbAfo9EceETIXWLz9w1SBAzddMF0B6XwzhXnUy6F2vd0vYWF93QSwLnWm0
-         8fMyectv/MTBaK9XSvAYmXhy38wFHlkaJasLneVaGObOA+VuGaYYVSL2+C1IgOK9cTkl
-         9FwRTK23sbjpB2zH34OBYczJ5x0NjGZzQ3UQyQANxAIs/WfSGCNF7fFgE5GXa8CiVLLs
-         Ebm02H75vfKWXHdQZwSPPQ5O7TjwgkLT/ikZzJLTS1/picpfoxj0CN+P0zUxMs5GYL3j
-         PUBmDLKrJtwXqqGmNVQHwMsLCWoY6DY/T+lF8HqcfgH33hWA8UefRrT0IFN8vMhdR12C
-         +oPw==
+        bh=hst+F6VKhDFpZObL3jgNAlAblZFRxOaBP89DJzo+N5U=;
+        b=OYE7FrNjE5TCyPx7Bfn3JPdd9rnDbOxu/GT+GtR+TQxXlN2WC3IxZXkJ4HmkiU6gEU
+         T2bgSaBqALN3wvMKtTdTBbuSC96wBW7v0t6Z/TGHEryWIAhDimfcHuegWCW4hHxgSvpe
+         23+ZSpJUG2Ylv/yHYQUAcCKbHacpJoMtLi8uhJIE4R5Z2C48w/jMPsVc0t96HS8w8hVw
+         oqYMv0IPVbXdIaiBt49AZrlOaR1gVZqnQVEEgcNdqi8CMUNOLGooVDkquK+GDl/+J1+b
+         RuWxYW9qDho2HUfvQILMo0/rWYR85AMe9kFlZO1DGZiOiCUDKYtz2kxsHS7NYHVckx/f
+         yFAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=vKTUZ4jxMu7q6W0p5Lc6TisV9hX+M4ixTYtAmBCXrfY=;
-        b=aK7h2o7B/Kh9EM/javvrDa+nZAmS4suNRdxmSLgshRYIVYGLH/x7/Q5oCRWZMsjWFS
-         HfJ8LX+ZrIcz69bt5ECO4PLtuH0rv+exzsLL0hUAvnwRhuR0UXXMYpzpS4ZJF2DLR/NC
-         qUSPZnWSmzftHr+5pTsw90ZyUDV77zUfFV57w43CdwxZhNmU7n7SZQhDO6VoC+OCbjbr
-         aMy5GxkRfGd7F4cxgZ23uwcZKgj6aCl0AEWMwOSVe2Gx/QHe+sITbF/b4ccegBkJbph/
-         KjTC5UEM3kCtnBESJUxNACeeMqnN3iH9lG2ApEZdLvWPmWgPzE3gkc8g+kAp59qmESh6
-         QQGA==
-X-Gm-Message-State: AA+aEWZHv7qGYq0aWk3bjqDQ8H7szESSEdi5JM2gSAn4S//Q6zbhCM7c
-        RrDbhRCNN1X4oz7mj/jDd1dbemYg
-X-Google-Smtp-Source: AFSGD/XosRE82Tb04H+cg4NVYPX4NnIOOBh5uP/MNxJoYR1JSP1C/kW2TDopxyS8/rq/lOfQsD8IVQ==
-X-Received: by 2002:a1c:6e06:: with SMTP id j6mr6084714wmc.3.1545203287286;
+        bh=hst+F6VKhDFpZObL3jgNAlAblZFRxOaBP89DJzo+N5U=;
+        b=MIWkLCaoZYdumorRbT1zX23/cDOMtavKp80fQMklI3rTrDFHK20inB+uAaIUH54e8u
+         PA8gl4EWTnBwN9kssoo90UL6El/KvIbU7RzbUNA8Zy0w0mtci4pCbeLSpfDsaGEXBGkT
+         cBOULK7d6Qv7Rh+b7NWNtlPWNGGN+o5zwp/kkFsZvTfNf8sL48eDBqhX+g4PFkL60vPm
+         LuVyuHdhoBNcRsHfnqD/s0B1be/TVTKqC9Mx1Tdwi9BG4yg7E0Us/noUFenKff3VPx5i
+         A0eFHqLiKzds8OiruXmC67CfW4GRdPlyI0VCQnCyLb74vjN6RI4bKPjeOGfmBXSVwVOT
+         qugQ==
+X-Gm-Message-State: AA+aEWZz/mEoCF7K7nYsStzphkNOjb6qxxAT3bTeIn6Hm0yWgsnk/v4w
+        d84EP7Xi4G2XljKwJtYklWGOKZQV
+X-Google-Smtp-Source: AFSGD/URZHY+4lsifIQHmhzD3oZhuBhR9Y05+u9mV2XDVD0a8zIX55zbByR9BfsQsgKlDGjzvzbR9A==
+X-Received: by 2002:adf:9521:: with SMTP id 30mr16495503wrs.192.1545203287876;
         Tue, 18 Dec 2018 23:08:07 -0800 (PST)
 Received: from flagship2.speedport.ip (p200300C20BD333581B9ECEB655B1C7D2.dip0.t-ipconnect.de. [2003:c2:bd3:3358:1b9e:ceb6:55b1:c7d2])
-        by smtp.gmail.com with ESMTPSA id s16sm3245724wrt.77.2018.12.18.23.08.06
+        by smtp.gmail.com with ESMTPSA id s16sm3245724wrt.77.2018.12.18.23.08.07
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Dec 2018 23:08:06 -0800 (PST)
+        Tue, 18 Dec 2018 23:08:07 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@vger.kernel.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>, netdev@vger.kernel.org
-Subject: [PATCH 2/5] net: drivers/amd: restore access to MIPS Alchemy platform
-Date:   Wed, 19 Dec 2018 08:08:00 +0100
-Message-Id: <20181219070803.449981-3-manuel.lauss@gmail.com>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 3/5] MIPS: Alchemy: drop DB1000 IrDA support bits
+Date:   Wed, 19 Dec 2018 08:08:01 +0100
+Message-Id: <20181219070803.449981-4-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20181219070803.449981-1-manuel.lauss@gmail.com>
 References: <20181219070803.449981-1-manuel.lauss@gmail.com>
@@ -70,30 +70,101 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The MIPS Alchemy platform needs access to the au1000_eth.c
-driver, which resides in the AMD driver directory (as the
-chips were at a time made by AMD).
+The IrDA drivers are gone, drop the now unused DB1000 board
+support for it.
 
-Cc: netdev@vger.kernel.org
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- drivers/net/ethernet/amd/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/alchemy/devboards/db1000.c | 58 ----------------------------
+ 1 file changed, 58 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/Kconfig b/drivers/net/ethernet/amd/Kconfig
-index 9e5cf5583c87..2bd93c7def99 100644
---- a/drivers/net/ethernet/amd/Kconfig
-+++ b/drivers/net/ethernet/amd/Kconfig
-@@ -7,7 +7,8 @@ config NET_VENDOR_AMD
- 	default y
- 	depends on DIO || MACH_DECSTATION || MVME147 || ATARI || SUN3 || \
- 		   SUN3X || SBUS || PCI || ZORRO || (ISA && ISA_DMA_API) || \
--		   (ARM && ARCH_EBSA110) || ISA || EISA || PCMCIA || ARM64
-+		   (ARM && ARCH_EBSA110) || ISA || EISA || PCMCIA || ARM64 || \
-+		   MIPS_ALCHEMY
- 	---help---
- 	  If you have a network (Ethernet) chipset belonging to this class,
- 	  say Y.
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 13e3c84859fe..aab842a8ddf3 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -389,58 +389,6 @@ static struct platform_device db1100_mmc1_dev = {
+ 
+ /******************************************************************************/
+ 
+-static void db1000_irda_set_phy_mode(int mode)
+-{
+-	unsigned short mask = BCSR_RESETS_IRDA_MODE_MASK | BCSR_RESETS_FIR_SEL;
+-
+-	switch (mode) {
+-	case AU1000_IRDA_PHY_MODE_OFF:
+-		bcsr_mod(BCSR_RESETS, mask, BCSR_RESETS_IRDA_MODE_OFF);
+-		break;
+-	case AU1000_IRDA_PHY_MODE_SIR:
+-		bcsr_mod(BCSR_RESETS, mask, BCSR_RESETS_IRDA_MODE_FULL);
+-		break;
+-	case AU1000_IRDA_PHY_MODE_FIR:
+-		bcsr_mod(BCSR_RESETS, mask, BCSR_RESETS_IRDA_MODE_FULL |
+-					    BCSR_RESETS_FIR_SEL);
+-		break;
+-	}
+-}
+-
+-static struct au1k_irda_platform_data db1000_irda_platdata = {
+-	.set_phy_mode	= db1000_irda_set_phy_mode,
+-};
+-
+-static struct resource au1000_irda_res[] = {
+-	[0] = {
+-		.start	= AU1000_IRDA_PHYS_ADDR,
+-		.end	= AU1000_IRDA_PHYS_ADDR + 0x0fff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1000_IRDA_TX_INT,
+-		.end	= AU1000_IRDA_TX_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1000_IRDA_RX_INT,
+-		.end	= AU1000_IRDA_RX_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device db1000_irda_dev = {
+-	.name	= "au1000-irda",
+-	.id	= -1,
+-	.dev	= {
+-		.platform_data = &db1000_irda_platdata,
+-	},
+-	.resource	= au1000_irda_res,
+-	.num_resources	= ARRAY_SIZE(au1000_irda_res),
+-};
+-
+-/******************************************************************************/
+-
+ static struct ads7846_platform_data db1100_touch_pd = {
+ 	.model		= 7846,
+ 	.vref_mv	= 3300,
+@@ -497,15 +445,10 @@ static struct platform_device *db1x00_devs[] = {
+ 	&db1x00_audio_dev,
+ };
+ 
+-static struct platform_device *db1000_devs[] = {
+-	&db1000_irda_dev,
+-};
+-
+ static struct platform_device *db1100_devs[] = {
+ 	&au1100_lcd_device,
+ 	&db1100_mmc0_dev,
+ 	&db1100_mmc1_dev,
+-	&db1000_irda_dev,
+ };
+ 
+ int __init db1000_dev_setup(void)
+@@ -565,7 +508,6 @@ int __init db1000_dev_setup(void)
+ 		d1 = 3; /* GPIO number, NOT irq! */
+ 		s0 = AU1000_GPIO1_INT;
+ 		s1 = AU1000_GPIO4_INT;
+-		platform_add_devices(db1000_devs, ARRAY_SIZE(db1000_devs));
+ 	} else if ((board == BCSR_WHOAMI_PB1500) ||
+ 		   (board == BCSR_WHOAMI_PB1500R2)) {
+ 		c0 = AU1500_GPIO203_INT;
 -- 
 2.20.0
 

@@ -2,372 +2,326 @@ Return-Path: <SRS0=x683=O4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B104DC43387
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4F83C43387
+	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 09:56:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6A16C21841
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 07:08:13 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DpHHZQt+"
+	by mail.kernel.org (Postfix) with ESMTP id 972A421873
+	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 09:56:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbeLSHIN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 19 Dec 2018 02:08:13 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:34275 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728139AbeLSHIN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 19 Dec 2018 02:08:13 -0500
-Received: by mail-wr1-f67.google.com with SMTP id j2so18357174wrw.1
-        for <linux-mips@vger.kernel.org>; Tue, 18 Dec 2018 23:08:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0rdFdeR5wsN1QZtfW2Lzo8NR0lTcORoDhBaQZrBtVuo=;
-        b=DpHHZQt+8Iw9kujgNZCAva560JJ05CwuKmTpOKa6Y/zcbjErU1BV0yZ92GRVAJk0T0
-         eoOJ8UGz0bqGYZIqQ1fkL0npQzzZWpcZAXue485haCmw/AhBicfbafcZRjmO1/f3ZF5d
-         buO/iN4rqHG4LdzOtL+fBs1j6GGQgH6kfz4LnChT2oSfbUvjBLGs7kc6ANK9tDRkY6B2
-         bl4R/xVHvDOrnQ6pZAMmxRbvJpIExyc4QN60NkYl2+njgEj67kievUapC30XhJsaaLF9
-         Ic+ozYXxqYVAY4FaOQFW+vNMg0+gaSsQlxnPJuECysEC4uVkBCMheQ/joyTUvmVQo3Od
-         qtmg==
+        id S1728186AbeLSJ4w (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 19 Dec 2018 04:56:52 -0500
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:38745 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727963AbeLSJ4v (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 19 Dec 2018 04:56:51 -0500
+Received: by mail-vs1-f66.google.com with SMTP id x64so11886828vsa.5;
+        Wed, 19 Dec 2018 01:56:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0rdFdeR5wsN1QZtfW2Lzo8NR0lTcORoDhBaQZrBtVuo=;
-        b=G8ClF3V55wlIsHIgSJZFvmk+1563D+iUJWCajGNiFCygukHSiBHL3nqEXtRS8YzLHD
-         RUrYVjpNda/x9KsKrSVtmrWc4/2Y2H08ctNt1nfTH6ZDlM8regZHyqgpolas0NJF6o2n
-         QKKeYpjLHqpI9S635SL/3puoZ7AmvLqFxmDlNL9AAiVVlJ6EtQpzVGnA6h9mVvVXAaX2
-         YzgB2tIlDKmyjvE8wz+a2eHCsAThElY+8Ym386hrdrLi7687eZMyTQ1i1QyItvh892Al
-         aIxXDZdpd2HIuurkKK5+joQCSvhrLFXP10lVCPT7gG7pMB2sP1B00ecU8P6GFeCBQ2OF
-         4YDw==
-X-Gm-Message-State: AA+aEWbqLUjgkKM/chONuSO+8x9P+tU+n9ifqBJmGp8kOME/MVKckm6r
-        7JKpAvd48X4yJKrkcT1BEeQ9IgoI
-X-Google-Smtp-Source: AFSGD/V1mknNDvCTRK2XNF3OGR98ndNmHsIiV+hbVJmJYi8ugUErZcrBme1Hzo6F5cS4W34WZUhNEQ==
-X-Received: by 2002:adf:9061:: with SMTP id h88mr17069701wrh.65.1545203288980;
-        Tue, 18 Dec 2018 23:08:08 -0800 (PST)
-Received: from flagship2.speedport.ip (p200300C20BD333581B9ECEB655B1C7D2.dip0.t-ipconnect.de. [2003:c2:bd3:3358:1b9e:ceb6:55b1:c7d2])
-        by smtp.gmail.com with ESMTPSA id s16sm3245724wrt.77.2018.12.18.23.08.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Dec 2018 23:08:08 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@vger.kernel.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 5/5] MIPS: Alchemy: update dma masks for devboard devices
-Date:   Wed, 19 Dec 2018 08:08:03 +0100
-Message-Id: <20181219070803.449981-6-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20181219070803.449981-1-manuel.lauss@gmail.com>
-References: <20181219070803.449981-1-manuel.lauss@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TE8P/S7H651ZvhFeMtHpwvmwJEI2CFOdDKeehk4IurY=;
+        b=P8GktdPjrx/GVrkn/MayU8NefuDgl+ofpxTGnaZIM3r8dMqvtpudZWXKxpZ0TYMG+k
+         SNiyQv8j0s/T35mAA36oJUwkZPY/smdRmyVuJiYcjuRp/X+EL+aXP/mpBHQqzfixsfwD
+         3H3fUMFIzkuQ/mMd+qUV3TCc53Gx8z09HsEVXNFmITRlvYzBUSqMX271FCeUBUuzwC03
+         4dM0W1nP4Pubx9tuIzIO6EKwIbH11qC1jkPu2qyYsniDkqaLz0njeymdCGuiDJILTa+Z
+         xnOH7zH02d60n8kLi6EqQqIBn/4rCQP2QFIA/HwhTo4Y+h+eOoDL5QfA6FElAN4DrXfo
+         bAPA==
+X-Gm-Message-State: AA+aEWa2Y/kqnkuyjiS9MD1z/ey6IUStaITusjsvGWKPsr83aot849OH
+        PZEOGK+PUe9CsmcxXd8PyYVRUfNu21aRgF6epgdKvFA0
+X-Google-Smtp-Source: AFSGD/Xtmo6GQNVhu2v/Cj09j1UMvZtlqsim3VgiGpTJLLZ4awj5wxIl0uJTxOJytJyI7I0rKjSwacMk2EdFaESGdZA=
+X-Received: by 2002:a67:b60d:: with SMTP id d13mr10109039vsm.152.1545213409003;
+ Wed, 19 Dec 2018 01:56:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <f322eb9ee0cac75f98d188b46843c2df00485f35.camel@hammerspace.com>
+ <20181217185506.22976-1-geert@linux-m68k.org> <f09223381a1afe2de79c55603279da176a1783d9.camel@hammerspace.com>
+In-Reply-To: <f09223381a1afe2de79c55603279da176a1783d9.camel@hammerspace.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 19 Dec 2018 10:56:37 +0100
+Message-ID: <CAMuHMdWr0OY=T85N5n5EUSf_36KdS3491uVR5oumXds+c6Yw2g@mail.gmail.com>
+Subject: Re: NFS/TCP crashes on MIPS/RBTX4927 in v4.20-rcX (bisected)
+To:     Trond Myklebust <trondmy@hammerspace.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+        "anemo@mba.ocn.ne.jp" <anemo@mba.ocn.ne.jp>,
+        "paul.burton@mips.com" <paul.burton@mips.com>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Fix the DMA masks for sound and mmc devices.
+Any comments from the iovec experts?
+This is a regression in v4.20-rc1.
 
-Verified on DB1300 and DB1500.
+Thanks!
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
- arch/mips/alchemy/devboards/db1000.c | 18 +++++++++++-------
- arch/mips/alchemy/devboards/db1200.c | 24 +++++++++++-------------
- arch/mips/alchemy/devboards/db1300.c | 23 +++++++++++++++++++----
- arch/mips/alchemy/devboards/db1550.c | 13 +++++++++++--
- 4 files changed, 52 insertions(+), 26 deletions(-)
+On Mon, Dec 17, 2018 at 8:01 PM Trond Myklebust <trondmy@hammerspace.com> wrote:
+> On Mon, 2018-12-17 at 19:55 +0100, Geert Uytterhoeven wrote:
+> > (For the newly added CCs, first message was
+> > https://lore.kernel.org/lkml/CAMuHMdVJr0PwvJg3FeTCy7vxuyY1=S1tPLHO7hPsoZX4wZ+-cQ@mail.gmail.com/)
+> >
+> > > On Mon, Dec 17, 2018 at 3:51 PM Trond Myklebust <
+> > > trondmy@hammerspace.com> wrote:
+> > > > On Mon, 2018-12-17 at 15:03 +0100, Geert Uytterhoeven wrote:
+> > > > > On Wed, Dec 5, 2018 at 3:47 PM Geert Uytterhoeven <
+> > > > > geert@linux-m68k.org> wrote:
+> > > > > > On Wed, Dec 5, 2018 at 2:45 PM Trond Myklebust <
+> > > > > > trondmy@hammerspace.com> wrote:
+> > > > > > > On Wed, 2018-12-05 at 14:41 +0100, Geert Uytterhoeven
+> > > > > > > wrote:
+> > > > > > > > On Wed, Dec 5, 2018 at 2:11 PM Atsushi Nemoto <
+> > > > > > > > anemo@mba.ocn.ne.jp>
+> > > > > > > > wrote:
+> > > > > > > > > On Tue, 4 Dec 2018 14:53:07 +0100, Geert Uytterhoeven <
+> > > > > > > > > geert@linux-m68k.org> wrote:
+> > > > > > > > > > I found similar crashes in a report from 2006, but of
+> > > > > > > > > > course the
+> > > > > > > > > > code
+> > > > > > > > > > has changed too much to apply the solution proposed
+> > > > > > > > > > there
+> > > > > > > > > > (
+> > > > > > > > > > https://www.linux-mips.org/archives/linux-mips/2006-09/msg00169.html
+> > > > > > > > > > ).
+> > > > > > > > > >
+> > > > > > > > > > Userland is Debian 8 (the last release supporting
+> > > > > > > > > > "old"
+> > > > > > > > > > MIPS).
+> > > > > > > > > > My kernel is based on v4.20.0-rc5, but the issue
+> > > > > > > > > > happens
+> > > > > > > > > > with
+> > > > > > > > > > v4.20-rc1,
+> > > > > > > > > > too.
+> > > > > > > > > >
+> > > > > > > > > > However, I noticed it works in v4.19! Hence I've
+> > > > > > > > > > bisected
+> > > > > > > > > > this,
+> > > > > > > > > > to commit
+> > > > > > > > > > 277e4ab7d530bf28 ("SUNRPC: Simplify TCP receive code
+> > > > > > > > > > by
+> > > > > > > > > > switching
+> > > > > > > > > > to using
+> > > > > > > > > > iterators").
+> > > > > > > > > >
+> > > > > > > > > > Dropping the ",tcp" part from the nfsroot parameter
+> > > > > > > > > > also
+> > > > > > > > > > fixes
+> > > > > > > > > > the issue.
+> > > > > > > > > >
+> > > > > > > > > > Given RBTX4927 is little endian, just like my
+> > > > > > > > > > arm/arm64
+> > > > > > > > > > boards,
+> > > > > > > > > > it's probably
+> > > > > > > > > > not an endianness issue.  Sparse didn't show anything
+> > > > > > > > > > suspicious
+> > > > > > > > > > before/after
+> > > > > > > > > > the guilty commit.
+> > > > > > > > > >
+> > > > > > > > > > Do you have a clue?
+> > > > > > > > >
+> > > > > > > > > If it was a cache issue, disabling i-cache or d-cache
+> > > > > > > > > completely
+> > > > > > > > > might
+> > > > > > > > > help understanding the problem.  I added TXx9 specific
+> > > > > > > > > "icdisable"
+> > > > > > > > > and
+> > > > > > > > > "dcdisable" kernel options for debugging long ago.
+> > > > > > > > >
+> > > > > > > > > I hope these options still works correctly with recent
+> > > > > > > > > kernel
+> > > > > > > > > but
+> > > > > > > > > not
+> > > > > > > > > sure.
+> > > > > > > > >
+> > > > > > > > > Also, disabling i-cache makes your board VERY slow, of
+> > > > > > > > > course.
+> > > > > > > >
+> > > > > > > > Thanks!
+> > > > > > > >
+> > > > > > > > When using these options, I do see a slowdown in early
+> > > > > > > > boot,
+> > > > > > > > but the
+> > > > > > > > issue
+> > > > > > > > is still there.
+> > > > > > > >
+> > > > > > > > My next guess is an unaligned access not using
+> > > > > > > > {get,put}_unaligned(),
+> > > > > > > > which
+> > > > > > > > doesn't seem to work on tx4927, but doesn't cause an
+> > > > > > > > exception
+> > > > > > > > neither.
+> > > > > > >
+> > > > > > > Can you try my linux-next branch on git.linux-nfs.org? It
+> > > > > > > contains a
+> > > > > > > fixes for a hang that results from the above commit.
+> > > > > > >
+> > > > > > > git pull git://git.linux-nfs.org/projects/trondmy/linux-
+> > > > > > > nfs.git
+> > > > > > > linux-next
+> > > > > >
+> > > > > > Thanks for the suggestion, but unfortunately it doesn't help.
+> > > > >
+> > > > > In the mean time, I tried your newer linux-next, no change.
+> > > > > I tried several other things:
+> > > > >   - remove the packed attribute (why did you add that?),
+> > > >
+> > > > The packed attribute allows us to avoid a series of copy
+> > > > operations
+> > > > when decoding the first three elements of a RPC over TCP header
+> > > > (which
+> > > > is why they are all declared as big endian). The alternative
+> > > > would be
+> > > > to have a 12 byte buffer there for temporary storage, and then a
+> > > > duplicate set of 3 32-bit words into which we copy the buffer
+> > > > contents
+> > > > after extracting them from the (non-blocking) socket.
+> > > >
+> > > > >   - verify (at runtime) that all accesses to fraghdr, xid, and
+> > > > > calldir
+> > > > > are aligned,
+> > > > >   - enable RPC_DEBUG_DATA, nothing fishy seen at first sight.
+> > > > >
+> > > > > Is anyone else seeing this on MIPS, or any other platform?
+> > > > > Does mounting NFS with -o nfsvers=3,tcp work on other MIPS
+> > > > > platforms?
+> > > >
+> > > > I have no access to any MIPS hardware for the purposes of testing
+> > > > so
+> > > > that would be a question for the community.
+> > > >
+> > > > One thing that I have noticed is that unlike the old code, the
+> > > > bvec
+> > > > 'generic' code does appear to fail to call flush_dcache_page().
+> > > > Could
+> > > > that be causing the problem here? If so, why would that not be a
+> > > > problem in the context of regular block I/O?
+> >
+> > Thanks for the hint!
+> >
+> > It wasn't clear to me where exactly the old code called
+> > flush_dcache_page(), but as rpcrdma_inline_fixup() calls it in
+> > between
+> > copying to a page, and unmapping the page, I added a call to
+> > flush_dcache_page() to all functions in lib/iov_iter.c that map a
+> > page
+> > and copy to it, cfr. the patch below.
+> >
+> > And suddenly NFS root over TCP is working again!
+>
+> Hah!
+>
+> >
+> > Note that I have no idea if it affects regular block I/O, as my
+> > RBTX4927
+> > does not have block devices.
+> >
+> > Also note that this platform does not use highmem.
+> >
+> > So, where's the proper place to fix this?
+> > Thanks in advance!
+>
+> Given that one of the main use cases for iov_iter is the page cache, I
+> think that your patch below is the correct one. However perhaps Al can
+> comment?
+>
+> >
+> > diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> > index 54c248526b55fc49..5be62db33414d3f9 100644
+> > --- a/lib/iov_iter.c
+> > +++ b/lib/iov_iter.c
+> > @@ -277,6 +277,7 @@ static size_t copy_page_from_iter_iovec(struct
+> > page *page, size_t offset, size_t
+> >                       to += copy;
+> >                       bytes -= copy;
+> >               }
+> > +             flush_dcache_page(page);
+> >               if (likely(!bytes)) {
+> >                       kunmap_atomic(kaddr);
+> >                       goto done;
+> > @@ -463,6 +464,7 @@ static void memcpy_to_page(struct page *page,
+> > size_t offset, const char *from, s
+> >  {
+> >       char *to = kmap_atomic(page);
+> >       memcpy(to + offset, from, len);
+> > +     flush_dcache_page(page);
+> >       kunmap_atomic(to);
+> >  }
+> >
+> > @@ -470,6 +472,7 @@ static void memzero_page(struct page *page,
+> > size_t offset, size_t len)
+> >  {
+> >       char *addr = kmap_atomic(page);
+> >       memset(addr + offset, 0, len);
+> > +     flush_dcache_page(page);
+> >       kunmap_atomic(addr);
+> >  }
+> >
+> > @@ -580,6 +583,7 @@ static size_t csum_and_copy_to_pipe_iter(const
+> > void *addr, size_t bytes,
+> >               char *p = kmap_atomic(pipe->bufs[idx].page);
+> >               next = csum_partial_copy_nocheck(addr, p + r, chunk,
+> > 0);
+> >               sum = csum_block_add(sum, next, off);
+> > +             flush_dcache_page(pipe->bufs[idx].page);
+> >               kunmap_atomic(p);
+> >               i->idx = idx;
+> >               i->iov_offset = r + chunk;
+> > @@ -628,6 +632,7 @@ static unsigned long memcpy_mcsafe_to_page(struct
+> > page *page, size_t offset,
+> >
+> >       to = kmap_atomic(page);
+> >       ret = memcpy_mcsafe(to + offset, from, len);
+> > +     flush_dcache_page(page);
+> >       kunmap_atomic(to);
+> >
+> >       return ret;
+> > @@ -894,6 +899,7 @@ size_t copy_page_from_iter(struct page *page,
+> > size_t offset, size_t bytes,
+> >       if (i->type & (ITER_BVEC|ITER_KVEC)) {
+> >               void *kaddr = kmap_atomic(page);
+> >               size_t wanted = _copy_from_iter(kaddr + offset, bytes,
+> > i);
+> > +             flush_dcache_page(page);
+> >               kunmap_atomic(kaddr);
+> >               return wanted;
+> >       } else
+> > @@ -958,6 +964,7 @@ size_t iov_iter_copy_from_user_atomic(struct page
+> > *page,
+> >                                v.bv_offset, v.bv_len),
+> >               memcpy((p += v.iov_len) - v.iov_len, v.iov_base,
+> > v.iov_len)
+> >       )
+> > +     flush_dcache_page(page);
+> >       kunmap_atomic(kaddr);
+> >       return bytes;
+> >  }
+> > @@ -1494,6 +1501,7 @@ size_t csum_and_copy_to_iter(const void *addr,
+> > size_t bytes, __wsum *csum,
+> >               next = csum_partial_copy_nocheck((from += v.bv_len) -
+> > v.bv_len,
+> >                                                p + v.bv_offset,
+> >                                                v.bv_len, 0);
+> > +             flush_dcache_page(v.bv_page);
+> >               kunmap_atomic(p);
+> >               sum = csum_block_add(sum, next, off);
+> >               off += v.bv_len;
 
-diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
-index aab842a8ddf3..7f99592cf56b 100644
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -82,6 +82,8 @@ static int db1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
- 	return -1;
- }
- 
-+static u64 au1xxx_all_dmamask = DMA_BIT_MASK(32);
-+
- static struct resource alchemy_pci_host_res[] = {
- 	[0] = {
- 		.start	= AU1500_PCI_PHYS_ADDR,
-@@ -120,13 +122,11 @@ static struct resource au1100_lcd_resources[] = {
- 	}
- };
- 
--static u64 au1100_lcd_dmamask = DMA_BIT_MASK(32);
--
- static struct platform_device au1100_lcd_device = {
- 	.name		= "au1100-lcd",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1100_lcd_dmamask,
-+		.dma_mask		= &au1xxx_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 	},
- 	.num_resources	= ARRAY_SIZE(au1100_lcd_resources),
-@@ -170,6 +170,10 @@ static struct platform_device db1x00_codec_dev = {
- 
- static struct platform_device db1x00_audio_dev = {
- 	.name		= "db1000-audio",
-+	.dev = {
-+		.dma_mask		= &au1xxx_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- /******************************************************************************/
-@@ -338,13 +342,11 @@ static struct resource au1100_mmc0_resources[] = {
- 	}
- };
- 
--static u64 au1xxx_mmc_dmamask =	 DMA_BIT_MASK(32);
--
- static struct platform_device db1100_mmc0_dev = {
- 	.name		= "au1xxx-mmc",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1xxx_mmc_dmamask,
-+		.dma_mask		= &au1xxx_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1100_mmc_platdata[0],
- 	},
-@@ -379,7 +381,7 @@ static struct platform_device db1100_mmc1_dev = {
- 	.name		= "au1xxx-mmc",
- 	.id		= 1,
- 	.dev = {
--		.dma_mask		= &au1xxx_mmc_dmamask,
-+		.dma_mask		= &au1xxx_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1100_mmc_platdata[1],
- 	},
-@@ -416,6 +418,8 @@ static struct platform_device db1100_spi_dev = {
- 	.id		= 0,
- 	.dev		= {
- 		.platform_data	= &db1100_spictl_pd,
-+		.dma_mask		= &au1xxx_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 	},
- };
- 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index 4bf02f96ab7f..fb11c578e178 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -153,6 +153,8 @@ int __init db1200_board_setup(void)
- 
- /******************************************************************************/
- 
-+static u64 au1200_all_dmamask = DMA_BIT_MASK(32);
-+
- static struct mtd_partition db1200_spiflash_parts[] = {
- 	{
- 		.name	= "spi_flash",
-@@ -324,13 +326,11 @@ static struct resource db1200_ide_res[] = {
- 	},
- };
- 
--static u64 au1200_ide_dmamask = DMA_BIT_MASK(32);
--
- static struct platform_device db1200_ide_dev = {
- 	.name		= "pata_platform",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1200_ide_dmamask,
-+		.dma_mask		= &au1200_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200_ide_info,
- 	},
-@@ -566,13 +566,11 @@ static struct resource au1200_mmc0_resources[] = {
- 	}
- };
- 
--static u64 au1xxx_mmc_dmamask =	 DMA_BIT_MASK(32);
--
- static struct platform_device db1200_mmc0_dev = {
- 	.name		= "au1xxx-mmc",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1xxx_mmc_dmamask,
-+		.dma_mask		= &au1200_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200_mmc_platdata[0],
- 	},
-@@ -607,7 +605,7 @@ static struct platform_device pb1200_mmc1_dev = {
- 	.name		= "au1xxx-mmc",
- 	.id		= 1,
- 	.dev = {
--		.dma_mask		= &au1xxx_mmc_dmamask,
-+		.dma_mask		= &au1200_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200_mmc_platdata[1],
- 	},
-@@ -657,13 +655,11 @@ static struct resource au1200_lcd_res[] = {
- 	}
- };
- 
--static u64 au1200_lcd_dmamask = DMA_BIT_MASK(32);
--
- static struct platform_device au1200_lcd_dev = {
- 	.name		= "au1200-lcd",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1200_lcd_dmamask,
-+		.dma_mask		= &au1200_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200fb_pd,
- 	},
-@@ -717,11 +713,9 @@ static struct au1550_spi_info db1200_spi_platdata = {
- 	.activate_cs	= db1200_spi_cs_en,
- };
- 
--static u64 spi_dmamask = DMA_BIT_MASK(32);
--
- static struct platform_device db1200_spi_dev = {
- 	.dev	= {
--		.dma_mask		= &spi_dmamask,
-+		.dma_mask		= &au1200_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200_spi_platdata,
- 	},
-@@ -766,6 +760,10 @@ static struct platform_device db1200_audio_dev = {
- static struct platform_device db1200_sound_dev = {
- 	/* name assigned later based on switch setting */
- 	.id		= 1,	/* PSC ID */
-+	.dev = {
-+		.dma_mask		= &au1200_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- static struct platform_device db1200_stac_dev = {
-diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-index ad7dd8e89598..8ac1f56ee57d 100644
---- a/arch/mips/alchemy/devboards/db1300.c
-+++ b/arch/mips/alchemy/devboards/db1300.c
-@@ -148,6 +148,8 @@ static void __init db1300_gpio_config(void)
- 
- /**********************************************************************/
- 
-+static u64 au1300_all_dmamask = DMA_BIT_MASK(32);
-+
- static void au1300_nand_cmd_ctrl(struct nand_chip *this, int cmd,
- 				 unsigned int ctrl)
- {
-@@ -438,6 +440,8 @@ static struct resource db1300_ide_res[] = {
- 
- static struct platform_device db1300_ide_dev = {
- 	.dev	= {
-+		.dma_mask		= &au1300_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data	= &db1300_ide_info,
- 	},
- 	.name		= "pata_platform",
-@@ -560,7 +564,9 @@ static struct resource au1300_sd1_res[] = {
- 
- static struct platform_device db1300_sd1_dev = {
- 	.dev = {
--		.platform_data	= &db1300_sd1_platdata,
-+		.dma_mask		= &au1300_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+		.platform_data		= &db1300_sd1_platdata,
- 	},
- 	.name		= "au1xxx-mmc",
- 	.id		= 1,
-@@ -625,7 +631,9 @@ static struct resource au1300_sd0_res[] = {
- 
- static struct platform_device db1300_sd0_dev = {
- 	.dev = {
--		.platform_data	= &db1300_sd0_platdata,
-+		.dma_mask		= &au1300_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+		.platform_data		= &db1300_sd0_platdata,
- 	},
- 	.name		= "au1xxx-mmc",
- 	.id		= 0,
-@@ -652,10 +660,18 @@ static struct platform_device db1300_i2sdma_dev = {
- 
- static struct platform_device db1300_sndac97_dev = {
- 	.name		= "db1300-ac97",
-+	.dev = {
-+		.dma_mask		= &au1300_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- static struct platform_device db1300_sndi2s_dev = {
- 	.name		= "db1300-i2s",
-+	.dev = {
-+		.dma_mask		= &au1300_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- /**********************************************************************/
-@@ -700,13 +716,12 @@ static struct resource au1300_lcd_res[] = {
- 	}
- };
- 
--static u64 au1300_lcd_dmamask = DMA_BIT_MASK(32);
- 
- static struct platform_device db1300_lcd_dev = {
- 	.name		= "au1200-lcd",
- 	.id		= 0,
- 	.dev = {
--		.dma_mask		= &au1300_lcd_dmamask,
-+		.dma_mask		= &au1300_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1300fb_pd,
- 	},
-diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
-index 7700ad0b93b4..3e0c75c0ece0 100644
---- a/arch/mips/alchemy/devboards/db1550.c
-+++ b/arch/mips/alchemy/devboards/db1550.c
-@@ -82,6 +82,8 @@ int __init db1550_board_setup(void)
- 
- /*****************************************************************************/
- 
-+static u64 au1550_all_dmamask = DMA_BIT_MASK(32);
-+
- static struct mtd_partition db1550_spiflash_parts[] = {
- 	{
- 		.name	= "spi_flash",
-@@ -269,11 +271,10 @@ static struct au1550_spi_info db1550_spi_platdata = {
- 	.activate_cs	= db1550_spi_cs_en,
- };
- 
--static u64 spi_dmamask = DMA_BIT_MASK(32);
- 
- static struct platform_device db1550_spi_dev = {
- 	.dev	= {
--		.dma_mask		= &spi_dmamask,
-+		.dma_mask		= &au1550_all_dmamask,
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1550_spi_platdata,
- 	},
-@@ -397,10 +398,18 @@ static struct platform_device db1550_i2sdma_dev = {
- 
- static struct platform_device db1550_sndac97_dev = {
- 	.name		= "db1550-ac97",
-+	.dev = {
-+		.dma_mask		= &au1550_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- static struct platform_device db1550_sndi2s_dev = {
- 	.name		= "db1550-i2s",
-+	.dev = {
-+		.dma_mask		= &au1550_all_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
- };
- 
- /**********************************************************************/
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.20.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

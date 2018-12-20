@@ -2,212 +2,213 @@ Return-Path: <SRS0=YrfY=O5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FROM,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55E47C43387
-	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 896ABC43387
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:45:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1C6DE2186A
-	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:39:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 46832218D9
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:45:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="je/p97iS"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="b5TEUy65"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388027AbeLTRjJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 20 Dec 2018 12:39:09 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:35358 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387920AbeLTRjJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 20 Dec 2018 12:39:09 -0500
-Received: by mail-ed1-f65.google.com with SMTP id x30so2462161edx.2;
-        Thu, 20 Dec 2018 09:39:06 -0800 (PST)
+        id S2388117AbeLTRpr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 20 Dec 2018 12:45:47 -0500
+Received: from mail-eopbgr820120.outbound.protection.outlook.com ([40.107.82.120]:7833
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388116AbeLTRpr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 20 Dec 2018 12:45:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ztZtXb7LkmN+J/DHEGiSJERmjE2sMXdpFqMqyM0TrjQ=;
-        b=je/p97iSPcO7zkNK4jgfwqhXcHmgKBMOlBKA8YMiqCR4xbUhMil0IGWC5iYq9LlldO
-         kfaG8wW96XLFSab7b1DGWebMyt7zZFD87xKB57FEKlrZvKj7Ni9Tt6nFCmdwPkFMgRfT
-         MRmggp4wdmsvW3PLJCmQG3eqthbjwM0PPn2XItchhmBHrlP9KorCRqCfOZyfZ/DbOGwL
-         He1SHyg7f/znJYi0OwxELpkjmCa26D/gak6wklvbh4B7KlN7fPhyT9/7kx2rLH2ZrEAJ
-         bWrSVQd3bhw3Ql0vtjcMd52/zwY5y7FJYF4TEmqtnXg2fRNijHNRCNq9FxD+X42hQUBL
-         aRfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ztZtXb7LkmN+J/DHEGiSJERmjE2sMXdpFqMqyM0TrjQ=;
-        b=Hyko2Ok/+goKLbzaIG4nQ9SuQKB9YYAomxolFiJFfr+g2hpT2aitz1Ut+dkLSRF2N9
-         7vZu6Zl6ttwzBr68CAJ8iNURbwq2rc1oIFMFL4kVDDNyE0qhjs1inYraBlWx3FDz9bRG
-         QrwjKekAnYguEyrHCgb7YWLHpZxyjU4DpPxEsSt4H+x6/TZbA3vJG+3cOEoC0XYLkZtj
-         QVMon/5yaP18AM0i4aFKYpDPBW3UBjsWi+OFc278mKtkWShQ91+sIr51sHpRZ02TnchS
-         0AnkCqUEOOfVm08wTaf6KwKzLi6qEJ9QHDSoaIKwhKXpFV+jeKCTw6u6Hor/VxOQp3+C
-         QX9A==
-X-Gm-Message-State: AA+aEWag0jA/2kcAQ0cLRJcuTdMtC1AvHDmpNwEIwHget8U/IfeQygQ4
-        6VoxaebR/otjrC1xTS1HX+c=
-X-Google-Smtp-Source: AFSGD/VNbmKdDZWGj9jtF0gqtj6UCbP6mKM/5DHezG1sA418uySDqKmkZGGAU3OIL8KNNM9JOc69dg==
-X-Received: by 2002:a50:ad55:: with SMTP id z21mr24473300edc.74.1545327545905;
-        Thu, 20 Dec 2018 09:39:05 -0800 (PST)
-Received: from localhost (pD9E51040.dip0.t-ipconnect.de. [217.229.16.64])
-        by smtp.gmail.com with ESMTPSA id r23-v6sm2219868eji.64.2018.12.20.09.39.04
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Dec 2018 09:39:04 -0800 (PST)
-Date:   Thu, 20 Dec 2018 18:39:04 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mathieu Malaterre <malat@debian.org>, ezequiel@collabora.co.uk,
-        prasannatsmkumar@gmail.com, linux-pwm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
-Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
-Message-ID: <20181220173904.GE9408@ulmo>
-References: <20181212220922.18759-1-paul@crapouillou.net>
- <20181212220922.18759-16-paul@crapouillou.net>
- <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
- <1544709795.18952.1@crapouillou.net>
- <20181213204219.onem3q6dcmakusl2@pengutronix.de>
- <CACRpkdbABtDgwKai=8Pfji7qVb-XHsX8pDsuDdS5hhg7qEN0Bw@mail.gmail.com>
- <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
- <1544969932.1649.1@crapouillou.net>
- <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+1bl+aydacSecRLoDTObn4T0do0wF6NzXjd5KGUer9c=;
+ b=b5TEUy65+rL5VVBAdGAt/LvWBhOEq5Q3sEFvEF/KKLPRMCQjfNGBMgVKCUw5lxWrlAr6waUd+wBGqUHyoffffTIXJJoj44/8DCUluxNS6RpUKZy1B+IPOta2mKK3ypW5HCsXm7P5t4Fr1DtPc5YEyuZU2L4e6rakNvxD9KmYctc=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1230.namprd22.prod.outlook.com (10.174.161.151) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1446.17; Thu, 20 Dec 2018 17:45:43 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::c07a:a95:8ba9:8435%9]) with mapi id 15.20.1446.020; Thu, 20 Dec 2018
+ 17:45:43 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Rich Felker <dalias@libc.org>,
+        David Daney <david.daney@cavium.com>,
+        Paul Burton <pburton@wavecomp.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
+Thread-Topic: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
+Thread-Index: AQHUmIvU0UY0CfycF02ZZK4s2JaOTQ==
+Date:   Thu, 20 Dec 2018 17:45:43 +0000
+Message-ID: <20181220174514.24953-1-paul.burton@mips.com>
+References: <CALCETrWaWTupSp6V=XXhvExtFdS6ewx_0A7hiGfStqpeuqZn8g@mail.gmail.com>
+In-Reply-To: <CALCETrWaWTupSp6V=XXhvExtFdS6ewx_0A7hiGfStqpeuqZn8g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CWLP265CA0060.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:401:12::24) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [94.197.89.66]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1230;6:2vg8ZB/ap7ANBSmKWxM6c06WjMZD/pntqjTeqGwLQWydlZx/oSKRyV5UnNRXJr+eYfPkCAXMZUoV0XeZHLDAcQT3X/ygdmpn5xGftLotdBSYPFuI1Ckal33Ommi4C/ZtytKrPbwED0htcccTpCIViJEOFrd18ExXatun9Yz3eMjRRDOcMNLzTNhONjyu808m/lJV4vWNsr4g7lTlV2+fsqYKbi1s0PzaGOQzBY5PT01JyOetqrbejO+8VifqChVYLX3qf9ife/P6c0E6tCxNODv9p2ZWoR9QtsbkAA0TY0XHwJ3oyWrtu2fg11tv9xIbXBGn/1524s5cdedVEgc4V8XHHmFdjH03r+3kpOdMg3c292Kqr1jGw8xMxSZ0UON98DHWC7xdwdyDphr+uzIIOmVl5C+gUDTExhBtyO70k3yJUd5wLm13/DXOvt5Iw+WF4Hn05YMXyVQWj5U4knlj+w==;5:CC8MvA2ol7I+6QjDkBORv8klySWAnWZ5PLFIT0Z4YmTMHu9u9UcpNQASpepfo8FOvBFSYM82MqNZCg1ofIfwHygl1086e8RPpAeIO68qMM6RNKN2NaCbmftYEXpfdwe9YV5MKOe39DZwQhzZ+7vLrTEl498nX8MzyzA/iKbahFY=;7:NOXojE8wiqnLlRrNh+B9NPueaM4OOeScNDNe0RHWjnGKkpQqUAtRdY72noT5jkuk0eFBBKD6U9bTCHb9TySJ8fLoTN9g4iKzhFmp4V/4IPzKTVBZhCdGYwp6nC+IMjA+Wy22WM4q9VPtc1is/44nnA==
+x-ms-office365-filtering-correlation-id: 74ed1a91-7d0d-4b08-0401-08d666a2f691
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1230;
+x-ms-traffictypediagnostic: MWHPR2201MB1230:
+x-microsoft-antispam-prvs: <MWHPR2201MB1230F1CE88B04AB8212247E5C1BF0@MWHPR2201MB1230.namprd22.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(5005026)(6040522)(2401047)(8121501046)(3231475)(944501520)(52105112)(3002001)(10201501046)(93006095)(149066)(150057)(6041310)(20161123564045)(20161123560045)(20161123558120)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1230;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1230;
+x-forefront-prvs: 0892FA9A88
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(366004)(39840400004)(136003)(396003)(376002)(199004)(189003)(305945005)(6486002)(5640700003)(4326008)(6116002)(81166006)(81156014)(6436002)(8676002)(8936002)(3846002)(14454004)(508600001)(7736002)(316002)(5660300001)(54906003)(575784001)(68736007)(53936002)(25786009)(102836004)(186003)(476003)(97736004)(446003)(42882007)(71190400001)(386003)(6506007)(6512007)(71200400001)(11346002)(2351001)(44832011)(105586002)(486006)(2616005)(106356001)(66066001)(76176011)(1076003)(99286004)(36756003)(256004)(6916009)(2501003)(52116002)(2906002)(26005)(14444005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1230;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-microsoft-antispam-message-info: j+ds6qxXD81LUlccMAFwu5KFbj+CgAZqHeyJAVq5YnkeIneqptVL1icSZyXhVbyo/WUR09EfGw1jvoU/F9yTjxv3JC4l/9Yy2jv9TX5ooZdXDoGQg4f46wiTSZAPTN60CRErK5vKkb0uSpQ0IFCUIUMGuFWiY8ubbTRhQflM3viczQHi0TpE5k8TpwI7dnF9wUl9MJmHPTxwjsGNyNXOb4mQaXPfvAwnCFprPRtA0KXx2RHwEq2Z2izz/RjG/FRo18L5DtpzhCqq7b9Y0J85zOvtm9w6dGe1swcVp685bpqK/3EmpY44s9OCEvUID03m
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="k3qmt+ucFURmlhDS"
-Content-Disposition: inline
-In-Reply-To: <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74ed1a91-7d0d-4b08-0401-08d666a2f691
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2018 17:45:43.2942
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1230
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Mapping the delay slot emulation page as both writeable & executable
+presents a security risk, in that if an exploit can write to & jump into
+the page then it can be used as an easy way to execute arbitrary code.
 
---k3qmt+ucFURmlhDS
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Prevent this by mapping the page read-only for userland, and using
+access_process_vm() with the FOLL_FORCE flag to write to it from
+mips_dsemul().
 
-On Mon, Dec 17, 2018 at 08:53:21AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Sun, Dec 16, 2018 at 03:18:52PM +0100, Paul Cercueil wrote:
-> > Hi,
-> >=20
-> > Le ven. 14 d=C3=A9c. 2018 =C3=A0 15:26, Uwe Kleine-K=C3=B6nig
-> > <u.kleine-koenig@pengutronix.de> a =C3=A9crit :
-> > > Hello,
-> > >=20
-> > > On Fri, Dec 14, 2018 at 02:50:20PM +0100, Linus Walleij wrote:
-> > > > On Thu, Dec 13, 2018 at 9:42 PM Uwe Kleine-K=C3=B6nig
-> > > > <u.kleine-koenig@pengutronix.de> wrote:
-> > > > > [Adding Linus Walleij to Cc:]
-> > > > > On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
-> > > > > > Le jeu. 13 d=C3=A9c. 2018 =C3=A0 10:24, Uwe Kleine-K=C3=B6nig
-> > > > > > <u.kleine-koenig@pengutronix.de> a =C3=A9crit :
-> > > > > > > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
-> > > > > > > >  The PWM in the JZ4725B works the same as in the JZ4740,
-> > > > > > > >  except that it only has 6 channels available instead of
-> > > > > > > >  8.
-> > > > > > >
-> > > > > > > this driver is probed only from device tree? If yes, it
-> > > > > > > might be sensible to specify the number of PWMs there and
-> > > > > > > get it from there.
-> > > > > > > There doesn't seem to be a generic binding for that, but ther=
-e are
-> > > > > > > several drivers that could benefit from it. (This is a bigger=
- project
-> > > > > > > though and shouldn't stop your patch. Still more as it alread=
-y got
-> > > > > > > Thierry's ack.)
-> > > > > >
-> > > > > > I think there needs to be a proper guideline, as there doesn't =
-seem to be
-> > > > > > a consensus about this. I learned from emails with Rob and  Lin=
-us (Walleij)
-> > > > > > that I should not have in devicetree what I can deduce from the=
- compatible
-> > > > > > string.
-> > > > >
-> > > > > I understood them a bit differently. It is ok to deduce things fr=
-om the
-> > > > > compatible string. But if you define a generic property (say) "nu=
-m-pwms"
-> > > > > that is used uniformly in most bindings this is ok, too. (And the=
-n the
-> > > > > two different devices could use the same compatible.)
-> > > > >
-> > > > > An upside of the generic "num-pwms" property is that the pwm core=
- could
-> > > > > sanity check pwm phandles before passing them to the hardware dri=
-vers.
-> > > >=20
-> > > >  I don't know if this helps, but in GPIO we have "ngpios" which is
-> > > >  used to augment an existing block as to the number of lines actual=
-ly
-> > > >  used with it.
-> > > >=20
-> > > >  The typical case is that an ASIC engineer synthesize a block for
-> > > >  32 GPIOs but only 12 of them are routed to external pads. So
-> > > >  we augment the behaviour of that driver to only use 12 of the
-> > > >  32 lines.
-> > > >=20
-> > > >  I guess using the remaining 20 lines "works" in a sense but they
-> > > >  have no practical use and will just bias electrons in the silicon
-> > > >  for no use.
-> > >=20
-> > > This looks very similar to the case under discussion.
-> > >=20
-> > > >  So if the PWM case is something similar, then by all means add
-> > > >  num-pwms.
-> > >=20
-> > > .. or "npwms" to use the same nomenclature as the gpio binding?
-> >=20
-> > If we're going to do something like this, should it be the drivers or
-> > the core (within pwmchip_add) that checks for this "npwms" property?
->=20
-> Of course this should be done in the core. The driver than can rely on
-> the validity of the index. But as I wrote before, this shouldn't stop
-> your patch from going in.
->=20
-> But if Thierry agrees that this npmws (or num-pwms) is a good idea, it
-> would be great to start early to convert drivers.
+This will likely be less efficient due to copy_to_user_page() performing
+cache maintenance on a whole page, rather than a single line as in the
+previous use of flush_cache_sigtramp(). However this delay slot
+emulation code ought not to be running in any performance critical paths
+anyway so this isn't really a problem, and we can probably do better in
+copy_to_user_page() anyway in future.
 
-Do we actually need this? It seems like Paul's patch here properly
-derives the number of available PWMs from the compatible string, so I
-don't see what the extra num-pwms (or whatever) property would add.
+A major advantage of this approach is that the fix is small & simple to
+backport to stable kernels.
 
-Thierry
+Reported-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 432c6bacbd0c ("MIPS: Use per-mm page to execute branch delay slot in=
+structions")
+Cc: stable@vger.kernel.org # v4.8+
+---
+ arch/mips/kernel/vdso.c     |  4 ++--
+ arch/mips/math-emu/dsemul.c | 38 +++++++++++++++++++------------------
+ 2 files changed, 22 insertions(+), 20 deletions(-)
 
---k3qmt+ucFURmlhDS
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 48a9c6b90e07..9df3ebdc7b0f 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -126,8 +126,8 @@ int arch_setup_additional_pages(struct linux_binprm *bp=
+rm, int uses_interp)
+=20
+ 	/* Map delay slot emulation page */
+ 	base =3D mmap_region(NULL, STACK_TOP, PAGE_SIZE,
+-			   VM_READ|VM_WRITE|VM_EXEC|
+-			   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
++			   VM_READ | VM_EXEC |
++			   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
+ 			   0, NULL);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret =3D base;
+diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
+index 5450f4d1c920..e2d46cb93ca9 100644
+--- a/arch/mips/math-emu/dsemul.c
++++ b/arch/mips/math-emu/dsemul.c
+@@ -214,8 +214,9 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction =
+ir,
+ {
+ 	int isa16 =3D get_isa16_mode(regs->cp0_epc);
+ 	mips_instruction break_math;
+-	struct emuframe __user *fr;
+-	int err, fr_idx;
++	unsigned long fr_uaddr;
++	struct emuframe fr;
++	int fr_idx, ret;
+=20
+ 	/* NOP is easy */
+ 	if (ir =3D=3D 0)
+@@ -250,27 +251,31 @@ int mips_dsemul(struct pt_regs *regs, mips_instructio=
+n ir,
+ 		fr_idx =3D alloc_emuframe();
+ 	if (fr_idx =3D=3D BD_EMUFRAME_NONE)
+ 		return SIGBUS;
+-	fr =3D &dsemul_page()[fr_idx];
+=20
+ 	/* Retrieve the appropriately encoded break instruction */
+ 	break_math =3D BREAK_MATH(isa16);
+=20
+ 	/* Write the instructions to the frame */
+ 	if (isa16) {
+-		err =3D __put_user(ir >> 16,
+-				 (u16 __user *)(&fr->emul));
+-		err |=3D __put_user(ir & 0xffff,
+-				  (u16 __user *)((long)(&fr->emul) + 2));
+-		err |=3D __put_user(break_math >> 16,
+-				  (u16 __user *)(&fr->badinst));
+-		err |=3D __put_user(break_math & 0xffff,
+-				  (u16 __user *)((long)(&fr->badinst) + 2));
++		union mips_instruction _emul =3D {
++			.halfword =3D { ir >> 16, ir }
++		};
++		union mips_instruction _badinst =3D {
++			.halfword =3D { break_math >> 16, break_math }
++		};
++
++		fr.emul =3D _emul.word;
++		fr.badinst =3D _badinst.word;
+ 	} else {
+-		err =3D __put_user(ir, &fr->emul);
+-		err |=3D __put_user(break_math, &fr->badinst);
++		fr.emul =3D ir;
++		fr.badinst =3D break_math;
+ 	}
+=20
+-	if (unlikely(err)) {
++	/* Write the frame to user memory */
++	fr_uaddr =3D (unsigned long)&dsemul_page()[fr_idx];
++	ret =3D access_process_vm(current, fr_uaddr, &fr, sizeof(fr),
++				FOLL_FORCE | FOLL_WRITE);
++	if (unlikely(ret !=3D sizeof(fr))) {
+ 		MIPS_FPU_EMU_INC_STATS(errors);
+ 		free_emuframe(fr_idx, current->mm);
+ 		return SIGBUS;
+@@ -282,10 +287,7 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction=
+ ir,
+ 	atomic_set(&current->thread.bd_emu_frame, fr_idx);
+=20
+ 	/* Change user register context to execute the frame */
+-	regs->cp0_epc =3D (unsigned long)&fr->emul | isa16;
+-
+-	/* Ensure the icache observes our newly written frame */
+-	flush_cache_sigtramp((unsigned long)&fr->emul);
++	regs->cp0_epc =3D fr_uaddr | isa16;
+=20
+ 	return 0;
+ }
+--=20
+2.20.0
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlwb07cACgkQ3SOs138+
-s6HqPQ/9EvqzyNbYIZcLq9uI1GFXYCcBJH2WDzabK4dC9qZDaof2UMjSPj5rBEaL
-EOZv/Yn+EaN5IoIo65MIVyPzB5dSyFuh2MZkBlXpH0c2JhIY/d/hd+7ZmxdjEVib
-CcBiBHi+QP+CJhQ5gKDFtqwXiU1hlff560NFpfDfFVNWtyeXN+2I1caEftRybYsq
-R+V/boJKSK+HygyNlKxY8bpZq2p/9eC2hndeJNI1rXdzXuv/if4+ZC9ZqKlDOLbz
-3zOHzMjHAl33uUVpQhJR11x+KmAnkTPBZ0Mn3Jv1AtAL/3FCOkNDwBx2CXjUnUxC
-HzRLcURjKRctjATnpd2tJwtuJZUyFxY0dcysRK0/+C/DD0Rj78aECIXald7npdDl
-MVk5SNplY1WpWkzdM8rwYWYuskHpU5IWB2haq6FLju6vq6ABEQYlg95OskrjZOih
-QPW2aN7CPgKfCilVhS1Ur3r4t6FxX/w33rEuJNeVaNsn2jFuQrVLeff1iHoXeRNg
-832gbMNIdJnSEV18tXizFVwvC3s1GWKiBLk7spSLTuxGaYQr82Na9DyBTdsqj/0a
-V2AttQ1GeTlDN/GjmqQrpfDYG6LJK7SRsXSmqsXR6J7187gSfRoLMzivYMaxJGsj
-qgbreq98AzZ1z5GiHQKL0NFRHaoHlTSMprrjhLsnIy+sBV+8t/g=
-=pWXg
------END PGP SIGNATURE-----
-
---k3qmt+ucFURmlhDS--

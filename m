@@ -1,344 +1,213 @@
-Return-Path: <SRS0=x683=O4=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=YrfY=O5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_NEOMUTT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FROM,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FC77C43387
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 16:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55E47C43387
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:39:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 58577214C6
-	for <linux-mips@archiver.kernel.org>; Wed, 19 Dec 2018 16:57:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1C6DE2186A
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:39:15 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="TcQZKlQv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="je/p97iS"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728594AbeLSQ57 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 19 Dec 2018 11:57:59 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44192 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728576AbeLSQ5x (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 19 Dec 2018 11:57:53 -0500
-Received: by mail-wr1-f67.google.com with SMTP id z5so20220507wrt.11
-        for <linux-mips@vger.kernel.org>; Wed, 19 Dec 2018 08:57:51 -0800 (PST)
+        id S2388027AbeLTRjJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 20 Dec 2018 12:39:09 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:35358 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387920AbeLTRjJ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 20 Dec 2018 12:39:09 -0500
+Received: by mail-ed1-f65.google.com with SMTP id x30so2462161edx.2;
+        Thu, 20 Dec 2018 09:39:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=ipk70XgawFq2DrKpbmaNeO7sDiuavgSWfwjNSok6DcE=;
-        b=TcQZKlQvs15wtS/CjJG+zHvmHWgqRhWd5WtBB0rf1SA/d9trc8i9CNFsrsjzkCV08q
-         cbuvtNAryuks1vQLynHEmEk76xrKaavnxOaIoDgn67BbsD0QKkAZqVy9G9NgQfitfhaW
-         UobZwQ7I4D4Ea0fwx+sD+MtA3hohdf73Ol9L4=
+        bh=ztZtXb7LkmN+J/DHEGiSJERmjE2sMXdpFqMqyM0TrjQ=;
+        b=je/p97iSPcO7zkNK4jgfwqhXcHmgKBMOlBKA8YMiqCR4xbUhMil0IGWC5iYq9LlldO
+         kfaG8wW96XLFSab7b1DGWebMyt7zZFD87xKB57FEKlrZvKj7Ni9Tt6nFCmdwPkFMgRfT
+         MRmggp4wdmsvW3PLJCmQG3eqthbjwM0PPn2XItchhmBHrlP9KorCRqCfOZyfZ/DbOGwL
+         He1SHyg7f/znJYi0OwxELpkjmCa26D/gak6wklvbh4B7KlN7fPhyT9/7kx2rLH2ZrEAJ
+         bWrSVQd3bhw3Ql0vtjcMd52/zwY5y7FJYF4TEmqtnXg2fRNijHNRCNq9FxD+X42hQUBL
+         aRfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ipk70XgawFq2DrKpbmaNeO7sDiuavgSWfwjNSok6DcE=;
-        b=fFDA+h03tqmQ6GdPeJbe76V44xZ4zG8srP1pvvJpUvTunfpe4JxjKKudHkqvHUjruk
-         PDYkLdEhy9rAQHTZtqg/5QCFxv0VbIFFSmarsyBWUpKwrVXEm4M3bRE6BvsoLmJeUtz8
-         KqzhK3hDOV9rZo7fp0+GfVv0X0SqH1IRXRejWmWxN22bvXdSfp9p79PqYsUNdvdKrPPn
-         q24PBGusduKSsyx1OzmjNZZo8bgMyD2D52YYw5YljEN6+wCeh10c+CSl1OvkQQ+Onqv3
-         m7nV2Br0axUSkCJu6JPIUFW+sLCGqVS1K23ILe5mNM8zpLtd14yDodiwB2Zq23FzuMoi
-         6RTQ==
-X-Gm-Message-State: AA+aEWYUtANHUVcAMr9wKigI4RYIkyspy5pdk3FRvy8kt0AeX2n/LBD3
-        lwwd9g1KMU/oSw4FiMQUm6sK9Yz0XcDvCg==
-X-Google-Smtp-Source: AFSGD/XjZvuL++qgyIW7v0Q2ysTDCEM2AfwE2T3EJAL2l/D6YqsYNA1o+odv8TMGq3csAsF4CgI6mw==
-X-Received: by 2002:adf:ed46:: with SMTP id u6mr20128419wro.262.1545238670653;
-        Wed, 19 Dec 2018 08:57:50 -0800 (PST)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id z9sm5494906wrs.63.2018.12.19.08.57.49
+        bh=ztZtXb7LkmN+J/DHEGiSJERmjE2sMXdpFqMqyM0TrjQ=;
+        b=Hyko2Ok/+goKLbzaIG4nQ9SuQKB9YYAomxolFiJFfr+g2hpT2aitz1Ut+dkLSRF2N9
+         7vZu6Zl6ttwzBr68CAJ8iNURbwq2rc1oIFMFL4kVDDNyE0qhjs1inYraBlWx3FDz9bRG
+         QrwjKekAnYguEyrHCgb7YWLHpZxyjU4DpPxEsSt4H+x6/TZbA3vJG+3cOEoC0XYLkZtj
+         QVMon/5yaP18AM0i4aFKYpDPBW3UBjsWi+OFc278mKtkWShQ91+sIr51sHpRZ02TnchS
+         0AnkCqUEOOfVm08wTaf6KwKzLi6qEJ9QHDSoaIKwhKXpFV+jeKCTw6u6Hor/VxOQp3+C
+         QX9A==
+X-Gm-Message-State: AA+aEWag0jA/2kcAQ0cLRJcuTdMtC1AvHDmpNwEIwHget8U/IfeQygQ4
+        6VoxaebR/otjrC1xTS1HX+c=
+X-Google-Smtp-Source: AFSGD/VNbmKdDZWGj9jtF0gqtj6UCbP6mKM/5DHezG1sA418uySDqKmkZGGAU3OIL8KNNM9JOc69dg==
+X-Received: by 2002:a50:ad55:: with SMTP id z21mr24473300edc.74.1545327545905;
+        Thu, 20 Dec 2018 09:39:05 -0800 (PST)
+Received: from localhost (pD9E51040.dip0.t-ipconnect.de. [217.229.16.64])
+        by smtp.gmail.com with ESMTPSA id r23-v6sm2219868eji.64.2018.12.20.09.39.04
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 19 Dec 2018 08:57:49 -0800 (PST)
-Date:   Wed, 19 Dec 2018 16:57:47 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Christophe Leroy <christophe.leroy@c-s.fr>
-Cc:     Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Thu, 20 Dec 2018 09:39:04 -0800 (PST)
+Date:   Thu, 20 Dec 2018 18:39:04 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Jason Wessel <jason.wessel@windriver.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net
-Subject: Re: [PATCH v2 2/2] kgdb/treewide: constify struct kgdb_arch
- arch_kgdb_ops
-Message-ID: <20181219165747.ltfs65vt3tycrl7x@holly.lan>
-References: <030d63848e4b0ef4d76ca24597ab8302a393d692.1544083483.git.christophe.leroy@c-s.fr>
- <5e130b11680be09537913aae9649c84ede763ec8.1544083483.git.christophe.leroy@c-s.fr>
+        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mathieu Malaterre <malat@debian.org>, ezequiel@collabora.co.uk,
+        prasannatsmkumar@gmail.com, linux-pwm@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
+Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
+Message-ID: <20181220173904.GE9408@ulmo>
+References: <20181212220922.18759-1-paul@crapouillou.net>
+ <20181212220922.18759-16-paul@crapouillou.net>
+ <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
+ <1544709795.18952.1@crapouillou.net>
+ <20181213204219.onem3q6dcmakusl2@pengutronix.de>
+ <CACRpkdbABtDgwKai=8Pfji7qVb-XHsX8pDsuDdS5hhg7qEN0Bw@mail.gmail.com>
+ <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
+ <1544969932.1649.1@crapouillou.net>
+ <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="k3qmt+ucFURmlhDS"
 Content-Disposition: inline
-In-Reply-To: <5e130b11680be09537913aae9649c84ede763ec8.1544083483.git.christophe.leroy@c-s.fr>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Dec 06, 2018 at 08:07:40PM +0000, Christophe Leroy wrote:
-> checkpatch.pl reports the following:
-> 
->   WARNING: struct kgdb_arch should normally be const
->   #28: FILE: arch/mips/kernel/kgdb.c:397:
->   +struct kgdb_arch arch_kgdb_ops = {
-> 
-> This report makes sense, as all other ops struct, this
-> one should also be const. This patch does the change.
-> 
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Richard Kuo <rkuo@codeaurora.org>
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Ley Foon Tan <lftan@altera.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: x86@kernel.org
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Acked-by: Paul Burton <paul.burton@mips.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-I've not heard any objections from the arch/ maintainers so...
+--k3qmt+ucFURmlhDS
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied! Thanks.
+On Mon, Dec 17, 2018 at 08:53:21AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> On Sun, Dec 16, 2018 at 03:18:52PM +0100, Paul Cercueil wrote:
+> > Hi,
+> >=20
+> > Le ven. 14 d=C3=A9c. 2018 =C3=A0 15:26, Uwe Kleine-K=C3=B6nig
+> > <u.kleine-koenig@pengutronix.de> a =C3=A9crit :
+> > > Hello,
+> > >=20
+> > > On Fri, Dec 14, 2018 at 02:50:20PM +0100, Linus Walleij wrote:
+> > > > On Thu, Dec 13, 2018 at 9:42 PM Uwe Kleine-K=C3=B6nig
+> > > > <u.kleine-koenig@pengutronix.de> wrote:
+> > > > > [Adding Linus Walleij to Cc:]
+> > > > > On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
+> > > > > > Le jeu. 13 d=C3=A9c. 2018 =C3=A0 10:24, Uwe Kleine-K=C3=B6nig
+> > > > > > <u.kleine-koenig@pengutronix.de> a =C3=A9crit :
+> > > > > > > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
+> > > > > > > >  The PWM in the JZ4725B works the same as in the JZ4740,
+> > > > > > > >  except that it only has 6 channels available instead of
+> > > > > > > >  8.
+> > > > > > >
+> > > > > > > this driver is probed only from device tree? If yes, it
+> > > > > > > might be sensible to specify the number of PWMs there and
+> > > > > > > get it from there.
+> > > > > > > There doesn't seem to be a generic binding for that, but ther=
+e are
+> > > > > > > several drivers that could benefit from it. (This is a bigger=
+ project
+> > > > > > > though and shouldn't stop your patch. Still more as it alread=
+y got
+> > > > > > > Thierry's ack.)
+> > > > > >
+> > > > > > I think there needs to be a proper guideline, as there doesn't =
+seem to be
+> > > > > > a consensus about this. I learned from emails with Rob and  Lin=
+us (Walleij)
+> > > > > > that I should not have in devicetree what I can deduce from the=
+ compatible
+> > > > > > string.
+> > > > >
+> > > > > I understood them a bit differently. It is ok to deduce things fr=
+om the
+> > > > > compatible string. But if you define a generic property (say) "nu=
+m-pwms"
+> > > > > that is used uniformly in most bindings this is ok, too. (And the=
+n the
+> > > > > two different devices could use the same compatible.)
+> > > > >
+> > > > > An upside of the generic "num-pwms" property is that the pwm core=
+ could
+> > > > > sanity check pwm phandles before passing them to the hardware dri=
+vers.
+> > > >=20
+> > > >  I don't know if this helps, but in GPIO we have "ngpios" which is
+> > > >  used to augment an existing block as to the number of lines actual=
+ly
+> > > >  used with it.
+> > > >=20
+> > > >  The typical case is that an ASIC engineer synthesize a block for
+> > > >  32 GPIOs but only 12 of them are routed to external pads. So
+> > > >  we augment the behaviour of that driver to only use 12 of the
+> > > >  32 lines.
+> > > >=20
+> > > >  I guess using the remaining 20 lines "works" in a sense but they
+> > > >  have no practical use and will just bias electrons in the silicon
+> > > >  for no use.
+> > >=20
+> > > This looks very similar to the case under discussion.
+> > >=20
+> > > >  So if the PWM case is something similar, then by all means add
+> > > >  num-pwms.
+> > >=20
+> > > .. or "npwms" to use the same nomenclature as the gpio binding?
+> >=20
+> > If we're going to do something like this, should it be the drivers or
+> > the core (within pwmchip_add) that checks for this "npwms" property?
+>=20
+> Of course this should be done in the core. The driver than can rely on
+> the validity of the index. But as I wrote before, this shouldn't stop
+> your patch from going in.
+>=20
+> But if Thierry agrees that this npmws (or num-pwms) is a good idea, it
+> would be great to start early to convert drivers.
 
+Do we actually need this? It seems like Paul's patch here properly
+derives the number of available PWMs from the compatible string, so I
+don't see what the extra num-pwms (or whatever) property would add.
 
-> -
-> ---
->  v2: Added CCs to all maintainers/supporters identified by get_maintainer.pl and Acks from Daniel and Paul.
-> 
->  arch/arc/kernel/kgdb.c        | 2 +-
->  arch/arm/kernel/kgdb.c        | 2 +-
->  arch/arm64/kernel/kgdb.c      | 2 +-
->  arch/h8300/kernel/kgdb.c      | 2 +-
->  arch/hexagon/kernel/kgdb.c    | 2 +-
->  arch/microblaze/kernel/kgdb.c | 2 +-
->  arch/mips/kernel/kgdb.c       | 2 +-
->  arch/nios2/kernel/kgdb.c      | 2 +-
->  arch/powerpc/kernel/kgdb.c    | 2 +-
->  arch/sh/kernel/kgdb.c         | 2 +-
->  arch/sparc/kernel/kgdb_32.c   | 2 +-
->  arch/sparc/kernel/kgdb_64.c   | 2 +-
->  arch/x86/kernel/kgdb.c        | 2 +-
->  include/linux/kgdb.h          | 2 +-
->  14 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arc/kernel/kgdb.c b/arch/arc/kernel/kgdb.c
-> index 9a3c34af2ae8..bfd04b442e36 100644
-> --- a/arch/arc/kernel/kgdb.c
-> +++ b/arch/arc/kernel/kgdb.c
-> @@ -204,7 +204,7 @@ void kgdb_roundup_cpus(unsigned long flags)
->  	local_irq_disable();
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* breakpoint instruction: TRAP_S 0x3 */
->  #ifdef CONFIG_CPU_BIG_ENDIAN
->  	.gdb_bpt_instr		= {0x78, 0x7e},
-> diff --git a/arch/arm/kernel/kgdb.c b/arch/arm/kernel/kgdb.c
-> index caa0dbe3dc61..21a6d5958955 100644
-> --- a/arch/arm/kernel/kgdb.c
-> +++ b/arch/arm/kernel/kgdb.c
-> @@ -274,7 +274,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
->   * and we handle the normal undef case within the do_undefinstr
->   * handler.
->   */
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  #ifndef __ARMEB__
->  	.gdb_bpt_instr		= {0xfe, 0xde, 0xff, 0xe7}
->  #else /* ! __ARMEB__ */
-> diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
-> index a20de58061a8..fe1d1f935b90 100644
-> --- a/arch/arm64/kernel/kgdb.c
-> +++ b/arch/arm64/kernel/kgdb.c
-> @@ -357,7 +357,7 @@ void kgdb_arch_exit(void)
->  	unregister_die_notifier(&kgdb_notifier);
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops;
-> +const struct kgdb_arch arch_kgdb_ops;
->  
->  int kgdb_arch_set_breakpoint(struct kgdb_bkpt *bpt)
->  {
-> diff --git a/arch/h8300/kernel/kgdb.c b/arch/h8300/kernel/kgdb.c
-> index 1a1d30cb0609..602e478afbd5 100644
-> --- a/arch/h8300/kernel/kgdb.c
-> +++ b/arch/h8300/kernel/kgdb.c
-> @@ -129,7 +129,7 @@ void kgdb_arch_exit(void)
->  	/* Nothing to do */
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: trapa #2 */
->  	.gdb_bpt_instr = { 0x57, 0x20 },
->  };
-> diff --git a/arch/hexagon/kernel/kgdb.c b/arch/hexagon/kernel/kgdb.c
-> index 16c24b22d0b2..f1924d483e78 100644
-> --- a/arch/hexagon/kernel/kgdb.c
-> +++ b/arch/hexagon/kernel/kgdb.c
-> @@ -83,7 +83,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
->  	{ "syscall_nr", GDB_SIZEOF_REG, offsetof(struct pt_regs, syscall_nr)},
->  };
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* trap0(#0xDB) 0x0cdb0054 */
->  	.gdb_bpt_instr = {0x54, 0x00, 0xdb, 0x0c},
->  };
-> diff --git a/arch/microblaze/kernel/kgdb.c b/arch/microblaze/kernel/kgdb.c
-> index 6366f69d118e..130cd0f064ce 100644
-> --- a/arch/microblaze/kernel/kgdb.c
-> +++ b/arch/microblaze/kernel/kgdb.c
-> @@ -143,7 +143,7 @@ void kgdb_arch_exit(void)
->  /*
->   * Global data
->   */
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  #ifdef __MICROBLAZEEL__
->  	.gdb_bpt_instr = {0x18, 0x00, 0x0c, 0xba}, /* brki r16, 0x18 */
->  #else
-> diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
-> index 31eff1bec577..edfdc2ec2d16 100644
-> --- a/arch/mips/kernel/kgdb.c
-> +++ b/arch/mips/kernel/kgdb.c
-> @@ -394,7 +394,7 @@ int kgdb_arch_handle_exception(int vector, int signo, int err_code,
->  	return -1;
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  #ifdef CONFIG_CPU_BIG_ENDIAN
->  	.gdb_bpt_instr = { spec_op << 2, 0x00, 0x00, break_op },
->  #else
-> diff --git a/arch/nios2/kernel/kgdb.c b/arch/nios2/kernel/kgdb.c
-> index 117859122d1c..37b25f844a2d 100644
-> --- a/arch/nios2/kernel/kgdb.c
-> +++ b/arch/nios2/kernel/kgdb.c
-> @@ -165,7 +165,7 @@ void kgdb_arch_exit(void)
->  	/* Nothing to do */
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: trap 30 */
->  	.gdb_bpt_instr = { 0xba, 0x6f, 0x3b, 0x00 },
->  };
-> diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
-> index 59c578f865aa..bdb588b1d8fb 100644
-> --- a/arch/powerpc/kernel/kgdb.c
-> +++ b/arch/powerpc/kernel/kgdb.c
-> @@ -477,7 +477,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
->  /*
->   * Global data
->   */
-> -struct kgdb_arch arch_kgdb_ops;
-> +const struct kgdb_arch arch_kgdb_ops;
->  
->  static int kgdb_not_implemented(struct pt_regs *regs)
->  {
-> diff --git a/arch/sh/kernel/kgdb.c b/arch/sh/kernel/kgdb.c
-> index 4f04c6638a4d..a24c48446e98 100644
-> --- a/arch/sh/kernel/kgdb.c
-> +++ b/arch/sh/kernel/kgdb.c
-> @@ -382,7 +382,7 @@ void kgdb_arch_exit(void)
->  	unregister_die_notifier(&kgdb_notifier);
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: trapa #0x3c */
->  #ifdef CONFIG_CPU_LITTLE_ENDIAN
->  	.gdb_bpt_instr		= { 0x3c, 0xc3 },
-> diff --git a/arch/sparc/kernel/kgdb_32.c b/arch/sparc/kernel/kgdb_32.c
-> index 639c8e54530a..7580775a14b9 100644
-> --- a/arch/sparc/kernel/kgdb_32.c
-> +++ b/arch/sparc/kernel/kgdb_32.c
-> @@ -166,7 +166,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long ip)
->  	regs->npc = regs->pc + 4;
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: ta 0x7d */
->  	.gdb_bpt_instr		= { 0x91, 0xd0, 0x20, 0x7d },
->  };
-> diff --git a/arch/sparc/kernel/kgdb_64.c b/arch/sparc/kernel/kgdb_64.c
-> index a68bbddbdba4..5d6c2d287e85 100644
-> --- a/arch/sparc/kernel/kgdb_64.c
-> +++ b/arch/sparc/kernel/kgdb_64.c
-> @@ -195,7 +195,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long ip)
->  	regs->tnpc = regs->tpc + 4;
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: ta 0x72 */
->  	.gdb_bpt_instr		= { 0x91, 0xd0, 0x20, 0x72 },
->  };
-> diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
-> index 8e36f249646e..e7effc02f13c 100644
-> --- a/arch/x86/kernel/kgdb.c
-> +++ b/arch/x86/kernel/kgdb.c
-> @@ -804,7 +804,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
->  				  (char *)bpt->saved_instr, BREAK_INSTR_SIZE);
->  }
->  
-> -struct kgdb_arch arch_kgdb_ops = {
-> +const struct kgdb_arch arch_kgdb_ops = {
->  	/* Breakpoint instruction: */
->  	.gdb_bpt_instr		= { 0xcc },
->  	.flags			= KGDB_HW_BREAKPOINT,
-> diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
-> index e465bb15912d..3bf313311cca 100644
-> --- a/include/linux/kgdb.h
-> +++ b/include/linux/kgdb.h
-> @@ -281,7 +281,7 @@ struct kgdb_io {
->  	int			is_console;
->  };
->  
-> -extern struct kgdb_arch		arch_kgdb_ops;
-> +extern const struct kgdb_arch		arch_kgdb_ops;
->  
->  extern unsigned long kgdb_arch_pc(int exception, struct pt_regs *regs);
->  
-> -- 
-> 2.13.3
-> 
+Thierry
+
+--k3qmt+ucFURmlhDS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlwb07cACgkQ3SOs138+
+s6HqPQ/9EvqzyNbYIZcLq9uI1GFXYCcBJH2WDzabK4dC9qZDaof2UMjSPj5rBEaL
+EOZv/Yn+EaN5IoIo65MIVyPzB5dSyFuh2MZkBlXpH0c2JhIY/d/hd+7ZmxdjEVib
+CcBiBHi+QP+CJhQ5gKDFtqwXiU1hlff560NFpfDfFVNWtyeXN+2I1caEftRybYsq
+R+V/boJKSK+HygyNlKxY8bpZq2p/9eC2hndeJNI1rXdzXuv/if4+ZC9ZqKlDOLbz
+3zOHzMjHAl33uUVpQhJR11x+KmAnkTPBZ0Mn3Jv1AtAL/3FCOkNDwBx2CXjUnUxC
+HzRLcURjKRctjATnpd2tJwtuJZUyFxY0dcysRK0/+C/DD0Rj78aECIXald7npdDl
+MVk5SNplY1WpWkzdM8rwYWYuskHpU5IWB2haq6FLju6vq6ABEQYlg95OskrjZOih
+QPW2aN7CPgKfCilVhS1Ur3r4t6FxX/w33rEuJNeVaNsn2jFuQrVLeff1iHoXeRNg
+832gbMNIdJnSEV18tXizFVwvC3s1GWKiBLk7spSLTuxGaYQr82Na9DyBTdsqj/0a
+V2AttQ1GeTlDN/GjmqQrpfDYG6LJK7SRsXSmqsXR6J7187gSfRoLMzivYMaxJGsj
+qgbreq98AzZ1z5GiHQKL0NFRHaoHlTSMprrjhLsnIy+sBV+8t/g=
+=pWXg
+-----END PGP SIGNATURE-----
+
+--k3qmt+ucFURmlhDS--

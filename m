@@ -2,213 +2,204 @@ Return-Path: <SRS0=YrfY=O5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 896ABC43387
-	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF649C43387
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 20:58:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 46832218D9
-	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 17:45:53 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="b5TEUy65"
+	by mail.kernel.org (Postfix) with ESMTP id 912C3218FE
+	for <linux-mips@archiver.kernel.org>; Thu, 20 Dec 2018 20:58:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388117AbeLTRpr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 20 Dec 2018 12:45:47 -0500
-Received: from mail-eopbgr820120.outbound.protection.outlook.com ([40.107.82.120]:7833
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388116AbeLTRpr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 20 Dec 2018 12:45:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+1bl+aydacSecRLoDTObn4T0do0wF6NzXjd5KGUer9c=;
- b=b5TEUy65+rL5VVBAdGAt/LvWBhOEq5Q3sEFvEF/KKLPRMCQjfNGBMgVKCUw5lxWrlAr6waUd+wBGqUHyoffffTIXJJoj44/8DCUluxNS6RpUKZy1B+IPOta2mKK3ypW5HCsXm7P5t4Fr1DtPc5YEyuZU2L4e6rakNvxD9KmYctc=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1230.namprd22.prod.outlook.com (10.174.161.151) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1446.17; Thu, 20 Dec 2018 17:45:43 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435%9]) with mapi id 15.20.1446.020; Thu, 20 Dec 2018
- 17:45:43 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        David Daney <david.daney@cavium.com>,
-        Paul Burton <pburton@wavecomp.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Topic: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Index: AQHUmIvU0UY0CfycF02ZZK4s2JaOTQ==
-Date:   Thu, 20 Dec 2018 17:45:43 +0000
-Message-ID: <20181220174514.24953-1-paul.burton@mips.com>
-References: <CALCETrWaWTupSp6V=XXhvExtFdS6ewx_0A7hiGfStqpeuqZn8g@mail.gmail.com>
-In-Reply-To: <CALCETrWaWTupSp6V=XXhvExtFdS6ewx_0A7hiGfStqpeuqZn8g@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: CWLP265CA0060.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:401:12::24) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [94.197.89.66]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1230;6:2vg8ZB/ap7ANBSmKWxM6c06WjMZD/pntqjTeqGwLQWydlZx/oSKRyV5UnNRXJr+eYfPkCAXMZUoV0XeZHLDAcQT3X/ygdmpn5xGftLotdBSYPFuI1Ckal33Ommi4C/ZtytKrPbwED0htcccTpCIViJEOFrd18ExXatun9Yz3eMjRRDOcMNLzTNhONjyu808m/lJV4vWNsr4g7lTlV2+fsqYKbi1s0PzaGOQzBY5PT01JyOetqrbejO+8VifqChVYLX3qf9ife/P6c0E6tCxNODv9p2ZWoR9QtsbkAA0TY0XHwJ3oyWrtu2fg11tv9xIbXBGn/1524s5cdedVEgc4V8XHHmFdjH03r+3kpOdMg3c292Kqr1jGw8xMxSZ0UON98DHWC7xdwdyDphr+uzIIOmVl5C+gUDTExhBtyO70k3yJUd5wLm13/DXOvt5Iw+WF4Hn05YMXyVQWj5U4knlj+w==;5:CC8MvA2ol7I+6QjDkBORv8klySWAnWZ5PLFIT0Z4YmTMHu9u9UcpNQASpepfo8FOvBFSYM82MqNZCg1ofIfwHygl1086e8RPpAeIO68qMM6RNKN2NaCbmftYEXpfdwe9YV5MKOe39DZwQhzZ+7vLrTEl498nX8MzyzA/iKbahFY=;7:NOXojE8wiqnLlRrNh+B9NPueaM4OOeScNDNe0RHWjnGKkpQqUAtRdY72noT5jkuk0eFBBKD6U9bTCHb9TySJ8fLoTN9g4iKzhFmp4V/4IPzKTVBZhCdGYwp6nC+IMjA+Wy22WM4q9VPtc1is/44nnA==
-x-ms-office365-filtering-correlation-id: 74ed1a91-7d0d-4b08-0401-08d666a2f691
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1230;
-x-ms-traffictypediagnostic: MWHPR2201MB1230:
-x-microsoft-antispam-prvs: <MWHPR2201MB1230F1CE88B04AB8212247E5C1BF0@MWHPR2201MB1230.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(5005026)(6040522)(2401047)(8121501046)(3231475)(944501520)(52105112)(3002001)(10201501046)(93006095)(149066)(150057)(6041310)(20161123564045)(20161123560045)(20161123558120)(20161123562045)(2016111802025)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1230;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1230;
-x-forefront-prvs: 0892FA9A88
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(366004)(39840400004)(136003)(396003)(376002)(199004)(189003)(305945005)(6486002)(5640700003)(4326008)(6116002)(81166006)(81156014)(6436002)(8676002)(8936002)(3846002)(14454004)(508600001)(7736002)(316002)(5660300001)(54906003)(575784001)(68736007)(53936002)(25786009)(102836004)(186003)(476003)(97736004)(446003)(42882007)(71190400001)(386003)(6506007)(6512007)(71200400001)(11346002)(2351001)(44832011)(105586002)(486006)(2616005)(106356001)(66066001)(76176011)(1076003)(99286004)(36756003)(256004)(6916009)(2501003)(52116002)(2906002)(26005)(14444005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1230;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: j+ds6qxXD81LUlccMAFwu5KFbj+CgAZqHeyJAVq5YnkeIneqptVL1icSZyXhVbyo/WUR09EfGw1jvoU/F9yTjxv3JC4l/9Yy2jv9TX5ooZdXDoGQg4f46wiTSZAPTN60CRErK5vKkb0uSpQ0IFCUIUMGuFWiY8ubbTRhQflM3viczQHi0TpE5k8TpwI7dnF9wUl9MJmHPTxwjsGNyNXOb4mQaXPfvAwnCFprPRtA0KXx2RHwEq2Z2izz/RjG/FRo18L5DtpzhCqq7b9Y0J85zOvtm9w6dGe1swcVp685bpqK/3EmpY44s9OCEvUID03m
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S2389724AbeLTU62 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 20 Dec 2018 15:58:28 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:49517 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729211AbeLTU61 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 20 Dec 2018 15:58:27 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ga5OW-0005zd-Dj; Thu, 20 Dec 2018 21:58:12 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ga5OT-0000P7-8J; Thu, 20 Dec 2018 21:58:09 +0100
+Date:   Thu, 20 Dec 2018 21:58:09 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>, paul.burton@mips.com,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mathieu Malaterre <malat@debian.org>, ezequiel@collabora.co.uk,
+        prasannatsmkumar@gmail.com, linux-pwm@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
+Subject: Re: [PATCH v8 15/26] pwm: jz4740: Add support for the JZ4725B
+Message-ID: <20181220205809.5t2klpb7donmoibb@pengutronix.de>
+References: <20181212220922.18759-1-paul@crapouillou.net>
+ <20181212220922.18759-16-paul@crapouillou.net>
+ <20181213092409.ml4wpnzow2nnszkd@pengutronix.de>
+ <1544709795.18952.1@crapouillou.net>
+ <20181213204219.onem3q6dcmakusl2@pengutronix.de>
+ <CACRpkdbABtDgwKai=8Pfji7qVb-XHsX8pDsuDdS5hhg7qEN0Bw@mail.gmail.com>
+ <20181214142628.zwi4hadrju53z6f3@pengutronix.de>
+ <1544969932.1649.1@crapouillou.net>
+ <20181217075321.k45vhgnszeqs3tea@pengutronix.de>
+ <20181220173904.GE9408@ulmo>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74ed1a91-7d0d-4b08-0401-08d666a2f691
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2018 17:45:43.2942
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1230
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20181220173904.GE9408@ulmo>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Mapping the delay slot emulation page as both writeable & executable
-presents a security risk, in that if an exploit can write to & jump into
-the page then it can be used as an easy way to execute arbitrary code.
+On Thu, Dec 20, 2018 at 06:39:04PM +0100, Thierry Reding wrote:
+> On Mon, Dec 17, 2018 at 08:53:21AM +0100, Uwe Kleine-König wrote:
+> > On Sun, Dec 16, 2018 at 03:18:52PM +0100, Paul Cercueil wrote:
+> > > Hi,
+> > > 
+> > > Le ven. 14 déc. 2018 à 15:26, Uwe Kleine-König
+> > > <u.kleine-koenig@pengutronix.de> a écrit :
+> > > > Hello,
+> > > > 
+> > > > On Fri, Dec 14, 2018 at 02:50:20PM +0100, Linus Walleij wrote:
+> > > > > On Thu, Dec 13, 2018 at 9:42 PM Uwe Kleine-König
+> > > > > <u.kleine-koenig@pengutronix.de> wrote:
+> > > > > > [Adding Linus Walleij to Cc:]
+> > > > > > On Thu, Dec 13, 2018 at 03:03:15PM +0100, Paul Cercueil wrote:
+> > > > > > > Le jeu. 13 déc. 2018 à 10:24, Uwe Kleine-König
+> > > > > > > <u.kleine-koenig@pengutronix.de> a écrit :
+> > > > > > > > On Wed, Dec 12, 2018 at 11:09:10PM +0100, Paul Cercueil wrote:
+> > > > > > > > >  The PWM in the JZ4725B works the same as in the JZ4740,
+> > > > > > > > >  except that it only has 6 channels available instead of
+> > > > > > > > >  8.
+> > > > > > > >
+> > > > > > > > this driver is probed only from device tree? If yes, it
+> > > > > > > > might be sensible to specify the number of PWMs there and
+> > > > > > > > get it from there.
+> > > > > > > > There doesn't seem to be a generic binding for that, but there are
+> > > > > > > > several drivers that could benefit from it. (This is a bigger project
+> > > > > > > > though and shouldn't stop your patch. Still more as it already got
+> > > > > > > > Thierry's ack.)
+> > > > > > >
+> > > > > > > I think there needs to be a proper guideline, as there doesn't seem to be
+> > > > > > > a consensus about this. I learned from emails with Rob and  Linus (Walleij)
+> > > > > > > that I should not have in devicetree what I can deduce from the compatible
+> > > > > > > string.
+> > > > > >
+> > > > > > I understood them a bit differently. It is ok to deduce things from the
+> > > > > > compatible string. But if you define a generic property (say) "num-pwms"
+> > > > > > that is used uniformly in most bindings this is ok, too. (And then the
+> > > > > > two different devices could use the same compatible.)
+> > > > > >
+> > > > > > An upside of the generic "num-pwms" property is that the pwm core could
+> > > > > > sanity check pwm phandles before passing them to the hardware drivers.
+> > > > > 
+> > > > >  I don't know if this helps, but in GPIO we have "ngpios" which is
+> > > > >  used to augment an existing block as to the number of lines actually
+> > > > >  used with it.
+> > > > > 
+> > > > >  The typical case is that an ASIC engineer synthesize a block for
+> > > > >  32 GPIOs but only 12 of them are routed to external pads. So
+> > > > >  we augment the behaviour of that driver to only use 12 of the
+> > > > >  32 lines.
+> > > > > 
+> > > > >  I guess using the remaining 20 lines "works" in a sense but they
+> > > > >  have no practical use and will just bias electrons in the silicon
+> > > > >  for no use.
+> > > > 
+> > > > This looks very similar to the case under discussion.
+> > > > 
+> > > > >  So if the PWM case is something similar, then by all means add
+> > > > >  num-pwms.
+> > > > 
+> > > > .. or "npwms" to use the same nomenclature as the gpio binding?
+> > > 
+> > > If we're going to do something like this, should it be the drivers or
+> > > the core (within pwmchip_add) that checks for this "npwms" property?
+> > 
+> > Of course this should be done in the core. The driver than can rely on
+> > the validity of the index. But as I wrote before, this shouldn't stop
+> > your patch from going in.
 
-Prevent this by mapping the page read-only for userland, and using
-access_process_vm() with the FOLL_FORCE flag to write to it from
-mips_dsemul().
+Actually the core already takes care of the validity of the index with
+the number of pwms being provided to pwmchip_add().
+ 
+> > But if Thierry agrees that this npmws (or num-pwms) is a good idea, it
+> > would be great to start early to convert drivers.
+> 
+> Do we actually need this? It seems like Paul's patch here properly
+> derives the number of available PWMs from the compatible string, so I
+> don't see what the extra num-pwms (or whatever) property would add.
 
-This will likely be less efficient due to copy_to_user_page() performing
-cache maintenance on a whole page, rather than a single line as in the
-previous use of flush_cache_sigtramp(). However this delay slot
-emulation code ought not to be running in any performance critical paths
-anyway so this isn't really a problem, and we can probably do better in
-copy_to_user_page() anyway in future.
+Given that the only difference between the two different implementations
+is just the number of pwms provided, this could just be expressed in the
+dts as:
 
-A major advantage of this approach is that the fix is small & simple to
-backport to stable kernels.
+	pwm@2000000 {
+		compatible = "jz4740";
+		num-pwms = <8>;
+	}
 
-Reported-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 432c6bacbd0c ("MIPS: Use per-mm page to execute branch delay slot in=
-structions")
-Cc: stable@vger.kernel.org # v4.8+
----
- arch/mips/kernel/vdso.c     |  4 ++--
- arch/mips/math-emu/dsemul.c | 38 +++++++++++++++++++------------------
- 2 files changed, 22 insertions(+), 20 deletions(-)
+and
 
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index 48a9c6b90e07..9df3ebdc7b0f 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -126,8 +126,8 @@ int arch_setup_additional_pages(struct linux_binprm *bp=
-rm, int uses_interp)
-=20
- 	/* Map delay slot emulation page */
- 	base =3D mmap_region(NULL, STACK_TOP, PAGE_SIZE,
--			   VM_READ|VM_WRITE|VM_EXEC|
--			   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
-+			   VM_READ | VM_EXEC |
-+			   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
- 			   0, NULL);
- 	if (IS_ERR_VALUE(base)) {
- 		ret =3D base;
-diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
-index 5450f4d1c920..e2d46cb93ca9 100644
---- a/arch/mips/math-emu/dsemul.c
-+++ b/arch/mips/math-emu/dsemul.c
-@@ -214,8 +214,9 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction =
-ir,
- {
- 	int isa16 =3D get_isa16_mode(regs->cp0_epc);
- 	mips_instruction break_math;
--	struct emuframe __user *fr;
--	int err, fr_idx;
-+	unsigned long fr_uaddr;
-+	struct emuframe fr;
-+	int fr_idx, ret;
-=20
- 	/* NOP is easy */
- 	if (ir =3D=3D 0)
-@@ -250,27 +251,31 @@ int mips_dsemul(struct pt_regs *regs, mips_instructio=
-n ir,
- 		fr_idx =3D alloc_emuframe();
- 	if (fr_idx =3D=3D BD_EMUFRAME_NONE)
- 		return SIGBUS;
--	fr =3D &dsemul_page()[fr_idx];
-=20
- 	/* Retrieve the appropriately encoded break instruction */
- 	break_math =3D BREAK_MATH(isa16);
-=20
- 	/* Write the instructions to the frame */
- 	if (isa16) {
--		err =3D __put_user(ir >> 16,
--				 (u16 __user *)(&fr->emul));
--		err |=3D __put_user(ir & 0xffff,
--				  (u16 __user *)((long)(&fr->emul) + 2));
--		err |=3D __put_user(break_math >> 16,
--				  (u16 __user *)(&fr->badinst));
--		err |=3D __put_user(break_math & 0xffff,
--				  (u16 __user *)((long)(&fr->badinst) + 2));
-+		union mips_instruction _emul =3D {
-+			.halfword =3D { ir >> 16, ir }
-+		};
-+		union mips_instruction _badinst =3D {
-+			.halfword =3D { break_math >> 16, break_math }
-+		};
-+
-+		fr.emul =3D _emul.word;
-+		fr.badinst =3D _badinst.word;
- 	} else {
--		err =3D __put_user(ir, &fr->emul);
--		err |=3D __put_user(break_math, &fr->badinst);
-+		fr.emul =3D ir;
-+		fr.badinst =3D break_math;
- 	}
-=20
--	if (unlikely(err)) {
-+	/* Write the frame to user memory */
-+	fr_uaddr =3D (unsigned long)&dsemul_page()[fr_idx];
-+	ret =3D access_process_vm(current, fr_uaddr, &fr, sizeof(fr),
-+				FOLL_FORCE | FOLL_WRITE);
-+	if (unlikely(ret !=3D sizeof(fr))) {
- 		MIPS_FPU_EMU_INC_STATS(errors);
- 		free_emuframe(fr_idx, current->mm);
- 		return SIGBUS;
-@@ -282,10 +287,7 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction=
- ir,
- 	atomic_set(&current->thread.bd_emu_frame, fr_idx);
-=20
- 	/* Change user register context to execute the frame */
--	regs->cp0_epc =3D (unsigned long)&fr->emul | isa16;
--
--	/* Ensure the icache observes our newly written frame */
--	flush_cache_sigtramp((unsigned long)&fr->emul);
-+	regs->cp0_epc =3D fr_uaddr | isa16;
-=20
- 	return 0;
- }
---=20
-2.20.0
+	pwm@2000000 {
+		compatible = "jz4740";
+		num-pwms = <6>;
+	}
 
+instead of
+
+	pwm@2000000 {
+		compatible = "jz4740";
+	}
+
+and
+
+	pwm@2000000 {
+		compatible = "jz4725";
+	}
+
+. According to my metric the former is more descriptive and so better.
+
+And then the pwm core could provide parsing of that property (e.g. if
+chip.npwm == 0) which simplifies the driver (and all others using that
+mechanism).
+
+Regarding the question "Do we actually need this?": We don't, but I
+think it would make a nice step to get more descriptive device trees and
+so I consider it an improvement. It would also allow to check a dtb
+because even without the driver you can notice that
+
+	pwms = <&pwm 12 0>;
+
+is invalid if &pwm has "num-pwms = <8>". Drivers that could benefit are
+(at least): hibvt, sun4i, tegra, lpss.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

@@ -2,140 +2,152 @@ Return-Path: <SRS0=5tp+=O6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=MAILING_LIST_MULTI,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C611C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Dec 2018 21:16:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8573CC43387
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Dec 2018 22:04:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 43E402190A
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Dec 2018 21:16:42 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="lbfu8PCX"
+	by mail.kernel.org (Postfix) with ESMTP id 55A6821928
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Dec 2018 22:04:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390357AbeLUVQm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 21 Dec 2018 16:16:42 -0500
-Received: from mail-eopbgr700106.outbound.protection.outlook.com ([40.107.70.106]:17766
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388463AbeLUVQl (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 21 Dec 2018 16:16:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cL4WbI1OumC5qCBQDt5UySwYhC7YQaH7rjPBBaqoZKg=;
- b=lbfu8PCXTtZOHjeAATcic5hcsGARmTjS8ueeM1xa8KKM0B3NiwIXebYiDQTAq5fDiO9iJrPVdBrSdI3S0RIFl+bb6vB7+yf+9MIwWyRl0Y+h3ZfBrGjSP0UCHEmK+21p4S3HUPfWZwWay7K4rgZQ286SmksY5fPsCfU4JkYv3jM=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1024.namprd22.prod.outlook.com (10.174.167.25) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1446.21; Fri, 21 Dec 2018 21:16:37 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::c07a:a95:8ba9:8435%9]) with mapi id 15.20.1446.020; Fri, 21 Dec 2018
- 21:16:37 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Sasha Levin <sashal@kernel.org>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        id S1725837AbeLUWEJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 21 Dec 2018 17:04:09 -0500
+Received: from mail-out.m-online.net ([212.18.0.9]:55389 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389028AbeLUWEI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 21 Dec 2018 17:04:08 -0500
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 43M2hj0P2Vz1qvvS;
+        Fri, 21 Dec 2018 23:04:04 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 43M2hh53Jpz1qsJj;
+        Fri, 21 Dec 2018 23:04:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id TW0calHYHzgz; Fri, 21 Dec 2018 23:04:02 +0100 (CET)
+X-Auth-Info: 8kXpQnXbBqkg9AavCCyVVMpz6zvX6738fl/Ue0ZH83s=
+Received: from [IPv6:::1] (unknown [195.140.253.167])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Fri, 21 Dec 2018 23:04:02 +0100 (CET)
+From:   Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH] Revert "serial: 8250: Fix clearing FIFOs in RS485 mode
+ again"
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Topic: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Index: AQHUmIvU0UY0CfycF02ZZK4s2JaOTaWIAqeAgAGxAoA=
-Date:   Fri, 21 Dec 2018 21:16:37 +0000
-Message-ID: <20181221211603.r7226vjkubi3lfzg@pburton-laptop>
-References: <20181220174514.24953-1-paul.burton@mips.com>
- <20181220192616.42976218FE@mail.kernel.org>
-In-Reply-To: <20181220192616.42976218FE@mail.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: LO2P265CA0198.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9e::18) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [94.197.89.66]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1024;6:wCi/JzUkEggbyxA7fF413dJMR6lIkIR4mjqPARO907FUPk6lQt68Bg7/d7g7RE/C23xLcDm9WorPz3mAOlCCohuOyPPxObhAv+jctW6AywlBArxJYgM1In9QiKg3aJUuwIg4B8M2HIw4x/rbEeFNdkjBxQfLM729LEAj+SJuCj8qCaEnGgYTStkHr7OXmXWD9DbMxZOncwTtpyZsieLadNfVypCeR7c6ZLNYT5D537GPk87+aiVDZX4VFGK/58csaolUVkE3hDKDF+PbgU0lYFz4qXUzOj+iEb2/X6/zk8aRtIvj4hrU0dxf6veUreGPQiktLFD/lq62d6+MdzmrDjywozLnDn192yviKDCTDO9H5Cp8EMNwv4Wf3ANw4tLpBpLUTBXO2TnyQCG/FeGrnYtWX8vv0WQK5j9CuY6PHsvTrgftrymdOqoiPLpBzo7h4Emxe7fVPlO1f3UcpE7LsA==;5:P+Ybwm448T/mCoSXN0//T5zqcqkD3zpe7E0oOCC3bxudjYQxA4u4RZKRPP/Dz9MCPbLPBA0FAW3Bz3+fwpv6UThED+2zpQDBmdPO+CRro1hcP2WaToZL+7oFDwJkswE6CXOpe4INNAllB4TENffMAkp2zuj4bo3qjlcYrjcEdLc=;7:zFuEykRClEhsd9o5LJqifcVT/ABUOgNlrJFup9uog979eXihYKBIY4pqNh19FI95kAiQ175YozMSE+hHETkzIpypdjjH6FJoggzhPsYpMeG19SwYtQ4mMim8PTVxHRZOVpTaUkt58ofdLkP1dHfegg==
-x-ms-office365-filtering-correlation-id: 914a27a6-055f-440a-95e2-08d66789976a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1024;
-x-ms-traffictypediagnostic: MWHPR2201MB1024:
-x-microsoft-antispam-prvs: <MWHPR2201MB1024113B01F1142EFEC42CB7C1B80@MWHPR2201MB1024.namprd22.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(999002)(5005026)(6040522)(2401047)(8121501046)(93006095)(3231475)(944501520)(52105112)(10201501046)(3002001)(149066)(150057)(6041310)(20161123560045)(20161123558120)(20161123564045)(2016111802025)(20161123562045)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1024;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1024;
-x-forefront-prvs: 0893636978
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(39840400004)(366004)(376002)(346002)(136003)(189003)(199004)(81156014)(2906002)(305945005)(446003)(54906003)(11346002)(58126008)(97736004)(8936002)(8676002)(81166006)(575784001)(229853002)(5660300001)(476003)(6436002)(44832011)(6916009)(14444005)(256004)(99286004)(9686003)(6486002)(68736007)(508600001)(7736002)(106356001)(486006)(186003)(105586002)(42882007)(25786009)(4326008)(33896004)(76176011)(26005)(52116002)(6512007)(386003)(102836004)(6506007)(66066001)(3846002)(6116002)(6246003)(53936002)(71190400001)(14454004)(33716001)(1076003)(71200400001)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1024;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-microsoft-antispam-message-info: 7fOhqJi+wrh0THXJDujwcK31Qz7+83yRnMvXUf9E+qhP81tDKVlXu2L22awZS/9ThinFRjMF5sEiCgMD6Etu8oM6gq+DjENkzfgCMms5u2DwHNLCv5KME1r/nsXZjoKVAdngxDcdajT8qxZvsGuh9pMvHWg6PIFLp0wA4Mt/4AgDKSPnPfBh+wkEb1GfK1HtcfGcoUH8uXOgvDVPgVpKCFSSGzvf9r50BwbgBgG1xiO+6REsCpz0VYMb/051m6aVzdVtwI6w1ztIIc2nM14Simlfz9TWQmC16agaVoqsd9X6hTsW4beAWjzZlcYKcmcc
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <95513F17380BFA4F85AFB4722702AF81@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        Paul Burton <pburton@wavecomp.com>,
+        Daniel Jedrychowski <avistel@gmail.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Ezequiel Garcia <ezequiel@collabora.com>
+References: <20181213174834.kxdy6fphaeoivqgh@pburton-laptop>
+ <20181216200833.27928-1-paul.burton@mips.com>
+ <93a3c76b-f4ba-57ae-9d80-6e945b4f3181@denx.de>
+ <20181216213901.hpll7wqzhqvfgkfy@pburton-laptop>
+ <28a1d4ae-493d-8bbc-46f7-ad41ca04d782@denx.de>
+ <20181216222815.4t4xhaiy6rvfaogq@pburton-laptop>
+ <78839e8c-0278-6060-0dd2-a84a19258a8a@denx.de>
+ <20181221210818.g3kbv7bnr577dane@pburton-laptop>
+Message-ID: <0266be47-75c8-6a1b-dfec-129c5b7bbf8f@denx.de>
+Date:   Fri, 21 Dec 2018 23:02:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 914a27a6-055f-440a-95e2-08d66789976a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2018 21:16:37.2763
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1024
+In-Reply-To: <20181221210818.g3kbv7bnr577dane@pburton-laptop>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Sasha,
+On 12/21/2018 10:08 PM, Paul Burton wrote:
+> Hi Marek,
+> 
+> On Fri, Dec 21, 2018 at 09:08:28PM +0100, Marek Vasut wrote:
+>> On 12/16/2018 11:28 PM, Paul Burton wrote:
+>>> On Sun, Dec 16, 2018 at 11:01:18PM +0100, Marek Vasut wrote:
+>>>>>>> I did suggest an alternative approach which would rename
+>>>>>>> serial8250_clear_fifos() and split it into 2 variants - one that
+>>>>>>> disables FIFOs & one that does not, then use the latter in
+>>>>>>> __do_stop_tx_rs485():
+>>>>>>>
+>>>>>>> https://lore.kernel.org/lkml/20181213014805.77u5dzydo23cm6fq@pburton-laptop/
+>>>>>>>
+>>>>>>> However I have no access to the OMAP3 hardware that Marek's patch was
+>>>>>>> attempting to fix & have heard nothing back with regards to him testing
+>>>>>>> that approach, so here's a simple revert that fixes the Ingenic JZ4780.
+>>>>>>>
+>>>>>>> I've marked for stable back to v4.10 presuming that this is how far the
+>>>>>>> broken patch may be backported, given that this is where commit
+>>>>>>> 2bed8a8e7072 ("Clearing FIFOs in RS485 emulation mode causes subsequent
+>>>>>>> transmits to break") that it tried to fix was introduced.
+>>>>>>
+>>>>>> OK, I tested this on AM335x / OMAP3 and the system is again broken, so
+>>>>>> that's a NAK.
+>>>>>
+>>>>> To be clear - what did you test? This revert or the patch linked to
+>>>>> above?
+>>>>>
+>>>>> This revert would of course reintroduce your RS485 issue because it just
+>>>>> undoes your change.
+>>>>
+>>>> The revert. Which of the two patches do you need me to test.
+>>>
+>>> The one in the email I sent on Thursday 13th at 01:48:06 UTC, linked to
+>>> at lore.kernel.org in the quote right above:
+>>>
+>>> https://lore.kernel.org/lkml/20181213014805.77u5dzydo23cm6fq@pburton-laptop/
+>>>
+>>> You replied with comments on the patch, you just never tested it or
+>>> never told me if you did. The lack of response means I don't know
+>>> whether that potential patch even still works for your system, hence the
+>>> revert.
+>>
+>> I shared the entire testcase, which now fails on AM335x due to this
+>> revert. Is there any progress on a proper fix from your side which does
+>> not break the AM335x ?
+> 
+> No.
+> 
+> Let's be clear - I didn't break your AM335x system, your broken patch
+> says that Daniel did with a commit applied back in v4.10. As such I
+> don't consider it my responsibility to fix your problem at all, I don't
+> have any access to the hardware anyway & I won't be buying hardware to
+> fix a bug for you.
+> 
+> Despite all that I did write a patch which I expect would have solved
+> the problem for both of us, which is linked *twice* in the quoted emails
+> above & which as far as I can tell you *still* have not tested. I can
+> only surmise that you're trying deliberately to be annoying at this
+> point.
+> 
+> If you want to try the patch I already wrote, and confirm whether it
+> actually works for you, then let's talk. Otherwise we're done here.
 
-On Thu, Dec 20, 2018 at 07:26:15PM +0000, Sasha Levin wrote:
-> Hi,
->=20
-> [This is an automated email]
->=20
-> This commit has been processed because it contains a "Fixes:" tag,
-> fixing commit: 432c6bacbd0c MIPS: Use per-mm page to execute branch delay=
- slot instructions.
->=20
-> The bot has tested the following trees: v4.19.10, v4.14.89, v4.9.146,=20
+Understood. However I did test your patch, but it was generating
+spurious IRQs and overruns (ttyS ttyS2: 91 input overrun(s)) on the
+AM335x, so that's not a proper solution.
 
-Neat! I like the idea of this automation :)
+I even brought the CI20 V2 I have back to life (yes, I bought one). The
+patch Ezequiel posted did fix the problem on the CI20, and did not break
+the AM335x, so I'd prefer if it was revisited instead of a heavy-handed
+revert.
 
-> v4.19.10: Build OK!
-> v4.14.89: Build OK!
-> v4.9.146: Failed to apply! Possible dependencies:
->     05ce77249d50 ("userfaultfd: non-cooperative: add madvise() event for =
-MADV_DONTNEED request")
->     163e11bc4f6e ("userfaultfd: hugetlbfs: UFFD_FEATURE_MISSING_HUGETLBFS=
-")
->     67dece7d4c58 ("x86/vdso: Set vDSO pointer only after success")
->     72f87654c696 ("userfaultfd: non-cooperative: add mremap() event")
->     893e26e61d04 ("userfaultfd: non-cooperative: Add fork() event")
->     897ab3e0c49e ("userfaultfd: non-cooperative: add event for memory unm=
-aps")
->     9cd75c3cd4c3 ("userfaultfd: non-cooperative: add ability to report no=
-n-PF events from uffd descriptor")
->     d811914d8757 ("userfaultfd: non-cooperative: rename *EVENT_MADVDONTNE=
-ED to *EVENT_REMOVE")
+And I'd prefer to keep this thread alive, since I am still convinced
+that the FIFO handling code is wrong. Moreover, considering the UME bit
+on JZ4780 in FCR, the original code should confuse the UART on the
+JZ4780 too, although this might be hidden by some other surrounding code
+specific to the 8250 core on the JZ4780.
 
-This list includes the correct soft dependency - commit 897ab3e0c49e
-("userfaultfd: non-cooperative: add event for memory unmaps") which
-added an extra argument to mmap_region().
+I am also on mipslinux IRC channel, in case you want to discuss this.
 
-> How should we proceed with this patch?
-
-The backport to v4.9 should simply drop the last argument (NULL) in the
-call to mmap_region().
-
-Is there some way I can indicate this sort of thing in future patches so
-that the automation can spot that I already know it won't apply cleanly
-to a particular range of kernel versions? Or even better, that I could
-indicate what needs to be changed when backporting to those kernel
-versions?
-
-Thanks,
-    Paul
+-- 
+Best regards,
+Marek Vasut

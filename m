@@ -6,83 +6,80 @@ X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAD1AC43387
-	for <linux-mips@archiver.kernel.org>; Sun, 23 Dec 2018 16:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A2C8C43387
+	for <linux-mips@archiver.kernel.org>; Sun, 23 Dec 2018 16:16:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 795C32184D
-	for <linux-mips@archiver.kernel.org>; Sun, 23 Dec 2018 16:16:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6367B2184D
+	for <linux-mips@archiver.kernel.org>; Sun, 23 Dec 2018 16:16:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="p68l1NAU"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="UXtS0mL/"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729613AbeLWQQ2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 23 Dec 2018 11:16:28 -0500
-Received: from mail-eopbgr690129.outbound.protection.outlook.com ([40.107.69.129]:35975
+        id S1729666AbeLWQQe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 23 Dec 2018 11:16:34 -0500
+Received: from mail-eopbgr690136.outbound.protection.outlook.com ([40.107.69.136]:52294
         "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725832AbeLWQQ2 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 23 Dec 2018 11:16:28 -0500
+        id S1725832AbeLWQQe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 23 Dec 2018 11:16:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gzO/3URKqL3vha3jMymMVTaLXFcE9NyCPWOQoVXVEHU=;
- b=p68l1NAUxpJdlpCB/gXjjX/u5hnYYbiMTOJhwdz7TwxV1GPFGVeOx46R5MWsGtxBRA0IoD1Xl81YQFOPq2FV4bTFmYGS5k9FuGrtr1vW/WE+e0LVD9Bqw9CsVbFggHzHphg3WhIoKGBxNCjfBAiN30eIt1QIeu95cOoCN7QS9p4=
+ bh=lDSZhFQKrZBF+BqTvvifkO9wTsgt80ml+0WC7qiascU=;
+ b=UXtS0mL/frlPML3krzI4FnFioiAsQMSQERzupGXjmI/d7NQ7VRl2Pny+IXPjlm46CJiWpOusQF9E3yc+EDQDmMnrg7UEd2m5jkbymogslScvHW8oADpA7mnTnenDC+wVs1Sl8NYHs666INeYHh2AtxVIy8h8N+opN1nfW9a5IN8=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
  MWHPR2201MB1102.namprd22.prod.outlook.com (10.174.169.152) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1446.23; Sun, 23 Dec 2018 16:16:24 +0000
+ 15.20.1446.23; Sun, 23 Dec 2018 16:16:32 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c07a:a95:8ba9:8435]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c07a:a95:8ba9:8435%9]) with mapi id 15.20.1446.026; Sun, 23 Dec 2018
- 16:16:24 +0000
+ 16:16:32 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Burton <pburton@wavecomp.com>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        David Daney <david.daney@cavium.com>,
-        Paul Burton <pburton@wavecomp.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+CC:     Linux-MIPS <linux-mips@vger.kernel.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Topic: [PATCH] MIPS: math-emu: Write-protect delay slot emulation pages
-Thread-Index: AQHUmIvU0UY0CfycF02ZZK4s2JaOTaWMhJMA
-Date:   Sun, 23 Dec 2018 16:16:24 +0000
-Message-ID: <MWHPR2201MB1277DFE826A1F2A351D29CC7C1BA0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20181220174514.24953-1-paul.burton@mips.com>
-In-Reply-To: <20181220174514.24953-1-paul.burton@mips.com>
+Subject: Re: [PATCH 1/5] MIPS: alchemy: cpu_all_mask is forbidden for clock
+ event  devices
+Thread-Topic: [PATCH 1/5] MIPS: alchemy: cpu_all_mask is forbidden for clock
+ event  devices
+Thread-Index: AQHUmtre3694yDcZ5E6Mf6lirDRF4A==
+Date:   Sun, 23 Dec 2018 16:16:32 +0000
+Message-ID: <MWHPR2201MB1277145BF09B9DA38908D1A6C1BA0@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20181219070803.449981-2-manuel.lauss@gmail.com>
+In-Reply-To: <20181219070803.449981-2-manuel.lauss@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: CWXP265CA0030.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:2d::18) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: CWXP265CA0046.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:2d::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [94.197.89.66]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1102;6:CsBdr2Bt6BPyxxjzvCbWjV5ReIsivJkbM4uCmNqCeY0bYsK5wl1/x/mi44/Ma062jKBcnKavUwtwraM4+BHDOETQ8ds/B+7D40KtQCpz8wOj0KwVzNbOXxeTRMya+h7tTDtSI/QQU7yifsWX7JFRHVPLby8WAmeIvEziIMTIOiRX0DcqG2udfnv5mrF/jpi3NgZmYlSDnSCBNs1ofcOK7T9SZ0m57LxT8GT8C91aV5A95vlMbPefLqfMkpt/+qJjc+CtyRs85cTflafGWA6saIPGmw+2qpKeIxx/4mOibfOLl2F9L3Er3yecDY6uaRqsyyo3Hpg/MLmD6kqVD5LWpOnpK6Y82Of/DF+MhJNCvuDnl1IGmuUsqlvPjeL4ChowWAtyMhMIz638eTjkTcjYkXTZA88FAnmL8dUejciwYyK4eo0j4+JNQ+71hexR2fJnJA1eFu7x8LQ3xu7uYYQHKg==;5:cROC+EAl8qk9d6AQqf1XKFue6XzN/lWkfqbr6nMQ6Iw6LR5IZI9DXK4H9cUc62Cns/X4YZkba1Q7oxXz9GRtCoKpa+ShuTRHrwXT1Lp8kXEVkBcLdxLvpyDr7kVL4CwJ8eaegW1tf0SNv6iJo+WYWMBOsXq9PF2NFqbNYgzfmqg=;7:d68jJBmdAF65KqHj1XzZzTOW8G5rjoNWfBCwyl4T6mhX/IRkejvdk//d3YD3vpf8hazadNpHT2F+e8bhgFqMHTU3Rcl1SVv4AZRbLTJtcXqkID+EYHl6/6BfR2eAuFf5AwW/NgNG9ku0t3n1xVkzTw==
-x-ms-office365-filtering-correlation-id: f2672bb7-8299-4b9b-8219-08d668f1fbdb
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1102;
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1102;6:ucvRtHAjQxpjwRVP0Er5INfOFlYnUoLrD9/lM64vjrIZsJBwAudvB7P70u2mc8BWGx9udIXBqRW4j2+kYuMQ1odsTqRX8subDpssG4XTldRWk86Z0iqpz92kJzMbEKi1PzREX8xJZSCl55HmCAz/BC36WFqgJZBRIcZBveK0lCP/hwdr+gHxUIc1ESiEWCCAFggoNQQ6nQ2KiEGY7GjLPcbXiJFKeOMQ4vPM0lnaOYNaeq8FUoyD4o7QpAxiiQd4G3JZYF2slNn4NGOs2MTIJcLQY6n2c0cjkzkEiLgoOUsGn6HNgXL1FFwv5pzJWl1FwAO7q3unhIVTyMyasCTK3FFz/YAVW2+1iA1A2Nmup2sgXos+6nE3PRZ6R1lYr4z9BrkIagvZ4asUE+4yIgZ00TtevUlMYOllQcJkh6wYd70TDNQl1FBxzfH4sJtUOc8JUlKop+DlejgGmzLOLeOc9w==;5:BpCOqQtUqlqxSeiWc3Z648fW1gMRZOAI/EDELssM6gyAXZFUjRb2YY1kq4llElAEJqlxmNGZVbIkhvX4C40jOUoiIZyHmiYgkKfg6IyruwUAsaWvcz1Bsi7jTTN99cACqT8QOhEeyDNV6UOKXVQLMpJRVloZrB1f0DPqGxk2Nds=;7:tU3A0YTvE7qlz0vP8bdv7BVQrGUgeAVwuUnikUZbBDYzyuA0G5xXYE49QJOSu1cJvHg0lEfQ1uMSHRjQp1qdf+Rt/SPGxVLQ+xXknHwRWzWQnkjFsMKEbGa6s6Ctd62rxgDD+vdgbT0PRbBAsEMTaQ==
+x-ms-office365-filtering-correlation-id: 737bdbe7-d1c6-4e2b-9e1f-08d668f200ca
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600074)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1102;
 x-ms-traffictypediagnostic: MWHPR2201MB1102:
-x-microsoft-antispam-prvs: <MWHPR2201MB1102A14B7D1386704136AD73C1BA0@MWHPR2201MB1102.namprd22.prod.outlook.com>
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(908002)(999002)(5005026)(6040522)(2401047)(8121501046)(10201501046)(3002001)(93006095)(3231475)(944501520)(52105112)(6041310)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123560045)(20161123564045)(20161123562045)(2016111802025)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1102;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1102;
+x-microsoft-antispam-prvs: <MWHPR2201MB1102CFF86440942EB3E9A2B1C1BA0@MWHPR2201MB1102.namprd22.prod.outlook.com>
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(908002)(999002)(5005026)(6040522)(2401047)(8121501046)(10201501046)(3002001)(93006095)(3231475)(944501520)(52105112)(6041310)(20161123560045)(20161123564045)(20161123562045)(2016111802025)(20161123558120)(6043046)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1102;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1102;
 x-forefront-prvs: 0895DF8FFD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(396003)(39830400003)(376002)(366004)(199004)(189003)(105586002)(6506007)(386003)(6116002)(71190400001)(102836004)(6436002)(229853002)(99286004)(6246003)(76176011)(71200400001)(26005)(33656002)(106356001)(3846002)(68736007)(7696005)(52116002)(54906003)(186003)(316002)(5660300001)(97736004)(55016002)(8936002)(2906002)(256004)(14444005)(4326008)(476003)(8676002)(81156014)(6862004)(81166006)(9686003)(7736002)(305945005)(74316002)(42882007)(14454004)(446003)(478600001)(53936002)(575784001)(66066001)(44832011)(25786009)(11346002)(486006);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1102;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(396003)(39830400003)(376002)(366004)(199004)(189003)(105586002)(6506007)(386003)(6116002)(71190400001)(102836004)(6436002)(229853002)(99286004)(6246003)(76176011)(71200400001)(26005)(33656002)(106356001)(3846002)(6916009)(68736007)(7696005)(52116002)(54906003)(186003)(316002)(5660300001)(97736004)(55016002)(39060400002)(8936002)(2906002)(256004)(14444005)(4326008)(476003)(8676002)(81156014)(81166006)(9686003)(7736002)(305945005)(74316002)(42882007)(14454004)(446003)(508600001)(53936002)(66066001)(44832011)(25786009)(11346002)(486006)(21443002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1102;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 0sK57Jq9glP7xqDBEzaEefDg5eGkHRfkssfPd1nbCIgN1q+h9FHqhfDQ0tE+SIu95/pEz7Yshwodno1tF2b3DxZDz013hyWpoz6Y/fLJmgPoY0lph7oSz8+CcWCg7IRfMfp2To3ozc1ViDo9fB0bS+rvTz+KqXoTZiwaOPByPDR8RnHFn1SiSqstZzd2RVskats8bPsAdSPSB8FWftEwKYsxjSjinG3E6+Llokpa4LYAO5+ZBe3ebEU2/bg/4EtrY/ZlJHeBeGPTl6nkQFoWO7jHECYfrphq+wAUufdCsP0kPFnl+K4jQ6bPKHsI5oeE
+x-microsoft-antispam-message-info: z8CMdYWs1q2wCdDqby0rnHrTFyydXKvbfWw+KosxeZ7BoOfAkzm02BhORm3+b9S6+YAjvXBalJY6IA9hYZTSe0VYohWE87gDETwvqXs5Hy5h9rds8j5QU+QeAFC1BzTx7mrXUcJmpdb5JTYXycZM+PsKpWnw9RZcoq8UZIZ75gc64DUzBjSKIH3/PR/XVGJI3/W9rPNsSDCBd9GAu5sLbmMmfzJxtKr1HoaD3YxefBHE5W8BqHw3zrJJrFxpJqAUE6LQt+JQnhoyRmijcUabJqyWJkb38vy3CQpaL4tZ4x/UW1pYJUV3mqKHtrBFJV79
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2672bb7-8299-4b9b-8219-08d668f1fbdb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Dec 2018 16:16:24.4400
+X-MS-Exchange-CrossTenant-Network-Message-Id: 737bdbe7-d1c6-4e2b-9e1f-08d668f200ca
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Dec 2018 16:16:32.6959
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
@@ -94,30 +91,14 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hello,
 
-Paul Burton wrote:
-> Mapping the delay slot emulation page as both writeable & executable
-> presents a security risk, in that if an exploit can write to & jump into
-> the page then it can be used as an easy way to execute arbitrary code.
+Manuel Lauss wrote:
+> change alchemy clock event device cpu_all_mask to cpu_possible_mask.
+> Gets rid of a warning, which then does the same substitution:
+> WARNING: CPU: 0 PID: 0 at kernel/time/clockevents.c:468 clockevents_regis=
+ter_device+0x130/0x140
+> rtcmatch2 cpumask =3D=3D cpu_all_mask, using cpu_possible_mask instead
 >=20
-> Prevent this by mapping the page read-only for userland, and using
-> access_process_vm() with the FOLL_FORCE flag to write to it from
-> mips_dsemul().
->=20
-> This will likely be less efficient due to copy_to_user_page() performing
-> cache maintenance on a whole page, rather than a single line as in the
-> previous use of flush_cache_sigtramp(). However this delay slot
-> emulation code ought not to be running in any performance critical paths
-> anyway so this isn't really a problem, and we can probably do better in
-> copy_to_user_page() anyway in future.
->=20
-> A major advantage of this approach is that the fix is small & simple to
-> backport to stable kernels.
->=20
-> Reported-by: Andy Lutomirski <luto@kernel.org>
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Fixes: 432c6bacbd0c ("MIPS: Use per-mm page to execute branch delay slot =
-instructions")
-> Cc: stable@vger.kernel.org # v4.8+
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 
 Applied to mips-fixes.
 

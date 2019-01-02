@@ -1,58 +1,104 @@
-Return-Path: <SRS0=KPy8=PJ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=tVBC=PK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49FBEC43444
-	for <linux-mips@archiver.kernel.org>; Tue,  1 Jan 2019 08:42:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68E02C43387
+	for <linux-mips@archiver.kernel.org>; Wed,  2 Jan 2019 14:56:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1EBED205C9
-	for <linux-mips@archiver.kernel.org>; Tue,  1 Jan 2019 08:42:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 340A2218FD
+	for <linux-mips@archiver.kernel.org>; Wed,  2 Jan 2019 14:56:55 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="AVDWBEEU"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727509AbfAAImO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 1 Jan 2019 03:42:14 -0500
-Received: from mail-pl1-f169.google.com ([209.85.214.169]:38318 "EHLO
-        mail-pl1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727302AbfAAImO (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 1 Jan 2019 03:42:14 -0500
-Received: by mail-pl1-f169.google.com with SMTP id e5so13355008plb.5
-        for <linux-mips@vger.kernel.org>; Tue, 01 Jan 2019 00:42:14 -0800 (PST)
+        id S1729632AbfABO4r (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 2 Jan 2019 09:56:47 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:46210 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729377AbfABO4q (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 2 Jan 2019 09:56:46 -0500
+Received: by mail-pl1-f194.google.com with SMTP id t13so14592977ply.13
+        for <linux-mips@vger.kernel.org>; Wed, 02 Jan 2019 06:56:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=yQZUNhRU9x643lviFmppAzPvgmfeUutu99BhDAlP9SE=;
+        b=AVDWBEEUsjjgagENCFY9VlVx2VCSlcrAqY1TZQdqevIJEK1+QZnCvEqtIhB6Luw0E6
+         Pg4M6lsZYw94OeOEjTB1TJiffVKt9STZbi/wqrIF5IHMRdt6q05TUiiBHFZjRatAJQ1+
+         Xx+qwpFiw5hb2IDUm4u3ZyNP+1uWW0UvlAIO0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=asvUQC84oHaFI4Bp9smDR4uYEYFGRN7p42xmuJ8fOo8=;
-        b=YwBQjjy9TFLmHjG5Krwl6h3CEC/DsW22WqgFbTt4+jTOZVKP/2YfbPHkhr54GpU+CB
-         53hrKnx5foL4a4mMcAQTIc9o/J/le43giWjbaZ4cXFuujsv2WlV67ucP6gQMVNyrVrEZ
-         N6dK4UtO5EJ5aZ3JQKOpspxdY5Vdss/d/Xd+RUTeGBTBaJXKU+XqHXOUhzbc3s8vwWuU
-         j6cz7GsBIic0yHsbrum0WTJGtakW3wE53rxXzhtr1mELAKk+4CKSGzp990VlfXTT2g1x
-         L5NKCcXMNCJWNn9pcyMU15aXM0xDDDaRiLGQ4ULI0EFfPEyl8bTeJBXvTm4paBSLlfhq
-         e9fw==
-X-Gm-Message-State: AJcUukd5rHwQxxwvNVj27AicjYq3+WyTQebnA716BhPt47oynXDcOkUN
-        YYWBSMvBnX1+7c4c8KsVWSPBEkL8xO94JfinUNE8T+ax6D8=
-X-Google-Smtp-Source: ALg8bN57iEgH+Ni5u3MuZyqSKwGEAfhOGrxHgmlFblUwkd0E9mOWLdsKMjzwTbqm/EQZfOydH5yKtYGjD71KDzRgx/E=
-X-Received: by 2002:a17:902:6b49:: with SMTP id g9mr38991990plt.98.1546332133786;
- Tue, 01 Jan 2019 00:42:13 -0800 (PST)
-MIME-Version: 1.0
-From:   YunQiang Su <syq@debian.org>
-Date:   Tue, 1 Jan 2019 16:42:03 +0800
-Message-ID: <CAKcpw6X_Q0iighiBXYvikNT8UDXME1F2wkEjzWHHDGK2_RNuGw@mail.gmail.com>
-Subject: =?UTF-8?Q?=5BBUG=5D_Data_Bus_Erorr_on_Ubiquiti_Networks_=2D_EdgeRout?=
-        =?UTF-8?Q?er=E2=84=A2_Infinity?=
-To:     steven.hill@cavium.com, david.daney@cavium.com
-Cc:     linux-mips <linux-mips@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yQZUNhRU9x643lviFmppAzPvgmfeUutu99BhDAlP9SE=;
+        b=DbeBfkh7QL6Q8DNeWZiBNDtu5N7vFA4aWqYaJx4GH1a8yb7FY3ko/SVm2SHAWI8YRW
+         SDGcv9A5F7Fn8Lqy0ky7bvEWo4dVCNQlvJqQ6up58KH4BTe7r+SPmxR7Yel8aWaA7swS
+         v58ZiwIvJqyIMw6keue6++OfFxivfbdPydSyQD49gsN6L8mARmlFa2XCVUDQT7dGazYp
+         85m0RlW0BI5UngIEhoAFkbzkUTKuYsX7FEeq2udB0P5oCvbjZsHaX3k31SkiXYca/H7o
+         ABhC6fU/n3uPxAxxDYgfrnZQfTJ522DZQsBvt8hMU3d1Mb4K8JSfHqmBXFRJcn34LT6e
+         EfxA==
+X-Gm-Message-State: AJcUukeT/QQznxga8801IaD81MExzrixAzAXevpsoyJYQ1Nlk1HZ/UFs
+        U17Q9UigVdVYH54vfpNkBs1zMQ==
+X-Google-Smtp-Source: ALg8bN6CzO1XSNV0us/oGa2Obt+47jrTz0crHOIOfHsO3ST+236can8wCi/H7qVzq5ft81NYeGJaGQ==
+X-Received: by 2002:a17:902:be0e:: with SMTP id r14mr41063619pls.124.1546441004777;
+        Wed, 02 Jan 2019 06:56:44 -0800 (PST)
+Received: from qualcomm-HP-ZBook-14-G2.qualcomm.com (blr-bdr-fw-01_globalnat_allzones-outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 5sm96745685pfz.149.2019.01.02.06.56.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 02 Jan 2019 06:56:44 -0800 (PST)
+From:   Firoz Khan <firoz.khan@linaro.org>
+To:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Cc:     y2038@lists.linaro.org, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, arnd@arndb.de, deepa.kernel@gmail.com,
+        marcin.juszkiewicz@linaro.org, firoz.khan@linaro.org
+Subject: [PATCH 0/2] Unify the system call scripts
+Date:   Wed,  2 Jan 2019 20:26:16 +0530
+Message-Id: <1546440978-19569-1-git-send-email-firoz.khan@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-I met a kernel problem for both 4.9 and 4.19 kernel
+System call table generation support is provided for
+alpha, ia64, m68k, microblaze, mips, parisc, powerpc,
+sh, sparc and xtensa architectures. The implementat-
+ions are almost similar across all the above archte-
+ctures. In order to reduce the source code across all
+the above architectures, create common ".sh" files and
+keep it in the common directory, script/. This will 
+be a generic scripts which can use for all the above
+architectures.
 
-This error happens in pci/pcie-octeon.c, in function
-   __cvmx_pcie_rc_initialize_gen2
+This patch depends on;
+ https://lore.kernel.org/lkml/1546439331-18646-1-git-send-email-firoz.khan@linaro.org/
 
-ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
+Firoz Khan (2):
+  mips: remove nargs from __SYSCALL
+  mips: generate uapi header and system call table files
 
-When disabble CONFIG_PCI, it won't meet this problem.
+ arch/mips/kernel/scall32-o32.S          |  2 +-
+ arch/mips/kernel/scall64-n32.S          |  2 +-
+ arch/mips/kernel/scall64-n64.S          |  2 +-
+ arch/mips/kernel/scall64-o32.S          |  2 +-
+ arch/mips/kernel/syscalls/Makefile      |  6 +++---
+ arch/mips/kernel/syscalls/syscallhdr.sh | 37 ---------------------------------
+ arch/mips/kernel/syscalls/syscallnr.sh  | 28 -------------------------
+ arch/mips/kernel/syscalls/syscalltbl.sh | 36 --------------------------------
+ 8 files changed, 7 insertions(+), 108 deletions(-)
+ delete mode 100644 arch/mips/kernel/syscalls/syscallhdr.sh
+ delete mode 100644 arch/mips/kernel/syscalls/syscallnr.sh
+ delete mode 100644 arch/mips/kernel/syscalls/syscalltbl.sh
+
+-- 
+1.9.1
+

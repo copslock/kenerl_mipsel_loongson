@@ -2,63 +2,98 @@ Return-Path: <SRS0=/SDL=PM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_MUTT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37E4EC43387
-	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 19:45:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73EB0C43444
+	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 21:27:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 079BC218D3
-	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 19:45:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4AA9521872
+	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 21:27:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725936AbfADTpm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 4 Jan 2019 14:45:42 -0500
-Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:55060 "EHLO
-        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725930AbfADTpm (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 4 Jan 2019 14:45:42 -0500
-Received: from darkstar.musicnaut.iki.fi (85-76-74-23-nat.elisa-mobile.fi [85.76.74.23])
-        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id 2A5BD200C2;
-        Fri,  4 Jan 2019 21:45:39 +0200 (EET)
-Date:   Fri, 4 Jan 2019 21:45:39 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     YunQiang Su <syq@debian.org>
-Cc:     steven.hill@cavium.com, david.daney@cavium.com,
-        linux-mips <linux-mips@vger.kernel.org>
-Subject: Re: [BUG] Data Bus Erorr on =?utf-8?Q?Ubiq?=
- =?utf-8?Q?uiti_Networks_-_EdgeRouter=E2=84=A2?= Infinity
-Message-ID: <20190104194539.GJ27785@darkstar.musicnaut.iki.fi>
-References: <CAKcpw6X_Q0iighiBXYvikNT8UDXME1F2wkEjzWHHDGK2_RNuGw@mail.gmail.com>
+        id S1726149AbfADV1E (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 4 Jan 2019 16:27:04 -0500
+Received: from mga04.intel.com ([192.55.52.120]:5543 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726100AbfADV1E (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 4 Jan 2019 16:27:04 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jan 2019 13:27:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.56,439,1539673200"; 
+   d="scan'208";a="307580654"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.154])
+  by fmsmga006.fm.intel.com with ESMTP; 04 Jan 2019 13:27:02 -0800
+Date:   Fri, 4 Jan 2019 13:27:02 -0800
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     lantianyu1986@gmail.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
+        marc.zyngier@arm.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
+        benh@kernel.crashing.org, mpe@ellerman.id.au, pbonzini@redhat.com,
+        rkrcmar@redhat.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, hpa@zytor.com, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, michael.h.kelley@microsoft.com,
+        kys@microsoft.com, vkuznets@redhat.com
+Subject: Re: [PATCH 7/11] KVM: Remove redundant check in the
+ kvm_get_dirty_log_protect()
+Message-ID: <20190104212702.GD11288@linux.intel.com>
+References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
+ <20190104085405.40356-8-Tianyu.Lan@microsoft.com>
+ <20190104155036.GA11288@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKcpw6X_Q0iighiBXYvikNT8UDXME1F2wkEjzWHHDGK2_RNuGw@mail.gmail.com>
+In-Reply-To: <20190104155036.GA11288@linux.intel.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
-
-On Tue, Jan 01, 2019 at 04:42:03PM +0800, YunQiang Su wrote:
-> I met a kernel problem for both 4.9 and 4.19 kernel
+On Fri, Jan 04, 2019 at 07:50:36AM -0800, Sean Christopherson wrote:
+> On Fri, Jan 04, 2019 at 04:54:01PM +0800, lantianyu1986@gmail.com wrote:
+> > From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> > 
+> > The dirty bits have already been checked in the previous check of
+> > "dirty_bitmap" and mask must be non-zero value at this point.
+> > 
+> > Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> > ---
+> >  virt/kvm/kvm_main.c | 8 +++-----
+> >  1 file changed, 3 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index cf7cc0554094..e75dbb15fd09 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -1206,11 +1206,9 @@ int kvm_get_dirty_log_protect(struct kvm *kvm,
+> >  			mask = xchg(&dirty_bitmap[i], 0);
+> >  			dirty_bitmap_buffer[i] = mask;
+> >  
+> > -			if (mask) {
+> > -				offset = i * BITS_PER_LONG;
+> > -				kvm_arch_mmu_enable_log_dirty_pt_masked(kvm, memslot,
+> > -									offset, mask);
+> > -			}
+> > +			offset = i * BITS_PER_LONG;
+> > +			kvm_arch_mmu_enable_log_dirty_pt_masked(kvm, memslot,
+> > +								offset, mask);
 > 
-> This error happens in pci/pcie-octeon.c, in function
->    __cvmx_pcie_rc_initialize_gen2
+> Hmm, the check against mask was explicitly added by commit 58d2930f4ee3
+> ("KVM: Eliminate extra function calls in kvm_get_dirty_log_protect()").
+> AFAIK KVM only *sets* bits in dirty_bitmap without holding slots_lock
+> and/or mmu_lock, so I agree that checking mask is redundant, but it'd be
+> nice to elaborate a bit more in the changelog.
 > 
-> ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-> 
-> When disabble CONFIG_PCI, it won't meet this problem.
+> At the very least this needs a Fixes tag for the aforementioned commit.
 
-Is this CN78XX hardware? Also can you confirm the board does not have
-any PCI Express (check U-Boot and vendor kernel logs)?
-
-On EdgeRouter 4 (CN70XX) kernel misdetects PCIe ports, and there are
-error logs and delays during this, but the board still boots up.
-
-Probably nobody has any OCTEON III board with working PCIe running
-mainline kernel, so we should just make the setup fail early.
-
-A.
+Actually, this can be a straight revert of 58d2930f4ee3.

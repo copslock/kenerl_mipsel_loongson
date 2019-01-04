@@ -7,52 +7,52 @@ X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_ADSP_CUSTOM_MED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 109DDC43387
-	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 08:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E40F5C43387
+	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 08:55:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B559F206C0
-	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 08:55:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A7A6721871
+	for <linux-mips@archiver.kernel.org>; Fri,  4 Jan 2019 08:55:59 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="uYtXsf4K"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nUohI3Aj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727625AbfADIzh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 4 Jan 2019 03:55:37 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:45926 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726831AbfADIzg (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 4 Jan 2019 03:55:36 -0500
-Received: by mail-pf1-f194.google.com with SMTP id g62so17990669pfd.12;
-        Fri, 04 Jan 2019 00:55:35 -0800 (PST)
+        id S1727223AbfADIyo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 4 Jan 2019 03:54:44 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:45596 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727220AbfADIyo (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 4 Jan 2019 03:54:44 -0500
+Received: by mail-pg1-f196.google.com with SMTP id y4so17213298pgc.12;
+        Fri, 04 Jan 2019 00:54:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=jpcu1UDIzC/kZYsb/gD7gMQHyU/ryGJIi1afoCM5WAo=;
-        b=uYtXsf4KIDh9LezuYtZ7zSYxTE+/XshKGvpm0xrDg3LRur0+tzRgdIreLklPxEYVIe
-         PecWg6ZXtTLu08gU2tz3BPlYcDb7BHisnyzcvGV44YmgI2UVh0+hcc9JNnr3m3Iycc/0
-         PgAwxujtUIe+QPtpRx+M5VdEq8fXlXGeqkaUTr9810fDzMNow8Gtxx64SSQ4l+yTgGV0
-         sJctkDYrAF1DYO2wZ8o4l/KtIr0vFeUCP1/s4XPtdIWCF8k7RgBUsUlvvgrhaVBdJA68
-         6BOnYnxN2EDB29YpMebA227bqbaCBL66cIlthj/Wqqq1zUZ0dibvkmdSV3Kzcl1Aouyq
-         qlhA==
+        bh=sAXI9KUfdDUDhWP7B1nKmtj4xb/BMelYpMd0QbjlSBM=;
+        b=nUohI3AjWQx6ybvOgpH7SxHa8o5nsYzlNw8zm2CmuYood2//x0Ie4POL9QksnHBF2I
+         YUbLZhd1Rp+Pw6ZIBVPNdREu5ob8/NSLRq6m6/VDtSShPyah6oXk0qwJ6GERJPgXeO6u
+         EUrdYFIOaWou/NJf40/UaAiehOFsZxMS2TqrBcwpH33yZixYhEMZPtTbO+uZ+PPeOhxm
+         zlA1ylEHJ9eNnEnCg0PxAzkRvuMGjQSok91W0OHcF2QBzYWHJGfBB0JFkC9KNPbDKMby
+         Hmyv2RXoicnEdLehOZJWYCkBrWb+0Z28p/1rQQ6j0R0WDyLlpYjwaX0cBTOkQtA6E5YA
+         Z3Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=jpcu1UDIzC/kZYsb/gD7gMQHyU/ryGJIi1afoCM5WAo=;
-        b=I03QrOoHrTJKN2T4RIk1z8E3QibT9BPc/79Kz6ry8yYs3VOavC6JfI02IROc37GP3v
-         L1R+tiTItzLiLCs6L2vmJN5jqWBdFGrL+YywCGg5Ox08W/yvYkm34V2A+pvxlOmc0Ych
-         q4mufC7QMK0leYTs2AVeAfMiAtobnlfQAVl9EiE3Q3IPiCmmLzFoqeEL6mA+g17hJsZK
-         QtAaUPsY1r4FoXqDtbosxX8xSIU6imE37hjb5OF5alfmF8Mpz++KurPl++d58SHzWSy0
-         LSqLVZ3Kq8o2GhCHxZFCLd9lUksl+b9hK+b5/s8EkvdrhcvjHau8nLlml4f7wCSfKyq1
-         faHA==
-X-Gm-Message-State: AJcUukdmol3BNun+61lLBPDMNc6O1Y/iVtlU4IoDM9L0tNJbS4aKD/8s
-        VXmvTgG15obOaLqRoGKx+xE=
-X-Google-Smtp-Source: ALg8bN6ahrlL+oFKWxOoz2sJm1EjP7AL3RCAAXyAPt/DmDTu1SnMvuyb7+QWMxqcv2be9BRNLP48DA==
-X-Received: by 2002:a65:5286:: with SMTP id y6mr19921670pgp.439.1546592134904;
-        Fri, 04 Jan 2019 00:55:34 -0800 (PST)
+        bh=sAXI9KUfdDUDhWP7B1nKmtj4xb/BMelYpMd0QbjlSBM=;
+        b=Nh59qEzGcKlq0nvNuHu9ZT4LQP3maCBYFy5TZVQdg3zVIZ9pYQnTtRHL2ELUv1Rg5+
+         UpOQHTZFABkvZ88PJiHPQPDYt2mpRuWcYZtNo9ce7sFFv0fbXdpxW+N22QSG0g/QvtZa
+         Sl82v2aOIDbzC3VGMeOFWRbnGeEKioLfx+YbeDPlea6k1noprCuREYIVG+qVKinksbPp
+         CwJYzyp2UZIIaWPXWFsnRR9sxzpvhcb9ajhLN82JYBjRHPWHUdwDJSBy6olehOtJZg5i
+         SI7Uz0dxn74aOJHdkZPG1TIFnPN/ZhVvvtihqpwiGJwZ/oCHt745SKE7jXyvUjf//b2J
+         kqtA==
+X-Gm-Message-State: AJcUukdqZW2zTxYetvNW4y7HC4IyROPxwxel09gNVJZ2jeVsw7fcbSIk
+        xmGK1YgTiwVYUdkL/rAgUfw=
+X-Google-Smtp-Source: ALg8bN7Fz7+aq6w8K/s4ukB3gYF8YzqWG/pOgvQxWE6lOgsKscCNdev/1KgoCdAPP4uOC2Ddj7PWew==
+X-Received: by 2002:a63:e5c:: with SMTP id 28mr842672pgo.369.1546592082509;
+        Fri, 04 Jan 2019 00:54:42 -0800 (PST)
 Received: from localhost.corp.microsoft.com ([2404:f801:9000:1a:d9bd:62c6:740b:9fc4])
-        by smtp.googlemail.com with ESMTPSA id i21sm99772145pgm.17.2019.01.04.00.55.27
+        by smtp.googlemail.com with ESMTPSA id i21sm99772145pgm.17.2019.01.04.00.54.35
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 04 Jan 2019 00:55:34 -0800 (PST)
+        Fri, 04 Jan 2019 00:54:41 -0800 (PST)
 From:   lantianyu1986@gmail.com
 X-Google-Original-From: Tianyu.Lan@microsoft.com
 Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
@@ -67,9 +67,9 @@ Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
         kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         kvm@vger.kernel.org, michael.h.kelley@microsoft.com,
         kys@microsoft.com, vkuznets@redhat.com
-Subject: [PATCH 10/11] KVM: Add flush parameter for kvm_age_hva()
-Date:   Fri,  4 Jan 2019 16:54:04 +0800
-Message-Id: <20190104085405.40356-11-Tianyu.Lan@microsoft.com>
+Subject: [PATCH 3/11] KVM: Add spte's point in the struct kvm_mmu_page
+Date:   Fri,  4 Jan 2019 16:53:57 +0800
+Message-Id: <20190104085405.40356-4-Tianyu.Lan@microsoft.com>
 X-Mailer: git-send-email 2.14.4
 In-Reply-To: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
 References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
@@ -81,190 +81,92 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-This patch is to add flush parameter for kvm_aga_hva() and inside code
-can check whether tlb flush is necessary when associated sptes are changed.
-The platform may just flush affected address tlbs instead of entire
-table's.
+It's necessary to check whether mmu page is last or large page when add
+mmu page into flush list. "spte" is needed for such check and so add
+spte point in the struct kvm_mmu_page.
 
 Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
 ---
- arch/arm/include/asm/kvm_host.h     | 3 ++-
- arch/arm64/include/asm/kvm_host.h   | 3 ++-
- arch/mips/include/asm/kvm_host.h    | 3 ++-
- arch/mips/kvm/mmu.c                 | 3 ++-
- arch/powerpc/include/asm/kvm_host.h | 3 ++-
- arch/powerpc/kvm/book3s.c           | 3 ++-
- arch/powerpc/kvm/e500_mmu_host.c    | 3 ++-
- arch/x86/include/asm/kvm_host.h     | 3 ++-
- arch/x86/kvm/mmu.c                  | 5 +++--
- virt/kvm/arm/mmu.c                  | 3 ++-
- virt/kvm/kvm_main.c                 | 4 ++--
- 11 files changed, 23 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/mmu.c              | 5 +++++
+ arch/x86/kvm/paging_tmpl.h      | 2 ++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/arch/arm/include/asm/kvm_host.h b/arch/arm/include/asm/kvm_host.h
-index 4f3400a74a17..7d7f9ff27500 100644
---- a/arch/arm/include/asm/kvm_host.h
-+++ b/arch/arm/include/asm/kvm_host.h
-@@ -229,7 +229,8 @@ int kvm_set_spte_hva(struct kvm *kvm, unsigned long hva, pte_t pte);
- 
- unsigned long kvm_arm_num_regs(struct kvm_vcpu *vcpu);
- int kvm_arm_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices);
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end);
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush);
- int kvm_test_age_hva(struct kvm *kvm, unsigned long hva);
- 
- struct kvm_vcpu *kvm_arm_get_running_vcpu(void);
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 063886be25ad..6f4539e13a26 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -361,7 +361,8 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
- int kvm_unmap_hva_range(struct kvm *kvm,
- 			unsigned long start, unsigned long end);
- int kvm_set_spte_hva(struct kvm *kvm, unsigned long hva, pte_t pte);
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end);
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush);
- int kvm_test_age_hva(struct kvm *kvm, unsigned long hva);
- 
- struct kvm_vcpu *kvm_arm_get_running_vcpu(void);
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 71c3f21d80d5..ae1b079ad740 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -934,7 +934,8 @@ enum kvm_mips_fault_result kvm_trap_emul_gva_fault(struct kvm_vcpu *vcpu,
- int kvm_unmap_hva_range(struct kvm *kvm,
- 			unsigned long start, unsigned long end);
- int kvm_set_spte_hva(struct kvm *kvm, unsigned long hva, pte_t pte);
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end);
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush);
- int kvm_test_age_hva(struct kvm *kvm, unsigned long hva);
- 
- /* Emulation */
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index f36ccb2d43ec..b69baf01dbac 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -582,7 +582,8 @@ static int kvm_test_age_hva_handler(struct kvm *kvm, gfn_t gfn, gfn_t gfn_end,
- 	return pte_young(*gpa_pte);
- }
- 
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end)
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush)
- {
- 	return handle_hva_to_gpa(kvm, start, end, kvm_age_hva_handler, NULL);
- }
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 0f98f00da2ea..d160e6b8ccfb 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -70,7 +70,8 @@
- 
- extern int kvm_unmap_hva_range(struct kvm *kvm,
- 			       unsigned long start, unsigned long end);
--extern int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end);
-+extern int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		       bool flush);
- extern int kvm_test_age_hva(struct kvm *kvm, unsigned long hva);
- extern int kvm_set_spte_hva(struct kvm *kvm, unsigned long hva, pte_t pte);
- 
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index bd1a677dd9e4..430a8b81ef81 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -841,7 +841,8 @@ int kvm_unmap_hva_range(struct kvm *kvm, unsigned long start, unsigned long end)
- 	return kvm->arch.kvm_ops->unmap_hva_range(kvm, start, end);
- }
- 
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end)
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush)
- {
- 	return kvm->arch.kvm_ops->age_hva(kvm, start, end);
- }
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index c3f312b2bcb3..e2f6c23ec39a 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -745,7 +745,8 @@ int kvm_unmap_hva_range(struct kvm *kvm, unsigned long start, unsigned long end)
- 	return 0;
- }
- 
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end)
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush)
- {
- 	/* XXX could be more clever ;) */
- 	return 0;
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 22dbaa8fba32..4f3ff9d5b631 100644
+index 4660ce90de7f..78d2a6714c3b 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -1518,7 +1518,8 @@ asmlinkage void kvm_spurious_fault(void);
+@@ -332,6 +332,7 @@ struct kvm_mmu_page {
+ 	int root_count;          /* Currently serving as active root */
+ 	unsigned int unsync_children;
+ 	struct kvm_rmap_head parent_ptes; /* rmap pointers to parent sptes */
++	u64 *sptep;
  
- #define KVM_ARCH_WANT_MMU_NOTIFIER
- int kvm_unmap_hva_range(struct kvm *kvm, unsigned long start, unsigned long end);
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end);
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush);
- int kvm_test_age_hva(struct kvm *kvm, unsigned long hva);
- int kvm_set_spte_hva(struct kvm *kvm, unsigned long hva, pte_t pte);
- int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
+ 	/* The page is obsolete if mmu_valid_gen != kvm->arch.mmu_valid_gen.  */
+ 	unsigned long mmu_valid_gen;
 diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
-index 30ed7a79335b..a5728f51bf7d 100644
+index ce770b446238..068694fa2371 100644
 --- a/arch/x86/kvm/mmu.c
 +++ b/arch/x86/kvm/mmu.c
-@@ -1995,9 +1995,10 @@ static void rmap_recycle(struct kvm_vcpu *vcpu, u64 *spte, gfn_t gfn)
- 			KVM_PAGES_PER_HPAGE(sp->role.level));
- }
+@@ -3160,6 +3160,7 @@ static int __direct_map(struct kvm_vcpu *vcpu, int write, int map_writable,
+ 			pseudo_gfn = base_addr >> PAGE_SHIFT;
+ 			sp = kvm_mmu_get_page(vcpu, pseudo_gfn, iterator.addr,
+ 					      iterator.level - 1, 1, ACC_ALL);
++			sp->sptep = iterator.sptep;
  
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end)
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush)
- {
--	return kvm_handle_hva_range(kvm, start, end, 0, kvm_age_rmapp);
-+	return kvm_handle_hva_range(kvm, start, end, flush, kvm_age_rmapp);
- }
- 
- int kvm_test_age_hva(struct kvm *kvm, unsigned long hva)
-diff --git a/virt/kvm/arm/mmu.c b/virt/kvm/arm/mmu.c
-index 232007ff3208..bbea7cfd6909 100644
---- a/virt/kvm/arm/mmu.c
-+++ b/virt/kvm/arm/mmu.c
-@@ -2110,7 +2110,8 @@ static int kvm_test_age_hva_handler(struct kvm *kvm, gpa_t gpa, u64 size, void *
- 		return pte_young(*pte);
- }
- 
--int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end)
-+int kvm_age_hva(struct kvm *kvm, unsigned long start, unsigned long end,
-+		bool flush)
- {
- 	if (!kvm->arch.pgd)
+ 			link_shadow_page(vcpu, iterator.sptep, sp);
+ 		}
+@@ -3588,6 +3589,7 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ 		sp = kvm_mmu_get_page(vcpu, 0, 0,
+ 				vcpu->arch.mmu->shadow_root_level, 1, ACC_ALL);
+ 		++sp->root_count;
++		sp->sptep = NULL;
+ 		spin_unlock(&vcpu->kvm->mmu_lock);
+ 		vcpu->arch.mmu->root_hpa = __pa(sp->spt);
+ 	} else if (vcpu->arch.mmu->shadow_root_level == PT32E_ROOT_LEVEL) {
+@@ -3604,6 +3606,7 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ 					i << 30, PT32_ROOT_LEVEL, 1, ACC_ALL);
+ 			root = __pa(sp->spt);
+ 			++sp->root_count;
++			sp->sptep = NULL;
+ 			spin_unlock(&vcpu->kvm->mmu_lock);
+ 			vcpu->arch.mmu->pae_root[i] = root | PT_PRESENT_MASK;
+ 		}
+@@ -3644,6 +3647,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 				vcpu->arch.mmu->shadow_root_level, 0, ACC_ALL);
+ 		root = __pa(sp->spt);
+ 		++sp->root_count;
++		sp->sptep = NULL;
+ 		spin_unlock(&vcpu->kvm->mmu_lock);
+ 		vcpu->arch.mmu->root_hpa = root;
  		return 0;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index bcbe059d98be..afec5787fc1d 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -432,7 +432,7 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
- 	idx = srcu_read_lock(&kvm->srcu);
- 	spin_lock(&kvm->mmu_lock);
+@@ -3681,6 +3685,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 				      0, ACC_ALL);
+ 		root = __pa(sp->spt);
+ 		++sp->root_count;
++		sp->sptep = NULL;
+ 		spin_unlock(&vcpu->kvm->mmu_lock);
  
--	young = kvm_age_hva(kvm, start, end);
-+	young = kvm_age_hva(kvm, start, end, true);
- 	if (young)
- 		kvm_flush_remote_tlbs(kvm);
+ 		vcpu->arch.mmu->pae_root[i] = root | pm_mask;
+diff --git a/arch/x86/kvm/paging_tmpl.h b/arch/x86/kvm/paging_tmpl.h
+index 6bdca39829bc..833e8855bbc9 100644
+--- a/arch/x86/kvm/paging_tmpl.h
++++ b/arch/x86/kvm/paging_tmpl.h
+@@ -633,6 +633,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gva_t addr,
+ 			table_gfn = gw->table_gfn[it.level - 2];
+ 			sp = kvm_mmu_get_page(vcpu, table_gfn, addr, it.level-1,
+ 					      false, access);
++			sp->sptep = it.sptep;
+ 		}
  
-@@ -465,7 +465,7 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
- 	 * cadence. If we find this inaccurate, we might come up with a
- 	 * more sophisticated heuristic later.
- 	 */
--	young = kvm_age_hva(kvm, start, end);
-+	young = kvm_age_hva(kvm, start, end, false);
- 	spin_unlock(&kvm->mmu_lock);
- 	srcu_read_unlock(&kvm->srcu, idx);
+ 		/*
+@@ -663,6 +664,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gva_t addr,
+ 
+ 		sp = kvm_mmu_get_page(vcpu, direct_gfn, addr, it.level-1,
+ 				      true, direct_access);
++		sp->sptep = it.sptep;
+ 		link_shadow_page(vcpu, it.sptep, sp);
+ 	}
  
 -- 
 2.14.4

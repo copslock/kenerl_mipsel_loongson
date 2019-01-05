@@ -4,64 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47BB6C43387
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62BF4C43387
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0B88E2085A
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 282042085A
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCuFJowo"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tsU1I8tf"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726238AbfAEPBM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 5 Jan 2019 10:01:12 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:46984 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726200AbfAEPBM (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 5 Jan 2019 10:01:12 -0500
-Received: by mail-pl1-f196.google.com with SMTP id t13so18752055ply.13
-        for <linux-mips@vger.kernel.org>; Sat, 05 Jan 2019 07:01:11 -0800 (PST)
+        id S1726241AbfAEPBV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 5 Jan 2019 10:01:21 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:44033 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726200AbfAEPBU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 5 Jan 2019 10:01:20 -0500
+Received: by mail-pl1-f193.google.com with SMTP id e11so18763293plt.11
+        for <linux-mips@vger.kernel.org>; Sat, 05 Jan 2019 07:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Z6QohCfjUAlpVS3+5Mx2RTATgU/q4jLJs7i4ICxN0SE=;
-        b=NCuFJowoGxz/oUN2FbUqlGpiER9k0U4acsOGEn1h4idvzV5kG4L0iwPtjRdk4pVI/M
-         ZyT0Jtl8Cnp+OK81ZJFKqPa1q6Knd9jMnBvzxJEkr3EUNLl4teRoorkPfF/8Qfu3stEe
-         d4umMUOHAz8436B7ofdmPz0oqEbOvHgYNIzTnE3AAL8rTWQgtYmttMmY+Gz3AhGP8hNs
-         kdkAGF8H4gXS5O/58nABF2Eo7G2R3033q5Rub9ro/OgalmKKFAGtCnR7CmwGKkYDFso9
-         y7uBcGRb1qDmHIwpA/1j+CjjN5WmwqGt/H/kN6XpBPQuRgFdklomQx4D5W7AWrmGTBei
-         EALg==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=s9vXuOvmMWhjscUj8b94Fxsujqr48ha60ukO/a+kPS8=;
+        b=tsU1I8tfVleSgbbNYvvoFoMJ55YrM2TZKAtm7Z5ZJI3mPVfzLNipmLr0xF9leT+rBI
+         nIMsEuUyb5bu6XF5K1liRs20PU2ZR/MvUSOB5YPcnB4TXnbdZC+76NV60iCwbi6tJQHz
+         uvqayhSiWkYLXZtK0A8Si6igAi0CBppNqdUnAGw1lEB55gwL3vU2YGRC0mls7tK57fkK
+         Vkrg8eNNhxJYje8kDCOXIZ3rxv+lZ0pw670YibBXevLundtT3czsnSP+ODAaYyaRZmex
+         ONN0WbrLab1h4q2zFP+7qnM+XeDQSKC7kDoMttGel9Rrgwxy0ku+X8ay16jTqNNEGTyy
+         oWCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=Z6QohCfjUAlpVS3+5Mx2RTATgU/q4jLJs7i4ICxN0SE=;
-        b=Xc/do2pSY8lA4T9BEoYJXLP0z9+EO0I/ZMzz/AFpnFr5tSyqvQ/aTclM8JMJDO7jHE
-         GrYBhwfl+ML6Q9gcDJOy0DqVrgtdKDy1nLcPNAj3vSIFD1HYARmgpuOpnGhVjAszX/yi
-         VGh/CJfximYArSwNM9Nrv58yNDIc8EMNdR5diVYLLPFsWIeXaxhA4ljQeUiRdasCReIl
-         /Vgglt1709UETONx3DoB0eIVUuGymZfo3sQSDvvtuRzVkyGP8GLK0ydTL57NXro+OFXe
-         KeeaxOsjPFSvfw5HzRz+9MZYZTQau0VfHTr8wuZqHS09YmX2mnSL0sKOQn0HKJRku3X3
-         p/Gw==
-X-Gm-Message-State: AJcUukcmURAdhYQEhtmmmQhMPEjzfrkuRaXExWpgLnYekfgJYsrIyeZ6
-        xexAW+YcVguBsT13EYlmucE=
-X-Google-Smtp-Source: ALg8bN7DgYdIASRl9Rr2JjpRU3f3DUehkxbxxnias9slbtyBwEc/ZF6JAOnTVwsm6cduvdrs1xXrIw==
-X-Received: by 2002:a17:902:96a:: with SMTP id 97mr53222909plm.45.1546700470892;
-        Sat, 05 Jan 2019 07:01:10 -0800 (PST)
+         :in-reply-to:references:mime-version:content-transfer-encoding;
+        bh=s9vXuOvmMWhjscUj8b94Fxsujqr48ha60ukO/a+kPS8=;
+        b=sz6pW9hr0IfTiPuZ83O6/4fIn6uO3of2w6SDyuk2NxmCcfhbJT9kp/uV+ImIO/EKnW
+         c7eE/++8grtoJwm4iNJgGjXphB0xHnJMyDJDhBCjPF1IiOeh8zYQOMgqaRO3uzNYhvK5
+         9HAWGX6n2OL5bNcMaEngv1bRMhd0LnngLSwZQFlD14/cWLvDTdZxXB1TXBKAXHqZtI4B
+         JcRGY15iGyOw/a9d6p8lRxWG6FKEsp6x2Dq7dsvnsb6g1+0Z3WeoJIAzF3XPXaHUa4iI
+         cr9P9mmuXpvQlMUO2hvbAmhR+BpY6JycRwLhsf75FOSkl6Ppgys2DWzs3tnpyMocWX3R
+         l2xg==
+X-Gm-Message-State: AJcUukdhzf4K8lcn264jHNmwzbFbS8PwQH/CdskG8l0JUpB+9uoKA8bx
+        OK7m11jCi7o/y4cSrkGgFQ8=
+X-Google-Smtp-Source: ALg8bN5xtSRhuSHeKWl4vFUvQtNQPmNKL1OdCD+PPm4dFDorwHO2dfD7f8yYezMd0Xs5t1Mk07fLOA==
+X-Received: by 2002:a17:902:28aa:: with SMTP id f39mr55378382plb.297.1546700477613;
+        Sat, 05 Jan 2019 07:01:17 -0800 (PST)
 Received: from localhost.localdomain ([47.74.12.188])
-        by smtp.gmail.com with ESMTPSA id j21sm87248890pfn.175.2019.01.05.07.01.06
+        by smtp.gmail.com with ESMTPSA id j21sm87248890pfn.175.2019.01.05.07.01.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 05 Jan 2019 07:01:09 -0800 (PST)
+        Sat, 05 Jan 2019 07:01:16 -0800 (PST)
 From:   YunQiang Su <syq@debian.org>
 To:     pburton@wavecomp.com, linux-mips@vger.kernel.org
 Cc:     chehc@lemote.com, syq@debian.org, zhangfx@lemote.com,
         wuzhangjin@gmail.com, linux-mips@linux-mips.org,
         YunQiang Su <ysu@wavecomp.com>
-Subject: [PATCH 1/2] MIPS: Loongson, add sync before target of branch between llsc
-Date:   Sat,  5 Jan 2019 23:00:36 +0800
-Message-Id: <20190105150037.30261-1-syq@debian.org>
+Subject: [PATCH 2/2] MIPS: Loongson, workaround ll/sc weak ordering
+Date:   Sat,  5 Jan 2019 23:00:37 +0800
+Message-Id: <20190105150037.30261-2-syq@debian.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190105150037.30261-1-syq@debian.org>
+References: <20190105150037.30261-1-syq@debian.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -71,68 +74,151 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 From: YunQiang Su <ysu@wavecomp.com>
 
-Loongson 2G/2H/3A/3B is quite weak sync'ed. If there is a branch,
-and the target is not in the scope of ll/sc or lld/scd, a sync is
-needed at the postion of target.
+On the Loongson-2G/2H/3A/3B there is a hardware flaw that ll/sc and
+lld/scd is very weak ordering. We should add sync instructions before
+each ll/lld and after the last sc/scd to workaround. Otherwise, this
+flaw will cause deadlock occationally (e.g. when doing heavy load test
+with LTP).
 
-Loongson doesn't plan to fix this problem in future, so we add the
-sync here for any condition.
+We introduced an gcc/as option "-mfix-loongson3-llsc", this option
+inserts sync before ll, and so some addresses in __ex_table will need
+to be shift.
 
-This is based on the patch from Chen Huacai.
+Not all Loongson CPU have this problem, aka Loongson starts to solve it
+in their new models, such as the last series Loongson 3A 3000.
+So for kerenel we introduce a config option CPU_LOONGSON3_WORKAROUND_LLSC,
+with this option enabled, we will add "-mfix-loongson3-llsc" to
+cc-option.
+
+This is based on the patch from Huacai Chen.
 
 Signed-off-by: YunQiang Su <ysu@wavecomp.com>
 ---
- arch/mips/mm/tlbex.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/mips/Kconfig             | 19 +++++++++++++++++++
+ arch/mips/Makefile            |  5 +++++
+ arch/mips/include/asm/futex.h | 20 ++++++++++++--------
+ arch/mips/mm/tlbex.c          |  3 +++
+ 4 files changed, 39 insertions(+), 8 deletions(-)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 787290781..4660e7847 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1385,6 +1385,25 @@ config CPU_LOONGSON3
+ 		The Loongson 3 processor implements the MIPS64R2 instruction
+ 		set with many extensions.
+ 
++config CPU_LOONGSON3_WORKAROUND_LLSC
++	bool "Workaround the LL/SC weak ordering"
++	default n
++	depends on CPU_LOONGSON3
++	help
++	  On the Loongson-2G/2H/3A/3B there is a hardware flaw that ll/sc and
++	  lld/scd is very weak ordering. We should add sync instructions before
++	  each ll/lld and after the last sc/scd to workaround. Otherwise, this
++	  flaw will cause deadlock occationally (e.g. when doing heavy load test
++	  with LTP).
++
++	  We introduced a gcc/as option "-mfix-loongson3-llsc", this option
++	  inserts sync before ll, and so some addresses in __ex_table will need
++	  to be shift.
++
++	  Newer model has solve this problem, such as the last series of 3A 3000
++	  but not all 3A 3000. If you want enable this workaround for older
++	  Loongson's CPU, please say 'Y' here.
++
+ config LOONGSON3_ENHANCEMENT
+ 	bool "New Loongson 3 CPU Enhancements"
+ 	default n
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 5b174c3d0..c2afaf58b 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -194,6 +194,11 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
+ endif
+ cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
+ cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
++ifeq ($(CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC),y)
++cflags-y	+= -mfix-loongson3-llsc
++else
++cflags-y	+= $(call cc-option,-mno-fix-loongson3-llsc,)
++endif
+ 
+ cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
+ cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 8eff134b3..c0608697f 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -18,6 +18,14 @@
+ #include <asm/errno.h>
+ #include <asm/war.h>
+ 
++#if defined(__mips_fix_loongson3_llsc) && defined(CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC)
++# define LL_SHIFT_UA __UA_ADDR "\t(1b+0), 4b		\n" 	\
++		__UA_ADDR "\t(1b+4), 4b			\n"	\
++		__UA_ADDR "\t(2b+0), 4b			\n"
++#else
++# define LL_SHIFT_UA __UA_ADDR "\t1b, 4b		\n" 	\
++		__UA_ADDR "\t2b, 4b			\n"
++#endif
+ #define __futex_atomic_op(insn, ret, oldval, uaddr, oparg)		\
+ {									\
+ 	if (cpu_has_llsc && R10000_LLSC_WAR) {				\
+@@ -41,8 +49,7 @@
+ 		"	j	3b				\n"	\
+ 		"	.previous				\n"	\
+ 		"	.section __ex_table,\"a\"		\n"	\
+-		"	"__UA_ADDR "\t1b, 4b			\n"	\
+-		"	"__UA_ADDR "\t2b, 4b			\n"	\
++		LL_SHIFT_UA						\
+ 		"	.previous				\n"	\
+ 		: "=r" (ret), "=&r" (oldval),				\
+ 		  "=" GCC_OFF_SMALL_ASM() (*uaddr)				\
+@@ -70,8 +77,7 @@
+ 		"	j	3b				\n"	\
+ 		"	.previous				\n"	\
+ 		"	.section __ex_table,\"a\"		\n"	\
+-		"	"__UA_ADDR "\t1b, 4b			\n"	\
+-		"	"__UA_ADDR "\t2b, 4b			\n"	\
++		LL_SHIFT_UA						\
+ 		"	.previous				\n"	\
+ 		: "=r" (ret), "=&r" (oldval),				\
+ 		  "=" GCC_OFF_SMALL_ASM() (*uaddr)				\
+@@ -155,8 +161,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	j	3b					\n"
+ 		"	.previous					\n"
+ 		"	.section __ex_table,\"a\"			\n"
+-		"	"__UA_ADDR "\t1b, 4b				\n"
+-		"	"__UA_ADDR "\t2b, 4b				\n"
++		LL_SHIFT_UA
+ 		"	.previous					\n"
+ 		: "+r" (ret), "=&r" (val), "=" GCC_OFF_SMALL_ASM() (*uaddr)
+ 		: GCC_OFF_SMALL_ASM() (*uaddr), "Jr" (oldval), "Jr" (newval),
+@@ -185,8 +190,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	j	3b					\n"
+ 		"	.previous					\n"
+ 		"	.section __ex_table,\"a\"			\n"
+-		"	"__UA_ADDR "\t1b, 4b				\n"
+-		"	"__UA_ADDR "\t2b, 4b				\n"
++		LL_SHIFT_UA
+ 		"	.previous					\n"
+ 		: "+r" (ret), "=&r" (val), "=" GCC_OFF_SMALL_ASM() (*uaddr)
+ 		: GCC_OFF_SMALL_ASM() (*uaddr), "Jr" (oldval), "Jr" (newval),
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 37b1cb246..08a9a66ef 100644
+index 08a9a66ef..e9eb4715c 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -932,6 +932,8 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		 * to mimic that here by taking a load/istream page
- 		 * fault.
- 		 */
-+		if(current_cpu_type() == CPU_LOONGSON3)
-+			uasm_i_sync(p, 0);
- 		UASM_i_LA(p, ptr, (unsigned long)tlb_do_page_fault_0);
- 		uasm_i_jr(p, ptr);
- 
-@@ -1556,6 +1558,7 @@ static void build_loongson3_tlb_refill_handler(void)
- 
- 	if (check_for_high_segbits) {
- 		uasm_l_large_segbits_fault(&l, p);
-+		uasm_i_sync(&p, 0);
- 		UASM_i_LA(&p, K1, (unsigned long)tlb_do_page_fault_0);
- 		uasm_i_jr(&p, K1);
- 		uasm_i_nop(&p);
-@@ -2259,6 +2262,8 @@ static void build_r4000_tlb_load_handler(void)
- #endif
- 
- 	uasm_l_nopage_tlbl(&l, p);
-+	if(current_cpu_type() == CPU_LOONGSON3)
-+		uasm_i_sync(&p, 0);
- 	build_restore_work_registers(&p);
- #ifdef CONFIG_CPU_MICROMIPS
- 	if ((unsigned long)tlb_do_page_fault_0 & 1) {
-@@ -2313,6 +2318,8 @@ static void build_r4000_tlb_store_handler(void)
- #endif
- 
- 	uasm_l_nopage_tlbs(&l, p);
-+	if(current_cpu_type() == CPU_LOONGSON3)
-+		uasm_i_sync(&p, 0);
- 	build_restore_work_registers(&p);
- #ifdef CONFIG_CPU_MICROMIPS
- 	if ((unsigned long)tlb_do_page_fault_1 & 1) {
-@@ -2368,6 +2375,8 @@ static void build_r4000_tlb_modify_handler(void)
- #endif
- 
- 	uasm_l_nopage_tlbm(&l, p);
-+	if(current_cpu_type() == CPU_LOONGSON3)
-+		uasm_i_sync(&p, 0);
- 	build_restore_work_registers(&p);
- #ifdef CONFIG_CPU_MICROMIPS
- 	if ((unsigned long)tlb_do_page_fault_1 & 1) {
+@@ -1649,6 +1649,9 @@ static void
+ iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
+ {
+ #ifdef CONFIG_SMP
++# ifdef CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC
++	uasm_i_sync(p, 0);
++# endif
+ # ifdef CONFIG_PHYS_ADDR_T_64BIT
+ 	if (cpu_has_64bits)
+ 		uasm_i_lld(p, pte, 0, ptr);
 -- 
 2.20.1
 

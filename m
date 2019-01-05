@@ -2,223 +2,175 @@ Return-Path: <SRS0=5/jd=PN=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62BF4C43387
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7079C43387
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 16:39:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 282042085A
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 15:01:21 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tsU1I8tf"
+	by mail.kernel.org (Postfix) with ESMTP id 85C0E2085A
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Jan 2019 16:39:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726241AbfAEPBV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 5 Jan 2019 10:01:21 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:44033 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726200AbfAEPBU (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 5 Jan 2019 10:01:20 -0500
-Received: by mail-pl1-f193.google.com with SMTP id e11so18763293plt.11
-        for <linux-mips@vger.kernel.org>; Sat, 05 Jan 2019 07:01:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=s9vXuOvmMWhjscUj8b94Fxsujqr48ha60ukO/a+kPS8=;
-        b=tsU1I8tfVleSgbbNYvvoFoMJ55YrM2TZKAtm7Z5ZJI3mPVfzLNipmLr0xF9leT+rBI
-         nIMsEuUyb5bu6XF5K1liRs20PU2ZR/MvUSOB5YPcnB4TXnbdZC+76NV60iCwbi6tJQHz
-         uvqayhSiWkYLXZtK0A8Si6igAi0CBppNqdUnAGw1lEB55gwL3vU2YGRC0mls7tK57fkK
-         Vkrg8eNNhxJYje8kDCOXIZ3rxv+lZ0pw670YibBXevLundtT3czsnSP+ODAaYyaRZmex
-         ONN0WbrLab1h4q2zFP+7qnM+XeDQSKC7kDoMttGel9Rrgwxy0ku+X8ay16jTqNNEGTyy
-         oWCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=s9vXuOvmMWhjscUj8b94Fxsujqr48ha60ukO/a+kPS8=;
-        b=sz6pW9hr0IfTiPuZ83O6/4fIn6uO3of2w6SDyuk2NxmCcfhbJT9kp/uV+ImIO/EKnW
-         c7eE/++8grtoJwm4iNJgGjXphB0xHnJMyDJDhBCjPF1IiOeh8zYQOMgqaRO3uzNYhvK5
-         9HAWGX6n2OL5bNcMaEngv1bRMhd0LnngLSwZQFlD14/cWLvDTdZxXB1TXBKAXHqZtI4B
-         JcRGY15iGyOw/a9d6p8lRxWG6FKEsp6x2Dq7dsvnsb6g1+0Z3WeoJIAzF3XPXaHUa4iI
-         cr9P9mmuXpvQlMUO2hvbAmhR+BpY6JycRwLhsf75FOSkl6Ppgys2DWzs3tnpyMocWX3R
-         l2xg==
-X-Gm-Message-State: AJcUukdhzf4K8lcn264jHNmwzbFbS8PwQH/CdskG8l0JUpB+9uoKA8bx
-        OK7m11jCi7o/y4cSrkGgFQ8=
-X-Google-Smtp-Source: ALg8bN5xtSRhuSHeKWl4vFUvQtNQPmNKL1OdCD+PPm4dFDorwHO2dfD7f8yYezMd0Xs5t1Mk07fLOA==
-X-Received: by 2002:a17:902:28aa:: with SMTP id f39mr55378382plb.297.1546700477613;
-        Sat, 05 Jan 2019 07:01:17 -0800 (PST)
-Received: from localhost.localdomain ([47.74.12.188])
-        by smtp.gmail.com with ESMTPSA id j21sm87248890pfn.175.2019.01.05.07.01.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 05 Jan 2019 07:01:16 -0800 (PST)
-From:   YunQiang Su <syq@debian.org>
-To:     pburton@wavecomp.com, linux-mips@vger.kernel.org
-Cc:     chehc@lemote.com, syq@debian.org, zhangfx@lemote.com,
-        wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-        YunQiang Su <ysu@wavecomp.com>
-Subject: [PATCH 2/2] MIPS: Loongson, workaround ll/sc weak ordering
-Date:   Sat,  5 Jan 2019 23:00:37 +0800
-Message-Id: <20190105150037.30261-2-syq@debian.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190105150037.30261-1-syq@debian.org>
-References: <20190105150037.30261-1-syq@debian.org>
+        id S1726243AbfAEQjL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 5 Jan 2019 11:39:11 -0500
+Received: from mout.gmx.net ([212.227.15.19]:37669 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726234AbfAEQjL (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 5 Jan 2019 11:39:11 -0500
+Received: from [192.168.178.38] ([31.18.251.131]) by mail.gmx.com (mrgmx001
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0MQiVh-1gs9BZ0Uaz-00U0uC; Sat, 05
+ Jan 2019 17:39:08 +0100
+To:     linux-mips@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+From:   Oleksij Rempel <linux@rempel-privat.de>
+Subject: MIPS: ath79: regressions after dma-mapping changes
+Openpgp: preference=signencrypt
+Autocrypt: addr=linux@rempel-privat.de; prefer-encrypt=mutual; keydata=
+ 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
+ 8VXa+gkZKRSnZTvVMAriaQwqKog=
+Cc:     John Crispin <john@phrozen.org>, antonynpavlov@gmail.com
+Message-ID: <6fcd16d9-84fc-891e-a295-9146c8071900@rempel-privat.de>
+Date:   Sat, 5 Jan 2019 17:39:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="LtmO77VbFCRI5P0EhbxwVubQXOaPjW5W0"
+X-Provags-ID: V03:K1:dzgrxHa2Toxj+j/VEF8cigJeQvYnf0b0ZHYvcwB5zojD/nRw+w0
+ X01AEVhgtYMRHlEcUL5Yg279aqDq5l4jNe5WWWxbJmqoatEQEslnDRWh4u/jC9bFaZRLhJC
+ nhNa+E8Wf6wTo7WHAdGEVBpZoc9SscNOqmBrt8eOtW4VBZo9Ma6uTK6qzHjXfTUDervPPt6
+ FuUFrg63/0bwJo+NPjUnw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2ekyRp7qK6o=:tGz/uBSeIkZRiz2RMSRpdf
+ lRzTP/ervDKUOeDfD2o7QUHMWc7Se0ZruwCbjMxEd0eBkoPOYIf+3sL9NLRBIWorvoPQ8nKss
+ JjlSNs56vI1DfZ1Cy3GIwYHAQ40Nj5lrmzu3eqjPg0WLvPubgR6jd6j2nhswb+EB6EnlG+RI/
+ i8PgM1svgTNw/b0I3k8K3cSWyOgBeLSuUQcpyP3fVRkJ2vsv1nVvGSZqsLE2HHskQDwhKpZXa
+ G/h5v/9TRa0jl1c4Z+3AhzjxkdEBAWbygo9sQoZy41rpH5y2tyOX8P9RcbOjmgiluUOeQ+1SG
+ eF6abHVmkUylSEVyZnomowUDzPp2+cnRChefxhwCaZso2TA4D82NjBCQCy4eLifmsj4OZVVIJ
+ aZb/FKfzCjsvfadTxYf5ra0SwfaJnvyoxHmYhqcqbguMRxQx7NHXKXA27mc1IXjIzMaqdxEZN
+ BVYqsqbqLqKf3fVF45nnRdLs9ej+1JOfKPJHfjlG0ABB/LX+c7pODlC5V+Pdz4vQtDhp5nVcq
+ Q+RiNj8QP4khxKsjzly7KOTZwRQN3Pb68OLwmKxhF+AFV6KGf1adr3hqKI3yXuifPePsSH9oz
+ xOwON8SniIIejgz49+f2BzR3rtHhC5eyOX4DhVPVNJaGDbfY6NlX+XrGqOhNnc4Fs9b5QfOZa
+ MUZSuA+qfCf0L5IAL1RPEMGcmEkMh8xRHho7QyRMosz/ySEsYZGelfA2R64oYFqZN9f05J0zB
+ wBZshjoEojTNl5jw/2xHbDjKaBHbuwVP5hXhKSNJiLt90H9qvIZIXCYA/dpv1vY3oshy0A/6x
+ /dg7feaRHkUmqlGg1qVNCu0xQ/T7uvyXHU2qdH5KfFZyFu1Wj0B6oxjuWFLIkuNQkzg+ZsZvZ
+ 0Livs1Pq0S4QpeixViMPzW+ePb+Ozo67Ru0/jKkRIS5hmCgYVAQVW7GeSyeFqPBTc4m7UguGv
+ 5CZGTiIL2DtdfYC9CGdEo7ZH7tDeVEj6Q797zAN7Z1Wue9JB7Wvi30arpW/wIQ8grONHnolQY
+ PQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: YunQiang Su <ysu@wavecomp.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--LtmO77VbFCRI5P0EhbxwVubQXOaPjW5W0
+Content-Type: multipart/mixed; boundary="pwTpIAX53Tw1xBtI4Jlhy3JzE5sZNyTT9";
+ protected-headers="v1"
+From: Oleksij Rempel <linux@rempel-privat.de>
+To: linux-mips@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Cc: John Crispin <john@phrozen.org>, antonynpavlov@gmail.com
+Message-ID: <6fcd16d9-84fc-891e-a295-9146c8071900@rempel-privat.de>
+Subject: MIPS: ath79: regressions after dma-mapping changes
 
-On the Loongson-2G/2H/3A/3B there is a hardware flaw that ll/sc and
-lld/scd is very weak ordering. We should add sync instructions before
-each ll/lld and after the last sc/scd to workaround. Otherwise, this
-flaw will cause deadlock occationally (e.g. when doing heavy load test
-with LTP).
+--pwTpIAX53Tw1xBtI4Jlhy3JzE5sZNyTT9
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-We introduced an gcc/as option "-mfix-loongson3-llsc", this option
-inserts sync before ll, and so some addresses in __ex_table will need
-to be shift.
+Hi all,
 
-Not all Loongson CPU have this problem, aka Loongson starts to solve it
-in their new models, such as the last series Loongson 3A 3000.
-So for kerenel we introduce a config option CPU_LOONGSON3_WORKAROUND_LLSC,
-with this option enabled, we will add "-mfix-loongson3-llsc" to
-cc-option.
+I'm working on Atheros ar9331 related patches for upstream. Suddenly
+this architecture is not working with latest mips_4.21 tag. Bisecting is
+pointing to dma-mapping-4.20 merge.
 
-This is based on the patch from Huacai Chen.
+The symptoms are following:
+- networking is broken, getting tx timouts from atheros network driver.
+- depending on configuration boot will stall even before UART is enabled
+- after reverting some of dma-mapping patches, network seems to work but
+init will trigger segfault. It is running from nfs-root.
 
-Signed-off-by: YunQiang Su <ysu@wavecomp.com>
----
- arch/mips/Kconfig             | 19 +++++++++++++++++++
- arch/mips/Makefile            |  5 +++++
- arch/mips/include/asm/futex.h | 20 ++++++++++++--------
- arch/mips/mm/tlbex.c          |  3 +++
- 4 files changed, 39 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 787290781..4660e7847 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1385,6 +1385,25 @@ config CPU_LOONGSON3
- 		The Loongson 3 processor implements the MIPS64R2 instruction
- 		set with many extensions.
- 
-+config CPU_LOONGSON3_WORKAROUND_LLSC
-+	bool "Workaround the LL/SC weak ordering"
-+	default n
-+	depends on CPU_LOONGSON3
-+	help
-+	  On the Loongson-2G/2H/3A/3B there is a hardware flaw that ll/sc and
-+	  lld/scd is very weak ordering. We should add sync instructions before
-+	  each ll/lld and after the last sc/scd to workaround. Otherwise, this
-+	  flaw will cause deadlock occationally (e.g. when doing heavy load test
-+	  with LTP).
-+
-+	  We introduced a gcc/as option "-mfix-loongson3-llsc", this option
-+	  inserts sync before ll, and so some addresses in __ex_table will need
-+	  to be shift.
-+
-+	  Newer model has solve this problem, such as the last series of 3A 3000
-+	  but not all 3A 3000. If you want enable this workaround for older
-+	  Loongson's CPU, please say 'Y' here.
-+
- config LOONGSON3_ENHANCEMENT
- 	bool "New Loongson 3 CPU Enhancements"
- 	default n
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 5b174c3d0..c2afaf58b 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -194,6 +194,11 @@ cflags-$(CONFIG_CPU_CAVIUM_OCTEON) += -Wa,-march=octeon
- endif
- cflags-$(CONFIG_CAVIUM_CN63XXP1) += -Wa,-mfix-cn63xxp1
- cflags-$(CONFIG_CPU_BMIPS)	+= -march=mips32 -Wa,-mips32 -Wa,--trap
-+ifeq ($(CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC),y)
-+cflags-y	+= -mfix-loongson3-llsc
-+else
-+cflags-y	+= $(call cc-option,-mno-fix-loongson3-llsc,)
-+endif
- 
- cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)	+= $(call cc-option,-mfix-r4000,)
- cflags-$(CONFIG_CPU_R4400_WORKAROUNDS)	+= $(call cc-option,-mfix-r4400,)
-diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
-index 8eff134b3..c0608697f 100644
---- a/arch/mips/include/asm/futex.h
-+++ b/arch/mips/include/asm/futex.h
-@@ -18,6 +18,14 @@
- #include <asm/errno.h>
- #include <asm/war.h>
- 
-+#if defined(__mips_fix_loongson3_llsc) && defined(CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC)
-+# define LL_SHIFT_UA __UA_ADDR "\t(1b+0), 4b		\n" 	\
-+		__UA_ADDR "\t(1b+4), 4b			\n"	\
-+		__UA_ADDR "\t(2b+0), 4b			\n"
-+#else
-+# define LL_SHIFT_UA __UA_ADDR "\t1b, 4b		\n" 	\
-+		__UA_ADDR "\t2b, 4b			\n"
-+#endif
- #define __futex_atomic_op(insn, ret, oldval, uaddr, oparg)		\
- {									\
- 	if (cpu_has_llsc && R10000_LLSC_WAR) {				\
-@@ -41,8 +49,7 @@
- 		"	j	3b				\n"	\
- 		"	.previous				\n"	\
- 		"	.section __ex_table,\"a\"		\n"	\
--		"	"__UA_ADDR "\t1b, 4b			\n"	\
--		"	"__UA_ADDR "\t2b, 4b			\n"	\
-+		LL_SHIFT_UA						\
- 		"	.previous				\n"	\
- 		: "=r" (ret), "=&r" (oldval),				\
- 		  "=" GCC_OFF_SMALL_ASM() (*uaddr)				\
-@@ -70,8 +77,7 @@
- 		"	j	3b				\n"	\
- 		"	.previous				\n"	\
- 		"	.section __ex_table,\"a\"		\n"	\
--		"	"__UA_ADDR "\t1b, 4b			\n"	\
--		"	"__UA_ADDR "\t2b, 4b			\n"	\
-+		LL_SHIFT_UA						\
- 		"	.previous				\n"	\
- 		: "=r" (ret), "=&r" (oldval),				\
- 		  "=" GCC_OFF_SMALL_ASM() (*uaddr)				\
-@@ -155,8 +161,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
- 		"	j	3b					\n"
- 		"	.previous					\n"
- 		"	.section __ex_table,\"a\"			\n"
--		"	"__UA_ADDR "\t1b, 4b				\n"
--		"	"__UA_ADDR "\t2b, 4b				\n"
-+		LL_SHIFT_UA
- 		"	.previous					\n"
- 		: "+r" (ret), "=&r" (val), "=" GCC_OFF_SMALL_ASM() (*uaddr)
- 		: GCC_OFF_SMALL_ASM() (*uaddr), "Jr" (oldval), "Jr" (newval),
-@@ -185,8 +190,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
- 		"	j	3b					\n"
- 		"	.previous					\n"
- 		"	.section __ex_table,\"a\"			\n"
--		"	"__UA_ADDR "\t1b, 4b				\n"
--		"	"__UA_ADDR "\t2b, 4b				\n"
-+		LL_SHIFT_UA
- 		"	.previous					\n"
- 		: "+r" (ret), "=&r" (val), "=" GCC_OFF_SMALL_ASM() (*uaddr)
- 		: GCC_OFF_SMALL_ASM() (*uaddr), "Jr" (oldval), "Jr" (newval),
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 08a9a66ef..e9eb4715c 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1649,6 +1649,9 @@ static void
- iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
- {
- #ifdef CONFIG_SMP
-+# ifdef CONFIG_CPU_LOONGSON3_WORKAROUND_LLSC
-+	uasm_i_sync(p, 0);
-+# endif
- # ifdef CONFIG_PHYS_ADDR_T_64BIT
- 	if (cpu_has_64bits)
- 		uasm_i_lld(p, pte, 0, ptr);
--- 
-2.20.1
+First patch where regressions started is this:
+commit dc3c05504d38849f77149cb962caeaedd1efa127
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Fri Aug 24 10:28:18 2018 +0200
 
+    dma-mapping: remove dma_deconfigure
+
+    This goes through a lot of hooks just to call arch_teardown_dma_ops.
+    Replace it with a direct call instead.
+
+    Signed-off-by: Christoph Hellwig <hch@lst.de>
+    Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+
+It is not enough to revert this patch. This rework seems to be huge.
+
+I also tested dma-mapping-4.21 tag, with same result.
+In case, some one won't to play with it, the patches can be found here:
+https://github.com/olerem/linux-2.6/commits/v4.20/topic/ath79-upstream-20=
+19.01.04.1
+
+
+It will be great if some one can help me to troubleshoot this issue.
+
+--=20
+Regards,
+Oleksij
+
+
+--pwTpIAX53Tw1xBtI4Jlhy3JzE5sZNyTT9--
+
+--LtmO77VbFCRI5P0EhbxwVubQXOaPjW5W0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAlww3aoACgkQdQOiSHVI
+77R1VAgAuAAxzb1JnKy6n8FPyP5Vqhhzd6bQvh856OWwbvf9pfN7guSYXgRf9UFx
+Kwv3qsjmSU8GDNjSh+oqQUk/bAtgGuUVlqW+2lA/HI/xXVrwpoCfj3W+LlvaWqOS
+rAS8YiwJXxISYgfW4fm/t29YtFTMOlzU8BuKIVB+tfRz+T/5Dd59mSzz3mRcudXd
+Yvn/oN3UJVq3UjhB5v98YtVBb0hmZE9dA8YxmlUbmNKStkau4JJFqi73LSQ7J0Bq
+FoDYyJoVJPMLb36qu64wO9v/ugEM95sYO8KxHOf+9d9vD2MYQQnejvqzStJbF3+D
+NscloTyaAnpFZGriPNpvLTP2jar/gQ==
+=NA+U
+-----END PGP SIGNATURE-----
+
+--LtmO77VbFCRI5P0EhbxwVubQXOaPjW5W0--

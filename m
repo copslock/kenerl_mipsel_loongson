@@ -6,56 +6,56 @@ X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0B5DC43387
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:36:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4D4FC43387
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:39:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 681FB2089F
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:36:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9AB212089F
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:39:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSJfvzO5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lqTLqygV"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727820AbfAGQgG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 7 Jan 2019 11:36:06 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50560 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726874AbfAGQeH (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:34:07 -0500
-Received: by mail-wm1-f66.google.com with SMTP id n190so1477188wmd.0;
-        Mon, 07 Jan 2019 08:34:04 -0800 (PST)
+        id S1727321AbfAGQjl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 7 Jan 2019 11:39:41 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:32875 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726957AbfAGQjk (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:39:40 -0500
+Received: by mail-wr1-f66.google.com with SMTP id c14so1133696wrr.0;
+        Mon, 07 Jan 2019 08:39:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:subject:to:cc:references:from:openpgp:autocrypt:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=rGZa/IUiqhDHrcCURN/ZOfDbcW76DbOfdmtz6UFvdTY=;
-        b=ZSJfvzO5eaQ6+ZYvr78Y7UpBGKDiPvt+7Ybu56K34mxUq0+Mwboq4/5h8OBD3bSH8j
-         zzKE0nlotLXNHdZ3w9UbgHvVfczHYUYyivOPtvhjGLXZeR3F8cE82rqbB+9vEqicZWZU
-         2kLSg12FYl9uMMMylWeLTnKgREBdhqVvEiRDDNdiug7wDfysyKcmrpSN1bZuEpTJ8zS2
-         Q9eQ8B1I5a8hlyJgeuH4+yjN9gkBnW5tjIUbhsKDShg/vkRc2TwYIKtTH8m3w0VpfVnR
-         ez2bQQktBLFdqmNrNwnXUxHSgjqGy1Iq27S/4DFtsgqKpETNCQZ3uEQUSdWyQvZGUmdX
-         ZtRw==
+        bh=BteyKLlXLM8xWhmFfx8rEo5j5LsIt2xkNi4G5K7nq30=;
+        b=lqTLqygV9eTX8EMiBHxdl51ZJjd30A0Q1vjaqc6FHVAA4EC6R2iIuVPrWNUNI/C8Bj
+         JHXDexAWZrtz48IFC5MgGCtCTsxDNN0Y/fiUZ6euEBzaKyi2HxYgAQtZ5J91oQMcDAYY
+         UyYZYQwNWIV5lVPu+VTyE0Cnc/0LnF6C18HXSD6g9KaCwtvrdTJiy7Wz3h+ZM9GKEVa9
+         kwazWvew+Xvo7jBwDWhyjMErEk7MS8Ix3KhsSjZK4hs1j8bSgSrwv/GLyIBJR6Xwi8xO
+         I4RA5kLnSD8I8SoEt9prBpjr9NZW1+XkqP1h5k532Gre6Q4Zk1L11t3ux3FkObfJuiop
+         moYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
          :autocrypt:message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=rGZa/IUiqhDHrcCURN/ZOfDbcW76DbOfdmtz6UFvdTY=;
-        b=jIsEbBfEmHNNjQ9vuPFuNP0FroX5wqquNdG2YRUtQf4HM6W6VpPUcT3dToi2FDSIb8
-         tXmXERCGRpyg4tDAKjRzrStO8n6jIEqnm9PSIUA/dn/ScA5MuSVYw8Z6aKzuBfKzIPuX
-         9iMgyHV0/G007abdLx9Ia0B1+MgP1RPH4HZDNEZZkR8PuJScCwD6/oGKqi76ONwt8bJK
-         uFSNNAT2wyqY66ScTqTamNhNH6AIRS8EkhUwPe3c5DQ/Q0DzQ3VWq/Po7HQxr1iDkHsw
-         ufqNuBSJZQErpltO/d7O+M28Ms3xyeYFBk/nvjo41AFfaPKLc6chKpHRhRX96SFxdL3J
-         bShg==
-X-Gm-Message-State: AJcUukfEaSqTS47PFQgspX+UGvdVe19xUMoUwn17azjckwGx3w3Ilm3Y
-        dyjn4viInH3lHVg5joJ16qU=
-X-Google-Smtp-Source: ALg8bN6zgQkMuUaGzExUIKKYaNM86+O45cK2o6wRe4er1alUcRL90jiJOzmmMczjP3xRk/ARMOYR3Q==
-X-Received: by 2002:a1c:2b01:: with SMTP id r1mr8996473wmr.7.1546878843953;
-        Mon, 07 Jan 2019 08:34:03 -0800 (PST)
+        bh=BteyKLlXLM8xWhmFfx8rEo5j5LsIt2xkNi4G5K7nq30=;
+        b=ZtbKkC9EgNwyGE91fb5y803FPb3aTeydaMZ/JMD3j2tI5WN8frnXORC8FTZadThmNE
+         n7Bom1r1xqyBH4ShE1DGlviquz2N/MJLVI/bFtd1wYSOtbOcO0BinTEWt+b4VSgDta6d
+         3ecFgjY7zkMoJ63Xe/OcgmrPnXiZFgcAjsVKL75rJuL9ZaEVMPHpndsBRmAllK6wCbTf
+         5m29eIBdaM5ERCEyFVaDTp+I8vi+v+6/Ls/WSFJMPNZtU/xtx4mVyoMV3NIvI62zRwva
+         EMXijKya2ilPlOT5/C1RLQzXFSaleA48RPOVGUG3OrBXNv8kZ5dnP+0yYLINGEOkI2/X
+         XZtA==
+X-Gm-Message-State: AJcUukdvNcasUEozJfFwJXVpma+wxwrGxua5Qvrxy8VrFVQBICKJxaXt
+        /raH2lECXs8/c1m6xjn4miE=
+X-Google-Smtp-Source: ALg8bN5A4h2vi1OaJoHqPHyE7gYA/rx1zturjQ0g6r5Fu3Wm3FdHxIrKHDubTXPGhlOsjlB/7qNs7A==
+X-Received: by 2002:adf:b6a1:: with SMTP id j33mr52322444wre.55.1546879178246;
+        Mon, 07 Jan 2019 08:39:38 -0800 (PST)
 Received: from ?IPv6:2001:b07:6468:f312:3473:41cf:8b30:f2e1? ([2001:b07:6468:f312:3473:41cf:8b30:f2e1])
-        by smtp.googlemail.com with ESMTPSA id v1sm69334041wrw.90.2019.01.07.08.34.01
+        by smtp.googlemail.com with ESMTPSA id l20sm111840324wrb.93.2019.01.07.08.39.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 Jan 2019 08:34:03 -0800 (PST)
-Subject: Re: [PATCH 3/11] KVM: Add spte's point in the struct kvm_mmu_page
+        Mon, 07 Jan 2019 08:39:37 -0800 (PST)
+Subject: Re: [PATCH 4/11] KVM/MMU: Introduce tlb flush with range list
 To:     lantianyu1986@gmail.com
 Cc:     kvm@vger.kernel.org, catalin.marinas@arm.com, will.deacon@arm.com,
         paulus@ozlabs.org, hpa@zytor.com, kys@microsoft.com,
@@ -69,7 +69,7 @@ Cc:     kvm@vger.kernel.org, catalin.marinas@arm.com, will.deacon@arm.com,
         paul.burton@mips.com, vkuznets@redhat.com,
         linuxppc-dev@lists.ozlabs.org
 References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
- <20190104085405.40356-4-Tianyu.Lan@microsoft.com>
+ <20190104085405.40356-5-Tianyu.Lan@microsoft.com>
 From:   Paolo Bonzini <pbonzini@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -127,41 +127,37 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  DduC0U3xYkfbGAUvbxeepjgzp0uEnBXfPTy09JGpgWbg0w91GyfT/ujKaGd4vxG2Ei+MMNDm
  S1SMx7wu0evvQ5kT9NPzyq8R2GIhVSiAd2jioGuTjX6AZCFv3ToO53DliFMkVTecLptsXaes
  uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <dfaebf54-2a01-aafc-6f86-596f49874d3c@redhat.com>
-Date:   Mon, 7 Jan 2019 17:34:00 +0100
+Message-ID: <2c6f7a11-b406-d4f1-c934-e6dedf5b07fd@redhat.com>
+Date:   Mon, 7 Jan 2019 17:39:33 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.3.1
 MIME-Version: 1.0
-In-Reply-To: <20190104085405.40356-4-Tianyu.Lan@microsoft.com>
+In-Reply-To: <20190104085405.40356-5-Tianyu.Lan@microsoft.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
 On 04/01/19 09:53, lantianyu1986@gmail.com wrote:
-> @@ -332,6 +332,7 @@ struct kvm_mmu_page {
->  	int root_count;          /* Currently serving as active root */
->  	unsigned int unsync_children;
->  	struct kvm_rmap_head parent_ptes; /* rmap pointers to parent sptes */
-> +	u64 *sptep;
+>  struct kvm_mmu_page {
+>  	struct list_head link;
+> +
+> +	/*
+> +	 * Tlb flush with range list uses struct kvm_mmu_page as list entry
+> +	 * and all list operations should be under protection of mmu_lock.
+> +	 */
+> +	struct list_head flush_link;
+>  	struct hlist_node hash_link;
+>  	bool unsync;
+>  
+> @@ -443,6 +449,7 @@ struct kvm_mmu {
 
-Is this really needed?  Can we put the "last" flag in the struct instead
-as a bool?  In fact, if you do
+Again, it would be nice not to grow the struct too much, though I
+understand that it's already relatively big (168 bytes).
 
-	u16 unsync_children;
-	bool unsync;
-	bool last_level;
-
-the struct does not grow at all. :)
-
-(I'm not sure where "large" is tested using the sptep field, even though
-it is in the commit message).
+Can you at least make this an hlist, so that it only takes a single word?
 
 Paolo
-
->  	/* The page is obsolete if mmu_valid_gen != kvm->arch.mmu_valid_gen.  */
->  	unsigned long mmu_valid_gen;
-

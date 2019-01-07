@@ -6,72 +6,70 @@ X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40CCFC43387
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0B5DC43387
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:36:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 063EB2147C
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:26:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 681FB2089F
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:36:12 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SweO434i"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSJfvzO5"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730268AbfAGQ0o (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 7 Jan 2019 11:26:44 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:42115 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727483AbfAGQ0o (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:26:44 -0500
-Received: by mail-wr1-f67.google.com with SMTP id q18so1029557wrx.9;
-        Mon, 07 Jan 2019 08:26:42 -0800 (PST)
+        id S1727820AbfAGQgG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 7 Jan 2019 11:36:06 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:50560 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbfAGQeH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:34:07 -0500
+Received: by mail-wm1-f66.google.com with SMTP id n190so1477188wmd.0;
+        Mon, 07 Jan 2019 08:34:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:subject:to:cc:references:from:openpgp:autocrypt:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=/U70qfKIXZfDtiR8L8OsjRjbuUkYcPLUD/fleteotXk=;
-        b=SweO434iWDy1IdSqUunohVYNhyzYgiE2pEiHkiqxgo7qhyAtL0Eiu23Gx6vr4pdFuW
-         sNscKecGB1c9z3VebNG+aC+0hxuHorwhJmPrT6EhjWrmjp82XsZ6lDopdKlZBzjHJqsS
-         906fJCHUocNRq2/jg5m0WxI+tS53UdBRhufo8nwa4J8JOrr3AfaZf7IXzPenzAGtceiz
-         3TDYrmSo2oDAcytg0LFTQcYFmR6ZCrvngXL8ttaxRZhEnNVCSbcrsR510lG8Cy502jPL
-         N3DCPIbuc+8SfPLGXF1RzZd1nIQtdk0I3QRzZGjHKpZrMZfqBEXm8cDx0FjqopsTwXQh
-         T6lg==
+        bh=rGZa/IUiqhDHrcCURN/ZOfDbcW76DbOfdmtz6UFvdTY=;
+        b=ZSJfvzO5eaQ6+ZYvr78Y7UpBGKDiPvt+7Ybu56K34mxUq0+Mwboq4/5h8OBD3bSH8j
+         zzKE0nlotLXNHdZ3w9UbgHvVfczHYUYyivOPtvhjGLXZeR3F8cE82rqbB+9vEqicZWZU
+         2kLSg12FYl9uMMMylWeLTnKgREBdhqVvEiRDDNdiug7wDfysyKcmrpSN1bZuEpTJ8zS2
+         Q9eQ8B1I5a8hlyJgeuH4+yjN9gkBnW5tjIUbhsKDShg/vkRc2TwYIKtTH8m3w0VpfVnR
+         ez2bQQktBLFdqmNrNwnXUxHSgjqGy1Iq27S/4DFtsgqKpETNCQZ3uEQUSdWyQvZGUmdX
+         ZtRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
          :autocrypt:message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=/U70qfKIXZfDtiR8L8OsjRjbuUkYcPLUD/fleteotXk=;
-        b=ZJgT5Jyks6xpCDJJfQ37vDHjTq5vhW1ZqpzL3vWgJLhr1gbzcMn/gykNT0KyAMk5Qq
-         B2nm6v2lVNLjE/rErZOB38iM6+SBfLd4v2+BDFsPAhBLONnyw/xlFY700omkv3ae6MhD
-         YMKMcsJaA4BqsofFxpQEz+AgcNDudKB1cS4aaPgotbuAx15UEZAqsRnGDrPcmRfAXLzV
-         ed3pvbyH2leTWLtC9SXusc1Ukx77/uqekccOke8h9UzpFzQDOwvxmV4U6EcOE0JPrBYC
-         zbWHtnqzAB7cx1i6Uo2YPJRB3+q6rN/INY6fybosnVZc6SUUPKNJASxadzIepGrtG4e+
-         y/RA==
-X-Gm-Message-State: AJcUukcmfO49M6R17geXI3pb0MwJYRPhUm6MSdAb2Uag8msWGzzBtYU/
-        XxC5oXwQZOHVcGOQw8FPvk8=
-X-Google-Smtp-Source: ALg8bN53Ae/LWk8R4oNfWY8JaVuQFl1l5dBEGbQBZ1oQw+MohX5T5j7ACyzpZfip9SWSnWHDOfTYEg==
-X-Received: by 2002:a05:6000:120a:: with SMTP id e10mr52902210wrx.85.1546878401435;
-        Mon, 07 Jan 2019 08:26:41 -0800 (PST)
+        bh=rGZa/IUiqhDHrcCURN/ZOfDbcW76DbOfdmtz6UFvdTY=;
+        b=jIsEbBfEmHNNjQ9vuPFuNP0FroX5wqquNdG2YRUtQf4HM6W6VpPUcT3dToi2FDSIb8
+         tXmXERCGRpyg4tDAKjRzrStO8n6jIEqnm9PSIUA/dn/ScA5MuSVYw8Z6aKzuBfKzIPuX
+         9iMgyHV0/G007abdLx9Ia0B1+MgP1RPH4HZDNEZZkR8PuJScCwD6/oGKqi76ONwt8bJK
+         uFSNNAT2wyqY66ScTqTamNhNH6AIRS8EkhUwPe3c5DQ/Q0DzQ3VWq/Po7HQxr1iDkHsw
+         ufqNuBSJZQErpltO/d7O+M28Ms3xyeYFBk/nvjo41AFfaPKLc6chKpHRhRX96SFxdL3J
+         bShg==
+X-Gm-Message-State: AJcUukfEaSqTS47PFQgspX+UGvdVe19xUMoUwn17azjckwGx3w3Ilm3Y
+        dyjn4viInH3lHVg5joJ16qU=
+X-Google-Smtp-Source: ALg8bN6zgQkMuUaGzExUIKKYaNM86+O45cK2o6wRe4er1alUcRL90jiJOzmmMczjP3xRk/ARMOYR3Q==
+X-Received: by 2002:a1c:2b01:: with SMTP id r1mr8996473wmr.7.1546878843953;
+        Mon, 07 Jan 2019 08:34:03 -0800 (PST)
 Received: from ?IPv6:2001:b07:6468:f312:3473:41cf:8b30:f2e1? ([2001:b07:6468:f312:3473:41cf:8b30:f2e1])
-        by smtp.googlemail.com with ESMTPSA id n127sm8479381wmd.20.2019.01.07.08.26.36
+        by smtp.googlemail.com with ESMTPSA id v1sm69334041wrw.90.2019.01.07.08.34.01
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 Jan 2019 08:26:40 -0800 (PST)
-Subject: Re: [PATCH 9/11] KVM/MMU: Flush tlb in the
- kvm_mmu_write_protect_pt_masked()
+        Mon, 07 Jan 2019 08:34:03 -0800 (PST)
+Subject: Re: [PATCH 3/11] KVM: Add spte's point in the struct kvm_mmu_page
 To:     lantianyu1986@gmail.com
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
-        marc.zyngier@arm.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
-        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
-        benh@kernel.crashing.org, mpe@ellerman.id.au, rkrcmar@redhat.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        michael.h.kelley@microsoft.com, kys@microsoft.com,
-        vkuznets@redhat.com
+Cc:     kvm@vger.kernel.org, catalin.marinas@arm.com, will.deacon@arm.com,
+        paulus@ozlabs.org, hpa@zytor.com, kys@microsoft.com,
+        kvmarm@lists.cs.columbia.edu, mpe@ellerman.id.au, x86@kernel.org,
+        linux@armlinux.org.uk, michael.h.kelley@microsoft.com,
+        mingo@redhat.com, benh@kernel.crashing.org, jhogan@kernel.org,
+        linux-mips@vger.kernel.org, Lan Tianyu <Tianyu.Lan@microsoft.com>,
+        marc.zyngier@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
+        tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        paul.burton@mips.com, vkuznets@redhat.com,
+        linuxppc-dev@lists.ozlabs.org
 References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
- <20190104085405.40356-10-Tianyu.Lan@microsoft.com>
+ <20190104085405.40356-4-Tianyu.Lan@microsoft.com>
 From:   Paolo Bonzini <pbonzini@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -129,51 +127,41 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  DduC0U3xYkfbGAUvbxeepjgzp0uEnBXfPTy09JGpgWbg0w91GyfT/ujKaGd4vxG2Ei+MMNDm
  S1SMx7wu0evvQ5kT9NPzyq8R2GIhVSiAd2jioGuTjX6AZCFv3ToO53DliFMkVTecLptsXaes
  uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <7eb0cde4-9436-9719-dd13-caf4ab5083a2@redhat.com>
-Date:   Mon, 7 Jan 2019 17:26:35 +0100
+Message-ID: <dfaebf54-2a01-aafc-6f86-596f49874d3c@redhat.com>
+Date:   Mon, 7 Jan 2019 17:34:00 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.3.1
 MIME-Version: 1.0
-In-Reply-To: <20190104085405.40356-10-Tianyu.Lan@microsoft.com>
+In-Reply-To: <20190104085405.40356-4-Tianyu.Lan@microsoft.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 04/01/19 09:54, lantianyu1986@gmail.com wrote:
->  		rmap_head = __gfn_to_rmap(slot->base_gfn + gfn_offset + __ffs(mask),
->  					  PT_PAGE_TABLE_LEVEL, slot);
-> -		__rmap_write_protect(kvm, rmap_head, false);
-> +		flush |= __rmap_write_protect(kvm, rmap_head, false);
->  
->  		/* clear the first set bit */
->  		mask &= mask - 1;
->  	}
-> +
-> +	if (flush && kvm_available_flush_tlb_with_range()) {
-> +		kvm_flush_remote_tlbs_with_address(kvm,
-> +				slot->base_gfn + gfn_offset,
-> +				hweight_long(mask));
+On 04/01/19 09:53, lantianyu1986@gmail.com wrote:
+> @@ -332,6 +332,7 @@ struct kvm_mmu_page {
+>  	int root_count;          /* Currently serving as active root */
+>  	unsigned int unsync_children;
+>  	struct kvm_rmap_head parent_ptes; /* rmap pointers to parent sptes */
+> +	u64 *sptep;
 
-Mask is zero here, so this probably won't work.
+Is this really needed?  Can we put the "last" flag in the struct instead
+as a bool?  In fact, if you do
 
-In addition, I suspect calling the hypercall once for every 64 pages is
-not very efficient.  Passing a flush list into
-kvm_mmu_write_protect_pt_masked, and flushing in
-kvm_arch_mmu_enable_log_dirty_pt_masked, isn't efficient either because
-kvm_arch_mmu_enable_log_dirty_pt_masked is also called once per word.
+	u16 unsync_children;
+	bool unsync;
+	bool last_level;
 
-I don't have any good ideas, except for moving the whole
-kvm_clear_dirty_log_protect loop into architecture-specific code (which
-is not the direction we want---architectures should share more code, not
-less).
+the struct does not grow at all. :)
+
+(I'm not sure where "large" is tested using the sptep field, even though
+it is in the commit message).
 
 Paolo
 
-> +		flush = false;
-> +	}
-> +
+>  	/* The page is obsolete if mmu_valid_gen != kvm->arch.mmu_valid_gen.  */
+>  	unsigned long mmu_valid_gen;
 

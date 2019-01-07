@@ -6,56 +6,57 @@ X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BFEFC43612
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45DBEC43387
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:20:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 531032087F
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:08:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0C2B82147C
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 16:20:46 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pfd4JMrX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eV+GpH4A"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728399AbfAGQIE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 7 Jan 2019 11:08:04 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:35639 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728363AbfAGQIE (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:08:04 -0500
-Received: by mail-wr1-f68.google.com with SMTP id 96so1003435wrb.2;
-        Mon, 07 Jan 2019 08:08:02 -0800 (PST)
+        id S1730006AbfAGQUk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 7 Jan 2019 11:20:40 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:44188 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726864AbfAGQUj (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 7 Jan 2019 11:20:39 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z5so993266wrt.11;
+        Mon, 07 Jan 2019 08:20:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:subject:to:cc:references:from:openpgp:autocrypt:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=D1kXDsIrRaGiuvpcXhul7eIrHZWAcX7Be7iXngO47mU=;
-        b=Pfd4JMrXW94JLhpb93PNrONLZqtI042xCGEnUApBzSI+I1Qktx/70Ak08yjw8CPDzD
-         M3I3qNUOUQ7MQIq5oZohly7mSJS0E7iuasgQEmsLixPcplEpvZmvAVnnPH+adJP0vmxn
-         gVybgMj2t8Iv9i8iofYiq+22Cn+5IfSeC3n1NUROo9Bda6Ii+0T+a6idJKH5WH8V3avq
-         MiXOE6b4g+1jXRDReud5SmVbTtMpEsrNmPf9dDAu3rUftqUwCVnhLtGa+YqgbaY4c3un
-         xkTIngjPKoPjbUwZE6ulvJv4P6yMHJY8+FzuBl3clJFhYg8QlWSjbqxXZzop09EzoAmO
-         cWSw==
+        bh=wo6kvzYCEB9x6sNLpbzEiDdvddMlVBTQkNzc4peqcCQ=;
+        b=eV+GpH4AQ6+7T7LIwNOOOejnJmtqZM2yXT2/VG308IJZHjjJWS3N9gcP2nHKtkdKM/
+         JSHGL1niPKpht2EkJPG0TH/ZEyjxwZOOxHQZipQC4OkRjBRRecfDTw4YBB1LwHoXFC9v
+         tlQODf899mTtivp7XmyjMbe28JPPTbJdZqkufAuDIxH0pbKvIfPCyG54kRacioV/ZCER
+         OAScVNmXQW7hsXbXDhUsZHGvOibmdboZ/nz2xngABk4O5ZdLPs/ivMrBJql+rEHsT24D
+         piOxUPf3ysxjycsEaKrpbN++XCo7/zdlGe4l+GI8qh4/k7k7sFCDyGb6M1UMqBpqMyGt
+         wg4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
          :autocrypt:message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=D1kXDsIrRaGiuvpcXhul7eIrHZWAcX7Be7iXngO47mU=;
-        b=bLZdLwoL5XbPt1JHaOCbLmQACPtAUc5SoHV2BwlZDKOAqVefAI9sEDW7rlC3HobTUA
-         XiXZVmAzg9b84CKG98QMQVoDCPC9B8x90q+LHX5b4OiC95Kj3wsrfCuoiBlDVGn3kcW5
-         FggEWPa0zOwyIMuJC9loED4pnk5ARHJYsT77MMC2zAW0PlYKvK/ezpGfS9QWWaAlaSzn
-         ufrQZXYGHUZ8VQtGOURSFG3HelGf7UljdmR1i5EX5NkTb0keZaPOYnbRYhre0x8LjVvN
-         VmgcsLRDOWGZpy20rlKddpDa5VIxl3U/cMk7IiCO4EegTa+qHuFa7E47WjWlM+iaPPPS
-         Axcw==
-X-Gm-Message-State: AJcUukeDyZ2p5H7+8JfnWDDVhQIHFTOUDDhm+DbxDgxV/HPWNU1UQNsl
-        WS8uBwDgjxWvBwC/pYsaxiM=
-X-Google-Smtp-Source: ALg8bN7kCmotn2Lkm6tNO33Zxglj/qRXgzoyZwqfavhkj+12KwHxH97DI/diz/R+btrsZA+A1bvudA==
-X-Received: by 2002:adf:e284:: with SMTP id v4mr50789999wri.26.1546877281636;
-        Mon, 07 Jan 2019 08:08:01 -0800 (PST)
+        bh=wo6kvzYCEB9x6sNLpbzEiDdvddMlVBTQkNzc4peqcCQ=;
+        b=ntNkfam2EYhk1ZMuI87ixZLr342Jnh213ICwizeTsWw5KFKbnjIzFDSoV+eBq3MTI1
+         vCd+jaXA0XzIlKKt8futLOQ6ilf3om0r1bB6knHJUh9oszQBWQ+2DtAC2t6Xz9yXx2nG
+         NRdnFKCKYEwiNVU0r0oFFR7Mbr+MdoCpG7Fz+w3QBARoE94gsd2qG3K8Dc+v0tTfRbUM
+         8uuK2dWDYtYiF9mvQB9eOOFMGa/v8mN9/E+NG8uhEb3jTK1paVOTHDa6J9ZfAg77M0ya
+         FwPoiE4PqYR8pA8XNuMRzShei2vW1o6dLGFxa7QCCrXfVE02GUnYwgLq1hDy3LvzyiEB
+         +aEw==
+X-Gm-Message-State: AJcUukfBXLZfOZvKg90owJr9Cc4iuP9Elc0Mr/5aQ2mHRUyMJeNzusYP
+        6/bWsVAuCgw+ihIOrXDDUEw=
+X-Google-Smtp-Source: ALg8bN75whlY2X8B+OnId7dxa6Gwo2IHtNNBq6DMkLET6wv0X8qN6sDjd1i2QO6EG+oSM13RIXDDEg==
+X-Received: by 2002:adf:f149:: with SMTP id y9mr56724337wro.284.1546878037106;
+        Mon, 07 Jan 2019 08:20:37 -0800 (PST)
 Received: from ?IPv6:2001:b07:6468:f312:3473:41cf:8b30:f2e1? ([2001:b07:6468:f312:3473:41cf:8b30:f2e1])
-        by smtp.googlemail.com with ESMTPSA id x10sm60879531wrn.29.2019.01.07.08.07.59
+        by smtp.googlemail.com with ESMTPSA id j8sm19509377wmd.0.2019.01.07.08.20.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 Jan 2019 08:08:01 -0800 (PST)
-Subject: Re: [PATCH 6/11] KVM/MMU: Flush tlb with range list in sync_page()
+        Mon, 07 Jan 2019 08:20:36 -0800 (PST)
+Subject: Re: [PATCH 7/11] KVM: Remove redundant check in the
+ kvm_get_dirty_log_protect()
 To:     Sean Christopherson <sean.j.christopherson@intel.com>,
         lantianyu1986@gmail.com
 Cc:     kvm@vger.kernel.org, rkrcmar@redhat.com, catalin.marinas@arm.com,
@@ -71,8 +72,8 @@ Cc:     kvm@vger.kernel.org, rkrcmar@redhat.com, catalin.marinas@arm.com,
         paul.burton@mips.com, vkuznets@redhat.com,
         linuxppc-dev@lists.ozlabs.org
 References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
- <20190104085405.40356-7-Tianyu.Lan@microsoft.com>
- <20190104163035.GC11288@linux.intel.com>
+ <20190104085405.40356-8-Tianyu.Lan@microsoft.com>
+ <20190104155036.GA11288@linux.intel.com>
 From:   Paolo Bonzini <pbonzini@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -130,12 +131,12 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  DduC0U3xYkfbGAUvbxeepjgzp0uEnBXfPTy09JGpgWbg0w91GyfT/ujKaGd4vxG2Ei+MMNDm
  S1SMx7wu0evvQ5kT9NPzyq8R2GIhVSiAd2jioGuTjX6AZCFv3ToO53DliFMkVTecLptsXaes
  uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <99e47cc1-43d6-ff05-46b8-6a96ebc34b2a@redhat.com>
-Date:   Mon, 7 Jan 2019 17:07:58 +0100
+Message-ID: <dad62bfb-e4c0-266f-ff36-8344d3952ba0@redhat.com>
+Date:   Mon, 7 Jan 2019 17:20:30 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.3.1
 MIME-Version: 1.0
-In-Reply-To: <20190104163035.GC11288@linux.intel.com>
+In-Reply-To: <20190104155036.GA11288@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -144,33 +145,17 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 04/01/19 17:30, Sean Christopherson wrote:
->> +
->> +		if (kvm_available_flush_tlb_with_range()
->> +		    && (tmp_spte_ret & SET_SPTE_NEED_REMOTE_TLB_FLUSH)) {
->> +			struct kvm_mmu_page *leaf_sp = page_header(sp->spt[i]
->> +					& PT64_BASE_ADDR_MASK);
->> +			list_add(&leaf_sp->flush_link, &flush_list);
->> +		}
->> +
->> +		set_spte_ret |= tmp_spte_ret;
->> +
->>  	}
->>  
->>  	if (set_spte_ret & SET_SPTE_NEED_REMOTE_TLB_FLUSH)
->> -		kvm_flush_remote_tlbs(vcpu->kvm);
->> +		kvm_flush_remote_tlbs_with_list(vcpu->kvm, &flush_list);
-> This is a bit confusing and potentially fragile.  It's not obvious that
-> kvm_flush_remote_tlbs_with_list() is guaranteed to call
-> kvm_flush_remote_tlbs() when kvm_available_flush_tlb_with_range() is
-> false, and you're relying on the kvm_flush_remote_tlbs_with_list() call
-> chain to never optimize away the empty list case.  Rechecking
-> kvm_available_flush_tlb_with_range() isn't expensive.
-> 
+On 04/01/19 16:50, Sean Christopherson wrote:
+> Tangentially related, does mmu_lock actually need to be held while we
+> walk dirty_bitmap in kvm_{clear,get}_dirty_log_protect()?  The bitmap
+> itself is protected by slots_lock (a lockdep assertion would be nice
+> too), e.g. can we grab the lock iff dirty_bitmap[i] != 0?
 
-Alternatively, do not check it during the loop: always build the
-flush_list, and always call kvm_flush_remote_tlbs_with_list.  The
-function can then check whether the list is empty, and the OR of
-tmp_spte_ret on every iteration goes away.
+Yes, we could avoid grabbing it as long as the bitmap is zero.  However,
+without kvm->manual_dirty_log_protect, the granularity of
+kvm_get_dirty_log_protect() is too coarse so it won't happen in
+practice.  Instead, with the new manual clear,
+kvm_get_dirty_log_protect() does not take the lock and a well-written
+userspace is not going to call the clear ioctl unless some bits are set.
 
 Paolo

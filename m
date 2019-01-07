@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03377C43612
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 13:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC649C43387
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 13:13:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C9104217D4
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 13:13:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7B4A72089F
+	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 13:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1546866791;
-	bh=ZhtEGOb110+2NFXg//zTxyZ+Xq+QNxzs5esaxnUnDCU=;
+	s=default; t=1546866803;
+	bh=bSBPiChESolQeq7V5JlUqU/PADOZUi0/BwfhDFgdAZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=hQDqr0WA3tISQC3g7rzoTqsCRtTp0Kk0t4HyuPLlFVf+bHnSvJeEMoPTEWcYbCumX
-	 G9BQFWTrA3qGIOBi83wVE8NhUTqUBy/jeFDbWx+udYn9s0ZRxvvzcG8OZobky1Xzce
-	 UcsmFKGQLwe9OIzyepFAM4o+CNzz0qpUTq13DZ5g=
+	b=jepsANRko5WAYO2mY89OJoWtKhx1YJnYy+R7NmFHWpUj0b+Nk9+DDYU+BcOkZaYp/
+	 h7R9/dfs6z51lDFVvfWpDwpNxaFRmbfzSOfUQ/xYvFRBU9afdu5hwT91atGAipxGEi
+	 XeSEm4YIiajczfhxJJC6Lp2arpThZ8achUDPLqG0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731106AbfAGND6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 7 Jan 2019 08:03:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51518 "EHLO mail.kernel.org"
+        id S1731108AbfAGNNW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 7 Jan 2019 08:13:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51276 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731100AbfAGND6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 7 Jan 2019 08:03:58 -0500
+        id S1730260AbfAGNDr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 7 Jan 2019 08:03:47 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 91C282089F;
-        Mon,  7 Jan 2019 13:03:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AFEBB217D4;
+        Mon,  7 Jan 2019 13:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1546866237;
-        bh=ZhtEGOb110+2NFXg//zTxyZ+Xq+QNxzs5esaxnUnDCU=;
+        s=default; t=1546866226;
+        bh=bSBPiChESolQeq7V5JlUqU/PADOZUi0/BwfhDFgdAZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xSedNs4jM7tT42bjoJ7XrlU1MPaCmuS+1jutzuDv4zv1bNSVgtj2HSvT8ZfCOaDyn
-         frCVvNGZsD8CjK2oNEvzYztvTOCKXD7xS2dFwRqrkicuDrLvMLrhUd76o6qHY1Wpzl
-         eOJYheWQFw6mjbOwSDe7/tYw8ELvu1DelvQyh6Ps=
+        b=tgHlz1FVnurUDH7U0lBg1aKG8aKxgjOlhrMQe28Pk+EexzFbJiqCAJ3Fr9/5KQFyk
+         8pfw/G+CN2cXC1Svs7Tt2NCba9J4HEGkTEvTIvJ2sVoA/WinKCoapkmdNZ6ekEmCBg
+         d6xPHXrZuebLwD3LgaxcM7+29nyi6kNLgnBqVh7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jiwei Sun <jiwei.sun@windriver.com>,
-        Yu Huabing <yhb@ruijie.com.cn>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.14 093/101] MIPS: Expand MIPS32 ASIDs to 64 bits
-Date:   Mon,  7 Jan 2019 13:33:21 +0100
-Message-Id: <20190107105337.927508368@linuxfoundation.org>
+        stable@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Rich Felker <dalias@libc.org>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH 4.14 089/101] MIPS: math-emu: Write-protect delay slot emulation pages
+Date:   Mon,  7 Jan 2019 13:33:17 +0100
+Message-Id: <20190107105337.745058069@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190107105330.372621917@linuxfoundation.org>
 References: <20190107105330.372621917@linuxfoundation.org>
@@ -68,148 +68,123 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 From: Paul Burton <paul.burton@mips.com>
 
-commit ff4dd232ec45a0e45ea69f28f069f2ab22b4908a upstream.
+commit adcc81f148d733b7e8e641300c5590a2cdc13bf3 upstream.
 
-ASIDs have always been stored as unsigned longs, ie. 32 bits on MIPS32
-kernels. This is problematic because it is feasible for the ASID version
-to overflow & wrap around to zero.
+Mapping the delay slot emulation page as both writeable & executable
+presents a security risk, in that if an exploit can write to & jump into
+the page then it can be used as an easy way to execute arbitrary code.
 
-We currently attempt to handle this overflow by simply setting the ASID
-version to 1, using asid_first_version(), but we make no attempt to
-account for the fact that there may be mm_structs with stale ASIDs that
-have versions which we now reuse due to the overflow & wrap around.
+Prevent this by mapping the page read-only for userland, and using
+access_process_vm() with the FOLL_FORCE flag to write to it from
+mips_dsemul().
 
-Encountering this requires that:
+This will likely be less efficient due to copy_to_user_page() performing
+cache maintenance on a whole page, rather than a single line as in the
+previous use of flush_cache_sigtramp(). However this delay slot
+emulation code ought not to be running in any performance critical paths
+anyway so this isn't really a problem, and we can probably do better in
+copy_to_user_page() anyway in future.
 
-  1) A struct mm_struct X is active on CPU A using ASID (V,n).
+A major advantage of this approach is that the fix is small & simple to
+backport to stable kernels.
 
-  2) That mm is not used on CPU A for the length of time that it takes
-     for CPU A's asid_cache to overflow & wrap around to the same
-     version V that the mm had in step 1. During this time tasks using
-     the mm could either be sleeping or only scheduled on other CPUs.
-
-  3) Some other mm Y becomes active on CPU A and is allocated the same
-     ASID (V,n).
-
-  4) mm X now becomes active on CPU A again, and now incorrectly has the
-     same ASID as mm Y.
-
-Where struct mm_struct ASIDs are represented above in the format
-(version, EntryHi.ASID), and on a typical MIPS32 system version will be
-24 bits wide & EntryHi.ASID will be 8 bits wide.
-
-The length of time required in step 2 is highly dependent upon the CPU &
-workload, but for a hypothetical 2GHz CPU running a workload which
-generates a new ASID every 10000 cycles this period is around 248 days.
-Due to this long period of time & the fact that tasks need to be
-scheduled in just the right (or wrong, depending upon your inclination)
-way, this is obviously a difficult bug to encounter but it's entirely
-possible as evidenced by reports.
-
-In order to fix this, simply extend ASIDs to 64 bits even on MIPS32
-builds. This will extend the period of time required for the
-hypothetical system above to encounter the problem from 28 days to
-around 3 trillion years, which feels safely outside of the realms of
-possibility.
-
-The cost of this is slightly more generated code in some commonly
-executed paths, but this is pretty minimal:
-
-                         | Code Size Gain | Percentage
-  -----------------------|----------------|-------------
-    decstation_defconfig |           +270 | +0.00%
-        32r2el_defconfig |           +652 | +0.01%
-        32r6el_defconfig |          +1000 | +0.01%
-
-I have been unable to measure any change in performance of the LMbench
-lat_ctx or lat_proc tests resulting from the 64b ASIDs on either
-32r2el_defconfig+interAptiv or 32r6el_defconfig+I6500 systems.
-
+Reported-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Suggested-by: James Hogan <jhogan@kernel.org>
-References: https://lore.kernel.org/linux-mips/80B78A8B8FEE6145A87579E8435D78C30205D5F3@fzex.ruijie.com.cn/
-References: https://lore.kernel.org/linux-mips/1488684260-18867-1-git-send-email-jiwei.sun@windriver.com/
-Cc: Jiwei Sun <jiwei.sun@windriver.com>
-Cc: Yu Huabing <yhb@ruijie.com.cn>
-Cc: stable@vger.kernel.org # 2.6.12+
+Fixes: 432c6bacbd0c ("MIPS: Use per-mm page to execute branch delay slot instructions")
+Cc: stable@vger.kernel.org # v4.8+
 Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>
+Cc: David Daney <david.daney@cavium.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/cpu-info.h    |    2 +-
- arch/mips/include/asm/mmu.h         |    2 +-
- arch/mips/include/asm/mmu_context.h |   10 ++++------
- arch/mips/mm/c-r3k.c                |    2 +-
- 4 files changed, 7 insertions(+), 9 deletions(-)
+ arch/mips/kernel/vdso.c     |    4 ++--
+ arch/mips/math-emu/dsemul.c |   38 ++++++++++++++++++++------------------
+ 2 files changed, 22 insertions(+), 20 deletions(-)
 
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -50,7 +50,7 @@ struct guest_info {
- #define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -126,8 +126,8 @@ int arch_setup_additional_pages(struct l
  
- struct cpuinfo_mips {
--	unsigned long		asid_cache;
-+	u64			asid_cache;
- #ifdef CONFIG_MIPS_ASID_BITS_VARIABLE
- 	unsigned long		asid_mask;
- #endif
---- a/arch/mips/include/asm/mmu.h
-+++ b/arch/mips/include/asm/mmu.h
-@@ -7,7 +7,7 @@
- #include <linux/wait.h>
- 
- typedef struct {
--	unsigned long asid[NR_CPUS];
-+	u64 asid[NR_CPUS];
- 	void *vdso;
- 	atomic_t fp_mode_switching;
- 
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -75,14 +75,14 @@ extern unsigned long pgd_current[];
-  *  All unused by hardware upper bits will be considered
-  *  as a software asid extension.
-  */
--static unsigned long asid_version_mask(unsigned int cpu)
-+static inline u64 asid_version_mask(unsigned int cpu)
+ 	/* Map delay slot emulation page */
+ 	base = mmap_region(NULL, STACK_TOP, PAGE_SIZE,
+-			   VM_READ|VM_WRITE|VM_EXEC|
+-			   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
++			   VM_READ | VM_EXEC |
++			   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
+ 			   0, NULL);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+--- a/arch/mips/math-emu/dsemul.c
++++ b/arch/mips/math-emu/dsemul.c
+@@ -214,8 +214,9 @@ int mips_dsemul(struct pt_regs *regs, mi
  {
- 	unsigned long asid_mask = cpu_asid_mask(&cpu_data[cpu]);
+ 	int isa16 = get_isa16_mode(regs->cp0_epc);
+ 	mips_instruction break_math;
+-	struct emuframe __user *fr;
+-	int err, fr_idx;
++	unsigned long fr_uaddr;
++	struct emuframe fr;
++	int fr_idx, ret;
  
--	return ~(asid_mask | (asid_mask - 1));
-+	return ~(u64)(asid_mask | (asid_mask - 1));
- }
+ 	/* NOP is easy */
+ 	if (ir == 0)
+@@ -250,27 +251,31 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 		fr_idx = alloc_emuframe();
+ 	if (fr_idx == BD_EMUFRAME_NONE)
+ 		return SIGBUS;
+-	fr = &dsemul_page()[fr_idx];
  
--static unsigned long asid_first_version(unsigned int cpu)
-+static inline u64 asid_first_version(unsigned int cpu)
- {
- 	return ~asid_version_mask(cpu) + 1;
- }
-@@ -101,14 +101,12 @@ static inline void enter_lazy_tlb(struct
- static inline void
- get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
- {
--	unsigned long asid = asid_cache(cpu);
-+	u64 asid = asid_cache(cpu);
+ 	/* Retrieve the appropriately encoded break instruction */
+ 	break_math = BREAK_MATH(isa16);
  
- 	if (!((asid += cpu_asid_inc()) & cpu_asid_mask(&cpu_data[cpu]))) {
- 		if (cpu_has_vtag_icache)
- 			flush_icache_all();
- 		local_flush_tlb_all();	/* start new asid cycle */
--		if (!asid)		/* fix version if needed */
--			asid = asid_first_version(cpu);
+ 	/* Write the instructions to the frame */
+ 	if (isa16) {
+-		err = __put_user(ir >> 16,
+-				 (u16 __user *)(&fr->emul));
+-		err |= __put_user(ir & 0xffff,
+-				  (u16 __user *)((long)(&fr->emul) + 2));
+-		err |= __put_user(break_math >> 16,
+-				  (u16 __user *)(&fr->badinst));
+-		err |= __put_user(break_math & 0xffff,
+-				  (u16 __user *)((long)(&fr->badinst) + 2));
++		union mips_instruction _emul = {
++			.halfword = { ir >> 16, ir }
++		};
++		union mips_instruction _badinst = {
++			.halfword = { break_math >> 16, break_math }
++		};
++
++		fr.emul = _emul.word;
++		fr.badinst = _badinst.word;
+ 	} else {
+-		err = __put_user(ir, &fr->emul);
+-		err |= __put_user(break_math, &fr->badinst);
++		fr.emul = ir;
++		fr.badinst = break_math;
  	}
  
- 	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
---- a/arch/mips/mm/c-r3k.c
-+++ b/arch/mips/mm/c-r3k.c
-@@ -245,7 +245,7 @@ static void r3k_flush_cache_page(struct
- 	pmd_t *pmdp;
- 	pte_t *ptep;
+-	if (unlikely(err)) {
++	/* Write the frame to user memory */
++	fr_uaddr = (unsigned long)&dsemul_page()[fr_idx];
++	ret = access_process_vm(current, fr_uaddr, &fr, sizeof(fr),
++				FOLL_FORCE | FOLL_WRITE);
++	if (unlikely(ret != sizeof(fr))) {
+ 		MIPS_FPU_EMU_INC_STATS(errors);
+ 		free_emuframe(fr_idx, current->mm);
+ 		return SIGBUS;
+@@ -282,10 +287,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 	atomic_set(&current->thread.bd_emu_frame, fr_idx);
  
--	pr_debug("cpage[%08lx,%08lx]\n",
-+	pr_debug("cpage[%08llx,%08lx]\n",
- 		 cpu_context(smp_processor_id(), mm), addr);
+ 	/* Change user register context to execute the frame */
+-	regs->cp0_epc = (unsigned long)&fr->emul | isa16;
+-
+-	/* Ensure the icache observes our newly written frame */
+-	flush_cache_sigtramp((unsigned long)&fr->emul);
++	regs->cp0_epc = fr_uaddr | isa16;
  
- 	/* No ASID => no such page in the cache.  */
+ 	return 0;
+ }
 
 

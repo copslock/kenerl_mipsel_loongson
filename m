@@ -2,140 +2,225 @@ Return-Path: <SRS0=z0u9=PQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56C09C43387
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94897C43387
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2397020660
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:04:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 59B6520660
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1546978140;
+	bh=B6mlu14fW1SVD+/37JQV7FF5J3Gf2jDLN6B9nZOHBmU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=VvuAFb4sEEt71hHwmHd6n6xxkEqXj+6mJqct79BSfCXBCuBauLM/FQvZD8gNCPKm4
+	 PF7bsGlwCVNps1HWNuPia3kmxmhzmJjrz+ZioNk6EXSOcNzrN26s7bnI7bb94xZQW4
+	 nLPBKm+hAbdgNvFqtETVSWfojWbM7Qg3hLTbPE1E=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732927AbfAHUEL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 8 Jan 2019 15:04:11 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:39699 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728913AbfAHUEK (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 8 Jan 2019 15:04:10 -0500
-Received: by mail-qt1-f196.google.com with SMTP id u47so5820435qtj.6;
-        Tue, 08 Jan 2019 12:04:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CkW7W76SxHhQT+R7Cgs1jTueM/y+bXON9Vp9PBD6KUk=;
-        b=HyIIKg3rLtociAvCtiL4+W5F3RCEUAMnAlh/+qveGzgNHNSY7ucXD0BIkig2rCKHBg
-         hLbL8rW/A8BVC0WDDZdvpzm/TQe5uwuN5DBgfbikoqjCvg5Kb+kbsGfpyqef+3GLcSFW
-         R47kmUjQ1g7fGRCIe5wAhQgm8/67yWyYFeEmCrpJPZA5D/k/g2BQqY1ibkn6IsGUgEI4
-         Xk/Mwn4ospq9Sxjuqi6+lvRQb3IvzMm9SzqvoMGeNc6Ow/2f/i+EST2SnDPCkjDy2X7L
-         4ZYUh2Trj/N4F73RKaz+kytIzMonwMrkbQMyq3VPrdoZcKfeaz9oPaF5mB1zvhoYKf1M
-         g8QQ==
-X-Gm-Message-State: AJcUukeMWQRYL+0a+UaBmHhoi0+zzy2wV2QTvLdwzJMIP6lAYdmV0hjs
-        l/fwPNEBmwhb10jrr0gKhG3jmsW4hZVs1lvpY0M=
-X-Google-Smtp-Source: ALg8bN5tuqki2dVs4i6/g+wZOfwMue6nI3pGVupEcrtN/5VTklHmEP3RtEfeqtDa92ooEaFfMQvnuR6VEWedHRQyI4o=
-X-Received: by 2002:ac8:1d12:: with SMTP id d18mr2955555qtl.343.1546977848238;
- Tue, 08 Jan 2019 12:04:08 -0800 (PST)
-MIME-Version: 1.0
-References: <20190108052255.10699-1-deepa.kernel@gmail.com> <20190108052255.10699-3-deepa.kernel@gmail.com>
-In-Reply-To: <20190108052255.10699-3-deepa.kernel@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 8 Jan 2019 21:03:49 +0100
-Message-ID: <CAK8P3a2T=dWgD1mvi77fbdKEsm=ZUwsQENv-btjhECjf+Y5wcg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] socket: Rename SO_RCVTIMEO/ SO_SNDTIMEO with _OLD suffixes
-To:     Deepa Dinamani <deepa.kernel@gmail.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
-        Paul Mackerras <paulus@samba.org>,
+        id S1729574AbfAHT1S (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 14:27:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33278 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729550AbfAHT1S (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 8 Jan 2019 14:27:18 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 32CA32070B;
+        Tue,  8 Jan 2019 19:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1546975636;
+        bh=B6mlu14fW1SVD+/37JQV7FF5J3Gf2jDLN6B9nZOHBmU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=yqbn5sbooLjRvenHyToIoNKYyexQnDdwrnfXZAD/EdMo47QielO3odx0HwAw5OU88
+         66sEh1Hb1S6Gn6wBsYDN+vn5vCtmHjiXmeuWTqP1uTr3ANf8IdR3isuyEjYlyi04QW
+         fB5UeUkbZ2dzioy6FqlBjmUnTXtIUF9IR6a5YpMs=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Huacai Chen <chenhc@lemote.com>,
+        Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Richard Henderson <rth@twiddle.net>, cluster-devel@redhat.com,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-alpha@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        James Hogan <james.hogan@mips.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.20 023/117] MIPS: Loongson: Add Loongson-3A R2.1 basic support
+Date:   Tue,  8 Jan 2019 14:24:51 -0500
+Message-Id: <20190108192628.121270-23-sashal@kernel.org>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20190108192628.121270-1-sashal@kernel.org>
+References: <20190108192628.121270-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Jan 8, 2019 at 6:24 AM Deepa Dinamani <deepa.kernel@gmail.com> wrote:
->
-> SO_RCVTIMEO and SO_SNDTIMEO socket options use struct timeval
-> as the time format. struct timeval is not y2038 safe.
-> The subsequent patches in the series add support for new socket
-> timeout options with _NEW suffix that are y2038 safe.
-> Rename the existing options with _OLD suffix forms so that the
-> right option is enabled for userspace applications according
-> to the architecture and time_t definition of libc.
->
-> Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-Looks good overall. A few minor concerns:
+[ Upstream commit f3ade253615ae6d83aeb72d1c8a96f62a4b4b29b ]
 
-The description above makes it sound like there is a bug with y2038-safety
-in this particular interface, which I think is just not what you meant,
-as the change is only needed for compatiblity with new C libraries
-that work around the y2038 problem in general by changing their
-timeval definition.
+Loongson-3A R2.1 is the bugfix revision of Loongson-3A R2.
 
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index 76976d6e50f9..c98ad9777ad9 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-> @@ -1089,12 +1089,12 @@ static void sctp_connect_to_sock(struct connection *con)
->          * since O_NONBLOCK argument in connect() function does not work here,
->          * then, we should restore the default value of this attribute.
->          */
-> -       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
-> +       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
->                           sizeof(tv));
->         result = sock->ops->connect(sock, (struct sockaddr *)&daddr, addr_len,
->                                    0);
->         memset(&tv, 0, sizeof(tv));
-> -       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
-> +       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
->                           sizeof(tv));
->
->         if (result == -EINPROGRESS)
+All Loongson-3 CPU family:
 
-It took me a bit to realize there that this is safe as well even if
-we don't use SO_SNDTIMEO_NEW, for the same reason.
+Code-name         Brand-name       PRId
+Loongson-3A R1    Loongson-3A1000  0x6305
+Loongson-3A R2    Loongson-3A2000  0x6308
+Loongson-3A R2.1  Loongson-3A2000  0x630c
+Loongson-3A R3    Loongson-3A3000  0x6309
+Loongson-3A R3.1  Loongson-3A3000  0x630d
+Loongson-3B R1    Loongson-3B1000  0x6306
+Loongson-3B R2    Loongson-3B1500  0x6307
 
-> --- a/net/compat.c
-> +++ b/net/compat.c
-> @@ -378,7 +378,7 @@ static int compat_sock_setsockopt(struct socket *sock, int level, int optname,
->                 return do_set_attach_filter(sock, level, optname,
->                                             optval, optlen);
->         if (!COMPAT_USE_64BIT_TIME &&
-> -           (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
-> +           (optname == SO_RCVTIMEO_OLD || optname == SO_SNDTIMEO_OLD))
->                 return do_set_sock_timeout(sock, level, optname, optval, optlen);
->
->         return sock_setsockopt(sock, level, optname, optval, optlen);
-> @@ -450,7 +450,7 @@ static int compat_sock_getsockopt(struct socket *sock, int level, int optname,
->                                 char __user *optval, int __user *optlen)
->  {
->         if (!COMPAT_USE_64BIT_TIME &&
-> -           (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
-> +           (optname == SO_RCVTIMEO_OLD || optname == SO_SNDTIMEO_OLD))
->                 return do_get_sock_timeout(sock, level, optname, optval, optlen);
->         return sock_getsockopt(sock, level, optname, optval, optlen);
->  }
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/21128/
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <james.hogan@mips.com>
+Cc: Steven J . Hill <Steven.Hill@cavium.com>
+Cc: linux-mips@linux-mips.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/include/asm/cpu.h                               | 3 ++-
+ arch/mips/include/asm/mach-loongson64/kernel-entry-init.h | 4 ++--
+ arch/mips/kernel/cpu-probe.c                              | 3 ++-
+ arch/mips/kernel/idle.c                                   | 2 +-
+ arch/mips/loongson64/common/env.c                         | 3 ++-
+ arch/mips/loongson64/loongson-3/smp.c                     | 3 ++-
+ arch/mips/mm/c-r4k.c                                      | 2 +-
+ drivers/platform/mips/cpu_hwmon.c                         | 3 ++-
+ 8 files changed, 14 insertions(+), 9 deletions(-)
 
-I looked at the original code and noticed that it's horrible, which of course
-is not your fault, but I wonder if we should just fix it now to avoid that
-get_fs()/set_fs() hack, since that code mostly implements what you
-also have in your patch 3 (which is done more nicely).
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index dacbdb84516a..532b49b1dbb3 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -248,8 +248,9 @@
+ #define PRID_REV_LOONGSON3A_R1		0x0005
+ #define PRID_REV_LOONGSON3B_R1		0x0006
+ #define PRID_REV_LOONGSON3B_R2		0x0007
+-#define PRID_REV_LOONGSON3A_R2		0x0008
++#define PRID_REV_LOONGSON3A_R2_0	0x0008
+ #define PRID_REV_LOONGSON3A_R3_0	0x0009
++#define PRID_REV_LOONGSON3A_R2_1	0x000c
+ #define PRID_REV_LOONGSON3A_R3_1	0x000d
+ 
+ /*
+diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+index cbac603ced19..b5e288a12dfe 100644
+--- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
+@@ -31,7 +31,7 @@
+ 	/* Enable STFill Buffer */
+ 	mfc0	t0, CP0_PRID
+ 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
+-	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
++	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
+ 	bnez	t0, 1f
+ 	mfc0	t0, CP0_CONFIG6
+ 	or	t0, 0x100
+@@ -60,7 +60,7 @@
+ 	/* Enable STFill Buffer */
+ 	mfc0	t0, CP0_PRID
+ 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
+-	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
++	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
+ 	bnez	t0, 1f
+ 	mfc0	t0, CP0_CONFIG6
+ 	or	t0, 0x100
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index d535fc706a8b..f70cf6447cfb 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1843,7 +1843,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 	switch (c->processor_id & PRID_IMP_MASK) {
+ 	case PRID_IMP_LOONGSON_64:  /* Loongson-2/3 */
+ 		switch (c->processor_id & PRID_REV_MASK) {
+-		case PRID_REV_LOONGSON3A_R2:
++		case PRID_REV_LOONGSON3A_R2_0:
++		case PRID_REV_LOONGSON3A_R2_1:
+ 			c->cputype = CPU_LOONGSON3;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
+index 046846999efd..909b7a87c89c 100644
+--- a/arch/mips/kernel/idle.c
++++ b/arch/mips/kernel/idle.c
+@@ -183,7 +183,7 @@ void __init check_wait(void)
+ 		cpu_wait = r4k_wait;
+ 		break;
+ 	case CPU_LOONGSON3:
+-		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
++		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
+ 			cpu_wait = r4k_wait;
+ 		break;
+ 
+diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
+index 8f68ee02a8c2..72e5f8fb2b35 100644
+--- a/arch/mips/loongson64/common/env.c
++++ b/arch/mips/loongson64/common/env.c
+@@ -197,7 +197,8 @@ void __init prom_init_env(void)
+ 			cpu_clock_freq = 797000000;
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R1:
+-		case PRID_REV_LOONGSON3A_R2:
++		case PRID_REV_LOONGSON3A_R2_0:
++		case PRID_REV_LOONGSON3A_R2_1:
+ 		case PRID_REV_LOONGSON3A_R3_0:
+ 		case PRID_REV_LOONGSON3A_R3_1:
+ 			cpu_clock_freq = 900000000;
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index b5c1e0aa955e..8fba0aa48bf4 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -682,7 +682,8 @@ void play_dead(void)
+ 		play_dead_at_ckseg1 =
+ 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r1_play_dead);
+ 		break;
+-	case PRID_REV_LOONGSON3A_R2:
++	case PRID_REV_LOONGSON3A_R2_0:
++	case PRID_REV_LOONGSON3A_R2_1:
+ 	case PRID_REV_LOONGSON3A_R3_0:
+ 	case PRID_REV_LOONGSON3A_R3_1:
+ 		play_dead_at_ckseg1 =
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 05bd77727fb9..7e430b4d8778 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1352,7 +1352,7 @@ static void probe_pcache(void)
+ 					  c->dcache.ways *
+ 					  c->dcache.linesz;
+ 		c->dcache.waybit = 0;
+-		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
++		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
+ 			c->options |= MIPS_CPU_PREFETCH;
+ 		break;
+ 
+diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+index f66521c7f846..42efcb850722 100644
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -25,9 +25,10 @@ int loongson3_cpu_temp(int cpu)
+ 	case PRID_REV_LOONGSON3A_R1:
+ 		reg = (reg >> 8) & 0xff;
+ 		break;
+-	case PRID_REV_LOONGSON3A_R2:
+ 	case PRID_REV_LOONGSON3B_R1:
+ 	case PRID_REV_LOONGSON3B_R2:
++	case PRID_REV_LOONGSON3A_R2_0:
++	case PRID_REV_LOONGSON3A_R2_1:
+ 		reg = ((reg >> 8) & 0xff) - 100;
+ 		break;
+ 	case PRID_REV_LOONGSON3A_R3_0:
+-- 
+2.19.1
 
-I'll follow up with a patch to demonstrate what I mean here. Your third
-patch will then just have to add another code path so we can handle
-all of old_timespec32 (for existing 32-bit user space), __kernel_old_timespec
-(for sparc64) and __kernel_sock_timeval (for everything else).
-
-       Arnd

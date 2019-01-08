@@ -1,110 +1,123 @@
-Return-Path: <SRS0=HQ/I=PP=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=z0u9=PQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6F6FC43387
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 21:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61C0AC43387
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 05:23:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B3F962087F
-	for <linux-mips@archiver.kernel.org>; Mon,  7 Jan 2019 21:40:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2E1852087E
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 05:23:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="iNreabkV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YkFuu65N"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726874AbfAGVkP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 7 Jan 2019 16:40:15 -0500
-Received: from mail-eopbgr810118.outbound.protection.outlook.com ([40.107.81.118]:6065
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726872AbfAGVkP (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 7 Jan 2019 16:40:15 -0500
+        id S1727484AbfAHFXW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 00:23:22 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:42374 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725800AbfAHFXW (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 8 Jan 2019 00:23:22 -0500
+Received: by mail-pf1-f194.google.com with SMTP id 64so1324319pfr.9;
+        Mon, 07 Jan 2019 21:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X4lArX6fA9rL5UBPlqlig+3Cs1yqcxawJrZoMMtklj4=;
- b=iNreabkVE5+95x1bWH0wuy2Ich4BRhWK78VEfV2JjDNMOgvrFhRoNc75VGX3SeoRgEdYlgxt7v6VKIdQbwuQHjnK0X2xt79Miq5RUfnkSBCpCo5HnSm3S5AvgVufhQXXzr1v3qrVca7/sWUhA6w2nDkkE9NnkaNLVl3BkOeUaN8=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1760.namprd22.prod.outlook.com (10.164.206.163) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1495.6; Mon, 7 Jan 2019 21:40:13 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::595e:ffcc:435b:9110]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::595e:ffcc:435b:9110%4]) with mapi id 15.20.1495.011; Mon, 7 Jan 2019
- 21:40:13 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Alban Bedel <albeu@free.fr>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Alban Bedel <albeu@free.fr>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: ath79: Enable OF serial ports in the default config
-Thread-Topic: [PATCH] MIPS: ath79: Enable OF serial ports in the default
- config
-Thread-Index: AQHUpsGNAmBYrnlRvU2Ua1GGq44ORqWkVZyA
-Date:   Mon, 7 Jan 2019 21:40:13 +0000
-Message-ID: <MWHPR2201MB1277BABEB0E6E8771FDB92B2C1890@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190107194515.16552-1-albeu@free.fr>
-In-Reply-To: <20190107194515.16552-1-albeu@free.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: LO2P265CA0195.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9e::15) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2a02:c7f:5e43:2c00:50fd:bec4:fe7e:44e7]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1760;6:llN9O+/UmIGaRC4fLTl2C+qkEgBZXxrQUwkye3miWWqpXHkn0unPLqsiED7iSCM0MtoOexx6Y1i44dPYktbdIFAPmbvUI/0B2bdxOa4jY1TUbKjUW9/TOnUBgW2d0bZNvTefCJN4puUd90lhr4uuRz9bkA09gYSC7eo0Uvkq4AtkfPXinHM+E4JXi38tVWqeXg+GIQnh29gkJ/TcUEzdosHp8PXG4R/Ns4x0pL1vXuBk1Xpbj3B8NhGKiIrTL9QRejFHntviRl3M8JH0vuqu8G6mGvcjOvPm5M1TBLzDHLS6mwgk8YDeTln9irKLr/v3M7s0yLBnvPXKKBt8OFz8q0qKnubGlsNkA3YsuC1SjjQee1wXLw0UUK6J4xdPOdgh1SwYuVgEXw8flX611CDZLL1P4gDO9VPLiADJI4VqIv3jglQvzOQRQPFaxLr6N6fYhsfNjW7CzN1elD8KvffOWA==;5:Fu8Y9jfjNNjj+zSNHsChMyec3cKycQ6VLKWQ4GwxIIa4cGAa8mcmlSpjvp+uv2z9bgHfKnj0OXZtP1X4hm4JR4HJsvw5DXByYAHDTHeo4ZYZo3C/jYELZ4x+Rsc+5PzGPOEMKaVHIDkdEEnbDioruMjU280qVDg48xfBwzYHHZ2RrL51nOBaMjkNquprB49VguBKGhnI0/3bp0+crIcMiA==;7:s2yqgYLW4ymjwhTJq6z4ff9tbPmLx0wc4/LeZKbEPsOLpqVQGLySvGKwD/Co1cgeF6LO9Zbf3K+se/qP1HX6IgcZy4z7Jhf7Kz9BwxwSOCXsg561ewOBceB4sSchMty5co3++GtzsbOX9HhsnlHykA==
-x-ms-office365-filtering-correlation-id: 04f62a87-d30e-4a00-ffcc-08d674e8b4ac
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600109)(711020)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1760;
-x-ms-traffictypediagnostic: MWHPR2201MB1760:
-x-microsoft-antispam-prvs: <MWHPR2201MB1760C533CC8444606C4B02E2C1890@MWHPR2201MB1760.namprd22.prod.outlook.com>
-x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(3230021)(908002)(999002)(5005026)(6040522)(8220060)(2401047)(8121501046)(3002001)(3231475)(944501520)(52105112)(93006095)(10201501046)(6041310)(20161123560045)(20161123558120)(201703131423095)(201702281528075)(20161123555045)(201703061421075)(201703061406153)(20161123564045)(20161123562045)(201708071742011)(7699051)(76991095);SRVR:MWHPR2201MB1760;BCL:0;PCL:0;RULEID:;SRVR:MWHPR2201MB1760;
-x-forefront-prvs: 0910AAF391
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(136003)(396003)(39830400003)(366004)(199004)(189003)(7736002)(14454004)(305945005)(105586002)(478600001)(99286004)(4326008)(316002)(54906003)(6246003)(7696005)(52116002)(71190400001)(25786009)(106356001)(76176011)(71200400001)(74316002)(5660300001)(2906002)(186003)(386003)(42882007)(102836004)(8936002)(6506007)(55016002)(33656002)(46003)(446003)(11346002)(476003)(6916009)(6436002)(53936002)(486006)(97736004)(6116002)(256004)(68736007)(81156014)(9686003)(81166006)(8676002)(229853002)(44832011)(15866825006);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1760;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: lJaMDnXj9jR5x66RCDJgMmWXZ5DPa5H7+KdIb3pGv9oGsNuSNRzJ/YCRhTYOpcFz4xgOvnqPKr/dcRmWGzUJTMUo2+AgyFS6jM8QOq3WU9mTBgPBq9/38Ns7QxOWDyhb2Aln7G5b1nbwTAzdJ4eDYqDws0Jn+giwZVU4w2ScYgPjZ9IoJU7vXuyUQu4DmSj3ChrzpxbevmRusUluVLty/fwiQZC6/fddDZEFzDb97pHpkz3EKnCKOrMjNLUXAY9dIr4HDcpR6DsUTjvASEbyx84ilpiAL/YWPzfBi0c1BhTzdDisKO8c17zXF+MiDEcU
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04f62a87-d30e-4a00-ffcc-08d674e8b4ac
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2019 21:40:13.4318
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1760
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=C/PZBrvynKthJJ/lsF1pt+JT3JSAbBllFgTcfNdsDto=;
+        b=YkFuu65N+ngxVlHyeP0s/V9Iod2E+T5hUPbkRPQCh2yKnlCzkVVWq6aCB1rO18RPVv
+         Va6IUWqSuQBNmsTUmS2Ki064WizCMs9ehC3oa4wamc+2WANf8A0xJMwdQEmoLt9FMTLc
+         TLnwCCGiNtpbKSmbSwS3ncUx1s7rJG3/ZZEkIFSmAsznHR9MwqdRz0l/uEmgwqDSxgIC
+         Hnu3c+5wyfrwxSJareRyEVjwA2869fv5iJ4XmW+f5X8SqBGZoQYb/cpb9L/QdDGZCzzi
+         l5W+q8/iqpilkwwb8mIBYxWNRrcv01JVjwQr073PF8KMF4Z4JN3BjUhSQcUCUyL9kSxG
+         JZww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=C/PZBrvynKthJJ/lsF1pt+JT3JSAbBllFgTcfNdsDto=;
+        b=c2JzLmUA4BJxLBzEItWKDRoArVwpTz8mjBkKBunckr+YP9OGwE9dyeUbBtlDY+1Ued
+         bT3JlE75A8xk3In1P+7Vr/pl4y5gRoWVGT7kH3NmwsdAx8cuFFyKOPQDuxpzUb30AODG
+         AQnY6gXFT8QjlQWxw5vHUksbxlINCZRwYnipNdVlS/g3N7KUP40Lm8pxeGMADtEhk1LY
+         XpN9fSklYcRDobYHb6KEe3F8OWVok309WNalJWFSZLu4Hw7Ina1VxY+Fd0tuM6nmPve2
+         qHT0tfYvPKjCz0qzpBpJXu4YK5wYKfAnjo8LbyArfwpXgnlVENDq41NLsA9Ukcyu8nv8
+         FMIA==
+X-Gm-Message-State: AJcUuke5Qx5QHDEvKZXhLf0DfW4C4pj2sVxpVESv5x3/78EyE2zMU3Uj
+        eQ1qxDjSwl1rD87ODBb3QQRe5Lz0
+X-Google-Smtp-Source: ALg8bN7ghZyE1I0wD5gN5PUQnaYnkYOy9P+PydTedV977KUL90hHzyPMg9r/c9JBoF+NRNuGobCIpQ==
+X-Received: by 2002:a62:3c1:: with SMTP id 184mr400161pfd.56.1546925001107;
+        Mon, 07 Jan 2019 21:23:21 -0800 (PST)
+Received: from deepa-ubuntu.lan (c-98-234-52-230.hsd1.ca.comcast.net. [98.234.52.230])
+        by smtp.gmail.com with ESMTPSA id x127sm102710626pfd.156.2019.01.07.21.23.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 07 Jan 2019 21:23:20 -0800 (PST)
+From:   Deepa Dinamani <deepa.kernel@gmail.com>
+To:     davem@davemloft.net, linux-kernel@vger.kernel.org
+Cc:     netdev@vger.kernel.org, arnd@arndb.de, y2038@lists.linaro.org,
+        ccaulfie@redhat.com, cluster-devel@redhat.com, deller@gmx.de,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
+        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org
+Subject: [PATCH 0/3] net: y2038-safe socket timeout options
+Date:   Mon,  7 Jan 2019 21:22:52 -0800
+Message-Id: <20190108052255.10699-1-deepa.kernel@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+The series is aimed at adding y2038-safe timeout options:
+SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW.
 
-Alban Bedel wrote:
-> CONFIG_SERIAL_OF_PLATFORM is needed to get a working console on the OF
-> boards, enable it in the default config to get a working setup out of
-> the box.
->=20
-> Signed-off-by: Alban Bedel <albeu@free.fr>
+This is similar to the previous series adding y2038-safe
+SO_TIMESTAMP* options.
 
-Applied to mips-fixes.
+The series needs to be applied after the socket timestamp series:
+https://lore.kernel.org/lkml/20190108032657.8331-1-deepa.kernel@gmail.com
 
-Thanks,
-    Paul
+Deepa Dinamani (3):
+  socket: Use old_timeval types for socket timeouts
+  socket: Rename SO_RCVTIMEO/ SO_SNDTIMEO with _OLD suffixes
+  sock: Add SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+ arch/alpha/include/uapi/asm/socket.h   | 13 ++++-
+ arch/mips/include/uapi/asm/socket.h    | 13 ++++-
+ arch/parisc/include/uapi/asm/socket.h  | 13 ++++-
+ arch/powerpc/include/uapi/asm/socket.h |  4 +-
+ arch/sparc/include/uapi/asm/socket.h   | 13 ++++-
+ fs/dlm/lowcomms.c                      |  4 +-
+ include/uapi/asm-generic/socket.h      | 13 ++++-
+ net/compat.c                           | 14 ++---
+ net/core/sock.c                        | 78 +++++++++++++++++++-------
+ net/vmw_vsock/af_vsock.c               |  4 +-
+ 10 files changed, 126 insertions(+), 43 deletions(-)
+
+
+base-commit: a4983672f9ca4c8393f26b6b80710e6c78886b8c
+prerequisite-patch-id: a03ec6afbdd328cd90557f7ee6675016a5f5c653
+prerequisite-patch-id: 724d26c3036e6f3a38f810c2f10db3f7ddbf843b
+prerequisite-patch-id: 14017867b6eb4d5231eec1b563edcd840a1be26e
+prerequisite-patch-id: 8df0edfd9b973ff5aae91c7709c8223be096a5bc
+prerequisite-patch-id: 9850ad48d41bf068f074c0dd3c7610fb7177c89f
+prerequisite-patch-id: bd31f35bba11902d1cc3e8726492b54df34b5c59
+prerequisite-patch-id: ea4b005c5ad188a4e0899d728357c114710a3a8e
+prerequisite-patch-id: cc3ee912c1ee1ea502ca079de81236a467950501
+-- 
+2.17.1
+
+Cc: ccaulfie@redhat.com
+Cc: cluster-devel@redhat.com
+Cc: davem@davemloft.net
+Cc: deller@gmx.de
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: paulus@samba.org
+Cc: ralf@linux-mips.org
+Cc: rth@twiddle.net
+Cc: sparclinux@vger.kernel.org

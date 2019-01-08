@@ -2,211 +2,281 @@ Return-Path: <SRS0=z0u9=PQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8317DC43387
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E55EC43444
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:10:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 51AB420660
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1546978166;
-	bh=0B71l8SQpkzlkJA1QR1d+6AbzJjUK26zeyAPLCAdea8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Vmped1LQywqLx8luz9mghqtOwwZOuMNKr7GcvXauInTGwNAJVzlvS3Ke+qxOZOsNC
-	 0vFS3XFAYwoKNMeQ7iksliOPrtQDNhfVEC9E2oq0lSqGSxZfBwCTdePL/zCMILAlVi
-	 +Wi2ZogFmURQQdckBZ7+HAx/O6IQE/2ySUvsta8M=
+	by mail.kernel.org (Postfix) with ESMTP id 6E03720660
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:10:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729441AbfAHT1F (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 8 Jan 2019 14:27:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32988 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729429AbfAHT1F (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 8 Jan 2019 14:27:05 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5BC792087F;
-        Tue,  8 Jan 2019 19:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1546975624;
-        bh=0B71l8SQpkzlkJA1QR1d+6AbzJjUK26zeyAPLCAdea8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O5InKGHnGblZCtaD1JqVctKeOZCYyYUpIS0ff+ZNAlb3lfqgw+su33NwBOxRF2fZF
-         07tPnH+BrKC7eqWjzjokCR0fJZBzUV0yGEtQXUWzJsDk2VVPCOea7Kji+V6PR46SzS
-         OUO3lowxFKUlj19A7G77H4s5O4I6I8wQAC54dFBI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.20 019/117] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur and BigSur
-Date:   Tue,  8 Jan 2019 14:24:47 -0500
-Message-Id: <20190108192628.121270-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190108192628.121270-1-sashal@kernel.org>
-References: <20190108192628.121270-1-sashal@kernel.org>
+        id S1732340AbfAHUKa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 15:10:30 -0500
+Received: from mout.kundenserver.de ([212.227.126.134]:56845 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729168AbfAHUKa (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 8 Jan 2019 15:10:30 -0500
+Received: from wuerfel.lan ([109.192.41.194]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MDv1A-1gX6KU3TJk-009yhV; Tue, 08 Jan 2019 21:10:10 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Henderson <rth@twiddle.net>, cluster-devel@redhat.com,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-alpha@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] socket: move compat timeout handling into sock.c
+Date:   Tue,  8 Jan 2019 21:09:36 +0100
+Message-Id: <20190108200959.1686520-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+In-Reply-To: <CAK8P3a2T=dWgD1mvi77fbdKEsm=ZUwsQENv-btjhECjf+Y5wcg@mail.gmail.com>
+References: <CAK8P3a2T=dWgD1mvi77fbdKEsm=ZUwsQENv-btjhECjf+Y5wcg@mail.gmail.com>
 MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:uPC0a5Rt4wtHOcL29nyURWhdIfWA6ffq44oOAaPdDhc4Ye86EoB
+ HYLVNMSb5rBC59ylQPOL1GHFQ4eKRfhge93q3C7gaeWyx7tA/DJ21qV0RfrnqlT88qs6Vx5
+ Wy0abp6eU/9++bVRqIbgf4Zt/iKwEh4XQKNysX3HdrXMw5Lig4O82oYaLrkfBILB0tISaik
+ BESvecJlj0op65bTRceUQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Z1hmhFbP734=:bum3G09Y9kTwLx51FEvxdl
+ G5DOKBqFXJUIHrfg21S5Im7xqv3ABMXGKWM9YA7xEo0wA8Bi4AkltZbYqcTPw/ppmBlmJrCjC
+ Jp580nfPgExPoHJqP2jZY6Y7NVUHvy6g7rN7sb6eMh8K+pXyFthSyq3XK3BqSf2e3TF6KiUex
+ zWAk37/8kAw6k3ueAxu5qoFMU66tRcSkmy8IY+1dAXaVRJ+TQ7A3CZNIIMtfBRi32kiCkff5o
+ gYUuq3+RisN4YOs2Ob/F328FeL9fTOdXOzV8JyH4RLpzP62HRtaH7CK10fOrzU44SJglAZQ8B
+ iTbT5Hyfwy5GGQO0XOUZyTzkqnlrL8znvfF7HwiFPAurNpcFdDIdCOjflOhLAoXkwvnec7BUS
+ 9YipPEkr++Iwrn+QWnQ0ECe7kfxf1luHZsbVbW+ZS3XjmSpSBJgdQX8pTXqt3Z1yBh8uX+y/3
+ 8TvIvtTkXpixmHqE5HlmXS2xb2nWWjulGzmxt+zsafF6w2OfBmUwICiQmghID2dckSBQPVzRG
+ O8jZXSkSBG927Zh/aI+RW7N0QuxRa6U2GrmgGEJqlrxI0GKNT/0fj1Js4OmMZGDHiwyJJZFcF
+ qNwwQcYIFecH0+SfV6Cb1EVuquvV/fVCRlHmdjYDkgnI19mauEmAqaiLXOOgOdNZ6lJr1ymdn
+ fXoRBN7rL6MARitGODEQby43mPuqMjJXTRsdcriZivBS5XXr1tVOgjdn0LtdLkSg+49XAGRM+
+ bJgzgt9dhuOLkHbpX2JhhqzBojAuQAT/NtgGqg==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+This is a cleanup to prepare for the addition of 64-bit time_t
+in O_SNDTIMEO/O_RCVTIMEO. The existing compat handler seems
+unnecessarily complex and error-prone, moving it all into the
+main setsockopt()/getsockopt() implementation requires half
+as much code and is easier to extend.
 
-[ Upstream commit e4849aff1e169b86c561738daf8ff020e9de1011 ]
+32-bit user space can now use old_timeval32 on both 32-bit
+and 64-bit machines, while 64-bit code can use
+__old_kernel_timeval.
 
-The Broadcom SiByte BCM1250, BCM1125, and BCM1125H SOCs have an onchip
-DRAM controller that supports memory amounts of up to 16GiB, and due to
-how the address decoder has been wired in the SOC any memory beyond 1GiB
-is actually mapped starting from 4GiB physical up, that is beyond the
-32-bit addressable limit[1].  Consequently if the maximum amount of
-memory has been installed, then it will span up to 19GiB.
-
-Many of the evaluation boards we support that are based on one of these
-SOCs have their memory soldered and the amount present fits in the
-32-bit address range.  The BCM91250A SWARM board however has actual DIMM
-slots and accepts, depending on the peripherals revision of the SOC, up
-to 4GiB or 8GiB of memory in commercially available JEDEC modules[2].
-I believe this is also the case with the BCM91250C2 LittleSur board.
-This means that up to either 3GiB or 7GiB of memory requires 64-bit
-addressing to access.
-
-I believe the BCM91480B BigSur board, which has the BCM1480 SOC instead,
-accepts at least as much memory, although I have no documentation or
-actual hardware available to verify that.
-
-Both systems have PCI slots installed for use by any PCI option boards,
-including ones that only support 32-bit addressing (additionally the
-32-bit PCI host bridge of the BCM1250, BCM1125, and BCM1125H SOCs limits
-addressing to 32-bits), and there is no IOMMU available.  Therefore for
-PCI DMA to work in the presence of memory beyond enable swiotlb for the
-affected systems.
-
-All the other SOC onchip DMA devices use 40-bit addressing and therefore
-can address the whole memory, so only enable swiotlb if PCI support and
-support for DMA beyond 4GiB have been both enabled in the configuration
-of the kernel.
-
-This shows up as follows:
-
-Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
-Board type: SiByte BCM91250A (SWARM)
-Determined physical RAM map:
- memory: 000000000fe7fe00 @ 0000000000000000 (usable)
- memory: 000000001ffffe00 @ 0000000080000000 (usable)
- memory: 000000000ffffe00 @ 00000000c0000000 (usable)
- memory: 0000000087fffe00 @ 0000000100000000 (usable)
-software IO TLB: mapped [mem 0xcbffc000-0xcfffc000] (64MB)
-
-in the bootstrap log and removes failures like these:
-
-defxx 0000:02:00.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi0: Receive buffer allocation failed
-fddi0: Adapter open failed!
-IP-Config: Failed to open fddi0
-defxx 0000:09:08.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi1: Receive buffer allocation failed
-fddi1: Adapter open failed!
-IP-Config: Failed to open fddi1
-
-when memory beyond 4GiB is handed out to devices that can only do 32-bit
-addressing.
-
-This updates commit cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need
-DMA32.").
-
-References:
-
-[1] "BCM1250/BCM1125/BCM1125H User Manual", Revision 1250_1125-UM100-R,
-    Broadcom Corporation, 21 Oct 2002, Section 3: "System Overview",
-    "Memory Map", pp. 34-38
-
-[2] "BCM91250A User Manual", Revision 91250A-UM100-R, Broadcom
-    Corporation, 18 May 2004, Section 3: "Physical Description",
-    "Supported DRAM", p. 23
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-[paul.burton@mips.com: Remove GPL text from dma.c; SPDX tag covers it]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Patchwork: https://patchwork.linux-mips.org/patch/21108/
-References: cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need DMA32.")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/Kconfig                |  3 +++
- arch/mips/sibyte/common/Makefile |  1 +
- arch/mips/sibyte/common/dma.c    | 14 ++++++++++++++
- 3 files changed, 18 insertions(+)
- create mode 100644 arch/mips/sibyte/common/dma.c
+ net/compat.c    | 66 +------------------------------------------------
+ net/core/sock.c | 65 +++++++++++++++++++++++++++++++-----------------
+ 2 files changed, 44 insertions(+), 87 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8272ea4c7264..a19c9fd05886 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -794,6 +794,7 @@ config SIBYTE_SWARM
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
+diff --git a/net/compat.c b/net/compat.c
+index 959d1c51826d..ce8f6e8cdcd2 100644
+--- a/net/compat.c
++++ b/net/compat.c
+@@ -348,28 +348,6 @@ static int do_set_attach_filter(struct socket *sock, int level, int optname,
+ 			      sizeof(struct sock_fprog));
+ }
  
- config SIBYTE_LITTLESUR
- 	bool "Sibyte BCM91250C2-LittleSur"
-@@ -814,6 +815,7 @@ config SIBYTE_SENTOSA
- 	select SYS_HAS_CPU_SB1
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
+-static int do_set_sock_timeout(struct socket *sock, int level,
+-		int optname, char __user *optval, unsigned int optlen)
+-{
+-	struct compat_timeval __user *up = (struct compat_timeval __user *)optval;
+-	struct timeval ktime;
+-	mm_segment_t old_fs;
+-	int err;
+-
+-	if (optlen < sizeof(*up))
+-		return -EINVAL;
+-	if (!access_ok(up, sizeof(*up)) ||
+-	    __get_user(ktime.tv_sec, &up->tv_sec) ||
+-	    __get_user(ktime.tv_usec, &up->tv_usec))
+-		return -EFAULT;
+-	old_fs = get_fs();
+-	set_fs(KERNEL_DS);
+-	err = sock_setsockopt(sock, level, optname, (char *)&ktime, sizeof(ktime));
+-	set_fs(old_fs);
+-
+-	return err;
+-}
+-
+ static int compat_sock_setsockopt(struct socket *sock, int level, int optname,
+ 				char __user *optval, unsigned int optlen)
+ {
+@@ -377,10 +355,6 @@ static int compat_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	    optname == SO_ATTACH_REUSEPORT_CBPF)
+ 		return do_set_attach_filter(sock, level, optname,
+ 					    optval, optlen);
+-	if (!COMPAT_USE_64BIT_TIME &&
+-	    (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
+-		return do_set_sock_timeout(sock, level, optname, optval, optlen);
+-
+ 	return sock_setsockopt(sock, level, optname, optval, optlen);
+ }
  
- config SIBYTE_BIGSUR
- 	bool "Sibyte BCM91480B-BigSur"
-@@ -826,6 +828,7 @@ config SIBYTE_BIGSUR
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
+@@ -417,44 +391,6 @@ COMPAT_SYSCALL_DEFINE5(setsockopt, int, fd, int, level, int, optname,
+ 	return __compat_sys_setsockopt(fd, level, optname, optval, optlen);
+ }
  
- config SNI_RM
- 	bool "SNI RM200/300/400"
-diff --git a/arch/mips/sibyte/common/Makefile b/arch/mips/sibyte/common/Makefile
-index b3d6bf23a662..3ef3fb658136 100644
---- a/arch/mips/sibyte/common/Makefile
-+++ b/arch/mips/sibyte/common/Makefile
-@@ -1,4 +1,5 @@
- obj-y := cfe.o
-+obj-$(CONFIG_SWIOTLB)			+= dma.o
- obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
- obj-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= cfe_console.o
- obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
-diff --git a/arch/mips/sibyte/common/dma.c b/arch/mips/sibyte/common/dma.c
-new file mode 100644
-index 000000000000..eb47a94f3583
---- /dev/null
-+++ b/arch/mips/sibyte/common/dma.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ *	DMA support for Broadcom SiByte platforms.
-+ *
-+ *	Copyright (c) 2018  Maciej W. Rozycki
-+ */
-+
-+#include <linux/swiotlb.h>
-+#include <asm/bootinfo.h>
-+
-+void __init plat_swiotlb_setup(void)
+-static int do_get_sock_timeout(struct socket *sock, int level, int optname,
+-		char __user *optval, int __user *optlen)
+-{
+-	struct compat_timeval __user *up;
+-	struct timeval ktime;
+-	mm_segment_t old_fs;
+-	int len, err;
+-
+-	up = (struct compat_timeval __user *) optval;
+-	if (get_user(len, optlen))
+-		return -EFAULT;
+-	if (len < sizeof(*up))
+-		return -EINVAL;
+-	len = sizeof(ktime);
+-	old_fs = get_fs();
+-	set_fs(KERNEL_DS);
+-	err = sock_getsockopt(sock, level, optname, (char *) &ktime, &len);
+-	set_fs(old_fs);
+-
+-	if (!err) {
+-		if (put_user(sizeof(*up), optlen) ||
+-		    !access_ok(up, sizeof(*up)) ||
+-		    __put_user(ktime.tv_sec, &up->tv_sec) ||
+-		    __put_user(ktime.tv_usec, &up->tv_usec))
+-			err = -EFAULT;
+-	}
+-	return err;
+-}
+-
+-static int compat_sock_getsockopt(struct socket *sock, int level, int optname,
+-				char __user *optval, int __user *optlen)
+-{
+-	if (!COMPAT_USE_64BIT_TIME &&
+-	    (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
+-		return do_get_sock_timeout(sock, level, optname, optval, optlen);
+-	return sock_getsockopt(sock, level, optname, optval, optlen);
+-}
+-
+ int compat_sock_get_timestamp(struct sock *sk, struct timeval __user *userstamp)
+ {
+ 	struct compat_timeval __user *ctv;
+@@ -527,7 +463,7 @@ static int __compat_sys_getsockopt(int fd, int level, int optname,
+ 		}
+ 
+ 		if (level == SOL_SOCKET)
+-			err = compat_sock_getsockopt(sock, level,
++			err = sock_getsockopt(sock, level,
+ 					optname, optval, optlen);
+ 		else if (sock->ops->compat_getsockopt)
+ 			err = sock->ops->compat_getsockopt(sock, level,
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 6aa2e7e0b4fb..e50b9a2abc92 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -335,14 +335,48 @@ int __sk_backlog_rcv(struct sock *sk, struct sk_buff *skb)
+ }
+ EXPORT_SYMBOL(__sk_backlog_rcv);
+ 
++static int sock_get_timeout(long timeo, void *optval)
 +{
-+	swiotlb_init(1);
++	struct __kernel_old_timeval tv;
++
++	if (timeo == MAX_SCHEDULE_TIMEOUT) {
++		tv.tv_sec = 0;
++		tv.tv_usec = 0;
++	} else {
++		tv.tv_sec = timeo / HZ;
++		tv.tv_usec = ((timeo % HZ) * USEC_PER_SEC) / HZ;
++	}
++
++	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
++		struct old_timeval32 tv32 = { tv.tv_sec, tv.tv_usec };
++		*(struct old_timeval32 *)optval = tv32;
++		return sizeof(tv32);
++	}
++
++	*(struct __kernel_old_timeval *)optval = tv;
++	return sizeof(tv);
 +}
++
+ static int sock_set_timeout(long *timeo_p, char __user *optval, int optlen)
+ {
+-	struct timeval tv;
++	struct __kernel_old_timeval tv;
+ 
+-	if (optlen < sizeof(tv))
+-		return -EINVAL;
+-	if (copy_from_user(&tv, optval, sizeof(tv)))
+-		return -EFAULT;
++	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
++		struct old_timeval32 tv32;
++
++		if (optlen < sizeof(tv32))
++			return -EINVAL;
++
++		if (copy_from_user(&tv, optval, sizeof(tv)))
++			return -EFAULT;
++		tv.tv_sec = tv32.tv_sec;
++		tv.tv_usec = tv32.tv_usec;
++	} else {
++		if (optlen < sizeof(tv))
++			return -EINVAL;
++		if (copy_from_user(&tv, optval, sizeof(tv)))
++			return -EFAULT;
++	}
+ 	if (tv.tv_usec < 0 || tv.tv_usec >= USEC_PER_SEC)
+ 		return -EDOM;
+ 
+@@ -1099,7 +1133,8 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		int val;
+ 		u64 val64;
+ 		struct linger ling;
+-		struct timeval tm;
++		struct old_timeval32 tm32;
++		struct __kernel_old_timeval tm;
+ 		struct sock_txtime txtime;
+ 	} v;
+ 
+@@ -1200,25 +1235,11 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case SO_RCVTIMEO:
+-		lv = sizeof(struct timeval);
+-		if (sk->sk_rcvtimeo == MAX_SCHEDULE_TIMEOUT) {
+-			v.tm.tv_sec = 0;
+-			v.tm.tv_usec = 0;
+-		} else {
+-			v.tm.tv_sec = sk->sk_rcvtimeo / HZ;
+-			v.tm.tv_usec = ((sk->sk_rcvtimeo % HZ) * USEC_PER_SEC) / HZ;
+-		}
++		lv = sock_get_timeout(sk->sk_rcvtimeo, optval);
+ 		break;
+ 
+ 	case SO_SNDTIMEO:
+-		lv = sizeof(struct timeval);
+-		if (sk->sk_sndtimeo == MAX_SCHEDULE_TIMEOUT) {
+-			v.tm.tv_sec = 0;
+-			v.tm.tv_usec = 0;
+-		} else {
+-			v.tm.tv_sec = sk->sk_sndtimeo / HZ;
+-			v.tm.tv_usec = ((sk->sk_sndtimeo % HZ) * USEC_PER_SEC) / HZ;
+-		}
++		lv = sock_get_timeout(sk->sk_sndtimeo, optval);
+ 		break;
+ 
+ 	case SO_RCVLOWAT:
 -- 
-2.19.1
+2.20.0
 

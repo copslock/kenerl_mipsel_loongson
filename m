@@ -2,211 +2,140 @@ Return-Path: <SRS0=z0u9=PQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDEFEC43444
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56C09C43387
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:04:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BA5D8206BB
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1546977346;
-	bh=yHwjqXFmUxuAio/uS1fazaLslM/J6rCMCnoClbPbHe0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=eOsSwxOeWGO9VDGvgLi/BpHjZLipnRF/WSji+6HYncjJqqzdXD1fvLa024vxVcDV+
-	 V9r6WqOZljQ+yze//OGzid83hgYrWC8hQFHeDtoqpneom0YoGM+9OIbYlFpUSA8xPF
-	 fAm2EaliSmMJibg3Z5ctfX6mrFQ7kJwaPMOWOZ/s=
+	by mail.kernel.org (Postfix) with ESMTP id 2397020660
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:04:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729718AbfAHTzk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 8 Jan 2019 14:55:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37950 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730694AbfAHTaR (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 8 Jan 2019 14:30:17 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84F1620645;
-        Tue,  8 Jan 2019 19:30:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1546975816;
-        bh=yHwjqXFmUxuAio/uS1fazaLslM/J6rCMCnoClbPbHe0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nDJKtm4rvGVh1jN52deVZGyuvjJQxN82LEMpub8g/pEc605ZenLZohEF2BoI8wgrV
-         fVI3XHOOHgraA04EEhTwlcw5djmQLfJPiXIwTG3bTuZlQUlN99JQ6hyZav9MJD5OEq
-         3lYecVXBmXfcYmGfPVvXelNT6x+wMG01nfUnFnjU=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 16/97] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur and BigSur
-Date:   Tue,  8 Jan 2019 14:28:25 -0500
-Message-Id: <20190108192949.122407-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190108192949.122407-1-sashal@kernel.org>
-References: <20190108192949.122407-1-sashal@kernel.org>
+        id S1732927AbfAHUEL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 15:04:11 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:39699 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728913AbfAHUEK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 8 Jan 2019 15:04:10 -0500
+Received: by mail-qt1-f196.google.com with SMTP id u47so5820435qtj.6;
+        Tue, 08 Jan 2019 12:04:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CkW7W76SxHhQT+R7Cgs1jTueM/y+bXON9Vp9PBD6KUk=;
+        b=HyIIKg3rLtociAvCtiL4+W5F3RCEUAMnAlh/+qveGzgNHNSY7ucXD0BIkig2rCKHBg
+         hLbL8rW/A8BVC0WDDZdvpzm/TQe5uwuN5DBgfbikoqjCvg5Kb+kbsGfpyqef+3GLcSFW
+         R47kmUjQ1g7fGRCIe5wAhQgm8/67yWyYFeEmCrpJPZA5D/k/g2BQqY1ibkn6IsGUgEI4
+         Xk/Mwn4ospq9Sxjuqi6+lvRQb3IvzMm9SzqvoMGeNc6Ow/2f/i+EST2SnDPCkjDy2X7L
+         4ZYUh2Trj/N4F73RKaz+kytIzMonwMrkbQMyq3VPrdoZcKfeaz9oPaF5mB1zvhoYKf1M
+         g8QQ==
+X-Gm-Message-State: AJcUukeMWQRYL+0a+UaBmHhoi0+zzy2wV2QTvLdwzJMIP6lAYdmV0hjs
+        l/fwPNEBmwhb10jrr0gKhG3jmsW4hZVs1lvpY0M=
+X-Google-Smtp-Source: ALg8bN5tuqki2dVs4i6/g+wZOfwMue6nI3pGVupEcrtN/5VTklHmEP3RtEfeqtDa92ooEaFfMQvnuR6VEWedHRQyI4o=
+X-Received: by 2002:ac8:1d12:: with SMTP id d18mr2955555qtl.343.1546977848238;
+ Tue, 08 Jan 2019 12:04:08 -0800 (PST)
 MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20190108052255.10699-1-deepa.kernel@gmail.com> <20190108052255.10699-3-deepa.kernel@gmail.com>
+In-Reply-To: <20190108052255.10699-3-deepa.kernel@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 8 Jan 2019 21:03:49 +0100
+Message-ID: <CAK8P3a2T=dWgD1mvi77fbdKEsm=ZUwsQENv-btjhECjf+Y5wcg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] socket: Rename SO_RCVTIMEO/ SO_SNDTIMEO with _OLD suffixes
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
+        Paul Mackerras <paulus@samba.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Henderson <rth@twiddle.net>, cluster-devel@redhat.com,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-alpha@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: "Maciej W. Rozycki" <macro@linux-mips.org>
+On Tue, Jan 8, 2019 at 6:24 AM Deepa Dinamani <deepa.kernel@gmail.com> wrote:
+>
+> SO_RCVTIMEO and SO_SNDTIMEO socket options use struct timeval
+> as the time format. struct timeval is not y2038 safe.
+> The subsequent patches in the series add support for new socket
+> timeout options with _NEW suffix that are y2038 safe.
+> Rename the existing options with _OLD suffix forms so that the
+> right option is enabled for userspace applications according
+> to the architecture and time_t definition of libc.
+>
+> Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
 
-[ Upstream commit e4849aff1e169b86c561738daf8ff020e9de1011 ]
+Looks good overall. A few minor concerns:
 
-The Broadcom SiByte BCM1250, BCM1125, and BCM1125H SOCs have an onchip
-DRAM controller that supports memory amounts of up to 16GiB, and due to
-how the address decoder has been wired in the SOC any memory beyond 1GiB
-is actually mapped starting from 4GiB physical up, that is beyond the
-32-bit addressable limit[1].  Consequently if the maximum amount of
-memory has been installed, then it will span up to 19GiB.
+The description above makes it sound like there is a bug with y2038-safety
+in this particular interface, which I think is just not what you meant,
+as the change is only needed for compatiblity with new C libraries
+that work around the y2038 problem in general by changing their
+timeval definition.
 
-Many of the evaluation boards we support that are based on one of these
-SOCs have their memory soldered and the amount present fits in the
-32-bit address range.  The BCM91250A SWARM board however has actual DIMM
-slots and accepts, depending on the peripherals revision of the SOC, up
-to 4GiB or 8GiB of memory in commercially available JEDEC modules[2].
-I believe this is also the case with the BCM91250C2 LittleSur board.
-This means that up to either 3GiB or 7GiB of memory requires 64-bit
-addressing to access.
+> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> index 76976d6e50f9..c98ad9777ad9 100644
+> --- a/fs/dlm/lowcomms.c
+> +++ b/fs/dlm/lowcomms.c
+> @@ -1089,12 +1089,12 @@ static void sctp_connect_to_sock(struct connection *con)
+>          * since O_NONBLOCK argument in connect() function does not work here,
+>          * then, we should restore the default value of this attribute.
+>          */
+> -       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
+> +       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
+>                           sizeof(tv));
+>         result = sock->ops->connect(sock, (struct sockaddr *)&daddr, addr_len,
+>                                    0);
+>         memset(&tv, 0, sizeof(tv));
+> -       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
+> +       kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
+>                           sizeof(tv));
+>
+>         if (result == -EINPROGRESS)
 
-I believe the BCM91480B BigSur board, which has the BCM1480 SOC instead,
-accepts at least as much memory, although I have no documentation or
-actual hardware available to verify that.
+It took me a bit to realize there that this is safe as well even if
+we don't use SO_SNDTIMEO_NEW, for the same reason.
 
-Both systems have PCI slots installed for use by any PCI option boards,
-including ones that only support 32-bit addressing (additionally the
-32-bit PCI host bridge of the BCM1250, BCM1125, and BCM1125H SOCs limits
-addressing to 32-bits), and there is no IOMMU available.  Therefore for
-PCI DMA to work in the presence of memory beyond enable swiotlb for the
-affected systems.
+> --- a/net/compat.c
+> +++ b/net/compat.c
+> @@ -378,7 +378,7 @@ static int compat_sock_setsockopt(struct socket *sock, int level, int optname,
+>                 return do_set_attach_filter(sock, level, optname,
+>                                             optval, optlen);
+>         if (!COMPAT_USE_64BIT_TIME &&
+> -           (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
+> +           (optname == SO_RCVTIMEO_OLD || optname == SO_SNDTIMEO_OLD))
+>                 return do_set_sock_timeout(sock, level, optname, optval, optlen);
+>
+>         return sock_setsockopt(sock, level, optname, optval, optlen);
+> @@ -450,7 +450,7 @@ static int compat_sock_getsockopt(struct socket *sock, int level, int optname,
+>                                 char __user *optval, int __user *optlen)
+>  {
+>         if (!COMPAT_USE_64BIT_TIME &&
+> -           (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO))
+> +           (optname == SO_RCVTIMEO_OLD || optname == SO_SNDTIMEO_OLD))
+>                 return do_get_sock_timeout(sock, level, optname, optval, optlen);
+>         return sock_getsockopt(sock, level, optname, optval, optlen);
+>  }
 
-All the other SOC onchip DMA devices use 40-bit addressing and therefore
-can address the whole memory, so only enable swiotlb if PCI support and
-support for DMA beyond 4GiB have been both enabled in the configuration
-of the kernel.
+I looked at the original code and noticed that it's horrible, which of course
+is not your fault, but I wonder if we should just fix it now to avoid that
+get_fs()/set_fs() hack, since that code mostly implements what you
+also have in your patch 3 (which is done more nicely).
 
-This shows up as follows:
+I'll follow up with a patch to demonstrate what I mean here. Your third
+patch will then just have to add another code path so we can handle
+all of old_timespec32 (for existing 32-bit user space), __kernel_old_timespec
+(for sparc64) and __kernel_sock_timeval (for everything else).
 
-Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
-Board type: SiByte BCM91250A (SWARM)
-Determined physical RAM map:
- memory: 000000000fe7fe00 @ 0000000000000000 (usable)
- memory: 000000001ffffe00 @ 0000000080000000 (usable)
- memory: 000000000ffffe00 @ 00000000c0000000 (usable)
- memory: 0000000087fffe00 @ 0000000100000000 (usable)
-software IO TLB: mapped [mem 0xcbffc000-0xcfffc000] (64MB)
-
-in the bootstrap log and removes failures like these:
-
-defxx 0000:02:00.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi0: Receive buffer allocation failed
-fddi0: Adapter open failed!
-IP-Config: Failed to open fddi0
-defxx 0000:09:08.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
-fddi1: Receive buffer allocation failed
-fddi1: Adapter open failed!
-IP-Config: Failed to open fddi1
-
-when memory beyond 4GiB is handed out to devices that can only do 32-bit
-addressing.
-
-This updates commit cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need
-DMA32.").
-
-References:
-
-[1] "BCM1250/BCM1125/BCM1125H User Manual", Revision 1250_1125-UM100-R,
-    Broadcom Corporation, 21 Oct 2002, Section 3: "System Overview",
-    "Memory Map", pp. 34-38
-
-[2] "BCM91250A User Manual", Revision 91250A-UM100-R, Broadcom
-    Corporation, 18 May 2004, Section 3: "Physical Description",
-    "Supported DRAM", p. 23
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-[paul.burton@mips.com: Remove GPL text from dma.c; SPDX tag covers it]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Patchwork: https://patchwork.linux-mips.org/patch/21108/
-References: cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need DMA32.")
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/Kconfig                |  3 +++
- arch/mips/sibyte/common/Makefile |  1 +
- arch/mips/sibyte/common/dma.c    | 14 ++++++++++++++
- 3 files changed, 18 insertions(+)
- create mode 100644 arch/mips/sibyte/common/dma.c
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 35511999156a..b245e34bd97f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -794,6 +794,7 @@ config SIBYTE_SWARM
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SIBYTE_LITTLESUR
- 	bool "Sibyte BCM91250C2-LittleSur"
-@@ -814,6 +815,7 @@ config SIBYTE_SENTOSA
- 	select SYS_HAS_CPU_SB1
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SIBYTE_BIGSUR
- 	bool "Sibyte BCM91480B-BigSur"
-@@ -826,6 +828,7 @@ config SIBYTE_BIGSUR
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ZONE_DMA32 if 64BIT
-+	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
- 
- config SNI_RM
- 	bool "SNI RM200/300/400"
-diff --git a/arch/mips/sibyte/common/Makefile b/arch/mips/sibyte/common/Makefile
-index b3d6bf23a662..3ef3fb658136 100644
---- a/arch/mips/sibyte/common/Makefile
-+++ b/arch/mips/sibyte/common/Makefile
-@@ -1,4 +1,5 @@
- obj-y := cfe.o
-+obj-$(CONFIG_SWIOTLB)			+= dma.o
- obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
- obj-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= cfe_console.o
- obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
-diff --git a/arch/mips/sibyte/common/dma.c b/arch/mips/sibyte/common/dma.c
-new file mode 100644
-index 000000000000..eb47a94f3583
---- /dev/null
-+++ b/arch/mips/sibyte/common/dma.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ *	DMA support for Broadcom SiByte platforms.
-+ *
-+ *	Copyright (c) 2018  Maciej W. Rozycki
-+ */
-+
-+#include <linux/swiotlb.h>
-+#include <asm/bootinfo.h>
-+
-+void __init plat_swiotlb_setup(void)
-+{
-+	swiotlb_init(1);
-+}
--- 
-2.19.1
-
+       Arnd

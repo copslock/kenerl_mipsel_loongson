@@ -7,47 +7,49 @@ X-Spam-Status: No, score=-13.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ADC7C43387
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20168C43612
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:39:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6C239205C9
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:37:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E479020645
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 19:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1546976278;
-	bh=nVAzZgs0SNtkJ2cIjRFA7VbheMUnrpNUxfIMlOmwMPI=;
-	h=From:To:Cc:Subject:Date:List-ID:From;
-	b=D1GY5cnK/CQJDpjr3qtcZVZtM32FiseMcQUzsXZg/+C8QxT/VIcsRPvyNEavzhabd
-	 uzuk5RqXYFKrcCn60bGaxSMoiSD9pi6QiBRyNNOB71ifjPexS5y6ULRqQ601P3J8mA
-	 4JCC/uDXA13TAzAvhKKaKcfPL6fz+hJC2LH2NXMg=
+	s=default; t=1546976392;
+	bh=QlLVZWbvoE6w2TJTNZWO63yxJ/hqsgpRaomz9GcLlJo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=A+cVxJojJA2ZWjMWNN0NUpVKLym0YjYiKAkVNv7nv0EH0E1OIdmk8Bn1H+hPjKCnx
+	 aCzmphRon7NuyqlneXOihCORVlHIAezXFe2IAa+0HF+nCpW1UGHJxh//vS4/JHLpQY
+	 R6YuAJeArAsnu70NOC6tGpZyQ/Il375Y3jzlxkFg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732305AbfAHTfi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 8 Jan 2019 14:35:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44472 "EHLO mail.kernel.org"
+        id S1732118AbfAHTe5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 14:34:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43716 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732281AbfAHTfh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 8 Jan 2019 14:35:37 -0500
+        id S1732110AbfAHTe4 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 8 Jan 2019 14:34:56 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ADC9620645;
-        Tue,  8 Jan 2019 19:35:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 68DD92063F;
+        Tue,  8 Jan 2019 19:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1546976136;
-        bh=nVAzZgs0SNtkJ2cIjRFA7VbheMUnrpNUxfIMlOmwMPI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=CaUw9Mdz9fWbaq6zr89HPeBYiKVXStVwRDr+VKDo1SH4fX/P6Sx2ILNzGf2hccWOY
-         uTs5XaxXGjRt6/q+gwrm3+2ikat3I00Q6HgM5l2WZ8a4AJrvt+sSNdz4V2HH6MCIOo
-         dR6awomwLqP90un3lxjt4YsTp87TdXV91eB6QqgE=
+        s=default; t=1546976095;
+        bh=QlLVZWbvoE6w2TJTNZWO63yxJ/hqsgpRaomz9GcLlJo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=yonSNQtJl8u7NaKQL4x90jdZQyz9DJj+7WJcf7JHI3G6/O/Cpv98vuUA4ugWFpZwW
+         zFvsWsSw2hYl2eTiby3SVGvtpBPvE8aIInRVvCc+ICCxri3tD/Apg7gh4reSCUmCaJ
+         ZP8+OHfh4tWapjaCvQevW4Y0fGzDQEMT5n9yuuvs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 3.18 01/19] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur and BigSur
-Date:   Tue,  8 Jan 2019 14:35:13 -0500
-Message-Id: <20190108193534.124555-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 04/28] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur and BigSur
+Date:   Tue,  8 Jan 2019 14:34:21 -0500
+Message-Id: <20190108193445.124251-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20190108193445.124251-1-sashal@kernel.org>
+References: <20190108193445.124251-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -148,10 +150,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  create mode 100644 arch/mips/sibyte/common/dma.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9536ef912f59..077ae203e8f9 100644
+index 8b0424abc84c..3350d0c2f2b3 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -627,6 +627,7 @@ config SIBYTE_SWARM
+@@ -760,6 +760,7 @@ config SIBYTE_SWARM
  	select SYS_SUPPORTS_HIGHMEM
  	select SYS_SUPPORTS_LITTLE_ENDIAN
  	select ZONE_DMA32 if 64BIT
@@ -159,7 +161,7 @@ index 9536ef912f59..077ae203e8f9 100644
  
  config SIBYTE_LITTLESUR
  	bool "Sibyte BCM91250C2-LittleSur"
-@@ -649,6 +650,7 @@ config SIBYTE_SENTOSA
+@@ -782,6 +783,7 @@ config SIBYTE_SENTOSA
  	select SYS_HAS_CPU_SB1
  	select SYS_SUPPORTS_BIG_ENDIAN
  	select SYS_SUPPORTS_LITTLE_ENDIAN
@@ -167,7 +169,7 @@ index 9536ef912f59..077ae203e8f9 100644
  
  config SIBYTE_BIGSUR
  	bool "Sibyte BCM91480B-BigSur"
-@@ -662,6 +664,7 @@ config SIBYTE_BIGSUR
+@@ -795,6 +797,7 @@ config SIBYTE_BIGSUR
  	select SYS_SUPPORTS_HIGHMEM
  	select SYS_SUPPORTS_LITTLE_ENDIAN
  	select ZONE_DMA32 if 64BIT

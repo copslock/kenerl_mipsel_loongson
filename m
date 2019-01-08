@@ -7,50 +7,46 @@ X-Spam-Status: No, score=-13.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94897C43387
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8317DC43387
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 59B6520660
-	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 51AB420660
+	for <linux-mips@archiver.kernel.org>; Tue,  8 Jan 2019 20:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1546978140;
-	bh=B6mlu14fW1SVD+/37JQV7FF5J3Gf2jDLN6B9nZOHBmU=;
+	s=default; t=1546978166;
+	bh=0B71l8SQpkzlkJA1QR1d+6AbzJjUK26zeyAPLCAdea8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=VvuAFb4sEEt71hHwmHd6n6xxkEqXj+6mJqct79BSfCXBCuBauLM/FQvZD8gNCPKm4
-	 PF7bsGlwCVNps1HWNuPia3kmxmhzmJjrz+ZioNk6EXSOcNzrN26s7bnI7bb94xZQW4
-	 nLPBKm+hAbdgNvFqtETVSWfojWbM7Qg3hLTbPE1E=
+	b=Vmped1LQywqLx8luz9mghqtOwwZOuMNKr7GcvXauInTGwNAJVzlvS3Ke+qxOZOsNC
+	 0vFS3XFAYwoKNMeQ7iksliOPrtQDNhfVEC9E2oq0lSqGSxZfBwCTdePL/zCMILAlVi
+	 +Wi2ZogFmURQQdckBZ7+HAx/O6IQE/2ySUvsta8M=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729574AbfAHT1S (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 8 Jan 2019 14:27:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33278 "EHLO mail.kernel.org"
+        id S1729441AbfAHT1F (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 8 Jan 2019 14:27:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:32988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729550AbfAHT1S (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 8 Jan 2019 14:27:18 -0500
+        id S1729429AbfAHT1F (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 8 Jan 2019 14:27:05 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32CA32070B;
-        Tue,  8 Jan 2019 19:27:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5BC792087F;
+        Tue,  8 Jan 2019 19:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1546975636;
-        bh=B6mlu14fW1SVD+/37JQV7FF5J3Gf2jDLN6B9nZOHBmU=;
+        s=default; t=1546975624;
+        bh=0B71l8SQpkzlkJA1QR1d+6AbzJjUK26zeyAPLCAdea8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yqbn5sbooLjRvenHyToIoNKYyexQnDdwrnfXZAD/EdMo47QielO3odx0HwAw5OU88
-         66sEh1Hb1S6Gn6wBsYDN+vn5vCtmHjiXmeuWTqP1uTr3ANf8IdR3isuyEjYlyi04QW
-         fB5UeUkbZ2dzioy6FqlBjmUnTXtIUF9IR6a5YpMs=
+        b=O5InKGHnGblZCtaD1JqVctKeOZCYyYUpIS0ff+ZNAlb3lfqgw+su33NwBOxRF2fZF
+         07tPnH+BrKC7eqWjzjokCR0fJZBzUV0yGEtQXUWzJsDk2VVPCOea7Kji+V6PR46SzS
+         OUO3lowxFKUlj19A7G77H4s5O4I6I8wQAC54dFBI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Huacai Chen <chenhc@lemote.com>,
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@mips.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.20 023/117] MIPS: Loongson: Add Loongson-3A R2.1 basic support
-Date:   Tue,  8 Jan 2019 14:24:51 -0500
-Message-Id: <20190108192628.121270-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.20 019/117] MIPS: SiByte: Enable swiotlb for SWARM, LittleSur and BigSur
+Date:   Tue,  8 Jan 2019 14:24:47 -0500
+Message-Id: <20190108192628.121270-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190108192628.121270-1-sashal@kernel.org>
 References: <20190108192628.121270-1-sashal@kernel.org>
@@ -62,165 +58,155 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Huacai Chen <chenhc@lemote.com>
+From: "Maciej W. Rozycki" <macro@linux-mips.org>
 
-[ Upstream commit f3ade253615ae6d83aeb72d1c8a96f62a4b4b29b ]
+[ Upstream commit e4849aff1e169b86c561738daf8ff020e9de1011 ]
 
-Loongson-3A R2.1 is the bugfix revision of Loongson-3A R2.
+The Broadcom SiByte BCM1250, BCM1125, and BCM1125H SOCs have an onchip
+DRAM controller that supports memory amounts of up to 16GiB, and due to
+how the address decoder has been wired in the SOC any memory beyond 1GiB
+is actually mapped starting from 4GiB physical up, that is beyond the
+32-bit addressable limit[1].  Consequently if the maximum amount of
+memory has been installed, then it will span up to 19GiB.
 
-All Loongson-3 CPU family:
+Many of the evaluation boards we support that are based on one of these
+SOCs have their memory soldered and the amount present fits in the
+32-bit address range.  The BCM91250A SWARM board however has actual DIMM
+slots and accepts, depending on the peripherals revision of the SOC, up
+to 4GiB or 8GiB of memory in commercially available JEDEC modules[2].
+I believe this is also the case with the BCM91250C2 LittleSur board.
+This means that up to either 3GiB or 7GiB of memory requires 64-bit
+addressing to access.
 
-Code-name         Brand-name       PRId
-Loongson-3A R1    Loongson-3A1000  0x6305
-Loongson-3A R2    Loongson-3A2000  0x6308
-Loongson-3A R2.1  Loongson-3A2000  0x630c
-Loongson-3A R3    Loongson-3A3000  0x6309
-Loongson-3A R3.1  Loongson-3A3000  0x630d
-Loongson-3B R1    Loongson-3B1000  0x6306
-Loongson-3B R2    Loongson-3B1500  0x6307
+I believe the BCM91480B BigSur board, which has the BCM1480 SOC instead,
+accepts at least as much memory, although I have no documentation or
+actual hardware available to verify that.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Both systems have PCI slots installed for use by any PCI option boards,
+including ones that only support 32-bit addressing (additionally the
+32-bit PCI host bridge of the BCM1250, BCM1125, and BCM1125H SOCs limits
+addressing to 32-bits), and there is no IOMMU available.  Therefore for
+PCI DMA to work in the presence of memory beyond enable swiotlb for the
+affected systems.
+
+All the other SOC onchip DMA devices use 40-bit addressing and therefore
+can address the whole memory, so only enable swiotlb if PCI support and
+support for DMA beyond 4GiB have been both enabled in the configuration
+of the kernel.
+
+This shows up as follows:
+
+Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
+Board type: SiByte BCM91250A (SWARM)
+Determined physical RAM map:
+ memory: 000000000fe7fe00 @ 0000000000000000 (usable)
+ memory: 000000001ffffe00 @ 0000000080000000 (usable)
+ memory: 000000000ffffe00 @ 00000000c0000000 (usable)
+ memory: 0000000087fffe00 @ 0000000100000000 (usable)
+software IO TLB: mapped [mem 0xcbffc000-0xcfffc000] (64MB)
+
+in the bootstrap log and removes failures like these:
+
+defxx 0000:02:00.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
+fddi0: Receive buffer allocation failed
+fddi0: Adapter open failed!
+IP-Config: Failed to open fddi0
+defxx 0000:09:08.0: dma_direct_map_page: overflow 0x0000000185bc6080+4608 of device mask ffffffff bus mask 0
+fddi1: Receive buffer allocation failed
+fddi1: Adapter open failed!
+IP-Config: Failed to open fddi1
+
+when memory beyond 4GiB is handed out to devices that can only do 32-bit
+addressing.
+
+This updates commit cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need
+DMA32.").
+
+References:
+
+[1] "BCM1250/BCM1125/BCM1125H User Manual", Revision 1250_1125-UM100-R,
+    Broadcom Corporation, 21 Oct 2002, Section 3: "System Overview",
+    "Memory Map", pp. 34-38
+
+[2] "BCM91250A User Manual", Revision 91250A-UM100-R, Broadcom
+    Corporation, 18 May 2004, Section 3: "Physical Description",
+    "Supported DRAM", p. 23
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+[paul.burton@mips.com: Remove GPL text from dma.c; SPDX tag covers it]
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/21128/
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Patchwork: https://patchwork.linux-mips.org/patch/21108/
+References: cce335ae47e2 ("[MIPS] 64-bit Sibyte kernels need DMA32.")
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <james.hogan@mips.com>
-Cc: Steven J . Hill <Steven.Hill@cavium.com>
 Cc: linux-mips@linux-mips.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/cpu.h                               | 3 ++-
- arch/mips/include/asm/mach-loongson64/kernel-entry-init.h | 4 ++--
- arch/mips/kernel/cpu-probe.c                              | 3 ++-
- arch/mips/kernel/idle.c                                   | 2 +-
- arch/mips/loongson64/common/env.c                         | 3 ++-
- arch/mips/loongson64/loongson-3/smp.c                     | 3 ++-
- arch/mips/mm/c-r4k.c                                      | 2 +-
- drivers/platform/mips/cpu_hwmon.c                         | 3 ++-
- 8 files changed, 14 insertions(+), 9 deletions(-)
+ arch/mips/Kconfig                |  3 +++
+ arch/mips/sibyte/common/Makefile |  1 +
+ arch/mips/sibyte/common/dma.c    | 14 ++++++++++++++
+ 3 files changed, 18 insertions(+)
+ create mode 100644 arch/mips/sibyte/common/dma.c
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index dacbdb84516a..532b49b1dbb3 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -248,8 +248,9 @@
- #define PRID_REV_LOONGSON3A_R1		0x0005
- #define PRID_REV_LOONGSON3B_R1		0x0006
- #define PRID_REV_LOONGSON3B_R2		0x0007
--#define PRID_REV_LOONGSON3A_R2		0x0008
-+#define PRID_REV_LOONGSON3A_R2_0	0x0008
- #define PRID_REV_LOONGSON3A_R3_0	0x0009
-+#define PRID_REV_LOONGSON3A_R2_1	0x000c
- #define PRID_REV_LOONGSON3A_R3_1	0x000d
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 8272ea4c7264..a19c9fd05886 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -794,6 +794,7 @@ config SIBYTE_SWARM
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select ZONE_DMA32 if 64BIT
++	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
  
- /*
-diff --git a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-index cbac603ced19..b5e288a12dfe 100644
---- a/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-loongson64/kernel-entry-init.h
-@@ -31,7 +31,7 @@
- 	/* Enable STFill Buffer */
- 	mfc0	t0, CP0_PRID
- 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
--	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
-+	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
- 	bnez	t0, 1f
- 	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
-@@ -60,7 +60,7 @@
- 	/* Enable STFill Buffer */
- 	mfc0	t0, CP0_PRID
- 	andi	t0, (PRID_IMP_MASK | PRID_REV_MASK)
--	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2)
-+	slti	t0, (PRID_IMP_LOONGSON_64 | PRID_REV_LOONGSON3A_R2_0)
- 	bnez	t0, 1f
- 	mfc0	t0, CP0_CONFIG6
- 	or	t0, 0x100
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index d535fc706a8b..f70cf6447cfb 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1843,7 +1843,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- 	switch (c->processor_id & PRID_IMP_MASK) {
- 	case PRID_IMP_LOONGSON_64:  /* Loongson-2/3 */
- 		switch (c->processor_id & PRID_REV_MASK) {
--		case PRID_REV_LOONGSON3A_R2:
-+		case PRID_REV_LOONGSON3A_R2_0:
-+		case PRID_REV_LOONGSON3A_R2_1:
- 			c->cputype = CPU_LOONGSON3;
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index 046846999efd..909b7a87c89c 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -183,7 +183,7 @@ void __init check_wait(void)
- 		cpu_wait = r4k_wait;
- 		break;
- 	case CPU_LOONGSON3:
--		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
-+		if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
- 			cpu_wait = r4k_wait;
- 		break;
+ config SIBYTE_LITTLESUR
+ 	bool "Sibyte BCM91250C2-LittleSur"
+@@ -814,6 +815,7 @@ config SIBYTE_SENTOSA
+ 	select SYS_HAS_CPU_SB1
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
  
-diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-index 8f68ee02a8c2..72e5f8fb2b35 100644
---- a/arch/mips/loongson64/common/env.c
-+++ b/arch/mips/loongson64/common/env.c
-@@ -197,7 +197,8 @@ void __init prom_init_env(void)
- 			cpu_clock_freq = 797000000;
- 			break;
- 		case PRID_REV_LOONGSON3A_R1:
--		case PRID_REV_LOONGSON3A_R2:
-+		case PRID_REV_LOONGSON3A_R2_0:
-+		case PRID_REV_LOONGSON3A_R2_1:
- 		case PRID_REV_LOONGSON3A_R3_0:
- 		case PRID_REV_LOONGSON3A_R3_1:
- 			cpu_clock_freq = 900000000;
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index b5c1e0aa955e..8fba0aa48bf4 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -682,7 +682,8 @@ void play_dead(void)
- 		play_dead_at_ckseg1 =
- 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r1_play_dead);
- 		break;
--	case PRID_REV_LOONGSON3A_R2:
-+	case PRID_REV_LOONGSON3A_R2_0:
-+	case PRID_REV_LOONGSON3A_R2_1:
- 	case PRID_REV_LOONGSON3A_R3_0:
- 	case PRID_REV_LOONGSON3A_R3_1:
- 		play_dead_at_ckseg1 =
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 05bd77727fb9..7e430b4d8778 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1352,7 +1352,7 @@ static void probe_pcache(void)
- 					  c->dcache.ways *
- 					  c->dcache.linesz;
- 		c->dcache.waybit = 0;
--		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2)
-+		if ((prid & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R2_0)
- 			c->options |= MIPS_CPU_PREFETCH;
- 		break;
+ config SIBYTE_BIGSUR
+ 	bool "Sibyte BCM91480B-BigSur"
+@@ -826,6 +828,7 @@ config SIBYTE_BIGSUR
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select ZONE_DMA32 if 64BIT
++	select SWIOTLB if ARCH_DMA_ADDR_T_64BIT && PCI
  
-diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
-index f66521c7f846..42efcb850722 100644
---- a/drivers/platform/mips/cpu_hwmon.c
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -25,9 +25,10 @@ int loongson3_cpu_temp(int cpu)
- 	case PRID_REV_LOONGSON3A_R1:
- 		reg = (reg >> 8) & 0xff;
- 		break;
--	case PRID_REV_LOONGSON3A_R2:
- 	case PRID_REV_LOONGSON3B_R1:
- 	case PRID_REV_LOONGSON3B_R2:
-+	case PRID_REV_LOONGSON3A_R2_0:
-+	case PRID_REV_LOONGSON3A_R2_1:
- 		reg = ((reg >> 8) & 0xff) - 100;
- 		break;
- 	case PRID_REV_LOONGSON3A_R3_0:
+ config SNI_RM
+ 	bool "SNI RM200/300/400"
+diff --git a/arch/mips/sibyte/common/Makefile b/arch/mips/sibyte/common/Makefile
+index b3d6bf23a662..3ef3fb658136 100644
+--- a/arch/mips/sibyte/common/Makefile
++++ b/arch/mips/sibyte/common/Makefile
+@@ -1,4 +1,5 @@
+ obj-y := cfe.o
++obj-$(CONFIG_SWIOTLB)			+= dma.o
+ obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
+ obj-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= cfe_console.o
+ obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
+diff --git a/arch/mips/sibyte/common/dma.c b/arch/mips/sibyte/common/dma.c
+new file mode 100644
+index 000000000000..eb47a94f3583
+--- /dev/null
++++ b/arch/mips/sibyte/common/dma.c
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ *	DMA support for Broadcom SiByte platforms.
++ *
++ *	Copyright (c) 2018  Maciej W. Rozycki
++ */
++
++#include <linux/swiotlb.h>
++#include <asm/bootinfo.h>
++
++void __init plat_swiotlb_setup(void)
++{
++	swiotlb_init(1);
++}
 -- 
 2.19.1
 

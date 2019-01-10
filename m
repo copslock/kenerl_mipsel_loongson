@@ -2,135 +2,154 @@ Return-Path: <SRS0=2fGM=PS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1BF3C43387
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 19:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0A0EC43612
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 20:33:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 81EA420879
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 19:56:57 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Zf8zk5Cg"
+	by mail.kernel.org (Postfix) with ESMTP id BBB0920879
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 20:33:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728382AbfAJT44 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 14:56:56 -0500
-Received: from mail-eopbgr740132.outbound.protection.outlook.com ([40.107.74.132]:10520
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728498AbfAJT4z (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Jan 2019 14:56:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+nwqZThe2EEHXMohureQNu8gGR1dYAYYsrkQ6LnIzqM=;
- b=Zf8zk5CgXojfq+z+88hdEdypLMN+Dja0nF1btZrwt3zB7zpFbLQkTMQZ5+PwiEABIhxt0wWcEZUT9P8GUE8FDgUL6mbLJBm3/MiMe2zyFjTKzmTKnXC7M8CdRtu+RmcAjzNtud63n5oK/KRb6S/l5PeQn9a1zXOzgzoxjKc7hWI=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1454.namprd22.prod.outlook.com (10.174.170.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1495.7; Thu, 10 Jan 2019 19:56:51 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::595e:ffcc:435b:9110]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::595e:ffcc:435b:9110%4]) with mapi id 15.20.1516.015; Thu, 10 Jan 2019
- 19:56:51 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Oleksij Rempel <linux@rempel-privat.de>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        John Crispin <john@phrozen.org>,
-        "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Subject: Re: MIPS: ath79: regressions after dma-mapping changes
-Thread-Topic: MIPS: ath79: regressions after dma-mapping changes
-Thread-Index: AQHUpRUxbLw1CyC8K0SKb231sq/YSaWo8xUA
-Date:   Thu, 10 Jan 2019 19:56:51 +0000
-Message-ID: <20190110195650.ped5tqsgkedrnn3d@pburton-laptop>
-References: <6fcd16d9-84fc-891e-a295-9146c8071900@rempel-privat.de>
-In-Reply-To: <6fcd16d9-84fc-891e-a295-9146c8071900@rempel-privat.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0082.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1454;6:ZJp6V0QQ79SHUWlhc0Sm+3vyoKIM/2JqQ/gw3r6zS2JEDAvvknyDUIAIyDTNn20MGgq6xgj5uy/tWAudcEDVxNvOD5eBwPSrR7VCsKpIPqpWXTups2hzwnUa4+8fe77mt8Z/9LY9P6kidSuL2AprI3yMoZtIDKLdCz7Olo+n9B/BfVefzZ1V7FNe6D8/9/Uh9T/nDGWBM28a6B/QHpQ6GRcAFIcFco7/76/av6Wip/YFnTx/kqHDEJbaTzSY80Rxi1ja8UQ8RlN2T2Nqrozuh3rkGVXcMvn516y4I7ZMcioNZ1w30NHvZYfm9BoT9vgL5j2qG/aAu2EMm0/WEFQjqMuMEGXvfzwzQwVQNmHL+mtBR+rL1oqtYqTlO11FIhhnjTEVHryhhmsXclFQEypJ4TMlzEImUJpIPSNvtbrZAtYe9dE9xF6TU5PL6m1Qz5+P5AXSyyT18X7WbF74PjsYVQ==;5:CPfp2ZanSL5Tct/OzQKeRQ7DRruJjdc7m9PCCDNxaKDkxWIXuPVTTX8flfvTPX6kFcBxhiFzcZB5ol0oGVm87yOVWRalGy93Jpq9fpr4k7w4UG5aCvJSmnxt4S2Db55vrUDhSIAxuwdKI7gYcc9Oq84vNUyvYDQJDrNxrs8SrBRZGMdbp1qhkLWg6odDP5UGyqYFpbmPMh6tZDAy1O5NKA==;7:3vTNMArIUDq3DuT/sr2/qAUrMfbBorb/p0qKgeR229nbYttxyXRLRcQFPXHENKZ93P+Y6ivBUIKxepF3UwxCFYFtjoeS8la80/uB7/CvOuEA5vzY4xiFw7DscDPE1azX4hQQ5b33NBzjv9y3kZRvGg==
-x-ms-office365-filtering-correlation-id: ded70fdb-1848-4cb2-75a3-08d67735c35a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600109)(711020)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1454;
-x-ms-traffictypediagnostic: MWHPR2201MB1454:
-x-microsoft-antispam-prvs: <MWHPR2201MB145484AEB6B2C092954CFD87C1840@MWHPR2201MB1454.namprd22.prod.outlook.com>
-x-forefront-prvs: 0913EA1D60
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(39850400004)(136003)(396003)(376002)(366004)(189003)(53754006)(199004)(476003)(8936002)(8676002)(25786009)(478600001)(305945005)(71200400001)(71190400001)(1076003)(68736007)(7736002)(3846002)(6116002)(39060400002)(2906002)(256004)(6246003)(81166006)(14454004)(81156014)(33716001)(4326008)(66066001)(99286004)(102836004)(52116002)(53936002)(486006)(33896004)(76176011)(446003)(5660300001)(316002)(6506007)(9686003)(6512007)(11346002)(42882007)(97736004)(6916009)(229853002)(106356001)(44832011)(58126008)(105586002)(26005)(6486002)(386003)(186003)(6436002)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1454;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: biReqCBqwTJj9xkoEcNvgsJB5UUry0OO1/nhRSmepeI2YraoTvA8WZIkUnTid8xgDibNyVSCOFlgA8XtS7i/CTEBdoxXvNJ3Ye+YIM/ZmvmvnI3j/jbmK1hoU3AMNFTPBx2j4vJXzN2L/oKQBuZrjQFqTBcAISS8g0YXsOrZG1jKYWA6e2tQARsvIyjwFI0BTM2PIa3eKV3J3K6gIsBSk6NXH8wRxtxSH1T1ca0fDSmSP3aIMl2s51Q9Xy8kLNmwtHPxLt6VkNlAtSNh2zdqkcU38n6yAlH+JsajeN05R/0KVB2cqE+z0x0YNN4zibl+
-spamdiagnosticoutput: 1:99
-spamdiagnosticmetadata: NSPM
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <CBB7B3094C82284FB2A4439AAD981D11@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1728806AbfAJUdR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 15:33:17 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60854 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728818AbfAJUdL (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Jan 2019 15:33:11 -0500
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id x0AKTxr8079890
+        for <linux-mips@vger.kernel.org>; Thu, 10 Jan 2019 15:33:10 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2pxbxxk39a-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@vger.kernel.org>; Thu, 10 Jan 2019 15:33:10 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Thu, 10 Jan 2019 20:33:07 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 10 Jan 2019 20:32:57 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0AKWunm27590674
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 10 Jan 2019 20:32:56 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 53D39AE055;
+        Thu, 10 Jan 2019 20:32:56 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E9552AE051;
+        Thu, 10 Jan 2019 20:32:54 +0000 (GMT)
+Received: from osiris (unknown [9.145.24.85])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu, 10 Jan 2019 20:32:54 +0000 (GMT)
+Date:   Thu, 10 Jan 2019 21:32:53 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
+        geert@linux-m68k.org, monstr@monstr.eu, paul.burton@mips.com,
+        deller@gmx.de, mpe@ellerman.id.au, schwidefsky@de.ibm.com,
+        dalias@libc.org, davem@davemloft.net, luto@kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, jcmvbkbc@gmail.com, firoz.khan@linaro.org,
+        ebiederm@xmission.com, deepa.kernel@gmail.com,
+        linux@dominikbrodowski.net, akpm@linux-foundation.org,
+        dave@stgolabs.net, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 14/15] arch: add split IPC system calls where needed
+References: <20190110162435.309262-1-arnd@arndb.de>
+ <20190110162435.309262-15-arnd@arndb.de>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ded70fdb-1848-4cb2-75a3-08d67735c35a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2019 19:56:51.8565
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1454
+In-Reply-To: <20190110162435.309262-15-arnd@arndb.de>
+X-TM-AS-GCONF: 00
+x-cbid: 19011020-0020-0000-0000-000003049552
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19011020-0021-0000-0000-000021559AEC
+Message-Id: <20190110203253.GA3676@osiris>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-10_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=738 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1901100158
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Oleksij,
+On Thu, Jan 10, 2019 at 05:24:34PM +0100, Arnd Bergmann wrote:
+> The IPC system call handling is highly inconsistent across architectures,
+> some use sys_ipc, some use separate calls, and some use both.  We also
+> have some architectures that require passing IPC_64 in the flags, and
+> others that set it implicitly.
+> 
+> For the additon of a y2083 safe semtimedop() system call, I chose to only
+> support the separate entry points, but that requires first supporting
+> the regular ones with their own syscall numbers.
+> 
+> The IPC_64 is now implied by the new semctl/shmctl/msgctl system
+> calls even on the architectures that require passing it with the ipc()
+> multiplexer.
+> 
+> I'm not adding the new semtimedop() or semop() on 32-bit architectures,
+> those will get implemented using the new semtimedop_time64() version
+> that gets added along with the other time64 calls.
+> Three 64-bit architectures (powerpc, s390 and sparc) get semtimedop().
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> One aspect here that might be a bit controversial is the use of
+> the same system call numbers across all architectures, synchronizing
+> all of them with the x86-32 numbers. With the new syscall.tbl
+> files, I hope we can just keep doing that in the future, and no
+> longer require the architecture maintainers to assign a number.
+> 
+> This is mainly useful for implementers of the C libraries: if
+> we can add future system calls everywhere at the same time, using
+> a particular version of the kernel headers also guarantees that
+> the system call number macro is visible.
 
-On Sat, Jan 05, 2019 at 05:39:06PM +0100, Oleksij Rempel wrote:
-> Hi all,
->=20
-> I'm working on Atheros ar9331 related patches for upstream. Suddenly
-> this architecture is not working with latest mips_4.21 tag. Bisecting is
-> pointing to dma-mapping-4.20 merge.
->=20
-> The symptoms are following:
-> - networking is broken, getting tx timouts from atheros network driver.
-> - depending on configuration boot will stall even before UART is enabled
-> - after reverting some of dma-mapping patches, network seems to work but
-> init will trigger segfault. It is running from nfs-root.
+> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+> index 022fc099b628..428cf512a757 100644
+> --- a/arch/s390/kernel/syscalls/syscall.tbl
+> +++ b/arch/s390/kernel/syscalls/syscall.tbl
+> @@ -391,3 +391,15 @@
+>  381  common	kexec_file_load		sys_kexec_file_load		compat_sys_kexec_file_load
+>  382  common	io_pgetevents		sys_io_pgetevents		compat_sys_io_pgetevents
+>  383  common	rseq			sys_rseq			compat_sys_rseq
+> +# room for arch specific syscalls
+> +392	64	semtimedop		sys_semtimedop			-
+> +393  common	semget			sys_semget			sys_semget
+...
+> +395  common	shmget			sys_shmget			sys_shmget
+...
+> +398  common	shmdt			sys_shmdt 			sys_shmdt
+> +399  common	msgget			sys_msgget			sys_msgget
 
-Could you please try with v5.0-rc1 & let us know how that goes?
+These four need compat system call wrappers, unfortunately... (well,
+actually only shmget and shmdt require them, but let's add them for
+all four). See arch/s390/kernel/compat_wrapper.c
 
-The mips_4.21 tag was based upon v4.20-rc1 which had a bug in
-dma_alloc_coherent. That was fixed for v4.20-rc2 by commit d01501f85249
-("MIPS: Fix `dma_alloc_coherent' returning a non-coherent allocation").
+I'm afraid this compat special handling will be even more annoying in
+the future, since s390 will be the only architecture which requires
+this special handling.
 
-In general if you're planning to use the mips-next branch or a tag from
-it then I'd suggest always merging it with the latest -rc or the release
-of the appropriate kernel version, and possibly also the mips-fixes
-branch. Or just use linux-next instead of mips-next.
+_Maybe_ it would make sense to automatically generate a weak compat
+system call wrapper for s390 with the SYSCALL_DEFINE macros, but that
+probably won't work in all cases.
 
-> First patch where regressions started is this:
-> commit dc3c05504d38849f77149cb962caeaedd1efa127
-> Author: Christoph Hellwig <hch@lst.de>
-> Date:   Fri Aug 24 10:28:18 2018 +0200
->=20
->     dma-mapping: remove dma_deconfigure
->=20
->     This goes through a lot of hooks just to call arch_teardown_dma_ops.
->     Replace it with a direct call instead.
->=20
->     Signed-off-by: Christoph Hellwig <hch@lst.de>
->     Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-
-Having said that, I'm not sure the dma_alloc_coherent issue we had would
-have led to this patch being pinpointed by a bisect, so let's see.
-
-Thanks,
-    Paul

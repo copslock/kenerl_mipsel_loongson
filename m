@@ -3,47 +3,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6303EC43612
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 274CCC43387
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:15:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3E7C4214DA
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:12:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0247D20874
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:15:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729447AbfAJRMC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 12:12:02 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:44834 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729390AbfAJRMC (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 12:12:02 -0500
-Received: by mail-qt1-f195.google.com with SMTP id n32so13980253qte.11;
-        Thu, 10 Jan 2019 09:12:00 -0800 (PST)
+        id S1729515AbfAJRPI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 12:15:08 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:45199 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729474AbfAJRPI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 12:15:08 -0500
+Received: by mail-qt1-f193.google.com with SMTP id e5so14010849qtr.12;
+        Thu, 10 Jan 2019 09:15:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=h9Ub2IW9cySGL3QZFJM+qSZvbyYHJpNB32B/Hx6OxIg=;
-        b=pUVuwK2tCgNuJv2DgtGRAvv9AY1YNqmwCT0U15x2/90IKkA9XNEQfVp5HzLSgiIqtR
-         FpqYdYwJMF0qJ+xEWYwtKhPHJk/okzO0/1dPXRfJac4sU7qSNlv+4VnHpfaAPZy2XTSm
-         LgwJpNrHwlYvwICWzwD8p6DZVNKPO6X8+e1ffK+QrgxRZBsjvxeF4QeiDhlaEEpXtcX3
-         21As+BQGyWkr5AgwpDE3RFh/2vaD0wcgLsqFDNNrT8fGSh5uutjAjSoMYbEJ8j2CFq8o
-         xFu8yg4Smu1FEXE9otqtDVzTCPvnTGFfLIQOmOTuK1/1xnaHybw9DHS+4YDeMOF3k0vb
-         qTbA==
-X-Gm-Message-State: AJcUukfRlfCoPgNdh1dmQ/XTjVGN4eqZNwJklO8FvNSoUydm6bTfqT7+
-        sjQGdSvpM+AzKMXpish8ou2y8RcuPngBohuBDFg=
-X-Google-Smtp-Source: ALg8bN4Gur1wD3h0ELBSl0ybGvD7wc1qcQeOBkYMXly/Z0pb/J89D40WVoT3xz1IidS9G8IG/oXogEOscyYpZb29+TE=
-X-Received: by 2002:a0c:d992:: with SMTP id y18mr10912612qvj.161.1547140320327;
- Thu, 10 Jan 2019 09:12:00 -0800 (PST)
+        bh=Vi+SvwsycUKtGhpMC3QEpN/Bk6bKq1AfTBDWYF1k7VQ=;
+        b=hf/Qw2NMREqLD0cU2L5PwYV6N3JVMoymHdz6WPZ4m0wF+QIVmbrGaDTsAVhbXHq03N
+         4zvyj8yMQlqAAkoSnTfjpTSDoKlE5/4DeDyYXqDanBk2XFUaWvhIweXT6lMTXFx35g0e
+         UT6Q4jr945WYh8e637Kj6ObPedDpTpUpbSu1VWf/sLwt+8cdb9NgCHp83IDvOkmf35kJ
+         eKcb0zmFQdz2u9d1PfJDI48UvC9AqA5sGgyzEGK2O3Pq7/Hinbi03TI30LWQ9v0sRygF
+         tpFBRAWbmX7y40RN9bhyROcWqdgIZzIjE6dh7nnXGRgWA0sbqle/1qVCFu6heqQN4uaR
+         L3zw==
+X-Gm-Message-State: AJcUukdDu2iSUzrpLirdpfVetnMplsuyAWY8r/S6gdyK0on1eVhuVsN5
+        e8yeoyAjDUQCUQcx+uFu9ACFiAKJ518JEpQ5pUI=
+X-Google-Smtp-Source: ALg8bN4AdylggnguSr7egu7xIPGdOjTe436nAOiytiob3A7SfzgpinZUkBcCe85tXDNMw1nvzwC1nAoiCh7sWU6vHE4=
+X-Received: by 2002:ac8:1d12:: with SMTP id d18mr10355152qtl.343.1547140506273;
+ Thu, 10 Jan 2019 09:15:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20190110162435.309262-1-arnd@arndb.de> <20190110162435.309262-7-arnd@arndb.de>
- <20190110163220.GB31683@fuggles.cambridge.arm.com>
-In-Reply-To: <20190110163220.GB31683@fuggles.cambridge.arm.com>
+References: <20190110162435.309262-1-arnd@arndb.de> <20190110162435.309262-8-arnd@arndb.de>
+ <20190110163908.GC31683@fuggles.cambridge.arm.com>
+In-Reply-To: <20190110163908.GC31683@fuggles.cambridge.arm.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 10 Jan 2019 18:11:44 +0100
-Message-ID: <CAK8P3a0TyDTTG7Eoz9dZF1J0SH-=OYQvQ6=YVThTkDfX-mnfWg@mail.gmail.com>
-Subject: Re: [PATCH 06/15] ARM: add migrate_pages() system call
+Date:   Thu, 10 Jan 2019 18:14:50 +0100
+Message-ID: <CAK8P3a27hYDL+yjO+DFe8n_C_dyjGNKcKOcWz-p3Pc1LwcxKjw@mail.gmail.com>
+Subject: Re: [PATCH 07/15] ARM: add kexec_file_load system call number
 To:     Will Deacon <will.deacon@arm.com>
 Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         Linux API <linux-api@vger.kernel.org>,
@@ -91,23 +91,28 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Jan 10, 2019 at 5:32 PM Will Deacon <will.deacon@arm.com> wrote:
-
+On Thu, Jan 10, 2019 at 5:39 PM Will Deacon <will.deacon@arm.com> wrote:
+>
 > > diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-> > index 04ee190b90fe..355fe2bc035b 100644
+> > index 355fe2bc035b..19f3f58b6146 100644
 > > --- a/arch/arm64/include/asm/unistd32.h
 > > +++ b/arch/arm64/include/asm/unistd32.h
-> > @@ -821,6 +821,8 @@ __SYSCALL(__NR_statx, sys_statx)
-> >  __SYSCALL(__NR_rseq, sys_rseq)
-> >  #define __NR_io_pgetevents 399
+> > @@ -823,6 +823,8 @@ __SYSCALL(__NR_rseq, sys_rseq)
 > >  __SYSCALL(__NR_io_pgetevents, compat_sys_io_pgetevents)
-> > +#define __NR_migrate_pages 400
-> > +__SYSCALL(__NR_migrate_pages, sys_migrate_pages)
+> >  #define __NR_migrate_pages 400
+> >  __SYSCALL(__NR_migrate_pages, sys_migrate_pages)
+> > +#define __NR_kexec_file_load 401
+> > +__SYSCALL(__NR_kexec_file_load, sys_kexec_file_load)
 >
-> Should be compat_sys_migrate_pages instead?
+> Hmm, I wonder if we need a compat wrapper for this, or are we assuming
+> that the early entry code has already zero-extended the long and pointer
+> arguments?
 
-Yes, good catch! Fixed now.
+Yes, that is generally the assumption for compat syscalls.
 
-Thanks,
+s390 needs some extra magic to do a 31-to-64 extension on pointer
+arguments, and I think sometimes we need a special wrapper to
+do sign-extension of 32-bit arguments into 64-bit, but the arguments
+here should not need that.
 
-        Arnd
+     Arnd

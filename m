@@ -2,130 +2,124 @@ Return-Path: <SRS0=2fGM=PS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EBCCC43387
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 09:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D22C43387
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 14:05:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EC17A214C6
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 09:06:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 52DCC20660
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 14:05:24 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTGY9Vaw"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="cNKUof4i"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727534AbfAJJGi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 04:06:38 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39794 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727257AbfAJJGi (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 04:06:38 -0500
-Received: by mail-pf1-f196.google.com with SMTP id r136so5016956pfc.6;
-        Thu, 10 Jan 2019 01:06:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oq80hyIRxc7kD/9H1MyYY3fFLvm60ShEsiOlrZc3KYA=;
-        b=hTGY9VawGhKjAEPgrRt1SPQT4EG5iuZqoIW1KBax7pl8YNTXG4Vfd9yFbNqVTP6CKq
-         Lq9gCQr172eU4c6qB+2ZJoksKKEV0IrNS25SJMIWPuxgIbu6deseS3OSzEsbAJy2YeM+
-         nA4gDJwymhlOM0pD950PKH7w1M22eiN5i/ObZwBQeq8LJFMBXiVzhVcTAUMlKc5aXzrp
-         9vkvrrM9VLbJcerBTbmQuUZK6eUWVSVly6mIouFlvpkaK7mBPZywI4SN2+PEgTyQNXlk
-         0civggBqSPQuln3CUOhsBUZ7jfJwDRjbFCyzKA0fficEthHyKNDX96C2SNbZYYLG6FHc
-         VpWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oq80hyIRxc7kD/9H1MyYY3fFLvm60ShEsiOlrZc3KYA=;
-        b=QWfUPOzrHS4YFNUcHs9YKYE8lKF7bEP5yflxcK1vgPxSEp/UFiAFOFv2RcstRpuf+5
-         VvYTluPE5hcDOtj3eSKYY0BWgKoyFHgkt9uTgcg+IkqdtjOztpmX8SsAaEZdtuGc4U2z
-         PYYopwL8uMlogI/RNO+mG1WlpA0NehABFLOZohrxL3MnvEjJDGo85Y6KdNQcTlxK54A0
-         yN5Ta0hJu4BfPZx8o7EkS6L/7w9c6/06IYSNtPxwu5Um3iI+Dhw21vYR+4/BYeTWSS4W
-         uoeQ9S2QIth9VPO6xnwhunEM0cRuvgd+kF6/be/un0LBI9rfyotTo6jBqtbRajDjOqra
-         BhYw==
-X-Gm-Message-State: AJcUukc5EgEmZhE3IrQYpeK/Ci0nGO092Xe3C37awzz/197fYTpf5gsx
-        cDohGUi2fmpOoxUUd8TPfhgDZsL4YDAYxnsm8Pg=
-X-Google-Smtp-Source: ALg8bN4BE6q8xxDDtq+YuLH5+cixz7d0oBOOvQbl+bRUmSLVR5oY8KTP6B615fpl1R0lgmzzlO6hmmnE0EIbQpvPK5o=
-X-Received: by 2002:a63:da14:: with SMTP id c20mr8224322pgh.233.1547111196652;
- Thu, 10 Jan 2019 01:06:36 -0800 (PST)
-MIME-Version: 1.0
-References: <20190104085405.40356-1-Tianyu.Lan@microsoft.com>
- <20190104085405.40356-10-Tianyu.Lan@microsoft.com> <7eb0cde4-9436-9719-dd13-caf4ab5083a2@redhat.com>
-In-Reply-To: <7eb0cde4-9436-9719-dd13-caf4ab5083a2@redhat.com>
-From:   Tianyu Lan <lantianyu1986@gmail.com>
-Date:   Thu, 10 Jan 2019 17:06:25 +0800
-Message-ID: <CAOLK0pz6K90+QOMV2Vmhd3vC2t5+15vmUo0E=2rwax7cGDfxjw@mail.gmail.com>
-Subject: Re: [PATCH 9/11] KVM/MMU: Flush tlb in the kvm_mmu_write_protect_pt_masked()
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
-        marc.zyngier@arm.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
-        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
-        benh@kernel.crashing.org, mpe@ellerman.id.au,
-        Radim Krcmar <rkrcmar@redhat.com>,
+        id S1728956AbfAJOFS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 09:05:18 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:49072 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728383AbfAJOFS (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 09:05:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1547129114; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UVALlfdv0MyaDaXOTjaTowekBqEatV4nVCmh59/6uRM=;
+        b=cNKUof4iDo74Ueha76HbgI8cs6/vl556x5I8bVg4FFV+2Kh1dNVNXNJCouNg9gDUTiYUQH
+        b4RMT2GIVqb+GzHqOYVE/GSifLGILKdA5KgoIzgCiXXiTGHHtALCZk0GfXSzuZa71JY9O/
+        sIC4RhWBWclvsi91/gk3DMPtpsueo/s=
+Date:   Thu, 10 Jan 2019 11:04:56 -0300
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v9 14/27] pwm: jz4740: Improve algorithm of clock
+ calculation
+To:     Uwe =?iso-8859-1?q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Stephen Boyd <sboyd@kernel.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        "linux-kernel@vger kernel org" <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm <kvm@vger.kernel.org>,
-        michael.h.kelley@microsoft.com, kys@microsoft.com,
-        vkuznets@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>
+Message-Id: <1547129096.16183.0@crapouillou.net>
+In-Reply-To: <20190105212711.s765knwwerceytvk@pengutronix.de>
+References: <20181227181319.31095-1-paul@crapouillou.net>
+        <20181227181319.31095-15-paul@crapouillou.net>
+        <20190105195725.cuxfge6zkpbt3cyk@pengutronix.de>
+        <1546722339.30174.0@crapouillou.net>
+        <20190105212711.s765knwwerceytvk@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Jan 8, 2019 at 12:26 AM Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On 04/01/19 09:54, lantianyu1986@gmail.com wrote:
-> >               rmap_head = __gfn_to_rmap(slot->base_gfn + gfn_offset + __ffs(mask),
-> >                                         PT_PAGE_TABLE_LEVEL, slot);
-> > -             __rmap_write_protect(kvm, rmap_head, false);
-> > +             flush |= __rmap_write_protect(kvm, rmap_head, false);
-> >
-> >               /* clear the first set bit */
-> >               mask &= mask - 1;
-> >       }
-> > +
-> > +     if (flush && kvm_available_flush_tlb_with_range()) {
-> > +             kvm_flush_remote_tlbs_with_address(kvm,
-> > +                             slot->base_gfn + gfn_offset,
-> > +                             hweight_long(mask));
->
-> Mask is zero here, so this probably won't work.
->
-> In addition, I suspect calling the hypercall once for every 64 pages is
-> not very efficient.  Passing a flush list into
-> kvm_mmu_write_protect_pt_masked, and flushing in
-> kvm_arch_mmu_enable_log_dirty_pt_masked, isn't efficient either because
-> kvm_arch_mmu_enable_log_dirty_pt_masked is also called once per word.
->
-Yes, this is not efficient.
+Adding Stephen to the discussion.
+Adding Stephen to the discussion.
 
-> I don't have any good ideas, except for moving the whole
-> kvm_clear_dirty_log_protect loop into architecture-specific code (which
-> is not the direction we want---architectures should share more code, not
-> less).
+On Sat, Jan 5, 2019 at 6:27 PM, Uwe Kleine-K=F6nig=20
+<u.kleine-koenig@pengutronix.de> wrote:
+> Hello Paul,
+>=20
+> On Sat, Jan 05, 2019 at 06:05:38PM -0300, Paul Cercueil wrote:
+>>  On Sat, Jan 5, 2019 at 4:57 PM, Uwe Kleine-K=F6nig
+>>  <u.kleine-koenig@pengutronix.de> wrote:
+>>  > You are assuming stuff here about the parent clk which isn't=20
+>> guaranteed
+>>  > (AFAICT) by the clk framework: If you call clk_round_rate(clk,=20
+>> rate - 1)
+>>  > this might well return rate even if the clock could run slower=20
+>> than
+>>  > rate.
+>>=20
+>>  It may not be guaranteed by the clock framework itself, but it is=20
+>> guaranteed
+>>  to behave like that on this family of SoCs.
+>=20
+> You shouldn't rely on that. Experience shows that people will start
+> copying code to machines where this is not guaranteed. Even if they
+> don't copy and only learn from reading this is bad. Also how do you
+> guarantee that this won't change in the future making the pwm code=20
+> break
+> without noticing?
+>=20
+> If you use an API better don't assume more things given than are
+> guaranteed by the API.
+>=20
+> Having said that I would consider it sensible to introduce something
+> like clk_roundup_rate() and clk_rounddown_rate() which would allow
+> calculations like that.
 
-kvm_vm_ioctl_clear_dirty_log/get_dirty_log()  is to get/clear dirty log with
-memslot as unit. We may just flush tlbs of the affected memslot instead of
-entire page table's when range flush is available.
+@Stephen:
+Some context: my algorithm makes use of clk_round_rate(clk, rate - 1)=20
+to get the
+next (smaller) clock rate that a clock support.
 
->
-> Paolo
->
-> > +             flush = false;
-> > +     }
-> > +
->
+Is it something safe to assume? If not is there a better way?
 
+>>  > Wouldn't it make sense to start iterating with rate =3D 0xffff *=20
+>> 1e9 /
+>>  > period? Otherwise you get bad configurations if rate is=20
+>> considerable
+>>  > slower than necessary.
+>>=20
+>>  The algorithm will start with 'rate' being the parent clock's rate,=20
+>> which
+>>  will always be the highest rate that the child clock will support.
+>=20
+> Ah right, I missed that bit.
 
---
-Best regards
-Tianyu Lan
+Thanks,
+-Paul
+=
+

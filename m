@@ -6,25 +6,25 @@ X-Spam-Status: No, score=-8.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B0AC43612
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35551C43444
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:39:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B02352173B
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:32:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 09E4A2173B
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:39:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727892AbfAJQca (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 11:32:30 -0500
-Received: from foss.arm.com ([217.140.101.70]:39320 "EHLO foss.arm.com"
+        id S1727807AbfAJQjS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 11:39:18 -0500
+Received: from foss.arm.com ([217.140.101.70]:39558 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727737AbfAJQca (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Jan 2019 11:32:30 -0500
+        id S1727836AbfAJQjS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Jan 2019 11:39:18 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 62EA8A78;
-        Thu, 10 Jan 2019 08:32:29 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E5D5A78;
+        Thu, 10 Jan 2019 08:39:17 -0800 (PST)
 Received: from fuggles.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C03B3F7B4;
-        Thu, 10 Jan 2019 08:32:22 -0800 (PST)
-Date:   Thu, 10 Jan 2019 16:32:20 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27BBF3F694;
+        Thu, 10 Jan 2019 08:39:11 -0800 (PST)
+Date:   Thu, 10 Jan 2019 16:39:08 +0000
 From:   Will Deacon <will.deacon@arm.com>
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
@@ -44,56 +44,73 @@ Cc:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 06/15] ARM: add migrate_pages() system call
-Message-ID: <20190110163220.GB31683@fuggles.cambridge.arm.com>
+Subject: Re: [PATCH 07/15] ARM: add kexec_file_load system call number
+Message-ID: <20190110163908.GC31683@fuggles.cambridge.arm.com>
 References: <20190110162435.309262-1-arnd@arndb.de>
- <20190110162435.309262-7-arnd@arndb.de>
+ <20190110162435.309262-8-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190110162435.309262-7-arnd@arndb.de>
+In-Reply-To: <20190110162435.309262-8-arnd@arndb.de>
 User-Agent: Mutt/1.11.1+86 (6f28e57d73f2) ()
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Jan 10, 2019 at 05:24:26PM +0100, Arnd Bergmann wrote:
-> The migrate_pages system call has an assigned number on all architectures
-> except ARM. When it got added initially in commit d80ade7b3231 ("ARM:
-> Fix warning: #warning syscall migrate_pages not implemented"), it was
-> intentionally left out based on the observation that there are no 32-bit
-> ARM NUMA systems.
+On Thu, Jan 10, 2019 at 05:24:27PM +0100, Arnd Bergmann wrote:
+> A couple of architectures including arm64 already implement the
+> kexec_file_load system call, on many others we have assigned a system
+> call number for it, but not implemented it yet.
 > 
-> However, there are now arm64 NUMA machines that can in theory run 32-bit
-> kernels (actually enabling NUMA there would require additional work)
-> as well as 32-bit user space on 64-bit kernels, so that argument is no
-> longer very strong.
-> 
-> Assigning the number lets us use the system call on 64-bit kernels as well
-> as providing a more consistent set of syscalls across architectures.
+> Adding the number in arch/arm/ lets us use the system call on arm64
+> systems in compat mode, and also reduces the number of differences
+> between architectures. If we want to implement kexec_file_load on ARM
+> in the future, the number assignment means that kexec tools can already
+> be built with the now current set of kernel headers.
 > 
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  arch/arm/include/asm/unistd.h     | 1 -
 >  arch/arm/tools/syscall.tbl        | 1 +
 >  arch/arm64/include/asm/unistd.h   | 2 +-
 >  arch/arm64/include/asm/unistd32.h | 2 ++
->  4 files changed, 4 insertions(+), 2 deletions(-)
-
-[...]
-
+>  3 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+> index 86de9eb34296..20ed7e026723 100644
+> --- a/arch/arm/tools/syscall.tbl
+> +++ b/arch/arm/tools/syscall.tbl
+> @@ -415,3 +415,4 @@
+>  398	common	rseq			sys_rseq
+>  399	common	io_pgetevents		sys_io_pgetevents
+>  400	common	migrate_pages		sys_migrate_pages
+> +401	common	kexec_file_load		sys_kexec_file_load
+> diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
+> index 261216c3336e..2c30e6f145ff 100644
+> --- a/arch/arm64/include/asm/unistd.h
+> +++ b/arch/arm64/include/asm/unistd.h
+> @@ -44,7 +44,7 @@
+>  #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
+>  #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
+>  
+> -#define __NR_compat_syscalls		401
+> +#define __NR_compat_syscalls		402
+>  #endif
+>  
+>  #define __ARCH_WANT_SYS_CLONE
 > diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-> index 04ee190b90fe..355fe2bc035b 100644
+> index 355fe2bc035b..19f3f58b6146 100644
 > --- a/arch/arm64/include/asm/unistd32.h
 > +++ b/arch/arm64/include/asm/unistd32.h
-> @@ -821,6 +821,8 @@ __SYSCALL(__NR_statx, sys_statx)
->  __SYSCALL(__NR_rseq, sys_rseq)
->  #define __NR_io_pgetevents 399
+> @@ -823,6 +823,8 @@ __SYSCALL(__NR_rseq, sys_rseq)
 >  __SYSCALL(__NR_io_pgetevents, compat_sys_io_pgetevents)
-> +#define __NR_migrate_pages 400
-> +__SYSCALL(__NR_migrate_pages, sys_migrate_pages)
+>  #define __NR_migrate_pages 400
+>  __SYSCALL(__NR_migrate_pages, sys_migrate_pages)
+> +#define __NR_kexec_file_load 401
+> +__SYSCALL(__NR_kexec_file_load, sys_kexec_file_load)
 
-Should be compat_sys_migrate_pages instead?
+Hmm, I wonder if we need a compat wrapper for this, or are we assuming
+that the early entry code has already zero-extended the long and pointer
+arguments?
 
 Will

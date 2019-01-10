@@ -3,47 +3,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE59EC43612
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F25E7C43387
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:06:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B8CE92183F
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 16:59:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C55A620685
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 17:06:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729256AbfAJQ7Y (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 11:59:24 -0500
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:36486 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728644AbfAJQ7X (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 11:59:23 -0500
-Received: by mail-vk1-f194.google.com with SMTP id 185so2639781vkc.3;
-        Thu, 10 Jan 2019 08:59:22 -0800 (PST)
+        id S1728993AbfAJRG2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 12:06:28 -0500
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:33067 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728918AbfAJRG2 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 12:06:28 -0500
+Received: by mail-qt1-f195.google.com with SMTP id l11so14028193qtp.0;
+        Thu, 10 Jan 2019 09:06:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Hw0e7GRKKordAWqSD7MEd/MdjXNL2gSRFLNoHST4yQU=;
-        b=CziGAr1nQCqVnhpZZP4mLYVdPp9LLljpPTPSAbxPdvZ0uhcbbl44e/T0TfHzWwNE+p
-         eeqR/R5i40FpaSrHwfRqGqJpfTwgeIzeTBUWQP+Ae3I7UUiZlEIAHdtqZh2cqpNoWFPo
-         g4ms9CdCpLWX6FoYc8iXOqBIb7na459x25Cl1Fl7YdjP4lSjYYgK6r7bVQy8Khtkb52Q
-         Y6mWlCKPNaUFxXN6r+11AtdizOXJ5mGLa014QrbkSZ/A9D1sXIql7zxRd6sexFdzqOwT
-         a6o363N5KHS2QLLX+vlVgQYyDR+P7z3Fkt3Ea9W2jY9krUSBV7f2HIu3OGKE0GoqO753
-         8LFg==
-X-Gm-Message-State: AJcUukehbygLd14B5AE60XLgQT5oYm6fwINOpjf2OyJx+c8nmK0FTP0F
-        OvwQg98x2Q0GaTQqipP+r37L4wOTcY2+qk6VGbA=
-X-Google-Smtp-Source: ALg8bN5fFE92/p210UY0O3VvZTR7XlFlqefe7/Td73EjJzfygMgDltkNFwFLL65t6V7dhJltD1zMZSFgvRHYqKmM9HE=
-X-Received: by 2002:a1f:a414:: with SMTP id n20mr4224838vke.83.1547139561779;
- Thu, 10 Jan 2019 08:59:21 -0800 (PST)
+        bh=ppZcVQ/6kEa1+6j6RgrBmmjrAAts0gpmQru81oI2DjY=;
+        b=eUNK2GNcNZATkLKzPd+5MbCWteA1Rs9iH5n/sPGSXu7s5xGsmbf8IUfFNXXc/5rqUt
+         BtpR62/vROgnBjwJcLxARMkZYGLyhdHXFz80odEWynHx6UzRJANvJ5Lc/XgeewNZ11Pm
+         f9TpCO+6Ax0MygpLp48TR5W1TPvP2xRvBEFHizdsqMCYdKdd51cB++Sh29OJdqNN0JTA
+         3JyLmWstDYV9ngto322UVZNuLN9k41EexiuKKFuH+Ob+/sF2UQ9IdMO0+x5U9Aiz0Oji
+         GU+sySHvsn0UaF/Zp8Ueg948My2oVRlCgAF1/jh3qC54/q9VptuhC1NtBdwXnOrNq4Qe
+         7bvw==
+X-Gm-Message-State: AJcUukfj/jXI4kquXnz2WkbP/M/dM9sSVZJ/C8fxX+mt/zfF3hujL8l+
+        N+PbRPBHXbW1PslXygWDbU2sBEqCbp27/cKdqR4=
+X-Google-Smtp-Source: ALg8bN6AYimQvL2fk3CyhFYbTwHueixsV0cppMAFEDILJ7f9F0R4jNkQXt8J3yrK7O3RY2Kukmp6QEA1Mn21OLb0A00=
+X-Received: by 2002:a0c:e202:: with SMTP id q2mr10276671qvl.180.1547139986093;
+ Thu, 10 Jan 2019 09:06:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20190110162435.309262-1-arnd@arndb.de>
-In-Reply-To: <20190110162435.309262-1-arnd@arndb.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 10 Jan 2019 17:59:08 +0100
-Message-ID: <CAMuHMdXYP3=TRHYqddVRfbRRaj_Ou=wfoX6ohKM7XNAx-c2RXw@mail.gmail.com>
+References: <20190110162435.309262-1-arnd@arndb.de> <CAMuHMdXYP3=TRHYqddVRfbRRaj_Ou=wfoX6ohKM7XNAx-c2RXw@mail.gmail.com>
+In-Reply-To: <CAMuHMdXYP3=TRHYqddVRfbRRaj_Ou=wfoX6ohKM7XNAx-c2RXw@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 10 Jan 2019 18:06:09 +0100
+Message-ID: <CAK8P3a0kmr2ju+sZE+f-+=-2t5Eu+t-DS-+r6OKrPVTAxHwf8w@mail.gmail.com>
 Subject: Re: [PATCH 00/15] arch: synchronize syscall tables in preparation for y2038
-To:     Arnd Bergmann <arnd@arndb.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         Linux API <linux-api@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -90,31 +89,31 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Arnd,
-
-On Thu, Jan 10, 2019 at 5:26 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> The system call tables have diverged a bit over the years, and a number
-> of the recent additions never made it into all architectures, for one
-> reason or another.
+On Thu, Jan 10, 2019 at 5:59 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
-> This is an attempt to clean it up as far as we can without breaking
-> compatibility, doing a number of steps:
+> Hi Arnd,
+>
+> On Thu, Jan 10, 2019 at 5:26 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > The system call tables have diverged a bit over the years, and a number
+> > of the recent additions never made it into all architectures, for one
+> > reason or another.
+> >
+> > This is an attempt to clean it up as far as we can without breaking
+> > compatibility, doing a number of steps:
+>
+> Thanks a lot!
+>
+> > - Add system calls that have not yet been integrated into all
+> >   architectures but that we definitely want there.
+>
+> It looks like you missed wiring up io_pgetevents() on m68k.
+> Is that intentional?
 
-Thanks a lot!
+Yes, I thought I had described that somewhere but maybe I
+forgot: semtimedop() and io_pgetevents() get replaced with
+time64 versions in the follow-up, so I only added them in
+64-bit architectures. If you think we should have both
+io_pgetevents() and io_pgetevents_time32() on all 32-bit
+architectures, I can add that as well.
 
-> - Add system calls that have not yet been integrated into all
->   architectures but that we definitely want there.
-
-It looks like you missed wiring up io_pgetevents() on m68k.
-Is that intentional?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+      Arnd

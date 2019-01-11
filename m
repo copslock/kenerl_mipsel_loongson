@@ -2,299 +2,189 @@ Return-Path: <SRS0=rYMR=PT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66B99C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 14:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3669FC43444
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 15:06:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 41CA02177B
-	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 14:24:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0792520874
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 15:06:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1547219217;
+	bh=0VA1UcJ6A1fDK36+YFfbPQLFIVDwdStFVXmiTdC9GuM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=NqxJUNmhFDrBrOZs+pguRZEAvIN4n1YjZtUFYYetJHDQa5NZmTpxaar3nHsRuIV2T
+	 VJY1kHUBAU6PDirSrttJV1ov4YnljHLS9tj7ESW9a0l7QrH9IHgqTaDagGN18p4MkF
+	 IHwWfB0n3t4+ZlDIJQrbUx6wBrZ62bOUGTeJQLnA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733172AbfAKOYj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 11 Jan 2019 09:24:39 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:46283 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388073AbfAKOXX (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 11 Jan 2019 09:23:23 -0500
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ore@pengutronix.de>)
-        id 1ghxiP-00054J-7B; Fri, 11 Jan 2019 15:23:17 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92-RC4)
-        (envelope-from <ore@pengutronix.de>)
-        id 1ghxiO-0002vw-1e; Fri, 11 Jan 2019 15:23:16 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH v1 01/11] MIPS: ath79: add helpers for setting clocks and expose the ref clock
-Date:   Fri, 11 Jan 2019 15:22:30 +0100
-Message-Id: <20190111142240.10908-2-o.rempel@pengutronix.de>
+        id S2387606AbfAKO2t (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 11 Jan 2019 09:28:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47584 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388571AbfAKO2q (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 11 Jan 2019 09:28:46 -0500
+Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE16821841;
+        Fri, 11 Jan 2019 14:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1547216925;
+        bh=0VA1UcJ6A1fDK36+YFfbPQLFIVDwdStFVXmiTdC9GuM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OxgDXtoPo9DD7KKfGg5mCG0Jgvpu17NCYOfCOwYkWEqDGc0PKyXhD379HX5rVd7DG
+         bfeFJwVq79gFxIsOr99vQTmCRktlTdJXZwOlD/D5QZnvK80GgbzIoZWg0hwguVEfrF
+         fp+XbsI30SPjQHuapCi6bQB83FlDnHcjnSI/2wYM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Rich Felker <dalias@libc.org>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH 4.9 41/63] MIPS: math-emu: Write-protect delay slot emulation pages
+Date:   Fri, 11 Jan 2019 15:14:44 +0100
+Message-Id: <20190111131052.421721088@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190111142240.10908-1-o.rempel@pengutronix.de>
-References: <20190111142240.10908-1-o.rempel@pengutronix.de>
+In-Reply-To: <20190111131046.387528003@linuxfoundation.org>
+References: <20190111131046.387528003@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
-Preparation for transitioning the legacy clock setup code over
-to OF.
+------------------
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: John Crispin <john@phrozen.org>
+From: Paul Burton <paul.burton@mips.com>
+
+commit adcc81f148d733b7e8e641300c5590a2cdc13bf3 upstream.
+
+Mapping the delay slot emulation page as both writeable & executable
+presents a security risk, in that if an exploit can write to & jump into
+the page then it can be used as an easy way to execute arbitrary code.
+
+Prevent this by mapping the page read-only for userland, and using
+access_process_vm() with the FOLL_FORCE flag to write to it from
+mips_dsemul().
+
+This will likely be less efficient due to copy_to_user_page() performing
+cache maintenance on a whole page, rather than a single line as in the
+previous use of flush_cache_sigtramp(). However this delay slot
+emulation code ought not to be running in any performance critical paths
+anyway so this isn't really a problem, and we can probably do better in
+copy_to_user_page() anyway in future.
+
+A major advantage of this approach is that the fix is small & simple to
+backport to stable kernels.
+
+Reported-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 432c6bacbd0c ("MIPS: Use per-mm page to execute branch delay slot instructions")
+Cc: stable@vger.kernel.org # v4.8+
+Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>
+Cc: David Daney <david.daney@cavium.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/ath79/clock.c               | 128 +++++++++++++-------------
- include/dt-bindings/clock/ath79-clk.h |   3 +-
- 2 files changed, 68 insertions(+), 63 deletions(-)
+ arch/mips/kernel/vdso.c     |    4 ++--
+ arch/mips/math-emu/dsemul.c |   38 ++++++++++++++++++++------------------
+ 2 files changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index cf9158e3c2d9..50bc3b01a4c4 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -37,20 +37,46 @@ static struct clk_onecell_data clk_data = {
- 	.clk_num = ARRAY_SIZE(clks),
- };
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -111,8 +111,8 @@ int arch_setup_additional_pages(struct l
  
--static struct clk *__init ath79_add_sys_clkdev(
--	const char *id, unsigned long rate)
-+static const char * const clk_names[ATH79_CLK_END] = {
-+	[ATH79_CLK_CPU] = "cpu",
-+	[ATH79_CLK_DDR] = "ddr",
-+	[ATH79_CLK_AHB] = "ahb",
-+	[ATH79_CLK_REF] = "ref",
-+};
-+
-+static const char * __init ath79_clk_name(int type)
+ 	/* Map delay slot emulation page */
+ 	base = mmap_region(NULL, STACK_TOP, PAGE_SIZE,
+-			   VM_READ|VM_WRITE|VM_EXEC|
+-			   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
++			   VM_READ | VM_EXEC |
++			   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
+ 			   0);
+ 	if (IS_ERR_VALUE(base)) {
+ 		ret = base;
+--- a/arch/mips/math-emu/dsemul.c
++++ b/arch/mips/math-emu/dsemul.c
+@@ -211,8 +211,9 @@ int mips_dsemul(struct pt_regs *regs, mi
  {
--	struct clk *clk;
--	int err;
-+	BUG_ON(type >= ARRAY_SIZE(clk_names) || !clk_names[type]);
-+	return clk_names[type];
-+}
+ 	int isa16 = get_isa16_mode(regs->cp0_epc);
+ 	mips_instruction break_math;
+-	struct emuframe __user *fr;
+-	int err, fr_idx;
++	unsigned long fr_uaddr;
++	struct emuframe fr;
++	int fr_idx, ret;
  
--	clk = clk_register_fixed_rate(NULL, id, NULL, 0, rate);
-+static void __init __ath79_set_clk(int type, const char *name, struct clk *clk)
-+{
- 	if (IS_ERR(clk))
--		panic("failed to allocate %s clock structure", id);
-+		panic("failed to allocate %s clock structure", clk_names[type]);
+ 	/* NOP is easy */
+ 	if (ir == 0)
+@@ -247,27 +248,31 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 		fr_idx = alloc_emuframe();
+ 	if (fr_idx == BD_EMUFRAME_NONE)
+ 		return SIGBUS;
+-	fr = &dsemul_page()[fr_idx];
  
--	err = clk_register_clkdev(clk, id, NULL);
--	if (err)
--		panic("unable to register %s clock device", id);
-+	clks[type] = clk;
-+	clk_register_clkdev(clk, name, NULL);
-+}
+ 	/* Retrieve the appropriately encoded break instruction */
+ 	break_math = BREAK_MATH(isa16);
  
-+static struct clk * __init ath79_set_clk(int type, unsigned long rate)
-+{
-+	const char *name = ath79_clk_name(type);
-+	struct clk *clk;
+ 	/* Write the instructions to the frame */
+ 	if (isa16) {
+-		err = __put_user(ir >> 16,
+-				 (u16 __user *)(&fr->emul));
+-		err |= __put_user(ir & 0xffff,
+-				  (u16 __user *)((long)(&fr->emul) + 2));
+-		err |= __put_user(break_math >> 16,
+-				  (u16 __user *)(&fr->badinst));
+-		err |= __put_user(break_math & 0xffff,
+-				  (u16 __user *)((long)(&fr->badinst) + 2));
++		union mips_instruction _emul = {
++			.halfword = { ir >> 16, ir }
++		};
++		union mips_instruction _badinst = {
++			.halfword = { break_math >> 16, break_math }
++		};
 +
-+	clk = clk_register_fixed_rate(NULL, name, NULL, 0, rate);
-+	__ath79_set_clk(type, name, clk);
-+	return clk;
-+}
-+
-+static struct clk * __init ath79_set_ff_clk(int type, const char *parent,
-+					    unsigned int mult, unsigned int div)
-+{
-+	const char *name = ath79_clk_name(type);
-+	struct clk *clk;
-+
-+	clk = clk_register_fixed_factor(NULL, name, parent, 0, mult, div);
-+	__ath79_set_clk(type, name, clk);
- 	return clk;
- }
- 
-@@ -80,27 +106,15 @@ static void __init ar71xx_clocks_init(void)
- 	div = (((pll >> AR71XX_AHB_DIV_SHIFT) & AR71XX_AHB_DIV_MASK) + 1) * 2;
- 	ahb_rate = cpu_rate / div;
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
- 
--static struct clk * __init ath79_reg_ffclk(const char *name,
--		const char *parent_name, unsigned int mult, unsigned int div)
--{
--	struct clk *clk;
--
--	clk = clk_register_fixed_factor(NULL, name, parent_name, 0, mult, div);
--	if (IS_ERR(clk))
--		panic("failed to allocate %s clock structure", name);
--
--	return clk;
--}
--
- static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- {
- 	u32 pll;
-@@ -114,24 +128,19 @@ static void __init ar724x_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 	ddr_div = ((pll >> AR724X_DDR_DIV_SHIFT) & AR724X_DDR_DIV_MASK) + 1;
- 	ahb_div = (((pll >> AR724X_AHB_DIV_SHIFT) & AR724X_AHB_DIV_MASK) + 1) * 2;
- 
--	clks[ATH79_CLK_CPU] = ath79_reg_ffclk("cpu", "ref", mult, div);
--	clks[ATH79_CLK_DDR] = ath79_reg_ffclk("ddr", "ref", mult, div * ddr_div);
--	clks[ATH79_CLK_AHB] = ath79_reg_ffclk("ahb", "ref", mult, div * ahb_div);
-+	ath79_set_ff_clk(ATH79_CLK_CPU, "ref", mult, div);
-+	ath79_set_ff_clk(ATH79_CLK_DDR, "ref", mult, div * ddr_div);
-+	ath79_set_ff_clk(ATH79_CLK_AHB, "ref", mult, div * ahb_div);
- }
- 
- static void __init ar724x_clocks_init(void)
- {
- 	struct clk *ref_clk;
- 
--	ref_clk = ath79_add_sys_clkdev("ref", AR724X_BASE_FREQ);
-+	ref_clk = ath79_set_clk(ATH79_CLK_REF, AR724X_BASE_FREQ);
- 
- 	ar724x_clk_init(ref_clk, ath79_pll_base);
- 
--	/* just make happy plat_time_init() from arch/mips/ath79/setup.c */
--	clk_register_clkdev(clks[ATH79_CLK_CPU], "cpu", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_DDR], "ddr", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_AHB], "ahb", NULL);
--
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
-@@ -186,12 +195,12 @@ static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
- 		     AR933X_PLL_CLOCK_CTRL_AHB_DIV_MASK) + 1;
++		fr.emul = _emul.word;
++		fr.badinst = _badinst.word;
+ 	} else {
+-		err = __put_user(ir, &fr->emul);
+-		err |= __put_user(break_math, &fr->badinst);
++		fr.emul = ir;
++		fr.badinst = break_math;
  	}
  
--	clks[ATH79_CLK_CPU] = ath79_reg_ffclk("cpu", "ref",
--					ninit_mul, ref_div * out_div * cpu_div);
--	clks[ATH79_CLK_DDR] = ath79_reg_ffclk("ddr", "ref",
--					ninit_mul, ref_div * out_div * ddr_div);
--	clks[ATH79_CLK_AHB] = ath79_reg_ffclk("ahb", "ref",
--					ninit_mul, ref_div * out_div * ahb_div);
-+	ath79_set_ff_clk(ATH79_CLK_CPU, "ref", ninit_mul,
-+			 ref_div * out_div * cpu_div);
-+	ath79_set_ff_clk(ATH79_CLK_DDR, "ref", ninit_mul,
-+			 ref_div * out_div * ddr_div);
-+	ath79_set_ff_clk(ATH79_CLK_AHB, "ref", ninit_mul,
-+			 ref_div * out_div * ahb_div);
- }
+-	if (unlikely(err)) {
++	/* Write the frame to user memory */
++	fr_uaddr = (unsigned long)&dsemul_page()[fr_idx];
++	ret = access_process_vm(current, fr_uaddr, &fr, sizeof(fr),
++				FOLL_FORCE | FOLL_WRITE);
++	if (unlikely(ret != sizeof(fr))) {
+ 		MIPS_FPU_EMU_INC_STATS(errors);
+ 		free_emuframe(fr_idx, current->mm);
+ 		return SIGBUS;
+@@ -279,10 +284,7 @@ int mips_dsemul(struct pt_regs *regs, mi
+ 	atomic_set(&current->thread.bd_emu_frame, fr_idx);
  
- static void __init ar933x_clocks_init(void)
-@@ -206,15 +215,10 @@ static void __init ar933x_clocks_init(void)
- 	else
- 		ref_rate = (25 * 1000 * 1000);
- 
--	ref_clk = ath79_add_sys_clkdev("ref", ref_rate);
-+	ref_clk = ath79_set_clk(ATH79_CLK_REF, ref_rate);
- 
- 	ar9330_clk_init(ref_clk, ath79_pll_base);
- 
--	/* just make happy plat_time_init() from arch/mips/ath79/setup.c */
--	clk_register_clkdev(clks[ATH79_CLK_CPU], "cpu", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_DDR], "ddr", NULL);
--	clk_register_clkdev(clks[ATH79_CLK_AHB], "ahb", NULL);
+ 	/* Change user register context to execute the frame */
+-	regs->cp0_epc = (unsigned long)&fr->emul | isa16;
 -
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
+-	/* Ensure the icache observes our newly written frame */
+-	flush_cache_sigtramp((unsigned long)&fr->emul);
++	regs->cp0_epc = fr_uaddr | isa16;
+ 
+ 	return 0;
  }
-@@ -344,10 +348,10 @@ static void __init ar934x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -431,10 +435,10 @@ static void __init qca953x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -516,10 +520,10 @@ static void __init qca955x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -620,10 +624,10 @@ static void __init qca956x_clocks_init(void)
- 	else
- 		ahb_rate = cpu_pll / (postdiv + 1);
- 
--	ath79_add_sys_clkdev("ref", ref_rate);
--	ath79_add_sys_clkdev("cpu", cpu_rate);
--	ath79_add_sys_clkdev("ddr", ddr_rate);
--	ath79_add_sys_clkdev("ahb", ahb_rate);
-+	ath79_set_clk(ATH79_CLK_REF, ref_rate);
-+	ath79_set_clk(ATH79_CLK_CPU, cpu_rate);
-+	ath79_set_clk(ATH79_CLK_DDR, ddr_rate);
-+	ath79_set_clk(ATH79_CLK_AHB, ahb_rate);
- 
- 	clk_add_alias("wdt", NULL, "ref", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-diff --git a/include/dt-bindings/clock/ath79-clk.h b/include/dt-bindings/clock/ath79-clk.h
-index 27359ad83904..262d7c5eb248 100644
---- a/include/dt-bindings/clock/ath79-clk.h
-+++ b/include/dt-bindings/clock/ath79-clk.h
-@@ -13,7 +13,8 @@
- #define ATH79_CLK_CPU		0
- #define ATH79_CLK_DDR		1
- #define ATH79_CLK_AHB		2
-+#define ATH79_CLK_REF		3
- 
--#define ATH79_CLK_END		3
-+#define ATH79_CLK_END		4
- 
- #endif /* __DT_BINDINGS_ATH79_CLK_H */
--- 
-2.20.1
+
 

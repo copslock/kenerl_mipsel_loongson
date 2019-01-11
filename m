@@ -2,141 +2,105 @@ Return-Path: <SRS0=rYMR=PT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7CA6C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 08:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C75B2C43387
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 08:37:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AC0662064C
-	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 08:07:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 98E5A20872
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 08:37:52 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OMK6VyLu"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725788AbfAKIH6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 11 Jan 2019 03:07:58 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:37983 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbfAKIH5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 11 Jan 2019 03:07:57 -0500
-Received: by mail-vs1-f65.google.com with SMTP id x64so8687085vsa.5;
-        Fri, 11 Jan 2019 00:07:55 -0800 (PST)
+        id S1730871AbfAKIhw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 11 Jan 2019 03:37:52 -0500
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:34919 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725616AbfAKIhw (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 11 Jan 2019 03:37:52 -0500
+Received: by mail-yb1-f196.google.com with SMTP id f187so5544913ybb.2;
+        Fri, 11 Jan 2019 00:37:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vyAWe21MMXZ0fS4NTs9X/8VSp5E1mQWCwE+SFamRGk8=;
+        b=OMK6VyLuE00i/kQKx4jMRPi5pg1vashvhS0P+qG2gljAy4PVn3ObNKiV955AXB+1D7
+         p3dbI+uBpM1BT7/ZocKYiMPiBCScpPoXp4n4VlXH/AaGn7ntF6PQIp3L0ArAIiaocGmo
+         lIvNP4+PM+LOFwmCS/sLWWnASfnvfZGCQEIAOfnkNW2pgEFoSlXqU9VIgSjgqZ4XVJWM
+         usBAB5IofOzH4A+xqLtT4XZSOSvNje99tOF8s9hMiqKFwi6LguxkPcMLQzGyvXmIXOFc
+         aK9rNW9ai4u2A8YhEGfIrf/Gt192mSrlnGDGdjtW94/CvqFDXDcP+R1PJ/zowOKo1pfn
+         Lp1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Gk5sRyaMorBl1gCKq795+qZVHE+uAsmqqhSvjIZGPmU=;
-        b=VfyLiJFmoydejEHDkg6wMZ1HKsUA0S3IhvdQWak9Reyfu2GMDG4r6RGR5eFEOiKieW
-         78RcrPDc66lFCJ2Hb03iwHwy7jrgi+JvWsj6vKiv19F5bR+QeRuYa3DZMzdfw5nOLOpV
-         bQhWFdl1Ih7BaHJbSGw/IwT9PEKfehk3285zgKu4NAJsjBDHI9HoGTLiEACg4gq1cdN+
-         xp8MQZ7DzrGVWihzCFVJ6R/bXioC1ItXvN4j9O7kVKka5pikJdwDOGW3m4B1FiG39Vt4
-         YGS/O+rVpXG1a6yrw0YhYuTAXqKolvxXL3RQIAxGIb2USX4ZjBvgpGZ1YmgAwhNSTMqF
-         /Xgg==
-X-Gm-Message-State: AJcUukffb2wnoPPx1NKlDDQe73afmoWFKx9lPHYp0ENSh2kxPwhtv/hY
-        +iKGR4N5scvxwZIA/51V3ic6w7areGsUoMkbc/0=
-X-Google-Smtp-Source: ALg8bN4BZSRCmO8JcdiTKsQLtOiGYCRcA4qcLBhQcTtWAUJ36fVLDe+20wntOZTNXHVnjK/m8j2ch6eOfrp0E8t9JNI=
-X-Received: by 2002:a67:f43:: with SMTP id 64mr5594803vsp.166.1547194075355;
- Fri, 11 Jan 2019 00:07:55 -0800 (PST)
+        bh=vyAWe21MMXZ0fS4NTs9X/8VSp5E1mQWCwE+SFamRGk8=;
+        b=Be9UdNFktPD3OM6lQJ9mkVDDR2pQyyVZnYSZAm1i7l18WeH0/6kdLD3j7TVsvFTl9j
+         dAS1QuXYCGjY4KEKG1EfoVaIkAdSZU+9Az0cOgXa6jjS88y/PjYK7hUum6B33h4Z6Ndw
+         SwZ7oYPvLYyBcux8qdw7xI8LtmsFWfMGJUbX8mFwS+v7oJe7oW4UcRrKHIA0wnuAkdXV
+         cgiGaX2ZdG1Dsvxf47wMgcHJWDHc5PZb1lLB+ldsMzfAKdgRKS/qhir8Xbladk6hV2CS
+         FgW5xs99F1WzsmAd/mTeWu7019cnUMxkNdVK/72+twxC0+alsh8QaU81CL35NSaP03Rz
+         fgNw==
+X-Gm-Message-State: AJcUukf94VJ2dR3lD0eFBoA5U7hFm3p+g3pEqjlbmLW4C50teyJ82qgz
+        E4EoEGYXA2F9tXJ0K+gdNevR2h4VCfBykHW03G5lgSPc
+X-Google-Smtp-Source: ALg8bN6FrzInGWlvbcJlaVcJZerX+x8N3sXZdDdE73COkEU9zhm0slKYxWPWVEgO5L44Al9fx9Ia3zZW0qdaltXI8GQ=
+X-Received: by 2002:a25:7b43:: with SMTP id w64mr13514711ybc.397.1547195870837;
+ Fri, 11 Jan 2019 00:37:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20190110162435.309262-1-arnd@arndb.de> <CAMuHMdXYP3=TRHYqddVRfbRRaj_Ou=wfoX6ohKM7XNAx-c2RXw@mail.gmail.com>
- <CAK8P3a0kmr2ju+sZE+f-+=-2t5Eu+t-DS-+r6OKrPVTAxHwf8w@mail.gmail.com>
- <CAMuHMdVpUNUx-wdDYChYNzMYqYi79w5tzjk5x3JskdS88VQCQw@mail.gmail.com> <CAK8P3a07yNiadLCJcA0Tyfo90YeQ0P2XF-wOEy9XAb8cDTFObw@mail.gmail.com>
-In-Reply-To: <CAK8P3a07yNiadLCJcA0Tyfo90YeQ0P2XF-wOEy9XAb8cDTFObw@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 11 Jan 2019 09:07:43 +0100
-Message-ID: <CAMuHMdUpThq_fmSitzUrEUFx40itYdURpjmunLs_YLA9BPaMQg@mail.gmail.com>
-Subject: Re: [PATCH 00/15] arch: synchronize syscall tables in preparation for y2038
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@mips.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
+References: <20190110170444.30616-8-amir73il@gmail.com> <201901111612.XzUbwDyo%fengguang.wu@intel.com>
+In-Reply-To: <201901111612.XzUbwDyo%fengguang.wu@intel.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Fri, 11 Jan 2019 10:37:39 +0200
+Message-ID: <CAOQ4uxg+Zk74XqPMNmrEpR13Wr9r=8osOrHVAhH1De9UMFmRoQ@mail.gmail.com>
+Subject: Re: [PATCH v5 07/17] fanotify: encode file identifier for FAN_REPORT_FID
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     kbuild-all@01.org, Jan Kara <jack@suse.cz>,
+        Matthew Bobrowski <mbobrowski@mbobrowski.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-mips@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Arnd,
-
-On Thu, Jan 10, 2019 at 11:43 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Thu, Jan 10, 2019 at 7:11 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Thu, Jan 10, 2019 at 6:06 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > On Thu, Jan 10, 2019 at 5:59 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > On Thu, Jan 10, 2019 at 5:26 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > > > The system call tables have diverged a bit over the years, and a number
-> > > > > of the recent additions never made it into all architectures, for one
-> > > > > reason or another.
-> > > > >
-> > > > > This is an attempt to clean it up as far as we can without breaking
-> > > > > compatibility, doing a number of steps:
-> > > >
-> > > > Thanks a lot!
-> > > >
-> > > > > - Add system calls that have not yet been integrated into all
-> > > > >   architectures but that we definitely want there.
-> > > >
-> > > > It looks like you missed wiring up io_pgetevents() on m68k.
-> > > > Is that intentional?
-> > >
-> > > Yes, I thought I had described that somewhere but maybe I
-> > > forgot: semtimedop() and io_pgetevents() get replaced with
-> > > time64 versions in the follow-up, so I only added them in
-> > > 64-bit architectures. If you think we should have both
-> > > io_pgetevents() and io_pgetevents_time32() on all 32-bit
-> > > architectures, I can add that as well.
-> >
-> > Thanks, sounds fine to me.
+On Fri, Jan 11, 2019 at 10:11 AM kbuild test robot <lkp@intel.com> wrote:
 >
-> Just to be sure, you mean it's fine to not add it, not that we should
-> add it?
+> Hi Amir,
+>
+> I love your patch! Perhaps something to improve:
+>
+> [auto build test WARNING on linus/master]
+> [also build test WARNING on v5.0-rc1]
+> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+>
+> url:    https://github.com/0day-ci/linux/commits/Amir-Goldstein/fanotify-add-support-for-more-event-types/20190111-090241
+> config: mips-allmodconfig (attached as .config)
+> compiler: mips-linux-gnu-gcc (Debian 7.2.0-11) 7.2.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.2.0 make.cross ARCH=mips
+>
+> All warnings (new ones prefixed by >>):
+>
+>    In file included from include/linux/kernel.h:14:0,
+>                     from include/linux/list.h:9,
+>                     from include/linux/preempt.h:11,
+>                     from include/linux/spinlock.h:51,
+>                     from include/linux/fdtable.h:11,
+>                     from fs/notify/fanotify/fanotify.c:3:
+>    fs/notify/fanotify/fanotify.c: In function 'fanotify_encode_fid':
+>    include/linux/kern_levels.h:5:18: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'long int' [-Wformat=]
 
-I'm fine with not having the legacy 32-bit ones.
+I'm confused.
+__kernel_fsid_t val member is long[] on mips arch and int[] on other archs.
+Which format specifier am I supposed to use to print it?
 
-Sorry for being unclear.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+Amir.

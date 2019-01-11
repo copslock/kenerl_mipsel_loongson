@@ -1,169 +1,162 @@
-Return-Path: <SRS0=2fGM=PS=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=rYMR=PT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18A95C43444
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 23:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95C8EC43387
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 02:16:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E117E2177B
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Jan 2019 23:44:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5AEFF20872
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Jan 2019 02:16:12 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="zkBlk2QN"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730401AbfAJXor (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Jan 2019 18:44:47 -0500
-Received: from smtp-1.orcon.net.nz ([60.234.4.34]:43960 "EHLO
-        smtp-1.orcon.net.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730304AbfAJXor (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 18:44:47 -0500
-X-Greylist: delayed 1732 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jan 2019 18:44:44 EST
-Received: from [121.99.228.40] (port=24388 helo=tower)
-        by smtp-1.orcon.net.nz with esmtpa (Exim 4.86_2)
-        (envelope-from <mcree@orcon.net.nz>)
-        id 1ghjX2-0006MW-NK; Fri, 11 Jan 2019 12:14:37 +1300
-Date:   Fri, 11 Jan 2019 12:14:31 +1300
-From:   Michael Cree <mcree@orcon.net.nz>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Joseph Myers <joseph@codesourcery.com>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@mips.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH 00/15] arch: synchronize syscall tables in preparation
- for y2038
-Message-ID: <20190110231431.ho6mjhjkj4p47hww@tower>
-Mail-Followup-To: Michael Cree <mcree@orcon.net.nz>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Joseph Myers <joseph@codesourcery.com>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>, Paul Burton <paul.burton@mips.com>,
-        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>, David Miller <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-References: <20190110162435.309262-1-arnd@arndb.de>
- <alpine.DEB.2.21.1901101808220.31458@digraph.polyomino.org.uk>
- <CAK8P3a2f4SCJXrm6HWO9UKY-akSW+ONNpOvQOtYbia_fRo9ciQ@mail.gmail.com>
+        id S1729652AbfAKCQH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Jan 2019 21:16:07 -0500
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:41450 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728083AbfAKCQG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Jan 2019 21:16:06 -0500
+X-Greylist: delayed 87258 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jan 2019 21:16:04 EST
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id x0B2FwTH004798;
+        Fri, 11 Jan 2019 11:15:59 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x0B2FwTH004798
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1547172959;
+        bh=42GLpL/gpsKXFu8DqqjKXktpxexfEsj5sSrDCB8KNK0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=zkBlk2QNc9mPtufMq/iEjn53cFumIq9wAjcRocCCI8RgPJoM9H06ehv9oHlliijj2
+         VqbqumDlCzSiTikRTbTfXThbA1amJn6fVjQnzAh8FhuCJy+dbuR8foocn623SuGKRX
+         PalZQ9tPvDVjPUXv2HPH1v+ZejrZ3xVhpWf9rhS3BrjhBQeLY6sSG2wKXnmRtszfc/
+         YL/DBjeigJncwvGX4uRR1hnd16PS13DLbf1mTYjxP9mBx+pBhSIMi15uDm44DhLtQc
+         1Ohw/ys088tXIuII3zV3ZpdyHtKu9m8Q/qo9b7sx5aC+PVGWtzsdWjjdleGkBeck5e
+         ZoPD9AFKyPYJw==
+X-Nifty-SrcIP: [209.85.217.42]
+Received: by mail-vs1-f42.google.com with SMTP id n10so8296918vso.13;
+        Thu, 10 Jan 2019 18:15:59 -0800 (PST)
+X-Gm-Message-State: AJcUukcCNanyw0qj2F0puWErTvP8UrXQOTGMU/FU3HZpL6lZVMtlfwNH
+        D0hCRDXzNEa6pGWFfdKHByFn3H+ZI2yHA1kZqUo=
+X-Google-Smtp-Source: ALg8bN4SQcR8JmaN7fz8IHJOtx1jgiIcL8bQMLKI5tjEzGHJgWel8E4Tq061mmjnOUjlpsSeUvNzf0BEx43rqSWYHTI=
+X-Received: by 2002:a67:385a:: with SMTP id f87mr5196361vsa.179.1547172958102;
+ Thu, 10 Jan 2019 18:15:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2f4SCJXrm6HWO9UKY-akSW+ONNpOvQOtYbia_fRo9ciQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-GeoIP: NZ
-X-Spam_score: -2.9
-X-Spam_score_int: -28
-X-Spam_bar: --
+References: <CAMuHMdUw9LMVb-8RSNVBEcDMVB9SFOdfF+kb20=gxJiWF1x8sQ@mail.gmail.com>
+ <20190109231539.24613-1-paul.burton@mips.com> <CAK7LNAReiEzF1nS8WR_yUmi-boJnfLWw5bjUvL2rDEAYnxwCzw@mail.gmail.com>
+ <20190110181106.otlwmiznvq2l67iv@pburton-laptop>
+In-Reply-To: <20190110181106.otlwmiznvq2l67iv@pburton-laptop>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 11 Jan 2019 11:15:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS-r4gZOxdJCNaQwHtOYbxHbdupu57qncWkE+bhGfb_7g@mail.gmail.com>
+Message-ID: <CAK7LNAS-r4gZOxdJCNaQwHtOYbxHbdupu57qncWkE+bhGfb_7g@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Disable LD_DEAD_CODE_DATA_ELIMINATION with ftrace
+ & GCC <= 4.7
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Jan 10, 2019 at 11:42:32PM +0100, Arnd Bergmann wrote:
-> On Thu, Jan 10, 2019 at 7:10 PM Joseph Myers <joseph@codesourcery.com> wrote:
+On Fri, Jan 11, 2019 at 3:11 AM Paul Burton <paul.burton@mips.com> wrote:
+>
+> Hi Masahiro,
+>
+> On Thu, Jan 10, 2019 at 11:00:49AM +0900, Masahiro Yamada wrote:
+> > On Thu, Jan 10, 2019 at 8:16 AM Paul Burton <paul.burton@mips.com> wrote:
+> > > When building using GCC 4.7 or older, -ffunction-sections & the -pg flag
+> > > used by ftrace are incompatible. This causes warnings or build failures
+> > > (where -Werror applies) such as the following:
+> > >
+> > >   arch/mips/generic/init.c:
+> > >     error: -ffunction-sections disabled; it makes profiling impossible
+> > >
+> > > This used to be taken into account by the ordering of calls to cc-option
+> > > from within the top-level Makefile, which was introduced by commit
+> > > 90ad4052e85c ("kbuild: avoid conflict between -ffunction-sections and
+> > > -pg on gcc-4.7"). Unfortunately this was broken when the
+> > > CONFIG_LD_DEAD_CODE_DATA_ELIMINATION cc-option check was moved to
+> > > Kconfig in commit e85d1d65cd8a ("kbuild: test dead code/data elimination
+> > > support in Kconfig"), because the flags used by this check no longer
+> > > include -pg.
+> > >
+> > > Fix this by not allowing CONFIG_LD_DEAD_CODE_DATA_ELIMINATION to be
+> > > enabled at the same time as ftrace/CONFIG_FUNCTION_TRACER when building
+> > > using GCC 4.7 or older.
+> > >
+> > > Signed-off-by: Paul Burton <paul.burton@mips.com>
+> > > Fixes: e85d1d65cd8a ("kbuild: test dead code/data elimination support in Kconfig")
+> > > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > > Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > > Cc: stable@vger.kernel.org # v4.19+
+> > > ---
+> > >  init/Kconfig | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/init/Kconfig b/init/Kconfig
+> > > index d47cb77a220e..c787f782148d 100644
+> > > --- a/init/Kconfig
+> > > +++ b/init/Kconfig
+> > > @@ -1124,6 +1124,7 @@ config LD_DEAD_CODE_DATA_ELIMINATION
+> > >         bool "Dead code and data elimination (EXPERIMENTAL)"
+> > >         depends on HAVE_LD_DEAD_CODE_DATA_ELIMINATION
+> > >         depends on EXPERT
+> > > +       depends on !FUNCTION_TRACER || !CC_IS_GCC || GCC_VERSION >= 40800
+> > >         depends on $(cc-option,-ffunction-sections -fdata-sections)
+> > >         depends on $(ld-option,--gc-sections)
+> > >         help
 > >
-> > On Thu, 10 Jan 2019, Arnd Bergmann wrote:
+> > Thanks for the fix.
 > >
-> > > - Add system calls that have not yet been integrated into all
-> > >   architectures but that we definitely want there.
+> > I prefer this explicit 'depends on'.
 > >
-> > glibc has a note that alpha lacks statfs64, any plans for that?
-> 
-> Good catch, I missed that because all other 64-bit architectures
-> have a statfs() call with 64-bit fields. I see that it also has an
-> osf_statfs64 structure and system call with lots of padding and some
-> oddly sized fields: f_type, f_flags and f_namemax are only 16 bits
-> wide, the rest is all 64-bit.
-> 
-> Adding the regular statfs64() should be easy enough, we just need to
-> decide which layout to use:
-> 
-> a) use the currently unused 'struct statfs64' as provided by the
->     alpha uapi headers, which has a 32-bit __statfs_word but
->     64-bit f_blocks, f_bfree, f_bavail, f_files, and f_ffree.
-> 
-> b) copy asm-generic/statfs.h to the alpha asm/statfs.h and
->     change statfs64 to have the regular layout that we use
->     on all other 64-bit architectures, using all 64-bit fields.
-> 
-> The other open question for alpha (as mentioned in one of the
-> patches I sent) would be whether to add get{eg,eu,g,p,pp,u}id()
-> with the regular calling conventions.
+> > Relying on the order of $(call cc-option, ...) in Makefile is fragile.
+> >
+> > We raise the compiler minimum version from time to time.
+> > So, this 'depends on' will eventually go away in the future.
+> >
+> > BTW, which one do you think more readable?
+> >
+> > depends on !FUNCTION_TRACER || !CC_IS_GCC || GCC_VERSION >= 40800
+> >
+> >     OR
+> >
+> > depends on !(FUNCTION_TRACER && CC_IS_GCC && GCC_VERSION < 40800)
+>
+> Thanks - yes I agree it's nice that this is more explicit than the
+> ordering we previously relied upon.
+>
+> I personally don't mind either of the 2 options above - let me know if
+> you'd like me to submit a v2 using your second option.
+>
+> Thanks,
+>     Paul
 
-I would be interested in seeing those provided on Alpha.  There are
-a handful of projects choosing to sidestep glibc for these syscalls
-and they break on Alpha.  Such projects are never keen to include
-special assembler code (because the extant syscalls on Alpha are not
-C ABI compliant) to support a legacy arch.
 
-Cheers
-Michael.
+
+Personally, I slightly prefer this:
+   depends on !(FUNCTION_TRACER && CC_IS_GCC && GCC_VERSION < 40800)
+
+
+It is more consistent with your patch title:
+   "Disable LD_DEAD_CODE_DATA_ELIMINATION with ftrace & GCC <= 4.7"
+
+
+May I ask v2?
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

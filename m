@@ -2,47 +2,47 @@ Return-Path: <SRS0=8GSq=PX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5164C43444
-	for <linux-mips@archiver.kernel.org>; Tue, 15 Jan 2019 15:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0830C43387
+	for <linux-mips@archiver.kernel.org>; Tue, 15 Jan 2019 15:19:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C119820656
-	for <linux-mips@archiver.kernel.org>; Tue, 15 Jan 2019 15:01:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 77965204FD
+	for <linux-mips@archiver.kernel.org>; Tue, 15 Jan 2019 15:19:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730563AbfAOPBn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 15 Jan 2019 10:01:43 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:33389 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729474AbfAOPBm (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 15 Jan 2019 10:01:42 -0500
-Received: by mail-qk1-f194.google.com with SMTP id d15so1727212qkj.0;
-        Tue, 15 Jan 2019 07:01:41 -0800 (PST)
+        id S1730748AbfAOPTG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 15 Jan 2019 10:19:06 -0500
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:46425 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730723AbfAOPTG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 15 Jan 2019 10:19:06 -0500
+Received: by mail-qk1-f195.google.com with SMTP id q1so1701768qkf.13;
+        Tue, 15 Jan 2019 07:19:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/j2xo8vyz06xg1gQlvQEYwJpD6WHXsDfeyUW+0147bI=;
-        b=XChiI9LVpdP21E9M1BNsF/4opcOvd3RVRf4P0jzJvaaYD3PfScOPTwoLSpaZVZjapk
-         H7drWl6gyidFgDVdRtsKtSLlRHNkr6y0gED/HPE/XVBUHg9cfuXp3d2+QV+L0cdyCdZ/
-         eP2TUAINwFOV517OKUXtJIksrCi82W2alWItH8OYHyzVU9pdIkX9bEDJQ0CgOiE0ztb+
-         m0l28O43hGTk2FekD9zKBlzDghMdN07HqbMH1yNvgI5PkEEbfk3gJAg8q41wRBS/I+S0
-         rWdyGqSYnOvdah3rJB+JqTnU/kIJIzVufHfDWoIbCXI4ltTOslUfOcA16SWLezsnMiQf
-         Puow==
-X-Gm-Message-State: AJcUukddl6JAB0EAsXSDy6xi7cH5ub8Rvmshvn7te49258faIIaRjZaH
-        5hCoi7ly0oLN60ugy8s2xVXNDze/xTs+MwTwJd0=
-X-Google-Smtp-Source: ALg8bN66ERQQcRHL6kpituOugRhaYl47wq+bMeU6L9UD0bbjiIXTK390uY37r+V2oE8uztNtYSgBmDdqY7/ckMkByIg=
-X-Received: by 2002:ae9:d8c2:: with SMTP id u185mr2882793qkf.107.1547564501193;
- Tue, 15 Jan 2019 07:01:41 -0800 (PST)
+        bh=OFGD7PXuhpa61ZNV+Dxzw50BERwu8kM4CC/gfLY4p9U=;
+        b=RNVXtHa5mOqBp4fFgCoHSu3Efmncw7kt9SLtisyVH/Y8jI1K3Iuy53T2d2kACwDYmP
+         O84hjXwmvxDzxI6Br8cqx9K/okkxX8dj5QIsEGqJYKOn647yAejO/9azgflNirdOY8iz
+         ZZU61772RM5lxxRKI1XVCs2okrl/dBiMwHi8EcXcctLrEE5l39VABVgzN5TtbqKULuGW
+         bih3oHJn7ytTv52jHbXuQs45afQrkxM4Ipvc6wBYULRGp6F5aBieeIOsAyy3D9DMTnH8
+         s/8UFcuHYKO1yWTydCY8FCQknIFG/ox34nwe4fpN7ypuhRBY5zyX8w1MnN7UqFrx3l+b
+         Gplw==
+X-Gm-Message-State: AJcUukeQuNKqrGPQYqCssoIRKBPqyWXL7z+FG7/W9TXUrAQRujIyaXGo
+        MvlPn8uZL3BrRc8DUzDf4y9oss14THeI1B5G8kQ=
+X-Google-Smtp-Source: ALg8bN5li7wBTklauFcVKrMtYE7+j8exj0sCThMZxxkRVYqsdAVuAfN8FZb6/7OCIQd/h7bJ0hMXGi+Oq4K6cLzGY0s=
+X-Received: by 2002:ae9:d8c2:: with SMTP id u185mr2951683qkf.107.1547565544568;
+ Tue, 15 Jan 2019 07:19:04 -0800 (PST)
 MIME-Version: 1.0
 References: <20190110162435.309262-1-arnd@arndb.de> <20190110162435.309262-15-arnd@arndb.de>
- <87pnsz28k2.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87pnsz28k2.fsf@concordia.ellerman.id.au>
+ <87pnsz28k2.fsf@concordia.ellerman.id.au> <CAK8P3a0uas76i2W1yjFvxHT-2=A8_egUZeAUM-Vya6386+87Xg@mail.gmail.com>
+In-Reply-To: <CAK8P3a0uas76i2W1yjFvxHT-2=A8_egUZeAUM-Vya6386+87Xg@mail.gmail.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 15 Jan 2019 16:01:24 +0100
-Message-ID: <CAK8P3a0uas76i2W1yjFvxHT-2=A8_egUZeAUM-Vya6386+87Xg@mail.gmail.com>
+Date:   Tue, 15 Jan 2019 16:18:48 +0100
+Message-ID: <CAK8P3a3eUzGDrJtV2ySpgHwjKHwZYr+1xHp6tChCt1gWi=mJ+g@mail.gmail.com>
 Subject: Re: [PATCH 14/15] arch: add split IPC system calls where needed
 To:     Michael Ellerman <mpe@ellerman.id.au>
 Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
@@ -91,64 +91,37 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Jan 14, 2019 at 4:59 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Arnd Bergmann <arnd@arndb.de> writes:
-> >  arch/m68k/kernel/syscalls/syscall.tbl     | 11 +++++++++++
-> >  arch/mips/kernel/syscalls/syscall_o32.tbl | 11 +++++++++++
-> >  arch/powerpc/kernel/syscalls/syscall.tbl  | 12 ++++++++++++
+On Tue, Jan 15, 2019 at 4:01 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> I have some changes I'd like to make to our syscall table that will
-> clash with this.
+> On Mon, Jan 14, 2019 at 4:59 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> > Arnd Bergmann <arnd@arndb.de> writes:
+> > >  arch/m68k/kernel/syscalls/syscall.tbl     | 11 +++++++++++
+> > >  arch/mips/kernel/syscalls/syscall_o32.tbl | 11 +++++++++++
+> > >  arch/powerpc/kernel/syscalls/syscall.tbl  | 12 ++++++++++++
+> >
+> > I have some changes I'd like to make to our syscall table that will
+> > clash with this.
+> >
+> > I'll try and send them today.
 >
-> I'll try and send them today.
+> Ok. Are those for 5.0 or 5.1? If they are intended for 5.0, it would be
+> nice for me to have a branch based on 5.0-rc1 that I can put
+> the other patches on top of.
 
-Ok. Are those for 5.0 or 5.1? If they are intended for 5.0, it would be
-nice for me to have a branch based on 5.0-rc1 that I can put
-the other patches on top of.
+There is also another change that I considered:
 
-> > diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> > index db3bbb8744af..1bffab54ff35 100644
-> > --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> > +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> > @@ -425,3 +425,15 @@
-> >  386  nospu   pkey_mprotect                   sys_pkey_mprotect
-> >  387  nospu   rseq                            sys_rseq
-> >  388  nospu   io_pgetevents                   sys_io_pgetevents               compat_sys_io_pgetevents
-> > +# room for arch specific syscalls
-> > +392  64      semtimedop                      sys_semtimedop
-> > +393  common  semget                          sys_semget
-> > +394  common  semctl                          sys_semctl                      compat_sys_semctl
-> > +395  common  shmget                          sys_shmget
-> > +396  common  shmctl                          sys_shmctl                      compat_sys_shmctl
-> > +397  common  shmat                           sys_shmat                       compat_sys_shmat
-> > +398  common  shmdt                           sys_shmdt
-> > +399  common  msgget                          sys_msgget
-> > +400  common  msgsnd                          sys_msgsnd                      compat_sys_msgsnd
-> > +401  common  msgrcv                          sys_msgrcv                      compat_sys_msgrcv
-> > +402  common  msgctl                          sys_msgctl                      compat_sys_msgctl
->
-> We already have a gap at 366-377 from when we tried to add the split IPC
-> calls a few years back.
->
-> I guess I don't mind leaving that gap and using the common numbers as
-> you've done here.
->
-> But it would be good to add a comment pointing out that we have room
-> at 366 for more arch specific syscalls as well.
+At the end of my series, we have a lot of entries like
 
-Ah, I missed that. I've added this to my patch now:
+245     32      clock_settime                   sys_clock_settime32
+245     64      clock_settime                   sys_clock_settime
+245     spu     clock_settime                   sys_clock_settime
 
-index 5c0936d862fc..2ddfba536d5f 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -460,6 +460,7 @@
- 363    spu     switch_endian                   sys_ni_syscall
- 364    common  userfaultfd                     sys_userfaultfd
- 365    common  membarrier                      sys_membarrier
-+# 366-377 originally left for IPC, now unused
- 378    nospu   mlock2                          sys_mlock2
- 379    nospu   copy_file_range                 sys_copy_file_range
- 380    common  preadv2                         sys_preadv2
-         compat_sys_preadv2
+which could be folded into
 
-       Arnd
+245     32      clock_settime                   sys_clock_settime32
+245     spu64 clock_settime                   sys_clock_settime
+
+if we just add another option to the ABI field. Any thoughts on
+that?
+
+      Arnd

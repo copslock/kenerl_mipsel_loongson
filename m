@@ -6,48 +6,48 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB45EC43387
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 13:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18842C43387
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 13:47:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7F1BC2082F
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 13:47:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DA6F8206C2
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 13:47:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393464AbfAPNrF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Jan 2019 08:47:05 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55448 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2393422AbfAPNqB (ORCPT
+        id S2393363AbfAPNps (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 16 Jan 2019 08:45:48 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:36966 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2393374AbfAPNps (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 16 Jan 2019 08:46:01 -0500
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id x0GDeaQZ007011
-        for <linux-mips@vger.kernel.org>; Wed, 16 Jan 2019 08:45:59 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2q23unwt09-1
+        Wed, 16 Jan 2019 08:45:48 -0500
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.22/8.16.0.22) with SMTP id x0GDeaRt079476
+        for <linux-mips@vger.kernel.org>; Wed, 16 Jan 2019 08:45:47 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2q2303fwcq-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Wed, 16 Jan 2019 08:45:59 -0500
+        for <linux-mips@vger.kernel.org>; Wed, 16 Jan 2019 08:45:46 -0500
 Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Wed, 16 Jan 2019 13:45:56 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 16 Jan 2019 13:45:43 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 16 Jan 2019 13:45:45 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0GDji8f55902306
+        Wed, 16 Jan 2019 13:45:41 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0GDje7X59113472
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Jan 2019 13:45:44 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AE4A2AE051;
-        Wed, 16 Jan 2019 13:45:44 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 884D2AE045;
-        Wed, 16 Jan 2019 13:45:40 +0000 (GMT)
+        Wed, 16 Jan 2019 13:45:40 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D9A2DA4051;
+        Wed, 16 Jan 2019 13:45:39 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B025DA404D;
+        Wed, 16 Jan 2019 13:45:35 +0000 (GMT)
 Received: from rapoport-lnx (unknown [9.148.8.226])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 16 Jan 2019 13:45:40 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 16 Jan 2019 15:45:39 +0200
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 16 Jan 2019 13:45:35 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 16 Jan 2019 15:45:35 +0200
 From:   Mike Rapoport <rppt@linux.ibm.com>
 To:     linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -85,16 +85,16 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
         xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH 16/21] mm/percpu: add checks for the return value of memblock_alloc*()
-Date:   Wed, 16 Jan 2019 15:44:16 +0200
+Subject: [PATCH 15/21] sparc: add checks for the return value of memblock_alloc*()
+Date:   Wed, 16 Jan 2019 15:44:15 +0200
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1547646261-32535-1-git-send-email-rppt@linux.ibm.com>
 References: <1547646261-32535-1-git-send-email-rppt@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19011613-4275-0000-0000-000002FFFF02
+x-cbid: 19011613-0012-0000-0000-000002E8D1CD
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19011613-4276-0000-0000-0000380E204D
-Message-Id: <1547646261-32535-17-git-send-email-rppt@linux.ibm.com>
+x-cbparentid: 19011613-0013-0000-0000-0000211FE9FB
+Message-Id: <1547646261-32535-16-git-send-email-rppt@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-16_05:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -107,143 +107,172 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Add panic() calls if memblock_alloc() returns NULL.
+Add panic() calls if memblock_alloc*() returns NULL.
 
-The panic() format duplicates the one used by memblock itself and in order
-to avoid explosion with long parameters list replace open coded allocation
-size calculations with a local variable.
+Most of the changes are simply addition of
+
+        if(!ptr)
+                panic();
+
+statements after the calls to memblock_alloc*() variants.
+
+Exceptions are pcpu_populate_pte() and kernel_map_range() that were
+slightly refactored to accommodate the change.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- mm/percpu.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 56 insertions(+), 17 deletions(-)
+ arch/sparc/kernel/prom_32.c  |  2 ++
+ arch/sparc/kernel/setup_64.c |  6 ++++++
+ arch/sparc/kernel/smp_64.c   | 12 ++++++++++++
+ arch/sparc/mm/init_64.c      | 11 +++++++++++
+ arch/sparc/mm/srmmu.c        |  8 ++++++++
+ 5 files changed, 39 insertions(+)
 
-diff --git a/mm/percpu.c b/mm/percpu.c
-index db86282..5998b03 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1086,6 +1086,7 @@ static struct pcpu_chunk * __init pcpu_alloc_first_chunk(unsigned long tmp_addr,
- 	struct pcpu_chunk *chunk;
- 	unsigned long aligned_addr, lcm_align;
- 	int start_offset, offset_bits, region_size, region_bits;
-+	size_t alloc_size;
+diff --git a/arch/sparc/kernel/prom_32.c b/arch/sparc/kernel/prom_32.c
+index e7126ca..869b16c 100644
+--- a/arch/sparc/kernel/prom_32.c
++++ b/arch/sparc/kernel/prom_32.c
+@@ -33,6 +33,8 @@ void * __init prom_early_alloc(unsigned long size)
+ 	void *ret;
  
- 	/* region calculations */
- 	aligned_addr = tmp_addr & PAGE_MASK;
-@@ -1101,9 +1102,12 @@ static struct pcpu_chunk * __init pcpu_alloc_first_chunk(unsigned long tmp_addr,
- 	region_size = ALIGN(start_offset + map_size, lcm_align);
+ 	ret = memblock_alloc(size, SMP_CACHE_BYTES);
++	if (!ret)
++		panic("%s: Failed to allocate %lu bytes\n", __func__, size);
  
- 	/* allocate chunk */
--	chunk = memblock_alloc(sizeof(struct pcpu_chunk) +
--			       BITS_TO_LONGS(region_size >> PAGE_SHIFT),
--			       SMP_CACHE_BYTES);
-+	alloc_size = sizeof(struct pcpu_chunk) +
-+		BITS_TO_LONGS(region_size >> PAGE_SHIFT);
-+	chunk = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!chunk)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
+ 	prom_early_allocated += size;
  
- 	INIT_LIST_HEAD(&chunk->list);
+diff --git a/arch/sparc/kernel/setup_64.c b/arch/sparc/kernel/setup_64.c
+index 51c4d12..fd2182a 100644
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -624,8 +624,14 @@ void __init alloc_irqstack_bootmem(void)
  
-@@ -1114,12 +1118,25 @@ static struct pcpu_chunk * __init pcpu_alloc_first_chunk(unsigned long tmp_addr,
- 	chunk->nr_pages = region_size >> PAGE_SHIFT;
- 	region_bits = pcpu_chunk_map_bits(chunk);
+ 		softirq_stack[i] = memblock_alloc_node(THREAD_SIZE,
+ 						       THREAD_SIZE, node);
++		if (!softirq_stack[i])
++			panic("%s: Failed to allocate %lu bytes align=%lx nid=%d\n",
++			      __func__, THREAD_SIZE, THREAD_SIZE, node);
+ 		hardirq_stack[i] = memblock_alloc_node(THREAD_SIZE,
+ 						       THREAD_SIZE, node);
++		if (!hardirq_stack[i])
++			panic("%s: Failed to allocate %lu bytes align=%lx nid=%d\n",
++			      __func__, THREAD_SIZE, THREAD_SIZE, node);
+ 	}
+ }
  
--	chunk->alloc_map = memblock_alloc(BITS_TO_LONGS(region_bits) * sizeof(chunk->alloc_map[0]),
--					  SMP_CACHE_BYTES);
--	chunk->bound_map = memblock_alloc(BITS_TO_LONGS(region_bits + 1) * sizeof(chunk->bound_map[0]),
--					  SMP_CACHE_BYTES);
--	chunk->md_blocks = memblock_alloc(pcpu_chunk_nr_blocks(chunk) * sizeof(chunk->md_blocks[0]),
--					  SMP_CACHE_BYTES);
-+	alloc_size = BITS_TO_LONGS(region_bits) * sizeof(chunk->alloc_map[0]);
-+	chunk->alloc_map = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!chunk->alloc_map)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index f45d876..a8275fe 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1628,6 +1628,8 @@ static void __init pcpu_populate_pte(unsigned long addr)
+ 		pud_t *new;
+ 
+ 		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
++		if (!new)
++			goto err_alloc;
+ 		pgd_populate(&init_mm, pgd, new);
+ 	}
+ 
+@@ -1636,6 +1638,8 @@ static void __init pcpu_populate_pte(unsigned long addr)
+ 		pmd_t *new;
+ 
+ 		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
++		if (!new)
++			goto err_alloc;
+ 		pud_populate(&init_mm, pud, new);
+ 	}
+ 
+@@ -1644,8 +1648,16 @@ static void __init pcpu_populate_pte(unsigned long addr)
+ 		pte_t *new;
+ 
+ 		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
++		if (!new)
++			goto err_alloc;
+ 		pmd_populate_kernel(&init_mm, pmd, new);
+ 	}
 +
-+	alloc_size =
-+		BITS_TO_LONGS(region_bits + 1) * sizeof(chunk->bound_map[0]);
-+	chunk->bound_map = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!chunk->bound_map)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
++	return;
 +
-+	alloc_size = pcpu_chunk_nr_blocks(chunk) * sizeof(chunk->md_blocks[0]);
-+	chunk->md_blocks = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!chunk->md_blocks)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
++err_alloc:
++	panic("%s: Failed to allocate %lu bytes align=%lx from=%lx\n",
++	      __func__, PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+ }
+ 
+ void __init setup_per_cpu_areas(void)
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index ef340e8..f2d70ff 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -1809,6 +1809,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+ 
+ 			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+ 						  PAGE_SIZE);
++			if (!new)
++				goto err_alloc;
+ 			alloc_bytes += PAGE_SIZE;
+ 			pgd_populate(&init_mm, pgd, new);
+ 		}
+@@ -1822,6 +1824,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+ 			}
+ 			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+ 						  PAGE_SIZE);
++			if (!new)
++				goto err_alloc;
+ 			alloc_bytes += PAGE_SIZE;
+ 			pud_populate(&init_mm, pud, new);
+ 		}
+@@ -1836,6 +1840,8 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+ 			}
+ 			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+ 						  PAGE_SIZE);
++			if (!new)
++				goto err_alloc;
+ 			alloc_bytes += PAGE_SIZE;
+ 			pmd_populate_kernel(&init_mm, pmd, new);
+ 		}
+@@ -1855,6 +1861,11 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+ 	}
+ 
+ 	return alloc_bytes;
 +
- 	pcpu_init_md_blocks(chunk);
++err_alloc:
++	panic("%s: Failed to allocate %lu bytes align=%lx from=%lx\n",
++	      __func__, PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
++	return -ENOMEM;
+ }
  
- 	/* manage populated page bitmap */
-@@ -2044,6 +2061,7 @@ int __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
- 	int group, unit, i;
- 	int map_size;
- 	unsigned long tmp_addr;
-+	size_t alloc_size;
+ static void __init flush_all_kernel_tsbs(void)
+diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+index a400ec3..aaebbc0 100644
+--- a/arch/sparc/mm/srmmu.c
++++ b/arch/sparc/mm/srmmu.c
+@@ -305,11 +305,17 @@ static void __init srmmu_nocache_init(void)
  
- #define PCPU_SETUP_BUG_ON(cond)	do {					\
- 	if (unlikely(cond)) {						\
-@@ -2075,14 +2093,29 @@ int __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
- 	PCPU_SETUP_BUG_ON(pcpu_verify_alloc_info(ai) < 0);
+ 	srmmu_nocache_pool = memblock_alloc(srmmu_nocache_size,
+ 					    SRMMU_NOCACHE_ALIGN_MAX);
++	if (!srmmu_nocache_pool)
++		panic("%s: Failed to allocate %lu bytes align=0x%x\n",
++		      __func__, srmmu_nocache_size, SRMMU_NOCACHE_ALIGN_MAX);
+ 	memset(srmmu_nocache_pool, 0, srmmu_nocache_size);
  
- 	/* process group information and build config tables accordingly */
--	group_offsets = memblock_alloc(ai->nr_groups * sizeof(group_offsets[0]),
--				       SMP_CACHE_BYTES);
--	group_sizes = memblock_alloc(ai->nr_groups * sizeof(group_sizes[0]),
--				     SMP_CACHE_BYTES);
--	unit_map = memblock_alloc(nr_cpu_ids * sizeof(unit_map[0]),
--				  SMP_CACHE_BYTES);
--	unit_off = memblock_alloc(nr_cpu_ids * sizeof(unit_off[0]),
--				  SMP_CACHE_BYTES);
-+	alloc_size = ai->nr_groups * sizeof(group_offsets[0]);
-+	group_offsets = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!group_offsets)
+ 	srmmu_nocache_bitmap =
+ 		memblock_alloc(BITS_TO_LONGS(bitmap_bits) * sizeof(long),
+ 			       SMP_CACHE_BYTES);
++	if (!srmmu_nocache_bitmap)
 +		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
-+
-+	alloc_size = ai->nr_groups * sizeof(group_sizes[0]);
-+	group_sizes = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!group_sizes)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
-+
-+	alloc_size = nr_cpu_ids * sizeof(unit_map[0]);
-+	unit_map = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!unit_map)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
-+
-+	alloc_size = nr_cpu_ids * sizeof(unit_off[0]);
-+	unit_off = memblock_alloc(alloc_size, SMP_CACHE_BYTES);
-+	if (!unit_off)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      alloc_size);
++		      BITS_TO_LONGS(bitmap_bits) * sizeof(long));
+ 	bit_map_init(&srmmu_nocache_map, srmmu_nocache_bitmap, bitmap_bits);
  
- 	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
- 		unit_map[cpu] = UINT_MAX;
-@@ -2148,6 +2181,9 @@ int __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
- 	pcpu_nr_slots = __pcpu_size_to_slot(pcpu_unit_size) + 2;
- 	pcpu_slot = memblock_alloc(pcpu_nr_slots * sizeof(pcpu_slot[0]),
- 				   SMP_CACHE_BYTES);
-+	if (!pcpu_slot)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      pcpu_nr_slots * sizeof(pcpu_slot[0]));
- 	for (i = 0; i < pcpu_nr_slots; i++)
- 		INIT_LIST_HEAD(&pcpu_slot[i]);
+ 	srmmu_swapper_pg_dir = __srmmu_get_nocache(SRMMU_PGD_TABLE_SIZE, SRMMU_PGD_TABLE_SIZE);
+@@ -468,6 +474,8 @@ static void __init sparc_context_init(int numctx)
  
-@@ -2602,6 +2638,9 @@ int __init pcpu_page_first_chunk(size_t reserved_size,
- 	pages_size = PFN_ALIGN(unit_pages * num_possible_cpus() *
- 			       sizeof(pages[0]));
- 	pages = memblock_alloc(pages_size, SMP_CACHE_BYTES);
-+	if (!pages)
-+		panic("%s: Failed to allocate %zu bytes\n", __func__,
-+		      pages_size);
+ 	size = numctx * sizeof(struct ctx_list);
+ 	ctx_list_pool = memblock_alloc(size, SMP_CACHE_BYTES);
++	if (!ctx_list_pool)
++		panic("%s: Failed to allocate %lu bytes\n", __func__, size);
  
- 	/* allocate pages */
- 	j = 0;
+ 	for (ctx = 0; ctx < numctx; ctx++) {
+ 		struct ctx_list *clist;
 -- 
 2.7.4
 

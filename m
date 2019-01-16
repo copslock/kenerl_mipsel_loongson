@@ -2,82 +2,124 @@ Return-Path: <SRS0=gHsu=PY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E786C43387
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 17:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6194DC43387
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 18:56:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F2E5120578
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 17:21:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3AD502086D
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Jan 2019 18:56:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405888AbfAPRVw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Jan 2019 12:21:52 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:41306 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405842AbfAPRVv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 16 Jan 2019 12:21:51 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::bf5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 58B4C14B56D28;
-        Wed, 16 Jan 2019 09:21:48 -0800 (PST)
-Date:   Wed, 16 Jan 2019 09:21:47 -0800 (PST)
-Message-Id: <20190116.092147.2222967221278304230.davem@davemloft.net>
-To:     rppt@linux.ibm.com
-Cc:     linux-mm@kvack.org, akpm@linux-foundation.org,
-        catalin.marinas@arm.com, hch@lst.de, dennis@kernel.org,
-        geert@linux-m68k.org, green.hu@gmail.com,
-        gregkh@linuxfoundation.org, gxt@pku.edu.cn, guoren@kernel.org,
-        heiko.carstens@de.ibm.com, msalter@redhat.com, mattst88@gmail.com,
-        jcmvbkbc@gmail.com, mpe@ellerman.id.au, monstr@monstr.eu,
-        paul.burton@mips.com, pmladek@suse.com, dalias@libc.org,
-        richard@nod.at, robh+dt@kernel.org, linux@armlinux.org.uk,
-        shorne@gmail.com, tony.luck@intel.com, vgupta@synopsys.com,
-        ysato@users.sourceforge.jp, devicetree@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linux-usb@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
-        sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        x86@kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 15/21] sparc: add checks for the return value of
- memblock_alloc*()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1547646261-32535-16-git-send-email-rppt@linux.ibm.com>
-References: <1547646261-32535-1-git-send-email-rppt@linux.ibm.com>
-        <1547646261-32535-16-git-send-email-rppt@linux.ibm.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 16 Jan 2019 09:21:50 -0800 (PST)
+        id S1729776AbfAPS4c (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 16 Jan 2019 13:56:32 -0500
+Received: from smtp1-g21.free.fr ([212.27.42.1]:60512 "EHLO smtp1-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729085AbfAPS4c (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 16 Jan 2019 13:56:32 -0500
+Received: from localhost.localdomain (unknown [IPv6:2a02:8108:4840:8f74:a08c:f56:b2dd:7ae0])
+        (Authenticated sender: albeu)
+        by smtp1-g21.free.fr (Postfix) with ESMTPA id 8BBFBB00583;
+        Wed, 16 Jan 2019 19:56:13 +0100 (CET)
+From:   Alban Bedel <albeu@free.fr>
+To:     linux-kernel@vger.kernel.org
+Cc:     Alban Bedel <albeu@free.fr>, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Mark Brown <broonie@kernel.org>, linux-mips@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: [PATCH 3/6] spi: ath79: Enable support for compile test
+Date:   Wed, 16 Jan 2019 19:55:46 +0100
+Message-Id: <20190116185549.23295-3-albeu@free.fr>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20190116185549.23295-1-albeu@free.fr>
+References: <20190116185549.23295-1-albeu@free.fr>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
-Date: Wed, 16 Jan 2019 15:44:15 +0200
+To allow building this driver in compile test we need to remove all
+dependency on headers from arch/mips/include. To allow this we
+explicitly define all the registers locally instead of using
+ar71xx_regs.h and we move the platform data struct definition to
+include/linux/platform_data/spi-ath79.h.
 
-> Add panic() calls if memblock_alloc*() returns NULL.
-> 
-> Most of the changes are simply addition of
-> 
->         if(!ptr)
->                 panic();
-> 
-> statements after the calls to memblock_alloc*() variants.
-> 
-> Exceptions are pcpu_populate_pte() and kernel_map_range() that were
-> slightly refactored to accommodate the change.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Alban Bedel <albeu@free.fr>
+---
+ arch/mips/ath79/dev-spi.h                         |  2 +-
+ drivers/spi/Kconfig                               |  2 +-
+ drivers/spi/spi-ath79.c                           | 15 ++++++++++++---
+ .../linux/platform_data/spi-ath79.h               |  0
+ 4 files changed, 14 insertions(+), 5 deletions(-)
+ rename arch/mips/include/asm/mach-ath79/ath79_spi_platform.h => include/linux/platform_data/spi-ath79.h (100%)
 
-Acked-by: David S. Miller <davem@davemloft.net>
+diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
+index d732565ca736..6e15bc8651be 100644
+--- a/arch/mips/ath79/dev-spi.h
++++ b/arch/mips/ath79/dev-spi.h
+@@ -13,7 +13,7 @@
+ #define _ATH79_DEV_SPI_H
+ 
+ #include <linux/spi/spi.h>
+-#include <asm/mach-ath79/ath79_spi_platform.h>
++#include <linux/platform_data/spi-ath79.h>
+ 
+ void ath79_register_spi(struct ath79_spi_platform_data *pdata,
+ 			 struct spi_board_info const *info,
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 128892c7e21e..71d3d2d5e5d1 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -63,7 +63,7 @@ config SPI_ALTERA
+ 
+ config SPI_ATH79
+ 	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
+-	depends on ATH79
++	depends on ATH79 || COMPILE_TEST
+ 	select SPI_BITBANG
+ 	help
+ 	  This enables support for the SPI controller present on the
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index edf695a359f4..09c4fb7fcf7a 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -23,15 +23,24 @@
+ #include <linux/bitops.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-
+-#include <asm/mach-ath79/ar71xx_regs.h>
+-#include <asm/mach-ath79/ath79_spi_platform.h>
++#include <linux/platform_data/spi-ath79.h>
+ 
+ #define DRV_NAME	"ath79-spi"
+ 
+ #define ATH79_SPI_RRW_DELAY_FACTOR	12000
+ #define MHZ				(1000 * 1000)
+ 
++#define AR71XX_SPI_REG_FS		0x00	/* Function Select */
++#define AR71XX_SPI_REG_CTRL		0x04	/* SPI Control */
++#define AR71XX_SPI_REG_IOC		0x08	/* SPI I/O Control */
++#define AR71XX_SPI_REG_RDS		0x0c	/* Read Data Shift */
++
++#define AR71XX_SPI_FS_GPIO		BIT(0)	/* Enable GPIO mode */
++
++#define AR71XX_SPI_IOC_DO		BIT(0)	/* Data Out pin */
++#define AR71XX_SPI_IOC_CLK		BIT(8)	/* CLK pin */
++#define AR71XX_SPI_IOC_CS(n)		BIT(16 + (n))
++
+ struct ath79_spi {
+ 	struct spi_bitbang	bitbang;
+ 	u32			ioc_base;
+diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/include/linux/platform_data/spi-ath79.h
+similarity index 100%
+rename from arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+rename to include/linux/platform_data/spi-ath79.h
+-- 
+2.19.1
+

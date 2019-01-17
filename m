@@ -2,43 +2,28 @@ Return-Path: <SRS0=9u5Z=PZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5898C43387
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 07:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 850B4C43387
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 09:28:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7465D20859
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 07:06:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1547708779;
-	bh=YQg5kK0CK1gygp8V+fUKHMM30p/aVFKoBFNquIpl8z4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=l30KpFK/XrafEerCUC/FMYUGq+jSZzjmywgUtr9fb/0yOipcWWqopauOcSNga2iKz
-	 TY+vds74tBVOL00Bqr1zjm4ci4+NjedhsVLqTrI5SSyXCeKXQCKjf/ghzgrQeJWXwX
-	 umSb0HxLmdt5VZlL2IY1P1UCEDPdILh0k3JDdHvw=
+	by mail.kernel.org (Postfix) with ESMTP id 5F49A20851
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 09:28:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730400AbfAQHGT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Jan 2019 02:06:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730398AbfAQHGT (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 17 Jan 2019 02:06:19 -0500
-Received: from guoren-Inspiron-7460 (23.83.240.247.16clouds.com [23.83.240.247])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 353B920856;
-        Thu, 17 Jan 2019 07:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1547708777;
-        bh=YQg5kK0CK1gygp8V+fUKHMM30p/aVFKoBFNquIpl8z4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0pw3ulKi3jq4oKmvxSJxzzJsSdMcohB7IigecglkQT5Rx7a1QVi6VMiKG+7/EaK5C
-         /1jqt2buqhHUph/IaPf93BCvJIFaI+XBcHutXpZ8WKrpTTySrlp18ZPjm07/tBc6Eg
-         nedbQORGuNF/Dh36ZedpPIbDbRoH11rc3m/ItgOI=
-Date:   Thu, 17 Jan 2019 15:06:03 +0800
-From:   Guo Ren <guoren@kernel.org>
+        id S1728486AbfAQJ2t (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Jan 2019 04:28:49 -0500
+Received: from mx2.suse.de ([195.135.220.15]:51720 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727234AbfAQJ2s (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 17 Jan 2019 04:28:48 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 66E4FAC7F;
+        Thu, 17 Jan 2019 09:28:45 +0000 (UTC)
+Date:   Thu, 17 Jan 2019 10:28:42 +0100
+From:   Petr Mladek <pmladek@suse.com>
 To:     Mike Rapoport <rppt@linux.ibm.com>
 Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -48,7 +33,7 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Greentime Hu <green.hu@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guan Xuetao <gxt@pku.edu.cn>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Mark Salter <msalter@redhat.com>,
         Matt Turner <mattst88@gmail.com>,
@@ -56,7 +41,7 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Michal Simek <monstr@monstr.eu>,
         Paul Burton <paul.burton@mips.com>,
-        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
+        Rich Felker <dalias@libc.org>,
         Richard Weinberger <richard@nod.at>,
         Rob Herring <robh+dt@kernel.org>,
         Russell King <linux@armlinux.org.uk>,
@@ -75,41 +60,61 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
         xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 19/21] treewide: add checks for the return value of
- memblock_alloc*()
-Message-ID: <20190117070602.GA31839@guoren-Inspiron-7460>
+Subject: Re: [PATCH 21/21] memblock: drop memblock_alloc_*_nopanic() variants
+Message-ID: <20190117092842.wnvsc6em5mxga3rn@pathway.suse.cz>
 References: <1547646261-32535-1-git-send-email-rppt@linux.ibm.com>
- <1547646261-32535-20-git-send-email-rppt@linux.ibm.com>
+ <1547646261-32535-22-git-send-email-rppt@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1547646261-32535-20-git-send-email-rppt@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <1547646261-32535-22-git-send-email-rppt@linux.ibm.com>
+User-Agent: NeoMutt/20170421 (1.8.2)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Jan 16, 2019 at 03:44:19PM +0200, Mike Rapoport wrote:
->  arch/csky/mm/highmem.c                    |  5 +++++
-...
-> diff --git a/arch/csky/mm/highmem.c b/arch/csky/mm/highmem.c
-> index 53b1bfa..3317b774 100644
-> --- a/arch/csky/mm/highmem.c
-> +++ b/arch/csky/mm/highmem.c
-> @@ -141,6 +141,11 @@ static void __init fixrange_init(unsigned long start, unsigned long end,
->  			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
->  				if (pmd_none(*pmd)) {
->  					pte = (pte_t *) memblock_alloc_low(PAGE_SIZE, PAGE_SIZE);
-> +					if (!pte)
-> +						panic("%s: Failed to allocate %lu bytes align=%lx\n",
-> +						      __func__, PAGE_SIZE,
-> +						      PAGE_SIZE);
-> +
->  					set_pmd(pmd, __pmd(__pa(pte)));
->  					BUG_ON(pte != pte_offset_kernel(pmd, 0));
->  				}
+On Wed 2019-01-16 15:44:21, Mike Rapoport wrote:
+> As all the memblock allocation functions return NULL in case of error
+> rather than panic(), the duplicates with _nopanic suffix can be removed.
 
-Looks good for me and panic is ok.
+[...]
 
-Reviewed-by: Guo Ren <ren_guo@c-sky.com>
+> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> index c4f0a41..ae65221 100644
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -1147,17 +1147,14 @@ void __init setup_log_buf(int early)
+>  	if (!new_log_buf_len)
+>  		return;
+>  
+> -	if (early) {
+> -		new_log_buf =
+> -			memblock_alloc(new_log_buf_len, LOG_ALIGN);
+> -	} else {
+> -		new_log_buf = memblock_alloc_nopanic(new_log_buf_len,
+> -							  LOG_ALIGN);
+> -	}
+> -
+> +	new_log_buf = memblock_alloc(new_log_buf_len, LOG_ALIGN);
+
+The above change is enough.
+
+>  	if (unlikely(!new_log_buf)) {
+> -		pr_err("log_buf_len: %lu bytes not available\n",
+> -			new_log_buf_len);
+> +		if (early)
+> +			panic("log_buf_len: %lu bytes not available\n",
+> +				new_log_buf_len);
+
+panic() is not needed here. printk() will just continue using
+the (smaller) static buffer.
+
+> +		else
+> +			pr_err("log_buf_len: %lu bytes not available\n",
+> +			       new_log_buf_len);
+>  		return;
+>  	}
+
+Best Regards,
+Petr

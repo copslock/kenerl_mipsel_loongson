@@ -2,119 +2,86 @@ Return-Path: <SRS0=9u5Z=PZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 850B4C43387
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 09:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E0A7C43444
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 10:05:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5F49A20851
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 09:28:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5D64420856
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 10:05:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728486AbfAQJ2t (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Jan 2019 04:28:49 -0500
-Received: from mx2.suse.de ([195.135.220.15]:51720 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727234AbfAQJ2s (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 17 Jan 2019 04:28:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 66E4FAC7F;
-        Thu, 17 Jan 2019 09:28:45 +0000 (UTC)
-Date:   Thu, 17 Jan 2019 10:28:42 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Zhou <dennis@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Mark Salter <msalter@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@mips.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        devicetree@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 21/21] memblock: drop memblock_alloc_*_nopanic() variants
-Message-ID: <20190117092842.wnvsc6em5mxga3rn@pathway.suse.cz>
-References: <1547646261-32535-1-git-send-email-rppt@linux.ibm.com>
- <1547646261-32535-22-git-send-email-rppt@linux.ibm.com>
+        id S1727906AbfAQKFF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Jan 2019 05:05:05 -0500
+Received: from mail.bootlin.com ([62.4.15.54]:60531 "EHLO mail.bootlin.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727341AbfAQKFE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 17 Jan 2019 05:05:04 -0500
+Received: by mail.bootlin.com (Postfix, from userid 110)
+        id 3501920994; Thu, 17 Jan 2019 11:05:02 +0100 (CET)
+Received: from localhost (aaubervilliers-681-1-37-87.w90-88.abo.wanadoo.fr [90.88.156.87])
+        by mail.bootlin.com (Postfix) with ESMTPSA id 0C100206DC;
+        Thu, 17 Jan 2019 11:05:02 +0100 (CET)
+From:   Antoine Tenart <antoine.tenart@bootlin.com>
+To:     davem@davemloft.net, alexandre.belloni@bootlin.com,
+        UNGLinuxDriver@microchip.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org
+Cc:     Antoine Tenart <antoine.tenart@bootlin.com>,
+        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
+        thomas.petazzoni@bootlin.com, quentin.schulz@bootlin.com,
+        allan.nielsen@microchip.com
+Subject: [PATCH net-next 3/8] Documentation/bindings: net: ocelot: document the PTP ready IRQ
+Date:   Thu, 17 Jan 2019 11:02:07 +0100
+Message-Id: <20190117100212.2336-4-antoine.tenart@bootlin.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190117100212.2336-1-antoine.tenart@bootlin.com>
+References: <20190117100212.2336-1-antoine.tenart@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1547646261-32535-22-git-send-email-rppt@linux.ibm.com>
-User-Agent: NeoMutt/20170421 (1.8.2)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed 2019-01-16 15:44:21, Mike Rapoport wrote:
-> As all the memblock allocation functions return NULL in case of error
-> rather than panic(), the duplicates with _nopanic suffix can be removed.
+One additional interrupt needs to be described within the Ocelot device
+tree node: the PTP ready one. This patch documents the binding needed to
+do so.
 
-[...]
+Signed-off-by: Antoine Tenart <antoine.tenart@bootlin.com>
+---
+ Documentation/devicetree/bindings/net/mscc-ocelot.txt | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> index c4f0a41..ae65221 100644
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -1147,17 +1147,14 @@ void __init setup_log_buf(int early)
->  	if (!new_log_buf_len)
->  		return;
->  
-> -	if (early) {
-> -		new_log_buf =
-> -			memblock_alloc(new_log_buf_len, LOG_ALIGN);
-> -	} else {
-> -		new_log_buf = memblock_alloc_nopanic(new_log_buf_len,
-> -							  LOG_ALIGN);
-> -	}
-> -
-> +	new_log_buf = memblock_alloc(new_log_buf_len, LOG_ALIGN);
+diff --git a/Documentation/devicetree/bindings/net/mscc-ocelot.txt b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
+index 08bc8d7f0c99..aa33066f3403 100644
+--- a/Documentation/devicetree/bindings/net/mscc-ocelot.txt
++++ b/Documentation/devicetree/bindings/net/mscc-ocelot.txt
+@@ -18,9 +18,10 @@ Required properties:
+   - "ana"
+   - "portX" with X from 0 to the number of last port index available on that
+     switch
+-- interrupts: Should contain the switch interrupts for frame extraction and
+-  frame injection
+-- interrupt-names: should contain the interrupt names: "xtr", "inj"
++- interrupts: Should contain the switch interrupts for frame extraction,
++  frame injection and PTP ready.
++- interrupt-names: should contain the interrupt names: "xtr", "inj" and
++  "ptp_rdy".
+ - ethernet-ports: A container for child nodes representing switch ports.
+ 
+ The ethernet-ports container has the following properties
+@@ -65,8 +66,8 @@ Example:
+ 			    "port1", "port2", "port3", "port4", "port5",
+ 			    "port6", "port7", "port8", "port9", "port10",
+ 			    "qsys", "ana";
+-		interrupts = <21 22>;
+-		interrupt-names = "xtr", "inj";
++		interrupts = <18 21 22>;
++		interrupt-names = "ptp_rdy", "xtr", "inj";
+ 
+ 		ethernet-ports {
+ 			#address-cells = <1>;
+-- 
+2.20.1
 
-The above change is enough.
-
->  	if (unlikely(!new_log_buf)) {
-> -		pr_err("log_buf_len: %lu bytes not available\n",
-> -			new_log_buf_len);
-> +		if (early)
-> +			panic("log_buf_len: %lu bytes not available\n",
-> +				new_log_buf_len);
-
-panic() is not needed here. printk() will just continue using
-the (smaller) static buffer.
-
-> +		else
-> +			pr_err("log_buf_len: %lu bytes not available\n",
-> +			       new_log_buf_len);
->  		return;
->  	}
-
-Best Regards,
-Petr

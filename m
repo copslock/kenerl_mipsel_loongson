@@ -6,21 +6,21 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6EE9C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F8CEC43387
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:23:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B054A20850
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:23:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D2B2B20850
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:23:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728529AbfARQU4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 11:20:56 -0500
-Received: from mout.kundenserver.de ([217.72.192.73]:56675 "EHLO
+        id S1728405AbfARQXl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 11:23:41 -0500
+Received: from mout.kundenserver.de ([217.72.192.73]:40389 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728452AbfARQUz (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 11:20:55 -0500
+        with ESMTP id S1728454AbfARQU4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 11:20:56 -0500
 Received: from wuerfel.lan ([109.192.41.194]) by mrelayeu.kundenserver.de
  (mreue109 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1M4s8v-1glu2i4Ab9-0023hU; Fri, 18 Jan 2019 17:19:36 +0100
+ 1N2m7O-1hDyQL1Aqq-0133Yl; Fri, 18 Jan 2019 17:19:33 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
@@ -41,63 +41,219 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, mattst88@gmail.com,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, netdev@vger.kernel.org,
         linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 15/29] alpha: add standard statfs64/fstatfs64 syscalls
-Date:   Fri, 18 Jan 2019 17:18:21 +0100
-Message-Id: <20190118161835.2259170-16-arnd@arndb.de>
+Subject: [PATCH v2 13/29] arch: add split IPC system calls where needed
+Date:   Fri, 18 Jan 2019 17:18:19 +0100
+Message-Id: <20190118161835.2259170-14-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20190118161835.2259170-1-arnd@arndb.de>
 References: <20190118161835.2259170-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:rSakGMBaEBbAtQUcV3qv3NM7i+OWluASRZee787Xpo3/o23caVn
- QWs5OY5vh9opxy1/zCZ9LY9N9pIJScThNKTMUOE8nA6un262wDIq2Fjhg5yIiWEmn82x0g9
- 8p3VeDjI0Rm19xjqPj0Z3FbT5slvuvHZtcUqZPj+gSCMB48TPbdYEEw4VLMKLx07SalqB3b
- h3OVH5LxVZJKnyB7bc21Q==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lg2Zcst79FI=:RjM/7u0hFuGHZ2BRfjTPMD
- 8fbJ1Oqm5cIPC9GeaHvhUwxiy6Kjrm/A90avnT4gPYEGG3drhLEmcVMffAdNdtsLTT2kOQu/9
- 9U1iqxCzfMtamHuo+Lvykvje1o1aTsd2rp+F0IR9Sf+vhzfs3Ry1952VDFu0nPS2jVP/yso/5
- /zohi1guOX5+PufGw5W40eWBbQtN7cydGZxEf3WMCnZ1zcVlXCx6sY9+1Rjbyvf1+k0f18R8K
- T2QJYu7012AdY16U6LfPR/21li2ADSjVByZ8E43b8tHba6P1U7dW1+DOogZ+wfBjkG0FW+22+
- hK/j1NbUyVDgs/0sAib43CUyRFQovnEdIJiz9ogsL8XY5ptvCVdCiXlgq8U4xBKgcba8zQ2zK
- zP7aq+pVaAWVNpRw9ucrV0CNZqVVkj6exO56AwQ7TSrWLv2er5omNVTKolhgh+K3vCud/MP3k
- QFUAdqHPpxJFDVWW0QclTKKiM+AqrHzrkW5L2rYyv0TKN+BltH3vLxKleH3bq4UKU3V9M54VY
- 149cHyT5F0DL6qHinYu9NHirim1imOhLAhDnmiVl43A3WqSlfS3sTrd2jeYunrJrgAn5huc69
- rDrSDi5snBC3J6gkHsCqMxkqovxLuN0yASzWROjAAglW0rMvI5oSBu5kz+U6ziG7P0chho9G4
- NVjYAQ/GPHW1EJskkpatgeukn2lCfJ97qsSET1mX9q1QVgyHAWcBLswP9TPLd0jQA+/DMuOon
- r0AZp67Be14b8gSfAB9zm3btQOHXBPlWLDZnkQ==
+X-Provags-ID: V03:K1:9XfxT/yEIGsgZ95t7tTrv0ZlB3ol0mXs5p3r6n3+SfpYotNome5
+ 78hcYxl/qsZHAiH3ryHPegLRkajWYUWhxdkKQoy12ZXuApBemPOCYtYMHb3BH6SgsQ8uC9L
+ A78OmvY7o+8q1vzWyQ44qSj7UBFW1A3dcaUzWdLez+SmNyh+oUcHPjNY2NOsmIk+Hqlj3Ld
+ v0WocVxDLqSG9nx4kZdxQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zk26Q6MT1hk=:nDoPYN0HLENH0gKBVB2Myv
+ 1cETQYcXpKiQexVK18lYhHg1U1YYeRw4RYmlx0ovAHX3khqkhUBnsHNvCxbCIddPO+QNvC/yc
+ MUfAdiCvDWsYVCmU/JkePPYO0Q08hpiUV0EBCNCX0+cYQrzJcW/Ajn13sgt7NGrjnybH+SMvd
+ qijCVcHeQYLP47JNOZ4wSyRwYlZxiUYTYaPFkpGysWZOT+NRgN9uPzVIDA990KY6nwLN84eIR
+ 8pJe95ZCLofwzsa7/9KkyfEJysc1nd8JQkrMVL9Dx5bqNR9eDQsDYTCTuoCril7dF3WrnUw2z
+ qwwaaPonE/JzAyMeJePYWE4nVzpRnKorECct6Hc/PF6Knj15ht2ch7d5p6EhP0HWLtC29Opql
+ ENaabHtcnflLGy5k7DyqOTrd/ucBc8ZIbTO/ZHM/A6MEb6s2lES5es4U9LYpKlQgOZEdGyfrd
+ muKttXKSCr4/wbUJ5mpsnaQ0WHvmgiEJMmjWvEH8JhIZ0az5FtRDCregnEqOze3gRhqG0zPYH
+ 1tJMWCjeF5GoPsL8ebE9AxpNrm8jzjDucwujJ92bUtuk3cioxv6YGyL+iC86S924XsaDkc5sA
+ qIai3s4fJt1aIH7o7CRL6EacSVaA+hkBzNT7E/tX4UTv3qA6zcc1jAvSJtCq7u+0iZqBp0+aD
+ R66sWZAl3kaBDRUhmCz0vMdUHAzcZHP9rnhwkG7ElzOa0hCbowZJWaPt9ldc0LH8MFPui9q0H
+ A/P4T1IZWW/SfAYsgWONNJNt12tbprwvQT9dRw==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-As Joseph Myers points out, alpha has never had a standard statfs64
-interface and instead returns only 32-bit numbers here.
+The IPC system call handling is highly inconsistent across architectures,
+some use sys_ipc, some use separate calls, and some use both.  We also
+have some architectures that require passing IPC_64 in the flags, and
+others that set it implicitly.
 
-While there is an old osf_statfs64 system call that returns additional
-data, this has some other quirks and does not get used in glibc.
+For the additon of a y2083 safe semtimedop() system call, I chose to only
+support the separate entry points, but that requires first supporting
+the regular ones with their own syscall numbers.
 
-I considered making the stat64 structure layout compatible with
-with the one used by the kernel on most other 64 bit architecture that
-implement it (ia64, parisc, powerpc, and sparc), but in the end
-decided to stay with the one that was traditionally defined in
-the alpha headers but not used, since this is also what glibc
-exposes to user space.
+The IPC_64 is now implied by the new semctl/shmctl/msgctl system
+calls even on the architectures that require passing it with the ipc()
+multiplexer.
+
+I'm not adding the new semtimedop() or semop() on 32-bit architectures,
+those will get implemented using the new semtimedop_time64() version
+that gets added along with the other time64 calls.
+Three 64-bit architectures (powerpc, s390 and sparc) get semtimedop().
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/alpha/kernel/syscalls/syscall.tbl | 2 ++
- 1 file changed, 2 insertions(+)
+One aspect here that might be a bit controversial is the use of
+the same system call numbers across all architectures, synchronizing
+all of them with the x86-32 numbers. With the new syscall.tbl
+files, I hope we can just keep doing that in the future, and no
+longer require the architecture maintainers to assign a number.
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 25b4a7e76943..0ebd59fdcb8b 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -456,3 +456,5 @@
- 525	common	pkey_free			sys_pkey_free
- 526	common	pkey_mprotect			sys_pkey_mprotect
- 527	common	rseq				sys_rseq
-+528	common	statfs64			sys_statfs64
-+529	common	fstatfs64			sys_fstatfs64
+This is mainly useful for implementers of the C libraries: if
+we can add future system calls everywhere at the same time, using
+a particular version of the kernel headers also guarantees that
+the system call number macro is visible.
+---
+ arch/m68k/kernel/syscalls/syscall.tbl     | 11 +++++++++++
+ arch/mips/kernel/syscalls/syscall_o32.tbl | 11 +++++++++++
+ arch/powerpc/kernel/syscalls/syscall.tbl  | 13 +++++++++++++
+ arch/s390/kernel/syscalls/syscall.tbl     | 12 ++++++++++++
+ arch/sh/kernel/syscalls/syscall.tbl       | 11 +++++++++++
+ arch/sparc/kernel/syscalls/syscall.tbl    | 12 ++++++++++++
+ arch/x86/entry/syscalls/syscall_32.tbl    | 11 +++++++++++
+ 7 files changed, 81 insertions(+)
+
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index 85779d6ef935..5354ba02eed2 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -388,3 +388,14 @@
+ 378	common	pwritev2			sys_pwritev2
+ 379	common	statx				sys_statx
+ 380	common	seccomp				sys_seccomp
++# room for arch specific calls
++393	common	semget				sys_semget
++394	common	semctl				sys_semctl
++395	common	shmget				sys_shmget
++396	common	shmctl				sys_shmctl
++397	common	shmat				sys_shmat
++398	common	shmdt				sys_shmdt
++399	common	msgget				sys_msgget
++400	common	msgsnd				sys_msgsnd
++401	common	msgrcv				sys_msgrcv
++402	common	msgctl				sys_msgctl
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 3d5a47b80d2b..fa47ea8cc6ef 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -380,3 +380,14 @@
+ 366	o32	statx				sys_statx
+ 367	o32	rseq				sys_rseq
+ 368	o32	io_pgetevents			sys_io_pgetevents		compat_sys_io_pgetevents
++# room for arch specific calls
++393	o32	semget				sys_semget
++394	o32	semctl				sys_semctl			compat_sys_semctl
++395	o32	shmget				sys_shmget
++396	o32	shmctl				sys_shmctl			compat_sys_shmctl
++397	o32	shmat				sys_shmat			compat_sys_shmat
++398	o32	shmdt				sys_shmdt
++399	o32	msgget				sys_msgget
++400	o32	msgsnd				sys_msgsnd			compat_sys_msgsnd
++401	o32	msgrcv				sys_msgrcv			compat_sys_msgrcv
++402	o32	msgctl				sys_msgctl			compat_sys_msgctl
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index db3bbb8744af..7555874ce39c 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -414,6 +414,7 @@
+ 363	spu	switch_endian			sys_ni_syscall
+ 364	common	userfaultfd			sys_userfaultfd
+ 365	common	membarrier			sys_membarrier
++# 366-377 originally left for IPC, now unused
+ 378	nospu	mlock2				sys_mlock2
+ 379	nospu	copy_file_range			sys_copy_file_range
+ 380	common	preadv2				sys_preadv2			compat_sys_preadv2
+@@ -425,3 +426,15 @@
+ 386	nospu	pkey_mprotect			sys_pkey_mprotect
+ 387	nospu	rseq				sys_rseq
+ 388	nospu	io_pgetevents			sys_io_pgetevents		compat_sys_io_pgetevents
++# room for arch specific syscalls
++392	64	semtimedop			sys_semtimedop
++393	common	semget				sys_semget
++394	common	semctl				sys_semctl			compat_sys_semctl
++395	common	shmget				sys_shmget
++396	common	shmctl				sys_shmctl			compat_sys_shmctl
++397	common	shmat				sys_shmat			compat_sys_shmat
++398	common	shmdt				sys_shmdt
++399	common	msgget				sys_msgget
++400	common	msgsnd				sys_msgsnd			compat_sys_msgsnd
++401	common	msgrcv				sys_msgrcv			compat_sys_msgrcv
++402	common	msgctl				sys_msgctl			compat_sys_msgctl
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index 7413fd318e2a..0bccb01c6202 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -391,3 +391,15 @@
+ 381  common	kexec_file_load		sys_kexec_file_load		sys_kexec_file_load
+ 382  common	io_pgetevents		sys_io_pgetevents		compat_sys_io_pgetevents
+ 383  common	rseq			sys_rseq			sys_rseq
++# room for arch specific syscalls
++392	64	semtimedop		sys_semtimedop			-
++393  common	semget			sys_semget			sys_semget
++394  common	semctl			sys_semctl			compat_sys_semctl
++395  common	shmget			sys_shmget			sys_shmget
++396  common	shmctl			sys_shmctl			compat_sys_shmctl
++397  common	shmat			sys_shmat			compat_sys_shmat
++398  common	shmdt			sys_shmdt 			sys_shmdt
++399  common	msgget			sys_msgget			sys_msgget
++400  common	msgsnd			sys_msgsnd			compat_sys_msgsnd
++401  common	msgrcv			sys_msgrcv			compat_sys_msgrcv
++402  common	msgctl			sys_msgctl			compat_sys_msgctl
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index a70db013dbc7..6d0b84e3ef2d 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -391,3 +391,14 @@
+ 381	common	preadv2				sys_preadv2
+ 382	common	pwritev2			sys_pwritev2
+ 383	common	statx				sys_statx
++# room for arch specific syscalls
++393	common	semget				sys_semget
++394	common	semctl				sys_semctl
++395	common	shmget				sys_shmget
++396	common	shmctl				sys_shmctl
++397	common	shmat				sys_shmat
++398	common	shmdt				sys_shmdt
++399	common	msgget				sys_msgget
++400	common	msgsnd				sys_msgsnd
++401	common	msgrcv				sys_msgrcv
++402	common	msgctl				sys_msgctl
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index c8c77c05ea97..8c9580302422 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -407,3 +407,15 @@
+ 359	common	pwritev2		sys_pwritev2			compat_sys_pwritev2
+ 360	common	statx			sys_statx
+ 361	common	io_pgetevents		sys_io_pgetevents		compat_sys_io_pgetevents
++# room for arch specific syscalls
++392	64	semtimedop			sys_semtimedop
++393	common	semget			sys_semget
++394	common	semctl			sys_semctl			compat_sys_semctl
++395	common	shmget			sys_shmget
++396	common	shmctl			sys_shmctl			compat_sys_shmctl
++397	common	shmat			sys_shmat			compat_sys_shmat
++398	common	shmdt			sys_shmdt
++399	common	msgget			sys_msgget
++400	common	msgsnd			sys_msgsnd			compat_sys_msgsnd
++401	common	msgrcv			sys_msgrcv			compat_sys_msgrcv
++402	common	msgctl			sys_msgctl			compat_sys_msgctl
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index 3cf7b533b3d1..fef80b92eb7e 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -398,3 +398,14 @@
+ 384	i386	arch_prctl		sys_arch_prctl			__ia32_compat_sys_arch_prctl
+ 385	i386	io_pgetevents		sys_io_pgetevents		__ia32_compat_sys_io_pgetevents
+ 386	i386	rseq			sys_rseq			__ia32_sys_rseq
++# room for arch specific syscalls
++393	i386	semget			sys_semget    			__ia32_sys_semget
++394	i386	semctl			sys_semctl    			__ia32_compat_sys_semctl
++395	i386	shmget			sys_shmget    			__ia32_sys_shmget
++396	i386	shmctl			sys_shmctl    			__ia32_compat_sys_shmctl
++397	i386	shmat			sys_shmat     			__ia32_compat_sys_shmat
++398	i386	shmdt			sys_shmdt     			__ia32_sys_shmdt
++399	i386	msgget			sys_msgget    			__ia32_sys_msgget
++400	i386	msgsnd			sys_msgsnd    			__ia32_compat_sys_msgsnd
++401	i386	msgrcv			sys_msgrcv    			__ia32_compat_sys_msgrcv
++402	i386	msgctl			sys_msgctl    			__ia32_compat_sys_msgctl
 -- 
 2.20.0
 

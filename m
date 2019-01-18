@@ -3,46 +3,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4EACC5AC81
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 17:14:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1084FC07EBF
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 17:22:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8BF9B20850
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 17:14:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E3B6E20823
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 17:22:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728436AbfARROw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 12:14:52 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:36022 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727986AbfARROv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 12:14:51 -0500
-Received: by mail-qk1-f194.google.com with SMTP id o125so8465175qkf.3;
-        Fri, 18 Jan 2019 09:14:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cM6Ct6RNNXTziZEbUSSe56myHuH3NS1roB2yrpi3ejY=;
-        b=b4hmzZrSqTo83uQbV1cw3TwQ8sG4zLm9cH3DbGueMW5YR7PG1tKkjf9bntVC9hoC+P
-         nIUDpuYJp5xaHTnAoIY99ITinIWaZOYuFRIh9miXdLiNPj9TtmsF1QUUE6yjIGR3E+0+
-         752KuxfxqBWV9gapXXssOhugThp6KVC7ueoylPJ4o6cFQAhbHoEVlt3AeHJASFqVAWdT
-         xbbeON+ILVtJwwozSxoMGkwjFNaFynN67iaQC49tJlkNFZRTTxnyTAnNb5nVdl7dL7X6
-         UyqwC37DjATpiItosXgz3EGI+hVddTusaWtUE5mDlh0zrAPlPWFYzHsV+dQJuN9tUAeJ
-         fv1w==
-X-Gm-Message-State: AJcUukdL3RtRDY3mzEj7cxG6ICjiNuWOBfiK8DJgnYyzr4AzmTSnkc3x
-        okIAgWH2ZLnW4yoX0SMH6bdXaSPWVu8MN9x7TkU=
-X-Google-Smtp-Source: ALg8bN6YuxAZx88mWjLK6OJGww6yso8mTxW2uQ+U16+TTtpFWJaRgawaUEpqTv2Trum/q/Wu6cLlwpnMJ3TVNfmaobA=
-X-Received: by 2002:ae9:d8c2:: with SMTP id u185mr15079174qkf.107.1547831689678;
- Fri, 18 Jan 2019 09:14:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20190118161835.2259170-1-arnd@arndb.de> <be3863ae-d903-8e9e-5e6c-e4a58fac189d@blastwave.org>
-In-Reply-To: <be3863ae-d903-8e9e-5e6c-e4a58fac189d@blastwave.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 18 Jan 2019 18:14:33 +0100
-Message-ID: <CAK8P3a3xUpbk+Wpo5kdDtZ81jQuzEZH6jdmJJNeNM+acueg+Dw@mail.gmail.com>
+        id S1728239AbfARRWs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 12:22:48 -0500
+Received: from atl4mhfb02.myregisteredsite.com ([209.17.115.118]:56228 "EHLO
+        atl4mhfb02.myregisteredsite.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727285AbfARRWr (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 18 Jan 2019 12:22:47 -0500
+Received: from atl4mhob15.registeredsite.com (atl4mhob15.registeredsite.com [209.17.115.53])
+        by atl4mhfb02.myregisteredsite.com (8.14.4/8.14.4) with ESMTP id x0IHK0p8002259
+        for <linux-mips@vger.kernel.org>; Fri, 18 Jan 2019 12:20:00 -0500
+Received: from mailpod.hostingplatform.com (atl4qobmail02pod2.registeredsite.com [10.30.77.36])
+        by atl4mhob15.registeredsite.com (8.14.4/8.14.4) with ESMTP id x0IHJwBo027855
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
+        for <linux-mips@vger.kernel.org>; Fri, 18 Jan 2019 12:19:58 -0500
+Received: (qmail 1895 invoked by uid 0); 18 Jan 2019 17:19:58 -0000
+X-TCPREMOTEIP: 174.118.245.214
+X-Authenticated-UID: dclarke@blastwave.org
+Received: from unknown (HELO ?172.16.35.3?) (dclarke@blastwave.org@174.118.245.214)
+  by 0 with ESMTPA; 18 Jan 2019 17:19:58 -0000
 Subject: Re: [PATCH v2 00/29] y2038: add time64 syscalls
-To:     Dennis Clarke <dclarke@blastwave.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         Linux API <linux-api@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -67,7 +57,7 @@ Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Deepa Dinamani <deepa.kernel@gmail.com>,
@@ -76,7 +66,7 @@ Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         alpha <linux-alpha@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-m68k <linux-m68k@vger.kernel.org>,
         linux-mips@vger.kernel.org,
         Parisc List <linux-parisc@vger.kernel.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
@@ -85,74 +75,50 @@ Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         sparclinux <sparclinux@vger.kernel.org>,
         Networking <netdev@vger.kernel.org>,
         Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20190118161835.2259170-1-arnd@arndb.de>
+ <be3863ae-d903-8e9e-5e6c-e4a58fac189d@blastwave.org>
+ <CAK8P3a3xUpbk+Wpo5kdDtZ81jQuzEZH6jdmJJNeNM+acueg+Dw@mail.gmail.com>
+From:   Dennis Clarke <dclarke@blastwave.org>
+Message-ID: <37173869-7516-55c5-8e4a-0c7bef011a62@blastwave.org>
+Date:   Fri, 18 Jan 2019 12:19:56 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101
+ Thunderbird/65.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a3xUpbk+Wpo5kdDtZ81jQuzEZH6jdmJJNeNM+acueg+Dw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 5:57 PM Dennis Clarke <dclarke@blastwave.org> wrote:
->
-> On 1/18/19 11:18 AM, Arnd Bergmann wrote:
-> > This is a minor update of the patches I posted last week, I
-> > would like to add this into linux-next now, but would still do
-> > changes if there are concerns about the contents. The first
-> > version did not see a lot of replies, which could mean that
-> > either everyone is happy with it, or that it was largely ignored.
-> >
-> > See also the article at https://lwn.net/Articles/776435/.
->
-> I would be happy to read "Approaching the kernel year-2038 end game"
-> however it is behind a pay wall.  Perhaps it may be best to just
-> host interesting articles about open source idea elsewhere.
+On 1/18/19 12:14 PM, Arnd Bergmann wrote:
+> On Fri, Jan 18, 2019 at 5:57 PM Dennis Clarke <dclarke@blastwave.org> wrote:
+>>
+>> On 1/18/19 11:18 AM, Arnd Bergmann wrote:
+>>> This is a minor update of the patches I posted last week, I
+>>> would like to add this into linux-next now, but would still do
+>>> changes if there are concerns about the contents. The first
+>>> version did not see a lot of replies, which could mean that
+>>> either everyone is happy with it, or that it was largely ignored.
+>>>
+>>> See also the article at https://lwn.net/Articles/776435/.
+>>
+>> I would be happy to read "Approaching the kernel year-2038 end game"
+>> however it is behind a pay wall.  Perhaps it may be best to just
+>> host interesting articles about open source idea elsewhere.
+> 
+> It's a short summary of the current state.
 
-It's a short summary of the current state. You can also find a
-video and slides from my ELC presentation online for a little more
-context.
+Oh, I pay. Also to FSF and other places however I was merely ranting
+very very quietly that so much open source is becoming commercialized
+in so many ways.  Sort of expected really.
 
-Generally speaking, I'd recommend paying for the subscription to
-lwn.net to anyone interested in the kernel, but it should become
-visible to everyone with the next day (a week after the initial
-publication). In the meantime, you can find the article at
-https://lwn.net/SubscriberLink/776435/a59d93d01d1addfc/.
+Pardon my little rant .. I will go back to hacking OpenSSL 1.1.1a and
+trying to get Apache httpd 2.4.38 release running cleanly.
 
-Finally, I've made a list of the remaining work that Deepa
-and I are planning to still continue (this should be mostly
-complete but may be missing a few things):
+Dennis
 
-syscalls
- - merge big series for 5.1, to allow time64 syscalls
- - waitid/wait4/getrusage should get a replacement based on __kernel_timespec
- - getitimer/setitimer should probably follow getrusage
- - vdso, waiting for consolidation series from Vincenzo Frascino before
-   adding time64 entry points
 
-file systems
- - range checks on timestamps
- - xfs
- - NFS
- - hfs/hfsplus
- - coda
- - hostfs
- - relatime_need_update
 
-drivers
- - media
- - alsa
- - sockets
- - af_packet
- - ppp ioctl
- - rtc ioctl
- - omap3isp
-
-core kernel
- - fix ELF core files (elfcore.h)
- - syscall Audit code (kernel/audit.c, kernel/auditsc.c)
- - make all time32 code conditional
- - remove include/linux/timekeeping32.h
- - remove compat_time* from time32.h
- - remove timeval
- - remove timespec
- - remove time_t
-
-     Arnd

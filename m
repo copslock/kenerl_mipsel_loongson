@@ -2,80 +2,109 @@ Return-Path: <SRS0=gTW6=P2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABB9AC43387
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 09:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7FD0C43387
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 14:15:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 747D22086D
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 09:09:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 70E0B2087E
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 14:15:37 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="G579AefQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbfARJJr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 04:09:47 -0500
-Received: from mail.bootlin.com ([62.4.15.54]:35588 "EHLO mail.bootlin.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725938AbfARJJr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 18 Jan 2019 04:09:47 -0500
-Received: by mail.bootlin.com (Postfix, from userid 110)
-        id E7BD3207AC; Fri, 18 Jan 2019 10:09:44 +0100 (CET)
-Received: from localhost (aaubervilliers-681-1-37-87.w90-88.abo.wanadoo.fr [90.88.156.87])
-        by mail.bootlin.com (Postfix) with ESMTPSA id BD7C6206A7;
-        Fri, 18 Jan 2019 10:09:44 +0100 (CET)
-Date:   Fri, 18 Jan 2019 10:09:45 +0100
-From:   Antoine Tenart <antoine.tenart@bootlin.com>
-To:     Richard Cochran <richardcochran@gmail.com>
-Cc:     Antoine Tenart <antoine.tenart@bootlin.com>, davem@davemloft.net,
-        alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
-        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
-        thomas.petazzoni@bootlin.com, quentin.schulz@bootlin.com,
-        allan.nielsen@microchip.com
-Subject: Re: [PATCH net-next 0/8] net: mscc: PTP offloading support
-Message-ID: <20190118090945.GI25424@kwain>
-References: <20190117100212.2336-1-antoine.tenart@bootlin.com>
- <20190118021342.enounbkp7v7nqzj2@localhost>
+        id S1727178AbfAROPc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 09:15:32 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:57680 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727020AbfAROPc (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 09:15:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1547820929; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QkNNW/dI81cbH2kw0vmnMq2W7RjddJVYl94J+FIvKqk=;
+        b=G579AefQ/4l83VXzQhtgVi4FJMr+Q1CzPAc4EzaHWHYyclT9q6pRHVoUBEeQmMTP9qcCBa
+        koJ+LUmMymY1GRsN60EHSQwbiqYWyMF3IycGHiURZPOq8iCEXcZT3o+5A61ISS5wyKu6LM
+        UFfJ/DtpucV9jxSqnmfNKAsCX568MDQ=
+Date:   Fri, 18 Jan 2019 11:15:14 -0300
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 1/8] MIPS: DTS: CI20: Set BCH clock to 200 MHz
+To:     Boris Brezillon <bbrezillon@kernel.org>
+Cc:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Harvey Hunt <harveyhuntnexus@gmail.com>,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
+Message-Id: <1547820914.1909.1@crapouillou.net>
+In-Reply-To: <20190118090736.6f1283bd@bbrezillon>
+References: <20190118010634.27399-1-paul@crapouillou.net>
+        <20190118090736.6f1283bd@bbrezillon>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190118021342.enounbkp7v7nqzj2@localhost>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Richard,
+Hi,
 
-On Thu, Jan 17, 2019 at 06:13:42PM -0800, Richard Cochran wrote:
-> On Thu, Jan 17, 2019 at 11:02:04AM +0100, Antoine Tenart wrote:
-> > This series adds support for the PTP offloading support in the Mscc
-> > Ocelot Ethernet switch driver. Both PTP 1-step and 2-step modes are
-> > supported.
-> > 
-> > In order to make use of the PTP offloading support, two new register
-> > banks were described in the Ocelot device tree. The use of those
-> > registers by the Mscc Ocelot Ethernet switch driver is made optional for
-> > dt compatibility reasons. For the same reason a new interrupt is
-> > described, and its use is also made optinal for compatibility reasons.
-> > All of this is done ine patches 1-5.
-> > 
-> > The PTP offloading support itself is added in patch 8.
+On Fri, Jan 18, 2019 at 5:07 AM, Boris Brezillon 
+<bbrezillon@kernel.org> wrote:
+> Hi Paul,
 > 
-> The subject lines and this description are misleading.  You are not
-> offloading the Precision Time Protocol.  Instead, this series
-> implements a normal PHC driver.
+> On Thu, 17 Jan 2019 22:06:27 -0300
+> Paul Cercueil <paul@crapouillou.net <mailto:paul@crapouillou.net>> 
+> wrote:
 > 
-> Please change the text to avoid the phrase, "PTP offloading".
+>>  This is currently done inside the jz4780-bch driver, but it really
+>>  should be done here instead.
+>> 
+> 
+> I disagree with that statement. If it's a per-SoC constraint then you
+> can select the appropriate rate based on the compatible in the driver.
+> If the clock rate depends on the NAND chip it probably means it's used
+> to generate the RE/WE pulse and should depend on the NAND timings
+> passed to ->setup_data_interface(). In either case, this should not be
+> specified in the DT.
 
-Will do.
+Alright, I'll drop the patch.
 
-Thanks!
-Antoine
+> Regards,
+> 
+> Boris
+> 
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net 
+>> <mailto:paul@crapouillou.net>>
+>>  ---
+>>   arch/mips/boot/dts/ingenic/ci20.dts | 3 +++
+>>   1 file changed, 3 insertions(+)
+>> 
+>>  diff --git a/arch/mips/boot/dts/ingenic/ci20.dts 
+>> b/arch/mips/boot/dts/ingenic/ci20.dts
+>>  index 50cff3cbcc6d..aa892ec54d0a 100644
+>>  --- a/arch/mips/boot/dts/ingenic/ci20.dts
+>>  +++ b/arch/mips/boot/dts/ingenic/ci20.dts
+>>  @@ -111,6 +111,9 @@
+>>   		pinctrl-names = "default";
+>>   		pinctrl-0 = <&pins_nemc>;
+>> 
+>>  +		assigned-clocks = <&cgu JZ4780_CLK_BCH>;
+>>  +		assigned-clock-rates = <200000000>;
+>>  +
+>>   		nand@1 {
+>>   			reg = <1>;
+>> 
+> 
 
--- 
-Antoine Ténart, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+

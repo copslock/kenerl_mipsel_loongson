@@ -2,598 +2,741 @@ Return-Path: <SRS0=gTW6=P2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF944C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 14:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79365C43387
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:21:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 870992086D
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 14:22:35 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="mjvOxz72"
+	by mail.kernel.org (Postfix) with ESMTP id 36F7C20850
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 16:21:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727123AbfAROWf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 09:22:35 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:36366 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727177AbfAROWf (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 09:22:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1547821351; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vzZATh7JXQQa0WtU/bz/YLknC1XzT/jzwFn1aMF0l5M=;
-        b=mjvOxz724Q2aYLcFeg5P1g9k9cJ4zjqrjF43TK2u6O66WuZomq2Btp911aUCuUyXhG8Mzs
-        KluCS25co1qsu8IkvusAqLzpbDxP66qrTRzPPSO0M0OklSZjdhPw6KJYd/z0Nr+HcZIGC2
-        TFFfYJ3rTYzz3HwEBzToOcUpbX54m6A=
-Date:   Fri, 18 Jan 2019 11:22:16 -0300
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 7/8] mtd: rawnand: jz4780-bch: Separate top-level and SoC
- specific code
-To:     Boris Brezillon <bbrezillon@kernel.org>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
-Message-Id: <1547821336.1909.2@crapouillou.net>
-In-Reply-To: <20190118093500.397d5d07@bbrezillon>
-References: <20190118010634.27399-1-paul@crapouillou.net>
-        <20190118010634.27399-7-paul@crapouillou.net>
-        <20190118093500.397d5d07@bbrezillon>
+        id S1728699AbfARQVK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 11:21:10 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:45625 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728610AbfARQVJ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 11:21:09 -0500
+Received: from wuerfel.lan ([109.192.41.194]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MyK9S-1h9ahD3q4i-00yfq3; Fri, 18 Jan 2019 17:19:32 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, mattst88@gmail.com,
+        linux@armlinux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
+        geert@linux-m68k.org, monstr@monstr.eu, paul.burton@mips.com,
+        deller@gmx.de, benh@kernel.crashing.org, mpe@ellerman.id.au,
+        schwidefsky@de.ibm.com, heiko.carstens@de.ibm.com, dalias@libc.org,
+        davem@davemloft.net, luto@kernel.org, tglx@linutronix.de,
+        mingo@redhat.com, hpa@zytor.com, x86@kernel.org,
+        jcmvbkbc@gmail.com, akpm@linux-foundation.org,
+        deepa.kernel@gmail.com, ebiederm@xmission.com,
+        firoz.khan@linaro.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Subject: [PATCH v2 12/29] ipc: rename old-style shmctl/semctl/msgctl syscalls
+Date:   Fri, 18 Jan 2019 17:18:18 +0100
+Message-Id: <20190118161835.2259170-13-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+In-Reply-To: <20190118161835.2259170-1-arnd@arndb.de>
+References: <20190118161835.2259170-1-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:eMivbeGP8umSxqYqVnyElJ+JcTfDwXXaqjqUq6p6Nln5uj1nQf6
+ 59RahDegNmzZx+KVckLapWPvUpd4ZmIpyhXQgObRGwYZZTSb1Tjlrra1eDubQn4Mhm7cion
+ jPK4+5gABDO6F4qZ2X+qWe/fRepqqGarmUOK7nXlYF57df5yIBjI2vnzUthDOSgjDakRnh3
+ BqOovOgAeSIvFSDJQVCsg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:u1sqGKWddkE=:v+ZtSnulQA+nYI84N/2Qvn
+ he9AkuPylm2S/rmUXLG541KYr/IAicl4+xHFECaZL1UpdVbtCrlcxZtEHHnFxrSQCmw8Ijz7d
+ 28NJ23na6jSxxvRca3WT4Z0XwfXL7vCdbc2Vz0UxhvNtos2j8l0alWnVfiiTXO0qIYAf97YpU
+ yTxPAhqIHj9Amim2j/FmrfsGjuyIqekC8xvmIy/5COnsHX3YvZ2k1svib0+e8E5lUpLAUn+EO
+ xV/iZNnQxde7cK0S5Dz+1RPRnDiQ7z/nQSQfdiz3nDfZbQtAlZx8bgPfhjW8DVtN4gj/24Ua/
+ EIg6ZvarZRx9UGTALIftSRXRgJCdnjxFeaxt4xXMgU1hPFVrjpQYP9d/OxjR52EzdUy7R3Y7Q
+ xptt+0vvVV5lYCsU5iEEPbCN1t5pqcEbhQpeEO+hPp7El/y1ky+/VfElftMjaF+O9/4EWPbQR
+ QS8JFEe5v1S3kLL/6e46fFmVSz8W4SEyTHc5lFyLR93x8+UDefbxA6ZC+SVJ9QIViMvnAGF9j
+ YFwXgPVnnXcIMf1yirH2VffQn6Jp9XW5NGbh0K4psS0yHcGGXgwjHn2HVNKkjvwVfCgJVvCNS
+ CSC/tKE3OdT6dLE5uqMomUauFuzjpe6UrAYC7RS1VYEyzkx2ntFoAYiJn51K/sEh1RWummiHH
+ z7JSP8MWUP5k0gZFQTicaExNi1XK+HWXWv6ycNxFTySDb4iR9mJkmqPYlN4gde0U8yWLgIXj8
+ V6GlBGchjlvFegbQblgWDrNGwu+Mo5N/lwcSmg==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+The behavior of these system calls is slightly different between
+architectures, as determined by the CONFIG_ARCH_WANT_IPC_PARSE_VERSION
+symbol. Most architectures that implement the split IPC syscalls don't set
+that symbol and only get the modern version, but alpha, arm, microblaze,
+mips-n32, mips-n64 and xtensa expect the caller to pass the IPC_64 flag.
 
-On Fri, Jan 18, 2019 at 5:35 AM, Boris Brezillon 
-<bbrezillon@kernel.org> wrote:
-> On Thu, 17 Jan 2019 22:06:33 -0300
-> Paul Cercueil <paul@crapouillou.net <mailto:paul@crapouillou.net>> 
-> wrote:
-> 
->>  The jz4780-nand driver uses an API provided by the jz4780-bch 
->> driver.
->>  This makes it difficult to support other SoCs in the jz4780-bch 
->> driver.
->>  To work around this, we separate the API functions from the 
->> SoC-specific
->>  code, so that these API functions are SoC-agnostic.
->> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net 
->> <mailto:paul@crapouillou.net>>
->>  ---
->>   drivers/mtd/nand/raw/Makefile              |   3 +-
->>   drivers/mtd/nand/raw/jz4780_bch.c          | 173 
->> +++--------------------------
->>   drivers/mtd/nand/raw/jz4780_bch_common.c   | 172 
->> ++++++++++++++++++++++++++++
->>   drivers/mtd/nand/raw/jz4780_bch_internal.h |  34 ++++++
-> 
-> What's the overhead of having 4725b and 4780 code in the same source
-> file? If we really need to split that up, I'd prefer to have all 
-> jz47xx
-> sources placed in a subdir (drivers/mtd/nand/raw/jz47xx/).
+For the architectures that so far only implement sys_ipc(), i.e. m68k,
+mips-o32, powerpc, s390, sh, sparc, and x86-32, we want the new behavior
+when adding the split syscalls, so we need to distinguish between the
+two groups of architectures.
 
-It's complicated, the hardware changed a lot between the two SoC 
-revisions,
-to the point where it's not really possible to support the two within 
-one
-single driver. The registers are different, the behaviour is different, 
-etc.
+The method I picked for this distinction is to have a separate system call
+entry point: sys_old_*ctl() now uses ipc_parse_version, while sys_*ctl()
+does not. The system call tables of the five architectures are changed
+accordingly.
 
->>   4 files changed, 222 insertions(+), 160 deletions(-)
->>   create mode 100644 drivers/mtd/nand/raw/jz4780_bch_common.c
->>   create mode 100644 drivers/mtd/nand/raw/jz4780_bch_internal.h
->> 
->>  diff --git a/drivers/mtd/nand/raw/Makefile 
->> b/drivers/mtd/nand/raw/Makefile
->>  index 57159b349054..6dacc9cf38d5 100644
->>  --- a/drivers/mtd/nand/raw/Makefile
->>  +++ b/drivers/mtd/nand/raw/Makefile
->>  @@ -46,7 +46,8 @@ obj-$(CONFIG_MTD_NAND_MPC5121_NFC)	+= 
->> mpc5121_nfc.o
->>   obj-$(CONFIG_MTD_NAND_VF610_NFC)	+= vf610_nfc.o
->>   obj-$(CONFIG_MTD_NAND_RICOH)		+= r852.o
->>   obj-$(CONFIG_MTD_NAND_JZ4740)		+= jz4740_nand.o
->>  -obj-$(CONFIG_MTD_NAND_JZ4780)		+= jz4780_nand.o jz4780_bch.o
->>  +obj-$(CONFIG_MTD_NAND_JZ4780)		+= jz4780_nand.o 
->> jz4780_bch_common.o \
->>  +					   jz4780_bch.o
->>   obj-$(CONFIG_MTD_NAND_GPMI_NAND)	+= gpmi-nand/
->>   obj-$(CONFIG_MTD_NAND_XWAY)		+= xway_nand.o
->>   obj-$(CONFIG_MTD_NAND_BCM47XXNFLASH)	+= bcm47xxnflash/
->>  diff --git a/drivers/mtd/nand/raw/jz4780_bch.c 
->> b/drivers/mtd/nand/raw/jz4780_bch.c
->>  index 161d3821e1c4..1dfc960067b3 100644
->>  --- a/drivers/mtd/nand/raw/jz4780_bch.c
->>  +++ b/drivers/mtd/nand/raw/jz4780_bch.c
->>  @@ -1,25 +1,19 @@
->>   // SPDX-License-Identifier: GPL-2.0
->>   /*
->>  - * JZ4780 BCH controller
->>  + * JZ4780 backend code for the jz4780-bch driver
->>    *
->>    * Copyright (c) 2015 Imagination Technologies
->>    * Author: Alex Smith <alex.smith@imgtec.com 
->> <mailto:alex.smith@imgtec.com>>
->>    */
->> 
->>   #include <linux/bitops.h>
->>  -#include <linux/clk.h>
->>  -#include <linux/delay.h>
->>  -#include <linux/init.h>
->>   #include <linux/iopoll.h>
->>  -#include <linux/module.h>
->>   #include <linux/mutex.h>
->>   #include <linux/of.h>
->>  -#include <linux/of_platform.h>
->>  -#include <linux/platform_device.h>
->>  -#include <linux/sched.h>
->>  -#include <linux/slab.h>
->>  +#include <linux/device.h>
->> 
->>   #include "jz4780_bch.h"
->>  +#include "jz4780_bch_internal.h"
->> 
->>   #define BCH_BHCR			0x0
->>   #define BCH_BHCCR			0x8
->>  @@ -60,13 +54,6 @@
->>   /* Timeout for BCH calculation/correction. */
->>   #define BCH_TIMEOUT_US			100000
->> 
->>  -struct jz4780_bch {
->>  -	struct device *dev;
->>  -	void __iomem *base;
->>  -	struct clk *clk;
->>  -	struct mutex lock;
->>  -};
->>  -
->>   static void jz4780_bch_init(struct jz4780_bch *bch,
->>   			    struct jz4780_bch_params *params, bool encode)
->>   {
->>  @@ -165,18 +152,9 @@ static bool jz4780_bch_wait_complete(struct 
->> jz4780_bch *bch, unsigned int irq,
->>   	return true;
->>   }
->> 
->>  -/**
->>  - * jz4780_bch_calculate() - calculate ECC for a data buffer
->>  - * @bch: BCH device.
->>  - * @params: BCH parameters.
->>  - * @buf: input buffer with raw data.
->>  - * @ecc_code: output buffer with ECC.
->>  - *
->>  - * Return: 0 on success, -ETIMEDOUT if timed out while waiting for 
->> BCH
->>  - * controller.
->>  - */
->>  -int jz4780_bch_calculate(struct jz4780_bch *bch, struct 
->> jz4780_bch_params *params,
->>  -			 const u8 *buf, u8 *ecc_code)
->>  +static int jz4780_calculate(struct jz4780_bch *bch,
->>  +			    struct jz4780_bch_params *params,
->>  +			    const u8 *buf, u8 *ecc_code)
->>   {
->>   	int ret = 0;
->> 
->>  @@ -195,23 +173,10 @@ int jz4780_bch_calculate(struct jz4780_bch 
->> *bch, struct jz4780_bch_params *param
->>   	mutex_unlock(&bch->lock);
->>   	return ret;
->>   }
->>  -EXPORT_SYMBOL(jz4780_bch_calculate);
->>  -
->>  -/**
->>  - * jz4780_bch_correct() - detect and correct bit errors
->>  - * @bch: BCH device.
->>  - * @params: BCH parameters.
->>  - * @buf: raw data read from the chip.
->>  - * @ecc_code: ECC read from the chip.
->>  - *
->>  - * Given the raw data and the ECC read from the NAND device, 
->> detects and
->>  - * corrects errors in the data.
->>  - *
->>  - * Return: the number of bit errors corrected, -EBADMSG if there 
->> are too many
->>  - * errors to correct or -ETIMEDOUT if we timed out waiting for the 
->> controller.
->>  - */
->>  -int jz4780_bch_correct(struct jz4780_bch *bch, struct 
->> jz4780_bch_params *params,
->>  -		       u8 *buf, u8 *ecc_code)
->>  +
->>  +static int jz4780_correct(struct jz4780_bch *bch,
->>  +			  struct jz4780_bch_params *params,
->>  +			  u8 *buf, u8 *ecc_code)
->>   {
->>   	u32 reg, mask, index;
->>   	int i, ret, count;
->>  @@ -257,119 +222,9 @@ int jz4780_bch_correct(struct jz4780_bch 
->> *bch, struct jz4780_bch_params *params,
->>   	mutex_unlock(&bch->lock);
->>   	return ret;
->>   }
->>  -EXPORT_SYMBOL(jz4780_bch_correct);
->>  -
->>  -/**
->>  - * jz4780_bch_get() - get the BCH controller device
->>  - * @np: BCH device tree node.
->>  - *
->>  - * Gets the BCH controller device from the specified device tree 
->> node. The
->>  - * device must be released with jz4780_bch_release() when it is no 
->> longer being
->>  - * used.
->>  - *
->>  - * Return: a pointer to jz4780_bch, errors are encoded into the 
->> pointer.
->>  - * PTR_ERR(-EPROBE_DEFER) if the device hasn't been initialised 
->> yet.
->>  - */
->>  -static struct jz4780_bch *jz4780_bch_get(struct device_node *np)
->>  -{
->>  -	struct platform_device *pdev;
->>  -	struct jz4780_bch *bch;
->>  -
->>  -	pdev = of_find_device_by_node(np);
->>  -	if (!pdev || !platform_get_drvdata(pdev))
->>  -		return ERR_PTR(-EPROBE_DEFER);
->>  -
->>  -	get_device(&pdev->dev);
->>  -
->>  -	bch = platform_get_drvdata(pdev);
->>  -	clk_prepare_enable(bch->clk);
->>  -
->>  -	return bch;
->>  -}
->>  -
->>  -/**
->>  - * of_jz4780_bch_get() - get the BCH controller from a DT node
->>  - * @of_node: the node that contains a bch-controller property.
->>  - *
->>  - * Get the bch-controller property from the given device tree
->>  - * node and pass it to jz4780_bch_get to do the work.
->>  - *
->>  - * Return: a pointer to jz4780_bch, errors are encoded into the 
->> pointer.
->>  - * PTR_ERR(-EPROBE_DEFER) if the device hasn't been initialised 
->> yet.
->>  - */
->>  -struct jz4780_bch *of_jz4780_bch_get(struct device_node *of_node)
->>  -{
->>  -	struct jz4780_bch *bch = NULL;
->>  -	struct device_node *np;
->> 
->>  -	np = of_parse_phandle(of_node, "ingenic,bch-controller", 0);
->>  -
->>  -	if (np) {
->>  -		bch = jz4780_bch_get(np);
->>  -		of_node_put(np);
->>  -	}
->>  -	return bch;
->>  -}
->>  -EXPORT_SYMBOL(of_jz4780_bch_get);
->>  -
->>  -/**
->>  - * jz4780_bch_release() - release the BCH controller device
->>  - * @bch: BCH device.
->>  - */
->>  -void jz4780_bch_release(struct jz4780_bch *bch)
->>  -{
->>  -	clk_disable_unprepare(bch->clk);
->>  -	put_device(bch->dev);
->>  -}
->>  -EXPORT_SYMBOL(jz4780_bch_release);
->>  -
->>  -static int jz4780_bch_probe(struct platform_device *pdev)
->>  -{
->>  -	struct device *dev = &pdev->dev;
->>  -	struct jz4780_bch *bch;
->>  -	struct resource *res;
->>  -
->>  -	bch = devm_kzalloc(dev, sizeof(*bch), GFP_KERNEL);
->>  -	if (!bch)
->>  -		return -ENOMEM;
->>  -
->>  -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>  -	bch->base = devm_ioremap_resource(dev, res);
->>  -	if (IS_ERR(bch->base))
->>  -		return PTR_ERR(bch->base);
->>  -
->>  -	jz4780_bch_disable(bch);
->>  -
->>  -	bch->clk = devm_clk_get(dev, NULL);
->>  -	if (IS_ERR(bch->clk)) {
->>  -		dev_err(dev, "failed to get clock: %ld\n", PTR_ERR(bch->clk));
->>  -		return PTR_ERR(bch->clk);
->>  -	}
->>  -
->>  -	mutex_init(&bch->lock);
->>  -
->>  -	bch->dev = dev;
->>  -	platform_set_drvdata(pdev, bch);
->>  -
->>  -	return 0;
->>  -}
->>  -
->>  -static const struct of_device_id jz4780_bch_dt_match[] = {
->>  -	{ .compatible = "ingenic,jz4780-bch" },
->>  -	{},
->>  +const struct jz4780_bch_ops jz4780_bch_jz4780_ops = {
->>  +	.disable = jz4780_bch_disable,
->>  +	.calculate = jz4780_calculate,
->>  +	.correct = jz4780_correct,
->>   };
->>  -MODULE_DEVICE_TABLE(of, jz4780_bch_dt_match);
->>  -
->>  -static struct platform_driver jz4780_bch_driver = {
->>  -	.probe		= jz4780_bch_probe,
->>  -	.driver	= {
->>  -		.name	= "jz4780-bch",
->>  -		.of_match_table = of_match_ptr(jz4780_bch_dt_match),
->>  -	},
->>  -};
->>  -module_platform_driver(jz4780_bch_driver);
->>  -
->>  -MODULE_AUTHOR("Alex Smith <alex@alex-smith.me.uk 
->> <mailto:alex@alex-smith.me.uk>>");
->>  -MODULE_AUTHOR("Harvey Hunt <harveyhuntnexus@gmail.com 
->> <mailto:harveyhuntnexus@gmail.com>>");
->>  -MODULE_DESCRIPTION("Ingenic JZ4780 BCH error correction driver");
->>  -MODULE_LICENSE("GPL v2");
->>  diff --git a/drivers/mtd/nand/raw/jz4780_bch_common.c 
->> b/drivers/mtd/nand/raw/jz4780_bch_common.c
->>  new file mode 100644
->>  index 000000000000..573b079e6cbe
->>  --- /dev/null
->>  +++ b/drivers/mtd/nand/raw/jz4780_bch_common.c
->>  @@ -0,0 +1,172 @@
->>  +// SPDX-License-Identifier: GPL-2.0
->>  +/*
->>  + * JZ4780 BCH controller
->>  + *
->>  + * Copyright (c) 2015 Imagination Technologies
->>  + * Author: Alex Smith <alex.smith@imgtec.com 
->> <mailto:alex.smith@imgtec.com>>
->>  + */
->>  +
->>  +#include <linux/clk.h>
->>  +#include <linux/init.h>
->>  +#include <linux/module.h>
->>  +#include <linux/of_platform.h>
->>  +#include <linux/platform_device.h>
->>  +
->>  +#include "jz4780_bch_internal.h"
->>  +#include "jz4780_bch.h"
->>  +
->>  +/**
->>  + * jz4780_bch_calculate() - calculate ECC for a data buffer
->>  + * @bch: BCH device.
->>  + * @params: BCH parameters.
->>  + * @buf: input buffer with raw data.
->>  + * @ecc_code: output buffer with ECC.
->>  + *
->>  + * Return: 0 on success, -ETIMEDOUT if timed out while waiting for 
->> BCH
->>  + * controller.
->>  + */
->>  +int jz4780_bch_calculate(struct jz4780_bch *bch, struct 
->> jz4780_bch_params *params,
->>  +			 const u8 *buf, u8 *ecc_code)
->>  +{
->>  +	return bch->ops->calculate(bch, params, buf, ecc_code);
->>  +}
->>  +EXPORT_SYMBOL(jz4780_bch_calculate);
->>  +
->>  +/**
->>  + * jz4780_bch_correct() - detect and correct bit errors
->>  + * @bch: BCH device.
->>  + * @params: BCH parameters.
->>  + * @buf: raw data read from the chip.
->>  + * @ecc_code: ECC read from the chip.
->>  + *
->>  + * Given the raw data and the ECC read from the NAND device, 
->> detects and
->>  + * corrects errors in the data.
->>  + *
->>  + * Return: the number of bit errors corrected, -EBADMSG if there 
->> are too many
->>  + * errors to correct or -ETIMEDOUT if we timed out waiting for the 
->> controller.
->>  + */
->>  +int jz4780_bch_correct(struct jz4780_bch *bch, struct 
->> jz4780_bch_params *params,
->>  +		       u8 *buf, u8 *ecc_code)
->>  +{
->>  +	return bch->ops->correct(bch, params, buf, ecc_code);
->>  +}
->>  +EXPORT_SYMBOL(jz4780_bch_correct);
->>  +
->>  +/**
->>  + * jz4780_bch_get() - get the BCH controller device
->>  + * @np: BCH device tree node.
->>  + *
->>  + * Gets the BCH controller device from the specified device tree 
->> node. The
->>  + * device must be released with jz4780_bch_release() when it is no 
->> longer being
->>  + * used.
->>  + *
->>  + * Return: a pointer to jz4780_bch, errors are encoded into the 
->> pointer.
->>  + * PTR_ERR(-EPROBE_DEFER) if the device hasn't been initialised 
->> yet.
->>  + */
->>  +static struct jz4780_bch *jz4780_bch_get(struct device_node *np)
->>  +{
->>  +	struct platform_device *pdev;
->>  +	struct jz4780_bch *bch;
->>  +
->>  +	pdev = of_find_device_by_node(np);
->>  +	if (!pdev || !platform_get_drvdata(pdev))
->>  +		return ERR_PTR(-EPROBE_DEFER);
->>  +
->>  +	get_device(&pdev->dev);
->>  +
->>  +	bch = platform_get_drvdata(pdev);
->>  +	clk_prepare_enable(bch->clk);
->>  +
->>  +	return bch;
->>  +}
->>  +
->>  +/**
->>  + * of_jz4780_bch_get() - get the BCH controller from a DT node
->>  + * @of_node: the node that contains a bch-controller property.
->>  + *
->>  + * Get the bch-controller property from the given device tree
->>  + * node and pass it to jz4780_bch_get to do the work.
->>  + *
->>  + * Return: a pointer to jz4780_bch, errors are encoded into the 
->> pointer.
->>  + * PTR_ERR(-EPROBE_DEFER) if the device hasn't been initialised 
->> yet.
->>  + */
->>  +struct jz4780_bch *of_jz4780_bch_get(struct device_node *of_node)
->>  +{
->>  +	struct jz4780_bch *bch = NULL;
->>  +	struct device_node *np;
->>  +
->>  +	np = of_parse_phandle(of_node, "ingenic,bch-controller", 0);
->>  +
->>  +	if (np) {
->>  +		bch = jz4780_bch_get(np);
->>  +		of_node_put(np);
->>  +	}
->>  +	return bch;
->>  +}
->>  +EXPORT_SYMBOL(of_jz4780_bch_get);
->>  +
->>  +/**
->>  + * jz4780_bch_release() - release the BCH controller device
->>  + * @bch: BCH device.
->>  + */
->>  +void jz4780_bch_release(struct jz4780_bch *bch)
->>  +{
->>  +	clk_disable_unprepare(bch->clk);
->>  +	put_device(bch->dev);
->>  +}
->>  +EXPORT_SYMBOL(jz4780_bch_release);
->>  +
->>  +static int jz4780_bch_probe(struct platform_device *pdev)
->>  +{
->>  +	struct device *dev = &pdev->dev;
->>  +	struct jz4780_bch *bch;
->>  +	struct resource *res;
->>  +
->>  +	bch = devm_kzalloc(dev, sizeof(*bch), GFP_KERNEL);
->>  +	if (!bch)
->>  +		return -ENOMEM;
->>  +
->>  +	bch->ops = device_get_match_data(dev);
->>  +	if (!bch->ops)
->>  +		return -EINVAL;
->>  +
->>  +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>  +	bch->base = devm_ioremap_resource(dev, res);
->>  +	if (IS_ERR(bch->base))
->>  +		return PTR_ERR(bch->base);
->>  +
->>  +	bch->ops->disable(bch);
->>  +
->>  +	bch->clk = devm_clk_get(dev, NULL);
->>  +	if (IS_ERR(bch->clk)) {
->>  +		dev_err(dev, "failed to get clock: %ld\n", PTR_ERR(bch->clk));
->>  +		return PTR_ERR(bch->clk);
->>  +	}
->>  +
->>  +	mutex_init(&bch->lock);
->>  +
->>  +	bch->dev = dev;
->>  +	platform_set_drvdata(pdev, bch);
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static const struct of_device_id jz4780_bch_dt_match[] = {
->>  +	{ .compatible = "ingenic,jz4780-bch", .data = 
->> &jz4780_bch_jz4780_ops },
->>  +	{},
->>  +};
->>  +MODULE_DEVICE_TABLE(of, jz4780_bch_dt_match);
->>  +
->>  +static struct platform_driver jz4780_bch_driver = {
->>  +	.probe		= jz4780_bch_probe,
->>  +	.driver	= {
->>  +		.name	= "jz4780-bch",
->>  +		.of_match_table = of_match_ptr(jz4780_bch_dt_match),
->>  +	},
->>  +};
->>  +module_platform_driver(jz4780_bch_driver);
->>  +
->>  +MODULE_AUTHOR("Alex Smith <alex@alex-smith.me.uk 
->> <mailto:alex@alex-smith.me.uk>>");
->>  +MODULE_AUTHOR("Harvey Hunt <harveyhuntnexus@gmail.com 
->> <mailto:harveyhuntnexus@gmail.com>>");
->>  +MODULE_DESCRIPTION("Ingenic JZ4780 BCH error correction driver");
->>  +MODULE_LICENSE("GPL v2");
->>  diff --git a/drivers/mtd/nand/raw/jz4780_bch_internal.h 
->> b/drivers/mtd/nand/raw/jz4780_bch_internal.h
->>  new file mode 100644
->>  index 000000000000..7162e4f872f4
->>  --- /dev/null
->>  +++ b/drivers/mtd/nand/raw/jz4780_bch_internal.h
->>  @@ -0,0 +1,34 @@
->>  +/* SPDX-License-Identifier: GPL-2.0 */
->>  +#ifndef __DRIVERS_MTD_NAND_JZ4780_BCH_INTERNAL_H__
->>  +#define __DRIVERS_MTD_NAND_JZ4780_BCH_INTERNAL_H__
->>  +
->>  +#include <linux/compiler_types.h>
->>  +#include <linux/mutex.h>
->>  +#include <linux/types.h>
->>  +
->>  +struct jz4780_bch_params;
->>  +struct jz4780_bch;
->>  +struct device;
->>  +struct clk;
->>  +
->>  +struct jz4780_bch_ops {
->>  +	void (*disable)(struct jz4780_bch *bch);
->>  +	int (*calculate)(struct jz4780_bch *bch,
->>  +			 struct jz4780_bch_params *params,
->>  +			 const u8 *buf, u8 *ecc_code);
->>  +	int (*correct)(struct jz4780_bch *bch,
->>  +			struct jz4780_bch_params *params,
->>  +			u8 *buf, u8 *ecc_code);
->>  +};
->>  +
->>  +struct jz4780_bch {
->>  +	struct device *dev;
->>  +	const struct jz4780_bch_ops *ops;
->>  +	void __iomem *base;
->>  +	struct clk *clk;
->>  +	struct mutex lock;
->>  +};
->>  +
->>  +extern const struct jz4780_bch_ops jz4780_bch_jz4780_ops;
->>  +
->>  +#endif /* __DRIVERS_MTD_NAND_JZ4780_BCH_INTERNAL_H__ */
-> 
+As an additional benefit, we no longer need the configuration specific
+definition for ipc_parse_version(), it always does the same thing now,
+but simply won't get called on architectures with the modern interface.
 
+A small downside is that on architectures that do set
+ARCH_WANT_IPC_PARSE_VERSION, we now have an extra set of entry points
+that are never called. They only add a few bytes of bloat, so it seems
+better to keep them compared to adding yet another Kconfig symbol.
+I considered adding new syscall numbers for the IPC_64 variants for
+consistency, but decided against that for now.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/alpha/kernel/syscalls/syscall.tbl      |  6 ++--
+ arch/arm/tools/syscall.tbl                  |  6 ++--
+ arch/arm64/include/asm/unistd32.h           |  6 ++--
+ arch/microblaze/kernel/syscalls/syscall.tbl |  6 ++--
+ arch/mips/kernel/syscalls/syscall_n32.tbl   |  6 ++--
+ arch/mips/kernel/syscalls/syscall_n64.tbl   |  6 ++--
+ arch/xtensa/kernel/syscalls/syscall.tbl     |  6 ++--
+ include/linux/syscalls.h                    |  3 ++
+ ipc/msg.c                                   | 39 ++++++++++++++++----
+ ipc/sem.c                                   | 39 ++++++++++++++++----
+ ipc/shm.c                                   | 40 +++++++++++++++++----
+ ipc/syscall.c                               | 12 +++----
+ ipc/util.h                                  | 21 ++++-------
+ kernel/sys_ni.c                             |  3 ++
+ 14 files changed, 137 insertions(+), 62 deletions(-)
+
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index f920b65e8c49..b0e247287908 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -174,17 +174,17 @@
+ 187	common	osf_alt_sigpending		sys_ni_syscall
+ 188	common	osf_alt_setsid			sys_ni_syscall
+ 199	common	osf_swapon			sys_swapon
+-200	common	msgctl				sys_msgctl
++200	common	msgctl				sys_old_msgctl
+ 201	common	msgget				sys_msgget
+ 202	common	msgrcv				sys_msgrcv
+ 203	common	msgsnd				sys_msgsnd
+-204	common	semctl				sys_semctl
++204	common	semctl				sys_old_semctl
+ 205	common	semget				sys_semget
+ 206	common	semop				sys_semop
+ 207	common	osf_utsname			sys_osf_utsname
+ 208	common	lchown				sys_lchown
+ 209	common	shmat				sys_shmat
+-210	common	shmctl				sys_shmctl
++210	common	shmctl				sys_old_shmctl
+ 211	common	shmdt				sys_shmdt
+ 212	common	shmget				sys_shmget
+ 213	common	osf_mvalid			sys_ni_syscall
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index 20ed7e026723..b54b7f2bc24a 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -314,15 +314,15 @@
+ 297	common	recvmsg			sys_recvmsg
+ 298	common	semop			sys_semop		sys_oabi_semop
+ 299	common	semget			sys_semget
+-300	common	semctl			sys_semctl
++300	common	semctl			sys_old_semctl
+ 301	common	msgsnd			sys_msgsnd
+ 302	common	msgrcv			sys_msgrcv
+ 303	common	msgget			sys_msgget
+-304	common	msgctl			sys_msgctl
++304	common	msgctl			sys_old_msgctl
+ 305	common	shmat			sys_shmat
+ 306	common	shmdt			sys_shmdt
+ 307	common	shmget			sys_shmget
+-308	common	shmctl			sys_shmctl
++308	common	shmctl			sys_old_shmctl
+ 309	common	add_key			sys_add_key
+ 310	common	request_key		sys_request_key
+ 311	common	keyctl			sys_keyctl
+diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
+index 8ca1d4c304f4..d10cce69a4b0 100644
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -622,7 +622,7 @@ __SYSCALL(__NR_semop, sys_semop)
+ #define __NR_semget 299
+ __SYSCALL(__NR_semget, sys_semget)
+ #define __NR_semctl 300
+-__SYSCALL(__NR_semctl, compat_sys_semctl)
++__SYSCALL(__NR_semctl, compat_sys_old_semctl)
+ #define __NR_msgsnd 301
+ __SYSCALL(__NR_msgsnd, compat_sys_msgsnd)
+ #define __NR_msgrcv 302
+@@ -630,7 +630,7 @@ __SYSCALL(__NR_msgrcv, compat_sys_msgrcv)
+ #define __NR_msgget 303
+ __SYSCALL(__NR_msgget, sys_msgget)
+ #define __NR_msgctl 304
+-__SYSCALL(__NR_msgctl, compat_sys_msgctl)
++__SYSCALL(__NR_msgctl, compat_sys_old_msgctl)
+ #define __NR_shmat 305
+ __SYSCALL(__NR_shmat, compat_sys_shmat)
+ #define __NR_shmdt 306
+@@ -638,7 +638,7 @@ __SYSCALL(__NR_shmdt, sys_shmdt)
+ #define __NR_shmget 307
+ __SYSCALL(__NR_shmget, sys_shmget)
+ #define __NR_shmctl 308
+-__SYSCALL(__NR_shmctl, compat_sys_shmctl)
++__SYSCALL(__NR_shmctl, compat_sys_old_shmctl)
+ #define __NR_add_key 309
+ __SYSCALL(__NR_add_key, sys_add_key)
+ #define __NR_request_key 310
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index a24d09e937dd..7cc0f9554da3 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -335,15 +335,15 @@
+ 325	common	semtimedop			sys_semtimedop
+ 326	common	timerfd_settime			sys_timerfd_settime
+ 327	common	timerfd_gettime			sys_timerfd_gettime
+-328	common	semctl				sys_semctl
++328	common	semctl				sys_old_semctl
+ 329	common	semget				sys_semget
+ 330	common	semop				sys_semop
+-331	common	msgctl				sys_msgctl
++331	common	msgctl				sys_old_msgctl
+ 332	common	msgget				sys_msgget
+ 333	common	msgrcv				sys_msgrcv
+ 334	common	msgsnd				sys_msgsnd
+ 335	common	shmat				sys_shmat
+-336	common	shmctl				sys_shmctl
++336	common	shmctl				sys_old_shmctl
+ 337	common	shmdt				sys_shmdt
+ 338	common	shmget				sys_shmget
+ 339	common	signalfd4			sys_signalfd4
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index 53d5862649ae..cc134b1211aa 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -37,7 +37,7 @@
+ 27	n32	madvise				sys_madvise
+ 28	n32	shmget				sys_shmget
+ 29	n32	shmat				sys_shmat
+-30	n32	shmctl				compat_sys_shmctl
++30	n32	shmctl				compat_sys_old_shmctl
+ 31	n32	dup				sys_dup
+ 32	n32	dup2				sys_dup2
+ 33	n32	pause				sys_pause
+@@ -71,12 +71,12 @@
+ 61	n32	uname				sys_newuname
+ 62	n32	semget				sys_semget
+ 63	n32	semop				sys_semop
+-64	n32	semctl				compat_sys_semctl
++64	n32	semctl				compat_sys_old_semctl
+ 65	n32	shmdt				sys_shmdt
+ 66	n32	msgget				sys_msgget
+ 67	n32	msgsnd				compat_sys_msgsnd
+ 68	n32	msgrcv				compat_sys_msgrcv
+-69	n32	msgctl				compat_sys_msgctl
++69	n32	msgctl				compat_sys_old_msgctl
+ 70	n32	fcntl				compat_sys_fcntl
+ 71	n32	flock				sys_flock
+ 72	n32	fsync				sys_fsync
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index a8286ccbb66c..af0da757a7b2 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -37,7 +37,7 @@
+ 27	n64	madvise				sys_madvise
+ 28	n64	shmget				sys_shmget
+ 29	n64	shmat				sys_shmat
+-30	n64	shmctl				sys_shmctl
++30	n64	shmctl				sys_old_shmctl
+ 31	n64	dup				sys_dup
+ 32	n64	dup2				sys_dup2
+ 33	n64	pause				sys_pause
+@@ -71,12 +71,12 @@
+ 61	n64	uname				sys_newuname
+ 62	n64	semget				sys_semget
+ 63	n64	semop				sys_semop
+-64	n64	semctl				sys_semctl
++64	n64	semctl				sys_old_semctl
+ 65	n64	shmdt				sys_shmdt
+ 66	n64	msgget				sys_msgget
+ 67	n64	msgsnd				sys_msgsnd
+ 68	n64	msgrcv				sys_msgrcv
+-69	n64	msgctl				sys_msgctl
++69	n64	msgctl				sys_old_msgctl
+ 70	n64	fcntl				sys_fcntl
+ 71	n64	flock				sys_flock
+ 72	n64	fsync				sys_fsync
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index 69cf91b03b26..f8befa11b0c4 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -103,7 +103,7 @@
+ 91	common	madvise				sys_madvise
+ 92	common	shmget				sys_shmget
+ 93	common	shmat				xtensa_shmat
+-94	common	shmctl				sys_shmctl
++94	common	shmctl				sys_old_shmctl
+ 95	common	shmdt				sys_shmdt
+ # Socket Operations
+ 96	common	socket				sys_socket
+@@ -177,12 +177,12 @@
+ 161	common	semtimedop			sys_semtimedop
+ 162	common	semget				sys_semget
+ 163	common	semop				sys_semop
+-164	common	semctl				sys_semctl
++164	common	semctl				sys_old_semctl
+ 165	common	available165			sys_ni_syscall
+ 166	common	msgget				sys_msgget
+ 167	common	msgsnd				sys_msgsnd
+ 168	common	msgrcv				sys_msgrcv
+-169	common	msgctl				sys_msgctl
++169	common	msgctl				sys_old_msgctl
+ 170	common	available170			sys_ni_syscall
+ # File System
+ 171	common	umount2				sys_umount
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index fb63045a0fb6..938d8908b9e0 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -717,6 +717,7 @@ asmlinkage long sys_mq_getsetattr(mqd_t mqdes, const struct mq_attr __user *mqst
+ 
+ /* ipc/msg.c */
+ asmlinkage long sys_msgget(key_t key, int msgflg);
++asmlinkage long sys_old_msgctl(int msqid, int cmd, struct msqid_ds __user *buf);
+ asmlinkage long sys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf);
+ asmlinkage long sys_msgrcv(int msqid, struct msgbuf __user *msgp,
+ 				size_t msgsz, long msgtyp, int msgflg);
+@@ -726,6 +727,7 @@ asmlinkage long sys_msgsnd(int msqid, struct msgbuf __user *msgp,
+ /* ipc/sem.c */
+ asmlinkage long sys_semget(key_t key, int nsems, int semflg);
+ asmlinkage long sys_semctl(int semid, int semnum, int cmd, unsigned long arg);
++asmlinkage long sys_old_semctl(int semid, int semnum, int cmd, unsigned long arg);
+ asmlinkage long sys_semtimedop(int semid, struct sembuf __user *sops,
+ 				unsigned nsops,
+ 				const struct __kernel_timespec __user *timeout);
+@@ -734,6 +736,7 @@ asmlinkage long sys_semop(int semid, struct sembuf __user *sops,
+ 
+ /* ipc/shm.c */
+ asmlinkage long sys_shmget(key_t key, size_t size, int flag);
++asmlinkage long sys_old_shmctl(int shmid, int cmd, struct shmid_ds __user *buf);
+ asmlinkage long sys_shmctl(int shmid, int cmd, struct shmid_ds __user *buf);
+ asmlinkage long sys_shmat(int shmid, char __user *shmaddr, int shmflg);
+ asmlinkage long sys_shmdt(char __user *shmaddr);
+diff --git a/ipc/msg.c b/ipc/msg.c
+index 0833c6405915..8dec945fa030 100644
+--- a/ipc/msg.c
++++ b/ipc/msg.c
+@@ -567,9 +567,8 @@ static int msgctl_stat(struct ipc_namespace *ns, int msqid,
+ 	return err;
+ }
+ 
+-long ksys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf)
++static long ksys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf, int version)
+ {
+-	int version;
+ 	struct ipc_namespace *ns;
+ 	struct msqid64_ds msqid64;
+ 	int err;
+@@ -577,7 +576,6 @@ long ksys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf)
+ 	if (msqid < 0 || cmd < 0)
+ 		return -EINVAL;
+ 
+-	version = ipc_parse_version(&cmd);
+ 	ns = current->nsproxy->ipc_ns;
+ 
+ 	switch (cmd) {
+@@ -613,9 +611,23 @@ long ksys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf)
+ 
+ SYSCALL_DEFINE3(msgctl, int, msqid, int, cmd, struct msqid_ds __user *, buf)
+ {
+-	return ksys_msgctl(msqid, cmd, buf);
++	return ksys_msgctl(msqid, cmd, buf, IPC_64);
+ }
+ 
++#ifdef CONFIG_ARCH_WANT_IPC_PARSE_VERSION
++long ksys_old_msgctl(int msqid, int cmd, struct msqid_ds __user *buf)
++{
++	int version = ipc_parse_version(&cmd);
++
++	return ksys_msgctl(msqid, cmd, buf, version);
++}
++
++SYSCALL_DEFINE3(old_msgctl, int, msqid, int, cmd, struct msqid_ds __user *, buf)
++{
++	return ksys_old_msgctl(msqid, cmd, buf);
++}
++#endif
++
+ #ifdef CONFIG_COMPAT
+ 
+ struct compat_msqid_ds {
+@@ -689,12 +701,11 @@ static int copy_compat_msqid_to_user(void __user *buf, struct msqid64_ds *in,
+ 	}
+ }
+ 
+-long compat_ksys_msgctl(int msqid, int cmd, void __user *uptr)
++static long compat_ksys_msgctl(int msqid, int cmd, void __user *uptr, int version)
+ {
+ 	struct ipc_namespace *ns;
+ 	int err;
+ 	struct msqid64_ds msqid64;
+-	int version = compat_ipc_parse_version(&cmd);
+ 
+ 	ns = current->nsproxy->ipc_ns;
+ 
+@@ -734,8 +745,22 @@ long compat_ksys_msgctl(int msqid, int cmd, void __user *uptr)
+ 
+ COMPAT_SYSCALL_DEFINE3(msgctl, int, msqid, int, cmd, void __user *, uptr)
+ {
+-	return compat_ksys_msgctl(msqid, cmd, uptr);
++	return compat_ksys_msgctl(msqid, cmd, uptr, IPC_64);
+ }
++
++#ifdef CONFIG_ARCH_WANT_COMPAT_IPC_PARSE_VERSION
++long compat_ksys_old_msgctl(int msqid, int cmd, void __user *uptr)
++{
++	int version = compat_ipc_parse_version(&cmd);
++
++	return compat_ksys_msgctl(msqid, cmd, uptr, version);
++}
++
++COMPAT_SYSCALL_DEFINE3(old_msgctl, int, msqid, int, cmd, void __user *, uptr)
++{
++	return compat_ksys_old_msgctl(msqid, cmd, uptr);
++}
++#endif
+ #endif
+ 
+ static int testmsg(struct msg_msg *msg, long type, int mode)
+diff --git a/ipc/sem.c b/ipc/sem.c
+index 745dc6187e84..d1efff3a81bb 100644
+--- a/ipc/sem.c
++++ b/ipc/sem.c
+@@ -1634,9 +1634,8 @@ static int semctl_down(struct ipc_namespace *ns, int semid,
+ 	return err;
+ }
+ 
+-long ksys_semctl(int semid, int semnum, int cmd, unsigned long arg)
++static long ksys_semctl(int semid, int semnum, int cmd, unsigned long arg, int version)
+ {
+-	int version;
+ 	struct ipc_namespace *ns;
+ 	void __user *p = (void __user *)arg;
+ 	struct semid64_ds semid64;
+@@ -1645,7 +1644,6 @@ long ksys_semctl(int semid, int semnum, int cmd, unsigned long arg)
+ 	if (semid < 0)
+ 		return -EINVAL;
+ 
+-	version = ipc_parse_version(&cmd);
+ 	ns = current->nsproxy->ipc_ns;
+ 
+ 	switch (cmd) {
+@@ -1691,9 +1689,23 @@ long ksys_semctl(int semid, int semnum, int cmd, unsigned long arg)
+ 
+ SYSCALL_DEFINE4(semctl, int, semid, int, semnum, int, cmd, unsigned long, arg)
+ {
+-	return ksys_semctl(semid, semnum, cmd, arg);
++	return ksys_semctl(semid, semnum, cmd, arg, IPC_64);
+ }
+ 
++#ifdef CONFIG_ARCH_WANT_IPC_PARSE_VERSION
++long ksys_old_semctl(int semid, int semnum, int cmd, unsigned long arg)
++{
++	int version = ipc_parse_version(&cmd);
++
++	return ksys_semctl(semid, semnum, cmd, arg, version);
++}
++
++SYSCALL_DEFINE4(old_semctl, int, semid, int, semnum, int, cmd, unsigned long, arg)
++{
++	return ksys_old_semctl(semid, semnum, cmd, arg);
++}
++#endif
++
+ #ifdef CONFIG_COMPAT
+ 
+ struct compat_semid_ds {
+@@ -1744,12 +1756,11 @@ static int copy_compat_semid_to_user(void __user *buf, struct semid64_ds *in,
+ 	}
+ }
+ 
+-long compat_ksys_semctl(int semid, int semnum, int cmd, int arg)
++static long compat_ksys_semctl(int semid, int semnum, int cmd, int arg, int version)
+ {
+ 	void __user *p = compat_ptr(arg);
+ 	struct ipc_namespace *ns;
+ 	struct semid64_ds semid64;
+-	int version = compat_ipc_parse_version(&cmd);
+ 	int err;
+ 
+ 	ns = current->nsproxy->ipc_ns;
+@@ -1792,8 +1803,22 @@ long compat_ksys_semctl(int semid, int semnum, int cmd, int arg)
+ 
+ COMPAT_SYSCALL_DEFINE4(semctl, int, semid, int, semnum, int, cmd, int, arg)
+ {
+-	return compat_ksys_semctl(semid, semnum, cmd, arg);
++	return compat_ksys_semctl(semid, semnum, cmd, arg, IPC_64);
+ }
++
++#ifdef CONFIG_ARCH_WANT_COMPAT_IPC_PARSE_VERSION
++long compat_ksys_old_semctl(int semid, int semnum, int cmd, int arg)
++{
++	int version = compat_ipc_parse_version(&cmd);
++
++	return compat_ksys_semctl(semid, semnum, cmd, arg, version);
++}
++
++COMPAT_SYSCALL_DEFINE4(old_semctl, int, semid, int, semnum, int, cmd, int, arg)
++{
++	return compat_ksys_old_semctl(semid, semnum, cmd, arg);
++}
++#endif
+ #endif
+ 
+ /* If the task doesn't already have a undo_list, then allocate one
+diff --git a/ipc/shm.c b/ipc/shm.c
+index 0842411cb0e9..ce1ca9f7c6e9 100644
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -1137,16 +1137,15 @@ static int shmctl_do_lock(struct ipc_namespace *ns, int shmid, int cmd)
+ 	return err;
+ }
+ 
+-long ksys_shmctl(int shmid, int cmd, struct shmid_ds __user *buf)
++static long ksys_shmctl(int shmid, int cmd, struct shmid_ds __user *buf, int version)
+ {
+-	int err, version;
++	int err;
+ 	struct ipc_namespace *ns;
+ 	struct shmid64_ds sem64;
+ 
+ 	if (cmd < 0 || shmid < 0)
+ 		return -EINVAL;
+ 
+-	version = ipc_parse_version(&cmd);
+ 	ns = current->nsproxy->ipc_ns;
+ 
+ 	switch (cmd) {
+@@ -1194,8 +1193,22 @@ long ksys_shmctl(int shmid, int cmd, struct shmid_ds __user *buf)
+ 
+ SYSCALL_DEFINE3(shmctl, int, shmid, int, cmd, struct shmid_ds __user *, buf)
+ {
+-	return ksys_shmctl(shmid, cmd, buf);
++	return ksys_shmctl(shmid, cmd, buf, IPC_64);
++}
++
++#ifdef CONFIG_ARCH_WANT_IPC_PARSE_VERSION
++long ksys_old_shmctl(int shmid, int cmd, struct shmid_ds __user *buf)
++{
++	int version = ipc_parse_version(&cmd);
++
++	return ksys_shmctl(shmid, cmd, buf, version);
++}
++
++SYSCALL_DEFINE3(old_shmctl, int, shmid, int, cmd, struct shmid_ds __user *, buf)
++{
++	return ksys_old_shmctl(shmid, cmd, buf);
+ }
++#endif
+ 
+ #ifdef CONFIG_COMPAT
+ 
+@@ -1319,11 +1332,10 @@ static int copy_compat_shmid_from_user(struct shmid64_ds *out, void __user *buf,
+ 	}
+ }
+ 
+-long compat_ksys_shmctl(int shmid, int cmd, void __user *uptr)
++long compat_ksys_shmctl(int shmid, int cmd, void __user *uptr, int version)
+ {
+ 	struct ipc_namespace *ns;
+ 	struct shmid64_ds sem64;
+-	int version = compat_ipc_parse_version(&cmd);
+ 	int err;
+ 
+ 	ns = current->nsproxy->ipc_ns;
+@@ -1378,8 +1390,22 @@ long compat_ksys_shmctl(int shmid, int cmd, void __user *uptr)
+ 
+ COMPAT_SYSCALL_DEFINE3(shmctl, int, shmid, int, cmd, void __user *, uptr)
+ {
+-	return compat_ksys_shmctl(shmid, cmd, uptr);
++	return compat_ksys_shmctl(shmid, cmd, uptr, IPC_64);
+ }
++
++#ifdef CONFIG_ARCH_WANT_COMPAT_IPC_PARSE_VERSION
++long compat_ksys_old_shmctl(int shmid, int cmd, void __user *uptr)
++{
++	int version = compat_ipc_parse_version(&cmd);
++
++	return compat_ksys_shmctl(shmid, cmd, uptr, version);
++}
++
++COMPAT_SYSCALL_DEFINE3(old_shmctl, int, shmid, int, cmd, void __user *, uptr)
++{
++	return compat_ksys_old_shmctl(shmid, cmd, uptr);
++}
++#endif
+ #endif
+ 
+ /*
+diff --git a/ipc/syscall.c b/ipc/syscall.c
+index 3cf8ad703a4d..581bdff4e7c5 100644
+--- a/ipc/syscall.c
++++ b/ipc/syscall.c
+@@ -47,7 +47,7 @@ int ksys_ipc(unsigned int call, int first, unsigned long second,
+ 			return -EINVAL;
+ 		if (get_user(arg, (unsigned long __user *) ptr))
+ 			return -EFAULT;
+-		return ksys_semctl(first, second, third, arg);
++		return ksys_old_semctl(first, second, third, arg);
+ 	}
+ 
+ 	case MSGSND:
+@@ -75,7 +75,7 @@ int ksys_ipc(unsigned int call, int first, unsigned long second,
+ 	case MSGGET:
+ 		return ksys_msgget((key_t) first, second);
+ 	case MSGCTL:
+-		return ksys_msgctl(first, second,
++		return ksys_old_msgctl(first, second,
+ 				   (struct msqid_ds __user *)ptr);
+ 
+ 	case SHMAT:
+@@ -100,7 +100,7 @@ int ksys_ipc(unsigned int call, int first, unsigned long second,
+ 	case SHMGET:
+ 		return ksys_shmget(first, second, third);
+ 	case SHMCTL:
+-		return ksys_shmctl(first, second,
++		return ksys_old_shmctl(first, second,
+ 				   (struct shmid_ds __user *) ptr);
+ 	default:
+ 		return -ENOSYS;
+@@ -152,7 +152,7 @@ int compat_ksys_ipc(u32 call, int first, int second,
+ 			return -EINVAL;
+ 		if (get_user(pad, (u32 __user *) compat_ptr(ptr)))
+ 			return -EFAULT;
+-		return compat_ksys_semctl(first, second, third, pad);
++		return compat_ksys_old_semctl(first, second, third, pad);
+ 
+ 	case MSGSND:
+ 		return compat_ksys_msgsnd(first, ptr, second, third);
+@@ -177,7 +177,7 @@ int compat_ksys_ipc(u32 call, int first, int second,
+ 	case MSGGET:
+ 		return ksys_msgget(first, second);
+ 	case MSGCTL:
+-		return compat_ksys_msgctl(first, second, compat_ptr(ptr));
++		return compat_ksys_old_msgctl(first, second, compat_ptr(ptr));
+ 
+ 	case SHMAT: {
+ 		int err;
+@@ -196,7 +196,7 @@ int compat_ksys_ipc(u32 call, int first, int second,
+ 	case SHMGET:
+ 		return ksys_shmget(first, (unsigned int)second, third);
+ 	case SHMCTL:
+-		return compat_ksys_shmctl(first, second, compat_ptr(ptr));
++		return compat_ksys_old_shmctl(first, second, compat_ptr(ptr));
+ 	}
+ 
+ 	return -ENOSYS;
+diff --git a/ipc/util.h b/ipc/util.h
+index d768fdbed515..e272be622ae7 100644
+--- a/ipc/util.h
++++ b/ipc/util.h
+@@ -160,10 +160,7 @@ static inline void ipc_update_pid(struct pid **pos, struct pid *pid)
+ 	}
+ }
+ 
+-#ifndef CONFIG_ARCH_WANT_IPC_PARSE_VERSION
+-/* On IA-64, we always use the "64-bit version" of the IPC structures.  */
+-# define ipc_parse_version(cmd)	IPC_64
+-#else
++#ifdef CONFIG_ARCH_WANT_IPC_PARSE_VERSION
+ int ipc_parse_version(int *cmd);
+ #endif
+ 
+@@ -246,13 +243,9 @@ int get_compat_ipc64_perm(struct ipc64_perm *,
+ 
+ static inline int compat_ipc_parse_version(int *cmd)
+ {
+-#ifdef	CONFIG_ARCH_WANT_COMPAT_IPC_PARSE_VERSION
+ 	int version = *cmd & IPC_64;
+ 	*cmd &= ~IPC_64;
+ 	return version;
+-#else
+-	return IPC_64;
+-#endif
+ }
+ #endif
+ 
+@@ -261,29 +254,29 @@ long ksys_semtimedop(int semid, struct sembuf __user *tsops,
+ 		     unsigned int nsops,
+ 		     const struct __kernel_timespec __user *timeout);
+ long ksys_semget(key_t key, int nsems, int semflg);
+-long ksys_semctl(int semid, int semnum, int cmd, unsigned long arg);
++long ksys_old_semctl(int semid, int semnum, int cmd, unsigned long arg);
+ long ksys_msgget(key_t key, int msgflg);
+-long ksys_msgctl(int msqid, int cmd, struct msqid_ds __user *buf);
++long ksys_old_msgctl(int msqid, int cmd, struct msqid_ds __user *buf);
+ long ksys_msgrcv(int msqid, struct msgbuf __user *msgp, size_t msgsz,
+ 		 long msgtyp, int msgflg);
+ long ksys_msgsnd(int msqid, struct msgbuf __user *msgp, size_t msgsz,
+ 		 int msgflg);
+ long ksys_shmget(key_t key, size_t size, int shmflg);
+ long ksys_shmdt(char __user *shmaddr);
+-long ksys_shmctl(int shmid, int cmd, struct shmid_ds __user *buf);
++long ksys_old_shmctl(int shmid, int cmd, struct shmid_ds __user *buf);
+ 
+ /* for CONFIG_ARCH_WANT_OLD_COMPAT_IPC */
+ long compat_ksys_semtimedop(int semid, struct sembuf __user *tsems,
+ 			    unsigned int nsops,
+ 			    const struct old_timespec32 __user *timeout);
+ #ifdef CONFIG_COMPAT
+-long compat_ksys_semctl(int semid, int semnum, int cmd, int arg);
+-long compat_ksys_msgctl(int msqid, int cmd, void __user *uptr);
++long compat_ksys_old_semctl(int semid, int semnum, int cmd, int arg);
++long compat_ksys_old_msgctl(int msqid, int cmd, void __user *uptr);
+ long compat_ksys_msgrcv(int msqid, compat_uptr_t msgp, compat_ssize_t msgsz,
+ 			compat_long_t msgtyp, int msgflg);
+ long compat_ksys_msgsnd(int msqid, compat_uptr_t msgp,
+ 		       compat_ssize_t msgsz, int msgflg);
+-long compat_ksys_shmctl(int shmid, int cmd, void __user *uptr);
++long compat_ksys_old_shmctl(int shmid, int cmd, void __user *uptr);
+ #endif /* CONFIG_COMPAT */
+ 
+ #endif
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index bc934f31ab10..ce04431a40d1 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -197,6 +197,7 @@ COND_SYSCALL_COMPAT(mq_getsetattr);
+ 
+ /* ipc/msg.c */
+ COND_SYSCALL(msgget);
++COND_SYSCALL(old_msgctl);
+ COND_SYSCALL(msgctl);
+ COND_SYSCALL_COMPAT(msgctl);
+ COND_SYSCALL(msgrcv);
+@@ -206,6 +207,7 @@ COND_SYSCALL_COMPAT(msgsnd);
+ 
+ /* ipc/sem.c */
+ COND_SYSCALL(semget);
++COND_SYSCALL(old_semctl);
+ COND_SYSCALL(semctl);
+ COND_SYSCALL_COMPAT(semctl);
+ COND_SYSCALL(semtimedop);
+@@ -214,6 +216,7 @@ COND_SYSCALL(semop);
+ 
+ /* ipc/shm.c */
+ COND_SYSCALL(shmget);
++COND_SYSCALL(old_shmctl);
+ COND_SYSCALL(shmctl);
+ COND_SYSCALL_COMPAT(shmctl);
+ COND_SYSCALL(shmat);
+-- 
+2.20.0
 

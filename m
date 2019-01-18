@@ -1,175 +1,79 @@
-Return-Path: <SRS0=9u5Z=PZ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=gTW6=P2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1545EC43387
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 12:40:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AE25C43387
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 01:06:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D983020851
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Jan 2019 12:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1547728822;
-	bh=IkzEgNK/NLM895ZOQO55AVwIF79l0tEkPKbyO3Qf3Ec=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:List-ID:From;
-	b=xkB/oXE9cDnjohk9vARVGXUOcHgmT3h0ir4RsWA3CHLAAk4W2hTPn2ob+Jtkp1sP/
-	 VoaaxHUFv0Dp4bwm3Se5Z4pSpJ7uEhffo9SIPXofzNo3ofJVhQmqXbx9mqMzemFBgS
-	 OqRv5qzytQ5ZPzRGgw4NHdlgEfDO6dkxo4lRf5Zs=
+	by mail.kernel.org (Postfix) with ESMTP id 2F6972086D
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 01:06:52 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="LBB25re8"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbfAQMkW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Jan 2019 07:40:22 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:60490 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727686AbfAQMkV (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Jan 2019 07:40:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=qsBdwsq+77gzvu4dQxeCJ/KKt32LH7f9pEazGgvO8Fk=; b=AELpN8CpBgCV
-        eZgBgBXeomyCrijMdoJepwn022YTVeEJRlCi/jhlqH1Pt0NniyuSUbF4w8T2RSQQzr3dsgrL4MVjf
-        HUFlLgrhvamQj8ecv+0pJFeo8LIjNk666DnqeSgKkF2Eybin/ZfQioL6QxNfIqaFQj7ySHMHxdmSV
-        hj8RY=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=debutante.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpa (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1gk6y0-0000ZD-MN; Thu, 17 Jan 2019 12:40:16 +0000
-Received: by debutante.sirena.org.uk (Postfix, from userid 1000)
-        id 3961D1126FE2; Thu, 17 Jan 2019 12:40:16 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     Alban Bedel <albeu@free.fr>
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        id S1726120AbfARBGv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Jan 2019 20:06:51 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:60914 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfARBGv (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Jan 2019 20:06:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1547773608; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:content-type:
+         content-transfer-encoding:in-reply-to:references;
+        bh=XkFGTck7gvRx9HDUa+mp6ZYQi5+zkGojqrDNp5DwBA8=;
+        b=LBB25re8p1wwRvrmIVbXYDfref05JGqKyrdwTqxwagAgX9eQ4q72Wnt9kGP3GG1+dt0IKl
+        NBeT/XJWgVH18ZTDaJ/hOCB3fHN1QW93FnvCIp/8U2DU63fWda4afzSUDMhACXkfUSdB+l
+        SrRBGF6mi/SpZG0VFhIvujQyNC0dSfE=
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-mips@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Applied "spi: ath79: Enable support for compile test" to the spi tree
-In-Reply-To:  <20190116185549.23295-3-albeu@free.fr>
-X-Patchwork-Hint: ignore
-Message-Id: <20190117124016.3961D1126FE2@debutante.sirena.org.uk>
-Date:   Thu, 17 Jan 2019 12:40:16 +0000 (GMT)
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Harvey Hunt <harveyhuntnexus@gmail.com>
+Cc:     linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH 1/8] MIPS: DTS: CI20: Set BCH clock to 200 MHz
+Date:   Thu, 17 Jan 2019 22:06:27 -0300
+Message-Id: <20190118010634.27399-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The patch
+This is currently done inside the jz4780-bch driver, but it really
+should be done here instead.
 
-   spi: ath79: Enable support for compile test
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From b172fd0c898022c47161a99cb40be5304b0d3fd0 Mon Sep 17 00:00:00 2001
-From: Alban Bedel <albeu@free.fr>
-Date: Wed, 16 Jan 2019 19:55:46 +0100
-Subject: [PATCH] spi: ath79: Enable support for compile test
-
-To allow building this driver in compile test we need to remove all
-dependency on headers from arch/mips/include. To allow this we
-explicitly define all the registers locally instead of using
-ar71xx_regs.h and we move the platform data struct definition to
-include/linux/platform_data/spi-ath79.h.
-
-Signed-off-by: Alban Bedel <albeu@free.fr>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/ath79/dev-spi.h                         |  2 +-
- drivers/spi/Kconfig                               |  2 +-
- drivers/spi/spi-ath79.c                           | 15 ++++++++++++---
- .../linux/platform_data/spi-ath79.h               |  0
- 4 files changed, 14 insertions(+), 5 deletions(-)
- rename arch/mips/include/asm/mach-ath79/ath79_spi_platform.h => include/linux/platform_data/spi-ath79.h (100%)
+ arch/mips/boot/dts/ingenic/ci20.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
-index d732565ca736..6e15bc8651be 100644
---- a/arch/mips/ath79/dev-spi.h
-+++ b/arch/mips/ath79/dev-spi.h
-@@ -13,7 +13,7 @@
- #define _ATH79_DEV_SPI_H
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index 50cff3cbcc6d..aa892ec54d0a 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -111,6 +111,9 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pins_nemc>;
  
- #include <linux/spi/spi.h>
--#include <asm/mach-ath79/ath79_spi_platform.h>
-+#include <linux/platform_data/spi-ath79.h>
- 
- void ath79_register_spi(struct ath79_spi_platform_data *pdata,
- 			 struct spi_board_info const *info,
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 128892c7e21e..71d3d2d5e5d1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -63,7 +63,7 @@ config SPI_ALTERA
- 
- config SPI_ATH79
- 	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
--	depends on ATH79
-+	depends on ATH79 || COMPILE_TEST
- 	select SPI_BITBANG
- 	help
- 	  This enables support for the SPI controller present on the
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index edf695a359f4..09c4fb7fcf7a 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -23,15 +23,24 @@
- #include <linux/bitops.h>
- #include <linux/clk.h>
- #include <linux/err.h>
--
--#include <asm/mach-ath79/ar71xx_regs.h>
--#include <asm/mach-ath79/ath79_spi_platform.h>
-+#include <linux/platform_data/spi-ath79.h>
- 
- #define DRV_NAME	"ath79-spi"
- 
- #define ATH79_SPI_RRW_DELAY_FACTOR	12000
- #define MHZ				(1000 * 1000)
- 
-+#define AR71XX_SPI_REG_FS		0x00	/* Function Select */
-+#define AR71XX_SPI_REG_CTRL		0x04	/* SPI Control */
-+#define AR71XX_SPI_REG_IOC		0x08	/* SPI I/O Control */
-+#define AR71XX_SPI_REG_RDS		0x0c	/* Read Data Shift */
++		assigned-clocks = <&cgu JZ4780_CLK_BCH>;
++		assigned-clock-rates = <200000000>;
 +
-+#define AR71XX_SPI_FS_GPIO		BIT(0)	/* Enable GPIO mode */
-+
-+#define AR71XX_SPI_IOC_DO		BIT(0)	/* Data Out pin */
-+#define AR71XX_SPI_IOC_CLK		BIT(8)	/* CLK pin */
-+#define AR71XX_SPI_IOC_CS(n)		BIT(16 + (n))
-+
- struct ath79_spi {
- 	struct spi_bitbang	bitbang;
- 	u32			ioc_base;
-diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/include/linux/platform_data/spi-ath79.h
-similarity index 100%
-rename from arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
-rename to include/linux/platform_data/spi-ath79.h
+ 		nand@1 {
+ 			reg = <1>;
+ 
 -- 
-2.20.1
+2.11.0
 

@@ -6,38 +6,38 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49891C43387
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 08:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDEF6C43387
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 08:20:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0C4202087E
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 08:07:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A9C222087E
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 08:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1547798870;
-	bh=iycJr6kMP0y8uo8Se6qfTNrgbB+LhAyuaI7z/89S51o=;
+	s=default; t=1547799620;
+	bh=yEimTCZEK6aNYjqPcmB/h0Z+F3CHTqoBGFr+UEAvb78=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:List-ID:From;
-	b=nbxx3jPEJDaqfJMk2njA7nEg1IwdnA31P1opzTwdm29uMXRy5XpLnr5mbyMxFul+P
-	 1YmZjqdPhQ27p/f07+Un1mAkVUZrC9GtqThgUyuAm4Gu2YqW8lFj0CahdL9P+eueZR
-	 b7Uu6BJ7hGT0dxSZAuwQp6Ktnm3aRZEr07R1De0c=
+	b=XCKKKEKzqUtH607Mp5C2eVCCUt0CDRRQxeltRuSPBnyC/Ns2xHEBmTX2D7iabm6LQ
+	 2N2SThNAz8TTF/RtxbRFgVMYGG27PgVkE/nVcroV6UyE3LySfPHXHRQiSQVNeX5vWE
+	 2lqx62ZkS4lZggs+cdRNtUKl5FXrT9zd5I1nIyg0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727167AbfARIHt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 03:07:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37924 "EHLO mail.kernel.org"
+        id S1727440AbfARIUU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 03:20:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42442 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727148AbfARIHt (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 18 Jan 2019 03:07:49 -0500
+        id S1727300AbfARIUU (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 18 Jan 2019 03:20:20 -0500
 Received: from bbrezillon (91-160-177-164.subs.proxad.net [91.160.177.164])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1737E20855;
-        Fri, 18 Jan 2019 08:07:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B5E12086D;
+        Fri, 18 Jan 2019 08:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1547798868;
-        bh=iycJr6kMP0y8uo8Se6qfTNrgbB+LhAyuaI7z/89S51o=;
+        s=default; t=1547799619;
+        bh=yEimTCZEK6aNYjqPcmB/h0Z+F3CHTqoBGFr+UEAvb78=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oPOUqKMMPfNCqnbLw20NA61qi0SdMPmFMJH6DehB8UnC8dZxattVHb88ATKxDtHoU
-         TLibIkiyd1fI3uBF7gSTsk5fZifycuAfgcGqEJFUi5PxKB7r1FfoGREs/oWP1edSdz
-         S7yYSZ+lJh1Qd9LmSkggyrVT7qajrULBoptzlCkQ=
-Date:   Fri, 18 Jan 2019 09:07:36 +0100
+        b=DXBGW6jTotGsMp+odRSlkp4yqxTdXvqY+j2UZglk8+m7fedjwBrAMueVaPYsfI/5D
+         Z/rBZsWTFDmR3PG+zWQ3BouGxLQA87/GZvuNsfS0t2YEL9v3eqMGRc7EFhEt1fx1fF
+         99qUhV0xnBZJ/1MlKcR5CD8p9qexMKmyUDPw8aDs=
+Date:   Fri, 18 Jan 2019 09:20:06 +0100
 From:   Boris Brezillon <bbrezillon@kernel.org>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     David Woodhouse <dwmw2@infradead.org>,
@@ -53,10 +53,12 @@ Cc:     David Woodhouse <dwmw2@infradead.org>,
         Harvey Hunt <harveyhuntnexus@gmail.com>,
         linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: Re: [PATCH 1/8] MIPS: DTS: CI20: Set BCH clock to 200 MHz
-Message-ID: <20190118090736.6f1283bd@bbrezillon>
-In-Reply-To: <20190118010634.27399-1-paul@crapouillou.net>
+Subject: Re: [PATCH 2/8] dt-bindings: mtd: ingenic: Add compatible strings
+ for the JZ4725B
+Message-ID: <20190118092006.79857045@bbrezillon>
+In-Reply-To: <20190118010634.27399-2-paul@crapouillou.net>
 References: <20190118010634.27399-1-paul@crapouillou.net>
+        <20190118010634.27399-2-paul@crapouillou.net>
 X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -66,43 +68,44 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Paul,
-
-On Thu, 17 Jan 2019 22:06:27 -0300
+On Thu, 17 Jan 2019 22:06:28 -0300
 Paul Cercueil <paul@crapouillou.net> wrote:
 
-> This is currently done inside the jz4780-bch driver, but it really
-> should be done here instead.
+> Add compatible strings to probe the jz4780-nand and jz4780-bch drivers
+> from devicetree on the JZ4725B SoC from Ingenic.
 > 
-
-I disagree with that statement. If it's a per-SoC constraint then you
-can select the appropriate rate based on the compatible in the driver.
-If the clock rate depends on the NAND chip it probably means it's used
-to generate the RE/WE pulse and should depend on the NAND timings
-passed to ->setup_data_interface(). In either case, this should not be
-specified in the DT.
-
-Regards,
-
-Boris
-
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+
+Reviewed-by: Boris Brezillon <bbrezillon@kernel.org>
+
 > ---
->  arch/mips/boot/dts/ingenic/ci20.dts | 3 +++
->  1 file changed, 3 insertions(+)
+>  Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-> index 50cff3cbcc6d..aa892ec54d0a 100644
-> --- a/arch/mips/boot/dts/ingenic/ci20.dts
-> +++ b/arch/mips/boot/dts/ingenic/ci20.dts
-> @@ -111,6 +111,9 @@
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&pins_nemc>;
+> diff --git a/Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt b/Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt
+> index 29ea5853ca91..8ebed442ac55 100644
+> --- a/Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt
+> +++ b/Documentation/devicetree/bindings/mtd/ingenic,jz4780-nand.txt
+> @@ -6,7 +6,9 @@ memory-controllers/ingenic,jz4780-nemc.txt), and thus NAND device nodes must
+>  be children of the NEMC node.
 >  
-> +		assigned-clocks = <&cgu JZ4780_CLK_BCH>;
-> +		assigned-clock-rates = <200000000>;
-> +
->  		nand@1 {
->  			reg = <1>;
+>  Required NAND controller device properties:
+> -- compatible: Should be set to "ingenic,jz4780-nand".
+> +- compatible: Should be one of:
+> +  * ingenic,jz4725b-nand
+> +  * ingenic,jz4780-nand
+>  - reg: For each bank with a NAND chip attached, should specify a bank number,
+>    an offset of 0 and a size of 0x1000000 (i.e. the whole NEMC bank).
+>  
+> @@ -72,7 +74,9 @@ NAND devices. The following is a description of the device properties for a
+>  BCH controller.
+>  
+>  Required BCH properties:
+> -- compatible: Should be set to "ingenic,jz4780-bch".
+> +- compatible: Should be one of:
+> +  * ingenic,jz4725b-bch
+> +  * ingenic,jz4780-bch
+>  - reg: Should specify the BCH controller registers location and length.
+>  - clocks: Clock for the BCH controller.
 >  
 

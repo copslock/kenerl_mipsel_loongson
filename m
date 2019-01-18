@@ -2,112 +2,110 @@ Return-Path: <SRS0=gTW6=P2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79844C5AC81
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 19:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94BF9C5AC81
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 19:33:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 54FB020657
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 19:33:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5A30A20657
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Jan 2019 19:33:55 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="oKSlY/2n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729323AbfARTdn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Jan 2019 14:33:43 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:33979 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728738AbfARTdn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Jan 2019 14:33:43 -0500
-Received: by mail-qt1-f196.google.com with SMTP id r14so16558949qtp.1;
-        Fri, 18 Jan 2019 11:33:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ErLXt+4MLir6MBRid1biQgec4eSYhQQBJKNsrW9q3Fs=;
-        b=Cu91HrP0wa9j0pLECqvB4NSoVGSq0QHevyvV5eLXyuuhdiAu8xRirAEalLNK8Z8ogG
-         7aUezEAzQW0MVrjVyf2TTo1BRdmfTCqn25TS6cBMsNQ+DIcUTeXtMjIPjnhJWVuYJac+
-         20fJzLRFfYwKsCfQT6ao+iGlR13swo/58+4kItawj8TZTRi5ruwGy1w3Mzqzzb2cuuZQ
-         jn6W6xOvnz05RiZDq2HX+r5hnANmU5rtRKwvul22urcMgAgpt1nOR7KHGBp7P6xXakgG
-         5v2NO9k0rYndwkK1/FX7WesxIGyRmDah5fiATnAyEOyg2MhSGPPcSN6V0LG89PgnD1UZ
-         Y2Bw==
-X-Gm-Message-State: AJcUukcFjgF/C4afyxXek/KQr8yhTINkAeOvoB4zHSvi3iT/f8nlBlE+
-        jL50/VCgMI3nVCqBD0xaEQLuMa8p9apxN9rr6+Y=
-X-Google-Smtp-Source: ALg8bN51ZSz8S/UEkmKkQ76yrnTrRmtVHEOrjwWqzHKH/uRWMtRP1y/XgFacGAOrjnX1tIv/Wxgb87NR61MktkAeKK4=
-X-Received: by 2002:a0c:f50c:: with SMTP id j12mr16647911qvm.149.1547840021534;
- Fri, 18 Jan 2019 11:33:41 -0800 (PST)
+        id S1729141AbfARTdz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Jan 2019 14:33:55 -0500
+Received: from mail-eopbgr780135.outbound.protection.outlook.com ([40.107.78.135]:44480
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728738AbfARTdy (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 18 Jan 2019 14:33:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lI+vI6okr2or9vRt6MHyYgmkUj4cWtnsUn4vP3SIa80=;
+ b=oKSlY/2nhO0hrz3hjc0iGhnCTYEBqWFIWRdidGc2Vwrh/O6zXQ1rgWJM4LNwd21IqvOni3DfSNZAn9hqiLqa2XUF7WaqWAoH/RmlmBWiyVSOiL7fs8pivx8hz2skAhtLTKgRMTmIogiinmezdRE/RGP81WhpOnb7dgDUDdCaKk8=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1327.namprd22.prod.outlook.com (10.174.162.142) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1537.27; Fri, 18 Jan 2019 19:33:51 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::595e:ffcc:435b:9110]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::595e:ffcc:435b:9110%4]) with mapi id 15.20.1537.018; Fri, 18 Jan 2019
+ 19:33:51 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "nbd@nbd.name" <nbd@nbd.name>, Hauke Mehrtens <hauke@hauke-m.de>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Compile post DMA flush only when needed
+Thread-Topic: [PATCH] MIPS: Compile post DMA flush only when needed
+Thread-Index: AQHUj9bd+V2+QGoge0iyRnB7XdbZMqW1qcqA
+Date:   Fri, 18 Jan 2019 19:33:51 +0000
+Message-ID: <MWHPR2201MB12776FB9987D8C7A68481689C19C0@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20181209154957.28403-1-hauke@hauke-m.de>
+In-Reply-To: <20181209154957.28403-1-hauke@hauke-m.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CO2PR04CA0165.namprd04.prod.outlook.com
+ (2603:10b6:104:4::19) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1327;6:qy4BHqBQ85xJDK++04nPv8SzbEItwOxW6FP84+RbcLUnQGZQst5Csj7k32nzc/k/EWtMRmJPcBt4zkI06qA7n/3IGZH+Gxi7WWTrAq8v1h/tmYCekMvXdCoTNL36Rc35fZKxhEVjs21Hn+LVcs8a+Pt+3HdVYx0Vxl8iC+f5nKh6DqMnIDvYik7aLvu3qGqe9+Gn2dXkWCDlnZ7AV7FlPvNFPgNZQj99vV3tpKSEJjQ2rLsLG6Rwx0Sop4BF9Wr2uTQYC6ZoObPbUgqxmkTEqJOszofp3j57bWStoUm+DbVIv4rymfeq23ZcWaYWGs6gMzVkazf5u8Sazt65qGmRdcYKlSjDVAfh5ATY4f7FNa5uH+rc9P4o4ikQwZ2Pr7MFdUA7vnHym78/PeOKfyCU8qxwBhoYINqKNAJdOP1CK4uDtBcZEu0rK1K/IcEegTRwLJUMFmem/9vN+6UaK46rAA==;5:ET4zVLoL9kCGym0Exm0hR35vp98m5XskSPFE/lg0yVoJbPobeut/IKhRP5F6LFUcx0VI1F8BFmfEvysHCutipExwGB/ebXifpqV5Y//NwMF97Pl/3IMUvMW7bbgHK1Gph5vVTZ08KKr9WroegGWO7Amv+zRUz8uaCD9bYzOXOg/wu6WFRHrInGVbGZqr12lITSTUKb7MjXJxx6xBnUVvVA==;7:JHJ6+R6ASkyvsh+egQLehyq2fZBWVwMifFOy+NCsUWN0RcJIoO2zrwB0nrRIEI3KR1H22C2YLNvaK7MSLsk82MsU7HjJ1/rbOZ9LozKTfL76b0w1XsK9toKkYWTqdHchvr5Uxn09oP/G+bEBrPijEg==
+x-ms-office365-filtering-correlation-id: 8f27d02f-b252-492f-abdd-08d67d7bdfc1
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600109)(711020)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1327;
+x-ms-traffictypediagnostic: MWHPR2201MB1327:
+x-microsoft-antispam-prvs: <MWHPR2201MB1327626250D2ADA5E32E8DE4C19C0@MWHPR2201MB1327.namprd22.prod.outlook.com>
+x-forefront-prvs: 0921D55E4F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(366004)(396003)(136003)(39840400004)(189003)(199004)(4326008)(76176011)(6116002)(68736007)(6916009)(3846002)(316002)(54906003)(33656002)(8936002)(229853002)(5660300001)(66066001)(74316002)(386003)(52116002)(11346002)(446003)(25786009)(97736004)(26005)(6506007)(102836004)(42882007)(6246003)(186003)(9686003)(53936002)(256004)(105586002)(7696005)(44832011)(476003)(106356001)(2906002)(486006)(81156014)(55016002)(305945005)(14454004)(8676002)(7736002)(81166006)(6436002)(4744005)(71200400001)(71190400001)(478600001)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1327;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: nu0KZzcCL82unMnXpOWcu7xWkPV+wy7x46HtwnIp7zmnPjA4HRGQqcYhPDBJk6fuCWdlAE+oeNJClIChsrZ6DixGYES+ztlwWyytBhmC8VCD7sOxdXGsITfWZuFFZkkgm+hkRztiQfd0HUNU4LkEPuMmxuvD0qXxIMfQivvvFJfdqDOVWOeyMCj1MwyLX2bOly9aa2cdsj+4mM8p8eSlDIH2UgkDsKIe2ZNc7+3sxM9ELVHtq9jjv+HsdmhQ+XAibKrCSglnI5h+95t9YyFSA/CYS3GGe4xGFI5vXlWGL6zSbvEEea60pStFfDq449wY2LDpwunNrZ14Ljozd9HAXTg+mOpt/wNyPHMvST9yAwulEXwMhT7gk9nL+EEztGsGH5/Myt5tbTXqCVMTYdV5WL3JRRULr4qQbc5EZnlxoI8=
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-30-arnd@arndb.de>
- <CALCETrXqM5mhvwreN5y-9K99h1j9rs9MAVK-cNLC54s1fdHA6w@mail.gmail.com>
-In-Reply-To: <CALCETrXqM5mhvwreN5y-9K99h1j9rs9MAVK-cNLC54s1fdHA6w@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 18 Jan 2019 20:33:25 +0100
-Message-ID: <CAK8P3a0V+xboaGAF2nqrYtpjXXA7y0LcvCKi4ngLTus1D_XZBA@mail.gmail.com>
-Subject: Re: [PATCH v2 29/29] y2038: add 64-bit time_t syscalls to all 32-bit architectures
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@mips.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f27d02f-b252-492f-abdd-08d67d7bdfc1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jan 2019 19:33:50.7194
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1327
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 7:50 PM Andy Lutomirski <luto@kernel.org> wrote:
-> On Fri, Jan 18, 2019 at 8:25 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > - Once we get to 512, we clash with the x32 numbers (unless
-> >   we remove x32 support first), and probably have to skip
-> >   a few more. I also considered using the 512..547 space
-> >   for 32-bit-only calls (which never clash with x32), but
-> >   that also seems to add a bit of complexity.
->
-> I have a patch that I'll send soon to make x32 use its own table.  As
-> far as I'm concerned, 547 is *it*.  548 is just a normal number and is
-> not special.  But let's please not reuse 512..547 for other purposes
-> on x86 variants -- that way lies even more confusion, IMO.
+Hello,
 
-Fair enough, the space for those numbers is cheap enough here.
-I take it you mean we also should not reuse that number space if
-we were to decide to remove x32 soon, but you are not worried
-about clashing with arch/alpha when everything else uses consistent
-numbers?
+Hauke Mehrtens wrote:
+> dma_sync_phys() is only called for some CPUs when a mapping is removed.
+> Add ARCH_HAS_SYNC_DMA_FOR_CPU only for the CPUs listed in
+> cpu_needs_post_dma_flush() which need this extra call and do not compile
+> this code in for other CPUs. We need this for R10000, R12000, BMIPS5000
+> CPUs and CPUs supporting MAAR which was introduced in MIPS32r5.
+>=20
+> This will hopefully improve the performance of the not affected devices.
+>=20
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 
-       Arnd
+Applied to mips-next.
+
+Thanks,
+    Paul
+
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

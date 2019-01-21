@@ -2,58 +2,62 @@ Return-Path: <SRS0=dr9w=P5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62DA7C2F441
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 16:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1852C31680
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 17:08:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3811B21019
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 16:31:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76F8421019
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 17:08:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730411AbfAUQbV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 11:31:21 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:44211 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730112AbfAUQbU (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 11:31:20 -0500
-Received: by mail-qt1-f193.google.com with SMTP id n32so24127341qte.11;
-        Mon, 21 Jan 2019 08:31:19 -0800 (PST)
+        id S1727232AbfAURIk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 12:08:40 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:36755 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726068AbfAURIj (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 12:08:39 -0500
+Received: by mail-qt1-f194.google.com with SMTP id t13so24320894qtn.3;
+        Mon, 21 Jan 2019 09:08:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ugnN37Htp2pcGbvXPo+DEz/r4541Rca2swp85kVj/dg=;
-        b=AN4J5uEie5Hx6iRzpgTqk2T78/TYbZGWKu5NP3ScooQUyeF+pmyzaxewwf+GzaK+uP
-         nYxvf88tBZStbUoK/Lpu2lZTijjAkRYgGZdTml5XNBvpxoa8v7N78Gc64UoRdsFOM4eV
-         92y+zLsPd9e7Vb0DeQ8153pnjbQ4v9+wUCBTLieS5wVDIHNRqZslR8xxxmdMciaITTjG
-         QjZy8xIFdXDUdFOTyMMhQoc6kIUZ4QUoVLQIfpJBEdRRD6IcpD1CZs4f87OjXnqL5hO1
-         fut8e9AbtYZy8M3vl2AkJoriRYJIB6vvIV0Ob/+TXIQThjD5KPlZZBzy3BNJO5njSqKk
-         IW/g==
-X-Gm-Message-State: AJcUukdhC7yC2jcZZEZAx/kA2Af/xMeH3SmcxCgjRSzE7Bk8qsfTVphi
-        yFeYy2ypdj+52BDoVBK+QEffrKZNQpm0NdOBih0=
-X-Google-Smtp-Source: ALg8bN4IjC8153m9pB3iBWOATh3R/RnsAQ6wVGb5LY7XqftLLWs9CXLGl7GxR+zlIVcd8dP96h71Ls+Fr/txo5y0uPg=
-X-Received: by 2002:aed:35c5:: with SMTP id d5mr27326381qte.212.1548088278474;
- Mon, 21 Jan 2019 08:31:18 -0800 (PST)
+        bh=A3BFzNbMjDWWnmVRt1tolWRl8m0peBLC2YUEivt95tQ=;
+        b=LuC+BFBFDarHHTq/4HS7If4XzMJzl5Y96wDGxXA1zsJNjtZAiNRzDaRR8ekZiU8LSE
+         QS3kbyCHfwi/mEWiu2LUgLynFpULg4hk/VI8GjIyoQc3hiLdUC0mxTuOLNpJk0aIb/us
+         whY4+48NwO5sQvnEu5DtJS/OV8l4kGR9MebOjji6uSM8tTn/O2M2cIVb2eadFHNKl5N/
+         vwXby02Fm1U6clyrSazy4WnOUEC7yf3uvOlcBc4XOtijAFoXHTwy+p1TPgMjMpafSKbN
+         bfIJlT5MvCwer3jn/oSWX+uclP7ajJpDeEiS2m3MINXRcpZnt58jj8U7cB+cAD8LQ5ON
+         +l6Q==
+X-Gm-Message-State: AJcUukefvxqZugOhEo7ulSLLc2wICtmh/ul1Bl+K6SeOLIEpQg7woe5D
+        UNmyX2J2gzymAZ3Rvr8FiLsmqLvrid8jdqb2TsA=
+X-Google-Smtp-Source: ALg8bN7/DN0rP0JOEiYkuJ24jXW/SvkEYHpGox4RlM5iK+eeluX/kG/Kn+zKF5Ngogsr1NCH9MXedHfaxCnYfxa1vgY=
+X-Received: by 2002:ac8:1d12:: with SMTP id d18mr27232408qtl.343.1548090517294;
+ Mon, 21 Jan 2019 09:08:37 -0800 (PST)
 MIME-Version: 1.0
 References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-30-arnd@arndb.de>
-In-Reply-To: <20190118161835.2259170-30-arnd@arndb.de>
+ <CALCETrXqM5mhvwreN5y-9K99h1j9rs9MAVK-cNLC54s1fdHA6w@mail.gmail.com>
+ <CAK8P3a0V+xboaGAF2nqrYtpjXXA7y0LcvCKi4ngLTus1D_XZBA@mail.gmail.com>
+ <CALCETrWPj6dHEyo=AELoVjXGsiwuSpRp17x3CEWBHvp7i3cy+Q@mail.gmail.com>
+ <20190119142852.cntdihah4mpa3lgx@e5254000004ec.dyn.armlinux.org.uk> <CAMuHMdXzQNEEDjWrmTph8Krovj1g2WhnBUaM=FvKB+J2fZqctA@mail.gmail.com>
+In-Reply-To: <CAMuHMdXzQNEEDjWrmTph8Krovj1g2WhnBUaM=FvKB+J2fZqctA@mail.gmail.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 21 Jan 2019 17:31:01 +0100
-Message-ID: <CAK8P3a2grsgvLeBHFoLnnpJti7qkZFfBPTrXf+CoihtOJKySzw@mail.gmail.com>
+Date:   Mon, 21 Jan 2019 18:08:20 +0100
+Message-ID: <CAK8P3a04UC2dHVqx1gHXJQzsDw446h1ghLEuRe0xmUyJgrOktw@mail.gmail.com>
 Subject: Re: [PATCH v2 29/29] y2038: add 64-bit time_t syscalls to all 32-bit architectures
-To:     y2038 Mailman List <y2038@lists.linaro.org>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Andy Lutomirski <luto@kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
         Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>
-Cc:     Matt Turner <mattst88@gmail.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Matt Turner <mattst88@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
         Paul Burton <paul.burton@mips.com>,
         Helge Deller <deller@gmx.de>,
@@ -62,20 +66,18 @@ Cc:     Matt Turner <mattst88@gmail.com>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
         Firoz Khan <firoz.khan@linaro.org>,
         alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         linux-mips@vger.kernel.org,
         Parisc List <linux-parisc@vger.kernel.org>,
@@ -83,51 +85,75 @@ Cc:     Matt Turner <mattst88@gmail.com>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         sparclinux <sparclinux@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>
+        Network Development <netdev@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 5:25 PM Arnd Bergmann <arnd@arndb.de> wrote:
+On Mon, Jan 21, 2019 at 9:19 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Sat, Jan 19, 2019 at 3:29 PM Russell King - ARM Linux admin
+> <linux@armlinux.org.uk> wrote:
+> > On Fri, Jan 18, 2019 at 11:53:25AM -0800, Andy Lutomirski wrote:
+> > > On Fri, Jan 18, 2019 at 11:33 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > On Fri, Jan 18, 2019 at 7:50 PM Andy Lutomirski <luto@kernel.org> wrote:
+> > >
+> > > Can we perhaps just start the consistent numbers above 547 or maybe
+> > > block out 512..547 in the new regime?
+> >
+> > I don't think you gain much with that kind of scheme - it won't take
+> > very long before an architecture misses having a syscall added, and
+> > then someone else adds their own.  Been there with ARM - I was keeping
+> > the syscall table in the same order as x86 for new syscalls, but now
 >
-> This adds 21 new system calls on each ABI that has 32-bit time_t
-> today. All of these have the exact same semantics as their existing
-> counterparts, and the new ones all have macro names that end in 'time64'
-> for clarification.
+> Same for m68k, and probably other architectures.
 >
-> This gets us to the point of being able to safely use a C library
-> that has 64-bit time_t in user space. There are still a couple of
-> loose ends to tie up in various areas of the code, but this is the
-> big one, and should be entirely uncontroversial at this point.
+> > that others have been adding syscalls to the table since I converted
+> > ARM to the tabular form, that's now gone out the window.
+> >
+> > So, I think it's completely pointless to do what you're suggesting.
+> > We'll just end up with a big hole in the middle of the syscall table
+> > and then revert back to random numbering of syscalls thereafter again.
+>
+> I believe the plan is to add future syscalls for all architectures in a
+> single commit, to keep everything in sync.
 
-I've successfully tested this with musl and LTP now, using an
-i386 kernel. The musl port I used is at
-https://git.linaro.org/people/arnd.bergmann/musl-y2038.git/
-This is just an updated version of what I used for testing last
-year, using the current syscall assignment, and going back
-to the time32 versions of getitimer/setitimer and
-wait4/waitid/getusage.
+Yes, that is the idea. This was not realistic before, since each one
+of the old architectures had its own way of describing the system call
+tables, and many needed a different set of quirks.
 
-It's certainly not intended for merging like this, but a proper
-musl port is under discussion now, and this should be
-sufficient if anyone else wants to try out the new syscall
-ABI before we merge it.
+Since (almost) everything is now converted to the syscall.tbl format,
+we have removed all obsolete architectures, and a lot of the quirks
+(x32, spu, s390-31) won't matter as much in the future, I think it is
+now possible to do it.
 
-The LTP I have is heavily hacked, and has a number of
-failures resulting from differences between musl and glibc,
-or from the way we convert between the kernel types and
-the user space types.
+We could even extend scripts/checksyscalls.sh to warn if a new
+syscall above 423 is not added to all 16 tables at the same time.
 
-The testing found one minor bug in all the kernel syscall tables:
+> Regardless, I'm wondering what to do with the holes marked "room for
+> arch specific calls".
+> When is a syscall really arch-specific, and can it be added there, and
+> when does it turn out (later) that it isn't, breaking the
+> synchronization again?
 
-> +418    common  mq_timedsend_time64             sys_mq_timedsend
-> +419    common  mq_timedreceiv_time64           sys_mq_timedreceive
+We've had a bit of that already, with cacheflush(), which exists on
+a couple of architectures, including some that use the first
+'arch specific' slot (244) of the asm-generic table. I think this
+will be rare enough that we can figure out a solution when we
+get there.
 
-While this would have fit in with umount(), creat() and mknod(),
-it was unintentional, and I've changed it back to
-mq_timedreceive_time64 (with an added 'e').
+> The pkey syscalls may be a bad example, as AFAIU they can be implemented
+> on some architectures, but not on some others.  Still, I had skipped them
+> when adding new syscalls to m68k.
+>
+> Perhaps we should get rid of the notion of "arch-specific syscalls", and
+> reserve a slot everywhere anyway?
 
-       Arnd
+I don't mind calling the hole something else if that helps. Out of
+principle I would already assume that anything we add for x86
+or the generic table should be added everywhere, but we can
+make it broader than that.
+
+      Arnd

@@ -7,46 +7,45 @@ X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27B05C2F3A0
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C262C2F3BE
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:09:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E4F2C20879
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:09:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E707E20861
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548079754;
-	bh=AqR9cnwtZYVrHZoFWI8UQ6jzsT82xMVrjBaY4w4xInA=;
+	s=default; t=1548079777;
+	bh=wR5w45Yb4/fud0h/RZD6NHFIn1QttTT1pZaqaUfQPDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=mGXswrpkfV4hH0oJKAlJzJTmFcuAkLXTZu69PdH5fJsE1o6Sxefh6aEtpkbQhq7iq
-	 pe7Wizr69M3Qgsh22d7UzGYKJhAPr49yDGdX0Gv7La4uWTjByNxVPaJe1h4Rg9sXwG
-	 VfVUPZ0dd59gtR7YTFaEyBcy9GRCgOMt36DDBMC4=
+	b=KACyXVFHkXYmJOR5ZTxI/TMiBFLzRdlOlGaP8SjYL6XvS1FQ1i2op7KT5MBk8ohPh
+	 SUf4xAiIIg+EP05dISXEbtLIDGyXp0cQTzRaV15mavPlnXOnprF/VmQxZD+kjBOXjF
+	 6Ay2hgFnZ9XnxdUqYZBfGrusju3cjLAj2WEQnOBI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731722AbfAUNzZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 08:55:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40056 "EHLO mail.kernel.org"
+        id S1731292AbfAUOJc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 09:09:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39758 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731699AbfAUNzZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Jan 2019 08:55:25 -0500
+        id S1730551AbfAUNzN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Jan 2019 08:55:13 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 10BE62084C;
-        Mon, 21 Jan 2019 13:55:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6F5E520861;
+        Mon, 21 Jan 2019 13:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548078924;
-        bh=AqR9cnwtZYVrHZoFWI8UQ6jzsT82xMVrjBaY4w4xInA=;
+        s=default; t=1548078912;
+        bh=wR5w45Yb4/fud0h/RZD6NHFIn1QttTT1pZaqaUfQPDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KJQYH2yd6/s0vwBG1DJSnXcYn89Cf9eTHPBb+Rn3lv3UBCBkzv/Ed+9EWOeqSTvLv
-         sJU3BZuIv+2gZ0ttISEW3odCodMYB3NO8uIYWgHNM0O/XoyPbLnaMtAu1FWW56+hyg
-         FBd6HVzCkBNvFZJKc8xXh3EJqNl54XGtiCJUS2N8=
+        b=DWOKMncHA38jq0HiaNOMCyL9cx4M7tvvwY2mCeLhJuTisQiBnqALz6dn6cUvyN5h3
+         9dtsvas5twS3xoEKLZcFHkPz5gbnLkbhJwPQigCZW1XC1RTOJepL6hqCSgVdw6nnXs
+         PqwXRaZ+eb5GufkAn7rulDm1iccgy3+aWPqna360=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, YunQiang Su <ysu@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
-        linux-mips@vger.kernel.org, aaro.koskinen@iki.fi
-Subject: [PATCH 4.9 30/51] Disable MSI also when pcie-octeon.pcie_disable on
-Date:   Mon, 21 Jan 2019 14:44:26 +0100
-Message-Id: <20190121122456.442226147@linuxfoundation.org>
+        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.9 27/51] mips: fix n32 compat_ipc_parse_version
+Date:   Mon, 21 Jan 2019 14:44:23 +0100
+Message-Id: <20190121122456.105302155@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190121122453.700446926@linuxfoundation.org>
 References: <20190121122453.700446926@linuxfoundation.org>
@@ -65,40 +64,41 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: YunQiang Su <ysu@wavecomp.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit a214720cbf50cd8c3f76bbb9c3f5c283910e9d33 upstream.
+commit 5a9372f751b5350e0ce3d2ee91832f1feae2c2e5 upstream.
 
-Octeon has an boot-time option to disable pcie.
+While reading through the sysvipc implementation, I noticed that the n32
+semctl/shmctl/msgctl system calls behave differently based on whether
+o32 support is enabled or not: Without o32, the IPC_64 flag passed by
+user space is rejected but calls without that flag get IPC_64 behavior.
 
-Since MSI depends on PCI-E, we should also disable MSI also with
-this option is on in order to avoid inadvertently accessing PCIe
-registers.
+As far as I can tell, this was inadvertently changed by a cleanup patch
+but never noticed by anyone, possibly nobody has tried using sysvipc
+on n32 after linux-3.19.
 
-Signed-off-by: YunQiang Su <ysu@wavecomp.com>
+Change it back to the old behavior now.
+
+Fixes: 78aaf956ba3a ("MIPS: Compat: Fix build error if CONFIG_MIPS32_COMPAT but no compat ABI.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: pburton@wavecomp.com
 Cc: linux-mips@vger.kernel.org
-Cc: aaro.koskinen@iki.fi
-Cc: stable@vger.kernel.org # v3.3+
+Cc: stable@vger.kernel.org # 3.19+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/pci/msi-octeon.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/pci/msi-octeon.c
-+++ b/arch/mips/pci/msi-octeon.c
-@@ -369,7 +369,9 @@ int __init octeon_msi_initialize(void)
- 	int irq;
- 	struct irq_chip *msi;
- 
--	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_PCIE) {
-+	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_INVALID) {
-+		return 0;
-+	} else if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_PCIE) {
- 		msi_rcv_reg[0] = CVMX_PEXP_NPEI_MSI_RCV0;
- 		msi_rcv_reg[1] = CVMX_PEXP_NPEI_MSI_RCV1;
- 		msi_rcv_reg[2] = CVMX_PEXP_NPEI_MSI_RCV2;
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3135,6 +3135,7 @@ config MIPS32_O32
+ config MIPS32_N32
+ 	bool "Kernel support for n32 binaries"
+ 	depends on 64BIT
++	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
+ 	select COMPAT
+ 	select MIPS32_COMPAT
+ 	select SYSVIPC_COMPAT if SYSVIPC
 
 

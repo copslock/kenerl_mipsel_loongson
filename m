@@ -2,116 +2,102 @@ Return-Path: <SRS0=dr9w=P5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72DEEC7113B
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 12:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1ADA3C2F3BE
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:01:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EE1A02084A
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 12:20:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D3166214D8
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1548079317;
+	bh=Xj2hA8l76MUL2lu3JGc48D+uz2I4VUOLs2KZNcHR73U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=2aenc3pvI6S37FNGEFwwP96UZbqzukY6QWLeKmPCVlZ/WlpsdUTjmrQuqoizPQRus
+	 KyEs++EelAotAlQ3hzrBtfVPpJvyO5luxAAi99bTlk9FNoE92EgWVYzVJ4JEjk0uOc
+	 sg37i+NTpWmgXjt2GTktOLWWlGbXRSpWo4yPLpqA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727971AbfAUMUI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 07:20:08 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55308 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728156AbfAUMUI (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Jan 2019 07:20:08 -0500
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x0LCJAXh112300
-        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 07:20:06 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2q5bg76xx8-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 07:19:54 -0500
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
-        Mon, 21 Jan 2019 12:19:36 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 21 Jan 2019 12:19:27 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0LCJQuZ60817412
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Jan 2019 12:19:26 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 528CF5204F;
-        Mon, 21 Jan 2019 12:19:26 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.95])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 4C7C552051;
-        Mon, 21 Jan 2019 12:19:25 +0000 (GMT)
-Date:   Mon, 21 Jan 2019 13:19:24 +0100
-From:   Heiko Carstens <heiko.carstens@de.ibm.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        mattst88@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
-        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        geert@linux-m68k.org, monstr@monstr.eu, paul.burton@mips.com,
-        deller@gmx.de, benh@kernel.crashing.org, mpe@ellerman.id.au,
-        schwidefsky@de.ibm.com, dalias@libc.org, davem@davemloft.net,
-        luto@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, jcmvbkbc@gmail.com,
-        akpm@linux-foundation.org, deepa.kernel@gmail.com,
-        ebiederm@xmission.com, firoz.khan@linaro.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 29/29] y2038: add 64-bit time_t syscalls to all 32-bit
- architectures
-References: <20190118161835.2259170-1-arnd@arndb.de>
- <20190118161835.2259170-30-arnd@arndb.de>
+        id S1732720AbfAUOB5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 09:01:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49200 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732257AbfAUOB5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Jan 2019 09:01:57 -0500
+Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ED50F2089F;
+        Mon, 21 Jan 2019 14:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1548079316;
+        bh=Xj2hA8l76MUL2lu3JGc48D+uz2I4VUOLs2KZNcHR73U=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=1XkWVzAU/rwG1cRMAuEWz6t4qCeHa6ED4Myf4zSMOnX731Cmzj09XBBPL0GLncZia
+         vxQzk4k6bUMhGebgjEmgvXcxI+WsHhdYKMLgRWT+SgEJoMZ5Z4Sz0mc5FsbCHji/Or
+         ONecLIqGKA241GiQTl2Ls6KsNZ/ZRe3q8C4zv5vA=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.19 45/99] mips: fix n32 compat_ipc_parse_version
+Date:   Mon, 21 Jan 2019 14:48:37 +0100
+Message-Id: <20190121134915.683413255@linuxfoundation.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190121134913.924726465@linuxfoundation.org>
+References: <20190121134913.924726465@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-In-Reply-To: <20190118161835.2259170-30-arnd@arndb.de>
-X-TM-AS-GCONF: 00
-x-cbid: 19012112-0016-0000-0000-000002484921
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19012112-0017-0000-0000-000032A279F9
-Message-Id: <20190121121923.GF4020@osiris>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-21_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=502 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1901210097
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 05:18:35PM +0100, Arnd Bergmann wrote:
-> This adds 21 new system calls on each ABI that has 32-bit time_t
-> today. All of these have the exact same semantics as their existing
-> counterparts, and the new ones all have macro names that end in 'time64'
-> for clarification.
-> 
-> This gets us to the point of being able to safely use a C library
-> that has 64-bit time_t in user space. There are still a couple of
-> loose ends to tie up in various areas of the code, but this is the
-> big one, and should be entirely uncontroversial at this point.
-> 
-> In particular, there are four system calls (getitimer, setitimer,
-> waitid, and getrusage) that don't have a 64-bit counterpart yet,
-> but these can all be safely implemented in the C library by wrapping
-> around the existing system calls because the 32-bit time_t they
-> pass only counts elapsed time, not time since the epoch. They
-> will be dealt with later.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/s390/kernel/syscalls/syscall.tbl       | 20 +++++++++
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-For the s390 bits:
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+------------------
+
+From: Arnd Bergmann <arnd@arndb.de>
+
+commit 5a9372f751b5350e0ce3d2ee91832f1feae2c2e5 upstream.
+
+While reading through the sysvipc implementation, I noticed that the n32
+semctl/shmctl/msgctl system calls behave differently based on whether
+o32 support is enabled or not: Without o32, the IPC_64 flag passed by
+user space is rejected but calls without that flag get IPC_64 behavior.
+
+As far as I can tell, this was inadvertently changed by a cleanup patch
+but never noticed by anyone, possibly nobody has tried using sysvipc
+on n32 after linux-3.19.
+
+Change it back to the old behavior now.
+
+Fixes: 78aaf956ba3a ("MIPS: Compat: Fix build error if CONFIG_MIPS32_COMPAT but no compat ABI.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Cc: stable@vger.kernel.org # 3.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3149,6 +3149,7 @@ config MIPS32_O32
+ config MIPS32_N32
+ 	bool "Kernel support for n32 binaries"
+ 	depends on 64BIT
++	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
+ 	select COMPAT
+ 	select MIPS32_COMPAT
+ 	select SYSVIPC_COMPAT if SYSVIPC
+
 

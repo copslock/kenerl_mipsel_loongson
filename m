@@ -2,121 +2,132 @@ Return-Path: <SRS0=dr9w=P5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DA80C2F441
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 15:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62DA7C2F441
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 16:31:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5CF5621019
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 15:53:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548086005;
-	bh=6oPLL4HYKE+2AuC4YV6/tAV370al8QEga0s+FzcpTQw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=Yd7LUmppiSifTz8yq/9lIoxQpD2/6N0qo2RKCPg8ApVsQy5L30vlXmp2wu/kFN9so
-	 xTLr8U6cn45XNzS0/UIUYlfqB//s6dVMEZbrAtR9g3n7uCYZd/xbLoSwVK5IdpgIRb
-	 H+g+YZHKxIPQkzNJH8O3+rvFFHemMMGnfUAATwVo=
+	by mail.kernel.org (Postfix) with ESMTP id 3811B21019
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 16:31:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730489AbfAUPxT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 10:53:19 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:36806 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729712AbfAUPxT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 10:53:19 -0500
-Received: by mail-ot1-f67.google.com with SMTP id k98so20930627otk.3;
-        Mon, 21 Jan 2019 07:53:19 -0800 (PST)
+        id S1730411AbfAUQbV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 11:31:21 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:44211 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730112AbfAUQbU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 11:31:20 -0500
+Received: by mail-qt1-f193.google.com with SMTP id n32so24127341qte.11;
+        Mon, 21 Jan 2019 08:31:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qe4qvfUSct3qbRBy94TjFwoY4JsWWV/7jTLSUh2s9Uc=;
-        b=ePeZc19whwIhjpLKExZp8ove6UKKttOQ6aikCsvOATruNC+ch3mVvZ/UkQND7bddsf
-         J00TX3nx3Q8nUb4NsXzV6DoHn9bx+MHXIvvgElePo9CHsIR4hJApTFpJk5KoeNEo1hug
-         3/IYUkx+mbhiV62xoASTEBzU4TlzX3NHV3l0ELT7EmqPmUcBIu+mTtQ/ZUQa70NKgPQA
-         b75QVsYXB6VIPBeVAxF8VAslh0uhwVKztQq2eMNMLin+Bu6hMAQ3OwWJjaLQossExR3A
-         w7c81j5s85LsXK0jdIO630nGmo8reyKQGCgIRRvxNcGqCB/ID4GCyFiidtWGYF4zLI+H
-         v7TQ==
-X-Gm-Message-State: AJcUukfpeIbsnCCyH972FbcYKfXAhnSLr6916cOieMwTJKsY94Bw30wi
-        +vyvgW9g6RkQpTDhqj0+hcHK0cw=
-X-Google-Smtp-Source: ALg8bN5f8uRSnN1F9ByVmrjy2vqK+nLdhCS7+fHZfCp+KAEWucx2r/nFVsjPH3omA1OF1we0etGxLA==
-X-Received: by 2002:a9d:4b15:: with SMTP id q21mr20118154otf.30.1548085998676;
-        Mon, 21 Jan 2019 07:53:18 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id w17sm5645274otk.12.2019.01.21.07.53.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 21 Jan 2019 07:53:18 -0800 (PST)
-Date:   Mon, 21 Jan 2019 09:53:17 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-kbuild@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux-s390@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        linux-mips@vger.kernel.org, James Hogan <jhogan@kernel.org>,
-        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Paul Burton <paul.burton@mips.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 3/4] kbuild: add real-prereqs shorthand for
- $(filter-out FORCE,$^)
-Message-ID: <20190121155317.GA7426@bogus>
-References: <1547719364-18849-1-git-send-email-yamada.masahiro@socionext.com>
- <1547719364-18849-3-git-send-email-yamada.masahiro@socionext.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ugnN37Htp2pcGbvXPo+DEz/r4541Rca2swp85kVj/dg=;
+        b=AN4J5uEie5Hx6iRzpgTqk2T78/TYbZGWKu5NP3ScooQUyeF+pmyzaxewwf+GzaK+uP
+         nYxvf88tBZStbUoK/Lpu2lZTijjAkRYgGZdTml5XNBvpxoa8v7N78Gc64UoRdsFOM4eV
+         92y+zLsPd9e7Vb0DeQ8153pnjbQ4v9+wUCBTLieS5wVDIHNRqZslR8xxxmdMciaITTjG
+         QjZy8xIFdXDUdFOTyMMhQoc6kIUZ4QUoVLQIfpJBEdRRD6IcpD1CZs4f87OjXnqL5hO1
+         fut8e9AbtYZy8M3vl2AkJoriRYJIB6vvIV0Ob/+TXIQThjD5KPlZZBzy3BNJO5njSqKk
+         IW/g==
+X-Gm-Message-State: AJcUukdhC7yC2jcZZEZAx/kA2Af/xMeH3SmcxCgjRSzE7Bk8qsfTVphi
+        yFeYy2ypdj+52BDoVBK+QEffrKZNQpm0NdOBih0=
+X-Google-Smtp-Source: ALg8bN4IjC8153m9pB3iBWOATh3R/RnsAQ6wVGb5LY7XqftLLWs9CXLGl7GxR+zlIVcd8dP96h71Ls+Fr/txo5y0uPg=
+X-Received: by 2002:aed:35c5:: with SMTP id d5mr27326381qte.212.1548088278474;
+ Mon, 21 Jan 2019 08:31:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1547719364-18849-3-git-send-email-yamada.masahiro@socionext.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-30-arnd@arndb.de>
+In-Reply-To: <20190118161835.2259170-30-arnd@arndb.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 21 Jan 2019 17:31:01 +0100
+Message-ID: <CAK8P3a2grsgvLeBHFoLnnpJti7qkZFfBPTrXf+CoihtOJKySzw@mail.gmail.com>
+Subject: Re: [PATCH v2 29/29] y2038: add 64-bit time_t syscalls to all 32-bit architectures
+To:     y2038 Mailman List <y2038@lists.linaro.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>
+Cc:     Matt Turner <mattst88@gmail.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Burton <paul.burton@mips.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        David Miller <davem@davemloft.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Firoz Khan <firoz.khan@linaro.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Jan 17, 2019 at 07:02:43PM +0900, Masahiro Yamada wrote:
-> In Kbuild, if_changed and friends must have FORCE as a prerequisite.
-> 
-> Hence, $(filter-out FORCE,$^) or $(filter-out $(PHONY),$^) is a common
-> pattern to get the names of all the prerequisites except phony targets.
-> 
-> Add real-prereqs as a shorthand.
-> 
-> Note:
-> We cannot replace $(filter %.o,$^) in cmd_link_multi-m because $^ may
-> include auto-generated dependencies from the .*.cmd file when a single
-> object module is changed into a multi object module. Refer to commit
-> 69ea912fda74 ("kbuild: remove unneeded link_multi_deps"). I added some
-> comment to avoid accidental breakage.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
-> 
-> The patch context depends on some other ones.
-> Please use 'git am -C1' if you want to test this
-> on Linus' tree.
-> 
-> 
-> Changes in v2:
->   - clean up arch/s390/boot/Makefile as well
-> 
->  Documentation/devicetree/bindings/Makefile |  2 +-
+On Fri, Jan 18, 2019 at 5:25 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> This adds 21 new system calls on each ABI that has 32-bit time_t
+> today. All of these have the exact same semantics as their existing
+> counterparts, and the new ones all have macro names that end in 'time64'
+> for clarification.
+>
+> This gets us to the point of being able to safely use a C library
+> that has 64-bit time_t in user space. There are still a couple of
+> loose ends to tie up in various areas of the code, but this is the
+> big one, and should be entirely uncontroversial at this point.
 
-Acked-by: Rob Herring <robh@kernel.org>
+I've successfully tested this with musl and LTP now, using an
+i386 kernel. The musl port I used is at
+https://git.linaro.org/people/arnd.bergmann/musl-y2038.git/
+This is just an updated version of what I used for testing last
+year, using the current syscall assignment, and going back
+to the time32 versions of getitimer/setitimer and
+wait4/waitid/getusage.
 
->  arch/mips/boot/Makefile                    |  2 +-
->  arch/powerpc/boot/Makefile                 |  2 +-
->  arch/s390/boot/Makefile                    |  2 +-
->  arch/x86/realmode/rm/Makefile              |  3 +--
->  scripts/Kbuild.include                     |  4 ++++
->  scripts/Makefile.build                     |  9 ++++++---
->  scripts/Makefile.lib                       | 18 +++++++++---------
->  scripts/Makefile.modpost                   |  2 +-
->  9 files changed, 25 insertions(+), 19 deletions(-)
+It's certainly not intended for merging like this, but a proper
+musl port is under discussion now, and this should be
+sufficient if anyone else wants to try out the new syscall
+ABI before we merge it.
+
+The LTP I have is heavily hacked, and has a number of
+failures resulting from differences between musl and glibc,
+or from the way we convert between the kernel types and
+the user space types.
+
+The testing found one minor bug in all the kernel syscall tables:
+
+> +418    common  mq_timedsend_time64             sys_mq_timedsend
+> +419    common  mq_timedreceiv_time64           sys_mq_timedreceive
+
+While this would have fit in with umount(), creat() and mknod(),
+it was unintentional, and I've changed it back to
+mq_timedreceive_time64 (with an added 'e').
+
+       Arnd

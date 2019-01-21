@@ -7,47 +7,46 @@ X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5DDDC2F3D5
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73C20C2F3D5
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:19:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B6D9720861
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:18:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 43FE820861
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548080287;
-	bh=7EYbgfDd7A9XWWIr0i7xh0ydL3UIAFIs/d2GEenepvc=;
+	s=default; t=1548080343;
+	bh=L/OhfWKQcfGNXkyAwiH5qSl1wLYmVMEvpZ1qeXK3oTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=2hraEJk1VmkdWISKw32JhSQjY1i/hhIM6FjVmYKm6tOPlNLfDFkjr3IwXZH/ww0b6
-	 hL+QcWw0+sjmpeA21V4k4tMkbOger1JymX9BwLcKQsOga5Bjopj4q8Ydi7GDrR6ljY
-	 yZlTtllziDNG1au3h+XNU3bRtI1oWFlm2AyzHg5U=
+	b=fX6vF7zT5B2xextFFSEd55+UDcAkwEp8qLGYYasTCeMZS1+URv/M1jb74gZIqoHu2
+	 HXQ30jTueV9s17KoRC31+NzvutcXMLETQketKWnr3Ml0vGjdZmGBQpmoETWPw0TTTK
+	 Rl0oZbGPMwLnaj9nGE1gHh8/Hu6Xc6LEG+yfe81g=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729693AbfAUNt7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 08:49:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60714 "EHLO mail.kernel.org"
+        id S1730070AbfAUNtI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 08:49:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728918AbfAUNt5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Jan 2019 08:49:57 -0500
+        id S1730114AbfAUNtH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Jan 2019 08:49:07 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B16BB2063F;
-        Mon, 21 Jan 2019 13:49:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2ECF620861;
+        Mon, 21 Jan 2019 13:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548078596;
-        bh=7EYbgfDd7A9XWWIr0i7xh0ydL3UIAFIs/d2GEenepvc=;
+        s=default; t=1548078546;
+        bh=L/OhfWKQcfGNXkyAwiH5qSl1wLYmVMEvpZ1qeXK3oTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wPdLLdf9Ddja9XWYs40RTKgr+aVg+SJKQGlAohx02Cn2FqTAXrWyz/wn5nDsNipob
-         FK3b4LxYQuRoi3eF8iXS0nVaEphpj65Ob25pOzM7eUkzXJXoaNi/DGqW1EdZdU61TB
-         skXggBhbpUfIPaT4/1X3tr7DBIJMikQd6Ju15reo=
+        b=IZ4lWWOk+A+zdBK2ZXKWQhcEm9W5hNdTplZwPf6S2bK/tyCrfIjwCwZadD2TvQhIO
+         Wlz3kY8qCD2b93UGkQhbrWqk6zxOuGVu8R8IIswdt14yfJTtKeISDm1+AXCJVPVpYQ
+         G9uCVPlcS1QqT1WuyHD7NA/YwH3Epo7us+PFzusw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Paul Burton <paul.burton@mips.com>, jhogan@kernel.org,
-        ralf@linux-mips.org, john@phrozen.org, linux-mips@linux-mips.org,
-        linux-mips@vger.kernel.org, stable@kernel.org
-Subject: [PATCH 4.20 050/111] MIPS: lantiq: Fix IPI interrupt handling
-Date:   Mon, 21 Jan 2019 14:42:44 +0100
-Message-Id: <20190121122501.451681137@linuxfoundation.org>
+        stable@vger.kernel.org, YunQiang Su <ysu@wavecomp.com>,
+        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
+        linux-mips@vger.kernel.org, aaro.koskinen@iki.fi
+Subject: [PATCH 4.20 070/111] Disable MSI also when pcie-octeon.pcie_disable on
+Date:   Mon, 21 Jan 2019 14:43:04 +0100
+Message-Id: <20190121122504.187489530@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190121122455.819406896@linuxfoundation.org>
 References: <20190121122455.819406896@linuxfoundation.org>
@@ -66,146 +65,40 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
+From: YunQiang Su <ysu@wavecomp.com>
 
-commit 2b4dba55b04b212a7fd1f0395b41d79ee3a9801b upstream.
+commit a214720cbf50cd8c3f76bbb9c3f5c283910e9d33 upstream.
 
-This makes SMP on the vrx200 work again, by removing all the MIPS CPU
-interrupt specific code and making it fully use the generic MIPS CPU
-interrupt controller.
+Octeon has an boot-time option to disable pcie.
 
-The mti,cpu-interrupt-controller from irq-mips-cpu.c now handles the CPU
-interrupts and also the IPI interrupts which are used to communication
-between the CPUs in a SMP system. The generic interrupt code was
-already used before but the interrupt vectors were overwritten again
-when we called set_vi_handler() in the lantiq interrupt driver and we
-also provided our own plat_irq_dispatch() function which overwrote the
-weak generic implementation. Now the code uses the generic handler for
-the MIPS CPU interrupts including the IPI interrupts and registers a
-handler for the CPU interrupts which are handled by the lantiq ICU with
-irq_set_chained_handler() which was already called before.
+Since MSI depends on PCI-E, we should also disable MSI also with
+this option is on in order to avoid inadvertently accessing PCIe
+registers.
 
-Calling the set_c0_status() function is also not needed any more because
-the generic MIPS CPU interrupt already activates the needed bits.
-
-Fixes: 1eed40043579 ("MIPS: smp-mt: Use CPU interrupt controller IPI IRQ domain support")
-Cc: stable@kernel.org # v4.12
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: YunQiang Su <ysu@wavecomp.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: jhogan@kernel.org
-Cc: ralf@linux-mips.org
-Cc: john@phrozen.org
-Cc: linux-mips@linux-mips.org
+Cc: pburton@wavecomp.com
 Cc: linux-mips@vger.kernel.org
+Cc: aaro.koskinen@iki.fi
+Cc: stable@vger.kernel.org # v3.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lantiq/irq.c |   68 +++----------------------------------------------
- 1 file changed, 5 insertions(+), 63 deletions(-)
+ arch/mips/pci/msi-octeon.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -224,9 +224,11 @@ static struct irq_chip ltq_eiu_type = {
- 	.irq_set_type = ltq_eiu_settype,
- };
+--- a/arch/mips/pci/msi-octeon.c
++++ b/arch/mips/pci/msi-octeon.c
+@@ -369,7 +369,9 @@ int __init octeon_msi_initialize(void)
+ 	int irq;
+ 	struct irq_chip *msi;
  
--static void ltq_hw_irqdispatch(int module)
-+static void ltq_hw_irq_handler(struct irq_desc *desc)
- {
-+	int module = irq_desc_get_irq(desc) - 2;
- 	u32 irq;
-+	int hwirq;
- 
- 	irq = ltq_icu_r32(module, LTQ_ICU_IM0_IOSR);
- 	if (irq == 0)
-@@ -237,7 +239,8 @@ static void ltq_hw_irqdispatch(int modul
- 	 * other bits might be bogus
- 	 */
- 	irq = __fls(irq);
--	do_IRQ((int)irq + MIPS_CPU_IRQ_CASCADE + (INT_NUM_IM_OFFSET * module));
-+	hwirq = irq + MIPS_CPU_IRQ_CASCADE + (INT_NUM_IM_OFFSET * module);
-+	generic_handle_irq(irq_linear_revmap(ltq_domain, hwirq));
- 
- 	/* if this is a EBU irq, we need to ack it or get a deadlock */
- 	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0) && LTQ_EBU_PCC_ISTAT)
-@@ -245,49 +248,6 @@ static void ltq_hw_irqdispatch(int modul
- 			LTQ_EBU_PCC_ISTAT);
- }
- 
--#define DEFINE_HWx_IRQDISPATCH(x)					\
--	static void ltq_hw ## x ## _irqdispatch(void)			\
--	{								\
--		ltq_hw_irqdispatch(x);					\
--	}
--DEFINE_HWx_IRQDISPATCH(0)
--DEFINE_HWx_IRQDISPATCH(1)
--DEFINE_HWx_IRQDISPATCH(2)
--DEFINE_HWx_IRQDISPATCH(3)
--DEFINE_HWx_IRQDISPATCH(4)
--
--#if MIPS_CPU_TIMER_IRQ == 7
--static void ltq_hw5_irqdispatch(void)
--{
--	do_IRQ(MIPS_CPU_TIMER_IRQ);
--}
--#else
--DEFINE_HWx_IRQDISPATCH(5)
--#endif
--
--static void ltq_hw_irq_handler(struct irq_desc *desc)
--{
--	ltq_hw_irqdispatch(irq_desc_get_irq(desc) - 2);
--}
--
--asmlinkage void plat_irq_dispatch(void)
--{
--	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
--	int irq;
--
--	if (!pending) {
--		spurious_interrupt();
--		return;
--	}
--
--	pending >>= CAUSEB_IP;
--	while (pending) {
--		irq = fls(pending) - 1;
--		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
--		pending &= ~BIT(irq);
--	}
--}
--
- static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
- {
- 	struct irq_chip *chip = &ltq_irq_type;
-@@ -343,28 +303,10 @@ int __init icu_of_init(struct device_nod
- 	for (i = 0; i < MAX_IM; i++)
- 		irq_set_chained_handler(i + 2, ltq_hw_irq_handler);
- 
--	if (cpu_has_vint) {
--		pr_info("Setting up vectored interrupts\n");
--		set_vi_handler(2, ltq_hw0_irqdispatch);
--		set_vi_handler(3, ltq_hw1_irqdispatch);
--		set_vi_handler(4, ltq_hw2_irqdispatch);
--		set_vi_handler(5, ltq_hw3_irqdispatch);
--		set_vi_handler(6, ltq_hw4_irqdispatch);
--		set_vi_handler(7, ltq_hw5_irqdispatch);
--	}
--
- 	ltq_domain = irq_domain_add_linear(node,
- 		(MAX_IM * INT_NUM_IM_OFFSET) + MIPS_CPU_IRQ_CASCADE,
- 		&irq_domain_ops, 0);
- 
--#ifndef CONFIG_MIPS_MT_SMP
--	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 |
--		IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
--#else
--	set_c0_status(IE_SW0 | IE_SW1 | IE_IRQ0 | IE_IRQ1 |
--		IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
--#endif
--
- 	/* tell oprofile which irq to use */
- 	ltq_perfcount_irq = irq_create_mapping(ltq_domain, LTQ_PERF_IRQ);
- 
+-	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_PCIE) {
++	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_INVALID) {
++		return 0;
++	} else if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_PCIE) {
+ 		msi_rcv_reg[0] = CVMX_PEXP_NPEI_MSI_RCV0;
+ 		msi_rcv_reg[1] = CVMX_PEXP_NPEI_MSI_RCV1;
+ 		msi_rcv_reg[2] = CVMX_PEXP_NPEI_MSI_RCV2;
 
 

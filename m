@@ -2,102 +2,121 @@ Return-Path: <SRS0=dr9w=P5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2CEBC2F3A0
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DA80C2F441
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 15:53:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B947C20861
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 14:19:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5CF5621019
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 15:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548080361;
-	bh=MMmzmmPWxXIo3J53OU5vIJeB6pVJ3BIo2wABNJUg+aE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=r3LL1m9Qar/sUfLU964Kcl3GLnEx58OtDn1ejKT5+AzSwgKID/1ctYfD5Nz+s5qWd
-	 RkLk5Ge7YxhPq3O+PTx7QMPN9yNSBEMuTCuLa68n2gwf5d25I5QpY54D066NG0XUmQ
-	 r4jbVKGrFYzN8BvJGqdA66Z2AkYQqS8qtloKJ4wM=
+	s=default; t=1548086005;
+	bh=6oPLL4HYKE+2AuC4YV6/tAV370al8QEga0s+FzcpTQw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=Yd7LUmppiSifTz8yq/9lIoxQpD2/6N0qo2RKCPg8ApVsQy5L30vlXmp2wu/kFN9so
+	 xTLr8U6cn45XNzS0/UIUYlfqB//s6dVMEZbrAtR9g3n7uCYZd/xbLoSwVK5IdpgIRb
+	 H+g+YZHKxIPQkzNJH8O3+rvFFHemMMGnfUAATwVo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729962AbfAUOTP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 09:19:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59068 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730038AbfAUNsw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Jan 2019 08:48:52 -0500
-Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FB7A2063F;
-        Mon, 21 Jan 2019 13:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548078531;
-        bh=MMmzmmPWxXIo3J53OU5vIJeB6pVJ3BIo2wABNJUg+aE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bAqwfTGNhRRhOwwe5R7SKWI23KcC7nibG/TZY3/D5DzaV38gjZQ/Z7CIs1/IwZ6i/
-         Qg2VHYEX6lPX41zEepQ+J5d1wiQygl/2V3PMj1DUq1kIOVtbhKiiHSoHfIaEzX9Gpc
-         4KXDwQO10CY17HpeciKjvqWccqRilAGF8OqajfdA=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.20 048/111] mips: fix n32 compat_ipc_parse_version
-Date:   Mon, 21 Jan 2019 14:42:42 +0100
-Message-Id: <20190121122501.248885342@linuxfoundation.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190121122455.819406896@linuxfoundation.org>
-References: <20190121122455.819406896@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
-X-Patchwork-Hint: ignore
+        id S1730489AbfAUPxT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 10:53:19 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:36806 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729712AbfAUPxT (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 10:53:19 -0500
+Received: by mail-ot1-f67.google.com with SMTP id k98so20930627otk.3;
+        Mon, 21 Jan 2019 07:53:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=qe4qvfUSct3qbRBy94TjFwoY4JsWWV/7jTLSUh2s9Uc=;
+        b=ePeZc19whwIhjpLKExZp8ove6UKKttOQ6aikCsvOATruNC+ch3mVvZ/UkQND7bddsf
+         J00TX3nx3Q8nUb4NsXzV6DoHn9bx+MHXIvvgElePo9CHsIR4hJApTFpJk5KoeNEo1hug
+         3/IYUkx+mbhiV62xoASTEBzU4TlzX3NHV3l0ELT7EmqPmUcBIu+mTtQ/ZUQa70NKgPQA
+         b75QVsYXB6VIPBeVAxF8VAslh0uhwVKztQq2eMNMLin+Bu6hMAQ3OwWJjaLQossExR3A
+         w7c81j5s85LsXK0jdIO630nGmo8reyKQGCgIRRvxNcGqCB/ID4GCyFiidtWGYF4zLI+H
+         v7TQ==
+X-Gm-Message-State: AJcUukfpeIbsnCCyH972FbcYKfXAhnSLr6916cOieMwTJKsY94Bw30wi
+        +vyvgW9g6RkQpTDhqj0+hcHK0cw=
+X-Google-Smtp-Source: ALg8bN5f8uRSnN1F9ByVmrjy2vqK+nLdhCS7+fHZfCp+KAEWucx2r/nFVsjPH3omA1OF1we0etGxLA==
+X-Received: by 2002:a9d:4b15:: with SMTP id q21mr20118154otf.30.1548085998676;
+        Mon, 21 Jan 2019 07:53:18 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id w17sm5645274otk.12.2019.01.21.07.53.18
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 21 Jan 2019 07:53:18 -0800 (PST)
+Date:   Mon, 21 Jan 2019 09:53:17 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-kbuild@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-s390@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        linux-mips@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Paul Burton <paul.burton@mips.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 3/4] kbuild: add real-prereqs shorthand for
+ $(filter-out FORCE,$^)
+Message-ID: <20190121155317.GA7426@bogus>
+References: <1547719364-18849-1-git-send-email-yamada.masahiro@socionext.com>
+ <1547719364-18849-3-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1547719364-18849-3-git-send-email-yamada.masahiro@socionext.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.20-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Jan 17, 2019 at 07:02:43PM +0900, Masahiro Yamada wrote:
+> In Kbuild, if_changed and friends must have FORCE as a prerequisite.
+> 
+> Hence, $(filter-out FORCE,$^) or $(filter-out $(PHONY),$^) is a common
+> pattern to get the names of all the prerequisites except phony targets.
+> 
+> Add real-prereqs as a shorthand.
+> 
+> Note:
+> We cannot replace $(filter %.o,$^) in cmd_link_multi-m because $^ may
+> include auto-generated dependencies from the .*.cmd file when a single
+> object module is changed into a multi object module. Refer to commit
+> 69ea912fda74 ("kbuild: remove unneeded link_multi_deps"). I added some
+> comment to avoid accidental breakage.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+> The patch context depends on some other ones.
+> Please use 'git am -C1' if you want to test this
+> on Linus' tree.
+> 
+> 
+> Changes in v2:
+>   - clean up arch/s390/boot/Makefile as well
+> 
+>  Documentation/devicetree/bindings/Makefile |  2 +-
 
-------------------
+Acked-by: Rob Herring <robh@kernel.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
-
-commit 5a9372f751b5350e0ce3d2ee91832f1feae2c2e5 upstream.
-
-While reading through the sysvipc implementation, I noticed that the n32
-semctl/shmctl/msgctl system calls behave differently based on whether
-o32 support is enabled or not: Without o32, the IPC_64 flag passed by
-user space is rejected but calls without that flag get IPC_64 behavior.
-
-As far as I can tell, this was inadvertently changed by a cleanup patch
-but never noticed by anyone, possibly nobody has tried using sysvipc
-on n32 after linux-3.19.
-
-Change it back to the old behavior now.
-
-Fixes: 78aaf956ba3a ("MIPS: Compat: Fix build error if CONFIG_MIPS32_COMPAT but no compat ABI.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # 3.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -3184,6 +3184,7 @@ config MIPS32_O32
- config MIPS32_N32
- 	bool "Kernel support for n32 binaries"
- 	depends on 64BIT
-+	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
- 	select COMPAT
- 	select MIPS32_COMPAT
- 	select SYSVIPC_COMPAT if SYSVIPC
-
-
+>  arch/mips/boot/Makefile                    |  2 +-
+>  arch/powerpc/boot/Makefile                 |  2 +-
+>  arch/s390/boot/Makefile                    |  2 +-
+>  arch/x86/realmode/rm/Makefile              |  3 +--
+>  scripts/Kbuild.include                     |  4 ++++
+>  scripts/Makefile.build                     |  9 ++++++---
+>  scripts/Makefile.lib                       | 18 +++++++++---------
+>  scripts/Makefile.modpost                   |  2 +-
+>  9 files changed, 25 insertions(+), 19 deletions(-)

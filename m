@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 929B6C282DB
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B2A8C282E9
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:04:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6B939214C6
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:04:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0A0EA2084A
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:04:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729555AbfAUIEi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 03:04:38 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:45976 "EHLO
+        id S1729643AbfAUIEz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 03:04:55 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:34548 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729534AbfAUIEi (ORCPT
+        by vger.kernel.org with ESMTP id S1729632AbfAUIEz (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Jan 2019 03:04:38 -0500
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x0L83lkL057715
-        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 03:04:36 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2q580cwd86-1
+        Mon, 21 Jan 2019 03:04:55 -0500
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x0L83mOe043930
+        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 03:04:54 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2q5856n2re-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 03:04:36 -0500
+        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 03:04:54 -0500
 Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Mon, 21 Jan 2019 08:04:33 -0000
+        Mon, 21 Jan 2019 08:04:51 -0000
 Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 21 Jan 2019 08:04:22 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0L84Lhu8913234
+        Mon, 21 Jan 2019 08:04:39 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0L84cJ71114462
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Jan 2019 08:04:21 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5E22D4204C;
-        Mon, 21 Jan 2019 08:04:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6D46242045;
-        Mon, 21 Jan 2019 08:04:16 +0000 (GMT)
+        Mon, 21 Jan 2019 08:04:39 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D32BE4C046;
+        Mon, 21 Jan 2019 08:04:38 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BBE7E4C052;
+        Mon, 21 Jan 2019 08:04:33 +0000 (GMT)
 Received: from rapoport-lnx (unknown [9.148.207.125])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Mon, 21 Jan 2019 08:04:16 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Mon, 21 Jan 2019 10:04:15 +0200
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Mon, 21 Jan 2019 08:04:33 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Mon, 21 Jan 2019 10:04:33 +0200
 From:   Mike Rapoport <rppt@linux.ibm.com>
 To:     linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -85,54 +85,91 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
         xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH v2 01/21] openrisc: prefer memblock APIs returning virtual address
-Date:   Mon, 21 Jan 2019 10:03:48 +0200
+Subject: [PATCH v2 04/21] memblock: drop memblock_alloc_base_nid()
+Date:   Mon, 21 Jan 2019 10:03:51 +0200
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
 References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19012108-0016-0000-0000-000002482BC2
+x-cbid: 19012108-4275-0000-0000-00000301E9EB
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19012108-0017-0000-0000-000032A25B18
-Message-Id: <1548057848-15136-2-git-send-email-rppt@linux.ibm.com>
+x-cbparentid: 19012108-4276-0000-0000-0000381015C0
+Message-Id: <1548057848-15136-5-git-send-email-rppt@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-21_04:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=876 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=818 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1901210066
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The allocation of the page tables memory in openrics uses
-memblock_phys_alloc() and then converts the returned physical address to
-virtual one. Use memblock_alloc_raw() and add a panic() if the allocation
-fails.
+The memblock_alloc_base_nid() is a oneliner wrapper for
+memblock_alloc_range_nid() without any side effect.
+Replace it's usage by the direct calls to memblock_alloc_range_nid().
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/openrisc/mm/init.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/memblock.h |  3 ---
+ mm/memblock.c            | 15 ++++-----------
+ 2 files changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-index d157310..caeb418 100644
---- a/arch/openrisc/mm/init.c
-+++ b/arch/openrisc/mm/init.c
-@@ -105,7 +105,10 @@ static void __init map_ram(void)
- 			}
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 60e100f..f7ef313 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -490,9 +490,6 @@ static inline bool memblock_bottom_up(void)
+ phys_addr_t __init memblock_alloc_range(phys_addr_t size, phys_addr_t align,
+ 					phys_addr_t start, phys_addr_t end,
+ 					enum memblock_flags flags);
+-phys_addr_t memblock_alloc_base_nid(phys_addr_t size,
+-					phys_addr_t align, phys_addr_t max_addr,
+-					int nid, enum memblock_flags flags);
+ phys_addr_t memblock_alloc_base(phys_addr_t size, phys_addr_t align,
+ 				phys_addr_t max_addr);
+ phys_addr_t __memblock_alloc_base(phys_addr_t size, phys_addr_t align,
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a32db30..c80029e 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1346,21 +1346,14 @@ phys_addr_t __init memblock_alloc_range(phys_addr_t size, phys_addr_t align,
+ 					flags);
+ }
  
- 			/* Alloc one page for holding PTE's... */
--			pte = (pte_t *) __va(memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE));
-+			pte = memblock_alloc_raw(PAGE_SIZE, PAGE_SIZE);
-+			if (!pte)
-+				panic("%s: Failed to allocate page for PTEs\n",
-+				      __func__);
- 			set_pmd(pme, __pmd(_KERNPG_TABLE + __pa(pte)));
+-phys_addr_t __init memblock_alloc_base_nid(phys_addr_t size,
+-					phys_addr_t align, phys_addr_t max_addr,
+-					int nid, enum memblock_flags flags)
+-{
+-	return memblock_alloc_range_nid(size, align, 0, max_addr, nid, flags);
+-}
+-
+ phys_addr_t __init memblock_phys_alloc_nid(phys_addr_t size, phys_addr_t align, int nid)
+ {
+ 	enum memblock_flags flags = choose_memblock_flags();
+ 	phys_addr_t ret;
  
- 			/* Fill the newly allocated page with PTE'S */
+ again:
+-	ret = memblock_alloc_base_nid(size, align, MEMBLOCK_ALLOC_ACCESSIBLE,
+-				      nid, flags);
++	ret = memblock_alloc_range_nid(size, align, 0,
++				       MEMBLOCK_ALLOC_ACCESSIBLE, nid, flags);
+ 
+ 	if (!ret && (flags & MEMBLOCK_MIRROR)) {
+ 		flags &= ~MEMBLOCK_MIRROR;
+@@ -1371,8 +1364,8 @@ phys_addr_t __init memblock_phys_alloc_nid(phys_addr_t size, phys_addr_t align,
+ 
+ phys_addr_t __init __memblock_alloc_base(phys_addr_t size, phys_addr_t align, phys_addr_t max_addr)
+ {
+-	return memblock_alloc_base_nid(size, align, max_addr, NUMA_NO_NODE,
+-				       MEMBLOCK_NONE);
++	return memblock_alloc_range_nid(size, align, 0, max_addr, NUMA_NO_NODE,
++					MEMBLOCK_NONE);
+ }
+ 
+ phys_addr_t __init memblock_alloc_base(phys_addr_t size, phys_addr_t align, phys_addr_t max_addr)
 -- 
 2.7.4
 

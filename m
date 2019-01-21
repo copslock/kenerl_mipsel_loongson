@@ -6,133 +6,133 @@ X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B97EC282DB
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B584FA3739
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 11:57:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EBBDD2084A
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:57:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0607720989
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 11:57:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729724AbfAUI4D (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 03:56:03 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:43884 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729417AbfAUI4C (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 03:56:02 -0500
-Received: by mail-ua1-f65.google.com with SMTP id z11so6652689uaa.10;
-        Mon, 21 Jan 2019 00:56:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OJScdj9p18oAEvTl9TNP9AzhiR3NeXZIyKQOy3xgTy8=;
-        b=sm7UdR7+OQ0Ar8QgmbYdCAoxsTemEPC5AumhUeqc5KyfmeXT2Yy8MSYfhqRJghQOmW
-         Q6YsuPhRMVRJBFtDUMRbdBgQ4XazTDkS9OXtKs31zpaS4sFcziyKkp/DPdXPRq9TlGQJ
-         zL+z/qUXY/8XaSAf0s6EEKjo+iWv9kV8px2D0ikIntk2lZ2ISMej19JuPXf4yXZgOL/F
-         z5c1tNnU8YE+rS33LuXuAL4Zaaoc/BYLBP/cWsmKWH2c7wiLVn3gZg/pySrCSmEm3i4s
-         CbyGL0N+MTObVHBhNX8IqhmdRha7czFHOzdKQhOJKeQHLJAEBK14TME8FK0/yNO03L9q
-         szPQ==
-X-Gm-Message-State: AJcUukcB7/BZDJF49J99W58563FwdAMzDDfH4CcqxS+EMngNwU3FnnWF
-        Z9waKt1LyOLZ0Qji99YCX5eTzHrUuD65YYNM53c=
-X-Google-Smtp-Source: ALg8bN4uFN3zWGMaGcasO6usU7NqldPno3Vg0buANjUHshxvHAfNTtSuQ7VautHVX5df0UK1s1iotaDgJP2GFGxetwA=
-X-Received: by 2002:ab0:7251:: with SMTP id d17mr11840905uap.0.1548060960356;
- Mon, 21 Jan 2019 00:56:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-15-arnd@arndb.de>
-In-Reply-To: <20190118161835.2259170-15-arnd@arndb.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 21 Jan 2019 09:55:48 +0100
-Message-ID: <CAMuHMdWaJyNqUeq4qu3AgU0fYrQdZ_zbo0DFFiM97Y5HESYYnA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/29] arch: add pkey and rseq syscall numbers everywhere
+        id S1728164AbfAUL5e (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 06:57:34 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:50042 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728238AbfAUL5d (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Jan 2019 06:57:33 -0500
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x0LBupD6016749
+        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 06:57:32 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2q5chmb883-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@vger.kernel.org>; Mon, 21 Jan 2019 06:57:30 -0500
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Mon, 21 Jan 2019 11:57:20 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 21 Jan 2019 11:57:09 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0LBv8le12386320
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Jan 2019 11:57:08 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 28A14A4054;
+        Mon, 21 Jan 2019 11:57:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 29171A4062;
+        Mon, 21 Jan 2019 11:57:07 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.95])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Mon, 21 Jan 2019 11:57:07 +0000 (GMT)
+Date:   Mon, 21 Jan 2019 12:57:05 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
 To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@mips.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     y2038@lists.linaro.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        mattst88@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+        will.deacon@arm.com, tony.luck@intel.com, fenghua.yu@intel.com,
+        geert@linux-m68k.org, monstr@monstr.eu, paul.burton@mips.com,
+        deller@gmx.de, benh@kernel.crashing.org, mpe@ellerman.id.au,
+        schwidefsky@de.ibm.com, dalias@libc.org, davem@davemloft.net,
+        luto@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, jcmvbkbc@gmail.com,
+        akpm@linux-foundation.org, deepa.kernel@gmail.com,
+        ebiederm@xmission.com, firoz.khan@linaro.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 13/29] arch: add split IPC system calls where needed
+References: <20190118161835.2259170-1-arnd@arndb.de>
+ <20190118161835.2259170-14-arnd@arndb.de>
+MIME-Version: 1.0
+In-Reply-To: <20190118161835.2259170-14-arnd@arndb.de>
+X-TM-AS-GCONF: 00
+x-cbid: 19012111-0008-0000-0000-000002B3D9A0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19012111-0009-0000-0000-0000222000C3
+Message-Id: <20190121115705.GB4020@osiris>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-21_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=418 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1901210095
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 5:20 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> Most architectures define system call numbers for the rseq and pkey system
-> calls, even when they don't support the features, and perhaps never will.
->
-> Only a few architectures are missing these, so just define them anyway
-> for consistency. If we decide to add them later to one of these, the
-> system call numbers won't get out of sync then.
->
+On Fri, Jan 18, 2019 at 05:18:19PM +0100, Arnd Bergmann wrote:
+> The IPC system call handling is highly inconsistent across architectures,
+> some use sys_ipc, some use separate calls, and some use both.  We also
+> have some architectures that require passing IPC_64 in the flags, and
+> others that set it implicitly.
+> 
+> For the additon of a y2083 safe semtimedop() system call, I chose to only
+> support the separate entry points, but that requires first supporting
+> the regular ones with their own syscall numbers.
+> 
+> The IPC_64 is now implied by the new semctl/shmctl/msgctl system
+> calls even on the architectures that require passing it with the ipc()
+> multiplexer.
+> 
+> I'm not adding the new semtimedop() or semop() on 32-bit architectures,
+> those will get implemented using the new semtimedop_time64() version
+> that gets added along with the other time64 calls.
+> Three 64-bit architectures (powerpc, s390 and sparc) get semtimedop().
+> 
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> One aspect here that might be a bit controversial is the use of
+> the same system call numbers across all architectures, synchronizing
+> all of them with the x86-32 numbers. With the new syscall.tbl
+> files, I hope we can just keep doing that in the future, and no
+> longer require the architecture maintainers to assign a number.
+> 
+> This is mainly useful for implementers of the C libraries: if
+> we can add future system calls everywhere at the same time, using
+> a particular version of the kernel headers also guarantees that
+> the system call number macro is visible.
+> ---
+>  arch/m68k/kernel/syscalls/syscall.tbl     | 11 +++++++++++
+>  arch/mips/kernel/syscalls/syscall_o32.tbl | 11 +++++++++++
+>  arch/powerpc/kernel/syscalls/syscall.tbl  | 13 +++++++++++++
+>  arch/s390/kernel/syscalls/syscall.tbl     | 12 ++++++++++++
+>  arch/sh/kernel/syscalls/syscall.tbl       | 11 +++++++++++
+>  arch/sparc/kernel/syscalls/syscall.tbl    | 12 ++++++++++++
+>  arch/x86/entry/syscalls/syscall_32.tbl    | 11 +++++++++++
+>  7 files changed, 81 insertions(+)
 
->  arch/m68k/kernel/syscalls/syscall.tbl   | 4 ++++
+For the s390 bits:
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
 
-> --- a/arch/m68k/kernel/syscalls/syscall.tbl
-> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
-> @@ -388,6 +388,10 @@
->  378    common  pwritev2                        sys_pwritev2
->  379    common  statx                           sys_statx
->  380    common  seccomp                         sys_seccomp
-> +381    common  pkey_alloc                      sys_pkey_alloc
-> +382    common  pkey_free                       sys_pkey_free
-> +383    common  pkey_mprotect                   sys_pkey_mprotect
-> +384    common  rseq                            sys_rseq
-
-Note that all architectures that already define pkey syscalls, list
-pkey_mprotect
-first.
-
-Regardless, for m68k:
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
->  # room for arch specific calls
->  393    common  semget                          sys_semget
->  394    common  semctl                          sys_semctl
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

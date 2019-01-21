@@ -2,105 +2,122 @@ Return-Path: <SRS0=dr9w=P5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A75CC31D64
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 07:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDB15C282DB
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 07:49:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2B1E4217F4
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 07:11:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 96D612084A
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 07:49:54 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="a1TU2cKC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nhKBAw61"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726068AbfAUHLQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 02:11:16 -0500
-Received: from condef-07.nifty.com ([202.248.20.72]:49348 "EHLO
-        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfAUHLQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 02:11:16 -0500
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-07.nifty.com with ESMTP id x0L2nbWo000684;
-        Mon, 21 Jan 2019 11:49:37 +0900
-Received: from pug.e01.socionext.com (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id x0L2ms5g015717;
-        Mon, 21 Jan 2019 11:48:54 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x0L2ms5g015717
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1548038934;
-        bh=1ScuhqJca0uj5wxaiMhHAqTBVV8LdYPNZ4+ByDc6o4o=;
-        h=From:To:Cc:Subject:Date:From;
-        b=a1TU2cKCVZcTtKz1/n9K4UZk/n8nAmkXhLP04ub/O3HMTi7ZxE2cWdij4PU/K6z6T
-         1jxabuQSRgJLf5skKBrcKX+zyVNvsgt+FZ46Vxl9Wa9SI/1a9cdkkwgTzGWI0sKGMb
-         B8LzKnmvLyB8dqHBdUudd71KQtFyhczAL0YDLWv+H26qsTX9ST7aXr5bX+9WxTu8Sw
-         2Z31p/6GTtbohBMOdRoaJVh/ROY4Sj6TMTImhlhZLBhrrrZ9rM3r11Dd96K90/oNeD
-         KiQOFn2ZgzKaMliOwfs5PPEXu8dwJpTZQtRy/c7DGp3TKRjzeKxRwH4ok5c+RZdKd3
-         9mzSDd22OnCFg==
-X-Nifty-SrcIP: [153.142.97.92]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: remove meaningless generic-(CONFIG_GENERIC_CSUM) += checksum.h
-Date:   Mon, 21 Jan 2019 11:48:49 +0900
-Message-Id: <1548038929-11814-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.7.4
+        id S1727903AbfAUHty (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 02:49:54 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:39616 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727882AbfAUHty (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 02:49:54 -0500
+Received: by mail-pf1-f193.google.com with SMTP id r136so9740668pfc.6;
+        Sun, 20 Jan 2019 23:49:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=oMUSXr5QsF43bcIcsIiuh+5ymsAO1eFL7kdTCvBXLWI=;
+        b=nhKBAw61LBsc1KZvQRmxBkPBknsCXawIVZAdBMR00NyVT3zwFiGabAhsTyCDO0VO4g
+         mUBSoLtGzh9mwWstNx7/DGl8PlY3oRefvQRBz+K7qdqNheS/Zu5AfzcuUl4G1hI7CFcS
+         FUTPkJxc9An4I9Bwxs8q7TExmOdP97G9GdS8BwesLNhZsijjXO3mA6uirK4T2RtWNZjP
+         0c2wRbaNMmEBjwHIwBVaYlTtx4MUcSg4gOarQ38CHH4t3yrw4TmlXIubmxWxb/NvOtma
+         YpkJQgfd3zLyWAyDd4CqP+7+V4cfxBmISOSZlGbPHPVBI5l9hFmWfbmH1xCWfevOZSPC
+         DiGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=oMUSXr5QsF43bcIcsIiuh+5ymsAO1eFL7kdTCvBXLWI=;
+        b=li055qVZ1pyZKs85tWT/nsvi2UsiqDaEn6JCDU6vVa78qCaiZkzqoMZJab8thy+pLp
+         fi80Ngkc8YUfq0r0n3dSrMqlfs0D3G5nKEJWZyLvoBFX5VKbTww75j/nLWvmXOZBFtw5
+         kpX3YadeWiRJcHVxjwGapQm/gaKtY75Abiv+O72czvXaZlK43CwjGDhyxYfORWLv4kyT
+         2Umf6qpMRkpqYSO/3EOLKYBv6cZkrqHS+7DuMEnKffUb1IfYzodk+hi3QPFwr7xzClOe
+         hTOhvEtb68i5PfRQGxInz0P8sjqHD3NFTRj9g6VEY+foYxmNpa9IA2YefdvJbHhaA1DG
+         9WEw==
+X-Gm-Message-State: AJcUukdjCzFu/G/wvD0HVyFG+s4fLCsJRQExcmegcb/WatLPuRGEYeI7
+        w7JFlIc4guwtHUUBoELnQB4rCIU=
+X-Google-Smtp-Source: ALg8bN7IS+OseEJcGrMGJ3Qx7LLRPIrTleJj4d2q5EAJkJbSWmYtih9VDuMdMeJWN6tf2H9CMhDMLQ==
+X-Received: by 2002:a62:9657:: with SMTP id c84mr28960807pfe.77.1548042310585;
+        Sun, 20 Jan 2019 19:45:10 -0800 (PST)
+Received: from genru-archlinux (220-135-242-25.HINET-IP.hinet.net. [220.135.242.25])
+        by smtp.gmail.com with ESMTPSA id c4sm22977095pfm.151.2019.01.20.19.45.08
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 20 Jan 2019 19:45:10 -0800 (PST)
+From:   Jun-Ru Chang <jrjang@gmail.com>
+X-Google-Original-From: Jun-Ru Chang <jrjang@realtek.com>
+Date:   Mon, 21 Jan 2019 11:45:05 +0800
+To:     ralf@linux-mips.org
+Cc:     paul.burton@mips.com, jhogan@kernel.org, macro@mips.com,
+        tonywu@realtek.com, mingo@kernel.org, peterz@infradead.org,
+        jrjang@realtek.com, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Remove function size check in get_frame_info()
+Message-ID: <20190121034505.GA1522@genru-archlinux>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.11.2 (2019-01-07)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This line is weird in multiple ways.
+Patch (b6c7a324df37b "MIPS: Fix get_frame_info() handling of
+microMIPS function size.") introduces additional function size
+check for microMIPS by only checking insn between ip and ip + func_size.
+However, func_size in get_frame_info() is always 0 if KALLSYMS is not
+enabled. This causes get_frame_info() to return immediately without
+calculating correct frame_size, which in turn causes "Can't analyze
+schedule() prologue" warning messages at boot time.
 
-(CONFIG_GENERIC_CSUM) might be a typo of $(CONFIG_GENERIC_CSUM).
+This patch removes func_size check, and let the frame_size check run
+up to 128 insns for both MIPS and microMIPS.
 
-Even if you add '$' to it, $(CONFIG_GENERIC_CSUM) is never evaluated
-to 'y' because scripts/Makefile.asm-generic does not include
-include/config/auto.conf. So, the asm-generic wrapper of checksum.h
-is never generated.
-
-Even if you manage to generate it, it is never included by anyone
-because MIPS has the checkin header with the same file name:
-
-  arch/mips/include/asm/checksum.h
-
-As you see in the top Makefile, the checkin headers are included before
-generated ones.
-
-  LINUXINCLUDE    := \
-                  -I$(srctree)/arch/$(SRCARCH)/include \
-                  -I$(objtree)/arch/$(SRCARCH)/include/generated \
-                  ...
-
-Commit 4e0748f5beb9 ("MIPS: Use generic checksum functions for MIPS R6")
-already added the asm-generic fallback code in the checkin header:
-
-  #ifdef CONFIG_GENERIC_CSUM
-  #include <asm/generic/checksum.h>
-  #else
-    ...
-  #endif
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Jun-Ru Chang <jrjang@realtek.com>
+Signed-off-by: Tony Wu <tonywu@realtek.com>
+Fixes: b6c7a324df37b ("MIPS: Fix get_frame_info() handling of microMIPS function size.")
 ---
+ arch/mips/kernel/process.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- arch/mips/include/asm/Kbuild | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
-index f15d5db..87b86cd 100644
---- a/arch/mips/include/asm/Kbuild
-+++ b/arch/mips/include/asm/Kbuild
-@@ -3,7 +3,6 @@ generated-y += syscall_table_32_o32.h
- generated-y += syscall_table_64_n32.h
- generated-y += syscall_table_64_n64.h
- generated-y += syscall_table_64_o32.h
--generic-(CONFIG_GENERIC_CSUM) += checksum.h
- generic-y += current.h
- generic-y += device.h
- generic-y += dma-contiguous.h
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 6829a064aac8..339870ed92f7 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -371,7 +371,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip, int *frame_size)
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+-	union mips_instruction insn, *ip, *ip_end;
++	union mips_instruction insn, *ip;
+ 	const unsigned int max_insns = 128;
+ 	unsigned int last_insn_size = 0;
+ 	unsigned int i;
+@@ -384,10 +384,9 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	if (!ip)
+ 		goto err;
+ 
+-	ip_end = (void *)ip + info->func_size;
+-
+-	for (i = 0; i < max_insns && ip < ip_end; i++) {
++	for (i = 0; i < max_insns; i++) {
+ 		ip = (void *)ip + last_insn_size;
++
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.word = ip->halfword[0] << 16;
+ 			last_insn_size = 2;
 -- 
-2.7.4
+2.20.1
 

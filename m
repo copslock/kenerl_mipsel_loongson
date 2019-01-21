@@ -6,43 +6,43 @@ X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1B57C282F6
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B97EC282DB
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:57:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CBCBB2084A
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:56:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EBBDD2084A
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Jan 2019 08:57:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729844AbfAUI4T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 03:56:19 -0500
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:33785 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729453AbfAUI4S (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 03:56:18 -0500
-Received: by mail-vs1-f67.google.com with SMTP id p74so12182062vsc.0;
-        Mon, 21 Jan 2019 00:56:17 -0800 (PST)
+        id S1729724AbfAUI4D (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 03:56:03 -0500
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:43884 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729417AbfAUI4C (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 03:56:02 -0500
+Received: by mail-ua1-f65.google.com with SMTP id z11so6652689uaa.10;
+        Mon, 21 Jan 2019 00:56:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=E/6v0ZVPaXQi5FWJ19dLuHcLgd/E9ZECv5IjLmf6PoI=;
-        b=EyAzTbPENUpPmTYgJxaA1sXp7UQHbKfwqLjssiVYRmV6kNSCGAT9BG/JsSu5+RIxmy
-         H9r4grTvIlZatxclZAGLWfkcrB+qY0TWen9dm+LUXI15aisNr8iFt2MPUfbstKCGHx1l
-         e9kmDE4G29S90ispupcoxwnoQ/+W9J4tIyLFQd4CIJs5p3DJ8vR+mf6218hPExefSlAa
-         pbT+I04ocE0trQ2YFzGQ8Mzp5XnYV6gDcq4tOz83gZVOcsX+ZKSDI+fDxhAy7dcUtCby
-         O45ML/nX9aTj7ewUxjMnvODnVSYJGq4/70tFFd4qrbJRyarnlMCP7uQObSJWsXNZh3qP
-         UDqQ==
-X-Gm-Message-State: AJcUukdObH7NbWqu2LTNEGUl3d+7V8JwkmhidtHkHmiIiAXvvq5RY6EP
-        t+wrENt6kUytwxj7JF/ttgWEdzcd/zAXe7D8KQU=
-X-Google-Smtp-Source: ALg8bN6mqPPGjY0mRgSzvQIVAiUYVEkzmmA1fTVJs4P5AJXGDwVjqnqovDI8HCxNMByb80ziNpDqZXxAv1iGgV8yZxk=
-X-Received: by 2002:a67:3885:: with SMTP id n5mr10358537vsi.96.1548060976721;
- Mon, 21 Jan 2019 00:56:16 -0800 (PST)
+        bh=OJScdj9p18oAEvTl9TNP9AzhiR3NeXZIyKQOy3xgTy8=;
+        b=sm7UdR7+OQ0Ar8QgmbYdCAoxsTemEPC5AumhUeqc5KyfmeXT2Yy8MSYfhqRJghQOmW
+         Q6YsuPhRMVRJBFtDUMRbdBgQ4XazTDkS9OXtKs31zpaS4sFcziyKkp/DPdXPRq9TlGQJ
+         zL+z/qUXY/8XaSAf0s6EEKjo+iWv9kV8px2D0ikIntk2lZ2ISMej19JuPXf4yXZgOL/F
+         z5c1tNnU8YE+rS33LuXuAL4Zaaoc/BYLBP/cWsmKWH2c7wiLVn3gZg/pySrCSmEm3i4s
+         CbyGL0N+MTObVHBhNX8IqhmdRha7czFHOzdKQhOJKeQHLJAEBK14TME8FK0/yNO03L9q
+         szPQ==
+X-Gm-Message-State: AJcUukcB7/BZDJF49J99W58563FwdAMzDDfH4CcqxS+EMngNwU3FnnWF
+        Z9waKt1LyOLZ0Qji99YCX5eTzHrUuD65YYNM53c=
+X-Google-Smtp-Source: ALg8bN4uFN3zWGMaGcasO6usU7NqldPno3Vg0buANjUHshxvHAfNTtSuQ7VautHVX5df0UK1s1iotaDgJP2GFGxetwA=
+X-Received: by 2002:ab0:7251:: with SMTP id d17mr11840905uap.0.1548060960356;
+ Mon, 21 Jan 2019 00:56:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-27-arnd@arndb.de>
-In-Reply-To: <20190118161835.2259170-27-arnd@arndb.de>
+References: <20190118161835.2259170-1-arnd@arndb.de> <20190118161835.2259170-15-arnd@arndb.de>
+In-Reply-To: <20190118161835.2259170-15-arnd@arndb.de>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 21 Jan 2019 09:56:02 +0100
-Message-ID: <CAMuHMdWiHTjDT9-tnjgJy9qCWRr+qUgsJa6LjpRDJQzhoJqnzw@mail.gmail.com>
-Subject: Re: [PATCH v2 26/29] y2038: use time32 syscall names on 32-bit
+Date:   Mon, 21 Jan 2019 09:55:48 +0100
+Message-ID: <CAMuHMdWaJyNqUeq4qu3AgU0fYrQdZ_zbo0DFFiM97Y5HESYYnA@mail.gmail.com>
+Subject: Re: [PATCH v2 14/29] arch: add pkey and rseq syscall numbers everywhere
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
         Linux API <linux-api@vger.kernel.org>,
@@ -91,30 +91,44 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 18, 2019 at 5:21 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> This is the big flip, where all 32-bit architectures set COMPAT_32BIT_TIME
-> abd use the _time32 system calls from the former compat layer instead
-> of the system calls that take __kernel_timespec and similar arguments.
+On Fri, Jan 18, 2019 at 5:20 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> Most architectures define system call numbers for the rseq and pkey system
+> calls, even when they don't support the features, and perhaps never will.
 >
-> The temporary redirects for __kernel_timespec, __kernel_itimerspec
-> and __kernel_timex can get removed with this.
->
-> It would be easy to split this commit by architecture, but with the new
-> generated system call tables, it's easy enough to do it all at once,
-> which makes it a little easier to check that the changes are the same
-> in each table.
+> Only a few architectures are missing these, so just define them anyway
+> for consistency. If we decide to add them later to one of these, the
+> system call numbers won't get out of sync then.
 >
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
->  arch/m68k/kernel/syscalls/syscall.tbl       | 42 +++++------
+>  arch/m68k/kernel/syscalls/syscall.tbl   | 4 ++++
 
-For m68k:
+> --- a/arch/m68k/kernel/syscalls/syscall.tbl
+> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
+> @@ -388,6 +388,10 @@
+>  378    common  pwritev2                        sys_pwritev2
+>  379    common  statx                           sys_statx
+>  380    common  seccomp                         sys_seccomp
+> +381    common  pkey_alloc                      sys_pkey_alloc
+> +382    common  pkey_free                       sys_pkey_free
+> +383    common  pkey_mprotect                   sys_pkey_mprotect
+> +384    common  rseq                            sys_rseq
+
+Note that all architectures that already define pkey syscalls, list
+pkey_mprotect
+first.
+
+Regardless, for m68k:
 Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
+>  # room for arch specific calls
+>  393    common  semget                          sys_semget
+>  394    common  semctl                          sys_semctl
 
 Gr{oetje,eeting}s,
 
                         Geert
+
 
 --
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org

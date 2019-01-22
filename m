@@ -2,90 +2,114 @@ Return-Path: <SRS0=jHXZ=P6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45D6DC37122
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 00:12:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00E7EC37124
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 02:02:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 13EC92089F
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 00:12:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548115927;
-	bh=DATvTix7nY2O37RxalDYKONsbRm3+nECmUfZrf3VXZQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=oD7FYV/IwOLO3saBX324sKFap+vxz0NuqJUrcRBr0x4IGvF0GaJd2HgfWpk/VbBgX
-	 7nQRvq6xu9Lz7Tvtuop5hvN/iNixwIw9STtAMgyE0yXNt3djTzQinR00KGRwCKr9zn
-	 nj304Gk0LhTuYkV7q9V1RFFVfnAiSmSx/wryLO7c=
+	by mail.kernel.org (Postfix) with ESMTP id C219C20870
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 02:02:19 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="YeKQSxGa"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbfAVAMB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 19:12:01 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34408 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725962AbfAVAMB (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 19:12:01 -0500
-Received: by mail-ot1-f65.google.com with SMTP id t5so17080557otk.1;
-        Mon, 21 Jan 2019 16:12:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=uwOnljoybqlcghtAFqmFtkneMxMmhHr1OEvzcqjbGAk=;
-        b=dZqiXUUpu4aSQjZgXN5U8ZTsEZcML035th0eFM12KFI+bSqsKnj1vcljX/mW4E9QC1
-         8abVivofAVytw87bRv/Uhmg6+Sgj0N4KiDPFz87lCGmNaBaXglqkz8jt05SU5n2FbXOp
-         GAp24Jb5j3dK6hrGyvcOua/Fz7gBdxsYReglGZXCTFgtVy51jMVcldPDNyhFliUwkaXB
-         VdQy2boo+7IfHeO0FwapLnQf/LjtQVqLhkhAVX+oCC9V1hvgT2oPgNc9tzckPQS5dHHD
-         JpiEKW+tjqDVP06JeBlfdpbMJORVF9H8F48cHh+Y3L9BRTrHC6nDvbsvg5fUGVhRJe8a
-         q5wQ==
-X-Gm-Message-State: AJcUukekW8j+u+k81h02fUdISMMTh9vR/vW85c7mnY5ov7cckgXnkK40
-        OWAOMZYT50EXnCZKXYzVGg==
-X-Google-Smtp-Source: ALg8bN5H1PCxu670A3uwImAFIF2xJ4Mo7y/5L8kYwqUli9tq3XaNcu70xLbw2xn8mQ+k4FsJ6Qau2w==
-X-Received: by 2002:a9d:4c8b:: with SMTP id m11mr19629696otf.111.1548115920842;
-        Mon, 21 Jan 2019 16:12:00 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id y25sm5981283otk.50.2019.01.21.16.12.00
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 21 Jan 2019 16:12:00 -0800 (PST)
-Date:   Mon, 21 Jan 2019 18:11:59 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 06/11] MIPS: ath79: export switch MDIO reference clock
-Message-ID: <20190122001159.GA29831@bogus>
-References: <20190111142240.10908-1-o.rempel@pengutronix.de>
- <20190111142240.10908-7-o.rempel@pengutronix.de>
+        id S1726648AbfAVCCG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Jan 2019 21:02:06 -0500
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:56995 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726601AbfAVCCG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 21:02:06 -0500
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id x0M21ptg027105;
+        Tue, 22 Jan 2019 11:01:51 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x0M21ptg027105
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1548122512;
+        bh=3KjszKj7hQE/0MhMfckZri1t/eeBuLPzkQH2181wOFo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YeKQSxGa1HkCdiLdGwkOso2NappFwj5TacZlzLBUuhYtmCXU/vkSBfg0tLaFste7A
+         0i+b0Em/X2546+jWx4B8ymFFPJYbCz8JRFwemqhqJiNI1yhMnIniQqFyrn8WcwZhum
+         84msA0BClqJWkBZFHaA17wsaS+X8iVe7Qm1F9qdXHY8aUh8e4WwMumbCJczGCBMRBs
+         a+RtlxmihYJ5EYPv+kUGMRN2bzfdDjBsyIkulTHNKrarp/u5B0O8PrfgaHolOs6gZT
+         AoPW4VsnzxNBfuz/Gd0QdUXuS2PL5AulzNb6R0GE6L6/xBTUvfW0w/zMP4YM+uh07o
+         dI+xrYqLX079w==
+X-Nifty-SrcIP: [209.85.222.52]
+Received: by mail-ua1-f52.google.com with SMTP id t8so7582124uap.0;
+        Mon, 21 Jan 2019 18:01:51 -0800 (PST)
+X-Gm-Message-State: AJcUukdOsrz1ru3Ab+pwN2qW5n5vi4mzth1RXozccm4hX5GNIB9+WLb2
+        8Bsj1x1tUyAjjwRLWDY00QUh8lmW83yhwOzogsc=
+X-Google-Smtp-Source: ALg8bN6ofMx0hznmVYRlUKKmEtSWP+zE+0hmQhIpNBnZI09dc3Tw8Im/utW/u3tYG/PLLzBu/QY49wsnhUu3B1iGWvg=
+X-Received: by 2002:ab0:849:: with SMTP id b9mr12700737uaf.93.1548122510513;
+ Mon, 21 Jan 2019 18:01:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190111142240.10908-7-o.rempel@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1548038929-11814-1-git-send-email-yamada.masahiro@socionext.com> <20190121174106.6tgokdtlo5f72hdx@pburton-laptop>
+In-Reply-To: <20190121174106.6tgokdtlo5f72hdx@pburton-laptop>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Tue, 22 Jan 2019 11:01:14 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQpVF=uHs+AxVomxQDwzpPtmKTT4-D4Hc7JphygF0BFKQ@mail.gmail.com>
+Message-ID: <CAK7LNAQpVF=uHs+AxVomxQDwzpPtmKTT4-D4Hc7JphygF0BFKQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: remove meaningless generic-(CONFIG_GENERIC_CSUM) += checksum.h
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 11, 2019 at 03:22:35PM +0100, Oleksij Rempel wrote:
-> From: Felix Fietkau <nbd@nbd.name>
-> 
-> On AR934x, the MDIO reference clock can be configured to a fixed 100 MHz
-> clock. If that feature is not used, it defaults to the main reference
-> clock, like on all other SoC.
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> Signed-off-by: John Crispin <john@phrozen.org>
-> ---
->  arch/mips/ath79/clock.c               | 8 ++++++++
+Hi Paul,
 
->  include/dt-bindings/clock/ath79-clk.h | 3 ++-
+On Tue, Jan 22, 2019 at 2:44 AM Paul Burton <paul.burton@mips.com> wrote:
+>
+> Hi Masahiro,
+>
+> On Mon, Jan 21, 2019 at 11:48:49AM +0900, Masahiro Yamada wrote:
+> > This line is weird in multiple ways.
+> >
+> > (CONFIG_GENERIC_CSUM) might be a typo of $(CONFIG_GENERIC_CSUM).
+> >
+> > Even if you add '$' to it, $(CONFIG_GENERIC_CSUM) is never evaluated
+> > to 'y' because scripts/Makefile.asm-generic does not include
+> > include/config/auto.conf. So, the asm-generic wrapper of checksum.h
+> > is never generated.
+> >
+> > Even if you manage to generate it, it is never included by anyone
+> > because MIPS has the checkin header with the same file name:
+> >
+> >   arch/mips/include/asm/checksum.h
+> >
+> > As you see in the top Makefile, the checkin headers are included before
+> > generated ones.
+> >
+> >   LINUXINCLUDE    := \
+> >                   -I$(srctree)/arch/$(SRCARCH)/include \
+> >                   -I$(objtree)/arch/$(SRCARCH)/include/generated \
+> >                   ...
+> >
+> > Commit 4e0748f5beb9 ("MIPS: Use generic checksum functions for MIPS R6")
+> > already added the asm-generic fallback code in the checkin header:
+> >
+> >   #ifdef CONFIG_GENERIC_CSUM
+> >   #include <asm/generic/checksum.h>
+> >   #else
+> >     ...
+> >   #endif
+> >
+> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+>
+> Good catch. Would you prefer to take this through your kbuild tree or
+> that I take it through the MIPS tree?
 
-Acked-by: Rob Herring <robh@kernel.org>
 
->  2 files changed, 10 insertions(+), 1 deletion(-)
+Could you apply it to MIPS tree? Thanks.
+
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

@@ -2,114 +2,84 @@ Return-Path: <SRS0=jHXZ=P6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00E7EC37124
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 02:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7835C282C4
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 13:05:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C219C20870
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 02:02:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 885AA20879
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Jan 2019 13:05:39 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="YeKQSxGa"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="pkFsxeYa"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbfAVCCG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Jan 2019 21:02:06 -0500
-Received: from conssluserg-06.nifty.com ([210.131.2.91]:56995 "EHLO
-        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726601AbfAVCCG (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Jan 2019 21:02:06 -0500
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id x0M21ptg027105;
-        Tue, 22 Jan 2019 11:01:51 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x0M21ptg027105
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1548122512;
-        bh=3KjszKj7hQE/0MhMfckZri1t/eeBuLPzkQH2181wOFo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YeKQSxGa1HkCdiLdGwkOso2NappFwj5TacZlzLBUuhYtmCXU/vkSBfg0tLaFste7A
-         0i+b0Em/X2546+jWx4B8ymFFPJYbCz8JRFwemqhqJiNI1yhMnIniQqFyrn8WcwZhum
-         84msA0BClqJWkBZFHaA17wsaS+X8iVe7Qm1F9qdXHY8aUh8e4WwMumbCJczGCBMRBs
-         a+RtlxmihYJ5EYPv+kUGMRN2bzfdDjBsyIkulTHNKrarp/u5B0O8PrfgaHolOs6gZT
-         AoPW4VsnzxNBfuz/Gd0QdUXuS2PL5AulzNb6R0GE6L6/xBTUvfW0w/zMP4YM+uh07o
-         dI+xrYqLX079w==
-X-Nifty-SrcIP: [209.85.222.52]
-Received: by mail-ua1-f52.google.com with SMTP id t8so7582124uap.0;
-        Mon, 21 Jan 2019 18:01:51 -0800 (PST)
-X-Gm-Message-State: AJcUukdOsrz1ru3Ab+pwN2qW5n5vi4mzth1RXozccm4hX5GNIB9+WLb2
-        8Bsj1x1tUyAjjwRLWDY00QUh8lmW83yhwOzogsc=
-X-Google-Smtp-Source: ALg8bN6ofMx0hznmVYRlUKKmEtSWP+zE+0hmQhIpNBnZI09dc3Tw8Im/utW/u3tYG/PLLzBu/QY49wsnhUu3B1iGWvg=
-X-Received: by 2002:ab0:849:: with SMTP id b9mr12700737uaf.93.1548122510513;
- Mon, 21 Jan 2019 18:01:50 -0800 (PST)
+        id S1728479AbfAVNFi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 22 Jan 2019 08:05:38 -0500
+Received: from forward102p.mail.yandex.net ([77.88.28.102]:58248 "EHLO
+        forward102p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728215AbfAVNFh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 22 Jan 2019 08:05:37 -0500
+Received: from mxback22g.mail.yandex.net (mxback22g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:322])
+        by forward102p.mail.yandex.net (Yandex) with ESMTP id 2D3FA1D41B7F;
+        Tue, 22 Jan 2019 16:05:35 +0300 (MSK)
+Received: from smtp3p.mail.yandex.net (smtp3p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:8])
+        by mxback22g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id pGxgvvVMkR-5YdCIRlA;
+        Tue, 22 Jan 2019 16:05:35 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1548162335;
+        bh=va6ar2RlbpsemIhQu9vlfedfrdFRiZG2GKowMPk/oVg=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
+        b=pkFsxeYaOjAbglO7sy69YaIDEzegejIfotgffxUoaNH2ieTiGp/e0j5Saj+TeVyhQ
+         GULzvW45Nmsytn1/fkToX+RxY5dWDhjd8IHDltRSDwITzuKDfFAXf/ZVxfKdV/F3Ew
+         mTcnfvm+8eZrynlZl5XcD5N0Ft8L6ZkBTMa7zgbc=
+Authentication-Results: mxback22g.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by smtp3p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id nEDDgaQwiv-5Neq02Cj;
+        Tue, 22 Jan 2019 16:05:29 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     linux-mips@vger.kernel.org
+Cc:     keguang.zhang@gmail.com, paul.burton@mips.com,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 2/6] MIPS: Loongson32: workaround di issue
+Date:   Tue, 22 Jan 2019 21:04:11 +0800
+Message-Id: <20190122130415.3440-2-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190122130415.3440-1-jiaxun.yang@flygoat.com>
+References: <20190122130415.3440-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-References: <1548038929-11814-1-git-send-email-yamada.masahiro@socionext.com> <20190121174106.6tgokdtlo5f72hdx@pburton-laptop>
-In-Reply-To: <20190121174106.6tgokdtlo5f72hdx@pburton-laptop>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Tue, 22 Jan 2019 11:01:14 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQpVF=uHs+AxVomxQDwzpPtmKTT4-D4Hc7JphygF0BFKQ@mail.gmail.com>
-Message-ID: <CAK7LNAQpVF=uHs+AxVomxQDwzpPtmKTT4-D4Hc7JphygF0BFKQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: remove meaningless generic-(CONFIG_GENERIC_CSUM) += checksum.h
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Paul,
+GS232 core used in Loongson-1 processors has a bug that
+di instruction doesn't save the irqflag immediately.
 
-On Tue, Jan 22, 2019 at 2:44 AM Paul Burton <paul.burton@mips.com> wrote:
->
-> Hi Masahiro,
->
-> On Mon, Jan 21, 2019 at 11:48:49AM +0900, Masahiro Yamada wrote:
-> > This line is weird in multiple ways.
-> >
-> > (CONFIG_GENERIC_CSUM) might be a typo of $(CONFIG_GENERIC_CSUM).
-> >
-> > Even if you add '$' to it, $(CONFIG_GENERIC_CSUM) is never evaluated
-> > to 'y' because scripts/Makefile.asm-generic does not include
-> > include/config/auto.conf. So, the asm-generic wrapper of checksum.h
-> > is never generated.
-> >
-> > Even if you manage to generate it, it is never included by anyone
-> > because MIPS has the checkin header with the same file name:
-> >
-> >   arch/mips/include/asm/checksum.h
-> >
-> > As you see in the top Makefile, the checkin headers are included before
-> > generated ones.
-> >
-> >   LINUXINCLUDE    := \
-> >                   -I$(srctree)/arch/$(SRCARCH)/include \
-> >                   -I$(objtree)/arch/$(SRCARCH)/include/generated \
-> >                   ...
-> >
-> > Commit 4e0748f5beb9 ("MIPS: Use generic checksum functions for MIPS R6")
-> > already added the asm-generic fallback code in the checkin header:
-> >
-> >   #ifdef CONFIG_GENERIC_CSUM
-> >   #include <asm/generic/checksum.h>
-> >   #else
-> >     ...
-> >   #endif
-> >
-> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
->
-> Good catch. Would you prefer to take this through your kbuild tree or
-> that I take it through the MIPS tree?
+Workaround by set irqflag in CP0 before di instructions
+as same as Loongson-3.
 
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+ arch/mips/include/asm/irqflags.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Could you apply it to MIPS tree? Thanks.
-
-
-
-
+diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
+index 9d3610be2323..59549d972439 100644
+--- a/arch/mips/include/asm/irqflags.h
++++ b/arch/mips/include/asm/irqflags.h
+@@ -41,7 +41,7 @@ static inline unsigned long arch_local_irq_save(void)
+ 	"	.set	push						\n"
+ 	"	.set	reorder						\n"
+ 	"	.set	noat						\n"
+-#if defined(CONFIG_CPU_LOONGSON3)
++#if defined(CONFIG_CPU_LOONGSON3) || defined (CONFIG_CPU_LOONGSON1)
+ 	"	mfc0	%[flags], $12					\n"
+ 	"	di							\n"
+ #else
 -- 
-Best Regards
-Masahiro Yamada
+2.20.1
+

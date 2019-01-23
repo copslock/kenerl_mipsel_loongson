@@ -2,402 +2,133 @@ Return-Path: <SRS0=SfrM=P7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCA18C41518
-	for <linux-mips@archiver.kernel.org>; Wed, 23 Jan 2019 17:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22E09C282C0
+	for <linux-mips@archiver.kernel.org>; Wed, 23 Jan 2019 17:51:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8C0E221872
-	for <linux-mips@archiver.kernel.org>; Wed, 23 Jan 2019 17:27:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B020A21872
+	for <linux-mips@archiver.kernel.org>; Wed, 23 Jan 2019 17:51:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="X2W9nfXy"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="MrHFzgQR"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726140AbfAWR1r (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 23 Jan 2019 12:27:47 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:36324 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725994AbfAWR1q (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 23 Jan 2019 12:27:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1548264463; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8SNmejVZ6E9h68DkJr+OJGS+RH6VpPmkQYhsz5XTWz8=;
-        b=X2W9nfXy6rZLMTLJrmOouqp8XD2FGxdj5QVqxAfk65zlVe1cTztLy37Zc6ng7MIDWi1x0a
-        wt3IESMC5Ra2dj7sSSD1bT6pkW7a5cE/a6t+dOFwPBedSgQOqeegAADn0TVxT4VqlIbJYB
-        7tesc97JZSlaU8oBZkkpsVp7ujBW4As=
-Date:   Wed, 23 Jan 2019 14:27:25 -0300
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v8 05/26] clocksource: Add driver for the Ingenic JZ47xx
- OST
-To:     Mathieu Malaterre <malat@debian.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S1725976AbfAWRvx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 23 Jan 2019 12:51:53 -0500
+Received: from mail-eopbgr690137.outbound.protection.outlook.com ([40.107.69.137]:35920
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725896AbfAWRvx (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 23 Jan 2019 12:51:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=udE79O/knlfPMo8jYPTXjrL+BPiVCf1qVriiOz7o0Lg=;
+ b=MrHFzgQRkRRPCXt17qYs5qBj1PKOwht7+cT/BS6fDE/Iq79nZnZCGvKb9v3gpgEWt2HTYGoiLGxeLxYOFwoavZuaT9rOv9DRbW3bxtK4B+epcwHclU+iSNN/+IL3Eb5TNzuIi9ZFnFfwDr5wBGdwMeTpdgz5S9AgiUS89O5hoZQ=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1710.namprd22.prod.outlook.com (10.164.206.152) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1558.16; Wed, 23 Jan 2019 17:51:49 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1558.016; Wed, 23 Jan 2019
+ 17:51:49 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        linux-pwm@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        linux-watchdog@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me,
-        Maarten ter Huurne <maarten@treewalker.org>
-Message-Id: <1548264445.3173.2@crapouillou.net>
-In-Reply-To: <CA+7wUsxNN2SL9_7tDh0DiBAgdUwxd_osgmi=09HP7110Tm0DYQ@mail.gmail.com>
-References: <20181212220922.18759-1-paul@crapouillou.net>
-        <20181212220922.18759-6-paul@crapouillou.net>
-        <CA+7wUsxNN2SL9_7tDh0DiBAgdUwxd_osgmi=09HP7110Tm0DYQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: remove meaningless generic-(CONFIG_GENERIC_CSUM) +=
+  checksum.h
+Thread-Topic: [PATCH] MIPS: remove meaningless generic-(CONFIG_GENERIC_CSUM)
+ +=  checksum.h
+Thread-Index: AQHUs0RQT/WRIwkZS0K0Th09gxIkig==
+Date:   Wed, 23 Jan 2019 17:51:49 +0000
+Message-ID: <MWHPR2201MB12770174A3C123570B461E79C1990@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <1548038929-11814-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <1548038929-11814-1-git-send-email-yamada.masahiro@socionext.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR02CA0009.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::22) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1710;6:PnLVlv5jMjidBUwC2zRiCzacSKlxwdVuhVLXf70HDUeF2qsPLU9I7lST2V93z+RhX6n1lA92jy7PfWBBewyLcm1pRp3e/0FhPTSzLJI2WakAJr0kTx0+KfDsTN0RSONLErPsLWwH6v/JrYgZHXMqF0mft1S+42jm4ueBhuinQ6l6K96222vGZZ0zUkFOdzVw+EvytKkTaJBd912SJ6QO21LhAZ+eDNNvYtJNqxoPAPJiizQX+3FHUkAIna8C17MRVbOPfWbLVAaWy9oaqxgTSyDlDnzh7Tcy8zJrOPvK6cih1ri6VZUGPG33ASaJyG1zRzxfMQaIqJOb1emjid9ouMQlJKHcVz4ZGDgJE7LHyf1G06ekeOJ9FW3gNY8r+9v5B43o6JvnD/NpuMIWPxari5v+7gW41iUnqv3kDAGWnxypU77oVTgqqD6OvHi8jelamP0sXOoW7ESNx0BQqKDuRg==;5:NTSQnBG6ZZamL+LHYuyVsIOtlA6M/QNVMXXqNj1CiZP5TMXCYs1lol5w0gkkR6zGrHbBtOF2L6egsKxEPL28OmW3l1usWyeQij9oaXWjj2uouKL1YnqUh1jcKgXw7EJ9zoyIy7iJgBGljdnA05zapzeF5wgya4zKvmo3ZU71CEHhqjd5oM+LNaW+2V3NOIEZeS/YV0MYq7pl/bNMAtaCNQ==;7:ygqko/yRZi/E5j9yaeGnqIM69XCQC25XdMbKBFiMl921OiUb+5s9AD8w+6ElPsERjyyWOo0yOIQVc0RdfkRTK5/zYdVJB9XmdCsGlJ9RILqEZSaVBelvjbeN6XHOvjSdb5K1Nc6Q+XMovzXUVJ9hSQ==
+x-ms-office365-filtering-correlation-id: b30a9180-dcaf-47a9-9c70-08d6815b733b
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600110)(711020)(4605077)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1710;
+x-ms-traffictypediagnostic: MWHPR2201MB1710:
+x-microsoft-antispam-prvs: <MWHPR2201MB17104942C07B0C38C6E19CACC1990@MWHPR2201MB1710.namprd22.prod.outlook.com>
+x-forefront-prvs: 0926B0E013
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(39850400004)(396003)(366004)(376002)(136003)(189003)(199004)(33656002)(8936002)(68736007)(106356001)(102836004)(386003)(6506007)(54906003)(97736004)(4326008)(6246003)(53936002)(105586002)(486006)(316002)(55016002)(44832011)(478600001)(6436002)(66066001)(71190400001)(71200400001)(6916009)(476003)(52116002)(74316002)(6116002)(446003)(11346002)(229853002)(25786009)(3846002)(2906002)(76176011)(186003)(256004)(9686003)(26005)(81166006)(99286004)(81156014)(305945005)(7736002)(8676002)(7696005)(14454004)(42882007)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1710;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: oY5cWeZLHwm5lxJ2d3ZNuORqptdxTAftSFBOvA5nw8w3x+t0L53JEvMKYG9TlQUS+QxaTa0dwlLT3qaQVzkjGMhjrS9eUXQx0VY2VxLscXWpAf9O2sEDaCs47CFVy6fSz9QJh8q6dUJp9zStYL4eu4sKk8S5D3+NPrSEhwSgYvwuk88eLYD7kBhem8fSQ4WGeCX9Uj1Ye3XQBm1w4St/IJSORCqirS69w5YDAftO3hvjpHtPUTkqFlJRt7X+H6HGkuT8w+qfc8LAG9ORMia+76WH4h5W4W2/Vhvyl/QaPS7wiZnltdTh0DPP2EEmt6Xbsd/aXncSxIn5K1nj70rLXDf2AHhZtmzZ6VAGDHDr9QnPZjkcD8R1GAJfn9cs7X5PA/KbbbtkevKV2hlBJK2N6+nxAcUf0EJIDb7WjKgNZI8=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b30a9180-dcaf-47a9-9c70-08d6815b733b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2019 17:51:49.4328
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1710
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-(re-send, in plain text this time, sorry for those who got it twice)
+Hello,
 
-
-Le mer. 23 janv. 2019 =E0 9:58, Mathieu Malaterre <malat@debian.org> a=20
-=E9crit :
-> On Wed, Dec 12, 2018 at 11:09 PM Paul Cercueil <paul@crapouillou.net>=20
-> wrote:
->>=20
->>  From: Maarten ter Huurne <maarten@treewalker.org>
->>=20
->>  OST is the OS Timer, a 64-bit timer/counter with buffered reading.
->>=20
->>  SoCs before the JZ4770 had (if any) a 32-bit OST; the JZ4770 and
->>  JZ4780 have a 64-bit OST.
->>=20
->>  This driver will register both a clocksource and a sched_clock to=20
->> the
->>  system.
->>=20
->>  Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>=20
->>  Notes:
->>       v5: New patch
->>=20
->>       v6: - Get rid of SoC IDs; pass pointer to ingenic_ost_soc_info=20
->> as
->>             devicetree match data instead.
->>           - Use device_get_match_data() instead of the of_* variant
->>           - Handle error of dev_get_regmap() properly
->>=20
->>       v7: Fix section mismatch by using=20
->> builtin_platform_driver_probe()
->>=20
->>       v8: builtin_platform_driver_probe() does not work anymore in
->>           4.20-rc6? The probe function won't be called. Work around=20
->> this
->>           for now by using late_initcall.
->>=20
->>   drivers/clocksource/Kconfig       |   8 ++
->>   drivers/clocksource/Makefile      |   1 +
->>   drivers/clocksource/ingenic-ost.c | 215=20
->> ++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 224 insertions(+)
->>   create mode 100644 drivers/clocksource/ingenic-ost.c
->>=20
->>  diff --git a/drivers/clocksource/Kconfig=20
->> b/drivers/clocksource/Kconfig
->>  index 4e69af15c3e7..e0646878b0de 100644
->>  --- a/drivers/clocksource/Kconfig
->>  +++ b/drivers/clocksource/Kconfig
->>  @@ -648,4 +648,12 @@ config INGENIC_TIMER
->>          help
->>            Support for the timer/counter unit of the Ingenic JZ SoCs.
->>=20
->>  +config INGENIC_OST
->>  +       bool "Ingenic JZ47xx Operating System Timer"
->>  +       depends on MIPS || COMPILE_TEST
->>  +       depends on COMMON_CLK
->>  +       select INGENIC_TIMER
->>  +       help
->>  +         Support for the OS Timer of the Ingenic JZ4770 or similar=20
->> SoC.
->>  +
->>   endmenu
->>  diff --git a/drivers/clocksource/Makefile=20
->> b/drivers/clocksource/Makefile
->>  index 7c8f790dcf67..7faa8108574a 100644
->>  --- a/drivers/clocksource/Makefile
->>  +++ b/drivers/clocksource/Makefile
->>  @@ -75,6 +75,7 @@ obj-$(CONFIG_ASM9260_TIMER)           +=3D=20
->> asm9260_timer.o
->>   obj-$(CONFIG_H8300_TMR8)               +=3D h8300_timer8.o
->>   obj-$(CONFIG_H8300_TMR16)              +=3D h8300_timer16.o
->>   obj-$(CONFIG_H8300_TPU)                        +=3D h8300_tpu.o
->>  +obj-$(CONFIG_INGENIC_OST)              +=3D ingenic-ost.o
->>   obj-$(CONFIG_INGENIC_TIMER)            +=3D ingenic-timer.o
->>   obj-$(CONFIG_CLKSRC_ST_LPC)            +=3D clksrc_st_lpc.o
->>   obj-$(CONFIG_X86_NUMACHIP)             +=3D numachip.o
->>  diff --git a/drivers/clocksource/ingenic-ost.c=20
->> b/drivers/clocksource/ingenic-ost.c
->>  new file mode 100644
->>  index 000000000000..cc0fee3efd29
->>  --- /dev/null
->>  +++ b/drivers/clocksource/ingenic-ost.c
->>  @@ -0,0 +1,215 @@
->>  +// SPDX-License-Identifier: GPL-2.0
->>  +/*
->>  + * JZ47xx SoCs TCU Operating System Timer driver
->>  + *
->>  + * Copyright (C) 2016 Maarten ter Huurne <maarten@treewalker.org>
->>  + * Copyright (C) 2018 Paul Cercueil <paul@crapouillou.net>
->>  + */
->>  +
->>  +#include <linux/clk.h>
->>  +#include <linux/clocksource.h>
->>  +#include <linux/mfd/ingenic-tcu.h>
->>  +#include <linux/of.h>
->>  +#include <linux/platform_device.h>
->>  +#include <linux/pm.h>
->>  +#include <linux/regmap.h>
->>  +#include <linux/sched_clock.h>
->>  +
->>  +#include "ingenic-timer.h"
->>  +
->>  +#define TCU_OST_TCSR_MASK      0xc0
->>  +#define TCU_OST_TCSR_CNT_MD    BIT(15)
->>  +
->>  +#define TCU_OST_CHANNEL                15
->>  +
->>  +struct ingenic_ost_soc_info {
->>  +       bool is64bit;
->>  +};
->>  +
->>  +struct ingenic_ost {
->>  +       struct regmap *map;
->>  +       struct clk *clk;
->>  +
->>  +       struct clocksource cs;
->>  +};
->>  +
->>  +static u64 notrace ingenic_ost_read_cntl(void)
->>  +{
->>  +       /* Bypass the regmap here as we must return as soon as=20
->> possible */
->>  +       return readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +}
->>  +
->>  +static u64 notrace ingenic_ost_read_cnth(void)
->>  +{
->>  +       /* Bypass the regmap here as we must return as soon as=20
->> possible */
->>  +       return readl(ingenic_tcu_base + TCU_REG_OST_CNTH);
->>  +}
->>  +
->>  +static u64 notrace ingenic_ost_clocksource_read(struct clocksource=20
->> *cs)
->>  +{
->>  +       u32 val1, val2;
->>  +       u64 count, recount;
->>  +       s64 diff;
->>  +
->>  +       /*
->>  +        * The buffering of the upper 32 bits of the timer prevents=20
->> wrong
->>  +        * results from the bottom 32 bits overflowing due to the=20
->> timer ticking
->>  +        * along. However, it does not prevent wrong results from=20
->> simultaneous
->>  +        * reads of the timer, which could reset the buffer=20
->> mid-read.
->>  +        * Since this kind of wrong read can happen only when the=20
->> bottom bits
->>  +        * overflow, there will be minutes between wrong reads, so=20
->> if we read
->>  +        * twice in succession, at least one of the reads will be=20
->> correct.
->>  +        */
->>  +
->>  +       /* Bypass the regmap here as we must return as soon as=20
->> possible */
->>  +       val1 =3D readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +       val2 =3D readl(ingenic_tcu_base + TCU_REG_OST_CNTHBUF);
->>  +       count =3D (u64)val1 | (u64)val2 << 32;
->>  +
->>  +       val1 =3D readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
->>  +       val2 =3D readl(ingenic_tcu_base + TCU_REG_OST_CNTHBUF);
->>  +       recount =3D (u64)val1 | (u64)val2 << 32;
->>  +
->>  +       /*
->>  +        * A wrong read will produce a result that is 1<<32 too=20
->> high: the bottom
->>  +        * part from before overflow and the upper part from after=20
->> overflow.
->>  +        * Therefore, the lower value of the two reads is the=20
->> correct value.
->>  +        */
->>  +
->>  +       diff =3D (s64)(recount - count);
->>  +       if (unlikely(diff < 0))
->>  +               count =3D recount;
->>  +
->>  +       return count;
->>  +}
->>  +
->>  +static int __init ingenic_ost_probe(struct platform_device *pdev)
->>  +{
->>  +       const struct ingenic_ost_soc_info *soc_info;
->>  +       struct device *dev =3D &pdev->dev;
->>  +       struct ingenic_ost *ost;
->>  +       struct clocksource *cs;
->>  +       unsigned long rate, flags;
->>  +       int err;
->>  +
->>  +       soc_info =3D device_get_match_data(dev);
->>  +       if (!soc_info)
->>  +               return -EINVAL;
->>  +
->>  +       ost =3D devm_kzalloc(dev, sizeof(*ost), GFP_KERNEL);
->>  +       if (!ost)
->>  +               return -ENOMEM;
->>  +
->>  +       ost->map =3D dev_get_regmap(dev->parent, NULL);
->>  +       if (!ost->map) {
->>  +               dev_err(dev, "regmap not found\n");
->>  +               return -EINVAL;
->>  +       }
->>  +
->>  +       ost->clk =3D devm_clk_get(dev, "ost");
->>  +       if (IS_ERR(ost->clk))
->>  +               return PTR_ERR(ost->clk);
->>  +
->>  +       err =3D clk_prepare_enable(ost->clk);
->>  +       if (err)
->>  +               return err;
->>  +
->>  +       /* Clear counter high/low registers */
->>  +       if (soc_info->is64bit)
->>  +               regmap_write(ost->map, TCU_REG_OST_CNTL, 0);
->>  +       regmap_write(ost->map, TCU_REG_OST_CNTH, 0);
->>  +
->>  +       /* Don't reset counter at compare value. */
->>  +       regmap_update_bits(ost->map, TCU_REG_OST_TCSR,
->>  +                          TCU_OST_TCSR_MASK, TCU_OST_TCSR_CNT_MD);
->>  +
->>  +       rate =3D clk_get_rate(ost->clk);
->>  +
->>  +       /* Enable OST TCU channel */
->>  +       regmap_write(ost->map, TCU_REG_TESR, BIT(TCU_OST_CHANNEL));
->>  +
->>  +       cs =3D &ost->cs;
->>  +       cs->name        =3D "ingenic-ost";
->>  +       cs->rating      =3D 320;
->>  +       cs->flags       =3D CLOCK_SOURCE_IS_CONTINUOUS;
->>  +
->>  +       if (soc_info->is64bit) {
->>  +               cs->mask =3D CLOCKSOURCE_MASK(64);
->>  +               cs->read =3D ingenic_ost_clocksource_read;
->>  +       } else {
->>  +               cs->mask =3D CLOCKSOURCE_MASK(32);
->>  +               cs->read =3D (u64 (*)(struct clocksource=20
->> *))ingenic_ost_read_cnth;
+Masahiro Yamada wrote:
+> This line is weird in multiple ways.
 >=20
-> The function is declared as ingenic_ost_read_cnth(void), are you sure
-> this is going to work ?
+> (CONFIG_GENERIC_CSUM) might be a typo of $(CONFIG_GENERIC_CSUM).
+>=20
+> Even if you add '$' to it, $(CONFIG_GENERIC_CSUM) is never evaluated
+> to 'y' because scripts/Makefile.asm-generic does not include
+> include/config/auto.conf. So, the asm-generic wrapper of checksum.h
+> is never generated.
+>=20
+> Even if you manage to generate it, it is never included by anyone
+> because MIPS has the checkin header with the same file name:
+>=20
+> arch/mips/include/asm/checksum.h
+>=20
+> As you see in the top Makefile, the checkin headers are included before
+> generated ones.
+>=20
+> LINUXINCLUDE    :=3D                   -I$(srctree)/arch/$(SRCARCH)/inclu=
+de                   -I$(objtree)/arch/$(SRCARCH)/include/generated        =
+           ...
+>=20
+> Commit 4e0748f5beb9 ("MIPS: Use generic checksum functions for MIPS R6")
+> already added the asm-generic fallback code in the checkin header:
+>=20
+> #ifdef CONFIG_GENERIC_CSUM
+> #include <asm/generic/checksum.h>
+> #else
+> ...
+> #endif
+>=20
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Hence the cast. The clocksource pointer passed as the first argument=20
-will
-simply be ignored by the function. This works fine.
+Applied to mips-next.
 
->>  +       }
->>  +
->>  +       err =3D clocksource_register_hz(cs, rate);
->>  +       if (err) {
->>  +               dev_err(dev, "clocksource registration failed:=20
->> %d\n", err);
->>  +               clk_disable_unprepare(ost->clk);
->>  +               return err;
->>  +       }
->>  +
->>  +       /* Cannot register a sched_clock with interrupts on */
->>  +       local_irq_save(flags);
->>  +       if (soc_info->is64bit)
->>  +               sched_clock_register(ingenic_ost_read_cntl, 32,=20
->> rate);
->>  +       else
->>  +               sched_clock_register(ingenic_ost_read_cnth, 32,=20
->> rate);
->>  +       local_irq_restore(flags);
->>  +
->>  +       return 0;
->>  +}
->>  +
->>  +#ifdef CONFIG_PM_SLEEP
->>  +static int ingenic_ost_suspend(struct device *dev)
->>  +{
->>  +       struct ingenic_ost *ost =3D dev_get_drvdata(dev);
->>  +
->>  +       clk_disable(ost->clk);
->>  +       return 0;
->>  +}
->>  +
->>  +static int ingenic_ost_resume(struct device *dev)
->>  +{
->>  +       struct ingenic_ost *ost =3D dev_get_drvdata(dev);
->>  +
->>  +       return clk_enable(ost->clk);
->>  +}
->>  +
->>  +static SIMPLE_DEV_PM_OPS(ingenic_ost_pm_ops, ingenic_ost_suspend,
->>  +                        ingenic_ost_resume);
->>  +#define INGENIC_OST_PM_OPS (&ingenic_ost_pm_ops)
->>  +#else
->>  +#define INGENIC_OST_PM_OPS NULL
->>  +#endif /* CONFIG_PM_SUSPEND */
->>  +
->>  +static const struct ingenic_ost_soc_info jz4725b_ost_soc_info =3D {
->>  +       .is64bit =3D false,
->>  +};
->>  +
->>  +static const struct ingenic_ost_soc_info jz4770_ost_soc_info =3D {
->>  +       .is64bit =3D true,
->>  +};
->>  +
->>  +static const struct of_device_id ingenic_ost_of_match[] =3D {
->>  +       { .compatible =3D "ingenic,jz4725b-ost", .data =3D=20
->> &jz4725b_ost_soc_info, },
->>  +       { .compatible =3D "ingenic,jz4770-ost",  .data =3D=20
->> &jz4770_ost_soc_info,  },
->>  +       { }
->>  +};
->>  +
->>  +static struct platform_driver ingenic_ost_driver =3D {
->>  +       .driver =3D {
->>  +               .name   =3D "ingenic-ost",
->>  +               .pm     =3D INGENIC_OST_PM_OPS,
->>  +               .of_match_table =3D ingenic_ost_of_match,
->>  +       },
->>  +};
->>  +
->>  +/* FIXME: Using device_initcall (or buildin_platform_driver_probe)=20
->> results
->>  + * in the driver not being probed at all. It worked in 4.18...
->>  + */
->>  +static int __init ingenic_ost_drv_register(void)
->>  +{
->>  +       return platform_driver_probe(&ingenic_ost_driver,
->>  +                                    ingenic_ost_probe);
->>  +}
->>  +late_initcall(ingenic_ost_drv_register);
->>  --
->>  2.11.0
->>=20
-=
+Thanks,
+    Paul
 
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

@@ -2,76 +2,100 @@ Return-Path: <SRS0=d1Yk=QA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DATE_IN_FUTURE_06_12,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	RCVD_DOUBLE_IP_LOOSE,SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F22B8C282C3
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Jan 2019 10:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F120C282C3
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Jan 2019 17:47:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C08CF218A6
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Jan 2019 10:17:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0F332218CD
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Jan 2019 17:47:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726012AbfAXKRK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 24 Jan 2019 05:17:10 -0500
-Received: from [182.148.157.197] ([182.148.157.197]:34958 "HELO eyou.net"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with SMTP
-        id S1726034AbfAXKRK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 24 Jan 2019 05:17:10 -0500
-X-EYOU-SPAMVALUE: 0
-X-EMDG-ORIGINAL-FROM: <zhouyanjie@cduestc.edu.cn>
-X-EMDG-ORIGINAL-TO: <linux-mips@vger.kernel.org>
-X-EMDG-ORIGINAL-IP: 125.71.5.39
-X-EMDG-VER: 4.1.1
-X-EMDG-ABROAD: no
-Received: (eyou anti_spam gateway 4.1.0); Thu, 24 Jan 2019 18:17:39 +0800
-X-EMDG-MID: <748325059.28198@eyou.net>
-Received: from 125.71.5.39 by 182.148.157.197 with SMTP; Thu, 24 Jan 2019 18:17:39 +0800
-Received: from localhost ([127.0.0.1]) 
-        by cduestc.cn with sendmail id 3424c98d8beab29e2781ee3693d74600;
-        Fri, 25 Jan 2019 02:22:15 +0800
-Date:   Fri, 25 Jan 2019 02:22:15 +0800
-From:   "Zhou Yanjie" <zhouyanjie@cduestc.edu.cn>
-Subject: [PATCH] DTS: CI20: Fix bugs in ci20's device tree.
-To:     "linux-mips" <linux-mips@vger.kernel.org>
-Cc:     "linux-kernel" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        paul.burton@mips.com, ralf@linux-mips.org, jhogan@kernel.org,
-        mark.rutland@arm.com, malat@debian.org, ezequiel@collabora.co.uk,
-        ulf.hansson@linaro.org, "syq" <syq@debian.org>,
-        "jiaxun.yang" <jiaxun.yang@flygoat.com>
-Message-Id: <190125022215331921004107@cduestc.edu.cn>
-MIME-Version: 1.0
-X-Mailer: eYou WebMail 8.13.6
-X-Eyou-Client: 171.209.85.48
-X-Eyou-Is-Onercpt: 0
-Content-Type: text/plain;
- charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Eyou-Sender: <zhouyanjie@cduestc.edu.cn>
+        id S1728650AbfAXRrq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 24 Jan 2019 12:47:46 -0500
+Received: from mx2.suse.de ([195.135.220.15]:51284 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727991AbfAXRrq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 24 Jan 2019 12:47:46 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 311A9AF7E;
+        Thu, 24 Jan 2019 17:47:45 +0000 (UTC)
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 0/7] MIPS: SGI-IP27 rework
+Date:   Thu, 24 Jan 2019 18:47:21 +0100
+Message-Id: <20190124174728.28812-1-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.13.7
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-RnJvbTogWmhvdSBZYW5qaWUgPHpob3V5YW5qaWVAY2R1ZXN0Yy5lZHUuY24+CgpBY2Nv
-cmRpbmcgdG8gdGhlIFNjaGVtYXRpYywgdGhlIGhhcmR3YXJlIG9mIGNpMjAgbGVhZHMg
-dG8gdWFydDMsCmJ1dCBub3QgdG8gdWFydDIuIFVhcnQyIGlzIG1pc3dyaXR0ZW4gaW4g
-dGhlIG9yaWdpbmFsIGNvZGUuCgpTaWduZWQtb2ZmLWJ5OiBaaG91IFlhbmppZSA8emhv
-dXlhbmppZUBjZHVlc3RjLmVkdS5jbj4KLS0tCiBhcmNoL21pcHMvYm9vdC9kdHMvaW5n
-ZW5pYy9jaTIwLmR0cyB8IDggKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
-dGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2Jv
-b3QvZHRzL2luZ2VuaWMvY2kyMC5kdHMgYi9hcmNoL21pcHMvYm9vdC9kdHMvaW5nZW5p
-Yy9jaTIwLmR0cwppbmRleCA1MGNmZjNjLi40ZjdiMWZhIDEwMDY0NAotLS0gYS9hcmNo
-L21pcHMvYm9vdC9kdHMvaW5nZW5pYy9jaTIwLmR0cworKysgYi9hcmNoL21pcHMvYm9v
-dC9kdHMvaW5nZW5pYy9jaTIwLmR0cwpAQCAtNzYsNyArNzYsNyBAQAogCXN0YXR1cyA9
-ICJva2F5IjsKIAogCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Ci0JcGluY3RybC0w
-ID0gPCZwaW5zX3VhcnQyPjsKKwlwaW5jdHJsLTAgPSA8JnBpbnNfdWFydDM+OwogfTsK
-IAogJnVhcnQ0IHsKQEAgLTE5Niw5ICsxOTYsOSBAQAogCQliaWFzLWRpc2FibGU7CiAJ
-fTsKIAotCXBpbnNfdWFydDI6IHVhcnQyIHsKLQkJZnVuY3Rpb24gPSAidWFydDIiOwot
-CQlncm91cHMgPSAidWFydDItZGF0YSIsICJ1YXJ0Mi1od2Zsb3ciOworCXBpbnNfdWFy
-dDM6IHVhcnQzIHsKKwkJZnVuY3Rpb24gPSAidWFydDMiOworCQlncm91cHMgPSAidWFy
-dDMtZGF0YSIsICJ1YXJ0My1od2Zsb3ciOwogCQliaWFzLWRpc2FibGU7CiAJfTsKIAot
-LSAKMi43LjQK
+SGI IP27 (Origin/Onyx2) and SGI IP30 (Octane) have a similair
+architecture and share some hardware (ioc3/bridge). To share
+the software parts this patchset reworks SGI IP27 interrupt
+and pci bridge code. By using features Linux gained during the
+many years since SGI IP27 code was integrated this even results
+in code reduction and IMHO cleaner code.
+
+Tests have been done on a two module O200 (4 CPUs) and an
+Origin 2000 (8 CPUs).
+
+My next step in integrating SGI IP30 support is splitting ioc3eth
+into a MFD and subdevice drivers. Prototype is working, but needs
+still more clean ups.
+
+
+Thomas Bogendoerfer (7):
+  MIPS: SGI-IP27: get rid of volatile and hubreg_t
+  MIPS: SGI-IP27: clean up bridge access and header files
+  MIPS: SGI-IP27: use pr_info/pr_emerg and pr_cont to fix output
+  MIPS: SGI-IP27: do xtalk scanning later
+  MIPS: SGI-IP27: rework HUB interrupts
+  MIPS: SGI-IP27: use generic PCI driver
+  MIPS: SGI-IP27: abstract chipset irq from bridge
+
+ arch/mips/Kconfig                          |   3 +
+ arch/mips/include/asm/mach-ip27/irq.h      |  12 +-
+ arch/mips/include/asm/mach-ip27/mmzone.h   |   2 -
+ arch/mips/include/asm/pci/bridge.h         | 225 ++++++------
+ arch/mips/include/asm/sn/addrs.h           |  63 +---
+ arch/mips/include/asm/sn/arch.h            |   2 -
+ arch/mips/include/asm/sn/intr.h            |   7 +
+ arch/mips/include/asm/sn/sn0/addrs.h       |   5 -
+ arch/mips/include/asm/xtalk/xtalk.h        |   9 -
+ arch/mips/pci/Makefile                     |   1 -
+ arch/mips/pci/ops-bridge.c                 | 322 -----------------
+ arch/mips/pci/pci-ip27.c                   | 233 ------------
+ arch/mips/sgi-ip27/Makefile                |   3 +-
+ arch/mips/sgi-ip27/ip27-hubio.c            |   2 +-
+ arch/mips/sgi-ip27/ip27-init.c             |  33 +-
+ arch/mips/sgi-ip27/ip27-irq-pci.c          | 266 --------------
+ arch/mips/sgi-ip27/ip27-irq.c              | 297 ++++++++++-----
+ arch/mips/sgi-ip27/ip27-irqno.c            |  48 ---
+ arch/mips/sgi-ip27/ip27-memory.c           |  34 +-
+ arch/mips/sgi-ip27/ip27-nmi.c              |  64 ++--
+ arch/mips/sgi-ip27/ip27-timer.c            |  42 +--
+ arch/mips/sgi-ip27/ip27-xtalk.c            |  44 ++-
+ drivers/pci/controller/Kconfig             |   3 +
+ drivers/pci/controller/Makefile            |   1 +
+ drivers/pci/controller/pci-xtalk-bridge.c  | 558 +++++++++++++++++++++++++++++
+ include/linux/platform_data/xtalk-bridge.h |  17 +
+ 26 files changed, 997 insertions(+), 1299 deletions(-)
+ delete mode 100644 arch/mips/pci/ops-bridge.c
+ delete mode 100644 arch/mips/pci/pci-ip27.c
+ delete mode 100644 arch/mips/sgi-ip27/ip27-irq-pci.c
+ delete mode 100644 arch/mips/sgi-ip27/ip27-irqno.c
+ create mode 100644 drivers/pci/controller/pci-xtalk-bridge.c
+ create mode 100644 include/linux/platform_data/xtalk-bridge.h
+
+-- 
+2.13.7
 

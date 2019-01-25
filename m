@@ -2,107 +2,148 @@ Return-Path: <SRS0=1uEU=QB=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.5 required=3.0
+	tests=HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_PASS,USER_AGENT_MUTT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2631C282C0
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 19:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC711C282C2
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 19:33:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 709E22087E
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 19:17:19 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="EtUGg1V+"
+	by mail.kernel.org (Postfix) with ESMTP id C7965217D4
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 19:33:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726262AbfAYTRT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 25 Jan 2019 14:17:19 -0500
-Received: from mail-eopbgr730120.outbound.protection.outlook.com ([40.107.73.120]:54562
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725976AbfAYTRT (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 25 Jan 2019 14:17:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XgDNkab9o5zSZchFV6J8+RFrfL4PrOIrFTKkK0M+8Bc=;
- b=EtUGg1V+l3ZQAbJvIS5R3gcLEbJ4wH627ikOIVgbM6hu+F4AKg7XLYnFfjJU83Ku0x/uFzN768ZloRHGYRYZI0EXI2vcqW6ItimgdfIxRvgo6EU2fpz0QW2D7OPggYi90tr9RDBG3m2GmLntYy7fFHGkY1NxgPf1K4Lyph3PLy8=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1310.namprd22.prod.outlook.com (10.174.162.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1558.17; Fri, 25 Jan 2019 19:17:15 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1558.021; Fri, 25 Jan 2019
- 19:17:15 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: DTS: jz4740: Correct interrupt number of DMA core
-Thread-Topic: [PATCH] MIPS: DTS: jz4740: Correct interrupt number of DMA core
-Thread-Index: AQHUtNmbp2nZQk2iQES0PqaDbTbeeKXAW3QA
-Date:   Fri, 25 Jan 2019 19:17:15 +0000
-Message-ID: <MWHPR2201MB1277416043C4C087210F10B1C19B0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190125181245.9966-1-paul@crapouillou.net>
-In-Reply-To: <20190125181245.9966-1-paul@crapouillou.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR15CA0027.namprd15.prod.outlook.com
- (2603:10b6:300:ad::13) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1310;6:ushhZHRl9UbmtjmW47nSAtBCv20iB0UKqX87Y0gYXdmwXVKoslgPMhA1+XJ3iTiGwk2W1YUNW13nFMbK1YqDTEev6GGvzB6xp+yB+FHrB3TzZbHUC8bp5doqH2JUdXk+rQdPcwENti2Ztz8nvSwtOneksalySJcDluGYBfVA1kzu3KCqNk+Z+pMBqV7w3Oe99nAmsUqNAl9QHO+ZsVF0mx3a9U5wpe2zNTESMo7Fd0uNTVWgTPBFzUbYkWdFLd+b320Kj22FmRk7xPemmYnSGAdy1JPpt+c2rd03iVQGBA47GfqijbrK4n1iQTA62iEuKAMeQ5Yrwqe4iJ7RRVC48jtKWjZmOhrNQuCJEwvMz1bGtwTaS90d+oGpzNKv+qo6L8UYTH3Bq6UnkCCG66FcCzUQqhn7DqhEa48pkSQnLA5ezdI/FUg43LInYxt5hzwtPhr2GUfQxG7rGIEdA6Sbsg==;5:O7CoY6ts4MgrH6ooKN8mXpzg2vkMYusC6VfEUdUXY7V9aIeJKgS7VxdoD8FqIKG1V1f2FjiNYF8Vyp92S8IJ5DTwmVb+Icy8OtrvcEZWCbGO+Zjmzn1dqlP32B1RB6PMIKZXZFXaj2Dgc8sgfXTUhbjxYGH32KMGp7O3Gvu7tocUBirwGiXanPsOt2tCfj/n0sd0SJ8/MR8Z5zvqjbjTZw==;7:ofqKzLGXA2oecsrVZEqkSXtqS0AxLY5hMcZJ5bT4PtKmUiC9cX+rw4MM5pGU2u7Q48P+W634rLTouJakkKG+90dxhI4ziV2OfcCsQ1pSrVbQDIQHwmFKxPxWsW0P8tc3LvoFItQLu4r+RL6HGJjjcg==
-x-ms-office365-filtering-correlation-id: 5f4f4826-ea2a-459e-5e8a-08d682f9b73a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1310;
-x-ms-traffictypediagnostic: MWHPR2201MB1310:
-x-microsoft-antispam-prvs: <MWHPR2201MB13105DED083F89857CAF453CC19B0@MWHPR2201MB1310.namprd22.prod.outlook.com>
-x-forefront-prvs: 0928072091
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(396003)(366004)(39840400004)(346002)(136003)(189003)(199004)(7696005)(55016002)(52116002)(97736004)(76176011)(4744005)(6116002)(99286004)(9686003)(3846002)(71190400001)(71200400001)(25786009)(14454004)(4326008)(106356001)(105586002)(53936002)(478600001)(6246003)(6436002)(229853002)(476003)(486006)(44832011)(11346002)(446003)(6916009)(2906002)(68736007)(316002)(54906003)(66066001)(33656002)(256004)(8936002)(186003)(81166006)(81156014)(8676002)(42882007)(386003)(102836004)(6506007)(74316002)(7736002)(26005)(305945005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1310;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 7VgVsU9zE7WqW5ofdKK2FThW57szRJFweGiaPP6kdN6iAnPXP08BwdiTsdqiQDtVgZbyq1Obk8c7Xysuwe9dMBruhHvFyLBc125rgg2TNkK/kENKxrnuE+Des0NM7JwDxNmANIzcgtN5mgLDlG4tmGfwQYJxKQL5GzceU7i8nWx8jGsD8IHqVozizKUaHBlWyerZvrMcgDJtZQ1za1i07gXCRkmaUhSoOQqpj4NVb0d7EH6ueRiHuJWRhInQDfkQ4MZHJazT/MGAt1WL4dhlQ0FX61FxRcdB+CmWpVwfRM1Hmj+VM5dowSwGsZj4Hf8RGHM9UdqaaV5xAaOJHLP7I8038H9vRPL1oRtAXT1z+8G9R/tvxwN92vwMbknxB4/O6+tD+XLaCieU8wq3wx3WJtmkA5JHGRB6p2iueFZlsxo=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1729129AbfAYTdQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 25 Jan 2019 14:33:16 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:48600 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726335AbfAYTdQ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 25 Jan 2019 14:33:16 -0500
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x0PJNfKA088516
+        for <linux-mips@vger.kernel.org>; Fri, 25 Jan 2019 14:33:15 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2q86bueduy-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@vger.kernel.org>; Fri, 25 Jan 2019 14:33:14 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Fri, 25 Jan 2019 19:33:11 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 25 Jan 2019 19:33:00 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x0PJWxsk39321658
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 25 Jan 2019 19:32:59 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A4230A405F;
+        Fri, 25 Jan 2019 19:32:59 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A9233A405C;
+        Fri, 25 Jan 2019 19:32:54 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.204.72])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Fri, 25 Jan 2019 19:32:54 +0000 (GMT)
+Date:   Fri, 25 Jan 2019 21:32:52 +0200
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dennis Zhou <dennis@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Burton <paul.burton@mips.com>,
+        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        devicetree@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 06/21] memblock: memblock_phys_alloc_try_nid(): don't
+ panic
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
+ <1548057848-15136-7-git-send-email-rppt@linux.ibm.com>
+ <20190125174502.GL25901@arrakis.emea.arm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f4f4826-ea2a-459e-5e8a-08d682f9b73a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jan 2019 19:17:15.1246
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1310
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190125174502.GL25901@arrakis.emea.arm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 19012519-0020-0000-0000-0000030B808E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19012519-0021-0000-0000-0000215CC7C3
+Message-Id: <20190125193252.GH31519@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-01-25_12:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=869 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1901250151
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+On Fri, Jan 25, 2019 at 05:45:02PM +0000, Catalin Marinas wrote:
+> On Mon, Jan 21, 2019 at 10:03:53AM +0200, Mike Rapoport wrote:
+> > diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+> > index ae34e3a..2c61ea4 100644
+> > --- a/arch/arm64/mm/numa.c
+> > +++ b/arch/arm64/mm/numa.c
+> > @@ -237,6 +237,10 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+> >  		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
+> >  
+> >  	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> > +	if (!nd_pa)
+> > +		panic("Cannot allocate %zu bytes for node %d data\n",
+> > +		      nd_size, nid);
+> > +
+> >  	nd = __va(nd_pa);
+> >  
+> >  	/* report and initialize */
+> 
+> Does it mean that memblock_phys_alloc_try_nid() never returns valid
+> physical memory starting at 0?
 
-Paul Cercueil wrote:
-> The interrupt number set in the devicetree node of the DMA driver was
-> wrong.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Yes, it does.
+memblock_find_in_range_node() that is used by all allocation methods
+skips the first page [1].
+ 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/memblock.c#n257
 
-Applied to mips-fixes.
+> -- 
+> Catalin
+> 
 
-Thanks,
-    Paul
+-- 
+Sincerely yours,
+Mike.
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]

@@ -2,145 +2,103 @@ Return-Path: <SRS0=1uEU=QB=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F290C282C0
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 08:22:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76307C282C0
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 09:21:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1626A21919
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 08:22:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 39FAF218D0
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Jan 2019 09:21:23 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="hvE9OSxJ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfAYIWD convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 25 Jan 2019 03:22:03 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:45053 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbfAYIWD (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 25 Jan 2019 03:22:03 -0500
-Received: by mail-oi1-f193.google.com with SMTP id m6so7065950oig.11;
-        Fri, 25 Jan 2019 00:22:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pMmRtOnlS9JmHS0lIi3rNLpuFdy8D/BTQQ+ROOLSja8=;
-        b=mGh+n/UAoDVquv1xLoYyp7Vxu9MmqB25D1Yc3hHUxO1UAEzTsrGflkeyIXSGdacgJV
-         umg95aqaFAw7PJiRlGfNFbK82dH+mhe2gvsq+ZYYTVU4nvp7m9X7dplYa8AWc+SH5TUz
-         plv91ZZZJ8touI0O2/StZigLaOaYLu5NvjF8dG7NkN81F2bc/nW3GWcNwPlTs665QJfS
-         wb6BAUrbKz+HU02fHmM0HJSArYoWvESsjYJm5cSc+QLSC3CxEVZlG72OZhemoh9xvgtN
-         veKEl74rNgoTgEB40gPJ/LKonCmGndwvezuOXYdAACnUofM0I38fqfyqQXzUglTsLwvZ
-         ZP8g==
-X-Gm-Message-State: AJcUukeG03zHiZxnv3zKQuMo3YwTGmoQLbUPfKqv1Q/COQvfi6DKBjjF
-        0uEVP1ULayZ0yhXGQRHFtihW+/GCyzi0RSP0WXA=
-X-Google-Smtp-Source: ALg8bN7WJwR/Rdg4MFCPOmYC9QXLPe8ClifnecdpFteEcAg7nc98yZ65ypwDrMAVMV658EErNMHf4+5H8LwZ4eGxt7c=
-X-Received: by 2002:aca:b05:: with SMTP id 5mr761641oil.258.1548404522077;
- Fri, 25 Jan 2019 00:22:02 -0800 (PST)
-MIME-Version: 1.0
-References: <20181212220922.18759-1-paul@crapouillou.net> <CA+7wUszMOvGoPSVOKP7F_KHxgJvjBGT7oJmn5EO62hGGTQK4KA@mail.gmail.com>
- <1548366095.3881.1@crapouillou.net>
-In-Reply-To: <1548366095.3881.1@crapouillou.net>
-From:   Mathieu Malaterre <malat@debian.org>
-Date:   Fri, 25 Jan 2019 09:21:51 +0100
-Message-ID: <CA+7wUsxhjiLQ6n40AZGWHeqL0o8NvR3hn+pWgmh=7hdPTBrKtg@mail.gmail.com>
-Subject: Re: [PATCH v8 00/26] Ingenic TCU patchset v8
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ezequiel Garcia <ezequiel@collabora.co.uk>,
-        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>, linux-mips@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        id S1728515AbfAYJVX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 25 Jan 2019 04:21:23 -0500
+Received: from sender-pp-092.zoho.com ([135.84.80.237]:25305 "EHLO
+        sender-pp-092.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726269AbfAYJVW (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 25 Jan 2019 04:21:22 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1548408064; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=QtobXTNDYL1pjtfvrweeA3fkIVnDZPlHDTwH9ZjkKys4AKpv7Fz6qUVjsUwk0GHnPU4708lLEKRUMwV7S15PxC4pSKlQS9uJ9//t1JVv6gC/eH5e1KtEAaxButWwk9PThG83TwLg6GiF3WXx0D5rcVP6sihzcdHrC07VgaOK7DU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1548408064; h=Cc:Date:From:Message-ID:Subject:To:ARC-Authentication-Results; 
+        bh=jTkoMdajrXYS2hEMBh76Kpa+zqVt18KUzxUiGreHz8c=; 
+        b=aX1MvaZ/mxxwGAldPeHSvG/YfX2MaL2o+GxOBovpiTzChX8ZHsOMcjI2PFnNvNQqzK2jDVrCt1qK6OgzGRgm1dbPhixJ4YQlsWr+XcWNq5g8awkqldKIsSPTQDDgnNCJGv0TviBXTAPKA9dmO+QAJwMI7reXq6Zr13hCshznmo4=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id; 
+  b=RDZVf5FT8DPbmtzqGOZVSaAaxsxn7NLvtgXdBDYHi7HZhHVXxW5P8T6k+ewIxBvr0AYrGQPM2hFk
+    qCxPHFMvbVi87z2Sga7aiQVK4C/GyilB6vYHu2hAeyIFsfCzgvCY  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1548408064;
+        s=default; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id; l=893;
+        bh=jTkoMdajrXYS2hEMBh76Kpa+zqVt18KUzxUiGreHz8c=;
+        b=hvE9OSxJJPCIcvfCBFblHDR7F3btuk1/bEb2Bk/OLoFV7hsuNA4mJhM6xsi9ZvTw
+        KsNLu5cYrRp6XhLFZK21tSt+5151qCqo9/jJGdPwX1sEBHw82ZXwQRTenW+2i+XAv5o
+        oJT/vtS5oQcfc1HrzathXNajc5s66gBpow2macRI=
+Received: from localhost.localdomain (182.149.160.17 [182.149.160.17]) by mx.zohomail.com
+        with SMTPS id 1548408061678384.9892041717419; Fri, 25 Jan 2019 01:21:01 -0800 (PST)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, paul.burton@mips.com, ralf@linux-mips.org,
+        jhogan@kernel.org, mark.rutland@arm.com, malat@debian.org,
+        ezequiel@collabora.co.uk, ulf.hansson@linaro.org, syq@debian.org,
+        jiaxun.yang@flygoat.com, 772753199@qq.com
+Subject: [PATCH RESEND] DTS: CI20: Fix bugs in ci20's device tree.
+Date:   Fri, 25 Jan 2019 17:19:22 +0800
+Message-Id: <1548407962-6484-1-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Paul,
+According to the Schematic, the hardware of ci20 leads to uart3,
+but not to uart2. Uart2 is miswritten in the original code.
 
-On Thu, Jan 24, 2019 at 10:41 PM Paul Cercueil <paul@crapouillou.net> wrote:
->
-> Hi Mathieu,
->
-> Le jeu. 24 janv. 2019 à 18:26, Mathieu Malaterre <malat@debian.org> a
-> écrit :
-> > Paul,
-> >
-> > On Wed, Dec 12, 2018 at 11:09 PM Paul Cercueil <paul@crapouillou.net>
-> > wrote:
-> >>
-> >>  Hi,
-> >>
-> >>  Here's the version 8 and hopefully final version of my patchset,
-> >> which
-> >>  adds support for the Timer/Counter Unit found in JZ47xx SoCs from
-> >>  Ingenic.
-> >
-> > I can no longer boot my MIPS Creator CI20 with this series (merged
-> > opendingux/for-upstream-timer-v8).
-> >
-> > Using screen+ttyUSB, I can see messages stopping at:
-> >
-> > ...
-> > [  OK  ] Started Cgroup management daemon.
-> >          Starting Regular background program processing daemon...
-> > [  OK  ] Started Regular background program processing daemon.
-> >          Starting System Logging Service...
-> >          Starting Provide limited super user privileges to specific
-> > users...
-> >          Starting Restore /etc/resolv.conf if the system cras...s
-> > shut down....
-> >          Starting WPA supplicant...
-> >          Starting D-Bus System Message Bus...
-> > [  OK  ] Started D-Bus System Message Bus.
-> >
-> > Nothing really stands out in the error messages. Could you suggest
-> > things to try out to get into a bootable state ?
->
-> I'm debugging it right now on jz4740, it seems to happen when the
-> clocksource
-> from the ingenic-timer driver is used. Is it your case? It should not
-> happen
-> if you have CONFIG_INGENIC_OST set.
+Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+---
+ arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Here is what I see:
-
-$ grep CONFIG_INGENIC_OST arch/mips/configs/ci20_defconfig
-CONFIG_INGENIC_OST=y
-$ make O=ci20 ARCH=mips CROSS_COMPILE=mipsel-linux-gnu- ci20_defconfig
-$ grep CONFIG_INGENIC_OST ci20/.config
-CONFIG_INGENIC_OST=y
-
-The setting is coming from your commit:
-
-8f66e6b9c98f MIPS: CI20: defconfig: enable OST driver
-
-In an attempt to solve the symptoms I even played with the clock rates
-with no success:
-
-&tcu {
-/* 3 MHz for the system timer and clocksource */
-assigned-clocks = <&tcu TCU_CLK_TIMER0>, <&tcu TCU_CLK_TIMER1>;
-assigned-clock-rates = <750000>, <750000>;
-};
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index 50cff3c..4f7b1fa 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -76,7 +76,7 @@
+ 	status = "okay";
+ 
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pins_uart2>;
++	pinctrl-0 = <&pins_uart3>;
+ };
+ 
+ &uart4 {
+@@ -196,9 +196,9 @@
+ 		bias-disable;
+ 	};
+ 
+-	pins_uart2: uart2 {
+-		function = "uart2";
+-		groups = "uart2-data", "uart2-hwflow";
++	pins_uart3: uart3 {
++		function = "uart3";
++		groups = "uart3-data", "uart3-hwflow";
+ 		bias-disable;
+ 	};
+ 
+-- 
+2.7.4
 
 
-> >>  The big change is that the timer driver has been simplified. The
-> >> code to
-> >>  dynamically update the system timer or clocksource to a new channel
-> >> has
-> >>  been removed. Now, the system timer and clocksource are provided as
-> >>  children nodes in the devicetree, and the TCU channel to use for
-> >> these
-> >>  is deduced from their respective memory resource. The PWM driver
-> >> will
-> >>  also deduce from its memory resources whether a given PWM channel
-> >> can be
-> >>  used, or is reserved for the system timers.
-> >>
-> >>  Kind regards,
-> >>  - Paul Cercueil
-> >>
->

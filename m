@@ -2,90 +2,66 @@ Return-Path: <SRS0=bwn4=QC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C782C282C7
-	for <linux-mips@archiver.kernel.org>; Sat, 26 Jan 2019 12:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1B59C282C7
+	for <linux-mips@archiver.kernel.org>; Sat, 26 Jan 2019 15:40:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0D144218A6
-	for <linux-mips@archiver.kernel.org>; Sat, 26 Jan 2019 12:10:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 82CF021903
+	for <linux-mips@archiver.kernel.org>; Sat, 26 Jan 2019 15:40:41 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="DAoNpvNA"
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="IosUSp6E"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729644AbfAZMKz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 26 Jan 2019 07:10:55 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:43345 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726262AbfAZMKv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 26 Jan 2019 07:10:51 -0500
-Received: by mail-lj1-f196.google.com with SMTP id q2-v6so10511207lji.10
-        for <linux-mips@vger.kernel.org>; Sat, 26 Jan 2019 04:10:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qWt+a+DApXXFI1Z66adeohhEeOQI8/QFCZ31i+hC8ps=;
-        b=DAoNpvNAai+Ul+1SZPMK2Lk3EP1oyCKUSQO1SHw9BI/MpPXGr1Nm9fpU/laydHmkse
-         2wzg3f0nY97yJtqrX1nuyPx0w9RvKpe4+rkEjUyy5zvxYkhxagXLmx/niVnYSCTX8+hl
-         BP2lxQZFjeqqK8v4bb+08anBWYk9TkChT+PSs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qWt+a+DApXXFI1Z66adeohhEeOQI8/QFCZ31i+hC8ps=;
-        b=eAkW9gyLYDQpwBARR53FTLGuZZ+h7KrNv0zxcKObHiZC79ERJ61KJyxetf1Jcbq6E9
-         2SujrErzMFQiCBCOvQtnTi8ZisrUi2Hwj6jWREhFeFtJ4iJpIr5B+K/rSHJiHSpXYJW/
-         05hG5JpvAhy2WnqzPlScnBCb1o6OakB2V1ad77FqAupthLSWibOLKoAoRCmEaCdaJAgt
-         Ax6eih/0TGjDbn2FfV3e1upBDQWDZHxZiUgBBjui8fQcD+BH6UsXIHwLpYX5NbZ0Hnti
-         +zgalhpOi+5QWpCfDMUmJrl7grR7o/Dr0nTkaVymISMKqJ4z/AYt/ZKxISrxx2T1v2/P
-         ICHw==
-X-Gm-Message-State: AJcUukcuq7D7nd4VjWNnwUp0GQdPiq5/vcnoN3O3W63XErecS/y2+Xg5
-        YZsh2klZkWBhJA4LVP+qyLJ6z4UTitJqhK6a6cVZsA==
-X-Google-Smtp-Source: ALg8bN6NITiklHR3i0avIacW92OpM5c5UyspsWPojNI0W2bSlry2L4cujLNodG6FVgCOLP/zuDbx/5iCS4h6qungMrg=
-X-Received: by 2002:a2e:568d:: with SMTP id k13-v6mr12588444lje.105.1548504649038;
- Sat, 26 Jan 2019 04:10:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20190125200927.21045-1-paul@crapouillou.net>
-In-Reply-To: <20190125200927.21045-1-paul@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 26 Jan 2019 13:10:37 +0100
-Message-ID: <CACRpkdbhgpkEJ2B2bEDpmM9WLHxUxM8SWhWw28Of5ZRcZ7okSA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mmc: jz4740: Remove platform data and use standard APIs
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-mips@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726295AbfAZPkg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 26 Jan 2019 10:40:36 -0500
+Received: from sender-pp-092.zoho.com ([135.84.80.237]:25401 "EHLO
+        sender-pp-092.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726248AbfAZPkg (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 26 Jan 2019 10:40:36 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1548517214; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=jPgnNg7xCnKVtitR1impGWyebVJ9repyHSfl7jZUmZqAqBJjIJJKNLJozbZMbJMpu7U5To/4pQUWLyng3DRsLE8VYNXYjAMX8cQKdddYknxWhfmxEgXQokIMv2B4KK/xYLkHrds/WoPlsxgmJwWNfsZuw7obRgc7uF7dwrj8UDs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1548517214; h=Cc:Date:From:Message-ID:Subject:To:ARC-Authentication-Results; 
+        bh=aLl9LOC5/y5bzeBnYnp9/0ADs68L6KAELWCzFdYLlbM=; 
+        b=Fwjoni2nY8uSU9F5FlLsRSG8L81WCrVNHAJuO15pRHg4dcLnwzH8m+RgPImDjqPmCNMhuB9ajEnfIfHRqyajIhhCVjWs2vSStjrWfOniia2aSJThJjhzILpSGT4nfAVhKNBziK5sf8lviLDWH84G9P6B8W/m2f7+TWE3KEl0rGU=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id; 
+  b=oH+iWBLXw1GGL5WFJyMIfezqKlRiFnWHZcnF+/qciuEomb0vDceipeYI2LqqCPecTz3TJWcC9t7T
+    FIbEicZtyADzvUW58xqa+ZMKLE/5NJx//2Z0rKWoKOqp7Lx6cdIP  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1548517214;
+        s=default; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id; l=36;
+        bh=aLl9LOC5/y5bzeBnYnp9/0ADs68L6KAELWCzFdYLlbM=;
+        b=IosUSp6EN+MKQ7MA4mPAUMDgbJLGu8s1ZRsX23HDC8ZfZK7Qv6ocX0TOdopAHUS+
+        OCWX+l9AvRtmzfYfVKBKNnZaNfFsA7aDo62yEvXJ74VXKpR40hnx938knSLcAlWvIua
+        t4Eg0KIk7S/g9t0b27rlOX3PDCqWHJ91tnZmi82Y=
+Received: from localhost.localdomain (171.221.112.7 [171.221.112.7]) by mx.zohomail.com
+        with SMTPS id 1548517212809199.82158132937707; Sat, 26 Jan 2019 07:40:12 -0800 (PST)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, paul.burton@mips.com, mark.rutland@arm.com,
+        marc.zyngier@arm.com, jason@lakedaemon.net, tglx@linutronix.de,
+        syq@debian.org, jiaxun.yang@flygoat.com, 772753199@qq.com
+Subject: Add Ingenic X1000 irqchip support.
+Date:   Sat, 26 Jan 2019 23:38:39 +0800
+Message-Id: <1548517123-60058-1-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jan 25, 2019 at 9:09 PM Paul Cercueil <paul@crapouillou.net> wrote:
+Add Ingenic X1000 irqchip support.
 
-> Drop the custom code to get the 'cd' and 'wp' GPIOs. The driver now
-> calls mmc_of_parse() which will init these from devicetree or
-> device properties.
->
-> Also drop the custom code to get the 'power' GPIO. The MMC core
-> provides us with the means to power the MMC card through an external
-> regulator.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-Execellent patching!
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-For all three patches.
-
-Yours,
-Linus Walleij

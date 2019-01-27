@@ -6,325 +6,69 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EF5AC282CB
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Jan 2019 20:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35B9AC282CA
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Jan 2019 21:28:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5BB842087F
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Jan 2019 20:25:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0AB0C2133D
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Jan 2019 21:28:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbfA0UZN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Jan 2019 15:25:13 -0500
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:51728 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726566AbfA0UZN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 27 Jan 2019 15:25:13 -0500
+        id S1726864AbfA0V2o (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Jan 2019 16:28:44 -0500
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:46906 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726695AbfA0V2o (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 27 Jan 2019 16:28:44 -0500
 Received: from localhost.localdomain (85-76-101-7-nat.elisa-mobile.fi [85.76.101.7])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id B101620107;
-        Sun, 27 Jan 2019 22:25:09 +0200 (EET)
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id DE04530059;
+        Sun, 27 Jan 2019 23:28:42 +0200 (EET)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     linux-mips@vger.kernel.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2] MIPS: OCTEON: delete unused cvmx-smix-defs.h
-Date:   Sun, 27 Jan 2019 22:24:31 +0200
-Message-Id: <20190127202431.7107-2-aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: OCTEON: don't set octeon_dma_bar_type if PCI is disabled
+Date:   Sun, 27 Jan 2019 23:28:33 +0200
+Message-Id: <20190127212833.16520-1-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20190127202431.7107-1-aaro.koskinen@iki.fi>
-References: <20190127202431.7107-1-aaro.koskinen@iki.fi>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Delete unused cvmx-smix-defs.h.
+Don't set octeon_dma_bar_type if PCI is disabled. This avoids creation
+of the MSI irqchip later on, and saves a bit of memory.
 
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/include/asm/octeon/cvmx-smix-defs.h | 276 ------------------
- 1 file changed, 276 deletions(-)
- delete mode 100644 arch/mips/include/asm/octeon/cvmx-smix-defs.h
+ arch/mips/pci/pci-octeon.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/octeon/cvmx-smix-defs.h b/arch/mips/include/asm/octeon/cvmx-smix-defs.h
-deleted file mode 100644
-index 7a928230b0c0..000000000000
---- a/arch/mips/include/asm/octeon/cvmx-smix-defs.h
-+++ /dev/null
-@@ -1,276 +0,0 @@
--/***********************license start***************
-- * Author: Cavium Networks
-- *
-- * Contact: support@caviumnetworks.com
-- * This file is part of the OCTEON SDK
-- *
-- * Copyright (c) 2003-2012 Cavium Networks
-- *
-- * This file is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License, Version 2, as
-- * published by the Free Software Foundation.
-- *
-- * This file is distributed in the hope that it will be useful, but
-- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-- * NONINFRINGEMENT.  See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this file; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-- * or visit http://www.gnu.org/licenses/.
-- *
-- * This file may also be available under a different license from Cavium.
-- * Contact Cavium Networks for more information
-- ***********************license end**************************************/
--
--#ifndef __CVMX_SMIX_DEFS_H__
--#define __CVMX_SMIX_DEFS_H__
--
--static inline uint64_t CVMX_SMIX_CLK(unsigned long offset)
--{
--	switch (cvmx_get_octeon_family()) {
--	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001818ull) + (offset) * 256;
--	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001818ull) + (offset) * 256;
--	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000003818ull) + (offset) * 128;
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index 5017d5843c5a..fc29b85cfa92 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -568,6 +568,11 @@ static int __init octeon_pci_setup(void)
+ 	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
+ 		return 0;
+ 
++	if (!octeon_is_pci_host()) {
++		pr_notice("Not in host mode, PCI Controller not initialized\n");
++		return 0;
++	}
++
+ 	/* Point pcibios_map_irq() to the PCI version of it */
+ 	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
+ 
+@@ -579,11 +584,6 @@ static int __init octeon_pci_setup(void)
+ 	else
+ 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
+ 
+-	if (!octeon_is_pci_host()) {
+-		pr_notice("Not in host mode, PCI Controller not initialized\n");
+-		return 0;
 -	}
--	return CVMX_ADD_IO_SEG(0x0001180000001818ull) + (offset) * 256;
--}
 -
--static inline uint64_t CVMX_SMIX_CMD(unsigned long offset)
--{
--	switch (cvmx_get_octeon_family()) {
--	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001800ull) + (offset) * 256;
--	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001800ull) + (offset) * 256;
--	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000003800ull) + (offset) * 128;
--	}
--	return CVMX_ADD_IO_SEG(0x0001180000001800ull) + (offset) * 256;
--}
--
--static inline uint64_t CVMX_SMIX_EN(unsigned long offset)
--{
--	switch (cvmx_get_octeon_family()) {
--	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001820ull) + (offset) * 256;
--	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001820ull) + (offset) * 256;
--	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000003820ull) + (offset) * 128;
--	}
--	return CVMX_ADD_IO_SEG(0x0001180000001820ull) + (offset) * 256;
--}
--
--static inline uint64_t CVMX_SMIX_RD_DAT(unsigned long offset)
--{
--	switch (cvmx_get_octeon_family()) {
--	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001810ull) + (offset) * 256;
--	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001810ull) + (offset) * 256;
--	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000003810ull) + (offset) * 128;
--	}
--	return CVMX_ADD_IO_SEG(0x0001180000001810ull) + (offset) * 256;
--}
--
--static inline uint64_t CVMX_SMIX_WR_DAT(unsigned long offset)
--{
--	switch (cvmx_get_octeon_family()) {
--	case OCTEON_CN30XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN38XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN31XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001808ull) + (offset) * 256;
--	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
--	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000001808ull) + (offset) * 256;
--	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
--		return CVMX_ADD_IO_SEG(0x0001180000003808ull) + (offset) * 128;
--	}
--	return CVMX_ADD_IO_SEG(0x0001180000001808ull) + (offset) * 256;
--}
--
--union cvmx_smix_clk {
--	uint64_t u64;
--	struct cvmx_smix_clk_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_25_63:39;
--		uint64_t mode:1;
--		uint64_t reserved_21_23:3;
--		uint64_t sample_hi:5;
--		uint64_t sample_mode:1;
--		uint64_t reserved_14_14:1;
--		uint64_t clk_idle:1;
--		uint64_t preamble:1;
--		uint64_t sample:4;
--		uint64_t phase:8;
--#else
--		uint64_t phase:8;
--		uint64_t sample:4;
--		uint64_t preamble:1;
--		uint64_t clk_idle:1;
--		uint64_t reserved_14_14:1;
--		uint64_t sample_mode:1;
--		uint64_t sample_hi:5;
--		uint64_t reserved_21_23:3;
--		uint64_t mode:1;
--		uint64_t reserved_25_63:39;
--#endif
--	} s;
--	struct cvmx_smix_clk_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_21_63:43;
--		uint64_t sample_hi:5;
--		uint64_t sample_mode:1;
--		uint64_t reserved_14_14:1;
--		uint64_t clk_idle:1;
--		uint64_t preamble:1;
--		uint64_t sample:4;
--		uint64_t phase:8;
--#else
--		uint64_t phase:8;
--		uint64_t sample:4;
--		uint64_t preamble:1;
--		uint64_t clk_idle:1;
--		uint64_t reserved_14_14:1;
--		uint64_t sample_mode:1;
--		uint64_t sample_hi:5;
--		uint64_t reserved_21_63:43;
--#endif
--	} cn30xx;
--};
--
--union cvmx_smix_cmd {
--	uint64_t u64;
--	struct cvmx_smix_cmd_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t phy_op:2;
--		uint64_t reserved_13_15:3;
--		uint64_t phy_adr:5;
--		uint64_t reserved_5_7:3;
--		uint64_t reg_adr:5;
--#else
--		uint64_t reg_adr:5;
--		uint64_t reserved_5_7:3;
--		uint64_t phy_adr:5;
--		uint64_t reserved_13_15:3;
--		uint64_t phy_op:2;
--		uint64_t reserved_18_63:46;
--#endif
--	} s;
--	struct cvmx_smix_cmd_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_17_63:47;
--		uint64_t phy_op:1;
--		uint64_t reserved_13_15:3;
--		uint64_t phy_adr:5;
--		uint64_t reserved_5_7:3;
--		uint64_t reg_adr:5;
--#else
--		uint64_t reg_adr:5;
--		uint64_t reserved_5_7:3;
--		uint64_t phy_adr:5;
--		uint64_t reserved_13_15:3;
--		uint64_t phy_op:1;
--		uint64_t reserved_17_63:47;
--#endif
--	} cn30xx;
--};
--
--union cvmx_smix_en {
--	uint64_t u64;
--	struct cvmx_smix_en_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_1_63:63;
--		uint64_t en:1;
--#else
--		uint64_t en:1;
--		uint64_t reserved_1_63:63;
--#endif
--	} s;
--};
--
--union cvmx_smix_rd_dat {
--	uint64_t u64;
--	struct cvmx_smix_rd_dat_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t pending:1;
--		uint64_t val:1;
--		uint64_t dat:16;
--#else
--		uint64_t dat:16;
--		uint64_t val:1;
--		uint64_t pending:1;
--		uint64_t reserved_18_63:46;
--#endif
--	} s;
--};
--
--union cvmx_smix_wr_dat {
--	uint64_t u64;
--	struct cvmx_smix_wr_dat_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t pending:1;
--		uint64_t val:1;
--		uint64_t dat:16;
--#else
--		uint64_t dat:16;
--		uint64_t val:1;
--		uint64_t pending:1;
--		uint64_t reserved_18_63:46;
--#endif
--	} s;
--};
--
--#endif
+ 	/* PCI I/O and PCI MEM values */
+ 	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+ 	ioport_resource.start = 0;
 -- 
 2.17.0
 

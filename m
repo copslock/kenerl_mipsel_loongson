@@ -2,110 +2,70 @@ Return-Path: <SRS0=zZS8=QE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AE5FC282C8
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:53:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74E4FC282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:05:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 18FAC2173C
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548694383;
-	bh=FFPNQi1uHn+T+YexTQQtrrlTA/2/v9WF/vtDFIZ9b9A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=CHZiD6lf2q8SwFJB3DX/DQv6i21hWAV8qcp/lw0uRj0EVr7gFM5z0ZC7bx0w1inG4
-	 xE2E/y4BokUaF+0ZpaCeTxI+414RXQo/timT5nZmQPOOgaA0GQPQxxbcPcCb7ti2Lj
-	 nuXjuUL1vdooXXKGtV2g6RKZTXpmkglupO4ti5QI=
+	by mail.kernel.org (Postfix) with ESMTP id 449CE21741
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:05:23 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="WwCKj7zt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388227AbfA1Qw4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 11:52:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52754 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388413AbfA1QSZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:18:25 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C43F21741;
-        Mon, 28 Jan 2019 16:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548692304;
-        bh=FFPNQi1uHn+T+YexTQQtrrlTA/2/v9WF/vtDFIZ9b9A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EyCio3VQaRHuYlJFYM0cySgS0+sRbTqf4A4jv6unE1dw/AIss2NTqVfXAByQ8onnU
-         2zXyllmfx9slI31v3l78FrEJgZmSx3+hWTjxlp8r8oye/gghHQvtClk9FLD23FJMFO
-         A7uJY/onMU4FB/z5ua3AVKU6FpsZ62dEYfkyVUoQ=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stefan Roese <sr@denx.de>, Paul Burton <paul.burton@mips.com>,
-        John Crispin <blogic@openwrt.org>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 146/170] MIPS: ralink: Select CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8
-Date:   Mon, 28 Jan 2019 11:11:36 -0500
-Message-Id: <20190128161200.55107-146-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190128161200.55107-1-sashal@kernel.org>
-References: <20190128161200.55107-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S2387702AbfA1RFW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 12:05:22 -0500
+Received: from sender-pp-092.zoho.com ([135.84.80.237]:25429 "EHLO
+        sender-pp-092.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387661AbfA1RFW (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 12:05:22 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1548695106; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=MAE/JjBl4Jc/PAVplJ+KTNgglncS6Xq+zFvGCAnLuL3inBh84uOSzxZLAFxGzLNZdS7ISW0BRxBjIS1hEiqVqLnBTzusBVBVfgO0UcCC3gJSojix3/Uwo2oMGNW2RScpNIEFg/R1mFtye3jgaO0aqH9M81cPRtmCvNYOuN0kgwk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1548695106; h=Cc:Date:From:In-Reply-To:Message-ID:References:Subject:To:ARC-Authentication-Results; 
+        bh=WkTNFu8vnmPor/+WSZwPOqsAXvLDg8nbVLIOYlWMj8g=; 
+        b=GkMAEK0tjdiABlA+p3mb7CVAuvL2Ym2bsJvAUBl3TBXfC449LVhsbIk0rChHz40uAw/o+Io8r413OWv3KDH6jbHCQYKb9MAUt7YxgdVugZgUx3gbLZ4vzS4RZITk9OURmqZkl0KboW4d6mJI8F6Ey1rCQdlFKGqwuzPm1o0mBq4=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id:in-reply-to:references; 
+  b=Nkf+P82bD2RhShO+JEjIcP3XQE8YCC4psFD1Ox74ifZ4YqXRif7uzHTm6b6hBMewOfVVW/9bgtUd
+    VwwcXwsu4WgyYuLAKFjy2rYqz2Zw4aGl15eNCVjr2Ghb9yQQWSJM  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1548695106;
+        s=default; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; l=100;
+        bh=WkTNFu8vnmPor/+WSZwPOqsAXvLDg8nbVLIOYlWMj8g=;
+        b=WwCKj7ztdoVJGBczfJYw6LYp18KcJj4Has0bcn9mXcsGqo4aXxYen2srxS98W7vJ
+        +XwzllcjZMxZjTSiKl6qRsSavdZJrX9H6At6ZLg5Pmtg+W/YkXBM8HtVcZN3f+EP/p0
+        smib+xRArKK5gADFouLw0kQzw5TaroXrgOt7E+7w=
+Received: from localhost.localdomain (171.221.112.7 [171.221.112.7]) by mx.zohomail.com
+        with SMTPS id 1548695104299105.85452309761104; Mon, 28 Jan 2019 09:05:04 -0800 (PST)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        paul.burton@mips.com, gregkh@linuxfoundation.org, jslaby@suse.com,
+        mark.rutland@arm.com, syq@debian.org, jiaxun.yang@flygoat.com,
+        772753199@qq.com
+Subject: Add Ingenic X1000 serial support
+Date:   Tue, 29 Jan 2019 01:03:47 +0800
+Message-Id: <1548695029-11900-1-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
+References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Stefan Roese <sr@denx.de>
+v1->v2: Remove unnecessary "EARLYCON_DECLARE".
+v2->v3: Use different subject line for each patch.
 
-[ Upstream commit 0b15394475e3bcaf35ca4bf22fc55d56df67224e ]
-
-Testing has shown, that when using mainline U-Boot on MT7688 based
-boards, the system may hang or crash while mounting the root-fs. The
-main issue here is that mainline U-Boot configures EBase to a value
-near the end of system memory. And with CONFIG_CPU_MIPSR2_IRQ_VI
-disabled, trap_init() will not allocate a new area to place the
-exception handler. The original value will be used and the handler
-will be copied to this location, which might already be used by some
-userspace application.
-
-The MT7688 supports VI - its config3 register is 0x00002420, so VInt
-(Bit 5) is set. But without setting CONFIG_CPU_MIPSR2_IRQ_VI this
-bit will not be evaluated to result in "cpu_has_vi" being set. This
-patch now selects CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8 which results
-trap_init() to allocate some memory for the exception handler.
-
-Please note that this issue was not seen with the Mediatek U-Boot
-version, as it does not touch EBase (stays at default of 0x8000.0000).
-This is strictly also not correct as the kernel (_text) resides
-here.
-
-Signed-off-by: Stefan Roese <sr@denx.de>
-[paul.burton@mips.com: s/beeing/being/]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/ralink/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index f26736b7080b..fae36f0371d3 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -39,6 +39,7 @@ choice
- 
- 	config SOC_MT7620
- 		bool "MT7620/8"
-+		select CPU_MIPSR2_IRQ_VI
- 		select HW_HAS_PCI
- 
- 	config SOC_MT7621
--- 
-2.19.1
 

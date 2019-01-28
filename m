@@ -2,69 +2,69 @@ Return-Path: <SRS0=zZS8=QE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2EF5C282CD
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:33:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F3CAC282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:58:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 79C222147A
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:33:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 02D3820989
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:58:46 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="h0peRGBy"
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="dDM2rZNt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfA1Ndo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 08:33:44 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:57646 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726647AbfA1Ndo (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 08:33:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=BQAbDTdJwdOOW82nOfAOiRyJqZt+DDRMYSPeNql1AE4=; b=h0peRGByJvJqH6vHU8SBNfBxV
-        0RB62rmAX25LvqvGJKbkOBYfLo4xyhPpd++X9kXIgF0AnqFgaZehugq1k4iE3uMqJ102jiPeio4VS
-        pAPFpd6VAMS6uxhaXbJWvHkUt2epCmmSByuiHwprPwChxV+HxXFSQIA7zrlj8U3L4oZdQcJeOBQb+
-        dTrm/3SPpHEn1uhx5zcRabKeyJDEbynaqQwv3xFm8rFdfzBouxOaLEMomLyaLJnX9AHBOAprAUXmt
-        afrL1FzFEAVZeNKRM8SdOxMzgDPb9hnXH8rj/0OXfQfPHyNUttc53jUpzFfqr8B3MU2klzGPD42Wd
-        jki8W3f+Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1go72j-0001Lz-FS; Mon, 28 Jan 2019 13:33:41 +0000
-Date:   Mon, 28 Jan 2019 05:33:41 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/7] MIPS: SGI-IP27: clean up bridge access and header
- files
-Message-ID: <20190128133341.GA5140@infradead.org>
-References: <20190124174728.28812-1-tbogendoerfer@suse.de>
- <20190124174728.28812-3-tbogendoerfer@suse.de>
- <20190128132003.GA744@infradead.org>
- <20190128142440.591d2115ac7844863713aa77@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190128142440.591d2115ac7844863713aa77@suse.de>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1726735AbfA1N6p (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 08:58:45 -0500
+Received: from sender-pp-092.zoho.com ([135.84.80.237]:25431 "EHLO
+        sender-pp-092.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726694AbfA1N6p (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 08:58:45 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1548683907; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=k/Z4oKfYUxFozKB9A82we9Bq63n99j+zluAj1MxO6JiYDyYe70Q5nSaF4M7y8VaH4QdYMnlOc0M0Vdro9FwMn+1bmGmKcieSzBWiLf3BZ8QZb3YU+Nd7zBUo3nnTnnhykzBwKNQ/HHHfQJCJpSGBKciw2t2cKJ9AuxgiAETOjf8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1548683907; h=Cc:Date:From:In-Reply-To:Message-ID:References:Subject:To:ARC-Authentication-Results; 
+        bh=SqB3w4byS6UTfSLHEA4Uzgvi/xiyoym5ycrjk/9Pxkg=; 
+        b=RJhVqEJ1jJfhIoOkI5H/0VolC4Gxs0q3sHCzzyEhnVr3G3NNC1qkrYsTPvVB1WIZIC+gV5ub3T8QwHobS6e5Q1tDPlmkqMGafgUfpU+iksxXOIy1fJ+jPzGRblHuGWyk+QzhHmAuqTGMHAz3r2noA6yf8pPlBr5yEkmmgdeO+3k=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id:in-reply-to:references; 
+  b=pqRpo/ABR2cat7JrdEPtgXzoAY3MR2Nem8INvr0ftLsA2qLl/8E6tdEFPV2b5XrjFj4JjlzgR8iN
+    MnJv7H5/6GJ8zzPoKu2y0uCA0ZYY1stx/PtlwrckuzNCdz4uuL9g  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1548683907;
+        s=default; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; l=48;
+        bh=SqB3w4byS6UTfSLHEA4Uzgvi/xiyoym5ycrjk/9Pxkg=;
+        b=dDM2rZNtnh5p+LbIZwqT52F7KjMLHwfjqBkIZ8/UrlR0RwZtVrOwdP6hntnLCwlo
+        w0Jz4gmeDggAKmHmZNozyCCUMFxR5L7rTuS9Xs47O626OqGGBcDUVQChaH0onzf/bCQ
+        7XSboxRYGLlY7RRdDRc+PRfbRs2NP/svN7taSnzY=
+Received: from localhost.localdomain (171.221.112.7 [171.221.112.7]) by mx.zohomail.com
+        with SMTPS id 1548683906414282.5482739945153; Mon, 28 Jan 2019 05:58:26 -0800 (PST)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        paul.burton@mips.com, gregkh@linuxfoundation.org, jslaby@suse.com,
+        mark.rutland@arm.com, syq@debian.org, jiaxun.yang@flygoat.com,
+        772753199@qq.com
+Subject: Serial: Ingenic: Add X1000 suppor for the UART driver.
+Date:   Mon, 28 Jan 2019 21:56:59 +0800
+Message-Id: <1548683821-120924-1-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
+References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Jan 28, 2019 at 02:24:40PM +0100, Thomas Bogendoerfer wrote:
-> I totally agreed. I only moved the original defintion around while cleaning
-> up the header file. Right now there is no code using it. Should I remove it
-> and access macros as soon there is a need for it ?
+v1->v2: Remove unnecessary "EARLYCON_DECLARE".
 
-Sounds good.
+

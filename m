@@ -4,48 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AFBDC282CD
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F31B4C4151A
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D1CBD21741
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B940B21783
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548690267;
-	bh=rA3BSpmdBaghDtwFln+RvjM8tmQS+Y238CqwlyoaXBU=;
+	s=default; t=1548690296;
+	bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=1WlTlw5rUsL2gCizqkQabAYSpTUreN2Wey+OCyNfAYpmCytYul8Z7lROe4votPxSL
-	 cptv1zoFnaKg4p76Z56nmgLGwNJqvIyZ/iPMsBpqlDKN0TdKzG8lw+IPCFxls67ivk
-	 M+7J9Q+DanQIwUUeEp7PK24MUVnM5ma4EmNtsQLM=
+	b=rGRYGP3Ddz4SWhdtbyxBguU994NGWr8c2nN92LnAtviKbeld+sGQ4sPwhFHs58KKy
+	 uaRbKnyepSvVapfMmhmNaeMdr8l+GYUBrUlbT10RbrcRltbcZm4XrMSBrrs0eJVooU
+	 7tkqqorqNLFKhFuuMB+FibOnqwz9ZaJJF9Kyv2RM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727348AbfA1Po1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 10:44:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57744 "EHLO mail.kernel.org"
+        id S1727582AbfA1Po4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 10:44:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58274 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727336AbfA1Po1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 10:44:27 -0500
+        id S1727571AbfA1Poz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 10:44:55 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94BEB2173C;
-        Mon, 28 Jan 2019 15:44:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3FB1521741;
+        Mon, 28 Jan 2019 15:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548690266;
-        bh=rA3BSpmdBaghDtwFln+RvjM8tmQS+Y238CqwlyoaXBU=;
+        s=default; t=1548690294;
+        bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OE8nyNCRPEdLV2B8GCayxecO3eD806JawyMVq52nONckIG1Gn3sbc1IW/OtDtUc46
-         nWDC9Qlefun2gKIlmteRbBqMcsgy/dozL1OGtcKTQg68XCshmq6TpkMcn7DRCwXRg6
-         twMRR7vz1M2I99KQ9o3n08apG+PdWD3rGxlINCmU=
+        b=g5kBFrBS7oHHq+A8SbczQoZzywrZE1psXqqkFzY0Nx54GLI5DE3yhqGS6XPV1ySB7
+         zCF+FNi6LjpSkhWJBigcj/X9BZfMF1M/O7WlxqCpdIgP7AZiUGpyFtLe8desAhdRGA
+         aDHrZRhgrp3NeP1iUNjmcSjfYLHO+P2uKU2aVtqw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yi Wang <wang.yi59@zte.com.cn>, Stephen Boyd <sboyd@kernel.org>,
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.20 024/304] clk: boston: fix possible memory leak in clk_boston_setup()
-Date:   Mon, 28 Jan 2019 10:39:01 -0500
-Message-Id: <20190128154341.47195-24-sashal@kernel.org>
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.20 037/304] MIPS: Boston: Disable EG20T prefetch
+Date:   Mon, 28 Jan 2019 10:39:14 -0500
+Message-Id: <20190128154341.47195-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190128154341.47195-1-sashal@kernel.org>
 References: <20190128154341.47195-1-sashal@kernel.org>
@@ -57,65 +56,49 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Yi Wang <wang.yi59@zte.com.cn>
+From: Paul Burton <paul.burton@mips.com>
 
-[ Upstream commit 46fda5b5067a391912cf73bf3d32c26b6a22ad09 ]
+[ Upstream commit 5ec17af7ead09701e23d2065e16db6ce4e137289 ]
 
-Smatch report warnings:
-drivers/clk/imgtec/clk-boston.c:76 clk_boston_setup() warn: possible memory leak of 'onecell'
-drivers/clk/imgtec/clk-boston.c:83 clk_boston_setup() warn: possible memory leak of 'onecell'
-drivers/clk/imgtec/clk-boston.c:90 clk_boston_setup() warn: possible memory leak of 'onecell'
+The Intel EG20T Platform Controller Hub used on the MIPS Boston
+development board supports prefetching memory to optimize DMA transfers.
+Unfortunately for unknown reasons this doesn't work well with some MIPS
+CPUs such as the P6600, particularly when using an I/O Coherence Unit
+(IOCU) to provide cache-coherent DMA. In these systems it is common for
+DMA data to be lost, resulting in broken access to EG20T devices such as
+the MMC or SATA controllers.
 
-'onecell' is malloced in clk_boston_setup(), but not be freed
-before leaving from the error handling cases.
+Support for a DT property to configure the prefetching was added a while
+back by commit 549ce8f134bd ("misc: pch_phub: Read prefetch value from
+device tree if passed") but we never added the DT snippet to make use of
+it. Add that now in order to disable the prefetching & fix DMA on the
+affected systems.
 
-Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/21068/
+Cc: linux-mips@linux-mips.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imgtec/clk-boston.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/mips/boot/dts/img/boston.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
-index 15af423cc0c9..f5d54a64d33c 100644
---- a/drivers/clk/imgtec/clk-boston.c
-+++ b/drivers/clk/imgtec/clk-boston.c
-@@ -73,27 +73,32 @@ static void __init clk_boston_setup(struct device_node *np)
- 	hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
- 	if (IS_ERR(hw)) {
- 		pr_err("failed to register input clock: %ld\n", PTR_ERR(hw));
--		return;
-+		goto error;
- 	}
- 	onecell->hws[BOSTON_CLK_INPUT] = hw;
+diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
+index 65af3f6ba81c..84328afa3a55 100644
+--- a/arch/mips/boot/dts/img/boston.dts
++++ b/arch/mips/boot/dts/img/boston.dts
+@@ -141,6 +141,12 @@
+ 				#size-cells = <2>;
+ 				#interrupt-cells = <1>;
  
- 	hw = clk_hw_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
- 	if (IS_ERR(hw)) {
- 		pr_err("failed to register sys clock: %ld\n", PTR_ERR(hw));
--		return;
-+		goto error;
- 	}
- 	onecell->hws[BOSTON_CLK_SYS] = hw;
- 
- 	hw = clk_hw_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
- 	if (IS_ERR(hw)) {
- 		pr_err("failed to register cpu clock: %ld\n", PTR_ERR(hw));
--		return;
-+		goto error;
- 	}
- 	onecell->hws[BOSTON_CLK_CPU] = hw;
- 
- 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, onecell);
- 	if (err)
- 		pr_err("failed to add DT provider: %d\n", err);
++				eg20t_phub@2,0,0 {
++					compatible = "pci8086,8801";
++					reg = <0x00020000 0 0 0 0>;
++					intel,eg20t-prefetch = <0>;
++				};
 +
-+	return;
-+
-+error:
-+	kfree(onecell);
- }
- 
- /*
+ 				eg20t_mac@2,0,1 {
+ 					compatible = "pci8086,8802";
+ 					reg = <0x00020100 0 0 0 0>;
 -- 
 2.19.1
 

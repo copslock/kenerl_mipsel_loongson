@@ -2,110 +2,129 @@ Return-Path: <SRS0=zZS8=QE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BE77C282C8
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FB5FC282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:33:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 37E4F2147A
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548696770;
-	bh=eDYTTJ6p7zS48/XjJJfxWeet2C2n7NaYhdS2NEI87t0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=RDiL532rt1zaNZ1J6y1Am5Ovewq+ITJtc+tCuiE3ElaRboC0qeWZO3AKWUZ6ef80J
-	 LGfN/560IfbJZX8A982Z1XOazVLLv8PF2dQ//MJYYD2CoiFcEgZck00oF3F5g0MSEk
-	 CgXj/ErKprqi6EL0mFEo7zXQPp3hGyqoIpz3yv8A=
+	by mail.kernel.org (Postfix) with ESMTP id 6C5462147A
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:33:15 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="Vi6ujWBW"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729059AbfA1P5P (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 10:57:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42748 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728174AbfA1P5O (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 10:57:14 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C4D821841;
-        Mon, 28 Jan 2019 15:57:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548691033;
-        bh=eDYTTJ6p7zS48/XjJJfxWeet2C2n7NaYhdS2NEI87t0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gcTUz9DN3wSRL+6Pq7rq6ukPAFqEIgdwLtA4fyN8IDnNWTZD2Pnt7L+5hbVi2fA/L
-         0Vsd8DsY8gjcr9trS+6S+Km1NuLMuu4E1KnC3hyCD11A+5rejndQ8hJsI7yfEBKgfJ
-         Pu9EbsAN/QLFOw/qmerhYXW2Md1CcDAgOB4Af+Yc=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stefan Roese <sr@denx.de>, Paul Burton <paul.burton@mips.com>,
-        John Crispin <blogic@openwrt.org>,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.20 268/304] MIPS: ralink: Select CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8
-Date:   Mon, 28 Jan 2019 10:43:05 -0500
-Message-Id: <20190128154341.47195-268-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190128154341.47195-1-sashal@kernel.org>
-References: <20190128154341.47195-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1730376AbfA1RdB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 12:33:01 -0500
+Received: from sender-pp-092.zoho.com ([135.84.80.237]:25457 "EHLO
+        sender-pp-092.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729351AbfA1RdA (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 12:33:00 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1548696701; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=YIyjRszvDDBO4ukdquYlxg4eSL4lUQ+76YchNpOvAK1JFOZnm6wbwDSpJdjScuKtKFxJx+08SfwfzzJKmA7TredE5UoUbVFaBqab4FsxqVdfEkUXVLfn1RnqQH7IU9PVgMCuKOKJhyARdx4UWPji7HNz938ph2R2hbIVg8ah2j8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1548696701; h=Cc:Date:From:In-Reply-To:Message-ID:References:Subject:To:ARC-Authentication-Results; 
+        bh=Hb4V+UUvIgOaR8+FOF5/tTTgrHynv8qZbzdGENKIw/Q=; 
+        b=XVM0urhhPK9ey61YhnF/MvKgX7/pwlRHfKqG5VZA8VIt3351Z/jDIOldqJQnRRVUE1a5wyrnXYrp184z7lug88ZXPltpN6bCbYJntvRjZYqdeC7R9IMOax4G9OXZ1dxxggfPSdcXY5Z1eCv3n9rQqXZ8TU9Yxx53e5wboudn7jE=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id:in-reply-to:references; 
+  b=v5YhN9/MkxYpgRBAN/Pcn302sEFc518gtDgjgI3Yv3KlJo3vpAUBUeeyMpXhg+kbqxAwH1WyVX66
+    hmiuJ2iMyHnul8UPZt3rC1L9D5Ha+H+obTusVsnFI8JfFcTinUKe  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1548696701;
+        s=default; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
+        l=2150; bh=Hb4V+UUvIgOaR8+FOF5/tTTgrHynv8qZbzdGENKIw/Q=;
+        b=Vi6ujWBWAwhzv4JQ46bQVmShIvKBfISlINOq/qYfwK3TVK40ZrhgiqTd7nT2ilIx
+        ZD0qoR9iFNtNj+Z+amzYBF28PEbDVXP0nkMXEb144GAVn9GDHJidVbjDZAmo6FjSMnS
+        DssU0H/0paMQsnEYkgSlEwYQyJovt6RmAKAgxorE=
+Received: from localhost.localdomain (171.221.112.7 [171.221.112.7]) by mx.zohomail.com
+        with SMTPS id 1548696698449303.6388026767029; Mon, 28 Jan 2019 09:31:38 -0800 (PST)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        devicetree@vger.kernel.org, a.zummo@towertech.it,
+        alexandre.belloni@bootlin.com, robh+dt@kernel.org,
+        paul.burton@mips.com, mark.rutland@arm.com, syq@debian.org,
+        jiaxun.yang@flygoat.com, 772753199@qq.com
+Subject: [PATCH 3/3] RTC: Ingenic: Replace jz47xx with XBurst.
+Date:   Tue, 29 Jan 2019 01:29:59 +0800
+Message-Id: <1548696599-53639-4-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548696599-53639-1-git-send-email-zhouyanjie@zoho.com>
+References: <1548696599-53639-1-git-send-email-zhouyanjie@zoho.com>
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Stefan Roese <sr@denx.de>
+Ingenic had changed their product code name.
+Latest SoCs had divided to several series such as
+T30/M200/X1000 and no longer called JZ47xx.
 
-[ Upstream commit 0b15394475e3bcaf35ca4bf22fc55d56df67224e ]
-
-Testing has shown, that when using mainline U-Boot on MT7688 based
-boards, the system may hang or crash while mounting the root-fs. The
-main issue here is that mainline U-Boot configures EBase to a value
-near the end of system memory. And with CONFIG_CPU_MIPSR2_IRQ_VI
-disabled, trap_init() will not allocate a new area to place the
-exception handler. The original value will be used and the handler
-will be copied to this location, which might already be used by some
-userspace application.
-
-The MT7688 supports VI - its config3 register is 0x00002420, so VInt
-(Bit 5) is set. But without setting CONFIG_CPU_MIPSR2_IRQ_VI this
-bit will not be evaluated to result in "cpu_has_vi" being set. This
-patch now selects CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8 which results
-trap_init() to allocate some memory for the exception handler.
-
-Please note that this issue was not seen with the Mediatek U-Boot
-version, as it does not touch EBase (stays at default of 0x8000.0000).
-This is strictly also not correct as the kernel (_text) resides
-here.
-
-Signed-off-by: Stefan Roese <sr@denx.de>
-[paul.burton@mips.com: s/beeing/being/]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
 ---
- arch/mips/ralink/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/Kconfig      |  4 ++--
+ drivers/rtc/rtc-jz4740.c | 15 +++------------
+ 2 files changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 1f9cb0e3c79a..613d61763433 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -38,6 +38,7 @@ choice
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 225b0b8..8b41853 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -1576,10 +1576,10 @@ config RTC_DRV_MPC5121
+ 	  will be called rtc-mpc5121.
  
- 	config SOC_MT7620
- 		bool "MT7620/8"
-+		select CPU_MIPSR2_IRQ_VI
- 		select HW_HAS_PCI
+ config RTC_DRV_JZ4740
+-	tristate "Ingenic JZ4740 SoC"
++	tristate "Ingenic XBurst SoC"
+ 	depends on MIPS || COMPILE_TEST
+ 	help
+-	  If you say yes here you get support for the Ingenic JZ47xx SoCs RTC
++	  If you say yes here you get support for the Ingenic XBurst SoCs RTC
+ 	  controllers.
  
- 	config SOC_MT7621
+ 	  This driver can also be built as a module. If so, the module
+diff --git a/drivers/rtc/rtc-jz4740.c b/drivers/rtc/rtc-jz4740.c
+index 0c7ae65..a262632 100644
+--- a/drivers/rtc/rtc-jz4740.c
++++ b/drivers/rtc/rtc-jz4740.c
+@@ -1,17 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
+  *  Copyright (C) 2010, Paul Cercueil <paul@crapouillou.net>
+- *	 JZ4740 SoC RTC driver
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under  the terms of  the GNU General Public License as published by the
+- *  Free Software Foundation;  either version 2 of the License, or (at your
+- *  option) any later version.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
++ *	Ingenic XBurst platform RTC support
+  */
+ 
+ #include <linux/clk.h>
+@@ -450,5 +441,5 @@ module_platform_driver(jz4740_rtc_driver);
+ 
+ MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
+ MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("RTC driver for the JZ4740 SoC\n");
++MODULE_DESCRIPTION("RTC driver for Ingenic XBurst platform\n");
+ MODULE_ALIAS("platform:jz4740-rtc");
 -- 
-2.19.1
+2.7.4
+
 

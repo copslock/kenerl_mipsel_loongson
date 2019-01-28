@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74B0FC282CF
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41C13C282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:37:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3B4F220879
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:31:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 12AF220811
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548693099;
-	bh=HKmXUXuNqZr4R+sXHdfHh48vHcAW2oVGto4sC2WbHNI=;
+	s=default; t=1548693473;
+	bh=7Xl9785Ooo3tc69cLRHlbmgfz8adtXgl//L6MK5SQog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=e6bcgK1SoTF/zVV6unU2KuGKf4AYfBUBqBV1j7pjVEZbUYR3ToROY6nL5gqYyBane
-	 pnKNRfY8r4ZvzwGWhNZCNRd7bgf38Ze6krZuEH6rhmOpoJxm9FnXn6CyYDmSOk2rYr
-	 QlDB5JTgMmUnL5+2mXHN9Gs2bZNVZZ64LXuGp6Mc=
+	b=av7aYhOjow9jiEyOBQVrwhMu778GzM17Na+BEQih1quWj1lazAwcl3638xX+9xBqU
+	 E00O1QRVCqqVnkRHEljvDt/IZazd7m8GiASDJP3M/MA0ya8TjTRFzjiJZNDaUU1vD5
+	 cH26MXZaQdUmy8TIu97Nww5gh6F0smN676OlQq6c=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388484AbfA1Qbc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 11:31:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36898 "EHLO mail.kernel.org"
+        id S1729674AbfA1Qhq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 11:37:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33740 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390344AbfA1Q1H (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:27:07 -0500
+        id S2389827AbfA1QY7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:24:59 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 268DD2171F;
-        Mon, 28 Jan 2019 16:27:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 99AF92147A;
+        Mon, 28 Jan 2019 16:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548692826;
-        bh=HKmXUXuNqZr4R+sXHdfHh48vHcAW2oVGto4sC2WbHNI=;
+        s=default; t=1548692698;
+        bh=7Xl9785Ooo3tc69cLRHlbmgfz8adtXgl//L6MK5SQog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FM91B3+cMPBQSspkMQlH52+8mmEMNei4sv5P8+IWp0bzrWp2aXXdBT+VLn3tn5gZ7
-         42Nooh/4sXrT9Mhft2mP+OjVC9CSrJj8VukA8qcVY/ZBLbrCIJLdZWbjhYZPeDn8cX
-         lUxnqAsucQMAMlwYkKBD0F7uJ2W/OQO9Zun00B9o=
+        b=wWZG4VOxz+gjgTZMbOALx5E5mD8a9bcuFDuDasqXP1usiGV0NfFYa/64lGTOlUuhU
+         iK+dSTX3DNksVv7hI42bldhhCw7OXESXz0nxFcIVJoNJH2akaWSLbh0RJuhSlzQvtg
+         U+N6sVZce9WMrqvdG+bxOGAGn7JWtAnXRYDxUhbc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jiong Wang <jiong.wang@netronome.com>,
@@ -45,12 +45,12 @@ Cc:     Jiong Wang <jiong.wang@netronome.com>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 3.18 25/61] mips: bpf: fix encoding bug for mm_srlv32_op
-Date:   Mon, 28 Jan 2019 11:25:47 -0500
-Message-Id: <20190128162623.59854-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 33/80] mips: bpf: fix encoding bug for mm_srlv32_op
+Date:   Mon, 28 Jan 2019 11:23:14 -0500
+Message-Id: <20190128162401.58841-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190128162623.59854-1-sashal@kernel.org>
-References: <20190128162623.59854-1-sashal@kernel.org>
+In-Reply-To: <20190128162401.58841-1-sashal@kernel.org>
+References: <20190128162401.58841-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 4bfdb9d4c186..3eb4d6177266 100644
+index 1b6f2f219298..9db764b51ffe 100644
 --- a/arch/mips/include/uapi/asm/inst.h
 +++ b/arch/mips/include/uapi/asm/inst.h
-@@ -262,8 +262,8 @@ enum mm_32a_minor_op {
+@@ -290,8 +290,8 @@ enum mm_32a_minor_op {
  	mm_ext_op = 0x02c,
  	mm_pool32axf_op = 0x03c,
  	mm_srl32_op = 0x040,

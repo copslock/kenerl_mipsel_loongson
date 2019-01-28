@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F31B4C4151A
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37320C282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:10:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B940B21783
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 15:44:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 091122171F
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548690296;
-	bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
+	s=default; t=1548691817;
+	bh=eDYTTJ6p7zS48/XjJJfxWeet2C2n7NaYhdS2NEI87t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=rGRYGP3Ddz4SWhdtbyxBguU994NGWr8c2nN92LnAtviKbeld+sGQ4sPwhFHs58KKy
-	 uaRbKnyepSvVapfMmhmNaeMdr8l+GYUBrUlbT10RbrcRltbcZm4XrMSBrrs0eJVooU
-	 7tkqqorqNLFKhFuuMB+FibOnqwz9ZaJJF9Kyv2RM=
+	b=L5nEjOTeglRFYRGeV6RlMuaqPz4r8an1BfsWhkt7uIelm5iwifQVvQlEwjf45r2Jz
+	 8fZiw7meqrNSCM5bhZ7Yg8te4P24X956pDZSXc9fh2HFqWU8dQwHs8WvjUePKPQwBd
+	 I1kExRfoOM8m/OcFaBZLFIJzNDXH3sH4/KHUt8dk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727582AbfA1Po4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 10:44:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58274 "EHLO mail.kernel.org"
+        id S1732732AbfA1QKO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 11:10:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35876 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727571AbfA1Poz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 10:44:55 -0500
+        id S1732298AbfA1QKN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:10:13 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3FB1521741;
-        Mon, 28 Jan 2019 15:44:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 781B72177E;
+        Mon, 28 Jan 2019 16:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548690294;
-        bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
+        s=default; t=1548691812;
+        bh=eDYTTJ6p7zS48/XjJJfxWeet2C2n7NaYhdS2NEI87t0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g5kBFrBS7oHHq+A8SbczQoZzywrZE1psXqqkFzY0Nx54GLI5DE3yhqGS6XPV1ySB7
-         zCF+FNi6LjpSkhWJBigcj/X9BZfMF1M/O7WlxqCpdIgP7AZiUGpyFtLe8desAhdRGA
-         aDHrZRhgrp3NeP1iUNjmcSjfYLHO+P2uKU2aVtqw=
+        b=qlLUh3svPIOIeYb1hEzhW/CXwSRkZeSdFIyj1qpZ/V4fE5WZlWOfg8F8bscg32Bqt
+         9wAEcEG9bdiT84y15IEGjvnT4oZleCOeNeznrdcJDxg89Mz5Qr6FSqLcLNKHliWed/
+         9iOBiKYRNyU5guQGPcdONHjn57wA+LO49kLQgriA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.20 037/304] MIPS: Boston: Disable EG20T prefetch
-Date:   Mon, 28 Jan 2019 10:39:14 -0500
-Message-Id: <20190128154341.47195-37-sashal@kernel.org>
+Cc:     Stefan Roese <sr@denx.de>, Paul Burton <paul.burton@mips.com>,
+        John Crispin <blogic@openwrt.org>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 225/258] MIPS: ralink: Select CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8
+Date:   Mon, 28 Jan 2019 10:58:51 -0500
+Message-Id: <20190128155924.51521-225-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190128154341.47195-1-sashal@kernel.org>
-References: <20190128154341.47195-1-sashal@kernel.org>
+In-Reply-To: <20190128155924.51521-1-sashal@kernel.org>
+References: <20190128155924.51521-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -56,49 +59,54 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Burton <paul.burton@mips.com>
+From: Stefan Roese <sr@denx.de>
 
-[ Upstream commit 5ec17af7ead09701e23d2065e16db6ce4e137289 ]
+[ Upstream commit 0b15394475e3bcaf35ca4bf22fc55d56df67224e ]
 
-The Intel EG20T Platform Controller Hub used on the MIPS Boston
-development board supports prefetching memory to optimize DMA transfers.
-Unfortunately for unknown reasons this doesn't work well with some MIPS
-CPUs such as the P6600, particularly when using an I/O Coherence Unit
-(IOCU) to provide cache-coherent DMA. In these systems it is common for
-DMA data to be lost, resulting in broken access to EG20T devices such as
-the MMC or SATA controllers.
+Testing has shown, that when using mainline U-Boot on MT7688 based
+boards, the system may hang or crash while mounting the root-fs. The
+main issue here is that mainline U-Boot configures EBase to a value
+near the end of system memory. And with CONFIG_CPU_MIPSR2_IRQ_VI
+disabled, trap_init() will not allocate a new area to place the
+exception handler. The original value will be used and the handler
+will be copied to this location, which might already be used by some
+userspace application.
 
-Support for a DT property to configure the prefetching was added a while
-back by commit 549ce8f134bd ("misc: pch_phub: Read prefetch value from
-device tree if passed") but we never added the DT snippet to make use of
-it. Add that now in order to disable the prefetching & fix DMA on the
-affected systems.
+The MT7688 supports VI - its config3 register is 0x00002420, so VInt
+(Bit 5) is set. But without setting CONFIG_CPU_MIPSR2_IRQ_VI this
+bit will not be evaluated to result in "cpu_has_vi" being set. This
+patch now selects CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8 which results
+trap_init() to allocate some memory for the exception handler.
 
+Please note that this issue was not seen with the Mediatek U-Boot
+version, as it does not touch EBase (stays at default of 0x8000.0000).
+This is strictly also not correct as the kernel (_text) resides
+here.
+
+Signed-off-by: Stefan Roese <sr@denx.de>
+[paul.burton@mips.com: s/beeing/being/]
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/21068/
+Cc: John Crispin <blogic@openwrt.org>
+Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/img/boston.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/ralink/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
-index 65af3f6ba81c..84328afa3a55 100644
---- a/arch/mips/boot/dts/img/boston.dts
-+++ b/arch/mips/boot/dts/img/boston.dts
-@@ -141,6 +141,12 @@
- 				#size-cells = <2>;
- 				#interrupt-cells = <1>;
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 1f9cb0e3c79a..613d61763433 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -38,6 +38,7 @@ choice
  
-+				eg20t_phub@2,0,0 {
-+					compatible = "pci8086,8801";
-+					reg = <0x00020000 0 0 0 0>;
-+					intel,eg20t-prefetch = <0>;
-+				};
-+
- 				eg20t_mac@2,0,1 {
- 					compatible = "pci8086,8802";
- 					reg = <0x00020100 0 0 0 0>;
+ 	config SOC_MT7620
+ 		bool "MT7620/8"
++		select CPU_MIPSR2_IRQ_VI
+ 		select HW_HAS_PCI
+ 
+ 	config SOC_MT7621
 -- 
 2.19.1
 

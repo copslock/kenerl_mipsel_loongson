@@ -2,75 +2,67 @@ Return-Path: <SRS0=zZS8=QE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B6B7C282C8
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 223ADC4151A
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 14:01:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0B44F20989
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 13:59:39 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="OJ8opvlk"
+	by mail.kernel.org (Postfix) with ESMTP id F05AB21738
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 14:01:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfA1N7d (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 08:59:33 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38733 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726693AbfA1N7d (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 08:59:33 -0500
-Received: by mail-lj1-f196.google.com with SMTP id c19-v6so14297710lja.5
-        for <linux-mips@vger.kernel.org>; Mon, 28 Jan 2019 05:59:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=99uQEixhQClcS2n/0GedsIly21bt501S/6G+8PRROzY=;
-        b=OJ8opvlkvym1DthqLuURYSEI7P31feT2ioxShHXGqa55VoMB9MdJerLsYrGBanG/Ay
-         clRIPCaLgTBNurAKlPRmsKzRyqD+ZGBnLnqNh7lDH1PJadu9J2HQXogVlEY0VRv7nStC
-         YyQeoPGPjB5YzjM6K9EXguUHAOd4a8SMH49GI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=99uQEixhQClcS2n/0GedsIly21bt501S/6G+8PRROzY=;
-        b=I4Etli4aHAL1uwsYwQMRjZqFUB8KbwlJUJmLuGb/s76Xp1lMoKT2263fUbcIF4BEew
-         p4PElfzDKVlRni8Rr/H+Wx2ap3onFqRMOt2YUPeHkptHf/MfuefaszjwCCCAbq793qt8
-         T7sue9C9YL2UZASae1vvubmIEQrMMrgcpiWIujDGnu2gbChG0C/HL5CPgCvwUIwZhgyO
-         6hZzeyEVH/OaBVOKxU8b5XAcaOh36TRQRqFtBCqeeC6twymdWvW0nVM1EAin39t7zPbY
-         jOMrLfNM2x6Opv1FzpdkH//LccKMyCCDPYfvU0SCuI1+A+KzcUxbYcEZwnZu2yWUx1L6
-         6JUQ==
-X-Gm-Message-State: AJcUukem6FvnVEqfQ9azjcPMQi3RHL5472gAUHPoPShyLdZQwRjuI05+
-        rQe5xWViM8C88LzcIw7qq4ukwloKW1c8KO3X+G+bYw==
-X-Google-Smtp-Source: ALg8bN7AVzCFnSmZ00nJgfwWbrHKV/K7ZbrrwlGCthF0+sI1AjuPWtEcQ1TiTF5Z94pWaMfvRYO+xfhQofPgUVClGh4=
-X-Received: by 2002:a2e:6109:: with SMTP id v9-v6mr16720694ljb.126.1548683970839;
- Mon, 28 Jan 2019 05:59:30 -0800 (PST)
-MIME-Version: 1.0
-References: <1548410393-6981-1-git-send-email-zhouyanjie@zoho.com> <1548410393-6981-2-git-send-email-zhouyanjie@zoho.com>
-In-Reply-To: <1548410393-6981-2-git-send-email-zhouyanjie@zoho.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 28 Jan 2019 14:59:19 +0100
-Message-ID: <CACRpkdYe2NsBFC-KBQXhmsSJ-S7wN9cZZuEPKHSfQe4HZUXTPg@mail.gmail.com>
-Subject: Re: [PATCH RESEND 1/4] Pinctrl: Ingenic: Fix bugs caused by
- differences between JZ4770 and JZ4780.
-To:     Zhou Yanjie <zhouyanjie@zoho.com>
-Cc:     linux-mips@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S1726754AbfA1OBh convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 09:01:37 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48404 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726668AbfA1OBh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 09:01:37 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 0D9A8AF3D;
+        Mon, 28 Jan 2019 14:01:36 +0000 (UTC)
+Date:   Mon, 28 Jan 2019 15:01:35 +0100
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Paul Burton <paul.burton@mips.com>,
-        Paul Cercueil <paul@crapouillou.net>, syq@debian.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, 772753199@qq.com
-Content-Type: text/plain; charset="UTF-8"
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 7/7] MIPS: SGI-IP27: abstract chipset irq from bridge
+Message-Id: <20190128150135.66f85834ab80813e6dc5ddf5@suse.de>
+In-Reply-To: <20190128133317.GD744@infradead.org>
+References: <20190124174728.28812-1-tbogendoerfer@suse.de>
+        <20190124174728.28812-8-tbogendoerfer@suse.de>
+        <20190128133317.GD744@infradead.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This series looks good to me, but it would be nice if you could
-fix the warning pointed out by Paul, and I would also
-like some ACK from Paul C on the patches so I know this is
-fine with him.
+On Mon, 28 Jan 2019 05:33:17 -0800
+Christoph Hellwig <hch@infradead.org> wrote:
 
-Yours,
-Linus Walleij
+> Shouldnt this just use chained irqchip drivers instead?
+
+you mean using irq_set_chained_handler() ? If yes, this IMHO doesn't look usefull
+because it's used for adding a secondary interrupt controller. But what I need
+is telling bridge ASIC to direct the xtalk IRQ packet to a specific HUB/HEART/BEDROCK
+from the HUB/HEART/BEDROCK specific code. And want to avoid dragging in bridge details
+to that specific code.
+
+But I'm open reusing whatever fits the bill here.
+
+Thomas.
+
+-- 
+SUSE Linux GmbH
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

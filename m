@@ -4,50 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2D42C282CF
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EBF7C282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:26:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 78B902082E
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:18:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 50B3420855
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548695926;
-	bh=4SRlss6fatly5HveyLqaOiGw2u5XwYKvpK67wEHOumc=;
+	s=default; t=1548696378;
+	bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=vADnnyrOEfJ0jLTKNmkV4qLkm0S80M0UnZsk9s2pIf28Qj3gFWU7KjRpwvNQUBEZZ
-	 JY7P1mg6jQqhM8QQqhEnGkhzFs1PAQQHcY4vrXIQTwLwdDH8cBtorOzEJj8ipd9Qmm
-	 HhR2/KhGfDMnvMO66dLOClKxB6GZU6ms9rlZRaQs=
+	b=s4mKlVPRHD1uTXX/7ms8CDFL2GdFaLKYbn2dqI2N/fjt0syQ0H5e7U9cMVKbC0DTh
+	 w/65eLoV7aTseCx49Czmu3zfujAgchU1wg6mz2OaVLPT8qPwEdOL9ceoXGf4W5FKO+
+	 4dpuYhcc/JoxAbOEo1bVmHrMuRoG7ReLscWbog1w=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731759AbfA1QFH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 11:05:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51344 "EHLO mail.kernel.org"
+        id S1728486AbfA1R0M (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 12:26:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731750AbfA1QFG (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:05:06 -0500
+        id S1730840AbfA1QAq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:00:46 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B561C2147A;
-        Mon, 28 Jan 2019 16:05:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B593F2175B;
+        Mon, 28 Jan 2019 16:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548691506;
-        bh=4SRlss6fatly5HveyLqaOiGw2u5XwYKvpK67wEHOumc=;
+        s=default; t=1548691245;
+        bh=XHvGrq9LUVK3VhEp6c72qxwXepi97IZhYICnHguuWkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JpLzImGXjbck90jmIkxMoQF/6yOnnqfrqS4gfJ9Ah9aJZfxtlQZBEavLLLhcBV0zP
-         wW40E9lyTT5mWFHjO+yr77gDAGU5BfDVHrf8EGp6B5f6BkG5KjjSSVRuaONaOBcbTb
-         kns4yObCt7DKBuJSYkYL9mW1X/J0kV58dYg1ui/0=
+        b=SHC04QZ/Xt6uiqaYq1+c6ae41+nPvb4rsYdnya/vXNd+X+CXPCWk6qQCJ2uE9J4vW
+         NcsWpn0xY14E0CCsm6IooUEWZTU3BViMgciDtGYnnJOhLjdPm4U9Lh7zLoql+/IVf3
+         7palLnwIjaUzAScVGPemy7tWj1M1Moe6ND0+lBMM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jiong Wang <jiong.wang@netronome.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 120/258] mips: bpf: fix encoding bug for mm_srlv32_op
-Date:   Mon, 28 Jan 2019 10:57:06 -0500
-Message-Id: <20190128155924.51521-120-sashal@kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 031/258] MIPS: Boston: Disable EG20T prefetch
+Date:   Mon, 28 Jan 2019 10:55:37 -0500
+Message-Id: <20190128155924.51521-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190128155924.51521-1-sashal@kernel.org>
 References: <20190128155924.51521-1-sashal@kernel.org>
@@ -59,47 +56,49 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jiong Wang <jiong.wang@netronome.com>
+From: Paul Burton <paul.burton@mips.com>
 
-[ Upstream commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 ]
+[ Upstream commit 5ec17af7ead09701e23d2065e16db6ce4e137289 ]
 
-For micro-mips, srlv inside POOL32A encoding space should use 0x50
-sub-opcode, NOT 0x90.
+The Intel EG20T Platform Controller Hub used on the MIPS Boston
+development board supports prefetching memory to optimize DMA transfers.
+Unfortunately for unknown reasons this doesn't work well with some MIPS
+CPUs such as the P6600, particularly when using an I/O Coherence Unit
+(IOCU) to provide cache-coherent DMA. In these systems it is common for
+DMA data to be lost, resulting in broken access to EG20T devices such as
+the MMC or SATA controllers.
 
-Some early version ISA doc describes the encoding as 0x90 for both srlv and
-srav, this looks to me was a typo. I checked Binutils libopcode
-implementation which is using 0x50 for srlv and 0x90 for srav.
+Support for a DT property to configure the prefetching was added a while
+back by commit 549ce8f134bd ("misc: pch_phub: Read prefetch value from
+device tree if passed") but we never added the DT snippet to make use of
+it. Add that now in order to disable the prefetching & fix DMA on the
+affected systems.
 
-v1->v2:
-  - Keep mm_srlv32_op sorted by value.
-
-Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/21068/
+Cc: linux-mips@linux-mips.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/uapi/asm/inst.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/img/boston.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index c05dcf5ab414..273ef58f4d43 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -369,8 +369,8 @@ enum mm_32a_minor_op {
- 	mm_ext_op = 0x02c,
- 	mm_pool32axf_op = 0x03c,
- 	mm_srl32_op = 0x040,
-+	mm_srlv32_op = 0x050,
- 	mm_sra_op = 0x080,
--	mm_srlv32_op = 0x090,
- 	mm_rotr_op = 0x0c0,
- 	mm_lwxs_op = 0x118,
- 	mm_addu32_op = 0x150,
+diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
+index 65af3f6ba81c..84328afa3a55 100644
+--- a/arch/mips/boot/dts/img/boston.dts
++++ b/arch/mips/boot/dts/img/boston.dts
+@@ -141,6 +141,12 @@
+ 				#size-cells = <2>;
+ 				#interrupt-cells = <1>;
+ 
++				eg20t_phub@2,0,0 {
++					compatible = "pci8086,8801";
++					reg = <0x00020000 0 0 0 0>;
++					intel,eg20t-prefetch = <0>;
++				};
++
+ 				eg20t_mac@2,0,1 {
+ 					compatible = "pci8086,8802";
+ 					reg = <0x00020100 0 0 0 0>;
 -- 
 2.19.1
 

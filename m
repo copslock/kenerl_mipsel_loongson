@@ -7,47 +7,47 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3371EC282D0
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2D42C282CF
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:18:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 01C1720844
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:16:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 78B902082E
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548695763;
-	bh=yzklis1qP1ua7rltG5gDUCmqKN/vZQ7FGUFiHg/pBV0=;
+	s=default; t=1548695926;
+	bh=4SRlss6fatly5HveyLqaOiGw2u5XwYKvpK67wEHOumc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=THQZ+pHlUz58AN2sNMZTCcAX1UppPT8+ahIylBzOBJZuy7JjTq+hoMn3JTzdmf/qR
-	 s+UJHbgWYs/9DfA+MGRwhmjjpcMevnjMfCnQY+6W7Pl9ayFTlJ2derCK6HKPgjsxKg
-	 r9e4jfMvaQNfJD/ntiLsIwyeTfZKK+1dU/9FPypU=
+	b=vADnnyrOEfJ0jLTKNmkV4qLkm0S80M0UnZsk9s2pIf28Qj3gFWU7KjRpwvNQUBEZZ
+	 JY7P1mg6jQqhM8QQqhEnGkhzFs1PAQQHcY4vrXIQTwLwdDH8cBtorOzEJj8ipd9Qmm
+	 HhR2/KhGfDMnvMO66dLOClKxB6GZU6ms9rlZRaQs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731744AbfA1RPz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 12:15:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56508 "EHLO mail.kernel.org"
+        id S1731759AbfA1QFH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 11:05:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51344 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731634AbfA1QGw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:06:52 -0500
+        id S1731750AbfA1QFG (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:05:06 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4838320989;
-        Mon, 28 Jan 2019 16:06:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B561C2147A;
+        Mon, 28 Jan 2019 16:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548691611;
-        bh=yzklis1qP1ua7rltG5gDUCmqKN/vZQ7FGUFiHg/pBV0=;
+        s=default; t=1548691506;
+        bh=4SRlss6fatly5HveyLqaOiGw2u5XwYKvpK67wEHOumc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ga4ylq47lICVz+niQWAA7pX0yv5SVbvihRpcgFUT9gXYxydARMTIPHCZ+WQDDZoiN
-         DBd1YThqLAuj0RED71Bdf+m0/LWletYZQkj3hESnYjki70u0IvSFTHyFevMGpBIs0b
-         MOt5dsmAyFrZwQhhs/zhT3evjWoBqgEf2aLL2igE=
+        b=JpLzImGXjbck90jmIkxMoQF/6yOnnqfrqS4gfJ9Ah9aJZfxtlQZBEavLLLhcBV0zP
+         wW40E9lyTT5mWFHjO+yr77gDAGU5BfDVHrf8EGp6B5f6BkG5KjjSSVRuaONaOBcbTb
+         kns4yObCt7DKBuJSYkYL9mW1X/J0kV58dYg1ui/0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@linux-mips.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 158/258] mmc: jz4740: Get CD/WP GPIOs from descriptors
-Date:   Mon, 28 Jan 2019 10:57:44 -0500
-Message-Id: <20190128155924.51521-158-sashal@kernel.org>
+Cc:     Jiong Wang <jiong.wang@netronome.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 120/258] mips: bpf: fix encoding bug for mm_srlv32_op
+Date:   Mon, 28 Jan 2019 10:57:06 -0500
+Message-Id: <20190128155924.51521-120-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190128155924.51521-1-sashal@kernel.org>
 References: <20190128155924.51521-1-sashal@kernel.org>
@@ -59,119 +59,47 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jiong Wang <jiong.wang@netronome.com>
 
-[ Upstream commit 0c901c0566fb4edc2631c3786e5085a037be91f8 ]
+[ Upstream commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 ]
 
-Modifty the JZ4740 driver to retrieve card detect and write
-protect GPIO pins from GPIO descriptors instead of hard-coded
-global numbers. Augment the only board file using this in the
-process and cut down on passed in platform data.
+For micro-mips, srlv inside POOL32A encoding space should use 0x50
+sub-opcode, NOT 0x90.
 
-Preserve the code setting the caps2 flags for CD and WP
-as active low or high since the slot GPIO code currently
-ignores the gpiolib polarity inversion semantice and uses
-the raw accessors to read the GPIO lines, but set the right
-polarity flags in the descriptor table for jz4740.
+Some early version ISA doc describes the encoding as 0x90 for both srlv and
+srav, this looks to me was a typo. I checked Binutils libopcode
+implementation which is using 0x50 for srlv and 0x90 for srav.
 
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Paul Burton <paul.burton@mips.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+v1->v2:
+  - Keep mm_srlv32_op sorted by value.
+
+Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
+Acked-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mips/include/asm/mach-jz4740/jz4740_mmc.h |  2 --
- arch/mips/jz4740/board-qi_lb60.c              | 12 ++++++++---
- drivers/mmc/host/jz4740_mmc.c                 | 20 +++++++++----------
- 3 files changed, 19 insertions(+), 15 deletions(-)
+ arch/mips/include/uapi/asm/inst.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
-index e9cc62cfac99..ff50aeb1a933 100644
---- a/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
-+++ b/arch/mips/include/asm/mach-jz4740/jz4740_mmc.h
-@@ -4,8 +4,6 @@
- 
- struct jz4740_mmc_platform_data {
- 	int gpio_power;
--	int gpio_card_detect;
--	int gpio_read_only;
- 	unsigned card_detect_active_low:1;
- 	unsigned read_only_active_low:1;
- 	unsigned power_active_low:1;
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index af0c8ace0141..705593d40d12 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -43,7 +43,6 @@
- #include "clock.h"
- 
- /* GPIOs */
--#define QI_LB60_GPIO_SD_CD		JZ_GPIO_PORTD(0)
- #define QI_LB60_GPIO_SD_VCC_EN_N	JZ_GPIO_PORTD(2)
- 
- #define QI_LB60_GPIO_KEYOUT(x)		(JZ_GPIO_PORTC(10) + (x))
-@@ -386,12 +385,18 @@ static struct platform_device qi_lb60_gpio_keys = {
- };
- 
- static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
--	.gpio_card_detect	= QI_LB60_GPIO_SD_CD,
--	.gpio_read_only		= -1,
- 	.gpio_power		= QI_LB60_GPIO_SD_VCC_EN_N,
- 	.power_active_low	= 1,
- };
- 
-+static struct gpiod_lookup_table qi_lb60_mmc_gpio_table = {
-+	.dev_id = "jz4740-mmc.0",
-+	.table = {
-+		GPIO_LOOKUP("GPIOD", 0, "cd", GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
-+
- /* beeper */
- static struct pwm_lookup qi_lb60_pwm_lookup[] = {
- 	PWM_LOOKUP("jz4740-pwm", 4, "pwm-beeper", NULL, 0,
-@@ -500,6 +505,7 @@ static int __init qi_lb60_init_platform_devices(void)
- 	gpiod_add_lookup_table(&qi_lb60_audio_gpio_table);
- 	gpiod_add_lookup_table(&qi_lb60_nand_gpio_table);
- 	gpiod_add_lookup_table(&qi_lb60_spigpio_gpio_table);
-+	gpiod_add_lookup_table(&qi_lb60_mmc_gpio_table);
- 
- 	spi_register_board_info(qi_lb60_spi_board_info,
- 				ARRAY_SIZE(qi_lb60_spi_board_info));
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 993386c9ea50..864338e308e2 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -983,17 +983,17 @@ static int jz4740_mmc_request_gpios(struct mmc_host *mmc,
- 	if (!pdata->read_only_active_low)
- 		mmc->caps2 |= MMC_CAP2_RO_ACTIVE_HIGH;
- 
--	if (gpio_is_valid(pdata->gpio_card_detect)) {
--		ret = mmc_gpio_request_cd(mmc, pdata->gpio_card_detect, 0);
--		if (ret)
--			return ret;
--	}
-+	/*
-+	 * Get optional card detect and write protect GPIOs,
-+	 * only back out on probe deferral.
-+	 */
-+	ret = mmc_gpiod_request_cd(mmc, "cd", 0, false, 0, NULL);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
- 
--	if (gpio_is_valid(pdata->gpio_read_only)) {
--		ret = mmc_gpio_request_ro(mmc, pdata->gpio_read_only);
--		if (ret)
--			return ret;
--	}
-+	ret = mmc_gpiod_request_ro(mmc, "wp", 0, false, 0, NULL);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
- 
- 	return jz4740_mmc_request_gpio(&pdev->dev, pdata->gpio_power,
- 			"MMC read only", true, pdata->power_active_low);
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index c05dcf5ab414..273ef58f4d43 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -369,8 +369,8 @@ enum mm_32a_minor_op {
+ 	mm_ext_op = 0x02c,
+ 	mm_pool32axf_op = 0x03c,
+ 	mm_srl32_op = 0x040,
++	mm_srlv32_op = 0x050,
+ 	mm_sra_op = 0x080,
+-	mm_srlv32_op = 0x090,
+ 	mm_rotr_op = 0x0c0,
+ 	mm_lwxs_op = 0x118,
+ 	mm_addu32_op = 0x150,
 -- 
 2.19.1
 

@@ -7,50 +7,50 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41C13C282C8
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:37:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BB02C282CF
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:43:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 12AF220811
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:37:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E1B8C2084A
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 16:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548693473;
-	bh=7Xl9785Ooo3tc69cLRHlbmgfz8adtXgl//L6MK5SQog=;
+	s=default; t=1548693814;
+	bh=ol+GQcxW3dEXmVczFWa3yJEsROoP/lF6JCLsaiBgMeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=av7aYhOjow9jiEyOBQVrwhMu778GzM17Na+BEQih1quWj1lazAwcl3638xX+9xBqU
-	 E00O1QRVCqqVnkRHEljvDt/IZazd7m8GiASDJP3M/MA0ya8TjTRFzjiJZNDaUU1vD5
-	 cH26MXZaQdUmy8TIu97Nww5gh6F0smN676OlQq6c=
+	b=I/G0zKflZ44rZMwfx0WfTqx5QUY8AQQ7SqkKutJS/VHPb9d5GjxkMaGy/2jO4ZDQi
+	 ktILsnqliN5Ym0vq+ZSMr4N0idDQTK8RHF8oAMjNhAju1G08Vy67uk5uq/Kt/AT4+r
+	 upFxlBSrbkld3AwmL8HyFXyGGuiEUWN9qAg6kTpw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729674AbfA1Qhq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 11:37:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33740 "EHLO mail.kernel.org"
+        id S2389420AbfA1QX0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 11:23:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59654 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389827AbfA1QY7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:24:59 -0500
+        id S2389019AbfA1QXY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:23:24 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 99AF92147A;
-        Mon, 28 Jan 2019 16:24:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E48DF2147A;
+        Mon, 28 Jan 2019 16:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548692698;
-        bh=7Xl9785Ooo3tc69cLRHlbmgfz8adtXgl//L6MK5SQog=;
+        s=default; t=1548692604;
+        bh=ol+GQcxW3dEXmVczFWa3yJEsROoP/lF6JCLsaiBgMeQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wWZG4VOxz+gjgTZMbOALx5E5mD8a9bcuFDuDasqXP1usiGV0NfFYa/64lGTOlUuhU
-         iK+dSTX3DNksVv7hI42bldhhCw7OXESXz0nxFcIVJoNJH2akaWSLbh0RJuhSlzQvtg
-         U+N6sVZce9WMrqvdG+bxOGAGn7JWtAnXRYDxUhbc=
+        b=soZC/ys9txCPGzbv+XVVHqfNWESpy0EE1SCtQ+tTeOhLnvYWAVXptVusBk8QbQQef
+         NoXR0T5J4wqimwflhpIGD0UYCBwJsEQR3DbkGaMYi2zSo6ORoWVDzAEoAYnzmaDAqm
+         dt6OXnDnQKqEuvSeSfkqiK/8D0Ns2P9qqq+EyM+k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jiong Wang <jiong.wang@netronome.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 33/80] mips: bpf: fix encoding bug for mm_srlv32_op
-Date:   Mon, 28 Jan 2019 11:23:14 -0500
-Message-Id: <20190128162401.58841-33-sashal@kernel.org>
+Cc:     Stefan Roese <sr@denx.de>, Paul Burton <paul.burton@mips.com>,
+        John Crispin <blogic@openwrt.org>,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 089/107] MIPS: ralink: Select CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8
+Date:   Mon, 28 Jan 2019 11:19:29 -0500
+Message-Id: <20190128161947.57405-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190128162401.58841-1-sashal@kernel.org>
-References: <20190128162401.58841-1-sashal@kernel.org>
+In-Reply-To: <20190128161947.57405-1-sashal@kernel.org>
+References: <20190128161947.57405-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -59,47 +59,54 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jiong Wang <jiong.wang@netronome.com>
+From: Stefan Roese <sr@denx.de>
 
-[ Upstream commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 ]
+[ Upstream commit 0b15394475e3bcaf35ca4bf22fc55d56df67224e ]
 
-For micro-mips, srlv inside POOL32A encoding space should use 0x50
-sub-opcode, NOT 0x90.
+Testing has shown, that when using mainline U-Boot on MT7688 based
+boards, the system may hang or crash while mounting the root-fs. The
+main issue here is that mainline U-Boot configures EBase to a value
+near the end of system memory. And with CONFIG_CPU_MIPSR2_IRQ_VI
+disabled, trap_init() will not allocate a new area to place the
+exception handler. The original value will be used and the handler
+will be copied to this location, which might already be used by some
+userspace application.
 
-Some early version ISA doc describes the encoding as 0x90 for both srlv and
-srav, this looks to me was a typo. I checked Binutils libopcode
-implementation which is using 0x50 for srlv and 0x90 for srav.
+The MT7688 supports VI - its config3 register is 0x00002420, so VInt
+(Bit 5) is set. But without setting CONFIG_CPU_MIPSR2_IRQ_VI this
+bit will not be evaluated to result in "cpu_has_vi" being set. This
+patch now selects CONFIG_CPU_MIPSR2_IRQ_VI on MT7620/8 which results
+trap_init() to allocate some memory for the exception handler.
 
-v1->v2:
-  - Keep mm_srlv32_op sorted by value.
+Please note that this issue was not seen with the Mediatek U-Boot
+version, as it does not touch EBase (stays at default of 0x8000.0000).
+This is strictly also not correct as the kernel (_text) resides
+here.
 
-Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Stefan Roese <sr@denx.de>
+[paul.burton@mips.com: s/beeing/being/]
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: John Crispin <blogic@openwrt.org>
+Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/uapi/asm/inst.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ralink/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 1b6f2f219298..9db764b51ffe 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -290,8 +290,8 @@ enum mm_32a_minor_op {
- 	mm_ext_op = 0x02c,
- 	mm_pool32axf_op = 0x03c,
- 	mm_srl32_op = 0x040,
-+	mm_srlv32_op = 0x050,
- 	mm_sra_op = 0x080,
--	mm_srlv32_op = 0x090,
- 	mm_rotr_op = 0x0c0,
- 	mm_lwxs_op = 0x118,
- 	mm_addu32_op = 0x150,
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 813826a456ca..55a5fee781e8 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -38,6 +38,7 @@ choice
+ 
+ 	config SOC_MT7620
+ 		bool "MT7620/8"
++		select CPU_MIPSR2_IRQ_VI
+ 		select HW_HAS_PCI
+ 
+ 	config SOC_MT7621
 -- 
 2.19.1
 

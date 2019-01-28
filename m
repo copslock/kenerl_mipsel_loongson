@@ -2,78 +2,95 @@ Return-Path: <SRS0=zZS8=QE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D65E7C282CB
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 09:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45BFBC282C8
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 10:53:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9B3BA20880
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 09:31:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548667868;
-	bh=8pE31qs1n6Gad1iZk9eDBc/v/HFhm7sP1o6WYwKn88M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=h1xw+d2DJup7eUqCl749ZRtLXjRiESgv490FmJKhHOUXbY3ZBt350mvcBdXdwRz6R
-	 rhmWywcQEQsihKa7vJTrgOhG8CqTiVPuHXayU8iis+yTtUdp4AItd8Adh2C3DIBNLM
-	 QdjBtS6aF4ePJPwbDUZXZwd3PNJOujg0UPdBETmw=
+	by mail.kernel.org (Postfix) with ESMTP id 1CF8A2148E
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 10:53:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfA1JbD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 04:31:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33356 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726369AbfA1JbD (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 04:31:03 -0500
-Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0480C20880;
-        Mon, 28 Jan 2019 09:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548667862;
-        bh=8pE31qs1n6Gad1iZk9eDBc/v/HFhm7sP1o6WYwKn88M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c7Vk+fG327DceGU7K+7vUGgYatfTEq+ZOr7dHNBDzy1aVPviUyrQ2nIaSH1pkY1mp
-         nTq8wtgDXDpoZgNpEi79LYosTCnYDZjZJEztCeGPwPe0ro0P8iiwX9KzA3L4/cRiUD
-         tP+re6K9iTJgiO3clEAb+LxJSKjMU26FWKjZQwk4=
-Date:   Mon, 28 Jan 2019 10:30:59 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Zhou Yanjie <zhouyanjie@zoho.com>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, paul.burton@mips.com, jslaby@suse.com,
-        mark.rutland@arm.com, syq@debian.org, jiaxun.yang@flygoat.com,
-        772753199@qq.com
-Subject: Re: [PATCH 1/2] Serial: Ingenic: Add support for the X1000.
-Message-ID: <20190128093059.GA31657@kroah.com>
-References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
- <1548667176-119830-2-git-send-email-zhouyanjie@zoho.com>
+        id S1726762AbfA1Kxl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 05:53:41 -0500
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:45033 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726415AbfA1Kxk (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 28 Jan 2019 05:53:40 -0500
+Received: by mail-ua1-f65.google.com with SMTP id d19so5418476uaq.11;
+        Mon, 28 Jan 2019 02:53:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bOlyTBUEweCe3JuQxgp8MY9eK0G+hUsxl/I9As77z/Y=;
+        b=pcD9sCCDV7nEqgv3Xiw/O+OeEizCamxjBFAp8x5EOvtpeqLamhfK8dLlX47aFmCnV3
+         RwPwt+S26tSuyvd6W/oQrp2YXFAvyvaTVitzlyuDWRVXwN583OP7AtBj5cY/VnVpEdU0
+         jBOLewnUCv7VPT2wnigsjp02c7IdNkL3r5SHW67oEXTztB8TN/JcEoUXbk692wF3YzQw
+         BEDCy+KnvZg34WvhXAh1dC9iwMWvG6oTYc1SxQkUDk7QOAVbi70fMtRdj5t88dqnTxHh
+         vGa6Gr/rPPMBSvZivcdNhjcEjE2hpxlr8/nSWNGuGgUfeNEDj21RC5zLDpbOx5hVW/Vo
+         jUFA==
+X-Gm-Message-State: AJcUukcCXLVQJLmcwHpLOE8poxs+48dyNSQD0cSAWPfrskAoQMzz9J1o
+        mcHVkkcl0e6WXdm8jT4A2xbPQMrIpwSTziHBqxw=
+X-Google-Smtp-Source: AHgI3IZjzCLTebq7xFS15oojNgrpS73pIdQDcU3jk20zJ+EwbwsnJ8WzRuV9nIbipwmLPM6hDd7dbIOtapVzushFpl0=
+X-Received: by 2002:a9f:2726:: with SMTP id a35mr5073826uaa.75.1548672819512;
+ Mon, 28 Jan 2019 02:53:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com> <1548667176-119830-2-git-send-email-zhouyanjie@zoho.com>
 In-Reply-To: <1548667176-119830-2-git-send-email-zhouyanjie@zoho.com>
-User-Agent: Mutt/1.11.2 (2019-01-07)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 28 Jan 2019 11:53:27 +0100
+Message-ID: <CAMuHMdWgYgMWD=oE6vCZtb1_-K5y19AHwn1WptLhJ47hc6Ah+g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] Serial: Ingenic: Add support for the X1000.
+To:     Zhou Yanjie <zhouyanjie@zoho.com>
+Cc:     linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
+        jiaxun.yang@flygoat.com, 772753199@qq.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Jan 28, 2019 at 05:19:35PM +0800, Zhou Yanjie wrote:
+Hi Zhou,
+
+On Mon, Jan 28, 2019 at 10:23 AM Zhou Yanjie <zhouyanjie@zoho.com> wrote:
 > Add support for probing the 8250_ingenic driver on the
 > X1000 Soc from Ingenic.
-> 
+>
 > Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
-> ---
->  drivers/tty/serial/8250/8250_ingenic.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
 
-You sent two different patches with the same subject: line, yet they did
-totally different things.
+Thanks for your patch!
 
-Please fix this up and resend with a better set of subject lines.
+> --- a/drivers/tty/serial/8250/8250_ingenic.c
+> +++ b/drivers/tty/serial/8250/8250_ingenic.c
+> @@ -145,6 +145,10 @@ EARLYCON_DECLARE(jz4780_uart, ingenic_early_console_setup);
+>  OF_EARLYCON_DECLARE(jz4780_uart, "ingenic,jz4780-uart",
+>                     ingenic_early_console_setup);
+>
+> +EARLYCON_DECLARE(x1000_uart, ingenic_early_console_setup);
+> +OF_EARLYCON_DECLARE(x1000_uart, "ingenic,x1000-uart",
+> +                   ingenic_early_console_setup);
 
-thanks,
+As of commit 2eaa790989e03900 ("earlycon: Use common framework for
+earlycon declarations") it is no longer needer to specify both
+EARLYCON_DECLARE() and OF_EARLYCON_DECLARE().
 
-greg k-h
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -4,47 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8DB4C282C8
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E436C282CF
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:07:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9DBB921741
-	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:07:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 25CB42177B
+	for <linux-mips@archiver.kernel.org>; Mon, 28 Jan 2019 17:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548695236;
-	bh=2PEJvm6vMC6GcGABpMFMjpxKDGWay7fgf8Y8iLBBlQY=;
+	s=default; t=1548695269;
+	bh=rA3BSpmdBaghDtwFln+RvjM8tmQS+Y238CqwlyoaXBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=e1yMEHoIATvYWZzBfOK/2fp9RjZ1EETCSFsgNBNdFBu15uvv1SmsOKpdeUhBJV8tb
-	 tBCYCB0guy6gZHdCuGQGfZVnfj9J7YL7JfIBmOPVoZ56YVzsRxdQPmwBTeRKerLfUm
-	 /jVg3uuSEKINqQGA7/C+JzpCwfCAJ8HJjmB6Zgik=
+	b=DPzw9joJB8IF6eR4Jx7WHRIdCNGMIKXCVhbZd7MpL/dtMZkJc0veVi/VbQubpkEiP
+	 sTkFLJpG3ZfU+tvKk9VtuGJfgz0AZBXZYONIA93DsOV2uXFhxGVlqW30rpiantbhVn
+	 i53acXqlZt2kpYqXOkzqCTSK1nnKWLcAB6yBAnFE=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733275AbfA1RHL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 28 Jan 2019 12:07:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41442 "EHLO mail.kernel.org"
+        id S1732775AbfA1QMg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 28 Jan 2019 11:12:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40812 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732593AbfA1QMz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 28 Jan 2019 11:12:55 -0500
+        id S1733179AbfA1QMd (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 28 Jan 2019 11:12:33 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 684DE2147A;
-        Mon, 28 Jan 2019 16:12:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AFA612175B;
+        Mon, 28 Jan 2019 16:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1548691974;
-        bh=2PEJvm6vMC6GcGABpMFMjpxKDGWay7fgf8Y8iLBBlQY=;
+        s=default; t=1548691953;
+        bh=rA3BSpmdBaghDtwFln+RvjM8tmQS+Y238CqwlyoaXBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AQlzZKJeAaT4o48QLiiCu0QTOGEF2ZsI+Kq7O9oYrHmqfjxFRPIn/94g2pCL2Ss23
-         iJev2GlZCUURim6+3oFdteFEnLA0TyEgWQlwnGFEHSVlaRfCFiViUT4bmi6bKm15bK
-         UIvuR+lxbnIgMs2hhbAvaTDLp+7AGIvRq22L/rp8=
+        b=UBbwMYj7C8FHp9fMWHrHH6OzsUJfq6DOmlOqf0qSdR3Z6CexEXE5dHJiTU9RPHegH
+         GM4RyoB7rEzd9ZAElo7qjcAgoTq6mc7p+/d+COfHgwLJg8WpyXHHpzYDx7r+X5b9Ec
+         ooimya3MIQBXzQH13QA0OC3N8njQ5fnJYguWmqU0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+Cc:     Yi Wang <wang.yi59@zte.com.cn>, Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 023/170] MIPS: Boston: Disable EG20T prefetch
-Date:   Mon, 28 Jan 2019 11:09:33 -0500
-Message-Id: <20190128161200.55107-23-sashal@kernel.org>
+        linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 013/170] clk: boston: fix possible memory leak in clk_boston_setup()
+Date:   Mon, 28 Jan 2019 11:09:23 -0500
+Message-Id: <20190128161200.55107-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190128161200.55107-1-sashal@kernel.org>
 References: <20190128161200.55107-1-sashal@kernel.org>
@@ -56,49 +57,65 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Burton <paul.burton@mips.com>
+From: Yi Wang <wang.yi59@zte.com.cn>
 
-[ Upstream commit 5ec17af7ead09701e23d2065e16db6ce4e137289 ]
+[ Upstream commit 46fda5b5067a391912cf73bf3d32c26b6a22ad09 ]
 
-The Intel EG20T Platform Controller Hub used on the MIPS Boston
-development board supports prefetching memory to optimize DMA transfers.
-Unfortunately for unknown reasons this doesn't work well with some MIPS
-CPUs such as the P6600, particularly when using an I/O Coherence Unit
-(IOCU) to provide cache-coherent DMA. In these systems it is common for
-DMA data to be lost, resulting in broken access to EG20T devices such as
-the MMC or SATA controllers.
+Smatch report warnings:
+drivers/clk/imgtec/clk-boston.c:76 clk_boston_setup() warn: possible memory leak of 'onecell'
+drivers/clk/imgtec/clk-boston.c:83 clk_boston_setup() warn: possible memory leak of 'onecell'
+drivers/clk/imgtec/clk-boston.c:90 clk_boston_setup() warn: possible memory leak of 'onecell'
 
-Support for a DT property to configure the prefetching was added a while
-back by commit 549ce8f134bd ("misc: pch_phub: Read prefetch value from
-device tree if passed") but we never added the DT snippet to make use of
-it. Add that now in order to disable the prefetching & fix DMA on the
-affected systems.
+'onecell' is malloced in clk_boston_setup(), but not be freed
+before leaving from the error handling cases.
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Patchwork: https://patchwork.linux-mips.org/patch/21068/
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Yi Wang <wang.yi59@zte.com.cn>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/img/boston.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clk/imgtec/clk-boston.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/img/boston.dts b/arch/mips/boot/dts/img/boston.dts
-index f7aad80c69ab..bebb0fa21369 100644
---- a/arch/mips/boot/dts/img/boston.dts
-+++ b/arch/mips/boot/dts/img/boston.dts
-@@ -141,6 +141,12 @@
- 				#size-cells = <2>;
- 				#interrupt-cells = <1>;
+diff --git a/drivers/clk/imgtec/clk-boston.c b/drivers/clk/imgtec/clk-boston.c
+index 15af423cc0c9..f5d54a64d33c 100644
+--- a/drivers/clk/imgtec/clk-boston.c
++++ b/drivers/clk/imgtec/clk-boston.c
+@@ -73,27 +73,32 @@ static void __init clk_boston_setup(struct device_node *np)
+ 	hw = clk_hw_register_fixed_rate(NULL, "input", NULL, 0, in_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register input clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_INPUT] = hw;
  
-+				eg20t_phub@2,0,0 {
-+					compatible = "pci8086,8801";
-+					reg = <0x00020000 0 0 0 0>;
-+					intel,eg20t-prefetch = <0>;
-+				};
+ 	hw = clk_hw_register_fixed_rate(NULL, "sys", "input", 0, sys_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register sys clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_SYS] = hw;
+ 
+ 	hw = clk_hw_register_fixed_rate(NULL, "cpu", "input", 0, cpu_freq);
+ 	if (IS_ERR(hw)) {
+ 		pr_err("failed to register cpu clock: %ld\n", PTR_ERR(hw));
+-		return;
++		goto error;
+ 	}
+ 	onecell->hws[BOSTON_CLK_CPU] = hw;
+ 
+ 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, onecell);
+ 	if (err)
+ 		pr_err("failed to add DT provider: %d\n", err);
 +
- 				eg20t_mac@2,0,1 {
- 					compatible = "pci8086,8802";
- 					reg = <0x00020100 0 0 0 0>;
++	return;
++
++error:
++	kfree(onecell);
+ }
+ 
+ /*
 -- 
 2.19.1
 

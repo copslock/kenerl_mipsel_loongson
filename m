@@ -2,100 +2,130 @@ Return-Path: <SRS0=QFq2=QF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA935C169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E6E9C169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 20:09:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8CF692080F
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2F0122087E
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 20:09:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="lTQr+ywv"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="DggUPO1n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729264AbfA2Tvk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 14:51:40 -0500
-Received: from mail-eopbgr730093.outbound.protection.outlook.com ([40.107.73.93]:24903
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        id S1727322AbfA2UJr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 15:09:47 -0500
+Received: from mail-eopbgr750129.outbound.protection.outlook.com ([40.107.75.129]:60096
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729244AbfA2Tvk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 14:51:40 -0500
+        id S1727229AbfA2UJq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 15:09:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=12shLTRGVC8JFRRag4QENMGpCGsV1/LiQbORHgsLdWI=;
- b=lTQr+ywvHPTu9IE2QWiSuzvCyfdOaHZFdgS3sq6wnaLNRuVt+NUoM7azBKhcbBUSp/zpevwwGyv5/WwjWGz/P9KWEwPEmB40dJCmi2CJoXplX+TT2msSDJw7IroLkrZ6APKRebHF8KmwfcuCI87j/Y9W8bULNlIkydLT654UInE=
+ bh=yJQtleUq3yiL3hu/ArSCi9Yh5NdG+6QL9LtU8WnN+Vs=;
+ b=DggUPO1n35n+kOigQ7fmR8/tIpeGLhuOVYQRnQDod9BgXfnNV6f8GUvecgmDA6hOS/x3MBpCPT8aahc7m6IEwvh0OmdGwtnlYO+O/7PqhF2mGbJWVL+QB6EFKMTVLVPAPIDWf4EpNkiy1ECeVgdPih8zvj2JfEbKJQJti7O/P9k=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1487.namprd22.prod.outlook.com (10.174.170.148) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1558.21; Tue, 29 Jan 2019 19:51:36 +0000
+ MWHPR2201MB1582.namprd22.prod.outlook.com (10.174.167.31) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1558.19; Tue, 29 Jan 2019 20:09:07 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1558.023; Tue, 29 Jan 2019
- 19:51:36 +0000
+ 20:09:07 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 1/2] MIPS: OCTEON: delete SMI/MDIO enable
-Thread-Topic: [PATCH 1/2] MIPS: OCTEON: delete SMI/MDIO enable
-Thread-Index: AQHUtn5oeKW1vWYFBUeUuzanuFMPQqXGqxeA
-Date:   Tue, 29 Jan 2019 19:51:36 +0000
-Message-ID: <MWHPR2201MB1277B6574ADFF3E7FA56B174C1970@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190127202431.7107-1-aaro.koskinen@iki.fi>
-In-Reply-To: <20190127202431.7107-1-aaro.koskinen@iki.fi>
+To:     Nishad Kamdar <nishadkamdar@gmail.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        NeilBrown <neil@brown.name>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, Joe Perches <joe@perches.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Select PINCTRL_RT2880 when RALINK is enabled
+Thread-Topic: [PATCH] MIPS: Select PINCTRL_RT2880 when RALINK is enabled
+Thread-Index: AQHUt+bkNR8KLJ2FGECDdb70JPYxtKXGrSqA
+Date:   Tue, 29 Jan 2019 20:09:07 +0000
+Message-ID: <20190129200905.vnb3amouxq6o57fn@pburton-laptop>
+References: <20190129152522.GA24872@nishad>
+In-Reply-To: <20190129152522.GA24872@nishad>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: MWHPR02CA0047.namprd02.prod.outlook.com
- (2603:10b6:301:60::36) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR02CA0063.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::40) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1487;6:fE5TRosTP8p4HQ5+3m+9koM7wgI9CbYoRJNvJwCvXzWpUee3YKEftCKeTAfCfhRq/KxGleiXXFxRB8i+O8CdjlMFdJk0j1giedoSJjEk5hkQL8v0g4BQdm4eoXeV/M+Ip1TLqlUGSt2Od3+y8X3w5XuJJFOIzrG8kWk+Do4rpOy2k0MpFGlGVYC21r3XsHeHVpTIqcrOWBol7mefrmVCMSWkO3XOWdVyYvj5eVuTrpSCunr6h+BCX9nuQPhX8sho2C+nQ/fqJY1q2Ez9RQXinOUQp1Lv/A8bt9ZifGWgWp9vM2OuSSvi7uiXoiRzzlp+shI6gjL2bdcmud1OrE26mPb9pimdh1wzIkaKhGQSTrPaUJFeGzMozB6FN/RvYoJgd8/WAyCdnyCYuRgnjiHti3PnM4edphz/xFjl38Vyhyw6kESkUIE9CI/tsyO3ha2Abw2Nqj8hD/j95VkWudyXaQ==;5:18bn2S/fSn+VCgU/Spph1ojJf7Q/r7hpQ//6hO9BrCwktraBRHaRNhGuqI9MoKJbIUpfkJIzp0pzfEB/ZXviRcG7+d9do5IKy08YFqdrWSNGQkE/U175IbY88EtAt8hd1BCerOysdqVEM/unkmg5q5nUaz5CL0B1rg/gdUjsiig1BmcVVIjNk61xNB8SGwrAZ3HZPR8zi5AoZ+zs8sAeBA==;7:68g+2Swr5/xcJ9Kco45xI5MmIZ12EzwpyW8PoxoeJH/9TcXE7DggRJkHWXFqndyvV5/06BvFYh8TCXiGi0BApAnOat+WW3tnpJcQ4+0WIvDRQaTcDMNCCpw+zoxRK5+JD1HwAYsvNEtvVAiuSUO/GQ==
-x-ms-office365-filtering-correlation-id: 19b257af-1df5-4de0-428a-08d686232d46
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1487;
-x-ms-traffictypediagnostic: MWHPR2201MB1487:
-x-microsoft-antispam-prvs: <MWHPR2201MB14873A6C11FAC63313916025C1970@MWHPR2201MB1487.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1582;6:UtDWYpe7x0b5z9L9mQ4b7J8jeTg8MmooBEYA5wL3Wp3Mq52PbkGfRbCWWcPcOsmVek/vDwjV0jkY/gcZaxsaVXEfl5XYVHLEX8NOH1eEE+h+5s0Xek7jC7540kkEZoUmw7WUrygfqFOcvj913/Wvfd4ZDArSEGqNbr26aJTvKa4XgBt+8v6x3bScFGQ1V7e2oZjqHYg/7rdnZP927cQd+x8cJ4ryqR7vvWy8RbMAaKHdT7pjmMVw66zbanLbigu62g+tZ6MEkFRCXplnvWf6JQ2oYzOBLsY9pXJ1cEL4V0jteeuUI/tMtYk+lHjIOrOhAu4swe7clxVNOY0XkdAwndV+WBzA8P5eW29Z6cE7zjxSuEfGJPW4ob7l67KVVR0TF1GpnKyNZSHCqyDbGoce5pHMxtlM0vUyxgyTt7e8PvJzRyhQocjIKRezcXzr4T7hCEm0dQxF2MVrQXmSVwc8xA==;5:I0WhWJ8OZbK4uxnRWqgJm1nlQvOKxqSWaDON1383RV/ZLwJqaX6DXtSOw+o1gcGgMtR0FrCVJoDxpK2fvYZTOVBS5mYwV4jiLyuF+V1i0zR1wPc8pUv+8ZoKQqZghH9B66JTinikfZSSTnLT3VJ58bphO5nVG1wQ8Wm/nxQRh/be/hhwA80SWxQ53RCNc2NnWrL9YLU7zV7chkgdAN8tDw==;7:xsfrMjiHJn1m+1w9SrLDj1IB1qCBdFLUMWchYIJzpEmwXEmeqjEUyGEtqDcoUszdTNCgVG5kedO5ksIlfPnQHN/cNkqwxtvW3AwhS2ietMB0A87CuH56ea/jWZhirliiPR4Hf8GSUipwS06ijzWlRQ==
+x-ms-office365-filtering-correlation-id: fbd46eba-dc03-459d-7de8-08d686259f7d
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1582;
+x-ms-traffictypediagnostic: MWHPR2201MB1582:
+x-microsoft-antispam-prvs: <MWHPR2201MB1582301CC877BE1B2FA1F000C1970@MWHPR2201MB1582.namprd22.prod.outlook.com>
 x-forefront-prvs: 093290AD39
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(396003)(39840400004)(366004)(136003)(189003)(199004)(316002)(102836004)(486006)(44832011)(8676002)(8936002)(26005)(478600001)(6436002)(42882007)(81166006)(476003)(76176011)(2906002)(305945005)(97736004)(33656002)(81156014)(446003)(186003)(54906003)(105586002)(74316002)(229853002)(99286004)(106356001)(7736002)(386003)(11346002)(14454004)(6506007)(3846002)(6116002)(66066001)(7696005)(68736007)(4326008)(4744005)(71190400001)(6916009)(6246003)(55016002)(52116002)(14444005)(53936002)(9686003)(256004)(25786009)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1487;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(346002)(39850400004)(366004)(376002)(136003)(189003)(199004)(386003)(6506007)(2906002)(102836004)(4744005)(97736004)(105586002)(8936002)(6116002)(3846002)(33716001)(7416002)(256004)(476003)(1411001)(446003)(26005)(25786009)(1076003)(305945005)(11346002)(8676002)(81166006)(186003)(66066001)(106356001)(81156014)(42882007)(6916009)(52116002)(9686003)(6512007)(486006)(6246003)(14454004)(99286004)(6436002)(4326008)(58126008)(53936002)(478600001)(76176011)(33896004)(39060400002)(44832011)(7736002)(71190400001)(71200400001)(68736007)(316002)(6486002)(54906003)(229853002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1582;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 4kQ4Fz/uIR/ga/EcTtxkHTPg0cxCGTD9GIiqcQCRJowYh9CIUKy8ppBznYZMkOVmzg24kythRAczbK6TSXPt1edfNW2LBeex985PuR8X8ZJQDCpX/EuQY0B/hLETLCMvbZlWh0McRPIMxIDYnrNOOyAK4nphkDsmBBfkHQGrHwkEpLpKKd8CIJme/dFueVvy4zuR0kSYsN3FNg2n4zTZQ0lNVKYZp3qr8w0KF91ogS7bHXq7NXHS2AoQwshLtc9cxjk+z8L8TfZ+R483tzrycgCkg5DxLLWVjB11aUi2sdfPl8Slw64zXsbV0cHEsldEZB8GvFwIZl+aA5WSBQDhcj231A9J3nEDL2dX5ujL7FvTm/BIpnvE0SWFPilyd+uZCmDus9eeD2rpoHHQM1CWtQh2m+u63fDARekaHojANq4=
-Content-Type: text/plain; charset="iso-8859-1"
+x-microsoft-antispam-message-info: +eRIWNlwAM61e8BwR4iQFudLnssU1OOz+mGTJckCuSXZhBuNCI3fm7Y45ttIrKas1NWPnp8Gf8t0hqN7SCgszDU3sgFAAvx+UqY9lwjg+bUMv8/2cD0xGhqkG5Ul3tl0xF7nk+fPLFd5O8FWqZ4RdLx5XHpW7goxUjY9LFxa8R2zOJCFY/tCWzDKB57gdtLa4t+skaNgaGXtX7JfMt3lvdiJro+C2Rlv+KtJE2uv/afuv8ypm2bvhAFGPUKnjgUXiD6rZxjbX0s0nNOY2lAtKN+pO3sq6T5DK7L3o4kU4lyxaRQmWtcTpftl+/3espeT30i2Opj3L2IGHY8s6UKXeDabWaHzkiuxyEZPZUjRXtcBaMeiva7Zztr4nfa+4WTaJDxvdRnQqD0OYsYhEG5iZV8LlZ1j0LkXAct0lsFfAOA=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <335B6EC3D6EAD047885765D40FEEF4B3@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19b257af-1df5-4de0-428a-08d686232d46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2019 19:51:36.0435
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbd46eba-dc03-459d-7de8-08d686259f7d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2019 20:09:06.6592
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1487
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1582
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Hi Nishad,
 
-Aaro Koskinen wrote:
-> SMI/MDIO enable is handled by the OCTEON MDIO driver, so we can delete
-> the duplicated functionality from the platform code.
+On Tue, Jan 29, 2019 at 08:55:27PM +0530, Nishad Kamdar wrote:
+> This patch selects config PINCTRL_RT2880 when config RALINK is
+> enabled as per drivers/staging/mt7621-pinctrl/TODO list. PINCTRL
+> is also selected when RALINK is enabled to avoid config dependency
+> warnings.
 >=20
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
+> ---
+>  arch/mips/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index e2fc88da0223..cea529cf6284 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -623,6 +623,8 @@ config RALINK
+>  	select CLKDEV_LOOKUP
+>  	select ARCH_HAS_RESET_CONTROLLER
+>  	select RESET_CONTROLLER
+> +	select PINCTRL
+> +	select PINCTRL_RT2880
+> =20
+>  config SGI_IP22
+>  	bool "SGI IP22 (Indy/Indigo2)"
 
-Series applied to mips-next.
+Wouldn't this also require selecting STAGING? Perhaps that's why it
+wasn't done in the first place?
 
 Thanks,
     Paul
-
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]

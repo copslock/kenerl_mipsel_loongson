@@ -2,93 +2,100 @@ Return-Path: <SRS0=QFq2=QF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 731A4C282C7
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 10:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1CE6C169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:24:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5035820869
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 10:29:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6CDAE21848
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:24:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728393AbfA2K3a (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 05:29:30 -0500
-Received: from ozlabs.org ([203.11.71.1]:38999 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726997AbfA2K33 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 05:29:29 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 43pjR63G0Gz9sNG;
-        Tue, 29 Jan 2019 21:29:22 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Zhou <dennis@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Mark Salter <msalter@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michal Simek <monstr@monstr.eu>,
+        id S1726374AbfA2PYu convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 10:24:50 -0500
+Received: from mx2.suse.de ([195.135.220.15]:55602 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725730AbfA2PYu (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 10:24:50 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 4E1A3ADBC;
+        Tue, 29 Jan 2019 15:24:47 +0000 (UTC)
+Date:   Tue, 29 Jan 2019 16:24:45 +0100
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Paul Burton <paul.burton@mips.com>,
-        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
-        Richard Weinberger <richard@nod.at>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        devicetree@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
-        xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 09/21] memblock: drop memblock_alloc_base()
-In-Reply-To: <1548057848-15136-10-git-send-email-rppt@linux.ibm.com>
-References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-10-git-send-email-rppt@linux.ibm.com>
-Date:   Tue, 29 Jan 2019 21:29:19 +1100
-Message-ID: <87sgxbrc3k.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 6/7] MIPS: SGI-IP27: use generic PCI driver
+Message-Id: <20190129162445.8584b58862068c0a7693718c@suse.de>
+In-Reply-To: <20190128133215.GC744@infradead.org>
+References: <20190124174728.28812-1-tbogendoerfer@suse.de>
+        <20190124174728.28812-7-tbogendoerfer@suse.de>
+        <20190128133215.GC744@infradead.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Mike Rapoport <rppt@linux.ibm.com> writes:
+On Mon, 28 Jan 2019 05:32:15 -0800
+Christoph Hellwig <hch@infradead.org> wrote:
 
-> The memblock_alloc_base() function tries to allocate a memory up to the
-> limit specified by its max_addr parameter and panics if the allocation
-> fails. Replace its usage with memblock_phys_alloc_range() and make the
-> callers check the return value and panic in case of error.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/rtas.c      |  6 +++++-
->  arch/powerpc/mm/hash_utils_64.c |  8 ++++++--
->  arch/s390/kernel/smp.c          |  6 +++++-
->  drivers/macintosh/smu.c         |  2 +-
->  include/linux/memblock.h        |  2 --
->  mm/memblock.c                   | 14 --------------
->  6 files changed, 17 insertions(+), 21 deletions(-)
+> > +#ifdef CONFIG_NUMA
+> > +int pcibus_to_node(struct pci_bus *bus)
+> > +{
+> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
+> > +
+> > +	return bc->nasid;
+> > +}
+> > +EXPORT_SYMBOL(pcibus_to_node);
+> > +#endif /* CONFIG_NUMA */
+> 
+> From an abstraction point of view this doesn't really belong into
+> a bridge driver as it is a global exported function.  I guess we can
+> keep it here with a fixme comment, but we should probably move this
+> into a method call instead.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+or put the nodeid into the bus struct ?
 
-cheers
+> > +dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+> > +{
+> > +	struct pci_dev *pdev = to_pci_dev(dev);
+> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
+> > +
+> > +	return bc->baddr + paddr;
+> > +}
+> > +
+> > +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+> > +{
+> > +	return dma_addr & ~(0xffUL << 56);
+> > +}
+> 
+> Similarly here - these are global platform-wide hooks, so having them
+> in a pci bridge driver is not the proper abstraction level.
+> 
+> Note that we could probably fix these by just switching IP27 and
+> other users of the bridge chip to use the dma_pfn_offset field
+> in struct device and stop overriding these functions.
+
+I'm all for it. I looked at the examples for using dma_pfn_offset and the
+only one coming close to usefull for me is arch/sh/drivers/pci/pcie-sh7786.c
+It overloads pcibios_bus_add_device() to set dma_pfn_offset, which doesn't
+look much nicer. What about having a dma_pfn_offset in struct pci_bus
+which all device inherit from ?
+
+Thomas.
+
+-- 
+SUSE Linux GmbH
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

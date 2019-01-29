@@ -3,27 +3,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F964C282C7
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:58:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 731A4C282C7
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 10:29:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7707A20870
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:58:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5035820869
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 10:29:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726060AbfA2J6T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 04:58:19 -0500
-Received: from ozlabs.org ([203.11.71.1]:48469 "EHLO ozlabs.org"
+        id S1728393AbfA2K3a (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 05:29:30 -0500
+Received: from ozlabs.org ([203.11.71.1]:38999 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725536AbfA2J6T (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 04:58:19 -0500
+        id S1726997AbfA2K33 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 05:29:29 -0500
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 43phlB1Pcgz9sMM;
-        Tue, 29 Jan 2019 20:58:14 +1100 (AEDT)
+        by ozlabs.org (Postfix) with ESMTPSA id 43pjR63G0Gz9sNG;
+        Tue, 29 Jan 2019 21:29:22 +1100 (AEDT)
 From:   Michael Ellerman <mpe@ellerman.id.au>
 To:     Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -60,11 +60,11 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
         xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 06/21] memblock: memblock_phys_alloc_try_nid(): don't panic
-In-Reply-To: <87y373rdll.fsf@concordia.ellerman.id.au>
-References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-7-git-send-email-rppt@linux.ibm.com> <87y373rdll.fsf@concordia.ellerman.id.au>
-Date:   Tue, 29 Jan 2019 20:58:13 +1100
-Message-ID: <87va27rdje.fsf@concordia.ellerman.id.au>
+Subject: Re: [PATCH v2 09/21] memblock: drop memblock_alloc_base()
+In-Reply-To: <1548057848-15136-10-git-send-email-rppt@linux.ibm.com>
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-10-git-send-email-rppt@linux.ibm.com>
+Date:   Tue, 29 Jan 2019 21:29:19 +1100
+Message-ID: <87sgxbrc3k.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
@@ -72,28 +72,23 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+Mike Rapoport <rppt@linux.ibm.com> writes:
 
-> Mike Rapoport <rppt@linux.ibm.com> writes:
+> The memblock_alloc_base() function tries to allocate a memory up to the
+> limit specified by its max_addr parameter and panics if the allocation
+> fails. Replace its usage with memblock_phys_alloc_range() and make the
+> callers check the return value and panic in case of error.
 >
->> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
->> index ae34e3a..2c61ea4 100644
->> --- a/arch/arm64/mm/numa.c
->> +++ b/arch/arm64/mm/numa.c
->> @@ -237,6 +237,10 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
->>  		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
->>  
->>  	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
->> +	if (!nd_pa)
->> +		panic("Cannot allocate %zu bytes for node %d data\n",
->> +		      nd_size, nid);
->> +
->>  	nd = __va(nd_pa);
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/rtas.c      |  6 +++++-
+>  arch/powerpc/mm/hash_utils_64.c |  8 ++++++--
+>  arch/s390/kernel/smp.c          |  6 +++++-
+>  drivers/macintosh/smu.c         |  2 +-
+>  include/linux/memblock.h        |  2 --
+>  mm/memblock.c                   | 14 --------------
+>  6 files changed, 17 insertions(+), 21 deletions(-)
 
-Wrong hunk, O_o
-
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-You know what I mean though :)
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers

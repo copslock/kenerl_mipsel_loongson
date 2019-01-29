@@ -2,100 +2,106 @@ Return-Path: <SRS0=QFq2=QF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1CE6C169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38F91C169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:25:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6CDAE21848
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:24:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0965821848
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 15:25:38 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfbYOAd9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726374AbfA2PYu convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 10:24:50 -0500
-Received: from mx2.suse.de ([195.135.220.15]:55602 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725730AbfA2PYu (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 10:24:50 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 4E1A3ADBC;
-        Tue, 29 Jan 2019 15:24:47 +0000 (UTC)
-Date:   Tue, 29 Jan 2019 16:24:45 +0100
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        id S1727824AbfA2PZh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 10:25:37 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:38976 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfA2PZh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 29 Jan 2019 10:25:37 -0500
+Received: by mail-pg1-f193.google.com with SMTP id w6so8874096pgl.6;
+        Tue, 29 Jan 2019 07:25:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=jsK7RsBEyiyXYTpRVcowXJMK7pXPpcPrFLCk40abBLw=;
+        b=JfbYOAd9w1R0YskrDDeyQNsO9kI+q1OcdSDx7Cx6J8BuPlWgBVeTM1ibP2IpmiW6ON
+         9UtUyZXufaWu4Qox8H+21ALp9lp2b0PIPm2Ab7u/A5Q/g0kV2n+PCoLmuJU4P6j3CJEx
+         ZRxF/2bZz/H/nxFI0Wu8SAHDNEGTbUjSyNsBRUnglupkTD3BUXF2WYHWXeMIVvYMkCp7
+         lzncsH7LI6OUcMXp+Yy4wh5Om+sLTrRsqlaa4VFze/fA80ZkKcLnfnQYIO6F0B0hsbJz
+         bEGpafa3BREIm56KCYy3Tnp2A7af3U/C1FMkKHrtsUKIDNJHYJ108zy6ELFFZQhQYtlQ
+         PxkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=jsK7RsBEyiyXYTpRVcowXJMK7pXPpcPrFLCk40abBLw=;
+        b=mcf8oNg2Rxn4sXyy44h14JuahgHrQcb/KQijKk3kGRVG5aML8bgbzi2x7/k1WuOeAD
+         wAHa9tyhnwSCfvCAowd65kU+x1hdyTZI7gp85wa88AEGs3TjuKYYaAUOsvXSif4wKbX8
+         jHzzYCxQGImPVUwHfE8W/fldKJaw+RhEtlzuuCH7c/M+ooaBFvAPq67mY6KD0Kf/lgov
+         tCuTcpL0CLxtvEyhkZS7yf8nhI5HHjcg83NveCFbB8Cc0Bpp7jI0vC37RljbKXzGoDsN
+         On+qmOdzVoZYPmNANIYCz7JAQtC12Ke6djM08JW3ORq+wop+TF0+VRIOKw1IEsEcJ4mk
+         I9vA==
+X-Gm-Message-State: AJcUukfmbvrfIzP3az4oI0YTNUrBlFsB6625acUog6ojahquVMbc+zjJ
+        VTcWUw1JArTgzW549K+Ov/U=
+X-Google-Smtp-Source: ALg8bN5AgA8PsSPz1nkOdfK2fC65cTO5rmnS2/nTWF9DHP3MT5Cpdop30c9e2tkykwksKYVBbZ6+hA==
+X-Received: by 2002:a63:5026:: with SMTP id e38mr24165629pgb.123.1548775536671;
+        Tue, 29 Jan 2019 07:25:36 -0800 (PST)
+Received: from nishad ([106.51.25.107])
+        by smtp.gmail.com with ESMTPSA id l5sm57380459pgu.86.2019.01.29.07.25.30
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 29 Jan 2019 07:25:36 -0800 (PST)
+Date:   Tue, 29 Jan 2019 20:55:27 +0530
+From:   Nishad Kamdar <nishadkamdar@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        NeilBrown <neil@brown.name>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 6/7] MIPS: SGI-IP27: use generic PCI driver
-Message-Id: <20190129162445.8584b58862068c0a7693718c@suse.de>
-In-Reply-To: <20190128133215.GC744@infradead.org>
-References: <20190124174728.28812-1-tbogendoerfer@suse.de>
-        <20190124174728.28812-7-tbogendoerfer@suse.de>
-        <20190128133215.GC744@infradead.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+        James Hogan <jhogan@kernel.org>, Joe Perches <joe@perches.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
+        Nishad Kamdar <nishadkamdar@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Select PINCTRL_RT2880 when RALINK is enabled
+Message-ID: <20190129152522.GA24872@nishad>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, 28 Jan 2019 05:32:15 -0800
-Christoph Hellwig <hch@infradead.org> wrote:
+This patch selects config PINCTRL_RT2880 when config RALINK is
+enabled as per drivers/staging/mt7621-pinctrl/TODO list. PINCTRL
+is also selected when RALINK is enabled to avoid config dependency
+warnings.
 
-> > +#ifdef CONFIG_NUMA
-> > +int pcibus_to_node(struct pci_bus *bus)
-> > +{
-> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
-> > +
-> > +	return bc->nasid;
-> > +}
-> > +EXPORT_SYMBOL(pcibus_to_node);
-> > +#endif /* CONFIG_NUMA */
-> 
-> From an abstraction point of view this doesn't really belong into
-> a bridge driver as it is a global exported function.  I guess we can
-> keep it here with a fixme comment, but we should probably move this
-> into a method call instead.
+Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
+---
+ arch/mips/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-or put the nodeid into the bus struct ?
-
-> > +dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
-> > +{
-> > +	struct pci_dev *pdev = to_pci_dev(dev);
-> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
-> > +
-> > +	return bc->baddr + paddr;
-> > +}
-> > +
-> > +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
-> > +{
-> > +	return dma_addr & ~(0xffUL << 56);
-> > +}
-> 
-> Similarly here - these are global platform-wide hooks, so having them
-> in a pci bridge driver is not the proper abstraction level.
-> 
-> Note that we could probably fix these by just switching IP27 and
-> other users of the bridge chip to use the dma_pfn_offset field
-> in struct device and stop overriding these functions.
-
-I'm all for it. I looked at the examples for using dma_pfn_offset and the
-only one coming close to usefull for me is arch/sh/drivers/pci/pcie-sh7786.c
-It overloads pcibios_bus_add_device() to set dma_pfn_offset, which doesn't
-look much nicer. What about having a dma_pfn_offset in struct pci_bus
-which all device inherit from ?
-
-Thomas.
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e2fc88da0223..cea529cf6284 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -623,6 +623,8 @@ config RALINK
+ 	select CLKDEV_LOOKUP
+ 	select ARCH_HAS_RESET_CONTROLLER
+ 	select RESET_CONTROLLER
++	select PINCTRL
++	select PINCTRL_RT2880
+ 
+ config SGI_IP22
+ 	bool "SGI IP22 (Indy/Indigo2)"
 -- 
-SUSE Linux GmbH
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+2.17.1
+

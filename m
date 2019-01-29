@@ -6,85 +6,79 @@ X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 069DBC169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA935C169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C9FE32080F
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8CF692080F
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 19:51:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="HH2GSXTt"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="lTQr+ywv"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729253AbfA2Tvh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 14:51:37 -0500
-Received: from mail-eopbgr820135.outbound.protection.outlook.com ([40.107.82.135]:63648
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        id S1729264AbfA2Tvk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 14:51:40 -0500
+Received: from mail-eopbgr730093.outbound.protection.outlook.com ([40.107.73.93]:24903
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729244AbfA2Tvh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 14:51:37 -0500
+        id S1729244AbfA2Tvk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 14:51:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uJZ4f21xRmsMSaqeujR8lwjdPLpc5oOzoRhrTZp9nFw=;
- b=HH2GSXTt+SnVmJXXODLYBEnauXoXGGm1EGSCJtEuVzAXnqodKYy9P2Fj9/prF93N5B+KysunuNrdcDx8Clcxl98XxZMLVdiPJcwtbRDCk2dnwCg/88BNeWECsWx3JHXRkvcI73vqPlcV6U0L9wFDNA56zPoEgCZEt3IrHKWPKak=
+ bh=12shLTRGVC8JFRRag4QENMGpCGsV1/LiQbORHgsLdWI=;
+ b=lTQr+ywvHPTu9IE2QWiSuzvCyfdOaHZFdgS3sq6wnaLNRuVt+NUoM7azBKhcbBUSp/zpevwwGyv5/WwjWGz/P9KWEwPEmB40dJCmi2CJoXplX+TT2msSDJw7IroLkrZ6APKRebHF8KmwfcuCI87j/Y9W8bULNlIkydLT654UInE=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1054.namprd22.prod.outlook.com (10.174.169.140) with Microsoft
+ MWHPR2201MB1487.namprd22.prod.outlook.com (10.174.170.148) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1580.16; Tue, 29 Jan 2019 19:51:32 +0000
+ 15.20.1558.21; Tue, 29 Jan 2019 19:51:36 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1558.023; Tue, 29 Jan 2019
- 19:51:31 +0000
+ 19:51:36 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Burton <pburton@wavecomp.com>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: VDSO: Include $(ccflags-vdso) in o32,n32 .lds
- builds
-Thread-Topic: [PATCH] MIPS: VDSO: Include $(ccflags-vdso) in o32,n32 .lds
- builds
-Thread-Index: AQHUt197+z06kmnkZECwkX3QHAg4ZKXGqU8A
-Date:   Tue, 29 Jan 2019 19:51:31 +0000
-Message-ID: <MWHPR2201MB127720F85FCC9A1661940E2FC1970@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190128231518.31459-1-paul.burton@mips.com>
-In-Reply-To: <20190128231518.31459-1-paul.burton@mips.com>
+Subject: Re: [PATCH 1/2] MIPS: OCTEON: delete SMI/MDIO enable
+Thread-Topic: [PATCH 1/2] MIPS: OCTEON: delete SMI/MDIO enable
+Thread-Index: AQHUtn5oeKW1vWYFBUeUuzanuFMPQqXGqxeA
+Date:   Tue, 29 Jan 2019 19:51:36 +0000
+Message-ID: <MWHPR2201MB1277B6574ADFF3E7FA56B174C1970@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190127202431.7107-1-aaro.koskinen@iki.fi>
+In-Reply-To: <20190127202431.7107-1-aaro.koskinen@iki.fi>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0058.namprd02.prod.outlook.com
- (2603:10b6:a03:54::35) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: MWHPR02CA0047.namprd02.prod.outlook.com
+ (2603:10b6:301:60::36) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1054;6:g1ZtJq9z6sY/oVmjdAMgoideySh1l01EdGS6l0E0yytlCKRuXAmxZObKE25CuiVihEh9kASAh2SoFvae+hPSiRv78vBvA7QsNhRwU3yfTtS7K5JY5fyYbephUCNQyMVPf/VNz3Y9oEsaos7K6hYM1jt3QHYLsgN7GYQJXgOuIrKKsMc4p/eJVzDWqaP7HVl+RufjPxbFMLXajO4tCB6kh/JgDDpCocjHYHObwg0XRFbq3KuFUclrYas2xO1bAgDdKEW4TPpY2mMYTrbQxbbpTMon9oIWmwT1kiZcZSisjH7HUJ7p3GoSf4Na0oKXeRwlJrusyin4kvNRLsIHhj1YfmGGCqQk/G6JsJ7G6UycCtlxhB62ARcL2BWkkYs2AMBtOYTNy0keAoy+nTJfWXRSK2kiCVuZ50z0cBSxdr9wv9kHQd7/N+GJvhLgQLSrMZYK9aRFLUr40JqS+zcNLKEvZQ==;5:926EVWo+1nun7GLJF1/Lm/6xXDa/B9yWHqg05yVrx3uJeWlr+hb5/4VHh6SBwzO6JUcwqwR/sW7s56jSkx5aUk7rH0EatIkb243WXFjvd1S4tF2V1RP5/5eeAASDX8mp4T4nfxNx0YKK2UYHnVWguSUQMkiU4WSIS8lfaIF1NdMLz45pStqJFrEmeJgYU7pdCaLFN4opEiXVvWzg6+3vlA==;7:luQxGkPUbvo0funzPsuENeWisjuwIJH8BGs9L/+GU2QUVCxkQywvMKtkSLshgWgtzhnRkRez36wwGJufnN8ZaDaIFHJrPQ+dyZBKJXiulRCzcKklA/8eCt6hsroBsoHVV4cngPddPqrsK/rVbAOUkw==
-x-ms-office365-filtering-correlation-id: daf777a4-8d94-4b96-a015-08d686232a97
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1054;
-x-ms-traffictypediagnostic: MWHPR2201MB1054:
-x-microsoft-antispam-prvs: <MWHPR2201MB10542DD97FF3C3F5757279F7C1970@MWHPR2201MB1054.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1487;6:fE5TRosTP8p4HQ5+3m+9koM7wgI9CbYoRJNvJwCvXzWpUee3YKEftCKeTAfCfhRq/KxGleiXXFxRB8i+O8CdjlMFdJk0j1giedoSJjEk5hkQL8v0g4BQdm4eoXeV/M+Ip1TLqlUGSt2Od3+y8X3w5XuJJFOIzrG8kWk+Do4rpOy2k0MpFGlGVYC21r3XsHeHVpTIqcrOWBol7mefrmVCMSWkO3XOWdVyYvj5eVuTrpSCunr6h+BCX9nuQPhX8sho2C+nQ/fqJY1q2Ez9RQXinOUQp1Lv/A8bt9ZifGWgWp9vM2OuSSvi7uiXoiRzzlp+shI6gjL2bdcmud1OrE26mPb9pimdh1wzIkaKhGQSTrPaUJFeGzMozB6FN/RvYoJgd8/WAyCdnyCYuRgnjiHti3PnM4edphz/xFjl38Vyhyw6kESkUIE9CI/tsyO3ha2Abw2Nqj8hD/j95VkWudyXaQ==;5:18bn2S/fSn+VCgU/Spph1ojJf7Q/r7hpQ//6hO9BrCwktraBRHaRNhGuqI9MoKJbIUpfkJIzp0pzfEB/ZXviRcG7+d9do5IKy08YFqdrWSNGQkE/U175IbY88EtAt8hd1BCerOysdqVEM/unkmg5q5nUaz5CL0B1rg/gdUjsiig1BmcVVIjNk61xNB8SGwrAZ3HZPR8zi5AoZ+zs8sAeBA==;7:68g+2Swr5/xcJ9Kco45xI5MmIZ12EzwpyW8PoxoeJH/9TcXE7DggRJkHWXFqndyvV5/06BvFYh8TCXiGi0BApAnOat+WW3tnpJcQ4+0WIvDRQaTcDMNCCpw+zoxRK5+JD1HwAYsvNEtvVAiuSUO/GQ==
+x-ms-office365-filtering-correlation-id: 19b257af-1df5-4de0-428a-08d686232d46
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1487;
+x-ms-traffictypediagnostic: MWHPR2201MB1487:
+x-microsoft-antispam-prvs: <MWHPR2201MB14873A6C11FAC63313916025C1970@MWHPR2201MB1487.namprd22.prod.outlook.com>
 x-forefront-prvs: 093290AD39
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(396003)(39850400004)(346002)(366004)(376002)(136003)(199004)(189003)(54906003)(2906002)(8936002)(476003)(105586002)(446003)(97736004)(26005)(11346002)(7736002)(106356001)(486006)(55016002)(71190400001)(71200400001)(9686003)(102836004)(74316002)(6862004)(6436002)(33656002)(386003)(256004)(42882007)(6506007)(14444005)(44832011)(8676002)(305945005)(6246003)(316002)(53936002)(68736007)(7696005)(14454004)(76176011)(52116002)(4326008)(81166006)(229853002)(25786009)(99286004)(66066001)(81156014)(6116002)(186003)(478600001)(3846002)(142923001)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1054;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(396003)(39840400004)(366004)(136003)(189003)(199004)(316002)(102836004)(486006)(44832011)(8676002)(8936002)(26005)(478600001)(6436002)(42882007)(81166006)(476003)(76176011)(2906002)(305945005)(97736004)(33656002)(81156014)(446003)(186003)(54906003)(105586002)(74316002)(229853002)(99286004)(106356001)(7736002)(386003)(11346002)(14454004)(6506007)(3846002)(6116002)(66066001)(7696005)(68736007)(4326008)(4744005)(71190400001)(6916009)(6246003)(55016002)(52116002)(14444005)(53936002)(9686003)(256004)(25786009)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1487;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: pzg61IPolLkB8mQLqrpf5aKhSAY+sA7+H3UqbSo4e4wH8l8dT8NHPU2DRQ5MlPTZXR02wUk+fgDLQNYPDJASav+6luufTaCCoo4yUvp7nYoANQ9GRlGSw4O5ZNTArIwN7GA+mUsaaX47pVqs/gpWkfKBHE7lIA6YGiTDaSXz6UhUNQZQqXhn5IvBJ7ZjlPzhfRJVUcERlT39x2kab9eLMVj5/hwrqzqPXJEepOzvfaf0jvJ0xv9C04fGcbBbkNs+EdgbFVV2Zz+tFbXwYO5qsRwcjRxxjAsaNu0TMHMdJ4RnObxRdXFBq24P4jLoXbGGX3/p09bBcHAC17JIDMLHZEmjVypnuHcAquy2YaVeyeIsYyJWAGWEo8hCHcjXKvHxJ4pC7d7IAjF/7t8fhvqnJo3zEFU4QFj2r/N1EbXpyik=
+x-microsoft-antispam-message-info: 4kQ4Fz/uIR/ga/EcTtxkHTPg0cxCGTD9GIiqcQCRJowYh9CIUKy8ppBznYZMkOVmzg24kythRAczbK6TSXPt1edfNW2LBeex985PuR8X8ZJQDCpX/EuQY0B/hLETLCMvbZlWh0McRPIMxIDYnrNOOyAK4nphkDsmBBfkHQGrHwkEpLpKKd8CIJme/dFueVvy4zuR0kSYsN3FNg2n4zTZQ0lNVKYZp3qr8w0KF91ogS7bHXq7NXHS2AoQwshLtc9cxjk+z8L8TfZ+R483tzrycgCkg5DxLLWVjB11aUi2sdfPl8Slw64zXsbV0cHEsldEZB8GvFwIZl+aA5WSBQDhcj231A9J3nEDL2dX5ujL7FvTm/BIpnvE0SWFPilyd+uZCmDus9eeD2rpoHHQM1CWtQh2m+u63fDARekaHojANq4=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: daf777a4-8d94-4b96-a015-08d686232a97
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2019 19:51:31.5436
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19b257af-1df5-4de0-428a-08d686232d46
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2019 19:51:36.0435
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1054
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1487
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -92,31 +86,13 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hello,
 
-Paul Burton wrote:
-> When generating vdso-o32.lds & vdso-n32.lds for use with programs
-> running as compat ABIs under 64b kernels, we previously haven't included
-> the compiler flags that are supposedly common to all ABIs - ie. those in
-> the ccflags-vdso variable.
+Aaro Koskinen wrote:
+> SMI/MDIO enable is handled by the OCTEON MDIO driver, so we can delete
+> the duplicated functionality from the platform code.
 >=20
-> This is problematic in cases where we need to provide the -m%-float flag
-> in order to ensure that we don't attempt to use a floating point ABI
-> that's incompatible with the target CPU & ABI. For example a toolchain
-> using current gcc trunk configured --with-fp-32=3Dxx fails to build a
-> 64r6el_defconfig kernel with the following error:
->=20
-> cc1: error: '-march=3Dmips1' requires '-mfp32'
-> make[2]: *** [arch/mips/vdso/Makefile:135: arch/mips/vdso/vdso-o32.lds] E=
-rror 1
->=20
-> Include $(ccflags-vdso) for the compat VDSO .lds builds, just as it is
-> included for the native VDSO .lds & when compiling objects for the
-> compat VDSOs. This ensures we consistently provide the -msoft-float flag
-> amongst others, avoiding the problem by ensuring we're agnostic to the
-> toolchain defaults.
->=20
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Applied to mips-fixes.
+Series applied to mips-next.
 
 Thanks,
     Paul

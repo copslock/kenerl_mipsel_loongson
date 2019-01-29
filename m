@@ -2,68 +2,71 @@ Return-Path: <SRS0=QFq2=QF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A64D8C169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 08:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80E49C169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:52:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 72FC2214DA
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 08:48:44 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20150623.gappssmtp.com header.i=@baylibre-com.20150623.gappssmtp.com header.b="bsCX9wum"
+	by mail.kernel.org (Postfix) with ESMTP id 595F32177E
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:52:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725601AbfA2Iso (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 03:48:44 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:39058 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725298AbfA2Iso (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 29 Jan 2019 03:48:44 -0500
-Received: by mail-wm1-f66.google.com with SMTP id y8so16712041wmi.4
-        for <linux-mips@vger.kernel.org>; Tue, 29 Jan 2019 00:48:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=AaSFeRpsz9hY5VgVHJfh99EOJhLu4T8KSsOuMiN9rtg=;
-        b=bsCX9wum1V37xrILImhlz+b8q1N0XjJVl4LtffOVS92jc4gqQ1ahRWKTwnvyD+v4eX
-         tboQS8fDyKtPxikjmfTfioQKyQLbLuiofB1x4W7mX7hGrKfDzrxUG/1hRO+e1uvPtIha
-         Cen73PV0kDtU24B6ZT0p6nbXl8iVM5SAdFjgghVMvSper02jI2ZOMhvSrtVNMZPF5hYh
-         qR8x5dFRVHRbn4pzR0eYgvfleuCOhFsehjPkhvP1+a0cb0OhvdR/blJLXwW1E3ty8kYW
-         k7LpdXLTfd4se/N8a3766RamP6lm5jAuYsyw1SEI3AkRhQwLPqAAyZ/SVRlUGMIetu+u
-         bf0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=AaSFeRpsz9hY5VgVHJfh99EOJhLu4T8KSsOuMiN9rtg=;
-        b=lugmYK5s8zRnULiOayF6GRSbXO4+Um55LZ2QpcXKGBTZFOZnp6oJ+qBD2sQFKleaQx
-         +Cu6p7TdC/fjzp1TniT4wz2E4VppXJIzi/3TfZgjnuVyPGTQWtNt75YSYEFHp7UqOCe0
-         nnWB6ai/tBRrwq7zmzCY02V+UbRrB0WeUrMopmBl6uEJp3nDHFS7ShGHd6Skm8Jcpm1q
-         wKtIkMJWoR8+iDd25w/+bP4Mut25IbUjM1eDxu2dQAm5YZk4GhctJuVMCxg0nLR4p0Hu
-         p22hA5ADVQq1uc+CqqcMZbWwhOer5TEM+NKs9HF/jW85+h/T/ooCA0SPD9N14AuIZkVK
-         97Tw==
-X-Gm-Message-State: AJcUukcb+HxFnOoUgS/8pz/4Is4qnn67AvXh+0cVUmJ0xNCGIyNk42ul
-        5CSpBXfwKFyPsTG0Fzpov3vP2MJtZZChSg==
-X-Google-Smtp-Source: ALg8bN40378QL9nTZQna63Q73k82t05CtpE0K/4TkgoVzzJ+hCzO3LGaXJ6nFkEKCqI33wLhYslpEw==
-X-Received: by 2002:a1c:7d06:: with SMTP id y6mr19910343wmc.7.1548751722039;
-        Tue, 29 Jan 2019 00:48:42 -0800 (PST)
-Received: from localhost (aputeaux-684-1-12-29.w90-86.abo.wanadoo.fr. [90.86.215.29])
-        by smtp.googlemail.com with ESMTPSA id y34sm310125474wrd.68.2019.01.29.00.48.40
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 29 Jan 2019 00:48:41 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Paul Burton <paul.burton@mips.com>,
-        "linux-mips\@vger.kernel.org" <linux-mips@vger.kernel.org>
-Cc:     Paul Burton <pburton@wavecomp.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH] MIPS: VDSO: Use same -m%-float cflag as the kernel proper
-In-Reply-To: <20190128222106.19100-1-paul.burton@mips.com>
-References: <20190128222106.19100-1-paul.burton@mips.com>
-Date:   Tue, 29 Jan 2019 09:48:40 +0100
-Message-ID: <7h8sz3rgrb.fsf@baylibre.com>
+        id S1727467AbfA2Jwf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 04:52:35 -0500
+Received: from ozlabs.org ([203.11.71.1]:35429 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727039AbfA2Jwe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 04:52:34 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 43phcK6Xzfz9s9h;
+        Tue, 29 Jan 2019 20:52:17 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dennis Zhou <dennis@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Burton <paul.burton@mips.com>,
+        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        devicetree@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
+        xen-devel@lists.xenproject.org,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v2 02/21] powerpc: use memblock functions returning virtual address
+In-Reply-To: <1548057848-15136-3-git-send-email-rppt@linux.ibm.com>
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-3-git-send-email-rppt@linux.ibm.com>
+Date:   Tue, 29 Jan 2019 20:52:17 +1100
+Message-ID: <871s4vssdq.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
@@ -71,40 +74,31 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Paul Burton <paul.burton@mips.com> writes:
+Mike Rapoport <rppt@linux.ibm.com> writes:
 
-> The MIPS VDSO build currently doesn't provide the -msoft-float flag to
-> the compiler as the kernel proper does. This results in an attempt to
-> use the compiler's default floating point configuration, which can be
-> problematic in cases where this is incompatible with the target CPU's
-> -march= flag. For example decstation_defconfig fails to build using
-> toolchains in which gcc was configured --with-fp-32=xx with the
-> following error:
+> From: Christophe Leroy <christophe.leroy@c-s.fr>
 >
->     LDS     arch/mips/vdso/vdso.lds
->   cc1: error: '-march=r3000' requires '-mfp32'
->   make[2]: *** [scripts/Makefile.build:379: arch/mips/vdso/vdso.lds] Error 1
+> Since only the virtual address of allocated blocks is used,
+> lets use functions returning directly virtual address.
 >
-> The kernel proper avoids this error because we build with the
-> -msoft-float compiler flag, rather than using the compiler's default.
-> Pass this flag through to the VDSO build so that it too becomes agnostic
-> to the toolchain's floating point configuration.
+> Those functions have the advantage of also zeroing the block.
 >
-> Note that this is filtered out from KBUILD_CFLAGS rather than simply
-> always using -msoft-float such that if we switch the kernel to use
-> -mno-float in the future the VDSO will automatically inherit the change.
+> [ MR:
+>  - updated error message in alloc_stack() to be more verbose
+>  - convereted several additional call sites ]
 >
-> The VDSO doesn't actually include any floating point code, and its
-> .MIPS.abiflags section is already manually generated to specify that
-> it's compatible with any floating point ABI. As such this change should
-> have no effect on the resulting VDSO, apart from fixing the build
-> failure for affected toolchains.
->
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Reported-by: Kevin Hilman <khilman@baylibre.com>
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Cc: Maciej W. Rozycki <macro@linux-mips.org>
-> References: https://lore.kernel.org/linux-mips/1477843551-21813-1-git-send-email-linux@roeck-us.nets/
-> References: https://kernelci.org/build/id/5c4e4ae059b5142a249ad004/logs/
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/dt_cpu_ftrs.c |  3 +--
+>  arch/powerpc/kernel/irq.c         |  5 -----
+>  arch/powerpc/kernel/paca.c        |  6 +++++-
+>  arch/powerpc/kernel/prom.c        |  5 ++++-
+>  arch/powerpc/kernel/setup_32.c    | 26 ++++++++++++++++----------
+>  5 files changed, 26 insertions(+), 19 deletions(-)
 
-Tested-by: Kevin Hilman <khilman@baylibre.com>
+LGTM.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+
+cheers

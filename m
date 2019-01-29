@@ -3,27 +3,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80E49C169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B12FCC169C4
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:57:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 595F32177E
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:52:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8112220869
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Jan 2019 09:57:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727467AbfA2Jwf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Jan 2019 04:52:35 -0500
-Received: from ozlabs.org ([203.11.71.1]:35429 "EHLO ozlabs.org"
+        id S1727059AbfA2J47 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Jan 2019 04:56:59 -0500
+Received: from ozlabs.org ([203.11.71.1]:39591 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727039AbfA2Jwe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Jan 2019 04:52:34 -0500
+        id S1725810AbfA2J47 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Jan 2019 04:56:59 -0500
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 43phcK6Xzfz9s9h;
-        Tue, 29 Jan 2019 20:52:17 +1100 (AEDT)
+        by ozlabs.org (Postfix) with ESMTPSA id 43phjg3h9Pz9sDr;
+        Tue, 29 Jan 2019 20:56:55 +1100 (AEDT)
 From:   Michael Ellerman <mpe@ellerman.id.au>
 To:     Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -59,14 +59,12 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
-        xen-devel@lists.xenproject.org,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 02/21] powerpc: use memblock functions returning virtual address
-In-Reply-To: <1548057848-15136-3-git-send-email-rppt@linux.ibm.com>
-References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-3-git-send-email-rppt@linux.ibm.com>
-Date:   Tue, 29 Jan 2019 20:52:17 +1100
-Message-ID: <871s4vssdq.fsf@concordia.ellerman.id.au>
+        xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v2 06/21] memblock: memblock_phys_alloc_try_nid(): don't panic
+In-Reply-To: <1548057848-15136-7-git-send-email-rppt@linux.ibm.com>
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-7-git-send-email-rppt@linux.ibm.com>
+Date:   Tue, 29 Jan 2019 20:56:54 +1100
+Message-ID: <87y373rdll.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
@@ -76,29 +74,20 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Mike Rapoport <rppt@linux.ibm.com> writes:
 
-> From: Christophe Leroy <christophe.leroy@c-s.fr>
->
-> Since only the virtual address of allocated blocks is used,
-> lets use functions returning directly virtual address.
->
-> Those functions have the advantage of also zeroing the block.
->
-> [ MR:
->  - updated error message in alloc_stack() to be more verbose
->  - convereted several additional call sites ]
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/dt_cpu_ftrs.c |  3 +--
->  arch/powerpc/kernel/irq.c         |  5 -----
->  arch/powerpc/kernel/paca.c        |  6 +++++-
->  arch/powerpc/kernel/prom.c        |  5 ++++-
->  arch/powerpc/kernel/setup_32.c    | 26 ++++++++++++++++----------
->  5 files changed, 26 insertions(+), 19 deletions(-)
+> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+> index ae34e3a..2c61ea4 100644
+> --- a/arch/arm64/mm/numa.c
+> +++ b/arch/arm64/mm/numa.c
+> @@ -237,6 +237,10 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+>  		pr_info("Initmem setup node %d [<memory-less node>]\n", nid);
+>  
+>  	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> +	if (!nd_pa)
+> +		panic("Cannot allocate %zu bytes for node %d data\n",
+> +		      nd_size, nid);
+> +
+>  	nd = __va(nd_pa);
 
-LGTM.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers

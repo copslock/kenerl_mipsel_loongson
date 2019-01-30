@@ -2,124 +2,117 @@ Return-Path: <SRS0=qUQg=QG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8930BC282D7
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 14:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02986C282D8
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 16:41:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5B01F20855
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 14:26:15 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLYHa8w6"
+	by mail.kernel.org (Postfix) with ESMTP id C79C72087F
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 16:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1548866499;
+	bh=INKXaGtg/+0fOqPEPqdDp5qyFRb7znKg7z8o00GHa4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=eemReEAODR3oajBjNHq+E41uGjdiRwhxUPw1jWxv+9qIE9LeWccM4R/uXhOv2DqeZ
+	 //hrMNeD5D1esvtyrfEDJduSBT2EJgLwFuVPCJLGvqlY5OyvqkSPgOkq4rkg9DSetY
+	 /AZvh6eczljYgGYydbyVPbNW5aYUTmnXkwtTSqqw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbfA3O0P (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Jan 2019 09:26:15 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:41091 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726332AbfA3O0P (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Jan 2019 09:26:15 -0500
-Received: by mail-pl1-f193.google.com with SMTP id u6so11120223plm.8;
-        Wed, 30 Jan 2019 06:26:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=VM3p6/s4SVy5fZUAia87KEQ5MWuRdZWo7LUOAtBmQU0=;
-        b=nLYHa8w66+qrneKZnCCbqE31p44ZKWGoYR5IiBhfdXYWJkAa8uxeZe1/xbqBohz9FF
-         l3u/s74nE0bN8+lMvpbXmxM6SzQpMVRtYLDGC3JMMzgOVy3NB5swxxJAvcu/c8Iyz/BT
-         CxEcfa/ZYNw9pHkCYhmNMmhkA9IlPxh9n2+rThc9+Jo/qtJV8TFwp163z8o6H8iuidnT
-         t6UvNZwtjO8kgX0/816iYqYB6UB3m+DY5UhksR3Mq59zHpDWQZtW2+QOoyqP/iUqHoWl
-         vZQxwFV3RDrvVPpQaLYByZf3+Mwi31w2nZ0irehfrPCKbINzRrCKosixSJLP7/qbgf9r
-         GYQg==
+        id S1732227AbfA3Qlj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Jan 2019 11:41:39 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:41532 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731496AbfA3Qlj (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Jan 2019 11:41:39 -0500
+Received: by mail-oi1-f193.google.com with SMTP id j21so136279oii.8;
+        Wed, 30 Jan 2019 08:41:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=VM3p6/s4SVy5fZUAia87KEQ5MWuRdZWo7LUOAtBmQU0=;
-        b=dRydQwW34cF5xoX0zZB5MUFKWRB2ECe+58MfUJa2wNp2NSq2v50x1ZimlcNr6C+aID
-         2Y/3ool8/upt7oCTPQrEG1qi52JpebIjkZs4M8Gq5mEU7Vv0s0YsvygxrlaGb59LWtai
-         a8595mNW3TodnqdTzRifvuU5KKXZ0NS8XOKomjIFBDFIR0ORkSziV/zQ8r0v/v+W3dvv
-         uKsBWH9wj7A9TGaA28G+Fp8K6vw7rbmvrfCa1I6XDopeicP6owaN4NCe90zzfFs+8rRG
-         WOopzIkZO983Gc3dGoBMbyDz+lAiVgCbd2KZjN5NX5O5RnRI5dIX/hgKFRkX+AXvq5la
-         TdBw==
-X-Gm-Message-State: AJcUukfDT7fDGQHPm1GT/rxHNuOhWWhelx4h98G3MzVBCVRXmZ+RmkYw
-        37nwvlcdXiKFLyGtFuDPAlI=
-X-Google-Smtp-Source: ALg8bN7Z2n67V/khSr8jW7o6rC2vZTkoUwukGWZqFX/Zl264nG9Ydtaze3ojN0g3enJfw3NYDk8v+w==
-X-Received: by 2002:a17:902:ab84:: with SMTP id f4mr29937393plr.207.1548858373930;
-        Wed, 30 Jan 2019 06:26:13 -0800 (PST)
-Received: from nishad ([106.51.25.107])
-        by smtp.gmail.com with ESMTPSA id l22sm3330164pfj.179.2019.01.30.06.26.08
+        bh=GqYVig0xsnSrfSCre6GYt4V6DdROEuY5kK2wQy2U+us=;
+        b=qxAByISx889rYPikClM4LDUjKpqVIRlss4WPg+Onmj4oS5NwnejOIFguf1q0FcLoMr
+         mC6pHZ4iILmY8qdGh0VPylYpyfj29yxWNzRP447uX+d3IYlyInYZPuUk3MkxudInpRY0
+         9MFhqnAmarku22/fBCi16UQO1x3nPS7Uo08Sy/3g5AHn8Iuf7UNXPk0yZT/0NMqPD3I6
+         QgrqGUiR0XEQunhH+feExvg+ZEIJYQ3LfWaRaTwdLS40DVq2OIgwj0k7YMbOsd00mSVT
+         TockTXWaDrbqVXzxXB9XsqpBxesqAmwdocjl6kVbjBqODANkVDeSch+HF4IaALyKnf8t
+         djZw==
+X-Gm-Message-State: AJcUukcEy5ZJIhcOkLFuQ7a6lSNjChBp59VSh1Y0Y/finKgda3YIjUV+
+        o8gbco0LBtlFwRnkhsphuA==
+X-Google-Smtp-Source: ALg8bN6T16gYELyQMb/m7eszNaoFBmul6xe8bU7k1nOEppKc44gbKcMHB0LvQaxno/dBGGmrWt/G3g==
+X-Received: by 2002:a54:4d01:: with SMTP id v1mr12297052oix.246.1548866498305;
+        Wed, 30 Jan 2019 08:41:38 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id l9sm708691otj.9.2019.01.30.08.41.37
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 30 Jan 2019 06:26:13 -0800 (PST)
-Date:   Wed, 30 Jan 2019 19:56:03 +0530
-From:   Nishad Kamdar <nishadkamdar@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        NeilBrown <neil@brown.name>, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, Joe Perches <joe@perches.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Select PINCTRL_RT2880 when RALINK is enabled
-Message-ID: <20190130142601.GA26071@nishad>
-References: <20190129152522.GA24872@nishad>
- <20190129200905.vnb3amouxq6o57fn@pburton-laptop>
+        Wed, 30 Jan 2019 08:41:37 -0800 (PST)
+Date:   Wed, 30 Jan 2019 10:41:36 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     linux-mips@vger.kernel.org, tglx@linutronix.de,
+        jason@lakedaemon.net, marc.zyngier@arm.com, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] dt-bindings: interrupt-controller: loongson ls1x
+ intc
+Message-ID: <20190130164136.GB31687@bogus>
+References: <20190122154557.22689-1-jiaxun.yang@flygoat.com>
+ <20190124032730.18237-1-jiaxun.yang@flygoat.com>
+ <20190124032730.18237-3-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190129200905.vnb3amouxq6o57fn@pburton-laptop>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190124032730.18237-3-jiaxun.yang@flygoat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Jan 29, 2019 at 08:09:07PM +0000, Paul Burton wrote:
-> Hi Nishad,
+On Thu, Jan 24, 2019 at 11:27:30AM +0800, Jiaxun Yang wrote:
+> Dt-bindings doc about Loongson-1 interrupt controller
 > 
-> On Tue, Jan 29, 2019 at 08:55:27PM +0530, Nishad Kamdar wrote:
-> > This patch selects config PINCTRL_RT2880 when config RALINK is
-> > enabled as per drivers/staging/mt7621-pinctrl/TODO list. PINCTRL
-> > is also selected when RALINK is enabled to avoid config dependency
-> > warnings.
-> > 
-> > Signed-off-by: Nishad Kamdar <nishadkamdar@gmail.com>
-> > ---
-> >  arch/mips/Kconfig | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index e2fc88da0223..cea529cf6284 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -623,6 +623,8 @@ config RALINK
-> >  	select CLKDEV_LOOKUP
-> >  	select ARCH_HAS_RESET_CONTROLLER
-> >  	select RESET_CONTROLLER
-> > +	select PINCTRL
-> > +	select PINCTRL_RT2880
-> >  
-> >  config SGI_IP22
-> >  	bool "SGI IP22 (Indy/Indigo2)"
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  .../loongson,ls1x-intc.txt                    | 24 +++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
 > 
-> Wouldn't this also require selecting STAGING? Perhaps that's why it
-> wasn't done in the first place?
-> 
-> Thanks,
->     Paul
-Ok, got it.
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
+> new file mode 100644
+> index 000000000000..a4e17c3f5f93
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
+> @@ -0,0 +1,24 @@
+> +Loongson ls1x Interrupt Controller
+> +
+> +Required properties:
+> +
+> +- compatible : should be "loongson,ls1x-intc". Valid strings are:
+> +
+> +- reg : Specifies base physical address and size of the registers.
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt source. The value shall be 1.
+> +- interrupts : Specifies the CPU interrupts the controller is connected to.
+> +
+> +Example:
+> +
+> +intc: interrupt-controller@1fd01040 {
+> +	compatible = "loongson,ls1x-intc";
+> +	reg = <0x1fd01040 0x78>;
+> +
+> +	interrupt-controller;
+> +	#interrupt-cells = <1>;
+> +
+> +	interrupt-parent = <&cpu_intc>;
+> +	interrupts = <2>, <3>, <4>, <5>, <6>;
+> +};
+> \ No newline at end of file
 
-Thanks for the review.
+Please fix.
 
-Regards,
-Nishad
+Otherwise,
+
+Reviewed-by: Rob Herring <robh@kernel.org>

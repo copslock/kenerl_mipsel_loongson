@@ -2,117 +2,88 @@ Return-Path: <SRS0=qUQg=QG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02986C282D8
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 16:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C1B9C282D7
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 17:25:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C79C72087F
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 16:41:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1548866499;
-	bh=INKXaGtg/+0fOqPEPqdDp5qyFRb7znKg7z8o00GHa4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=eemReEAODR3oajBjNHq+E41uGjdiRwhxUPw1jWxv+9qIE9LeWccM4R/uXhOv2DqeZ
-	 //hrMNeD5D1esvtyrfEDJduSBT2EJgLwFuVPCJLGvqlY5OyvqkSPgOkq4rkg9DSetY
-	 /AZvh6eczljYgGYydbyVPbNW5aYUTmnXkwtTSqqw=
+	by mail.kernel.org (Postfix) with ESMTP id 4ECEE20869
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 17:25:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732227AbfA3Qlj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Jan 2019 11:41:39 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:41532 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731496AbfA3Qlj (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Jan 2019 11:41:39 -0500
-Received: by mail-oi1-f193.google.com with SMTP id j21so136279oii.8;
-        Wed, 30 Jan 2019 08:41:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GqYVig0xsnSrfSCre6GYt4V6DdROEuY5kK2wQy2U+us=;
-        b=qxAByISx889rYPikClM4LDUjKpqVIRlss4WPg+Onmj4oS5NwnejOIFguf1q0FcLoMr
-         mC6pHZ4iILmY8qdGh0VPylYpyfj29yxWNzRP447uX+d3IYlyInYZPuUk3MkxudInpRY0
-         9MFhqnAmarku22/fBCi16UQO1x3nPS7Uo08Sy/3g5AHn8Iuf7UNXPk0yZT/0NMqPD3I6
-         QgrqGUiR0XEQunhH+feExvg+ZEIJYQ3LfWaRaTwdLS40DVq2OIgwj0k7YMbOsd00mSVT
-         TockTXWaDrbqVXzxXB9XsqpBxesqAmwdocjl6kVbjBqODANkVDeSch+HF4IaALyKnf8t
-         djZw==
-X-Gm-Message-State: AJcUukcEy5ZJIhcOkLFuQ7a6lSNjChBp59VSh1Y0Y/finKgda3YIjUV+
-        o8gbco0LBtlFwRnkhsphuA==
-X-Google-Smtp-Source: ALg8bN6T16gYELyQMb/m7eszNaoFBmul6xe8bU7k1nOEppKc44gbKcMHB0LvQaxno/dBGGmrWt/G3g==
-X-Received: by 2002:a54:4d01:: with SMTP id v1mr12297052oix.246.1548866498305;
-        Wed, 30 Jan 2019 08:41:38 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id l9sm708691otj.9.2019.01.30.08.41.37
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 30 Jan 2019 08:41:37 -0800 (PST)
-Date:   Wed, 30 Jan 2019 10:41:36 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-mips@vger.kernel.org, tglx@linutronix.de,
-        jason@lakedaemon.net, marc.zyngier@arm.com, mark.rutland@arm.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] dt-bindings: interrupt-controller: loongson ls1x
- intc
-Message-ID: <20190130164136.GB31687@bogus>
-References: <20190122154557.22689-1-jiaxun.yang@flygoat.com>
- <20190124032730.18237-1-jiaxun.yang@flygoat.com>
- <20190124032730.18237-3-jiaxun.yang@flygoat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190124032730.18237-3-jiaxun.yang@flygoat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1728895AbfA3RZX convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Jan 2019 12:25:23 -0500
+Received: from mx2.suse.de ([195.135.220.15]:42080 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726341AbfA3RZW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 30 Jan 2019 12:25:22 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 5D773ABD0;
+        Wed, 30 Jan 2019 17:25:21 +0000 (UTC)
+Date:   Wed, 30 Jan 2019 18:25:20 +0100
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 6/7] MIPS: SGI-IP27: use generic PCI driver
+Message-Id: <20190130182520.2864ad962605b43f1635e4fd@suse.de>
+In-Reply-To: <20190130091706.GA3617@infradead.org>
+References: <20190124174728.28812-1-tbogendoerfer@suse.de>
+        <20190124174728.28812-7-tbogendoerfer@suse.de>
+        <20190128133215.GC744@infradead.org>
+        <20190129162445.8584b58862068c0a7693718c@suse.de>
+        <20190130091706.GA3617@infradead.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Jan 24, 2019 at 11:27:30AM +0800, Jiaxun Yang wrote:
-> Dt-bindings doc about Loongson-1 interrupt controller
+On Wed, 30 Jan 2019 01:17:06 -0800
+Christoph Hellwig <hch@infradead.org> wrote:
+
+> On Tue, Jan 29, 2019 at 04:24:45PM +0100, Thomas Bogendoerfer wrote:
+> > > From an abstraction point of view this doesn't really belong into
+> > > a bridge driver as it is a global exported function.  I guess we can
+> > > keep it here with a fixme comment, but we should probably move this
+> > > into a method call instead.
+> > 
+> > or put the nodeid into the bus struct ?
 > 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  .../loongson,ls1x-intc.txt                    | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
+> Doesn't sound to bad to me, you'll just have to update a fair
+> amount of arch implementations.
+
+and it's already there:-) Each struct device has a field numa_node and pci_bus has
+contains a struct device. arm64 is already using it only not so nice part is the
+usage of pcibios_root_bridge_prepare() to set the numa_node for the root bus.
+
+> > I'm all for it. I looked at the examples for using dma_pfn_offset and the
+> > only one coming close to usefull for me is arch/sh/drivers/pci/pcie-sh7786.c
+> > It overloads pcibios_bus_add_device() to set dma_pfn_offset, which doesn't
+> > look much nicer. What about having a dma_pfn_offset in struct pci_bus
+> > which all device inherit from ?
 > 
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
-> new file mode 100644
-> index 000000000000..a4e17c3f5f93
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/loongson,ls1x-intc.txt
-> @@ -0,0 +1,24 @@
-> +Loongson ls1x Interrupt Controller
-> +
-> +Required properties:
-> +
-> +- compatible : should be "loongson,ls1x-intc". Valid strings are:
-> +
-> +- reg : Specifies base physical address and size of the registers.
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt source. The value shall be 1.
-> +- interrupts : Specifies the CPU interrupts the controller is connected to.
-> +
-> +Example:
-> +
-> +intc: interrupt-controller@1fd01040 {
-> +	compatible = "loongson,ls1x-intc";
-> +	reg = <0x1fd01040 0x78>;
-> +
-> +	interrupt-controller;
-> +	#interrupt-cells = <1>;
-> +
-> +	interrupt-parent = <&cpu_intc>;
-> +	interrupts = <2>, <3>, <4>, <5>, <6>;
-> +};
-> \ No newline at end of file
+> Or add a add_dev callback, similar to what I did for a previous series
+> that we didn't end up needing after all:
+> 
+> http://git.infradead.org/users/hch/misc.git/commitdiff/06d9b4fc7deed336edc1292fe2e661729e98ec39
 
-Please fix.
+that's exactly what I'm looking for. Should I add the patch for my patchset or
+are you going to submit it after having a use case ?
 
-Otherwise,
+Thomas.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+-- 
+SUSE Linux GmbH
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

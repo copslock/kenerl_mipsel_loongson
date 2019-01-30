@@ -2,85 +2,114 @@ Return-Path: <SRS0=qUQg=QG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E799C282D7
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 09:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D7FEC282D7
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 09:28:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 728632083B
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 09:17:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6B9862085B
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Jan 2019 09:28:52 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NjuaUyU7"
+	dkim=pass (1024-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZCQ3Ikc1"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727500AbfA3JRK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Jan 2019 04:17:10 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:58886 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726452AbfA3JRJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Jan 2019 04:17:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=PkkRrH7Upoq4Qs5K73ZsT40YYfKo1vrfTnkSOGPXaak=; b=NjuaUyU7G/RQx2NHQ5Wzvm+DT
-        2B4zkjV/NFMgartmyl2XVNLBduYK8e/7ut80VVYoMtvL2KMv+9JMlb9QLIGQBTAXmInTCWmweXS62
-        dwMQwTWmKHf3RBK2GaKDSWSvRQtW7D2OAwwZMGsx1vH2Git2v2whu8YDZo/IYuWiW7HPZBxadXq0Y
-        GyBu3WakPbpGyUKCtaY39ReWA4DGzWDz7gKEi18Du6KorP8bjUkSVnyakgGg3FnjWOteXVpZy8Se0
-        oupSKfK7f9ddCb+wyBtiPKHgYCqCwYdFaiDEZgju8Q2L1rBmaIMI0JxTCP7+BhxdA9+wd4BGR/nY+
-        1/Ho4IRig==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1golzW-0004Dc-6L; Wed, 30 Jan 2019 09:17:06 +0000
-Date:   Wed, 30 Jan 2019 01:17:06 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 6/7] MIPS: SGI-IP27: use generic PCI driver
-Message-ID: <20190130091706.GA3617@infradead.org>
-References: <20190124174728.28812-1-tbogendoerfer@suse.de>
- <20190124174728.28812-7-tbogendoerfer@suse.de>
- <20190128133215.GC744@infradead.org>
- <20190129162445.8584b58862068c0a7693718c@suse.de>
+        id S1727433AbfA3J2w (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Jan 2019 04:28:52 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:45288 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbfA3J2v (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Jan 2019 04:28:51 -0500
+Received: by mail-lf1-f67.google.com with SMTP id b20so16829433lfa.12
+        for <linux-mips@vger.kernel.org>; Wed, 30 Jan 2019 01:28:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bAHyGO+lnhPxkCWAbECpUO67RxYdWDgKVewRjoakAYI=;
+        b=ZCQ3Ikc1sERKhKD0GzADeHcKGVAVT0dPyXCqsanEEOUlJs1mPB1VLvMYf8n8zeTfjs
+         KH1P3BbLc8cNONeCuIRrU2fv9fXi4sA6MHz08PBQ6586JjCxX36q10l6+PCZne4CA8n5
+         sWby4c2ZX05lGtnaa18wkrtchGw0xRmtfUg2E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bAHyGO+lnhPxkCWAbECpUO67RxYdWDgKVewRjoakAYI=;
+        b=EOKajnUtDCTcF1jssVl9JT+OHX5RlVsWWxSyXEylJetWMfFY61GU+b0n09DQf1/rPa
+         ZvHXq3nOlSSVq0vQYn6ERhpvEyBzZ2dKTpOpHNkiG9H4vBk6/CcglBiSP0J7DewW3w0z
+         BSwbEbSbI2V7qMWBNN+lPadRa4TqIqYQFHUJ4IP8VKSR8h7Ukf3mB70jUo6RN8meIpFB
+         sPovqPvEk5FVQsvK4iNKxfbAsjTGOwLKCikCqi1cR7fFofY1cjqK7DcpFmtlHMNPxDmy
+         BA4ZSwpf9FT6hgyqjrY1boxWWSEN8ZrvK7ybkqGByj10MmUTUbWL5L0lEpU6IFktqJ8r
+         3hiQ==
+X-Gm-Message-State: AJcUukeZDCWrd+AtJ2Cjc1SroCbTTQJmyH48UO4SC1f+0mzaNoMpNcrH
+        +7jS+brNBcly6W4StldHhezZCMxWByMj0eBZ7sPz5g==
+X-Google-Smtp-Source: ALg8bN466+fXTSbL5WwKHV6aeDxmersWbdmvjuobfmSxhx4W8Xo5kVP8PDTZ0banaCj/fyanfGIArUo0W0lEo26RlRo=
+X-Received: by 2002:ac2:53b1:: with SMTP id j17mr22324090lfh.167.1548840529706;
+ Wed, 30 Jan 2019 01:28:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190129162445.8584b58862068c0a7693718c@suse.de>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <1548410393-6981-1-git-send-email-zhouyanjie@zoho.com>
+ <1548688799-129840-1-git-send-email-zhouyanjie@zoho.com> <1548688799-129840-2-git-send-email-zhouyanjie@zoho.com>
+In-Reply-To: <1548688799-129840-2-git-send-email-zhouyanjie@zoho.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 30 Jan 2019 10:28:38 +0100
+Message-ID: <CACRpkdZHxB=iTZQvdjG7npLtEXz1x9iZfiPOpHMWXTJup3ubxg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] Pinctrl: Ingenic: Fix bugs caused by differences
+ between JZ4770 and JZ4780.
+To:     Zhou Yanjie <zhouyanjie@zoho.com>
+Cc:     linux-mips@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Paul Cercueil <paul@crapouillou.net>, syq@debian.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, 772753199@qq.com,
+        Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Jan 29, 2019 at 04:24:45PM +0100, Thomas Bogendoerfer wrote:
-> > From an abstraction point of view this doesn't really belong into
-> > a bridge driver as it is a global exported function.  I guess we can
-> > keep it here with a fixme comment, but we should probably move this
-> > into a method call instead.
-> 
-> or put the nodeid into the bus struct ?
+On Mon, Jan 28, 2019 at 4:28 PM Zhou Yanjie <zhouyanjie@zoho.com> wrote:
 
-Doesn't sound to bad to me, you'll just have to update a fair
-amount of arch implementations.
+> From: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
+>
+> Delete uart4 and i2c3/4 from JZ4770:
+> According to the datasheet, only JZ4780 have uart4 and i2c3/4. So we
+> remove it from the JZ4770 code and add a section corresponding the JZ4780.
+>
+> Fix bugs in i2c0/1:
+> The pin number was wrong in the original code.
+>
+> Fix bugs in uart2:
+> JZ4770 and JZ4780 have different uart2 pins. So the original section JZ4770
+> has been modified and the corresponding section of JZ4780 has been added.
+>
+> Fix bugs in mmc0:
+> JZ4770 and JZ4780 assigned different pins to mmc0's 4~7 data lines. So the
+> original section JZ4770 has been modified and the corresponding section of
+> JZ4780 has been added.
+>
+> Fix bugs in mmc1:
+> JZ4770's mmc1 has 8bit mode, while JZ4780 doesn't. So the original
+> section JZ4770 has been modified and the corresponding section of
+> JZ4780 has been added.
+>
+> Fix bugs in nemc:
+> JZ4770's nemc has 16bit mode, while JZ4780 doesn't. So the original section
+> JZ4770 has been modified and the corresponding section of JZ4780 has been
+> added. And add missing cs2~5 groups for JZ4770 and JZ4780.
+>
+> Fix bugs in cim:
+> JZ4770's cim has 12bit mode, while JZ4780 doesn't. So the original
+> section JZ4770 has been modified and the corresponding section of
+> JZ4780 has been added.
+>
+> Fix bugs in lcd:
+> Both JZ4770 and JZ4780 lcd should be 24bit instead of 32bit.
+>
+> Signed-off-by: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
 
-> I'm all for it. I looked at the examples for using dma_pfn_offset and the
-> only one coming close to usefull for me is arch/sh/drivers/pci/pcie-sh7786.c
-> It overloads pcibios_bus_add_device() to set dma_pfn_offset, which doesn't
-> look much nicer. What about having a dma_pfn_offset in struct pci_bus
-> which all device inherit from ?
+Patch applied for v5.1 with Paul's review tag.
 
-Or add a add_dev callback, similar to what I did for a previous series
-that we didn't end up needing after all:
-
-http://git.infradead.org/users/hch/misc.git/commitdiff/06d9b4fc7deed336edc1292fe2e661729e98ec39
-
+Yours,
+Linus Walleij

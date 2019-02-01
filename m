@@ -2,40 +2,40 @@ Return-Path: <SRS0=+ky4=QI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT autolearn=unavailable
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5CD2C282DA
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 307D8C282D8
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:51:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 745F620811
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:51:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 025DA20811
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:51:02 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KTUmfgmi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="l6xSAXci"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729365AbfBAIsR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1729361AbfBAIsR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Fri, 1 Feb 2019 03:48:17 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:48306 "EHLO
+Received: from bombadil.infradead.org ([198.137.202.133]:48326 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729327AbfBAIsN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 03:48:13 -0500
+        with ESMTP id S1726172AbfBAIsQ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 03:48:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qzppGvL5YTNR4ERolWGzkqCfDHbPo49RlnLgQJkb/B4=; b=KTUmfgmiCcSdnJYygxwmL4jdmE
-        BlEsBjwRJT+EUpK+qf0kiyQeZEMErFPTttfof2L5+dnLU9jRRGY6MCYuTdqQhCTz4cB6w77tVfsZg
-        /2JSSMOrzcqzWCQdlBLEJH9x927VWVWF+u/V1idwRy2d/1tA+fwu6X3KOAhO/JAsMkLtAQ8k9eTGY
-        wvRdmBI/ZVHZm5ugY1tCvmjM/o/WuB4Gjn1L7mfqjy5yEarPDJ/UxWnhF3qiVojFjRHrpgEPa0wkj
-        hLY1AH68bx8Pd1VKnc31cIQgUEehlB9n5UMMIzeXbZVAXUs6c2JJz3/Y9JIPpdKfzFWuAvXiykJuv
-        fO0nUUJA==;
+        bh=CxZHu4dBypMzIJdePoRBvzcE17U6xI+P3h/hNk9DnbQ=; b=l6xSAXciTrUv6yu7E1BVv+daIt
+        uOF379nXHlyFMEjN6Uksd9kr5QqWZw98NoWx/kI/WP7qyET/ouo7kvwzRT2jgJCR+bxu04lQIXWYf
+        Qk/ZBuRvotjK8PvlB2nKx9UFxIqtPbQJEEbcKR8rhC0vwlpxOVz55tx4RCYiyJfTgjoNtFMCpbPk4
+        Zv9tNKPN+ce7J67R5aM60FCEc/F+tW24m1Ms5iZ6JTUU/1vXhcGx7H5jov+9jJ3szbPQjnImvpHjz
+        TsayKVrYyeSRgKOj/dsZ8QgdI4Ye1CYQVIhOvGpnsV9dNbFHrF4s8SkAFh8r3pDu4TSjUkPdUypQS
+        5UXJsZvQ==;
 Received: from 089144212163.atnat0021.highway.a1.net ([89.144.212.163] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gpUUc-0001NC-Se; Fri, 01 Feb 2019 08:48:11 +0000
+        id 1gpUUf-0001Np-Ie; Fri, 01 Feb 2019 08:48:13 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     John Crispin <john@phrozen.org>, Vinod Koul <vkoul@kernel.org>,
         Dmitry Tarnyagin <dmitry.tarnyagin@lockless.no>,
@@ -46,9 +46,9 @@ To:     John Crispin <john@phrozen.org>, Vinod Koul <vkoul@kernel.org>,
         netdev@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
 Cc:     iommu@lists.linux-foundation.org
-Subject: [PATCH 03/18] net: caif: pass struct device to DMA API functions
-Date:   Fri,  1 Feb 2019 09:47:46 +0100
-Message-Id: <20190201084801.10983-4-hch@lst.de>
+Subject: [PATCH 04/18] au1000_eth: pass struct device to DMA API functions
+Date:   Fri,  1 Feb 2019 09:47:47 +0100
+Message-Id: <20190201084801.10983-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190201084801.10983-1-hch@lst.de>
 References: <20190201084801.10983-1-hch@lst.de>
@@ -64,102 +64,42 @@ The DMA API generally relies on a struct device to work properly, and
 only barely works without one for legacy reasons.  Pass the easily
 available struct device from the platform_device to remedy this.
 
-Also use the proper Kconfig symbol to check for DMA API availability.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/net/caif/caif_spi.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/caif/caif_spi.c b/drivers/net/caif/caif_spi.c
-index d28a1398c091..b7f3e263b57c 100644
---- a/drivers/net/caif/caif_spi.c
-+++ b/drivers/net/caif/caif_spi.c
-@@ -73,35 +73,37 @@ MODULE_PARM_DESC(spi_down_tail_align, "SPI downlink tail alignment.");
- #define LOW_WATER_MARK   100
- #define HIGH_WATER_MARK  (LOW_WATER_MARK*5)
+diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+index e833d1b3fe18..e5073aeea06a 100644
+--- a/drivers/net/ethernet/amd/au1000_eth.c
++++ b/drivers/net/ethernet/amd/au1000_eth.c
+@@ -1167,7 +1167,7 @@ static int au1000_probe(struct platform_device *pdev)
+ 	/* Allocate the data buffers
+ 	 * Snooping works fine with eth on all au1xxx
+ 	 */
+-	aup->vaddr = (u32)dma_alloc_attrs(NULL, MAX_BUF_SIZE *
++	aup->vaddr = (u32)dma_alloc_attrs(&pdev->dev, MAX_BUF_SIZE *
+ 					  (NUM_TX_BUFFS + NUM_RX_BUFFS),
+ 					  &aup->dma_addr, 0,
+ 					  DMA_ATTR_NON_CONSISTENT);
+@@ -1349,7 +1349,7 @@ static int au1000_probe(struct platform_device *pdev)
+ err_remap2:
+ 	iounmap(aup->mac);
+ err_remap1:
+-	dma_free_attrs(NULL, MAX_BUF_SIZE * (NUM_TX_BUFFS + NUM_RX_BUFFS),
++	dma_free_attrs(&pdev->dev, MAX_BUF_SIZE * (NUM_TX_BUFFS + NUM_RX_BUFFS),
+ 			(void *)aup->vaddr, aup->dma_addr,
+ 			DMA_ATTR_NON_CONSISTENT);
+ err_vaddr:
+@@ -1383,7 +1383,7 @@ static int au1000_remove(struct platform_device *pdev)
+ 		if (aup->tx_db_inuse[i])
+ 			au1000_ReleaseDB(aup, aup->tx_db_inuse[i]);
  
--#ifdef CONFIG_UML
-+#ifdef CONFIG_HAS_DMA
+-	dma_free_attrs(NULL, MAX_BUF_SIZE * (NUM_TX_BUFFS + NUM_RX_BUFFS),
++	dma_free_attrs(&pdev->dev, MAX_BUF_SIZE * (NUM_TX_BUFFS + NUM_RX_BUFFS),
+ 			(void *)aup->vaddr, aup->dma_addr,
+ 			DMA_ATTR_NON_CONSISTENT);
  
- /*
-  * We sometimes use UML for debugging, but it cannot handle
-  * dma_alloc_coherent so we have to wrap it.
-  */
--static inline void *dma_alloc(dma_addr_t *daddr)
-+static inline void *dma_alloc(struct cfspi *cfspi, dma_addr_t *daddr)
- {
- 	return kmalloc(SPI_DMA_BUF_LEN, GFP_KERNEL);
- }
- 
--static inline void dma_free(void *cpu_addr, dma_addr_t handle)
-+static inline void dma_free(struct cfspi *cfspi, void *cpu_addr,
-+		dma_addr_t handle)
- {
- 	kfree(cpu_addr);
- }
- 
- #else
- 
--static inline void *dma_alloc(dma_addr_t *daddr)
-+static inline void *dma_alloc(struct cfspi *cfspi, dma_addr_t *daddr)
- {
--	return dma_alloc_coherent(NULL, SPI_DMA_BUF_LEN, daddr,
-+	return dma_alloc_coherent(&cfspi->pdev->dev, SPI_DMA_BUF_LEN, daddr,
- 				GFP_KERNEL);
- }
- 
--static inline void dma_free(void *cpu_addr, dma_addr_t handle)
-+static inline void dma_free(struct cfspi *cfspi, void *cpu_addr,
-+		dma_addr_t handle)
- {
--	dma_free_coherent(NULL, SPI_DMA_BUF_LEN, cpu_addr, handle);
-+	dma_free_coherent(&cfspi->pdev->dev, SPI_DMA_BUF_LEN, cpu_addr, handle);
- }
--#endif	/* CONFIG_UML */
-+#endif	/* CONFIG_HAS_DMA */
- 
- #ifdef CONFIG_DEBUG_FS
- 
-@@ -610,13 +612,13 @@ static int cfspi_init(struct net_device *dev)
- 	}
- 
- 	/* Allocate DMA buffers. */
--	cfspi->xfer.va_tx[0] = dma_alloc(&cfspi->xfer.pa_tx[0]);
-+	cfspi->xfer.va_tx[0] = dma_alloc(cfspi, &cfspi->xfer.pa_tx[0]);
- 	if (!cfspi->xfer.va_tx[0]) {
- 		res = -ENODEV;
- 		goto err_dma_alloc_tx_0;
- 	}
- 
--	cfspi->xfer.va_rx = dma_alloc(&cfspi->xfer.pa_rx);
-+	cfspi->xfer.va_rx = dma_alloc(cfspi, &cfspi->xfer.pa_rx);
- 
- 	if (!cfspi->xfer.va_rx) {
- 		res = -ENODEV;
-@@ -665,9 +667,9 @@ static int cfspi_init(struct net_device *dev)
- 	return 0;
- 
-  err_create_wq:
--	dma_free(cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
-+	dma_free(cfspi, cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
-  err_dma_alloc_rx:
--	dma_free(cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
-+	dma_free(cfspi, cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
-  err_dma_alloc_tx_0:
- 	return res;
- }
-@@ -683,8 +685,8 @@ static void cfspi_uninit(struct net_device *dev)
- 
- 	cfspi->ndev = NULL;
- 	/* Free DMA buffers. */
--	dma_free(cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
--	dma_free(cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
-+	dma_free(cfspi, cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
-+	dma_free(cfspi, cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
- 	set_bit(SPI_TERMINATE, &cfspi->state);
- 	wake_up_interruptible(&cfspi->wait);
- 	destroy_workqueue(cfspi->wq);
 -- 
 2.20.1
 

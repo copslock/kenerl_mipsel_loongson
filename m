@@ -2,139 +2,148 @@ Return-Path: <SRS0=+ky4=QI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 496BAC282D8
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 06:36:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7FBAC282DA
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:48:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1ABC120857
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 06:36:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 849D921726
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 08:48:39 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="Ca8nSz3C"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DVnztnYQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726460AbfBAGg1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Feb 2019 01:36:27 -0500
-Received: from forward100o.mail.yandex.net ([37.140.190.180]:41639 "EHLO
-        forward100o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725876AbfBAGg0 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 01:36:26 -0500
-Received: from mxback20j.mail.yandex.net (mxback20j.mail.yandex.net [IPv6:2a02:6b8:0:1619::114])
-        by forward100o.mail.yandex.net (Yandex) with ESMTP id 3C9004AC2A57;
-        Fri,  1 Feb 2019 09:36:22 +0300 (MSK)
-Received: from smtp3o.mail.yandex.net (smtp3o.mail.yandex.net [2a02:6b8:0:1a2d::27])
-        by mxback20j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id qJCCBI1Fap-aLPKoXau;
-        Fri, 01 Feb 2019 09:36:22 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1549002982;
-        bh=bw8o9PbShB3Y6hhdn7ifBb3eYe95FLWeMK5ModEQ+Iw=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=Ca8nSz3CbmINCn7RK5K7HSShpGhLu1UfjHmNCg/xD3WRYwKnROipuIPZpFTlOvL/H
-         pLwpjg8rccTAeo6ib5ve3zzA9SvXNUJJxifcZSNH3AfeuSvmUM8aQ+ZNd9y58ovFS8
-         47kedHdd+RIR+YFmhfbzl0z0YrruuC/D57IEOl8Y=
-Authentication-Results: mxback20j.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by smtp3o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 5VfXSCstdQ-aHVCPGMI;
-        Fri, 01 Feb 2019 09:36:20 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-mips@vger.kernel.org
-Cc:     mturquette@baylibre.com, sboyd@kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 3/3] dt-bindings: clock: Add loongson-1 clock bindings
-Date:   Fri,  1 Feb 2019 14:35:40 +0800
-Message-Id: <20190201063540.19636-4-jiaxun.yang@flygoat.com>
+        id S1729666AbfBAIsi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Feb 2019 03:48:38 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:48470 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729634AbfBAIsf (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 03:48:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=pU0HGVd2mqMY96Sg+NjMcR2p0eV/+Kyy5J3jOlZeRfA=; b=DVnztnYQZKzoT+JeFlNalarZXc
+        DKYysDp7mfma5POpYC66khqOTC3hwKqlH0UkhiF052GFkvIRXiHNM2wrhaUNP2F5l6juTEr+T7hrT
+        hS//HLgdatiRar2k9vIXFDmlysobYx0LAk9qyxYNxKtZ1sg7/XYWyGUivFAgfk3GVts5fHyHwqwnf
+        O82txf8uvAHAjz8jDyJDxiMjAMx0wL6clUmFBUlkWAJambBIMlVC1RSI2KD3j0nD05W3N1/FnPBWy
+        G40VoJ1mRzh0wM5Ggb6UKzr6k+9LoXDeN8xpkDLqMry8GFJAilOiwyXJKCe6e0NFX8iNe8zcmafo/
+        6ZOcrW1w==;
+Received: from 089144212163.atnat0021.highway.a1.net ([89.144.212.163] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1gpUUx-0001S8-UW; Fri, 01 Feb 2019 08:48:32 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     John Crispin <john@phrozen.org>, Vinod Koul <vkoul@kernel.org>,
+        Dmitry Tarnyagin <dmitry.tarnyagin@lockless.no>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Felipe Balbi <balbi@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+Cc:     iommu@lists.linux-foundation.org
+Subject: [PATCH 11/18] parport_ip32: pass struct device to DMA API functions
+Date:   Fri,  1 Feb 2019 09:47:54 +0100
+Message-Id: <20190201084801.10983-12-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190201063540.19636-1-jiaxun.yang@flygoat.com>
-References: <20190128152052.3047-1-jiaxun.yang@flygoat.com>
- <20190201063540.19636-1-jiaxun.yang@flygoat.com>
+In-Reply-To: <20190201084801.10983-1-hch@lst.de>
+References: <20190201084801.10983-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Loongson-1 is a series of MIPS MCUs.
-This patch add the clock bindings for loongson-1b and
-loongson-1c clock subsystem.
+The DMA API generally relies on a struct device to work properly, and
+only barely works without one for legacy reasons.  Pass the easily
+available struct device from the platform_device to remedy this.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- .../bindings/clock/loongson1-clock.txt          | 14 ++++++++++++++
- include/dt-bindings/clock/ls1b-clock.h          | 17 +++++++++++++++++
- include/dt-bindings/clock/ls1c-clock.h          | 14 ++++++++++++++
- 3 files changed, 45 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/loongson1-clock.txt
- create mode 100644 include/dt-bindings/clock/ls1b-clock.h
- create mode 100644 include/dt-bindings/clock/ls1c-clock.h
+ drivers/parport/parport_ip32.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/loongson1-clock.txt b/Documentation/devicetree/bindings/clock/loongson1-clock.txt
-new file mode 100644
-index 000000000000..5afd13a98eaa
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/loongson1-clock.txt
-@@ -0,0 +1,14 @@
-+* Clock bindings for Loongson-1 MCUs
-+
-+Required properties:
-+- compatible: must contain one of the following compatibles:
-+                - "loongson,ls1b-clock"
-+                - "loongson,ls1c-clock"
-+
-+- reg: Address and length of the register set
-+- #clock-cells: Should be <1>
-+- clocks: list of input clocks
-+
-+The clock consumer should specify the desired clock by having the clock
-+ID in its "clocks" phandle cell. See include/dt-bindings/clock/ls1c-clock.h
-+or include/dt-bindings/clock/ls1b-clock.h for the full list of clocks.
-diff --git a/include/dt-bindings/clock/ls1b-clock.h b/include/dt-bindings/clock/ls1b-clock.h
-new file mode 100644
-index 000000000000..c7ae85bb4583
---- /dev/null
-+++ b/include/dt-bindings/clock/ls1b-clock.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
-+
-+#ifndef __DT_BINDINGS_CLOCK_LS1B_CLOCK_H__
-+#define __DT_BINDINGS_CLOCK_LS1B_CLOCK_H__
-+
-+#define LS1B_CLK_PLL 0
-+#define LS1B_CLK_CPU_DIV 1
-+#define LS1B_CLK_CPU 2
-+#define LS1B_CLK_DC_DIV 3
-+#define LS1B_CLK_DC 4
-+#define LS1B_CLK_DDR_DIV 5
-+#define LS1B_CLK_DDR 6
-+#define LS1B_CLK_AHB 7
-+#define LS1B_CLK_APB 8
-+
-+#endif /* __DT_BINDINGS_CLOCK_LS1B_CLOCK_H__ */
-diff --git a/include/dt-bindings/clock/ls1c-clock.h b/include/dt-bindings/clock/ls1c-clock.h
-new file mode 100644
-index 000000000000..9d01914f374e
---- /dev/null
-+++ b/include/dt-bindings/clock/ls1c-clock.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
-+
-+#ifndef __DT_BINDINGS_CLOCK_LS1C_CLOCK_H__
-+#define __DT_BINDINGS_CLOCK_LS1C_CLOCK_H__
-+
-+#define LS1C_CLK_PLL 0
-+#define LS1C_CLK_CPU 1
-+#define LS1C_CLK_DC 2
-+#define LS1C_CLK_DDR 3
-+#define LS1C_CLK_AHB 4
-+#define LS1C_CLK_APB 5
-+
-+#endif /* __DT_BINDINGS_CLOCK_LS1C_CLOCK_H__ */
+diff --git a/drivers/parport/parport_ip32.c b/drivers/parport/parport_ip32.c
+index 62873070f988..b7a892791c3e 100644
+--- a/drivers/parport/parport_ip32.c
++++ b/drivers/parport/parport_ip32.c
+@@ -568,6 +568,7 @@ static irqreturn_t parport_ip32_merr_interrupt(int irq, void *dev_id)
+ 
+ /**
+  * parport_ip32_dma_start - begins a DMA transfer
++ * @p:		partport to work on
+  * @dir:	DMA direction: DMA_TO_DEVICE or DMA_FROM_DEVICE
+  * @addr:	pointer to data buffer
+  * @count:	buffer size
+@@ -575,8 +576,8 @@ static irqreturn_t parport_ip32_merr_interrupt(int irq, void *dev_id)
+  * Calls to parport_ip32_dma_start() and parport_ip32_dma_stop() must be
+  * correctly balanced.
+  */
+-static int parport_ip32_dma_start(enum dma_data_direction dir,
+-				  void *addr, size_t count)
++static int parport_ip32_dma_start(struct parport *p,
++		enum dma_data_direction dir, void *addr, size_t count)
+ {
+ 	unsigned int limit;
+ 	u64 ctrl;
+@@ -601,7 +602,7 @@ static int parport_ip32_dma_start(enum dma_data_direction dir,
+ 
+ 	/* Prepare DMA pointers */
+ 	parport_ip32_dma.dir = dir;
+-	parport_ip32_dma.buf = dma_map_single(NULL, addr, count, dir);
++	parport_ip32_dma.buf = dma_map_single(&p->bus_dev, addr, count, dir);
+ 	parport_ip32_dma.len = count;
+ 	parport_ip32_dma.next = parport_ip32_dma.buf;
+ 	parport_ip32_dma.left = parport_ip32_dma.len;
+@@ -625,11 +626,12 @@ static int parport_ip32_dma_start(enum dma_data_direction dir,
+ 
+ /**
+  * parport_ip32_dma_stop - ends a running DMA transfer
++ * @p:		partport to work on
+  *
+  * Calls to parport_ip32_dma_start() and parport_ip32_dma_stop() must be
+  * correctly balanced.
+  */
+-static void parport_ip32_dma_stop(void)
++static void parport_ip32_dma_stop(struct parport *p)
+ {
+ 	u64 ctx_a;
+ 	u64 ctx_b;
+@@ -685,8 +687,8 @@ static void parport_ip32_dma_stop(void)
+ 	enable_irq(MACEISA_PAR_CTXB_IRQ);
+ 	parport_ip32_dma.irq_on = 1;
+ 
+-	dma_unmap_single(NULL, parport_ip32_dma.buf, parport_ip32_dma.len,
+-			 parport_ip32_dma.dir);
++	dma_unmap_single(&p->bus_dev, parport_ip32_dma.buf,
++			 parport_ip32_dma.len, parport_ip32_dma.dir);
+ }
+ 
+ /**
+@@ -1445,7 +1447,7 @@ static size_t parport_ip32_fifo_write_block_dma(struct parport *p,
+ 
+ 	priv->irq_mode = PARPORT_IP32_IRQ_HERE;
+ 
+-	parport_ip32_dma_start(DMA_TO_DEVICE, (void *)buf, len);
++	parport_ip32_dma_start(p, DMA_TO_DEVICE, (void *)buf, len);
+ 	reinit_completion(&priv->irq_complete);
+ 	parport_ip32_frob_econtrol(p, ECR_DMAEN | ECR_SERVINTR, ECR_DMAEN);
+ 
+@@ -1461,7 +1463,7 @@ static size_t parport_ip32_fifo_write_block_dma(struct parport *p,
+ 		if (ecr & ECR_SERVINTR)
+ 			break;	/* DMA transfer just finished */
+ 	}
+-	parport_ip32_dma_stop();
++	parport_ip32_dma_stop(p);
+ 	written = len - parport_ip32_dma_get_residue();
+ 
+ 	priv->irq_mode = PARPORT_IP32_IRQ_FWD;
 -- 
 2.20.1
 

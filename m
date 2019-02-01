@@ -2,131 +2,161 @@ Return-Path: <SRS0=+ky4=QI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-4.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AD2CC282D8
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 13:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 935D4C282D8
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 13:53:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5171B21872
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 13:34:34 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=microchiptechnology.onmicrosoft.com header.i=@microchiptechnology.onmicrosoft.com header.b="ZnKr5zUU"
+	by mail.kernel.org (Postfix) with ESMTP id 6C55F2084C
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 13:53:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727283AbfBANee (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Feb 2019 08:34:34 -0500
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:46366 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbfBANed (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 08:34:33 -0500
-X-IronPort-AV: E=Sophos;i="5.56,548,1539673200"; 
-   d="scan'208";a="25740249"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 01 Feb 2019 06:34:32 -0700
-Received: from NAM01-BN3-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.76.107) with Microsoft SMTP Server (TLS) id
- 14.3.352.0; Fri, 1 Feb 2019 06:34:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector1-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+CoLmDdoc8R1hyK51IVzdg9IlPsF4owLDan3aQ7Dsfo=;
- b=ZnKr5zUUcM4PjM75+gW77QH6ZdofZ0S2pESo6D7HgnUbbKZ3lUfW/dC8wPMcc9C4W+EuTpXqd10UeqhFUp5zQx/8SboifWIa8lmnOGjihko4FQUXkedRfr4iJ9JU/pRO0ukETz04/EdKLpI8mR4Ww20N/FdS/YOobHbNqMFW/M8=
-Received: from MWHPR11MB1662.namprd11.prod.outlook.com (10.172.55.15) by
- MWHPR11MB1934.namprd11.prod.outlook.com (10.175.54.21) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1580.17; Fri, 1 Feb 2019 13:34:30 +0000
-Received: from MWHPR11MB1662.namprd11.prod.outlook.com
- ([fe80::b92e:f982:af32:2887]) by MWHPR11MB1662.namprd11.prod.outlook.com
- ([fe80::b92e:f982:af32:2887%5]) with mapi id 15.20.1558.023; Fri, 1 Feb 2019
- 13:34:30 +0000
-From:   <Nicolas.Ferre@microchip.com>
-To:     <hch@lst.de>, <john@phrozen.org>, <vkoul@kernel.org>,
-        <dmitry.tarnyagin@lockless.no>, <sudipm.mukherjee@gmail.com>,
-        <balbi@kernel.org>, <linux-mips@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <linux-fbdev@vger.kernel.org>, <alsa-devel@alsa-project.org>
-CC:     <iommu@lists.linux-foundation.org>
-Subject: Re: [PATCH 05/18] macb_main: pass struct device to DMA API functions
-Thread-Topic: [PATCH 05/18] macb_main: pass struct device to DMA API functions
-Thread-Index: AQHUugsvj9N+ac4FwkevDZDD3e1gsqXK8ZcA
-Date:   Fri, 1 Feb 2019 13:34:30 +0000
-Message-ID: <e23bc61b-0c62-486b-ee85-fcfd8d86fdcf@microchip.com>
+        id S1730381AbfBANxS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Feb 2019 08:53:18 -0500
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:60378 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730265AbfBANxR (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 1 Feb 2019 08:53:17 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0AEE280D;
+        Fri,  1 Feb 2019 05:53:17 -0800 (PST)
+Received: from [10.1.196.75] (e110467-lin.cambridge.arm.com [10.1.196.75])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CD473F59C;
+        Fri,  1 Feb 2019 05:53:14 -0800 (PST)
+Subject: Re: [PATCH 03/18] net: caif: pass struct device to DMA API functions
+To:     Christoph Hellwig <hch@lst.de>, John Crispin <john@phrozen.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dmitry Tarnyagin <dmitry.tarnyagin@lockless.no>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Felipe Balbi <balbi@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+Cc:     iommu@lists.linux-foundation.org
 References: <20190201084801.10983-1-hch@lst.de>
- <20190201084801.10983-6-hch@lst.de>
-In-Reply-To: <20190201084801.10983-6-hch@lst.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR04CA0009.namprd04.prod.outlook.com
- (2603:10b6:a03:40::22) To MWHPR11MB1662.namprd11.prod.outlook.com
- (2603:10b6:301:e::15)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Nicolas.Ferre@microchip.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [195.6.168.232]
-x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR11MB1934;6:1MyhO7dOEXr+xc4OPNWFMJC0vyalnqga7QLuvHx1MpR0k9GdBgPmyL9/Fj30jf7OB/CMx2iSM5lzecw8OCJGoZBTdxvblMTMXz+2/7IqlTPJ2s/7kEnIVgnZ2dIpcC+CiRDUHCEyAp1l/dw3NeT1adYTFZTVm7ZBYDz0B8iMYk0HzjzCLRK1WbjYNzZauKVMw8bvvEvSXn5O0GyBO2mHVjlmyUehySllWgK4hqhWzSgft590UNvD9pIs55E8xZLtkZ8IU+wZh3y/Spq6Pl2ddSiSAPxWNHqzQWGBfZPjRPNvyPWOmaYSPqkg0a2YW7xdKmmAWeBQ2EsgluQibW4fY5jT9Hg6gwXkhcm+HDDM2N89VbZdHfpoFYErtgFmz4+ClFz7CU63vGtoVu+dNvukdULG5clyoqi3jdjEabhGrHgktHW3tGuRpqTqJ7dVshOHXuT65lw9TwmQCFJ3UNPwTw==;5:wpd6yaVk8Z9Giu65gMKmQQs27DBhkBbeqMbBzmw6qpHp3UL3d6GY9boG6pzLz6LfCFHMl3waBIHMj+yIQR7j5R8F3SVogVlkxn83aaDttPK9F/RPEEsCd1HmTG8g3mH7fk4u27rsNKLHwsAerAgo0LWa3BwuDR5qdGjnwy+ksdraRynDn7M47zprIs7RTA8DxkupwTmf4yoZurvTDn9MQQ==;7:55mCbT9QvGX7ZrrlI8bjNYnF0zDOlzfn7/01gqUnnnvVqLIfPOBhz2FfkEfCHFc6+J9A/SUG93rN5wzdWhDP6NQkv+RhCqmkIWkXdc2xgdPDW9qobnubdNeyGtbyOJzCTXq/1pNtFRiapGU5ZzWiTg==
-x-ms-office365-filtering-correlation-id: 0971a900-3bd0-4dae-0604-08d68849fdff
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR11MB1934;
-x-ms-traffictypediagnostic: MWHPR11MB1934:
-x-microsoft-antispam-prvs: <MWHPR11MB1934574940737923CA05461BE0920@MWHPR11MB1934.namprd11.prod.outlook.com>
-x-forefront-prvs: 09352FD734
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(346002)(39860400002)(136003)(376002)(189003)(199004)(2616005)(11346002)(3846002)(31696002)(6116002)(446003)(86362001)(31686004)(105586002)(476003)(53936002)(486006)(106356001)(7736002)(39060400002)(8676002)(36756003)(8936002)(305945005)(81156014)(81166006)(71190400001)(71200400001)(97736004)(6246003)(68736007)(72206003)(6436002)(186003)(26005)(14454004)(6486002)(256004)(386003)(478600001)(4326008)(6512007)(6506007)(316002)(110136005)(217873002)(2906002)(66066001)(53546011)(2501003)(99286004)(25786009)(2201001)(102836004)(76176011)(7416002)(52116002)(229853002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR11MB1934;H:MWHPR11MB1662.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: GExem889GjJ+wQUFk33uiOq3+80PVsjRpbAg4qWjMjUuIqsI8vyezuM0VRNAazDjB+FaIHgcWKjnjtowj7KKsAdihhTCNtQEHBVA0KVEaLhmimWEV/TCVFHdcvwO4nZ40vDLoheTHmwcxxAs4331TfoI72nInnyfOYcP5HsNS7DPUrl3qbfD5ROSQ4pZ/TFP8GJpgLXzQ9WLrxsBE1QhVi913lT4W6SshG2nOYRdrK54tgr9jmeJUPDO/J5IZlf+9xeySUvmxKgJCWGX2PCGF3efCQxyy5Wu6BHAXVx5WhC9R4SkGnaVYQPeJp6uMjHKL0apBIgTYred0orDhre0HwZ1b4rzM954E/CKqPFFHS4aHaSbgMQSzVHY/wITL/RedhbNH/wmgfO9hiiIY9XCPGGnSXQqxaQZhbdwER5oZ5k=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7DC9437E6C81014BBE5FC3185E3DE5FC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20190201084801.10983-4-hch@lst.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <1cafba51-b652-5457-0dd7-77d64264c85e@arm.com>
+Date:   Fri, 1 Feb 2019 13:53:09 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0971a900-3bd0-4dae-0604-08d68849fdff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Feb 2019 13:34:25.7655
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1934
-X-OriginatorOrg: microchip.com
+In-Reply-To: <20190201084801.10983-4-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-T24gMDEvMDIvMjAxOSBhdCAwOTo0NywgQ2hyaXN0b3BoIEhlbGx3aWcgd3JvdGU6DQo+IFRoZSBE
-TUEgQVBJIGdlbmVyYWxseSByZWxpZXMgb24gYSBzdHJ1Y3QgZGV2aWNlIHRvIHdvcmsgcHJvcGVy
-bHksIGFuZA0KPiBvbmx5IGJhcmVseSB3b3JrcyB3aXRob3V0IG9uZSBmb3IgbGVnYWN5IHJlYXNv
-bnMuICBQYXNzIHRoZSBlYXNpbHkNCj4gYXZhaWxhYmxlIHN0cnVjdCBkZXZpY2UgZnJvbSB0aGUg
-cGxhdGZvcm1fZGV2aWNlIHRvIHJlbWVkeSB0aGlzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ2hy
-aXN0b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+DQoNCkFja2VkLWJ5OiBOaWNvbGFzIEZlcnJlIDxu
-aWNvbGFzLmZlcnJlQG1pY3JvY2hpcC5jb20+DQoNCj4gLS0tDQo+ICAgZHJpdmVycy9uZXQvZXRo
-ZXJuZXQvY2FkZW5jZS9tYWNiX21haW4uYyB8IDggKysrKy0tLS0NCj4gICAxIGZpbGUgY2hhbmdl
-ZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvbmV0L2V0aGVybmV0L2NhZGVuY2UvbWFjYl9tYWluLmMgYi9kcml2ZXJzL25ldC9ldGhl
-cm5ldC9jYWRlbmNlL21hY2JfbWFpbi5jDQo+IGluZGV4IDJiMjg4MjYxNWU4Yi4uNjFhMjc5NjNm
-MWQxIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9jYWRlbmNlL21hY2JfbWFp
-bi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2NhZGVuY2UvbWFjYl9tYWluLmMNCj4g
-QEAgLTM2NzMsOSArMzY3Myw5IEBAIHN0YXRpYyBuZXRkZXZfdHhfdCBhdDkxZXRoZXJfc3RhcnRf
-eG1pdChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLA0KPiAgIAkJLyogU3RvcmUgcGFja2V0IGluZm9ybWF0
-aW9uICh0byBmcmVlIHdoZW4gVHggY29tcGxldGVkKSAqLw0KPiAgIAkJbHAtPnNrYiA9IHNrYjsN
-Cj4gICAJCWxwLT5za2JfbGVuZ3RoID0gc2tiLT5sZW47DQo+IC0JCWxwLT5za2JfcGh5c2FkZHIg
-PSBkbWFfbWFwX3NpbmdsZShOVUxMLCBza2ItPmRhdGEsIHNrYi0+bGVuLA0KPiAtCQkJCQkJCURN
-QV9UT19ERVZJQ0UpOw0KPiAtCQlpZiAoZG1hX21hcHBpbmdfZXJyb3IoTlVMTCwgbHAtPnNrYl9w
-aHlzYWRkcikpIHsNCj4gKwkJbHAtPnNrYl9waHlzYWRkciA9IGRtYV9tYXBfc2luZ2xlKCZscC0+
-cGRldi0+ZGV2LCBza2ItPmRhdGEsDQo+ICsJCQkJCQkgIHNrYi0+bGVuLCBETUFfVE9fREVWSUNF
-KTsNCj4gKwkJaWYgKGRtYV9tYXBwaW5nX2Vycm9yKCZscC0+cGRldi0+ZGV2LCBscC0+c2tiX3Bo
-eXNhZGRyKSkgew0KPiAgIAkJCWRldl9rZnJlZV9za2JfYW55KHNrYik7DQo+ICAgCQkJZGV2LT5z
-dGF0cy50eF9kcm9wcGVkKys7DQo+ICAgCQkJbmV0ZGV2X2VycihkZXYsICIlczogRE1BIG1hcHBp
-bmcgZXJyb3JcbiIsIF9fZnVuY19fKTsNCj4gQEAgLTM3NjUsNyArMzc2NSw3IEBAIHN0YXRpYyBp
-cnFyZXR1cm5fdCBhdDkxZXRoZXJfaW50ZXJydXB0KGludCBpcnEsIHZvaWQgKmRldl9pZCkNCj4g
-ICAJCWlmIChscC0+c2tiKSB7DQo+ICAgCQkJZGV2X2tmcmVlX3NrYl9pcnEobHAtPnNrYik7DQo+
-ICAgCQkJbHAtPnNrYiA9IE5VTEw7DQo+IC0JCQlkbWFfdW5tYXBfc2luZ2xlKE5VTEwsIGxwLT5z
-a2JfcGh5c2FkZHIsDQo+ICsJCQlkbWFfdW5tYXBfc2luZ2xlKCZscC0+cGRldi0+ZGV2LCBscC0+
-c2tiX3BoeXNhZGRyLA0KPiAgIAkJCQkJIGxwLT5za2JfbGVuZ3RoLCBETUFfVE9fREVWSUNFKTsN
-Cj4gICAJCQlkZXYtPnN0YXRzLnR4X3BhY2tldHMrKzsNCj4gICAJCQlkZXYtPnN0YXRzLnR4X2J5
-dGVzICs9IGxwLT5za2JfbGVuZ3RoOw0KPiANCg0KDQotLSANCk5pY29sYXMgRmVycmUNCg==
+On 01/02/2019 08:47, Christoph Hellwig wrote:
+> The DMA API generally relies on a struct device to work properly, and
+> only barely works without one for legacy reasons.  Pass the easily
+> available struct device from the platform_device to remedy this.
+> 
+> Also use the proper Kconfig symbol to check for DMA API availability.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   drivers/net/caif/caif_spi.c | 30 ++++++++++++++++--------------
+>   1 file changed, 16 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/caif/caif_spi.c b/drivers/net/caif/caif_spi.c
+> index d28a1398c091..b7f3e263b57c 100644
+> --- a/drivers/net/caif/caif_spi.c
+> +++ b/drivers/net/caif/caif_spi.c
+> @@ -73,35 +73,37 @@ MODULE_PARM_DESC(spi_down_tail_align, "SPI downlink tail alignment.");
+>   #define LOW_WATER_MARK   100
+>   #define HIGH_WATER_MARK  (LOW_WATER_MARK*5)
+>   
+> -#ifdef CONFIG_UML
+> +#ifdef CONFIG_HAS_DMA
+
+#ifndef, surely?
+
+Robin.
+
+>   
+>   /*
+>    * We sometimes use UML for debugging, but it cannot handle
+>    * dma_alloc_coherent so we have to wrap it.
+>    */
+> -static inline void *dma_alloc(dma_addr_t *daddr)
+> +static inline void *dma_alloc(struct cfspi *cfspi, dma_addr_t *daddr)
+>   {
+>   	return kmalloc(SPI_DMA_BUF_LEN, GFP_KERNEL);
+>   }
+>   
+> -static inline void dma_free(void *cpu_addr, dma_addr_t handle)
+> +static inline void dma_free(struct cfspi *cfspi, void *cpu_addr,
+> +		dma_addr_t handle)
+>   {
+>   	kfree(cpu_addr);
+>   }
+>   
+>   #else
+>   
+> -static inline void *dma_alloc(dma_addr_t *daddr)
+> +static inline void *dma_alloc(struct cfspi *cfspi, dma_addr_t *daddr)
+>   {
+> -	return dma_alloc_coherent(NULL, SPI_DMA_BUF_LEN, daddr,
+> +	return dma_alloc_coherent(&cfspi->pdev->dev, SPI_DMA_BUF_LEN, daddr,
+>   				GFP_KERNEL);
+>   }
+>   
+> -static inline void dma_free(void *cpu_addr, dma_addr_t handle)
+> +static inline void dma_free(struct cfspi *cfspi, void *cpu_addr,
+> +		dma_addr_t handle)
+>   {
+> -	dma_free_coherent(NULL, SPI_DMA_BUF_LEN, cpu_addr, handle);
+> +	dma_free_coherent(&cfspi->pdev->dev, SPI_DMA_BUF_LEN, cpu_addr, handle);
+>   }
+> -#endif	/* CONFIG_UML */
+> +#endif	/* CONFIG_HAS_DMA */
+>   
+>   #ifdef CONFIG_DEBUG_FS
+>   
+> @@ -610,13 +612,13 @@ static int cfspi_init(struct net_device *dev)
+>   	}
+>   
+>   	/* Allocate DMA buffers. */
+> -	cfspi->xfer.va_tx[0] = dma_alloc(&cfspi->xfer.pa_tx[0]);
+> +	cfspi->xfer.va_tx[0] = dma_alloc(cfspi, &cfspi->xfer.pa_tx[0]);
+>   	if (!cfspi->xfer.va_tx[0]) {
+>   		res = -ENODEV;
+>   		goto err_dma_alloc_tx_0;
+>   	}
+>   
+> -	cfspi->xfer.va_rx = dma_alloc(&cfspi->xfer.pa_rx);
+> +	cfspi->xfer.va_rx = dma_alloc(cfspi, &cfspi->xfer.pa_rx);
+>   
+>   	if (!cfspi->xfer.va_rx) {
+>   		res = -ENODEV;
+> @@ -665,9 +667,9 @@ static int cfspi_init(struct net_device *dev)
+>   	return 0;
+>   
+>    err_create_wq:
+> -	dma_free(cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
+> +	dma_free(cfspi, cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
+>    err_dma_alloc_rx:
+> -	dma_free(cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
+> +	dma_free(cfspi, cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
+>    err_dma_alloc_tx_0:
+>   	return res;
+>   }
+> @@ -683,8 +685,8 @@ static void cfspi_uninit(struct net_device *dev)
+>   
+>   	cfspi->ndev = NULL;
+>   	/* Free DMA buffers. */
+> -	dma_free(cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
+> -	dma_free(cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
+> +	dma_free(cfspi, cfspi->xfer.va_rx, cfspi->xfer.pa_rx);
+> +	dma_free(cfspi, cfspi->xfer.va_tx[0], cfspi->xfer.pa_tx[0]);
+>   	set_bit(SPI_TERMINATE, &cfspi->state);
+>   	wake_up_interruptible(&cfspi->wait);
+>   	destroy_workqueue(cfspi->wq);
+> 

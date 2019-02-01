@@ -2,130 +2,302 @@ Return-Path: <SRS0=+ky4=QI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_ADSP_CUSTOM_MED,
-	DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 737B6C282DB
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 14:48:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49AA6C282DA
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 15:46:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4646820870
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 14:48:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0351720855
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Feb 2019 15:46:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VclUM1Gr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GB0CpwEh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729160AbfBAOsn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Feb 2019 09:48:43 -0500
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:39988 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbfBAOsn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 09:48:43 -0500
-Received: by mail-pl1-f194.google.com with SMTP id u18so3315454plq.7;
-        Fri, 01 Feb 2019 06:48:42 -0800 (PST)
+        id S1730208AbfBAPpv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Feb 2019 10:45:51 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:33601 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729417AbfBAPpu (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Feb 2019 10:45:50 -0500
+Received: by mail-pl1-f196.google.com with SMTP id z23so3410034plo.0;
+        Fri, 01 Feb 2019 07:45:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=BQS7eYX9HGve9LVug8wOO94RnbbcOyjLdKnO/lDDp2I=;
-        b=VclUM1Gr6vplH2lc6Ex2uMcst7OpLUwzYdrhBjSpiDgIZg76ZHVjpKJ4U4SExjF3QV
-         Od3ncVcWLzN8HgUVQB3KUYeup4HFmP2iE1LT+/OtaQTbCvbGUwggPiD6Pm/POl+Qa6BJ
-         Md0Xm3LYjrStc9gxfllVcDGzfzcB78fp+FLJTEFRLG/J+Vi+TlYL2STO78l/1+ysLbe9
-         gHtU5rJNNQMbJbNDj9yPz7VuQ6bZrSfnwP1kjrFJlgoKfVOTkOp5Qj/mst+wK1BwGFRm
-         5YHV9KRzExaWbwjLj7uIzqTVFmXCxOB44fYAqN5swmaQaifUYQagLR1fr/V7merQuAco
-         YdpQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=L+eRszaVcLJhzXj2o2NlyRdmZKWD9e+IePzjE+CEeas=;
+        b=GB0CpwEhcke4UA2ODfF7QoeMePw8fiBcd/3p9Xx5u1gfvoanw87Fncx2aT93xGzbJk
+         NFi+hkp5gRxlOqg+6t/eDipHC0oGFyKxbGqhnuagu3JIpguxd58hILhz2lQQ0B/5feop
+         kzHHJCynkd3xxnlEudZuIFsLj9acdtVDqp+U+DtjkU5npU1jWTcHooYpT2zoIGpqWaG+
+         rk1uEfMbgcUgggwOMaIWrUsvxZ4DqMTUG8bWRMKZTSJ32K2XXHl4uyxZCA+DCG3kJKD6
+         A4imtJJR2S/YnxTSKkhybhSfHIjO6nX/R/OODBfTENTPlM7VmX6uCmEkZM93R3tiueWP
+         U4Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=BQS7eYX9HGve9LVug8wOO94RnbbcOyjLdKnO/lDDp2I=;
-        b=BPBTE+k+mBJIIPnA9iHGhE4zFkXANsvmagI7mcP5/kR4ReiXRtpPZuxffMj/jbbge5
-         pHOtIEmUv5n9p7EMdVwfhM14uOE1NySnYOr0XQUmabo5rlIicSJOM9gI2MEisxPuUO3c
-         SOQs108e1rA/Zu3UfBnW/wWeDaiXA8fUj54rOTCZXt8GgQTFukVN2souWatEWp/n1bxc
-         Q0LeXOudzph3OimI0hWVwewVVOiU+Zh4xCzCA4Q7iPVHQO6W7p3ICOD82dvz0xX/c8Jy
-         a9RPg3PhrWTqPzp4X8YBv/tRAbZ4d927LkRWi92pCQwWsVhcg+5eHPUhmyhtpqLSOvIk
-         z0Ag==
-X-Gm-Message-State: AJcUukdT4lJDqCK27oaCOJVKaZhsfn897jmlxpLi7XIVHdUDh+lTVA9H
-        ob43wRMYUdLPcHu0aAGY8CtSfMCxusg=
-X-Google-Smtp-Source: ALg8bN5eyyO1GjD67omoBBXbC4wUV9Hny7kZddb4cDJA6juGAKguzsu8tLq3FRvPinM9K65VT/+xzg==
-X-Received: by 2002:a17:902:8641:: with SMTP id y1mr39725750plt.159.1549032522270;
-        Fri, 01 Feb 2019 06:48:42 -0800 (PST)
-Received: from localhost.corp.microsoft.com ([167.220.255.67])
-        by smtp.googlemail.com with ESMTPSA id n74sm2309674pfi.163.2019.02.01.06.48.33
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 01 Feb 2019 06:48:41 -0800 (PST)
-From:   lantianyu1986@gmail.com
-X-Google-Original-From: Tianyu.Lan@microsoft.com
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
-        bp@alien8.de, catalin.marinas@arm.com, christoffer.dall@arm.com,
-        devel@linuxdriverproject.org, haiyangz@microsoft.com,
-        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
-        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
-        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
-        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
-        paulus@ozlabs.org, pbonzini@redhat.com, ralf@linux-mips.org,
-        rkrcmar@redhat.com, sashal@kernel.org, sthemmin@microsoft.com,
-        tglx@linutronix.de, will.deacon@arm.com, x86@kernel.org,
-        michael.h.kelley@microsoft.com, vkuznets@redhat.com
-Subject: [PATCH V2 00/10] X86/KVM/Hyper-V: Add HV ept tlb range list flush support in KVM              
-Date:   Fri,  1 Feb 2019 22:48:12 +0800
-Message-Id: <20190201144821.50409-1-Tianyu.Lan@microsoft.com>
-X-Mailer: git-send-email 2.14.4
-To:     unlisted-recipients:; (no To-header on input)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=L+eRszaVcLJhzXj2o2NlyRdmZKWD9e+IePzjE+CEeas=;
+        b=noHCLh7YuqkoY0cZvUo4FQR9PhMZPm2qEyCHDqeu+Aemsc0enpi5tQbCeBiv2NIZwA
+         CIPZbooIGrO0x7kjRobcxWuURGzXNWqx0Kidak8NyiSTLHcJ+JM27eLwVbpJ+lknIZVg
+         wWm7zlouYRia6NMG0e+Q8xFOye5pZ81sPE2MAx7BeKD0nootxPNfrBM2BJjVX/9yTyrH
+         9YPllKDwV86sjjwc+tNUijT59Ogv6PYH7lcKIsd6pBoO7mBX9EP3T/cUyanUXNFXon6Y
+         uqgOhCvc9JyzQWM6FR1NWGrBouiy04SqYHON7S1aTKqiFTbpaG9ikOED+EcTQvjG1H4z
+         o5qA==
+X-Gm-Message-State: AJcUukdjGUBxuxBKyG4MhFURq6gq8gHh5nbcnfwi47O3yP2uG9Cc+yWR
+        XR4zfBwD99dLJOe9UaUfZiU=
+X-Google-Smtp-Source: ALg8bN64qzo97aUdVkordA6l0tw9WewI0kuC6dAcsqisGCt1ubeL/7DdPcZ6HEv6oXRv3cDJ85mszQ==
+X-Received: by 2002:a17:902:2dc3:: with SMTP id p61mr39322887plb.166.1549035949480;
+        Fri, 01 Feb 2019 07:45:49 -0800 (PST)
+Received: from localhost.localdomain ([49.206.15.111])
+        by smtp.gmail.com with ESMTPSA id z9sm25886959pfd.99.2019.02.01.07.45.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 01 Feb 2019 07:45:48 -0800 (PST)
+From:   Deepa Dinamani <deepa.kernel@gmail.com>
+To:     davem@davemloft.net, linux-kernel@vger.kernel.org
+Cc:     netdev@vger.kernel.org, arnd@arndb.de, y2038@lists.linaro.org,
+        ccaulfie@redhat.com, deller@gmx.de, paulus@samba.org,
+        ralf@linux-mips.org, rth@twiddle.net, cluster-devel@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: [PATCH net-next v4 11/12] socket: Rename SO_RCVTIMEO/ SO_SNDTIMEO with _OLD suffixes
+Date:   Fri,  1 Feb 2019 07:43:55 -0800
+Message-Id: <20190201154356.15536-12-deepa.kernel@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190201154356.15536-1-deepa.kernel@gmail.com>
+References: <20190201154356.15536-1-deepa.kernel@gmail.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+SO_RCVTIMEO and SO_SNDTIMEO socket options use struct timeval
+as the time format. struct timeval is not y2038 safe.
+The subsequent patches in the series add support for new socket
+timeout options with _NEW suffix that will use y2038 safe
+data structures. Although the existing struct timeval layout
+is sufficiently wide to represent timeouts, because of the way
+libc will interpret time_t based on user defined flag, these
+new flags provide a way of having a structure that is the same
+for all architectures consistently.
+Rename the existing options with _OLD suffix forms so that the
+right option is enabled for userspace applications according
+to the architecture and time_t definition of libc.
 
-This patchset is to introduce hv ept tlb range list flush function
-support in the KVM MMU component. Flushing ept tlbs of several address
-range can be done via single hypercall and new list flush function is
-used in the kvm_mmu_commit_zap_page() and FNAME(sync_page). This patchset
-also adds more hv ept tlb range flush support in more KVM MMU function.
+Signed-off-by: Deepa Dinamani <deepa.kernel@gmail.com>
+Cc: ccaulfie@redhat.com
+Cc: deller@gmx.de
+Cc: paulus@samba.org
+Cc: ralf@linux-mips.org
+Cc: rth@twiddle.net
+Cc: cluster-devel@redhat.com
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+---
+ arch/alpha/include/uapi/asm/socket.h   | 7 +++++--
+ arch/mips/include/uapi/asm/socket.h    | 6 ++++--
+ arch/parisc/include/uapi/asm/socket.h  | 6 ++++--
+ arch/powerpc/include/uapi/asm/socket.h | 4 ++--
+ arch/sparc/include/uapi/asm/socket.h   | 7 +++++--
+ fs/dlm/lowcomms.c                      | 4 ++--
+ include/uapi/asm-generic/socket.h      | 6 ++++--
+ net/core/sock.c                        | 8 ++++----
+ 8 files changed, 30 insertions(+), 18 deletions(-)
 
-Change since v1:
-       1) Make flush list as a hlist instead of list in order to 
-       keep struct kvm_mmu_page size.
-       2) Add last_level flag in the struct kvm_mmu_page instead
-       of spte pointer
-       3) Move tlb flush from kvm_mmu_notifier_clear_flush_young() to kvm_age_hva()
-       4) Use range flush in the kvm_vm_ioctl_get/clear_dirty_log()
-
-Lan Tianyu (10):
-  X86/Hyper-V: Add parameter offset for
-    hyperv_fill_flush_guest_mapping_list()
-  KVM/VMX: Fill range list in kvm_fill_hv_flush_list_func()
-  KVM/MMU: Add last_level in the struct mmu_spte_page
-  KVM/MMU: Introduce tlb flush with range list
-  KVM/MMU: Flush tlb with range list in sync_page()
-  KVM/MMU: Flush tlb directly in the kvm_mmu_slot_gfn_write_protect()
-  KVM: Add kvm_get_memslot() to get memslot via slot id
-  KVM: Use tlb range flush in the kvm_vm_ioctl_get/clear_dirty_log()
-  KVM: Add flush parameter for kvm_age_hva()
-  KVM/MMU: Use tlb range flush  in the kvm_age_hva()
-
- arch/arm/include/asm/kvm_host.h     |  3 ++-
- arch/arm64/include/asm/kvm_host.h   |  3 ++-
- arch/mips/include/asm/kvm_host.h    |  3 ++-
- arch/mips/kvm/mmu.c                 | 11 ++++++--
- arch/powerpc/include/asm/kvm_host.h |  3 ++-
- arch/powerpc/kvm/book3s.c           | 10 ++++++--
- arch/powerpc/kvm/e500_mmu_host.c    |  3 ++-
- arch/x86/hyperv/nested.c            |  4 +--
- arch/x86/include/asm/kvm_host.h     | 11 +++++++-
- arch/x86/include/asm/mshyperv.h     |  2 +-
- arch/x86/kvm/mmu.c                  | 51 +++++++++++++++++++++++++++++--------
- arch/x86/kvm/mmu.h                  |  7 +++++
- arch/x86/kvm/paging_tmpl.h          | 15 ++++++++---
- arch/x86/kvm/vmx/vmx.c              | 18 +++++++++++--
- arch/x86/kvm/x86.c                  | 16 +++++++++---
- include/linux/kvm_host.h            |  1 +
- virt/kvm/arm/mmu.c                  | 13 ++++++++--
- virt/kvm/kvm_main.c                 | 51 +++++++++++++++----------------------
- 18 files changed, 160 insertions(+), 65 deletions(-)
-
+diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
+index 934ea6268f1a..9826d1db71d0 100644
+--- a/arch/alpha/include/uapi/asm/socket.h
++++ b/arch/alpha/include/uapi/asm/socket.h
+@@ -31,8 +31,8 @@
+ #define SO_RCVBUFFORCE	0x100b
+ #define	SO_RCVLOWAT	0x1010
+ #define	SO_SNDLOWAT	0x1011
+-#define	SO_RCVTIMEO	0x1012
+-#define	SO_SNDTIMEO	0x1013
++#define	SO_RCVTIMEO_OLD	0x1012
++#define	SO_SNDTIMEO_OLD	0x1013
+ #define SO_ACCEPTCONN	0x1014
+ #define SO_PROTOCOL	0x1028
+ #define SO_DOMAIN	0x1029
+@@ -121,6 +121,9 @@
+ 
+ #if !defined(__KERNEL__)
+ 
++#define	SO_RCVTIMEO SO_RCVTIMEO_OLD
++#define	SO_SNDTIMEO SO_SNDTIMEO_OLD
++
+ #if __BITS_PER_LONG == 64
+ #define SO_TIMESTAMP		SO_TIMESTAMP_OLD
+ #define SO_TIMESTAMPNS		SO_TIMESTAMPNS_OLD
+diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
+index 110f9506d64f..96cc0e907f12 100644
+--- a/arch/mips/include/uapi/asm/socket.h
++++ b/arch/mips/include/uapi/asm/socket.h
+@@ -39,8 +39,8 @@
+ #define SO_RCVBUF	0x1002	/* Receive buffer. */
+ #define SO_SNDLOWAT	0x1003	/* send low-water mark */
+ #define SO_RCVLOWAT	0x1004	/* receive low-water mark */
+-#define SO_SNDTIMEO	0x1005	/* send timeout */
+-#define SO_RCVTIMEO	0x1006	/* receive timeout */
++#define SO_SNDTIMEO_OLD	0x1005	/* send timeout */
++#define SO_RCVTIMEO_OLD	0x1006	/* receive timeout */
+ #define SO_ACCEPTCONN	0x1009
+ #define SO_PROTOCOL	0x1028	/* protocol type */
+ #define SO_DOMAIN	0x1029	/* domain/socket family */
+@@ -132,6 +132,8 @@
+ 
+ #if !defined(__KERNEL__)
+ 
++#define	SO_RCVTIMEO SO_RCVTIMEO_OLD
++#define	SO_SNDTIMEO SO_SNDTIMEO_OLD
+ #if __BITS_PER_LONG == 64
+ #define SO_TIMESTAMP		SO_TIMESTAMP_OLD
+ #define SO_TIMESTAMPNS		SO_TIMESTAMPNS_OLD
+diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+index bee2a9dde656..046f0cd9cce4 100644
+--- a/arch/parisc/include/uapi/asm/socket.h
++++ b/arch/parisc/include/uapi/asm/socket.h
+@@ -22,8 +22,8 @@
+ #define SO_RCVBUFFORCE	0x100b
+ #define SO_SNDLOWAT	0x1003
+ #define SO_RCVLOWAT	0x1004
+-#define SO_SNDTIMEO	0x1005
+-#define SO_RCVTIMEO	0x1006
++#define SO_SNDTIMEO_OLD	0x1005
++#define SO_RCVTIMEO_OLD	0x1006
+ #define SO_ERROR	0x1007
+ #define SO_TYPE		0x1008
+ #define SO_PROTOCOL	0x1028
+@@ -113,6 +113,8 @@
+ 
+ #if !defined(__KERNEL__)
+ 
++#define	SO_RCVTIMEO SO_RCVTIMEO_OLD
++#define	SO_SNDTIMEO SO_SNDTIMEO_OLD
+ #if __BITS_PER_LONG == 64
+ #define SO_TIMESTAMP		SO_TIMESTAMP_OLD
+ #define SO_TIMESTAMPNS		SO_TIMESTAMPNS_OLD
+diff --git a/arch/powerpc/include/uapi/asm/socket.h b/arch/powerpc/include/uapi/asm/socket.h
+index 94de465e0920..12aa0c43e775 100644
+--- a/arch/powerpc/include/uapi/asm/socket.h
++++ b/arch/powerpc/include/uapi/asm/socket.h
+@@ -11,8 +11,8 @@
+ 
+ #define SO_RCVLOWAT	16
+ #define SO_SNDLOWAT	17
+-#define SO_RCVTIMEO	18
+-#define SO_SNDTIMEO	19
++#define SO_RCVTIMEO_OLD	18
++#define SO_SNDTIMEO_OLD	19
+ #define SO_PASSCRED	20
+ #define SO_PEERCRED	21
+ 
+diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
+index 2b38dda51426..342ffdc3b424 100644
+--- a/arch/sparc/include/uapi/asm/socket.h
++++ b/arch/sparc/include/uapi/asm/socket.h
+@@ -21,8 +21,8 @@
+ #define SO_BSDCOMPAT    0x0400
+ #define SO_RCVLOWAT     0x0800
+ #define SO_SNDLOWAT     0x1000
+-#define SO_RCVTIMEO     0x2000
+-#define SO_SNDTIMEO     0x4000
++#define SO_RCVTIMEO_OLD     0x2000
++#define SO_SNDTIMEO_OLD     0x4000
+ #define SO_ACCEPTCONN	0x8000
+ 
+ #define SO_SNDBUF	0x1001
+@@ -114,6 +114,9 @@
+ 
+ #if !defined(__KERNEL__)
+ 
++#define SO_RCVTIMEO              SO_RCVTIMEO_OLD
++#define SO_SNDTIMEO              SO_SNDTIMEO_OLD
++
+ #if __BITS_PER_LONG == 64
+ #define SO_TIMESTAMP		SO_TIMESTAMP_OLD
+ #define SO_TIMESTAMPNS		SO_TIMESTAMPNS_OLD
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 76976d6e50f9..c98ad9777ad9 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1089,12 +1089,12 @@ static void sctp_connect_to_sock(struct connection *con)
+ 	 * since O_NONBLOCK argument in connect() function does not work here,
+ 	 * then, we should restore the default value of this attribute.
+ 	 */
+-	kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
++	kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
+ 			  sizeof(tv));
+ 	result = sock->ops->connect(sock, (struct sockaddr *)&daddr, addr_len,
+ 				   0);
+ 	memset(&tv, 0, sizeof(tv));
+-	kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv,
++	kernel_setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO_OLD, (char *)&tv,
+ 			  sizeof(tv));
+ 
+ 	if (result == -EINPROGRESS)
+diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+index 2713e0fa68ef..c56b8b487c12 100644
+--- a/include/uapi/asm-generic/socket.h
++++ b/include/uapi/asm-generic/socket.h
+@@ -30,8 +30,8 @@
+ #define SO_PEERCRED	17
+ #define SO_RCVLOWAT	18
+ #define SO_SNDLOWAT	19
+-#define SO_RCVTIMEO	20
+-#define SO_SNDTIMEO	21
++#define SO_RCVTIMEO_OLD	20
++#define SO_SNDTIMEO_OLD	21
+ #endif
+ 
+ /* Security levels - as per NRL IPv6 - don't actually do anything */
+@@ -116,6 +116,8 @@
+ 
+ #if !defined(__KERNEL__)
+ 
++#define	SO_RCVTIMEO SO_RCVTIMEO_OLD
++#define	SO_SNDTIMEO SO_SNDTIMEO_OLD
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+ /* on 64-bit and x32, avoid the ?: operator */
+ #define SO_TIMESTAMP		SO_TIMESTAMP_OLD
+diff --git a/net/core/sock.c b/net/core/sock.c
+index a7c2f6287616..0e29e0b0338f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -941,11 +941,11 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
+ 			sk->sk_rcvlowat = val ? : 1;
+ 		break;
+ 
+-	case SO_RCVTIMEO:
++	case SO_RCVTIMEO_OLD:
+ 		ret = sock_set_timeout(&sk->sk_rcvtimeo, optval, optlen);
+ 		break;
+ 
+-	case SO_SNDTIMEO:
++	case SO_SNDTIMEO_OLD:
+ 		ret = sock_set_timeout(&sk->sk_sndtimeo, optval, optlen);
+ 		break;
+ 
+@@ -1279,11 +1279,11 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		v.val = sk->sk_tsflags;
+ 		break;
+ 
+-	case SO_RCVTIMEO:
++	case SO_RCVTIMEO_OLD:
+ 		lv = sock_get_timeout(sk->sk_rcvtimeo, optval);
+ 		break;
+ 
+-	case SO_SNDTIMEO:
++	case SO_SNDTIMEO_OLD:
+ 		lv = sock_get_timeout(sk->sk_sndtimeo, optval);
+ 		break;
+ 
 -- 
-2.14.4
+2.17.1
 

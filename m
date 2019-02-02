@@ -7,44 +7,42 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E84AEC282DA
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AAAEC282D8
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BADEF20857
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6D64820857
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:37 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="rzFumByw"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="GsReWy12"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbfBBBng (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Feb 2019 20:43:36 -0500
+        id S1726506AbfBBBnh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Feb 2019 20:43:37 -0500
 Received: from mail-eopbgr810108.outbound.protection.outlook.com ([40.107.81.108]:62863
         "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726506AbfBBBng (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 1 Feb 2019 20:43:36 -0500
+        id S1726516AbfBBBnh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 1 Feb 2019 20:43:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=08M9DvEqjVw/kk7l4sYM71dKbNepFroYMdizxMZcu+Y=;
- b=rzFumBywmcKAizl4YiPI3ewazPyHn4mOCfXH/zGcsoKt/yJmmqDTT5Rto09VzA1zSq6vlgbwZip0wSkr0H4N7WWsya3iJPvACHixphTVbWKcfn5POMll7y/Eknc09a2U0FtBMlydpgZQosVbZKMRRiH9TxEhgR0n8q3wyvbamnM=
+ bh=s513NnosSwvNZ8i3tyf0SYbVNOfmMQpnCdeTulAUK3w=;
+ b=GsReWy12EkxPmg5yhkiDofymKbEKPL7W9X5Xn7RYv0Pv6eDyQRzmZ2gRUM00SC0bI1kmqEU/HET4LkYjiBGyHC+aWBOS9nbGAkubzawWji99NNNRc3a0Pj1fuhq7xnDFwogj7W93YS2KRcenGvpnhjpE/gQoqYOPW82p7OasZGs=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
  MWHPR2201MB1439.namprd22.prod.outlook.com (10.174.169.166) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1558.21; Sat, 2 Feb 2019 01:43:24 +0000
+ 15.20.1558.21; Sat, 2 Feb 2019 01:43:25 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Sat, 2 Feb 2019
- 01:43:24 +0000
+ 01:43:25 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
 CC:     Paul Burton <pburton@wavecomp.com>
-Subject: [PATCH 07/14] MIPS: mm: Remove redundant preempt_disable in
- local_flush_tlb_mm()
-Thread-Topic: [PATCH 07/14] MIPS: mm: Remove redundant preempt_disable in
- local_flush_tlb_mm()
-Thread-Index: AQHUupitlEdYKgFZBk+A78mGWOv45Q==
-Date:   Sat, 2 Feb 2019 01:43:21 +0000
-Message-ID: <20190202014242.30680-8-paul.burton@mips.com>
+Subject: [PATCH 09/14] MIPS: mm: Split obj-y to a file per line
+Thread-Topic: [PATCH 09/14] MIPS: mm: Split obj-y to a file per line
+Thread-Index: AQHUupiufaQEj55dJUi+bYUfDGVfDA==
+Date:   Sat, 2 Feb 2019 01:43:23 +0000
+Message-ID: <20190202014242.30680-10-paul.burton@mips.com>
 References: <20190202014242.30680-1-paul.burton@mips.com>
 In-Reply-To: <20190202014242.30680-1-paul.burton@mips.com>
 Accept-Language: en-US
@@ -59,23 +57,23 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.20.1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1439;6:SDfnSGi+gf5bL0ztau8B+qxNWCFXUnNSdUjt0eoCPfS3PQvFAnTTS5/UiiwcQGaDqh2+RFfQX6KNu8wKQGZ7l66XiXN1JJxw4kUwyHW+4MOdG2jJFv9VCuyMotWPVbRYLetapbOX3AKOZhjPBYvzJ9ESKaT/9U2Fkc6LSRZ4XC0uk5m9efgHu4IKAUZ55KKioeCLn8b2+vViENb2zr7sDFaLBQWXda1I0r6z2Fzt5yTUdkcfHg3pWlZ/ADgV0U8tCXzAe5OWKvXr5ALOZH8JDBHVeCb5hfjlpumen3mjXJlM5M5pdmkonwRcd2UcDD1aiJxWxWrmqbxcN0rwd7HxRMZonigSpWo0fZAO7H+BfJOrVMtp70hoSg5SAFoKHiBfy8cw6+ZCh1+L9B9NdxbnErJrszaYY9GcC8HFFt0NwIq6C0kKlNAFieOBNmMjQSd5NIUQmWIc6W3MuCfUfH4ECQ==;5:5YUsMgMgKqZdbGW1mZcwaKuYL1IC/uDojb+wPzByqoWUIUWCXMueeZTCPUVoaBlqKg9fZeRw1YzuMDPt97VtNOsP3dlkJOdfHv8QhMUSc10CtZuY0PsZoSknVLxpbatYMElKBqBJ0Esq4tus+WXGA4IvAne6/EDmrurs8hHyrIeZMVf/pOcIyFN9LfTdV5iYctnE6RGafeUuzUTqMJtyvQ==;7:K8CLKm6Gpb3E9r7JygpNjqNbCNDNWhjjFz54Okr5bzZckt/t0TIzx3Gp7eJSoViTWwsGLtL15o1mkgYE2c8qpBoCwuXV73n/lBwCg29YnD724CTv8QHxWUSbmNHUdy0mzoDIoU5QOrqlFjIkK40IKA==
-x-ms-office365-filtering-correlation-id: 05a1e3d8-c0f2-4588-5374-08d688afd001
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1439;6:r3pYdUzAj5J6Vqh6/IIAurauB+5ib6iwPi/62Xvjov4EEu+j03no0dR13NvOtlIu6U6iJwmC1OV9pAiq+6+Rhcu+09PjfeIvYT8q+2a6ViJZZfZDkqWNg5Nv/UwrqapP9YElM6Trz6R6l+BG+aGBtCppXX0QZStNeyjF7uqPTUZerSe/3dT+IAgYVztB4kJSj4EvID2Do/ylyUIqcUPlsogTtI9kftzY9Nz1M9R8N2wVHyZ73h5QVpwL81I6YXmhhlhcIuaM5avi/z5+a+sVN7ZOW8BsSPJQG1n6pvPjdj/4ugyC13UVyODPAW+rFQ1gwrC198fDtyTcGofWC08IM/lviIZRqcDGoLYepiTTkVOppqT4ZgYAzwFUFnTe/rDzYJwMVPhYgz/4q4wKq8SoRqnsOl3K6F/bKhnqHkvapTCyJWOH2yTx12Ow4pe+VPe+mL60RMYk2eLU/qNRbkZGoQ==;5:AZzk0yIpnGgfocKkkTIU5fE4l2rYhnxEjfPO5l8QmQhlJdJ+inri5fXLFsGiDB5wxpqXwm4MBV7ZLDsjW2JfWpS3a8OzUGSGNv6GbgS7pGm7IVtqN/pgbJ124L3YVGVNKDWiRHolXvWSWrp3bvEpm3dRR/Pbo+2Pi6yQGmlGUMW/REPEAIJjuvwjFYwHCWIpHq0B4SBkl3H8nSk9fxf5jg==;7:eME7TN0m5OcuIA5jhBXN3H062mPJVsICfBkADQP7+Xyk9bcQOdR5JeqNHuTIVyN37oKBXrO/C7vA+gwYSji8kRu1Fz+qC7Y+ZZX5NeiUg8wbyaxvCoHSF7MjOj99CdEsaWUN645rZSnzpFacJC7o9g==
+x-ms-office365-filtering-correlation-id: f794e5cd-e5fa-4524-a1ff-08d688afd104
 x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1439;
 x-ms-traffictypediagnostic: MWHPR2201MB1439:
-x-microsoft-antispam-prvs: <MWHPR2201MB143947CC9BA7E8B6975B8EC8C1930@MWHPR2201MB1439.namprd22.prod.outlook.com>
+x-microsoft-antispam-prvs: <MWHPR2201MB14394AF63028AACD409293E8C1930@MWHPR2201MB1439.namprd22.prod.outlook.com>
 x-forefront-prvs: 09368DB063
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(136003)(396003)(39850400004)(376002)(346002)(199004)(189003)(2616005)(6436002)(446003)(42882007)(106356001)(1076003)(386003)(2501003)(6506007)(305945005)(476003)(107886003)(316002)(25786009)(97736004)(105586002)(11346002)(7736002)(26005)(186003)(36756003)(3846002)(102836004)(6116002)(44832011)(50226002)(486006)(5640700003)(6916009)(68736007)(6666004)(99286004)(4326008)(2906002)(8936002)(6486002)(76176011)(8676002)(71190400001)(256004)(14444005)(14454004)(2351001)(71200400001)(66066001)(52116002)(6512007)(478600001)(81156014)(81166006)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1439;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(136003)(396003)(39850400004)(376002)(346002)(199004)(189003)(2616005)(6436002)(446003)(42882007)(106356001)(1076003)(4744005)(386003)(2501003)(6506007)(305945005)(476003)(107886003)(316002)(25786009)(97736004)(105586002)(11346002)(7736002)(26005)(186003)(36756003)(3846002)(102836004)(6116002)(44832011)(50226002)(486006)(5640700003)(6916009)(68736007)(99286004)(4326008)(2906002)(8936002)(6486002)(76176011)(8676002)(71190400001)(256004)(14444005)(14454004)(2351001)(71200400001)(66066001)(52116002)(6512007)(478600001)(81156014)(81166006)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1439;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: DKjq4Vuo46NFr1mKzzw2l/pG2XArq9LOvxhu9ndcfQpfV7j8qKQ5CigkOtoxZKwPAtz0J/yH/ekaFFqRj6A7vkyz2dvBcr1p67nUfbmx0bCJ8ETfRjMf5C9xkm+uvcGXyCivTKyl8Zy5R7fzBFERL+gknziCwBQc00SyihOz5vfs9ZCzB+w2Rh0MnmXy67IW3Jiq9T9unRfzo/lc0R0z74mv+1CfYIKnlcOZhM2MByYYr8rwYUl9E4JpSd29Q2LNQyDWJayLrJmk76Xo58FXRASR4H1YpfnYxPKKVjUaDbaeFT15UZ/dj+1pl6+T5wkfQkv11eVvfDcmfVsN/p4AoVgGtoUDDl2nwyt4YblETp2iDFgFy00q5O365bU/QHt3FWa+TNYE2Prj6WeUC1n90L7Gtj6P1mSfElv1iR69wgs=
+x-microsoft-antispam-message-info: MWl8Bi+boRLOj+V/7aEtAWzvb87LZ2IZZsJq9Tt2Vz8brTgmRxjyhnLrfBKE2pdYEGHwLxhQYr0OpzqoZZyfhpGNMQaSsyWkq8yxzLT8fQ4Rgafg9Gcr7GDfHyJlp/CCVjS8uoV31k708GkPiCyF818SA3nSoRI1TQcwrwwXEAamo3/XggILYSvnR+JV0sYLC9OmkHnUiRX8+oerkqwdseNtdW9W5uGpZ4vIJcWLC4d4DEM/prICK9uJoNLPWgM/2uvwHy459cVcLROTszbyB/tE8rg5DwK9vRBS4EABID7NvlFICNSQK/XbVGplxQI8tyRBuqiAtYaYbMYY0CVYQU2jJzDbEEDlkPp2OMFk0aUh6S3gd1o/IpSpjBClxdqGVC9rXheTi1QjgvRxiZRWFrnLwIPJseTHFhVZIHIBL7E=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05a1e3d8-c0f2-4588-5374-08d688afd001
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2019 01:43:20.8855
+X-MS-Exchange-CrossTenant-Network-Message-Id: f794e5cd-e5fa-4524-a1ff-08d688afd104
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2019 01:43:22.5859
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
@@ -85,38 +83,41 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The r4k variant of local_flush_tlb_mm() wraps its call to
-drop_mmu_context() with a preempt_disable() & preempt_enable() pair, but
-this is redundant since drop_mmu_context() disables interrupts and from
-Documentation/preempt-locking.txt:
-
-  Note that you do not need to explicitly prevent preemption if you are
-  holding any locks or interrupts are disabled, since preemption is
-  implicitly disabled in those cases.
-
-Remove the redundant preempt_disable() & preempt_enable() calls.
+Split always-included objects to one per line in order to make it easier
+to modify the list of included objects.
 
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 ---
 
- arch/mips/mm/tlb-r4k.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/mips/mm/Makefile | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index ba76b0c11d38..9fff08eabe8f 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -108,9 +108,7 @@ EXPORT_SYMBOL(local_flush_tlb_all);
-    these entries, we just bump the asid. */
- void local_flush_tlb_mm(struct mm_struct *mm)
- {
--	preempt_disable();
- 	drop_mmu_context(mm);
--	preempt_enable();
- }
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 3e5bb203c95a..25d492736848 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -3,9 +3,18 @@
+ # Makefile for the Linux/MIPS-specific parts of the memory manager.
+ #
 =20
- void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start=
-,
+-obj-y				+=3D cache.o extable.o fault.o \
+-				   gup.o init.o mmap.o page.o page-funcs.o \
+-				   pgtable.o tlbex.o tlbex-fault.o tlb-funcs.o
++obj-y				+=3D cache.o
++obj-y				+=3D extable.o
++obj-y				+=3D fault.o
++obj-y				+=3D gup.o
++obj-y				+=3D init.o
++obj-y				+=3D mmap.o
++obj-y				+=3D page.o
++obj-y				+=3D page-funcs.o
++obj-y				+=3D pgtable.o
++obj-y				+=3D tlbex.o
++obj-y				+=3D tlbex-fault.o
++obj-y				+=3D tlb-funcs.o
+=20
+ ifdef CONFIG_CPU_MICROMIPS
+ obj-y				+=3D uasm-micromips.o
 --=20
 2.20.1
 

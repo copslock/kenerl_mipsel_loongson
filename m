@@ -2,46 +2,49 @@ Return-Path: <SRS0=tpXJ=QJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76A39C282D8
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BB39C282D8
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3249020857
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3E2FE20857
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Feb 2019 01:43:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="HWT1oz/O"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="DVHhCS9F"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbfBBBnT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Feb 2019 20:43:19 -0500
-Received: from mail-eopbgr700128.outbound.protection.outlook.com ([40.107.70.128]:50592
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        id S1726410AbfBBBnV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Feb 2019 20:43:21 -0500
+Received: from mail-eopbgr770128.outbound.protection.outlook.com ([40.107.77.128]:62080
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726183AbfBBBnS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 1 Feb 2019 20:43:18 -0500
+        id S1726183AbfBBBnU (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 1 Feb 2019 20:43:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SG956B/MZTb3VplnAIPl9TCwnsu7fIYYwLMnVEc6PMI=;
- b=HWT1oz/O0BVfRvc3fywZkubcWuryvn0Q9WBLtgatjUZcOlasROqLy3llgAmJkevcr8OJMvK2Mlcv6nJ7wtp5TpapW6Gr86fB6vHiv9gZJ5L3EFXJy2FNMzGWe7PZLp5/28ilVuk6QJ3o1cEC26+xFX3kH7eRDv2kp4INThe7RNE=
+ bh=LVQNadAPndkRJn/PhE3WqHDIveZZxyuwrIQ7jmtqqfs=;
+ b=DVHhCS9FzjvxcrmgjxPIKNwMH9NgGRWkQpMATDhsc6s53V7ASlOh8B6u6tNXKcDT9lpWx/D0suwG2A50RHlYAt2G32Pn09MByATNCeYyCqpRwz+kAyU36liRrauiMMafxkzVupMIZ6FUF4+ePuJbpa9YtnAIxs4JTqTjrJSDeeA=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1055.namprd22.prod.outlook.com (10.174.169.141) with Microsoft
+ MWHPR2201MB1439.namprd22.prod.outlook.com (10.174.169.166) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1580.17; Sat, 2 Feb 2019 01:43:15 +0000
+ 15.20.1558.21; Sat, 2 Feb 2019 01:43:16 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Sat, 2 Feb 2019
- 01:43:15 +0000
+ 01:43:16 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
 CC:     Paul Burton <pburton@wavecomp.com>
-Subject: [PATCH 00/14] MIPS: MemoryMapID (MMID) & GINVT Support
-Thread-Topic: [PATCH 00/14] MIPS: MemoryMapID (MMID) & GINVT Support
-Thread-Index: AQHUupipFxEkdvvxWkqmFP+vbW6GAg==
+Subject: [PATCH 01/14] MIPS: mm: Define activate_mm() using switch_mm()
+Thread-Topic: [PATCH 01/14] MIPS: mm: Define activate_mm() using switch_mm()
+Thread-Index: AQHUupiqp1Sra5g7vEKmmfY4jNBCDA==
 Date:   Sat, 2 Feb 2019 01:43:15 +0000
-Message-ID: <20190202014242.30680-1-paul.burton@mips.com>
+Message-ID: <20190202014242.30680-2-paul.burton@mips.com>
+References: <20190202014242.30680-1-paul.burton@mips.com>
+In-Reply-To: <20190202014242.30680-1-paul.burton@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -54,87 +57,95 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.20.1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1055;6:1JvlaE2UzJSMnbB4ZZN/9Pgzrn5Ary8Afoy4nLLI+c6074wvMDLcA4ChF5wSh8UCQwTaRtQW3+RLVXIi3DEJxFR1lonLBmi+vnARzRYhNYXoGLdDjD+UlhZE25W+jhTmMprA/VvxJce1quSDif4V9D4RDNHgQ912DRr/8bfC6rt0J2A2uD4ZiNaMa3FFh5bcP/RxP5wDYcljmUIsf/deyjWNq+XMWgBFg6mUcEfOVY2/okSRXv8ECjsYCmTQ7jAhNqocNK22agJRcMInKhEAtBpOuBlsNU2LFXx69PYD83OuAkyZoY6/5SJiemqS/V+3EMkCP0RRW2c1hy8sOPzdDSZbSODXHnzp+yogXIu1aAvbmDWGMQq/SOl1YTbt1CEEHnFJSpUP0JNyJ4ZpxiO6MtvuA5iD9E9oxVuV7ImYc91i87Zes/LKbqGmQX0gv4zS7JzrpREr17olKI8i7bUL5A==;5:gvALs9hU4LbTd7BrNsHhueEpf5PcCZvDJ7Dl2GYq/y2iBMC2KrC7uFdGkKWKHOkIATQrR7NRoh1ZY8sK9H0knfDg4SsNBfDvXk+2UMwtam/oDpLcqYMAuaMxZCcgOwWcT4wgz96NXW9AleMTJmTKfBTgrITPiwyiLNLDc7fW+ZcoEVLHcQ2yK6OQq3EREDglAE2LU4MLFdglQCq9jRa/Rw==;7:XY/tJo93AOeKxun+k3Wq/imx3Zs1hyAhaR/XV8OLTyUPkfSBWzkYYWjuUCZN/fKrZeQeD15vtkyfy6u7993b71aDuYIW/hQ4VG1eONB96RLoUNIVqzXTKXSxn1yAhIlXdd3nMm2MpqMdOpiN4yzgaA==
-x-ms-office365-filtering-correlation-id: fe606711-ba1b-477f-dcfc-08d688afcc32
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1055;
-x-ms-traffictypediagnostic: MWHPR2201MB1055:
-x-microsoft-antispam-prvs: <MWHPR2201MB10552CA19B5EF0430AB688BDC1930@MWHPR2201MB1055.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1439;6:3JnP0V6y+EyVK4Rqjvzyz96dVN1H7+k/gMuZoymRPmmk7OkbX26MTIPC85ZMiSWmhH4FRu3gFafRjWW8+VKdyqBNbQw3D/rtxifimQu+Vk9VK8NXblwmK+BezIUjzueIOEkdRpbmO3pZzkEh19mkawr0KeZfNgFxV1Nzq7l8y3utmEgMArc8OsYPFfCmRcyBpL0isRjpatNGjoJ46ckv7NLRH6MhEin66F2Ucxrd6of6vMih9qTY2jX+dCgx7ep5qaZWW3vJVMPmN7C5Br+WdNGnRVQ43jNCItOlnAXK2UznlmlCVaOOHMcKM60zHmp39Ho/mc6XKhmjfUt7CBWuMUOt+0JC4g+iAWKTRunM2Wojw+wQXy7AhObWkpfGwsk2drNq4Gq0NkMc8JV3SgUGnqXBy50c+ihBwV1M1md4lrptt0LmUnry4tJKcDFSoYlS2PvwGlyuu3PFFgzoiQC9Rg==;5:eaGCPgVdKAXr/2OkaNe65S4BlYpCAPeEouWTbIJqy1Z5yNfddPjQUlIQe7y/2eHzYXku2vhgsaoyOGDg+BLL0BOA0CSrtVP/K40tF8QS56CPTlpo/JT/UDlSXiZjs9adxqgG1CAKHhXjs80rJq5/OwkCUty0h+oQejf3eAR4Q6sdkfh5obi9zcLySJ6AfMGZaJVes13bPrlXMzXtjRNaWg==;7:gNkG+5GVn+LWRbldK6TXrNnBVOslpwKrvxHxuSL0yCI3GNIrk2pmwUvGkZTwtKxSeTiJe0SAoy27UhzOTj9l6WhEtn27CRKV6t4uG1zLzF0LcmQCu24+zzqQPm4BZ6TJIV4xxNJzij1U+qCKDm6dBQ==
+x-ms-office365-filtering-correlation-id: af5bc491-d48e-4ec0-2d52-08d688afccc3
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1439;
+x-ms-traffictypediagnostic: MWHPR2201MB1439:
+x-microsoft-antispam-prvs: <MWHPR2201MB1439D7C0F14BA0C78D916DA4C1930@MWHPR2201MB1439.namprd22.prod.outlook.com>
 x-forefront-prvs: 09368DB063
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(136003)(346002)(366004)(39840400004)(189003)(199004)(4326008)(97736004)(53936002)(1076003)(25786009)(14454004)(71190400001)(71200400001)(66066001)(14444005)(256004)(107886003)(478600001)(2351001)(105586002)(106356001)(476003)(81156014)(81166006)(6506007)(102836004)(8676002)(2616005)(386003)(6512007)(6436002)(50226002)(8936002)(42882007)(5640700003)(68736007)(44832011)(26005)(186003)(305945005)(52116002)(2906002)(6116002)(36756003)(3846002)(6916009)(7736002)(316002)(99286004)(6486002)(486006)(2501003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1055;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(136003)(396003)(39850400004)(376002)(346002)(199004)(189003)(2616005)(6436002)(446003)(42882007)(106356001)(1076003)(386003)(2501003)(6506007)(305945005)(476003)(107886003)(316002)(25786009)(97736004)(105586002)(11346002)(7736002)(26005)(186003)(36756003)(3846002)(102836004)(6116002)(44832011)(50226002)(486006)(5640700003)(6916009)(68736007)(99286004)(4326008)(2906002)(8936002)(6486002)(76176011)(8676002)(71190400001)(256004)(14444005)(14454004)(2351001)(71200400001)(66066001)(52116002)(6512007)(478600001)(81156014)(81166006)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1439;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: SGSgmgB7OTVoNx6g+keu5HSCoYhP9+7eKP55mTHK/HKEsjY2hFm4U+/YNeTewOj0LQpvJ7XzZByYKX9XHPFOO6Es+CjJqccGsWK1e3/tETEIu6ids1U3Zyrd1CVkxD6tNp0EIUogy1qALvIsDNTLSrrGudh6+wbgCxamlBjE1QyejdcD3fdlYPMfRULemzzyehis8d7bTvVua342CQJASgCVeBt/wwqETXd21obBf5+WrCesnYDf0bavqp0JQQudxdihjHK0akfi0/15jc6LDCbBy7BjB6JIUDGtw+hK+MeucsdVBvcB2euVQJ6JTOJkGe/kWA4O4ehM1/47Xb3pbvfkKVf+dyp7NsUzXXSEkJUcjfriCXSw9RHAilnwvdBwI1AZrBBy7XdMuFpOFHDGAjs04ULEdefSTOuMXnL9QHY=
+x-microsoft-antispam-message-info: 18V4NFIQRPazZkj2yCStctw8vDWYe54wNNJQj7zOQfsiQAXA1H/W45/vypwXg2+ANzzNOJ3c7rc0SPOpY79jOPwNiAdkRMmx9lAog5QW+BSzMb1zu1M9YN+gGzfdM1L366/PWeruPZDaH4WOKWUOarZI8Hqv3yfOawmo+HMrDBRdfh9DIfhAPWEuzVxKsC8/Ld3v7mv1QLe4qO1MWmizextgL4erHwlKR0QStyIfjOZr6Qr6U2gsSP+NUiOjiaxBsIzx66TYlcnLFN837nEbblA8BMhr557ZojDtuxDqDZS1mzWHU2ndp6gdEwwOBcuLl49yrU//1B/SLZRs6y9eecc8fkLQH+mLDXZ+PI6BS3xP8pGFM6/b0ijJ179G1VXGVvXbLBXsikpkP5akOaa2S/1n/CbusdpfUqgZM3dCxYQ=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe606711-ba1b-477f-dcfc-08d688afcc32
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2019 01:43:14.5002
+X-MS-Exchange-CrossTenant-Network-Message-Id: af5bc491-d48e-4ec0-2d52-08d688afccc3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2019 01:43:15.4440
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1055
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1439
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This series introduces support for MemoryMapIDs (MMIDs) & GINVT
-instructions. These give us a larger, global namespace for address space
-IDs & allow for global invalidation of TLB entries without IPIs.
+MIPS has separate definitions of activate_mm() & switch_mm() which are
+identical apart from switch_mm() checking that the ASID is valid before
+acquiring a new one.
 
-This has been tested on various configurations of the MIPS I6500, which
-is the first CPU to support these features.
+We know that when activate_mm() is called cpu_context(X, mm) will be
+zero, and this will never be considered a valid ASID because we never
+allow the ASID version number to be zero, instead beginning with version
+1 using asid_first_version(). Therefore switch_mm() will always allocate
+a new ASID when called for a new task, meaning that it will behave
+identically to activate_mm().
 
-Applies cleanly atop v5.0-rc4.
+Take advantage of this to remove the duplication & define activate_mm()
+using switch_mm() just like many other architectures do.
 
-Paul Burton (14):
-  MIPS: mm: Define activate_mm() using switch_mm()
-  MIPS: mm: Remove redundant drop_mmu_context() cpu argument
-  MIPS: mm: Remove redundant get_new_mmu_context() cpu argument
-  MIPS: mm: Avoid HTW stop/start when dropping an inactive mm
-  MIPS: mm: Consolidate drop_mmu_context() has-ASID checks
-  MIPS: mm: Move drop_mmu_context() comment into appropriate block
-  MIPS: mm: Remove redundant preempt_disable in local_flush_tlb_mm()
-  MIPS: mm: Remove local_flush_tlb_mm()
-  MIPS: mm: Split obj-y to a file per line
-  MIPS: mm: Un-inline get_new_mmu_context
-  MIPS: mm: Unify ASID version checks
-  MIPS: mm: Add set_cpu_context() for ASID assignments
-  MIPS: Add GINVT instruction helpers
-  MIPS: MemoryMapID (MMID) Support
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+---
 
- arch/mips/Makefile                   |   2 +
- arch/mips/include/asm/barrier.h      |  19 ++
- arch/mips/include/asm/cpu-features.h |  13 ++
- arch/mips/include/asm/cpu.h          |   1 +
- arch/mips/include/asm/ginvt.h        |  56 ++++++
- arch/mips/include/asm/mipsregs.h     |  11 +
- arch/mips/include/asm/mmu.h          |   6 +-
- arch/mips/include/asm/mmu_context.h  | 139 +++++++------
- arch/mips/include/asm/tlbflush.h     |   5 +-
- arch/mips/kernel/cpu-probe.c         |  55 ++++-
- arch/mips/kernel/smp.c               |  67 ++++++-
- arch/mips/kernel/traps.c             |   4 +-
- arch/mips/kernel/unaligned.c         |   1 +
- arch/mips/kvm/emulate.c              |   8 +-
- arch/mips/kvm/mips.c                 |   5 +
- arch/mips/kvm/trap_emul.c            |  30 +--
- arch/mips/kvm/vz.c                   |   8 +-
- arch/mips/lib/dump_tlb.c             |  22 +-
- arch/mips/mm/Makefile                |  16 +-
- arch/mips/mm/c-r4k.c                 |   8 +-
- arch/mips/mm/context.c               | 288 +++++++++++++++++++++++++++
- arch/mips/mm/init.c                  |   7 +
- arch/mips/mm/tlb-r3k.c               |  14 +-
- arch/mips/mm/tlb-r4k.c               |  71 ++++---
- arch/mips/mm/tlb-r8k.c               |  10 +-
- 25 files changed, 698 insertions(+), 168 deletions(-)
- create mode 100644 arch/mips/include/asm/ginvt.h
- create mode 100644 arch/mips/mm/context.c
+ arch/mips/include/asm/mmu_context.h | 28 +---------------------------
+ 1 file changed, 1 insertion(+), 27 deletions(-)
 
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mm=
+u_context.h
+index a589585be21b..6731fa5ec4b9 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -166,35 +166,9 @@ static inline void destroy_context(struct mm_struct *m=
+m)
+ 	dsemul_mm_cleanup(mm);
+ }
+=20
++#define activate_mm(prev, next)	switch_mm(prev, next, current)
+ #define deactivate_mm(tsk, mm)	do { } while (0)
+=20
+-/*
+- * After we have set current->mm to a new value, this activates
+- * the context for the new mm so we see the new mappings.
+- */
+-static inline void
+-activate_mm(struct mm_struct *prev, struct mm_struct *next)
+-{
+-	unsigned long flags;
+-	unsigned int cpu =3D smp_processor_id();
+-
+-	local_irq_save(flags);
+-
+-	htw_stop();
+-	/* Unconditionally get a new ASID.  */
+-	get_new_mmu_context(next, cpu);
+-
+-	write_c0_entryhi(cpu_asid(cpu, next));
+-	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+-
+-	/* mark mmu ownership change */
+-	cpumask_clear_cpu(cpu, mm_cpumask(prev));
+-	cpumask_set_cpu(cpu, mm_cpumask(next));
+-	htw_start();
+-
+-	local_irq_restore(flags);
+-}
+-
+ /*
+  * If mm is currently active_mm, we can't really drop it.  Instead,
+  * we will get a new one for it.
 --=20
 2.20.1
 

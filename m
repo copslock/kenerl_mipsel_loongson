@@ -2,160 +2,142 @@ Return-Path: <SRS0=dHpb=QK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87F23C282D7
-	for <linux-mips@archiver.kernel.org>; Sun,  3 Feb 2019 02:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1190C169C4
+	for <linux-mips@archiver.kernel.org>; Sun,  3 Feb 2019 09:39:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4358E2084A
-	for <linux-mips@archiver.kernel.org>; Sun,  3 Feb 2019 02:47:34 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdTP3ifq"
+	by mail.kernel.org (Postfix) with ESMTP id 84BB520855
+	for <linux-mips@archiver.kernel.org>; Sun,  3 Feb 2019 09:39:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727209AbfBCCrd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 2 Feb 2019 21:47:33 -0500
-Received: from mail-it1-f193.google.com ([209.85.166.193]:56207 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbfBCCrd (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 2 Feb 2019 21:47:33 -0500
-Received: by mail-it1-f193.google.com with SMTP id m62so15601904ith.5;
-        Sat, 02 Feb 2019 18:47:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZMYtRmKOONVnZU74jVMCYosr4pKhEho8RsInAYHkIrU=;
-        b=KdTP3ifqajYxvYkJWRnrvGBZSyEmIgYA39UHfnYk43VDQd72q/DV+y/VS2iwKEvIkD
-         mRWvndEEKv+NBrz/qbRD85E925sBQ+IdLiJtyf/bxgXkDN+2I4U/UbTP3ge/SkftkHvi
-         GGUUf6ZdBiWJsU2bA6GkH0nb4DRfPa+pYyD98P75tcaruSBdAeaHiVtmv6LUWquk0sOv
-         XzMaN1E0rPVqGlR/n3j6dgNpYZCtUWuTmavMClfuH1J0jVhRwgSzMOLwALcUqNtOBph7
-         t1pfsH7SLZ1Gu0xrDf7kQL91744p180NWBVbA7IAICl1QNu57omX10tU5p7iajd7hCz1
-         2EHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZMYtRmKOONVnZU74jVMCYosr4pKhEho8RsInAYHkIrU=;
-        b=It0anNRW9lg6qUEkUu8yMgiAqPFk+lcdoUrFtkP7bg4gmWeb6FVE/lmlhhr97x93uM
-         SkoOGAmdh8+zgDAA5PSeJSekjXWctZqi89DTiQAxaEKgQfy8TNYxSGSTIl3RmWYotYp1
-         HIUiWoCr5TvvZK5sYKrIDD3sPyP7CrTDG7x1H7MzpTCUEHpHPqRW67/WrZOwM7z2BmYF
-         8rbTAWIAlaGVE65lnOcavWeG1NgD6/gGAGSBcXaWE/E8c5A9cbmI4Dug8G3tTGbfEskA
-         P3+sGr4T4BuLcXRVV20F6F1P1tBqzkmCcBZUBCqLo4mQyPDFTAR5aLYszCiNUumexWZ1
-         k9Ug==
-X-Gm-Message-State: AHQUAuY6g2eCLtJ4Be+vktu3Bw0hUNOSvvmSj+NGEH83GqrAe0mFGTfM
-        u8XBS0OAZFDsPyU9m2Le09X/N9lKRLWDO8cz0G0=
-X-Google-Smtp-Source: AHgI3IYS2NBXv2myRee69tHGYtSoIzUX3ZpjIGORvAD+gSqnvHnb8wwPrS8ntV2W3anTchzcRl2E0ikoXcP4hPviPoE=
-X-Received: by 2002:a24:3dd1:: with SMTP id n200mr5846603itn.61.1549162051879;
- Sat, 02 Feb 2019 18:47:31 -0800 (PST)
+        id S1727593AbfBCJjm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 3 Feb 2019 04:39:42 -0500
+Received: from ozlabs.org ([203.11.71.1]:42857 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727479AbfBCJjl (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 3 Feb 2019 04:39:41 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 43sm550vBPz9sMp;
+        Sun,  3 Feb 2019 20:39:19 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dennis Zhou <dennis@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Burton <paul.burton@mips.com>,
+        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        devicetree@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
+        xen-devel@lists.xenproject.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v2 10/21] memblock: refactor internal allocation functions
+In-Reply-To: <1548057848-15136-11-git-send-email-rppt@linux.ibm.com>
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com> <1548057848-15136-11-git-send-email-rppt@linux.ibm.com>
+Date:   Sun, 03 Feb 2019 20:39:20 +1100
+Message-ID: <87ftt5nrcn.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-References: <20190202153454.7121-1-deepa.kernel@gmail.com> <20190202153454.7121-13-deepa.kernel@gmail.com>
- <0fad3f4d-4c0e-d9f2-1af0-7890d40c19c0@hartkopp.net>
-In-Reply-To: <0fad3f4d-4c0e-d9f2-1af0-7890d40c19c0@hartkopp.net>
-From:   Deepa Dinamani <deepa.kernel@gmail.com>
-Date:   Sat, 2 Feb 2019 18:47:20 -0800
-Message-ID: <CABeXuvrf_s_LzwYy5p_gqw+PU70OnFAntdtyazN+CBAbyS07TA@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 12/12] sock: Add SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW
-To:     Oliver Hartkopp <socketcan@hartkopp.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Network Devel Mailing List <netdev@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
-        Paul Mackerras <paulus@samba.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Richard Henderson <rth@twiddle.net>,
-        cluster-devel <cluster-devel@redhat.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-alpha@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sat, Feb 2, 2019 at 9:15 AM Oliver Hartkopp <socketcan@hartkopp.net> wro=
-te:
+Mike Rapoport <rppt@linux.ibm.com> writes:
+
+> Currently, memblock has several internal functions with overlapping
+> functionality. They all call memblock_find_in_range_node() to find free
+> memory and then reserve the allocated range and mark it with kmemleak.
+> However, there is difference in the allocation constraints and in fallback
+> strategies.
 >
-> Hi all,
+> The allocations returning physical address first attempt to find free
+> memory on the specified node within mirrored memory regions, then retry on
+> the same node without the requirement for memory mirroring and finally fall
+> back to all available memory.
 >
-> On 02.02.19 16:34, Deepa Dinamani wrote:
-> > Add new socket timeout options that are y2038 safe.
-> (..)
-> >
-> > diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/=
-uapi/asm/socket.h
-> > index 9826d1db71d0..0d0fddb7e738 100644
-> > --- a/arch/alpha/include/uapi/asm/socket.h
-> > +++ b/arch/alpha/include/uapi/asm/socket.h
-> > @@ -119,19 +119,25 @@
-> >   #define SO_TIMESTAMPNS_NEW      64
-> >   #define SO_TIMESTAMPING_NEW     65
-> >
-> > -#if !defined(__KERNEL__)
-> > +#define SO_RCVTIMEO_NEW         66
-> > +#define SO_SNDTIMEO_NEW         67
-> >
-> > -#define      SO_RCVTIMEO SO_RCVTIMEO_OLD
-> > -#define      SO_SNDTIMEO SO_SNDTIMEO_OLD
-> > +#if !defined(__KERNEL__)
-> >
-> >   #if __BITS_PER_LONG =3D=3D 64
-> >   #define SO_TIMESTAMP                SO_TIMESTAMP_OLD
-> >   #define SO_TIMESTAMPNS              SO_TIMESTAMPNS_OLD
-> >   #define SO_TIMESTAMPING         SO_TIMESTAMPING_OLD
-> > +
-> > +#define SO_RCVTIMEO          SO_RCVTIMEO_OLD
-> > +#define SO_SNDTIMEO          SO_SNDTIMEO_OLD
+> The allocations returning virtual address start with clamping the allowed
+> range to memblock.current_limit, attempt to allocate from the specified
+> node from regions with mirroring and with user defined minimal address. If
+> such allocation fails, next attempt is done with node restriction lifted.
+> Next, the allocation is retried with minimal address reset to zero and at
+> last without the requirement for mirrored regions.
 >
-> Maybe I'm a bit late in this discussion as you are already in v5 ...
+> Let's consolidate various fallbacks handling and make them more consistent
+> for physical and virtual variants. Most of the fallback handling is moved
+> to memblock_alloc_range_nid() and it now handles node and mirror fallbacks.
 >
-> I can see patches making the transition in different steps where it
-> might be helpful to name them *_OLD and *_NEW to understand the patches.
+> The memblock_alloc_internal() uses memblock_alloc_range_nid() to get a
+> physical address of the allocated range and converts it to virtual address.
 >
-> But in the end the naming stays in the kernel for a very long time and I
-> remember myself (in early years) to name things 'new', 'new2', 'new3'.
->
-> In fact SO_TIMESTAMP_OLD should be named SO_TIMESTAMP32 and
-> SO_TIMESTAMP_NEW should be named SO_TIMESTAMP64.
+> The fallback for allocation below the specified minimal address remains in
+> memblock_alloc_internal() because memblock_alloc_range_nid() is used by CMA
+> with exact requirement for lower bounds.
 
-Hmm. SO_TIMESTAMP_OLD uses 64-bit time_t on a 64 bit machine. In fact,
-there is no difference between the two options on a 64 bit machine. So
-using  SO_TIMESTAMP_32 is just wrong.
+This is causing problems on some of my machines.
 
-Likewise, SO_TIMESTAMP_64 naming somehow indicates that the existing
-one was not, and that is also not true on a 64-bit machine.
+I see NODE_DATA allocations falling back to node 0 when they shouldn't,
+or didn't previously.
 
-Further, userspace will still continue to use SO_TIMESTAMP and the
-macros take care of which option to select internally.
+eg, before:
 
-Moreover, these macros have been there for more than ten years
-(introduced before 2.4) and there has been no change. I doubt you will
-ever have NEW2.
-I think this argument is similar to saying don=E2=80=99t name these macros
-SO_TIMESTAMP because there might be SO_TIMESTAMP1 some day. There is
-never a perfect name. SO_TIMESTAMPING is also not really descriptive.
+57990190: (116011251): numa:   NODE_DATA [mem 0xfffe4980-0xfffebfff]
+58152042: (116373087): numa:   NODE_DATA [mem 0x8fff90980-0x8fff97fff]
 
-> Especially as it tells you what is 'inside', the naming of these new intr=
-oduced constants should be replaced with *32 and *64 names.
-> The documentation and the other comments still fit perfectly then.
+after:
 
-I would prefer not to do this, for reasons mentioned above. Since you
-point out that it is easier to use this naming for intermediate steps,
-I suggest that we leave the series as it is.
-If you feel strongly to post a follow-on renaming patch, you could
-discuss it with the subsystem maintainers, if you think there is a
-correct but more descriptive naming.
+16356872061562: (6296877055): numa:   NODE_DATA [mem 0xfffe4980-0xfffebfff]
+16356872079279: (6296894772): numa:   NODE_DATA [mem 0xfffcd300-0xfffd497f]
+16356872096376: (6296911869): numa:     NODE_DATA(1) on node 0
 
--Deepa
 
-> Regards,
-> Oliver
+On some of my other systems it does that, and then panics because it
+can't allocate anything at all:
+
+[    0.000000] numa:   NODE_DATA [mem 0x7ffcaee80-0x7ffcb3fff]
+[    0.000000] numa:   NODE_DATA [mem 0x7ffc99d00-0x7ffc9ee7f]
+[    0.000000] numa:     NODE_DATA(1) on node 0
+[    0.000000] Kernel panic - not syncing: Cannot allocate 20864 bytes for node 16 data
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.0.0-rc4-gccN-next-20190201-gdc4c899 #1
+[    0.000000] Call Trace:
+[    0.000000] [c0000000011cfca0] [c000000000c11044] dump_stack+0xe8/0x164 (unreliable)
+[    0.000000] [c0000000011cfcf0] [c0000000000fdd6c] panic+0x17c/0x3e0
+[    0.000000] [c0000000011cfd90] [c000000000f61bc8] initmem_init+0x128/0x260
+[    0.000000] [c0000000011cfe60] [c000000000f57940] setup_arch+0x398/0x418
+[    0.000000] [c0000000011cfee0] [c000000000f50a94] start_kernel+0xa0/0x684
+[    0.000000] [c0000000011cff90] [c00000000000af70] start_here_common+0x1c/0x52c
+[    0.000000] Rebooting in 180 seconds..
+
+
+So there's something going wrong there, I haven't had time to dig into
+it though (Sunday night here).
+
+cheers

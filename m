@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBC6FC169C4
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 12:01:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDAE7C169C4
+	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 12:02:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 925432175B
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 12:01:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 80E682175B
+	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 12:02:36 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZrIkGZ6K"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSPcuRu+"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727317AbfBFMBT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 6 Feb 2019 07:01:19 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:43176 "EHLO
+        id S1730144AbfBFMCg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 6 Feb 2019 07:02:36 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:39552 "EHLO
         mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726957AbfBFMBT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 6 Feb 2019 07:01:19 -0500
-Received: by mail-pl1-f193.google.com with SMTP id gn14so2967126plb.10
-        for <linux-mips@vger.kernel.org>; Wed, 06 Feb 2019 04:01:18 -0800 (PST)
+        with ESMTP id S1730135AbfBFMCg (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 6 Feb 2019 07:02:36 -0500
+Received: by mail-pl1-f193.google.com with SMTP id 101so2979851pld.6
+        for <linux-mips@vger.kernel.org>; Wed, 06 Feb 2019 04:02:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=bogk6pcvWffju0yM8fIqllYghtYYFwTdPsO3Yx7P7Ok=;
-        b=ZrIkGZ6K8bC7cw0kwK1i2gayp7wRx7kzHgDV1q8dKSQljk4qzCx7XxncyxqW7z5FvI
-         JuYgqZiztSeP9Xl6Tr7nEnUMzycPcf8xM3DOtY44+E320jCQwpvYb7MXfdeNXH1Apas3
-         t78JdmMR15EWlQ22fLpLsMiBeSJIhe+2T3YXV4Sp6QUwif4JxuWZaTz2taE/w3elSYmt
-         xqmRFSOie3q+MQLz3A+S+w2fb0VWZtaS7NKY0JjSEmvbAm0bm0mPCWdAnOE1xedXubbq
-         0OeZI8r72WkxHQA145fItnzgJLzAEZWKy3aLih06BIy3l5Q4HvLKNk+Fti0P1K9HUlWG
-         DPAA==
+        bh=fqUg2jgOjoWPvJr/w38uyf8w7ifDT+469NhTpycxlsg=;
+        b=dSPcuRu+N/y5b8fC3f+VDpKhA7oJL+lN/J3Fm2E0j0kBF0GBrLt4wZjf6N4QwTukE4
+         udQxUQmAcsTHKLKLZ+Imd8o2HJ9RHxdRmEfDCFLyUqNXYpyI1rP3Gi4NhbmaeG5mYNiw
+         hMfD8TjButr0XkM+itKJ7lqsv3s1kZ9evBuXae88z1xcy/XYi7DFvNrPBE95q9fVHYJy
+         Oxw9wsGlUbPZc6F6HNAzEDevo76sc8BTbJgeYgjwZNF0/B9ZWNg+jz0nAkZf0O+WDyqR
+         FyVkUS4aiazhZxZ9rb/8sasvmksVOAMs1io2x7ucC22zamAXZYWPkFgePih6O8CKAasD
+         +bVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=bogk6pcvWffju0yM8fIqllYghtYYFwTdPsO3Yx7P7Ok=;
-        b=ZqF8i8fkVkP9y/5Jp3gArk88WQxBi7v+wUTCL63EqoJehW8z3MDIBaP5L4/15viF/j
-         p0eAThWZVhVEuaeceIJ7nfzp2gEe+aDCWoicF0oMl8aczIREzvApGiIrHR7cxh0Hs7ox
-         zCxV8PkRMWhv38nMgH4dsSmPmGjCbxhpP7l2yqvEuMcHU/7fYcKbqcqMViTeMx6qUTEi
-         7Vpk1WY8QcbfR0xERsRXg1ZDER72Asp02KHX0mUyibb0fv52m1KhgWcpF6x4ruKEs31h
-         E5cKBRh4b+TSiyIwFH8Y5ukcrun9yuNphPwN1tC2ptcvvvZ0Rvu7jxxOVZLRHbdgpW1F
-         BIzA==
-X-Gm-Message-State: AHQUAubs4VMjlRJKVZSEOGMTNn8xMnT+k9DVotAbUGkNVkazofp1rP5r
-        udlivNjTQNDBwbUa3lENvPg=
-X-Google-Smtp-Source: AHgI3IZ+oc1tpPC9JPEG+37aoCy41fL9vyyx3v7H49mHDmnC00QNfMb9ODUeTlUgjn0kaYClERyYYw==
-X-Received: by 2002:a17:902:704c:: with SMTP id h12mr10651177plt.30.1549454478015;
-        Wed, 06 Feb 2019 04:01:18 -0800 (PST)
+        bh=fqUg2jgOjoWPvJr/w38uyf8w7ifDT+469NhTpycxlsg=;
+        b=HTetrmXLW+AFnYC8XInqpIjzh5F3vCb2+fv2kLK16WGneqIlsEKkIW87PKK7jmaGGU
+         5BUFskXgKMgH3aOr40GcDqfnale0Csyly4ziRzIrYLDmq404apsMUwC2nGsMi0dbOSPv
+         dRRa0mR6YLUU7XFxC18Y5Cel9jVvkSP3GOA8JipQv1dpxcP677A3pBf4i5iA5zW2oabu
+         g+6VDOMfG+fzeL8BAaeCoP/8PxgxzrjfbtRagv4zL6oO1A5S8cbjDXRVWC2eQHMU16r6
+         ZCguG4RldbCJhXYLzXOyUAal5oGKVEOKK+LHIh/2OPhNv14ZZ5hUwNsYXTp49RiKKlI0
+         lgaw==
+X-Gm-Message-State: AHQUAubr/Hgcd6ZaDNO5ZnEwPVlvhwhb2ZDzrisn8M7PNeKDVhvQ/Hce
+        GVW2j/0TYrUFtAknQg0OhvQ=
+X-Google-Smtp-Source: AHgI3IZ15aM3Lt8F/8mWzQA3ZsL29BgybcTT19RdCAXdjq30PtCbD+5bsqJV6JG/oV2GBjGXa9YnpA==
+X-Received: by 2002:a17:902:449:: with SMTP id 67mr1669269ple.310.1549454554920;
+        Wed, 06 Feb 2019 04:02:34 -0800 (PST)
 Received: from software.domain.org ([172.247.34.138])
-        by smtp.gmail.com with ESMTPSA id z14sm6544394pgv.47.2019.02.06.04.01.12
+        by smtp.gmail.com with ESMTPSA id s190sm9434059pfb.103.2019.02.06.04.02.29
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 06 Feb 2019 04:01:17 -0800 (PST)
+        Wed, 06 Feb 2019 04:02:34 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -60,584 +61,553 @@ Cc:     linux-mips@linux-mips.org, linux-mips@vger.kernel.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhuacai@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH] MIPS: Add syscall auditing support
-Date:   Wed,  6 Feb 2019 20:01:20 +0800
-Message-Id: <1549454480-8962-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH] MIPS: Loongson: Make CPUFreq usable for Loongson-3
+Date:   Wed,  6 Feb 2019 20:02:31 +0800
+Message-Id: <1549454551-9009-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Ralf Baechle <ralf@linux-mips.org>
+Loongson-3A/3B support frequency scaling. But due to hardware
+limitation, Loongson-3A R1's frequency scaling is not independent for
+each core, we suggest enable Loongson-3A's CPUFreq only when there is
+one core online. Loongson-3B and newer processors can adjust frequency
+independently for each core, so it can be always enabled.
 
-The original patch is from Ralf. I have maintained it for more than six
-years on Loongson platform, and it works perfectly. Most of the commit
-messages are written by Ralf.
+Each package has only one register (ChipConfig or FreqCtrl) to control
+frequency, so we need spinlocks to protect register access for multi-
+cores.
 
-MIPS doesn't quite fit into the existing pattern of other architectures
-and I'd appreciate your comments and maybe even an Acked-by.
+arch/mips/kernel/smp.c is modified to guarantee udelay_val has the
+correct value while both CPU hotplug and CPUFreq are enabled.
 
- - Linux on MIPS extends the traditional syscall table used by older UNIX
-   implementations.  This is why 32-bit Linux syscalls are starting from
-   4000; the native 64-bit syscalls start from 5000 and the N32 compat ABI
-   from 6000.  The existing syscall bitmap is only large enough for at most
-   2048 syscalls, so I had to increase AUDIT_BITMASK_SIZE to 256 which
-   provides enough space for 8192 syscalls.  Because include/uapi/linux/
-   audit.h and AUDIT_BITMASK_SIZE are exported to userspace I've used an
-   #ifdef __mips__ for this.
-
- - The code treats the little endian MIPS architecture as separate from
-   big endian.  Combined with the 3 ABIs that's 6 combinations.  I tried
-   to sort of follow the example set by ARM which explicitly lists the
-   (rare) big endian architecture variant - but it doesn't seem to very
-   useful so I wonder if this could be squashed to just the three ABIs
-   without consideration of endianess?
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/Kconfig                   | 13 +++++
- arch/mips/include/asm/abi.h         |  1 +
- arch/mips/include/asm/unistd.h      | 10 ++++
- arch/mips/include/uapi/asm/unistd.h | 21 ++++----
- arch/mips/kernel/Makefile           |  4 ++
- arch/mips/kernel/audit-n32.c        | 58 ++++++++++++++++++++++
- arch/mips/kernel/audit-native.c     | 97 +++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/audit-o32.c        | 60 +++++++++++++++++++++++
- arch/mips/kernel/signal.c           | 18 +++++++
- arch/mips/kernel/signal_n32.c       |  8 +++
- arch/mips/kernel/signal_o32.c       |  8 +++
- include/uapi/linux/audit.h          | 10 ++++
- kernel/auditsc.c                    | 13 +++++
- 13 files changed, 312 insertions(+), 9 deletions(-)
- create mode 100644 arch/mips/kernel/audit-n32.c
- create mode 100644 arch/mips/kernel/audit-native.c
- create mode 100644 arch/mips/kernel/audit-o32.c
+ arch/mips/include/asm/mach-loongson64/loongson.h |   1 +
+ arch/mips/kernel/smp.c                           |   3 +-
+ arch/mips/loongson64/Kconfig                     |   1 +
+ arch/mips/loongson64/common/platform.c           |  13 +-
+ arch/mips/loongson64/loongson-3/Makefile         |   2 +-
+ arch/mips/loongson64/loongson-3/clock.c          | 191 +++++++++++++++++++++++
+ drivers/cpufreq/Kconfig                          |  13 ++
+ drivers/cpufreq/Makefile                         |   1 +
+ drivers/cpufreq/loongson3_cpufreq.c              | 190 ++++++++++++++++++++++
+ 9 files changed, 410 insertions(+), 5 deletions(-)
+ create mode 100644 arch/mips/loongson64/loongson-3/clock.c
+ create mode 100644 drivers/cpufreq/loongson3_cpufreq.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 25266d1..2662f7d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -14,6 +14,7 @@ config MIPS
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_IPC_PARSE_VERSION
-+	select AUDIT_ARCH
- 	select BUILDTIME_EXTABLE_SORT
- 	select CLONE_BACKWARDS
- 	select CPU_NO_EFFICIENT_FFS if (TARGET_ISA_REV < 1)
-@@ -35,6 +36,7 @@ config MIPS
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select HANDLE_DOMAIN_IRQ
-+	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_COMPILER_H
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KGDB
-@@ -1064,6 +1066,15 @@ config FW_ARC
- config ARCH_MAY_HAVE_PC_FDC
- 	bool
+diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+index b6870fe..0623cc8 100644
+--- a/arch/mips/include/asm/mach-loongson64/loongson.h
++++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+@@ -277,6 +277,7 @@ extern u64 loongson_freqctrl[MAX_PACKAGES];
+ #ifdef CONFIG_CPU_SUPPORTS_CPUFREQ
+ #include <linux/cpufreq.h>
+ extern struct cpufreq_frequency_table loongson2_clockmod_table[];
++extern struct cpufreq_frequency_table loongson3_clockmod_table[];
+ #endif
  
-+config AUDIT_ARCH
-+	bool
+ /*
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 6fd9e94..f49a2d7 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -371,7 +371,8 @@ asmlinkage void start_secondary(void)
+ 	calibrate_delay();
+ 	preempt_disable();
+ 	cpu = smp_processor_id();
+-	cpu_data[cpu].udelay_val = loops_per_jiffy;
++	if (!cpu_data[cpu].udelay_val)
++		cpu_data[cpu].udelay_val = loops_per_jiffy;
+ 
+ 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
+ 	notify_cpu_starting(cpu);
+diff --git a/arch/mips/loongson64/Kconfig b/arch/mips/loongson64/Kconfig
+index 4c14a11..81d8382 100644
+--- a/arch/mips/loongson64/Kconfig
++++ b/arch/mips/loongson64/Kconfig
+@@ -74,6 +74,7 @@ config LOONGSON_MACH3X
+ 	select CSRC_R4K
+ 	select CEVT_R4K
+ 	select CPU_HAS_WB
++	select HAVE_CLK
+ 	select FORCE_PCI
+ 	select ISA
+ 	select I8259
+diff --git a/arch/mips/loongson64/common/platform.c b/arch/mips/loongson64/common/platform.c
+index 0ed3832..733a13f 100644
+--- a/arch/mips/loongson64/common/platform.c
++++ b/arch/mips/loongson64/common/platform.c
+@@ -17,15 +17,22 @@ static struct platform_device loongson2_cpufreq_device = {
+ 	.id = -1,
+ };
+ 
+-static int __init loongson2_cpufreq_init(void)
++static struct platform_device loongson3_cpufreq_device = {
++	.name = "loongson3_cpufreq",
++	.id = -1,
++};
 +
-+config AUDITSYSCALL_O32
-+	bool
-+
-+config AUDITSYSCALL_N32
-+	bool
-+
- config BOOT_RAW
- 	bool
++static int __init loongson_cpufreq_init(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
  
-@@ -3149,6 +3160,7 @@ config MIPS32_O32
- 	select COMPAT
- 	select MIPS32_COMPAT
- 	select SYSVIPC_COMPAT if SYSVIPC
-+	select AUDITSYSCALL_O32 if AUDITSYSCALL
- 	help
- 	  Select this option if you want to run o32 binaries.  These are pure
- 	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of
-@@ -3162,6 +3174,7 @@ config MIPS32_N32
- 	select COMPAT
- 	select MIPS32_COMPAT
- 	select SYSVIPC_COMPAT if SYSVIPC
-+	select AUDITSYSCALL_N32 if AUDITSYSCALL
- 	help
- 	  Select this option if you want to run n32 binaries.  These are
- 	  64-bit binaries using 32-bit quantities for addressing and certain
-diff --git a/arch/mips/include/asm/abi.h b/arch/mips/include/asm/abi.h
-index dba7f4b..6e717a4a 100644
---- a/arch/mips/include/asm/abi.h
-+++ b/arch/mips/include/asm/abi.h
-@@ -21,6 +21,7 @@ struct mips_abi {
- 	int (* const setup_rt_frame)(void *sig_return, struct ksignal *ksig,
- 				     struct pt_regs *regs, sigset_t *set);
- 	const unsigned long	restart;
-+	const int audit_arch;
+ 	/* Only 2F revision and it's successors support CPUFreq */
+-	if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON2F)
++	if ((c->processor_id & PRID_REV_MASK) == PRID_REV_LOONGSON2F)
+ 		return platform_device_register(&loongson2_cpufreq_device);
++	if ((c->processor_id & PRID_REV_MASK) >= PRID_REV_LOONGSON3A_R1)
++		return platform_device_register(&loongson3_cpufreq_device);
  
- 	unsigned	off_sc_fpregs;
- 	unsigned	off_sc_fpc_csr;
-diff --git a/arch/mips/include/asm/unistd.h b/arch/mips/include/asm/unistd.h
-index b23d74a..06240be 100644
---- a/arch/mips/include/asm/unistd.h
-+++ b/arch/mips/include/asm/unistd.h
-@@ -71,4 +71,14 @@
+ 	return -ENODEV;
+ }
  
- #endif /* !__ASSEMBLY__ */
+-arch_initcall(loongson2_cpufreq_init);
++arch_initcall(loongson_cpufreq_init);
+diff --git a/arch/mips/loongson64/loongson-3/Makefile b/arch/mips/loongson64/loongson-3/Makefile
+index b5a0c2f..0c63713 100644
+--- a/arch/mips/loongson64/loongson-3/Makefile
++++ b/arch/mips/loongson64/loongson-3/Makefile
+@@ -1,7 +1,7 @@
+ #
+ # Makefile for Loongson-3 family machines
+ #
+-obj-y			+= irq.o cop2-ex.o platform.o acpi_init.o dma.o
++obj-y			+= irq.o cop2-ex.o platform.o acpi_init.o dma.o clock.o
  
-+#ifdef CONFIG_MIPS32_N32
-+#define NR_syscalls	(__NR_N32_Linux + __NR_N32_Linux_syscalls)
-+#elif defined(CONFIG_64BIT)
-+#define NR_syscalls	(__NR_64_Linux  + __NR_64_Linux_syscalls)
-+#elif defined(CONFIG_32BIT)
-+#define NR_syscalls	(__NR_O32_Linux + __NR_O32_Linux_syscalls)
-+#else
-+#error Must know ABIs in use to define NR_syscalls
-+#endif
-+
- #endif /* _ASM_UNISTD_H */
-diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
-index 4abe387..b501ea1 100644
---- a/arch/mips/include/uapi/asm/unistd.h
-+++ b/arch/mips/include/uapi/asm/unistd.h
-@@ -6,34 +6,37 @@
-  *
-  * Copyright (C) 1995, 96, 97, 98, 99, 2000 by Ralf Baechle
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-- *
-- * Changed system calls macros _syscall5 - _syscall7 to push args 5 to 7 onto
-- * the stack. Robin Farine for ACN S.A, Copyright (C) 1996 by ACN S.A
-  */
- #ifndef _UAPI_ASM_UNISTD_H
- #define _UAPI_ASM_UNISTD_H
+ obj-$(CONFIG_SMP)	+= smp.o
  
- #include <asm/sgidefs.h>
- 
--#if _MIPS_SIM == _MIPS_SIM_ABI32
-+#if (defined(__WANT_SYSCALL_NUMBERS) &&					\
-+	(__WANT_SYSCALL_NUMBERS == _MIPS_SIM_ABI32)) ||			\
-+	(!defined(__WANT_SYSCALL_NUMBERS) && _MIPS_SIM == _MIPS_SIM_ABI32)
- 
- #define __NR_Linux	4000
- #include <asm/unistd_o32.h>
- 
--#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
-+#endif /* Want O32 || _MIPS_SIM == _MIPS_SIM_ABI32  */
- 
--#if _MIPS_SIM == _MIPS_SIM_ABI64
-+#if (defined(__WANT_SYSCALL_NUMBERS) &&					\
-+	(__WANT_SYSCALL_NUMBERS == _MIPS_SIM_ABI64)) ||			\
-+	(!defined(__WANT_SYSCALL_NUMBERS) && _MIPS_SIM == _MIPS_SIM_ABI64)
- 
- #define __NR_Linux	5000
- #include <asm/unistd_n64.h>
- 
--#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
-+#endif /* Want N64 || _MIPS_SIM == _MIPS_SIM_ABI64  */
- 
--#if _MIPS_SIM == _MIPS_SIM_NABI32
-+#if (defined(__WANT_SYSCALL_NUMBERS) &&					\
-+	(__WANT_SYSCALL_NUMBERS == _MIPS_SIM_NABI32)) ||		\
-+	(!defined(__WANT_SYSCALL_NUMBERS) && _MIPS_SIM == _MIPS_SIM_NABI32)
- 
- #define __NR_Linux	6000
- #include <asm/unistd_n32.h>
- 
--#endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
-+#endif /* Want N32 || _MIPS_SIM == _MIPS_SIM_NABI32  */
- 
- #endif /* _UAPI_ASM_UNISTD_H */
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 89b07ea..9de423a 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -106,6 +106,10 @@ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
- obj-$(CONFIG_UPROBES)		+= uprobes.o
- 
-+obj-$(CONFIG_AUDITSYSCALL_O32)	+= audit-o32.o
-+obj-$(CONFIG_AUDITSYSCALL_N32)	+= audit-n32.o
-+obj-$(CONFIG_AUDITSYSCALL)	+= audit-native.o
-+
- obj-$(CONFIG_MIPS_CM)		+= mips-cm.o
- obj-$(CONFIG_MIPS_CPC)		+= mips-cpc.o
- 
-diff --git a/arch/mips/kernel/audit-n32.c b/arch/mips/kernel/audit-n32.c
+diff --git a/arch/mips/loongson64/loongson-3/clock.c b/arch/mips/loongson64/loongson-3/clock.c
 new file mode 100644
-index 0000000..2248badc
+index 0000000..df21a5b
 --- /dev/null
-+++ b/arch/mips/kernel/audit-n32.c
-@@ -0,0 +1,58 @@
-+#define __WANT_SYSCALL_NUMBERS _MIPS_SIM_NABI32
++++ b/arch/mips/loongson64/loongson-3/clock.c
+@@ -0,0 +1,191 @@
++/*
++ * Copyright (C) 2008 - 2014 Lemote Inc.
++ * Author: Yan Hua, yanh@lemote.com
++ *         Chen Huacai, chenhc@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
 +
-+#include <linux/init.h>
-+#include <linux/types.h>
-+#include <linux/audit.h>
-+#include <asm/unistd.h>
++#include <linux/module.h>
++#include <linux/err.h>
++#include <linux/slab.h>
++#include <linux/cpufreq.h>
++#include <linux/platform_device.h>
 +
-+static unsigned dir_class_n32[] = {
-+#include <asm-generic/audit_dir_write.h>
-+~0U
++#include <asm/clock.h>
++
++#include <loongson.h>
++
++static LIST_HEAD(clock_list);
++static DEFINE_SPINLOCK(clock_lock);
++static DEFINE_MUTEX(clock_list_sem);
++
++/* Minimum CLK support */
++enum {
++	DC_ZERO, DC_12PT, DC_25PT, DC_37PT, DC_50PT, DC_62PT,
++	DC_75PT, DC_87PT, DC_DISABLE, DC_RESV
 +};
 +
-+static unsigned read_class_n32[] = {
-+#include <asm-generic/audit_read.h>
-+~0U
++struct cpufreq_frequency_table loongson3_clockmod_table[] = {
++	{0, DC_ZERO, CPUFREQ_ENTRY_INVALID},
++	{0, DC_12PT, 0},
++	{0, DC_25PT, 0},
++	{0, DC_37PT, 0},
++	{0, DC_50PT, 0},
++	{0, DC_62PT, 0},
++	{0, DC_75PT, 0},
++	{0, DC_87PT, 0},
++	{0, DC_DISABLE, 0},
++	{0, DC_RESV, CPUFREQ_TABLE_END},
 +};
++EXPORT_SYMBOL_GPL(loongson3_clockmod_table);
 +
-+static unsigned write_class_n32[] = {
-+#include <asm-generic/audit_write.h>
-+~0U
-+};
++static struct clk cpu_clks[NR_CPUS];
++static char clk_names[NR_CPUS][10];
 +
-+static unsigned chattr_class_n32[] = {
-+#include <asm-generic/audit_change_attr.h>
-+~0U
-+};
-+
-+static unsigned signal_class_n32[] = {
-+#include <asm-generic/audit_signal.h>
-+~0U
-+};
-+
-+int audit_classify_syscall_n32(int abi, unsigned syscall)
++struct clk *cpu_clk_get(int cpu)
 +{
-+	switch (syscall) {
-+	case __NR_open:
-+		return 2;
-+	case __NR_openat:
-+		return 3;
-+	case __NR_execve:
-+		return 5;
-+	default:
-+		return 0;
++	return &cpu_clks[cpu];
++}
++
++struct clk *clk_get(struct device *dev, const char *id)
++{
++	int i;
++	struct clk *clk;
++
++	if (!id)
++		return NULL;
++
++	for_each_possible_cpu(i) {
++		clk = &cpu_clks[i];
++		if (strcmp(clk->name, id) == 0)
++			return clk;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(clk_get);
++
++static void propagate_rate(struct clk *clk)
++{
++	struct clk *clkp;
++
++	list_for_each_entry(clkp, &clock_list, node) {
++		if (likely(clkp->parent != clk))
++			continue;
++		if (likely(clkp->ops && clkp->ops->recalc))
++			clkp->ops->recalc(clkp);
++		if (unlikely(clkp->flags & CLK_RATE_PROPAGATES))
++			propagate_rate(clkp);
 +	}
 +}
 +
-+static int __init audit_classes_n32_init(void)
++int clk_enable(struct clk *clk)
 +{
-+	audit_register_class(AUDIT_CLASS_WRITE_N32, write_class_n32);
-+	audit_register_class(AUDIT_CLASS_READ_N32, read_class_n32);
-+	audit_register_class(AUDIT_CLASS_DIR_WRITE_N32, dir_class_n32);
-+	audit_register_class(AUDIT_CLASS_CHATTR_N32, chattr_class_n32);
-+	audit_register_class(AUDIT_CLASS_SIGNAL_N32, signal_class_n32);
++	return 0;
++}
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	if (!clk)
++		return 0;
++
++	return (unsigned long)clk->rate;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);
++
++int clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	int regval, ret = 0;
++	struct cpufreq_frequency_table *pos;
++	int cpu = clk - cpu_clks;
++	uint64_t core_id = cpu_core(&cpu_data[cpu]);
++	uint64_t package_id = cpu_data[cpu].package;
++
++	if (likely(clk->ops && clk->ops->set_rate)) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		ret = clk->ops->set_rate(clk, rate, 0);
++		spin_unlock_irqrestore(&clock_lock, flags);
++	}
++
++	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
++		propagate_rate(clk);
++
++	cpufreq_for_each_valid_entry(pos, loongson3_clockmod_table)
++		if (rate == pos->frequency)
++			break;
++	if (rate != pos->frequency)
++		return -ENOTSUPP;
++
++	clk->rate = rate;
++
++	if ((read_c0_prid() & 0xf) == PRID_REV_LOONGSON3A_R1) {
++		regval = LOONGSON_CHIPCFG(package_id);
++		regval = (regval & ~0x7) | (pos->driver_data - 1);
++		LOONGSON_CHIPCFG(package_id) = regval;
++	} else {
++		regval = LOONGSON_FREQCTRL(package_id);
++		regval = (regval & ~(0x7 << (core_id*4))) |
++			((pos->driver_data - 1) << (core_id*4));
++		LOONGSON_FREQCTRL(package_id) = regval;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(clk_set_rate);
++
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	if (likely(clk->ops && clk->ops->round_rate)) {
++		unsigned long flags, rounded;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		rounded = clk->ops->round_rate(clk, rate);
++		spin_unlock_irqrestore(&clock_lock, flags);
++
++		return rounded;
++	}
++
++	return rate;
++}
++EXPORT_SYMBOL_GPL(clk_round_rate);
++
++static int loongson3_clock_init(void)
++{
++	int i;
++
++	for_each_possible_cpu(i) {
++		sprintf(clk_names[i], "cpu%d_clk", i);
++		cpu_clks[i].name = clk_names[i];
++		cpu_clks[i].flags = CLK_ALWAYS_ENABLED | CLK_RATE_PROPAGATES;
++		cpu_clks[i].rate = cpu_clock_freq / 1000;
++	}
++
++	/* clock table init */
++	for (i = 1;
++	     (loongson3_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
++	     i++)
++		loongson3_clockmod_table[i].frequency = ((cpu_clock_freq / 1000) * i) / 8;
 +
 +	return 0;
 +}
++arch_initcall(loongson3_clock_init);
 +
-+__initcall(audit_classes_n32_init);
-diff --git a/arch/mips/kernel/audit-native.c b/arch/mips/kernel/audit-native.c
++MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
++MODULE_DESCRIPTION("CPUFreq driver for Loongson 3A/3B");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index 608af20..88ac6be 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -276,6 +276,19 @@ config LOONGSON2_CPUFREQ
+ 
+ 	  If in doubt, say N.
+ 
++config LOONGSON3_CPUFREQ
++	tristate "Loongson3 CPUFreq Driver"
++	depends on CPU_LOONGSON3
++	help
++	  This option adds a CPUFreq driver for loongson processors which
++	  support software configurable cpu frequency.
++
++	  Loongson-3A and it's successors support this feature.
++
++	  For details, take a look at <file:Documentation/cpu-freq/>.
++
++	  If in doubt, say N.
++
+ config LOONGSON1_CPUFREQ
+ 	tristate "Loongson1 CPUFreq Driver"
+ 	depends on LOONGSON1_LS1B
+diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+index 08c071b..9cb0429 100644
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -102,6 +102,7 @@ obj-$(CONFIG_POWERNV_CPUFREQ)		+= powernv-cpufreq.o
+ obj-$(CONFIG_BMIPS_CPUFREQ)		+= bmips-cpufreq.o
+ obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
+ obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
++obj-$(CONFIG_LOONGSON3_CPUFREQ)		+= loongson3_cpufreq.o
+ obj-$(CONFIG_LOONGSON1_CPUFREQ)		+= loongson1-cpufreq.o
+ obj-$(CONFIG_SH_CPU_FREQ)		+= sh-cpufreq.o
+ obj-$(CONFIG_SPARC_US2E_CPUFREQ)	+= sparc-us2e-cpufreq.o
+diff --git a/drivers/cpufreq/loongson3_cpufreq.c b/drivers/cpufreq/loongson3_cpufreq.c
 new file mode 100644
-index 0000000..09ae3db
+index 0000000..f76591a
 --- /dev/null
-+++ b/arch/mips/kernel/audit-native.c
-@@ -0,0 +1,97 @@
-+#include <linux/init.h>
-+#include <linux/types.h>
-+#include <linux/audit.h>
-+#include <asm/unistd.h>
++++ b/drivers/cpufreq/loongson3_cpufreq.c
+@@ -0,0 +1,190 @@
++/*
++ * CPUFreq driver for the loongson-3 processors
++ *
++ * All revisions of Loongson-3 processor support this feature.
++ *
++ * Copyright (C) 2008 - 2014 Lemote Inc.
++ * Author: Yan Hua, yanh@lemote.com
++ *         Chen Huacai, chenhc@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/module.h>
++#include <linux/time.h>
++#include <linux/delay.h>
++#include <linux/cpufreq.h>
++#include <linux/platform_device.h>
++#include <asm/idle.h>
++#include <asm/clock.h>
++#include <asm/cevt-r4k.h>
 +
-+static unsigned dir_class[] = {
-+#include <asm-generic/audit_dir_write.h>
-+~0U
++#include <loongson.h>
++
++static spinlock_t cpufreq_reg_lock[MAX_PACKAGES];
++
++extern struct clk *cpu_clk_get(int cpu);
++
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data);
++
++static struct notifier_block loongson3_cpufreq_notifier_block = {
++	.notifier_call = loongson3_cpu_freq_notifier
 +};
 +
-+static unsigned read_class[] = {
-+#include <asm-generic/audit_read.h>
-+~0U
-+};
++#ifdef CONFIG_SMP
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data)
++{
++	struct cpufreq_freqs *freqs = (struct cpufreq_freqs *)data;
++	unsigned long cpu = freqs->cpu;
++	struct clock_event_device *cd = &per_cpu(mips_clockevent_device, cpu);
 +
-+static unsigned write_class[] = {
-+#include <asm-generic/audit_write.h>
-+~0U
-+};
++	if (val == CPUFREQ_POSTCHANGE) {
++		if (cpu == smp_processor_id())
++			clockevents_update_freq(cd, freqs->new * 1000 / 2);
++		else {
++			clockevents_calc_mult_shift(cd, freqs->new * 1000 / 2, 4);
++			cd->min_delta_ns = clockevent_delta2ns(cd->min_delta_ticks, cd);
++			cd->max_delta_ns = clockevent_delta2ns(cd->max_delta_ticks, cd);
++		}
++		cpu_data[cpu].udelay_val =
++			cpufreq_scale(loops_per_jiffy, cpu_clock_freq / 1000, freqs->new);
++	}
 +
-+static unsigned chattr_class[] = {
-+#include <asm-generic/audit_change_attr.h>
-+~0U
-+};
++	return 0;
++}
++#else
++static int loongson3_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data)
++{
++	struct cpufreq_freqs *freqs = (struct cpufreq_freqs *)data;
++	struct clock_event_device *cd = &per_cpu(mips_clockevent_device, 0);
 +
-+static unsigned signal_class[] = {
-+#include <asm-generic/audit_signal.h>
-+~0U
-+};
++	if (val == CPUFREQ_POSTCHANGE) {
++		clockevents_update_freq(cd, freqs->new * 1000 / 2);
++		current_cpu_data.udelay_val = loops_per_jiffy;
++	}
 +
++	return 0;
++}
++#endif
++
++static unsigned int loongson3_cpufreq_get(unsigned int cpu)
++{
++	return clk_get_rate(cpu_clk_get(cpu));
++}
 +
 +/*
-+ * Pretend to be a single architecture
++ * Here we notify other drivers of the proposed change and the final change.
 + */
-+int audit_classify_arch(int arch)
++static int loongson3_cpufreq_target(struct cpufreq_policy *policy,
++				     unsigned int index)
 +{
-+	return 0;
-+}
++	unsigned int freq;
++	unsigned int cpu = policy->cpu;
++	unsigned int package = cpu_data[cpu].package;
 +
-+extern int audit_classify_syscall_o32(int abi, unsigned syscall);
-+extern int audit_classify_syscall_n32(int abi, unsigned syscall);
++	if (!cpu_online(cpu))
++		return -ENODEV;
 +
-+int audit_classify_syscall(int abi, unsigned syscall)
-+{
-+	int res;
++	freq =
++	    ((cpu_clock_freq / 1000) *
++	     loongson3_clockmod_table[index].driver_data) / 8;
 +
-+	switch (syscall) {
-+	case __NR_open:
-+		res = 2;
-+		break;
-+
-+	case __NR_openat:
-+		res = 3;
-+		break;
-+
-+#ifdef __NR_socketcall		/* Only exists on O32 */
-+	case __NR_socketcall:
-+		res = 4;
-+		break;
-+#endif
-+	case __NR_execve:
-+		res = 5;
-+		break;
-+	default:
-+#ifdef CONFIG_AUDITSYSCALL_O32
-+		res = audit_classify_syscall_o32(abi, syscall);
-+		if (res)
-+			break;
-+#endif
-+#ifdef CONFIG_AUDITSYSCALL_N32
-+		res = audit_classify_syscall_n32(abi, syscall);
-+		if (res)
-+			break;
-+#endif
-+		if (abi == AUDIT_ARCH_MIPS || abi == AUDIT_ARCH_MIPSEL)
-+			res = 1;
-+		else if (abi == AUDIT_ARCH_MIPS64 || abi == AUDIT_ARCH_MIPSEL64)
-+			res = 0;
-+		else if (abi == AUDIT_ARCH_MIPS64N32 || abi == AUDIT_ARCH_MIPSEL64N32)
-+			res = 6;
-+	}
-+
-+	return res;
-+}
-+
-+static int __init audit_classes_init(void)
-+{
-+	audit_register_class(AUDIT_CLASS_WRITE, write_class);
-+	audit_register_class(AUDIT_CLASS_READ, read_class);
-+	audit_register_class(AUDIT_CLASS_DIR_WRITE, dir_class);
-+	audit_register_class(AUDIT_CLASS_CHATTR, chattr_class);
-+	audit_register_class(AUDIT_CLASS_SIGNAL, signal_class);
++	/* setting the cpu frequency */
++	spin_lock(&cpufreq_reg_lock[package]);
++	clk_set_rate(policy->clk, freq);
++	spin_unlock(&cpufreq_reg_lock[package]);
 +
 +	return 0;
 +}
 +
-+__initcall(audit_classes_init);
-diff --git a/arch/mips/kernel/audit-o32.c b/arch/mips/kernel/audit-o32.c
-new file mode 100644
-index 0000000..e8b9b50
---- /dev/null
-+++ b/arch/mips/kernel/audit-o32.c
-@@ -0,0 +1,60 @@
-+#define __WANT_SYSCALL_NUMBERS _MIPS_SIM_ABI32
-+
-+#include <linux/init.h>
-+#include <linux/types.h>
-+#include <linux/audit.h>
-+#include <linux/unistd.h>
-+
-+static unsigned dir_class_o32[] = {
-+#include <asm-generic/audit_dir_write.h>
-+~0U
-+};
-+
-+static unsigned read_class_o32[] = {
-+#include <asm-generic/audit_read.h>
-+~0U
-+};
-+
-+static unsigned write_class_o32[] = {
-+#include <asm-generic/audit_write.h>
-+~0U
-+};
-+
-+static unsigned chattr_class_o32[] = {
-+#include <asm-generic/audit_change_attr.h>
-+~0U
-+};
-+
-+static unsigned signal_class_o32[] = {
-+#include <asm-generic/audit_signal.h>
-+~0U
-+};
-+
-+int audit_classify_syscall_o32(int abi, unsigned syscall)
++static int loongson3_cpufreq_cpu_init(struct cpufreq_policy *policy)
 +{
-+	switch (syscall) {
-+	case __NR_open:
-+		return 2;
-+	case __NR_openat:
-+		return 3;
-+	case __NR_socketcall:
-+		return 4;
-+	case __NR_execve:
-+		return 5;
-+	default:
-+		return 0;
-+	}
-+}
++	if (!cpu_online(policy->cpu))
++		return -ENODEV;
 +
-+static int __init audit_classes_o32_init(void)
-+{
-+	audit_register_class(AUDIT_CLASS_WRITE_32, write_class_o32);
-+	audit_register_class(AUDIT_CLASS_READ_32, read_class_o32);
-+	audit_register_class(AUDIT_CLASS_DIR_WRITE_32, dir_class_o32);
-+	audit_register_class(AUDIT_CLASS_CHATTR_32, chattr_class_o32);
-+	audit_register_class(AUDIT_CLASS_SIGNAL_32, signal_class_o32);
++	policy->clk = cpu_clk_get(policy->cpu);
++	policy->cur = loongson3_cpufreq_get(policy->cpu);
++
++	policy->cpuinfo.transition_latency = 1000;
++	policy->freq_table = loongson3_clockmod_table;
++
++	/* Loongson-3A R1: all cores in a package share one clock */
++	if ((read_c0_prid() & 0xf) == PRID_REV_LOONGSON3A_R1)
++		cpumask_copy(policy->cpus, topology_core_cpumask(policy->cpu));
 +
 +	return 0;
 +}
 +
-+__initcall(audit_classes_o32_init);
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index d753379..09e4aef 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -8,6 +8,7 @@
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  * Copyright (C) 2014, Imagination Technologies Ltd.
-  */
-+#include <linux/audit.h>
- #include <linux/cache.h>
- #include <linux/context_tracking.h>
- #include <linux/irqflags.h>
-@@ -790,6 +791,23 @@ struct mips_abi mips_abi = {
- #endif
- 	.setup_rt_frame = setup_rt_frame,
- 	.restart	= __NR_restart_syscall,
-+#ifdef CONFIG_64BIT
-+# ifdef __BIG_ENDIAN
-+	.audit_arch	= AUDIT_ARCH_MIPS64,
-+# elif defined(__LITTLE_ENDIAN)
-+	.audit_arch	= AUDIT_ARCH_MIPSEL64,
-+# else
-+#  error "Neither big nor little endian ???"
-+# endif
-+#else
-+# ifdef __BIG_ENDIAN
-+	.audit_arch	= AUDIT_ARCH_MIPS,
-+# elif defined(__LITTLE_ENDIAN)
-+	.audit_arch	= AUDIT_ARCH_MIPSEL,
-+# else
-+#  error "Neither big nor little endian ???"
-+# endif
-+#endif
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext, sc_fpc_csr),
-diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-index c498b02..1ee9156 100644
---- a/arch/mips/kernel/signal_n32.c
-+++ b/arch/mips/kernel/signal_n32.c
-@@ -15,6 +15,7 @@
-  * along with this program; if not, write to the Free Software
-  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-  */
-+#include <linux/audit.h>
- #include <linux/cache.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-@@ -153,6 +154,13 @@ static int setup_rt_frame_n32(void *sig_return, struct ksignal *ksig,
- struct mips_abi mips_abi_n32 = {
- 	.setup_rt_frame = setup_rt_frame_n32,
- 	.restart	= __NR_N32_restart_syscall,
-+#ifdef __BIG_ENDIAN
-+	.audit_arch	= AUDIT_ARCH_MIPS64N32,
-+#elif defined(__LITTLE_ENDIAN)
-+	.audit_arch	= AUDIT_ARCH_MIPSEL64N32,
-+#else
-+# error "Neither big nor little endian ???"
-+#endif
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext, sc_fpc_csr),
-diff --git a/arch/mips/kernel/signal_o32.c b/arch/mips/kernel/signal_o32.c
-index df25961..74698f7 100644
---- a/arch/mips/kernel/signal_o32.c
-+++ b/arch/mips/kernel/signal_o32.c
-@@ -8,6 +8,7 @@
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  * Copyright (C) 2016, Imagination Technologies Ltd.
-  */
-+#include <linux/audit.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
- #include <linux/signal.h>
-@@ -244,6 +245,13 @@ struct mips_abi mips_abi_32 = {
- 	.setup_frame	= setup_frame_32,
- 	.setup_rt_frame = setup_rt_frame_32,
- 	.restart	= __NR_O32_restart_syscall,
-+#ifdef __BIG_ENDIAN
-+	.audit_arch	= AUDIT_ARCH_MIPS,
-+#elif defined(__LITTLE_ENDIAN)
-+	.audit_arch	= AUDIT_ARCH_MIPSEL,
-+#else
-+# error "Neither big nor little endian ???"
-+#endif
- 
- 	.off_sc_fpregs = offsetof(struct sigcontext32, sc_fpregs),
- 	.off_sc_fpc_csr = offsetof(struct sigcontext32, sc_fpc_csr),
-diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-index f28acd9..c231555 100644
---- a/include/uapi/linux/audit.h
-+++ b/include/uapi/linux/audit.h
-@@ -175,7 +175,11 @@
-  * AUDIT_LIST commands must be implemented. */
- #define AUDIT_MAX_FIELDS   64
- #define AUDIT_MAX_KEY_LEN  256
-+#ifdef __mips__
-+#define AUDIT_BITMASK_SIZE 256
-+#else
- #define AUDIT_BITMASK_SIZE 64
-+#endif
- #define AUDIT_WORD(nr) ((__u32)((nr)/32))
- #define AUDIT_BIT(nr)  (1 << ((nr) - AUDIT_WORD(nr)*32))
- 
-@@ -191,6 +195,12 @@
- #define AUDIT_CLASS_SIGNAL 8
- #define AUDIT_CLASS_SIGNAL_32 9
- 
-+#define AUDIT_CLASS_DIR_WRITE_N32	10
-+#define AUDIT_CLASS_CHATTR_N32		11
-+#define AUDIT_CLASS_READ_N32		12
-+#define AUDIT_CLASS_WRITE_N32		13
-+#define AUDIT_CLASS_SIGNAL_N32		14
++static int loongson3_cpufreq_exit(struct cpufreq_policy *policy)
++{
++	return 0;
++}
 +
- /* This bitmask is used to validate user input.  It represents all bits that
-  * are currently used in an audit field constant understood by the kernel.
-  * If you are adding a new #define AUDIT_<whatever>, please ensure that
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 6593a52..1f5fa4d 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -168,6 +168,19 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
- 		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
- 	case 5: /* execve */
- 		return mask & AUDIT_PERM_EXEC;
-+#ifdef CONFIG_MIPS
-+	case 6: /* for N32 */
-+		if ((mask & AUDIT_PERM_WRITE) &&
-+		     audit_match_class(AUDIT_CLASS_WRITE_N32, n))
-+			return 1;
-+		if ((mask & AUDIT_PERM_READ) &&
-+		     audit_match_class(AUDIT_CLASS_READ_N32, n))
-+			return 1;
-+		if ((mask & AUDIT_PERM_ATTR) &&
-+		     audit_match_class(AUDIT_CLASS_CHATTR_N32, n))
-+			return 1;
-+		return 0;
-+#endif
- 	default:
- 		return 0;
- 	}
++static struct cpufreq_driver loongson3_cpufreq_driver = {
++	.name = "loongson3",
++	.init = loongson3_cpufreq_cpu_init,
++	.verify = cpufreq_generic_frequency_table_verify,
++	.target_index = loongson3_cpufreq_target,
++	.get = loongson3_cpufreq_get,
++	.exit = loongson3_cpufreq_exit,
++	.attr = cpufreq_generic_attr,
++};
++
++static struct platform_device_id platform_device_ids[] = {
++	{
++		.name = "loongson3_cpufreq",
++	},
++	{}
++};
++
++MODULE_DEVICE_TABLE(platform, platform_device_ids);
++
++static struct platform_driver platform_driver = {
++	.driver = {
++		.name = "loongson3_cpufreq",
++		.owner = THIS_MODULE,
++	},
++	.id_table = platform_device_ids,
++};
++
++static int __init cpufreq_init(void)
++{
++	int i, ret;
++
++	/* Register platform stuff */
++	ret = platform_driver_register(&platform_driver);
++	if (ret)
++		return ret;
++
++	pr_info("cpufreq: Loongson-3 CPU frequency driver.\n");
++
++	for (i = 0; i < MAX_PACKAGES; i++)
++		spin_lock_init(&cpufreq_reg_lock[i]);
++
++	cpufreq_register_notifier(&loongson3_cpufreq_notifier_block,
++				  CPUFREQ_TRANSITION_NOTIFIER);
++
++	ret = cpufreq_register_driver(&loongson3_cpufreq_driver);
++
++	return ret;
++}
++
++static void __exit cpufreq_exit(void)
++{
++	cpufreq_unregister_driver(&loongson3_cpufreq_driver);
++	cpufreq_unregister_notifier(&loongson3_cpufreq_notifier_block,
++				    CPUFREQ_TRANSITION_NOTIFIER);
++
++	platform_driver_unregister(&platform_driver);
++}
++
++module_init(cpufreq_init);
++module_exit(cpufreq_exit);
++
++MODULE_AUTHOR("Huacai Chen <chenhc@lemote.com>");
++MODULE_DESCRIPTION("CPUFreq driver for Loongson-3A/3B");
++MODULE_LICENSE("GPL");
 -- 
 2.7.0
 

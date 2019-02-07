@@ -1,102 +1,87 @@
-Return-Path: <SRS0=AiVX=QN=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=1crz=QO=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D03AC169C4
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 19:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B12BC282C2
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 05:38:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 03762218B0
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Feb 2019 19:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1549480717;
-	bh=5ue2r0PP91E/tWGZA+YxrtG/lBYKmGBGoE6ioBqCvns=;
-	h=To:In-Reply-To:Subject:References:Cc:From:Date:List-ID:From;
-	b=qSRuPMeRwL/8fPMsZgVB7P53+OaqWSt+OzM1pUCzxb/0N7RVhXIIK9tONVuS6rPJC
-	 RtBO7IaWblByFpa+L+yMUpLRaZct7bnhb4LVo2+sh43tUjXyCFeyffOBbVjs1rb/hM
-	 he21C/vXdb6y3Q54tFEOrrtCMmk9OFoyrLfWbAxA=
+	by mail.kernel.org (Postfix) with ESMTP id 779CC218D3
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 05:38:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbfBFTSg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 6 Feb 2019 14:18:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55092 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726579AbfBFTSg (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 6 Feb 2019 14:18:36 -0500
-Received: from localhost (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B94B20B1F;
-        Wed,  6 Feb 2019 19:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1549480715;
-        bh=5ue2r0PP91E/tWGZA+YxrtG/lBYKmGBGoE6ioBqCvns=;
-        h=To:In-Reply-To:Subject:References:Cc:From:Date:From;
-        b=hk86GIdMazxFH0UEeyn3pBETKKaaQd7kvGEcXHYVXUzvE9+FtCYSlQtGrFiNpY4vT
-         KTL4qZ4a/H55Dw/BI+vwgw6Oxt9M5OLq2ZZCJ9rp40kgFoFPIBWYviqloLa0CO4DOy
-         23DBykRyLEsLhhk4oHS87MwVWmtjPzMTkjH6c11g=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org
-In-Reply-To: <20190201063540.19636-2-jiaxun.yang@flygoat.com>
-User-Agent: alot/0.8
-Subject: Re: [PATCH v3 1/3] clk: loongson1: add configuration option for loongson1 clks
-Message-ID: <154948071478.115909.15205970894327083365@swboyd.mtv.corp.google.com>
-References: <20190128152052.3047-1-jiaxun.yang@flygoat.com> <20190201063540.19636-1-jiaxun.yang@flygoat.com> <20190201063540.19636-2-jiaxun.yang@flygoat.com>
-Cc:     mturquette@baylibre.com, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com, devicetree@vger.kernel.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-From:   Stephen Boyd <sboyd@kernel.org>
-Date:   Wed, 06 Feb 2019 11:18:34 -0800
+        id S1726930AbfBGFik (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Feb 2019 00:38:40 -0500
+Received: from smtp.nue.novell.com ([195.135.221.5]:39334 "EHLO
+        smtp.nue.novell.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726128AbfBGFij (ORCPT
+        <rfc822;groupwise-linux-mips@vger.kernel.org:0:0>);
+        Thu, 7 Feb 2019 00:38:39 -0500
+Received: from emea4-mta.ukb.novell.com ([10.120.13.87])
+        by smtp.nue.novell.com with ESMTP (TLS encrypted); Thu, 07 Feb 2019 06:38:37 +0100
+Received: from localhost.localdomain (nwb-a10-snat.microfocus.com [10.120.13.201])
+        by emea4-mta.ukb.novell.com with ESMTP (TLS encrypted); Thu, 07 Feb 2019 05:38:05 +0000
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     akpm@linux-foundation.org
+Cc:     linux-mm@kvack.org, dave@stgolabs.net,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Davidlohr Bueso <dbueso@suse.de>
+Subject: [PATCH 2/2] MIPS/c-r4k: do no use mmap_sem for gup_fast()
+Date:   Wed,  6 Feb 2019 21:37:40 -0800
+Message-Id: <20190207053740.26915-3-dave@stgolabs.net>
+X-Mailer: git-send-email 2.16.4
+In-Reply-To: <20190207053740.26915-1-dave@stgolabs.net>
+References: <20190207053740.26915-1-dave@stgolabs.net>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Quoting Jiaxun Yang (2019-01-31 22:35:38)
-> diff --git a/drivers/clk/loongson1/Kconfig b/drivers/clk/loongson1/Kconfig
-> new file mode 100644
-> index 000000000000..e2220332d797
-> --- /dev/null
-> +++ b/drivers/clk/loongson1/Kconfig
-> @@ -0,0 +1,27 @@
-> +menu "Loongson-1 Clock drivers"
-> +       depends on MACH_LOONGSON32
-> +
-> +config LOONGSON1_CLOCK_COMMON
-> +       bool
-> +
-> +config LOONGSON1_CLOCK_LS1B
-> +       bool "Loongson 1B driver"
-> +       default y
+It is well known that because the mm can internally
+call the regular gup_unlocked if the lockless approach
+fails and take the sem there, the caller must not hold
+the mmap_sem already.
 
-Should be default CONFIG_LOONGSON1_LS1B?
-> +       select LOONGSON1_CLOCK_COMMON
+Fixes: e523f289fe4d (MIPS: c-r4k: Fix sigtramp SMP call to use kmap)
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+---
+ arch/mips/mm/c-r4k.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Drop the selects and have the menuconfig make the "COMMON" config option
-enabled then?
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index cc4e17caeb26..38fe86928837 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1034,11 +1034,9 @@ static void r4k_flush_cache_sigtramp(unsigned long addr)
+ 	struct flush_cache_sigtramp_args args;
+ 	int npages;
+ 
+-	down_read(&current->mm->mmap_sem);
+-
+ 	npages = get_user_pages_fast(addr, 1, 0, &args.page);
+ 	if (npages < 1)
+-		goto out;
++		return;
+ 
+ 	args.mm = current->mm;
+ 	args.addr = addr;
+@@ -1046,8 +1044,6 @@ static void r4k_flush_cache_sigtramp(unsigned long addr)
+ 	r4k_on_each_cpu(R4K_HIT, local_r4k_flush_cache_sigtramp, &args);
+ 
+ 	put_page(args.page);
+-out:
+-	up_read(&current->mm->mmap_sem);
+ }
+ 
+ static void r4k_flush_icache_all(void)
+-- 
+2.16.4
 
-> +       help
-> +         Support the clocks provided by the clock hardware on Loongson-1B
-> +         and compatible SoCs.
-> +
-> +         If building for a Loongson-1B SoC, you want to say Y here.
-> +
-> +config LOONGSON1_CLOCK_LS1C
-> +       bool "Loongson 1C driver"
-> +       default y
-
-And default CONFIG_LOONGSON1_LS1C?
-
-> +       select LOONGSON1_CLOCK_COMMON
-> +       help
-> +         Support the clocks provided by the clock hardware on Loongson-1C
-> +         and compatible SoCs.
-> +
-> +         If building for a Loongson-1C SoC, you want to say Y here.
-> +
-> +endmenu

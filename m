@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01117C282C2
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BFF7C282CC
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:56:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B99A82147C
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:53:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 42F1B2173B
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:56:05 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="f0Oa5y0Y"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="P+jVnZHB"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbfBGTx1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Feb 2019 14:53:27 -0500
-Received: from mail-eopbgr750139.outbound.protection.outlook.com ([40.107.75.139]:3008
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        id S1727269AbfBGT4F (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Feb 2019 14:56:05 -0500
+Received: from mail-eopbgr820105.outbound.protection.outlook.com ([40.107.82.105]:22514
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726843AbfBGTx1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 7 Feb 2019 14:53:27 -0500
+        id S1727216AbfBGT4E (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 7 Feb 2019 14:56:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OZXqdVwLVUkRJRTpihcZIdeW2xjzMwks53WfUuYq34g=;
- b=f0Oa5y0Y0HCjXPE2gLSS6Ua3m2XMfR23Ml/S1idVFMCpQZ9fNf8yMHZU0YlOIAaYxkPII1OMc43G0RUKiVX3RQ4JpyU9guW/HrjJ0wIvXSveaDls2ofdCprWwZEVodrvk92TJPAKgt1ssPOyVLerLB+sv5RMdgu+se5kMDbZdhU=
+ bh=lo8rk4Rphnz5bOpzChzAJ3Lw5J3FFPMqjeVW27C9Lco=;
+ b=P+jVnZHBd8uMl84t4Uoq4qLCX/+7ZkLy4JLY5/ZiQy7Epa/lZiNH12s32IrHJSrhLW1K+BPXmxbqpVcj1Cw0+fqpDlpVioF1M3wDA/56gjRgb1g2XfUm/EwmcUQQJJ9NonP7szYk/6tzuXcgZDPqXOkslTW1drjPIaRhysiZ1cE=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1647.namprd22.prod.outlook.com (10.174.167.36) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1601.17; Thu, 7 Feb 2019 19:53:23 +0000
+ MWHPR2201MB1328.namprd22.prod.outlook.com (10.174.162.143) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1580.22; Thu, 7 Feb 2019 19:56:02 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Thu, 7 Feb 2019
- 19:53:23 +0000
+ 19:56:02 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Yifeng Li <tomli@tomli.me>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+To:     Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>, Yifeng Li <tomli@tomli.me>,
+        James Hogan <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] mips: loongson64: remove unreachable(),  fix
- loongson_poweroff().
-Thread-Topic: [PATCH] mips: loongson64: remove unreachable(),  fix
- loongson_poweroff().
-Thread-Index: AQHUvx7IJgGw8UBs2EK+UyHUqW9lRg==
-Date:   Thu, 7 Feb 2019 19:53:23 +0000
-Message-ID: <MWHPR2201MB127722785DD946B644451072C1680@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190206070721.19185-1-tomli@tomli.me>
-In-Reply-To: <20190206070721.19185-1-tomli@tomli.me>
+Subject: Re: [PATCH v3] mips: cm: reprime error cause
+Thread-Topic: [PATCH v3] mips: cm: reprime error cause
+Thread-Index: AQHUvhGWfyMhi/6vwUOYbSMa0BG7HaXUwigA
+Date:   Thu, 7 Feb 2019 19:56:02 +0000
+Message-ID: <MWHPR2201MB1277C5B1E00B0C95ADA6A696C1680@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190206114617.24426-1-vladimir.kondratiev@linux.intel.com>
+In-Reply-To: <20190206114617.24426-1-vladimir.kondratiev@linux.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR05CA0071.namprd05.prod.outlook.com
- (2603:10b6:a03:74::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR07CA0073.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::14) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1647;6:LACvT0URbEpB9l7VgpzJ08LvzUCHxVs5PJ+u0V7/LB/3D02SiKXMyb63nd2glQFWqAjIyAvO27fBk0lZ2VMEbeehPs08+qtypDadrOU5qjxcHKngDTkmyPsiJ8igwKDPe+Tbk8mlTx7ytDwzAeKQ619mymQ5X/7gpWc2V2EWa3V27s8F0UyWzThyFbi71cGhIhE2On5vPJ0H6vM4Ifty+H68dr51Msrs+YuVO6I9NPmuIaIi3hjwkfp2EQU8TrqP8vJvLJ0e51f6LvMSqbmSsf/SJlDZBcDki++G70vMH0mdXO8wFYGxDohlowv+dWgFjzsg2eXlTolKRkGrK9T3MnowQ/IWBUFZtnrSjIOj/5OgtdIXY6p1d9R3+C9yzgIanzcGLVUpEmzxGib692zeGxugxXyMN8LawShgZZk2E/UFLHDgFonUarONPMHkpuNQnqJ1wH9Ho1reSEFS+391Pw==;5:pbxrr2H3FN0GOnwTNeJ3NyXWBTIUhLJ8q7+fLp/OVfk3a37gzTYCf97Aa3RXMT3eWHaz06pg+f+K1xyIrhKHP6VCOiTVEzZnb/f9Vw/7gN+u6w1c/0kh8EV+N4FHmYMP/mZIj0cIrGIjWljlXBB9wFpbbn/3PsHhjUYgixmSNd22Tfmf26jeWG0sEV5sv9ty6gi6/Xo9JrCpbKourKnrhg==;7:6PEY9SyqW3IwvS9sCo78wWB+gXvw9CaS+GYK+66bkcP1hIi/fzFrRujb8MWQSfIfexQY9XKVGNbfezRGkcxOj5mQWqmWANc6o7Ai/C4qTdVs6E9IGu+RkHZNnbH6wVZf8rhmOwgzOFDppkFyZ/3mQw==
-x-ms-office365-filtering-correlation-id: 724e1624-cfdd-4c69-edc1-08d68d35ead5
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1647;
-x-ms-traffictypediagnostic: MWHPR2201MB1647:
-x-microsoft-antispam-prvs: <MWHPR2201MB164720AB8794692BD086BFBAC1680@MWHPR2201MB1647.namprd22.prod.outlook.com>
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1328;6:1c/YJEubsOYPAxeoPfjwNhmK1u7hXc9y/F6LIEFqk5HCXlG+czPYW7iBtGHg/CiNgHrtxEMd2Rc5KSt41300y3pL/vfcCwNaDV5fOp3CujsB/2jVxjOIww4e/216jaSW+xetyHqeuRLDB7nkwk+0LvXsq3E3BhsHzuBMWbUPYKi0m5rJgPsc0a2G7Qprd1rB9gBw8iisdrwJLUFDYnna30pdwoF+8km89xeaBv4wKiZS6O3w+9vfz4Id2n6N5iEEQU6bRyAau8Ec6NMhaypAGZtgRlXE65XMwLgAWQR9LnbgVscRDPIPdmDOS+Cm2G7znJlQA5aJFeUfogQBn8cq0b1F7O+mXwb9QJBct6Im1cuSYZQApzOyKJfekMjBKN+ud9uvOzGFFeol7BSQEmdA12IthMr1WmGvnaL+iQmdMi90TMTKDJT4+T2ELqjahqnZhg0/LThxMWe+uPXuoCjz5w==;5:7Lf+mzDlPJdH8QMUieK8ODdNuYAXODi0b39cEMyt2/JS/LZ2SZ39jEDqV87D+pe8N4Uj042uf7uiqzzhjhxifVTBPqHhqa2QJCBCKJCxvKpd/YTcOGQx2SgyfthjF1gCVu/XvH9F1hMrwrUpPCMcuUiLe8GuSWfDw/6uZpTUVBtbOdkiJOg1PA6zxvlcaQNcsBVSv15oJjXH7pNoLVckVA==;7:yuMzo0NVliHaucEnMg3Zpi4+Exi2cISeo7ZyPsA2kleYDtoIVQ9CcEmxQ32jwoznn0k0HKSs5hN0xT5BLhVP8jrchrXGLXtphY8KuZTVs5Xtw6y1uqAfDDBa6pyuWJerpdrzBaYE+16/KhsVvEQCVA==
+x-ms-office365-filtering-correlation-id: 2b26bedf-deb4-402c-1e5e-08d68d364972
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1328;
+x-ms-traffictypediagnostic: MWHPR2201MB1328:
+x-microsoft-antispam-prvs: <MWHPR2201MB13288A5984ADEBA4B74762FFC1680@MWHPR2201MB1328.namprd22.prod.outlook.com>
 x-forefront-prvs: 0941B96580
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(396003)(39840400004)(346002)(366004)(376002)(199004)(189003)(305945005)(26005)(7736002)(229853002)(52116002)(186003)(4326008)(76176011)(71190400001)(486006)(7696005)(6916009)(71200400001)(33656002)(25786009)(97736004)(42882007)(6246003)(256004)(53936002)(316002)(74316002)(99286004)(54906003)(68736007)(11346002)(476003)(446003)(966005)(3846002)(6116002)(6306002)(14454004)(55016002)(9686003)(81166006)(81156014)(386003)(105586002)(6506007)(102836004)(8936002)(478600001)(2906002)(8676002)(6436002)(44832011)(66066001)(106356001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1647;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(346002)(396003)(39840400004)(376002)(366004)(189003)(199004)(486006)(9686003)(53936002)(7696005)(25786009)(386003)(4744005)(11346002)(52116002)(6916009)(476003)(74316002)(55016002)(6506007)(446003)(186003)(81166006)(33656002)(6246003)(76176011)(26005)(102836004)(316002)(71200400001)(478600001)(42882007)(66066001)(71190400001)(8936002)(6436002)(4326008)(97736004)(68736007)(305945005)(99286004)(8676002)(2906002)(256004)(6116002)(229853002)(105586002)(3846002)(106356001)(81156014)(7736002)(44832011)(14454004)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1328;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: WMUylLFyHmubv9zeRh+4xxjOGk++n6IJOujtQtp/4KPS5TT+vRDSEw81FquP9fa83fHjvCKxambWdg+xuOlzNAAVTgCEnfYZsC9jdc+8afdCShm0MZcMz8WfaC4cEO8Un5Y4pme3y1BOPGDJQzqPLYS4Jr8YfDK+Uu+iND58nUiDb3+Fv0sbTPu6mFqgBRoESlLcUqn8xK/aoYgmq6O8TNLux+3tfqAxWJOlN73N9zt+riuWOcEvCJlO9IVM/y+5Ftk8aO8MvB54odwhaPna6GXM3IZLa1fojdUWZVW9nDl7IyvfNdRwHPm1XPcOABWwFV3x1CD3nq0DX/GrnRNx4cfYABeeKc84leGjGoaOCZyZXmsCrsey76xHs7GoKFnkOzRcjL23dXCNuq99mt2Bvick4sUpEoRnVROkFCVYdto=
+x-microsoft-antispam-message-info: jq8eIu1PGLffqhMgYP/hgXV0vBNwCcG4UM/mWOuUA2doOHAVCYkoEdy+zye2aBbU8vRmCwbCowLjoFlFEpor6ymFok9aEtX20pOo1mjOl2ZeLpRl4LP+tMG5c8BrPd2ATvJ/D5dWfp9bdL/MhyiPJwYWZBpyDESA+fiGZv0cO1fbOLhG+AhKhIp3THFkyAnTcNrFz3Vmhh06z0vEjK3UnjWdJJxOpU3HqiOc4GD4OjRTEkA7O84CCd03a17OG4bjyYQ89DAy+sHqOp9+duSJdF/JiSFaB1l3jH9S78MvMmK7n3UpNZ7TeWO8QerLRZkoDiquSV4QXcVZichDwItYeZKGHbj5XL+AURNAYW7XzBBFG5Ujfqu6zHdDhdlAfgCjbXklTCw6gK812ftxCFs/2kuQ0rWECXJZ8ouGlD85lfI=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 724e1624-cfdd-4c69-edc1-08d68d35ead5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Feb 2019 19:53:23.1605
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b26bedf-deb4-402c-1e5e-08d68d364972
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Feb 2019 19:56:01.8318
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1647
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1328
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -94,28 +91,20 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hello,
 
-Yifeng Li wrote:
-> On my Yeeloong 8089, I noticed the machine fails to shutdown
-> properly, and often, the function mach_prepare_reboot() is
-> unexpectedly executed, thus the machine reboots instead. A
-> wait loop is needed to ensure the system is in a well-defined
-> state before going down.
+Vladimir Kondratiev wrote:
+> Accordingly to the documentation
+> ---cut---
+> The GCR_ERROR_CAUSE.ERR_TYPE field and the GCR_ERROR_MULT.ERR_TYPE
+> fields can be cleared by either a reset or by writing the current
+> value of GCR_ERROR_CAUSE.ERR_TYPE to the
+> GCR_ERROR_CAUSE.ERR_TYPE register.
+> ---cut---
+> Do exactly this. Original value of cm_error may be safely written back;
+> it clears error cause and keeps other bits untouched.
 >=20
-> In commit 997e93d4df16 ("MIPS: Hang more efficiently on
-> halt/powerdown/restart"), a general superset of the wait loop for all
-> platforms is already provided, so we don't need to implement our own.
->=20
-> This commit simply removes the unreachable() compiler marco after
-> mach_prepare_reboot(), thus allowing the execution of machine_hang().
-> My test shows that the machine is now able to shutdown successfully.
->=20
-> Please note that there are two different bugs preventing the machine
-> from shutting down, another work-in-progress commit is needed to
-> fix a lockup in cpufreq / i8259 driver, please read Reference, this
-> commit does not fix that bug.
->=20
-> Reference: https://lkml.org/lkml/2019/2/5/908
-> Signed-off-by: Yifeng Li <tomli@tomli.me>
+> Fixes: 3885c2b463f6 ("MIPS: CM: Add support for reporting CM cache errors=
+")
+> Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 
 Applied to mips-fixes.
 

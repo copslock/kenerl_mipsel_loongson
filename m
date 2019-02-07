@@ -2,191 +2,122 @@ Return-Path: <SRS0=1crz=QO=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75A54C282C2
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 15:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6601C282C2
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:00:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 11EAA21904
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 15:02:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7876D2086C
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 19:00:13 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="P2XAeqCB"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="jF2XO5hx"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726606AbfBGPCQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Feb 2019 10:02:16 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:53043 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbfBGPCQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Feb 2019 10:02:16 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190207150215euoutp01598484943c4b89809d679556cd4f9b64~BHRfh47eL2733027330euoutp01I
-        for <linux-mips@vger.kernel.org>; Thu,  7 Feb 2019 15:02:15 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190207150215euoutp01598484943c4b89809d679556cd4f9b64~BHRfh47eL2733027330euoutp01I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1549551735;
-        bh=TWg2qNt9N7rdOfhdgeICGOCK++MML2U91rv3yMdgOec=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=P2XAeqCBqY9kvjIWEurlqoPlPtyJlgyC0UBZtlN4opAsFSaK9sqWokbpgKVOjDwrk
-         21jbg5wSWbevuh78itHf1LMoxwQlcw9MgQcNkydYBO/gnL28o2v9WNeLQy7uWU6bUj
-         xLptbuwTAnYUHZjy4JrGfLa8jjRzWPSzAJqYnzyw=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190207150214eucas1p24a59bfd30ecb118f22ceb5ddacec8396~BHRfLSfGw0761907619eucas1p2H;
-        Thu,  7 Feb 2019 15:02:14 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id BB.38.04441.6784C5C5; Thu,  7
-        Feb 2019 15:02:14 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190207150214eucas1p19c563f804ce02178ae58aa957854a445~BHRecGXin3182231822eucas1p1c;
-        Thu,  7 Feb 2019 15:02:14 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190207150213eusmtrp163fd53667a6abba3204ffdb54f781ba5~BHReN7U_U0678406784eusmtrp1R;
-        Thu,  7 Feb 2019 15:02:13 +0000 (GMT)
-X-AuditID: cbfec7f2-a1ae89c000001159-ae-5c5c48767934
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id A9.CB.04128.5784C5C5; Thu,  7
-        Feb 2019 15:02:13 +0000 (GMT)
-Received: from [106.120.53.102] (unknown [106.120.53.102]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190207150213eusmtip2be5283c534b1682e331abee35eab46fe~BHRd90OMr0333603336eusmtip2w;
-        Thu,  7 Feb 2019 15:02:13 +0000 (GMT)
-Subject: Re: Loongson 2F IDE/ATA broken with lemote2f_defconfig
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-mips@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <66a23e7c-2ba8-b505-8382-d13c1912ea88@samsung.com>
-Date:   Thu, 7 Feb 2019 16:02:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
-        Thunderbird/45.3.0
+        id S1726788AbfBGTAN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Feb 2019 14:00:13 -0500
+Received: from mail-eopbgr750098.outbound.protection.outlook.com ([40.107.75.98]:23046
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726474AbfBGTAN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 7 Feb 2019 14:00:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mdLCWm/y+1EwdazVy0gpYpMrY5LIQZMeyNsI1Ir0wI4=;
+ b=jF2XO5hxPNRvvoZ1sA6WgfQXUGNaUML8zEexZjFRlFFyu8ixJ8Ai5+sk/7M9Glk0LaoVb2IXPgclwMag8VVVzNo/y//zxPELx7+vKEZ2FPJfe/XRi7Xh/JMzbJ1yMDgDRVzKifTkKpppz1NQx/BhS8ZweMVcEBbvTdkgVU0gsrU=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1391.namprd22.prod.outlook.com (10.172.63.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1601.19; Thu, 7 Feb 2019 19:00:09 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Thu, 7 Feb 2019
+ 19:00:09 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Davidlohr Bueso <dave@stgolabs.net>
+CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [PATCH 2/2] MIPS/c-r4k: do no use mmap_sem for gup_fast()
+Thread-Topic: [PATCH 2/2] MIPS/c-r4k: do no use mmap_sem for gup_fast()
+Thread-Index: AQHUvqdibN/VJXh0p0CcjWrTW3p8AqXUsWAA
+Date:   Thu, 7 Feb 2019 19:00:09 +0000
+Message-ID: <20190207190007.jz4rz6e6qxwazxm7@pburton-laptop>
+References: <20190207053740.26915-1-dave@stgolabs.net>
+ <20190207053740.26915-3-dave@stgolabs.net>
+In-Reply-To: <20190207053740.26915-3-dave@stgolabs.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR02CA0027.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::40) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1391;6:ls39BYP+zaS44uQFrRD23ArLAkMSTg/w0CLWKxRrAJX3mnIuXpHt80ptJj15Xdi1C0aoYEfgADrVF/JnPvpXZzQMWL1t0SUPBAAdCLRJIhEnnZJWJbRRvlbTjlOjUJ7GShdDwZX5M/EmU/5ay5nmSRMmNemwIu//48Mbfg8GBgZA0KIKBEFN/grkIJ5Cp1p9bxCXnJAJoyDfpW8O9NrxkwIkWWRgcZnaaaCNgWco417acoc8pRwSuA1/PLDPQF7Cn8T0OE4sRpdmMOVSJxcQAZZe9sKU9DlZImwCPQx1rW9A198JaoEHcFN0y48CnyGQB2rvCiCAAh1KbuYb9R0WaJvnZesPLA+YmDNlSILA5cZCw5IFBgOcjqTIyVUXSloR7cqRWNPGcZchHU1pkRTGWRcN/owRbdtioLGKwQpgqm1I+7qP4RHnAhmPoTA5XAFmFGYf18hFnFwzNBrDReN9NQ==;5:jnz9jjdQJyel2v3AY5NETiYkOCy8O0CGU9wtpwW04M5fXxhG+ETSNWlncE5zHjQ79UvMsRAuSr++/VOe4jmmWbwHEVsWoL81LxYmzGgo/EgwByizQpktXdGG1HY6NuiBc97DMWM6gZlghXNCkuIBTv+AikfXvP+ZkNmL683pt0WvWaWXB40SpN7eBDOaHYTVwGsVj/LNVgWxMUCgHVfqJA==;7:ZOYcPcK/u+SijvFOKaTQzlX9kdoCoOtgKyhvVthq/ppvGtifrAdmG2GVy3CjWoWJaIEAu6dlQJAjza4lZfFIxqe7gfx8oP1Ka8YpGJP06lS5/LZEt+g4FZj6rSwAD24uCXq69IpZ+kmF4p2kgmbsbw==
+x-ms-office365-filtering-correlation-id: 8183cfbf-3a91-49a7-e4e9-08d68d2e7b24
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1391;
+x-ms-traffictypediagnostic: MWHPR2201MB1391:
+x-microsoft-antispam-prvs: <MWHPR2201MB139168B3154F0FAB077FEFE7C1680@MWHPR2201MB1391.namprd22.prod.outlook.com>
+x-forefront-prvs: 0941B96580
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(376002)(136003)(39850400004)(346002)(366004)(199004)(189003)(97736004)(68736007)(305945005)(4326008)(8936002)(6246003)(14444005)(7736002)(99286004)(81156014)(6916009)(8676002)(256004)(2906002)(81166006)(6512007)(9686003)(6486002)(478600001)(186003)(229853002)(66066001)(71190400001)(71200400001)(4744005)(14454004)(26005)(386003)(44832011)(6436002)(6506007)(25786009)(54906003)(58126008)(316002)(52116002)(76176011)(33896004)(53936002)(33716001)(102836004)(105586002)(106356001)(486006)(42882007)(3846002)(6116002)(1076003)(446003)(476003)(11346002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1391;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: UzUxSDcix+Y2r26Gsq5Okh1ymaWeedUI299LyhBWkPt3z/FXReSrf2GNHYk4Rl7bUgY5lCPLMPafWHsRlI9gGycS7esvbfenePR/76W4QZx7lHWBu2/uhVbhP4v/iNuaByeYZMe8FQcsToWaw6Ec3YzMJGrKvYil3FWh6D40YPgiYZzex97DswfeosIs1mPcCVbh/TjedA2PC7m68Fa9wq24izUQyqUZBrCxDeeAgd8uz1NNMv20nfxf6Be+v8DGMuLt+UNhw9+jMwqbsXbjAodRsbQdxGE7OoejGP1I7LIKt5INx17lIpg7nccaesFtj0b6wnaGxy+ytAubsvp8z4BurpVZ9nCkNo0ik8HNyrWPvpj3qYVvrDNMMAqOQ9ErSTlLNrvD3h7kui3NaXAOi3+oQuCbymhkQyXs8Ub9daI=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <71A7310B61D4C846AF3BC8DAE9D665F4@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20190126184351.GE2792@darkstar.musicnaut.iki.fi>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmplleLIzCtJLcpLzFFi42LZduzned0yj5gYgxs7lSzWvHCwWH23n83i
-        2I5HTBadm7YyOrB4HP66kMXj8tlSj8+b5AKYo7hsUlJzMstSi/TtErgyri96wFrwR7Li3ooW
-        xgbGmyJdjJwcEgImEqc2rmXtYuTiEBJYwSjRM3c+M4TzhVFi0ck5TCBVQgKfGSXevOOD6Vh6
-        6ChU0XJGiflNnVDOe0aJXxPuMoJUCQvYS6z4PBvMFhHQkHi1r58VxGYWiJQ4t6MFzGYTsJKY
-        2L4KrIZXwE6iYTJEL4uAisTBWzNZuhg5OEQFIiT6z6hDlAhKnJz5hAXE5gQqn3hpESPESAOJ
-        I4vmQI2Xl9j+dg7YPRICv9kkbs/6wgRxtYvEz3uH2SFsYYlXx7dA2TISpyf3sEA0TAf68tdS
-        KGc9o8SaM8eguq0lDh+/yAphO0q07+hnA7lOQoBP4sZbQYjNfBKTtk1nhgjzSnS0CUFUq0ls
-        WLaBDWZX186VzBC2h8SbR01sExgVZyH5bRaSf2Yh+WcBI/MqRvHU0uLc9NRiw7zUcr3ixNzi
-        0rx0veT83E2MwMRx+t/xTzsYv15KOsQowMGoxMN7QTsmRog1say4MvcQowQHs5IIb5ULUIg3
-        JbGyKrUoP76oNCe1+BCjNAeLkjhvNcODaCGB9MSS1OzU1ILUIpgsEwenVANjXUJL8i/1FA+j
-        HQXxOZ/fHoyyvnWV1eFm1tk37MsKisr/9GSKrPFXjzjp7rNbxv9zsIsGp7jSxVy9/jNOcsU3
-        5eLnRaopeM99699quLgg6lGTevhSa7Evh6pD7ITtjW+s2WpZeVLhXv/dPTqs96RuPzry8vED
-        T7+sk6rH7r/f18+spTHTW0WJpTgj0VCLuag4EQC37tvQGAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupikeLIzCtJLcpLzFFi42I5/e/4Pd1Sj5gYg7MXdS3WvHCwWH23n83i
-        2I5HTBadm7YyOrB4HP66kMXj8tlSj8+b5AKYo/RsivJLS1IVMvKLS2yVog0tjPQMLS30jEws
-        9QyNzWOtjEyV9O1sUlJzMstSi/TtEvQyri96wFrwR7Li3ooWxgbGmyJdjJwcEgImEksPHWXu
-        YuTiEBJYyihx48c6li5GDqCEjMTx9WUQNcISf651sUHUvGWU2H9rHRtIQljAXmLF59mMILaI
-        gIbEq339rBBFG5gkPlyewwKSYBaIlLg99xsziM0mYCUxsX0VWAOvgJ1Ew+S7YDaLgIrEwVsz
-        wepFBSIkbj3sYIGoEZQ4OfMJmM0JVD/x0iJGiJl6Ejuu/2KFsOUltr+dwzyBUXAWkpZZSMpm
-        ISlbwMi8ilEktbQ4Nz232EivODG3uDQvXS85P3cTIzAeth37uWUHY9e74EOMAhyMSjy8F7Rj
-        YoRYE8uKK3MPMUpwMCuJ8Fa5AIV4UxIrq1KL8uOLSnNSiw8xmgI9MZFZSjQ5HxireSXxhqaG
-        5haWhubG5sZmFkrivOcNKqOEBNITS1KzU1MLUotg+pg4OKUaGKVEFfb8Xhwod4mh8E9Qwjux
-        riW/tn5qtz11hpNTZd79qdt2r3vffzbmrbpS1t4Hcv/j98Q6bY44MkvvuU7r1abLrCnlFYKn
-        7oeaawckn/LWz59/9t/raawy1hcTT2YeYDwSetvSRTmoz+zSTGsD3fcWy1WSzQ4Fb5/Ht/tk
-        SlRPxcmF5SuvTFNiKc5INNRiLipOBACdA8mlnQIAAA==
-X-CMS-MailID: 20190207150214eucas1p19c563f804ce02178ae58aa957854a445
-X-Msg-Generator: CA
-X-RootMTR: 20190112152659epcas5p3953165de5118dba017c94b164dd725a2
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190112152659epcas5p3953165de5118dba017c94b164dd725a2
-References: <20190106124607.GK27785@darkstar.musicnaut.iki.fi>
-        <CGME20190112152659epcas5p3953165de5118dba017c94b164dd725a2@epcas5p3.samsung.com>
-        <20190112152609.GE22416@darkstar.musicnaut.iki.fi>
-        <08c48218-2bc5-a100-4b01-edb08b4225c4@samsung.com>
-        <20190126184351.GE2792@darkstar.musicnaut.iki.fi>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8183cfbf-3a91-49a7-e4e9-08d68d2e7b24
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Feb 2019 19:00:08.8667
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1391
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Davidlohr,
 
-On 01/26/2019 07:43 PM, Aaro Koskinen wrote:
-> Hi,
-> 
-> On Mon, Jan 14, 2019 at 02:16:42PM +0100, Bartlomiej Zolnierkiewicz wrote:
->> On 01/12/2019 04:26 PM, Aaro Koskinen wrote:
->>> Hi,
->>>
->>> On Sun, Jan 06, 2019 at 02:46:07PM +0200, Aaro Koskinen wrote:
->>>> Commit 7ff7a5b1bfff ("MIPS: lemote2f_defconfig: Convert to use libata
->>>> PATA drivers") switched from IDE to libata PATA on Loongson 2F, but
->>>> neither PATA_AMD or PATA_CS5536 work well on this platform compared
->>>> to the AMD74XX IDE driver.
->>
->> Sorry about that.
->>
->>>> During the ATA init/probe there is interrupt storm from irq 14, and
->>>> majority of system boots end up with "nobody cared... IRQ disabled".
->>>> So the result is a very slow disk access.
->>>>
->>>> It seems that the interrupt gets crazy after the port freeze done early
->>>> during the init, and for whatever reason it cannot be cleared.
->>>>
->>>> With the below workaround I was able to boot the system normally. I
->>>> guess that rather than going back to old IDE driver, we should just try
->>>> to make pata_cs5536 work (and forget PATA AMD on this board)...?
->>>
->>> Hmm, even with this hack I get ~500 spurious IRQs during the boot.
->>>
->>> Also compared to old IDE, there's 33 vs 100 speed difference:
->>>
->>> [    3.324000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4ce0 irq 14
->>> [    3.584000] ata1.00: ATA-8: WDC WD1600BEVS-00VAT0, 11.01A11, max UDMA/133
->>> [    3.588000] ata1.00: 312581808 sectors, multi 16: LBA48
->>> [    3.592000] ata1.00: limited to UDMA/33 due to 40-wire cable
->>>
->>> [    4.540000] Probing IDE interface ide0...
->>> [    4.992000] hda: WDC WD1600BEVS-00VAT0, ATA DISK drive
->>> [    5.716000] hda: host max PIO5 wanted PIO255(auto-tune) selected PIO4
->>> [    5.716000] hda: UDMA/100 mode selected
->>
->> Can you try booting with "libata.force=1:80c" (and if that doesn't work with
->> "libata.force=1:short40c")
-> 
-> (Sorry for delay, this machine is in use so I couldn't reboot it randomly...)
-> 
-> OK, the speed issue can be fixed with command line. So "libata.force=1:80c"
-> works with cs5536 libata driver.
-> 
->> and also provide full dmesg-s for working (ide) and not working
->> (libata) kernels.
-> 
-> Logs are below:
-> 
-> 1) working IDE (no spurious IRQs)
-> 2) working PATA AMD (around ~90k spurious IRQs, so it's just a matter of luck)
-> 3) failing PATA AMD (100k spurious IRQs reached)
-> 4) working PATA CS5536 (same as with PATA AMD)
-> 5) failing PATA CS5536 (same as with PATA AMD)
+On Wed, Feb 06, 2019 at 09:37:40PM -0800, Davidlohr Bueso wrote:
+> It is well known that because the mm can internally
+> call the regular gup_unlocked if the lockless approach
+> fails and take the sem there, the caller must not hold
+> the mmap_sem already.
+>=20
+> Fixes: e523f289fe4d (MIPS: c-r4k: Fix sigtramp SMP call to use kmap)
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: linux-mips@vger.kernel.org
+> Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
 
-Thank you.
+Thanks - this looks good, but:
 
-I've looked a bit more into the problem and came with two possible
-approaches to investigate it further:
+ 1) The problem it fixes was introduced in v4.8.
 
-* The major difference between IDE and libata during probing is that
-  IDE keeps the port's IRQ (if known) disabled during whole probe time.
+ 2) Commit adcc81f148d7 ("MIPS: math-emu: Write-protect delay slot
+    emulation pages") actually left flush_cache_sigtramp unused, and has
+    been backported to stable kernels also as far as v4.8.
 
-  To replicate this behavior in libata it seems that we would need
-  to cache IRQ number used in ap->irq, then call disable_irq(ap->irq)
-  when ATA_PFLAG_LOADING flag is set and enable_irq(ap->irq) when
-  ATA_PFLAG_LOADING is cleared.
+Therefore this will just fix code that never gets called, and I'll go
+delete the whole thing instead.
 
-* The other idea is to try to modify your workaround patch to implement
-  dummy ->sff_set_devctl helper ("empty" one) instead of adding custom
-  version of ->freeze one.
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Thanks,
+    Paul

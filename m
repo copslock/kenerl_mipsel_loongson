@@ -2,178 +2,293 @@ Return-Path: <SRS0=Rn8T=QP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0018C169C4
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 06:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C2F7C169C4
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 08:30:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BCD9F21908
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 06:03:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EDF0B21917
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 08:30:50 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="qoVDTpVs"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727166AbfBHGC7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Feb 2019 01:02:59 -0500
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:34805 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727147AbfBHGC7 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 8 Feb 2019 01:02:59 -0500
-Received: by mail-qk1-f195.google.com with SMTP id a15so1491179qkc.1
-        for <linux-mips@vger.kernel.org>; Thu, 07 Feb 2019 22:02:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+nXOz6pJ3BlFpyk91TAV6qomYY/ubiCtP1T6z27AOU8=;
-        b=qlB14O1Wsv5z/lbiTBJSaqfJTvd4/iWPQHDaekv+aGbxQ6hD06Z/4wB5q5/JTspOPk
-         x+yEVl+pdga27yn0qW/r4xNbBl2mhXDs9hYQZyE18grB9D9DvIIpsTuHJbzNmQ9+aD0U
-         VC8LcD9Z2Lwj3QsEnMmgvLHQRL5GoWmXTBWF4ukK6eVo/wUDK+poGATJz+WdtzwgZ6ji
-         Aa0X40WuYNvBbAKurMlORgM+viA7PeJ58hxZ5iOoOF3PgbKWm2wllNcb9SbUfoFV7Hpf
-         8IriYi7dKkxYEKsfR7LUmEwJ99o4kX39yfF++URenuT45mcgL48nHwAq2p9CjojP3Srr
-         qsoA==
-X-Gm-Message-State: AHQUAuaznFAE2FcyEFLwuwEYD7XCmHw+OkzRDZP++7efF0q1FIujpvb+
-        7Z1wEU1Ek40P0PC5vyafmx6vKA==
-X-Google-Smtp-Source: AHgI3IY8UkuNEaunDWPDIIGAubiipW3iirC76VOqANc+nOZM1N0XFgV17IacLCmhs/QrcslrJHU2NQ==
-X-Received: by 2002:ae9:f110:: with SMTP id k16mr10172495qkg.93.1549605777884;
-        Thu, 07 Feb 2019 22:02:57 -0800 (PST)
-Received: from redhat.com (pool-173-76-246-42.bstnma.fios.verizon.net. [173.76.246.42])
-        by smtp.gmail.com with ESMTPSA id y6sm1075699qki.10.2019.02.07.22.02.56
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 07 Feb 2019 22:02:57 -0800 (PST)
-Date:   Fri, 8 Feb 2019 01:02:55 -0500
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+        id S1726133AbfBHIau (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Feb 2019 03:30:50 -0500
+Received: from tomli.me ([153.92.126.73]:53484 "EHLO tomli.me"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726115AbfBHIau (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 8 Feb 2019 03:30:50 -0500
+Received: from tomli.me (localhost [127.0.0.1])
+        by tomli.me (OpenSMTPD) with ESMTP id 45f807a7;
+        Fri, 8 Feb 2019 08:30:47 +0000 (UTC)
+X-HELO: localhost.localdomain
+Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
+Received: from Unknown (HELO localhost.localdomain) (2402:f000:1:1501:200:5efe:7b75:4650)
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Fri, 08 Feb 2019 08:30:47 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=date:from:to:cc:subject:message-id:mime-version:content-type; s=1490979754; bh=mFincKebPPpECswUFNTJz8kSm6XZOraDogWkrsWfW+8=; b=qoVDTpVsQRC6KxQn66wpQ+JHfmsc31x/6LLajCdcbDUrYuiUv/en/a2CDvT4Jshmk+oGnuJa4658oruqbE9GQerL7q69XBjGkWCp5j9nNEoTkdSD1MqIl64f1yfRN3RRhXOYwR1pir5DWUQOAssfUyjQ0w8XoJwiEWXSsaY698DEca2Nupc1syi0Mw7xAvWex/16lXr9aOy5rHac/dCbyvTum7bsjLZg/fLPtZ9XuflwaY13lYP4N3I4bDgnM7hOpp7nmEGmRmS3hhjFneVTWqTZc4ejvTd2U5HeJg6kWAdf3KiOph+RBHoR1bKj/zZHFbuei8H608StJSg+WURwbQ==
+Date:   Fri, 8 Feb 2019 16:30:39 +0800
+From:   Tom Li <tomli@tomli.me>
+To:     James Hogan <jhogan@kernel.org>
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org
-Subject: [PATCH 2/2] arch: move common mmap flags to linux/mman.h
-Message-ID: <20190124142448.23243-3-mst@redhat.com>
-References: <20190124142448.23243-1-mst@redhat.com>
+        Alexandre Oliva <lxoliva@fsfla.org>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RFC] On the Current Troubles of Mainlining Loongson Platform Drivers
+Message-ID: <20190208083038.GA1433@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="W/nzBZO5zC0uMSeA"
 Content-Disposition: inline
-In-Reply-To: <20190124142448.23243-1-mst@redhat.com>
-X-Mailer: git-send-email 2.17.1.1206.gb667731e2e.dirty
-X-Mutt-Fcc: =sent
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Now that we have 3 mmap flags shared by all architectures,
-let's move them into the common header.
 
-This will help discourage future architectures from duplicating code.
+--W/nzBZO5zC0uMSeA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- arch/alpha/include/uapi/asm/mman.h     | 4 +---
- arch/mips/include/uapi/asm/mman.h      | 4 +---
- arch/parisc/include/uapi/asm/mman.h    | 4 +---
- arch/xtensa/include/uapi/asm/mman.h    | 4 +---
- include/uapi/asm-generic/mman-common.h | 4 +---
- include/uapi/linux/mman.h              | 4 ++++
- 6 files changed, 9 insertions(+), 15 deletions(-)
+Hello, Greg, Ralf, Paul, James, Alexandre and Huacai
 
-diff --git a/arch/alpha/include/uapi/asm/mman.h b/arch/alpha/include/uapi/asm/mman.h
-index f9d4e6b6d4bd..ac23379b7a87 100644
---- a/arch/alpha/include/uapi/asm/mman.h
-+++ b/arch/alpha/include/uapi/asm/mman.h
-@@ -10,9 +10,7 @@
- #define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
- #define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
- 
--#define MAP_SHARED	0x01		/* Share changes */
--#define MAP_PRIVATE	0x02		/* Changes are private */
--#define MAP_SHARED_VALIDATE 0x03	/* share + validate extension flags */
-+/* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x0f		/* Mask for type of mapping (OSF/1 is _wrong_) */
- #define MAP_FIXED	0x100		/* Interpret addr exactly */
- #define MAP_ANONYMOUS	0x10		/* don't use a file */
-diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
-index 3035ca499cd8..c2b40969eb1f 100644
---- a/arch/mips/include/uapi/asm/mman.h
-+++ b/arch/mips/include/uapi/asm/mman.h
-@@ -27,9 +27,7 @@
- /*
-  * Flags for mmap
-  */
--#define MAP_SHARED	0x001		/* Share changes */
--#define MAP_PRIVATE	0x002		/* Changes are private */
--#define MAP_SHARED_VALIDATE 0x003	/* share + validate extension flags */
-+/* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x00f		/* Mask for type of mapping */
- #define MAP_FIXED	0x010		/* Interpret addr exactly */
- 
-diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uapi/asm/mman.h
-index 870fbf8c7088..c98162f494db 100644
---- a/arch/parisc/include/uapi/asm/mman.h
-+++ b/arch/parisc/include/uapi/asm/mman.h
-@@ -10,9 +10,7 @@
- #define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
- #define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
- 
--#define MAP_SHARED	0x01		/* Share changes */
--#define MAP_PRIVATE	0x02		/* Changes are private */
--#define MAP_SHARED_VALIDATE 0x03	/* share + validate extension flags */
-+/* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x2b		/* Mask for type of mapping, includes bits 0x08 and 0x20 */
- #define MAP_FIXED	0x04		/* Interpret addr exactly */
- #define MAP_ANONYMOUS	0x10		/* don't use a file */
-diff --git a/arch/xtensa/include/uapi/asm/mman.h b/arch/xtensa/include/uapi/asm/mman.h
-index 58f29a9d895d..be726062412b 100644
---- a/arch/xtensa/include/uapi/asm/mman.h
-+++ b/arch/xtensa/include/uapi/asm/mman.h
-@@ -34,9 +34,7 @@
- /*
-  * Flags for mmap
-  */
--#define MAP_SHARED	0x001		/* Share changes */
--#define MAP_PRIVATE	0x002		/* Changes are private */
--#define MAP_SHARED_VALIDATE 0x003	/* share + validate extension flags */
-+/* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x00f		/* Mask for type of mapping */
- #define MAP_FIXED	0x010		/* Interpret addr exactly */
- 
-diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-index e7ee32861d51..abd238d0f7a4 100644
---- a/include/uapi/asm-generic/mman-common.h
-+++ b/include/uapi/asm-generic/mman-common.h
-@@ -15,9 +15,7 @@
- #define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
- #define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
- 
--#define MAP_SHARED	0x01		/* Share changes */
--#define MAP_PRIVATE	0x02		/* Changes are private */
--#define MAP_SHARED_VALIDATE 0x03	/* share + validate extension flags */
-+/* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x0f		/* Mask for type of mapping */
- #define MAP_FIXED	0x10		/* Interpret addr exactly */
- #define MAP_ANONYMOUS	0x20		/* don't use a file */
-diff --git a/include/uapi/linux/mman.h b/include/uapi/linux/mman.h
-index d0f515d53299..fc1a64c3447b 100644
---- a/include/uapi/linux/mman.h
-+++ b/include/uapi/linux/mman.h
-@@ -12,6 +12,10 @@
- #define OVERCOMMIT_ALWAYS		1
- #define OVERCOMMIT_NEVER		2
- 
-+#define MAP_SHARED	0x01		/* Share changes */
-+#define MAP_PRIVATE	0x02		/* Changes are private */
-+#define MAP_SHARED_VALIDATE 0x03	/* share + validate extension flags */
-+
- /*
-  * Huge page size encoding when MAP_HUGETLB is specified, and a huge page
-  * size other than the default is desired.  See hugetlb_encode.h.
--- 
-MST
+Many years ago when I was still in the middle scheool, I got a Loongson
+Yeeloong laptop to explore the world of non-x86 world, as Geert Uytterhoeven
+once said, there's lots of Linux beyond IA-32. At that time I've noticed th=
+ere
+was no platform driver for the laptop. I just assumed that nobody bothered
+mainlining it and everyone were using Alexandre Oliva's tree. I've diffed
+his tree, got the patches, discovered and fixed two minor bugs and submitted
+to Alexandre, and called it a day.
 
+Years later, I stared at my machine, and found Alexandre Oliva has stopped
+maintaining his tree, yet there is still no platform driver in the mainline.
+So I decided that submitting the Yeeloong driver to the mainline kernel is
+the my current personal project of this year. I only work for myself for fu=
+n,
+not for profit. I see Loongson as an interesting non-x86 platform, but I do
+not work for Loongson, do not explictly support them, nor supported by them
+in any way.
+
+Reviewing the previous E-mails and patches at Linux/MIPS mailing list, I've
+noticed that, from 2009 to 2019, in a 10-year span, there have been at least
+3 attempts by 3 people to submit the platform driver for Yeeloong laptop to
+the Linux/MIPS tree, all implicitly rejected. This is not meant to be a
+criticism for maintainers' hard work and high quality standard, but rather,
+I think it shows a serious challenge on development of platform drivers that
+worth discussing. since there's even more unsubmitted platform drivers for
+more devices, especially Loongson3. We need to find a solution both for
+short-term and long-term further development of these platform drivers.
+
+Here, I give a quick summary about the situation, and see what can I/we
+do about it. Digging into the mailing list, in the hindsight, it's clear
+to see the fate of this platform driver. In December 2009, Wu Zhangin
+submitted a refined version of the initial platform driver to the mailing
+list.
+
+His intention was to create a MIPS-equivalent version of the x86 platform
+drivers, as he said,
+
+> I like the folks did under drivers/platform/x86/ ;) which
+> will be better to maintain. for all of these drivers are really only
+> YeeLoong platform specific ;)
+
+However, Ralf Baechle commented, that
+
+> You split old, big driver into several individual drivers - good.
+[...]
+> Experience has shown that drivers for a particular subsystem are best
+> combined in a single menu, in a single directory. Otherwise any changes
+> to subsystem's internal APIs will become a major pain.
+
+Dmitry Torokhov gave another response,
+
+> Umm, it still mixes up bunch of stuff not directly related to input.
+> I'd vote for drivers/platform/mips (since we have a few of kitchen-sink
+> style drivers for x86-based laptops in drivers/platform/x86).
+
+This discussion is frozen without any progress in the following years.
+
+For example, when the driver was resubmitted to James Hogan in late 2018,
+he noted, possibly without knowledge of the discussion in 2009,
+
+> I can't help thinking it would be better to separate this into separate
+> drivers for each part (backlight, power supply etc), and move them into
+> the appropriate driver directories (drivers/power/supply,
+> drivers/video/backlight etc). That way each part would get proper review
+> from the appropriate maintainers (or at least they should be Cc'd).
+>=20
+> Is there a particular reason for it to be a single driver?
+
+So I think it's the time to restart this discussion. Should the driver be
+submitted as a platform driver, or be splitted and merged into various
+subsystems? I've considered reasons from both sides.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+Argument FOR platform driver
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+
+* Unlike other drivers, platform drivers are only written for a specific
+machine, or a specfic family of machines. They are usually useless for
+other computers. A central point-of-maintenance is easier to manage than
+running between different subsystems. Also, many drivers only have trivial
+code for each device, splitting it creates more boilerplates.
+
+* Platform drivers are not universal, architecture-wide, instead, they are
+tightly-coupled to a specfic hardware controller and/or BIOS firmware. On
+laptops, the Embedded Controller is responsible for controlling the battery,
+keyboard, backlights, and other opeartions. In this way, it's better to see
+a platform drivers as a driver for a single controller chip, instead of a
+series of drivers for a keyboard, a battery, or a screen. These kitchen-sink
+drivers don't really fit into a single category.
+
+* Since a platform driver talk to the same controller, shares the same head=
+er
+and I/O functions, it's difficult to split different operations on the same
+chipset. First, code-sharing of the underlying EC operations can be a probl=
+em.
+Also, modification to a single driver often touches the underlying EC logic,
+which need to touch the core architecture code, and it also affects on driv=
+ers
+in unrelated-subsystems, thus creating many troubles on coordination. Even =
+worse,
+they are only designed to interact on each other. For example, closing the =
+lid
+may deactivate the screen and changes the behavior of a light sensor, a pow=
+er
+button, and a 3G modem and their respective LED indicators. From a EC driver
+perspective, it's easy to manage, but harder to do so independent drivers.
+
+* Some computers have different hardware functionatilies, e.g. different
+screen sizes, types of batteries, or keymap, but often share a single family
+of the EC chipset and they can be controlled in a similar way, or have simi=
+lar
+characteristics. Using single platform drivers is easier to add support of =
+a=20
+new machise, or to reuse code among different computers - simply extend the
+existing platform driver is enough. In our case, It's expected to support m=
+ore
+Loongson PCs of the same family, such as Yeeloong laptops, MengLoong machin=
+es
+and FuLoong Mini PCs.
+
+The platform drivers in drivers/platform/x86 is representative for the poin=
+ts
+above. For example, Greg Kroah-Hartman's samsung-laptop.c.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+Argument AGAINST platform driver
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+* Loongson is only a subfamily of MIPS systems. Unlike x86, where there is a
+massive number of platforms which need custom platform drivers, the vast
+majority of MIPS are servers/workstations or embedded systems, which does n=
+ot
+use platform drivers. Introducing platform drivers will encourage unrelated
+drivers to be submitted to the Linux/MIPS mailing list, creating more press=
+ure
+to a small team like Linux/MIPS.
+
+* Linux/MIPS is specialized in maintaining core MIPS code. The developers
+should not be forced into reviewing and maintaining unrelated subsystems, s=
+uch
+as battery, LEDs, or hotkeys, which they are not responsible to. They should
+be reviewed by the maintainers of their respective subsystem, this also
+encourages higher-quality drivers.
+
+* x86 platform drivers are maintained independently from core x86 code. in a
+separate tree, and has its own community, platform-driver-x86@vger.kernel.o=
+rg.
+However, there is nothing is this in Linux/MIPS.
+
+* The code reuse and coordination problem is simply an excuse, it can be
+solved by providing a generic EC interface in arch/mips/loongson64 for each
+driver in its respective subsystem. Monolithic Kitchen-sink platform drivers
+are anti-patterns and they shouldn't be developed.
+
+In conclusion, in my opinion, although having a central location for Loongs=
+on
+platform driver is preferable, but consider the current circumstances, it's=
+ a
+bad idea, and in particular, bad for Linux/MIPS maintainers. I think the be=
+st
+way of doing it under the current system is splitting the drivers to their
+respective subsystems, and put the EC-related code in arch/mips/loongson64
+and export the symbols. If there's consensus on it, I think I can starting
+working on it immediately.
+
+Nevertheless, I think a longterm solution is needed to facilitate the
+development of lots more platform drivers of Loongson mainches. I've noticed
+that Google has a similar problem developing their own platform drivers
+for Chromebooks, their solution is creating drivers/platform/chrome, so
+they can work on i2c, lightbar, LED backlight, etc, drivers tightly-coupled
+with the Embedded Controller in a central location, with its dedicated tree
+chrome-platform.git, without disturbing the ARM developers by sending unrel=
+ated
+drivers. I think we should adopt this model, having a drivers/platform/loon=
+gson
+should make the development easier.
+
+Unsolved problems still remains, however. First, how to solve the coordinat=
+ion
+problem? Linux/MIPS is a relatively low-volume and slow list, what to do if=
+ the
+unmerged MIPS patches becomes a blocker for other drivers? Second, we alrea=
+dy
+have a hwmon driver under drivers/platform/mips, should we put a warning th=
+at
+says new drivers under this directory shouldn't be written? Third, if we ag=
+ree
+to create drivers/platform/loongson in the future, how can we ask the maint=
+ainers
+of other subsystems to review the drivers in it? I think Google bypassed the
+problem because they have lots of kernel developers, but not us. Does anyone
+know more about Chromebook's development procedures? Also, if we want
+drivers/platform/loongson and its own tree, what are the procedures to get =
+them
+created?
+
+All comments, suggestions, criticisms, etc, are appreciated.
+
+Thanks,
+Tom Li
+
+Beijing GNU/Linux User Group
+
+[1] 2009/12: https://lore.kernel.org/linux-mips/1259679137.12571.4.camel@fa=
+lcon/
+[2] 2010/05: https://lore.kernel.org/linux-mips/cover.1274622624.git.wuzhan=
+gjin@gmail.com/
+[3] 2017/11: https://lore.kernel.org/linux-mips/20171112063617.26546-3-jiax=
+un.yang@flygoat.com/
+[4] https://www.spinics.net/lists/platform-driver-x86/
+
+--W/nzBZO5zC0uMSeA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEJVIRsjlaWj4OSKDx+tPrBeiOjW0FAlxdPiYACgkQ+tPrBeiO
+jW3FOg/8Dzcq5uTWIoqQb0APzi1HUBspcWMZ/S4NNVXdx2bcePuEbTBijVT9P5fx
+0AluLKK0fTDGeM0YzPXHrumJp+IaOGE2RBeK9haH0Ye4U9eJcHqT5isLfLActkf+
+/l3KTleUmX4VT19e64H1aOirxJxCsOpEKG9cBnlBpjnVyCUE1zrFCViv5nrdYqKj
+qv3kDfdCrjtUa+/XUcIH5nxGDdb3DvsdqDrL8ZdbYQvW7NgR5vyp9W0xXuIViw1q
+CFfiUJmtfyZyjA0X/N+8kOc6/AinJxWwO0EV2y7waxSxeG0lVuelxQxQNBQRlZ5d
+4GXy9naLr4M93vv8+DwbCXsRe2LaMX+xeNQaXGNu22eCL6shpVJHxFr+3Q8BOkRl
+dES0K9b7IjeajUZ0EHUcUekdpIqNfhOdTjybA2nm96Y4hidtHQhaypfCJanUcIsg
+3GWucEpohvuuSwa5PsCWhNmIM82dhlRO0vum09NK7+ok66azrwP8huOqFy25u7Ir
+Xhy+gFK4WRc7z526k2cLU+QZ7PRvzwsfr7J5tNKjcY6cBuWHjjJ2gjJ/6DSuFy1I
+RYUGHIJuEtXH+zwuyc/eU9cq+SDVBtqZK1n4v+qJch9KX6nDz1QeDaHA096HLGWh
+3E2tOKa7HEUiL1EKHIYst8QyzBLKFIvAUhM0299tSBMkalrOUcw=
+=Xbyq
+-----END PGP SIGNATURE-----
+
+--W/nzBZO5zC0uMSeA--

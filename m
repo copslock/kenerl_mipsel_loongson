@@ -1,130 +1,152 @@
-Return-Path: <SRS0=1crz=QO=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=Rn8T=QP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B082DC282C2
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 23:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94E65C169C4
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 05:57:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7FB2C21721
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Feb 2019 23:29:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5132920863
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Feb 2019 05:57:15 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="ke139kK4"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="IWHIqZF8"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726793AbfBGX3T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Feb 2019 18:29:19 -0500
-Received: from mail-eopbgr790135.outbound.protection.outlook.com ([40.107.79.135]:11840
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        id S1726847AbfBHF5P (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Feb 2019 00:57:15 -0500
+Received: from mail-eopbgr810131.outbound.protection.outlook.com ([40.107.81.131]:56128
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726650AbfBGX3T (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 7 Feb 2019 18:29:19 -0500
+        id S1725940AbfBHF5O (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 8 Feb 2019 00:57:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k7yMLOirbZ4azbEgHr/QWXCxuqufeAiL2J6o5MjcnFI=;
- b=ke139kK4PsLhOm3CZpg6x0kf3h1X9EGUoWy5xXyyydNPZsOyrUyRfENN3mOjy6ex4g7TvCrrVnxTcCi+Usw6si1heIvx82noRGqijjc1oPnbkmPgE0eHDZ17cJbxAX+IySvHi7OynTOGHTOaz5nbmnzW6Vid8qoraIfSP7LWDZs=
+ bh=lBfx1O7JrTg0tEEQk4+PNtkxKhzYTFq+OwdLEPD4oc4=;
+ b=IWHIqZF8O5kFHCNhey5CaSwWsC/65afXh+1TIi8PnoW8yBZ2ed1sK7a6V8TRjNf3y1SI/4D4hzdIhmSLcAQ+T7ZKTsSaABoGtYVFbfmEtwpw3qlBaj5rxKJZgIEVMvo3IMmx+exu9jEjRrP0I46e9yknntZf8N7EWqwlJ433HHs=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1344.namprd22.prod.outlook.com (10.174.162.147) with Microsoft
+ MWHPR2201MB1070.namprd22.prod.outlook.com (10.174.169.144) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1601.17; Thu, 7 Feb 2019 23:29:14 +0000
+ 15.20.1601.21; Fri, 8 Feb 2019 05:57:11 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Thu, 7 Feb 2019
- 23:29:14 +0000
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1580.019; Fri, 8 Feb 2019
+ 05:57:11 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Christoph Hellwig <hch@lst.de>
-CC:     John Crispin <john@phrozen.org>, Vinod Koul <vkoul@kernel.org>,
-        Dmitry Tarnyagin <dmitry.tarnyagin@lockless.no>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-Subject: Re: [PATCH 01/18] MIPS: lantiq: pass struct device to DMA API
- functions
-Thread-Topic: [PATCH 01/18] MIPS: lantiq: pass struct device to DMA API
- functions
-Thread-Index: AQHUugtMSEi4XkuS4UKpOJkg4WEy1aXVBcYA
-Date:   Thu, 7 Feb 2019 23:29:14 +0000
-Message-ID: <20190207232912.wfgejc5c6d6lk5so@pburton-laptop>
-References: <20190201084801.10983-1-hch@lst.de>
- <20190201084801.10983-2-hch@lst.de>
-In-Reply-To: <20190201084801.10983-2-hch@lst.de>
+To:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+CC:     "dave@stgolabs.net" <dave@stgolabs.net>,
+        "dbueso@suse.de" <dbueso@suse.de>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "mm-commits@vger.kernel.org" <mm-commits@vger.kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: + mips-c-r4k-do-no-use-mmap_sem-for-gup_fast.patch added to -mm
+ tree
+Thread-Topic: + mips-c-r4k-do-no-use-mmap_sem-for-gup_fast.patch added to -mm
+ tree
+Thread-Index: AQHUv3FRGd3D5kwGB06QH21t1QVvHqXVZ10A
+Date:   Fri, 8 Feb 2019 05:57:10 +0000
+Message-ID: <20190208055708.sxlvcfyjayiwrozc@pburton-laptop>
+References: <20190208054407.gjyKBBYUS%akpm@linux-foundation.org>
+In-Reply-To: <20190208054407.gjyKBBYUS%akpm@linux-foundation.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0046.namprd07.prod.outlook.com
- (2603:10b6:a03:60::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR11CA0062.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::39) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
+x-originating-ip: [2601:647:4100:4687:76db:7cfe:65a3:6aea]
 x-ms-publictraffictype: Email
-x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1344;6:2tEPk8CH6CCZnRiICVfwsbDHjsM87Gj8RuRsDc+gx6lIm+EpaF9nPayQvUHoOFQcEfvxtbXxET+QMkBz6lHEWEO1lO+FaMmXUEXu/+lloQFTs3KHhx6FxRiyjKt1oO2Eu2W2f80lTQDn9r8LUDop6eW5v8VTf/p0l+KL3jJWmTWU6tPPSMB5VrZzyhPG9u064uandmLkHs8BQgqy5YkzJovhT1eEKWYeFJ+12WmacMJHW4Sd0FOrNnNVyd9/Ev64iPoljOFRPLVlmy8QMajL7LMJlYbNKnQYz6Q8bVBlK4xDU51kKza3xaclULhcH+lB1j8l6S6rd9BJ+9iPtSYtUaNau+oPqRKlp4a8j+hb7AFdKsmaGSC2p38qtYaMu45PHto3Xh2mGEiUDLiVnoHnSRWJvF0Qdg1BdDJmhWz8HE5Ku3kzSxr6RscRqU4ziYb+wH785GZ12oAvRzJUhRn2kg==;5:oIw+5MdFbZ7zN2qvnobIF5ZpE228FXXB5Lm5LYM32fSxKQtAbkkCUfYjPn0NxAtro4kKhhO00c+g9Aqr1oJ8zlA0tI/yF8jdTo1GbEDe3LFtQlDL8A1sAroctjZ1gv6ipH3FtqNGtoaDQMJLydY6DC71lSy8MlDWr63H3XGLyxNtT6epaKRrqxVB38LgBxPCWZ02A6h0xHZt0uZgHU1tww==;7:JRQrMZyD5Ov54ssBhtT8QHiv3C9uQ8QNmSGKF+3qsKTz9UY/8+8xvwdOY5fpcDWWqh0b84FEVmBwAV5sXwfYAfnxs8AcwJcnz/S+IfeLWrPYpyrINsRBD57VnHxcDUx+IzWvkH0wX3kAIo9rFMcBRQ==
-x-ms-office365-filtering-correlation-id: 183ea2fd-112b-44a2-4539-08d68d541209
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1344;
-x-ms-traffictypediagnostic: MWHPR2201MB1344:
-x-microsoft-antispam-prvs: <MWHPR2201MB13446C0ADABEFF536D011F6EC1680@MWHPR2201MB1344.namprd22.prod.outlook.com>
-x-forefront-prvs: 0941B96580
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(376002)(39840400004)(396003)(136003)(346002)(189003)(199004)(33716001)(76176011)(33896004)(217873002)(229853002)(6506007)(4326008)(66066001)(305945005)(6246003)(25786009)(6916009)(386003)(256004)(58126008)(97736004)(68736007)(52116002)(7736002)(102836004)(53936002)(14444005)(99286004)(7416002)(26005)(6486002)(54906003)(6436002)(71200400001)(6116002)(478600001)(316002)(186003)(8936002)(11346002)(8676002)(3846002)(81156014)(81166006)(1076003)(44832011)(4744005)(106356001)(486006)(105586002)(2906002)(14454004)(476003)(42882007)(6512007)(9686003)(446003)(71190400001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1344;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1070;6:EAkJX/aKp53lY+pxHNA5+3fADLO7NpKyrZs7oMz8R06WOTVrJlYacHCcIbm6xmIfZLY8Q6JYg7N95MLcg3XoT/Vf7/RhfY4j+Us8PJ2zGC3fTnIXGw1HbDZTOhcGymMoiEth1GbRinmTLWPvQWB59TYeOpxnkHjeM/RIs24VIvZQjpJBV8bB8rvCPlFSDBP//dkE0EDqKl6CgnB0Fp9f8FnU/xc4a4MnaylPeg+RNo8G8Wp4/TCyo/TWjixA7t6HIL1hKBSJVlIsPo3Xn81ufwaG/JLOp63ZQ549zo8d+8c9y8KAnj9wcAM6y6NxvSVrVlJdw2Fti9zYRAqfB+3TMvx4g4xZ68aXcGnq6LYI+INCUOtqISuTCEZrlLGz2+IEZpz+0WDgILsGUB4e0BamQ4LJbIV4x9+zyScjVobqLjsJscf1GwtJy5Ulij0cwgjwGjvmAOE8XLOsQfofNRTbng==;5:HQXrkLxa4Dim5+LiCwWj6u4hw5juxJtpsd6aFv5Q9XSFJrczkYxpj7/CzA1R/MJXF+HS9uxid5cdZvKlxE3oeBEVE2nJdCorExQUDr7u3yeUCqatiDmuiuxo8YM6JgmFebsjQVCeMaGGywX5iPiL7LF590nqeA8l3b59BFcR3qxIa4n/no4cB1JyES8sYz87p/0mP9+SLPBoS1bbQMudDQ==;7:3FshxQbQ9eqyA3jBw8wNw3je7W89tp3ALZW9J+xUFlE8bAGDFqKGUuWsYb0Yvyr+C3p/yLWvxbSxeXae8rbzOlvkNJKQP4TqY3v5THgFHNHGpuLKLQ3pksOSVndPoQzHsO5mhLXvqzc3eqF7MI8AbQ==
+x-ms-office365-filtering-correlation-id: 5cd89efc-933c-4cfc-9f59-08d68d8a43bf
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1070;
+x-ms-traffictypediagnostic: MWHPR2201MB1070:
+x-ms-exchange-purlcount: 4
+x-microsoft-antispam-prvs: <MWHPR2201MB1070DD0648BA381A6FBE7CE6C1690@MWHPR2201MB1070.namprd22.prod.outlook.com>
+x-forefront-prvs: 094213BFEA
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(376002)(136003)(366004)(346002)(189003)(199004)(97736004)(3716004)(6116002)(71190400001)(71200400001)(305945005)(7736002)(6916009)(5640700003)(6436002)(6486002)(2501003)(76176011)(68736007)(42882007)(102836004)(46003)(229853002)(386003)(52116002)(256004)(33896004)(14444005)(186003)(6506007)(9686003)(6512007)(6306002)(2351001)(446003)(11346002)(106356001)(105586002)(486006)(44832011)(8676002)(1076003)(53936002)(81166006)(81156014)(6246003)(14454004)(966005)(2906002)(54906003)(1730700003)(33716001)(508600001)(53376002)(8936002)(4326008)(25786009)(58126008)(476003)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1070;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: cAxehm9nKuJ7hjORvPLUtCOvB4hTBatXq7mpzogMexY2Cd/YqG3vOWG/g8JjXgabqdLwb9CP057ZzyN6xyZBC2Wd2P0bfzVd2eNP2JqB9hP969iRl9S8KDQMRC4UfdnGRWKAk7vz8rEklce9NRxaAo4zg0w+EE6K2z/JS4FywIo2RxivqJ2lEPueFXlgGtlubEDaBWxFDucOSGjCncD4oEvrR5m+TSTBJIhZKprkZyHhq89eHMyFeAr+ciceTBfcJjVd9YkC5aUvKGoUO5C8FAhA8ubz4n5U/4ujb0trvdrJT0JBsqiDzolIkyUtQ0Xl9FEQQQSlnZOj0bdlmzAQ8fB3TjOkuMyIznvLKSuEQJOeL+UcgRU+0gAqbzWThgaguY3k5FtchwdKEyM6Y15YRc04g5ALJGujnX6ABblrKLM=
+x-microsoft-antispam-message-info: I2wXHSCCeEIXuORGLSWmoZKz8LmfK1FAXX63Xg53zffDQhWugiJlMPN0LjyiUUzfsb/7k9pBVHDOgpn45kOVaU2SJrezYSmysZyWGjo7Jy8mWC+AVo/6iiQvry4BkNDUjsBWBUwdtw+LBl1ezRI4a1QuR2GJlur67N3JRUFDaDebbvw7gXvnGB1QHJ3OjaMQebrDrP0bkwWlL6HQ+XHJL9RgjHuzxMjSIVIsE2Jwi6/UW+kKXLMmmeYGkTMW2YyR0cLg3wWCydfdqWm3IkUlY+R0/8j/LCbRTPNx6Vib/DsQaMpPXJPMXPk0XWPoP6x7osKyiwK+bd//wFYDt4Ja6jkD9voEPsKzN4TMKfkVcjxjGJloEc5vvmXPJ7vJRdwuFmAEff39Xmqq8J8riWGz2UZQFECLxBIfIyhJXp3qWsM=
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <F505CEADCDCA13409DACF1CBCB28A5C3@namprd22.prod.outlook.com>
+Content-ID: <836DD39E6FD9E046B74ED0286061B0B3@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 183ea2fd-112b-44a2-4539-08d68d541209
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Feb 2019 23:29:13.8300
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cd89efc-933c-4cfc-9f59-08d68d8a43bf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2019 05:57:10.0137
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1344
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1070
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Christoph,
+Hi Andrew,
 
-On Fri, Feb 01, 2019 at 09:47:44AM +0100, Christoph Hellwig wrote:
-> The DMA API generally relies on a struct device to work properly, and
-> only barely works without one for legacy reasons.  Pass the easily
-> available struct device from the platform_device to remedy this.
+On Thu, Feb 07, 2019 at 09:44:07PM -0800, akpm@linux-foundation.org wrote:
 >=20
-> Also use GFP_KERNEL instead of GFP_ATOMIC as the gfp_t for the memory
-> allocation, as we aren't in interrupt context or under a lock.
+> The patch titled
+>      Subject: arch/mips/mm/c-r4k.c: do not use mmap_sem for gup_fast()
+> has been added to the -mm tree.  Its filename is
+>      mips-c-r4k-do-no-use-mmap_sem-for-gup_fast.patch
 >=20
-> Note that this whole function looks somewhat bogus given that we never
-> even look at the returned dma address, and the CPHYSADDR magic on
-> a returned noncached mapping looks "interesting".  But I'll leave
-> that to people more familiar with the code to sort out.
+> This patch should soon appear at
+>     http://ozlabs.org/~akpm/mmots/broken-out/mips-c-r4k-do-no-use-mmap_se=
+m-for-gup_fast.patch
+> and later at
+>     http://ozlabs.org/~akpm/mmotm/broken-out/mips-c-r4k-do-no-use-mmap_se=
+m-for-gup_fast.patch
 >=20
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/mips/lantiq/xway/vmmc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Before you just go and hit "reply", please:
+>    a) Consider who else should be cc'ed
+>    b) Prefer to cc a suitable mailing list as well
+>    c) Ideally: find the original patch on the mailing list and do a
+>       reply-to-all to that, adding suitable additional cc's
+>=20
+> *** Remember to use Documentation/process/submit-checklist.rst when testi=
+ng your code ***
+>=20
+> The -mm tree is included into linux-next and is updated
+> there every 3-4 working days
+>=20
+> ------------------------------------------------------
+> From: Davidlohr Bueso <dave@stgolabs.net>
+> Subject: arch/mips/mm/c-r4k.c: do not use mmap_sem for gup_fast()
+>=20
+> It is well known that because the mm can internally call the regular
+> gup_unlocked if the lockless approach fails and take the sem there, the
+> caller must not hold the mmap_sem already.
+>=20
+> Link: http://lkml.kernel.org/r/20190207053740.26915-3-dave@stgolabs.net
+> Fixes: e523f289fe4d ("MIPS: c-r4k: Fix sigtramp SMP call to use kmap")
+> Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Would you like this to go through the MIPS tree or elsewhere? If the
-latter:
-
-    Acked-by: Paul Burton <paul.burton@mips.com>
+Whilst I don't object to you merging this too strongly, I thought I'd
+point out again that as I already replied to Davidlohr [1] the code
+being changed here is unused in mainline & all affected stable branches.
+In mips-next it's entirely removed. As such this patch will have no
+effect on the kernel's behaviour & cause a minor conflict with
+mips-next.
 
 Thanks,
     Paul
+
+[1] https://lore.kernel.org/linux-mips/20190207190007.jz4rz6e6qxwazxm7@pbur=
+ton-laptop/

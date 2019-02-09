@@ -2,36 +2,41 @@ Return-Path: <SRS0=Wred=QQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE9F4C282C4
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 10:11:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40300C282C4
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 19:38:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8534820857
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 10:11:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F4149218D2
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 19:38:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="YhLeYq3G"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="j6uQL3xM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726755AbfBIKLq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 9 Feb 2019 05:11:46 -0500
-Received: from tomli.me ([153.92.126.73]:54622 "EHLO tomli.me"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726058AbfBIKLp (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 9 Feb 2019 05:11:45 -0500
-Received: from tomli.me (localhost [127.0.0.1])
-        by tomli.me (OpenSMTPD) with ESMTP id 7d5e56c4;
-        Sat, 9 Feb 2019 10:11:42 +0000 (UTC)
-X-HELO: localhost.localdomain
-Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
-Received: from Unknown (HELO localhost.localdomain) (2402:f000:1:1501:200:5efe:7b76:76e8)
- by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Sat, 09 Feb 2019 10:11:41 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=date:from:to:cc:subject:message-id:references:mime-version:content-type:in-reply-to; s=1490979754; bh=EBIKsvw4zmVonKYgI4gXCNmcrvM9dfpkvXYljZmtxyI=; b=YhLeYq3Gk/KgrsefJ9bu38CTw9evCEuy5zV5rEwY47pQlenVrj+fkslE7UqbM+H4JeClfPS+8Pahisbp/4260wqCQuFsJTElGaoLElLqF2V/qF7ZITkV/l1V4qD8pQS09+3Cms568ZgzCU4Bk4DfwF/TInoR/tSXHxeIeeIF011m3KYod6cgHAOlZ3WH2cUATQ/8KhEQVTyHX3ny5OfLBYYBleVgtv93KwRNzFF4YT5C+l0hd2zo1L6Jo9XPhnkab1FCWxMjSOoqlFQM6+EOuAQzGZOoyypbMKNxfK1VmsC7ViWuWUIW6MKeXqjQTuFR+PO/x8mSKEunjrFXZWUybg==
-Date:   Sat, 9 Feb 2019 18:11:33 +0800
-From:   Tom Li <tomli@tomli.me>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     James Hogan <jhogan@kernel.org>,
+        id S1727234AbfBITi5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 9 Feb 2019 14:38:57 -0500
+Received: from mail-eopbgr770127.outbound.protection.outlook.com ([40.107.77.127]:20293
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727221AbfBITi5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 9 Feb 2019 14:38:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6Tz7CXDIlSGB7/AnH8t17YYw/2pXaByp79DvCkSqaHo=;
+ b=j6uQL3xMR4MA486zfkyTW0ki4Tj7Q4jjYcnHMWMJdL0T/qUYbeOjEDeB8+tdLkOAvz31lRhVKMWlS06wL+buVxaFzv5GN3B23XLNFxkIQl86Ppxc3cREuDEGqvLrsSGifwFV0I94DwONlNmGbjk6kafQtymUhx2HEZg2jqa0zc8=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1728.namprd22.prod.outlook.com (10.164.206.158) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1601.17; Sat, 9 Feb 2019 19:38:51 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1601.016; Sat, 9 Feb 2019
+ 19:38:51 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Tom Li <tomli@tomli.me>
+CC:     James Hogan <jhogan@kernel.org>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -40,86 +45,85 @@ Cc:     James Hogan <jhogan@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [RFC] On the Current Troubles of Mainlining Loongson Platform
  Drivers
-Message-ID: <20190209101132.GA3901@localhost.localdomain>
+Thread-Topic: [RFC] On the Current Troubles of Mainlining Loongson Platform
+ Drivers
+Thread-Index: AQHUv4iaADGqjKpPI06v8WRtTh6JiaXWVScAgADrcYCAAJ6AAA==
+Date:   Sat, 9 Feb 2019 19:38:51 +0000
+Message-ID: <20190209193850.tcg46ckwz4q22dwg@pburton-laptop>
 References: <20190208083038.GA1433@localhost.localdomain>
  <20190208200852.wcywd7yfcq7zwzve@pburton-laptop>
+ <20190209101132.GA3901@localhost.localdomain>
+In-Reply-To: <20190209101132.GA3901@localhost.localdomain>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0085.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::26) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;MWHPR2201MB1728;6:65cvtQgmsgUWTye8FsjhxR/qOt9yK8xwThYD+GCsKhUGFbxQsxxTQuLsK2YTWnGwhtc9ALFXE729JREpBbXmcKOeLNXQrfCjcOY4hDBpTgMrAwtlCMM/1fa3811j7ueDklEBEPJC5d8Rmhloz89BXwPxuB/udlQp+nedlmeOwVeKeBVsVd2mH0tFF6SwdiATh+nCpeqGqbjDGDulI/KiUJl662yGx1T/fxaYlG9I/Cjlv2jczlSFdJQrVadSjc1L55gsB8Cx4roXal4ziYvJ2hVSjb00Reztcm6L2xEZ9iJv/Q4/WZR3Fxor9VE8PcuqXXD8vLKia8cbg4XwyUYc1uu5eOpTqj7PI9h6IYrb1iNrb7rQFgarYQypjYeaiVUlsukMRfaUwM9NNNKMnMaZH3Yp0qXmaewP8S80aORiyGTAKjMsiAIXjc94DDKVXSYkQboHc0zUKT1gY/U6VZTmLA==;5:15/Ty3xhHdG0BHGsLrmdxvMaXBsrQECTJ/jXAlSOVG8VrDKSO5msY1u3mxU8F09WJvbVzy1QAMrmbjYHAfO5zqMp4FCbQWYBE+eFOr8rGFzFKZFSf8Coa9DM4toc2nFBo4thxQPOZuZOTIAmoFAx1zZLfbX0ejs4O0TF1zw1PHPYv5klkPYQHZ+xJKEdd9E8/JUHPkEdMLur93fecDqDeg==;7:59OJMIB656iuj9dM5Dswk6gR1g3pbY4MJ+RkBUHoy0T5OXZDIezLIdIGuBJomnC0RQJZrBurTWIAGjj97GpGZt45nwaQv6tyG57vj+P6UBUtB1MKUg34cWXTr/S9385hjFJFoW+rFf9EbRr+l6nJqw==
+x-ms-office365-filtering-correlation-id: 92cc1fa4-2d35-4982-9d01-08d68ec63806
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1728;
+x-ms-traffictypediagnostic: MWHPR2201MB1728:
+x-microsoft-antispam-prvs: <MWHPR2201MB1728C774574DAB6F541A9E98C16A0@MWHPR2201MB1728.namprd22.prod.outlook.com>
+x-forefront-prvs: 09435FCA72
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(136003)(376002)(39840400004)(396003)(189003)(199004)(71200400001)(1076003)(105586002)(71190400001)(476003)(6116002)(106356001)(3846002)(6246003)(42882007)(102836004)(486006)(6916009)(68736007)(99286004)(97736004)(44832011)(14444005)(76176011)(53936002)(33896004)(256004)(52116002)(186003)(478600001)(33716001)(14454004)(25786009)(6486002)(66066001)(7736002)(305945005)(81156014)(54906003)(2906002)(6506007)(8676002)(26005)(81166006)(446003)(9686003)(6512007)(386003)(229853002)(58126008)(4326008)(11346002)(8936002)(6436002)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1728;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: fPH+Q1UU09Azn2QE3yxUVZbK3Q4HXnYIADpJNsp7IVTpqwFOeVPHZM/B9lXIQrpvnyauaekSRI9BNWrmE/LujnEZBbdAEYmKhtMdnleBmQPBHhBawr5ZZ+nrZ8wA/BV3kZdXtaeKPQA7+8miz2f10sjvwKsS4r18738sQU7/kWVGlI5FpYhCOhnF4mYYSf1IYjiNNdbLRktNhs3N3QM5cLql/5s85KnaW2sjX2fcC0CKS+GH3G7wO0xwT5moGlHw2ADeopa67XNOG6JK0+MIVYJDHk3XtA9UP+gkO4X7EOV6YGa5UssbWanFd5CGpimTtbMot++stuoPlanq+v/ixrVm7Spz7G7hCkOCG1CjRgIX7I0drDuLbPhC1Pk7tHVh86diCHHCdhqUS677MMDXoXPCyOoottXmBeQ/kMsRYos=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <D1BAF5B3B13981418BA21C22B598EDF9@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
-Content-Disposition: inline
-In-Reply-To: <20190208200852.wcywd7yfcq7zwzve@pburton-laptop>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92cc1fa4-2d35-4982-9d01-08d68ec63806
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2019 19:38:51.3579
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1728
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Tom,
 
---G4iJoqBmSsgzjUCe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Sat, Feb 09, 2019 at 06:11:33PM +0800, Tom Li wrote:
+> > To address the particular quote you give from Dmitry Torokhov on the
+> > yeeloong_hotkey driver - just because the driver as-is includes a bunch
+> > of non-input related things doesn't mean that it should or has to. From
+> > a look at the 2009 submission it seems to mix a bunch of policy into th=
+e
+> > kernel which really ought to be elsewhere. Generally the input driver
+> > reports that a key was pressed & something in userland decides what to
+> > do with it, whereas this driver seems to attempt to bypass that & prod
+> > at unrelated hardware all by itself.
+>=20
+> Sure, the hotkey driver has some problems in its current shape. I think
+> the existing code makes some hotkeys on the keyboard behave like a hardwa=
+re
+> switch to order to implement rfkill hardblock, and also controls the vide=
+o
+> output switch. I think I need to investigate it further.
+>%
+> I find reorganization of the current Yeeloong platform driver is relative=
+ly
+> easy, since it only involves one machine, I'm already working on it.
+>=20
+> If future developers find it's difficult to support new machines, we can =
+simply
+> have more discussion, reorganize the existing hierarchy further, and make
+> incremental changes.
 
-> To address the particular quote you give from Dmitry Torokhov on the
-> yeeloong_hotkey driver - just because the driver as-is includes a bunch
-> of non-input related things doesn't mean that it should or has to. From
-> a look at the 2009 submission it seems to mix a bunch of policy into the
-> kernel which really ought to be elsewhere. Generally the input driver
-> reports that a key was pressed & something in userland decides what to
-> do with it, whereas this driver seems to attempt to bypass that & prod
-> at unrelated hardware all by itself.
+Thanks for working on it, I look forward to seeing your patches :)
 
-Sure, the hotkey driver has some problems in its current shape. I think
-the existing code makes some hotkeys on the keyboard behave like a hardware
-switch to order to implement rfkill hardblock, and also controls the video
-output switch. I think I need to investigate it further.
-
-> Personally I see no reason for that hwmon driver to live under
-> drivers/platform/mips rather than drivers/hwmon. All that does is bypass
-> the attention of the drivers/hwmon/ maintainers who would be best placed
-> to offer input & ensure the driver is actually any good.
-
-Yes. I think if our conclusion is "drivers/platform/mips is not a good idea",
-it should be moved to the appropriate category in the future.
-
-> I think that question should prompt another - if we have maintainers for
-> various driver subsystems, why not place the drivers under their care in
-> the already established directories?
->
-> Thanks,
->     Paul
-
-Thanks for your reply, I'm fully agree with your comments about platform
-drivers.
-
-I find reorganization of the current Yeeloong platform driver is relatively
-easy, since it only involves one machine, I'm already working on it.
-
-If future developers find it's difficult to support new machines, we can simply
-have more discussion, reorganize the existing hierarchy further, and make
-incremental changes.
-
-Cheers,
-Tom Li
-Beijing GNU/Linux User Group.
-
---G4iJoqBmSsgzjUCe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEJVIRsjlaWj4OSKDx+tPrBeiOjW0FAlxep08ACgkQ+tPrBeiO
-jW2Uhg//S9DyQ2E8xIFqU+qR0m93iXTPcWfX7/Z1HywSTbz32ppA5woe5VrKwDP1
-wKht81YsRDQFZk2ctMh02owBB18GrhG9rgeXcdMUgTByvAfieuUju84GF6hQMMl9
-NAI3AoiT1lQgGZsALvHZpFLHAVWlvd/1M120YpQnOsDCLXqaURufMIt3lDaG3dcr
-0A2v0HnRc/ltklrKiHkNuQ1+h+iiYfCNH4TeMsAsti5GZ6jchxTWNy6y+M2iraPu
-ltN09uu70BoQ+iXo0Cc9S0YQx/jHMRij1sC0ZEq6S3JTJtWtDx8f6+cyurjGQEc3
-jJ8I5E24RQAXFlWNB/y2edgBGHVnwRVl4XROvtDnAPRFDZe82q1DQVXSpADEaGlm
-a76x1eKv/hi4m6HJII8cKmRvw1uX2jx/0t3vGdqiQ2hb2qDqmTXX7sjQNPLf7olQ
-y1mFS6wls0HhaqLfv4oN0I0NAPI40z/QznPeXzJurmf14WowaMDX3oalR6P/96pJ
-a+aas05HjDfNyubmsntf3OhiFysbMDTC6oOVnbXZbQn+a2vQjGooaCF5pIwrKEeQ
-H00t0e/EkeQosFdOvxrGY3YBgSl7G0AxtE0pfMAUs+kwWFeNkuzVUl9EP9uGYvNW
-zKPBQglJnlXAn1RVpjyDkmsAv69oF9NfBwTkTPNgPl+4UPy8M8E=
-=t1nv
------END PGP SIGNATURE-----
-
---G4iJoqBmSsgzjUCe--
+Paul

@@ -2,94 +2,124 @@ Return-Path: <SRS0=Wred=QQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D46F4C169C4
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 01:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE9F4C282C4
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 10:11:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A21C721841
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 01:44:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8534820857
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Feb 2019 10:11:46 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDAZophP"
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="YhLeYq3G"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbfBIBos (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Feb 2019 20:44:48 -0500
-Received: from mail-it1-f195.google.com ([209.85.166.195]:40427 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726522AbfBIBos (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 8 Feb 2019 20:44:48 -0500
-Received: by mail-it1-f195.google.com with SMTP id h193so13771518ita.5;
-        Fri, 08 Feb 2019 17:44:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ll6utr+E4KfSWBkxlzzCxCgAe0VO4EUDQW3TXLdDpGY=;
-        b=MDAZophPccpEBkwjEu0yNdj8ZjsQxHZoRWnzwamVRcFu8r7Ig0NhQlK0YvmzjRF5QR
-         TgcKGXaP4ee1P+S/a0rQ2+7UiyxnPbjp7wIKXUfbI1A+R0bjOHRwHykEAbVrKlZ5XMRy
-         lW4dGvuT+IedIGdh5nShDzxnMDdGO0txe51ksvaZbMsLRx23d76MnlG3BBi4Gmn69thl
-         xWzvM2aGsPw94MO+MhX6e4G6gJeopOb0pawYb13EVs+xmYELU+XgOdMRl1pmrIiKuJsU
-         tlFuRb0FOFESQgKh3xQyw6O3xR2F2JKb17js6wJUSX6C95W2N71tiA5RCxZ2f4L4Gh8H
-         cqKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ll6utr+E4KfSWBkxlzzCxCgAe0VO4EUDQW3TXLdDpGY=;
-        b=H7c37JpxJhWgeBxeIkA7IGAtIG6D8Afn7nmxJDYkw4ymtMHbrq7EyZlKIvkLbCDhbl
-         O8ZwcayKALo4xVI6JcDJV7wf90DVnoweP7gZM8wvlKUH+U0x4r9fzSM42x1agNKkPRo/
-         dt80S4t/uFDQVkVCx9eJ6rlszInmAoKOqHk6M4a7/4Sq7CQaOLlkK2FIM9whx+SZaO37
-         D+EhDc9fxLGm685Af3uqwy/Whd//rGda8a9MNUFLpMz0lur8Qru7KygsBmzknQxQdxgg
-         oLslt6Lc4KXZxq5uKLZhLICEjW6nKAAhnG1QOrtbs4M2IkSfpeJBvHN9Lr3JMxOjdneE
-         hrrA==
-X-Gm-Message-State: AHQUAuZpsXJsOP+ZiOuOFJVeAeJ6GMnTuOEcgoEotSNPBF7Qa+qFxKgE
-        OvZI3+u+0AfhebZgMTJur69wO9iZJ7TgK5JMo3g=
-X-Google-Smtp-Source: AHgI3IY6QR0TgFBSRnx7k50PrdwZjR9n6uuI2e6b4PsPo9m4Lv9EuBSpIZeO3O5wiWXMtobd9tOzC4xAVsLdS+zi4Xs=
-X-Received: by 2002:a24:955:: with SMTP id 82mr788760itm.58.1549676686827;
- Fri, 08 Feb 2019 17:44:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20190202153454.7121-1-deepa.kernel@gmail.com> <20190202153454.7121-13-deepa.kernel@gmail.com>
- <87r2clku4j.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87r2clku4j.fsf@concordia.ellerman.id.au>
-From:   Deepa Dinamani <deepa.kernel@gmail.com>
-Date:   Fri, 8 Feb 2019 17:44:34 -0800
-Message-ID: <CABeXuvqpexo4g7xQihKPoOd4ce4rLq0Agy-jYMELYvOAnqmXJA@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 12/12] sock: Add SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Network Devel Mailing List <netdev@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
-        Paul Mackerras <paulus@samba.org>,
+        id S1726755AbfBIKLq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 9 Feb 2019 05:11:46 -0500
+Received: from tomli.me ([153.92.126.73]:54622 "EHLO tomli.me"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726058AbfBIKLp (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 9 Feb 2019 05:11:45 -0500
+Received: from tomli.me (localhost [127.0.0.1])
+        by tomli.me (OpenSMTPD) with ESMTP id 7d5e56c4;
+        Sat, 9 Feb 2019 10:11:42 +0000 (UTC)
+X-HELO: localhost.localdomain
+Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
+Received: from Unknown (HELO localhost.localdomain) (2402:f000:1:1501:200:5efe:7b76:76e8)
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Sat, 09 Feb 2019 10:11:41 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=date:from:to:cc:subject:message-id:references:mime-version:content-type:in-reply-to; s=1490979754; bh=EBIKsvw4zmVonKYgI4gXCNmcrvM9dfpkvXYljZmtxyI=; b=YhLeYq3Gk/KgrsefJ9bu38CTw9evCEuy5zV5rEwY47pQlenVrj+fkslE7UqbM+H4JeClfPS+8Pahisbp/4260wqCQuFsJTElGaoLElLqF2V/qF7ZITkV/l1V4qD8pQS09+3Cms568ZgzCU4Bk4DfwF/TInoR/tSXHxeIeeIF011m3KYod6cgHAOlZ3WH2cUATQ/8KhEQVTyHX3ny5OfLBYYBleVgtv93KwRNzFF4YT5C+l0hd2zo1L6Jo9XPhnkab1FCWxMjSOoqlFQM6+EOuAQzGZOoyypbMKNxfK1VmsC7ViWuWUIW6MKeXqjQTuFR+PO/x8mSKEunjrFXZWUybg==
+Date:   Sat, 9 Feb 2019 18:11:33 +0800
+From:   Tom Li <tomli@tomli.me>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     James Hogan <jhogan@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Richard Henderson <rth@twiddle.net>,
-        cluster-devel <cluster-devel@redhat.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-alpha@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Alexandre Oliva <lxoliva@fsfla.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] On the Current Troubles of Mainlining Loongson Platform
+ Drivers
+Message-ID: <20190209101132.GA3901@localhost.localdomain>
+References: <20190208083038.GA1433@localhost.localdomain>
+ <20190208200852.wcywd7yfcq7zwzve@pburton-laptop>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
+Content-Disposition: inline
+In-Reply-To: <20190208200852.wcywd7yfcq7zwzve@pburton-laptop>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-> You touched powerpc in the previous patch but not this one.
+
+--G4iJoqBmSsgzjUCe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+> To address the particular quote you give from Dmitry Torokhov on the
+> yeeloong_hotkey driver - just because the driver as-is includes a bunch
+> of non-input related things doesn't mean that it should or has to. From
+> a look at the 2009 submission it seems to mix a bunch of policy into the
+> kernel which really ought to be elsewhere. Generally the input driver
+> reports that a key was pressed & something in userland decides what to
+> do with it, whereas this driver seems to attempt to bypass that & prod
+> at unrelated hardware all by itself.
+
+Sure, the hotkey driver has some problems in its current shape. I think
+the existing code makes some hotkeys on the keyboard behave like a hardware
+switch to order to implement rfkill hardblock, and also controls the video
+output switch. I think I need to investigate it further.
+
+> Personally I see no reason for that hwmon driver to live under
+> drivers/platform/mips rather than drivers/hwmon. All that does is bypass
+> the attention of the drivers/hwmon/ maintainers who would be best placed
+> to offer input & ensure the driver is actually any good.
+
+Yes. I think if our conclusion is "drivers/platform/mips is not a good idea",
+it should be moved to the appropriate category in the future.
+
+> I think that question should prompt another - if we have maintainers for
+> various driver subsystems, why not place the drivers under their care in
+> the already established directories?
 >
-> That's because we use the asm-generic version I assume.
+> Thanks,
+>     Paul
 
-That is correct.
+Thanks for your reply, I'm fully agree with your comments about platform
+drivers.
 
-> Would be good to mention in the change log though to avoid any confusion.
+I find reorganization of the current Yeeloong platform driver is relatively
+easy, since it only involves one machine, I'm already working on it.
 
-I'm not sure how to do that now. It looks like the series has already
-been applied to net-next with a couple of merge conflicts fixed.
+If future developers find it's difficult to support new machines, we can simply
+have more discussion, reorganize the existing hierarchy further, and make
+incremental changes.
 
--Deepa
+Cheers,
+Tom Li
+Beijing GNU/Linux User Group.
+
+--G4iJoqBmSsgzjUCe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEJVIRsjlaWj4OSKDx+tPrBeiOjW0FAlxep08ACgkQ+tPrBeiO
+jW2Uhg//S9DyQ2E8xIFqU+qR0m93iXTPcWfX7/Z1HywSTbz32ppA5woe5VrKwDP1
+wKht81YsRDQFZk2ctMh02owBB18GrhG9rgeXcdMUgTByvAfieuUju84GF6hQMMl9
+NAI3AoiT1lQgGZsALvHZpFLHAVWlvd/1M120YpQnOsDCLXqaURufMIt3lDaG3dcr
+0A2v0HnRc/ltklrKiHkNuQ1+h+iiYfCNH4TeMsAsti5GZ6jchxTWNy6y+M2iraPu
+ltN09uu70BoQ+iXo0Cc9S0YQx/jHMRij1sC0ZEq6S3JTJtWtDx8f6+cyurjGQEc3
+jJ8I5E24RQAXFlWNB/y2edgBGHVnwRVl4XROvtDnAPRFDZe82q1DQVXSpADEaGlm
+a76x1eKv/hi4m6HJII8cKmRvw1uX2jx/0t3vGdqiQ2hb2qDqmTXX7sjQNPLf7olQ
+y1mFS6wls0HhaqLfv4oN0I0NAPI40z/QznPeXzJurmf14WowaMDX3oalR6P/96pJ
+a+aas05HjDfNyubmsntf3OhiFysbMDTC6oOVnbXZbQn+a2vQjGooaCF5pIwrKEeQ
+H00t0e/EkeQosFdOvxrGY3YBgSl7G0AxtE0pfMAUs+kwWFeNkuzVUl9EP9uGYvNW
+zKPBQglJnlXAn1RVpjyDkmsAv69oF9NfBwTkTPNgPl+4UPy8M8E=
+=t1nv
+-----END PGP SIGNATURE-----
+
+--G4iJoqBmSsgzjUCe--

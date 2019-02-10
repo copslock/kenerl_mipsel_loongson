@@ -2,63 +2,70 @@ Return-Path: <SRS0=19tk=QR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1160EC282C2
-	for <linux-mips@archiver.kernel.org>; Sun, 10 Feb 2019 13:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66795C282C2
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Feb 2019 22:13:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D859E2084D
-	for <linux-mips@archiver.kernel.org>; Sun, 10 Feb 2019 13:25:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3DECB20823
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Feb 2019 22:13:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726039AbfBJNZI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 10 Feb 2019 08:25:08 -0500
-Received: from emh03.mail.saunalahti.fi ([62.142.5.109]:56544 "EHLO
-        emh03.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbfBJNZI (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 10 Feb 2019 08:25:08 -0500
-Received: from darkstar.musicnaut.iki.fi (85-76-87-85-nat.elisa-mobile.fi [85.76.87.85])
-        by emh03.mail.saunalahti.fi (Postfix) with ESMTP id 7492F40076;
-        Sun, 10 Feb 2019 15:25:05 +0200 (EET)
-Date:   Sun, 10 Feb 2019 15:25:05 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Yifeng Li <tomli@tomli.me>
-Cc:     linux-mips@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
+        id S1726243AbfBJWNB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 10 Feb 2019 17:13:01 -0500
+Received: from ozlabs.org ([203.11.71.1]:37049 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726102AbfBJWNB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 10 Feb 2019 17:13:01 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 43yNTL3wrDz9sCh;
+        Mon, 11 Feb 2019 09:12:54 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Deepa Dinamani <deepa.kernel@gmail.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Network Devel Mailing List <netdev@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        ccaulfie@redhat.com, Helge Deller <deller@gmx.de>,
+        Paul Mackerras <paulus@samba.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/1] mips: loongson64: move EC header to
- include/asm/mach-loongson64
-Message-ID: <20190210132505.GA22242@darkstar.musicnaut.iki.fi>
-References: <20190210130617.8392-1-tomli@tomli.me>
+        Richard Henderson <rth@twiddle.net>,
+        cluster-devel <cluster-devel@redhat.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-alpha@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH net-next v5 12/12] sock: Add SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW
+In-Reply-To: <CABeXuvqpexo4g7xQihKPoOd4ce4rLq0Agy-jYMELYvOAnqmXJA@mail.gmail.com>
+References: <20190202153454.7121-1-deepa.kernel@gmail.com> <20190202153454.7121-13-deepa.kernel@gmail.com> <87r2clku4j.fsf@concordia.ellerman.id.au> <CABeXuvqpexo4g7xQihKPoOd4ce4rLq0Agy-jYMELYvOAnqmXJA@mail.gmail.com>
+Date:   Mon, 11 Feb 2019 09:12:52 +1100
+Message-ID: <87o97ji97f.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190210130617.8392-1-tomli@tomli.me>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+Deepa Dinamani <deepa.kernel@gmail.com> writes:
 
-On Sun, Feb 10, 2019 at 09:06:16PM +0800, Yifeng Li wrote:
-> In order to operate the Embedded Controller from multiple platform
-> drivers, it should be possible to include lemote-2f/ec_kb3310b.h
-> from everywhere. This commits move it from lemote-2f/ec_kb3310b.h
-> to include/asm/mach-loongson64/.
-> 
-> This simple patch immediately enables the implementation of two
-> platform drivers. if there's no objection from the maintainers,
-> please consider to prioritize it for mips-next, thanks.
-> 
-> Yifeng Li (1):
->   mips: loongson64: move EC header to include/asm/mach-loongson64
+>> You touched powerpc in the previous patch but not this one.
+>>
+>> That's because we use the asm-generic version I assume.
+>
+> That is correct.
+>
+>> Would be good to mention in the change log though to avoid any confusion.
+>
+> I'm not sure how to do that now. It looks like the series has already
+> been applied to net-next with a couple of merge conflicts fixed.
 
-This probably should be MFD driver under drivers/mfd. It's a longer
-road, though...
+That's fine, it's not that important.
 
-A.
+cheers

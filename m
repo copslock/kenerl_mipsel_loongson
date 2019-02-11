@@ -2,110 +2,62 @@ Return-Path: <SRS0=yT8e=QS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B562C169C4
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 13:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5E4EC282CE
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 13:36:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D360B20855
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 13:30:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1549891851;
-	bh=zd2/qdEIrVr0UdLku0R+8t5HRgW7hNoZ+e2qXE3O2kY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:List-ID:From;
-	b=I5FSQGdsFy4GuWWkT8dZwuH+R6BPKtGAyBzFciVLMHDHa9iSoabSFDnbTWJbsxR5R
-	 hUihMf+GQemIu4DEAZalbaPfXtyoYCNRcR5z4+/Q0Y9HIX/udbVWmqQPiwbKOwJDch
-	 8RbsrJ1//+DLUh/Vckaj322H086CrbPg46P7obfk=
+	by mail.kernel.org (Postfix) with ESMTP id 84224218F0
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 13:36:06 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Y3FsRwM5"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728004AbfBKNau (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Feb 2019 08:30:50 -0500
-Received: from mga05.intel.com ([192.55.52.43]:32813 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727991AbfBKNau (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 11 Feb 2019 08:30:50 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Feb 2019 05:30:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.58,358,1544515200"; 
-   d="asc'?scan'208";a="274132445"
-Received: from pipin.fi.intel.com (HELO localhost) ([10.237.72.175])
-  by orsmga004.jf.intel.com with ESMTP; 11 Feb 2019 05:30:44 -0800
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Christoph Hellwig <hch@lst.de>, John Crispin <john@phrozen.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dmitry Tarnyagin <dmitry.tarnyagin@lockless.no>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        alsa-devel@alsa-project.org, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 12/18] fotg210-udc: remove a bogus dma_sync_single_for_device call
-In-Reply-To: <20190211131243.GA21917@lst.de>
-References: <20190201084801.10983-1-hch@lst.de> <20190201084801.10983-13-hch@lst.de> <87d0obodci.fsf@linux.intel.com> <20190201161026.GE6532@lst.de> <20190211131243.GA21917@lst.de>
-Date:   Mon, 11 Feb 2019 15:30:40 +0200
-Message-ID: <87mun25u67.fsf@linux.intel.com>
+        id S1727820AbfBKNgB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Feb 2019 08:36:01 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:45140 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727106AbfBKNgB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Feb 2019 08:36:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=0RjqkG/Z5AYAcLHmSc7mP71T89y/DfZMMiXjibyrQmQ=; b=Y3FsRwM508xCp0G/iq7D7q6Q/
+        +Vwi2bjqQKsAiiybpIONc9kDJSCDfA6pqDu8AnIz5sEaBbndwnVYbFDnFne3CHZi1WdV54Uvhpv0K
+        jH4Etxr6yTNOEJukMJ/JItoRIKFmPzLXFJgroJmn8FrOTatK73R4HRUf3CzKowvoyRk5uwh6xk4PA
+        NDNmTyXcCcCW0lxygBsuZo9fTYg62B0UyhyZW2okyzN6zxAInjMQQUaqGLlfbzWr30HWW3Bk9E8SF
+        qoG1HgEhPJoH5IglNMpq4TBx3wmSatK07824fW3D7DUXCKqYSMHLKC070cqxT8SkwCSbWl5Eu/uNd
+        HRoGlklLg==;
+Received: from 089144210182.atnat0019.highway.a1.net ([89.144.210.182] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1gtBkc-0008Ld-Db; Mon, 11 Feb 2019 13:35:58 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     iommu@lists.linux-foundation.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>, x86@kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: dma_declare_coherent spring cleaning
+Date:   Mon, 11 Feb 2019 14:35:42 +0100
+Message-Id: <20190211133554.30055-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Hi all,
 
-
-Hi,
-
-Christoph Hellwig <hch@lst.de> writes:
-> On Fri, Feb 01, 2019 at 05:10:26PM +0100, Christoph Hellwig wrote:
->> On Fri, Feb 01, 2019 at 03:19:41PM +0200, Felipe Balbi wrote:
->> > Christoph Hellwig <hch@lst.de> writes:
->> >=20
->> > > dma_map_single already transfers ownership to the device.
->> > >
->> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
->> >=20
->> > Do you want me to take the USB bits or will you take the entire series?
->> > In case you're taking the entire series:
->>=20
->> If you want to take the USB feel free.  I just want most of this in
->> this merge window if possible.
->
-> I didn't see in the USB tree yet, so please let me know if you want to
-> take it.
-
-sorry for the delay, just took it to my tree.
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIyBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAlxheQAACgkQzL64meEa
-mQYzFg/4muRUpGlUEIEF7m9XPk3QIX8Pzn3aMhhLD7ucF6/5HvJqCFtSWHhlMFTm
-rFr30ro355hllOJnoWLoNfJY3T3cu8PMJ5IQ2365YdA+4CsmjZXUrcRe5WXAw/9Y
-lTgoKjRqyPgQ8pvDZcm5fWI738c74q/bdlaGmZEJ/Gnvx4V7J+VTwvZSWpzuWO+R
-R5BlvRd9D/WRvJjijfSnxH8e8bHQdzvOZBp3w1/xFfq7R/1ETCj5WIbQShh+EmEm
-32rDZZoXO5QM2vduoknOdvOxAaBYtmP98HIlpcZZad+cEmIzAIU/J73F7cNdDpFX
-+9Uwan4LKbx39nimqGAGDFLKgm/RfTZ2f/kAnUroGbV9RB+cTcaFJD4jbLkFF0lt
-fszk5GE9EmONRYNdVUrZKDN/vuC5nIfrFckYMoEvHhbYWesSK7xPX6ULy7FqLfmX
-SVSfjhs4hyc4RC2M6ahpOEdiLmfioBX7fXWgN3wMQDS4wwt5Nu8tnuep/RZbfGDu
-13d2LNqpjvAX5wpyflLRZUeHSN7mPQGyS1w3i1ecVFo0BN99YNbwL72p0F1nSti4
-/bVCOR74cnliLlMOly3IExJCVTksMVLa/4rWpP3s/EF1OnCq7HhTcoyU9ctkaeFc
-YwL+7FWJm932YAw8lv0o5P6Tahvbl1CH4h0aw4Lkyw5XWIBxXQ==
-=9V6B
------END PGP SIGNATURE-----
---=-=-=--
+this series removes various bits of dead code and refactors the
+remaining functionality around dma_declare_coherent to be a somewhat
+more coherent code base.

@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9E56C4151A
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 14:43:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACB5DC282D7
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 15:06:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 71575222A6
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 14:43:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7B91F217D9
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Feb 2019 15:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1549896226;
-	bh=kdNTHLSkr8DmUwB4YzBvuE1K0wG1YZPwDQNBEwKqfIM=;
+	s=default; t=1549897581;
+	bh=aCNsgIu1d7WdYeCoJEgTn2E4SNAXhQ6Z5CAtBbuisVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=2hr7YTYnDpEqCbiDXcxjVIR+gRRDVnNATXcxTgn/bGhy5leaFstAKRq0X1P+6chkV
-	 XvmxNPgHOijRXhIzrVTZIscOrHOApUNkJPmqNAWCTG4ZMfRo/llcSWbp31fjrqfCFB
-	 ujaRg9p++9uIvlLNDiVzqsL7hAKn7Ss1FepZCJo8=
+	b=Buzb9OdZ6618UwyF5j6j/Ss19anpdcCminwkF8kPCrEja1PiPcj5zz3x56/MQm6jY
+	 93U0pCAjBh4Ko3dUnkZv0/Uz9aNOW/R8PUXMaKP44LWucz/of7VYFaUNyx+EkGB1Xf
+	 VaDDOcRnB8dqaS3qT0b/qDyXVNAsJfuKrtrBFm1Q=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732690AbfBKOnp (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Feb 2019 09:43:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56104 "EHLO mail.kernel.org"
+        id S2391194AbfBKPGU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Feb 2019 10:06:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55850 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731624AbfBKOno (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 11 Feb 2019 09:43:44 -0500
+        id S2391190AbfBKPGS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 11 Feb 2019 10:06:18 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 908BB20700;
-        Mon, 11 Feb 2019 14:43:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A0490217D9;
+        Mon, 11 Feb 2019 15:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1549896224;
-        bh=kdNTHLSkr8DmUwB4YzBvuE1K0wG1YZPwDQNBEwKqfIM=;
+        s=default; t=1549897578;
+        bh=aCNsgIu1d7WdYeCoJEgTn2E4SNAXhQ6Z5CAtBbuisVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WTtw7VJu81to9VW/KZo0UqoZqLmlCIW3zliX0fNSXAARMXaykOWX5voqUhiYhtvuh
-         FZCdUH3RMGPttKh08jWX3w2jc3lPIHsKIFK10aN7/dhrH+BvJNzNNl3rIYgGxLJzSk
-         ceIoBWoZRpd1McU7m2KgAXIrKId7cXpBZaRmlYSU=
+        b=tnnlZ4EMcvlgbPWOh7RlCwZCmAGFPfcx3Sq1/2Y1HK97VLfFiPeCoi1UK+snxlZq8
+         1Lvn8bOz5Omwa8Do/ELR2k6xrHQNCzgYB7Yn83wcXVJGINRpviWJjJtm5XbscVNlVy
+         4lQy1Y6+oPTAeOJr/E1eEYOIXP6eNvy3hXJH+l10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiong Wang <jiong.wang@netronome.com>,
         Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 113/313] mips: bpf: fix encoding bug for mm_srlv32_op
-Date:   Mon, 11 Feb 2019 15:16:33 +0100
-Message-Id: <20190211141901.415699443@linuxfoundation.org>
+Subject: [PATCH 4.9 043/137] mips: bpf: fix encoding bug for mm_srlv32_op
+Date:   Mon, 11 Feb 2019 15:18:44 +0100
+Message-Id: <20190211141815.968754797@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190211141852.749630980@linuxfoundation.org>
-References: <20190211141852.749630980@linuxfoundation.org>
+In-Reply-To: <20190211141811.964925535@linuxfoundation.org>
+References: <20190211141811.964925535@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,10 +96,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index c05dcf5ab414..273ef58f4d43 100644
+index 711d9b8465b8..377d5179ea3b 100644
 --- a/arch/mips/include/uapi/asm/inst.h
 +++ b/arch/mips/include/uapi/asm/inst.h
-@@ -369,8 +369,8 @@ enum mm_32a_minor_op {
+@@ -361,8 +361,8 @@ enum mm_32a_minor_op {
  	mm_ext_op = 0x02c,
  	mm_pool32axf_op = 0x03c,
  	mm_srl32_op = 0x040,

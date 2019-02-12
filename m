@@ -2,56 +2,57 @@ Return-Path: <SRS0=yn1R=QT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A89C9C282C4
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD203C282C4
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:40:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6B58621B68
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:24:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 91811222C1
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550003072;
-	bh=BveQ4nP7N3gyvkFjUSr90tJMP/e9r0pbToW4MSxdXJY=;
+	s=default; t=1550004037;
+	bh=vjjmB3q5kxynqTfBl4fMXnJzLtFOe/CWMrbnP/HvubI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=0aVAr3pOfDKaMpFsK8Vcnp/LHGRSrcQ0EncBPLqULzh34S0ei20niWNs86ll8FbMq
-	 7bry6b4iJyR+l96GcsV2amczLxd2rJzfYH0E98EaADhQpykg2jIfBBIkyWK712vNCM
-	 lFXMXu2rRcxg2fMIgA0zwC+MEy9V0FebbUSxAviM=
+	b=NOdeRK8VL5Ucxa3PwnrEzTsRH6Z0ET7X0BXLgWCQj4PV/Z6cozVoDpO4dgZZ5v558
+	 4XK4pg8wwWCj0GJvF7Qn41oHYuPImYFyDKGr10zc0ufEPERYiyvvbGr9rX7xlHscuf
+	 lsomLFsr1NQFfxXMH75rti1eFH7Y632TNbHwUX8U=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727659AbfBLUYc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Feb 2019 15:24:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40936 "EHLO mail.kernel.org"
+        id S1727890AbfBLUkh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Feb 2019 15:40:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727303AbfBLUYc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Feb 2019 15:24:32 -0500
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+        id S1728097AbfBLUkh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Feb 2019 15:40:37 -0500
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4515D222CA;
-        Tue, 12 Feb 2019 20:24:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DEB6C222C1;
+        Tue, 12 Feb 2019 20:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550003071;
-        bh=BveQ4nP7N3gyvkFjUSr90tJMP/e9r0pbToW4MSxdXJY=;
+        s=default; t=1550004036;
+        bh=vjjmB3q5kxynqTfBl4fMXnJzLtFOe/CWMrbnP/HvubI=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gRVLLXcgZ1AIYHYj00/fl4zJj5uwHFRPiSNjERGvza+b63FiOJlGAARkss3C3bqVe
-         4xSpSvXckOl0xlj/QTFw+dpy/7ieM/yBbv5RtKuxEnIMrAqW/ZjmlfrqjyFVRm9s3z
-         z0YNNT67Hgad3I7KnqxwKPL9kYfuWQJIEs817/Zc=
-Received: by mail-qt1-f179.google.com with SMTP id n32so4522361qte.11;
-        Tue, 12 Feb 2019 12:24:31 -0800 (PST)
-X-Gm-Message-State: AHQUAuZwwyhz3JwrSSpKs/bubX7hW8GKBuY5AGGNTvVK1+jL305cYRmu
-        uj6qRVOoJ57mK2R8ZSgndGnnrQxijys+caEawQ==
-X-Google-Smtp-Source: AHgI3IZ+aYxfQi/q+LDrbNlsuqcIsAtFo4UYad7A+3Ns0Rodh50TLXP9jNafEkB5/FuiwJjwL14XDxq/b8yo4h5Ejaw=
-X-Received: by 2002:ac8:2f4e:: with SMTP id k14mr4325527qta.76.1550003070462;
- Tue, 12 Feb 2019 12:24:30 -0800 (PST)
+        b=QfKA6/6/PzAH/1DTX5KyhQZjfr82FQxTeLuAkVGfvNPh0B5ZeDW8YW0zkx2oYKF8x
+         js6uiZtrNajIS0RO2RaoERpXiSG8LLpOW2CofF7tRM0Ar6Gkfs/XYQaSDu8gGWSYkl
+         fig/6HVAkxpsdIZs+cf77ZjUfMX0mfPMDlK+pctE=
+Received: by mail-qk1-f181.google.com with SMTP id p15so32107qkl.5;
+        Tue, 12 Feb 2019 12:40:35 -0800 (PST)
+X-Gm-Message-State: AHQUAuYHGGs1wXuSsUGBXp8ozX/dUZkynyOS6a7M1g2AJOohE9vhUGBF
+        wuA7bnET3pKio38fkFnhuKARby9t+wTW2G6UIQ==
+X-Google-Smtp-Source: AHgI3IYz2gzbmamNNYONyTiDfE0zREh3E/QtpTpAvvx3glvEe3X+ZYzmIZ6HhCz+z+2Heg/0CZQUYhYHO3QCjAjIpjc=
+X-Received: by 2002:a37:5686:: with SMTP id k128mr3834629qkb.29.1550004035085;
+ Tue, 12 Feb 2019 12:40:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-4-hch@lst.de>
-In-Reply-To: <20190211133554.30055-4-hch@lst.de>
+References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-7-hch@lst.de>
+In-Reply-To: <20190211133554.30055-7-hch@lst.de>
 From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 12 Feb 2019 14:24:19 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ2Qt6=TTD250C9qW7Kv8rZn5PyB_C78FUhWwfgOnjPHg@mail.gmail.com>
-Message-ID: <CAL_JsqJ2Qt6=TTD250C9qW7Kv8rZn5PyB_C78FUhWwfgOnjPHg@mail.gmail.com>
-Subject: Re: [PATCH 03/12] of: mark early_init_dt_alloc_reserved_memory_arch static
+Date:   Tue, 12 Feb 2019 14:40:23 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com>
+Message-ID: <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com>
+Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
+ dma_declare_coherent availability
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -70,19 +71,56 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Feb 11, 2019 at 7:36 AM Christoph Hellwig <hch@lst.de> wrote:
+On Mon, Feb 11, 2019 at 7:37 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> This function is only used in of_reserved_mem.c, and never overridden
-> despite the __weak marker.
+> This API is primarily used through DT entries, but two architectures
+> and two drivers call it directly.  So instead of selecting the config
+> symbol for random architectures pull it in implicitly for the actual
+> users.  Also rename the Kconfig option to describe the feature better.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  drivers/of/of_reserved_mem.c    | 2 +-
->  include/linux/of_reserved_mem.h | 7 -------
->  2 files changed, 1 insertion(+), 8 deletions(-)
+>  arch/arc/Kconfig            | 1 -
+>  arch/arm/Kconfig            | 2 +-
+>  arch/arm64/Kconfig          | 1 -
+>  arch/csky/Kconfig           | 1 -
+>  arch/mips/Kconfig           | 1 -
+>  arch/riscv/Kconfig          | 1 -
+>  arch/sh/Kconfig             | 2 +-
+>  arch/unicore32/Kconfig      | 1 -
+>  arch/x86/Kconfig            | 1 -
+>  drivers/mfd/Kconfig         | 2 ++
+>  drivers/of/Kconfig          | 3 ++-
+>  include/linux/device.h      | 2 +-
+>  include/linux/dma-mapping.h | 8 ++++----
+>  kernel/dma/Kconfig          | 2 +-
+>  kernel/dma/Makefile         | 2 +-
+>  15 files changed, 13 insertions(+), 17 deletions(-)
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> index 3607fd2810e4..f8c66a9472a4 100644
+> --- a/drivers/of/Kconfig
+> +++ b/drivers/of/Kconfig
+> @@ -43,6 +43,7 @@ config OF_FLATTREE
+>
+>  config OF_EARLY_FLATTREE
+>         bool
+> +       select DMA_DECLARE_COHERENT
 
-Looks like this one isn't a dependency, so I can take it if you want.
+Is selecting DMA_DECLARE_COHERENT okay on UML? We run the unittests with UML.
 
-Rob
+Maybe we should just get rid of OF_RESERVED_MEM. If we support booting
+from DT, then it should always be enabled anyways.
+
+>         select OF_FLATTREE
+>
+>  config OF_PROMTREE
+> @@ -83,7 +84,7 @@ config OF_MDIO
+>  config OF_RESERVED_MEM
+>         bool
+>         depends on OF_EARLY_FLATTREE
+> -       default y if HAVE_GENERIC_DMA_COHERENT || DMA_CMA
+> +       default y if DMA_DECLARE_COHERENT || DMA_CMA
+>
+>  config OF_RESOLVE
+>         bool

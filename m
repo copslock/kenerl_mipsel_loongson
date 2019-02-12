@@ -4,66 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DBFDC169C4
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 02:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49F66C282CE
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 02:17:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 138B1214DA
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 02:02:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0EEA621B18
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 02:17:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="Khae+qna"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="ozG293VS"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726699AbfBLCCx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Feb 2019 21:02:53 -0500
-Received: from mail-eopbgr740110.outbound.protection.outlook.com ([40.107.74.110]:4612
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        id S1727478AbfBLCRa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Feb 2019 21:17:30 -0500
+Received: from mail-eopbgr820101.outbound.protection.outlook.com ([40.107.82.101]:31744
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726226AbfBLCCx (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 11 Feb 2019 21:02:53 -0500
+        id S1727166AbfBLCRa (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 11 Feb 2019 21:17:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ko3u7AbITI3PXQfMPviTKYv28S80u3ZNuvzbqnXFfw0=;
- b=Khae+qnaUo8lC0WpjR6TuQviCo8MBeneU5ey2OLYol2VNU1nmJCS+onfGN8X4vDbDGy3Xurvl8jACYLPEOJnqA7wmBH9K8Npi4g4pMRkV4yWijkYulnHyss6pkfOGAaZ0DXbtG/ONw3Bijq0z66rvUrZsyQzaHMjFi2WXEMB6uQ=
+ bh=sLNA/8E7XxiU5SNRQ2CEjv6lzgrFvdP2XeYgmRA9AuI=;
+ b=ozG293VSNp8I8yx7T3BVAOWNeNHvL2sN0w+HaTqXvDWnouYd91TVzT0ck0bFrJ0PrAdp+SidTNqnMq8BOQHnzm06uhgBw6UIGz5nQhojJwpv4GAy+EMnSSuCO7l3iTEdKPBmUGPIg49G7nbxWfkUdLSw6HLffZD8W5v40wbeHlc=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1328.namprd22.prod.outlook.com (10.174.162.143) with Microsoft
+ MWHPR2201MB1518.namprd22.prod.outlook.com (10.174.170.155) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1601.22; Tue, 12 Feb 2019 02:02:48 +0000
+ 15.20.1601.24; Tue, 12 Feb 2019 02:17:26 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1601.023; Tue, 12 Feb 2019
- 02:02:48 +0000
+ 02:17:26 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     Christoph Hellwig <hch@lst.de>
-CC:     Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+CC:     "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        "x86@kernel.org" <x86@kernel.org>,
         "linux-snps-arc@lists.infradead.org" 
         <linux-snps-arc@lists.infradead.org>,
         "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dma-mapping: add a kconfig symbol for
- arch_setup_dma_ops availability
-Thread-Topic: [PATCH 1/2] dma-mapping: add a kconfig symbol for
- arch_setup_dma_ops availability
-Thread-Index: AQHUvGGrfD9q1BPhjUaX7rLQQjZd+aXbdVQA
-Date:   Tue, 12 Feb 2019 02:02:48 +0000
-Message-ID: <20190212020246.pnxg2tlwejvu45ze@pburton-laptop>
-References: <20190204081420.15083-1-hch@lst.de>
- <20190204081420.15083-2-hch@lst.de>
-In-Reply-To: <20190204081420.15083-2-hch@lst.de>
+Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
+ dma_declare_coherent availability
+Thread-Topic: [PATCH 06/12] dma-mapping: improve selection of
+ dma_declare_coherent availability
+Thread-Index: AQHUwg7wztMik5M5KE2guV+HlCSoLKXbbhKA
+Date:   Tue, 12 Feb 2019 02:17:26 +0000
+Message-ID: <20190212021724.cp4snlcqbm3kqtzu@pburton-laptop>
+References: <20190211133554.30055-1-hch@lst.de>
+ <20190211133554.30055-7-hch@lst.de>
+In-Reply-To: <20190211133554.30055-7-hch@lst.de>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR04CA0024.namprd04.prod.outlook.com
- (2603:10b6:a03:40::37) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR03CA0002.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::15) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
@@ -71,51 +75,51 @@ authentication-results: spf=none (sender IP is )
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 908efb06-c86a-4692-a691-08d6908e2fa2
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1328;
-x-ms-traffictypediagnostic: MWHPR2201MB1328:
-x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;MWHPR2201MB1328;23:D4hhrUvzN1PFKdjkHNADyi5AJa8E1FXG809i/8v?=
- =?us-ascii?Q?WR8mhml2/ghGwWXIgqj7HaABu8hlyEEDwbxr57YIPM8k+e65aPmhp4Gw512o?=
- =?us-ascii?Q?UPP4lnyUerVh78qFRkKCvHVRTuhrN/O0COay+0umrZOiKuuy6qPGt+8/NYFo?=
- =?us-ascii?Q?LQrAfcJNMfUEfcvsrfjzFEu8UQ/G89AH9QivUCAFQ3f14uvy3C22C4FfNpHj?=
- =?us-ascii?Q?HkH06B4PavAvr4JJ2zCaf1idkzJj82pr47s+vBy6fIiBKjC0O2mJj5oog3FN?=
- =?us-ascii?Q?ITpLbgbcnmsmFIZGlKmQNuMoYggYqJbG7GDeuU+DMKPI5992ExvSFtjFcKGS?=
- =?us-ascii?Q?iFVJS+Yjx8/8TiYwvij3WDKCUdaxea5o153dKG+SbIGplKZKp5Fo8Jx6n8eh?=
- =?us-ascii?Q?DZbv7s8UUjgpqvGb2ED4YI5HxaELPhuc5LymlPLoOFrcOehF1amnjcX91SC4?=
- =?us-ascii?Q?Ng41Mc3qHDa3cOEFkhHK75qomecRnsuhkv2xXB+IgCWPvQXzk8/MlQ3sk0Wb?=
- =?us-ascii?Q?Rx0nSQUlKvuodqHlobkKIXjntgvEXlm4EFNSAsTYrXYAOGnsS0kN9D33T4Ic?=
- =?us-ascii?Q?MEgEVRH77AJbofNdDyvcnzRc0/1A4DL49/QGVpDoPWsOEZpjBG2NacYyoteb?=
- =?us-ascii?Q?Jz1U2qk0z50TcWq5X7AEfEYQG2FiCut8ZqpF6V68kXlsW60N1+6yFUBTyfCU?=
- =?us-ascii?Q?qeElj6nAKyV4QcrOHJ2DLNWXm/Z4OiOJWnolUF2K+KNh8xOO8mVBlXwTjc5s?=
- =?us-ascii?Q?CvwsJuug4sHMvImmwOK2v8dfkq0N2+W7w0c/c2rIHvWOJh6+WM/CCi1jAevW?=
- =?us-ascii?Q?LFw4vLmr43Q6LnhkUoKjaWP0RWkSCLxFrFFWgg5ttE2h1cQogSXQrNR0jFow?=
- =?us-ascii?Q?wyglBZJmX7duyHkvXGB2x5J74yrGIRZlqaBpXLseY8DzSLSudntS786VvJWB?=
- =?us-ascii?Q?8kMjrVXAVwAdRLSW/Xi0U0UX/akjcm+IBHA77zIPGV9F50PjrTZRf0lK7jjO?=
- =?us-ascii?Q?JNN+mnFaNpWnlucD90ETRFcfo6Hpvq8aqETYIQDwPyhP8gcML5sKB7N9sDrD?=
- =?us-ascii?Q?c3HILyQ6q7BUvbemTvCTb8iNAbzHu895v2hlUBgDeVQjXCE6OStoT8Q7WySQ?=
- =?us-ascii?Q?vCceQiSkEI/rQj/rIv50HucNdGaBhCFEQoGEydWIYMt4O1vAjzRb8ah+qMvV?=
- =?us-ascii?Q?w88/3cffxHIrLhkdq84wJCjKff+z4lgHxpyQ3iaICleQXRnnWSd6DKcVGyyw?=
- =?us-ascii?Q?vSMjrk9PsBiBVqs/qH8MeESNlLaR6hd8+IitEQKvXeSRMF1RWLERku7YPw5S?=
- =?us-ascii?Q?qMwEnAZ3dcrnq7mAjeDkp6Xo=3D?=
-x-microsoft-antispam-prvs: <MWHPR2201MB13281C706CB3B6CD9ABE6348C1650@MWHPR2201MB1328.namprd22.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: 9dfcaee2-f573-43f7-6c6f-08d690903b2a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1518;
+x-ms-traffictypediagnostic: MWHPR2201MB1518:
+x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;MWHPR2201MB1518;23:azaZ1cGJ61L0XoyxK8Dc51MaxQQ+esp1XB9FDjq?=
+ =?us-ascii?Q?/g57vHvs9iwd7Y4e6qa6Ke5f5h8JhfBX4J2Nse+blKx5H8OCQVFdsSobIdjS?=
+ =?us-ascii?Q?S6MpFq726gt2YuR+ZVFmw6zrtJ/kLl9Vo7H1XlRuTjI1T7LqewYJPu+6NaPc?=
+ =?us-ascii?Q?mseBdhHx5RUxrQ/JKvaigCrQpgYyubrRyjjowsKMwhM3M4mqXtSXxIEPCRD5?=
+ =?us-ascii?Q?qphy77CXyNeZhh3BzFLJGFw9mgEGaERS795SKYIwqHlTk9sM4c8sNW27T+s/?=
+ =?us-ascii?Q?pJZjMN0mKxXqvoZAJ5K654+c6qCYxBWzgjfb9C620aqhNddnwvWlykOIhaFJ?=
+ =?us-ascii?Q?5dlthwGOcEygUN8+08EAtDfG8/cQ/ns2i2jH7Sh09blV0PXufUpXXQGcEwYY?=
+ =?us-ascii?Q?rNYTwDp6DmalDvyIt8bZtZSaS0qnvhTYSMB52KGO24XISLlcntBtNNzWlwyD?=
+ =?us-ascii?Q?J54Z9wVFVOIr6SB/G13OgvQ1Zba8tCCo5H1Fj0ruc3T8cA3NhLMJHTxULy3E?=
+ =?us-ascii?Q?wBHiWE4q+aDS4shd98vjhBjtok09bHCLHtbaR8NR722akgIpXcNUyQmBtFKp?=
+ =?us-ascii?Q?zYhrpZjiR9SFDybg3fPnYJEOomkycxGuT5128EvuwtQhy/nrTfNFHhvonQkQ?=
+ =?us-ascii?Q?DWQYy5kTpCllgu2MJOfBu07R07qxXi6GeTmuyWxASE+qvJz+QsnE66S5kQYb?=
+ =?us-ascii?Q?q4gev4yMehHVxPkFb9QmvW5tFBNwWyYDUsUq4X9OcxVVm2L+zM8hpR6CbJ8b?=
+ =?us-ascii?Q?wTQdXXWfvliiNEXOGa7mdTC8ZYj/3SlrPzkmsxbqqLAZGcIzgLY5W5M8E3JM?=
+ =?us-ascii?Q?qwoMLf87R8jy3B1LR3ELWl8zA48t5LBl7jDSik1RtIGlhR0gSAdvDQqzCTuW?=
+ =?us-ascii?Q?EO0V853Q+Op2iKeBLzKe5fpyNQ/T29OZzALeJwMPtzyEOidmY+4FS/IHBmpa?=
+ =?us-ascii?Q?sHI4zxo1J9Tt9uOWkQnjQ3I9f5SI7kj3mpz9zDZQnlF2kusu2jN2vbffMrZ5?=
+ =?us-ascii?Q?YaGOvA5WS3NTsLVaADcwm+iF0yxm7hPIMI1HLfOkBOzWL6h7nvA/K9a731M0?=
+ =?us-ascii?Q?NY12EfZTmmWK/fYwRPriYOlgUnTfXVHts+TQe/6Ad1HNM4oo6asbhJYJINDh?=
+ =?us-ascii?Q?0vTX4PEZKHveyer1zpZ6f4rkSzVMVGVcKsYAN3LXh6AxJQ7xZ0J/yMOCMYe4?=
+ =?us-ascii?Q?Oaf2/ueyi57Z6kwQeRitq6Ui7l6EyU+u6WJxA4suWKZ5dgJxq338xs6+oaAo?=
+ =?us-ascii?Q?Z8qPH9s+/Lj4M90aPhRPReTey3RjcyIr3yTGs6p6UUqZnrmvUZLHrwaIjpbY?=
+ =?us-ascii?Q?gEWB8fGNAzZqkODTRf1uAVec=3D?=
+x-microsoft-antispam-prvs: <MWHPR2201MB151846352CEF0CE2B38C4092C1650@MWHPR2201MB1518.namprd22.prod.outlook.com>
 x-forefront-prvs: 0946DC87A1
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(376002)(346002)(39840400004)(366004)(136003)(199004)(189003)(81166006)(52116002)(4326008)(76176011)(6246003)(6116002)(14454004)(3846002)(99286004)(33716001)(33896004)(8936002)(8676002)(305945005)(106356001)(7416002)(105586002)(7736002)(81156014)(25786009)(478600001)(58126008)(54906003)(476003)(316002)(26005)(68736007)(446003)(6436002)(11346002)(6916009)(186003)(4744005)(66066001)(2906002)(6506007)(53936002)(386003)(6486002)(71190400001)(44832011)(486006)(9686003)(6512007)(71200400001)(1076003)(97736004)(42882007)(256004)(229853002)(102836004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1328;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(366004)(346002)(376002)(136003)(39850400004)(199004)(189003)(486006)(33716001)(81166006)(2906002)(53936002)(97736004)(68736007)(386003)(8936002)(476003)(44832011)(1076003)(11346002)(14454004)(66066001)(7416002)(6436002)(4744005)(81156014)(446003)(26005)(25786009)(6246003)(6916009)(99286004)(8676002)(42882007)(478600001)(76176011)(54906003)(256004)(52116002)(305945005)(9686003)(7736002)(6512007)(33896004)(71200400001)(316002)(6506007)(71190400001)(6486002)(58126008)(3846002)(6116002)(106356001)(186003)(229853002)(105586002)(4326008)(102836004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1518;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 3J3jOrF5ZV0/e+aCiAn7AjK4hZ6DJsAjQaKbDClrx6HMjCxjmsFt55kUYIpGr9K3NDg5pM0S51kEH6AOIxDoG6CBZujGtGOa9YLXSWGhtRFURZ9cEW8hAF7WNRQgjPj6tiFw8cjOm3f7W5Bi64vGnnDYEQvbbwbI9MiSXnIALRSognH57wB+cd0i4w/4fE7wVZcv67uREW18Cj3oSYwzoS/jFpIaZRaFVp0CrYIOAC1C+qByK8BUjUBbkT88n5vtMz9z74vVgELuJLmxtp/WxagSZ//eaE/f03Sp/quZ8ZHGgvCsnlE4ib8LAzp7K0oOVPtHBXzWrJmaBJEEKIRRgP/ed99n18PNtahTL4dUCeGzImG8Gs/VntQlmbxWmwm0d2IWaQ0YCWrIEAWfDSJdAdox4U2aTTjYttb/yvPcmJY=
+x-microsoft-antispam-message-info: 4L+haswJ6uv1RBUXPnSknQtUAgOiS3kDE2H/b7RVDbzX1U0BrnWr4lKTJNzelIgvuLllJJQFQLeNqMEzqvm9nUSZjqbWg5Mlplry4uiLrLrInA7v9O61x6nRaVF7fGJ8OBzxOPst8iqgyi5hwXLTbBFfHiHwZ1+fugEpdo6ykVfVPmW641hQ2pdgCOItnm4egE45x7/sOdKdnZgsKmDDsJZOrNcQFfzb1XGF/NyesNPgmmE5pBdTl3c7Da57yLFXgXZ7V7D8cTkxhva2EzB2RoDIYesW8RiAo/SxbQHtrWqhipIa65SHUjAgNw+98zUXJ2g/UIwsb+vFhgUpjzflb9i1cpsjrE64zObzePfVXqgG1LIPVFzI4y4GWO6LDVKbzYW7p326Qx8TEvCeo6V3Hw9fJJ164vVtVW6zl6kUeNk=
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <C4D58356C472DE43A87A2CDF3A97D97A@namprd22.prod.outlook.com>
+Content-ID: <101BE7318D87D541944405D342ACE1DB@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 908efb06-c86a-4692-a691-08d6908e2fa2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Feb 2019 02:02:47.7877
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dfcaee2-f573-43f7-6c6f-08d690903b2a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Feb 2019 02:17:26.1259
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1328
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1518
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -123,19 +127,13 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hi Christoph,
 
-On Mon, Feb 04, 2019 at 09:14:19AM +0100, Christoph Hellwig wrote:
+On Mon, Feb 11, 2019 at 02:35:48PM +0100, Christoph Hellwig wrote:
+> This API is primarily used through DT entries, but two architectures
+> and two drivers call it directly.  So instead of selecting the config
+> symbol for random architectures pull it in implicitly for the actual
+> users.  Also rename the Kconfig option to describe the feature better.
+>=20
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/arc/Kconfig                     |  1 +
->  arch/arc/include/asm/Kbuild          |  1 +
->  arch/arc/include/asm/dma-mapping.h   | 13 -------------
->  arch/arm/Kconfig                     |  1 +
->  arch/arm/include/asm/dma-mapping.h   |  4 ----
->  arch/arm64/Kconfig                   |  1 +
->  arch/arm64/include/asm/dma-mapping.h |  4 ----
->  arch/mips/Kconfig                    |  1 +
->  arch/mips/include/asm/dma-mapping.h  | 10 ----------
->  arch/mips/mm/dma-noncoherent.c       |  8 ++++++++
 
 Acked-by: Paul Burton <paul.burton@mips.com> # MIPS
 

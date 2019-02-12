@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 357ABC282CA
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A89C9C282C4
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:24:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 041DF222C4
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:11:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6B58621B68
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550002304;
-	bh=3jUa/zunVYEZn+DyMnsy8KXouqEiFYqtXTvcx6an4qk=;
+	s=default; t=1550003072;
+	bh=BveQ4nP7N3gyvkFjUSr90tJMP/e9r0pbToW4MSxdXJY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=KsnRC6w5Io2rbeVntKMk1e7ALpe1Vz4PnrbE32pWrHpIhXKFhYywwOTzUfaD+/XPW
-	 5uVkZs/2DSRdqKudwZH8z6HGLeUQi4RKNCrrp+k/i7mNT8bw5kjB1ozcTOm8maWMoC
-	 dKIjRLV6aSgQRbI+LUKeyfsNfLSYTp6EeoSntDSI=
+	b=0aVAr3pOfDKaMpFsK8Vcnp/LHGRSrcQ0EncBPLqULzh34S0ei20niWNs86ll8FbMq
+	 7bry6b4iJyR+l96GcsV2amczLxd2rJzfYH0E98EaADhQpykg2jIfBBIkyWK712vNCM
+	 lFXMXu2rRcxg2fMIgA0zwC+MEy9V0FebbUSxAviM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbfBLULi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Feb 2019 15:11:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36236 "EHLO mail.kernel.org"
+        id S1727659AbfBLUYc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Feb 2019 15:24:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726044AbfBLULi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Feb 2019 15:11:38 -0500
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        id S1727303AbfBLUYc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Feb 2019 15:24:32 -0500
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7437D222CA;
-        Tue, 12 Feb 2019 20:11:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4515D222CA;
+        Tue, 12 Feb 2019 20:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550002297;
-        bh=3jUa/zunVYEZn+DyMnsy8KXouqEiFYqtXTvcx6an4qk=;
+        s=default; t=1550003071;
+        bh=BveQ4nP7N3gyvkFjUSr90tJMP/e9r0pbToW4MSxdXJY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rS1bcNk+w8HmhmSC51+HlkPK92wtM4VYvSp1r6hov6nO+UgUiVmNcSMLjdzccAjIS
-         CGfD1WLWCgx6ETbf06Bs3l5HGaxPcdQTrOW4X3yWLL/uX4LMGl6JioWcOF3ro1y/xl
-         I2QY4V+JzHuYKiqSYoL+o1vgv+BgF3yQob+EZwW4=
-Received: by mail-qt1-f181.google.com with SMTP id e5so4466337qtr.12;
-        Tue, 12 Feb 2019 12:11:37 -0800 (PST)
-X-Gm-Message-State: AHQUAuYHDVKz7udbIuxufKEVo3rgI3XMhLPtxZxI4/zxAH5jEYMFPu6D
-        T4K8FTTbTttRCOuoQPjVbjaauaNQqEfNcS4GtQ==
-X-Google-Smtp-Source: AHgI3IbkdyI3kKb4Rqp5UgWWae9Pz2hV3loOAoVLCgrxJ3QQUi58Dd1hLL5El9rPrWVkYWU9ykNePmU2n4HW1F2r7SM=
-X-Received: by 2002:a0c:9e05:: with SMTP id p5mr4072679qve.246.1550002296610;
- Tue, 12 Feb 2019 12:11:36 -0800 (PST)
+        b=gRVLLXcgZ1AIYHYj00/fl4zJj5uwHFRPiSNjERGvza+b63FiOJlGAARkss3C3bqVe
+         4xSpSvXckOl0xlj/QTFw+dpy/7ieM/yBbv5RtKuxEnIMrAqW/ZjmlfrqjyFVRm9s3z
+         z0YNNT67Hgad3I7KnqxwKPL9kYfuWQJIEs817/Zc=
+Received: by mail-qt1-f179.google.com with SMTP id n32so4522361qte.11;
+        Tue, 12 Feb 2019 12:24:31 -0800 (PST)
+X-Gm-Message-State: AHQUAuZwwyhz3JwrSSpKs/bubX7hW8GKBuY5AGGNTvVK1+jL305cYRmu
+        uj6qRVOoJ57mK2R8ZSgndGnnrQxijys+caEawQ==
+X-Google-Smtp-Source: AHgI3IZ+aYxfQi/q+LDrbNlsuqcIsAtFo4UYad7A+3Ns0Rodh50TLXP9jNafEkB5/FuiwJjwL14XDxq/b8yo4h5Ejaw=
+X-Received: by 2002:ac8:2f4e:: with SMTP id k14mr4325527qta.76.1550003070462;
+ Tue, 12 Feb 2019 12:24:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-5-hch@lst.de>
-In-Reply-To: <20190211133554.30055-5-hch@lst.de>
+References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-4-hch@lst.de>
+In-Reply-To: <20190211133554.30055-4-hch@lst.de>
 From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 12 Feb 2019 14:11:25 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJFGhTa+izRTeUxjtbyOek-zynZofOJGDK+xZbD4r5H0Q@mail.gmail.com>
-Message-ID: <CAL_JsqJFGhTa+izRTeUxjtbyOek-zynZofOJGDK+xZbD4r5H0Q@mail.gmail.com>
-Subject: Re: [PATCH 04/12] of: select OF_RESERVED_MEM automatically
+Date:   Tue, 12 Feb 2019 14:24:19 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ2Qt6=TTD250C9qW7Kv8rZn5PyB_C78FUhWwfgOnjPHg@mail.gmail.com>
+Message-ID: <CAL_JsqJ2Qt6=TTD250C9qW7Kv8rZn5PyB_C78FUhWwfgOnjPHg@mail.gmail.com>
+Subject: Re: [PATCH 03/12] of: mark early_init_dt_alloc_reserved_memory_arch static
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
-        linux-xtensa@linux-xtensa.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        SH-Linux <linux-sh@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        x86@kernel.org, linux-mips@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Lee Jones <lee.jones@linaro.org>, x86@kernel.org,
         arcml <linux-snps-arc@lists.infradead.org>,
-        Lee Jones <lee.jones@linaro.org>,
         "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org,
+        SH-Linux <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Feb 11, 2019 at 7:37 AM Christoph Hellwig <hch@lst.de> wrote:
+On Mon, Feb 11, 2019 at 7:36 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> The OF_RESERVED_MEM can be used if we have either CMA or the generic
-> declare coherent code built and we support the early flattened DT.
->
-> So don't bother making it a user visible options that is selected
-> by most configs that fit the above category, but just select it when
-> the requirements are met.
+> This function is only used in of_reserved_mem.c, and never overridden
+> despite the __weak marker.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  arch/arc/Kconfig     | 1 -
->  arch/arm/Kconfig     | 1 -
->  arch/arm64/Kconfig   | 1 -
->  arch/csky/Kconfig    | 1 -
->  arch/powerpc/Kconfig | 1 -
->  arch/xtensa/Kconfig  | 1 -
->  drivers/of/Kconfig   | 5 ++---
->  7 files changed, 2 insertions(+), 9 deletions(-)
+>  drivers/of/of_reserved_mem.c    | 2 +-
+>  include/linux/of_reserved_mem.h | 7 -------
+>  2 files changed, 1 insertion(+), 8 deletions(-)
 
 Reviewed-by: Rob Herring <robh@kernel.org>
+
+Looks like this one isn't a dependency, so I can take it if you want.
+
+Rob

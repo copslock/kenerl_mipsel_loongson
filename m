@@ -2,126 +2,103 @@ Return-Path: <SRS0=gFuS=QU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7AD2C282CE
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4A48C282CE
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 19:28:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7F1EE21904
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:56:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8AE1E222D0
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 19:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550084218;
-	bh=kQhBNWEbz5s2SCX5ABnv5xVMmg/JHZh/E7KvyABiR4s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=1JQXQxJZBXZO0UlzY6Mkvzi97bWEvyFgmnAA4nICJUiafYLWwLwj5nnUajYccJ+BO
-	 qDh1vU8G4alKYU8y6/aCmGjHqfwbX15qzogar319rbUn80PVN6biUTVFZlMxp4W+b0
-	 a+Apq8KgbTVwEKmZDogsAHjbWRebQC2TpCtxv2R4=
+	s=default; t=1550086084;
+	bh=d4USaxOaZ5zIs0Yd6AYwU7IxGiiMG63YyGPnEEw7QQk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=bqG+e36L2wE3SLSxmXt7N/mdkVVf3ghg543RyWKd3ZLEZPre2ZfLb8XOsk/djIiA1
+	 poiqUPzRwcDv2892m3TP5Npt9oljdOu1jP5MJArRCQcHrDR97blsVt8cxy8en/S4Gf
+	 6JXYMV3myFy3cKMRhXwowcIJPU1W+zYGWJCuHp14=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405208AbfBMSje (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Feb 2019 13:39:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37478 "EHLO mail.kernel.org"
+        id S2390857AbfBMT17 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 14:27:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387666AbfBMSjb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Feb 2019 13:39:31 -0500
-Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1730161AbfBMT17 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Feb 2019 14:27:59 -0500
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 48832222D8;
-        Wed, 13 Feb 2019 18:39:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 74928222D0;
+        Wed, 13 Feb 2019 19:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550083170;
-        bh=kQhBNWEbz5s2SCX5ABnv5xVMmg/JHZh/E7KvyABiR4s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U69/Jc883TSZ+vm3NhkGmZZ+LFrGDSDz3KfrRW7WgbUV5W//oOjHTuSMnVmcZnlt9
-         /kiiWEK5zPjqpor8b0Om35Duu5IkcP/jllDlefW3ryhBycOPP0h6LZPQFTDen+u4Op
-         9BjqvzlVt7w1bxfSV3i3nyAClT17aYRAy97mktb0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        linux-mips@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>
-Subject: [PATCH 4.9 10/24] MIPS: VDSO: Include $(ccflags-vdso) in o32,n32 .lds builds
-Date:   Wed, 13 Feb 2019 19:38:07 +0100
-Message-Id: <20190213183648.169890535@linuxfoundation.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190213183647.333441569@linuxfoundation.org>
-References: <20190213183647.333441569@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
-X-Patchwork-Hint: ignore
+        s=default; t=1550086078;
+        bh=d4USaxOaZ5zIs0Yd6AYwU7IxGiiMG63YyGPnEEw7QQk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=MRdSBbmokqMe8z+9FVsMJsm648JqGS4TxplBfDvE4kg//D3ih8EgoUzNEvOm+uwxn
+         OfG3inpBJ3aRJziIpru75JaWAPGejKP+rW0jT753boDgWR4cniOiayP/gg5vgcXp5C
+         PoMWr+zmo30lm/AU8BhVR7120eozOfZ2/B37L/HE=
+Received: by mail-qt1-f171.google.com with SMTP id p48so4044960qtk.2;
+        Wed, 13 Feb 2019 11:27:58 -0800 (PST)
+X-Gm-Message-State: AHQUAuYWvvSaPwJwO5+zbtiZopJxWOw+vFw9/w2RILkJ5UxaFlomM3JV
+        DevgBpG74GMtgaUGuX3EkTs6Lrjc+6qu8doW7Q==
+X-Google-Smtp-Source: AHgI3Ia7ZzDKkBkWUQYA6sU/9ZdcsVSBsmd/pRgt7FkqYjFxVtDglXsm4TWC21OgiOFhLerCX65ssWFBeBIZC5R9+H0=
+X-Received: by 2002:a0c:9e05:: with SMTP id p5mr1699437qve.246.1550086077695;
+ Wed, 13 Feb 2019 11:27:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-7-hch@lst.de>
+ <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com> <20190213182435.GA19906@lst.de>
+In-Reply-To: <20190213182435.GA19906@lst.de>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 13 Feb 2019 13:27:45 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLCr4Jk_-cWUFGs5zfk+NKksc+bs0bpiBeQHsZFthaM1Q@mail.gmail.com>
+Message-ID: <CAL_JsqLCr4Jk_-cWUFGs5zfk+NKksc+bs0bpiBeQHsZFthaM1Q@mail.gmail.com>
+Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
+ dma_declare_coherent availability
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>, x86@kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org,
+        SH-Linux <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Feb 13, 2019 at 12:24 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Tue, Feb 12, 2019 at 02:40:23PM -0600, Rob Herring wrote:
+> > > diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> > > index 3607fd2810e4..f8c66a9472a4 100644
+> > > --- a/drivers/of/Kconfig
+> > > +++ b/drivers/of/Kconfig
+> > > @@ -43,6 +43,7 @@ config OF_FLATTREE
+> > >
+> > >  config OF_EARLY_FLATTREE
+> > >         bool
+> > > +       select DMA_DECLARE_COHERENT
+> >
+> > Is selecting DMA_DECLARE_COHERENT okay on UML? We run the unittests with UML.
+>
+> No, that will fail with undefined references to memunmap.
+>
+> I gues this needs to be
+>
+>         select DMA_DECLARE_COHERENT if HAS_DMA
+>
+> > Maybe we should just get rid of OF_RESERVED_MEM. If we support booting
+> > from DT, then it should always be enabled anyways.
+>
+> Fine with me.  Do you want me to respin the series to just remove
+> it?
 
-------------------
+Either now or it can wait. I don't want to hold this up any.
 
-From: Paul Burton <paul.burton@mips.com>
-
-commit 67fc5dc8a541e8f458d7f08bf88ff55933bf9f9d upstream.
-
-When generating vdso-o32.lds & vdso-n32.lds for use with programs
-running as compat ABIs under 64b kernels, we previously haven't included
-the compiler flags that are supposedly common to all ABIs - ie. those in
-the ccflags-vdso variable.
-
-This is problematic in cases where we need to provide the -m%-float flag
-in order to ensure that we don't attempt to use a floating point ABI
-that's incompatible with the target CPU & ABI. For example a toolchain
-using current gcc trunk configured --with-fp-32=xx fails to build a
-64r6el_defconfig kernel with the following error:
-
-  cc1: error: '-march=mips1' requires '-mfp32'
-  make[2]: *** [arch/mips/vdso/Makefile:135: arch/mips/vdso/vdso-o32.lds] Error 1
-
-Include $(ccflags-vdso) for the compat VDSO .lds builds, just as it is
-included for the native VDSO .lds & when compiling objects for the
-compat VDSOs. This ensures we consistently provide the -msoft-float flag
-amongst others, avoiding the problem by ensuring we're agnostic to the
-toolchain defaults.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-Cc: linux-mips@vger.kernel.org
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Maciej W . Rozycki <macro@linux-mips.org>
-Cc: stable@vger.kernel.org # v4.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/vdso/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -116,7 +116,7 @@ $(obj)/%-o32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
- 	$(call if_changed_rule,cc_o_c)
- 
--$(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := -mabi=32
-+$(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=32
- $(obj)/vdso-o32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
-@@ -156,7 +156,7 @@ $(obj)/%-n32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
- 	$(call if_changed_rule,cc_o_c)
- 
--$(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := -mabi=n32
-+$(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=n32
- $(obj)/vdso-n32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
-
-
+Rob

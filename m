@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE693C282C2
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 687A7C282CA
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:49:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8459C20835
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:49:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3D26720811
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550083743;
-	bh=G8Xz/bRJBcTKWRmbv2mKjnyl6xW3Y7D8WOe1hMS+rBA=;
+	s=default; t=1550083745;
+	bh=qRVX3gCA5Z4JRwds7/Nhne6j4J0XyLlTtjYoEYCnJZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=XYpOBGX+/5dukoX5XiMObIzOntpVcHv9tNEZYFIX7pAZPR/WLd9QbU4Zt2P2QDLcG
-	 CgHRazQBCySWyMPJFw/sxz2j+quirPAZzD6Ui1mB0VHgNUftJHRo3zlM2oSqWtHsZm
-	 T6HspbMJfFGP9iEOpM4515PcqWZjbndS9mpJMFrQ=
+	b=bgFgk/Ar4HtFbScRvgQvfbMUnUPpgJq7ehilBSMNrMhfhxsNJOpf+GK2hoCZDRcUv
+	 DwbMy0h0XgbWBQaEFK62aI101RiQZ8Kdcl8/Fq+6Sqc+dEFaFY4Af/yBE/zASV/zFr
+	 Jiah8guDe2I/zgl9pFGvuMmQfsFLiShV/xwVYTNs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730819AbfBMSs6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Feb 2019 13:48:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44372 "EHLO mail.kernel.org"
+        id S2394080AbfBMSpm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 13:45:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44326 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394089AbfBMSpo (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Feb 2019 13:45:44 -0500
+        id S2394072AbfBMSpm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Feb 2019 13:45:42 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A1A5520835;
-        Wed, 13 Feb 2019 18:45:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E5CFE222D2;
+        Wed, 13 Feb 2019 18:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550083544;
-        bh=G8Xz/bRJBcTKWRmbv2mKjnyl6xW3Y7D8WOe1hMS+rBA=;
+        s=default; t=1550083541;
+        bh=qRVX3gCA5Z4JRwds7/Nhne6j4J0XyLlTtjYoEYCnJZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wskwdAf/r2Fxmyz2HEG61AOJ3DjAPJYb/3TBrVsF5AB7ZSwfCD3vz6WSGRBuQsVk/
-         AdOEH48XxxHLu3HWbzZX+uzovLkDFmWFdxiear1+iQmouka8FxVd/CfTWY0pM5ohq4
-         KUE8F1XinE7rBFI2C6TUnKhmxPt/t6AquyY3NT24=
+        b=xYEj9yXvZgRFtqZRBDJRhH6X0uvc05MReHPyD9z8xxpyTEejn1vxtaeD9okfu6CQX
+         BVqMR68qeX66its9GjYeNXMxGtdTlSdbKEW4uewcHrMUaPcpqG6UuAjCXADFMTsbjo
+         gEQ7qvW05T7rOn81t0oPuNqe6bpFAxzqREWAYS8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        linux-mips@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>
-Subject: [PATCH 4.20 28/50] MIPS: VDSO: Include $(ccflags-vdso) in o32,n32 .lds builds
-Date:   Wed, 13 Feb 2019 19:38:33 +0100
-Message-Id: <20190213183657.995261189@linuxfoundation.org>
+        stable@vger.kernel.org, Yifeng Li <tomli@tomli.me>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 4.20 27/50] mips: loongson64: remove unreachable(), fix loongson_poweroff().
+Date:   Wed, 13 Feb 2019 19:38:32 +0100
+Message-Id: <20190213183657.921615249@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190213183655.747168774@linuxfoundation.org>
 References: <20190213183655.747168774@linuxfoundation.org>
@@ -65,62 +68,60 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Paul Burton <paul.burton@mips.com>
+From: Yifeng Li <tomli@tomli.me>
 
-commit 67fc5dc8a541e8f458d7f08bf88ff55933bf9f9d upstream.
+commit 8a96669d77897ff3613157bf43f875739205d66d upstream.
 
-When generating vdso-o32.lds & vdso-n32.lds for use with programs
-running as compat ABIs under 64b kernels, we previously haven't included
-the compiler flags that are supposedly common to all ABIs - ie. those in
-the ccflags-vdso variable.
+On my Yeeloong 8089, I noticed the machine fails to shutdown
+properly, and often, the function mach_prepare_reboot() is
+unexpectedly executed, thus the machine reboots instead. A
+wait loop is needed to ensure the system is in a well-defined
+state before going down.
 
-This is problematic in cases where we need to provide the -m%-float flag
-in order to ensure that we don't attempt to use a floating point ABI
-that's incompatible with the target CPU & ABI. For example a toolchain
-using current gcc trunk configured --with-fp-32=xx fails to build a
-64r6el_defconfig kernel with the following error:
+In commit 997e93d4df16 ("MIPS: Hang more efficiently on
+halt/powerdown/restart"), a general superset of the wait loop for all
+platforms is already provided, so we don't need to implement our own.
 
-  cc1: error: '-march=mips1' requires '-mfp32'
-  make[2]: *** [arch/mips/vdso/Makefile:135: arch/mips/vdso/vdso-o32.lds] Error 1
+This commit simply removes the unreachable() compiler marco after
+mach_prepare_reboot(), thus allowing the execution of machine_hang().
+My test shows that the machine is now able to shutdown successfully.
 
-Include $(ccflags-vdso) for the compat VDSO .lds builds, just as it is
-included for the native VDSO .lds & when compiling objects for the
-compat VDSOs. This ensures we consistently provide the -msoft-float flag
-amongst others, avoiding the problem by ensuring we're agnostic to the
-toolchain defaults.
+Please note that there are two different bugs preventing the machine
+from shutting down, another work-in-progress commit is needed to
+fix a lockup in cpufreq / i8259 driver, please read Reference, this
+commit does not fix that bug.
 
+Reference: https://lkml.org/lkml/2019/2/5/908
+Signed-off-by: Yifeng Li <tomli@tomli.me>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
 Cc: linux-mips@vger.kernel.org
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Maciej W . Rozycki <macro@linux-mips.org>
-Cc: stable@vger.kernel.org # v4.4+
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: stable@vger.kernel.org # v4.17+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/vdso/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/loongson64/common/reset.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -129,7 +129,7 @@ $(obj)/%-o32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
- 	$(call if_changed_rule,cc_o_c)
- 
--$(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := -mabi=32
-+$(obj)/vdso-o32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=32
- $(obj)/vdso-o32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
- 
-@@ -169,7 +169,7 @@ $(obj)/%-n32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
- 	$(call if_changed_rule,cc_o_c)
- 
--$(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := -mabi=n32
-+$(obj)/vdso-n32.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) -mabi=n32
- $(obj)/vdso-n32.lds: $(src)/vdso.lds.S FORCE
- 	$(call if_changed_dep,cpp_lds_S)
+--- a/arch/mips/loongson64/common/reset.c
++++ b/arch/mips/loongson64/common/reset.c
+@@ -59,7 +59,12 @@ static void loongson_poweroff(void)
+ {
+ #ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
+ 	mach_prepare_shutdown();
+-	unreachable();
++
++	/*
++	 * It needs a wait loop here, but mips/kernel/reset.c already calls
++	 * a generic delay loop, machine_hang(), so simply return.
++	 */
++	return;
+ #else
+ 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
  
 
 

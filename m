@@ -2,93 +2,120 @@ Return-Path: <SRS0=gFuS=QU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D287FC282CE
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 03:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1F72C282C2
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 07:27:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 968342082F
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 03:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550027040;
-	bh=9fff7Y53ByZc4GPGUy1uC7VXdvhIdzzONFMNSuxFStU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=j2oWypr+dLLJcLLaEXiA/1BnWN+bZ2XtpJGR0niuFd9vydqEnmgOfpNYHJoriCrUn
-	 rc9d+aNKB3x6SfkbOiGKuyIxmZDGokc87VjuMfU7/NlowV4zibdBIxPZtpBqcN1mpH
-	 rMftx2j+rspSEPtZvCRcbNGcJudGaGLE+MBzkkt0=
+	by mail.kernel.org (Postfix) with ESMTP id 824A4222BE
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 07:27:25 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Il8S2LIQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387896AbfBMDDz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Feb 2019 22:03:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37804 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387652AbfBMCeO (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Feb 2019 21:34:14 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D1E4222CA;
-        Wed, 13 Feb 2019 02:34:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550025254;
-        bh=9fff7Y53ByZc4GPGUy1uC7VXdvhIdzzONFMNSuxFStU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E6MEsKQzQT2w49vwBD6UKHKjL9DsxeDmTCzWG0JOycgnNF9RwirP+eieNfFk2Rz8b
-         K9MuXnlI/jD5/E9z6Obmq/LJknQFnDAZOx2V3nCdjQTYsMcjvydC7TyMGLpnZ6fw2q
-         U2WMJauBxdb/DgURxxnpuj2MvMVFSl/cEpGpZCYA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alban Bedel <albeu@free.fr>, Paul Burton <paul.burton@mips.com>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.20 033/105] MIPS: ath79: Enable OF serial ports in the default config
-Date:   Tue, 12 Feb 2019 21:32:24 -0500
-Message-Id: <20190213023336.19019-33-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190213023336.19019-1-sashal@kernel.org>
-References: <20190213023336.19019-1-sashal@kernel.org>
+        id S2388205AbfBMH1V (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 02:27:21 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:40341 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732690AbfBMH1U (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 13 Feb 2019 02:27:20 -0500
+Received: by mail-wm1-f66.google.com with SMTP id q21so1198171wmc.5
+        for <linux-mips@vger.kernel.org>; Tue, 12 Feb 2019 23:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=ougDmMsACf0IXoScSd8bSpPQfh5iP2Vt3unj4CIa8E8=;
+        b=Il8S2LIQg33Qcq8+uP7U/u3imYzP54lQZDAEEM5CF+kzID+q9sgm0f1PMHhfWqZiXS
+         sh4DwdtHssUQrTbvsgx/oN/zcldkDP8Y8AeZzzRpPf1/injx//G+/Cf2r9GxWr4arkMl
+         qCn6fydje/0+xe2IbXvOI0key5mboqPkQuUJ2aw8uOlM4sJVE1UARhZIKvW7hordAhSn
+         +mVl08ksWPLgh21Ba7GdUgWYDOSD17cDkb57YKWs1Q69ULviavQangrTgmzX8DKCm5F1
+         2hv9/wSO2ZgTfUhXjLdT/7j08glaH7922e9zMgNG7RB4Gf+HoF3hv0LQiWm+LqwXzCuu
+         0qiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=ougDmMsACf0IXoScSd8bSpPQfh5iP2Vt3unj4CIa8E8=;
+        b=KWIvm5eiyb78OPA1Rw/g7e1RyE9UyzBM3j0c1yxjO3SYmPvfRn4R9/Ue0RZXFzhGNo
+         +Xaaa8mq6ScTOfaAiU8tG3yf0j8jO38kNMo8sDq4w+icZnZKG5kD43KaJKvHT9X8nXda
+         kq2vgPY7/v0an2FEppXNNdZ39Cxjd4iyKjeP/5d/fiOlaJQLHTuOEqC2CpbMbZitaB2y
+         KzcDstf4Rzwk4NgOeD/VDztxKIsCGKt/QYWZI7/zHPZCmH0VhciRZjURRkOEmLZOgM9s
+         R/PMAURvRoxcZJAanL/TdwYth1ORSWDslJUVnx+xqZ3J0YPU5yAk6ijW6jDgS+PIq5SJ
+         DeGg==
+X-Gm-Message-State: AHQUAuZISFudG1e/JafRJtQEPFWxiwDXIsfI2S5Ifwl+eg6RX4F6iJte
+        vi7eEka2iM4DSy60ytJdXBLUYg==
+X-Google-Smtp-Source: AHgI3IbW4eZ4PSEG6OMXvEyDow8gFmlqHoPShqVgICSkNax3h+8NXljNYO2fYKDgGUm+UxblAX9GyA==
+X-Received: by 2002:a1c:c441:: with SMTP id u62mr2202451wmf.69.1550042838527;
+        Tue, 12 Feb 2019 23:27:18 -0800 (PST)
+Received: from dell ([2.27.35.171])
+        by smtp.gmail.com with ESMTPSA id n9sm12417168wrx.80.2019.02.12.23.27.17
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 Feb 2019 23:27:17 -0800 (PST)
+Date:   Wed, 13 Feb 2019 07:27:16 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     iommu@lists.linux-foundation.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        x86@kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
+ dma_declare_coherent availability
+Message-ID: <20190213072716.GC1863@dell>
+References: <20190211133554.30055-1-hch@lst.de>
+ <20190211133554.30055-7-hch@lst.de>
 MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190211133554.30055-7-hch@lst.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Alban Bedel <albeu@free.fr>
+On Mon, 11 Feb 2019, Christoph Hellwig wrote:
 
-[ Upstream commit 565dc8a4f55e491935bfb04866068d21784ea9a4 ]
+> This API is primarily used through DT entries, but two architectures
+> and two drivers call it directly.  So instead of selecting the config
+> symbol for random architectures pull it in implicitly for the actual
+> users.  Also rename the Kconfig option to describe the feature better.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/arc/Kconfig            | 1 -
+>  arch/arm/Kconfig            | 2 +-
+>  arch/arm64/Kconfig          | 1 -
+>  arch/csky/Kconfig           | 1 -
+>  arch/mips/Kconfig           | 1 -
+>  arch/riscv/Kconfig          | 1 -
+>  arch/sh/Kconfig             | 2 +-
+>  arch/unicore32/Kconfig      | 1 -
+>  arch/x86/Kconfig            | 1 -
 
-CONFIG_SERIAL_OF_PLATFORM is needed to get a working console on the OF
-boards, enable it in the default config to get a working setup out of
-the box.
+>  drivers/mfd/Kconfig         | 2 ++
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/configs/ath79_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+If everyone else is happy with these changes, then so am I.
 
-diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
-index 951c4231bdb8..4c47b3fd958b 100644
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -71,6 +71,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_PCI is not set
- CONFIG_SERIAL_8250_NR_UARTS=1
- CONFIG_SERIAL_8250_RUNTIME_UARTS=1
-+CONFIG_SERIAL_OF_PLATFORM=y
- CONFIG_SERIAL_AR933X=y
- CONFIG_SERIAL_AR933X_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
+  Acked-by: Lee Jones <lee.jones@linaro.org>
+
+>  drivers/of/Kconfig          | 3 ++-
+>  include/linux/device.h      | 2 +-
+>  include/linux/dma-mapping.h | 8 ++++----
+>  kernel/dma/Kconfig          | 2 +-
+>  kernel/dma/Makefile         | 2 +-
+>  15 files changed, 13 insertions(+), 17 deletions(-)
+
 -- 
-2.19.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

@@ -2,103 +2,142 @@ Return-Path: <SRS0=gFuS=QU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4A48C282CE
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 19:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7217CC00319
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 22:01:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8AE1E222D0
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 19:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550086084;
-	bh=d4USaxOaZ5zIs0Yd6AYwU7IxGiiMG63YyGPnEEw7QQk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=bqG+e36L2wE3SLSxmXt7N/mdkVVf3ghg543RyWKd3ZLEZPre2ZfLb8XOsk/djIiA1
-	 poiqUPzRwcDv2892m3TP5Npt9oljdOu1jP5MJArRCQcHrDR97blsVt8cxy8en/S4Gf
-	 6JXYMV3myFy3cKMRhXwowcIJPU1W+zYGWJCuHp14=
+	by mail.kernel.org (Postfix) with ESMTP id E6E88222CC
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 22:00:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390857AbfBMT17 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Feb 2019 14:27:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36178 "EHLO mail.kernel.org"
+        id S2395033AbfBMWAy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 17:00:54 -0500
+Received: from mx1.redhat.com ([209.132.183.28]:54258 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730161AbfBMT17 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Feb 2019 14:27:59 -0500
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2395027AbfBMWAy (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Feb 2019 17:00:54 -0500
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74928222D0;
-        Wed, 13 Feb 2019 19:27:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550086078;
-        bh=d4USaxOaZ5zIs0Yd6AYwU7IxGiiMG63YyGPnEEw7QQk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MRdSBbmokqMe8z+9FVsMJsm648JqGS4TxplBfDvE4kg//D3ih8EgoUzNEvOm+uwxn
-         OfG3inpBJ3aRJziIpru75JaWAPGejKP+rW0jT753boDgWR4cniOiayP/gg5vgcXp5C
-         PoMWr+zmo30lm/AU8BhVR7120eozOfZ2/B37L/HE=
-Received: by mail-qt1-f171.google.com with SMTP id p48so4044960qtk.2;
-        Wed, 13 Feb 2019 11:27:58 -0800 (PST)
-X-Gm-Message-State: AHQUAuYWvvSaPwJwO5+zbtiZopJxWOw+vFw9/w2RILkJ5UxaFlomM3JV
-        DevgBpG74GMtgaUGuX3EkTs6Lrjc+6qu8doW7Q==
-X-Google-Smtp-Source: AHgI3Ia7ZzDKkBkWUQYA6sU/9ZdcsVSBsmd/pRgt7FkqYjFxVtDglXsm4TWC21OgiOFhLerCX65ssWFBeBIZC5R9+H0=
-X-Received: by 2002:a0c:9e05:: with SMTP id p5mr1699437qve.246.1550086077695;
- Wed, 13 Feb 2019 11:27:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-7-hch@lst.de>
- <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com> <20190213182435.GA19906@lst.de>
-In-Reply-To: <20190213182435.GA19906@lst.de>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 13 Feb 2019 13:27:45 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLCr4Jk_-cWUFGs5zfk+NKksc+bs0bpiBeQHsZFthaM1Q@mail.gmail.com>
-Message-ID: <CAL_JsqLCr4Jk_-cWUFGs5zfk+NKksc+bs0bpiBeQHsZFthaM1Q@mail.gmail.com>
-Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
- dma_declare_coherent availability
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>, x86@kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        SH-Linux <linux-sh@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        by mx1.redhat.com (Postfix) with ESMTPS id B0E6689AE0;
+        Wed, 13 Feb 2019 22:00:52 +0000 (UTC)
+Received: from llong.com (ovpn-125-158.rdu2.redhat.com [10.10.125.158])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1035C600C0;
+        Wed, 13 Feb 2019 22:00:44 +0000 (UTC)
+From:   Waiman Long <longman@redhat.com>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Waiman Long <longman@redhat.com>
+Subject: [PATCH v4 0/3] locking/rwsem: Rwsem rearchitecture part 0
+Date:   Wed, 13 Feb 2019 17:00:14 -0500
+Message-Id: <1550095217-12047-1-git-send-email-longman@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Wed, 13 Feb 2019 22:00:53 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Feb 13, 2019 at 12:24 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Tue, Feb 12, 2019 at 02:40:23PM -0600, Rob Herring wrote:
-> > > diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-> > > index 3607fd2810e4..f8c66a9472a4 100644
-> > > --- a/drivers/of/Kconfig
-> > > +++ b/drivers/of/Kconfig
-> > > @@ -43,6 +43,7 @@ config OF_FLATTREE
-> > >
-> > >  config OF_EARLY_FLATTREE
-> > >         bool
-> > > +       select DMA_DECLARE_COHERENT
-> >
-> > Is selecting DMA_DECLARE_COHERENT okay on UML? We run the unittests with UML.
->
-> No, that will fail with undefined references to memunmap.
->
-> I gues this needs to be
->
->         select DMA_DECLARE_COHERENT if HAS_DMA
->
-> > Maybe we should just get rid of OF_RESERVED_MEM. If we support booting
-> > from DT, then it should always be enabled anyways.
->
-> Fine with me.  Do you want me to respin the series to just remove
-> it?
+v4:
+ - Remove rwsem-spinlock.c and make all archs use rwsem-xadd.c.
 
-Either now or it can wait. I don't want to hold this up any.
+v3:
+ - Optimize __down_read_trylock() for the uncontended case as suggested
+   by Linus.
 
-Rob
+v2:
+ - Add patch 2 to optimize __down_read_trylock() as suggested by PeterZ.
+ - Update performance test data in patch 1.
+
+The goal of this patchset is to remove the architecture specific files
+for rwsem-xadd to make it easer to add enhancements in the later rwsem
+patches. It also removes the legacy rwsem-spinlock.c file and make all
+the architectures use one single implementation of rwsem - rwsem-xadd.c.
+
+Waiman Long (3):
+  locking/rwsem: Remove arch specific rwsem files
+  locking/rwsem: Remove rwsem-spinlock.c & use rwsem-xadd.c for all
+    archs
+  locking/rwsem: Optimize down_read_trylock()
+
+ MAINTAINERS                     |   1 -
+ arch/alpha/Kconfig              |   7 -
+ arch/alpha/include/asm/rwsem.h  | 211 -------------------------
+ arch/arc/Kconfig                |   3 -
+ arch/arm/Kconfig                |   4 -
+ arch/arm/include/asm/Kbuild     |   1 -
+ arch/arm64/Kconfig              |   3 -
+ arch/arm64/include/asm/Kbuild   |   1 -
+ arch/c6x/Kconfig                |   3 -
+ arch/csky/Kconfig               |   3 -
+ arch/h8300/Kconfig              |   3 -
+ arch/hexagon/Kconfig            |   6 -
+ arch/hexagon/include/asm/Kbuild |   1 -
+ arch/ia64/Kconfig               |   4 -
+ arch/ia64/include/asm/rwsem.h   | 172 --------------------
+ arch/m68k/Kconfig               |   7 -
+ arch/microblaze/Kconfig         |   6 -
+ arch/mips/Kconfig               |   7 -
+ arch/nds32/Kconfig              |   3 -
+ arch/nios2/Kconfig              |   3 -
+ arch/openrisc/Kconfig           |   6 -
+ arch/parisc/Kconfig             |   6 -
+ arch/powerpc/Kconfig            |   7 -
+ arch/powerpc/include/asm/Kbuild |   1 -
+ arch/riscv/Kconfig              |   3 -
+ arch/s390/Kconfig               |   6 -
+ arch/s390/include/asm/Kbuild    |   1 -
+ arch/sh/Kconfig                 |   6 -
+ arch/sh/include/asm/Kbuild      |   1 -
+ arch/sparc/Kconfig              |   8 -
+ arch/sparc/include/asm/Kbuild   |   1 -
+ arch/unicore32/Kconfig          |   6 -
+ arch/x86/Kconfig                |   3 -
+ arch/x86/include/asm/rwsem.h    | 237 ----------------------------
+ arch/x86/lib/Makefile           |   1 -
+ arch/x86/lib/rwsem.S            | 156 ------------------
+ arch/x86/um/Kconfig             |   6 -
+ arch/x86/um/Makefile            |   1 -
+ arch/xtensa/Kconfig             |   3 -
+ arch/xtensa/include/asm/Kbuild  |   1 -
+ include/asm-generic/rwsem.h     | 140 -----------------
+ include/linux/rwsem-spinlock.h  |  47 ------
+ include/linux/rwsem.h           |   9 +-
+ kernel/Kconfig.locks            |   2 +-
+ kernel/locking/Makefile         |   4 +-
+ kernel/locking/percpu-rwsem.c   |   2 +
+ kernel/locking/rwsem-spinlock.c | 339 ----------------------------------------
+ kernel/locking/rwsem.h          | 130 +++++++++++++++
+ 48 files changed, 135 insertions(+), 1447 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/rwsem.h
+ delete mode 100644 arch/ia64/include/asm/rwsem.h
+ delete mode 100644 arch/x86/include/asm/rwsem.h
+ delete mode 100644 arch/x86/lib/rwsem.S
+ delete mode 100644 include/asm-generic/rwsem.h
+ delete mode 100644 include/linux/rwsem-spinlock.h
+ delete mode 100644 kernel/locking/rwsem-spinlock.c
+
+-- 
+1.8.3.1
+

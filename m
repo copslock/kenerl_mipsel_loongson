@@ -6,27 +6,27 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7278C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 23:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F7B9C10F00
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 23:06:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BBA82222A1
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 23:05:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5AD1A222A1
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 23:06:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437037AbfBMXFj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Feb 2019 18:05:39 -0500
+        id S2392814AbfBMXGC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 18:06:02 -0500
 Received: from mga05.intel.com ([192.55.52.43]:40570 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726323AbfBMXFh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S2405795AbfBMXFh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Wed, 13 Feb 2019 18:05:37 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2019 15:05:33 -0800
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2019 15:05:36 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.58,366,1544515200"; 
-   d="scan'208";a="138415653"
+   d="scan'208";a="138415659"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by orsmga001.jf.intel.com with ESMTP; 13 Feb 2019 15:05:31 -0800
+  by orsmga001.jf.intel.com with ESMTP; 13 Feb 2019 15:05:34 -0800
 From:   ira.weiny@intel.com
 To:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -76,9 +76,9 @@ Cc:     Ira Weiny <ira.weiny@intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH V2 6/7] IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
-Date:   Wed, 13 Feb 2019 15:04:54 -0800
-Message-Id: <20190213230455.5605-7-ira.weiny@intel.com>
+Subject: [PATCH V2 7/7] IB/mthca: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+Date:   Wed, 13 Feb 2019 15:04:55 -0800
+Message-Id: <20190213230455.5605-8-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190213230455.5605-1-ira.weiny@intel.com>
 References: <20190211201643.7599-1-ira.weiny@intel.com>
@@ -97,22 +97,23 @@ FS DAX pages being mapped.
 
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- drivers/infiniband/hw/qib/qib_user_sdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mthca/mthca_memfree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_user_sdma.c b/drivers/infiniband/hw/qib/qib_user_sdma.c
-index 31c523b2a9f5..b53cc0240e02 100644
---- a/drivers/infiniband/hw/qib/qib_user_sdma.c
-+++ b/drivers/infiniband/hw/qib/qib_user_sdma.c
-@@ -673,7 +673,7 @@ static int qib_user_sdma_pin_pages(const struct qib_devdata *dd,
- 		else
- 			j = npages;
+diff --git a/drivers/infiniband/hw/mthca/mthca_memfree.c b/drivers/infiniband/hw/mthca/mthca_memfree.c
+index 112d2f38e0de..8ff0e90d7564 100644
+--- a/drivers/infiniband/hw/mthca/mthca_memfree.c
++++ b/drivers/infiniband/hw/mthca/mthca_memfree.c
+@@ -472,7 +472,8 @@ int mthca_map_user_db(struct mthca_dev *dev, struct mthca_uar *uar,
+ 		goto out;
+ 	}
  
--		ret = get_user_pages_fast(addr, j, 0, pages);
-+		ret = get_user_pages_fast(addr, j, FOLL_LONGTERM, pages);
- 		if (ret != j) {
- 			i = 0;
- 			j = ret;
+-	ret = get_user_pages_fast(uaddr & PAGE_MASK, 1, FOLL_WRITE, pages);
++	ret = get_user_pages_fast(uaddr & PAGE_MASK, 1,
++				  FOLL_WRITE | FOLL_LONGTERM, pages);
+ 	if (ret < 0)
+ 		goto out;
+ 
 -- 
 2.20.1
 

@@ -1,126 +1,133 @@
-Return-Path: <SRS0=yn1R=QT=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=gFuS=QU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD203C282C4
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D670BC282C4
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 02:42:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 91811222C1
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Feb 2019 20:40:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A57142175B
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 02:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550004037;
-	bh=vjjmB3q5kxynqTfBl4fMXnJzLtFOe/CWMrbnP/HvubI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=NOdeRK8VL5Ucxa3PwnrEzTsRH6Z0ET7X0BXLgWCQj4PV/Z6cozVoDpO4dgZZ5v558
-	 4XK4pg8wwWCj0GJvF7Qn41oHYuPImYFyDKGr10zc0ufEPERYiyvvbGr9rX7xlHscuf
-	 lsomLFsr1NQFfxXMH75rti1eFH7Y632TNbHwUX8U=
+	s=default; t=1550025773;
+	bh=AukooJYYEWsA9ZNXtMpE/p+4kLZE5MMdq98agdN/7gA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=ZSsPE/saoLDa4p9RnDJSQ0SfSrpqrAWpPwKlWFGwEXBt3a5zTXslHxECHhEM2dihX
+	 x0/MvDPgmgZqCGNBf4YxUUDSF07nPxKU6o+lpRnDOJKhrU/E4UNlbcLoPb2QK6fJqR
+	 Ff2zXuwdS7Ii17kvCOVps5ifTckXd0cV6r+10cVc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbfBLUkh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Feb 2019 15:40:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48514 "EHLO mail.kernel.org"
+        id S2388083AbfBMCmn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Feb 2019 21:42:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45574 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728097AbfBLUkh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Feb 2019 15:40:37 -0500
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+        id S2389352AbfBMCly (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Feb 2019 21:41:54 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DEB6C222C1;
-        Tue, 12 Feb 2019 20:40:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D56BA222C9;
+        Wed, 13 Feb 2019 02:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550004036;
-        bh=vjjmB3q5kxynqTfBl4fMXnJzLtFOe/CWMrbnP/HvubI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QfKA6/6/PzAH/1DTX5KyhQZjfr82FQxTeLuAkVGfvNPh0B5ZeDW8YW0zkx2oYKF8x
-         js6uiZtrNajIS0RO2RaoERpXiSG8LLpOW2CofF7tRM0Ar6Gkfs/XYQaSDu8gGWSYkl
-         fig/6HVAkxpsdIZs+cf77ZjUfMX0mfPMDlK+pctE=
-Received: by mail-qk1-f181.google.com with SMTP id p15so32107qkl.5;
-        Tue, 12 Feb 2019 12:40:35 -0800 (PST)
-X-Gm-Message-State: AHQUAuYHGGs1wXuSsUGBXp8ozX/dUZkynyOS6a7M1g2AJOohE9vhUGBF
-        wuA7bnET3pKio38fkFnhuKARby9t+wTW2G6UIQ==
-X-Google-Smtp-Source: AHgI3IYz2gzbmamNNYONyTiDfE0zREh3E/QtpTpAvvx3glvEe3X+ZYzmIZ6HhCz+z+2Heg/0CZQUYhYHO3QCjAjIpjc=
-X-Received: by 2002:a37:5686:: with SMTP id k128mr3834629qkb.29.1550004035085;
- Tue, 12 Feb 2019 12:40:35 -0800 (PST)
+        s=default; t=1550025713;
+        bh=AukooJYYEWsA9ZNXtMpE/p+4kLZE5MMdq98agdN/7gA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=IsjjCYTAbtqSxOeyqh9lBltVlrOuoMH1qGKEzWKp02ycM0E8bEVbz8EH8KupY+5GV
+         08rbvp2lQ2oMlEvY7k/PQKFd2CBHITK4FSQ/quqBAfQqTS8YOKiYCM9T2MXMf1r0WU
+         fQ1WtPjuyQ0nlyaP/vxjfcbTAqoAoBvaaQz7qYb0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 3.18 10/14] MIPS: jazz: fix 64bit build
+Date:   Tue, 12 Feb 2019 21:41:34 -0500
+Message-Id: <20190213024139.22268-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.19.1
+In-Reply-To: <20190213024139.22268-1-sashal@kernel.org>
+References: <20190213024139.22268-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20190211133554.30055-1-hch@lst.de> <20190211133554.30055-7-hch@lst.de>
-In-Reply-To: <20190211133554.30055-7-hch@lst.de>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 12 Feb 2019 14:40:23 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com>
-Message-ID: <CAL_JsqL+LiJTF5kZz2hXGbQcH+D4U0jAQE376VSUVMQmdg=XFA@mail.gmail.com>
-Subject: Re: [PATCH 06/12] dma-mapping: improve selection of
- dma_declare_coherent availability
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>, x86@kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        SH-Linux <linux-sh@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Feb 11, 2019 at 7:37 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> This API is primarily used through DT entries, but two architectures
-> and two drivers call it directly.  So instead of selecting the config
-> symbol for random architectures pull it in implicitly for the actual
-> users.  Also rename the Kconfig option to describe the feature better.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/arc/Kconfig            | 1 -
->  arch/arm/Kconfig            | 2 +-
->  arch/arm64/Kconfig          | 1 -
->  arch/csky/Kconfig           | 1 -
->  arch/mips/Kconfig           | 1 -
->  arch/riscv/Kconfig          | 1 -
->  arch/sh/Kconfig             | 2 +-
->  arch/unicore32/Kconfig      | 1 -
->  arch/x86/Kconfig            | 1 -
->  drivers/mfd/Kconfig         | 2 ++
->  drivers/of/Kconfig          | 3 ++-
->  include/linux/device.h      | 2 +-
->  include/linux/dma-mapping.h | 8 ++++----
->  kernel/dma/Kconfig          | 2 +-
->  kernel/dma/Makefile         | 2 +-
->  15 files changed, 13 insertions(+), 17 deletions(-)
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-> index 3607fd2810e4..f8c66a9472a4 100644
-> --- a/drivers/of/Kconfig
-> +++ b/drivers/of/Kconfig
-> @@ -43,6 +43,7 @@ config OF_FLATTREE
->
->  config OF_EARLY_FLATTREE
->         bool
-> +       select DMA_DECLARE_COHERENT
+[ Upstream commit 41af167fbc0032f9d7562854f58114eaa9270336 ]
 
-Is selecting DMA_DECLARE_COHERENT okay on UML? We run the unittests with UML.
+64bit JAZZ builds failed with
 
-Maybe we should just get rid of OF_RESERVED_MEM. If we support booting
-from DT, then it should always be enabled anyways.
+  linux-next/arch/mips/jazz/jazzdma.c: In function `vdma_init`:
+  /linux-next/arch/mips/jazz/jazzdma.c:77:30: error: implicit declaration
+    of function `KSEG1ADDR`; did you mean `CKSEG1ADDR`?
+    [-Werror=implicit-function-declaration]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+                                ^~~~~~~~~
+                                CKSEG1ADDR
+  /linux-next/arch/mips/jazz/jazzdma.c:77:10: error: cast to pointer from
+    integer of different size [-Werror=int-to-pointer-cast]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+            ^
+  In file included from /linux-next/arch/mips/include/asm/barrier.h:11:0,
+                   from /linux-next/include/linux/compiler.h:248,
+                   from /linux-next/include/linux/kernel.h:10,
+                   from /linux-next/arch/mips/jazz/jazzdma.c:11:
+  /linux-next/arch/mips/include/asm/addrspace.h:41:29: error: cast from
+    pointer to integer of different size [-Werror=pointer-to-int-cast]
+   #define _ACAST32_  (_ATYPE_)(_ATYPE32_) /* widen if necessary */
+                               ^
+  /linux-next/arch/mips/include/asm/addrspace.h:53:25: note: in
+    expansion of macro `_ACAST32_`
+   #define CPHYSADDR(a)  ((_ACAST32_(a)) & 0x1fffffff)
+                           ^~~~~~~~~
+  /linux-next/arch/mips/jazz/jazzdma.c:84:44: note: in expansion of
+    macro `CPHYSADDR`
+    r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
 
->         select OF_FLATTREE
->
->  config OF_PROMTREE
-> @@ -83,7 +84,7 @@ config OF_MDIO
->  config OF_RESERVED_MEM
->         bool
->         depends on OF_EARLY_FLATTREE
-> -       default y if HAVE_GENERIC_DMA_COHERENT || DMA_CMA
-> +       default y if DMA_DECLARE_COHERENT || DMA_CMA
->
->  config OF_RESOLVE
->         bool
+Using correct casts and CKSEG1ADDR when dealing with the pgtbl setup
+fixes this.
+
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/jazz/jazzdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
+index db6f5afff4ff..ea897912bc71 100644
+--- a/arch/mips/jazz/jazzdma.c
++++ b/arch/mips/jazz/jazzdma.c
+@@ -71,14 +71,15 @@ static int __init vdma_init(void)
+ 						    get_order(VDMA_PGTBL_SIZE));
+ 	BUG_ON(!pgtbl);
+ 	dma_cache_wback_inv((unsigned long)pgtbl, VDMA_PGTBL_SIZE);
+-	pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
++	pgtbl = (VDMA_PGTBL_ENTRY *)CKSEG1ADDR((unsigned long)pgtbl);
+ 
+ 	/*
+ 	 * Clear the R4030 translation table
+ 	 */
+ 	vdma_pgtbl_init();
+ 
+-	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
++	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE,
++			  CPHYSADDR((unsigned long)pgtbl));
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_LIM, VDMA_PGTBL_SIZE);
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_INV, 0);
+ 
+-- 
+2.19.1
+

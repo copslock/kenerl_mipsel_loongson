@@ -7,45 +7,48 @@ X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B660C282CA
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47B55C282C2
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:55:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CDCD420835
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:55:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1B86620835
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Feb 2019 18:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550084134;
-	bh=xTRnONJ99nOxtOWbTgDgZPAppR9pBN2DokYZdHs0VgU=;
+	s=default; t=1550084138;
+	bh=1WnEmKMkpS0ejAKLDM2D1kO3aYcWaSOdr8YibOE8UM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=vXW2JsfNWVNpHKTVozqZKWU/8X8zmJT1s9+WwL+00tnld52K7Uf2GaLYMv7r/ufx5
-	 1KVZOWI+4+GRJ+n5oFpMRMFyVCjIo2qzisHFaooabRqFeEXtrq/v5J2+6Z/+VQY7T2
-	 RIVi8wy/XBt72P2uI1/Np+j8lyqPZrHFDOhpmSbA=
+	b=sM5Y2eoIhEnv/B71+muzFd2HCx80LVVd0JCZGsbH74A9ZLkdDkMgG+F+dN2RPwO2t
+	 URlv6ZjsbSY5sOZ4+LCMCwNHrWxN7gRrodeqBtFC7QHNMMy4j9tAiOMkr0xJXjHqse
+	 C0c7QPfsxyjmJqIJyGNgxwCA+n9+UdZyqUAp8cGA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405468AbfBMSkt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Feb 2019 13:40:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39028 "EHLO mail.kernel.org"
+        id S2391138AbfBMSkr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Feb 2019 13:40:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405465AbfBMSkt (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Feb 2019 13:40:49 -0500
+        id S2388148AbfBMSkq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Feb 2019 13:40:46 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F20EA222DB;
-        Wed, 13 Feb 2019 18:40:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F810222DA;
+        Wed, 13 Feb 2019 18:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550083248;
-        bh=xTRnONJ99nOxtOWbTgDgZPAppR9pBN2DokYZdHs0VgU=;
+        s=default; t=1550083245;
+        bh=1WnEmKMkpS0ejAKLDM2D1kO3aYcWaSOdr8YibOE8UM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BOVcprs9+t/lXMRkWjGWc20BVfNdy/gVJ7Fyz6dJfRFwHhNubGKYjPKiVdBGM+V8o
-         2fmzgoPM1cvrgKqevlDnUzzBPeON3Fu8IVYTKfelzNGzlHNtnixfzNyqtwZrnFXDjY
-         SKAzlDZKn+UWyr14xQYygLMzxJawvJyhKgGCXlJA=
+        b=SdJM1lkN35fDzp5AtE9f85xdMp4G83LBzVp1jtRSL5+AENsVw2EfT+LfcWEsZHe2Y
+         +isYi237Pru9+Cifi4Njsjn2C47xZbNrwXADR2d93ffeZanxaRIiOIziLWnP3g0rr0
+         927HdWfI73Z7BLOiWqyfoiH4dslvh1prcSnpILk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.14 11/35] MIPS: OCTEON: dont set octeon_dma_bar_type if PCI is disabled
-Date:   Wed, 13 Feb 2019 19:38:06 +0100
-Message-Id: <20190213183706.704778969@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.14 10/35] mips: cm: reprime error cause
+Date:   Wed, 13 Feb 2019 19:38:05 +0100
+Message-Id: <20190213183706.664641659@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190213183706.176685027@linuxfoundation.org>
 References: <20190213183706.176685027@linuxfoundation.org>
@@ -64,49 +67,42 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 
-commit dcf300a69ac307053dfb35c2e33972e754a98bce upstream.
+commit 05dc6001af0630e200ad5ea08707187fe5537e6d upstream.
 
-Don't set octeon_dma_bar_type if PCI is disabled. This avoids creation
-of the MSI irqchip later on, and saves a bit of memory.
+Accordingly to the documentation
+---cut---
+The GCR_ERROR_CAUSE.ERR_TYPE field and the GCR_ERROR_MULT.ERR_TYPE
+fields can be cleared by either a reset or by writing the current
+value of GCR_ERROR_CAUSE.ERR_TYPE to the
+GCR_ERROR_CAUSE.ERR_TYPE register.
+---cut---
+Do exactly this. Original value of cm_error may be safely written back;
+it clears error cause and keeps other bits untouched.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Fixes: 3885c2b463f6 ("MIPS: CM: Add support for reporting CM cache errors")
+Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: a214720cbf50 ("Disable MSI also when pcie-octeon.pcie_disable on")
-Cc: stable@vger.kernel.org # v3.3+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/pci/pci-octeon.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/kernel/mips-cm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/pci/pci-octeon.c
-+++ b/arch/mips/pci/pci-octeon.c
-@@ -572,6 +572,11 @@ static int __init octeon_pci_setup(void)
- 	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
- 		return 0;
+--- a/arch/mips/kernel/mips-cm.c
++++ b/arch/mips/kernel/mips-cm.c
+@@ -457,5 +457,5 @@ void mips_cm_error_report(void)
+ 	}
  
-+	if (!octeon_is_pci_host()) {
-+		pr_notice("Not in host mode, PCI Controller not initialized\n");
-+		return 0;
-+	}
-+
- 	/* Point pcibios_map_irq() to the PCI version of it */
- 	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
- 
-@@ -583,11 +588,6 @@ static int __init octeon_pci_setup(void)
- 	else
- 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
- 
--	if (!octeon_is_pci_host()) {
--		pr_notice("Not in host mode, PCI Controller not initialized\n");
--		return 0;
--	}
--
- 	/* PCI I/O and PCI MEM values */
- 	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
- 	ioport_resource.start = 0;
+ 	/* reprime cause register */
+-	write_gcr_error_cause(0);
++	write_gcr_error_cause(cm_error);
+ }
 
 

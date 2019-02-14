@@ -2,47 +2,47 @@ Return-Path: <SRS0=d8WL=QV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21426C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF620C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:40:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E5228222DF
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:32:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7D6A1222DD
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:40:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407986AbfBNQck (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Feb 2019 11:32:40 -0500
-Received: from mx1.redhat.com ([209.132.183.28]:35064 "EHLO mx1.redhat.com"
+        id S2405308AbfBNQki (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Feb 2019 11:40:38 -0500
+Received: from mx1.redhat.com ([209.132.183.28]:34264 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728867AbfBNQcj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 14 Feb 2019 11:32:39 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        id S2405016AbfBNQki (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 14 Feb 2019 11:40:38 -0500
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C790AC04BD22;
-        Thu, 14 Feb 2019 16:32:38 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 084F3E6A9D;
+        Thu, 14 Feb 2019 16:40:37 +0000 (UTC)
 Received: from [10.36.112.66] (ovpn-112-66.ams2.redhat.com [10.36.112.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9722B5ED5B;
-        Thu, 14 Feb 2019 16:32:19 +0000 (UTC)
-Subject: Re: [PATCH V2 3/10] KVM/MMU: Add last_level in the struct
- mmu_spte_page
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 074FC600C4;
+        Thu, 14 Feb 2019 16:40:25 +0000 (UTC)
+Subject: Re: [PATCH V2 00/10] X86/KVM/Hyper-V: Add HV ept tlb range list flush
+ support in KVM
 To:     lantianyu1986@gmail.com
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
-        marc.zyngier@arm.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
-        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
-        benh@kernel.crashing.org, mpe@ellerman.id.au, rkrcmar@redhat.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        michael.h.kelley@microsoft.com, kys@microsoft.com,
-        vkuznets@redhat.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
+        bp@alien8.de, catalin.marinas@arm.com, christoffer.dall@arm.com,
+        devel@linuxdriverproject.org, haiyangz@microsoft.com,
+        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
+        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
+        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
+        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
+        paulus@ozlabs.org, ralf@linux-mips.org, rkrcmar@redhat.com,
+        sashal@kernel.org, sthemmin@microsoft.com, tglx@linutronix.de,
+        will.deacon@arm.com, x86@kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
 References: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
- <20190202013825.51261-4-Tianyu.Lan@microsoft.com>
 From:   Paolo Bonzini <pbonzini@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
@@ -100,54 +100,43 @@ Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
  DduC0U3xYkfbGAUvbxeepjgzp0uEnBXfPTy09JGpgWbg0w91GyfT/ujKaGd4vxG2Ei+MMNDm
  S1SMx7wu0evvQ5kT9NPzyq8R2GIhVSiAd2jioGuTjX6AZCFv3ToO53DliFMkVTecLptsXaes
  uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <572a6ce3-23f6-7b16-a070-4d4a81ee4335@redhat.com>
-Date:   Thu, 14 Feb 2019 17:32:17 +0100
+Message-ID: <3bcfedac-3054-7d5e-24b6-5c98d8171514@redhat.com>
+Date:   Thu, 14 Feb 2019 17:40:20 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.4.0
 MIME-Version: 1.0
-In-Reply-To: <20190202013825.51261-4-Tianyu.Lan@microsoft.com>
+In-Reply-To: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Thu, 14 Feb 2019 16:32:39 +0000 (UTC)
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 14 Feb 2019 16:40:37 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
 On 02/02/19 02:38, lantianyu1986@gmail.com wrote:
-> diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
-> index ce770b446238..70cafd3f95ab 100644
-> --- a/arch/x86/kvm/mmu.c
-> +++ b/arch/x86/kvm/mmu.c
-> @@ -2918,6 +2918,9 @@ static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
->  
->  	if (level > PT_PAGE_TABLE_LEVEL)
->  		spte |= PT_PAGE_SIZE_MASK;
-> +
-> +	sp->last_level = is_last_spte(spte, level);
+> From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> 
+> This patchset is to introduce hv ept tlb range list flush function
+> support in the KVM MMU component. Flushing ept tlbs of several address
+> range can be done via single hypercall and new list flush function is
+> used in the kvm_mmu_commit_zap_page() and FNAME(sync_page). This patchset
+> also adds more hv ept tlb range flush support in more KVM MMU function.
+> 
+> Change since v1:
+>        1) Make flush list as a hlist instead of list in order to 
+>        keep struct kvm_mmu_page size.
+>        2) Add last_level flag in the struct kvm_mmu_page instead
+>        of spte pointer
+>        3) Move tlb flush from kvm_mmu_notifier_clear_flush_young() to kvm_age_hva()
+>        4) Use range flush in the kvm_vm_ioctl_get/clear_dirty_log()
 
-Wait, I wasn't thinking straight.  If a struct kvm_mmu_page exists, it
-is never the last level.  Page table entries for the last level do not
-have a struct kvm_mmu_page.
+Looks good except for the confusion on sp->last_level (which was mostly
+mine---sorry about that).  I think it can still make 5.1.
 
-Therefore you don't need the flag after all.  I suspect your
-calculations in patch 2 are off by one, and you actually need
-
-	hlist_for_each_entry(sp, range->flush_list, flush_link) {
-		int pages = KVM_PAGES_PER_HPAGE(sp->role.level + 1);
-		...
-	}
-
-For example, if sp->role.level is 1 then the struct kvm_mmu_page is for
-a page containing PTEs and covers an area of 2 MiB.
-
-Thanks,
+However, note that I've never received "KVM/MMU: Use tlb range flush  in
+the kvm_age_hva()".
 
 Paolo
-
->  	if (tdp_enabled)
->  		spte |= kvm_x86_ops->get_mt_mask(vcpu, gfn,
->  			kvm_is_mmio_pfn(pfn));
-

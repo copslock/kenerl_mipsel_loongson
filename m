@@ -2,68 +2,64 @@ Return-Path: <SRS0=d8WL=QV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLACK autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B096C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 09:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB553C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 10:36:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 00BE4222CC
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 09:27:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B66E62229F
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 10:36:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390125AbfBNJ1d convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Feb 2019 04:27:33 -0500
-Received: from mga11.intel.com ([192.55.52.93]:40587 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388196AbfBNJ1d (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 14 Feb 2019 04:27:33 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Feb 2019 01:27:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.58,368,1544515200"; 
-   d="scan'208";a="116132673"
-Received: from irsmsx109.ger.corp.intel.com ([163.33.3.23])
-  by orsmga006.jf.intel.com with ESMTP; 14 Feb 2019 01:27:30 -0800
-Received: from irsmsx108.ger.corp.intel.com ([169.254.11.28]) by
- IRSMSX109.ger.corp.intel.com ([169.254.13.83]) with mapi id 14.03.0415.000;
- Thu, 14 Feb 2019 09:27:18 +0000
-From:   "Mehrtens, Hauke" <hauke.mehrtens@intel.com>
-To:     "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: print active stack on watchdog pre timeout for separate irq stack
-Thread-Topic: print active stack on watchdog pre timeout for separate irq
- stack
-Thread-Index: AdTERhkHQ/tMdayNR9+t+VaCObWnBg==
-Date:   Thu, 14 Feb 2019 09:27:17 +0000
-Message-ID: <9231D502B07C5E4A8B32D5115C9F19991F89C484@IRSMSX108.ger.corp.intel.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.0.400.15
-dlp-reaction: no-action
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNzcwYWNjMzMtOWM2OS00YTRmLWFjZTItY2Y3ZTZmZTcxZjE5IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidFM1SGwxR3NhR3oyNkdoak9jeVc3U0FVOUFnUTZJclptMGgrOWZLSmRIZVNpTnNzVmNsdUIzTDUwNjlQNTdVRiJ9
-x-ctpclassification: CTP_NT
-x-originating-ip: [163.33.239.180]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        id S1729274AbfBNKgM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Feb 2019 05:36:12 -0500
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:40730 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728406AbfBNKgM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 14 Feb 2019 05:36:12 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0331BEBD;
+        Thu, 14 Feb 2019 02:36:12 -0800 (PST)
+Received: from big-swifty.misterjones.org (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DC8D3F575;
+        Thu, 14 Feb 2019 02:36:09 -0800 (PST)
+Date:   Thu, 14 Feb 2019 10:36:07 +0000
+Message-ID: <86sgwqslm0.wl-marc.zyngier@arm.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     linux-mips@vger.kernel.org, tglx@linutronix.de,
+        jason@lakedaemon.net, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org
+Subject: Re: irqchip: Add driver for Loongson-1 intc v6
+In-Reply-To: <20190201062236.17903-1-jiaxun.yang@flygoat.com>
+References: <20190122154557.22689-1-jiaxun.yang@flygoat.com>
+        <20190201062236.17903-1-jiaxun.yang@flygoat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 EasyPG/1.0.0 Emacs/25.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Organization: ARM Ltd
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+On Fri, 01 Feb 2019 06:22:34 +0000,
+Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+> 
+> v1->v2: Fix SPDX-License-Identifier
+> v2->v3: Rework according suggestions from Marc Zyngier, Thanks.
+> v3->v4: Rework the driver into a single chip driver.
+> v4->v5: Fix minor issues.
+> v5->v6: Fix doc and collect Rob's review tag.
 
-We would like to print the stack of the currently active kernel thread from the interrupt handler when the watchdog pre timeout interrupt for our watchdog is triggered, currently we have a WARN_ONCE() in the code of the interrupt handler, but this only prints the interrupt stack, which is pretty boring. On MIPS the interrupts are handled on a separate stack and not on top of the stack of the current active kernel thread to avoid stack overflows. Is there some function which would print the stack trace of the current active kernel thread in addition or instead of the interrupt stack inside of an interrupt?
+Now applied to irqchip-next
 
-The kernel also has these pre timeout handlers, but they also seem to be affected by this problem:
-https://elixir.bootlin.com/linux/v5.0-rc6/source/drivers/watchdog/pretimeout_panic.c
+Thanks,
 
-This was seen on kernel 4.9.109, but I am not aware of any changes in this area in the last few years. 
+	M.
 
-Hauke
+-- 
+Jazz is not dead, it just smell funny.

@@ -2,141 +2,125 @@ Return-Path: <SRS0=d8WL=QV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF620C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6F15C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 18:32:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7D6A1222DD
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:40:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9F54F21B68
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 18:32:46 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="T0cNVqTX"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405308AbfBNQki (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Feb 2019 11:40:38 -0500
-Received: from mx1.redhat.com ([209.132.183.28]:34264 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405016AbfBNQki (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 14 Feb 2019 11:40:38 -0500
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 084F3E6A9D;
-        Thu, 14 Feb 2019 16:40:37 +0000 (UTC)
-Received: from [10.36.112.66] (ovpn-112-66.ams2.redhat.com [10.36.112.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 074FC600C4;
-        Thu, 14 Feb 2019 16:40:25 +0000 (UTC)
-Subject: Re: [PATCH V2 00/10] X86/KVM/Hyper-V: Add HV ept tlb range list flush
- support in KVM
-To:     lantianyu1986@gmail.com
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
-        bp@alien8.de, catalin.marinas@arm.com, christoffer.dall@arm.com,
-        devel@linuxdriverproject.org, haiyangz@microsoft.com,
-        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
-        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
-        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
-        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
-        paulus@ozlabs.org, ralf@linux-mips.org, rkrcmar@redhat.com,
-        sashal@kernel.org, sthemmin@microsoft.com, tglx@linutronix.de,
-        will.deacon@arm.com, x86@kernel.org,
-        michael.h.kelley@microsoft.com, vkuznets@redhat.com
-References: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <3bcfedac-3054-7d5e-24b6-5c98d8171514@redhat.com>
-Date:   Thu, 14 Feb 2019 17:40:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
-MIME-Version: 1.0
-In-Reply-To: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
-Content-Type: text/plain; charset=utf-8
+        id S1727277AbfBNScq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Feb 2019 13:32:46 -0500
+Received: from mail-eopbgr800134.outbound.protection.outlook.com ([40.107.80.134]:61152
+        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726443AbfBNScp (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 14 Feb 2019 13:32:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rWT6hPpOUPAf4sY+gFa+rvQDv1C+rCVN82H411Qpobw=;
+ b=T0cNVqTXNubGHhaEnQwdFCEYQxES80HMS/7GWotuRlh761Ue6BNuztj1yQCUkpxt3IhsE79rsKX4QKQT0Lr5OKIk3EyQc77KABePed+Yp9Vu8UFSZOFVoXiqMmToszXFpCjm02q0cIWdmEHOXgc8NSJ/OPS31qu3vAVBHtwJzUc=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1136.namprd22.prod.outlook.com (10.174.171.38) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1622.16; Thu, 14 Feb 2019 18:32:40 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1601.023; Thu, 14 Feb 2019
+ 18:32:40 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: BCM47XX: Fix/improve Buffalo WHR-G54S support
+Thread-Topic: [PATCH] MIPS: BCM47XX: Fix/improve Buffalo WHR-G54S support
+Thread-Index: AQHUwWXxHk6ZJZokxE6cpx8jQkbJOaXfpIWA
+Date:   Thu, 14 Feb 2019 18:32:39 +0000
+Message-ID: <MWHPR2201MB1277718F9C81478C4BEA1E4FC1670@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190210172739.13904-1-zajec5@gmail.com>
+In-Reply-To: <20190210172739.13904-1-zajec5@gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 14 Feb 2019 16:40:37 +0000 (UTC)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0049.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::26) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ddb3a047-6b7a-4acb-f512-08d692aacc60
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1136;
+x-ms-traffictypediagnostic: MWHPR2201MB1136:
+x-microsoft-exchange-diagnostics: =?utf-8?B?MTtNV0hQUjIyMDFNQjExMzY7MjM6ZFpsTisyWE92dXVScnpTaTFYK1JndkxM?=
+ =?utf-8?B?WGlXYVNSdGNwZ3FrdlNPTUE3NTF6dUpuY1BQYlR5ZGZsZ1ZOSElJY0J2cWsx?=
+ =?utf-8?B?cFd6S29CUWRzSWVSVFNaTnBVK3FwQnUzTlhnWDF2NWtlbGJtV2lPV25VNDFI?=
+ =?utf-8?B?NVZRU3AzWEtVR3FVZ0sxVEVucUhMKyswc0F4NStjUmlrUXBSWXFpTXZOOG5i?=
+ =?utf-8?B?dW42SWFWeUtLOVprc1JHTkFBRzZKQWtXWnRudnorNVViU2g5emV5RWNQZHkr?=
+ =?utf-8?B?K0xteVR1eUd0U0dDZThJclRENG4xMU5uSXJ0Y1puaW9jdDhTaFYwTFNobkRR?=
+ =?utf-8?B?K0VJdFhkR2RZNkNRVE40SGFnYTltbVlzWUh6dmszWi9vMjBtVXQ3NlR4eDVw?=
+ =?utf-8?B?WGdKZVBkTDkyQXlzVm9UZlpGbEF1bFdMMFRmQW4ySjVIUXZUNVN3cTA0c3Zj?=
+ =?utf-8?B?ZFRONGt4eUxQckk3VkpVTTBRbEVQZGlUZjBYYUlkZXM2QSt6RTZ4REZtM254?=
+ =?utf-8?B?RmwyT3k1UlZDajVxVm1kTmFlcXBreXF2eGFwNjJZckxzeEpBVWJyTHdKc0lk?=
+ =?utf-8?B?U2RPNmlwTjNKOEE4L21JM3RYNE9VTWlxekhRZDZETmhXQVBDNXQ1Rzk2a25k?=
+ =?utf-8?B?Y1FFRWJpSnRabXFiYXdydHUxQmlDNjBZUTI0c3hxYUlKSEw3SEtMT3lRbGp1?=
+ =?utf-8?B?d2dIdzZIYUowcW9xeUNiWVJmTlVoejEwdnJsRE1tTmJTWjR2b0drd2YxWVpT?=
+ =?utf-8?B?S050SkVkc2FoZnYrSHZNWXhLNnZPaWhMdVRlM3lYSGN5Z3Nra1R5SVZEQmc3?=
+ =?utf-8?B?cnBVcE45bTdoVXkzY1laKzZYMnpveTRLaDBQQ1FDSHc0aTQ1ZU1RTUduaStJ?=
+ =?utf-8?B?Sm9oZGU3b0w2dWVBVm5wRDdTcGRNdW9sRE5lVHV0cysvZEpjbjFoQ1AwclFC?=
+ =?utf-8?B?UlhLZ0pFZlY4RGZoamdXYlhhYTVycnIrVHFIKzAxbDY5MUd3VmNsUUFBY1Br?=
+ =?utf-8?B?WlpLcjJLMGV5Z2hSY0x0M1FPcGFtYm1lekhEdkZ1aW8zZnJPNWp5T0VMQVlw?=
+ =?utf-8?B?T01aYkpNMmFlcWxBUmROQis0b1BUOXlxaVcxd0tzTDF2WGdqem5Eb3RpamI0?=
+ =?utf-8?B?MUF6OVNrcXZZK1MrRnFXVkxmUStRNFRnQVIzdTVFMVlOY3d5c1FOZkFLL3RF?=
+ =?utf-8?B?U2xNemhxclFrNVQvUm9iVUEwMVpYMXVFVmprM0VoeU1OeE1Vc29IN21xbytq?=
+ =?utf-8?B?eHlUM0VLZ0crNDZvLy9nN1N0engxa3hzcjNjRTh3ZnB3MlB1Nks0SEN5VS9N?=
+ =?utf-8?B?RzZqUUNLN29EK1VUdWQ5RTdxN0tMalJVcGtNMEU4WU9kaDNrTm9WdVZVTjNT?=
+ =?utf-8?B?M3NqN2tpU2cvNzVjSHZFYnlpMk9LdDlya1Z1Vit5S3BtaWtRUE1hR3U2bnFG?=
+ =?utf-8?B?Z2dPQkZNQlM5cXdYbXJ2U20wYkFaUGJWMmpEdFVCQlVLbkJLV2E4V3c3RmhK?=
+ =?utf-8?B?bjUxby9DWUpjOWlXNDBGZzkzUVVYREl5T1JjNzVtSkJYWUI3d2ZSbmtHeVh3?=
+ =?utf-8?B?eUVHM2xUZzA2Nkd1cWxJa1F6NGFTZjdFRlZmMEJoT1EwWG5TS25UWjNkck9Q?=
+ =?utf-8?B?UzR5YUJtNENMc2F5MGFlQi9WSkdVZ3dVYlF5RXhVNHpCbzZ5M2ZNNU53WS9I?=
+ =?utf-8?Q?DwXc2De3M3rwHKlGaV1MQQpbnkvYU58zbsXhbAXe1?=
+x-microsoft-antispam-prvs: <MWHPR2201MB11369D138ACAC570798FCC5FC1670@MWHPR2201MB1136.namprd22.prod.outlook.com>
+x-forefront-prvs: 09480768F8
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(366004)(346002)(136003)(396003)(39850400004)(189003)(199004)(8676002)(71200400001)(8936002)(26005)(66066001)(68736007)(486006)(106356001)(76176011)(97736004)(81166006)(14454004)(81156014)(6436002)(256004)(6506007)(186003)(386003)(1411001)(2906002)(102836004)(71190400001)(52116002)(54906003)(7696005)(99286004)(74316002)(25786009)(4744005)(4326008)(229853002)(316002)(478600001)(42882007)(7736002)(44832011)(305945005)(6246003)(6116002)(3846002)(446003)(476003)(11346002)(53936002)(105586002)(33656002)(6916009)(9686003)(55016002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1136;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: Ywkb401G8l2lJJkoaj0RQUz5zgplSgM40dFlVYvfCe3HnyqJBUY435oHOhkP2AEIuk6nPBy9hYCqh+73UDFxLbDhEtS9basjmg6KjlGuvl1qBopAmuSP20qjpYQIE9/ubNPsyGZ70OlC7s3xH1ucZw2pWxMexQlEYfr65b3UcCbfKhx6uK6hCfLAXiK/TWJQhnHd3vPByfTzzauYUReP2spPSqZZ+KiSWew4+Y3Vu3XkkmFyfgz5t9Dns93uVeSJTMyk3J2QYj+qAjRffYm+zO5h0c6HUXcw3WHsJJDrDuEoXevFoQ3vd2aCuBY0DPsJ69Pv+kbdHPxkzrGKv3iwWyCzHpxn07VyktpNmrPaV+x7GetuYNn/b3kYTC2cvKK+ByoEBoNIneBx5Eh4QuC5zUgouZ/MRILzBFKHDa+OAOo=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddb3a047-6b7a-4acb-f512-08d692aacc60
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2019 18:32:38.9364
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1136
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 02/02/19 02:38, lantianyu1986@gmail.com wrote:
-> From: Lan Tianyu <Tianyu.Lan@microsoft.com>
-> 
-> This patchset is to introduce hv ept tlb range list flush function
-> support in the KVM MMU component. Flushing ept tlbs of several address
-> range can be done via single hypercall and new list flush function is
-> used in the kvm_mmu_commit_zap_page() and FNAME(sync_page). This patchset
-> also adds more hv ept tlb range flush support in more KVM MMU function.
-> 
-> Change since v1:
->        1) Make flush list as a hlist instead of list in order to 
->        keep struct kvm_mmu_page size.
->        2) Add last_level flag in the struct kvm_mmu_page instead
->        of spte pointer
->        3) Move tlb flush from kvm_mmu_notifier_clear_flush_young() to kvm_age_hva()
->        4) Use range flush in the kvm_vm_ioctl_get/clear_dirty_log()
-
-Looks good except for the confusion on sp->last_level (which was mostly
-mine---sorry about that).  I think it can still make 5.1.
-
-However, note that I've never received "KVM/MMU: Use tlb range flush  in
-the kvm_age_hva()".
-
-Paolo
+SGVsbG8sDQoNClJhZmHFgiBNacWCZWNraSB3cm90ZToNCj4gRnJvbTogUmFmYcWCIE1pxYJlY2tp
+IDxyYWZhbEBtaWxlY2tpLnBsPg0KPiANCj4gMSkgRml4IHJlc2V0IGJ1dHRvbiBzdXBwb3J0IHdo
+aWNoIGlzIGFjdGl2ZSAqaGlnaCoNCj4gMikgU3BlY2lmeSBMRURzIGNvbG9ycw0KPiANCj4gU2ln
+bmVkLW9mZi1ieTogUmFmYcWCIE1pxYJlY2tpIDxyYWZhbEBtaWxlY2tpLnBsPg0KDQpBcHBsaWVk
+IHRvIG1pcHMtbmV4dC4NCg0KVGhhbmtzLA0KICAgIFBhdWwNCg0KWyBUaGlzIG1lc3NhZ2Ugd2Fz
+IGF1dG8tZ2VuZXJhdGVkOyBpZiB5b3UgYmVsaWV2ZSBhbnl0aGluZyBpcyBpbmNvcnJlY3QNCiAg
+dGhlbiBwbGVhc2UgZW1haWwgcGF1bC5idXJ0b25AbWlwcy5jb20gdG8gcmVwb3J0IGl0LiBdDQo=

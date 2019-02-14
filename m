@@ -2,30 +2,30 @@ Return-Path: <SRS0=d8WL=QV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,UNWANTED_LANGUAGE_BODY
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7E6CC43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21426C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:32:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 770D0222A1
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:12:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E5228222DF
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 16:32:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502620AbfBNQMf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Feb 2019 11:12:35 -0500
-Received: from mx1.redhat.com ([209.132.183.28]:59750 "EHLO mx1.redhat.com"
+        id S2407986AbfBNQck (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Feb 2019 11:32:40 -0500
+Received: from mx1.redhat.com ([209.132.183.28]:35064 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407854AbfBNQMe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 14 Feb 2019 11:12:34 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        id S1728867AbfBNQcj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 14 Feb 2019 11:32:39 -0500
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E561F7F7B1;
-        Thu, 14 Feb 2019 16:12:31 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id C790AC04BD22;
+        Thu, 14 Feb 2019 16:32:38 +0000 (UTC)
 Received: from [10.36.112.66] (ovpn-112-66.ams2.redhat.com [10.36.112.66])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 259CC101E847;
-        Thu, 14 Feb 2019 16:12:18 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9722B5ED5B;
+        Thu, 14 Feb 2019 16:32:19 +0000 (UTC)
 Subject: Re: [PATCH V2 3/10] KVM/MMU: Add last_level in the struct
  mmu_spte_page
 To:     lantianyu1986@gmail.com
@@ -100,17 +100,17 @@ Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
  DduC0U3xYkfbGAUvbxeepjgzp0uEnBXfPTy09JGpgWbg0w91GyfT/ujKaGd4vxG2Ei+MMNDm
  S1SMx7wu0evvQ5kT9NPzyq8R2GIhVSiAd2jioGuTjX6AZCFv3ToO53DliFMkVTecLptsXaes
  uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
-Message-ID: <34503144-fb31-8c02-9ac2-eedc1d95e80d@redhat.com>
-Date:   Thu, 14 Feb 2019 17:12:10 +0100
+Message-ID: <572a6ce3-23f6-7b16-a070-4d4a81ee4335@redhat.com>
+Date:   Thu, 14 Feb 2019 17:32:17 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.4.0
 MIME-Version: 1.0
 In-Reply-To: <20190202013825.51261-4-Tianyu.Lan@microsoft.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Thu, 14 Feb 2019 16:12:33 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Thu, 14 Feb 2019 16:32:39 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -128,7 +128,22 @@ On 02/02/19 02:38, lantianyu1986@gmail.com wrote:
 > +
 > +	sp->last_level = is_last_spte(spte, level);
 
-sp->last_level is always true here.
+Wait, I wasn't thinking straight.  If a struct kvm_mmu_page exists, it
+is never the last level.  Page table entries for the last level do not
+have a struct kvm_mmu_page.
+
+Therefore you don't need the flag after all.  I suspect your
+calculations in patch 2 are off by one, and you actually need
+
+	hlist_for_each_entry(sp, range->flush_list, flush_link) {
+		int pages = KVM_PAGES_PER_HPAGE(sp->role.level + 1);
+		...
+	}
+
+For example, if sp->role.level is 1 then the struct kvm_mmu_page is for
+a page containing PTEs and covers an area of 2 MiB.
+
+Thanks,
 
 Paolo
 

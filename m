@@ -1,85 +1,131 @@
-Return-Path: <SRS0=d8WL=QV=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=/Ny7=QW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE579C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 22:10:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C4AEC4360F
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 15:05:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9D7C321B1C
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Feb 2019 22:10:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 18997207E0
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 15:05:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Db0OTrcq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4zcylc3"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395232AbfBNWKh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Feb 2019 17:10:37 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:40654 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2395218AbfBNWKh (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 14 Feb 2019 17:10:37 -0500
-Received: by mail-pg1-f196.google.com with SMTP id u9so223407pgo.7;
-        Thu, 14 Feb 2019 14:10:36 -0800 (PST)
+        id S1731235AbfBOPFd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 15 Feb 2019 10:05:33 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:36346 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726137AbfBOPFd (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 15 Feb 2019 10:05:33 -0500
+Received: by mail-pf1-f194.google.com with SMTP id n22so4965010pfa.3;
+        Fri, 15 Feb 2019 07:05:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=b+G+/Tv/LVVp5yMCM79O8zHJHRh/fMf3ed9bvKVaV2s=;
-        b=Db0OTrcq+ijfzq0DaoCnfOeexl9qsgSFd0K6RVyAzIOV0BPLXb0y8ogl06IQB/l9Qm
-         pIG8eoj2w/9ZWBypzC95VD8kBFresusjM6naP5BbpwXiTOqPAtbFEg7yz0kS8E6IDLnA
-         vwO7u/gSzp5tGaZvynNTL1NgUFr6PpqDRCDeLbFOlRJdYDhnuzZsJGkh7o0PHsJsU/Zg
-         ysVq22MQJ3jyfLJMjumyI5Ue0BbV2S3nBUeAbfz8+n9mmnlEi7um5o2A7vMXqfxlWPix
-         GXi+kHuVEfTWte4lJzAcUDRBq2cL1a8V55V4Cva3k9Xgp0X3loQO5nLRSDvQtKSjxsAj
-         /AkA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pdlq/dEtI363+RqrBnNPZ7uHe1H/unQpX6+JLG3TUso=;
+        b=l4zcylc3JZXCQ5dgtx8+3QDOppft9OqAq2m82EUh2nCHYAFX7hShjjFF8JFVHzGJMU
+         hDiNoQiA83mgT5zit13fJerL3eNlO8QK0+YJdgH1hgxjc4nMTuTYtTxbkMP44HSfzyC1
+         o9oEY99aJsWTakOSwV2WB8m5VTbJRd5qH22G3VA9WavtTAjRArJ/9Bm3YlEG7iolxA9I
+         SCYMG3G+yQ9hchXv9kQOT+DKP1hON8ZP35cDUJXFTVYYragi/KhQ1rkV60PemXeFaYjA
+         cmLNbLuwyNbKX2Xgppa4lWNGt3Ckvd2kHMHjWbo3JmLRMOiJC4w3YlEJhYzJnj+58FjL
+         v1rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=b+G+/Tv/LVVp5yMCM79O8zHJHRh/fMf3ed9bvKVaV2s=;
-        b=WzWYw7VZdim3SDTwcLLpV2s8Sa/L1sX9YWoSRbCvqzdvXQdWlp/VgBdnOtLmw4qhKv
-         B4VKROwBAuzaoy7yF8WFjMEdvfeYzMwVHfRQqBo/LpVHQf85HN6aQcC9Xz20U1pypNyb
-         KKr0VUS4HsGHw0yj2brRiXtX82cvM72jNOIMIYa7md8+LNVKE/Z9sOJbe+aE5Mvs8bxc
-         OjouDLTGkTb1dTjQ41TPKT/69Oa8wT+Mt6/FZohXp1dKEBesv16cB0eGOfaMNt1064It
-         woOPgZVkm8cBx8AZWlZeRnKPX/kXVDAC+JtDqpN/c7ADt7cpyQQFiEBL7CjJSHfBvK+z
-         ptLQ==
-X-Gm-Message-State: AHQUAubydnWZDl4sjCMBqOrH6kj9Bf7zmLOrYoktA+hc3dCLKLRuK1tM
-        dIUCrlfScz3c2nAMx2gMt+c=
-X-Google-Smtp-Source: AHgI3IZ8r++IG+KgY1MV736iiTE+NNe7hhgMxlyHKv6aRMBfZ4JrMJDxHQVoSGqccx1XEViX6PXgdQ==
-X-Received: by 2002:a62:1d8c:: with SMTP id d134mr6459874pfd.96.1550182236411;
-        Thu, 14 Feb 2019 14:10:36 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t185sm1608137pfb.114.2019.02.14.14.10.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 Feb 2019 14:10:35 -0800 (PST)
-Date:   Thu, 14 Feb 2019 14:10:34 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Mehrtens, Hauke" <hauke.mehrtens@intel.com>
-Cc:     "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: print active stack on watchdog pre timeout for separate irq stack
-Message-ID: <20190214221034.GA11494@roeck-us.net>
-References: <9231D502B07C5E4A8B32D5115C9F19991F89C484@IRSMSX108.ger.corp.intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pdlq/dEtI363+RqrBnNPZ7uHe1H/unQpX6+JLG3TUso=;
+        b=SYY3z8wuSJntHa3pEchAWUUpmMp0W2ATBRl3O0nu1mAxzwRfwe2Z4TYaPQXcSUbnW9
+         2rvK4bnvEALIYzUfzv08eBROXAuG4ZIY0iVhvL3e5RC7aVkehEo6RKzLHuzwPWMiJihK
+         2p5N0dLN/zY8dmo8HTg1a1H8nI78tGGS+3zrsLxn/FcPeKmX9uH9EGmCyUtw3oaR7V4W
+         HxsA//AlqElmQGRcaWR3zVvxtj4JWsl0Iv7aizUKd4Beyg+xBTjQdI3ogLpGieNzrl2b
+         p+zrYUR1mkgSwOOezP4XTW8OdwREldXkPgWgPZXNAFBUk35CgudpbygDxrFEx884N1+g
+         4M5A==
+X-Gm-Message-State: AHQUAuYaqcQiwpkgRr0T5uObAjfWWTrstQ3KbLR2oXfyp5tQrD6VzDzu
+        kFKkNKIxHZxwL1W0gs2wFtIZqvH6Yp3WMxQwfnQ=
+X-Google-Smtp-Source: AHgI3IZGOB0YXIwlivSAxLHT4URYYb3+UhrAB9EIaQZQ4W7zt8lv9iT8EbVfih6aM7/Q0WiZpsDnUp+4G9hZ8+OTfjo=
+X-Received: by 2002:a63:6bc1:: with SMTP id g184mr5915867pgc.25.1550243132454;
+ Fri, 15 Feb 2019 07:05:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9231D502B07C5E4A8B32D5115C9F19991F89C484@IRSMSX108.ger.corp.intel.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+References: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
+ <20190202013825.51261-4-Tianyu.Lan@microsoft.com> <572a6ce3-23f6-7b16-a070-4d4a81ee4335@redhat.com>
+In-Reply-To: <572a6ce3-23f6-7b16-a070-4d4a81ee4335@redhat.com>
+From:   Tianyu Lan <lantianyu1986@gmail.com>
+Date:   Fri, 15 Feb 2019 23:05:21 +0800
+Message-ID: <CAOLK0pzXnvk=FsfjH07jUyRJGpeiNG7-9vR9Vo0mLJtdPnt_7Q@mail.gmail.com>
+Subject: Re: [PATCH V2 3/10] KVM/MMU: Add last_level in the struct mmu_spte_page
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
+        marc.zyngier@arm.com, linux@armlinux.org.uk,
+        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
+        benh@kernel.crashing.org, mpe@ellerman.id.au,
+        Radim Krcmar <rkrcmar@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        "linux-kernel@vger kernel org" <linux-kernel@vger.kernel.org>,
+        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm <kvm@vger.kernel.org>,
+        michael.h.kelley@microsoft.com, kys@microsoft.com,
+        Vitaly Kuznetsov <vkuznets@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Feb 14, 2019 at 09:27:17AM +0000, Mehrtens, Hauke wrote:
-> Hi,
-> 
-> We would like to print the stack of the currently active kernel thread from the interrupt handler when the watchdog pre timeout interrupt for our watchdog is triggered, currently we have a WARN_ONCE() in the code of the interrupt handler, but this only prints the interrupt stack, which is pretty boring. On MIPS the interrupts are handled on a separate stack and not on top of the stack of the current active kernel thread to avoid stack overflows. Is there some function which would print the stack trace of the current active kernel thread in addition or instead of the interrupt stack inside of an interrupt?
-> 
-> The kernel also has these pre timeout handlers, but they also seem to be affected by this problem:
-> https://elixir.bootlin.com/linux/v5.0-rc6/source/drivers/watchdog/pretimeout_panic.c
-> 
-Not sure I understand. Are you saying that panic() doesn't help either ?
-If that is correct, I have no idea what else could be done.
+On Fri, Feb 15, 2019 at 12:32 AM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> On 02/02/19 02:38, lantianyu1986@gmail.com wrote:
+> > diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
+> > index ce770b446238..70cafd3f95ab 100644
+> > --- a/arch/x86/kvm/mmu.c
+> > +++ b/arch/x86/kvm/mmu.c
+> > @@ -2918,6 +2918,9 @@ static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
+> >
+> >       if (level > PT_PAGE_TABLE_LEVEL)
+> >               spte |= PT_PAGE_SIZE_MASK;
+> > +
+> > +     sp->last_level = is_last_spte(spte, level);
+>
+> Wait, I wasn't thinking straight.  If a struct kvm_mmu_page exists, it
+> is never the last level.  Page table entries for the last level do not
+> have a struct kvm_mmu_page.
+>
+> Therefore you don't need the flag after all.  I suspect your
+> calculations in patch 2 are off by one, and you actually need
+>
+>         hlist_for_each_entry(sp, range->flush_list, flush_link) {
+>                 int pages = KVM_PAGES_PER_HPAGE(sp->role.level + 1);
+>                 ...
+>         }
+>
+> For example, if sp->role.level is 1 then the struct kvm_mmu_page is for
+> a page containing PTEs and covers an area of 2 MiB.
 
-Guenter
+Yes, you are right. Thanks to point out and will fix. The last_level
+flag is to avoid adding middle page node(e.g, PGD, PMD)
+into flush list. The address range will be duplicated if adding both
+leaf, node and middle node into flush list.
+
+>
+> Thanks,
+>
+> Paolo
+>
+> >       if (tdp_enabled)
+> >               spte |= kvm_x86_ops->get_mt_mask(vcpu, gfn,
+> >                       kvm_is_mmio_pfn(pfn));
+>
+
+
+-- 
+Best regards
+Tianyu Lan

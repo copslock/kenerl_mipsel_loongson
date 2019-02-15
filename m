@@ -2,154 +2,138 @@ Return-Path: <SRS0=/Ny7=QW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96ED8C4360F
-	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 18:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67750C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 19:28:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 73F6C2192C
-	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 18:58:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2961D222D0
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Feb 2019 19:28:19 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="jeG8KeWh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390810AbfBOS6p (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 15 Feb 2019 13:58:45 -0500
-Received: from mx1.redhat.com ([209.132.183.28]:42130 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390784AbfBOS6o (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 15 Feb 2019 13:58:44 -0500
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 891FF3D1E0;
-        Fri, 15 Feb 2019 18:58:42 +0000 (UTC)
-Received: from llong.remote.csb (dhcp-17-59.bos.redhat.com [10.18.17.59])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 52DD15C21E;
-        Fri, 15 Feb 2019 18:58:35 +0000 (UTC)
-Subject: Re: [PATCH v4 0/3] locking/rwsem: Rwsem rearchitecture part 0
-To:     Will Deacon <will.deacon@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>
-References: <1550095217-12047-1-git-send-email-longman@redhat.com>
- <20190214103715.GI32494@hirez.programming.kicks-ass.net>
- <20190215184056.GC15084@fuggles.cambridge.arm.com>
-From:   Waiman Long <longman@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=longman@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- weim8xU=
-Organization: Red Hat
-Message-ID: <a45d8b68-5623-d6fe-8080-072994f7625e@redhat.com>
-Date:   Fri, 15 Feb 2019 13:58:34 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20190215184056.GC15084@fuggles.cambridge.arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+        id S1726346AbfBOT2S (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 15 Feb 2019 14:28:18 -0500
+Received: from mail-eopbgr700139.outbound.protection.outlook.com ([40.107.70.139]:52346
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726010AbfBOT2S (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 15 Feb 2019 14:28:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UMaF/28X3XGUsxNGr0B8eLBPogoldspC/yW5FnjM6ck=;
+ b=jeG8KeWhmRGmcwtZfr3ZXEIySUQGImTVKOwDU4oaOVrMAexdICn6zkgiJUvET4T1PUlafW4/JV/vTuXuMGOmWsJeQ7Mwz1re0ApwNCz62g4IwJc7OlHD09GpUeM++peUHCxGQgOBYLbiRK4yIarEv1PBkGsV2DWAibe7CCM7kFw=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1101.namprd22.prod.outlook.com (10.174.169.151) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1622.19; Fri, 15 Feb 2019 19:28:14 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1601.023; Fri, 15 Feb 2019
+ 19:28:14 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     "Mehrtens, Hauke" <hauke.mehrtens@intel.com>
+CC:     "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: print active stack on watchdog pre timeout for separate irq stack
+Thread-Topic: print active stack on watchdog pre timeout for separate irq
+ stack
+Thread-Index: AdTERhkHQ/tMdayNR9+t+VaCObWnBgBHn3kA
+Date:   Fri, 15 Feb 2019 19:28:13 +0000
+Message-ID: <20190215192812.unoor5dudhvn2tgt@pburton-laptop>
+References: <9231D502B07C5E4A8B32D5115C9F19991F89C484@IRSMSX108.ger.corp.intel.com>
+In-Reply-To: <9231D502B07C5E4A8B32D5115C9F19991F89C484@IRSMSX108.ger.corp.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Fri, 15 Feb 2019 18:58:43 +0000 (UTC)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR08CA0010.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a6c173bb-5700-4871-fa1d-08d6937bba6a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600110)(711020)(4605077)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1101;
+x-ms-traffictypediagnostic: MWHPR2201MB1101:
+x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;MWHPR2201MB1101;23:e6GT3P+PTifUS6UScZvY/V3Cq6H2LySLslNiC7u?=
+ =?us-ascii?Q?A2V+qmzHwyraXsMGd5uCMpjM6bFU5RemmmNMu6RgeY/Ia2SJBmLMnf0DYyO8?=
+ =?us-ascii?Q?ekabkkeVgikjWiYGSMYhDexrTs+MGberlfZcAexzJjMYYMXKE7mBpD8SpC44?=
+ =?us-ascii?Q?Krsbp5Iy3A4E1vAXxleieHZilMOiBbd4k2hYIpiOSsXfDJ4MLrlnZASn/w2j?=
+ =?us-ascii?Q?/+/45Ei7xOHnrYxqvzPr+Kgv2Xom/zVBa8rkijLK64UScIqaGoEo/Zzozso+?=
+ =?us-ascii?Q?wW7W1DkYQodNA4SSXf6mcn3cSB9HpwoeKZXPQ4O3BHxsqai4FOWvF2/xdxxL?=
+ =?us-ascii?Q?ccxoOu7rUftxo65VtkoN7VOzT2H4IQE71NvA1rzqBKfylZVwOm4mKZWQM+7q?=
+ =?us-ascii?Q?rDKbOIMAUjwMcbuBIeeM4t1PqvyR22p7+f8axX3KzORX+7B6Bn4hOJZTJU7z?=
+ =?us-ascii?Q?pJNP1CnT5KZRVshqWc7QHD8U4zGSZRNfmiWMlsZhj4nUzUzeOItzSjJ2vDmq?=
+ =?us-ascii?Q?CsufxKdZkIiNmZfKAjAoFgd3IJq/nj5BHEcpcLFaCDaiHvnm869QXf8idi7H?=
+ =?us-ascii?Q?Twzp0Edn87qVRM556URPmN8Msm/v8udT7ge1OcM2yyn64tDx7s0qkjJaVoiB?=
+ =?us-ascii?Q?zyRNqOhsdFuUsCvJQsUthgGinnoZ6Lr2HUpRwBk1EMGZrzlGzq/KRD6IzgLM?=
+ =?us-ascii?Q?fVsUkwgu4zZiarMY9vxfe2CP3out/jRQGfPYHxdkmNkK97+CXqbQEs/woAmE?=
+ =?us-ascii?Q?rRG8kFxTIZGw2x9j+EGKaJONCPhy+5eaqkGqBCY6Uj8wwDM/nnp443mykKlQ?=
+ =?us-ascii?Q?itZJUku2TArOTF06HP1zxziWsjk+OTfsn2wPjMOIgNM0emZrcw+XaN8rqJjq?=
+ =?us-ascii?Q?Iuf9Bj/zD8+4YhF0Kp3Ek/WtcQOZbxlULLhQUFCntGQ89U+2k2NMTVD9onLV?=
+ =?us-ascii?Q?SrQRhqRl402f1OVbISUG5vIk/jIiwqkVc34AEuYgkc3h3tcvRyib9WEAPKTY?=
+ =?us-ascii?Q?2zWtOG2HRga0OAkmouNAqurs0KE1Ta+Jw5S50zDkurXm7O+fhlr5NoAg7NV5?=
+ =?us-ascii?Q?wL3iWa6ACAsk+m+W/4ab0UZIy/3jmQSwLcoClc2fTW0bI/U4wOujEMZIWTEA?=
+ =?us-ascii?Q?4WKS2PEclGxqxVCuWyDRFhhaWyFvw5UexbGkmhqGaE+gZoBlqgVIr6um7ux4?=
+ =?us-ascii?Q?qU6WMQJ0u2PsOSH4SNRjF9wVDi1aWu0w48IPlFQRzyvNUrt1h+cT1ZVmQm+/?=
+ =?us-ascii?Q?/HlbLQXuVHld+GE5AMQk/addE1ag0JLhl87dQJfzN?=
+x-microsoft-antispam-prvs: <MWHPR2201MB11018738A7BE0ACE6EC6A10EC1600@MWHPR2201MB1101.namprd22.prod.outlook.com>
+x-forefront-prvs: 09497C15EB
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(376002)(346002)(396003)(39850400004)(366004)(199004)(189003)(4326008)(186003)(54906003)(81156014)(8936002)(97736004)(81166006)(66066001)(99286004)(229853002)(8676002)(446003)(476003)(11346002)(6916009)(42882007)(6436002)(486006)(44832011)(2906002)(68736007)(6116002)(478600001)(256004)(1076003)(76176011)(71190400001)(71200400001)(386003)(14454004)(6506007)(305945005)(33716001)(58126008)(6246003)(7736002)(106356001)(26005)(52116002)(3846002)(9686003)(102836004)(6486002)(53936002)(25786009)(6512007)(33896004)(105586002)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1101;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: YZoSFzGgv6GXoZ8Ae15MtkDTRSvkllMi/hZRTf9nBMjTaxn4q0hGty300n+xTmZ4hLtNcPIuxlQul0X3ffMPlVAC6IqBMAcx2+0Gq8f/53ujTR1D6HI9GPRWtTlqwoBjEdGp/05ft46U3v7r8QdeLeTr6J4I2jOkgNUc4QcXe4038z00qRO9J1UEFDAXAV7XlFTxbBoQhNURzsFMVyzVU47qf+L2ta9TSc+7vbAFhAf5HyckxY9lxFhtye0BgmcZEYMX99Ijp1GW8zPgMyUNrycvcvYebwBx9H/cQmOtG2xqpZ6qAx0xb0cfkGFAZbGkLOfMt5DdFO8JdoG5O1nSEfe744VgxYak0H/nLSX57lRnBM/nNZwjgoZuzBuonmomPJeLaDsdgOaVQwRaZ5C+AXIBOD/295TV+mlaxc8S0Rc=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <27538D7972558942AACAACA9094A5B2F@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6c173bb-5700-4871-fa1d-08d6937bba6a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2019 19:28:13.6736
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1101
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 02/15/2019 01:40 PM, Will Deacon wrote:
-> On Thu, Feb 14, 2019 at 11:37:15AM +0100, Peter Zijlstra wrote:
->> On Wed, Feb 13, 2019 at 05:00:14PM -0500, Waiman Long wrote:
->>> v4:
->>>  - Remove rwsem-spinlock.c and make all archs use rwsem-xadd.c.
->>>
->>> v3:
->>>  - Optimize __down_read_trylock() for the uncontended case as suggested
->>>    by Linus.
->>>
->>> v2:
->>>  - Add patch 2 to optimize __down_read_trylock() as suggested by PeterZ.
->>>  - Update performance test data in patch 1.
->>>
->>> The goal of this patchset is to remove the architecture specific files
->>> for rwsem-xadd to make it easer to add enhancements in the later rwsem
->>> patches. It also removes the legacy rwsem-spinlock.c file and make all
->>> the architectures use one single implementation of rwsem - rwsem-xadd.c.
->>>
->>> Waiman Long (3):
->>>   locking/rwsem: Remove arch specific rwsem files
->>>   locking/rwsem: Remove rwsem-spinlock.c & use rwsem-xadd.c for all
->>>     archs
->>>   locking/rwsem: Optimize down_read_trylock()
->> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->>
->> with the caveat that I'm happy to exchange patch 3 back to my earlier
->> suggestion in case Will expesses concerns wrt the ARM64 performance of
->> Linus' suggestion.
-> Right, the current proposal doesn't work well for us, unfortunately. Which
-> was your earlier suggestion?
->
-> Will
+Hi Hauke,
 
-In my posting yesterday, I showed that most of the trylocks done were
-actually uncontended. Assuming that pattern hold for the most of the
-workloads, it will not that bad after all.
+On Thu, Feb 14, 2019 at 09:27:17AM +0000, Mehrtens, Hauke wrote:
+> We would like to print the stack of the currently active kernel thread
+> from the interrupt handler when the watchdog pre timeout interrupt for
+> our watchdog is triggered, currently we have a WARN_ONCE() in the code
+> of the interrupt handler, but this only prints the interrupt stack,
+> which is pretty boring. On MIPS the interrupts are handled on a
+> separate stack and not on top of the stack of the current active
+> kernel thread to avoid stack overflows. Is there some function which
+> would print the stack trace of the current active kernel thread in
+> addition or instead of the interrupt stack inside of an interrupt?
+>%
+> This was seen on kernel 4.9.109, but I am not aware of any changes in
+> this area in the last few years.
 
--Longman
+What's meant to happen is that we unwind the interrupt stack, then once
+we reach the end of that we jump over to the task stack & continue
+unwinding there to obtain a complete stack trace.
 
+That was added in v4.11 by commit db8466c581cc ("MIPS: IRQ Stack: Unwind
+IRQ stack onto task stack"), and it looks like it was backported to v4.9
+starting with v4.9.54 so you should have it already.
+
+Could you take a look at the "if (unlikely(*sp =3D=3D irq_stack_high))"
+check in unwind_stack_by_address() & see whether you hit it?
+
+Thanks,
+    Paul

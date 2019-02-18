@@ -2,50 +2,56 @@ Return-Path: <SRS0=NRRR=QZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EB52C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30097C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:18:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3C1CD21905
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:13:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F200E2177E
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550499194;
-	bh=raw4I8vF7z8DltlfERfXJlT+4FA1bpuA+gEUy1dKIOE=;
+	s=default; t=1550499490;
+	bh=mH2l9aAGj6Ly+flAAVJ26qd6dRAZ8A9DxURwmQYB37A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=2o+YQroCApLYOzsaW+0G/3MoSt6ZvpInT7KuMgXhFbO4zw7uEapbMSjOZ1V2eyj0C
-	 z790MDim7F0KToO0Ik7Nc0mcWfa/c882VZqYEn9dpgD8wYyQ0OEWzImIwVoxIMw7rE
-	 +uWyUfpgT8pjRjxKITn6zfd4fW+RweuOZaZTy8Go=
+	b=OAx+/re8HdSxVKoSBe4ntzfpCKIIkiuU92IdIK8CuK2hAjtJknGMhUoE6ZGqnF1KS
+	 uSwfMeHh7Yj+NsDbYEVP40+0uTKLpdAk8WWhne7S1wPEG2RjDLDqkjo6CjfGutx59R
+	 RoL1A+/mSE9mwRptnoekA5fdJ+50c4gDyfhcJTB0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392274AbfBRONN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 18 Feb 2019 09:13:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57802 "EHLO mail.kernel.org"
+        id S2391120AbfBROJN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 18 Feb 2019 09:09:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52668 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392247AbfBRONJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 18 Feb 2019 09:13:09 -0500
+        id S2391108AbfBROJK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 18 Feb 2019 09:09:10 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 195F8217D7;
-        Mon, 18 Feb 2019 14:13:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 813E421901;
+        Mon, 18 Feb 2019 14:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550499188;
-        bh=raw4I8vF7z8DltlfERfXJlT+4FA1bpuA+gEUy1dKIOE=;
+        s=default; t=1550498950;
+        bh=mH2l9aAGj6Ly+flAAVJ26qd6dRAZ8A9DxURwmQYB37A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vR1Fg6IIrxqa4DfBR8XYfpK3UutpenlNUlMnpebvteMqWzM/oAhl3FfmOsiASwSQy
-         pY8QlCknO7kA1RnPnnNeH/0Q74f3b4VkXY9jmh79xKWdEJP8wGyflmUDVUY3Vp/jKM
-         ouY4hvLrhJTurBN46O8CyDFr6LVgnTGRe/IMboCI=
+        b=TxKGr7oaW3A4URxUuhn5URSTc+7AkbMuor91JfAqstz1bIsGvADcsATQkHIIqPybf
+         zKoWWSyfzO83ujxe1sz4msQ+icUYoltuYCNY3QjYlIOk+shDPJofh5N82+AmXT5PPG
+         nszyci5hQP8ZBYoMG1yHAFRgJjt6IeTTk44Lu3PU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 3.18 080/108] MIPS: OCTEON: dont set octeon_dma_bar_type if PCI is disabled
-Date:   Mon, 18 Feb 2019 14:44:16 +0100
-Message-Id: <20190218133523.231370027@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Jakub Kicinski <jakub.kicinski@netronome.com>,
+        Song Liu <songliubraving@fb.com>,
+        Jiong Wang <jiong.wang@netronome.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 3.18 021/108] mips: bpf: fix encoding bug for mm_srlv32_op
+Date:   Mon, 18 Feb 2019 14:43:17 +0100
+Message-Id: <20190218133520.493782313@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190218133519.525507231@linuxfoundation.org>
 References: <20190218133519.525507231@linuxfoundation.org>
@@ -64,49 +70,47 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+[ Upstream commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 ]
 
-commit dcf300a69ac307053dfb35c2e33972e754a98bce upstream.
+For micro-mips, srlv inside POOL32A encoding space should use 0x50
+sub-opcode, NOT 0x90.
 
-Don't set octeon_dma_bar_type if PCI is disabled. This avoids creation
-of the MSI irqchip later on, and saves a bit of memory.
+Some early version ISA doc describes the encoding as 0x90 for both srlv and
+srav, this looks to me was a typo. I checked Binutils libopcode
+implementation which is using 0x50 for srlv and 0x90 for srav.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: a214720cbf50 ("Disable MSI also when pcie-octeon.pcie_disable on")
-Cc: stable@vger.kernel.org # v3.3+
+v1->v2:
+  - Keep mm_srlv32_op sorted by value.
+
+Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
+Acked-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pci-octeon.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/include/uapi/asm/inst.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/pci/pci-octeon.c
-+++ b/arch/mips/pci/pci-octeon.c
-@@ -571,6 +571,11 @@ static int __init octeon_pci_setup(void)
- 	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
- 		return 0;
- 
-+	if (!octeon_is_pci_host()) {
-+		pr_notice("Not in host mode, PCI Controller not initialized\n");
-+		return 0;
-+	}
-+
- 	/* Point pcibios_map_irq() to the PCI version of it */
- 	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
- 
-@@ -582,11 +587,6 @@ static int __init octeon_pci_setup(void)
- 	else
- 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
- 
--	if (!octeon_is_pci_host()) {
--		pr_notice("Not in host mode, PCI Controller not initialized\n");
--		return 0;
--	}
--
- 	/* PCI I/O and PCI MEM values */
- 	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
- 	ioport_resource.start = 0;
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index 4bfdb9d4c186..3eb4d6177266 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -262,8 +262,8 @@ enum mm_32a_minor_op {
+ 	mm_ext_op = 0x02c,
+ 	mm_pool32axf_op = 0x03c,
+ 	mm_srl32_op = 0x040,
++	mm_srlv32_op = 0x050,
+ 	mm_sra_op = 0x080,
+-	mm_srlv32_op = 0x090,
+ 	mm_rotr_op = 0x0c0,
+ 	mm_lwxs_op = 0x118,
+ 	mm_addu32_op = 0x150,
+-- 
+2.19.1
+
 
 

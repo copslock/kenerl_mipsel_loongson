@@ -1,79 +1,116 @@
-Return-Path: <SRS0=vhdE=QY=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=NRRR=QZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84B41C43381
-	for <linux-mips@archiver.kernel.org>; Sun, 17 Feb 2019 23:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8385C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 01:37:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4DC39217FA
-	for <linux-mips@archiver.kernel.org>; Sun, 17 Feb 2019 23:59:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9175B2184E
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 01:37:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727390AbfBQX7z (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 17 Feb 2019 18:59:55 -0500
-Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:39720 "EHLO
-        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726304AbfBQX7y (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 17 Feb 2019 18:59:54 -0500
-Received: from darkstar.musicnaut.iki.fi (85-76-79-75-nat.elisa-mobile.fi [85.76.79.75])
-        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id 2CAB02001F;
-        Mon, 18 Feb 2019 01:59:52 +0200 (EET)
-Date:   Mon, 18 Feb 2019 01:59:52 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Alexandre Oliva <lxoliva@fsfla.org>
+        id S1727398AbfBRBh6 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 17 Feb 2019 20:37:58 -0500
+Received: from linux-libre.fsfla.org ([209.51.188.54]:51134 "EHLO
+        linux-libre.fsfla.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726281AbfBRBh6 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 17 Feb 2019 20:37:58 -0500
+Received: from free.home (home.lxoliva.fsfla.org [172.31.160.164])
+        by linux-libre.fsfla.org (8.15.2/8.15.2/Debian-3) with ESMTP id x1I1bO7W006827;
+        Mon, 18 Feb 2019 01:37:26 GMT
+Received: from livre (livre.home [172.31.160.2])
+        by free.home (8.15.2/8.15.2) with ESMTP id x1I1b4jV007048;
+        Sun, 17 Feb 2019 22:37:04 -0300
+From:   Alexandre Oliva <lxoliva@fsfla.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     Tom Li <tomli@tomli.me>, James Hogan <jhogan@kernel.org>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC] On the Current Troubles of Mainlining Loongson Platform
- Drivers
-Message-ID: <20190217235951.GA20700@darkstar.musicnaut.iki.fi>
+Subject: Re: [RFC] On the Current Troubles of Mainlining Loongson Platform Drivers
+Organization: Free thinker, not speaking for FSF Latin America
 References: <20190208083038.GA1433@localhost.localdomain>
- <orbm3i5xrn.fsf@lxoliva.fsfla.org>
- <20190211125506.GA21280@localhost.localdomain>
- <orimxq3q9j.fsf@lxoliva.fsfla.org>
- <20190211230614.GB22242@darkstar.musicnaut.iki.fi>
- <orva1jj9ht.fsf@lxoliva.fsfla.org>
+        <orbm3i5xrn.fsf@lxoliva.fsfla.org>
+        <20190211125506.GA21280@localhost.localdomain>
+        <orimxq3q9j.fsf@lxoliva.fsfla.org>
+        <20190211230614.GB22242@darkstar.musicnaut.iki.fi>
+        <orva1jj9ht.fsf@lxoliva.fsfla.org>
+        <20190217235951.GA20700@darkstar.musicnaut.iki.fi>
+Date:   Sun, 17 Feb 2019 22:37:03 -0300
+In-Reply-To: <20190217235951.GA20700@darkstar.musicnaut.iki.fi> (Aaro
+        Koskinen's message of "Mon, 18 Feb 2019 01:59:52 +0200")
+Message-ID: <orpnrpj2rk.fsf@lxoliva.fsfla.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <orva1jj9ht.fsf@lxoliva.fsfla.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Scanned-By: MIMEDefang 2.84
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sun, Feb 17, 2019 at 01:59:26AM -0300, Alexandre Oliva wrote:
-> On Feb 11, 2019, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> 
-> > ATA (libata) CS5536 driver is having issues with spurious IRQs and often
-> > disables IRQs completely during the boot. You should see a warning
-> > in dmesg. This was the reason for slowness on my FuLoong mini-PC. A
-> > workaround is to switch to old IDE driver.
-> 
-> Thanks.  I see a NIEN quirk in ide-iops.c that's enabled for the hard
-> drive model I've got on my yeeloong, but that's not even compiled in my
-> freeloong builds.  I don't see any changes in libata between 4.19 and
-> 4.20 that could explain the regression either.
+On Feb 17, 2019, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
 
-I tested few older kernels, and it seems that the spurious IRQ issue has
-been always there after switching to libata (commit 7ff7a5b1bfff). It has
-been unnoticed as the 100000 irq limit wasn't reached during boot. But
-since libata probe is asynchronous some other kernel thread may delay it,
-and apparently some change in recent kernels adds enough delay to make the
-IRQ count to hit the limit.
+> I tested few older kernels, and it seems that the spurious IRQ issue has
+> been always there after switching to libata (commit 7ff7a5b1bfff). It has
+> been unnoticed as the 100000 irq limit wasn't reached during boot.
 
-> I'm afraid there's no observable change in behavior after installing the
-> proposed patch at
-> https://lore.kernel.org/linux-mips/20190106124607.GK27785@darkstar.musicnaut.iki.fi/
-> 
-> The kernel still disables irq14 early on, and then runs slow.
+I see, thanks.  That would probably make it hard to bisect indeed.
 
-This hack works only for CONFIG_PATA_CS5536. You are probably using PATA_AMD.
+>> The kernel still disables irq14 early on, and then runs slow.
 
-A.
+> This hack works only for CONFIG_PATA_CS5536. You are probably using PATA_AMD.
+
+That's a reasonable guess, but I don't think so.  I do have PATA_AMD
+enabled as a module indeed, but it's not even loaded, much as I can
+tell, whereas PATA_CS5536 is built into the kernel image, and dmesg
+says:
+
+[    4.460000] scsi host0: pata_cs5536
+[    4.464000] scsi host1: pata_cs5536
+[    4.464000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4c60 irq 14
+[    4.464000] ata2: DUMMY
+[    4.464000] pcnet32: [...]
+[    4.644000] random: [...]
+[    5.908000] irq 14: nobody cared (try booting with the "irqpoll" option)
+
+
+Just to be sure, I added some printks to cs5536_noop_freeze, and here's
+what I got in dmesg instead:
+
+[    4.452000] pata_cs5536: freeze: checking status...
+[    4.452000] pata_cs5536: freeze: checked, clearing...
+[    4.452000] pata_cs5536: freeze: cleared
+[    4.460000] scsi host0: pata_cs5536
+[    4.464000] scsi host1: pata_cs5536
+[    4.464000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4c60 irq 14
+[    4.464000] ata2: DUMMY
+[    4.464000] pcnet32: [...]
+[    4.468000] pata_cs5536: freeze: checking status...
+[    4.468000] pata_cs5536: freeze: checked, clearing...
+[    4.468000] pata_cs5536: freeze: cleared
+[    4.652000] random: [...]
+[    5.920000] irq 14: nobody cared (try booting with the "irqpoll" option)
+
+now, maybe I just don't understand what effects the patch was supposed
+to have.
+
+The system still feels very slow, but I haven't timed anything; could it
+be that it had the effect of keeping the IRQ functional after all, but
+5.0-rc6 is slower than earlier kernels for other reasons?  Like,
+/proc/irq/14/pata_cs5536/ is there, but I haven't checked whether it was
+there before the patch.
+
+Do you suggest any way to tell whether it had the intended effect?
+
+-- 
+Alexandre Oliva, freedom fighter   https://FSFLA.org/blogs/lxo
+Be the change, be Free!         FSF Latin America board member
+GNU Toolchain Engineer                Free Software Evangelist
+Hay que enGNUrecerse, pero sin perder la terGNUra jamás-GNUChe

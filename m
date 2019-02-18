@@ -7,48 +7,48 @@ X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10885C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EB52C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:13:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D6D1221902
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:06:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3C1CD21905
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550498816;
-	bh=6hmZwesDXpNTijRoV6F/KX/PaIU4BqqmN9ToaF8G5cU=;
+	s=default; t=1550499194;
+	bh=raw4I8vF7z8DltlfERfXJlT+4FA1bpuA+gEUy1dKIOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=E7eWnYFBx3zwvxZMlHinwkmGOkyMR/iN5vId6uzSe6xKsQlDQBkxLZ3YbhT5yo+ZX
-	 8IOHuNcIFjQDO6+J4oADADAbG1MXNf4oEGebbN/vXAJIKMpkV/p6337FF7o8ZaDAGS
-	 uR/4JB7nzN8DJllhQ5aC1Z5cCeazz8z+VN4W5jyY=
+	b=2o+YQroCApLYOzsaW+0G/3MoSt6ZvpInT7KuMgXhFbO4zw7uEapbMSjOZ1V2eyj0C
+	 z790MDim7F0KToO0Ik7Nc0mcWfa/c882VZqYEn9dpgD8wYyQ0OEWzImIwVoxIMw7rE
+	 +uWyUfpgT8pjRjxKITn6zfd4fW+RweuOZaZTy8Go=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390495AbfBROG4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 18 Feb 2019 09:06:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49976 "EHLO mail.kernel.org"
+        id S2392274AbfBRONN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 18 Feb 2019 09:13:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389943AbfBROGz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 18 Feb 2019 09:06:55 -0500
+        id S2392247AbfBRONJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 18 Feb 2019 09:13:09 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB78421901;
-        Mon, 18 Feb 2019 14:06:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 195F8217D7;
+        Mon, 18 Feb 2019 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550498814;
-        bh=6hmZwesDXpNTijRoV6F/KX/PaIU4BqqmN9ToaF8G5cU=;
+        s=default; t=1550499188;
+        bh=raw4I8vF7z8DltlfERfXJlT+4FA1bpuA+gEUy1dKIOE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tb/38sRwJeX3PnFXij9Bs37IYK4+oOmU97Mvs2UkVPo1rhBOwX+bEN2IHBItlw2Nj
-         BIpym3YrrYroo0ljBnZ9BHqFDL4TXBuXjhcNau2gh27jqzOxXhIBpuS90ZddeB6U/R
-         LMmK1hq3YzquR0kHr/WIQlenZsEkiaExoYftpsBY=
+        b=vR1Fg6IIrxqa4DfBR8XYfpK3UutpenlNUlMnpebvteMqWzM/oAhl3FfmOsiASwSQy
+         pY8QlCknO7kA1RnPnnNeH/0Q74f3b4VkXY9jmh79xKWdEJP8wGyflmUDVUY3Vp/jKM
+         ouY4hvLrhJTurBN46O8CyDFr6LVgnTGRe/IMboCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.4 104/143] MIPS: OCTEON: dont set octeon_dma_bar_type if PCI is disabled
-Date:   Mon, 18 Feb 2019 14:43:52 +0100
-Message-Id: <20190218133532.835048316@linuxfoundation.org>
+Subject: [PATCH 3.18 080/108] MIPS: OCTEON: dont set octeon_dma_bar_type if PCI is disabled
+Date:   Mon, 18 Feb 2019 14:44:16 +0100
+Message-Id: <20190218133523.231370027@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190218133529.099444112@linuxfoundation.org>
-References: <20190218133529.099444112@linuxfoundation.org>
+In-Reply-To: <20190218133519.525507231@linuxfoundation.org>
+References: <20190218133519.525507231@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+3.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

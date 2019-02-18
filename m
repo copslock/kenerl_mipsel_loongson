@@ -2,93 +2,110 @@ Return-Path: <SRS0=NRRR=QZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-14.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2B18C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 10:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75C23C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 12:30:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A53C521736
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 10:58:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 44ED521479
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 12:30:21 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Hx1wjV+i"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730249AbfBRK6L convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 18 Feb 2019 05:58:11 -0500
-Received: from mx2.suse.de ([195.135.220.15]:45110 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729465AbfBRK6L (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 18 Feb 2019 05:58:11 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 707C6AE0F;
-        Mon, 18 Feb 2019 10:58:09 +0000 (UTC)
-Date:   Mon, 18 Feb 2019 11:58:07 +0100
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 6/7] MIPS: SGI-IP27: use generic PCI driver
-Message-Id: <20190218115807.1a683d2c6824acd4ea78eb11@suse.de>
-In-Reply-To: <20190128133215.GC744@infradead.org>
-References: <20190124174728.28812-1-tbogendoerfer@suse.de>
-        <20190124174728.28812-7-tbogendoerfer@suse.de>
-        <20190128133215.GC744@infradead.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+        id S1728293AbfBRMaU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 18 Feb 2019 07:30:20 -0500
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:39674 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729690AbfBRMaU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 18 Feb 2019 07:30:20 -0500
+Received: by mail-yb1-f196.google.com with SMTP id s5so6680277ybp.6
+        for <linux-mips@vger.kernel.org>; Mon, 18 Feb 2019 04:30:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=ateX3s8gpfmkf/nVro5ijlmm4WUX31nTOLg9tsTAyHo=;
+        b=Hx1wjV+im/r8g4D1bp3S1D5jpGoQGj7HvHwpejDBhO/CkXGx+488gncYSBSpGNSARm
+         iyTtVcc3KgVZaLfunUua9UODmwMPXQnFIRm8hl9EVyEh8QHXmQBzsdp1Z/CBoOPeaoSV
+         ikin1xwyzeDLAkn4CXt3ISvrrC9oQ4MFt5ZqQvfTYSTYah6G8iIsRMK35MQQN9CKqqtP
+         ekeKHjxRHUN/JwIAHKBcbEldy8+1U9naKLok9pywoHknJNboUZAjo1VQUTYjxYxuA2K/
+         o6L+DI/PyfOHSh1Zd1/haa40AGy3gMtSNoSNf89t33VGN6ZH+Kbn1/slGAk0GH0hxm+W
+         LHbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ateX3s8gpfmkf/nVro5ijlmm4WUX31nTOLg9tsTAyHo=;
+        b=VdC1xE75AxXKUNiYUzqRjtD7IYcOD7wVC2pwTof5SkXcPRoQTFtS9uC7f82sr+9RhQ
+         u4XTlUMZWMozZmJvtMLi2Ae/OE6ECFLmF3h2/I85HtOtRb1KmsSIvKbptoo8rifQqj3n
+         A3hdzvZ8TP32lpFt3SkoAtiYFh9LQSFxyAVbKHyD/iIaXw+vVbijnBWsodRuQqk/WF0u
+         encwrKBIG9nUX82rgqBmm1tJ8dIF5KxvXSaVPiHgAjhxhWjKftVApOV6ZF3fNAEmUCay
+         9Pv8OARKfiz1tZ9VaUr8EAiU8WJP8YS8pOFdceeQ1VdFwRaNoAy5VyqNMJJdk4oXZU3g
+         /Fyg==
+X-Gm-Message-State: AHQUAub17YYtgyqn0vM6WPW0IueolmVbhdDOOvRTv6WlGhohnZJVyo9B
+        U9Euf7dytsa+G+dsFiiWIXjloQ==
+X-Google-Smtp-Source: AHgI3IZ0ikGflQzpigdpSjHwCFVf8oIyLZ31XectcfYiTm+tuEa6KV4uTlhpgVb9eX96Xd31K9dlAg==
+X-Received: by 2002:a25:be85:: with SMTP id i5mr18703799ybk.134.1550493019787;
+        Mon, 18 Feb 2019 04:30:19 -0800 (PST)
+Received: from localhost.localdomain ([106.51.22.126])
+        by smtp.gmail.com with ESMTPSA id z77sm1663695ywz.91.2019.02.18.04.30.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 18 Feb 2019 04:30:19 -0800 (PST)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Stable <stable@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH for-3.18.y+] MIPS: BCM63XX: fix switch core reset on BCM6368
+Date:   Mon, 18 Feb 2019 18:00:10 +0530
+Message-Id: <1550493012-5959-1-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, 28 Jan 2019 05:32:15 -0800
-Christoph Hellwig <hch@infradead.org> wrote:
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-> Note that we could probably fix these by just switching IP27 and
-> other users of the bridge chip to use the dma_pfn_offset field
-> in struct device and stop overriding these functions.
+commit 8a38dacf87180738d42b058334c951eba15d2d47 upstream.
 
-during my final round of tests for v2 of the patchset I found a problem with
-the current implementation regarding dma_pfn_offset. Right now it asumes that
-dma addresses are lower than physical addresses, which probably came from the
-sh7786 usage (at least that's how I understand the SH7786 datasheet). But for
-IP27 physical addresses starts at 0 and dma address is more at the end of the
-64bit address space. So using following patch gets it right for IP27:
+The Ethernet Switch core mask was set to 0, causing the switch core to
+be not reset on BCM6368 on boot. Provide the proper mask so the switch
+core gets reset to a known good state.
 
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index b7338702592a..19dfadc292f5 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -12,14 +12,14 @@ static inline dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
- {
-        dma_addr_t dev_addr = (dma_addr_t)paddr;
- 
--       return dev_addr - ((dma_addr_t)dev->dma_pfn_offset << PAGE_SHIFT);
-+       return dev_addr + ((dma_addr_t)dev->dma_pfn_offset << PAGE_SHIFT);
- }
- 
- static inline phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dev_addr)
- {
-        phys_addr_t paddr = (phys_addr_t)dev_addr;
- 
--       return paddr + ((phys_addr_t)dev->dma_pfn_offset << PAGE_SHIFT);
-+       return paddr - ((phys_addr_t)dev->dma_pfn_offset << PAGE_SHIFT);
- }
- 
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
+Fixes: 799faa626c71 ("MIPS: BCM63XX: add core reset helper")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+Cherry-picked from lede tree https://git.lede-project.org/?p=source.git
+and build tested for LTS trees up to v4.19.y for ARCH=mips bcm63xx_defconfig.
 
-This of course will break SH7786. To fix both cases how about making dma_pfn_offset
-a signed long ?
+ arch/mips/bcm63xx/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thomas.
-
+diff --git a/arch/mips/bcm63xx/reset.c b/arch/mips/bcm63xx/reset.c
+index a2af38cf28a7..64574e74cb23 100644
+--- a/arch/mips/bcm63xx/reset.c
++++ b/arch/mips/bcm63xx/reset.c
+@@ -120,7 +120,7 @@
+ #define BCM6368_RESET_DSL	0
+ #define BCM6368_RESET_SAR	SOFTRESET_6368_SAR_MASK
+ #define BCM6368_RESET_EPHY	SOFTRESET_6368_EPHY_MASK
+-#define BCM6368_RESET_ENETSW	0
++#define BCM6368_RESET_ENETSW	SOFTRESET_6368_ENETSW_MASK
+ #define BCM6368_RESET_PCM	SOFTRESET_6368_PCM_MASK
+ #define BCM6368_RESET_MPI	SOFTRESET_6368_MPI_MASK
+ #define BCM6368_RESET_PCIE	0
 -- 
-SUSE Linux GmbH
-GF: Felix Imendörffer, Jane Smithard, Graham Norton
-HRB 21284 (AG Nürnberg)
+2.7.4
+

@@ -2,59 +2,55 @@ Return-Path: <SRS0=NRRR=QZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30097C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:18:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2A1EC10F01
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:21:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F200E2177E
-	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:18:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 75D2621902
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Feb 2019 14:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1550499490;
-	bh=mH2l9aAGj6Ly+flAAVJ26qd6dRAZ8A9DxURwmQYB37A=;
+	s=default; t=1550499666;
+	bh=yEFbe/0vxAWUdwPVbrnxxJSBobPiqZCskXVVk2YPQOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=OAx+/re8HdSxVKoSBe4ntzfpCKIIkiuU92IdIK8CuK2hAjtJknGMhUoE6ZGqnF1KS
-	 uSwfMeHh7Yj+NsDbYEVP40+0uTKLpdAk8WWhne7S1wPEG2RjDLDqkjo6CjfGutx59R
-	 RoL1A+/mSE9mwRptnoekA5fdJ+50c4gDyfhcJTB0=
+	b=RmcExU/g9n2TCW9166JbYa76spe78LrsmvGKEq3guTPF1SgG+sfQIqa/citkQ5WJX
+	 zu9p8w0kZBRuFWzEzu2Y59CLjTDcmasfK3drowPHinX1t8UzSQ6VdAxg+xPwAckOYt
+	 ifNjr7RQ/81xOlFWslNBktgO4jhNahXy4wYJskKo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391120AbfBROJN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 18 Feb 2019 09:09:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52668 "EHLO mail.kernel.org"
+        id S1733244AbfBROVA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 18 Feb 2019 09:21:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49926 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391108AbfBROJK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 18 Feb 2019 09:09:10 -0500
+        id S2389706AbfBROGw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 18 Feb 2019 09:06:52 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 813E421901;
-        Mon, 18 Feb 2019 14:09:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22ADB204FD;
+        Mon, 18 Feb 2019 14:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1550498950;
-        bh=mH2l9aAGj6Ly+flAAVJ26qd6dRAZ8A9DxURwmQYB37A=;
+        s=default; t=1550498811;
+        bh=yEFbe/0vxAWUdwPVbrnxxJSBobPiqZCskXVVk2YPQOM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TxKGr7oaW3A4URxUuhn5URSTc+7AkbMuor91JfAqstz1bIsGvADcsATQkHIIqPybf
-         zKoWWSyfzO83ujxe1sz4msQ+icUYoltuYCNY3QjYlIOk+shDPJofh5N82+AmXT5PPG
-         nszyci5hQP8ZBYoMG1yHAFRgJjt6IeTTk44Lu3PU=
+        b=1Y91f8RY+jrOwxEjyfOZ87RwqCjScBPb4glrkfhUlxoC6W8PP+Sbb6tuqMMy3YihZ
+         wE3uGywaXcrW8Krat579FNmnOmaul+ZybKMkCsBkTlIepKLMmJ6L0E3xVgbUYEa2nP
+         181uBUl6IsZcB6gLLwAIsCmRw1odYmlqybR8Q5Us=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        Song Liu <songliubraving@fb.com>,
-        Jiong Wang <jiong.wang@netronome.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 3.18 021/108] mips: bpf: fix encoding bug for mm_srlv32_op
-Date:   Mon, 18 Feb 2019 14:43:17 +0100
-Message-Id: <20190218133520.493782313@linuxfoundation.org>
+        Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.4 103/143] mips: cm: reprime error cause
+Date:   Mon, 18 Feb 2019 14:43:51 +0100
+Message-Id: <20190218133532.800216011@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190218133519.525507231@linuxfoundation.org>
-References: <20190218133519.525507231@linuxfoundation.org>
+In-Reply-To: <20190218133529.099444112@linuxfoundation.org>
+References: <20190218133529.099444112@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +62,46 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-3.18-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-[ Upstream commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 ]
+From: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 
-For micro-mips, srlv inside POOL32A encoding space should use 0x50
-sub-opcode, NOT 0x90.
+commit 05dc6001af0630e200ad5ea08707187fe5537e6d upstream.
 
-Some early version ISA doc describes the encoding as 0x90 for both srlv and
-srav, this looks to me was a typo. I checked Binutils libopcode
-implementation which is using 0x50 for srlv and 0x90 for srav.
+Accordingly to the documentation
+---cut---
+The GCR_ERROR_CAUSE.ERR_TYPE field and the GCR_ERROR_MULT.ERR_TYPE
+fields can be cleared by either a reset or by writing the current
+value of GCR_ERROR_CAUSE.ERR_TYPE to the
+GCR_ERROR_CAUSE.ERR_TYPE register.
+---cut---
+Do exactly this. Original value of cm_error may be safely written back;
+it clears error cause and keeps other bits untouched.
 
-v1->v2:
-  - Keep mm_srlv32_op sorted by value.
-
-Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Paul Burton <paul.burton@mips.com>
+Fixes: 3885c2b463f6 ("MIPS: CM: Add support for reporting CM cache errors")
+Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@vger.kernel.org
-Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/include/uapi/asm/inst.h | 2 +-
+ arch/mips/kernel/mips-cm.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 4bfdb9d4c186..3eb4d6177266 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -262,8 +262,8 @@ enum mm_32a_minor_op {
- 	mm_ext_op = 0x02c,
- 	mm_pool32axf_op = 0x03c,
- 	mm_srl32_op = 0x040,
-+	mm_srlv32_op = 0x050,
- 	mm_sra_op = 0x080,
--	mm_srlv32_op = 0x090,
- 	mm_rotr_op = 0x0c0,
- 	mm_lwxs_op = 0x118,
- 	mm_addu32_op = 0x150,
--- 
-2.19.1
-
+--- a/arch/mips/kernel/mips-cm.c
++++ b/arch/mips/kernel/mips-cm.c
+@@ -424,5 +424,5 @@ void mips_cm_error_report(void)
+ 	}
+ 
+ 	/* reprime cause register */
+-	write_gcr_error_cause(0);
++	write_gcr_error_cause(cm_error);
+ }
 
 

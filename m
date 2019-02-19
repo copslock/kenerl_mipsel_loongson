@@ -6,33 +6,30 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A46B2C4151A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9239C10F03
 	for <linux-mips@archiver.kernel.org>; Tue, 19 Feb 2019 15:58:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8069D2183E
+	by mail.kernel.org (Postfix) with ESMTP id A28662146E
 	for <linux-mips@archiver.kernel.org>; Tue, 19 Feb 2019 15:58:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728912AbfBSP5m (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 19 Feb 2019 10:57:42 -0500
-Received: from mx2.suse.de ([195.135.220.15]:51914 "EHLO mx1.suse.de"
+        id S1728732AbfBSP5l (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 19 Feb 2019 10:57:41 -0500
+Received: from mx2.suse.de ([195.135.220.15]:51930 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726357AbfBSP5m (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 19 Feb 2019 10:57:42 -0500
+        id S1728661AbfBSP5l (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 19 Feb 2019 10:57:41 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id B1C2AAF5F;
-        Tue, 19 Feb 2019 15:57:40 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id B5528AF49;
+        Tue, 19 Feb 2019 15:57:38 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH v2 08/10] MIPS: SGI-IP27: use generic PCI driver
-Date:   Tue, 19 Feb 2019 16:57:22 +0100
-Message-Id: <20190219155728.19163-9-tbogendoerfer@suse.de>
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 06/10] MIPS: SGI-IP27: rework HUB interrupts
+Date:   Tue, 19 Feb 2019 16:57:20 +0100
+Message-Id: <20190219155728.19163-7-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190219155728.19163-1-tbogendoerfer@suse.de>
 References: <20190219155728.19163-1-tbogendoerfer@suse.de>
@@ -41,1026 +38,1113 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Converted bridge code to a platform driver using the PCI generic driver
-framework and use adding platform devices during xtalk scan. This allows
-easier sharing bridge driver for other SGI platforms like IP30 (Octane) and
-IP35 (Origin 3k, Fuel, Tezro).
+This commit rearranges the HUB interrupt code by using MIPS_IRQ_CPU
+interrupt handling code and modern Linux IRQ framework features to get
+rid of global arrays. It also adds support for irq affinity setting.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/Kconfig                                  |   2 +
- arch/mips/include/asm/dma-direct.h                 |   2 +
- arch/mips/include/asm/mach-generic/dma-direct.h    |   7 +
- arch/mips/include/asm/mach-ip27/dma-direct.h       |  20 ++
- arch/mips/include/asm/mach-ip27/topology.h         |  13 +-
- arch/mips/include/asm/pci.h                        |   8 +
- arch/mips/include/asm/pci/bridge.h                 |   6 +-
- arch/mips/include/asm/xtalk/xtalk.h                |   9 -
- arch/mips/pci/Makefile                             |   1 -
- arch/mips/pci/pci-ip27.c                           | 214 ----------------
- arch/mips/sgi-ip27/ip27-init.c                     |   2 +
- arch/mips/sgi-ip27/ip27-xtalk.c                    |  31 ++-
- drivers/pci/controller/Kconfig                     |   3 +
- drivers/pci/controller/Makefile                    |   1 +
- .../pci/controller/pci-xtalk-bridge.c              | 278 +++++++++++++++++----
- include/linux/platform_data/xtalk-bridge.h         |  17 ++
- 16 files changed, 312 insertions(+), 302 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-generic/dma-direct.h
- create mode 100644 arch/mips/include/asm/mach-ip27/dma-direct.h
- delete mode 100644 arch/mips/pci/pci-ip27.c
- rename arch/mips/pci/ops-bridge.c => drivers/pci/controller/pci-xtalk-bridge.c (52%)
- create mode 100644 include/linux/platform_data/xtalk-bridge.h
+ arch/mips/Kconfig                        |   1 +
+ arch/mips/include/asm/mach-ip27/irq.h    |  12 +-
+ arch/mips/include/asm/mach-ip27/mmzone.h |   9 -
+ arch/mips/include/asm/pci/bridge.h       |   4 +-
+ arch/mips/pci/pci-ip27.c                 |  18 +-
+ arch/mips/sgi-ip27/Makefile              |   3 +-
+ arch/mips/sgi-ip27/ip27-init.c           |  33 +--
+ arch/mips/sgi-ip27/ip27-irq-pci.c        | 264 -----------------------
+ arch/mips/sgi-ip27/ip27-irq.c            | 357 +++++++++++++++++++++----------
+ arch/mips/sgi-ip27/ip27-irqno.c          |  48 -----
+ arch/mips/sgi-ip27/ip27-timer.c          |  42 +---
+ 11 files changed, 260 insertions(+), 531 deletions(-)
+ delete mode 100644 arch/mips/sgi-ip27/ip27-irq-pci.c
+ delete mode 100644 arch/mips/sgi-ip27/ip27-irqno.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 93b88e8e72d0..57a424e82a18 100644
+index a84c24d894aa..93b88e8e72d0 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -678,6 +678,8 @@ config SGI_IP27
+@@ -676,6 +676,7 @@ config SGI_IP27
+ 	select DEFAULT_SGI_PARTITION
+ 	select SYS_HAS_EARLY_PRINTK
  	select HAVE_PCI
- 	select IRQ_MIPS_CPU
++	select IRQ_MIPS_CPU
  	select NR_CPUS_DEFAULT_64
-+	select PCI_DRIVERS_GENERIC
-+	select PCI_XTALK_BRIDGE
  	select SYS_HAS_CPU_R10000
  	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
-diff --git a/arch/mips/include/asm/dma-direct.h b/arch/mips/include/asm/dma-direct.h
-index b5c240806e1b..bd11e7934df1 100644
---- a/arch/mips/include/asm/dma-direct.h
-+++ b/arch/mips/include/asm/dma-direct.h
-@@ -2,6 +2,8 @@
- #ifndef _MIPS_DMA_DIRECT_H
- #define _MIPS_DMA_DIRECT_H 1
+diff --git a/arch/mips/include/asm/mach-ip27/irq.h b/arch/mips/include/asm/mach-ip27/irq.h
+index b0b7261ff3ad..fd91c58aaf7d 100644
+--- a/arch/mips/include/asm/mach-ip27/irq.h
++++ b/arch/mips/include/asm/mach-ip27/irq.h
+@@ -10,13 +10,15 @@
+ #ifndef __ASM_MACH_IP27_IRQ_H
+ #define __ASM_MACH_IP27_IRQ_H
  
-+#include <dma-direct.h>
-+
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
- {
- 	if (!dev->dma_mask)
-diff --git a/arch/mips/include/asm/mach-generic/dma-direct.h b/arch/mips/include/asm/mach-generic/dma-direct.h
-new file mode 100644
-index 000000000000..2d2c187dcd42
---- /dev/null
-+++ b/arch/mips/include/asm/mach-generic/dma-direct.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MACH_GENERIC_DMA_DIRECT_H
-+#define __ASM_MACH_GENERIC_DMA_DIRECT_H
-+
-+/* Intentionally empty file ...  */
-+
-+#endif /* __ASM_MACH_GENERIC_DMA_DIRECT_H */
-diff --git a/arch/mips/include/asm/mach-ip27/dma-direct.h b/arch/mips/include/asm/mach-ip27/dma-direct.h
-new file mode 100644
-index 000000000000..ec9856dfe2db
---- /dev/null
-+++ b/arch/mips/include/asm/mach-ip27/dma-direct.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MACH_IP27_DMA_DIRECT_H
-+#define __ASM_MACH_IP27_DMA_DIRECT_H
-+
-+#include <asm/pci/bridge.h>
-+
-+static inline dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
-+
-+	return bc->baddr + paddr;
-+}
-+
-+static inline phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
-+{
-+	return dma_addr & ~(0xffUL << 56);
-+}
-+
-+#endif /* __ASM_MACH_IP27_DMA_DIRECT_H */
-diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
-index 42ea1313626c..3cd03a74187e 100644
---- a/arch/mips/include/asm/mach-ip27/topology.h
-+++ b/arch/mips/include/asm/mach-ip27/topology.h
-@@ -7,18 +7,9 @@
- #include <asm/mmzone.h>
+-/*
+- * A hardwired interrupt number is completely stupid for this system - a
+- * large configuration might have thousands if not tenthousands of
+- * interrupts.
+- */
+ #define NR_IRQS 256
  
- struct cpuinfo_ip27 {
--//	cpuid_t		p_cpuid;	/* PROM assigned cpuid */
- 	cnodeid_t	p_nodeid;	/* my node ID in compact-id-space */
- 	nasid_t		p_nasid;	/* my node ID in numa-as-id-space */
- 	unsigned char	p_slice;	/* Physical position on node board */
--#if 0
--	unsigned long		loops_per_sec;
--	unsigned long		ipi_count;
--	unsigned long		irq_attempt[NR_IRQS];
--	unsigned long		smp_local_irq_count;
--	unsigned long		prof_multiplier;
--	unsigned long		prof_counter;
--#endif
+ #include_next <irq.h>
+ 
++#define IP27_HUB_PEND0_IRQ	(MIPS_CPU_IRQ_BASE + 2)
++#define IP27_HUB_PEND1_IRQ	(MIPS_CPU_IRQ_BASE + 3)
++#define IP27_RT_TIMER_IRQ	(MIPS_CPU_IRQ_BASE + 4)
++
++#define IP27_HUB_IRQ_BASE	(MIPS_CPU_IRQ_BASE + 8)
++#define IP27_HUB_IRQ_COUNT	128
++
+ #endif /* __ASM_MACH_IP27_IRQ_H */
+diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
+index 2ed3094dee07..1cd6a23a84f2 100644
+--- a/arch/mips/include/asm/mach-ip27/mmzone.h
++++ b/arch/mips/include/asm/mach-ip27/mmzone.h
+@@ -8,20 +8,11 @@
+ 
+ #define pa_to_nid(addr)		NASID_TO_COMPACT_NODEID(NASID_GET(addr))
+ 
+-#define LEVELS_PER_SLICE	128
+-
+-struct slice_data {
+-	unsigned long irq_enable_mask[2];
+-	int level_to_irq[LEVELS_PER_SLICE];
+-};
+-
+ struct hub_data {
+ 	kern_vars_t	kern_vars;
+ 	DECLARE_BITMAP(h_bigwin_used, HUB_NUM_BIG_WINDOW);
+ 	cpumask_t	h_cpus;
+ 	unsigned long slice_map;
+-	unsigned long irq_alloc_mask[2];
+-	struct slice_data slice[2];
  };
  
- extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
-@@ -27,10 +18,8 @@ extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
- #define cpumask_of_node(node)	((node) == -1 ?				\
- 				 cpu_all_mask :				\
- 				 &hub_data(node)->h_cpus)
--struct pci_bus;
--extern int pcibus_to_node(struct pci_bus *);
- 
--#define cpumask_of_pcibus(bus)	(cpu_online_mask)
-+#define cpumask_of_pcibus(bus)	(cpumask_of_node(pcibus_to_node(bus)))
- 
- extern unsigned char __node_distances[MAX_COMPACT_NODES][MAX_COMPACT_NODES];
- 
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 436099883022..70d1e51a7ca2 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -147,4 +147,12 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 	return channel ? 15 : 14;
- }
- 
-+#ifdef CONFIG_SGI_IP27
-+/* Returns the node based on pci bus */
-+static inline int pcibus_to_node(struct pci_bus *bus)
-+{
-+	return dev_to_node(&bus->dev);
-+}
-+#endif
-+
- #endif /* _ASM_PCI_H */
+ struct node_data {
 diff --git a/arch/mips/include/asm/pci/bridge.h b/arch/mips/include/asm/pci/bridge.h
-index 23574c27eb40..457ff868a027 100644
+index 0c5fe3a2d2a9..23574c27eb40 100644
 --- a/arch/mips/include/asm/pci/bridge.h
 +++ b/arch/mips/include/asm/pci/bridge.h
-@@ -801,15 +801,13 @@ struct bridge_err_cmdword {
- #define PCI64_ATTR_RMF_SHFT	48
- 
- struct bridge_controller {
--	struct pci_controller	pc;
- 	struct resource		mem;
- 	struct resource		io;
- 	struct resource		busn;
+@@ -808,7 +808,6 @@ struct bridge_controller {
  	struct bridge_regs	*base;
--	nasid_t			nasid;
--	unsigned int		widget_id;
+ 	nasid_t			nasid;
+ 	unsigned int		widget_id;
+-	unsigned int		irq_cpu;
  	u64			baddr;
  	unsigned int		pci_int[8];
-+	nasid_t			nasid;
  };
+@@ -823,8 +822,7 @@ struct bridge_controller {
+ #define bridge_clr(bc, reg, val)	\
+ 	__raw_writel(__raw_readl(&bc->base->reg) & ~(val), &bc->base->reg)
  
- #define BRIDGE_CONTROLLER(bus) \
-@@ -824,6 +822,4 @@ struct bridge_controller {
+-extern void register_bridge_irq(unsigned int irq);
+-extern int request_bridge_irq(struct bridge_controller *bc);
++extern int request_bridge_irq(struct bridge_controller *bc, int pin);
  
- extern int request_bridge_irq(struct bridge_controller *bc, int pin);
+ extern struct pci_ops bridge_pci_ops;
  
--extern struct pci_ops bridge_pci_ops;
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index 7cf50290a6d9..3c177b4d0609 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -24,22 +24,11 @@
+ #define MAX_PCI_BUSSES		40
+ 
+ /*
+- * Max #PCI devices (like scsi controllers) we handle on a bus.
+- */
+-#define MAX_DEVICES_PER_PCIBUS	8
 -
- #endif /* _ASM_PCI_BRIDGE_H */
-diff --git a/arch/mips/include/asm/xtalk/xtalk.h b/arch/mips/include/asm/xtalk/xtalk.h
-index 26d2ed1fa917..680e7efebbaf 100644
---- a/arch/mips/include/asm/xtalk/xtalk.h
-+++ b/arch/mips/include/asm/xtalk/xtalk.h
-@@ -47,15 +47,6 @@ typedef struct xtalk_piomap_s *xtalk_piomap_t;
- #define XIO_PORT(x)	((xwidgetnum_t)(((x)&XIO_PORT_BITS) >> XIO_PORT_SHIFT))
- #define XIO_PACK(p, o)	((((uint64_t)(p))<<XIO_PORT_SHIFT) | ((o)&XIO_ADDR_BITS))
+-/*
+  * XXX: No kmalloc available when we do our crosstalk scan,
+  *	we should try to move it later in the boot process.
+  */
+ static struct bridge_controller bridges[MAX_PCI_BUSSES];
  
--#ifdef CONFIG_PCI
--extern int bridge_probe(nasid_t nasid, int widget, int masterwid);
--#else
--static inline int bridge_probe(nasid_t nasid, int widget, int masterwid)
+-/*
+- * Translate from irq to software PCI bus number and PCI slot.
+- */
+-struct bridge_controller *irq_to_bridge[MAX_PCI_BUSSES * MAX_DEVICES_PER_PCIBUS];
+-int irq_to_slot[MAX_PCI_BUSSES * MAX_DEVICES_PER_PCIBUS];
+-
+ extern struct pci_ops bridge_pci_ops;
+ 
+ int bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+@@ -77,7 +66,6 @@ int bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+ 	bc->io.end		= ~0UL;
+ 	bc->io.flags		= IORESOURCE_IO;
+ 
+-	bc->irq_cpu = smp_processor_id();
+ 	bc->widget_id = widget_id;
+ 	bc->nasid = nasid;
+ 
+@@ -165,16 +153,12 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ 
+ 	irq = bc->pci_int[slot];
+ 	if (irq == -1) {
+-		irq = request_bridge_irq(bc);
++		irq = request_bridge_irq(bc, slot);
+ 		if (irq < 0)
+ 			return irq;
+ 
+ 		bc->pci_int[slot] = irq;
+ 	}
+-
+-	irq_to_bridge[irq] = bc;
+-	irq_to_slot[irq] = slot;
+-
+ 	dev->irq = irq;
+ 
+ 	return 0;
+diff --git a/arch/mips/sgi-ip27/Makefile b/arch/mips/sgi-ip27/Makefile
+index 73502fda13ee..27c14ede191e 100644
+--- a/arch/mips/sgi-ip27/Makefile
++++ b/arch/mips/sgi-ip27/Makefile
+@@ -3,10 +3,9 @@
+ # Makefile for the IP27 specific kernel interface routines under Linux.
+ #
+ 
+-obj-y	:= ip27-berr.o ip27-irq.o ip27-irqno.o ip27-init.o ip27-klconfig.o \
++obj-y	:= ip27-berr.o ip27-irq.o ip27-init.o ip27-klconfig.o \
+ 	   ip27-klnuma.o ip27-memory.o ip27-nmi.o ip27-reset.o ip27-timer.o \
+ 	   ip27-hubio.o ip27-xtalk.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)	+= ip27-console.o
+-obj-$(CONFIG_PCI)		+= ip27-irq-pci.o
+ obj-$(CONFIG_SMP)		+= ip27-smp.o
+diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
+index e6fa9d0c708a..6074efeff894 100644
+--- a/arch/mips/sgi-ip27/ip27-init.c
++++ b/arch/mips/sgi-ip27/ip27-init.c
+@@ -56,7 +56,6 @@ static void per_hub_init(cnodeid_t cnode)
+ {
+ 	struct hub_data *hub = hub_data(cnode);
+ 	nasid_t nasid = COMPACT_TO_NASID_NODEID(cnode);
+-	int i;
+ 
+ 	cpumask_set_cpu(smp_processor_id(), &hub->h_cpus);
+ 
+@@ -87,24 +86,6 @@ static void per_hub_init(cnodeid_t cnode)
+ 		__flush_cache_all();
+ 	}
+ #endif
+-
+-	/*
+-	 * Some interrupts are reserved by hardware or by software convention.
+-	 * Mark these as reserved right away so they won't be used accidentally
+-	 * later.
+-	 */
+-	for (i = 0; i <= BASE_PCI_IRQ; i++) {
+-		__set_bit(i, hub->irq_alloc_mask);
+-		LOCAL_HUB_CLR_INTR(INT_PEND0_BASELVL + i);
+-	}
+-
+-	__set_bit(IP_PEND0_6_63, hub->irq_alloc_mask);
+-	LOCAL_HUB_S(PI_INT_PEND_MOD, IP_PEND0_6_63);
+-
+-	for (i = NI_BRDCAST_ERR_A; i <= MSC_PANIC_INTR; i++) {
+-		__set_bit(i, hub->irq_alloc_mask);
+-		LOCAL_HUB_CLR_INTR(INT_PEND1_BASELVL + i);
+-	}
+ }
+ 
+ void per_cpu_init(void)
+@@ -113,8 +94,6 @@ void per_cpu_init(void)
+ 	int slice = LOCAL_HUB_L(PI_CPU_NUM);
+ 	cnodeid_t cnode = get_compact_nodeid();
+ 	struct hub_data *hub = hub_data(cnode);
+-	struct slice_data *si = hub->slice + slice;
+-	int i;
+ 
+ 	if (test_and_set_bit(slice, &hub->slice_map))
+ 		return;
+@@ -123,22 +102,14 @@ void per_cpu_init(void)
+ 
+ 	per_hub_init(cnode);
+ 
+-	for (i = 0; i < LEVELS_PER_SLICE; i++)
+-		si->level_to_irq[i] = -1;
+-
+-	/*
+-	 * We use this so we can find the local hub's data as fast as only
+-	 * possible.
+-	 */
+-	cpu_data[cpu].data = si;
+-
+ 	cpu_time_init();
+ 	install_ipi();
+ 
+ 	/* Install our NMI handler if symmon hasn't installed one. */
+ 	install_cpu_nmi_handler(cputoslice(cpu));
+ 
+-	set_c0_status(SRB_DEV0 | SRB_DEV1);
++	enable_percpu_irq(IP27_HUB_PEND0_IRQ, IRQ_TYPE_NONE);
++	enable_percpu_irq(IP27_HUB_PEND1_IRQ, IRQ_TYPE_NONE);
+ }
+ 
+ /*
+diff --git a/arch/mips/sgi-ip27/ip27-irq-pci.c b/arch/mips/sgi-ip27/ip27-irq-pci.c
+deleted file mode 100644
+index a00a23b32a2a..000000000000
+--- a/arch/mips/sgi-ip27/ip27-irq-pci.c
++++ /dev/null
+@@ -1,264 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * ip27-irq.c: Highlevel interrupt handling for IP27 architecture.
+- *
+- * Copyright (C) 1999, 2000 Ralf Baechle (ralf@gnu.org)
+- * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+- * Copyright (C) 1999 - 2001 Kanoj Sarcar
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/irq.h>
+-#include <linux/errno.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/smp.h>
+-#include <linux/random.h>
+-#include <linux/kernel.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-
+-#include <asm/processor.h>
+-#include <asm/pci/bridge.h>
+-#include <asm/sn/addrs.h>
+-#include <asm/sn/agent.h>
+-#include <asm/sn/arch.h>
+-#include <asm/sn/hub.h>
+-#include <asm/sn/intr.h>
+-
+-/*
+- * Linux has a controller-independent x86 interrupt architecture.
+- * every controller has a 'controller-template', that is used
+- * by the main code to do the right thing. Each driver-visible
+- * interrupt source is transparently wired to the appropriate
+- * controller. Thus drivers need not be aware of the
+- * interrupt-controller.
+- *
+- * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,
+- * PIIX4's internal 8259 PIC and SGI's Visual Workstation Cobalt (IO-)APIC.
+- * (IO-APICs assumed to be messaging to Pentium local-APICs)
+- *
+- * the code is designed to be easily extended with new/different
+- * interrupt controllers, without having to do assembly magic.
+- */
+-
+-extern struct bridge_controller *irq_to_bridge[];
+-extern int irq_to_slot[];
+-
+-/*
+- * use these macros to get the encoded nasid and widget id
+- * from the irq value
+- */
+-#define IRQ_TO_BRIDGE(i)		irq_to_bridge[(i)]
+-#define SLOT_FROM_PCI_IRQ(i)		irq_to_slot[i]
+-
+-static inline int alloc_level(int cpu, int irq)
 -{
+-	struct hub_data *hub = hub_data(cpu_to_node(cpu));
+-	struct slice_data *si = cpu_data[cpu].data;
+-	int level;
+-
+-	level = find_first_zero_bit(hub->irq_alloc_mask, LEVELS_PER_SLICE);
+-	if (level >= LEVELS_PER_SLICE)
+-		panic("Cpu %d flooded with devices", cpu);
+-
+-	__set_bit(level, hub->irq_alloc_mask);
+-	si->level_to_irq[level] = irq;
+-
+-	return level;
+-}
+-
+-static inline int find_level(cpuid_t *cpunum, int irq)
+-{
+-	int cpu, i;
+-
+-	for_each_online_cpu(cpu) {
+-		struct slice_data *si = cpu_data[cpu].data;
+-
+-		for (i = BASE_PCI_IRQ; i < LEVELS_PER_SLICE; i++)
+-			if (si->level_to_irq[i] == irq) {
+-				*cpunum = cpu;
+-
+-				return i;
+-			}
+-	}
+-
+-	panic("Could not identify cpu/level for irq %d", irq);
+-}
+-
+-static int intr_connect_level(int cpu, int bit)
+-{
+-	nasid_t nasid = COMPACT_TO_NASID_NODEID(cpu_to_node(cpu));
+-	struct slice_data *si = cpu_data[cpu].data;
+-
+-	set_bit(bit, si->irq_enable_mask);
+-
+-	if (!cputoslice(cpu)) {
+-		REMOTE_HUB_S(nasid, PI_INT_MASK0_A, si->irq_enable_mask[0]);
+-		REMOTE_HUB_S(nasid, PI_INT_MASK1_A, si->irq_enable_mask[1]);
+-	} else {
+-		REMOTE_HUB_S(nasid, PI_INT_MASK0_B, si->irq_enable_mask[0]);
+-		REMOTE_HUB_S(nasid, PI_INT_MASK1_B, si->irq_enable_mask[1]);
+-	}
+-
 -	return 0;
 -}
--#endif
 -
- #endif /* !__ASSEMBLY__ */
+-static int intr_disconnect_level(int cpu, int bit)
+-{
+-	nasid_t nasid = COMPACT_TO_NASID_NODEID(cpu_to_node(cpu));
+-	struct slice_data *si = cpu_data[cpu].data;
+-
+-	clear_bit(bit, si->irq_enable_mask);
+-
+-	if (!cputoslice(cpu)) {
+-		REMOTE_HUB_S(nasid, PI_INT_MASK0_A, si->irq_enable_mask[0]);
+-		REMOTE_HUB_S(nasid, PI_INT_MASK1_A, si->irq_enable_mask[1]);
+-	} else {
+-		REMOTE_HUB_S(nasid, PI_INT_MASK0_B, si->irq_enable_mask[0]);
+-		REMOTE_HUB_S(nasid, PI_INT_MASK1_B, si->irq_enable_mask[1]);
+-	}
+-
+-	return 0;
+-}
+-
+-/* Startup one of the (PCI ...) IRQs routes over a bridge.  */
+-static unsigned int startup_bridge_irq(struct irq_data *d)
+-{
+-	struct bridge_controller *bc;
+-	int pin, swlevel;
+-	cpuid_t cpu;
+-	u64 device;
+-
+-	pin = SLOT_FROM_PCI_IRQ(d->irq);
+-	bc = IRQ_TO_BRIDGE(d->irq);
+-
+-	pr_debug("bridge_startup(): irq= 0x%x  pin=%d\n", d->irq, pin);
+-	/*
+-	 * "map" irq to a swlevel greater than 6 since the first 6 bits
+-	 * of INT_PEND0 are taken
+-	 */
+-	swlevel = find_level(&cpu, d->irq);
+-	bridge_write(bc, b_int_addr[pin].addr,
+-		     (0x20000 | swlevel | (bc->nasid << 8)));
+-	bridge_set(bc, b_int_enable, (1 << pin));
+-	bridge_set(bc, b_int_enable, 0x7ffffe00); /* more stuff in int_enable */
+-
+-	/*
+-	 * Enable sending of an interrupt clear packt to the hub on a high to
+-	 * low transition of the interrupt pin.
+-	 *
+-	 * IRIX sets additional bits in the address which are documented as
+-	 * reserved in the bridge docs.
+-	 */
+-	bridge_set(bc, b_int_mode, (1UL << pin));
+-
+-	/*
+-	 * We assume the bridge to have a 1:1 mapping between devices
+-	 * (slots) and intr pins.
+-	 */
+-	device = bridge_read(bc, b_int_device);
+-	device &= ~(7 << (pin*3));
+-	device |= (pin << (pin*3));
+-	bridge_write(bc, b_int_device, device);
+-
+-	bridge_read(bc, b_wid_tflush);
+-
+-	intr_connect_level(cpu, swlevel);
+-
+-	return 0;	/* Never anything pending.  */
+-}
+-
+-/* Shutdown one of the (PCI ...) IRQs routes over a bridge.  */
+-static void shutdown_bridge_irq(struct irq_data *d)
+-{
+-	struct bridge_controller *bc = IRQ_TO_BRIDGE(d->irq);
+-	int pin, swlevel;
+-	cpuid_t cpu;
+-
+-	pr_debug("bridge_shutdown: irq 0x%x\n", d->irq);
+-	pin = SLOT_FROM_PCI_IRQ(d->irq);
+-
+-	/*
+-	 * map irq to a swlevel greater than 6 since the first 6 bits
+-	 * of INT_PEND0 are taken
+-	 */
+-	swlevel = find_level(&cpu, d->irq);
+-	intr_disconnect_level(cpu, swlevel);
+-
+-	bridge_clr(bc, b_int_enable, (1 << pin));
+-	bridge_read(bc, b_wid_tflush);
+-}
+-
+-static inline void enable_bridge_irq(struct irq_data *d)
+-{
+-	cpuid_t cpu;
+-	int swlevel;
+-
+-	swlevel = find_level(&cpu, d->irq);	/* Criminal offence */
+-	intr_connect_level(cpu, swlevel);
+-}
+-
+-static inline void disable_bridge_irq(struct irq_data *d)
+-{
+-	cpuid_t cpu;
+-	int swlevel;
+-
+-	swlevel = find_level(&cpu, d->irq);	/* Criminal offence */
+-	intr_disconnect_level(cpu, swlevel);
+-}
+-
+-static struct irq_chip bridge_irq_type = {
+-	.name		= "bridge",
+-	.irq_startup	= startup_bridge_irq,
+-	.irq_shutdown	= shutdown_bridge_irq,
+-	.irq_mask	= disable_bridge_irq,
+-	.irq_unmask	= enable_bridge_irq,
+-};
+-
+-void register_bridge_irq(unsigned int irq)
+-{
+-	irq_set_chip_and_handler(irq, &bridge_irq_type, handle_level_irq);
+-}
+-
+-int request_bridge_irq(struct bridge_controller *bc)
+-{
+-	int irq = allocate_irqno();
+-	int swlevel, cpu;
+-	nasid_t nasid;
+-
+-	if (irq < 0)
+-		return irq;
+-
+-	/*
+-	 * "map" irq to a swlevel greater than 6 since the first 6 bits
+-	 * of INT_PEND0 are taken
+-	 */
+-	cpu = bc->irq_cpu;
+-	swlevel = alloc_level(cpu, irq);
+-	if (unlikely(swlevel < 0)) {
+-		free_irqno(irq);
+-
+-		return -EAGAIN;
+-	}
+-
+-	/* Make sure it's not already pending when we connect it. */
+-	nasid = COMPACT_TO_NASID_NODEID(cpu_to_node(cpu));
+-	REMOTE_HUB_CLR_INTR(nasid, swlevel);
+-
+-	intr_connect_level(cpu, swlevel);
+-
+-	register_bridge_irq(irq);
+-
+-	return irq;
+-}
+diff --git a/arch/mips/sgi-ip27/ip27-irq.c b/arch/mips/sgi-ip27/ip27-irq.c
+index f37155ef7ed9..710a59764b01 100644
+--- a/arch/mips/sgi-ip27/ip27-irq.c
++++ b/arch/mips/sgi-ip27/ip27-irq.c
+@@ -7,67 +7,234 @@
+  * Copyright (C) 1999 - 2001 Kanoj Sarcar
+  */
  
- #endif /* _ASM_XTALK_XTALK_H */
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 8185a2bfaf09..0225d83d6681 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -38,7 +38,6 @@ obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o pci-malta.o
- obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_FPGA)	+= fixup-pmcmsp.o ops-pmcmsp.o
--obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-ip27.o
- obj-$(CONFIG_SGI_IP32)		+= fixup-ip32.o ops-mace.o pci-ip32.o
- obj-$(CONFIG_SIBYTE_SB1250)	+= fixup-sb1250.o pci-sb1250.o
- obj-$(CONFIG_SIBYTE_BCM112X)	+= fixup-sb1250.o pci-sb1250.o
-diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+-#undef DEBUG
+-
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/errno.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/smp.h>
+-#include <linux/random.h>
+ #include <linux/kernel.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/delay.h>
+ #include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+ #include <asm/io.h>
+-#include <asm/mipsregs.h>
+-
+-#include <asm/processor.h>
++#include <asm/irq_cpu.h>
++#include <asm/pci/bridge.h>
+ #include <asm/sn/addrs.h>
+ #include <asm/sn/agent.h>
+ #include <asm/sn/arch.h>
+ #include <asm/sn/hub.h>
+ #include <asm/sn/intr.h>
+ 
+-/*
+- * Linux has a controller-independent x86 interrupt architecture.
+- * every controller has a 'controller-template', that is used
+- * by the main code to do the right thing. Each driver-visible
+- * interrupt source is transparently wired to the appropriate
+- * controller. Thus drivers need not be aware of the
+- * interrupt-controller.
+- *
+- * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,
+- * PIIX4's internal 8259 PIC and SGI's Visual Workstation Cobalt (IO-)APIC.
+- * (IO-APICs assumed to be messaging to Pentium local-APICs)
+- *
+- * the code is designed to be easily extended with new/different
+- * interrupt controllers, without having to do assembly magic.
+- */
++struct hub_irq_data {
++	struct bridge_controller *bc;
++	u64	*irq_mask[2];
++	cpuid_t	cpu;
++	int	bit;
++	int	pin;
++};
+ 
+-extern asmlinkage void ip27_irq(void);
++static DECLARE_BITMAP(hub_irq_map, IP27_HUB_IRQ_COUNT);
+ 
+-/*
+- * Find first bit set
+- */
+-static int ms1bit(unsigned long x)
++static DEFINE_PER_CPU(unsigned long [2], irq_enable_mask);
++
++static inline int alloc_level(void)
++{
++	int level;
++
++again:
++	level = find_first_zero_bit(hub_irq_map, IP27_HUB_IRQ_COUNT);
++	if (level >= IP27_HUB_IRQ_COUNT)
++		return -ENOSPC;
++
++	if (test_and_set_bit(level, hub_irq_map))
++		goto again;
++
++	return level;
++}
++
++static void enable_hub_irq(struct irq_data *d)
++{
++	struct hub_irq_data *hd = irq_data_get_irq_chip_data(d);
++	unsigned long *mask = per_cpu(irq_enable_mask, hd->cpu);
++
++	set_bit(hd->bit, mask);
++	__raw_writeq(mask[0], hd->irq_mask[0]);
++	__raw_writeq(mask[1], hd->irq_mask[1]);
++}
++
++static void disable_hub_irq(struct irq_data *d)
++{
++	struct hub_irq_data *hd = irq_data_get_irq_chip_data(d);
++	unsigned long *mask = per_cpu(irq_enable_mask, hd->cpu);
++
++	clear_bit(hd->bit, mask);
++	__raw_writeq(mask[0], hd->irq_mask[0]);
++	__raw_writeq(mask[1], hd->irq_mask[1]);
++}
++
++static unsigned int startup_bridge_irq(struct irq_data *d)
++{
++	struct hub_irq_data *hd = irq_data_get_irq_chip_data(d);
++	struct bridge_controller *bc;
++	nasid_t nasid;
++	u32 device;
++	int pin;
++
++	if (!hd)
++		return -EINVAL;
++
++	pin = hd->pin;
++	bc = hd->bc;
++
++	nasid = COMPACT_TO_NASID_NODEID(cpu_to_node(hd->cpu));
++	bridge_write(bc, b_int_addr[pin].addr,
++		     (0x20000 | hd->bit | (nasid << 8)));
++	bridge_set(bc, b_int_enable, (1 << pin));
++	bridge_set(bc, b_int_enable, 0x7ffffe00); /* more stuff in int_enable */
++
++	/*
++	 * Enable sending of an interrupt clear packt to the hub on a high to
++	 * low transition of the interrupt pin.
++	 *
++	 * IRIX sets additional bits in the address which are documented as
++	 * reserved in the bridge docs.
++	 */
++	bridge_set(bc, b_int_mode, (1UL << pin));
++
++	/*
++	 * We assume the bridge to have a 1:1 mapping between devices
++	 * (slots) and intr pins.
++	 */
++	device = bridge_read(bc, b_int_device);
++	device &= ~(7 << (pin*3));
++	device |= (pin << (pin*3));
++	bridge_write(bc, b_int_device, device);
++
++	bridge_read(bc, b_wid_tflush);
++
++	enable_hub_irq(d);
++
++	return 0;	/* Never anything pending.  */
++}
++
++static void shutdown_bridge_irq(struct irq_data *d)
++{
++	struct hub_irq_data *hd = irq_data_get_irq_chip_data(d);
++	struct bridge_controller *bc;
++	int pin = hd->pin;
++
++	if (!hd)
++		return;
++
++	disable_hub_irq(d);
++
++	bc = hd->bc;
++	bridge_clr(bc, b_int_enable, (1 << pin));
++	bridge_read(bc, b_wid_tflush);
++}
++
++static void setup_hub_mask(struct hub_irq_data *hd, const struct cpumask *mask)
++{
++	nasid_t nasid;
++	int cpu;
++
++	cpu = cpumask_first_and(mask, cpu_online_mask);
++	nasid = COMPACT_TO_NASID_NODEID(cpu_to_node(cpu));
++	hd->cpu = cpu;
++	if (!cputoslice(cpu)) {
++		hd->irq_mask[0] = REMOTE_HUB_PTR(nasid, PI_INT_MASK0_A);
++		hd->irq_mask[1] = REMOTE_HUB_PTR(nasid, PI_INT_MASK1_A);
++	} else {
++		hd->irq_mask[0] = REMOTE_HUB_PTR(nasid, PI_INT_MASK0_B);
++		hd->irq_mask[1] = REMOTE_HUB_PTR(nasid, PI_INT_MASK1_B);
++	}
++
++	/* Make sure it's not already pending when we connect it. */
++	REMOTE_HUB_CLR_INTR(nasid, hd->bit);
++}
++
++static int set_affinity_hub_irq(struct irq_data *d, const struct cpumask *mask,
++				bool force)
++{
++	struct hub_irq_data *hd = irq_data_get_irq_chip_data(d);
++
++	if (!hd)
++		return -EINVAL;
++
++	if (irqd_is_started(d))
++		disable_hub_irq(d);
++
++	setup_hub_mask(hd, mask);
++
++	if (irqd_is_started(d))
++		startup_bridge_irq(d);
++
++	irq_data_update_effective_affinity(d, cpumask_of(hd->cpu));
++
++	return 0;
++}
++
++static struct irq_chip hub_irq_type = {
++	.name		  = "HUB",
++	.irq_startup	  = startup_bridge_irq,
++	.irq_shutdown	  = shutdown_bridge_irq,
++	.irq_mask	  = disable_hub_irq,
++	.irq_unmask	  = enable_hub_irq,
++	.irq_set_affinity = set_affinity_hub_irq,
++};
++
++int request_bridge_irq(struct bridge_controller *bc, int pin)
+ {
+-	int b = 0, s;
++	struct hub_irq_data *hd;
++	struct hub_data *hub;
++	struct irq_desc *desc;
++	int swlevel;
++	int irq;
++
++	hd = kzalloc(sizeof(*hd), GFP_KERNEL);
++	if (!hd)
++		return -ENOMEM;
++
++	swlevel = alloc_level();
++	if (unlikely(swlevel < 0)) {
++		kfree(hd);
++		return -EAGAIN;
++	}
++	irq = swlevel + IP27_HUB_IRQ_BASE;
++
++	hd->bc = bc;
++	hd->bit = swlevel;
++	hd->pin = pin;
++	irq_set_chip_data(irq, hd);
++
++	/* use CPU connected to nearest hub */
++	hub = hub_data(NASID_TO_COMPACT_NODEID(bc->nasid));
++	setup_hub_mask(hd, &hub->h_cpus);
+ 
+-	s = 16; if (x >> 16 == 0) s = 0; b += s; x >>= s;
+-	s =  8; if (x >>  8 == 0) s = 0; b += s; x >>= s;
+-	s =  4; if (x >>  4 == 0) s = 0; b += s; x >>= s;
+-	s =  2; if (x >>  2 == 0) s = 0; b += s; x >>= s;
+-	s =  1; if (x >>  1 == 0) s = 0; b += s;
++	desc = irq_to_desc(irq);
++	desc->irq_common_data.node = bc->nasid;
++	cpumask_copy(desc->irq_common_data.affinity, &hub->h_cpus);
+ 
+-	return b;
++	return irq;
++}
++
++void ip27_hub_irq_init(void)
++{
++	int i;
++
++	for (i = IP27_HUB_IRQ_BASE;
++	     i < (IP27_HUB_IRQ_BASE + IP27_HUB_IRQ_COUNT); i++)
++		irq_set_chip_and_handler(i, &hub_irq_type, handle_level_irq);
++
++	/*
++	 * Some interrupts are reserved by hardware or by software convention.
++	 * Mark these as reserved right away so they won't be used accidentally
++	 * later.
++	 */
++	for (i = 0; i <= BASE_PCI_IRQ; i++)
++		set_bit(i, hub_irq_map);
++
++	set_bit(IP_PEND0_6_63, hub_irq_map);
++
++	for (i = NI_BRDCAST_ERR_A; i <= MSC_PANIC_INTR; i++)
++		set_bit(i, hub_irq_map);
+ }
+ 
+ /*
+@@ -82,23 +249,19 @@ static int ms1bit(unsigned long x)
+  * Kanoj 05.13.00
+  */
+ 
+-static void ip27_do_irq_mask0(void)
++static void ip27_do_irq_mask0(struct irq_desc *desc)
+ {
+-	int irq, swlevel;
+-	u64 pend0, mask0;
+ 	cpuid_t cpu = smp_processor_id();
+-	int pi_int_mask0 =
+-		(cputoslice(cpu) == 0) ?  PI_INT_MASK0_A : PI_INT_MASK0_B;
++	unsigned long *mask = per_cpu(irq_enable_mask, cpu);
++	u64 pend0;
+ 
+ 	/* copied from Irix intpend0() */
+ 	pend0 = LOCAL_HUB_L(PI_INT_PEND0);
+-	mask0 = LOCAL_HUB_L(pi_int_mask0);
+ 
+-	pend0 &= mask0;		/* Pick intrs we should look at */
++	pend0 &= mask[0];		/* Pick intrs we should look at */
+ 	if (!pend0)
+ 		return;
+ 
+-	swlevel = ms1bit(pend0);
+ #ifdef CONFIG_SMP
+ 	if (pend0 & (1UL << CPU_RESCHED_A_IRQ)) {
+ 		LOCAL_HUB_CLR_INTR(CPU_RESCHED_A_IRQ);
+@@ -108,106 +271,66 @@ static void ip27_do_irq_mask0(void)
+ 		scheduler_ipi();
+ 	} else if (pend0 & (1UL << CPU_CALL_A_IRQ)) {
+ 		LOCAL_HUB_CLR_INTR(CPU_CALL_A_IRQ);
+-		irq_enter();
+ 		generic_smp_call_function_interrupt();
+-		irq_exit();
+ 	} else if (pend0 & (1UL << CPU_CALL_B_IRQ)) {
+ 		LOCAL_HUB_CLR_INTR(CPU_CALL_B_IRQ);
+-		irq_enter();
+ 		generic_smp_call_function_interrupt();
+-		irq_exit();
+ 	} else
+ #endif
+-	{
+-		/* "map" swlevel to irq */
+-		struct slice_data *si = cpu_data[cpu].data;
+-
+-		irq = si->level_to_irq[swlevel];
+-		do_IRQ(irq);
+-	}
++		generic_handle_irq(__ffs(pend0) + IP27_HUB_IRQ_BASE);
+ 
+ 	LOCAL_HUB_L(PI_INT_PEND0);
+ }
+ 
+-static void ip27_do_irq_mask1(void)
++static void ip27_do_irq_mask1(struct irq_desc *desc)
+ {
+-	int irq, swlevel;
+-	u64 pend1, mask1;
+ 	cpuid_t cpu = smp_processor_id();
+-	int pi_int_mask1 = (cputoslice(cpu) == 0) ?  PI_INT_MASK1_A : PI_INT_MASK1_B;
+-	struct slice_data *si = cpu_data[cpu].data;
++	unsigned long *mask = per_cpu(irq_enable_mask, cpu);
++	u64 pend1;
+ 
+ 	/* copied from Irix intpend0() */
+ 	pend1 = LOCAL_HUB_L(PI_INT_PEND1);
+-	mask1 = LOCAL_HUB_L(pi_int_mask1);
+ 
+-	pend1 &= mask1;		/* Pick intrs we should look at */
++	pend1 &= mask[1];		/* Pick intrs we should look at */
+ 	if (!pend1)
+ 		return;
+ 
+-	swlevel = ms1bit(pend1);
+-	/* "map" swlevel to irq */
+-	irq = si->level_to_irq[swlevel];
+-	LOCAL_HUB_CLR_INTR(swlevel);
+-	do_IRQ(irq);
++	generic_handle_irq(__ffs(pend1) + IP27_HUB_IRQ_BASE + 64);
+ 
+ 	LOCAL_HUB_L(PI_INT_PEND1);
+ }
+ 
+-static void ip27_prof_timer(void)
+-{
+-	panic("CPU %d got a profiling interrupt", smp_processor_id());
+-}
+-
+-static void ip27_hub_error(void)
+-{
+-	panic("CPU %d got a hub error interrupt", smp_processor_id());
+-}
+-
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned long pending = read_c0_cause() & read_c0_status();
+-	extern unsigned int rt_timer_irq;
+-
+-	if (pending & CAUSEF_IP4)
+-		do_IRQ(rt_timer_irq);
+-	else if (pending & CAUSEF_IP2)	/* PI_INT_PEND_0 or CC_PEND_{A|B} */
+-		ip27_do_irq_mask0();
+-	else if (pending & CAUSEF_IP3)	/* PI_INT_PEND_1 */
+-		ip27_do_irq_mask1();
+-	else if (pending & CAUSEF_IP5)
+-		ip27_prof_timer();
+-	else if (pending & CAUSEF_IP6)
+-		ip27_hub_error();
+-}
+-
+-void __init arch_init_irq(void)
+-{
+-}
+-
+ void install_ipi(void)
+ {
+-	int slice = LOCAL_HUB_L(PI_CPU_NUM);
+ 	int cpu = smp_processor_id();
+-	struct slice_data *si = cpu_data[cpu].data;
+-	struct hub_data *hub = hub_data(cpu_to_node(cpu));
++	unsigned long *mask = per_cpu(irq_enable_mask, cpu);
++	int slice = LOCAL_HUB_L(PI_CPU_NUM);
+ 	int resched, call;
+ 
+ 	resched = CPU_RESCHED_A_IRQ + slice;
+-	__set_bit(resched, hub->irq_alloc_mask);
+-	__set_bit(resched, si->irq_enable_mask);
++	set_bit(resched, mask);
+ 	LOCAL_HUB_CLR_INTR(resched);
+ 
+ 	call = CPU_CALL_A_IRQ + slice;
+-	__set_bit(call, hub->irq_alloc_mask);
+-	__set_bit(call, si->irq_enable_mask);
++	set_bit(call, mask);
+ 	LOCAL_HUB_CLR_INTR(call);
+ 
+ 	if (slice == 0) {
+-		LOCAL_HUB_S(PI_INT_MASK0_A, si->irq_enable_mask[0]);
+-		LOCAL_HUB_S(PI_INT_MASK1_A, si->irq_enable_mask[1]);
++		LOCAL_HUB_S(PI_INT_MASK0_A, mask[0]);
++		LOCAL_HUB_S(PI_INT_MASK1_A, mask[1]);
+ 	} else {
+-		LOCAL_HUB_S(PI_INT_MASK0_B, si->irq_enable_mask[0]);
+-		LOCAL_HUB_S(PI_INT_MASK1_B, si->irq_enable_mask[1]);
++		LOCAL_HUB_S(PI_INT_MASK0_B, mask[0]);
++		LOCAL_HUB_S(PI_INT_MASK1_B, mask[1]);
+ 	}
+ }
++
++void __init arch_init_irq(void)
++{
++	mips_cpu_irq_init();
++	ip27_hub_irq_init();
++
++	irq_set_percpu_devid(IP27_HUB_PEND0_IRQ);
++	irq_set_chained_handler(IP27_HUB_PEND0_IRQ, ip27_do_irq_mask0);
++	irq_set_percpu_devid(IP27_HUB_PEND1_IRQ);
++	irq_set_chained_handler(IP27_HUB_PEND1_IRQ, ip27_do_irq_mask1);
++}
+diff --git a/arch/mips/sgi-ip27/ip27-irqno.c b/arch/mips/sgi-ip27/ip27-irqno.c
 deleted file mode 100644
-index 3c177b4d0609..000000000000
---- a/arch/mips/pci/pci-ip27.c
+index 957ab58e1c00..000000000000
+--- a/arch/mips/sgi-ip27/ip27-irqno.c
 +++ /dev/null
-@@ -1,214 +0,0 @@
+@@ -1,48 +0,0 @@
 -/*
 - * This file is subject to the terms and conditions of the GNU General Public
 - * License.  See the file "COPYING" in the main directory of this archive
 - * for more details.
-- *
-- * Copyright (C) 2003 Christoph Hellwig (hch@lst.de)
-- * Copyright (C) 1999, 2000, 04 Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
 - */
--#include <linux/kernel.h>
--#include <linux/export.h>
--#include <linux/pci.h>
--#include <linux/smp.h>
--#include <linux/dma-direct.h>
--#include <asm/sn/arch.h>
--#include <asm/pci/bridge.h>
--#include <asm/paccess.h>
--#include <asm/sn/intr.h>
--#include <asm/sn/sn0/hub.h>
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/types.h>
 -
--/*
-- * Max #PCI busses we can handle; ie, max #PCI bridges.
-- */
--#define MAX_PCI_BUSSES		40
+-#include <asm/barrier.h>
 -
--/*
-- * XXX: No kmalloc available when we do our crosstalk scan,
-- *	we should try to move it later in the boot process.
-- */
--static struct bridge_controller bridges[MAX_PCI_BUSSES];
+-static DECLARE_BITMAP(irq_map, NR_IRQS);
 -
--extern struct pci_ops bridge_pci_ops;
--
--int bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+-int allocate_irqno(void)
 -{
--	unsigned long offset = NODE_OFFSET(nasid);
--	struct bridge_controller *bc;
--	static int num_bridges = 0;
--	int slot;
--
--	pci_set_flags(PCI_PROBE_ONLY);
--
--	printk("a bridge\n");
--
--	/* XXX: kludge alert.. */
--	if (!num_bridges)
--		ioport_resource.end = ~0UL;
--
--	bc = &bridges[num_bridges];
--
--	bc->pc.pci_ops		= &bridge_pci_ops;
--	bc->pc.mem_resource	= &bc->mem;
--	bc->pc.io_resource	= &bc->io;
--
--	bc->pc.index		= num_bridges;
--
--	bc->mem.name		= "Bridge PCI MEM";
--	bc->pc.mem_offset	= offset;
--	bc->mem.start		= 0;
--	bc->mem.end		= ~0UL;
--	bc->mem.flags		= IORESOURCE_MEM;
--
--	bc->io.name		= "Bridge IO MEM";
--	bc->pc.io_offset	= offset;
--	bc->io.start		= 0UL;
--	bc->io.end		= ~0UL;
--	bc->io.flags		= IORESOURCE_IO;
--
--	bc->widget_id = widget_id;
--	bc->nasid = nasid;
--
--	bc->baddr = (u64)masterwid << 60 | PCI64_ATTR_BAR;
--
--	/*
--	 * point to this bridge
--	 */
--	bc->base = (struct bridge_regs *)RAW_NODE_SWIN_BASE(nasid, widget_id);
--
--	/*
--	 * Clear all pending interrupts.
--	 */
--	bridge_write(bc, b_int_rst_stat, BRIDGE_IRR_ALL_CLR);
--
--	/*
--	 * Until otherwise set up, assume all interrupts are from slot 0
--	 */
--	bridge_write(bc, b_int_device, 0x0);
--
--	/*
--	 * swap pio's to pci mem and io space (big windows)
--	 */
--	bridge_set(bc, b_wid_control, BRIDGE_CTRL_IO_SWAP |
--				      BRIDGE_CTRL_MEM_SWAP);
--#ifdef CONFIG_PAGE_SIZE_4KB
--	bridge_clr(bc, b_wid_control, BRIDGE_CTRL_PAGE_SIZE);
--#else /* 16kB or larger */
--	bridge_set(bc, b_wid_control, BRIDGE_CTRL_PAGE_SIZE);
--#endif
--
--	/*
--	 * Hmm...  IRIX sets additional bits in the address which
--	 * are documented as reserved in the bridge docs.
--	 */
--	bridge_write(bc, b_wid_int_upper, 0x8000 | (masterwid << 16));
--	bridge_write(bc, b_wid_int_lower, 0x01800090); /* PI_INT_PEND_MOD off*/
--	bridge_write(bc, b_dir_map, (masterwid << 20));	/* DMA */
--	bridge_write(bc, b_int_enable, 0);
--
--	for (slot = 0; slot < 8; slot ++) {
--		bridge_set(bc, b_device[slot].reg, BRIDGE_DEV_SWAP_DIR);
--		bc->pci_int[slot] = -1;
--	}
--	bridge_read(bc, b_wid_tflush);	  /* wait until Bridge PIO complete */
--
--	register_pci_controller(&bc->pc);
--
--	num_bridges++;
--
--	return 0;
--}
--
--/*
-- * All observed requests have pin == 1. We could have a global here, that
-- * gets incremented and returned every time - unfortunately, pci_map_irq
-- * may be called on the same device over and over, and need to return the
-- * same value. On O2000, pin can be 0 or 1, and PCI slots can be [0..7].
-- *
-- * A given PCI device, in general, should be able to intr any of the cpus
-- * on any one of the hubs connected to its xbow.
-- */
--int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
--{
--	return 0;
--}
--
--static inline struct pci_dev *bridge_root_dev(struct pci_dev *dev)
--{
--	while (dev->bus->parent) {
--		/* Move up the chain of bridges. */
--		dev = dev->bus->self;
--	}
--
--	return dev;
--}
--
--/* Do platform specific device initialization at pci_enable_device() time */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	struct bridge_controller *bc = BRIDGE_CONTROLLER(dev->bus);
--	struct pci_dev *rdev = bridge_root_dev(dev);
--	int slot = PCI_SLOT(rdev->devfn);
 -	int irq;
 -
--	irq = bc->pci_int[slot];
--	if (irq == -1) {
--		irq = request_bridge_irq(bc, slot);
--		if (irq < 0)
--			return irq;
+-again:
+-	irq = find_first_zero_bit(irq_map, NR_IRQS);
 -
--		bc->pci_int[slot] = irq;
--	}
--	dev->irq = irq;
+-	if (irq >= NR_IRQS)
+-		return -ENOSPC;
 -
--	return 0;
--}
+-	if (test_and_set_bit(irq, irq_map))
+-		goto again;
 -
--dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
--{
--	struct pci_dev *pdev = to_pci_dev(dev);
--	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
--
--	return bc->baddr + paddr;
--}
--
--phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
--{
--	return dma_addr & ~(0xffUL << 56);
+-	return irq;
 -}
 -
 -/*
-- * Device might live on a subordinate PCI bus.	XXX Walk up the chain of buses
-- * to find the slot number in sense of the bridge device register.
-- * XXX This also means multiple devices might rely on conflicting bridge
-- * settings.
+- * Allocate the 16 legacy interrupts for i8259 devices.	 This happens early
+- * in the kernel initialization so treating allocation failure as BUG() is
+- * ok.
 - */
--
--static inline void pci_disable_swapping(struct pci_dev *dev)
+-void __init alloc_legacy_irqno(void)
 -{
--	struct bridge_controller *bc = BRIDGE_CONTROLLER(dev->bus);
--	struct bridge_regs *bridge = bc->base;
--	int slot = PCI_SLOT(dev->devfn);
+-	int i;
 -
--	/* Turn off byte swapping */
--	bridge->b_device[slot].reg &= ~BRIDGE_DEV_SWAP_DIR;
--	bridge->b_widget.w_tflush;	/* Flush */
+-	for (i = 0; i <= 16; i++)
+-		BUG_ON(test_and_set_bit(i, irq_map));
 -}
 -
--static void pci_fixup_ioc3(struct pci_dev *d)
+-void free_irqno(unsigned int irq)
 -{
--	pci_disable_swapping(d);
+-	smp_mb__before_atomic();
+-	clear_bit(irq, irq_map);
+-	smp_mb__after_atomic();
+-}
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 9d55247533a5..9b4b9ac621a3 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -38,20 +38,6 @@
+ #include <asm/sn/sn0/hubio.h>
+ #include <asm/pci/bridge.h>
+ 
+-static void enable_rt_irq(struct irq_data *d)
+-{
 -}
 -
--#ifdef CONFIG_NUMA
--int pcibus_to_node(struct pci_bus *bus)
+-static void disable_rt_irq(struct irq_data *d)
 -{
--	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
--
--	return bc->nasid;
 -}
--EXPORT_SYMBOL(pcibus_to_node);
--#endif /* CONFIG_NUMA */
 -
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_SGI, PCI_DEVICE_ID_SGI_IOC3,
--	pci_fixup_ioc3);
-diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
-index 6074efeff894..066b33f50bcc 100644
---- a/arch/mips/sgi-ip27/ip27-init.c
-+++ b/arch/mips/sgi-ip27/ip27-init.c
-@@ -184,5 +184,7 @@ void __init plat_mem_setup(void)
- 
- 	ioc3_eth_init();
- 
-+	ioport_resource.start = 0;
-+	ioport_resource.end = ~0UL;
- 	set_io_port_base(IO_BASE);
- }
-diff --git a/arch/mips/sgi-ip27/ip27-xtalk.c b/arch/mips/sgi-ip27/ip27-xtalk.c
-index ce06aaa115ae..8579b651d862 100644
---- a/arch/mips/sgi-ip27/ip27-xtalk.c
-+++ b/arch/mips/sgi-ip27/ip27-xtalk.c
-@@ -9,6 +9,8 @@
- 
- #include <linux/kernel.h>
- #include <linux/smp.h>
-+#include <linux/platform_device.h>
-+#include <linux/platform_data/xtalk-bridge.h>
- #include <asm/sn/types.h>
- #include <asm/sn/klconfig.h>
- #include <asm/sn/hub.h>
-@@ -20,7 +22,19 @@
- #define XXBOW_WIDGET_PART_NUM	0xd000	/* Xbow in Xbridge */
- #define BASE_XBOW_PORT		8     /* Lowest external port */
- 
--extern int bridge_probe(nasid_t nasid, int widget, int masterwid);
-+static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
-+{
-+	struct platform_device *pdev;
-+	struct xtalk_bridge_platform_data bridge_data;
-+
-+	pdev = platform_device_alloc("xtalk-bridge", PLATFORM_DEVID_AUTO);
-+	bridge_data.nasid = nasid;
-+	bridge_data.widget = widget;
-+	bridge_data.masterwid = masterwid;
-+	platform_device_add_data(pdev, &bridge_data, sizeof(bridge_data));
-+	platform_device_add(pdev);
-+	pr_info("xtalk:n%d/%x bridge widget\n", nasid, widget);
-+}
- 
- static int probe_one_port(nasid_t nasid, int widget, int masterwid)
+-static struct irq_chip rt_irq_type = {
+-	.name		= "SN HUB RT timer",
+-	.irq_mask	= disable_rt_irq,
+-	.irq_unmask	= enable_rt_irq,
+-};
+-
+ static int rt_next_event(unsigned long delta, struct clock_event_device *evt)
  {
-@@ -31,13 +45,10 @@ static int probe_one_port(nasid_t nasid, int widget, int masterwid)
- 		(RAW_NODE_SWIN_BASE(nasid, widget) + WIDGET_ID);
- 	partnum = XWIDGET_PART_NUM(widget_id);
- 
--	printk(KERN_INFO "Cpu %d, Nasid 0x%x, widget 0x%x (partnum 0x%x) is ",
--			smp_processor_id(), nasid, widget, partnum);
--
- 	switch (partnum) {
- 	case BRIDGE_WIDGET_PART_NUM:
- 	case XBRIDGE_WIDGET_PART_NUM:
--		bridge_probe(nasid, widget, masterwid);
-+		bridge_platform_create(nasid, widget, masterwid);
- 		break;
- 	default:
- 		break;
-@@ -52,8 +63,6 @@ static int xbow_probe(nasid_t nasid)
- 	klxbow_t *xbow_p;
- 	unsigned masterwid, i;
- 
--	printk("is xbow\n");
--
- 	/*
- 	 * found xbow, so may have multiple bridges
- 	 * need to probe xbow
-@@ -117,19 +126,17 @@ static void xtalk_probe_node(cnodeid_t nid)
- 		       (RAW_NODE_SWIN_BASE(nasid, 0x0) + WIDGET_ID);
- 	partnum = XWIDGET_PART_NUM(widget_id);
- 
--	printk(KERN_INFO "Cpu %d, Nasid 0x%x: partnum 0x%x is ",
--			smp_processor_id(), nasid, partnum);
--
- 	switch (partnum) {
- 	case BRIDGE_WIDGET_PART_NUM:
--		bridge_probe(nasid, 0x8, 0xa);
-+		bridge_platform_create(nasid, 0x8, 0xa);
- 		break;
- 	case XBOW_WIDGET_PART_NUM:
- 	case XXBOW_WIDGET_PART_NUM:
-+		pr_info("xtalk:n%d/0 xbow widget\n", nasid);
- 		xbow_probe(nasid);
- 		break;
- 	default:
--		printk(" unknown widget??\n");
-+		pr_info("xtalk:n%d/0 unknown widget (0x%x)\n", nasid, partnum);
- 		break;
- 	}
- }
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index 6671946dbf66..c3815353f2f8 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -265,6 +265,9 @@ config PCIE_TANGO_SMP8759
- 	  This can lead to data corruption if drivers perform concurrent
- 	  config and MMIO accesses.
- 
-+config PCI_XTALK_BRIDGE
-+	bool
-+
- config VMD
- 	depends on PCI_MSI && X86_64 && SRCU
- 	tristate "Intel Volume Management Device Driver"
-diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-index d56a507495c5..bcbd740f878c 100644
---- a/drivers/pci/controller/Makefile
-+++ b/drivers/pci/controller/Makefile
-@@ -28,6 +28,7 @@ obj-$(CONFIG_PCIE_ROCKCHIP_HOST) += pcie-rockchip-host.o
- obj-$(CONFIG_PCIE_MEDIATEK) += pcie-mediatek.o
- obj-$(CONFIG_PCIE_MOBIVEIL) += pcie-mobiveil.o
- obj-$(CONFIG_PCIE_TANGO_SMP8759) += pcie-tango.o
-+obj-$(CONFIG_PCI_XTALK_BRIDGE) += pci-xtalk-bridge.o
- obj-$(CONFIG_VMD) += vmd.o
- # pcie-hisi.o quirks are needed even without CONFIG_PCIE_DW
- obj-y				+= dwc/
-diff --git a/arch/mips/pci/ops-bridge.c b/drivers/pci/controller/pci-xtalk-bridge.c
-similarity index 52%
-rename from arch/mips/pci/ops-bridge.c
-rename to drivers/pci/controller/pci-xtalk-bridge.c
-index df95b0da08f2..77e42c46937b 100644
---- a/arch/mips/pci/ops-bridge.c
-+++ b/drivers/pci/controller/pci-xtalk-bridge.c
-@@ -3,13 +3,21 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 1999, 2000, 04, 06 Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (C) 2003 Christoph Hellwig (hch@lst.de)
-+ * Copyright (C) 1999, 2000, 04 Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  */
-+#include <linux/kernel.h>
-+#include <linux/export.h>
- #include <linux/pci.h>
--#include <asm/paccess.h>
--#include <asm/pci/bridge.h>
-+#include <linux/smp.h>
-+#include <linux/dma-direct.h>
-+#include <linux/platform_device.h>
-+#include <linux/platform_data/xtalk-bridge.h>
-+
- #include <asm/sn/arch.h>
-+#include <asm/pci/bridge.h>
-+#include <asm/paccess.h>
- #include <asm/sn/intr.h>
- #include <asm/sn/sn0/hub.h>
- 
-@@ -29,6 +37,20 @@ static u32 emulate_ioc3_cfg(int where, int size)
- 	return 0;
+ 	unsigned int cpu = smp_processor_id();
+@@ -65,8 +51,6 @@ static int rt_next_event(unsigned long delta, struct clock_event_device *evt)
+ 	return LOCAL_HUB_L(PI_RT_COUNT) >= cnt ? -ETIME : 0;
  }
  
-+static void bridge_disable_swapping(struct pci_dev *dev)
-+{
-+	struct bridge_controller *bc = BRIDGE_CONTROLLER(dev->bus);
-+	int slot = PCI_SLOT(dev->devfn);
-+
-+	/* Turn off byte swapping */
-+	bridge_clr(bc, b_device[slot].reg, BRIDGE_DEV_SWAP_DIR);
-+	bridge_read(bc, b_widget.w_tflush);	/* Flush */
-+}
-+
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_SGI, PCI_DEVICE_ID_SGI_IOC3,
-+	bridge_disable_swapping);
-+
-+
- /*
-  * The Bridge ASIC supports both type 0 and type 1 access.  Type 1 is
-  * not really documented, so right now I can't write code which uses it.
-@@ -39,20 +61,19 @@ static u32 emulate_ioc3_cfg(int where, int size)
-  * which is used in SGI systems.  The IOC3 can only handle 32-bit PCI
-  * accesses and does only decode parts of it's address space.
-  */
+-unsigned int rt_timer_irq;
 -
- static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
--				 int where, int size, u32 * value)
-+				 int where, int size, u32 *value)
- {
- 	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
- 	struct bridge_regs *bridge = bc->base;
- 	int slot = PCI_SLOT(devfn);
- 	int fn = PCI_FUNC(devfn);
--	volatile void *addr;
-+	void *addr;
- 	u32 cf, shift, mask;
- 	int res;
+ static DEFINE_PER_CPU(struct clock_event_device, hub_rt_clockevent);
+ static DEFINE_PER_CPU(char [11], hub_rt_name);
  
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[PCI_VENDOR_ID];
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
+@@ -87,6 +71,7 @@ static irqreturn_t hub_rt_counter_handler(int irq, void *dev_id)
  
- 	/*
-@@ -65,11 +86,11 @@ static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[where ^ (4 - size)];
- 
- 	if (size == 1)
--		res = get_dbe(*value, (u8 *) addr);
-+		res = get_dbe(*value, (u8 *)addr);
- 	else if (size == 2)
--		res = get_dbe(*value, (u16 *) addr);
-+		res = get_dbe(*value, (u16 *)addr);
- 	else
--		res = get_dbe(*value, (u32 *) addr);
-+		res = get_dbe(*value, (u32 *)addr);
- 
- 	return res ? PCIBIOS_DEVICE_NOT_FOUND : PCIBIOS_SUCCESSFUL;
- 
-@@ -84,8 +105,7 @@ static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
- 	}
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].l[where >> 2];
--
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	shift = ((where & 3) << 3);
-@@ -96,20 +116,20 @@ static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
- }
- 
- static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
--				 int where, int size, u32 * value)
-+				 int where, int size, u32 *value)
- {
- 	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
- 	struct bridge_regs *bridge = bc->base;
- 	int busno = bus->number;
- 	int slot = PCI_SLOT(devfn);
- 	int fn = PCI_FUNC(devfn);
--	volatile void *addr;
-+	void *addr;
- 	u32 cf, shift, mask;
- 	int res;
- 
- 	bridge_write(bc, b_pci_cfg, (busno << 16) | (slot << 11));
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | PCI_VENDOR_ID];
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	/*
-@@ -119,15 +139,14 @@ static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
- 	if (cf == (PCI_VENDOR_ID_SGI | (PCI_DEVICE_ID_SGI_IOC3 << 16)))
- 		goto is_ioc3;
- 
--	bridge_write(bc, b_pci_cfg, (busno << 16) | (slot << 11));
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | (where ^ (4 - size))];
- 
- 	if (size == 1)
--		res = get_dbe(*value, (u8 *) addr);
-+		res = get_dbe(*value, (u8 *)addr);
- 	else if (size == 2)
--		res = get_dbe(*value, (u16 *) addr);
-+		res = get_dbe(*value, (u16 *)addr);
- 	else
--		res = get_dbe(*value, (u32 *) addr);
-+		res = get_dbe(*value, (u32 *)addr);
- 
- 	return res ? PCIBIOS_DEVICE_NOT_FOUND : PCIBIOS_SUCCESSFUL;
- 
-@@ -141,10 +160,8 @@ static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
- 		return PCIBIOS_SUCCESSFUL;
- 	}
- 
--	bridge_write(bc, b_pci_cfg, (busno << 16) | (slot << 11));
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | where];
--
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	shift = ((where & 3) << 3);
-@@ -155,7 +172,7 @@ static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
- }
- 
- static int pci_read_config(struct pci_bus *bus, unsigned int devfn,
--			   int where, int size, u32 * value)
-+			   int where, int size, u32 *value)
- {
- 	if (!pci_is_root_bus(bus))
- 		return pci_conf1_read_config(bus, devfn, where, size, value);
-@@ -170,12 +187,12 @@ static int pci_conf0_write_config(struct pci_bus *bus, unsigned int devfn,
- 	struct bridge_regs *bridge = bc->base;
- 	int slot = PCI_SLOT(devfn);
- 	int fn = PCI_FUNC(devfn);
--	volatile void *addr;
-+	void *addr;
- 	u32 cf, shift, mask, smask;
- 	int res;
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[PCI_VENDOR_ID];
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	/*
-@@ -187,13 +204,12 @@ static int pci_conf0_write_config(struct pci_bus *bus, unsigned int devfn,
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[where ^ (4 - size)];
- 
--	if (size == 1) {
--		res = put_dbe(value, (u8 *) addr);
--	} else if (size == 2) {
--		res = put_dbe(value, (u16 *) addr);
--	} else {
--		res = put_dbe(value, (u32 *) addr);
--	}
-+	if (size == 1)
-+		res = put_dbe(value, (u8 *)addr);
-+	else if (size == 2)
-+		res = put_dbe(value, (u16 *)addr);
-+	else
-+		res = put_dbe(value, (u32 *)addr);
- 
- 	if (res)
- 		return PCIBIOS_DEVICE_NOT_FOUND;
-@@ -210,7 +226,7 @@ static int pci_conf0_write_config(struct pci_bus *bus, unsigned int devfn,
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].l[where >> 2];
- 
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	shift = ((where & 3) << 3);
-@@ -218,7 +234,7 @@ static int pci_conf0_write_config(struct pci_bus *bus, unsigned int devfn,
- 	smask = mask << shift;
- 
- 	cf = (cf & ~smask) | ((value & mask) << shift);
--	if (put_dbe(cf, (u32 *) addr))
-+	if (put_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	return PCIBIOS_SUCCESSFUL;
-@@ -232,13 +248,13 @@ static int pci_conf1_write_config(struct pci_bus *bus, unsigned int devfn,
- 	int slot = PCI_SLOT(devfn);
- 	int fn = PCI_FUNC(devfn);
- 	int busno = bus->number;
--	volatile void *addr;
-+	void *addr;
- 	u32 cf, shift, mask, smask;
- 	int res;
- 
- 	bridge_write(bc, b_pci_cfg, (busno << 16) | (slot << 11));
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | PCI_VENDOR_ID];
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	/*
-@@ -250,13 +266,12 @@ static int pci_conf1_write_config(struct pci_bus *bus, unsigned int devfn,
- 
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | (where ^ (4 - size))];
- 
--	if (size == 1) {
--		res = put_dbe(value, (u8 *) addr);
--	} else if (size == 2) {
--		res = put_dbe(value, (u16 *) addr);
--	} else {
--		res = put_dbe(value, (u32 *) addr);
--	}
-+	if (size == 1)
-+		res = put_dbe(value, (u8 *)addr);
-+	else if (size == 2)
-+		res = put_dbe(value, (u16 *)addr);
-+	else
-+		res = put_dbe(value, (u32 *)addr);
- 
- 	if (res)
- 		return PCIBIOS_DEVICE_NOT_FOUND;
-@@ -272,8 +287,7 @@ static int pci_conf1_write_config(struct pci_bus *bus, unsigned int devfn,
- 		return PCIBIOS_SUCCESSFUL;
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].l[where >> 2];
--
--	if (get_dbe(cf, (u32 *) addr))
-+	if (get_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	shift = ((where & 3) << 3);
-@@ -281,7 +295,7 @@ static int pci_conf1_write_config(struct pci_bus *bus, unsigned int devfn,
- 	smask = mask << shift;
- 
- 	cf = (cf & ~smask) | ((value & mask) << shift);
--	if (put_dbe(cf, (u32 *) addr))
-+	if (put_dbe(cf, (u32 *)addr))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
- 	return PCIBIOS_SUCCESSFUL;
-@@ -296,7 +310,173 @@ static int pci_write_config(struct pci_bus *bus, unsigned int devfn,
- 	return pci_conf0_write_config(bus, devfn, where, size, value);
- }
- 
--struct pci_ops bridge_pci_ops = {
--	.read	= pci_read_config,
--	.write	= pci_write_config,
-+static int bridge_add_bus(struct pci_bus *bus)
-+{
-+	struct bridge_controller *bc = BRIDGE_CONTROLLER(bus);
-+
-+	set_dev_node(&bus->dev, bc->nasid);
-+	return 0;
-+}
-+
-+static struct pci_ops bridge_pci_ops = {
-+	.add_bus = bridge_add_bus,
-+	.read	 = pci_read_config,
-+	.write	 = pci_write_config,
-+};
-+
-+/*
-+ * All observed requests have pin == 1. We could have a global here, that
-+ * gets incremented and returned every time - unfortunately, pci_map_irq
-+ * may be called on the same device over and over, and need to return the
-+ * same value. On O2000, pin can be 0 or 1, and PCI slots can be [0..7].
-+ *
-+ * A given PCI device, in general, should be able to intr any of the cpus
-+ * on any one of the hubs connected to its xbow.
-+ */
-+static int bridge_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	struct bridge_controller *bc = BRIDGE_CONTROLLER(dev->bus);
-+	int irq;
-+
-+	irq = bc->pci_int[slot];
-+	if (irq == -1) {
-+		irq = request_bridge_irq(bc, slot);
-+		if (irq < 0)
-+			return irq;
-+
-+		bc->pci_int[slot] = irq;
-+	}
-+	return irq;
-+}
-+
-+static int bridge_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct bridge_controller *bc;
-+	struct pci_host_bridge *host;
-+	unsigned long offset;
-+	int slot;
-+	int err;
-+	struct xtalk_bridge_platform_data *bd = dev_get_platdata(&pdev->dev);
-+
-+	offset = NODE_OFFSET(bd->nasid);
-+
-+	pci_set_flags(PCI_PROBE_ONLY);
-+
-+	host = devm_pci_alloc_host_bridge(dev, sizeof(*bc));
-+	if (!host)
-+		return -ENOMEM;
-+
-+	bc = pci_host_bridge_priv(host);
-+
-+	bc->mem.name		= "Bridge PCI MEM";
-+	bc->mem.start		= offset + (bd->widget << SWIN_SIZE_BITS);
-+	bc->mem.end		= bc->mem.start + SWIN_SIZE;
-+	bc->mem.flags		= IORESOURCE_MEM;
-+
-+	bc->io.name		= "Bridge PCI IO";
-+	bc->io.start		= offset + (bd->widget << SWIN_SIZE_BITS);
-+	bc->io.end		= bc->io.start + SWIN_SIZE;
-+	bc->io.flags		= IORESOURCE_IO;
-+
-+	bc->busn.name		= "Bridge PCI busn";
-+	bc->busn.start		= 0;
-+	bc->busn.end		= 0xff;
-+	bc->busn.flags		= IORESOURCE_BUS;
-+
-+	pci_add_resource_offset(&host->windows, &bc->mem, offset);
-+	pci_add_resource_offset(&host->windows, &bc->io, offset);
-+	pci_add_resource(&host->windows, &bc->busn);
-+
-+	err = devm_request_pci_bus_resources(dev, &host->windows);
-+	if (err < 0) {
-+		pci_free_resource_list(&host->windows);
-+		return err;
-+	}
-+
-+	bc->nasid = bd->nasid;
-+
-+	bc->baddr = (u64)bd->masterwid << 60 | PCI64_ATTR_BAR;
-+
-+	/*
-+	 * point to this bridge
-+	 */
-+	bc->base = (struct bridge_regs *)RAW_NODE_SWIN_BASE(bd->nasid,
-+							    bd->widget);
-+
-+	/*
-+	 * Clear all pending interrupts.
-+	 */
-+	bridge_write(bc, b_int_rst_stat, BRIDGE_IRR_ALL_CLR);
-+
-+	/*
-+	 * Until otherwise set up, assume all interrupts are from slot 0
-+	 */
-+	bridge_write(bc, b_int_device, 0x0);
-+
-+	/*
-+	 * disable swapping for big windows
-+	 */
-+	bridge_clr(bc, b_wid_control,
-+		   BRIDGE_CTRL_IO_SWAP | BRIDGE_CTRL_MEM_SWAP);
-+#ifdef CONFIG_PAGE_SIZE_4KB
-+	bridge_clr(bc, b_wid_control, BRIDGE_CTRL_PAGE_SIZE);
-+#else /* 16kB or larger */
-+	bridge_set(bc, b_wid_control, BRIDGE_CTRL_PAGE_SIZE);
-+#endif
-+
-+	/*
-+	 * Hmm...  IRIX sets additional bits in the address which
-+	 * are documented as reserved in the bridge docs.
-+	 */
-+	bridge_write(bc, b_wid_int_upper, 0x8000 | (bd->masterwid << 16));
-+	bridge_write(bc, b_wid_int_lower, 0x01800090);	/* PI_INT_PEND_MOD off*/
-+	bridge_write(bc, b_dir_map, (bd->masterwid << 20));	/* DMA */
-+	bridge_write(bc, b_int_enable, 0);
-+
-+	for (slot = 0; slot < 8; slot++) {
-+		bridge_set(bc, b_device[slot].reg, BRIDGE_DEV_SWAP_DIR);
-+		bc->pci_int[slot] = -1;
-+	}
-+	bridge_read(bc, b_wid_tflush);	  /* wait until Bridge PIO complete */
-+
-+	host->dev.parent = dev;
-+	host->sysdata = bc;
-+	host->busnr = 0;
-+	host->ops = &bridge_pci_ops;
-+	host->map_irq = bridge_map_irq;
-+	host->swizzle_irq = pci_common_swizzle;
-+
-+	err = pci_scan_root_bus_bridge(host);
-+	if (err < 0)
-+		return err;
-+
-+	pci_bus_claim_resources(host->bus);
-+	pci_bus_add_devices(host->bus);
-+
-+	platform_set_drvdata(pdev, host->bus);
-+
-+	return 0;
-+}
-+
-+static int bridge_remove(struct platform_device *pdev)
-+{
-+	struct pci_bus *bus = platform_get_drvdata(pdev);
-+
-+	pci_lock_rescan_remove();
-+	pci_stop_root_bus(bus);
-+	pci_remove_root_bus(bus);
-+	pci_unlock_rescan_remove();
-+
-+	return 0;
-+}
-+
-+static struct platform_driver bridge_driver = {
-+	.probe  = bridge_probe,
-+	.remove = bridge_remove,
-+	.driver = {
-+		.name = "xtalk-bridge",
-+	}
+ struct irqaction hub_rt_irqaction = {
+ 	.handler	= hub_rt_counter_handler,
++	.percpu_dev_id	= &hub_rt_clockevent,
+ 	.flags		= IRQF_PERCPU | IRQF_TIMER,
+ 	.name		= "hub-rt",
  };
+@@ -107,7 +92,6 @@ void hub_rt_clock_event_init(void)
+ 	unsigned int cpu = smp_processor_id();
+ 	struct clock_event_device *cd = &per_cpu(hub_rt_clockevent, cpu);
+ 	unsigned char *name = per_cpu(hub_rt_name, cpu);
+-	int irq = rt_timer_irq;
+ 
+ 	sprintf(name, "hub-rt %d", cpu);
+ 	cd->name		= name;
+@@ -118,29 +102,19 @@ void hub_rt_clock_event_init(void)
+ 	cd->min_delta_ns	= clockevent_delta2ns(0x300, cd);
+ 	cd->min_delta_ticks	= 0x300;
+ 	cd->rating		= 200;
+-	cd->irq			= irq;
++	cd->irq			= IP27_RT_TIMER_IRQ;
+ 	cd->cpumask		= cpumask_of(cpu);
+ 	cd->set_next_event	= rt_next_event;
+ 	clockevents_register_device(cd);
 +
-+builtin_platform_driver(bridge_driver);
-diff --git a/include/linux/platform_data/xtalk-bridge.h b/include/linux/platform_data/xtalk-bridge.h
-new file mode 100644
-index 000000000000..818d4b457429
---- /dev/null
-+++ b/include/linux/platform_data/xtalk-bridge.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * SGI PCI Xtalk Bridge
-+ */
-+
-+#ifndef PLATFORM_DATA_XTALK_BRIDGE_H
-+#define PLATFORM_DATA_XTALK_BRIDGE_H
-+
-+#include <asm/sn/types.h>
-+
-+struct xtalk_bridge_platform_data {
-+	nasid_t	nasid;
-+	int	widget;
-+	int	masterwid;
-+};
-+
-+#endif /* PLATFORM_DATA_XTALK_BRIDGE_H */
++	enable_percpu_irq(IP27_RT_TIMER_IRQ, IRQ_TYPE_NONE);
+ }
+ 
+ static void __init hub_rt_clock_event_global_init(void)
+ {
+-	int irq;
+-
+-	do {
+-		smp_wmb();
+-		irq = rt_timer_irq;
+-		if (irq)
+-			break;
+-
+-		irq = allocate_irqno();
+-		if (irq < 0)
+-			panic("Allocation of irq number for timer failed");
+-	} while (xchg(&rt_timer_irq, irq));
+-
+-	irq_set_chip_and_handler(irq, &rt_irq_type, handle_percpu_irq);
+-	setup_irq(irq, &hub_rt_irqaction);
++	irq_set_handler(IP27_RT_TIMER_IRQ, handle_percpu_devid_irq);
++	irq_set_percpu_devid(IP27_RT_TIMER_IRQ);
++	setup_percpu_irq(IP27_RT_TIMER_IRQ, &hub_rt_irqaction);
+ }
+ 
+ static u64 hub_rt_read(struct clocksource *cs)
+@@ -194,8 +168,6 @@ void cpu_time_init(void)
+ 		panic("No information about myself?");
+ 
+ 	printk("CPU %d clock is %dMHz.\n", smp_processor_id(), cpu->cpu_speed);
+-
+-	set_c0_status(SRB_TIMOCLK);
+ }
+ 
+ void hub_rtc_init(cnodeid_t cnode)
 -- 
 2.13.7
 

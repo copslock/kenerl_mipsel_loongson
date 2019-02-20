@@ -2,152 +2,136 @@ Return-Path: <SRS0=PWkM=Q3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+X-Spam-Status: No, score=-5.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E7D0C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 05:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F815C10F0B
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 14:47:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 08C4821848
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 05:32:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F093F21848
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 14:47:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbfBTFaw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 20 Feb 2019 00:30:52 -0500
-Received: from mga06.intel.com ([134.134.136.31]:25315 "EHLO mga06.intel.com"
+        id S1727266AbfBTOr0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 20 Feb 2019 09:47:26 -0500
+Received: from foss.arm.com ([217.140.101.70]:59164 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726082AbfBTFav (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 20 Feb 2019 00:30:51 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Feb 2019 21:30:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.58,388,1544515200"; 
-   d="scan'208";a="144924899"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by fmsmga002.fm.intel.com with ESMTP; 19 Feb 2019 21:30:48 -0800
-From:   ira.weiny@intel.com
-To:     John Hubbard <jhubbard@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        id S1726592AbfBTOrZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 20 Feb 2019 09:47:25 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B34615AB;
+        Wed, 20 Feb 2019 06:47:25 -0800 (PST)
+Received: from fuggles.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EF1B3F5C1;
+        Wed, 20 Feb 2019 06:47:20 -0800 (PST)
+Date:   Wed, 20 Feb 2019 14:47:17 +0000
+From:   Will Deacon <will.deacon@arm.com>
+To:     Waiman Long <longman@redhat.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     Ira Weiny <ira.weiny@intel.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
-        linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-scsi@vger.kernel.org, devel@driverdev.osuosl.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
-        devel@lists.orangefs.org, ceph-devel@vger.kernel.org,
-        rds-devel@oss.oracle.com
-Subject: [RESEND PATCH 0/7] Add FOLL_LONGTERM to GUP fast and use it
-Date:   Tue, 19 Feb 2019 21:30:33 -0800
-Message-Id: <20190220053040.10831-1-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.20.1
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tim Chen <tim.c.chen@linux.intel.com>
+Subject: Re: [PATCH v4 1/3] locking/rwsem: Remove arch specific rwsem files
+Message-ID: <20190220144717.GI7523@fuggles.cambridge.arm.com>
+References: <1550095217-12047-1-git-send-email-longman@redhat.com>
+ <1550095217-12047-2-git-send-email-longman@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1550095217-12047-2-git-send-email-longman@redhat.com>
+User-Agent: Mutt/1.11.1+86 (6f28e57d73f2) ()
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Ira Weiny <ira.weiny@intel.com>
+On Wed, Feb 13, 2019 at 05:00:15PM -0500, Waiman Long wrote:
+> As the generic rwsem-xadd code is using the appropriate acquire and
+> release versions of the atomic operations, the arch specific rwsem.h
+> files will not be that much faster than the generic code as long as the
+> atomic functions are properly implemented. So we can remove those arch
+> specific rwsem.h and stop building asm/rwsem.h to reduce maintenance
+> effort.
+> 
+> Currently, only x86, alpha and ia64 have implemented architecture
+> specific fast paths. I don't have access to alpha and ia64 systems for
+> testing, but they are legacy systems that are not likely to be updated
+> to the latest kernel anyway.
+> 
+> By using a rwsem microbenchmark, the total locking rates on a 4-socket
+> 56-core 112-thread x86-64 system before and after the patch were as
+> follows (mixed means equal # of read and write locks):
+> 
+>                       Before Patch              After Patch
+>    # of Threads  wlock   rlock   mixed     wlock   rlock   mixed
+>    ------------  -----   -----   -----     -----   -----   -----
+>         1        29,201  30,143  29,458    28,615  30,172  29,201
+>         2         6,807  13,299   1,171     7,725  15,025   1,804
+>         4         6,504  12,755   1,520     7,127  14,286   1,345
+>         8         6,762  13,412     764     6,826  13,652     726
+>        16         6,693  15,408     662     6,599  15,938     626
+>        32         6,145  15,286     496     5,549  15,487     511
+>        64         5,812  15,495      60     5,858  15,572      60
+> 
+> There were some run-to-run variations for the multi-thread tests. For
+> x86-64, using the generic C code fast path seems to be a little bit
+> faster than the assembly version with low lock contention.  Looking at
+> the assembly version of the fast paths, there are assembly to/from C
+> code wrappers that save and restore all the callee-clobbered registers
+> (7 registers on x86-64). The assembly generated from the generic C
+> code doesn't need to do that. That may explain the slight performance
+> gain here.
+> 
+> The generic asm rwsem.h can also be merged into kernel/locking/rwsem.h
+> with no code change as no other code other than those under
+> kernel/locking needs to access the internal rwsem macros and functions.
+> 
+> Signed-off-by: Waiman Long <longman@redhat.com>
+> ---
+>  MAINTAINERS                     |   1 -
+>  arch/alpha/include/asm/rwsem.h  | 211 -----------------------------------
+>  arch/arm/include/asm/Kbuild     |   1 -
+>  arch/arm64/include/asm/Kbuild   |   1 -
+>  arch/hexagon/include/asm/Kbuild |   1 -
+>  arch/ia64/include/asm/rwsem.h   | 172 -----------------------------
+>  arch/powerpc/include/asm/Kbuild |   1 -
+>  arch/s390/include/asm/Kbuild    |   1 -
+>  arch/sh/include/asm/Kbuild      |   1 -
+>  arch/sparc/include/asm/Kbuild   |   1 -
+>  arch/x86/include/asm/rwsem.h    | 237 ----------------------------------------
+>  arch/x86/lib/Makefile           |   1 -
+>  arch/x86/lib/rwsem.S            | 156 --------------------------
+>  arch/x86/um/Makefile            |   1 -
+>  arch/xtensa/include/asm/Kbuild  |   1 -
+>  include/asm-generic/rwsem.h     | 140 ------------------------
+>  include/linux/rwsem.h           |   4 +-
+>  kernel/locking/percpu-rwsem.c   |   2 +
+>  kernel/locking/rwsem.h          | 130 ++++++++++++++++++++++
+>  19 files changed, 133 insertions(+), 930 deletions(-)
+>  delete mode 100644 arch/alpha/include/asm/rwsem.h
+>  delete mode 100644 arch/ia64/include/asm/rwsem.h
+>  delete mode 100644 arch/x86/include/asm/rwsem.h
+>  delete mode 100644 arch/x86/lib/rwsem.S
+>  delete mode 100644 include/asm-generic/rwsem.h
 
-Resending these as I had only 1 minor comment which I believe we have covered
-in this series.  I was anticipating these going through the mm tree as they
-depend on a cleanup patch there and the IB changes are very minor.  But they
-could just as well go through the IB tree.
+Looks like a nice cleanup, thanks:
 
-NOTE: This series depends on my clean up patch to remove the write parameter
-from gup_fast_permitted()[1]
+Acked-by: Will Deacon <will.deacon@arm.com>
 
-HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
-advantages.  These pages can be held for a significant time.  But
-get_user_pages_fast() does not protect against mapping of FS DAX pages.
-
-Introduce FOLL_LONGTERM and use this flag in get_user_pages_fast() which
-retains the performance while also adding the FS DAX checks.  XDP has also
-shown interest in using this functionality.[2]
-
-In addition we change get_user_pages() to use the new FOLL_LONGTERM flag and
-remove the specialized get_user_pages_longterm call.
-
-[1] https://lkml.org/lkml/2019/2/11/237
-[2] https://lkml.org/lkml/2019/2/11/1789
-
-Ira Weiny (7):
-  mm/gup: Replace get_user_pages_longterm() with FOLL_LONGTERM
-  mm/gup: Change write parameter to flags in fast walk
-  mm/gup: Change GUP fast to use flags rather than a write 'bool'
-  mm/gup: Add FOLL_LONGTERM capability to GUP fast
-  IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
-  IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
-  IB/mthca: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
-
- arch/mips/mm/gup.c                          |  11 +-
- arch/powerpc/kvm/book3s_64_mmu_hv.c         |   4 +-
- arch/powerpc/kvm/e500_mmu.c                 |   2 +-
- arch/powerpc/mm/mmu_context_iommu.c         |   4 +-
- arch/s390/kvm/interrupt.c                   |   2 +-
- arch/s390/mm/gup.c                          |  12 +-
- arch/sh/mm/gup.c                            |  11 +-
- arch/sparc/mm/gup.c                         |   9 +-
- arch/x86/kvm/paging_tmpl.h                  |   2 +-
- arch/x86/kvm/svm.c                          |   2 +-
- drivers/fpga/dfl-afu-dma-region.c           |   2 +-
- drivers/gpu/drm/via/via_dmablit.c           |   3 +-
- drivers/infiniband/core/umem.c              |   5 +-
- drivers/infiniband/hw/hfi1/user_pages.c     |   5 +-
- drivers/infiniband/hw/mthca/mthca_memfree.c |   3 +-
- drivers/infiniband/hw/qib/qib_user_pages.c  |   8 +-
- drivers/infiniband/hw/qib/qib_user_sdma.c   |   2 +-
- drivers/infiniband/hw/usnic/usnic_uiom.c    |   9 +-
- drivers/media/v4l2-core/videobuf-dma-sg.c   |   6 +-
- drivers/misc/genwqe/card_utils.c            |   2 +-
- drivers/misc/vmw_vmci/vmci_host.c           |   2 +-
- drivers/misc/vmw_vmci/vmci_queue_pair.c     |   6 +-
- drivers/platform/goldfish/goldfish_pipe.c   |   3 +-
- drivers/rapidio/devices/rio_mport_cdev.c    |   4 +-
- drivers/sbus/char/oradax.c                  |   2 +-
- drivers/scsi/st.c                           |   3 +-
- drivers/staging/gasket/gasket_page_table.c  |   4 +-
- drivers/tee/tee_shm.c                       |   2 +-
- drivers/vfio/vfio_iommu_spapr_tce.c         |   3 +-
- drivers/vfio/vfio_iommu_type1.c             |   3 +-
- drivers/vhost/vhost.c                       |   2 +-
- drivers/video/fbdev/pvr2fb.c                |   2 +-
- drivers/virt/fsl_hypervisor.c               |   2 +-
- drivers/xen/gntdev.c                        |   2 +-
- fs/orangefs/orangefs-bufmap.c               |   2 +-
- include/linux/mm.h                          |  17 +-
- kernel/futex.c                              |   2 +-
- lib/iov_iter.c                              |   7 +-
- mm/gup.c                                    | 220 ++++++++++++--------
- mm/gup_benchmark.c                          |   5 +-
- mm/util.c                                   |   8 +-
- net/ceph/pagevec.c                          |   2 +-
- net/rds/info.c                              |   2 +-
- net/rds/rdma.c                              |   3 +-
- 44 files changed, 232 insertions(+), 180 deletions(-)
-
--- 
-2.20.1
-
+Will

@@ -2,41 +2,35 @@ Return-Path: <SRS0=PWkM=Q3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_MUTT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C056C4360F
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 15:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88FC0C43381
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 18:03:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E0B7F20880
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 15:21:13 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WIGucUyB"
+	by mail.kernel.org (Postfix) with ESMTP id 6CC0C20880
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Feb 2019 18:03:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727458AbfBTPU6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 20 Feb 2019 10:20:58 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:37016 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbfBTPU5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Feb 2019 10:20:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=EFeifr+GfaKqX300Um+mjNzD3Rm1S0esXSt0B9w2YGY=; b=WIGucUyBjsGVWuL2jvGEP36J7
-        wAIM66Nws+XW3bCRdl88lmFalND8Uqloj60hjuL97/UwAqCvwAh/q71HAghQoAiJxUBKDV4NeFs+P
-        HVl2PIkFym1snOkp7H0Bh7Iwy3HNth61esVAhkupONHYlLPFOyNBcP6ioDPUrT9m8HmSlz0Cy7brW
-        T3CThrxzbkECUC+LLP/75uJ0vWxiD0QDLR28VwL+hwhNu5iUxu99KR6fznvbiQWa2uKqaDKSSWHwd
-        5uLNPR4nLxuoKU8lEnZ+ly+ElHLeYkLQbpv5lMqHn24WHv224i/dDaYfT4EtkA5c0+hIF01oAUZ5T
-        N7tedkzRQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gwTek-00048O-OH; Wed, 20 Feb 2019 15:19:30 +0000
-Date:   Wed, 20 Feb 2019 07:19:30 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     ira.weiny@intel.com
+        id S1726295AbfBTSC5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 20 Feb 2019 13:02:57 -0500
+Received: from mga12.intel.com ([192.55.52.136]:24817 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725798AbfBTSC5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 20 Feb 2019 13:02:57 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Feb 2019 10:02:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.58,391,1544515200"; 
+   d="scan'208";a="148440466"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2019 10:02:55 -0800
+Date:   Wed, 20 Feb 2019 10:02:56 -0800
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Christoph Hellwig <hch@infradead.org>
 Cc:     John Hubbard <jhubbard@nvidia.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.com>,
@@ -67,35 +61,64 @@ Cc:     John Hubbard <jhubbard@nvidia.com>,
         devel@lists.orangefs.org, ceph-devel@vger.kernel.org,
         rds-devel@oss.oracle.com
 Subject: Re: [RESEND PATCH 0/7] Add FOLL_LONGTERM to GUP fast and use it
-Message-ID: <20190220151930.GB11695@infradead.org>
+Message-ID: <20190220180255.GA12020@iweiny-DESK2.sc.intel.com>
 References: <20190220053040.10831-1-ira.weiny@intel.com>
+ <20190220151930.GB11695@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190220053040.10831-1-ira.weiny@intel.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190220151930.GB11695@infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Feb 19, 2019 at 09:30:33PM -0800, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
+On Wed, Feb 20, 2019 at 07:19:30AM -0800, Christoph Hellwig wrote:
+> On Tue, Feb 19, 2019 at 09:30:33PM -0800, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > Resending these as I had only 1 minor comment which I believe we have covered
+> > in this series.  I was anticipating these going through the mm tree as they
+> > depend on a cleanup patch there and the IB changes are very minor.  But they
+> > could just as well go through the IB tree.
+> > 
+> > NOTE: This series depends on my clean up patch to remove the write parameter
+> > from gup_fast_permitted()[1]
+> > 
+> > HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
+> > advantages.  These pages can be held for a significant time.  But
+> > get_user_pages_fast() does not protect against mapping of FS DAX pages.
 > 
-> Resending these as I had only 1 minor comment which I believe we have covered
-> in this series.  I was anticipating these going through the mm tree as they
-> depend on a cleanup patch there and the IB changes are very minor.  But they
-> could just as well go through the IB tree.
+> This I don't get - if you do lock down long term mappings performance
+> of the actual get_user_pages call shouldn't matter to start with.
 > 
-> NOTE: This series depends on my clean up patch to remove the write parameter
-> from gup_fast_permitted()[1]
-> 
-> HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
-> advantages.  These pages can be held for a significant time.  But
-> get_user_pages_fast() does not protect against mapping of FS DAX pages.
+> What do I miss?
 
-This I don't get - if you do lock down long term mappings performance
-of the actual get_user_pages call shouldn't matter to start with.
+A couple of points.
 
-What do I miss?
+First "longterm" is a relative thing and at this point is probably a misnomer.
+This is really flagging a pin which is going to be given to hardware and can't
+move.  I've thought of a couple of alternative names but I think we have to
+settle on if we are going to use FL_LAYOUT or something else to solve the
+"longterm" problem.  Then I think we can change the flag to a better name.
+
+Second, It depends on how often you are registering memory.  I have spoken with
+some RDMA users who consider MR in the performance path...  For the overall
+application performance.  I don't have the numbers as the tests for HFI1 were
+done a long time ago.  But there was a significant advantage.  Some of which is
+probably due to the fact that you don't have to hold mmap_sem.
+
+Finally, architecturally I think it would be good for everyone to use *_fast.
+There are patches submitted to the RDMA list which would allow the use of
+*_fast (they reworking the use of mmap_sem) and as soon as they are accepted
+I'll submit a patch to convert the RDMA core as well.  Also to this point
+others are looking to use *_fast.[2]
+
+As an asside, Jasons pointed out in my previous submission that *_fast and
+*_unlocked look very much the same.  I agree and I think further cleanup will
+be coming.  But I'm focused on getting the final solution for DAX at the
+moment.
+
+Ira
+

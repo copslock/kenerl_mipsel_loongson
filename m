@@ -2,168 +2,171 @@ Return-Path: <SRS0=X8HB=Q4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_NEOMUTT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6ED9BC43381
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Feb 2019 20:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E779BC43381
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Feb 2019 21:03:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2B888207E0
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Feb 2019 20:50:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9C8252080F
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Feb 2019 21:03:18 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="mLtOVILN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXyhktJg"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbfBUUun (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Feb 2019 15:50:43 -0500
-Received: from mail-eopbgr810109.outbound.protection.outlook.com ([40.107.81.109]:7479
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725891AbfBUUun (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 21 Feb 2019 15:50:43 -0500
+        id S1725943AbfBUVDS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 21 Feb 2019 16:03:18 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:38097 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725891AbfBUVDR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Feb 2019 16:03:17 -0500
+Received: by mail-pg1-f195.google.com with SMTP id m2so8591pgl.5;
+        Thu, 21 Feb 2019 13:03:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jBlSUn5Cy6NyDaA15yKluhsGEKX9LuMgFz8MtU/pdIg=;
- b=mLtOVILNdK3C4dbTs+jz/imSoUWvsPtyvSkPFObDDM0mTNHxtUrF3KEyqDtt1367rPbScOgS6PMjbTubZfDh3HHJz6iai+HQanZZt/XKxdwtKCZ2/kEw5KRGWjPAvH3lIhiIj1LXKXvArXjokcabkup9byKBWxDwW58koXHU9pA=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1358.namprd22.prod.outlook.com (10.174.162.148) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1643.14; Thu, 21 Feb 2019 20:50:39 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::7d5e:f3b0:4a5:4636]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::7d5e:f3b0:4a5:4636%9]) with mapi id 15.20.1622.020; Thu, 21 Feb 2019
- 20:50:39 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 00/10] MIPS: SGI-IP27 rework
-Thread-Topic: [PATCH v2 00/10] MIPS: SGI-IP27 rework
-Thread-Index: AQHUyicabaobcsLrVkGM419PhbaunQ==
-Date:   Thu, 21 Feb 2019 20:50:39 +0000
-Message-ID: <20190221205038.hcov3n574a3zqip7@pburton-laptop>
-References: <20190219155728.19163-1-tbogendoerfer@suse.de>
-In-Reply-To: <20190219155728.19163-1-tbogendoerfer@suse.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR11CA0073.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::14) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 47179be5-b4c3-40bb-5689-08d6983e3ca3
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600110)(711020)(4605104)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1358;
-x-ms-traffictypediagnostic: MWHPR2201MB1358:
-x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;MWHPR2201MB1358;23:NzFDP9h1wdKVfdI/MwVFHmT3c4vAa6lkQCbKAtq?=
- =?us-ascii?Q?BPay7ho+LpZ8wQrjxevYU2q4TiXk5io/a5b1nPmVmLy4zds9/8OcCplk4MgA?=
- =?us-ascii?Q?XfnoPOfSe7NFnjQdXBohJYAPxWKCz8+1txqfCQqlsI2sCNSDzvTfdITAc2hB?=
- =?us-ascii?Q?hezmYYOAHAprZpJTTWomBjfUFf+iTLW71PPI6wM1KSlpzpR7L0E7ZbZZ/pho?=
- =?us-ascii?Q?gHm4yKe7s7aUbudQ/zx77c95/d1zmk7Ks/BWk8DN3XnAKCgf2Yge5JgIpaM6?=
- =?us-ascii?Q?D3N2eGqCSu0qKqKd4+Zt7gfAaj4xRxHbfR5JE2A/XJjinzjVFhGmD9+KCAOr?=
- =?us-ascii?Q?yMA+F0da6yKIm9frZec28aByzzp5ef33sB28pUPC0QOzWfSNig2b1rVkA0kb?=
- =?us-ascii?Q?yR0Tw7Vjwnpi0buxS9Ya7r7y3mKQT3aP45PtJmYBvnqZfvSvfFvZIJ13UJvp?=
- =?us-ascii?Q?3xcM+DlWptUG+GcF/yrT7wAGdjDW858yngMrsFTr7/V0VZp8D1yGydb3sgzX?=
- =?us-ascii?Q?iMD6zSKB3gY/MWlc7VY3iz/ScpY8RgL1ElvQD1EEBWPLli6wezrWVBbZYDE+?=
- =?us-ascii?Q?fhGnMzqIPEnFHeumIhl47Gv+mhoQ9QYOS+TJVsnBWeS1CK3l8XzfNWFh29Pz?=
- =?us-ascii?Q?s7xebwkm3jVJSTbd0ZjB9EQpzRArKfBD4MPyiZZk4aKG/KvUqRZs9XYsgKyK?=
- =?us-ascii?Q?t4mzXcCDjbOo3HwO1ZeVU+zk12JXJgLtXroUKXqpozHEU12F5WEza6+Xou07?=
- =?us-ascii?Q?ALgXrRUtfP4EM1/uPe1M6Zs8jxkaQCHf1hfFGpfNG82+XE22jzNrR7wPm1dL?=
- =?us-ascii?Q?LyxBw5PG0RZQIvsepRPsWs5xOYv5N19PkVd804CX5rs+x9wHpJ+6lsxxtMNA?=
- =?us-ascii?Q?XjXa56sftkpihdjGu4FvUUk6dnwaZ+imTaNTXHs3lv8m6z5zmjm4SIZApH27?=
- =?us-ascii?Q?J+D+CPoIAUL3XErIdwOrYYyft5S5bDuEKLXVXTYY/Wn4wM7/+i5dpaUv55qt?=
- =?us-ascii?Q?evuEknCDXWM32Dw2g7EusSedZWQtZpoLW8L+zI3b1AlOIUHzIRl2unRFbC4x?=
- =?us-ascii?Q?V5VuFQmgmu1NPLoFNq+gRHknzcH+p7Qp8p/481rKd/0usCbwtGWbwwy8p9Gi?=
- =?us-ascii?Q?of8pMPed+ijgC9KQSaPm9GwQ67cnrfxj3xgiqOjxL6Zpm9usqQNopsenyQc9?=
- =?us-ascii?Q?8FAt66YnClXfkkL/YQh2aExLVhcF7WcZYvWu5Ux9p4zzHtBqnfWn/xTgD8JG?=
- =?us-ascii?Q?Wg3fxJQusLtRt+Ny3N4SJbaVuhIDFLSmsVnWvlA0Rk6FpJ5guldHAgIGEqXo?=
- =?us-ascii?Q?19qHaxITYmOwOsi89ehbuH5gRh3sBIR8N5NamfdIcyxbu?=
-x-microsoft-antispam-prvs: <MWHPR2201MB13582F51F031E17CF300EB13C17E0@MWHPR2201MB1358.namprd22.prod.outlook.com>
-x-forefront-prvs: 09555FB1AD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(366004)(39850400004)(346002)(376002)(136003)(199004)(189003)(33896004)(76176011)(305945005)(316002)(71190400001)(102836004)(7736002)(6506007)(386003)(446003)(97736004)(6486002)(11346002)(5660300002)(476003)(54906003)(52116002)(58126008)(7416002)(71200400001)(44832011)(105586002)(106356001)(6436002)(6512007)(53936002)(9686003)(81156014)(186003)(81166006)(8676002)(229853002)(14444005)(26005)(256004)(33716001)(4326008)(8936002)(6246003)(66066001)(478600001)(1076003)(42882007)(3846002)(14454004)(6116002)(99286004)(68736007)(486006)(25786009)(6916009)(2906002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1358;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: hBWJgI4yKYw2CDNyKPLUYxUN4QaQjVkC2Y11TeWcfF6zt6ZCQ8Dj50Rp0kUUPEDCzkL/dwz++RI1ctPNzqyfWqC/45y0NjEW/873CAlSfeTdYYKa+ZlJKvIN+cvVwIopLDYo6eFMOcrjnHcP3a2vZRzuw+11qO3bNSp4KUelggu+I4hlnHU3mFtRLs4BQpapTFwj724av10CkgqJrneN7Uyiy6Kt8NeY80+IsU/jskIWAmbm1yCdMnfftn1GCTobEPnMCYT7djCDpFPnQvynwIB9i/RSO2cGE5a9UxSwd9X9/983xn7IkJ8A3644ljg7LxVKYyeyG+JAmtNlYDjn/8eCc/4vEVVmtsVKlb7Anbyrmav5mPNtPD4NcFrcC98vAG02oDc10cWCXjTa3AEoiHk5iua1RZF//taOuI9H9h0=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <21DF7EAEFB82A945B9A9D82A73D0DDFD@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=S3oUk3lMpZLvsLcCJJBf9TXN7vnsk1j+PuSnRjD/NGw=;
+        b=MXyhktJgSfI6z7i2gSPGT2zYHMBmT+pK7tescSBd+LhrK7A/j9B+q6Wkbbnu6kHJMs
+         4x7ZnN2doVwqV93icxJ7IBv9i58gSCTgt6RHl9lMbVGb4RC3ggNnSACtidC3hYZK/Pd/
+         d70iB9IXYywLHi6huYuJ4omoNx8qtoW8kzVct+gszRLNu5W+R4Ieb2EJK4inQ7C+bvYK
+         bFr8mq1Om2yqN5eah253RnERs0CBJy/kULasxvt7xCW1+HS8I9loivuV0C1PWuNLhZGH
+         1u35a0Pj8nEN5UdaPrmkNHLtfxGXVTlwgNDziQrszjnNvWRFpobKXJm7WIgDfETH3FvS
+         Uygg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=S3oUk3lMpZLvsLcCJJBf9TXN7vnsk1j+PuSnRjD/NGw=;
+        b=rk4wauBPa0jaImUrnmIMLBhW7FnLuNHhhguIV5+TSceE2HREENJi8onB8Tsqu6cHtC
+         174u9aFomX08FWatDrjzebXSOAWnKhcxxMJa5IEh6PqtoJOpoAGSV9BV8TZt82B2TJT3
+         w78F6Ea/Z2iveQue8cTEVAl+SdRC51MUFrjRbxgO+bKmEz7l3Op4RzDcN4oft5PkupFZ
+         GXxi/cZlHISdmM30IKk8pfUsumy0nl41AAFIN2X9tKjmVFr+Bv4rstbFvN6GwRoQR11f
+         nz/zaeimnNWjyAo7pXSmWvr0ANHqQ8LfG5tnDg0HwiJar6YKSdMl6TLb3G+sZrN7r3xA
+         a6og==
+X-Gm-Message-State: AHQUAubdY5lXbo0WBzIIk6diACuEPQq/MNXICLvRQn2egltPcMVGdgj7
+        dmcn6PcVCPZ+Il/dUE9ufQM=
+X-Google-Smtp-Source: AHgI3Ib0kcfUybt6hmeBcsoSq8xK9okHPMfFpqSC7+6wLvROQoITm66m52yQj7ZGpJepX01AOHff8g==
+X-Received: by 2002:a65:6259:: with SMTP id q25mr454613pgv.235.1550782996515;
+        Thu, 21 Feb 2019 13:03:16 -0800 (PST)
+Received: from [10.67.49.97] ([192.19.223.250])
+        by smtp.googlemail.com with ESMTPSA id v26sm32585833pfg.62.2019.02.21.13.03.12
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 21 Feb 2019 13:03:15 -0800 (PST)
+Subject: Re: [PATCH] irqchip: brcmstb-l2: use _irqsave variants in
+ non-interrupt code
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "open list:BROADCOM BMIPS MIPS ARCHITECTURE" 
+        <linux-mips@vger.kernel.org>,
+        "moderated list:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <20190220221528.20811-1-f.fainelli@gmail.com>
+ <20190221101535.3f7f26e3@why.wild-wind.fr.eu.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
+Message-ID: <b004e1f2-0b9e-a75c-4f6e-1daa2f0e7eed@gmail.com>
+Date:   Thu, 21 Feb 2019 13:02:54 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47179be5-b4c3-40bb-5689-08d6983e3ca3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2019 20:50:39.1655
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1358
+In-Reply-To: <20190221101535.3f7f26e3@why.wild-wind.fr.eu.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Thomas,
+On 2/21/19 2:15 AM, Marc Zyngier wrote:
+> On Wed, 20 Feb 2019 14:15:28 -0800
+> Florian Fainelli <f.fainelli@gmail.com> wrote:
+> 
+>> From: Doug Berger <opendmb@gmail.com>
+>>
+>> Using the irq_gc_lock/irq_gc_unlock functions in the suspend and
+>> resume functions creates the opportunity for a deadlock during
+>> suspend, resume, and shutdown. Using the irq_gc_lock_irqsave/
+>> irq_gc_unlock_irqrestore variants prevents this possible deadlock.
+>>
+>> Signed-off-by: Doug Berger <opendmb@gmail.com>
+>> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> Applied to irqchip-next with:
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7f646e92766e2 ("irqchip: brcmstb-l2: Add Broadcom Set Top Box
+> Level-2 interrupt controller")
+> 
+> Now, I'm worried this is not the only issue, see below.
 
-On Tue, Feb 19, 2019 at 04:57:14PM +0100, Thomas Bogendoerfer wrote:
-> SGI IP27 (Origin/Onyx2) and SGI IP30 (Octane) have a similair
-> architecture and share some hardware (ioc3/bridge). To share
-> the software parts this patchset reworks SGI IP27 interrupt
-> and pci bridge code. By using features Linux gained during the
-> many years since SGI IP27 code was integrated this even results
-> in code reduction and IMHO cleaner code.
->=20
-> Tests have been done on a two module O200 (4 CPUs) and an
-> Origin 2000 (8 CPUs).
->=20
-> My next step in integrating SGI IP30 support is splitting ioc3eth
-> into a MFD and subdevice drivers. Prototype is working, but needs
-> still more clean ups.
->=20
-> Changes in v2:
->=20
-> - replaced HUB_L/HUB_S by __raw_readq/__raw_writeq
-> - removed union bridge_ate
-> - replaced remaing fields in slice_data by per_cpu data
-> - use generic_handle_irq instead of do_IRQ
-> - use hierarchy irq domain for stacking bridge and hub interrupt
-> - moved __dma_to_phys/__phy_to_dma to mach-ip27/dma-direct.h
-> - use dev_to_node() for pcibus_to_node() implementation
->=20
-> Thomas Bogendoerfer (10):
->   MIPS: SGI-IP27: get rid of volatile and hubreg_t
->   MIPS: SGI-IP27: clean up bridge access and header files
->   MIPS: SGI-IP27: use pr_info/pr_emerg and pr_cont to fix output
->   MIPS: SGI-IP27: do xtalk scanning later
->   MIPS: SGI-IP27: do boot CPU init later
->   MIPS: SGI-IP27: rework HUB interrupts
->   PCI: call add_bus method also for root bus
->   MIPS: SGI-IP27: use generic PCI driver
->   genirq/irqdomain: fall back to default domain when creating hierarchy
->     domain
->   MIPS: SGI-IP27: abstract chipset irq from bridge
-
-I have patches 1-6 applied locally - would you be happy for those to be
-pushed to mips-next without 7-10? I know ip27_defconfig still builds but
-have no idea whether it still works :)
-
-I don't appear to have received patches 7 or 9 but I see from archives
-there'll be a v3 of patch 9 at least.
-
-So I can either apply 1-6 for v5.1 or defer the whole series. Let me
-know - I'm happy either way.
-
-Thanks,
-    Paul
+Thanks for adding the Fixes tag, I should have done that, but did not
+consider it to be a particularly serious issue (we have not see it in
+real life, just only when LOCKDEP is enabled).
+-- 
+Florian

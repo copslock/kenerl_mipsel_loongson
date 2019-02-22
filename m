@@ -2,71 +2,138 @@ Return-Path: <SRS0=tVub=Q5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_ADSP_CUSTOM_MED,
+	DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C67A0C43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 14:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A124DC43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 15:07:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9573B206A3
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 14:49:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6797F2075A
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 15:07:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RzvG4jCh"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oHeHpCpv"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726458AbfBVOtP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Feb 2019 09:49:15 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:49316 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726090AbfBVOtO (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Feb 2019 09:49:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=U52uwF3d8GBlR/1Mbgwoe1sx/P0nJ97QaArOdi6k+ng=; b=RzvG4jChDX62QYDUMCAi2f91G
-        1KJs1V5tr0dvTho+lkOpALugFm6M8ge+JJwlsNt53Mg7bet3mwZoRvPSPz5G+yvwLeaKjnYrqM7oR
-        XOZojJrhu8TGGmZg0lBx0wybmThbMVZRRxPxwGn3zbTh7to+Hg00kvjC+oxqSjvlgwL/iqvuMUwu7
-        kRNJhSLoXSV7EllkMJBeB34QZLmg/GXI75vRrc17RMB1SstJcwapwO1JS/DTqVakfldLF43Ggzt8m
-        tnGpSsVJ5tXrC2oznKehzz9m7wQNExhMpAFfDdh4lN1+As4sZxjkMWa2yXRVU37xm/ugGWAg4I6Dw
-        p1tNmAbYA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1gxC8R-00085g-K1; Fri, 22 Feb 2019 14:49:07 +0000
-Date:   Fri, 22 Feb 2019 06:49:07 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 00/10] MIPS: SGI-IP27 rework
-Message-ID: <20190222144907.GB10643@infradead.org>
-References: <20190219155728.19163-1-tbogendoerfer@suse.de>
- <20190221205038.hcov3n574a3zqip7@pburton-laptop>
- <20190222091418.7c0eeb0d5c11b68874d8fdc9@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190222091418.7c0eeb0d5c11b68874d8fdc9@suse.de>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1727240AbfBVPG4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Feb 2019 10:06:56 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:41618 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726278AbfBVPGz (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Feb 2019 10:06:55 -0500
+Received: by mail-pl1-f195.google.com with SMTP id y5so1217984plk.8;
+        Fri, 22 Feb 2019 07:06:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=EiQBCSDAIf/suoeIwapm+FX4BR230o85XgcWooq6xpo=;
+        b=oHeHpCpvC2AoMktGH/FylVXGTrHXAAlZwXTLNGNTPVr+jXY93hFWcuEeceYTyB2prt
+         2rvvFgZ3gQU9hBYqEtXQWn4hXd7/3XkuVewfkGv86mW/NUOf2IvLU9H7mEBwl9Gp1u5L
+         +jVImO1D2WzSZMxc7RsGxQtHnhV52l0CIjRzNeg1ujDJqpuVFpblk6qFUaS5lAJagbAQ
+         BAyxleQsFdr6Gar/VUDt0QtIf4RMlt73YvIZG7rrHMOcsQUVh68pS/QQCfbhRVvtNJN7
+         yZbM5BhQLh6tbXzh5iSAT/wgHpkQqs+pDJZ27Fh8wqM/R9hDywOjjUORLVOpG/utNIkI
+         X0nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=EiQBCSDAIf/suoeIwapm+FX4BR230o85XgcWooq6xpo=;
+        b=evbmmiQKDkKshru7L7eBmXk8wNApR7ZC+C9EtXjeaA7Q5oK5HSens0GRtmAoGezoXd
+         BBjVUPT+c/tfJOxT/ji0tWFz4pQBDOq9CcOj27/Sno4ud1Yu8oFq0krDH+AitUTrACIZ
+         p34WAD1FZQsQdqEs8neE2zmAjOVvygW4XbZpvRk1edfZrzE+X7rVPaaxk1x0ERg1YeJ1
+         PHRq6fZ46c9Q1NDuztFRT5ncVZrwyMcAm0EBM/akGY4pkpMBBT+/Zm1thOcSnnYPL8s8
+         oJbhd32gQsdWfXWxYILd5GJqL3L/J79CiqckRYjVAFHQgqYyO3OzX16SX9XGlZNgPlV5
+         Giow==
+X-Gm-Message-State: AHQUAua8QOkTot25HAxM0GvvR5KkaAc12kZztLYrPa7oJqlXAF8QYH1L
+        jOhAePbmIqO2pNyaI2n91X4=
+X-Google-Smtp-Source: AHgI3IZbPWlYQzuwjEhbQFDPOboaR5xFVm1PNF+pNbeBeCaY7FX4MLfmcdiKb1W6D3NMvqNF02xA3A==
+X-Received: by 2002:a17:902:2de4:: with SMTP id p91mr4658872plb.215.1550848015074;
+        Fri, 22 Feb 2019 07:06:55 -0800 (PST)
+Received: from localhost.corp.microsoft.com ([167.220.255.67])
+        by smtp.googlemail.com with ESMTPSA id a4sm6151780pga.52.2019.02.22.07.06.46
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 22 Feb 2019 07:06:54 -0800 (PST)
+From:   lantianyu1986@gmail.com
+X-Google-Original-From: Tianyu.Lan@microsoft.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
+        bp@alien8.de, catalin.marinas@arm.com, christoffer.dall@arm.com,
+        devel@linuxdriverproject.org, haiyangz@microsoft.com,
+        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
+        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
+        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
+        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
+        paulus@ozlabs.org, pbonzini@redhat.com, ralf@linux-mips.org,
+        rkrcmar@redhat.com, sashal@kernel.org, sthemmin@microsoft.com,
+        tglx@linutronix.de, will.deacon@arm.com, x86@kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
+Subject: [PATCH V3 00/10] X86/KVM/Hyper-V: Add HV ept tlb range list flush support in KVM               
+Date:   Fri, 22 Feb 2019 23:06:27 +0800
+Message-Id: <20190222150637.2337-1-Tianyu.Lan@microsoft.com>
+X-Mailer: git-send-email 2.14.4
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Feb 22, 2019 at 09:14:18AM +0100, Thomas Bogendoerfer wrote:
-> 
-> I'm still fighting with git send-email to do proper collecting of addresses...
-> And the mails to your @mips.com address bounced yesterday.
+From: Lan Tianyu <Tianyu.Lan@microsoft.com>
 
-FYI, it also bounced for me yesterday (or the day before, depending on
-the time zone).
+This patchset is to introduce hv ept tlb range list flush function
+support in the KVM MMU component. Flushing ept tlbs of several address
+range can be done via single hypercall and new list flush function is
+used in the kvm_mmu_commit_zap_page() and FNAME(sync_page). This patchset
+also adds more hv ept tlb range flush support in more KVM MMU function.
+
+This patchset is based on the fix patch "x86/Hyper-V: Fix definition HV_MAX_FLUSH_REP_COUNT".
+(https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1939455.html)
+
+Change since v2:
+	1) Fix calculation of flush pages in the kvm_fill_hv_flush_list_func()
+	2) Change the logic of setting/clearing last_level flag
+
+Change since v1:
+	1) Make flush list as a hlist instead of list in order to 
+	keep struct kvm_mmu_page size.
+	2) Add last_level flag in the struct kvm_mmu_page instead
+	of spte pointer
+	3) Move tlb flush from kvm_mmu_notifier_clear_flush_young() to kvm_age_hva()
+	4) Use range flush in the kvm_vm_ioctl_get/clear_dirty_log()
+
+
+Lan Tianyu (10):
+  X86/Hyper-V: Add parameter offset for
+    hyperv_fill_flush_guest_mapping_list()
+  KVM/VMX: Fill range list in kvm_fill_hv_flush_list_func()
+  KVM/MMU: Introduce tlb flush with range list
+  KVM/MMU: Use range flush in sync_page()
+  KVM/MMU: Flush tlb directly in the kvm_mmu_slot_gfn_write_protect()
+  KVM: Add kvm_get_memslot() to get memslot via slot id
+  KVM: Use tlb range flush in the kvm_vm_ioctl_get/clear_dirty_log()
+  KVM: Add flush parameter for kvm_age_hva()
+  KVM/MMU: Use tlb range flush in the kvm_age_hva()
+  KVM/MMU: Add last_level flag in the struct mmu_spte_page
+
+ arch/arm/include/asm/kvm_host.h     |  3 +-
+ arch/arm64/include/asm/kvm_host.h   |  3 +-
+ arch/mips/include/asm/kvm_host.h    |  3 +-
+ arch/mips/kvm/mmu.c                 | 11 ++++++--
+ arch/powerpc/include/asm/kvm_host.h |  3 +-
+ arch/powerpc/kvm/book3s.c           | 10 +++++--
+ arch/powerpc/kvm/e500_mmu_host.c    |  3 +-
+ arch/x86/hyperv/nested.c            |  4 +--
+ arch/x86/include/asm/kvm_host.h     | 11 +++++++-
+ arch/x86/include/asm/mshyperv.h     |  2 +-
+ arch/x86/kvm/mmu.c                  | 55 ++++++++++++++++++++++++++++++-------
+ arch/x86/kvm/mmu.h                  |  7 +++++
+ arch/x86/kvm/paging_tmpl.h          |  5 ++--
+ arch/x86/kvm/vmx/vmx.c              | 18 ++++++++++--
+ arch/x86/kvm/x86.c                  | 16 ++++++++---
+ include/linux/kvm_host.h            |  1 +
+ virt/kvm/arm/mmu.c                  | 13 +++++++--
+ virt/kvm/kvm_main.c                 | 51 ++++++++++++++--------------------
+ 18 files changed, 156 insertions(+), 63 deletions(-)
+
+-- 
+2.14.4
+

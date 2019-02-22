@@ -2,164 +2,135 @@ Return-Path: <SRS0=tVub=Q5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23567C43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 17:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE8E3C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 18:26:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DD03B20700
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 17:08:48 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="Z2YShWpo"
+	by mail.kernel.org (Postfix) with ESMTP id 7FBDF2070B
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 18:26:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727284AbfBVRIs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Feb 2019 12:08:48 -0500
-Received: from mail-eopbgr770115.outbound.protection.outlook.com ([40.107.77.115]:20208
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726647AbfBVRIs (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Feb 2019 12:08:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Zcsm9VxctEi9bkYvuW5sKEvEw50Fq4+uy6LfOzpS0M=;
- b=Z2YShWpoh9l/bzM6QI3PBQs9Prc2wE8yPzU2XFnPL4MQUGYNVFtghZZLORxJC/O0PZhdTko1jbxYaGtzucFMuOXKE+UZAgPK2yd8rQloDT7984OchBp+EpcP8NqdjhMNVINJfiqrNdKEh2JSpNrDrnmoTvjVMDJXx2c5LNNT4QM=
-Received: from SN6PR2101MB0912.namprd21.prod.outlook.com (52.132.117.13) by
- SN6PR2101MB0896.namprd21.prod.outlook.com (52.132.116.161) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1665.4; Fri, 22 Feb 2019 17:08:41 +0000
-Received: from SN6PR2101MB0912.namprd21.prod.outlook.com
- ([fe80::f103:1a6d:8837:1153]) by SN6PR2101MB0912.namprd21.prod.outlook.com
- ([fe80::f103:1a6d:8837:1153%6]) with mapi id 15.20.1665.002; Fri, 22 Feb 2019
- 17:08:41 +0000
-From:   Stephen Hemminger <sthemmin@microsoft.com>
-To:     "lantianyu1986@gmail.com" <lantianyu1986@gmail.com>
-CC:     Tianyu Lan <Tianyu.Lan@microsoft.com>,
-        "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
-        "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "paul.burton@mips.com" <paul.burton@mips.com>,
-        "paulus@ozlabs.org" <paulus@ozlabs.org>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "sashal@kernel.org" <sashal@kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "rkrcmar@redhat.com" <rkrcmar@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "devel@linuxdriverproject.org" <devel@linuxdriverproject.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        vkuznets <vkuznets@redhat.com>
-Subject: RE: [PATCH V3 1/10] X86/Hyper-V: Add parameter offset for
- hyperv_fill_flush_guest_mapping_list()
-Thread-Topic: [PATCH V3 1/10] X86/Hyper-V: Add parameter offset for
- hyperv_fill_flush_guest_mapping_list()
-Thread-Index: AQHUysBHD5XLcndsGEGj5wzptavVTKXsDLuw
-Date:   Fri, 22 Feb 2019 17:08:41 +0000
-Message-ID: <SN6PR2101MB0912C24CD03D22248C868196CC7F0@SN6PR2101MB0912.namprd21.prod.outlook.com>
+        id S1727489AbfBVS0N (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Feb 2019 13:26:13 -0500
+Received: from mx1.redhat.com ([209.132.183.28]:34486 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726604AbfBVS0N (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Feb 2019 13:26:13 -0500
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id D9E38883C2;
+        Fri, 22 Feb 2019 18:26:11 +0000 (UTC)
+Received: from [10.36.112.23] (ovpn-112-23.ams2.redhat.com [10.36.112.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 83C1A5C647;
+        Fri, 22 Feb 2019 18:25:57 +0000 (UTC)
+Subject: Re: [PATCH V3 00/10] X86/KVM/Hyper-V: Add HV ept tlb range list flush
+ support in KVM
+To:     lantianyu1986@gmail.com
+Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, benh@kernel.crashing.org,
+        bp@alien8.de, catalin.marinas@arm.com, christoffer.dall@arm.com,
+        devel@linuxdriverproject.org, haiyangz@microsoft.com,
+        hpa@zytor.com, jhogan@kernel.org, kvmarm@lists.cs.columbia.edu,
+        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, kys@microsoft.com,
+        linux-arm-kernel@lists.infradead.org, linux@armlinux.org.uk,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, marc.zyngier@arm.com,
+        mingo@redhat.com, mpe@ellerman.id.au, paul.burton@mips.com,
+        paulus@ozlabs.org, ralf@linux-mips.org, rkrcmar@redhat.com,
+        sashal@kernel.org, sthemmin@microsoft.com, tglx@linutronix.de,
+        will.deacon@arm.com, x86@kernel.org,
+        michael.h.kelley@microsoft.com, vkuznets@redhat.com
 References: <20190222150637.2337-1-Tianyu.Lan@microsoft.com>
- <20190222150637.2337-2-Tianyu.Lan@microsoft.com>
-In-Reply-To: <20190222150637.2337-2-Tianyu.Lan@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=sthemmin@microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-02-22T17:08:38.0176008Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=e404e21f-d99a-455b-a00f-02600ceba6bc;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-x-originating-ip: [204.195.22.127]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 46f00424-7fde-446e-c198-08d698e86513
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600110)(711020)(4605104)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:SN6PR2101MB0896;
-x-ms-traffictypediagnostic: SN6PR2101MB0896:
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;SN6PR2101MB0896;23:isxqKglvU8hm1GqL8+Ucrr7IExy4b7BP9MnP8lq?=
- =?us-ascii?Q?sBzMt/l3iouZ0XG9+TYrRYZne1BJbPbnJpVg/1PMowca8MylIdZNqn/LMjaa?=
- =?us-ascii?Q?4YODFn9L5z/WsakGanbz1NnH+jSECUG50/Ma3aSdWsQVgXzdROaHezhzQj72?=
- =?us-ascii?Q?cnT/WpO6QP68OcGrOLYuepEXT32dZWBZaarOd7At+6FIoe8Q+OSm55NpXn5s?=
- =?us-ascii?Q?H4WqKXWDVYrodtU63ERahJ5+qTC4F4d1o2dWxKNyFPMm4lEWa+7kAKvGBOkc?=
- =?us-ascii?Q?usDfjKcHTIJVKQ9L3Eo8ePjfiOcTuW5aVkswEqygQIVGjxi2u1J654svSuN0?=
- =?us-ascii?Q?Iz95rmXr74WT2WT35k152+GM+sJR9xeloCxsXPi3wDA0F2jXVSDVtG61DUqd?=
- =?us-ascii?Q?p/PCVD/7QONsn0RHd/1FrF4FfkyN8MzzKWvfZ8/a7XdbV+HcxER7g5qLOsVE?=
- =?us-ascii?Q?6z0JAYIDpxkqPyj5tiYEBf8aK0MUFttbZ3ILf1sDvYjYDPvrZDedq46dIlgl?=
- =?us-ascii?Q?7V0mxwO7mpX4MeGLJ861edrG9dnhRDa+9SyqzvZWG5lL+xoaOKRk7Wif5jJp?=
- =?us-ascii?Q?F2i+U9FWVKanJkWyefC1RhQHT0smYs4pY60/VZMKQQ3SJQ++HD/su6E4BYyD?=
- =?us-ascii?Q?ROky0HF/FuOah9pmYh6S37JZG/X31pkGnHM5thnje9QE0s3U1Qgk+gu1aeyc?=
- =?us-ascii?Q?HUJ4DNCnMVFkqLdDrXwYOHFGtVoARtfX7eaZcZvlT4DaUiALIboYTKOOsm/X?=
- =?us-ascii?Q?L54IKagB4mrW+XC3G7j0g+AYnNPSLCHFn2lThKIHCCqkXb1J6F5wckAihg+T?=
- =?us-ascii?Q?L9F1o/0QzNiI0XDWU08FQVmcwFxxzpf1+lnU7GBAaMg6nb+VjBnUQb4ibqlx?=
- =?us-ascii?Q?Pcwxw3Qj9+zb5IcpEwIOQX8r/yh/lkyPUX4mZ6F1AxJB5rMpyd2WuGnMRxi5?=
- =?us-ascii?Q?sgoYw7TVC50RvAO2gk4JY9P0kElwqTOm3k2ehvgZgZxTfVCkyl0o388rHL/+?=
- =?us-ascii?Q?i3xgiN1MJxeEMM5QkLlfaQjwhVrt7cbF+SHOs0mFlHXqNFq4CNSulV8Euxnp?=
- =?us-ascii?Q?ddHCAC3Vj4MfKGP0l03mFhcWA+n2MpvrMLaQQFAgNLfWNpxFyXXtgtMPhZ27?=
- =?us-ascii?Q?G2oE5BuKLCmnGrZlj0Omx0zAo125TcyXL5IR6Qoti1IsorDivi8vswtlNxBk?=
- =?us-ascii?Q?gSG+NGB2/tkRDFYrBJKuXB7lJ2Spq0akrbDW3r4A6+FI2O73UYG0hD5D524F?=
- =?us-ascii?Q?R34ToygR3khSfmCtuDRd9eZzW7N5tT+jA7YJGvGkXr1gdYTLkAa8O7miz9A3?=
- =?us-ascii?Q?Lt6EbO0oMPXja+gDQF3j91f4zFg4KNh/uN/v1ihzi8g82ZOH7XDdwsBv3ky9?=
- =?us-ascii?Q?Z/uSCXiMhKg+yUFuFFJ2OnIqSi7Bvb9XwhLPEU4tdj/r+wvqsEXzqsVuKKBV?=
- =?us-ascii?Q?DIXB8jBF+DKOX9Y5qCmt+/zpVkmRSdRkkLxkLkymIw4UCgXsGYkB7?=
-x-microsoft-antispam-prvs: <SN6PR2101MB08966AA9227E954E2268598ECC7F0@SN6PR2101MB0896.namprd21.prod.outlook.com>
-x-forefront-prvs: 09565527D6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(396003)(366004)(39860400002)(346002)(136003)(189003)(199004)(316002)(74316002)(66066001)(71190400001)(71200400001)(25786009)(22452003)(1411001)(4326008)(2501003)(8990500004)(99286004)(26005)(33656002)(6246003)(55016002)(10290500003)(486006)(9686003)(76176011)(5640700003)(53936002)(6506007)(6436002)(4744005)(102836004)(7416002)(11346002)(7696005)(446003)(54906003)(476003)(97736004)(1361003)(7736002)(6346003)(68736007)(478600001)(8676002)(81156014)(81166006)(2906002)(14454004)(305945005)(8936002)(10090500001)(229853002)(6116002)(105586002)(256004)(2351001)(86362001)(5660300002)(3846002)(86612001)(106356001)(6916009)(186003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR2101MB0896;H:SN6PR2101MB0912.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=sthemmin@microsoft.com; 
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 6zpyScMsCNqC4SbhQ7mljeDH9jDDTchOC+WMtywETHLrIbmMjSj5ef8ps8QIibtV6pjwTkr1DOjpuGG8a63hbvcc/1XTbULf3f+DYOBcZoO+6OekL/FUZx25L4v28kXx4VjcChMw4g+WZM7RbB47TLdosBuLzGclD7gAqddjFZs9a5arkhc3GJO5h0csOE0lLEbe7eGXGtYKu2cMmCfhoQsIyuRj8UmwZclwhzKqPqgBbq6B9Z0/g4/VayLbUC9Fy8S8vwZybI+qqrKTXT9VtxEmEGQwxfTfJAvcX2MkcbcUOv/wnHvenDhrQfIUc/+vqAEFJGTidV50KvWT607j1zfG3tF0/fV9bMLpZXslfdHE7k4lIGdc3hsuHZtC0aPigUDJ43n7cHqMeQ88rcl6RcQty+xYxFCU3KoNzZ/Csvs=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=pbonzini@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ uUHgL9dKIfvpm+rNXRn9wAwGjk0X/A==
+Message-ID: <75e9238a-f168-b90d-e1f1-89938e6df57a@redhat.com>
+Date:   Fri, 22 Feb 2019 19:25:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46f00424-7fde-446e-c198-08d698e86513
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Feb 2019 17:08:41.2853
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR2101MB0896
+In-Reply-To: <20190222150637.2337-1-Tianyu.Lan@microsoft.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Fri, 22 Feb 2019 18:26:12 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-int hyperv_fill_flush_guest_mapping_list(
- 		struct hv_guest_mapping_flush_list *flush,
--		u64 start_gfn, u64 pages)
-+		int offset, u64 start_gfn, u64 pages)
- {
- 	u64 cur =3D start_gfn;
- 	u64 additional_pages;
--	int gpa_n =3D 0;
-+	int gpa_n =3D offset;
-=20
- 	do {
- 		/*
+On 22/02/19 16:06, lantianyu1986@gmail.com wrote:
+> From: Lan Tianyu <Tianyu.Lan@microsoft.com>
+> 
+> This patchset is to introduce hv ept tlb range list flush function
+> support in the KVM MMU component. Flushing ept tlbs of several address
+> range can be done via single hypercall and new list flush function is
+> used in the kvm_mmu_commit_zap_page() and FNAME(sync_page). This patchset
+> also adds more hv ept tlb range flush support in more KVM MMU function.
+> 
+> This patchset is based on the fix patch "x86/Hyper-V: Fix definition HV_MAX_FLUSH_REP_COUNT".
+> (https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1939455.html)
 
-Do you mean to support negative offsets here? Maybe unsigned would be bette=
-r?
+Note that this won't make it in 5.1 unless Linus releases an -rc8.
+Otherwise, I'll get to it next week.
+
+Thanks,
+
+Paolo

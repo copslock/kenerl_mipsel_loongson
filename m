@@ -2,168 +2,225 @@ Return-Path: <SRS0=tVub=Q5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AD38C43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 02:36:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 427E8C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 03:29:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 58E07207E0
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 02:36:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 00B2020836
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 03:29:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726247AbfBVCgF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Feb 2019 21:36:05 -0500
-Received: from out20-49.mail.aliyun.com ([115.124.20.49]:41265 "EHLO
-        out20-49.mail.aliyun.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbfBVCgE (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Feb 2019 21:36:04 -0500
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.06263833|-1;CH=green;DM=CONTINUE|CONTINUE|true|0.0215014-0.00552324-0.972975;FP=0|0|0|0|0|-1|-1|-1;HT=e02c03307;MF=rosysong@rosinson.com;NM=1;PH=DS;RN=1;RT=1;SR=0;TI=SMTPD_---.E.fUl70_1550802938;
-Received: from DESKTOP-N5K16OA(mailfrom:rosysong@rosinson.com fp:SMTPD_---.E.fUl70_1550802938)
-          by smtp.aliyun-inc.com(10.147.41.231);
-          Fri, 22 Feb 2019 10:35:41 +0800
-Date:   Fri, 22 Feb 2019 10:35:39 +0800
-From:   "rosysong@rosinson.com" <rosysong@rosinson.com>
-To:     linux-mips <linux-mips@vger.kernel.org>
-Subject: Kernel hang when replace older uboot with uboot master for ath79 mips platform
-X-Priority: 3
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.9.156[cn]
-Mime-Version: 1.0
-Message-ID: <201902221035393424496@rosinson.com>
-Content-Type: text/plain;
-        charset="UTF-8"
-Content-Transfer-Encoding: base64
+        id S1726627AbfBVD3B (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 21 Feb 2019 22:29:01 -0500
+Received: from mx1.redhat.com ([209.132.183.28]:44954 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725961AbfBVD3B (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 21 Feb 2019 22:29:01 -0500
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id BB123CA36F;
+        Fri, 22 Feb 2019 03:28:59 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-125-186.rdu2.redhat.com [10.10.125.186])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6A2675D9D4;
+        Fri, 22 Feb 2019 03:28:48 +0000 (UTC)
+Subject: Re: [PATCH v4 3/3] locking/rwsem: Optimize down_read_trylock()
+To:     Will Deacon <will.deacon@arm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, x86@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tim Chen <tim.c.chen@linux.intel.com>
+References: <1550095217-12047-1-git-send-email-longman@redhat.com>
+ <1550095217-12047-4-git-send-email-longman@redhat.com>
+ <20190221141420.GC12696@fuggles.cambridge.arm.com>
+From:   Waiman Long <longman@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=longman@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ weim8xU=
+Organization: Red Hat
+Message-ID: <9dc33d11-4570-f2d9-e097-d4e6586d13e2@redhat.com>
+Date:   Thu, 21 Feb 2019 22:28:47 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190221141420.GC12696@fuggles.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Fri, 22 Feb 2019 03:29:00 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGkgYWxsLMKgCsKgIMKgIE15IGtlcm5lbCB2ZXJzaW9uIGlzIGxpbnV4LTQuOS4xNTgsIGl0IGhh
-bmdzIHdoZW4gcmVwbGFjZSB0aGUgb2xkIHUtYm9vdCgxLjEuNCkgd2l0aCB1LWJvb3QtbWFzdGVy
-LgrCoCDCoCBGb3IgbGludXgtNC4xNC54eCwgV2hlbiBJIGVuYWJsZSBDT05GSUdfTUlQU1IyX0lS
-UV9WSSBvcHRpb25zLCBpdCBkb2VzIGhhbmcgYW55IGxvbmdlciB3aGlsZSBzdGlsbCBoYW5nIGlu
-IGxpbnV4LTQuOS4xNTguCsKgIMKgIFNvbWV0aW1lcyBpdCBoYW5ncyBhdCAicmFuZG9tOiBjcm5n
-IGluaXQgZG9uZSIuCgrCoCDCoCBBbnkgaGludHMgd2lsbCBiZSBhcHByZWNpYXRlZCEhISBUaGFu
-a3MKClUtQm9vdCAyMDE5LjAxLTAwMDc5LWczNDIwYTZmYzZlLWRpcnR5IChGZWIgMTkgMjAxOSAt
-IDE3OjE5OjE2ICswODAwKQoKUXVhbGNvbW0gQXRoZXJvcyBRQ0E5NTYxIHZlciAxIHJldiAwCk1v
-ZGVsOiBBUDE1MiBSZWZlcmVuY2UgQm9hcmQKRFJBTTogwqAxMjggTWlCCkxvYWRpbmcgRW52aXJv
-bm1lbnQgZnJvbSBTUEkgRmxhc2guLi4gU0Y6IERldGVjdGVkIHcyNXExMjhidiB3aXRoIHBhZ2Ug
-c2l6ZSAyNTYgQnl0ZXMsIGVyYXNlIHNpemUgNCBLaUIsIHRvdGFsIDE2IE1pQiwgbWFwcGVkIGF0
-IDlmMDAwMDAwCioqKiBXYXJuaW5nIC0gYmFkIENSQywgdXNpbmcgZGVmYXVsdCBlbnZpcm9ubWVu
-dAoKSW46IMKgIMKgdWFydEAxODAyMDAwMApPdXQ6IMKgIHVhcnRAMTgwMjAwMDAKRXJyOiDCoCB1
-YXJ0QDE4MDIwMDAwCk5ldDogwqDCoApXYXJuaW5nOiBldGhAMHgxOTAwMDAwMCAoZXRoMCkgdXNp
-bmcgcmFuZG9tIE1BQyBhZGRyZXNzIC0gNTY6ODc6M2M6NjE6OWI6NTAKZXRoMDogZXRoQDB4MTkw
-MDAwMDAKSGl0IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9vdDogwqAwwqAKYXAxNTIgIyBib290bSAw
-eDFmMDYwMDAwCiMjIEJvb3Rpbmcga2VybmVsIGZyb20gTGVnYWN5IEltYWdlIGF0IDFmMDYwMDAw
-IC4uLgrCoCDCoEltYWdlIE5hbWU6IMKgIE1JUFMgT3BlbldydCBMaW51eC00LjE0LjEwMQrCoCDC
-oEltYWdlIFR5cGU6IMKgIE1JUFMgTGludXggS2VybmVsIEltYWdlIChsem1hIGNvbXByZXNzZWQp
-CsKgIMKgRGF0YSBTaXplOiDCoCDCoDE2MTUwMzAgQnl0ZXMgPSAxLjUgTWlCCsKgIMKgTG9hZCBB
-ZGRyZXNzOiA4MDA2MDAwMArCoCDCoEVudHJ5IFBvaW50OiDCoDgwMDYwMDAwCsKgIMKgVmVyaWZ5
-aW5nIENoZWNrc3VtIC4uLiBPSwrCoCDCoFVuY29tcHJlc3NpbmcgS2VybmVsIEltYWdlIC4uLiBP
-SwpbIMKgIMKgMC4wMDAwMDBdIExpbnV4IHZlcnNpb24gNC4xNC4xMDEgKHh4eEB4eHgtUEMpIChn
-Y2MgdmVyc2lvbiA3LjQuMCAoT3BlbldydCBHQ0MgNy40LjAgcjg5OTctNDg4YWY1MWY4MSkpICMw
-IE1vbiBGZWIgMTggMTU6MTE6MzIgMjAxOQpbIMKgIMKgMC4wMDAwMDBdIGJvb3Rjb25zb2xlIFtl
-YXJseTBdIGVuYWJsZWQKWyDCoCDCoDAuMDAwMDAwXSBDUFUwIHJldmlzaW9uIGlzOiAwMDAxOTc1
-MCAoTUlQUyA3NEtjKQpbIMKgIMKgMC4wMDAwMDBdIE1JUFM6IG1hY2hpbmUgaXMgUk9TSU5TT04g
-V1I4MTgKWyDCoCDCoDAuMDAwMDAwXSBTb0M6IFF1YWxjb21tIEF0aGVyb3MgUUNBOTU2WCB2ZXIg
-MSByZXYgMApbIMKgIMKgMC4wMDAwMDBdIERldGVybWluZWQgcGh5c2ljYWwgUkFNIG1hcDoKWyDC
-oCDCoDAuMDAwMDAwXSDCoG1lbW9yeTogMDgwMDAwMDAgQCAwMDAwMDAwMCAodXNhYmxlKQpbIMKg
-IMKgMC4wMDAwMDBdIEluaXRyZCBub3QgZm91bmQgb3IgZW1wdHkgLSBkaXNhYmxpbmcgaW5pdHJk
-ClsgwqAgwqAwLjAwMDAwMF0gUHJpbWFyeSBpbnN0cnVjdGlvbiBjYWNoZSA2NGtCLCBWSVBULCA0
-LXdheSwgbGluZXNpemUgMzIgYnl0ZXMuClsgwqAgwqAwLjAwMDAwMF0gUHJpbWFyeSBkYXRhIGNh
-Y2hlIDMya0IsIDQtd2F5LCBWSVBULCBjYWNoZSBhbGlhc2VzLCBsaW5lc2l6ZSAzMiBieXRlcwpb
-IMKgIMKgMC4wMDAwMDBdIFpvbmUgcmFuZ2VzOgpbIMKgIMKgMC4wMDAwMDBdIMKgIE5vcm1hbCDC
-oCBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAwMDdmZmZmZmZdClsgwqAgwqAwLjAw
-MDAwMF0gTW92YWJsZSB6b25lIHN0YXJ0IGZvciBlYWNoIG5vZGUKWyDCoCDCoDAuMDAwMDAwXSBF
-YXJseSBtZW1vcnkgbm9kZSByYW5nZXMKWyDCoCDCoDAuMDAwMDAwXSDCoCBub2RlIMKgIDA6IFtt
-ZW0gMHgwMDAwMDAwMDAwMDAwMDAwLTB4MDAwMDAwMDAwN2ZmZmZmZl0KWyDCoCDCoDAuMDAwMDAw
-XSBJbml0bWVtIHNldHVwIG5vZGUgMCBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAw
-MDdmZmZmZmZdClsgwqAgwqAwLjAwMDAwMF0gcmFuZG9tOiBnZXRfcmFuZG9tX2J5dGVzIGNhbGxl
-ZCBmcm9tIHN0YXJ0X2tlcm5lbCsweDhjLzB4NDc0IHdpdGggY3JuZ19pbml0PTAKWyDCoCDCoDAu
-MDAwMDAwXSBCdWlsdCAxIHpvbmVsaXN0cywgbW9iaWxpdHkgZ3JvdXBpbmcgb24uIMKgVG90YWwg
-cGFnZXM6IDMyNTEyClsgwqAgwqAwLjAwMDAwMF0gS2VybmVsIGNvbW1hbmQgbGluZTogY29uc29s
-ZT10dHlTMCwxMTUyMDBuOCByb290ZnN0eXBlPXNxdWFzaGZzLGpmZnMyClsgwqAgwqAwLjAwMDAw
-MF0gUElEIGhhc2ggdGFibGUgZW50cmllczogNTEyIChvcmRlcjogLTEsIDIwNDggYnl0ZXMpClsg
-wqAgwqAwLjAwMDAwMF0gRGVudHJ5IGNhY2hlIGhhc2ggdGFibGUgZW50cmllczogMTYzODQgKG9y
-ZGVyOiA0LCA2NTUzNiBieXRlcykKWyDCoCDCoDAuMDAwMDAwXSBJbm9kZS1jYWNoZSBoYXNoIHRh
-YmxlIGVudHJpZXM6IDgxOTIgKG9yZGVyOiAzLCAzMjc2OCBieXRlcykKWyDCoCDCoDAuMDAwMDAw
-XSBXcml0aW5nIEVyckN0bCByZWdpc3Rlcj0wMDAwMDAwMApbIMKgIMKgMC4wMDAwMDBdIFJlYWRi
-YWNrIEVyckN0bCByZWdpc3Rlcj0wMDAwMDAwMApbIMKgIMKgMC4wMDAwMDBdIE1lbW9yeTogMTIz
-MTg0Sy8xMzEwNzJLIGF2YWlsYWJsZSAoMzc3N0sga2VybmVsIGNvZGUsIDE1MEsgcndkYXRhLCA5
-MTJLIHJvZGF0YSwgMTIzMksgaW5pdCwgMjA0SyBic3MsIDc4ODhLIHJlc2VydmVkLCAwSyBjbWEt
-cmVzZXJ2ZWQpClsgwqAgwqAwLjAwMDAwMF0gU0xVQjogSFdhbGlnbj0zMiwgT3JkZXI9MC0zLCBN
-aW5PYmplY3RzPTAsIENQVXM9MSwgTm9kZXM9MQpbIMKgIMKgMC4wMDAwMDBdIE5SX0lSUVM6IDUx
-ClsgwqAgwqAwLjAwMDAwMF0gQ1BVIGNsb2NrOiA3NzUuMDAwIE1IegpbIMKgIMKgMC4wMDAwMDBd
-IGNsb2Nrc291cmNlOiBNSVBTOiBtYXNrOiAweGZmZmZmZmZmIG1heF9jeWNsZXM6IDB4ZmZmZmZm
-ZmYsIG1heF9pZGxlX25zOiA0OTMyMjg1MDI0IG5zClsgwqAgwqAwLjAwMDAwN10gc2NoZWRfY2xv
-Y2s6IDMyIGJpdHMgYXQgMzg3TUh6LCByZXNvbHV0aW9uIDJucywgd3JhcHMgZXZlcnkgNTU0MTg5
-MzExOG5zClsgwqAgwqAwLjAwODg0MV0gQ2FsaWJyYXRpbmcgZGVsYXkgbG9vcC4uLiAzODUuODQg
-Qm9nb01JUFMgKGxwaj0xOTI5MjE2KQpbIMKgIMKgMC4wNzU4OTddIHBpZF9tYXg6IGRlZmF1bHQ6
-IDMyNzY4IG1pbmltdW06IDMwMQpbIMKgIMKgMC4wODEyOTJdIE1vdW50LWNhY2hlIGhhc2ggdGFi
-bGUgZW50cmllczogMTAyNCAob3JkZXI6IDAsIDQwOTYgYnl0ZXMpClsgwqAgwqAwLjA4ODgwNV0g
-TW91bnRwb2ludC1jYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDEwMjQgKG9yZGVyOiAwLCA0MDk2
-IGJ5dGVzKQpbIMKgIMKgMC4xMDAxOTVdIGNsb2Nrc291cmNlOiBqaWZmaWVzOiBtYXNrOiAweGZm
-ZmZmZmZmIG1heF9jeWNsZXM6IDB4ZmZmZmZmZmYsIG1heF9pZGxlX25zOiAxOTExMjYwNDQ2Mjc1
-MDAwMCBucwpbIMKgIMKgMC4xMTEzODVdIGZ1dGV4IGhhc2ggdGFibGUgZW50cmllczogMjU2IChv
-cmRlcjogLTEsIDMwNzIgYnl0ZXMpClsgwqAgwqAwLjExODM3MF0gcGluY3RybCBjb3JlOiBpbml0
-aWFsaXplZCBwaW5jdHJsIHN1YnN5c3RlbQpbIMKgIMKgMC4xMjUxMTddIE5FVDogUmVnaXN0ZXJl
-ZCBwcm90b2NvbCBmYW1pbHkgMTYKWyDCoCDCoDAuMTUyNzIwXSBjbG9ja3NvdXJjZTogU3dpdGNo
-ZWQgdG8gY2xvY2tzb3VyY2UgTUlQUwpbIMKgIMKgMC4xNTkzMzFdIE5FVDogUmVnaXN0ZXJlZCBw
-cm90b2NvbCBmYW1pbHkgMgpbIMKgIMKgMC4xNjQ5MzJdIFRDUCBlc3RhYmxpc2hlZCBoYXNoIHRh
-YmxlIGVudHJpZXM6IDEwMjQgKG9yZGVyOiAwLCA0MDk2IGJ5dGVzKQpbIMKgIMKgMC4xNzI4OTRd
-IFRDUCBiaW5kIGhhc2ggdGFibGUgZW50cmllczogMTAyNCAob3JkZXI6IDAsIDQwOTYgYnl0ZXMp
-ClsgwqAgwqAwLjE4MDExNl0gVENQOiBIYXNoIHRhYmxlcyBjb25maWd1cmVkIChlc3RhYmxpc2hl
-ZCAxMDI0IGJpbmQgMTAyNCkKWyDCoCDCoDAuMTg3NDYxXSBVRFAgaGFzaCB0YWJsZSBlbnRyaWVz
-OiAyNTYgKG9yZGVyOiAwLCA0MDk2IGJ5dGVzKQpbIMKgIMKgMC4xOTQxMzZdIFVEUC1MaXRlIGhh
-c2ggdGFibGUgZW50cmllczogMjU2IChvcmRlcjogMCwgNDA5NiBieXRlcykKWyDCoCDCoDAuMjAx
-NDYxXSBORVQ6IFJlZ2lzdGVyZWQgcHJvdG9jb2wgZmFtaWx5IDEKWyDCoCDCoDAuMjA5MTY4XSBD
-cmFzaGxvZyBhbGxvY2F0ZWQgUkFNIGF0IGFkZHJlc3MgMHgzZjAwMDAwClsgwqAgwqAwLjIxNjM4
-NV0gd29ya2luZ3NldDogdGltZXN0YW1wX2JpdHM9MzAgbWF4X29yZGVyPTE1IGJ1Y2tldF9vcmRl
-cj0wClsgwqAgwqAwLjIyNzY4OF0gc3F1YXNoZnM6IHZlcnNpb24gNC4wICgyMDA5LzAxLzMxKSBQ
-aGlsbGlwIExvdWdoZXIKWyDCoCDCoDAuMjM0MzQ2XSBqZmZzMjogdmVyc2lvbiAyLjIgKE5BTkQp
-IChTVU1NQVJZKSAoTFpNQSkgKFJUSU1FKSAoQ01PREVfUFJJT1JJVFkpIChjKSAyMDAxLTIwMDYg
-UmVkIEhhdCwgSW5jLgpbIMKgIMKgMC4yNTMyMzRdIGlvIHNjaGVkdWxlciBub29wIHJlZ2lzdGVy
-ZWQKWyDCoCDCoDAuMjU3NjgyXSBpbyBzY2hlZHVsZXIgZGVhZGxpbmUgcmVnaXN0ZXJlZCAoZGVm
-YXVsdCkKWyDCoCDCoDAuMjYzODEwXSBhcjcyMDAtdXNiLXBoeSB1c2ItcGh5OiBwaHkgcmVzZXQg
-aXMgbWlzc2luZwpbIMKgIMKgMC4yNzEzMzFdIHBpbmN0cmwtc2luZ2xlIDE4MDQwMDJjLnBpbm11
-eDogNTQ0IHBpbnMgYXQgcGEgYjgwNDAwMmMgc2l6ZSA2OApbIMKgIMKgMC4yODAyMDFdIFNlcmlh
-bDogODI1MC8xNjU1MCBkcml2ZXIsIDEgcG9ydHMsIElSUSBzaGFyaW5nIGRpc2FibGVkClsgwqAg
-wqAwLjI4ODA0MF0gY29uc29sZSBbdHR5UzBdIGRpc2FibGVkClsgwqAgwqAwLjI5MjEyMl0gMTgw
-MjAwMDAudWFydDogdHR5UzAgYXQgTU1JTyAweDE4MDIwMDAwIChpcnEgPSA4LCBiYXNlX2JhdWQg
-PSAxNTYyNTAwKSBpcyBhIDE2NTUwQQpbIMKgIMKgMC4zMDE5NDNdIGNvbnNvbGUgW3R0eVMwXSBl
-bmFibGVkClsgwqAgwqAwLjMwMTk0M10gY29uc29sZSBbdHR5UzBdIGVuYWJsZWQKWyDCoCDCoDAu
-MzA5NTAwXSBib290Y29uc29sZSBbZWFybHkwXSBkaXNhYmxlZApbIMKgIMKgMC4zMDk1MDBdIGJv
-b3Rjb25zb2xlIFtlYXJseTBdIGRpc2FibGVkClsgwqAgwqAwLjMzMjU0Ml0gbTI1cDgwIHNwaTAu
-MDogdzI1cTEyOCAoMTYzODQgS2J5dGVzKQpbIMKgIMKgMC4zMzc0OTJdIDUgZml4ZWQtcGFydGl0
-aW9ucyBwYXJ0aXRpb25zIGZvdW5kIG9uIE1URCBkZXZpY2Ugc3BpMC4wClsgwqAgwqAwLjM0NDA2
-MF0gQ3JlYXRpbmcgNSBNVEQgcGFydGl0aW9ucyBvbiAic3BpMC4wIjoKWyDCoCDCoDAuMzQ5MDE0
-XSAweDAwMDAwMDAwMDAwMC0weDAwMDAwMDA0MDAwMCA6ICJ1LWJvb3QiClsgwqAgwqAwLjM1NDgz
-NF0gMHgwMDAwMDAwNDAwMDAtMHgwMDAwMDAwNTAwMDAgOiAidS1ib290LWVudiIKWyDCoCDCoDAu
-MzYwOTQ0XSAweDAwMDAwMDA1MDAwMC0weDAwMDAwMDA2MDAwMCA6ICJmYWN0b3J5IgpbIMKgIMKg
-MC4zNjY4MzFdIDB4MDAwMDAwMDYwMDAwLTB4MDAwMDAwZmUwMDAwIDogImZpcm13YXJlIgpbIMKg
-IMKgMC4zNzQ5NzNdIDIgdWltYWdlLWZ3IHBhcnRpdGlvbnMgZm91bmQgb24gTVREIGRldmljZSBm
-aXJtd2FyZQpbIMKgIMKgMC4zODEwOTBdIENyZWF0aW5nIDIgTVREIHBhcnRpdGlvbnMgb24gImZp
-cm13YXJlIjoKWyDCoCDCoDAuMzg2MjU4XSAweDAwMDAwMDAwMDAwMC0weDAwMDAwMDE5MDAwMCA6
-ICJrZXJuZWwiClsgwqAgwqAwLjM5MjAyN10gMHgwMDAwMDAxOTAwMDAtMHgwMDAwMDBmODAwMDAg
-OiAicm9vdGZzIgpbIMKgIMKgMC4zOTc3ODNdIG10ZDogZGV2aWNlIDUgKHJvb3Rmcykgc2V0IHRv
-IGJlIHJvb3QgZmlsZXN5c3RlbQpbIMKgIMKgMC40MDM3MDNdIDEgc3F1YXNoZnMtc3BsaXQgcGFy
-dGl0aW9ucyBmb3VuZCBvbiBNVEQgZGV2aWNlIHJvb3RmcwpbIMKgIMKgMC40MTAwOTVdIDB4MDAw
-MDAwNDQwMDAwLTB4MDAwMDAwZjgwMDAwIDogInJvb3Rmc19kYXRhIgpbIMKgIMKgMC40MTYyOTVd
-IDB4MDAwMDAwZmYwMDAwLTB4MDAwMDAxMDAwMDAwIDogImFydCIKWyDCoCDCoDAuNDIyNjkxXSBs
-aWJwaHk6IEZpeGVkIE1ESU8gQnVzOiBwcm9iZWQKWyDCoCDCoDAuNzYzMDc4XSBsaWJwaHk6IGFn
-NzF4eF9tZGlvOiBwcm9iZWQKWyDCoCDCoDAuNzcwMDM2XSBzd2l0Y2gwOiBBdGhlcm9zIEFSODMz
-NyByZXYuIDIgc3dpdGNoIHJlZ2lzdGVyZWQgb24gbWRpby1idXMuMApbIMKgIMKgMS40MjQ1MjZd
-IGFnNzF4eCAxOTAwMDAwMC5ldGg6IGludmFsaWQgTUFDIGFkZHJlc3MsIHVzaW5nIHJhbmRvbSBh
-ZGRyZXNzClsgwqAgwqAxLjc2Mzg4Ml0gYWc3MXh4IDE5MDAwMDAwLmV0aDogY29ubmVjdGVkIHRv
-IFBIWSBhdCBtZGlvLWJ1cy4wOjAwIFt1aWQ9MDA0ZGQwMzYsIGRyaXZlcj1BdGhlcm9zIEFSODIx
-Ni9BUjgyMzYvQVI4MzE2XQpbIMKgIMKgMS43NzU0NzldIGV0aDA6IEF0aGVyb3MgQUc3MXh4IGF0
-IDB4YjkwMDAwMDAsIGlycSA0LCBtb2RlOlNHTUlJClsgwqAgwqAxLjc4MzUxNV0gTkVUOiBSZWdp
-c3RlcmVkIHByb3RvY29sIGZhbWlseSAxMApbIMKgIMKgMS43OTE0MzldIFNlZ21lbnQgUm91dGlu
-ZyB3aXRoIElQdjYKWyDCoCDCoDEuNzk1MzU4XSBORVQ6IFJlZ2lzdGVyZWQgcHJvdG9jb2wgZmFt
-aWx5IDE3ClsgwqAgwqAxLjc5OTk4NF0gODAyMXE6IDgwMi4xUSBWTEFOIFN1cHBvcnQgdjEuOApb
-IMKgIMKgMS44MTAwMTRdIFZGUzogTW91bnRlZCByb290IChzcXVhc2hmcyBmaWxlc3lzdGVtKSBy
-ZWFkb25seSBvbiBkZXZpY2UgMzE6NS4KWyDCoCDCoDEuODI0MDQ5XSBGcmVlaW5nIHVudXNlZCBr
-ZXJuZWwgbWVtb3J5OiAxMjMySwpbIMKgIMKgMS44Mjg3MjldIFRoaXMgYXJjaGl0ZWN0dXJlIGRv
-ZXMgbm90IGhhdmUga2VybmVsIG1lbW9yeSBwcm90ZWN0aW9uLgoKCgo=
+On 02/21/2019 09:14 AM, Will Deacon wrote:
+> On Wed, Feb 13, 2019 at 05:00:17PM -0500, Waiman Long wrote:
+>> Modify __down_read_trylock() to optimize for an unlocked rwsem and make
+>> it generate slightly better code.
+>>
+>> Before this patch, down_read_trylock:
+>>
+>>    0x0000000000000000 <+0>:     callq  0x5 <down_read_trylock+5>
+>>    0x0000000000000005 <+5>:     jmp    0x18 <down_read_trylock+24>
+>>    0x0000000000000007 <+7>:     lea    0x1(%rdx),%rcx
+>>    0x000000000000000b <+11>:    mov    %rdx,%rax
+>>    0x000000000000000e <+14>:    lock cmpxchg %rcx,(%rdi)
+>>    0x0000000000000013 <+19>:    cmp    %rax,%rdx
+>>    0x0000000000000016 <+22>:    je     0x23 <down_read_trylock+35>
+>>    0x0000000000000018 <+24>:    mov    (%rdi),%rdx
+>>    0x000000000000001b <+27>:    test   %rdx,%rdx
+>>    0x000000000000001e <+30>:    jns    0x7 <down_read_trylock+7>
+>>    0x0000000000000020 <+32>:    xor    %eax,%eax
+>>    0x0000000000000022 <+34>:    retq
+>>    0x0000000000000023 <+35>:    mov    %gs:0x0,%rax
+>>    0x000000000000002c <+44>:    or     $0x3,%rax
+>>    0x0000000000000030 <+48>:    mov    %rax,0x20(%rdi)
+>>    0x0000000000000034 <+52>:    mov    $0x1,%eax
+>>    0x0000000000000039 <+57>:    retq
+>>
+>> After patch, down_read_trylock:
+>>
+>>    0x0000000000000000 <+0>:	callq  0x5 <down_read_trylock+5>
+>>    0x0000000000000005 <+5>:	xor    %eax,%eax
+>>    0x0000000000000007 <+7>:	lea    0x1(%rax),%rdx
+>>    0x000000000000000b <+11>:	lock cmpxchg %rdx,(%rdi)
+>>    0x0000000000000010 <+16>:	jne    0x29 <down_read_trylock+41>
+>>    0x0000000000000012 <+18>:	mov    %gs:0x0,%rax
+>>    0x000000000000001b <+27>:	or     $0x3,%rax
+>>    0x000000000000001f <+31>:	mov    %rax,0x20(%rdi)
+>>    0x0000000000000023 <+35>:	mov    $0x1,%eax
+>>    0x0000000000000028 <+40>:	retq
+>>    0x0000000000000029 <+41>:	test   %rax,%rax
+>>    0x000000000000002c <+44>:	jns    0x7 <down_read_trylock+7>
+>>    0x000000000000002e <+46>:	xor    %eax,%eax
+>>    0x0000000000000030 <+48>:	retq
+>>
+>> By using a rwsem microbenchmark, the down_read_trylock() rate (with a
+>> load of 10 to lengthen the lock critical section) on a x86-64 system
+>> before and after the patch were:
+>>
+>>                  Before Patch    After Patch
+>>    # of Threads     rlock           rlock
+>>    ------------     -----           -----
+>>         1           14,496          14,716
+>>         2            8,644           8,453
+>> 	4            6,799           6,983
+>> 	8            5,664           7,190
+>>
+>> On a ARM64 system, the performance results were:
+>>
+>>                  Before Patch    After Patch
+>>    # of Threads     rlock           rlock
+>>    ------------     -----           -----
+>>         1           23,676          24,488
+>>         2            7,697           9,502
+>>         4            4,945           3,440
+>>         8            2,641           1,603
+>>
+>> For the uncontended case (1 thread), the new down_read_trylock() is a
+>> little bit faster. For the contended cases, the new down_read_trylock()
+>> perform pretty well in x86-64, but performance degrades at high
+>> contention level on ARM64.
+>>
+>> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>  kernel/locking/rwsem.h | 13 ++++++++-----
+>>  1 file changed, 8 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/kernel/locking/rwsem.h b/kernel/locking/rwsem.h
+>> index 45ee002..1f5775a 100644
+>> --- a/kernel/locking/rwsem.h
+>> +++ b/kernel/locking/rwsem.h
+>> @@ -174,14 +174,17 @@ static inline int __down_read_killable(struct rw_semaphore *sem)
+>>  
+>>  static inline int __down_read_trylock(struct rw_semaphore *sem)
+>>  {
+>> -	long tmp;
+>> +	/*
+>> +	 * Optimize for the case when the rwsem is not locked at all.
+>> +	 */
+>> +	long tmp = RWSEM_UNLOCKED_VALUE;
+>>  
+>> -	while ((tmp = atomic_long_read(&sem->count)) >= 0) {
+>> -		if (tmp == atomic_long_cmpxchg_acquire(&sem->count, tmp,
+>> -				   tmp + RWSEM_ACTIVE_READ_BIAS)) {
+>> +	do {
+>> +		if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp,
+>> +					tmp + RWSEM_ACTIVE_READ_BIAS)) {
+>>  			return 1;
+>>  		}
+>> -	}
+>> +	} while (tmp >= 0);
+> Nit: but I guess that should be RWSEM_UNLOCKED_VALUE instead of 0.
+>
+> Will
+
+Using RWSEM_UNLOCKED_VALUE may be better. Anyway, it is not a big deal
+as I am going to change this again in a later patch.
+
+Thanks,
+Longman
+
+RWSEM_UNLOCKED_VALUE
 

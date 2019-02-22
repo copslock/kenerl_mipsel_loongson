@@ -2,117 +2,164 @@ Return-Path: <SRS0=tVub=Q5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7181AC43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 15:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23567C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 17:08:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 41BDC207E0
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 15:16:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DD03B20700
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Feb 2019 17:08:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3TmaqAD"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="Z2YShWpo"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbfBVPQs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Feb 2019 10:16:48 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:42734 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfBVPQs (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Feb 2019 10:16:48 -0500
-Received: by mail-pf1-f194.google.com with SMTP id n74so1243262pfi.9;
-        Fri, 22 Feb 2019 07:16:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Vo6jhFpbADqF/a0Ruw2bj4J5FVM9bvOetl2FepVuCV8=;
-        b=K3TmaqAD4pXvm/GlBWOLi3KMMA3nE1BcVO5H8tvU6WLblDnG6rU5iQDEcf+DenGjg/
-         KPBbaD/8Ufw7zsYwK3LHwKAGate7bhzVZvAM7dVb73c7t3ViHwYtk3KN3MQyiWf5ViLB
-         lI33EzlB7Lp1o/q9BZudcdhoCMMcz6pQLrSp0UbWMq9mtoyG4uorMiL9svUzcIa7nOv1
-         0Fas/qtQlGh0mUU2vhqHgiAA27XlZvAAsaGOR2l8gAhc/gb0y8s+owi+uNNY2lwlKnnU
-         lB71JS+fKzNQWR6j1I7kY9bqUJk3JJjdSa3qIcnN/ih8DdMdwDP1z1iLDZUjxcVJOh/1
-         2liw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Vo6jhFpbADqF/a0Ruw2bj4J5FVM9bvOetl2FepVuCV8=;
-        b=dgWohAixejJdV8FNyBRCdG5upsrhz2RfU5EByQl+eVf5DWu+URo9yaPPGmBxtDlbRo
-         0V8638hxpI87qmAhPgH936XqHDhulh3Ee5gBxnv0vXDgBUtWLn+wNWpYSN7ANCtqOCHl
-         N3RuX84d/NBqqtzodQ/AzT5Qoxyw9ndD/O7DwUjtejKs1HIE0trO6U83aZ02fxBpzkQK
-         s21+BlnJ32xZGbTBKCQLxq8G+6IdCIXpRPTCYTjNEQf3B/r0NRCWawgCp4k29M6hYocn
-         ClUimudwpjJbHQFZ+W/qxSijLdb7ToFl39HF58FcF1bd787dK/2hVwtvVBJ84GrptI4Q
-         /NSw==
-X-Gm-Message-State: AHQUAubmaIgW4R9FhX2QDGSLapXC/wp4CnKbxjUA4x+ZpChUi1APCa1+
-        CUf/m06PbqwENG2+1w95i20eHksVq8DzAcUyNb8=
-X-Google-Smtp-Source: AHgI3IZeQgqWVtrcsfm2Tm2BWN3Prl48FQfg6UjzpDJVhVgiMrpi7spJkXwnpCmoaBF9grx4xygB0oWfMnVdUG2nFc0=
-X-Received: by 2002:a63:d347:: with SMTP id u7mr4363863pgi.383.1550848607431;
- Fri, 22 Feb 2019 07:16:47 -0800 (PST)
+        id S1727284AbfBVRIs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Feb 2019 12:08:48 -0500
+Received: from mail-eopbgr770115.outbound.protection.outlook.com ([40.107.77.115]:20208
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726647AbfBVRIs (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Feb 2019 12:08:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2Zcsm9VxctEi9bkYvuW5sKEvEw50Fq4+uy6LfOzpS0M=;
+ b=Z2YShWpoh9l/bzM6QI3PBQs9Prc2wE8yPzU2XFnPL4MQUGYNVFtghZZLORxJC/O0PZhdTko1jbxYaGtzucFMuOXKE+UZAgPK2yd8rQloDT7984OchBp+EpcP8NqdjhMNVINJfiqrNdKEh2JSpNrDrnmoTvjVMDJXx2c5LNNT4QM=
+Received: from SN6PR2101MB0912.namprd21.prod.outlook.com (52.132.117.13) by
+ SN6PR2101MB0896.namprd21.prod.outlook.com (52.132.116.161) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1665.4; Fri, 22 Feb 2019 17:08:41 +0000
+Received: from SN6PR2101MB0912.namprd21.prod.outlook.com
+ ([fe80::f103:1a6d:8837:1153]) by SN6PR2101MB0912.namprd21.prod.outlook.com
+ ([fe80::f103:1a6d:8837:1153%6]) with mapi id 15.20.1665.002; Fri, 22 Feb 2019
+ 17:08:41 +0000
+From:   Stephen Hemminger <sthemmin@microsoft.com>
+To:     "lantianyu1986@gmail.com" <lantianyu1986@gmail.com>
+CC:     Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
+        "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "paul.burton@mips.com" <paul.burton@mips.com>,
+        "paulus@ozlabs.org" <paulus@ozlabs.org>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "sashal@kernel.org" <sashal@kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "pbonzini@redhat.com" <pbonzini@redhat.com>,
+        "rkrcmar@redhat.com" <rkrcmar@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "devel@linuxdriverproject.org" <devel@linuxdriverproject.org>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        Michael Kelley <mikelley@microsoft.com>,
+        vkuznets <vkuznets@redhat.com>
+Subject: RE: [PATCH V3 1/10] X86/Hyper-V: Add parameter offset for
+ hyperv_fill_flush_guest_mapping_list()
+Thread-Topic: [PATCH V3 1/10] X86/Hyper-V: Add parameter offset for
+ hyperv_fill_flush_guest_mapping_list()
+Thread-Index: AQHUysBHD5XLcndsGEGj5wzptavVTKXsDLuw
+Date:   Fri, 22 Feb 2019 17:08:41 +0000
+Message-ID: <SN6PR2101MB0912C24CD03D22248C868196CC7F0@SN6PR2101MB0912.namprd21.prod.outlook.com>
+References: <20190222150637.2337-1-Tianyu.Lan@microsoft.com>
+ <20190222150637.2337-2-Tianyu.Lan@microsoft.com>
+In-Reply-To: <20190222150637.2337-2-Tianyu.Lan@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=sthemmin@microsoft.com;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-02-22T17:08:38.0176008Z;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=e404e21f-d99a-455b-a00f-02600ceba6bc;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
+x-originating-ip: [204.195.22.127]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 46f00424-7fde-446e-c198-08d698e86513
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600110)(711020)(4605104)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:SN6PR2101MB0896;
+x-ms-traffictypediagnostic: SN6PR2101MB0896:
+x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+x-microsoft-exchange-diagnostics: =?us-ascii?Q?1;SN6PR2101MB0896;23:isxqKglvU8hm1GqL8+Ucrr7IExy4b7BP9MnP8lq?=
+ =?us-ascii?Q?sBzMt/l3iouZ0XG9+TYrRYZne1BJbPbnJpVg/1PMowca8MylIdZNqn/LMjaa?=
+ =?us-ascii?Q?4YODFn9L5z/WsakGanbz1NnH+jSECUG50/Ma3aSdWsQVgXzdROaHezhzQj72?=
+ =?us-ascii?Q?cnT/WpO6QP68OcGrOLYuepEXT32dZWBZaarOd7At+6FIoe8Q+OSm55NpXn5s?=
+ =?us-ascii?Q?H4WqKXWDVYrodtU63ERahJ5+qTC4F4d1o2dWxKNyFPMm4lEWa+7kAKvGBOkc?=
+ =?us-ascii?Q?usDfjKcHTIJVKQ9L3Eo8ePjfiOcTuW5aVkswEqygQIVGjxi2u1J654svSuN0?=
+ =?us-ascii?Q?Iz95rmXr74WT2WT35k152+GM+sJR9xeloCxsXPi3wDA0F2jXVSDVtG61DUqd?=
+ =?us-ascii?Q?p/PCVD/7QONsn0RHd/1FrF4FfkyN8MzzKWvfZ8/a7XdbV+HcxER7g5qLOsVE?=
+ =?us-ascii?Q?6z0JAYIDpxkqPyj5tiYEBf8aK0MUFttbZ3ILf1sDvYjYDPvrZDedq46dIlgl?=
+ =?us-ascii?Q?7V0mxwO7mpX4MeGLJ861edrG9dnhRDa+9SyqzvZWG5lL+xoaOKRk7Wif5jJp?=
+ =?us-ascii?Q?F2i+U9FWVKanJkWyefC1RhQHT0smYs4pY60/VZMKQQ3SJQ++HD/su6E4BYyD?=
+ =?us-ascii?Q?ROky0HF/FuOah9pmYh6S37JZG/X31pkGnHM5thnje9QE0s3U1Qgk+gu1aeyc?=
+ =?us-ascii?Q?HUJ4DNCnMVFkqLdDrXwYOHFGtVoARtfX7eaZcZvlT4DaUiALIboYTKOOsm/X?=
+ =?us-ascii?Q?L54IKagB4mrW+XC3G7j0g+AYnNPSLCHFn2lThKIHCCqkXb1J6F5wckAihg+T?=
+ =?us-ascii?Q?L9F1o/0QzNiI0XDWU08FQVmcwFxxzpf1+lnU7GBAaMg6nb+VjBnUQb4ibqlx?=
+ =?us-ascii?Q?Pcwxw3Qj9+zb5IcpEwIOQX8r/yh/lkyPUX4mZ6F1AxJB5rMpyd2WuGnMRxi5?=
+ =?us-ascii?Q?sgoYw7TVC50RvAO2gk4JY9P0kElwqTOm3k2ehvgZgZxTfVCkyl0o388rHL/+?=
+ =?us-ascii?Q?i3xgiN1MJxeEMM5QkLlfaQjwhVrt7cbF+SHOs0mFlHXqNFq4CNSulV8Euxnp?=
+ =?us-ascii?Q?ddHCAC3Vj4MfKGP0l03mFhcWA+n2MpvrMLaQQFAgNLfWNpxFyXXtgtMPhZ27?=
+ =?us-ascii?Q?G2oE5BuKLCmnGrZlj0Omx0zAo125TcyXL5IR6Qoti1IsorDivi8vswtlNxBk?=
+ =?us-ascii?Q?gSG+NGB2/tkRDFYrBJKuXB7lJ2Spq0akrbDW3r4A6+FI2O73UYG0hD5D524F?=
+ =?us-ascii?Q?R34ToygR3khSfmCtuDRd9eZzW7N5tT+jA7YJGvGkXr1gdYTLkAa8O7miz9A3?=
+ =?us-ascii?Q?Lt6EbO0oMPXja+gDQF3j91f4zFg4KNh/uN/v1ihzi8g82ZOH7XDdwsBv3ky9?=
+ =?us-ascii?Q?Z/uSCXiMhKg+yUFuFFJ2OnIqSi7Bvb9XwhLPEU4tdj/r+wvqsEXzqsVuKKBV?=
+ =?us-ascii?Q?DIXB8jBF+DKOX9Y5qCmt+/zpVkmRSdRkkLxkLkymIw4UCgXsGYkB7?=
+x-microsoft-antispam-prvs: <SN6PR2101MB08966AA9227E954E2268598ECC7F0@SN6PR2101MB0896.namprd21.prod.outlook.com>
+x-forefront-prvs: 09565527D6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(396003)(366004)(39860400002)(346002)(136003)(189003)(199004)(316002)(74316002)(66066001)(71190400001)(71200400001)(25786009)(22452003)(1411001)(4326008)(2501003)(8990500004)(99286004)(26005)(33656002)(6246003)(55016002)(10290500003)(486006)(9686003)(76176011)(5640700003)(53936002)(6506007)(6436002)(4744005)(102836004)(7416002)(11346002)(7696005)(446003)(54906003)(476003)(97736004)(1361003)(7736002)(6346003)(68736007)(478600001)(8676002)(81156014)(81166006)(2906002)(14454004)(305945005)(8936002)(10090500001)(229853002)(6116002)(105586002)(256004)(2351001)(86362001)(5660300002)(3846002)(86612001)(106356001)(6916009)(186003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR2101MB0896;H:SN6PR2101MB0912.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=sthemmin@microsoft.com; 
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 6zpyScMsCNqC4SbhQ7mljeDH9jDDTchOC+WMtywETHLrIbmMjSj5ef8ps8QIibtV6pjwTkr1DOjpuGG8a63hbvcc/1XTbULf3f+DYOBcZoO+6OekL/FUZx25L4v28kXx4VjcChMw4g+WZM7RbB47TLdosBuLzGclD7gAqddjFZs9a5arkhc3GJO5h0csOE0lLEbe7eGXGtYKu2cMmCfhoQsIyuRj8UmwZclwhzKqPqgBbq6B9Z0/g4/VayLbUC9Fy8S8vwZybI+qqrKTXT9VtxEmEGQwxfTfJAvcX2MkcbcUOv/wnHvenDhrQfIUc/+vqAEFJGTidV50KvWT607j1zfG3tF0/fV9bMLpZXslfdHE7k4lIGdc3hsuHZtC0aPigUDJ43n7cHqMeQ88rcl6RcQty+xYxFCU3KoNzZ/Csvs=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20190202013825.51261-1-Tianyu.Lan@microsoft.com>
- <20190202013825.51261-4-Tianyu.Lan@microsoft.com> <572a6ce3-23f6-7b16-a070-4d4a81ee4335@redhat.com>
- <CAOLK0pzXnvk=FsfjH07jUyRJGpeiNG7-9vR9Vo0mLJtdPnt_7Q@mail.gmail.com> <d9043bc8-d006-bf64-2047-79a9b6f98183@redhat.com>
-In-Reply-To: <d9043bc8-d006-bf64-2047-79a9b6f98183@redhat.com>
-From:   Tianyu Lan <lantianyu1986@gmail.com>
-Date:   Fri, 22 Feb 2019 23:16:35 +0800
-Message-ID: <CAOLK0pyGhbd43rVPZE7waaStUkGVYVgakG2VgqtME4PxNTOY0w@mail.gmail.com>
-Subject: Re: [PATCH V2 3/10] KVM/MMU: Add last_level in the struct mmu_spte_page
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Lan Tianyu <Tianyu.Lan@microsoft.com>, christoffer.dall@arm.com,
-        marc.zyngier@arm.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will.deacon@arm.com, jhogan@kernel.org,
-        ralf@linux-mips.org, paul.burton@mips.com, paulus@ozlabs.org,
-        benh@kernel.crashing.org, mpe@ellerman.id.au,
-        Radim Krcmar <rkrcmar@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        "linux-kernel@vger kernel org" <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm <kvm@vger.kernel.org>,
-        michael.h.kelley@microsoft.com, kys@microsoft.com,
-        Vitaly Kuznetsov <vkuznets@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46f00424-7fde-446e-c198-08d698e86513
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Feb 2019 17:08:41.2853
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR2101MB0896
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Feb 15, 2019 at 11:23 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On 15/02/19 16:05, Tianyu Lan wrote:
-> > Yes, you are right. Thanks to point out and will fix. The last_level
-> > flag is to avoid adding middle page node(e.g, PGD, PMD)
-> > into flush list. The address range will be duplicated if adding both
-> > leaf, node and middle node into flush list.
->
-> Hmm, that's not easy to track.  One kvm_mmu_page could include both leaf
-> and non-leaf page (for example a huge page for 0 to 2 MB and a page
-> table for 2 MB to 4 MB).
->
-> Is this really needed?  First, your benchmarks so far have been done
-> with sp->last_level always set to true.  Second, you would only
-> encounter this optimization in kvm_mmu_commit_zap_page when zapping a 1
-> GB region (which then would be invalidated twice, at both the PMD and
-> PGD level) or bigger.
->
-> Paolo
+int hyperv_fill_flush_guest_mapping_list(
+ 		struct hv_guest_mapping_flush_list *flush,
+-		u64 start_gfn, u64 pages)
++		int offset, u64 start_gfn, u64 pages)
+ {
+ 	u64 cur =3D start_gfn;
+ 	u64 additional_pages;
+-	int gpa_n =3D 0;
++	int gpa_n =3D offset;
+=20
+ 	do {
+ 		/*
 
-Hi Paolo:
-             Sorry for later response and I tried to figure out a bug
-lead by defining wrong
-max flush count. I just sent out V3. I still put the last_level flag
-patch in the end of patchset.
-Detail please see the change log. Just like you said this was an
-optimization and wasn't 100%
-required. If you still have some concerns, you can ignore it and other
-patches in this patchset
-should be good. Thanks.
-
--- 
-Best regards
-Tianyu Lan
+Do you mean to support negative offsets here? Maybe unsigned would be bette=
+r?

@@ -1,63 +1,66 @@
-Return-Path: <SRS0=1Pqs=Q6=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=K/c0=Q7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9F8DC43381
-	for <linux-mips@archiver.kernel.org>; Sat, 23 Feb 2019 15:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF57DC43381
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 04:56:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B7CB220665
-	for <linux-mips@archiver.kernel.org>; Sat, 23 Feb 2019 15:30:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F7EF206B6
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 04:56:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725920AbfBWPan (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 23 Feb 2019 10:30:43 -0500
-Received: from emh03.mail.saunalahti.fi ([62.142.5.109]:58248 "EHLO
-        emh03.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725859AbfBWPan (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 23 Feb 2019 10:30:43 -0500
-Received: from darkstar.musicnaut.iki.fi (85-76-65-82-nat.elisa-mobile.fi [85.76.65.82])
-        by emh03.mail.saunalahti.fi (Postfix) with ESMTP id 1CD4C400CF;
-        Sat, 23 Feb 2019 17:30:41 +0200 (EET)
-Date:   Sat, 23 Feb 2019 17:30:40 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+        id S1727800AbfBXE4c convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 23 Feb 2019 23:56:32 -0500
+Received: from linux-libre.fsfla.org ([209.51.188.54]:38788 "EHLO
+        linux-libre.fsfla.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727689AbfBXE4c (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 23 Feb 2019 23:56:32 -0500
+Received: from free.home (home.lxoliva.fsfla.org [172.31.160.164])
+        by linux-libre.fsfla.org (8.15.2/8.15.2/Debian-3) with ESMTP id x1O4u3Ua003292;
+        Sun, 24 Feb 2019 04:56:04 GMT
+Received: from livre (livre.home [172.31.160.2])
+        by free.home (8.15.2/8.15.2) with ESMTP id x1O4tWHt477343;
+        Sun, 24 Feb 2019 01:55:32 -0300
+From:   Alexandre Oliva <lxoliva@fsfla.org>
 To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Tom Li <tomli@tomli.me>, Alexandre Oliva <lxoliva@fsfla.org>,
+Cc:     Tom Li <tomli@tomli.me>, Aaro Koskinen <aaro.koskinen@iki.fi>,
         James Hogan <jhogan@kernel.org>,
         Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@vger.kernel.org
 Subject: Re: CS5536 Spurious Interrupt Problem on Loongson2
-Message-ID: <20190223153040.GB26495@darkstar.musicnaut.iki.fi>
+Organization: Free thinker, not speaking for FSF Latin America
 References: <ora7in8tfs.fsf@lxoliva.fsfla.org>
- <20190223015650.GA8616@localhost.localdomain>
- <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com>
+        <20190223015650.GA8616@localhost.localdomain>
+        <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com>
+Date:   Sun, 24 Feb 2019 01:55:32 -0300
+In-Reply-To: <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com> (Jiaxun Yang's
+        message of "Sat, 23 Feb 2019 14:08:38 +0800")
+Message-ID: <orpnrh7pkr.fsf@lxoliva.fsfla.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8BIT
+X-Scanned-By: MIMEDefang 2.84
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+On Feb 23, 2019, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
 
-On Sat, Feb 23, 2019 at 02:08:38PM +0800, Jiaxun Yang wrote:
-> 在 2019/2/23 9:56, Tom Li 写道:
-> >On Fri, Feb 22, 2019 at 09:43:43PM +0200, Aaro Koskinen wrote:
-> >>Mini-PC does not have any EC. PMON is:
-> >>Version: PMON2000 2.1 (Bonito) #121: Mon Jan  5 14:19:11 CST 2009.
-> 
-> Check "env" variables in PMON shell. There night be some information such as
-> version or build date.
+> Check "env" variables in PMON shell. There night be some information
+> such as version or build date.
 
-It has:
+Ah, yes, thanks.
 
-   Version = LM6004-1.3.2
- BuildTime = "Jan  5 2009 14:18:56"
+EC PQ1D28, PMON LM8089-1.4.5 built on Aug 10, 2009.
 
-A.
+-- 
+Alexandre Oliva, freedom fighter   https://FSFLA.org/blogs/lxo
+Be the change, be Free!         FSF Latin America board member
+GNU Toolchain Engineer                Free Software Evangelist
+Hay que enGNUrecerse, pero sin perder la terGNUra jamás-GNUChe

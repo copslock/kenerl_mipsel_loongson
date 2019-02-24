@@ -6,28 +6,28 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63325C43381
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0C0CC43381
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3060720661
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A963520661
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbfBXHPL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 24 Feb 2019 02:15:11 -0500
-Received: from smtpbg202.qq.com ([184.105.206.29]:60537 "EHLO smtpbg202.qq.com"
+        id S1726424AbfBXHPR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 24 Feb 2019 02:15:17 -0500
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:42384 "EHLO smtpbgbr2.qq.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726459AbfBXHPK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 24 Feb 2019 02:15:10 -0500
-X-QQ-mid: bizesmtp3t1550992507txx3g4rbu
+        id S1725965AbfBXHPR (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 24 Feb 2019 02:15:17 -0500
+X-QQ-mid: bizesmtp3t1550992510tkbwgufxk
 Received: from localhost.localdomain (unknown [116.236.177.50])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Sun, 24 Feb 2019 15:15:05 +0800 (CST)
+        id ; Sun, 24 Feb 2019 15:15:08 +0800 (CST)
 X-QQ-SSF: 01400000002000C0EG82B00A0000000
-X-QQ-FEAT: 92FxZ2TPvnd29DML+O608EXmytofcWCyLdLE6qSbHeMaU8KYSnEZcvEJlaizi
-        lqUA2OCAqkND+tB6NrCjo5ZnKyzeG7TcYLNzoxn3hgWPUREacru/bN9yFSAhhjjWLtLnCDr
-        Ji6Btf6mk+C7RexpFVOHh19aNA3fKKQCjOJnfVpCet0ieYLMdXWADUX/B5Cd7gu1ZRFZwzd
-        nWLBVAT7JpkCvXRZ9K/H3JXjCqFu2X32AW8l3KAu3HHAt3L3QeOHuesKfY6s/wLdDg9UnPn
-        G3kiRkwyYc7borL0Ukz70JqCw=
+X-QQ-FEAT: JeZkV8SsDPkiP1CqcxwKdSj1fH9ZSMJaS53/BboKXhwgZYcCnIIhf2iAp1/r3
+        J9kxYmFT7bVMGobnAOtIxxFDH3s893nJOmbQvCLG31Dkg3d7997UCys+x83c101W4Mf31BW
+        HNHpWotdY6yGDBeSXD0H5/WG9ycfr4/C3kb3rvdGDzZxMSmmBBMALNbFhyOHW4ny9x+4+4M
+        rffWlAh5GG7muz7B+uoxOWm9kydGHljo2cXFwkml3dexe55zvJpzugODcyqMj8gMgoiZPTK
+        5BP8jkJiHju8w8cs/yrOUGPEnX6ATC4/2LDQ==
 X-QQ-GoodBg: 2
 From:   Wang Xuerui <wangxuerui@qiniu.com>
 To:     linux-mips@vger.kernel.org
@@ -37,24 +37,26 @@ Cc:     Wang Xuerui <wangxuerui@qiniu.com>,
         Alex Belits <alex.belits@cavium.com>,
         James Hogan <james.hogan@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 3/4] MIPS: define virtual address size in Kconfig
-Date:   Sun, 24 Feb 2019 15:13:54 +0800
-Message-Id: <20190224071355.14488-4-wangxuerui@qiniu.com>
+Subject: [PATCH 4/4] MIPS: support 47-bit userland VM space
+Date:   Sun, 24 Feb 2019 15:13:55 +0800
+Message-Id: <20190224071355.14488-5-wangxuerui@qiniu.com>
 X-Mailer: git-send-email 2.16.1
 In-Reply-To: <20190224071355.14488-1-wangxuerui@qiniu.com>
 References: <20190224071355.14488-1-wangxuerui@qiniu.com>
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:qiniu.com:qybgforeign:qybgforeign2
+Feedback-ID: bizesmtp:qiniu.com:qybgforeign:qybgforeign4
 X-QQ-Bgrelay: 1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-To ease addition of new VA sizes, punt the constant in processor.h
-to Kconfig.
+The infrastructure is now ready, so just add the necessary Kconfig
+logic. The equivalent logic has been tested on Loongson 3A2000 and
+3A3000 for more than 2 years, no breakage so far.
 
 Signed-off-by: Wang Xuerui <wangxuerui@qiniu.com>
+Tested-by: Wang Xuerui <wangxuerui@qiniu.com>
 Cc: Huacai Chen <chenhc@lemote.com>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Cc: Alex Belits <alex.belits@cavium.com>
@@ -62,39 +64,53 @@ Cc: James Hogan <james.hogan@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/Kconfig                 | 5 +++++
- arch/mips/include/asm/processor.h | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/Kconfig | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b0068a1e1e33..a1ab9e7924a0 100644
+index a1ab9e7924a0..104de85ef6ed 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -2191,6 +2191,11 @@ endchoice
- config MIPS_LARGE_VA
- 	bool
+@@ -2171,6 +2171,31 @@ config MIPS_VA_BITS_DEFAULT
  
-+config MIPS_VA_BITS
-+	int
-+	default 48 if MIPS_VA_BITS_48
-+	default 40
+ 	  If unsure, say Y.
+ 
++config MIPS_VA_BITS_47
++	bool "47 bits virtual memory"
++	depends on 64BIT
++	select MIPS_LARGE_VA
++	help
++	  This is a temporary option to support 47 bits of application virtual
++	  memory, as is the case with x86_64.
 +
- choice
- 	prompt "Kernel page size"
- 	default PAGE_SIZE_4KB
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 226cf46cc89c..9119e9a44d9c 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -63,7 +63,7 @@ extern unsigned int vced_count, vcei_count;
-  */
- #define TASK_SIZE32	0x7fff8000UL
- #ifdef CONFIG_MIPS_LARGE_VA
--#define TASK_SIZE64     (0x1UL << min(cpu_data[0].vmbits, 48))
-+#define TASK_SIZE64     (0x1UL << min(cpu_data[0].vmbits, CONFIG_MIPS_VA_BITS))
- #else
- #define TASK_SIZE64     0x10000000000UL
- #endif
++	  Some applications and libraries assume the userland address space is
++	  47-bit or less, due to the prevalence of x86_64 platforms where this
++	  restriction is present.  Hence, turning on 48-bit userland addresses
++	  may cause these applications to stop working.  For example,
++	  SpiderMonkey re-uses the higher 17 bits of pointers as tags, which
++	  breaks GJS and thus whole GNOME if 48-bit is enabled.  This option
++	  retains compatibility with those (broken for now) apps, while
++	  providing larger address space to userland.
++
++	  However, the option is only here as a stop-gap measure; the
++	  applications should be fixed to not depend on unused bits in
++	  pointers, as those bits will eventually become unavailable.  Also
++	  note that the caveats of 48-bit virtual memory also apply, because
++	  the implementation is shared.
++
++	  If unsure, say N.
++
+ config MIPS_VA_BITS_48
+ 	bool "48 bits virtual memory"
+ 	depends on 64BIT
+@@ -2193,6 +2218,7 @@ config MIPS_LARGE_VA
+ 
+ config MIPS_VA_BITS
+ 	int
++	default 47 if MIPS_VA_BITS_47
+ 	default 48 if MIPS_VA_BITS_48
+ 	default 40
+ 
 -- 
 2.16.1
 

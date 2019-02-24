@@ -2,65 +2,80 @@ Return-Path: <SRS0=K/c0=Q7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF57DC43381
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 04:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A093C43381
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8F7EF206B6
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 04:56:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5B73C20661
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 07:15:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727800AbfBXE4c convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 23 Feb 2019 23:56:32 -0500
-Received: from linux-libre.fsfla.org ([209.51.188.54]:38788 "EHLO
-        linux-libre.fsfla.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727689AbfBXE4c (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 23 Feb 2019 23:56:32 -0500
-Received: from free.home (home.lxoliva.fsfla.org [172.31.160.164])
-        by linux-libre.fsfla.org (8.15.2/8.15.2/Debian-3) with ESMTP id x1O4u3Ua003292;
-        Sun, 24 Feb 2019 04:56:04 GMT
-Received: from livre (livre.home [172.31.160.2])
-        by free.home (8.15.2/8.15.2) with ESMTP id x1O4tWHt477343;
-        Sun, 24 Feb 2019 01:55:32 -0300
-From:   Alexandre Oliva <lxoliva@fsfla.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Tom Li <tomli@tomli.me>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        James Hogan <jhogan@kernel.org>,
+        id S1726424AbfBXHPA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 24 Feb 2019 02:15:00 -0500
+Received: from smtpbgau1.qq.com ([54.206.16.166]:36322 "EHLO smtpbgau1.qq.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725965AbfBXHO7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 24 Feb 2019 02:14:59 -0500
+X-QQ-mid: bizesmtp3t1550992487t89g48b0i
+Received: from localhost.localdomain (unknown [116.236.177.50])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Sun, 24 Feb 2019 15:14:43 +0800 (CST)
+X-QQ-SSF: 01400000002000C0EF92B00A0000000
+X-QQ-FEAT: R3tZgSt770MAtl3QlDCoa4HBzFgRnDeEnB8SALHnMoDwpqcMZ4+rzP6TYvNYo
+        u69H9usKHJX2O6Ev1LJY6bg27Y2Bh1KLq1I6MCR+h671q4xw0GaGlp/FSblbfsCUu8YxeFi
+        IsJIZgO92QyIHOz91O7BXCvRp5STxGP61OJOLSisjIZ6SlUS8wjS65LIffDk+ms3CcMG2em
+        gYhXOLknsW/nRbqWRkzuu99a5QUyqTCOArXOMsirBLm0l608SirbQVPjQ49BAR1i1QgFMIw
+        PsV7Oi7WOH/Gxn
+X-QQ-GoodBg: 2
+From:   Wang Xuerui <wangxuerui@qiniu.com>
+To:     linux-mips@vger.kernel.org
+Cc:     Wang Xuerui <wangxuerui@qiniu.com>,
         Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@vger.kernel.org
-Subject: Re: CS5536 Spurious Interrupt Problem on Loongson2
-Organization: Free thinker, not speaking for FSF Latin America
-References: <ora7in8tfs.fsf@lxoliva.fsfla.org>
-        <20190223015650.GA8616@localhost.localdomain>
-        <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com>
-Date:   Sun, 24 Feb 2019 01:55:32 -0300
-In-Reply-To: <e57f51ad-4065-b652-ef0e-d93b084d938f@flygoat.com> (Jiaxun Yang's
-        message of "Sat, 23 Feb 2019 14:08:38 +0800")
-Message-ID: <orpnrh7pkr.fsf@lxoliva.fsfla.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Scanned-By: MIMEDefang 2.84
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Alex Belits <alex.belits@cavium.com>,
+        James Hogan <james.hogan@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 0/4] MIPS: support 47-bit userland VM space
+Date:   Sun, 24 Feb 2019 15:13:51 +0800
+Message-Id: <20190224071355.14488-1-wangxuerui@qiniu.com>
+X-Mailer: git-send-email 2.16.1
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:qiniu.com:qybgforeign:qybgforeign2
+X-QQ-Bgrelay: 1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Feb 23, 2019, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+Hi,
 
-> Check "env" variables in PMON shell. There night be some information
-> such as version or build date.
+This is my patchset to support 47-bit userland virtual memory space on
+MIPS, for better application compatibility with x86_64.  The
+implementation is entirely shared with the previous 48-bit virtual
+memory space work.
 
-Ah, yes, thanks.
+The existing mechanism is first refactored to accommodate extensions,
+then 47-bit support is added as an additional case of the
+now-generalized large VA support.  I have been running an earlier
+uncleaned version of this code for over 2 years, on Loongson 3A2000 and
+3A3000, without any problem so far.  This is my first patchset to
+Linux/MIPS, so any review or comment is greatly appreciated!
 
-EC PQ1D28, PMON LM8089-1.4.5 built on Aug 10, 2009.
+Wang Xuerui (4):
+  MIPS: simplify definition of TASK_SIZE64
+  MIPS: refactor virtual address size selection
+  MIPS: define virtual address size in Kconfig
+  MIPS: support 47-bit userland VM space
+
+ arch/mips/Kconfig                  | 59 +++++++++++++++++++++++++++++++++++---
+ arch/mips/include/asm/pgtable-64.h | 10 +++----
+ arch/mips/include/asm/processor.h  |  5 ++--
+ 3 files changed, 63 insertions(+), 11 deletions(-)
 
 -- 
-Alexandre Oliva, freedom fighter   https://FSFLA.org/blogs/lxo
-Be the change, be Free!         FSF Latin America board member
-GNU Toolchain Engineer                Free Software Evangelist
-Hay que enGNUrecerse, pero sin perder la terGNUra jamás-GNUChe
+2.16.1
+
+
+

@@ -1,151 +1,112 @@
-Return-Path: <SRS0=K/c0=Q7=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=DhUk=RA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FBC1C4360F
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 10:05:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31FD7C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 05:28:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 70BAE20663
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Feb 2019 10:05:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E81122084D
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 05:28:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=xen0n.name header.i=@xen0n.name header.b="ayJKR4g+"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="WZAYIfSN"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728096AbfBXKFl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 24 Feb 2019 05:05:41 -0500
-Received: from [115.28.160.31] ([115.28.160.31]:45318 "EHLO
-        mailbox.box.xen0n.name" rhost-flags-FAIL-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1728120AbfBXKFl (ORCPT
+        id S1725923AbfBYF2s (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Feb 2019 00:28:48 -0500
+Received: from forward103p.mail.yandex.net ([77.88.28.106]:44706 "EHLO
+        forward103p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725912AbfBYF2s (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 24 Feb 2019 05:05:41 -0500
-Received: from localhost.localdomain (unknown [116.236.177.50])
-        by mailbox.box.xen0n.name (Postfix) with ESMTPA id D86C3601C8;
-        Sun, 24 Feb 2019 17:37:02 +0800 (CST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=xen0n.name; s=mail;
-        t=1551001023; bh=J7iATcxVrVbgSMYpAyIOEoUkNVWUfAtyvY/ElhHuLgQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ayJKR4g+kWUtCj+zA5zNLBk29oROmIXYvg05Kh+uUuMcQglnmaikmc8O9dvYPtKTw
-         v17V5byanql0CtU/FH2UejIxM776Eb01hQMJ+tY4XAiNU3UFR0NJY/D9bQA0W8/QnT
-         J+nV1UGj8V/KrEiUeUZhM7Db6tAQ02T/53NPV5Q4=
-From:   kernel@xen0n.name
-To:     linux-mips@vger.kernel.org
-Cc:     Wang Xuerui <wangxuerui@qiniu.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [RFC PATCH 2/2] MIPS: VDSO: support extcc-based timekeeping
-Date:   Sun, 24 Feb 2019 17:36:35 +0800
-Message-Id: <20190224093635.1242-3-kernel@xen0n.name>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190224093635.1242-1-kernel@xen0n.name>
-References: <20190224093635.1242-1-kernel@xen0n.name>
+        Mon, 25 Feb 2019 00:28:48 -0500
+Received: from mxback19g.mail.yandex.net (mxback19g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:319])
+        by forward103p.mail.yandex.net (Yandex) with ESMTP id AC9ED18C10B1;
+        Mon, 25 Feb 2019 08:28:42 +0300 (MSK)
+Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
+        by mxback19g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 9ULGu6UL3h-SfrWj73J;
+        Mon, 25 Feb 2019 08:28:42 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1551072522;
+        bh=2U0ewqH6074O3o/A1lkWgpM5pm96Y/E7gQaaIv6Z8aw=;
+        h=Cc:To:From:Subject:Date:Message-Id;
+        b=WZAYIfSN4hOWrfv2D80hMgIPNyKsN8HCL5XDT8JMJsYm6ZQYLHqS9eHs707Cm52O+
+         TUK62LSZSzu1T+81ObvS7bd9LBvNNBSJy82Pn3DO3VkD1LjFOVGkNwEFhpqjHunJWc
+         bUG3d2nVX59BPxFAqq61OHfr+QYRiPgmmfEA+QHY=
+Authentication-Results: mxback19g.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 7zis86YKDZ-SZReoeJx;
+        Mon, 25 Feb 2019 08:28:39 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+Message-Id: <20190225082840.SZReoeJx@smtp4o.mail.yandex.net>
+Date:   Mon, 25 Feb 2019 13:28:29 +0800
+Subject: Re: [RFC PATCH 0/2] MIPS: Loongson: ExtCC clocksource support
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     kernel@xen0n.name
+Cc:     linux-mips@linux-mips.org, Paul Burton <paul.burton@mips.com>,
+        linux-mips@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Wang Xuerui <wangxuerui@qiniu.com>,
+        Huacai Chen <chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Wang Xuerui <wangxuerui@qiniu.com>
-
-The clocksource bits are ready, just wire things up in VDSO for a
-significant user-space timekeeping performance gain.  There are several
-ABI problems uncovered by vdsotest though, but daily usage of the test
-system didn't expose any of them.  These inconsistencies will be fixed
-in a later commit (presently TODO).
-
-According to vdsotest (formatting is manually added, only the affected
-figures are shown):
-
-    category                          before  after
-    --------                          ------  -----
-    clock-gettime-monotonic: syscall: 409     401 nsec/call
-    clock-gettime-monotonic:    libc: 476     141 nsec/call
-    clock-gettime-monotonic:    vdso: 462     123 nsec/call
-
-    clock-gettime-realtime:  syscall: 405     407 nsec/call
-    clock-gettime-realtime:     libc: 474     142 nsec/call
-    clock-gettime-realtime:     vdso: 457     125 nsec/call
-
-    gettimeofday:            syscall: 406     407 nsec/call
-    gettimeofday:               libc: 455     121 nsec/call
-    gettimeofday:               vdso: 440     102 nsec/call
-
-The benchmark was run on a single-socket 3A3000 @ 1.4GHz.  There is
-still plenty of headroom for improvements of course, but let's take
-care of the micro-optimizations later.
-
-Signed-off-by: Wang Xuerui <wangxuerui@qiniu.com>
-Tested-by: Wang Xuerui <wangxuerui@qiniu.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/include/asm/clocksource.h | 1 +
- arch/mips/loongson64/common/extcc.c | 3 +--
- arch/mips/vdso/gettimeofday.c       | 8 ++++++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/clocksource.h b/arch/mips/include/asm/clocksource.h
-index 3deb1d0c1a94..6a126a475892 100644
---- a/arch/mips/include/asm/clocksource.h
-+++ b/arch/mips/include/asm/clocksource.h
-@@ -17,6 +17,7 @@
- #define VDSO_CLOCK_NONE		0	/* No suitable clocksource. */
- #define VDSO_CLOCK_R4K		1	/* Use the coprocessor 0 count. */
- #define VDSO_CLOCK_GIC		2	/* Use the GIC. */
-+#define VDSO_CLOCK_EXTCC	3	/* Use the Loongson ExtCC. */
- 
- /**
-  * struct arch_clocksource_data - Architecture-specific clocksource information.
-diff --git a/arch/mips/loongson64/common/extcc.c b/arch/mips/loongson64/common/extcc.c
-index 702cb389856a..0f6775099411 100644
---- a/arch/mips/loongson64/common/extcc.c
-+++ b/arch/mips/loongson64/common/extcc.c
-@@ -23,8 +23,7 @@ static struct clocksource extcc_clocksource = {
- 	.read		= extcc_read,
- 	.mask		= CLOCKSOURCE_MASK(64),
- 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS | CLOCK_SOURCE_VALID_FOR_HRES,
--	/* TODO later */
--	.archdata	= { .vdso_clock_mode = VDSO_CLOCK_NONE },
-+	.archdata	= { .vdso_clock_mode = VDSO_CLOCK_EXTCC },
- };
- 
- void __init extcc_clocksource_init(void)
-diff --git a/arch/mips/vdso/gettimeofday.c b/arch/mips/vdso/gettimeofday.c
-index e22b422f282c..92eef8de36a4 100644
---- a/arch/mips/vdso/gettimeofday.c
-+++ b/arch/mips/vdso/gettimeofday.c
-@@ -17,6 +17,9 @@
- #include <asm/io.h>
- #include <asm/unistd.h>
- #include <asm/vdso.h>
-+#ifdef CONFIG_LOONGSON_EXTCC_CLKSRC
-+#include <asm/mach-loongson64/extcc.h>
-+#endif
- 
- #ifdef CONFIG_MIPS_CLOCK_VSYSCALL
- 
-@@ -148,6 +151,11 @@ static __always_inline u64 get_ns(const union mips_vdso_data *data)
- 	case VDSO_CLOCK_GIC:
- 		cycle_now = read_gic_count(data);
- 		break;
-+#endif
-+#ifdef CONFIG_LOONGSON_EXTCC_CLKSRC
-+	case VDSO_CLOCK_EXTCC:
-+		cycle_now = __extcc_read_ordered();
-+		break;
- #endif
- 	default:
- 		return 0;
--- 
-2.20.1
+CgoyMDE55bm0MuaciDI05pelIOS4i+WNiDU6Mzbkuo4ga2VybmVsQHhlbjBuLm5hbWXlhpnpgZPv
+vJoKPgo+IEZyb206IFdhbmcgWHVlcnVpIDx3YW5neHVlcnVpQHFpbml1LmNvbT4gCj4KPiBIaSwg
+Cj4KPiBUaGlzIGlzIG15IFdJUCBwYXRjaHNldCB0byBhZGQgc3VwcG9ydCBmb3IgdXNpbmcgdGhl
+IG9uLWNoaXAgRXh0Q0MgCj4gKGV4dGVybmFsIGNvdW50ZXIpIHJlZ2lzdGVyIGFzIGNsb2Nrc291
+cmNlLCB0byBib29zdCB0aGUgcmVhbC10aW1lIAo+IHBlcmZvcm1hbmNlIG9uIExvb25nc29uIHBs
+YXRmb3JtLiBJJ20gcG9zdGluZyB0aGlzIHRvIHNvbGljaXQgY29tbWVudHMgCj4gYW5kIGdldCBz
+b21lIG9mIHRoZSB1bnJlc29sdmVkIHF1ZXN0aW9ucyBhbnN3ZXJlZC4gCgpIaSBYdWVydWkKClRo
+YW5rcyBhIGxvdCBmb3IgeW91ciB3b3JrcywgaG93ZXZlciwgdGhlIEV4dENDIGNhbiBiZSBpbmZs
+dWVuY2VkIGJ5IHRoZSBmcmVxdWVuY3kgb2YgQ1BVIGNvcmUsIGFuZCB3ZSBoYXZlIGNwdWZyZXEg
+d29ya2luZyBvbiBMb29uZ3Nvbi0zIHByb2Nlc3NvcnMsIHNvIHlvdSBzaG91bGQgbWFyayBpdCBj
+b25mbGljdCB3aXRoIGNwdWZyZXEgZHJpdmVyLgoKQW5kIGFzIGZhciBhcyBJIGtub3csIEV4dEND
+IGlzIGV2ZW4gbm90IHN5bmNocm9ub3VzIGJldHdlZW4gZGlmZmVyZW50IGNvcmVzLgoKSSdkIHBy
+ZWZlciB0byB1c2UgZ3MzX0hQVCgweDNmZjAwNDA4KSAgcmVnaXN0ZXIgdG8gaW1wbGVtZW50IHRo
+aXMgZmVhdGhlci4gQWxzbyBpdCBjYW4gYmUgYWNjZXNzZWQgZnJvbSBhbGwgdGhlIG5vZGVzLCBh
+bmQgdGhlIGNsb2NrIGNvbWVzIGZyb20gIm5vZGUgY2xvY2siIHdoaWNoIHdpbGwgbm90IGVmZmVj
+dGVkIGJ5IGNvcmUgZnJlcXVlbmN5Lgo+Cj4gKiBJIGRvbid0IGhhdmUgYWNjZXNzIHRvIG11bHRp
+LXNvY2tldCBjY05VTUEgTG9vbmdzb24gYm9hcmRzLiBUaGUgY29kZSAKPiDCoCBtb3N0IGNlcnRh
+aW5seSBkb2Vzbid0IHdvcmsgb24gc3VjaCBoYXJkd2FyZSwgc28gZWl0aGVyIHNvbWVvbmUgd2l0
+aCAKPiDCoCBleHBlcnRpc2Ugd291bGQgdGVhY2ggbWUgaG93IHRvIGRvIHRoaXMsIG9yIGdldCB0
+aGlzIGRvbmUgb24gdGhlaXIgCj4gwqAgb3duLiAKPiAqIEknbSBub3Qgc3VyZSBvZiB0aGUgcGlw
+ZWxpbmUgYmVoYXZpb3Igb2YgdGhlIHJkaHdyIGluc3RydWN0aW9uIHVzZWQuIAo+IMKgIFRoZSBj
+dXJyZW50IGltcGxlbWVudGF0aW9uIGhhcyBhIHN5bmMgKHJvdWdobHkgdGhlIHg4NiB3YXkpLCBh
+bmQgSSdtIAo+IMKgIG5vdCBzdXJlIGlmIGl0IGNhbiBiZSBzYWZlbHkgb21pdHRlZCwgb3IgZXZl
+biBtb3ZlZCBpbnRvIHRoZSBkZWxheSAKPiDCoCBzbG90IG9uIHJldHVybi4gCj4gKiBDbG9jayBz
+a2V3IGNhbiBiZSBhIGNvbmNlcm4sIGJ1dCBpdCBzZWVtcyB0aGVyZSdzIG5vIGdlbmVyaWMgbWVj
+aGFuaXNtIAo+IMKgIGZvciBjbG9ja3NvdXJjZSBjYWxpYnJhdGlvbi4gVGhlIHg4NiBjb2RlIGhh
+cyBvbmUgc3VwcG9ydGluZyBQSVQvSFBFVC0gCj4gwqAgYmFzZWQgY2FsaWJyYXRpb24sIGJ1dCB0
+aGF0IGNvZGUgbmV2ZXIgZ290IGV4dHJhY3RlZCB0byBjb21tb24gCj4gwqAgZnJhbWV3b3JrLiAK
+PiAqIFRoZSBWRFNPIHBlcmZvcm1hbmNlIHNlZW1zIHZlcnkgYmFkIGNvbXBhcmluZyB0byB4ODYs
+IGV2ZW4gYWZ0ZXIgCj4gwqAgYWRqdXN0aW5nIGZvciB0aGUgY3ljbGUgZnJlcXVlbmN5IGRpZmZl
+cmVuY2UuIEJ1dCBJIGhhdmVuJ3QgdGhvcm91Z2hseSAKPiDCoCBwcm9maWxlZCB0aGlzIGFuZCBw
+ZXJoYXBzIHdvbid0IGhhdmUgZW5vdWdoIHNwYXJlIHRpbWUgZm9yIGRvaW5nIHNvIAo+IMKgIChr
+ZXJuZWwgd29yayBpc24ndCBwYXJ0IG9mIG15IGRheSBqb2IpLsKgIFNvIG1heWJlIHNvbWVvbmUg
+Y291bGQgCj4gwqAgcHJvdmlkZSBzb21lIGhpbnRzIGluIHRoaXMgYXJlYT8gCj4KPiBDYW4gb25s
+eSBjb21lIHVwIHdpdGggc28gbWFueSBwb2ludHMgZm9yIG5vdzsgSSdsbCBhZGQgaWYgbW9yZSBp
+ZGVhcyAKPiB0dXJuIHVwLiAKPgo+IFAuUy4gSSBoYXZlIHRvIGNoYW5nZSB0byBteSBwZXJzb25h
+bCBhZGRyZXNzIGZvciBvdXRnb2luZyBtYWlsczsgbXkgCj4gd29yayBhZGRyZXNzIGlzIGhvc3Rl
+ZCBvbiBRUSBFbnRlcnByaXNlIE1haWwsIHdoaWNoIG1vc3QgY2VydGFpbmx5IGlzIAo+IGJsb2Nr
+ZWQgYWx0b2dldGhlciBieSBsaW51eC1taXBzLm9yZy4gCj4KPiBXYW5nIFh1ZXJ1aSAoMik6IAo+
+IMKgIE1JUFM6IExvb25nc29uOiBhZGQgZXh0Y2MgY2xvY2tzb3VyY2UgCj4gwqAgTUlQUzogVkRT
+Tzogc3VwcG9ydCBleHRjYy1iYXNlZCB0aW1la2VlcGluZyAKPgo+IGFyY2gvbWlwcy9pbmNsdWRl
+L2FzbS9jbG9ja3NvdXJjZS5owqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEgKyAKPiBhcmNoL21p
+cHMvaW5jbHVkZS9hc20vbWFjaC1sb29uZ3NvbjY0L2V4dGNjLmggfCAyNiArKysrKysrKysgCj4g
+YXJjaC9taXBzL2xvb25nc29uNjQvS2NvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgfCAxMyArKysrKyAKPiBhcmNoL21pcHMvbG9vbmdzb242NC9jb21tb24vTWFrZWZpbGXC
+oMKgwqDCoMKgwqDCoMKgwqAgfMKgIDUgKysgCj4gYXJjaC9taXBzL2xvb25nc29uNjQvY29tbW9u
+L2V4dGNjLmPCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDU0ICsrKysrKysrKysrKysrKysrKysgCj4g
+YXJjaC9taXBzL2xvb25nc29uNjQvY29tbW9uL3RpbWUuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+fMKgIDcgKysrIAo+IGFyY2gvbWlwcy92ZHNvL2dldHRpbWVvZmRheS5jwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgfMKgIDggKysrIAo+IDcgZmlsZXMgY2hhbmdlZCwgMTE0IGluc2Vy
+dGlvbnMoKykgCj4gY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9tYWNo
+LWxvb25nc29uNjQvZXh0Y2MuaCAKPiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9taXBzL2xvb25n
+c29uNjQvY29tbW9uL2V4dGNjLmMgCj4KPiAtLSAKPiAyLjIwLjEgCj4K
 

@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93721C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 21:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 146FDC43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 21:55:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 609F520449
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 21:53:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D70DC2083D
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 21:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551131633;
-	bh=s74Qn4pTwS2mbvHBtEq8DwCDORBSeXHKeAULa1m/UPA=;
+	s=default; t=1551131720;
+	bh=ogWa4ls5frD8lRwgvqYbv45f6x0YkogDiLVLJvkIvPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=TdalUneOVh4b6AWgwMGCpTS9jOq+3CU17YJrI/3VpfrsEIPRiZ2xf1GtCz6Vgo51+
-	 a1+POegTknxCcvXPrRGEjI14Vug3/DD3ct2cy+HYUZU+OoXzh8wrD41sw4CUOOIneA
-	 D/sMLFlVhCA8ke3i0mweK7q5FFKoY9L9n/+Hn5cg=
+	b=oFSTCWAKOIkuFlo6h2c4Ce29teaUy7of+ZggoVjPKyzaB/fQId0XmbrEhTnJ43fWH
+	 E0iXrIwFmsJh6BltyM72SeJYK6Us3sZcUfX6GRbpBYj0YKOCo9YHz+KKiBskuZE2TT
+	 1yooqfTLZYEFyz3La/hrhVw/aNUnibqXDZOPx+uE=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730578AbfBYVxr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Feb 2019 16:53:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56464 "EHLO mail.kernel.org"
+        id S1727662AbfBYVzU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Feb 2019 16:55:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730845AbfBYVWV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Feb 2019 16:22:21 -0500
+        id S1730698AbfBYVVw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Feb 2019 16:21:52 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C62EE21871;
-        Mon, 25 Feb 2019 21:22:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 30C5F2186A;
+        Mon, 25 Feb 2019 21:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551129740;
-        bh=s74Qn4pTwS2mbvHBtEq8DwCDORBSeXHKeAULa1m/UPA=;
+        s=default; t=1551129711;
+        bh=ogWa4ls5frD8lRwgvqYbv45f6x0YkogDiLVLJvkIvPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RbMkUeVaXw2n0v3aR7rDEXiJEJnHxssrkqfe2Byzojbpnus1XND9R18opMcj82q/X
-         g4KP+dihebELzDo6xjbxOG54snUBG6kGqmzzRG6rLC4yd8DFpXREb3wFwiY7pEg7UN
-         TJtSvhhqf71mjk/+n3Rl0ijomm0LKdd13FzEDgN8=
+        b=WixSHPe+WhWnY8CuGc1ABD2QkLvHkDSjCBiza7tb68ZkUewenhfnFiPUM60lzG7Kp
+         VP5U5i9fwOAgri9iWnwCyt14QqKpsZQhAE+SjdeWP+qVabijQMloudYkCSa5fMgW1Q
+         a5sWT0Gu4mC3D7MtKIi7rOFU9gDg+5tROaNjlRVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Paul Burton <paul.burton@mips.com>,
+        stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 051/152] MIPS: jazz: fix 64bit build
-Date:   Mon, 25 Feb 2019 22:10:43 +0100
-Message-Id: <20190225195047.145915689@linuxfoundation.org>
+Subject: [PATCH 4.19 043/152] MIPS: ath79: Enable OF serial ports in the default config
+Date:   Mon, 25 Feb 2019 22:10:35 +0100
+Message-Id: <20190225195046.753706097@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190225195043.645958524@linuxfoundation.org>
 References: <20190225195043.645958524@linuxfoundation.org>
@@ -68,73 +67,35 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-[ Upstream commit 41af167fbc0032f9d7562854f58114eaa9270336 ]
+[ Upstream commit 565dc8a4f55e491935bfb04866068d21784ea9a4 ]
 
-64bit JAZZ builds failed with
+CONFIG_SERIAL_OF_PLATFORM is needed to get a working console on the OF
+boards, enable it in the default config to get a working setup out of
+the box.
 
-  linux-next/arch/mips/jazz/jazzdma.c: In function `vdma_init`:
-  /linux-next/arch/mips/jazz/jazzdma.c:77:30: error: implicit declaration
-    of function `KSEG1ADDR`; did you mean `CKSEG1ADDR`?
-    [-Werror=implicit-function-declaration]
-    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
-                                ^~~~~~~~~
-                                CKSEG1ADDR
-  /linux-next/arch/mips/jazz/jazzdma.c:77:10: error: cast to pointer from
-    integer of different size [-Werror=int-to-pointer-cast]
-    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
-            ^
-  In file included from /linux-next/arch/mips/include/asm/barrier.h:11:0,
-                   from /linux-next/include/linux/compiler.h:248,
-                   from /linux-next/include/linux/kernel.h:10,
-                   from /linux-next/arch/mips/jazz/jazzdma.c:11:
-  /linux-next/arch/mips/include/asm/addrspace.h:41:29: error: cast from
-    pointer to integer of different size [-Werror=pointer-to-int-cast]
-   #define _ACAST32_  (_ATYPE_)(_ATYPE32_) /* widen if necessary */
-                               ^
-  /linux-next/arch/mips/include/asm/addrspace.h:53:25: note: in
-    expansion of macro `_ACAST32_`
-   #define CPHYSADDR(a)  ((_ACAST32_(a)) & 0x1fffffff)
-                           ^~~~~~~~~
-  /linux-next/arch/mips/jazz/jazzdma.c:84:44: note: in expansion of
-    macro `CPHYSADDR`
-    r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
-
-Using correct casts and CKSEG1ADDR when dealing with the pgtbl setup
-fixes this.
-
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Signed-off-by: Alban Bedel <albeu@free.fr>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/jazz/jazzdma.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/configs/ath79_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
-index d31bc2f012088..fb2b6d0b77c36 100644
---- a/arch/mips/jazz/jazzdma.c
-+++ b/arch/mips/jazz/jazzdma.c
-@@ -74,14 +74,15 @@ static int __init vdma_init(void)
- 						    get_order(VDMA_PGTBL_SIZE));
- 	BUG_ON(!pgtbl);
- 	dma_cache_wback_inv((unsigned long)pgtbl, VDMA_PGTBL_SIZE);
--	pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
-+	pgtbl = (VDMA_PGTBL_ENTRY *)CKSEG1ADDR((unsigned long)pgtbl);
- 
- 	/*
- 	 * Clear the R4030 translation table
- 	 */
- 	vdma_pgtbl_init();
- 
--	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
-+	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE,
-+			  CPHYSADDR((unsigned long)pgtbl));
- 	r4030_write_reg32(JAZZ_R4030_TRSTBL_LIM, VDMA_PGTBL_SIZE);
- 	r4030_write_reg32(JAZZ_R4030_TRSTBL_INV, 0);
- 
+diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
+index 951c4231bdb85..4c47b3fd958b6 100644
+--- a/arch/mips/configs/ath79_defconfig
++++ b/arch/mips/configs/ath79_defconfig
+@@ -71,6 +71,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
+ # CONFIG_SERIAL_8250_PCI is not set
+ CONFIG_SERIAL_8250_NR_UARTS=1
+ CONFIG_SERIAL_8250_RUNTIME_UARTS=1
++CONFIG_SERIAL_OF_PLATFORM=y
+ CONFIG_SERIAL_AR933X=y
+ CONFIG_SERIAL_AR933X_CONSOLE=y
+ # CONFIG_HW_RANDOM is not set
 -- 
 2.19.1
 

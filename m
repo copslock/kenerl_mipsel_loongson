@@ -7,48 +7,49 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC3AFC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 22:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F6C4C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 22:04:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 88C5B2146F
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 22:02:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3DB022146F
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Feb 2019 22:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551132179;
-	bh=l3aZeZ61FdSiJITpVo9cMfxPWF0gRgGQa0o6hCpg4uk=;
+	s=default; t=1551132284;
+	bh=pJBYSf667u0XuPDc3/J/3d68SPA/+i7nur5Q0q6TeeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Ly8dpEcpCZp7AGxok/qlIMtKYTVylhaU+D9YyDXM9MV1ZDV0PP0O16mbopxoWe8Jt
-	 YvvA3GH0oF4aBVLtc/jOO8HD/QU4STiDgzNMS722FPwa6sYsMuhnMA3Q3w/y9zgtib
-	 qCs2Q7gh63DGmU+o0+PNP9oql/iMBR3Iwv4nClXg=
+	b=asXHVw4eibkS0WnV3I2fE4YNwp4DYxBxjyyfD9TeSxaG/6UH+tGusZuXblfuK01aB
+	 wE9E/tK9lCzbpVQIdigoYVOSMUFreu7ECrw3BAZYTI5Rgo0a8YA7qs8K7iPW4v8SR2
+	 rCbb2cfngMvgXq5aOZ2dGhTA7JTaFd7hJUvNkRUU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728758AbfBYWCx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Feb 2019 17:02:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46374 "EHLO mail.kernel.org"
+        id S1727007AbfBYWEi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Feb 2019 17:04:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43924 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729400AbfBYVPP (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Feb 2019 16:15:15 -0500
+        id S1728692AbfBYVNX (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Feb 2019 16:13:23 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B25D721734;
-        Mon, 25 Feb 2019 21:15:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D5DD920C01;
+        Mon, 25 Feb 2019 21:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551129315;
-        bh=l3aZeZ61FdSiJITpVo9cMfxPWF0gRgGQa0o6hCpg4uk=;
+        s=default; t=1551129202;
+        bh=pJBYSf667u0XuPDc3/J/3d68SPA/+i7nur5Q0q6TeeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sYRdqeemXmfp45em9XK7QqiuefPB2cFIjMvoSimSVyGvViEv3pM5xygiW+5ORDN4X
-         NgfECHtvjGl3GnYsDwVQiKxcoD3BnZ0gOfZFyRSaC5BLt/mbTpolvMBPoq1yHAXREE
-         moDY2pRimB2hbVlCjbvW2KXm/k6lOG+Y8D9KDhyQ=
+        b=MEx7142P1hHWesdJ6zc897Y+hRGsXh4cm9sH6nYe7vj8cJdp50Yyr16FLaTFHJQFw
+         JYcQ79etEXi9dz2+C0/s3Gkwb4XXy4WhF0Bo+EOhtdPuFOGumAkJeino1rRCbAneWh
+         fThLHT9dQcobK7wya/Abh9uNlBoizLISeD5QQOx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        stable@vger.kernel.org,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.9 17/63] MIPS: ath79: Enable OF serial ports in the default config
-Date:   Mon, 25 Feb 2019 22:11:17 +0100
-Message-Id: <20190225195037.018152507@linuxfoundation.org>
+Subject: [PATCH 4.9 20/63] MIPS: jazz: fix 64bit build
+Date:   Mon, 25 Feb 2019 22:11:20 +0100
+Message-Id: <20190225195037.262030530@linuxfoundation.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190225195035.713274200@linuxfoundation.org>
 References: <20190225195035.713274200@linuxfoundation.org>
@@ -67,35 +68,73 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-[ Upstream commit 565dc8a4f55e491935bfb04866068d21784ea9a4 ]
+[ Upstream commit 41af167fbc0032f9d7562854f58114eaa9270336 ]
 
-CONFIG_SERIAL_OF_PLATFORM is needed to get a working console on the OF
-boards, enable it in the default config to get a working setup out of
-the box.
+64bit JAZZ builds failed with
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
+  linux-next/arch/mips/jazz/jazzdma.c: In function `vdma_init`:
+  /linux-next/arch/mips/jazz/jazzdma.c:77:30: error: implicit declaration
+    of function `KSEG1ADDR`; did you mean `CKSEG1ADDR`?
+    [-Werror=implicit-function-declaration]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+                                ^~~~~~~~~
+                                CKSEG1ADDR
+  /linux-next/arch/mips/jazz/jazzdma.c:77:10: error: cast to pointer from
+    integer of different size [-Werror=int-to-pointer-cast]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+            ^
+  In file included from /linux-next/arch/mips/include/asm/barrier.h:11:0,
+                   from /linux-next/include/linux/compiler.h:248,
+                   from /linux-next/include/linux/kernel.h:10,
+                   from /linux-next/arch/mips/jazz/jazzdma.c:11:
+  /linux-next/arch/mips/include/asm/addrspace.h:41:29: error: cast from
+    pointer to integer of different size [-Werror=pointer-to-int-cast]
+   #define _ACAST32_  (_ATYPE_)(_ATYPE32_) /* widen if necessary */
+                               ^
+  /linux-next/arch/mips/include/asm/addrspace.h:53:25: note: in
+    expansion of macro `_ACAST32_`
+   #define CPHYSADDR(a)  ((_ACAST32_(a)) & 0x1fffffff)
+                           ^~~~~~~~~
+  /linux-next/arch/mips/jazz/jazzdma.c:84:44: note: in expansion of
+    macro `CPHYSADDR`
+    r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
+
+Using correct casts and CKSEG1ADDR when dealing with the pgtbl setup
+fixes this.
+
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/configs/ath79_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/jazz/jazzdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
-index 134879c1310a0..4ed369c0ec6a1 100644
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -74,6 +74,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_SERIAL_8250_PCI is not set
- CONFIG_SERIAL_8250_NR_UARTS=1
- CONFIG_SERIAL_8250_RUNTIME_UARTS=1
-+CONFIG_SERIAL_OF_PLATFORM=y
- CONFIG_SERIAL_AR933X=y
- CONFIG_SERIAL_AR933X_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
+diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
+index db6f5afff4ff1..ea897912bc712 100644
+--- a/arch/mips/jazz/jazzdma.c
++++ b/arch/mips/jazz/jazzdma.c
+@@ -71,14 +71,15 @@ static int __init vdma_init(void)
+ 						    get_order(VDMA_PGTBL_SIZE));
+ 	BUG_ON(!pgtbl);
+ 	dma_cache_wback_inv((unsigned long)pgtbl, VDMA_PGTBL_SIZE);
+-	pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
++	pgtbl = (VDMA_PGTBL_ENTRY *)CKSEG1ADDR((unsigned long)pgtbl);
+ 
+ 	/*
+ 	 * Clear the R4030 translation table
+ 	 */
+ 	vdma_pgtbl_init();
+ 
+-	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
++	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE,
++			  CPHYSADDR((unsigned long)pgtbl));
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_LIM, VDMA_PGTBL_SIZE);
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_INV, 0);
+ 
 -- 
 2.19.1
 

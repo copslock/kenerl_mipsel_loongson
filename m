@@ -2,66 +2,60 @@ Return-Path: <SRS0=aQ+2=RC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7682C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 09:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C3AAC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 09:43:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AF9CF2133D
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 09:43:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 27F7C205F4
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 09:43:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729482AbfB0JnL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Feb 2019 04:43:11 -0500
-Received: from mx2.suse.de ([195.135.220.15]:33122 "EHLO mx1.suse.de"
+        id S1729115AbfB0Jnv convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Feb 2019 04:43:51 -0500
+Received: from mx2.suse.de ([195.135.220.15]:33348 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725881AbfB0JnL (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 27 Feb 2019 04:43:11 -0500
+        id S1726356AbfB0Jnv (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 27 Feb 2019 04:43:51 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id D4D9FADFB;
-        Wed, 27 Feb 2019 09:43:09 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id DBFAEADFB;
+        Wed, 27 Feb 2019 09:43:49 +0000 (UTC)
+Date:   Wed, 27 Feb 2019 10:43:49 +0100
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Mike Rapoport <rppt@linux.vnet.ibm.com>
-Subject: [PATCH v2] MIPS: fix memory setup for platforms with PHYS_OFFSET != 0
-Date:   Wed, 27 Feb 2019 10:42:56 +0100
-Message-Id: <20190227094256.7658-1-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.13.7
+        linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Subject: Re: [PATCH] MIPS: fix memory setup for platforms with PHY_OFFSET !=
+ 0
+Message-Id: <20190227104349.7a3134a44b21c6bc60decff3@suse.de>
+In-Reply-To: <20190227063242.GA16901@rapoport-lnx>
+References: <20190226140632.13343-1-tbogendoerfer@suse.de>
+        <20190227063242.GA16901@rapoport-lnx>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-For platforms, which use a PHYS_OFFSET != 0, symbol _end also
-contains that offset. So when calling memblock_reserve() for
-reserving kernel the size argument needs to be adjusted.
+On Wed, 27 Feb 2019 08:32:43 +0200
+Mike Rapoport <rppt@linux.ibm.com> wrote:
 
-Fixes: bcec54bf3118 ("mips: switch to NO_BOOTMEM")
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
----
- arch/mips/kernel/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> The changelog mentions initrd, but the patch changes only the kernel
+> reservation. Can you please update the changelog to match the code?
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 8c6c48ed786a..d2e5a5ad0e6f 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -384,7 +384,8 @@ static void __init bootmem_init(void)
- 	init_initrd();
- 	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
- 
--	memblock_reserve(PHYS_OFFSET, reserved_end << PAGE_SHIFT);
-+	memblock_reserve(PHYS_OFFSET,
-+			 (reserved_end << PAGE_SHIFT) - PHYS_OFFSET);
- 
- 	/*
- 	 * max_low_pfn is not a number of pages. The number of pages
+sure, changed and sent.
+
+Thomas.
+
 -- 
-2.13.7
-
+SUSE Linux GmbH
+GF: Felix Imendörffer, Jane Smithard, Graham Norton
+HRB 21284 (AG Nürnberg)

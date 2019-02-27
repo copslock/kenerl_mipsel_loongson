@@ -2,164 +2,114 @@ Return-Path: <SRS0=aQ+2=RC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 585E9C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 19:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D36FC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 23:55:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2740D2133D
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 19:14:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6423E214D8
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Feb 2019 23:55:07 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="vz6Gts0A"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730098AbfB0TOe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Feb 2019 14:14:34 -0500
-Received: from mga06.intel.com ([134.134.136.31]:40149 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbfB0TOe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 27 Feb 2019 14:14:34 -0500
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Feb 2019 11:14:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.58,420,1544515200"; 
-   d="scan'208";a="150535022"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2019 11:14:31 -0800
-Date:   Wed, 27 Feb 2019 11:14:42 -0800
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     John Hubbard <jhubbard@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        id S1730323AbfB0Xy5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Feb 2019 18:54:57 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:60472 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728397AbfB0Xy4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Feb 2019 18:54:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1551311691; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cJ6fULrEGLrLtO/O+I4SpN9dM7a0vaIBbaxUxFE0zew=;
+        b=vz6Gts0AlF1ZMxzNvwztMEwxrlMYtUm8vCZGrHH2K38uvYsNaQEwsGoASa1KbumPTB+Z6A
+        88PY/c9CQ9QkAnmFVsij8HjTByhDB1NR1aR4C+wZhWzvjIocvGJMOFJt+2Di8Cg69huwZl
+        zA1bw5utq6/tPI8K1f1TGueCFOzSWK4=
+Date:   Wed, 27 Feb 2019 20:54:28 -0300
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v8 05/26] clocksource: Add driver for the Ingenic JZ47xx
+ OST
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        kvm@vger.kernel.org, linux-fpga@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devel@driverdev.osuosl.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
-        devel@lists.orangefs.org, ceph-devel@vger.kernel.org,
-        rds-devel@oss.oracle.com
-Subject: Re: [RESEND PATCH 0/7] Add FOLL_LONGTERM to GUP fast and use it
-Message-ID: <20190227191442.GB31669@iweiny-DESK2.sc.intel.com>
-References: <20190220053040.10831-1-ira.weiny@intel.com>
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ezequiel Garcia <ezequiel@collabora.co.uk>,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+        linux-pwm@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me,
+        Maarten ter Huurne <maarten@treewalker.org>
+Message-Id: <1551311669.21164.1@crapouillou.net>
+In-Reply-To: <155111793658.191923.2540746255375959460@swboyd.mtv.corp.google.com>
+References: <20181212220922.18759-1-paul@crapouillou.net>
+        <CA+7wUsxNN2SL9_7tDh0DiBAgdUwxd_osgmi=09HP7110Tm0DYQ@mail.gmail.com>
+        <128675a5-7ede-4114-a649-89a536346dc8@roeck-us.net>
+        <1548264353.3173.1@crapouillou.net> <20190123180155.GB9781@roeck-us.net>
+        <154835808767.136743.14531363127962557756@swboyd.mtv.corp.google.com>
+        <1548362788.3881.0@crapouillou.net>
+        <154836998080.136743.17683029101430122926@swboyd.mtv.corp.google.com>
+        <1548370388.3881.2@crapouillou.net> <1550891845.20534.1@crapouillou.net>
+        <155111793658.191923.2540746255375959460@swboyd.mtv.corp.google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190220053040.10831-1-ira.weiny@intel.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Feb 19, 2019 at 09:30:33PM -0800, 'Ira Weiny' wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> Resending these as I had only 1 minor comment which I believe we have covered
-> in this series.  I was anticipating these going through the mm tree as they
-> depend on a cleanup patch there and the IB changes are very minor.  But they
-> could just as well go through the IB tree.
-> 
-> NOTE: This series depends on my clean up patch to remove the write parameter
-> from gup_fast_permitted()[1]
-> 
-> HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
-> advantages.  These pages can be held for a significant time.  But
-> get_user_pages_fast() does not protect against mapping of FS DAX pages.
-> 
-> Introduce FOLL_LONGTERM and use this flag in get_user_pages_fast() which
-> retains the performance while also adding the FS DAX checks.  XDP has also
-> shown interest in using this functionality.[2]
-> 
-> In addition we change get_user_pages() to use the new FOLL_LONGTERM flag and
-> remove the specialized get_user_pages_longterm call.
-> 
-> [1] https://lkml.org/lkml/2019/2/11/237
-> [2] https://lkml.org/lkml/2019/2/11/1789
+Hi,
 
-Is there anything I need to do on this series or does anyone have any
-objections to it going into 5.1?  And if so who's tree is it going to go
-through?
+Le lun. 25 f=E9vr. 2019 =E0 15:05, Stephen Boyd <sboyd@kernel.org> a=20
+=E9crit :
+> Quoting Paul Cercueil (2019-02-22 19:17:25)
+>>  Hi,
+>>=20
+>>  Anything new on this? It still happens on 5.0-rc7.
+>>  It probes with late_initcall, and not with device_initcall.
+>>  I have no clue what's going on.
+>>=20
+>=20
+> I'm not sure what's going on either. You'll probably have to debug=20
+> when
+> the device is created and when it is probed by enabling the debug
+> printing in the driver core or by adding in extra debug prints to=20
+> narrow
+> down the problem. For example, add a '#define DEBUG 1' at the top of
+> drivers/base/dd.c and see if that helps give some info on what's going
+> on with the drivers and devices.
 
-Thanks,
-Ira
+The doc of __platform_driver_probe says:
+"Use this instead of platform_driver_register() when you know the device
+is not hotpluggable and has already been registered".
 
-> 
-> Ira Weiny (7):
->   mm/gup: Replace get_user_pages_longterm() with FOLL_LONGTERM
->   mm/gup: Change write parameter to flags in fast walk
->   mm/gup: Change GUP fast to use flags rather than a write 'bool'
->   mm/gup: Add FOLL_LONGTERM capability to GUP fast
->   IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
->   IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
->   IB/mthca: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
-> 
->  arch/mips/mm/gup.c                          |  11 +-
->  arch/powerpc/kvm/book3s_64_mmu_hv.c         |   4 +-
->  arch/powerpc/kvm/e500_mmu.c                 |   2 +-
->  arch/powerpc/mm/mmu_context_iommu.c         |   4 +-
->  arch/s390/kvm/interrupt.c                   |   2 +-
->  arch/s390/mm/gup.c                          |  12 +-
->  arch/sh/mm/gup.c                            |  11 +-
->  arch/sparc/mm/gup.c                         |   9 +-
->  arch/x86/kvm/paging_tmpl.h                  |   2 +-
->  arch/x86/kvm/svm.c                          |   2 +-
->  drivers/fpga/dfl-afu-dma-region.c           |   2 +-
->  drivers/gpu/drm/via/via_dmablit.c           |   3 +-
->  drivers/infiniband/core/umem.c              |   5 +-
->  drivers/infiniband/hw/hfi1/user_pages.c     |   5 +-
->  drivers/infiniband/hw/mthca/mthca_memfree.c |   3 +-
->  drivers/infiniband/hw/qib/qib_user_pages.c  |   8 +-
->  drivers/infiniband/hw/qib/qib_user_sdma.c   |   2 +-
->  drivers/infiniband/hw/usnic/usnic_uiom.c    |   9 +-
->  drivers/media/v4l2-core/videobuf-dma-sg.c   |   6 +-
->  drivers/misc/genwqe/card_utils.c            |   2 +-
->  drivers/misc/vmw_vmci/vmci_host.c           |   2 +-
->  drivers/misc/vmw_vmci/vmci_queue_pair.c     |   6 +-
->  drivers/platform/goldfish/goldfish_pipe.c   |   3 +-
->  drivers/rapidio/devices/rio_mport_cdev.c    |   4 +-
->  drivers/sbus/char/oradax.c                  |   2 +-
->  drivers/scsi/st.c                           |   3 +-
->  drivers/staging/gasket/gasket_page_table.c  |   4 +-
->  drivers/tee/tee_shm.c                       |   2 +-
->  drivers/vfio/vfio_iommu_spapr_tce.c         |   3 +-
->  drivers/vfio/vfio_iommu_type1.c             |   3 +-
->  drivers/vhost/vhost.c                       |   2 +-
->  drivers/video/fbdev/pvr2fb.c                |   2 +-
->  drivers/virt/fsl_hypervisor.c               |   2 +-
->  drivers/xen/gntdev.c                        |   2 +-
->  fs/orangefs/orangefs-bufmap.c               |   2 +-
->  include/linux/mm.h                          |  17 +-
->  kernel/futex.c                              |   2 +-
->  lib/iov_iter.c                              |   7 +-
->  mm/gup.c                                    | 220 ++++++++++++--------
->  mm/gup_benchmark.c                          |   5 +-
->  mm/util.c                                   |   8 +-
->  net/ceph/pagevec.c                          |   2 +-
->  net/rds/info.c                              |   2 +-
->  net/rds/rdma.c                              |   3 +-
->  44 files changed, 232 insertions(+), 180 deletions(-)
-> 
-> -- 
-> 2.20.1
-> 
+When the parent device and child device are both probed with
+builtin_platform_driver_probe(), and the parent calls
+devm_of_platform_populate(), it is not certain that the parent's
+probe will happen before the child's, and if it does not, the child
+device has not been registered and its probe is not allowed to defer.
+So it turned out not to be a core bug, rather a misuse of the API.
+
+So I will keep the builtin_platform_driver_probe() in the child, and=20
+use a
+subsys_initcall() in the parent. That works fine.
+
+Regards,
+-Paul
+=
+

@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F85CC10F00
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:16:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1063CC4360F
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:17:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F3F40218D9
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:16:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D536F20C01
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551366973;
-	bh=/SpI5RBeGdHbvSzpJPXzQaijuqIeg5FZ7KY0I2EcmpY=;
+	s=default; t=1551367026;
+	bh=8zhW52B+DJe3HBprdZDJn1wJiof8ZBnnHU4bCIx5Bpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=B4Vuywx1N1nHcS7BguXn3m5a/g9w4zQlXtC550xc/rExjf9IPHUbDr2u+zU/U5LdF
-	 b5xsj/a6wM9ublYgZeo+foCbCjgR/U5U2JEH9L7A1HZlWGeE0+E+4P3PJ6gzShDkuo
-	 eVJVAa0gP5UGiOWSsmQVaODp98CZIGu4jzFebExw=
+	b=XUsn0XQNx43uJQ1VEI55gVw+Fx/Fi2J5Ccdx+jctDseg89biNFl5S7FYA+MSFHwBn
+	 5F1PGrmt8JW05Q9HbSIjBbDTQpyUUGQyPzwHW4BrWok5aqPo1DwZzU65nuPy1CcBKA
+	 zZwFvf0kziRSGJY+PnQYyOsTPGbOC3sPl2el/518=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388980AbfB1PQL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Feb 2019 10:16:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52330 "EHLO mail.kernel.org"
+        id S2389038AbfB1PQ2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Feb 2019 10:16:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388974AbfB1PQL (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 28 Feb 2019 10:16:11 -0500
+        id S2388361AbfB1PQ1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 28 Feb 2019 10:16:27 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0999A218EA;
-        Thu, 28 Feb 2019 15:16:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5FC8520C01;
+        Thu, 28 Feb 2019 15:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551366970;
-        bh=/SpI5RBeGdHbvSzpJPXzQaijuqIeg5FZ7KY0I2EcmpY=;
+        s=default; t=1551366986;
+        bh=8zhW52B+DJe3HBprdZDJn1wJiof8ZBnnHU4bCIx5Bpg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CWYCzSps0zpqTpnR/4M8AIeFXZc4JQ/DvdsPMv1KNK6LkPxUEYU8LlOXSHyk/7flc
-         IoAxkvuGkP9hCI4pfX27skVOGEOVNZqBn02cawoq3wS0Yvj0+Z2S/jcistUq7s5A0V
-         6MGWCJPpbE1khllr0Ak1lCg0GMMO6+07MdgMwaJ8=
+        b=kLnSSdm+jRgEfcRxm6qRxtJjBua3VW383ARDT3JdajYmxCbvsmYYcqTlBO3hqZdqP
+         kBhqBgKaeWbq7IGpzfrv3IdUU6B4aC069J2StTg/p56bMW7qUyM43/10RjQIoQoWXQ
+         Q4hlyArzEAeWysWnnjRXi33/5sFQ3yCrzcV+gohg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jun-Ru Chang <jrjang@realtek.com>, Tony Wu <tonywu@realtek.com>,
@@ -45,12 +45,12 @@ Cc:     Jun-Ru Chang <jrjang@realtek.com>, Tony Wu <tonywu@realtek.com>,
         jhogan@kernel.org, macro@mips.com, yamada.masahiro@socionext.com,
         peterz@infradead.org, mingo@kernel.org, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 18/19] MIPS: Remove function size check in get_frame_info()
-Date:   Thu, 28 Feb 2019 10:15:14 -0500
-Message-Id: <20190228151517.12705-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 8/8] MIPS: Remove function size check in get_frame_info()
+Date:   Thu, 28 Feb 2019 10:16:12 -0500
+Message-Id: <20190228151614.13022-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190228151517.12705-1-sashal@kernel.org>
-References: <20190228151517.12705-1-sashal@kernel.org>
+In-Reply-To: <20190228151614.13022-1-sashal@kernel.org>
+References: <20190228151614.13022-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 1cc133e7026fd..fffd031dc6b61 100644
+index ebd8a715fe380..e6102775892d1 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -344,7 +344,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
+@@ -339,7 +339,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
  static int get_frame_info(struct mips_frame_info *info)
  {
  	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
@@ -104,7 +104,7 @@ index 1cc133e7026fd..fffd031dc6b61 100644
  	const unsigned int max_insns = 128;
  	unsigned int last_insn_size = 0;
  	unsigned int i;
-@@ -356,10 +356,9 @@ static int get_frame_info(struct mips_frame_info *info)
+@@ -351,10 +351,9 @@ static int get_frame_info(struct mips_frame_info *info)
  	if (!ip)
  		goto err;
  

@@ -6,28 +6,28 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCEE1C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 22:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6555AC4360F
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 22:08:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8906720663
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 22:08:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 26F042064A
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 22:08:25 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="TR7BP2mk"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="yKODuEdT"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733144AbfB1WIT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Feb 2019 17:08:19 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:57386 "EHLO
+        id S1733042AbfB1WIP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Feb 2019 17:08:15 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:57344 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725918AbfB1WIT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 28 Feb 2019 17:08:19 -0500
+        with ESMTP id S1725918AbfB1WIO (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 28 Feb 2019 17:08:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1551391697; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1551391692; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=9bmu3olBDU1SPJkeX/p/57byvzXNqGam6CRS32e7Sbs=;
-        b=TR7BP2mkiY4/MbSCokfAxFP4aHGRPszbnHfxUyxDg0ej+ehlSQ7/OgQWuatAy5ojyLbb8u
-        gqXu/NljGhpY7qFS29Wn0MIWX5Ar572fmv+yKKMSlkQyXdQ33/nCVnQioAgwiGHY7vV9A5
-        b+Da580JQL3zkv8QDgCjsg+JbIXRmNw=
+        bh=MERAlDaoxRzi8J93ZF0xQJnhwHgSyiyL+LWS5VC0wEI=;
+        b=yKODuEdTtTB6S3CYyEYlrxDBINQ5jbxdQ9hwxr5WOfv0Ms1gcpFm/ScLeN7Lkx52JaKCTM
+        yaH7mirOJV8xKyhm+I2hwzQ5BJ+mUEhVYk0C0AD/MG3+CeA5i3Rdaqt0WxC1hBqKaAN8bd
+        EAcZaULTKnnuG/WSNuMAdG+XIjJcruI=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -38,9 +38,9 @@ To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
 Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 2/3] dt-bindings: Add header for the ingenic-drm driver bindings
-Date:   Thu, 28 Feb 2019 19:07:55 -0300
-Message-Id: <20190228220756.20262-3-paul@crapouillou.net>
+Subject: [PATCH 1/3] dt-bindings: Add doc for the ingenic-drm driver
+Date:   Thu, 28 Feb 2019 19:07:54 -0300
+Message-Id: <20190228220756.20262-2-paul@crapouillou.net>
 In-Reply-To: <20190228220756.20262-1-paul@crapouillou.net>
 References: <20190228220756.20262-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -48,50 +48,52 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Add macros that can be used with the ingenic,lcd-mode property in the
-devicetree node that corresponds to the ingenic-drm driver.
+Add documentation for the devicetree bindings of the DRM driver for the
+JZ47xx family of SoCs from Ingenic.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
- include/dt-bindings/display/ingenic,drm.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
- create mode 100644 include/dt-bindings/display/ingenic,drm.h
+ .../devicetree/bindings/display/ingenic,drm.txt    | 30 ++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/ingenic,drm.txt
 
-diff --git a/include/dt-bindings/display/ingenic,drm.h b/include/dt-bindings/display/ingenic,drm.h
+diff --git a/Documentation/devicetree/bindings/display/ingenic,drm.txt b/Documentation/devicetree/bindings/display/ingenic,drm.txt
 new file mode 100644
-index 000000000000..20c5399366c1
+index 000000000000..52a368ec35cd
 --- /dev/null
-+++ b/include/dt-bindings/display/ingenic,drm.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ *  Ingenic JZ47xx KMS driver
-+ *
-+ *  Copyright (C) 2019, Paul Cercueil <paul@crapouillou.net>
-+ */
-+#ifndef __INCLUDE_DT_BINDINGS_DISPLAY_INGENIC_DRM_H__
-+#define __INCLUDE_DT_BINDINGS_DISPLAY_INGENIC_DRM_H__
++++ b/Documentation/devicetree/bindings/display/ingenic,drm.txt
+@@ -0,0 +1,30 @@
++Ingenic JZ47xx DRM driver
 +
-+#define JZ_DRM_LCD_GENERIC_16BIT		0
-+#define JZ_DRM_LCD_GENERIC_18BIT		16
++Required properties:
++- compatible: one of:
++  * ingenic,jz4740-drm
++  * ingenic,jz4725b-drm
++- reg: LCD registers location and length
++- clocks: LCD pixclock and device clock specifiers.
++	   The device clock is only required on the JZ4740.
++- clock-names: "lcd_pclk" and "lcd"
++- interrupts: Specifies the interrupt line the LCD controller is connected to.
 +
-+#define JZ_DRM_LCD_SPECIAL_TFT_1		1
-+#define JZ_DRM_LCD_SPECIAL_TFT_2		2
-+#define JZ_DRM_LCD_SPECIAL_TFT_3		3
++Optional properties:
++- ingenic,panel: phandle to a display panel, if one is present
++- ingenic,lcd-mode: LCD mode to use with the display panel.
++		    See <dt-bindings/display/ingenic,drm.h> for all the
++		    possible values.
 +
-+#define JZ_DRM_LCD_NON_INTERLACED_TV_OUT	4
-+#define JZ_DRM_LCD_INTERLACED_TV_OUT		6
++Example:
 +
-+#define JZ_DRM_LCD_SINGLE_COLOR_STN		8
-+#define JZ_DRM_LCD_SINGLE_MONOCHROME_STN	9
-+#define JZ_DRM_LCD_DUAL_COLOR_STN		10
-+#define JZ_DRM_LCD_DUAL_MONOCHROME_STN		11
++lcd: lcd-controller@13050000 {
++	compatible = "ingenic,jz4725b-drm";
++	reg = <0x13050000 0x1000>;
 +
-+#define JZ_LCD_TYPE_8BIT_SERIAL			12
-+#define JZ_LCD_TYPE_LCM				13
++	interrupt-parent = <&intc>;
++	interrupts = <31>;
 +
-+#endif /* __INCLUDE_DT_BINDINGS_DISPLAY_INGENIC_DRM_H__ */
++	clocks = <&cgu JZ4725B_CLK_LCD>;
++	clock-names = "lcd";
++};
 -- 
 2.11.0
 

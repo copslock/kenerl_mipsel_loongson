@@ -2,99 +2,88 @@ Return-Path: <SRS0=OKHG=RD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 280F9C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09963C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 18:42:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DEA2D20C01
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:32:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D4CEA218D0
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 18:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551367974;
-	bh=5pWmnEXUIZhcIa1/J7ri5v85TwVVoOiZnUAyJD2I0LE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=lfWydEJmX+IWSb/s/tRiqdU1zkhJiHNNZXZM+q9oHc9t9/PADvv4c+LzSJzqcVupT
-	 4WWmK+6vQE21Em7hLP9QGDJPCifYuwjnx3/mbkV0nm23xefTPJ+XMLL2zILsJU159l
-	 sOocNbCGYRoM8YHD2yfgy4eBi5/opULlvHt+n97E=
+	s=default; t=1551379359;
+	bh=oLvNdA/M/UKLXZYqQYq+ZFgHkuM+Rc/ZO2DPIBogeu8=;
+	h=In-Reply-To:To:Subject:References:From:Cc:Date:List-ID:From;
+	b=DykmqBrwOnBikMLcw+2wE3jx082nceTEtLt6ABrWOJaNq9QE/z1Occ/HF65MWZ0Q2
+	 uQz+5WIZ/Fid8FlCijzqYX++JAulflRokBKQhtWZpLtnlu+r23pogGxd4w6zmbfJli
+	 HneeLnUI7f2ywnyx/siN6I2ku0VSkrx5WHZG/tJM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733256AbfB1PIy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Feb 2019 10:08:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41264 "EHLO mail.kernel.org"
+        id S2388156AbfB1Sme (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Feb 2019 13:42:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42584 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733099AbfB1PIx (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 28 Feb 2019 10:08:53 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726232AbfB1Sme (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 28 Feb 2019 13:42:34 -0500
+Received: from localhost (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 54A63218B0;
-        Thu, 28 Feb 2019 15:08:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 15E4D20863;
+        Thu, 28 Feb 2019 18:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551366532;
-        bh=5pWmnEXUIZhcIa1/J7ri5v85TwVVoOiZnUAyJD2I0LE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z/exKk5yCTd7B63+z7B2Azu0hDQLVx7NFCJAvpUHeJ8CedEDv3Y7kc+FOjf7QgREN
-         wxVdl7AmDDrUI9QobsNd9GaBNnJUOkg0b5VebvYrtbaPLJs/vucbFoKKzCSE//gtvb
-         1bA9Ejv1/2sdPNDHnT+Ed/drR72PIINAm7CDfYhg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Paul Burton <paul.burton@mips.com>,
+        s=default; t=1551379353;
+        bh=oLvNdA/M/UKLXZYqQYq+ZFgHkuM+Rc/ZO2DPIBogeu8=;
+        h=In-Reply-To:To:Subject:References:From:Cc:Date:From;
+        b=NHhvjKfZ0S2SmY3fzFrEisgq9iBjLgtBixr81bonO7/cd74Bl0bXj7JRTKH0BPZOB
+         gpvHNZiaGqy+E/OauSBFdEhVavO5AMwE8Z+JSeLwNjjzEbIn90ZvlqHJZpUw0SxYnw
+         rCLAgD6VYA+TfR4L6Np3MB8QERrXRxY6H8PVtZtg=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1550884678.20534.0@crapouillou.net>
+To:     Paul Cercueil <paul@crapouillou.net>,
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v9 14/27] pwm: jz4740: Improve algorithm of clock calculation
+Message-ID: <155137935225.16805.10412318501940648799@swboyd.mtv.corp.google.com>
+References: <20181227181319.31095-1-paul@crapouillou.net> <20181227181319.31095-15-paul@crapouillou.net> <20190105195725.cuxfge6zkpbt3cyk@pengutronix.de> <1546722339.30174.0@crapouillou.net> <20190105212711.s765knwwerceytvk@pengutronix.de> <1547129096.16183.0@crapouillou.net> <1550884678.20534.0@crapouillou.net>
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.20 24/81] MIPS: DTS: jz4740: Correct interrupt number of DMA core
-Date:   Thu, 28 Feb 2019 10:07:16 -0500
-Message-Id: <20190228150813.10256-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190228150813.10256-1-sashal@kernel.org>
-References: <20190228150813.10256-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>
+User-Agent: alot/0.8
+Date:   Thu, 28 Feb 2019 10:42:32 -0800
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Cercueil <paul@crapouillou.net>
+Quoting Paul Cercueil (2019-02-22 17:17:58)
+> Bump.
+>=20
+> What should I do here?
+>=20
 
-[ Upstream commit 70999ec1c9d3f783a7232973cfc26971e5732758 ]
+I thought I replied to the list but maybe it got rejected because my MUA
+is currently failing hard at sending 8-bit mails without
+using quoted printable. Let me remove all non-ascii characters from this
+mail!
 
-The interrupt number set in the devicetree node of the DMA driver was
-wrong.
-
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 6fb16fd240353..2beb78a62b7dc 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -161,7 +161,7 @@
- 		#dma-cells = <2>;
- 
- 		interrupt-parent = <&intc>;
--		interrupts = <29>;
-+		interrupts = <20>;
- 
- 		clocks = <&cgu JZ4740_CLK_DMA>;
- 
--- 
-2.19.1
+If someone has the mail please rebounce it to the list. Otherwise, I
+think I basically said this is OK because clk_round_rate() semantics are
+specifically vague here to allow the implementation to decide how rates
+are rounded (up, down, closest, etc). As long as the whole rate space is
+searched with a +1 or a -1 style of search it should be work. We're not
+going to add round_up() or round_down() APIs as far as I'm concerned,
+and you can look on the list to see previous proposals on that topic to
+get some background on why they aren't liked.
 

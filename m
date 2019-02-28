@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1154C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:08:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F85CC10F00
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:16:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B355C218D9
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:08:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F3F40218D9
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Feb 2019 15:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551366536;
-	bh=OSmQ5vhrznVfvKMW0+PN1HUC0o9AgphD2pFkCMhXTMc=;
+	s=default; t=1551366973;
+	bh=/SpI5RBeGdHbvSzpJPXzQaijuqIeg5FZ7KY0I2EcmpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=RDsfkD90AzxlfIDIk4da5/THE7LNyXJr0EBOnkLRUM8HNhyemaw6ggFj6vvIGWo72
-	 l5aTpPDzA11MpIzrP2C8tNaM/nM2/Leg7w90QYW0g508BRu4VQdTBxAjzqN7T336+I
-	 XGbLVLpw4FzQy/amoMmDdDD4hmKoytzoK+lxG+LQ=
+	b=B4Vuywx1N1nHcS7BguXn3m5a/g9w4zQlXtC550xc/rExjf9IPHUbDr2u+zU/U5LdF
+	 b5xsj/a6wM9ublYgZeo+foCbCjgR/U5U2JEH9L7A1HZlWGeE0+E+4P3PJ6gzShDkuo
+	 eVJVAa0gP5UGiOWSsmQVaODp98CZIGu4jzFebExw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733112AbfB1PI4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Feb 2019 10:08:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41326 "EHLO mail.kernel.org"
+        id S2388980AbfB1PQL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Feb 2019 10:16:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52330 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733264AbfB1PI4 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 28 Feb 2019 10:08:56 -0500
+        id S2388974AbfB1PQL (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 28 Feb 2019 10:16:11 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D0A7B206B8;
-        Thu, 28 Feb 2019 15:08:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0999A218EA;
+        Thu, 28 Feb 2019 15:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551366535;
-        bh=OSmQ5vhrznVfvKMW0+PN1HUC0o9AgphD2pFkCMhXTMc=;
+        s=default; t=1551366970;
+        bh=/SpI5RBeGdHbvSzpJPXzQaijuqIeg5FZ7KY0I2EcmpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tn9SCuCfl9WWwX+ZaOtH9wnDSPtCd0NF2/wE5QwuJpCJm/4D9+Lb1vqPCAxgzWaEE
-         9CMqx7c9SZsmkrfxe2taE3XQLQJwOn1e+Vx0i2d7bQQsOiS44N5KzrvE547dascS9v
-         9cDkBQs5fPoWRHillAKq8oLmgjfZbpOHFDG2WI+8=
+        b=CWYCzSps0zpqTpnR/4M8AIeFXZc4JQ/DvdsPMv1KNK6LkPxUEYU8LlOXSHyk/7flc
+         IoAxkvuGkP9hCI4pfX27skVOGEOVNZqBn02cawoq3wS0Yvj0+Z2S/jcistUq7s5A0V
+         6MGWCJPpbE1khllr0Ak1lCg0GMMO6+07MdgMwaJ8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhou Yanjie <zhouyanjie@cduestc.edu.cn>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-mips <linux-mips@vger.kernel.org>,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        ralf@linux-mips.org, jhogan@kernel.org, mark.rutland@arm.com,
-        malat@debian.org, ezequiel@collabora.co.uk, ulf.hansson@linaro.org,
-        syq <syq@debian.org>, "jiaxun . yang" <jiaxun.yang@flygoat.com>,
+Cc:     Jun-Ru Chang <jrjang@realtek.com>, Tony Wu <tonywu@realtek.com>,
+        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
+        jhogan@kernel.org, macro@mips.com, yamada.masahiro@socionext.com,
+        peterz@infradead.org, mingo@kernel.org, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.20 25/81] DTS: CI20: Fix bugs in ci20's device tree.
-Date:   Thu, 28 Feb 2019 10:07:17 -0500
-Message-Id: <20190228150813.10256-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 18/19] MIPS: Remove function size check in get_frame_info()
+Date:   Thu, 28 Feb 2019 10:15:14 -0500
+Message-Id: <20190228151517.12705-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190228150813.10256-1-sashal@kernel.org>
-References: <20190228150813.10256-1-sashal@kernel.org>
+In-Reply-To: <20190228151517.12705-1-sashal@kernel.org>
+References: <20190228151517.12705-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -61,58 +59,64 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
+From: Jun-Ru Chang <jrjang@realtek.com>
 
-[ Upstream commit 1ca1c87f91d9dc50d6a38e2177b2032996e7901c ]
+[ Upstream commit 2b424cfc69728224fcb5fad138ea7260728e0901 ]
 
-According to the Schematic, the hardware of ci20 leads to uart3,
-but not to uart2. Uart2 is miswritten in the original code.
+Patch (b6c7a324df37b "MIPS: Fix get_frame_info() handling of
+microMIPS function size.") introduces additional function size
+check for microMIPS by only checking insn between ip and ip + func_size.
+However, func_size in get_frame_info() is always 0 if KALLSYMS is not
+enabled. This causes get_frame_info() to return immediately without
+calculating correct frame_size, which in turn causes "Can't analyze
+schedule() prologue" warning messages at boot time.
 
-Signed-off-by: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
+This patch removes func_size check, and let the frame_size check run
+up to 128 insns for both MIPS and microMIPS.
+
+Signed-off-by: Jun-Ru Chang <jrjang@realtek.com>
+Signed-off-by: Tony Wu <tonywu@realtek.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips <linux-mips@vger.kernel.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: robh+dt@kernel.org
-Cc: ralf@linux-mips.org
-Cc: jhogan@kernel.org
-Cc: mark.rutland@arm.com
-Cc: malat@debian.org
-Cc: ezequiel@collabora.co.uk
-Cc: ulf.hansson@linaro.org
-Cc: syq <syq@debian.org>
-Cc: jiaxun.yang <jiaxun.yang@flygoat.com>
+Fixes: b6c7a324df37b ("MIPS: Fix get_frame_info() handling of microMIPS function size.")
+Cc: <ralf@linux-mips.org>
+Cc: <jhogan@kernel.org>
+Cc: <macro@mips.com>
+Cc: <yamada.masahiro@socionext.com>
+Cc: <peterz@infradead.org>
+Cc: <mingo@kernel.org>
+Cc: <linux-mips@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/process.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 50cff3cbcc6de..4f7b1fa31cf53 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -76,7 +76,7 @@
- 	status = "okay";
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 1cc133e7026fd..fffd031dc6b61 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -344,7 +344,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+-	union mips_instruction insn, *ip, *ip_end;
++	union mips_instruction insn, *ip;
+ 	const unsigned int max_insns = 128;
+ 	unsigned int last_insn_size = 0;
+ 	unsigned int i;
+@@ -356,10 +356,9 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	if (!ip)
+ 		goto err;
  
- 	pinctrl-names = "default";
--	pinctrl-0 = <&pins_uart2>;
-+	pinctrl-0 = <&pins_uart3>;
- };
- 
- &uart4 {
-@@ -196,9 +196,9 @@
- 		bias-disable;
- 	};
- 
--	pins_uart2: uart2 {
--		function = "uart2";
--		groups = "uart2-data", "uart2-hwflow";
-+	pins_uart3: uart3 {
-+		function = "uart3";
-+		groups = "uart3-data", "uart3-hwflow";
- 		bias-disable;
- 	};
- 
+-	ip_end = (void *)ip + info->func_size;
+-
+-	for (i = 0; i < max_insns && ip < ip_end; i++) {
++	for (i = 0; i < max_insns; i++) {
+ 		ip = (void *)ip + last_insn_size;
++
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
 -- 
 2.19.1
 

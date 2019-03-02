@@ -2,108 +2,81 @@ Return-Path: <SRS0=FRkd=RF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECE4BC4360F
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 17:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A9A5C10F06
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:34:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C1C2820836
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 17:54:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1A01520838
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:34:36 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="rbwmQQ7T"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="DRS+s+mM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726295AbfCBRyK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 2 Mar 2019 12:54:10 -0500
-Received: from tomli.me ([153.92.126.73]:41934 "EHLO tomli.me"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726787AbfCBRyJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 2 Mar 2019 12:54:09 -0500
-Received: from tomli.me (localhost [127.0.0.1])
-        by tomli.me (OpenSMTPD) with ESMTP id a1b095aa;
-        Sat, 2 Mar 2019 17:54:06 +0000 (UTC)
-X-HELO: localhost.lan
-Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
-Received: from Unknown (HELO localhost.lan) (2402:f000:1:1501:200:5efe:3d30:3659)
- by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Sat, 02 Mar 2019 17:54:05 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=vD8wIHxTaA+QFi1c9PDntjTUfB+mxBi+vzJRThgV/9Y=; b=rbwmQQ7TIVKg5CkoAZ2tiCPZ/LpfuAwIt2TQpeam6a4oohfJUqVmAMMqixF3PlgWw6T0ZJqoTChF0yJ2QQUsVuINJtvXxRcwg6xJ2bTlMhJItMWnIEWninrn2qZdg3eYJdTRzWy31pc55GDj0qRUsol7xORUJ1wu96eFzAdNZ2vdGNpW3yS2+gafYRMQgk0lcFuZ7KbwwIw/kQoUE5f+RcS3VTnkOVw5Wxi+eMmtMR6z7w+PS4GENs1K7qXZwGudNY/o4i3KWidxumwLg/bMeU3fEXSTx+4feY/LJj4L73IA2nfPj9QCOTVqqC1xdEkYpJTWL3JPXDf2XUCMU4v1mA==
-From:   Yifeng Li <tomli@tomli.me>
-To:     Lee Jones <lee.jones@linaro.org>, linux-mips@vger.kernel.org
-Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
+        id S1726959AbfCBXeb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 2 Mar 2019 18:34:31 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:60526 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726592AbfCBXea (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 2 Mar 2019 18:34:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1551569666; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:content-type:
+         content-transfer-encoding:in-reply-to:references;
+        bh=QVQst8EK/PLgJUiLMusS3TTp/grRh57aTCc3Y4+nxow=;
+        b=DRS+s+mMTaz+z61e1VoVE0VgrH+2cUs3Tt1IbgUOxZ2j71NZIVrdEAn58BJXoHD+ggB3Sb
+        Fj0OKsUt8IkUUzW7sqr3Z94k+3TnE29zb2xAzYOnSdgJNGMn+Rist+x9mpkqfxgnn77Yoy
+        RDrh+dF/2Lqf6wbv/BVUYWnU8pEvNqw=
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/7] mips: loongson64: remove yeeloong_report_lid_status from pm.c
-Date:   Sun,  3 Mar 2019 01:53:31 +0800
-Message-Id: <20190302175334.5103-5-tomli@tomli.me>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190302175334.5103-1-tomli@tomli.me>
-References: <20190302175334.5103-1-tomli@tomli.me>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
+        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [5.2][PATCH v10 00/27] Ingenic TCU patchset
+Date:   Sat,  2 Mar 2019 20:33:46 -0300
+Message-Id: <20190302233413.14813-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There is some complicated logic in lemote-2f/pm.c. During wakeup, it
-creates a delayed_work to execute a callback to the function
-yeeloong_report_lid_status(). It's only purpose is to report the current
-status of the laptop lid switch, and this callback function wan not
-implemented in the mainline kernel.
+Hi,
 
-This level of overenginnering hardly makes sense. All we need is to report
-the laptop lid switch unconditionally upon wakeup in the future PM code,
-which is being worked on.
+This is the Ingenic JZ47xx TCU patchset version 10.
 
-Signed-off-by: Yifeng Li <tomli@tomli.me>
----
- arch/mips/loongson64/lemote-2f/pm.c | 22 ----------------------
- 1 file changed, 22 deletions(-)
+Changes from v9:
+- [04/27]: - The clocksource is now created unconditionally, even if the
+             SoC has the better OS Timer. This gives the choice back to
+	     the user.
+	   - Simplify the set_rate/set_parent callbacks for the clocks
+	   - Probe platform driver at subsys_initcall() instead of
+	     using builtin_platform_driver_probe(), to ensure that the
+	     devices are populated before the children drivers (e.g. OS
+	     Timer driver) are probed.
+- [05/27]: Fix incorrect mask used with regmap_update_bits, which caused
+           the clocksource to be unstable on JZ4770 and JZ4780.
+- [13/27]: Update commit message to reflect why "select REGMAP" was
+           removed.
+- [14/27]: Use a new algorithm that does not use clk_round_rate().
+- [23/27] and [25/27]: Revert behaviour to what was in V8.
 
-diff --git a/arch/mips/loongson64/lemote-2f/pm.c b/arch/mips/loongson64/lemote-2f/pm.c
-index 4ee7e9864700..ebe4b57535f0 100644
---- a/arch/mips/loongson64/lemote-2f/pm.c
-+++ b/arch/mips/loongson64/lemote-2f/pm.c
-@@ -80,17 +80,6 @@ void setup_wakeup_events(void)
- 	}
- }
- 
--static struct delayed_work lid_task;
--static int initialized;
--/* yeeloong_report_lid_status will be implemented in yeeloong_laptop.c */
--sci_handler yeeloong_report_lid_status;
--EXPORT_SYMBOL(yeeloong_report_lid_status);
--static void yeeloong_lid_update_task(struct work_struct *work)
--{
--	if (yeeloong_report_lid_status)
--		yeeloong_report_lid_status(KB3310B_BIT_LID_DETECT_ON);
--}
--
- int wakeup_loongson(void)
- {
- 	int irq;
-@@ -119,17 +108,6 @@ int wakeup_loongson(void)
- 			lid_status = kb3310b_read(KB3310B_REG_LID_DETECT);
- 			/* wakeup cpu when people open the LID */
- 			if (lid_status == KB3310B_BIT_LID_DETECT_ON) {
--				/* If we call it directly here, the WARNING
--				 * will be sent out by getnstimeofday
--				 * via "WARN_ON(timekeeping_suspended);"
--				 * because we can not schedule in suspend mode.
--				 */
--				if (initialized == 0) {
--					INIT_DELAYED_WORK(&lid_task,
--						yeeloong_lid_update_task);
--					initialized = 1;
--				}
--				schedule_delayed_work(&lid_task, 1);
- 				return 1;
- 			}
- 		}
--- 
-2.20.1
+It has been tested and reported to be working, on the JZ4725B by me,
+on the JZ4740 by Artur Rojek, and on the JZ4780 by Mathieu Malaterre.
+
+I'd like this patchset to go through the MIPS tree, that will allow other
+unrelated cleanups to follow.
+
+Thanks,
+- Paul
 

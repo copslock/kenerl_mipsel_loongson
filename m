@@ -6,28 +6,28 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADC21C00319
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59C81C43381
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7301B20838
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2763A20838
+	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="QmNhLhdi"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="dOqEFBKb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728054AbfCBXgv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 2 Mar 2019 18:36:51 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:35746 "EHLO
+        id S1727791AbfCBXgH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 2 Mar 2019 18:36:07 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:34612 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727250AbfCBXgv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 2 Mar 2019 18:36:51 -0500
+        with ESMTP id S1726958AbfCBXgG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 2 Mar 2019 18:36:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1551569808; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1551569763; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=hWVRVJ1JCLE41hirGJHq+OUF6CZM2gytoMVCFHHj/o8=;
-        b=QmNhLhdimqrVm+9q1aE7N/57pwGC7vV3O7pFYnlxwkOtdCXJy9ata1TVMaA3MpkjXxZvRf
-        mwnTQI7thKVkDAiScQKf7XfJK45m2cvht+jG1LmhDVHfPwVQF0aLhKqidGYHevuUBhcfLv
-        T9aWgEPrJDajbH0GFp6nstM2PvpnphA=
+        bh=5u9wJOcsmHwHyJffBgLzKv9/tQWZhgJvE36/wVYRcIE=;
+        b=dOqEFBKbX47G2Kp1yl5zIYoRv/AeRxdVeE7ZsZuVGvBlG0AbJtLGM6bloaVYjsimKxBjjq
+        rOzEX/r1d2kZIC4DpFH4kqvZn9g6dNxGaBp2Q25k+J1gy2osCMi3c+bx8Lcdow74J0kKA6
+        H+u6GUQe+p63a+hwYztwWnOanF8/2fo=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -43,9 +43,9 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v10 22/27] MIPS: qi_lb60: Reduce system timer and clocksource to 750 kHz
-Date:   Sat,  2 Mar 2019 20:34:08 -0300
-Message-Id: <20190302233413.14813-23-paul@crapouillou.net>
+Subject: [PATCH v10 15/27] pwm: jz4740: Allow selection of PWM channels 0 and 1
+Date:   Sat,  2 Mar 2019 20:34:01 -0300
+Message-Id: <20190302233413.14813-16-paul@crapouillou.net>
 In-Reply-To: <20190302233413.14813-1-paul@crapouillou.net>
 References: <20190302233413.14813-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -53,8 +53,8 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The default clock (12 MHz) is too fast for the system timer, which fails
-to report time accurately.
+The TCU channels 0 and 1 were previously reserved for system tasks, and
+thus unavailable for PWM.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
@@ -62,35 +62,39 @@ Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
 
 Notes:
-         v5: New patch
-    
-         v6: Remove ingenic,clocksource-channel property
+         v6: New patch
     
          v7: No change
     
-         v8: No change
+         v8: ingenic_tcu_[request,release]_channel are dropped. We now use
+             the memory resources provided to the driver to detect whether
+    	 or not we are allowed to use the TCU channel.
     
-         v9: No change
+         v9: Drop previous system. Call a API function provided by the
+             clocksource driver to know if we can use the channel as PWM.
     
          v10: No change
 
- arch/mips/boot/dts/ingenic/qi_lb60.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pwm/pwm-jz4740.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-index 85529a142409..de9d45e2c24a 100644
---- a/arch/mips/boot/dts/ingenic/qi_lb60.dts
-+++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-@@ -45,3 +45,9 @@
- 		bias-disable;
- 	};
- };
-+
-+&tcu {
-+	/* 750 kHz for the system timer and clocksource */
-+	assigned-clocks = <&tcu TCU_CLK_TIMER0>, <&tcu TCU_CLK_TIMER1>;
-+	assigned-clock-rates = <750000>, <750000>;
-+};
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index f497388fc818..c914589d547b 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -44,11 +44,7 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	char clk_name[16];
+ 	int ret;
+ 
+-	/*
+-	 * Timers 0 and 1 are used for system tasks, so they are unavailable
+-	 * for use as PWMs.
+-	 */
+-	if (pwm->hwpwm < 2)
++	if (!ingenic_tcu_pwm_can_use_chn(pwm->hwpwm))
+ 		return -EBUSY;
+ 
+ 	snprintf(clk_name, sizeof(clk_name), "timer%u", pwm->hwpwm);
 -- 
 2.11.0
 

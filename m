@@ -1,100 +1,68 @@
-Return-Path: <SRS0=FRkd=RF=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=KGvN=RH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59C81C43381
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0B90C43381
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 00:24:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2763A20838
-	for <linux-mips@archiver.kernel.org>; Sat,  2 Mar 2019 23:37:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A087720835
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 00:24:42 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="dOqEFBKb"
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="2k1OgDds"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbfCBXgH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 2 Mar 2019 18:36:07 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:34612 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726958AbfCBXgG (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 2 Mar 2019 18:36:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1551569763; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=5u9wJOcsmHwHyJffBgLzKv9/tQWZhgJvE36/wVYRcIE=;
-        b=dOqEFBKbX47G2Kp1yl5zIYoRv/AeRxdVeE7ZsZuVGvBlG0AbJtLGM6bloaVYjsimKxBjjq
-        rOzEX/r1d2kZIC4DpFH4kqvZn9g6dNxGaBp2Q25k+J1gy2osCMi3c+bx8Lcdow74J0kKA6
-        H+u6GUQe+p63a+hwYztwWnOanF8/2fo=
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S1726034AbfCDAYm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 3 Mar 2019 19:24:42 -0500
+Received: from tomli.me ([153.92.126.73]:42926 "EHLO tomli.me"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726032AbfCDAYm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 3 Mar 2019 19:24:42 -0500
+Received: from tomli.me (localhost [127.0.0.1])
+        by tomli.me (OpenSMTPD) with ESMTP id af83b442;
+        Mon, 4 Mar 2019 00:24:39 +0000 (UTC)
+X-HELO: localhost.localdomain
+Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
+Received: from Unknown (HELO localhost.localdomain) (2402:f000:1:1501:200:5efe:3d30:3659)
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 00:24:38 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=date:from:to:cc:subject:message-id:references:mime-version:content-type:in-reply-to; s=1490979754; bh=DTZBnQX/0sVb4WUV/kiNo5pPv8ABNI+ejo/DyALhMrU=; b=2k1OgDdsCJDITcOV+nxJNDAJ/d6+6Ghm5k86Dw1nGq8cYfU/BWkosXXHwAF2GIUCJniGvV6br9Q7tiNUecOvfE7pO4bGcGsfOkUnjnyHy9qPmVtTbEpLlELjVDGTC4uOygLL04mA24WB1Y6veuXAhM2+gscJhqKYCbI/IiAEo5xpUMHyzJm4p/EfHAsyDIlHzFsS1RPOoK7mjUn68T/iR/QOhNTaoI/0gvbaXTbwlgBeBCNPwnkkFTrrZGLsyLYMA8jUUVN4ViPb/0SOeiO2PE704QBD163ZPeLU4x3+0AxAB0bAVz5bGSEs+Mbl6vqJxdX9K0/jraOpJ+DgFnNAqA==
+Date:   Mon, 4 Mar 2019 08:24:29 +0800
+From:   Tom Li <tomli@tomli.me>
+To:     Lee Jones <lee.jones@linaro.org>, linux-mips@vger.kernel.org
+Cc:     kbuild-all@01.org, Yifeng Li <tomli@tomli.me>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v10 15/27] pwm: jz4740: Allow selection of PWM channels 0 and 1
-Date:   Sat,  2 Mar 2019 20:34:01 -0300
-Message-Id: <20190302233413.14813-16-paul@crapouillou.net>
-In-Reply-To: <20190302233413.14813-1-paul@crapouillou.net>
-References: <20190302233413.14813-1-paul@crapouillou.net>
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] mfd: yeeloong_kb3310b: support KB3310B EC for Lemote
+ Yeeloong laptops.
+Message-ID: <20190304002428.GA1043@localhost.localdomain>
+References: <20190302175334.5103-2-tomli@tomli.me>
+ <201903040432.qyPxOrOQ%fengguang.wu@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201903040432.qyPxOrOQ%fengguang.wu@intel.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The TCU channels 0 and 1 were previously reserved for system tasks, and
-thus unavailable for PWM.
+>    drivers/mfd/yeeloong_kb3310b.c: In function 'kb3310b_read':
+> >> drivers/mfd/yeeloong_kb3310b.c:70:2: error: implicit declaration of function 'outb' [-Werror=implicit-function-declaration]
+>      outb((reg & 0xff00) >> 8, KB3310B_IO_PORT_HIGH);
+>      ^~~~
+> >> drivers/mfd/yeeloong_kb3310b.c:72:8: error: implicit declaration of function 'inb' [-Werror=implicit-function-declaration]
+>      val = inb(KB3310B_IO_PORT_DATA);
+>            ^~~
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Mathieu Malaterre <malat@debian.org>
-Tested-by: Artur Rojek <contact@artur-rojek.eu>
----
+Nice bot.
 
-Notes:
-         v6: New patch
-    
-         v7: No change
-    
-         v8: ingenic_tcu_[request,release]_channel are dropped. We now use
-             the memory resources provided to the driver to detect whether
-    	 or not we are allowed to use the TCU channel.
-    
-         v9: Drop previous system. Call a API function provided by the
-             clocksource driver to know if we can use the channel as PWM.
-    
-         v10: No change
+I'll send out PATCH v2 soon with this fixed.
 
- drivers/pwm/pwm-jz4740.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
-index f497388fc818..c914589d547b 100644
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -44,11 +44,7 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- 	char clk_name[16];
- 	int ret;
- 
--	/*
--	 * Timers 0 and 1 are used for system tasks, so they are unavailable
--	 * for use as PWMs.
--	 */
--	if (pwm->hwpwm < 2)
-+	if (!ingenic_tcu_pwm_can_use_chn(pwm->hwpwm))
- 		return -EBUSY;
- 
- 	snprintf(clk_name, sizeof(clk_name), "timer%u", pwm->hwpwm);
--- 
-2.11.0
-
+Cheers,
+Tom Li

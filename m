@@ -2,121 +2,113 @@ Return-Path: <SRS0=KGvN=RH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CD9C43381
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AB98C43381
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 10:14:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0364C20823
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551689125;
-	bh=E4z72FJAjyBItHQpbqElvBL3DjaeWsJGE/FNur1u29k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=B+lk/bPVvR+X7L8mIYriDNYFz/63uXIjDowIczHLfUk6yPouiO++Ljup3mtTLpPdu
-	 ZeleeA/q+27rsqOu4o4GF54Ofv5Eho0OYP+vW5s7D9YsF/KdyAV79DVi+Fl9xnLPm0
-	 bmq458COyD0WyGv+d4JXErn4Dxjg96A4QuRS1kAY=
+	by mail.kernel.org (Postfix) with ESMTP id 3B4A920823
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 10:14:42 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V9DXlobo"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727285AbfCDI1p (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Mar 2019 03:27:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51932 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726137AbfCDI1o (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Mar 2019 03:27:44 -0500
-Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F2216208E4;
-        Mon,  4 Mar 2019 08:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551688063;
-        bh=E4z72FJAjyBItHQpbqElvBL3DjaeWsJGE/FNur1u29k=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fs5qlpln74qywRTs1LHzrS/N+s2tiKgIzgs1UELKkIqnuy5Yy2H3SRG155d63Leu4
-         i+LVVkI6z+v5gY/45zR0HCip64zB9UQhOe8DaoCz8+LdTgRKXWsd3ybaVDTD5rf22D
-         GeMWVCRsGIynHAZRY3Z1cFAFqOH4WCxMW2qqCvt8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: [PATCH 4.14 51/52] MIPS: eBPF: Fix icache flush end address
-Date:   Mon,  4 Mar 2019 09:22:49 +0100
-Message-Id: <20190304081620.015835385@linuxfoundation.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190304081617.159014799@linuxfoundation.org>
-References: <20190304081617.159014799@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
-X-Patchwork-Hint: ignore
+        id S1726066AbfCDKOl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Mar 2019 05:14:41 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40662 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfCDKOl (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 4 Mar 2019 05:14:41 -0500
+Received: by mail-wr1-f68.google.com with SMTP id q1so4862163wrp.7
+        for <linux-mips@vger.kernel.org>; Mon, 04 Mar 2019 02:14:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=lCz/26aFF6OO+kiRt5HTIO2SCb5YEAIxSc38A0iW2J0=;
+        b=V9DXloboo7T8EGkeYF9vhAWbY/WPWmJfgqpCpWgAjT03bXEFltuIIHZ2MKyi87G5Yx
+         EKLBgbNZb8E2NdCW7UG0+W+GuaM3ELaEPM6eg3SOxcgE0R6ar2EvnjOXdbD1kTBBnBmg
+         pgnziCDA6qOuO490UVI/LpDO6ywXoMO6azZ2j/pPy1yIFbkP4PQNqtpoNcoRfvBowqwg
+         4ZXrx6Mig1yU+G6xdHzGaAjoqhvv5ITWQ2g+q1irvDCqO8DxOjOi0Evc+6hP7/83vMg2
+         qMR0lzgjiwwHLelpCX4XQLt0039xfe42BIWPr6vRkXnbi/MA7RSlv6+rpjOp71xjVSob
+         CPSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=lCz/26aFF6OO+kiRt5HTIO2SCb5YEAIxSc38A0iW2J0=;
+        b=p6cPNeZKQEyia0QxYlFcsd6MxEiBfe5VgxTBgT4H162gkYJlohLYfSAuC+i3ArYg7N
+         LLKJcccTZHmqVR1wyTsy9aXVg3D7fp7kKHSrD7mmrckf1JskSwY5ACG7jdPxen6IVnB4
+         rC+5X7cAN1w2YIB0rdqGNQCXM1F9wVmzdjoqkqgg+T1q2+8BWhMMUFkeVgdx6zRwrnhU
+         kjclN0tus9gf0VzllbGvWAsp/kh7O6jcNPApdV2xtAR+su2gDxPNl+nGqmM8F+8HtpJQ
+         OAEOOJlO83YJ9yEfaE7Fx78dCsV9CBK1TdI9+UIIV8BZDSEvFIWZr8HB5dp9WCtHvbQf
+         rMJA==
+X-Gm-Message-State: APjAAAXn2UKiZzH+jOGfL6Xh/VGkITBoK0cnIik/IEnSiOSf8+MfpPjY
+        Z16s0zGNAnHhd3Tq2MetDdTRfw==
+X-Google-Smtp-Source: APXvYqwAusav88CSspaLqJeLBhmrxfAmN0jn80zA1Ci4IpA4OG1yJm88oHciSP20ByV3ngFs4a83Og==
+X-Received: by 2002:adf:e98c:: with SMTP id h12mr12701245wrm.302.1551694479568;
+        Mon, 04 Mar 2019 02:14:39 -0800 (PST)
+Received: from dell ([2.27.35.194])
+        by smtp.gmail.com with ESMTPSA id 62sm5818472wra.46.2019.03.04.02.14.38
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 04 Mar 2019 02:14:38 -0800 (PST)
+Date:   Mon, 4 Mar 2019 10:14:37 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Yifeng Li <tomli@tomli.me>, kbuild-all@01.org,
+        linux-mips@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] mfd: yeeloong_kb3310b: support KB3310B EC for Lemote
+ Yeeloong laptops.
+Message-ID: <20190304101437.GN4118@dell>
+References: <20190302175334.5103-2-tomli@tomli.me>
+ <201903040851.4ZDLoz8h%fengguang.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <201903040851.4ZDLoz8h%fengguang.wu@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+On Mon, 04 Mar 2019, kbuild test robot wrote:
 
-------------------
+> Hi Yifeng,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on linus/master]
+> [also build test ERROR on v5.0-rc8]
+> [cannot apply to next-20190301]
+> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Yifeng-Li/Preliminary-Platform-Driver-Support-for-Lemote-Yeeloong-Laptops/20190304-005203
+> config: powerpc-allyesconfig (attached as .config)
+> compiler: powerpc64-linux-gnu-gcc (Debian 8.2.0-11) 8.2.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=8.2.0 make.cross ARCH=powerpc 
+> 
+> All errors (new ones prefixed by >>):
 
-From: Paul Burton <paul.burton@mips.com>
+This patch isn't in my Inbox.
 
-commit d1a2930d8a992fb6ac2529449f81a0056e1b98d1 upstream.
+Who was it sent to?
 
-The MIPS eBPF JIT calls flush_icache_range() in order to ensure the
-icache observes the code that we just wrote. Unfortunately it gets the
-end address calculation wrong due to some bad pointer arithmetic.
-
-The struct jit_ctx target field is of type pointer to u32, and as such
-adding one to it will increment the address being pointed to by 4 bytes.
-Therefore in order to find the address of the end of the code we simply
-need to add the number of 4 byte instructions emitted, but we mistakenly
-add the number of instructions multiplied by 4. This results in the call
-to flush_icache_range() operating on a memory region 4x larger than
-intended, which is always wasteful and can cause crashes if we overrun
-into an unmapped page.
-
-Fix this by correcting the pointer arithmetic to remove the bogus
-multiplication, and use braces to remove the need for a set of brackets
-whilst also making it obvious that the target field is a pointer.
-
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: b6bd53f9c4e8 ("MIPS: Add missing file for eBPF JIT.")
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.13+
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/net/ebpf_jit.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/mips/net/ebpf_jit.c
-+++ b/arch/mips/net/ebpf_jit.c
-@@ -1971,7 +1971,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 
- 	/* Update the icache */
- 	flush_icache_range((unsigned long)ctx.target,
--			   (unsigned long)(ctx.target + ctx.idx * sizeof(u32)));
-+			   (unsigned long)&ctx.target[ctx.idx]);
- 
- 	if (bpf_jit_enable > 1)
- 		/* Dump JIT code */
-
-
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

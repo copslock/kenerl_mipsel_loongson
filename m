@@ -2,178 +2,84 @@ Return-Path: <SRS0=KGvN=RH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D744EC43381
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 18:18:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B85C43381
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:00:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A81BA20675
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 18:18:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CDAE32070B
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:00:38 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="oNkqm2Rw"
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="2EkGocQz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfCDSSP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Mar 2019 13:18:15 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:37784 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726111AbfCDSSP (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 4 Mar 2019 13:18:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1551723491; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vcimyzTYq93+Ws1z9JT7iEZu19RErpFY3H0Q4NoTYU0=;
-        b=oNkqm2Rw2GhCIBirxZNnkm1HpGHP2fouvlDlDIW2LD2m9bbPUoSR6yznIJ4KPoboDO7GA9
-        0h+SXFc6ElVj7uI53nMAyWDcnzq48pQz/45KimDlI6tk993EHkAlsX4DW7vX34X0bI3PVp
-        tk9s42mHMnKU8PDb8keZep1LVDn39iM=
-Date:   Mon, 04 Mar 2019 19:18:00 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v10 13/27] pwm: jz4740: Use clocks from TCU driver
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S1726080AbfCDWAi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Mar 2019 17:00:38 -0500
+Received: from tomli.me ([153.92.126.73]:44100 "EHLO tomli.me"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726038AbfCDWAi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Mar 2019 17:00:38 -0500
+Received: from tomli.me (localhost [127.0.0.1])
+        by tomli.me (OpenSMTPD) with ESMTP id 94d04484;
+        Mon, 4 Mar 2019 22:00:35 +0000 (UTC)
+X-HELO: localhost.lan
+Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
+Received: from Unknown (HELO localhost.lan) (2402:f000:1:1501:200:5efe:72f4:b31)
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 22:00:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:mime-version:content-transfer-encoding; s=1490979754; bh=uieIdADfuGnZgn/vvyEk/SEUq7QDCLA8JwWoh6XOsWk=; b=2EkGocQzGe0bGtC9WY5Z2e7uOGrZoC2Nc9i6mmD+UVEC/Ebe3Q+w1TqAk62ZHR100KQwGlNnWWuzU8y0AO0Odx6DfmYag2bO6RKwpttIRb2Kt4b9TuTJzk2/lSnu3aJ7Nv2VHYkc2EVUJ4In4Eh8kviemFy9BprUVDQXPTcTuFEby+yax0ClQRDlJbCHFGS7WRah2bsl7sJ9vjaiPZciTUmbIG2rVykOp0Dc9Ae8Q1vFc7i2esO9433HEg305SPNQdFDLMHuxIJfSkskvEy+WDixHI2iKVQoKw9t3qqKbVmRZwKX8gk4hvxXM6g4gswfxO+iNPElHehHu+eGL6FGHw==
+From:   Yifeng Li <tomli@tomli.me>
+To:     linux-mips@vger.kernel.org
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Uwe =?iso-8859-1?q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
-        linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Message-Id: <1551723480.4932.1@crapouillou.net>
-In-Reply-To: <20190304123003.GE9040@ulmo>
-References: <20190302233413.14813-1-paul@crapouillou.net>
-        <20190302233413.14813-14-paul@crapouillou.net> <20190304123003.GE9040@ulmo>
+        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org,
+        Yifeng Li <tomli@tomli.me>
+Subject: [PATCH] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to "cascade" irqaction.
+Date:   Tue,  5 Mar 2019 06:00:22 +0800
+Message-Id: <20190304220022.20682-1-tomli@tomli.me>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Timekeeping IRQs from CS5536 MFGPT are routed to i8259, which then
+triggers the "cascade" IRQ on MIPS CPU. Without IRQF_NO_SUSPEND in
+cascade_irqaction, MFGPT interrupts will be masked in suspend mode,
+and the machine would be unable to resume once suspended.
 
-On Mon, Mar 4, 2019 at 1:30 PM, Thierry Reding 
-<thierry.reding@gmail.com> wrote:
-> On Sat, Mar 02, 2019 at 08:33:59PM -0300, Paul Cercueil wrote:
->>  The ingenic-timer "TCU" driver provides us with clocks, that can be
->>  (un)gated, reparented or reclocked from devicetree, instead of 
->> having
->>  these settings hardcoded in this driver.
->> 
->>  While this driver is devicetree-compatible, it is never (as of now)
->>  probed from devicetree, so this change does not introduce a ABI 
->> problem
->>  with current devicetree files.
->> 
->>  Note that the "select REGMAP" has been dropped because it's
->>  already enabled by the "select INGENIC_TIMER".
->> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net 
->> <mailto:paul@crapouillou.net>>
->>  Tested-by: Mathieu Malaterre <malat@debian.org 
->> <mailto:malat@debian.org>>
->>  Tested-by: Artur Rojek <contact@artur-rojek.eu 
->> <mailto:contact@artur-rojek.eu>>
->>  ---
->> 
->>  Notes:
->>           v9: New patch
->> 
->>           v10: Explain in commit message why "select REGMAP" was 
->> dropped
->> 
->>   drivers/pwm/Kconfig      |  3 ++-
->>   drivers/pwm/pwm-jz4740.c | 39 
->> ++++++++++++++++++++++++++-------------
->>   2 files changed, 28 insertions(+), 14 deletions(-)
->> 
->>  diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
->>  index ace8ea4b6247..4e201e970509 100644
->>  --- a/drivers/pwm/Kconfig
->>  +++ b/drivers/pwm/Kconfig
->>  @@ -204,7 +204,8 @@ config PWM_IMX
->>   config PWM_JZ4740
->>   	tristate "Ingenic JZ47xx PWM support"
->>   	depends on MACH_INGENIC
->>  -	select REGMAP
->>  +	depends on COMMON_CLK
->>  +	select INGENIC_TIMER
-> 
-> Okay... sounds like this would be okay. I'm assuming you go through 
-> that
-> extra step of selecting REGMAP in the prior patch and dropping it here
-> again so that you keep the series bisectible?
+Previously, MIPS IRQs were not disabled properly, so the original
+code appeared to work. Commit a3e6c1eff5 (MIPS: IRQ: Fix disable_irq
+on CPU IRQs) uncovers the bug. To fix it, add IRQF_NO_SUSPEND to
+cascade_irqaction.
 
-Yes, exactly.
+This commit is functionally identical to 0add9c2f1cff ("MIPS:
+Loongson-3: Add IRQF_NO_SUSPEND to Cascade irqaction"), but it forgot
+to apply the same fix to Loongson2.
 
->>   	help
->>   	  Generic PWM framework driver for Ingenic JZ47xx based
->>   	  machines.
->>  diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
->>  index 8dfac5ffd71c..c6136bd4434b 100644
->>  --- a/drivers/pwm/pwm-jz4740.c
->>  +++ b/drivers/pwm/pwm-jz4740.c
->>  @@ -28,7 +28,7 @@
->> 
->>   struct jz4740_pwm_chip {
->>   	struct pwm_chip chip;
->>  -	struct clk *clk;
->>  +	struct clk *clks[NUM_PWM];
->>   	struct regmap *map;
->>   };
->> 
->>  @@ -40,6 +40,9 @@ static inline struct jz4740_pwm_chip 
->> *to_jz4740(struct pwm_chip *chip)
->>   static int jz4740_pwm_request(struct pwm_chip *chip, struct 
->> pwm_device *pwm)
->>   {
->>   	struct jz4740_pwm_chip *jz = to_jz4740(chip);
->>  +	struct clk *clk;
->>  +	char clk_name[16];
->>  +	int ret;
->> 
->>   	/*
->>   	 * Timers 0 and 1 are used for system tasks, so they are 
->> unavailable
->>  @@ -48,16 +51,29 @@ static int jz4740_pwm_request(struct pwm_chip 
->> *chip, struct pwm_device *pwm)
->>   	if (pwm->hwpwm < 2)
->>   		return -EBUSY;
->> 
->>  -	regmap_write(jz->map, TCU_REG_TSCR, BIT(pwm->hwpwm));
->>  +	snprintf(clk_name, sizeof(clk_name), "timer%u", pwm->hwpwm);
->> 
->>  +	clk = clk_get(chip->dev, clk_name);
->>  +	if (IS_ERR(clk))
->>  +		return PTR_ERR(clk);
->>  +
->>  +	ret = clk_prepare_enable(clk);
->>  +	if (ret) {
->>  +		clk_put(clk);
->>  +		return ret;
->>  +	}
->>  +
->>  +	jz->clks[pwm->hwpwm] = clk;
->>   	return 0;
->>   }
-> 
-> Since you're already using ->request(), why not add a per-PWM 
-> structure
-> that tracks the clock? There are a number of other PWMs that already 
-> do
-> something similar. You can use pwm_{set,get}_chip_data() to associate
-> chip-specific extra data with a PWM.
-> 
-> Thierry
+Signed-off-by: Yifeng Li <tomli@tomli.me>
+---
+ arch/mips/loongson64/lemote-2f/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Good idea.
-
--Paul
-
+diff --git a/arch/mips/loongson64/lemote-2f/irq.c b/arch/mips/loongson64/lemote-2f/irq.c
+index 9e33e45aa17c..b213cecb8e3a 100644
+--- a/arch/mips/loongson64/lemote-2f/irq.c
++++ b/arch/mips/loongson64/lemote-2f/irq.c
+@@ -103,7 +103,7 @@ static struct irqaction ip6_irqaction = {
+ static struct irqaction cascade_irqaction = {
+ 	.handler = no_action,
+ 	.name = "cascade",
+-	.flags = IRQF_NO_THREAD,
++	.flags = IRQF_NO_THREAD | IRQF_NO_SUSPEND,
+ };
+ 
+ void __init mach_init_irq(void)
+-- 
+2.20.1
 

@@ -4,31 +4,31 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9580DC4360F
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 175F6C10F0F
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 500FA20823
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CE89B20830
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="XByohEuw"
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="ddaiOm1I"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbfCDW3H (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Mar 2019 17:29:07 -0500
+        id S1726724AbfCDW3Z (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Mar 2019 17:29:25 -0500
 Received: from tomli.me ([153.92.126.73]:44168 "EHLO tomli.me"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726625AbfCDW3H (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Mar 2019 17:29:07 -0500
+        id S1726178AbfCDW3Z (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Mar 2019 17:29:25 -0500
 Received: from tomli.me (localhost [127.0.0.1])
-        by tomli.me (OpenSMTPD) with ESMTP id af01001b;
-        Mon, 4 Mar 2019 22:29:04 +0000 (UTC)
+        by tomli.me (OpenSMTPD) with ESMTP id 9abce6f4;
+        Mon, 4 Mar 2019 22:29:22 +0000 (UTC)
 X-HELO: localhost.lan
 Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
 Received: from Unknown (HELO localhost.lan) (2402:f000:1:1501:200:5efe:72f4:b31)
- by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 22:29:03 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=3tuOTDyW9AEjRkxr3sPCsjTrtC1EV1QGsbKvl37Sgxw=; b=XByohEuwPTY9LxjssgxYMFUu/MECXqpkBKZu/3a5s78swl833K4ArzvbtDnAXTfqxJl8xJ9CA8skRVwTyvsCjp9pBHRZexWTi0hZOGA3VGbQppLR7fF0vKwW5HyrTsRNiTxWpbbJCvU+eDEQez78IOssHVtRfr6mXK9Q9LHiZesQskAjN7N+UBCX0brPgny1yZBrCQNYMNqdppa7LlvZrLDgiC4xej6NkWfT7O6KSy2VX6CFKiazcpqM1+BFvawyzS9JJTiOW5Nuu4/ee2r+9nezGzwRjCVjr6CsMZI9UQdcmCZpzKeosHc6nQL3ILsD+Hwryp9oZbpWKsXDXRJgqg==
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 22:29:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=kieGshjoAXm2sPzM8x4a4gyWiyfT4mzaoi/5S4qitWg=; b=ddaiOm1IAI/ZpgQMqEvdX01fYo2V93deLEC5x18Ev7c6sKI5DdfnW/BBmrxMvFOfmsAWWpnYRlvDUsCICEknljgeeCL9M4ZqbPCRB0UV74YDGzd7TxOpsmukRQfKvmeTFnZR4MNGJcYWKKCfczDPM3P5MfrOskQmBdvkV1z46ePr35sIt97YMAdFmvSh+u9kjwfv3H4OYmcKAEa7cqwYsf6jozWXi8c19bVzo2pXUkcpe9H7YNmfMJeIOOhDNxt0HHfvqq9yQEQjIieCSPg0/vJfT6wS7HosBZwS1ciKdFbKOnuuca0IbmjOKirSdSL7esyy0cOMFUBkcueC014Xaw==
 From:   Yifeng Li <tomli@tomli.me>
 To:     Lee Jones <lee.jones@linaro.org>, linux-mips@vger.kernel.org
 Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
@@ -36,9 +36,9 @@ Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] mfd: yeeloong_kb3310b: support KB3310B EC for Lemote Yeeloong laptops.
-Date:   Tue,  5 Mar 2019 06:28:42 +0800
-Message-Id: <20190304222848.25037-2-tomli@tomli.me>
+Subject: [PATCH v2 5/7] mips: loongson64: register per-board platform drivers for lemote-2f
+Date:   Tue,  5 Mar 2019 06:28:46 +0800
+Message-Id: <20190304222848.25037-6-tomli@tomli.me>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190304222848.25037-1-tomli@tomli.me>
 References: <20190304222848.25037-1-tomli@tomli.me>
@@ -49,513 +49,140 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Lemote Yeeloong is a laptop powered by Loongson 2F MIPS processor,
-primarily a demo platform for hobbyists and developers. It uses an
-ENE KB3310B Embedded Controller with customized firmware to implement
-hardware and power management.
+Currently, common/platform.c registers the Loongson 2F cpufreq driver
+during boot time for all boards. To support platform drivers for Lemote
+Yeeloong laptops, we need to register more drivers.
 
-A monolithic platform driver code for those functionality has existed
-out-of-tree for many years. This commit creates a MFD driver for the EC
-chip on Yeeloong laptop to isolate EC-related code from core MIPS code,
-and serves as the foundation of various subdrivers.
+First, we add support for per-board platform drivers. Just like how IRQ,
+DMA, or reset logic is implemented for each board, we introduces a call
+of mach_platform_init() in common/platform.c, to allow each board to have
+its own platform.c to register platform drivers.
 
-My original attempt was to create a regmap for subdrivers to access the
-EC, unfortunately, the board files in Linux/MIPS still needs to access
-the EC directly for power management. Unless we find a better home for
-those code, we simply export the EC-related functions.
+Then, we implement lemote-2f/platform.c to register the MFD driver for
+Yeeloong laptops.
+
+So far, only one board, lemote-f2, is using this facility, so we hardcode
+the call of mach_platform_init() in common/platform.c as a ifdef for now.
 
 Signed-off-by: Yifeng Li <tomli@tomli.me>
 ---
- MAINTAINERS                          |   7 +
- drivers/mfd/Kconfig                  |  10 ++
- drivers/mfd/Makefile                 |   1 +
- drivers/mfd/yeeloong_kb3310b.c       | 207 ++++++++++++++++++++++++++
- include/linux/mfd/yeeloong_kb3310b.h | 211 +++++++++++++++++++++++++++
- 5 files changed, 436 insertions(+)
- create mode 100644 drivers/mfd/yeeloong_kb3310b.c
- create mode 100644 include/linux/mfd/yeeloong_kb3310b.h
+ .../include/asm/mach-loongson64/loongson.h    |  3 ++
+ arch/mips/loongson64/common/platform.c        | 15 ++++++
+ arch/mips/loongson64/lemote-2f/Makefile       |  2 +-
+ arch/mips/loongson64/lemote-2f/platform.c     | 47 +++++++++++++++++++
+ 4 files changed, 66 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/loongson64/lemote-2f/platform.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 51029a425dbe..208f19801a23 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16839,6 +16839,13 @@ S:	Maintained
- F:	Documentation/input/devices/yealink.rst
- F:	drivers/input/misc/yealink.*
+diff --git a/arch/mips/include/asm/mach-loongson64/loongson.h b/arch/mips/include/asm/mach-loongson64/loongson.h
+index b6870fec0f99..0ea43479d9f8 100644
+--- a/arch/mips/include/asm/mach-loongson64/loongson.h
++++ b/arch/mips/include/asm/mach-loongson64/loongson.h
+@@ -23,6 +23,9 @@ extern void bonito_irq_init(void);
+ extern void mach_prepare_reboot(void);
+ extern void mach_prepare_shutdown(void);
  
-+YEELOONG ENE KB3310B MFD DRIVER
-+M:	Tom Li <tomli@tomli.me>
-+L:	linux-mips@vger.kernel.org
-+S:	Maintained
-+F:	drivers/mfd/yeeloong_kb3310b.c
-+F:	include/linux/mfd/yeeloong_kb3310b.h
++/* machine-specific platform driver registration */
++extern int mach_platform_init(void) __init;
 +
- Z8530 DRIVER FOR AX.25
- M:	Joerg Reuter <jreuter@yaina.de>
- W:	http://yaina.de/jreuter/
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index f461460a2aeb..a6da8cce72fc 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1872,6 +1872,16 @@ config MFD_STM32_TIMERS
- 	  for PWM and IIO Timer. This driver allow to share the
- 	  registers between the others drivers.
+ /* environment arguments from bootloader */
+ extern u32 cpu_clock_freq;
+ extern u32 memsize, highmemsize;
+diff --git a/arch/mips/loongson64/common/platform.c b/arch/mips/loongson64/common/platform.c
+index 0ed38321a9a2..f8a205bae5da 100644
+--- a/arch/mips/loongson64/common/platform.c
++++ b/arch/mips/loongson64/common/platform.c
+@@ -11,6 +11,7 @@
+ #include <linux/err.h>
+ #include <linux/smp.h>
+ #include <linux/platform_device.h>
++#include <loongson.h>
  
-+config MFD_YEELOONG_KB3310B
-+	bool "ENE KB3310B Embedded Controller on Lemote Yeeloong laptops"
-+	depends on (MIPS && LEMOTE_MACH2F) || COMPILE_TEST
-+	select MFD_CORE
-+	help
-+          Select this option to enable ENE KB3310B Embedded Controller
-+          driver used on Lemote Yeeloong laptops, providing power, battery
-+          and backlight services. This is a mandatory dependency for
-+          Lemote 2F systems.
+ static struct platform_device loongson2_cpufreq_device = {
+ 	.name = "loongson2_cpufreq",
+@@ -29,3 +30,17 @@ static int __init loongson2_cpufreq_init(void)
+ }
+ 
+ arch_initcall(loongson2_cpufreq_init);
 +
- menu "Multimedia Capabilities Port drivers"
- 	depends on ARCH_SA1100
++/*
++ * Currently, only LEMOTE_MACH2F implements mach_platform_init();
++ * Fuloong-2E or Loongson3 does not have platform drivers to register
++ * at here yet.
++ */
++#ifdef CONFIG_LEMOTE_MACH2F
++static int __init loongson2_platform_init(void)
++{
++	return mach_platform_init();
++}
++
++device_initcall(loongson2_platform_init);
++#endif
+diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson64/lemote-2f/Makefile
+index ac97f14ea2b7..2b18752424ee 100644
+--- a/arch/mips/loongson64/lemote-2f/Makefile
++++ b/arch/mips/loongson64/lemote-2f/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for lemote loongson2f family machines
+ #
  
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 12980a4ad460..a3446ce7c384 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -224,6 +224,7 @@ obj-$(CONFIG_MFD_HI655X_PMIC)   += hi655x-pmic.o
- obj-$(CONFIG_MFD_DLN2)		+= dln2.o
- obj-$(CONFIG_MFD_RT5033)	+= rt5033.o
- obj-$(CONFIG_MFD_SKY81452)	+= sky81452.o
-+obj-$(CONFIG_MFD_YEELOONG_KB3310B) += yeeloong_kb3310b.o
+-obj-y += clock.o machtype.o irq.o reset.o dma.o
++obj-y += clock.o machtype.o irq.o reset.o dma.o platform.o
  
- intel-soc-pmic-objs		:= intel_soc_pmic_core.o intel_soc_pmic_crc.o
- obj-$(CONFIG_INTEL_SOC_PMIC)	+= intel-soc-pmic.o
-diff --git a/drivers/mfd/yeeloong_kb3310b.c b/drivers/mfd/yeeloong_kb3310b.c
+ #
+ # Suspend Support
+diff --git a/arch/mips/loongson64/lemote-2f/platform.c b/arch/mips/loongson64/lemote-2f/platform.c
 new file mode 100644
-index 000000000000..64d353a83122
+index 000000000000..c8a8c597e384
 --- /dev/null
-+++ b/drivers/mfd/yeeloong_kb3310b.c
-@@ -0,0 +1,207 @@
++++ b/arch/mips/loongson64/lemote-2f/platform.c
+@@ -0,0 +1,47 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +
 +/*
-+ * MFD driver for ENE KB3310B embedded controller on Lemote Yeeloong laptops
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin, wuzhangjin@gmail.com
 + *
-+ * Copyright (C) 2008 Lemote Inc.
-+ * Author: liujl <liujl@lemote.com>, 2008-04-20
-+ *
-+ * Copyright (C) 2018 Yifeng Li
++ * Copyright (C) 2019 Yifeng Li
 + * Author: Yifeng Li <tomli@tomli.me>
-+ *
-+ * This is a MFD driver for the ENE KB3310B Embedded Controller for Lemote
-+ * Yeeloong laptops to provide utility functions to access the chip from
-+ * subdrivers, and handle events and interrupts in board files. This is a
-+ * special-purpose driver, and it's only used on Lemote Yeeloong laptops,
-+ * and is a mandatory dependency.
-+ *
-+ * My original attempt was to create a regmap for subdrivers to access the
-+ * EC, unfortunately, the board files in Linux/MIPS still needs to access
-+ * the EC directly for power management. Unless we find a better home for
-+ * those code, we simply export the EC-related functions.
 + */
 +
-+#include <linux/export.h>
++#include <asm/bootinfo.h>
 +#include <linux/platform_device.h>
-+#include <linux/mfd/core.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
-+
 +#include <linux/mfd/yeeloong_kb3310b.h>
 +
-+#define DRV_NAME "yeeloong_kb3310b: "
++static struct kb3310b_chip yeeloong_ec_info;
 +
-+/*****************************************************************************
-+ * Most drivers, such as battery or backlight drivers, uses the I/O ports to
-+ * access the Index Registers to obtain hardware status and information from
-+ * EC chip.
-+ ****************************************************************************/
-+static struct kb3310b_chip *kb3310b_fwinfo;
-+
-+static const struct mfd_cell kb3310b_cells[] = {
-+	{
-+		.name = "yeeloong_sci"
-+	},
-+	{
-+		.name = "yeeloong_hwmon"
-+	},
-+	{
-+		.name = "yeeloong_battery"
-+	},
-+	{
-+		.name = "yeeloong_backlight"
-+	},
-+	{
-+		.name = "yeeloong_lcd"
-+	},
-+	{
-+		.name = "yeeloong_hotkey"
++static struct platform_device yeeloong_ec_device = {
++	.name = "yeeloong_kb3310b",
++	.id = -1,
++	.dev = {
++		.platform_data = &yeeloong_ec_info,
 +	},
 +};
 +
-+static DEFINE_SPINLOCK(kb3310b_index_lock);
-+
-+u8 kb3310b_read(u16 reg)
++int __init mach_platform_init(void)
 +{
-+	unsigned long flags;
-+	u8 val;
++	/*
++	 * arcs_cmdline is __initdata, which will be freed after boot and cannot
++	 * be used. We extract the EC version string from it, and pass it to
++	 * yeeloong-kb3310b driver as platform data.
++	 */
++	static const char token[] = "EC_VER=";
++	char *p;
 +
-+	spin_lock_irqsave(&kb3310b_index_lock, flags);
-+
-+	outb((reg & 0xff00) >> 8, KB3310B_IO_PORT_HIGH);
-+	outb((reg & 0x00ff), KB3310B_IO_PORT_LOW);
-+	val = inb(KB3310B_IO_PORT_DATA);
-+
-+	spin_unlock_irqrestore(&kb3310b_index_lock, flags);
-+
-+	return val;
-+}
-+EXPORT_SYMBOL_GPL(kb3310b_read);
-+
-+void kb3310b_write(u16 reg, u8 val)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&kb3310b_index_lock, flags);
-+
-+	outb((reg & 0xff00) >> 8, KB3310B_IO_PORT_HIGH);
-+	outb((reg & 0x00ff), KB3310B_IO_PORT_LOW);
-+	outb(val, KB3310B_IO_PORT_DATA);
-+	inb(KB3310B_IO_PORT_DATA);  /* flush pending writes */
-+
-+	spin_unlock_irqrestore(&kb3310b_index_lock, flags);
-+}
-+EXPORT_SYMBOL_GPL(kb3310b_write);
-+
-+bool kb3310b_fw_earlier(char *version)
-+{
-+	return (strncasecmp(kb3310b_fwinfo->version,
-+				version, KB3310B_VERSION_LEN) < 0);
-+}
-+EXPORT_SYMBOL_GPL(kb3310b_fw_earlier);
-+
-+static int kb3310b_probe(struct platform_device *pdev)
-+{
-+	kb3310b_fwinfo = dev_get_platdata(&pdev->dev);
-+	pr_info(DRV_NAME "firmware version %s", kb3310b_fwinfo->version);
-+
-+	return devm_mfd_add_devices(&pdev->dev, -1, kb3310b_cells,
-+				    ARRAY_SIZE(kb3310b_cells), NULL, 0, NULL);
-+}
-+
-+static struct platform_driver kb3310b_driver = {
-+	.driver = {
-+		   .name = "yeeloong_kb3310b",
-+	},
-+	.probe = kb3310b_probe,
-+};
-+builtin_platform_driver(kb3310b_driver);
-+
-+/*****************************************************************************
-+ * For interrupt handling and power management, the EC chip is also needed to
-+ * be queried from the board file at arch/mips/loongson64, through a separate
-+ * command port.
-+ *****************************************************************************/
-+
-+static DEFINE_SPINLOCK(kb3310b_command_lock);
-+
-+/*
-+ * This function is used for EC command writes and corresponding status queries.
-+ */
-+int kb3310b_query_seq(unsigned char cmd)
-+{
-+	int timeout;
-+	unsigned char status;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&kb3310b_command_lock, flags);
-+
-+	/* make chip goto reset mode */
-+	udelay(KB3310B_REG_UDELAY);
-+	outb(cmd, KB3310B_CMD_PORT);
-+	udelay(KB3310B_REG_UDELAY);
-+
-+	/* check if the command is received by EC */
-+	timeout = KB3310B_CMD_TIMEOUT;
-+	status = inb(KB3310B_STS_PORT);
-+	while (timeout-- && (status & (1 << 1))) {
-+		status = inb(KB3310B_STS_PORT);
-+		udelay(KB3310B_REG_UDELAY);
++	p = strstr(arcs_cmdline, token);
++	if (!p)
++		memset(yeeloong_ec_info.version, 0, KB3310B_VERSION_LEN);
++	else {
++		p += ARRAY_SIZE(token) - 1;
++		strncpy(yeeloong_ec_info.version, p, KB3310B_VERSION_LEN);
++		p = strstr(yeeloong_ec_info.version, " ");
++		if (p)
++			*p = '\0';
 +	}
 +
-+	spin_unlock_irqrestore(&kb3310b_command_lock, flags);
-+
-+	if (timeout <= 0) {
-+		pr_err(DRV_NAME
-+			"(%x/NA) failed to issue command %d, no response!\n",
-+			timeout, cmd);
-+		return -EINVAL;
-+	}
-+
-+	pr_info(DRV_NAME
-+		 "(%x/%x) issued command %d, status: 0x%x\n",
-+		 timeout, KB3310B_CMD_TIMEOUT - timeout,
-+		 cmd, status);
-+
-+	return 0;
++	return platform_device_register(&yeeloong_ec_device);
 +}
-+EXPORT_SYMBOL_GPL(kb3310b_query_seq);
-+
-+/*
-+ * Send query command to EC to get the proper event number.
-+ */
-+int kb3310b_query_event_num(void)
-+{
-+	return kb3310b_query_seq(KB3310B_CMD_GET_EVENT_NUM);
-+}
-+EXPORT_SYMBOL_GPL(kb3310b_query_event_num);
-+
-+/*
-+ * Get event number from EC.
-+ *
-+ * NOTE: This routine must follow the query_event_num function in the
-+ * interrupt.
-+ */
-+int kb3310b_get_event_num(void)
-+{
-+	int timeout = 100;
-+	unsigned char value;
-+	unsigned char status;
-+
-+	udelay(KB3310B_REG_UDELAY);
-+	status = inb(KB3310B_STS_PORT);
-+	udelay(KB3310B_REG_UDELAY);
-+	while (timeout-- && !(status & (1 << 0))) {
-+		status = inb(KB3310B_STS_PORT);
-+		udelay(KB3310B_REG_UDELAY);
-+	}
-+	if (timeout <= 0) {
-+		pr_info("%s: get event number timeout.\n", __func__);
-+		return -EINVAL;
-+	}
-+	value = inb(KB3310B_DAT_PORT);
-+	udelay(KB3310B_REG_UDELAY);
-+
-+	return value;
-+}
-+EXPORT_SYMBOL_GPL(kb3310b_get_event_num);
-diff --git a/include/linux/mfd/yeeloong_kb3310b.h b/include/linux/mfd/yeeloong_kb3310b.h
-new file mode 100644
-index 000000000000..1f16ba2579bc
---- /dev/null
-+++ b/include/linux/mfd/yeeloong_kb3310b.h
-@@ -0,0 +1,211 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+/*
-+ * MFD driver for ENE KB3310B embedded controller on Lemote Yeeloong laptops
-+ *
-+ * Copyright (C) 2008 Lemote Inc.
-+ * Author: liujl <liujl@lemote.com>, 2008-04-20
-+ *
-+ * Copyright (C) 2018 Yifeng Li
-+ * Author: Yifeng Li <tomli@tomli.me>
-+ */
-+
-+#ifndef __LINUX_MFD_YEELOONG_KB3310B_H
-+#define __LINUX_MFD_YEELOONG_KB3310B_H
-+
-+extern u8 kb3310b_read(u16 reg);
-+extern void kb3310b_write(u16 reg, u8 val);
-+extern bool kb3310b_fw_earlier(char *version);
-+extern int kb3310b_query_seq(unsigned char cmd);
-+extern int kb3310b_query_event_num(void);
-+extern int kb3310b_get_event_num(void);
-+
-+typedef int (*sci_handler) (int status);
-+
-+extern int yeeloong_sci_register_notify(struct notifier_block *nb);
-+extern int yeeloong_sci_unregister_notify(struct notifier_block *nb);
-+
-+#define KB3310B_VERSION_LEN 8
-+
-+struct kb3310b_chip {
-+	char version[KB3310B_VERSION_LEN];
-+};
-+
-+#define KB3310B_SCI_IRQ_NUM	0x0A
-+
-+/*
-+ * The following registers are determined by the EC index configuration.
-+ * 1, fill the PORT_HIGH as EC register high part.
-+ * 2, fill the PORT_LOW as EC register low part.
-+ * 3, fill the PORT_DATA as EC register write data or get the data from it.
-+ */
-+#define KB3310B_IO_PORT_HIGH	0x0381
-+#define KB3310B_IO_PORT_LOW	0x0382
-+#define KB3310B_IO_PORT_DATA	0x0383
-+
-+/*
-+ * EC delay time is 500us for register and status access
-+ */
-+#define KB3310B_REG_UDELAY	500
-+#define KB3310B_CMD_TIMEOUT	0x1000
-+
-+/*
-+ * EC access port for SCI communication
-+ */
-+#define KB3310B_CMD_PORT		0x66
-+#define KB3310B_STS_PORT		0x66
-+#define KB3310B_DAT_PORT		0x62
-+#define KB3310B_CMD_INIT_IDLE_MODE	0xdd
-+#define KB3310B_CMD_EXIT_IDLE_MODE	0xdf
-+#define KB3310B_CMD_INIT_RESET_MODE	0xd8
-+#define KB3310B_CMD_REBOOT_SYSTEM	0x8c
-+#define KB3310B_CMD_GET_EVENT_NUM	0x84
-+#define KB3310B_CMD_PROGRAM_PIECE	0xda
-+
-+/* temperature & fan registers */
-+#define KB3310B_REG_TEMPERATURE_VALUE	0xF458
-+#define KB3310B_REG_FAN_AUTO_MAN_SWITCH 0xF459
-+#define KB3310B_BIT_FAN_AUTO		0
-+#define KB3310B_BIT_FAN_MANUAL		1
-+#define KB3310B_REG_FAN_CONTROL		0xF4D2
-+#define KB3310B_BIT_FAN_CONTROL_ON	(1 << 0)
-+#define KB3310B_BIT_FAN_CONTROL_OFF	(0 << 0)
-+#define KB3310B_REG_FAN_STATUS		0xF4DA
-+#define KB3310B_BIT_FAN_STATUS_ON	(1 << 0)
-+#define KB3310B_BIT_FAN_STATUS_OFF	(0 << 0)
-+#define KB3310B_REG_FAN_SPEED_HIGH	0xFE22
-+#define KB3310B_REG_FAN_SPEED_LOW	0xFE23
-+#define KB3310B_REG_FAN_SPEED_LEVEL	0xF4CC
-+
-+/* fan speed divider */
-+#define KB3310B_FAN_SPEED_DIVIDER	480000	/* (60*1000*1000/62.5/2)*/
-+
-+/* battery registers */
-+#define KB3310B_REG_BAT_DESIGN_CAP_HIGH		0xF77D
-+#define KB3310B_REG_BAT_DESIGN_CAP_LOW		0xF77E
-+#define KB3310B_REG_BAT_FULLCHG_CAP_HIGH	0xF780
-+#define KB3310B_REG_BAT_FULLCHG_CAP_LOW		0xF781
-+#define KB3310B_REG_BAT_DESIGN_VOL_HIGH		0xF782
-+#define KB3310B_REG_BAT_DESIGN_VOL_LOW		0xF783
-+#define KB3310B_REG_BAT_CURRENT_HIGH		0xF784
-+#define KB3310B_REG_BAT_CURRENT_LOW		0xF785
-+#define KB3310B_REG_BAT_VOLTAGE_HIGH		0xF786
-+#define KB3310B_REG_BAT_VOLTAGE_LOW		0xF787
-+#define KB3310B_REG_BAT_TEMPERATURE_HIGH	0xF788
-+#define KB3310B_REG_BAT_TEMPERATURE_LOW		0xF789
-+#define KB3310B_REG_BAT_RELATIVE_CAP_HIGH	0xF492
-+#define KB3310B_REG_BAT_RELATIVE_CAP_LOW	0xF493
-+#define KB3310B_REG_BAT_VENDOR			0xF4C4
-+#define KB3310B_FLAG_BAT_VENDOR_SANYO		0x01
-+#define KB3310B_FLAG_BAT_VENDOR_SIMPLO		0x02
-+#define KB3310B_REG_BAT_CELL_COUNT		0xF4C6
-+#define KB3310B_FLAG_BAT_CELL_3S1P		0x03
-+#define KB3310B_FLAG_BAT_CELL_3S2P		0x06
-+#define KB3310B_REG_BAT_CHARGE			0xF4A2
-+#define KB3310B_FLAG_BAT_CHARGE_DISCHARGE	0x01
-+#define KB3310B_FLAG_BAT_CHARGE_CHARGE		0x02
-+#define KB3310B_FLAG_BAT_CHARGE_ACPOWER		0x00
-+#define KB3310B_REG_BAT_STATUS			0xF4B0
-+#define KB3310B_BIT_BAT_STATUS_LOW		(1 << 5)
-+#define KB3310B_BIT_BAT_STATUS_DESTROY		(1 << 2)
-+#define KB3310B_BIT_BAT_STATUS_FULL		(1 << 1)
-+#define KB3310B_BIT_BAT_STATUS_IN		(1 << 0)
-+#define KB3310B_REG_BAT_CHARGE_STATUS		0xF4B1
-+#define KB3310B_BIT_BAT_CHARGE_STATUS_OVERTEMP	(1 << 2)
-+#define KB3310B_BIT_BAT_CHARGE_STATUS_PRECHG	(1 << 1)
-+#define KB3310B_REG_BAT_STATE			0xF482
-+#define KB3310B_BIT_BAT_STATE_CHARGING		(1 << 1)
-+#define KB3310B_BIT_BAT_STATE_DISCHARGING	(1 << 0)
-+#define KB3310B_REG_BAT_POWER			0xF440
-+#define KB3310B_BIT_BAT_POWER_S3		(1 << 2)
-+#define KB3310B_BIT_BAT_POWER_ON		(1 << 1)
-+#define KB3310B_BIT_BAT_POWER_ACIN		(1 << 0)
-+
-+/* other registers */
-+
-+/* Audio: rd/wr */
-+#define KB3310B_REG_AUDIO_VOLUME	0xF46C
-+#define KB3310B_REG_AUDIO_MUTE		0xF4E7
-+#define KB3310B_REG_AUDIO_BEEP		0xF4D0
-+
-+/* USB port power or not: rd/wr */
-+#define KB3310B_REG_USB0_FLAG		0xF461
-+#define KB3310B_REG_USB1_FLAG		0xF462
-+#define KB3310B_REG_USB2_FLAG		0xF463
-+#define KB3310B_BIT_USB_FLAG_ON		1
-+#define KB3310B_BIT_USB_FLAG_OFF	0
-+
-+/* LID */
-+#define KB3310B_REG_LID_DETECT		0xF4BD
-+#define KB3310B_BIT_LID_DETECT_ON	1
-+#define KB3310B_BIT_LID_DETECT_OFF	0
-+
-+/* CRT */
-+#define KB3310B_REG_CRT_DETECT		0xF4AD
-+#define KB3310B_BIT_CRT_DETECT_PLUG	1
-+#define KB3310B_BIT_CRT_DETECT_UNPLUG	0
-+
-+/* LCD backlight brightness adjust: 9 levels */
-+#define KB3310B_REG_DISPLAY_BRIGHTNESS	0xF4F5
-+
-+/* Black screen status */
-+#define KB3310B_REG_DISPLAY_LCD		0xF79F
-+#define KB3310B_BIT_DISPLAY_LCD_ON	1
-+#define KB3310B_BIT_DISPLAY_LCD_OFF	0
-+
-+/* LCD backlight control: off/restore */
-+#define KB3310B_REG_BACKLIGHT_CTRL	0xF7BD
-+#define KB3310B_BIT_BACKLIGHT_ON	1
-+#define KB3310B_BIT_BACKLIGHT_OFF	0
-+
-+/* Reset the machine auto-clear: rd/wr */
-+#define KB3310B_REG_RESET		0xF4EC
-+#define KB3310B_BIT_RESET_ON		1
-+
-+/* Light the LED: rd/wr */
-+#define KB3310B_REG_LED			0xF4C8
-+#define KB3310B_BIT_LED_RED_POWER	(1 << 0)
-+#define KB3310B_BIT_LED_ORANGE_POWER	(1 << 1)
-+#define KB3310B_BIT_LED_GREEN_CHARGE	(1 << 2)
-+#define KB3310B_BIT_LED_RED_CHARGE	(1 << 3)
-+#define KB3310B_BIT_LED_NUMLOCK		(1 << 4)
-+
-+/* Test LED mode, all LED on/off */
-+#define KB3310B_REG_LED_TEST		0xF4C2
-+#define KB3310B_BIT_LED_TEST_IN		1
-+#define KB3310B_BIT_LED_TEST_OUT	0
-+
-+/* Camera on/off */
-+#define KB3310B_REG_CAMERA_STATUS	0xF46A
-+#define KB3310B_BIT_CAMERA_STATUS_ON	1
-+#define KB3310B_BIT_CAMERA_STATUS_OFF	0
-+#define KB3310B_REG_CAMERA_CONTROL	0xF7B7
-+#define KB3310B_BIT_CAMERA_CONTROL_OFF	0
-+#define KB3310B_BIT_CAMERA_CONTROL_ON	1
-+
-+/* WLAN Status */
-+#define KB3310B_REG_WLAN		0xF4FA
-+#define KB3310B_BIT_WLAN_ON		1
-+#define KB3310B_BIT_WLAN_OFF		0
-+
-+/* SCI Event Number from EC */
-+enum {
-+	KB3310B_EVENT_START = 0x22,
-+	KB3310B_EVENT_LID = 0x23,	   /* LID open/close */
-+	KB3310B_EVENT_DISPLAY_TOGGLE,	   /* Fn+F3 for display switch */
-+	KB3310B_EVENT_SLEEP,		   /* Fn+F1 for entering sleep mode */
-+	KB3310B_EVENT_OVERTEMP,		   /* Over-temperature occurred */
-+	KB3310B_EVENT_CRT_DETECT,	   /* CRT is connected */
-+	KB3310B_EVENT_CAMERA,		   /* Camera on/off */
-+	KB3310B_EVENT_USB_OC2,		   /* USB2 Overcurrent occurred */
-+	KB3310B_EVENT_USB_OC0,		   /* USB0 Overcurrent occurred */
-+	KB3310B_EVENT_BLACK_SCREEN,	   /* Turn on/off backlight */
-+	KB3310B_EVENT_AUDIO_MUTE,	   /* Mute on/off */
-+	KB3310B_EVENT_DISPLAY_BRIGHTNESS,  /* LCD backlight brightness adjust */
-+	KB3310B_EVENT_AC_BAT,		   /* AC & Battery relative issue */
-+	KB3310B_EVENT_AUDIO_VOLUME,	   /* Volume adjust */
-+	KB3310B_EVENT_WLAN,		   /* WLAN on/off */
-+	KB3310B_EVENT_END
-+};
-+
-+#endif /* !__LINUX_MFD_YEELOONG_KB3310B_H */
 -- 
 2.20.1
 

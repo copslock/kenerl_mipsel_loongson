@@ -4,39 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88AA3C43381
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1ED5C4360F
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:41:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 582C521019
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:36:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEE8D20823
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 08:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1551688600;
-	bh=CuGbEMLM6oAhFYrwVlX8Wqpq8sqnn6vIvFMlXrSp6cc=;
+	s=default; t=1551688918;
+	bh=nOHZIZxlFgkstYyXw3LWOWmyz97E/eqa8M6Fzue3v0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=ZMPENYZ6FPhzI20z+UVC9S9cQkwTdWHtFbkIOhlhesCpylI9GwuLATFawuNERvWxm
-	 725Yb78j42UrSA+JFy4awB3ooU5tM0v9LYfhQUe5BrRInhH7b3rRhSaBgKSBwYA0hU
-	 XAUMhZ3NKFLRDcWq4r/szftqAnhLqj8eWWSVVkds=
+	b=GDLUVp/3ISCeHJIZskQZFN/XeyfnUcGhkDRX5Zyi7KuRK0MO+ZoAzmS/adT98O9jb
+	 zUwPGfSARsm0h4yVIYHkPfFlboHl3qqSH68g8MGldqmHVsM7EITesiMJOXI49zBjLq
+	 CWzKIOx5IfB9I73+tye03NU/WjKvExVMCQ0ESNdA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727726AbfCDIgj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Mar 2019 03:36:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46468 "EHLO mail.kernel.org"
+        id S1727946AbfCDIbd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Mar 2019 03:31:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33618 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728677AbfCDIgi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Mar 2019 03:36:38 -0500
+        id S1727941AbfCDIbc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Mar 2019 03:31:32 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CF6D2146E;
-        Mon,  4 Mar 2019 08:36:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A415820836;
+        Mon,  4 Mar 2019 08:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1551688597;
-        bh=CuGbEMLM6oAhFYrwVlX8Wqpq8sqnn6vIvFMlXrSp6cc=;
+        s=default; t=1551688292;
+        bh=nOHZIZxlFgkstYyXw3LWOWmyz97E/eqa8M6Fzue3v0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L3zvF2CDBTTVPEY0hiIIjRe2WQGSwUUE+h47G8c2vbnItEEVgdICJu/CknLrnLISR
-         eDjLcBWdtCjNWihYMkLRMyxzIlIe6J7k5NSCWnRodvqpKyOYUH1+EwRhezpdEB2Xz0
-         SevD93MaUNWu8MqN91KgdbgtnaCy9C6nhvTLaIIs=
+        b=mJFhHv5kYgL81/Bc1YD2FC+DNj9EoPdQhioTQWdzt5ZoeV2dFqqq2VjVB1h9xsAhs
+         6NT+SlVfhCS79YzGumXqqrHuUMXfVLqAoDIWxbfxqqdFtsguGq4cxx2eB4dNOkCTvK
+         SlWEw7t+mJon9mgHxtSFo/2jfavbefbR+AS8wCPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +48,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
         netdev@vger.kernel.org, bpf@vger.kernel.org,
         linux-mips@vger.kernel.org
-Subject: [PATCH 4.20 87/88] MIPS: eBPF: Fix icache flush end address
-Date:   Mon,  4 Mar 2019 09:23:10 +0100
-Message-Id: <20190304081634.141831263@linuxfoundation.org>
+Subject: [PATCH 4.19 77/78] MIPS: eBPF: Fix icache flush end address
+Date:   Mon,  4 Mar 2019 09:23:00 +0100
+Message-Id: <20190304081629.043690167@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190304081630.610632175@linuxfoundation.org>
-References: <20190304081630.610632175@linuxfoundation.org>
+In-Reply-To: <20190304081625.508788074@linuxfoundation.org>
+References: <20190304081625.508788074@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +65,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.20-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

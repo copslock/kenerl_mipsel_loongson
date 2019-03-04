@@ -4,31 +4,31 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3DF7C43381
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C4ECC4360F
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7906D208E4
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 431BC20830
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Mar 2019 22:29:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="A3YoJip0"
+	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="uDKODzI9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726088AbfCDW3Q (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Mar 2019 17:29:16 -0500
+        id S1726808AbfCDW3d (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Mar 2019 17:29:33 -0500
 Received: from tomli.me ([153.92.126.73]:44168 "EHLO tomli.me"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726522AbfCDW3Q (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Mar 2019 17:29:16 -0500
+        id S1726178AbfCDW3c (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Mar 2019 17:29:32 -0500
 Received: from tomli.me (localhost [127.0.0.1])
-        by tomli.me (OpenSMTPD) with ESMTP id 0b480d7b;
-        Mon, 4 Mar 2019 22:29:13 +0000 (UTC)
+        by tomli.me (OpenSMTPD) with ESMTP id 179179ae;
+        Mon, 4 Mar 2019 22:29:27 +0000 (UTC)
 X-HELO: localhost.lan
 Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
 Received: from Unknown (HELO localhost.lan) (2402:f000:1:1501:200:5efe:72f4:b31)
- by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 22:29:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=uMmr+paLH3oxbIjnf44KpHw1/0fMpGkylyvaTPhBq3U=; b=A3YoJip0cNG19x2u4EHtInxZF1xCKHFi4TJE3uu7+1HO3z1atFIGIwsGpSZ7A5BJOALmWr39NoIQYtFVnjmWSqrels5HyuiZd1TlzYFEH6TWg5wr3ukRhTptoRdl7hGqsCHRxMVWumdOh/j9sqXGC3m//vwe4BMiD3TjIkR8KYy8Vn38MEGyPUf346ooNNh7ZrDhHfuENz0RbvCeolSiRFLKA+/INHjbjOHI9QrTiQsnLArPRZy/Xkbq7dCqrI0JQ4sYYTNT8QX6Qs/MK0tVO2BUGelI2sQ63FTEjy6Rczeukp4C97yv9ngdV/dyuiSpUQQKIK/B/+vUhZyUOuAFaw==
+ by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Mon, 04 Mar 2019 22:29:27 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=xNvRB8rPeaT13gC9E0EgNG391+g95SHxSvMR/2lHVIU=; b=uDKODzI9884vKTMVzhcclM4mS0VwxaS1ddnDKLqOVc0ego1h1zNneirqPhKmmv6Yej9t2TPRJYmNVJk24DtJgCvgQm6gheA6h2yvWJsKrq2BRqrHLpRr7ZWyivfBRmFDgQbqEV4s9DTQA6fu9dY9wPC+za08tOS/7cVjSKEi6j6AvasGb9iBvU4WkReusjp3nv8tE7GqCGFQsLt9OY/oL635n2jNW0S1rRd9sGmU3T3UG+qt0wYC4PHSC9v1jZh6/zEbfTm0lhb2JT/KiNUd/KA1tZhz3OIMi+1mptRsqGyYKw98Z7cPCQqIj4b5qr5hVbWPnjSBwtDWyxRWJn1Rfw==
 From:   Yifeng Li <tomli@tomli.me>
 To:     Lee Jones <lee.jones@linaro.org>, linux-mips@vger.kernel.org
 Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
@@ -36,9 +36,9 @@ Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/7] mips: loongson64: remove ec_kb3310b.c, use MFD driver.
-Date:   Tue,  5 Mar 2019 06:28:44 +0800
-Message-Id: <20190304222848.25037-4-tomli@tomli.me>
+Subject: [PATCH v2 6/7] mips: loongson64: Support System Control Interrupts for Lemote Yeeloong.
+Date:   Tue,  5 Mar 2019 06:28:47 +0800
+Message-Id: <20190304222848.25037-7-tomli@tomli.me>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190304222848.25037-1-tomli@tomli.me>
 References: <20190304222848.25037-1-tomli@tomli.me>
@@ -49,448 +49,445 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-We have already converted the supporting code for ENE KB3310B
-embedded controller as a separate MFD driver, and select it
-as a dependency of LEMOTE_MACH2F.
+The hardware design of Yeeloong laptops is similar to OLPC: low-level
+hardware events are processed by the ENE KB3310B Embedded Controller,
+which is connected to the AMD CS5536 southbridge through a GPIO port.
 
-This commit removes the original implementation of ec_kb3310b.c,
-and converts all EC operations to use the utility function provided
-by the yeeloong_kb3310b MFD driver instead.
+When a hardware event occurs, such as a short-circuit on the USB port,
+removing the power supply, plugging in a VGA adapter, opening the lid
+of the laptop, or pressing a hotkey on the keyboard, the EC sends a
+pulse to CS5536, which then fires a System Control Interrupt to notify
+the kernel.
+
+In the previous attempted submission, the logic for handling SCI and
+hotkeys was tightly-coupled, and the driver was called the "hotkey"
+driver, which was misleading. In this implementation of sci.c, we only
+handle the minimum number of things that deal with the underlying
+platform hardware directly, such as setting up the CS5536 GPIO and IRQ,
+handling the the power supply of USB and camera. The vast majority of
+events are passed to the subdrivers via a notification chain, thus,
+the SCI logic and the specific hotkey handling logic have been decoupled.
 
 Signed-off-by: Yifeng Li <tomli@tomli.me>
 ---
- arch/mips/loongson64/lemote-2f/Makefile     |   2 +-
- arch/mips/loongson64/lemote-2f/ec_kb3310b.c | 129 --------------
- arch/mips/loongson64/lemote-2f/ec_kb3310b.h | 188 --------------------
- arch/mips/loongson64/lemote-2f/pm.c         |  18 +-
- arch/mips/loongson64/lemote-2f/reset.c      |   4 +-
- 5 files changed, 12 insertions(+), 329 deletions(-)
- delete mode 100644 arch/mips/loongson64/lemote-2f/ec_kb3310b.c
- delete mode 100644 arch/mips/loongson64/lemote-2f/ec_kb3310b.h
+ arch/mips/loongson64/lemote-2f/Makefile |   2 +-
+ arch/mips/loongson64/lemote-2f/sci.c    | 394 ++++++++++++++++++++++++
+ 2 files changed, 395 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/loongson64/lemote-2f/sci.c
 
 diff --git a/arch/mips/loongson64/lemote-2f/Makefile b/arch/mips/loongson64/lemote-2f/Makefile
-index b5792c334cd5..ac97f14ea2b7 100644
+index 2b18752424ee..af4a1d347884 100644
 --- a/arch/mips/loongson64/lemote-2f/Makefile
 +++ b/arch/mips/loongson64/lemote-2f/Makefile
 @@ -2,7 +2,7 @@
  # Makefile for lemote loongson2f family machines
  #
  
--obj-y += clock.o machtype.o irq.o reset.o dma.o ec_kb3310b.o
-+obj-y += clock.o machtype.o irq.o reset.o dma.o
+-obj-y += clock.o machtype.o irq.o reset.o dma.o platform.o
++obj-y += clock.o machtype.o irq.o reset.o dma.o platform.o sci.o
  
  #
  # Suspend Support
-diff --git a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c b/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
-deleted file mode 100644
-index 321822997e76..000000000000
---- a/arch/mips/loongson64/lemote-2f/ec_kb3310b.c
-+++ /dev/null
-@@ -1,129 +0,0 @@
--/*
-- * Basic KB3310B Embedded Controller support for the YeeLoong 2F netbook
-- *
-- *  Copyright (C) 2008 Lemote Inc.
-- *  Author: liujl <liujl@lemote.com>, 2008-04-20
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
--
--#include <linux/io.h>
--#include <linux/export.h>
--#include <linux/spinlock.h>
--#include <linux/delay.h>
--
--#include "ec_kb3310b.h"
--
--static DEFINE_SPINLOCK(index_access_lock);
--static DEFINE_SPINLOCK(port_access_lock);
--
--unsigned char ec_read(unsigned short addr)
--{
--	unsigned char value;
--	unsigned long flags;
--
--	spin_lock_irqsave(&index_access_lock, flags);
--	outb((addr & 0xff00) >> 8, EC_IO_PORT_HIGH);
--	outb((addr & 0x00ff), EC_IO_PORT_LOW);
--	value = inb(EC_IO_PORT_DATA);
--	spin_unlock_irqrestore(&index_access_lock, flags);
--
--	return value;
--}
--EXPORT_SYMBOL_GPL(ec_read);
--
--void ec_write(unsigned short addr, unsigned char val)
--{
--	unsigned long flags;
--
--	spin_lock_irqsave(&index_access_lock, flags);
--	outb((addr & 0xff00) >> 8, EC_IO_PORT_HIGH);
--	outb((addr & 0x00ff), EC_IO_PORT_LOW);
--	outb(val, EC_IO_PORT_DATA);
--	/*  flush the write action */
--	inb(EC_IO_PORT_DATA);
--	spin_unlock_irqrestore(&index_access_lock, flags);
--}
--EXPORT_SYMBOL_GPL(ec_write);
--
--/*
-- * This function is used for EC command writes and corresponding status queries.
-- */
--int ec_query_seq(unsigned char cmd)
--{
--	int timeout;
--	unsigned char status;
--	unsigned long flags;
--	int ret = 0;
--
--	spin_lock_irqsave(&port_access_lock, flags);
--
--	/* make chip goto reset mode */
--	udelay(EC_REG_DELAY);
--	outb(cmd, EC_CMD_PORT);
--	udelay(EC_REG_DELAY);
--
--	/* check if the command is received by ec */
--	timeout = EC_CMD_TIMEOUT;
--	status = inb(EC_STS_PORT);
--	while (timeout-- && (status & (1 << 1))) {
--		status = inb(EC_STS_PORT);
--		udelay(EC_REG_DELAY);
--	}
--
--	spin_unlock_irqrestore(&port_access_lock, flags);
--
--	if (timeout <= 0) {
--		printk(KERN_ERR "%s: deadable error : timeout...\n", __func__);
--		ret = -EINVAL;
--	} else
--		printk(KERN_INFO
--			   "(%x/%d)ec issued command %d status : 0x%x\n",
--			   timeout, EC_CMD_TIMEOUT - timeout, cmd, status);
--
--	return ret;
--}
--EXPORT_SYMBOL_GPL(ec_query_seq);
--
--/*
-- * Send query command to EC to get the proper event number
-- */
--int ec_query_event_num(void)
--{
--	return ec_query_seq(CMD_GET_EVENT_NUM);
--}
--EXPORT_SYMBOL(ec_query_event_num);
--
--/*
-- * Get event number from EC
-- *
-- * NOTE: This routine must follow the query_event_num function in the
-- * interrupt.
-- */
--int ec_get_event_num(void)
--{
--	int timeout = 100;
--	unsigned char value;
--	unsigned char status;
--
--	udelay(EC_REG_DELAY);
--	status = inb(EC_STS_PORT);
--	udelay(EC_REG_DELAY);
--	while (timeout-- && !(status & (1 << 0))) {
--		status = inb(EC_STS_PORT);
--		udelay(EC_REG_DELAY);
--	}
--	if (timeout <= 0) {
--		pr_info("%s: get event number timeout.\n", __func__);
--
--		return -EINVAL;
--	}
--	value = inb(EC_DAT_PORT);
--	udelay(EC_REG_DELAY);
--
--	return value;
--}
--EXPORT_SYMBOL(ec_get_event_num);
-diff --git a/arch/mips/loongson64/lemote-2f/ec_kb3310b.h b/arch/mips/loongson64/lemote-2f/ec_kb3310b.h
-deleted file mode 100644
-index 5a3f1860d4d2..000000000000
---- a/arch/mips/loongson64/lemote-2f/ec_kb3310b.h
-+++ /dev/null
-@@ -1,188 +0,0 @@
--/*
-- * KB3310B Embedded Controller
-- *
-- *  Copyright (C) 2008 Lemote Inc.
-- *  Author: liujl <liujl@lemote.com>, 2008-03-14
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
--
--#ifndef _EC_KB3310B_H
--#define _EC_KB3310B_H
--
--extern unsigned char ec_read(unsigned short addr);
--extern void ec_write(unsigned short addr, unsigned char val);
--extern int ec_query_seq(unsigned char cmd);
--extern int ec_query_event_num(void);
--extern int ec_get_event_num(void);
--
--typedef int (*sci_handler) (int status);
--extern sci_handler yeeloong_report_lid_status;
--
--#define SCI_IRQ_NUM 0x0A
--
--/*
-- * The following registers are determined by the EC index configuration.
-- * 1, fill the PORT_HIGH as EC register high part.
-- * 2, fill the PORT_LOW as EC register low part.
-- * 3, fill the PORT_DATA as EC register write data or get the data from it.
-- */
--#define EC_IO_PORT_HIGH 0x0381
--#define EC_IO_PORT_LOW	0x0382
--#define EC_IO_PORT_DATA 0x0383
--
--/*
-- * EC delay time is 500us for register and status access
-- */
--#define EC_REG_DELAY	500	/* unit : us */
--#define EC_CMD_TIMEOUT	0x1000
--
--/*
-- * EC access port for SCI communication
-- */
--#define EC_CMD_PORT		0x66
--#define EC_STS_PORT		0x66
--#define EC_DAT_PORT		0x62
--#define CMD_INIT_IDLE_MODE	0xdd
--#define CMD_EXIT_IDLE_MODE	0xdf
--#define CMD_INIT_RESET_MODE	0xd8
--#define CMD_REBOOT_SYSTEM	0x8c
--#define CMD_GET_EVENT_NUM	0x84
--#define CMD_PROGRAM_PIECE	0xda
--
--/* temperature & fan registers */
--#define REG_TEMPERATURE_VALUE	0xF458
--#define REG_FAN_AUTO_MAN_SWITCH 0xF459
--#define BIT_FAN_AUTO		0
--#define BIT_FAN_MANUAL		1
--#define REG_FAN_CONTROL		0xF4D2
--#define BIT_FAN_CONTROL_ON	(1 << 0)
--#define BIT_FAN_CONTROL_OFF	(0 << 0)
--#define REG_FAN_STATUS		0xF4DA
--#define BIT_FAN_STATUS_ON	(1 << 0)
--#define BIT_FAN_STATUS_OFF	(0 << 0)
--#define REG_FAN_SPEED_HIGH	0xFE22
--#define REG_FAN_SPEED_LOW	0xFE23
--#define REG_FAN_SPEED_LEVEL	0xF4CC
--/* fan speed divider */
--#define FAN_SPEED_DIVIDER	480000	/* (60*1000*1000/62.5/2)*/
--
--/* battery registers */
--#define REG_BAT_DESIGN_CAP_HIGH		0xF77D
--#define REG_BAT_DESIGN_CAP_LOW		0xF77E
--#define REG_BAT_FULLCHG_CAP_HIGH	0xF780
--#define REG_BAT_FULLCHG_CAP_LOW		0xF781
--#define REG_BAT_DESIGN_VOL_HIGH		0xF782
--#define REG_BAT_DESIGN_VOL_LOW		0xF783
--#define REG_BAT_CURRENT_HIGH		0xF784
--#define REG_BAT_CURRENT_LOW		0xF785
--#define REG_BAT_VOLTAGE_HIGH		0xF786
--#define REG_BAT_VOLTAGE_LOW		0xF787
--#define REG_BAT_TEMPERATURE_HIGH	0xF788
--#define REG_BAT_TEMPERATURE_LOW		0xF789
--#define REG_BAT_RELATIVE_CAP_HIGH	0xF492
--#define REG_BAT_RELATIVE_CAP_LOW	0xF493
--#define REG_BAT_VENDOR			0xF4C4
--#define FLAG_BAT_VENDOR_SANYO		0x01
--#define FLAG_BAT_VENDOR_SIMPLO		0x02
--#define REG_BAT_CELL_COUNT		0xF4C6
--#define FLAG_BAT_CELL_3S1P		0x03
--#define FLAG_BAT_CELL_3S2P		0x06
--#define REG_BAT_CHARGE			0xF4A2
--#define FLAG_BAT_CHARGE_DISCHARGE	0x01
--#define FLAG_BAT_CHARGE_CHARGE		0x02
--#define FLAG_BAT_CHARGE_ACPOWER		0x00
--#define REG_BAT_STATUS			0xF4B0
--#define BIT_BAT_STATUS_LOW		(1 << 5)
--#define BIT_BAT_STATUS_DESTROY		(1 << 2)
--#define BIT_BAT_STATUS_FULL		(1 << 1)
--#define BIT_BAT_STATUS_IN		(1 << 0)
--#define REG_BAT_CHARGE_STATUS		0xF4B1
--#define BIT_BAT_CHARGE_STATUS_OVERTEMP	(1 << 2)
--#define BIT_BAT_CHARGE_STATUS_PRECHG	(1 << 1)
--#define REG_BAT_STATE			0xF482
--#define BIT_BAT_STATE_CHARGING		(1 << 1)
--#define BIT_BAT_STATE_DISCHARGING	(1 << 0)
--#define REG_BAT_POWER			0xF440
--#define BIT_BAT_POWER_S3		(1 << 2)
--#define BIT_BAT_POWER_ON		(1 << 1)
--#define BIT_BAT_POWER_ACIN		(1 << 0)
--
--/* other registers */
--/* Audio: rd/wr */
--#define REG_AUDIO_VOLUME	0xF46C
--#define REG_AUDIO_MUTE		0xF4E7
--#define REG_AUDIO_BEEP		0xF4D0
--/* USB port power or not: rd/wr */
--#define REG_USB0_FLAG		0xF461
--#define REG_USB1_FLAG		0xF462
--#define REG_USB2_FLAG		0xF463
--#define BIT_USB_FLAG_ON		1
--#define BIT_USB_FLAG_OFF	0
--/* LID */
--#define REG_LID_DETECT		0xF4BD
--#define BIT_LID_DETECT_ON	1
--#define BIT_LID_DETECT_OFF	0
--/* CRT */
--#define REG_CRT_DETECT		0xF4AD
--#define BIT_CRT_DETECT_PLUG	1
--#define BIT_CRT_DETECT_UNPLUG	0
--/* LCD backlight brightness adjust: 9 levels */
--#define REG_DISPLAY_BRIGHTNESS	0xF4F5
--/* Black screen Status */
--#define BIT_DISPLAY_LCD_ON	1
--#define BIT_DISPLAY_LCD_OFF	0
--/* LCD backlight control: off/restore */
--#define REG_BACKLIGHT_CTRL	0xF7BD
--#define BIT_BACKLIGHT_ON	1
--#define BIT_BACKLIGHT_OFF	0
--/* Reset the machine auto-clear: rd/wr */
--#define REG_RESET		0xF4EC
--#define BIT_RESET_ON		1
--/* Light the led: rd/wr */
--#define REG_LED			0xF4C8
--#define BIT_LED_RED_POWER	(1 << 0)
--#define BIT_LED_ORANGE_POWER	(1 << 1)
--#define BIT_LED_GREEN_CHARGE	(1 << 2)
--#define BIT_LED_RED_CHARGE	(1 << 3)
--#define BIT_LED_NUMLOCK		(1 << 4)
--/* Test led mode, all led on/off */
--#define REG_LED_TEST		0xF4C2
--#define BIT_LED_TEST_IN		1
--#define BIT_LED_TEST_OUT	0
--/* Camera on/off */
--#define REG_CAMERA_STATUS	0xF46A
--#define BIT_CAMERA_STATUS_ON	1
--#define BIT_CAMERA_STATUS_OFF	0
--#define REG_CAMERA_CONTROL	0xF7B7
--#define BIT_CAMERA_CONTROL_OFF	0
--#define BIT_CAMERA_CONTROL_ON	1
--/* Wlan Status */
--#define REG_WLAN		0xF4FA
--#define BIT_WLAN_ON		1
--#define BIT_WLAN_OFF		0
--#define REG_DISPLAY_LCD		0xF79F
--
--/* SCI Event Number from EC */
--enum {
--	EVENT_LID = 0x23,	/*  LID open/close */
--	EVENT_DISPLAY_TOGGLE,	/*  Fn+F3 for display switch */
--	EVENT_SLEEP,		/*  Fn+F1 for entering sleep mode */
--	EVENT_OVERTEMP,		/*  Over-temperature happened */
--	EVENT_CRT_DETECT,	/*  CRT is connected */
--	EVENT_CAMERA,		/*  Camera on/off */
--	EVENT_USB_OC2,		/*  USB2 Over Current occurred */
--	EVENT_USB_OC0,		/*  USB0 Over Current occurred */
--	EVENT_BLACK_SCREEN,	/*  Turn on/off backlight */
--	EVENT_AUDIO_MUTE,	/*  Mute on/off */
--	EVENT_DISPLAY_BRIGHTNESS,/* LCD backlight brightness adjust */
--	EVENT_AC_BAT,		/*  AC & Battery relative issue */
--	EVENT_AUDIO_VOLUME,	/*  Volume adjust */
--	EVENT_WLAN,		/*  Wlan on/off */
--	EVENT_END
--};
--
--#endif /* !_EC_KB3310B_H */
-diff --git a/arch/mips/loongson64/lemote-2f/pm.c b/arch/mips/loongson64/lemote-2f/pm.c
-index 6859e934862d..4ee7e9864700 100644
---- a/arch/mips/loongson64/lemote-2f/pm.c
-+++ b/arch/mips/loongson64/lemote-2f/pm.c
-@@ -23,7 +23,7 @@
- #include <loongson.h>
- 
- #include <cs5536/cs5536_mfgpt.h>
--#include "ec_kb3310b.h"
+diff --git a/arch/mips/loongson64/lemote-2f/sci.c b/arch/mips/loongson64/lemote-2f/sci.c
+new file mode 100644
+index 000000000000..c78d579e72de
+--- /dev/null
++++ b/arch/mips/loongson64/lemote-2f/sci.c
+@@ -0,0 +1,394 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/*
++ * Support for Lemote Yeeloong System Control Interrupts (SCI)
++ *
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin <wuzhangjin@gmail.com>
++ *         Liu Junliang <liujl@lemote.com>
++ *
++ * Copyright (C) 2012, 2013, 2014, 2015 Petr Pisar
++ * Author: Petr Pisar <petr.pisar@atlas.cz> (bugfixes)
++ *
++ * Copyright (C) 2017 Jiaxun Yang
++ * Author: Jiaxun Yang <jiaxun.yang@flygoat.com>
++ *
++ * Copyright (C) 2019 Yifeng Li
++ * Author: Yifeng Li <tomli@tomli.me>
++ *
++ * The hardware design of Yeeloong laptops is similar to OLPC: low-level
++ * hardware events are processed by the ENE KB3310B Embedded Controller,
++ * which is connected to the AMD CS5536 southbridge through a GPIO port.
++ *
++ * When a hardware event occurs, such as a short-circuit on the USB port,
++ * removing the power supply, plugging in a VGA adapter, opening the lid
++ * of the laptop, or pressing a hotkey on the keyboard, the EC sends a
++ * pulse to CS5536, which then fires a System Control Interrupt to notify
++ * the kernel.
++ */
++
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <linux/export.h>
++#include <linux/power_supply.h>
++#include <linux/backlight.h>
 +#include <linux/mfd/yeeloong_kb3310b.h>
- 
- #define I8042_KBD_IRQ		1
- #define I8042_CTR_KBDINT	0x01
-@@ -70,7 +70,7 @@ void setup_wakeup_events(void)
- 		/* Wakeup CPU via SCI lid open event */
- 		outb(irq_mask & ~(1 << PIC_CASCADE_IR), PIC_MASTER_IMR);
- 		inb(PIC_MASTER_IMR);
--		outb(0xff & ~(1 << (SCI_IRQ_NUM - 8)), PIC_SLAVE_IMR);
-+		outb(0xff & ~(1 << (KB3310B_SCI_IRQ_NUM - 8)), PIC_SLAVE_IMR);
- 		inb(PIC_SLAVE_IMR);
- 
- 		break;
-@@ -88,7 +88,7 @@ EXPORT_SYMBOL(yeeloong_report_lid_status);
- static void yeeloong_lid_update_task(struct work_struct *work)
- {
- 	if (yeeloong_report_lid_status)
--		yeeloong_report_lid_status(BIT_LID_DETECT_ON);
-+		yeeloong_report_lid_status(KB3310B_BIT_LID_DETECT_ON);
- }
- 
- int wakeup_loongson(void)
-@@ -104,21 +104,21 @@ int wakeup_loongson(void)
- 
- 	if (irq == I8042_KBD_IRQ)
- 		return 1;
--	else if (irq == SCI_IRQ_NUM) {
-+	else if (irq == KB3310B_SCI_IRQ_NUM) {
- 		int ret, sci_event;
- 		/* query the event number */
--		ret = ec_query_seq(CMD_GET_EVENT_NUM);
-+		ret = kb3310b_query_seq(KB3310B_CMD_GET_EVENT_NUM);
- 		if (ret < 0)
- 			return 0;
--		sci_event = ec_get_event_num();
-+		sci_event = kb3310b_get_event_num();
- 		if (sci_event < 0)
- 			return 0;
--		if (sci_event == EVENT_LID) {
-+		if (sci_event == KB3310B_EVENT_LID) {
- 			int lid_status;
- 			/* check the LID status */
--			lid_status = ec_read(REG_LID_DETECT);
-+			lid_status = kb3310b_read(KB3310B_REG_LID_DETECT);
- 			/* wakeup cpu when people open the LID */
--			if (lid_status == BIT_LID_DETECT_ON) {
-+			if (lid_status == KB3310B_BIT_LID_DETECT_ON) {
- 				/* If we call it directly here, the WARNING
- 				 * will be sent out by getnstimeofday
- 				 * via "WARN_ON(timekeeping_suspended);"
-diff --git a/arch/mips/loongson64/lemote-2f/reset.c b/arch/mips/loongson64/lemote-2f/reset.c
-index a26ca7fcd7e0..c5e2afbb8121 100644
---- a/arch/mips/loongson64/lemote-2f/reset.c
-+++ b/arch/mips/loongson64/lemote-2f/reset.c
-@@ -20,7 +20,7 @@
- #include <loongson.h>
- 
- #include <cs5536/cs5536.h>
--#include "ec_kb3310b.h"
-+#include <linux/mfd/yeeloong_kb3310b.h>
- 
- static void reset_cpu(void)
- {
-@@ -81,7 +81,7 @@ static void ml2f_reboot(void)
- 	reset_cpu();
- 
- 	/* sending an reset signal to EC(embedded controller) */
--	ec_write(REG_RESET, BIT_RESET_ON);
-+	kb3310b_write(KB3310B_REG_RESET, KB3310B_BIT_RESET_ON);
- }
- 
- #define yl2f89_reboot ml2f_reboot
++#include <linux/platform_device.h>
++#include <linux/reboot.h>
++#include <linux/suspend.h>
++
++#include <loongson.h>
++#include <cs5536/cs5536.h>
++
++static void usb_power_set(bool power)
++{
++	kb3310b_write(KB3310B_REG_USB0_FLAG, power);
++	kb3310b_write(KB3310B_REG_USB1_FLAG, power);
++	kb3310b_write(KB3310B_REG_USB2_FLAG, power);
++}
++
++static void camera_power_set(bool power)
++{
++	kb3310b_write(KB3310B_REG_CAMERA_CONTROL, power);
++}
++
++/*
++ * Handlers for EC events. We only handles the bare-minimum number of events
++ * directly related to the platform hardware. Other events are reported to
++ * subdrivers and handled by them.
++ */
++static void usb0_handler(void)
++{
++	pr_emerg("USB0 Overcurrent occurred!\n");
++}
++
++static void usb2_handler(void)
++{
++	pr_emerg("USB2 Overcurrent occurred!\n");
++}
++
++static void camera_handler(void)
++{
++	camera_power_set(!kb3310b_read(KB3310B_REG_CAMERA_CONTROL));
++}
++
++/*
++ * SCI notifiers. This notifier reports EC events to various
++ * subdrivers.
++ */
++static BLOCKING_NOTIFIER_HEAD(yeeloong_sci_notifier_list);
++
++int yeeloong_sci_register_notify(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_register(&yeeloong_sci_notifier_list,
++						nb);
++}
++EXPORT_SYMBOL_GPL(yeeloong_sci_register_notify);
++
++int yeeloong_sci_unregister_notify(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_unregister(&yeeloong_sci_notifier_list,
++						nb);
++}
++EXPORT_SYMBOL_GPL(yeeloong_sci_unregister_notify);
++
++/*
++ * Do not handle or notify other drivers about certain events while we're
++ * going down to reboot or sleep. This avoids unexpected behaviors in the
++ * userspace, such as closing the laptop lid while rebooting.
++ */
++static atomic_t reboot_flag;
++static atomic_t sleep_flag;
++
++static int
++notify_reboot(struct notifier_block *nb, unsigned long event, void *buf)
++{
++	switch (event) {
++	case SYS_RESTART:
++	case SYS_HALT:
++	case SYS_POWER_OFF:
++		atomic_set(&reboot_flag, 1);
++		break;
++	default:
++		return NOTIFY_DONE;
++	}
++
++	return NOTIFY_OK;
++}
++
++static int
++notify_pm(struct notifier_block *nb, unsigned long event, void *buf)
++{
++	switch (event) {
++	case PM_HIBERNATION_PREPARE:
++	case PM_SUSPEND_PREPARE:
++		atomic_inc(&sleep_flag);
++		break;
++	case PM_POST_HIBERNATION:
++	case PM_POST_SUSPEND:
++	case PM_RESTORE_PREPARE:        /* do we need this ?? */
++		atomic_dec(&sleep_flag);
++		break;
++	default:
++		return NOTIFY_DONE;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block reboot_notifier = {
++	.notifier_call = notify_reboot,
++};
++
++static struct notifier_block pm_notifier = {
++	.notifier_call = notify_pm,
++};
++
++static bool is_spurious_event(int event)
++{
++	if (event == KB3310B_EVENT_LID || event == KB3310B_EVENT_SLEEP)
++		return !!(atomic_read(&reboot_flag) | atomic_read(&sleep_flag));
++	else
++		return false;
++}
++
++/*
++ * Invoke the handler of the reported SCI event.
++ */
++static void process_sci_event(int event)
++{
++	if (is_spurious_event(event))
++		return;
++
++	switch (event) {
++	case KB3310B_EVENT_USB_OC0:
++		usb0_handler();
++		break;
++	case KB3310B_EVENT_USB_OC2:
++		usb2_handler();
++		break;
++	case KB3310B_EVENT_CAMERA:
++		camera_handler();
++		break;
++	default:
++		break;
++	}
++
++	/*
++	 * Report this event to other subdrivers, in particular, yeeloong-hotkey
++	 * driver will report the hotkey to userspace.
++	 */
++	blocking_notifier_call_chain(&yeeloong_sci_notifier_list, event, NULL);
++}
++
++/*
++ * Handle the SCI event and perform the needed action.
++ *
++ * A SCI event lasts about 120 microseconds. It means the function must take
++ * longer than 120 microseconds to complete. It has been shown that the function
++ * already takes 3 ms, so no artificial delay is needed.
++ */
++static irqreturn_t sci_irq_handler(int irq, void *dev_id)
++{
++	int ret, event;
++
++	if (irq != KB3310B_SCI_IRQ_NUM)
++		return IRQ_NONE;
++
++	/* query the event number */
++	ret = kb3310b_query_event_num();
++	if (ret < 0)
++		return IRQ_NONE;
++
++	event = kb3310b_get_event_num();
++	if (event < KB3310B_EVENT_START || event > KB3310B_EVENT_END)
++		return IRQ_NONE;
++
++	/* execute the corresponding action */
++	process_sci_event(event);
++
++	return IRQ_HANDLED;
++}
++
++/*
++ * Program the GPIO and MSR registers on CS5536.
++ *
++ * TODO: Linux kernel already has a cs5535-gpio kernel driver, but that
++ *       driver not adapted for Loongson. It's desirable to convert these
++ *       raw operations to use cs5535-gpio. Also, Loongson has its own
++ *       CS5536 clocksource driver, though Linux already has cs5535-clockevt,
++ *       but only supports clockevent, not clocksource. Clocksource code
++ *       should be merged into cs5535-clockevt and Loongson should use
++ *       that, too.
++ */
++static int setup_ec_sci(void)
++{
++	u32 hi, lo;
++	u32 gpio_base;
++	unsigned long flags;
++	int ret;
++
++	/* Get GPIO base */
++	_rdmsr(DIVIL_MSR_REG(DIVIL_LBAR_GPIO), &hi, &lo);
++	gpio_base = lo & 0xff00;
++
++	/*
++	 * HACK: to prevent any interrupts from being fired, we query
++	 * the EC to clear the pending event, and wait for a while to
++	 * miss the interrupt intentionally.
++	 */
++	ret = kb3310b_query_event_num();
++	if (ret)
++		return ret;
++
++	/* wait for a while */
++	mdelay(10);
++
++	/*
++	 * Set GPIO native registers and MSRs for GPIO-27 SCI EVENT PIN
++	 *
++	 * MSR:
++	 *     no primary and LPC.
++	 *     Unrestricted Z Input 8 to IG-10 from Virtual GPIO-0.
++	 *
++	 * GPIO mode:
++	 *     input, pull-up, no-invert, event-count and value 0,
++	 *     no-filter, no-edge. GPIO-27 map to Virtual GPIO-0.
++	 */
++	local_irq_save(flags);
++
++	/* set primary mask */
++	_rdmsr(0x80000024, &hi, &lo);
++	lo &= ~(1 << 10);
++	_wrmsr(0x80000024, hi, lo);
++
++	/* set LPC mask */
++	_rdmsr(0x80000025, &hi, &lo);
++	lo &= ~(1 << 10);
++	_wrmsr(0x80000025, hi, lo);
++
++	/* set Unrestricted Z map */
++	_rdmsr(0x80000023, &hi, &lo);
++	lo |= (0x0a << 0);
++	_wrmsr(0x80000023, hi, lo);
++
++	local_irq_restore(flags);
++
++	asm(".set noreorder\n");
++	outl(0x00000800, (gpio_base | 0xA0));  /* GPIO-27 input enable */
++	outl(0x00000800, (gpio_base | 0xA4));  /* GPIO-27 input invert */
++	outl(0x00000800, (gpio_base | 0xB8));  /* GPIO-27 event-int enable */
++	asm(".set reorder\n");
++
++	return 0;
++}
++
++/*
++ * Setup the IRQ handler for SCI. Must be called after setup_ec_sci().
++ */
++static int setup_sci_interrupt(struct platform_device *pdev)
++{
++	int ret;
++
++	ret = request_threaded_irq(KB3310B_SCI_IRQ_NUM, NULL, &sci_irq_handler,
++					IRQF_ONESHOT, "sci", NULL);
++	if (ret)
++		dev_err(&pdev->dev, "unable to request interrupt!\n");
++
++	return ret;
++}
++
++static int yeeloong_sci_probe(struct platform_device *pdev)
++{
++	int ret;
++
++	camera_power_set(KB3310B_BIT_CAMERA_CONTROL_OFF);
++	usb_power_set(KB3310B_BIT_USB_FLAG_ON);
++
++	ret = register_reboot_notifier(&reboot_notifier);
++	if (ret) {
++		dev_err(&pdev->dev, "unable to register reboot_notifier!\n");
++		goto fail;
++	}
++
++	ret = register_pm_notifier(&pm_notifier);
++	if (ret) {
++		dev_err(&pdev->dev, "unable to register pm_notifier!\n");
++		goto fail_reboot;
++	}
++
++	ret = setup_ec_sci();
++	if (ret) {
++		dev_err(&pdev->dev, "unable to setup EC SCI!\n");
++		goto fail_irq;
++	}
++
++	ret = setup_sci_interrupt(pdev);
++	if (ret)
++		goto fail_irq;
++
++	return ret;
++
++fail_irq:
++	free_irq(KB3310B_SCI_IRQ_NUM, NULL);
++	unregister_pm_notifier(&pm_notifier);
++fail_reboot:
++	unregister_reboot_notifier(&reboot_notifier);
++fail:
++	return ret;
++}
++
++#ifdef CONFIG_PM
++static int
++yeeloong_sci_suspend(struct device *dev)
++{
++	usb_power_set(KB3310B_BIT_USB_FLAG_OFF);
++	camera_power_set(KB3310B_BIT_CAMERA_CONTROL_OFF);
++	return 0;
++}
++
++static int yeeloong_sci_resume(struct device *dev)
++{
++	int ret;
++
++	usb_power_set(KB3310B_BIT_USB_FLAG_ON);
++
++	ret = setup_ec_sci();
++	if (ret) {
++		dev_err(dev, "unable to setup EC SCI!\n");
++		return -EFAULT;
++	}
++
++	/*
++	 * Lid switch and power supply may hawe changed while we were
++	 * asleep, so we generate a KB3310B_EVENT_LID and KB3310B_EVENT_AC_BAT
++	 * events to force the hotkey/battery subdriver to report their new
++	 * states.
++	 */
++	blocking_notifier_call_chain(&yeeloong_sci_notifier_list,
++						KB3310B_EVENT_LID, NULL);
++	blocking_notifier_call_chain(&yeeloong_sci_notifier_list,
++						KB3310B_EVENT_AC_BAT, NULL);
++
++	return 0;
++}
++
++static const SIMPLE_DEV_PM_OPS(yeeloong_sci_pm_ops,
++				yeeloong_sci_suspend, yeeloong_sci_resume);
++#endif
++
++static struct platform_driver yeeloong_sci_driver = {
++	.probe = yeeloong_sci_probe,
++	.driver = {
++		.name = "yeeloong_sci",
++#ifdef CONFIG_PM
++		.pm = &yeeloong_sci_pm_ops,
++#endif
++	},
++};
++
++static int __init yeeloong_sci_init(void)
++{
++	return platform_driver_register(&yeeloong_sci_driver);
++}
++arch_initcall(yeeloong_sci_init);
 -- 
 2.20.1
 

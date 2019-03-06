@@ -2,46 +2,55 @@ Return-Path: <SRS0=AFfg=RJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DF4EC43381
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Mar 2019 12:02:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A841C43381
+	for <linux-mips@archiver.kernel.org>; Wed,  6 Mar 2019 15:51:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3A81020661
-	for <linux-mips@archiver.kernel.org>; Wed,  6 Mar 2019 12:02:34 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomli.me header.i=@tomli.me header.b="MyjgEF8x"
+	by mail.kernel.org (Postfix) with ESMTP id 71B8F206DD
+	for <linux-mips@archiver.kernel.org>; Wed,  6 Mar 2019 15:51:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729434AbfCFMCF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 6 Mar 2019 07:02:05 -0500
-Received: from tomli.me ([153.92.126.73]:46566 "EHLO tomli.me"
+        id S1729767AbfCFPu6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 6 Mar 2019 10:50:58 -0500
+Received: from foss.arm.com ([217.140.101.70]:34256 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729498AbfCFMCE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 6 Mar 2019 07:02:04 -0500
-Received: from tomli.me (localhost [127.0.0.1])
-        by tomli.me (OpenSMTPD) with ESMTP id 8ef2bf1e;
-        Wed, 6 Mar 2019 12:02:02 +0000 (UTC)
-X-HELO: localhost.lan
-Authentication-Results: tomli.me; auth=pass (login) smtp.auth=tomli
-Received: from Unknown (HELO localhost.lan) (2402:f000:1:1501:200:5efe:72f4:b31)
- by tomli.me (qpsmtpd/0.95) with ESMTPSA (DHE-RSA-CHACHA20-POLY1305 encrypted); Wed, 06 Mar 2019 12:02:02 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=tomli.me; h=from:to:cc:subject:date:message-id:in-reply-to:references:mime-version:content-transfer-encoding; s=1490979754; bh=17tJ+LRyo7NePFlBvhmpIAFh7/EROGjz26SLZpRTBYk=; b=MyjgEF8xFMA4gUUzK0fMkGKS7cEmhocL1cEJz+3xWQkWF1oIc6Ivgk5cXKWosfXFFnEQmk3b01E+gihpu7217/mIF9njqRnnLg4GWpWonTy3Hai06iAPuPP7r0qI+zJ8YpUUj/TZK7cOJwdKjdMA5Ohbut0Q5vYdmvwywJw7aCEspC6QET7fu185s+6dSNsHuBHS4lxaB9K0lR84yCuNWlQTFX/YdbgIdpxd6OAjws/X1vgKVBoXRrxWze4l6RsuZVNWNYXubdauiWriL+CbS/yuSpO9ZMXu3dtZMGWQNoLP959fomkpaA9fUbI7NV8MJmL9cQTWQ2gO+XJj+324Sw==
-From:   Yifeng Li <tomli@tomli.me>
-To:     Lee Jones <lee.jones@linaro.org>, linux-mips@vger.kernel.org,
-        Paul Burton <paul.burton@mips.com>
-Cc:     Yifeng Li <tomli@tomli.me>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
+        id S1729359AbfCFPu5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 6 Mar 2019 10:50:57 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A69C80D;
+        Wed,  6 Mar 2019 07:50:57 -0800 (PST)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.69])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 567923F703;
+        Wed,  6 Mar 2019 07:50:53 -0800 (PST)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will.deacon@arm.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/7] mips: loongson64: remove yeeloong_report_lid_status from pm.c
-Date:   Wed,  6 Mar 2019 20:01:10 +0800
-Message-Id: <20190306120113.648-5-tomli@tomli.me>
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH v4 03/19] mips: mm: Add p?d_large() definitions
+Date:   Wed,  6 Mar 2019 15:50:15 +0000
+Message-Id: <20190306155031.4291-4-steven.price@arm.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190306120113.648-1-tomli@tomli.me>
-References: <20190306120113.648-1-tomli@tomli.me>
+In-Reply-To: <20190306155031.4291-1-steven.price@arm.com>
+References: <20190306155031.4291-1-steven.price@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -49,61 +58,53 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There is some complicated logic in lemote-2f/pm.c. During wakeup, it
-creates a delayed_work to execute a callback to the function
-yeeloong_report_lid_status(). It's only purpose is to report the current
-status of the laptop lid switch, and this callback function was not
-implemented in the mainline kernel.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_large() functions/macros.
 
-This level of overenginnering hardly makes sense. All we need is to report
-the laptop lid switch unconditionally upon wakeup in the future PM code,
-which is being worked on.
+For mips, we only support large pages on 64 bit.
 
-Signed-off-by: Yifeng Li <tomli@tomli.me>
+For 64 bit if _PAGE_HUGE is defined we can simply look for it. When not
+defined we can be confident that there are no large pages in existence
+and fall back on the generic implementation (added in a later patch)
+which returns 0.
+
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Paul Burton <paul.burton@mips.com>
+CC: James Hogan <jhogan@kernel.org>
+CC: linux-mips@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
 ---
- arch/mips/loongson64/lemote-2f/pm.c | 22 ----------------------
- 1 file changed, 22 deletions(-)
+ arch/mips/include/asm/pgtable-64.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/loongson64/lemote-2f/pm.c b/arch/mips/loongson64/lemote-2f/pm.c
-index 4ee7e9864700..ebe4b57535f0 100644
---- a/arch/mips/loongson64/lemote-2f/pm.c
-+++ b/arch/mips/loongson64/lemote-2f/pm.c
-@@ -80,17 +80,6 @@ void setup_wakeup_events(void)
- 	}
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 93a9dce31f25..42162877ac62 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -273,6 +273,10 @@ static inline int pmd_present(pmd_t pmd)
+ 	return pmd_val(pmd) != (unsigned long) invalid_pte_table;
  }
  
--static struct delayed_work lid_task;
--static int initialized;
--/* yeeloong_report_lid_status will be implemented in yeeloong_laptop.c */
--sci_handler yeeloong_report_lid_status;
--EXPORT_SYMBOL(yeeloong_report_lid_status);
--static void yeeloong_lid_update_task(struct work_struct *work)
--{
--	if (yeeloong_report_lid_status)
--		yeeloong_report_lid_status(KB3310B_BIT_LID_DETECT_ON);
--}
--
- int wakeup_loongson(void)
++#ifdef _PAGE_HUGE
++#define pmd_large(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pmd_clear(pmd_t *pmdp)
  {
- 	int irq;
-@@ -119,17 +108,6 @@ int wakeup_loongson(void)
- 			lid_status = kb3310b_read(KB3310B_REG_LID_DETECT);
- 			/* wakeup cpu when people open the LID */
- 			if (lid_status == KB3310B_BIT_LID_DETECT_ON) {
--				/* If we call it directly here, the WARNING
--				 * will be sent out by getnstimeofday
--				 * via "WARN_ON(timekeeping_suspended);"
--				 * because we can not schedule in suspend mode.
--				 */
--				if (initialized == 0) {
--					INIT_DELAYED_WORK(&lid_task,
--						yeeloong_lid_update_task);
--					initialized = 1;
--				}
--				schedule_delayed_work(&lid_task, 1);
- 				return 1;
- 			}
- 		}
+ 	pmd_val(*pmdp) = ((unsigned long) invalid_pte_table);
+@@ -297,6 +301,10 @@ static inline int pud_present(pud_t pud)
+ 	return pud_val(pud) != (unsigned long) invalid_pmd_table;
+ }
+ 
++#ifdef _PAGE_HUGE
++#define pud_large(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pud_clear(pud_t *pudp)
+ {
+ 	pud_val(*pudp) = ((unsigned long) invalid_pmd_table);
 -- 
 2.20.1
 

@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B786FC43381
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 13:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9EC0C43381
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 13:08:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7C16520661
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 13:05:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9A25B20661
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 13:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1552050320;
-	bh=QdRemWDY9/h1kAlySZjh4J5biDBcHTrhbAK/8tVGw8M=;
+	s=default; t=1552050520;
+	bh=HcAQ9KReJXHtSCy5A8LE+albqNexo90n5h1gWpgOZBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=11iO8T4AfT+NHzZ6uXSc+GaXULajRUeL56PsUvkocdXaNeEKmx0TWqospvNlxAsed
-	 J7GCRKhfzSlXjRm+5AF2notnyGQBCNPDIy9iPcR0McYKT7Uo5+CIjq6ISXTpNFAKz8
-	 hRN4aNLjWsxLYmTBq9aATUSCsv6y3OhkuKW0ddLg=
+	b=sT1j2jQT6+0r4x9NycjRmzHjEF1VLVM4zxHsKnn5KGD63KOUgw/5CYTVyc7sylRc/
+	 tiahwGGLCVQOD9T/UAdA4mk2ecLw5BxDkEF9VnzeRN1B3WkWsWzVNHmBvf2g7QfFdO
+	 NKtEdVxEk58jiD/koekvpjFGSbp4bju8g2bHzP0Q=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727703AbfCHM4k (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Mar 2019 07:56:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32870 "EHLO mail.kernel.org"
+        id S1726857AbfCHNIZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Mar 2019 08:08:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56686 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727716AbfCHM4j (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 8 Mar 2019 07:56:39 -0500
+        id S1726640AbfCHMxB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 8 Mar 2019 07:53:01 -0500
 Received: from localhost (5356596B.cm-6-7b.dynamic.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4524720449;
-        Fri,  8 Mar 2019 12:56:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A61862087C;
+        Fri,  8 Mar 2019 12:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1552049798;
-        bh=QdRemWDY9/h1kAlySZjh4J5biDBcHTrhbAK/8tVGw8M=;
+        s=default; t=1552049580;
+        bh=HcAQ9KReJXHtSCy5A8LE+albqNexo90n5h1gWpgOZBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MpLM23QCpDyfnlJSqd9YInP6xQGff5VGp5NYoiZ4ehMHkLyhCI5OMRVnDhv5tJmK+
-         MKPSm7CR7u5W8MioqrBr9YxdkVDR/jaDFf67T1NEuNml+hiUNKt5WuHVW065UOAzIT
-         gSCXLXvd/XfqPpMa2ETckddBcCUBpE1bjhElkSNI=
+        b=t76qVD1/urNTpDznvFIBgnJeloQbjd6Id/6GIEu0F1dobMZhE4RgbOEP/mt331NJy
+         B3IBkylmTKtAJ8jA0+s6RTyoRF3/56b4r7gEObKYoRKhnKzLPbnez+HdZNdD9ZKM5v
+         FjtK7FdnFs846Ti14EP2UiCLDa7xU27Aw3VA+TUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Liu Xiang <liu.xiang6@zte.com.cn>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.20 66/76] MIPS: irq: Allocate accurate order pages for irq stack
-Date:   Fri,  8 Mar 2019 13:50:18 +0100
-Message-Id: <20190308124917.129568238@linuxfoundation.org>
+Subject: [PATCH 5.0 36/46] MIPS: irq: Allocate accurate order pages for irq stack
+Date:   Fri,  8 Mar 2019 13:50:09 +0100
+Message-Id: <20190308124904.584345584@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190308124914.789210760@linuxfoundation.org>
-References: <20190308124914.789210760@linuxfoundation.org>
+In-Reply-To: <20190308124902.257040783@linuxfoundation.org>
+References: <20190308124902.257040783@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +59,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.20-stable review patch.  If anyone has any objections, please let me know.
+5.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

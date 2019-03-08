@@ -2,105 +2,92 @@ Return-Path: <SRS0=hlE+=RL=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17FA4C43381
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 21:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8500EC4360F
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 22:23:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DA3BB20851
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 21:10:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4D3F520857
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Mar 2019 22:23:49 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P6TjMG7f"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fSfpD4mb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726465AbfCHVKA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Mar 2019 16:10:00 -0500
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:33999 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726375AbfCHVKA (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 8 Mar 2019 16:10:00 -0500
-Received: by mail-pg1-f194.google.com with SMTP id i130so15087654pgd.1
-        for <linux-mips@vger.kernel.org>; Fri, 08 Mar 2019 13:09:59 -0800 (PST)
+        id S1726352AbfCHWXr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Mar 2019 17:23:47 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:33103 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726286AbfCHWXr (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 8 Mar 2019 17:23:47 -0500
+Received: by mail-lj1-f195.google.com with SMTP id z7so18719904lji.0
+        for <linux-mips@vger.kernel.org>; Fri, 08 Mar 2019 14:23:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S1cde1jQsu/UmZpXHCI4YVyEziLBMknSj83sr+RMBZs=;
-        b=P6TjMG7fGRK7XyKsHWb0VTW6Q9whc9pDX0eApYKLPbELPHCHHvNO1r7DQOut67QdQf
-         FuTtzYitbpr7AHdi+ap23htEvIVldeQFt0CZig1xUByIAmLIDI2O4k4YHsBwJ64kaQWd
-         tv9j1KHx2JH1J2tmZPJhMNVFB8etwLial5vzaeR/9qwAV2c1yBvLA3TTyt4/i+HmPcTL
-         T/oBwnARgQbuOoODRHRkgsClw63M47siEORCvHIoDAARpKe6irP/WtLHcw7Dj8eT5JuA
-         Ilbxwx/EPXlacKb9cRMv1rJi0/JemVW4Hm0J0lIdqHk5YR9babjNToAKh+r2oIKnNfY4
-         f0Xw==
+         :cc:content-transfer-encoding;
+        bh=lO7SZ2brTDoO1a0egWwhDfNQfKSc2gBmtdk6iWrE7tY=;
+        b=fSfpD4mbl3+RT47Jlb31fJMiwcm3HsDrnCYrZPcX+15p8qAN7YW4SFZ4wRhoEvat45
+         v8OQlu3+OexHqSEh1wSL7oTnvW7HUaWUtbBd1O39QxCbATDIzgJXZvPutZ2c2kwmgyBv
+         6zo6wE1hS2+QRKcTo8asfrLSQ7X5pD3XgUAl5IWbUGz35/udsuHPxxT9mz779rsxttGs
+         sjqiBEG916F1FkkOvPxHejyGoFTOpx9YMPqnrA0N8yQPM/uEmFhBX31XkpfW8FUJJgmi
+         K3wM1TROc30Dwh+vIc2DDyJkvrPMdL6QnDFahJaCeyBkTMp2M4QhJbotNxGGVptyWi6r
+         V/lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S1cde1jQsu/UmZpXHCI4YVyEziLBMknSj83sr+RMBZs=;
-        b=bd31puNKnCNG3mak6PMxmbTZW72Yqt+ga/YFeDY5Kq7b6ZUipgXzfYx1cEx2tgL0xf
-         vn/v1U/dHTNRAzyGyxd9BeP06quzC1tv0UErLJVXousVB/j7qwx1mNemevUfUY1DPIM3
-         vnuznhNkjE7S/EyaUAC4ZvpjKWaZCLzVOS8mXRaNmFLUpG3nEvM5dr9GRdw7iWpuy3w5
-         oo138oDypn3nktj81zipD9/aUF+STKqMaAzg2js6IFPrtEsi2dFNYe83fpmc9gfYl1zl
-         IsHr/FWp2S9aWI+WKePRMZM1jcoNWyOQ2NABaxEYKo8dSGOMzMfBhhBQXu5NLH28fJQZ
-         Yk9g==
-X-Gm-Message-State: APjAAAW6S7nwEF04pE+K+QqbU82XOZiU4p3VSDVWjEB/ts6RpqxgZ4Oh
-        F/96p9A11aIu44JAyKLCvgdzogbsBRGde8Y6mVUsAg==
-X-Google-Smtp-Source: APXvYqxaUQ5jhATdW1RKgLqB4lqdILD9dACC3jIaYW5eDACGP9qzaugQ2z2LCqttDQxBnJJNnWoLEVD25z3YeGBTuYs=
-X-Received: by 2002:a17:902:56a:: with SMTP id 97mr20702494plf.320.1552079398761;
- Fri, 08 Mar 2019 13:09:58 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=lO7SZ2brTDoO1a0egWwhDfNQfKSc2gBmtdk6iWrE7tY=;
+        b=Q57GPw/2D5l/QDOk30R1A1ac5ysG6o6pc9/CLVzZFH1WSOcf2TxwS1HgdaFx7+yB0g
+         w7xm6K2w6Iz395Rt75HMPNMqgvo+K0Q7oT8qp7lvoemshONhZVB8N6ltok9tHdZI6xIk
+         7BYmr9wG+AJXWuUKLyhEbuqYks8hPoImv29+llkopXX4wS1pY8o1N/teHZ8yCQIrFK/i
+         a6akOvlx/N9q1A1pkUqxJeoN9zMP7Jl3H/WzKoBZe3Akb4LVHXRo9WfkGHWBsT89kzHL
+         ZVMsHofQYaeO+kL4QtBneVu1vEizQWRHuxLpBsBLNcjzOLTpZm48ArSeHtnGjDlXEjTF
+         ZFpA==
+X-Gm-Message-State: APjAAAWebbA38nHL1lVum5n5h31zy5Jr8AocvoH+o+Wgc+fN5WFdVGbQ
+        eKqyPeXV5vOODK8UsW4TaCssRgU01Nu8vWXto0R6PQ==
+X-Google-Smtp-Source: APXvYqz6acVE0S1CBvA7fh1Gfw4lcA41lkfcJ54ZuL2G+Xh6ke/d7K5NF00aDkGTm8s6kyOjh05ejSFz7rnUrVBPfNA=
+X-Received: by 2002:a2e:90cd:: with SMTP id o13mr10317613ljg.153.1552083825496;
+ Fri, 08 Mar 2019 14:23:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20190307091218.2343836-1-arnd@arndb.de> <20190307152805.GA25101@redhat.com>
- <CAK8P3a2fuD-UBJET_OBKekCxrTDpnAxb0Bpu2LCCXaVT3pXTMQ@mail.gmail.com>
- <20190307164647.GC25101@redhat.com> <CAK8P3a2FU55-7wQnLXDAmRCgiZ-W+2rY6p7CrTiKNe0wda-Hsg@mail.gmail.com>
- <CAKwvOd=nyhM72CxdO-YYSsXr7rh3LUALn_ezVNzyiBaOD7KZkA@mail.gmail.com> <31b6d5bdfda9cbadffa6d8cb3ad0991e237a364c.camel@perches.com>
-In-Reply-To: <31b6d5bdfda9cbadffa6d8cb3ad0991e237a364c.camel@perches.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Fri, 8 Mar 2019 13:09:47 -0800
-Message-ID: <CAKwvOd=+_FjWmo2McyLOAL3r6JOuu1wZEzQknY-GToDnCwzhsQ@mail.gmail.com>
-Subject: Re: [PATCH] signal: fix building with clang
-To:     Joe Perches <joe@perches.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Oleg Nesterov <oleg@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Christian Brauner <christian@brauner.io>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-mips@vger.kernel.org
+References: <20190228220756.20262-1-paul@crapouillou.net> <20190228220756.20262-2-paul@crapouillou.net>
+ <20190301201624.GA22317@ravnborg.org> <1551480042.1526.0@crapouillou.net>
+In-Reply-To: <1551480042.1526.0@crapouillou.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 8 Mar 2019 23:23:33 +0100
+Message-ID: <CACRpkdbtnuHC6Ob-soewxKbH_AR+ijg-zkc_w2ZTBg8qBPkoZw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: Add doc for the ingenic-drm driver
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-mips@vger.kernel.org,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Mar 7, 2019 at 4:27 PM Joe Perches <joe@perches.com> wrote:
->
-> On Thu, 2019-03-07 at 16:22 -0800, Nick Desaulniers wrote:
-> > On Thu, Mar 7, 2019 at 1:45 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > I'd have to try, but I think you are right. It was probably an
-> > > overoptimization back in 1997 when the code got added to
-> > > linux-2.1.68pre1, and compilers have become smarter in the
-> > > meantime ;-)
-> >
-> > How do you track history pre-git (2.6.XX)?
->
-> https://landley.net/kdocs/fullhist/
+On Fri, Mar 1, 2019 at 11:41 PM Paul Cercueil <paul@crapouillou.net> wrote:
 
-Ah neat! Thanks for the link.  Now to wire that up to fugitive:
-http://vimcasts.org/episodes/fugitive-vim-exploring-the-history-of-a-git-repository/
+> I also have a board with a "smart" panel (ili9331)
+> that needs a special configuration in the IP. There is nothing in
+> the drm_panel interface that tells me what mode I should use for what
+> panel...
 
-The LLVM project recently switched to git from svn.  For quite some
-time the move was delayed in order to preserve history (including for
-parked release branches and all kinds of edge cases and things that
-don't quite translate from svn to git).  Now I better appreciate the
-history preservation.
--- 
-Thanks,
-~Nick Desaulniers
+Is the ILI9331 anything similar to ILI9322 that I have a driver
+for in drivers/gpu/drm/panel/panel-ilitek-ili9322.c?
+I was hoping they would be similar and we =E1=BA=83ould be able
+to just reuse that driver for more of them but I might be
+mistaken.
+
+Yours,
+Linus Walleij

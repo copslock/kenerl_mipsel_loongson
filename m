@@ -2,125 +2,86 @@ Return-Path: <SRS0=UFFZ=RM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.3 required=3.0 tests=DATE_IN_PAST_03_06,
+	DKIM_INVALID,DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DF10C43381
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Mar 2019 00:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D8FBC43381
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Mar 2019 16:21:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2512B20857
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Mar 2019 00:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1552091037;
-	bh=n/JIxP5EjXTbE6AftsS936qkRdKHn9xUYcmdVlCy+NM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=sp1TtrhMRolnOUai5GIyv1zF1UaFJ4edkrgkCCzyX+eUb57+BePl0jZG6I3bhelEu
-	 V7tFNt9iXUuxO0ax3Sh42IJgXyteMPkE471WEx+GkZtMthlMuvHtxoRTUaP2ZD0rep
-	 +46AWhMHSzHPL74y5gWWhACUH4FLjQ9xJY+jm1p0=
+	by mail.kernel.org (Postfix) with ESMTP id 3F2672081B
+	for <linux-mips@archiver.kernel.org>; Sat,  9 Mar 2019 16:21:32 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="L8+mj//p"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbfCIAX4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Mar 2019 19:23:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58472 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726302AbfCIAX4 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 8 Mar 2019 19:23:56 -0500
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 13B542086A;
-        Sat,  9 Mar 2019 00:23:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1552091035;
-        bh=n/JIxP5EjXTbE6AftsS936qkRdKHn9xUYcmdVlCy+NM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=AgrS66BuN6zXq6EiJYQr1GyyWEP3WoukrdmVL++6PfdR8eA1EQjweOUJNoG260rhj
-         WJj9Fm3vNOdjMegHBWA1wPXpYCJfib5+dz31zAxls5jA7t8q/tjPQqef2Rjcuz+nFE
-         cZG/nCrbY3Wm9Ty78o38ScTF9OZlfP8dzWO5rBto=
-Received: by mail-qk1-f170.google.com with SMTP id y140so12246801qkb.9;
-        Fri, 08 Mar 2019 16:23:55 -0800 (PST)
-X-Gm-Message-State: APjAAAX3y5QJoqN4RhwKEnxBxo80ZL1wzaSdB5kEdJUJZZlMZ2lcr6rI
-        I1xif31BMcOLW0XjIIE2hHUd0FtWjukvxNkwrQ==
-X-Google-Smtp-Source: APXvYqz8Ly0D8oSMcFgkwyNWRuCChEPqCHPGuRoW0+DuNoY747Hez9qeI7cB3bUf2u3GyGmGdKorQ0dNf6AF3m57ex4=
-X-Received: by 2002:a05:620a:123b:: with SMTP id v27mr15253215qkj.29.1552091034224;
- Fri, 08 Mar 2019 16:23:54 -0800 (PST)
-MIME-Version: 1.0
-References: <20190228220756.20262-1-paul@crapouillou.net> <20190228220756.20262-2-paul@crapouillou.net>
-In-Reply-To: <20190228220756.20262-2-paul@crapouillou.net>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 8 Mar 2019 18:23:43 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJNBdV=bN7hnXDB=MjL1OnUnxEgC=bRzb9sCE-F_MX-zQ@mail.gmail.com>
-Message-ID: <CAL_JsqJNBdV=bN7hnXDB=MjL1OnUnxEgC=bRzb9sCE-F_MX-zQ@mail.gmail.com>
+        id S1726379AbfCIQV1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 9 Mar 2019 11:21:27 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:57088 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726289AbfCIQV1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 9 Mar 2019 11:21:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1552148483; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0ObnIZZXjIdjz4h/6SKpSit2+zp5DF8vYj96LBwtyng=;
+        b=L8+mj//p8gOV1oD614qXuwwt1Vzi4Qb0aXB51fmd1zF4nnupf9lPpJPwtLAf+7R85teBhX
+        EhM1c1Fu0MESwAfaczi7pIDfc0V1v1kWAuXsJFODWDWiNuUTN0eRBBTFqycjSw81js/u+v
+        RtBa8QLhGfocUuXbDlKGKoSRQeBWKj4=
+Date:   Sat, 09 Mar 2019 13:33:54 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
 Subject: Re: [PATCH 1/3] dt-bindings: Add doc for the ingenic-drm driver
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
         Sean Paul <sean@poorly.run>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-mips@vger.kernel.org,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        linux-kernel@vger.kernel.org
+Message-Id: <1552134834.2040.0@crapouillou.net>
+In-Reply-To: <CACRpkdbtnuHC6Ob-soewxKbH_AR+ijg-zkc_w2ZTBg8qBPkoZw@mail.gmail.com>
+References: <20190228220756.20262-1-paul@crapouillou.net>
+        <20190228220756.20262-2-paul@crapouillou.net>
+        <20190301201624.GA22317@ravnborg.org> <1551480042.1526.0@crapouillou.net>
+        <CACRpkdbtnuHC6Ob-soewxKbH_AR+ijg-zkc_w2ZTBg8qBPkoZw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Feb 28, 2019 at 4:08 PM Paul Cercueil <paul@crapouillou.net> wrote:
->
-> Add documentation for the devicetree bindings of the DRM driver for the
-> JZ47xx family of SoCs from Ingenic.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Tested-by: Artur Rojek <contact@artur-rojek.eu>
-> ---
->  .../devicetree/bindings/display/ingenic,drm.txt    | 30 ++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/ingenic,drm.txt
->
-> diff --git a/Documentation/devicetree/bindings/display/ingenic,drm.txt b/Documentation/devicetree/bindings/display/ingenic,drm.txt
-> new file mode 100644
-> index 000000000000..52a368ec35cd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/ingenic,drm.txt
-> @@ -0,0 +1,30 @@
-> +Ingenic JZ47xx DRM driver
-> +
-> +Required properties:
-> +- compatible: one of:
-> +  * ingenic,jz4740-drm
-> +  * ingenic,jz4725b-drm
+Hi Linus,
 
-DRM is a kernel thing. What's the h/w called?
+On Fri, Mar 8, 2019 at 11:23 PM, Linus Walleij=20
+<linus.walleij@linaro.org> wrote:
+> On Fri, Mar 1, 2019 at 11:41 PM Paul Cercueil <paul@crapouillou.net=20
+> <mailto:paul@crapouillou.net>> wrote:
+>=20
+>>  I also have a board with a "smart" panel (ili9331)
+>>  that needs a special configuration in the IP. There is nothing in
+>>  the drm_panel interface that tells me what mode I should use for=20
+>> what
+>>  panel...
+>=20
+> Is the ILI9331 anything similar to ILI9322 that I have a driver
+> for in drivers/gpu/drm/panel/panel-ilitek-ili9322.c?
+> I was hoping they would be similar and we =E1=BA=83ould be able
+> to just reuse that driver for more of them but I might be
+> mistaken.
 
-> +- reg: LCD registers location and length
-> +- clocks: LCD pixclock and device clock specifiers.
-> +          The device clock is only required on the JZ4740.
-> +- clock-names: "lcd_pclk" and "lcd"
-> +- interrupts: Specifies the interrupt line the LCD controller is connected to.
-> +
-> +Optional properties:
-> +- ingenic,panel: phandle to a display panel, if one is present
+That's a bit hard to tell right now, but from a quick look at the
+datasheet, it looks quite different :(
 
-Use the graph binding or a child node. See other bindings.
+-Paul
 
-> +- ingenic,lcd-mode: LCD mode to use with the display panel.
-> +                   See <dt-bindings/display/ingenic,drm.h> for all the
-> +                   possible values.
-> +
-> +Example:
-> +
-> +lcd: lcd-controller@13050000 {
-> +       compatible = "ingenic,jz4725b-drm";
-> +       reg = <0x13050000 0x1000>;
-> +
-> +       interrupt-parent = <&intc>;
-> +       interrupts = <31>;
-> +
-> +       clocks = <&cgu JZ4725B_CLK_LCD>;
-> +       clock-names = "lcd";
-> +};
-> --
-> 2.11.0
->
+=
+

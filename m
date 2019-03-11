@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EB73C10F06
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10D8BC43381
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:56:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2F82420883
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:55:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E396F20643
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:56:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728313AbfCKSz4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 14:55:56 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:57635 "EHLO
+        id S1728479AbfCKS4Q (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 14:56:16 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:58293 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728281AbfCKSzy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:55:54 -0400
+        with ESMTP id S1728380AbfCKS4P (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:56:15 -0400
 Received: from orion.localdomain ([95.115.159.19]) by mrelayeu.kundenserver.de
  (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MgNtR-1gZJKg2Swp-00hwpN; Mon, 11 Mar 2019 19:55:37 +0100
+ 1MRnXY-1hVUY81wdO-00TBmG; Mon, 11 Mar 2019 19:55:58 +0100
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -34,76 +34,62 @@ Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         shawnguo@kernel.org, linux-gpio@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH 16/42] drivers: gpio: janz-ttl: drop unneccessary temp variable dev
-Date:   Mon, 11 Mar 2019 19:54:55 +0100
-Message-Id: <1552330521-4276-16-git-send-email-info@metux.net>
+Subject: [PATCH 42/42] drivers: gpio: use devm_platform_ioremap_resource()
+Date:   Mon, 11 Mar 2019 19:55:21 +0100
+Message-Id: <1552330521-4276-42-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1552330521-4276-1-git-send-email-info@metux.net>
 References: <1552330521-4276-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:xPkcHUo6RopzkqV+mh4vpPChYf4VH0lnv4qK/tFVXd518EX7goP
- fE+h/waGMIQcBXFyHl2mq0TNuKHgHulmHoMLbXWNaKlaC4lw9WQVO9LBFie7iE32I45XUI1
- KyMHsAW1M6/GmZKIMWnBmE8cCGG/5qnzhk9RUwoNViVB860YxZI+TDscphdHRZ+B2gdThZ3
- 0FHTmo3xgE+FUIbLN8vEw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8QpcY987fuE=:/gKt4XdUX6RqHGucbXMHoW
- xCMoIPSMVtUg33YrA3fgelxDXwIeXZhifNd/U2cJMB7pOqFNdknmnwiNxmMxTcM8O51Ap6cR3
- i2XbRBwlL3OdIm3u7LxhvhxCwHm+xoTjTJBV+s3RNJINRdzKJ5p/URe7pHc9os/zG0n+2za2d
- A6GRc+kZgVAbTore7ObSc6d++ZnfOcK3ANNatOUF/DUtct3LcPwmiMdZTuP6qiv3zRahbm+kR
- c8wcrFWF8IOjfCYGj42TjSxz/9HhPs6rHIXyR40NQcziHHQMDonaGv0Riui4cy1diwC0cwq5T
- PfbaHkkp1w7Hox1xPQfgxzTt7BcB9b3Nznwf20Kr4vmL323d9bHGaIddTF8sJtQbPw5aqCIA/
- sQtXJ8wPGsZqqFpHR13iRwYj0plB/C0sqlRBpi3YuGp0qbWnsXDSHFdv0q1QWQ3zH01jB/ipf
- PxdfD2epV+Xg2e6cFaxdB+kbdulcMAOYXHFTq17BXTATwIRRCi2b+1fYr49gqtmhSh+RrVrwF
- jVysRUnrx2llk/0JLN0MAi11znldRchik9TLq8Urojpz7dPyhxf1H7kCAlxQFe8CB4kXwhi6G
- UrIiqrxjQTKxFwTDy3od33T9Xm6SAcT+WwJlYS2kX1bk6iYcoIG7yMcTeD88stMPTrL4I44d3
- 6PffckfAXooOoxGYn18u/kzXqOWaExACZ1qW/7T9jreSlUXuW79gbQJrp6ZxET5/K806+KOPu
- Abz9Zk1bn/SEYr2cEczrVeY3AmN1rUC96W1ugw==
+X-Provags-ID: V03:K1:2LJDIy+/NTyotb6nvlXwEmN99EPjq0YcVBzQbh4KjRi9rAfmUI1
+ C3Y7OdifTOByscUfTFZpIXO1TCLynfnzceMCY5HxiZXgV86Mik8dApa3MjfPWedJV0J2iLq
+ 7vQ10gnTKbTWpbcqBf4tx01AIDb+m9/LB8DdhnxyM15dcLjD5C+fjbGS2g+pZD7+jJ5N6zJ
+ cavweOpA1vp+cMoGqOw2g==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TWrT11k4J4o=:POyb8WLicxVsIKrHqtlzXs
+ 4y7ZFYUxXGgZQAEb7Hb3ujZNcJ6k3z5Xa9IzdKIKvTGtF0NMAVNnM5sM2YFcMLUu73Ne/G4TD
+ hynb3/JsExeKCjR8nTE7HzxpOp6qdYh0Yh51Yk70FYQY0vNe2leVBDcjhFVOFRq6xscTWxfbq
+ r81p2aWg5O2AU7qbqGaJsXUFSnL8pXXSA5NAjDsAQRRhPbutbmp5yRsoT9kAu+fhbpJXNjeEP
+ ANWbluKGkxZqMWdEyqUYsnu2CTFfg020BNdMxV4DE2yV37YcC2VRhvzduE2z2LGZxzJHrJH2C
+ fKDYm9xCp5ipZX2yqSxJlUSPTbZluuvQSccFtpdaKUIgbMvtHw6kmAxmtFPqXySK7mR3pdali
+ Q7bo/zZ1LQkz29dPme0bi1zR4ycpHh/bDnAC1lVSOVrquNpgWXw4ojH8BQzwlNvuKhf/ErTvE
+ O/2htmuYY1FmOKSVPcpOpZcKHRCGYXSNuA71gETjpTfgyeirgcgyvMlwlDiA0jN9zyEw0L9ly
+ H0Tcq0ZidfR8gMsnbxY9LnJbZ8oqXHCg4DdH+0JuIrtTCW8x3axAmTy/Qjr7bh7fkOUAuWQCJ
+ VmGCIlGQbVPVDYuqopv5KicFkt+WbHeUUPG98PgP96Hrr/tHBGTfSFGOXZ9tN59EqGRTyD3RS
+ CfCb/BhMOmY3pyjjVjkZSoauSD7Qyxm/CHxu/4icbhsz6Cij0sAPOKgKhWF1/4MpoIgR3gMMP
+ O5ajKagKpgt1YXNdSMOf9EYVP3Kw2D5yZI8TXQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-don't need the temporary variable "dev", directly use &pdev->dev
+Use the new helper that wraps the calls to platform_get_resource()
+and devm_ioremap_resource() together.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- drivers/gpio/gpio-janz-ttl.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-zynq.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-janz-ttl.c b/drivers/gpio/gpio-janz-ttl.c
-index b97a911..91f91f6 100644
---- a/drivers/gpio/gpio-janz-ttl.c
-+++ b/drivers/gpio/gpio-janz-ttl.c
-@@ -144,18 +144,17 @@ static void ttl_setup_device(struct ttl_module *mod)
- static int ttl_probe(struct platform_device *pdev)
- {
- 	struct janz_platform_data *pdata;
--	struct device *dev = &pdev->dev;
- 	struct ttl_module *mod;
- 	struct gpio_chip *gpio;
- 	int ret;
+diff --git a/drivers/gpio/gpio-zynq.c b/drivers/gpio/gpio-zynq.c
+index 00ff7b1..9392eda 100644
+--- a/drivers/gpio/gpio-zynq.c
++++ b/drivers/gpio/gpio-zynq.c
+@@ -834,7 +834,6 @@ static int zynq_gpio_probe(struct platform_device *pdev)
+ 	int ret, bank_num;
+ 	struct zynq_gpio *gpio;
+ 	struct gpio_chip *chip;
+-	struct resource *res;
+ 	const struct of_device_id *match;
  
- 	pdata = dev_get_platdata(&pdev->dev);
- 	if (!pdata) {
--		dev_err(dev, "no platform data\n");
-+		dev_err(&pdev->dev, "no platform data\n");
- 		return -ENXIO;
- 	}
+ 	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+@@ -849,8 +848,7 @@ static int zynq_gpio_probe(struct platform_device *pdev)
+ 	gpio->p_data = match->data;
+ 	platform_set_drvdata(pdev, gpio);
  
--	mod = devm_kzalloc(dev, sizeof(*mod), GFP_KERNEL);
-+	mod = devm_kzalloc(&pdev->dev, sizeof(*mod), GFP_KERNEL);
- 	if (!mod)
- 		return -ENOMEM;
- 
-@@ -181,9 +180,9 @@ static int ttl_probe(struct platform_device *pdev)
- 	gpio->base = -1;
- 	gpio->ngpio = 20;
- 
--	ret = devm_gpiochip_add_data(dev, gpio, NULL);
-+	ret = devm_gpiochip_add_data(&pdev->dev, gpio, NULL);
- 	if (ret) {
--		dev_err(dev, "unable to add GPIO chip\n");
-+		dev_err(&pdev->dev, "unable to add GPIO chip\n");
- 		return ret;
- 	}
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	gpio->base_addr = devm_ioremap_resource(&pdev->dev, res);
++	gpio->base_addr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(gpio->base_addr))
+ 		return PTR_ERR(gpio->base_addr);
  
 -- 
 1.9.1

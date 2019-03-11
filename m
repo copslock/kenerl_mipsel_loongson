@@ -6,112 +6,104 @@ X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27B6EC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B09DC43381
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:14:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D55F7206BA
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:14:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 092EA206BA
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:14:12 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="CVAbY8bE"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="olCfCjIA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727336AbfCKSOF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 14:14:05 -0400
-Received: from mail-eopbgr730103.outbound.protection.outlook.com ([40.107.73.103]:59965
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        id S1727153AbfCKSOL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 14:14:11 -0400
+Received: from mail-eopbgr720107.outbound.protection.outlook.com ([40.107.72.107]:36769
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727147AbfCKSOF (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 11 Mar 2019 14:14:05 -0400
+        id S1728034AbfCKSOK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 11 Mar 2019 14:14:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVavoyoiBTKfyONZTVhC0ubm20MocMkb06SU5qbG16g=;
- b=CVAbY8bEaGAqYjROBr14vyo86Tn9/ctzOTW79MkvADvgdsFMQ68U/SOc9WUqKNkThGc8PibQZNqG4DRzIUEm3GRpP2fXn55L62Yp+9Hz7LOy2gXuYfd3Q+oAhg99Gt//rYpV9yE5Qf28hw4+IxA2feedWvUKUfLJpgycqCwKy04=
+ bh=8Lt8U/jnpmqM4U/5NYQucIbsh9JwE8iLSRMD3qKhUSg=;
+ b=olCfCjIA4tPIoZb76QzkOx44XLGAQ/vQro9dDdWSK2tx68LUXSxh5Nu3fyo3jxWH00eWAXLzfBkwfTOg7OWa355x/TqtxSuYJHiUWgY+7zuaXJlkTqjor2Vvejmx+/Y8Od/YkaC15R0a3PaE0iauXrS6v3mXgQSXAyrtSLlhaBc=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1374.namprd22.prod.outlook.com (10.174.160.149) with Microsoft
+ MWHPR2201MB1455.namprd22.prod.outlook.com (10.174.170.140) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1686.21; Mon, 11 Mar 2019 18:14:01 +0000
+ 15.20.1665.19; Mon, 11 Mar 2019 18:14:07 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1686.021; Mon, 11 Mar 2019
- 18:14:01 +0000
+ 18:14:07 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Yifeng Li <tomli@tomli.me>
+To:     Archer Yan <ayan@wavecomp.com>
 CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Yifeng Li <tomli@tomli.me>,
+        Archer Yan <ayan@wavecomp.com>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to
- "cascade"  irqaction.
-Thread-Topic: [PATCH] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to
- "cascade"  irqaction.
-Thread-Index: AQHU2DY0omutCmrXsE2nUAWtbThm2A==
-Date:   Mon, 11 Mar 2019 18:14:01 +0000
-Message-ID: <MWHPR2201MB1277B26232DBDC311AEC16EEC1480@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190304220022.20682-1-tomli@tomli.me>
-In-Reply-To: <20190304220022.20682-1-tomli@tomli.me>
+Subject: Re: [PATCH] Fix Kernel crash for MIPS rel6 in jump label branch
+ function.
+Thread-Topic: [PATCH] Fix Kernel crash for MIPS rel6 in jump label branch
+ function.
+Thread-Index: AQHU1V8dzO7oBULX/0Sep/akK9JeA6YGwa8A
+Date:   Mon, 11 Mar 2019 18:14:07 +0000
+Message-ID: <MWHPR2201MB1277A9E773B601A33D71BBCDC1480@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190308032907.10110-1-ayan@wavecomp.com>
+In-Reply-To: <20190308032907.10110-1-ayan@wavecomp.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0045.namprd02.prod.outlook.com
- (2603:10b6:a03:54::22) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR05CA0038.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::15) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: be020e5a-161c-43ac-39c8-08d6a64d565d
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1374;
-x-ms-traffictypediagnostic: MWHPR2201MB1374:
-x-microsoft-exchange-diagnostics: =?iso-8859-1?Q?1;MWHPR2201MB1374;23:ohHNjrmKtDgPGhKcPO+ZKpZa952KncE7Ac0PN?=
- =?iso-8859-1?Q?8JIkdYHWiKskFMR2gVQdppz4Ya6z5QNftdgRD1420SPnz5dVcX6VTqU+zu?=
- =?iso-8859-1?Q?5yyWf3R+mj1GyDlKyveGadlGuIsjWJYog+jab19h1nWhdmVbdPUuMZPZ+Y?=
- =?iso-8859-1?Q?daplRW5GXaxvYHohR8HovKyYRBaF7f/sMQFIbeH4GxNUXglwBHy1VI/MF+?=
- =?iso-8859-1?Q?cobG0ijJNC6sJT4O37E2r1voupiyyfAPBPCyPxjLv7dQdqfD8rB1ZWOqKw?=
- =?iso-8859-1?Q?kqV4G7XVysX8KqXEwNgZD7xxDdl3sLZcEBDVw6yqs2jKyqpRzeJUyIwDev?=
- =?iso-8859-1?Q?P5SBNi6Pa7Bt8aAPJCTFO76dZnqnxu4f3WnUw+pg5hOb7oD7h/0ENzgf+Y?=
- =?iso-8859-1?Q?3ju4vN6CcT8tQaEJgHOPyhW4HibQzKRvyNSSkIk4dflEapls/21NwRSKPl?=
- =?iso-8859-1?Q?uS3o1eTkgHbkD+d4YHjNleIB78D1vQyRq2A0Q/B+EXqETriAjH43P+lPJo?=
- =?iso-8859-1?Q?/pu0yVOA8UBUYfI+K8JD14qvIQ9wRKmwD+5QJDcocLHzv7w4lxZb9kPJ9D?=
- =?iso-8859-1?Q?CwzA9cjeIaUgAEkk+aZAYWlwRrDqPbrCE1pgQDzJ6XobD32mRnbsW7jsmC?=
- =?iso-8859-1?Q?4XCT29sYfsbmy8+T02YxtbThdRPuRRAv+05WIp7GYP9ixZWTawT5FNMlyi?=
- =?iso-8859-1?Q?YXY9IA/96Onw/lqsN8cAG+k5AEB6rUqV89voKwK08br7Z2RKRonUnWv3Zy?=
- =?iso-8859-1?Q?P9tGmMN7hDFi+iC+OZbDdzdtl7fUmjDF1ReQuenFBbbnEjJXlB6OBoUu/K?=
- =?iso-8859-1?Q?/A9Pg8Yh11C0s1fkrkNgBMSF1tQsT/Me8j0bIxeZ/hH8jgGUvxTiDNVwgM?=
- =?iso-8859-1?Q?LwrCMfidi15zoxTpQ2X22LJQG1CcD/wOF8gySV5ZKPphCSwpxMhm2ssl/7?=
- =?iso-8859-1?Q?4pJgoMV/buT+s2RVmk37WSwOEx+wCAwhq0jFUFMr6D4c0VZZxzbnckVb9U?=
- =?iso-8859-1?Q?tgLd6B6BVd6XdGN7H7a5zhL2d9fdxRjsNqgTPb+kv7m+ULwTDmSx6U0yw+?=
- =?iso-8859-1?Q?2rD4iBIXpguKRkZPz27bFg5AI4miWlQQCHuCNen+k9jJDj6nXvMbpnu9uC?=
- =?iso-8859-1?Q?m/gJcvdryoRjBkEhHXDV7zWzde8bOkWLPl0VV945aDaZ9faVM87r2ZvGYp?=
- =?iso-8859-1?Q?tsKFMDPvkkmmYWx9wdw/jF7PgTRul/gQiySa1mhe45I9HYwkz5Lyi3b7JZ?=
- =?iso-8859-1?Q?JGydsxFEy+hn3xIPnhw/iGvoHXDolJT5vzghbMqVDEMEzFonAHfiBsJs57?=
- =?iso-8859-1?Q?5nMN/q2zORkZW7e8+GNpmVBfu8QAlSVtFUQv7VNjOavlT2P5grI4HRvqqa?=
- =?iso-8859-1?Q?MXGZGJjX1t0PmPWsBAY4p8s1Ym++p+WmB5b+z2o5mFA0pdBn5BQmUhfl+K?=
- =?iso-8859-1?Q?bkAqO+8J7o04N91E3OHmMQyxlgCpjPtx82nms?=
-x-microsoft-antispam-prvs: <MWHPR2201MB137449A38FFCED3F55B3986EC1480@MWHPR2201MB1374.namprd22.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: 04dfde5d-bed2-4caa-0b26-08d6a64d5a26
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1455;
+x-ms-traffictypediagnostic: MWHPR2201MB1455:
+x-microsoft-exchange-diagnostics: =?iso-8859-1?Q?1;MWHPR2201MB1455;23:ipKVV+i5u73ErXTZy1eJ8jft9VaBhnKe/J4qr?=
+ =?iso-8859-1?Q?lmaGIZOFQGrfRia89qfvtBJTLXfVUmgIxz0N03bxh/9dREUrR1dy/qSm/J?=
+ =?iso-8859-1?Q?LSa08f73OG86z66XIx+rRbBLDHxHACbRoxCej7Hq3zAM56yxechegQ8B8P?=
+ =?iso-8859-1?Q?UQpcnJdpKb3kBVMzo7oY37Ts/jcw1yiw0AdUp0KqMhsll7DzqFIgi18T4R?=
+ =?iso-8859-1?Q?8zClJYbkTquHYQQp0d28BbXOPh4Ywqgn/AmUTnAaYWsDmhIWZmP8xjp36C?=
+ =?iso-8859-1?Q?EDP9iha6d43EWMbapE8rj5jiVfcHPq5bVNIg0gAfUf1HWaDXWEt8ueLV0t?=
+ =?iso-8859-1?Q?v+Fv2fDsMgiljBT4K5hznFsujWA6D+VA67nWII61fKSpOq1MaPHFZreMHG?=
+ =?iso-8859-1?Q?b5maFM5gIf6uaWgcZscRt3yug7oeoQbRliVHO/tLrYt4Dhw/8SfSBVSqQZ?=
+ =?iso-8859-1?Q?utsNouJN9sRjcwA8Xpp2lc6qkpHUoszjkBiKPLH5N53z6l5VN8DkT9i2V4?=
+ =?iso-8859-1?Q?wLi+vAAqVkdfTGccFJJX2ARpMlglZ8ZVEy3IDv2lt2kJzssRh3okvqqXhY?=
+ =?iso-8859-1?Q?jaYt95L+14ZAoci8nEDabePRnWc6rJBDNMBxgQSIlrW6LcmvC37TRXP44F?=
+ =?iso-8859-1?Q?CoIS5e4kKdNBc1Vfy+Ea7QFiuJ6IG8AtZIzs4a7NkjVLekx0+HV8Vrknm+?=
+ =?iso-8859-1?Q?Gdg89qiZqQftJA3A0IunBPbcE+xDL2JIkRFVgOp0nMjuOoBX6BUjJUyJV/?=
+ =?iso-8859-1?Q?Hl0cYhxeVy5NkzUJ5RSfshg6/Fn8wbEsfoNnWan0g/aUIvhngvAS0KPMsq?=
+ =?iso-8859-1?Q?leuXGSQivh0D547FH83SvNwdi7Lm+Pi21G1Ecav9tWMQzoS/L3TypfPdni?=
+ =?iso-8859-1?Q?8OZiXU/qm3hSb71OD8gcaayDfaghogVBeS1fr2qpkWekwH9wSHR8o8NvRS?=
+ =?iso-8859-1?Q?Y+LLBrA+JfbjbK4Zkiu+uH7oVw55dG8SWFi5WnJuuM8HlOtGWTQ7mG0yn0?=
+ =?iso-8859-1?Q?7VvAF7BzLj3Fw4PLJdQ8E3FMzkeARtjtWAfJKzPXpQE+7vFgWnioFnw7Ai?=
+ =?iso-8859-1?Q?/NIi7ohvsn4FEs4xUnvqyMik8AO9LQAPzl7bjJwty9zgSQci3bHpsBk2w7?=
+ =?iso-8859-1?Q?N8/5ckZs2qrh7hf0f0p8Z5bNGgwQRPpPc96ljIgtHa6yBRN1qNqvLk8xbr?=
+ =?iso-8859-1?Q?Gdz9lTrzIJm/lBH5dA5FCR1TrrM/T8KSLeQrhKc0c1orQrMBsKPBapob08?=
+ =?iso-8859-1?Q?fB3CuAsT7VPkFccWI3lh4gkICyy1T2NE0bxgrNi4U3a87zb0wi1iEfLbla?=
+ =?iso-8859-1?Q?kQ6zMOcgPAPwpvDF6GFvdy22MGYN2sb/3Ff4ZBvLkeSg0GA=3D=3D?=
+x-microsoft-antispam-prvs: <MWHPR2201MB1455FF839B166A6426A16326C1480@MWHPR2201MB1455.namprd22.prod.outlook.com>
 x-forefront-prvs: 09730BD177
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(366004)(396003)(346002)(39850400004)(376002)(136003)(189003)(199004)(2906002)(55016002)(26005)(186003)(42882007)(11346002)(486006)(52536013)(476003)(44832011)(8676002)(5660300002)(7736002)(305945005)(478600001)(33656002)(99286004)(97736004)(446003)(8936002)(52116002)(7696005)(76176011)(68736007)(81166006)(54906003)(81156014)(6246003)(74316002)(106356001)(105586002)(14454004)(102836004)(6116002)(3846002)(6436002)(14444005)(4326008)(25786009)(256004)(6506007)(386003)(6916009)(71190400001)(71200400001)(4744005)(316002)(66066001)(229853002)(53936002)(9686003)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1374;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(366004)(376002)(39850400004)(396003)(346002)(189003)(199004)(81156014)(8676002)(81166006)(54906003)(3846002)(25786009)(99286004)(6116002)(53936002)(68736007)(8936002)(106356001)(55016002)(105586002)(9686003)(97736004)(6436002)(4326008)(66066001)(6246003)(256004)(446003)(11346002)(71190400001)(42882007)(4744005)(186003)(476003)(6862004)(44832011)(486006)(7736002)(71200400001)(386003)(26005)(2906002)(14454004)(33656002)(5660300002)(478600001)(52536013)(52116002)(76176011)(7696005)(102836004)(6506007)(305945005)(229853002)(74316002)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1455;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: dgwPHCtcZTPWj+Aa2Ic0Mr+uoMVhpB5XS2azZtP8SQa41h/B0g5c9LqXjtEiq2CC/EaG5VIDtPyxMF0cXBFh9/pf7jaQqwhytIXCGy4232x8IYdJFnvE/csldsyK8e7s3Tt7rKRlFgcoSMl0TGH8ZfmVpb1xpuuGhjKNNhSmFCWsrRNBSjljsdwxz7xwisVD0mc/X2H3LTTP7gj6PDQnz6TbgpqxjXqpWjgW/5TvtzMLq2FvLMWKyDzKhPIlowgsq3ORuIJHMst4ndFP8i+AwIIZp2PZYvRrcD8Fo/igXEtH0HGBP8lf+J0ucbChYinURwHZJGAdvp1LPGQzkbOPviSsmkrZgXPtwRCT5/LyPVgYfXK2aHsZzjzAN8n0xMyqQKlo4h917O073WMCVgmmcTN4DN2qBy5RS+JUezxMfuw=
+x-microsoft-antispam-message-info: rJ0bvRcLPoyFsYtVOreETEvwWuaKLXydzJCCieSXe9TzDcUiMI08G14LfRbx5UnAwPS1LCixXqR/7Z5MNI2D3Rv3gT/zJhrfpD+G09QfUZ7AHMRzhX+pUbsAOMYdYK0uMg1BslUY/p9DYaJI907sYXDQzt166f6mMggLVgDKIxDY041/dqM1v+VVY2leDok1XX5JiiFd+AG8i7Yekxy/Rdv/W5CqJ9pt5JWswg10ocejmFjNROtUzzDKPjcCTxxD8WFQ+xt3ts/3QuqJoHqltCeO3a/AhziQsIadamoNOj1WIUtjiPofaknknHpkZPpPl6RUQ0W0J2a0fIX+bAUJDfHaMOx2adc4/AJlTMZLxq20Rbm6Mw6FD0rdsaJj1bfaGsOrOGD5piplCb3zLzj+XVJqwoocCLO50fyqgLQ8pMI=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be020e5a-161c-43ac-39c8-08d6a64d565d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2019 18:14:01.5990
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04dfde5d-bed2-4caa-0b26-08d6a64d5a26
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2019 18:14:07.7711
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1374
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1455
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -119,22 +111,15 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hello,
 
-Yifeng Li wrote:
-> Timekeeping IRQs from CS5536 MFGPT are routed to i8259, which then
-> triggers the "cascade" IRQ on MIPS CPU. Without IRQF_NO_SUSPEND in
-> cascade_irqaction, MFGPT interrupts will be masked in suspend mode,
-> and the machine would be unable to resume once suspended.
+Archer Yan wrote:
+> Insert Branch instruction instead of NOP to make sure assembler don't
+> patch code in forbidden slot. In jump label function, it might
+> be possible to patch Control Transfer Instructions(CTIs) into
+> forbidden slot, which will generate Reserved Instruction exception
+> in MIPS release 6.
 >=20
-> Previously, MIPS IRQs were not disabled properly, so the original
-> code appeared to work. Commit a3e6c1eff5 (MIPS: IRQ: Fix disable_irq
-> on CPU IRQs) uncovers the bug. To fix it, add IRQF_NO_SUSPEND to
-> cascade_irqaction.
->=20
-> This commit is functionally identical to 0add9c2f1cff ("MIPS:
-> Loongson-3: Add IRQF_NO_SUSPEND to Cascade irqaction"), but it forgot
-> to apply the same fix to Loongson2.
->=20
-> Signed-off-by: Yifeng Li <tomli@tomli.me>
+> Signed-off-by: Archer Yan <ayan@wavecomp.com>
+> Reviewed-by: Paul Burton <paul.burton@mips.com>
 
 Applied to mips-fixes.
 

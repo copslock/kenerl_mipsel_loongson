@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F86CC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 19:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85479C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 19:02:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0BBCC20643
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 19:01:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 517CD20643
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 19:02:04 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1dPMvyL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtV01dbb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728621AbfCKTB1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 15:01:27 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:46924 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728576AbfCKTB1 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 15:01:27 -0400
-Received: by mail-yw1-f65.google.com with SMTP id j189so4775090ywd.13;
-        Mon, 11 Mar 2019 12:01:26 -0700 (PDT)
+        id S1728137AbfCKTCD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 15:02:03 -0400
+Received: from mail-yw1-f66.google.com ([209.85.161.66]:38476 "EHLO
+        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727138AbfCKTCD (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 15:02:03 -0400
+Received: by mail-yw1-f66.google.com with SMTP id x20so4798808ywd.5;
+        Mon, 11 Mar 2019 12:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=NhAuSQORS/cG9C8DX3QKVK1hxjdPlskm+qoF11hf+tM=;
-        b=g1dPMvyLRr6tCmqHnSZ2RZMpeRTpUEfgDmnmjUGv3jdI7iM+8G08pPbVH9tYpwSY8B
-         W0GDiznxoIVVOJq2qKBDlNGMFkiDXTmLrQ7RQIor0BKAMEBSWndxTPOFspBY4+B5Mouc
-         uUV55suLQhVjMsI+bEsrt+KWPj/HYllu+M4aqJuzEJmU3mpd2rCs/n0Z5kpg7MAua/9z
-         PJ+8KMawRd1r/NJOzOz+JTUR+ptDAhVhRZpFPExts7BHX/UmWiD9KAsTJQyJocWuA9Vk
-         zEQEGT4YxebKF6sYaT+xJyiDee8zqE4VATrquXEnZHeho314YCZLUNjJc33WugFh1LFT
-         WbmA==
+        bh=JL/eF/MjZIUnC+n9L1pbX9vmg6J6RNNSGrcuRioqjXc=;
+        b=KtV01dbbGkG46x74gJV61W2Fu3jNMHXsI0CkvCOfH3WawVP7EZ9PCgD31WvqG2SxRb
+         IEfzlQULxqUtsE62Zuf7PMBbDvYKr90p8F8zPi9OcGdTTGF9Syx9Hw4iMdVTop+wofKc
+         BfLNcjcIJVp/ms5sIKceCjq5MqBQBOMW1wwc8pU/luUcPwEr6y0Rpq+OensmlOWb24Qu
+         MN5ryokRsc0P9a3ILpAbl0gZGZPyjbl1wKSpkierv3oHubrJ8bB7gxeDdsV5Lea7W8I3
+         X+3wRRHODnWeg+YP6tSF/d/0c0A88l12G1y6BgEVKDZaj5u9Phi3lbTaxKCaoZO+I6F2
+         625w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=NhAuSQORS/cG9C8DX3QKVK1hxjdPlskm+qoF11hf+tM=;
-        b=KAHb+zRNPJUyuhsqX30VUD0uoYbX8kXy0T117u0Fct0Yq/5jonaFL0i+skR9YSCwY4
-         TD/3fx0zbX5f5lspbRHPFMkSTiywXhgKsA7p6XfwKt+jpIuNc/to0pw2s+EpdCCkqpa+
-         1M3Ydcr57ZlKVvSEm6EUuCP+dg3TEHm9B9f4eZhmVLOHq2V6X2nJOUXcigDU+CBTzxmw
-         gDF6m7Ldwvq0mTB5qQTXGNEsqttan5M6vS41LGZLv8P6nwReXyxQgACckDzMGI3ngf6Z
-         z3ndw6Y/nj9IEFIE9AaXECAZYnyfcivuFEnKCHD30lXNY7+3TFXLNXmr78CoaG9fAsEw
-         jTqw==
-X-Gm-Message-State: APjAAAXHJfzTshSCt6setlT+46wugIE/m/MwoFiU/73OGyjvWUfKPm+F
-        PZx0ibT6iPfwjkwJwbQKyzVb7og8
-X-Google-Smtp-Source: APXvYqy9SpS/7Tq7TDYQiea8n/FE9D+1CyCCh/ftJs92ZLYrk2Pg46mwkBIT+mXflAT197Fee9MGLQ==
-X-Received: by 2002:a5b:7ce:: with SMTP id t14mr14102359ybq.416.1552330885485;
-        Mon, 11 Mar 2019 12:01:25 -0700 (PDT)
+        bh=JL/eF/MjZIUnC+n9L1pbX9vmg6J6RNNSGrcuRioqjXc=;
+        b=WNwoeullGd6SqTZdmi8rdA+lm9Yf7FvA8A+FTOpBfER6krswbMvWwPaQ32rnBBtItx
+         zHN03MzcNQg24xM+e2Xtdas/c5hxM1UzYXBvfSnaPmrvmBjKO+WBZ+f3MFNiA2oxvexX
+         ojASN8lgy4Ra6k8JfMDFvAX9FZXsOop5/ZSeqvoCou6YyDWtcXV0NI0CPfvQsn8unVCd
+         7mNPT5hAcv3H6oQo0d1aVBz1JYYupluEbV8xBlYRHebHzjS7aS1pTpQVRV8UNqjcFy07
+         MczNwMKIzzoExDLWn+n008h1sESVTZkG19Bey6fePhCa2+m5fD4vZQG+7K9+MGU3zrmr
+         bOrw==
+X-Gm-Message-State: APjAAAXaiAlxhGFzUDMSC3kT7eUi7MNIl5UmGktfTmR2C/w9hCm42SSm
+        UvN8ToIPbJ0CHtMfhaGqUAG+M7ai
+X-Google-Smtp-Source: APXvYqyi+6GXulbfJBePMsK07dtqkhE7sPssSYzXkDCy4sZ67gcOcFWwMrmxKCnYuz+8zCfDAwtreQ==
+X-Received: by 2002:a0d:d4c4:: with SMTP id w187mr26762027ywd.41.1552330921930;
+        Mon, 11 Mar 2019 12:02:01 -0700 (PDT)
 Received: from [10.67.50.31] ([192.19.223.250])
-        by smtp.googlemail.com with ESMTPSA id l71sm2502744ywl.65.2019.03.11.12.01.18
+        by smtp.googlemail.com with ESMTPSA id z23sm3290814ywj.36.2019.03.11.12.01.58
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 Mar 2019 12:01:24 -0700 (PDT)
-Subject: Re: [PATCH 23/42] drivers: gpio: use devm_platform_ioremap_resource()
+        Mon, 11 Mar 2019 12:02:01 -0700 (PDT)
+Subject: Re: [PATCH 24/42] drivers: gpio: use devm_platform_ioremap_resource()
 To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
         linux-kernel@vger.kernel.org
 Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -71,7 +71,7 @@ Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
 References: <1552330521-4276-1-git-send-email-info@metux.net>
- <1552330521-4276-23-git-send-email-info@metux.net>
+ <1552330521-4276-24-git-send-email-info@metux.net>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -128,12 +128,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <ff274306-df7e-4715-46f6-fecb09714f66@gmail.com>
-Date:   Mon, 11 Mar 2019 12:01:17 -0700
+Message-ID: <d3b12ed4-67e6-2993-4f56-80b1be572a24@gmail.com>
+Date:   Mon, 11 Mar 2019 12:01:56 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.5.1
 MIME-Version: 1.0
-In-Reply-To: <1552330521-4276-23-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-24-git-send-email-info@metux.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -148,9 +148,6 @@ On 3/11/19 11:55 AM, Enrico Weigelt, metux IT consult wrote:
 > 
 > Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-The subject is missing an "octeon: " part here to indicate which driver
-this applies to.
-
-Maybe you should convert all drivers in one go though?
--- 
+Same here, missing an "omap: " qualifier in the subject.
+--
 Florian

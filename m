@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C153C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2DF1C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:57:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0DD3E206BA
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:57:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C2E88206BA
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:57:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728479AbfCKS5N (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 14:57:13 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:48105 "EHLO
+        id S1728190AbfCKS5U (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 14:57:20 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:45853 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728406AbfCKS4H (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:56:07 -0400
+        with ESMTP id S1728389AbfCKS4F (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:56:05 -0400
 Received: from orion.localdomain ([95.115.159.19]) by mrelayeu.kundenserver.de
  (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MOzjW-1hQajr0wxg-00PJcA; Mon, 11 Mar 2019 19:55:51 +0100
+ 1MuUWi-1glCW23cHa-00rUy4; Mon, 11 Mar 2019 19:55:53 +0100
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -34,28 +34,28 @@ Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         shawnguo@kernel.org, linux-gpio@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH 33/42] drivers: gpio: tegra: use devm_platform_ioremap_resource()
-Date:   Mon, 11 Mar 2019 19:55:12 +0100
-Message-Id: <1552330521-4276-33-git-send-email-info@metux.net>
+Subject: [PATCH 35/42] drivers: gpio: ts4800: use devm_platform_ioremap_resource()
+Date:   Mon, 11 Mar 2019 19:55:14 +0100
+Message-Id: <1552330521-4276-35-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1552330521-4276-1-git-send-email-info@metux.net>
 References: <1552330521-4276-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:AzJtMxIcpK5L9lDHlHkZc67QygWDWhG+SlVRwbIsXUDxSbetHPO
- rhSK9Bh/XY7yeCK86iiJm2oWB1qqeWyeOw7QdUW7AjpTEnnthd+KmujiBKNlrNrPitDjVKj
- bTtVzyj7yHvWkmySQ2c/IIIMPTswDMjLlGRRg5D0nYdP1C14af02PQRjvaFp9kqcfaImRn1
- LBFve/K0+YQfkLHXpvXig==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:c4pHt85+Owg=:/fi2spomNyje5e6mvNN8oW
- wnSwiRvUmGY3/dMFSQ4qAIVuuipAvYpgryZ0Q7Us3UaisUQg10w2jFECgrawR/M97SEUeaDvo
- ew9W5d6aAoOG1G7vPFIt0NxltrOxj0sHmkD6OOGbpocCRI7vIDv9DZdaNJiEXOY3nPAKdgbCZ
- yGLKaO0Iad5NvidDTGHegYEQvMzpaMwFZBMgVWQVZAnAh8dwvga+duAmw4fdexCO+Fw1HWiKD
- Oo0mGwE2ffs+EDxa1DzZJEi9N8lqUhxbVcMIUiZh7fz8IdnYvY4m6W9PJ8Nklt89yaPzxc/PS
- Y0FzegKm6BF5itQdtQaLylQYhBh3PzI0cKSBK+77nMPo/4kfYhy9KPq83yCZl4JwzHe5Ok3s9
- i699//f6zzC9P4AMULys+y/AnqmLQJPimMlYGyl/7V/nq14NOx3wi6nTuxGtkDiLvxxrmfdFM
- B+/PBXBcY8rx/Jm4vzwFZRb/Uk7UAxHYTbJMyzd50JeB3qjy/Uex3s8FGG7iL4KG8cWnB97Hq
- nBLZTRW9W2jGMGqb96RtYMWjEAtlP7un7/25mus1+t/PABGqO6700w/f6Fb4e1f+8Fw8CTcwB
- kGO5yYUjOd5LgT+Su5pjpisJFrFLSi/ALUgWXzQDTY4Z7HTommlZHfPB3S4Y3J70HE6WqXk7Z
- IorIxY/T9LYsDOIE9/CN+bayrpj/e4sEBejjqPhPekDUfBDL2/Prt4cNryEe2PbLGlQEy2C+c
- Sgk2OaK3agNKLpUBDm+mIM0/bvT2wGjhJOl7qQ==
+X-Provags-ID: V03:K1:ZLM0qTB4BbBAGFjOCu5dGMzkJwXWbu1LQzcdjtjvs/hDoHbW2Y/
+ AKskx/phDVN/mm/Uy6oZmPuKBgch57lgAoKeJvSA/xbGUXak+WUZENy/1sb4riKpxTnEMcz
+ 33wtxslOv0V1AToQlvRvOpaNafzUEOBgLhDJbfqSE77XL8aO48CCcG4MZUI9gsEMXSJyz8X
+ e/XuDb7OFKqKLauWQnhWA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Ks12aLW2P8g=:26zFSIwCHWwy6UKT2aapED
+ VWpkH8q2XBLueI2iW0aP8l4IccGWAAZtOCnbvRZ4HcVssBP6xoeGex8eqXXTpuHxETnibolcA
+ dLOYsh2XJpFpVSk7EYgSGvNPPX/kSNwe8XwCiPNeFgVFYHdxT0hMm9OmVbn9TDxD3fuMlXngO
+ ZrdZv90J+k48bHodaykfU654kKn7RP977srXASym+zX31blqhdKd0duG0JI99fnBqz9RIzYgs
+ DHoqGmFPEhy76Vsuzo6HPccXdYsXEiYV6A8nd7c/mOBLvcYw3xz6eYKYYQnP3o3jm3eAMkvP5
+ uAc/WY311sk88bQ6Z9W+2uyQJkE7R9+wtPQWdFXUybTVpBpUdnEyH3fPquHQhNw8fdGT5n7u1
+ vsub6Ch9VOIo9vhRRGOCwJU6Ovluykdpkcd8OiZT081C+YKeGiHvEZlxkFQBxLDyNIq9yYrd9
+ UaFvG63WdAilReD238vroNSg6kNr3Tp7ZtHct8HNFdtvbJiheYZHIhJpGp0/Ope5aJqldkVdS
+ 0ROKbE0m1I0hQbArQyRDcDbKFTWZbMdfUHhX6oMTXDiblFyv98SHRwH/b5IZM0LeXb6DIoxLj
+ 6QKhVIwtYoR13DJdd4Gi7c7BkrN2vFSOhNSwhudWC5XtidnfxRsBs4xqkQGe+EvVxH+OOrr9V
+ nW6B4qeo+3k4ECl+4OtEwoHMhNRxRihY0nPmooTlB1ESwVN6kK0Id5oRiTAe/xPt353zsmZd8
+ wLkJuAmNsK66Rr257Nyq9tOM7KpVbCB01XAc2Q==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -66,30 +66,30 @@ and devm_ioremap_resource() together.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- drivers/gpio/gpio-tegra.c | 4 +---
+ drivers/gpio/gpio-ts4800.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 1ececf2..6d9b690 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -569,7 +569,6 @@ static inline void tegra_gpio_debuginit(struct tegra_gpio_info *tgi)
- static int tegra_gpio_probe(struct platform_device *pdev)
+diff --git a/drivers/gpio/gpio-ts4800.c b/drivers/gpio/gpio-ts4800.c
+index c2a80b4..8c0d82d 100644
+--- a/drivers/gpio/gpio-ts4800.c
++++ b/drivers/gpio/gpio-ts4800.c
+@@ -23,7 +23,6 @@ static int ts4800_gpio_probe(struct platform_device *pdev)
  {
- 	struct tegra_gpio_info *tgi;
+ 	struct device_node *node;
+ 	struct gpio_chip *chip;
 -	struct resource *res;
- 	struct tegra_gpio_bank *bank;
- 	unsigned int gpio, i, j;
- 	int ret;
-@@ -645,8 +644,7 @@ static int tegra_gpio_probe(struct platform_device *pdev)
- 		bank->tgi = tgi;
- 	}
+ 	void __iomem *base_addr;
+ 	int retval;
+ 	u32 ngpios;
+@@ -32,8 +31,7 @@ static int ts4800_gpio_probe(struct platform_device *pdev)
+ 	if (!chip)
+ 		return -ENOMEM;
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	tgi->regs = devm_ioremap_resource(&pdev->dev, res);
-+	tgi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(tgi->regs))
- 		return PTR_ERR(tgi->regs);
+-	base_addr = devm_ioremap_resource(&pdev->dev, res);
++	base_addr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base_addr))
+ 		return PTR_ERR(base_addr);
  
 -- 
 1.9.1

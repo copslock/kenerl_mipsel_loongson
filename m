@@ -2,72 +2,101 @@ Return-Path: <SRS0=SHWW=RO=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C6B8C10F06
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBD33C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:55:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 75DA5206DF
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:23:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9B8CE2084F
+	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 18:55:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727847AbfCKSXe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 14:23:34 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:40112 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727824AbfCKSXe (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:23:34 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 37689144CAF82;
-        Mon, 11 Mar 2019 11:23:33 -0700 (PDT)
-Date:   Mon, 11 Mar 2019 11:23:32 -0700 (PDT)
-Message-Id: <20190311.112332.2212718467104899802.davem@davemloft.net>
-To:     arnd@arndb.de
-Cc:     deepa.kernel@gmail.com, willemb@google.com,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, labbott@redhat.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] y2038: fix socket.h header inclusion
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190311153857.563743-1-arnd@arndb.de>
-References: <20190311153857.563743-1-arnd@arndb.de>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 11 Mar 2019 11:23:33 -0700 (PDT)
+        id S1727996AbfCKSzr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 14:55:47 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:55781 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727138AbfCKSzq (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 14:55:46 -0400
+Received: from orion.localdomain ([95.115.159.19]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MGA0o-1hHglD43Ho-00GcR0; Mon, 11 Mar 2019 19:55:32 +0100
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        andrew@aj.id.au, f.fainelli@gmail.com, sbranden@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
+        orsonzhai@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
+        keguang.zhang@gmail.com, vz@mleia.com, matthias.bgg@gmail.com,
+        thierry.reding@gmail.com, grygorii.strashko@ti.com,
+        ssantosh@kernel.org, khilman@kernel.org, robert.jarzmik@free.fr,
+        yamada.masahiro@socionext.com, jun.nie@linaro.org,
+        shawnguo@kernel.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH 09/42] drivers: gpio: sprd: use devm_platform_ioremap_resource()
+Date:   Mon, 11 Mar 2019 19:54:48 +0100
+Message-Id: <1552330521-4276-9-git-send-email-info@metux.net>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1552330521-4276-1-git-send-email-info@metux.net>
+References: <1552330521-4276-1-git-send-email-info@metux.net>
+X-Provags-ID: V03:K1:AJj9UQ36ZRPYaJj/cNVlFIAl0ioap3o00Av+q2urgkBgCRKVh/Q
+ kfZC/XmZS+MgWjzlqujo7UVqi4ORrEIDRai/9rYJ5MID4xoRfHFgYllx0sCVvFATF7DTFo/
+ MW9ALZ1D4J1q22J3A3msbPK7NPercuiAOJBKqeX9WeCb0y1coewWU7HeStFM8rlTFOsW5tu
+ bIa9WNBsbWos3Rwuhj7Gg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:D5Tp24xLAsY=:YEqb712ctBBfaqRu8uWF8+
+ qRkSSl0bILKe75Cbz44gMiyBXpaYDH30BCj4mnqyVaA10nT9zNmk43zqJvv+StSPHZKKvGOKe
+ 5oI272hfcI2tH4lgRJYf5CiFt9ow7kiehG6R/1cbQCYOj5dD87YskJVaAkzLTi2AhRIhtXBrv
+ bo5+DrVVyzwAlhirlWekdmVA0kTxuHybBQMIRf6YXFkLhDpzhgMnjlj10TlpYoKvNUQuNa7xk
+ 0fA++AVX5Yhmis90ybB8S9YMMTOY//hIiaQEzbJU+s89m4M8S+Y/CHLb6lwYYoHOYnPx08X57
+ hKvOE5RGztWSFjw8AogPy92YxzWbQowSwQuouffJzXO8J0nhvaUuHN2hRntwe+aJm+eA0516K
+ qCwsEee0rciOQ1Sc21EO+VemrHD7aigrd7Qut0zHecoMJdIbRpulSsv+CXAq/0Rucx3OJEmQH
+ 0QXsOzQw4WSCZzZCkeDMiKSmMO5dnNzlBrYZH/UCVDLXW3om6f9inrqVWTe4vr/X8WpEutW7d
+ F54s4EpyKj6ZViHgmeyQJG7WzCQJdFSAnfs2fxNcaoQRVu2llk4k9RVTmMyfPHupv/NF2x0Nr
+ 80T9+GXlzOLff8vbDEe721L/CjlU1p+SecjEb1hTENrcrhwl22E7M9wY0pWoZEeMUx6k5i7vt
+ xJrEjFOX8e7ZrL2SmyKrcRXk9KKfHWdf54hQJfJdGh6i35XDSdgZ5J7Kzgs+YbsiG0AsUStED
+ YtkAhSHdYPEULyAXjWs0GxW4Q+xIXLr2rqfuuQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 11 Mar 2019 16:38:17 +0100
+Use the new helper that wraps the calls to platform_get_resource()
+and devm_ioremap_resource() together.
 
-> Referencing the __kernel_long_t type caused some user space applications
-> to stop compiling when they had not already included linux/posix_types.h,
-> e.g.
-> 
-> s/multicast.c -o ext/sockets/multicast.lo
-> In file included from /builddir/build/BUILD/php-7.3.3/main/php.h:468,
->                  from /builddir/build/BUILD/php-7.3.3/ext/sockets/sockets.c:27:
-> /builddir/build/BUILD/php-7.3.3/ext/sockets/sockets.c: In function 'zm_startup_sockets':
-> /builddir/build/BUILD/php-7.3.3/ext/sockets/sockets.c:776:40: error: '__kernel_long_t' undeclared (first use in this function)
->   776 |  REGISTER_LONG_CONSTANT("SO_SNDTIMEO", SO_SNDTIMEO, CONST_CS | CONST_PERSISTENT);
-> 
-> It is safe to include that header here, since it only contains kernel
-> internal types that do not conflict with other user space types.
-> 
-> It's still possible that some related build failures remain, but those
-> are likely to be for code that is not already y2038 safe.
-> 
-> Reported-by: Laura Abbott <labbott@redhat.com>
-> Fixes: a9beb86ae6e5 ("sock: Add SO_RCVTIMEO_NEW and SO_SNDTIMEO_NEW")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+---
+ drivers/gpio/gpio-eic-sprd.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Applied, thanks.
+diff --git a/drivers/gpio/gpio-eic-sprd.c b/drivers/gpio/gpio-eic-sprd.c
+index f0223ce..c12de87 100644
+--- a/drivers/gpio/gpio-eic-sprd.c
++++ b/drivers/gpio/gpio-eic-sprd.c
+@@ -567,7 +567,6 @@ static int sprd_eic_probe(struct platform_device *pdev)
+ 	const struct sprd_eic_variant_data *pdata;
+ 	struct gpio_irq_chip *irq;
+ 	struct sprd_eic *sprd_eic;
+-	struct resource *res;
+ 	int ret, i;
+ 
+ 	pdata = of_device_get_match_data(&pdev->dev);
+@@ -596,13 +595,9 @@ static int sprd_eic_probe(struct platform_device *pdev)
+ 		 * have one bank EIC, thus base[1] and base[2] can be
+ 		 * optional.
+ 		 */
+-		res = platform_get_resource(pdev, IORESOURCE_MEM, i);
+-		if (!res)
+-			continue;
+-
+-		sprd_eic->base[i] = devm_ioremap_resource(&pdev->dev, res);
++		sprd_eic->base[i] = devm_platform_ioremap_resource(pdev, 0);
+ 		if (IS_ERR(sprd_eic->base[i]))
+-			return PTR_ERR(sprd_eic->base[i]);
++			continue;
+ 	}
+ 
+ 	sprd_eic->chip.label = sprd_eic_label_name[sprd_eic->type];
+-- 
+1.9.1
+

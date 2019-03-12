@@ -2,112 +2,130 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D22FAC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 16:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E9CC10F00
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:20:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A266D2054F
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 16:02:47 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AjfiDiGT"
+	by mail.kernel.org (Postfix) with ESMTP id D9BA0214AE
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1552411222;
+	bh=MVYqKjChGDIouZylQG6P77I0kakZDqiF79TlhZb0okY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=bGSSkSDRJvIE2Hij9eLoSVhmNHlVRDmAryErxzfEw2ZL5CYXgBqjC4j/sqohvIXVM
+	 /qCjqc1OShDhWA8Mcit1F5kJxccUWM47YwLw+gNZZeH0U++LBuHy7OmXUbfttgB4vR
+	 Fwxcb6QMfC9t16fPLlQ9naBe6VjOgD1VHGTJid30=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726716AbfCLQCl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 12:02:41 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:45397 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbfCLQCl (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 12:02:41 -0400
-Received: by mail-pf1-f196.google.com with SMTP id v21so2127564pfm.12;
-        Tue, 12 Mar 2019 09:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=CHyXDaPIHjibiFy22aPvR2N0EpshdvkVuWtuHAwVOgc=;
-        b=AjfiDiGTdHBA1kYKmtDtyV7n+GrVIrDo7AfNwbnUyY7meZeFldtADJ0UYiUeukbkvo
-         BuJJvgu64PZLs9EGZErDKQv3sYd49JiZ946rxMQywCNKiNXw1a0LzrQn16ONQcnKB9Nw
-         xo5sbns+gYhUi2UJx0QCCbITLA6vkZJDkTwIGrbJHP4ROvGKvgrxy+KdwcHlGnnc62Kd
-         bkRH5vUfYpk7PTqFq322yTP/TLN6pYwWSJuvRYZu2Sqt4TNPL7ysIHwBRop/Poko2dBY
-         Od7I7aFOJi+XOEQS179mg6661X3+3kFHqT/Cxb4qdCVSFLssCZJWIcpyU/mWXCsnf2pR
-         UlcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=CHyXDaPIHjibiFy22aPvR2N0EpshdvkVuWtuHAwVOgc=;
-        b=WK5JQt08gYpZsvl9yw+x1MIBrEqX8HnFF6FpkGsqRfpumBrFRryF7KRPsU3TUouz+C
-         PcHzfxo6u4Vth/ru4M8dQ6SKSlNzyyODqzSLV/hHw1gCIKlQlCWMqveTeZB1Jw7pz3F9
-         5OFmlARL5lFGW8uXXAcP6gi4JLh/wPt4cEY40bBb/72NIPeFo/drbbTYOMqV7rIP2gQ9
-         cfI8PjrY7Bdst8z04pHJ9qf3YGM6tLhOwILzToob48KeKuMrDQmLv1y+aTnbbOwQXIzM
-         ZKYBSLt/EpYJWJQezaEWPg5ZXDDYFPjPSqz/7O6cP++30DJSdaGKHgi6HiT+YPaezuxA
-         yPIQ==
-X-Gm-Message-State: APjAAAUsQqtXy7J4umDF0h7j77+t40sXh/AR/g5bGdQywQD7orshcIwR
-        AxIF+5Cv2rq4xASjwXBWRE5pHRCf
-X-Google-Smtp-Source: APXvYqwrzFIuAO3c+5/A/XjG/uQiKAAsruMmGozzV/7/3YS8m0FuvXxlQ+aC36DcD4TDHygB9TmZ6w==
-X-Received: by 2002:a17:902:8217:: with SMTP id x23mr41184312pln.332.1552406559600;
-        Tue, 12 Mar 2019 09:02:39 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-101-123-102.oc.oc.cox.net. [68.101.123.102])
-        by smtp.gmail.com with ESMTPSA id g188sm20101969pfc.24.2019.03.12.09.02.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 Mar 2019 09:02:38 -0700 (PDT)
-Subject: Re: [PATCH 38/42] drivers: gpio: vr41xx: use
- devm_platform_ioremap_resource()
-To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, andrew@aj.id.au, sbranden@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
-        orsonzhai@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
-        keguang.zhang@gmail.com, vz@mleia.com, matthias.bgg@gmail.com,
-        grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org,
-        robert.jarzmik@free.fr, yamada.masahiro@socionext.com,
-        jun.nie@linaro.org, shawnguo@kernel.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-References: <1552330521-4276-1-git-send-email-info@metux.net>
- <1552330521-4276-38-git-send-email-info@metux.net>
- <20190312113732.GG31026@ulmo>
- <e224f52a-a92b-63cd-a9ed-67672a2c7337@metux.net>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Openpgp: preference=signencrypt
-Message-ID: <18445a6d-09b2-f2d1-fd7b-4dfbbaf99981@gmail.com>
-Date:   Tue, 12 Mar 2019 09:02:32 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.5.3
+        id S1727563AbfCLRUW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 13:20:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35990 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730053AbfCLRSV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Mar 2019 13:18:21 -0400
+Received: from localhost (unknown [104.133.8.98])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BCB98218A6;
+        Tue, 12 Mar 2019 17:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1552411100;
+        bh=MVYqKjChGDIouZylQG6P77I0kakZDqiF79TlhZb0okY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=a7K+fD13dg3fO3fW4C6Bbq7Le4cHyG9P0ABUnqIbkqaYbaXcmlYOjXtHhKIXAGY4X
+         U1NT5usiX9Z8YaQj5Pf8mXECnOVV6macoSH9ZEqx57cQArj62hXl1WQ3libk7unJNW
+         F6+gtCJFRV70dwlqT/Iyi6JVDr+uDPSoYHXSsNyg=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jun-Ru Chang <jrjang@realtek.com>,
+        Tony Wu <tonywu@realtek.com>,
+        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
+        jhogan@kernel.org, macro@mips.com, yamada.masahiro@socionext.com,
+        peterz@infradead.org, mingo@kernel.org, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.9 82/96] MIPS: Remove function size check in get_frame_info()
+Date:   Tue, 12 Mar 2019 10:10:40 -0700
+Message-Id: <20190312171040.763830937@linuxfoundation.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190312171034.530434962@linuxfoundation.org>
+References: <20190312171034.530434962@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-In-Reply-To: <e224f52a-a92b-63cd-a9ed-67672a2c7337@metux.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
+------------------
 
-On 3/12/2019 8:42 AM, Enrico Weigelt, metux IT consult wrote:
-> On 12.03.19 12:37, Thierry Reding wrote:
-> 
->> The driver currently doesn't request the memory described in the
->> resource, so technically you're changing behaviour here and with your
->> change the driver could now fail if somebody else has already claimed
->> the memory.
-> 
-> hmm, using w/o requesting/claiming - isn't that a bug ?
+[ Upstream commit 2b424cfc69728224fcb5fad138ea7260728e0901 ]
 
-Not necessarily, before regmap existed, you could have very well
-delegated a subset of a larger resource to a specific driver while a
-driver requesting that larger resource would be responsible for doing
-the request_mem_region(). As long as both drivers don't stomp on each
-other, this is a perfectly valid way to delegate, yet keep things
-modular/separate.
+Patch (b6c7a324df37b "MIPS: Fix get_frame_info() handling of
+microMIPS function size.") introduces additional function size
+check for microMIPS by only checking insn between ip and ip + func_size.
+However, func_size in get_frame_info() is always 0 if KALLSYMS is not
+enabled. This causes get_frame_info() to return immediately without
+calculating correct frame_size, which in turn causes "Can't analyze
+schedule() prologue" warning messages at boot time.
+
+This patch removes func_size check, and let the frame_size check run
+up to 128 insns for both MIPS and microMIPS.
+
+Signed-off-by: Jun-Ru Chang <jrjang@realtek.com>
+Signed-off-by: Tony Wu <tonywu@realtek.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: b6c7a324df37b ("MIPS: Fix get_frame_info() handling of microMIPS function size.")
+Cc: <ralf@linux-mips.org>
+Cc: <jhogan@kernel.org>
+Cc: <macro@mips.com>
+Cc: <yamada.masahiro@socionext.com>
+Cc: <peterz@infradead.org>
+Cc: <mingo@kernel.org>
+Cc: <linux-mips@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/kernel/process.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 1cc133e7026f..fffd031dc6b6 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -344,7 +344,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+-	union mips_instruction insn, *ip, *ip_end;
++	union mips_instruction insn, *ip;
+ 	const unsigned int max_insns = 128;
+ 	unsigned int last_insn_size = 0;
+ 	unsigned int i;
+@@ -356,10 +356,9 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	if (!ip)
+ 		goto err;
+ 
+-	ip_end = (void *)ip + info->func_size;
+-
+-	for (i = 0; i < max_insns && ip < ip_end; i++) {
++	for (i = 0; i < max_insns; i++) {
+ 		ip = (void *)ip + last_insn_size;
++
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
 -- 
-Florian
+2.19.1
+
+
+

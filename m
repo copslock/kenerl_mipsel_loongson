@@ -2,80 +2,119 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 329C6C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44F00C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 19:01:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 03D4F2087C
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:19:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 14B602087C
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 19:01:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfCLSTD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 14:19:03 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:47972 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726360AbfCLSTC (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Mar 2019 14:19:02 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 189C8A78;
-        Tue, 12 Mar 2019 11:19:00 -0700 (PDT)
-Received: from [10.1.194.37] (e113632-lin.cambridge.arm.com [10.1.194.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F195A3F59C;
-        Tue, 12 Mar 2019 11:18:56 -0700 (PDT)
-Subject: Re: [PATCH 00/14] entry: preempt_schedule_irq() callers scrub
-To:     Vineet Gupta <vineet.gupta1@synopsys.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Julien Thierry <julien.thierry@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-xtensa@linux-xtensa.org, x86@kernel.org,
-        sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, nios2-dev@lists.rocketboards.org
-References: <20190311224752.8337-1-valentin.schneider@arm.com>
- <e604601e-f8e1-a8b5-d364-69ca967996ce@synopsys.com>
-From:   Valentin Schneider <valentin.schneider@arm.com>
-Message-ID: <a5b1605b-b3b3-7898-30ae-d993050e8c7a@arm.com>
-Date:   Tue, 12 Mar 2019 18:18:55 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
+        id S1726876AbfCLTBc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 15:01:32 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:46625 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726815AbfCLTBc (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 15:01:32 -0400
+Received: by mail-vs1-f66.google.com with SMTP id b17so2252227vsr.13;
+        Tue, 12 Mar 2019 12:01:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+BZRbNIhNOurSroe/tJA+wYWjkSTRqpJteypzf8z5ZY=;
+        b=GoimaU9CZqGAOHxMHTIzgU68W2H51+0Uor4nqte4KhaZ7tuv15m03DqVeGrTl09hlO
+         yaKF2AaihO2tnNqk6Nk+3AAD7ap4CFhSOry6F1fxvGOUY0G42ykkG39A0ATMXNHifvlq
+         09tfKwKI/tdZDck7ZBO72dOqS1gQfnzJ/qB7MBF/WZ1c67jsBO+M0/4ebXoQIHA8uX+N
+         Pr8+AG6O0cKqY4qcoqQLlk7POx22gd0Eo4k5rgfqQxAEnuay7Mgv2eRxmmTtb0l7O0As
+         Q1EdDQOyO10v62BsvlWecrdJu1tvfpKx/5hPghgn8KK3CSsSZjGudxzjNsNKWP1uyqAs
+         EMfA==
+X-Gm-Message-State: APjAAAWt1E8vIgzm12EaGQdOL3hvDGhIRS4uotMVr6PKdk13wR8d5kz0
+        WqbuHCI2KCrsvJk6zYY3w1DD59MQ0Zwy8repErs=
+X-Google-Smtp-Source: APXvYqxysHQXIqHYmdqvnbBM07paC9ZZ6c03m8bN64fTgyVkiDNpv4PX6cQML/O9ehxAVHB4/gq1norKxG+WwevEV8c=
+X-Received: by 2002:a67:7dd1:: with SMTP id y200mr18640499vsc.96.1552417290536;
+ Tue, 12 Mar 2019 12:01:30 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <e604601e-f8e1-a8b5-d364-69ca967996ce@synopsys.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-27-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-27-git-send-email-info@metux.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 12 Mar 2019 20:01:18 +0100
+Message-ID: <CAMuHMdV4cT6rsA0DbGLRAzY8A6kXZ1C_2_GNjdXxamdXPA7_6w@mail.gmail.com>
+Subject: Re: [PATCH 27/42] drivers: gpio: rcar: use devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Lyra Zhang <zhang.lyra@gmail.com>, keguang.zhang@gmail.com,
+        vz@mleia.com, Matthias Brugger <matthias.bgg@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 12/03/2019 18:03, Vineet Gupta wrote:
-[...]
->> Regarding that loop, archs seem to fall in 3 categories:
->> A) Those that don't have the loop
-> 
-> Please clarify that this is the right thing to do (since core code already has the
-> loop) hence no fixing is required for this "category"
-> 
+CC linux-renesas-soc
 
-Right, those don't need any change. I had a brief look at them to double
-check they had the proper need_resched() gate before calling
-preempt_schedule_irq() (with no loop) and they all seem fine. Also...
+On Mon, Mar 11, 2019 at 7:58 PM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
+> Use the new helper that wraps the calls to platform_get_resource()
+> and devm_ioremap_resource() together.
+>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
->> B) Those that have a small need_resched() loop around the
->>    preempt_schedule_irq() callsite
->> C) Those that branch to some more generic code further up the entry code
->>    and eventually branch back to preempt_schedule_irq()
->>
->> arc, m68k, nios2 fall in A)
-> 
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I forgot to include parisc in here.
+> --- a/drivers/gpio/gpio-rcar.c
+> +++ b/drivers/gpio/gpio-rcar.c
+> @@ -430,7 +430,7 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
+>  static int gpio_rcar_probe(struct platform_device *pdev)
+>  {
+>         struct gpio_rcar_priv *p;
+> -       struct resource *io, *irq;
+> +       struct resource *irq;
+>         struct gpio_chip *gpio_chip;
+>         struct irq_chip *irq_chip;
+>         struct device *dev = &pdev->dev;
+> @@ -461,8 +461,7 @@ static int gpio_rcar_probe(struct platform_device *pdev)
+>                 goto err0;
+>         }
+>
+> -       io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       p->base = devm_ioremap_resource(dev, io);
+> +       p->base = devm_platform_ioremap_resource(pdev, 0);
+>         if (IS_ERR(p->base)) {
+>                 ret = PTR_ERR(p->base);
+>                 goto err0;
 
-[...]
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

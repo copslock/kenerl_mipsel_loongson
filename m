@@ -3,30 +3,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02A6DC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 15:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EBDAC10F00
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 15:42:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C6E22214AF
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 15:00:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EC6C820693
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 15:42:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbfCLPA1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 11:00:27 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:44097 "EHLO
+        id S1726255AbfCLPm3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 11:42:29 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:45697 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726521AbfCLPA1 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 11:00:27 -0400
+        with ESMTP id S1726174AbfCLPm3 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 11:42:29 -0400
 Received: from [192.168.1.110] ([77.4.190.91]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MKsaz-1hM4YE0Jzx-00LDhJ; Tue, 12 Mar 2019 16:00:07 +0100
-Subject: Re: [PATCH 16/42] drivers: gpio: janz-ttl: drop unneccessary temp
- variable dev
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
+ (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MvKGv-1gleWf3BZp-00rL9O; Tue, 12 Mar 2019 16:42:08 +0100
+Subject: Re: [PATCH 38/42] drivers: gpio: vr41xx: use
+ devm_platform_ioremap_resource()
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
         bgolaszewski@baylibre.com, andrew@aj.id.au, f.fainelli@gmail.com,
         sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
         hoan@os.amperecomputing.com, orsonzhai@gmail.com,
@@ -39,49 +38,51 @@ Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
         linux-pwm@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-tegra@vger.kernel.org
 References: <1552330521-4276-1-git-send-email-info@metux.net>
- <1552330521-4276-16-git-send-email-info@metux.net>
- <539b3cd4-8af3-d6d8-f5a9-2c426a1f0faa@codethink.co.uk>
- <93ae13c0-da78-0e6a-358f-97e358c11f16@metux.net>
- <20190312112607.GD31026@ulmo>
+ <1552330521-4276-38-git-send-email-info@metux.net>
+ <20190312113732.GG31026@ulmo>
 From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
 Organization: metux IT consult
-Message-ID: <a3a56d82-ef94-9c71-2395-ed1a78dc9c26@metux.net>
-Date:   Tue, 12 Mar 2019 16:00:01 +0100
+Message-ID: <e224f52a-a92b-63cd-a9ed-67672a2c7337@metux.net>
+Date:   Tue, 12 Mar 2019 16:42:06 +0100
 User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.2.1
 MIME-Version: 1.0
-In-Reply-To: <20190312112607.GD31026@ulmo>
+In-Reply-To: <20190312113732.GG31026@ulmo>
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ou+KFzSnuy7P5D4TczGQrE6uPpcZ/1V/Yh28iy/G6Icp1OwENlZ
- WDgNIgAO9W9bRcGGsfnF05YYCk2sYyQP/Qq3VLbN6kKhCzbNpyFbe0mrJ5bz+6Y0QMhJEgb
- RMPRkArcynlC/O58VrWDseI0MI1ZhpKFhaxVu9XzBssADElk7WDYm9wPd5qpK3XxBfjZi3i
- trlaoAPM374Dp9npsAaHg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vTTqjEIsuyA=:lcxl3NTsZLdqIm2cA6wMYG
- RRXKuevs6wzSxETR9Xp3zXuKkK5EDKe5ZTSm25f3GnPyPGF6cMoozq1Y9o8waa/j1UcErKvxA
- JXGkek44Ch5OOmOPIPwfdNWEKdMigFgYZcQC7kL/3u1lTwHC84fFPOlu1246wTpNe6kcX9Gkj
- 8TjmhMkBz5F8smEwMywymJZDJw+B51yorEKRyB/s5+Z8wJAoykR7ZjtZzAW/x0KNSJEAfnwGB
- rMcSo8B4ArMIAk1wLY88hHPPFxS+tsAjuro5ONOYsvCvSaJ76m51rcFizNYUUDKCRkRVtoueY
- T3iuWjlab51YNk4pYVHFQpOIbS0hO8JVJlGIkoyLldF7U5wMgFhK+GRiUXxdHANzbvj9J0zMe
- TuPLvMXMvy4t7USHPwqDF4v8nMmbsdy6kS0sl6YhtMLcMkIVoxxH7M3j0n/Rh0Rr3dVPi88hA
- fw+tTKMz4OoTVhyrqdJ+CXDYPuhJz/f6RSMLnOFeTC/pBHt02QYJQmmXOmj0PSwv6IJJSyl3o
- l83GP79E9W0zUsoL8EtI3I85rBmpNadxfuU9JrGuhNZpKgwywYx7+3wmqLLurFHbDoCeXCEIH
- w1jf/1wAQopYAVhCu3t+MDs8zXl0SAFsdFZYDa5FBJQID3u/aKgFXzEnXVzfUGymB/q7Lj3ks
- Y8lzF6lE1MzymfJBf7mT/ruiEAznpMivDFioPtVrcjrb+RrjJANsNtA01WDCZcZGyB+6jpDSh
- yKq6O45ohgr0tk+OHrMySRSVPDEbQHHyZ6iO7CrDKKOjHmISH1ZrLDkJBoU=
+X-Provags-ID: V03:K1:fEymrQE84X8YA4VKIn7db4UHJeguHMCEeiDadNUHJItc4Cyf4xS
+ DPVJ6hS+rZ/+ievdjt6JfA6pIi71QiNcE7BA6YaXwa3m4svvnCjWjIzPQxcm+CP84hyj5qA
+ MsJGBFzxD7fqIuxkvRxuTxeH76Wm8ckXk2e79f1xcV8P4AZAvng6BPIkwa1EurRK4ANnN68
+ nz/3orX7Qk4FIzVVz89Zg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:DyStniLx2nQ=:CrU5Ea/kakURxVSPWEtxmL
+ YSiYbA49+D53a+W4GWP+4fGBmDjLKomYamau2nwrCER/QhFJipUPUBvT9qRnCwfcRyobl8Suk
+ fmnf9NJTuKD1Nn5M3aoR9dV9c+27Ida4vg0/qKGizBEP5ml2Qz7YXx6lAEAf37yUp7EoErqGk
+ VxSP7MMarFaNvaacPoJB1ZlHz++rs3iiFFCbxMBWtERHWU+LyMg0eqXniA+w+IRGieLJfUyUA
+ zkVHOILynO1M0n3pVOjrf12STYvdKfCAapo4IGfH9CD8IEBt3Ysh66FqxuAqmltggP3+z5Y4i
+ fPKt/GG96twvXhyjZ1Hb8aqeVoGP67JHpgwbO5yhWAPkHEDOvc+rpUN1Di0Vhg9PuI/wSrRZt
+ VPVr8kSjqfOCAew0wnSbxGk6fM/01fqZf3jita3zXonY4PRPEZ+OB5gSIKNzopltX1YC+RVtA
+ 3MWgudvP/pmheSEY1u1BAFiw9GdcE3mbjnfiOFxJ1A2N9NJ2njWj2Ff0e4QZgctbZlBp6VB6j
+ yq26Fwpr8dPoD0qrF0tTKpQzs5CNlnig2WBNxbtS2rWQ8L6Ud+p6wSHh19a66REeLwu6/lIIL
+ EHURR8SXo6BcsnThw7+G2BBvUv+i9miHSljnpwtiQ3RILF+xqMyh6B01NpK6MofejtPGv31zz
+ Yn6Y79n8Wzi2NA12Km089FUg7OaIeUPUdoIVZkMs3SKzZti9aBEdic2wncoHOFut2l3ZZ+IYw
+ 0LYtNalhYWKxSuaXr/8WYe6yfUuDxDxBmFL9BqmdYPw1vlXIzmyc6TjvqyU=
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 12.03.19 12:26, Thierry Reding wrote:
-> You're not consistent within the series itself. In patch 3 you went the
-> other way and dropped usage of pdev->dev in favour of the local dev
-> variable.
+On 12.03.19 12:37, Thierry Reding wrote:
 
-ups, you got me :O
+> The driver currently doesn't request the memory described in the
+> resource, so technically you're changing behaviour here and with your
+> change the driver could now fail if somebody else has already claimed
+> the memory.
 
+hmm, using w/o requesting/claiming - isn't that a bug ?
+
+
+--mtx
 
 -- 
 Enrico Weigelt, metux IT consult

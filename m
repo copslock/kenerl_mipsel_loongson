@@ -2,56 +2,50 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C059C4360F
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09BFEC43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:41:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 201DD2087C
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:36:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D1D222087C
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 17:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1552412176;
-	bh=njn+LxlYIRN0HL1iO0v8pl6v9lxKn4uLlYjkfi1zK8U=;
+	s=default; t=1552412502;
+	bh=yFqUeBKk7uxIbvvuwkhJg4YfewCg7+vTo8if1fKA6Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=MzsTjbj2beOyva6jCkAq0xwbXAs7xA4+3mOzTFLIKuDjz/P+uPO/wl3qvtKcALLFP
-	 pMJJ/Q0fPxPNBA1UWp537/BOBH+aJ4dSNdf178wlltB8TcN13dOxNXepepSHbl9dNs
-	 39NlVS/Hm/vTtY9rOV0s7jk47Of/tIcDl4XGpbXI=
+	b=TvtFDm12Ho+pSmjfhY8q/i+UURwUjHTlRl7gU3eZWr7fm2+6HoTx5PqXcG9wfdTfp
+	 hmshwLNSGP3qx9XIZTgyU3cdf0QdEtzHKRKrffrw19n3dBrw3Sw4V6ff/mSgLRC6XR
+	 cX/1DCf9Td6LYe41jIeXkbsEeD3KAGx8aLSUi6po=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727484AbfCLRgK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 13:36:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59422 "EHLO mail.kernel.org"
+        id S1728577AbfCLRlg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 13:41:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57638 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729292AbfCLRQr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Mar 2019 13:16:47 -0400
+        id S1728983AbfCLRQF (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Mar 2019 13:16:05 -0400
 Received: from localhost (unknown [104.133.8.98])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D4233217D8;
-        Tue, 12 Mar 2019 17:16:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A98C82183F;
+        Tue, 12 Mar 2019 17:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1552411006;
-        bh=njn+LxlYIRN0HL1iO0v8pl6v9lxKn4uLlYjkfi1zK8U=;
+        s=default; t=1552410964;
+        bh=yFqUeBKk7uxIbvvuwkhJg4YfewCg7+vTo8if1fKA6Fs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ntbj7onR5wkjXIFgc770JL4vFDyfBTVAWYid6i1IKSYld2yJ2fItZKE1FIQdZwiHm
-         mFX6u3hkP7d76mHgsZ0ihE92ox1fDHNnsw4wztFPLwIrgSXPb2Egdq8tky6/pUiZiW
-         v+E9b4XexblXbtlatQQcyAhfAF30QrNKDDm9qKyo=
+        b=Gdlqag32PbV8Sd3EuUzo4ccfbzyXG23oUUodKb4BnDUKGex8/CVvZXoA4+DtSEcBq
+         C+gJlIZl2jBIOJt/C0u+8tEukaTkpV4ARcc0PHuNSv1IkySkqwU6Bk4FOhN3FdY36f
+         mb0SEVJxFbksJFuRSPZ/GfIObrd7hrCzYcT8Dvpc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Zhou Yanjie <zhouyanjie@cduestc.edu.cn>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-mips <linux-mips@vger.kernel.org>,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        ralf@linux-mips.org, jhogan@kernel.org, mark.rutland@arm.com,
-        malat@debian.org, ezequiel@collabora.co.uk, ulf.hansson@linaro.org,
-        syq <syq@debian.org>, "jiaxun.yang" <jiaxun.yang@flygoat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 093/135] DTS: CI20: Fix bugs in ci20s device tree.
-Date:   Tue, 12 Mar 2019 10:09:00 -0700
-Message-Id: <20190312170349.760389664@linuxfoundation.org>
+        stable@vger.kernel.org, Liu Xiang <liu.xiang6@zte.com.cn>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.14 037/135] MIPS: irq: Allocate accurate order pages for irq stack
+Date:   Tue, 12 Mar 2019 10:08:04 -0700
+Message-Id: <20190312170344.506796683@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190312170341.127810985@linuxfoundation.org>
 References: <20190312170341.127810985@linuxfoundation.org>
@@ -70,58 +64,44 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-[ Upstream commit 1ca1c87f91d9dc50d6a38e2177b2032996e7901c ]
+From: Liu Xiang <liu.xiang6@zte.com.cn>
 
-According to the Schematic, the hardware of ci20 leads to uart3,
-but not to uart2. Uart2 is miswritten in the original code.
+commit 72faa7a773ca59336f3c889e878de81445c5a85c upstream.
 
-Signed-off-by: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
+The irq_pages is the number of pages for irq stack, but not the
+order which is needed by __get_free_pages().
+We can use get_order() to calculate the accurate order.
+
+Signed-off-by: Liu Xiang <liu.xiang6@zte.com.cn>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips <linux-mips@vger.kernel.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: robh+dt@kernel.org
-Cc: ralf@linux-mips.org
-Cc: jhogan@kernel.org
-Cc: mark.rutland@arm.com
-Cc: malat@debian.org
-Cc: ezequiel@collabora.co.uk
-Cc: ulf.hansson@linaro.org
-Cc: syq <syq@debian.org>
-Cc: jiaxun.yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe8bd18ffea5 ("MIPS: Introduce irq_stack")
+Cc: linux-mips@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.11+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/irq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index a4cc52214dbd..dad4aa0ebdd8 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -54,7 +54,7 @@
- 	status = "okay";
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -52,6 +52,7 @@ asmlinkage void spurious_interrupt(void)
+ void __init init_IRQ(void)
+ {
+ 	int i;
++	unsigned int order = get_order(IRQ_STACK_SIZE);
  
- 	pinctrl-names = "default";
--	pinctrl-0 = <&pins_uart2>;
-+	pinctrl-0 = <&pins_uart3>;
- };
+ 	for (i = 0; i < NR_IRQS; i++)
+ 		irq_set_noprobe(i);
+@@ -62,8 +63,7 @@ void __init init_IRQ(void)
+ 	arch_init_irq();
  
- &uart4 {
-@@ -174,9 +174,9 @@
- 		bias-disable;
- 	};
+ 	for_each_possible_cpu(i) {
+-		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
+-		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
++		void *s = (void *)__get_free_pages(GFP_KERNEL, order);
  
--	pins_uart2: uart2 {
--		function = "uart2";
--		groups = "uart2-data", "uart2-hwflow";
-+	pins_uart3: uart3 {
-+		function = "uart3";
-+		groups = "uart3-data", "uart3-hwflow";
- 		bias-disable;
- 	};
- 
--- 
-2.19.1
-
+ 		irq_stack[i] = s;
+ 		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
 
 

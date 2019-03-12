@@ -2,127 +2,303 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E08A9C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:39:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCCA3C4360F
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 12:28:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B322D2084F
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:39:07 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P1s/dHop"
+	by mail.kernel.org (Postfix) with ESMTP id 8CED7214AE
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 12:28:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1552393695;
+	bh=RfMRDnH1eEt84Aj4yukahn+u48BjxguJ/6f9pQE5oIk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=ll5yY7Mahn7QpdTTSiPm26GwzCrfNgJvC2MLNL9lWn2phRYZcP/ECIlbJ6zkxXiH5
+	 GFaB215D71JQNdz6OtgGb/K8/Z8CoHBdwFrhp5zvJI5jvtjw5GbXtzrlgntMiJc5GG
+	 SnDNNHcMnBSHzCORE6C8+TmSONIteMH7f/Xrq3hk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbfCLLi5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 07:38:57 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:38579 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726109AbfCLLi5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 07:38:57 -0400
-Received: by mail-wr1-f66.google.com with SMTP id g12so2315278wrm.5;
-        Tue, 12 Mar 2019 04:38:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YtzcH7BB7x2UbQWl7ghp8eoh+CUFyncOaY4nExE5rCY=;
-        b=P1s/dHop7dxa+o7uw79keBd07arsAjqCMQkTB2ii1WjLHPNERl56NFrwqbMRdSzeWd
-         +18K84A4RuS2K9Kqg+IQAkAR6aqsRO4z1xH9/4yuytJBsKj8Cu7A9TVNB2lYig98K3Lw
-         8N9jVJ1JC+UwbPGTE685XhFvFK3okltxzTaBcPydPeM+aM6lVMI9oiZxJY4d3ECxQJU7
-         BnkcSAj5bXr6Am+CGAuZz5YrFeU+rQkBIyrdx2btcduXlkn14mTafmL7b6P8DGs60EgY
-         JCkDzBEXgEpZG5oUgvECdqDSHRIYbu0steSb37C4He57ZtmucDDlMuZgxwnVmnPZ7whQ
-         Vy7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YtzcH7BB7x2UbQWl7ghp8eoh+CUFyncOaY4nExE5rCY=;
-        b=P9UZWi16J37S5K+kIeVsDnLMVpaKcF736R+1R2yA6Ph0UcNAjGAPjfKi9rfg3dJuii
-         GKwv+WVDvuVu1D9diqJ8h6rFxtxnBSbuZBuU3MtPRglGJ+bK/bTCs05/kJJ+hBx8gRnZ
-         jGCXZaOqaJxjmQlcSV7xs2pXhbVf8i/KQjB46OJ/cWoClmSZXCMpSp2hogfYsLuCNN/k
-         4B61YzFv4hIxnoPGmwHcXcoddCnVinxd5TxMRA0zGDOiD3I81w1XWOSd01jTD71G57n+
-         iH/0vqSApBzdSd2rJHozmgwPm79h+JPSJzFZdne4xi5ywGkyErZYZj4nImFE40BKW6mK
-         gdaw==
-X-Gm-Message-State: APjAAAVz4ZlrqAdqlDMVhVo9aJUmW9rabUxyb/fg4BHAeYnpctiNmeFa
-        ktLCZ1POQC2BkleSSKf2d7I=
-X-Google-Smtp-Source: APXvYqz6HrlvUPrupIkeOnNR4u2JiO5HAO6+4u8i6Uy+pDBKsc4EckR0AXk5jX6hXLXHqhODeDCaUg==
-X-Received: by 2002:adf:f80e:: with SMTP id s14mr24186744wrp.327.1552390734584;
-        Tue, 12 Mar 2019 04:38:54 -0700 (PDT)
-Received: from localhost (pD9E51D2D.dip0.t-ipconnect.de. [217.229.29.45])
-        by smtp.gmail.com with ESMTPSA id v6sm3226026wme.24.2019.03.12.04.38.53
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 Mar 2019 04:38:53 -0700 (PDT)
-Date:   Tue, 12 Mar 2019 12:38:52 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, andrew@aj.id.au, f.fainelli@gmail.com,
-        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-        hoan@os.amperecomputing.com, orsonzhai@gmail.com,
-        baolin.wang@linaro.org, zhang.lyra@gmail.com,
-        keguang.zhang@gmail.com, vz@mleia.com, matthias.bgg@gmail.com,
-        grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org,
-        robert.jarzmik@free.fr, yamada.masahiro@socionext.com,
-        jun.nie@linaro.org, shawnguo@kernel.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 42/42] drivers: gpio: use devm_platform_ioremap_resource()
-Message-ID: <20190312113852.GH31026@ulmo>
-References: <1552330521-4276-1-git-send-email-info@metux.net>
- <1552330521-4276-42-git-send-email-info@metux.net>
+        id S1726746AbfCLM2O (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 08:28:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54726 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726193AbfCLM2N (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Mar 2019 08:28:13 -0400
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 52DF5214AF
+        for <linux-mips@vger.kernel.org>; Tue, 12 Mar 2019 12:28:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1552393692;
+        bh=RfMRDnH1eEt84Aj4yukahn+u48BjxguJ/6f9pQE5oIk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=0f5lc6xqHH9qSgTCD3dq2oeTyxqvKCZxhoOE4/THZ5Vtu1KKLQlWd+ST/zAQVdBCV
+         QQpq54vbSzlY3P0sF0gO8pd30yU0cBK579zyBcuRG3vNINuFw7hgKKMZ2RfFy4C/rQ
+         HKkojTXUWQZPs0TyTusdrxBRhD3NeHodYFOSjvOo=
+Received: by mail-ot1-f41.google.com with SMTP id c18so2223367otl.13
+        for <linux-mips@vger.kernel.org>; Tue, 12 Mar 2019 05:28:12 -0700 (PDT)
+X-Gm-Message-State: APjAAAVJ7WgHqDhTFNi4FYnm3dvT8RzrWiv8RfaP5mDktK5TxAlliy0F
+        xUA/d7ZfqGd0NLx+S+BDMEpqaSAdBjBG1JCpW13YFA==
+X-Google-Smtp-Source: APXvYqz0vB0J2+h3DL6He37eQCNIvCvUy9T/ByTelc9RVPeWJshavRtenpxLsfspEWltM8H6JuWe2cTn4mOc5Ue2w4Y=
+X-Received: by 2002:a9d:7390:: with SMTP id j16mr23496214otk.231.1552393691537;
+ Tue, 12 Mar 2019 05:28:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fmEUq8M7S0s+Fl0V"
-Content-Disposition: inline
-In-Reply-To: <1552330521-4276-42-git-send-email-info@metux.net>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+References: <20190312091520.8863-1-jiaxun.yang@flygoat.com> <20190312091520.8863-5-jiaxun.yang@flygoat.com>
+In-Reply-To: <20190312091520.8863-5-jiaxun.yang@flygoat.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 12 Mar 2019 07:28:00 -0500
+X-Gmail-Original-Message-ID: <CABGGiszYh0uE_ybrfhK2byz4XZVAm9wvL5tQg0R85nnLt4c1iw@mail.gmail.com>
+Message-ID: <CABGGiszYh0uE_ybrfhK2byz4XZVAm9wvL5tQg0R85nnLt4c1iw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] MIPS: Loongson32: dts: add ls1b & ls1c
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     linux-mips@vger.kernel.org, paul.burton@mips.com,
+        keguang.zhang@gmail.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-
---fmEUq8M7S0s+Fl0V
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Mar 11, 2019 at 07:55:21PM +0100, Enrico Weigelt, metux IT consult =
-wrote:
-> Use the new helper that wraps the calls to platform_get_resource()
-> and devm_ioremap_resource() together.
->=20
-> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+On Tue, Mar 12, 2019 at 4:16 AM Jiaxun Yang <jiaxun.yang@flygoat.com> wrote=
+:
+>
+> Add devicetree skeleton for ls1b and ls1c
+>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
->  drivers/gpio/gpio-zynq.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  arch/mips/boot/dts/loongson/Makefile  |   6 ++
+>  arch/mips/boot/dts/loongson/ls1b.dts  |  21 +++++
+>  arch/mips/boot/dts/loongson/ls1c.dts  |  25 ++++++
+>  arch/mips/boot/dts/loongson/ls1x.dtsi | 117 ++++++++++++++++++++++++++
+>  4 files changed, 169 insertions(+)
+>  create mode 100644 arch/mips/boot/dts/loongson/Makefile
+>  create mode 100644 arch/mips/boot/dts/loongson/ls1b.dts
+>  create mode 100644 arch/mips/boot/dts/loongson/ls1c.dts
+>  create mode 100644 arch/mips/boot/dts/loongson/ls1x.dtsi
+>
+> diff --git a/arch/mips/boot/dts/loongson/Makefile b/arch/mips/boot/dts/lo=
+ongson/Makefile
+> new file mode 100644
+> index 000000000000..447801568f33
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/loongson/Makefile
+> @@ -0,0 +1,6 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +dtb-$(CONFIG_LOONGSON1_LS1B)   +=3D ls1b.dtb
+> +
+> +dtb-$(CONFIG_LOONGSON1_LS1B)   +=3D ls1c.dtb
+> +
+> +obj-$(CONFIG_BUILTIN_DTB)      +=3D $(addsuffix .o, $(dtb-y))
+> diff --git a/arch/mips/boot/dts/loongson/ls1b.dts b/arch/mips/boot/dts/lo=
+ongson/ls1b.dts
+> new file mode 100644
+> index 000000000000..6d40dc502acf
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/loongson/ls1b.dts
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> + */
+> +
+> +/dts-v1/;
+> +#include <ls1x.dtsi>
+> +
+> +/ {
+> +       model =3D "Loongson LS1B";
+> +       compatible =3D "loongson,ls1b";
 
-Subject prefix doesn't seem to match for this driver.
+Documented?
 
-Thierry
+> +
+> +};
+> +
+> +&ehci0 {
+> +       status =3D "okay";
+> +};
+> +
+> +&ohci0 {
+> +       status =3D "okay";
+> +};
+> \ No newline at end of file
 
---fmEUq8M7S0s+Fl0V
-Content-Type: application/pgp-signature; name="signature.asc"
+Fix this.
 
------BEGIN PGP SIGNATURE-----
+> diff --git a/arch/mips/boot/dts/loongson/ls1c.dts b/arch/mips/boot/dts/lo=
+ongson/ls1c.dts
+> new file mode 100644
+> index 000000000000..778d205a586e
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/loongson/ls1c.dts
+> @@ -0,0 +1,25 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> + */
+> +
+> +/dts-v1/;
+> +#include <ls1x.dtsi>
+> +
+> +/ {
+> +       model =3D "Loongson LS1C300A";
+> +       compatible =3D "loongson,ls1c300a";
+> +
+> +};
+> +
+> +&platintc4 {
+> +       status =3D "okay";
+> +};
+> +
+> +&ehci0 {
+> +       status =3D "okay";
+> +};
+> +
+> +&ohci0 {
+> +       status =3D "okay";
+> +};
+> \ No newline at end of file
+> diff --git a/arch/mips/boot/dts/loongson/ls1x.dtsi b/arch/mips/boot/dts/l=
+oongson/ls1x.dtsi
+> new file mode 100644
+> index 000000000000..f808e4328fd8
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/loongson/ls1x.dtsi
+> @@ -0,0 +1,117 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> + */
+> +
+> +/dts-v1/;
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +
+> +/ {
+> +    #address-cells =3D <1>;
+> +       #size-cells =3D <1>;
+> +
+> +       cpus {
+> +               #address-cells =3D <1>;
+> +               #size-cells =3D <0>;
+> +
+> +               cpu@0 {
+> +                       device_type =3D "cpu";
+> +                       reg =3D <0>;
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlyHmkwACgkQ3SOs138+
-s6Gx6xAAv1mQgIEYsiEOG3auFjK4NyqWTcTVKmRK/0r5f71zWRytjqe4lKn75wI+
-5PytZXa7xc67Qx6cVyqtLsdTBQ0kyShxwlRX4weQpR98ogYazQeEa+uzpDI8ywLa
-xrNmbePWN8RvJPtnksoHn36mNLIRHx5GB7ZdpnM5SpXufT0EH0+jZ5qJcZLmFrVr
-ctvRo3YzlLFsnaETSUOzP3uEEUZoa1cP18ul+36Xl+YBDUGpiXBVgyYvVGj8ZICw
-iq+/HA/MvPMTytFk81aEDMIH+K8mSP5uIXHsLFc/9hB8kb1vT3M70pt3yTdUdIJ6
-cuPcmSNtuLEe6lQm2UnBS7zUNblU5WVR7jz5bqAXDD2hI78PgXP9mZeT4jJyIV+e
-JS4juLof2V2V717jwL1iaJjgsrgetKAzfWV9EovIHiMVTCBQlALrl9hwi3rA/LL4
-0h5Zre1NaZ5OHFy/lM48NCcamK83rfFtfrzT8E1znKgN/AUvOyDbPKuA8gRrt+et
-NQrxijZW3aHPwtnFy4NYRtltYyI7XYNt7rIOSPFtFT40T6CcQRdJlETsFXYutVU/
-FLEyWQYPGSt+KzlPXWb1julgTWuA8n6/n6AgldDEL/wdV8f2SoBLmUtGjJ7NQ547
-B796Pe8juq+0bpjOWveScK46skLniGOrAyjltkR8PTotXq77kzo=
-=GdEd
------END PGP SIGNATURE-----
+Needs a (documented) compatible string.
 
---fmEUq8M7S0s+Fl0V--
+> +               };
+> +       };
+> +
+> +       cpu_intc: interrupt-controller {
+> +               #address-cells =3D <0>;
+> +               compatible =3D "mti,cpu-interrupt-controller";
+> +
+> +               interrupt-controller;
+> +               #interrupt-cells =3D <1>;
+> +       };
+> +
+> +       soc {
+> +               #address-cells =3D <1>;
+> +               #size-cells =3D <1>;
+> +
+> +               compatible =3D "simple-bus";
+> +               ranges;
+> +
+> +
+> +               platintc0: interrupt-controller@1fd01040 {
+> +                       compatible =3D "loongson,ls1x-intc";
+> +                       reg =3D <0x1fd01040 0x18>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells =3D <2>;
+> +
+> +                       interrupt-parent =3D <&cpu_intc>;
+> +                       interrupts =3D <2>;
+> +               };
+> +
+> +               platintc1: interrupt-controller@1fd01058 {
+> +                       compatible =3D "loongson,ls1x-intc";
+> +                       reg =3D <0x1fd01058 0x18>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells =3D <2>;
+> +
+> +                       interrupt-parent =3D <&cpu_intc>;
+> +                       interrupts =3D <3>;
+> +               };
+> +
+> +               platintc2: interrupt-controller@1fd01070 {
+> +                       compatible =3D "loongson,ls1x-intc";
+> +                       reg =3D <0x1fd01070 0x18>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells =3D <2>;
+> +
+> +                       interrupt-parent =3D <&cpu_intc>;
+> +                       interrupts =3D <4>;
+> +               };
+> +
+> +               platintc3: interrupt-controller@1fd01088 {
+> +                       compatible =3D "loongson,ls1x-intc";
+> +                       reg =3D <0x1fd01088 0x18>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells =3D <2>;
+> +
+> +                       interrupt-parent =3D <&cpu_intc>;
+> +                       interrupts =3D <5>;
+> +               };
+> +
+> +               platintc4: interrupt-controller@1fd010a0 {
+> +                       compatible =3D "loongson,ls1x-intc";
+> +                       reg =3D <0x1fd010a0 0x18>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells =3D <2>;
+> +
+> +                       interrupt-parent =3D <&cpu_intc>;
+> +                       interrupts =3D <6>;
+> +
+> +           status =3D "disabled";
+
+Some indentation problem.
+
+> +               };
+> +
+> +               ehci0: usb@1fe20000 {
+> +                       compatible =3D "generic-ehci";
+
+It would be better to add a chip specific compatible here. Most all
+USB controllers have some quirks.
+
+> +                       reg =3D <0x1fe20000 0x100>;
+> +                       interrupt-parent =3D <&platintc1>;
+> +                       interrupts =3D <0 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +           status =3D "disabled";
+> +                       };
+> +
+> +               ohci0: usb@1fe28000 {
+> +                       compatible =3D "generic-ohci";
+> +                       reg =3D <0x1fe28000 0x100>;
+> +                       interrupt-parent =3D <&platintc1>;
+> +                       interrupts =3D <1 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +           status =3D "disabled";
+> +                       };
+
+Don't you need a serial port or something for a console?
+
+> +
+> +       };
+> +};
+> +\ =E6=96=87=E4=BB=B6=E5=B0=BE=E6=B2=A1=E6=9C=89=E6=8D=A2=E8=A1=8C=E7=AC=
+=A6
+> --
+> 2.20.1
+>

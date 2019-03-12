@@ -2,60 +2,59 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-8.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 038CCC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D0F7C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:37:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C24E22075C
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:30:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 237992084F
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 11:37:39 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TffYgIlS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bx4Y47Yj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbfCLLaJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 07:30:09 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:52285 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbfCLLaI (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 07:30:08 -0400
-Received: by mail-wm1-f67.google.com with SMTP id f65so2241008wma.2;
-        Tue, 12 Mar 2019 04:30:06 -0700 (PDT)
+        id S1726255AbfCLLhi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 07:37:38 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:37004 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725844AbfCLLhi (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 07:37:38 -0400
+Received: by mail-wm1-f68.google.com with SMTP id x10so2216966wmg.2;
+        Tue, 12 Mar 2019 04:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=+XcJvH542AD4bXehLJbV9mB4t5I10uxa2rKnBAMyGM8=;
-        b=TffYgIlS8y4yA3LfMbRuqdfD9315J83Y/7tqgb1HBbRBOAK+m8AZnM/AabBvd9Wx35
-         oSMdfFzScO3UhpFpxGjoYMB5aJ3+Tgaj4bVlIU794ZqG7S2z2SssjW2/uy/MUmuFDUAD
-         bGEXvqNrbCQSDt91X54p4iCzII4rnPPW1GT01tkKsAZy6vjHfdwbBEryvAYXBe96piOf
-         d0Fjv6687CuQxynEmkbfD0Vnaq6d59fdJSlW/RfJLjp9W902eSMMyvStywKogZ5+ziDo
-         I3UOkkphqsdULMmERycStiDK2SzulittA03UBK3TQbxXFLD4URB+qu21iSyfN0DDhQNU
-         wmaA==
+        bh=02NJNpf9xftt9Jxg0i5VP4bGJO4Ftj6yP7T1GxfxOPE=;
+        b=bx4Y47YjIpRBe7OWb9QtvJgqhUob/ITaPZ3DfJ3dLEmnKZm78W3K2Z+BbBfq38jo45
+         KAXiwiTLGXWYs5zyyEQovUIkx+PWta3mgmVSFTEBq5Vz8etCcTueDXuF9e3M78wo396t
+         NSe43a4FHz/Ha3RFbG3WtIcpr+WKArT0/53e7JDYc3sWAE6wXO3V2bV6dp/y6DFTrAVu
+         MUyLUBirhGRgHWFh74QJ9VR88Hrk7MoCLOBCVSVn4xHf0YQzpqCpA1H8yxJ/qOY68i21
+         42nmgUjlcftaxi54Ss70s6dwZobrdWzEwvwD5bsr2cpi4+oZpP8+4VaqNbSViOY7AmbT
+         nWNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+XcJvH542AD4bXehLJbV9mB4t5I10uxa2rKnBAMyGM8=;
-        b=tHqVAyur3so5PzDZ67IRxUN+wj3zYQKJpcOm1tEwsqmrWu6rZps59MzZkKQa0kR6sp
-         Ep/mcE0Ns6FiQETCs9hO2T57t8cBaFeevB8r8LW6jWTyXQ84XBOrZrV7TCpplVHG1C59
-         Y0l0SSKXMltBI8y7ctJvsWulmS3tOTgOetKo9wxo4pyKiRaZofuqTXRxzz1hxAuj/sbt
-         jwBINBZHxnHAfFmcO2iYaWno7dkDbcW6tjMYyoQbfO9LJ7VKKxDkSGg8M7ihmVu4by4D
-         Ks2LSBAHMqz+LCuRX0GeVyrD4juN4/Y3Nacx1swLdqzqt0aS6b6AK5RmfiFqF/HNUR4W
-         aafA==
-X-Gm-Message-State: APjAAAVxanzOpFpo3Svb/Xj+oC9xA+t/wbBCUrMMTNIeplbmEJnlk9nt
-        V79ao26sJOna68hhxx9SK8s=
-X-Google-Smtp-Source: APXvYqwfEb+0fl0GoX7XVKmGKH2mQq36SYnbRmhTidPc6rMQ2ZwcX5mwctIIm3AmGpT64/xQPm1PYg==
-X-Received: by 2002:a1c:b40b:: with SMTP id d11mr2218472wmf.80.1552390206103;
-        Tue, 12 Mar 2019 04:30:06 -0700 (PDT)
+        bh=02NJNpf9xftt9Jxg0i5VP4bGJO4Ftj6yP7T1GxfxOPE=;
+        b=C2V3TUCcv1Z9gBp3dqNUhSq1FCWyNTU0Nbk0tqK8RPej0+DZhHcXM02ogv6fy9299w
+         KGF9LqGtU7BnpJNh8kfx9lijcNq4iYxys8Dl/Xkgup94AvDYyYPU4UHTz3SRTq6JK3yP
+         +nPSPjfOpGXt3X2XSV2/J2SD3ziw4SEmyTQ43fAlsq20hhhddvGyc0alQ9mY8YqUMsoI
+         /vsjZB8k7V4CM+k2ztJI0yHuiTCNlCYFkzTbHiTI9fbZYwpFhle0IER6z2VkWIpAajmO
+         JPTuqes0HqXeD8JzeJqy69ygjjYEw2XNFfsZzDTpTua4DVRwwDAQlHXf8Wov/LMPYxhm
+         DHWA==
+X-Gm-Message-State: APjAAAWR6vqBsw/zqSC4+YIKCBSNzKXxoshokUiTXtl98RqX4pzNK5kG
+        eCA0zSRQkT1xD0eirKydzvkQEUeE
+X-Google-Smtp-Source: APXvYqzR56N0XUCoqRCTiH1vFQODSsgDZ827Abey7jAuHhEk0wmWhBnL/XIVmbafF3pnviSFlHj1NQ==
+X-Received: by 2002:a1c:9694:: with SMTP id y142mr2019570wmd.98.1552390655001;
+        Tue, 12 Mar 2019 04:37:35 -0700 (PDT)
 Received: from localhost (pD9E51D2D.dip0.t-ipconnect.de. [217.229.29.45])
-        by smtp.gmail.com with ESMTPSA id c21sm12508423wre.35.2019.03.12.04.30.05
+        by smtp.gmail.com with ESMTPSA id n6sm12475415wrt.23.2019.03.12.04.37.33
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 Mar 2019 04:30:05 -0700 (PDT)
-Date:   Tue, 12 Mar 2019 12:30:04 +0100
+        Tue, 12 Mar 2019 04:37:33 -0700 (PDT)
+Date:   Tue, 12 Mar 2019 12:37:32 +0100
 From:   Thierry Reding <thierry.reding@gmail.com>
 To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
 Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
@@ -70,16 +69,16 @@ Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
         linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-pwm@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 33/42] drivers: gpio: tegra: use
+Subject: Re: [PATCH 38/42] drivers: gpio: vr41xx: use
  devm_platform_ioremap_resource()
-Message-ID: <20190312113004.GF31026@ulmo>
+Message-ID: <20190312113732.GG31026@ulmo>
 References: <1552330521-4276-1-git-send-email-info@metux.net>
- <1552330521-4276-33-git-send-email-info@metux.net>
+ <1552330521-4276-38-git-send-email-info@metux.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="dgjlcl3Tl+kb3YDk"
+        protocol="application/pgp-signature"; boundary="9Iq5ULCa7nGtWwZS"
 Content-Disposition: inline
-In-Reply-To: <1552330521-4276-33-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-38-git-send-email-info@metux.net>
 User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
@@ -87,41 +86,110 @@ List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
 
---dgjlcl3Tl+kb3YDk
+--9Iq5ULCa7nGtWwZS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2019 at 07:55:12PM +0100, Enrico Weigelt, metux IT consult =
+On Mon, Mar 11, 2019 at 07:55:17PM +0100, Enrico Weigelt, metux IT consult =
 wrote:
 > Use the new helper that wraps the calls to platform_get_resource()
 > and devm_ioremap_resource() together.
 >=20
+> this driver deserves a bit more cleanup, to get rid of the global
+> variable giu_base, which makes it single-instance-only.
+>=20
 > Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 > ---
->  drivers/gpio/gpio-tegra.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/gpio/gpio-vr41xx.c | 19 +++++--------------
+>  1 file changed, 5 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/gpio/gpio-vr41xx.c b/drivers/gpio/gpio-vr41xx.c
+> index b13a49c..98cd715 100644
+> --- a/drivers/gpio/gpio-vr41xx.c
+> +++ b/drivers/gpio/gpio-vr41xx.c
+> @@ -467,10 +467,9 @@ static int vr41xx_gpio_to_irq(struct gpio_chip *chip=
+, unsigned offset)
+> =20
+>  static int giu_probe(struct platform_device *pdev)
+>  {
+> -	struct resource *res;
+>  	unsigned int trigger, i, pin;
+>  	struct irq_chip *chip;
+> -	int irq, ret;
+> +	int irq;
+> =20
+>  	switch (pdev->id) {
+>  	case GPIO_50PINS_PULLUPDOWN:
+> @@ -489,21 +488,14 @@ static int giu_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+> =20
+> -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res)
+> -		return -EBUSY;
+> -
+> -	giu_base =3D ioremap(res->start, resource_size(res));
+> -	if (!giu_base)
+> -		return -ENOMEM;
+> +	giu_base =3D devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(giu_base))
+> +		return PTR_ERR(giu_base);
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+The driver currently doesn't request the memory described in the
+resource, so technically you're changing behaviour here and with your
+change the driver could now fail if somebody else has already claimed
+the memory.
 
---dgjlcl3Tl+kb3YDk
+Looking at arch/mips/vr41xx there doesn't seem to be an overlap between
+the memory region used by the GIU device and any others, so this should
+be safe. Not sure anyone still has hardware for this around to give it
+a spin.
+
+Thierry
+
+> =20
+>  	vr41xx_gpio_chip.parent =3D &pdev->dev;
+> =20
+> -	ret =3D gpiochip_add_data(&vr41xx_gpio_chip, NULL);
+> -	if (!ret) {
+> -		iounmap(giu_base);
+> +	if (gpiochip_add_data(&vr41xx_gpio_chip, NULL))
+>  		return -ENODEV;
+> -	}
+> =20
+>  	giu_write(GIUINTENL, 0);
+>  	giu_write(GIUINTENH, 0);
+> @@ -534,7 +526,6 @@ static int giu_probe(struct platform_device *pdev)
+>  static int giu_remove(struct platform_device *pdev)
+>  {
+>  	if (giu_base) {
+> -		iounmap(giu_base);
+>  		giu_base =3D NULL;
+>  	}
+> =20
+> --=20
+> 1.9.1
+>=20
+
+--9Iq5ULCa7nGtWwZS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlyHmDwACgkQ3SOs138+
-s6F7Qw/+Ig2XXOoqc2QD68SQdohFVyykTnyHy3+Un2OUtPW8/Qj/zr6kpRbpEtXF
-yyVZ5vYXGJmaSYSYjPRGHdXwy7UDCtFoEdrP7vElVJgZRtWS9aeodcIqy+s39i86
-DrCuskY+baZpX4HBHL0EWs+2JF4QBVL8wRPneCsIB5hQZnIevxBkCaxxhzVp6lXE
-LSMRF45aDp01RrGT700sctdvC/MzL6wWPLcb1f9RtCQpdMFtEzv38MpsK6WH7TeX
-ezjPiuPss2tmC4pf8wWQ3YDoJi1TjqFpfvbeUviezvwtGq0lW66j6jXpC6QwmcSb
-7un7Yxsm9lInxRWxTA3+ZjPRnDF8Ln32uGr9UuzGYE49ImIRBrX+7LRMcosDEIlu
-538Ggsf8UFsGfMITCvIOHCamOZFpNTdgLYHCBNt6UcL1IKAJJezoDL5QvU9Nipgt
-p9+As3hfvqId1Z3UAu0LPmWcHWhdYr1og21X6pjQC3ynMZoWW2w9F8ceWBFpDf2h
-ug2aWWqT8UgQw8dT4chcokFVWABRLhScukWtFg1jmLG1TkvZm/hs3YyyTrdb4yKX
-gAHznvIqom40DPcA8oF5DjSH2n8OTQTvoQVroXeX5HF3BXkW39LuahWmuDWSJMmF
-ZucmkgTcF9CC+wv/dbWzgGzBs6Ec8Zcvd3AIBvgjggsLlcOFJhA=
-=Pzrs
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlyHmfwACgkQ3SOs138+
+s6GpPw/+PO40QInzGgfRGJGf5fQ2uQKUwIiH2EQxp0L7tmyvF/ZYodNb2Oy16DM4
+ypJlpKtRU8udgnhj6h4Jr+rJ50Ak5Nz26aBltA0XVBpUm7eEfLbA3egfup3BtXDR
+eERmniHeC83brj+qd2ttpngN0p4RF06BiUtpqWQwYbPaM6ZRhZfqRr5Y3m673vRn
+Wm/uKpNVXJ+LjqDEbbwuawy9icfTjPK9u4x5W80H1Qw4AnQEH66cB6isB7kXCKNT
+hVA1AKnc2wor3HEQxNBhGESwg5j1tzBYQK6RJ6fVB9cnpOFQGjPCIjYsyJdNf1wc
+T27zc3UEL4Sy20crfEzVMaP23khdcdUFlyqLfnPfY3JmUT4NhhZr0FVUGP9iUHPa
+hLDtXwUEt+Ojol9uIAyT8OePfSm797Xpk6t+WVpt3H8hrXvXdo77NGUUZXG/IInq
+QAMeV/yN/iNOnUguWe7xjBHQLuVUbm+yuNCgKWFG+DOOKYjN8TLmuju1SeHHj/fx
+wge65+PnS+SiHzaNz8icRZHaH9VWSGS2qCvEcMuoGJZjGyz3ajaqdzSVfm0TsnIT
+R87r1B46OZC++ztZicofvfGtc1vInwaE8F1ikjKxa5VJoFofssI0HnzU+WHrgfcs
+PO9mqyLDHjv569YoyX7NcEWdtXotVJT/GlYdkkI+SN70/7Va+4M=
+=BSp7
 -----END PGP SIGNATURE-----
 
---dgjlcl3Tl+kb3YDk--
+--9Iq5ULCa7nGtWwZS--

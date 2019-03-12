@@ -2,176 +2,94 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EA03C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F16DC43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:34:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CE505214AF
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:22:50 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="brQhhlxZ"
+	by mail.kernel.org (Postfix) with ESMTP id 69763214D8
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:34:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725926AbfCLJWu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 05:22:50 -0400
-Received: from forward105j.mail.yandex.net ([5.45.198.248]:41426 "EHLO
-        forward105j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725894AbfCLJWu (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Mar 2019 05:22:50 -0400
-X-Greylist: delayed 406 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Mar 2019 05:22:47 EDT
-Received: from mxback5j.mail.yandex.net (mxback5j.mail.yandex.net [IPv6:2a02:6b8:0:1619::10e])
-        by forward105j.mail.yandex.net (Yandex) with ESMTP id BAA23B21F9B;
-        Tue, 12 Mar 2019 12:15:59 +0300 (MSK)
-Received: from smtp1j.mail.yandex.net (smtp1j.mail.yandex.net [2a02:6b8:0:801::ab])
-        by mxback5j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id qf7LOJly07-FxeCHs2x;
-        Tue, 12 Mar 2019 12:15:59 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1552382159;
-        bh=pPg0Xc1u/PW7WvNprCqCGm16GFnmZtiD8YEsqJzCnVA=;
-        h=In-Reply-To:Subject:To:From:Message-Id:Cc:References:Date;
-        b=brQhhlxZRmLoXk/teyihm8UXamywQbhs5o+yvxIqJ1a2N0SIxzgqFBphg5VfjwDka
-         LCcykXMbc1zjnaQJLvCf/lBoeuZDy00NO2mBl/Fn0PfO2II1i37zYqkWoVxSeeJh5U
-         H9wDcl4lJHDbf96LJ/3U+PaLShniLC9L/35ygJ5k=
-Authentication-Results: mxback5j.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id HHvVQer8fs-FtdKiDaP;
-        Tue, 12 Mar 2019 12:15:58 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-mips@vger.kernel.org
-Cc:     paul.burton@mips.com, keguang.zhang@gmail.com,
-        linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 3/4] MIPS: Loongson32: Kconfig merge CPU_LOONGSON1B&C
-Date:   Tue, 12 Mar 2019 17:15:19 +0800
-Message-Id: <20190312091520.8863-4-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190312091520.8863-1-jiaxun.yang@flygoat.com>
-References: <20190312091520.8863-1-jiaxun.yang@flygoat.com>
+        id S1726452AbfCLJeI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 05:34:08 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:58443 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725767AbfCLJeH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 05:34:07 -0400
+Received: from [192.168.1.110] ([77.4.190.91]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MsI4Q-1gnklV3SlG-00tooP; Tue, 12 Mar 2019 10:33:47 +0100
+Subject: Re: [PATCH 16/42] drivers: gpio: janz-ttl: drop unneccessary temp
+ variable dev
+To:     Ben Dooks <ben.dooks@codethink.co.uk>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        linux-kernel@vger.kernel.org
+Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        andrew@aj.id.au, f.fainelli@gmail.com, sbranden@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
+        orsonzhai@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
+        keguang.zhang@gmail.com, vz@mleia.com, matthias.bgg@gmail.com,
+        thierry.reding@gmail.com, grygorii.strashko@ti.com,
+        ssantosh@kernel.org, khilman@kernel.org, robert.jarzmik@free.fr,
+        yamada.masahiro@socionext.com, jun.nie@linaro.org,
+        shawnguo@kernel.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
+References: <1552330521-4276-1-git-send-email-info@metux.net>
+ <1552330521-4276-16-git-send-email-info@metux.net>
+ <539b3cd4-8af3-d6d8-f5a9-2c426a1f0faa@codethink.co.uk>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <93ae13c0-da78-0e6a-358f-97e358c11f16@metux.net>
+Date:   Tue, 12 Mar 2019 10:33:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <539b3cd4-8af3-d6d8-f5a9-2c426a1f0faa@codethink.co.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:0SrY8q+Yz4chDSJzpBhN2boV3LJ1UlZAmHVRyM99spCvye5OLkk
+ Zds8FtZ69RIvK3HlXYCyP4G+r5qL+hFPB8hI2OhM5SaADJPrgAWEM0Cc8Xh2igD58Xpl5YF
+ 22lL9syOjmsohWU/gFSiWYTIccc6Gbc8qsehHRrLajNdqJPnxPSKDeMHXZWuhOWDpJVMs0W
+ EoMh6TNkXDUlKhJ2jpG/g==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Hk2OouH5jz4=:9Ykb5WhMUxlKnMQEy9QfOf
+ Il/mMzRaXz+ura8Dpca4OIGfDt72rdJwsX7RK82NLEw+qPdYLJl/axniO96C45Resip9cb88x
+ Iqn++6Oc5CrXBmnJ7QVWUpstQb7FwNWaQOxTGlPxBktUsqytYmLcp1ygoZSUjdh6UL3K5rtZD
+ i9pIApnmkqGpEGe9SyOn4xVMiUlch/WgCS9lDSBpLQnZGROaYF9rixKuHSonPzbzql+c3HhZs
+ JaU+i+HZ5x5QxnobVIkT4FTx11v1PltlsYP7KE1Rj19UvNky1nACebUQS21Kk7fSnVZaVPtVq
+ WOIp6ZYxD514IERwDNc7hI6q2SMvusE74SMkdVaVeHqlXNR5/gX657YH1ntWVi6yeIdsL+o3Q
+ LUj0P4v4Qx3UA5h5EmY92BNrJ9X014TmO8R9KaR7hax3T4uDBX7D6VDLtE2m9iQpC92k8zVuL
+ mdWy7m3muG9BhYOgyXMoNB2wuLrK/pZ/a0fR3i1ZD6fHkPKPNEAonJbbsZ9ehZFOHRqy2ZA1I
+ KSHLaUL+83nhEegdDUmNGLQoGFezOkfuA07rjj+QmO4HFPR1ZngWQAA8w+swxGbT6gXfb1p14
+ 4Pmv2v0aHJ16XB/t12WuDfN3Npn34PTrOaktsh1vpKMVI8VU3HzdJeRazH4SiTa4qQ6RJNp0g
+ XjRAnrt5zAAbBa16qXyC7KhV/yDUGyejekx+LpLCqn9cfXSEdEJiPLLoKkPuU2hn1e6ct9nyF
+ CVnZoMkGjxc9zkBbkd+0pZew5n6GlsWXF31FnX2e3GfQwUnGTrTatEuwo2M=
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Loongson-1B&C have totally identical GS232 core, so merge
-them into same CPU config.
+On 12.03.19 10:17, Ben Dooks wrote:
+> On 11/03/2019 18:54, Enrico Weigelt, metux IT consult wrote:
+>> don't need the temporary variable "dev", directly use &pdev->dev
+>>
+>> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+> 
+> This is quite usual to do, and I like it as it saves typing.
+> Personally I would say don't bother with this change.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- arch/mips/Kconfig                | 38 +++++++++-----------------------
- arch/mips/include/asm/cpu-type.h |  3 +--
- arch/mips/loongson32/Kconfig     |  4 ++--
- 3 files changed, 14 insertions(+), 31 deletions(-)
+hmm, both approaches have their valid arguments.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 15f8cc3c965f..ac0b93e57ca3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1429,26 +1429,22 @@ config CPU_LOONGSON2F
- 	  have a similar programming interface with FPGA northbridge used in
- 	  Loongson2E.
- 
--config CPU_LOONGSON1B
--	bool "Loongson 1B"
--	depends on SYS_HAS_CPU_LOONGSON1B
--	select CPU_LOONGSON1
-+config CPU_LOONGSON1
-+	bool "Loongson 1"
-+	depends on SYS_HAS_CPU_LOONGSON1
-+	select CPU_MIPS32
-+	select CPU_MIPSR2
-+	select CPU_HAS_PREFETCH
-+	select CPU_HAS_LOAD_STORE_LR
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
-+	select CPU_SUPPORTS_CPUFREQ
- 	select LEDS_GPIO_REGISTER
- 	help
- 	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
- 	  Release 1 instruction set and part of the MIPS32 Release 2
- 	  instruction set.
- 
--config CPU_LOONGSON1C
--	bool "Loongson 1C"
--	depends on SYS_HAS_CPU_LOONGSON1C
--	select CPU_LOONGSON1
--	select LEDS_GPIO_REGISTER
--	help
--	  The Loongson 1C is a 32-bit SoC, which implements the MIPS32
--	  Release 1 instruction set and part of the MIPS32 Release 2
--	  instruction set.
--
- config CPU_MIPS32_R1
- 	bool "MIPS32 Release 1"
- 	depends on SYS_HAS_CPU_MIPS32_R1
-@@ -1866,15 +1862,6 @@ config CPU_LOONGSON2
- 	select ARCH_HAS_PHYS_TO_DMA
- 	select CPU_HAS_LOAD_STORE_LR
- 
--config CPU_LOONGSON1
--	bool
--	select CPU_MIPS32
--	select CPU_MIPSR2
--	select CPU_HAS_PREFETCH
--	select CPU_HAS_LOAD_STORE_LR
--	select CPU_SUPPORTS_32BIT_KERNEL
--	select CPU_SUPPORTS_HIGHMEM
--	select CPU_SUPPORTS_CPUFREQ
- 
- config CPU_BMIPS32_3300
- 	select SMP_UP if SMP
-@@ -1914,10 +1901,7 @@ config SYS_HAS_CPU_LOONGSON2F
- 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
- 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
- 
--config SYS_HAS_CPU_LOONGSON1B
--	bool
--
--config SYS_HAS_CPU_LOONGSON1C
-+config SYS_HAS_CPU_LOONGSON1
- 	bool
- 
- config SYS_HAS_CPU_MIPS32_R1
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index a45af3de075d..ee17f02419a3 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -24,8 +24,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_LOONGSON3:
- #endif
- 
--#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
--    defined(CONFIG_SYS_HAS_CPU_LOONGSON1C)
-+#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1)
- 	case CPU_LOONGSON1:
- #endif
- 
-diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
-index 6dacc1438906..a0a00c3e2187 100644
---- a/arch/mips/loongson32/Kconfig
-+++ b/arch/mips/loongson32/Kconfig
-@@ -8,7 +8,7 @@ config LOONGSON1_LS1B
- 	bool "Loongson LS1B board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
- 	select CSRC_R4K if !MIPS_EXTERNAL_TIMER
--	select SYS_HAS_CPU_LOONGSON1B
-+	select SYS_HAS_CPU_LOONGSON1
- 	select DMA_NONCOHERENT
- 	select BOOT_ELF32
- 	select IRQ_MIPS_CPU
-@@ -23,7 +23,7 @@ config LOONGSON1_LS1C
- 	bool "Loongson LS1C board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
- 	select CSRC_R4K if !MIPS_EXTERNAL_TIMER
--	select SYS_HAS_CPU_LOONGSON1C
-+	select SYS_HAS_CPU_LOONGSON1
- 	select DMA_NONCOHERENT
- 	select BOOT_ELF32
- 	select IRQ_MIPS_CPU
+I'm not particularily biased to one or another ay, but I'd prefer
+having it consistent  everywhere.
+
+
+--mtx
+
 -- 
-2.20.1
-
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

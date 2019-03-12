@@ -1,160 +1,132 @@
-Return-Path: <SRS0=SHWW=RO=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE9FBC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 22:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAFF9C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 02:39:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C3B792087C
-	for <linux-mips@archiver.kernel.org>; Mon, 11 Mar 2019 22:49:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A74CE214AE
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 02:39:03 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r2gPjsM8"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbfCKWsF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 11 Mar 2019 18:48:05 -0400
-Received: from foss.arm.com ([217.140.101.70]:33862 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726442AbfCKWsC (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 11 Mar 2019 18:48:02 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7D60A78;
-        Mon, 11 Mar 2019 15:48:01 -0700 (PDT)
-Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com [10.1.194.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7AC513F59C;
-        Mon, 11 Mar 2019 15:47:58 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Julien Thierry <julien.thierry@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-xtensa@linux-xtensa.org, x86@kernel.org,
-        sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, nios2-dev@lists.rocketboards.org
-Subject: [PATCH 00/14] entry: preempt_schedule_irq() callers scrub
-Date:   Mon, 11 Mar 2019 22:47:38 +0000
-Message-Id: <20190311224752.8337-1-valentin.schneider@arm.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726781AbfCLCi5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 11 Mar 2019 22:38:57 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:36646 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726829AbfCLCi4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 11 Mar 2019 22:38:56 -0400
+Received: by mail-lj1-f195.google.com with SMTP id v10so914359lji.3
+        for <linux-mips@vger.kernel.org>; Mon, 11 Mar 2019 19:38:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5U9bUNAqij3VG7YLuZ3Gl5U8RjZnG9CeEaaenO2RaR0=;
+        b=r2gPjsM8mvyT/fDHMyPEcAkEBC1H4/+GdOE+0omVaDRVBaqjR1vvwxKH+bWW1cUbdU
+         gZs4o1zIW3hLD/7WaXSX2x/zDfVEPEoyhpQUoBLpTDcsusDCB1z2pse3jnZWlseBs3+C
+         xztHfNJexMNjhDe14W4UQtFK8Emx/BVseUv7VOe5kpNL5u3muNKvDSQ68xYObjCZDFX0
+         aeXPBGN0nQxRCS5l+OmvIqJK1AxlE0tZF1fPQ/AwNe2YsVK3sXaFXLc61IPsuSbnE+dh
+         fWOcLTokjwPNWz/iAOiieqjkD0TmFPbLqUMpVQwvHQDCIQYMTeE60dyliLq/hTsW7/Wd
+         cZMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5U9bUNAqij3VG7YLuZ3Gl5U8RjZnG9CeEaaenO2RaR0=;
+        b=q5ftlznMltv5dFOEgZaHBHG19tmV2JRREgIne+Y5e4BwVoea2K6ER1YLCAo9J/FJqo
+         WqEAH3k/gSlZ9jHw7VSKWGHczgreREDD42k1wXqREQzxWIFhahQcd3O+5VVw6GDTfXCc
+         vSiNVG9i7uArrANvSqcIshzkmCO/Nmc7C3YoZuvhRE4LoX99SU1prb8Ice6ex1bnxA7b
+         R/T3Y1hOw8LKxQqm75JGNwCZYYORcmN5GzZ5g/wUFBXozS5EMT8x5u6EpUa83x7YpkyZ
+         h4kr9FjWK3aigGNawHq9J4diwOy4HB37IxM+YTXhNDC+8Pas0B7UuR6Cm8diVbTT+6N8
+         bKUg==
+X-Gm-Message-State: APjAAAXLD2dWMLdiC4CBT7wp/jr8HlgNYZHEd6xHqmXI3gCOUQ59X6cH
+        xxqPAfZLUPq/8eQuysF26bpLeBVlqWHgZl7BGmpT2A==
+X-Google-Smtp-Source: APXvYqxkAx87Dn3f1WaNYwv1DfReo6GgOrEGMmRjGCpnuqvlrNQLeTRGyz69xF8zgLXlvor8ek0Bu/hzP/94vfywRfU=
+X-Received: by 2002:a2e:8084:: with SMTP id i4mr17929912ljg.44.1552358334339;
+ Mon, 11 Mar 2019 19:38:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-9-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-9-git-send-email-info@metux.net>
+From:   Baolin Wang <baolin.wang@linaro.org>
+Date:   Tue, 12 Mar 2019 10:38:43 +0800
+Message-ID: <CAMz4kuKC5haGbhyVJ4gQ6nMRzdaxJnd3SmeCSM-096p7TAp8cA@mail.gmail.com>
+Subject: Re: [PATCH 09/42] drivers: gpio: sprd: use devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        andrew@aj.id.au, f.fainelli@gmail.com, sbranden@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, keguang.zhang@gmail.com,
+        vz@mleia.com, matthias.bgg@gmail.com,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        ssantosh@kernel.org, khilman@kernel.org,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        jun.nie@linaro.org, shawnguo@kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+On Tue, 12 Mar 2019 at 02:55, Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
+>
+> Use the new helper that wraps the calls to platform_get_resource()
+> and devm_ioremap_resource() together.
+>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+> ---
+>  drivers/gpio/gpio-eic-sprd.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-eic-sprd.c b/drivers/gpio/gpio-eic-sprd.c
+> index f0223ce..c12de87 100644
+> --- a/drivers/gpio/gpio-eic-sprd.c
+> +++ b/drivers/gpio/gpio-eic-sprd.c
+> @@ -567,7 +567,6 @@ static int sprd_eic_probe(struct platform_device *pdev)
+>         const struct sprd_eic_variant_data *pdata;
+>         struct gpio_irq_chip *irq;
+>         struct sprd_eic *sprd_eic;
+> -       struct resource *res;
+>         int ret, i;
+>
+>         pdata = of_device_get_match_data(&pdev->dev);
+> @@ -596,13 +595,9 @@ static int sprd_eic_probe(struct platform_device *pdev)
+>                  * have one bank EIC, thus base[1] and base[2] can be
+>                  * optional.
+>                  */
+> -               res = platform_get_resource(pdev, IORESOURCE_MEM, i);
+> -               if (!res)
+> -                       continue;
+> -
+> -               sprd_eic->base[i] = devm_ioremap_resource(&pdev->dev, res);
+> +               sprd_eic->base[i] = devm_platform_ioremap_resource(pdev, 0);
 
-This is the continuation of [1] where I'm hunting down
-preempt_schedule_irq() callers because of [2].
+This is incorrect, since we can have multiple IO resources, but you
+only get index 0.
 
-I told myself the best way to get this moving forward wouldn't be to write
-doc about it, but to go write some fixes and get some discussions going,
-which is what this patch-set is about.
-
-I've looked at users of preempt_schedule_irq(), and made sure they didn't
-have one of those useless loops. The list of offenders is:
-
-$ grep -r -I "preempt_schedule_irq" arch/ | cut -d/ -f2 | sort | uniq
-
-  arc
-  arm
-  arm64
-  c6x
-  csky
-  h8300
-  ia64
-  m68k
-  microblaze
-  mips
-  nds32
-  nios2
-  parisc
-  powerpc
-  riscv
-  s390
-  sh
-  sparc
-  x86
-  xtensa
-
-Regarding that loop, archs seem to fall in 3 categories:
-A) Those that don't have the loop
-B) Those that have a small need_resched() loop around the
-   preempt_schedule_irq() callsite
-C) Those that branch to some more generic code further up the entry code
-   and eventually branch back to preempt_schedule_irq()
-
-arc, m68k, nios2 fall in A)
-sparc, ia64, s390 fall in C)
-all the others fall in B)
-
-I've written patches for B) and C) EXCEPT for ia64 and s390 because I
-haven't been able to tell if it's actually fine to kill that "long jump"
-(and maybe I'm wrong on sparc). Hopefully folks who understand what goes on
-in there might be able to shed some light.
-
-Also, since I sent patches for arm & arm64 in [1] I'm not including them
-here.
-
-Boot-tested on:
-- x86
-
-Build-tested on:
-- h8300
-- c6x
-- powerpc
-- mips
-- nds32
-- microblaze
-- sparc
-- xtensa
-
-Thanks,
-Valentin
-
-[1]: https://lore.kernel.org/lkml/20190131182339.9835-1-valentin.schneider@arm.com/
-[2]: https://lore.kernel.org/lkml/cc989920-a13b-d53b-db83-1584a7f53edc@arm.com/
-
-Valentin Schneider (14):
-  sched/core: Fix preempt_schedule() interrupt return comment
-  c6x: entry: Remove unneeded need_resched() loop
-  csky: entry: Remove unneeded need_resched() loop
-  h8300: entry: Remove unneeded need_resched() loop
-  microblaze: entry: Remove unneeded need_resched() loop
-  MIPS: entry: Remove unneeded need_resched() loop
-  nds32: ex-exit: Remove unneeded need_resched() loop
-  powerpc: entry: Remove unneeded need_resched() loop
-  RISC-V: entry: Remove unneeded need_resched() loop
-  sh: entry: Remove unneeded need_resched() loop
-  sh64: entry: Remove unneeded need_resched() loop
-  sparc64: rtrap: Remove unneeded need_resched() loop
-  x86/entry: Remove unneeded need_resched() loop
-  xtensa: entry: Remove unneeded need_resched() loop
-
- arch/c6x/kernel/entry.S        | 3 +--
- arch/csky/kernel/entry.S       | 4 ----
- arch/h8300/kernel/entry.S      | 3 +--
- arch/microblaze/kernel/entry.S | 5 -----
- arch/mips/kernel/entry.S       | 3 +--
- arch/nds32/kernel/ex-exit.S    | 4 ++--
- arch/powerpc/kernel/entry_32.S | 6 +-----
- arch/powerpc/kernel/entry_64.S | 8 +-------
- arch/riscv/kernel/entry.S      | 3 +--
- arch/sh/kernel/cpu/sh5/entry.S | 5 +----
- arch/sh/kernel/entry-common.S  | 4 +---
- arch/sparc/kernel/rtrap_64.S   | 1 -
- arch/x86/entry/entry_32.S      | 3 +--
- arch/x86/entry/entry_64.S      | 3 +--
- arch/xtensa/kernel/entry.S     | 2 +-
- kernel/sched/core.c            | 7 +++----
- 16 files changed, 16 insertions(+), 48 deletions(-)
-
---
-2.20.1
-
+>                 if (IS_ERR(sprd_eic->base[i]))
+> -                       return PTR_ERR(sprd_eic->base[i]);
+> +                       continue;
+>         }
+>
+>         sprd_eic->chip.label = sprd_eic_label_name[sprd_eic->type];
+> --
+> 1.9.1
+>
+-- 
+Baolin Wang
+Best Regards

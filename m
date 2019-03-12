@@ -2,145 +2,112 @@ Return-Path: <SRS0=h4L/=RP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9060C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 331A6C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:18:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 87855214D8
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:16:22 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="nf2j6i80"
+	by mail.kernel.org (Postfix) with ESMTP id 0B6C5214D8
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 09:18:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbfCLJP4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 05:15:56 -0400
-Received: from forward101p.mail.yandex.net ([77.88.28.101]:46399 "EHLO
-        forward101p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726083AbfCLJPw (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Mar 2019 05:15:52 -0400
-Received: from mxback16o.mail.yandex.net (mxback16o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::67])
-        by forward101p.mail.yandex.net (Yandex) with ESMTP id E0E313280C37;
-        Tue, 12 Mar 2019 12:15:47 +0300 (MSK)
-Received: from smtp1j.mail.yandex.net (smtp1j.mail.yandex.net [2a02:6b8:0:801::ab])
-        by mxback16o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id jYhk0F1NhY-Fle0McxO;
-        Tue, 12 Mar 2019 12:15:47 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1552382147;
-        bh=Err9z0m61RbqdJ7xge8ontpHyGC0l7NfZZiN8i7cJd0=;
-        h=In-Reply-To:Subject:To:From:Message-Id:Cc:References:Date;
-        b=nf2j6i80EmWU/5An3gEYoBboy7YkwY+VQSC6alrjYwJ+8g8iJeSh4iEA87crUYw6K
-         0bJLM4TG3q6wWydr70jJ/2jCen1v5DRsn/dp6MZt3MhObm/0cXZIwF5j5Xud95EwRg
-         UzMBSm6Cf4e5ktbSj3TrDG1CKHGwSqVo5FXFo/DM=
-Authentication-Results: mxback16o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by smtp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id HHvVQer8fs-FhdKU6oC;
-        Tue, 12 Mar 2019 12:15:46 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-mips@vger.kernel.org
-Cc:     paul.burton@mips.com, keguang.zhang@gmail.com,
-        linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 1/4] MIPS: Loongson32: Remove ehci platform device
-Date:   Tue, 12 Mar 2019 17:15:17 +0800
-Message-Id: <20190312091520.8863-2-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190312091520.8863-1-jiaxun.yang@flygoat.com>
-References: <20190312091520.8863-1-jiaxun.yang@flygoat.com>
+        id S1726588AbfCLJRz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 05:17:55 -0400
+Received: from imap1.codethink.co.uk ([176.9.8.82]:58619 "EHLO
+        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbfCLJRz (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 12 Mar 2019 05:17:55 -0400
+Received: from [78.40.148.180] (helo=[0.0.0.0])
+        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
+        id 1h3dXi-0001gc-7k; Tue, 12 Mar 2019 09:17:50 +0000
+Subject: Re: [PATCH 16/42] drivers: gpio: janz-ttl: drop unneccessary temp
+ variable dev
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        linux-kernel@vger.kernel.org
+Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        andrew@aj.id.au, f.fainelli@gmail.com, sbranden@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, hoan@os.amperecomputing.com,
+        orsonzhai@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
+        keguang.zhang@gmail.com, vz@mleia.com, matthias.bgg@gmail.com,
+        thierry.reding@gmail.com, grygorii.strashko@ti.com,
+        ssantosh@kernel.org, khilman@kernel.org, robert.jarzmik@free.fr,
+        yamada.masahiro@socionext.com, jun.nie@linaro.org,
+        shawnguo@kernel.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
+References: <1552330521-4276-1-git-send-email-info@metux.net>
+ <1552330521-4276-16-git-send-email-info@metux.net>
+From:   Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+Message-ID: <539b3cd4-8af3-d6d8-f5a9-2c426a1f0faa@codethink.co.uk>
+Date:   Tue, 12 Mar 2019 09:17:48 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1552330521-4276-16-git-send-email-info@metux.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-It's going to be enabled by DeviceTree
+On 11/03/2019 18:54, Enrico Weigelt, metux IT consult wrote:
+> don't need the temporary variable "dev", directly use &pdev->dev
+> 
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- .../include/asm/mach-loongson32/platform.h    |  1 -
- arch/mips/loongson32/common/platform.c        | 30 -------------------
- arch/mips/loongson32/ls1b/board.c             |  1 -
- 3 files changed, 32 deletions(-)
+This is quite usual to do, and I like it as it saves typing.
+Personally I would say don't bother with this change.
 
-diff --git a/arch/mips/include/asm/mach-loongson32/platform.h b/arch/mips/include/asm/mach-loongson32/platform.h
-index 15d1de2300fe..f36c8d287b59 100644
---- a/arch/mips/include/asm/mach-loongson32/platform.h
-+++ b/arch/mips/include/asm/mach-loongson32/platform.h
-@@ -19,7 +19,6 @@ extern struct platform_device ls1x_uart_pdev;
- extern struct platform_device ls1x_cpufreq_pdev;
- extern struct platform_device ls1x_eth0_pdev;
- extern struct platform_device ls1x_eth1_pdev;
--extern struct platform_device ls1x_ehci_pdev;
- extern struct platform_device ls1x_gpio0_pdev;
- extern struct platform_device ls1x_gpio1_pdev;
- extern struct platform_device ls1x_rtc_pdev;
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index 0bf355c8bcb2..4b35f49e9fcb 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -10,12 +10,10 @@
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
--#include <linux/mtd/partitions.h>
- #include <linux/sizes.h>
- #include <linux/phy.h>
- #include <linux/serial_8250.h>
- #include <linux/stmmac.h>
--#include <linux/usb/ehci_pdriver.h>
- 
- #include <platform.h>
- #include <loongson1.h>
-@@ -255,34 +253,6 @@ struct platform_device ls1x_gpio1_pdev = {
- 	.resource	= ls1x_gpio1_resources,
- };
- 
--/* USB EHCI */
--static u64 ls1x_ehci_dmamask = DMA_BIT_MASK(32);
--
--static struct resource ls1x_ehci_resources[] = {
--	[0] = {
--		.start	= LS1X_EHCI_BASE,
--		.end	= LS1X_EHCI_BASE + SZ_32K - 1,
--		.flags	= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start	= LS1X_EHCI_IRQ,
--		.flags	= IORESOURCE_IRQ,
--	},
--};
--
--static struct usb_ehci_pdata ls1x_ehci_pdata = {
--};
--
--struct platform_device ls1x_ehci_pdev = {
--	.name		= "ehci-platform",
--	.id		= -1,
--	.num_resources	= ARRAY_SIZE(ls1x_ehci_resources),
--	.resource	= ls1x_ehci_resources,
--	.dev		= {
--		.dma_mask = &ls1x_ehci_dmamask,
--		.platform_data = &ls1x_ehci_pdata,
--	},
--};
- 
- /* Real Time Clock */
- void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
-diff --git a/arch/mips/loongson32/ls1b/board.c b/arch/mips/loongson32/ls1b/board.c
-index 447b15fc0a2b..74f7b530d9b1 100644
---- a/arch/mips/loongson32/ls1b/board.c
-+++ b/arch/mips/loongson32/ls1b/board.c
-@@ -42,7 +42,6 @@ static struct platform_device *ls1b_platform_devices[] __initdata = {
- 	&ls1x_cpufreq_pdev,
- 	&ls1x_eth0_pdev,
- 	&ls1x_eth1_pdev,
--	&ls1x_ehci_pdev,
- 	&ls1x_gpio0_pdev,
- 	&ls1x_gpio1_pdev,
- 	&ls1x_rtc_pdev,
+> ---
+>   drivers/gpio/gpio-janz-ttl.c | 9 ++++-----
+>   1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-janz-ttl.c b/drivers/gpio/gpio-janz-ttl.c
+> index b97a911..91f91f6 100644
+> --- a/drivers/gpio/gpio-janz-ttl.c
+> +++ b/drivers/gpio/gpio-janz-ttl.c
+> @@ -144,18 +144,17 @@ static void ttl_setup_device(struct ttl_module *mod)
+>   static int ttl_probe(struct platform_device *pdev)
+>   {
+>   	struct janz_platform_data *pdata;
+> -	struct device *dev = &pdev->dev;
+>   	struct ttl_module *mod;
+>   	struct gpio_chip *gpio;
+>   	int ret;
+>   
+>   	pdata = dev_get_platdata(&pdev->dev);
+>   	if (!pdata) {
+> -		dev_err(dev, "no platform data\n");
+> +		dev_err(&pdev->dev, "no platform data\n");
+>   		return -ENXIO;
+>   	}
+>   
+> -	mod = devm_kzalloc(dev, sizeof(*mod), GFP_KERNEL);
+> +	mod = devm_kzalloc(&pdev->dev, sizeof(*mod), GFP_KERNEL);
+>   	if (!mod)
+>   		return -ENOMEM;
+>   
+> @@ -181,9 +180,9 @@ static int ttl_probe(struct platform_device *pdev)
+>   	gpio->base = -1;
+>   	gpio->ngpio = 20;
+>   
+> -	ret = devm_gpiochip_add_data(dev, gpio, NULL);
+> +	ret = devm_gpiochip_add_data(&pdev->dev, gpio, NULL);
+>   	if (ret) {
+> -		dev_err(dev, "unable to add GPIO chip\n");
+> +		dev_err(&pdev->dev, "unable to add GPIO chip\n");
+>   		return ret;
+>   	}
+>   
+> 
+
+
 -- 
-2.20.1
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
 
+https://www.codethink.co.uk/privacy.html

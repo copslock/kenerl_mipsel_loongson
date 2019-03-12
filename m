@@ -7,50 +7,51 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E46BCC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2F70C4360F
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:05:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id ADDFF2087C
-	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:05:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A42A22147C
+	for <linux-mips@archiver.kernel.org>; Tue, 12 Mar 2019 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1552413903;
-	bh=l64l3qvKN0bwfV1xBefE4uinW/cMvfop+Im88zymUro=;
+	s=default; t=1552413910;
+	bh=aqwcRsou3omsl0U7oxXsBRH41wtvOff4J6L2rJ6r+20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Al30UjtQ8ERPDUnk2VERslNegTFhuw2Z705MrTKwCG7jqhGp4uZa2RSOftn4F5hzF
-	 7ccVasguCveLu/hVOLUdk4llfWfUsPy4n6WL6jYpK53qlqUDvPdaxhrLXQfcUJB28o
-	 ti+A51q0htjbEJxMbg0AprhiKrpVg+kUPO/OAmOQ=
+	b=qo84nO1fbEMR+2UnTLxnziP56l8vY8VptDGg7+itOsDlaFga8lnJAr5rWp7ztSozH
+	 4/lLI0FkizIQa+mDFPNEgUVJFfl4tnJVm5oEa2n8oq9IfzzzpLDYl1IC7Tbu/ZaGMz
+	 bQl36ng6jXEzvjMjadWUK9C85xuksrF1XQbr9BWI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727607AbfCLRMn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 12 Mar 2019 13:12:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48364 "EHLO mail.kernel.org"
+        id S1727814AbfCLSFE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 12 Mar 2019 14:05:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48396 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727597AbfCLRMm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 12 Mar 2019 13:12:42 -0400
+        id S1727603AbfCLRMn (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 12 Mar 2019 13:12:43 -0400
 Received: from localhost (unknown [104.133.8.98])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AFEE21741;
-        Tue, 12 Mar 2019 17:12:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 369E52183E;
+        Tue, 12 Mar 2019 17:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1552410761;
-        bh=l64l3qvKN0bwfV1xBefE4uinW/cMvfop+Im88zymUro=;
+        s=default; t=1552410762;
+        bh=aqwcRsou3omsl0U7oxXsBRH41wtvOff4J6L2rJ6r+20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dRraTN9pwGWg1glQUa3fMcUEBQV5yQW1YGPXe7ftOQWO8TihtGclY4UZJUQ69NpcH
-         Qlc5FqBmK/7bzp66np77Xcf5pKZkqJBl/SeT1YdXTNC+wWu3goUZs1IW6xAbeSLunn
-         TWF44m5LorxZii3kl20JxJHzVCF0yc23DLydbQJ4=
+        b=e70MVnaXa75Jxq6aSgg6dY0j7kFRtBXkEYptRrFLgZPQoTQqvgDWbd9GJ77vgKbkU
+         Ymf4ArXXfJTR6LIO/Jvp8IFMbbTQmZlXp/cW9JgPNgeSuXodpkgLcoMUbbu9n8UfVh
+         RqAMNr/qY8JZdlWqoY5symOR54LhUWB6hfZvi8Hk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        stable@vger.kernel.org, Zhou Yanjie <zhouyanjie@cduestc.edu.cn>,
         Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.20 094/171] MIPS: DTS: jz4740: Correct interrupt number of DMA core
-Date:   Tue, 12 Mar 2019 10:07:54 -0700
-Message-Id: <20190312170356.078923649@linuxfoundation.org>
+        linux-mips <linux-mips@vger.kernel.org>,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        ralf@linux-mips.org, jhogan@kernel.org, mark.rutland@arm.com,
+        malat@debian.org, ezequiel@collabora.co.uk, ulf.hansson@linaro.org,
+        syq <syq@debian.org>, "jiaxun.yang" <jiaxun.yang@flygoat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.20 095/171] DTS: CI20: Fix bugs in ci20s device tree.
+Date:   Tue, 12 Mar 2019 10:07:55 -0700
+Message-Id: <20190312170356.160461164@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190312170347.868927101@linuxfoundation.org>
 References: <20190312170347.868927101@linuxfoundation.org>
@@ -69,37 +70,55 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-[ Upstream commit 70999ec1c9d3f783a7232973cfc26971e5732758 ]
+[ Upstream commit 1ca1c87f91d9dc50d6a38e2177b2032996e7901c ]
 
-The interrupt number set in the devicetree node of the DMA driver was
-wrong.
+According to the Schematic, the hardware of ci20 leads to uart3,
+but not to uart2. Uart2 is miswritten in the original code.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Zhou Yanjie <zhouyanjie@cduestc.edu.cn>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips <linux-mips@vger.kernel.org>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>
 Cc: devicetree@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Cc: robh+dt@kernel.org
+Cc: ralf@linux-mips.org
+Cc: jhogan@kernel.org
+Cc: mark.rutland@arm.com
+Cc: malat@debian.org
+Cc: ezequiel@collabora.co.uk
+Cc: ulf.hansson@linaro.org
+Cc: syq <syq@debian.org>
+Cc: jiaxun.yang <jiaxun.yang@flygoat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/ingenic/ci20.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 6fb16fd24035..2beb78a62b7d 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -161,7 +161,7 @@
- 		#dma-cells = <2>;
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index 50cff3cbcc6d..4f7b1fa31cf5 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -76,7 +76,7 @@
+ 	status = "okay";
  
- 		interrupt-parent = <&intc>;
--		interrupts = <29>;
-+		interrupts = <20>;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pins_uart2>;
++	pinctrl-0 = <&pins_uart3>;
+ };
  
- 		clocks = <&cgu JZ4740_CLK_DMA>;
+ &uart4 {
+@@ -196,9 +196,9 @@
+ 		bias-disable;
+ 	};
+ 
+-	pins_uart2: uart2 {
+-		function = "uart2";
+-		groups = "uart2-data", "uart2-hwflow";
++	pins_uart3: uart3 {
++		function = "uart3";
++		groups = "uart3-data", "uart3-hwflow";
+ 		bias-disable;
+ 	};
  
 -- 
 2.19.1

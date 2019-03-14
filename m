@@ -2,127 +2,158 @@ Return-Path: <SRS0=2fIh=RR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E1FAC43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 16:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5821C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 17:40:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E30352184C
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 16:16:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6BF592184C
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 17:40:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P0Kg8Gm0"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="cc937uCv"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbfCNQQr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Mar 2019 12:16:47 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:38681 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727726AbfCNQQr (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 14 Mar 2019 12:16:47 -0400
-Received: by mail-yw1-f65.google.com with SMTP id m207so4869622ywd.5;
-        Thu, 14 Mar 2019 09:16:46 -0700 (PDT)
+        id S1726967AbfCNRkV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Mar 2019 13:40:21 -0400
+Received: from mail-eopbgr820134.outbound.protection.outlook.com ([40.107.82.134]:64425
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726485AbfCNRkV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 14 Mar 2019 13:40:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7ktaUV3fMFadix+0Z6ctybnKLcsuwszmrSG1OINS11g=;
-        b=P0Kg8Gm051GGZnKv3tgLZdVWxZUALC+FgLYCwj/MOLKxU4gCM34jsuPZD0B6Fm7Szk
-         jiTSz8EyCJgb7nI9YH37BouaBMOvePqXxdttxOwokuU/nFOgtucEaoyP3CbB4GlRGCY4
-         NrvliTk4k2Ap7N8NQAb5wIEQwK9CMM0Lg2B+lCj18/XKtA0nqn+vW8+cpeGQrohGk/cG
-         LcVGXjQsm7XoHASa9TSUcZS6eck/QzZ5xUyHTKLqb4NvMd1BMap4/+ns8iUzexvFRXxt
-         NY5quK8y3O8N4DpjB6MRwXLHC8P7Vwlquovv3PCy74XJh6IFR7woMEbdXxVb8NEzYZGK
-         Sljg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7ktaUV3fMFadix+0Z6ctybnKLcsuwszmrSG1OINS11g=;
-        b=MXvi80gKmc0LmKuaM1BfQ2BoyJCrYpTEIWzalS/j7u+HfPPTeUXKa6B5tuBhC1Kk41
-         cAk99A7btn6iUN1QH17+HTEohHzjhfH1BtsQi7rqkUQypPqXzEIvW3XpvR0cq5yGvO3J
-         PUOSYdBkVl8V+9hobGA9EfJnR3kNkGHngpx+crTHyTr+UraTv7X/lYE8maCkXUt0haXv
-         5MVjWTJ2U9M2JiVb0IpdjX2q610l9yfM1GgMrvFrFgXZ1cv2kShwbEkbuZrKh0H7IHFy
-         MZ+UVoiHD5iN+UdddlRnjnK9Y9Fd+3lxSVFWmXW4h/YUcrUVZ6TOojJGMLu6VxnW5SjS
-         uKyQ==
-X-Gm-Message-State: APjAAAUT6uEMqAHLaOxzQggz8clE3IswsS30J7oeiH9ReLXO5BZIYElf
-        lU+pnkwL9JnbOxK+RMSI2GyLq2NOPzBUTFGYeZE=
-X-Google-Smtp-Source: APXvYqxF42jYjMBTZKD5Te8Y2GoxTpuu156u3a4IQ4LRlwwnn1Q5YzLcSWOxMprk34wQ4paWh4tyqwtnQyDJeQA+bqk=
-X-Received: by 2002:a5b:642:: with SMTP id o2mr40888379ybq.32.1552580206382;
- Thu, 14 Mar 2019 09:16:46 -0700 (PDT)
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D3xG7kEEOfmn068eHFGVBGNIYHb9jk0WSU8n5QXM8/I=;
+ b=cc937uCvUgDDA9OwGkfaYjlcku4WbnzKHXiOsXyPk9QGdCZp188YhMds8kv/LWPoEjx+h+KEqx/x4ZbU9LzMzHJ894gCT4TY+nYqEzMrxSA1A9pkeSiycSPfa/Lm7z+AgsFX0skrNckDjAjdVs0fzuYbVx4GyRFucneP8A8Yx4I=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1565.namprd22.prod.outlook.com (10.172.63.19) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1709.13; Thu, 14 Mar 2019 17:40:16 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1709.011; Thu, 14 Mar 2019
+ 17:40:16 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Jan Kara <jack@suse.cz>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
+Subject: [PATCH] MIPS: Remove custom MIPS32 __kernel_fsid_t type
+Thread-Topic: [PATCH] MIPS: Remove custom MIPS32 __kernel_fsid_t type
+Thread-Index: AQHU2oz8biJKb9VnB02dJhiRtaA49w==
+Date:   Thu, 14 Mar 2019 17:40:16 +0000
+Message-ID: <20190314173900.25454-1-paul.burton@mips.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR21CA0012.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::22) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.21.0
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d6645d8f-54f3-40c6-565c-08d6a8a41e64
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1565;
+x-ms-traffictypediagnostic: MWHPR2201MB1565:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <MWHPR2201MB15655422973E7E78162DC70AC14B0@MWHPR2201MB1565.namprd22.prod.outlook.com>
+x-forefront-prvs: 09760A0505
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(39840400004)(376002)(366004)(396003)(52314003)(199004)(189003)(97736004)(7736002)(105586002)(2351001)(8936002)(966005)(54906003)(305945005)(486006)(26005)(102836004)(316002)(106356001)(44832011)(5640700003)(42882007)(50226002)(6486002)(186003)(6116002)(476003)(2616005)(256004)(6436002)(2906002)(3846002)(14444005)(14454004)(66066001)(52116002)(4326008)(81166006)(478600001)(99286004)(25786009)(53936002)(8676002)(6916009)(71190400001)(5660300002)(71200400001)(36756003)(386003)(68736007)(6306002)(6506007)(81156014)(6512007)(1076003)(2501003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1565;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: XqP+B8TINw3rTTbFNc9xPwI/6dIJc1ZPpgJdiudJJNYJAdjKXrC7N1GzNZ55qd7yT+t3WGFm7381xe+2hkN32/EpepNyiR5NQnB7SK+QTih0RKbHli5slH2cKiElxcV+yRvySQARxT8FHaAAXM6FmPEJGRR4kFY8PNAySJL6ckpdifMSShtn2nr/ztUzlmLQxh8Tf5yxXFH2yv0oVAbepBdnWilJAfukGF62gX5jzy2tLEUueZ4izaqYt0i25Br/Ex5wE1MShfouZt+NTeuMDEtrfx4YU3ZCFWfNcO8zIT0bGoU1/YWFTw0iI8F3164HMvZoEcZTc+FKJtIhBVAzTO9P/wU+F4prkKeoS2fnqxhWmw1R1DA7IjzgVzgWSqDbWaHXkAayU98DD6V+B4KQky5+IMYhxJPajsXzf3Yjs9U=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <201903140234.4FpTWdW3%lkp@intel.com> <20190314083758.GA16658@quack2.suse.cz>
- <CAOQ4uxhZH9=U63J1_bVrMbNO-Quy-8S300Qi6VmZxvKwYCogQQ@mail.gmail.com>
- <20190314123811.GH16658@quack2.suse.cz> <20190314143158.GC27249@linux-mips.org>
-In-Reply-To: <20190314143158.GC27249@linux-mips.org>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 14 Mar 2019 18:16:35 +0200
-Message-ID: <CAOQ4uxiEkczB7PNCXegFC-eYb9zAGaio_o=OgHAJHFd7eavBxA@mail.gmail.com>
-Subject: Re: fs/notify/fanotify/fanotify.c:198:2: note: in expansion of macro 'pr_warn_ratelimited'
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Jan Kara <jack@suse.cz>, kbuild-all@01.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6645d8f-54f3-40c6-565c-08d6a8a41e64
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2019 17:40:16.2883
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1565
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Mar 14, 2019 at 4:34 PM Ralf Baechle <ralf@linux-mips.org> wrote:
->
-> On Thu, Mar 14, 2019 at 01:38:11PM +0100, Jan Kara wrote:
->
-> > On Thu 14-03-19 14:01:18, Amir Goldstein wrote:
-> > > On Thu, Mar 14, 2019 at 10:37 AM Jan Kara <jack@suse.cz> wrote:
-> > > >
-> > > > AFAICS this is the known problem with weird mips definitions of
-> > > > __kernel_fsid_t which uses long whereas all other architectures use int,
-> > > > right? Seeing that mips can actually have 8-byte longs, I guess this
-> > > > bogosity is just wired in the kernel API and we cannot easily fix it in
-> > > > mips (mips guys, correct me if I'm wrong). So what if we just
-> > > > unconditionally typed printed values to unsigned int to silence the
-> > > > warning?
-> > >
-> > > I don't understand why. To me that sounds like papering over a bug.
-> > >
-> > > See this reply from mips developer Paul Burton:
-> > > https://marc.info/?l=linux-fsdevel&m=154783680019904&w=2
-> > > mips developers have not replied to the question why __kernel_fsid_t
-> > > should use long.
-> >
-> > Ah, right. I've missed that mips defines __kernel_fsid_t only if
-> > sizeof(long) == 4. OK, than fixing MIPS headers is definitely what we ought
-> > to do. Mips guys, any reason why the patch from Ralf didn't get merged yet?
->
-> Paul's patch :-)
->
-> As for the reason why the definition is as it is - 32-bit MIPS was
-> born using long, then in 2000 64-bit MIPS started off as arch/mips64
-> using int.  Eventually the two ports were combined using:
->
-> ypedef struct {
-> #if (_MIPS_SZLONG == 32)
->         long    val[2];
-> #endif
-> #if (_MIPS_SZLONG == 64)
->         int     val[2];
-> #endif
-> } __kernel_fsid_t;
->
-> A desparate attempt to use asm-generic where ever possible then resulted
-> in the confusing definition we'e having today.
->
-> Normally APIs are cast into stone not to be changed.  But fsid is used in
-> struct statfs and the man page states "Nobody knows what f_fsid is supposed
-> to contain (but see below)." and f_fsid is supposed to be opaque anyway so
-> I'm wondering if something could break at all.  Researching that.
->
+For MIPS32 kernels we have a custom definition of __kernel_fsid_t. This
+differs from the asm-generic version used by all other architectures &
+MIPS64 in one way - it declares the val field as an array of long,
+rather than an array of int. Since int & long have identical size &
+alignment when targeting MIPS32 anyway, this makes little sense.
 
-Its content is opaque, but its size must be equal to that of fsid_t
-from glibc/toolchain headers. Do the mips32 glibc headers also
-define fsid_t as long val[2], or do they define it as int val[2]?
+Beyond the pointlessness this causes problems for code which prints
+entries from the val array, for example the fanotify_encode_fid()
+function [1]. If such code uses a format specified suited to an int then
+it encounters compiler warnings when building for MIPS32, such as:
 
-Thanks,
-Amir.
+  In file included from include/linux/kernel.h:14:0,
+                   from include/linux/list.h:9,
+                   from include/linux/preempt.h:11,
+                   from include/linux/spinlock.h:51,
+                   from include/linux/fdtable.h:11,
+                   from fs/notify/fanotify/fanotify.c:3:
+  fs/notify/fanotify/fanotify.c: In function 'fanotify_encode_fid':
+  include/linux/kern_levels.h:5:18: warning: format '%x' expects argument
+    of type 'unsigned int', but argument 2 has type 'long int' [-Wformat=3D=
+]
+
+Remove the custom __kernel_fsid_t definition & make use of the
+asm-generic version which will have an identical layout in memory
+anyway, in order to remove the inconsistency with other architectures.
+
+One possible regression this could cause if is any code is attempting to
+print entries from the val array with a long-sized format specifier, in
+which case it would begin seeing compiler warnings when built against
+kernel headers including this change. Since such code is exceedingly
+rare, and would have to be MIPS32-specific to expect a long, this seems
+to be a problem that it's extremely unlikely anyone will encounter.
+
+[1] https://lore.kernel.org/linux-mips/CAOQ4uxiEkczB7PNCXegFC-eYb9zAGaio_o=
+=3DOgHAJHFd7eavBxA@mail.gmail.com/T/#mb43103277c79ef06b884359209e817db1c136=
+140
+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+---
+
+ arch/mips/include/uapi/asm/posix_types.h | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/arch/mips/include/uapi/asm/posix_types.h b/arch/mips/include/u=
+api/asm/posix_types.h
+index 6aa49c10f88f..f0ccb5b90ce9 100644
+--- a/arch/mips/include/uapi/asm/posix_types.h
++++ b/arch/mips/include/uapi/asm/posix_types.h
+@@ -21,13 +21,6 @@
+ typedef long		__kernel_daddr_t;
+ #define __kernel_daddr_t __kernel_daddr_t
+=20
+-#if (_MIPS_SZLONG =3D=3D 32)
+-typedef struct {
+-	long	val[2];
+-} __kernel_fsid_t;
+-#define __kernel_fsid_t __kernel_fsid_t
+-#endif
+-
+ #include <asm-generic/posix_types.h>
+=20
+ #endif /* _ASM_POSIX_TYPES_H */
+--=20
+2.21.0
+

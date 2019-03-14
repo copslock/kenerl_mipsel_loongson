@@ -2,241 +2,1111 @@ Return-Path: <SRS0=2fIh=RR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B11EAC43381
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 12:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4AB5C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 12:37:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 762622184C
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 12:01:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 773102184C
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Mar 2019 12:37:16 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Br4hP5Ua"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="fpaoSmrj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbfCNMBc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 14 Mar 2019 08:01:32 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:40296 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726688AbfCNMBc (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 14 Mar 2019 08:01:32 -0400
-Received: by mail-yw1-f68.google.com with SMTP id p64so858581ywg.7;
-        Thu, 14 Mar 2019 05:01:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oZODocrUkC0mLZGDSWfLaCUM33i+j2tcUizSAEEaLRc=;
-        b=Br4hP5Uacmm/icfrIayICNRzoTe/p/6W0nDjvTJ5XMYcS5vfFQN/RFF/TxGQPAvQFm
-         Y6nhCWwy2IJQn2DCnQf5DSuUONDnrxcIjvd/uYcDp8twRBjJZ39wVPtkxE6Okva/yFf3
-         KkJyd70BiNVQ7Wqjatg8xQGrytY4qPwZzJVJjL1ZtqBKYGiWf6J5dVBVmyM9DNCRkq3e
-         Z/JXGUvQpiZN4maLB86+iv2s5Lwcutq8mMoZ9aXGjui+hWkvRWOCg0r4cIMNVZewSw4x
-         7QypDrcTk3cpB34yTRl0d/hG3G1Vb2sKVDZUpZBObKIHV2imymFiBr4ZygxiZeSbZBsD
-         bi5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oZODocrUkC0mLZGDSWfLaCUM33i+j2tcUizSAEEaLRc=;
-        b=JgyW6MlTF+jPeUixkfKDU3A/q7nk7XOkxnE8BjaGH+SXk94NTPJCei/FBbclhAwIvW
-         sqZXTXiV0FOBZw1UyKTd6EFPs3OGXUCzei4rD8b96c/x5+jamZyuLQYVJbyihb5Iocb8
-         AS9Ge7d5IZxitRoA4nunURBOYhurVuNeb5RSFtu0yLJA8WUmbMW/XOe5iIds+AHykA4n
-         Cp3bKHfg+DJ2ee4kATLz4NNd4uiz2w/hC1J0bQuQJ7mkq3yR+8SAvQzz7wPvifs5ZxCK
-         cT4UUyH3Icx53DeUztUa8cGT8ulKvHGaYrC32jPf2V3SwjBhOjlkneNNPvLkUuI15j7d
-         18rA==
-X-Gm-Message-State: APjAAAX18RLGe8vihNZ3QUG3toLupZOkAz9s/ngjrnu7r6R70+B0U41x
-        kupykLwgHpsOG0COFNYf8p/5UfbJ1WBlq/hKKhUqkWNQjrw=
-X-Google-Smtp-Source: APXvYqw5EwIiQtYe8ROjqHiWq/TDxVaejDtC4cqkyTeD4N7XHVRhWDHSlumL83Ib+ALybkhz0PHoiMSX1EKXR2zr5U0=
-X-Received: by 2002:a25:4643:: with SMTP id t64mr41676114yba.462.1552564890316;
- Thu, 14 Mar 2019 05:01:30 -0700 (PDT)
+        id S1727091AbfCNMhK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Mar 2019 08:37:10 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:40818 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726786AbfCNMhK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 14 Mar 2019 08:37:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1552567026; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=z6wANRU1E18kHrkKsPvgwWKSMEUUUm13svs/NHzNgPA=;
+        b=fpaoSmrjiwrF1H7ZwkUPTsZOw0ZzB14hUU0MBHZhicgiixUlJ7XvWJhUADe7a5TwYI9Nwc
+        YWLGHnqPKDrajqn1CbV55MyQsLJWKE4tAOI5SZ2/RNANLfBnqgbuKg5qiVjZ9Qfap8RkVv
+        CcFFOfZh0sWndWkWw5wQxuGIvbPIxwU=
+Date:   Thu, 14 Mar 2019 13:36:59 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 3/3] DRM: Add KMS driver for the Ingenic JZ47xx SoCs
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     David Airlie <airlied@linux.ie>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, dri-devel@lists.freedesktop.org,
+        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-Id: <1552567021.7520.0@crapouillou.net>
+In-Reply-To: <20190301082645.GU2665@phenom.ffwll.local>
+References: <20190228220756.20262-1-paul@crapouillou.net>
+        <20190228220756.20262-4-paul@crapouillou.net>
+        <20190301082645.GU2665@phenom.ffwll.local>
 MIME-Version: 1.0
-References: <201903140234.4FpTWdW3%lkp@intel.com> <20190314083758.GA16658@quack2.suse.cz>
-In-Reply-To: <20190314083758.GA16658@quack2.suse.cz>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 14 Mar 2019 14:01:18 +0200
-Message-ID: <CAOQ4uxhZH9=U63J1_bVrMbNO-Quy-8S300Qi6VmZxvKwYCogQQ@mail.gmail.com>
-Subject: Re: fs/notify/fanotify/fanotify.c:198:2: note: in expansion of macro 'pr_warn_ratelimited'
-To:     Jan Kara <jack@suse.cz>
-Cc:     kbuild-all@01.org, linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Mar 14, 2019 at 10:37 AM Jan Kara <jack@suse.cz> wrote:
->
-> AFAICS this is the known problem with weird mips definitions of
-> __kernel_fsid_t which uses long whereas all other architectures use int,
-> right? Seeing that mips can actually have 8-byte longs, I guess this
-> bogosity is just wired in the kernel API and we cannot easily fix it in
-> mips (mips guys, correct me if I'm wrong). So what if we just
-> unconditionally typed printed values to unsigned int to silence the
-> warning?
+Hi Daniel,
 
-I don't understand why. To me that sounds like papering over a bug.
+Le ven. 1 mars 2019 =E0 9:26, Daniel Vetter <daniel@ffwll.ch> a =E9crit :
+> On Thu, Feb 28, 2019 at 07:07:56PM -0300, Paul Cercueil wrote:
+>>  Add a KMS driver for the Ingenic JZ47xx family of SoCs.
+>>  This driver is meant to replace the aging jz4740-fb driver.
+>>=20
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  Tested-by: Artur Rojek <contact@artur-rojek.eu>
+>=20
+> Yay, more fbdev drivers moving to atmic!
+>=20
+> Going on vacations for a week now, so just a few quick high-level=20
+> comments
+> below. Those should make the driver even smaller and cleaner.
+>=20
+>>  ---
+>>   drivers/gpu/drm/Kconfig               |   2 +
+>>   drivers/gpu/drm/Makefile              |   1 +
+>>   drivers/gpu/drm/ingenic/Kconfig       |  16 +
+>>   drivers/gpu/drm/ingenic/Makefile      |   1 +
+>>   drivers/gpu/drm/ingenic/ingenic-drm.c | 896=20
+>> ++++++++++++++++++++++++++++++++++
+>>   5 files changed, 916 insertions(+)
+>>   create mode 100644 drivers/gpu/drm/ingenic/Kconfig
+>>   create mode 100644 drivers/gpu/drm/ingenic/Makefile
+>>   create mode 100644 drivers/gpu/drm/ingenic/ingenic-drm.c
+>>=20
+>>  diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+>>  index bd943a71756c..f1929112e559 100644
+>>  --- a/drivers/gpu/drm/Kconfig
+>>  +++ b/drivers/gpu/drm/Kconfig
+>>  @@ -303,6 +303,8 @@ source "drivers/gpu/drm/sti/Kconfig"
+>>=20
+>>   source "drivers/gpu/drm/imx/Kconfig"
+>>=20
+>>  +source "drivers/gpu/drm/ingenic/Kconfig"
+>>  +
+>>   source "drivers/gpu/drm/v3d/Kconfig"
+>>=20
+>>   source "drivers/gpu/drm/vc4/Kconfig"
+>>  diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+>>  index 1ac55c65eac0..9666c0767f44 100644
+>>  --- a/drivers/gpu/drm/Makefile
+>>  +++ b/drivers/gpu/drm/Makefile
+>>  @@ -94,6 +94,7 @@ obj-$(CONFIG_DRM_TEGRA) +=3D tegra/
+>>   obj-$(CONFIG_DRM_STM) +=3D stm/
+>>   obj-$(CONFIG_DRM_STI) +=3D sti/
+>>   obj-$(CONFIG_DRM_IMX) +=3D imx/
+>>  +obj-y			+=3D ingenic/
+>>   obj-$(CONFIG_DRM_MEDIATEK) +=3D mediatek/
+>>   obj-$(CONFIG_DRM_MESON)	+=3D meson/
+>>   obj-y			+=3D i2c/
+>>  diff --git a/drivers/gpu/drm/ingenic/Kconfig=20
+>> b/drivers/gpu/drm/ingenic/Kconfig
+>>  new file mode 100644
+>>  index 000000000000..d82c3d37ec9c
+>>  --- /dev/null
+>>  +++ b/drivers/gpu/drm/ingenic/Kconfig
+>>  @@ -0,0 +1,16 @@
+>>  +config DRM_INGENIC
+>>  +	tristate "DRM Support for Ingenic SoCs"
+>>  +	depends on MIPS || COMPILE_TEST
+>>  +	depends on DRM
+>>  +	depends on CMA
+>>  +	depends on OF
+>>  +	select DRM_BRIDGE
+>>  +	select DRM_PANEL_BRIDGE
+>>  +	select DRM_KMS_HELPER
+>>  +	select DRM_KMS_CMA_HELPER
+>>  +	select DRM_GEM_CMA_HELPER
+>>  +	select VT_HW_CONSOLE_BINDING if FRAMEBUFFER_CONSOLE
+>>  +	help
+>>  +	  Choose this option for DRM support for the Ingenic SoCs.
+>>  +
+>>  +	  If M is selected the module will be called ingenic-drm.
+>>  diff --git a/drivers/gpu/drm/ingenic/Makefile=20
+>> b/drivers/gpu/drm/ingenic/Makefile
+>>  new file mode 100644
+>>  index 000000000000..11cac42ce0bb
+>>  --- /dev/null
+>>  +++ b/drivers/gpu/drm/ingenic/Makefile
+>>  @@ -0,0 +1 @@
+>>  +obj-$(CONFIG_DRM_INGENIC) +=3D ingenic-drm.o
+>>  diff --git a/drivers/gpu/drm/ingenic/ingenic-drm.c=20
+>> b/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>  new file mode 100644
+>>  index 000000000000..18120deea96f
+>>  --- /dev/null
+>>  +++ b/drivers/gpu/drm/ingenic/ingenic-drm.c
+>>  @@ -0,0 +1,896 @@
+>>  +// SPDX-License-Identifier: GPL-2.0
+>>  +//
+>>  +// Ingenic JZ47xx KMS driver
+>>  +//
+>>  +// Copyright (C) 2019, Paul Cercueil <paul@crapouillou.net>
+>>  +
+>>  +#include <linux/clk.h>
+>>  +#include <linux/dma-mapping.h>
+>>  +#include <linux/module.h>
+>>  +#include <linux/platform_device.h>
+>>  +#include <linux/regmap.h>
+>>  +
+>>  +#include <drm/drm_atomic.h>
+>>  +#include <drm/drm_atomic_helper.h>
+>>  +#include <drm/drm_crtc.h>
+>>  +#include <drm/drm_crtc_helper.h>
+>>  +#include <drm/drm_drv.h>
+>>  +#include <drm/drm_gem_cma_helper.h>
+>>  +#include <drm/drm_fb_cma_helper.h>
+>>  +#include <drm/drm_fb_helper.h>
+>>  +#include <drm/drm_fourcc.h>
+>>  +#include <drm/drm_gem_framebuffer_helper.h>
+>>  +#include <drm/drm_irq.h>
+>>  +#include <drm/drm_panel.h>
+>>  +#include <drm/drm_plane.h>
+>>  +#include <drm/drm_plane_helper.h>
+>>  +#include <drm/drm_probe_helper.h>
+>>  +#include <drm/drm_vblank.h>
+>>  +
+>>  +#include <dt-bindings/display/ingenic,drm.h>
+>>  +
+>>  +#include "../drm_internal.h"
+>>  +
+>>  +#define JZ_REG_LCD_CFG		0x00
+>>  +#define JZ_REG_LCD_VSYNC	0x04
+>>  +#define JZ_REG_LCD_HSYNC	0x08
+>>  +#define JZ_REG_LCD_VAT		0x0C
+>>  +#define JZ_REG_LCD_DAH		0x10
+>>  +#define JZ_REG_LCD_DAV		0x14
+>>  +#define JZ_REG_LCD_PS		0x18
+>>  +#define JZ_REG_LCD_CLS		0x1C
+>>  +#define JZ_REG_LCD_SPL		0x20
+>>  +#define JZ_REG_LCD_REV		0x24
+>>  +#define JZ_REG_LCD_CTRL		0x30
+>>  +#define JZ_REG_LCD_STATE	0x34
+>>  +#define JZ_REG_LCD_IID		0x38
+>>  +#define JZ_REG_LCD_DA0		0x40
+>>  +#define JZ_REG_LCD_SA0		0x44
+>>  +#define JZ_REG_LCD_FID0		0x48
+>>  +#define JZ_REG_LCD_CMD0		0x4C
+>>  +#define JZ_REG_LCD_DA1		0x50
+>>  +#define JZ_REG_LCD_SA1		0x54
+>>  +#define JZ_REG_LCD_FID1		0x58
+>>  +#define JZ_REG_LCD_CMD1		0x5C
+>>  +
+>>  +#define JZ_LCD_CFG_SLCD			BIT(31)
+>>  +#define JZ_LCD_CFG_PS_DISABLE		BIT(23)
+>>  +#define JZ_LCD_CFG_CLS_DISABLE		BIT(22)
+>>  +#define JZ_LCD_CFG_SPL_DISABLE		BIT(21)
+>>  +#define JZ_LCD_CFG_REV_DISABLE		BIT(20)
+>>  +#define JZ_LCD_CFG_HSYNCM		BIT(19)
+>>  +#define JZ_LCD_CFG_PCLKM		BIT(18)
+>>  +#define JZ_LCD_CFG_INV			BIT(17)
+>>  +#define JZ_LCD_CFG_SYNC_DIR		BIT(16)
+>>  +#define JZ_LCD_CFG_PS_POLARITY		BIT(15)
+>>  +#define JZ_LCD_CFG_CLS_POLARITY		BIT(14)
+>>  +#define JZ_LCD_CFG_SPL_POLARITY		BIT(13)
+>>  +#define JZ_LCD_CFG_REV_POLARITY		BIT(12)
+>>  +#define JZ_LCD_CFG_HSYNC_ACTIVE_LOW	BIT(11)
+>>  +#define JZ_LCD_CFG_PCLK_FALLING_EDGE	BIT(10)
+>>  +#define JZ_LCD_CFG_DE_ACTIVE_LOW	BIT(9)
+>>  +#define JZ_LCD_CFG_VSYNC_ACTIVE_LOW	BIT(8)
+>>  +#define JZ_LCD_CFG_18_BIT		BIT(7)
+>>  +#define JZ_LCD_CFG_PDW			(BIT(5) | BIT(4))
+>>  +#define JZ_LCD_CFG_MODE_MASK		0xf
+>>  +
+>>  +#define JZ_LCD_VSYNC_VPS_OFFSET		16
+>>  +#define JZ_LCD_VSYNC_VPE_OFFSET		0
+>>  +
+>>  +#define JZ_LCD_HSYNC_HPS_OFFSET		16
+>>  +#define JZ_LCD_HSYNC_HPE_OFFSET		0
+>>  +
+>>  +#define JZ_LCD_VAT_HT_OFFSET		16
+>>  +#define JZ_LCD_VAT_VT_OFFSET		0
+>>  +
+>>  +#define JZ_LCD_DAH_HDS_OFFSET		16
+>>  +#define JZ_LCD_DAH_HDE_OFFSET		0
+>>  +
+>>  +#define JZ_LCD_DAV_VDS_OFFSET		16
+>>  +#define JZ_LCD_DAV_VDE_OFFSET		0
+>>  +
+>>  +#define JZ_LCD_CTRL_BURST_4		(0x0 << 28)
+>>  +#define JZ_LCD_CTRL_BURST_8		(0x1 << 28)
+>>  +#define JZ_LCD_CTRL_BURST_16		(0x2 << 28)
+>>  +#define JZ_LCD_CTRL_RGB555		BIT(27)
+>>  +#define JZ_LCD_CTRL_OFUP		BIT(26)
+>>  +#define JZ_LCD_CTRL_FRC_GRAYSCALE_16	(0x0 << 24)
+>>  +#define JZ_LCD_CTRL_FRC_GRAYSCALE_4	(0x1 << 24)
+>>  +#define JZ_LCD_CTRL_FRC_GRAYSCALE_2	(0x2 << 24)
+>>  +#define JZ_LCD_CTRL_PDD_MASK		(0xff << 16)
+>>  +#define JZ_LCD_CTRL_EOF_IRQ		BIT(13)
+>>  +#define JZ_LCD_CTRL_SOF_IRQ		BIT(12)
+>>  +#define JZ_LCD_CTRL_OFU_IRQ		BIT(11)
+>>  +#define JZ_LCD_CTRL_IFU0_IRQ		BIT(10)
+>>  +#define JZ_LCD_CTRL_IFU1_IRQ		BIT(9)
+>>  +#define JZ_LCD_CTRL_DD_IRQ		BIT(8)
+>>  +#define JZ_LCD_CTRL_QDD_IRQ		BIT(7)
+>>  +#define JZ_LCD_CTRL_REVERSE_ENDIAN	BIT(6)
+>>  +#define JZ_LCD_CTRL_LSB_FISRT		BIT(5)
+>>  +#define JZ_LCD_CTRL_DISABLE		BIT(4)
+>>  +#define JZ_LCD_CTRL_ENABLE		BIT(3)
+>>  +#define JZ_LCD_CTRL_BPP_1		0x0
+>>  +#define JZ_LCD_CTRL_BPP_2		0x1
+>>  +#define JZ_LCD_CTRL_BPP_4		0x2
+>>  +#define JZ_LCD_CTRL_BPP_8		0x3
+>>  +#define JZ_LCD_CTRL_BPP_15_16		0x4
+>>  +#define JZ_LCD_CTRL_BPP_18_24		0x5
+>>  +#define JZ_LCD_CTRL_BPP_MASK		(JZ_LCD_CTRL_RGB555 | (0x7 << 0))
+>>  +
+>>  +#define JZ_LCD_CMD_SOF_IRQ		BIT(31)
+>>  +#define JZ_LCD_CMD_EOF_IRQ		BIT(30)
+>>  +#define JZ_LCD_CMD_ENABLE_PAL		BIT(28)
+>>  +
+>>  +#define JZ_LCD_SYNC_MASK		0x3ff
+>>  +
+>>  +#define JZ_LCD_STATE_EOF_IRQ		BIT(5)
+>>  +#define JZ_LCD_STATE_SOF_IRQ		BIT(4)
+>>  +#define JZ_LCD_STATE_DISABLED		BIT(0)
+>>  +
+>>  +struct ingenic_framedesc {
+>>  +	uint32_t next;
+>>  +	uint32_t addr;
+>>  +	uint32_t id;
+>>  +	uint32_t cmd;
+>>  +} __packed;
+>>  +
+>>  +struct jz_soc_info {
+>>  +	bool needs_dev_clk;
+>>  +};
+>>  +
+>>  +struct ingenic_drm {
+>>  +	struct device *dev;
+>=20
+> Embedding is kinda the new thing, since it also prevents people from=20
+> using
+> devm_ for this, which is (strictly speaking, not that it matters=20
+> much) the
+> wrong lifetime for drm allocations. There's some patches from Noralf=20
+> that
+> should land soon to make this a bit more convenient.
+>=20
+>>  +	void __iomem *base;
+>>  +	struct regmap *map;
+>>  +	struct clk *lcd_clk, *pix_clk;
+>>  +
+>>  +	u32 lcd_mode;
+>>  +
+>>  +	struct ingenic_framedesc *framedesc;
+>>  +	dma_addr_t framedesc_phys;
+>>  +
+>>  +	struct drm_device *drm;
+>>  +	struct drm_plane primary;
+>>  +	struct drm_crtc crtc;
+>>  +	struct drm_connector connector;
+>>  +	struct drm_encoder encoder;
+>=20
+> Any reason you didn't opt for the drm_simple_display_pipe helpers?=20
+> Since
+> you have just 1:1:1 between crtc/plane/encoder that will allow you to
+> ditch lots of boilerplate.
+>=20
+> https://dri.freedesktop.org/docs/drm/gpu/drm-kms-helpers.html#simple-kms-=
+helper-reference
+>=20
+>>  +	struct drm_panel *panel;
+>>  +
+>>  +	struct device_node *panel_node;
+>=20
+> There's panel bridge helpers which takes a panel and wraps it into a
+> drm_bridge (which you can glue into the simple pipe helpers), giving=20
+> you
+> the connector for free.
+>=20
+> https://dri.freedesktop.org/docs/drm/gpu/drm-kms-helpers.html#panel-bridg=
+e-helper-reference
 
-See this reply from mips developer Paul Burton:
-https://marc.info/?l=linux-fsdevel&m=154783680019904&w=2
-mips developers have not replied to the question why __kernel_fsid_t
-should use long.
-
-My concern is that we expose __kernel_fsid_t type in uapi header
-in struct fanotify_event_info_fid. We should make sure this type
-is consistent with glibc's fsid_t.
-
-For reference, the statfs(2) man page says that on Linux
-"...fsid_t is defined as struct { int val[2]; }".
-
-Besides, it looks like __kernel_fsid_t got let behind on the
-mips posix_types cleanup:
-bb8ac181a5cf bury __kernel_nlink_t, make internal nlink_t consistent
-86fcd10e9a57 mips: Use generic posix_types.h
-
-To me this seems like an issue that mips developers should
-advise on the solution.
+I'm having some trouble using this; if I use a drm_bridge and attach it
+directly to the encoder, how can I get a pointer to the drm_connector?
+I need it to retrieve the connector->display_info.bus_flags.
 
 Thanks,
-Amir.
+-Paul
 
->
->                                                                 Honza
->
-> On Thu 14-03-19 02:31:52, kbuild test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> > head:   5453a3df2a5eb49bc24615d4cf0d66b2aae05e5f
-> > commit: e9e0c8903009477b630e37a8b6364b26a00720da fanotify: encode file identifier for FAN_REPORT_FID
-> > date:   5 weeks ago
-> > config: mips-allmodconfig (attached as .config)
-> > compiler: mips-linux-gnu-gcc (Debian 7.2.0-11) 7.2.0
-> > reproduce:
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         git checkout e9e0c8903009477b630e37a8b6364b26a00720da
-> >         # save the attached .config to linux build tree
-> >         GCC_VERSION=7.2.0 make.cross ARCH=mips
-> >
-> > All warnings (new ones prefixed by >>):
-> >
-> >    In file included from include/linux/kernel.h:14:0,
-> >                     from include/linux/list.h:9,
-> >                     from include/linux/preempt.h:11,
-> >                     from include/linux/spinlock.h:51,
-> >                     from include/linux/fdtable.h:11,
-> >                     from fs/notify/fanotify/fanotify.c:3:
-> >    fs/notify/fanotify/fanotify.c: In function 'fanotify_encode_fid':
-> >    include/linux/kern_levels.h:5:18: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'long int' [-Wformat=]
-> >     #define KERN_SOH "\001"  /* ASCII Start Of Header */
-> >                      ^
-> >    include/linux/printk.h:424:10: note: in definition of macro 'printk_ratelimited'
-> >       printk(fmt, ##__VA_ARGS__);    \
-> >              ^~~
-> >    include/linux/kern_levels.h:12:22: note: in expansion of macro 'KERN_SOH'
-> >     #define KERN_WARNING KERN_SOH "4" /* warning conditions */
-> >                          ^~~~~~~~
-> >    include/linux/printk.h:440:21: note: in expansion of macro 'KERN_WARNING'
-> >      printk_ratelimited(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
-> >                         ^~~~~~~~~~~~
-> > >> fs/notify/fanotify/fanotify.c:198:2: note: in expansion of macro 'pr_warn_ratelimited'
-> >      pr_warn_ratelimited("fanotify: failed to encode fid (fsid=%x.%x, "
-> >      ^~~~~~~~~~~~~~~~~~~
-> >    fs/notify/fanotify/fanotify.c:198:61: note: format string is defined here
-> >      pr_warn_ratelimited("fanotify: failed to encode fid (fsid=%x.%x, "
-> >                                                                ~^
-> >                                                                %lx
-> >    In file included from include/linux/kernel.h:14:0,
-> >                     from include/linux/list.h:9,
-> >                     from include/linux/preempt.h:11,
-> >                     from include/linux/spinlock.h:51,
-> >                     from include/linux/fdtable.h:11,
-> >                     from fs/notify/fanotify/fanotify.c:3:
-> >    include/linux/kern_levels.h:5:18: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'long int' [-Wformat=]
-> >     #define KERN_SOH "\001"  /* ASCII Start Of Header */
-> >                      ^
-> >    include/linux/printk.h:424:10: note: in definition of macro 'printk_ratelimited'
-> >       printk(fmt, ##__VA_ARGS__);    \
-> >              ^~~
-> >    include/linux/kern_levels.h:12:22: note: in expansion of macro 'KERN_SOH'
-> >     #define KERN_WARNING KERN_SOH "4" /* warning conditions */
-> >                          ^~~~~~~~
-> >    include/linux/printk.h:440:21: note: in expansion of macro 'KERN_WARNING'
-> >      printk_ratelimited(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
-> >                         ^~~~~~~~~~~~
-> > >> fs/notify/fanotify/fanotify.c:198:2: note: in expansion of macro 'pr_warn_ratelimited'
-> >      pr_warn_ratelimited("fanotify: failed to encode fid (fsid=%x.%x, "
-> >      ^~~~~~~~~~~~~~~~~~~
-> >    fs/notify/fanotify/fanotify.c:198:64: note: format string is defined here
-> >      pr_warn_ratelimited("fanotify: failed to encode fid (fsid=%x.%x, "
-> >                                                                   ~^
-> >                                                                   %lx
-> >
-> > vim +/pr_warn_ratelimited +198 fs/notify/fanotify/fanotify.c
-> >
-> >    154
-> >    155        static int fanotify_encode_fid(struct fanotify_event *event,
-> >    156                                       const struct path *path, gfp_t gfp)
-> >    157        {
-> >    158                struct fanotify_fid *fid = &event->fid;
-> >    159                int dwords, bytes = 0;
-> >    160                struct kstatfs stat;
-> >    161                int err, type;
-> >    162
-> >    163                stat.f_fsid.val[0] = stat.f_fsid.val[1] = 0;
-> >    164                fid->ext_fh = NULL;
-> >    165                dwords = 0;
-> >    166                err = -ENOENT;
-> >    167                type = exportfs_encode_inode_fh(d_inode(path->dentry), NULL, &dwords,
-> >    168                                                NULL);
-> >    169                if (!dwords)
-> >    170                        goto out_err;
-> >    171
-> >    172                err = vfs_statfs(path, &stat);
-> >    173                if (err)
-> >    174                        goto out_err;
-> >    175
-> >    176                bytes = dwords << 2;
-> >    177                if (bytes > FANOTIFY_INLINE_FH_LEN) {
-> >    178                        /* Treat failure to allocate fh as failure to allocate event */
-> >    179                        err = -ENOMEM;
-> >    180                        fid->ext_fh = kmalloc(bytes, gfp);
-> >    181                        if (!fid->ext_fh)
-> >    182                                goto out_err;
-> >    183                }
-> >    184
-> >    185                type = exportfs_encode_inode_fh(d_inode(path->dentry),
-> >    186                                                fanotify_fid_fh(fid, bytes), &dwords,
-> >    187                                                NULL);
-> >    188                err = -EINVAL;
-> >    189                if (!type || type == FILEID_INVALID || bytes != dwords << 2)
-> >    190                        goto out_err;
-> >    191
-> >    192                fid->fsid = stat.f_fsid;
-> >    193                event->fh_len = bytes;
-> >    194
-> >    195                return type;
-> >    196
-> >    197        out_err:
-> >  > 198                pr_warn_ratelimited("fanotify: failed to encode fid (fsid=%x.%x, "
-> >    199                                    "type=%d, bytes=%d, err=%i)\n",
-> >    200                                    stat.f_fsid.val[0], stat.f_fsid.val[1],
-> >    201                                    type, bytes, err);
-> >    202                kfree(fid->ext_fh);
-> >    203                fid->ext_fh = NULL;
-> >    204                event->fh_len = 0;
-> >    205
-> >    206                return FILEID_INVALID;
-> >    207        }
-> >    208
-> >
-> > ---
-> > 0-DAY kernel test infrastructure                Open Source Technology Center
-> > https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
->
->
+> This should cover all the bigger items, details look already really=20
+> tidy.
+>=20
+> Cheers, Daniel
+>=20
+>>  +
+>>  +	unsigned short ps_start, ps_end, cls_start,
+>>  +		       cls_end, spl_start, spl_end, rev_start;
+>>  +};
+>>  +
+>>  +static const uint32_t ingenic_drm_primary_formats[] =3D {
+>>  +	DRM_FORMAT_XRGB1555,
+>>  +	DRM_FORMAT_RGB565,
+>>  +	DRM_FORMAT_XRGB8888,
+>>  +};
+>>  +
+>>  +static bool ingenic_drm_writeable_reg(struct device *dev, unsigned=20
+>> int reg)
+>>  +{
+>>  +	switch (reg) {
+>>  +	case JZ_REG_LCD_IID:
+>>  +	case JZ_REG_LCD_SA0:
+>>  +	case JZ_REG_LCD_FID0:
+>>  +	case JZ_REG_LCD_CMD0:
+>>  +	case JZ_REG_LCD_SA1:
+>>  +	case JZ_REG_LCD_FID1:
+>>  +	case JZ_REG_LCD_CMD1:
+>>  +		return false;
+>>  +	default:
+>>  +		return true;
+>>  +	}
+>>  +}
+>>  +
+>>  +static const struct regmap_config ingenic_drm_regmap_config =3D {
+>>  +	.reg_bits =3D 32,
+>>  +	.val_bits =3D 32,
+>>  +	.reg_stride =3D 4,
+>>  +
+>>  +	.max_register =3D JZ_REG_LCD_CMD1,
+>>  +	.writeable_reg =3D ingenic_drm_writeable_reg,
+>>  +};
+>>  +
+>>  +static inline struct ingenic_drm *drm_crtc_get_priv(struct=20
+>> drm_crtc *crtc)
+>>  +{
+>>  +	return container_of(crtc, struct ingenic_drm, crtc);
+>>  +}
+>>  +
+>>  +static inline struct ingenic_drm *drm_plane_get_priv(struct=20
+>> drm_plane *plane)
+>>  +{
+>>  +	return container_of(plane, struct ingenic_drm, primary);
+>>  +}
+>>  +
+>>  +static inline struct ingenic_drm *drm_conn_get_priv(struct=20
+>> drm_connector *conn)
+>>  +{
+>>  +	return container_of(conn, struct ingenic_drm, connector);
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_atomic_enable(struct drm_crtc *crtc,
+>>  +					  struct drm_crtc_state *state)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_STATE, 0);
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_CTRL,
+>>  +			   JZ_LCD_CTRL_ENABLE | JZ_LCD_CTRL_DISABLE,
+>>  +			   JZ_LCD_CTRL_ENABLE);
+>>  +
+>>  +	drm_panel_enable(priv->panel);
+>>  +
+>>  +	drm_crtc_vblank_on(crtc);
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_atomic_disable(struct drm_crtc *crtc,
+>>  +					   struct drm_crtc_state *state)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +	unsigned int var;
+>>  +
+>>  +	drm_crtc_vblank_off(crtc);
+>>  +
+>>  +	drm_panel_disable(priv->panel);
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_CTRL,
+>>  +			   JZ_LCD_CTRL_DISABLE, JZ_LCD_CTRL_DISABLE);
+>>  +
+>>  +	regmap_read_poll_timeout(priv->map, JZ_REG_LCD_STATE, var,
+>>  +				 var & JZ_LCD_STATE_DISABLED,
+>>  +				 1000, 0);
+>>  +}
+>>  +
+>>  +static inline bool ingenic_drm_lcd_is_special_mode(u32 mode)
+>>  +{
+>>  +	switch (mode) {
+>>  +	case JZ_DRM_LCD_SPECIAL_TFT_1:
+>>  +	case JZ_DRM_LCD_SPECIAL_TFT_2:
+>>  +	case JZ_DRM_LCD_SPECIAL_TFT_3:
+>>  +		return true;
+>>  +	default:
+>>  +		return false;
+>>  +	}
+>>  +}
+>>  +
+>>  +static inline bool ingenic_drm_lcd_is_stn_mode(u32 mode)
+>>  +{
+>>  +	switch (mode) {
+>>  +	case JZ_DRM_LCD_SINGLE_COLOR_STN:
+>>  +	case JZ_DRM_LCD_SINGLE_MONOCHROME_STN:
+>>  +	case JZ_DRM_LCD_DUAL_COLOR_STN:
+>>  +	case JZ_DRM_LCD_DUAL_MONOCHROME_STN:
+>>  +		return true;
+>>  +	default:
+>>  +		return false;
+>>  +	}
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_update_timings(struct ingenic_drm=20
+>> *priv,
+>>  +					    struct drm_display_mode *mode)
+>>  +{
+>>  +	unsigned int vpe, vds, vde, vt, hpe, hds, hde, ht;
+>>  +
+>>  +	vpe =3D mode->vsync_end - mode->vsync_start;
+>>  +	vds =3D mode->vtotal - mode->vsync_start;
+>>  +	vde =3D vds + mode->vdisplay;
+>>  +	vt =3D vde + mode->vsync_start - mode->vdisplay;
+>>  +
+>>  +	hpe =3D mode->hsync_end - mode->hsync_start;
+>>  +	hds =3D mode->htotal - mode->hsync_start;
+>>  +	hde =3D hds + mode->hdisplay;
+>>  +	ht =3D hde + mode->hsync_start - mode->hdisplay;
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_VSYNC,
+>>  +		     0 << JZ_LCD_VSYNC_VPS_OFFSET |
+>>  +		     vpe << JZ_LCD_VSYNC_VPE_OFFSET);
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_HSYNC,
+>>  +		     0 << JZ_LCD_HSYNC_HPS_OFFSET |
+>>  +		     hpe << JZ_LCD_HSYNC_HPE_OFFSET);
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_VAT,
+>>  +		     ht << JZ_LCD_VAT_HT_OFFSET |
+>>  +		     vt << JZ_LCD_VAT_VT_OFFSET);
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_DAH,
+>>  +		     hds << JZ_LCD_DAH_HDS_OFFSET |
+>>  +		     hde << JZ_LCD_DAH_HDE_OFFSET);
+>>  +	regmap_write(priv->map, JZ_REG_LCD_DAV,
+>>  +		     vds << JZ_LCD_DAV_VDS_OFFSET |
+>>  +		     vde << JZ_LCD_DAV_VDE_OFFSET);
+>>  +
+>>  +	if (ingenic_drm_lcd_is_special_mode(priv->lcd_mode)) {
+>>  +		regmap_write(priv->map, JZ_REG_LCD_PS, hde << 16 | (hde + 1));
+>>  +		regmap_write(priv->map, JZ_REG_LCD_CLS, hde << 16 | (hde + 1));
+>>  +		regmap_write(priv->map, JZ_REG_LCD_SPL, hpe << 16 | (hpe + 1));
+>>  +		regmap_write(priv->map, JZ_REG_LCD_REV, mode->htotal << 16);
+>>  +	}
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_update_cfg(struct ingenic_drm *priv,
+>>  +					struct drm_display_mode *mode)
+>>  +
+>>  +{
+>>  +	unsigned int cfg =3D priv->lcd_mode;
+>>  +	u32 bus_flags =3D priv->connector.display_info.bus_flags;
+>>  +
+>>  +	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
+>>  +		cfg |=3D JZ_LCD_CFG_HSYNC_ACTIVE_LOW;
+>>  +	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
+>>  +		cfg |=3D JZ_LCD_CFG_VSYNC_ACTIVE_LOW;
+>>  +	if (bus_flags & DRM_BUS_FLAG_DE_LOW)
+>>  +		cfg |=3D JZ_LCD_CFG_DE_ACTIVE_LOW;
+>>  +	if (bus_flags & DRM_BUS_FLAG_PIXDATA_NEGEDGE)
+>>  +		cfg |=3D JZ_LCD_CFG_PCLK_FALLING_EDGE;
+>>  +
+>>  +	if (ingenic_drm_lcd_is_special_mode(priv->lcd_mode)) {
+>>  +		// TODO: Is that valid for all special modes?
+>>  +		cfg |=3D JZ_LCD_CFG_REV_POLARITY;
+>>  +	} else {
+>>  +		cfg |=3D JZ_LCD_CFG_PS_DISABLE
+>>  +		    | JZ_LCD_CFG_CLS_DISABLE
+>>  +		    | JZ_LCD_CFG_SPL_DISABLE
+>>  +		    | JZ_LCD_CFG_REV_DISABLE;
+>>  +	}
+>>  +
+>>  +	regmap_write(priv->map, JZ_REG_LCD_CFG, cfg);
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_update_ctrl(struct ingenic_drm *priv,
+>>  +					 unsigned int bpp)
+>>  +{
+>>  +	unsigned int ctrl =3D JZ_LCD_CTRL_OFUP | JZ_LCD_CTRL_BURST_16;
+>>  +
+>>  +	switch (bpp) {
+>>  +	case 1:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_1;
+>>  +		break;
+>>  +	case 2:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_2;
+>>  +		break;
+>>  +	case 4:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_4;
+>>  +		break;
+>>  +	case 8:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_8;
+>>  +	break;
+>>  +	case 15:
+>>  +		ctrl |=3D JZ_LCD_CTRL_RGB555; /* Falltrough */
+>>  +	case 16:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_15_16;
+>>  +		break;
+>>  +	case 18:
+>>  +	case 24:
+>>  +	case 32:
+>>  +		ctrl |=3D JZ_LCD_CTRL_BPP_18_24;
+>>  +		break;
+>>  +	default:
+>>  +		break;
+>>  +	}
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_CTRL,
+>>  +			   JZ_LCD_CTRL_OFUP | JZ_LCD_CTRL_BURST_16 |
+>>  +			   JZ_LCD_CTRL_BPP_MASK, ctrl);
+>>  +}
+>>  +
+>>  +static int ingenic_drm_crtc_atomic_check(struct drm_crtc *crtc,
+>>  +					 struct drm_crtc_state *state)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +	long rate;
+>>  +
+>>  +	if (!drm_atomic_crtc_needs_modeset(state))
+>>  +		return 0;
+>>  +
+>>  +	rate =3D clk_round_rate(priv->pix_clk,
+>>  +			      state->adjusted_mode.clock * 1000);
+>>  +	if (rate < 0)
+>>  +		return rate;
+>>  +
+>>  +	return 0;
+>>  +}
+>>  +
+>>  +static void ingenic_drm_crtc_atomic_flush(struct drm_crtc *crtc,
+>>  +					  struct drm_crtc_state *oldstate)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +	struct drm_crtc_state *state =3D crtc->state;
+>>  +	struct drm_pending_vblank_event *event =3D state->event;
+>>  +	struct drm_framebuffer *drm_fb =3D crtc->primary->state->fb;
+>>  +	const struct drm_format_info *finfo;
+>>  +	unsigned int width, height;
+>>  +
+>>  +	if (drm_atomic_crtc_needs_modeset(state)) {
+>>  +		finfo =3D drm_format_info(drm_fb->format->format);
+>>  +		width =3D state->adjusted_mode.hdisplay;
+>>  +		height =3D state->adjusted_mode.vdisplay;
+>>  +
+>>  +		ingenic_drm_crtc_update_timings(priv, &state->mode);
+>>  +
+>>  +		ingenic_drm_crtc_update_ctrl(priv, finfo->depth);
+>>  +		ingenic_drm_crtc_update_cfg(priv, &state->adjusted_mode);
+>>  +
+>>  +		clk_set_rate(priv->pix_clk, state->adjusted_mode.clock * 1000);
+>>  +
+>>  +		regmap_write(priv->map, JZ_REG_LCD_DA0, priv->framedesc->next);
+>>  +	}
+>>  +
+>>  +	if (event) {
+>>  +		state->event =3D NULL;
+>>  +
+>>  +		spin_lock_irq(&crtc->dev->event_lock);
+>>  +		if (drm_crtc_vblank_get(crtc) =3D=3D 0)
+>>  +			drm_crtc_arm_vblank_event(crtc, event);
+>>  +		else
+>>  +			drm_crtc_send_vblank_event(crtc, event);
+>>  +		spin_unlock_irq(&crtc->dev->event_lock);
+>>  +	}
+>>  +}
+>>  +
+>>  +static void ingenic_drm_plane_atomic_update(struct drm_plane=20
+>> *plane,
+>>  +					    struct drm_plane_state *oldstate)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_plane_get_priv(plane);
+>>  +	struct drm_plane_state *state =3D plane->state;
+>>  +	const struct drm_format_info *finfo;
+>>  +	unsigned int width, height;
+>>  +
+>>  +	finfo =3D drm_format_info(state->fb->format->format);
+>>  +	width =3D state->crtc->state->adjusted_mode.hdisplay;
+>>  +	height =3D state->crtc->state->adjusted_mode.vdisplay;
+>>  +
+>>  +	priv->framedesc->addr =3D drm_fb_cma_get_gem_addr(state->fb, state,=20
+>> 0);
+>>  +
+>>  +	priv->framedesc->cmd =3D width * height * ((finfo->depth + 7) / 8)=20
+>> / 4;
+>>  +	priv->framedesc->cmd |=3D JZ_LCD_CMD_EOF_IRQ;
+>>  +}
+>>  +
+>>  +static enum drm_connector_status
+>>  +ingenic_drm_conn_detect(struct drm_connector *conn, bool force)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_conn_get_priv(conn);
+>>  +
+>>  +	if (priv->panel) {
+>>  +		drm_panel_attach(priv->panel, conn);
+>>  +
+>>  +		return connector_status_connected;
+>>  +	}
+>>  +
+>>  +	return connector_status_disconnected;
+>>  +}
+>>  +
+>>  +static void ingenic_drm_conn_destroy(struct drm_connector *conn)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_conn_get_priv(conn);
+>>  +
+>>  +	if (priv->panel)
+>>  +		drm_panel_detach(priv->panel);
+>>  +
+>>  +	drm_connector_cleanup(conn);
+>>  +}
+>>  +
+>>  +static int ingenic_drm_conn_get_modes(struct drm_connector *conn)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_conn_get_priv(conn);
+>>  +
+>>  +	if (priv->panel)
+>>  +		return priv->panel->funcs->get_modes(priv->panel);
+>>  +
+>>  +	return 0;
+>>  +}
+>>  +
+>>  +static irqreturn_t ingenic_drm_irq_handler(int irq, void *arg)
+>>  +{
+>>  +	struct drm_device *drm =3D arg;
+>>  +	struct ingenic_drm *priv =3D drm->dev_private;
+>>  +	unsigned int state;
+>>  +
+>>  +	regmap_read(priv->map, JZ_REG_LCD_STATE, &state);
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_STATE,
+>>  +			   JZ_LCD_STATE_EOF_IRQ, 0);
+>>  +
+>>  +	if (state & JZ_LCD_STATE_EOF_IRQ)
+>>  +		drm_crtc_handle_vblank(&priv->crtc);
+>>  +
+>>  +	return IRQ_HANDLED;
+>>  +}
+>>  +
+>>  +static int ingenic_drm_enable_vblank(struct drm_crtc *crtc)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_CTRL,
+>>  +			   JZ_LCD_CTRL_EOF_IRQ, JZ_LCD_CTRL_EOF_IRQ);
+>>  +
+>>  +	return 0;
+>>  +}
+>>  +
+>>  +static void ingenic_drm_disable_vblank(struct drm_crtc *crtc)
+>>  +{
+>>  +	struct ingenic_drm *priv =3D drm_crtc_get_priv(crtc);
+>>  +
+>>  +	regmap_update_bits(priv->map, JZ_REG_LCD_CTRL,=20
+>> JZ_LCD_CTRL_EOF_IRQ, 0);
+>>  +}
+>>  +
+>>  +DEFINE_DRM_GEM_CMA_FOPS(ingenic_drm_fops);
+>>  +
+>>  +static struct drm_driver ingenic_drm_driver_data =3D {
+>>  +	.driver_features	=3D DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME
+>>  +				| DRIVER_ATOMIC | DRIVER_HAVE_IRQ,
+>>  +	.name			=3D "ingenic-drm",
+>>  +	.desc			=3D "DRM module for Ingenic SoCs",
+>>  +	.date			=3D "20190228",
+>>  +	.major			=3D 1,
+>>  +	.minor			=3D 0,
+>>  +	.patchlevel		=3D 0,
+>>  +
+>>  +	.fops			=3D &ingenic_drm_fops,
+>>  +
+>>  +	.dumb_create		=3D drm_gem_cma_dumb_create,
+>>  +	.gem_free_object_unlocked =3D drm_gem_cma_free_object,
+>>  +	.gem_vm_ops		=3D &drm_gem_cma_vm_ops,
+>>  +
+>>  +	.prime_handle_to_fd	=3D drm_gem_prime_handle_to_fd,
+>>  +	.prime_fd_to_handle	=3D drm_gem_prime_fd_to_handle,
+>>  +	.gem_prime_import	=3D drm_gem_prime_import,
+>>  +	.gem_prime_export	=3D drm_gem_prime_export,
+>>  +	.gem_prime_get_sg_table	=3D drm_gem_cma_prime_get_sg_table,
+>>  +	.gem_prime_import_sg_table =3D drm_gem_cma_prime_import_sg_table,
+>>  +	.gem_prime_vmap		=3D drm_gem_cma_prime_vmap,
+>>  +	.gem_prime_vunmap	=3D drm_gem_cma_prime_vunmap,
+>>  +	.gem_prime_mmap		=3D drm_gem_cma_prime_mmap,
+>>  +
+>>  +	.irq_handler		=3D ingenic_drm_irq_handler,
+>>  +};
+>>  +
+>>  +static const struct drm_plane_funcs=20
+>> ingenic_drm_primary_plane_funcs =3D {
+>>  +	.update_plane		=3D drm_atomic_helper_update_plane,
+>>  +	.disable_plane		=3D drm_atomic_helper_disable_plane,
+>>  +	.reset			=3D drm_atomic_helper_plane_reset,
+>>  +
+>>  +	.atomic_duplicate_state	=3D drm_atomic_helper_plane_duplicate_state,
+>>  +	.atomic_destroy_state	=3D drm_atomic_helper_plane_destroy_state,
+>>  +};
+>>  +
+>>  +static const struct drm_crtc_funcs ingenic_drm_crtc_funcs =3D {
+>>  +	.reset			=3D drm_atomic_helper_crtc_reset,
+>>  +	.set_config		=3D drm_atomic_helper_set_config,
+>>  +	.page_flip		=3D drm_atomic_helper_page_flip,
+>>  +
+>>  +	.atomic_duplicate_state	=3D drm_atomic_helper_crtc_duplicate_state,
+>>  +	.atomic_destroy_state	=3D drm_atomic_helper_crtc_destroy_state,
+>>  +
+>>  +	.enable_vblank		=3D ingenic_drm_enable_vblank,
+>>  +	.disable_vblank		=3D ingenic_drm_disable_vblank,
+>>  +
+>>  +	.gamma_set		=3D drm_atomic_helper_legacy_gamma_set,
+>>  +};
+>>  +
+>>  +static const struct drm_connector_funcs ingenic_drm_conn_funcs =3D {
+>>  +	.fill_modes		=3D drm_helper_probe_single_connector_modes,
+>>  +	.detect			=3D ingenic_drm_conn_detect,
+>>  +	.destroy		=3D ingenic_drm_conn_destroy,
+>>  +	.reset			=3D drm_atomic_helper_connector_reset,
+>>  +	.atomic_duplicate_state	=3D=20
+>> drm_atomic_helper_connector_duplicate_state,
+>>  +	.atomic_destroy_state	=3D drm_atomic_helper_connector_destroy_state,
+>>  +};
+>>  +
+>>  +static const struct drm_plane_helper_funcs=20
+>> ingenic_drm_plane_helper_funcs =3D {
+>>  +	.atomic_update		=3D ingenic_drm_plane_atomic_update,
+>>  +	.prepare_fb		=3D drm_gem_fb_prepare_fb,
+>>  +};
+>>  +
+>>  +static const struct drm_crtc_helper_funcs=20
+>> ingenic_drm_crtc_helper_funcs =3D {
+>>  +	.atomic_enable		=3D ingenic_drm_crtc_atomic_enable,
+>>  +	.atomic_disable		=3D ingenic_drm_crtc_atomic_disable,
+>>  +	.atomic_flush		=3D ingenic_drm_crtc_atomic_flush,
+>>  +	.atomic_check		=3D ingenic_drm_crtc_atomic_check,
+>>  +};
+>>  +
+>>  +static const struct drm_connector_helper_funcs=20
+>> ingenic_drm_conn_helper_funcs =3D {
+>>  +	.get_modes		=3D ingenic_drm_conn_get_modes,
+>>  +};
+>>  +
+>>  +static const struct drm_mode_config_funcs=20
+>> ingenic_drm_mode_config_funcs =3D {
+>>  +	.fb_create		=3D drm_gem_fb_create,
+>>  +	.output_poll_changed	=3D drm_fb_helper_output_poll_changed,
+>>  +	.atomic_check		=3D drm_atomic_helper_check,
+>>  +	.atomic_commit		=3D drm_atomic_helper_commit,
+>>  +};
+>>  +
+>>  +static const struct drm_encoder_funcs ingenic_drm_encoder_funcs =3D {
+>>  +	.destroy		=3D drm_encoder_cleanup,
+>>  +};
+>>  +
+>>  +static int ingenic_drm_probe(struct platform_device *pdev)
+>>  +{
+>>  +	const struct jz_soc_info *soc_info;
+>>  +	struct device *dev =3D &pdev->dev;
+>>  +	struct ingenic_drm *priv;
+>>  +	struct clk *parent_clk;
+>>  +	struct drm_device *drm;
+>>  +	struct resource *mem;
+>>  +	void __iomem *base;
+>>  +	long parent_rate;
+>>  +	int ret, irq;
+>>  +
+>>  +	soc_info =3D device_get_match_data(dev);
+>>  +	if (!soc_info)
+>>  +		return -EINVAL;
+>>  +
+>>  +	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+>>  +	if (!priv)
+>>  +		return -ENOMEM;
+>>  +
+>>  +	priv->dev =3D dev;
+>>  +
+>>  +	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>  +	priv->base =3D base =3D devm_ioremap_resource(dev, mem);
+>>  +	if (IS_ERR(base))
+>>  +		return PTR_ERR(base);
+>>  +
+>>  +	irq =3D platform_get_irq(pdev, 0);
+>>  +	if (irq < 0) {
+>>  +		dev_err(dev, "Failed to get platform irq\n");
+>>  +		return -ENOENT;
+>>  +	}
+>>  +
+>>  +	priv->map =3D devm_regmap_init_mmio(dev, base,
+>>  +					  &ingenic_drm_regmap_config);
+>>  +	if (IS_ERR(priv->map)) {
+>>  +		dev_err(dev, "Failed to create regmap\n");
+>>  +		return PTR_ERR(priv->map);
+>>  +	}
+>>  +
+>>  +	if (soc_info->needs_dev_clk) {
+>>  +		priv->lcd_clk =3D devm_clk_get(dev, "lcd");
+>>  +		if (IS_ERR(priv->lcd_clk)) {
+>>  +			dev_err(dev, "Failed to get lcd clock\n");
+>>  +			return PTR_ERR(priv->lcd_clk);
+>>  +		}
+>>  +	}
+>>  +
+>>  +	priv->pix_clk =3D devm_clk_get(dev, "lcd_pclk");
+>>  +	if (IS_ERR(priv->pix_clk)) {
+>>  +		dev_err(dev, "Failed to get pixel clock\n");
+>>  +		return PTR_ERR(priv->pix_clk);
+>>  +	}
+>>  +
+>>  +	priv->panel_node =3D of_parse_phandle(dev->of_node,=20
+>> "ingenic,panel", 0);
+>>  +	if (!priv->panel_node) {
+>>  +		DRM_INFO("No panel found");
+>>  +	} else {
+>>  +		priv->panel =3D of_drm_find_panel(priv->panel_node);
+>>  +		of_node_put(priv->panel_node);
+>>  +
+>>  +		if (IS_ERR(priv->panel)) {
+>>  +			if (PTR_ERR(priv->panel) =3D=3D -EPROBE_DEFER)
+>>  +				return -EPROBE_DEFER;
+>>  +
+>>  +			priv->panel =3D NULL;
+>>  +		} else {
+>>  +			ret =3D drm_panel_prepare(priv->panel);
+>>  +			if (ret && ret !=3D -ENOSYS)
+>>  +				return ret;
+>>  +		}
+>>  +	}
+>>  +
+>>  +	if (priv->panel) {
+>>  +		ret =3D device_property_read_u32(dev, "ingenic,lcd-mode",
+>>  +					       &priv->lcd_mode);
+>>  +		if (ret) {
+>>  +			dev_err(dev, "Unable to read ingenic,lcd-mode property\n");
+>>  +			return ret;
+>>  +		}
+>>  +	}
+>>  +
+>>  +	priv->framedesc =3D dma_alloc_coherent(dev,=20
+>> sizeof(*priv->framedesc),
+>>  +					     &priv->framedesc_phys, GFP_KERNEL);
+>>  +	if (!priv->framedesc)
+>>  +		return -ENOMEM;
+>>  +
+>>  +	priv->framedesc->next =3D priv->framedesc_phys;
+>>  +	priv->framedesc->id =3D 0xdeafbead;
+>>  +
+>>  +	drm =3D drm_dev_alloc(&ingenic_drm_driver_data, dev);
+>>  +	if (IS_ERR(drm)) {
+>>  +		ret =3D PTR_ERR(drm);
+>>  +		goto err_free_dma;
+>>  +	}
+>>  +
+>>  +	priv->drm =3D drm;
+>>  +
+>>  +	drm_mode_config_init(drm);
+>>  +	drm->mode_config.min_width =3D 0;
+>>  +	drm->mode_config.min_height =3D 0;
+>>  +	drm->mode_config.max_width =3D 800;
+>>  +	drm->mode_config.max_height =3D 600;
+>>  +	drm->mode_config.funcs =3D &ingenic_drm_mode_config_funcs;
+>>  +
+>>  +	drm_plane_helper_add(&priv->primary,=20
+>> &ingenic_drm_plane_helper_funcs);
+>>  +
+>>  +	ret =3D drm_universal_plane_init(drm, &priv->primary,
+>>  +				       0, &ingenic_drm_primary_plane_funcs,
+>>  +				       ingenic_drm_primary_formats,
+>>  +				       ARRAY_SIZE(ingenic_drm_primary_formats),
+>>  +				       NULL, DRM_PLANE_TYPE_PRIMARY, NULL);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to register primary plane: %i\n", ret);
+>>  +		goto err_unref_drm;
+>>  +	}
+>>  +
+>>  +	drm_crtc_helper_add(&priv->crtc, &ingenic_drm_crtc_helper_funcs);
+>>  +
+>>  +	ret =3D drm_crtc_init_with_planes(drm, &priv->crtc, &priv->primary,
+>>  +					NULL, &ingenic_drm_crtc_funcs, NULL);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to init CRTC: %i\n", ret);
+>>  +		goto err_cleanup_plane;
+>>  +	}
+>>  +
+>>  +	drm_connector_helper_add(&priv->connector,
+>>  +				 &ingenic_drm_conn_helper_funcs);
+>>  +	ret =3D drm_connector_init(drm, &priv->connector,
+>>  +				 &ingenic_drm_conn_funcs,
+>>  +				 DRM_MODE_CONNECTOR_Unknown);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to init connector: %i\n", ret);
+>>  +		goto err_cleanup_crtc;
+>>  +	}
+>>  +
+>>  +	priv->encoder.possible_crtcs =3D 1;
+>>  +
+>>  +	ret =3D drm_encoder_init(drm, &priv->encoder,=20
+>> &ingenic_drm_encoder_funcs,
+>>  +			       DRM_MODE_ENCODER_NONE, NULL);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to init encoder: %i\n", ret);
+>>  +		goto err_cleanup_connector;
+>>  +	}
+>>  +
+>>  +	drm_connector_attach_encoder(&priv->connector, &priv->encoder);
+>>  +
+>>  +	platform_set_drvdata(pdev, drm);
+>>  +	priv->drm =3D drm;
+>>  +	drm->dev_private =3D priv;
+>>  +
+>>  +	ret =3D drm_irq_install(drm, irq);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Unable to install IRQ handler\n");
+>>  +		goto err_cleanup_encoder;
+>>  +	}
+>>  +
+>>  +	ret =3D drm_vblank_init(drm, 1);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed calling drm_vblank_init()\n");
+>>  +		goto err_uninstall_irq;
+>>  +	}
+>>  +
+>>  +	drm_mode_config_reset(drm);
+>>  +
+>>  +	ret =3D clk_prepare_enable(priv->pix_clk);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Unable to start pixel clock\n");
+>>  +		goto err_cleanup_vblank;
+>>  +	}
+>>  +
+>>  +	if (priv->lcd_clk) {
+>>  +		parent_clk =3D clk_get_parent(priv->lcd_clk);
+>>  +		parent_rate =3D clk_get_rate(parent_clk);
+>>  +
+>>  +		/* LCD Device clock must be 3x the pixel clock for STN panels,
+>>  +		 * or 1.5x the pixel clock for TFT panels. To avoid having to
+>>  +		 * check for the LCD device clock everytime we do a mode change,
+>>  +		 * we set the LCD device clock to the highest rate possible.
+>>  +		 */
+>>  +		ret =3D clk_set_rate(priv->lcd_clk, parent_rate);
+>>  +		if (ret) {
+>>  +			dev_err(dev, "Unable to set LCD clock rate\n");
+>>  +			goto err_pixclk_disable;
+>>  +		}
+>>  +
+>>  +		ret =3D clk_prepare_enable(priv->lcd_clk);
+>>  +		if (ret) {
+>>  +			dev_err(dev, "Unable to start lcd clock\n");
+>>  +			goto err_pixclk_disable;
+>>  +		}
+>>  +	}
+>>  +
+>>  +	ret =3D drm_fbdev_generic_setup(drm, 16);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to init fbdev\n");
+>>  +		goto err_devclk_disable;
+>>  +	}
+>>  +
+>>  +	ret =3D drm_dev_register(drm, 0);
+>>  +	if (ret) {
+>>  +		dev_err(dev, "Failed to register DRM driver\n");
+>>  +		goto err_cleanup_fbdev;
+>>  +	}
+>>  +
+>>  +	return 0;
+>>  +
+>>  +err_cleanup_fbdev:
+>>  +	drm_mode_config_cleanup(drm);
+>>  +err_devclk_disable:
+>>  +	if (priv->lcd_clk)
+>>  +		clk_disable_unprepare(priv->lcd_clk);
+>>  +err_pixclk_disable:
+>>  +	clk_disable_unprepare(priv->pix_clk);
+>>  +err_cleanup_vblank:
+>>  +	drm_vblank_cleanup(drm);
+>>  +err_uninstall_irq:
+>>  +	drm_irq_uninstall(drm);
+>>  +err_cleanup_encoder:
+>>  +	drm_encoder_cleanup(&priv->encoder);
+>>  +err_cleanup_connector:
+>>  +	drm_connector_cleanup(&priv->connector);
+>>  +err_cleanup_crtc:
+>>  +	drm_crtc_cleanup(&priv->crtc);
+>>  +err_cleanup_plane:
+>>  +	drm_plane_cleanup(&priv->primary);
+>>  +err_unref_drm:
+>>  +	drm_dev_put(drm);
+>>  +err_free_dma:
+>>  +	dma_free_coherent(dev, sizeof(*priv->framedesc),
+>>  +			  priv->framedesc, priv->framedesc_phys);
+>>  +	return ret;
+>>  +}
+>>  +
+>>  +static int ingenic_drm_remove(struct platform_device *pdev)
+>>  +{
+>>  +	struct drm_device *drm =3D platform_get_drvdata(pdev);
+>>  +	struct ingenic_drm *priv =3D drm->dev_private;
+>>  +
+>>  +	drm_dev_unregister(drm);
+>>  +	drm_mode_config_cleanup(drm);
+>>  +
+>>  +	if (priv->lcd_clk)
+>>  +		clk_disable_unprepare(priv->lcd_clk);
+>>  +	clk_disable_unprepare(priv->pix_clk);
+>>  +
+>>  +	drm_vblank_cleanup(drm);
+>>  +	drm_irq_uninstall(drm);
+>>  +
+>>  +	drm_encoder_cleanup(&priv->encoder);
+>>  +	drm_connector_cleanup(&priv->connector);
+>>  +	drm_crtc_cleanup(&priv->crtc);
+>>  +	drm_plane_cleanup(&priv->primary);
+>>  +
+>>  +	drm_dev_put(drm);
+>>  +
+>>  +	dma_free_coherent(&pdev->dev, sizeof(*priv->framedesc),
+>>  +			  priv->framedesc, priv->framedesc_phys);
+>>  +
+>>  +	return 0;
+>>  +}
+>>  +
+>>  +static const struct jz_soc_info jz4740_soc_info =3D {
+>>  +	.needs_dev_clk =3D true,
+>>  +};
+>>  +
+>>  +static const struct jz_soc_info jz4725b_soc_info =3D {
+>>  +	.needs_dev_clk =3D false,
+>>  +};
+>>  +
+>>  +static const struct of_device_id ingenic_drm_of_match[] =3D {
+>>  +	{ .compatible =3D "ingenic,jz4740-drm", .data =3D &jz4740_soc_info },
+>>  +	{ .compatible =3D "ingenic,jz4725b-drm", .data =3D &jz4725b_soc_info=20
+>> },
+>>  +	{},
+>>  +};
+>>  +
+>>  +static struct platform_driver ingenic_drm_driver =3D {
+>>  +	.driver =3D {
+>>  +		.name =3D "ingenic-drm",
+>>  +		.of_match_table =3D of_match_ptr(ingenic_drm_of_match),
+>>  +	},
+>>  +	.probe =3D ingenic_drm_probe,
+>>  +	.remove =3D ingenic_drm_remove,
+>>  +};
+>>  +module_platform_driver(ingenic_drm_driver);
+>>  +
+>>  +MODULE_AUTHOR("Paul Cercueil <paul@crapouillou.net>");
+>>  +MODULE_DESCRIPTION("DRM driver for the Ingenic SoCs\n");
+>>  +MODULE_LICENSE("GPL v2");
+>>  --
+>>  2.11.0
+>>=20
+>=20
 > --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
+=
+

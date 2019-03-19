@@ -2,68 +2,94 @@ Return-Path: <SRS0=7iUB=RW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 660D6C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 18:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC8F7C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 22:19:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 278CB2082F
-	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 18:15:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A072D2175B
+	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 22:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553019319;
-	bh=pU8tlj9fVCo0OFHWGEDxvGlCSHPsZnktYGAdqwOMY00=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:List-ID:From;
-	b=L1EUhjkKx2z/RvyJSVnxrMcRD09lL5YoVaOlKzdUp7Le/1XJfRVKjNxF6ANdBz8YA
-	 +ACf7MJTjVnURhzf90hRX0rV5YkyEa9rGEGO7egOMocuai9j2dmdk8LWd/2SgIL7w5
-	 t+HiCOiR/TqGICyq1ISQr9V9dSFMBKP2byhtaja4=
+	s=default; t=1553033974;
+	bh=CWHoK7+ryr2wxJvutZimA/AdCYmtRDG/YpvaeB9T8uM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:List-ID:From;
+	b=s+NpLfFuO2cjOwy9poOxk/vR6xD0ecqt7oUuejpa8axZPirj7/9kMnkI8plVwk+xA
+	 8RPjGVioeUzrilehPwZRoUqj9OpZx+XKAYI5HV+4r7vtY0C0bajCHVqgnVb6VRKzny
+	 6Z9ag+o4fhzBHCTxMbLlexKFBEvZAzDL4Bs3REmc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728003AbfCSSPN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 19 Mar 2019 14:15:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727139AbfCSSPN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 19 Mar 2019 14:15:13 -0400
-Subject: Re: [GIT PULL] MIPS fixes
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553019312;
-        bh=pU8tlj9fVCo0OFHWGEDxvGlCSHPsZnktYGAdqwOMY00=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=HZG75rI6qzIy2xM3XQWbcIThA8atn79j38xmV/GXlhsF0Hb3IUpje855tmSP0H5Xf
-         9S8OTTgTbBWssmOge9siGHOEDsDL8j0IZSP2PQgaoNtLCMrH3YBNKoo5ls7BvUMV/+
-         KtKxlq4uNbqcaWxE3dqG3WXutT6FFVLZUDiNFq/0=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20190318230815.m7amgekprnajav7i@pburton-laptop>
-References: <20190318230815.m7amgekprnajav7i@pburton-laptop>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20190318230815.m7amgekprnajav7i@pburton-laptop>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git
- tags/mips_fixes_5.1_1
-X-PR-Tracked-Commit-Id: f6cab793d4a70808e4946baa8f5df4ea9adacc82
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b7a42146dca3f57b6a6ceb9aaaabfff21634040e
-Message-Id: <155301931258.12441.11808232505556681385.pr-tracker-bot@kernel.org>
-Date:   Tue, 19 Mar 2019 18:15:12 +0000
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        id S1726933AbfCSWTe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 19 Mar 2019 18:19:34 -0400
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53568 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726851AbfCSWTe (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 19 Mar 2019 18:19:34 -0400
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C3ACB3DA8;
+        Tue, 19 Mar 2019 22:19:31 +0000 (UTC)
+Date:   Tue, 19 Mar 2019 15:19:30 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     ira.weiny@intel.com
+Cc:     John Hubbard <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RESEND PATCH 0/7] Add FOLL_LONGTERM to GUP fast and use it
+Message-Id: <20190319151930.bab575d62fb1a33094160fe3@linux-foundation.org>
+In-Reply-To: <20190317183438.2057-1-ira.weiny@intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The pull request you sent on Mon, 18 Mar 2019 23:08:16 +0000:
+On Sun, 17 Mar 2019 11:34:31 -0700 ira.weiny@intel.com wrote:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_fixes_5.1_1
+> Resending after rebasing to the latest mm tree.
+> 
+> HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
+> advantages.  These pages can be held for a significant time.  But
+> get_user_pages_fast() does not protect against mapping FS DAX pages.
+> 
+> Introduce FOLL_LONGTERM and use this flag in get_user_pages_fast() which
+> retains the performance while also adding the FS DAX checks.  XDP has also
+> shown interest in using this functionality.[1]
+> 
+> In addition we change get_user_pages() to use the new FOLL_LONGTERM flag and
+> remove the specialized get_user_pages_longterm call.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b7a42146dca3f57b6a6ceb9aaaabfff21634040e
+It would be helpful to include your response to Christoph's question
+(http://lkml.kernel.org/r/20190220180255.GA12020@iweiny-DESK2.sc.intel.com)
+in the changelog.  Because if one person was wondering about this,
+others will likely do so.
 
-Thank you!
+We have no record of acks or reviewed-by's.  At least one was missed
+(http://lkml.kernel.org/r/CAOg9mSTTcD-9bCSDfC0WRYqfVrNB4TwOzL0c4+6QXi-N_Y43Vw@mail.gmail.com),
+but that is very very partial.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+This patchset is fairly DAX-centered, but Dan wasn't cc'ed!
+
+So ho hum.  I'll scoop them up and shall make the above changes to the
+[1/n] changelog, but we still have some work to do.
+

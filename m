@@ -2,107 +2,104 @@ Return-Path: <SRS0=BbLz=RX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E587C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 09:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19B8FC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 09:42:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 561DB213F2
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 09:39:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E35F72175B
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 09:42:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727220AbfCTJi5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 20 Mar 2019 05:38:57 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:39192 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725905AbfCTJi5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Mar 2019 05:38:57 -0400
-Received: by mail-qt1-f193.google.com with SMTP id t28so1679275qte.6;
-        Wed, 20 Mar 2019 02:38:56 -0700 (PDT)
+        id S1727054AbfCTJmC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 20 Mar 2019 05:42:02 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:43737 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726832AbfCTJmB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Mar 2019 05:42:01 -0400
+Received: by mail-qk1-f194.google.com with SMTP id c20so8913860qkc.10;
+        Wed, 20 Mar 2019 02:42:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=baqznmx5SEUGlKXy0XWhrYbi7y7TbN73HabOIUzlc9g=;
-        b=AV8xLCAlOfLApJ983+esKs6J5QuAr+q1ZD3b0+rANLQvkPqYBBCL6LrLwUGRNK/pfm
-         6jkehnnbe28T/hFkSRkiv8lJhoE26bVxg0UjzyIQCYVdGe4aJNkLJFWWHTkUfqWfLoqO
-         1S/2+IZUucvLu8/yvNqhqNNjhUARttjzEzZeu5TajmJaIEJOKqKrs7f8la9MoDeIIk6b
-         SzAoKQpjOgWhDrrzQNDIVvnE2ZWYJ+5YuqrM1eeRHxmZXjt7AhBF3cTJJPtX34iQ21Gt
-         pUMh87uNuGWbKO0aAWC3pNkTBAAispPAWQrsxrYKGdNpC+zMpgKAyuy3EeVtMVY3rA1J
-         ieZg==
-X-Gm-Message-State: APjAAAXKVFOlcaEhSRnCeMa5jmREsWvYm93EFAzJuLLqAejQJ+Tu8L83
-        CM6rnmUtTjHDPx+W404jiEbQt0JEp36vsAhkxMZFlyf2
-X-Google-Smtp-Source: APXvYqy0JoRVFSrNJl/sRu1o+RTIjkEJdtNCtG5nQiriXKN6DBYQFFQrpf5g/fTnXJYyTn69eJne/HE0Vv+ZGAZte2M=
-X-Received: by 2002:ac8:276b:: with SMTP id h40mr6073731qth.319.1553074735819;
- Wed, 20 Mar 2019 02:38:55 -0700 (PDT)
+        bh=Wcem8o0HHIzqutiHXBbDWombZs0tH1uJm1IkFEOS1gM=;
+        b=K00Zg9JACrnbs/JhvwjDpPiHiu2XYf6RNfh7dywAcagQkS0qyCc36otGSKldfF64AS
+         TlqER+c4AmmlTP/JJnoDF9Gkmw6BKzjJut3b8RSsHejXUOTd7UkGXXWyjMLoX/JEhVGl
+         V37efC6Hvkb1QNjE4R4Mf2KUmUR0HR4pA+UFz7CtBxThsg4WJJglpO+bXOsZxGmjfSlk
+         4Ee4eEnxjPD8VwQGh+Bu91e7hIZQIOR63N7q2rLElLH62/6Yu6B8UAFima093nB3grEp
+         EOzC5Z87Dl5lFUZzPDsPK4UVouqMzcUMbqmBcpO/zW8fq9zB9Lybv+bZWIytUE7SrKu2
+         bYcw==
+X-Gm-Message-State: APjAAAXQllMFQG1x6kBBD0cHUGtXp4t01USZrPxo93UAve+70bGD7rJm
+        KOnvn0U/BJ4YHsSt5YJaVa5YWKrSp/w5G/tWkOU=
+X-Google-Smtp-Source: APXvYqzQSLM2qs76g1mPFR6+NFZQ+VxO7eK9lVtHjHmQgwnJhO043jU8NlghsFKH8kP1B/2Ljhps92bIbDCGPPfMWi4=
+X-Received: by 2002:ae9:dec2:: with SMTP id s185mr5394316qkf.107.1553074920561;
+ Wed, 20 Mar 2019 02:42:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com> <CAK7LNAQu9hmeSgKO_B1LhXqq9Z923H25HXNS9XYNvFi55WrFYw@mail.gmail.com>
-In-Reply-To: <CAK7LNAQu9hmeSgKO_B1LhXqq9Z923H25HXNS9XYNvFi55WrFYw@mail.gmail.com>
+References: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 20 Mar 2019 10:38:38 +0100
-Message-ID: <CAK8P3a0-7LRE4ByO2Uf4tb5mR49SbZzBu0AgHpS=03FAMWFLgQ@mail.gmail.com>
+Date:   Wed, 20 Mar 2019 10:41:43 +0100
+Message-ID: <CAK8P3a3BG_mxYxxCx4S_+ZKAer_+5FpmkzLk0VrACZekuD=2GQ@mail.gmail.com>
 Subject: Re: [PATCH] compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING
 To:     Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Dave Hansen <dave@sr71.net>,
-        Michael Ellerman <mpe@ellerman.id.au>, X86 ML <x86@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         linux-mips@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         Ingo Molnar <mingo@redhat.com>,
         linux-mtd <linux-mtd@lists.infradead.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Mar 20, 2019 at 7:41 AM Masahiro Yamada
+On Wed, Mar 20, 2019 at 7:21 AM Masahiro Yamada
 <yamada.masahiro@socionext.com> wrote:
+>
+> Commit 60a3cdd06394 ("x86: add optimized inlining") introduced
+> CONFIG_OPTIMIZE_INLINING, but it has been available only for x86.
+>
+> The idea is obviously arch-agnostic although we need some code fixups.
+> This commit moves the config entry from arch/x86/Kconfig.debug to
+> lib/Kconfig.debug so that all architectures (except MIPS for now) can
+> benefit from it.
+>
+> At this moment, I added "depends on !MIPS" because fixing 0day bot reports
+> for MIPS was complex to me.
+>
+> I tested this patch on my arm/arm64 boards.
+>
+> This can make a huge difference in kernel image size especially when
+> CONFIG_OPTIMIZE_FOR_SIZE is enabled.
+>
+> For example, I got 3.5% smaller arm64 kernel image for v5.1-rc1.
+>
+>   dec       file
+>   18983424  arch/arm64/boot/Image.before
+>   18321920  arch/arm64/boot/Image.after
+>
+> This also slightly improves the "Kernel hacking" Kconfig menu.
+> Commit e61aca5158a8 ("Merge branch 'kconfig-diet' from Dave Hansen')
+> mentioned this config option would be a good fit in the "compiler option"
+> menu. I did so.
 
-> It is unclear to me how to fix it.
-> That's why I ended up with "depends on !MIPS".
->
->
->   MODPOST vmlinux.o
-> arch/mips/mm/sc-mips.o: In function `mips_sc_prefetch_enable.part.2':
-> sc-mips.c:(.text+0x98): undefined reference to `mips_gcr_base'
-> sc-mips.c:(.text+0x9c): undefined reference to `mips_gcr_base'
-> sc-mips.c:(.text+0xbc): undefined reference to `mips_gcr_base'
-> sc-mips.c:(.text+0xc8): undefined reference to `mips_gcr_base'
-> sc-mips.c:(.text+0xdc): undefined reference to `mips_gcr_base'
-> arch/mips/mm/sc-mips.o:sc-mips.c:(.text.unlikely+0x44): more undefined
-> references to `mips_gcr_base'
->
->
-> Perhaps, MIPS folks may know how to fix it.
+I think this is a good idea in general, but it is likely to cause a lot of
+new warnings. Especially the -Wmaybe-uninitialized warnings get
+new false positives every time we get substantially different inlining
+decisions.
 
-I would guess like this:
+I've added your patch to my randconfig test setup and will let you
+know if I see anything noticeable. I'm currently testing clang-arm32,
+clang-arm64 and gcc-x86.
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 8bc5df49b0e1..a27483fedb7d 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -79,7 +79,7 @@ static inline int mips_cm_probe(void)
-  *
-  * Returns true if a CM is present in the system, else false.
-  */
--static inline bool mips_cm_present(void)
-+static __always_inline bool mips_cm_present(void)
- {
- #ifdef CONFIG_MIPS_CM
-        return mips_gcr_base != NULL;
-@@ -93,7 +93,7 @@ static inline bool mips_cm_present(void)
-  *
-  * Returns true if the system implements an L2-only sync region, else false.
-  */
--static inline bool mips_cm_has_l2sync(void)
-+static __always_inline bool mips_cm_has_l2sync(void)
- {
- #ifdef CONFIG_MIPS_CM
-        return mips_cm_l2sync_base != NULL;
+      Arnd

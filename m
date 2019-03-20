@@ -1,113 +1,374 @@
-Return-Path: <SRS0=7iUB=RW=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=BbLz=RX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15032C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 23:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFE8DC4360F
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 06:22:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D6CD520857
-	for <linux-mips@archiver.kernel.org>; Tue, 19 Mar 2019 23:18:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 94B3F2183E
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 06:22:07 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="rBxKEAF1"
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="FRFEnKIi"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727328AbfCSXS2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 19 Mar 2019 19:18:28 -0400
-Received: from mail-eopbgr810114.outbound.protection.outlook.com ([40.107.81.114]:47744
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726801AbfCSXS2 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 19 Mar 2019 19:18:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c9AUV8yR3rzMV63/2qlSM1yjoRPf1f87+s5sjU/mn74=;
- b=rBxKEAF1KZ4MunIm3XdKUGDqSTRGTrQ2P7YgoQoIctE+eRL/8pxPM5AEEBqJIn4A4EExrmbIzgY8dqNEMKP8oVaVgJDIFKhIBFWixugzQ97wUVJHa00kJeYLuIaEOIOmx9eeOCbxLKCXR4rX5biJN3EefRIJrYUDKqQxQ92+bTc=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1741.namprd22.prod.outlook.com (10.164.206.159) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1709.15; Tue, 19 Mar 2019 23:18:25 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1709.015; Tue, 19 Mar 2019
- 23:18:25 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Valentin Schneider <valentin.schneider@arm.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: entry: Remove unneeded need_resched() loop
-Thread-Topic: [PATCH v2] MIPS: entry: Remove unneeded need_resched() loop
-Thread-Index: AQHU20ykrAck/zUdt0q7hlvreQS7t6YTnYAA
-Date:   Tue, 19 Mar 2019 23:18:25 +0000
-Message-ID: <MWHPR2201MB12771A95F3320F9D1E343B23C1400@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190315163133.31632-1-valentin.schneider@arm.com>
-In-Reply-To: <20190315163133.31632-1-valentin.schneider@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR01CA0009.prod.exchangelabs.com (2603:10b6:a02:80::22)
- To MWHPR2201MB1277.namprd22.prod.outlook.com (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d3dd92e7-dd04-43f9-0f09-08d6acc12fe0
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1741;
-x-ms-traffictypediagnostic: MWHPR2201MB1741:
-x-microsoft-antispam-prvs: <MWHPR2201MB17410447566E8AD2B2319F68C1400@MWHPR2201MB1741.namprd22.prod.outlook.com>
-x-forefront-prvs: 0981815F2F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(396003)(136003)(346002)(39850400004)(376002)(199004)(189003)(68736007)(446003)(316002)(105586002)(256004)(71190400001)(66066001)(14444005)(7736002)(486006)(25786009)(97736004)(74316002)(54906003)(106356001)(71200400001)(52536014)(305945005)(4326008)(6916009)(52116002)(5660300002)(6506007)(33656002)(102836004)(11346002)(6436002)(2906002)(14454004)(4744005)(229853002)(55016002)(6116002)(26005)(386003)(186003)(478600001)(99286004)(8676002)(3846002)(476003)(7696005)(44832011)(81156014)(76176011)(81166006)(8936002)(53936002)(9686003)(6246003)(42882007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1741;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: UdBkTTQHQ5JRVGSauXM+UsbG2tJkT9G5zRaV0pcYb8ru6Xj3eRzl5Y5MEnRncMJHiVmkjkbuvVv7vwl4kTZf6TsRsuTYZ/wwk46pocJhiN7WLF866BUIHdiku4+0i107aMZh/UEGKfAiRak1/l0tOn7j4CiqsZ/S89aXdHW0zgBBAT5RCGgkNoJTSb6CzjZMMwa56TkdeGGk9A5jn41974MfJ4KAnC6A6QuqbF1xkoX0IcyIA6hMmhm/s6eKUhIM1kHOqaBQGUSIYEgFStzktLJ7OYH8N/NjfzzJPROkxjb8QBs99k2/B4TAtAQMkN2Zn5YjZnrq6J4CjBDTV3SUwy1jt2EM17/YNcjzU5zTvEV2YBm0aS1CveKg5n3wMlR7dsTmWTxm3aQ6Mrb/aLC5P4JesgR62jNhrfL/L2qTZss=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1727143AbfCTGWB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 20 Mar 2019 02:22:01 -0400
+Received: from conuserg-07.nifty.com ([210.131.2.74]:20904 "EHLO
+        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727357AbfCTGWB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Mar 2019 02:22:01 -0400
+Received: from pug.e01.socionext.com (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id x2K6KTsY026594;
+        Wed, 20 Mar 2019 15:20:29 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com x2K6KTsY026594
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1553062830;
+        bh=uH4xe3CH12yTh8mnSGInWxM9nADq5yD89rNGuB8JyKA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FRFEnKIinsOQb6jEtBtbXkXntog1kb94W7ZzukTbzPaKpuIfeFYKttbyrFzteESya
+         3mDRCfTOiftBYT8W7RnWuEDvNEj2KWHtd7SmVqdZN32p6yShMLgxBHFj+dwQpHlN26
+         pI9EVSIJanbD3lbyHBTYZ+O6uX7mbtpi6zBoDxBsF6xZqgm2+DMvAFxUSm8IrhnXdp
+         rcFWpT9bX+ge14CGBHDY1bQxOjjUnvZOVY+MZyAI1GLlPwBqTTr/g5xC/WeHbzkLvN
+         T4giY5Uz1/mM54YuJl7CbHOk1lKoVFMD/ScY4CbZPt60GMmDduD90EsBVM+OcUfhxL
+         E2QeCxeQ++/6g==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        x86@kernel.org, linux-mtd@lists.infradead.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Dave Hansen <dave@sr71.net>,
+        linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: [PATCH] compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING
+Date:   Wed, 20 Mar 2019 15:20:27 +0900
+Message-Id: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3dd92e7-dd04-43f9-0f09-08d6acc12fe0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2019 23:18:25.5145
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1741
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Commit 60a3cdd06394 ("x86: add optimized inlining") introduced
+CONFIG_OPTIMIZE_INLINING, but it has been available only for x86.
 
-Valentin Schneider wrote:
-> Since the enabling and disabling of IRQs within preempt_schedule_irq()
-> is contained in a need_resched() loop, we don't need the outer arch
-> code loop.
->=20
-> Note that commit a18815abcdfd ("Use preempt_schedule_irq.") initially
-> removed the existing loop, but missed the final branch to restore_all.
-> Commit cdaed73afb61 ("Fix preemption bug.") missed that and reintroduced
-> the loop.
->=20
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: linux-mips@vger.kernel.org
+The idea is obviously arch-agnostic although we need some code fixups.
+This commit moves the config entry from arch/x86/Kconfig.debug to
+lib/Kconfig.debug so that all architectures (except MIPS for now) can
+benefit from it.
 
-Applied to mips-next.
+At this moment, I added "depends on !MIPS" because fixing 0day bot reports
+for MIPS was complex to me.
 
-Thanks,
-    Paul
+I tested this patch on my arm/arm64 boards.
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+This can make a huge difference in kernel image size especially when
+CONFIG_OPTIMIZE_FOR_SIZE is enabled.
+
+For example, I got 3.5% smaller arm64 kernel image for v5.1-rc1.
+
+  dec       file
+  18983424  arch/arm64/boot/Image.before
+  18321920  arch/arm64/boot/Image.after
+
+This also slightly improves the "Kernel hacking" Kconfig menu.
+Commit e61aca5158a8 ("Merge branch 'kconfig-diet' from Dave Hansen')
+mentioned this config option would be a good fit in the "compiler option"
+menu. I did so.
+
+I fixed up some files to avoid build warnings/errors.
+
+[1] arch/arm64/include/asm/cpufeature.h
+
+In file included from ././include/linux/compiler_types.h:68,
+                 from <command-line>:
+./arch/arm64/include/asm/jump_label.h: In function 'cpus_have_const_cap':
+./include/linux/compiler-gcc.h:120:38: warning: asm operand 0 probably doesn't match constraints
+ #define asm_volatile_goto(x...) do { asm goto(x); asm (""); } while (0)
+                                      ^~~
+./arch/arm64/include/asm/jump_label.h:32:2: note: in expansion of macro 'asm_volatile_goto'
+  asm_volatile_goto(
+  ^~~~~~~~~~~~~~~~~
+./include/linux/compiler-gcc.h:120:38: error: impossible constraint in 'asm'
+ #define asm_volatile_goto(x...) do { asm goto(x); asm (""); } while (0)
+                                      ^~~
+./arch/arm64/include/asm/jump_label.h:32:2: note: in expansion of macro 'asm_volatile_goto'
+  asm_volatile_goto(
+  ^~~~~~~~~~~~~~~~~
+
+[2] arch/mips/kernel/cpu-bugs64.c
+
+arch/mips/kernel/cpu-bugs64.c: In function 'mult_sh_align_mod.constprop':
+arch/mips/kernel/cpu-bugs64.c:33:2: error: asm operand 1 probably doesn't match constraints [-Werror]
+  asm volatile(
+  ^~~
+arch/mips/kernel/cpu-bugs64.c:33:2: error: asm operand 1 probably doesn't match constraints [-Werror]
+  asm volatile(
+  ^~~
+arch/mips/kernel/cpu-bugs64.c:33:2: error: impossible constraint in 'asm'
+  asm volatile(
+  ^~~
+arch/mips/kernel/cpu-bugs64.c:33:2: error: impossible constraint in 'asm'
+  asm volatile(
+  ^~~
+
+[3] arch/powerpc/mm/tlb-radix.c
+
+arch/powerpc/mm/tlb-radix.c: In function '__radix__flush_tlb_range_psize':
+arch/powerpc/mm/tlb-radix.c:104:2: error: asm operand 3 probably doesn't match constraints [-Werror]
+  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+  ^~~
+arch/powerpc/mm/tlb-radix.c:104:2: error: impossible constraint in 'asm'
+  CC      arch/powerpc/perf/hv-gpci.o
+
+[4] arch/s390/include/asm/cpacf.h
+
+In file included from arch/s390/crypto/des_s390.c:19:
+./arch/s390/include/asm/cpacf.h: In function 'cpacf_query':
+./arch/s390/include/asm/cpacf.h:170:2: warning: asm operand 3 probably doesn't match constraints
+  asm volatile(
+  ^~~
+./arch/s390/include/asm/cpacf.h:170:2: error: impossible constraint in 'asm'
+
+[5] arch/powerpc/kernel/prom_init.c
+
+WARNING: vmlinux.o(.text.unlikely+0x20): Section mismatch in reference from the function .prom_getprop() to the function .init.text:.call_prom()
+The function .prom_getprop() references
+the function __init .call_prom().
+This is often because .prom_getprop lacks a __init
+annotation or the annotation of .call_prom is wrong.
+
+WARNING: vmlinux.o(.text.unlikely+0x3c): Section mismatch in reference from the function .prom_getproplen() to the function .init.text:.call_prom()
+The function .prom_getproplen() references
+the function __init .call_prom().
+This is often because .prom_getproplen lacks a __init
+annotation or the annotation of .call_prom is wrong.
+
+[6] drivers/mtd/nand/raw/vf610_nfc.c
+
+drivers/mtd/nand/raw/vf610_nfc.c: In function ‘vf610_nfc_cmd’:
+drivers/mtd/nand/raw/vf610_nfc.c:455:3: warning: ‘offset’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+   vf610_nfc_rd_from_sram(instr->ctx.data.buf.in + offset,
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            nfc->regs + NFC_MAIN_AREA(0) + offset,
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            trfr_sz, !nfc->data_access);
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[7] arch/arm/kernel/smp.c
+
+arch/arm/kernel/smp.c: In function ‘raise_nmi’:
+arch/arm/kernel/smp.c:522:2: warning: array subscript is above array bounds [-Warray-bounds]
+  trace_ipi_raise_rcuidle(target, ipi_types[ipinr]);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The fixup is not included in this. The patch is available in ML:
+
+http://lists.infradead.org/pipermail/linux-arm-kernel/2016-February/409393.html
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ arch/arm64/include/asm/cpufeature.h |  4 ++--
+ arch/mips/kernel/cpu-bugs64.c       |  4 ++--
+ arch/powerpc/kernel/prom_init.c     |  6 +++---
+ arch/powerpc/mm/tlb-radix.c         |  2 +-
+ arch/s390/include/asm/cpacf.h       |  2 +-
+ arch/x86/Kconfig                    |  3 ---
+ arch/x86/Kconfig.debug              | 14 --------------
+ drivers/mtd/nand/raw/vf610_nfc.c    |  2 +-
+ include/linux/compiler_types.h      |  3 +--
+ lib/Kconfig.debug                   | 15 +++++++++++++++
+ 10 files changed, 26 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index e505e1f..77d1aa5 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -406,7 +406,7 @@ static inline bool cpu_have_feature(unsigned int num)
+ }
+ 
+ /* System capability check for constant caps */
+-static inline bool __cpus_have_const_cap(int num)
++static __always_inline bool __cpus_have_const_cap(int num)
+ {
+ 	if (num >= ARM64_NCAPS)
+ 		return false;
+@@ -420,7 +420,7 @@ static inline bool cpus_have_cap(unsigned int num)
+ 	return test_bit(num, cpu_hwcaps);
+ }
+ 
+-static inline bool cpus_have_const_cap(int num)
++static __always_inline bool cpus_have_const_cap(int num)
+ {
+ 	if (static_branch_likely(&arm64_const_caps_ready))
+ 		return __cpus_have_const_cap(num);
+diff --git a/arch/mips/kernel/cpu-bugs64.c b/arch/mips/kernel/cpu-bugs64.c
+index bada74a..c04b97a 100644
+--- a/arch/mips/kernel/cpu-bugs64.c
++++ b/arch/mips/kernel/cpu-bugs64.c
+@@ -42,8 +42,8 @@ static inline void align_mod(const int align, const int mod)
+ 		: "n"(align), "n"(mod));
+ }
+ 
+-static inline void mult_sh_align_mod(long *v1, long *v2, long *w,
+-				     const int align, const int mod)
++static __always_inline void mult_sh_align_mod(long *v1, long *v2, long *w,
++					      const int align, const int mod)
+ {
+ 	unsigned long flags;
+ 	int m1, m2;
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index f33ff41..241fe6b 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -501,14 +501,14 @@ static int __init prom_next_node(phandle *nodep)
+ 	}
+ }
+ 
+-static inline int prom_getprop(phandle node, const char *pname,
+-			       void *value, size_t valuelen)
++static inline int __init prom_getprop(phandle node, const char *pname,
++				      void *value, size_t valuelen)
+ {
+ 	return call_prom("getprop", 4, 1, node, ADDR(pname),
+ 			 (u32)(unsigned long) value, (u32) valuelen);
+ }
+ 
+-static inline int prom_getproplen(phandle node, const char *pname)
++static inline int __init prom_getproplen(phandle node, const char *pname)
+ {
+ 	return call_prom("getproplen", 2, 1, node, ADDR(pname));
+ }
+diff --git a/arch/powerpc/mm/tlb-radix.c b/arch/powerpc/mm/tlb-radix.c
+index 6a23b9e..a2b2848 100644
+--- a/arch/powerpc/mm/tlb-radix.c
++++ b/arch/powerpc/mm/tlb-radix.c
+@@ -928,7 +928,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+ 	tlb->need_flush_all = 0;
+ }
+ 
+-static inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
++static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+ 				unsigned long start, unsigned long end,
+ 				int psize, bool also_pwc)
+ {
+diff --git a/arch/s390/include/asm/cpacf.h b/arch/s390/include/asm/cpacf.h
+index 3cc52e3..f316de4 100644
+--- a/arch/s390/include/asm/cpacf.h
++++ b/arch/s390/include/asm/cpacf.h
+@@ -202,7 +202,7 @@ static inline int __cpacf_check_opcode(unsigned int opcode)
+ 	}
+ }
+ 
+-static inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
++static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
+ {
+ 	if (__cpacf_check_opcode(opcode)) {
+ 		__cpacf_query(opcode, mask);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index c1f9b3c..1a3e2b5 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -310,9 +310,6 @@ config ZONE_DMA32
+ config AUDIT_ARCH
+ 	def_bool y if X86_64
+ 
+-config ARCH_SUPPORTS_OPTIMIZED_INLINING
+-	def_bool y
+-
+ config ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	def_bool y
+ 
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index 15d0fbe..f730680 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -266,20 +266,6 @@ config CPA_DEBUG
+ 	---help---
+ 	  Do change_page_attr() self-tests every 30 seconds.
+ 
+-config OPTIMIZE_INLINING
+-	bool "Allow gcc to uninline functions marked 'inline'"
+-	---help---
+-	  This option determines if the kernel forces gcc to inline the functions
+-	  developers have marked 'inline'. Doing so takes away freedom from gcc to
+-	  do what it thinks is best, which is desirable for the gcc 3.x series of
+-	  compilers. The gcc 4.x series have a rewritten inlining algorithm and
+-	  enabling this option will generate a smaller kernel there. Hopefully
+-	  this algorithm is so good that allowing gcc 4.x and above to make the
+-	  decision will become the default in the future. Until then this option
+-	  is there to test gcc for this.
+-
+-	  If unsure, say N.
+-
+ config DEBUG_ENTRY
+ 	bool "Debug low-level entry code"
+ 	depends on DEBUG_KERNEL
+diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
+index a662ca1..19792d7 100644
+--- a/drivers/mtd/nand/raw/vf610_nfc.c
++++ b/drivers/mtd/nand/raw/vf610_nfc.c
+@@ -364,7 +364,7 @@ static int vf610_nfc_cmd(struct nand_chip *chip,
+ {
+ 	const struct nand_op_instr *instr;
+ 	struct vf610_nfc *nfc = chip_to_nfc(chip);
+-	int op_id = -1, trfr_sz = 0, offset;
++	int op_id = -1, trfr_sz = 0, offset = 0;
+ 	u32 col = 0, row = 0, cmd1 = 0, cmd2 = 0, code = 0;
+ 	bool force8bit = false;
+ 
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index ba814f1..19e58b9 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -140,8 +140,7 @@ struct ftrace_likely_data {
+  * Do not use __always_inline here, since currently it expands to inline again
+  * (which would break users of __always_inline).
+  */
+-#if !defined(CONFIG_ARCH_SUPPORTS_OPTIMIZED_INLINING) || \
+-	!defined(CONFIG_OPTIMIZE_INLINING)
++#if !defined(CONFIG_OPTIMIZE_INLINING)
+ #define inline inline __attribute__((__always_inline__)) __gnu_inline \
+ 	__maybe_unused notrace
+ #else
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 0d9e817..20f3dfc 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -310,6 +310,21 @@ config HEADERS_CHECK
+ 	  exported to $(INSTALL_HDR_PATH) (usually 'usr/include' in
+ 	  your build tree), to make sure they're suitable.
+ 
++config OPTIMIZE_INLINING
++	bool "Allow compiler to uninline functions marked 'inline'"
++	depends on !MIPS  # TODO: look into MIPS code
++	help
++	  This option determines if the kernel forces gcc to inline the functions
++	  developers have marked 'inline'. Doing so takes away freedom from gcc to
++	  do what it thinks is best, which is desirable for the gcc 3.x series of
++	  compilers. The gcc 4.x series have a rewritten inlining algorithm and
++	  enabling this option will generate a smaller kernel there. Hopefully
++	  this algorithm is so good that allowing gcc 4.x and above to make the
++	  decision will become the default in the future. Until then this option
++	  is there to test gcc for this.
++
++	  If unsure, say N.
++
+ config DEBUG_SECTION_MISMATCH
+ 	bool "Enable full Section mismatch analysis"
+ 	help
+-- 
+2.7.4
+

@@ -3,88 +3,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BD4FC43381
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 13:34:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17554C43381
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 14:07:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3FBAC21850
-	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 13:34:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E7AC3213F2
+	for <linux-mips@archiver.kernel.org>; Wed, 20 Mar 2019 14:07:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726644AbfCTNeV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 20 Mar 2019 09:34:21 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:40235 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726065AbfCTNeV (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Mar 2019 09:34:21 -0400
-Received: by mail-qt1-f195.google.com with SMTP id x12so2455220qts.7;
-        Wed, 20 Mar 2019 06:34:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lxb+cto02BIatCH7Gsn3jweAO4W1kfw2CVhMuPz2fqU=;
-        b=Cfeb3wPaKiU9JH8ehNkOHiAq/mUbUXMdOnbFWoURTfzhCk0khmFrXUs7XnwYyj/s7Y
-         gGUgnGVXpzb2ZddE+Dj/lGW9N2/9WDt+N2Z76gFyH3OKoQ1pS+DxLf1roiiKgtHrXea/
-         QUHuM9LSaUCUOsRM9jUHqzTqbTDUCeNfQURah8dhEb+wwoUQ6xK3IWrwObzZlPzJIu1o
-         XyyKX4rEV8SHpYWvYgSuB2paQ/06dsAg8v/SrDXQxwAh+/OEKq6VgAYi/gSnNEdq5yXY
-         N/9tdVQWzAV5cu4mBqygwgqgjLPzq0WfZ+3RVsrXnndmDMDzKEBhrMpo9FUTHpdrfVFf
-         s9gg==
-X-Gm-Message-State: APjAAAX7WOEWCei9NqVuoM8Zat7MCT/H7J0FKkGnNI6HpYj6sj9CX+qD
-        O6Gc3++b4LodGAbNaLMA7wUqNmbktXnfCEjP91o=
-X-Google-Smtp-Source: APXvYqz9MW7CJwO9dJ+S+7Q1aJsu3zP2Bpyeyex9t6Dgx6Q7wQ4uZyS7kKe5y9Us8CNX6vU0d8jy9lg1/AmI+RSWdPc=
-X-Received: by 2002:a0c:9487:: with SMTP id j7mr1278926qvj.180.1553088860133;
- Wed, 20 Mar 2019 06:34:20 -0700 (PDT)
+        id S1727522AbfCTOH1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 20 Mar 2019 10:07:27 -0400
+Received: from www62.your-server.de ([213.133.104.62]:51188 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726239AbfCTOH1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 20 Mar 2019 10:07:27 -0400
+Received: from [78.46.172.2] (helo=sslproxy05.your-server.de)
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1h6bsH-0007ia-T6; Wed, 20 Mar 2019 15:07:22 +0100
+Received: from [2a02:120b:c3fc:feb0:dda7:bd28:a848:50e2] (helo=linux.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1h6bsH-000Kmj-Ma; Wed, 20 Mar 2019 15:07:21 +0100
+Subject: Re: [PATCH v2 3/3] MIPS: eBPF: Initial eBPF support for MIPS32
+ architecture.
+To:     Hassan Naveed <hnaveed@wavecomp.com>,
+        Paul Burton <pburton@wavecomp.com>
+Cc:     "kafai@fb.com" <kafai@fb.com>,
+        "songliubraving@fb.com" <songliubraving@fb.com>,
+        "yhs@fb.com" <yhs@fb.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "open list:MIPS" <linux-mips@linux-mips.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20190312224706.6121-1-hnaveed@wavecomp.com>
+ <20190312224706.6121-3-hnaveed@wavecomp.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <98323a41-2851-d000-c928-242d055a5bc1@iogearbox.net>
+Date:   Wed, 20 Mar 2019 15:07:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-References: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com> <CAK8P3a3BG_mxYxxCx4S_+ZKAer_+5FpmkzLk0VrACZekuD=2GQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a3BG_mxYxxCx4S_+ZKAer_+5FpmkzLk0VrACZekuD=2GQ@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 20 Mar 2019 14:34:02 +0100
-Message-ID: <CAK8P3a0GEYTbw5XCwzVeZe_-pGF=7e=1kXhH3U+fidnMZeP0CA@mail.gmail.com>
-Subject: Re: [PATCH] compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Dave Hansen <dave@sr71.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190312224706.6121-3-hnaveed@wavecomp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.100.2/25394/Wed Mar 20 08:52:02 2019)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Mar 20, 2019 at 10:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> I've added your patch to my randconfig test setup and will let you
-> know if I see anything noticeable. I'm currently testing clang-arm32,
-> clang-arm64 and gcc-x86.
+On 03/12/2019 11:48 PM, Hassan Naveed wrote:
+> Currently MIPS32 supports a JIT for classic BPF only, not extended BPF.
+> This patch adds JIT support for extended BPF on MIPS32, so code is
+> actually JIT'ed instead of being only interpreted. Instructions with
+> 64-bit operands are not supported at this point.
+> We can delete classic BPF because the kernel will translate classic BPF
+> programs into extended BPF and JIT them, eliminating the need for
+> classic BPF.
+> 
+> Signed-off-by: Hassan Naveed <hnaveed@wavecomp.com>
 
-This is the only additional bug that has come up so far:
+Nice! Did you check BPF test suite (lib/test_bpf.ko) that both before/after
+the same number of cBPF programs could be JITed?
 
-`.exit.text' referenced in section `.alt.smp.init' of
-drivers/char/ipmi/ipmi_msghandler.o: defined in discarded section
-`exit.text' of drivers/char/ipmi/ipmi_msghandler.o
+Please also follow-up to update Documentation/sysctl/net.txt, bpf_jit_enable
+section, and adding yourself as co-maintainer for 'BPF JIT for MIPS' wouldn't
+hurt either if Paul would be good with that, too.
 
-diff --git a/arch/arm/kernel/atags.h b/arch/arm/kernel/atags.h
-index 201100226301..84b12e33104d 100644
---- a/arch/arm/kernel/atags.h
-+++ b/arch/arm/kernel/atags.h
-@@ -5,7 +5,7 @@ void convert_to_tag_list(struct tag *tags);
- const struct machine_desc *setup_machine_tags(phys_addr_t __atags_pointer,
-        unsigned int machine_nr);
- #else
--static inline const struct machine_desc *
-+static __always_inline const struct machine_desc *
- setup_machine_tags(phys_addr_t __atags_pointer, unsigned int machine_nr)
- {
-        early_print("no ATAGS support: can't continue\n");
+Any plans on completing eBPF support for mips32?
+
+Thanks,
+Daniel

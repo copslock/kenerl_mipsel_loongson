@@ -2,100 +2,54 @@ Return-Path: <SRS0=ObrZ=RY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38273C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 17:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09515C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 22:02:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 061862190A
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 17:03:45 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2HLm9tt"
+	by mail.kernel.org (Postfix) with ESMTP id D25C6218D4
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 22:02:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbfCURDo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Mar 2019 13:03:44 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:50525 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728013AbfCURDn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Mar 2019 13:03:43 -0400
-Received: by mail-it1-f195.google.com with SMTP id m137so5435652ita.0;
-        Thu, 21 Mar 2019 10:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9bmNiIiYSXpSlnRBJipd8bRpL/IMsEPjbQrVWRlU9SA=;
-        b=h2HLm9ttoJzyWmFCPllwKVOFnmaKmLYsADm7Re/c7mDSJX6cJAkYIq8Brpxp8lzOVJ
-         ueSygsrYrHr6bLG66E+RCS+W55QVpSc+Nqxg/Ts8e1iGuXCTtrw+jT9I6IBHofwYWtbR
-         vZozciCYArpSZt+nXmVzKnXHPEDacJd0djR7rMD9eCoJGgh0323QFkjwDRcvFRaJFdkd
-         SfvbL8c4g41REHm02adqPWfvcOHa7nCr038UhslI/G8h39UGDvx5m3A9jNf6eby5wrza
-         DiXIPE/j3N1jS5EeabiIwRdca5ObRMJnQBl8g3EPGIjILpAi6IrMF4cbumLQdiFFCNG/
-         2Znw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9bmNiIiYSXpSlnRBJipd8bRpL/IMsEPjbQrVWRlU9SA=;
-        b=c4EXRtdv58oc7qjbkX1/+t9eu5q1fDuCLk9GnR3TSn+BVpLdSkuJ6wQm1bamT+fuJI
-         c5CXQjPkmhJyQNkPbic0AWfoItdJD3d3FU3B/E7LI5Lu0hvAeTPLJ2mKumjm00X8LyXn
-         qrH0ezMoFYsE3mj8tgTqRWhqh9ByIMbkzWLFBHkeO0hgYSL9R/fK1NWZfYXt4vlrZtoG
-         cWA436uYkaHfvImFnYtSIpnTz8VbVQySoPlcr0oGy9OkmRK1qJFX1sgyTRTjVQCabTMQ
-         althpBKLCDV9Ydcaiu4MWYPxrRpjrDcZJYThJRgucFtuoNq1SlhRzYJK8aoftqyypINa
-         WH4Q==
-X-Gm-Message-State: APjAAAW/kF5rWL8ze6nrNiZ9OeGZGtyocKO6xA/2SPFnaHR7FTiyyFpy
-        SddlSOngU0GeFhtGtT849SM=
-X-Google-Smtp-Source: APXvYqwC0i60GO2oaG0501xzeRAEuJFw0K1CqY9l1jq8o4oEypffAnsOoqHfkqiu1tU9DU/PpF4q0w==
-X-Received: by 2002:a24:6948:: with SMTP id e69mr411341itc.140.1553187822124;
-        Thu, 21 Mar 2019 10:03:42 -0700 (PDT)
-Received: from localhost.localdomain (c-73-242-244-99.hsd1.nm.comcast.net. [73.242.244.99])
-        by smtp.gmail.com with ESMTPSA id t23sm2577951ioj.19.2019.03.21.10.03.41
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 21 Mar 2019 10:03:41 -0700 (PDT)
-From:   George Hilliard <thirtythreeforty@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        George Hilliard <thirtythreeforty@gmail.com>
-Subject: [RESEND PATCH] mips: ralink: allow zboot
-Date:   Thu, 21 Mar 2019 11:03:34 -0600
-Message-Id: <20190321170334.15122-2-thirtythreeforty@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190321170334.15122-1-thirtythreeforty@gmail.com>
+        id S1727364AbfCUWCC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 21 Mar 2019 18:02:02 -0400
+Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:50358 "EHLO
+        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726817AbfCUWCC (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Mar 2019 18:02:02 -0400
+Received: from darkstar.musicnaut.iki.fi (85-76-115-194-nat.elisa-mobile.fi [85.76.115.194])
+        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id CCB792006B;
+        Fri, 22 Mar 2019 00:01:59 +0200 (EET)
+Date:   Fri, 22 Mar 2019 00:01:59 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     George Hilliard <thirtythreeforty@gmail.com>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH] mips: ralink: allow zboot
+Message-ID: <20190321220159.GC7872@darkstar.musicnaut.iki.fi>
 References: <20190321170334.15122-1-thirtythreeforty@gmail.com>
+ <20190321170334.15122-2-thirtythreeforty@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190321170334.15122-2-thirtythreeforty@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Architecturally, there's nothing preventing compressed images from
-working.  Bootloaders built with support for the various compression
-methods can decompress and run the kernel.  In practice, many
-bootloaders do not support compressed images, but kernels for those
-boards should just not be compressed.
+Hi,
 
-Tested on an MT7688 with U-Boot doing LZMA decompression of uImage.
+On Thu, Mar 21, 2019 at 11:03:34AM -0600, George Hilliard wrote:
+> Architecturally, there's nothing preventing compressed images from
+> working.  Bootloaders built with support for the various compression
+> methods can decompress and run the kernel.  In practice, many
+> bootloaders do not support compressed images, but kernels for those
+> boards should just not be compressed.
 
-Signed-off-by: George Hilliard <thirtythreeforty@gmail.com>
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+With zboot the decompressor is included in the image so no bootloader
+support is needed.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4a5f5b0ee9a9..b286fbbd9699 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -619,6 +619,7 @@ config RALINK
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_MIPS16
-+	select SYS_SUPPORTS_ZBOOT
- 	select SYS_HAS_EARLY_PRINTK
- 	select CLKDEV_LOOKUP
- 	select ARCH_HAS_RESET_CONTROLLER
--- 
-2.21.0
-
+A.

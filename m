@@ -5,55 +5,56 @@ X-Spam-Level:
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D877C10F00
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 14:29:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F663C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 14:44:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4D34921901
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 14:29:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 64CDD218D3
+	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 14:44:08 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zm77rfKD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rjVNMVrA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727958AbfCUO30 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Mar 2019 10:29:26 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:37944 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728463AbfCUO3Z (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Mar 2019 10:29:25 -0400
-Received: by mail-pg1-f195.google.com with SMTP id v1so4314551pgi.5;
-        Thu, 21 Mar 2019 07:29:24 -0700 (PDT)
+        id S1728404AbfCUOoI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 21 Mar 2019 10:44:08 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:43329 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728326AbfCUOoH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 21 Mar 2019 10:44:07 -0400
+Received: by mail-pf1-f195.google.com with SMTP id c8so4426749pfd.10;
+        Thu, 21 Mar 2019 07:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=zvijzFXMFiSKhny3I5dyB2iSqe3m5+FVEnNqQ1i4se4=;
-        b=Zm77rfKD+QZLUfO/ZaAjVnTttIzr7Og5Pl6mfrQBakqpeUf5zY1sdGpMSD39yIMjpg
-         aLYUEPm2CK+1cK5O3BDU0UYNxM9FupN83FJ6JMSOM5EGw6gyV1P0ZYN7x47uhNpb8mVj
-         gvTXKJ7vXT4CGDa7jsa/DBuwFIa5Lgx/VXh0X5OFo7NAqOgTJtCvtJpUhwwGZNzfsZ7F
-         PhVgUitbplCrbIM7YsopN9NLJV7fcLeW2gJqUzAj5UbDO50PHQ+TSF87jEdlxp9N5/Ze
-         H0822KJhNqn2MTgBBjGTWNe6BNmGWGPvTCGih74l0PGeIzzijkvP6KLG8Nb+Wf2PDirw
-         z30w==
+        bh=pd7DZgFZHydc22jsnva6HCwIQ6qYSallrsNWhLPd39k=;
+        b=rjVNMVrAZDzk6WalHOKZlusXykVZ74sm6Da1S3WemT13MtWwKW0ojyarUbnDoX9PAs
+         x/Ug4Oo4BUhuxm20/g8Lw74Axo8oVLZYDjnc+HnGNfV3Hpc3f33DJogpHhKhW5Py1T8T
+         UdIexXnKF+1jex93Knu1GMZ4YyAD//pJQ8GCf3nqBTeBUKvVe+uMDM0p847iOqiFC++P
+         vXRXPPCagKrgtTAbZf0ZuBhHBVGfwarhqRTShpJPDSyXBbDGdRcHtwit1xUdMAznsPfp
+         Ok5WpD3EoydwuQU+04j74qLKpDew6ccsAmUm67590ksFaRZSn7LfTR6SiBrnhZjIMA8A
+         cK9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=zvijzFXMFiSKhny3I5dyB2iSqe3m5+FVEnNqQ1i4se4=;
-        b=YQ/VThwXQuDF1+BxLutazO7Mh/MxT9cIyZolq4wSx4si5dCprz9BucBIfauPTBMlLU
-         N4BHhDZ+fd/kiRfhLXUGGMqxWLqisgfLp+qRELK5/VYNgKmnkzjDKcyCVlEig9CrRO2P
-         IOGvR8K2QIcFH960sNQ8103rw2gtK3EZTbKYnjXTCH0Fx3q+O1b1L54mz77QM0mpEK75
-         97VYqbccruuPE4WEWjWcMK/MHHXqTY+7zc4rnLOuH7qPgj/9GlJwapR3/agzQCHpUgVi
-         hCYntW8Ek9LC8/860WTst9jIu6J6r29AcxPXf0ZB9SRaECC5mzydtkEoMor8MI/iMP98
-         q0+A==
-X-Gm-Message-State: APjAAAU8RPHI4Zcs1MVR89LAk88v2cxHwy8Cj10tx6wKfCWo/pRlsWrp
-        Tbsvg5/uDh/IwA3gM9NAMIWBiLrs1qS99Q==
-X-Google-Smtp-Source: APXvYqxkBP93LqBEoYkgfnyCrwe4B1QC82OcDGc/6Zr2tWvlluAsK7IP2ELTx3uvdxhYhHu5SWjhog==
-X-Received: by 2002:a62:448d:: with SMTP id m13mr3720155pfi.182.1553178564334;
-        Thu, 21 Mar 2019 07:29:24 -0700 (PDT)
+        bh=pd7DZgFZHydc22jsnva6HCwIQ6qYSallrsNWhLPd39k=;
+        b=l+esABcq76rBxa0uDwHveI86JtKNmfmfLB2Ytmx3aXmlmTsl2PR+iurgC2dk7EfIEr
+         9zbzu6VrWDScbz5ckQIUkTirJCVzJ5jdBAp3Iu0luzpJsk0F9kKzxxqTQ2QWIyNIlZmi
+         ZzYljjsk/axgbn4ETMxhYVoqHVmFcfzu73CtZqW5+zRu08sZwBmD6aOmt3kcitBs/Feo
+         c8h25GW3czdYRW97jdh4XHhXolclF+BQlCB6ylj0AQGI1IVmrDr51Myd+eA2c326bVrG
+         C6Kl0hSa222FkVHrJIIBpYqK6PYXC846y2/qc2YZGWdicsXyusUUQyGWUCegXTE7GmT+
+         SyDw==
+X-Gm-Message-State: APjAAAXh9j3xUM1s7v+VITbZuKs7DrL2Z4dS1rYYeR6AVKMV+bHv+sOf
+        8zOnS80DwlDStQvXTUD09S3a5AXAFLSJkg==
+X-Google-Smtp-Source: APXvYqyJMUU8zjwTSKzJyUIa1TV3n+P/VwdL+aNnTUBgQUAfLAud/bKMoD2SI866CEivnAB3Plsg2g==
+X-Received: by 2002:a62:4414:: with SMTP id r20mr3663491pfa.37.1553179446705;
+        Thu, 21 Mar 2019 07:44:06 -0700 (PDT)
 Received: from GuoGuo-OMEN.lan ([107.151.139.128])
-        by smtp.gmail.com with ESMTPSA id p5sm2809086pga.40.2019.03.21.07.29.20
+        by smtp.gmail.com with ESMTPSA id f4sm6158811pgq.94.2019.03.21.07.44.02
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 21 Mar 2019 07:29:23 -0700 (PDT)
+        Thu, 21 Mar 2019 07:44:06 -0700 (PDT)
 From:   Chuanhong Guo <gch981213@gmail.com>
 To:     linux-mips@vger.kernel.org
 Cc:     Chuanhong Guo <gch981213@gmail.com>,
@@ -63,9 +64,9 @@ Cc:     Chuanhong Guo <gch981213@gmail.com>,
         James Hogan <jhogan@kernel.org>,
         John Crispin <john@phrozen.org>,
         linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH resend] MIPS: ralink: fix cpu clock of mt7621 and add dt clk devices
-Date:   Thu, 21 Mar 2019 22:28:13 +0800
-Message-Id: <20190321142813.19925-1-gch981213@gmail.com>
+Subject: [PATCH v2] MIPS: ralink: fix cpu clock of mt7621 and add dt clk devices
+Date:   Thu, 21 Mar 2019 22:42:51 +0800
+Message-Id: <20190321144251.28313-1-gch981213@gmail.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -88,7 +89,12 @@ c7ca224299 ramips: fix cpu clock of mt7621 and add dt clk devices
 Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 ---
 
-Resend due to incorrect patch subject.
+Change since v1:
+ Correctly fix the following checkpatch.pl warning:
+ WARNING: Missing a blank line after declarations
+ #137: FILE: arch/mips/ralink/mt7621.c:146:
+ +	u32 xtal_clk, cpu_clk, bus_clk;
+ +	const static u32 prediv_tbl[] = {0, 1, 2, 2};
 
  arch/mips/include/asm/mach-ralink/mt7621.h |  20 ++++
  arch/mips/ralink/mt7621.c                  | 102 ++++++++++++++-------
@@ -134,7 +140,7 @@ index a672e06fa5fd..b8a8834164c8 100644
  #define MT7621_DDR2_SIZE_MIN		32
  #define MT7621_DDR2_SIZE_MAX		256
 diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
-index d2718de60b9b..0b2845a4a036 100644
+index d2718de60b9b..6828eefb0a85 100644
 --- a/arch/mips/ralink/mt7621.c
 +++ b/arch/mips/ralink/mt7621.c
 @@ -9,22 +9,22 @@
@@ -165,7 +171,7 @@ index d2718de60b9b..0b2845a4a036 100644
  #define MT7621_GPIO_MODE_UART1		1
  #define MT7621_GPIO_MODE_I2C		2
  #define MT7621_GPIO_MODE_UART3_MASK	0x3
-@@ -110,49 +110,90 @@ static struct rt2880_pmx_group mt7621_pinmux_data[] = {
+@@ -110,49 +110,89 @@ static struct rt2880_pmx_group mt7621_pinmux_data[] = {
  	{ 0 }
  };
  
@@ -205,11 +211,10 @@ index d2718de60b9b..0b2845a4a036 100644
 -	u32 clk_sts, syscfg;
 -	u8 clk_sel = 0, xtal_mode;
 -	u32 cpu_clk;
++	const static u32 prediv_tbl[] = {0, 1, 2, 2};
 +	u32 syscfg, xtal_sel, clkcfg, clk_sel, curclk, ffiv, ffrac;
 +	u32 pll, prediv, fbdiv;
 +	u32 xtal_clk, cpu_clk, bus_clk;
-+
-+	const static u32 prediv_tbl[] = {0, 1, 2, 2};
 +
 +	syscfg = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG0);
 +	xtal_sel = (syscfg >> XTAL_MODE_SEL_SHIFT) & XTAL_MODE_SEL_MASK;

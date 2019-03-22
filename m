@@ -2,136 +2,102 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2B3FC10F03
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EB93C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 11:28:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A8D7521917
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:46:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 100AD218A2
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 11:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1553254089;
+	bh=lvUNEmoYphm1nf7ISKV2wRlWi2QCWtSdlBMvrguRndw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=rJpFWuWY26n7RpET8N1Fa8jf/PsnjUETwqroNVeuZMyrWthmjrEIHs7CV8Y/sOCaR
+	 UqKWH+Oiu6WjYkdKW7jEW4NjAcVcElRdvO2A8sZ42FKkiJ3AjO+VkbAJ/gj8CA0pie
+	 h+yOjR3AqyntOGnA+2clbx9eJ9+m6W3PK5CeVTD8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725974AbfCVHqy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 03:46:54 -0400
-Received: from relay12.mail.gandi.net ([217.70.178.232]:52741 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725938AbfCVHqy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 03:46:54 -0400
-Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id EECA9200009;
-        Fri, 22 Mar 2019 07:46:47 +0000 (UTC)
-From:   Alexandre Ghiti <alex@ghiti.fr>
-To:     Christoph Hellwig <hch@infradead.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+        id S1729077AbfCVL2I (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 07:28:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55854 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729043AbfCVL2I (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Mar 2019 07:28:08 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E5EC2183E;
+        Fri, 22 Mar 2019 11:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1553254087;
+        bh=lvUNEmoYphm1nf7ISKV2wRlWi2QCWtSdlBMvrguRndw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=X5I7pW+tHInjxIRdkhAPDIe6t3doo56+d1qR0Ol57/SwMfWG/qJRx81k7tuHyvU3o
+         j/PV+S30PtRDK4U/5c4S5cK0XJzrD+Iq+3QSeMrys88RpcJqbxBgJMPNVTE7dOM5OE
+         cGO5WXLHaKGWPqL11lDGGYb5cI8+bBI2PbkT9X5M=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH 4/4] riscv: Make mmap allocation top-down by default
-Date:   Fri, 22 Mar 2019 03:42:25 -0400
-Message-Id: <20190322074225.22282-5-alex@ghiti.fr>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190322074225.22282-1-alex@ghiti.fr>
-References: <20190322074225.22282-1-alex@ghiti.fr>
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 012/230] MIPS: ath79: Enable OF serial ports in the default config
+Date:   Fri, 22 Mar 2019 12:12:30 +0100
+Message-Id: <20190322111237.600363791@linuxfoundation.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190322111236.796964179@linuxfoundation.org>
+References: <20190322111236.796964179@linuxfoundation.org>
+User-Agent: quilt/0.65
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-In order to avoid wasting user address space by using bottom-up mmap
-allocation scheme, prefer top-down scheme when possible.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-Before:
-root@qemuriscv64:~# cat /proc/self/maps
-00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
-00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
-00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
-00018000-00039000 rw-p 00000000 00:00 0          [heap]
-1555556000-155556d000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
-155556d000-155556e000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
-155556e000-155556f000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
-155556f000-1555570000 rw-p 00000000 00:00 0
-1555570000-1555572000 r-xp 00000000 00:00 0      [vdso]
-1555574000-1555576000 rw-p 00000000 00:00 0
-1555576000-1555674000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
-1555674000-1555678000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
-1555678000-155567a000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
-155567a000-15556a0000 rw-p 00000000 00:00 0
-3fffb90000-3fffbb1000 rw-p 00000000 00:00 0      [stack]
+------------------
 
-After:
-root@qemuriscv64:~# cat /proc/self/maps
-00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
-00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
-00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
-00018000-00039000 rw-p 00000000 00:00 0          [heap]
-3ff7eb6000-3ff7ed8000 rw-p 00000000 00:00 0
-3ff7ed8000-3ff7fd6000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
-3ff7fd6000-3ff7fda000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
-3ff7fda000-3ff7fdc000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
-3ff7fdc000-3ff7fe2000 rw-p 00000000 00:00 0
-3ff7fe4000-3ff7fe6000 r-xp 00000000 00:00 0      [vdso]
-3ff7fe6000-3ff7ffd000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
-3ff7ffd000-3ff7ffe000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
-3ff7ffe000-3ff7fff000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
-3ff7fff000-3ff8000000 rw-p 00000000 00:00 0
-3fff888000-3fff8a9000 rw-p 00000000 00:00 0      [stack]
+[ Upstream commit 565dc8a4f55e491935bfb04866068d21784ea9a4 ]
 
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+CONFIG_SERIAL_OF_PLATFORM is needed to get a working console on the OF
+boards, enable it in the default config to get a working setup out of
+the box.
+
+Signed-off-by: Alban Bedel <albeu@free.fr>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Kconfig                 | 12 ++++++++++++
- arch/riscv/include/asm/processor.h |  1 +
- 2 files changed, 13 insertions(+)
+ arch/mips/configs/ath79_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index eb56c82d8aa1..7661335d1667 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -50,6 +50,18 @@ config RISCV
- 	select ARCH_HAS_PTE_SPECIAL
- 	select HAVE_EBPF_JIT if 64BIT
- 
-+config HAVE_ARCH_MMAP_RND_BITS
-+	def_bool y
-+
-+config ARCH_MMAP_RND_BITS_MIN
-+	default 18
-+
-+# max bits determined by the following formula:
-+#  VA_BITS - PAGE_SHIFT - 3
-+config ARCH_MMAP_RND_BITS_MAX
-+	default 33 if 64BIT # SV48 based
-+	default 18
-+
- config MMU
- 	def_bool y
- 
-diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-index ce70bceb8872..e68a1b1e144a 100644
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -23,6 +23,7 @@
-  * space during mmap's.
-  */
- #define TASK_UNMAPPED_BASE	PAGE_ALIGN(TASK_SIZE / 3)
-+#define ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
- 
- #define STACK_TOP		TASK_SIZE
- #define STACK_TOP_MAX		STACK_TOP
+diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
+index 134879c1310a0..4ed369c0ec6a1 100644
+--- a/arch/mips/configs/ath79_defconfig
++++ b/arch/mips/configs/ath79_defconfig
+@@ -74,6 +74,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
+ # CONFIG_SERIAL_8250_PCI is not set
+ CONFIG_SERIAL_8250_NR_UARTS=1
+ CONFIG_SERIAL_8250_RUNTIME_UARTS=1
++CONFIG_SERIAL_OF_PLATFORM=y
+ CONFIG_SERIAL_AR933X=y
+ CONFIG_SERIAL_AR933X_CONSOLE=y
+ # CONFIG_HW_RANDOM is not set
 -- 
-2.20.1
+2.19.1
+
+
 

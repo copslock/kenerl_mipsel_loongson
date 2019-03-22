@@ -6,22 +6,22 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8FACC4360F
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:44:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96092C10F03
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:45:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C14E2218FE
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:44:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6F07D21917
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:45:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfCVHop (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 03:44:45 -0400
-Received: from relay12.mail.gandi.net ([217.70.178.232]:38397 "EHLO
+        id S1727667AbfCVHpu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 03:45:50 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:47575 "EHLO
         relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbfCVHop (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 03:44:45 -0400
+        with ESMTP id S1725974AbfCVHpu (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 03:45:50 -0400
 Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
         (Authenticated sender: alex@ghiti.fr)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id E7FFE20000D;
-        Fri, 22 Mar 2019 07:44:38 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 4A88E20001D;
+        Fri, 22 Mar 2019 07:45:43 +0000 (UTC)
 From:   Alexandre Ghiti <alex@ghiti.fr>
 To:     Christoph Hellwig <hch@infradead.org>,
         Russell King <linux@armlinux.org.uk>,
@@ -39,9 +39,9 @@ To:     Christoph Hellwig <hch@infradead.org>,
         linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
         linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 Cc:     Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH 2/4] arm: Use generic mmap top-down layout
-Date:   Fri, 22 Mar 2019 03:42:23 -0400
-Message-Id: <20190322074225.22282-3-alex@ghiti.fr>
+Subject: [PATCH 3/4] mips: Use generic mmap top-down layout
+Date:   Fri, 22 Mar 2019 03:42:24 -0400
+Message-Id: <20190322074225.22282-4-alex@ghiti.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190322074225.22282-1-alex@ghiti.fr>
 References: <20190322074225.22282-1-alex@ghiti.fr>
@@ -52,41 +52,40 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-arm uses a top-down layout by default that fits the generic functions.
-At the same time, this commit allows to fix the following problems:
-
-- one uncovered and not fixed for arm here:
+mips uses a top-down layout by default that fits the generic functions.
+At the same time, this commit allows to fix problem uncovered
+and not fixed for mips here:
 https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1429066.html
-
-- the use of TASK_SIZE instead of STACK_TOP in mmap_base which, when
-  address space of a task is 26 bits, would assign mmap base way too high.
 
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- arch/arm/include/asm/processor.h |  2 +-
- arch/arm/mm/mmap.c               | 52 --------------------------------
- 2 files changed, 1 insertion(+), 53 deletions(-)
+ arch/mips/include/asm/processor.h |  4 +--
+ arch/mips/mm/mmap.c               | 57 -------------------------------
+ 2 files changed, 2 insertions(+), 59 deletions(-)
 
-diff --git a/arch/arm/include/asm/processor.h b/arch/arm/include/asm/processor.h
-index 57fe73ea0f72..03837d325a2f 100644
---- a/arch/arm/include/asm/processor.h
-+++ b/arch/arm/include/asm/processor.h
-@@ -143,7 +143,7 @@ static inline void prefetchw(const void *ptr)
- #endif
- #endif
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index aca909bd7841..f8e04962b52d 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -30,9 +30,9 @@
+ extern unsigned int vced_count, vcei_count;
  
--#define HAVE_ARCH_PICK_MMAP_LAYOUT
+ /*
+- * MIPS does have an arch_pick_mmap_layout()
++ * MIPS uses the default implementation of topdown mmap layout.
+  */
+-#define HAVE_ARCH_PICK_MMAP_LAYOUT 1
 +#define ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
  
- #endif
- 
-diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
-index f866870db749..b8d912ac9e61 100644
---- a/arch/arm/mm/mmap.c
-+++ b/arch/arm/mm/mmap.c
-@@ -17,33 +17,6 @@
- 	((((addr)+SHMLBA-1)&~(SHMLBA-1)) +	\
- 	 (((pgoff)<<PAGE_SHIFT) & (SHMLBA-1)))
+ #ifdef CONFIG_32BIT
+ #ifdef CONFIG_KVM_GUEST
+diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+index 2f616ebeb7e0..61e65a69bb09 100644
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -20,33 +20,6 @@
+ unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
+ EXPORT_SYMBOL(shm_align_mask);
  
 -/* gap between mmap and stack */
 -#define MIN_GAP (128*1024*1024UL)
@@ -115,18 +114,23 @@ index f866870db749..b8d912ac9e61 100644
 -	return PAGE_ALIGN(TASK_SIZE - gap - rnd);
 -}
 -
- /*
-  * We need to ensure that shared mappings are correctly aligned to
-  * avoid aliasing issues with VIPT caches.  We need to ensure that
-@@ -171,31 +144,6 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 	return addr;
+ #define COLOUR_ALIGN(addr, pgoff)				\
+ 	((((addr) + shm_align_mask) & ~shm_align_mask) +	\
+ 	 (((pgoff) << PAGE_SHIFT) & shm_align_mask))
+@@ -144,36 +117,6 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+ 			addr0, len, pgoff, flags, DOWN);
  }
  
 -unsigned long arch_mmap_rnd(void)
 -{
 -	unsigned long rnd;
 -
--	rnd = get_random_long() & ((1UL << mmap_rnd_bits) - 1);
+-#ifdef CONFIG_COMPAT
+-	if (TASK_IS_32BIT_ADDR)
+-		rnd = get_random_long() & ((1UL << mmap_rnd_compat_bits) - 1);
+-	else
+-#endif /* CONFIG_COMPAT */
+-		rnd = get_random_long() & ((1UL << mmap_rnd_bits) - 1);
 -
 -	return rnd << PAGE_SHIFT;
 -}
@@ -147,9 +151,9 @@ index f866870db749..b8d912ac9e61 100644
 -	}
 -}
 -
- /*
-  * You really shouldn't be using read() or write() on /dev/mem.  This
-  * might go away in the future.
+ static inline unsigned long brk_rnd(void)
+ {
+ 	unsigned long rnd = get_random_long();
 -- 
 2.20.1
 

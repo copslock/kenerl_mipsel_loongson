@@ -1,89 +1,88 @@
-Return-Path: <SRS0=ObrZ=RY=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6583C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 23:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C01DC43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 00:00:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 97A9821900
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Mar 2019 23:40:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C0A5421902
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 00:00:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="H4tl8G2S"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="NnuumdKn"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbfCUXk0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Mar 2019 19:40:26 -0400
-Received: from mail-eopbgr750105.outbound.protection.outlook.com ([40.107.75.105]:63617
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        id S1726374AbfCVAAs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 21 Mar 2019 20:00:48 -0400
+Received: from mail-eopbgr710130.outbound.protection.outlook.com ([40.107.71.130]:2334
+        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726374AbfCUXkZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 21 Mar 2019 19:40:25 -0400
+        id S1726377AbfCVAAs (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 21 Mar 2019 20:00:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AnFgwaiIXsQ1O3TcsUebHzVVpnJVlKryNcNrMdWKakQ=;
- b=H4tl8G2SzSaC0sec5xy8jSDQyjuMCv7p9CJive8aFZCDYFS00HTQkcawZqCxj0WvcfgXY2v+iFO39ESVCHPou56TnXlX0U1dSq+pn6EcFlXJ9tV1D5ntyPmG7w/1vPdGc9K1JbVmfB3gJB4dPasEr5Jsd6uldasm1KOEh+QMkgc=
+ bh=gfwk6hMP/WUiBQ12WQh+LE0i2VmZHpTy1BCAQx+THHc=;
+ b=NnuumdKncH+3XopGL8MX2vzmCOrFbr7Wx6w7kZEH09zd1ToHGfvM8G6WY8kaJMUD4mCH6dF/EUgsV9/XTx1enUDx9Sl7tZHbqhqcxcXd1cYWw5aotHu5e0S/C4djyPn+HaBTrRKAk9GprxYgXnDC0/j0RLULhJyh6xHw+ptrOl4=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1086.namprd22.prod.outlook.com (10.174.169.148) with Microsoft
+ MWHPR2201MB1471.namprd22.prod.outlook.com (10.174.170.144) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1709.14; Thu, 21 Mar 2019 23:40:21 +0000
+ 15.20.1730.15; Fri, 22 Mar 2019 00:00:45 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1730.013; Thu, 21 Mar 2019
- 23:40:21 +0000
+ ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1730.013; Fri, 22 Mar 2019
+ 00:00:45 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     George Hilliard <thirtythreeforty@gmail.com>
-CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RESEND PATCH] mips: ralink: allow zboot
-Thread-Topic: [RESEND PATCH] mips: ralink: allow zboot
-Thread-Index: AQHU4AgLQNJaCLPr+E2sTRrwfQ+CsqYWo1mAgAATLgCAAAhLgA==
-Date:   Thu, 21 Mar 2019 23:40:20 +0000
-Message-ID: <20190321234019.5ifoywetz2vnhpne@pburton-laptop>
-References: <20190321170334.15122-1-thirtythreeforty@gmail.com>
- <20190321170334.15122-2-thirtythreeforty@gmail.com>
- <20190321220159.GC7872@darkstar.musicnaut.iki.fi>
- <CACmrr9hj6A_ZgbgO=bHuueav1FEc4jQ2-T9ddASa61Qe4mKR9g@mail.gmail.com>
-In-Reply-To: <CACmrr9hj6A_ZgbgO=bHuueav1FEc4jQ2-T9ddASa61Qe4mKR9g@mail.gmail.com>
+To:     George Spelvin <lkml@sdf.org>
+CC:     "jhogan@kernel.org" <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] arch/mips/kvm/emulate.c: Don't waste /dev/random
+ emulating TLBWR
+Thread-Topic: [PATCH] arch/mips/kvm/emulate.c: Don't waste /dev/random
+ emulating TLBWR
+Thread-Index: AQHU36v0QUkII+7gSEaAupI0L3eDY6YWxT8A
+Date:   Fri, 22 Mar 2019 00:00:45 +0000
+Message-ID: <20190322000043.krzxo7coqibbxi6c@pburton-laptop>
+References: <201903210604.x2L64Ord018045@sdf.org>
+In-Reply-To: <201903210604.x2L64Ord018045@sdf.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR03CA0029.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::42) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR04CA0011.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::24) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 49e2af6f-5515-4e72-1764-08d6ae5694c1
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1086;
-x-ms-traffictypediagnostic: MWHPR2201MB1086:
-x-microsoft-antispam-prvs: <MWHPR2201MB108654DB46105C764DF647EAC1420@MWHPR2201MB1086.namprd22.prod.outlook.com>
-x-forefront-prvs: 0983EAD6B2
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(366004)(396003)(39850400004)(346002)(376002)(189003)(199004)(76176011)(52116002)(71190400001)(102836004)(6916009)(6506007)(386003)(476003)(186003)(58126008)(99286004)(26005)(6246003)(14454004)(6116002)(97736004)(81156014)(68736007)(14444005)(478600001)(4326008)(256004)(5660300002)(71200400001)(3846002)(8676002)(6486002)(1076003)(486006)(6512007)(305945005)(33716001)(42882007)(54906003)(66066001)(53936002)(81166006)(7736002)(1411001)(316002)(11346002)(229853002)(105586002)(9686003)(93886005)(8936002)(446003)(106356001)(2906002)(6436002)(44832011)(25786009);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1086;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-ms-office365-filtering-correlation-id: 4d4a48fc-9fb4-4128-2c4e-08d6ae596e87
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600127)(711020)(4605104)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1471;
+x-ms-traffictypediagnostic: MWHPR2201MB1471:
+x-microsoft-antispam-prvs: <MWHPR2201MB1471EDBF9AA5E768428B480BC1430@MWHPR2201MB1471.namprd22.prod.outlook.com>
+x-forefront-prvs: 09840A4839
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39850400004)(366004)(396003)(376002)(136003)(346002)(51914003)(199004)(189003)(53936002)(6486002)(7736002)(99286004)(8936002)(6512007)(8676002)(54906003)(316002)(9686003)(81166006)(58126008)(33716001)(81156014)(5660300002)(2906002)(305945005)(3846002)(6116002)(66066001)(229853002)(6916009)(105586002)(97736004)(106356001)(476003)(11346002)(6436002)(478600001)(4326008)(42882007)(186003)(44832011)(446003)(71190400001)(1076003)(6246003)(14444005)(68736007)(52116002)(486006)(256004)(386003)(6506007)(76176011)(71200400001)(102836004)(25786009)(6346003)(14454004)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1471;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: v8ktZiZNjkHDtTlUSF3FTUsb0OLizcUjJrx1vX9cUaCoQyzThdv9dVvQu9ZHUixEmobzLEdByNF06Mibzlznv2XbuVy+IXETHxu/FPwIBCp5lbWMO5KfoQx4aQG+TmqFgN07qmKBF0wd35SoeN43Eduoo1zI/U3ogiscdmKB5kKJPYjClSf+XsiBZ8rT+fbkV8F+GU+5CYS3rJSZLLUusxmAWjxlOmwFKAo1ASDtyufFvRKFWhp52L6hH7aFbf3An9LICRI2A3qwzhRq9jhLPTfeswklXSeuUQLq9e6ZveY8UjAkrZl0sp3u2cw2rwe/72VpmI6BtXUc+RN1/ogl4T/FAkqp+VsR8joDvhjeN2Ydg7oZE+8ozhRSEBRPS3ALEdELu4ZRupBbbNQ9vzPhWS1/7bDZh2e4ZaZmC8TQ3eg=
+x-microsoft-antispam-message-info: lhcqDsDhrFqH6ID80iE2Z7u07LcxGjh/E2UU08SSxQovkVQ7kDhN29xLYsJYwO+G+hnSkb+jCD9K83gFhuiTZja+uYnoglIH9cea/pFVflA2KwOKbV9metcNY834WwC7+kP96gkzZ8I29b4/LKzysARyyTZ3wXCV1gJvWkesCMFOYM6Sw2rbRWb5BZiMtuXbmhyG5kxeAWc6Cxv5o2Qc4WvKoyxDZH4HIEzWdr3YnfmUClmtPeiQ2cJ3B8VXxUBASVkHt/psoP/ni5BawYes7GGMWYVsJi+gQEfbcwSNyChp/hRd6pkaUQPdhiVUd1+XcMFdcl5rgf6Ei+1ywwlgKAQjxt0s82KN8XDxYvS4ZwKqFNjPuNuwDytmNgtqWwDPCoVMBT0b9wAP1nEkPSNUjlNyOcIZkTpVnFyYXtheQGs=
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <9EBC57223C84DD47A70D9EDB4525B54F@namprd22.prod.outlook.com>
+Content-ID: <282A703B60DB9C4F90F7F6073E332300@namprd22.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49e2af6f-5515-4e72-1764-08d6ae5694c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2019 23:40:20.9890
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d4a48fc-9fb4-4128-2c4e-08d6ae596e87
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2019 00:00:45.4212
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1086
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1471
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -91,71 +90,63 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hi George,
 
-On Thu, Mar 21, 2019 at 05:10:38PM -0600, George Hilliard wrote:
-> My version of U-Boot complains if I compile out LZMA support:
+On Thu, Mar 21, 2019 at 06:04:24AM +0000, George Spelvin wrote:
+> KVM_MIPS_GUEST_TLB_SIZE is 64, so we only need one random byte,
+> not 4.
+>=20
+> A more complex question is whether we need crypto-grade random
+> numbers at all.  If safe, we could use prandom_u32().  If not,
+> we could seed a private PRNG and use prandom_u32_state().
+>=20
+> Or could we just use asm("mfc0 %0, Random" : "=3Dr" (index))?
+>=20
+> Signed-off-by: George Spelvin <lkml@sdf.org>
 > ---
-> =3D> tftpboot 0x81000000 uImage; tftpboot 0x84000000 hawkeye.dtb; bootm
-> 0x81000000 - 0x84000000
-> (snip)
-> Bytes transferred =3D 7349 (1cb5 hex)
-> ## Booting kernel from Legacy Image at 81000000 ...
->    Image Name:   Linux-5.1.0-rc1
->    Image Type:   MIPS Linux Kernel Image (lzma compressed)
->    Data Size:    1465871 Bytes =3D 1.4 MiB
->    Load Address: 80000000
->    Entry Point:  80344338
->    Verifying Checksum ... OK
-> ## Flattened Device Tree blob at 84000000
->    Booting using the fdt blob at 0x84000000
->    Uncompressing Kernel Image ... Unimplemented compression type 3
-> exit not allowed from main input shell.
-> =3D>
-> ---
+> I ran across this whie doing some other cleanups, and thought
+> I'd pass it on.
+>=20
+> get_random_bytes() is quite an expensive function call.
+> Is it needed at all?
 
-There you're using a uImage though, which is different to
-CONFIG_SYS_SUPPORTS_ZBOOT. Even without CONFIG_SYS_SUPPORTS_ZBOOT
-enabled, you can build either a compressed or uncompressed uImage.
+Thanks for the patch. I expect we should be fine with:
 
-Some platforms enable one of those targets by default but it doesn't
-appear that ralink does, so I guess you're specifying a uImage.lzma
-target when building the kernel? Try doing that when
-CONFIG_SYS_SUPPORTS_ZBOOT isn't enabled - it'll still generate the same
-type of LZMA-compressed uImage.
+  index =3D prandom_u32_max(KVM_MIPS_GUEST_TLB_SIZE);
 
-What CONFIG_SYS_SUPPORTS_ZBOOT does is produce a program (vmlinuz) which
-contains a compressed version of vmlinux.bin along with some code to
-decompress it. The decompression is performed by vmlinuz itself, not by
-U-Boot.
+We certainly don't need crypto-grade randomness here. Using the cp0
+Random register would be an option for configurations prior to MIPSr6,
+where the Random register was deprecated & we shouldn't rely on its
+presence. So we could do:
 
-A uImage in contrast is just the compressed (or uncompressed)
-vmlinux.bin with a header prepended that U-Boot uses to understand what
-it's loading. If the header says the data is compressed with LZMA then
-U-Boot will need to support LZMA decompression.
+  if (MIPS_ISA_REV < 6)
+    index =3D read_c0_random() % KVM_MIPS_GUEST_TLB_SIZE;
+  else
+    index =3D prandom_u32_max(KVM_MIPS_GUEST_TLB_SIZE);
 
-What U-Boot is complaining about there is that you gave it a uImage
-that's LZMA compressed & your build of U-Boot itself doesn't support
-LZMA. That has nothing to do with CONFIG_SYS_SUPPORTS_ZBOOT or whether
-the kernel binary itself supports any particular compression algorithm -
-it's purely down to the configuration of your copy of U-Boot.
-
-Options would be to rebuild U-Boot with LZMA support enabled, or to use
-a different compression for your uImage that U-Boot already supports.
-eg. you could specify that you want to use gzip:
-
-  $ make ARCH=3Dmips uImage.gz
-
-That would give you an image that will work so long as U-Boot supports
-gzip decompression, or:
-
-  $ make ARCH=3Dmips uImage.bin
-
-That would give you an uncompressed uImage which U-Boot always supports.
-
-Now it could still be valid to select CONFIG_SYS_SUPPORTS_ZBOOT if you
-had a need for a better compression algorithm & couldn't update your
-bootloader to support it, but that would be solving a different problem
-than your commit message claims & it wouldn't matter at all whether the
-bootloader supports a particular compression algorithm.
+Though whether that micro-optimization is worth the extra code is
+questionable.
 
 Thanks,
     Paul
+
+>  arch/mips/kvm/emulate.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+> index ec9ed23bca7f..a689f3db3094 100644
+> --- a/arch/mips/kvm/emulate.c
+> +++ b/arch/mips/kvm/emulate.c
+> @@ -1139,8 +1139,9 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kv=
+m_vcpu *vcpu)
+>  	struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>  	struct kvm_mips_tlb *tlb =3D NULL;
+>  	unsigned long pc =3D vcpu->arch.pc;
+> -	int index;
+> +	unsigned char index;
+> =20
+> +	/* Do we need this quality of random numbers?  Would prandom_u32 do? */
+>  	get_random_bytes(&index, sizeof(index));
+>  	index &=3D (KVM_MIPS_GUEST_TLB_SIZE - 1);
+> =20
+> --=20
+> 2.20.1
+>=20

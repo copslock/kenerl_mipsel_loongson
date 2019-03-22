@@ -2,30 +2,30 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 739F5C4360F
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 14:30:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74337C10F10
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 14:30:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4BAB4218D3
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 14:30:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4E4AF218E2
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 14:30:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727996AbfCVOan (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 10:30:43 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:57248 "EHLO mx1.redhat.com"
+        id S1728843AbfCVOaX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 10:30:23 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:57012 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728898AbfCVOam (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Mar 2019 10:30:42 -0400
+        id S1727719AbfCVOaW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Mar 2019 10:30:22 -0400
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 2D3E590B1A;
-        Fri, 22 Mar 2019 14:30:41 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 42AB285363;
+        Fri, 22 Mar 2019 14:30:21 +0000 (UTC)
 Received: from llong.com (dhcp-17-47.bos.redhat.com [10.18.17.47])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 59B1C60C08;
-        Fri, 22 Mar 2019 14:30:32 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6B62F60BE2;
+        Fri, 22 Mar 2019 14:30:15 +0000 (UTC)
 From:   Waiman Long <longman@redhat.com>
 To:     Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>,
@@ -49,118 +49,99 @@ Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
         Tim Chen <tim.c.chen@linux.intel.com>,
         Waiman Long <longman@redhat.com>
-Subject: [PATCH v5 3/3] locking/rwsem: Optimize down_read_trylock()
-Date:   Fri, 22 Mar 2019 10:30:08 -0400
-Message-Id: <20190322143008.21313-4-longman@redhat.com>
-In-Reply-To: <20190322143008.21313-1-longman@redhat.com>
-References: <20190322143008.21313-1-longman@redhat.com>
+Subject: [PATCH v5 0/3] locking/rwsem: Rwsem rearchitecture part 0
+Date:   Fri, 22 Mar 2019 10:30:05 -0400
+Message-Id: <20190322143008.21313-1-longman@redhat.com>
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Fri, 22 Mar 2019 14:30:41 +0000 (UTC)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Fri, 22 Mar 2019 14:30:22 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Modify __down_read_trylock() to optimize for an unlocked rwsem and make
-it generate slightly better code.
+v5:
+ - Rebase to the latest v5.1 tree and fix conflicts in 
+   arch/{xtensa,s390}/include/asm/Kbuild.
 
-Before this patch, down_read_trylock:
+v4:
+ - Remove rwsem-spinlock.c and make all archs use rwsem-xadd.c.
 
-   0x0000000000000000 <+0>:     callq  0x5 <down_read_trylock+5>
-   0x0000000000000005 <+5>:     jmp    0x18 <down_read_trylock+24>
-   0x0000000000000007 <+7>:     lea    0x1(%rdx),%rcx
-   0x000000000000000b <+11>:    mov    %rdx,%rax
-   0x000000000000000e <+14>:    lock cmpxchg %rcx,(%rdi)
-   0x0000000000000013 <+19>:    cmp    %rax,%rdx
-   0x0000000000000016 <+22>:    je     0x23 <down_read_trylock+35>
-   0x0000000000000018 <+24>:    mov    (%rdi),%rdx
-   0x000000000000001b <+27>:    test   %rdx,%rdx
-   0x000000000000001e <+30>:    jns    0x7 <down_read_trylock+7>
-   0x0000000000000020 <+32>:    xor    %eax,%eax
-   0x0000000000000022 <+34>:    retq
-   0x0000000000000023 <+35>:    mov    %gs:0x0,%rax
-   0x000000000000002c <+44>:    or     $0x3,%rax
-   0x0000000000000030 <+48>:    mov    %rax,0x20(%rdi)
-   0x0000000000000034 <+52>:    mov    $0x1,%eax
-   0x0000000000000039 <+57>:    retq
+v3:
+ - Optimize __down_read_trylock() for the uncontended case as suggested
+   by Linus.
 
-After patch, down_read_trylock:
+v2:
+ - Add patch 2 to optimize __down_read_trylock() as suggested by PeterZ.
+ - Update performance test data in patch 1.
 
-   0x0000000000000000 <+0>:	callq  0x5 <down_read_trylock+5>
-   0x0000000000000005 <+5>:	xor    %eax,%eax
-   0x0000000000000007 <+7>:	lea    0x1(%rax),%rdx
-   0x000000000000000b <+11>:	lock cmpxchg %rdx,(%rdi)
-   0x0000000000000010 <+16>:	jne    0x29 <down_read_trylock+41>
-   0x0000000000000012 <+18>:	mov    %gs:0x0,%rax
-   0x000000000000001b <+27>:	or     $0x3,%rax
-   0x000000000000001f <+31>:	mov    %rax,0x20(%rdi)
-   0x0000000000000023 <+35>:	mov    $0x1,%eax
-   0x0000000000000028 <+40>:	retq
-   0x0000000000000029 <+41>:	test   %rax,%rax
-   0x000000000000002c <+44>:	jns    0x7 <down_read_trylock+7>
-   0x000000000000002e <+46>:	xor    %eax,%eax
-   0x0000000000000030 <+48>:	retq
+The goal of this patchset is to remove the architecture specific files
+for rwsem-xadd to make it easer to add enhancements in the later rwsem
+patches. It also removes the legacy rwsem-spinlock.c file and make all
+the architectures use one single implementation of rwsem - rwsem-xadd.c.
 
-By using a rwsem microbenchmark, the down_read_trylock() rate (with a
-load of 10 to lengthen the lock critical section) on a x86-64 system
-before and after the patch were:
+Waiman Long (3):
+  locking/rwsem: Remove arch specific rwsem files
+  locking/rwsem: Remove rwsem-spinlock.c & use rwsem-xadd.c for all
+    archs
+  locking/rwsem: Optimize down_read_trylock()
 
-                 Before Patch    After Patch
-   # of Threads     rlock           rlock
-   ------------     -----           -----
-        1           14,496          14,716
-        2            8,644           8,453
-	4            6,799           6,983
-	8            5,664           7,190
+ MAINTAINERS                     |   1 -
+ arch/alpha/Kconfig              |   7 -
+ arch/alpha/include/asm/rwsem.h  | 211 --------------------
+ arch/arc/Kconfig                |   3 -
+ arch/arm/Kconfig                |   4 -
+ arch/arm/include/asm/Kbuild     |   1 -
+ arch/arm64/Kconfig              |   3 -
+ arch/arm64/include/asm/Kbuild   |   1 -
+ arch/c6x/Kconfig                |   3 -
+ arch/csky/Kconfig               |   3 -
+ arch/h8300/Kconfig              |   3 -
+ arch/hexagon/Kconfig            |   6 -
+ arch/hexagon/include/asm/Kbuild |   1 -
+ arch/ia64/Kconfig               |   4 -
+ arch/ia64/include/asm/rwsem.h   | 172 ----------------
+ arch/m68k/Kconfig               |   7 -
+ arch/microblaze/Kconfig         |   6 -
+ arch/mips/Kconfig               |   7 -
+ arch/nds32/Kconfig              |   3 -
+ arch/nios2/Kconfig              |   3 -
+ arch/openrisc/Kconfig           |   6 -
+ arch/parisc/Kconfig             |   6 -
+ arch/powerpc/Kconfig            |   7 -
+ arch/powerpc/include/asm/Kbuild |   1 -
+ arch/riscv/Kconfig              |   3 -
+ arch/s390/Kconfig               |   6 -
+ arch/s390/include/asm/Kbuild    |   1 -
+ arch/sh/Kconfig                 |   6 -
+ arch/sh/include/asm/Kbuild      |   1 -
+ arch/sparc/Kconfig              |   8 -
+ arch/sparc/include/asm/Kbuild   |   1 -
+ arch/unicore32/Kconfig          |   6 -
+ arch/x86/Kconfig                |   3 -
+ arch/x86/include/asm/rwsem.h    | 237 ----------------------
+ arch/x86/lib/Makefile           |   1 -
+ arch/x86/lib/rwsem.S            | 156 ---------------
+ arch/x86/um/Kconfig             |   6 -
+ arch/x86/um/Makefile            |   1 -
+ arch/xtensa/Kconfig             |   3 -
+ arch/xtensa/include/asm/Kbuild  |   1 -
+ include/asm-generic/rwsem.h     | 140 -------------
+ include/linux/rwsem-spinlock.h  |  47 -----
+ include/linux/rwsem.h           |   9 +-
+ kernel/Kconfig.locks            |   2 +-
+ kernel/locking/Makefile         |   4 +-
+ kernel/locking/percpu-rwsem.c   |   2 +
+ kernel/locking/rwsem-spinlock.c | 339 --------------------------------
+ kernel/locking/rwsem.h          | 130 ++++++++++++
+ 48 files changed, 135 insertions(+), 1447 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/rwsem.h
+ delete mode 100644 arch/ia64/include/asm/rwsem.h
+ delete mode 100644 arch/x86/include/asm/rwsem.h
+ delete mode 100644 arch/x86/lib/rwsem.S
+ delete mode 100644 include/asm-generic/rwsem.h
+ delete mode 100644 include/linux/rwsem-spinlock.h
+ delete mode 100644 kernel/locking/rwsem-spinlock.c
 
-On a ARM64 system, the performance results were:
-
-                 Before Patch    After Patch
-   # of Threads     rlock           rlock
-   ------------     -----           -----
-        1           23,676          24,488
-        2            7,697           9,502
-        4            4,945           3,440
-        8            2,641           1,603
-
-For the uncontended case (1 thread), the new down_read_trylock() is a
-little bit faster. For the contended cases, the new down_read_trylock()
-perform pretty well in x86-64, but performance degrades at high
-contention level on ARM64.
-
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- kernel/locking/rwsem.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/locking/rwsem.h b/kernel/locking/rwsem.h
-index 45ee00236e03..1f5775aa6a1d 100644
---- a/kernel/locking/rwsem.h
-+++ b/kernel/locking/rwsem.h
-@@ -174,14 +174,17 @@ static inline int __down_read_killable(struct rw_semaphore *sem)
- 
- static inline int __down_read_trylock(struct rw_semaphore *sem)
- {
--	long tmp;
-+	/*
-+	 * Optimize for the case when the rwsem is not locked at all.
-+	 */
-+	long tmp = RWSEM_UNLOCKED_VALUE;
- 
--	while ((tmp = atomic_long_read(&sem->count)) >= 0) {
--		if (tmp == atomic_long_cmpxchg_acquire(&sem->count, tmp,
--				   tmp + RWSEM_ACTIVE_READ_BIAS)) {
-+	do {
-+		if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp,
-+					tmp + RWSEM_ACTIVE_READ_BIAS)) {
- 			return 1;
- 		}
--	}
-+	} while (tmp >= 0);
- 	return 0;
- }
- 
 -- 
 2.18.1
 

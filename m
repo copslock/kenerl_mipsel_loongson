@@ -2,54 +2,50 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCA99C10F03
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C29DAC43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:13:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A10932183E
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:11:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 89C4221873
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553260303;
-	bh=wtC7hLvVF4hIQdNnmRq/AYbnXwpIAWRPHSUy2MRas3Q=;
+	s=default; t=1553260400;
+	bh=xeD6hYDuMNN7gIMsgvQviyLc+BzDheruPx00S2Vg0qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=jFxRov/T5EUOlRCglWzBLBMZ2aOWkFvNFRq65/j8RhvP37yBDWEI6cUylGJSBwUkc
-	 mcNCPW0xFdj30DGvEetYyrswvyfdaAhemCAtGvdG4RYHHExba7Yjk8GerUnV3PwAcD
-	 RaWrMrxLTy7zyv197pQOAkK004L2/FCjVGWp+WGc=
+	b=nzPj/3n0XRfV70rC/zzT8CrFZomcnLOl0Kv2YvrunnPeu5CT5Ueiv/3ooM+uNWSMm
+	 c10r5/GIeCO9dE6tIqZdvLSicPLg/KRC9Ls26h8erU+L9Tj1GxdxxQa4ZX1b3kIoTP
+	 0HV8RrMztTniNQtDG9wYCFhzjn1chAMTIoR0ihaI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730184AbfCVLck (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 07:32:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32940 "EHLO mail.kernel.org"
+        id S1728926AbfCVLam (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 07:30:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58624 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730174AbfCVLck (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Mar 2019 07:32:40 -0400
+        id S1729966AbfCVLai (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Mar 2019 07:30:38 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D25F421916;
-        Fri, 22 Mar 2019 11:32:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62965218B0;
+        Fri, 22 Mar 2019 11:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553254359;
-        bh=wtC7hLvVF4hIQdNnmRq/AYbnXwpIAWRPHSUy2MRas3Q=;
+        s=default; t=1553254237;
+        bh=xeD6hYDuMNN7gIMsgvQviyLc+BzDheruPx00S2Vg0qA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=duusSQ/xgFzhdyW+I9OzHAVpesHhnMiCNyosH6WcNUhCUWypg2zFTHzTbjdsNggcf
-         CUI8KXvhpH05T6otJsIREbz1EGN6JGHX8k2CTIssXKhm/JFnRqryeWBG3/mA1On5s/
-         nOBBo6a4v+R2rw3YuX5t4UpMNlTJmHuiGd6CSUDc=
+        b=hj5mMjyu4D5Gsh0BWweESlpqCwnq7gvmh9lhZk7f8y3w1iMKQ+lfLa06Scr7BeZjK
+         6ioSD6jEBEigvvJ6I158K+/DJs9hCtTKQd4bFV+Ls8mA6jGAZgxtE25qlOWYcMu+9t
+         RwitmLT49gbnu3KJegzVBiFIXlZNVQjsKXasYReY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jun-Ru Chang <jrjang@realtek.com>,
-        Tony Wu <tonywu@realtek.com>,
-        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
-        jhogan@kernel.org, macro@mips.com, yamada.masahiro@socionext.com,
-        peterz@infradead.org, mingo@kernel.org, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 111/230] MIPS: Remove function size check in get_frame_info()
-Date:   Fri, 22 Mar 2019 12:14:09 +0100
-Message-Id: <20190322111244.418293744@linuxfoundation.org>
+        stable@vger.kernel.org, Liu Xiang <liu.xiang6@zte.com.cn>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.4 074/230] MIPS: irq: Allocate accurate order pages for irq stack
+Date:   Fri, 22 Mar 2019 12:13:32 +0100
+Message-Id: <20190322111241.858970300@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190322111236.796964179@linuxfoundation.org>
 References: <20190322111236.796964179@linuxfoundation.org>
@@ -68,64 +64,44 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-[ Upstream commit 2b424cfc69728224fcb5fad138ea7260728e0901 ]
+From: Liu Xiang <liu.xiang6@zte.com.cn>
 
-Patch (b6c7a324df37b "MIPS: Fix get_frame_info() handling of
-microMIPS function size.") introduces additional function size
-check for microMIPS by only checking insn between ip and ip + func_size.
-However, func_size in get_frame_info() is always 0 if KALLSYMS is not
-enabled. This causes get_frame_info() to return immediately without
-calculating correct frame_size, which in turn causes "Can't analyze
-schedule() prologue" warning messages at boot time.
+commit 72faa7a773ca59336f3c889e878de81445c5a85c upstream.
 
-This patch removes func_size check, and let the frame_size check run
-up to 128 insns for both MIPS and microMIPS.
+The irq_pages is the number of pages for irq stack, but not the
+order which is needed by __get_free_pages().
+We can use get_order() to calculate the accurate order.
 
-Signed-off-by: Jun-Ru Chang <jrjang@realtek.com>
-Signed-off-by: Tony Wu <tonywu@realtek.com>
+Signed-off-by: Liu Xiang <liu.xiang6@zte.com.cn>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: b6c7a324df37b ("MIPS: Fix get_frame_info() handling of microMIPS function size.")
-Cc: <ralf@linux-mips.org>
-Cc: <jhogan@kernel.org>
-Cc: <macro@mips.com>
-Cc: <yamada.masahiro@socionext.com>
-Cc: <peterz@infradead.org>
-Cc: <mingo@kernel.org>
-Cc: <linux-mips@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe8bd18ffea5 ("MIPS: Introduce irq_stack")
+Cc: linux-mips@vger.kernel.org
+Cc: stable@vger.kernel.org # v4.11+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/kernel/process.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/mips/kernel/irq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index ebd8a715fe38..e6102775892d 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -339,7 +339,7 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
- static int get_frame_info(struct mips_frame_info *info)
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -52,6 +52,7 @@ asmlinkage void spurious_interrupt(void)
+ void __init init_IRQ(void)
  {
- 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
--	union mips_instruction insn, *ip, *ip_end;
-+	union mips_instruction insn, *ip;
- 	const unsigned int max_insns = 128;
- 	unsigned int last_insn_size = 0;
- 	unsigned int i;
-@@ -351,10 +351,9 @@ static int get_frame_info(struct mips_frame_info *info)
- 	if (!ip)
- 		goto err;
+ 	int i;
++	unsigned int order = get_order(IRQ_STACK_SIZE);
  
--	ip_end = (void *)ip + info->func_size;
--
--	for (i = 0; i < max_insns && ip < ip_end; i++) {
-+	for (i = 0; i < max_insns; i++) {
- 		ip = (void *)ip + last_insn_size;
-+
- 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
- 			insn.halfword[0] = 0;
- 			insn.halfword[1] = ip->halfword[0];
--- 
-2.19.1
-
+ 	for (i = 0; i < NR_IRQS; i++)
+ 		irq_set_noprobe(i);
+@@ -59,8 +60,7 @@ void __init init_IRQ(void)
+ 	arch_init_irq();
+ 
+ 	for_each_possible_cpu(i) {
+-		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
+-		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
++		void *s = (void *)__get_free_pages(GFP_KERNEL, order);
+ 
+ 		irq_stack[i] = s;
+ 		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
 
 

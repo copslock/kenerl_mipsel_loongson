@@ -2,61 +2,60 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 750E2C43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF4E8C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:15:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4153721900
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:14:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9DF7D21900
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:15:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="gXnr/LKc"
+	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="pKk8vaqm"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727982AbfCVWOj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 18:14:39 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:54380 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727940AbfCVWOi (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:14:38 -0400
-Received: by mail-it1-f193.google.com with SMTP id w18so5879802itj.4;
-        Fri, 22 Mar 2019 15:14:37 -0700 (PDT)
+        id S1727814AbfCVWPX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 18:15:23 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:37657 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726205AbfCVWPW (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:15:22 -0400
+Received: by mail-it1-f196.google.com with SMTP id z124so5773134itc.2;
+        Fri, 22 Mar 2019 15:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wm2+IDsr0NmRaIQ9GIimbnBiutoAYhXqklaChAdkC0E=;
-        b=gXnr/LKcmO3n/AkDnk5tuJJz0sD52kdAC51zKOFpz9IFbfbYifTLF6ymlYbHKb1Fzf
-         5IK9kzfgRjlOjG8rPf/pLCcCoxWGCDHkfS90S+LKj3jcXm5xQYa13eJcPAUZ+hXohZjm
-         IBPo+8GJ+Rq8y+Q+kI7lVQj+zb+PR7I30rOlJksrdJy/Wp2dqUTjZA9F3vGG+ezwSQtN
-         Rd0g5Hf0LyHnnPkTMRnIAwxLFm25gMxn56/wKPSlCPteP5nwXO0eAhs4klJ0MxT6YP2e
-         dxwI2R6VEa8rmJFaL4xGk5paDuSdBggXv21lLkD4qtLHBeTsgNPI61yo109FsRi4r0QQ
-         8DwA==
+        bh=NxtbMONzoE1s3tzmii8qj/NkqDi2oTH0iJ5EH+lwhzs=;
+        b=pKk8vaqmEOWE7wmsQsAlpVqHxGSGlzdO18CvseUDa6Gqg3ToKg6HC+d6WIlSijUcfE
+         eqZis0vwDECjehXasWtExjdgpfVBq/hrPtiOoQQSKzK3TjOl/nTT+9YmHvwUR+PM7IA4
+         SOb/KicPs2Y3XnvO+puWR7yKpWhSgZFJhnJ6r4/irdDupSuupBFv6JOsvwLkAcOJVCvc
+         /c6q0yBJIunL/GfMeaZCvO2zo7Le+40UBax9xxx16S5aZ0WDQh3P5CgePOvXOOBPFbgz
+         HBnYydx8J6DIC1a5uoC8HcWUFBhtiH/ArOQmUpRQZYjiW5VzQldKh5YBRfOuJhQ/9xvp
+         6L0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wm2+IDsr0NmRaIQ9GIimbnBiutoAYhXqklaChAdkC0E=;
-        b=ItXnI17q/8HYNVYKAk23Ry8uJ6eJUxTrVV/aCpyymPtrQbysZjJ2onR64HdCj05rnC
-         pHKT/vgzaN53WGlWX2vfc3nUmvlm55rPp3a/I93Hmbh7qY1IVdyGEOsx90mKojx+8Xbg
-         Dfholtef69cKrK7KzW2JgkrLX6RkEfeCwXXFpwz4/CFwoi/5ZG9MUmhxCjRzjqHawUX5
-         dowUiFcTo4Be8IOK1tctByaS3agcaQQrSV+XEG588UG/A35E+ofkgChAnMwIueMEiWwg
-         Ly1v/Ib2N3RmGhV+iaxe0pWXPGJ3tVSr+dNyQO7+gshCheeGVeEOJfYJeSiEb25CxfHj
-         xbWQ==
-X-Gm-Message-State: APjAAAVJ9jdxgwr4XN3HSsNPdunKhHNlhJmmZ68hDRGbYyMpsZyjyPRi
-        BHWXW9pzdht1adYOIcgJxI9r0O/+COLSfsr+TEk=
-X-Google-Smtp-Source: APXvYqwIoaHTQX3ElVQKOchmDlJSSWqTKG84OsYpQvQY0PG83rmTkoixgVtLY+vkXQxXTMX8UIfgiVFJTO08ZCVWvdY=
-X-Received: by 2002:a24:411f:: with SMTP id x31mr3120456ita.169.1553292877426;
- Fri, 22 Mar 2019 15:14:37 -0700 (PDT)
+        bh=NxtbMONzoE1s3tzmii8qj/NkqDi2oTH0iJ5EH+lwhzs=;
+        b=jM0s7cYxPLNd6CpeWkl8RThH9s/2KWrZSwuU2OM6SqPw1nhcrZLC2HNfbqb9i5YpTY
+         gatmLJzoF8B4ruI5UzsPiP/3T4lyyDL3rlzn09KcZQv/MpBgzgq7ySfIPfxYAl0hUKgh
+         n35Ptuq4tqILxoU3iNCO8Jx+ZaSxpIAOD7Nlve6XpLhC2bR5qfJ66QJTc49sDjAVf6Qe
+         U6Zs7tOYpMlH3CKuTxG4v3DSrIx4nSzFuBuis5nXVWAaAfUfoqWkC95CZa0EG4QQtkA0
+         WbIo90h3dSWlycQm8Ed8U+w91QYxSq1ikAMUDw32jWctfaQEZZ3r2sne674odInkTJqx
+         Spsg==
+X-Gm-Message-State: APjAAAUyVTera3EHBCkjAfe9T6ybOzaRWR+3cJuw5w0Xd0HfA2zFridw
+        8yHuDE7p3TYyagvpH2M/s1kkM6X2ufE4adbPqEE=
+X-Google-Smtp-Source: APXvYqziYcin9TkCNIVMFnILirct4rYKpjMxOpZQfFl5u+ozFqvpcOi02iZydMgVTL758Vu3P43GvK0tXOYXgqNrS/o=
+X-Received: by 2002:a24:298b:: with SMTP id p133mr3587931itp.43.1553292921652;
+ Fri, 22 Mar 2019 15:15:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-6-ira.weiny@intel.com>
-In-Reply-To: <20190317183438.2057-6-ira.weiny@intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-7-ira.weiny@intel.com>
+In-Reply-To: <20190317183438.2057-7-ira.weiny@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 22 Mar 2019 15:14:26 -0700
-Message-ID: <CAA9_cmdQjMekSFU09gLc87-PVx2iHeeh2jC6KeFY1UeadpPh4A@mail.gmail.com>
-Subject: Re: [RESEND 5/7] IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+Date:   Fri, 22 Mar 2019 15:15:10 -0700
+Message-ID: <CAA9_cmdDxh1ZYn1fO+ED1crzDMCPWk0fLjNPfxkFKUb5kNHgxA@mail.gmail.com>
+Subject: Re: [RESEND 6/7] IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
 To:     ira.weiny@intel.com
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
@@ -96,35 +95,5 @@ On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
 > FS DAX pages being mapped.
 >
 > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> ---
->  drivers/infiniband/hw/hfi1/user_pages.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/infiniband/hw/hfi1/user_pages.c b/drivers/infiniband/hw/hfi1/user_pages.c
-> index 78ccacaf97d0..6a7f9cd5a94e 100644
-> --- a/drivers/infiniband/hw/hfi1/user_pages.c
-> +++ b/drivers/infiniband/hw/hfi1/user_pages.c
-> @@ -104,9 +104,11 @@ int hfi1_acquire_user_pages(struct mm_struct *mm, unsigned long vaddr, size_t np
->                             bool writable, struct page **pages)
->  {
->         int ret;
-> +       unsigned int gup_flags = writable ? FOLL_WRITE : 0;
 
-Maybe:
-
-    unsigned int gup_flags = FOLL_LONGTERM | (writable ? FOLL_WRITE : 0);
-
-?
-
->
-> -       ret = get_user_pages_fast(vaddr, npages, writable ? FOLL_WRITE : 0,
-> -                                 pages);
-> +       gup_flags |= FOLL_LONGTERM;
-> +
-> +       ret = get_user_pages_fast(vaddr, npages, gup_flags, pages);
->         if (ret < 0)
->                 return ret;
->
-> --
-> 2.20.1
->
+Looks good modulo potential  __get_user_pages_fast() suggestion.

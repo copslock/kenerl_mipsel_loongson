@@ -7,56 +7,56 @@ X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BCD0C4360F
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 750E2C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:14:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C384921925
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:13:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4153721900
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:14:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="Zb9Bl7Bn"
+	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="gXnr/LKc"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727733AbfCVWNI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 18:13:08 -0400
-Received: from mail-it1-f196.google.com ([209.85.166.196]:37288 "EHLO
-        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727606AbfCVWNI (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:13:08 -0400
-Received: by mail-it1-f196.google.com with SMTP id z124so5766936itc.2;
-        Fri, 22 Mar 2019 15:13:06 -0700 (PDT)
+        id S1727982AbfCVWOj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 18:14:39 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:54380 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727940AbfCVWOi (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:14:38 -0400
+Received: by mail-it1-f193.google.com with SMTP id w18so5879802itj.4;
+        Fri, 22 Mar 2019 15:14:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=VnWfr5Cz9g8Ts5McgdJK3bb2nMan4nq5nXqWONnMsfs=;
-        b=Zb9Bl7Bn4sqZs4rM2mwfzJd7rKnn+/+6ONyGGwJqa1scMrXWXjmi9yoQBAbfMlLpgS
-         RGV1LtFJyFJAtRyqt7x4phr5CYLMLHxyjOqtaGBIgKlABbih3LbLp5n0OYCbWIHRLaHd
-         TTQ98w8krLJnK39QE8Dp0ik11E8+01Sgyn1wW72V9bUGSzJ08oA4QbCqRZA5AnJQLOtm
-         o3basMsLTQYqNorbmDjd4KoyjPrND/z4P2rEoZfVYQnDMfAEdcsp9b63663QinvyZoJp
-         HOu5mHwb07RCBU+1v7ChvrPznU5/HmjF8OEnSTsQgs+cld8MrdbVwNZKadLpnlT93nHs
-         Yb2w==
+        bh=wm2+IDsr0NmRaIQ9GIimbnBiutoAYhXqklaChAdkC0E=;
+        b=gXnr/LKcmO3n/AkDnk5tuJJz0sD52kdAC51zKOFpz9IFbfbYifTLF6ymlYbHKb1Fzf
+         5IK9kzfgRjlOjG8rPf/pLCcCoxWGCDHkfS90S+LKj3jcXm5xQYa13eJcPAUZ+hXohZjm
+         IBPo+8GJ+Rq8y+Q+kI7lVQj+zb+PR7I30rOlJksrdJy/Wp2dqUTjZA9F3vGG+ezwSQtN
+         Rd0g5Hf0LyHnnPkTMRnIAwxLFm25gMxn56/wKPSlCPteP5nwXO0eAhs4klJ0MxT6YP2e
+         dxwI2R6VEa8rmJFaL4xGk5paDuSdBggXv21lLkD4qtLHBeTsgNPI61yo109FsRi4r0QQ
+         8DwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VnWfr5Cz9g8Ts5McgdJK3bb2nMan4nq5nXqWONnMsfs=;
-        b=ccLQBoMktj+EGlvYTMnJ5ebXJJXkpSI17oyqZDEwmFSSCVRurSA6lDn53Bf1q2N4Zi
-         /mfNhg/da013n5C8g37oCBgu+s7ZwvOd00iQlWY/6pU+5Ka8Cf46p3+YIsggiA5Qb31F
-         DYB9PqNJB2svbkkxKrXdq4cQfsLCiLUS90WgKbOTSKqmt4RpjT6TmlSe8ohOTuyCaD9Z
-         uJeAAmFhMRRmB5OpWMDkLrNxp5putajre62dwMJK/JXrQx7BEJPAJs04rHVvkcVpALC+
-         ryL8THaArahcarhgknapFHuhBV+vdP2J3Jn742KsMBOS+cYRf2yoOZKLPEtZUF203Jlw
-         TrYA==
-X-Gm-Message-State: APjAAAUuLGoy3fMVubGbbqGOtpN5QdZhK61fveUtg2A9wDgBPNPXrO4+
-        clm9fbFR3BmLnP7CS2wcTKKh2IXLSdHU39RJ7aM=
-X-Google-Smtp-Source: APXvYqwPCPjaWzKVXpURWg65K5fkBoLbrluPEoFqqgn2rT6o/InM1ko8UbBUfBaLU8H/oERd+79+VhkVDmrMWUaE2i4=
-X-Received: by 2002:a02:c007:: with SMTP id y7mr8517902jai.1.1553292786464;
- Fri, 22 Mar 2019 15:13:06 -0700 (PDT)
+        bh=wm2+IDsr0NmRaIQ9GIimbnBiutoAYhXqklaChAdkC0E=;
+        b=ItXnI17q/8HYNVYKAk23Ry8uJ6eJUxTrVV/aCpyymPtrQbysZjJ2onR64HdCj05rnC
+         pHKT/vgzaN53WGlWX2vfc3nUmvlm55rPp3a/I93Hmbh7qY1IVdyGEOsx90mKojx+8Xbg
+         Dfholtef69cKrK7KzW2JgkrLX6RkEfeCwXXFpwz4/CFwoi/5ZG9MUmhxCjRzjqHawUX5
+         dowUiFcTo4Be8IOK1tctByaS3agcaQQrSV+XEG588UG/A35E+ofkgChAnMwIueMEiWwg
+         Ly1v/Ib2N3RmGhV+iaxe0pWXPGJ3tVSr+dNyQO7+gshCheeGVeEOJfYJeSiEb25CxfHj
+         xbWQ==
+X-Gm-Message-State: APjAAAVJ9jdxgwr4XN3HSsNPdunKhHNlhJmmZ68hDRGbYyMpsZyjyPRi
+        BHWXW9pzdht1adYOIcgJxI9r0O/+COLSfsr+TEk=
+X-Google-Smtp-Source: APXvYqwIoaHTQX3ElVQKOchmDlJSSWqTKG84OsYpQvQY0PG83rmTkoixgVtLY+vkXQxXTMX8UIfgiVFJTO08ZCVWvdY=
+X-Received: by 2002:a24:411f:: with SMTP id x31mr3120456ita.169.1553292877426;
+ Fri, 22 Mar 2019 15:14:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-5-ira.weiny@intel.com>
-In-Reply-To: <20190317183438.2057-5-ira.weiny@intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-6-ira.weiny@intel.com>
+In-Reply-To: <20190317183438.2057-6-ira.weiny@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 22 Mar 2019 15:12:55 -0700
-Message-ID: <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
-Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
+Date:   Fri, 22 Mar 2019 15:14:26 -0700
+Message-ID: <CAA9_cmdQjMekSFU09gLc87-PVx2iHeeh2jC6KeFY1UeadpPh4A@mail.gmail.com>
+Subject: Re: [RESEND 5/7] IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
 To:     ira.weiny@intel.com
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
@@ -92,77 +92,39 @@ On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
 >
 > From: Ira Weiny <ira.weiny@intel.com>
 >
-> DAX pages were previously unprotected from longterm pins when users
-> called get_user_pages_fast().
->
-> Use the new FOLL_LONGTERM flag to check for DEVMAP pages and fall
-> back to regular GUP processing if a DEVMAP page is encountered.
+> Use the new FOLL_LONGTERM to get_user_pages_fast() to protect against
+> FS DAX pages being mapped.
 >
 > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 > ---
->  mm/gup.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
+>  drivers/infiniband/hw/hfi1/user_pages.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 0684a9536207..173db0c44678 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1600,6 +1600,9 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
->                         goto pte_unmap;
->
->                 if (pte_devmap(pte)) {
-> +                       if (unlikely(flags & FOLL_LONGTERM))
-> +                               goto pte_unmap;
-> +
->                         pgmap = get_dev_pagemap(pte_pfn(pte), pgmap);
->                         if (unlikely(!pgmap)) {
->                                 undo_dev_pagemap(nr, nr_start, pages);
-> @@ -1739,8 +1742,11 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->         if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
->                 return 0;
->
-> -       if (pmd_devmap(orig))
-> +       if (pmd_devmap(orig)) {
-> +               if (unlikely(flags & FOLL_LONGTERM))
-> +                       return 0;
->                 return __gup_device_huge_pmd(orig, pmdp, addr, end, pages, nr);
-> +       }
->
->         refs = 0;
->         page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> @@ -1777,8 +1783,11 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
->         if (!pud_access_permitted(orig, flags & FOLL_WRITE))
->                 return 0;
->
-> -       if (pud_devmap(orig))
-> +       if (pud_devmap(orig)) {
-> +               if (unlikely(flags & FOLL_LONGTERM))
-> +                       return 0;
->                 return __gup_device_huge_pud(orig, pudp, addr, end, pages, nr);
-> +       }
->
->         refs = 0;
->         page = pud_page(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> @@ -2066,8 +2075,20 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
->                 start += nr << PAGE_SHIFT;
->                 pages += nr;
->
-> -               ret = get_user_pages_unlocked(start, nr_pages - nr, pages,
-> -                                             gup_flags);
-> +               if (gup_flags & FOLL_LONGTERM) {
-> +                       down_read(&current->mm->mmap_sem);
-> +                       ret = __gup_longterm_locked(current, current->mm,
-> +                                                   start, nr_pages - nr,
-> +                                                   pages, NULL, gup_flags);
-> +                       up_read(&current->mm->mmap_sem);
-> +               } else {
-> +                       /*
-> +                        * retain FAULT_FOLL_ALLOW_RETRY optimization if
-> +                        * possible
-> +                        */
-> +                       ret = get_user_pages_unlocked(start, nr_pages - nr,
-> +                                                     pages, gup_flags);
+> diff --git a/drivers/infiniband/hw/hfi1/user_pages.c b/drivers/infiniband/hw/hfi1/user_pages.c
+> index 78ccacaf97d0..6a7f9cd5a94e 100644
+> --- a/drivers/infiniband/hw/hfi1/user_pages.c
+> +++ b/drivers/infiniband/hw/hfi1/user_pages.c
+> @@ -104,9 +104,11 @@ int hfi1_acquire_user_pages(struct mm_struct *mm, unsigned long vaddr, size_t np
+>                             bool writable, struct page **pages)
+>  {
+>         int ret;
+> +       unsigned int gup_flags = writable ? FOLL_WRITE : 0;
 
-I couldn't immediately grok why this path needs to branch on
-FOLL_LONGTERM? Won't get_user_pages_unlocked(..., FOLL_LONGTERM) do
-the right thing?
+Maybe:
+
+    unsigned int gup_flags = FOLL_LONGTERM | (writable ? FOLL_WRITE : 0);
+
+?
+
+>
+> -       ret = get_user_pages_fast(vaddr, npages, writable ? FOLL_WRITE : 0,
+> -                                 pages);
+> +       gup_flags |= FOLL_LONGTERM;
+> +
+> +       ret = get_user_pages_fast(vaddr, npages, gup_flags, pages);
+>         if (ret < 0)
+>                 return ret;
+>
+> --
+> 2.20.1
+>

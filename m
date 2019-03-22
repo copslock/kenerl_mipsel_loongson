@@ -2,77 +2,89 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 712EEC43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 05:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0F40C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 06:45:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 38FF02075D
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 05:22:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B824E21902
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 06:45:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1553237112;
+	bh=bWhsaeWhQPicYb/9TPJ6/Fp1lQk6GyuWmuNkkqdwrcE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=T3aOqDioNQ7No5ISTNCxGqbu6SIrpstf248S6KvbveyREWb7/3gZu9Y1D7hfIH5w3
+	 WkOQoKOSHq/3DoWVG5vAowtVPETDesaTGNRYmXr4kQpS6STieutUd60vGgR/JvLIh+
+	 Jx8Zl4erNErgXJ3fTm2VjtB+L6Ut9psekIBb/O0Q=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726047AbfCVFWu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 01:22:50 -0400
-Received: from mx.sdf.org ([205.166.94.20]:50673 "EHLO mx.sdf.org"
+        id S1727611AbfCVGpM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 02:45:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42098 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725938AbfCVFWt (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Mar 2019 01:22:49 -0400
-Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
-        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id x2M5Mjw1029828
-        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits) verified NO);
-        Fri, 22 Mar 2019 05:22:46 GMT
-Received: (from lkml@localhost)
-        by sdf.org (8.15.2/8.12.8/Submit) id x2M5MjTm026260;
-        Fri, 22 Mar 2019 05:22:45 GMT
-Date:   Fri, 22 Mar 2019 05:22:45 GMT
-From:   George Spelvin <lkml@sdf.org>
-Message-Id: <201903220522.x2M5MjTm026260@sdf.org>
-To:     lkml@sdf.org, paul.burton@mips.com
-Subject: Re: [PATCH] arch/mips/kvm/emulate.c: Don't waste /dev/random emulating TLBWR
-Cc:     jhogan@kernel.org, linux-mips@vger.kernel.org
-In-Reply-To: <20190322000043.krzxo7coqibbxi6c@pburton-laptop>
-References: <201903210604.x2L64Ord018045@sdf.org>,
-    <20190322000043.krzxo7coqibbxi6c@pburton-laptop>
+        id S1727599AbfCVGpM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Mar 2019 02:45:12 -0400
+Received: from localhost (unknown [106.201.33.144])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E279621873;
+        Fri, 22 Mar 2019 06:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1553237111;
+        bh=bWhsaeWhQPicYb/9TPJ6/Fp1lQk6GyuWmuNkkqdwrcE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2uS9cp8r93KbvSmleTsH5X3LnhtH3qNBXOIFUsveOKcIvODMZ4VnzC7EojvrET28w
+         vqOWZTZSpjYCdzSDE05wKA/F1ZvKU+S6+uS9KJekxZWnsTMXaJnD5g/wnHpSjxieug
+         +AQOk9CDOAJ7+Qft9lBio/gk3aWj0bsDVo4o2Lfg=
+Date:   Fri, 22 Mar 2019 12:15:06 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [BISECTED, REGRESSION] Broken networking on MIPS/OCTEON
+ EdgeRouter Lite
+Message-ID: <20190322064506.GB5348@vkoul-mobl>
+References: <20190322002125.GD7872@darkstar.musicnaut.iki.fi>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190322002125.GD7872@darkstar.musicnaut.iki.fi>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, 22 Mar 2019 at 00:00:45 +0000, Paul Burton wrote:
-> On Thu, Mar 21, 2019 at 06:04:24AM +0000, George Spelvin wrote:
->> KVM_MIPS_GUEST_TLB_SIZE is 64, so we only need one random byte,
->> not 4.
->> 
->> A more complex question is whether we need crypto-grade random
->> numbers at all.  If safe, we could use prandom_u32().  If not,
->> we could seed a private PRNG and use prandom_u32_state().
->> 
->> Or could we just use asm("mfc0 %0, Random" : "=r" (index))?
-
-> Thanks for the patch. I expect we should be fine with:
+On 22-03-19, 02:21, Aaro Koskinen wrote:
+> Hi,
 > 
->   index = prandom_u32_max(KVM_MIPS_GUEST_TLB_SIZE);
+> When booting v5.1-rc1 on EdgeRouter Lite (MIPS/OCTEON), with at803x phy
+> driver enabled, networking no longer works - I even need to go physically
+> power cycle the board before getting networking to work again (otherwise
+> bootloader cannot tftp an older working image).
 > 
-> We certainly don't need crypto-grade randomness here. Using the cp0
-> Random register would be an option for configurations prior to MIPSr6,
-> where the Random register was deprecated & we shouldn't rely on its
-> presence. So we could do:
+> Bisected to:
 > 
->   if (MIPS_ISA_REV < 6)
->     index = read_c0_random() % KVM_MIPS_GUEST_TLB_SIZE;
->   else
->     index = prandom_u32_max(KVM_MIPS_GUEST_TLB_SIZE);
+> 	commit 6d4cd041f0af5b4c8fc742b4a68eac22e420e28c
+> 	Author: Vinod Koul <vkoul@kernel.org>
+> 	Date:   Thu Feb 21 15:53:15 2019 +0530
 > 
-> Though whether that micro-optimization is worth the extra code is
-> questionable.
+> 	    net: phy: at803x: disable delay only for RGMII mode
 
-I'm also not sure if you *want* to use the random register, because
-that's a source of /dev/random entropy (arch/mips/include/asm/timex.h),
-and maybe exposing it to VM guests would be a bad thing.
+Hello,
 
-There's no need to get too fancy; prandom_u32_max is fine.  (And
-gcc optimizes it to a shift if the argument is a compie-time power
-of 2.)
+So with cd28d1d6e52e ("net: phy: at803x: Disable phy delay for RGMII
+mode") it works for you but not 6d4cd041f0af ("net: phy: at803x: disable
+delay only for RGMII mode"). That is bit more weird case :)
 
-Anyway, thank you for the response, and I'm assuming there's no need
-for revised patch from me; as it's less work for you to write your own.
+So does the ethernet expect RGMII mode or RGMII_ID mode here, looks like
+disable delay is expected as well?
+
+Can you point me to the DT node as well..
+
+> Booting v5.1-rc1 with this commit reverted makes networking to work
+> fine again.
+
+-- 
+~Vinod

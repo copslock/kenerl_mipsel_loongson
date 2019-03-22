@@ -2,89 +2,93 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0F40C43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 06:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 561BBC10F03
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:42:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B824E21902
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 06:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553237112;
-	bh=bWhsaeWhQPicYb/9TPJ6/Fp1lQk6GyuWmuNkkqdwrcE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=T3aOqDioNQ7No5ISTNCxGqbu6SIrpstf248S6KvbveyREWb7/3gZu9Y1D7hfIH5w3
-	 WkOQoKOSHq/3DoWVG5vAowtVPETDesaTGNRYmXr4kQpS6STieutUd60vGgR/JvLIh+
-	 Jx8Zl4erNErgXJ3fTm2VjtB+L6Ut9psekIBb/O0Q=
+	by mail.kernel.org (Postfix) with ESMTP id 2C13B21916
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 07:42:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbfCVGpM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 02:45:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42098 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727599AbfCVGpM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Mar 2019 02:45:12 -0400
-Received: from localhost (unknown [106.201.33.144])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E279621873;
-        Fri, 22 Mar 2019 06:45:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553237111;
-        bh=bWhsaeWhQPicYb/9TPJ6/Fp1lQk6GyuWmuNkkqdwrcE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2uS9cp8r93KbvSmleTsH5X3LnhtH3qNBXOIFUsveOKcIvODMZ4VnzC7EojvrET28w
-         vqOWZTZSpjYCdzSDE05wKA/F1ZvKU+S6+uS9KJekxZWnsTMXaJnD5g/wnHpSjxieug
-         +AQOk9CDOAJ7+Qft9lBio/gk3aWj0bsDVo4o2Lfg=
-Date:   Fri, 22 Mar 2019 12:15:06 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [BISECTED, REGRESSION] Broken networking on MIPS/OCTEON
- EdgeRouter Lite
-Message-ID: <20190322064506.GB5348@vkoul-mobl>
-References: <20190322002125.GD7872@darkstar.musicnaut.iki.fi>
+        id S1726091AbfCVHme (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 03:42:34 -0400
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:55429 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726029AbfCVHme (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 03:42:34 -0400
+X-Originating-IP: 79.86.19.127
+Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id C432F1C0006;
+        Fri, 22 Mar 2019 07:42:26 +0000 (UTC)
+From:   Alexandre Ghiti <alex@ghiti.fr>
+To:     Christoph Hellwig <hch@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH 0/4] Provide generic top-down mmap layout functions 
+Date:   Fri, 22 Mar 2019 03:42:21 -0400
+Message-Id: <20190322074225.22282-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190322002125.GD7872@darkstar.musicnaut.iki.fi>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 22-03-19, 02:21, Aaro Koskinen wrote:
-> Hi,
-> 
-> When booting v5.1-rc1 on EdgeRouter Lite (MIPS/OCTEON), with at803x phy
-> driver enabled, networking no longer works - I even need to go physically
-> power cycle the board before getting networking to work again (otherwise
-> bootloader cannot tftp an older working image).
-> 
-> Bisected to:
-> 
-> 	commit 6d4cd041f0af5b4c8fc742b4a68eac22e420e28c
-> 	Author: Vinod Koul <vkoul@kernel.org>
-> 	Date:   Thu Feb 21 15:53:15 2019 +0530
-> 
-> 	    net: phy: at803x: disable delay only for RGMII mode
+This series introduces generic functions to make top-down mmap layout
+easily accessible to architectures, in particular riscv which was
+the initial goal of this series.
+The generic implementation was taken from arm64 and used successively
+by arm, mips and finally riscv.
 
-Hello,
+Note that in addition the series fixes 2 issues:
+- stack randomization was taken into account even if not necessary.
+- [1] fixed an issue with mmap base which did not take into account
+  randomization but did not report it to arm and mips, so by moving
+  arm64 into a generic library, this problem is now fixed for both
+  architectures.
 
-So with cd28d1d6e52e ("net: phy: at803x: Disable phy delay for RGMII
-mode") it works for you but not 6d4cd041f0af ("net: phy: at803x: disable
-delay only for RGMII mode"). That is bit more weird case :)
+This work is an effort to factorize architecture functions to avoid
+code duplication and oversights as in [1].
 
-So does the ethernet expect RGMII mode or RGMII_ID mode here, looks like
-disable delay is expected as well?
+[1]: https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1429066.html
 
-Can you point me to the DT node as well..
+Alexandre Ghiti (4):
+  arm64, mm: Move generic mmap layout functions to mm
+  arm: Use generic mmap top-down layout
+  mips: Use generic mmap top-down layout
+  riscv: Make mmap allocation top-down by default
 
-> Booting v5.1-rc1 with this commit reverted makes networking to work
-> fine again.
+ arch/arm/include/asm/processor.h   |  2 +-
+ arch/arm/mm/mmap.c                 | 52 ----------------
+ arch/arm64/include/asm/processor.h |  2 +-
+ arch/arm64/mm/mmap.c               | 72 ----------------------
+ arch/mips/include/asm/processor.h  |  4 +-
+ arch/mips/mm/mmap.c                | 57 -----------------
+ arch/riscv/Kconfig                 | 12 ++++
+ arch/riscv/include/asm/processor.h |  1 +
+ fs/binfmt_elf.c                    | 20 ------
+ include/linux/mm.h                 |  2 +
+ kernel/sysctl.c                    |  6 +-
+ mm/util.c                          | 99 +++++++++++++++++++++++++++++-
+ 12 files changed, 121 insertions(+), 208 deletions(-)
 
 -- 
-~Vinod
+2.20.1
+

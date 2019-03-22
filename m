@@ -2,50 +2,54 @@ Return-Path: <SRS0=ULQD=RZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C29DAC43381
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E921C43381
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:16:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 89C4221873
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:13:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1F000218E2
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 13:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553260400;
-	bh=xeD6hYDuMNN7gIMsgvQviyLc+BzDheruPx00S2Vg0qA=;
+	s=default; t=1553260572;
+	bh=F5LEsaE/XG+3NABslFLqGL8E3ZsVP9Ax/wq7kRnx+RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=nzPj/3n0XRfV70rC/zzT8CrFZomcnLOl0Kv2YvrunnPeu5CT5Ueiv/3ooM+uNWSMm
-	 c10r5/GIeCO9dE6tIqZdvLSicPLg/KRC9Ls26h8erU+L9Tj1GxdxxQa4ZX1b3kIoTP
-	 0HV8RrMztTniNQtDG9wYCFhzjn1chAMTIoR0ihaI=
+	b=aAO9ik3TbmxAefj98VodVDTr6aJn2A8Ju55nZmZJ3QX7+0+/iGAP7zCiljCKJAUIB
+	 kM1yIXdlCXdK3sFsULrQjHUQzWOx6M1wvFbT+G7AYuocuRlPeYfzB/tPju8AYobTed
+	 ovEGyGtkIQ24SBl44+uNyi6oithESZ+otVG+p2MI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728926AbfCVLam (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 07:30:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58624 "EHLO mail.kernel.org"
+        id S1729360AbfCVNQG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 09:16:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729966AbfCVLai (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 22 Mar 2019 07:30:38 -0400
+        id S1728892AbfCVL1Z (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Mar 2019 07:27:25 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62965218B0;
-        Fri, 22 Mar 2019 11:30:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 678DA21917;
+        Fri, 22 Mar 2019 11:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553254237;
-        bh=xeD6hYDuMNN7gIMsgvQviyLc+BzDheruPx00S2Vg0qA=;
+        s=default; t=1553254043;
+        bh=F5LEsaE/XG+3NABslFLqGL8E3ZsVP9Ax/wq7kRnx+RI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hj5mMjyu4D5Gsh0BWweESlpqCwnq7gvmh9lhZk7f8y3w1iMKQ+lfLa06Scr7BeZjK
-         6ioSD6jEBEigvvJ6I158K+/DJs9hCtTKQd4bFV+Ls8mA6jGAZgxtE25qlOWYcMu+9t
-         RwitmLT49gbnu3KJegzVBiFIXlZNVQjsKXasYReY=
+        b=NhWLbLLFva5SK/gSxNPCEwyAJHw0Gd3/M78c+wfEJCKKiqR2TBQwLWtDWvj+WhAvA
+         TgR4xnhn6tYCqJbLBkX2QMJUz3syUoUCqSYyhY231m7WlkVM4ZhOemKZ/Waoap8KPO
+         EUe/umUvbEYfM1n2WDVYaTaD9bhn82mx0/Ho2TnU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Liu Xiang <liu.xiang6@zte.com.cn>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.4 074/230] MIPS: irq: Allocate accurate order pages for irq stack
-Date:   Fri, 22 Mar 2019 12:13:32 +0100
-Message-Id: <20190322111241.858970300@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 015/230] MIPS: jazz: fix 64bit build
+Date:   Fri, 22 Mar 2019 12:12:33 +0100
+Message-Id: <20190322111237.799493734@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190322111236.796964179@linuxfoundation.org>
 References: <20190322111236.796964179@linuxfoundation.org>
@@ -64,44 +68,75 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Liu Xiang <liu.xiang6@zte.com.cn>
+[ Upstream commit 41af167fbc0032f9d7562854f58114eaa9270336 ]
 
-commit 72faa7a773ca59336f3c889e878de81445c5a85c upstream.
+64bit JAZZ builds failed with
 
-The irq_pages is the number of pages for irq stack, but not the
-order which is needed by __get_free_pages().
-We can use get_order() to calculate the accurate order.
+  linux-next/arch/mips/jazz/jazzdma.c: In function `vdma_init`:
+  /linux-next/arch/mips/jazz/jazzdma.c:77:30: error: implicit declaration
+    of function `KSEG1ADDR`; did you mean `CKSEG1ADDR`?
+    [-Werror=implicit-function-declaration]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+                                ^~~~~~~~~
+                                CKSEG1ADDR
+  /linux-next/arch/mips/jazz/jazzdma.c:77:10: error: cast to pointer from
+    integer of different size [-Werror=int-to-pointer-cast]
+    pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
+            ^
+  In file included from /linux-next/arch/mips/include/asm/barrier.h:11:0,
+                   from /linux-next/include/linux/compiler.h:248,
+                   from /linux-next/include/linux/kernel.h:10,
+                   from /linux-next/arch/mips/jazz/jazzdma.c:11:
+  /linux-next/arch/mips/include/asm/addrspace.h:41:29: error: cast from
+    pointer to integer of different size [-Werror=pointer-to-int-cast]
+   #define _ACAST32_  (_ATYPE_)(_ATYPE32_) /* widen if necessary */
+                               ^
+  /linux-next/arch/mips/include/asm/addrspace.h:53:25: note: in
+    expansion of macro `_ACAST32_`
+   #define CPHYSADDR(a)  ((_ACAST32_(a)) & 0x1fffffff)
+                           ^~~~~~~~~
+  /linux-next/arch/mips/jazz/jazzdma.c:84:44: note: in expansion of
+    macro `CPHYSADDR`
+    r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
 
-Signed-off-by: Liu Xiang <liu.xiang6@zte.com.cn>
+Using correct casts and CKSEG1ADDR when dealing with the pgtbl setup
+fixes this.
+
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: fe8bd18ffea5 ("MIPS: Introduce irq_stack")
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
 Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.11+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/irq.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/jazz/jazzdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -52,6 +52,7 @@ asmlinkage void spurious_interrupt(void)
- void __init init_IRQ(void)
- {
- 	int i;
-+	unsigned int order = get_order(IRQ_STACK_SIZE);
+diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
+index db6f5afff4ff1..ea897912bc712 100644
+--- a/arch/mips/jazz/jazzdma.c
++++ b/arch/mips/jazz/jazzdma.c
+@@ -71,14 +71,15 @@ static int __init vdma_init(void)
+ 						    get_order(VDMA_PGTBL_SIZE));
+ 	BUG_ON(!pgtbl);
+ 	dma_cache_wback_inv((unsigned long)pgtbl, VDMA_PGTBL_SIZE);
+-	pgtbl = (VDMA_PGTBL_ENTRY *)KSEG1ADDR(pgtbl);
++	pgtbl = (VDMA_PGTBL_ENTRY *)CKSEG1ADDR((unsigned long)pgtbl);
  
- 	for (i = 0; i < NR_IRQS; i++)
- 		irq_set_noprobe(i);
-@@ -59,8 +60,7 @@ void __init init_IRQ(void)
- 	arch_init_irq();
+ 	/*
+ 	 * Clear the R4030 translation table
+ 	 */
+ 	vdma_pgtbl_init();
  
- 	for_each_possible_cpu(i) {
--		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
--		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
-+		void *s = (void *)__get_free_pages(GFP_KERNEL, order);
+-	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE, CPHYSADDR(pgtbl));
++	r4030_write_reg32(JAZZ_R4030_TRSTBL_BASE,
++			  CPHYSADDR((unsigned long)pgtbl));
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_LIM, VDMA_PGTBL_SIZE);
+ 	r4030_write_reg32(JAZZ_R4030_TRSTBL_INV, 0);
  
- 		irq_stack[i] = s;
- 		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
+-- 
+2.19.1
+
 
 

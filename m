@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 237F5C10F03
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BCD0C4360F
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:13:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D62DA21929
-	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:06:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C384921925
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Mar 2019 22:13:08 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="ETh0Q+H5"
+	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="Zb9Bl7Bn"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727597AbfCVWGH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 22 Mar 2019 18:06:07 -0400
-Received: from mail-it1-f194.google.com ([209.85.166.194]:53420 "EHLO
-        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727440AbfCVWGH (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:06:07 -0400
-Received: by mail-it1-f194.google.com with SMTP id w85so5859655itc.3;
-        Fri, 22 Mar 2019 15:06:05 -0700 (PDT)
+        id S1727733AbfCVWNI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Mar 2019 18:13:08 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:37288 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727606AbfCVWNI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 22 Mar 2019 18:13:08 -0400
+Received: by mail-it1-f196.google.com with SMTP id z124so5766936itc.2;
+        Fri, 22 Mar 2019 15:13:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zPnyPNGnsO/md2Fj5yEAI9x91Hz7J9uO8l7Sk2KMvIo=;
-        b=ETh0Q+H5NErnf+anAIeNX89EpJjpuFOFrGA549zU6YNjyodAclghZqMAQhCYHmsdpr
-         VBr/q0cU6fGUQZpceBNwr0M+bLWwnpat9RsFa50fk6EH+Ej3wT3fiVBe0lVTwTugrloo
-         iFU6UFQ36JWbIMUYlh8YNEcsGoj838Wu1icdiWs1qphTBfThMQQSRXpaXXYbY3iRIz+R
-         okhh/FvQVRXB/Q8a7q6XyZrBKwLnS/7Qc7BIuqBvFeFzP4QdI3IylwYJd+W54gfYHbbY
-         V3ldQH0uIH3yxe3qtmId36/CRAoD48vcD7efQl3U/JsBsrDrQh+HlYfRz2uDtxUe2MaL
-         raAg==
+        bh=VnWfr5Cz9g8Ts5McgdJK3bb2nMan4nq5nXqWONnMsfs=;
+        b=Zb9Bl7Bn4sqZs4rM2mwfzJd7rKnn+/+6ONyGGwJqa1scMrXWXjmi9yoQBAbfMlLpgS
+         RGV1LtFJyFJAtRyqt7x4phr5CYLMLHxyjOqtaGBIgKlABbih3LbLp5n0OYCbWIHRLaHd
+         TTQ98w8krLJnK39QE8Dp0ik11E8+01Sgyn1wW72V9bUGSzJ08oA4QbCqRZA5AnJQLOtm
+         o3basMsLTQYqNorbmDjd4KoyjPrND/z4P2rEoZfVYQnDMfAEdcsp9b63663QinvyZoJp
+         HOu5mHwb07RCBU+1v7ChvrPznU5/HmjF8OEnSTsQgs+cld8MrdbVwNZKadLpnlT93nHs
+         Yb2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zPnyPNGnsO/md2Fj5yEAI9x91Hz7J9uO8l7Sk2KMvIo=;
-        b=LotVsiShS9tkqKwG4bbZFbxi8t2a1Ty71UX6agqn9LcC6VIIW1LLMiSFNHQe2Hjf1Y
-         HUUMpgkr0TFzKWFsPMvNtqS//MO/ZLCU9Gcu7gyHBiehmhGpwNg1gzP+AUFkQI3B2ILj
-         ci8vp5WigJj7X1QX7C1Tn/wQHDZdjlfW3YZwjfpwcET09Ech2bJZURzXXjBvMo4qV5RH
-         gRKtfTgZ1ahWLFZ3ql4AnsHDWnxe/CcHpmFOa0l4pAhVTuOkERbAKVyt/Wbpam111Gjq
-         7r5WonPVlp1TrMqIY+mK0vrnsORsvuua1sEal9EUOSwWGp4E75xfzsfw7sTsYdhBDBvR
-         D4Nw==
-X-Gm-Message-State: APjAAAUdUxgkLVE4PulqiDmU/mELviTaxf6Xw7/3xyEY97e+AjQ7mZai
-        lRsJue1o3Ng7MTxEIYkmsm2mnzXsgXNvcqzcINA=
-X-Google-Smtp-Source: APXvYqzvkOUTluGSKTjETBKJlQ9d9U0bafaXjVPDo287WeJSv03XpVRn3tgZfH8AGEVriQsCe7Tjp8XH5gu+GSmr/AQ=
-X-Received: by 2002:a24:298b:: with SMTP id p133mr3554913itp.43.1553292365179;
- Fri, 22 Mar 2019 15:06:05 -0700 (PDT)
+        bh=VnWfr5Cz9g8Ts5McgdJK3bb2nMan4nq5nXqWONnMsfs=;
+        b=ccLQBoMktj+EGlvYTMnJ5ebXJJXkpSI17oyqZDEwmFSSCVRurSA6lDn53Bf1q2N4Zi
+         /mfNhg/da013n5C8g37oCBgu+s7ZwvOd00iQlWY/6pU+5Ka8Cf46p3+YIsggiA5Qb31F
+         DYB9PqNJB2svbkkxKrXdq4cQfsLCiLUS90WgKbOTSKqmt4RpjT6TmlSe8ohOTuyCaD9Z
+         uJeAAmFhMRRmB5OpWMDkLrNxp5putajre62dwMJK/JXrQx7BEJPAJs04rHVvkcVpALC+
+         ryL8THaArahcarhgknapFHuhBV+vdP2J3Jn742KsMBOS+cYRf2yoOZKLPEtZUF203Jlw
+         TrYA==
+X-Gm-Message-State: APjAAAUuLGoy3fMVubGbbqGOtpN5QdZhK61fveUtg2A9wDgBPNPXrO4+
+        clm9fbFR3BmLnP7CS2wcTKKh2IXLSdHU39RJ7aM=
+X-Google-Smtp-Source: APXvYqwPCPjaWzKVXpURWg65K5fkBoLbrluPEoFqqgn2rT6o/InM1ko8UbBUfBaLU8H/oERd+79+VhkVDmrMWUaE2i4=
+X-Received: by 2002:a02:c007:: with SMTP id y7mr8517902jai.1.1553292786464;
+ Fri, 22 Mar 2019 15:13:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-4-ira.weiny@intel.com>
-In-Reply-To: <20190317183438.2057-4-ira.weiny@intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-5-ira.weiny@intel.com>
+In-Reply-To: <20190317183438.2057-5-ira.weiny@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 22 Mar 2019 15:05:53 -0700
-Message-ID: <CAA9_cmd9gUWMbpkP_AuxZ08iqvZdxjbtDoR-FpSjAyhZJisRZA@mail.gmail.com>
-Subject: Re: [RESEND 3/7] mm/gup: Change GUP fast to use flags rather than a
- write 'bool'
+Date:   Fri, 22 Mar 2019 15:12:55 -0700
+Message-ID: <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
+Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
 To:     ira.weiny@intel.com
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
@@ -92,113 +92,77 @@ On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
 >
 > From: Ira Weiny <ira.weiny@intel.com>
 >
-> To facilitate additional options to get_user_pages_fast() change the
-> singular write parameter to be gup_flags.
+> DAX pages were previously unprotected from longterm pins when users
+> called get_user_pages_fast().
 >
-> This patch does not change any functionality.  New functionality will
-> follow in subsequent patches.
->
-> Some of the get_user_pages_fast() call sites were unchanged because they
-> already passed FOLL_WRITE or 0 for the write parameter.
+> Use the new FOLL_LONGTERM flag to check for DEVMAP pages and fall
+> back to regular GUP processing if a DEVMAP page is encountered.
 >
 > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
->
 > ---
-> Changes from V1:
->         Rebase to current merge tree
->         arch/powerpc/mm/mmu_context_iommu.c no longer calls gup_fast
->                 The gup_longterm was converted in patch 1
+>  mm/gup.c | 29 +++++++++++++++++++++++++----
+>  1 file changed, 25 insertions(+), 4 deletions(-)
 >
->  arch/mips/mm/gup.c                         | 11 ++++++-----
->  arch/powerpc/kvm/book3s_64_mmu_hv.c        |  4 ++--
->  arch/powerpc/kvm/e500_mmu.c                |  2 +-
->  arch/s390/kvm/interrupt.c                  |  2 +-
->  arch/s390/mm/gup.c                         | 12 ++++++------
->  arch/sh/mm/gup.c                           | 11 ++++++-----
->  arch/sparc/mm/gup.c                        |  9 +++++----
->  arch/x86/kvm/paging_tmpl.h                 |  2 +-
->  arch/x86/kvm/svm.c                         |  2 +-
->  drivers/fpga/dfl-afu-dma-region.c          |  2 +-
->  drivers/gpu/drm/via/via_dmablit.c          |  3 ++-
->  drivers/infiniband/hw/hfi1/user_pages.c    |  3 ++-
->  drivers/misc/genwqe/card_utils.c           |  2 +-
->  drivers/misc/vmw_vmci/vmci_host.c          |  2 +-
->  drivers/misc/vmw_vmci/vmci_queue_pair.c    |  6 ++++--
->  drivers/platform/goldfish/goldfish_pipe.c  |  3 ++-
->  drivers/rapidio/devices/rio_mport_cdev.c   |  4 +++-
->  drivers/sbus/char/oradax.c                 |  2 +-
->  drivers/scsi/st.c                          |  3 ++-
->  drivers/staging/gasket/gasket_page_table.c |  4 ++--
->  drivers/tee/tee_shm.c                      |  2 +-
->  drivers/vfio/vfio_iommu_spapr_tce.c        |  3 ++-
->  drivers/vhost/vhost.c                      |  2 +-
->  drivers/video/fbdev/pvr2fb.c               |  2 +-
->  drivers/virt/fsl_hypervisor.c              |  2 +-
->  drivers/xen/gntdev.c                       |  2 +-
->  fs/orangefs/orangefs-bufmap.c              |  2 +-
->  include/linux/mm.h                         |  4 ++--
->  kernel/futex.c                             |  2 +-
->  lib/iov_iter.c                             |  7 +++++--
->  mm/gup.c                                   | 10 +++++-----
->  mm/util.c                                  |  8 ++++----
->  net/ceph/pagevec.c                         |  2 +-
->  net/rds/info.c                             |  2 +-
->  net/rds/rdma.c                             |  3 ++-
->  35 files changed, 79 insertions(+), 63 deletions(-)
-
-
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 0684a9536207..173db0c44678 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1600,6 +1600,9 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+>                         goto pte_unmap;
 >
-> diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
-> index 0d14e0d8eacf..4c2b4483683c 100644
-> --- a/arch/mips/mm/gup.c
-> +++ b/arch/mips/mm/gup.c
-> @@ -235,7 +235,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->   * get_user_pages_fast() - pin user pages in memory
->   * @start:     starting user address
->   * @nr_pages:  number of pages from start to pin
-> - * @write:     whether pages will be written to
-> + * @gup_flags: flags modifying pin behaviour
->   * @pages:     array that receives pointers to the pages pinned.
->   *             Should be at least nr_pages long.
->   *
-> @@ -247,8 +247,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->   * requested. If nr_pages is 0 or negative, returns 0. If no pages
->   * were pinned, returns -errno.
->   */
-> -int get_user_pages_fast(unsigned long start, int nr_pages, int write,
-> -                       struct page **pages)
-> +int get_user_pages_fast(unsigned long start, int nr_pages,
-> +                       unsigned int gup_flags, struct page **pages)
+>                 if (pte_devmap(pte)) {
+> +                       if (unlikely(flags & FOLL_LONGTERM))
+> +                               goto pte_unmap;
+> +
+>                         pgmap = get_dev_pagemap(pte_pfn(pte), pgmap);
+>                         if (unlikely(!pgmap)) {
+>                                 undo_dev_pagemap(nr, nr_start, pages);
+> @@ -1739,8 +1742,11 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>         if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
+>                 return 0;
+>
+> -       if (pmd_devmap(orig))
+> +       if (pmd_devmap(orig)) {
+> +               if (unlikely(flags & FOLL_LONGTERM))
+> +                       return 0;
+>                 return __gup_device_huge_pmd(orig, pmdp, addr, end, pages, nr);
+> +       }
+>
+>         refs = 0;
+>         page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> @@ -1777,8 +1783,11 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+>         if (!pud_access_permitted(orig, flags & FOLL_WRITE))
+>                 return 0;
+>
+> -       if (pud_devmap(orig))
+> +       if (pud_devmap(orig)) {
+> +               if (unlikely(flags & FOLL_LONGTERM))
+> +                       return 0;
+>                 return __gup_device_huge_pud(orig, pudp, addr, end, pages, nr);
+> +       }
+>
+>         refs = 0;
+>         page = pud_page(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> @@ -2066,8 +2075,20 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
+>                 start += nr << PAGE_SHIFT;
+>                 pages += nr;
+>
+> -               ret = get_user_pages_unlocked(start, nr_pages - nr, pages,
+> -                                             gup_flags);
+> +               if (gup_flags & FOLL_LONGTERM) {
+> +                       down_read(&current->mm->mmap_sem);
+> +                       ret = __gup_longterm_locked(current, current->mm,
+> +                                                   start, nr_pages - nr,
+> +                                                   pages, NULL, gup_flags);
+> +                       up_read(&current->mm->mmap_sem);
+> +               } else {
+> +                       /*
+> +                        * retain FAULT_FOLL_ALLOW_RETRY optimization if
+> +                        * possible
+> +                        */
+> +                       ret = get_user_pages_unlocked(start, nr_pages - nr,
+> +                                                     pages, gup_flags);
 
-This looks a tad scary given all related thrash especially when it's
-only 1 user that wants to do get_user_page_fast_longterm, right? Maybe
-something like the following. Note I explicitly moved the flags to the
-end so that someone half paying attention that calls
-__get_user_pages_fast will get a compile error if they specify the
-args in the same order.
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 76ba638ceda8..c6c743bc2c68 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1505,8 +1505,15 @@ static inline long
-get_user_pages_longterm(unsigned long start,
- }
- #endif /* CONFIG_FS_DAX */
-
--int get_user_pages_fast(unsigned long start, int nr_pages, int write,
--                       struct page **pages);
-+
-+int __get_user_pages_fast(unsigned long start, int nr_pages,
-+               struct page **pages, unsigned int gup_flags);
-+
-+static inline int get_user_pages_fast(unsigned long start, int
-nr_pages, int write,
-+                       struct page **pages)
-+{
-+       return __get_user_pages_fast(start, nr_pages, pages, write ?
-FOLL_WRITE);
-+}
-
- /* Container for pinned pfns / pages */
- struct frame_vector {
+I couldn't immediately grok why this path needs to branch on
+FOLL_LONGTERM? Won't get_user_pages_unlocked(..., FOLL_LONGTERM) do
+the right thing?

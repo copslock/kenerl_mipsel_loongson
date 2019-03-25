@@ -6,29 +6,29 @@ X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52BFDC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49484C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2B9E62084D
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 247092084D
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730012AbfCYV1d (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 17:27:33 -0400
-Received: from smtprelay0118.hostedemail.com ([216.40.44.118]:37246 "EHLO
+        id S1730803AbfCYV11 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 17:27:27 -0400
+Received: from smtprelay0235.hostedemail.com ([216.40.44.235]:34890 "EHLO
         smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730747AbfCYV1d (ORCPT
+        by vger.kernel.org with ESMTP id S1730790AbfCYV11 (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Mar 2019 17:27:33 -0400
+        Mon, 25 Mar 2019 17:27:27 -0400
 Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 8B70F180A884F;
-        Mon, 25 Mar 2019 21:27:31 +0000 (UTC)
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 68AC4180286CF;
+        Mon, 25 Mar 2019 21:27:25 +0000 (UTC)
 X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: rice78_24009da3de43b
-X-Filterd-Recvd-Size: 3642
+X-HE-Tag: tail29_235805fdf0a31
+X-Filterd-Recvd-Size: 3638
 Received: from joe-laptop.perches.com (unknown [47.151.153.53])
         (Authenticated sender: joe@perches.com)
-        by omf15.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 25 Mar 2019 21:27:27 +0000 (UTC)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 25 Mar 2019 21:27:22 +0000 (UTC)
 From:   Joe Perches <joe@perches.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@vger.kernel.org,
@@ -36,8 +36,8 @@ Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
 Subject: Bad file pattern in MAINTAINERS section 'MIPS/LOONGSON3 ARCHITECTURE'
-Date:   Mon, 25 Mar 2019 14:27:25 -0700
-Message-Id: <20190325212726.27184-1-joe@perches.com>
+Date:   Mon, 25 Mar 2019 14:27:21 -0700
+Message-Id: <20190325212721.27115-1-joe@perches.com>
 X-Mailer: git-send-email 2.15.0
 In-Reply-To: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
 References: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
@@ -68,12 +68,12 @@ linux-next MAINTAINERS section:
 	10369	F:	arch/mips/loongson64/
 	10370	F:	arch/mips/include/asm/mach-loongson64/
 	10371	F:	drivers/platform/mips/cpu_hwmon.c
-	10372	F:	drivers/*/*loongson3*
--->	10373	F:	drivers/*/*/*loongson3*
+-->	10372	F:	drivers/*/*loongson3*
+	10373	F:	drivers/*/*/*loongson3*
 
 2: ---------------------------------------------------------------------------
 
-The most recent commit that added or modified file pattern 'drivers/*/*/*loongson3*':
+The most recent commit that added or modified file pattern 'drivers/*/*loongson3*':
 
 commit ffe1f9356fbe55df7dd7f7f6b050ee8b7136611f
 Author: Huacai Chen <chenhc@lemote.com>
@@ -119,4 +119,4 @@ Date:   Thu Dec 7 14:31:08 2017 +0800
 
 3: ---------------------------------------------------------------------------
 
-No commit with file pattern 'drivers/*/*/*loongson3*' was found
+No commit with file pattern 'drivers/*/*loongson3*' was found

@@ -2,65 +2,34 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
+X-Spam-Status: No, score=-1.4 required=3.0 tests=DATE_IN_PAST_06_12,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7B04C10F03
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:36:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95407C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:55:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A7EF02082F
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:36:46 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="GiML85P6"
+	by mail.kernel.org (Postfix) with ESMTP id 6AC8D20830
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:55:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729548AbfCYWgl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 18:36:41 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:39031 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729840AbfCYWgl (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Mar 2019 18:36:41 -0400
-Received: by mail-ot1-f66.google.com with SMTP id f10so9653397otb.6
-        for <linux-mips@vger.kernel.org>; Mon, 25 Mar 2019 15:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sTcPY30C0OSYzeNRaa/EPMGmie/8U7JXyLn50zJf1Pw=;
-        b=GiML85P6LCslgtDlslKCCUhWvbv1y+nvEc56Q0X8Qjel5DMzDzfar6+H7s6fmu2h3d
-         dLEyyqXH0XMmCTgsIn3yhKqlcM+JBYc0UTK5/fEknfFXNcWh7vZB4qk8YZDtnv5IAp1l
-         JJmvxmcMseSRffwnab8HmvfayPrxqWL01+eSLrgeJSA/9velnAvwDxgjJF0ugNsd/ZFW
-         LpEP4qbgPu6yg3gM3ufLilvbIHnGxS7z2m60QKWTsLURCVB/tyWdotVRQdzsF7WEone8
-         YAzkam1P/6bRoe78GssUpwMMiqKYpvFyZCQg0hkxWxLA+GhGDSF3+u1c5KgRvgkutwHN
-         +uoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sTcPY30C0OSYzeNRaa/EPMGmie/8U7JXyLn50zJf1Pw=;
-        b=nfakao1jEmer0MqePI5JFtkJd6BEm1rV65U2tDzO5SLny2yBa4cy1QFLDKannd8N9Z
-         FRhAeU8P/6KXbejxRi07JY7Rnl3gPAIUyVoEPppZkn1w5/l/fMUx43+qc1JxuAA8L5uY
-         PO+P5r3kBfWaOdZcwxewOkH3AxBJJs4EDlOfe89GyG6y4OJHVsp8G6RaQ0GwodqXvWDP
-         NJD+2ytin4C7Hy4cLrIGOT4MPiKGKa53r3WOBuXaCsAQR54ccsUSHzAohD5gteDHcO1K
-         lhjE/v9NME0g3huSDB0RGpj9aiV14ykm8tG4JEYyRc7tyZBX3Mv8mkpJe2ZH1BhXfe2P
-         yltQ==
-X-Gm-Message-State: APjAAAWICE7ZSmlqk9bSZdP3oHjcLIyKGhkfUGG9iDDHtu/FYJLD7Fo9
-        uXYf2oIFD6IUMymQOu5DKcaPLBeb8mFwwfPa3sKbLg==
-X-Google-Smtp-Source: APXvYqxFqrAkIeS5L2WYBPBcjU2Ckw+9rPMAalcwIDZdE3acnVShZDDWo5M3SQr2UUBKcI362os2eQY4GbHhvkhCzss=
-X-Received: by 2002:a9d:224a:: with SMTP id o68mr20655282ota.214.1553553400410;
- Mon, 25 Mar 2019 15:36:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-5-ira.weiny@intel.com>
- <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
- <20190325084225.GC16366@iweiny-DESK2.sc.intel.com> <20190325164713.GC9949@ziepe.ca>
- <20190325092314.GF16366@iweiny-DESK2.sc.intel.com> <20190325175150.GA21008@ziepe.ca>
- <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
-In-Reply-To: <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Mon, 25 Mar 2019 15:36:28 -0700
-Message-ID: <CAPcyv4hG8WDhsWinXHYkReHKS6gdQ3gAHMcfVWvuP4c4SYBzXQ@mail.gmail.com>
-Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
-To:     Ira Weiny <ira.weiny@intel.com>
+        id S1730321AbfCYWzZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 18:55:25 -0400
+Received: from mga18.intel.com ([134.134.136.126]:9258 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729204AbfCYWzY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Mar 2019 18:55:24 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Mar 2019 15:55:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,270,1549958400"; 
+   d="scan'208";a="137221326"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga003.jf.intel.com with ESMTP; 25 Mar 2019 15:55:22 -0700
+Date:   Mon, 25 Mar 2019 07:54:11 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
 Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
         Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
@@ -85,18 +54,45 @@ Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
         Linux-sh <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
         linux-rdma <linux-rdma@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
+Message-ID: <20190325145411.GI16366@iweiny-DESK2.sc.intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com>
+ <20190317183438.2057-5-ira.weiny@intel.com>
+ <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
+ <20190325084225.GC16366@iweiny-DESK2.sc.intel.com>
+ <20190325164713.GC9949@ziepe.ca>
+ <20190325092314.GF16366@iweiny-DESK2.sc.intel.com>
+ <20190325175150.GA21008@ziepe.ca>
+ <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
+ <CAPcyv4hG8WDhsWinXHYkReHKS6gdQ3gAHMcfVWvuP4c4SYBzXQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4hG8WDhsWinXHYkReHKS6gdQ3gAHMcfVWvuP4c4SYBzXQ@mail.gmail.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 3:22 PM Ira Weiny <ira.weiny@intel.com> wrote:
-[..]
-> FWIW this thread is making me think my original patch which simply implemented
-> get_user_pages_fast_longterm() would be more clear.  There is some evidence
-> that the GUP API was trending that way (see get_user_pages_remote).  That seems
-> wrong but I don't know how to ensure users don't specify the wrong flag.
+On Mon, Mar 25, 2019 at 03:36:28PM -0700, Dan Williams wrote:
+> On Mon, Mar 25, 2019 at 3:22 PM Ira Weiny <ira.weiny@intel.com> wrote:
+> [..]
+> > FWIW this thread is making me think my original patch which simply implemented
+> > get_user_pages_fast_longterm() would be more clear.  There is some evidence
+> > that the GUP API was trending that way (see get_user_pages_remote).  That seems
+> > wrong but I don't know how to ensure users don't specify the wrong flag.
+> 
+> What about just making the existing get_user_pages_longterm() have a
+> fast path option?
 
-What about just making the existing get_user_pages_longterm() have a
-fast path option?
+That would work but was not the direction we agreed upon before.[1]
+
+At this point I would rather see this patch set applied, focus on fixing the
+filesystem issues, and once that is done determine if FOLL_LONGTERM is needed
+in any GUP calls.
+
+Ira
+
+[1] https://lkml.org/lkml/2019/2/11/2038
+

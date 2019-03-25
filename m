@@ -2,118 +2,121 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A324C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52BFDC43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 15FA220811
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:02:53 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="FnGZnjbI"
+	by mail.kernel.org (Postfix) with ESMTP id 2B9E62084D
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 21:28:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729283AbfCYVCw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 17:02:52 -0400
-Received: from mail-eopbgr820095.outbound.protection.outlook.com ([40.107.82.95]:15932
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729123AbfCYVCw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Mar 2019 17:02:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BT/iqKaVI/PG8I9rzf4SwzVgj4V+ok12L5lFaE+Zs9Q=;
- b=FnGZnjbIscufJUNDOE/M2bwESJchGXEjM4KrwKu/dON76eMpB6CUkK73UGl1l8qs4CaemdBILUFMKYV7P78760Lyua5V9VJyDX1fkokoT2RAGeWQsrpDV5VSiA8LDRHDK/z8AgRhDo79+7nRjmjoMvxgvjTQfHwm3tGI6BT83RY=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1022.namprd22.prod.outlook.com (10.174.167.23) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1730.18; Mon, 25 Mar 2019 21:02:48 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1730.019; Mon, 25 Mar 2019
- 21:02:48 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Burton <pburton@wavecomp.com>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        George Spelvin <lkml@sdf.org>, James Hogan <jhogan@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: KVM: Use prandom_u32_max() to generate tlbwr index
-Thread-Topic: [PATCH] MIPS: KVM: Use prandom_u32_max() to generate tlbwr index
-Thread-Index: AQHU4NmiNa7OUdhgaUe67JGmz2BUC6Yc2n+A
-Date:   Mon, 25 Mar 2019 21:02:48 +0000
-Message-ID: <MWHPR2201MB1277E2E9E0CE42C7CCECE372C15E0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190322180349.4256-1-paul.burton@mips.com>
-In-Reply-To: <20190322180349.4256-1-paul.burton@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BY5PR13CA0013.namprd13.prod.outlook.com
- (2603:10b6:a03:180::26) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0733858a-4ff1-4b11-0aeb-08d6b1653c43
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600127)(711020)(4605104)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1022;
-x-ms-traffictypediagnostic: MWHPR2201MB1022:
-x-microsoft-antispam-prvs: <MWHPR2201MB1022DF941A6A4DD6839E23C4C15E0@MWHPR2201MB1022.namprd22.prod.outlook.com>
-x-forefront-prvs: 0987ACA2E2
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(346002)(39840400004)(366004)(376002)(136003)(199004)(189003)(52314003)(76176011)(6506007)(4326008)(53936002)(316002)(6862004)(66066001)(68736007)(6436002)(386003)(229853002)(478600001)(42882007)(26005)(81156014)(9686003)(55016002)(6246003)(7696005)(52116002)(5660300002)(2906002)(102836004)(14454004)(106356001)(105586002)(97736004)(33656002)(8936002)(7736002)(256004)(486006)(74316002)(446003)(305945005)(52536014)(25786009)(476003)(54906003)(71200400001)(71190400001)(3846002)(6116002)(186003)(11346002)(8676002)(44832011)(81166006)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1022;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Q9MQEWnLyLNSS3FoiSPeqmBv3E5IDRkFb+ZiYAihT/wmZpRQAhc0p5Rwu/Sz1rHCrik/mPzzaF4YBsMWRVxCdIJrqiWLTcgY9cCzA4o9ljKst1MnbCbt75RcVEYvnOA+EcQHRRpEc/4xdINpKHxbx7CfL3v9FIm/5pSgOa1RIuBCck5b/oVNLgkaSkT+A7SfswUm1Zz9mumTj80nSSn5K1ZKvr0yRWYmospUdj1bbd8Gjhjwvz3zATdCX7NZRhPTaTf7OMbcZgusNRspne71mjfdf/eK8bohRAEeoMsWqSlXR/UGBZ9MLO0ZTdtr2krbvA3Bxgfobw6tzZqdzwqCEgYPO2AHebMORNEFNk9lpqy7XOObXe6+KwBiIL/MW2CaOR+Cve3yQAiKuBMjMHsDvqVHzIwiU+y7b3nT9JVwCu4=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0733858a-4ff1-4b11-0aeb-08d6b1653c43
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2019 21:02:48.4407
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1022
+        id S1730012AbfCYV1d (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 17:27:33 -0400
+Received: from smtprelay0118.hostedemail.com ([216.40.44.118]:37246 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730747AbfCYV1d (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Mar 2019 17:27:33 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 8B70F180A884F;
+        Mon, 25 Mar 2019 21:27:31 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: rice78_24009da3de43b
+X-Filterd-Recvd-Size: 3642
+Received: from joe-laptop.perches.com (unknown [47.151.153.53])
+        (Authenticated sender: joe@perches.com)
+        by omf15.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 25 Mar 2019 21:27:27 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Huacai Chen <chenhc@lemote.com>, linux-mips@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: Bad file pattern in MAINTAINERS section 'MIPS/LOONGSON3 ARCHITECTURE'
+Date:   Mon, 25 Mar 2019 14:27:25 -0700
+Message-Id: <20190325212726.27184-1-joe@perches.com>
+X-Mailer: git-send-email 2.15.0
+In-Reply-To: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
+References: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+A file pattern line in this section of the MAINTAINERS file in linux-next
+does not have a match in the linux source files.
 
-Paul Burton wrote:
-> Emulation of the tlbwr instruction, which writes a TLB entry to a random
-> index in the TLB, currently uses get_random_bytes() to generate a 4 byte
-> random number which we then mask to form the index. This is overkill in
-> a couple of ways:
->=20
-> - We don't need 4 bytes here since we mask the value to form a 6 bit
-> number anyway, so we waste /dev/random entropy generating 3 random
-> bytes that are unused.
->=20
-> - We don't need crypto-grade randomness here - the architecture spec
-> allows implementations to use any algorithm & merely encourages that
-> some pseudo-randomness be used rather than a simple counter. The
-> fast prandom_u32() function fits that criteria well.
->=20
-> So rather than using get_random_bytes() & consuming /dev/random entropy,
-> switch to using the faster prandom_u32_max() which provides what we need
-> here whilst also performing the masking/modulo for us.
->=20
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Reported-by: George Spelvin <lkml@sdf.org>
-> Cc: James Hogan <jhogan@kernel.org>
+This could occur because a matching filename was never added, was deleted
+or renamed in some other commit.
 
-Applied to mips-next.
+The commits that added and if found renamed or removed the file pattern
+are shown below.
 
-Thanks,
-    Paul
+Please fix this defect appropriately.
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+1: ---------------------------------------------------------------------------
+
+linux-next MAINTAINERS section:
+
+	10365	MIPS/LOONGSON3 ARCHITECTURE
+	10366	M:	Huacai Chen <chenhc@lemote.com>
+	10367	L:	linux-mips@vger.kernel.org
+	10368	S:	Maintained
+	10369	F:	arch/mips/loongson64/
+	10370	F:	arch/mips/include/asm/mach-loongson64/
+	10371	F:	drivers/platform/mips/cpu_hwmon.c
+	10372	F:	drivers/*/*loongson3*
+-->	10373	F:	drivers/*/*/*loongson3*
+
+2: ---------------------------------------------------------------------------
+
+The most recent commit that added or modified file pattern 'drivers/*/*/*loongson3*':
+
+commit ffe1f9356fbe55df7dd7f7f6b050ee8b7136611f
+Author: Huacai Chen <chenhc@lemote.com>
+Date:   Thu Dec 7 14:31:08 2017 +0800
+
+    MAINTAINERS: Add Loongson-2/Loongson-3 maintainers
+    
+    Add Jiaxun Yang as the MIPS/Loongson-2 maintainer and add Huacai Chen
+    as the MIPS/Loongson-3 maintainer.
+    
+    [ralf@linux-mips.org: Don't put all of drivers/platform/mips/ into these
+    two entries but rather only the files required even though at this time
+    the Loongson platforms are the only users of drivers/platform/mips/.]
+    
+    Signed-off-by: Huacai Chen <chenhc@lemote.com>
+    Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+    Cc: Linus Torvalds <torvalds@linux-foundation.org>
+    Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+    Cc: James Hogan <james.hogan@mips.com>
+    Cc: Rui Wang <wangr@lemote.com>
+    Cc: Binbin Zhou <zhoubb@lemote.com>
+    Cc: Ce Sun <sunc@lemote.com>
+    Cc: Yao Wang <wangyao@lemote.com>
+    Cc: Liangliang Huang <huangll@lemote.com>
+    Cc: Fuxin Zhang <zhangfx@lemote.com>
+    Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+    Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+    Cc: r@hev.cc
+    Cc: zhoubb.aaron@gmail.com
+    Cc: huanglllzu@163.com
+    Cc: 513434146@qq.com
+    Cc: 1393699660@qq.com
+    Cc: linux-mips@linux-mips.org
+    Cc: linux-kernel@vger.kernel.org
+    Cc: Huacai Chen <chenhc@lemote.com>
+    Patchwork: https://patchwork.linux-mips.org/patch/17888/
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+    Signed-off-by: James Hogan <jhogan@kernel.org>
+
+ MAINTAINERS | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+3: ---------------------------------------------------------------------------
+
+No commit with file pattern 'drivers/*/*/*loongson3*' was found

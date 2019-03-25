@@ -2,203 +2,207 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.4 required=3.0 tests=DATE_IN_PAST_06_12,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D70FC4360F
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 15:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B72D1C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 16:27:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 300392087E
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 15:25:33 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=c-s.fr header.i=@c-s.fr header.b="Gb0MkZXr"
+	by mail.kernel.org (Postfix) with ESMTP id 835B920828
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 16:27:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729475AbfCYPZa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 11:25:30 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:45723 "EHLO pegase1.c-s.fr"
+        id S1729106AbfCYQ1e (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 12:27:34 -0400
+Received: from mga18.intel.com ([134.134.136.126]:50097 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725810AbfCYPZ2 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Mar 2019 11:25:28 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 44SdPD2xnBz9v0lr;
-        Mon, 25 Mar 2019 16:25:20 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=Gb0MkZXr; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id CrK4rxgSxrO3; Mon, 25 Mar 2019 16:25:20 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 44SdPD1fbZz9tyDn;
-        Mon, 25 Mar 2019 16:25:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1553527520; bh=JrL7MExoxenGmOAA8+6zfD5VS8gV08AijePqq6+rivY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Gb0MkZXr4cfDzR19n8lna6H+IPA5AH3vZL1jNvOtCev91KCVbckg3/MYHKcjqkio5
-         h3ZxOQHblb9nHvTSJ7+rGRyQcDlyWn4FJ8MQkFBX2AdS6cvQu/8kr1/7uriihL47lA
-         Q8KeTVo/1kkW9DTDs2sH3feGWWW85xlVR3ifVPe8=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 464268B8AB;
-        Mon, 25 Mar 2019 16:25:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id PjtKP9S86Vzq; Mon, 25 Mar 2019 16:25:25 +0100 (CET)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.2])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id DA4758B74F;
-        Mon, 25 Mar 2019 16:25:24 +0100 (CET)
-Subject: Re: [PATCH v5 3/3] locking/rwsem: Optimize down_read_trylock()
-To:     Waiman Long <longman@redhat.com>,
+        id S1725788AbfCYQ1e (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Mar 2019 12:27:34 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Mar 2019 09:27:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,269,1549958400"; 
+   d="scan'208";a="217406487"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga001.jf.intel.com with ESMTP; 25 Mar 2019 09:27:31 -0700
+Date:   Mon, 25 Mar 2019 01:26:20 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
-        x86@kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
-        openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        linux-parisc@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20190322143008.21313-1-longman@redhat.com>
- <20190322143008.21313-4-longman@redhat.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <014279a5-8998-8e03-adb3-c3d611dff171@c-s.fr>
-Date:   Mon, 25 Mar 2019 16:25:24 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mm <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
+        linux-rdma@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [RESEND 3/7] mm/gup: Change GUP fast to use flags rather than a
+ write 'bool'
+Message-ID: <20190325082620.GB16366@iweiny-DESK2.sc.intel.com>
+References: <20190317183438.2057-1-ira.weiny@intel.com>
+ <20190317183438.2057-4-ira.weiny@intel.com>
+ <CAA9_cmd9gUWMbpkP_AuxZ08iqvZdxjbtDoR-FpSjAyhZJisRZA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190322143008.21313-4-longman@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA9_cmd9gUWMbpkP_AuxZ08iqvZdxjbtDoR-FpSjAyhZJisRZA@mail.gmail.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+On Fri, Mar 22, 2019 at 03:05:53PM -0700, Dan Williams wrote:
+> On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
+> >
+> > From: Ira Weiny <ira.weiny@intel.com>
+> >
+> > To facilitate additional options to get_user_pages_fast() change the
+> > singular write parameter to be gup_flags.
+> >
+> > This patch does not change any functionality.  New functionality will
+> > follow in subsequent patches.
+> >
+> > Some of the get_user_pages_fast() call sites were unchanged because they
+> > already passed FOLL_WRITE or 0 for the write parameter.
+> >
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> >
+> > ---
+> > Changes from V1:
+> >         Rebase to current merge tree
+> >         arch/powerpc/mm/mmu_context_iommu.c no longer calls gup_fast
+> >                 The gup_longterm was converted in patch 1
+> >
+> >  arch/mips/mm/gup.c                         | 11 ++++++-----
+> >  arch/powerpc/kvm/book3s_64_mmu_hv.c        |  4 ++--
+> >  arch/powerpc/kvm/e500_mmu.c                |  2 +-
+> >  arch/s390/kvm/interrupt.c                  |  2 +-
+> >  arch/s390/mm/gup.c                         | 12 ++++++------
+> >  arch/sh/mm/gup.c                           | 11 ++++++-----
+> >  arch/sparc/mm/gup.c                        |  9 +++++----
+> >  arch/x86/kvm/paging_tmpl.h                 |  2 +-
+> >  arch/x86/kvm/svm.c                         |  2 +-
+> >  drivers/fpga/dfl-afu-dma-region.c          |  2 +-
+> >  drivers/gpu/drm/via/via_dmablit.c          |  3 ++-
+> >  drivers/infiniband/hw/hfi1/user_pages.c    |  3 ++-
+> >  drivers/misc/genwqe/card_utils.c           |  2 +-
+> >  drivers/misc/vmw_vmci/vmci_host.c          |  2 +-
+> >  drivers/misc/vmw_vmci/vmci_queue_pair.c    |  6 ++++--
+> >  drivers/platform/goldfish/goldfish_pipe.c  |  3 ++-
+> >  drivers/rapidio/devices/rio_mport_cdev.c   |  4 +++-
+> >  drivers/sbus/char/oradax.c                 |  2 +-
+> >  drivers/scsi/st.c                          |  3 ++-
+> >  drivers/staging/gasket/gasket_page_table.c |  4 ++--
+> >  drivers/tee/tee_shm.c                      |  2 +-
+> >  drivers/vfio/vfio_iommu_spapr_tce.c        |  3 ++-
+> >  drivers/vhost/vhost.c                      |  2 +-
+> >  drivers/video/fbdev/pvr2fb.c               |  2 +-
+> >  drivers/virt/fsl_hypervisor.c              |  2 +-
+> >  drivers/xen/gntdev.c                       |  2 +-
+> >  fs/orangefs/orangefs-bufmap.c              |  2 +-
+> >  include/linux/mm.h                         |  4 ++--
+> >  kernel/futex.c                             |  2 +-
+> >  lib/iov_iter.c                             |  7 +++++--
+> >  mm/gup.c                                   | 10 +++++-----
+> >  mm/util.c                                  |  8 ++++----
+> >  net/ceph/pagevec.c                         |  2 +-
+> >  net/rds/info.c                             |  2 +-
+> >  net/rds/rdma.c                             |  3 ++-
+> >  35 files changed, 79 insertions(+), 63 deletions(-)
+> 
+> 
+> >
+> > diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
+> > index 0d14e0d8eacf..4c2b4483683c 100644
+> > --- a/arch/mips/mm/gup.c
+> > +++ b/arch/mips/mm/gup.c
+> > @@ -235,7 +235,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+> >   * get_user_pages_fast() - pin user pages in memory
+> >   * @start:     starting user address
+> >   * @nr_pages:  number of pages from start to pin
+> > - * @write:     whether pages will be written to
+> > + * @gup_flags: flags modifying pin behaviour
+> >   * @pages:     array that receives pointers to the pages pinned.
+> >   *             Should be at least nr_pages long.
+> >   *
+> > @@ -247,8 +247,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+> >   * requested. If nr_pages is 0 or negative, returns 0. If no pages
+> >   * were pinned, returns -errno.
+> >   */
+> > -int get_user_pages_fast(unsigned long start, int nr_pages, int write,
+> > -                       struct page **pages)
+> > +int get_user_pages_fast(unsigned long start, int nr_pages,
+> > +                       unsigned int gup_flags, struct page **pages)
+> 
+> This looks a tad scary given all related thrash especially when it's
+> only 1 user that wants to do get_user_page_fast_longterm, right?
 
-Could you share the microbenchmark you are using ?
+Agreed but the discussion back in Feb agreed that it would be better to make
+get_user_pages_fast() use flags rather than add another *_longterm call, and I
+agree.
 
-I'd like to test the series on powerpc.
+> Maybe
+> something like the following. Note I explicitly moved the flags to the
+> end so that someone half paying attention that calls
+> __get_user_pages_fast will get a compile error if they specify the
+> args in the same order.
 
-Thanks
-Christophe
+I did this to remain consistent with the other public calls.  They put the
+"return" pages parameter at the end.  For example get_user_pages() is defined
+this way with pages and vmas at the end.
 
-Le 22/03/2019 à 15:30, Waiman Long a écrit :
-> Modify __down_read_trylock() to optimize for an unlocked rwsem and make
-> it generate slightly better code.
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+                unsigned int gup_flags, struct page **pages,
+                struct vm_area_struct **vmas)
+
+I'm pretty sure I got all the callers.  Is this worth making the signature
+"non-standard" WRT the other calls?
+
+Ira
+
 > 
-> Before this patch, down_read_trylock:
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 76ba638ceda8..c6c743bc2c68 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1505,8 +1505,15 @@ static inline long
+> get_user_pages_longterm(unsigned long start,
+>  }
+>  #endif /* CONFIG_FS_DAX */
 > 
->     0x0000000000000000 <+0>:     callq  0x5 <down_read_trylock+5>
->     0x0000000000000005 <+5>:     jmp    0x18 <down_read_trylock+24>
->     0x0000000000000007 <+7>:     lea    0x1(%rdx),%rcx
->     0x000000000000000b <+11>:    mov    %rdx,%rax
->     0x000000000000000e <+14>:    lock cmpxchg %rcx,(%rdi)
->     0x0000000000000013 <+19>:    cmp    %rax,%rdx
->     0x0000000000000016 <+22>:    je     0x23 <down_read_trylock+35>
->     0x0000000000000018 <+24>:    mov    (%rdi),%rdx
->     0x000000000000001b <+27>:    test   %rdx,%rdx
->     0x000000000000001e <+30>:    jns    0x7 <down_read_trylock+7>
->     0x0000000000000020 <+32>:    xor    %eax,%eax
->     0x0000000000000022 <+34>:    retq
->     0x0000000000000023 <+35>:    mov    %gs:0x0,%rax
->     0x000000000000002c <+44>:    or     $0x3,%rax
->     0x0000000000000030 <+48>:    mov    %rax,0x20(%rdi)
->     0x0000000000000034 <+52>:    mov    $0x1,%eax
->     0x0000000000000039 <+57>:    retq
+> -int get_user_pages_fast(unsigned long start, int nr_pages, int write,
+> -                       struct page **pages);
+> +
+> +int __get_user_pages_fast(unsigned long start, int nr_pages,
+> +               struct page **pages, unsigned int gup_flags);
+> +
+> +static inline int get_user_pages_fast(unsigned long start, int
+> nr_pages, int write,
+> +                       struct page **pages)
+> +{
+> +       return __get_user_pages_fast(start, nr_pages, pages, write ?
+> FOLL_WRITE);
+> +}
 > 
-> After patch, down_read_trylock:
-> 
->     0x0000000000000000 <+0>:	callq  0x5 <down_read_trylock+5>
->     0x0000000000000005 <+5>:	xor    %eax,%eax
->     0x0000000000000007 <+7>:	lea    0x1(%rax),%rdx
->     0x000000000000000b <+11>:	lock cmpxchg %rdx,(%rdi)
->     0x0000000000000010 <+16>:	jne    0x29 <down_read_trylock+41>
->     0x0000000000000012 <+18>:	mov    %gs:0x0,%rax
->     0x000000000000001b <+27>:	or     $0x3,%rax
->     0x000000000000001f <+31>:	mov    %rax,0x20(%rdi)
->     0x0000000000000023 <+35>:	mov    $0x1,%eax
->     0x0000000000000028 <+40>:	retq
->     0x0000000000000029 <+41>:	test   %rax,%rax
->     0x000000000000002c <+44>:	jns    0x7 <down_read_trylock+7>
->     0x000000000000002e <+46>:	xor    %eax,%eax
->     0x0000000000000030 <+48>:	retq
-> 
-> By using a rwsem microbenchmark, the down_read_trylock() rate (with a
-> load of 10 to lengthen the lock critical section) on a x86-64 system
-> before and after the patch were:
-> 
->                   Before Patch    After Patch
->     # of Threads     rlock           rlock
->     ------------     -----           -----
->          1           14,496          14,716
->          2            8,644           8,453
-> 	4            6,799           6,983
-> 	8            5,664           7,190
-> 
-> On a ARM64 system, the performance results were:
-> 
->                   Before Patch    After Patch
->     # of Threads     rlock           rlock
->     ------------     -----           -----
->          1           23,676          24,488
->          2            7,697           9,502
->          4            4,945           3,440
->          8            2,641           1,603
-> 
-> For the uncontended case (1 thread), the new down_read_trylock() is a
-> little bit faster. For the contended cases, the new down_read_trylock()
-> perform pretty well in x86-64, but performance degrades at high
-> contention level on ARM64.
-> 
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Waiman Long <longman@redhat.com>
-> ---
->   kernel/locking/rwsem.h | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/kernel/locking/rwsem.h b/kernel/locking/rwsem.h
-> index 45ee00236e03..1f5775aa6a1d 100644
-> --- a/kernel/locking/rwsem.h
-> +++ b/kernel/locking/rwsem.h
-> @@ -174,14 +174,17 @@ static inline int __down_read_killable(struct rw_semaphore *sem)
->   
->   static inline int __down_read_trylock(struct rw_semaphore *sem)
->   {
-> -	long tmp;
-> +	/*
-> +	 * Optimize for the case when the rwsem is not locked at all.
-> +	 */
-> +	long tmp = RWSEM_UNLOCKED_VALUE;
->   
-> -	while ((tmp = atomic_long_read(&sem->count)) >= 0) {
-> -		if (tmp == atomic_long_cmpxchg_acquire(&sem->count, tmp,
-> -				   tmp + RWSEM_ACTIVE_READ_BIAS)) {
-> +	do {
-> +		if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp,
-> +					tmp + RWSEM_ACTIVE_READ_BIAS)) {
->   			return 1;
->   		}
-> -	}
-> +	} while (tmp >= 0);
->   	return 0;
->   }
->   
+>  /* Container for pinned pfns / pages */
+>  struct frame_vector {
 > 

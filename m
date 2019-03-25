@@ -2,36 +2,66 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.4 required=3.0 tests=DATE_IN_PAST_06_12,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EB4DC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7B04C10F03
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:36:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EC3A720811
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:22:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A7EF02082F
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 22:36:46 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.b="GiML85P6"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729610AbfCYWWh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 18:22:37 -0400
-Received: from mga17.intel.com ([192.55.52.151]:34864 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729478AbfCYWWh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Mar 2019 18:22:37 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Mar 2019 15:22:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,270,1549958400"; 
-   d="scan'208";a="143760397"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by FMSMGA003.fm.intel.com with ESMTP; 25 Mar 2019 15:22:36 -0700
-Date:   Mon, 25 Mar 2019 07:21:25 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
+        id S1729548AbfCYWgl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 18:36:41 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39031 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729840AbfCYWgl (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Mar 2019 18:36:41 -0400
+Received: by mail-ot1-f66.google.com with SMTP id f10so9653397otb.6
+        for <linux-mips@vger.kernel.org>; Mon, 25 Mar 2019 15:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sTcPY30C0OSYzeNRaa/EPMGmie/8U7JXyLn50zJf1Pw=;
+        b=GiML85P6LCslgtDlslKCCUhWvbv1y+nvEc56Q0X8Qjel5DMzDzfar6+H7s6fmu2h3d
+         dLEyyqXH0XMmCTgsIn3yhKqlcM+JBYc0UTK5/fEknfFXNcWh7vZB4qk8YZDtnv5IAp1l
+         JJmvxmcMseSRffwnab8HmvfayPrxqWL01+eSLrgeJSA/9velnAvwDxgjJF0ugNsd/ZFW
+         LpEP4qbgPu6yg3gM3ufLilvbIHnGxS7z2m60QKWTsLURCVB/tyWdotVRQdzsF7WEone8
+         YAzkam1P/6bRoe78GssUpwMMiqKYpvFyZCQg0hkxWxLA+GhGDSF3+u1c5KgRvgkutwHN
+         +uoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sTcPY30C0OSYzeNRaa/EPMGmie/8U7JXyLn50zJf1Pw=;
+        b=nfakao1jEmer0MqePI5JFtkJd6BEm1rV65U2tDzO5SLny2yBa4cy1QFLDKannd8N9Z
+         FRhAeU8P/6KXbejxRi07JY7Rnl3gPAIUyVoEPppZkn1w5/l/fMUx43+qc1JxuAA8L5uY
+         PO+P5r3kBfWaOdZcwxewOkH3AxBJJs4EDlOfe89GyG6y4OJHVsp8G6RaQ0GwodqXvWDP
+         NJD+2ytin4C7Hy4cLrIGOT4MPiKGKa53r3WOBuXaCsAQR54ccsUSHzAohD5gteDHcO1K
+         lhjE/v9NME0g3huSDB0RGpj9aiV14ykm8tG4JEYyRc7tyZBX3Mv8mkpJe2ZH1BhXfe2P
+         yltQ==
+X-Gm-Message-State: APjAAAWICE7ZSmlqk9bSZdP3oHjcLIyKGhkfUGG9iDDHtu/FYJLD7Fo9
+        uXYf2oIFD6IUMymQOu5DKcaPLBeb8mFwwfPa3sKbLg==
+X-Google-Smtp-Source: APXvYqxFqrAkIeS5L2WYBPBcjU2Ckw+9rPMAalcwIDZdE3acnVShZDDWo5M3SQr2UUBKcI362os2eQY4GbHhvkhCzss=
+X-Received: by 2002:a9d:224a:: with SMTP id o68mr20655282ota.214.1553553400410;
+ Mon, 25 Mar 2019 15:36:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190317183438.2057-1-ira.weiny@intel.com> <20190317183438.2057-5-ira.weiny@intel.com>
+ <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
+ <20190325084225.GC16366@iweiny-DESK2.sc.intel.com> <20190325164713.GC9949@ziepe.ca>
+ <20190325092314.GF16366@iweiny-DESK2.sc.intel.com> <20190325175150.GA21008@ziepe.ca>
+ <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
+In-Reply-To: <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Mon, 25 Mar 2019 15:36:28 -0700
+Message-ID: <CAPcyv4hG8WDhsWinXHYkReHKS6gdQ3gAHMcfVWvuP4c4SYBzXQ@mail.gmail.com>
+Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
         Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
         Michal Hocko <mhocko@suse.com>,
@@ -53,77 +83,20 @@ Cc:     Dan Williams <dan.j.williams@intel.com>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Linux-sh <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
+        linux-rdma <linux-rdma@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
-Message-ID: <20190325142125.GH16366@iweiny-DESK2.sc.intel.com>
-References: <20190317183438.2057-1-ira.weiny@intel.com>
- <20190317183438.2057-5-ira.weiny@intel.com>
- <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
- <20190325084225.GC16366@iweiny-DESK2.sc.intel.com>
- <20190325164713.GC9949@ziepe.ca>
- <20190325092314.GF16366@iweiny-DESK2.sc.intel.com>
- <20190325175150.GA21008@ziepe.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190325175150.GA21008@ziepe.ca>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 02:51:50PM -0300, Jason Gunthorpe wrote:
-> On Mon, Mar 25, 2019 at 02:23:15AM -0700, Ira Weiny wrote:
-> > > > Unfortunately holding the lock is required to support FOLL_LONGTERM (to check
-> > > > the VMAs) but we don't want to hold the lock to be optimal (specifically allow
-> > > > FAULT_FOLL_ALLOW_RETRY).  So I'm maintaining the optimization for *_fast users
-> > > > who do not specify FOLL_LONGTERM.
-> > > > 
-> > > > Another way to do this would have been to define __gup_longterm_unlocked with
-> > > > the above logic, but that seemed overkill at this point.
-> > > 
-> > > get_user_pages_unlocked() is an exported symbol, shouldn't it work
-> > > with the FOLL_LONGTERM flag?
-> > > 
-> > > I think it should even though we have no user..
-> > > 
-> > > Otherwise the GUP API just gets more confusing.
-> > 
-> > I agree WRT to the API.  But I think callers of get_user_pages_unlocked() are
-> > not going to get the behavior they want if they specify FOLL_LONGTERM.
-> 
-> Oh? Isn't the only thing FOLL_LONGTERM does is block the call on DAX?
+On Mon, Mar 25, 2019 at 3:22 PM Ira Weiny <ira.weiny@intel.com> wrote:
+[..]
+> FWIW this thread is making me think my original patch which simply implemented
+> get_user_pages_fast_longterm() would be more clear.  There is some evidence
+> that the GUP API was trending that way (see get_user_pages_remote).  That seems
+> wrong but I don't know how to ensure users don't specify the wrong flag.
 
-From an API yes.
-
-> Why does the locking mode matter to this test?
-
-DAX checks for VMA's being Filesystem DAX.  Therefore, it requires collection
-of VMA's as the GUP code executes.  The unlocked version can drop the lock and
-therefore the VMAs may become invalid.  Therefore, the 2 code paths are
-incompatible.
-
-Users of GUP unlocked are going to want the benefit of FAULT_FOLL_ALLOW_RETRY.
-So I don't anticipate anyone using FOLL_LONGTERM with
-get_user_pages_unlocked().
-
-FWIW this thread is making me think my original patch which simply implemented
-get_user_pages_fast_longterm() would be more clear.  There is some evidence
-that the GUP API was trending that way (see get_user_pages_remote).  That seems
-wrong but I don't know how to ensure users don't specify the wrong flag.
-
-> 
-> > What I could do is BUG_ON (or just WARN_ON) if unlocked is called with
-> > FOLL_LONGTERM similar to the code in get_user_pages_locked() which does not
-> > allow locked and vmas to be passed together:
-> 
-> The GUP call should fail if you are doing something like this. But I'd
-> rather not see confusing specialc cases in code without a clear
-> comment explaining why it has to be there.
-
-Code comment would be necessary, sure.  Was just throwing ideas out there.
-
-Ira
-
+What about just making the existing get_user_pages_longterm() have a
+fast path option?

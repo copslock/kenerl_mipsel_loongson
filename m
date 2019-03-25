@@ -3,53 +3,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35D43C43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 06:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4604C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 06:13:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0441120693
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 06:11:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A01792075E
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 06:13:36 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="xX3/HJVi"
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="M5yNkfWq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729400AbfCYGLQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 02:11:16 -0400
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:52602 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729373AbfCYGLQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Mar 2019 02:11:16 -0400
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id x2P6B3ao022765;
-        Mon, 25 Mar 2019 15:11:04 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com x2P6B3ao022765
+        id S1729503AbfCYGNg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 02:13:36 -0400
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:18954 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729400AbfCYGNg (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Mar 2019 02:13:36 -0400
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x2P6DD5W021460;
+        Mon, 25 Mar 2019 15:13:14 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x2P6DD5W021460
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1553494264;
-        bh=M5yB2IL6rUVfb6KdDylKlG225AGtoW93SAI13OU0scI=;
+        s=dec2015msa; t=1553494394;
+        bh=Sx+F89ZCL+7I7bmEi4KU1fUncjZk/BW8NVT+rzg4YZM=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=xX3/HJVi67ZE7O+YgUqY300T00eUjNmJmXP8bCXfoQHa5Air4JM6GFt/6oBaczpj/
-         u11TINIB7G2truNMRO5GcWSbfQSL1zf1IeAED2pmVCAzEPfwkett3y4nd6iZ8G0rHD
-         gDwKNHBAnpvcqHz+cUlBgFdd2Dt3ZqYf/800h8o4bipHysPCxBBgReoo84esXAs2tE
-         v3YifwN1shxb3mR95hOrNLP5oiGOjTO08WNyZOUo6iwL49DbeCPGekShiCb62o+ahl
-         JdPg0gXqHCc2MEe1FgcA9Dnz0Zr7qfil5TTERII2lmrZR2L0Qb27qhVxDYEF1d632b
-         o0O0IBkTWJ30Q==
-X-Nifty-SrcIP: [209.85.221.173]
-Received: by mail-vk1-f173.google.com with SMTP id s80so677281vke.6;
-        Sun, 24 Mar 2019 23:11:04 -0700 (PDT)
-X-Gm-Message-State: APjAAAXATT4kBG7iBUkl0BTlawGZZctYVCOITH7RSX3A5RJqwxVlWKy/
-        e3GNVKgfzb9Pc5xuXP9ZGjeYVvxUBkvNOWfPHTM=
-X-Google-Smtp-Source: APXvYqz8qUhdfpRv8vBpRrajP0ICg/lHdRAAg6gG/ToNJOJ/LPtsBzM8huHn1TCODJl7fUVHytYK1YSBZrnQ8QJK2r0=
-X-Received: by 2002:a1f:9350:: with SMTP id v77mr13352129vkd.84.1553494263012;
- Sun, 24 Mar 2019 23:11:03 -0700 (PDT)
+        b=M5yNkfWqCZM61EfciI7aYwtMPdtHOgHCnWG7sAtBa01Yc3VAyopkSzeXY0q5UTSDx
+         xeqhv4xcdKYHOUOagTdXmlsTYoqrxNtVogm4r1yn+OP0WEdrb1tU7NZkE/m14eDLMu
+         UTdfbRtROPFjFBs6CgsxACemjQfyyrhRZa67i60+BlqdqVhCjc7Gy0M8A5FF7lcjPz
+         WCEdYKv8UXuykajnwJuc7FSjDyFHrSAVPmrWU7yBe5HavbJeYT7zVteHfRn5kDjGmb
+         G2Q5FGKAK68/GE3xqtCi3K916oI4lKIdXV6zURC3UF+0KRX4aHrmJjawz5lVS3DOUI
+         hw6/1aChaZADw==
+X-Nifty-SrcIP: [209.85.217.54]
+Received: by mail-vs1-f54.google.com with SMTP id w26so3643617vsk.13;
+        Sun, 24 Mar 2019 23:13:14 -0700 (PDT)
+X-Gm-Message-State: APjAAAW/1Ui+SMF53HANBP8vYzjiSBLEedWJLxWcGmpWPC93GF8ymAYQ
+        YTogkdMiHb67ZWoKzfZjL+AE5T/cvAcxYHHTeRM=
+X-Google-Smtp-Source: APXvYqzWUbmmHppt7GkpSeF6ZbIaPWFwcO9J7sA818cft6eG2FytjcwDC97ioibZl4L5MGq/cc4GOoihEgT7zdVYM4U=
+X-Received: by 2002:a67:7c04:: with SMTP id x4mr14129809vsc.155.1553494393497;
+ Sun, 24 Mar 2019 23:13:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
- <CAK8P3a3BG_mxYxxCx4S_+ZKAer_+5FpmkzLk0VrACZekuD=2GQ@mail.gmail.com> <CAK8P3a0GEYTbw5XCwzVeZe_-pGF=7e=1kXhH3U+fidnMZeP0CA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0GEYTbw5XCwzVeZe_-pGF=7e=1kXhH3U+fidnMZeP0CA@mail.gmail.com>
+ <CAK8P3a3BG_mxYxxCx4S_+ZKAer_+5FpmkzLk0VrACZekuD=2GQ@mail.gmail.com>
+ <CAK8P3a0GEYTbw5XCwzVeZe_-pGF=7e=1kXhH3U+fidnMZeP0CA@mail.gmail.com> <CAK7LNAQvvCVsQtd9ZYkechOSCg4HAeZFaNXCgaBbWWxBYXOgaQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAQvvCVsQtd9ZYkechOSCg4HAeZFaNXCgaBbWWxBYXOgaQ@mail.gmail.com>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Mon, 25 Mar 2019 15:10:27 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQvvCVsQtd9ZYkechOSCg4HAeZFaNXCgaBbWWxBYXOgaQ@mail.gmail.com>
-Message-ID: <CAK7LNAQvvCVsQtd9ZYkechOSCg4HAeZFaNXCgaBbWWxBYXOgaQ@mail.gmail.com>
+Date:   Mon, 25 Mar 2019 15:12:37 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASzZVKivBjEa-93Ary=x98WeqMddqTWsqe4U-GXyuHTWQ@mail.gmail.com>
+Message-ID: <CAK7LNASzZVKivBjEa-93Ary=x98WeqMddqTWsqe4U-GXyuHTWQ@mail.gmail.com>
 Subject: Re: [PATCH] compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     linux-arch <linux-arch@vger.kernel.org>,
@@ -71,44 +72,57 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Arnd,
-
-
-
-
-On Wed, Mar 20, 2019 at 10:34 PM Arnd Bergmann <arnd@arndb.de> wrote:
+On Mon, Mar 25, 2019 at 3:10 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
 >
-> On Wed, Mar 20, 2019 at 10:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> Hi Arnd,
+>
+>
+>
+>
+> On Wed, Mar 20, 2019 at 10:34 PM Arnd Bergmann <arnd@arndb.de> wrote:
 > >
-> > I've added your patch to my randconfig test setup and will let you
-> > know if I see anything noticeable. I'm currently testing clang-arm32,
-> > clang-arm64 and gcc-x86.
+> > On Wed, Mar 20, 2019 at 10:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > >
+> > > I've added your patch to my randconfig test setup and will let you
+> > > know if I see anything noticeable. I'm currently testing clang-arm32,
+> > > clang-arm64 and gcc-x86.
+> >
+> > This is the only additional bug that has come up so far:
+> >
+> > `.exit.text' referenced in section `.alt.smp.init' of
+> > drivers/char/ipmi/ipmi_msghandler.o: defined in discarded section
+> > `exit.text' of drivers/char/ipmi/ipmi_msghandler.o
+> >
+> > diff --git a/arch/arm/kernel/atags.h b/arch/arm/kernel/atags.h
+> > index 201100226301..84b12e33104d 100644
+> > --- a/arch/arm/kernel/atags.h
+> > +++ b/arch/arm/kernel/atags.h
+> > @@ -5,7 +5,7 @@ void convert_to_tag_list(struct tag *tags);
+> >  const struct machine_desc *setup_machine_tags(phys_addr_t __atags_pointer,
+> >         unsigned int machine_nr);
+> >  #else
+> > -static inline const struct machine_desc *
+> > +static __always_inline const struct machine_desc *
+> >  setup_machine_tags(phys_addr_t __atags_pointer, unsigned int machine_nr)
+> >  {
+> >         early_print("no ATAGS support: can't continue\n");
+> >
 >
-> This is the only additional bug that has come up so far:
 >
-> `.exit.text' referenced in section `.alt.smp.init' of
-> drivers/char/ipmi/ipmi_msghandler.o: defined in discarded section
-> `exit.text' of drivers/char/ipmi/ipmi_msghandler.o
->
-> diff --git a/arch/arm/kernel/atags.h b/arch/arm/kernel/atags.h
-> index 201100226301..84b12e33104d 100644
-> --- a/arch/arm/kernel/atags.h
-> +++ b/arch/arm/kernel/atags.h
-> @@ -5,7 +5,7 @@ void convert_to_tag_list(struct tag *tags);
->  const struct machine_desc *setup_machine_tags(phys_addr_t __atags_pointer,
->         unsigned int machine_nr);
->  #else
-> -static inline const struct machine_desc *
-> +static __always_inline const struct machine_desc *
->  setup_machine_tags(phys_addr_t __atags_pointer, unsigned int machine_nr)
->  {
->         early_print("no ATAGS support: can't continue\n");
->
+> I do not know why to reproduce it,
+
+"how to"
 
 
-I do not know why to reproduce it,
-but is "__init __noreturn" more sensible than
-"__always_inline" here?
+> but is "__init __noreturn" more sensible than
+> "__always_inline" here?
+>
+>
+> --
+> Best Regards
+> Masahiro Yamada
+
 
 
 -- 

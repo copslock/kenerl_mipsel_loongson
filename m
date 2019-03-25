@@ -2,263 +2,155 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.4 required=3.0 tests=DATE_IN_PAST_06_12,
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3855AC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1722C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:37:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 061872087E
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:24:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 984B3205C9
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:37:23 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="ainsoJHS"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729095AbfCYRY3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 13:24:29 -0400
-Received: from mga07.intel.com ([134.134.136.100]:2956 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728912AbfCYRY2 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Mar 2019 13:24:28 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Mar 2019 10:24:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,269,1549958400"; 
-   d="scan'208";a="125738993"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by orsmga007.jf.intel.com with ESMTP; 25 Mar 2019 10:24:26 -0700
-Date:   Mon, 25 Mar 2019 02:23:15 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Michal Hocko <mhocko@suse.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        id S1730042AbfCYRhX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 13:37:23 -0400
+Received: from mail-eopbgr750102.outbound.protection.outlook.com ([40.107.75.102]:57229
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729946AbfCYRhV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Mar 2019 13:37:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KxdGHDqM2Hob1Ge4ufd+xg2dLJBLXLGIts1F7o/D6L0=;
+ b=ainsoJHSuV4wQILShvNFOJKL3XQ5olD9sSMos4w92z0ZAEx9VxfDXjIU5Hs6RXlY13RVBEd2eRDcTdczi690f2Rgxpd4lunYwEQPsrkliqCKuZZDndAjxEKz0Y9tnWOP8HMDgxjHwH+5Kg4DJfJbJdFYnnijGu12VCfH87Aj+fg=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1392.namprd22.prod.outlook.com (10.172.63.10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1730.18; Mon, 25 Mar 2019 17:37:12 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b8d4:8f0d:d6d1:4018]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b8d4:8f0d:d6d1:4018%3]) with mapi id 15.20.1730.019; Mon, 25 Mar 2019
+ 17:37:12 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mm <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
-Message-ID: <20190325092314.GF16366@iweiny-DESK2.sc.intel.com>
-References: <20190317183438.2057-1-ira.weiny@intel.com>
- <20190317183438.2057-5-ira.weiny@intel.com>
- <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
- <20190325084225.GC16366@iweiny-DESK2.sc.intel.com>
- <20190325164713.GC9949@ziepe.ca>
+        "David S . Miller" <davem@davemloft.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Firoz Khan <firoz.khan@linaro.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
+Thread-Topic: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
+Thread-Index: AQHU4xnDP1dzfUK3kECwl5vlzfGO86YcnIQA
+Date:   Mon, 25 Mar 2019 17:37:11 +0000
+Message-ID: <20190325173704.mun2cj2ulswv7s3i@pburton-laptop>
+References: <20190325143521.34928-1-arnd@arndb.de>
+ <20190325144737.703921-1-arnd@arndb.de>
+In-Reply-To: <20190325144737.703921-1-arnd@arndb.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0093.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::34) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b77b85e2-738a-4beb-6f17-08d6b14882f6
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600127)(711020)(4605104)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7153060)(7193020);SRVR:MWHPR2201MB1392;
+x-ms-traffictypediagnostic: MWHPR2201MB1392:
+x-microsoft-antispam-prvs: <MWHPR2201MB139298757EF5E1EE94647489C15E0@MWHPR2201MB1392.namprd22.prod.outlook.com>
+x-forefront-prvs: 0987ACA2E2
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39840400004)(346002)(376002)(396003)(366004)(136003)(189003)(199004)(1076003)(68736007)(478600001)(6486002)(14454004)(256004)(4326008)(52116002)(6506007)(386003)(106356001)(66066001)(102836004)(76176011)(8936002)(71190400001)(71200400001)(186003)(105586002)(26005)(99286004)(305945005)(54906003)(486006)(81156014)(6512007)(9686003)(446003)(25786009)(6246003)(42882007)(6916009)(81166006)(58126008)(33716001)(97736004)(8676002)(11346002)(44832011)(476003)(111086002)(7416002)(316002)(7406005)(53936002)(229853002)(3846002)(6116002)(2906002)(5660300002)(7736002)(6436002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1392;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 2+cUWKxJxdo+gG43J3egSpOoVxfSvfkRRxwHFW1Gcf5cr74uFP4A1HnuCcCx0BVWC9Nm0DI8GfbgBWCfCIjk99T6WqqS29wa7CIo0Ddnac3kM0SXjo9cfXnsqT+qa7uu8Mw5KMLyvOEcF3HzGV95rei1eHjMwb8voN9KgI0pzquq0mU919nohnWilH6h4PqCBb3rWtFiLS1yH9/s0qVv47dFfjoLMhv+l9YBrQPLOVggTkNpLJ7Aaaw1hH+046Ld34QD62zFd7XwrAl500gW4RRk3nppWyI6t3TBQVSLMjBVGfGAFKGeqDIbwm4YAb1W6HKwOLsh8M4B/pW7ZwEBdZ6E1QL0CjNhpMcS3qtSOx+un62AqkL6jaRx3vjYApk/0RLbyWEnKOA3sQ/yQtKHqnmnVNDvzpaKqC0/18le5ic=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <925CEF0D081FD04088D61AE526A67361@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190325164713.GC9949@ziepe.ca>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b77b85e2-738a-4beb-6f17-08d6b14882f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2019 17:37:11.6927
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1392
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 01:47:13PM -0300, Jason Gunthorpe wrote:
-> On Mon, Mar 25, 2019 at 01:42:26AM -0700, Ira Weiny wrote:
-> > On Fri, Mar 22, 2019 at 03:12:55PM -0700, Dan Williams wrote:
-> > > On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
-> > > >
-> > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > >
-> > > > DAX pages were previously unprotected from longterm pins when users
-> > > > called get_user_pages_fast().
-> > > >
-> > > > Use the new FOLL_LONGTERM flag to check for DEVMAP pages and fall
-> > > > back to regular GUP processing if a DEVMAP page is encountered.
-> > > >
-> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > > >  mm/gup.c | 29 +++++++++++++++++++++++++----
-> > > >  1 file changed, 25 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/mm/gup.c b/mm/gup.c
-> > > > index 0684a9536207..173db0c44678 100644
-> > > > +++ b/mm/gup.c
-> > > > @@ -1600,6 +1600,9 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
-> > > >                         goto pte_unmap;
-> > > >
-> > > >                 if (pte_devmap(pte)) {
-> > > > +                       if (unlikely(flags & FOLL_LONGTERM))
-> > > > +                               goto pte_unmap;
-> > > > +
-> > > >                         pgmap = get_dev_pagemap(pte_pfn(pte), pgmap);
-> > > >                         if (unlikely(!pgmap)) {
-> > > >                                 undo_dev_pagemap(nr, nr_start, pages);
-> > > > @@ -1739,8 +1742,11 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
-> > > >         if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
-> > > >                 return 0;
-> > > >
-> > > > -       if (pmd_devmap(orig))
-> > > > +       if (pmd_devmap(orig)) {
-> > > > +               if (unlikely(flags & FOLL_LONGTERM))
-> > > > +                       return 0;
-> > > >                 return __gup_device_huge_pmd(orig, pmdp, addr, end, pages, nr);
-> > > > +       }
-> > > >
-> > > >         refs = 0;
-> > > >         page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> > > > @@ -1777,8 +1783,11 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
-> > > >         if (!pud_access_permitted(orig, flags & FOLL_WRITE))
-> > > >                 return 0;
-> > > >
-> > > > -       if (pud_devmap(orig))
-> > > > +       if (pud_devmap(orig)) {
-> > > > +               if (unlikely(flags & FOLL_LONGTERM))
-> > > > +                       return 0;
-> > > >                 return __gup_device_huge_pud(orig, pudp, addr, end, pages, nr);
-> > > > +       }
-> > > >
-> > > >         refs = 0;
-> > > >         page = pud_page(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> > > > @@ -2066,8 +2075,20 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
-> > > >                 start += nr << PAGE_SHIFT;
-> > > >                 pages += nr;
-> > > >
-> > > > -               ret = get_user_pages_unlocked(start, nr_pages - nr, pages,
-> > > > -                                             gup_flags);
-> > > > +               if (gup_flags & FOLL_LONGTERM) {
-> > > > +                       down_read(&current->mm->mmap_sem);
-> > > > +                       ret = __gup_longterm_locked(current, current->mm,
-> > > > +                                                   start, nr_pages - nr,
-> > > > +                                                   pages, NULL, gup_flags);
-> > > > +                       up_read(&current->mm->mmap_sem);
-> > > > +               } else {
-> > > > +                       /*
-> > > > +                        * retain FAULT_FOLL_ALLOW_RETRY optimization if
-> > > > +                        * possible
-> > > > +                        */
-> > > > +                       ret = get_user_pages_unlocked(start, nr_pages - nr,
-> > > > +                                                     pages, gup_flags);
-> > > 
-> > > I couldn't immediately grok why this path needs to branch on
-> > > FOLL_LONGTERM? Won't get_user_pages_unlocked(..., FOLL_LONGTERM) do
-> > > the right thing?
-> > 
-> > Unfortunately holding the lock is required to support FOLL_LONGTERM (to check
-> > the VMAs) but we don't want to hold the lock to be optimal (specifically allow
-> > FAULT_FOLL_ALLOW_RETRY).  So I'm maintaining the optimization for *_fast users
-> > who do not specify FOLL_LONGTERM.
-> > 
-> > Another way to do this would have been to define __gup_longterm_unlocked with
-> > the above logic, but that seemed overkill at this point.
-> 
-> get_user_pages_unlocked() is an exported symbol, shouldn't it work
-> with the FOLL_LONGTERM flag?
-> 
-> I think it should even though we have no user..
-> 
-> Otherwise the GUP API just gets more confusing.
+Hi Arnd,
 
-I agree WRT to the API.  But I think callers of get_user_pages_unlocked() are
-not going to get the behavior they want if they specify FOLL_LONGTERM.
+On Mon, Mar 25, 2019 at 03:47:37PM +0100, Arnd Bergmann wrote:
+> Add the io_uring and pidfd_send_signal system calls to all architectures.
+>=20
+> These system calls are designed to handle both native and compat tasks,
+> so all entries are the same across architectures, only arm-compat and
+> the generic tale still use an old format.
+>=20
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>%
+> diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel=
+/syscalls/syscall_n64.tbl
+> index c85502e67b44..c4a49f7d57bb 100644
+> --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
+> +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+> @@ -338,3 +338,7 @@
+>  327	n64	rseq				sys_rseq
+>  328	n64	io_pgetevents			sys_io_pgetevents
+>  # 329 through 423 are reserved to sync up with other architectures
+> +424	common	pidfd_send_signal		sys_pidfd_send_signal
+> +425	common	io_uring_setup			sys_io_uring_setup
+> +426	common	io_uring_enter			sys_io_uring_enter
+> +427	common	io_uring_register		sys_io_uring_register
 
-What I could do is BUG_ON (or just WARN_ON) if unlocked is called with
-FOLL_LONGTERM similar to the code in get_user_pages_locked() which does not
-allow locked and vmas to be passed together:
+Shouldn't these declare the ABI as "n64"?
 
-        if (locked) {
-                /* if VM_FAULT_RETRY can be returned, vmas become invalid */
-                BUG_ON(vmas);
-                /* check caller initialized locked */
-                BUG_ON(*locked != 1);
-        }
+I don't see anywhere that it would actually change the generated code,
+but a comment at the top of the file says that every entry should use
+"n64" and so far they all do. Did you have something else in mind here?
 
-Combining Dan's comment and yours; I could do something like below? (not even
-compile tested)  Coded with WARN_ON because technically I _think_ the
-FOLL_LONGTERM would "work" but not be optimal.  I'm just not 100% sure.  A
-BUG_ON would be most protective IMO.
-
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 173db0c44678..8e31411f485f 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1014,6 +1014,29 @@ long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
- }
- EXPORT_SYMBOL(get_user_pages_locked);
- 
-+long __gup_longterm_unlocked(unsigned long start, unsigned long nr_pages,
-+			     struct page **pages, unsigned int gup_flags)
-+{
-+	struct mm_struct *mm = current->mm;
-+	int locked = 1;
-+	long ret;
-+
-+	down_read(&mm->mmap_sem);
-+	if (gup_flags & FOLL_LONGTERM) {
-+		ret = __gup_longterm_locked(current, mm,
-+					    start, nr_pages - nr,
-+					    pages, NULL, gup_flags);
-+	} else {
-+		ret = __get_user_pages_locked(current, mm, start, nr_pages,
-+					      pages, NULL, &locked,
-+					      gup_flags | FOLL_TOUCH);
-+	}
-+	if (locked)
-+		up_read(&mm->mmap_sem);
-+
-+	return ret;
-+}
-+
- /*
-  * get_user_pages_unlocked() is suitable to replace the form:
-  *
-@@ -1032,16 +1055,9 @@ EXPORT_SYMBOL(get_user_pages_locked);
- long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
- 			     struct page **pages, unsigned int gup_flags)
- {
--	struct mm_struct *mm = current->mm;
--	int locked = 1;
--	long ret;
-+	WARN_ON(gup_flags & FOLL_LONGTERM);
- 
--	down_read(&mm->mmap_sem);
--	ret = __get_user_pages_locked(current, mm, start, nr_pages, pages, NULL,
--				      &locked, gup_flags | FOLL_TOUCH);
--	if (locked)
--		up_read(&mm->mmap_sem);
--	return ret;
-+	__gup_longterm_unlocked(start, nr_pages, pages, gup_flags);
- }
- EXPORT_SYMBOL(get_user_pages_unlocked);
- 
-@@ -2075,20 +2091,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
- 		start += nr << PAGE_SHIFT;
- 		pages += nr;
- 
--		if (gup_flags & FOLL_LONGTERM) {
--			down_read(&current->mm->mmap_sem);
--			ret = __gup_longterm_locked(current, current->mm,
--						    start, nr_pages - nr,
--						    pages, NULL, gup_flags);
--			up_read(&current->mm->mmap_sem);
--		} else {
--			/*
--			 * retain FAULT_FOLL_ALLOW_RETRY optimization if
--			 * possible
--			 */
--			ret = get_user_pages_unlocked(start, nr_pages - nr,
--						      pages, gup_flags);
--		}
-+		__gup_longterm_unlocked();
- 
- 		/* Have to be a bit careful with return values */
- 		if (nr > 0) {
+Thanks,
+    Paul

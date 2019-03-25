@@ -2,69 +2,40 @@ Return-Path: <SRS0=VxEc=R4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+X-Spam-Status: No, score=-4.4 required=3.0 tests=DATE_IN_PAST_06_12,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
 	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B38CC43381
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C668C43381
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 18:28:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E20C120823
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 17:51:53 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="mcakECUM"
+	by mail.kernel.org (Postfix) with ESMTP id EFE942070D
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Mar 2019 18:28:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729914AbfCYRvx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Mar 2019 13:51:53 -0400
-Received: from mail-qk1-f179.google.com ([209.85.222.179]:40627 "EHLO
-        mail-qk1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729883AbfCYRvx (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Mar 2019 13:51:53 -0400
-Received: by mail-qk1-f179.google.com with SMTP id w20so5876868qka.7
-        for <linux-mips@vger.kernel.org>; Mon, 25 Mar 2019 10:51:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=00Ms6NJY8XZVY3PTifw/DWKACkhTufevyM9oDDMnZ98=;
-        b=mcakECUMzfnWJTjHKTgjHkQ3p5HiWz1AVOeK/ghfgih69htVJO9HDrS54A121ygzVY
-         gWLEZMejpsvVFhPFvHwICPJEGrqNyF2/qZcA0NNQdr9DSe7lhxSeAsy3AlI8/ilXz0Wy
-         iMjTD05URcYKbnMgowRxCxL/DBUygVp3Sma1XI81k+r9M7o2AAzJzmYJzZpoi21aczm0
-         eJeHxiLWuI7hbyS8S+/ZQ0NvTbpWGm3bLAR63L4Lfuo8GetXjU127prX/mYb1aNddl8p
-         PasZzEsnYa7YcrBr5PZX7TvDDfzStRfR4EBtHmAXdccRPyo5CD2MDBXpy7Y6pvzdL9FQ
-         Mskw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=00Ms6NJY8XZVY3PTifw/DWKACkhTufevyM9oDDMnZ98=;
-        b=H5P4MrR1aT0g91lFoTPrpVVWRgqtk+0Q/8jd1t5QVggGZPhvpF4lMg3s2sTXqP2TBB
-         tciAGHQ2v4rsgiDmpt+ysV4sDHc/9B8fe7Vcp7plTJWVaaGIC0nPJi4W24euNCM45r6L
-         r5vAe8lmo7p8+MiOQ3vNvs9xetV9A/Cx1sWcP4RjnajhW5aZ/BBPzZtERYLTho7uzrjv
-         jWMWd3qNyc8OcW9o1PL/1q5Jc6KsxzhBXRvpHx58njZknIBZuBT4qVznjxcuadD607mu
-         2E8yXj1cMQ1KlLtB+DRDaCrBM/9g2+3JUPRWAAn4IF/E2P6Pf/RE20/ET2pJcTwgsnyb
-         dJpg==
-X-Gm-Message-State: APjAAAWCsmvYAhddncImdpVHsoI5pVUeYGun9lW92K2COVfHaHaSJSAh
-        7041+LqDapOFe4wtgg+hkMsvqg==
-X-Google-Smtp-Source: APXvYqyPXE4H1Qt/wLb7MTNtAAHDbeoOG7ue4zLWhXEM5KYve0v2wSXPQ09LZ4L0EFTQCEmHdQgrlA==
-X-Received: by 2002:a37:7d86:: with SMTP id y128mr20700103qkc.36.1553536312325;
-        Mon, 25 Mar 2019 10:51:52 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-49-251.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.49.251])
-        by smtp.gmail.com with ESMTPSA id 56sm5277027qto.57.2019.03.25.10.51.50
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 25 Mar 2019 10:51:51 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1h8TlG-0005vR-FG; Mon, 25 Mar 2019 14:51:50 -0300
-Date:   Mon, 25 Mar 2019 14:51:50 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1729626AbfCYS2T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Mar 2019 14:28:19 -0400
+Received: from mga09.intel.com ([134.134.136.24]:21251 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728912AbfCYS2T (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 25 Mar 2019 14:28:19 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Mar 2019 11:28:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,269,1549958400"; 
+   d="scan'208";a="125755489"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga007.jf.intel.com with ESMTP; 25 Mar 2019 11:28:17 -0700
+Date:   Mon, 25 Mar 2019 03:27:05 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         John Hubbard <jhubbard@nvidia.com>,
         Michal Hocko <mhocko@suse.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -75,7 +46,10 @@ Cc:     Dan Williams <dan.j.williams@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mm <linux-mm@kvack.org>,
+        James Hogan <jhogan@kernel.org>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        linux-mm <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-mips@vger.kernel.org,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
@@ -83,52 +57,101 @@ Cc:     Dan Williams <dan.j.williams@intel.com>,
         Linux-sh <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
         linux-rdma@vger.kernel.org,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RESEND 4/7] mm/gup: Add FOLL_LONGTERM capability to GUP fast
-Message-ID: <20190325175150.GA21008@ziepe.ca>
+Subject: Re: [RESEND 1/7] mm/gup: Replace get_user_pages_longterm() with
+ FOLL_LONGTERM
+Message-ID: <20190325102705.GG16366@iweiny-DESK2.sc.intel.com>
 References: <20190317183438.2057-1-ira.weiny@intel.com>
- <20190317183438.2057-5-ira.weiny@intel.com>
- <CAA9_cmcx-Bqo=CFuSj7Xcap3e5uaAot2reL2T74C47Ut6_KtQw@mail.gmail.com>
- <20190325084225.GC16366@iweiny-DESK2.sc.intel.com>
- <20190325164713.GC9949@ziepe.ca>
- <20190325092314.GF16366@iweiny-DESK2.sc.intel.com>
+ <20190317183438.2057-2-ira.weiny@intel.com>
+ <CAA9_cmffz1VBOJ0ykBtcj+hiznn-kbbuotu1uUhPiJtXiFjJXg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190325092314.GF16366@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAA9_cmffz1VBOJ0ykBtcj+hiznn-kbbuotu1uUhPiJtXiFjJXg@mail.gmail.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 02:23:15AM -0700, Ira Weiny wrote:
-> > > Unfortunately holding the lock is required to support FOLL_LONGTERM (to check
-> > > the VMAs) but we don't want to hold the lock to be optimal (specifically allow
-> > > FAULT_FOLL_ALLOW_RETRY).  So I'm maintaining the optimization for *_fast users
-> > > who do not specify FOLL_LONGTERM.
-> > > 
-> > > Another way to do this would have been to define __gup_longterm_unlocked with
-> > > the above logic, but that seemed overkill at this point.
-> > 
-> > get_user_pages_unlocked() is an exported symbol, shouldn't it work
-> > with the FOLL_LONGTERM flag?
-> > 
-> > I think it should even though we have no user..
-> > 
-> > Otherwise the GUP API just gets more confusing.
+On Fri, Mar 22, 2019 at 02:24:40PM -0700, Dan Williams wrote:
+> On Sun, Mar 17, 2019 at 7:36 PM <ira.weiny@intel.com> wrote:
+
+[snip]
+
+> > + * __gup_longterm_locked() is a wrapper for __get_uer_pages_locked which
 > 
-> I agree WRT to the API.  But I think callers of get_user_pages_unlocked() are
-> not going to get the behavior they want if they specify FOLL_LONGTERM.
+> s/uer/user/
+> 
+> > + * allows us to process the FOLL_LONGTERM flag if present.
+> > + *
+> > + * FOLL_LONGTERM Checks for either DAX VMAs or PPC CMA regions and either fails
+> > + * the pin or attempts to migrate the page as appropriate.
+> > + *
+> > + * In the filesystem-dax case mappings are subject to the lifetime enforced by
+> > + * the filesystem and we need guarantees that longterm users like RDMA and V4L2
+> > + * only establish mappings that have a kernel enforced revocation mechanism.
+> > + *
+> > + * In the CMA case pages can't be pinned in a CMA region as this would
+> > + * unnecessarily fragment that region.  So CMA attempts to migrate the page
+> > + * before pinning.
+> >   *
+> >   * "longterm" == userspace controlled elevated page count lifetime.
+> >   * Contrast this to iov_iter_get_pages() usages which are transient.
+> 
+> Ah, here's the longterm documentation, but if I was a developer
+> considering whether to use FOLL_LONGTERM or not I would expect to find
+> the documentation at the flag definition site.
+> 
+> I think it has become more clear since get_user_pages_longterm() was
+> initially merged that we need to warn people not to use it, or at
+> least seriously reconsider whether they want an interface to support
+> indefinite pins.
 
-Oh? Isn't the only thing FOLL_LONGTERM does is block the call on DAX?
-Why does the locking mode matter to this test?
+I will move the comment to the flag definition but...
 
-> What I could do is BUG_ON (or just WARN_ON) if unlocked is called with
-> FOLL_LONGTERM similar to the code in get_user_pages_locked() which does not
-> allow locked and vmas to be passed together:
+In reviewing this comment it occurs to me that the addition of special casing
+CMA regions via FOLL_LONGTERM has made it less experimental/temporary and now
+simply implies intent to the GUP code as to the use of the pages.
 
-The GUP call should fail if you are doing something like this. But I'd
-rather not see confusing specialc cases in code without a clear
-comment explaining why it has to be there.
+As I'm not super familiar with the CMA use case I can't say for certain but it
+seems that it is not a temporary solution.
 
-Jason
+So I'm not going to refrain from a FIXME WRT removing the flag.
+
+New suggested text below.
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6831077d126c..5db9d8e894aa 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2596,7 +2596,28 @@ struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
+ #define FOLL_REMOTE    0x2000  /* we are working on non-current tsk/mm */
+ #define FOLL_COW       0x4000  /* internal GUP flag */
+ #define FOLL_ANON      0x8000  /* don't do file mappings */
+-#define FOLL_LONGTERM  0x10000 /* mapping is intended for a long term pin */
++#define FOLL_LONGTERM  0x10000 /* mapping lifetime is indefinite: see below */
++
++/*
++ * NOTE on FOLL_LONGTERM:
++ *
++ * FOLL_LONGTERM indicates that the page will be held for an indefinite time
++ * period _often_ under userspace control.  This is contrasted with
++ * iov_iter_get_pages() where usages which are transient.
++ *
++ * FIXME: For pages which are part of a filesystem, mappings are subject to the
++ * lifetime enforced by the filesystem and we need guarantees that longterm
++ * users like RDMA and V4L2 only establish mappings which coordinate usage with
++ * the filesystem.  Ideas for this coordination include revoking the longterm
++ * pin, delaying writeback, bounce buffer page writeback, etc.  As FS DAX was
++ * added after the problem with filesystems was found FS DAX VMAs are
++ * specifically failed.  Filesystem pages are still subject to bugs and use of
++ * FOLL_LONGTERM should be avoided on those pages.
++ *
++ * In the CMA case: longterm pins in a CMA region would unnecessarily fragment
++ * that region.  And so CMA attempts to migrate the page before pinning when
++ * FOLL_LONGTERM is specified.
++ */
+ 
+ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
+ {
+

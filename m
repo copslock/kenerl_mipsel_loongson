@@ -2,113 +2,128 @@ Return-Path: <SRS0=PETI=R5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94631C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71B77C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 08:41:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6367F2070B
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:47:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553582863;
-	bh=Tihbc4Z6MF7F6RiRz4r4Qdr2HlBe995dTlbAHE1WZaE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=SGfXUE8ZFxr2EuPPgs/qN4cTelaWCz2+D+DQRFHfen9wWnvHOaJvIXWFD42i/2/SH
-	 uRJF3NrxAQ0wBM1CIbnpn4sCr6rBmHDIkI3IRUZ6nOb/JNgm4idnfRIzrKUh/lbN2U
-	 RWu2igCWrIh46Y4lK5usFQ+lCxVvxm+hFGwjA1G8=
+	by mail.kernel.org (Postfix) with ESMTP id 492082084B
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 08:41:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731111AbfCZGbl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 02:31:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41044 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731088AbfCZGbi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 26 Mar 2019 02:31:38 -0400
-Received: from localhost (unknown [104.132.152.111])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C18E20866;
-        Tue, 26 Mar 2019 06:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553581898;
-        bh=Tihbc4Z6MF7F6RiRz4r4Qdr2HlBe995dTlbAHE1WZaE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jVrLt7KxKWb/sYD75FLqp/xzQ/YxzDvONk+ptMm9cT9zuHIVcbr4NNWf4mImBwzNq
-         MwARlXw9oJePBer1vvmgLJlo+5wgtOrUvJU9lcwTgPjmZ4w8cT1qFg32FPfGJEZE9M
-         /PuVcSW+og0XZrS0uWbvZcXyUpY8InllPd8clqJ8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Archer Yan <ayan@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.9 08/30] MIPS: Fix kernel crash for R6 in jump label branch function
-Date:   Tue, 26 Mar 2019 15:29:47 +0900
-Message-Id: <20190326042607.861704407@linuxfoundation.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190326042607.558087893@linuxfoundation.org>
-References: <20190326042607.558087893@linuxfoundation.org>
-User-Agent: quilt/0.65
-X-stable: review
-X-Patchwork-Hint: ignore
+        id S1730827AbfCZIlQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 04:41:16 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:40195 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730633AbfCZIlP (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 04:41:15 -0400
+Received: by mail-qk1-f196.google.com with SMTP id w20so7077043qka.7;
+        Tue, 26 Mar 2019 01:41:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FsvXmJOm0pyAEzqJwh7QrRIEtsG70UpLjTLyzkR25QM=;
+        b=inGHnAWdZEHqVyzAUkaVa09dLWCrDcQma/jIwKLkmdlzFZV0JFjHkNEYQatkdUn3MK
+         CuIHcEaZopxd/nmqihAFHAzjIRPJu6oxonVrCAIXxFhiMd4CLM1qs/nvL9TXGhMvgY+K
+         hzsJo5N6hhUXBrpkzZBXJSvPkRXP1IsuHuPi+PYq7iKF/bW9hg84QppRnc5WxsfNHdta
+         JQBCvgVbVamPvTBFzUgvmzMW9Cy+G+57FolnWxE5mVuXFxIydohCUh5tM4sizyxzg0mC
+         Q1+mLfHhWjVGdftptweKD3WkEhsP7XY+XYQoEc5o68roMYbhlDVW2kjQIoiYHVdm8vHZ
+         rubw==
+X-Gm-Message-State: APjAAAVlq05eoaMCMIjCmy0LkrUOUcVimpsX4d6nwcyKYgz5sm8Mk12D
+        2N6ruv3Fldr7vJGn+dA8esN3lpcFN6DP5amtYhY=
+X-Google-Smtp-Source: APXvYqzWbuWCanAHJozGrgBku0Nl3U4qpb5NhALU98xKcvW3XcvnqLpIieND44urCirxL5XGMyEfYrhtUAoIc81gmlU=
+X-Received: by 2002:a05:620a:133b:: with SMTP id p27mr23057938qkj.173.1553589674188;
+ Tue, 26 Mar 2019 01:41:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20190325143521.34928-1-arnd@arndb.de> <20190325144737.703921-1-arnd@arndb.de>
+ <20190325173704.mun2cj2ulswv7s3i@pburton-laptop>
+In-Reply-To: <20190325173704.mun2cj2ulswv7s3i@pburton-laptop>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 26 Mar 2019 09:40:57 +0100
+Message-ID: <CAK8P3a1dVLdL_oM8iCGP1R0SG=4BrrsPSaTare5NN5WLxJb_Uw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Firoz Khan <firoz.khan@linaro.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+On Mon, Mar 25, 2019 at 6:37 PM Paul Burton <paul.burton@mips.com> wrote:
+> On Mon, Mar 25, 2019 at 03:47:37PM +0100, Arnd Bergmann wrote:
+> > Add the io_uring and pidfd_send_signal system calls to all architectures.
+> >
+> > These system calls are designed to handle both native and compat tasks,
+> > so all entries are the same across architectures, only arm-compat and
+> > the generic tale still use an old format.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >%
+> > diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+> > index c85502e67b44..c4a49f7d57bb 100644
+> > --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
+> > +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+> > @@ -338,3 +338,7 @@
+> >  327  n64     rseq                            sys_rseq
+> >  328  n64     io_pgetevents                   sys_io_pgetevents
+> >  # 329 through 423 are reserved to sync up with other architectures
+> > +424  common  pidfd_send_signal               sys_pidfd_send_signal
+> > +425  common  io_uring_setup                  sys_io_uring_setup
+> > +426  common  io_uring_enter                  sys_io_uring_enter
+> > +427  common  io_uring_register               sys_io_uring_register
+>
+> Shouldn't these declare the ABI as "n64"?
+>
+> I don't see anywhere that it would actually change the generated code,
+> but a comment at the top of the file says that every entry should use
+> "n64" and so far they all do. Did you have something else in mind here?
 
-------------------
+You are right, the use of 'common' here is unintentional but harmless,
+and I should have used 'n64' here.
 
-From: Archer Yan <ayan@wavecomp.com>
+We may decide to do things differently in the future, i.e. we could
+have just a single global file for newly added system calls once
+it turns out that the tables are consistent across all architectures,
+but I'd probably go on with the separate identical entries for a bit
+before changing that.
 
-commit 47c25036b60f27b86ab44b66a8861bcf81cde39b upstream.
-
-Insert Branch instruction instead of NOP to make sure assembler don't
-patch code in forbidden slot. In jump label function, it might
-be possible to patch Control Transfer Instructions(CTIs) into
-forbidden slot, which will generate Reserved Instruction exception
-in MIPS release 6.
-
-Signed-off-by: Archer Yan <ayan@wavecomp.com>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-[paul.burton@mips.com:
-  - Add MIPS prefix to subject.
-  - Mark for stable from v4.0, which introduced r6 support, onwards.]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/include/asm/jump_label.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/arch/mips/include/asm/jump_label.h
-+++ b/arch/mips/include/asm/jump_label.h
-@@ -21,15 +21,15 @@
- #endif
- 
- #ifdef CONFIG_CPU_MICROMIPS
--#define NOP_INSN "nop32"
-+#define B_INSN "b32"
- #else
--#define NOP_INSN "nop"
-+#define B_INSN "b"
- #endif
- 
- static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
- {
--	asm_volatile_goto("1:\t" NOP_INSN "\n\t"
--		"nop\n\t"
-+	asm_volatile_goto("1:\t" B_INSN " 2f\n\t"
-+		"2:\tnop\n\t"
- 		".pushsection __jump_table,  \"aw\"\n\t"
- 		WORD_INSN " 1b, %l[l_yes], %0\n\t"
- 		".popsection\n\t"
-
-
+     Arnd

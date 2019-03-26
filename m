@@ -2,68 +2,55 @@ Return-Path: <SRS0=PETI=R5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83903C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4720BC43381
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 16:26:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4F0D620857
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:22:10 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtKrig73"
+	by mail.kernel.org (Postfix) with ESMTP id 22295206DF
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 16:26:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731594AbfCZPWF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 11:22:05 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:36695 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731652AbfCZPVu (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 11:21:50 -0400
-Received: by mail-it1-f193.google.com with SMTP id h9so20600870itl.1;
-        Tue, 26 Mar 2019 08:21:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=J6aYt82B/im1x/Yyr0qGXhiLTzFyVheHcnku77QlNA8=;
-        b=RtKrig73ZaeRLJqjod9yAuZZ/PW+U5Jdk9k3l6bkTPy5xRobq6AKynDzaw308lmyku
-         elR8m80GNMYSy+TnJPwQocyV42ta0RKp7pxri0wz2C/s232eRi8g+m5ZuIodWUuExD5Z
-         qEvNx59geh7gzzjRMbxbmLUdZJlisdYe3sb8b97ofCj+qMQiZPk2YX/w6zT1fEd9kvGx
-         58Na8oxWCpzxpE/Mn2qK07lVxzOX8wVE9W4hLJXO1+bexELeF35phgX09Nmrs07SS08U
-         kgqyppP8TVIrfzPCSzBshaa9UN5zysf0vCp957XfvtosUC56jRlFHDuldeVg33qIioAH
-         rrJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=J6aYt82B/im1x/Yyr0qGXhiLTzFyVheHcnku77QlNA8=;
-        b=QS7fG+EX/vrEaNM7s65i+Ru5PxYVuTPGVwDc6wLGK4yaF4Ocfu+uCBz/ViOmdlm85v
-         dikHIIkIJhit/TN95WJZSqYAnet1R6dudo4zX4iVpmPko0w9tWK+D3M1RmGjgBKdXlyo
-         g93l9oOFciz0vcZe+Yv+TO1vYciVL6cmt6XOuFHUD382yiJB0aGu7ywvY5VK+sPaT3Kj
-         BU0vtRQOBBMvPunaCp7ol2AkGSnSTMC8SaVsH8b5DHgHtvgzrEnsGVBIN6i17OZRCoab
-         jRRfpGLnf80ikatRYKTNMe1XoJfIOcaQYKSekBtf3XLCrj5FAN9N/B1P3ba4AcIuTqWg
-         934w==
-X-Gm-Message-State: APjAAAVyarUfn4zAjlVmzaQKngkKECjJkioynb0RCcvfNcBRosxfoM/q
-        A1qSNh1DjybICRQsoHRfXNc=
-X-Google-Smtp-Source: APXvYqzQmMOwsVZBvJGxm8+3v+CdARmSuXNTJ1+edpRp6wzv8fzRvt9amN0gFZNZcwnMGHJzxJK47Q==
-X-Received: by 2002:a02:c4c8:: with SMTP id h8mr23250884jaj.33.1553613709403;
-        Tue, 26 Mar 2019 08:21:49 -0700 (PDT)
-Received: from localhost.localdomain (c-73-242-244-99.hsd1.nm.comcast.net. [73.242.244.99])
-        by smtp.gmail.com with ESMTPSA id w14sm6861045iol.32.2019.03.26.08.21.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Mar 2019 08:21:48 -0700 (PDT)
-From:   George Hilliard <thirtythreeforty@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        George Hilliard <thirtythreeforty@gmail.com>
-Subject: [PATCH v4 1/2] staging: mt7621-mmc: Remove obsolete Kconfig flags
-Date:   Tue, 26 Mar 2019 09:21:38 -0600
-Message-Id: <20190326152139.18609-2-thirtythreeforty@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190326152139.18609-1-thirtythreeforty@gmail.com>
-References: <20190326152139.18609-1-thirtythreeforty@gmail.com>
+        id S1731754AbfCZQ0r (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 12:26:47 -0400
+Received: from foss.arm.com ([217.140.101.70]:39586 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727492AbfCZQ0r (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 26 Mar 2019 12:26:47 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C66841684;
+        Tue, 26 Mar 2019 09:26:46 -0700 (PDT)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.69])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F09503F614;
+        Tue, 26 Mar 2019 09:26:42 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will.deacon@arm.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH v6 03/19] mips: mm: Add p?d_large() definitions
+Date:   Tue, 26 Mar 2019 16:26:08 +0000
+Message-Id: <20190326162624.20736-4-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190326162624.20736-1-steven.price@arm.com>
+References: <20190326162624.20736-1-steven.price@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -71,35 +58,54 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-These values are not referred to anywhere else in the kernel. Card
-detect is controlled by the device tree property "mediatek,cd-poll",
-and there is no driver support for eMMC whatsoever.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_large() functions/macros.
 
-Signed-off-by: George Hilliard <thirtythreeforty@gmail.com>
+For mips, we only support large pages on 64 bit.
+
+For 64 bit if _PAGE_HUGE is defined we can simply look for it. When not
+defined we can be confident that there are no large pages in existence
+and fall back on the generic implementation (added in a later patch)
+which returns 0.
+
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Paul Burton <paul.burton@mips.com>
+CC: James Hogan <jhogan@kernel.org>
+CC: linux-mips@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+Acked-by: Paul Burton <paul.burton@mips.com>
 ---
-v2: Rewrite of v1
-v3: [Not present]
-v4: Resubmit of v2
+ arch/mips/include/asm/pgtable-64.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- drivers/staging/mt7621-mmc/Kconfig | 8 --------
- 1 file changed, 8 deletions(-)
-
-diff --git a/drivers/staging/mt7621-mmc/Kconfig b/drivers/staging/mt7621-mmc/Kconfig
-index 1eb79cd6e22f..01f231dd8511 100644
---- a/drivers/staging/mt7621-mmc/Kconfig
-+++ b/drivers/staging/mt7621-mmc/Kconfig
-@@ -6,11 +6,3 @@ config MTK_AEE_KDUMP
- 	bool "MTK AEE KDUMP"
- 	depends on MTK_MMC
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 93a9dce31f25..42162877ac62 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -273,6 +273,10 @@ static inline int pmd_present(pmd_t pmd)
+ 	return pmd_val(pmd) != (unsigned long) invalid_pte_table;
+ }
  
--config MTK_MMC_CD_POLL
--	bool "Card Detect with Polling"
--	depends on MTK_MMC
--
--config MTK_MMC_EMMC_8BIT
--	bool "eMMC 8-bit support"
--	depends on MTK_MMC && RALINK_MT7628
--
++#ifdef _PAGE_HUGE
++#define pmd_large(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pmd_clear(pmd_t *pmdp)
+ {
+ 	pmd_val(*pmdp) = ((unsigned long) invalid_pte_table);
+@@ -297,6 +301,10 @@ static inline int pud_present(pud_t pud)
+ 	return pud_val(pud) != (unsigned long) invalid_pmd_table;
+ }
+ 
++#ifdef _PAGE_HUGE
++#define pud_large(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pud_clear(pud_t *pudp)
+ {
+ 	pud_val(*pudp) = ((unsigned long) invalid_pmd_table);
 -- 
-2.21.0
+2.20.1
 

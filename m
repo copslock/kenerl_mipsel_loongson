@@ -4,40 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4BFCC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8F05C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:38:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 73E0620866
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:33:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A745D2086C
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553582028;
-	bh=wjFTetixX7mQL1O+pWsG91TjqIbGxV7uBpjFojrfueo=;
+	s=default; t=1553582303;
+	bh=MIWFpi4T1Wo5YerruYS2bRgHn2nT/C4s1/17QpGVbg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=APFlApygsY4LyxEoGWDoM027S0KCSwo6wmpGiIX8SQSjBN7uxIlCjTb2QymmZHYDm
-	 yRa09+sTKKn359I6sPk+Vj+oVpCuvcTeGVgxXn2fDffndbO82OlS8+94K6r/WQM9eo
-	 Z2EIO+OKjSn5Jan+WSEiSVnNqmkPrZvCXv+Lgy6Y=
+	b=ZU5WCsyQY0O3GmD9mGC7rjMf3QyGcT3wadyGGW6bJhPqVhbB3Mev8LK/mYV5zDHjn
+	 OhAftbxfLhP26kE0rggWnzmWk53c3etOr3C3M+aVMNwi2z0wKCB6wbLnQYBQPF3n2n
+	 zpoiugVNlb+SLizOP+rKTJYIUvPO7rA/hFjLG48w=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731262AbfCZGdn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 02:33:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43636 "EHLO mail.kernel.org"
+        id S1732016AbfCZGiW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 02:38:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731179AbfCZGdm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 26 Mar 2019 02:33:42 -0400
+        id S1732519AbfCZGiV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 26 Mar 2019 02:38:21 -0400
 Received: from localhost (unknown [104.132.152.111])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B135D20857;
-        Tue, 26 Mar 2019 06:33:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5BA42070B;
+        Tue, 26 Mar 2019 06:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553582021;
-        bh=wjFTetixX7mQL1O+pWsG91TjqIbGxV7uBpjFojrfueo=;
+        s=default; t=1553582300;
+        bh=MIWFpi4T1Wo5YerruYS2bRgHn2nT/C4s1/17QpGVbg4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SajrVh1+wFMRcKCI0pODELE/4tR+p7ty5pJq74k3Y3kP6FJD3B2pTJSHeEYln9PjJ
-         htZ1UF1Jsj1TklGXspO6V+Fy3Cni65BZxYhuRDXgE0QPgf/rIhQn/hYQQb7XW4PrvK
-         dkPeX3ba5xoiSOV7t1sQ0P2XtqfuDz9iwv6z5WYE=
+        b=uXADpNy43RA9ReW8qjxWEL/1XDXQXzO33PDEyL5wQBeOcNiSRjcnxCTX17EanNg2D
+         kjZwFNlTEJdPIB0dVMwg7lZuM8HgvymLsCnBTXxVj6Ynko9kZt8x5Qb9Sqfkn3FVP6
+         t/YvRRu/JoGBbIsWE8QnYLbluSccosr3JtNEdtLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +46,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Huacai Chen <chenhc@lemote.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>
-Subject: [PATCH 4.14 06/41] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to "cascade" irqaction.
-Date:   Tue, 26 Mar 2019 15:29:43 +0900
-Message-Id: <20190326042650.194435365@linuxfoundation.org>
+Subject: [PATCH 5.0 14/52] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to "cascade" irqaction.
+Date:   Tue, 26 Mar 2019 15:30:01 +0900
+Message-Id: <20190326042701.634116895@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190326042649.889479098@linuxfoundation.org>
-References: <20190326042649.889479098@linuxfoundation.org>
+In-Reply-To: <20190326042700.963224437@linuxfoundation.org>
+References: <20190326042700.963224437@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

@@ -7,60 +7,60 @@ X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6D93C4360F
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83903C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:22:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8819E20823
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:21:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4F0D620857
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:22:10 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qPUhDFW0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtKrig73"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731661AbfCZPVw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 11:21:52 -0400
-Received: from mail-it1-f196.google.com ([209.85.166.196]:39738 "EHLO
-        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732128AbfCZPVv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 11:21:51 -0400
-Received: by mail-it1-f196.google.com with SMTP id 139so20617550ita.4;
-        Tue, 26 Mar 2019 08:21:51 -0700 (PDT)
+        id S1731594AbfCZPWF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 11:22:05 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:36695 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731652AbfCZPVu (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 11:21:50 -0400
+Received: by mail-it1-f193.google.com with SMTP id h9so20600870itl.1;
+        Tue, 26 Mar 2019 08:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zNDW/JmLRYmJUskWsM7sYQ9RMDYDxyLGR5SNcEkiM2c=;
-        b=qPUhDFW0YWT2mMdOecOhI21kFtySIqtkIBHaIoP8KWwDixZPVv8MJNC7trbNDOvadr
-         4kButM8JLmArS934E+vTO6e9MIBO5W7FuvMj763tnoz0MlE4fz097zlupCE8t02wnJds
-         Fo8CJeeH8U1zMjhFpMcmpdqPRhmharIwW0J044O2JLrDnmgjEwzAjK/0NL6diRmObjNt
-         9/wWubkKMCryYstz3Bej9XVRI71ilhOv4HcmhPtEk1p/T2+iEm4f72N6fEOqETA8V3kX
-         4w3MSlq0E2cFDSfAE90SoyFE2fKWxDgZzXRcVu42M53EOU2oIfZ+M6kJBpqWqUqkHv2W
-         L1Qw==
+        bh=J6aYt82B/im1x/Yyr0qGXhiLTzFyVheHcnku77QlNA8=;
+        b=RtKrig73ZaeRLJqjod9yAuZZ/PW+U5Jdk9k3l6bkTPy5xRobq6AKynDzaw308lmyku
+         elR8m80GNMYSy+TnJPwQocyV42ta0RKp7pxri0wz2C/s232eRi8g+m5ZuIodWUuExD5Z
+         qEvNx59geh7gzzjRMbxbmLUdZJlisdYe3sb8b97ofCj+qMQiZPk2YX/w6zT1fEd9kvGx
+         58Na8oxWCpzxpE/Mn2qK07lVxzOX8wVE9W4hLJXO1+bexELeF35phgX09Nmrs07SS08U
+         kgqyppP8TVIrfzPCSzBshaa9UN5zysf0vCp957XfvtosUC56jRlFHDuldeVg33qIioAH
+         rrJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zNDW/JmLRYmJUskWsM7sYQ9RMDYDxyLGR5SNcEkiM2c=;
-        b=fAfD2+21SwyU14+d07/uumw1ZjN8mPTd0fpbscPz9RhjnwDzHx9Q9UAaGMczzwL8Iy
-         CyaZ6ADyQTrKcoFCNxGoYyyGd1lBG2d1PUVAmdUKZfFntdiU5/qk0O1X3jqnCsjHqEXA
-         T3bUhT6+FyrSEvWJohiC5Po/V/Weybm5mgdBgtcyW+IfYrMHP3tzc/p9PVZAFJplgHLQ
-         JzvUScwhyWfJ2Gt5bKK/fqgMEYslU7cV7jj+f0yRr3x2mjK6RSYJcfziPpqH1wrLYQXw
-         0BGSNS3WCos7qWr8dDNH7DRkONTBjhPIM5akRiECgxGC6j7zpDyvP9XoCUzwWJ/fWvh1
-         ERCg==
-X-Gm-Message-State: APjAAAUrJZP5ZNqmnIMzSK1sxNS8dtGoyppaObCel9iGKb4SVjtaWHst
-        fo91GLqZNSaPcnpa47dkUZukozSgszo=
-X-Google-Smtp-Source: APXvYqxv/AVGZZvi1LBae0NDcZFTGkKBKiesordnemv2ZMEH5LQiURhX4gW1dyCKrL53BV7hwDZP5Q==
-X-Received: by 2002:a24:287:: with SMTP id 129mr667516itu.114.1553613710753;
-        Tue, 26 Mar 2019 08:21:50 -0700 (PDT)
+        bh=J6aYt82B/im1x/Yyr0qGXhiLTzFyVheHcnku77QlNA8=;
+        b=QS7fG+EX/vrEaNM7s65i+Ru5PxYVuTPGVwDc6wLGK4yaF4Ocfu+uCBz/ViOmdlm85v
+         dikHIIkIJhit/TN95WJZSqYAnet1R6dudo4zX4iVpmPko0w9tWK+D3M1RmGjgBKdXlyo
+         g93l9oOFciz0vcZe+Yv+TO1vYciVL6cmt6XOuFHUD382yiJB0aGu7ywvY5VK+sPaT3Kj
+         BU0vtRQOBBMvPunaCp7ol2AkGSnSTMC8SaVsH8b5DHgHtvgzrEnsGVBIN6i17OZRCoab
+         jRRfpGLnf80ikatRYKTNMe1XoJfIOcaQYKSekBtf3XLCrj5FAN9N/B1P3ba4AcIuTqWg
+         934w==
+X-Gm-Message-State: APjAAAVyarUfn4zAjlVmzaQKngkKECjJkioynb0RCcvfNcBRosxfoM/q
+        A1qSNh1DjybICRQsoHRfXNc=
+X-Google-Smtp-Source: APXvYqzQmMOwsVZBvJGxm8+3v+CdARmSuXNTJ1+edpRp6wzv8fzRvt9amN0gFZNZcwnMGHJzxJK47Q==
+X-Received: by 2002:a02:c4c8:: with SMTP id h8mr23250884jaj.33.1553613709403;
+        Tue, 26 Mar 2019 08:21:49 -0700 (PDT)
 Received: from localhost.localdomain (c-73-242-244-99.hsd1.nm.comcast.net. [73.242.244.99])
-        by smtp.gmail.com with ESMTPSA id w14sm6861045iol.32.2019.03.26.08.21.49
+        by smtp.gmail.com with ESMTPSA id w14sm6861045iol.32.2019.03.26.08.21.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Mar 2019 08:21:50 -0700 (PDT)
+        Tue, 26 Mar 2019 08:21:48 -0700 (PDT)
 From:   George Hilliard <thirtythreeforty@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         George Hilliard <thirtythreeforty@gmail.com>
-Subject: [PATCH v4 2/2] staging: mt7621-mmc: Initialize completions a single time during probe
-Date:   Tue, 26 Mar 2019 09:21:39 -0600
-Message-Id: <20190326152139.18609-3-thirtythreeforty@gmail.com>
+Subject: [PATCH v4 1/2] staging: mt7621-mmc: Remove obsolete Kconfig flags
+Date:   Tue, 26 Mar 2019 09:21:38 -0600
+Message-Id: <20190326152139.18609-2-thirtythreeforty@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190326152139.18609-1-thirtythreeforty@gmail.com>
 References: <20190326152139.18609-1-thirtythreeforty@gmail.com>
@@ -71,84 +71,35 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The module was initializing completions whenever it was going to wait on
-them, and not when the completion was allocated.  This is incorrect
-according to the completion docs:
-
-    Calling init_completion() on the same completion object twice is
-    most likely a bug [...]
-
-Re-initialization is also unnecessary because the module never uses
-complete_all().  Fix this by only ever initializing the completion a
-single time, and log if the completions are not consumed as intended
-(this is not a fatal problem, but should not go unnoticed).
+These values are not referred to anywhere else in the kernel. Card
+detect is controlled by the device tree property "mediatek,cd-poll",
+and there is no driver support for eMMC whatsoever.
 
 Signed-off-by: George Hilliard <thirtythreeforty@gmail.com>
 ---
-v2: rewrite of v1
-v3: Remove BUG_ON() calls
-v4: Indent style fixup
+v2: Rewrite of v1
+v3: [Not present]
+v4: Resubmit of v2
 
- drivers/staging/mt7621-mmc/sd.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/staging/mt7621-mmc/Kconfig | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/staging/mt7621-mmc/sd.c b/drivers/staging/mt7621-mmc/sd.c
-index e346167754bd..ed63bd3ba6cc 100644
---- a/drivers/staging/mt7621-mmc/sd.c
-+++ b/drivers/staging/mt7621-mmc/sd.c
-@@ -466,7 +466,11 @@ static unsigned int msdc_command_start(struct msdc_host   *host,
- 	host->cmd     = cmd;
- 	host->cmd_rsp = resp;
+diff --git a/drivers/staging/mt7621-mmc/Kconfig b/drivers/staging/mt7621-mmc/Kconfig
+index 1eb79cd6e22f..01f231dd8511 100644
+--- a/drivers/staging/mt7621-mmc/Kconfig
++++ b/drivers/staging/mt7621-mmc/Kconfig
+@@ -6,11 +6,3 @@ config MTK_AEE_KDUMP
+ 	bool "MTK AEE KDUMP"
+ 	depends on MTK_MMC
  
--	init_completion(&host->cmd_done);
-+	// The completion should have been consumed by the previous command
-+	// response handler, because the mmc requests should be serialized
-+	if(completion_done(&host->cmd_done))
-+		dev_err(mmc_dev(host->mmc),
-+		        "previous command was not handled\n");
- 
- 	sdr_set_bits(host->base + MSDC_INTEN, wints);
- 	sdc_send_cmd(rawcmd, cmd->arg);
-@@ -488,7 +492,6 @@ static unsigned int msdc_command_resp(struct msdc_host   *host,
- 		    MSDC_INT_ACMD19_DONE;
- 
- 	BUG_ON(in_interrupt());
--	//init_completion(&host->cmd_done);
- 	//sdr_set_bits(host->base + MSDC_INTEN, wints);
- 
- 	spin_unlock(&host->lock);
-@@ -670,7 +673,13 @@ static int msdc_do_request(struct mmc_host *mmc, struct mmc_request *mrq)
- 		//msdc_clr_fifo(host);  /* no need */
- 
- 		msdc_dma_on();  /* enable DMA mode first!! */
--		init_completion(&host->xfer_done);
-+
-+		// The completion should have been consumed by the previous
-+		// xfer response handler, because the mmc requests should be
-+		// serialized
-+		if(completion_done(&host->cmd_done))
-+			dev_err(mmc_dev(host->mmc),
-+			        "previous transfer was not handled\n");
- 
- 		/* start the command first*/
- 		if (msdc_command_start(host, cmd, CMD_TIMEOUT) != 0)
-@@ -696,7 +705,6 @@ static int msdc_do_request(struct mmc_host *mmc, struct mmc_request *mrq)
- 		/* for read, the data coming too fast, then CRC error
- 		 *  start DMA no business with CRC.
- 		 */
--		//init_completion(&host->xfer_done);
- 		msdc_dma_start(host);
- 
- 		spin_unlock(&host->lock);
-@@ -1687,6 +1695,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 	}
- 	msdc_init_gpd_bd(host, &host->dma);
- 
-+	init_completion(&host->cmd_done);
-+	init_completion(&host->xfer_done);
- 	INIT_DELAYED_WORK(&host->card_delaywork, msdc_tasklet_card);
- 	spin_lock_init(&host->lock);
- 	msdc_init_hw(host);
+-config MTK_MMC_CD_POLL
+-	bool "Card Detect with Polling"
+-	depends on MTK_MMC
+-
+-config MTK_MMC_EMMC_8BIT
+-	bool "eMMC 8-bit support"
+-	depends on MTK_MMC && RALINK_MT7628
+-
 -- 
 2.21.0
 

@@ -2,128 +2,77 @@ Return-Path: <SRS0=PETI=R5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71B77C43381
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 08:41:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2D40C43381
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:21:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 492082084B
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 08:41:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B2A282075E
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 15:21:50 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q13xFeYP"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730827AbfCZIlQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 04:41:16 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:40195 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730633AbfCZIlP (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 04:41:15 -0400
-Received: by mail-qk1-f196.google.com with SMTP id w20so7077043qka.7;
-        Tue, 26 Mar 2019 01:41:14 -0700 (PDT)
+        id S1731715AbfCZPVu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 11:21:50 -0400
+Received: from mail-it1-f169.google.com ([209.85.166.169]:55074 "EHLO
+        mail-it1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731661AbfCZPVt (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 11:21:49 -0400
+Received: by mail-it1-f169.google.com with SMTP id w18so20152210itj.4;
+        Tue, 26 Mar 2019 08:21:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ut/KxZ/NxspP3PhpdUgOZaF02FJjx1Uz1wElp+fptX0=;
+        b=Q13xFeYPcmy0npkL81YbMLiJyIB2ebTbElq/LvZxagwnuZSNc6AnTACp3x5Q9Lxn8G
+         NuMx+AuulOM5aDkWwPBCVelsd7ZQdPuLVQ5xpKWYA0mDcQiUu6YVSdnGsTg+6qtnVW62
+         MkUSOPeT6VRljjcF0oS0/2wBcelXIzGyGFNh1jSdilicyzdfduCy45uukhqvqjiLlp+x
+         WWmGfdYTCgvfVISqMH5xC3ce04rAQKfnTjabaSOuFIY0QpQAyMyRcOlp6yMEnK3yPCYV
+         KZQ/qZMye/wNQzZc2VFppdD2mDsdYpXojvr0PIBixVlLo+ogl9LTmsedF0qMhpx5Q43H
+         qS+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FsvXmJOm0pyAEzqJwh7QrRIEtsG70UpLjTLyzkR25QM=;
-        b=inGHnAWdZEHqVyzAUkaVa09dLWCrDcQma/jIwKLkmdlzFZV0JFjHkNEYQatkdUn3MK
-         CuIHcEaZopxd/nmqihAFHAzjIRPJu6oxonVrCAIXxFhiMd4CLM1qs/nvL9TXGhMvgY+K
-         hzsJo5N6hhUXBrpkzZBXJSvPkRXP1IsuHuPi+PYq7iKF/bW9hg84QppRnc5WxsfNHdta
-         JQBCvgVbVamPvTBFzUgvmzMW9Cy+G+57FolnWxE5mVuXFxIydohCUh5tM4sizyxzg0mC
-         Q1+mLfHhWjVGdftptweKD3WkEhsP7XY+XYQoEc5o68roMYbhlDVW2kjQIoiYHVdm8vHZ
-         rubw==
-X-Gm-Message-State: APjAAAVlq05eoaMCMIjCmy0LkrUOUcVimpsX4d6nwcyKYgz5sm8Mk12D
-        2N6ruv3Fldr7vJGn+dA8esN3lpcFN6DP5amtYhY=
-X-Google-Smtp-Source: APXvYqzWbuWCanAHJozGrgBku0Nl3U4qpb5NhALU98xKcvW3XcvnqLpIieND44urCirxL5XGMyEfYrhtUAoIc81gmlU=
-X-Received: by 2002:a05:620a:133b:: with SMTP id p27mr23057938qkj.173.1553589674188;
- Tue, 26 Mar 2019 01:41:14 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ut/KxZ/NxspP3PhpdUgOZaF02FJjx1Uz1wElp+fptX0=;
+        b=S2U/zyKbL1UtwB13GfUS4944wvH5tc/0gTCkQto2wPjcizIVFrZddN6wVygdm97Hmh
+         D9VZGH+pixw8H++xn8YnMMYI06SyGgQP+wVOBTofzDP+KixLMi1Njo0zVBi89bMr5Tls
+         RRNs/Ydz1yXyxz7xtElRkBsXZwG3iRnb/zDAVdgHyLyme7rSnPXl54aM+uE02aI2nbOL
+         1UZcviMw5AdD6h9Ms1kfT0G9dV4O0ZN+WbjajlRcox1QiySRz404dIPeySYIXWJppQ4v
+         /+cQ8d2LaWGpEpVCStGNTH2e428SerRyQoQ1xF3f0EuAn9bQNWEf8ieWKG2hqd90wHEs
+         66ng==
+X-Gm-Message-State: APjAAAUhQHFO/GnkwxJMAH9w91KSzXy/cyRCrfSvLQMOyXbl5/5Mk7BW
+        e/ILZBCNigfJ6LwreQecKco=
+X-Google-Smtp-Source: APXvYqxZ9zj+T5ksTOLi+uIEgzH1z6x3LUMgbXokunZoxirMHSOy9VlH9LLgJXX+hpXlYMOEHI8HUg==
+X-Received: by 2002:a24:4383:: with SMTP id s125mr665205itb.55.1553613708297;
+        Tue, 26 Mar 2019 08:21:48 -0700 (PDT)
+Received: from localhost.localdomain (c-73-242-244-99.hsd1.nm.comcast.net. [73.242.244.99])
+        by smtp.gmail.com with ESMTPSA id w14sm6861045iol.32.2019.03.26.08.21.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 26 Mar 2019 08:21:47 -0700 (PDT)
+From:   George Hilliard <thirtythreeforty@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] staging: mt7621-mmc: correctness fixes
+Date:   Tue, 26 Mar 2019 09:21:37 -0600
+Message-Id: <20190326152139.18609-1-thirtythreeforty@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190325143521.34928-1-arnd@arndb.de> <20190325144737.703921-1-arnd@arndb.de>
- <20190325173704.mun2cj2ulswv7s3i@pburton-laptop>
-In-Reply-To: <20190325173704.mun2cj2ulswv7s3i@pburton-laptop>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 26 Mar 2019 09:40:57 +0100
-Message-ID: <CAK8P3a1dVLdL_oM8iCGP1R0SG=4BrrsPSaTare5NN5WLxJb_Uw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 6:37 PM Paul Burton <paul.burton@mips.com> wrote:
-> On Mon, Mar 25, 2019 at 03:47:37PM +0100, Arnd Bergmann wrote:
-> > Add the io_uring and pidfd_send_signal system calls to all architectures.
-> >
-> > These system calls are designed to handle both native and compat tasks,
-> > so all entries are the same across architectures, only arm-compat and
-> > the generic tale still use an old format.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >%
-> > diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> > index c85502e67b44..c4a49f7d57bb 100644
-> > --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-> > +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> > @@ -338,3 +338,7 @@
-> >  327  n64     rseq                            sys_rseq
-> >  328  n64     io_pgetevents                   sys_io_pgetevents
-> >  # 329 through 423 are reserved to sync up with other architectures
-> > +424  common  pidfd_send_signal               sys_pidfd_send_signal
-> > +425  common  io_uring_setup                  sys_io_uring_setup
-> > +426  common  io_uring_enter                  sys_io_uring_enter
-> > +427  common  io_uring_register               sys_io_uring_register
->
-> Shouldn't these declare the ABI as "n64"?
->
-> I don't see anywhere that it would actually change the generated code,
-> but a comment at the top of the file says that every entry should use
-> "n64" and so far they all do. Did you have something else in mind here?
+Coding style fixup and rebase of v3, and resubmit of the Kconfig patch
+that got dropped from v2.  No other changes.
 
-You are right, the use of 'common' here is unintentional but harmless,
-and I should have used 'n64' here.
+Thanks for your continued attention and reviews!
 
-We may decide to do things differently in the future, i.e. we could
-have just a single global file for newly added system calls once
-it turns out that the tables are consistent across all architectures,
-but I'd probably go on with the separate identical entries for a bit
-before changing that.
+George
 
-     Arnd
+

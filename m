@@ -7,48 +7,48 @@ X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C5B9C10F06
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FA69C10F05
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:44:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 253DE2070B
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:42:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2677B2070B
+	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 06:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553582575;
-	bh=Ks82F6afs5miF/B6V7NV7PuKCBsXgMu4SoVTkBhz1hc=;
+	s=default; t=1553582676;
+	bh=pqjvzSiJEsfK7ZffskbdO1uKI6xdKYWOWo4gD1qa7Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=LtYHaXQzJECApoisGZgtR48kAtcGO5t3k78Ldqpxz8YJnAzQGGHspb1nJg0faBxqT
-	 99o/ikgOUd8ghBlkgY1P/f2uR6UCvUlYHW4n3/2IxH6ZEFDdcqPEZz78QkrSaM0mVQ
-	 F0lmkCH1kFacrxHr2tUGq2yaXVSXn4HUs2gFulpQ=
+	b=YVsJj4RCv/cxzUGPKP6UV3HLG/kGnkTqtYk/xCJoy9fgqYXtKxcZ8MsGA0dPkVvNw
+	 +moUxwTHG4vij6bOcm1tU1Fa3Q6rXqwjxuHUQEjbTmXTE9qSt3mp/13vgsW9tvPp7T
+	 N3T4JQ0va7zSaxTOfXnIkJt947J2CTDdLFP+YF9o=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732531AbfCZGi2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 02:38:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53104 "EHLO mail.kernel.org"
+        id S1731633AbfCZGfi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 02:35:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47458 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732229AbfCZGi2 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 26 Mar 2019 02:38:28 -0400
+        id S1725535AbfCZGfh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 26 Mar 2019 02:35:37 -0400
 Received: from localhost (unknown [104.132.152.111])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B2462086C;
-        Tue, 26 Mar 2019 06:38:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 650F420823;
+        Tue, 26 Mar 2019 06:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553582307;
-        bh=Ks82F6afs5miF/B6V7NV7PuKCBsXgMu4SoVTkBhz1hc=;
+        s=default; t=1553582137;
+        bh=pqjvzSiJEsfK7ZffskbdO1uKI6xdKYWOWo4gD1qa7Do=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ms2ZeBMMAtNHwrdWlKOGuTUFWq1mhp2EUO8kDwMtHvIQHvAV/FnUTRTUCK6c3gv1/
-         8mKwJroOn+A8PjLzczp/E86XqADCe0DQTfvmDMwBjlq5zXr6cJAs4+RYdCKt2TSkrn
-         9TL0Bkvn7Hu4n2CAmrubL/pXutz9TIURjNqqXsK0=
+        b=sAOT0UTkbmKRCntzdQ1tJ69HJ/32hsCIyF3U1vV2LPoMWSrsypK9K1bnSKHwlvaO9
+         HXDfqE88j/Q/XRQNZU6PruDaamCIQDu9hsxgvolTiEnGv7l0XI5W8GWzCMT853E0KN
+         uFHbZpkYGcnlda44SGdiODtPS0rmIbA8ux4mSIM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Archer Yan <ayan@wavecomp.com>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 5.0 16/52] MIPS: Fix kernel crash for R6 in jump label branch function
-Date:   Tue, 26 Mar 2019 15:30:03 +0900
-Message-Id: <20190326042701.724166031@linuxfoundation.org>
+Subject: [PATCH 4.19 13/45] MIPS: Fix kernel crash for R6 in jump label branch function
+Date:   Tue, 26 Mar 2019 15:29:56 +0900
+Message-Id: <20190326042703.370663184@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190326042700.963224437@linuxfoundation.org>
-References: <20190326042700.963224437@linuxfoundation.org>
+In-Reply-To: <20190326042702.565683325@linuxfoundation.org>
+References: <20190326042702.565683325@linuxfoundation.org>
 User-Agent: quilt/0.65
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-5.0-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

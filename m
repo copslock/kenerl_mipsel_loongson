@@ -2,32 +2,33 @@ Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_PASS,UNWANTED_LANGUAGE_BODY autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5623C10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9090C10F0A
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:18:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 67CD12075C
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:18:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6D0E62082F
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:18:55 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="YXcP/R4G"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="lPDcbnnW"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732745AbfC0XRv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 19:17:51 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:59276 "EHLO
+        id S1732784AbfC0XRw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 19:17:52 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:59222 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732572AbfC0XRv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:51 -0400
+        with ESMTP id S1732628AbfC0XRq (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1553728668; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1553728664; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=NjQ2F08kMImKzahKxPvopZlS77+2wWI9m9V/KZlaiA0=;
-        b=YXcP/R4GPbq8hsKtPtul+l1iPGHFyzdOQgOZzDZThZtuIlXjq0H0XkkA5Tnhn6mhSgNbDf
-        MwJo/8BtxoL4BJN2N0kvWAQZOy+SCVhf8ZNcLuCBQ2Szet5JB0yj0QypSRRwV65vhq2sqe
-        DJWgRXs5erMmL/tpBjZs1NB9CzRKr4Q=
+        bh=Xjf4DrrtmSZT3xvRmQjVzrD+mdW5u5tnY/n+24Z5NZk=;
+        b=lPDcbnnW5sOTHZbgIiELh/TmzQdiOUgyihxHOkJn1WVGaZDCUii4U2ufFGob/POt4k2Qu1
+        IYBm4Yo/MoonSw6/DIRbGdub1fngJpiMdJt13QbUeM5l6S33/vOJAEEqMsm5inmu+KTlKa
+        SDEgJb78dIg7c2TtveFWCLG3elzeDUU=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,9 +47,9 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v11 19/27] MIPS: Kconfig: Select TCU timer driver when MACH_INGENIC is set
-Date:   Thu, 28 Mar 2019 00:16:23 +0100
-Message-Id: <20190327231631.15708-20-paul@crapouillou.net>
+Subject: [PATCH v11 18/27] clk: jz4740: Add TCU clock
+Date:   Thu, 28 Mar 2019 00:16:22 +0100
+Message-Id: <20190327231631.15708-19-paul@crapouillou.net>
 In-Reply-To: <20190327231631.15708-1-paul@crapouillou.net>
 References: <20190327231631.15708-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -56,29 +57,47 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-We cannot boot to userspace (not even initramfs) if the timer driver is
-not present; so it makes sense to enable it unconditionally when
-MACH_INGENIC is set.
+Add the missing TCU clock to the list of clocks supplied by the CGU for
+the JZ4740 SoC.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
+ include/dt-bindings/clock/jz4740-cgu.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4a5f5b0ee9a9..eca480d43d93 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -393,6 +393,7 @@ config MACH_INGENIC
- 	select BUILTIN_DTB if MIPS_NO_APPENDED_DTB
- 	select USE_OF
- 	select LIBFDT
-+	select INGENIC_TIMER
+diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
+index b86edd328249..5d0d5be1e6a7 100644
+--- a/drivers/clk/ingenic/jz4740-cgu.c
++++ b/drivers/clk/ingenic/jz4740-cgu.c
+@@ -211,6 +211,12 @@ static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
+ 		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
+ 		.gate = { CGU_REG_CLKGR, 5 },
+ 	},
++
++	[JZ4740_CLK_TCU] = {
++		"tcu", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 1 },
++	},
+ };
  
- config LANTIQ
- 	bool "Lantiq based platforms"
+ static void __init jz4740_cgu_init(struct device_node *np)
+diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
+index 6ed83f926ae7..e82d77028581 100644
+--- a/include/dt-bindings/clock/jz4740-cgu.h
++++ b/include/dt-bindings/clock/jz4740-cgu.h
+@@ -34,5 +34,6 @@
+ #define JZ4740_CLK_ADC		19
+ #define JZ4740_CLK_I2C		20
+ #define JZ4740_CLK_AIC		21
++#define JZ4740_CLK_TCU		22
+ 
+ #endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
 -- 
 2.11.0
 

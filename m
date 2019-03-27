@@ -1,108 +1,96 @@
-Return-Path: <SRS0=PETI=R5=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03B3AC43381
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 17:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 602BBC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 00:46:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C4E702070D
-	for <linux-mips@archiver.kernel.org>; Tue, 26 Mar 2019 17:03:56 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJlCdVAC"
+	by mail.kernel.org (Postfix) with ESMTP id 270C12082F
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 00:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1553647570;
+	bh=VnGM0s5kqmuXW+KOcnWFx1TyYj0DnTnhE/my1+oM1cA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=rzN2a+soGN+WgtvN963aSnYpYJcBBILA+vfCm/wcyOsj+bvMU3HZf6M/PmHfgBKe2
+	 52/RWwcAyg/9u/hBzeVPBDBr4NM65vwwpuRhwJrFHLNkjDbuVn6eGoOosK3ySbA+H/
+	 1uJMP/Ottis8SyneueHWoaCtdRAFoSgATggbTgoA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729440AbfCZRD4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 13:03:56 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:43413 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbfCZRD4 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 13:03:56 -0400
-Received: by mail-ed1-f68.google.com with SMTP id d26so11415655ede.10;
-        Tue, 26 Mar 2019 10:03:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Da+zC2BJbCPB/tjtf0Jk85c8HOJsfHJGaS+cHCHGf5M=;
-        b=TJlCdVAC7CeSGb5rI9dBLm/OM61Boca7yb6nI7DSSwBxkq91irCW36x3fyzapLxWrB
-         w/PEPjQk+mqFzVMV5wXl1t0CNi65e4fJ1uTvAWojJFrbbQW1EFmW1Z4sIsQcUeYO3xSv
-         Wnl49QwXeDwqxIRfdzM+yvVRVEJv612laZQGnJZusLaREZjgR6/EfLZhSZVdccWlUxzj
-         MZAJAqTR0cfzIi85zL0zWTDb7jj16vzjOMh0Fg3DzbwGMUfaL1nFE4+msepOnoGwj+Ku
-         aRW9lIHYrNTFmEvxfwDyzVKdafPsN10mqIkU1/i3kfMYGyiDcsCEeVEwEhzjuMQSFB9c
-         2CtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Da+zC2BJbCPB/tjtf0Jk85c8HOJsfHJGaS+cHCHGf5M=;
-        b=pXeRez5Ih4qvgbSR3S3Ki4WUZUmDZLCPIEZw3OxtF6qLQXuWeb079YmSim4JifuDQY
-         wJ8bqCkgKunBKbkqPXmKWEmfPN2/Br/aQvfNIysLvPz3koY77APmeQESSuDZvROuvsXT
-         fqFGjbiCkqJ+pSfNgE/e6xC3DjOITMnLLo6Y0k8++5x1Y37OFbd0tlRJxIbsWh4GyTAH
-         jSoD4LayxRXNFTRAL+wyrqDEaootAy++oCkQmk7cZaL432y96/ITOjY4usCiG5Su+rkk
-         E3awT4pmli5E1FIEXhEp+mPIDwnzi1s5/7PLkiHvngVgpR6ix4VtjKxLKaYQwbGSUsKS
-         9qkg==
-X-Gm-Message-State: APjAAAXyUmQQQGkEnqDbknNWfOgx1eF3Ll4cWYAX3EjmexeLKYokuJXu
-        yy+NF7PkW3qFj77P2ivq738=
-X-Google-Smtp-Source: APXvYqzwEvDMTcXb1kP1nc7APCR6qbi6xrfTpcWDEuEiXZygcXrcD9KwvMoeX2/LXlxLga/WvMDP+Q==
-X-Received: by 2002:a17:906:d503:: with SMTP id ge3mr14716041ejb.2.1553619834234;
-        Tue, 26 Mar 2019 10:03:54 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.250])
-        by smtp.gmail.com with ESMTPSA id t52sm1631356edd.54.2019.03.26.10.03.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Mar 2019 10:03:53 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        linux-kernel@vger.kernel.org (open list:PERFORMANCE EVENTS SUBSYSTEM),
-        linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCH fixes] MIPS: perf: Fix build with CONFIG_CPU_BMIPS5000 enabled
-Date:   Tue, 26 Mar 2019 10:03:34 -0700
-Message-Id: <20190326170335.8031-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1730441AbfC0AqJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 20:46:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46660 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730333AbfC0AqJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 26 Mar 2019 20:46:09 -0400
+Received: from localhost (mobile-166-137-177-030.mycingular.net [166.137.177.30])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F41342082F;
+        Wed, 27 Mar 2019 00:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1553647568;
+        bh=VnGM0s5kqmuXW+KOcnWFx1TyYj0DnTnhE/my1+oM1cA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nMgJMuai1zofqgzM+DacllOwm5Uo9cbD+nLxlWK5LiS/c6OWWO7N8WpWwas4Noue+
+         ROO8+QIFuYfXUxwstauDm9aPj7sPwJrjOPL+MAHOnlj6X12UXRocgkG+pWbDcg0aWN
+         5kuoFNrxrKvdKrJfY4BvfKB6+gVZ5QFwklr2exwI=
+Date:   Wed, 27 Mar 2019 09:46:03 +0900
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     George Hilliard <thirtythreeforty@gmail.com>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] staging: mt7621-mmc: Initialize completions a
+ single time during probe
+Message-ID: <20190327004603.GA28785@kroah.com>
+References: <20190326152139.18609-1-thirtythreeforty@gmail.com>
+ <20190326152139.18609-3-thirtythreeforty@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190326152139.18609-3-thirtythreeforty@gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The 'event' variable may be unused in case only CONFIG_CPU_BMIPS5000
-being enabled:
+On Tue, Mar 26, 2019 at 09:21:39AM -0600, George Hilliard wrote:
+> The module was initializing completions whenever it was going to wait on
+> them, and not when the completion was allocated.  This is incorrect
+> according to the completion docs:
+> 
+>     Calling init_completion() on the same completion object twice is
+>     most likely a bug [...]
+> 
+> Re-initialization is also unnecessary because the module never uses
+> complete_all().  Fix this by only ever initializing the completion a
+> single time, and log if the completions are not consumed as intended
+> (this is not a fatal problem, but should not go unnoticed).
+> 
+> Signed-off-by: George Hilliard <thirtythreeforty@gmail.com>
+> ---
+> v2: rewrite of v1
+> v3: Remove BUG_ON() calls
+> v4: Indent style fixup
+> 
+>  drivers/staging/mt7621-mmc/sd.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/staging/mt7621-mmc/sd.c b/drivers/staging/mt7621-mmc/sd.c
+> index e346167754bd..ed63bd3ba6cc 100644
+> --- a/drivers/staging/mt7621-mmc/sd.c
+> +++ b/drivers/staging/mt7621-mmc/sd.c
+> @@ -466,7 +466,11 @@ static unsigned int msdc_command_start(struct msdc_host   *host,
+>  	host->cmd     = cmd;
+>  	host->cmd_rsp = resp;
+>  
+> -	init_completion(&host->cmd_done);
+> +	// The completion should have been consumed by the previous command
+> +	// response handler, because the mmc requests should be serialized
+> +	if(completion_done(&host->cmd_done))
 
-arch/mips/kernel/perf_event_mipsxx.c: In function 'mipsxx_pmu_enable_event':
-arch/mips/kernel/perf_event_mipsxx.c:326:21: error: unused variable 'event' [-Werror=unused-variable]
-  struct perf_event *event = container_of(evt, struct perf_event, hw);
-                     ^~~~~
-
-Fixes: 84002c88599d ("MIPS: perf: Fix perf with MT counting other threads")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/kernel/perf_event_mipsxx.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 413863508f6f..739b7ff9fdab 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -323,7 +323,9 @@ static int mipsxx_pmu_alloc_counter(struct cpu_hw_events *cpuc,
- 
- static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
- {
-+#ifndef CONFIG_CPU_BMIPS5000
- 	struct perf_event *event = container_of(evt, struct perf_event, hw);
-+#endif
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- #ifdef CONFIG_MIPS_MT_SMP
- 	unsigned int range = evt->event_base >> 24;
--- 
-2.17.1
+Did you run your patch through checkpatch.pl?  It should have reported
+an error here :(
 

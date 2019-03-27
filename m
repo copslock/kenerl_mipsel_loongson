@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6DA9C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05DDBC10F00
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9AE182075C
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEF262075C
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:28 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="biyUtygW"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="VwBeUAVd"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731628AbfC0XRO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 19:17:14 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:58654 "EHLO
+        id S1731337AbfC0XRJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 19:17:09 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:58540 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731122AbfC0XRO (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:14 -0400
+        with ESMTP id S1731122AbfC0XRI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1553728631; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1553728625; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=1nobiONOw5T28uwag8BCDV7k1e7a1BrnY3DSy12emig=;
-        b=biyUtygW9DPZLENN/uNYsybcF993JbxtutKYsa7oqPg3ReZmuIzXPwLGmou967rgA6/sTd
-        kbpHmB29Vj8ARG8PLVWc9iLcGYkCORBxvt737AOQpZUFtf4VtpaG9jcZf6pRV2v9sJLVN6
-        6rOZREVqBFAosoMEqSJG1EegcNLdY8o=
+        bh=2HjsG60H2GgJjgPPTcQEt4g9NWXUCEtxTAIaggqC49E=;
+        b=VwBeUAVd457o0BLGb5bjmGTz+yb/xWDGe4Obuw4txA06/dFH2xyINX5Uta2LtUlWwYcZcD
+        nE2+zJuHXEPln9+mp18DS3tX6pv/wnMqJYWb2RrYn1oLwFNur8xRZWhV4HITKiAS8YeFcL
+        6axnn8cnfwRfi6IlP/cFzMnIRCxrzMk=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -45,10 +45,12 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v11 07/27] watchdog: jz4740: Use WDT clock provided by TCU driver
-Date:   Thu, 28 Mar 2019 00:16:11 +0100
-Message-Id: <20190327231631.15708-8-paul@crapouillou.net>
+        linux-clk@vger.kernel.org,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v11 05/27] clocksource: Add driver for the Ingenic JZ47xx OST
+Date:   Thu, 28 Mar 2019 00:16:09 +0100
+Message-Id: <20190327231631.15708-6-paul@crapouillou.net>
 In-Reply-To: <20190327231631.15708-1-paul@crapouillou.net>
 References: <20190327231631.15708-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -56,205 +58,284 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Instead of requesting the "ext" clock and handling the watchdog clock
-divider and gating in the watchdog driver, we now request and use the
-"wdt" clock that is supplied by the ingenic-timer "TCU" driver.
+From: Maarten ter Huurne <maarten@treewalker.org>
 
-The major benefit is that the watchdog's clock rate and parent can now
-be specified from within devicetree, instead of hardcoded in the driver.
+OST is the OS Timer, a 64-bit timer/counter with buffered reading.
 
-Also, this driver won't poke anymore into the TCU registers to
-enable/disable the clock, as this is now handled by the TCU driver.
+SoCs before the JZ4770 had (if any) a 32-bit OST; the JZ4770 and
+JZ4780 have a 64-bit OST.
 
-On the bad side, we break the ABI with devicetree - as we now request a
-different clock. In this very specific case it is still okay, as every
-Ingenic JZ47xx-based board out there compile the devicetree within the
-kernel; so it's still time to push breaking changes, in order to get a
-clean devicetree that won't break once it musn't.
+This driver will register both a clocksource and a sched_clock to the
+system.
 
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
- drivers/watchdog/Kconfig      |  2 +
- drivers/watchdog/jz4740_wdt.c | 86 +++++++++++++++++--------------------------
- 2 files changed, 36 insertions(+), 52 deletions(-)
+ drivers/clocksource/Kconfig       |   8 ++
+ drivers/clocksource/Makefile      |   1 +
+ drivers/clocksource/ingenic-ost.c | 220 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 229 insertions(+)
+ create mode 100644 drivers/clocksource/ingenic-ost.c
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 242eea859637..69b3b023c863 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1546,7 +1546,9 @@ config INDYDOG
- config JZ4740_WDT
- 	tristate "Ingenic jz4740 SoC hardware watchdog"
- 	depends on MACH_JZ4740 || MACH_JZ4780
-+	depends on COMMON_CLK
- 	select WATCHDOG_CORE
-+	select INGENIC_TIMER
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index c6fb17233ff2..d58ca614e852 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -655,6 +655,14 @@ config INGENIC_TIMER
  	help
- 	  Hardware driver for the built-in watchdog timer on Ingenic jz4740 SoCs.
+ 	  Support for the timer/counter unit of the Ingenic JZ SoCs.
  
-diff --git a/drivers/watchdog/jz4740_wdt.c b/drivers/watchdog/jz4740_wdt.c
-index ec4d99a830ba..1d504ecf45e1 100644
---- a/drivers/watchdog/jz4740_wdt.c
-+++ b/drivers/watchdog/jz4740_wdt.c
-@@ -26,25 +26,9 @@
- #include <linux/err.h>
- #include <linux/of.h>
- 
--#include <asm/mach-jz4740/timer.h>
--
- #define JZ_REG_WDT_TIMER_DATA     0x0
- #define JZ_REG_WDT_COUNTER_ENABLE 0x4
- #define JZ_REG_WDT_TIMER_COUNTER  0x8
--#define JZ_REG_WDT_TIMER_CONTROL  0xC
--
--#define JZ_WDT_CLOCK_PCLK 0x1
--#define JZ_WDT_CLOCK_RTC  0x2
--#define JZ_WDT_CLOCK_EXT  0x4
--
--#define JZ_WDT_CLOCK_DIV_SHIFT   3
--
--#define JZ_WDT_CLOCK_DIV_1    (0 << JZ_WDT_CLOCK_DIV_SHIFT)
--#define JZ_WDT_CLOCK_DIV_4    (1 << JZ_WDT_CLOCK_DIV_SHIFT)
--#define JZ_WDT_CLOCK_DIV_16   (2 << JZ_WDT_CLOCK_DIV_SHIFT)
--#define JZ_WDT_CLOCK_DIV_64   (3 << JZ_WDT_CLOCK_DIV_SHIFT)
--#define JZ_WDT_CLOCK_DIV_256  (4 << JZ_WDT_CLOCK_DIV_SHIFT)
--#define JZ_WDT_CLOCK_DIV_1024 (5 << JZ_WDT_CLOCK_DIV_SHIFT)
- 
- #define DEFAULT_HEARTBEAT 5
- #define MAX_HEARTBEAT     2048
-@@ -65,7 +49,8 @@ MODULE_PARM_DESC(heartbeat,
- struct jz4740_wdt_drvdata {
- 	struct watchdog_device wdt;
- 	void __iomem *base;
--	struct clk *rtc_clk;
++config INGENIC_OST
++	bool "Ingenic JZ47xx Operating System Timer"
++	depends on MIPS || COMPILE_TEST
++	depends on COMMON_CLK
++	select INGENIC_TIMER
++	help
++	  Support for the OS Timer of the Ingenic JZ4770 or similar SoC.
++
+ config MILBEAUT_TIMER
+ 	bool "Milbeaut timer driver" if COMPILE_TEST
+ 	depends on OF
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index 0e360da7b74d..b3d304ec7072 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -77,6 +77,7 @@ obj-$(CONFIG_ASM9260_TIMER)		+= asm9260_timer.o
+ obj-$(CONFIG_H8300_TMR8)		+= h8300_timer8.o
+ obj-$(CONFIG_H8300_TMR16)		+= h8300_timer16.o
+ obj-$(CONFIG_H8300_TPU)			+= h8300_tpu.o
++obj-$(CONFIG_INGENIC_OST)		+= ingenic-ost.o
+ obj-$(CONFIG_INGENIC_TIMER)		+= ingenic-timer.o
+ obj-$(CONFIG_CLKSRC_ST_LPC)		+= clksrc_st_lpc.o
+ obj-$(CONFIG_X86_NUMACHIP)		+= numachip.o
+diff --git a/drivers/clocksource/ingenic-ost.c b/drivers/clocksource/ingenic-ost.c
+new file mode 100644
+index 000000000000..66ad328c74cc
+--- /dev/null
++++ b/drivers/clocksource/ingenic-ost.c
+@@ -0,0 +1,220 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * JZ47xx SoCs TCU Operating System Timer driver
++ *
++ * Copyright (C) 2016 Maarten ter Huurne <maarten@treewalker.org>
++ * Copyright (C) 2019 Paul Cercueil <paul@crapouillou.net>
++ */
++
++#include <linux/clk.h>
++#include <linux/clocksource.h>
++#include <linux/mfd/ingenic-tcu.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
++#include <linux/pm.h>
++#include <linux/regmap.h>
++#include <linux/sched_clock.h>
++
++#include "ingenic-timer.h"
++
++#define TCU_OST_TCSR_MASK	0xffc0
++#define TCU_OST_TCSR_CNT_MD	BIT(15)
++
++#define TCU_OST_CHANNEL		15
++
++struct ingenic_ost_soc_info {
++	bool is64bit;
++};
++
++struct ingenic_ost {
++	struct regmap *map;
 +	struct clk *clk;
-+	unsigned long clk_rate;
- };
- 
- static int jz4740_wdt_ping(struct watchdog_device *wdt_dev)
-@@ -80,31 +65,12 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
- 				    unsigned int new_timeout)
- {
- 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
--	unsigned int rtc_clk_rate;
--	unsigned int timeout_value;
--	unsigned short clock_div = JZ_WDT_CLOCK_DIV_1;
--
--	rtc_clk_rate = clk_get_rate(drvdata->rtc_clk);
--
--	timeout_value = rtc_clk_rate * new_timeout;
--	while (timeout_value > 0xffff) {
--		if (clock_div == JZ_WDT_CLOCK_DIV_1024) {
--			/* Requested timeout too high;
--			* use highest possible value. */
--			timeout_value = 0xffff;
--			break;
--		}
--		timeout_value >>= 2;
--		clock_div += (1 << JZ_WDT_CLOCK_DIV_SHIFT);
--	}
-+	u16 timeout_value = (u16)(drvdata->clk_rate * new_timeout);
- 
- 	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
--	writew(clock_div, drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
- 
- 	writew((u16)timeout_value, drvdata->base + JZ_REG_WDT_TIMER_DATA);
- 	writew(0x0, drvdata->base + JZ_REG_WDT_TIMER_COUNTER);
--	writew(clock_div | JZ_WDT_CLOCK_RTC,
--		drvdata->base + JZ_REG_WDT_TIMER_CONTROL);
- 
- 	writeb(0x1, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
- 
-@@ -114,7 +80,13 @@ static int jz4740_wdt_set_timeout(struct watchdog_device *wdt_dev,
- 
- static int jz4740_wdt_start(struct watchdog_device *wdt_dev)
- {
--	jz4740_timer_enable_watchdog();
-+	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-+	int ret;
 +
-+	ret = clk_prepare_enable(drvdata->clk);
-+	if (ret)
-+		return ret;
++	struct clocksource cs;
++};
 +
- 	jz4740_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
- 
- 	return 0;
-@@ -125,7 +97,7 @@ static int jz4740_wdt_stop(struct watchdog_device *wdt_dev)
- 	struct jz4740_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
- 
- 	writeb(0x0, drvdata->base + JZ_REG_WDT_COUNTER_ENABLE);
--	jz4740_timer_disable_watchdog();
-+	clk_disable_unprepare(drvdata->clk);
- 
- 	return 0;
- }
-@@ -163,26 +135,42 @@ MODULE_DEVICE_TABLE(of, jz4740_wdt_of_matches);
- 
- static int jz4740_wdt_probe(struct platform_device *pdev)
- {
++static inline struct ingenic_ost *cs_to_ingenic_ost(struct clocksource *cs)
++{
++	return container_of(cs, struct ingenic_ost, cs);
++}
++
++static u64 notrace ingenic_ost_read_cntl(void)
++{
++	/* Bypass the regmap here as we must return as soon as possible */
++	return readl(ingenic_tcu_base + TCU_REG_OST_CNTL);
++}
++
++static u64 notrace ingenic_ost_read_cnth(void)
++{
++	/* Bypass the regmap here as we must return as soon as possible */
++	return readl(ingenic_tcu_base + TCU_REG_OST_CNTH);
++}
++
++static u64 notrace ingenic_ost_clocksource_read64(struct clocksource *cs)
++{
++	struct ingenic_ost *ost = cs_to_ingenic_ost(cs);
++	unsigned int val1, val2;
++	u64 count, recount;
++	s64 diff;
++
++	/*
++	 * The buffering of the upper 32 bits of the timer prevents wrong
++	 * results from the bottom 32 bits overflowing due to the timer ticking
++	 * along. However, it does not prevent wrong results from simultaneous
++	 * reads of the timer, which could reset the buffer mid-read.
++	 * Since this kind of wrong read can happen only when the bottom bits
++	 * overflow, there will be minutes between wrong reads, so if we read
++	 * twice in succession, at least one of the reads will be correct.
++	 */
++	regmap_read(ost->map, TCU_REG_OST_CNTL, &val1);
++	regmap_read(ost->map, TCU_REG_OST_CNTHBUF, &val2);
++	count = (u64)val1 | (u64)val2 << 32;
++
++	regmap_read(ost->map, TCU_REG_OST_CNTL, &val1);
++	regmap_read(ost->map, TCU_REG_OST_CNTHBUF, &val2);
++	recount = (u64)val1 | (u64)val2 << 32;
++
++	/*
++	 * A wrong read will produce a result that is 1<<32 too high: the bottom
++	 * part from before overflow and the upper part from after overflow.
++	 * Therefore, the lower value of the two reads is the correct value.
++	 */
++	diff = (s64)(recount - count);
++	if (unlikely(diff < 0))
++		count = recount;
++
++	return count;
++}
++
++static u64 notrace ingenic_ost_clocksource_read32(struct clocksource *cs)
++{
++	struct ingenic_ost *ost = cs_to_ingenic_ost(cs);
++	unsigned int val;
++
++	regmap_read(ost->map, TCU_REG_OST_CNTH, &val);
++
++	return val;
++}
++
++static int __init ingenic_ost_probe(struct platform_device *pdev)
++{
++	const struct ingenic_ost_soc_info *soc_info;
 +	struct device *dev = &pdev->dev;
- 	struct jz4740_wdt_drvdata *drvdata;
- 	struct watchdog_device *jz4740_wdt;
- 	struct resource	*res;
-+	long rate;
- 	int ret;
- 
--	drvdata = devm_kzalloc(&pdev->dev, sizeof(struct jz4740_wdt_drvdata),
--			       GFP_KERNEL);
-+	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
- 	if (!drvdata)
- 		return -ENOMEM;
- 
--	if (heartbeat < 1 || heartbeat > MAX_HEARTBEAT)
--		heartbeat = DEFAULT_HEARTBEAT;
-+	drvdata->clk = devm_clk_get(&pdev->dev, "wdt");
-+	if (IS_ERR(drvdata->clk)) {
-+		dev_err(&pdev->dev, "cannot find WDT clock\n");
-+		return PTR_ERR(drvdata->clk);
++	struct ingenic_ost *ost;
++	struct clocksource *cs;
++	unsigned long rate, flags;
++	int err;
++
++	soc_info = device_get_match_data(dev);
++	if (!soc_info)
++		return -EINVAL;
++
++	ost = devm_kzalloc(dev, sizeof(*ost), GFP_KERNEL);
++	if (!ost)
++		return -ENOMEM;
++
++	ost->map = dev_get_regmap(dev->parent, NULL);
++	if (!ost->map) {
++		dev_err(dev, "regmap not found\n");
++		return -EINVAL;
 +	}
 +
-+	/* Set smallest clock possible */
-+	rate = clk_round_rate(drvdata->clk, 1);
-+	if (rate < 0)
-+		return rate;
- 
-+	ret = clk_set_rate(drvdata->clk, rate);
-+	if (ret)
-+		return ret;
++	ost->clk = devm_clk_get(dev, "ost");
++	if (IS_ERR(ost->clk))
++		return PTR_ERR(ost->clk);
 +
-+	drvdata->clk_rate = rate;
- 	jz4740_wdt = &drvdata->wdt;
- 	jz4740_wdt->info = &jz4740_wdt_info;
- 	jz4740_wdt->ops = &jz4740_wdt_ops;
--	jz4740_wdt->timeout = heartbeat;
- 	jz4740_wdt->min_timeout = 1;
--	jz4740_wdt->max_timeout = MAX_HEARTBEAT;
--	jz4740_wdt->parent = &pdev->dev;
-+	jz4740_wdt->max_timeout = 0xffff / rate;
-+	jz4740_wdt->timeout = clamp(heartbeat,
-+				    jz4740_wdt->min_timeout,
-+				    jz4740_wdt->max_timeout);
-+	jz4740_wdt->parent = dev;
- 	watchdog_set_nowayout(jz4740_wdt, nowayout);
- 	watchdog_set_drvdata(jz4740_wdt, drvdata);
- 
-@@ -191,12 +179,6 @@ static int jz4740_wdt_probe(struct platform_device *pdev)
- 	if (IS_ERR(drvdata->base))
- 		return PTR_ERR(drvdata->base);
- 
--	drvdata->rtc_clk = devm_clk_get(&pdev->dev, "rtc");
--	if (IS_ERR(drvdata->rtc_clk)) {
--		dev_err(&pdev->dev, "cannot find RTC clock\n");
--		return PTR_ERR(drvdata->rtc_clk);
--	}
--
- 	ret = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
- 	if (ret < 0)
- 		return ret;
++	err = clk_prepare_enable(ost->clk);
++	if (err)
++		return err;
++
++	/* Clear counter high/low registers */
++	if (soc_info->is64bit)
++		regmap_write(ost->map, TCU_REG_OST_CNTL, 0);
++	regmap_write(ost->map, TCU_REG_OST_CNTH, 0);
++
++	/* Don't reset counter at compare value. */
++	regmap_update_bits(ost->map, TCU_REG_OST_TCSR,
++			   TCU_OST_TCSR_MASK, TCU_OST_TCSR_CNT_MD);
++
++	rate = clk_get_rate(ost->clk);
++
++	/* Enable OST TCU channel */
++	regmap_write(ost->map, TCU_REG_TESR, BIT(TCU_OST_CHANNEL));
++
++	cs = &ost->cs;
++	cs->name	= "ingenic-ost";
++	cs->rating	= 320;
++	cs->flags	= CLOCK_SOURCE_IS_CONTINUOUS;
++
++	if (soc_info->is64bit) {
++		cs->mask = CLOCKSOURCE_MASK(64);
++		cs->read = ingenic_ost_clocksource_read64;
++	} else {
++		cs->mask = CLOCKSOURCE_MASK(32);
++		cs->read = ingenic_ost_clocksource_read32;
++	}
++
++	err = clocksource_register_hz(cs, rate);
++	if (err) {
++		dev_err(dev, "clocksource registration failed: %d\n", err);
++		clk_disable_unprepare(ost->clk);
++		return err;
++	}
++
++	/* Cannot register a sched_clock with interrupts on */
++	local_irq_save(flags);
++	if (soc_info->is64bit)
++		sched_clock_register(ingenic_ost_read_cntl, 32, rate);
++	else
++		sched_clock_register(ingenic_ost_read_cnth, 32, rate);
++	local_irq_restore(flags);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM_SLEEP
++static int ingenic_ost_suspend(struct device *dev)
++{
++	struct ingenic_ost *ost = dev_get_drvdata(dev);
++
++	clk_disable(ost->clk);
++
++	return 0;
++}
++
++static int ingenic_ost_resume(struct device *dev)
++{
++	struct ingenic_ost *ost = dev_get_drvdata(dev);
++
++	return clk_enable(ost->clk);
++}
++
++static SIMPLE_DEV_PM_OPS(ingenic_ost_pm_ops, ingenic_ost_suspend,
++			 ingenic_ost_resume);
++#define INGENIC_OST_PM_OPS (&ingenic_ost_pm_ops)
++#else
++#define INGENIC_OST_PM_OPS NULL
++#endif /* CONFIG_PM_SUSPEND */
++
++static const struct ingenic_ost_soc_info jz4725b_ost_soc_info = {
++	.is64bit = false,
++};
++
++static const struct ingenic_ost_soc_info jz4770_ost_soc_info = {
++	.is64bit = true,
++};
++
++static const struct of_device_id ingenic_ost_of_match[] = {
++	{ .compatible = "ingenic,jz4725b-ost", .data = &jz4725b_ost_soc_info, },
++	{ .compatible = "ingenic,jz4770-ost", .data = &jz4770_ost_soc_info, },
++	{ }
++};
++
++static struct platform_driver ingenic_ost_driver = {
++	.driver = {
++		.name = "ingenic-ost",
++		.pm = INGENIC_OST_PM_OPS,
++		.of_match_table = ingenic_ost_of_match,
++	},
++};
++builtin_platform_driver_probe(ingenic_ost_driver, ingenic_ost_probe);
 -- 
 2.11.0
 

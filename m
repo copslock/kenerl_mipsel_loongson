@@ -2,106 +2,96 @@ Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C82D7C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78754C43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:27:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9F36F2082F
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:25:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 44AC42082F
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:27:40 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PqKr8lnf"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727979AbfC0WZr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 18:25:47 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:49533 "EHLO
-        mail.loongson.cn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727840AbfC0WZr (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 18:25:47 -0400
-Received: by ajax-webmail-mail (Coremail) ; Thu, 28 Mar 2019 06:25:33 +0800
- (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-X-Originating-IP: [220.194.107.221]
-Date:   Thu, 28 Mar 2019 06:25:33 +0800 (GMT+08:00)
-From:   qiaochong <qiaochong@loongson.cn>
-To:     "Doug Anderson" <dianders@chromium.org>
-Cc:     "Ralf Baechle" <ralf@linux-mips.org>,
-        "Paul Burton" <paul.burton@mips.com>,
-        "James Hogan" <jhogan@kernel.org>,
-        "Daniel Thompson" <daniel.thompson@linaro.org>,
-        "Will Deacon" <will.deacon@arm.com>,
-        "Christophe Leroy" <christophe.leroy@c-s.fr>,
+        id S1727744AbfC0W1k (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 18:27:40 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:36082 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbfC0W1j (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 18:27:39 -0400
+Received: by mail-vs1-f65.google.com with SMTP id n4so10979337vsm.3
+        for <linux-mips@vger.kernel.org>; Wed, 27 Mar 2019 15:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ydU001t3e2zWo6of+Lw+lN3EwVXKWGKpNMT3//N3PJo=;
+        b=PqKr8lnf3KT01sE0cqYIx4Fe9xEXa/QnooEkMGnrsMX3rs+GldGm7JF7aKSGnzFml+
+         wQVOtzNgyMS0WKe1yOVYAEscghpiNvLz/uNjXpxY9KcLyXiRfRi2MdaLgB+T+DhTitKJ
+         Td10d7SnJd8hDE/C00nPcm6Cps2nSppvGyKJ4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ydU001t3e2zWo6of+Lw+lN3EwVXKWGKpNMT3//N3PJo=;
+        b=Kl5LR1NmvG/xk+O7rrTxXZld2wY/tizb6eXx3vN8zqlJ4EJZKTp7kNFB6yDLAXyrKS
+         11ZjAj+DrZWdpzjHSP+m5FKv5Fs744hy4Wf2zG+4rnY+SGI21cPyoIFnomEY2L8Q7Wpr
+         Nr8KmQw52SAwgg9KOGndvxKWzljlDr002/IZ+iX7NF3DYcPPrff9aJwjul4Fr7MQCOLY
+         QMC7XdFhmMLLyxo7pcsMpUx1uLL74Ye44m9J3NSclaXYus+xgDSGZMfYlRruYfEDzCCx
+         Dv1RePrlhELNKBUL24Z9yJMwjYWzObAt6RH0fO5dN9fJw/4RqRdCG+ylijbzkVc5a93S
+         RL4w==
+X-Gm-Message-State: APjAAAX9diRT3OdohlV/7aYExFGwYxYtGcUejnVfuKoL3QHyG+By9PRJ
+        m06kPk4yejl6025jdyK4X8qrs7JNngo=
+X-Google-Smtp-Source: APXvYqxan8d9Y+RqGgpp2T/GAJLVCfamO59Hp3c3kOy2xFZz9pTMd6IO52Sfh9zMqJSVXxXDfkG7jw==
+X-Received: by 2002:a67:ad1a:: with SMTP id t26mr24653547vsl.124.1553725658567;
+        Wed, 27 Mar 2019 15:27:38 -0700 (PDT)
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com. [209.85.217.44])
+        by smtp.gmail.com with ESMTPSA id c204sm1485743vkd.14.2019.03.27.15.27.37
+        for <linux-mips@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
+Received: by mail-vs1-f44.google.com with SMTP id f22so7261668vso.7
+        for <linux-mips@vger.kernel.org>; Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
+X-Received: by 2002:a67:ffce:: with SMTP id w14mr24277426vsq.111.1553725657293;
+ Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190327150551.12851-1-qiaochong@loongson.cn> <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
+ <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
+In-Reply-To: <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 27 Mar 2019 15:27:26 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UhqQh2i1CUfgGHPdUtFWsTznCL_1tNafG+F74oHXM1Ew@mail.gmail.com>
+Message-ID: <CAD=FV=UhqQh2i1CUfgGHPdUtFWsTznCL_1tNafG+F74oHXM1Ew@mail.gmail.com>
+Subject: Re: Re: [PATCH] MIPS: KGDB: fix kgdb support for SMP platforms.
+To:     qiaochong <qiaochong@loongson.cn>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
         linux-mips <linux-mips@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re:Re: [PATCH] MIPS: KGDB: fix kgdb support for SMP platforms.
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT3.0.6a_preview build
- 20150605(69773.7394) Copyright (c) 2002-2019 www.mailtech.cn loongson
-In-Reply-To: <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
-References: <20190327150551.12851-1-qiaochong@loongson.cn>
- <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: hVRFB2Zvb3Rlcl90eHQ9MTc3MTo3MzQ=
-Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
-Message-ID: <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
-X-CM-TRANSID: QMiowPDx779e+JtcqVu0AA--.6105W
-X-CM-SenderInfo: 5tld0upkrqwqxorr0wxvrqhubq/1tbiAQACDFEBqdSvPAAIs5
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Ck15IG5hbWUgIGlzIFFpYW9DaG9uZ++8jCB3aGljaCBpcyBzYW1lIHRvIG15IHVzZXJuYW1lLgpR
-aWFvIGlzIG15IGZhbWlseSBuYW1lLgpUaGFua3MgYSBsb3QuCgrlnKggMjAxOS0wMy0yOCAwMDoy
-NTowNu+8jCJEb3VnIEFuZGVyc29uIiA8ZGlhbmRlcnNAY2hyb21pdW0ub3JnPiDlhpnpgZPvvJoK
-Cj5IaSwKPgo+T24gV2VkLCBNYXIgMjcsIDIwMTkgYXQgODowNiBBTSBxaWFvY2hvbmcgPHFpYW9j
-aG9uZ0Bsb29uZ3Nvbi5jbj4gd3JvdGU6Cj4+Cj4+IEtHREJfY2FsbF9ubWlfaG9vayBpcyBjYWxs
-ZWQgYnkgb3RoZXIgY3B1IHRocm91Z2ggc21wIGNhbGwuCj4+IE1JUFMgc21wIGNhbGwgaXMgcHJv
-Y2Vzc2VkIGluIGlwaSBpcnEgaGFuZGxlciBhbmQgcmVncyBpcyBzYXZlZCBpbgo+PiAgaGFuZGxl
-X2ludC4KPj4gU28ga2dkYl9jYWxsX25taV9ob29rIGdldCByZWdzIGJ5IGdldF9pcnFfcmVncyBh
-bmQgcmVncyB3aWxsIGJlIHBhc3NlZAo+PiAgdG8ga2dkYl9jcHVfZW50ZXIuCj4+Cj4+IFNpZ25l
-ZC1vZmYtYnk6IHFpYW9jaG9uZyA8cWlhb2Nob25nQGxvb25nc29uLmNuPgo+Cj5Ob3RlIHRoYXQg
-eW91IG1pZ2h0IHdhbnQgdG8gYWRqdXN0IHlvdXIgZ2l0IHNldHRpbmdzLiAgVXN1YWxseSBpbiB0
-aGUKPmtlcm5lbCB0aGV5IHJlcXVpcmUgdGhhdCBhIFNpZ25lZC1vZmYtYnkgaGF2ZSB5b3VyIHJl
-YWwgbmFtZSwgbm90IGp1c3QKPnlvdXIgdXNlcm5hbWUuICBZb3UgcHJvYmFibHkgbmVlZCB0byBz
-cGluIHlvdXIgcGF0Y2ggdG8gZml4IHRoaXMuICBZb3UKPnNob3VsZCBtYWtlIHN1cmUgdGhhdCB0
-aGUgYXV0aG9yc2hpcCBvZiB0aGUgcGF0Y2ggYWxzbyBoYXMgeW91ciByZWFsCj5uYW1lLgo+Cj4K
-Pj4gLS0tCj4+ICBhcmNoL21pcHMva2VybmVsL2tnZGIuYyB8IDMgKystCj4+ICAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9h
-cmNoL21pcHMva2VybmVsL2tnZGIuYyBiL2FyY2gvbWlwcy9rZXJuZWwva2dkYi5jCj4+IGluZGV4
-IDZlNTc0YzAyZTRjM2IuLmVhNzgxYjI5ZjdmMTcgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvbWlwcy9r
-ZXJuZWwva2dkYi5jCj4+ICsrKyBiL2FyY2gvbWlwcy9rZXJuZWwva2dkYi5jCj4+IEBAIC0zMyw2
-ICszMyw3IEBACj4+ICAjaW5jbHVkZSA8YXNtL3Byb2Nlc3Nvci5oPgo+PiAgI2luY2x1ZGUgPGFz
-bS9zaWdjb250ZXh0Lmg+Cj4+ICAjaW5jbHVkZSA8bGludXgvdWFjY2Vzcy5oPgo+PiArI2luY2x1
-ZGUgPGFzbS9pcnFfcmVncy5oPgo+Pgo+PiAgc3RhdGljIHN0cnVjdCBoYXJkX3RyYXBfaW5mbyB7
-Cj4+ICAgICAgICAgdW5zaWduZWQgY2hhciB0dDsgICAgICAgLyogVHJhcCB0eXBlIGNvZGUgZm9y
-IE1JUFMgUjN4eHggYW5kIFI0eHh4ICovCj4+IEBAIC0yMTQsNyArMjE1LDcgQEAgdm9pZCBrZ2Ri
-X2NhbGxfbm1pX2hvb2sodm9pZCAqaWdub3JlZCkKPj4gICAgICAgICBvbGRfZnMgPSBnZXRfZnMo
-KTsKPj4gICAgICAgICBzZXRfZnMoS0VSTkVMX0RTKTsKPj4KPj4gLSAgICAgICBrZ2RiX25taWNh
-bGxiYWNrKHJhd19zbXBfcHJvY2Vzc29yX2lkKCksIE5VTEwpOwo+PiArICAgICAgIGtnZGJfbm1p
-Y2FsbGJhY2socmF3X3NtcF9wcm9jZXNzb3JfaWQoKSwgZ2V0X2lycV9yZWdzKCkpOwo+Pgo+PiAg
-ICAgICAgIHNldF9mcyhvbGRfZnMpOwo+PiAgfQo+Cj5BcyBwZXIgbXkgcmVwbHkgb24gVjEsIGZl
-ZWwgZnJlZSB0byBhZGQ6Cj4KPlJldmlld2VkLWJ5OiBEb3VnbGFzIEFuZGVyc29uIDxkaWFuZGVy
-c0BjaHJvbWl1bS5vcmc+Cg0KDQrljJfkuqzluILmtbfmt4DljLrkuK3lhbPmnZHnjq/kv53np5Hm
-ioDnpLrojIPlm63pvpnoiq/kuqfkuJrlm60y5Y+35qW8IDEwMDA5NeeUteivnTogKzg2ICgxMCkg
-NjI1NDY2NjjkvKDnnJ86ICs4NiAoMTApIDYyNjAwODI2d3d3Lmxvb25nc29uLmNu5pys6YKu5Lu2
-5Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR5oqA5pyv5pyJ6ZmQ5YWs5Y+455qE5ZWG5Lia
-56eY5a+G5L+h5oGv77yM5LuF6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE
-5Liq5Lq65oiW576k57uE44CC56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/
-55So77yI5YyF5ous5L2G5LiN6ZmQ5LqO5YWo6YOo5oiW6YOoIOWIhuWcsOazhOmcsuOAgeWkjeWI
-tuaIluaVo+WPke+8ieacrOmCruS7tuWPiuWFtumZhOS7tuS4reeahOS/oeaBr+OAguWmguaenOaC
-qOmUmeaUtuacrOmCruS7tu+8jOivt+aCqOeri+WNs+eUteivneaIlumCruS7tumAmuefpeWPkeS7
-tuS6uuW5tuWIoOmZpOacrOmCruS7tuOAgiANCg0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1l
-bnRzIGNvbnRhaW4gY29uZmlkZW50aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24NClRlY2hu
-b2xvZ3kgQ29ycG9yYXRpb24gTGltaXRlZCwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhl
-IHBlcnNvbiBvciBlbnRpdHkNCndob3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNl
-IG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluDQphbnkgd2F5IChpbmNsdWRp
-bmcsIGJ1dCBub3QgbGltaXRlZCB0bywgdG90YWwgb3IgcGFydGlhbCBkaXNjbG9zdXJlLA0KcmVw
-cm9kdWN0aW9uIG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUgaW50
-ZW5kZWQgcmVjaXBpZW50KHMpDQppcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlzIGVt
-YWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgYnkNCnBob25lIG9yIGVtYWls
-IGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQuIA==
+Hi,
+
+On Wed, Mar 27, 2019 at 3:25 PM qiaochong <qiaochong@loongson.cn> wrote:
+>
+>
+> My name  is QiaoChong=EF=BC=8C which is same to my username.
+> Qiao is my family name.
+> Thanks a lot.
+
+I guess it will be up to whichever maintainer lands this (maybe
+Daniel?) on whether they want you to spin it.  I think folks expect to
+see a real name that is capitalized and usually a space between the
+family name and the given name.
+
+-Doug

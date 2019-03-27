@@ -2,95 +2,83 @@ Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 602BBC43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 00:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6346FC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 01:46:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 270C12082F
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 00:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1553647570;
-	bh=VnGM0s5kqmuXW+KOcnWFx1TyYj0DnTnhE/my1+oM1cA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=rzN2a+soGN+WgtvN963aSnYpYJcBBILA+vfCm/wcyOsj+bvMU3HZf6M/PmHfgBKe2
-	 52/RWwcAyg/9u/hBzeVPBDBr4NM65vwwpuRhwJrFHLNkjDbuVn6eGoOosK3ySbA+H/
-	 1uJMP/Ottis8SyneueHWoaCtdRAFoSgATggbTgoA=
+	by mail.kernel.org (Postfix) with ESMTP id 2739B2087E
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 01:46:49 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chY+FDRI"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730441AbfC0AqJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 26 Mar 2019 20:46:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46660 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730333AbfC0AqJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 26 Mar 2019 20:46:09 -0400
-Received: from localhost (mobile-166-137-177-030.mycingular.net [166.137.177.30])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F41342082F;
-        Wed, 27 Mar 2019 00:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1553647568;
-        bh=VnGM0s5kqmuXW+KOcnWFx1TyYj0DnTnhE/my1+oM1cA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nMgJMuai1zofqgzM+DacllOwm5Uo9cbD+nLxlWK5LiS/c6OWWO7N8WpWwas4Noue+
-         ROO8+QIFuYfXUxwstauDm9aPj7sPwJrjOPL+MAHOnlj6X12UXRocgkG+pWbDcg0aWN
-         5kuoFNrxrKvdKrJfY4BvfKB6+gVZ5QFwklr2exwI=
-Date:   Wed, 27 Mar 2019 09:46:03 +0900
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     George Hilliard <thirtythreeforty@gmail.com>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+        id S1731483AbfC0Bqt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 26 Mar 2019 21:46:49 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:43826 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730441AbfC0Bqt (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 26 Mar 2019 21:46:49 -0400
+Received: by mail-io1-f68.google.com with SMTP id x3so12654558iol.10;
+        Tue, 26 Mar 2019 18:46:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6y9c/7x1WlirmnjZEheHDM5tBdS+V+J/OFT5azB9lZk=;
+        b=chY+FDRIo9ubzIVbs8qlZ4rzCeS9ShM16gEivOdXgF9ZIwF+fXk3CyWXBcLo3qwhAm
+         uQGx9mTnZYRsaZMPQNTqpHQJLn1bNAcQAhtVMWdDdQhjGCed6b/tH2sgfGK3VAYa+nuG
+         aAx/1jbD8ZuFqkpXMcAul6Xh0a1x7842fSG5i4giYbkBKLUzjsdxpbiStMTlBvLPYTLP
+         S96wqSAAUDqtctTR/RJYtML+gCCJQtCgofnIsXJ0tRXAhTzml1kP1CNjUI9RzGH3X22z
+         NciBwkuDH/VDN+sqhiVBdC+CXKUFfp3zk3JhvVfnTIdZN9dhOc+d6xycoFrInIOGjOcD
+         TDDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6y9c/7x1WlirmnjZEheHDM5tBdS+V+J/OFT5azB9lZk=;
+        b=t+CsRD/Hu7Ll444otsHjnjBOzA1PC1wNCwRoMSuYVcDA4+dvKDTSBie2NDB0XW6nOx
+         Cp0qtSb0igY5kwCxAGv1fTmauLACkeDzf8rKL2bjIJIJ9KpSMEa2tkGe1I5MWaeM/Ogn
+         94XGB2fEE3MFCq+MUILpS97QAdGNuJnVAHtFy973jKD4Wf/IfsCre8H/xl9EcpzAvd00
+         96Y7qMJMj1F4Yrh/wVenjysFRsV7JXauyjqNFYnmxmmJ4D2yrGXH02BAK670uejGMkKF
+         3GJpVLyLlAEyrkP6E54br4xqOUZMUv7p1Ev5SIpbAYXzOeFQVguevzpoo4v1gglIGOwW
+         VXhA==
+X-Gm-Message-State: APjAAAXUcNo/7dURv+Q86qJ1DswxXvu4J7dNsDUz4ItONNrtT0UExD8+
+        pl4gqnYHi13qHiTvUImYGHvwaOxchXXPKpnDAzZDYbT9
+X-Google-Smtp-Source: APXvYqyOLq8tXnj3Wq9crOBVLrFspQUEsy4ducuPArM4z2yKNwUcy9iFcxIJD9/z8eDvFdvbIbIuZ+AyMhpGd1WhlM0=
+X-Received: by 2002:a5e:a505:: with SMTP id 5mr25080316iog.28.1553651208215;
+ Tue, 26 Mar 2019 18:46:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190326152139.18609-1-thirtythreeforty@gmail.com>
+ <20190326152139.18609-3-thirtythreeforty@gmail.com> <20190327004603.GA28785@kroah.com>
+In-Reply-To: <20190327004603.GA28785@kroah.com>
+From:   George Hilliard <thirtythreeforty@gmail.com>
+Date:   Tue, 26 Mar 2019 19:46:36 -0600
+Message-ID: <CACmrr9iqK-g8o3tAAHD3NDy+9BiOkoXH+vFMT+stG37iZ2Zp5g@mail.gmail.com>
 Subject: Re: [PATCH v4 2/2] staging: mt7621-mmc: Initialize completions a
  single time during probe
-Message-ID: <20190327004603.GA28785@kroah.com>
-References: <20190326152139.18609-1-thirtythreeforty@gmail.com>
- <20190326152139.18609-3-thirtythreeforty@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190326152139.18609-3-thirtythreeforty@gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Mar 26, 2019 at 09:21:39AM -0600, George Hilliard wrote:
-> The module was initializing completions whenever it was going to wait on
-> them, and not when the completion was allocated.  This is incorrect
-> according to the completion docs:
-> 
->     Calling init_completion() on the same completion object twice is
->     most likely a bug [...]
-> 
-> Re-initialization is also unnecessary because the module never uses
-> complete_all().  Fix this by only ever initializing the completion a
-> single time, and log if the completions are not consumed as intended
-> (this is not a fatal problem, but should not go unnoticed).
-> 
-> Signed-off-by: George Hilliard <thirtythreeforty@gmail.com>
-> ---
-> v2: rewrite of v1
-> v3: Remove BUG_ON() calls
-> v4: Indent style fixup
-> 
->  drivers/staging/mt7621-mmc/sd.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/staging/mt7621-mmc/sd.c b/drivers/staging/mt7621-mmc/sd.c
-> index e346167754bd..ed63bd3ba6cc 100644
-> --- a/drivers/staging/mt7621-mmc/sd.c
-> +++ b/drivers/staging/mt7621-mmc/sd.c
-> @@ -466,7 +466,11 @@ static unsigned int msdc_command_start(struct msdc_host   *host,
->  	host->cmd     = cmd;
->  	host->cmd_rsp = resp;
->  
-> -	init_completion(&host->cmd_done);
-> +	// The completion should have been consumed by the previous command
-> +	// response handler, because the mmc requests should be serialized
-> +	if(completion_done(&host->cmd_done))
+On Tue, Mar 26, 2019 at 6:46 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Mar 26, 2019 at 09:21:39AM -0600, George Hilliard wrote:
+> > -     init_completion(&host->cmd_done);
+> > +     // The completion should have been consumed by the previous command
+> > +     // response handler, because the mmc requests should be serialized
+> > +     if(completion_done(&host->cmd_done))
+>
+> Did you run your patch through checkpatch.pl?  It should have reported
+> an error here :(
 
-Did you run your patch through checkpatch.pl?  It should have reported
-an error here :(
+No, I didn't.  My mistake, sorry.  Will fix up and resend again.
 
+George

@@ -2,96 +2,95 @@ Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78754C43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:27:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D5CEC43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:08:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 44AC42082F
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:27:40 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PqKr8lnf"
+	by mail.kernel.org (Postfix) with ESMTP id 1F9DB20657
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:08:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727744AbfC0W1k (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 18:27:40 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:36082 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbfC0W1j (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 18:27:39 -0400
-Received: by mail-vs1-f65.google.com with SMTP id n4so10979337vsm.3
-        for <linux-mips@vger.kernel.org>; Wed, 27 Mar 2019 15:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ydU001t3e2zWo6of+Lw+lN3EwVXKWGKpNMT3//N3PJo=;
-        b=PqKr8lnf3KT01sE0cqYIx4Fe9xEXa/QnooEkMGnrsMX3rs+GldGm7JF7aKSGnzFml+
-         wQVOtzNgyMS0WKe1yOVYAEscghpiNvLz/uNjXpxY9KcLyXiRfRi2MdaLgB+T+DhTitKJ
-         Td10d7SnJd8hDE/C00nPcm6Cps2nSppvGyKJ4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ydU001t3e2zWo6of+Lw+lN3EwVXKWGKpNMT3//N3PJo=;
-        b=Kl5LR1NmvG/xk+O7rrTxXZld2wY/tizb6eXx3vN8zqlJ4EJZKTp7kNFB6yDLAXyrKS
-         11ZjAj+DrZWdpzjHSP+m5FKv5Fs744hy4Wf2zG+4rnY+SGI21cPyoIFnomEY2L8Q7Wpr
-         Nr8KmQw52SAwgg9KOGndvxKWzljlDr002/IZ+iX7NF3DYcPPrff9aJwjul4Fr7MQCOLY
-         QMC7XdFhmMLLyxo7pcsMpUx1uLL74Ye44m9J3NSclaXYus+xgDSGZMfYlRruYfEDzCCx
-         Dv1RePrlhELNKBUL24Z9yJMwjYWzObAt6RH0fO5dN9fJw/4RqRdCG+ylijbzkVc5a93S
-         RL4w==
-X-Gm-Message-State: APjAAAX9diRT3OdohlV/7aYExFGwYxYtGcUejnVfuKoL3QHyG+By9PRJ
-        m06kPk4yejl6025jdyK4X8qrs7JNngo=
-X-Google-Smtp-Source: APXvYqxan8d9Y+RqGgpp2T/GAJLVCfamO59Hp3c3kOy2xFZz9pTMd6IO52Sfh9zMqJSVXxXDfkG7jw==
-X-Received: by 2002:a67:ad1a:: with SMTP id t26mr24653547vsl.124.1553725658567;
-        Wed, 27 Mar 2019 15:27:38 -0700 (PDT)
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com. [209.85.217.44])
-        by smtp.gmail.com with ESMTPSA id c204sm1485743vkd.14.2019.03.27.15.27.37
-        for <linux-mips@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
-Received: by mail-vs1-f44.google.com with SMTP id f22so7261668vso.7
-        for <linux-mips@vger.kernel.org>; Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
-X-Received: by 2002:a67:ffce:: with SMTP id w14mr24277426vsq.111.1553725657293;
- Wed, 27 Mar 2019 15:27:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190327150551.12851-1-qiaochong@loongson.cn> <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
- <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
-In-Reply-To: <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Wed, 27 Mar 2019 15:27:26 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UhqQh2i1CUfgGHPdUtFWsTznCL_1tNafG+F74oHXM1Ew@mail.gmail.com>
-Message-ID: <CAD=FV=UhqQh2i1CUfgGHPdUtFWsTznCL_1tNafG+F74oHXM1Ew@mail.gmail.com>
-Subject: Re: Re: [PATCH] MIPS: KGDB: fix kgdb support for SMP platforms.
-To:     qiaochong <qiaochong@loongson.cn>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        id S1727766AbfC0XI1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 19:08:27 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:49940 "EHLO
+        mail.loongson.cn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbfC0XI1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:08:27 -0400
+Received: from localhost.localdomain (unknown [10.50.122.29])
+        by mail (Coremail) with SMTP id QMiowPDxRuRTApxcQGG0AA--.39177S2;
+        Thu, 28 Mar 2019 07:08:17 +0800 (CST)
+From:   Chong Qiao <qiaochong@loongson.cn>
+To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Will Deacon <will.deacon@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-mips <linux-mips@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Christophe Leroy <christophe.leroy@c-s.fr>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        QiaoChong <qiaochong@loongson.cn>
+Subject: [PATCH] MIPS: KGDB: fix kgdb support for SMP platforms.
+Date:   Thu, 28 Mar 2019 07:08:01 +0800
+Message-Id: <20190327230801.3650-1-qiaochong@loongson.cn>
+X-Mailer: git-send-email 2.17.0
+X-CM-TRANSID: QMiowPDxRuRTApxcQGG0AA--.39177S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF4rXF1UZr4ruw43WrW8Crg_yoWDurbEk3
+        4xG3WkGw1rArsIvF1UXrWrCF13A3ykKF1DursF9FWIy34UAr15Xay8ta4DWrn5CrsYvr4f
+        uF98GryDCwnFyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb-kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+        Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+        1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+        jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+        1lF7xvr2IYc2Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lF7I21c0EjII2zVCS
+        5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026x
+        CaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_
+        JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
+        1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_
+        Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+        W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjtfHUUUUUU==
+X-CM-SenderInfo: 5tld0upkrqwqxorr0wxvrqhubq/
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+KGDB_call_nmi_hook is called by other cpu through smp call.
+MIPS smp call is processed in ipi irq handler and regs is saved in
+ handle_int.
+So kgdb_call_nmi_hook get regs by get_irq_regs and regs will be passed
+ to kgdb_cpu_enter.
 
-On Wed, Mar 27, 2019 at 3:25 PM qiaochong <qiaochong@loongson.cn> wrote:
->
->
-> My name  is QiaoChong=EF=BC=8C which is same to my username.
-> Qiao is my family name.
-> Thanks a lot.
+Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
+---
+ arch/mips/kernel/kgdb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I guess it will be up to whichever maintainer lands this (maybe
-Daniel?) on whether they want you to spin it.  I think folks expect to
-see a real name that is capitalized and usually a space between the
-family name and the given name.
+diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
+index 6e574c02e4c3b..ea781b29f7f17 100644
+--- a/arch/mips/kernel/kgdb.c
++++ b/arch/mips/kernel/kgdb.c
+@@ -33,6 +33,7 @@
+ #include <asm/processor.h>
+ #include <asm/sigcontext.h>
+ #include <linux/uaccess.h>
++#include <asm/irq_regs.h>
+ 
+ static struct hard_trap_info {
+ 	unsigned char tt;	/* Trap type code for MIPS R3xxx and R4xxx */
+@@ -214,7 +215,7 @@ void kgdb_call_nmi_hook(void *ignored)
+ 	old_fs = get_fs();
+ 	set_fs(KERNEL_DS);
+ 
+-	kgdb_nmicallback(raw_smp_processor_id(), NULL);
++	kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
+ 
+ 	set_fs(old_fs);
+ }
+-- 
+2.17.0
 
--Doug
+

@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B58D3C10F00
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:17:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14664C10F00
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:17:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 82BED2082F
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:17:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CB71D21773
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:17:51 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="Gqoh3Ei7"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="jgoZsvoc"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732507AbfC0XRl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 19:17:41 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:59062 "EHLO
+        id S1732684AbfC0XRq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 19:17:46 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:59176 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732379AbfC0XRj (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:39 -0400
+        with ESMTP id S1732572AbfC0XRo (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1553728657; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1553728661; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=Vfr89DEuixHt/Ld1cIBzy7ff8DhBwMoI2s6wXld3jbA=;
-        b=Gqoh3Ei750tF1iMZ/7XovFZZ27Dfq2vbkPgmTacQO5D95aB6Fu8XcQqn4o1vqVko84Sokq
-        FHhvNT60SUjNALPzjL+9qBjoWWn7Xj+ow5uxcis9Gb/h8B/cnUtz8qwl3gaiAh0QJRx1yy
-        NzGC/KErRdA3GrSAYSO56YoI23qXDU0=
+        bh=LaBZgQfRycafkqZkxA0KQOxGTobHePRrAgEM3XkEjFQ=;
+        b=jgoZsvocN306f74/spp3hXET5Vp2umbTJKJaHkj2+YNuDEsJrLS5dXWKdGi/eT7ciF8ip3
+        wQQ/JhAzpQ98zPdv6tXwqu7TaheVyvUJz1KGDUYeziiW/MbZiFUrtRbr3v2rNhallNg2vT
+        AmRgxCzdj9uOUQYEP+diU6AhTRB95io=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,9 +46,9 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v11 15/27] pwm: jz4740: Allow selection of PWM channels 0 and 1
-Date:   Thu, 28 Mar 2019 00:16:19 +0100
-Message-Id: <20190327231631.15708-16-paul@crapouillou.net>
+Subject: [PATCH v11 17/27] pwm: jz4740: Remove unused devicetree compatible strings
+Date:   Thu, 28 Mar 2019 00:16:21 +0100
+Message-Id: <20190327231631.15708-18-paul@crapouillou.net>
 In-Reply-To: <20190327231631.15708-1-paul@crapouillou.net>
 References: <20190327231631.15708-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -56,33 +56,32 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The TCU channels 0 and 1 were previously reserved for system tasks, and
-thus unavailable for PWM.
+Right now none of the Ingenic-based boards probe this driver from
+devicetree. This driver defined three compatible strings for the exact
+same behaviour. Before these strings are used, we can remove two of
+them.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Thierry Reding <thierry.reding@gmail.com>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
- drivers/pwm/pwm-jz4740.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/pwm/pwm-jz4740.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
-index b55ee879e23d..c874a387c1d9 100644
+index c874a387c1d9..47d891bd22c7 100644
 --- a/drivers/pwm/pwm-jz4740.c
 +++ b/drivers/pwm/pwm-jz4740.c
-@@ -42,11 +42,7 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- 	char clk_name[16];
- 	int ret;
- 
--	/*
--	 * Timers 0 and 1 are used for system tasks, so they are unavailable
--	 * for use as PWMs.
--	 */
--	if (pwm->hwpwm < 2)
-+	if (!ingenic_tcu_pwm_can_use_chn(chip->dev, pwm->hwpwm))
- 		return -EBUSY;
- 
- 	snprintf(clk_name, sizeof(clk_name), "timer%u", pwm->hwpwm);
+@@ -233,8 +233,6 @@ static int jz4740_pwm_remove(struct platform_device *pdev)
+ #ifdef CONFIG_OF
+ static const struct of_device_id jz4740_pwm_dt_ids[] = {
+ 	{ .compatible = "ingenic,jz4740-pwm", },
+-	{ .compatible = "ingenic,jz4770-pwm", },
+-	{ .compatible = "ingenic,jz4780-pwm", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, jz4740_pwm_dt_ids);
 -- 
 2.11.0
 

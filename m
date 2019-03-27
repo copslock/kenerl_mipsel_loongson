@@ -2,128 +2,106 @@ Return-Path: <SRS0=CBLp=R6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,UPPERCASE_50_75,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 003EEC43381
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 21:11:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C82D7C43381
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:25:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C2B5520700
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 21:11:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9F36F2082F
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 22:25:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727225AbfC0VLw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 17:11:52 -0400
-Received: from mars.blocktrron.ovh ([51.254.112.43]:40549 "EHLO
-        mail.blocktrron.ovh" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726059AbfC0VLw (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 17:11:52 -0400
-X-Greylist: delayed 473 seconds by postgrey-1.27 at vger.kernel.org; Wed, 27 Mar 2019 17:11:50 EDT
-Received: from localhost.localdomain (p200300E53F05A6005088A270B90FE34A.dip0.t-ipconnect.de [IPv6:2003:e5:3f05:a600:5088:a270:b90f:e34a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.blocktrron.ovh (Postfix) with ESMTPSA id DCA151FF17
-        for <linux-mips@vger.kernel.org>; Wed, 27 Mar 2019 22:03:55 +0100 (CET)
-From:   David Bauer <mail@david-bauer.net>
-To:     linux-mips@vger.kernel.org
-Subject: [PATCH] MIPS: ath79: add missing QCA955x GMAC registers
-Date:   Wed, 27 Mar 2019 22:03:43 +0100
-Message-Id: <20190327210343.11336-1-mail@david-bauer.net>
-X-Mailer: git-send-email 2.21.0
+        id S1727979AbfC0WZr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 18:25:47 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:49533 "EHLO
+        mail.loongson.cn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727840AbfC0WZr (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 18:25:47 -0400
+Received: by ajax-webmail-mail (Coremail) ; Thu, 28 Mar 2019 06:25:33 +0800
+ (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+X-Originating-IP: [220.194.107.221]
+Date:   Thu, 28 Mar 2019 06:25:33 +0800 (GMT+08:00)
+From:   qiaochong <qiaochong@loongson.cn>
+To:     "Doug Anderson" <dianders@chromium.org>
+Cc:     "Ralf Baechle" <ralf@linux-mips.org>,
+        "Paul Burton" <paul.burton@mips.com>,
+        "James Hogan" <jhogan@kernel.org>,
+        "Daniel Thompson" <daniel.thompson@linaro.org>,
+        "Will Deacon" <will.deacon@arm.com>,
+        "Christophe Leroy" <christophe.leroy@c-s.fr>,
+        linux-mips <linux-mips@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re:Re: [PATCH] MIPS: KGDB: fix kgdb support for SMP platforms.
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT3.0.6a_preview build
+ 20150605(69773.7394) Copyright (c) 2002-2019 www.mailtech.cn loongson
+In-Reply-To: <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
+References: <20190327150551.12851-1-qiaochong@loongson.cn>
+ <CAD=FV=WAvzz+wXZzoLZvxBhO4P_RjV2op=uiX9dHD2dPdSCruw@mail.gmail.com>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: hVRFB2Zvb3Rlcl90eHQ9MTc3MTo3MzQ=
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <727cd934.9e92.169c1422cf2.Coremail.qiaochong@loongson.cn>
+X-CM-TRANSID: QMiowPDx779e+JtcqVu0AA--.6105W
+X-CM-SenderInfo: 5tld0upkrqwqxorr0wxvrqhubq/1tbiAQACDFEBqdSvPAAIs5
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This adds missing GMAC register definitions for the Qualcomm Atheros
-QCA955x series MIPS SoCs.
-
-They originate from the platforms U-Boot code and the AVM FRITZ!WLAN
-Repeater 450E's GPL tarball.
-
-Signed-off-by: David Bauer <mail@david-bauer.net>
----
- .../mips/include/asm/mach-ath79/ar71xx_regs.h | 54 +++++++++++++++++++
- 1 file changed, 54 insertions(+)
-
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 284b4fa23e03..e3b2484ce83f 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -1245,7 +1245,12 @@
-  */
- 
- #define QCA955X_GMAC_REG_ETH_CFG	0x00
-+#define QCA955X_GMAC_REG_SGMII_RESET	0x14
- #define QCA955X_GMAC_REG_SGMII_SERDES	0x18
-+#define QCA955X_GMAC_REG_MR_AN_CONTROL	0x1c
-+#define QCA955X_GMAC_REG_MR_AN_STATUS	0x20
-+#define QCA955X_GMAC_REG_SGMII_CONFIG	0x34
-+#define QCA955X_GMAC_REG_SGMII_DEBUG	0x58
- 
- #define QCA955X_ETH_CFG_RGMII_EN	BIT(0)
- #define QCA955X_ETH_CFG_MII_GE0		BIT(1)
-@@ -1267,9 +1272,58 @@
- #define QCA955X_ETH_CFG_TXE_DELAY_MASK	0x3
- #define QCA955X_ETH_CFG_TXE_DELAY_SHIFT	20
- 
-+#define QCA955X_SGMII_RESET_RX_CLK_N_RESET	0
-+#define QCA955X_SGMII_RESET_RX_CLK_N		BIT(0)
-+#define QCA955X_SGMII_RESET_TX_CLK_N		BIT(1)
-+#define QCA955X_SGMII_RESET_RX_125M_N		BIT(2)
-+#define QCA955X_SGMII_RESET_TX_125M_N		BIT(3)
-+#define QCA955X_SGMII_RESET_HW_RX_125M_N	BIT(4)
-+
- #define QCA955X_SGMII_SERDES_LOCK_DETECT_STATUS	BIT(15)
- #define QCA955X_SGMII_SERDES_RES_CALIBRATION_SHIFT 23
- #define QCA955X_SGMII_SERDES_RES_CALIBRATION_MASK 0xf
-+
-+#define QCA955X_MR_AN_CONTROL_SPEED_SEL1	BIT(6)
-+#define QCA955X_MR_AN_CONTROL_DUPLEX_MODE	BIT(8)
-+#define QCA955X_MR_AN_CONTROL_RESTART_AN	BIT(9)
-+#define QCA955X_MR_AN_CONTROL_POWER_DOWN	BIT(11)
-+#define QCA955X_MR_AN_CONTROL_AN_ENABLE		BIT(12)
-+#define QCA955X_MR_AN_CONTROL_SPEED_SEL0	BIT(13)
-+#define QCA955X_MR_AN_CONTROL_LOOPBACK		BIT(14)
-+#define QCA955X_MR_AN_CONTROL_PHY_RESET		BIT(15)
-+
-+#define QCA955X_MR_AN_STATUS_EXT_CAP		BIT(0)
-+#define QCA955X_MR_AN_STATUS_LINK_UP		BIT(2)
-+#define QCA955X_MR_AN_STATUS_AN_ABILITY		BIT(3)
-+#define QCA955X_MR_AN_STATUS_REMOTE_FAULT	BIT(4)
-+#define QCA955X_MR_AN_STATUS_AN_COMPLETE	BIT(5)
-+#define QCA955X_MR_AN_STATUS_NO_PREAMBLE	BIT(6)
-+#define QCA955X_MR_AN_STATUS_BASE_PAGE		BIT(7)
-+
-+#define QCA955X_SGMII_CONFIG_MODE_CTRL_SHIFT		0
-+#define QCA955X_SGMII_CONFIG_MODE_CTRL_MASK		0x7
-+#define QCA955X_SGMII_CONFIG_ENABLE_SGMII_TX_PAUSE	BIT(3)
-+#define QCA955X_SGMII_CONFIG_MR_REG4_CHANGED		BIT(4)
-+#define QCA955X_SGMII_CONFIG_FORCE_SPEED		BIT(5)
-+#define QCA955X_SGMII_CONFIG_SPEED_SHIFT		6
-+#define QCA955X_SGMII_CONFIG_SPEED_MASK			0xc0
-+#define QCA955X_SGMII_CONFIG_REMOTE_PHY_LOOPBACK	BIT(8)
-+#define QCA955X_SGMII_CONFIG_NEXT_PAGE_LOADED		BIT(9)
-+#define QCA955X_SGMII_CONFIG_MDIO_ENABLE		BIT(10)
-+#define QCA955X_SGMII_CONFIG_MDIO_PULSE			BIT(11)
-+#define QCA955X_SGMII_CONFIG_MDIO_COMPLETE		BIT(12)
-+#define QCA955X_SGMII_CONFIG_PRBS_ENABLE		BIT(13)
-+#define QCA955X_SGMII_CONFIG_BERT_ENABLE		BIT(14)
-+
-+#define QCA955X_SGMII_DEBUG_TX_STATE_MASK	0xff
-+#define QCA955X_SGMII_DEBUG_TX_STATE_SHIFT	0
-+#define QCA955X_SGMII_DEBUG_RX_STATE_MASK	0xff00
-+#define QCA955X_SGMII_DEBUG_RX_STATE_SHIFT	8
-+#define QCA955X_SGMII_DEBUG_RX_SYNC_STATE_MASK	0xff0000
-+#define QCA955X_SGMII_DEBUG_RX_SYNC_STATE_SHIFT	16
-+#define QCA955X_SGMII_DEBUG_ARB_STATE_MASK	0xf000000
-+#define QCA955X_SGMII_DEBUG_ARB_STATE_SHIFT	24
-+
- /*
-  * QCA956X GMAC Interface
-  */
--- 
-2.21.0
-
+Ck15IG5hbWUgIGlzIFFpYW9DaG9uZ++8jCB3aGljaCBpcyBzYW1lIHRvIG15IHVzZXJuYW1lLgpR
+aWFvIGlzIG15IGZhbWlseSBuYW1lLgpUaGFua3MgYSBsb3QuCgrlnKggMjAxOS0wMy0yOCAwMDoy
+NTowNu+8jCJEb3VnIEFuZGVyc29uIiA8ZGlhbmRlcnNAY2hyb21pdW0ub3JnPiDlhpnpgZPvvJoK
+Cj5IaSwKPgo+T24gV2VkLCBNYXIgMjcsIDIwMTkgYXQgODowNiBBTSBxaWFvY2hvbmcgPHFpYW9j
+aG9uZ0Bsb29uZ3Nvbi5jbj4gd3JvdGU6Cj4+Cj4+IEtHREJfY2FsbF9ubWlfaG9vayBpcyBjYWxs
+ZWQgYnkgb3RoZXIgY3B1IHRocm91Z2ggc21wIGNhbGwuCj4+IE1JUFMgc21wIGNhbGwgaXMgcHJv
+Y2Vzc2VkIGluIGlwaSBpcnEgaGFuZGxlciBhbmQgcmVncyBpcyBzYXZlZCBpbgo+PiAgaGFuZGxl
+X2ludC4KPj4gU28ga2dkYl9jYWxsX25taV9ob29rIGdldCByZWdzIGJ5IGdldF9pcnFfcmVncyBh
+bmQgcmVncyB3aWxsIGJlIHBhc3NlZAo+PiAgdG8ga2dkYl9jcHVfZW50ZXIuCj4+Cj4+IFNpZ25l
+ZC1vZmYtYnk6IHFpYW9jaG9uZyA8cWlhb2Nob25nQGxvb25nc29uLmNuPgo+Cj5Ob3RlIHRoYXQg
+eW91IG1pZ2h0IHdhbnQgdG8gYWRqdXN0IHlvdXIgZ2l0IHNldHRpbmdzLiAgVXN1YWxseSBpbiB0
+aGUKPmtlcm5lbCB0aGV5IHJlcXVpcmUgdGhhdCBhIFNpZ25lZC1vZmYtYnkgaGF2ZSB5b3VyIHJl
+YWwgbmFtZSwgbm90IGp1c3QKPnlvdXIgdXNlcm5hbWUuICBZb3UgcHJvYmFibHkgbmVlZCB0byBz
+cGluIHlvdXIgcGF0Y2ggdG8gZml4IHRoaXMuICBZb3UKPnNob3VsZCBtYWtlIHN1cmUgdGhhdCB0
+aGUgYXV0aG9yc2hpcCBvZiB0aGUgcGF0Y2ggYWxzbyBoYXMgeW91ciByZWFsCj5uYW1lLgo+Cj4K
+Pj4gLS0tCj4+ICBhcmNoL21pcHMva2VybmVsL2tnZGIuYyB8IDMgKystCj4+ICAxIGZpbGUgY2hh
+bmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9h
+cmNoL21pcHMva2VybmVsL2tnZGIuYyBiL2FyY2gvbWlwcy9rZXJuZWwva2dkYi5jCj4+IGluZGV4
+IDZlNTc0YzAyZTRjM2IuLmVhNzgxYjI5ZjdmMTcgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvbWlwcy9r
+ZXJuZWwva2dkYi5jCj4+ICsrKyBiL2FyY2gvbWlwcy9rZXJuZWwva2dkYi5jCj4+IEBAIC0zMyw2
+ICszMyw3IEBACj4+ICAjaW5jbHVkZSA8YXNtL3Byb2Nlc3Nvci5oPgo+PiAgI2luY2x1ZGUgPGFz
+bS9zaWdjb250ZXh0Lmg+Cj4+ICAjaW5jbHVkZSA8bGludXgvdWFjY2Vzcy5oPgo+PiArI2luY2x1
+ZGUgPGFzbS9pcnFfcmVncy5oPgo+Pgo+PiAgc3RhdGljIHN0cnVjdCBoYXJkX3RyYXBfaW5mbyB7
+Cj4+ICAgICAgICAgdW5zaWduZWQgY2hhciB0dDsgICAgICAgLyogVHJhcCB0eXBlIGNvZGUgZm9y
+IE1JUFMgUjN4eHggYW5kIFI0eHh4ICovCj4+IEBAIC0yMTQsNyArMjE1LDcgQEAgdm9pZCBrZ2Ri
+X2NhbGxfbm1pX2hvb2sodm9pZCAqaWdub3JlZCkKPj4gICAgICAgICBvbGRfZnMgPSBnZXRfZnMo
+KTsKPj4gICAgICAgICBzZXRfZnMoS0VSTkVMX0RTKTsKPj4KPj4gLSAgICAgICBrZ2RiX25taWNh
+bGxiYWNrKHJhd19zbXBfcHJvY2Vzc29yX2lkKCksIE5VTEwpOwo+PiArICAgICAgIGtnZGJfbm1p
+Y2FsbGJhY2socmF3X3NtcF9wcm9jZXNzb3JfaWQoKSwgZ2V0X2lycV9yZWdzKCkpOwo+Pgo+PiAg
+ICAgICAgIHNldF9mcyhvbGRfZnMpOwo+PiAgfQo+Cj5BcyBwZXIgbXkgcmVwbHkgb24gVjEsIGZl
+ZWwgZnJlZSB0byBhZGQ6Cj4KPlJldmlld2VkLWJ5OiBEb3VnbGFzIEFuZGVyc29uIDxkaWFuZGVy
+c0BjaHJvbWl1bS5vcmc+Cg0KDQrljJfkuqzluILmtbfmt4DljLrkuK3lhbPmnZHnjq/kv53np5Hm
+ioDnpLrojIPlm63pvpnoiq/kuqfkuJrlm60y5Y+35qW8IDEwMDA5NeeUteivnTogKzg2ICgxMCkg
+NjI1NDY2NjjkvKDnnJ86ICs4NiAoMTApIDYyNjAwODI2d3d3Lmxvb25nc29uLmNu5pys6YKu5Lu2
+5Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR5oqA5pyv5pyJ6ZmQ5YWs5Y+455qE5ZWG5Lia
+56eY5a+G5L+h5oGv77yM5LuF6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE
+5Liq5Lq65oiW576k57uE44CC56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/
+55So77yI5YyF5ous5L2G5LiN6ZmQ5LqO5YWo6YOo5oiW6YOoIOWIhuWcsOazhOmcsuOAgeWkjeWI
+tuaIluaVo+WPke+8ieacrOmCruS7tuWPiuWFtumZhOS7tuS4reeahOS/oeaBr+OAguWmguaenOaC
+qOmUmeaUtuacrOmCruS7tu+8jOivt+aCqOeri+WNs+eUteivneaIlumCruS7tumAmuefpeWPkeS7
+tuS6uuW5tuWIoOmZpOacrOmCruS7tuOAgiANCg0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1l
+bnRzIGNvbnRhaW4gY29uZmlkZW50aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24NClRlY2hu
+b2xvZ3kgQ29ycG9yYXRpb24gTGltaXRlZCwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhl
+IHBlcnNvbiBvciBlbnRpdHkNCndob3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNl
+IG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluDQphbnkgd2F5IChpbmNsdWRp
+bmcsIGJ1dCBub3QgbGltaXRlZCB0bywgdG90YWwgb3IgcGFydGlhbCBkaXNjbG9zdXJlLA0KcmVw
+cm9kdWN0aW9uIG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUgaW50
+ZW5kZWQgcmVjaXBpZW50KHMpDQppcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlzIGVt
+YWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgYnkNCnBob25lIG9yIGVtYWls
+IGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQuIA==

@@ -6,28 +6,28 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA387C10F06
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A143C10F00
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9EFEF2075C
-	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 661C12082F
+	for <linux-mips@archiver.kernel.org>; Wed, 27 Mar 2019 23:19:08 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="Rc+YFeB5"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="fBCn0n2k"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728401AbfC0XS6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 27 Mar 2019 19:18:58 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:59118 "EHLO
+        id S1732477AbfC0XRk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 27 Mar 2019 19:17:40 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:59018 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728062AbfC0XRm (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:42 -0400
+        with ESMTP id S1726102AbfC0XRi (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 27 Mar 2019 19:17:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1553728659; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1553728654; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=i7nXZc2dagRgFRfMyZHWXJxqtg8BMbqF+6N1Dzaibgs=;
-        b=Rc+YFeB50ozbmFA6ZyQpQTqO63FcyjAH/wYcdEnZ1VYSTUtvwspSSDJSKlgt6iUPwQHHyP
-        0iH7rKy6haua6j+8GVXHnYbvnh5glYLZb30tQLSTM4AtYC7NU8l/fhDrrKzzWC/xFp3yob
-        +nWXHHrj7yg5z7V9ENQdEaGPT0SaVFk=
+        bh=GkICgK8vBLcuX0i49vbljswblHjkddWYl4PLQNv7YN4=;
+        b=fBCn0n2kr2zKU+fYHSy5pOAEVW5H1+Z8POU4Iedav/d33XjWF7EkWJ0I6Ww3f04a/Lt15L
+        5l/GlIMhZkk9Dlez0weEgBb1s8dqcuMFZNUYT5WfMovwHML1KFwBy9L0zRqab9x0t3tAIj
+        XNVfmx1UlnLdJtqmsmuryOdvkKUn9BA=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,9 +46,9 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v11 16/27] pwm: jz4740: Drop dependency on MACH_INGENIC, use COMPILE_TEST
-Date:   Thu, 28 Mar 2019 00:16:20 +0100
-Message-Id: <20190327231631.15708-17-paul@crapouillou.net>
+Subject: [PATCH v11 14/27] pwm: jz4740: Improve algorithm of clock calculation
+Date:   Thu, 28 Mar 2019 00:16:18 +0100
+Message-Id: <20190327231631.15708-15-paul@crapouillou.net>
 In-Reply-To: <20190327231631.15708-1-paul@crapouillou.net>
 References: <20190327231631.15708-1-paul@crapouillou.net>
 Sender: linux-mips-owner@vger.kernel.org
@@ -56,35 +56,102 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Depending on MACH_INGENIC prevent us from creating a generic kernel that
-works on more than one MIPS board. Instead, we just depend on MIPS being
-set.
+The previous algorithm hardcoded details about how the TCU clocks work.
 
-On other architectures, this driver can still be built, thanks to
-COMPILE_TEST. This is used by automated tools to find bugs, for
-instance.
+The new algorithm will compute the maximum frequency at which the clock
+can run for the given period/duty parameters, and use clk_set_max_rate()
+to ensure that we will always compute period/duty values that fit in our
+16-bit register fields.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
 ---
- drivers/pwm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-jz4740.c | 51 +++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index a1aba52793ee..e73e744a7a71 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -212,7 +212,7 @@ config PWM_IMX27
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index 1a0eab0abafe..b55ee879e23d 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -108,24 +108,47 @@ static int jz4740_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	struct jz4740_pwm_chip *jz4740 = to_jz4740(pwm->chip);
+ 	struct clk *clk = pwm_get_chip_data(pwm),
+ 		   *parent_clk = clk_get_parent(clk);
+-	unsigned long rate, period, duty;
++	unsigned long rate, parent_rate, period, duty;
+ 	unsigned long long tmp;
+-	unsigned int prescaler = 0;
++	int ret;
  
- config PWM_JZ4740
- 	tristate "Ingenic JZ47xx PWM support"
--	depends on MACH_INGENIC
-+	depends on MIPS || COMPILE_TEST
- 	depends on COMMON_CLK
- 	select INGENIC_TIMER
- 	help
+-	rate = clk_get_rate(parent_clk);
+-	tmp = (unsigned long long)rate * state->period;
+-	do_div(tmp, 1000000000);
+-	period = tmp;
++	parent_rate = clk_get_rate(parent_clk);
++
++	jz4740_pwm_disable(chip, pwm);
++
++	/* Reset the clock to the maximum rate, and we'll reduce it if needed */
++	ret = clk_set_rate(clk, parent_rate);
++	if (ret)
++		return ret;
+ 
+-	while (period > 0xffff && prescaler < 6) {
+-		period >>= 2;
+-		rate >>= 2;
+-		++prescaler;
++	/*
++	 * Limit the clock to a maximum rate that still gives us a period value
++	 * which fits in 16 bits.
++	 */
++	tmp = 0xffffull * NSEC_PER_SEC;
++	do_div(tmp, state->period);
++
++	ret = clk_set_max_rate(clk, tmp);
++	if (ret) {
++		dev_err(chip->dev, "Unable to set max rate: %i\n", ret);
++		return ret;
+ 	}
+ 
+-	if (prescaler == 6)
+-		return -EINVAL;
++	/*
++	 * Read back the clock rate, as it may have been modified by
++	 * clk_set_max_rate()
++	 */
++	rate = clk_get_rate(clk);
++
++	if (rate != parent_rate)
++		dev_dbg(chip->dev, "PWM clock updated to %lu Hz\n", rate);
+ 
++	/* Calculate period value */
++	tmp = (unsigned long long)rate * state->period;
++	do_div(tmp, NSEC_PER_SEC);
++	period = (unsigned long)tmp;
++
++	/* Calculate duty value */
+ 	tmp = (unsigned long long)period * state->duty_cycle;
+ 	do_div(tmp, state->period);
+ 	duty = period - tmp;
+@@ -133,8 +156,6 @@ static int jz4740_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (duty >= period)
+ 		duty = period - 1;
+ 
+-	jz4740_pwm_disable(chip, pwm);
+-
+ 	/*
+ 	 * Set abrupt shutdown.
+ 	 *
+@@ -144,8 +165,6 @@ static int jz4740_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	regmap_update_bits(jz4740->map, TCU_REG_TCSRc(pwm->hwpwm),
+ 			   TCU_TCSR_PWM_SD, TCU_TCSR_PWM_SD);
+ 
+-	clk_set_rate(clk, rate);
+-
+ 	/* Reset counter to 0 */
+ 	regmap_write(jz4740->map, TCU_REG_TCNTc(pwm->hwpwm), 0);
+ 
 -- 
 2.11.0
 

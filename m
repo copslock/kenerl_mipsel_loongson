@@ -2,110 +2,148 @@ Return-Path: <SRS0=GXiT=R7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E64E1C43381
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 15:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0D4DC43381
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 15:42:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C0D8A217F9
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 15:23:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9DAF921773
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 15:42:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1553787761;
+	bh=7W1yljRBvSIndmqSMX0YUQpbdeqZmA4x9L/HJMuag/0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=Ox4yX1EUd62YjBbQYm/UzP2QttbCc3B2GWPRdJjVF9WxvDXWVd00o7Dwm3nwWjniI
+	 UGPBakvgomcW9veuP0Oq5PjMQqo0dew14xLcgk7pyAF2UvWVfaA7NmcmcdCne7q32r
+	 5cAxEq3MgIFY7CjzSveUpvQ7/i7iAW9DYoWPxqWw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727149AbfC1PWG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Mar 2019 11:22:06 -0400
-Received: from foss.arm.com ([217.140.101.70]:46222 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725849AbfC1PWF (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 28 Mar 2019 11:22:05 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EBB81684;
-        Thu, 28 Mar 2019 08:22:05 -0700 (PDT)
-Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.69])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C39E3F557;
-        Thu, 28 Mar 2019 08:22:01 -0700 (PDT)
-From:   Steven Price <steven.price@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Steven Price <steven.price@arm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Morse <james.morse@arm.com>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will.deacon@arm.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "Liang, Kan" <kan.liang@linux.intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH v7 03/20] mips: mm: Add p?d_large() definitions
-Date:   Thu, 28 Mar 2019 15:20:47 +0000
-Message-Id: <20190328152104.23106-4-steven.price@arm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190328152104.23106-1-steven.price@arm.com>
-References: <20190328152104.23106-1-steven.price@arm.com>
+        id S1726275AbfC1Pml (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Mar 2019 11:42:41 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44290 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726046AbfC1Pml (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 28 Mar 2019 11:42:41 -0400
+Received: by mail-ot1-f66.google.com with SMTP id d24so4228605otl.11;
+        Thu, 28 Mar 2019 08:42:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4az+46DIMfUB/SNTIsMCQFGc8Fnlowh1OrOWXEomb4w=;
+        b=VrXm1/64sjT25/Gg8RUJUD8av7Y8kN1OL6dNMfo/j4X9R7Y3aQo/NXFnitB1UncBAC
+         p73EVG7OpvzBJ5+hNeH0BZVTMcluvJk8pjpwu3B0A8w9h/eC660Rk0ZvwLpMdft2AxPD
+         eBhnPnu001DXRZ3D3MxzwA9NxKYB1gNVPkgL+8HV3lBmNjcKxYYM2yOMz7F551AmZIAB
+         WFIRae2e0uXz5IW+hXvaElvfewhSzsrAcymlNodqcpg2PrlfGZsSBzdKFYhTW8VYb+e8
+         ChlsxBh/F2mojeII0hNoSuYTlDtMYCBIl1QbIarz00AP/jIxZJkX1bkIkjJXqfMBbG0R
+         5h6Q==
+X-Gm-Message-State: APjAAAWl8nOxGg1nS9zQ/MjlibrJuWl+hT7rQwqBfVvJmiayDTwmET/S
+        ojcjrXxk+RJHfKNz40HNFA==
+X-Google-Smtp-Source: APXvYqxWekuyLQ5qCLs1b3xTvC3fEzjlccVvX52gn2dE+rZh0h2hIDf+mvkrEYzX+Y/EukoEhf+F9A==
+X-Received: by 2002:a05:6830:1092:: with SMTP id y18mr4973717oto.130.1553787760337;
+        Thu, 28 Mar 2019 08:42:40 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id k3sm9298397oic.11.2019.03.28.08.42.38
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 Mar 2019 08:42:39 -0700 (PDT)
+Date:   Thu, 28 Mar 2019 10:42:38 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Cc:     kishon@ti.com, linux-kernel@vger.kernel.org,
+        driverdev-devel@linuxdriverproject.org, devicetree@vger.kernel.org,
+        john@phrozen.org, linux-mips@vger.kernel.org, neil@brown.name
+Subject: Re: [PATCH 2/2] dt-bindings: phy: Add binding for Mediatek MT7621
+ PCIe PHY
+Message-ID: <20190328154238.GA20934@bogus>
+References: <20190314132210.654-1-sergio.paracuellos@gmail.com>
+ <20190314132210.654-3-sergio.paracuellos@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190314132210.654-3-sergio.paracuellos@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-walk_page_range() is going to be allowed to walk page tables other than
-those of user space. For this it needs to know when it has reached a
-'leaf' entry in the page tables. This information is provided by the
-p?d_large() functions/macros.
+On Thu, Mar 14, 2019 at 02:22:10PM +0100, Sergio Paracuellos wrote:
+> Add bindings to describe Mediatek MT7621 PCIe PHY.
 
-For mips, we only support large pages on 64 bit.
+Binding should come before the driver.
 
-For 64 bit if _PAGE_HUGE is defined we can simply look for it. When not
-defined we can be confident that there are no large pages in existence
-and fall back on the generic implementation (added in a later patch)
-which returns 0.
+> 
+> Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+> ---
+>  .../bindings/phy/mediatek,mt7621-pci-phy.txt  | 54 +++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt b/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
+> new file mode 100644
+> index 000000000000..8addedbe815e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
+> @@ -0,0 +1,54 @@
+> +Mediatek Mt7621 PCIe PHY
+> +
+> +Required properties:
+> +- compatible: must be "mediatek,mt7621-pci-phy"
+> +- reg: base address and length of the PCIe PHY block
+> +- #address-cells: must be 1
+> +- #size-cells: must be 0
+> +
+> +Each PCIe PHY should be represented by a child node
+> +
+> +Required properties For the child node:
+> +- reg: the PHY ID
+> +0 - PCIe RC 0
+> +1 - PCIe RC 1
+> +- #phy-cells: must be 0
+> +
+> +Example:
+> +	pcie0_phy: pcie-phy@1e149000 {
+> +		compatible = "mediatek,mt7621-pci-phy";
+> +		reg = <0x1e149000 0x0700>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		pcie0_port: pcie-phy@0 {
+> +			reg = <0>;
+> +			#phy-cells = <0>;
+> +		};
+> +
+> +		pcie1_port: pcie-phy@1 {
+> +			reg = <1>;
+> +			#phy-cells = <0>;
+> +		};
 
-CC: Ralf Baechle <ralf@linux-mips.org>
-CC: Paul Burton <paul.burton@mips.com>
-CC: James Hogan <jhogan@kernel.org>
-CC: linux-mips@vger.kernel.org
-Signed-off-by: Steven Price <steven.price@arm.com>
-Acked-by: Paul Burton <paul.burton@mips.com>
----
- arch/mips/include/asm/pgtable-64.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+If each phy port doesn't have its own resources, then you don't need 
+child nodes. Just set #phy-cells to 1.
 
-diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-index 93a9dce31f25..42162877ac62 100644
---- a/arch/mips/include/asm/pgtable-64.h
-+++ b/arch/mips/include/asm/pgtable-64.h
-@@ -273,6 +273,10 @@ static inline int pmd_present(pmd_t pmd)
- 	return pmd_val(pmd) != (unsigned long) invalid_pte_table;
- }
- 
-+#ifdef _PAGE_HUGE
-+#define pmd_large(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
-+#endif
-+
- static inline void pmd_clear(pmd_t *pmdp)
- {
- 	pmd_val(*pmdp) = ((unsigned long) invalid_pte_table);
-@@ -297,6 +301,10 @@ static inline int pud_present(pud_t pud)
- 	return pud_val(pud) != (unsigned long) invalid_pmd_table;
- }
- 
-+#ifdef _PAGE_HUGE
-+#define pud_large(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
-+#endif
-+
- static inline void pud_clear(pud_t *pudp)
- {
- 	pud_val(*pudp) = ((unsigned long) invalid_pmd_table);
--- 
-2.20.1
-
+> +	};
+> +
+> +	pcie1_phy: pcie-phy@1e14a000 {
+> +		compatible = "mediatek,mt7621-pci-phy";
+> +		reg = <0x1e14a000 0x0700>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		pcie2_port: pcie-phy@0 {
+> +			reg = <0>;
+> +			#phy-cells = <0>;
+> +		};
+> +	};
+> +
+> +	/* users of the PCIe phy */
+> +
+> +	pcie: pcie@1e140000 {
+> +		...
+> +		...
+> +		phys = <&pcie0_port>, <&pcie1_port>, <&pcie2_port>;
+> +		phy-names = "pcie-phy0", "pcie-phy1", "pcie-phy2";
+> +	};
+> -- 
+> 2.19.1
+> 

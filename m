@@ -2,191 +2,151 @@ Return-Path: <SRS0=GXiT=R7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.9 required=3.0 tests=DATE_IN_PAST_06_12,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B3BC43381
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 16:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BEE0C43381
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 16:45:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DD10D2183E
-	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 16:06:24 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Srj0h6GV"
+	by mail.kernel.org (Postfix) with ESMTP id D821E2082F
+	for <linux-mips@archiver.kernel.org>; Thu, 28 Mar 2019 16:45:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726029AbfC1QGU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 28 Mar 2019 12:06:20 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:44756 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726891AbfC1QGT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 28 Mar 2019 12:06:19 -0400
-Received: by mail-oi1-f195.google.com with SMTP id i21so16177855oib.11;
-        Thu, 28 Mar 2019 09:06:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J2YnF4j3XKMHvgYMrtOtaTfN5SnS3wNUPDSLACqrJC8=;
-        b=Srj0h6GVrZLToj12j8htEi2KLXrdj2pQhRHLDPOoF0TJUkA5ilRx3W3E4CK58n+soJ
-         Hsz4gQ1LIWwjEvZWRqbIhY8anPAKX7aOF6BGYSdPpYgGsuOsjrkZHfYfDiatPFuf3Fv1
-         pBLg7auZG3c9UNxF9FZC/ahPFPiiLbeTMg7H7VjoH1k2id43NDG04PM9eHdOGmwy8p9h
-         Ya6UBP6XtwbLLhA9PHlyMo+ztRb2xoGbnOpeF9tHJ2TKZzMIfesMPU6MJre6Hc81v0UN
-         wtD5z/EUXOuHSfbtbYNQxGx4+JckDKuB6XXWM3wygaxA8Xqk/XyYwygUUQrriggYb2gl
-         Yfsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J2YnF4j3XKMHvgYMrtOtaTfN5SnS3wNUPDSLACqrJC8=;
-        b=f8tqRdAvF42TcZ9crvuumLOlf8PemVVV4WwYeKW+IpCymxraXNwffiYmN/wdShgvJU
-         +zK97nMSGQqVVyZTm5chw6E7IcDT1+tDQc5Lw2MclfyVIkM4TNuLxxeuyzFyxQcxJ55z
-         5DgdKuUuIPs+ZmnPILfMifvFKBNObOwWAiL+aMwz6qIEvuCtiTZfFYnYjEGQnknwylmR
-         HI9Vu+s/jCv5tfgq9b0+HBJu4KOb2ivng9hCU/onIIjJRokZpfhppU4MbICH2r41iljW
-         pYQ3Yw+zx/0vD2chDBzUf9wThD22J5rWt/lAQM80B1H8SYYmRPxxK4Cz6BTRMCyWm5gp
-         9a9Q==
-X-Gm-Message-State: APjAAAU0JoiYqngwvO4Z2en6rffZB/t3dghu4+gek8eA2ceLL3elktaf
-        t1ILq+VXeUVqG1eu2btz5byV1COYyYevKTgP20s=
-X-Google-Smtp-Source: APXvYqycU1o1ldnqB15PgpXFB9zdTWPJNGcTklAAHTLIu/9LPEUTaUsKN3pjLs35oM3l4Cg894pzUPc8R2UsiORNqm4=
-X-Received: by 2002:aca:d4d8:: with SMTP id l207mr531154oig.29.1553789177972;
- Thu, 28 Mar 2019 09:06:17 -0700 (PDT)
+        id S1726242AbfC1Qpg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 28 Mar 2019 12:45:36 -0400
+Received: from mga07.intel.com ([134.134.136.100]:60424 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725849AbfC1Qpg (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 28 Mar 2019 12:45:36 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Mar 2019 09:45:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,281,1549958400"; 
+   d="scan'208";a="218460183"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga001.jf.intel.com with ESMTP; 28 Mar 2019 09:45:33 -0700
+From:   ira.weiny@intel.com
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Cc:     Ira Weiny <ira.weiny@intel.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH V3 0/7] Add FOLL_LONGTERM to GUP fast and use it
+Date:   Thu, 28 Mar 2019 01:44:15 -0700
+Message-Id: <20190328084422.29911-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190314132210.654-1-sergio.paracuellos@gmail.com>
- <20190314132210.654-3-sergio.paracuellos@gmail.com> <20190328154238.GA20934@bogus>
-In-Reply-To: <20190328154238.GA20934@bogus>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Thu, 28 Mar 2019 17:06:05 +0100
-Message-ID: <CAMhs-H8akrBVWf5G2unAYmEAv852jvGdieZVk=o59LWW8FnxSw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: phy: Add binding for Mediatek MT7621
- PCIe PHY
-To:     Rob Herring <robh@kernel.org>
-Cc:     kishon@ti.com, linux-kernel <linux-kernel@vger.kernel.org>,
-        driverdev-devel@linuxdriverproject.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, John Crispin <john@phrozen.org>,
-        linux-mips@vger.kernel.org, NeilBrown <neil@brown.name>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Rob,
+From: Ira Weiny <ira.weiny@intel.com>
 
-Thanks for the review.
+Following discussion and review[1] here are the cleanups requested.
 
-On Thu, Mar 28, 2019 at 4:42 PM Rob Herring <robh@kernel.org> wrote:
->
-> On Thu, Mar 14, 2019 at 02:22:10PM +0100, Sergio Paracuellos wrote:
-> > Add bindings to describe Mediatek MT7621 PCIe PHY.
->
-> Binding should come before the driver.
+The biggest change for V3 was the disabling of the ability to use FOLL_LONGTERM
+in get_user_pages[unlocked|locked|remote]
 
-Do you mean this should be PATCH 1 of the series?
+Comments were also enhanced throughout to show potential users what
+FOLL_LONGTERM is all about and limitations it has.
 
->
-> >
-> > Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-> > ---
-> >  .../bindings/phy/mediatek,mt7621-pci-phy.txt  | 54 +++++++++++++++++++
-> >  1 file changed, 54 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
-> >
-> > diff --git a/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt b/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
-> > new file mode 100644
-> > index 000000000000..8addedbe815e
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
-> > @@ -0,0 +1,54 @@
-> > +Mediatek Mt7621 PCIe PHY
-> > +
-> > +Required properties:
-> > +- compatible: must be "mediatek,mt7621-pci-phy"
-> > +- reg: base address and length of the PCIe PHY block
-> > +- #address-cells: must be 1
-> > +- #size-cells: must be 0
-> > +
-> > +Each PCIe PHY should be represented by a child node
-> > +
-> > +Required properties For the child node:
-> > +- reg: the PHY ID
-> > +0 - PCIe RC 0
-> > +1 - PCIe RC 1
-> > +- #phy-cells: must be 0
-> > +
-> > +Example:
-> > +     pcie0_phy: pcie-phy@1e149000 {
-> > +             compatible = "mediatek,mt7621-pci-phy";
-> > +             reg = <0x1e149000 0x0700>;
-> > +             #address-cells = <1>;
-> > +             #size-cells = <0>;
-> > +
-> > +             pcie0_port: pcie-phy@0 {
-> > +                     reg = <0>;
-> > +                     #phy-cells = <0>;
-> > +             };
-> > +
-> > +             pcie1_port: pcie-phy@1 {
-> > +                     reg = <1>;
-> > +                     #phy-cells = <0>;
-> > +             };
->
-> If each phy port doesn't have its own resources, then you don't need
-> child nodes. Just set #phy-cells to 1.
+Minor review comments were fixed
 
-I see. I will change those two into:
+Original cover letter:
 
-pcie0_phy: pcie-phy@1e149000 {
-     compatible = "mediatek,mt7621-pci-phy";
-     reg = <0x1e149000 0x0700>;
-     #phy-cells = <1>;
-};
+HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
+advantages.  These pages can be held for a significant time.  But
+get_user_pages_fast() does not protect against mapping FS DAX pages.
 
-pcie1_phy: pcie-phy@1e14a000 {
-     compatible = "mediatek,mt7621-pci-phy";
-     reg = <0x1e14a000 0x0700>;
-     #phy-cells = <0>;
-};
+Introduce FOLL_LONGTERM and use this flag in get_user_pages_fast() which
+retains the performance while also adding the FS DAX checks.  XDP has also
+shown interest in using this functionality.[1]
 
->
-> > +     };
-> > +
-> > +     pcie1_phy: pcie-phy@1e14a000 {
-> > +             compatible = "mediatek,mt7621-pci-phy";
-> > +             reg = <0x1e14a000 0x0700>;
-> > +             #address-cells = <1>;
-> > +             #size-cells = <0>;
-> > +
-> > +             pcie2_port: pcie-phy@0 {
-> > +                     reg = <0>;
-> > +                     #phy-cells = <0>;
-> > +             };
-> > +     };
-> > +
-> > +     /* users of the PCIe phy */
-> > +
-> > +     pcie: pcie@1e140000 {
-> > +             ...
-> > +             ...
-> > +             phys = <&pcie0_port>, <&pcie1_port>, <&pcie2_port>;
-> > +             phy-names = "pcie-phy0", "pcie-phy1", "pcie-phy2";
-> > +     };
+In addition we change get_user_pages() to use the new FOLL_LONGTERM flag and
+remove the specialized get_user_pages_longterm call.
 
-I think changing the previous one as you suggested make clients to do now:
+[1] https://lkml.org/lkml/2019/3/19/939
 
-pcie: pcie@1e140000 {
-      phys = <&pcie0_phy 0>, <&pcie0_phy 1>, <&pcie1_phy>;
-      phy-names = "pcie-phy0", "pcie-phy1", "pcie-phy2";
-};
 
-Am I right?
 
-I have to figure out how to change the driver to achieve this changes
-also to properly get the phy.
+Ira Weiny (7):
+  mm/gup: Replace get_user_pages_longterm() with FOLL_LONGTERM
+  mm/gup: Change write parameter to flags in fast walk
+  mm/gup: Change GUP fast to use flags rather than a write 'bool'
+  mm/gup: Add FOLL_LONGTERM capability to GUP fast
+  IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+  IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+  IB/mthca: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
 
-Thanks, I will make the changes in staging to be tested by Neil a send
-v2 PATCHEs for this with your suggested changes.
+ arch/mips/mm/gup.c                          |  11 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c         |   4 +-
+ arch/powerpc/kvm/e500_mmu.c                 |   2 +-
+ arch/powerpc/mm/mmu_context_iommu.c         |   3 +-
+ arch/s390/kvm/interrupt.c                   |   2 +-
+ arch/s390/mm/gup.c                          |  12 +-
+ arch/sh/mm/gup.c                            |  11 +-
+ arch/sparc/mm/gup.c                         |   9 +-
+ arch/x86/kvm/paging_tmpl.h                  |   2 +-
+ arch/x86/kvm/svm.c                          |   2 +-
+ drivers/fpga/dfl-afu-dma-region.c           |   2 +-
+ drivers/gpu/drm/via/via_dmablit.c           |   3 +-
+ drivers/infiniband/core/umem.c              |   5 +-
+ drivers/infiniband/hw/hfi1/user_pages.c     |   3 +-
+ drivers/infiniband/hw/mthca/mthca_memfree.c |   3 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c  |   8 +-
+ drivers/infiniband/hw/qib/qib_user_sdma.c   |   2 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c    |   9 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c   |   6 +-
+ drivers/misc/genwqe/card_utils.c            |   2 +-
+ drivers/misc/vmw_vmci/vmci_host.c           |   2 +-
+ drivers/misc/vmw_vmci/vmci_queue_pair.c     |   6 +-
+ drivers/platform/goldfish/goldfish_pipe.c   |   3 +-
+ drivers/rapidio/devices/rio_mport_cdev.c    |   4 +-
+ drivers/sbus/char/oradax.c                  |   2 +-
+ drivers/scsi/st.c                           |   3 +-
+ drivers/staging/gasket/gasket_page_table.c  |   4 +-
+ drivers/tee/tee_shm.c                       |   2 +-
+ drivers/vfio/vfio_iommu_spapr_tce.c         |   3 +-
+ drivers/vfio/vfio_iommu_type1.c             |   3 +-
+ drivers/vhost/vhost.c                       |   2 +-
+ drivers/video/fbdev/pvr2fb.c                |   2 +-
+ drivers/virt/fsl_hypervisor.c               |   2 +-
+ drivers/xen/gntdev.c                        |   2 +-
+ fs/io_uring.c                               |   5 +-
+ fs/orangefs/orangefs-bufmap.c               |   2 +-
+ include/linux/mm.h                          |  45 ++-
+ kernel/futex.c                              |   2 +-
+ lib/iov_iter.c                              |   7 +-
+ mm/gup.c                                    | 288 +++++++++++++-------
+ mm/gup_benchmark.c                          |   5 +-
+ mm/util.c                                   |   8 +-
+ net/ceph/pagevec.c                          |   2 +-
+ net/rds/info.c                              |   2 +-
+ net/rds/rdma.c                              |   3 +-
+ net/xdp/xdp_umem.c                          |   4 +-
+ 46 files changed, 314 insertions(+), 200 deletions(-)
 
-Best regards and thanks again for your time.
+-- 
+2.20.1
 
-Sergio Paracuellos

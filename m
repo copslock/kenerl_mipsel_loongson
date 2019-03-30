@@ -5,65 +5,63 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE40AC43381
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 05:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1478C43381
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 08:18:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BA76B218A3
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 05:50:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8078C218A6
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 08:18:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLmr/IYP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d+zgUrq4"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726597AbfC3Fun (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 30 Mar 2019 01:50:43 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:45389 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726402AbfC3Fun (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 30 Mar 2019 01:50:43 -0400
-Received: by mail-wr1-f65.google.com with SMTP id s15so5059156wra.12;
-        Fri, 29 Mar 2019 22:50:41 -0700 (PDT)
+        id S1730388AbfC3IS5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 30 Mar 2019 04:18:57 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:42042 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730384AbfC3IS4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 30 Mar 2019 04:18:56 -0400
+Received: by mail-pg1-f195.google.com with SMTP id p6so2292498pgh.9;
+        Sat, 30 Mar 2019 01:18:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BmXvWkyxo0c8a4qSu48xg6QsEYyfhThwmxiqL36nycg=;
-        b=BLmr/IYPUMLESgfe9D6xXJGcon+tfp/WEkK54RaNBeXULqDdmGbULhRpYlTBHZv39n
-         VAv8pHTXnQhiS7ziRT/a/hOIz+LILsdRGCBsg99ZI2bzgpMQZ6CWWzDlg4wAc60J+4if
-         HqsP8rKa4fLmCzUcAzovGMXjtP4ySnoF/Ia9UKyCMobxt2+4k9xzG2y7COzbgbcZ5pPq
-         c6D0tx7m9goDCb2HjEdmA3ulBgdIfMddD/rx5aC0MlJz2DQdoBxKxiOyb/EP+kMl7wHa
-         ocmTLEjqIgeqHeCSTYDssFDATbDhyHqiDL7o3BtQWckGzWdSkiL228554It/yxTXFFv4
-         CqGQ==
+        bh=lQFPduuRrvcX+gZuXfvtig2m2Ju7MKCjCFT91ywMWWw=;
+        b=d+zgUrq4m5Sd097CG9C3c42l6xmoLtR6USTocGxSFbJazASzU7HS32c57fWFZTrigS
+         Z2hygPI+JHb4eiikHmAwY+37o0Z7Kke0d7IgrC4o00jD297HvIz50ZSKBFom4JUA5dkS
+         ng0faIKHaIBrOlWYuBlLwf7T2utjEX2Io1np6fCQwUq0o467iqdBT84XcuxE3SDzmgOW
+         lZE71DiGJsrIduAr9p7uEpaUoPma2/lfh7l42g9wf1SF98vlqs4KfEOnWITcI03QNo2w
+         JE/kwEyNZxzhNb/NqOcc2zeihtaTfhIQ6U+e2+XPr9ecZN9HMckiRUSIG8FPsciQupb4
+         nB0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BmXvWkyxo0c8a4qSu48xg6QsEYyfhThwmxiqL36nycg=;
-        b=sh0FF+rXeaayThJNmFEelWQeBeMTyE+Df1D/epnCPxGMZCUwcCg+bCalyVO3T5Mf1R
-         0CI+8yz7tvShoMR4GVVqkod0Q1RbIFkIPotVwuJy5N5qhkNAGP26iSAGK3tvFDGqML21
-         z7l0UkZvmtHynGjdJfmxImEl/PtMvsUrXzkrUxam8/C8mYrW8OTrpOYmEuAJtYs8MBNx
-         Km467GNuJDmM2OIYhxJ+0q8UPlTOhMnkLsJy1jh7Egn2TpDjR6dsFS7HrWVwbLkoaGNo
-         1pGH9wYuRXI/7r62W9rGlzjH8GmZ4yv7VMDAYsy9uruSNR6DT/h2qlnswiZ6DlzExEjk
-         chMg==
-X-Gm-Message-State: APjAAAWsh3oq8chwtMGXwsyu4mx/CX3pGSEk6QfqGwuLpXhJlGCrCfJe
-        JwXTlucJrd1R9iE1z4r8dDY=
-X-Google-Smtp-Source: APXvYqzTaqhp6GoI+uprofX7t5yl2CXQbTl3tHPIkZjaRr3LCxTF56Di12TXVDrxsKLBL9HeLKCJMg==
-X-Received: by 2002:a5d:698b:: with SMTP id g11mr30329506wru.65.1553925041203;
-        Fri, 29 Mar 2019 22:50:41 -0700 (PDT)
-Received: from localhost.localdomain (79.red-83-47-240.dynamicip.rima-tde.net. [83.47.240.79])
-        by smtp.gmail.com with ESMTPSA id l8sm4089610wrv.45.2019.03.29.22.50.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 29 Mar 2019 22:50:40 -0700 (PDT)
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-To:     kishon@ti.com
-Cc:     linux-kernel@vger.kernel.org,
-        driverdev-devel@linuxdriverproject.org, devicetree@vger.kernel.org,
-        john@phrozen.org, linux-mips@vger.kernel.org, robh+dt@kernel.org,
-        neil@brown.name
-Subject: [PATCH v2 0/2] MT7621 PCIe PHY
-Date:   Sat, 30 Mar 2019 06:50:36 +0100
-Message-Id: <20190330055038.18958-1-sergio.paracuellos@gmail.com>
-X-Mailer: git-send-email 2.19.1
+        bh=lQFPduuRrvcX+gZuXfvtig2m2Ju7MKCjCFT91ywMWWw=;
+        b=fH6DhcgIlh5hr4MVxOCRIYlsQSsrce0j/8qTVsAcuglAAsiPueRepsg2kXn0KxcZHx
+         kufqVqbpx08j5lre5sKI02w6vYa0H0PjDcNiK6LOgW2zVzO/08DUEKEYmHoTabqD6pUA
+         FEXU7Av1CU++f09vEY/U44ZTijsT92RY6TLQ7nu9jMgG+t12/CFI7gRmT6XEm+Ehb/45
+         hIwABy2zpkovF+BXJiFuQBrSmLJ0tMyi2FbElF/bbOP8SAJUXcI4YHIqZt32RyHx8PAT
+         ZYBW81HrDpnOycaGEAWbIgo/outFCDsgx/clmd2g8fmfLL+na3lUURryLEnrrC8BiMm6
+         iePw==
+X-Gm-Message-State: APjAAAVeVNtzBqzn2OOzu9gDb8mHpKmdSMkvZae2F7XWqkiO02/WKHgV
+        qHQAp1gaYfxKi/fqxCTGYn4=
+X-Google-Smtp-Source: APXvYqxl0qmF88noEbF2jDL6qHdi9WKyyh2eApvDspI9S9Oa4OhtAeDwY57q8m18R6+jO7NSibhwzw==
+X-Received: by 2002:a63:550d:: with SMTP id j13mr4639837pgb.18.1553933936044;
+        Sat, 30 Mar 2019 01:18:56 -0700 (PDT)
+Received: from localhost.lan (nitrohorse.emeraldonion.org. [2620:18c:0:1001::106])
+        by smtp.gmail.com with ESMTPSA id e2sm6724006pfa.64.2019.03.30.01.18.46
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 30 Mar 2019 01:18:55 -0700 (PDT)
+From:   Tom Li <biergaizi2009@gmail.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        linux-kernel@vger.kernel.org, Tom Li <biergaizi2009@gmail.com>
+Subject: [PATCH 0/1] KB3310B MFD Driver for Lemote Yeeloong laptops.
+Date:   Sat, 30 Mar 2019 16:18:35 +0800
+Message-Id: <20190330081836.26942-1-biergaizi2009@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -71,40 +69,41 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This series adds support for the PCIe PHY found in the Mediatek
-MT7621 SoC.
+This is a resend of the first patch ("[PATCH v3 1/7]") in the patchset
+"[PATCH v3 0/7] Preliminary Platform Driver Support for Lemote Yeeloong
+Laptops" [0], which introduced a new MFD driver.
 
-This is the first attempt to get feedback of what is missing in
-this driver to be promoted from staging.
+The original patchset never arrived to Lee's inbox. so I resend the
+patch to facilitate review.
 
-There is also a 'mt7621-pci' driver which is the controller part
-which is still in staging and is a client of this phy.
+It features the following...
 
-Both drivers have been tested together in a gnubee1 board.
+* Create a MFD driver for KB3310B controller, and move the original
+KB3310B controller code from mips/loongson64 to our new MFD driver.
+This needs to be reviewed by the MFD subsystem maintainer before the
+following can proceed.
 
-Changes in v2:
-    - Reorder patches to get bindings first in the series.
-    - Don't use child nodes in the device tree. Use #phy-cells=1 instead.
-    - Update driver code with new 'xlate' function for the new device tree.
-    - Minor changes in driver's macros changing some spaces to tabs.
+* Subdrivers - hwmon, battery, backlight, lcd and hotkey are registered
+as MFD cells in the MFD driver. It means onlf the MFD driver is resposible
+to register the upcoming subdrivers, the core board files mips/loongson64/
+will not contain unrelated code.
 
-Thanks in advance for your time.
+[0] https://lore.kernel.org/linux-mips/20190306120113.648-1-tomli@tomli.me/T/#m2a6e18afbb62ceb535a859181d8485916b30a63f
 
-Best regards,
-     Sergio Paracuellos
+Thanks,
 
-Sergio Paracuellos (2):
-  dt-bindings: phy: Add binding for Mediatek MT7621 PCIe PHY
-  phy: ralink: Add PHY driver for MT7621 PCIe PHY
+Yifeng Li (1):
+  mfd: yeeloong_kb3310b: support KB3310B EC for Lemote Yeeloong laptops.
 
- .../bindings/phy/mediatek,mt7621-pci-phy.txt  |  28 ++
- drivers/phy/ralink/Kconfig                    |   7 +
- drivers/phy/ralink/Makefile                   |   1 +
- drivers/phy/ralink/phy-mt7621-pci.c           | 401 ++++++++++++++++++
- 4 files changed, 437 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
- create mode 100644 drivers/phy/ralink/phy-mt7621-pci.c
+ MAINTAINERS                          |   7 +
+ drivers/mfd/Kconfig                  |  10 ++
+ drivers/mfd/Makefile                 |   1 +
+ drivers/mfd/yeeloong_kb3310b.c       | 200 +++++++++++++++++++++++++
+ include/linux/mfd/yeeloong_kb3310b.h | 211 +++++++++++++++++++++++++++
+ 5 files changed, 429 insertions(+)
+ create mode 100644 drivers/mfd/yeeloong_kb3310b.c
+ create mode 100644 include/linux/mfd/yeeloong_kb3310b.h
 
 -- 
-2.19.1
+2.20.1
 

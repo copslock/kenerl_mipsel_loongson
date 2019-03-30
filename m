@@ -6,130 +6,85 @@ X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 168E3C43381
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 09:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1468EC43381
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 10:30:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DED2B218AC
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 09:42:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D9C0D218D3
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 10:30:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730352AbfC3Jmx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 30 Mar 2019 05:42:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:41424 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730414AbfC3Jmx (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 30 Mar 2019 05:42:53 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x2U9d0F3044266
-        for <linux-mips@vger.kernel.org>; Sat, 30 Mar 2019 05:42:51 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2rj4f8ap4j-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Sat, 30 Mar 2019 05:42:51 -0400
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
-        Sat, 30 Mar 2019 09:42:49 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Sat, 30 Mar 2019 09:42:39 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x2U9gcKe43778232
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 30 Mar 2019 09:42:38 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AD1AE4C04A;
-        Sat, 30 Mar 2019 09:42:38 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6CB7F4C040;
-        Sat, 30 Mar 2019 09:42:37 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.21])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Sat, 30 Mar 2019 09:42:37 +0000 (GMT)
-Date:   Sat, 30 Mar 2019 10:42:36 +0100
-From:   Heiko Carstens <heiko.carstens@de.ibm.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-References: <20190325143521.34928-1-arnd@arndb.de>
- <20190325144737.703921-1-arnd@arndb.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190325144737.703921-1-arnd@arndb.de>
-X-TM-AS-GCONF: 00
-x-cbid: 19033009-0012-0000-0000-0000030927FD
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19033009-0013-0000-0000-000021406030
-Message-Id: <20190330094236.GB3801@osiris>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-03-30_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=469 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1903300070
+        id S1730592AbfC3Kar (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 30 Mar 2019 06:30:47 -0400
+Received: from mx.sdf.org ([205.166.94.20]:63544 "EHLO mx.sdf.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730535AbfC3Kar (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 30 Mar 2019 06:30:47 -0400
+Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
+        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id x2UAUNMB015486
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits) verified NO);
+        Sat, 30 Mar 2019 10:30:24 GMT
+Received: (from lkml@localhost)
+        by sdf.org (8.15.2/8.12.8/Submit) id x2UAUNOg026448;
+        Sat, 30 Mar 2019 10:30:23 GMT
+Date:   Sat, 30 Mar 2019 10:30:23 GMT
+From:   George Spelvin <lkml@sdf.org>
+Message-Id: <201903301030.x2UAUNOg026448@sdf.org>
+To:     heiko.carstens@de.ibm.com, lkml@sdf.org
+Subject: Re: CONFIG_ARCH_SUPPORTS_INT128: Why not mips, s390, powerpc, and alpha?
+Cc:     linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20190330084346.GA3801@osiris>
+References: <201903291307.x2TD772v013534@sdf.org>,
+    <20190330084346.GA3801@osiris>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Mar 25, 2019 at 03:47:37PM +0100, Arnd Bergmann wrote:
-> Add the io_uring and pidfd_send_signal system calls to all architectures.
+On Sat, 30 Mar 2019 at 09:43:47 +0100, Heiko Carstens wrote:
+> It hasn't been enabled on s390 simply because at least I wasn't aware
+> of this config option. Feel free to send a patch, otherwise I will
+> enable this. Whatever you prefer.
 > 
-> These system calls are designed to handle both native and compat tasks,
-> so all entries are the same across architectures, only arm-compat and
-> the generic tale still use an old format.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Thanks for pointing this out!
 
-> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-> index 02579f95f391..3eb56e639b96 100644
-> --- a/arch/s390/kernel/syscalls/syscall.tbl
-> +++ b/arch/s390/kernel/syscalls/syscall.tbl
-> @@ -426,3 +426,7 @@
->  421	32	rt_sigtimedwait_time64	-				compat_sys_rt_sigtimedwait_time64
->  422	32	futex_time64		-				sys_futex
->  423	32	sched_rr_get_interval_time64	-			sys_sched_rr_get_interval
-> +424	common	pidfd_send_signal		sys_pidfd_send_signal
-> +425	common	io_uring_setup			sys_io_uring_setup
-> +426	common	io_uring_enter			sys_io_uring_enter
-> +427	common	io_uring_register		sys_io_uring_register
+Here's a draft patch, but obviously it should be tested!
 
-I was just about to write that io_uring_enter is missing compat
-handling, but your first patch actually fixes that. Would have been
-good to be cc'ed on both patches :)
+From 6f3cc608c49dba33a38e81232a2fd46e8fa8dbcd Mon Sep 17 00:00:00 2001
+From: George Spelvin <lkml@sdf.org>
+Date: Sat, 30 Mar 2019 10:27:14 +0000
+Subject: [PATCH] s390: Enable CONFIG_ARCH_SUPPORTS_INT128 on 64-bit builds
 
-For s390:
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+If a platform supports a 64x64->128-bit widening multiply,
+that allows more efficient scaling of 64-bit values in various
+parts of the kernel.  GCC advertises __int128 support with the
+__INT128__ #define, but we care about efficient inline
+support, so this is a separate flag.
+
+For s390, that was added on 24 March 2017 by
+https://gcc.gnu.org/viewcvs/gcc?view=revision&revision=246457
+which is part of GCC 7.
+
+It also only applies to TARGET_ARCH12, which I am guessing
+corresponds to HAVE_MARCH_ZEC12_FEATURES.  clang support is
+pure guesswork.
+
+Signed-off-by: George Spelvin <lkml@sdf.org>
+---
+ arch/s390/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index ed554b09eb3f..43e6dc677f7d 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -372,6 +372,7 @@ endchoice
+ 
+ config 64BIT
+ 	def_bool y
++	select ARCH_SUPPORTS_INT128 if GCC_VERSION >= 70000 && HAVE_MARCH_ZEC12_FEATURES || CC_IS_CLANG
+ 
+ config COMPAT
+ 	def_bool y
+-- 
+2.20.1
 

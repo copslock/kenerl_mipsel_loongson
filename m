@@ -2,130 +2,106 @@ Return-Path: <SRS0=U4pd=SB=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4219C43381
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 11:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C703DC43381
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 12:33:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 877D4218AC
-	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 11:29:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F0592184D
+	for <linux-mips@archiver.kernel.org>; Sat, 30 Mar 2019 12:33:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=sdf.org header.i=@sdf.org header.b="SnUyKcvl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rf4Wiq1M"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730453AbfC3L3N (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 30 Mar 2019 07:29:13 -0400
-Received: from mx.sdf.org ([205.166.94.20]:63653 "EHLO mx.sdf.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730354AbfC3L3N (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 30 Mar 2019 07:29:13 -0400
-Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
-        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id x2UBSL8e016039
-        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits) verified NO);
-        Sat, 30 Mar 2019 11:28:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sdf.org; s=default;
-        t=1553945307; bh=nVu/b1uPV4aWkWUAZcsDgJh1gNvQ2T92e3ooWC3xgKE=;
-        h=Date:From:To:Subject:Cc:In-Reply-To:References;
-        b=SnUyKcvlI1bo0ONozGyxLlztlOfdSHMnMs4lCp2FH6F9eNwJQOji8k4FtW/JrxaAJ
-         1Ayyllfs0VZnL0rTwqnMvR4P+v+GPWv+Jh09+QeCw4ndyWA0X8RRYv6m+0m9ufBoEd
-         Al6bq7IcGYkO8inyjOTChnGPTsJ2q6HyOotkLGZI=
-Received: (from lkml@localhost)
-        by sdf.org (8.15.2/8.12.8/Submit) id x2UBSLNH017484;
-        Sat, 30 Mar 2019 11:28:21 GMT
-Date:   Sat, 30 Mar 2019 11:28:21 GMT
-From:   George Spelvin <lkml@sdf.org>
-Message-Id: <201903301128.x2UBSLNH017484@sdf.org>
-To:     lkml@sdf.org, segher@kernel.crashing.org
-Subject: Re: CONFIG_ARCH_SUPPORTS_INT128: Why not mips, s390, powerpc, and alpha?
-Cc:     linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20190329202557.GL3969@gate.crashing.org>
-References: <201903291307.x2TD772v013534@sdf.org>,
-    <20190329202557.GL3969@gate.crashing.org>
+        id S1730723AbfC3Md5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 30 Mar 2019 08:33:57 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:35292 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730698AbfC3Md4 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 30 Mar 2019 08:33:56 -0400
+Received: by mail-pl1-f193.google.com with SMTP id p19so2285018plo.2;
+        Sat, 30 Mar 2019 05:33:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0mt+2TR/aQBYxFhl01YPRilqwpZdmJ6PLwvKjb1RvJI=;
+        b=Rf4Wiq1MCmAW2ppC60/2MruXzVHa9AUy+KWPJsWxFM/QO0yMnyAPts217uAk5RkwW8
+         O8KNLS6YQPimAjb4fuBPYh/6HbCfLKy+Ax0T2dsBETxPSrkdWQ+zFGTYhKNWK+/0U2Jj
+         Q71zh4V5ljHO4xQgem4dx7+Er9zl41QTksvG8jLzht+3Cl85W3BvwXww4Z3DwI/elWtx
+         ZHc0Zk+F4BrmCWPjwrs69gOTsYW6rZLwejIkzIJBdImuMMosPtfF5pqwJ6q1nIt1KXGm
+         i2TxQ0ZzAWKwP63QwAF8rZWwaBfjsjUmKwnCaoEcdomp0NvVshpxxbn1ceLXGxruJBiA
+         wWZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0mt+2TR/aQBYxFhl01YPRilqwpZdmJ6PLwvKjb1RvJI=;
+        b=gCxIjFCC4+48C66XaxnsYHhuofZjalXX0yVEuk0C5EYQIR+dSuoXkiKkIHTmomQyCI
+         pe1kVEk2DfKSBxHw0rudwqjT7iMNslXztwaTurD+i/6ANoJswXX11kPwoi7XBaWAYWAh
+         aciILtG3MXsEsuNvUuqpo9rxznXVLz7HjNVzlBswxmK0rjVKb1t+rpideBqK5VtjrEND
+         ZQZQh+X4mPhth5t2ynlRiE1Ocw6/Qq4HzLy6as87gs4dokMDDwuBjgJJ+jG+nMMHnxWR
+         FrFwC6FoNoHNYY+v6Kvwad/l8QbZ1BN2XQEOEHdcg8pSqlbpoPv7kPiaF/wpcoz0RAEX
+         uj8g==
+X-Gm-Message-State: APjAAAVZjiiP/2K0VjWrBPNcELetz7DCydtnnE8gGm1UD6DG/Moi4RE6
+        EBO5ugkvF8vznuq8yJLHivc=
+X-Google-Smtp-Source: APXvYqwsIadSLRHrSSeMgjyJE7PCbRVQOfy/m+H73UGPamh3/dCrtXNkiPxHOD3dtAnHAWppsq0OZg==
+X-Received: by 2002:a17:902:7081:: with SMTP id z1mr13220341plk.252.1553949236069;
+        Sat, 30 Mar 2019 05:33:56 -0700 (PDT)
+Received: from localhost.localdomain ([2409:251:20c0:100:fe80:8e59:9ae1:e028])
+        by smtp.gmail.com with ESMTPSA id m23sm7864309pfa.117.2019.03.30.05.33.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 30 Mar 2019 05:33:55 -0700 (PDT)
+From:   NOGUCHI Hiroshi <drvlabo@gmail.com>
+To:     John Crispin <john@phrozen.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
+        NOGUCHI Hiroshi <drvlabo@gmail.com>
+Subject: [RFC 0/5] MIPS: ralink: peripheral clock gating driver
+Date:   Sat, 30 Mar 2019 21:33:12 +0900
+Message-Id: <20190330123317.16821-1-drvlabo@gmail.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-General update:
+This series introduce Mediatek/Ralink SoC's clock gating driver.
+The gating clock items are different at individual SoCs.
+Driver loads gating clock item table defined in individual SoC source files,
+via OF device id data.
 
-I've since found the reason for the GCC version check.
-It's not *broken* support (apologies for impugning GCC),
-but *inefficient* support via a muditi3 helper function.
+NOGUCHI Hiroshi (5):
+  mips: ralink: add rt2880-clock driver
+  mips: ralink: add dt-binding document for rt2880-clock driver
+  mips: ralink: mt7620/76x8 use clk framework and rt2880-clock driver
+  mips: ralink: mt7628: add nodes for clock provider
+  mips: ralink: mt7620: add nodes for clock provider
 
-The version check is the version which added in-line code generation.
-For example, s390 support was added in March of 2017 and is part
-of the 7.1 release.
+ .../bindings/clock/ralink,rt2880-clock.txt    |  20 +++
+ arch/mips/boot/dts/ralink/mt7620a.dtsi        |  34 ++++-
+ arch/mips/boot/dts/ralink/mt7628a.dtsi        |  37 +++++
+ arch/mips/ralink/Kconfig                      |   6 +
+ arch/mips/ralink/Makefile                     |   2 +
+ arch/mips/ralink/clk.c                        |  30 ++++
+ arch/mips/ralink/common.h                     |   3 +
+ arch/mips/ralink/mt7620.c                     | 132 ++++++++++++++---
+ arch/mips/ralink/rt2880-clk_internal.h        |  21 +++
+ arch/mips/ralink/rt2880-clock.c               | 134 ++++++++++++++++++
+ include/dt-bindings/clock/mt7620-clk.h        |  17 +++
+ 11 files changed, 411 insertions(+), 25 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/ralink,rt2880-clock.txt
+ create mode 100644 arch/mips/ralink/rt2880-clk_internal.h
+ create mode 100644 arch/mips/ralink/rt2880-clock.c
+ create mode 100644 include/dt-bindings/clock/mt7620-clk.h
 
-I hvave to do some digging through gcc version history to
-find when it was added to various architectures.
-(And MIPS64v6 support is still lacking in gcc 9.)
+-- 
+2.20.1
 
-
-On Fri, 29 Mar 2019 at 15:25:58 -0500, Segher Boessenkool wrote:
-> On Fri, Mar 29, 2019 at 01:07:07PM +0000, George Spelvin wrote:
->> I don't have easy access to an Alpha cross-compiler to test, but
->> as it has UMULH, I suspect it would work, too.
-> 
-> https://mirrors.edge.kernel.org/pub/tools/crosstool/
-
-Thanks for the pointer; I have a working Alpha cross-compiler now.
- 
->> u64 get_random_u64(void);
->> u64 get_random_max64(u64 range, u64 lim)
->> {
->> 	unsigned __int128 prod;
->> 	do {
->> 		prod = (unsigned __int128)get_random_u64() * range;
->> 	} while (unlikely((u64)prod < lim));
->> 	return prod >> 64;
->> }
-> 
->> MIPS:
->> .L7:
->> 	jal	get_random_u64
->> 	nop
->> 	dmultu $2,$17
->> 	mflo	$3
->> 	sltu	$4,$3,$16
->> 	bne	$4,$0,.L7
->> 	mfhi	$2
->> 
->> PowerPC:
->> .L9:
->> 	bl get_random_u64
->> 	nop
->> 	mulld 9,3,31
->> 	mulhdu 3,3,31
->> 	cmpld 7,30,9
->> 	bgt 7,.L9
->>
->> I like that the MIPS code leaves the high half of the product in
->> the hi register until it tests the low half; I wish PowerPC would
->> similarly move the mulhdu *after* the loop,
-
-> The MIPS code has the multiplication inside the loop as well, and even
-> the mfhi I think: MIPS has delay slots.
-
-Yes, it's in the delay slot, which is fine (the branch is unlikely,
-after all).  But it does the compare (sltu) before accessing %hi, which
-is good as %hi often has a longer latency than %lo.  (On out-of-order
-cores, of course, none of this matters.)
-
-> GCC treats the int128 as one register until it has expanded to RTL, and it
-> does not do such loop optimisations after that, apparently.
-> 
-> File a PR please?  https://gcc.gnu.org/bugzilla/
-
-Er...  about what?  The fact that the PowerPC code is not
->> PowerPC:
->> .L9:
->> 	bl get_random_u64
->> 	nop
->> 	mulld 9,3,31
->> 	cmpld 7,30,9
->> 	bgt 7,.L9
->> 	mulhdu 3,3,31
-
-I'm not sure quite how to explain it in gcc-ese.

@@ -2,66 +2,59 @@ Return-Path: <SRS0=1rl1=SD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79272C4360F
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 04:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C9C1C43381
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 07:15:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3C75A2086C
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 04:10:38 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DDmXTurX"
+	by mail.kernel.org (Postfix) with ESMTP id 1AEDA213A2
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 07:15:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1554102918;
+	bh=LyvHeAeP1djEbb49Sell3K+VoOHSA6z/zCyDGEs6RU4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=WYdNXMDKHdlqXyYGe1jYn6E/pyrbUcLbkWHgVzPfWvlzw57pfWO61PtxUaVoCjmO6
+	 XdFzy8QiGNfcYlMABkprfLm3SJ+0LPLjsRJQV1UUfI9GBMNSVhDOjMunmrE4Dx9jxw
+	 MwILOXWiAZkfJVQOmBxH7yyvYsYFJHnk1Cehlm5M=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725926AbfDAEKe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Apr 2019 00:10:34 -0400
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:36307 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbfDAEKe (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Apr 2019 00:10:34 -0400
-Received: by mail-yb1-f194.google.com with SMTP id k10so3019153ybd.3
-        for <linux-mips@vger.kernel.org>; Sun, 31 Mar 2019 21:10:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QzSKihQZzQ7ROAl8Uqfco7n/5do+sI85xzCfbGp+Anc=;
-        b=DDmXTurXDR4zN8vDoEMhC0LwvQzwy371OLRV3LRnboVerEylOKKFoqmOSubHTOpj3U
-         G5tYzc+v2J5SwAaoXke4+Q8mihjpmzJm9d/jroAaewYs244lGZk4/2skNMQ9LPZ4rOpy
-         4b3hqGRZnKhyBmTHgDATFAliNszvhtjcWoNZbdgSwkYTuRequa0/eF8CFzspwnLxzPAA
-         NQzXrTxp5ekUisMRzCeYp41glMwdo3vjvXU5UyM8/7q0LwOHFPLsdZMXnrG1WZfqLa0e
-         EJ6fO+5tMNlzIPWPW/PGYfrNiL/9N7xxUKysVXEfSliR7O0fTrPHdUF0JP7/NkAkJ/PM
-         J66g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QzSKihQZzQ7ROAl8Uqfco7n/5do+sI85xzCfbGp+Anc=;
-        b=Yu1/5Y0NRYgroGa6C74f704FRggEcMJchaX4dZExW8TLntskr9OKuMtsRd37LdHWU+
-         1AVjz3Kk/qzdtn2JvhcBr7TP1RxnBct7vRqICBcBdDJcWfnThYOSI3G2VtE9I6UT2Tox
-         MTu8KqblUnx1aivK7YX+TUshNw+LPPVRW8gFi+jNVGHgg/2z3RgKlP+lQyaOrAe/z8Ac
-         ItLxoK8G+OWGcPGd0BQP8GDW6crECOY0DZajm6UtsF8OF9O7bnIM3yPvLrZc5DheyckV
-         poE04e+0u+Ynv5cw7QN6j3CLplZqlU7SKjxaUC00dbmGp1yjAc8+RitFlB+8h+3B8dKK
-         RTeA==
-X-Gm-Message-State: APjAAAXSahSNUX0o36yYCPDoyBhti9O2LBXl1O0+Gt9hOBLDda94Y6Px
-        qaRYgZf7MTAdsE6qtC8XIi5/k86YzsF/K8w5j0YjYA==
-X-Google-Smtp-Source: APXvYqxF8cbaWRb+umJHA+GOINmMlYk/DML6P7zb9KOJbXcw74psgC403ZhYYLOgaRobllmQO88evl7Pu9GEle2r9ko=
-X-Received: by 2002:a25:c84:: with SMTP id 126mr22017341ybm.247.1554091832630;
- Sun, 31 Mar 2019 21:10:32 -0700 (PDT)
+        id S1731801AbfDAHPR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 1 Apr 2019 03:15:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46242 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731160AbfDAHPR (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 1 Apr 2019 03:15:17 -0400
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2592A218FE;
+        Mon,  1 Apr 2019 07:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1554102916;
+        bh=LyvHeAeP1djEbb49Sell3K+VoOHSA6z/zCyDGEs6RU4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=2Pxh3P6jVbIjibByxtUUFgI+JnUmzHETkxOfaxQfMC9UMsZAwKcm62lHWmUw5/zr0
+         EWLS3kVBKX51p+SoggWDlYr3sXCdUoQxdwQFnEn0kh+pgAcfy72tjQXOpuMEvIG8mS
+         whi4FZbKqoTq67qcR8OT4aVZ3UD1ioeTT6ujcMRE=
+Received: by mail-lf1-f50.google.com with SMTP id v14so5482283lfi.0;
+        Mon, 01 Apr 2019 00:15:16 -0700 (PDT)
+X-Gm-Message-State: APjAAAXXqCUyFaLszmexZk3zSuygnGy/JYSLgLEJJ6YZ04CJEGIi9a7p
+        +QlVBxfwXq21im6eqIZrEllBhab4Y6OPIezIs14=
+X-Google-Smtp-Source: APXvYqw+YYiKb2sU1g9YqLcWIiPTVfznwQAzQL2ojBMiqnywM8UMiNpYcMcsFqxgE+GGLIwkE7Hbw7CsIBNkfladbFY=
+X-Received: by 2002:a19:6a02:: with SMTP id u2mr13696808lfu.20.1554102914230;
+ Mon, 01 Apr 2019 00:15:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190401032425.18647-1-daniel.lezcano@linaro.org>
 In-Reply-To: <20190401032425.18647-1-daniel.lezcano@linaro.org>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Sun, 31 Mar 2019 21:10:21 -0700
-Message-ID: <CABXOdTeB+5vNi+mRBf2ff2YJG5WVRAGFjBz-ehjDTCyQdcpr7A@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 1 Apr 2019 09:15:03 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPdF3s53noZs0oye=gW6Ap_pF=oomVL11KU9DLKYTFF1Tw@mail.gmail.com>
+Message-ID: <CAJKOXPdF3s53noZs0oye=gW6Ap_pF=oomVL11KU9DLKYTFF1Tw@mail.gmail.com>
 Subject: Re: [PATCH] thermal/drivers/core: Remove the module Kconfig's option
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rui.zhang@intel.com, edubezval@gmail.com,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
+Cc:     rui.zhang@intel.com, edubezval@gmail.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
@@ -69,7 +62,6 @@ Cc:     rui.zhang@intel.com, edubezval@gmail.com,
         Andrew Morton <akpm@linux-foundation.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Guenter Roeck <groeck@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
         Daniel Mack <daniel@zonque.org>,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -81,13 +73,9 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sun, Mar 31, 2019 at 8:24 PM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
+On Mon, 1 Apr 2019 at 05:24, Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
 >
 > The module support for the thermal subsystem does have a little sense:
-
-Do you mean "makes little sense" ?
-
 >  - some subsystems relying on it are not modules, thus forcing the
 >    framework to be compiled in
 >  - it is compiled in for almost every configs, the remaining ones
@@ -102,118 +90,11 @@ Do you mean "makes little sense" ?
 > come after this patch gets in or is acked.
 >
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
-Sounds like a good idea.
-
-Acked-by: Guenter Roeck <groeck@chromium.org>
-
-Many dependencies such as the following can probably be simplified or
-removed after this patch has been accepted.
-
-depends on THERMAL=y
-depends on THERMAL || THERMAL=n
-depends on (HWMON && (THERMAL || !THERMAL_OF)) || !HWMON
-depends on !(MLXSW_CORE=y && THERMAL=m)
-depends on THERMAL || !THERMAL
-depends on HWMON=y || HWMON=THERMAL
-depends on THERMAL || !THERMAL_OF
-
 > ---
 >  arch/arm/configs/mini2440_defconfig        | 2 +-
->  arch/arm/configs/pxa_defconfig             | 2 +-
->  arch/mips/configs/ip22_defconfig           | 2 +-
->  arch/mips/configs/ip27_defconfig           | 2 +-
->  arch/unicore32/configs/unicore32_defconfig | 2 +-
->  drivers/thermal/Kconfig                    | 4 ++--
->  6 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-> index d95a8059d30b..0cf1c120c4bb 100644
-> --- a/arch/arm/configs/mini2440_defconfig
-> +++ b/arch/arm/configs/mini2440_defconfig
-> @@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
->  CONFIG_SPI_SPIDEV=y
->  CONFIG_GPIO_SYSFS=y
->  CONFIG_SENSORS_LM75=y
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_S3C2410_WATCHDOG=y
->  CONFIG_FB=y
-> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-> index d4654755b09c..d4f9dda3a52f 100644
-> --- a/arch/arm/configs/pxa_defconfig
-> +++ b/arch/arm/configs/pxa_defconfig
-> @@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
->  CONFIG_SENSORS_LM90=m
->  CONFIG_SENSORS_LM95245=m
->  CONFIG_SENSORS_NTC_THERMISTOR=m
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_XILINX_WATCHDOG=m
->  CONFIG_SA1100_WATCHDOG=m
-> diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-> index ff40fbc2f439..21a1168ae301 100644
-> --- a/arch/mips/configs/ip22_defconfig
-> +++ b/arch/mips/configs/ip22_defconfig
-> @@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
->  # CONFIG_HW_RANDOM is not set
->  CONFIG_RAW_DRIVER=m
->  # CONFIG_HWMON is not set
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_INDYDOG=m
->  # CONFIG_VGA_CONSOLE is not set
-> diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-> index 81c47e18131b..54db5dedf776 100644
-> --- a/arch/mips/configs/ip27_defconfig
-> +++ b/arch/mips/configs/ip27_defconfig
-> @@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
->  CONFIG_I2C_TAOS_EVM=m
->  CONFIG_I2C_STUB=m
->  # CONFIG_HWMON is not set
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_MFD_PCF50633=m
->  CONFIG_PCF50633_ADC=m
->  CONFIG_PCF50633_GPIO=m
-> diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
-> index aebd01fc28e5..360cc9abcdb0 100644
-> --- a/arch/unicore32/configs/unicore32_defconfig
-> +++ b/arch/unicore32/configs/unicore32_defconfig
-> @@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
->  #      Hardware Monitoring support
->  #CONFIG_SENSORS_LM75=m
->  #      Generic Thermal sysfs driver
-> -#CONFIG_THERMAL=m
-> +#CONFIG_THERMAL=y
->  #CONFIG_THERMAL_HWMON=y
->
->  #      Multimedia support
-> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-> index 653aa27a25a4..ccf5b9408d7a 100644
-> --- a/drivers/thermal/Kconfig
-> +++ b/drivers/thermal/Kconfig
-> @@ -3,7 +3,7 @@
->  #
->
->  menuconfig THERMAL
-> -       tristate "Generic Thermal sysfs driver"
-> +       bool "Generic Thermal sysfs driver"
->         help
->           Generic Thermal Sysfs driver offers a generic mechanism for
->           thermal management. Usually it's made up of one or more thermal
-> @@ -11,7 +11,7 @@ menuconfig THERMAL
->           Each thermal zone contains its own temperature, trip points,
->           cooling devices.
->           All platforms with ACPI thermal support can use this driver.
-> -         If you want this support, you should say Y or M here.
-> +         If you want this support, you should say Y here.
->
->  if THERMAL
->
-> --
-> 2.17.1
->
+
+For mini2440:
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+Best regards,
+Krzysztof

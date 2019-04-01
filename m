@@ -2,74 +2,193 @@ Return-Path: <SRS0=1rl1=SD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 551FCC43381
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 00:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30BEDC43381
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 03:24:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1D15920879
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 00:01:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E2E8F2086C
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 03:24:37 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dVR7Djlq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731335AbfDAABG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 31 Mar 2019 20:01:06 -0400
-Received: from zeniv.linux.org.uk ([195.92.253.2]:44842 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731383AbfDAABG (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 31 Mar 2019 20:01:06 -0400
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hAkNs-0005oR-Ht; Mon, 01 Apr 2019 00:01:04 +0000
-Date:   Mon, 1 Apr 2019 01:01:04 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     linux-mips@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [RFC] mips ptrace32.c and compat_ptr()
-Message-ID: <20190401000104.GF2217@ZenIV.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1731700AbfDADYh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 31 Mar 2019 23:24:37 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:33932 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731685AbfDADYh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 31 Mar 2019 23:24:37 -0400
+Received: by mail-pg1-f193.google.com with SMTP id v12so4016890pgq.1
+        for <linux-mips@vger.kernel.org>; Sun, 31 Mar 2019 20:24:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=hwwaEVKECJwjOTE1hnV29hek6M9PCrzEolVP/wwefUY=;
+        b=dVR7Djlqzy5wKbwuoBbRQQAW7rhX4EadJRGwTYRVzHLON6Heet4U2vZz7YvCU8ITpU
+         coVhxTNb4+83/ZqVJ8IPbtm41SZLIZssJ74CMRt9/d5zV/k016ZXMcp/AsooqDIMSUFl
+         J4FSNCY+EcdbGsED13XkpH9oI7bD1BK+ru8XDED9CGd141gA+JhBSyYoHc17yKABKbs+
+         ZqCLZpV+TuDvx+w0KgGa1U6m2QdjuaLFjQVcgjBlZE48rs9ShUHrKAgaxyKpi0acYz48
+         UvgsXVBIIcYBBoF/iGvvPotGU+IOgrVXWH8dCFjLkApiv4i1EUZ1FrDhCSO1CM4YEPAK
+         GgDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=hwwaEVKECJwjOTE1hnV29hek6M9PCrzEolVP/wwefUY=;
+        b=K5C3wsHvtkYwEAVYBCDA8D1DrS8gTzIn/QxUuKrL7p0y8bJc/hAErI9w/xplt81d9H
+         DUyejowmbP70T1A3MylTtDHUHqN3IeJyYF7/KeBY2UANe87pJitIqkgLfe5h4MGJeOt1
+         +l/oZGvtjsmqHVBajCT0+O73cXAcPKgieYUukjSkK+a3Op3mYcO1+POctO4CG0pgGZkq
+         czh0VtsxWAKwZ7q/mNHOKKc8MQPDe+MkGsGyqET2Ubm9sTWNg/xP1Z01xpewr2+7pM7R
+         lSYQZp43OX51R+T9rY/J7EgNcLmweM1jwGwy4oPquUTM56+VuREIp1NrlC+y4oPQOZkX
+         Tw3Q==
+X-Gm-Message-State: APjAAAXiLiOUeKGRuUJkme/udqdmNwxV0BcYz0FL4egGi2qT29P2fPsJ
+        okt2K2wfM5y68J2sMdt8wXE/3Q==
+X-Google-Smtp-Source: APXvYqyYlBUL5z+GLklnCgaBk3mP6hpdoYeVVhizXnZNfvVsFVEc5/KBbLoL7t1LP7g6PswO2gyqlg==
+X-Received: by 2002:a65:6144:: with SMTP id o4mr21263129pgv.247.1554089075897;
+        Sun, 31 Mar 2019 20:24:35 -0700 (PDT)
+Received: from mai.imgcgcw.net ([147.50.13.10])
+        by smtp.gmail.com with ESMTPSA id j14sm14124888pfe.12.2019.03.31.20.24.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 31 Mar 2019 20:24:34 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rui.zhang@intel.com, edubezval@gmail.com
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
+        Alexey Brodkin <alexey.brodkin@synopsys.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Guenter Roeck <groeck@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-mips@vger.kernel.org (open list:MIPS)
+Subject: [PATCH] thermal/drivers/core: Remove the module Kconfig's option
+Date:   Mon,  1 Apr 2019 05:24:20 +0200
+Message-Id: <20190401032425.18647-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-	There's something odd going on:
+The module support for the thermal subsystem does have a little sense:
+ - some subsystems relying on it are not modules, thus forcing the
+   framework to be compiled in
+ - it is compiled in for almost every configs, the remaining ones
+   are a few platforms where I don't see why we can not switch the thermal
+   to 'y'. The drivers can stay in tristate.
+ - platforms need the thermal to be ready as soon as possible at boot time
+   in order to mitigate
 
-1)
-static inline void __user *compat_ptr(compat_uptr_t uptr)
-{
-        /* cast to a __user pointer via "unsigned long" makes sparse happy */
-        return (void __user *)(unsigned long)(long)uptr;
-}
+Usually the subsystems framework are compiled-in and the plugs are as module.
 
-Huh?  The first impression is that it wants to sign-extend
-the argument, but... compat_uptr_t is and always had been
-unsigned.  Initially it went
-+typedef u32            compat_uptr_t;
-+
-+static inline void *compat_ptr(compat_uptr_t uptr)
-+{
-+       return (void *)(long)uptr;
-+}
-so there never had been any sign-extension in that thing.
-So what is that cast to long in the current version about?
+Remove the module option. The removal of the module related dead code will
+come after this patch gets in or is acked.
 
-2)
-long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
-                        compat_ulong_t caddr, compat_ulong_t cdata)
-{
-        int addr = caddr;
-        int data = cdata;
-...
-                ret = put_user(tmp, (u32 __user *) (unsigned long) data);
-                break;
-and quite a few similar in the same function.  Here we _do_ get sign
-extension.  Which is bloody odd, seeing that all other compat syscalls
-end up using compat_ptr(), either explicitly or in the syscall glue.
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+---
+ arch/arm/configs/mini2440_defconfig        | 2 +-
+ arch/arm/configs/pxa_defconfig             | 2 +-
+ arch/mips/configs/ip22_defconfig           | 2 +-
+ arch/mips/configs/ip27_defconfig           | 2 +-
+ arch/unicore32/configs/unicore32_defconfig | 2 +-
+ drivers/thermal/Kconfig                    | 4 ++--
+ 6 files changed, 7 insertions(+), 7 deletions(-)
 
-Shouldn't it be doing
-                ret = put_user(tmp, (u32 __user *)compat_ptr(cdata));
-                break;
-instead?
+diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
+index d95a8059d30b..0cf1c120c4bb 100644
+--- a/arch/arm/configs/mini2440_defconfig
++++ b/arch/arm/configs/mini2440_defconfig
+@@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
+ CONFIG_SPI_SPIDEV=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_SENSORS_LM75=y
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_S3C2410_WATCHDOG=y
+ CONFIG_FB=y
+diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+index d4654755b09c..d4f9dda3a52f 100644
+--- a/arch/arm/configs/pxa_defconfig
++++ b/arch/arm/configs/pxa_defconfig
+@@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
+ CONFIG_SENSORS_LM90=m
+ CONFIG_SENSORS_LM95245=m
+ CONFIG_SENSORS_NTC_THERMISTOR=m
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_XILINX_WATCHDOG=m
+ CONFIG_SA1100_WATCHDOG=m
+diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+index ff40fbc2f439..21a1168ae301 100644
+--- a/arch/mips/configs/ip22_defconfig
++++ b/arch/mips/configs/ip22_defconfig
+@@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
+ # CONFIG_HW_RANDOM is not set
+ CONFIG_RAW_DRIVER=m
+ # CONFIG_HWMON is not set
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_INDYDOG=m
+ # CONFIG_VGA_CONSOLE is not set
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index 81c47e18131b..54db5dedf776 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
+ CONFIG_I2C_TAOS_EVM=m
+ CONFIG_I2C_STUB=m
+ # CONFIG_HWMON is not set
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_MFD_PCF50633=m
+ CONFIG_PCF50633_ADC=m
+ CONFIG_PCF50633_GPIO=m
+diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
+index aebd01fc28e5..360cc9abcdb0 100644
+--- a/arch/unicore32/configs/unicore32_defconfig
++++ b/arch/unicore32/configs/unicore32_defconfig
+@@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
+ #	Hardware Monitoring support
+ #CONFIG_SENSORS_LM75=m
+ #	Generic Thermal sysfs driver
+-#CONFIG_THERMAL=m
++#CONFIG_THERMAL=y
+ #CONFIG_THERMAL_HWMON=y
+ 
+ #	Multimedia support
+diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
+index 653aa27a25a4..ccf5b9408d7a 100644
+--- a/drivers/thermal/Kconfig
++++ b/drivers/thermal/Kconfig
+@@ -3,7 +3,7 @@
+ #
+ 
+ menuconfig THERMAL
+-	tristate "Generic Thermal sysfs driver"
++	bool "Generic Thermal sysfs driver"
+ 	help
+ 	  Generic Thermal Sysfs driver offers a generic mechanism for
+ 	  thermal management. Usually it's made up of one or more thermal
+@@ -11,7 +11,7 @@ menuconfig THERMAL
+ 	  Each thermal zone contains its own temperature, trip points,
+ 	  cooling devices.
+ 	  All platforms with ACPI thermal support can use this driver.
+-	  If you want this support, you should say Y or M here.
++	  If you want this support, you should say Y here.
+ 
+ if THERMAL
+ 
+-- 
+2.17.1
+

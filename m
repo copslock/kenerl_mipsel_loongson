@@ -4,48 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDEBBC43381
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 17:48:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA508C10F05
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 17:49:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 82E5920883
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 17:48:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 99C002133D
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Apr 2019 17:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1554140926;
-	bh=WJ4IdmD/ee7c8tvgcLCc8//t8XYXhdkyz7fkjZ7xkMQ=;
+	s=default; t=1554140965;
+	bh=ypDZLm/OD4et0aUlj8/hWV8vPL6MC6k0a2u6dx9Vja0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=zfhLs6xkXWGXiApxpEcBHYmSM0BQfg2HsK3UH1XOO9AEtzXh2kcGX0xSjhp6QCNHN
-	 mPh93OTq9xN7RdqC6/CD7Hg092ULwhphxUCIiD/fA9Ta0SLIPzIK7xMbyfftAZvVKM
-	 Y9YGPTqJwyp/E5CPYmfDVJztBP3yxPewGGK+aZzQ=
+	b=TdwEgeEhBmfnJKl2VJJyZhuKAyx0o3wPBA8fqwwT02YY0jk0QKMAXpU6obBsRKk1E
+	 SZ32VEgAcmmbAZxrPePKZQjIfY4LMvbE/38f7TXLUNxhQSTZXGYxBBy1DfIMSA18nV
+	 BAo6yhMj52uc9XRO8iD5TOr9T2SJiesOoHERPgQ0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733168AbfDARaw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Apr 2019 13:30:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38002 "EHLO mail.kernel.org"
+        id S1729395AbfDARtO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 1 Apr 2019 13:49:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37036 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733163AbfDARav (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 1 Apr 2019 13:30:51 -0400
+        id S1733050AbfDARaN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 1 Apr 2019 13:30:13 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DCE7B2070B;
-        Mon,  1 Apr 2019 17:30:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AD96320830;
+        Mon,  1 Apr 2019 17:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1554139850;
-        bh=WJ4IdmD/ee7c8tvgcLCc8//t8XYXhdkyz7fkjZ7xkMQ=;
+        s=default; t=1554139812;
+        bh=ypDZLm/OD4et0aUlj8/hWV8vPL6MC6k0a2u6dx9Vja0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bs+luqT2MLS8g7dYFMMPtU7uFnpBLeo73dxbjK1oIZ3TOeNz6yYmLBHg5zd2bZ1cL
-         xs2hJ9DtG+Nj507ix2y1E5eoUHPJTeeW0KtD7e0H+T8vVYAXho69qs6AjkpjqiDFcp
-         TlukWEN5XBjMADW9I046axAcDtNARggxUjoxqAos=
+        b=R4c2M0XOSyXu/t2OhBjn8qkwvVyM3Jc8vS0YIciaGe36L+J4adft19JcC2ZBXvMxM
+         meHOOCLHPDwY9NAlOS/XZQ3okAWQLnZYMcsBha1Sp76hzuaHiOpy3wkSuA9Uq/NLDq
+         vcx0t2zac21YI4IlNMO9tRHAPT/VteL7id77qT3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Archer Yan <ayan@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.4 005/131] MIPS: Fix kernel crash for R6 in jump label branch function
-Date:   Mon,  1 Apr 2019 19:01:15 +0200
-Message-Id: <20190401170052.155960886@linuxfoundation.org>
+        stable@vger.kernel.org, Yifeng Li <tomli@tomli.me>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Subject: [PATCH 4.4 004/131] mips: loongson64: lemote-2f: Add IRQF_NO_SUSPEND to "cascade" irqaction.
+Date:   Mon,  1 Apr 2019 19:01:14 +0200
+Message-Id: <20190401170052.064881644@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190401170051.645954551@linuxfoundation.org>
 References: <20190401170051.645954551@linuxfoundation.org>
@@ -64,51 +67,49 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 ------------------
 
-From: Archer Yan <ayan@wavecomp.com>
+From: Yifeng Li <tomli@tomli.me>
 
-commit 47c25036b60f27b86ab44b66a8861bcf81cde39b upstream.
+commit 5f5f67da9781770df0403269bc57d7aae608fecd upstream.
 
-Insert Branch instruction instead of NOP to make sure assembler don't
-patch code in forbidden slot. In jump label function, it might
-be possible to patch Control Transfer Instructions(CTIs) into
-forbidden slot, which will generate Reserved Instruction exception
-in MIPS release 6.
+Timekeeping IRQs from CS5536 MFGPT are routed to i8259, which then
+triggers the "cascade" IRQ on MIPS CPU. Without IRQF_NO_SUSPEND in
+cascade_irqaction, MFGPT interrupts will be masked in suspend mode,
+and the machine would be unable to resume once suspended.
 
-Signed-off-by: Archer Yan <ayan@wavecomp.com>
-Reviewed-by: Paul Burton <paul.burton@mips.com>
-[paul.burton@mips.com:
-  - Add MIPS prefix to subject.
-  - Mark for stable from v4.0, which introduced r6 support, onwards.]
+Previously, MIPS IRQs were not disabled properly, so the original
+code appeared to work. Commit a3e6c1eff5 ("MIPS: IRQ: Fix disable_irq on
+CPU IRQs") uncovers the bug. To fix it, add IRQF_NO_SUSPEND to
+cascade_irqaction.
+
+This commit is functionally identical to 0add9c2f1cff ("MIPS:
+Loongson-3: Add IRQF_NO_SUSPEND to Cascade irqaction"), but it forgot
+to apply the same fix to Loongson2.
+
+Signed-off-by: Yifeng Li <tomli@tomli.me>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.0+
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org # v3.19+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/jump_label.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/loongson64/lemote-2f/irq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/jump_label.h
-+++ b/arch/mips/include/asm/jump_label.h
-@@ -21,15 +21,15 @@
- #endif
+--- a/arch/mips/loongson64/lemote-2f/irq.c
++++ b/arch/mips/loongson64/lemote-2f/irq.c
+@@ -102,7 +102,7 @@ static struct irqaction ip6_irqaction =
+ static struct irqaction cascade_irqaction = {
+ 	.handler = no_action,
+ 	.name = "cascade",
+-	.flags = IRQF_NO_THREAD,
++	.flags = IRQF_NO_THREAD | IRQF_NO_SUSPEND,
+ };
  
- #ifdef CONFIG_CPU_MICROMIPS
--#define NOP_INSN "nop32"
-+#define B_INSN "b32"
- #else
--#define NOP_INSN "nop"
-+#define B_INSN "b"
- #endif
- 
- static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
- {
--	asm_volatile_goto("1:\t" NOP_INSN "\n\t"
--		"nop\n\t"
-+	asm_volatile_goto("1:\t" B_INSN " 2f\n\t"
-+		"2:\tnop\n\t"
- 		".pushsection __jump_table,  \"aw\"\n\t"
- 		WORD_INSN " 1b, %l[l_yes], %0\n\t"
- 		".popsection\n\t"
+ void __init mach_init_irq(void)
 
 

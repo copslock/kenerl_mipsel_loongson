@@ -2,99 +2,196 @@ Return-Path: <SRS0=6JhV=SE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E576AC10F00
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 13:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76B9AC10F00
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 16:13:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B5A672133D
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 13:46:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4715F206BA
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 16:13:39 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FFy/4Wm+"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731765AbfDBNqc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 09:46:32 -0400
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:43124 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731419AbfDBNkF (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 09:40:05 -0400
-Received: from [167.98.27.226] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1hBJdv-0002nO-Na; Tue, 02 Apr 2019 14:39:59 +0100
-Received: from ben by deadeye with local (Exim 4.92)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1hBJdu-0004sW-NN; Tue, 02 Apr 2019 14:39:58 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, Denis Kirjanov <kda@linux-powerpc.org>,
-        "Alexei Starovoitov" <ast@kernel.org>,
-        "Jiong Wang" <jiong.wang@netronome.com>,
-        linux-mips@vger.kernel.org,
-        "Markos Chandras" <markos.chandras@imgtec.com>,
-        "Song Liu" <songliubraving@fb.com>,
-        "Paul Burton" <paul.burton@mips.com>,
-        "Jakub Kicinski" <jakub.kicinski@netronome.com>
-Date:   Tue, 02 Apr 2019 14:38:27 +0100
-Message-ID: <lsq.1554212307.468606152@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-X-Patchwork-Hint: ignore
-Subject: [PATCH 3.16 26/99] mips: bpf: fix encoding bug for mm_srlv32_op
-In-Reply-To: <lsq.1554212307.17110877@decadent.org.uk>
-X-SA-Exim-Connect-IP: 167.98.27.226
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+        id S1729521AbfDBQN3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 12:13:29 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:40936 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729101AbfDBQN3 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 12:13:29 -0400
+Received: by mail-wm1-f68.google.com with SMTP id z24so4496051wmi.5
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 09:13:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=xKY+ceGe4SnC6doIZkUhD6Dozc5uLu/ZgR2u3m//Do4=;
+        b=FFy/4Wm+LurbVt0OXlOunKKi3T2Cm7VPBBPp4er2zxXCSFig3++1KgZ67Lc5P4SQZx
+         PpQ+KNac1FSpIn9HYi0FW3hO6XWvHCMwyw03VFY4295APSPJGzFRIQltm2xvzp6jC6Q4
+         V5pjK8XvvlJgadjNwoCFISAkobOv9L54qyBmJu5lopHqR0D067HpOjDGTgJj4HQTFtIJ
+         UFu+wHh34k0Kimu1DvxXhD0PtA2QUbQJ7nrbmjgdk+NwFAkZAlPXBBnHPv/vAkiNyyit
+         omL4C9rI/LByQtXK7NTPYCLs43V8XSm6V4yBxzCRcWf0oTAN8+hJnFxUjDtP8qUtTN4S
+         9/lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=xKY+ceGe4SnC6doIZkUhD6Dozc5uLu/ZgR2u3m//Do4=;
+        b=BgtIkI/Ti8Kmm3RzYQ36kba8RzU9IjN2oFeU2duuKO5ATXc4pFuXVcV7E1pTNhnKqu
+         2a6iLhSU0kERzdXgLauCEaTqUudyNckbZJmYXUby1c3O9p+QHd4dTCLBkWTL76YyNZt/
+         QIP2fMXyzICJmK/iNMO+L/ZxfqUQjqx9o2VGujpmykwIMCjcfmhznNGRWq5pICdOhL4B
+         KcE34HTBNWy8JOsJPwDN+hbv2lJk7ZcDMUOVpf9u1F5sykIOIblQdn1Bjjc1Y2/atm5x
+         hO245rtuRiHMF1eV60Ff9Jn7tyGKM4GE1ElzQjfRGZ6eGjxVYO4QDLZVh2bU6jdHu90g
+         6pgA==
+X-Gm-Message-State: APjAAAVvMTyp9AZRFI8n3kMA03USWMKzR1MkwqWmaF/mzZJXLXq2oeGd
+        iphCPVNQXnbTmlbUQlTag/dd0o1XkjqeBw==
+X-Google-Smtp-Source: APXvYqzoObTo7zPJvBtCd59aQgny5Hx5j84Tue4t437siGlAblkQSZFM3HK85Cl0JhFmHM0F82HGMA==
+X-Received: by 2002:a1c:c18d:: with SMTP id r135mr4126832wmf.112.1554221606503;
+        Tue, 02 Apr 2019 09:13:26 -0700 (PDT)
+Received: from mai.imgcgcw.net (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
+        by smtp.gmail.com with ESMTPSA id a126sm17054999wmh.4.2019.04.02.09.13.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 02 Apr 2019 09:13:25 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rui.zhang@intel.com, edubezval@gmail.com
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <groeck@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexey Brodkin <alexey.brodkin@synopsys.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Daniel Mack <daniel@zonque.org>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-mips@vger.kernel.org (open list:MIPS)
+Subject: [PATCH 1/7] thermal/drivers/core: Remove the module Kconfig's option
+Date:   Tue,  2 Apr 2019 18:12:44 +0200
+Message-Id: <20190402161256.11044-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-3.16.65-rc1 review patch.  If anyone has any objections, please let me know.
+The module support for the thermal subsystem makes little sense:
+ - some subsystems relying on it are not modules, thus forcing the
+   framework to be compiled in
+ - it is compiled in for almost every configs, the remaining ones
+   are a few platforms where I don't see why we can not switch the thermal
+   to 'y'. The drivers can stay in tristate.
+ - platforms need the thermal to be ready as soon as possible at boot time
+   in order to mitigate
 
-------------------
+Usually the subsystems framework are compiled-in and the plugs are as module.
 
-From: Jiong Wang <jiong.wang@netronome.com>
+Remove the module option. The removal of the module related dead code will
+come after this patch gets in or is acked.
 
-commit 17f6c83fb5ebf7db4fcc94a5be4c22d5a7bfe428 upstream.
-
-For micro-mips, srlv inside POOL32A encoding space should use 0x50
-sub-opcode, NOT 0x90.
-
-Some early version ISA doc describes the encoding as 0x90 for both srlv and
-srav, this looks to me was a typo. I checked Binutils libopcode
-implementation which is using 0x50 for srlv and 0x90 for srav.
-
-v1->v2:
-  - Keep mm_srlv32_op sorted by value.
-
-Fixes: f31318fdf324 ("MIPS: uasm: Add srlv uasm instruction")
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Signed-off-by: Jiong Wang <jiong.wang@netronome.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Guenter Roeck <groeck@chromium.org>
+For mini2440:
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/mips/include/uapi/asm/inst.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/mini2440_defconfig        | 2 +-
+ arch/arm/configs/pxa_defconfig             | 2 +-
+ arch/mips/configs/ip22_defconfig           | 2 +-
+ arch/mips/configs/ip27_defconfig           | 2 +-
+ arch/unicore32/configs/unicore32_defconfig | 2 +-
+ drivers/thermal/Kconfig                    | 4 ++--
+ 6 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -262,8 +262,8 @@ enum mm_32a_minor_op {
- 	mm_ext_op = 0x02c,
- 	mm_pool32axf_op = 0x03c,
- 	mm_srl32_op = 0x040,
-+	mm_srlv32_op = 0x050,
- 	mm_sra_op = 0x080,
--	mm_srlv32_op = 0x090,
- 	mm_rotr_op = 0x0c0,
- 	mm_lwxs_op = 0x118,
- 	mm_addu32_op = 0x150,
+diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
+index d95a8059d30b..0cf1c120c4bb 100644
+--- a/arch/arm/configs/mini2440_defconfig
++++ b/arch/arm/configs/mini2440_defconfig
+@@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
+ CONFIG_SPI_SPIDEV=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_SENSORS_LM75=y
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_S3C2410_WATCHDOG=y
+ CONFIG_FB=y
+diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+index d4654755b09c..d4f9dda3a52f 100644
+--- a/arch/arm/configs/pxa_defconfig
++++ b/arch/arm/configs/pxa_defconfig
+@@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
+ CONFIG_SENSORS_LM90=m
+ CONFIG_SENSORS_LM95245=m
+ CONFIG_SENSORS_NTC_THERMISTOR=m
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_XILINX_WATCHDOG=m
+ CONFIG_SA1100_WATCHDOG=m
+diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+index ff40fbc2f439..21a1168ae301 100644
+--- a/arch/mips/configs/ip22_defconfig
++++ b/arch/mips/configs/ip22_defconfig
+@@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
+ # CONFIG_HW_RANDOM is not set
+ CONFIG_RAW_DRIVER=m
+ # CONFIG_HWMON is not set
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_INDYDOG=m
+ # CONFIG_VGA_CONSOLE is not set
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index 81c47e18131b..54db5dedf776 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
+ CONFIG_I2C_TAOS_EVM=m
+ CONFIG_I2C_STUB=m
+ # CONFIG_HWMON is not set
+-CONFIG_THERMAL=m
++CONFIG_THERMAL=y
+ CONFIG_MFD_PCF50633=m
+ CONFIG_PCF50633_ADC=m
+ CONFIG_PCF50633_GPIO=m
+diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
+index aebd01fc28e5..360cc9abcdb0 100644
+--- a/arch/unicore32/configs/unicore32_defconfig
++++ b/arch/unicore32/configs/unicore32_defconfig
+@@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
+ #	Hardware Monitoring support
+ #CONFIG_SENSORS_LM75=m
+ #	Generic Thermal sysfs driver
+-#CONFIG_THERMAL=m
++#CONFIG_THERMAL=y
+ #CONFIG_THERMAL_HWMON=y
+ 
+ #	Multimedia support
+diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
+index 653aa27a25a4..ccf5b9408d7a 100644
+--- a/drivers/thermal/Kconfig
++++ b/drivers/thermal/Kconfig
+@@ -3,7 +3,7 @@
+ #
+ 
+ menuconfig THERMAL
+-	tristate "Generic Thermal sysfs driver"
++	bool "Generic Thermal sysfs driver"
+ 	help
+ 	  Generic Thermal Sysfs driver offers a generic mechanism for
+ 	  thermal management. Usually it's made up of one or more thermal
+@@ -11,7 +11,7 @@ menuconfig THERMAL
+ 	  Each thermal zone contains its own temperature, trip points,
+ 	  cooling devices.
+ 	  All platforms with ACPI thermal support can use this driver.
+-	  If you want this support, you should say Y or M here.
++	  If you want this support, you should say Y here.
+ 
+ if THERMAL
+ 
+-- 
+2.17.1
 

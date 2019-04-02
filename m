@@ -2,196 +2,294 @@ Return-Path: <SRS0=6JhV=SE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76B9AC10F00
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 16:13:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA7BEC4360F
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 20:08:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4715F206BA
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 16:13:39 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FFy/4Wm+"
+	by mail.kernel.org (Postfix) with ESMTP id 79F3C2084B
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 20:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1554235686;
+	bh=XyEkjn7qx+PzZoDTxyEnI6Fo9eGypwG6G7VB5frpVNs=;
+	h=In-Reply-To:References:From:Subject:Cc:To:Date:List-ID:From;
+	b=rmg8KkvSunzokLgC4YS3t1sXHC6P81hfHVea+Qh84bzlS0cOIQGySUlOwk3WJOewE
+	 zl54Yiq6T7LZRBbE9YQcV5DnXknlMcWpodkQ9JrR1slQXDCdV9RuHI/AgoOFb6jmCq
+	 MjiLIdzQjc7XebaDrCb3aGtiG3ZL7svTBNTTgl1o=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729521AbfDBQN3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 12:13:29 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:40936 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729101AbfDBQN3 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 12:13:29 -0400
-Received: by mail-wm1-f68.google.com with SMTP id z24so4496051wmi.5
-        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 09:13:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=xKY+ceGe4SnC6doIZkUhD6Dozc5uLu/ZgR2u3m//Do4=;
-        b=FFy/4Wm+LurbVt0OXlOunKKi3T2Cm7VPBBPp4er2zxXCSFig3++1KgZ67Lc5P4SQZx
-         PpQ+KNac1FSpIn9HYi0FW3hO6XWvHCMwyw03VFY4295APSPJGzFRIQltm2xvzp6jC6Q4
-         V5pjK8XvvlJgadjNwoCFISAkobOv9L54qyBmJu5lopHqR0D067HpOjDGTgJj4HQTFtIJ
-         UFu+wHh34k0Kimu1DvxXhD0PtA2QUbQJ7nrbmjgdk+NwFAkZAlPXBBnHPv/vAkiNyyit
-         omL4C9rI/LByQtXK7NTPYCLs43V8XSm6V4yBxzCRcWf0oTAN8+hJnFxUjDtP8qUtTN4S
-         9/lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=xKY+ceGe4SnC6doIZkUhD6Dozc5uLu/ZgR2u3m//Do4=;
-        b=BgtIkI/Ti8Kmm3RzYQ36kba8RzU9IjN2oFeU2duuKO5ATXc4pFuXVcV7E1pTNhnKqu
-         2a6iLhSU0kERzdXgLauCEaTqUudyNckbZJmYXUby1c3O9p+QHd4dTCLBkWTL76YyNZt/
-         QIP2fMXyzICJmK/iNMO+L/ZxfqUQjqx9o2VGujpmykwIMCjcfmhznNGRWq5pICdOhL4B
-         KcE34HTBNWy8JOsJPwDN+hbv2lJk7ZcDMUOVpf9u1F5sykIOIblQdn1Bjjc1Y2/atm5x
-         hO245rtuRiHMF1eV60Ff9Jn7tyGKM4GE1ElzQjfRGZ6eGjxVYO4QDLZVh2bU6jdHu90g
-         6pgA==
-X-Gm-Message-State: APjAAAVvMTyp9AZRFI8n3kMA03USWMKzR1MkwqWmaF/mzZJXLXq2oeGd
-        iphCPVNQXnbTmlbUQlTag/dd0o1XkjqeBw==
-X-Google-Smtp-Source: APXvYqzoObTo7zPJvBtCd59aQgny5Hx5j84Tue4t437siGlAblkQSZFM3HK85Cl0JhFmHM0F82HGMA==
-X-Received: by 2002:a1c:c18d:: with SMTP id r135mr4126832wmf.112.1554221606503;
-        Tue, 02 Apr 2019 09:13:26 -0700 (PDT)
-Received: from mai.imgcgcw.net (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
-        by smtp.gmail.com with ESMTPSA id a126sm17054999wmh.4.2019.04.02.09.13.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Apr 2019 09:13:25 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rui.zhang@intel.com, edubezval@gmail.com
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <groeck@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexey Brodkin <alexey.brodkin@synopsys.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Mack <daniel@zonque.org>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
-        linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCH 1/7] thermal/drivers/core: Remove the module Kconfig's option
-Date:   Tue,  2 Apr 2019 18:12:44 +0200
-Message-Id: <20190402161256.11044-1-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        id S1725857AbfDBUIG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 16:08:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41098 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725822AbfDBUIF (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 2 Apr 2019 16:08:05 -0400
+Received: from localhost (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 718512082C;
+        Tue,  2 Apr 2019 20:08:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1554235684;
+        bh=XyEkjn7qx+PzZoDTxyEnI6Fo9eGypwG6G7VB5frpVNs=;
+        h=In-Reply-To:References:From:Subject:Cc:To:Date:From;
+        b=L4Cz7jLiqbqG9ML+r1NtUPkdZzREB5Uw5hIkqo7xyLw7i5/FztZHWQsOwTZdk0/rd
+         5i5mQP2G5LqEwsgdbBjMJut5U8JdEgal6kZmIM/1oCB06bRJH2cleaWueEm97aWWbp
+         98Wuyl01tFuafgBtdN8+pCxbAh3mIE+WdryQBJvM=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190330123317.16821-2-drvlabo@gmail.com>
+References: <20190330123317.16821-1-drvlabo@gmail.com> <20190330123317.16821-2-drvlabo@gmail.com>
+From:   Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [RFC 1/5] mips: ralink: add rt2880-clock driver
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
+        NOGUCHI Hiroshi <drvlabo@gmail.com>
+To:     John Crispin <john@phrozen.org>,
+        NOGUCHI Hiroshi <drvlabo@gmail.com>
+Message-ID: <155423568358.20095.11135907708934310380@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.8
+Date:   Tue, 02 Apr 2019 13:08:03 -0700
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The module support for the thermal subsystem makes little sense:
- - some subsystems relying on it are not modules, thus forcing the
-   framework to be compiled in
- - it is compiled in for almost every configs, the remaining ones
-   are a few platforms where I don't see why we can not switch the thermal
-   to 'y'. The drivers can stay in tristate.
- - platforms need the thermal to be ready as soon as possible at boot time
-   in order to mitigate
+Quoting NOGUCHI Hiroshi (2019-03-30 05:33:13)
+> This patch adds SoC peripheral clock gating driver.
+> The driver loads gating clock table from of_device_id.data in individual =
+SoC sources.
 
-Usually the subsystems framework are compiled-in and the plugs are as module.
+Please line wrap this to the column length standard of something like 76
+columns.
 
-Remove the module option. The removal of the module related dead code will
-come after this patch gets in or is acked.
+>=20
+> Signed-off-by: NOGUCHI Hiroshi <drvlabo@gmail.com>
+> diff --git a/arch/mips/ralink/rt2880-clk_internal.h b/arch/mips/ralink/rt=
+2880-clk_internal.h
+> new file mode 100644
+> index 000000000000..9d5dded16a80
+> --- /dev/null
+> +++ b/arch/mips/ralink/rt2880-clk_internal.h
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 NOGUCHI Hiroshi <drvlabo@gmail.com>
+> + */
+> +
+> +#ifndef __RT2880_CLOCK_INTERNAL_H
+> +
+> +
+> +#define GATE_CLK_NUM   (32)
+> +
+> +struct gate_clk_desc {
+> +       const char *name;
+> +       const char *parent_name;
+> +};
+> +
+> +extern const struct of_device_id __initconst of_match_rt2880_clk[];
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Guenter Roeck <groeck@chromium.org>
-For mini2440:
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/arm/configs/mini2440_defconfig        | 2 +-
- arch/arm/configs/pxa_defconfig             | 2 +-
- arch/mips/configs/ip22_defconfig           | 2 +-
- arch/mips/configs/ip27_defconfig           | 2 +-
- arch/unicore32/configs/unicore32_defconfig | 2 +-
- drivers/thermal/Kconfig                    | 4 ++--
- 6 files changed, 7 insertions(+), 7 deletions(-)
+Why is it extern?
 
-diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-index d95a8059d30b..0cf1c120c4bb 100644
---- a/arch/arm/configs/mini2440_defconfig
-+++ b/arch/arm/configs/mini2440_defconfig
-@@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
- CONFIG_SPI_SPIDEV=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_SENSORS_LM75=y
--CONFIG_THERMAL=m
-+CONFIG_THERMAL=y
- CONFIG_WATCHDOG=y
- CONFIG_S3C2410_WATCHDOG=y
- CONFIG_FB=y
-diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-index d4654755b09c..d4f9dda3a52f 100644
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
- CONFIG_SENSORS_LM90=m
- CONFIG_SENSORS_LM95245=m
- CONFIG_SENSORS_NTC_THERMISTOR=m
--CONFIG_THERMAL=m
-+CONFIG_THERMAL=y
- CONFIG_WATCHDOG=y
- CONFIG_XILINX_WATCHDOG=m
- CONFIG_SA1100_WATCHDOG=m
-diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-index ff40fbc2f439..21a1168ae301 100644
---- a/arch/mips/configs/ip22_defconfig
-+++ b/arch/mips/configs/ip22_defconfig
-@@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
- # CONFIG_HW_RANDOM is not set
- CONFIG_RAW_DRIVER=m
- # CONFIG_HWMON is not set
--CONFIG_THERMAL=m
-+CONFIG_THERMAL=y
- CONFIG_WATCHDOG=y
- CONFIG_INDYDOG=m
- # CONFIG_VGA_CONSOLE is not set
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 81c47e18131b..54db5dedf776 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
- CONFIG_I2C_TAOS_EVM=m
- CONFIG_I2C_STUB=m
- # CONFIG_HWMON is not set
--CONFIG_THERMAL=m
-+CONFIG_THERMAL=y
- CONFIG_MFD_PCF50633=m
- CONFIG_PCF50633_ADC=m
- CONFIG_PCF50633_GPIO=m
-diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
-index aebd01fc28e5..360cc9abcdb0 100644
---- a/arch/unicore32/configs/unicore32_defconfig
-+++ b/arch/unicore32/configs/unicore32_defconfig
-@@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
- #	Hardware Monitoring support
- #CONFIG_SENSORS_LM75=m
- #	Generic Thermal sysfs driver
--#CONFIG_THERMAL=m
-+#CONFIG_THERMAL=y
- #CONFIG_THERMAL_HWMON=y
- 
- #	Multimedia support
-diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-index 653aa27a25a4..ccf5b9408d7a 100644
---- a/drivers/thermal/Kconfig
-+++ b/drivers/thermal/Kconfig
-@@ -3,7 +3,7 @@
- #
- 
- menuconfig THERMAL
--	tristate "Generic Thermal sysfs driver"
-+	bool "Generic Thermal sysfs driver"
- 	help
- 	  Generic Thermal Sysfs driver offers a generic mechanism for
- 	  thermal management. Usually it's made up of one or more thermal
-@@ -11,7 +11,7 @@ menuconfig THERMAL
- 	  Each thermal zone contains its own temperature, trip points,
- 	  cooling devices.
- 	  All platforms with ACPI thermal support can use this driver.
--	  If you want this support, you should say Y or M here.
-+	  If you want this support, you should say Y here.
- 
- if THERMAL
- 
--- 
-2.17.1
+> +
+> +
+> +#endif
+> +
+> +
+> diff --git a/arch/mips/ralink/rt2880-clock.c b/arch/mips/ralink/rt2880-cl=
+ock.c
+> new file mode 100644
+> index 000000000000..46cc067225ab
+> --- /dev/null
+> +++ b/arch/mips/ralink/rt2880-clock.c
+> @@ -0,0 +1,134 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2019 NOGUCHI Hiroshi <drvlabo@gmail.com>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/init.h>
+> +#include <linux/jiffies.h>
+
+Used?
+
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +#include <linux/clk.h>
+
+Used?
+
+> +#include <linux/clkdev.h>
+
+Used?
+
+> +#include <linux/clk-provider.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/regmap.h>
+> +#include <linux/bug.h>
+
+Drop? Don't use panic().
+
+> +
+> +#include "rt2880-clk_internal.h"
+> +
+> +
+> +/* clock configuration 1 */
+> +#define        SYSC_REG_CLKCFG1        0x30
+> +
+> +struct rt2880_gate {
+> +       struct clk_hw   hw;
+> +       u8      shift;
+> +};
+> +
+> +#define        to_rt2880_gate(_hw)     container_of(_hw, struct rt2880_g=
+ate, hw)
+> +
+> +static struct clk_onecell_data clk_data;
+> +static struct clk *clks[GATE_CLK_NUM];
+
+Why does it need to be static? Why not allocate at runtime?
+
+> +
+> +static struct regmap *syscon_regmap;
+> +
+> +static int rt2880_gate_enable(struct clk_hw *hw)
+> +{
+> +       struct rt2880_gate *clk_gate =3D to_rt2880_gate(hw);
+> +       u32 val =3D 0x01UL << clk_gate->shift;
+
+Just write BIT(clk_gate->shift) instead.
+
+> +
+> +       regmap_update_bits(syscon_regmap, SYSC_REG_CLKCFG1, val, val);
+
+return regmap_udpate_bits()?
+
+> +
+> +       return 0;
+> +}
+> +
+> +static void rt2880_gate_disable(struct clk_hw *hw)
+> +{
+> +       struct rt2880_gate *clk_gate =3D to_rt2880_gate(hw);
+> +       u32 val =3D 0x01UL << clk_gate->shift;
+
+Same, use BIT() macro.
+
+> +
+> +       regmap_update_bits(syscon_regmap, SYSC_REG_CLKCFG1, val, 0);
+> +}
+> +
+> +static int rt2880_gate_is_enabled(struct clk_hw *hw)
+> +{
+> +       struct rt2880_gate *clk_gate =3D to_rt2880_gate(hw);
+> +       unsigned int rdval;
+> +
+> +       if (regmap_read(syscon_regmap, SYSC_REG_CLKCFG1, &rdval))
+> +               return 0;
+> +
+> +       return (!!(rdval & (0x01UL << clk_gate->shift)));
+
+Doesn't need to be a bool. Just 'return rdval & BIT(clk_gate->shift)'
+
+> +}
+> +
+> +static const struct clk_ops rt2880_gate_ops =3D {
+> +       .enable =3D rt2880_gate_enable,
+> +       .disable =3D rt2880_gate_disable,
+> +       .is_enabled =3D rt2880_gate_is_enabled,
+> +};
+> +
+> +static struct clk * __init
+> +rt2880_register_gate(const char *name, const char *parent_name, u8 shift)
+> +{
+> +       struct rt2880_gate      *clk_gate;
+> +       struct clk              *clk;
+> +       struct clk_init_data    init;
+> +       const char *_parent_names[1] =3D { parent_name };
+> +
+> +       clk_gate =3D kzalloc(sizeof(*clk_gate), GFP_KERNEL);
+> +       if (!clk_gate)
+> +               return ERR_PTR(-ENOMEM);
+> +
+> +       init.name =3D name;
+> +       init.ops =3D &rt2880_gate_ops;
+> +       init.flags =3D 0;
+> +       init.parent_names =3D parent_name ? _parent_names : NULL;
+> +       init.num_parents =3D parent_name ? 1 : 0;
+> +
+> +       clk_gate->hw.init =3D &init;
+> +       clk_gate->shift =3D shift;
+> +
+> +       clk =3D clk_register(NULL, &clk_gate->hw);
+
+Please use clk_hw_register() instead of clk_register().
+
+> +       if (IS_ERR(clk))
+> +               kfree(clk_gate);
+> +
+> +       return clk;
+> +}
+> +
+> +static void __init rt2880_clkctrl_init_dt(struct device_node *np)
+> +{
+> +       struct clk *clk;
+> +       int i;
+> +       const struct of_device_id *match;
+> +       struct gate_clk_desc *clk_tbl;
+> +
+> +       match =3D of_match_node(of_match_rt2880_clk, np);
+> +       if (!match) {
+> +               pr_info("rt2880-clock: could not get compatible node");
+
+How is this possible?
+
+> +               return;
+> +       }
+> +       clk_tbl =3D (struct gate_clk_desc *)match->data;
+
+Drop useless cast from void.
+
+> +
+> +       syscon_regmap =3D syscon_regmap_lookup_by_phandle(np, "ralink,sys=
+ctl");
+> +       if (IS_ERR(syscon_regmap)) {
+> +               pr_info("rt2880-clock: could not get syscon regmap");
+
+Why are error messages at 'info' print level? Should be pr_err().
+
+> +               return;
+> +       }
+> +
+> +       clk_data.clk_num =3D GATE_CLK_NUM;
+> +       clk_data.clks =3D clks;
+> +
+> +       for (i =3D 0; i < GATE_CLK_NUM; i++) {
+> +               if (clk_tbl[i].name) {
+> +                       clk =3D rt2880_register_gate(
+> +                               clk_tbl[i].name, clk_tbl[i].parent_name, =
+i);
+> +                       if (IS_ERR_OR_NULL(clk))
+> +                               panic("rt2880-clock : could not register =
+gate clock");
+
+Do we need to panic here? Maybe things will still work?
+
+> +                       clk_data.clks[i] =3D clk;
+> +               }
+> +       }
+> +
+> +       of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data);
+
+Please add a clk_hw provider instead of a clk provider.
+
+> +}
+> +CLK_OF_DECLARE(rt2880, "ralink,rt2880-clock", rt2880_clkctrl_init_dt);
+
+Can this be a platform driver?
 

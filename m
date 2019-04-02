@@ -2,62 +2,64 @@ Return-Path: <SRS0=6JhV=SE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8F4BC4360F
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 09:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E92F7C4360F
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 09:19:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7ABFC20882
-	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 09:10:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B3A2B20856
+	for <linux-mips@archiver.kernel.org>; Tue,  2 Apr 2019 09:19:07 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FXttMIzI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iaEu1ZvE"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730024AbfDBJKu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 05:10:50 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35502 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730020AbfDBJKu (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 05:10:50 -0400
-Received: by mail-ot1-f65.google.com with SMTP id m10so11435311otp.2
-        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 02:10:50 -0700 (PDT)
+        id S1726157AbfDBJTH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 05:19:07 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:43721 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728681AbfDBJTH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 05:19:07 -0400
+Received: by mail-lj1-f193.google.com with SMTP id f18so10857390lja.10
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 02:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=VXZ0694S7fFzp5Y3g6ww3d5ergdGQYmUb1qBPSGUqb4=;
-        b=FXttMIzIsP71KjSeodaDsnif8KC8LaNlL3Cwfnj9hLZ0Xp0O7pd1ka/F3P2OQrn9gp
-         t5N4x+abBKqy1Bi82RjDD1TccBPW1ZHpTDsIVA0oTu4+7UG9IW8hEQs92yb1vcyZGzLJ
-         pP9N85f1V9GaROM6f6apIIj8yKTNKJN1/hFMZrc9/uIuvKaTa3JhDI3hAbqIUaRf8Yin
-         xxVmhKtA/hd6tRsVyKUZ8rest6nNfcVu99UYxTAy5vTxz5Qp0lNU09B7/FuISmdnN4pZ
-         0W3fyQ0NsN0MRNuaYuFGeVG85qCgrJ80j3vb4MzQVjPpBQZFLhK/YNRcdn7mjXxfoOy+
-         4Q7w==
+        bh=savQo5tfN+y45IL1LSRmkM0pmYjRsdkEuwf8ptUdZY4=;
+        b=iaEu1ZvE7i+aceOKthhQa0wG7pJ1PrfGYDtQuOrb88tEELV+yUJ3wP6a+J/dxCJXME
+         hMGXODlxFPg05q96NazwqlLEW9lQHQWLy++oZdizqu0eY7/OyckXnxk2fQaXaGpO6AbS
+         +0PJXtlLcIRc0biHtRDT7o7WXzdI+DvreDHNsZpeDldYeHmtVGc5R4VEO03unCCS5Dig
+         O3BPYQdef+tcAAY+AYBbvFNrdsOJBwp3MNYpuvOgnlcBc6Xw4Xpai1T4KJDr0rjrrIVG
+         RjvJAiB2/nMa+/CoS0Zli3dQyWaQ4aPiebrSKRv2g1p+tgVdpwLcUMC7b8Lm7Ukz/N+k
+         F/Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=VXZ0694S7fFzp5Y3g6ww3d5ergdGQYmUb1qBPSGUqb4=;
-        b=KNyh0aI1gwBeyyYE+RueK8dOsnsSX+IqcmDiI3PDqePdl7YyRVkKE6d7ryD5m0vSAi
-         w9juzV5aITtVCTAdHLeh7hdm05D7LzfJFNKyEmrsbGLHv+rLNOVGvm4H07k/7d3R8tT0
-         bxCvmrsIx4EXaNL64cKgF3ANoF8ow57pXwoWKw7MgxcGTQDXM5Jp0hcThXXhroz0FUK2
-         tWlv0KJFopyfC8CnJfjgfvZkiL4Lx+swqK9yeTagLhTMK8UtWcGihRTd9ta4XJMwG6SF
-         ztrZ5HoQ1LDE+A/A6h5Lmohi7PDeVwEn8LqgynA0mnv+2Jty57a3lehfrn04Lg99cwiT
-         S2Zg==
-X-Gm-Message-State: APjAAAUy5cO/Ll/y7EPCLhe+gElOyxH71A6jlfS6KCSxMBGXOw5tDH8y
-        4+X2b867M7BpfhYhF4x9kqu/ALONq/svQAL2tfMA+A==
-X-Google-Smtp-Source: APXvYqz1MJ8bMDmcZW1WgEYchJMU4A9Q2Irypej5jBC2LEJOWBDCMbDy5VRyiIwuhZoQgWi1vgQSiZxPkh1DGVYN44U=
-X-Received: by 2002:a05:6830:1446:: with SMTP id w6mr35990731otp.157.1554196249559;
- Tue, 02 Apr 2019 02:10:49 -0700 (PDT)
+        bh=savQo5tfN+y45IL1LSRmkM0pmYjRsdkEuwf8ptUdZY4=;
+        b=kFWG4IVNQPnxwqiflcnT7KlWP+95KOpjJzigFaqH463swYUA7uJvhkhAXGv4X61n7A
+         45HiSaCA3KoD1WItYzMFQmk7WfVImpwAEAH7AsJTQvkzDiZMAuRelbLiKT2jwDONWD88
+         UxKhguGsht6fY996w6h1Ga9UJkF/rXjrPJm8joE0j/DW1zC+DWvCi2nRH0f5HB9dwwV9
+         EIaFDaheYzZI/l6MDhrIqHsNdS4MG8GlD55IKynrJ5aOshNh+qlhZrN0aTqGazntHZRu
+         be7wnd8nbZxFpKe1cAPBDs7DBbGqh4Mths8o0P1Y7628xYEo5/MgCKCe8VW1VJeZMrr4
+         Ku+w==
+X-Gm-Message-State: APjAAAUCh8to7BouFihnO1aDL0EcKznA3DGc3QWQMIzKqtrpLquz79p5
+        t5e6bpSz+ZIEPYqFvnCf6vo23r8tsDxJu970RMNPYQ==
+X-Google-Smtp-Source: APXvYqyXmxbb7LdXRf28JxrEktA/coioA9BJXfYztWmnUpHCcGCupbQgKpB+sSfZB1SxugdWFY9VxLuTyZxq3TZf69k=
+X-Received: by 2002:a2e:808e:: with SMTP id i14mr20135284ljg.103.1554196745108;
+ Tue, 02 Apr 2019 02:19:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <1552330521-4276-1-git-send-email-info@metux.net>
  <1552330521-4276-29-git-send-email-info@metux.net> <CACRpkdYa+oaw-P9aYL6KApvetVBZLt7USVV3kx7xZ4R7U=Hfew@mail.gmail.com>
-In-Reply-To: <CACRpkdYa+oaw-P9aYL6KApvetVBZLt7USVV3kx7xZ4R7U=Hfew@mail.gmail.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Tue, 2 Apr 2019 17:10:38 +0800
-Message-ID: <CAMz4ku+L_iAGB4HrBuS8w5AQus1AZgKpbWbABbHwzDPWj9-rqg@mail.gmail.com>
+ <CAMz4ku+L_iAGB4HrBuS8w5AQus1AZgKpbWbABbHwzDPWj9-rqg@mail.gmail.com>
+In-Reply-To: <CAMz4ku+L_iAGB4HrBuS8w5AQus1AZgKpbWbABbHwzDPWj9-rqg@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 2 Apr 2019 16:18:53 +0700
+Message-ID: <CACRpkdZMpZMHR22USj_m+_j6=nKCsZbJ6FumSO0EtYvw0OsH3A@mail.gmail.com>
 Subject: Re: [PATCH 29/42] drivers: gpio: sprd: use devm_platform_ioremap_resource()
-To:     Linus Walleij <linus.walleij@linaro.org>
+To:     Baolin Wang <baolin.wang@linaro.org>
 Cc:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
@@ -88,23 +90,60 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Linus,
-
-On Tue, 2 Apr 2019 at 17:04, Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> On Tue, Mar 12, 2019 at 1:57 AM Enrico Weigelt, metux IT consult
-> <info@metux.net> wrote:
->
-> > Use the new helper that wraps the calls to platform_get_resource()
-> > and devm_ioremap_resource() together.
+On Tue, Apr 2, 2019 at 4:10 PM Baolin Wang <baolin.wang@linaro.org> wrote:
+> On Tue, 2 Apr 2019 at 17:04, Linus Walleij <linus.walleij@linaro.org> wrote:
 > >
-> > Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+> > On Tue, Mar 12, 2019 at 1:57 AM Enrico Weigelt, metux IT consult
+> > <info@metux.net> wrote:
+> >
+> > > Use the new helper that wraps the calls to platform_get_resource()
+> > > and devm_ioremap_resource() together.
+> > >
+> > > Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+> >
+> > Patch applied with Baolin's ACK.
 >
-> Patch applied with Baolin's ACK.
+> This patch had some problems which I've pointed out and I did not ack
+> this patch. Please do not apply it now until fixing the problem.
 
-This patch had some problems which I've pointed out and I did not ack
-this patch. Please do not apply it now until fixing the problem.
+Sorry, it's the gmail threading that confuse the different patches.
 
--- 
-Baolin Wang
-Best Regards
+The patch I actually applied is for gpio-sprd.c and looks like this:
+
+commit 851f66daeab961328507dcce0980cd7e4ff5f9ae (HEAD -> devel)
+Author: Enrico Weigelt, metux IT consult <info@metux.net>
+Date:   Mon Mar 11 19:55:08 2019 +0100
+
+    drivers: gpio: sprd: use devm_platform_ioremap_resource()
+
+    Use the new helper that wraps the calls to platform_get_resource()
+    and devm_ioremap_resource() together.
+
+    Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+    Reviewed-by: Baolin Wang <baolin.wang@linaro.org>
+    Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+
+diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
+index 55072d2b367f..f5c8b3a351d5 100644
+--- a/drivers/gpio/gpio-sprd.c
++++ b/drivers/gpio/gpio-sprd.c
+@@ -219,7 +219,6 @@ static int sprd_gpio_probe(struct platform_device *pdev)
+ {
+        struct gpio_irq_chip *irq;
+        struct sprd_gpio *sprd_gpio;
+-       struct resource *res;
+        int ret;
+
+        sprd_gpio = devm_kzalloc(&pdev->dev, sizeof(*sprd_gpio), GFP_KERNEL);
+@@ -232,8 +231,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
+                return sprd_gpio->irq;
+        }
+
+-       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-       sprd_gpio->base = devm_ioremap_resource(&pdev->dev, res);
++       sprd_gpio->base = devm_platform_ioremap_resource(pdev, 0);
+        if (IS_ERR(sprd_gpio->base))
+                return PTR_ERR(sprd_gpio->base);
+
+Yours,
+Linus Walleij

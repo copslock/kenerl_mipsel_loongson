@@ -6,56 +6,56 @@ X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AEBBC4360F
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCF06C4360F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:50:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 24F7821473
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:49:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9AFB920882
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:50:55 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tmkxdSO+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DGtY+ws+"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfDCDtv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 23:49:51 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:35764 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726411AbfDCDtv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 23:49:51 -0400
-Received: by mail-lf1-f65.google.com with SMTP id u21so10582338lfu.2
-        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 20:49:50 -0700 (PDT)
+        id S1726818AbfDCDuz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 23:50:55 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:36511 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726411AbfDCDuz (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 23:50:55 -0400
+Received: by mail-lj1-f194.google.com with SMTP id r24so13536776ljg.3
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 20:50:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TpU/xVxBv9WEG+3g7U9648HQVl2f7NlFys1Xmj7hepg=;
-        b=tmkxdSO+rb89A084WPto+VexCa+WwxrARfqz4RtKxjj79sPgiXdxYK3UIt7ksiLs7L
-         OPDsJPj1QHEqAl0EpmPJpPUMqZYy53N3FOFrUImGgY1P0+xNBEn3Rdtg6l1sT0AQJ4wE
-         GKKJZgEn0UdzS7EqsSHy4vO1141TQOVLot8LxKNRheQGAVahC1LXDFY7Lf7v7UksnUqs
-         1x4EoDzg3YfJcx5ELdIiZuIWIeSjmYZXK71vDIAueNe62K2+i8bTsPN9+GdWROkwoPS6
-         Ta96AOma2MRi0V5tQJlClerj8QRvH+QlLZ4Agt8108RIAZeROoti45TaZB8rmEQtoiBm
-         wqfg==
+        bh=3WT5Rdn7B2I8mwHTOIJSabuf0BiIIvc0b13OxkuNwhM=;
+        b=DGtY+ws+cQFaHerybIIJvFiY/kSl4DrRhgWaXdXuuThf6g38vqQiaD9Ed8N5SOyUN6
+         WPkWRnm5YMXrGdPJr5QgP1zxyzL1CIeSNVfXE9hFyBWJ2nfzyMkYidqkS51MGJ+qRvP1
+         sueexCoo72FkU0AC2i08/1KlrQw7xY4PoV0/xS2pWhEH87FDTJqqzypLDdHPedI4ySV1
+         ttJaOQh9rSlBrGv315FzB0m6+cN2bskh0OnIlOiova4PT6CWeiAa+kTx023E4PmCYqkO
+         /sTtOhkiS/iKFjvtKX6GgK0UDa0AHZaRDZVZDcXGfihGX7jphpwhufSe95rlXNX1rXzA
+         3SJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TpU/xVxBv9WEG+3g7U9648HQVl2f7NlFys1Xmj7hepg=;
-        b=mbXYPsSZRrdYzc7zcw4ikgveCGmZfQrxTECcuK29jr0G3BNIbV5iGtx2PUSICTQkA8
-         CoaaMzwq+tBT08GR6kgpLvMV9q18n2WF4SO4O8PK/RnlkEA4uIBgpZzb+rBaXUT3LA5l
-         UZZbjnIVIwJALEanXlO/TbUSOgA9qOdhC7cVOwfqLwiq0oI1EBFz7q3ahkBw4nLlojlB
-         RrET0u91O52ayXnqYytCoH0sO7Qxrg7KDlDpwpA8006sy4F0Eqlto7t8hjzRUWj9ksXP
-         y1Caj+CrbPEiois7GxO5wchCQRBjinRylVksE0csrqXZu+pF9osiVfSvztmInTZxXEjw
-         3u8g==
-X-Gm-Message-State: APjAAAXEf4mxY5MJNLFngJtq4AaUzs5RBKtHI1F7mK+8s84yI+cV4MPq
-        rV4S1EPsq0PUGLKNasGG7+GrnoZyyrSKE0FdvlOHdA==
-X-Google-Smtp-Source: APXvYqzyM/9XxtV6zaPsy/6WzV0bMFhvjVBpG+Pd/TUBfIpczrZGXBhbPCaXlWvCXW8fZYYC9NmEoT71O+e0veseDxI=
-X-Received: by 2002:ac2:4285:: with SMTP id m5mr11297261lfh.103.1554263390092;
- Tue, 02 Apr 2019 20:49:50 -0700 (PDT)
+        bh=3WT5Rdn7B2I8mwHTOIJSabuf0BiIIvc0b13OxkuNwhM=;
+        b=WftI9SSZ07MuT481M62zw92mw8EY/D/ZWaKSOqs+QnDeEQBwBYz7VL4CxX5L9Lepcg
+         JFFhrqcy5ktcYKR9vrODC0FquZsDb12qT+abwgTZbADsPJ3VpS2gMmWPS4TIuhie5cfF
+         dqU4bJ6UGCDqlIhAy9COR9H+A1C25uRHdX12giEsfDvRZiTS8SVihSVbzZXwKRXESooJ
+         5jsIcvmo4YPK3VZJtgCFLfVjv/z8XxeUR/jepDAUQZYgyoAWKJa3PvpOqCCU4pZk3PiE
+         LiPmmlo71Dfn4X9AQ/7lUbFRHqnZqG718z5Edc4r7cLM8yGJY4DvPzuukWFEL0ML28ag
+         7ahA==
+X-Gm-Message-State: APjAAAXFe24exWWSmkNMkmYKd/fQ6JvOlnzXG7b/Ct8NN41sps4VZ4Zq
+        10k88hS4JLNmvHeKt8bTrV7pozPTVrLPHgiaZMnJ8A==
+X-Google-Smtp-Source: APXvYqzOTAF7lCpOM+FQuHW+r3Rq8B7v8Qb+i3DmNtLTD90Suw36BTqo5oN4jJlSubEzu1VwARv+Dp7EVTcHTJwJNMg=
+X-Received: by 2002:a2e:808e:: with SMTP id i14mr23093879ljg.103.1554263453023;
+ Tue, 02 Apr 2019 20:50:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-36-git-send-email-info@metux.net>
-In-Reply-To: <1552330521-4276-36-git-send-email-info@metux.net>
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-37-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-37-git-send-email-info@metux.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 3 Apr 2019 10:49:38 +0700
-Message-ID: <CACRpkdZx+Y5s0n6=AuTmmKhQZWsZs-sLTrfgnkqt4DtWrYZ1wg@mail.gmail.com>
-Subject: Re: [PATCH 36/42] drivers: gpio: uniphier: use devm_platform_ioremap_resource()
+Date:   Wed, 3 Apr 2019 10:50:40 +0700
+Message-ID: <CACRpkdaRg5NKp0btcxM4tCn8+MqgYBOC1SAL88mTx4jMoQ7B9g@mail.gmail.com>
+Subject: Re: [PATCH 37/42] drivers: gpio: vf610: use devm_platform_ioremap_resource()
 To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
@@ -87,7 +87,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Mar 12, 2019 at 1:57 AM Enrico Weigelt, metux IT consult
+On Tue, Mar 12, 2019 at 1:56 AM Enrico Weigelt, metux IT consult
 <info@metux.net> wrote:
 
 > Use the new helper that wraps the calls to platform_get_resource()
@@ -95,7 +95,7 @@ On Tue, Mar 12, 2019 at 1:57 AM Enrico Weigelt, metux IT consult
 >
 > Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-Patch applied with Masahiro's ACK.
+Patch applied.
 
 Yours,
 Linus Walleij
